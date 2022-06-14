@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
@@ -50,5 +51,56 @@ class SortableRepository extends DataRepository<Sortable> {
       log.warning('Could not parse fixed folder $folder', e);
     }
     return null;
+  }
+
+  Future<bool> applyTemplate(
+    String language, {
+    String name = 'memoplanner',
+  }) async {
+    final templateResponse = await client.get(
+      '$baseUrl/api/v1/base-data'.toUri(),
+      headers: jsonHeader,
+    );
+    if (templateResponse.statusCode != 200) {
+      log.severe('could not get base-data set '
+          '${templateResponse.statusCode} '
+          '${templateResponse.body}');
+      return false;
+    }
+
+    final templateResponseJson = templateResponse.json() as List<dynamic>;
+    final template = templateResponseJson
+        .exceptionSafeMap(
+          BaseDataTemplate.fromJson,
+          onException: log.logAndReturnNull,
+        )
+        .whereNotNull()
+        .firstWhereOrNull(
+          (t) => t.language == language && t.name.contains(name),
+        );
+
+    if (template == null) {
+      log.severe(
+        'no templates applicable to $language in $templateResponseJson',
+      );
+
+      return false;
+    }
+
+    final applyResponse = await client.post(
+      '$baseUrl/api/v1/entity/$userId/apply-base-data/${template.id}'.toUri(),
+      headers: jsonHeader,
+    );
+    switch (applyResponse.statusCode) {
+      case 200:
+        log.info('succesfully applied $template to user $userId');
+        return true;
+      case 409:
+        log.warning(
+          'conflict when trying to apply starter set '
+          '${applyResponse.body}',
+        );
+    }
+    return false;
   }
 }

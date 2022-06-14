@@ -14,7 +14,9 @@ class AlarmRoute<T> extends MaterialPageRoute<T> {
 }
 
 class AlarmNavigator {
-  final _alarmRoutesOnStack = <String, AlarmRoute>{};
+  static const _fullScreenActivityKey = 'fullScreenActivity',
+      _screenSaverKey = 'screenSaver';
+  final _routesOnStack = <String, MaterialPageRoute>{};
   static final log = Logger((AlarmNavigator).toString());
 
   Route getFullscreenAlarmRoute({
@@ -28,23 +30,28 @@ class AlarmNavigator {
         child: AlarmListener(child: _alarmPage(alarm)),
       ),
     );
-    _alarmRoutesOnStack[alarm.stackId] = route;
+    _routesOnStack[alarm.stackId] = route;
     return route;
   }
 
-  void popFullscreenRoute() {
-    final route = _alarmRoutesOnStack['fullScreenActivity'];
+  void popFullscreenRoute() => _popRoute(_fullScreenActivityKey);
+
+  void _popRoute(String key) {
+    final route = _routesOnStack.remove(key);
     if (route != null) {
-      final navigator = route.navigator;
-      _alarmRoutesOnStack.remove('fullScreenActivity');
-      navigator?.removeRoute(route);
+      log.fine('route $route with key $key removed');
+      route.navigator?.removeRoute(route);
     }
   }
+
+  void addScreenSaver(MaterialPageRoute screenSaverRoute) =>
+      _routesOnStack['screenSaver'] = screenSaverRoute;
 
   Future pushAlarm(
     BuildContext context,
     NotificationAlarm alarm,
   ) async {
+    _popRoute(_screenSaverKey);
     final authProviders = copiedAuthProviders(context);
     final activityRepository = context.read<ActivityRepository>();
     log.fine('pushAlarm: $alarm');
@@ -58,14 +65,13 @@ class AlarmNavigator {
       ),
       fullscreenDialog: true,
     );
-    final routeOnStack = _alarmRoutesOnStack[alarm.stackId];
+    final routeOnStack = _routesOnStack[alarm.stackId];
     final navigator = Navigator.of(context);
     if (routeOnStack != null) {
       if (alarm is ActivityAlarm && alarm.fullScreenActivity) {
         navigator.removeRoute(routeOnStack);
-        _alarmRoutesOnStack[alarm.stackId] = route;
-        await navigator.push(route);
-        return;
+        _routesOnStack[alarm.stackId] = route;
+        return navigator.push(route);
       }
       log.fine('pushed alarm exists on stack');
       if (navigator.canPop()) {
@@ -76,7 +82,7 @@ class AlarmNavigator {
         return navigator.pushAndRemoveUntil(route, (_) => false);
       }
     }
-    _alarmRoutesOnStack[alarm.stackId] = route;
+    _routesOnStack[alarm.stackId] = route;
     return navigator.push(route);
   }
 
@@ -94,6 +100,6 @@ class AlarmNavigator {
 
   MaterialPageRoute? removedFromRoutes(NotificationAlarm alarm) {
     log.info('removedFromRoutes: $alarm');
-    return _alarmRoutesOnStack.remove(alarm.stackId);
+    return _routesOnStack.remove(alarm.stackId);
   }
 }

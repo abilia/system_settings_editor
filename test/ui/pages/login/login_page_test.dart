@@ -3,13 +3,16 @@ import 'package:get_it/get_it.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
 import 'package:seagull/getit.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/all.dart';
 
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/tts.dart';
@@ -20,10 +23,18 @@ void main() {
 
   final time = DateTime(2020, 11, 11, 11, 11);
   DateTime licensExpireTime;
+  late final ListenableMockClient client;
 
   setUpAll(() {
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    licensExpireTime = time.add(10.days());
+    client = Fakes.client(
+      activityResponse: () => [],
+      licenseResponse: () => Fakes.licenseResponseExpires(licensExpireTime),
+    );
   });
+
+  late SortableDb sortableDb;
 
   setUp(() async {
     setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
@@ -31,20 +42,33 @@ void main() {
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     licensExpireTime = time.add(10.days());
 
+    sortableDb = MockSortableDb();
+    when(() => sortableDb.getAllNonDeleted()).thenAnswer((_) => Future.value([
+          Sortable.createNew(
+            data: const ImageArchiveData(myPhotos: true),
+            fixed: true,
+          ),
+          Sortable.createNew(
+            data: const ImageArchiveData(upload: true),
+            fixed: true,
+          ),
+        ]));
+    when(() => sortableDb.insertAndAddDirty(any()))
+        .thenAnswer((_) => Future.value(true));
+    when(() => sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+
     GetItInitializer()
       ..sharedPreferences =
           await FakeSharedPreferences.getInstance(loggedIn: false)
       ..activityDb = FakeActivityDb()
       ..fireBasePushService = FakeFirebasePushService()
       ..ticker = Ticker.fake(initialTime: time)
-      ..client = Fakes.client(
-        activityResponse: () => [],
-        licenseResponse: () => Fakes.licenseResponseExpires(licensExpireTime),
-      )
+      ..client = client
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
       ..database = FakeDatabase()
       ..genericDb = FakeGenericDb()
+      ..sortableDb = sortableDb
       ..battery = FakeBattery()
       ..init();
   });
@@ -320,38 +344,6 @@ void main() {
     expect(find.text(translate.userTypeNotSupported), findsOneWidget);
   });
 
-  group('permissions', () {
-    testWidgets(
-        'when fullscreen notification is NOT granted: show FullscreenAlarmInfoDialog',
-        (WidgetTester tester) async {
-      setupPermissions({Permission.systemAlertWindow: PermissionStatus.denied});
-      await tester.pumpApp();
-      await tester.pumpAndSettle();
-      await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-      await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
-      await tester.pump();
-      await tester.tap(find.byType(LoginButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(FullscreenAlarmInfoDialog), findsOneWidget);
-      expect(find.byType(RequestFullscreenNotificationButton), findsOneWidget);
-      await tester.tap(find.byType(RequestFullscreenNotificationButton));
-      expect(requestedPermissions, contains(Permission.systemAlertWindow));
-    });
-
-    testWidgets(
-        'when fullscreen notification IS granted: show NO FullscreenAlarmInfoDialog',
-        (WidgetTester tester) async {
-      await tester.pumpApp();
-      await tester.pumpAndSettle();
-      await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-      await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
-      await tester.pump();
-      await tester.tap(find.byType(LoginButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(FullscreenAlarmInfoDialog), findsNothing);
-    });
-  });
-
   testWidgets('Cant press OK with too short username',
       (WidgetTester tester) async {
     await tester.pumpApp();
@@ -422,5 +414,88 @@ void main() {
     expect(find.byType(LoginPage), findsOneWidget);
     expect(find.text(pw), findsOneWidget);
     expect(find.text(secretPassword), findsNothing);
+  });
+
+  testWidgets('Redirect to login when unautorized',
+      (WidgetTester tester) async {
+    await tester.pumpApp();
+    await tester.pumpAndSettle();
+    await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+    await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(LoginButton));
+    await tester.pumpAndSettle();
+    expect(find.byType(CalendarPage), findsOneWidget);
+
+    client.fakeUnauthorized();
+    await tester.pumpAndSettle();
+    expect(find.byType(LoginPage), findsOneWidget);
+    expect(find.text(translate.loggedOutMessage), findsOneWidget);
+  });
+
+  group('on login popups', () {
+    group('permissions', () {
+      testWidgets(
+          'when fullscreen notification is NOT granted: show FullscreenAlarmInfoDialog',
+          (WidgetTester tester) async {
+        setupPermissions(
+            {Permission.systemAlertWindow: PermissionStatus.denied});
+        await tester.pumpApp();
+        await tester.pumpAndSettle();
+        await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+        await tester.pump();
+        await tester.tap(find.byType(LoginButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(FullscreenAlarmInfoDialog), findsOneWidget);
+        expect(
+          find.byType(RequestFullscreenNotificationButton),
+          findsOneWidget,
+        );
+        await tester.tap(find.byType(RequestFullscreenNotificationButton));
+        expect(requestedPermissions, contains(Permission.systemAlertWindow));
+      }, skip: Config.isMP);
+
+      testWidgets(
+          'when fullscreen notification IS granted: show NO FullscreenAlarmInfoDialog',
+          (WidgetTester tester) async {
+        await tester.pumpApp();
+        await tester.pumpAndSettle();
+        await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+        await tester.pump();
+        await tester.tap(find.byType(LoginButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(FullscreenAlarmInfoDialog), findsNothing);
+      });
+    });
+
+    group('starter set', () {
+      testWidgets('when no sortables: show StarterSetDialog',
+          (WidgetTester tester) async {
+        when(() => sortableDb.getAllNonDeleted())
+            .thenAnswer((_) => Future.value([]));
+        await tester.pumpApp();
+        await tester.pumpAndSettle();
+        await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+        await tester.pump();
+        await tester.tap(find.byType(LoginButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(StarterSetDialog), findsOneWidget);
+      });
+
+      testWidgets('when some sortable:  NO StarterSetDialog',
+          (WidgetTester tester) async {
+        await tester.pumpApp();
+        await tester.pumpAndSettle();
+        await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+        await tester.pump();
+        await tester.tap(find.byType(LoginButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(StarterSetDialog), findsNothing);
+      });
+    });
   });
 }
