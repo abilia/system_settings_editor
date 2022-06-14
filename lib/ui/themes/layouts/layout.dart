@@ -177,33 +177,6 @@ class Layout {
   bool get large => runtimeType == LargeLayout;
 }
 
-class MenuPageLayout {
-  final EdgeInsets padding;
-  final double crossAxisSpacing, mainAxisSpacing;
-  final int crossAxisCount;
-
-  final MenuItemButtonLayout menuItemButton;
-
-  const MenuPageLayout({
-    this.padding = const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
-    this.crossAxisSpacing = 7.5,
-    this.mainAxisSpacing = 7,
-    this.crossAxisCount = 3,
-    this.menuItemButton = const MenuItemButtonLayout(),
-  });
-}
-
-class MenuItemButtonLayout {
-  final double size, borderRadius, orangeDotInset, orangeDotRadius;
-
-  const MenuItemButtonLayout({
-    this.size = 48,
-    this.borderRadius = 12,
-    this.orangeDotInset = 4,
-    this.orangeDotRadius = 6,
-  });
-}
-
 class MyPhotosLayout {
   final double? childAspectRatio;
   final double fullScreenImageBorderRadius;
