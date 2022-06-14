@@ -337,7 +337,11 @@ final _textActionButtonStyle = ButtonStyle(
   maximumSize: MaterialStateProperty.all(
       Size(layout.actionButton.size, layout.actionButton.size)),
   padding: MaterialStateProperty.all(layout.actionButton.withTextPadding),
+  alignment: Alignment.topCenter,
 );
+
+final textActionButtonStyleBlack =
+    _textActionButtonStyle.merge(actionButtonStyleBlack);
 
 final textActionButtonStyleLight =
     _textActionButtonStyle.merge(actionButtonStyleLight);

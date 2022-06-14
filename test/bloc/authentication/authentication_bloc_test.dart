@@ -99,6 +99,8 @@ void main() {
       when(() => mockedUserRepository.me()).thenAnswer(
           (_) => Future.value(const User(id: 0, type: '', name: '')));
       when(() => mockedUserRepository.isLoggedIn()).thenReturn(true);
+      when(() => mockedUserRepository.fetchAndSetCalendar(any()))
+          .thenAnswer((_) => Future.value());
     });
 
     blocTest(

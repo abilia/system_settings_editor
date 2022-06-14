@@ -48,6 +48,9 @@ abstract class Translated {
   final String userTypeNotSupported =
       "Users of type Support person or Admin can't log in to MEMOPlanner Go. Please use myAbilia.";
 
+  final String loggedOutMessage =
+      'You have been logged out. Please log in again.';
+
   final String createAccountHint = 'Don’t have a myAbilia account yet?';
 
   final String createAccount = 'Create Account';
@@ -949,6 +952,10 @@ class SV extends Translated {
   @override
   final String userTypeNotSupported =
       'Användare av typen Supportperson eller Admin kan inte logga in i MEMOPlanner Go. Var vänlig använd myAbilia.';
+
+  @override
+  final String loggedOutMessage =
+      'Du har blivit utloggad. Vänligen logga in igen.';
 
   @override
   final String createAccountHint = 'Har du inte ett myAbilia konto än?';
@@ -2023,7 +2030,7 @@ class SV extends Translated {
   final String editCategory = 'Redigera kategori';
 
   @override
-  final String speakEveryWord = 'Uppläsning av varje ord';
+  final String speakEveryWord = 'Uppläsning av ord vid tryck på mellanslag';
 
   @override
   final String speechRate = 'Talhastighet';
@@ -7387,6 +7394,9 @@ class NB extends Translated {
   final String timerInvalidDuration = 'Varigheten kan ikke være null.';
 
   @override
+  final String timerDelete = 'Vil du slette timeren?';
+
+  @override
   final String activity = 'Aktivitet';
 
   @override
@@ -7467,6 +7477,9 @@ class NB extends Translated {
       'Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?';
 
   @override
+  final String basicTemplates = 'Maler';
+
+  @override
   final String basicActivities = 'Standardaktiviteter';
 
   @override
@@ -7476,7 +7489,13 @@ class NB extends Translated {
   final String editBasicActivity = 'Endre standardaktivitet';
 
   @override
+  final String enterNameForBasicActivity = 'Angi navn på standardaktivitet';
+
+  @override
   final String timeTo = 'til';
+
+  @override
+  final String addTimer = 'Legg inn timer';
 
   @override
   final String start = 'Start';
@@ -7491,6 +7510,9 @@ class NB extends Translated {
   final String startTimer = 'Start timer';
 
   @override
+  final String enterNameForTimer = 'Angi navn på timer';
+
+  @override
   final String fromBasicTimer = 'Fra standardtimere';
 
   @override
@@ -7503,7 +7525,13 @@ class NB extends Translated {
   final String timer = 'Tidtaker';
 
   @override
+  final String timeIsUp = 'Tiden er slutt';
+
+  @override
   final String basicTimers = 'Standardtimere';
+
+  @override
+  final String newBasicTimer = 'Ny standardtimer';
 
   @override
   final String menu = 'Meny';
@@ -7809,6 +7837,9 @@ class NB extends Translated {
   final String task = 'Oppgave';
 
   @override
+  final String enterTask = 'Legg inn oppgave';
+
+  @override
   final String screenBrightness = 'Skjermens lysstyrke';
 
   @override
@@ -8081,6 +8112,9 @@ class NB extends Translated {
   final String defaults = 'Forvalg';
 
   @override
+  final String onlyAppliesToGo = 'Gjelder kun MEMOplanner Go';
+
+  @override
   final String showOngoingActivityInFullScreen =
       'Vis gjeldende aktivitet i full skjerm';
 
@@ -8113,6 +8147,9 @@ class NB extends Translated {
   @override
   final String menuRemovalWarning =
       'Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke på kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.';
+
+  @override
+  final String selectADayToViewDetails = 'Velg en dag for å se mer detaljer';
 
   @override
   final String topField = 'Toppfelt';
@@ -8202,10 +8239,19 @@ class NB extends Translated {
   final String speechRate = 'Talehastighet';
 
   @override
+  final String voice = 'Talesyntese';
+
+  @override
   final String noVoicesInstalled = 'Ingen stemmer er installert';
 
   @override
+  final String installingVoice = 'Installerer';
+
+  @override
   final String speechTest = 'Test av talehastighet';
+
+  @override
+  final String voices = 'Talesynteser';
 
   @override
   final String codeProtect = 'Kodebeskyttelse';
@@ -8221,6 +8267,12 @@ class NB extends Translated {
 
   @override
   final String codeProtectAndroidSettings = 'Kodebeskytt Android-innstillinger';
+
+  @override
+  final String enterCode = 'Angi kode';
+
+  @override
+  final String enterYourCodeToAccess = 'Angi din kode for å få tilgang';
 
   @override
   final String enterNewCode = 'Angi ny kode';
@@ -8326,6 +8378,24 @@ class NB extends Translated {
 
   @override
   final String quickSettingsMenu = 'Hurtig-\ninnstillinger';
+
+  @override
+  final String allPhotos = 'Alle foto';
+
+  @override
+  final String addToPhotoCalendarQuestion =
+      'Vil du legge inn dette foto i fotokalenderen?';
+
+  @override
+  final String removeFromPhotoCalendarQuestion =
+      'Vil du slette dette foto fra fotokalenderen?';
+
+  @override
+  final String remove = 'Slette';
+
+  @override
+  final String doYouWantToDeleteThisPhoto =
+      'Er du sikker på at du vil slette dette foto?';
 
   @override
   final String doYouWantToImportADefaultSet =

@@ -5,7 +5,12 @@ import 'package:seagull/repository/end_point.dart';
 import 'package:seagull/ui/all.dart';
 
 class LoginForm extends StatelessWidget {
-  const LoginForm({Key? key}) : super(key: key);
+  const LoginForm({
+    Key? key,
+    required this.message,
+  }) : super(key: key);
+
+  final String message;
 
   @override
   Widget build(BuildContext context) {
@@ -13,13 +18,18 @@ class LoginForm extends StatelessWidget {
     final theme = Theme.of(context);
     return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
+        final hasMessage = message.isNotEmpty;
         return Form(
           child: Padding(
-            padding: layout.templates.m5,
+            padding: hasMessage ? layout.templates.m6 : layout.templates.m5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
+                if (hasMessage) ...[
+                  ErrorMessage(text: Text(message)),
+                  SizedBox(height: layout.templates.m5.top)
+                ],
                 const MEMOplannerLogoWithLoginProgress(),
                 SizedBox(height: layout.formPadding.groupBottomDistance),
                 Tts(
