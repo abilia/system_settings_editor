@@ -53,6 +53,7 @@ void main() {
         )
         ..battery = FakeBattery()
         ..database = FakeDatabase()
+        ..deviceDb = FakeDeviceDb()
         ..init();
     });
 
@@ -62,7 +63,6 @@ void main() {
     });
 
     Widget _wrapWithMaterialApp({Widget? child}) => TopLevelBlocsProvider(
-          runStartGuide: false,
           child: AuthenticatedBlocsProvider(
             memoplannerSettingBloc: settingBloc,
             authenticatedState: const Authenticated(userId: 1),
@@ -271,6 +271,7 @@ void main() {
           stream: clockStreamController.stream,
         )
         ..battery = FakeBattery()
+        ..deviceDb = FakeDeviceDb()
         ..init();
     });
 

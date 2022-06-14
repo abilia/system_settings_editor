@@ -46,7 +46,6 @@ void main() {
     SortableBloc? sortableBloc,
   }) =>
       TopLevelBlocsProvider(
-        runStartGuide: false,
         child: AuthenticatedBlocsProvider(
           memoplannerSettingBloc: memoplannerSettingBloc,
           sortableBloc: sortableBloc,
@@ -151,6 +150,7 @@ void main() {
       ..database = FakeDatabase()
       ..battery = FakeBattery()
       ..timerDb = mockTimerDb
+      ..deviceDb = FakeDeviceDb()
       ..init();
   });
 
