@@ -27,7 +27,6 @@ class MenuPageLayout {
 
 class MenuPageLayoutMedium extends MenuPageLayout {
   const MenuPageLayoutMedium({
-    EdgeInsets? padding,
     MenuButtonLayout? button,
     double? crossAxisSpacing,
     double? mainAxisSpacing,
@@ -50,7 +49,6 @@ class MenuPageLayoutMedium extends MenuPageLayout {
 class MenuPageLayoutLarge extends MenuPageLayoutMedium {
   const MenuPageLayoutLarge()
       : super(
-          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
           crossAxisSpacing: 40,
           mainAxisSpacing: 40,
           button: const MenuButtonLayoutLarge(),
