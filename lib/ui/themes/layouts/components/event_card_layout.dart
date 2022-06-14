@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:seagull/ui/all.dart';
 
 class EventCardLayout {
@@ -12,7 +13,9 @@ class EventCardLayout {
       currentBorderWidth,
       timerWheelSize,
       privateIconSize,
-      titleSubtitleSpacing;
+      titleSubtitleSpacing,
+      bodyText4Height,
+      bodyText4Size;
 
   final EdgeInsets imagePadding;
   final EdgeInsets crossPadding;
@@ -40,7 +43,19 @@ class EventCardLayout {
     this.cardIconPadding = const EdgeInsets.only(right: 4),
     this.privateIconSize = 24,
     this.titleSubtitleSpacing = 6,
+    this.bodyText4Height = 28,
+    this.bodyText4Size = 16,
   });
+
+  TextStyle get bodyText4 => GoogleFonts.roboto(
+        textStyle: TextStyle(
+          color: AbiliaColors.black,
+          fontSize: bodyText4Size,
+          height: bodyText4Height / bodyText4Size,
+          fontWeight: FontWeight.w400,
+          leadingDistribution: TextLeadingDistribution.even,
+        ),
+      );
 }
 
 class EventCardLayoutMedium extends EventCardLayout {
@@ -48,6 +63,8 @@ class EventCardLayoutMedium extends EventCardLayout {
     double? height,
     double? imageSize,
     double? timerWheelSize,
+    double? bodyText4Height,
+    double? bodyText4Size,
   }) : super(
           height: height ?? 104,
           marginSmall: 8,
@@ -67,6 +84,8 @@ class EventCardLayoutMedium extends EventCardLayout {
           privateIconSize: 36,
           cardIconPadding: const EdgeInsets.only(right: 6),
           titleSubtitleSpacing: 12,
+          bodyText4Height: bodyText4Height ?? 42,
+          bodyText4Size: bodyText4Size ?? 24,
         );
 }
 
@@ -76,5 +95,7 @@ class EventCardLayoutLarge extends EventCardLayoutMedium {
           height: 120,
           imageSize: 104,
           timerWheelSize: 84,
+          bodyText4Height: 40,
+          bodyText4Size: 28,
         );
 }

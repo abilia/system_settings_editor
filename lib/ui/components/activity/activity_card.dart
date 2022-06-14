@@ -30,8 +30,9 @@ class ActivityCard extends StatelessWidget {
     final themeData = inactive
         ? abiliaTheme.copyWith(
             textTheme: textTheme.copyWith(
-              bodyText1:
-                  textTheme.bodyText1?.copyWith(color: AbiliaColors.white140),
+              labelSmall: layout.eventCard.bodyText4.copyWith(
+                color: AbiliaColors.white140,
+              ),
             ),
             iconTheme:
                 abiliaTheme.iconTheme.copyWith(color: AbiliaColors.white140))
@@ -114,7 +115,7 @@ class ActivityCard extends StatelessWidget {
                                   activity.subtitle(context),
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyText1
+                                      .labelSmall
                                       ?.copyWith(height: 1),
                                   overflow: TextOverflow.ellipsis,
                                 ),
