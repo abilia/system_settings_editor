@@ -84,7 +84,6 @@ void main() {
   }) =>
       MaterialApp(
         home: TopLevelBlocsProvider(
-          runStartGuide: false,
           child: AuthenticatedBlocsProvider(
             authenticatedState: state,
             child: MultiBlocProvider(

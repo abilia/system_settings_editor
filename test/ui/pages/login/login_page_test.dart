@@ -23,9 +23,15 @@ void main() {
 
   final time = DateTime(2020, 11, 11, 11, 11);
   DateTime licensExpireTime;
+  late final ListenableMockClient client;
 
   setUpAll(() {
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    licensExpireTime = time.add(10.days());
+    client = Fakes.client(
+      activityResponse: () => [],
+      licenseResponse: () => Fakes.licenseResponseExpires(licensExpireTime),
+    );
   });
 
   late SortableDb sortableDb;
@@ -57,16 +63,14 @@ void main() {
       ..activityDb = FakeActivityDb()
       ..fireBasePushService = FakeFirebasePushService()
       ..ticker = Ticker.fake(initialTime: time)
-      ..client = Fakes.client(
-        activityResponse: () => [],
-        licenseResponse: () => Fakes.licenseResponseExpires(licensExpireTime),
-      )
+      ..client = client
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
       ..database = FakeDatabase()
       ..genericDb = FakeGenericDb()
       ..sortableDb = sortableDb
       ..battery = FakeBattery()
+      ..deviceDb = FakeDeviceDb()
       ..init();
   });
 
@@ -411,6 +415,23 @@ void main() {
     expect(find.byType(LoginPage), findsOneWidget);
     expect(find.text(pw), findsOneWidget);
     expect(find.text(secretPassword), findsNothing);
+  });
+
+  testWidgets('Redirect to login when unautorized',
+      (WidgetTester tester) async {
+    await tester.pumpApp();
+    await tester.pumpAndSettle();
+    await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+    await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(LoginButton));
+    await tester.pumpAndSettle();
+    expect(find.byType(CalendarPage), findsOneWidget);
+
+    client.fakeUnauthorized();
+    await tester.pumpAndSettle();
+    expect(find.byType(LoginPage), findsOneWidget);
+    expect(find.text(translate.loggedOutMessage), findsOneWidget);
   });
 
   group('on login popups', () {

@@ -83,6 +83,15 @@ final textButtonStyle = baseButtonStyle.copyWith(
   ),
 );
 
+final startPageButton = ButtonStyle(
+  backgroundColor: buttonBackgroundGreen,
+  shape: noBorder,
+  foregroundColor: MaterialStateProperty.all(AbiliaColors.white),
+  padding: MaterialStateProperty.all(
+    layout.button.textButtonInsets,
+  ),
+);
+
 final textButtonStyleGreen = textButtonStyle.copyWith(
   backgroundColor: buttonBackgroundGreen,
 );
@@ -328,7 +337,11 @@ final _textActionButtonStyle = ButtonStyle(
   maximumSize: MaterialStateProperty.all(
       Size(layout.actionButton.size, layout.actionButton.size)),
   padding: MaterialStateProperty.all(layout.actionButton.withTextPadding),
+  alignment: Alignment.topCenter,
 );
+
+final textActionButtonStyleBlack =
+    _textActionButtonStyle.merge(actionButtonStyleBlack);
 
 final textActionButtonStyleLight =
     _textActionButtonStyle.merge(actionButtonStyleLight);

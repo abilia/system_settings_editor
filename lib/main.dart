@@ -6,7 +6,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get_it/get_it.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:seagull/analytics/all.dart';
@@ -35,7 +34,6 @@ void main() async {
     () => runApp(
       App(
         payload: payload,
-        runStartGuide: shouldRunStartGuide,
         analytics: Config.release,
       ),
     ),
@@ -102,30 +100,25 @@ Future<NotificationAlarm?> getOrAddPayloadToStream() async {
   return null;
 }
 
-bool get shouldRunStartGuide =>
-    Config.isMP && GetIt.I<DeviceDb>().serialId.isEmpty;
-
 class App extends StatelessWidget {
   final PushCubit? pushCubit;
   final NotificationAlarm? payload;
   final _navigatorKey = GlobalKey<NavigatorState>();
-  final bool runStartGuide, analytics;
+  final bool analytics;
 
   App({
     Key? key,
     this.payload,
     this.pushCubit,
-    this.runStartGuide = false,
     this.analytics = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => TopLevelBlocsProvider(
-        runStartGuide: runStartGuide,
         pushCubit: pushCubit,
-        child: BlocBuilder<StartGuideCubit, StartGuideState>(
-          builder: (context, startGuideState) =>
-              startGuideState is StartGuideDone
+        child: BlocBuilder<StartupCubit, StartupState>(
+          builder: (context, productionGuideState) =>
+              productionGuideState is StartupDone
                   ? TopLevelListener(
                       navigatorKey: _navigatorKey,
                       payload: payload,
@@ -134,7 +127,9 @@ class App extends StatelessWidget {
                         analytics: analytics,
                       ),
                     )
-                  : const ProductionGuidePage(),
+                  : productionGuideState is WelcomeGuide
+                      ? const StartupGuidePage()
+                      : const ProductionGuidePage(),
         ),
       );
 }

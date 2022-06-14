@@ -59,6 +59,7 @@ void main() {
         ..battery = FakeBattery()
         ..settingsDb = settingsDb
         ..ttsHandler = AcapelaTtsHandler()
+        ..deviceDb = FakeDeviceDb()
         ..init();
     });
 
