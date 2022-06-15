@@ -5,7 +5,6 @@ import 'package:seagull/ui/components/abilia_icons.dart';
 import 'package:seagull/ui/themes/all.dart';
 
 // Form paddings
-final m1WithZeroBottom = layout.templates.m1.copyWith(bottom: 0);
 final dividerPadding = EdgeInsets.only(
   top: layout.formPadding.groupBottomDistance,
 );

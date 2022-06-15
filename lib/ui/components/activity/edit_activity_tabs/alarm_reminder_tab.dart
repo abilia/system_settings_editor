@@ -15,7 +15,7 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
           child: ListView(
             controller: _scrollController,
             children: <Widget>[
-              AlarmWidget(activity).pad(m1WithZeroBottom),
+              AlarmWidget(activity).pad(layout.templates.m1.withoutBottom),
               SizedBox(height: layout.formPadding.groupBottomDistance),
               const Divider(),
               Column(
@@ -31,12 +31,13 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
                     child: Reminders(activity: activity),
                   ),
                 ],
-              ).pad(m1WithZeroBottom),
+              ).pad(layout.templates.m1.withoutBottom),
               if (context.read<WizardCubit>()
                   is! TemplateActivityWizardCubit) ...[
                 SizedBox(height: layout.formPadding.groupBottomDistance),
                 const Divider(),
-                RecordSoundWidget(activity: activity).pad(m1WithZeroBottom),
+                RecordSoundWidget(activity: activity)
+                    .pad(layout.templates.m1.withoutBottom),
               ],
             ],
           ),

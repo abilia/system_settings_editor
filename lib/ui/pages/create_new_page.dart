@@ -45,7 +45,7 @@ class CreateNewPage extends StatelessWidget {
                         context.read<MemoplannerSettingBloc>(),
                     day: context.read<DayPickerBloc>().state.day,
                   ),
-                ).pad(m1WithZeroBottom),
+                ).pad(layout.templates.m1.withoutBottom),
               if (memoplannerSettingsState.basicActivityOption &&
                   displayNewActivity)
                 PickField(
@@ -97,7 +97,7 @@ class CreateNewPage extends StatelessWidget {
                   leading: const Icon(AbiliaIcons.stopWatch),
                   text: Text(t.newTimer),
                   onTap: () => navigateToEditTimerPage(context, authProviders),
-                ).pad(m1WithZeroBottom),
+                ).pad(layout.templates.m1.withoutBottom),
               if (displayNewTimer)
                 PickField(
                   key: TestKey.basicTimerChoice,
