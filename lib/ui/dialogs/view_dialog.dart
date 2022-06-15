@@ -7,6 +7,7 @@ class ViewDialog extends StatelessWidget {
   final Widget body;
   final EdgeInsets? bodyPadding;
   final bool expanded;
+
   const ViewDialog({
     Key? key,
     this.heading,
