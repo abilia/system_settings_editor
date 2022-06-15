@@ -49,7 +49,7 @@ class EventCardLayout {
 
   TextStyle get bodyText4 => GoogleFonts.roboto(
         textStyle: TextStyle(
-          color: AbiliaColors.black,
+          color: AbiliaColors.black75,
           fontSize: bodyText4Size,
           height: bodyText4Height / bodyText4Size,
           fontWeight: FontWeight.w400,

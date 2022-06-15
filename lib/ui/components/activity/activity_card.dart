@@ -20,23 +20,22 @@ class ActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = abiliaTheme.textTheme;
     final activity = activityOccasion.activity;
     final signedOff = activityOccasion.isSignedOff && !preview;
     final current = activityOccasion.isCurrent && !preview;
     final past = activityOccasion.isPast && !preview;
     final inactive = past || signedOff;
     final hasSideContent = activity.hasImage || signedOff || past;
-    final themeData = inactive
-        ? abiliaTheme.copyWith(
-            textTheme: textTheme.copyWith(
-              bodyText1: layout.eventCard.bodyText4.copyWith(
-                color: AbiliaColors.white140,
-              ),
-            ),
-            iconTheme:
-                abiliaTheme.iconTheme.copyWith(color: AbiliaColors.white140))
-        : abiliaTheme;
+    final bodyText4 = layout.eventCard.bodyText4.copyWith(
+      color: inactive ? AbiliaColors.white140 : null,
+      height: 1,
+    );
+    final themeData = abiliaTheme.copyWith(
+      iconTheme: abiliaTheme.iconTheme.copyWith(
+        color: inactive ? AbiliaColors.white140 : null,
+      ),
+    );
+
     return AnimatedTheme(
       duration: ActivityCard.duration,
       data: themeData,
@@ -113,10 +112,7 @@ class ActivityCard extends StatelessWidget {
                                 ],
                                 Text(
                                   activity.subtitle(context),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1
-                                      ?.copyWith(height: 1),
+                                  style: bodyText4.copyWith(height: 1),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ],
