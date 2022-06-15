@@ -3,8 +3,6 @@ import 'dart:ui' as ui;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:seagull/ui/all.dart';
 
-import 'package:seagull/ui/themes/layouts/components/all.dart';
-
 part 'large_layout.dart';
 
 part 'medium_layout.dart';
@@ -42,7 +40,7 @@ class Layout {
   final WeekCalendarLayout weekCalendar;
   final MonthCalendarLayout monthCalendar;
   final EventCardLayout eventCard;
-  final TimepillarLayout timePillar;
+  final TimepillarLayout timepillar;
   final TimerPageLayout timerPage;
   final SettingsBasePageLayout settingsBasePage;
   final DefaultTextInputPageLayout defaultTextInputPage;
@@ -113,7 +111,7 @@ class Layout {
     this.weekCalendar = const WeekCalendarLayout(),
     this.monthCalendar = const MonthCalendarLayout(),
     this.eventCard = const EventCardLayout(),
-    this.timePillar = const TimepillarLayout(),
+    this.timepillar = const TimepillarLayout(),
     this.timerPage = const TimerPageLayout(),
     this.settingsBasePage = const SettingsBasePageLayout(),
     this.defaultTextInputPage = const DefaultTextInputPageLayout(),
@@ -363,70 +361,6 @@ class TimerPageLayout {
   });
 }
 
-class TimepillarLayout {
-  final double fontSize,
-      width,
-      padding,
-      hourPadding,
-      hourLineWidth,
-      topMargin,
-      bottomMargin,
-      timeLineHeight,
-      flarpRadius;
-
-  final TimepillarDotLayout dot;
-  final TimepillarCardLayout card;
-  final TwoTimepillarLayout twoTimePillar;
-
-  const TimepillarLayout({
-    this.fontSize = 20,
-    this.width = 42,
-    this.padding = 10,
-    this.hourPadding = 1,
-    this.hourLineWidth = 1,
-    this.topMargin = 96,
-    this.bottomMargin = 64,
-    this.timeLineHeight = 2,
-    this.flarpRadius = 8,
-    this.dot = const TimepillarDotLayout(),
-    this.card = const TimepillarCardLayout(),
-    this.twoTimePillar = const TwoTimepillarLayout(),
-  });
-
-  TextStyle textStyle(bool isNight, double zoom) => GoogleFonts.roboto(
-        textStyle: TextStyle(
-          fontSize: fontSize * zoom,
-          color: isNight ? AbiliaColors.white : AbiliaColors.black,
-          fontWeight: FontWeight.w500,
-          leadingDistribution: TextLeadingDistribution.even,
-        ),
-      );
-}
-
-class TimepillarDotLayout {
-  final double size, padding, distance;
-
-  const TimepillarDotLayout({
-    this.size = 10,
-    this.padding = 3,
-  }) : distance = size + padding;
-}
-
-class TimepillarCardLayout {
-  final TimerCardLayout timer;
-  final double distance, width, activityMinHeight, imageMinHeight;
-  final EdgeInsets padding;
-
-  const TimepillarCardLayout({
-    this.timer = const TimerCardLayout(),
-    this.width = 72,
-    this.activityMinHeight = 84,
-    this.padding = const EdgeInsets.all(4),
-    this.distance = 12,
-    this.imageMinHeight = 56,
-  });
-}
-
 class TimerCardLayout {
   final double minHeigth;
   final Size wheelSize;
@@ -436,16 +370,6 @@ class TimerCardLayout {
     this.minHeigth = 76,
     this.wheelSize = const Size.square(44),
     this.wheelPadding = const EdgeInsets.symmetric(vertical: 4),
-  });
-}
-
-class TwoTimepillarLayout {
-  final double verticalMargin, nightMargin, radius;
-
-  const TwoTimepillarLayout({
-    this.verticalMargin = 24,
-    this.radius = 9,
-    this.nightMargin = 4,
   });
 }
 
@@ -864,31 +788,6 @@ class SelectableFieldLayout {
     this.textTopPadding = 10,
     this.padding = const EdgeInsets.all(4),
     this.boxPadding = const EdgeInsets.all(3),
-  });
-}
-
-class CategoryLayout {
-  final double height,
-      radius,
-      startPadding,
-      endPadding,
-      emptySize,
-      topMargin,
-      imageDiameter,
-      noColorsImageSize;
-  final EdgeInsets radioPadding, imagePadding;
-
-  const CategoryLayout({
-    this.height = 44,
-    this.radius = 100,
-    this.startPadding = 8,
-    this.endPadding = 4,
-    this.emptySize = 16,
-    this.topMargin = 4,
-    this.imageDiameter = 36,
-    this.noColorsImageSize = 30,
-    this.radioPadding = const EdgeInsets.all(8),
-    this.imagePadding = const EdgeInsets.all(3),
   });
 }
 

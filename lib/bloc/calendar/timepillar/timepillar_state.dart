@@ -35,7 +35,7 @@ class TimepillarState extends Equatable {
 class TimepillarMeasures extends Equatable {
   final double zoom;
   final TimepillarInterval interval;
-  final TimepillarLayout _layout = layout.timePillar;
+  final TimepillarLayout _layout = layout.timepillar;
 
   TimepillarMeasures(this.interval, this.zoom);
 
@@ -62,11 +62,14 @@ class TimepillarMeasures extends Equatable {
   late final double dotSize = _layout.dot.size * zoom;
   late final double dotDistance = _layout.dot.distance * zoom;
   late final double hourHeight = _layout.dot.distance * dotsPerHour * zoom;
-  late final double hourPadding = _layout.hourPadding * zoom;
   late final double dotPadding = _layout.dot.padding * zoom;
 
   // Timepillar
   late final double timePillarPadding = _layout.padding * zoom;
+  late final double hourIntervalPadding = _layout.hourIntervalPadding * zoom;
+  late final EdgeInsets hourTextPadding = EdgeInsets.only(
+      top: _layout.hourTextPadding * zoom - hourIntervalPadding,
+      bottom: _layout.hourTextPadding * zoom);
 
   late final double timePillarWidth = _layout.width * zoom;
   late final double timePillarTotalWidth =
@@ -76,7 +79,7 @@ class TimepillarMeasures extends Equatable {
           // (alternatively, adding the font height of the text would also work)
           1) *
       hourHeight;
-  late final double topPadding = 2 * hourPadding;
+  late final double topPadding = 2 * hourIntervalPadding;
   late final double hourLineWidth = _layout.hourLineWidth * zoom;
 
   double topOffset(DateTime hour) {
