@@ -60,43 +60,47 @@ class EventImage extends StatelessWidget {
     final event = this.event;
     final signedOff = event is ActivityDay && event.isSignedOff;
     final inactive = past || signedOff;
-    return Stack(
-      alignment: Alignment.center,
-      fit: StackFit.expand,
-      children: [
-        if (event.hasImage)
-          AnimatedOpacity(
-            duration: duration,
-            opacity: inactive ? 0.5 : 1.0,
-            child: ClipRRect(
-              borderRadius: borderRadius,
-              child: FadeInImage(
-                fit: fit,
-                image: getImage(
-                  context,
-                  event.image,
-                  imageSize,
-                ).image,
-                placeholder: MemoryImage(kTransparentImage),
+    return LayoutBuilder(builder: (context, constraints) {
+      return Stack(
+        alignment: Alignment.center,
+        fit: constraints.hasBoundedHeight && constraints.hasBoundedWidth
+            ? StackFit.expand
+            : StackFit.loose,
+        children: [
+          if (event.hasImage)
+            AnimatedOpacity(
+              duration: duration,
+              opacity: inactive ? 0.5 : 1.0,
+              child: ClipRRect(
+                borderRadius: borderRadius,
+                child: FadeInImage(
+                  fit: fit,
+                  image: getImage(
+                    context,
+                    event.image,
+                    imageSize,
+                  ).image,
+                  placeholder: MemoryImage(kTransparentImage),
+                ),
               ),
             ),
-          ),
-        if (past)
-          CrossOver(
-            style: CrossOverStyle.darkSecondary,
-            padding:
-                crossPadding ?? layout.eventImageLayout.fallbackCrossPadding,
-          ),
-        if (signedOff)
-          Padding(
-            padding:
-                checkPadding ?? layout.eventImageLayout.fallbackCheckPadding,
-            child: CheckMark(
-              fit: fit,
+          if (past)
+            CrossOver(
+              style: CrossOverStyle.darkSecondary,
+              padding:
+                  crossPadding ?? layout.eventImageLayout.fallbackCrossPadding,
             ),
-          ),
-      ],
-    );
+          if (signedOff)
+            Padding(
+              padding:
+                  checkPadding ?? layout.eventImageLayout.fallbackCheckPadding,
+              child: CheckMark(
+                fit: fit,
+              ),
+            ),
+        ],
+      );
+    });
   }
 
   static Image getImage(
