@@ -7,6 +7,7 @@ export 'month_calendar_layout.dart';
 export 'templates_layout.dart';
 export 'starter_set_dialog_layout.dart';
 export 'photo_calendar_layout.dart';
+export 'menu_page_layout.dart';
 export 'time_input_layout.dart';
 export 'checklist_question_layout.dart';
 export 'layout_templates.dart';

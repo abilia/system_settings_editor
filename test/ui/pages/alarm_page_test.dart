@@ -67,6 +67,7 @@ void main() {
   );
   AlarmNavigator _alarmNavigator = AlarmNavigator();
   late MockMemoplannerSettingBloc mockMPSettingsBloc;
+  late StreamController<MemoplannerSettingsState> mockMPSettingsBlocStream;
   late MockUserFileCubit mockUserFileCubit;
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
@@ -148,10 +149,15 @@ void main() {
     when(() => mockMPSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
             MemoplannerSettings(alarm: AlarmSettings(durationMs: 0))));
+    mockMPSettingsBlocStream = StreamController<MemoplannerSettingsState>();
+    final settingsStream = mockMPSettingsBlocStream.stream.asBroadcastStream();
+    when(() => mockMPSettingsBloc.stream).thenAnswer((_) => settingsStream);
     await initializeDateFormatting();
+    // ticker = ;
     GetItInitializer()
       ..fileStorage = FakeFileStorage()
       ..database = FakeDatabase()
+      ..ticker = Ticker.fake(initialTime: startTime)
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..init();
   });
@@ -159,182 +165,221 @@ void main() {
   tearDown(() {
     GetIt.I.reset();
     clearNotificationSubject();
+    mockMPSettingsBlocStream.close();
   });
 
-  group('alarm speech button tests', () {
-    testWidgets('Alarm page visible', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          PopAwareAlarmPage(
-            alarm: startAlarm,
-            alarmNavigator: _alarmNavigator,
-            child: AlarmPage(
+  group('alarm speech', () {
+    group('button tests', () {
+      testWidgets('Alarm page visible', (WidgetTester tester) async {
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            PopAwareAlarmPage(
               alarm: startAlarm,
+              alarmNavigator: _alarmNavigator,
+              child: AlarmPage(
+                alarm: startAlarm,
+              ),
             ),
           ),
-        ),
-      );
-      await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
-      expect(find.byType(AlarmPage), findsOneWidget);
-    });
+        );
+        await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
+        expect(find.byType(AlarmPage), findsOneWidget);
+      });
 
-    testWidgets('Start alarm shows play speech button',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          PopAwareAlarmPage(
+      testWidgets('Start alarm shows play speech button',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            PopAwareAlarmPage(
+              alarm: startAlarm,
+              alarmNavigator: _alarmNavigator,
+              child: AlarmPage(alarm: startAlarm),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
+        expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
+      });
+
+      testWidgets('End alarm does not show play speech button',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            PopAwareAlarmPage(
+              alarm: startAlarm,
+              alarmNavigator: _alarmNavigator,
+              child: AlarmPage(alarm: endAlarmWithNoSpeech),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
+        expect(find.byType(PlayAlarmSpeechButton), findsNothing);
+      });
+
+      testWidgets('End alarm shows play button when speech is present',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+          wrapWithMaterialApp(PopAwareAlarmPage(
             alarm: startAlarm,
             alarmNavigator: _alarmNavigator,
-            child: AlarmPage(alarm: startAlarm),
+            child: AlarmPage(alarm: endAlarmWithSpeech),
+          )),
+        );
+        await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
+        expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
+      });
+    });
+
+    group('automatic playes', () {
+      final payload = StartAlarm(ActivityDay(activityWithStartSpeech, day));
+
+      testWidgets('speech plays when notification is tapped',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            PopAwareAlarmPage(
+              alarm: startAlarm,
+              alarmNavigator: _alarmNavigator,
+              child: AlarmPage(alarm: startAlarm),
+            ),
           ),
-        ),
-      );
-      await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
-      expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
-    });
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.stop), findsNothing);
+        selectNotificationSubject.add(payload);
+        await tester.pumpAndSettle();
+        expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
+        expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
+        await tester.pump(AlarmSpeechCubit.minSpeechDelay);
+      }, skip: Config.isMP);
 
-    testWidgets('End alarm does not show play speech button',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          PopAwareAlarmPage(
-            alarm: startAlarm,
-            alarmNavigator: _alarmNavigator,
-            child: AlarmPage(alarm: endAlarmWithNoSpeech),
+      testWidgets('speech plays when notification screen is tapped',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            PopAwareAlarmPage(
+              alarm: startAlarm,
+              alarmNavigator: _alarmNavigator,
+              child: AlarmPage(alarm: startAlarm),
+            ),
           ),
-        ),
-      );
-      await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
-      expect(find.byType(PlayAlarmSpeechButton), findsNothing);
-    });
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.stop), findsNothing);
+        await tester.tapAt(Offset.zero);
+        await tester.pumpAndSettle();
+        expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
+        expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
+        await tester.pump(AlarmSpeechCubit.minSpeechDelay);
+      });
 
-    testWidgets('Clock is visible', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        wrapWithMaterialApp(PopAwareAlarmPage(
-          alarm: startAlarm,
-          alarmNavigator: _alarmNavigator,
-          child: AlarmPage(alarm: endAlarmWithNoSpeech),
-        )),
-      );
-      await tester.pumpAndSettle();
-      expect(find.byType(AbiliaClock), findsOneWidget);
-    });
+      testWidgets('speech plays after time delay is up',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            PopAwareAlarmPage(
+              alarm: startAlarm,
+              alarmNavigator: _alarmNavigator,
+              child: AlarmPage(
+                alarm: startAlarm,
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.stop), findsNothing);
+        // wait untill alarm is over
+        await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
+        // should play alarm
+        expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
+        expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
+      });
 
-    testWidgets('End alarm shows play button when speech is present',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-        wrapWithMaterialApp(PopAwareAlarmPage(
-          alarm: startAlarm,
-          alarmNavigator: _alarmNavigator,
-          child: AlarmPage(alarm: endAlarmWithSpeech),
-        )),
-      );
-      await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
-      expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
+      testWidgets('speech plays after time delay is up 5 min alarm',
+          (WidgetTester tester) async {
+        const fiveMin = Duration(minutes: 5);
+        when(() => mockMPSettingsBloc.state).thenReturn(
+            MemoplannerSettingsLoaded(MemoplannerSettings(
+                alarm: AlarmSettings(durationMs: fiveMin.inMilliseconds))));
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            PopAwareAlarmPage(
+              alarm: startAlarm,
+              alarmNavigator: _alarmNavigator,
+              child: AlarmPage(alarm: startAlarm),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.stop), findsNothing);
+        // Wait min speech
+        await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
+        // not playing
+        expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.stop), findsNothing);
+        // wait alarm time
+        await tester.pumpAndSettle(fiveMin - AlarmSpeechCubit.minSpeechDelay);
+        // Should play
+        expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
+        expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
+      });
+
+      testWidgets('speech plays does not play before after time delay is up',
+          (WidgetTester tester) async {
+        when(() => mockMPSettingsBloc.state)
+            .thenReturn(const MemoplannerSettingsNotLoaded());
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            PopAwareAlarmPage(
+              alarm: startAlarm,
+              alarmNavigator: _alarmNavigator,
+              child: AlarmPage(
+                alarm: startAlarm,
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.stop), findsNothing);
+        // wait Default time
+        final defaultDuration = const AlarmSettings().duration;
+        await tester.pumpAndSettle(defaultDuration);
+        // not playing
+        expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.stop), findsNothing);
+        GetIt.I<Ticker>()
+            .setFakeTime(startTime.add(defaultDuration), setTicker: false);
+        mockMPSettingsBlocStream.add(const MemoplannerSettingsLoaded(
+            MemoplannerSettings(alarm: AlarmSettings(durationMs: 0))));
+        await tester.pumpAndSettle();
+        await tester.pumpAndSettle();
+        // Should play
+        expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
+        expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
+      });
     });
   });
 
-  group('alarm speech automatic playes', () {
-    final payload = StartAlarm(ActivityDay(activityWithStartSpeech, day));
-
-    testWidgets('speech plays when notification is tapped',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          PopAwareAlarmPage(
-            alarm: startAlarm,
-            alarmNavigator: _alarmNavigator,
-            child: AlarmPage(alarm: startAlarm),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.stop), findsNothing);
-      selectNotificationSubject.add(payload);
-      await tester.pumpAndSettle();
-      expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
-      expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
-      await tester.pump(AlarmSpeechCubit.minSpeechDelay);
-    }, skip: Config.isMP);
-
-    testWidgets('speech plays when notification screen is tapped',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          PopAwareAlarmPage(
-            alarm: startAlarm,
-            alarmNavigator: _alarmNavigator,
-            child: AlarmPage(alarm: startAlarm),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.stop), findsNothing);
-      await tester.tapAt(Offset.zero);
-      await tester.pumpAndSettle();
-      expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
-      expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
-      await tester.pump(AlarmSpeechCubit.minSpeechDelay);
-    });
-
-    testWidgets('speech plays after time delay is up',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          PopAwareAlarmPage(
-            alarm: startAlarm,
-            alarmNavigator: _alarmNavigator,
-            child: AlarmPage(
-              alarm: startAlarm,
-            ),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.stop), findsNothing);
-      // wait untill alarm is over
-      await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
-      // should play alarm
-      expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
-      expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
-    });
-
-    testWidgets('speech plays after time delay is up 5 min alarm',
-        (WidgetTester tester) async {
-      const fiveMin = Duration(minutes: 5);
-      when(() => mockMPSettingsBloc.state).thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(
-              alarm: AlarmSettings(durationMs: fiveMin.inMilliseconds))));
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          PopAwareAlarmPage(
-            alarm: startAlarm,
-            alarmNavigator: _alarmNavigator,
-            child: AlarmPage(alarm: startAlarm),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.stop), findsNothing);
-      // Wait min speech
-      await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
-      // not playing
-      expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.stop), findsNothing);
-      // wait alarm time
-      await tester.pumpAndSettle(fiveMin - AlarmSpeechCubit.minSpeechDelay);
-      // Should play
-      expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
-      expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
-    });
+  testWidgets('Clock is visible', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      wrapWithMaterialApp(PopAwareAlarmPage(
+        alarm: startAlarm,
+        alarmNavigator: _alarmNavigator,
+        child: AlarmPage(alarm: endAlarmWithNoSpeech),
+      )),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byType(AbiliaClock), findsOneWidget);
   });
 
   testWidgets(

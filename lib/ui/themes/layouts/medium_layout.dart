@@ -7,6 +7,7 @@ class MediumLayout extends Layout {
     TemplatesLayout? templates,
     ClockLayout? clockLayout,
     PhotoCalendarLayoutMedium? photoCalendarLayout,
+    MenuPageLayout? menuPage,
     MonthCalendarLayout? monthCalendar,
     FontSize? fontSize,
     ActivityPageLayout? activityPage,
@@ -19,18 +20,7 @@ class MediumLayout extends Layout {
           actionButton: actionButton ?? const ActionButtonLayoutMedium(),
           photoCalendarLayout:
               photoCalendarLayout ?? const PhotoCalendarLayoutMedium(),
-          menuPage: const MenuPageLayout(
-            padding: EdgeInsets.symmetric(vertical: 32, horizontal: 46),
-            crossAxisSpacing: 24,
-            mainAxisSpacing: 24,
-            crossAxisCount: 3,
-            menuItemButton: MenuItemButtonLayout(
-              size: 96,
-              borderRadius: 20,
-              orangeDotInset: 6,
-              orangeDotRadius: 9,
-            ),
-          ),
+          menuPage: menuPage ?? const MenuPageLayoutMedium(),
           myPhotos: const MyPhotosLayout(
             crossAxisCount: 3,
             fullScreenImageBorderRadius: 20,
