@@ -62,12 +62,14 @@ class TimepillarMeasures extends Equatable {
   late final double dotSize = _layout.dot.size * zoom;
   late final double dotDistance = _layout.dot.distance * zoom;
   late final double hourHeight = _layout.dot.distance * dotsPerHour * zoom;
-  late final double hourIntervalPadding = _layout.hourIntervalPadding * zoom;
-  late final double hourTextPadding = _layout.hourTextPadding * zoom;
   late final double dotPadding = _layout.dot.padding * zoom;
 
   // Timepillar
   late final double timePillarPadding = _layout.padding * zoom;
+  late final double hourIntervalPadding = _layout.hourIntervalPadding * zoom;
+  late final EdgeInsets hourTextPadding = EdgeInsets.only(
+      top: _layout.hourTextPadding * zoom - hourIntervalPadding,
+      bottom: _layout.hourTextPadding * zoom);
 
   late final double timePillarWidth = _layout.width * zoom;
   late final double timePillarTotalWidth =
