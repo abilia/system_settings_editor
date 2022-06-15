@@ -7,7 +7,6 @@ class MediumLayout extends Layout {
     TemplatesLayout? templates,
     ClockLayout? clockLayout,
     PhotoCalendarLayoutMedium? photoCalendarLayout,
-    SelectorLayout? selector,
     MenuPageLayout? menuPage,
     MonthCalendarLayout? monthCalendar,
     FontSize? fontSize,
@@ -466,7 +465,7 @@ class MediumLayout extends Layout {
           ),
           fab: const FloatingActionButtonLayout(padding: EdgeInsets.all(24)),
           crossOver: const CrossOverLayout(strokeWidth: 3),
-          selector: selector ?? const SelectorLayoutMedium(),
+          selector: const SelectorLayoutMedium(),
           startupPage: const StartupPageLayoutMedium(),
           starterSetDialog: const StarterSetDialogLayoutMedium(),
         );

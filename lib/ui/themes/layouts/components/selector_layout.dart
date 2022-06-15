@@ -12,7 +12,3 @@ class SelectorLayoutMedium extends SelectorLayout {
           iconSize: 48,
         );
 }
-
-class SelectorLayoutLarge extends SelectorLayoutMedium {
-  const SelectorLayoutLarge() : super();
-}
