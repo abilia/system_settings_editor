@@ -206,7 +206,7 @@ class _SortableLibraryState<T extends SortableData>
           controller: _controller,
           child: GridView.count(
             controller: _controller,
-            padding: m1WithZeroBottom,
+            padding: layout.templates.m1.withoutBottom,
             mainAxisSpacing: layout.libraryPage.mainAxisSpacing,
             crossAxisSpacing: layout.libraryPage.crossAxisSpacing,
             crossAxisCount:
