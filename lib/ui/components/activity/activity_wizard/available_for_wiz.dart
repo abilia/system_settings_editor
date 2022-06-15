@@ -2,10 +2,10 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/db/support_persons_db.dart';
 import 'package:seagull/models/activity/activity.dart';
 import 'package:seagull/repository/data_repository/support_persons_repository.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AvailableForWiz extends StatelessWidget {
   const AvailableForWiz({Key? key}) : super(key: key);
@@ -13,35 +13,37 @@ class AvailableForWiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
+
     return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) => WizardScaffold(
         iconData: AbiliaIcons.unlock,
         title: translate.availableFor,
-        body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-          builder: (context, authState) =>
-              RepositoryProvider<SupportPersonsRepository>(
-            create: (context) => SupportPersonsRepository(
-              baseUrlDb: GetIt.I<BaseUrlDb>(),
-              client: GetIt.I<BaseClient>(),
-              db: SupportPersonsDb(GetIt.I<Database>()),
-              userId: (authState as Authenticated).userId,
-            ),
-            child: BlocProvider<AvailableForCubit>(
-              create: (context) => AvailableForCubit(
-                supportPersonsRepository:
-                    context.read<SupportPersonsRepository>(),
-                availableFor: state.activity.availableFor,
-                selectedSupportPersons: state.activity.secretExemptions,
-              ),
-              child: AvailableForPageBody(
-                onRadioButtonChanged: _onSelected,
-                onSupportPersonChanged: _onSupportPersonChanged,
-              ),
-            ),
-          ),
-        ),
+        body: getAvailableForContext(context, state.activity),
       ),
     );
+  }
+
+  Widget getAvailableForContext(BuildContext context, Activity activity) {
+    final authenticatedState = context.read<AuthenticationBloc>().state;
+    if (authenticatedState is Authenticated) {
+      return BlocProvider<AvailableForCubit>(
+        create: (context) => AvailableForCubit(
+          supportPersonsRepository: SupportPersonsRepository(
+            baseUrlDb: GetIt.I<BaseUrlDb>(),
+            client: GetIt.I<BaseClient>(),
+            db: SupportPersonsDb(GetIt.I<SharedPreferences>()),
+            userId: authenticatedState.userId,
+          ),
+          availableFor: activity.availableFor,
+          selectedSupportPersons: activity.secretExemptions,
+        ),
+        child: AvailableForPageBody(
+          onRadioButtonChanged: _onSelected,
+          onSupportPersonChanged: _onSupportPersonChanged,
+        ),
+      );
+    }
+    return const SizedBox.shrink();
   }
 
   void _onSelected(BuildContext context, AvailableForType? availableFor) {

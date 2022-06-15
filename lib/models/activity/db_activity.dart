@@ -161,13 +161,11 @@ class DbActivity extends DbModel<Activity> {
               .cast<int>() ??
           []);
 
-  static UnmodifiableListView<int> _parseExemptions(String? secretExemptions) =>
-      UnmodifiableListView(secretExemptions
-              ?.split(';')
+  static UnmodifiableSetView<int> _parseExemptions(String? secretExemptions) =>
+      UnmodifiableSetView(secretExemptions
+              ?.split(';').toSet()
               .map(int.tryParse)
-              .where((v) => v != null)
-              .cast<int>() ??
-          []);
+              .where((v) => v != null).toSet().cast<int>() ?? <int>{});
 
   @override
   List<Object> get props => [activity, revision, dirty];

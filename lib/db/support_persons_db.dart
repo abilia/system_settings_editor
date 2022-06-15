@@ -1,43 +1,27 @@
-import 'package:collection/collection.dart';
-import 'package:seagull/db/all.dart';
-import 'package:seagull/logging.dart';
+import 'dart:convert';
+
 import 'package:seagull/models/support_person.dart';
-import 'package:seagull/utils/iterable.dart';
-import 'package:seagull/utils/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SupportPersonsDb {
-  SupportPersonsDb(this.db);
+  SupportPersonsDb(this.prefs);
 
-  final Database db;
+  final SharedPreferences prefs;
 
-  String get tableName => DatabaseRepository.supportPersonTableName;
+  final String _supportUsersRecord = 'supportUsers';
 
-  static const _getAll = 'SELECT * FROM ${DatabaseRepository.timerTableName}';
+  Future insertAll(Iterable<SupportPerson> supportUsers) => prefs.setStringList(
+      _supportUsersRecord, supportUsers.map((e) => json.encode(e.toMapForDb())).toList());
 
-  Future<Iterable<SupportPerson>> getAll() async {
-    final result = await db.rawQuery(_getAll);
-    return result
-        .exceptionSafeMap(
-          SupportPerson.fromDbMap,
-          onException: _log.logAndReturnNull,
-        )
-        .whereNotNull();
+  Iterable<SupportPerson> getAll() {
+    final userString = prefs.getString(_supportUsersRecord);
+    return userString == null
+        ? const []
+        : userString
+            .split(';')
+            .map((e) => SupportPerson.fromJson(json.decode(e)));
   }
 
-  Future<int> insert(SupportPerson supportPerson) => db.insert(
-        DatabaseRepository.supportPersonTableName,
-        supportPerson.toMapForDb(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
+  void deleteAll() => prefs.remove(_supportUsersRecord);
 
-  Future<int> delete(SupportPerson supportPerson) => db.delete(
-        DatabaseRepository.supportPersonTableName,
-        where: 'id = "${supportPerson.id}"',
-      );
-
-  Future<int> deleteAll() => db.delete(
-        DatabaseRepository.supportPersonTableName,
-      );
-
-  Logger get _log => Logger((SupportPersonsDb).toString());
 }

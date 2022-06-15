@@ -138,6 +138,7 @@ class GetItInitializer {
     final loginDb = _loginDb ?? LoginDb(_sharedPreferences);
     final deviceDb = _deviceDb ?? DeviceDb(_sharedPreferences);
     GetIt.I
+      ..registerSingleton<SharedPreferences>(_sharedPreferences)
       ..registerSingleton<LoginDb>(loginDb)
       ..registerSingleton<DeviceDb>(deviceDb)
       ..registerSingleton<BaseClient>(_baseClient ??

@@ -14,13 +14,13 @@ void main() {
 
   const emptyState = AvailableForState(
     availableFor: AvailableForType.allSupportPersons,
-    selectedSupportPersons: [],
+    selectedSupportPersons: <int>{},
     allSupportPersons: [],
   );
 
   const dbState = AvailableForState(
     availableFor: AvailableForType.allSupportPersons,
-    selectedSupportPersons: [],
+    selectedSupportPersons: <int>{},
     allSupportPersons: [testSupportPerson, testSupportPerson2],
   );
 
@@ -55,12 +55,12 @@ void main() {
         availableForCubit.state,
         dbState.copyWith(
             availableFor: AvailableForType.selectedSupportPersons));
-    availableForCubit.selectSupportPerson(testSupportPerson2.id, true);
+    availableForCubit.selectSupportPerson(testSupportPerson2.id);
     await expectLater(
         availableForCubit.state,
         dbState.copyWith(
             availableFor: AvailableForType.selectedSupportPersons,
-            selectedSupportPersons: [testSupportPerson2.id]));
+            selectedSupportPersons: <int>{testSupportPerson2.id}));
 
     availableForCubit.setAvailableFor(AvailableForType.onlyMe);
     await expectLater(availableForCubit.state,

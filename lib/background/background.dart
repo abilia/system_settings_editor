@@ -95,12 +95,6 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       userId: user.id,
     ).load();
 
-    await SupportPersonsRepository(
-      baseUrlDb: baseUrlDb,
-      client: client,
-      db: SupportPersonsDb(database),
-      userId: user.id,
-    ).load();
   } catch (e) {
     log.severe('Exception when running background handler', e);
   } finally {

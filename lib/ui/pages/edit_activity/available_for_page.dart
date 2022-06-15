@@ -47,13 +47,7 @@ class AvailableForPageBody extends StatelessWidget {
       builder: (context, state) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-                layout.templates.m1.left,
-                layout.templates.m1.top,
-                layout.templates.m1.right,
-                layout.formPadding.verticalItemDistance),
-            child: RadioField<AvailableForType>(
+            RadioField<AvailableForType>(
               groupValue: state.availableFor,
               onChanged: (value) => _onRadioButtonChanged(context, value),
               value: AvailableForType.onlyMe,
@@ -62,14 +56,10 @@ class AvailableForPageBody extends StatelessWidget {
                 size: layout.icon.button,
               ),
               text: Text(translate.onlyMe),
-            ),
+            ).pad(layout.templates.m1
+                .copyWith(bottom: layout.formPadding.verticalItemDistance),
           ),
-          Padding(
-            padding: EdgeInsets.only(
-                left: layout.templates.m1.left,
-                right: layout.templates.m1.right,
-                bottom: layout.formPadding.verticalItemDistance),
-            child: RadioField<AvailableForType>(
+          RadioField<AvailableForType>(
               groupValue: state.availableFor,
               onChanged: (value) => _onRadioButtonChanged(context, value),
               value: AvailableForType.allSupportPersons,
@@ -78,14 +68,11 @@ class AvailableForPageBody extends StatelessWidget {
                 size: layout.icon.button,
               ),
               text: Text(translate.allSupportPersons),
-            ),
+            ).pad(EdgeInsets.symmetric(
+                horizontal: layout.templates.m1.left),
           ),
-          Padding(
-              padding: EdgeInsets.only(
-                  left: layout.templates.m1.left,
-                  right: layout.templates.m1.right,
-                  bottom: layout.formPadding.verticalItemDistance),
-              child: RadioField<AvailableForType?>(
+          SizedBox(height: layout.formPadding.verticalItemDistance),
+          RadioField<AvailableForType?>(
                 groupValue: state.availableFor,
                 onChanged: (value) => _onRadioButtonChanged(context, value),
                 value: AvailableForType.selectedSupportPersons,
@@ -94,7 +81,9 @@ class AvailableForPageBody extends StatelessWidget {
                   size: layout.icon.button,
                 ),
                 text: Text(translate.selectedSupportPersons),
-              )),
+              ).pad(EdgeInsets.symmetric(
+                  horizontal: layout.templates.m1.left),),
+          SizedBox(height: layout.formPadding.verticalItemDistance),
           if (state.availableFor ==
               AvailableForType.selectedSupportPersons) ...[
             Padding(
@@ -140,15 +129,11 @@ class SupportPersonsWidget extends StatelessWidget {
           return ListView(
             controller: scrollController,
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(
-                    left: layout.templates.m1.left,
-                    top: layout.templates.m1.top,
-                    right: layout.templates.m1.right),
-                child: Tts(
-                  child: Text(Translator.of(context).translate.supportPersons,
-                      style: bodyText2.copyWith(color: AbiliaColors.black75)),
-                ),
+              Tts(
+                child: Text(Translator.of(context).translate.supportPersons,
+                    style: bodyText2.copyWith(color: AbiliaColors.black75)),
+              ).pad(
+                layout.templates.m1.copyWith(bottom: 0),
               ),
               ...state.allSupportPersons
                   .map(
@@ -181,7 +166,7 @@ class SupportPersonsWidget extends StatelessWidget {
   }
 
   void _onSupportPersonChanged(BuildContext context, int id, bool selected) {
-    context.read<AvailableForCubit>().selectSupportPerson(id, selected);
+    context.read<AvailableForCubit>().selectSupportPerson(id);
     if (onSupportPersonChanged != null) {
       onSupportPersonChanged!(context, id, selected);
     }

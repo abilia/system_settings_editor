@@ -34,8 +34,8 @@ class ProfilePicture extends StatelessWidget {
                     initial,
                     style: headline6.copyWith(color: AbiliaColors.white),
                   ),
-                ),
-              if (initial.isEmpty)
+                )
+              else
                 Icon(
                   AbiliaIcons.contact,
                   color: AbiliaColors.black75,

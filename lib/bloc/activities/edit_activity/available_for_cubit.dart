@@ -8,11 +8,11 @@ class AvailableForCubit extends Cubit<AvailableForState> {
   AvailableForCubit({
     required this.supportPersonsRepository,
     AvailableForType? availableFor,
-    List<int>? selectedSupportPersons,
+    Set<int>? selectedSupportPersons,
   }) : super(
           AvailableForState(
             availableFor: availableFor ?? AvailableForType.allSupportPersons,
-            selectedSupportPersons: selectedSupportPersons ?? const [],
+            selectedSupportPersons: selectedSupportPersons ?? <int>{},
             allSupportPersons: const [],
           ),
         ) {
@@ -32,18 +32,16 @@ class AvailableForCubit extends Cubit<AvailableForState> {
   void setAvailableFor(AvailableForType availableFor) => emit(state.copyWith(
       availableFor: availableFor,
       selectedSupportPersons:
-          availableFor != AvailableForType.selectedSupportPersons ? [] : null));
+          availableFor != AvailableForType.selectedSupportPersons
+              ? <int>{}
+              : null));
 
-  void selectSupportPerson(int id, bool selected) {
-    if (selected && !state.selectedSupportPersons.contains(id)) {
-      emit(state.copyWith(
-          selectedSupportPersons: List.from(state.selectedSupportPersons)
-            ..add(id)));
-    } else if (!selected && state.selectedSupportPersons.contains(id)) {
-      emit(state.copyWith(
-          selectedSupportPersons: List.from(state.selectedSupportPersons)
-            ..remove(id)));
+  void selectSupportPerson(int id) {
+    final _supportPersons = Set<int>.from(state.selectedSupportPersons);
+    if (!_supportPersons.remove(id)) {
+      _supportPersons.add(id);
     }
+    emit(state.copyWith(selectedSupportPersons: _supportPersons));
   }
 }
 
@@ -55,18 +53,20 @@ class AvailableForState extends Equatable {
   });
 
   final AvailableForType availableFor;
-  final List<int> selectedSupportPersons;
+  final Set<int> selectedSupportPersons;
   final Iterable<SupportPerson> allSupportPersons;
 
-  AvailableForState copyWith(
-          {AvailableForType? availableFor,
-          List<int>? selectedSupportPersons,
-          Iterable<SupportPerson>? allSupportPersons}) =>
+  AvailableForState copyWith({
+    AvailableForType? availableFor,
+    Set<int>? selectedSupportPersons,
+    Iterable<SupportPerson>? allSupportPersons,
+  }) =>
       AvailableForState(
-          availableFor: availableFor ?? this.availableFor,
-          selectedSupportPersons:
-              selectedSupportPersons ?? this.selectedSupportPersons,
-          allSupportPersons: allSupportPersons ?? this.allSupportPersons);
+        availableFor: availableFor ?? this.availableFor,
+        selectedSupportPersons:
+            selectedSupportPersons ?? this.selectedSupportPersons,
+        allSupportPersons: allSupportPersons ?? this.allSupportPersons,
+      );
 
   @override
   List<Object?> get props => [

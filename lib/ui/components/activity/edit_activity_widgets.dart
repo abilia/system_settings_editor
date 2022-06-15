@@ -8,6 +8,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/data_repository/support_persons_repository.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ActivityNameAndPictureWidget extends StatelessWidget {
   const ActivityNameAndPictureWidget({Key? key}) : super(key: key);
@@ -536,12 +537,18 @@ class AvailableForWidget extends StatelessWidget {
                   : translator.selectedSupportPersons),
           onTap: () async {
             final editActivityCubit = context.read<EditActivityCubit>();
-            final availableForState = await navigateToAvailableForPage(context);
-            if (availableForState != null) {
-              editActivityCubit.replaceActivity(activity.copyWith(
-                  secret: availableForState.availableFor !=
-                      AvailableForType.allSupportPersons,
-                  secretExemptions: availableForState.selectedSupportPersons));
+            final authenticatedState =
+                context.read<AuthenticationBloc>().state;
+            if (authenticatedState is Authenticated) {
+              final availableForState = await navigateToAvailableForPage(
+                  context, authenticatedState.userId);
+              if (availableForState != null) {
+                editActivityCubit.replaceActivity(activity.copyWith(
+                    secret: availableForState.availableFor !=
+                        AvailableForType.allSupportPersons,
+                    secretExemptions:
+                        availableForState.selectedSupportPersons));
+              }
             }
           },
         ),
@@ -549,31 +556,23 @@ class AvailableForWidget extends StatelessWidget {
     );
   }
 
-  Future<AvailableForState?> navigateToAvailableForPage(BuildContext context) {
+  Future<AvailableForState?> navigateToAvailableForPage(
+      BuildContext context, int userId) {
     return Navigator.of(context).push<AvailableForState>(
       MaterialPageRoute(
-        builder: (context) =>
-            BlocBuilder<AuthenticationBloc, AuthenticationState>(
-          builder: (context, authState) =>
-              RepositoryProvider<SupportPersonsRepository>(
-            create: (context) => SupportPersonsRepository(
-              baseUrlDb: GetIt.I<BaseUrlDb>(),
-              client: GetIt.I<BaseClient>(),
-              db: SupportPersonsDb(GetIt.I<Database>()),
-              userId: (authState as Authenticated).userId,
-            ),
-            child: BlocProvider<AvailableForCubit>(
-              create: (context) => AvailableForCubit(
-                supportPersonsRepository:
-                    context.read<SupportPersonsRepository>(),
-                availableFor: activity.availableFor,
-                selectedSupportPersons: activity.secretExemptions,
-              ),
-              child: const AvailableForPage(),
-            ),
-          ),
-        ),
-      ),
+          builder: (context) => BlocProvider<AvailableForCubit>(
+                create: (context) => AvailableForCubit(
+                  supportPersonsRepository: SupportPersonsRepository(
+                    baseUrlDb: GetIt.I<BaseUrlDb>(),
+                    client: GetIt.I<BaseClient>(),
+                    db: SupportPersonsDb(GetIt.I<SharedPreferences>()),
+                    userId: userId,
+                  ),
+                  availableFor: activity.availableFor,
+                  selectedSupportPersons: activity.secretExemptions,
+                ),
+                child: const AvailableForPage(),
+              )),
     );
   }
 }

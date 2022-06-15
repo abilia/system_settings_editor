@@ -28,20 +28,13 @@ class SupportPersonsRepository extends Repository {
 
       db.deleteAll();
       Iterable<SupportPerson> result = decoded.where((element) {
-        return element['role']['id'] == 6;
-      }).map((element) {
-        SupportPerson supportPerson = SupportPerson.fromJson(element['entity']);
-        db.insert(supportPerson);
-        return supportPerson;
-      });
+        return element['role']['id'] == 6; // '6' is the role id of support person in myabilia
+      }).map((element) => SupportPerson.fromJson(element['entity'],),);
+      db.insertAll(result);
       return result;
     } catch (e) {
       log.severe('Error when fetching support persons, offline?', e);
-      return loadFromDb();
+      return db.getAll();
     }
-  }
-
-  Future<Iterable<SupportPerson>> loadFromDb() async {
-    return await db.getAll();
   }
 }
