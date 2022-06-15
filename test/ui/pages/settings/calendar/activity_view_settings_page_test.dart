@@ -53,6 +53,7 @@ void main() {
       ..genericDb = genericDb
       ..activityDb = activityDb
       ..battery = FakeBattery()
+      ..deviceDb = FakeDeviceDb()
       ..init();
   });
 

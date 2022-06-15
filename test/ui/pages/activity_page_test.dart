@@ -83,6 +83,7 @@ void main() {
       ..sortableDb = FakeSortableDb()
       ..database = FakeDatabase()
       ..battery = FakeBattery()
+      ..deviceDb = FakeDeviceDb()
       ..init();
   });
 
@@ -1168,6 +1169,34 @@ void main() {
         }
       }
     }
+  });
+
+  testWidgets(
+      'SGC-1736 Check all checklist in checkable activity shows sign off question',
+      (WidgetTester tester) async {
+    const tag1 = 'tag', tag2 = 'another';
+    final activity = Activity.createNew(
+        title: 'title',
+        startTime: startTime,
+        checkable: true,
+        infoItem: Checklist(questions: const [
+          Question(id: 0, name: tag1),
+          Question(id: 1, name: tag2),
+        ]));
+
+    // Arrange
+    when(() => mockActivityDb.getAllNonDeleted())
+        .thenAnswer((_) => Future.value(<Activity>[activity]));
+    await navigateToActivityPage(tester);
+
+    // Act sign off question
+    await tester.tap(find.text(tag1));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(tag2));
+    await tester.pumpAndSettle();
+
+    // Assert pop up with signed off all question shows
+    expect(find.byType(CheckActivityConfirmDialog), findsOneWidget);
   });
 
   testWidgets('Check and uncheck activity with confirmation',

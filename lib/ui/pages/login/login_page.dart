@@ -62,11 +62,15 @@ class LoginPage extends StatelessWidget {
             }
           }
         },
-        child: const AnnotatedRegion<SystemUiOverlayStyle>(
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.dark,
           child: Scaffold(
             body: SafeArea(
-              child: LoginForm(),
+              child: LoginForm(
+                  message:
+                      authState.loggedOutReason == LoggedOutReason.unautorized
+                          ? translate.loggedOutMessage
+                          : ''),
             ),
             resizeToAvoidBottomInset: false,
           ),

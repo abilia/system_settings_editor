@@ -1,6 +1,5 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/copied_auth_providers.dart';
 
 class SpeechSupportSettingsPage extends StatelessWidget {
   const SpeechSupportSettingsPage({
@@ -15,7 +14,6 @@ class SpeechSupportSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    final locale = Translator.of(context).locale.toString();
     final textStyle = Theme.of(context)
         .textTheme
         .bodyText2
@@ -74,8 +72,12 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                                             ? t.noVoicesInstalled
                                             : t.installingVoice
                                         : state.voice),
-                                    onTap: () =>
-                                        _showVoicesPage(context, locale),
+                                    onTap: () async =>
+                                        await Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (_) => const VoicesPage(),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -193,18 +195,5 @@ class SpeechSupportSettingsPage extends StatelessWidget {
 
   double _progressToSpeechRate(double progress) {
     return 100 + progress * 10;
-  }
-
-  void _showVoicesPage(BuildContext context, String locale) async {
-    final authProviders = copiedAuthProviders(context);
-
-    await Navigator.of(context).push<String?>(
-      MaterialPageRoute(
-        builder: (_) => MultiBlocProvider(
-          providers: authProviders,
-          child: const VoicesPage(),
-        ),
-      ),
-    );
   }
 }

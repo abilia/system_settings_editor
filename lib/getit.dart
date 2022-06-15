@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:battery_plus/battery_plus.dart';
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
 import 'package:package_info/package_info.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
@@ -66,9 +65,10 @@ class GetItInitializer {
 
   set deviceDb(DeviceDb deviceDb) => _deviceDb = deviceDb;
 
-  BaseClient? _baseClient;
+  ListenableClient? _listenableClient;
 
-  set client(BaseClient baseClient) => _baseClient = baseClient;
+  set client(ListenableClient listenableClient) =>
+      _listenableClient = listenableClient;
 
   SortableDb? _sortableDb;
 
@@ -141,7 +141,7 @@ class GetItInitializer {
       ..registerSingleton<SharedPreferences>(_sharedPreferences)
       ..registerSingleton<LoginDb>(loginDb)
       ..registerSingleton<DeviceDb>(deviceDb)
-      ..registerSingleton<BaseClient>(_baseClient ??
+      ..registerSingleton<ListenableClient>(_listenableClient ??
           ClientWithDefaultHeaders(
             _packageInfo.version,
             loginDb: loginDb,

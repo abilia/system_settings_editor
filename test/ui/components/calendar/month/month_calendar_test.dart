@@ -62,6 +62,7 @@ void main() {
       ..ttsHandler = FlutterTtsHandler()
       ..ticker = Ticker.fake(initialTime: initialDay)
       ..battery = FakeBattery()
+      ..deviceDb = FakeDeviceDb()
       ..init();
   });
 

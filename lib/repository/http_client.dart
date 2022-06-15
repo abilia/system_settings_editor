@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -11,11 +12,12 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:synchronized/extension.dart';
 
-class ClientWithDefaultHeaders extends BaseClient {
+class ClientWithDefaultHeaders extends ListenableClient {
   late final Client _inner;
   final String userAgent;
   final LoginDb loginDb;
   final DeviceDb deviceDb;
+  final _stateController = StreamController<HttpMessage>.broadcast();
   final _log = Logger((ClientWithDefaultHeaders).toString());
 
   ClientWithDefaultHeaders(
@@ -26,6 +28,9 @@ class ClientWithDefaultHeaders extends BaseClient {
     String model = 'seagull',
   })  : userAgent = '${Config.flavor.name} v$version $model',
         _inner = client ?? Client();
+
+  @override
+  Stream<HttpMessage> get messageStream => _stateController.stream;
 
   @override
   Future<Response> get(Uri url, {Map<String, String>? headers}) async {
@@ -128,6 +133,13 @@ class ClientWithDefaultHeaders extends BaseClient {
     switch (response.statusCode) {
       case 200:
         return LoginInfo.fromJson(response.json());
+      case 401:
+        _stateController.add(HttpMessage.unauthorized);
+        throw RequestTokenException(
+          badRequest: BadRequest.fromJson(
+            response.json(),
+          ),
+        );
       default:
         throw RequestTokenException(
           badRequest: BadRequest.fromJson(
@@ -136,4 +148,15 @@ class ClientWithDefaultHeaders extends BaseClient {
         );
     }
   }
+
+  @override
+  void close() {
+    _stateController.close();
+  }
+}
+
+enum HttpMessage { unauthorized }
+
+abstract class ListenableClient extends BaseClient {
+  Stream<HttpMessage> get messageStream;
 }

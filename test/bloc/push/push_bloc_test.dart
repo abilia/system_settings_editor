@@ -45,6 +45,7 @@ void main() {
         ..userFileDb = FakeUserFileDb()
         ..ticker = Ticker.fake(initialTime: time)
         ..database = FakeDatabase()
+        ..deviceDb = FakeDeviceDb()
         ..init();
     });
 

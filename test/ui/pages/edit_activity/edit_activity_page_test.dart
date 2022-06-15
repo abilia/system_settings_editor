@@ -74,6 +74,7 @@ void main() {
 
   Widget createEditActivityPage({
     Activity? givenActivity,
+    DateTime? day,
     bool use24H = false,
     bool newActivity = false,
   }) {
@@ -105,7 +106,7 @@ void main() {
                         calendarId: 'calendarId',
                       )
                     : EditActivityCubit.edit(
-                        ActivityDay(activity, today),
+                        ActivityDay(activity, day ?? today),
                       ),
               ),
               BlocProvider<WizardCubit>(
@@ -1444,6 +1445,19 @@ text''';
 
       expect(find.byType(EditActivityPage), findsNothing);
       expect(find.byType(DatePickerPage), findsOneWidget);
+    });
+
+    testWidgets('SGC-1668 full day recurring activity shows correct date',
+        (WidgetTester tester) async {
+      final activity = Activity.createNew(
+          title: 'title',
+          startTime: startTime,
+          recurs: Recurs.everyDay,
+          fullDay: true);
+      await tester.pumpWidget(createEditActivityPage(
+          givenActivity: activity, day: startTime.addDays(5)));
+      await tester.pumpAndSettle();
+      expect(find.text('February 15, 2020'), findsOneWidget);
     });
   });
 

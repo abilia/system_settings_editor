@@ -5,7 +5,12 @@ import 'package:seagull/repository/end_point.dart';
 import 'package:seagull/ui/all.dart';
 
 class LoginForm extends StatelessWidget {
-  const LoginForm({Key? key}) : super(key: key);
+  const LoginForm({
+    Key? key,
+    required this.message,
+  }) : super(key: key);
+
+  final String message;
 
   @override
   Widget build(BuildContext context) {
@@ -13,14 +18,19 @@ class LoginForm extends StatelessWidget {
     final theme = Theme.of(context);
     return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
+        final hasMessage = message.isNotEmpty;
         return Form(
           child: Padding(
-            padding: layout.templates.m5,
+            padding: hasMessage ? layout.templates.m6 : layout.templates.m5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                const MEMOplannerLogo(),
+                if (hasMessage) ...[
+                  ErrorMessage(text: Text(message)),
+                  SizedBox(height: layout.templates.m5.top)
+                ],
+                const MEMOplannerLogoWithLoginProgress(),
                 SizedBox(height: layout.formPadding.groupBottomDistance),
                 Tts(
                   child: Text(
@@ -91,42 +101,6 @@ class UsernameInput extends StatelessWidget {
       inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r'\s'))],
       onChanged: onChanged,
       wrapWithAuthProviders: false,
-    );
-  }
-}
-
-class MEMOplannerLogo extends StatelessWidget {
-  const MEMOplannerLogo({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) => SizedBox(
-        width: layout.login.logoSize,
-        height: layout.login.logoSize,
-        child: state is LoginLoading
-            ? CircularProgressIndicator(
-                valueColor: const AlwaysStoppedAnimation(AbiliaColors.red),
-                strokeWidth: layout.login.progressWidth,
-              )
-            : GestureDetector(
-                onLongPress: () {
-                  context.read<LoginCubit>().clearFailure();
-                  showDialog(
-                    context: context,
-                    builder: (context) => const BackendSwitchesDialog(),
-                  );
-                },
-                child: FadeInImage(
-                  fadeInDuration: const Duration(milliseconds: 50),
-                  fadeInCurve: Curves.linear,
-                  placeholder: MemoryImage(kTransparentImage),
-                  image: AssetImage(
-                    'assets/graphics/${Config.flavor.id}/logo.png',
-                  ),
-                ),
-              ),
-      ),
     );
   }
 }
