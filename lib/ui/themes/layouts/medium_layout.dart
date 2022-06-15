@@ -4,7 +4,7 @@ class MediumLayout extends Layout {
   const MediumLayout({
     AppBarLayout? appBar,
     ActionButtonLayout? actionButton,
-    TemplatesLayout? templates,
+    LayoutTemplates? templates,
     ClockLayout? clockLayout,
     PhotoCalendarLayoutMedium? photoCalendarLayout,
     MenuPageLayout? menuPage,
@@ -265,7 +265,7 @@ class MediumLayout extends Layout {
             imagePadding: EdgeInsets.fromLTRB(8, 25, 8, 15),
             margin: EdgeInsets.only(left: 4, right: 8),
           ),
-          templates: templates ?? const TemplatesLayoutMedium(),
+          templates: templates ?? const LayoutTemplatesMedium(),
           borders: borders ?? const BorderLayoutMedium(),
           linedBorder: const LinedBorderLayout(dashSize: 6),
           selectableField: const SelectableFieldLayout(
