@@ -105,7 +105,7 @@ class _SelectButton<T> extends StatelessWidget {
         child: Column(
           children: [
             Text(text),
-            Icon(icon),
+            Icon(icon, size: layout.selector.iconSize),
           ],
         ),
       ),

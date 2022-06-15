@@ -8,9 +8,8 @@ extension IntToDuration on int {
   Duration milliseconds() => Duration(milliseconds: this);
 }
 
-const iOSMaxAlarmDuration = Duration(seconds: 30);
-
-Duration maxDuration(Duration a, Duration b) => a > b ? a : b;
+const iOSPersistantNotificationMaxDuration = Duration(seconds: 30),
+    iOSUnlockedPhoneNotificationMaxDuration = Duration(seconds: 5);
 
 extension DurationExtensions on Duration {
   String toDurationString(Translated translator, {bool shortMin = true}) {
