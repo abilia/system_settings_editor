@@ -19,5 +19,6 @@ class LargeLayout extends MediumLayout {
           timerPage: const TimerPageLayoutLarge(),
           menuPage: const MenuPageLayoutLarge(),
           fontSize: const FontSizeLarge(),
+          eventCard: const EventCardLayoutLarge(),
         );
 }

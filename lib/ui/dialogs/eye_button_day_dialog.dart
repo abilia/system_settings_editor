@@ -165,6 +165,9 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                         setState(() => dotsInTimePillar = dots),
                   ),
                 ).pad(layout.templates.m1.onlyHorizontal),
+              SizedBox(
+                height: layout.templates.m1.bottom,
+              ),
             ],
           ),
         ),

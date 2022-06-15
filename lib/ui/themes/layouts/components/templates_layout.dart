@@ -42,12 +42,13 @@ class TemplatesLayout {
 
 class TemplatesLayoutMedium extends TemplatesLayout {
   const TemplatesLayoutMedium({
+    EdgeInsets? s4,
     EdgeInsets? s5,
   }) : super(
           s1: const EdgeInsets.all(16),
           s2: const EdgeInsets.fromLTRB(24, 24, 24, 64),
           s3: const EdgeInsets.all(6),
-          s4: const EdgeInsets.symmetric(horizontal: 20),
+          s4: s4 ?? const EdgeInsets.symmetric(horizontal: 20),
           s5: s5 ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 72),
           bottomNavigation: const EdgeInsets.fromLTRB(18, 12, 18, 18),
           m1: const EdgeInsets.fromLTRB(24, 36, 24, 64),
@@ -67,6 +68,7 @@ class TemplatesLayoutMedium extends TemplatesLayout {
 class TemplatesLayoutLarge extends TemplatesLayoutMedium {
   const TemplatesLayoutLarge()
       : super(
+          s4: const EdgeInsets.symmetric(horizontal: 160),
           s5: const EdgeInsets.symmetric(horizontal: 16, vertical: 72),
         );
 }
