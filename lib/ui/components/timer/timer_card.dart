@@ -17,17 +17,11 @@ class TimerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPast = timerOccasion.isPast;
-    final textTheme = abiliaTheme.textTheme;
-    final themeData = isPast
-        ? abiliaTheme.copyWith(
-            textTheme: textTheme.copyWith(
-              bodyText1: layout.eventCard.bodyText4,
-            ),
-            iconTheme: abiliaTheme.iconTheme.copyWith(
-              color: AbiliaColors.white140,
-            ),
-          )
-        : abiliaTheme;
+    final themeData = abiliaTheme.copyWith(
+      iconTheme: abiliaTheme.iconTheme.copyWith(
+        color: isPast ? AbiliaColors.white140 : null,
+      ),
+    );
     return AnimatedTheme(
       duration: ActivityCard.duration,
       data: themeData,
@@ -124,10 +118,13 @@ class TimeLeft extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bodyText4 = layout.eventCard.bodyText4.copyWith(
+      color: timerOccasion.isPast ? AbiliaColors.white140 : null,
+      height: 1,
+    );
+
     return DefaultTextStyle(
-      style:
-          (Theme.of(context).textTheme.bodyText1 ?? layout.eventCard.bodyText4)
-              .copyWith(height: 1),
+      style: bodyText4,
       overflow: TextOverflow.ellipsis,
       child: timerOccasion.isOngoing
           ? TimerTickerBuilder(
