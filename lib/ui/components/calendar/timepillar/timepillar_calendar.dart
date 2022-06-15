@@ -68,8 +68,8 @@ class OneTimepillarCalendar extends StatefulWidget {
     double? bottomMargin,
     bool? showCategoryLabels,
   })  : showCategoryLabels = showCategoryLabels ?? showCategories,
-        topMargin = topMargin ?? layout.timePillar.topMargin,
-        bottomMargin = bottomMargin ?? layout.timePillar.bottomMargin,
+        topMargin = topMargin ?? layout.timepillar.topMargin,
+        bottomMargin = bottomMargin ?? layout.timepillar.bottomMargin,
         super(key: key);
 
   @override
@@ -122,9 +122,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
   Widget build(BuildContext context) {
     final mediaData = MediaQuery.of(context);
 
-    final textTheme = Theme.of(context).textTheme.caption ?? caption;
-    final fontSize = textTheme.fontSize!;
-    final textStyle = textTheme.copyWith(fontSize: fontSize * measures.zoom);
+    final textStyle = layout.timepillar.card.textStyle(measures.zoom);
     final textScaleFactor = mediaData.textScaleFactor;
     final events = widget.timepillarState.eventsForInterval(interval);
     final np = interval.intervalPart == IntervalPart.dayAndNight

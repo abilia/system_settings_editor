@@ -6,12 +6,12 @@ class MenuPageLayout {
   final double crossAxisSpacing, mainAxisSpacing;
   final TextStyle _textStyle;
 
-  final MenuButtonLayout button;
+  final MenuButtonsLayout button;
 
   const MenuPageLayout({
     this.crossAxisSpacing = 7.5,
     this.mainAxisSpacing = 7,
-    this.button = const MenuButtonLayout(),
+    this.button = const MenuButtonsLayout(),
     TextStyle? textStyle,
   }) : _textStyle = textStyle ??
             const TextStyle(
@@ -27,7 +27,7 @@ class MenuPageLayout {
 
 class MenuPageLayoutMedium extends MenuPageLayout {
   const MenuPageLayoutMedium({
-    MenuButtonLayout? button,
+    MenuButtonsLayout? button,
     double? crossAxisSpacing,
     double? mainAxisSpacing,
     TextStyle? textStyle,
@@ -62,11 +62,11 @@ class MenuPageLayoutLarge extends MenuPageLayoutMedium {
         );
 }
 
-class MenuButtonLayout {
+class MenuButtonsLayout {
   final double size, iconSize, borderRadius, orangeDotInset, orangeDotRadius;
   final EdgeInsets padding;
 
-  const MenuButtonLayout({
+  const MenuButtonsLayout({
     this.size = 112,
     this.iconSize = 48,
     this.borderRadius = 12,
@@ -76,7 +76,7 @@ class MenuButtonLayout {
   });
 }
 
-class MenuButtonLayoutMedium extends MenuButtonLayout {
+class MenuButtonLayoutMedium extends MenuButtonsLayout {
   const MenuButtonLayoutMedium({
     double? size,
     double? iconSize,
