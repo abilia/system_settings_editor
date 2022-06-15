@@ -11,5 +11,6 @@ class LargeLayout extends MediumLayout {
           photoCalendarLayout: const PhotoCalendarLayoutLarge(),
           menuPage: const MenuPageLayoutLarge(),
           fontSize: const FontSizeLarge(),
+          eventCard: const EventCardLayoutLarge(),
         );
 }
