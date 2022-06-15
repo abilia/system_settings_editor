@@ -97,6 +97,7 @@ class Layout {
   final StarterSetDialogLayout starterSetDialog;
   final PhotoCalendarLayoutMedium photoCalendarLayout;
   final SupportPersonLayout supportPerson;
+  final SelectorLayout selector;
 
   const Layout({
     this.radius = 12,
@@ -172,6 +173,7 @@ class Layout {
     this.starterSetDialog = const StarterSetDialogLayout(),
     this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
     this.supportPerson = const SupportPersonLayout(),
+    this.selector = const SelectorLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -344,49 +346,6 @@ class _WeekDayColumnLayout {
       vertical: 6,
       horizontal: 4,
     ),
-  });
-}
-
-class EventCardLayout {
-  final double height,
-      marginSmall,
-      marginLarge,
-      imageSize,
-      categorySideOffset,
-      iconSize,
-      titleImagePadding,
-      borderWidth,
-      currentBorderWidth,
-      timerWheelSize,
-      privateIconSize,
-      titleSubtitleSpacing;
-
-  final EdgeInsets imagePadding;
-  final EdgeInsets crossPadding;
-  final EdgeInsets titlePadding;
-  final EdgeInsets statusesPadding;
-  final EdgeInsets timerWheelPadding;
-  final EdgeInsets cardIconPadding;
-
-  const EventCardLayout({
-    this.height = 56,
-    this.marginSmall = 6,
-    this.marginLarge = 10,
-    this.imageSize = 48,
-    this.categorySideOffset = 43,
-    this.iconSize = 18,
-    this.titleImagePadding = 10,
-    this.borderWidth = 1.5,
-    this.currentBorderWidth = 3,
-    this.timerWheelSize = 44,
-    this.crossPadding = const EdgeInsets.all(4),
-    this.imagePadding = const EdgeInsets.only(left: 4),
-    this.titlePadding = const EdgeInsets.only(left: 8, right: 8),
-    this.statusesPadding = const EdgeInsets.only(right: 8, bottom: 3),
-    this.timerWheelPadding = const EdgeInsets.only(right: 5),
-    this.cardIconPadding = const EdgeInsets.only(right: 4),
-    this.privateIconSize = 24,
-    this.titleSubtitleSpacing = 6,
   });
 }
 
