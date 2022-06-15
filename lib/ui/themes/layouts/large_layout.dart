@@ -13,5 +13,6 @@ class LargeLayout extends MediumLayout {
           category: const CategoryLayoutLarge(),
           menuPage: const MenuPageLayoutLarge(),
           fontSize: const FontSizeLarge(),
+          eventCard: const EventCardLayoutLarge(),
         );
 }
