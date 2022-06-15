@@ -9,5 +9,5 @@ export 'photo_calendar_layout.dart';
 export 'menu_page_layout.dart';
 export 'time_input_layout.dart';
 export 'checklist_question_layout.dart';
-export 'layout_templates.dart';
+export 'templates_layout.dart';
 export 'border_layout.dart';

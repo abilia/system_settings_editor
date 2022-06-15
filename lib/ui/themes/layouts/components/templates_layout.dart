@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
-class LayoutTemplates {
+class TemplatesLayout {
   final EdgeInsets m1,
       m2,
       m3,
@@ -19,7 +19,7 @@ class LayoutTemplates {
       l5,
       bottomNavigation;
 
-  const LayoutTemplates({
+  const TemplatesLayout({
     this.s1 = const EdgeInsets.all(12),
     this.s2 = const EdgeInsets.fromLTRB(12, 12, 12, 40),
     this.s3 = const EdgeInsets.all(4),
@@ -40,8 +40,8 @@ class LayoutTemplates {
   });
 }
 
-class LayoutTemplatesMedium extends LayoutTemplates {
-  const LayoutTemplatesMedium({
+class TemplatesLayoutMedium extends TemplatesLayout {
+  const TemplatesLayoutMedium({
     EdgeInsets? s5,
   }) : super(
           s1: const EdgeInsets.all(16),
@@ -64,8 +64,8 @@ class LayoutTemplatesMedium extends LayoutTemplates {
         );
 }
 
-class LayoutTemplatesLarge extends LayoutTemplatesMedium {
-  const LayoutTemplatesLarge()
+class TemplatesLayoutLarge extends TemplatesLayoutMedium {
+  const TemplatesLayoutLarge()
       : super(
           s5: const EdgeInsets.symmetric(horizontal: 16, vertical: 72),
         );

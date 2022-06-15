@@ -65,7 +65,7 @@ class Layout {
   final PickFieldLayout pickField;
   final EventImageLayout eventImageLayout;
   final ListFolderLayout listFolder;
-  final LayoutTemplates templates;
+  final TemplatesLayout templates;
   final BorderLayout borders;
   final LinedBorderLayout linedBorder;
   final SelectableFieldLayout selectableField;
@@ -139,7 +139,7 @@ class Layout {
     this.pickField = const PickFieldLayout(),
     this.eventImageLayout = const EventImageLayout(),
     this.listFolder = const ListFolderLayout(),
-    this.templates = const LayoutTemplates(),
+    this.templates = const TemplatesLayout(),
     this.borders = const BorderLayout(),
     this.linedBorder = const LinedBorderLayout(),
     this.selectableField = const SelectableFieldLayout(),
