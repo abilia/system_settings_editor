@@ -112,7 +112,7 @@ class ActivityCard extends StatelessWidget {
                                 ],
                                 Text(
                                   activity.subtitle(context),
-                                  style: bodyText4.copyWith(height: 1),
+                                  style: bodyText4,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ],
