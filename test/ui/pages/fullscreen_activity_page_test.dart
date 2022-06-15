@@ -34,15 +34,22 @@ void main() {
   late ClockBloc clockBloc;
 
   final List<Activity> fakeActivities = [
-    FakeActivity.starts(startTimeOne,
-        duration: const Duration(minutes: 5), title: 'Test1'),
-    FakeActivity.starts(startTimeTwo,
-        duration: const Duration(minutes: 1), title: 'Test2')
+    Activity.createNew(
+      title: 'Test1',
+      startTime: startTimeOne,
+      duration: const Duration(minutes: 5),
+    ),
+    Activity.createNew(
+      title: 'Test2',
+      startTime: startTimeTwo,
+      duration: const Duration(minutes: 1),
+    )
   ];
-  final List<ActivityDay> dayActivities = [
-    ActivityDay(fakeActivities[0], fakeActivities[0].startTime.onlyDays()),
-    ActivityDay(fakeActivities[1], fakeActivities[1].startTime.onlyDays())
-  ];
+
+  final List<NewAlarm> alarms = fakeActivities
+      .map((a) => ActivityDay(a, a.startTime.onlyDays()))
+      .map(StartAlarm.new)
+      .toList();
   final testActivity = Activity.createNew(
     title: 'title',
     startTime: startTimeOne,
@@ -163,7 +170,7 @@ void main() {
             PopAwareAlarmPage(
               alarm: startAlarm,
               alarmNavigator: _alarmNavigator,
-              child: FullScreenActivityPage(activityDay: dayActivities.first),
+              child: FullScreenActivityPage(alarm: alarms.first),
             ),
           ),
         );
@@ -179,7 +186,7 @@ void main() {
             PopAwareAlarmPage(
               alarm: startAlarm,
               alarmNavigator: _alarmNavigator,
-              child: FullScreenActivityPage(activityDay: dayActivities[0]),
+              child: FullScreenActivityPage(alarm: alarms.first),
             ),
           ),
         );
@@ -199,7 +206,7 @@ void main() {
             PopAwareAlarmPage(
               alarm: startAlarm,
               alarmNavigator: _alarmNavigator,
-              child: FullScreenActivityPage(activityDay: dayActivities[1]),
+              child: FullScreenActivityPage(alarm: alarms[1]),
             ),
           ),
         );
