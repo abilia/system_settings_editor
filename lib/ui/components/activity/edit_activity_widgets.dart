@@ -344,7 +344,7 @@ class CategoryRadioField extends StatelessWidget {
         final nothing = fileId.isEmpty && !state.showCategoryColor;
         return RadioField<int>(
           key: isRight ? TestKey.rightCategoryRadio : TestKey.leftCategoryRadio,
-          padding: nothing ? null : layout.category.radioPadding,
+          padding: nothing ? null : layout.category.activityRadioPadding,
           onChanged: onChanged,
           leading: nothing
               ? null

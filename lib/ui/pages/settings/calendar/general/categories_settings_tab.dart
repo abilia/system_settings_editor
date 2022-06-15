@@ -80,6 +80,7 @@ class _CategoryPickField extends StatelessWidget {
   Widget build(BuildContext context) {
     return PickField(
       text: Text(imageAndName.hasName ? imageAndName.name : defaultName),
+      leadingPadding: layout.category.settingsRadioPadding,
       leading: imageAndName.image.isNotEmpty
           ? FadeInAbiliaImage(
               imageFileId: imageAndName.image.id,
