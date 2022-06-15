@@ -144,6 +144,7 @@ class TimepillarCardLayout {
   TextStyle textStyle(double zoom) => GoogleFonts.roboto(
         textStyle: TextStyle(
           fontSize: fontSize * zoom,
+          height: fontHeight,
           color: AbiliaColors.black,
           fontWeight: FontWeight.w400,
           leadingDistribution: TextLeadingDistribution.even,

@@ -121,11 +121,7 @@ class ActivityTimepillarCard extends TimepillarCard {
                             if (hasTitle)
                               SizedBox(
                                 height: textHeight,
-                                child: Text(
-                                  activity.title,
-                                  style: layout.timepillar.card
-                                      .textStyle(measures.zoom),
-                                ),
+                                child: Text(activity.title),
                               ),
                             if (hasImage || signedOff || past)
                               Padding(
