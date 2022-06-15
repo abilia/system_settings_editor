@@ -39,104 +39,113 @@ class ActivityCard extends StatelessWidget {
     return AnimatedTheme(
       duration: ActivityCard.duration,
       data: themeData,
-      child: Builder(
-        builder: (context) => Tts.fromSemantics(
+      child: Builder(builder: (context) {
+        final eventState = context.watch<DayEventsCubit>().state;
+        final now = context.watch<ClockBloc>().state;
+        final dayPartsSetting = context
+            .select((MemoplannerSettingBloc bloc) => bloc.state.dayParts);
+        final isNight = eventState.day.isAtSameDay(now) &&
+            now.dayPart(dayPartsSetting) == DayPart.night;
+        return Tts.fromSemantics(
           activity.semanticsProperties(context),
-          child: AnimatedContainer(
-            duration: ActivityCard.duration,
-            height: layout.eventCard.height,
-            decoration: getCategoryBoxDecoration(
-              current: current,
-              inactive: inactive,
-              category: activity.category,
-              showCategoryColor: showCategoryColor,
-            ),
-            child: Material(
-              type: MaterialType.transparency,
-              child: InkWell(
-                borderRadius: borderRadius - BorderRadius.circular(1.0),
-                onTap: preview
-                    ? null
-                    : () async {
-                        final authProviders = copiedAuthProviders(context);
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => MultiBlocProvider(
-                              providers: authProviders,
-                              child: ActivityPage(
-                                activityDay: activityOccasion,
+          child: Opacity(
+            opacity: isNight ? (signedOff || past ? 0.3 : 0.4) : 1,
+            child: AnimatedContainer(
+              duration: ActivityCard.duration,
+              height: layout.eventCard.height,
+              decoration: getCategoryBoxDecoration(
+                current: current,
+                inactive: inactive,
+                category: activity.category,
+                showCategoryColor: showCategoryColor,
+              ),
+              child: Material(
+                type: MaterialType.transparency,
+                child: InkWell(
+                  borderRadius: borderRadius - BorderRadius.circular(1.0),
+                  onTap: preview
+                      ? null
+                      : () async {
+                          final authProviders = copiedAuthProviders(context);
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => MultiBlocProvider(
+                                providers: authProviders,
+                                child: ActivityPage(
+                                  activityDay: activityOccasion,
+                                ),
+                              ),
+                              settings: RouteSettings(
+                                  name: 'ActivityPage $activityOccasion'),
+                            ),
+                          );
+                        },
+                  child: Stack(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          if (hasSideContent)
+                            Padding(
+                              padding: layout.eventCard.imagePadding,
+                              child: SizedBox(
+                                width: layout.eventCard.imageSize,
+                                child: EventImage.fromEventOccasion(
+                                  eventOccasion: activityOccasion,
+                                  fit: BoxFit.cover,
+                                  crossPadding: layout.eventCard.crossPadding,
+                                ),
                               ),
                             ),
-                            settings: RouteSettings(
-                                name: 'ActivityPage $activityOccasion'),
-                          ),
-                        );
-                      },
-                child: Stack(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        if (hasSideContent)
-                          Padding(
-                            padding: layout.eventCard.imagePadding,
-                            child: SizedBox(
-                              width: layout.eventCard.imageSize,
-                              child: EventImage.fromEventOccasion(
-                                eventOccasion: activityOccasion,
-                                fit: BoxFit.cover,
-                                crossPadding: layout.eventCard.crossPadding,
-                              ),
-                            ),
-                          ),
-                        Expanded(
-                          child: Padding(
-                            padding: layout.eventCard.titlePadding,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                if (activity.hasTitle) ...[
+                          Expanded(
+                            child: Padding(
+                              padding: layout.eventCard.titlePadding,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  if (activity.hasTitle) ...[
+                                    Text(
+                                      activity.title,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1
+                                          ?.copyWith(height: 1),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(
+                                        height: layout
+                                            .eventCard.titleSubtitleSpacing),
+                                  ],
                                   Text(
-                                    activity.title,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .subtitle1
-                                        ?.copyWith(height: 1),
+                                    activity.subtitle(context),
+                                    style: bodyText4,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                  SizedBox(
-                                      height: layout
-                                          .eventCard.titleSubtitleSpacing),
                                 ],
-                                Text(
-                                  activity.subtitle(context),
-                                  style: bodyText4,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    if (showInfoIcons)
-                      Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: Padding(
-                          padding: layout.eventCard.statusesPadding,
-                          child: buildInfoIcons(activity, inactive),
-                        ),
+                        ],
                       ),
-                  ],
+                      if (showInfoIcons)
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: Padding(
+                            padding: layout.eventCard.statusesPadding,
+                            child: buildInfoIcons(activity, inactive),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 
