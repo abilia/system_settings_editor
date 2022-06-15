@@ -1,6 +1,5 @@
 import 'package:http/http.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/db/support_persons_db.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/support_person.dart';
 import 'package:seagull/repository/all.dart';
@@ -28,13 +27,17 @@ class SupportPersonsRepository extends Repository {
 
       db.deleteAll();
       Iterable<SupportPerson> result = decoded.where((element) {
-        return element['role']['id'] == 6; // '6' is the role id of support person in myabilia
-      }).map((element) => SupportPerson.fromJson(element['entity'],),);
+        return element['role']['id'] ==
+            6; // '6' is the role id of a support person in myabilia
+      }).map(
+        (element) => SupportPerson.fromJson(
+          element['entity'],
+        ),
+      );
       db.insertAll(result);
-      return result;
     } catch (e) {
       log.severe('Error when fetching support persons, offline?', e);
-      return db.getAll();
     }
+    return db.getAll();
   }
 }

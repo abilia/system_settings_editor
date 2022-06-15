@@ -61,6 +61,7 @@ Future<void> initServices() async {
   final voiceDb = VoiceDb(preferences, applicationSupportDirectory.path);
   final baseUrlDb = BaseUrlDb(preferences);
   await baseUrlDb.initialize();
+
   GetItInitializer()
     ..documentsDirectory = documentDirectory
     ..applicationSupportDirectory = applicationSupportDirectory

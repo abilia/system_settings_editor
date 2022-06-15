@@ -220,4 +220,25 @@ class EditActivityCubit extends Cubit<EditActivityState> {
         return InfoItem.none;
     }
   }
+
+  void setAvailableFor(AvailableForType availableFor) {
+    final activity = state.activity;
+    replaceActivity(
+      activity.copyWith(
+        secret: availableFor != AvailableForType.allSupportPersons,
+        secretExemptions: const [],
+      ),
+    );
+  }
+
+  void supportPersonChanged(int id) {
+    final activity = state.activity;
+    final _supportPersons = Set<int>.from(activity.secretExemptions);
+    if (!_supportPersons.remove(id)) {
+      _supportPersons.add(id);
+    }
+    replaceActivity(
+      activity.copyWith(secretExemptions: _supportPersons),
+    );
+  }
 }

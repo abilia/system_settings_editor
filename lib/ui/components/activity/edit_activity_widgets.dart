@@ -1,11 +1,10 @@
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/db/support_persons_db.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/data_repository/support_persons_repository.dart';
+import 'package:seagull/repository/http_client.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -537,8 +536,7 @@ class AvailableForWidget extends StatelessWidget {
                   : translator.selectedSupportPersons),
           onTap: () async {
             final editActivityCubit = context.read<EditActivityCubit>();
-            final authenticatedState =
-                context.read<AuthenticationBloc>().state;
+            final authenticatedState = context.read<AuthenticationBloc>().state;
             if (authenticatedState is Authenticated) {
               final availableForState = await navigateToAvailableForPage(
                   context, authenticatedState.userId);
@@ -564,7 +562,7 @@ class AvailableForWidget extends StatelessWidget {
                 create: (context) => AvailableForCubit(
                   supportPersonsRepository: SupportPersonsRepository(
                     baseUrlDb: GetIt.I<BaseUrlDb>(),
-                    client: GetIt.I<BaseClient>(),
+                    client: GetIt.I<ListenableClient>(),
                     db: SupportPersonsDb(GetIt.I<SharedPreferences>()),
                     userId: userId,
                   ),

@@ -8,11 +8,11 @@ class AvailableForCubit extends Cubit<AvailableForState> {
   AvailableForCubit({
     required this.supportPersonsRepository,
     AvailableForType? availableFor,
-    Set<int>? selectedSupportPersons,
+    Iterable<int>? selectedSupportPersons,
   }) : super(
           AvailableForState(
             availableFor: availableFor ?? AvailableForType.allSupportPersons,
-            selectedSupportPersons: selectedSupportPersons ?? <int>{},
+            selectedSupportPersons: selectedSupportPersons ?? const <int>[],
             allSupportPersons: const [],
           ),
         ) {
@@ -29,12 +29,12 @@ class AvailableForCubit extends Cubit<AvailableForState> {
 
   final SupportPersonsRepository supportPersonsRepository;
 
-  void setAvailableFor(AvailableForType availableFor) => emit(state.copyWith(
-      availableFor: availableFor,
-      selectedSupportPersons:
-          availableFor != AvailableForType.selectedSupportPersons
-              ? <int>{}
-              : null));
+  void setAvailableFor(AvailableForType availableFor) => emit(
+        state.copyWith(
+          availableFor: availableFor,
+          selectedSupportPersons: const [],
+        ),
+      );
 
   void selectSupportPerson(int id) {
     final _supportPersons = Set<int>.from(state.selectedSupportPersons);
@@ -53,12 +53,12 @@ class AvailableForState extends Equatable {
   });
 
   final AvailableForType availableFor;
-  final Set<int> selectedSupportPersons;
+  final Iterable<int> selectedSupportPersons;
   final Iterable<SupportPerson> allSupportPersons;
 
   AvailableForState copyWith({
     AvailableForType? availableFor,
-    Set<int>? selectedSupportPersons,
+    Iterable<int>? selectedSupportPersons,
     Iterable<SupportPerson>? allSupportPersons,
   }) =>
       AvailableForState(

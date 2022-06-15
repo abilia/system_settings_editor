@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:seagull/db/support_persons_db.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:seagull/background/all.dart';
@@ -94,7 +93,6 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       sortableDb: SortableDb(database),
       userId: user.id,
     ).load();
-
   } catch (e) {
     log.severe('Exception when running background handler', e);
   } finally {

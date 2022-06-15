@@ -34,10 +34,10 @@ class AvailableForPage extends StatelessWidget {
 class AvailableForPageBody extends StatelessWidget {
   const AvailableForPageBody({
     Key? key,
-    this.onRadioButtonChanged,
+    this.onAvailableForChanged,
     this.onSupportPersonChanged,
   }) : super(key: key);
-  final Function? onRadioButtonChanged;
+  final Function? onAvailableForChanged;
   final Function? onSupportPersonChanged;
 
   @override
@@ -47,42 +47,44 @@ class AvailableForPageBody extends StatelessWidget {
       builder: (context, state) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-            RadioField<AvailableForType>(
-              groupValue: state.availableFor,
-              onChanged: (value) => _onRadioButtonChanged(context, value),
-              value: AvailableForType.onlyMe,
-              leading: Icon(
-                AbiliaIcons.lock,
-                size: layout.icon.button,
-              ),
-              text: Text(translate.onlyMe),
-            ).pad(layout.templates.m1
+          RadioField<AvailableForType>(
+            groupValue: state.availableFor,
+            onChanged: (value) => _onAvailableForChanged(context, value),
+            value: AvailableForType.onlyMe,
+            leading: Icon(
+              AbiliaIcons.lock,
+              size: layout.icon.button,
+            ),
+            text: Text(translate.onlyMe),
+          ).pad(
+            layout.templates.m1
                 .copyWith(bottom: layout.formPadding.verticalItemDistance),
           ),
           RadioField<AvailableForType>(
-              groupValue: state.availableFor,
-              onChanged: (value) => _onRadioButtonChanged(context, value),
-              value: AvailableForType.allSupportPersons,
-              leading: Icon(
-                AbiliaIcons.unlock,
-                size: layout.icon.button,
-              ),
-              text: Text(translate.allSupportPersons),
-            ).pad(EdgeInsets.symmetric(
-                horizontal: layout.templates.m1.left),
+            groupValue: state.availableFor,
+            onChanged: (value) => _onAvailableForChanged(context, value),
+            value: AvailableForType.allSupportPersons,
+            leading: Icon(
+              AbiliaIcons.unlock,
+              size: layout.icon.button,
+            ),
+            text: Text(translate.allSupportPersons),
+          ).pad(
+            EdgeInsets.symmetric(horizontal: layout.templates.m1.left),
           ),
           SizedBox(height: layout.formPadding.verticalItemDistance),
           RadioField<AvailableForType?>(
-                groupValue: state.availableFor,
-                onChanged: (value) => _onRadioButtonChanged(context, value),
-                value: AvailableForType.selectedSupportPersons,
-                leading: Icon(
-                  AbiliaIcons.selectedSupport,
-                  size: layout.icon.button,
-                ),
-                text: Text(translate.selectedSupportPersons),
-              ).pad(EdgeInsets.symmetric(
-                  horizontal: layout.templates.m1.left),),
+            groupValue: state.availableFor,
+            onChanged: (value) => _onAvailableForChanged(context, value),
+            value: AvailableForType.selectedSupportPersons,
+            leading: Icon(
+              AbiliaIcons.selectedSupport,
+              size: layout.icon.button,
+            ),
+            text: Text(translate.selectedSupportPersons),
+          ).pad(
+            EdgeInsets.symmetric(horizontal: layout.templates.m1.left),
+          ),
           SizedBox(height: layout.formPadding.verticalItemDistance),
           if (state.availableFor ==
               AvailableForType.selectedSupportPersons) ...[
@@ -103,11 +105,11 @@ class AvailableForPageBody extends StatelessWidget {
     );
   }
 
-  void _onRadioButtonChanged(BuildContext context, AvailableForType? value) {
+  void _onAvailableForChanged(BuildContext context, AvailableForType? value) {
     if (value != null) {
       context.read<AvailableForCubit>().setAvailableFor(value);
-      if (onRadioButtonChanged != null) {
-        onRadioButtonChanged!(context, value);
+      if (onAvailableForChanged != null) {
+        onAvailableForChanged!(context, value);
       }
     }
   }
@@ -147,7 +149,7 @@ class SupportPersonsWidget extends StatelessWidget {
                       padding: layout.supportPerson.switchFieldPadding,
                       value: state.selectedSupportPersons.contains(person.id),
                       onChanged: (selected) =>
-                          _onSupportPersonChanged(context, person.id, selected),
+                          _onSupportPersonChanged(context, person.id),
                       child: Text(person.name),
                     ).pad(
                       EdgeInsets.only(
@@ -165,10 +167,10 @@ class SupportPersonsWidget extends StatelessWidget {
     );
   }
 
-  void _onSupportPersonChanged(BuildContext context, int id, bool selected) {
+  void _onSupportPersonChanged(BuildContext context, int id) {
     context.read<AvailableForCubit>().selectSupportPerson(id);
     if (onSupportPersonChanged != null) {
-      onSupportPersonChanged!(context, id, selected);
+      onSupportPersonChanged!(context, id);
     }
   }
 }

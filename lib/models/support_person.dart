@@ -20,12 +20,6 @@ class SupportPerson extends Equatable {
         'image': image,
       };
 
-  static SupportPerson fromDbMap(Map<String, dynamic> dbRow) => SupportPerson(
-        id: dbRow['id'],
-        name: dbRow['name'],
-        image: dbRow['image'],
-      );
-
   static SupportPerson fromJson(Map<String, dynamic> json) => SupportPerson(
         id: json['id'],
         name: json['name'],

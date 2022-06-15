@@ -57,7 +57,7 @@ class Activity extends DataModel {
   final InfoItem infoItem;
   final Recurs recurs;
   final Extras extras;
-  final UnmodifiableSetView<int> secretExemptions;
+  final UnmodifiableListView<int> secretExemptions;
 
   late final DateTime noneRecurringEnd = startTime.add(duration);
   late final UnmodifiableSetView<Duration> reminders = UnmodifiableSetView(
@@ -111,7 +111,7 @@ class Activity extends DataModel {
     required String timezone,
     Extras extras = Extras.empty,
     required String calendarId,
-    List<int> secretExemptions = const [],
+    Iterable<int> secretExemptions = const [],
   }) {
     final id = const Uuid().v4();
     return Activity._(
@@ -136,7 +136,7 @@ class Activity extends DataModel {
       timezone: timezone,
       extras: extras,
       calendarId: calendarId,
-      secretExemptions: UnmodifiableSetView(secretExemptions.toSet()),
+      secretExemptions: UnmodifiableListView(secretExemptions),
     );
   }
 
@@ -252,7 +252,7 @@ class Activity extends DataModel {
         extras: extras ?? this.extras,
         calendarId: calendarId ?? this.calendarId,
         secretExemptions: secretExemptions != null
-            ? UnmodifiableSetView(secretExemptions.toSet())
+            ? UnmodifiableListView(secretExemptions)
             : this.secretExemptions,
       );
 

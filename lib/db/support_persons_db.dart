@@ -11,17 +11,20 @@ class SupportPersonsDb {
   final String _supportUsersRecord = 'supportUsers';
 
   Future insertAll(Iterable<SupportPerson> supportUsers) => prefs.setStringList(
-      _supportUsersRecord, supportUsers.map((e) => json.encode(e.toMapForDb())).toList());
+        _supportUsersRecord,
+        supportUsers
+            .map(
+              (e) => jsonEncode(e.toMapForDb()),
+            )
+            .toList(),
+      );
 
   Iterable<SupportPerson> getAll() {
-    final userString = prefs.getString(_supportUsersRecord);
+    final userString = prefs.getStringList(_supportUsersRecord);
     return userString == null
         ? const []
-        : userString
-            .split(';')
-            .map((e) => SupportPerson.fromJson(json.decode(e)));
+        : userString.map((e) => SupportPerson.fromJson(json.decode(e)));
   }
 
   void deleteAll() => prefs.remove(_supportUsersRecord);
-
 }

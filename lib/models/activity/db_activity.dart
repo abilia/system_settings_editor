@@ -49,7 +49,7 @@ class DbActivity extends DbModel<Activity> {
               : json['timezone'],
           extras: Extras.fromJsonString(json['extras']),
           calendarId: json['calendarId'] ?? '',
-          secretExemptions: _parseExemptions(json['secretExemptions']),
+          secretExemptions: json['secretExemptions'],
         ),
         revision: json['revision'],
         dirty: 0,
@@ -115,7 +115,7 @@ class DbActivity extends DbModel<Activity> {
         'revision': revision,
         'timezone': activity.timezone,
         'extras': activity.extras.toJsonString(),
-        'secretExemptions': activity.secretExemptions.join(';'),
+        'secretExemptions': activity.secretExemptions,
         if (activity.calendarId.isNotEmpty) 'calendarId': activity.calendarId,
       };
 
@@ -161,11 +161,13 @@ class DbActivity extends DbModel<Activity> {
               .cast<int>() ??
           []);
 
-  static UnmodifiableSetView<int> _parseExemptions(String? secretExemptions) =>
-      UnmodifiableSetView(secretExemptions
-              ?.split(';').toSet()
+  static UnmodifiableListView<int> _parseExemptions(String? secretExemptions) =>
+      UnmodifiableListView(secretExemptions
+              ?.split(';')
               .map(int.tryParse)
-              .where((v) => v != null).toSet().cast<int>() ?? <int>{});
+              .where((v) => v != null)
+              .cast<int>() ??
+          []);
 
   @override
   List<Object> get props => [activity, revision, dirty];
