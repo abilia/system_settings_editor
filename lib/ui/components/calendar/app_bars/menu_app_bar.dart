@@ -13,21 +13,24 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
       builder: (context, memoSettingsState) => BlocBuilder<ClockBloc, DateTime>(
         buildWhen: (previous, current) => previous.day != current.day,
         builder: (context, time) {
-          return CalendarAppBar(
-            day: time,
-            calendarDayColor: memoSettingsState.calendarDayColor,
-            rows: AppBarTitleRows.day(
-              displayWeekDay: memoSettingsState.activityDisplayWeekDay,
-              displayPartOfDay: memoSettingsState.activityDisplayDayPeriod,
-              displayDate: memoSettingsState.activityDisplayDate,
-              currentTime: time,
+          if (memoSettingsState.displayDayCalendarAppBar) {
+            return CalendarAppBar(
               day: time,
-              dayParts: memoSettingsState.dayParts,
-              langCode: Localizations.localeOf(context).toLanguageTag(),
-              translator: Translator.of(context).translate,
-            ),
-            showClock: memoSettingsState.activityDisplayClock,
-          );
+              calendarDayColor: memoSettingsState.calendarDayColor,
+              rows: AppBarTitleRows.day(
+                displayWeekDay: memoSettingsState.activityDisplayWeekDay,
+                displayPartOfDay: memoSettingsState.activityDisplayDayPeriod,
+                displayDate: memoSettingsState.activityDisplayDate,
+                currentTime: time,
+                day: time,
+                dayParts: memoSettingsState.dayParts,
+                langCode: Localizations.localeOf(context).toLanguageTag(),
+                translator: Translator.of(context).translate,
+              ),
+              showClock: memoSettingsState.activityDisplayClock,
+            );
+          }
+          return Container(height: 0);
         },
       ),
     );

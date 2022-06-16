@@ -130,6 +130,49 @@ void main() {
         );
       });
 
+      testWidgets(
+          'BUG SGC-1683 - Header shown in menu page even when turned off',
+          (tester) async {
+        generics = [
+          Generic.createNew<MemoplannerSettingData>(
+            data: MemoplannerSettingData.fromData(
+              data: false,
+              identifier: MemoplannerSettings.dayCaptionShowDayButtonsKey,
+            ),
+          ),
+          Generic.createNew<MemoplannerSettingData>(
+            data: MemoplannerSettingData.fromData(
+              data: false,
+              identifier: MemoplannerSettings.activityDisplayWeekDayKey,
+            ),
+          ),
+          Generic.createNew<MemoplannerSettingData>(
+            data: MemoplannerSettingData.fromData(
+              data: false,
+              identifier: MemoplannerSettings.activityDisplayDayPeriodKey,
+            ),
+          ),
+          Generic.createNew<MemoplannerSettingData>(
+            data: MemoplannerSettingData.fromData(
+              data: false,
+              identifier: MemoplannerSettings.activityDisplayDateKey,
+            ),
+          ),
+          Generic.createNew<MemoplannerSettingData>(
+            data: MemoplannerSettingData.fromData(
+              data: false,
+              identifier: MemoplannerSettings.activityDisplayClockKey,
+            ),
+          ),
+        ];
+        await tester.pumpApp();
+        await tester.tap(find.byType(MenuButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(CalendarAppBar), findsNothing);
+      });
+    });
+
+    group('Display tab', () {
       testWidgets('Select list', (tester) async {
         await tester.goToDayCalendarSettingsPage(pump: true);
         await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
