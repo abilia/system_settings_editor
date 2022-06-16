@@ -22,7 +22,7 @@ class CategoryLayout {
     this.imageDiameter = 36,
     this.radioImageDiameter = 36,
     this.noColorsImageSize = 30,
-    this.activityRadioPadding = const EdgeInsets.all(8),
+    this.activityRadioPadding = const EdgeInsets.fromLTRB(8, 10, 0, 10),
     this.settingsRadioPadding = const EdgeInsets.all(4),
     this.imagePadding = const EdgeInsets.all(3),
   });
@@ -67,7 +67,7 @@ class CategoryLayoutLarge extends CategoryLayoutMedium {
           topMargin: 12,
           imageDiameter: 72,
           noColorsImageSize: 60,
-          activityRadioPadding: const EdgeInsets.all(12),
+          activityRadioPadding: const EdgeInsets.all(15),
           imagePadding: const EdgeInsets.all(6),
         );
 }

@@ -82,6 +82,7 @@ class _CategoryPickField extends StatelessWidget {
     return PickField(
       text: Text(imageAndName.hasName ? imageAndName.name : defaultName),
       leadingPadding: layout.category.settingsRadioPadding,
+      padding: EdgeInsets.only(right: layout.pickField.padding.right),
       leading: imageAndName.image.isNotEmpty
           ? AspectRatio(
               aspectRatio: 1,
