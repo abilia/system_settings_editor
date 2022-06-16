@@ -1,5 +1,4 @@
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/themes/layouts/components/all.dart';
 
 class MonthCalendarLayout {
   final int monthContentFlex, monthListPreviewFlex;
@@ -57,9 +56,11 @@ class MonthCalendarLayout {
 class MonthCalendarLayoutMedium extends MonthCalendarLayout {
   const MonthCalendarLayoutMedium({
     MonthPreviewLayout? monthPreviewLayout,
+    int? monthContentFlex,
+    int? monthListPreviewFlex,
   }) : super(
-            monthContentFlex: 620,
-            monthListPreviewFlex: 344,
+            monthContentFlex: monthContentFlex ?? 620,
+            monthListPreviewFlex: monthListPreviewFlex ?? 344,
             monthHeadingHeight: 48,
             dayRadius: 12,
             dayRadiusHighlighted: 14,
@@ -85,6 +86,8 @@ class MonthCalendarLayoutMedium extends MonthCalendarLayout {
 class MonthCalendarLayoutLarge extends MonthCalendarLayoutMedium {
   const MonthCalendarLayoutLarge()
       : super(
+          monthContentFlex: 932,
+          monthListPreviewFlex: 620,
           monthPreviewLayout: const MonthPreviewLayoutLarge(),
         );
 }

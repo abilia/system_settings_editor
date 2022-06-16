@@ -78,11 +78,12 @@ class PhotoPage extends StatelessWidget {
                       );
                     },
                   ),
-                  TextAndOrIconActionButtonLight(
-                    translate.delete,
-                    AbiliaIcons.deleteAllClear,
-                    onPressed: () => _deletePhoto(context, sortable),
-                  ),
+                  if (!isInPhotoCalendar)
+                    TextAndOrIconActionButtonLight(
+                      translate.delete,
+                      AbiliaIcons.deleteAllClear,
+                      onPressed: () => _deletePhoto(context, sortable),
+                    ),
                   TextAndOrIconActionButtonLight(
                     translate.close,
                     AbiliaIcons.navigationPrevious,
