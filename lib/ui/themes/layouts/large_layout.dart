@@ -17,6 +17,8 @@ class LargeLayout extends MediumLayout {
             addNewQIconPadding: EdgeInsets.only(left: 22, right: 16),
           ),
           timerPage: const TimerPageLayoutLarge(),
+          timepillar: const TimepillarLayoutLarge(),
+          category: const CategoryLayoutLarge(),
           menuPage: const MenuPageLayoutLarge(),
           fontSize: const FontSizeLarge(),
           eventCard: const EventCardLayoutLarge(),

@@ -53,8 +53,8 @@ class TimerTimepillardCard extends TimepillarCard {
             height: cardPosition.height,
             width: measures.cardWidth,
             padding: padding,
-            margin:
-                EdgeInsets.only(left: measures.dotSize + measures.hourPadding),
+            margin: EdgeInsets.only(
+                left: measures.dotSize + measures.hourIntervalPadding),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [

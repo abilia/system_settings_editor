@@ -1,5 +1,4 @@
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/themes/layouts/components/all.dart';
 
 class MonthCalendarLayout {
   final int monthContentFlex, monthListPreviewFlex;

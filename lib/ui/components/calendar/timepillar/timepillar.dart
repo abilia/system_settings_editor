@@ -112,13 +112,13 @@ class Hour extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: layout.timePillar.textStyle(isNight, measures.zoom),
+      style: layout.timepillar.textStyle(isNight, measures.zoom),
       softWrap: false,
       overflow: TextOverflow.visible,
       textAlign: TextAlign.end,
       child: Container(
         height: measures.hourHeight,
-        padding: EdgeInsets.symmetric(vertical: measures.hourPadding),
+        padding: EdgeInsets.symmetric(vertical: measures.hourIntervalPadding),
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
@@ -131,7 +131,10 @@ class Hour extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Tts(child: Text(hour)),
+            Padding(
+              padding: measures.hourTextPadding,
+              child: Tts(child: Text(hour)),
+            ),
             dots,
           ],
         ),
