@@ -6,12 +6,12 @@ class MenuPageLayout {
   final double crossAxisSpacing, mainAxisSpacing;
   final TextStyle _textStyle;
 
-  final MenuButtonsLayout button;
+  final MenuButtonsLayout buttons;
 
   const MenuPageLayout({
     this.crossAxisSpacing = 7.5,
     this.mainAxisSpacing = 7,
-    this.button = const MenuButtonsLayout(),
+    this.buttons = const MenuButtonsLayout(),
     TextStyle? textStyle,
   }) : _textStyle = textStyle ??
             const TextStyle(
@@ -27,14 +27,14 @@ class MenuPageLayout {
 
 class MenuPageLayoutMedium extends MenuPageLayout {
   const MenuPageLayoutMedium({
-    MenuButtonsLayout? button,
+    MenuButtonsLayout? buttons,
     double? crossAxisSpacing,
     double? mainAxisSpacing,
     TextStyle? textStyle,
   }) : super(
           crossAxisSpacing: crossAxisSpacing ?? 24,
           mainAxisSpacing: mainAxisSpacing ?? 24,
-          button: button ?? const MenuButtonLayoutMedium(),
+          buttons: buttons ?? const MenuButtonLayoutMedium(),
           textStyle: textStyle ??
               const TextStyle(
                 color: AbiliaColors.black,
@@ -51,12 +51,12 @@ class MenuPageLayoutLarge extends MenuPageLayoutMedium {
       : super(
           crossAxisSpacing: 40,
           mainAxisSpacing: 40,
-          button: const MenuButtonLayoutLarge(),
+          buttons: const MenuButtonLayoutLarge(),
           textStyle: const TextStyle(
             color: AbiliaColors.black,
             fontSize: 36,
             fontWeight: FontWeight.w400,
-            height: 1,
+            height: 42 / 36.0,
             leadingDistribution: TextLeadingDistribution.even,
           ),
         );
