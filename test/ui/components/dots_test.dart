@@ -389,7 +389,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(SubQuarerDot), findsOneWidget);
+      expect(find.byType(SubQuarterDot), findsOneWidget);
       final dots = tester.widgetList<MiniDot>(find.byType(MiniDot)).toList();
 
       expect(dots, hasLength(5));
@@ -417,7 +417,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(SubQuarerDot), findsOneWidget);
+      expect(find.byType(SubQuarterDot), findsOneWidget);
       final dots = tester.widgetList<MiniDot>(find.byType(MiniDot)).toList();
       expect(dots, hasLength(5));
       expect(dots.where((d) => d.visible), hasLength(1), reason: '1 mini dot');
