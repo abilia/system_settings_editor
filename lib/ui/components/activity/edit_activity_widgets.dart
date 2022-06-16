@@ -7,7 +7,6 @@ import 'package:seagull/repository/data_repository/support_persons_repository.da
 import 'package:seagull/repository/http_client.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ActivityNameAndPictureWidget extends StatelessWidget {
   const ActivityNameAndPictureWidget({Key? key}) : super(key: key);
@@ -563,7 +562,7 @@ class AvailableForWidget extends StatelessWidget {
                   supportPersonsRepository: SupportPersonsRepository(
                     baseUrlDb: GetIt.I<BaseUrlDb>(),
                     client: GetIt.I<ListenableClient>(),
-                    db: SupportPersonsDb(GetIt.I<SharedPreferences>()),
+                    db: GetIt.I<SupportPersonsDb>(),
                     userId: userId,
                   ),
                   availableFor: activity.availableFor,

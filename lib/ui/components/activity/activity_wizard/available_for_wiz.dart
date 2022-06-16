@@ -5,7 +5,6 @@ import 'package:seagull/models/activity/activity.dart';
 import 'package:seagull/repository/data_repository/support_persons_repository.dart';
 import 'package:seagull/repository/http_client.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AvailableForWiz extends StatelessWidget {
   const AvailableForWiz({Key? key}) : super(key: key);
@@ -31,7 +30,7 @@ class AvailableForWiz extends StatelessWidget {
           supportPersonsRepository: SupportPersonsRepository(
             baseUrlDb: GetIt.I<BaseUrlDb>(),
             client: GetIt.I<ListenableClient>(),
-            db: SupportPersonsDb(GetIt.I<SharedPreferences>()),
+            db: GetIt.I<SupportPersonsDb>(),
             userId: authenticatedState.userId,
           ),
           availableFor: activity.availableFor,

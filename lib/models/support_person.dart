@@ -14,7 +14,7 @@ class SupportPerson extends Equatable {
   @override
   bool? get stringify => true;
 
-  Map<String, dynamic> toMapForDb() => {
+  Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
         'image': image,

@@ -14,7 +14,7 @@ class SupportPersonsDb {
         _supportUsersRecord,
         supportUsers
             .map(
-              (e) => jsonEncode(e.toMapForDb()),
+              (e) => jsonEncode(e.toJson()),
             )
             .toList(),
       );

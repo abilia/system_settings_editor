@@ -140,12 +140,14 @@ class SupportPersonsWidget extends StatelessWidget {
               ...state.allSupportPersons
                   .map(
                     (person) => SwitchField(
-                      leading: ProfilePicture(
-                        GetIt.I<BaseUrlDb>().baseUrl,
-                        person.image,
-                        initial: person.name.substring(0, 1).capitalize(),
-                        size: layout.icon.normal,
-                      ).pad(layout.supportPerson.iconPadding),
+                      leading: Center(
+                        child: ProfilePicture(
+                          GetIt.I<BaseUrlDb>().baseUrl,
+                          person.image,
+                          initial: person.name.substring(0, 1).capitalize(),
+                          size: layout.icon.normal,
+                        ),
+                      ),
                       padding: layout.supportPerson.switchFieldPadding,
                       value: state.selectedSupportPersons.contains(person.id),
                       onChanged: (selected) =>

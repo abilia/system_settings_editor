@@ -8,9 +8,13 @@ class ProfilePicture extends StatelessWidget {
   static final radius = layout.logout.profilePictureSize;
   final double? size;
 
-  const ProfilePicture(this.baseUrl, this.image,
-      {Key? key, this.initial = '', this.size})
-      : super(key: key);
+  const ProfilePicture(
+    this.baseUrl,
+    this.image, {
+    Key? key,
+    this.initial = '',
+    this.size,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
