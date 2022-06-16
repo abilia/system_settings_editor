@@ -364,7 +364,7 @@ void main() {
           reason: 'no current dots');
       expect(dots.where((d) => d.decoration == pastDotShape), hasLength(4),
           reason: 'four past dots');
-      expect(dots.where((d) => d.decoration == futureDotShape), hasLength(4),
+      expect(dots.where((d) => d.decoration == futureBigDotShape), hasLength(4),
           reason: 'four future dots');
     });
 

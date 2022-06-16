@@ -5,6 +5,15 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
+extension _ShapeDecorationExtension on ShapeDecoration {
+  ShapeDecoration copyWith({Color? color, ShapeBorder? shape}) {
+    return ShapeDecoration(
+      color: color ?? this.color,
+      shape: shape ?? this.shape,
+    );
+  }
+}
+
 final pastSideDotShape = ShapeDecoration(
   shape: CircleBorder(
     side: BorderSide(
@@ -13,6 +22,7 @@ final pastSideDotShape = ShapeDecoration(
     ),
   ),
 );
+
 const pastDotShape = ShapeDecoration(
       shape: CircleBorder(side: BorderSide(color: AbiliaColors.black)),
     ),
@@ -27,8 +37,20 @@ const pastDotShape = ShapeDecoration(
         ShapeDecoration(color: AbiliaColors.red, shape: CircleBorder()),
     futureNightDotShape =
         ShapeDecoration(color: AbiliaColors.blue, shape: CircleBorder()),
-    futureSideDotShape =
-        ShapeDecoration(color: AbiliaColors.black, shape: CircleBorder());
+    futureSideDotShape = futureDotShape;
+
+final bigSideDotBorder = CircleBorder(
+  side: BorderSide(
+      color: AbiliaColors.black,
+      width: layout.borders.activityInfoSideDotsWidth),
+);
+
+final pastBigDotShape = pastDotShape.copyWith(
+  shape: bigSideDotBorder,
+);
+final futureBigDotShape = futureSideDotShape.copyWith(
+  shape: bigSideDotBorder,
+);
 
 class PastDots extends StatelessWidget {
   final bool isNight;
@@ -353,14 +375,7 @@ class _BigDots extends StatelessWidget {
         final dotEndTime =
             endTime.subtract((dot * (minutesPerDot + 1)).minutes());
         final past = now.isAtSameMomentOrAfter(dotEndTime);
-        final decoration = ShapeDecoration(
-          color: past ? null : AbiliaColors.black,
-          shape: CircleBorder(
-            side: BorderSide(
-                color: AbiliaColors.black,
-                width: layout.borders.activityInfoSideDotsWidth),
-          ),
-        );
+        final decoration = past ? pastBigDotShape : futureBigDotShape;
         return AnimatedDot(decoration: decoration, size: bigDotSize);
       })
           .reversed
@@ -381,7 +396,7 @@ class SubQuarterDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => minutes > minutesPerDot
-      ? AnimatedDot(decoration: futureDotShape, size: bigDotSize)
+      ? AnimatedDot(decoration: futureBigDotShape, size: bigDotSize)
       : AnimatedDot(
           size: bigDotSize,
           decoration: pastDotShape,
