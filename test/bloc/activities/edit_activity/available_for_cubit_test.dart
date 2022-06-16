@@ -14,13 +14,13 @@ void main() {
 
   const emptyState = AvailableForState(
     availableFor: AvailableForType.allSupportPersons,
-    selectedSupportPersons: <int>{},
+    selectedSupportPersons: <int>[],
     allSupportPersons: [],
   );
 
   const dbState = AvailableForState(
     availableFor: AvailableForType.allSupportPersons,
-    selectedSupportPersons: <int>{},
+    selectedSupportPersons: <int>[],
     allSupportPersons: [testSupportPerson, testSupportPerson2],
   );
 
