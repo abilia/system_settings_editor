@@ -8,7 +8,7 @@ class ChangeCodeProtectPage extends StatefulWidget {
 }
 
 class _ChangeCodeProtectPageState extends State<ChangeCodeProtectPage> {
-  late final TextEditingController controller;
+  late final CodeProtectTextEditController controller;
 
   String? firstCode;
   bool get isAtFirstCode => firstCode == null;

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/settings/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -30,7 +32,7 @@ class CodeProtectPage extends StatefulWidget {
 }
 
 class _CodeProtectPageState extends State<CodeProtectPage> {
-  late final TextEditingController controller;
+  late final CodeProtectTextEditController controller;
 
   @override
   void initState() {
@@ -82,9 +84,6 @@ class _CodeProtectPageState extends State<CodeProtectPage> {
   }
 }
 
-const _pinLength = 4;
-const _dash = '-';
-
 class PinCodeWidget extends StatelessWidget {
   const PinCodeWidget({
     required this.controller,
@@ -93,7 +92,7 @@ class PinCodeWidget extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final TextEditingController controller;
+  final CodeProtectTextEditController controller;
   final VoidCallback? onEditingComplete;
   final String? fieldMessage;
 
@@ -150,20 +149,12 @@ class PinCodeWidget extends StatelessWidget {
           height: 96,
         ),
         AbiliaNumPad(delete: () {
-          controller.text = ''.padRight(_pinLength, _dash);
+          controller.delete();
         }, onClear: () {
-          final code = controller.text.replaceAll('-', '');
-          final n =
-              code.substring(0, code.length - 1).padRight(_pinLength, _dash);
-          controller.text = n;
+          controller.clear();
         }, onNumPress: (n) {
-          final code = controller.text.replaceAll('-', '');
-          if (code.length >= 4) {
-            return;
-          }
-          final newCode = code + n;
-          controller.text = newCode.padRight(_pinLength, _dash);
-          if (newCode.length >= 4) {
+          final code = controller.add(n);
+          if (code.length >= controller.pinLength) {
             onEditingComplete?.call();
           }
         }),
@@ -175,10 +166,29 @@ class PinCodeWidget extends StatelessWidget {
 class CodeProtectTextEditController extends TextEditingController {
   CodeProtectTextEditController() : super(text: _dash * _pinLength);
 
+  static const _pinLength = 4;
+  static const _dash = '-';
+
   @override
   void clear() {
     text = _dash * _pinLength;
   }
-}
 
-String formatEditUpdate(String newV) => newV.padRight(_pinLength, _dash);
+  void delete() {
+    final code = text.replaceAll('-', '');
+    text =
+        code.substring(0, max(code.length - 1, 0)).padRight(_pinLength, _dash);
+  }
+
+  int get pinLength => _pinLength;
+
+  String add(String s) {
+    final code = text.replaceAll('-', '');
+    if (code.length >= _pinLength) {
+      return code;
+    }
+    final newCode = code + s;
+    text = newCode.padRight(_pinLength, _dash);
+    return newCode;
+  }
+}
