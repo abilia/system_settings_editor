@@ -5,6 +5,7 @@ import 'package:seagull/utils/all.dart';
 
 class CategoriesSettingsTab extends StatelessWidget {
   const CategoriesSettingsTab({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GeneralCalendarSettingsCubit,
@@ -82,9 +83,12 @@ class _CategoryPickField extends StatelessWidget {
       text: Text(imageAndName.hasName ? imageAndName.name : defaultName),
       leadingPadding: layout.category.settingsRadioPadding,
       leading: imageAndName.image.isNotEmpty
-          ? FadeInAbiliaImage(
-              imageFileId: imageAndName.image.id,
-              imageFilePath: imageAndName.image.path,
+          ? AspectRatio(
+              aspectRatio: 1,
+              child: FadeInAbiliaImage(
+                imageFileId: imageAndName.image.id,
+                imageFilePath: imageAndName.image.path,
+              ),
             )
           : null,
       onTap: () async {
