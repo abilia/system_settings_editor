@@ -128,6 +128,7 @@ class _Category extends StatefulWidget {
   final double maxWidth;
   final bool showColors;
   final int letters;
+
   _Category({
     Key? key,
     required this.label,
@@ -263,10 +264,10 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                           child: w,
                         ),
                         child: CategoryImage(
-                          fileId: widget.fileId,
-                          category: widget.category,
-                          showColors: widget.showColors,
-                        ),
+                            fileId: widget.fileId,
+                            showBorder: widget.showColors,
+                            diameter: layout.category.imageDiameter,
+                            color: categoryColor(category: widget.category)),
                       )
                     else
                       SizedBox(width: layout.category.emptySize)
@@ -288,24 +289,31 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
 }
 
 class CategoryImage extends StatelessWidget {
+  final String fileId;
+  final bool showBorder;
+  final Color? color;
+  final double diameter;
+
   CategoryImage({
     Key? key,
     required this.fileId,
-    required this.category,
-    required this.showColors,
-  })  : assert(fileId.isNotEmpty || showColors),
+    required this.color,
+    required this.showBorder,
+    required this.diameter,
+  })  : assert(fileId.isNotEmpty || showBorder),
+        borderRadius = BorderRadius.circular(diameter / 2),
+        noColorsImageSize = layout.category.noColorsImageSize,
+        noColorsImageBorderRadius =
+            BorderRadius.circular(layout.category.noColorsImageSize / 2),
         super(key: key);
 
-  static final diameter = layout.category.imageDiameter,
-      borderRadius = BorderRadius.circular(diameter / 2),
-      noColorsImageSize = layout.category.noColorsImageSize,
-      noColorsImageBorderRadius = BorderRadius.circular(noColorsImageSize / 2);
-  final String fileId;
-  final int category;
-  final bool showColors;
+  late final BorderRadius borderRadius;
+  late final double noColorsImageSize;
+  late final BorderRadius noColorsImageBorderRadius;
+
   @override
   Widget build(BuildContext context) {
-    if (fileId.isNotEmpty && !showColors) {
+    if (fileId.isNotEmpty && !showBorder) {
       return FadeInAbiliaImage(
         imageFileId: fileId,
         width: diameter,
@@ -317,7 +325,7 @@ class CategoryImage extends StatelessWidget {
       width: diameter,
       height: diameter,
       decoration: BoxDecoration(
-        color: categoryColor(category: category),
+        color: color,
         borderRadius: borderRadius,
       ),
       padding: layout.category.imagePadding,
