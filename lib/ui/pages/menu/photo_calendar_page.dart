@@ -25,12 +25,12 @@ class PhotoCalendarPage extends StatelessWidget {
       data: theme.theme,
       child: Scaffold(
         appBar: const PhotoCalendarAppBar(),
+        backgroundColor: theme.color,
         body: SafeArea(
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 height: _layout.clockRowHeight,
-                color: theme.color,
                 child: Stack(
                   children: [
                     Row(
