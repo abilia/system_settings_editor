@@ -174,6 +174,18 @@ void main() {
         );
       });
     });
+
+    testWidgets('Delete button not visible when photo added to photo calendar',
+        (tester) async {
+      await mockNetworkImages(() async {
+        await tester.goToMyPhotos();
+        await tester.tap(find.byType(PhotoCalendarSticker));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(PhotoPage), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.deleteAllClear), findsNothing);
+      });
+    });
   });
 }
 

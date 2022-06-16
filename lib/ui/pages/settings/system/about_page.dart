@@ -26,7 +26,7 @@ class AboutPage extends StatelessWidget {
                 translate.version,
                 style:
                     textTheme.bodyText2?.copyWith(color: AbiliaColors.black75),
-              ).withTts().pad(m1WithZeroBottom),
+              ).withTts().pad(layout.templates.m1.withoutBottom),
               DefaultTextStyle(
                 style: textTheme.headline6 ?? headline6,
                 child: const Version(),
@@ -40,14 +40,14 @@ class AboutPage extends StatelessWidget {
                 translate.producer,
                 style:
                     textTheme.bodyText2?.copyWith(color: AbiliaColors.black75),
-              ).withTts().pad(m1WithZeroBottom),
+              ).withTts().pad(layout.templates.m1.withoutBottom),
               Text(
                 'Abilia AB',
                 style: textTheme.headline6,
               ).withTts().pad(m1ItemPadding),
               const Text('Råsundavägen 6, 169 67 Solna, Sweden')
                   .withTts()
-                  .pad(m1WithZeroBottom),
+                  .pad(layout.templates.m1.withoutBottom),
               const Text('+46 (0)8- 594 694 00\n'
                       'info@abilia.com\n'
                       'www.abilia.com')
