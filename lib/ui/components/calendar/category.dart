@@ -128,7 +128,6 @@ class _Category extends StatefulWidget {
   final double maxWidth;
   final bool showColors;
   final int letters;
-
   _Category({
     Key? key,
     required this.label,
