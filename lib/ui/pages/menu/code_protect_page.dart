@@ -115,9 +115,7 @@ class PinCodeWidget extends StatelessWidget {
                 showCursor: false,
                 autocorrect: false,
                 textAlign: TextAlign.center,
-                toolbarOptions: const ToolbarOptions(),
                 keyboardType: TextInputType.number,
-                enableSuggestions: false,
                 enableInteractiveSelection: false,
                 style: Theme.of(context).textTheme.headline4,
                 decoration: InputDecoration(
@@ -134,8 +132,8 @@ class PinCodeWidget extends StatelessWidget {
           ],
         ),
         if (message != null) ...[
-          const SizedBox(
-            height: 24,
+          SizedBox(
+            height: layout.codeProtect.textDistance,
           ),
           Text(
             message,
@@ -145,8 +143,8 @@ class PinCodeWidget extends StatelessWidget {
                 ?.copyWith(color: AbiliaColors.black60),
           )
         ],
-        const SizedBox(
-          height: 96,
+        SizedBox(
+          height: layout.codeProtect.keypadDistance,
         ),
         AbiliaNumPad(delete: () {
           controller.delete();

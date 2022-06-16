@@ -96,6 +96,7 @@ class Layout {
   final StartupPageLayout startupPage;
   final StarterSetDialogLayout starterSetDialog;
   final PhotoCalendarLayoutMedium photoCalendarLayout;
+  final CodeProtectLayoutMedium codeProtect;
 
   const Layout({
     this.radius = 12,
@@ -170,6 +171,7 @@ class Layout {
     this.startupPage = const StartupPageLayout(),
     this.starterSetDialog = const StarterSetDialogLayout(),
     this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
+    this.codeProtect = const CodeProtectLayoutMedium(),
   });
 
   bool get go => runtimeType == _GoLayout;

@@ -8,3 +8,4 @@ export 'templates_layout.dart';
 export 'starter_set_dialog_layout.dart';
 export 'photo_calendar_layout.dart';
 export 'menu_page_layout.dart';
+export 'code_protect_layout.dart';
