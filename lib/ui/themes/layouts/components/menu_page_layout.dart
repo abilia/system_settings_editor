@@ -40,7 +40,7 @@ class MenuPageLayoutMedium extends MenuPageLayout {
                 color: AbiliaColors.black,
                 fontSize: 24,
                 fontWeight: FontWeight.w400,
-                height: 42 / 24.0,
+                height: 30 / 24.0,
                 leadingDistribution: TextLeadingDistribution.even,
               ),
         );
