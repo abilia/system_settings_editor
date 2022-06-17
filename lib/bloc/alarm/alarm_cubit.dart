@@ -14,7 +14,7 @@ class AlarmCubit extends Cubit<NotificationAlarm?> {
     required Stream<NotificationAlarm> selectedNotificationSubject,
     required this.activitiesBloc,
     required this.settingsBloc,
-    required clockBloc,
+    required ClockBloc clockBloc,
   }) : super(null) {
     _selectedNotificationSubscription =
         selectedNotificationSubject.listen((payload) => emit(payload));
