@@ -103,6 +103,23 @@ class NoteInfoItem extends InfoItem {
   bool get isEmpty => text.isEmpty;
 }
 
+class LinkInfoItem extends InfoItem {
+  static const typeName = 'link';
+  final String link;
+  const LinkInfoItem([this.link = '']);
+
+  @override
+  List<Object> get props => [link];
+
+  @override
+  Map<String, dynamic> toJson() => {'link': link};
+
+  @override
+  String get typeId => typeName;
+  @override
+  bool get isEmpty => link.isEmpty;
+}
+
 class Checklist extends InfoItem {
   static const typeName = 'checklist';
   final String image;

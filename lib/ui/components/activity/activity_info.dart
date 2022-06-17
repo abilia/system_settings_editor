@@ -7,6 +7,8 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
+import 'embedded_youtube_video.dart';
+
 class ActivityInfoWithDots extends StatelessWidget {
   final ActivityDay activityDay;
   final Widget? previewImage;
@@ -206,11 +208,12 @@ class ActivityContainer extends StatelessWidget {
                     endIndent: 0,
                     indent: layout.activityPage.dividerIndentation,
                   ),
-                  Expanded(
-                    child: Attachment(
+                  // Expanded(
+                  //   child:
+                    Attachment(
                       activityDay: activityDay,
                       alarm: alarm,
-                    ),
+                    // ),
                   ),
                 ],
               ),
@@ -236,36 +239,46 @@ class Attachment extends StatelessWidget with ActivityMixin {
     final translate = Translator.of(context).translate;
     final activity = activityDay.activity;
     final item = activity.infoItem;
-    if (item is NoteInfoItem) {
-      return NoteBlock(
-        text: item.text,
-        textWidget: Text(item.text),
+    if (item is LinkInfoItem) {
+      return Expanded(
+        child: NoteBlock(
+          text: item.link,
+          textWidget: Text(item.link),
+        ),
       );
     } else if (item is Checklist) {
-      return ChecklistView(
-        item,
-        day: activityDay.day,
-        padding: layout.activityPage.checklistPadding,
-        onTap: (question) async {
-          final signedOff = item.signOff(question, activityDay.day);
-          final updatedActivity = activity.copyWith(
-            infoItem: signedOff,
-          );
-          BlocProvider.of<ActivitiesBloc>(context).add(
-            UpdateActivity(updatedActivity),
-          );
-
-          if (signedOff.allSignedOff(activityDay.day) &&
-              updatedActivity.checkable &&
-              !activityDay.isSignedOff) {
-            await checkConfirmationAndRemoveAlarm(
-              context,
-              ActivityDay(updatedActivity, activityDay.day),
-              alarm: alarm,
-              message: translate.checklistDoneInfo,
+      return Expanded(
+        child: ChecklistView(
+          item,
+          day: activityDay.day,
+          padding: layout.activityPage.checklistPadding,
+          onTap: (question) async {
+            final signedOff = item.signOff(question, activityDay.day);
+            final updatedActivity = activity.copyWith(
+              infoItem: signedOff,
             );
-          }
-        },
+            BlocProvider.of<ActivitiesBloc>(context).add(
+              UpdateActivity(updatedActivity),
+            );
+
+            if (signedOff.allSignedOff(activityDay.day) &&
+                updatedActivity.checkable &&
+                !activityDay.isSignedOff) {
+              await checkConfirmationAndRemoveAlarm(
+                context,
+                ActivityDay(updatedActivity, activityDay.day),
+                alarm: alarm,
+                message: translate.checklistDoneInfo,
+              );
+            }
+          },
+        ),
+      );
+    } else if (item is NoteInfoItem) {
+      return Center(
+        child: EmbeddedYoutubeVideo(
+          link: item.text,
+        ),
       );
     }
     return Container();
