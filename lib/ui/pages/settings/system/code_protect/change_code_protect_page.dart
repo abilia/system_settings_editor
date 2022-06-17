@@ -27,22 +27,23 @@ class _ChangeCodeProtectPageState extends State<ChangeCodeProtectPage> {
         label: Config.isMP ? translate.codeProtect : null,
         iconData: AbiliaIcons.unlock,
       ),
-      body: Column(
-        children: [
-          PinCodeWidget(
-            controller: controller,
-            onEditingComplete: onPressed,
-          ),
-          const Spacer(),
-          BottomNavigation(
-            backNavigationWidget: const CancelButton(),
-            forwardNavigationWidget: GreenButton(
-              icon: AbiliaIcons.ok,
-              text: translate.next,
-              onPressed: onPressed,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            PinCodeWidget(
+              controller: controller,
             ),
-          )
-        ],
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigation(
+        backNavigationWidget: const CancelButton(),
+        forwardNavigationWidget: GreenButton(
+          icon: AbiliaIcons.ok,
+          text: translate.next,
+          onPressed: onPressed,
+        ),
       ),
     );
   }

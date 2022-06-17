@@ -219,8 +219,8 @@ class SettingsButton extends StatelessWidget {
             ),
             if (importantPermissionMissing)
               Positioned(
-                top: layout.menuPage.button.orangeDotInset,
-                right: layout.menuPage.button.orangeDotInset,
+                top: layout.menuPage.buttons.orangeDotInset,
+                right: layout.menuPage.buttons.orangeDotInset,
                 child: const OrangeDot(),
               ),
           ],
@@ -249,13 +249,13 @@ class MenuItemButton extends StatelessWidget {
     return Tts.data(
       data: text.singleLine,
       child: SizedBox(
-        width: layout.menuPage.button.size,
-        height: layout.menuPage.button.size,
+        width: layout.menuPage.buttons.size,
+        height: layout.menuPage.buttons.size,
         child: TextButton(
           style: style,
           onPressed: onPressed,
           child: Padding(
-            padding: layout.menuPage.button.padding,
+            padding: layout.menuPage.buttons.padding,
             child: Column(
               children: [
                 Text(
@@ -267,7 +267,7 @@ class MenuItemButton extends StatelessWidget {
                 const Spacer(),
                 Icon(
                   icon,
-                  size: layout.menuPage.button.iconSize,
+                  size: layout.menuPage.buttons.iconSize,
                 ),
               ],
             ),

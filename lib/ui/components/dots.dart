@@ -441,7 +441,7 @@ class OrangeDot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColorDot(
-      radius: layout.menuPage.button.orangeDotRadius,
+      radius: layout.menuPage.buttons.orangeDotRadius,
       color: AbiliaColors.orange40,
     );
   }
