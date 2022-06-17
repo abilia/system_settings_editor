@@ -37,8 +37,6 @@ class EventImage extends StatelessWidget {
     bool preview = false,
     EdgeInsets? crossPadding,
     EdgeInsets? checkPadding,
-    double? crossOverStrokeWidth,
-    Color? crossOverColor,
   }) =>
       preview
           ? FadeInCalendarImage(
@@ -54,7 +52,7 @@ class EventImage extends StatelessWidget {
               imageSize: imageSize,
               fit: fit,
               crossPadding: crossPadding,
-              checkPadding: crossPadding,
+              checkPadding: checkPadding,
             );
 
   @override
@@ -62,40 +60,47 @@ class EventImage extends StatelessWidget {
     final event = this.event;
     final signedOff = event is ActivityDay && event.isSignedOff;
     final inactive = past || signedOff;
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        if (event.hasImage)
-          AnimatedOpacity(
-            duration: duration,
-            opacity: inactive ? 0.5 : 1.0,
-            child: ClipRRect(
-              borderRadius: borderRadius,
-              child: FadeInImage(
-                fit: fit,
-                image: getImage(
-                  context,
-                  event.image,
-                  imageSize,
-                ).image,
-                placeholder: MemoryImage(kTransparentImage),
+    return LayoutBuilder(builder: (context, constraints) {
+      return Stack(
+        alignment: Alignment.center,
+        fit: constraints.hasBoundedHeight && constraints.hasBoundedWidth
+            ? StackFit.expand
+            : StackFit.loose,
+        children: [
+          if (event.hasImage)
+            AnimatedOpacity(
+              duration: duration,
+              opacity: inactive ? 0.5 : 1.0,
+              child: ClipRRect(
+                borderRadius: borderRadius,
+                child: FadeInImage(
+                  fit: fit,
+                  image: getImage(
+                    context,
+                    event.image,
+                    imageSize,
+                  ).image,
+                  placeholder: MemoryImage(kTransparentImage),
+                ),
               ),
             ),
-          ),
-        if (past)
-          CrossOver(
-            style: CrossOverStyle.darkSecondary,
-            padding:
-                crossPadding ?? layout.eventImageLayout.fallbackCrossPadding,
-          ),
-        if (signedOff)
-          Padding(
-            padding:
-                checkPadding ?? layout.eventImageLayout.fallbackCheckPadding,
-            child: const CheckMark(),
-          ),
-      ],
-    );
+          if (past)
+            CrossOver(
+              style: CrossOverStyle.darkSecondary,
+              padding:
+                  crossPadding ?? layout.eventImageLayout.fallbackCrossPadding,
+            ),
+          if (signedOff)
+            Padding(
+              padding:
+                  checkPadding ?? layout.eventImageLayout.fallbackCheckPadding,
+              child: CheckMark(
+                fit: fit,
+              ),
+            ),
+        ],
+      );
+    });
   }
 
   static Image getImage(
@@ -132,10 +137,12 @@ class EventImage extends StatelessWidget {
 
 class CheckedImageWithImagePopup extends StatelessWidget {
   final ActivityDay activityDay;
+  final EdgeInsets? checkPadding;
 
   const CheckedImageWithImagePopup({
     Key? key,
     required this.activityDay,
+    this.checkPadding,
   }) : super(key: key);
 
   @override
@@ -153,6 +160,7 @@ class CheckedImageWithImagePopup extends StatelessWidget {
         event: activityDay,
         imageSize: ImageSize.original,
         fit: BoxFit.contain,
+        checkPadding: checkPadding,
       ),
     );
   }

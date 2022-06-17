@@ -6,3 +6,4 @@ export 'text_theme.dart';
 export 'layouts/layout.dart';
 export 'startup_page_layout.dart';
 export 'layouts/components/all.dart';
+export 'layouts/pages/all.dart';
