@@ -2,7 +2,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ActivityPage extends StatelessWidget {
   final ActivityDay activityDay;
@@ -16,30 +15,8 @@ class ActivityPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final videoId = activityDay.activity.infoItem is UrlInfoItem
-        ? YoutubePlayer.convertUrlToId(
-            (activityDay.activity.infoItem as UrlInfoItem).url)
-        : '';
-    final _controller = YoutubePlayerController(
-      initialVideoId: videoId ?? '',
-      flags: const YoutubePlayerFlags(
-        autoPlay: false,
-        mute: false,
-      ),
-    );
-    return YoutubePlayerBuilder(
-        player: YoutubePlayer(
-          controller: _controller,
-          width: 500,
-          showVideoProgressIndicator: true,
-          progressIndicatorColor: Colors.amber,
-          progressColors: const ProgressBarColors(
-            playedColor: Colors.amber,
-            handleColor: Colors.amberAccent,
-          ),
-          onReady: () {
-          },
-        ),
+    return EmbeddedYoutubePlayer(
+        infoItem: activityDay.activity.infoItem,
         builder: (context, player) {
           return Theme(
             data: abiliaWhiteTheme,

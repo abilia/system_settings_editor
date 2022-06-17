@@ -8,10 +8,12 @@ import 'package:seagull/utils/all.dart';
 
 class FullScreenActivityPage extends StatelessWidget {
   final NewAlarm alarm;
+  final Widget? player;
 
   const FullScreenActivityPage({
     Key? key,
     required this.alarm,
+    this.player,
   }) : super(key: key);
 
   @override
@@ -36,7 +38,12 @@ class FullScreenActivityPage extends StatelessWidget {
               appBar: DayAppBar(day: selected.day),
               body: Column(
                 children: [
-                  Expanded(child: ActivityInfoWithDots(selected, alarm: alarm)),
+                  Expanded(
+                      child: ActivityInfoWithDots(
+                    selected,
+                    alarm: alarm,
+                    player: player,
+                  )),
                   _FullScreenActivityTabBar(selectedActivityDay: selected),
                 ],
               ),
@@ -274,6 +281,7 @@ class _ActivityArrow extends StatelessWidget {
 
 class _ActivityArrowBorderPainter extends CustomPainter {
   final Paint _arrowPaint;
+
   _ActivityArrowBorderPainter(double border, Color color)
       : _arrowPaint = Paint()
           ..style = PaintingStyle.stroke

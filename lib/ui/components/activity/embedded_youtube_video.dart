@@ -1,25 +1,31 @@
+import 'package:seagull/models/info_item.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class EmbeddedYoutubeVideo extends StatefulWidget {
-  final String link;
+class EmbeddedYoutubePlayer extends StatefulWidget {
+  final InfoItem infoItem;
+  final Widget Function(BuildContext, Widget) builder;
 
-  const EmbeddedYoutubeVideo({
-    required this.link,
+  const EmbeddedYoutubePlayer({
+    required this.infoItem,
+    required this.builder,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<EmbeddedYoutubeVideo> createState() => _EmbeddedYoutubeVideoState();
+  State<EmbeddedYoutubePlayer> createState() => _EmbeddedYoutubePlayerState();
 }
 
-class _EmbeddedYoutubeVideoState extends State<EmbeddedYoutubeVideo> {
+class _EmbeddedYoutubePlayerState extends State<EmbeddedYoutubePlayer> {
   late final YoutubePlayerController _controller;
 
   @override
   void initState() {
     super.initState();
-    final videoId = YoutubePlayer.convertUrlToId(widget.link);
+    final url = widget.infoItem is UrlInfoItem
+        ? (widget.infoItem as UrlInfoItem).url
+        : '';
+    final videoId = YoutubePlayer.convertUrlToId(url);
     _controller = YoutubePlayerController(
       initialVideoId: videoId ?? '',
       flags: const YoutubePlayerFlags(
@@ -30,18 +36,28 @@ class _EmbeddedYoutubeVideoState extends State<EmbeddedYoutubeVideo> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return YoutubePlayer(
-      controller: _controller,
-      width: 500,
-      showVideoProgressIndicator: true,
-      progressIndicatorColor: Colors.amber,
-      progressColors: const ProgressBarColors(
-        playedColor: Colors.amber,
-        handleColor: Colors.amberAccent,
-      ),
-      onReady: () {
-      },
-    );
+    return YoutubePlayerBuilder(
+        player: YoutubePlayer(
+          controller: _controller,
+          width: 500,
+          showVideoProgressIndicator: true,
+          progressIndicatorColor: Colors.amber,
+          progressColors: const ProgressBarColors(
+            playedColor: Colors.amber,
+            handleColor: Colors.amberAccent,
+          ),
+          onReady: () {},
+        ),
+        builder: (context, player) {
+          final child = widget.builder(context, player);
+          return child;
+        });
   }
 }

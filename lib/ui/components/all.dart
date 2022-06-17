@@ -35,5 +35,6 @@ export 'list_data_item.dart';
 export 'sub_heading.dart';
 export 'lined_border.dart';
 export 'collapsable_widget.dart';
+export 'activity/embedded_youtube_video.dart';
 
 export 'package:flutter/semantics.dart';
