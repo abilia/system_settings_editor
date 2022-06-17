@@ -91,11 +91,8 @@ jobs:
           elif ${{ contains(matrix.flavor, 'go') }}
           then
             track="internal"
-          elif [[ $GITHUB_REF == "refs/heads/master" ]]
-          then
-            track="Development track"
           else
-            track="memotrack"
+            track="Development track"
           fi
           echo "::set-output name=track::$track"
 
