@@ -20,9 +20,11 @@ class MainTab extends StatelessWidget with EditActivityTab {
               controller: _scrollController,
               padding: EdgeInsets.only(bottom: layout.templates.m1.bottom),
               children: <Widget>[
-                const ActivityNameAndPictureWidget().pad(m1WithZeroBottom),
+                const ActivityNameAndPictureWidget()
+                    .pad(layout.templates.m1.withoutBottom),
                 const Divider().pad(dividerPadding),
-                const DateAndTimeWidget().pad(m1WithZeroBottom),
+                const DateAndTimeWidget()
+                    .pad(layout.templates.m1.withoutBottom),
                 if (memoSettingsState.showCategories ||
                     memoSettingsState.settings.editActivity.type)
                   CollapsableWidget(
@@ -30,18 +32,21 @@ class MainTab extends StatelessWidget with EditActivityTab {
                     child: Column(
                       children: [
                         const Divider().pad(dividerPadding),
-                        CategoryWidget(activity).pad(m1WithZeroBottom),
+                        CategoryWidget(activity)
+                            .pad(layout.templates.m1.withoutBottom),
                       ],
                     ),
                   ),
                 if (memoSettingsState.settings.editActivity.checkable ||
                     memoSettingsState.settings.editActivity.removeAfter) ...[
                   const Divider().pad(dividerPadding),
-                  CheckableAndDeleteAfterWidget(activity).pad(m1WithZeroBottom),
+                  CheckableAndDeleteAfterWidget(activity)
+                      .pad(layout.templates.m1.withoutBottom),
                 ],
                 if (memoSettingsState.settings.editActivity.availability) ...[
                   const Divider().pad(dividerPadding),
-                  AvailableForWidget(activity).pad(m1WithZeroBottom),
+                  AvailableForWidget(activity)
+                      .pad(layout.templates.m1.withoutBottom),
                 ],
               ],
             ),

@@ -44,7 +44,7 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
                       controller: _controller,
                       child: ListView.separated(
                         controller: _controller,
-                        padding: m1WithZeroBottom,
+                        padding: layout.templates.m1,
                         itemCount: content.length,
                         separatorBuilder: (context, index) => SizedBox(
                           height: layout.formPadding.smallVerticalItemDistance,
