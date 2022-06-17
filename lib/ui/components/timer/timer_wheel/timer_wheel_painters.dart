@@ -1,8 +1,9 @@
 import 'dart:math';
+
 import 'package:matrix4_transform/matrix4_transform.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_styles.dart';
 import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_config.dart';
+import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_styles.dart';
 
 class TimerWheelBackgroundPainter extends CustomPainter {
   TimerWheelBackgroundPainter({
@@ -30,10 +31,12 @@ class TimerWheelBackgroundPainter extends CustomPainter {
       ),
       config.style,
     );
-    wheelShape = wheelShape.shift(Offset(
-      (size.width - config.outerCircleDiameter) / 2,
-      (size.height - config.outerCircleDiameter) / 2,
-    ));
+    wheelShape = wheelShape.shift(
+      Offset(
+        (size.width - config.outerCircleDiameter) / 2,
+        (size.height - config.outerCircleDiameter) / 2,
+      ),
+    );
 
     Path inactiveSectionArc = Path()
       ..arcTo(
@@ -95,10 +98,12 @@ class TimerWheelBackgroundPainter extends CustomPainter {
             ..lineTo(endX, endY);
 
           var roundedEdge = Path()
-            ..addOval(Rect.fromCircle(
-              center: Offset(endX, endY),
-              radius: config.numberPointerRoundedEdgeRadius,
-            ));
+            ..addOval(
+              Rect.fromCircle(
+                center: Offset(endX, endY),
+                radius: config.numberPointerRoundedEdgeRadius,
+              ),
+            );
 
           canvas
             ..drawPath(numberPointer, config.numberPointerPaint)
@@ -163,10 +168,12 @@ class TimerWheelForegroundPainter extends CustomPainter {
       ),
       config.style,
     );
-    wheelShape = wheelShape.shift(Offset(
-      (size.width - config.outerCircleDiameter) / 2,
-      (size.height - config.outerCircleDiameter) / 2,
-    ));
+    wheelShape = wheelShape.shift(
+      Offset(
+        (size.width - config.outerCircleDiameter) / 2,
+        (size.height - config.outerCircleDiameter) / 2,
+      ),
+    );
 
     Path timeLeftArc = Path()
       ..arcTo(
@@ -218,8 +225,10 @@ class TimerWheelForegroundPainter extends CustomPainter {
 
         timeLeftText.paint(
           canvas,
-          Offset(size.width / 2 - timeLeftText.width / 2,
-              size.height / 2 - timeLeftText.height / 2),
+          Offset(
+            size.width / 2 - timeLeftText.width / 2,
+            size.height / 2 - timeLeftText.height / 2,
+          ),
         );
       }
 
@@ -249,22 +258,25 @@ class TimerWheelForegroundPainter extends CustomPainter {
           ..addRRect(
             RRect.fromRectAndRadius(
               Rect.fromCenter(
-                  center: Offset(
-                    config.centerPoint.dx,
-                    config.centerPoint.dy -
-                        (config.outerCircleDiameter / 4 +
-                            config.innerCircleDiameter / 4),
-                  ),
-                  width: 24 * config.scaleFactor,
-                  height: 32 * config.scaleFactor),
+                center: Offset(
+                  config.centerPoint.dx,
+                  config.centerPoint.dy -
+                      (config.outerCircleDiameter / 4 +
+                          config.innerCircleDiameter / 4),
+                ),
+                width: 24 * config.scaleFactor,
+                height: 32 * config.scaleFactor,
+              ),
               Radius.circular(4.0 * config.scaleFactor),
             ),
           );
 
-        thumbRectangle = thumbRectangle.transform(Matrix4Transform()
-            .rotate(_timeLeftSweepRadians, origin: config.centerPoint)
-            .matrix4
-            .storage);
+        thumbRectangle = thumbRectangle.transform(
+          Matrix4Transform()
+              .rotate(_timeLeftSweepRadians, origin: config.centerPoint)
+              .matrix4
+              .storage,
+        );
 
         final distanceBetweenInnerCircleToThumbLine = 21 * config.scaleFactor;
         final distanceBetweenLines = 3.0 * config.scaleFactor;
@@ -282,10 +294,12 @@ class TimerWheelForegroundPainter extends CustomPainter {
           ..relativeMoveTo(-distanceBetweenLines, 2 * config.scaleFactor)
           ..relativeLineTo(0, -config.longSliderThumbLineLength);
 
-        thumbLines = thumbLines.transform(Matrix4Transform()
-            .rotate(_timeLeftSweepRadians, origin: config.centerPoint)
-            .matrix4
-            .storage);
+        thumbLines = thumbLines.transform(
+          Matrix4Transform()
+              .rotate(_timeLeftSweepRadians, origin: config.centerPoint)
+              .matrix4
+              .storage,
+        );
 
         canvas
           ..drawPath(nowLine, config.nowLinePaint)
@@ -336,34 +350,73 @@ Path _getWheelShape(Size size, TimerWheelStyle timerWheelStyle) {
 
     final sectionShape = Path()
       ..moveTo(pointA.dx, pointA.dy)
-      ..cubicTo(controlA2.dx, controlA2.dy, controlB1.dx, controlB1.dy,
-          pointB.dx, pointB.dy)
+      ..cubicTo(
+        controlA2.dx,
+        controlA2.dy,
+        controlB1.dx,
+        controlB1.dy,
+        pointB.dx,
+        pointB.dy,
+      )
       ..lineTo(pointC.dx, pointC.dy) // ok
-      ..cubicTo(controlC1.dx, controlC1.dy, controlD1.dx, controlD1.dy,
-          pointD.dx, pointD.dy)
-      ..cubicTo(controlD2.dx, controlD2.dy, controlE1.dx, controlE1.dy,
-          pointE.dx, pointE.dy)
-      ..cubicTo(controlE2.dx, controlE2.dy, controlF1.dx, controlF1.dy,
-          pointF.dx, pointF.dy)
+      ..cubicTo(
+        controlC1.dx,
+        controlC1.dy,
+        controlD1.dx,
+        controlD1.dy,
+        pointD.dx,
+        pointD.dy,
+      )
+      ..cubicTo(
+        controlD2.dx,
+        controlD2.dy,
+        controlE1.dx,
+        controlE1.dy,
+        pointE.dx,
+        pointE.dy,
+      )
+      ..cubicTo(
+        controlE2.dx,
+        controlE2.dy,
+        controlF1.dx,
+        controlF1.dy,
+        pointF.dx,
+        pointF.dy,
+      )
       ..lineTo(pointG.dx, pointG.dy) // ok
-      ..cubicTo(controlG1.dx, controlG1.dy, controlH1.dx, controlH1.dy,
-          pointH.dx, pointH.dy)
-      ..cubicTo(controlH2.dx, controlH2.dy, controlA1.dx, controlA1.dy,
-          pointA.dx, pointA.dy)
+      ..cubicTo(
+        controlG1.dx,
+        controlG1.dy,
+        controlH1.dx,
+        controlH1.dy,
+        pointH.dx,
+        pointH.dy,
+      )
+      ..cubicTo(
+        controlH2.dx,
+        controlH2.dy,
+        controlA1.dx,
+        controlA1.dy,
+        pointA.dx,
+        pointA.dy,
+      )
       ..close();
 
     final timerWheelShape = Path();
 
     for (int i = 0; i < TimerWheelConfiguration.nrOfWheelSections; i++) {
       timerWheelShape.addPath(
-          sectionShape.transform(Matrix4Transform()
+        sectionShape.transform(
+          Matrix4Transform()
               .rotate(
                 (pi / 6) * i,
                 origin: Offset(size.width / 2, size.height / 2),
               )
               .matrix4
-              .storage),
-          const Offset(0, 0));
+              .storage,
+        ),
+        const Offset(0, 0),
+      );
     }
 
     return timerWheelShape;
@@ -403,34 +456,73 @@ Path _getWheelShape(Size size, TimerWheelStyle timerWheelStyle) {
 
     final sectionShape = Path()
       ..moveTo(pointA.dx, pointA.dy)
-      ..cubicTo(controlA2.dx, controlA2.dy, controlB1.dx, controlB1.dy,
-          pointB.dx, pointB.dy)
+      ..cubicTo(
+        controlA2.dx,
+        controlA2.dy,
+        controlB1.dx,
+        controlB1.dy,
+        pointB.dx,
+        pointB.dy,
+      )
       ..lineTo(pointC.dx, pointC.dy) // ok
-      ..cubicTo(controlC1.dx, controlC1.dy, controlD1.dx, controlD1.dy,
-          pointD.dx, pointD.dy)
-      ..cubicTo(controlD2.dx, controlD2.dy, controlE1.dx, controlE1.dy,
-          pointE.dx, pointE.dy)
-      ..cubicTo(controlE2.dx, controlE2.dy, controlF1.dx, controlF1.dy,
-          pointF.dx, pointF.dy)
+      ..cubicTo(
+        controlC1.dx,
+        controlC1.dy,
+        controlD1.dx,
+        controlD1.dy,
+        pointD.dx,
+        pointD.dy,
+      )
+      ..cubicTo(
+        controlD2.dx,
+        controlD2.dy,
+        controlE1.dx,
+        controlE1.dy,
+        pointE.dx,
+        pointE.dy,
+      )
+      ..cubicTo(
+        controlE2.dx,
+        controlE2.dy,
+        controlF1.dx,
+        controlF1.dy,
+        pointF.dx,
+        pointF.dy,
+      )
       ..lineTo(pointG.dx, pointG.dy) // ok
-      ..cubicTo(controlG1.dx, controlG1.dy, controlH1.dx, controlH1.dy,
-          pointH.dx, pointH.dy)
-      ..cubicTo(controlH2.dx, controlH2.dy, controlA1.dx, controlA1.dy,
-          pointA.dx, pointA.dy)
+      ..cubicTo(
+        controlG1.dx,
+        controlG1.dy,
+        controlH1.dx,
+        controlH1.dy,
+        pointH.dx,
+        pointH.dy,
+      )
+      ..cubicTo(
+        controlH2.dx,
+        controlH2.dy,
+        controlA1.dx,
+        controlA1.dy,
+        pointA.dx,
+        pointA.dy,
+      )
       ..close();
 
     final timerWheelShape = Path();
 
     for (int i = 0; i < TimerWheelConfiguration.nrOfWheelSections; i++) {
       timerWheelShape.addPath(
-          sectionShape.transform(Matrix4Transform()
+        sectionShape.transform(
+          Matrix4Transform()
               .rotate(
                 (pi / 6) * i,
                 origin: Offset(size.width / 2, size.height / 2),
               )
               .matrix4
-              .storage),
-          const Offset(0, 0));
+              .storage,
+        ),
+        const Offset(0, 0),
+      );
     }
 
     return timerWheelShape;

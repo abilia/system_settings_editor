@@ -3,21 +3,28 @@ import 'dart:async';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/getit.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
+import '../../../test_helpers/tts.dart';
 
 void main() {
   late MockBattery mockBattery;
 
-  setUp(() {
+  setUp(() async {
+    setupFakeTts();
     registerFallbackValue(BatteryState.unknown);
     mockBattery = MockBattery();
     when(() => mockBattery.onBatteryStateChanged)
         .thenAnswer((_) => Stream.value(BatteryState.unknown));
     when(() => mockBattery.batteryState)
         .thenAnswer((_) => Future.value(BatteryState.discharging));
+    GetItInitializer()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
+      ..database = FakeDatabase()
+      ..init();
   });
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
@@ -48,6 +55,8 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevelCritical), findsOneWidget);
+    await tester.verifyTts(find.byIcon(AbiliaIcons.batteryLevelCritical),
+        exact: '1%');
   });
 
   testWidgets('Battery level 10%', (WidgetTester tester) async {
@@ -57,6 +66,8 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_10), findsOneWidget);
+    await tester.verifyTts(find.byIcon(AbiliaIcons.batteryLevel_10),
+        exact: '10%');
   });
 
   testWidgets('Battery level 20%', (WidgetTester tester) async {
@@ -66,6 +77,8 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_20), findsOneWidget);
+    await tester.verifyTts(find.byIcon(AbiliaIcons.batteryLevel_20),
+        exact: '20%');
   });
 
   testWidgets('Battery level 40%', (WidgetTester tester) async {
@@ -75,6 +88,8 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_40), findsOneWidget);
+    await tester.verifyTts(find.byIcon(AbiliaIcons.batteryLevel_40),
+        exact: '40%');
   });
 
   testWidgets('Battery level 60%', (WidgetTester tester) async {
@@ -84,6 +99,8 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_60), findsOneWidget);
+    await tester.verifyTts(find.byIcon(AbiliaIcons.batteryLevel_60),
+        exact: '60%');
   });
 
   testWidgets('Battery level 80%', (WidgetTester tester) async {
@@ -93,6 +110,8 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_80), findsOneWidget);
+    await tester.verifyTts(find.byIcon(AbiliaIcons.batteryLevel_80),
+        exact: '80%');
   });
 
   testWidgets('Battery level 100%', (WidgetTester tester) async {
@@ -102,6 +121,8 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_100), findsOneWidget);
+    await tester.verifyTts(find.byIcon(AbiliaIcons.batteryLevel_100),
+        exact: '100%');
   });
 
   testWidgets('Battery charging', (WidgetTester tester) async {

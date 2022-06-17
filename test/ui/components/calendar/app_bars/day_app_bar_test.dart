@@ -1,17 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:seagull/utils/all.dart';
 
+import '../../../../fakes/all.dart';
 import '../../../../mocks/mock_bloc.dart';
 import '../../../../test_helpers/register_fallback_values.dart';
-import '../../../../fakes/all.dart';
 import '../../../../test_helpers/tts.dart';
 
 void main() {
@@ -222,6 +221,8 @@ void main() {
   });
 
   group('tts tests', () {
+    final translate = Locales.language.values.first;
+
     setUpAll(() async {
       setupFakeTts();
       GetItInitializer()
@@ -250,6 +251,25 @@ void main() {
       await tester.pumpAndSettle();
       tester.verifyTts(find.byType(AnalogClock),
           exact: 'the time is twenty five past 10 in the mid-morning');
+    });
+
+    testWidgets('tts on nav buttons', (WidgetTester tester) async {
+      _expectSettings(const MemoplannerSettings());
+      await tester.pumpWidget(wrapWithMaterialApp(
+          DayAppBar(
+            day: day,
+            leftAction: LeftNavButton(
+              onPressed: () => {},
+            ),
+            rightAction: RightNavButton(
+              onPressed: () => {},
+            ),
+          ),
+          defaultClockBloc));
+      await tester.pumpAndSettle();
+      await tester.verifyTts(find.byType(LeftNavButton), exact: translate.back);
+      await tester.verifyTts(find.byType(RightNavButton),
+          exact: translate.next);
     });
   });
 }
