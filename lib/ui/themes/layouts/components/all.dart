@@ -11,4 +11,5 @@ export 'timepillar_layout.dart';
 export 'category_layout.dart';
 export 'selector_layout.dart';
 export 'menu_page_layout.dart';
+export 'code_protect_layout.dart';
 export 'event_card_layout.dart';
