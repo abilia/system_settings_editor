@@ -152,7 +152,7 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
   late final AnimationController controller;
   late final Animation<Matrix4> matrixAnimation;
   late final Animation<EdgeInsetsGeometry> paddingAnimation;
-  late final Characters characters = widget.label.characters;
+  Characters get characters => widget.label.characters;
 
   @override
   void initState() {
