@@ -25,9 +25,9 @@ class _EmbeddedYoutubePlayerState extends State<EmbeddedYoutubePlayer> {
     final url = widget.infoItem is UrlInfoItem
         ? (widget.infoItem as UrlInfoItem).url
         : '';
-    final videoId = YoutubePlayer.convertUrlToId(url);
+    final videoId = YoutubePlayer.convertUrlToId(url) ?? '';
     _controller = YoutubePlayerController(
-      initialVideoId: videoId ?? '',
+      initialVideoId: videoId,
       flags: const YoutubePlayerFlags(
         autoPlay: false,
         mute: false,

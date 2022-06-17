@@ -19,51 +19,57 @@ class AlarmPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EmbeddedYoutubePlayer(
-        infoItem: alarm.activityDay.activity.infoItem,
-        builder: (context, player) {
-          if (alarm.fullScreenActivity) {
-            return FullScreenActivityPage(
+    if (alarm.activity.infoItem is UrlInfoItem) {
+      return EmbeddedYoutubePlayer(
+          infoItem: alarm.activity.infoItem,
+          builder: (_, player) {
+            return body(context, player);
+          });
+    }
+    return body(context);
+  }
+
+  Widget body(BuildContext context, [Widget? player]) {
+    if (alarm.fullScreenActivity) {
+      return FullScreenActivityPage(
+        alarm: alarm,
+        player: player,
+      );
+    }
+    return Theme(
+      data: abiliaWhiteTheme,
+      child: Scaffold(
+        appBar: AbiliaAppBar(
+          title: Translator.of(context).translate.alarm,
+          iconData: AbiliaIcons.handiAlarmVibration,
+          trailing: Padding(
+            padding: layout.alarmPage.alarmClockPadding,
+            child: AbiliaClock(
+              style: Theme.of(context).textTheme.caption?.copyWith(
+                    color: AbiliaColors.white,
+                  ),
+            ),
+          ),
+        ),
+        body: Padding(
+          padding: layout.templates.s1,
+          child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
+            selector: (activitiesState) => ActivityDay(
+              activitiesState
+                  .newActivityFromLoadedOrGiven(alarm.activityDay.activity),
+              alarm.activityDay.day,
+            ),
+            builder: (context, ad) => ActivityInfo(
+              ad,
+              previewImage: previewImage,
               alarm: alarm,
               player: player,
-            );
-          }
-          return Theme(
-            data: abiliaWhiteTheme,
-            child: Scaffold(
-              appBar: AbiliaAppBar(
-                title: Translator.of(context).translate.alarm,
-                iconData: AbiliaIcons.handiAlarmVibration,
-                trailing: Padding(
-                  padding: layout.alarmPage.alarmClockPadding,
-                  child: AbiliaClock(
-                    style: Theme.of(context).textTheme.caption?.copyWith(
-                          color: AbiliaColors.white,
-                        ),
-                  ),
-                ),
-              ),
-              body: Padding(
-                padding: layout.templates.s1,
-                child:
-                    BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
-                  selector: (activitiesState) => ActivityDay(
-                    activitiesState.newActivityFromLoadedOrGiven(
-                        alarm.activityDay.activity),
-                    alarm.activityDay.day,
-                  ),
-                  builder: (context, ad) => ActivityInfo(
-                    ad,
-                    previewImage: previewImage,
-                    alarm: alarm,
-                    player: player,
-                  ),
-                ),
-              ),
-              bottomNavigationBar: AlarmBottomNavigationBar(alarm: alarm),
             ),
-          );
-        });
+          ),
+        ),
+        bottomNavigationBar: AlarmBottomNavigationBar(alarm: alarm),
+      ),
+    );
   }
 }
 
@@ -77,59 +83,66 @@ class ReminderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (reminder.activity.infoItem is UrlInfoItem) {
+      return EmbeddedYoutubePlayer(
+          infoItem: reminder.activity.infoItem,
+          builder: (_, player) {
+            return body(context, player);
+          });
+    }
+    return body(context);
+  }
+
+  Widget body(BuildContext context, [Widget? player]) {
     final translate = Translator.of(context).translate;
     final text = reminder.reminder
         .toReminderHeading(translate, reminder is ReminderBefore);
-    return EmbeddedYoutubePlayer(
-        infoItem: reminder.activityDay.activity.infoItem,
-        builder: (context, player) {
-          return Theme(
-            data: abiliaWhiteTheme,
-            child: Scaffold(
-              appBar: AbiliaAppBar(
-                title: translate.reminder,
-                iconData: AbiliaIcons.handiReminder,
-              ),
-              body: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  children: <Widget>[
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 18, bottom: 30),
-                        child: Tts(
-                          child: Text(
-                            text,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline4
-                                ?.copyWith(color: AbiliaColors.red),
-                          ),
-                        ),
-                      ),
+    return Theme(
+      data: abiliaWhiteTheme,
+      child: Scaffold(
+        appBar: AbiliaAppBar(
+          title: translate.reminder,
+          iconData: AbiliaIcons.handiReminder,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: <Widget>[
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 18, bottom: 30),
+                  child: Tts(
+                    child: Text(
+                      text,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4
+                          ?.copyWith(color: AbiliaColors.red),
                     ),
-                    Expanded(
-                      child: BlocSelector<ActivitiesBloc, ActivitiesState,
-                          ActivityDay>(
-                        selector: (activitiesState) => ActivityDay(
-                          activitiesState.newActivityFromLoadedOrGiven(
-                              reminder.activityDay.activity),
-                          reminder.activityDay.day,
-                        ),
-                        builder: (context, ad) => ActivityInfo(
-                          ad,
-                          alarm: reminder,
-                          player: player,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-              bottomNavigationBar: AlarmBottomNavigationBar(alarm: reminder),
-            ),
-          );
-        });
+              Expanded(
+                child:
+                    BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
+                  selector: (activitiesState) => ActivityDay(
+                    activitiesState.newActivityFromLoadedOrGiven(
+                        reminder.activityDay.activity),
+                    reminder.activityDay.day,
+                  ),
+                  builder: (context, ad) => ActivityInfo(
+                    ad,
+                    alarm: reminder,
+                    player: player,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: AlarmBottomNavigationBar(alarm: reminder),
+      ),
+    );
   }
 }
 

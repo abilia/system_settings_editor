@@ -15,13 +15,14 @@ class ActivityPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return activityDay.activity.infoItem is UrlInfoItem
-        ? EmbeddedYoutubePlayer(
-            infoItem: activityDay.activity.infoItem,
-            builder: (context, player) {
-              return body(player);
-            })
-        : body();
+    if (activityDay.activity.infoItem is UrlInfoItem) {
+      return EmbeddedYoutubePlayer(
+          infoItem: activityDay.activity.infoItem,
+          builder: (_, player) {
+            return body(player);
+          });
+    }
+    return body();
   }
 
   Widget body([Widget? player]) {
