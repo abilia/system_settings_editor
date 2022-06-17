@@ -115,7 +115,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text(placeHoderText), findsOneWidget);
-      await tester.enterText(find.byType(TextField), newCode);
+      await tester._type(newCode);
       await tester.pumpAndSettle();
 
       expect(find.text(newCode), findsOneWidget);
@@ -124,7 +124,7 @@ void main() {
 
       expect(find.text(newCode), findsNothing);
       expect(find.text(placeHoderText), findsOneWidget);
-      await tester.enterText(find.byType(TextField), newCode);
+      await tester._type(newCode);
 
       expect(find.text(newCode), findsOneWidget);
       await tester.tap(find.byType(GreenButton));
@@ -155,14 +155,14 @@ void main() {
       expect(find.byType(ErrorDialog), findsOneWidget);
       await tester.tap(find.byType(PreviousButton));
       await tester.pumpAndSettle();
-      await tester.enterText(find.byType(TextField), '123');
+      await tester._type('123');
       await tester.tap(find.byType(GreenButton));
       await tester.pumpAndSettle();
 
       expect(find.byType(ErrorDialog), findsOneWidget);
       await tester.tap(find.byType(PreviousButton));
       await tester.pumpAndSettle();
-      await tester.enterText(find.byType(TextField), '1234');
+      await tester._type('1234');
       await tester.pumpAndSettle();
       await tester.tap(find.byType(GreenButton));
       await tester.pumpAndSettle();
@@ -173,7 +173,7 @@ void main() {
       await tester.tap(find.byType(PreviousButton));
       await tester.pumpAndSettle();
 
-      await tester.enterText(find.byType(TextField), '1234');
+      await tester._type('1234');
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(CancelButton));
@@ -199,7 +199,7 @@ void main() {
       await tester._goToSettings();
       expect(find.byType(CodeProtectPage), findsOneWidget);
 
-      await tester._enterCode(CodeProtectSettings.defaultCode);
+      await tester._type(CodeProtectSettings.defaultCode);
       expect(find.byType(SettingsPage), findsOneWidget);
     });
 
@@ -248,7 +248,7 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.numericKeyboard));
       await tester.pumpAndSettle();
       expect(find.byType(CodeProtectPage), findsOneWidget);
-      await tester._enterCode('1111');
+      await tester._type('1111');
       expect(find.byType(ErrorDialog), findsOneWidget);
       await tester.tap(
         find.descendant(
@@ -257,7 +257,7 @@ void main() {
       );
       expect(find.byType(CodeProtectSettingsPage), findsNothing);
       await tester.pumpAndSettle();
-      await tester._enterCode('1234');
+      await tester._type('1234');
       expect(find.byType(CodeProtectSettingsPage), findsOneWidget);
     });
   }, skip: !Config.isMP);
@@ -280,8 +280,11 @@ extension on WidgetTester {
     await pumpAndSettle();
   }
 
-  Future<void> _enterCode(String code) async {
-    await enterText(find.byType(TextField), code);
-    await pumpAndSettle();
+  Future<void> _type(String code) async {
+    final chars = code.split('');
+    for (var input in chars) {
+      await tap(find.widgetWithText(KeyboardNumberButton, input));
+      await pumpAndSettle();
+    }
   }
 }
