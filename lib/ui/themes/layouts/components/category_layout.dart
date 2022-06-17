@@ -10,7 +10,9 @@ class CategoryLayout {
       imageDiameter,
       radioImageDiameter,
       noColorsImageSize;
-  final EdgeInsets activityRadioPadding, settingsRadioPadding, imagePadding;
+  final EdgeInsets activityRadioPadding,
+      settingsRadioImagePadding,
+      imagePadding;
 
   const CategoryLayout({
     this.height = 44,
@@ -23,7 +25,7 @@ class CategoryLayout {
     this.radioImageDiameter = 36,
     this.noColorsImageSize = 30,
     this.activityRadioPadding = const EdgeInsets.all(8),
-    this.settingsRadioPadding = const EdgeInsets.all(4),
+    this.settingsRadioImagePadding = const EdgeInsets.all(4),
     this.imagePadding = const EdgeInsets.all(3),
   });
 }
@@ -52,7 +54,7 @@ class CategoryLayoutMedium extends CategoryLayout {
           noColorsImageSize: noColorsImageSize ?? 45,
           activityRadioPadding:
               activityRadioPadding ?? const EdgeInsets.all(12),
-          settingsRadioPadding: const EdgeInsets.all(6),
+          settingsRadioImagePadding: const EdgeInsets.all(6),
           imagePadding: imagePadding ?? const EdgeInsets.all(4.5),
         );
 }
