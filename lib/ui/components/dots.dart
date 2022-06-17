@@ -131,15 +131,15 @@ class Dots extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TimepillarMeasuresCubit, TimepillarMeasures>(
-      buildWhen: (oldState, newState) => oldState.dotSize != newState.dotSize,
-      builder: (context, measures) => Column(
+    return BlocSelector<TimepillarMeasuresCubit, TimepillarMeasures, double>(
+      selector: (state) => state.dotSize,
+      builder: (context, dotSize) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(
           dotsPerHour,
           (_) => Container(
-            height: measures.dotSize,
-            width: measures.dotSize,
+            height: dotSize,
+            width: dotSize,
             decoration: decoration,
           ),
         ),

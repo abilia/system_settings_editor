@@ -50,13 +50,15 @@ class SoundCubit extends Cubit<SoundState> {
         if (s is SoundPlaying) {
           final duration =
               s.duration == 0 ? await audioPlayer.getDuration() : s.duration;
-          emit(
-            SoundPlaying(
-              s.currentSound,
-              duration: duration,
-              position: position,
-            ),
-          );
+          if (!isClosed) {
+            emit(
+              SoundPlaying(
+                s.currentSound,
+                duration: duration,
+                position: position,
+              ),
+            );
+          }
         }
       },
     );

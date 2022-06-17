@@ -100,6 +100,15 @@ void main() {
               BlocProvider<TouchDetectionCubit>(
                 create: (context) => TouchDetectionCubit(),
               ),
+              BlocProvider<AlarmCubit>(
+                create: (context) => FakeAlarmCubit(),
+              ),
+              BlocProvider<TimepillarMeasuresCubit>(
+                create: (context) => FakeTimepillarMeasuresCubit(),
+              ),
+              BlocProvider<TimepillarCubit>(
+                create: (context) => FakeTimepillarCubit(),
+              )
             ],
             child: Builder(
               builder: (context) => Listener(
@@ -200,6 +209,33 @@ void main() {
         await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
         expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
       });
+
+      testWidgets(
+        'Ongoing Start alarm shows play speech button',
+        (WidgetTester tester) async {
+          final fullscreenStartAlarm = StartAlarm(
+            startAlarm.activityDay,
+            fullScreenActivity: true,
+          );
+          tester.binding.window.physicalSizeTestValue = const Size(800, 1280);
+          tester.binding.window.devicePixelRatioTestValue = 1;
+
+          // resets the screen to its orinal size after the test end
+          addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+          addTearDown(tester.binding.window.clearDevicePixelRatioTestValue);
+          await tester.pumpWidget(
+            wrapWithMaterialApp(
+              PopAwareAlarmPage(
+                alarm: fullscreenStartAlarm,
+                alarmNavigator: _alarmNavigator,
+                child: AlarmPage(alarm: fullscreenStartAlarm),
+              ),
+            ),
+          );
+          await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
+          expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
+        },
+      );
 
       testWidgets('End alarm does not show play speech button',
           (WidgetTester tester) async {

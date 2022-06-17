@@ -20,7 +20,7 @@ class AlarmPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (alarm.fullScreenActivity) {
-      return FullScreenActivityPage(activityDay: alarm.activityDay);
+      return FullScreenActivityPage(alarm: alarm);
     }
     return Theme(
       data: abiliaWhiteTheme,
