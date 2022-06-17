@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:devicelocale/devicelocale.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -44,6 +45,8 @@ void main() async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.instance
+      .isAutoInitEnabled; // DO NOT REMOVE THIS LINE. Fore some reason FirebaseMessaging instance needs to be touched before receiving messages
   final documentDirectory = await getApplicationDocumentsDirectory();
   final applicationSupportDirectory = await getApplicationSupportDirectory();
   final preferences = await SharedPreferences.getInstance();
