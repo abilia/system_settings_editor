@@ -11,10 +11,12 @@ class ActivityInfoWithDots extends StatelessWidget {
   final ActivityDay activityDay;
   final Widget? previewImage;
   final Widget? player;
+  final NewAlarm? alarm;
 
   const ActivityInfoWithDots(
     this.activityDay, {
     Key? key,
+    this.alarm,
     this.previewImage,
     this.player,
   }) : super(key: key);
@@ -37,6 +39,8 @@ class ActivityInfoWithDots extends StatelessWidget {
                   activityDay,
                   previewImage: previewImage,
                   player: player,
+                  alarm: alarm,
+                  showCheckButton: true,
                 ),
               ),
             ),
@@ -50,30 +54,37 @@ class ActivityInfo extends StatelessWidget with ActivityMixin {
   final Widget? previewImage;
   final ActivityAlarm? alarm;
   final Widget? player;
+  final bool showCheckButton;
 
   const ActivityInfo(
     this.activityDay, {
+    this.showCheckButton = false,
     Key? key,
     this.previewImage,
     this.alarm,
     this.player,
   }) : super(key: key);
 
+  @visibleForTesting
   factory ActivityInfo.from({
     required Activity activity,
     required DateTime day,
     Key? key,
   }) =>
-      ActivityInfo(ActivityDay(activity, day), key: key);
+      ActivityInfo(
+        ActivityDay(activity, day),
+        showCheckButton: true,
+        key: key,
+      );
 
   static const animationDuration = Duration(milliseconds: 500);
 
   @override
   Widget build(BuildContext context) {
-    final showCheckButton = alarm == null &&
+    final showCheck = showCheckButton &&
         activityDay.activity.checkable &&
         !activityDay.isSignedOff;
-    final verticalPadding = showCheckButton
+    final verticalPadding = showCheck
         ? layout.activityPage.verticalInfoPaddingCheckable
         : layout.activityPage.verticalInfoPaddingNonCheckable;
     return Column(
@@ -96,7 +107,7 @@ class ActivityInfo extends StatelessWidget with ActivityMixin {
           ),
         ),
         SizedBox(height: verticalPadding.bottom),
-        if (showCheckButton)
+        if (showCheck)
           Padding(
             padding: layout.activityPage.checkButtonPadding,
             child: CheckButton(
