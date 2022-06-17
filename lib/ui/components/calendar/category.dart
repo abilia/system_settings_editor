@@ -243,7 +243,6 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                     Flexible(
                       child: AnimatedBuilder(
                         animation: controller,
-                        key: TestKey.categoryAnimationTestKey,
                         builder: (context, _) => intAnimation.value != 0
                             ? Text(
                                 characters.take(intAnimation.value).string,
