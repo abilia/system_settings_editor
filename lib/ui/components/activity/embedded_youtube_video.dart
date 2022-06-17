@@ -41,7 +41,6 @@ class _EmbeddedYoutubeVideoState extends State<EmbeddedYoutubeVideo> {
         handleColor: Colors.amberAccent,
       ),
       onReady: () {
-        print("Redy");
       },
     );
   }

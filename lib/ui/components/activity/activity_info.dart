@@ -5,17 +5,18 @@ import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/components/activity/embedded_youtube_video.dart';
 import 'package:seagull/utils/all.dart';
 
 class ActivityInfoWithDots extends StatelessWidget {
   final ActivityDay activityDay;
   final Widget? previewImage;
+  final Widget? player;
 
   const ActivityInfoWithDots(
     this.activityDay, {
     Key? key,
     this.previewImage,
+    this.player,
   }) : super(key: key);
 
   @override
@@ -35,6 +36,7 @@ class ActivityInfoWithDots extends StatelessWidget {
                 child: ActivityInfo(
                   activityDay,
                   previewImage: previewImage,
+                  player: player,
                 ),
               ),
             ),
@@ -47,12 +49,14 @@ class ActivityInfo extends StatelessWidget with ActivityMixin {
   final ActivityDay activityDay;
   final Widget? previewImage;
   final ActivityAlarm? alarm;
+  final Widget? player;
 
   const ActivityInfo(
     this.activityDay, {
     Key? key,
     this.previewImage,
     this.alarm,
+    this.player,
   }) : super(key: key);
 
   factory ActivityInfo.from({
@@ -87,6 +91,7 @@ class ActivityInfo extends StatelessWidget with ActivityMixin {
               activityDay: activityDay,
               previewImage: previewImage,
               alarm: alarm,
+              player: player,
             ),
           ),
         ),
@@ -173,11 +178,13 @@ class ActivityContainer extends StatelessWidget {
     required this.activityDay,
     this.alarm,
     this.previewImage,
+    this.player,
   }) : super(key: key);
 
   final ActivityDay activityDay;
   final Widget? previewImage;
   final ActivityAlarm? alarm;
+  final Widget? player;
 
   @override
   Widget build(BuildContext context) {
@@ -207,12 +214,12 @@ class ActivityContainer extends StatelessWidget {
                     endIndent: 0,
                     indent: layout.activityPage.dividerIndentation,
                   ),
-                  // Expanded(
-                  //   child:
-                    Attachment(
+                  Expanded(
+                    child: Attachment(
                       activityDay: activityDay,
                       alarm: alarm,
-                    // ),
+                      player: player,
+                    ),
                   ),
                 ],
               ),
@@ -226,11 +233,13 @@ class ActivityContainer extends StatelessWidget {
 class Attachment extends StatelessWidget with ActivityMixin {
   final ActivityDay activityDay;
   final ActivityAlarm? alarm;
+  final Widget? player;
 
   const Attachment({
     Key? key,
     required this.activityDay,
     this.alarm,
+    this.player,
   }) : super(key: key);
 
   @override
@@ -238,45 +247,43 @@ class Attachment extends StatelessWidget with ActivityMixin {
     final translate = Translator.of(context).translate;
     final activity = activityDay.activity;
     final item = activity.infoItem;
-    if (item is LinkInfoItem) {
-      return Expanded(
-        child: NoteBlock(
-          text: item.link,
-          textWidget: Text(item.link),
-        ),
+    if (item is NoteInfoItem) {
+      return NoteBlock(
+        text: item.text,
+        textWidget: Text(item.text),
       );
     } else if (item is Checklist) {
-      return Expanded(
-        child: ChecklistView(
-          item,
-          day: activityDay.day,
-          padding: layout.activityPage.checklistPadding,
-          onTap: (question) async {
-            final signedOff = item.signOff(question, activityDay.day);
-            final updatedActivity = activity.copyWith(
-              infoItem: signedOff,
-            );
-            BlocProvider.of<ActivitiesBloc>(context).add(
-              UpdateActivity(updatedActivity),
-            );
+      return ChecklistView(
+        item,
+        day: activityDay.day,
+        padding: layout.activityPage.checklistPadding,
+        onTap: (question) async {
+          final signedOff = item.signOff(question, activityDay.day);
+          final updatedActivity = activity.copyWith(
+            infoItem: signedOff,
+          );
+          BlocProvider.of<ActivitiesBloc>(context).add(
+            UpdateActivity(updatedActivity),
+          );
 
-            if (signedOff.allSignedOff(activityDay.day) &&
-                updatedActivity.checkable &&
-                !activityDay.isSignedOff) {
-              await checkConfirmationAndRemoveAlarm(
-                context,
-                ActivityDay(updatedActivity, activityDay.day),
-                alarm: alarm,
-                message: translate.checklistDoneInfo,
-              );
-            }
-          },
-        ),
+          if (signedOff.allSignedOff(activityDay.day) &&
+              updatedActivity.checkable &&
+              !activityDay.isSignedOff) {
+            await checkConfirmationAndRemoveAlarm(
+              context,
+              ActivityDay(updatedActivity, activityDay.day),
+              alarm: alarm,
+              message: translate.checklistDoneInfo,
+            );
+          }
+        },
       );
-    } else if (item is NoteInfoItem) {
-      return Center(
-        child: EmbeddedYoutubeVideo(
-          link: item.text,
+    } else if (item is UrlInfoItem) {
+      return Padding(
+        padding: const EdgeInsets.all(12),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: player,
         ),
       );
     }

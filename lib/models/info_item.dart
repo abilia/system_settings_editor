@@ -43,6 +43,8 @@ abstract class InfoItem extends Equatable {
           return NoteInfoItem(data['text']);
         case Checklist.typeName:
           return Checklist.fromJson(data);
+        case UrlInfoItem.typeName:
+          return UrlInfoItem(data['url']);
         default:
           _log.warning('unknown info item type', type);
       }
@@ -103,21 +105,21 @@ class NoteInfoItem extends InfoItem {
   bool get isEmpty => text.isEmpty;
 }
 
-class LinkInfoItem extends InfoItem {
-  static const typeName = 'link';
-  final String link;
-  const LinkInfoItem([this.link = '']);
+class UrlInfoItem extends InfoItem {
+  static const typeName = 'url';
+  final String url;
+  const UrlInfoItem([this.url = '']);
 
   @override
-  List<Object> get props => [link];
+  List<Object> get props => [url];
 
   @override
-  Map<String, dynamic> toJson() => {'link': link};
+  Map<String, dynamic> toJson() => {'url': url};
 
   @override
   String get typeId => typeName;
   @override
-  bool get isEmpty => link.isEmpty;
+  bool get isEmpty => url.isEmpty;
 }
 
 class Checklist extends InfoItem {
