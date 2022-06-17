@@ -1,5 +1,4 @@
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class EmbeddedYoutubeVideo extends StatefulWidget {

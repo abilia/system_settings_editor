@@ -5,9 +5,8 @@ import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/ui/components/activity/embedded_youtube_video.dart';
 import 'package:seagull/utils/all.dart';
-
-import 'embedded_youtube_video.dart';
 
 class ActivityInfoWithDots extends StatelessWidget {
   final ActivityDay activityDay;
