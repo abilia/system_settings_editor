@@ -7,11 +7,11 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class FullScreenActivityPage extends StatelessWidget {
-  final ActivityDay activityDay;
+  final NewAlarm alarm;
 
   const FullScreenActivityPage({
     Key? key,
-    required this.activityDay,
+    required this.alarm,
   }) : super(key: key);
 
   @override
@@ -23,7 +23,7 @@ class FullScreenActivityPage extends StatelessWidget {
           activitiesBloc: context.read<ActivitiesBloc>(),
           clockBloc: context.read<ClockBloc>(),
           alarmCubit: context.read<AlarmCubit>(),
-          startingActivity: activityDay,
+          startingActivity: alarm.activityDay,
         ),
         child: BlocListener<FullScreenActivityCubit, FullScreenActivityState>(
           listenWhen: (previous, current) => current.eventsList.isEmpty,
@@ -36,7 +36,7 @@ class FullScreenActivityPage extends StatelessWidget {
               appBar: DayAppBar(day: selected.day),
               body: Column(
                 children: [
-                  Expanded(child: ActivityInfoWithDots(selected)),
+                  Expanded(child: ActivityInfoWithDots(selected, alarm: alarm)),
                   _FullScreenActivityTabBar(selectedActivityDay: selected),
                 ],
               ),
