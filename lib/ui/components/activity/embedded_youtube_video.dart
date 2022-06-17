@@ -46,7 +46,6 @@ class _EmbeddedYoutubePlayerState extends State<EmbeddedYoutubePlayer> {
     return YoutubePlayerBuilder(
         player: YoutubePlayer(
           controller: _controller,
-          width: 500,
           showVideoProgressIndicator: true,
           progressIndicatorColor: Colors.amber,
           progressColors: const ProgressBarColors(

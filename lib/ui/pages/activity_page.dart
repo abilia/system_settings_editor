@@ -15,36 +15,42 @@ class ActivityPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EmbeddedYoutubePlayer(
-        infoItem: activityDay.activity.infoItem,
-        builder: (context, player) {
-          return Theme(
-            data: abiliaWhiteTheme,
-            child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
-              selector: (activitiesState) {
-                final a = activitiesState
-                    .newActivityFromLoadedOrGiven(activityDay.activity);
-                return ActivityDay(
-                  a,
-                  a.isRecurring ? activityDay.day : a.startTime,
-                );
-              },
-              builder: (context, ad) {
-                return Scaffold(
-                  appBar: DayAppBar(
-                    day: ad.day,
-                  ),
-                  body: ActivityInfoWithDots(
-                    ad,
-                    previewImage: previewImage,
-                    player: player,
-                  ),
-                  bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
-                );
-              },
-            ),
+    return activityDay.activity.infoItem is UrlInfoItem
+        ? EmbeddedYoutubePlayer(
+            infoItem: activityDay.activity.infoItem,
+            builder: (context, player) {
+              return body(player);
+            })
+        : body();
+  }
+
+  Widget body([Widget? player]) {
+    return Theme(
+      data: abiliaWhiteTheme,
+      child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
+        selector: (activitiesState) {
+          final a = activitiesState
+              .newActivityFromLoadedOrGiven(activityDay.activity);
+          return ActivityDay(
+            a,
+            a.isRecurring ? activityDay.day : a.startTime,
           );
-        });
+        },
+        builder: (context, ad) {
+          return Scaffold(
+            appBar: DayAppBar(
+              day: ad.day,
+            ),
+            body: ActivityInfoWithDots(
+              ad,
+              previewImage: previewImage,
+              player: player,
+            ),
+            bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
+          );
+        },
+      ),
+    );
   }
 }
 
