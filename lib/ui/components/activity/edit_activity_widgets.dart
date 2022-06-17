@@ -357,7 +357,9 @@ class CategoryRadioField extends StatelessWidget {
                   child: CategoryImage(
                       fileId: fileId,
                       showBorder: true,
-                      color: fileId.isEmpty ? categoryColor(category: category) : null,
+                      color: fileId.isEmpty
+                          ? categoryColor(category: category)
+                          : null,
                       diameter: layout.category.radioImageDiameter),
                 ),
           text: Text(
