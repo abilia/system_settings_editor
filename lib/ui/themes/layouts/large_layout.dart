@@ -22,5 +22,6 @@ class LargeLayout extends MediumLayout {
           menuPage: const MenuPageLayoutLarge(),
           fontSize: const FontSizeLarge(),
           eventCard: const EventCardLayoutLarge(),
+          borders: const BorderLayoutLarge(),
         );
 }
