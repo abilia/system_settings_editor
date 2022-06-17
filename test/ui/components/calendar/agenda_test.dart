@@ -671,7 +671,7 @@ void main() {
       await tester.pumpAndSettle();
 
       AnimatedBuilder categoryAnimation = find
-          .byKey(Key('AnimationTestKey'))
+          .byKey(TestKey.categoryAnimationTestKey)
           .evaluate()
           .first
           .widget as AnimatedBuilder;

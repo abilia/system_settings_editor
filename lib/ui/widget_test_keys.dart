@@ -108,5 +108,6 @@ class TestKey {
       allPhotosTab = Key('allPhotosTab'),
       timerAlarmSelector = Key('timerAlarmSelector'),
       basicTimerLibraryFolder = Key('basicTimerLibraryFolder'),
-      calendarBackgroundColor = Key('calendarBackground');
+      calendarBackgroundColor = Key('calendarBackground'),
+      categoryAnimationTestKey = Key('categoryAnimationTestKey');
 }
