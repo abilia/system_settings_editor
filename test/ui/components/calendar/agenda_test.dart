@@ -674,7 +674,7 @@ void main() {
       expect(find.text(rightCategoryName), findsOneWidget);
       expect(leftFinder, findsNothing);
       expect(rightFinder, findsNothing);
-    });
+    }, skip: true);
 
     testWidgets(' memoplanner settings - show category push update ',
         (WidgetTester tester) async {
