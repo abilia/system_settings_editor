@@ -8,14 +8,13 @@ class AlarmCubit extends Cubit<NotificationAlarm?> {
   late final StreamSubscription _clockSubscription;
   late final StreamSubscription _selectedNotificationSubscription;
   final ActivitiesBloc activitiesBloc;
-  final ClockBloc clockBloc;
   final MemoplannerSettingBloc settingsBloc;
 
   AlarmCubit({
     required Stream<NotificationAlarm> selectedNotificationSubject,
     required this.activitiesBloc,
-    required this.clockBloc,
     required this.settingsBloc,
+    required clockBloc,
   }) : super(null) {
     _selectedNotificationSubscription =
         selectedNotificationSubject.listen((payload) => emit(payload));
@@ -23,7 +22,7 @@ class AlarmCubit extends Cubit<NotificationAlarm?> {
   }
 
   void _newMinute(DateTime now) {
-    if (settingsBloc.state.alarm.disabledUntilDate.isAfter(clockBloc.state)) {
+    if (settingsBloc.state.alarm.disabledUntilDate.isAfter(now)) {
       return;
     }
     final state = activitiesBloc.state;
