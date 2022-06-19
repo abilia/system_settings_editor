@@ -20,20 +20,20 @@ class AlarmPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (alarm.activity.infoItem is UrlInfoItem) {
-      return EmbeddedYoutubePlayer(
-          infoItem: alarm.activity.infoItem,
-          builder: (_, player) {
-            return body(context, player);
+      return WebLinkView(
+          url: (alarm.activity.infoItem as UrlInfoItem).url,
+          builder: (_, webView) {
+            return child(context, webView);
           });
     }
-    return body(context);
+    return child(context);
   }
 
-  Widget body(BuildContext context, [Widget? player]) {
+  Widget child(BuildContext context, [Widget? webView]) {
     if (alarm.fullScreenActivity) {
       return FullScreenActivityPage(
         alarm: alarm,
-        player: player,
+        webView: webView,
       );
     }
     return Theme(
@@ -63,7 +63,7 @@ class AlarmPage extends StatelessWidget {
               ad,
               previewImage: previewImage,
               alarm: alarm,
-              player: player,
+              webView: webView,
             ),
           ),
         ),
@@ -84,16 +84,16 @@ class ReminderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (reminder.activity.infoItem is UrlInfoItem) {
-      return EmbeddedYoutubePlayer(
-          infoItem: reminder.activity.infoItem,
+      return WebLinkView(
+          url: (reminder.activity.infoItem as UrlInfoItem).url,
           builder: (_, player) {
-            return body(context, player);
+            return child(context, player);
           });
     }
-    return body(context);
+    return child(context);
   }
 
-  Widget body(BuildContext context, [Widget? player]) {
+  Widget child(BuildContext context, [Widget? webView]) {
     final translate = Translator.of(context).translate;
     final text = reminder.reminder
         .toReminderHeading(translate, reminder is ReminderBefore);
@@ -133,7 +133,7 @@ class ReminderPage extends StatelessWidget {
                   builder: (context, ad) => ActivityInfo(
                     ad,
                     alarm: reminder,
-                    player: player,
+                    webView: webView,
                   ),
                 ),
               ),

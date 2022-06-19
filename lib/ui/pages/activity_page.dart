@@ -16,43 +16,41 @@ class ActivityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (activityDay.activity.infoItem is UrlInfoItem) {
-      return EmbeddedYoutubePlayer(
-          infoItem: activityDay.activity.infoItem,
-          builder: (_, player) {
-            return body(player);
+      return WebLinkView(
+          url: (activityDay.activity.infoItem as UrlInfoItem).url,
+          builder: (_, webView) {
+            return child(webView);
           });
     }
-    return body();
+    return child();
   }
 
-  Widget body([Widget? player]) {
-    return Theme(
-      data: abiliaWhiteTheme,
-      child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
-        selector: (activitiesState) {
-          final a = activitiesState
-              .newActivityFromLoadedOrGiven(activityDay.activity);
-          return ActivityDay(
-            a,
-            a.isRecurring ? activityDay.day : a.startTime,
-          );
-        },
-        builder: (context, ad) {
-          return Scaffold(
-            appBar: DayAppBar(
-              day: ad.day,
-            ),
-            body: ActivityInfoWithDots(
-              ad,
-              previewImage: previewImage,
-              player: player,
-            ),
-            bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
-          );
-        },
-      ),
-    );
-  }
+  Widget child([Widget? webView]) => Theme(
+        data: abiliaWhiteTheme,
+        child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
+          selector: (activitiesState) {
+            final a = activitiesState
+                .newActivityFromLoadedOrGiven(activityDay.activity);
+            return ActivityDay(
+              a,
+              a.isRecurring ? activityDay.day : a.startTime,
+            );
+          },
+          builder: (context, ad) {
+            return Scaffold(
+              appBar: DayAppBar(
+                day: ad.day,
+              ),
+              body: ActivityInfoWithDots(
+                ad,
+                previewImage: previewImage,
+                webView: webView,
+              ),
+              bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
+            );
+          },
+        ),
+      );
 }
 
 class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {

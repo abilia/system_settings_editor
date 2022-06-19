@@ -8,12 +8,12 @@ import 'package:seagull/utils/all.dart';
 
 class FullScreenActivityPage extends StatelessWidget {
   final NewAlarm alarm;
-  final Widget? player;
+  final Widget? webView;
 
   const FullScreenActivityPage({
     Key? key,
     required this.alarm,
-    this.player,
+    this.webView,
   }) : super(key: key);
 
   @override
@@ -42,7 +42,7 @@ class FullScreenActivityPage extends StatelessWidget {
                       child: ActivityInfoWithDots(
                     selected,
                     alarm: alarm,
-                    player: player,
+                    webView: webView,
                   )),
                   _FullScreenActivityTabBar(selectedActivityDay: selected),
                 ],

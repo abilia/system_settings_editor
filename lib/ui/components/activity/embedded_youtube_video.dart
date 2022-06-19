@@ -1,62 +1,77 @@
-import 'package:seagull/models/info_item.dart';
+import 'dart:io';
+
 import 'package:seagull/ui/all.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class EmbeddedYoutubePlayer extends StatefulWidget {
-  final InfoItem infoItem;
+class WebLinkView extends StatefulWidget {
+  final String url;
   final Widget Function(BuildContext, Widget) builder;
 
-  const EmbeddedYoutubePlayer({
-    required this.infoItem,
+  const WebLinkView({
+    required this.url,
     required this.builder,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<EmbeddedYoutubePlayer> createState() => _EmbeddedYoutubePlayerState();
+  State<WebLinkView> createState() => _WebLinkViewState();
 }
 
-class _EmbeddedYoutubePlayerState extends State<EmbeddedYoutubePlayer> {
-  late final YoutubePlayerController _controller;
+class _WebLinkViewState extends State<WebLinkView> {
+  YoutubePlayerController? _youtubeController;
+  late final String? _videoId;
 
   @override
   void initState() {
     super.initState();
-    final url = widget.infoItem is UrlInfoItem
-        ? (widget.infoItem as UrlInfoItem).url
-        : '';
-    final videoId = YoutubePlayer.convertUrlToId(url) ?? '';
-    _controller = YoutubePlayerController(
-      initialVideoId: videoId,
-      flags: const YoutubePlayerFlags(
-        autoPlay: false,
-        mute: false,
-      ),
-    );
+    _videoId = YoutubePlayer.convertUrlToId(widget.url);
+    if (_videoId != null) {
+      _youtubeController = YoutubePlayerController(
+        initialVideoId: _videoId!,
+        flags: const YoutubePlayerFlags(
+          enableCaption: false,
+          hideThumbnail: true,
+          autoPlay: false,
+          mute: false,
+        ),
+      );
+    } else if (Platform.isAndroid) {
+      WebView.platform = AndroidWebView();
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    if (_youtubeController != null) {
+      _youtubeController!.dispose();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return YoutubePlayerBuilder(
-        player: YoutubePlayer(
-          controller: _controller,
-          showVideoProgressIndicator: true,
-          progressIndicatorColor: Colors.amber,
-          progressColors: const ProgressBarColors(
-            playedColor: Colors.amber,
-            handleColor: Colors.amberAccent,
+    if (_youtubeController != null) {
+      return YoutubePlayerBuilder(
+          player: YoutubePlayer(
+            controller: _youtubeController!,
+            showVideoProgressIndicator: true,
+            progressIndicatorColor: Colors.amber,
+            progressColors: const ProgressBarColors(
+              playedColor: Colors.amber,
+              handleColor: Colors.amberAccent,
+            ),
+            onReady: () {},
           ),
-          onReady: () {},
-        ),
-        builder: (context, player) {
-          final child = widget.builder(context, player);
-          return child;
-        });
+          builder: (context, player) {
+            final child = widget.builder(context, player);
+            return child;
+          });
+    }
+    final webView = WebView(
+      initialUrl: widget.url,
+    );
+    final child = widget.builder(context, webView);
+    return child;
   }
 }
