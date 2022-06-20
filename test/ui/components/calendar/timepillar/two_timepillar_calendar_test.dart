@@ -272,7 +272,7 @@ void main() {
         final timeLinePostion = box.localToGlobal(box.size.center(Offset.zero));
         expect(timeLinePostion.dy, closeTo(currentDotPosition.dy, 0.0001));
       }
-    }, skip: true); // Timeline is still wonky
+    });
 
     testWidgets('hourTimeline hidden by default', (WidgetTester tester) async {
       await tester.pumpWidget(App());
