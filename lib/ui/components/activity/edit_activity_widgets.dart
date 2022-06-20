@@ -350,17 +350,17 @@ class CategoryRadioField extends StatelessWidget {
               ? null
               : Container(
                   foregroundDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                        layout.category.radioImageDiameter / 2),
+                    shape: BoxShape.circle,
                     border: border,
                   ),
                   child: CategoryImage(
-                      fileId: fileId,
-                      showBorder: true,
-                      color: fileId.isEmpty
-                          ? categoryColor(category: category)
-                          : null,
-                      diameter: layout.category.radioImageDiameter),
+                    fileId: fileId,
+                    showBorder: fileId.isEmpty,
+                    color: fileId.isEmpty
+                        ? categoryColor(category: category)
+                        : null,
+                    diameter: layout.category.radioImageDiameter,
+                  ),
                 ),
           text: Text(
             label,

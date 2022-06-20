@@ -264,10 +264,11 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                           child: w,
                         ),
                         child: CategoryImage(
-                            fileId: widget.fileId,
-                            showBorder: widget.showColors,
-                            diameter: layout.category.imageDiameter,
-                            color: categoryColor(category: widget.category)),
+                          fileId: widget.fileId,
+                          showBorder: widget.showColors,
+                          diameter: layout.category.imageDiameter,
+                          color: categoryColor(category: widget.category),
+                        ),
                       )
                     else
                       SizedBox(width: layout.category.emptySize)
