@@ -113,6 +113,35 @@ void main() {
       expect(find.byType(AlarmPage), findsOneWidget);
     });
 
+    testWidgets('SGC-1710 Alarms does not show when disable for 24h is set',
+        (WidgetTester tester) async {
+      // Arrange
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+        (_) => Future.value(
+          [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: activityWithAlarmTime
+                    .onlyDays()
+                    .nextDay()
+                    .millisecondsSinceEpoch,
+                identifier: AlarmSettings.alarmsDisabledUntilKey,
+              ),
+            ),
+          ],
+        ),
+      );
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Act
+      mockTicker.add(activityWithAlarmTime);
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(PopAwareAlarmPage), findsNothing);
+      expect(find.byType(AlarmPage), findsNothing);
+    });
+
     testWidgets('Reminder shows', (WidgetTester tester) async {
       // Arrange
       final reminder = 15.minutes();

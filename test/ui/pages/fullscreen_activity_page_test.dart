@@ -139,6 +139,7 @@ void main() {
                 selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
                 activitiesBloc: mockActivitiesBloc,
                 clockBloc: clockBloc,
+                settingsBloc: mockMemoplannerSettingBloc,
               ),
             ),
             BlocProvider<TimepillarMeasuresCubit>(
