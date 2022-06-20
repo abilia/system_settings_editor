@@ -23,8 +23,6 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
     final autoPlayParam = uri.queryParameters['autoplay'];
     final startAtParam = uri.queryParameters['t'];
 
-    // If videoId is null, the url is not a youtube video.
-    // For future implementation of more weblinks one can check if the videoId is null or not. If the videoId is null then display a WebView instead of a YoutubePlayer.
     final videoId = YoutubePlayerController.convertUrlToId(widget.url);
     _controller = YoutubePlayerController(
       initialVideoId: videoId ?? '',
