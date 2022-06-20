@@ -45,8 +45,8 @@ void main() async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  FirebaseMessaging.instance
-      .isAutoInitEnabled; // DO NOT REMOVE THIS LINE. Fore some reason FirebaseMessaging instance needs to be touched before receiving messages
+  // DO NOT REMOVE. The isAutoInitEnabled call is needed to make push work https://github.com/firebase/flutterfire/issues/6011
+  FirebaseMessaging.instance.isAutoInitEnabled;
   final documentDirectory = await getApplicationDocumentsDirectory();
   final applicationSupportDirectory = await getApplicationSupportDirectory();
   final preferences = await SharedPreferences.getInstance();
