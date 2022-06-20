@@ -11,6 +11,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
@@ -157,6 +158,23 @@ void main() {
           (_) => Future.value(<Activity>[activityWithStartAndEndSpeech]));
       await navigateToActivityPage(tester);
       expect(find.byType(PlaySoundButton), findsOneWidget);
+    });
+
+    testWidgets('Youtube video is shown when UrlInfoItem url is a youtube link', (WidgetTester tester) async {
+      const url = "https://www.youtube.com/watch?v=A_LWGAOBy04";
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
+            (_) => Future.value(
+          <Activity>[
+            Activity.createNew(
+                title: 'title',
+                startTime: startTime,
+                infoItem: const UrlInfoItem(url))
+          ],
+        ),
+      );
+
+      await navigateToActivityPage(tester);
+      expect(find.byType(YoutubePlayerIFrame), findsOneWidget);
     });
   });
 
@@ -1365,13 +1383,13 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
     testWidgets('checklist', (WidgetTester tester) async {
       const item1 = 'first thing on the list';
       when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-        (_) => Future.value(
+            (_) => Future.value(
           <Activity>[
             Activity.createNew(
               title: 'title',
               startTime: startTime,
               infoItem:
-                  Checklist(questions: const [Question(id: 1, name: item1)]),
+              Checklist(questions: const [Question(id: 1, name: item1)]),
             )
           ],
         ),

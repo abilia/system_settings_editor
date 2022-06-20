@@ -13,11 +13,12 @@ class LinkWebView extends StatelessWidget {
     final startAt = uri.queryParameters['t'];
 
     // If videoId is equal to null, the url is not a youtube video.
-    // For future implementation of more weblinks, check if videoId is null and if not; display a WebView instead of a YoutubePlayer.
+    // For future implementation of more weblinks, check if videoId is null and if not, display a WebView instead of a YoutubePlayer.
     final videoId = YoutubePlayerController.convertUrlToId(url);
     final controller = YoutubePlayerController(
       initialVideoId: videoId ?? '',
       params: YoutubePlayerParams(
+        strictRelatedVideos: true,
         showFullscreenButton: true,
         autoPlay: autoPlay == '1',
         startAt: startAt != null
