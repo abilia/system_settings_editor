@@ -19,22 +19,8 @@ class AlarmPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (alarm.activity.infoItem is UrlInfoItem) {
-      return WebLinkView(
-          url: (alarm.activity.infoItem as UrlInfoItem).url,
-          builder: (_, webView) {
-            return child(context, webView);
-          });
-    }
-    return child(context);
-  }
-
-  Widget child(BuildContext context, [Widget? webView]) {
     if (alarm.fullScreenActivity) {
-      return FullScreenActivityPage(
-        alarm: alarm,
-        webView: webView,
-      );
+      return FullScreenActivityPage(alarm: alarm);
     }
     return Theme(
       data: abiliaWhiteTheme,
@@ -63,7 +49,6 @@ class AlarmPage extends StatelessWidget {
               ad,
               previewImage: previewImage,
               alarm: alarm,
-              webView: webView,
             ),
           ),
         ),
@@ -83,17 +68,6 @@ class ReminderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (reminder.activity.infoItem is UrlInfoItem) {
-      return WebLinkView(
-          url: (reminder.activity.infoItem as UrlInfoItem).url,
-          builder: (_, player) {
-            return child(context, player);
-          });
-    }
-    return child(context);
-  }
-
-  Widget child(BuildContext context, [Widget? webView]) {
     final translate = Translator.of(context).translate;
     final text = reminder.reminder
         .toReminderHeading(translate, reminder is ReminderBefore);
@@ -130,11 +104,7 @@ class ReminderPage extends StatelessWidget {
                         reminder.activityDay.activity),
                     reminder.activityDay.day,
                   ),
-                  builder: (context, ad) => ActivityInfo(
-                    ad,
-                    alarm: reminder,
-                    webView: webView,
-                  ),
+                  builder: (context, ad) => ActivityInfo(ad, alarm: reminder),
                 ),
               ),
             ],
@@ -164,7 +134,6 @@ class PopAwareAlarmPage extends StatefulWidget {
 
 class _PopAwareAlarmPageState extends State<PopAwareAlarmPage> {
   bool isCanceled = false;
-
   @override
   Widget build(BuildContext context) => WillPopScope(
         onWillPop: () async {

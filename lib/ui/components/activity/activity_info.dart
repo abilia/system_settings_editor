@@ -10,7 +10,6 @@ import 'package:seagull/utils/all.dart';
 class ActivityInfoWithDots extends StatelessWidget {
   final ActivityDay activityDay;
   final Widget? previewImage;
-  final Widget? webView;
   final NewAlarm? alarm;
 
   const ActivityInfoWithDots(
@@ -18,7 +17,6 @@ class ActivityInfoWithDots extends StatelessWidget {
     Key? key,
     this.alarm,
     this.previewImage,
-    this.webView,
   }) : super(key: key);
 
   @override
@@ -38,7 +36,6 @@ class ActivityInfoWithDots extends StatelessWidget {
                 child: ActivityInfo(
                   activityDay,
                   previewImage: previewImage,
-                  webView: webView,
                   alarm: alarm,
                   showCheckButton: true,
                 ),
@@ -53,7 +50,6 @@ class ActivityInfo extends StatelessWidget with ActivityMixin {
   final ActivityDay activityDay;
   final Widget? previewImage;
   final ActivityAlarm? alarm;
-  final Widget? webView;
   final bool showCheckButton;
 
   const ActivityInfo(
@@ -62,7 +58,6 @@ class ActivityInfo extends StatelessWidget with ActivityMixin {
     Key? key,
     this.previewImage,
     this.alarm,
-    this.webView,
   }) : super(key: key);
 
   @visibleForTesting
@@ -102,7 +97,6 @@ class ActivityInfo extends StatelessWidget with ActivityMixin {
               activityDay: activityDay,
               previewImage: previewImage,
               alarm: alarm,
-              webView: webView,
             ),
           ),
         ),
@@ -189,13 +183,11 @@ class ActivityContainer extends StatelessWidget {
     required this.activityDay,
     this.alarm,
     this.previewImage,
-    this.webView,
   }) : super(key: key);
 
   final ActivityDay activityDay;
   final Widget? previewImage;
   final ActivityAlarm? alarm;
-  final Widget? webView;
 
   @override
   Widget build(BuildContext context) {
@@ -218,11 +210,11 @@ class ActivityContainer extends StatelessWidget {
               key: TestKey.attachment,
               child: Column(
                 children: [
-                  if (webView == null)
+                  if (activityDay.activity.infoItem.runtimeType != UrlInfoItem)
                     SizedBox(
                       height: layout.activityPage.dividerTopPadding,
                     ),
-                  if (webView == null)
+                  if (activityDay.activity.infoItem.runtimeType != UrlInfoItem)
                     Divider(
                       height: layout.activityPage.dividerHeight,
                       endIndent: 0,
@@ -232,7 +224,6 @@ class ActivityContainer extends StatelessWidget {
                     child: Attachment(
                       activityDay: activityDay,
                       alarm: alarm,
-                      webView: webView,
                     ),
                   ),
                 ],
@@ -247,13 +238,11 @@ class ActivityContainer extends StatelessWidget {
 class Attachment extends StatelessWidget with ActivityMixin {
   final ActivityDay activityDay;
   final ActivityAlarm? alarm;
-  final Widget? webView;
 
   const Attachment({
     Key? key,
     required this.activityDay,
     this.alarm,
-    this.webView,
   }) : super(key: key);
 
   @override
@@ -297,7 +286,9 @@ class Attachment extends StatelessWidget with ActivityMixin {
         padding: layout.activityPage.webViewPadding,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: webView,
+          child: LinkWebView(
+            url: item.url,
+          ),
         ),
       );
     }

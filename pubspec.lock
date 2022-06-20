@@ -1447,15 +1447,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.0"
-  youtube_player_flutter:
-    dependency: "direct main"
-    description:
-      path: "packages/youtube_player_flutter"
-      ref: master
-      resolved-ref: "11293cab3fb0328c3c40d4f5271f5ff1a0fa9ef2"
-      url: "https://github.com/SlowDeepCoder/youtube_player_flutter"
-    source: git
-    version: "8.0.0"
   youtube_player_iframe:
     dependency: "direct main"
     description:
