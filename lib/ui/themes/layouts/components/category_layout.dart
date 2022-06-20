@@ -8,8 +8,11 @@ class CategoryLayout {
       emptySize,
       topMargin,
       imageDiameter,
+      radioImageDiameter,
       noColorsImageSize;
-  final EdgeInsets radioPadding, imagePadding;
+  final EdgeInsets activityRadioPadding,
+      settingsRadioImagePadding,
+      imagePadding;
 
   const CategoryLayout({
     this.height = 44,
@@ -19,8 +22,10 @@ class CategoryLayout {
     this.emptySize = 16,
     this.topMargin = 4,
     this.imageDiameter = 36,
+    this.radioImageDiameter = 36,
     this.noColorsImageSize = 30,
-    this.radioPadding = const EdgeInsets.all(8),
+    this.activityRadioPadding = const EdgeInsets.all(8),
+    this.settingsRadioImagePadding = const EdgeInsets.all(4),
     this.imagePadding = const EdgeInsets.all(3),
   });
 }
@@ -33,8 +38,9 @@ class CategoryLayoutMedium extends CategoryLayout {
     double? emptySize,
     double? topMargin,
     double? imageDiameter,
+    double? radioImageDiameter,
     double? noColorsImageSize,
-    EdgeInsets? radioPadding,
+    EdgeInsets? activityRadioPadding,
     EdgeInsets? imagePadding,
   }) : super(
           height: height ?? 66,
@@ -44,8 +50,11 @@ class CategoryLayoutMedium extends CategoryLayout {
           emptySize: emptySize ?? 24,
           topMargin: topMargin ?? 8,
           imageDiameter: imageDiameter ?? 54,
+          radioImageDiameter: 54,
           noColorsImageSize: noColorsImageSize ?? 45,
-          radioPadding: radioPadding ?? const EdgeInsets.all(12),
+          activityRadioPadding:
+              activityRadioPadding ?? const EdgeInsets.all(12),
+          settingsRadioImagePadding: const EdgeInsets.all(6),
           imagePadding: imagePadding ?? const EdgeInsets.all(4.5),
         );
 }
@@ -60,7 +69,7 @@ class CategoryLayoutLarge extends CategoryLayoutMedium {
           topMargin: 12,
           imageDiameter: 72,
           noColorsImageSize: 60,
-          radioPadding: const EdgeInsets.all(8),
+          activityRadioPadding: const EdgeInsets.all(15),
           imagePadding: const EdgeInsets.all(6),
         );
 }
