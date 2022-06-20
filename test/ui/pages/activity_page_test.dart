@@ -11,7 +11,6 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
@@ -175,7 +174,7 @@ void main() {
       );
 
       await navigateToActivityPage(tester);
-      expect(find.byType(YoutubePlayerIFrame), findsOneWidget);
+      expect(find.byType(YoutubePlayer), findsOneWidget);
     });
   });
 

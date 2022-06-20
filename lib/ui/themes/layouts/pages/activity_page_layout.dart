@@ -29,7 +29,7 @@ class ActivityPageLayout {
       checkButtonPadding,
       checkButtonContentPadding,
       checklistPadding,
-      webViewPadding;
+      youtubePlayerPadding;
 
   TextStyle titleStyle() => GoogleFonts.roboto(
         textStyle: TextStyle(
@@ -56,7 +56,7 @@ class ActivityPageLayout {
     this.checkButtonPadding = const EdgeInsets.only(bottom: 16),
     this.checkButtonContentPadding = const EdgeInsets.fromLTRB(10, 10, 20, 10),
     this.checklistPadding = const EdgeInsets.fromLTRB(18, 12, 12, 0),
-    this.webViewPadding = const EdgeInsets.all(12),
+    this.youtubePlayerPadding = const EdgeInsets.all(12),
     this.titleFontSize = 24, // headline4.2
     this.titleLineHeight = 28.13,
     this.checkButtonHeight = 48,
@@ -95,7 +95,7 @@ class ActivityPageLayoutMedium extends ActivityPageLayout {
           horizontalInfoPadding: const EdgeInsets.symmetric(horizontal: 16),
           checkButtonPadding: const EdgeInsets.only(bottom: 24),
           checklistPadding: const EdgeInsets.fromLTRB(27, 15, 28, 0),
-          webViewPadding: const EdgeInsets.all(16),
+          youtubePlayerPadding: const EdgeInsets.all(16),
           titleFontSize: titleFontSize ?? 48, // headline4.2
           titleLineHeight: titleLineHeight ?? 56.25,
           checkButtonHeight: 72,

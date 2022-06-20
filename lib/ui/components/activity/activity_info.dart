@@ -283,10 +283,10 @@ class Attachment extends StatelessWidget with ActivityMixin {
       );
     } else if (item is UrlInfoItem) {
       return Padding(
-        padding: layout.activityPage.webViewPadding,
+        padding: layout.activityPage.youtubePlayerPadding,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: LinkWebView(
+          child: YoutubePlayer(
             url: item.url,
           ),
         ),

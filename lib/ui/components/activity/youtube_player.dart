@@ -3,16 +3,16 @@ import 'dart:async';
 import 'package:seagull/ui/all.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-class LinkWebView extends StatefulWidget {
+class YoutubePlayer extends StatefulWidget {
   final String url;
 
-  const LinkWebView({required this.url, Key? key}) : super(key: key);
+  const YoutubePlayer({required this.url, Key? key}) : super(key: key);
 
   @override
-  State<LinkWebView> createState() => _LinkWebViewState();
+  State<YoutubePlayer> createState() => _YoutubePlayerState();
 }
 
-class _LinkWebViewState extends State<LinkWebView> {
+class _YoutubePlayerState extends State<YoutubePlayer> {
   late final YoutubePlayerController _controller;
   StreamSubscription? _stream;
 
@@ -23,8 +23,8 @@ class _LinkWebViewState extends State<LinkWebView> {
     final autoPlayParam = uri.queryParameters['autoplay'];
     final startAtParam = uri.queryParameters['t'];
 
-    // If videoId is equal to null, the url is not a youtube video.
-    // For future implementation of more weblinks, check if videoId is null and if not, display a WebView instead of a YoutubePlayer.
+    // If videoId is null, the url is not a youtube video.
+    // For future implementation of more weblinks one can check if the videoId is null or not. If the videoId is null then display a WebView instead of a YoutubePlayer.
     final videoId = YoutubePlayerController.convertUrlToId(widget.url);
     _controller = YoutubePlayerController(
       initialVideoId: videoId ?? '',
@@ -36,14 +36,16 @@ class _LinkWebViewState extends State<LinkWebView> {
             : Duration.zero,
       ),
     );
-    if (autoPlayParam == '1') {
-      _stream = _controller.listen((event) {
-        if (_controller.value.isReady) {
-          _controller.play();
-          _stream?.cancel();
-        }
-      });
-    }
+    if (autoPlayParam == '1') _playWhenReady();
+  }
+
+  void _playWhenReady() {
+    _stream = _controller.listen((event) {
+      if (_controller.value.isReady) {
+        _controller.play();
+        _stream?.cancel();
+      }
+    });
   }
 
   @override
