@@ -231,7 +231,7 @@ void main() {
         key: MemoplannerSettings.calendarActivityTypeLeftKey,
         matcher: newLeftName,
       );
-    }, skip: true);
+    });
 
     testWidgets('edit right category saved', (tester) async {
       const newRightName = 'new rght name';
@@ -256,7 +256,7 @@ void main() {
         key: MemoplannerSettings.calendarActivityTypeRightKey,
         matcher: newRightName,
       );
-    }, skip: true);
+    });
 
     group('edit image', () {
       testWidgets('right saved', (tester) async {

@@ -1,4 +1,4 @@
-name: CI
+name: analyze
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
       - release
 
 jobs:
-  build:
+  analyze:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -20,11 +20,13 @@ jobs:
     - run: flutter pub get
     - run: flutter analyze .
     - run: flutter format --set-exit-if-changed .
+    - run: flutter packages pub run build_runner build --delete-conflicting-outputs
+    - run: git diff --exit-code
 
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: build
+    needs: analyze
     strategy:
       matrix:
         flavor: ['mp', 'mpgo']

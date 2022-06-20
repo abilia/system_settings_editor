@@ -147,7 +147,7 @@ void main() {
       final res = await poped.first.popped;
       expect(res, AbiliaFile.from(id: fileId, path: path));
     });
-  }, skip: true);
+  });
 
   testWidgets('tts', (WidgetTester tester) async {
     await mockNetworkImages(() async {

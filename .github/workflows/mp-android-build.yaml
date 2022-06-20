@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - release
+      - test-**
     paths-ignore:
       - 'ios/**'
       - 'test/**'
@@ -76,30 +77,35 @@ jobs:
       matrix:
         flavor: ['mp', 'mpgo']
     steps:
+
+      - id: set_package_name
+        run: |
+          packageName=$( ${{ contains(matrix.flavor, 'go') }} && echo "com.abilia.memoplannergo" || echo "com.abilia.memoplanner" )
+          echo "::set-output name=packageName::$packageName"
+      
+      - id: decide_track
+        run: |
+          if [[ "${{ needs.build.outputs.releasetype }}" == "release" ]]
+          then
+            track="alpha"
+          elif [[ $GITHUB_REF == refs/heads/test-* ]]
+          then
+            track="memotrack"
+          elif ${{ contains(matrix.flavor, 'go') }}
+          then
+            track="internal"
+          else
+            track="Development track"
+          fi
+          echo "::set-output name=track::$track"
+
       - uses: actions/download-artifact@v3
         with:
           name: app-${{ matrix.flavor }}-release
       - uses: r0adkll/upload-google-play@v1
-        if: ${{ contains(matrix.flavor, 'go') }}
         with:
           serviceAccountJsonPlainText: ${{ env.SERVICE_ACCOUNT_JSON }}
-          packageName: com.abilia.memoplannergo
-          releaseFiles: ./**/app-${{ matrix.flavor }}-release.aab
-          track: alpha
-          status: completed
-        env:
-          SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-
-      - id: decide_track
-        run: |
-          track=$([[ "${{ needs.build.outputs.releasetype }}" == "release" ]] && echo "alpha" || echo "Development track")
-          echo "::set-output name=track::$track"
-
-      - uses: r0adkll/upload-google-play@v1
-        if: ${{ !contains(matrix.flavor, 'go') }}
-        with:
-          serviceAccountJsonPlainText: ${{ env.SERVICE_ACCOUNT_JSON }}
-          packageName: com.abilia.memoplanner
+          packageName: ${{ steps.set_package_name.outputs.packageName }}
           releaseFiles: ./**/app-${{ matrix.flavor }}-release.aab
           track: ${{ steps.decide_track.outputs.track }}
           status: completed
