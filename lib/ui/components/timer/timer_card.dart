@@ -28,107 +28,103 @@ class TimerCard extends StatelessWidget {
     return AnimatedTheme(
       duration: ActivityCard.duration,
       data: themeData,
-      child: Builder(builder: (context) {
-        final eventState = context
-            .watch<DayEventsCubit>()
-            .state;
-        final now = context
-            .watch<ClockBloc>()
-            .state;
-        final dayPartsSetting = context
-            .select((MemoplannerSettingBloc bloc) => bloc.state.dayParts);
-        final isNight = eventState.day.isAtSameDay(now) &&
-            now.dayPart(dayPartsSetting) == DayPart.night;
-        return Tts.fromSemantics(
-          timerOccasion.timer.semanticsProperties(context),
-          child: Opacity(
-            opacity: opacityOnDark
-                ? isNight
-                ? (isPast ? 0.3 : 0.4)
-                : 1
-                : 1,
-            child: Container(
-              height: layout.eventCard.height,
-              decoration: getCategoryBoxDecoration(
-                current: timerOccasion.isOngoing,
-                inactive: isPast,
-                category: timerOccasion.category,
-                showCategoryColor: false,
-              ),
-              child: Material(
-                type: MaterialType.transparency,
-                child: InkWell(
-                  borderRadius: borderRadius - BorderRadius.circular(2.0),
-                  onTap: () {
-                    final authProviders = copiedAuthProviders(context);
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            MultiBlocProvider(
-                              providers: authProviders,
-                              child: TimerPage(
-                                timerOccasion: timerOccasion,
-                                day: day,
+      child: Builder(
+        builder: (context) {
+          final eventState = context.watch<DayEventsCubit>().state;
+          final now = context.watch<ClockBloc>().state;
+          final dayPartsSetting = context
+              .select((MemoplannerSettingBloc bloc) => bloc.state.dayParts);
+          final isNight = eventState.day.isAtSameDay(now) &&
+              now.dayPart(dayPartsSetting) == DayPart.night;
+          return Tts.fromSemantics(
+            timerOccasion.timer.semanticsProperties(context),
+            child: Opacity(
+              opacity: opacityOnDark
+                  ? isNight
+                      ? (isPast ? 0.3 : 0.4)
+                      : 1
+                  : 1,
+              child: Container(
+                height: layout.eventCard.height,
+                decoration: getCategoryBoxDecoration(
+                  current: timerOccasion.isOngoing,
+                  inactive: isPast,
+                  category: timerOccasion.category,
+                  showCategoryColor: false,
+                ),
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: InkWell(
+                    borderRadius: borderRadius - BorderRadius.circular(2.0),
+                    onTap: () {
+                      final authProviders = copiedAuthProviders(context);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => MultiBlocProvider(
+                            providers: authProviders,
+                            child: TimerPage(
+                              timerOccasion: timerOccasion,
+                              day: day,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        if (isPast || timerOccasion.timer.hasImage)
+                          Padding(
+                            padding: layout.eventCard.imagePadding,
+                            child: SizedBox(
+                              width: layout.eventCard.imageSize,
+                              child: EventImage.fromEventOccasion(
+                                eventOccasion: timerOccasion,
+                                fit: BoxFit.cover,
+                                crossPadding: layout.eventCard.crossPadding,
                               ),
                             ),
-                      ),
-                    );
-                  },
-                  child: Row(
-                    children: [
-                      if (isPast || timerOccasion.timer.hasImage)
-                        Padding(
-                          padding: layout.eventCard.imagePadding,
-                          child: SizedBox(
-                            width: layout.eventCard.imageSize,
-                            child: EventImage.fromEventOccasion(
-                              eventOccasion: timerOccasion,
-                              fit: BoxFit.cover,
-                              crossPadding: layout.eventCard.crossPadding,
+                          ),
+                        Expanded(
+                          child: Padding(
+                            padding: layout.eventCard.titlePadding,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                if (timerOccasion.timer.hasTitle) ...[
+                                  Text(
+                                    timerOccasion.timer.title,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1
+                                        ?.copyWith(height: 1),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(
+                                    height:
+                                        layout.eventCard.titleSubtitleSpacing,
+                                  ),
+                                ],
+                                TimeLeft(timerOccasion),
+                              ],
                             ),
                           ),
                         ),
-                      Expanded(
-                        child: Padding(
-                          padding: layout.eventCard.titlePadding,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (timerOccasion.timer.hasTitle) ...[
-                                Text(
-                                  timerOccasion.timer.title,
-                                  style: Theme
-                                      .of(context)
-                                      .textTheme
-                                      .subtitle1
-                                      ?.copyWith(height: 1),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(
-                                  height: layout.eventCard.titleSubtitleSpacing,
-                                ),
-                              ],
-                              TimeLeft(timerOccasion),
-                            ],
+                        Padding(
+                          padding: layout.eventCard.timerWheelPadding,
+                          child: SizedBox(
+                            width: layout.eventCard.timerWheelSize,
+                            child: TimerCardWheel(timerOccasion),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: layout.eventCard.timerWheelPadding,
-                        child: SizedBox(
-                          width: layout.eventCard.timerWheelSize,
-                          child: TimerCardWheel(timerOccasion),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
       ),
     );
   }
@@ -136,6 +132,7 @@ class TimerCard extends StatelessWidget {
 
 class TimeLeft extends StatelessWidget {
   final TimerOccasion timerOccasion;
+
   const TimeLeft(this.timerOccasion, {Key? key}) : super(key: key);
 
   @override

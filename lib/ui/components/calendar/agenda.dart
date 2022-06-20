@@ -245,6 +245,7 @@ class SliverEventList extends StatelessWidget {
                     child: TimerCard(
                       timerOccasion: event,
                       day: day,
+                      opacityOnDark: true,
                     ),
                   );
                 }
