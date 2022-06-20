@@ -160,10 +160,11 @@ void main() {
       expect(find.byType(PlaySoundButton), findsOneWidget);
     });
 
-    testWidgets('Youtube video is shown when UrlInfoItem url is a youtube link', (WidgetTester tester) async {
-      const url = "https://www.youtube.com/watch?v=A_LWGAOBy04";
+    testWidgets('Youtube video is shown when UrlInfoItem url is a youtube link',
+        (WidgetTester tester) async {
+      const url = 'https://www.youtube.com/watch?v=A_LWGAOBy04';
       when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-            (_) => Future.value(
+        (_) => Future.value(
           <Activity>[
             Activity.createNew(
                 title: 'title',
@@ -1383,13 +1384,13 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
     testWidgets('checklist', (WidgetTester tester) async {
       const item1 = 'first thing on the list';
       when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-            (_) => Future.value(
+        (_) => Future.value(
           <Activity>[
             Activity.createNew(
               title: 'title',
               startTime: startTime,
               infoItem:
-              Checklist(questions: const [Question(id: 1, name: item1)]),
+                  Checklist(questions: const [Question(id: 1, name: item1)]),
             )
           ],
         ),
