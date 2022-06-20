@@ -236,6 +236,7 @@ class SliverEventList extends StatelessWidget {
                     child: ActivityCard(
                       activityOccasion: event,
                       showCategoryColor: setting.showCategoryColor,
+                      opacityOnDark: true,
                     ),
                   );
                 } else if (event is TimerOccasion) {

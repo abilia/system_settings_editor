@@ -6,7 +6,7 @@ import 'package:seagull/utils/all.dart';
 class ActivityCard extends StatelessWidget {
   final ActivityOccasion activityOccasion;
 
-  final bool preview, showCategoryColor, showInfoIcons;
+  final bool preview, showCategoryColor, showInfoIcons, opacityOnDark;
 
   static const Duration duration = Duration(seconds: 1);
 
@@ -16,6 +16,7 @@ class ActivityCard extends StatelessWidget {
     this.preview = false,
     this.showCategoryColor = false,
     this.showInfoIcons = true,
+    this.opacityOnDark = false,
   }) : super(key: key);
 
   @override
@@ -49,7 +50,11 @@ class ActivityCard extends StatelessWidget {
         return Tts.fromSemantics(
           activity.semanticsProperties(context),
           child: Opacity(
-            opacity: isNight ? (signedOff || past ? 0.3 : 0.4) : 1,
+            opacity: opacityOnDark
+                ? isNight
+                    ? (signedOff || past ? 0.3 : 0.4)
+                    : 1
+                : 1,
             child: AnimatedContainer(
               duration: ActivityCard.duration,
               height: layout.eventCard.height,

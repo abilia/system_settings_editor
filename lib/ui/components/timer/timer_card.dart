@@ -8,10 +8,13 @@ import 'package:seagull/utils/all.dart';
 class TimerCard extends StatelessWidget {
   final TimerOccasion timerOccasion;
   final DateTime day;
+  final bool opacityOnDark;
+
   const TimerCard({
     Key? key,
     required this.timerOccasion,
     required this.day,
+    this.opacityOnDark = false,
   }) : super(key: key);
 
   @override
@@ -35,7 +38,11 @@ class TimerCard extends StatelessWidget {
         return Tts.fromSemantics(
           timerOccasion.timer.semanticsProperties(context),
           child: Opacity(
-            opacity: isNight ? (isPast ? 0.3 : 0.4) : 1,
+            opacity: opacityOnDark
+                ? isNight
+                    ? (isPast ? 0.3 : 0.4)
+                    : 1
+                : 1,
             child: Container(
               height: layout.eventCard.height,
               decoration: getCategoryBoxDecoration(
