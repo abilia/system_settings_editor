@@ -6,12 +6,12 @@ class MenuPageLayout {
   final double crossAxisSpacing, mainAxisSpacing;
   final TextStyle _textStyle;
 
-  final MenuButtonLayout button;
+  final MenuButtonsLayout buttons;
 
   const MenuPageLayout({
     this.crossAxisSpacing = 7.5,
     this.mainAxisSpacing = 7,
-    this.button = const MenuButtonLayout(),
+    this.buttons = const MenuButtonsLayout(),
     TextStyle? textStyle,
   }) : _textStyle = textStyle ??
             const TextStyle(
@@ -27,20 +27,20 @@ class MenuPageLayout {
 
 class MenuPageLayoutMedium extends MenuPageLayout {
   const MenuPageLayoutMedium({
-    MenuButtonLayout? button,
+    MenuButtonsLayout? buttons,
     double? crossAxisSpacing,
     double? mainAxisSpacing,
     TextStyle? textStyle,
   }) : super(
           crossAxisSpacing: crossAxisSpacing ?? 24,
           mainAxisSpacing: mainAxisSpacing ?? 24,
-          button: button ?? const MenuButtonLayoutMedium(),
+          buttons: buttons ?? const MenuButtonLayoutMedium(),
           textStyle: textStyle ??
               const TextStyle(
                 color: AbiliaColors.black,
                 fontSize: 24,
                 fontWeight: FontWeight.w400,
-                height: 42 / 24.0,
+                height: 30 / 24.0,
                 leadingDistribution: TextLeadingDistribution.even,
               ),
         );
@@ -51,22 +51,22 @@ class MenuPageLayoutLarge extends MenuPageLayoutMedium {
       : super(
           crossAxisSpacing: 40,
           mainAxisSpacing: 40,
-          button: const MenuButtonLayoutLarge(),
+          buttons: const MenuButtonLayoutLarge(),
           textStyle: const TextStyle(
             color: AbiliaColors.black,
             fontSize: 36,
             fontWeight: FontWeight.w400,
-            height: 1,
+            height: 42 / 36.0,
             leadingDistribution: TextLeadingDistribution.even,
           ),
         );
 }
 
-class MenuButtonLayout {
+class MenuButtonsLayout {
   final double size, iconSize, borderRadius, orangeDotInset, orangeDotRadius;
   final EdgeInsets padding;
 
-  const MenuButtonLayout({
+  const MenuButtonsLayout({
     this.size = 112,
     this.iconSize = 48,
     this.borderRadius = 12,
@@ -76,7 +76,7 @@ class MenuButtonLayout {
   });
 }
 
-class MenuButtonLayoutMedium extends MenuButtonLayout {
+class MenuButtonLayoutMedium extends MenuButtonsLayout {
   const MenuButtonLayoutMedium({
     double? size,
     double? iconSize,

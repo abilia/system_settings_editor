@@ -1,4 +1,4 @@
-import 'package:flutter/services.dart';
+import 'dart:math';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/settings/all.dart';
@@ -38,23 +38,6 @@ class _CodeProtectPageState extends State<CodeProtectPage> {
   void initState() {
     super.initState();
     controller = CodeProtectTextEditController();
-    controller.addListener(_listener);
-  }
-
-  Future _listener() async {
-    if (controller.selection.baseOffset == _pinLength) {
-      if (controller.text == widget.code) {
-        return Navigator.of(context).pop(true);
-      }
-      await showViewDialog(
-        context: context,
-        wrapWithAuthProviders: false,
-        builder: (context) => ErrorDialog(
-          text: Translator.of(context).translate.incorrectCode,
-        ),
-      );
-      controller.clear();
-    }
   }
 
   @override
@@ -65,112 +48,145 @@ class _CodeProtectPageState extends State<CodeProtectPage> {
         title: translate.enterCode,
         iconData: AbiliaIcons.unlock,
       ),
-      body: Column(
-        children: [
-          PinCodeWidget(
-            controller: controller,
-            onEditingComplete: () {
-              Navigator.of(context).pop(true);
-            },
-          ),
-          SizedBox(height: layout.formPadding.groupBottomDistance),
-          Tts(
-            child: Text(
-              '${translate.enterYourCodeToAccess} ${widget.name}',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  ?.copyWith(color: AbiliaColors.black60),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            PinCodeWidget(
+              controller: controller,
+              fieldMessage: '${translate.enterYourCodeToAccess} ${widget.name}',
+              onEditingComplete: () {
+                _verifyCode();
+              },
             ),
-          ),
-          const Spacer(),
-          const BottomNavigation(backNavigationWidget: PreviousButton())
-        ],
+            SizedBox(height: layout.formPadding.groupBottomDistance),
+          ],
+        ),
+      ),
+      bottomNavigationBar: const BottomNavigation(
+        backNavigationWidget: PreviousButton(),
       ),
     );
   }
 
-  @override
-  void dispose() {
-    controller.removeListener(_listener);
-    super.dispose();
+  Future _verifyCode() async {
+    if (controller.text == widget.code) {
+      return Navigator.of(context).pop(true);
+    }
+    await showViewDialog(
+      context: context,
+      wrapWithAuthProviders: false,
+      builder: (context) => ErrorDialog(
+        text: Translator.of(context).translate.incorrectCode,
+      ),
+    );
+    controller.clear();
   }
 }
-
-const _pinLength = 4;
-const _dash = '-';
 
 class PinCodeWidget extends StatelessWidget {
   const PinCodeWidget({
     required this.controller,
+    this.fieldMessage,
     this.onEditingComplete,
     Key? key,
   }) : super(key: key);
 
-  final TextEditingController controller;
+  final CodeProtectTextEditController controller;
   final VoidCallback? onEditingComplete;
+  final String? fieldMessage;
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
+    final message = fieldMessage;
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SubHeading(translate.code),
-        SizedBox(
-          width: layout.timeInput.width,
-          child: TextField(
-            controller: controller,
-            autofocus: true,
-            showCursor: false,
-            autocorrect: false,
-            textAlign: TextAlign.center,
-            toolbarOptions: const ToolbarOptions(),
-            keyboardType: TextInputType.number,
-            enableSuggestions: false,
-            enableInteractiveSelection: false,
-            onEditingComplete: onEditingComplete,
-            maxLengthEnforcement: MaxLengthEnforcement.enforced,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-              LengthLimitingTextInputFormatter(_pinLength),
-              DashedInputFormatter(),
-            ],
-            style: Theme.of(context).textTheme.headline4,
-            decoration: InputDecoration(
-              focusedBorder: OutlineInputBorder(
-                borderRadius: borderRadius,
-                borderSide: BorderSide(
-                  color: Colors.black,
-                  width: layout.borders.medium,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SubHeading(translate.code),
+            SizedBox(
+              width: layout.timeInput.width,
+              child: TextField(
+                controller: controller,
+                autofocus: true,
+                readOnly: true,
+                showCursor: false,
+                autocorrect: false,
+                textAlign: TextAlign.center,
+                keyboardType: TextInputType.number,
+                enableInteractiveSelection: false,
+                style: Theme.of(context).textTheme.headline4,
+                decoration: InputDecoration(
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: borderRadius,
+                    borderSide: BorderSide(
+                      color: Colors.black,
+                      width: layout.borders.medium,
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
+        if (message != null) ...[
+          SizedBox(
+            height: layout.codeProtect.textDistance,
+          ),
+          Text(
+            message,
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1
+                ?.copyWith(color: AbiliaColors.black60),
+          )
+        ],
+        SizedBox(
+          height: layout.codeProtect.keypadDistance,
+        ),
+        AbiliaNumPad(delete: () {
+          controller.delete();
+        }, onClear: () {
+          controller.clear();
+        }, onNumPress: (n) {
+          final code = controller.add(n);
+          if (code.length >= controller.pinLength) {
+            onEditingComplete?.call();
+          }
+        }),
       ],
     );
   }
 }
 
 class CodeProtectTextEditController extends TextEditingController {
-  CodeProtectTextEditController()
-      : super(
-          text: _dash * _pinLength,
-        ) {
-    selection = const TextSelection.collapsed(offset: 0);
-  }
+  CodeProtectTextEditController() : super(text: _dash * _pinLength);
+
+  static const _pinLength = 4;
+  static const _dash = '-';
 
   @override
   void clear() {
     text = _dash * _pinLength;
-    selection = const TextSelection.collapsed(offset: 0);
   }
-}
 
-class DashedInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-          TextEditingValue oldValue, TextEditingValue newValue) =>
-      newValue.copyWith(text: newValue.text.padRight(_pinLength, _dash));
+  void delete() {
+    final code = text.replaceAll('-', '');
+    text =
+        code.substring(0, max(code.length - 1, 0)).padRight(_pinLength, _dash);
+  }
+
+  int get pinLength => _pinLength;
+
+  String add(String s) {
+    final code = text.replaceAll('-', '');
+    if (code.length >= _pinLength) {
+      return code;
+    }
+    final newCode = code + s;
+    text = newCode.padRight(_pinLength, _dash);
+    return newCode;
+  }
 }

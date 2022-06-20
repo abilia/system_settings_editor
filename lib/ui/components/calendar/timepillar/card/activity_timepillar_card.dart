@@ -99,9 +99,13 @@ class ActivityTimepillarCard extends TimepillarCard {
                   child: Container(
                     margin: right
                         ? EdgeInsets.only(
-                            left: measures.dotSize + measures.hourPadding)
+                            left:
+                                measures.dotSize + measures.hourIntervalPadding,
+                          )
                         : EdgeInsets.only(
-                            right: measures.dotSize + measures.hourPadding),
+                            right:
+                                measures.dotSize + measures.hourIntervalPadding,
+                          ),
                     width: measures.cardWidth,
                     decoration: decoration,
                     child: ConstrainedBox(
@@ -174,7 +178,7 @@ class SideTime extends StatelessWidget {
         decoration: BoxDecoration(
           color: colorFromOccasion(occasion),
           borderRadius: BorderRadius.all(
-            Radius.circular(layout.timePillar.flarpRadius),
+            Radius.circular(layout.timepillar.flarpRadius),
           ),
         ),
       ),

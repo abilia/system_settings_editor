@@ -29,8 +29,12 @@ class TimerCard extends StatelessWidget {
       duration: ActivityCard.duration,
       data: themeData,
       child: Builder(builder: (context) {
-        final eventState = context.watch<DayEventsCubit>().state;
-        final now = context.watch<ClockBloc>().state;
+        final eventState = context
+            .watch<DayEventsCubit>()
+            .state;
+        final now = context
+            .watch<ClockBloc>()
+            .state;
         final dayPartsSetting = context
             .select((MemoplannerSettingBloc bloc) => bloc.state.dayParts);
         final isNight = eventState.day.isAtSameDay(now) &&
@@ -40,8 +44,8 @@ class TimerCard extends StatelessWidget {
           child: Opacity(
             opacity: opacityOnDark
                 ? isNight
-                    ? (isPast ? 0.3 : 0.4)
-                    : 1
+                ? (isPast ? 0.3 : 0.4)
+                : 1
                 : 1,
             child: Container(
               height: layout.eventCard.height,
@@ -59,13 +63,14 @@ class TimerCard extends StatelessWidget {
                     final authProviders = copiedAuthProviders(context);
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => MultiBlocProvider(
-                          providers: authProviders,
-                          child: TimerPage(
-                            timerOccasion: timerOccasion,
-                            day: day,
-                          ),
-                        ),
+                        builder: (context) =>
+                            MultiBlocProvider(
+                              providers: authProviders,
+                              child: TimerPage(
+                                timerOccasion: timerOccasion,
+                                day: day,
+                              ),
+                            ),
                       ),
                     );
                   },
@@ -80,7 +85,6 @@ class TimerCard extends StatelessWidget {
                               eventOccasion: timerOccasion,
                               fit: BoxFit.cover,
                               crossPadding: layout.eventCard.crossPadding,
-                              crossOverColor: AbiliaColors.transparentBlack30,
                             ),
                           ),
                         ),
@@ -94,7 +98,8 @@ class TimerCard extends StatelessWidget {
                               if (timerOccasion.timer.hasTitle) ...[
                                 Text(
                                   timerOccasion.timer.title,
-                                  style: Theme.of(context)
+                                  style: Theme
+                                      .of(context)
                                       .textTheme
                                       .subtitle1
                                       ?.copyWith(height: 1),
@@ -123,7 +128,8 @@ class TimerCard extends StatelessWidget {
             ),
           ),
         );
-      }),
+      },
+      ),
     );
   }
 }
