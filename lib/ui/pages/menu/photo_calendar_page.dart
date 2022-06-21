@@ -66,7 +66,7 @@ class PhotoCalendarPage extends StatelessWidget {
                           Navigator.of(context)
                               .popUntil((route) => route.isFirst);
                         },
-                        child: const Icon(AbiliaIcons.month),
+                        child: const Icon(AbiliaIcons.closeProgram),
                       ),
                     ),
                   ],
