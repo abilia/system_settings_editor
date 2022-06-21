@@ -51,10 +51,8 @@ class ActivityCard extends StatelessWidget {
           return Tts.fromSemantics(
             activity.semanticsProperties(context),
             child: Opacity(
-              opacity: opacityOnDark
-                  ? isNight
+              opacity: opacityOnDark && isNight
                       ? (signedOff || past ? 0.3 : 0.4)
-                      : 1
                   : 1,
               child: AnimatedContainer(
                 duration: ActivityCard.duration,
