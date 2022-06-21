@@ -2,10 +2,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:seagull/ui/all.dart';
 
 class AppBarLayout {
-  final double horizontalPadding,
-      clockPadding,
-      largeHeight,
-      height;
+  final double horizontalPadding, clockPadding, largeHeight, height;
 
   final BorderRadius borderRadius;
   final TextStyle _textStyle;
