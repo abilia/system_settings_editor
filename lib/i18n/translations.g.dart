@@ -869,7 +869,7 @@ abstract class Translated {
 
   final String camera = 'Camera';
 
-  final String photoCalendar = 'Photo-calendar';
+  final String photoCalendar = 'Photo calendar';
 
   final String countdown = 'Countdown';
 
@@ -2168,7 +2168,7 @@ class SV extends Translated {
   final String camera = 'Kamera';
 
   @override
-  final String photoCalendar = 'Foto-\nkalender';
+  final String photoCalendar = 'Fotokalender';
 
   @override
   final String countdown = 'Nedräkning';
@@ -3421,7 +3421,7 @@ class DA extends Translated {
   final String camera = 'Kamera';
 
   @override
-  final String photoCalendar = 'Billede-\nkalender';
+  final String photoCalendar = 'Billedekalender';
 
   @override
   final String countdown = 'Nedtælling';
@@ -4648,7 +4648,7 @@ class NL extends Translated {
   final String camera = 'Camera';
 
   @override
-  final String photoCalendar = 'Foto-\nkalender';
+  final String photoCalendar = 'Fotokalender';
 
   @override
   final String countdown = 'Timers';
@@ -5873,7 +5873,7 @@ class FI extends Translated {
   final String camera = 'Kamera';
 
   @override
-  final String photoCalendar = 'Kuva-\nkalenteri';
+  final String photoCalendar = 'Kuvakalenteri';
 
   @override
   final String countdown = 'Ajastin';
@@ -7105,7 +7105,7 @@ class DE extends Translated {
   final String camera = 'Kamera';
 
   @override
-  final String photoCalendar = 'Foto-\nkalender';
+  final String photoCalendar = 'Fotokalender';
 
   @override
   final String countdown = 'Countdown';
@@ -8371,7 +8371,7 @@ class NB extends Translated {
   final String camera = 'Kamera';
 
   @override
-  final String photoCalendar = 'Bilde-\nkalender';
+  final String photoCalendar = 'Bildekalender';
 
   @override
   final String countdown = 'Nedtelling';
