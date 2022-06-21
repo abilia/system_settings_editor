@@ -20,34 +20,6 @@ class CalendarInactivityListener
         );
 }
 
-class HomeScreenInactivityListener extends StatelessWidget {
-  final Widget child;
-  final MemoplannerSettingsState settingsState;
-
-  const HomeScreenInactivityListener({
-    Key? key,
-    required this.settingsState,
-    required this.child,
-  }) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    if (!Config.isMP) return child;
-
-    return BlocListener<InactivityCubit, InactivityState>(
-      listenWhen: (previous, current) =>
-          current is HomeScreenInactivityThresholdReached &&
-          previous is! HomeScreenInactivityThresholdReached &&
-          current.startView != StartView.photoAlbum,
-      listener: (context, state) {
-        if (state is! HomeScreenInactivityThresholdReached) return;
-        DefaultTabController.of(context)?.index =
-            settingsState.startViewIndex(state.startView);
-      },
-      child: child,
-    );
-  }
-}
-
 class ScreenSaverListener
     extends BlocListener<InactivityCubit, InactivityState> {
   ScreenSaverListener({Key? key})

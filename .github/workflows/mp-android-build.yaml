@@ -5,7 +5,7 @@ on:
     branches:
       - master
       - release
-      - test-**
+      - test-*
     paths-ignore:
       - 'ios/**'
       - 'test/**'

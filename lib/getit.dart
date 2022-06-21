@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:battery_plus/battery_plus.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:package_info/package_info.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
@@ -134,6 +136,15 @@ class GetItInitializer {
 
   set ttsHandler(TtsInterface ttsHandler) => _ttsHandler = ttsHandler;
 
+  static const platformChannel = 'memoplanner/intent_actions';
+  late ActionIntentStream _actionIntentStream =
+      const EventChannel(platformChannel)
+          .receiveBroadcastStream()
+          .whereType<String>();
+
+  set actionIntentStream(ActionIntentStream actionIntentStream) =>
+      _actionIntentStream = actionIntentStream;
+
   void init() {
     final loginDb = _loginDb ?? LoginDb(_sharedPreferences);
     final deviceDb = _deviceDb ?? DeviceDb(_sharedPreferences);
@@ -172,7 +183,7 @@ class GetItInitializer {
       ..registerSingleton<Battery>(_battery)
       ..registerSingleton<TtsInterface>(_ttsHandler)
       ..registerSingleton<VoiceDb>(_voiceDb ??
-          VoiceDb(
-              _sharedPreferences, _applicationSupportDirectory?.path ?? ''));
+          VoiceDb(_sharedPreferences, _applicationSupportDirectory?.path ?? ''))
+      ..registerSingleton<ActionIntentStream>(_actionIntentStream);
   }
 }

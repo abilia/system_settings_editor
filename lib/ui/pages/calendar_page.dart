@@ -26,8 +26,7 @@ class CalendarPage extends StatelessWidget {
               buildWhen: (previous, current) =>
                   previous.runtimeType != current.runtimeType,
               builder: (context, state) {
-                return HomeScreenInactivityListener(
-                  settingsState: settingsState,
+                return ReturnToHomeScreenListener(
                   child: state is ActivitiesNotLoaded
                       ? Center(
                           child: CircularProgressIndicator(

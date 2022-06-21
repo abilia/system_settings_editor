@@ -8,7 +8,8 @@ class AndroidIntentAction {
       manageOverlay = 'android.settings.action.MANAGE_OVERLAY_PERMISSION',
       deviceInfo = 'android.settings.DEVICE_INFO_SETTINGS',
       wifi = 'android.settings.WIFI_SETTINGS',
-      writeSettings = 'android.settings.action.MANAGE_WRITE_SETTINGS';
+      writeSettings = 'android.settings.action.MANAGE_WRITE_SETTINGS',
+      homeButton = 'android.intent.action.MAIN';
 }
 
 class AndroidIntents {

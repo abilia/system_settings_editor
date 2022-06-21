@@ -44,6 +44,16 @@ FlutterLocalNotificationsPlugin ensureNotificationPluginInitialized() {
   return notificationsPluginInstance = pluginInstance;
 }
 
+Future cancelAllActiveNotifications() async {
+  final activeNotification = await notificationPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.getActiveNotifications();
+  for (var notification in activeNotification ?? []) {
+    await notificationPlugin.cancel(notification.id);
+  }
+}
+
 Future scheduleAlarmNotifications(
   Iterable<Activity> activities,
   Iterable<TimerAlarm> timers,
