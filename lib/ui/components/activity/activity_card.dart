@@ -52,7 +52,7 @@ class ActivityCard extends StatelessWidget {
             activity.semanticsProperties(context),
             child: Opacity(
               opacity: opacityOnDark && isNight
-                      ? (signedOff || past ? 0.3 : 0.4)
+                  ? (signedOff || past ? 0.3 : 0.4)
                   : 1,
               child: AnimatedContainer(
                 duration: ActivityCard.duration,

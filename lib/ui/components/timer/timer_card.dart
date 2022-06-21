@@ -39,9 +39,7 @@ class TimerCard extends StatelessWidget {
           return Tts.fromSemantics(
             timerOccasion.timer.semanticsProperties(context),
             child: Opacity(
-              opacity: opacityOnDark && isNight
-                      ? (signedOff || past ? 0.3 : 0.4)
-                  : 1,
+              opacity: opacityOnDark && isNight ? (isPast ? 0.3 : 0.4) : 1,
               child: Container(
                 height: layout.eventCard.height,
                 decoration: getCategoryBoxDecoration(
