@@ -210,16 +210,17 @@ class ActivityContainer extends StatelessWidget {
               key: TestKey.attachment,
               child: Column(
                 children: [
-                  if (activityDay.activity.infoItem.runtimeType != UrlInfoItem)
+                  if (activityDay.activity.infoItem.runtimeType !=
+                      UrlInfoItem) ...[
                     SizedBox(
                       height: layout.activityPage.dividerTopPadding,
                     ),
-                  if (activityDay.activity.infoItem.runtimeType != UrlInfoItem)
                     Divider(
                       height: layout.activityPage.dividerHeight,
                       endIndent: 0,
                       indent: layout.activityPage.dividerIndentation,
                     ),
+                  ],
                   Expanded(
                     child: Attachment(
                       activityDay: activityDay,
