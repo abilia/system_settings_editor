@@ -70,7 +70,6 @@ class SystemSettingsPage extends StatelessWidget {
             }
           },
         ),
-        const PermissionPickField(),
         MenuItemPickField(
           icon: AbiliaIcons.information,
           text: t.about,
