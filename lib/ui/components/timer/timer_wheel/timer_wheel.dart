@@ -147,8 +147,8 @@ class _TimerWheelState extends State<TimerWheel> {
       // rounding by 58 to skip '60' minutes
       final fiveMinInterval =
           ((minutes % 58) / _intervalLength).round() * _intervalLength;
-      final arc = minutes % _intervalLength;
-      if (arc < 1 || arc > 3) {
+      final minute = minutes % _intervalLength;
+      if (minute < 1 || minute > 3) {
         GetIt.I<TtsInterface>().speak(
           '$fiveMinInterval ${Translator.of(context).translate.minutes}',
         );

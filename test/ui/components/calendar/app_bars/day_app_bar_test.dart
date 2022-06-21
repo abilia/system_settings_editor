@@ -255,21 +255,25 @@ void main() {
 
     testWidgets('tts on nav buttons', (WidgetTester tester) async {
       _expectSettings(const MemoplannerSettings());
-      await tester.pumpWidget(wrapWithMaterialApp(
-          DayAppBar(
-            day: day,
-            leftAction: LeftNavButton(
-              onPressed: () => {},
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+            DayAppBar(
+              day: day,
+              leftAction: LeftNavButton(
+                onPressed: () => {},
+              ),
+              rightAction: RightNavButton(
+                onPressed: () => {},
+              ),
             ),
-            rightAction: RightNavButton(
-              onPressed: () => {},
-            ),
-          ),
-          defaultClockBloc));
+            defaultClockBloc),
+      );
       await tester.pumpAndSettle();
       await tester.verifyTts(find.byType(LeftNavButton), exact: translate.back);
-      await tester.verifyTts(find.byType(RightNavButton),
-          exact: translate.next);
+      await tester.verifyTts(
+        find.byType(RightNavButton),
+        exact: translate.next,
+      );
     });
   });
 }
