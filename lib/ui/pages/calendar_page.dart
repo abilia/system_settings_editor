@@ -30,14 +30,11 @@ class CalendarPage extends StatelessWidget {
                   settingsState: settingsState,
                   child: state is ActivitiesNotLoaded
                       ? Center(
-                          child: SizedBox(
-                            height: 80,
-                            width: 80,
-                            child: CircularProgressIndicator(
-                              valueColor: const AlwaysStoppedAnimation(
-                                  AbiliaColors.red),
-                              strokeWidth: layout.login.progressWidth,
+                          child: CircularProgressIndicator(
+                            valueColor: const AlwaysStoppedAnimation(
+                              AbiliaColors.red,
                             ),
+                            strokeWidth: layout.login.progressWidth,
                           ),
                         )
                       : TabBarView(
