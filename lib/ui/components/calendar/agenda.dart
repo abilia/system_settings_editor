@@ -144,6 +144,7 @@ class EventList extends StatelessWidget {
                         pastEvents,
                         notPastEvents,
                       ),
+                      isNight: isNight,
                     ),
                   ),
                 SliverPadding(
@@ -152,7 +153,11 @@ class EventList extends StatelessWidget {
                     top: isTodayAndNoPast ? topPadding : 0.0,
                     bottom: bottomPadding,
                   ),
-                  sliver: SliverEventList(notPastEvents, eventState.day),
+                  sliver: SliverEventList(
+                    notPastEvents,
+                    eventState.day,
+                    isNight: isNight,
+                  ),
                 ),
               ],
             ],
@@ -203,11 +208,13 @@ class SliverEventList extends StatelessWidget {
   final double lastMargin;
   final int _maxIndex;
   final DateTime day;
+  final bool isNight;
 
   const SliverEventList(
     this.events,
     this.day, {
     this.reversed = false,
+    this.isNight = false,
     this.lastMargin = 0.0,
     Key? key,
   })  : _maxIndex = events.length - 1,
@@ -236,7 +243,7 @@ class SliverEventList extends StatelessWidget {
                     child: ActivityCard(
                       activityOccasion: event,
                       showCategoryColor: setting.showCategoryColor,
-                      opacityOnDark: true,
+                      useOpacity: isNight,
                     ),
                   );
                 } else if (event is TimerOccasion) {
@@ -245,7 +252,7 @@ class SliverEventList extends StatelessWidget {
                     child: TimerCard(
                       timerOccasion: event,
                       day: day,
-                      opacityOnDark: true,
+                      useOpacity: isNight,
                     ),
                   );
                 }

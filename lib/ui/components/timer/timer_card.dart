@@ -8,13 +8,13 @@ import 'package:seagull/utils/all.dart';
 class TimerCard extends StatelessWidget {
   final TimerOccasion timerOccasion;
   final DateTime day;
-  final bool opacityOnDark;
+  final bool useOpacity;
 
   const TimerCard({
     Key? key,
     required this.timerOccasion,
     required this.day,
-    this.opacityOnDark = false,
+    this.useOpacity = false,
   }) : super(key: key);
 
   @override
@@ -30,16 +30,10 @@ class TimerCard extends StatelessWidget {
       data: themeData,
       child: Builder(
         builder: (context) {
-          final eventState = context.watch<DayEventsCubit>().state;
-          final now = context.watch<ClockBloc>().state;
-          final dayPartsSetting = context
-              .select((MemoplannerSettingBloc bloc) => bloc.state.dayParts);
-          final isNight = eventState.day.isAtSameDay(now) &&
-              now.dayPart(dayPartsSetting) == DayPart.night;
           return Tts.fromSemantics(
             timerOccasion.timer.semanticsProperties(context),
             child: Opacity(
-              opacity: opacityOnDark && isNight ? (isPast ? 0.3 : 0.4) : 1,
+              opacity: useOpacity ? (isPast ? 0.3 : 0.4) : 1,
               child: Container(
                 height: layout.eventCard.height,
                 decoration: getCategoryBoxDecoration(

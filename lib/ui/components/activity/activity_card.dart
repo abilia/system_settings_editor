@@ -6,7 +6,7 @@ import 'package:seagull/utils/all.dart';
 class ActivityCard extends StatelessWidget {
   final ActivityOccasion activityOccasion;
 
-  final bool preview, showCategoryColor, showInfoIcons, opacityOnDark;
+  final bool preview, showCategoryColor, showInfoIcons, useOpacity;
 
   static const Duration duration = Duration(seconds: 1);
 
@@ -16,7 +16,7 @@ class ActivityCard extends StatelessWidget {
     this.preview = false,
     this.showCategoryColor = false,
     this.showInfoIcons = true,
-    this.opacityOnDark = false,
+    this.useOpacity = false,
   }) : super(key: key);
 
   @override
@@ -42,18 +42,10 @@ class ActivityCard extends StatelessWidget {
       data: themeData,
       child: Builder(
         builder: (context) {
-          final eventState = context.watch<DayEventsCubit>().state;
-          final now = context.watch<ClockBloc>().state;
-          final dayPartsSetting = context
-              .select((MemoplannerSettingBloc bloc) => bloc.state.dayParts);
-          final isNight = eventState.day.isAtSameDay(now) &&
-              now.dayPart(dayPartsSetting) == DayPart.night;
           return Tts.fromSemantics(
             activity.semanticsProperties(context),
             child: Opacity(
-              opacity: opacityOnDark && isNight
-                  ? (signedOff || past ? 0.3 : 0.4)
-                  : 1,
+              opacity: useOpacity ? (signedOff || past ? 0.3 : 0.4) : 1,
               child: AnimatedContainer(
                 duration: ActivityCard.duration,
                 height: layout.eventCard.height,
