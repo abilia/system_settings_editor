@@ -40,7 +40,7 @@ class AvailableForWiz extends StatelessWidget {
           onAvailableForChanged: (availableFor) =>
               context.read<EditActivityCubit>().setAvailableFor(availableFor),
           onSupportPersonChanged: (id) =>
-              context.read<EditActivityCubit>().supportPersonChanged(id),
+              context.read<EditActivityCubit>().toggleSupportPerson(id),
         ),
       );
     }

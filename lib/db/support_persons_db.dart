@@ -26,5 +26,5 @@ class SupportPersonsDb {
         : userString.map((e) => SupportPerson.fromJson(json.decode(e)));
   }
 
-  void deleteAll() => prefs.remove(_supportUsersRecord);
+  Future deleteAll() => prefs.remove(_supportUsersRecord);
 }

@@ -55,7 +55,7 @@ void main() {
         availableForCubit.state,
         dbState.copyWith(
             availableFor: AvailableForType.selectedSupportPersons));
-    availableForCubit.selectSupportPerson(testSupportPerson2.id);
+    availableForCubit.toggleSupportPerson(testSupportPerson2.id);
     await expectLater(
         availableForCubit.state,
         dbState.copyWith(

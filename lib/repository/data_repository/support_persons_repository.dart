@@ -16,6 +16,7 @@ class SupportPersonsRepository extends Repository {
   final int userId;
   final Logger log = Logger((SupportPersonsRepository).toString());
   final SupportPersonsDb db;
+  static const supportPersonRoleId = 6;
 
   Future<Iterable<SupportPerson>> load() async {
     try {
@@ -23,18 +24,18 @@ class SupportPersonsRepository extends Repository {
       final response = await client.get(
         '$baseUrl/api/v1/entity/$userId/roles-to'.toUri(),
       );
-      final decoded = response.json() as List;
-
-      db.deleteAll();
-      Iterable<SupportPerson> result = decoded.where((element) {
-        return element['role']['id'] ==
-            6; // '6' is the role id of a support person in myabilia
-      }).map(
-        (element) => SupportPerson.fromJson(
-          element['entity'],
-        ),
-      );
-      db.insertAll(result);
+      if (response.statusCode == 200) {
+        final decoded = response.json() as List;
+        await db.deleteAll();
+        Iterable<SupportPerson> result = decoded.where((element) {
+          return element['role']['id'] == supportPersonRoleId;
+        }).map(
+          (element) => SupportPerson.fromJson(
+            element['entity'],
+          ),
+        );
+        db.insertAll(result);
+      }
     } catch (e) {
       log.severe('Error when fetching support persons, offline?', e);
     }

@@ -36,7 +36,7 @@ class AvailableForCubit extends Cubit<AvailableForState> {
         ),
       );
 
-  void selectSupportPerson(int id) {
+  void toggleSupportPerson(int id) {
     final _supportPersons = Set<int>.from(state.selectedSupportPersons);
     if (!_supportPersons.remove(id)) {
       _supportPersons.add(id);

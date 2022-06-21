@@ -108,9 +108,7 @@ class AvailableForPageBody extends StatelessWidget {
   void _onAvailableForChanged(BuildContext context, AvailableForType? value) {
     if (value != null) {
       context.read<AvailableForCubit>().setAvailableFor(value);
-      if (onAvailableForChanged != null) {
-        onAvailableForChanged!(context, value);
-      }
+      onAvailableForChanged?.call(value);
     }
   }
 }
@@ -132,8 +130,10 @@ class SupportPersonsWidget extends StatelessWidget {
             controller: scrollController,
             children: <Widget>[
               Tts(
-                child: Text(Translator.of(context).translate.supportPersons,
-                    style: bodyText2.copyWith(color: AbiliaColors.black75)),
+                child: Text(
+                  Translator.of(context).translate.supportPersons,
+                  style: bodyText2.copyWith(color: AbiliaColors.black75),
+                ),
               ).pad(
                 layout.templates.m1.copyWith(bottom: 0),
               ),
@@ -170,9 +170,7 @@ class SupportPersonsWidget extends StatelessWidget {
   }
 
   void _onSupportPersonChanged(BuildContext context, int id) {
-    context.read<AvailableForCubit>().selectSupportPerson(id);
-    if (onSupportPersonChanged != null) {
-      onSupportPersonChanged!(context, id);
-    }
+    context.read<AvailableForCubit>().toggleSupportPerson(id);
+    onSupportPersonChanged?.call(id);
   }
 }

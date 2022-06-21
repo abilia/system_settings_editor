@@ -14,15 +14,17 @@ class EditActivityCubit extends Cubit<EditActivityState> {
   EditActivityCubit.edit(ActivityDay activityDay)
       : super(
           StoredActivityState(
-              activityDay.activity,
-              activityDay.activity.fullDay
-                  ? TimeInterval(startDate: activityDay.day)
-                  : TimeInterval.fromDateTime(
-                      activityDay.activity.startClock(activityDay.day),
-                      activityDay.activity.hasEndTime
-                          ? activityDay.activity.endClock(activityDay.day)
-                          : null),
-              activityDay.day),
+            activityDay.activity,
+            activityDay.activity.fullDay
+                ? TimeInterval(startDate: activityDay.day)
+                : TimeInterval.fromDateTime(
+                    activityDay.activity.startClock(activityDay.day),
+                    activityDay.activity.hasEndTime
+                        ? activityDay.activity.endClock(activityDay.day)
+                        : null,
+                  ),
+            activityDay.day,
+          ),
         );
 
   EditActivityCubit.editTemplate(
@@ -231,7 +233,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     );
   }
 
-  void supportPersonChanged(int id) {
+  void toggleSupportPerson(int id) {
     final activity = state.activity;
     final _supportPersons = Set<int>.from(activity.secretExemptions);
     if (!_supportPersons.remove(id)) {
