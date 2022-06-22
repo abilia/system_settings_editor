@@ -9,11 +9,27 @@ import 'package:seagull/repository/ticker.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../fakes/all.dart';
+import '../../../mocks/mock_bloc.dart';
 
 void main() {
   final nowTime = DateTime(2022, 01, 29, 13, 37);
+  final startTime = DateTime(2022, 01, 29, 13, 50);
+  final day = DateTime(2022, 01, 29);
+  late MockDayEventsCubit dayEventsCubitMock;
 
   setUp(() async {
+    dayEventsCubitMock = MockDayEventsCubit();
+    final expected = EventsState(
+      activities: const [],
+      timers: const [],
+      fullDayActivities: const [],
+      day: day,
+      occasion: Occasion.current,
+    );
+
+    when(() => dayEventsCubitMock.state).thenReturn(expected);
+    when(() => dayEventsCubitMock.stream)
+        .thenAnswer((_) => Stream.fromIterable([expected]));
     GetItInitializer()
       ..ticker = Ticker.fake(initialTime: nowTime)
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -25,8 +41,21 @@ void main() {
 
   Widget wrap(final Widget child) => Directionality(
         textDirection: TextDirection.ltr,
-        child: BlocProvider(
-          create: (context) => SettingsCubit(settingsDb: FakeSettingsDb()),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => SettingsCubit(settingsDb: FakeSettingsDb()),
+            ),
+            BlocProvider<DayEventsCubit>(
+              create: (context) => dayEventsCubitMock,
+            ),
+            BlocProvider<MemoplannerSettingBloc>(
+              create: (context) => FakeMemoplannerSettingsBloc(),
+            ),
+            BlocProvider<ClockBloc>(
+              create: (context) => ClockBloc.fixed(startTime),
+            ),
+          ],
           child: child,
         ),
       );
@@ -74,5 +103,48 @@ void main() {
         ),
       ),
     );
+  });
+
+  testWidgets('timer card doesn\'t use opacity', (tester) async {
+    const timerTitle = 'timer title';
+    final timerOccasion = TimerOccasion(
+      AbiliaTimer.createNew(
+        title: timerTitle,
+        startTime: nowTime.subtract(const Duration(minutes: 30)),
+        duration: const Duration(hours: 1),
+      ),
+      Occasion.current,
+    );
+    await tester.pumpWidget(
+      wrap(TimerCard(
+        timerOccasion: timerOccasion,
+        day: nowTime,
+      )),
+    );
+    Finder finder = find.byType(Opacity).first;
+    Opacity op = finder.evaluate().single.widget as Opacity;
+    expect(op.opacity, 1.0);
+  });
+
+  testWidgets('timer card uses opacity', (tester) async {
+    const timerTitle = 'timer title';
+    final timerOccasion = TimerOccasion(
+      AbiliaTimer.createNew(
+        title: timerTitle,
+        startTime: nowTime.subtract(const Duration(minutes: 30)),
+        duration: const Duration(hours: 1),
+      ),
+      Occasion.current,
+    );
+    await tester.pumpWidget(
+      wrap(TimerCard(
+        timerOccasion: timerOccasion,
+        day: nowTime,
+        useOpacity: true,
+      )),
+    );
+    Finder finder = find.byType(Opacity).first;
+    Opacity op = finder.evaluate().single.widget as Opacity;
+    expect(op.opacity, 0.4);
   });
 }
