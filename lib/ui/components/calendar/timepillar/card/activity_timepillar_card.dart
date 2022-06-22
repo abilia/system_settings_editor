@@ -132,10 +132,15 @@ class ActivityTimepillarCard extends TimepillarCard {
                                       textHeight -
                                       measures.cardPadding.vertical -
                                       measures.cardPadding.top,
-                                  child: EventImage.fromEventOccasion(
-                                    eventOccasion: activityOccasion,
-                                    crossPadding: measures.cardPadding,
-                                    checkPadding: measures.cardPadding * 2,
+                                  child: Center(
+                                    child: AspectRatio(
+                                      aspectRatio: 1,
+                                      child: EventImage.fromEventOccasion(
+                                        eventOccasion: activityOccasion,
+                                        crossPadding: measures.cardPadding,
+                                        checkPadding: measures.cardPadding * 2,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               )

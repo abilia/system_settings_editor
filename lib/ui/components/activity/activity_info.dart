@@ -348,7 +348,7 @@ class TitleAndOrImage extends StatelessWidget {
         ? Tts(
             child: Text(
               activity.title,
-              style: layout.activityPage.titleStyle(),
+              style: layout.activityPage.headline4_2(),
               overflow: TextOverflow.visible,
               textAlign: TextAlign.center,
             ),
