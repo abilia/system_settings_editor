@@ -238,8 +238,8 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                       child: Padding(
                         padding: fullDayActivitiesPadding,
                         child: _FullDayActivities(
-                          weekdayIndex: day.weekday - 1,
-                          selectedDay: selected,
+                          day: day,
+                          isSelected: selected,
                         ),
                       ),
                     ),
@@ -255,17 +255,18 @@ class WeekCalenderHeadingContent extends StatelessWidget {
 }
 
 class _FullDayActivities extends StatelessWidget {
-  final int weekdayIndex;
-  final bool selectedDay;
+  final DateTime day;
+  final bool isSelected;
 
   const _FullDayActivities({
     Key? key,
-    required this.weekdayIndex,
-    required this.selectedDay,
+    required this.day,
+    required this.isSelected,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final weekdayIndex = day.weekday - 1;
     return BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
       buildWhen: (previous, current) =>
           previous.currentWeekActivities[weekdayIndex] !=
@@ -278,11 +279,13 @@ class _FullDayActivities extends StatelessWidget {
         if (fullDayActivities.length > 1) {
           return FullDayStack(
             numberOfActivities: fullDayActivities.length,
+            goToActivitiesListOnTap: true,
+            day: day,
           );
         } else if (fullDayActivities.length == 1) {
           return _WeekActivityContent(
             activityOccasion: fullDayActivities.first,
-            selectedDay: selectedDay,
+            isSelected: isSelected,
           );
         }
         return const SizedBox.shrink();
@@ -421,7 +424,7 @@ class _WeekDayColumn extends StatelessWidget {
                         padding: innerDayPadding,
                         child: _WeekDayColumnItems(
                           day: day,
-                          selected: selected,
+                          isSelected: selected,
                           showCategories: memosettings.showCategories,
                           showCategoryColor: memosettings.showCategoryColor,
                         ),
@@ -440,12 +443,12 @@ class _WeekDayColumn extends StatelessWidget {
 
 class _WeekDayColumnItems extends StatelessWidget {
   final DateTime day;
-  final bool selected, showCategories, showCategoryColor;
+  final bool isSelected, showCategories, showCategoryColor;
 
   const _WeekDayColumnItems({
     Key? key,
     required this.day,
-    required this.selected,
+    required this.isSelected,
     required this.showCategories,
     required this.showCategoryColor,
   }) : super(key: key);
@@ -471,11 +474,11 @@ class _WeekDayColumnItems extends StatelessWidget {
             Padding(
               padding: _categoryPadding(
                 showCategories,
-                selected,
+                isSelected,
                 activityOccasions[i].category,
                 newCategory,
               ),
-              child: selected && !layout.go
+              child: isSelected && !layout.go
                   ? SizedBox(
                       child: ActivityCard(
                         activityOccasion: activityOccasions[i],
@@ -487,7 +490,7 @@ class _WeekDayColumnItems extends StatelessWidget {
                       aspectRatio: 1,
                       child: _WeekActivityContent(
                         activityOccasion: activityOccasions[i],
-                        selectedDay: selected,
+                        isSelected: isSelected,
                       ),
                     ),
             ),
@@ -532,19 +535,19 @@ class _WeekActivityContent extends StatelessWidget {
   const _WeekActivityContent({
     Key? key,
     required this.activityOccasion,
-    required this.selectedDay,
+    required this.isSelected,
   }) : super(key: key);
 
   final ActivityOccasion activityOccasion;
   final double scaleFactor = 2 / 3;
-  final bool selectedDay;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
     final wLayout = layout.weekCalendar;
     final inactive = activityOccasion.isPast || activityOccasion.isSignedOff;
-    final borderRadius = selectedDay && !activityOccasion.activity.fullDay
+    final borderRadius = isSelected && !activityOccasion.activity.fullDay
         ? wLayout.selectedDay.activityRadius
         : wLayout.notSelectedDay.activityRadius;
 
@@ -559,10 +562,10 @@ class _WeekActivityContent extends StatelessWidget {
           showCategoryColor:
               settings.showCategoryColor && !activityOccasion.activity.fullDay,
           category: activityOccasion.activity.category,
-          borderWidth: selectedDay
+          borderWidth: isSelected
               ? wLayout.selectedDay.activityBorderWidth
               : wLayout.notSelectedDay.activityBorderWidth,
-          currentBorderWidth: selectedDay
+          currentBorderWidth: isSelected
               ? wLayout.selectedDay.currentActivityBorderWidth
               : wLayout.notSelectedDay.currentActivityBorderWidth,
         );

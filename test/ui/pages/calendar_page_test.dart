@@ -987,6 +987,26 @@ void main() {
     });
   });
 
+  testWidgets(
+      'SGC-1748 AllDayList page is shown when clicking on a day with multiple full day activities in week calendar',
+      (WidgetTester tester) async {
+    final activities = [
+      FakeActivity.fullday(initialTime.addDays(1), 'one'),
+      FakeActivity.fullday(initialTime.addDays(1), 'two'),
+    ];
+    when(() => mockActivityDb.getAllNonDeleted())
+        .thenAnswer((_) => Future.value(activities));
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.week));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(FullDayStack));
+    await tester.pumpAndSettle();
+    expect(find.byType(AllDayList), findsOneWidget);
+    expect(find.text(activities[0].title), findsOneWidget);
+    expect(find.text(activities[1].title), findsOneWidget);
+  });
+
   group('disable alarm button', () {
     late MemoplannerSettingBloc memoplannerSettingBlocMock;
 

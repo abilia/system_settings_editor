@@ -66,7 +66,9 @@ class FullDayStack extends StatelessWidget {
                         parent: animation,
                         curve: Curves.easeOut,
                       ),
-                      child: const AllDayList(),
+                      child: AllDayList(
+                        day: day!,
+                      ),
                     ),
                   ),
                   settings: RouteSettings(name: 'AllDayList $day'),
