@@ -104,4 +104,47 @@ void main() {
       ),
     );
   });
+
+  testWidgets('timer card doesn\'t use opacity', (tester) async {
+    const timerTitle = 'timer title';
+    final timerOccasion = TimerOccasion(
+      AbiliaTimer.createNew(
+        title: timerTitle,
+        startTime: nowTime.subtract(const Duration(minutes: 30)),
+        duration: const Duration(hours: 1),
+      ),
+      Occasion.current,
+    );
+    await tester.pumpWidget(
+      wrap(TimerCard(
+        timerOccasion: timerOccasion,
+        day: nowTime,
+      )),
+    );
+    Finder finder = find.byType(Opacity).first;
+    Opacity op = finder.evaluate().single.widget as Opacity;
+    expect(op.opacity, 1.0);
+  });
+
+  testWidgets('timer card uses opacity', (tester) async {
+    const timerTitle = 'timer title';
+    final timerOccasion = TimerOccasion(
+      AbiliaTimer.createNew(
+        title: timerTitle,
+        startTime: nowTime.subtract(const Duration(minutes: 30)),
+        duration: const Duration(hours: 1),
+      ),
+      Occasion.current,
+    );
+    await tester.pumpWidget(
+      wrap(TimerCard(
+        timerOccasion: timerOccasion,
+        day: nowTime,
+        useOpacity: true,
+      )),
+    );
+    Finder finder = find.byType(Opacity).first;
+    Opacity op = finder.evaluate().single.widget as Opacity;
+    expect(op.opacity, 0.4);
+  });
 }
