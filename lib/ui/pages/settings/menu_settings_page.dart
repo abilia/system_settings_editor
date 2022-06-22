@@ -113,7 +113,7 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
           leading: const Icon(AbiliaIcons.favoritesShow),
           value: showBasicTemplates,
           onChanged: (v) => setState(() => showBasicTemplates = v),
-          child: Text(t.basicTemplates.singleLine),
+          child: Text(t.templates.singleLine),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.menuSetup),

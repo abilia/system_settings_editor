@@ -235,7 +235,7 @@ abstract class Translated {
 
   final String undo = 'Undo';
 
-  final String fromBasicActivity = 'From basic activity';
+  final String fromTemplateActivity = 'From template';
 
   final String createActivity = 'New activity';
 
@@ -266,15 +266,9 @@ abstract class Translated {
   final String checklistDoneInfo =
       'All checklist tasks in your activity are completed. Do you want to complete the activity?';
 
-  final String basicTemplates = 'Basic templates';
+  final String templates = 'Templates';
 
-  final String basicActivities = 'Basic activities';
-
-  final String newBasicActivity = 'New basic activity';
-
-  final String editBasicActivity = 'Edit basic activity';
-
-  final String enterNameForBasicActivity = 'Enter name for basic activity';
+  final String templateActivities = 'Activities';
 
   final String timeTo = 'to';
 
@@ -290,7 +284,7 @@ abstract class Translated {
 
   final String enterNameForTimer = 'Enter name for timer';
 
-  final String fromBasicTimer = 'From basic timer';
+  final String fromTemplateTimer = 'From template';
 
   final String noBasicTimers = 'You have no basic timers';
 
@@ -300,9 +294,9 @@ abstract class Translated {
 
   final String timeIsUp = 'Time is up';
 
-  final String basicTimers = 'Basic timers';
+  final String templateTimers = 'Timers';
 
-  final String newBasicTimer = 'New basic timer';
+  final String editTimer = 'Edit timer';
 
   final String menu = 'Menu';
 
@@ -1230,7 +1224,7 @@ class SV extends Translated {
   final String undo = 'Ångra';
 
   @override
-  final String fromBasicActivity = 'Från basaktivitet';
+  final String fromTemplateActivity = 'Från mall';
 
   @override
   final String createActivity = 'Ny aktivitet';
@@ -1278,19 +1272,10 @@ class SV extends Translated {
       'Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?';
 
   @override
-  final String basicTemplates = 'Basmallar';
+  final String templates = 'Mallar';
 
   @override
-  final String basicActivities = 'Basaktiviteter';
-
-  @override
-  final String newBasicActivity = 'Ny basaktivitet';
-
-  @override
-  final String editBasicActivity = 'Ändra basaktivitet';
-
-  @override
-  final String enterNameForBasicActivity = 'Ange namn för basaktivitet';
+  final String templateActivities = 'Aktiviteter';
 
   @override
   final String timeTo = 'till';
@@ -1314,7 +1299,7 @@ class SV extends Translated {
   final String enterNameForTimer = 'Ange namn för timer';
 
   @override
-  final String fromBasicTimer = 'Från bastimers';
+  final String fromTemplateTimer = 'Från mall';
 
   @override
   final String noBasicTimers = 'Du har inga bastimers';
@@ -1329,10 +1314,10 @@ class SV extends Translated {
   final String timeIsUp = 'Tiden är slut';
 
   @override
-  final String basicTimers = 'Bastimers';
+  final String templateTimers = 'Timers';
 
   @override
-  final String newBasicTimer = 'Ny bastimer';
+  final String editTimer = 'Ändra timer';
 
   @override
   final String menu = 'Meny';
@@ -2520,7 +2505,7 @@ class DA extends Translated {
   final String undo = 'Fortryd';
 
   @override
-  final String fromBasicActivity = 'Fra standardaktivitet';
+  final String fromTemplateActivity = 'Fra standardaktivitet';
 
   @override
   final String createActivity = 'Ny aktivitet';
@@ -2568,13 +2553,7 @@ class DA extends Translated {
       'Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?';
 
   @override
-  final String basicActivities = 'Standardaktiviteter';
-
-  @override
-  final String newBasicActivity = 'Ny standardaktivitet';
-
-  @override
-  final String editBasicActivity = 'Rediger standardaktivitet';
+  final String templateActivities = 'Standardaktiviteter';
 
   @override
   final String timeTo = 'til';
@@ -2592,7 +2571,7 @@ class DA extends Translated {
   final String startTimer = 'Start timeren';
 
   @override
-  final String fromBasicTimer = 'Fra standardtimer';
+  final String fromTemplateTimer = 'Fra standardtimer';
 
   @override
   final String noBasicTimers = 'Du har ingen standardtimer';
@@ -2604,7 +2583,7 @@ class DA extends Translated {
   final String timer = 'Timer';
 
   @override
-  final String basicTimers = 'Standardtimers';
+  final String templateTimers = 'Standardtimers';
 
   @override
   final String menu = 'Menu';
@@ -3743,7 +3722,7 @@ class NL extends Translated {
   final String undo = 'Ongedaan maken';
 
   @override
-  final String fromBasicActivity = 'Uit standaardactiviteit';
+  final String fromTemplateActivity = 'Uit standaardactiviteit';
 
   @override
   final String createActivity = 'Nieuwe activiteit';
@@ -3789,13 +3768,7 @@ class NL extends Translated {
       'Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?';
 
   @override
-  final String basicActivities = 'Standaard activiteiten';
-
-  @override
-  final String newBasicActivity = 'Nieuwe standaardactiviteit';
-
-  @override
-  final String editBasicActivity = 'Standaardactiviteit bewerken';
+  final String templateActivities = 'Standaard activiteiten';
 
   @override
   final String timeTo = 'tot';
@@ -3813,7 +3786,7 @@ class NL extends Translated {
   final String startTimer = 'Start timer';
 
   @override
-  final String fromBasicTimer = 'Uit standaardtimers';
+  final String fromTemplateTimer = 'Uit standaardtimers';
 
   @override
   final String noBasicTimers = 'Je hebt geen standaardtimers';
@@ -3825,7 +3798,7 @@ class NL extends Translated {
   final String timer = 'Tijdopnemer';
 
   @override
-  final String basicTimers = 'Standaard timers';
+  final String templateTimers = 'Standaard timers';
 
   @override
   final String menu = 'Menu';
@@ -4969,7 +4942,7 @@ class FI extends Translated {
   final String undo = 'Peruuta';
 
   @override
-  final String fromBasicActivity = 'Perusaktiviteetista';
+  final String fromTemplateActivity = 'Perusaktiviteetista';
 
   @override
   final String createActivity = 'Uusi aktiviteetti';
@@ -5016,13 +4989,7 @@ class FI extends Translated {
       'Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?';
 
   @override
-  final String basicActivities = 'Perusaktiviteetit';
-
-  @override
-  final String newBasicActivity = 'Uusi perusaktiviteetti';
-
-  @override
-  final String editBasicActivity = 'Muokkaa perusaktiviteettia';
+  final String templateActivities = 'Perusaktiviteetit';
 
   @override
   final String timeTo = '-';
@@ -5040,7 +5007,7 @@ class FI extends Translated {
   final String startTimer = 'Käynnistysajastin';
 
   @override
-  final String fromBasicTimer = 'Perusajastimesta';
+  final String fromTemplateTimer = 'Perusajastimesta';
 
   @override
   final String noBasicTimers = 'Sinulla ei ole perusajastimia';
@@ -5052,7 +5019,7 @@ class FI extends Translated {
   final String timer = 'Ajastin';
 
   @override
-  final String basicTimers = 'Perusajastimet';
+  final String templateTimers = 'Perusajastimet';
 
   @override
   final String menu = 'Valikko';
@@ -6198,7 +6165,7 @@ class DE extends Translated {
   final String undo = 'Rückgängig';
 
   @override
-  final String fromBasicActivity = 'Von Standardaktivität';
+  final String fromTemplateActivity = 'Von Standardaktivität';
 
   @override
   final String createActivity = 'Neue Aktivität';
@@ -6245,13 +6212,7 @@ class DE extends Translated {
       'Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?';
 
   @override
-  final String basicActivities = 'Standardaktivitäten';
-
-  @override
-  final String newBasicActivity = 'Neue Standardaktivität';
-
-  @override
-  final String editBasicActivity = 'Standardaktivität bearbeiten';
+  final String templateActivities = 'Standardaktivitäten';
 
   @override
   final String timeTo = 'bis';
@@ -6269,7 +6230,7 @@ class DE extends Translated {
   final String startTimer = 'Timer starten';
 
   @override
-  final String fromBasicTimer = 'Von Standardtimer';
+  final String fromTemplateTimer = 'Von Standardtimer';
 
   @override
   final String noBasicTimers = 'Sie haben keine Standardtimer';
@@ -6281,7 +6242,7 @@ class DE extends Translated {
   final String timer = 'Timer';
 
   @override
-  final String basicTimers = 'Standardtimer';
+  final String templateTimers = 'Standardtimer';
 
   @override
   final String menu = 'Menü';
@@ -7430,7 +7391,7 @@ class NB extends Translated {
   final String undo = 'Angre';
 
   @override
-  final String fromBasicActivity = 'Fra standardaktivitet';
+  final String fromTemplateActivity = 'Fra standardaktivitet';
 
   @override
   final String createActivity = 'Ny aktivitet';
@@ -7477,19 +7438,10 @@ class NB extends Translated {
       'Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?';
 
   @override
-  final String basicTemplates = 'Maler';
+  final String templates = 'Maler';
 
   @override
-  final String basicActivities = 'Standardaktiviteter';
-
-  @override
-  final String newBasicActivity = 'Ny standardaktivitet';
-
-  @override
-  final String editBasicActivity = 'Endre standardaktivitet';
-
-  @override
-  final String enterNameForBasicActivity = 'Angi navn på standardaktivitet';
+  final String templateActivities = 'Standardaktiviteter';
 
   @override
   final String timeTo = 'til';
@@ -7513,7 +7465,7 @@ class NB extends Translated {
   final String enterNameForTimer = 'Angi navn på timer';
 
   @override
-  final String fromBasicTimer = 'Fra standardtimere';
+  final String fromTemplateTimer = 'Fra standardtimere';
 
   @override
   final String noBasicTimers = 'Du har ingen standardtimere';
@@ -7528,10 +7480,7 @@ class NB extends Translated {
   final String timeIsUp = 'Tiden er slutt';
 
   @override
-  final String basicTimers = 'Standardtimere';
-
-  @override
-  final String newBasicTimer = 'Ny standardtimer';
+  final String templateTimers = 'Standardtimere';
 
   @override
   final String menu = 'Meny';

@@ -16,11 +16,11 @@ class BasicTemplatesPage extends StatelessWidget {
       child: Scaffold(
         appBar: AbiliaAppBar(
           iconData: AbiliaIcons.favoritesShow,
-          title: translate.basicTemplates,
+          title: translate.templates,
           bottom: AbiliaTabBar(
             tabs: <Widget>[
-              TabItem(translate.basicActivities, AbiliaIcons.basicActivity),
-              TabItem(translate.basicTimers, AbiliaIcons.stopWatch),
+              TabItem(translate.templateActivities, AbiliaIcons.basicActivity),
+              TabItem(translate.templateTimers, AbiliaIcons.stopWatch),
             ],
           ),
         ),

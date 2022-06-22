@@ -67,8 +67,8 @@ class EditActivityPage extends StatelessWidget {
     final isEdit =
         context.read<EditActivityCubit>().state is StoredActivityState;
     if (isTemplate) {
-      if (isEdit) return translate.editBasicActivity;
-      return translate.newBasicActivity;
+      if (isEdit) return translate.editActivity;
+      return translate.newActivity;
     }
     if (isEdit) return translate.editActivity;
     return translate.newActivity;
