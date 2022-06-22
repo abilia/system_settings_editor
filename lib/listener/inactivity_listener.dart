@@ -31,11 +31,13 @@ class ScreenSaverListener
           listener: (context, state) {
             Navigator.of(context)
                 .popUntil((route) => route.isFirst || route is AlarmRoute);
+            final settingsState = context.read<MemoplannerSettingBloc>().state;
             if (state is! HomeScreenInactivityThresholdReached ||
-                !state.screensaverOrPhotoAlbum) return;
+                !settingsState.screensaverOrPhotoAlbum) return;
 
             final authProviders = copiedAuthProviders(context);
-            if (state.startView == StartView.photoAlbum) {
+
+            if (settingsState.startView == StartView.photoAlbum) {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => MultiBlocProvider(
@@ -47,7 +49,7 @@ class ScreenSaverListener
               );
             }
 
-            if (state.showScreensaver) {
+            if (settingsState.useScreensaver) {
               final screenSaverRoute = MaterialPageRoute(
                 builder: (context) => MultiBlocProvider(
                   providers: authProviders,

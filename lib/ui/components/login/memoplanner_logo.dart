@@ -11,10 +11,7 @@ class MEMOplannerLogoWithLoginProgress extends StatelessWidget {
         width: layout.login.logoSize,
         height: layout.login.logoSize,
         child: state is LoginLoading
-            ? CircularProgressIndicator(
-                valueColor: const AlwaysStoppedAnimation(AbiliaColors.red),
-                strokeWidth: layout.login.progressWidth,
-              )
+            ? const AbiliaProgressIndicator()
             : GestureDetector(
                 onLongPress: () {
                   context.read<LoginCubit>().clearFailure();

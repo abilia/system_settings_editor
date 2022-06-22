@@ -96,6 +96,7 @@ class Layout {
   final PhotoCalendarLayoutMedium photoCalendarLayout;
   final CodeProtectLayoutMedium codeProtect;
   final SelectorLayout selector;
+  final ProgressIndicatorLayout progressIndicator;
 
   const Layout({
     this.radius = 12,
@@ -172,6 +173,7 @@ class Layout {
     this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
     this.codeProtect = const CodeProtectLayoutMedium(),
     this.selector = const SelectorLayout(),
+    this.progressIndicator = const ProgressIndicatorLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -799,17 +801,12 @@ class SwitchFieldLayout {
 }
 
 class LoginLayout {
-  final double topFormDistance,
-      logoSize,
-      progressWidth,
-      termsPadding,
-      logoHeight;
+  final double topFormDistance, logoSize, termsPadding, logoHeight;
   final EdgeInsets createAccountPadding, loginButtonPadding;
 
   const LoginLayout({
     this.topFormDistance = 32,
     this.logoSize = 64,
-    this.progressWidth = 6,
     this.termsPadding = 48,
     this.logoHeight = 64,
     this.createAccountPadding = const EdgeInsets.fromLTRB(16, 8, 16, 32),
@@ -959,9 +956,8 @@ class CrossOverLayout {
 }
 
 class SpeechSupportPageLayout {
-  final double loaderStrokeWidth, loaderSize;
+  final double loaderSize;
   const SpeechSupportPageLayout({
-    this.loaderStrokeWidth = 6,
     this.loaderSize = 56,
   });
 }

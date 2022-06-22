@@ -113,13 +113,17 @@ void main() {
 
       // Act
       await tester.pumpApp();
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(MenuPage), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      expect(find.byType(MenuPage), findsNothing);
+      expect(find.byType(WeekCalendar), findsOneWidget);
       // Act press home button
       intentStreamController.add(AndroidIntentAction.homeButton);
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(DayCalendar), findsNothing);
+      expect(find.byType(WeekCalendar), findsNothing);
       expect(find.byType(MenuPage), findsOneWidget);
     });
 
@@ -131,21 +135,20 @@ void main() {
 
       // Act
       await tester.pumpApp();
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(WeekCalendar), findsOneWidget);
       // Act go to settings
       await tester.tap(find.byType(MenuButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(SettingsButton));
       await tester.pumpAndSettle();
 
-      expect(find.byType(DayCalendar), findsNothing);
+      expect(find.byType(WeekCalendar), findsNothing);
       expect(find.byType(SettingsPage), findsOneWidget);
       // Act press home button
       intentStreamController.add(AndroidIntentAction.homeButton);
       await tester.pumpAndSettle();
 
       // Assert at week calendar
-      expect(find.byType(DayCalendar), findsNothing);
       expect(find.byType(MenuPage), findsNothing);
       expect(find.byType(SettingsPage), findsNothing);
       expect(find.byType(WeekCalendar), findsOneWidget);

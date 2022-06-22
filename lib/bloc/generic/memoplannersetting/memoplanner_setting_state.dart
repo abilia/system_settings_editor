@@ -42,6 +42,8 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get displayMenu =>
       settings.functionMenuDisplayMenu && !settings.menu.allDisabled;
   bool get useScreensaver => settings.useScreensaver;
+  bool get screensaverOrPhotoAlbum =>
+      useScreensaver || startView == StartView.photoAlbum;
   bool get displayLocalImages => settings.imageMenuDisplayPhotoItem;
   bool get displayCamera => settings.imageMenuDisplayCameraItem;
   bool get displayMyPhotos => settings.imageMenuDisplayMyPhotosItem;
@@ -199,7 +201,7 @@ abstract class MemoplannerSettingsState extends Equatable {
     }
   }
 
-  int startViewIndex(StartView startView) {
+  int get startViewIndex {
     switch (startView) {
       case StartView.weekCalendar:
         if (displayWeekCalendar) {

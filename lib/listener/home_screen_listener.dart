@@ -24,11 +24,11 @@ class ReturnToHomeScreenListener extends StatelessWidget {
             listenWhen: (previous, current) =>
                 current is HomeScreenInactivityThresholdReached &&
                 previous is! HomeScreenInactivityThresholdReached &&
-                current.startView != StartView.photoAlbum,
+                settingsState.startView != StartView.photoAlbum,
             listener: (context, state) {
               if (state is! HomeScreenInactivityThresholdReached) return;
               DefaultTabController.of(context)?.index =
-                  settingsState.startViewIndex(state.startView);
+                  settingsState.startViewIndex;
             },
           ),
           BlocListener<ActionIntentCubit, String>(
@@ -37,7 +37,7 @@ class ReturnToHomeScreenListener extends StatelessWidget {
             listener: (context, state) {
               Navigator.of(context).popUntil((route) => route.isFirst);
               DefaultTabController.of(context)?.index =
-                  settingsState.startViewIndex(settingsState.startView);
+                  settingsState.startViewIndex;
               GetIt.I<AlarmNavigator>().clearAlarmStack();
               cancelAllActiveNotifications();
             },

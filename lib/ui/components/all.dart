@@ -35,5 +35,6 @@ export 'list_data_item.dart';
 export 'sub_heading.dart';
 export 'lined_border.dart';
 export 'collapsable_widget.dart';
+export 'abilia_progress_indicator.dart';
 
 export 'package:flutter/semantics.dart';
