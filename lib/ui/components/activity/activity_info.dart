@@ -210,11 +210,17 @@ class ActivityContainer extends StatelessWidget {
               key: TestKey.attachment,
               child: Column(
                 children: [
-                  Divider(
-                    height: layout.activityPage.dividerHeight,
-                    endIndent: 0,
-                    indent: layout.activityPage.dividerIndentation,
-                  ),
+                  if (activityDay.activity.infoItem.runtimeType !=
+                      UrlInfoItem) ...[
+                    SizedBox(
+                      height: layout.activityPage.dividerTopPadding,
+                    ),
+                    Divider(
+                      height: layout.activityPage.dividerHeight,
+                      endIndent: 0,
+                      indent: layout.activityPage.dividerIndentation,
+                    ),
+                  ],
                   Expanded(
                     child: Attachment(
                       activityDay: activityDay,
@@ -275,6 +281,16 @@ class Attachment extends StatelessWidget with ActivityMixin {
             );
           }
         },
+      );
+    } else if (item is UrlInfoItem) {
+      return Padding(
+        padding: layout.activityPage.youtubePlayerPadding,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: YoutubePlayer(
+            url: item.url,
+          ),
+        ),
       );
     }
     return Container();
