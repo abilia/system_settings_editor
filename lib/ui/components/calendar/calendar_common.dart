@@ -52,31 +52,37 @@ class FullDayStack extends StatelessWidget {
     );
 
     return goToActivitiesListOnTap
-        ? GestureDetector(
-            onTap: () {
-              final authProviders = copiedAuthProviders(context);
-
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  pageBuilder: (_, animation, secondaryAnimation) =>
-                      MultiBlocProvider(
-                    providers: authProviders,
-                    child: FadeTransition(
-                      opacity: CurvedAnimation(
-                        parent: animation,
-                        curve: Curves.easeOut,
-                      ),
-                      child: AllDayList(
-                        day: day!,
-                      ),
-                    ),
-                  ),
-                  settings: RouteSettings(name: 'AllDayList $day'),
-                ),
-              );
-            },
-            child: body,
-          )
+        ? _wrapWithGestureDetector(context, day, body)
         : body;
+  }
+
+  Widget _wrapWithGestureDetector(
+      BuildContext context, DateTime? day, Widget body) {
+    return GestureDetector(
+      onTap: () {
+        final authProviders = copiedAuthProviders(context);
+        if (day != null) {
+          Navigator.of(context).push(
+            PageRouteBuilder(
+              pageBuilder: (_, animation, secondaryAnimation) =>
+                  MultiBlocProvider(
+                providers: authProviders,
+                child: FadeTransition(
+                  opacity: CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeOut,
+                  ),
+                  child: AllDayList(
+                    day: day,
+                  ),
+                ),
+              ),
+              settings: RouteSettings(name: 'AllDayList $day'),
+            ),
+          );
+        }
+      },
+      child: body,
+    );
   }
 }
