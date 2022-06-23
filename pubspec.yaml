@@ -66,6 +66,7 @@ dependencies:
   uuid: ^3.0.5
   wakelock: ^0.6.1
   webview_flutter: ^3.0.1
+  youtube_player_iframe: ^2.2.2
 
 dev_dependencies:
   test: any

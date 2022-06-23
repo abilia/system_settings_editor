@@ -6,8 +6,7 @@ class AppBarLayout {
       clockPadding,
       largeHeight,
       mediumHeight,
-      smallHeight,
-      previewWidth;
+      smallHeight;
 
   final BorderRadius borderRadius;
   final TextStyle _textStyle;
@@ -18,7 +17,6 @@ class AppBarLayout {
     this.largeHeight = 80,
     this.mediumHeight = 80,
     this.smallHeight = 68,
-    this.previewWidth = 375,
     this.borderRadius = const BorderRadius.only(
       topLeft: Radius.circular(24),
       topRight: Radius.circular(24),
@@ -48,7 +46,6 @@ class AppBarLayoutMedium extends AppBarLayout {
           largeHeight: largeHeight ?? 148,
           mediumHeight: mediumHeight ?? 148,
           smallHeight: 104,
-          previewWidth: 562.5,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(32),
             topRight: Radius.circular(32),

@@ -157,9 +157,9 @@ back	Previous	Tillbaka	Tilbage	Terug	Takaisin	Zurück	Tilbake
 next	Next	Nästa	Næste	Volgende	Seuraava	Nächster	Neste
 ok	OK	OK	OK	OK	OK	OK	OK
 record	Record	Spela in	Indspil	Opnemen	Nauhoita	Aufnahme	Spill inn
+newText	New	Ny	Ny	Nieuw	Uusi	Neu	Ny
 							
-### Edit activity							
-newActivityButton	New	Ny	Ny	Nieuw	Uusi	Neu	Ny
+### Edit activity
 newActivityChoice	New	Helt ny	Helt ny	Nieuw	Uusi	Neu	Helt ny
 newActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuw activiteit	Uusi aktiviteettia	Neu Aktivität	Ny aktivitet
 editActivity	Edit activity	Ändra aktivitet	Ændre aktivitet	Activiteit bewerken	Muokkaa aktiviteettia	Aktivität bearbeiten	Endre aktivitet
@@ -456,7 +456,7 @@ searchForUpdate	Search for update	Sök uppdatering	Søg opdatering	Zoeken naar u
 							
 ### Menu page							
 camera	Camera	Kamera	Kamera	Camera	Kamera	Kamera	Kamera
-photoCalendar	Photo-calendar	Foto-\nkalender	Billede-\nkalender	Foto-\nkalender	Kuva-\nkalenteri	Foto-\nkalender	Bilde-\nkalender
+photoCalendar	Photo calendar	Fotokalender	Billedekalender	Fotokalender	Kuvakalenteri	Fotokalender	Bildekalender
 countdown	Countdown	Nedräkning	Nedtælling	Timers	Ajastin	Countdown	Nedtelling
 quickSettingsMenu	Quick settings	Snabb-\ninställningar	Hurtig-\nindstillinger	Snelle\ninstellingen	Pika-\nasetukset	Schnell-\neinstellungen	Hurtig-\ninnstillinger
 ### Photo calendar							

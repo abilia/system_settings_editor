@@ -15,11 +15,10 @@ class AppBarPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoSettingsState) => BlocBuilder<ClockBloc, DateTime>(
-        builder: (context, currentTime) => FittedBox(
-          child: SizedBox(
-            width: layout.appBar.previewWidth,
-            height: CalendarAppBar.size.height,
+        builder: (context, currentTime) {
+          return FittedBox(
             child: SizedBox(
+              width: MediaQuery.of(context).size.width,
               height: CalendarAppBar.size.height,
               child: CalendarAppBar(
                 leftAction: showBrowseButtons
@@ -40,8 +39,8 @@ class AppBarPreview extends StatelessWidget {
                 rows: rows,
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

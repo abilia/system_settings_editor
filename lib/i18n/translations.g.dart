@@ -322,7 +322,7 @@ abstract class Translated {
 
   final String record = 'Record';
 
-  final String newActivityButton = 'New';
+  final String newText = 'New';
 
   final String newActivityChoice = 'New';
 
@@ -869,7 +869,7 @@ abstract class Translated {
 
   final String camera = 'Camera';
 
-  final String photoCalendar = 'Photo-calendar';
+  final String photoCalendar = 'Photo calendar';
 
   final String countdown = 'Countdown';
 
@@ -1362,7 +1362,7 @@ class SV extends Translated {
   final String record = 'Spela in';
 
   @override
-  final String newActivityButton = 'Ny';
+  final String newText = 'Ny';
 
   @override
   final String newActivityChoice = 'Helt ny';
@@ -2168,7 +2168,7 @@ class SV extends Translated {
   final String camera = 'Kamera';
 
   @override
-  final String photoCalendar = 'Foto-\nkalender';
+  final String photoCalendar = 'Fotokalender';
 
   @override
   final String countdown = 'Nedräkning';
@@ -2634,7 +2634,7 @@ class DA extends Translated {
   final String record = 'Indspil';
 
   @override
-  final String newActivityButton = 'Ny';
+  final String newText = 'Ny';
 
   @override
   final String newActivityChoice = 'Helt ny';
@@ -3421,7 +3421,7 @@ class DA extends Translated {
   final String camera = 'Kamera';
 
   @override
-  final String photoCalendar = 'Billede-\nkalender';
+  final String photoCalendar = 'Billedekalender';
 
   @override
   final String countdown = 'Nedtælling';
@@ -3855,7 +3855,7 @@ class NL extends Translated {
   final String record = 'Opnemen';
 
   @override
-  final String newActivityButton = 'Nieuw';
+  final String newText = 'Nieuw';
 
   @override
   final String newActivityChoice = 'Nieuw';
@@ -4648,7 +4648,7 @@ class NL extends Translated {
   final String camera = 'Camera';
 
   @override
-  final String photoCalendar = 'Foto-\nkalender';
+  final String photoCalendar = 'Fotokalender';
 
   @override
   final String countdown = 'Timers';
@@ -5082,7 +5082,7 @@ class FI extends Translated {
   final String record = 'Nauhoita';
 
   @override
-  final String newActivityButton = 'Uusi';
+  final String newText = 'Uusi';
 
   @override
   final String newActivityChoice = 'Uusi';
@@ -5873,7 +5873,7 @@ class FI extends Translated {
   final String camera = 'Kamera';
 
   @override
-  final String photoCalendar = 'Kuva-\nkalenteri';
+  final String photoCalendar = 'Kuvakalenteri';
 
   @override
   final String countdown = 'Ajastin';
@@ -6311,7 +6311,7 @@ class DE extends Translated {
   final String record = 'Aufnahme';
 
   @override
-  final String newActivityButton = 'Neu';
+  final String newText = 'Neu';
 
   @override
   final String newActivityChoice = 'Neu';
@@ -7105,7 +7105,7 @@ class DE extends Translated {
   final String camera = 'Kamera';
 
   @override
-  final String photoCalendar = 'Foto-\nkalender';
+  final String photoCalendar = 'Fotokalender';
 
   @override
   final String countdown = 'Countdown';
@@ -7561,7 +7561,7 @@ class NB extends Translated {
   final String record = 'Spill inn';
 
   @override
-  final String newActivityButton = 'Ny';
+  final String newText = 'Ny';
 
   @override
   final String newActivityChoice = 'Helt ny';
@@ -8371,7 +8371,7 @@ class NB extends Translated {
   final String camera = 'Kamera';
 
   @override
-  final String photoCalendar = 'Bilde-\nkalender';
+  final String photoCalendar = 'Bildekalender';
 
   @override
   final String countdown = 'Nedtelling';

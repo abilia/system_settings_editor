@@ -8,6 +8,7 @@ class ActivityPageLayout {
       checkButtonHeight,
       dividerHeight,
       dividerIndentation,
+      dividerTopPadding,
       dashWidth,
       dashSpacing,
       timeBoxCurrentBorderWidth,
@@ -25,7 +26,8 @@ class ActivityPageLayout {
       horizontalInfoPadding,
       checkButtonPadding,
       checkButtonContentPadding,
-      checklistPadding;
+      checklistPadding,
+      youtubePlayerPadding;
 
   TextStyle headline4_2() => GoogleFonts.roboto(
         textStyle: const TextStyle(
@@ -41,8 +43,7 @@ class ActivityPageLayout {
   const ActivityPageLayout({
     this.topInfoHeight = 126,
     this.timeRowPadding = const EdgeInsets.only(bottom: 8),
-    this.topInfoPadding =
-        const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+    this.topInfoPadding = const EdgeInsets.only(left: 12, top: 15),
     this.titleImageHorizontalSpacing = 8,
     this.imagePadding = const EdgeInsets.fromLTRB(12, 0, 12, 12),
     this.checkPadding =
@@ -55,9 +56,11 @@ class ActivityPageLayout {
     this.checkButtonPadding = const EdgeInsets.only(bottom: 16),
     this.checkButtonContentPadding = const EdgeInsets.fromLTRB(10, 10, 20, 10),
     this.checklistPadding = const EdgeInsets.fromLTRB(18, 12, 12, 0),
+    this.youtubePlayerPadding = const EdgeInsets.all(12),
     this.checkButtonHeight = 48,
     this.dividerHeight = 1,
     this.dividerIndentation = 12,
+    this.dividerTopPadding = 15,
     this.dashWidth = 7,
     this.dashSpacing = 8,
     this.timeCrossOverSize = const Size(64, 38),
@@ -79,7 +82,7 @@ class ActivityPageLayoutMedium extends ActivityPageLayout {
   }) : super(
           topInfoHeight: topInfoHeight ?? 232,
           timeRowPadding: const EdgeInsets.only(bottom: 16),
-          topInfoPadding: const EdgeInsets.all(16),
+          topInfoPadding: const EdgeInsets.only(left: 16, top: 16),
           titleImageHorizontalSpacing: 16,
           imagePadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
           verticalInfoPaddingCheckable:
@@ -89,11 +92,13 @@ class ActivityPageLayoutMedium extends ActivityPageLayout {
           horizontalInfoPadding: const EdgeInsets.symmetric(horizontal: 16),
           checkButtonPadding: const EdgeInsets.only(bottom: 24),
           checklistPadding: const EdgeInsets.fromLTRB(27, 15, 28, 0),
+          youtubePlayerPadding: const EdgeInsets.all(16),
           checkButtonHeight: 72,
           checkButtonContentPadding:
               const EdgeInsets.fromLTRB(14.25, 15, 31.75, 15),
           dividerHeight: 2,
           dividerIndentation: 16,
+          dividerTopPadding: 16,
           dashWidth: 12,
           dashSpacing: 12,
           timeCrossOverSize: timeCrossOverSize ?? const Size(112, 56),
