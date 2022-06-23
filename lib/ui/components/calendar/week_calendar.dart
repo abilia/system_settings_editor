@@ -615,7 +615,7 @@ class _WeekActivityContent extends StatelessWidget {
                         Center(
                           child: Text(
                             activityOccasion.activity.title,
-                            overflow: TextOverflow.ellipsis,
+                            overflow: TextOverflow.clip,
                             style:
                                 Theme.of(context).textTheme.caption ?? caption,
                             textAlign: TextAlign.center,
