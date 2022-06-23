@@ -23,5 +23,6 @@ class LargeLayout extends MediumLayout {
           fontSize: const FontSizeLarge(),
           eventCard: const EventCardLayoutLarge(),
           borders: const BorderLayoutLarge(),
+          alarmPage: const AlarmPageLayoutLarge(),
         );
 }

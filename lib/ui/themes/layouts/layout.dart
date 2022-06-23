@@ -556,15 +556,6 @@ class IconTextButtonStyle {
   });
 }
 
-class AlarmPageLayout {
-  final EdgeInsets alarmClockPadding;
-
-  const AlarmPageLayout({
-    this.alarmClockPadding =
-        const EdgeInsets.only(top: 4, bottom: 4, right: 16),
-  });
-}
-
 class ScreenSaverLayout {
   final double clockHeight,
       clockSeparation,
