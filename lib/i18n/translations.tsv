@@ -212,7 +212,7 @@ onlyMe	Only me	Bara mig	Bare mig	Mij alleen	Vain minä	Nur für mich	Bare meg
 ### Alarm							
 selectAlarmType	Select alarm	Ange larm	Vælg alarm	Alarm selecteren	Valitse hälytys	Alarm auswählen	Angi alarm
 alarmAndVibration	Alarm + vibration	Larm + vibration	Alarm + vibration	Alarm + trilfunctie	Hälytys + värinä	Alarm + Vibration	Alarm + Vibrasjon
-vibration	Vibration	Vibration	Vibration	Trilfunctie	Värinä	Vibration	Vibrasjon
+vibrationIfAvailable	Vibration (if available)
 noAlarm	No alarm	Inget larm	Ingen alarm	Geen alarm	Ei hälytystä	Kein Alarm	Ingen alarm
 silentAlarm	Silent alarm	Tyst larm	Stille alarm	Stil alarm	Äänetön hälytys	Stiller Alarm	Stille alarm
 alarmOnlyAtStartTime	Alarm only at Start time	Larm endast vid starttid	Kun alarm ved starttidspunkt	Alarm alleen op begintijd	Vain hälytys alkamisaikaan	Alarm nur zur Startzeit	Alarm kun på starttid
@@ -337,6 +337,7 @@ allowPassedStartTime	Allow passed start time	Lägga in på passerad tid	Indsæt 
 addRecurringActivity	Add recurring activity	Lägga in återkommande aktivitet	>Indsæt gentagende aktivitet	Terugkerende activiteit toevoegen	Lisää toistuva aktiviteetti	Wiederkehrende Aktivität hinzufügen	Legg inn gjentakende aktivitet
 showEndTime	Show end time	Visa sluttid	Vis sluttid	Eindtijd tonen	Näytä päättymisaika	Endezeit anzeigen	Vis sluttid
 showAlarm	Show alarm	Visa larm	Vis alarm	Alarmen weergeven	Näytä hälytykset	Alarme anzeigen	Vis alarm
+showVibrationAlarm	Show vibration
 showSilentAlarm	Show silent alarm	Visa tyst larm	Vis stille alarm	Stille alarmen weergeven	Näytä hiljaiset hälytykset	Stille Alarme anzeigen	Vis stille alarm
 showNoAlarm	Show no alarm	Visa inget larm	Vis ingen alarm	Geen alarmen weergeven	Älä näytä hälytystä	Kein Alarm anzeigen	Vis ingen alarm
 throughEditView	Through Edit View	Via Ändravyn	Via Redigersiden	Door bewerkweergave	Muokkausnäkymässä	Durch Bearbeitungsanzeige	Via endrevindu

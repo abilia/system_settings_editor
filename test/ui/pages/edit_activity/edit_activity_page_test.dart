@@ -379,14 +379,14 @@ void main() {
         await tester.pumpAndSettle();
         await tester.goToAlarmTab();
         expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
-        expect(find.text(translate.vibration), findsNothing);
+        expect(find.text(translate.vibrationIfAvailable), findsNothing);
         expect(find.byIcon(AbiliaIcons.handiVibration), findsNothing);
         await tester.tap(find.byKey(TestKey.selectAlarm));
         await tester.pumpAndSettle();
         expect(find.byType(SelectAlarmTypePage), findsOneWidget);
         await tester.tap(find.byKey(const ObjectKey(AlarmType.vibration)));
         await tester.pumpAndSettle();
-        expect(find.text(translate.vibration), findsOneWidget);
+        expect(find.text(translate.vibrationIfAvailable), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.handiVibration), findsOneWidget);
       });
 
@@ -2428,7 +2428,7 @@ text''';
       expect(find.byType(SelectAlarmTypePage), findsOneWidget);
 
       expect(find.text(translate.silentAlarm), findsOneWidget);
-      expect(find.text(translate.vibration), findsOneWidget);
+      expect(find.text(translate.vibrationIfAvailable), findsOneWidget);
     });
 
     testWidgets(
@@ -2887,7 +2887,7 @@ text''';
       await tester.pumpAndSettle();
 
       await tester.verifyTts(find.byKey(const ObjectKey(AlarmType.vibration)),
-          exact: translate.vibration);
+          exact: translate.vibrationIfAvailable);
     });
 
     testWidgets('recurrance', (WidgetTester tester) async {

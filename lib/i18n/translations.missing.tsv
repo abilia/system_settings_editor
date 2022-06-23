@@ -12,8 +12,10 @@ addTimer	Add Timer	Lägga in timer					Legg inn timer
 enterNameForTimer	Enter name for timer	Ange namn för timer					Angi navn på timer
 timeIsUp	Time is up	Tiden är slut					Tiden er slutt
 newBasicTimer	New basic timer	Ny bastimer					Ny standardtimer
+vibrationIfAvailable	Vibration (if available)
 disableAlarms	Disable alarms	Inaktivera alarm					
 enterTask	Enter task						Legg inn oppgave
+showVibrationAlarm	Show vibration
 onlyAppliesToGo	Only applies to MEMOplanner Go	Gäller endast MEMOplanner Go					Gjelder kun MEMOplanner Go
 selectADayToViewDetails	Select a day to view more details	Välj en dag för att se mer detaljer					Velg en dag for å se mer detaljer
 voice	Voice	Röst					Talesyntese

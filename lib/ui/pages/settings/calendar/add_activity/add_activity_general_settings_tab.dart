@@ -53,6 +53,15 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
                 child: Text(t.showAlarm),
               ),
               SwitchField(
+                leading: const Icon(AbiliaIcons.handiVibration),
+                value: settings.showVibrationAlarm,
+                onChanged: (v) => context
+                    .read<AddActivitySettingsCubit>()
+                    .addActivitySetting(
+                        settings.copyWith(showVibrationAlarm: v)),
+                child: Text(t.showVibrationAlarm),
+              ),
+              SwitchField(
                 leading: const Icon(AbiliaIcons.handiAlarm),
                 value: settings.showSilentAlarm,
                 onChanged: (v) => context

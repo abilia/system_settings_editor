@@ -423,7 +423,7 @@ abstract class Translated {
 
   final String alarmAndVibration = 'Alarm + vibration';
 
-  final String vibration = 'Vibration';
+  final String vibrationIfAvailable = 'Vibration (if available)';
 
   final String noAlarm = 'No alarm';
 
@@ -654,6 +654,8 @@ abstract class Translated {
   final String showEndTime = 'Show end time';
 
   final String showAlarm = 'Show alarm';
+
+  final String showVibrationAlarm = 'Show vibration';
 
   final String showSilentAlarm = 'Show silent alarm';
 
@@ -1511,9 +1513,6 @@ class SV extends Translated {
 
   @override
   final String alarmAndVibration = 'Larm + vibration';
-
-  @override
-  final String vibration = 'Vibration';
 
   @override
   final String noAlarm = 'Inget larm';
@@ -2788,9 +2787,6 @@ class DA extends Translated {
   final String alarmAndVibration = 'Alarm + vibration';
 
   @override
-  final String vibration = 'Vibration';
-
-  @override
   final String noAlarm = 'Ingen alarm';
 
   @override
@@ -4008,9 +4004,6 @@ class NL extends Translated {
 
   @override
   final String alarmAndVibration = 'Alarm + trilfunctie';
-
-  @override
-  final String vibration = 'Trilfunctie';
 
   @override
   final String noAlarm = 'Geen alarm';
@@ -5237,9 +5230,6 @@ class FI extends Translated {
   final String alarmAndVibration = 'Hälytys + värinä';
 
   @override
-  final String vibration = 'Värinä';
-
-  @override
   final String noAlarm = 'Ei hälytystä';
 
   @override
@@ -6464,9 +6454,6 @@ class DE extends Translated {
 
   @override
   final String alarmAndVibration = 'Alarm + Vibration';
-
-  @override
-  final String vibration = 'Vibration';
 
   @override
   final String noAlarm = 'Kein Alarm';
@@ -7713,9 +7700,6 @@ class NB extends Translated {
 
   @override
   final String alarmAndVibration = 'Alarm + Vibrasjon';
-
-  @override
-  final String vibration = 'Vibrasjon';
 
   @override
   final String noAlarm = 'Ingen alarm';
