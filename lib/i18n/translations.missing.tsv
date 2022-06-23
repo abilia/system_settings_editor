@@ -12,6 +12,9 @@ addTimer	Add Timer	Lägga in timer					Legg inn timer
 enterNameForTimer	Enter name for timer	Ange namn för timer					Angi navn på timer
 timeIsUp	Time is up	Tiden är slut					Tiden er slutt
 newBasicTimer	New basic timer	Ny bastimer					Ny standardtimer
+allSupportPersons	All my support persons	Alla mina stödpersoner					
+selectedSupportPersons	Selected support persons	Utvalda stödpersoner					
+supportPersons	Support Persons	Stödpersoner					
 disableAlarms	Disable alarms	Inaktivera alarm					
 enterTask	Enter task						Legg inn oppgave
 onlyAppliesToGo	Only applies to MEMOplanner Go	Gäller endast MEMOplanner Go					Gjelder kun MEMOplanner Go

@@ -8,6 +8,7 @@ class SwitchField extends StatelessWidget {
   final double? heigth, width;
   final bool value;
   final Decoration? decoration;
+  final EdgeInsets? padding;
   static final defaultHeight = layout.switchField.height;
 
   const SwitchField({
@@ -19,6 +20,7 @@ class SwitchField extends StatelessWidget {
     this.width,
     this.value = false,
     this.decoration,
+    this.padding,
     this.ttsData,
   })  : assert(child is Text || ttsData != null),
         super(key: key);
@@ -49,7 +51,7 @@ class SwitchField extends StatelessWidget {
             decoration: onChanged == null
                 ? boxDecoration
                 : decoration ?? whiteBoxDecoration,
-            padding: layout.switchField.padding,
+            padding: padding ?? layout.switchField.padding,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[

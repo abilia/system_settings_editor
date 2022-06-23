@@ -64,7 +64,7 @@ class _ProfilePictureNameAndEmailState
             onDoubleTap: () => setState(() => showVersion = !showVersion),
             child: ProfilePicture(
               baseUrl,
-              user,
+              user.image,
             ),
           ),
           SizedBox(height: layout.logout.profileDistance),

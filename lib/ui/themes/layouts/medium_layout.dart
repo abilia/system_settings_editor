@@ -371,5 +371,6 @@ class MediumLayout extends Layout {
           selector: const SelectorLayoutMedium(),
           startupPage: const StartupPageLayoutMedium(),
           starterSetDialog: const StarterSetDialogLayoutMedium(),
+          supportPerson: const SupportPersonLayoutMedium(),
         );
 }
