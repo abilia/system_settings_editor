@@ -3,8 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/data_repository/support_persons_repository.dart';
-import 'package:seagull/repository/http_client.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -513,65 +512,64 @@ class AvailableForWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final secret = activity.secret;
-    final secretExemptions = activity.secretExemptions;
     final translator = Translator.of(context).translate;
+    final availableFor = activity.availableFor;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SubHeading(translator.availableFor),
         PickField(
-          leading: Icon(
-            !secret
-                ? AbiliaIcons.unlock
-                : secretExemptions.isEmpty
-                    ? AbiliaIcons.lock
-                    : AbiliaIcons.selectedSupport,
+          leading: Icon(availableFor.icon),
+          text: Text(
+            availableFor.text(translator),
           ),
-          text: Text(!secret
-              ? translator.allSupportPersons
-              : secretExemptions.isEmpty
-                  ? translator.onlyMe
-                  : translator.selectedSupportPersons),
-          onTap: () async {
-            final editActivityCubit = context.read<EditActivityCubit>();
-            final authenticatedState = context.read<AuthenticationBloc>().state;
-            if (authenticatedState is Authenticated) {
-              final availableForState = await navigateToAvailableForPage(
-                  context, authenticatedState.userId);
-              if (availableForState != null) {
-                editActivityCubit.replaceActivity(activity.copyWith(
-                    secret: availableForState.availableFor !=
-                        AvailableForType.allSupportPersons,
-                    secretExemptions:
-                        availableForState.selectedSupportPersons));
-              }
-            }
-          },
+          onTap: () => onTap(context),
         ),
       ],
     );
   }
 
-  Future<AvailableForState?> navigateToAvailableForPage(
-      BuildContext context, int userId) {
-    return Navigator.of(context).push<AvailableForState>(
-      MaterialPageRoute(
-          builder: (context) => BlocProvider<AvailableForCubit>(
-                create: (context) => AvailableForCubit(
-                  supportPersonsRepository: SupportPersonsRepository(
-                    baseUrlDb: GetIt.I<BaseUrlDb>(),
-                    client: GetIt.I<ListenableClient>(),
-                    db: GetIt.I<SupportPersonsDb>(),
-                    userId: userId,
-                  ),
-                  availableFor: activity.availableFor,
-                  selectedSupportPersons: activity.secretExemptions,
-                ),
-                child: const AvailableForPage(),
-              )),
-    );
+  Future<void> onTap(BuildContext context) async {
+    final authenticatedState = context.read<AuthenticationBloc>().state;
+    if (authenticatedState is Authenticated) {
+      final editActivityCubit = context.read<EditActivityCubit>();
+      final availableForState = await navigateToAvailableForPage(
+        context,
+        authenticatedState.userId,
+      );
+      if (availableForState != null) {
+        editActivityCubit.replaceActivity(
+          activity.copyWith(
+            secret: availableForState.availableFor !=
+                AvailableForType.allSupportPersons,
+            secretExemptions: availableForState.selectedSupportPersons,
+          ),
+        );
+      }
+    }
   }
+
+  Future<AvailableForState?> navigateToAvailableForPage(
+    BuildContext context,
+    int userId,
+  ) =>
+      Navigator.of(context).push<AvailableForState>(
+        MaterialPageRoute(
+          builder: (context) => BlocProvider<AvailableForCubit>(
+            create: (context) => AvailableForCubit(
+              supportPersonsRepository: SupportPersonsRepository(
+                baseUrlDb: GetIt.I<BaseUrlDb>(),
+                client: GetIt.I<ListenableClient>(),
+                db: GetIt.I<SupportPersonsDb>(),
+                userId: userId,
+              ),
+              availableFor: activity.availableFor,
+              selectedSupportPersons: activity.secretExemptions,
+            ),
+            child: const AvailableForPage(),
+          ),
+        ),
+      );
 }
 
 class RecurrenceWidget extends StatelessWidget {

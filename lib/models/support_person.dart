@@ -1,8 +1,11 @@
 import 'package:equatable/equatable.dart';
 
 class SupportPerson extends Equatable {
-  const SupportPerson(
-      {required this.id, required this.name, required this.image});
+  const SupportPerson({
+    required this.id,
+    required this.name,
+    required this.image,
+  });
 
   final int id;
   final String name;

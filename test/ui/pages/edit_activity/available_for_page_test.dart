@@ -58,7 +58,7 @@ void main() {
 
     supportUserRepo = MockSupportPersonsRepository();
     when(() => supportUserRepo.load()).thenAnswer((_) =>
-        Future.value(const [SupportPerson(id: 0, name: 'Test', image: '')]));
+        Future.value({const SupportPerson(id: 0, name: 'Test', image: '')}));
 
     mockBaseUrlDb = MockBaseUrlDb();
     when(() => mockBaseUrlDb.baseUrl).thenAnswer((_) => 'mockUrl');
