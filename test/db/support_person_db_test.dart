@@ -4,25 +4,28 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/models/support_person.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../fakes/all.dart';
+
 void main() {
   const testSupportPerson = SupportPerson(id: 0, name: 'Test', image: '');
   const testSupportPerson2 = SupportPerson(id: 1, name: 'Test 2', image: '');
-  const supportUsers = [testSupportPerson, testSupportPerson2];
+  final supportUsers = {testSupportPerson, testSupportPerson2};
 
   late SupportPersonsDb supportPersonsDb;
 
   setUp(() async {
-    supportPersonsDb = SupportPersonsDb(await SharedPreferences.getInstance());
+    supportPersonsDb =
+        SupportPersonsDb(await FakeSharedPreferences.getInstance());
   });
 
   test('Test insert list, get and compare', () async {
     await supportPersonsDb.insertAll(supportUsers);
 
-    Iterable<SupportPerson> fromDb = supportPersonsDb.getAll();
+    final fromDb = supportPersonsDb.getAll();
 
-    Function listEquals = const ListEquality().equals;
+    Function listEquals = const SetEquality().equals;
 
-    expect(listEquals(supportUsers, fromDb.toList()), true);
+    expect(listEquals(supportUsers, fromDb), true);
   });
 
   tearDown(() async {

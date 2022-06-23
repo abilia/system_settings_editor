@@ -67,7 +67,7 @@ void main() {
 
     supportUserRepo = MockSupportPersonsRepository();
     when(() => supportUserRepo.load())
-        .thenAnswer((_) => Future.value(const []));
+        .thenAnswer((_) => Future.value(const {}));
   });
 
   tearDown(GetIt.I.reset);

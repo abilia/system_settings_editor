@@ -1,9 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/models/activity/activity.dart';
-import 'package:seagull/repository/data_repository/support_persons_repository.dart';
-import 'package:seagull/repository/http_client.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class AvailableForWiz extends StatelessWidget {
@@ -12,38 +11,37 @@ class AvailableForWiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-
-    return BlocBuilder<EditActivityCubit, EditActivityState>(
-      builder: (context, state) => WizardScaffold(
-        iconData: AbiliaIcons.unlock,
-        title: translate.availableFor,
-        body: getAvailableForContext(context, state.activity),
-      ),
-    );
-  }
-
-  Widget getAvailableForContext(BuildContext context, Activity activity) {
-    final authenticatedState = context.read<AuthenticationBloc>().state;
-    if (authenticatedState is Authenticated) {
-      return BlocProvider<AvailableForCubit>(
-        create: (context) => AvailableForCubit(
-          supportPersonsRepository: SupportPersonsRepository(
-            baseUrlDb: GetIt.I<BaseUrlDb>(),
-            client: GetIt.I<ListenableClient>(),
-            db: GetIt.I<SupportPersonsDb>(),
-            userId: authenticatedState.userId,
+    return BlocSelector<EditActivityCubit, EditActivityState, Activity>(
+      selector: (state) => state.activity,
+      builder: (context, activity) {
+        final authenticatedState = context.read<AuthenticationBloc>().state;
+        if (authenticatedState is! Authenticated) {
+          return const SizedBox.shrink();
+        }
+        return WizardScaffold(
+          iconData: AbiliaIcons.unlock,
+          title: translate.availableFor,
+          body: BlocProvider<AvailableForCubit>(
+            create: (context) => AvailableForCubit(
+              supportPersonsRepository: SupportPersonsRepository(
+                baseUrlDb: GetIt.I<BaseUrlDb>(),
+                client: GetIt.I<ListenableClient>(),
+                db: GetIt.I<SupportPersonsDb>(),
+                userId: authenticatedState.userId,
+              ),
+              availableFor: activity.availableFor,
+              selectedSupportPersons: activity.secretExemptions,
+            ),
+            child: AvailableForPageBody(
+              onAvailableForChanged: (availableFor) => context
+                  .read<EditActivityCubit>()
+                  .setAvailableFor(availableFor),
+              onSupportPersonChanged: (id) =>
+                  context.read<EditActivityCubit>().toggleSupportPerson(id),
+            ),
           ),
-          availableFor: activity.availableFor,
-          selectedSupportPersons: activity.secretExemptions,
-        ),
-        child: AvailableForPageBody(
-          onAvailableForChanged: (availableFor) =>
-              context.read<EditActivityCubit>().setAvailableFor(availableFor),
-          onSupportPersonChanged: (id) =>
-              context.read<EditActivityCubit>().toggleSupportPerson(id),
-        ),
-      );
-    }
-    return const SizedBox.shrink();
+        );
+      },
+    );
   }
 }

@@ -183,36 +183,40 @@ class AvailableForIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color decorationColor;
-    final Icon icon;
+    return IconTheme(
+      data: Theme.of(context).iconTheme.copyWith(
+            size: layout.eventCard.iconSize,
+            color: iconColor,
+          ),
+      child: AnimatedContainer(
+        margin: layout.eventCard.cardIconPadding,
+        duration: ActivityCard.duration,
+        width: layout.eventCard.privateIconSize,
+        height: layout.eventCard.privateIconSize,
+        decoration: BoxDecoration(
+          color: decorationColor,
+          borderRadius: borderRadius,
+        ),
+        child: Icon(availableFor.icon),
+      ),
+    );
+  }
 
+  Color get iconColor {
     switch (availableFor) {
       case AvailableForType.onlyMe:
-        icon = Icon(AbiliaIcons.lock,
-            color: inactive ? AbiliaColors.white110 : AbiliaColors.white,
-            size: layout.eventCard.iconSize);
-        decorationColor =
-            inactive ? AbiliaColors.white140 : AbiliaColors.black75;
-        break;
+        return inactive ? AbiliaColors.white110 : AbiliaColors.white;
       default:
-        icon = Icon(
-            availableFor == AvailableForType.allSupportPersons
-                ? AbiliaIcons.unlock
-                : AbiliaIcons.selectedSupport,
-            color: inactive ? AbiliaColors.white140 : AbiliaColors.black75,
-            size: layout.eventCard.iconSize);
-        decorationColor = inactive ? AbiliaColors.white110 : AbiliaColors.white;
+        return inactive ? AbiliaColors.white140 : AbiliaColors.black75;
     }
-    return AnimatedContainer(
-      margin: layout.eventCard.cardIconPadding,
-      duration: ActivityCard.duration,
-      width: layout.eventCard.privateIconSize,
-      height: layout.eventCard.privateIconSize,
-      decoration: BoxDecoration(
-        color: decorationColor,
-        borderRadius: borderRadius,
-      ),
-      child: icon,
-    );
+  }
+
+  Color get decorationColor {
+    switch (availableFor) {
+      case AvailableForType.onlyMe:
+        return inactive ? AbiliaColors.white140 : AbiliaColors.black75;
+      default:
+        return inactive ? AbiliaColors.white110 : AbiliaColors.white;
+    }
   }
 }
