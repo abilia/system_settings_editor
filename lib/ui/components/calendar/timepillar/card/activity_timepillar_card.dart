@@ -132,15 +132,11 @@ class ActivityTimepillarCard extends TimepillarCard {
                                       textHeight -
                                       measures.cardPadding.vertical -
                                       measures.cardPadding.top,
-                                  child: Center(
-                                    child: AspectRatio(
-                                      aspectRatio: 1,
-                                      child: EventImage.fromEventOccasion(
-                                        eventOccasion: activityOccasion,
-                                        crossPadding: measures.cardPadding,
-                                        checkPadding: measures.cardPadding * 2,
-                                      ),
-                                    ),
+                                  child: EventImage.fromEventOccasion(
+                                    fit: BoxFit.scaleDown,
+                                    eventOccasion: activityOccasion,
+                                    crossPadding: measures.cardPadding,
+                                    checkPadding: measures.cardPadding * 2,
                                   ),
                                 ),
                               )
@@ -165,6 +161,7 @@ class SideTime extends StatelessWidget {
   final double width;
   final int category;
   final bool showCategoryColor;
+
   const SideTime({
     Key? key,
     required this.occasion,

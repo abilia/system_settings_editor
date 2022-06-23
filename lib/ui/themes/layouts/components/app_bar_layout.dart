@@ -67,7 +67,6 @@ class AppBarLayoutLarge extends AppBarLayoutMedium {
   const AppBarLayoutLarge()
       : super(
           largeHeight: 200,
-          mediumHeight: 148,
           horizontalPadding: 32,
           textStyle: const TextStyle(
             fontSize: 48,

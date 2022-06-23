@@ -10,17 +10,17 @@ class AlarmPageLayout {
 
 class AlarmPageLayoutMedium extends AlarmPageLayout {
   const AlarmPageLayoutMedium({
-    EdgeInsets? alarmClockPadding,
+    EdgeInsets? clockPadding,
   }) : super(
-          clockPadding: alarmClockPadding ?? const EdgeInsets.only(right: 16),
+          clockPadding: clockPadding ?? const EdgeInsets.only(right: 16),
         );
 }
 
 class AlarmPageLayoutLarge extends AlarmPageLayoutMedium {
   const AlarmPageLayoutLarge({
-    EdgeInsets? alarmClockPadding,
+    EdgeInsets? clockPadding,
   }) : super(
-          alarmClockPadding: alarmClockPadding ??
+          clockPadding: clockPadding ??
               const EdgeInsets.only(
                 top: 16,
                 bottom: 12,
