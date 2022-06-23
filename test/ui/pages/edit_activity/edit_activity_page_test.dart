@@ -2383,12 +2383,13 @@ text''';
       expect(find.byIcon(AbiliaIcons.repeat), findsNothing);
     });
 
-    testWidgets('Alarm options', (WidgetTester tester) async {
+    testWidgets('Alarm options, only one option', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
         addActivity: AddActivitySettings(
           showAlarm: false,
           showSilentAlarm: false,
+          showVibrationAlarm: false,
         ),
       )));
       await tester.pumpWidget(createEditActivityPage());
