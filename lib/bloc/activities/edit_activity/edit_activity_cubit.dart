@@ -228,7 +228,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     replaceActivity(
       activity.copyWith(
         secret: availableFor != AvailableForType.allSupportPersons,
-        secretExemptions: const [],
+        secretExemptions: const {},
       ),
     );
   }

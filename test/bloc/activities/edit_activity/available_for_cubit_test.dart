@@ -1,4 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/activities/all.dart';
 import 'package:seagull/models/activity/activity.dart';
@@ -14,20 +15,22 @@ void main() {
 
   const emptyState = AvailableForState(
     availableFor: AvailableForType.allSupportPersons,
-    selectedSupportPersons: <int>[],
-    allSupportPersons: [],
+    selectedSupportPersons: UnmodifiableSetView.empty(),
+    allSupportPersons: UnmodifiableSetView.empty(),
   );
 
-  const dbState = AvailableForState(
+  final dbState = AvailableForState(
     availableFor: AvailableForType.allSupportPersons,
-    selectedSupportPersons: <int>[],
-    allSupportPersons: [testSupportPerson, testSupportPerson2],
+    selectedSupportPersons: const UnmodifiableSetView.empty(),
+    allSupportPersons: UnmodifiableSetView(
+      {testSupportPerson, testSupportPerson2},
+    ),
   );
 
   setUp(() {
     supportPersonsRepository = MockSupportPersonsRepository();
     when(() => supportPersonsRepository.load()).thenAnswer(
-        (_) => Future.value([testSupportPerson, testSupportPerson2]));
+        (_) => Future.value({testSupportPerson, testSupportPerson2}));
   });
 
   blocTest('Initial states, emits dbState',

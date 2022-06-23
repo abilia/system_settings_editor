@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/models/activity/activity.dart';
@@ -8,12 +9,13 @@ class AvailableForCubit extends Cubit<AvailableForState> {
   AvailableForCubit({
     required this.supportPersonsRepository,
     AvailableForType? availableFor,
-    Iterable<int>? selectedSupportPersons,
+    Set<int>? selectedSupportPersons,
   }) : super(
           AvailableForState(
             availableFor: availableFor ?? AvailableForType.allSupportPersons,
-            selectedSupportPersons: selectedSupportPersons ?? const <int>[],
-            allSupportPersons: const [],
+            selectedSupportPersons:
+                UnmodifiableSetView(selectedSupportPersons ?? const <int>{}),
+            allSupportPersons: const UnmodifiableSetView.empty(),
           ),
         ) {
     initialize();
@@ -32,7 +34,7 @@ class AvailableForCubit extends Cubit<AvailableForState> {
   void setAvailableFor(AvailableForType availableFor) => emit(
         state.copyWith(
           availableFor: availableFor,
-          selectedSupportPersons: const [],
+          selectedSupportPersons: const {},
         ),
       );
 
@@ -53,19 +55,22 @@ class AvailableForState extends Equatable {
   });
 
   final AvailableForType availableFor;
-  final Iterable<int> selectedSupportPersons;
-  final Iterable<SupportPerson> allSupportPersons;
+  final UnmodifiableSetView<int> selectedSupportPersons;
+  final UnmodifiableSetView<SupportPerson> allSupportPersons;
 
   AvailableForState copyWith({
     AvailableForType? availableFor,
-    Iterable<int>? selectedSupportPersons,
-    Iterable<SupportPerson>? allSupportPersons,
+    Set<int>? selectedSupportPersons,
+    Set<SupportPerson>? allSupportPersons,
   }) =>
       AvailableForState(
         availableFor: availableFor ?? this.availableFor,
-        selectedSupportPersons:
-            selectedSupportPersons ?? this.selectedSupportPersons,
-        allSupportPersons: allSupportPersons ?? this.allSupportPersons,
+        selectedSupportPersons: selectedSupportPersons != null
+            ? UnmodifiableSetView(selectedSupportPersons)
+            : this.selectedSupportPersons,
+        allSupportPersons: allSupportPersons != null
+            ? UnmodifiableSetView(allSupportPersons)
+            : this.allSupportPersons,
       );
 
   @override
