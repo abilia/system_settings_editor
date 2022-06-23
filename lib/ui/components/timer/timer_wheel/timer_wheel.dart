@@ -148,7 +148,7 @@ class _TimerWheelState extends State<TimerWheel> {
       final fiveMinInterval =
           ((minutes % 58) / _intervalLength).round() * _intervalLength;
       final minute = minutes % _intervalLength;
-      if (minute < 1 || minute > 3) {
+      if (minute == 0 || minute == _intervalLength - 1) {
         GetIt.I<TtsInterface>().speak(
           '$fiveMinInterval ${Translator.of(context).translate.minutes}',
         );
