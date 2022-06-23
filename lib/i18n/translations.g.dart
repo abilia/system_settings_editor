@@ -434,6 +434,8 @@ abstract class Translated {
   final String alertAlarmsDisabled =
       'All alarms will be disabled until midnight on this device';
 
+  final String disableAlarms = 'Disable alarms';
+
   final String selectImage = 'Select image';
 
   final String removeImage = 'Remove image';
@@ -1525,6 +1527,9 @@ class SV extends Translated {
   @override
   final String alertAlarmsDisabled =
       'Alla larm kommer att inaktiveras fram till midnatt på den här enheten';
+
+  @override
+  final String disableAlarms = 'Inaktivera alarm';
 
   @override
   final String selectImage = 'Välj bild';

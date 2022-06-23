@@ -16,6 +16,7 @@ class _EyeButton extends StatelessWidget {
       child: IconActionButtonBlack(
         onPressed: onPressed,
         child: const Icon(AbiliaIcons.show),
+        ttsData: Translator.of(context).translate.display,
       ),
     );
   }

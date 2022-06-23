@@ -4,6 +4,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:intl/intl.dart';
 
 class ActivityNameAndPictureWidget extends StatelessWidget {
   const ActivityNameAndPictureWidget({Key? key}) : super(key: key);
@@ -31,7 +32,8 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
                   ? (text) {
                       if (state.activity.title != text) {
                         context.read<EditActivityCubit>().replaceActivity(
-                            state.activity.copyWith(title: text));
+                              state.activity.copyWith(title: text),
+                            );
                       }
                     }
                   : null,
@@ -397,17 +399,18 @@ class AlarmWidget extends StatelessWidget {
                 ? () async {
                     final authProviders = copiedAuthProviders(context);
                     final editActivityCubit = context.read<EditActivityCubit>();
-                    final result = await Navigator.of(context)
-                        .push<AlarmType>(MaterialPageRoute(
-                      builder: (_) => MultiBlocProvider(
-                        providers: authProviders,
-                        child: SelectAlarmTypePage(
-                          alarm: alarm.typeSeagull,
+                    final result = await Navigator.of(context).push<AlarmType>(
+                      MaterialPageRoute(
+                        builder: (_) => MultiBlocProvider(
+                          providers: authProviders,
+                          child: SelectAlarmTypePage(
+                            alarm: alarm.typeSeagull,
+                          ),
                         ),
+                        settings:
+                            const RouteSettings(name: 'SelectAlarmTypePage'),
                       ),
-                      settings:
-                          const RouteSettings(name: 'SelectAlarmTypePage'),
-                    ));
+                    );
                     if (result != null) {
                       editActivityCubit.replaceActivity(
                         activity.copyWith(
@@ -563,13 +566,14 @@ class RecurrenceWidget extends StatelessWidget {
           text: Text(recurrentType.text(translator)),
           onTap: () async {
             final editActivityCubit = context.read<EditActivityCubit>();
-            final result = await Navigator.of(context)
-                .push<RecurrentType>(MaterialPageRoute(
-              builder: (_) => SelectRecurrencePage(
-                recurrentType: recurrentType,
+            final result = await Navigator.of(context).push<RecurrentType>(
+              MaterialPageRoute(
+                builder: (_) => SelectRecurrencePage(
+                  recurrentType: recurrentType,
+                ),
+                settings: const RouteSettings(name: 'SelectRecurrencePage'),
               ),
-              settings: const RouteSettings(name: 'SelectRecurrencePage'),
-            ));
+            );
             if (result != null) {
               editActivityCubit.newRecurrence(newType: result);
             }
@@ -670,6 +674,8 @@ class WeekDays extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
+    final dateFormat = DateFormat('', '${Localizations.localeOf(context)}');
+    final weekdays = dateFormat.dateSymbols.STANDALONEWEEKDAYS;
     return DefaultTextStyle(
       style: (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
           .copyWith(height: 1.5),
@@ -682,23 +688,24 @@ class WeekDays extends StatelessWidget {
             runSpacing: layout.formPadding.verticalItemDistance,
             children: [
               ...RecurringWeekState.allWeekdays.map(
-                (d) => BlocSelector<MemoplannerSettingBloc,
+                (day) => BlocSelector<MemoplannerSettingBloc,
                     MemoplannerSettingsState, DayTheme>(
                   selector: (state) => weekdayTheme(
                     dayColor: state.calendarDayColor,
                     languageCode: Localizations.localeOf(context).languageCode,
-                    weekday: d,
+                    weekday: day,
                   ),
                   builder: (context, dayTheme) => SelectableField(
                     text: Text(
-                      translate.shortWeekday(d),
+                      translate.shortWeekday(day),
                       style: TextStyle(color: dayTheme.monthSurfaceColor),
                     ),
                     color: dayTheme.dayColor,
-                    selected: state.weekdays.contains(d),
+                    selected: state.weekdays.contains(day),
                     onTap: () => context
                         .read<RecurringWeekCubit>()
-                        .addOrRemoveWeekday(d),
+                        .addOrRemoveWeekday(day),
+                    ttsData: weekdays[day % DateTime.daysPerWeek],
                   ),
                 ),
               ),
