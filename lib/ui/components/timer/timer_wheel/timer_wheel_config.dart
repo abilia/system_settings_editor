@@ -79,6 +79,8 @@ class TimerWheelConfiguration {
       _shorterSliderThumbLineLength * scaleFactor;
   late final longSliderThumbLineLength =
       _longerSliderThumbLineLength * scaleFactor;
+  late final numberCircleDiameter = _numberCircleDiameter * scaleFactor;
+  late final maxSize = _timerWheelSides * scaleFactor;
 
   late final wheelSectionsOutline = Paint()
     ..style = PaintingStyle.stroke

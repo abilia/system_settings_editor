@@ -152,6 +152,7 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
   late final AnimationController controller;
   late final Animation<Matrix4> matrixAnimation;
   late final Animation<EdgeInsetsGeometry> paddingAnimation;
+  Characters get characters => widget.label.characters;
 
   @override
   void initState() {
@@ -187,8 +188,8 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final intAnimation = IntTween(
-      begin: value ? widget.label.length : widget.letters,
-      end: value ? widget.letters : widget.label.length,
+      begin: value ? characters.length : widget.letters,
+      end: value ? widget.letters : characters.length,
     ).animate(
       CurvedAnimation(
         curve: Curves.easeInOutExpo,
@@ -244,7 +245,7 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                         animation: controller,
                         builder: (context, _) => intAnimation.value != 0
                             ? Text(
-                                widget.label.substring(0, intAnimation.value),
+                                characters.take(intAnimation.value).string,
                                 style: Theme.of(context)
                                     .textTheme
                                     .subtitle1
@@ -264,8 +265,9 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                         ),
                         child: CategoryImage(
                           fileId: widget.fileId,
-                          category: widget.category,
-                          showColors: widget.showColors,
+                          showBorder: widget.showColors,
+                          diameter: layout.category.imageDiameter,
+                          color: categoryColor(category: widget.category),
                         ),
                       )
                     else
@@ -288,24 +290,31 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
 }
 
 class CategoryImage extends StatelessWidget {
+  final String fileId;
+  final bool showBorder;
+  final Color? color;
+  final double diameter;
+
   CategoryImage({
     Key? key,
     required this.fileId,
-    required this.category,
-    required this.showColors,
-  })  : assert(fileId.isNotEmpty || showColors),
+    required this.color,
+    required this.showBorder,
+    required this.diameter,
+  })  : assert(fileId.isNotEmpty || showBorder),
+        borderRadius = BorderRadius.circular(diameter / 2),
+        noColorsImageSize = layout.category.noColorsImageSize,
+        noColorsImageBorderRadius =
+            BorderRadius.circular(layout.category.noColorsImageSize / 2),
         super(key: key);
 
-  static final diameter = layout.category.imageDiameter,
-      borderRadius = BorderRadius.circular(diameter / 2),
-      noColorsImageSize = layout.category.noColorsImageSize,
-      noColorsImageBorderRadius = BorderRadius.circular(noColorsImageSize / 2);
-  final String fileId;
-  final int category;
-  final bool showColors;
+  late final BorderRadius borderRadius;
+  late final double noColorsImageSize;
+  late final BorderRadius noColorsImageBorderRadius;
+
   @override
   Widget build(BuildContext context) {
-    if (fileId.isNotEmpty && !showColors) {
+    if (fileId.isNotEmpty && !showBorder) {
       return FadeInAbiliaImage(
         imageFileId: fileId,
         width: diameter,
@@ -317,7 +326,7 @@ class CategoryImage extends StatelessWidget {
       width: diameter,
       height: diameter,
       decoration: BoxDecoration(
-        color: categoryColor(category: category),
+        color: color,
         borderRadius: borderRadius,
       ),
       padding: layout.category.imagePadding,

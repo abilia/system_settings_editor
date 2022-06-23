@@ -141,7 +141,9 @@ class _AddPhotoButton extends StatelessWidget {
             builder: (context, _) {
               final includeInPhotoCalendar =
                   tabController.index == photoCalendarTabIndex;
-              return IconActionButtonBlack(
+              return TextAndOrIconActionButtonBlack(
+                Translator.of(context).translate.newText,
+                AbiliaIcons.plus,
                 onPressed: () async {
                   final userFileCubit = context.read<UserFileCubit>();
                   final sortableBloc = context.read<SortableBloc>();
@@ -200,7 +202,6 @@ class _AddPhotoButton extends StatelessWidget {
                     }
                   }
                 },
-                child: const Icon(AbiliaIcons.plus),
               );
             }),
       ),

@@ -12,7 +12,12 @@ class MediumLayout extends Layout {
     MenuPageLayout? menuPage,
     MonthCalendarLayout? monthCalendar,
     FontSize? fontSize,
+    ActivityPageLayout? activityPage,
+    ChecklistLayout? checklist,
+    TimerPageLayout? timerPage,
+    BorderLayout? borders,
     EventCardLayout? eventCard,
+    AlarmPageLayout? alarmPage,
   }) : super(
           radius: 18,
           appBar: appBar ?? const AppBarLayoutMedium(),
@@ -55,6 +60,7 @@ class MediumLayout extends Layout {
             doubleIconLeft: 48,
           ),
           clock: clockLayout ?? const ClockLayoutMedium(),
+          alarmPage: alarmPage ?? const AlarmPageLayoutMedium(),
           formPadding: const FormPaddingLayout(
             smallVerticalItemDistance: 8,
             verticalItemDistance: 12,
@@ -102,12 +108,7 @@ class MediumLayout extends Layout {
           ),
           monthCalendar: monthCalendar ?? const MonthCalendarLayoutMedium(),
           eventCard: eventCard ?? const EventCardLayoutMedium(),
-          timerPage: const TimerPageLayout(
-            topInfoHeight: 232,
-            imageSize: 200,
-            imagePadding: 16,
-            topPadding: EdgeInsets.all(16),
-          ),
+          timerPage: timerPage ?? const TimerPageLayoutMedium(),
           timepillar: timepillar ?? const TimepillarLayoutMedium(),
           settingsBasePage: const SettingsBasePageLayout(
             dividerThemeData: DividerThemeData(
@@ -178,48 +179,14 @@ class MediumLayout extends Layout {
             iconSize: 48,
             secondaryTextHeight: 24 / 20,
           ),
-          activityPage: const ActivityPageLayout(
-            topInfoHeight: 232,
-            timeRowPadding: EdgeInsets.only(bottom: 16),
-            topInfoPadding: EdgeInsets.all(16),
-            titleImageHorizontalSpacing: 16,
-            imagePadding: EdgeInsets.fromLTRB(16, 0, 16, 16),
-            verticalInfoPaddingCheckable: EdgeInsets.only(top: 24, bottom: 16),
-            verticalInfoPaddingNonCheckable:
-                EdgeInsets.only(top: 24, bottom: 14),
-            horizontalInfoPadding: EdgeInsets.symmetric(horizontal: 16),
-            checkButtonPadding: EdgeInsets.only(bottom: 22),
-            checklistPadding: EdgeInsets.fromLTRB(27, 15, 28, 0),
-            titleFontSize: 48,
-            titleLineHeight: 56.25,
-            checkButtonHeight: 72,
-            checkButtonContentPadding:
-                EdgeInsets.fromLTRB(14.25, 15, 31.75, 15),
-            dividerHeight: 2,
-            dividerIndentation: 16,
-            dashWidth: 12,
-            dashSpacing: 12,
-            timeCrossOverSize: Size(112, 56),
-            minTimeBoxWidth: 108,
-            timeBoxSize: Size(144, 80),
-            timeBoxPadding: EdgeInsets.all(16),
-            timeBoxCurrentBorderWidth: 3,
-            timeBoxFutureBorderWidth: 2,
-          ),
-          checklist: const ChecklistLayout(
-            question: ChecklistQuestionLayout(
-              imagePadding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-              titlePadding: EdgeInsets.fromLTRB(12, 16, 0, 16),
-              iconPadding: EdgeInsets.fromLTRB(16, 22, 22, 22),
-              viewHeight: 80,
-              imageSize: 60,
-              fontSize: 28,
-              lineHeight: 48,
-            ),
-            listPadding: EdgeInsets.all(24),
-            addNewQButtonPadding: EdgeInsets.fromLTRB(18, 12, 18, 18),
-            addNewQIconPadding: EdgeInsets.only(left: 22, right: 16),
-          ),
+          activityPage: activityPage ?? const ActivityPageLayoutMedium(),
+          checklist: checklist ??
+              const ChecklistLayout(
+                question: ChecklistQuestionLayoutMedium(),
+                listPadding: EdgeInsets.all(24),
+                addNewQButtonPadding: EdgeInsets.fromLTRB(18, 12, 18, 18),
+                addNewQIconPadding: EdgeInsets.only(left: 22, right: 16),
+              ),
           note: const NoteLayout(
             notePadding: EdgeInsets.fromLTRB(27, 15, 24, 36),
             lineOffset: 3,
@@ -231,9 +198,6 @@ class MediumLayout extends Layout {
           nextButton: const IconTextButtonStyle(
             minimumSize: Size(346, 96),
             maximumSize: Size(346, 96),
-          ),
-          alarmPage: const AlarmPageLayout(
-            alarmClockPadding: EdgeInsets.only(top: 6, bottom: 4, right: 24),
           ),
           alarmSettingsPage: const AlarmSettingsPageLayout(
             playButtonSeparation: 16,
@@ -263,7 +227,7 @@ class MediumLayout extends Layout {
             margin: EdgeInsets.only(left: 4, right: 8),
           ),
           templates: templates ?? const TemplatesLayoutMedium(),
-          borders: const BorderLayout(thin: 1.5, medium: 3),
+          borders: borders ?? const BorderLayoutMedium(),
           linedBorder: const LinedBorderLayout(dashSize: 6),
           selectableField: const SelectableFieldLayout(
             height: 72,
@@ -286,19 +250,7 @@ class MediumLayout extends Layout {
             paddingLarge: 8.48,
             removeButtonPadding: EdgeInsets.fromLTRB(9, 12, 9, 12),
           ),
-          timeInput: const TimeInputLayout(
-            height: 96,
-            width: 180,
-            amPmHeight: 72,
-            amPmWidth: 88.5,
-            timeDashAlignValue: 21,
-            amPmDistance: 3,
-            headerClockPadding: EdgeInsets.only(right: 18),
-            inputKeyboardDistance: 96,
-            keyboardButtonHeight: 88,
-            keyboardButtonWidth: 160,
-            keyboardButtonPadding: 12,
-          ),
+          timeInput: const TimeInputLayoutMedium(),
           recording: const RecordingLayout(
             trackHeight: 6,
             thumbRadius: 18,

@@ -9,3 +9,4 @@ export 'image_picker_settings_page.dart';
 export 'select_sound_page.dart';
 export 'select_alarm_duration_page.dart';
 export 'quick_settings_page.dart';
+export 'permissions_page.dart';

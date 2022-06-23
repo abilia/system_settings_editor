@@ -5,6 +5,15 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
+extension _ShapeDecorationExtension on ShapeDecoration {
+  ShapeDecoration copyWith({Color? color, ShapeBorder? shape}) {
+    return ShapeDecoration(
+      color: color ?? this.color,
+      shape: shape ?? this.shape,
+    );
+  }
+}
+
 final pastSideDotShape = ShapeDecoration(
   shape: CircleBorder(
     side: BorderSide(
@@ -13,6 +22,7 @@ final pastSideDotShape = ShapeDecoration(
     ),
   ),
 );
+
 const pastDotShape = ShapeDecoration(
       shape: CircleBorder(side: BorderSide(color: AbiliaColors.black)),
     ),
@@ -21,21 +31,35 @@ const pastDotShape = ShapeDecoration(
     ),
     futureDotShape =
         ShapeDecoration(color: AbiliaColors.black, shape: CircleBorder()),
-    transparantDotShape =
+    _transparentDotShape =
         ShapeDecoration(color: Colors.transparent, shape: CircleBorder()),
     currentDotShape =
         ShapeDecoration(color: AbiliaColors.red, shape: CircleBorder()),
     futureNightDotShape =
         ShapeDecoration(color: AbiliaColors.blue, shape: CircleBorder()),
-    futureSideDotShape =
-        ShapeDecoration(color: AbiliaColors.black, shape: CircleBorder());
+    futureSideDotShape = futureDotShape;
+
+final bigSideDotBorder = CircleBorder(
+  side: BorderSide(
+      color: AbiliaColors.black,
+      width: layout.borders.activityInfoSideDotsWidth),
+);
+
+final pastBigDotShape = pastDotShape.copyWith(
+  shape: bigSideDotBorder,
+);
+final futureBigDotShape = futureSideDotShape.copyWith(
+  shape: bigSideDotBorder,
+);
 
 class PastDots extends StatelessWidget {
   final bool isNight;
+
   const PastDots({
     Key? key,
     required this.isNight,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) => isNight
       ? const Dots(decoration: pastNightDotShape)
@@ -88,10 +112,12 @@ class CurrentDots extends StatelessWidget {
 
 class FutureDots extends StatelessWidget {
   final bool isNight;
+
   const FutureDots({
     Key? key,
     required this.isNight,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) => isNight
       ? const Dots(decoration: futureNightDotShape)
@@ -100,18 +126,20 @@ class FutureDots extends StatelessWidget {
 
 class Dots extends StatelessWidget {
   final Decoration decoration;
+
   const Dots({Key? key, required this.decoration}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TimepillarMeasuresCubit, TimepillarMeasures>(
-      buildWhen: (oldState, newState) => oldState.dotSize != newState.dotSize,
-      builder: (context, measures) => Column(
+    return BlocSelector<TimepillarMeasuresCubit, TimepillarMeasures, double>(
+      selector: (state) => state.dotSize,
+      builder: (context, dotSize) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(
           dotsPerHour,
           (_) => Container(
-            height: measures.dotSize,
-            width: measures.dotSize,
+            height: dotSize,
+            width: dotSize,
             decoration: decoration,
           ),
         ),
@@ -120,16 +148,19 @@ class Dots extends StatelessWidget {
   }
 }
 
+@visibleForTesting
 class AnimatedDot extends StatelessWidget {
   final Decoration? decoration;
   final double? size;
   final Widget? child;
+
   const AnimatedDot({
     Key? key,
     @required this.decoration,
     this.size,
     this.child,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<TimepillarMeasuresCubit, TimepillarMeasures>(
@@ -150,6 +181,7 @@ class SideDots extends StatelessWidget {
   final DateTime endTime;
   final int dots;
   final DayParts dayParts;
+
   const SideDots({
     Key? key,
     required this.startTime,
@@ -157,6 +189,7 @@ class SideDots extends StatelessWidget {
     required this.dots,
     required this.dayParts,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final flat = startTime.roundToMinute(minutesPerDot, roundingMinute);
@@ -198,12 +231,20 @@ class ActivityInfoSideDots extends StatelessWidget {
   static const int dots = 8, hours = (dots ~/ dotsPerHour);
 
   final ActivityDay activityDay;
+
   DateTime get day => activityDay.day;
+
   Activity get activity => activityDay.activity;
+
   const ActivityInfoSideDots(this.activityDay, {Key? key}) : super(key: key);
-  factory ActivityInfoSideDots.from(
-          {required Activity activity, required DateTime day, Key? key}) =>
+
+  factory ActivityInfoSideDots.from({
+    required Activity activity,
+    required DateTime day,
+    Key? key,
+  }) =>
       ActivityInfoSideDots(ActivityDay(activity, day), key: key);
+
   @override
   Widget build(BuildContext context) {
     final endTime = activityDay.end;
@@ -251,6 +292,7 @@ class ActivityInfoSideDots extends StatelessWidget {
   }
 }
 
+@visibleForTesting
 class SideDotsLarge extends StatelessWidget {
   const SideDotsLarge(
       {Key? key,
@@ -274,7 +316,7 @@ class SideDotsLarge extends StatelessWidget {
             const Spacer(),
             Padding(
               padding: layout.activityPage.horizontalInfoPadding,
-              child: BigDots(
+              child: _BigDots(
                 dots: max(dots, 1),
                 startTime: startTime,
                 endTime: endTime,
@@ -308,10 +350,11 @@ class SideDotsLarge extends StatelessWidget {
   }
 }
 
-class BigDots extends StatelessWidget {
+class _BigDots extends StatelessWidget {
   final int dots;
   final DateTime startTime, endTime, now;
-  const BigDots({
+
+  const _BigDots({
     Key? key,
     required this.dots,
     required this.startTime,
@@ -327,12 +370,12 @@ class BigDots extends StatelessWidget {
       children: List.generate(dots, (dot) {
         if (dot == 0) {
           final timeLeft = endTime.difference(now).inMinutes;
-          return SubQuarerDot(minutes: timeLeft);
+          return SubQuarterDot(minutes: timeLeft);
         }
         final dotEndTime =
             endTime.subtract((dot * (minutesPerDot + 1)).minutes());
         final past = now.isAtSameMomentOrAfter(dotEndTime);
-        final decoration = past ? pastDotShape : futureDotShape;
+        final decoration = past ? pastBigDotShape : futureBigDotShape;
         return AnimatedDot(decoration: decoration, size: bigDotSize);
       })
           .reversed
@@ -345,16 +388,18 @@ class BigDots extends StatelessWidget {
   }
 }
 
-class SubQuarerDot extends StatelessWidget {
+@visibleForTesting
+class SubQuarterDot extends StatelessWidget {
   final int minutes;
-  const SubQuarerDot({Key? key, required this.minutes}) : super(key: key);
+
+  const SubQuarterDot({Key? key, required this.minutes}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => minutes > minutesPerDot
-      ? AnimatedDot(decoration: futureDotShape, size: bigDotSize)
+      ? AnimatedDot(decoration: futureBigDotShape, size: bigDotSize)
       : AnimatedDot(
           size: bigDotSize,
-          decoration: pastDotShape,
+          decoration: pastBigDotShape,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -371,23 +416,28 @@ class SubQuarerDot extends StatelessWidget {
             ],
           ),
         );
+
   Widget dot(int i) => MiniDot(minutes > (minutePerSubDot * i));
 }
 
+@visibleForTesting
 class MiniDot extends StatelessWidget {
   final bool visible;
+
   const MiniDot(this.visible, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => AnimatedContainer(
       duration: transitionDuration,
       margin: const EdgeInsets.all(1.0),
       width: miniDotSize,
       height: miniDotSize,
-      decoration: visible ? futureDotShape : transparantDotShape);
+      decoration: visible ? futureDotShape : _transparentDotShape);
 }
 
 class OrangeDot extends StatelessWidget {
   const OrangeDot({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ColorDot(
@@ -400,11 +450,13 @@ class OrangeDot extends StatelessWidget {
 class ColorDot extends StatelessWidget {
   final Color color;
   final double radius;
+
   const ColorDot({
     Key? key,
     this.color = AbiliaColors.white,
     required this.radius,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(

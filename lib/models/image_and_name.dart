@@ -18,7 +18,8 @@ class ImageAndName extends Equatable {
       );
 
   bool get hasName => name.isNotEmpty;
-  bool get isEmpty => !hasName && image.isEmpty;
+  bool get hasImage => image.isNotEmpty;
+  bool get isEmpty => !hasName && !hasImage;
   bool get isNotEmpty => !isEmpty;
 
   @override

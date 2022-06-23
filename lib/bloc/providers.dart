@@ -159,6 +159,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               create: (context) => AlarmCubit(
                 clockBloc: context.read<ClockBloc>(),
                 activitiesBloc: context.read<ActivitiesBloc>(),
+                settingsBloc: context.read<MemoplannerSettingBloc>(),
                 selectedNotificationSubject: selectNotificationSubject,
               ),
             ),

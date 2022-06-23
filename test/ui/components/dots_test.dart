@@ -364,7 +364,7 @@ void main() {
           reason: 'no current dots');
       expect(dots.where((d) => d.decoration == pastDotShape), hasLength(4),
           reason: 'four past dots');
-      expect(dots.where((d) => d.decoration == futureDotShape), hasLength(4),
+      expect(dots.where((d) => d.decoration == futureBigDotShape), hasLength(4),
           reason: 'four future dots');
     });
 
@@ -389,7 +389,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(SubQuarerDot), findsOneWidget);
+      expect(find.byType(SubQuarterDot), findsOneWidget);
       final dots = tester.widgetList<MiniDot>(find.byType(MiniDot)).toList();
 
       expect(dots, hasLength(5));
@@ -417,7 +417,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(SubQuarerDot), findsOneWidget);
+      expect(find.byType(SubQuarterDot), findsOneWidget);
       final dots = tester.widgetList<MiniDot>(find.byType(MiniDot)).toList();
       expect(dots, hasLength(5));
       expect(dots.where((d) => d.visible), hasLength(1), reason: '1 mini dot');

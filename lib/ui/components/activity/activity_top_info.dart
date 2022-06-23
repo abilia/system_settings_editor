@@ -1,9 +1,5 @@
-import 'dart:math';
-
 import 'package:auto_size_text/auto_size_text.dart';
-
 import 'package:get_it/get_it.dart';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/all.dart';
@@ -75,81 +71,93 @@ class _ActivityTopInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activity = activityDay.activity;
-    final totalWidth = layout.actionButton.size * 2 -
-        layout.activityPage.dashSpacing * 4 +
-        layout.activityPage.dashWidth;
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-      final timeBoxMaxWidth = (constraints.maxWidth - totalWidth) / 2;
-      return BlocBuilder<ClockBloc, DateTime>(
-        builder: (context, now) {
-          return Padding(
-            padding: layout.activityPage.timeRowPadding,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                leading ?? SizedBox(width: layout.actionButton.size),
-                if (activity.fullDay)
-                  _TimeBox(
-                    occasion: activityDay.day.isDayBefore(now)
-                        ? Occasion.past
-                        : Occasion.future,
-                    text: Translator.of(context).translate.fullDay,
-                  )
-                else if (!activity.hasEndTime)
-                  _TimeBox(
-                    text: hourAndMinuteFormat(context)(activityDay.start),
-                    occasion: activityDay.start.occasion(now),
-                    key: TestKey.startTime,
-                  )
-                else ...[
-                  Expanded(
-                    child: Row(
+    return BlocBuilder<ClockBloc, DateTime>(
+      builder: (context, now) {
+        return Padding(
+          padding: layout.activityPage.timeRowPadding,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              leading ?? SizedBox(width: layout.actionButton.size),
+              if (activity.fullDay || !activity.hasEndTime)
+                Expanded(
+                  child: LayoutBuilder(builder: (context, constraints) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (activity.fullDay)
+                          _TimeBox(
+                            maxWidth: constraints.maxWidth,
+                            occasion: activityDay.day.isDayBefore(now)
+                                ? Occasion.past
+                                : Occasion.future,
+                            text: Translator.of(context).translate.fullDay,
+                          )
+                        else if (!activity.hasEndTime)
+                          _TimeBox(
+                            maxWidth: constraints.maxWidth,
+                            text:
+                                hourAndMinuteFormat(context)(activityDay.start),
+                            occasion: activityDay.start.occasion(now),
+                            key: TestKey.startTime,
+                          )
+                      ],
+                    );
+                  }),
+                )
+              else ...[
+                Expanded(
+                  child: LayoutBuilder(builder: (context, constraints) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Spacer(),
                         _TimeBox(
-                          maxWidth: timeBoxMaxWidth,
+                          maxWidth: constraints.maxWidth,
                           key: TestKey.startTime,
                           text: hourAndMinuteFormat(context)(activityDay.start),
                           occasion: activityDay.start.occasion(now),
                         )
                       ],
+                    );
+                  }),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: layout.activityPage.dashSpacing,
+                  ),
+                  child: SizedBox(
+                    width: layout.activityPage.dashWidth,
+                    child: Text(
+                      '-',
+                      style: Theme.of(context).textTheme.headline5,
+                      overflow: TextOverflow.visible,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: layout.activityPage.dashSpacing,
-                    ),
-                    child: SizedBox(
-                      width: layout.activityPage.dashWidth,
-                      child: Text(
-                        '-',
-                        style: Theme.of(context).textTheme.headline5,
-                        overflow: TextOverflow.visible,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Row(
+                ),
+                Expanded(
+                  child: LayoutBuilder(builder: (context, constraints) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         _TimeBox(
-                          maxWidth: timeBoxMaxWidth,
+                          maxWidth: constraints.maxWidth,
                           key: TestKey.endTime,
                           text: hourAndMinuteFormat(context)(activityDay.end),
                           occasion: activityDay.end.occasion(now),
                         ),
                         const Spacer(),
                       ],
-                    ),
-                  ),
-                ],
-                trailing ?? SizedBox(width: layout.actionButton.size),
+                    );
+                  }),
+                ),
               ],
-            ),
-          );
-        },
-      );
-    });
+              trailing ?? SizedBox(width: layout.actionButton.size),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -158,18 +166,17 @@ class _TimeBox extends StatelessWidget {
     Key? key,
     required this.text,
     required this.occasion,
-    this.maxWidth,
+    required this.maxWidth,
   }) : super(key: key);
 
   final Occasion occasion;
   final String text;
-  final double? maxWidth;
+  final double maxWidth;
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.headline6?.copyWith(
+    final textStyle = layout.activityPage.headline6_3().copyWith(
         color: occasion.isPast ? AbiliaColors.white140 : AbiliaColors.black);
-    final maxMaxWidth = layout.activityPage.timeBoxSize.width;
     return Tts.data(
       data: text,
       child: Stack(
@@ -179,9 +186,9 @@ class _TimeBox extends StatelessWidget {
             duration: ActivityInfo.animationDuration,
             padding: layout.activityPage.timeBoxPadding,
             constraints: BoxConstraints(
-              minWidth: layout.activityPage.minTimeBoxWidth,
+              minWidth: layout.activityPage.timeBoxSize.width,
+              maxWidth: maxWidth,
               minHeight: layout.activityPage.timeBoxSize.height,
-              maxWidth: min(maxWidth ?? maxMaxWidth, maxMaxWidth),
               maxHeight: layout.activityPage.timeBoxSize.height,
             ),
             decoration: occasion.isCurrent
@@ -190,6 +197,7 @@ class _TimeBox extends StatelessWidget {
                     ? const BoxDecoration()
                     : _futureBoxDecoration,
             child: Center(
+              widthFactor: 1,
               child: AutoSizeText(
                 text,
                 style: textStyle,

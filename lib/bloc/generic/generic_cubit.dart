@@ -21,13 +21,9 @@ class GenericCubit extends Cubit<GenericState> {
   }) : super(GenericsNotLoaded()) {
     pushSubscription = pushCubit.stream.listen((state) {
       if (state is PushReceived) {
-        _mapLoadGenericsToState();
+        loadGenerics();
       }
     });
-  }
-
-  void loadGenerics() {
-    _mapLoadGenericsToState();
   }
 
   void genericUpdated(Iterable<GenericData> genericData) async {
@@ -49,13 +45,13 @@ class GenericCubit extends Cubit<GenericState> {
 
       final anyDirty = await genericRepository.save(toUpdate.values);
       if (anyDirty) {
-        _mapLoadGenericsToState();
+        loadGenerics();
         syncBloc.add(const GenericSaved());
       }
     }
   }
 
-  void _mapLoadGenericsToState() async {
+  Future<void> loadGenerics() async {
     try {
       final generics = await genericRepository.load();
       emit(

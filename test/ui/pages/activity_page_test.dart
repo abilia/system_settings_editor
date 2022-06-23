@@ -158,6 +158,24 @@ void main() {
       await navigateToActivityPage(tester);
       expect(find.byType(PlaySoundButton), findsOneWidget);
     });
+
+    testWidgets('Youtube video is shown when UrlInfoItem url is a youtube link',
+        (WidgetTester tester) async {
+      const url = 'https://www.youtube.com/watch?v=A_LWGAOBy04';
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
+        (_) => Future.value(
+          <Activity>[
+            Activity.createNew(
+                title: 'title',
+                startTime: startTime,
+                infoItem: const UrlInfoItem(url))
+          ],
+        ),
+      );
+
+      await navigateToActivityPage(tester);
+      expect(find.byType(YoutubePlayer), findsOneWidget);
+    });
   });
 
   group('Edit activity', () {

@@ -20,7 +20,7 @@ class AlarmPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (alarm.fullScreenActivity) {
-      return FullScreenActivityPage(activityDay: alarm.activityDay);
+      return FullScreenActivityPage(alarm: alarm);
     }
     return Theme(
       data: abiliaWhiteTheme,
@@ -28,8 +28,9 @@ class AlarmPage extends StatelessWidget {
         appBar: AbiliaAppBar(
           title: Translator.of(context).translate.alarm,
           iconData: AbiliaIcons.handiAlarmVibration,
+          height: layout.appBar.mediumHeight,
           trailing: Padding(
-            padding: layout.alarmPage.alarmClockPadding,
+            padding: layout.alarmPage.clockPadding,
             child: AbiliaClock(
               style: Theme.of(context).textTheme.caption?.copyWith(
                     color: AbiliaColors.white,
@@ -77,6 +78,15 @@ class ReminderPage extends StatelessWidget {
         appBar: AbiliaAppBar(
           title: translate.reminder,
           iconData: AbiliaIcons.handiReminder,
+          height: layout.appBar.mediumHeight,
+          trailing: Padding(
+            padding: layout.alarmPage.clockPadding,
+            child: AbiliaClock(
+              style: Theme.of(context).textTheme.caption?.copyWith(
+                    color: AbiliaColors.white,
+                  ),
+            ),
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(12.0),

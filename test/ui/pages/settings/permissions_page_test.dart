@@ -10,11 +10,11 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../../fakes/all.dart';
-import '../../../../mocks/mock_bloc.dart';
-import '../../../../mocks/mocks.dart';
-import '../../../../test_helpers/register_fallback_values.dart';
-import '../../../../test_helpers/tts.dart';
+import '../../../fakes/all.dart';
+import '../../../mocks/mock_bloc.dart';
+import '../../../mocks/mocks.dart';
+import '../../../test_helpers/register_fallback_values.dart';
+import '../../../test_helpers/tts.dart';
 
 void main() {
   const user = User(
@@ -83,7 +83,7 @@ void main() {
         home: widget,
       );
 
-  group('permission page', () {
+  group('Permission page', () {
     tearDown(setupPermissions);
 
     final permissionButtonFinder = find.byType(PermissionPickField);
@@ -92,7 +92,7 @@ void main() {
         find.byType(PermissionSetting, skipOffstage: false);
 
     testWidgets('Has permission button', (WidgetTester tester) async {
-      await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
       await tester.pumpAndSettle();
 
       expect(permissionButtonFinder, findsOneWidget);
@@ -104,7 +104,7 @@ void main() {
         Permission.notification: PermissionStatus.denied,
         Permission.systemAlertWindow: PermissionStatus.granted,
       });
-      await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
       await tester.pumpAndSettle();
 
       expect(find.byType(OrangeDot), findsOneWidget);
@@ -116,14 +116,14 @@ void main() {
         Permission.notification: PermissionStatus.granted,
         Permission.systemAlertWindow: PermissionStatus.denied,
       });
-      await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
       await tester.pumpAndSettle();
 
       expect(find.byType(OrangeDot), findsOneWidget);
     });
 
     testWidgets('Can go to permission page', (WidgetTester tester) async {
-      await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
@@ -137,7 +137,7 @@ void main() {
         for (var key in PermissionCubit.allPermissions)
           key: PermissionStatus.denied
       });
-      await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
@@ -159,7 +159,7 @@ void main() {
         for (var key in PermissionCubit.allPermissions)
           key: PermissionStatus.granted
       });
-      await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
@@ -172,7 +172,7 @@ void main() {
 
     testWidgets('Permission tts', (WidgetTester tester) async {
       setupPermissions({Permission.notification: PermissionStatus.denied});
-      await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
@@ -198,7 +198,7 @@ void main() {
 
       setupPermissions(
           {for (var k in allPermissions) k: PermissionStatus.denied});
-      await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
@@ -217,7 +217,7 @@ void main() {
         for (var key in PermissionCubit.allPermissions)
           key: PermissionStatus.permanentlyDenied
       });
-      await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
@@ -239,7 +239,7 @@ void main() {
         for (var key in PermissionCubit.allPermissions)
           key: PermissionStatus.granted
       });
-      await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
@@ -259,7 +259,7 @@ void main() {
     testWidgets('Notification granted tapped calls shows warning',
         (WidgetTester tester) async {
       setupPermissions({Permission.notification: PermissionStatus.granted});
-      await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
@@ -276,7 +276,7 @@ void main() {
     testWidgets('Notification denied shows warnings',
         (WidgetTester tester) async {
       setupPermissions({Permission.notification: PermissionStatus.denied});
-      await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
@@ -290,7 +290,7 @@ void main() {
         (WidgetTester tester) async {
       setupPermissions(
           {Permission.systemAlertWindow: PermissionStatus.granted});
-      await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
@@ -302,12 +302,12 @@ void main() {
           find.byType(NotificationPermissionOffWarningDialog), findsOneWidget);
       await tester.tap(find.byKey(TestKey.okDialog));
       await tester.pumpAndSettle();
-    }, skip: Config.isMP);
+    });
 
     testWidgets('systemAlertWindow denied shows warnings',
         (WidgetTester tester) async {
       setupPermissions({Permission.notification: PermissionStatus.denied});
-      await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
@@ -322,7 +322,7 @@ void main() {
         (WidgetTester tester) async {
       setupPermissions({Permission.systemAlertWindow: PermissionStatus.denied});
 
-      await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
@@ -335,6 +335,15 @@ void main() {
       expect(find.text(translate.notificationsWarningHintText), findsNothing);
     });
   }, skip: Config.isMP);
+
+  testWidgets('Permissions page not available on MP',
+      (WidgetTester tester) async {
+    setupPermissions({Permission.systemAlertWindow: PermissionStatus.denied});
+
+    await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
+    await tester.pumpAndSettle();
+    expect(find.byType(PermissionPickField), findsNothing);
+  }, skip: !Config.isMP);
 }
 
 extension on WidgetTester {
