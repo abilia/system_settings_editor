@@ -17,6 +17,7 @@ import 'package:intl/intl.dart';
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
 
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
@@ -38,6 +39,7 @@ void main() {
   late MockUserFileCubit mockUserFileCubit;
   late MockTimerCubit mockTimerCubit;
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
+  late MockSupportPersonsRepository supportUserRepo;
 
   setUpAll(() async {
     registerFallbackValues();
@@ -62,6 +64,10 @@ void main() {
     );
     when(() => mockMemoplannerSettingsBloc.stream)
         .thenAnswer((_) => const Stream.empty());
+
+    supportUserRepo = MockSupportPersonsRepository();
+    when(() => supportUserRepo.load())
+        .thenAnswer((_) => Future.value(const {}));
   });
 
   tearDown(GetIt.I.reset);
@@ -519,22 +525,31 @@ void main() {
       expect(rightCategoryRadio3.groupValue, Category.right);
     });
 
-    testWidgets('Availible for dialog', (WidgetTester tester) async {
-      await tester.pumpWidget(createEditActivityPage());
-      await tester.pumpAndSettle();
-      await tester.scrollDown();
-      await tester.pumpAndSettle();
+    group('Available for dialog', () {
+      setUp(() async {
+        GetItInitializer()
+          ..sharedPreferences = await FakeSharedPreferences.getInstance()
+          ..database = FakeDatabase()
+          ..baseUrlDb = MockBaseUrlDb()
+          ..init();
+      });
+      testWidgets('Available for dialog', (WidgetTester tester) async {
+        await tester.pumpWidget(createEditActivityPage());
+        await tester.pumpAndSettle();
+        await tester.scrollDown();
+        await tester.pumpAndSettle();
 
-      expect(find.byType(AvailableForWidget), findsOneWidget);
-      expect(find.text(translate.onlyMe), findsNothing);
-      expect(find.byIcon(AbiliaIcons.passwordProtection), findsNothing);
-      await tester.tap(find.byType(AvailableForWidget));
-      await tester.pumpAndSettle();
-      expect(find.byType(AvailableForPage), findsOneWidget);
-      await tester.tap(find.byIcon(AbiliaIcons.passwordProtection));
-      await tester.pumpAndSettle();
-      expect(find.text(translate.onlyMe), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.passwordProtection), findsOneWidget);
+        expect(find.byType(AvailableForWidget), findsOneWidget);
+        expect(find.text(translate.onlyMe), findsNothing);
+        expect(find.byIcon(AbiliaIcons.lock), findsNothing);
+        await tester.tap(find.byType(AvailableForWidget));
+        await tester.pumpAndSettle();
+        expect(find.byType(AvailableForPage), findsOneWidget);
+        await tester.tap(find.byIcon(AbiliaIcons.lock));
+        await tester.pumpAndSettle();
+        expect(find.text(translate.onlyMe), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.lock), findsOneWidget);
+      });
     });
 
     testWidgets('Reminder', (WidgetTester tester) async {
@@ -2830,12 +2845,12 @@ text''';
       await tester.scrollDown(dy: -550);
 
       await tester.verifyTts(find.byType(AvailableForWidget),
-          exact: translate.meAndSupportPersons);
+          exact: translate.allSupportPersons);
 
       await tester.tap(find.byType(AvailableForWidget));
       await tester.pumpAndSettle();
 
-      await tester.verifyTts(find.byIcon(AbiliaIcons.passwordProtection),
+      await tester.verifyTts(find.byIcon(AbiliaIcons.lock),
           exact: translate.onlyMe);
     });
 

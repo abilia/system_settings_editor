@@ -94,6 +94,7 @@ class Layout {
   final StartupPageLayout startupPage;
   final StarterSetDialogLayout starterSetDialog;
   final PhotoCalendarLayoutMedium photoCalendarLayout;
+  final SupportPersonLayout supportPerson;
   final CodeProtectLayoutMedium codeProtect;
   final SelectorLayout selector;
 
@@ -170,6 +171,7 @@ class Layout {
     this.startupPage = const StartupPageLayout(),
     this.starterSetDialog = const StarterSetDialogLayout(),
     this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
+    this.supportPerson = const SupportPersonLayout(),
     this.codeProtect = const CodeProtectLayoutMedium(),
     this.selector = const SelectorLayout(),
   });

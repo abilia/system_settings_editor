@@ -2,6 +2,7 @@ part of 'activity.dart';
 
 class DbActivity extends DbModel<Activity> {
   Activity get activity => model;
+
   const DbActivity._({
     required Activity activity,
     required int dirty,
@@ -48,6 +49,8 @@ class DbActivity extends DbModel<Activity> {
               : json['timezone'],
           extras: Extras.fromJsonString(json['extras']),
           calendarId: json['calendarId'] ?? '',
+          secretExemptions:
+              _parseExemptions(json['secretExemptions'].toString()),
         ),
         revision: json['revision'],
         dirty: 0,
@@ -82,6 +85,7 @@ class DbActivity extends DbModel<Activity> {
               : dbRow['timezone'],
           extras: Extras.fromJsonString(dbRow['extras']),
           calendarId: dbRow['calendar_id'] ?? '',
+          secretExemptions: _parseExemptions(dbRow['secret_exemptions']),
         ),
         revision: dbRow['revision'],
         dirty: dbRow['dirty'],
@@ -112,6 +116,7 @@ class DbActivity extends DbModel<Activity> {
         'revision': revision,
         'timezone': activity.timezone,
         'extras': activity.extras.toJsonString(),
+        'secretExemptions': activity.secretExemptions.join(';'),
         if (activity.calendarId.isNotEmpty) 'calendarId': activity.calendarId,
       };
 
@@ -140,6 +145,7 @@ class DbActivity extends DbModel<Activity> {
         'timezone': activity.timezone,
         'extras': activity.extras.toJsonString(),
         'calendar_id': activity.calendarId,
+        'secret_exemptions': activity.secretExemptions.join(';'),
         'revision': revision,
         'dirty': dirty,
       };
@@ -156,6 +162,14 @@ class DbActivity extends DbModel<Activity> {
               .cast<int>() ??
           []);
 
+  static UnmodifiableSetView<int> _parseExemptions(String? secretExemptions) =>
+      UnmodifiableSetView(secretExemptions
+              ?.split(';')
+              .map(int.tryParse)
+              .where((v) => v != null)
+              .cast<int>()
+              .toSet() ??
+          {});
   @override
   List<Object> get props => [activity, revision, dirty];
 

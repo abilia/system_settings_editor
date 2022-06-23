@@ -206,8 +206,10 @@ missingRequiredActivitySetting	You need either “Show basic activities”, “S
 ### Privacy							
 availableFor	Available for	Tillgänglig för	Fås til	Beschikbaar voor	Käytettävissä	Verfügbar für	Tilgjengelig for
 activityAvailableFor	Available for	Tillgänglig för	Fås til	Beschikbaar voor	Käytettävissä	Verfügbar für	Tilgjengelig for
-meAndSupportPersons	Me and support persons	Mig och stödpersoner	Mig og støttepersoner	Mij en ondersteuningspersonen	Minä ja tukihenkilöt	Mich und Hilfspersonen	Meg og støttepersoner
+allSupportPersons	All my support persons	Alla mina stödpersoner					
 onlyMe	Only me	Bara mig	Bare mig	Mij alleen	Vain minä	Nur für mich	Bare meg
+selectedSupportPersons	Selected support persons	Utvalda stödpersoner					
+supportPersons	Support Persons	Stödpersoner					
 							
 ### Alarm							
 selectAlarmType	Select alarm	Ange larm	Vælg alarm	Alarm selecteren	Valitse hälytys	Alarm auswählen	Angi alarm

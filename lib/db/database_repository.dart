@@ -108,6 +108,7 @@ class DatabaseRepository {
     _createTimersTable,
     'alter table $activityTableName add column calendar_id text',
     _createCalendarTable,
+    'alter table $activityTableName add column secret_exemptions text',
   ];
 
   static Future<Database> createSqfliteDb() async {
