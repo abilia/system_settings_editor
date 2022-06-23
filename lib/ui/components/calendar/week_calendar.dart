@@ -1,9 +1,10 @@
 import 'dart:math';
+
+import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:intl/intl.dart';
 
 class WeekCalendarTab extends StatelessWidget {
   const WeekCalendarTab({
@@ -161,9 +162,8 @@ class WeekCalenderHeadingContent extends StatelessWidget {
     final _bodyText1 = (dayTheme.theme.textTheme.bodyText1 ?? bodyText1)
         .copyWith(height: 18 / 16);
     final innerRadius = Radius.circular(wLayout.columnRadius.x - borderWidth);
-    final _fullDayPadding = selected
-        ? wLayout.selectedDay.innerDayPadding.horizontal / 2
-        : wLayout.notSelectedDay.innerDayPadding.horizontal / 2;
+    final _fullDayPadding =
+        wLayout.notSelectedDay.innerDayPadding.horizontal / 2;
     final fullDayActivitiesPadding = EdgeInsets.symmetric(
       horizontal: max(
         _fullDayPadding - borderWidth,
@@ -234,13 +234,11 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: Center(
-                      child: Padding(
-                        padding: fullDayActivitiesPadding,
-                        child: _FullDayActivities(
-                          weekdayIndex: day.weekday - 1,
-                          selectedDay: selected,
-                        ),
+                    child: Padding(
+                      padding: fullDayActivitiesPadding,
+                      child: _FullDayActivities(
+                        weekdayIndex: day.weekday - 1,
+                        selectedDay: selected,
                       ),
                     ),
                   ),
@@ -282,7 +280,7 @@ class _FullDayActivities extends StatelessWidget {
         } else if (fullDayActivities.length == 1) {
           return _WeekActivityContent(
             activityOccasion: fullDayActivities.first,
-            selectedDay: selectedDay,
+            selectedDay: false,
           );
         }
         return const SizedBox.shrink();
@@ -605,6 +603,7 @@ class _WeekActivityContent extends StatelessWidget {
                           duration: const Duration(milliseconds: 400),
                           opacity: inactive ? 0.5 : 1.0,
                           child: FadeInAbiliaImage(
+                            fit: BoxFit.scaleDown,
                             imageFileId: activityOccasion.activity.fileId,
                             imageFilePath: activityOccasion.activity.icon,
                             height: double.infinity,
@@ -616,22 +615,28 @@ class _WeekActivityContent extends StatelessWidget {
                         Center(
                           child: Text(
                             activityOccasion.activity.title,
-                            overflow: TextOverflow.clip,
+                            overflow: TextOverflow.ellipsis,
                             style:
                                 Theme.of(context).textTheme.caption ?? caption,
                             textAlign: TextAlign.center,
                           ),
                         ),
                       if (activityOccasion.isPast)
-                        CrossOver(
-                          style: CrossOverStyle.darkSecondary,
-                          padding: wLayout.crossOverActivityPadding,
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: CrossOver(
+                            style: CrossOverStyle.darkSecondary,
+                            padding: wLayout.crossOverActivityPadding,
+                          ),
                         ),
                       if (activityOccasion.isSignedOff)
-                        FractionallySizedBox(
-                          widthFactor: scaleFactor,
-                          heightFactor: scaleFactor,
-                          child: const CheckMark(),
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: FractionallySizedBox(
+                            widthFactor: scaleFactor,
+                            heightFactor: scaleFactor,
+                            child: const CheckMark(),
+                          ),
                         ),
                     ],
                   ),
