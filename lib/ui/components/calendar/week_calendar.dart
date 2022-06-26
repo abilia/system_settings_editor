@@ -280,7 +280,7 @@ class _FullDayActivities extends StatelessWidget {
         } else if (fullDayActivities.length == 1) {
           return _WeekActivityContent(
             activityOccasion: fullDayActivities.first,
-            selectedDay: false,
+            selectedDay: selectedDay,
           );
         }
         return const SizedBox.shrink();
@@ -603,7 +603,7 @@ class _WeekActivityContent extends StatelessWidget {
                           duration: const Duration(milliseconds: 400),
                           opacity: inactive ? 0.5 : 1.0,
                           child: FadeInAbiliaImage(
-                            fit: BoxFit.scaleDown,
+                            fit: selectedDay ? BoxFit.scaleDown : BoxFit.cover,
                             imageFileId: activityOccasion.activity.fileId,
                             imageFilePath: activityOccasion.activity.icon,
                             height: double.infinity,
