@@ -19,13 +19,11 @@ class DayCalendarAppBar extends StatelessWidget implements PreferredSizeWidget {
 
           return DayAppBar(
             day: dayPickerState.day,
-            leftAction: IconActionButton(
+            leftAction: LeftNavButton(
               onPressed: BlocProvider.of<TimepillarCubit>(context).previous,
-              child: const Icon(AbiliaIcons.returnToPreviousPage),
             ),
-            rightAction: IconActionButton(
+            rightAction: RightNavButton(
               onPressed: BlocProvider.of<TimepillarCubit>(context).next,
-              child: const Icon(AbiliaIcons.goToNextPage),
             ),
           );
         },

@@ -1,5 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/bloc/activities/edit_activity/edit_activity_cubit.dart';
+import 'package:get_it/get_it.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class AvailableForWiz extends StatelessWidget {
@@ -8,38 +11,37 @@ class AvailableForWiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return BlocBuilder<EditActivityCubit, EditActivityState>(
-      builder: (context, state) => WizardScaffold(
-        iconData: AbiliaIcons.unlock,
-        title: translate.availableFor,
-        body: Padding(
-          padding: layout.templates.m1,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              RadioField<bool?>(
-                groupValue: state.activity.secret,
-                onChanged: (value) => context
-                    .read<EditActivityCubit>()
-                    .replaceActivity(state.activity.copyWith(secret: value)),
-                value: true,
-                leading: const Icon(AbiliaIcons.passwordProtection),
-                text: Text(translate.onlyMe),
+    return BlocSelector<EditActivityCubit, EditActivityState, Activity>(
+      selector: (state) => state.activity,
+      builder: (context, activity) {
+        final authenticatedState = context.read<AuthenticationBloc>().state;
+        if (authenticatedState is! Authenticated) {
+          return const SizedBox.shrink();
+        }
+        return WizardScaffold(
+          iconData: AbiliaIcons.unlock,
+          title: translate.availableFor,
+          body: BlocProvider<AvailableForCubit>(
+            create: (context) => AvailableForCubit(
+              supportPersonsRepository: SupportPersonsRepository(
+                baseUrlDb: GetIt.I<BaseUrlDb>(),
+                client: GetIt.I<ListenableClient>(),
+                db: GetIt.I<SupportPersonsDb>(),
+                userId: authenticatedState.userId,
               ),
-              SizedBox(height: layout.formPadding.verticalItemDistance),
-              RadioField<bool?>(
-                groupValue: state.activity.secret,
-                onChanged: (value) => context
-                    .read<EditActivityCubit>()
-                    .replaceActivity(state.activity.copyWith(secret: value)),
-                value: false,
-                leading: const Icon(AbiliaIcons.userGroup),
-                text: Text(translate.meAndSupportPersons),
-              ),
-            ],
+              availableFor: activity.availableFor,
+              selectedSupportPersons: activity.secretExemptions,
+            ),
+            child: AvailableForPageBody(
+              onAvailableForChanged: (availableFor) => context
+                  .read<EditActivityCubit>()
+                  .setAvailableFor(availableFor),
+              onSupportPersonChanged: (id) =>
+                  context.read<EditActivityCubit>().toggleSupportPerson(id),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

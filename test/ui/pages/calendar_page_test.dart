@@ -1031,6 +1031,8 @@ void main() {
       expect(find.byType(MonthCalendarTab), findsOneWidget);
       expect(find.byType(MonthAppBar), findsOneWidget);
       expect(find.byType(ToggleAlarmButton), findsOneWidget);
+      await tester.verifyTts(find.byType(ToggleAlarmButton),
+          exact: translate.disableAlarms);
     });
 
     testWidgets("don't display alarm button", (WidgetTester tester) async {
@@ -1047,6 +1049,13 @@ void main() {
       expect(find.byType(MonthCalendarTab), findsOneWidget);
       expect(find.byType(MonthAppBar), findsOneWidget);
       expect(find.byType(ToggleAlarmButton), findsNothing);
+    });
+
+    testWidgets('eye button tts', (WidgetTester tester) async {
+      await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage()));
+      await tester.pumpAndSettle();
+      await tester.verifyTts(find.byType(EyeButtonDay),
+          exact: translate.display);
     });
 
     testWidgets('SGC-1129 alarm button toggleable',

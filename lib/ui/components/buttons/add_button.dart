@@ -82,6 +82,7 @@ class _AddButtonMPGO extends StatelessWidget {
       Translator.of(context).translate.activity,
       AbiliaIcons.plus,
       key: TestKey.addActivityButton,
+      ttsData: Translator.of(context).translate.addActivity,
       onPressed: () => _navigateToCreateNewPage(context: context),
     );
   }
@@ -96,6 +97,7 @@ class _AddActivityButton extends StatelessWidget {
       Translator.of(context).translate.activity,
       AbiliaIcons.plus,
       key: TestKey.addActivityButton,
+      ttsData: Translator.of(context).translate.addActivity,
       onPressed: () => _navigateToCreateNewPage(
         context: context,
         showTimers: false,
@@ -113,6 +115,7 @@ class _AddTimerButton extends StatelessWidget {
       Translator.of(context).translate.timer,
       AbiliaIcons.stopWatch,
       key: TestKey.addTimerButton,
+      ttsData: Translator.of(context).translate.addTimer,
       onPressed: () => _navigateToCreateNewPage(
         context: context,
         showActivities: false,
@@ -144,6 +147,7 @@ class _AddActivityOrTimerButtons extends StatelessWidget {
             text: translate.activity,
             icon: AbiliaIcons.plus,
             position: _AddTabPosition.left,
+            ttsData: Translator.of(context).translate.addActivity,
             onTap: () => _navigateToCreateNewPage(
               context: context,
               showTimers: false,
@@ -157,6 +161,7 @@ class _AddActivityOrTimerButtons extends StatelessWidget {
             text: translate.timer,
             icon: AbiliaIcons.stopWatch,
             position: _AddTabPosition.right,
+            ttsData: Translator.of(context).translate.addTimer,
             onTap: () => _navigateToCreateNewPage(
               context: context,
               showActivities: false,
@@ -177,12 +182,14 @@ class _AddTab extends StatelessWidget {
     required this.icon,
     required this.position,
     required this.onTap,
+    this.ttsData,
   }) : super(key: key);
 
   final String text;
   final IconData icon;
   final _AddTabPosition position;
   final VoidCallback onTap;
+  final String? ttsData;
 
   @override
   Widget build(BuildContext context) {
@@ -199,48 +206,51 @@ class _AddTab extends StatelessWidget {
     );
     final isLeft = position == _AddTabPosition.left;
 
-    return SizedBox(
-      height: layout.actionButton.size,
-      width: layout.actionButton.size,
-      child: Ink(
-        decoration: BoxDecoration(
-          border: Border(
-            left: borderSide.copyWith(
-              color: Colors.transparent,
-              width: isLeft ? null : 0,
+    return Tts.data(
+      data: ttsData ?? text,
+      child: SizedBox(
+        height: layout.actionButton.size,
+        width: layout.actionButton.size,
+        child: Ink(
+          decoration: BoxDecoration(
+            border: Border(
+              left: borderSide.copyWith(
+                color: Colors.transparent,
+                width: isLeft ? null : 0,
+              ),
+              right: borderSide.copyWith(
+                color: Colors.transparent,
+                width: isLeft ? 0 : null,
+              ),
             ),
-            right: borderSide.copyWith(
-              color: Colors.transparent,
-              width: isLeft ? 0 : null,
-            ),
+            color: AbiliaColors.transparentWhite20,
           ),
-          color: AbiliaColors.transparentWhite20,
-        ),
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: layout.actionButton.withTextPadding,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  height: textStyle.fontSize,
-                  child: Center(
-                    child: AutoSizeText(
-                      text,
-                      minFontSize: 12,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: textStyle,
+          child: InkWell(
+            onTap: onTap,
+            child: Padding(
+              padding: layout.actionButton.withTextPadding,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    height: textStyle.fontSize,
+                    child: Center(
+                      child: AutoSizeText(
+                        text,
+                        minFontSize: 12,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: textStyle,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: layout.actionButton.spacing),
-                IconTheme(
-                  data: iconTheme,
-                  child: Icon(icon),
-                )
-              ],
+                  SizedBox(height: layout.actionButton.spacing),
+                  IconTheme(
+                    data: iconTheme,
+                    child: Icon(icon),
+                  )
+                ],
+              ),
             ),
           ),
         ),

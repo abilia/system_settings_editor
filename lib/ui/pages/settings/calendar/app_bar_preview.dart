@@ -22,15 +22,13 @@ class AppBarPreview extends StatelessWidget {
               height: CalendarAppBar.size.height,
               child: CalendarAppBar(
                 leftAction: showBrowseButtons
-                    ? IconActionButton(
+                    ? LeftNavButton(
                         onPressed: () {},
-                        child: const Icon(AbiliaIcons.returnToPreviousPage),
                       )
                     : null,
                 rightAction: showBrowseButtons
-                    ? IconActionButton(
+                    ? RightNavButton(
                         onPressed: () {},
-                        child: const Icon(AbiliaIcons.goToNextPage),
                       )
                     : null,
                 day: currentTime,
