@@ -20,34 +20,6 @@ class CalendarInactivityListener
         );
 }
 
-class HomeScreenInactivityListener extends StatelessWidget {
-  final Widget child;
-  final MemoplannerSettingsState settingsState;
-
-  const HomeScreenInactivityListener({
-    Key? key,
-    required this.settingsState,
-    required this.child,
-  }) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    if (!Config.isMP) return child;
-
-    return BlocListener<InactivityCubit, InactivityState>(
-      listenWhen: (previous, current) =>
-          current is HomeScreenInactivityThresholdReached &&
-          previous is! HomeScreenInactivityThresholdReached &&
-          current.startView != StartView.photoAlbum,
-      listener: (context, state) {
-        if (state is! HomeScreenInactivityThresholdReached) return;
-        DefaultTabController.of(context)?.index =
-            settingsState.startViewIndex(state.startView);
-      },
-      child: child,
-    );
-  }
-}
-
 class ScreenSaverListener
     extends BlocListener<InactivityCubit, InactivityState> {
   ScreenSaverListener({Key? key})
@@ -59,11 +31,13 @@ class ScreenSaverListener
           listener: (context, state) {
             Navigator.of(context)
                 .popUntil((route) => route.isFirst || route is AlarmRoute);
+            final settingsState = context.read<MemoplannerSettingBloc>().state;
             if (state is! HomeScreenInactivityThresholdReached ||
-                !state.screensaverOrPhotoAlbum) return;
+                !settingsState.screensaverOrPhotoAlbum) return;
 
             final authProviders = copiedAuthProviders(context);
-            if (state.startView == StartView.photoAlbum) {
+
+            if (settingsState.startView == StartView.photoAlbum) {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => MultiBlocProvider(
@@ -75,7 +49,7 @@ class ScreenSaverListener
               );
             }
 
-            if (state.showScreensaver) {
+            if (settingsState.useScreensaver) {
               final screenSaverRoute = MaterialPageRoute(
                 builder: (context) => MultiBlocProvider(
                   providers: authProviders,

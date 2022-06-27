@@ -214,6 +214,11 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   context.read<TimerAlarmBloc>().stream,
                 ),
               ),
+              BlocProvider<ActionIntentCubit>(
+                create: (context) => ActionIntentCubit(
+                  GetIt.I<ActionIntentStream>(),
+                ),
+              ),
             ]
           ],
           child: child,

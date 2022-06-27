@@ -15,6 +15,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../fakes/all.dart';
+import '../mocks/mock_bloc.dart';
 import '../mocks/mocks.dart';
 import '../test_helpers/app_pumper.dart';
 import '../test_helpers/register_fallback_values.dart';
@@ -29,14 +30,20 @@ void main() {
   group('minimum', () {
     final DateTime initialTime = DateTime(2122, 06, 06, 06, 00);
     final Ticker fakeTicker = Ticker.fake(initialTime: initialTime);
-    final MemoplannerSettingBloc settingBloc = FakeMemoplannerSettingsBloc();
+    late MockMemoplannerSettingBloc mockSettingBloc;
     late InactivityCubit inactivityCubit;
 
     setUp(() async {
+      mockSettingBloc = MockMemoplannerSettingBloc();
+      when(() => mockSettingBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(MemoplannerSettings()),
+      );
+      when(() => mockSettingBloc.stream)
+          .thenAnswer((invocation) => const Stream.empty());
       inactivityCubit = InactivityCubit(
         const Duration(minutes: 1),
         fakeTicker,
-        settingBloc,
+        mockSettingBloc,
         TouchDetectionCubit().stream,
         const Stream.empty(),
         const Stream.empty(),
@@ -64,7 +71,7 @@ void main() {
 
     Widget _wrapWithMaterialApp({Widget? child}) => TopLevelBlocsProvider(
           child: AuthenticatedBlocsProvider(
-            memoplannerSettingBloc: settingBloc,
+            memoplannerSettingBloc: mockSettingBloc,
             authenticatedState: const Authenticated(userId: 1),
             child: BlocProvider<InactivityCubit>(
               create: (context) => inactivityCubit,
@@ -83,14 +90,17 @@ void main() {
       testWidgets(
           'When timeout is reached, screen saver is false, app switches to WeekCalendar',
           (tester) async {
-        await tester
-            .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
-        inactivityCubit.emit(
-          const HomeScreenInactivityThresholdReached(
-            startView: StartView.weekCalendar,
-            showScreensaver: false,
+        when(() => mockSettingBloc.state).thenReturn(
+          MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              functionMenuStartView: StartView.weekCalendar.index,
+              useScreensaver: false,
+            ),
           ),
         );
+        await tester
+            .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
+        inactivityCubit.emit(const HomeScreenInactivityThresholdReached());
         await tester.pumpAndSettle();
         expect(find.byType(WeekCalendar), findsOneWidget);
       });
@@ -98,13 +108,18 @@ void main() {
       testWidgets(
           'When timeout is reached, screen saver is false, app switches to MonthCalendar',
           (tester) async {
+        when(() => mockSettingBloc.state).thenReturn(
+          MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              functionMenuStartView: StartView.monthCalendar.index,
+              useScreensaver: false,
+            ),
+          ),
+        );
         await tester
             .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
         inactivityCubit.emit(
-          const HomeScreenInactivityThresholdReached(
-            startView: StartView.monthCalendar,
-            showScreensaver: false,
-          ),
+          const HomeScreenInactivityThresholdReached(),
         );
         await tester.pumpAndSettle();
         expect(find.byType(MonthCalendar), findsOneWidget);
@@ -113,13 +128,18 @@ void main() {
       testWidgets(
           'When timeout is reached, screen saver is false, app switches to Menu',
           (tester) async {
+        when(() => mockSettingBloc.state).thenReturn(
+          MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              functionMenuStartView: StartView.menu.index,
+              useScreensaver: false,
+            ),
+          ),
+        );
         await tester
             .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
         inactivityCubit.emit(
-          const HomeScreenInactivityThresholdReached(
-            startView: StartView.menu,
-            showScreensaver: false,
-          ),
+          const HomeScreenInactivityThresholdReached(),
         );
         await tester.pumpAndSettle();
         expect(find.byType(MenuPage), findsOneWidget);
@@ -128,13 +148,18 @@ void main() {
       testWidgets(
           'When timeout is reached, screen saver is false, app switches to PhotoCalendar',
           (tester) async {
+        when(() => mockSettingBloc.state).thenReturn(
+          MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              functionMenuStartView: StartView.photoAlbum.index,
+              useScreensaver: false,
+            ),
+          ),
+        );
         await tester
             .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
         inactivityCubit.emit(
-          const HomeScreenInactivityThresholdReached(
-            startView: StartView.photoAlbum,
-            showScreensaver: false,
-          ),
+          const HomeScreenInactivityThresholdReached(),
         );
         await tester.pumpAndSettle();
         expect(find.byType(PhotoCalendarPage), findsOneWidget);
@@ -143,13 +168,18 @@ void main() {
       testWidgets(
           'When timeout is reached, screen saver is true, app switches to ScreenSaver',
           (tester) async {
+        when(() => mockSettingBloc.state).thenReturn(
+          MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              functionMenuStartView: StartView.menu.index,
+              useScreensaver: true,
+            ),
+          ),
+        );
         await tester
             .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
         inactivityCubit.emit(
-          const HomeScreenInactivityThresholdReached(
-            startView: StartView.menu,
-            showScreensaver: true,
-          ),
+          const HomeScreenInactivityThresholdReached(),
         );
         await tester.pumpAndSettle();
         expect(find.byType(ScreenSaverPage), findsOneWidget);
@@ -158,6 +188,14 @@ void main() {
       testWidgets(
           'When timeout is reached, screen saver is false, '
           'app switches to DayCalendar from Menu', (tester) async {
+        when(() => mockSettingBloc.state).thenReturn(
+          MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              functionMenuStartView: StartView.dayCalendar.index,
+              useScreensaver: false,
+            ),
+          ),
+        );
         await tester
             .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
         await tester.tap(find.byType(MenuButton));
@@ -165,10 +203,7 @@ void main() {
         await tester.tap(find.byType(SettingsButton));
         await tester.pumpAndSettle();
         inactivityCubit.emit(
-          const HomeScreenInactivityThresholdReached(
-            startView: StartView.dayCalendar,
-            showScreensaver: false,
-          ),
+          const HomeScreenInactivityThresholdReached(),
         );
         await tester.pumpAndSettle();
         expect(find.byType(DayCalendar), findsOneWidget);
@@ -293,7 +328,11 @@ void main() {
 
       // Act
       await tester.pumpApp();
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(MenuPage), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      expect(find.byType(MenuPage), findsNothing);
+      expect(find.byType(WeekCalendar), findsOneWidget);
       clockStreamController.add(initialTime.add(1.minutes()));
       await tester.pumpAndSettle();
 
@@ -313,6 +352,10 @@ void main() {
 
       // Act
       await tester.pumpApp();
+      expect(find.byType(MenuPage), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.day));
+      await tester.pumpAndSettle();
+      expect(find.byType(MenuPage), findsNothing);
       expect(find.byType(DayCalendar), findsOneWidget);
       clockStreamController.add(initialTime.add(1.minutes()));
       await tester.pumpAndSettle();

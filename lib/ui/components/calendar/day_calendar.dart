@@ -105,9 +105,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
               if (eventState.day.dayIndex != index) {
                 return const SizedBox.shrink();
               }
-              if (eventState is EventsLoading) {
-                return const Center(child: CircularProgressIndicator());
-              }
+
               return Column(
                 children: <Widget>[
                   if (eventState.fullDayActivities.isNotEmpty)
