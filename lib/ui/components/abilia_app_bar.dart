@@ -24,7 +24,6 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
             AbiliaAppBar.height + (bottom?.preferredSize.height ?? 0.0)),
         super(key: key);
 
-  static final Size size = Size.fromHeight(height);
   static final double height = layout.appBar.smallHeight;
 
   @override

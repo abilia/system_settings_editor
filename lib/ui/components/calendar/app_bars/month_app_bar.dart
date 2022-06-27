@@ -24,7 +24,7 @@ class MonthAppBar extends StatelessWidget implements PreferredSizeWidget {
 class MonthAppBarStepper extends StatelessWidget
     implements PreferredSizeWidget {
   @override
-  Size get preferredSize => AbiliaAppBar.size;
+  Size get preferredSize => Size.fromHeight(AbiliaAppBar.height);
 
   final bool showYear, showDay, showBrowseButtons, showClock;
   final DayColor dayColor;
