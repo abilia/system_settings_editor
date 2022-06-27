@@ -708,6 +708,33 @@ void main() {
       // Assert
       expect(find.byType(SelectRecurrentTypePage), findsOneWidget);
     });
+
+    testWidgets(
+        'SGC-1709 When delete button pressed for single recurring No this day and forward question shown',
+        (WidgetTester tester) async {
+      // Arrangeflutter
+      when(() => mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value(<Activity>[
+                Activity.createNew(
+                    title: 'title',
+                    startTime: (startTime),
+                    recurs: Recurs.raw(
+                      Recurs.typeWeekly,
+                      Recurs.allDaysOfWeek,
+                      startTime.millisecondsSinceEpoch,
+                    ),
+                    alarmType: alarmSilent)
+              ]));
+      await navigateToActivityPage(tester);
+
+      // Act
+      await tester.tap(deleteButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(yesButtonFinder);
+      await tester.pumpAndSettle();
+      // // Assert
+      expect(find.byType(SelectRecurrentTypePage), findsNothing);
+    });
   });
   group('Edit recurring', () {
     final editRecurrentFinder = find.byType(SelectRecurrentTypePage);
