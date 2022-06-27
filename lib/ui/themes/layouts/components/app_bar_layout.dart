@@ -37,6 +37,7 @@ class AppBarLayoutMedium extends AppBarLayout {
   const AppBarLayoutMedium({
     double? largeHeight,
     double? mediumHeight,
+    double? smallHeight,
     double? horizontalPadding,
     double? clockPadding,
     TextStyle? textStyle,
@@ -45,7 +46,7 @@ class AppBarLayoutMedium extends AppBarLayout {
           clockPadding: clockPadding ?? 16,
           largeHeight: largeHeight ?? 148,
           mediumHeight: mediumHeight ?? 148,
-          smallHeight: 104,
+          smallHeight: smallHeight ?? 104,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(32),
             topRight: Radius.circular(32),
@@ -64,6 +65,7 @@ class AppBarLayoutLarge extends AppBarLayoutMedium {
   const AppBarLayoutLarge()
       : super(
           largeHeight: 200,
+          smallHeight: 138,
           horizontalPadding: 32,
           textStyle: const TextStyle(
             fontSize: 48,
