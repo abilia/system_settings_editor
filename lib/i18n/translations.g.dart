@@ -239,7 +239,7 @@ abstract class Translated {
 
   final String createActivity = 'New activity';
 
-  final String selectBasicActivity = 'Select basic activity';
+  final String selectTemplateActivity = 'Select activity';
 
   final String deleteActivity = 'Do you want to delete this activity?';
 
@@ -286,9 +286,7 @@ abstract class Translated {
 
   final String fromTemplateTimer = 'From template';
 
-  final String noBasicTimers = 'You have no basic timers';
-
-  final String selectBaseTimer = 'Select basic timer';
+  final String selectTemplateTimer = 'Select timer';
 
   final String timer = 'Timer';
 
@@ -346,7 +344,7 @@ abstract class Translated {
 
   final String emptyFolder = 'The folder is empty';
 
-  final String noBasicActivities = 'You have no basic activities';
+  final String noTemplates = 'You have no templates';
 
   final String noChecklists = 'You have no checklists';
 
@@ -396,14 +394,14 @@ abstract class Translated {
   final String conflictWarning =
       'There are activities conflicting with this activity. Press OK to continue.';
 
-  final String noBasicActivityError1 =
-      'There are no basic activities and you have not selected name or image in adding an activity step-by-step.';
+  final String noTemplateActivityError1 =
+      'There are no templates and you have not selected name or image in adding an activity step-by-step.';
 
-  final String noBasicActivityError2 =
-      'To fix this, either create basic activities or select either name or image for step-by-step.';
+  final String noTemplateActivityError2 =
+      'To fix this, either create templates or select either name or image for step-by-step.';
 
   final String missingRequiredActivitySetting =
-      'You need either “Show basic activities”, “Select name” or “Select image” selected.';
+      'You need either “Show templates”, “Select name” or “Select image” selected.';
 
   final String availableFor = 'Available for';
 
@@ -657,7 +655,7 @@ abstract class Translated {
 
   final String stepByStep = 'Step-by-step';
 
-  final String showBasicActivities = 'Show basic activities';
+  final String showTemplates = 'Show templates';
 
   final String selectName = 'Select name';
 
@@ -885,7 +883,7 @@ abstract class Translated {
   final String installStarterSet = 'Install starter set?';
 
   final String doYouWantToImportADefaultSet =
-      'Do you want to import a default set of data with basic activities, timers, checklists and image archive?';
+      'Do you want to import a default set of data with activities, timers, checklists and image archive?';
 
   final String welcome = 'Welcome!';
 
@@ -1230,7 +1228,7 @@ class SV extends Translated {
   final String createActivity = 'Ny aktivitet';
 
   @override
-  final String selectBasicActivity = 'Välj basaktivitet';
+  final String selectTemplateActivity = 'Välj aktivitet';
 
   @override
   final String deleteActivity =
@@ -1302,10 +1300,7 @@ class SV extends Translated {
   final String fromTemplateTimer = 'Från mall';
 
   @override
-  final String noBasicTimers = 'Du har inga bastimers';
-
-  @override
-  final String selectBaseTimer = 'Välj bastimer';
+  final String selectTemplateTimer = 'Välj timer';
 
   @override
   final String timer = 'Timer';
@@ -1392,7 +1387,7 @@ class SV extends Translated {
   final String emptyFolder = 'Mappen är tom';
 
   @override
-  final String noBasicActivities = 'Du har inga basaktiviteter';
+  final String noTemplates = 'Du har inga mallar';
 
   @override
   final String noChecklists = 'Du har inga checklistor';
@@ -1466,16 +1461,16 @@ class SV extends Translated {
       'Det finns aktiviteter som krockar med din aktivitet. Tryck ok om du vill fortsätta.';
 
   @override
-  final String noBasicActivityError1 =
-      'Det finns inga basaktiviteter och du har inte valt namn och bild i lägga in stegvis.';
+  final String noTemplateActivityError1 =
+      'Det finns inga mallar och du har inte valt namn och bild i lägga in stegvis.';
 
   @override
-  final String noBasicActivityError2 =
-      'För att åtgärda, skapa några basaktiviteter eller aktivera antingen namn eller bild i lägga in stegvis.';
+  final String noTemplateActivityError2 =
+      'För att åtgärda, skapa mallar eller aktivera antingen namn eller bild i lägga in stegvis.';
 
   @override
   final String missingRequiredActivitySetting =
-      'Du behöver ha antingen “Visa basaktiviteter”, “Välj namn”, eller “Välj bild” vald.';
+      'Du behöver ha antingen “Visa mallar”, “Välj namn”, eller “Välj bild” vald.';
 
   @override
   final String availableFor = 'Tillgänglig för';
@@ -1852,7 +1847,7 @@ class SV extends Translated {
   final String stepByStep = 'Stegvis';
 
   @override
-  final String showBasicActivities = 'Visa basaktiviteter';
+  final String showTemplates = 'Visa mallar';
 
   @override
   final String selectName = 'Välj namn';
@@ -2184,7 +2179,7 @@ class SV extends Translated {
 
   @override
   final String doYouWantToImportADefaultSet =
-      'Vill du importera startuppsättning av basaktiviteter, timers, checklistor och bildarkiv?';
+      'Vill du importera startuppsättning av aktiviteter, timers, checklistor och bildarkiv?';
 
   @override
   final String welcome = 'Välkommen!';
@@ -2511,7 +2506,7 @@ class DA extends Translated {
   final String createActivity = 'Ny aktivitet';
 
   @override
-  final String selectBasicActivity = 'Vælg standardaktivitet';
+  final String selectTemplateActivity = 'Vælg standardaktivitet';
 
   @override
   final String deleteActivity =
@@ -2574,10 +2569,7 @@ class DA extends Translated {
   final String fromTemplateTimer = 'Fra standardtimer';
 
   @override
-  final String noBasicTimers = 'Du har ingen standardtimer';
-
-  @override
-  final String selectBaseTimer = 'Vælg bastimer';
+  final String selectTemplateTimer = 'Vælg bastimer';
 
   @override
   final String timer = 'Timer';
@@ -2658,9 +2650,6 @@ class DA extends Translated {
   final String emptyFolder = 'Mappen er tom';
 
   @override
-  final String noBasicActivities = 'Du har ingen standardaktiviteter';
-
-  @override
   final String noChecklists = 'Du har ingen tjeklister';
 
   @override
@@ -2732,11 +2721,11 @@ class DA extends Translated {
       'Der er aktiviteter, der falder sammen med denne aktivitet. Tryk på OK for at fortsætte.';
 
   @override
-  final String noBasicActivityError1 =
+  final String noTemplateActivityError1 =
       'Det er ingen standardaktivitet, og du har ikke valgt navn og billede i sekvensmodus.';
 
   @override
-  final String noBasicActivityError2 =
+  final String noTemplateActivityError2 =
       'For at fikse det skal der oprettes standardaktiviteter eller aktiveres enten navn eller billede i sekvensmodus.';
 
   @override
@@ -3117,9 +3106,6 @@ class DA extends Translated {
 
   @override
   final String stepByStep = 'Trinvist';
-
-  @override
-  final String showBasicActivities = 'Vis standardaktiviteter';
 
   @override
   final String selectName = 'Vælg navn';
@@ -3728,7 +3714,7 @@ class NL extends Translated {
   final String createActivity = 'Nieuwe activiteit';
 
   @override
-  final String selectBasicActivity = 'Standaardactiviteit selecteren';
+  final String selectTemplateActivity = 'Standaardactiviteit selecteren';
 
   @override
   final String deleteActivity = 'Wilt u deze activiteit verwijderen?';
@@ -3789,10 +3775,7 @@ class NL extends Translated {
   final String fromTemplateTimer = 'Uit standaardtimers';
 
   @override
-  final String noBasicTimers = 'Je hebt geen standaardtimers';
-
-  @override
-  final String selectBaseTimer = 'Standaardtimers selecteren';
+  final String selectTemplateTimer = 'Standaardtimers selecteren';
 
   @override
   final String timer = 'Tijdopnemer';
@@ -3873,9 +3856,6 @@ class NL extends Translated {
   final String emptyFolder = 'De map is leeg';
 
   @override
-  final String noBasicActivities = 'Je hebt geen standaardactiviteiten';
-
-  @override
   final String noChecklists = 'Je hebt geen checklists';
 
   @override
@@ -3948,11 +3928,11 @@ class NL extends Translated {
       'Er zijn activiteiten die conflicteren met deze activiteit. Druk op OK om door te gaan.';
 
   @override
-  final String noBasicActivityError1 =
+  final String noTemplateActivityError1 =
       'Er zijn geen standaardactiviteiten en u heeft geen naam of afbeelding geselecteerd in het stap voor stap toevoegen van een activiteit.';
 
   @override
-  final String noBasicActivityError2 =
+  final String noTemplateActivityError2 =
       'Om dit op te lossen creëert u standaardactiviteiten of selecteer een naam of afbeelding voor stap voor stap.';
 
   @override
@@ -4333,9 +4313,6 @@ class NL extends Translated {
 
   @override
   final String stepByStep = 'Stap voor stap';
-
-  @override
-  final String showBasicActivities = 'Toon standaardactiviteiten';
 
   @override
   final String selectName = 'Naam selecteren';
@@ -4948,7 +4925,7 @@ class FI extends Translated {
   final String createActivity = 'Uusi aktiviteetti';
 
   @override
-  final String selectBasicActivity = 'Valitse perusaktiviteetti';
+  final String selectTemplateActivity = 'Valitse perusaktiviteetti';
 
   @override
   final String deleteActivity = 'Haluatko poistaa tämän aktiviteetin?';
@@ -5010,10 +4987,7 @@ class FI extends Translated {
   final String fromTemplateTimer = 'Perusajastimesta';
 
   @override
-  final String noBasicTimers = 'Sinulla ei ole perusajastimia';
-
-  @override
-  final String selectBaseTimer = 'Valitse perusajastin';
+  final String selectTemplateTimer = 'Valitse perusajastin';
 
   @override
   final String timer = 'Ajastin';
@@ -5094,9 +5068,6 @@ class FI extends Translated {
   final String emptyFolder = 'Kansio on tyhjä';
 
   @override
-  final String noBasicActivities = 'Sinulla ei ole perusaktiviteettit';
-
-  @override
   final String noChecklists = 'Sinulla ei ole tarkistuslistoja';
 
   @override
@@ -5169,11 +5140,11 @@ class FI extends Translated {
       'On olemassa aktiviteetteja, jotka ovat ristiriidassa tämän aktiviteetin kanssa. Jatka painamalla OK.';
 
   @override
-  final String noBasicActivityError1 =
+  final String noTemplateActivityError1 =
       'Perusaktiviteetteja ei ole, etkä ole valinnut nimeä tai kuvaa lisätessäsi aktiviteettia vaiheittain.';
 
   @override
-  final String noBasicActivityError2 =
+  final String noTemplateActivityError2 =
       'Korjaa tämä joko luomalla perusaktiviteetteja tai valitsemalla joko nimi tai kuva vaiheittaisten ohjeiden mukaisesti.';
 
   @override
@@ -5554,9 +5525,6 @@ class FI extends Translated {
 
   @override
   final String stepByStep = 'Vaihe vaiheelta';
-
-  @override
-  final String showBasicActivities = 'Näytä perusaktiviteetit';
 
   @override
   final String selectName = 'Valitse nimi';
@@ -6171,7 +6139,7 @@ class DE extends Translated {
   final String createActivity = 'Neue Aktivität';
 
   @override
-  final String selectBasicActivity = 'Standardaktivität auswählen';
+  final String selectTemplateActivity = 'Standardaktivität auswählen';
 
   @override
   final String deleteActivity = 'Möchten Sie diese Aktivität löschen?';
@@ -6233,10 +6201,7 @@ class DE extends Translated {
   final String fromTemplateTimer = 'Von Standardtimer';
 
   @override
-  final String noBasicTimers = 'Sie haben keine Standardtimer';
-
-  @override
-  final String selectBaseTimer = 'Standardtimer auswählen';
+  final String selectTemplateTimer = 'Standardtimer auswählen';
 
   @override
   final String timer = 'Timer';
@@ -6317,9 +6282,6 @@ class DE extends Translated {
   final String emptyFolder = 'Der Ordner leer ist';
 
   @override
-  final String noBasicActivities = 'Sie haben keine Standardaktivitäten';
-
-  @override
   final String noChecklists = 'Sie haben keine Checklisten';
 
   @override
@@ -6392,11 +6354,11 @@ class DE extends Translated {
       'Mit dieser Aktivität stehen andere Aktivitäten im Konflikt. Drücken Sie auf OK, um fortzufahren.';
 
   @override
-  final String noBasicActivityError1 =
+  final String noTemplateActivityError1 =
       'Es gibt keine Standardaktivitäten und Sie haben beim schrittweisen Hinzufügen einer Aktivität keinen Namen oder kein Bild ausgewählt.';
 
   @override
-  final String noBasicActivityError2 =
+  final String noTemplateActivityError2 =
       'Um dies zu beheben, erstellen Sie entweder Standardaktivitäten oder wählen einen Namen oder ein Bild für die schrittweise Prozedur aus.';
 
   @override
@@ -6779,9 +6741,6 @@ class DE extends Translated {
 
   @override
   final String stepByStep = 'Schritt für Schritt';
-
-  @override
-  final String showBasicActivities = 'Standardaktivitäten anzeigen';
 
   @override
   final String selectName = 'Name auswählen';
@@ -7397,7 +7356,7 @@ class NB extends Translated {
   final String createActivity = 'Ny aktivitet';
 
   @override
-  final String selectBasicActivity = 'Velg standardaktivitet';
+  final String selectTemplateActivity = 'Velg standardaktivitet';
 
   @override
   final String deleteActivity = 'Er du sikker på at du vil slette aktiviteten?';
@@ -7468,10 +7427,7 @@ class NB extends Translated {
   final String fromTemplateTimer = 'Fra standardtimere';
 
   @override
-  final String noBasicTimers = 'Du har ingen standardtimere';
-
-  @override
-  final String selectBaseTimer = 'Velg standardtimere';
+  final String selectTemplateTimer = 'Velg standardtimere';
 
   @override
   final String timer = 'Tidtaker';
@@ -7555,9 +7511,6 @@ class NB extends Translated {
   final String emptyFolder = 'Mappen er tom';
 
   @override
-  final String noBasicActivities = 'Du har ingen standardaktiviteter';
-
-  @override
   final String noChecklists = 'Du har ingen sjekklister';
 
   @override
@@ -7629,11 +7582,11 @@ class NB extends Translated {
       'Der er aktiviteter som kolliderer med denne aktivitet. Trykk på OK for å fortsette.';
 
   @override
-  final String noBasicActivityError1 =
+  final String noTemplateActivityError1 =
       'Det er ingen standardaktivitet, og du har ikke valgt navn og bilde i sekvensmodus.';
 
   @override
-  final String noBasicActivityError2 =
+  final String noTemplateActivityError2 =
       'For å fikse, opprette noen standardaktiviteter eller aktivere enten navn eller bilde i sekvensmodus.';
 
   @override
@@ -8016,9 +7969,6 @@ class NB extends Translated {
 
   @override
   final String stepByStep = 'Via sekvens';
-
-  @override
-  final String showBasicActivities = 'Vis liste med standardaktiviteter';
 
   @override
   final String selectName = 'Velg navn';

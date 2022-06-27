@@ -70,7 +70,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
                   _showErrorDialog(context);
                 }
               },
-              child: Text(t.showBasicActivities),
+              child: Text(t.showTemplates),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.selectTextSize),
@@ -184,7 +184,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
                   _showErrorDialog(context);
                 }
               },
-              child: Text(t.showBasicActivities),
+              child: Text(t.showTemplates),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.selectTextSize),

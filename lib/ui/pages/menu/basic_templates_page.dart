@@ -27,12 +27,12 @@ class BasicTemplatesPage extends StatelessWidget {
         body: TabBarView(
           children: [
             ListLibrary<BasicActivityData>(
-              emptyLibraryMessage: translate.noBasicActivities,
+              emptyLibraryMessage: translate.noTemplates,
               libraryItemGenerator: BasicTemplatePickField.new,
               onTapEdit: _onEditTemplateActivity,
             ),
             ListLibrary<BasicTimerData>(
-              emptyLibraryMessage: translate.noBasicTimers,
+              emptyLibraryMessage: translate.noTemplates,
               libraryItemGenerator: BasicTemplatePickField.new,
               onTapEdit: _onEditTemplateTimer,
             ),

@@ -19,7 +19,7 @@ class BasicActivityPickerPage extends StatelessWidget {
             title: translate.fromTemplateActivity,
           ),
           body: ListLibrary<BasicActivityData>(
-            emptyLibraryMessage: translate.noBasicActivities,
+            emptyLibraryMessage: translate.noTemplates,
             selectableItems: false,
             libraryItemGenerator: (sortable, onTap, _, __) {
               return BasicTemplatePickField<BasicActivityData>(

@@ -23,7 +23,7 @@ class BasicTimerPickerPage extends StatelessWidget {
               title: translate.fromTemplateTimer,
             ),
             body: ListLibrary<BasicTimerData>(
-              emptyLibraryMessage: translate.noBasicTimers,
+              emptyLibraryMessage: translate.noTemplates,
               selectableItems: false,
               libraryItemGenerator: (sortable, onTap, _, __) {
                 final sortableData = sortable.data;

@@ -453,7 +453,7 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
           await tester.pumpAndSettle();
-          expect(find.text(translate.noBasicActivities), findsOneWidget);
+          expect(find.text(translate.noTemplates), findsOneWidget);
         });
 
         testWidgets(
