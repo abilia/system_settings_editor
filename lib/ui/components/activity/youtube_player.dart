@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:seagull/ui/all.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
@@ -14,13 +12,11 @@ class YoutubePlayer extends StatefulWidget {
 
 class _YoutubePlayerState extends State<YoutubePlayer> {
   late final YoutubePlayerController _controller;
-  StreamSubscription? _stream;
 
   @override
   void initState() {
     super.initState();
     final uri = Uri.parse(widget.url);
-    final autoPlayParam = uri.queryParameters['autoplay'];
     final startAtParam = uri.queryParameters['t'];
 
     final videoId = YoutubePlayerController.convertUrlToId(widget.url);
@@ -34,22 +30,6 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
             : Duration.zero,
       ),
     );
-    if (autoPlayParam == '1') _playWhenReady();
-  }
-
-  void _playWhenReady() {
-    _stream = _controller.listen((event) {
-      if (_controller.value.isReady) {
-        _controller.play();
-        _stream?.cancel();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _stream?.cancel();
   }
 
   @override
