@@ -1,21 +1,43 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/occasion/activity_occasion.dart';
+import 'package:seagull/models/occasion/event_occasion.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class AllDayList extends StatelessWidget {
+  final DateTime day;
+
   const AllDayList({
     Key? key,
+    required this.day,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DayEventsCubit, EventsState>(
+    return BlocBuilder<ActivitiesBloc, ActivitiesState>(
       builder: (context, state) {
+        final now = DateTime.now();
+        final occasion = day.isAtSameDay(now)
+            ? Occasion.current
+            : day.isAfter(now)
+                ? Occasion.future
+                : Occasion.past;
+        final dayActivities = state.activities
+            .expand((activity) => activity.dayActivitiesForDay(day))
+            .toList();
+        final fullDayActivities = dayActivities
+            .where((activityDay) => activityDay.activity.fullDay)
+            .map((e) => ActivityOccasion(e.activity, day, occasion))
+            .toList();
+        fullDayActivities.sort(
+            (a, b) => b.title.toLowerCase().compareTo(a.title.toLowerCase()));
+
         return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
           builder: (context, memoSettingsState) => Theme(
             data: weekdayTheme(
                     dayColor: memoSettingsState.calendarDayColor,
                     languageCode: Localizations.localeOf(context).languageCode,
-                    weekday: state.day.weekday)
+                    weekday: day.weekday)
                 .theme,
             child: Builder(
               builder: (context) => Scaffold(
@@ -24,18 +46,18 @@ class AllDayList extends StatelessWidget {
                     itemExtent:
                         layout.eventCard.height + layout.eventCard.marginSmall,
                     padding: layout.templates.s1,
-                    itemCount: state.fullDayActivities.length,
+                    itemCount: fullDayActivities.length,
                     itemBuilder: (context, index) => Padding(
                       padding: EdgeInsets.only(
                         bottom: layout.eventCard.marginSmall,
                       ),
                       child: ActivityCard(
-                        activityOccasion: state.fullDayActivities[index],
+                        activityOccasion: fullDayActivities[index],
                       ),
                     ),
                   ),
                 ),
-                appBar: DayAppBar(day: state.day),
+                appBar: DayAppBar(day: day),
                 bottomNavigationBar: const BottomNavigation(
                   backNavigationWidget: CloseButton(),
                 ),

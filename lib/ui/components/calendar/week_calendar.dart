@@ -241,8 +241,8 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                     child: Padding(
                       padding: fullDayActivitiesPadding,
                       child: _FullDayActivities(
-                        weekdayIndex: day.weekday - 1,
-                        selectedDay: selected,
+                        day: day,
+                        selected: selected,
                       ),
                     ),
                   ),
@@ -257,17 +257,18 @@ class WeekCalenderHeadingContent extends StatelessWidget {
 }
 
 class _FullDayActivities extends StatelessWidget {
-  final int weekdayIndex;
-  final bool selectedDay;
+  final DateTime day;
+  final bool selected;
 
   const _FullDayActivities({
     Key? key,
-    required this.weekdayIndex,
-    required this.selectedDay,
+    required this.day,
+    required this.selected,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final weekdayIndex = day.weekday - 1;
     return BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
       buildWhen: (previous, current) =>
           previous.currentWeekActivities[weekdayIndex] !=
@@ -280,11 +281,13 @@ class _FullDayActivities extends StatelessWidget {
         if (fullDayActivities.length > 1) {
           return FullDayStack(
             numberOfActivities: fullDayActivities.length,
+            goToActivitiesListOnTap: true,
+            day: day,
           );
         } else if (fullDayActivities.length == 1) {
           return _WeekActivityContent(
             activityOccasion: fullDayActivities.first,
-            selectedDay: selectedDay,
+            selected: selected,
           );
         }
         return const SizedBox.shrink();
@@ -489,7 +492,7 @@ class _WeekDayColumnItems extends StatelessWidget {
                       aspectRatio: 1,
                       child: _WeekActivityContent(
                         activityOccasion: activityOccasions[i],
-                        selectedDay: selected,
+                        selected: selected,
                       ),
                     ),
             ),
@@ -534,19 +537,19 @@ class _WeekActivityContent extends StatelessWidget {
   const _WeekActivityContent({
     Key? key,
     required this.activityOccasion,
-    required this.selectedDay,
+    required this.selected,
   }) : super(key: key);
 
   final ActivityOccasion activityOccasion;
   final double scaleFactor = 2 / 3;
-  final bool selectedDay;
+  final bool selected;
 
   @override
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
     final wLayout = layout.weekCalendar;
     final inactive = activityOccasion.isPast || activityOccasion.isSignedOff;
-    final borderRadius = selectedDay && !activityOccasion.activity.fullDay
+    final borderRadius = selected && !activityOccasion.activity.fullDay
         ? wLayout.selectedDay.activityRadius
         : wLayout.notSelectedDay.activityRadius;
 
@@ -561,10 +564,10 @@ class _WeekActivityContent extends StatelessWidget {
           showCategoryColor:
               settings.showCategoryColor && !activityOccasion.activity.fullDay,
           category: activityOccasion.activity.category,
-          borderWidth: selectedDay && !activityOccasion.activity.fullDay
+          borderWidth: selected && !activityOccasion.activity.fullDay
               ? wLayout.selectedDay.activityBorderWidth
               : wLayout.notSelectedDay.activityBorderWidth,
-          currentBorderWidth: selectedDay && !activityOccasion.activity.fullDay
+          currentBorderWidth: selected && !activityOccasion.activity.fullDay
               ? wLayout.selectedDay.currentActivityBorderWidth
               : wLayout.notSelectedDay.currentActivityBorderWidth,
         );
@@ -607,7 +610,7 @@ class _WeekActivityContent extends StatelessWidget {
                           duration: const Duration(milliseconds: 400),
                           opacity: inactive ? 0.5 : 1.0,
                           child: FadeInAbiliaImage(
-                            fit: selectedDay ? BoxFit.scaleDown : BoxFit.cover,
+                            fit: selected ? BoxFit.scaleDown : BoxFit.cover,
                             imageFileId: activityOccasion.activity.fileId,
                             imageFilePath: activityOccasion.activity.icon,
                             height: double.infinity,
