@@ -399,7 +399,7 @@ class SubQuarterDot extends StatelessWidget {
       ? AnimatedDot(decoration: futureBigDotShape, size: bigDotSize)
       : AnimatedDot(
           size: bigDotSize,
-          decoration: pastDotShape,
+          decoration: pastBigDotShape,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

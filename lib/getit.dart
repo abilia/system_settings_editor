@@ -144,6 +144,10 @@ class GetItInitializer {
 
   set actionIntentStream(ActionIntentStream actionIntentStream) =>
       _actionIntentStream = actionIntentStream;
+  SupportPersonsDb? _supportPersonsDb;
+
+  set supportPersonsDb(SupportPersonsDb supportPersonsDb) =>
+      _supportPersonsDb = supportPersonsDb;
 
   void init() {
     final loginDb = _loginDb ?? LoginDb(_sharedPreferences);
@@ -184,6 +188,8 @@ class GetItInitializer {
       ..registerSingleton<TtsInterface>(_ttsHandler)
       ..registerSingleton<VoiceDb>(_voiceDb ??
           VoiceDb(_sharedPreferences, _applicationSupportDirectory?.path ?? ''))
-      ..registerSingleton<ActionIntentStream>(_actionIntentStream);
+      ..registerSingleton<ActionIntentStream>(_actionIntentStream)
+      ..registerSingleton<SupportPersonsDb>(
+          _supportPersonsDb ?? SupportPersonsDb(_sharedPreferences));
   }
 }

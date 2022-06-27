@@ -138,7 +138,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
               onChanged: (v) => context
                   .read<AddActivitySettingsCubit>()
                   .editSettings(addTabState.copyWith(removeAfter: v)),
-              child: Text(t.selectDeleteAfter),
+              child: Text(t.deleteAfter),
             ),
           ]
               .map((c) => Padding(
@@ -252,7 +252,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
               onChanged: (v) => context
                   .read<AddActivitySettingsCubit>()
                   .stepByStepSetting(settings.copyWith(selectDeleteAfter: v)),
-              child: Text(t.selectDeleteAfter),
+              child: Text(t.deleteAfter),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.handiAlarm),

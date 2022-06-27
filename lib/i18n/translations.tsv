@@ -157,9 +157,9 @@ back	Previous	Tillbaka	Tilbage	Terug	Takaisin	Zurück	Tilbake
 next	Next	Nästa	Næste	Volgende	Seuraava	Nächster	Neste
 ok	OK	OK	OK	OK	OK	OK	OK
 record	Record	Spela in	Indspil	Opnemen	Nauhoita	Aufnahme	Spill inn
+newText	New	Ny	Ny	Nieuw	Uusi	Neu	Ny
 							
-### Edit activity							
-newActivityButton	New	Ny	Ny	Nieuw	Uusi	Neu	Ny
+### Edit activity
 newActivityChoice	New	Helt ny	Helt ny	Nieuw	Uusi	Neu	Helt ny
 newActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuw activiteit	Uusi aktiviteettia	Neu Aktivität	Ny aktivitet
 editActivity	Edit activity	Ändra aktivitet	Ændre aktivitet	Activiteit bewerken	Muokkaa aktiviteettia	Aktivität bearbeiten	Endre aktivitet
@@ -206,8 +206,10 @@ missingRequiredActivitySetting	You need either “Show basic activities”, “S
 ### Privacy							
 availableFor	Available for	Tillgänglig för	Fås til	Beschikbaar voor	Käytettävissä	Verfügbar für	Tilgjengelig for
 activityAvailableFor	Available for	Tillgänglig för	Fås til	Beschikbaar voor	Käytettävissä	Verfügbar für	Tilgjengelig for
-meAndSupportPersons	Me and support persons	Mig och stödpersoner	Mig og støttepersoner	Mij en ondersteuningspersonen	Minä ja tukihenkilöt	Mich und Hilfspersonen	Meg og støttepersoner
+allSupportPersons	All my support persons	Alla mina stödpersoner					
 onlyMe	Only me	Bara mig	Bare mig	Mij alleen	Vain minä	Nur für mich	Bare meg
+selectedSupportPersons	Selected support persons	Utvalda stödpersoner					
+supportPersons	Support Persons	Stödpersoner					
 							
 ### Alarm							
 selectAlarmType	Select alarm	Ange larm	Vælg alarm	Alarm selecteren	Valitse hälytys	Alarm auswählen	Angi alarm
@@ -217,6 +219,7 @@ noAlarm	No alarm	Inget larm	Ingen alarm	Geen alarm	Ei hälytystä	Kein Alarm	Ing
 silentAlarm	Silent alarm	Tyst larm	Stille alarm	Stil alarm	Äänetön hälytys	Stiller Alarm	Stille alarm
 alarmOnlyAtStartTime	Alarm only at Start time	Larm endast vid starttid	Kun alarm ved starttidspunkt	Alarm alleen op begintijd	Vain hälytys alkamisaikaan	Alarm nur zur Startzeit	Alarm kun på starttid
 alertAlarmsDisabled	All alarms will be disabled until midnight on this device	Alla larm kommer att inaktiveras fram till midnatt på den här enheten	Alle alarmer vill være deaktivert til midnatt på denne enheten	Alle alarmen worden tot middernacht uitgeschakeld op dit toestel	Kaikki tämän laitteen hälytykset poistetaan käytöstä keskiyöhön asti	Alle Alarme auf diesem Gerät werden bis Mitternacht deaktiviert	Alle alarmer deaktiveres indtil midat på denne enhed
+disableAlarms	Disable alarms	Inaktivera alarm					
 							
 ### Select picture							
 selectImage	Select image	Välj bild	Vælg billede	Afbeelding selecteren	Valitse kuva	Bild auswählen	Velg bilde
@@ -347,7 +350,6 @@ selectDate	Select date	Välj datum	Vælg dato	Datum selecteren	Valitse päiväm�
 selectType	Select type	Välj typ	Vælg type	Type selecteren	Valitse tyyppi	Typ auswählen	Velg type
 selectCheckable	Select checkable	Välj kvitterbar	Vælg kvittering	Afvinkbaarheid selecteren	Valitse tarkistettava	Kontrollierbar auswählen	Velg kvittering
 selectAvailableFor	Select available for	Välj tillgänglig för	Vælg tilgængelig for	Selecteer beschikbaar voor	Valitse käytettävissä	Wählen Sie verfügbar für	Velg tilgjengelig for
-selectDeleteAfter	Select delete after	Välj ta bort efteråt	Vælg slet bagefter	Wissen na selecteren	Valitse poista, kun on kulunut	Zeit bis Löschen auswählen	Velg slett etterpå
 selectAlarm	Select alarm	Välj larm	Vælg alarm	Alarm selecteren	Valitse hälytys	Alarm auswählen	Velg alarm
 iOSAlarmTimeWarning	On an iPhone, alarm sounds can only be played for maximum 30 seconds	På en iPhone kan alarmljud bara spelas upp i maximalt 30 sekunder	På en iPhone kan alarmlyde kun afspilles i maksimalt 30 sekunder	Op een iPhone kunnen alarmgeluiden maximaal 30 seconden worden afgespeeld	IPhonessa hälytysääniä voidaan toistaa enintään 30 sekunnin ajan	Auf einem iPhone können Alarmtöne nur maximal 30 Sekunden lang abgespielt werden	På en iPhone kan alarmlyder bare spilles av i maksimalt 30 sekunder
 selectChecklist	Select checklist	Välj checklista	Vælg tjekliste	Checklist selecteren	Valitse tarkistusluettelo	Checkliste auswählen	Velg sjekkliste
@@ -412,7 +414,7 @@ noVoicesInstalled	No voices installed	Inga röster är installerade	Der er ikke 
 installingVoice	Installing	Installerar					Installerer
 speechTest	Test of speech rate	Test av talhastighet	Test af talehastighed	Test van spraaksnelheid	Puhenopeuden testaus	Test des Sprechtempos	Test av talehastighet
 voices	Voices	Röster		Stemmen	Äänet	Stimmen	Talesynteser
-
+							
 ### Code protect							
 codeProtect	Code protect	Kodskydd	Kodebeskyttelse	Codebescherming	Suojakoodi	Schutz durch Code	Kodebeskyttelse
 code	Code	Kod	Kode	Code	Koodi	Code	Kode

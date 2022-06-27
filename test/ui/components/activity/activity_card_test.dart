@@ -238,8 +238,8 @@ void main() {
         secret: true,
       ),
     );
-    expect(find.byType(PrivateIcon), findsOneWidget);
-    expect(find.byIcon(AbiliaIcons.passwordProtection), findsOneWidget);
+    expect(find.byType(AvailableForIcon), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.lock), findsOneWidget);
   });
 
   testWidgets('current activity is not crossed over',

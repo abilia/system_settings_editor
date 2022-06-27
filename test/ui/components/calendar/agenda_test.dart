@@ -809,11 +809,14 @@ void main() {
 
       void expectCorrectColor(String title, Color expectedColor) {
         final boxDecoration = tester
-            .widget<AnimatedContainer>(find.descendant(
-                of: find.widgetWithText(ActivityCard, title,
-                    skipOffstage: false),
-                matching: find.byType(AnimatedContainer, skipOffstage: false),
-                skipOffstage: false))
+            .widget<AnimatedContainer>(find
+                .descendant(
+                    of: find.widgetWithText(ActivityCard, title,
+                        skipOffstage: false),
+                    matching:
+                        find.byType(AnimatedContainer, skipOffstage: false),
+                    skipOffstage: false)
+                .first)
             .decoration as BoxDecoration;
         expect(
           boxDecoration.border?.bottom.color,
@@ -878,11 +881,14 @@ void main() {
 
       void expectCorrectColor(String title, Color expectedColor) {
         final boxDecoration = tester
-            .widget<AnimatedContainer>(find.descendant(
-                of: find.widgetWithText(ActivityCard, title,
-                    skipOffstage: false),
-                matching: find.byType(AnimatedContainer, skipOffstage: false),
-                skipOffstage: false))
+            .widget<AnimatedContainer>(find
+                .descendant(
+                    of: find.widgetWithText(ActivityCard, title,
+                        skipOffstage: false),
+                    matching:
+                        find.byType(AnimatedContainer, skipOffstage: false),
+                    skipOffstage: false)
+                .first)
             .decoration as BoxDecoration;
         expect(
           boxDecoration.border?.bottom.color,

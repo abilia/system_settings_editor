@@ -14,8 +14,9 @@ class TimeWiz extends StatelessWidget {
       child: WizardScaffold(
         iconData: AbiliaIcons.clock,
         title: Translator.of(context).translate.setTime,
+        appBarHeight: layout.appBar.mediumHeight,
         appBarTrailing: Padding(
-          padding: layout.timeInput.headerClockPadding,
+          padding: layout.alarmPage.clockPadding,
           child: AbiliaClock(
             style: Theme.of(context)
                 .textTheme

@@ -82,12 +82,12 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-
     return Padding(
       padding: layout.commonCalendar.fullDayButtonPadding,
       child: IconActionButton(
         onPressed: () {
+          final authProviders = copiedAuthProviders(context);
+
           Navigator.of(context).push(
             PageRouteBuilder(
               pageBuilder: (_, animation, secondaryAnimation) =>
@@ -98,7 +98,9 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
                     parent: animation,
                     curve: Curves.easeOut,
                   ),
-                  child: const AllDayList(),
+                  child: AllDayList(
+                    day: day,
+                  ),
                 ),
               ),
               settings: RouteSettings(name: 'AllDayList $day'),
