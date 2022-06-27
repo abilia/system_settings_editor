@@ -18,7 +18,7 @@ import '../../test_helpers/tts.dart';
 
 void main() {
   final day = DateTime(2111, 11, 11);
-  late MockDayEventsCubit dayEventsCubitMock;
+  late MockActivitiesBloc activitiesBlocMock;
   late FakeTimepillarCubit timepillarCubit;
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
@@ -30,12 +30,7 @@ void main() {
         home: MultiBlocProvider(providers: [
           BlocProvider<AuthenticationBloc>(
               create: (context) => FakeAuthenticationBloc()),
-          BlocProvider<DayEventsCubit>(
-            create: (context) => dayEventsCubitMock,
-          ),
-          BlocProvider<ActivitiesBloc>(
-            create: (context) => FakeActivitiesBloc(),
-          ),
+          BlocProvider<ActivitiesBloc>.value(value: activitiesBlocMock),
           BlocProvider<ClockBloc>(
             create: (context) => ClockBloc.fixed(day),
           ),
@@ -65,7 +60,7 @@ void main() {
   setUp(() async {
     await initializeDateFormatting();
     setupFakeTts();
-    dayEventsCubitMock = MockDayEventsCubit();
+    activitiesBlocMock = MockActivitiesBloc();
     timepillarCubit = FakeTimepillarCubit();
     final allDayActivities = [
       title0,
@@ -74,28 +69,18 @@ void main() {
       title3,
     ]
         .map(
-          (t) => ActivityOccasion(
-            Activity.createNew(
-              title: t,
-              startTime: day,
-              fullDay: true,
-            ),
-            day,
-            Occasion.future,
+          (t) => Activity.createNew(
+            title: t,
+            startTime: day,
+            fullDay: true,
           ),
         )
         .toList();
 
-    final expected = EventsState(
-      activities: const [],
-      timers: const [],
-      fullDayActivities: allDayActivities,
-      day: day,
-      occasion: Occasion.current,
-    );
+    final expected = ActivitiesLoaded(allDayActivities);
 
-    when(() => dayEventsCubitMock.state).thenReturn(expected);
-    when(() => dayEventsCubitMock.stream)
+    when(() => activitiesBlocMock.state).thenReturn(expected);
+    when(() => activitiesBlocMock.stream)
         .thenAnswer((_) => Stream.fromIterable([expected]));
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -106,7 +91,13 @@ void main() {
   tearDown(GetIt.I.reset);
 
   testWidgets('All DayList shows', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(const AllDayList()));
+    await tester.pumpWidget(
+      wrapWithMaterialApp(
+        AllDayList(
+          day: day,
+        ),
+      ),
+    );
     await tester.pumpAndSettle();
     expect(find.text(title0), findsOneWidget);
     expect(find.text(title1), findsOneWidget);
@@ -115,7 +106,13 @@ void main() {
   });
 
   testWidgets('tts', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(const AllDayList()));
+    await tester.pumpWidget(
+      wrapWithMaterialApp(
+        AllDayList(
+          day: day,
+        ),
+      ),
+    );
     await tester.pumpAndSettle();
     await tester.verifyTts(find.text(title0), contains: title0);
   });
