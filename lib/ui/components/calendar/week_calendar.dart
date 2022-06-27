@@ -243,7 +243,7 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                         padding: fullDayActivitiesPadding,
                         child: _FullDayActivities(
                           day: day,
-                          isSelected: selected,
+                          selected: selected,
                         ),
                       ),
                     ),
@@ -260,12 +260,12 @@ class WeekCalenderHeadingContent extends StatelessWidget {
 
 class _FullDayActivities extends StatelessWidget {
   final DateTime day;
-  final bool isSelected;
+  final bool selected;
 
   const _FullDayActivities({
     Key? key,
     required this.day,
-    required this.isSelected,
+    required this.selected,
   }) : super(key: key);
 
   @override
@@ -289,7 +289,7 @@ class _FullDayActivities extends StatelessWidget {
         } else if (fullDayActivities.length == 1) {
           return _WeekActivityContent(
             activityOccasion: fullDayActivities.first,
-            isSelected: isSelected,
+            selected: selected,
           );
         }
         return const SizedBox.shrink();
@@ -428,7 +428,7 @@ class _WeekDayColumn extends StatelessWidget {
                         padding: innerDayPadding,
                         child: _WeekDayColumnItems(
                           day: day,
-                          isSelected: selected,
+                          selected: selected,
                           showCategories: memosettings.showCategories,
                           showCategoryColor: memosettings.showCategoryColor,
                         ),
@@ -447,12 +447,12 @@ class _WeekDayColumn extends StatelessWidget {
 
 class _WeekDayColumnItems extends StatelessWidget {
   final DateTime day;
-  final bool isSelected, showCategories, showCategoryColor;
+  final bool selected, showCategories, showCategoryColor;
 
   const _WeekDayColumnItems({
     Key? key,
     required this.day,
-    required this.isSelected,
+    required this.selected,
     required this.showCategories,
     required this.showCategoryColor,
   }) : super(key: key);
@@ -478,11 +478,11 @@ class _WeekDayColumnItems extends StatelessWidget {
             Padding(
               padding: _categoryPadding(
                 showCategories,
-                isSelected,
+                selected,
                 activityOccasions[i].category,
                 newCategory,
               ),
-              child: isSelected && !layout.go
+              child: selected && !layout.go
                   ? SizedBox(
                       child: ActivityCard(
                         activityOccasion: activityOccasions[i],
@@ -494,7 +494,7 @@ class _WeekDayColumnItems extends StatelessWidget {
                       aspectRatio: 1,
                       child: _WeekActivityContent(
                         activityOccasion: activityOccasions[i],
-                        isSelected: isSelected,
+                        selected: selected,
                       ),
                     ),
             ),
@@ -539,19 +539,19 @@ class _WeekActivityContent extends StatelessWidget {
   const _WeekActivityContent({
     Key? key,
     required this.activityOccasion,
-    required this.isSelected,
+    required this.selected,
   }) : super(key: key);
 
   final ActivityOccasion activityOccasion;
   final double scaleFactor = 2 / 3;
-  final bool isSelected;
+  final bool selected;
 
   @override
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
     final wLayout = layout.weekCalendar;
     final inactive = activityOccasion.isPast || activityOccasion.isSignedOff;
-    final borderRadius = isSelected && !activityOccasion.activity.fullDay
+    final borderRadius = selected && !activityOccasion.activity.fullDay
         ? wLayout.selectedDay.activityRadius
         : wLayout.notSelectedDay.activityRadius;
 
@@ -566,10 +566,10 @@ class _WeekActivityContent extends StatelessWidget {
           showCategoryColor:
               settings.showCategoryColor && !activityOccasion.activity.fullDay,
           category: activityOccasion.activity.category,
-          borderWidth: isSelected
+          borderWidth: selected
               ? wLayout.selectedDay.activityBorderWidth
               : wLayout.notSelectedDay.activityBorderWidth,
-          currentBorderWidth: isSelected
+          currentBorderWidth: selected
               ? wLayout.selectedDay.currentActivityBorderWidth
               : wLayout.notSelectedDay.currentActivityBorderWidth,
         );
