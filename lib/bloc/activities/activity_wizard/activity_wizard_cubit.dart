@@ -89,7 +89,7 @@ class ActivityWizardCubit extends WizardCubit {
         if (stepByStep.image) WizardStep.image,
         if (stepByStep.datePicker) WizardStep.date,
         if (stepByStep.type) WizardStep.type,
-        if (!activity.fullDay) WizardStep.time,
+        if (stepByStep.time && !activity.fullDay) WizardStep.time,
         if (stepByStep.checkable) WizardStep.checkable,
         if (stepByStep.removeAfter) WizardStep.deleteAfter,
         if (stepByStep.availability) WizardStep.availableFor,
