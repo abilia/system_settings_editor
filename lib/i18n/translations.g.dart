@@ -314,7 +314,7 @@ abstract class Translated {
 
   final String record = 'Record';
 
-  final String newActivityButton = 'New';
+  final String newText = 'New';
 
   final String newActivityChoice = 'New';
 
@@ -407,9 +407,13 @@ abstract class Translated {
 
   final String activityAvailableFor = 'Available for';
 
-  final String meAndSupportPersons = 'Me and support persons';
+  final String allSupportPersons = 'All my support persons';
 
   final String onlyMe = 'Only me';
+
+  final String selectedSupportPersons = 'Selected support persons';
+
+  final String supportPersons = 'Support Persons';
 
   final String selectAlarmType = 'Select alarm';
 
@@ -425,6 +429,8 @@ abstract class Translated {
 
   final String alertAlarmsDisabled =
       'All alarms will be disabled until midnight on this device';
+
+  final String disableAlarms = 'Disable alarms';
 
   final String selectImage = 'Select image';
 
@@ -1342,7 +1348,7 @@ class SV extends Translated {
   final String record = 'Spela in';
 
   @override
-  final String newActivityButton = 'Ny';
+  final String newText = 'Ny';
 
   @override
   final String newActivityChoice = 'Helt ny';
@@ -1479,10 +1485,16 @@ class SV extends Translated {
   final String activityAvailableFor = 'Tillgänglig för';
 
   @override
-  final String meAndSupportPersons = 'Mig och stödpersoner';
+  final String allSupportPersons = 'Alla mina stödpersoner';
 
   @override
   final String onlyMe = 'Bara mig';
+
+  @override
+  final String selectedSupportPersons = 'Utvalda stödpersoner';
+
+  @override
+  final String supportPersons = 'Stödpersoner';
 
   @override
   final String selectAlarmType = 'Ange larm';
@@ -1505,6 +1517,9 @@ class SV extends Translated {
   @override
   final String alertAlarmsDisabled =
       'Alla larm kommer att inaktiveras fram till midnatt på den här enheten';
+
+  @override
+  final String disableAlarms = 'Inaktivera alarm';
 
   @override
   final String selectImage = 'Välj bild';
@@ -2605,7 +2620,7 @@ class DA extends Translated {
   final String record = 'Indspil';
 
   @override
-  final String newActivityButton = 'Ny';
+  final String newText = 'Ny';
 
   @override
   final String newActivityChoice = 'Helt ny';
@@ -2737,9 +2752,6 @@ class DA extends Translated {
 
   @override
   final String activityAvailableFor = 'Fås til';
-
-  @override
-  final String meAndSupportPersons = 'Mig og støttepersoner';
 
   @override
   final String onlyMe = 'Bare mig';
@@ -3811,7 +3823,7 @@ class NL extends Translated {
   final String record = 'Opnemen';
 
   @override
-  final String newActivityButton = 'Nieuw';
+  final String newText = 'Nieuw';
 
   @override
   final String newActivityChoice = 'Nieuw';
@@ -3944,9 +3956,6 @@ class NL extends Translated {
 
   @override
   final String activityAvailableFor = 'Beschikbaar voor';
-
-  @override
-  final String meAndSupportPersons = 'Mij en ondersteuningspersonen';
 
   @override
   final String onlyMe = 'Mij alleen';
@@ -5023,7 +5032,7 @@ class FI extends Translated {
   final String record = 'Nauhoita';
 
   @override
-  final String newActivityButton = 'Uusi';
+  final String newText = 'Uusi';
 
   @override
   final String newActivityChoice = 'Uusi';
@@ -5156,9 +5165,6 @@ class FI extends Translated {
 
   @override
   final String activityAvailableFor = 'Käytettävissä';
-
-  @override
-  final String meAndSupportPersons = 'Minä ja tukihenkilöt';
 
   @override
   final String onlyMe = 'Vain minä';
@@ -6237,7 +6243,7 @@ class DE extends Translated {
   final String record = 'Aufnahme';
 
   @override
-  final String newActivityButton = 'Neu';
+  final String newText = 'Neu';
 
   @override
   final String newActivityChoice = 'Neu';
@@ -6370,9 +6376,6 @@ class DE extends Translated {
 
   @override
   final String activityAvailableFor = 'Verfügbar für';
-
-  @override
-  final String meAndSupportPersons = 'Mich und Hilfspersonen';
 
   @override
   final String onlyMe = 'Nur für mich';
@@ -7466,7 +7469,7 @@ class NB extends Translated {
   final String record = 'Spill inn';
 
   @override
-  final String newActivityButton = 'Ny';
+  final String newText = 'Ny';
 
   @override
   final String newActivityChoice = 'Helt ny';
@@ -7598,9 +7601,6 @@ class NB extends Translated {
 
   @override
   final String activityAvailableFor = 'Tilgjengelig for';
-
-  @override
-  final String meAndSupportPersons = 'Meg og støttepersoner';
 
   @override
   final String onlyMe = 'Bare meg';

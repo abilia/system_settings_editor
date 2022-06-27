@@ -153,9 +153,9 @@ back	Previous	Tillbaka	Tilbage	Terug	Takaisin	Zurück	Tilbake
 next	Next	Nästa	Næste	Volgende	Seuraava	Nächster	Neste
 ok	OK	OK	OK	OK	OK	OK	OK
 record	Record	Spela in	Indspil	Opnemen	Nauhoita	Aufnahme	Spill inn
+newText	New	Ny	Ny	Nieuw	Uusi	Neu	Ny
 							
-### Edit activity							
-newActivityButton	New	Ny	Ny	Nieuw	Uusi	Neu	Ny
+### Edit activity
 newActivityChoice	New	Helt ny	Helt ny	Nieuw	Uusi	Neu	Helt ny
 newActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuw activiteit	Uusi aktiviteettia	Neu Aktivität	Ny aktivitet
 editActivity	Edit activity	Ändra aktivitet	Ændre aktivitet	Activiteit bewerken	Muokkaa aktiviteettia	Aktivität bearbeiten	Endre aktivitet
@@ -202,8 +202,10 @@ missingRequiredActivitySetting	You need either “Show templates”, “Select n
 ### Privacy							
 availableFor	Available for	Tillgänglig för	Fås til	Beschikbaar voor	Käytettävissä	Verfügbar für	Tilgjengelig for
 activityAvailableFor	Available for	Tillgänglig för	Fås til	Beschikbaar voor	Käytettävissä	Verfügbar für	Tilgjengelig for
-meAndSupportPersons	Me and support persons	Mig och stödpersoner	Mig og støttepersoner	Mij en ondersteuningspersonen	Minä ja tukihenkilöt	Mich und Hilfspersonen	Meg og støttepersoner
+allSupportPersons	All my support persons	Alla mina stödpersoner					
 onlyMe	Only me	Bara mig	Bare mig	Mij alleen	Vain minä	Nur für mich	Bare meg
+selectedSupportPersons	Selected support persons	Utvalda stödpersoner					
+supportPersons	Support Persons	Stödpersoner					
 							
 ### Alarm							
 selectAlarmType	Select alarm	Ange larm	Vælg alarm	Alarm selecteren	Valitse hälytys	Alarm auswählen	Angi alarm
@@ -213,6 +215,7 @@ noAlarm	No alarm	Inget larm	Ingen alarm	Geen alarm	Ei hälytystä	Kein Alarm	Ing
 silentAlarm	Silent alarm	Tyst larm	Stille alarm	Stil alarm	Äänetön hälytys	Stiller Alarm	Stille alarm
 alarmOnlyAtStartTime	Alarm only at Start time	Larm endast vid starttid	Kun alarm ved starttidspunkt	Alarm alleen op begintijd	Vain hälytys alkamisaikaan	Alarm nur zur Startzeit	Alarm kun på starttid
 alertAlarmsDisabled	All alarms will be disabled until midnight on this device	Alla larm kommer att inaktiveras fram till midnatt på den här enheten	Alle alarmer vill være deaktivert til midnatt på denne enheten	Alle alarmen worden tot middernacht uitgeschakeld op dit toestel	Kaikki tämän laitteen hälytykset poistetaan käytöstä keskiyöhön asti	Alle Alarme auf diesem Gerät werden bis Mitternacht deaktiviert	Alle alarmer deaktiveres indtil midat på denne enhed
+disableAlarms	Disable alarms	Inaktivera alarm					
 							
 ### Select picture							
 selectImage	Select image	Välj bild	Vælg billede	Afbeelding selecteren	Valitse kuva	Bild auswählen	Velg bilde
@@ -408,7 +411,7 @@ noVoicesInstalled	No voices installed	Inga röster är installerade	Der er ikke 
 installingVoice	Installing	Installerar					Installerer
 speechTest	Test of speech rate	Test av talhastighet	Test af talehastighed	Test van spraaksnelheid	Puhenopeuden testaus	Test des Sprechtempos	Test av talehastighet
 voices	Voices	Röster		Stemmen	Äänet	Stimmen	Talesynteser
-
+							
 ### Code protect							
 codeProtect	Code protect	Kodskydd	Kodebeskyttelse	Codebescherming	Suojakoodi	Schutz durch Code	Kodebeskyttelse
 code	Code	Kod	Kode	Code	Koodi	Code	Kode

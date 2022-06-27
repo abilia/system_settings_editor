@@ -274,6 +274,7 @@ class TopLevelBlocsProvider extends StatelessWidget {
                   clearNotificationSubject(),
                   notificationPlugin.cancelAll(),
                   GetIt.I<FileStorage>().deleteUserFolder(),
+                  GetIt.I<SupportPersonsDb>().deleteAll(),
                 ],
               ),
               client: GetIt.I<ListenableClient>(),

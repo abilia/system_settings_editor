@@ -12,6 +12,10 @@ enterNameForTimer	Enter name for timer	Ange namn för timer					Angi navn på ti
 timeIsUp	Time is up	Tiden är slut					Tiden er slutt
 editTimer	Edit timer	Ändra timer
 noTemplates	You have no templates	Du har inga mallar
+allSupportPersons	All my support persons	Alla mina stödpersoner					
+selectedSupportPersons	Selected support persons	Utvalda stödpersoner					
+supportPersons	Support Persons	Stödpersoner					
+disableAlarms	Disable alarms	Inaktivera alarm					
 enterTask	Enter task						Legg inn oppgave
 showTemplates	Show templates	Visa mallar
 onlyAppliesToGo	Only applies to MEMOplanner Go	Gäller endast MEMOplanner Go					Gjelder kun MEMOplanner Go

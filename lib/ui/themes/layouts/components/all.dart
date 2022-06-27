@@ -15,4 +15,5 @@ export 'checklist_question_layout.dart';
 export 'templates_layout.dart';
 export 'border_layout.dart';
 export 'code_protect_layout.dart';
+export 'support_person_layout.dart';
 export 'event_card_layout.dart';

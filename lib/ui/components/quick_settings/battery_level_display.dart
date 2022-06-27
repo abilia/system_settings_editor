@@ -20,25 +20,29 @@ class BatteryLevel extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SubHeading(t.battery),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: layout.formPadding.largeHorizontalItemDistance,
-                  ),
-                  Icon(
-                    batteryState == BatteryState.charging
-                        ? AbiliaIcons.batteryCharging
-                        : _batteryLevelIcon(batteryLevel),
-                    size: layout.icon.large,
-                  ),
-                  SizedBox(width: layout.formPadding.groupHorizontalDistance),
-                  Text(
-                    batteryLevel > 0 ? batteryLevel.toString() + '%' : '',
-                    style: Theme.of(context).textTheme.headline6,
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+              Tts.data(
+                data: batteryLevel.toString() + '%',
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      width: layout.formPadding.largeHorizontalItemDistance,
+                    ),
+                    Icon(
+                      batteryState == BatteryState.charging
+                          ? AbiliaIcons.batteryCharging
+                          : _batteryLevelIcon(batteryLevel),
+                      size: layout.icon.large,
+                    ),
+                    SizedBox(width: layout.formPadding.groupHorizontalDistance),
+                    Text(
+                      batteryLevel > 0 ? batteryLevel.toString() + '%' : '',
+                      style: Theme.of(context).textTheme.headline6,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               )
             ],
           );

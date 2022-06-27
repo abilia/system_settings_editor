@@ -1,9 +1,10 @@
 import 'dart:math';
+
+import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:intl/intl.dart';
 
 class WeekCalendarTab extends StatelessWidget {
   const WeekCalendarTab({
@@ -31,12 +32,15 @@ class WeekCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageController = PageController(
-        initialPage: context.read<WeekCalendarCubit>().state.index);
+      initialPage: context.read<WeekCalendarCubit>().state.index,
+    );
     return BlocListener<WeekCalendarCubit, WeekCalendarState>(
       listener: (context, state) {
-        pageController.animateToPage(state.index,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeOutQuad);
+        pageController.animateToPage(
+          state.index,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeOutQuad,
+        );
       },
       child: PageView.builder(
         controller: pageController,
@@ -146,8 +150,8 @@ class WeekCalenderHeadingContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final wLayout = layout.weekCalendar;
-    final weekDayFormat =
-        DateFormat('EEEE', Localizations.localeOf(context).toLanguageTag());
+    final weekDayFormat = DateFormat(
+        'MMMMEEEEd', Localizations.localeOf(context).toLanguageTag());
     final borderColor = occasion.isCurrent
         ? AbiliaColors.red
         : selected
@@ -161,9 +165,8 @@ class WeekCalenderHeadingContent extends StatelessWidget {
     final _bodyText1 = (dayTheme.theme.textTheme.bodyText1 ?? bodyText1)
         .copyWith(height: 18 / 16);
     final innerRadius = Radius.circular(wLayout.columnRadius.x - borderWidth);
-    final _fullDayPadding = selected
-        ? wLayout.selectedDay.innerDayPadding.horizontal / 2
-        : wLayout.notSelectedDay.innerDayPadding.horizontal / 2;
+    final _fullDayPadding =
+        wLayout.notSelectedDay.innerDayPadding.horizontal / 2;
     final fullDayActivitiesPadding = EdgeInsets.symmetric(
       horizontal: max(
         _fullDayPadding - borderWidth,
@@ -211,7 +214,7 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Tts.data(
-                      data: '${day.day}, ${weekDayFormat.format(day)}',
+                      data: weekDayFormat.format(day),
                       child: BlocBuilder<ClockBloc, DateTime>(
                         buildWhen: (previous, current) =>
                             !previous.isAtSameDay(current),
@@ -225,7 +228,8 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: occasion.isPast
                                   ? _bodyText1.copyWith(
-                                      color: AbiliaColors.white)
+                                      color: AbiliaColors.white,
+                                    )
                                   : _bodyText1,
                             ),
                           ),
@@ -234,13 +238,11 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: Center(
-                      child: Padding(
-                        padding: fullDayActivitiesPadding,
-                        child: _FullDayActivities(
-                          weekdayIndex: day.weekday - 1,
-                          selectedDay: selected,
-                        ),
+                    child: Padding(
+                      padding: fullDayActivitiesPadding,
+                      child: _FullDayActivities(
+                        day: day,
+                        selected: selected,
                       ),
                     ),
                   ),
@@ -255,17 +257,18 @@ class WeekCalenderHeadingContent extends StatelessWidget {
 }
 
 class _FullDayActivities extends StatelessWidget {
-  final int weekdayIndex;
-  final bool selectedDay;
+  final DateTime day;
+  final bool selected;
 
   const _FullDayActivities({
     Key? key,
-    required this.weekdayIndex,
-    required this.selectedDay,
+    required this.day,
+    required this.selected,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final weekdayIndex = day.weekday - 1;
     return BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
       buildWhen: (previous, current) =>
           previous.currentWeekActivities[weekdayIndex] !=
@@ -278,11 +281,13 @@ class _FullDayActivities extends StatelessWidget {
         if (fullDayActivities.length > 1) {
           return FullDayStack(
             numberOfActivities: fullDayActivities.length,
+            goToActivitiesListOnTap: true,
+            day: day,
           );
         } else if (fullDayActivities.length == 1) {
           return _WeekActivityContent(
             activityOccasion: fullDayActivities.first,
-            selectedDay: selectedDay,
+            selected: selected,
           );
         }
         return const SizedBox.shrink();
@@ -487,7 +492,7 @@ class _WeekDayColumnItems extends StatelessWidget {
                       aspectRatio: 1,
                       child: _WeekActivityContent(
                         activityOccasion: activityOccasions[i],
-                        selectedDay: selected,
+                        selected: selected,
                       ),
                     ),
             ),
@@ -532,19 +537,19 @@ class _WeekActivityContent extends StatelessWidget {
   const _WeekActivityContent({
     Key? key,
     required this.activityOccasion,
-    required this.selectedDay,
+    required this.selected,
   }) : super(key: key);
 
   final ActivityOccasion activityOccasion;
   final double scaleFactor = 2 / 3;
-  final bool selectedDay;
+  final bool selected;
 
   @override
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
     final wLayout = layout.weekCalendar;
     final inactive = activityOccasion.isPast || activityOccasion.isSignedOff;
-    final borderRadius = selectedDay && !activityOccasion.activity.fullDay
+    final borderRadius = selected && !activityOccasion.activity.fullDay
         ? wLayout.selectedDay.activityRadius
         : wLayout.notSelectedDay.activityRadius;
 
@@ -559,10 +564,10 @@ class _WeekActivityContent extends StatelessWidget {
           showCategoryColor:
               settings.showCategoryColor && !activityOccasion.activity.fullDay,
           category: activityOccasion.activity.category,
-          borderWidth: selectedDay
+          borderWidth: selected && !activityOccasion.activity.fullDay
               ? wLayout.selectedDay.activityBorderWidth
               : wLayout.notSelectedDay.activityBorderWidth,
-          currentBorderWidth: selectedDay
+          currentBorderWidth: selected && !activityOccasion.activity.fullDay
               ? wLayout.selectedDay.currentActivityBorderWidth
               : wLayout.notSelectedDay.currentActivityBorderWidth,
         );
@@ -605,6 +610,7 @@ class _WeekActivityContent extends StatelessWidget {
                           duration: const Duration(milliseconds: 400),
                           opacity: inactive ? 0.5 : 1.0,
                           child: FadeInAbiliaImage(
+                            fit: selected ? BoxFit.scaleDown : BoxFit.cover,
                             imageFileId: activityOccasion.activity.fileId,
                             imageFilePath: activityOccasion.activity.icon,
                             height: double.infinity,
@@ -623,15 +629,21 @@ class _WeekActivityContent extends StatelessWidget {
                           ),
                         ),
                       if (activityOccasion.isPast)
-                        CrossOver(
-                          style: CrossOverStyle.darkSecondary,
-                          padding: wLayout.crossOverActivityPadding,
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: CrossOver(
+                            style: CrossOverStyle.darkSecondary,
+                            padding: wLayout.crossOverActivityPadding,
+                          ),
                         ),
                       if (activityOccasion.isSignedOff)
-                        FractionallySizedBox(
-                          widthFactor: scaleFactor,
-                          heightFactor: scaleFactor,
-                          child: const CheckMark(),
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: FractionallySizedBox(
+                            widthFactor: scaleFactor,
+                            heightFactor: scaleFactor,
+                            child: const CheckMark(),
+                          ),
                         ),
                     ],
                   ),

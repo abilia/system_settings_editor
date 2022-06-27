@@ -1,9 +1,12 @@
 import 'package:flutter/services.dart';
-
+import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:intl/intl.dart';
 
 class ActivityNameAndPictureWidget extends StatelessWidget {
   const ActivityNameAndPictureWidget({Key? key}) : super(key: key);
@@ -31,7 +34,8 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
                   ? (text) {
                       if (state.activity.title != text) {
                         context.read<EditActivityCubit>().replaceActivity(
-                            state.activity.copyWith(title: text));
+                              state.activity.copyWith(title: text),
+                            );
                       }
                     }
                   : null,
@@ -397,17 +401,18 @@ class AlarmWidget extends StatelessWidget {
                 ? () async {
                     final authProviders = copiedAuthProviders(context);
                     final editActivityCubit = context.read<EditActivityCubit>();
-                    final result = await Navigator.of(context)
-                        .push<AlarmType>(MaterialPageRoute(
-                      builder: (_) => MultiBlocProvider(
-                        providers: authProviders,
-                        child: SelectAlarmTypePage(
-                          alarm: alarm.typeSeagull,
+                    final result = await Navigator.of(context).push<AlarmType>(
+                      MaterialPageRoute(
+                        builder: (_) => MultiBlocProvider(
+                          providers: authProviders,
+                          child: SelectAlarmTypePage(
+                            alarm: alarm.typeSeagull,
+                          ),
                         ),
+                        settings:
+                            const RouteSettings(name: 'SelectAlarmTypePage'),
                       ),
-                      settings:
-                          const RouteSettings(name: 'SelectAlarmTypePage'),
-                    ));
+                    );
                     if (result != null) {
                       editActivityCubit.replaceActivity(
                         activity.copyWith(
@@ -513,34 +518,64 @@ class AvailableForWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final secret = activity.secret;
     final translator = Translator.of(context).translate;
+    final availableFor = activity.availableFor;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SubHeading(translator.availableFor),
         PickField(
-          leading: Icon(
-            secret ? AbiliaIcons.passwordProtection : AbiliaIcons.userGroup,
+          leading: Icon(availableFor.icon),
+          text: Text(
+            availableFor.text(translator),
           ),
-          text:
-              Text(secret ? translator.onlyMe : translator.meAndSupportPersons),
-          onTap: () async {
-            final editActivityCubit = context.read<EditActivityCubit>();
-            final result = await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AvailableForPage(secret: activity.secret),
-              ),
-            );
-            if (result != null) {
-              editActivityCubit
-                  .replaceActivity(activity.copyWith(secret: result));
-            }
-          },
+          onTap: () => onTap(context),
         ),
       ],
     );
   }
+
+  Future<void> onTap(BuildContext context) async {
+    final authenticatedState = context.read<AuthenticationBloc>().state;
+    if (authenticatedState is Authenticated) {
+      final editActivityCubit = context.read<EditActivityCubit>();
+      final availableForState = await navigateToAvailableForPage(
+        context,
+        authenticatedState.userId,
+      );
+      if (availableForState != null) {
+        editActivityCubit.replaceActivity(
+          activity.copyWith(
+            secret: availableForState.availableFor !=
+                AvailableForType.allSupportPersons,
+            secretExemptions: availableForState.selectedSupportPersons,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<AvailableForState?> navigateToAvailableForPage(
+    BuildContext context,
+    int userId,
+  ) =>
+      Navigator.of(context).push<AvailableForState>(
+        MaterialPageRoute(
+          builder: (context) => BlocProvider<AvailableForCubit>(
+            create: (context) => AvailableForCubit(
+              supportPersonsRepository: SupportPersonsRepository(
+                baseUrlDb: GetIt.I<BaseUrlDb>(),
+                client: GetIt.I<ListenableClient>(),
+                db: GetIt.I<SupportPersonsDb>(),
+                userId: userId,
+              ),
+              availableFor: activity.availableFor,
+              selectedSupportPersons: activity.secretExemptions,
+            ),
+            child: const AvailableForPage(),
+          ),
+        ),
+      );
 }
 
 class RecurrenceWidget extends StatelessWidget {
@@ -563,13 +598,14 @@ class RecurrenceWidget extends StatelessWidget {
           text: Text(recurrentType.text(translator)),
           onTap: () async {
             final editActivityCubit = context.read<EditActivityCubit>();
-            final result = await Navigator.of(context)
-                .push<RecurrentType>(MaterialPageRoute(
-              builder: (_) => SelectRecurrencePage(
-                recurrentType: recurrentType,
+            final result = await Navigator.of(context).push<RecurrentType>(
+              MaterialPageRoute(
+                builder: (_) => SelectRecurrencePage(
+                  recurrentType: recurrentType,
+                ),
+                settings: const RouteSettings(name: 'SelectRecurrencePage'),
               ),
-              settings: const RouteSettings(name: 'SelectRecurrencePage'),
-            ));
+            );
             if (result != null) {
               editActivityCubit.newRecurrence(newType: result);
             }
@@ -670,6 +706,8 @@ class WeekDays extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
+    final dateFormat = DateFormat('', '${Localizations.localeOf(context)}');
+    final weekdays = dateFormat.dateSymbols.STANDALONEWEEKDAYS;
     return DefaultTextStyle(
       style: (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
           .copyWith(height: 1.5),
@@ -682,23 +720,24 @@ class WeekDays extends StatelessWidget {
             runSpacing: layout.formPadding.verticalItemDistance,
             children: [
               ...RecurringWeekState.allWeekdays.map(
-                (d) => BlocSelector<MemoplannerSettingBloc,
+                (day) => BlocSelector<MemoplannerSettingBloc,
                     MemoplannerSettingsState, DayTheme>(
                   selector: (state) => weekdayTheme(
                     dayColor: state.calendarDayColor,
                     languageCode: Localizations.localeOf(context).languageCode,
-                    weekday: d,
+                    weekday: day,
                   ),
                   builder: (context, dayTheme) => SelectableField(
                     text: Text(
-                      translate.shortWeekday(d),
+                      translate.shortWeekday(day),
                       style: TextStyle(color: dayTheme.monthSurfaceColor),
                     ),
                     color: dayTheme.dayColor,
-                    selected: state.weekdays.contains(d),
+                    selected: state.weekdays.contains(day),
                     onTap: () => context
                         .read<RecurringWeekCubit>()
-                        .addOrRemoveWeekday(d),
+                        .addOrRemoveWeekday(day),
+                    ttsData: weekdays[day % DateTime.daysPerWeek],
                   ),
                 ),
               ),

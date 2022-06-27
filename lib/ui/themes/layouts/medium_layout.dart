@@ -17,6 +17,7 @@ class MediumLayout extends Layout {
     TimerPageLayout? timerPage,
     BorderLayout? borders,
     EventCardLayout? eventCard,
+    AlarmPageLayout? alarmPage,
   }) : super(
           radius: 18,
           appBar: appBar ?? const AppBarLayoutMedium(),
@@ -59,6 +60,7 @@ class MediumLayout extends Layout {
             doubleIconLeft: 48,
           ),
           clock: clockLayout ?? const ClockLayoutMedium(),
+          alarmPage: alarmPage ?? const AlarmPageLayoutMedium(),
           formPadding: const FormPaddingLayout(
             smallVerticalItemDistance: 8,
             verticalItemDistance: 12,
@@ -93,7 +95,7 @@ class MediumLayout extends Layout {
               activityRadius: BorderRadius.all(Radius.circular(12)),
               innerDayPadding: EdgeInsets.symmetric(
                 vertical: 9,
-                horizontal: 4,
+                horizontal: 6,
               ),
             ),
             dayDistance: 3,
@@ -196,9 +198,6 @@ class MediumLayout extends Layout {
           nextButton: const IconTextButtonStyle(
             minimumSize: Size(346, 96),
             maximumSize: Size(346, 96),
-          ),
-          alarmPage: const AlarmPageLayout(
-            alarmClockPadding: EdgeInsets.only(top: 6, bottom: 4, right: 24),
           ),
           alarmSettingsPage: const AlarmSettingsPageLayout(
             playButtonSeparation: 16,
@@ -372,5 +371,6 @@ class MediumLayout extends Layout {
           selector: const SelectorLayoutMedium(),
           startupPage: const StartupPageLayoutMedium(),
           starterSetDialog: const StarterSetDialogLayoutMedium(),
+          supportPerson: const SupportPersonLayoutMedium(),
         );
 }

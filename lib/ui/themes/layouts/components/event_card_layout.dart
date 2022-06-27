@@ -24,11 +24,14 @@ class EventCardLayout {
   final EdgeInsets timerWheelPadding;
   final EdgeInsets cardIconPadding;
 
+  final BorderRadius imageRadius;
+
   const EventCardLayout({
     this.height = 56,
     this.marginSmall = 6,
     this.marginLarge = 10,
     this.imageSize = 48,
+    this.imageRadius = const BorderRadius.all(Radius.circular(8)),
     this.categorySideOffset = 43,
     this.iconSize = 18,
     this.titleImagePadding = 10,
@@ -36,7 +39,7 @@ class EventCardLayout {
     this.currentBorderWidth = 3,
     this.timerWheelSize = 44,
     this.crossPadding = const EdgeInsets.all(4),
-    this.imagePadding = const EdgeInsets.only(left: 4),
+    this.imagePadding = const EdgeInsets.fromLTRB(2, 2, 0, 2),
     this.titlePadding = const EdgeInsets.only(left: 8, right: 8),
     this.statusesPadding = const EdgeInsets.only(right: 8, bottom: 3),
     this.timerWheelPadding = const EdgeInsets.only(right: 5),
@@ -70,6 +73,7 @@ class EventCardLayoutMedium extends EventCardLayout {
           marginSmall: 8,
           marginLarge: 16,
           imageSize: imageSize ?? 88,
+          imageRadius: const BorderRadius.all(Radius.circular(12)),
           categorySideOffset: 76,
           timerWheelSize: 72,
           timerWheelPadding: const EdgeInsets.only(right: 10),
@@ -77,7 +81,7 @@ class EventCardLayoutMedium extends EventCardLayout {
           titleImagePadding: 12,
           borderWidth: 4,
           currentBorderWidth: 6,
-          imagePadding: const EdgeInsets.only(left: 8),
+          imagePadding: const EdgeInsets.fromLTRB(4, 4, 0, 4),
           crossPadding: const EdgeInsets.all(8),
           titlePadding: const EdgeInsets.only(left: 12, right: 12),
           statusesPadding: const EdgeInsets.only(right: 12, bottom: 8),

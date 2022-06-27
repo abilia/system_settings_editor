@@ -987,6 +987,26 @@ void main() {
     });
   });
 
+  testWidgets(
+      'SGC-1748 AllDayList page is shown when clicking on a day with multiple full day activities in week calendar',
+      (WidgetTester tester) async {
+    final activities = [
+      FakeActivity.fullday(initialTime.addDays(1), 'one'),
+      FakeActivity.fullday(initialTime.addDays(1), 'two'),
+    ];
+    when(() => mockActivityDb.getAllNonDeleted())
+        .thenAnswer((_) => Future.value(activities));
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.week));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(FullDayStack));
+    await tester.pumpAndSettle();
+    expect(find.byType(AllDayList), findsOneWidget);
+    expect(find.text(activities[0].title), findsOneWidget);
+    expect(find.text(activities[1].title), findsOneWidget);
+  });
+
   group('disable alarm button', () {
     late MemoplannerSettingBloc memoplannerSettingBlocMock;
 
@@ -1011,6 +1031,8 @@ void main() {
       expect(find.byType(MonthCalendarTab), findsOneWidget);
       expect(find.byType(MonthAppBar), findsOneWidget);
       expect(find.byType(ToggleAlarmButton), findsOneWidget);
+      await tester.verifyTts(find.byType(ToggleAlarmButton),
+          exact: translate.disableAlarms);
     });
 
     testWidgets("don't display alarm button", (WidgetTester tester) async {
@@ -1027,6 +1049,13 @@ void main() {
       expect(find.byType(MonthCalendarTab), findsOneWidget);
       expect(find.byType(MonthAppBar), findsOneWidget);
       expect(find.byType(ToggleAlarmButton), findsNothing);
+    });
+
+    testWidgets('eye button tts', (WidgetTester tester) async {
+      await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage()));
+      await tester.pumpAndSettle();
+      await tester.verifyTts(find.byType(EyeButtonDay),
+          exact: translate.display);
     });
 
     testWidgets('SGC-1129 alarm button toggleable',
