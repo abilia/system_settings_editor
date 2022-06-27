@@ -16,6 +16,7 @@ class EventImage extends StatelessWidget {
   final BoxFit fit;
   final EdgeInsets? crossPadding;
   final EdgeInsets? checkPadding;
+  final BorderRadius? radius;
 
   static const duration = Duration(milliseconds: 400);
 
@@ -26,6 +27,7 @@ class EventImage extends StatelessWidget {
     this.fit = BoxFit.cover,
     this.crossPadding,
     this.checkPadding,
+    this.radius,
     Key? key,
   }) : super(key: key);
 
@@ -37,6 +39,7 @@ class EventImage extends StatelessWidget {
     bool preview = false,
     EdgeInsets? crossPadding,
     EdgeInsets? checkPadding,
+    BorderRadius? radius,
   }) =>
       preview
           ? FadeInCalendarImage(
@@ -44,6 +47,7 @@ class EventImage extends StatelessWidget {
               imageFile: eventOccasion.image,
               imageSize: imageSize,
               fit: fit,
+              radius: radius,
             )
           : EventImage(
               key: key,
@@ -53,6 +57,7 @@ class EventImage extends StatelessWidget {
               fit: fit,
               crossPadding: crossPadding,
               checkPadding: checkPadding,
+              radius: radius,
             );
 
   @override
@@ -72,7 +77,7 @@ class EventImage extends StatelessWidget {
               duration: duration,
               opacity: inactive ? 0.5 : 1.0,
               child: ClipRRect(
-                borderRadius: borderRadius,
+                borderRadius: radius ?? borderRadius,
                 child: FadeInImage(
                   fit: fit,
                   image: getImage(
@@ -295,6 +300,7 @@ class FadeInCalendarImage extends StatelessWidget {
   final double? width, height;
   final ImageSize imageSize;
   final BoxFit fit;
+  final BorderRadius? radius;
   const FadeInCalendarImage({
     Key? key,
     required this.imageFile,
@@ -302,6 +308,7 @@ class FadeInCalendarImage extends StatelessWidget {
     this.height,
     this.imageSize = ImageSize.thumb,
     this.fit = BoxFit.cover,
+    this.radius,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -326,7 +333,7 @@ class FadeInCalendarImage extends StatelessWidget {
         height: height,
         width: width,
         child: ClipRRect(
-          borderRadius: borderRadius,
+          borderRadius: radius ?? borderRadius,
           child: file != null
               ? FadeInImage(
                   fit: fit,

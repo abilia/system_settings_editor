@@ -284,7 +284,7 @@ class _FullDayActivities extends StatelessWidget {
         } else if (fullDayActivities.length == 1) {
           return _WeekActivityContent(
             activityOccasion: fullDayActivities.first,
-            selectedDay: false,
+            selectedDay: selectedDay,
           );
         }
         return const SizedBox.shrink();
@@ -561,10 +561,10 @@ class _WeekActivityContent extends StatelessWidget {
           showCategoryColor:
               settings.showCategoryColor && !activityOccasion.activity.fullDay,
           category: activityOccasion.activity.category,
-          borderWidth: selectedDay
+          borderWidth: selectedDay && !activityOccasion.activity.fullDay
               ? wLayout.selectedDay.activityBorderWidth
               : wLayout.notSelectedDay.activityBorderWidth,
-          currentBorderWidth: selectedDay
+          currentBorderWidth: selectedDay && !activityOccasion.activity.fullDay
               ? wLayout.selectedDay.currentActivityBorderWidth
               : wLayout.notSelectedDay.currentActivityBorderWidth,
         );
@@ -607,7 +607,7 @@ class _WeekActivityContent extends StatelessWidget {
                           duration: const Duration(milliseconds: 400),
                           opacity: inactive ? 0.5 : 1.0,
                           child: FadeInAbiliaImage(
-                            fit: BoxFit.scaleDown,
+                            fit: selectedDay ? BoxFit.scaleDown : BoxFit.cover,
                             imageFileId: activityOccasion.activity.fileId,
                             imageFilePath: activityOccasion.activity.icon,
                             height: double.infinity,
@@ -619,7 +619,7 @@ class _WeekActivityContent extends StatelessWidget {
                         Center(
                           child: Text(
                             activityOccasion.activity.title,
-                            overflow: TextOverflow.ellipsis,
+                            overflow: TextOverflow.clip,
                             style:
                                 Theme.of(context).textTheme.caption ?? caption,
                             textAlign: TextAlign.center,
