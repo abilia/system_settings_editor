@@ -1,9 +1,10 @@
 import 'dart:math';
+
+import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:intl/intl.dart';
 
 class WeekCalendarTab extends StatelessWidget {
   const WeekCalendarTab({
@@ -164,9 +165,8 @@ class WeekCalenderHeadingContent extends StatelessWidget {
     final _bodyText1 = (dayTheme.theme.textTheme.bodyText1 ?? bodyText1)
         .copyWith(height: 18 / 16);
     final innerRadius = Radius.circular(wLayout.columnRadius.x - borderWidth);
-    final _fullDayPadding = selected
-        ? wLayout.selectedDay.innerDayPadding.horizontal / 2
-        : wLayout.notSelectedDay.innerDayPadding.horizontal / 2;
+    final _fullDayPadding =
+        wLayout.notSelectedDay.innerDayPadding.horizontal / 2;
     final fullDayActivitiesPadding = EdgeInsets.symmetric(
       horizontal: max(
         _fullDayPadding - borderWidth,
@@ -238,13 +238,11 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: Center(
-                      child: Padding(
-                        padding: fullDayActivitiesPadding,
-                        child: _FullDayActivities(
-                          day: day,
-                          selected: selected,
-                        ),
+                    child: Padding(
+                      padding: fullDayActivitiesPadding,
+                      child: _FullDayActivities(
+                        day: day,
+                        selected: selected,
                       ),
                     ),
                   ),
@@ -566,10 +564,10 @@ class _WeekActivityContent extends StatelessWidget {
           showCategoryColor:
               settings.showCategoryColor && !activityOccasion.activity.fullDay,
           category: activityOccasion.activity.category,
-          borderWidth: selected
+          borderWidth: selected && !activityOccasion.activity.fullDay
               ? wLayout.selectedDay.activityBorderWidth
               : wLayout.notSelectedDay.activityBorderWidth,
-          currentBorderWidth: selected
+          currentBorderWidth: selected && !activityOccasion.activity.fullDay
               ? wLayout.selectedDay.currentActivityBorderWidth
               : wLayout.notSelectedDay.currentActivityBorderWidth,
         );
@@ -612,6 +610,7 @@ class _WeekActivityContent extends StatelessWidget {
                           duration: const Duration(milliseconds: 400),
                           opacity: inactive ? 0.5 : 1.0,
                           child: FadeInAbiliaImage(
+                            fit: selected ? BoxFit.scaleDown : BoxFit.cover,
                             imageFileId: activityOccasion.activity.fileId,
                             imageFilePath: activityOccasion.activity.icon,
                             height: double.infinity,
@@ -630,15 +629,21 @@ class _WeekActivityContent extends StatelessWidget {
                           ),
                         ),
                       if (activityOccasion.isPast)
-                        CrossOver(
-                          style: CrossOverStyle.darkSecondary,
-                          padding: wLayout.crossOverActivityPadding,
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: CrossOver(
+                            style: CrossOverStyle.darkSecondary,
+                            padding: wLayout.crossOverActivityPadding,
+                          ),
                         ),
                       if (activityOccasion.isSignedOff)
-                        FractionallySizedBox(
-                          widthFactor: scaleFactor,
-                          heightFactor: scaleFactor,
-                          child: const CheckMark(),
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: FractionallySizedBox(
+                            widthFactor: scaleFactor,
+                            heightFactor: scaleFactor,
+                            child: const CheckMark(),
+                          ),
                         ),
                     ],
                   ),

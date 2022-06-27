@@ -95,7 +95,7 @@ class MediumLayout extends Layout {
               activityRadius: BorderRadius.all(Radius.circular(12)),
               innerDayPadding: EdgeInsets.symmetric(
                 vertical: 9,
-                horizontal: 4,
+                horizontal: 6,
               ),
             ),
             dayDistance: 3,
