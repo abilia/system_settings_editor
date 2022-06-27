@@ -87,6 +87,7 @@ class ActivityCard extends StatelessWidget {
                                 eventOccasion: activityOccasion,
                                 fit: BoxFit.cover,
                                 crossPadding: layout.eventCard.crossPadding,
+                                radius: layout.eventCard.imageRadius,
                               ),
                             ),
                           ),
