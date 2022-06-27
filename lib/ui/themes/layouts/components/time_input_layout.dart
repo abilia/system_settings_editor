@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class TimeInputLayout {
   final double width,
       height,
@@ -11,7 +9,6 @@ class TimeInputLayout {
       keyboardButtonHeight,
       keyboardButtonWidth,
       keyboardButtonPadding;
-  final EdgeInsets headerClockPadding;
 
   const TimeInputLayout({
     this.width = 120,
@@ -21,7 +18,6 @@ class TimeInputLayout {
     this.timeDashAlignValue = 14,
     this.amPmDistance = 2,
     this.inputKeyboardDistance = 44,
-    this.headerClockPadding = const EdgeInsets.only(right: 16),
     this.keyboardButtonHeight = 48,
     this.keyboardButtonWidth = 80,
     this.keyboardButtonPadding = 8,
@@ -37,7 +33,6 @@ class TimeInputLayoutMedium extends TimeInputLayout {
           amPmWidth: 88.5,
           timeDashAlignValue: 21,
           amPmDistance: 3,
-          headerClockPadding: const EdgeInsets.only(right: 18),
           inputKeyboardDistance: 96,
           keyboardButtonHeight: 88,
           keyboardButtonWidth: 160,

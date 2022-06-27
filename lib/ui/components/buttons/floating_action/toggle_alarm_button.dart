@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/datetime.dart';
@@ -43,6 +42,7 @@ class ToggleAlarmButtonActive extends StatelessWidget {
         ],
       ),
       child: const Icon(AbiliaIcons.handiNoAlarmVibration),
+      ttsData: Translator.of(context).translate.disableAlarms,
     );
   }
 }
@@ -72,6 +72,7 @@ class ToggleAlarmButtonInactive extends StatelessWidget {
         );
       },
       child: const Icon(AbiliaIcons.handiAlarmVibration),
+      ttsData: Translator.of(context).translate.disableAlarms,
     );
   }
 }

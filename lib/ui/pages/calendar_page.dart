@@ -22,19 +22,34 @@ class CalendarPage extends StatelessWidget {
                         settingsState.displayBottomBar
                     ? const CalendarBottomBar()
                     : null,
-            body: HomeScreenInactivityListener(
-              settingsState: settingsState,
-              child: TabBarView(
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  const DayCalendar(),
-                  if (settingsState.displayWeekCalendar)
-                    const WeekCalendarTab(),
-                  if (settingsState.displayMonthCalendar)
-                    const MonthCalendarTab(),
-                  if (settingsState.displayMenu) const MenuPage(),
-                ],
-              ),
+            body: BlocBuilder<ActivitiesBloc, ActivitiesState>(
+              buildWhen: (previous, current) =>
+                  previous.runtimeType != current.runtimeType,
+              builder: (context, state) {
+                return HomeScreenInactivityListener(
+                  settingsState: settingsState,
+                  child: state is ActivitiesNotLoaded
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            valueColor: const AlwaysStoppedAnimation(
+                              AbiliaColors.red,
+                            ),
+                            strokeWidth: layout.login.progressWidth,
+                          ),
+                        )
+                      : TabBarView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: [
+                            const DayCalendar(),
+                            if (settingsState.displayWeekCalendar)
+                              const WeekCalendarTab(),
+                            if (settingsState.displayMonthCalendar)
+                              const MonthCalendarTab(),
+                            if (settingsState.displayMenu) const MenuPage(),
+                          ],
+                        ),
+                );
+              },
             ),
           ),
         ),

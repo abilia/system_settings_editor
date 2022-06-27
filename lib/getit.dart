@@ -134,6 +134,11 @@ class GetItInitializer {
 
   set ttsHandler(TtsInterface ttsHandler) => _ttsHandler = ttsHandler;
 
+  SupportPersonsDb? _supportPersonsDb;
+
+  set supportPersonsDb(SupportPersonsDb supportPersonsDb) =>
+      _supportPersonsDb = supportPersonsDb;
+
   void init() {
     final loginDb = _loginDb ?? LoginDb(_sharedPreferences);
     final deviceDb = _deviceDb ?? DeviceDb(_sharedPreferences);
@@ -172,7 +177,8 @@ class GetItInitializer {
       ..registerSingleton<Battery>(_battery)
       ..registerSingleton<TtsInterface>(_ttsHandler)
       ..registerSingleton<VoiceDb>(_voiceDb ??
-          VoiceDb(
-              _sharedPreferences, _applicationSupportDirectory?.path ?? ''));
+          VoiceDb(_sharedPreferences, _applicationSupportDirectory?.path ?? ''))
+      ..registerSingleton<SupportPersonsDb>(
+          _supportPersonsDb ?? SupportPersonsDb(_sharedPreferences));
   }
 }

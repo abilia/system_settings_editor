@@ -1,5 +1,11 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:seagull/bloc/settings/settings_cubit.dart';
+import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_config.dart';
 import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_painters.dart';
 import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_styles.dart';
@@ -76,52 +82,78 @@ class TimerWheel extends StatefulWidget {
 class _TimerWheelState extends State<TimerWheel> {
   int? minutesSelectedOnTapDown;
   bool sliderTemporaryLocked = false;
+  final int _intervalLength = 5;
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      final config = TimerWheelConfiguration(
-        canvasSize: constraints.biggest,
-        style: widget.style,
-        paused: widget.paused,
-        isPast: widget.isPast,
-      );
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final config = TimerWheelConfiguration(
+          canvasSize: constraints.biggest,
+          style: widget.style,
+          paused: widget.paused,
+          isPast: widget.isPast,
+        );
 
-      final Widget timerWheel = Stack(
-        children: [
-          RepaintBoundary(
-            child: CustomPaint(
-              size: constraints.biggest,
-              painter: TimerWheelBackgroundPainter(
-                config: config,
-                lengthInMinutes:
-                    widget.lengthInMinutes ?? Duration.minutesPerHour,
+        final Widget timerWheel = Stack(
+          children: [
+            RepaintBoundary(
+              child: CustomPaint(
+                size: constraints.biggest,
+                painter: TimerWheelBackgroundPainter(
+                  config: config,
+                  lengthInMinutes:
+                      widget.lengthInMinutes ?? Duration.minutesPerHour,
+                ),
               ),
             ),
-          ),
-          CustomPaint(
-            size: constraints.biggest,
-            painter: TimerWheelForegroundPainter(
-              config: config,
-              activeSeconds: widget.activeSeconds,
-              finished: widget.finished,
-              showTimeText: widget.showTimeText,
+            CustomPaint(
+              size: constraints.biggest,
+              painter: TimerWheelForegroundPainter(
+                config: config,
+                activeSeconds: widget.activeSeconds,
+                finished: widget.finished,
+                showTimeText: widget.showTimeText,
+              ),
             ),
-          ),
-        ],
-      );
+          ],
+        );
 
-      if (widget.style != TimerWheelStyle.interactive) {
-        return timerWheel;
-      } else {
-        return GestureDetector(
-          onPanDown: (details) => _onPanDown(details, config),
-          onPanUpdate: (details) => _onPanUpdate(details, config),
-          onTapUp: (details) => _onTapUp(details, config),
-          child: timerWheel,
+        if (widget.style != TimerWheelStyle.interactive) {
+          return timerWheel;
+        } else {
+          return BlocBuilder<SettingsCubit, SettingsState>(
+            builder: (context, settingsState) => GestureDetector(
+              onPanDown: (details) => _onPanDown(details, config),
+              onPanUpdate: (details) => _onPanUpdate(details, config),
+              onTapUp: (details) => _onTapUp(details, config),
+              onLongPressStart: (details) => settingsState.textToSpeech
+                  ? _playTtsOnNumbers(details, config)
+                  : () {},
+              child: timerWheel,
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  void _playTtsOnNumbers(
+    LongPressStartDetails details,
+    TimerWheelConfiguration config,
+  ) {
+    if (_pointIsOnNumberWheel(details.localPosition, config)) {
+      final minutes = _minutesFromPoint(details.localPosition, config);
+      // rounding by 58 to skip '60' minutes
+      final fiveMinInterval =
+          ((minutes % 58) / _intervalLength).round() * _intervalLength;
+      final minute = minutes % _intervalLength;
+      if (minute == 0 || minute == _intervalLength - 1) {
+        GetIt.I<TtsInterface>().speak(
+          '$fiveMinInterval ${Translator.of(context).translate.minutes}',
         );
       }
-    });
+    }
   }
 
   void _updateMinutesSelected(int minutes) {
@@ -154,7 +186,8 @@ class _TimerWheelState extends State<TimerWheel> {
       if (isCrossingZeroForwards || isCrossingZeroBackwards) {
         sliderTemporaryLocked = true;
         _updateMinutesSelected(
-            isCrossingZeroBackwards ? 0 : Duration.minutesPerHour);
+          isCrossingZeroBackwards ? 0 : Duration.minutesPerHour,
+        );
         return;
       }
 
@@ -183,9 +216,10 @@ class _TimerWheelState extends State<TimerWheel> {
       int desiredMinutesLeft =
           (_minutesFromPoint(details.localPosition, config) / 5).ceil() * 5;
       assert(
-          desiredMinutesLeft >= 0 &&
-              desiredMinutesLeft <= Duration.minutesPerHour,
-          'Tried setting timer wheel to invalid time');
+        desiredMinutesLeft >= 0 &&
+            desiredMinutesLeft <= Duration.minutesPerHour,
+        'Tried setting timer wheel to invalid time',
+      );
       desiredMinutesLeft.clamp(0, Duration.minutesPerHour);
       _updateMinutesSelected(desiredMinutesLeft);
     }
@@ -202,6 +236,16 @@ class _TimerWheelState extends State<TimerWheel> {
         distanceFromCenter >= config.innerCircleDiameter / 2;
   }
 
+  bool _pointIsOnNumberWheel(Offset point, TimerWheelConfiguration config) {
+    final distanceFromCenter = sqrt(
+      pow((point.dx - config.centerPoint.dx), 2) +
+          pow((point.dy - config.centerPoint.dy), 2),
+    );
+
+    return distanceFromCenter <= config.maxSize / 2 &&
+        distanceFromCenter >= config.outerCircleDiameter / 2;
+  }
+
   // Returns a value in range: [0..60]
   int _minutesFromPoint(Offset point, TimerWheelConfiguration config) {
     final deltaX = point.dx - config.centerPoint.dx;
@@ -214,8 +258,10 @@ class _TimerWheelState extends State<TimerWheel> {
     }
 
     final percentage = angle / (2 * pi);
-    assert(percentage >= 0 && percentage <= 1,
-        'Given value is out of range [0..1]');
+    assert(
+      percentage >= 0 && percentage <= 1,
+      'Given value is out of range [0..1]',
+    );
     percentage.clamp(0, 1);
     return (percentage * Duration.minutesPerHour).floor();
   }

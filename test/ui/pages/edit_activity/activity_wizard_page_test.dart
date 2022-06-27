@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -12,6 +14,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
@@ -59,7 +62,15 @@ void main() {
     when(() => mockMemoplannerSettingsBloc.stream).thenAnswer(
       (_) => const Stream.empty(),
     );
+
+    GetItInitializer()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
+      ..database = FakeDatabase()
+      ..baseUrlDb = MockBaseUrlDb()
+      ..init();
   });
+
+  tearDown(GetIt.I.reset);
 
   Widget wizardPage({
     bool use24 = false,

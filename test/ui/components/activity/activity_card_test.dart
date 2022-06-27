@@ -14,10 +14,13 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
 
 import '../../../fakes/all.dart';
+import '../../../mocks/mock_bloc.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
   final startTime = DateTime(2011, 11, 11, 11, 11);
+  final day = DateTime(2011, 11, 11);
+  late MockDayEventsCubit dayEventsCubitMock;
 
   bool applyCrossOver() =>
       (find.byType(CrossOver).evaluate().first.widget as CrossOver).applyCross;
@@ -53,6 +56,12 @@ void main() {
                     BlocProvider<ClockBloc>(
                       create: (context) => ClockBloc.fixed(startTime),
                     ),
+                    BlocProvider<DayEventsCubit>(
+                      create: (context) => dayEventsCubitMock,
+                    ),
+                    BlocProvider<MemoplannerSettingBloc>(
+                      create: (context) => FakeMemoplannerSettingsBloc(),
+                    ),
                     BlocProvider<SettingsCubit>(
                       create: (context) => SettingsCubit(
                         settingsDb: FakeSettingsDb(),
@@ -76,7 +85,21 @@ void main() {
 
   setUp(() async {
     setupFakeTts();
+    dayEventsCubitMock = MockDayEventsCubit();
     await initializeDateFormatting();
+
+    final expected = EventsState(
+      activities: const [],
+      timers: const [],
+      fullDayActivities: const [],
+      day: day,
+      occasion: Occasion.current,
+    );
+
+    when(() => dayEventsCubitMock.state).thenReturn(expected);
+    when(() => dayEventsCubitMock.stream)
+        .thenAnswer((_) => Stream.fromIterable([expected]));
+
     GetItInitializer()
       ..fileStorage = FakeFileStorage()
       ..database = FakeDatabase()
@@ -215,8 +238,8 @@ void main() {
         secret: true,
       ),
     );
-    expect(find.byType(PrivateIcon), findsOneWidget);
-    expect(find.byIcon(AbiliaIcons.passwordProtection), findsOneWidget);
+    expect(find.byType(AvailableForIcon), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.lock), findsOneWidget);
   });
 
   testWidgets('current activity is not crossed over',

@@ -18,8 +18,9 @@ class TimerPage extends StatelessWidget {
       data: abiliaWhiteTheme,
       child: BlocSelector<TimerAlarmBloc, TimerAlarmState, TimerOccasion>(
         selector: (timerState) => timerState.timers.firstWhere(
-            (to) => to.timer.id == timerOccasion.timer.id,
-            orElse: () => timerOccasion),
+          (to) => to.timer.id == timerOccasion.timer.id,
+          orElse: () => timerOccasion,
+        ),
         builder: (context, timerOccasion) {
           final timer = timerOccasion.timer;
           return Scaffold(

@@ -94,6 +94,7 @@ class Layout {
   final StartupPageLayout startupPage;
   final StarterSetDialogLayout starterSetDialog;
   final PhotoCalendarLayoutMedium photoCalendarLayout;
+  final SupportPersonLayout supportPerson;
   final CodeProtectLayoutMedium codeProtect;
   final SelectorLayout selector;
 
@@ -170,6 +171,7 @@ class Layout {
     this.startupPage = const StartupPageLayout(),
     this.starterSetDialog = const StarterSetDialogLayout(),
     this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
+    this.supportPerson = const SupportPersonLayout(),
     this.codeProtect = const CodeProtectLayoutMedium(),
     this.selector = const SelectorLayout(),
   });
@@ -553,15 +555,6 @@ class IconTextButtonStyle {
     this.maximumSize = const Size(double.infinity, 64),
     this.iconTextSpacing = 8,
     this.padding = const EdgeInsets.only(right: 8),
-  });
-}
-
-class AlarmPageLayout {
-  final EdgeInsets alarmClockPadding;
-
-  const AlarmPageLayout({
-    this.alarmClockPadding =
-        const EdgeInsets.only(top: 4, bottom: 4, right: 16),
   });
 }
 

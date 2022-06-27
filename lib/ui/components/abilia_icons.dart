@@ -500,5 +500,6 @@ class AbiliaIcons {
       basicTimers = IconData(0xeb37, fontFamily: fontFamily),
       sun = IconData(0xEB2A, fontFamily: fontFamily),
       dayInterval = IconData(0xEB2B, fontFamily: fontFamily),
+      selectedSupport = IconData(0xEB35, fontFamily: fontFamily),
       dayNight = IconData(0xEB2C, fontFamily: fontFamily);
 }

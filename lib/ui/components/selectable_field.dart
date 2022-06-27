@@ -6,6 +6,7 @@ class SelectableField extends StatelessWidget {
   final Color? color;
   final bool selected;
   final GestureTapCallback onTap;
+  final String? ttsData;
 
   const SelectableField({
     Key? key,
@@ -15,6 +16,7 @@ class SelectableField extends StatelessWidget {
     this.color,
     this.height,
     this.width,
+    this.ttsData,
   }) : super(key: key);
 
   @override
@@ -23,7 +25,8 @@ class SelectableField extends StatelessWidget {
     final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
     final selectedOuterDecoration = selected
         ? selectedBoxDecoration.copyWith(
-            color: this.color != null ? scaffoldBackgroundColor : color)
+            color: this.color != null ? scaffoldBackgroundColor : color,
+          )
         : BoxDecoration(
             color: color,
             borderRadius: borderRadius,
@@ -61,7 +64,7 @@ class SelectableField extends StatelessWidget {
 
     return Tts.fromSemantics(
       SemanticsProperties(
-        label: text.data,
+        label: ttsData ?? text.data,
         selected: selected,
         toggled: selected,
         inMutuallyExclusiveGroup: true,

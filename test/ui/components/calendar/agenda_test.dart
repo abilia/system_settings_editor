@@ -809,11 +809,14 @@ void main() {
 
       void expectCorrectColor(String title, Color expectedColor) {
         final boxDecoration = tester
-            .widget<AnimatedContainer>(find.descendant(
-                of: find.widgetWithText(ActivityCard, title,
-                    skipOffstage: false),
-                matching: find.byType(AnimatedContainer, skipOffstage: false),
-                skipOffstage: false))
+            .widget<AnimatedContainer>(find
+                .descendant(
+                    of: find.widgetWithText(ActivityCard, title,
+                        skipOffstage: false),
+                    matching:
+                        find.byType(AnimatedContainer, skipOffstage: false),
+                    skipOffstage: false)
+                .first)
             .decoration as BoxDecoration;
         expect(
           boxDecoration.border?.bottom.color,
@@ -878,11 +881,14 @@ void main() {
 
       void expectCorrectColor(String title, Color expectedColor) {
         final boxDecoration = tester
-            .widget<AnimatedContainer>(find.descendant(
-                of: find.widgetWithText(ActivityCard, title,
-                    skipOffstage: false),
-                matching: find.byType(AnimatedContainer, skipOffstage: false),
-                skipOffstage: false))
+            .widget<AnimatedContainer>(find
+                .descendant(
+                    of: find.widgetWithText(ActivityCard, title,
+                        skipOffstage: false),
+                    matching:
+                        find.byType(AnimatedContainer, skipOffstage: false),
+                    skipOffstage: false)
+                .first)
             .decoration as BoxDecoration;
         expect(
           boxDecoration.border?.bottom.color,
@@ -1079,5 +1085,24 @@ void main() {
         expect(find.byType(TimerCard), findsNothing);
       });
     });
+  });
+
+  testWidgets('Opacity for nighttime activities', (WidgetTester tester) async {
+    final nightTime = DateTime(2020, 06, 04, 01, 24);
+    GetIt.I<Ticker>().setFakeTime(nightTime, setTicker: false);
+    activityResponse = () => [
+          Activity.createNew(
+            title: 'test',
+            startTime: nightTime.subtract(1.minutes()),
+            duration: 30.minutes(),
+          ),
+        ];
+
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+
+    Finder finder = find.byType(Opacity).first;
+    Opacity op = finder.evaluate().single.widget as Opacity;
+    expect(op.opacity, 0.4);
   });
 }

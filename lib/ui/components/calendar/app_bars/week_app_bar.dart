@@ -34,10 +34,9 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
               langCode: Localizations.localeOf(context).toLanguageTag(),
             ),
             leftAction: memoSettingsState.weekCaptionShowBrowseButtons
-                ? IconActionButton(
+                ? LeftNavButton(
                     onPressed: () => BlocProvider.of<WeekCalendarCubit>(context)
                         .previousWeek(),
-                    child: const Icon(AbiliaIcons.returnToPreviousPage),
                   )
                 : null,
             clockReplacement: !state.currentWeekStart.isSameWeek(time)
@@ -49,10 +48,9 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
                   )
                 : null,
             rightAction: memoSettingsState.weekCaptionShowBrowseButtons
-                ? IconActionButton(
+                ? RightNavButton(
                     onPressed: () =>
                         BlocProvider.of<WeekCalendarCubit>(context).nextWeek(),
-                    child: const Icon(AbiliaIcons.goToNextPage),
                   )
                 : null,
             crossedOver: state.currentWeekStart.nextWeek().isBefore(time),

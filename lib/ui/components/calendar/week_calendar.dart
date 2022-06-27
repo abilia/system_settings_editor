@@ -32,12 +32,15 @@ class WeekCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageController = PageController(
-        initialPage: context.read<WeekCalendarCubit>().state.index);
+      initialPage: context.read<WeekCalendarCubit>().state.index,
+    );
     return BlocListener<WeekCalendarCubit, WeekCalendarState>(
       listener: (context, state) {
-        pageController.animateToPage(state.index,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeOutQuad);
+        pageController.animateToPage(
+          state.index,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeOutQuad,
+        );
       },
       child: PageView.builder(
         controller: pageController,
@@ -147,8 +150,8 @@ class WeekCalenderHeadingContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final wLayout = layout.weekCalendar;
-    final weekDayFormat =
-        DateFormat('EEEE', Localizations.localeOf(context).toLanguageTag());
+    final weekDayFormat = DateFormat(
+        'MMMMEEEEd', Localizations.localeOf(context).toLanguageTag());
     final borderColor = occasion.isCurrent
         ? AbiliaColors.red
         : selected
@@ -211,7 +214,7 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Tts.data(
-                      data: '${day.day}, ${weekDayFormat.format(day)}',
+                      data: weekDayFormat.format(day),
                       child: BlocBuilder<ClockBloc, DateTime>(
                         buildWhen: (previous, current) =>
                             !previous.isAtSameDay(current),
@@ -225,7 +228,8 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: occasion.isPast
                                   ? _bodyText1.copyWith(
-                                      color: AbiliaColors.white)
+                                      color: AbiliaColors.white,
+                                    )
                                   : _bodyText1,
                             ),
                           ),
