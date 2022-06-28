@@ -117,10 +117,19 @@ BoardCardGenerator _activityCard({
   required DayParts dayParts,
   required TimepillarSide timepillarSide,
 }) {
+  final totalBorderWidth = getCategoryBoxDecoration(
+        current: activityOccasion.occasion.isCurrent,
+        inactive: activityOccasion.isPast || activityOccasion.isSignedOff,
+        showCategoryColor: true,
+        category: activityOccasion.activity.category,
+        zoom: measures.zoom,
+      ).border?.dimensions.horizontal ??
+      0;
+
   final a = activityOccasion.activity;
   final textHeight = (a.hasTitle
       ? a.title
-          .textPainter(textStyle, measures.cardTextWidth,
+          .textPainter(textStyle, measures.cardTextWidth - totalBorderWidth,
               scaleFactor: textScaleFactor)
           .height
       : 0.0);

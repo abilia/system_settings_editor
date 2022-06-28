@@ -81,10 +81,7 @@ class _VoiceRow extends StatelessWidget {
               child: SizedBox(
                 width: pageLayout.loaderSize,
                 height: pageLayout.loaderSize,
-                child: CircularProgressIndicator(
-                  strokeWidth: pageLayout.loaderStrokeWidth,
-                  valueColor: const AlwaysStoppedAnimation(AbiliaColors.red),
-                ),
+                child: const AbiliaProgressIndicator(),
               ),
             ),
           )

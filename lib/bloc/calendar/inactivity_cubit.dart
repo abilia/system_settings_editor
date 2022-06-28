@@ -56,10 +56,7 @@ class InactivityCubit extends Cubit<InactivityState> {
     if (hasTimeout &&
         time.isAtSameMomentOrAfter(state.timeStamp.add(activityTimeout))) {
       emit(
-        HomeScreenInactivityThresholdReached(
-          startView: settings.startView,
-          showScreensaver: settings.useScreensaver,
-        ),
+        const HomeScreenInactivityThresholdReached(),
       );
     }
   }
@@ -95,17 +92,8 @@ class CalendarInactivityThresholdReached extends _NotFinalState {
 }
 
 class HomeScreenInactivityThresholdReached extends InactivityState {
-  const HomeScreenInactivityThresholdReached({
-    required this.startView,
-    required this.showScreensaver,
-  });
-
-  final StartView startView;
-  final bool showScreensaver;
-
-  bool get screensaverOrPhotoAlbum =>
-      showScreensaver || startView == StartView.photoAlbum;
+  const HomeScreenInactivityThresholdReached();
 
   @override
-  List<Object?> get props => [startView, showScreensaver];
+  List<Object?> get props => [];
 }

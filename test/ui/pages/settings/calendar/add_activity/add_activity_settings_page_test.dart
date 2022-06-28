@@ -248,7 +248,7 @@ void main() {
 
         testWidgets('deselect Delete after', (tester) async {
           await tester.verifyInAddTab(
-            find.text(translate.selectDeleteAfter),
+            find.text(translate.deleteAfter),
             genericDb,
             key: EditActivitySettings.removeAfterKey,
             matcher: isFalse,
@@ -335,7 +335,7 @@ void main() {
 
         testWidgets('deselect Select delete after', (tester) async {
           await tester.verifyStepByStep(
-            find.text(translate.selectDeleteAfter, skipOffstage: false),
+            find.text(translate.deleteAfter, skipOffstage: false),
             genericDb,
             key: StepByStepSettings.removeAfterKey,
             matcher: isTrue,
@@ -384,7 +384,7 @@ void main() {
       testWidgets('Select vibration', (tester) async {
         await tester.goToDefaultsTab();
         expect(find.byType(AddActivityDefaultSettingsTab), findsOneWidget);
-        await tester.tap(find.text(translate.vibration));
+        await tester.tap(find.text(translate.vibrationIfAvailable));
         await tester.pumpAndSettle();
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();

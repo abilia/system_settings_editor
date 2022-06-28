@@ -210,7 +210,7 @@ supportPersons	Support Persons	Stödpersoner
 ### Alarm							
 selectAlarmType	Select alarm	Ange larm	Vælg alarm	Alarm selecteren	Valitse hälytys	Alarm auswählen	Angi alarm
 alarmAndVibration	Alarm + vibration	Larm + vibration	Alarm + vibration	Alarm + trilfunctie	Hälytys + värinä	Alarm + Vibration	Alarm + Vibrasjon
-vibration	Vibration	Vibration	Vibration	Trilfunctie	Värinä	Vibration	Vibrasjon
+vibrationIfAvailable	Vibration (if available)	Vibration (om tillgängligt)	Vibration (hvis tilgængelig)	Trilfunctie (indien beschikbaar)	Värinä (jos käytettävissä)	Vibration (falls verfügbar)	Vibrasjon (om tilgjengelig)
 noAlarm	No alarm	Inget larm	Ingen alarm	Geen alarm	Ei hälytystä	Kein Alarm	Ingen alarm
 silentAlarm	Silent alarm	Tyst larm	Stille alarm	Stil alarm	Äänetön hälytys	Stiller Alarm	Stille alarm
 alarmOnlyAtStartTime	Alarm only at Start time	Larm endast vid starttid	Kun alarm ved starttidspunkt	Alarm alleen op begintijd	Vain hälytys alkamisaikaan	Alarm nur zur Startzeit	Alarm kun på starttid
@@ -335,6 +335,7 @@ allowPassedStartTime	Allow passed start time	Lägga in på passerad tid	Indsæt 
 addRecurringActivity	Add recurring activity	Lägga in återkommande aktivitet	>Indsæt gentagende aktivitet	Terugkerende activiteit toevoegen	Lisää toistuva aktiviteetti	Wiederkehrende Aktivität hinzufügen	Legg inn gjentakende aktivitet
 showEndTime	Show end time	Visa sluttid	Vis sluttid	Eindtijd tonen	Näytä päättymisaika	Endezeit anzeigen	Vis sluttid
 showAlarm	Show alarm	Visa larm	Vis alarm	Alarmen weergeven	Näytä hälytykset	Alarme anzeigen	Vis alarm
+showVibrationAlarm	Show vibration
 showSilentAlarm	Show silent alarm	Visa tyst larm	Vis stille alarm	Stille alarmen weergeven	Näytä hiljaiset hälytykset	Stille Alarme anzeigen	Vis stille alarm
 showNoAlarm	Show no alarm	Visa inget larm	Vis ingen alarm	Geen alarmen weergeven	Älä näytä hälytystä	Kein Alarm anzeigen	Vis ingen alarm
 throughEditView	Through Edit View	Via Ändravyn	Via Redigersiden	Door bewerkweergave	Muokkausnäkymässä	Durch Bearbeitungsanzeige	Via endrevindu
@@ -346,7 +347,6 @@ selectDate	Select date	Välj datum	Vælg dato	Datum selecteren	Valitse päiväm�
 selectType	Select type	Välj typ	Vælg type	Type selecteren	Valitse tyyppi	Typ auswählen	Velg type
 selectCheckable	Select checkable	Välj kvitterbar	Vælg kvittering	Afvinkbaarheid selecteren	Valitse tarkistettava	Kontrollierbar auswählen	Velg kvittering
 selectAvailableFor	Select available for	Välj tillgänglig för	Vælg tilgængelig for	Selecteer beschikbaar voor	Valitse käytettävissä	Wählen Sie verfügbar für	Velg tilgjengelig for
-selectDeleteAfter	Select delete after	Välj ta bort efteråt	Vælg slet bagefter	Wissen na selecteren	Valitse poista, kun on kulunut	Zeit bis Löschen auswählen	Velg slett etterpå
 selectAlarm	Select alarm	Välj larm	Vælg alarm	Alarm selecteren	Valitse hälytys	Alarm auswählen	Velg alarm
 iOSAlarmTimeWarning	On an iPhone, alarm sounds can only be played for maximum 30 seconds	På en iPhone kan alarmljud bara spelas upp i maximalt 30 sekunder	På en iPhone kan alarmlyde kun afspilles i maksimalt 30 sekunder	Op een iPhone kunnen alarmgeluiden maximaal 30 seconden worden afgespeeld	IPhonessa hälytysääniä voidaan toistaa enintään 30 sekunnin ajan	Auf einem iPhone können Alarmtöne nur maximal 30 Sekunden lang abgespielt werden	På en iPhone kan alarmlyder bare spilles av i maksimalt 30 sekunder
 selectChecklist	Select checklist	Välj checklista	Vælg tjekliste	Checklist selecteren	Valitse tarkistusluettelo	Checkliste auswählen	Velg sjekkliste

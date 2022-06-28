@@ -419,7 +419,7 @@ abstract class Translated {
 
   final String alarmAndVibration = 'Alarm + vibration';
 
-  final String vibration = 'Vibration';
+  final String vibrationIfAvailable = 'Vibration (if available)';
 
   final String noAlarm = 'No alarm';
 
@@ -651,6 +651,8 @@ abstract class Translated {
 
   final String showAlarm = 'Show alarm';
 
+  final String showVibrationAlarm = 'Show vibration';
+
   final String showSilentAlarm = 'Show silent alarm';
 
   final String showNoAlarm = 'Show no alarm';
@@ -672,8 +674,6 @@ abstract class Translated {
   final String selectCheckable = 'Select checkable';
 
   final String selectAvailableFor = 'Select available for';
-
-  final String selectDeleteAfter = 'Select delete after';
 
   final String selectAlarm = 'Select alarm';
 
@@ -1503,7 +1503,7 @@ class SV extends Translated {
   final String alarmAndVibration = 'Larm + vibration';
 
   @override
-  final String vibration = 'Vibration';
+  final String vibrationIfAvailable = 'Vibration (om tillgängligt)';
 
   @override
   final String noAlarm = 'Inget larm';
@@ -1878,9 +1878,6 @@ class SV extends Translated {
 
   @override
   final String selectAvailableFor = 'Välj tillgänglig för';
-
-  @override
-  final String selectDeleteAfter = 'Välj ta bort efteråt';
 
   @override
   final String selectAlarm = 'Välj larm';
@@ -2763,7 +2760,7 @@ class DA extends Translated {
   final String alarmAndVibration = 'Alarm + vibration';
 
   @override
-  final String vibration = 'Vibration';
+  final String vibrationIfAvailable = 'Vibration (hvis tilgængelig)';
 
   @override
   final String noAlarm = 'Ingen alarm';
@@ -3133,9 +3130,6 @@ class DA extends Translated {
 
   @override
   final String selectAvailableFor = 'Vælg tilgængelig for';
-
-  @override
-  final String selectDeleteAfter = 'Vælg slet bagefter';
 
   @override
   final String selectAlarm = 'Vælg alarm';
@@ -3967,7 +3961,7 @@ class NL extends Translated {
   final String alarmAndVibration = 'Alarm + trilfunctie';
 
   @override
-  final String vibration = 'Trilfunctie';
+  final String vibrationIfAvailable = 'Trilfunctie (indien beschikbaar)';
 
   @override
   final String noAlarm = 'Geen alarm';
@@ -4337,9 +4331,6 @@ class NL extends Translated {
 
   @override
   final String selectAvailableFor = 'Selecteer beschikbaar voor';
-
-  @override
-  final String selectDeleteAfter = 'Wissen na selecteren';
 
   @override
   final String selectAlarm = 'Alarm selecteren';
@@ -5176,7 +5167,7 @@ class FI extends Translated {
   final String alarmAndVibration = 'Hälytys + värinä';
 
   @override
-  final String vibration = 'Värinä';
+  final String vibrationIfAvailable = 'Värinä (jos käytettävissä)';
 
   @override
   final String noAlarm = 'Ei hälytystä';
@@ -5546,9 +5537,6 @@ class FI extends Translated {
 
   @override
   final String selectAvailableFor = 'Valitse käytettävissä';
-
-  @override
-  final String selectDeleteAfter = 'Valitse poista, kun on kulunut';
 
   @override
   final String selectAlarm = 'Valitse hälytys';
@@ -6387,7 +6375,7 @@ class DE extends Translated {
   final String alarmAndVibration = 'Alarm + Vibration';
 
   @override
-  final String vibration = 'Vibration';
+  final String vibrationIfAvailable = 'Vibration (falls verfügbar)';
 
   @override
   final String noAlarm = 'Kein Alarm';
@@ -6759,9 +6747,6 @@ class DE extends Translated {
 
   @override
   final String selectAvailableFor = 'Wählen Sie verfügbar für';
-
-  @override
-  final String selectDeleteAfter = 'Zeit bis Löschen auswählen';
 
   @override
   final String selectAlarm = 'Alarm auswählen';
@@ -7612,7 +7597,7 @@ class NB extends Translated {
   final String alarmAndVibration = 'Alarm + Vibrasjon';
 
   @override
-  final String vibration = 'Vibrasjon';
+  final String vibrationIfAvailable = 'Vibrasjon (om tilgjengelig)';
 
   @override
   final String noAlarm = 'Ingen alarm';
@@ -7984,9 +7969,6 @@ class NB extends Translated {
 
   @override
   final String selectAvailableFor = 'Velg tilgjengelig for';
-
-  @override
-  final String selectDeleteAfter = 'Velg slett etterpå';
 
   @override
   final String selectAlarm = 'Velg alarm';

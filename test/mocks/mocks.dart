@@ -73,6 +73,9 @@ class MockFirebasePushService extends Mock implements FirebasePushService {}
 class MockFlutterLocalNotificationsPlugin extends Mock
     implements FlutterLocalNotificationsPlugin {}
 
+class MockAndroidFlutterLocalNotificationsPlugin extends Mock
+    implements AndroidFlutterLocalNotificationsPlugin {}
+
 // Misc
 
 class MockNotification extends Mock implements Notification {}
