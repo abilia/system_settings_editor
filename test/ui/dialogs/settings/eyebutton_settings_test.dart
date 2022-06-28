@@ -67,17 +67,17 @@ void main() {
 
   tearDown(GetIt.I.reset);
 
-  testWidgets('Timepillar shows first dots, then edge when settings changes',
+  testWidgets('Timepillar shows first edge, then dots when settings changes',
       (WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
-    // Assert - At timepillar and side dots shows
+    // Assert - At timepillar and edge shows
     expect(find.byType(TimepillarCalendar), findsOneWidget);
-    expect(find.byType(SideDots), findsWidgets);
-    expect(find.byType(SideTime), findsNothing);
+    expect(find.byType(SideTime), findsWidgets);
+    expect(find.byType(SideDots), findsNothing);
 
-    // Act - change to Edge illustraion in time
+    // Act - change to side dots illustration in time
     await tester.pumpAndSettle();
     await tester.tap(find.byType(EyeButtonDay));
     await tester.pumpAndSettle();
@@ -85,7 +85,7 @@ void main() {
     await tester.dragFrom(center, const Offset(0.0, -400));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(AbiliaIcons.flarp));
+    await tester.tap(find.byIcon(AbiliaIcons.options));
     await tester.pumpAndSettle();
 
     expect(find.byType(OkButton), findsOneWidget);
@@ -97,7 +97,7 @@ void main() {
       tester,
       mockGenericDb,
       key: MemoplannerSettings.dotsInTimepillarKey,
-      matcher: isFalse,
+      matcher: isTrue,
     );
   });
 
