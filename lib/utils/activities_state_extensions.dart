@@ -35,7 +35,6 @@ extension ActivitiesStateExtensions on ActivitiesState {
 
     return false;
   }
-
 }
 
 extension ActivityDayConflict on ActivityDay {
