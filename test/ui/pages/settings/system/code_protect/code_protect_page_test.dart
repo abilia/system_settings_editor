@@ -203,6 +203,36 @@ void main() {
       expect(find.byType(SettingsPage), findsOneWidget);
     });
 
+    testWidgets('hidden settings is protected', (tester) async {
+      // Arrange
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: true,
+                identifier: CodeProtectSettings.protectSettingsKey,
+              ),
+            ),
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: false,
+                identifier: MenuSettings.showSettingsKey,
+              ),
+            ),
+          ];
+
+      // Act
+      await tester.pumpApp();
+      expect(find.byType(HiddenSetting), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.hiddenSettingsButtonLeft));
+      await tester.tap(find.byKey(TestKey.hiddenSettingsButtonRight));
+      await tester.tap(find.byKey(TestKey.hiddenSettingsButtonLeft));
+      await tester.pumpAndSettle();
+      expect(find.byType(CodeProtectPage), findsOneWidget);
+
+      await tester._type(CodeProtectSettings.defaultCode);
+      expect(find.byType(SettingsPage), findsOneWidget);
+    });
+
     testWidgets('android settings is protected', (tester) async {
       // Arrange
       genericResponse = () => [
