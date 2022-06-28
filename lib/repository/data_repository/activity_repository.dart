@@ -10,7 +10,7 @@ class ActivityRepository extends DataRepository<Activity> {
     required BaseUrlDb baseUrlDb,
     required BaseClient client,
     required int userId,
-    required ActivityDb activityDb,
+    required this.activityDb,
   }) : super(
           client: client,
           baseUrlDb: baseUrlDb,
@@ -21,4 +21,10 @@ class ActivityRepository extends DataRepository<Activity> {
           fromJsonToDataModel: DbActivity.fromJson,
           log: Logger((ActivityRepository).toString()),
         );
+
+  final ActivityDb activityDb;
+
+  Future<Iterable<Activity>> allAfter(DateTime time) {
+    return activityDb.getAllAfter(time);
+  }
 }

@@ -119,4 +119,14 @@ abstract class DataDb<M extends DataModel> {
     final res = await Future.wait(insertResult);
     return res.isNotEmpty;
   }
+
+  Iterable<M> rowsToModels(List<Map<String, Object?>> rows) {
+    return rows
+        .exceptionSafeMap(
+          convertToDataModel,
+          onException: log.logAndReturnNull,
+        )
+        .whereNotNull()
+        .map((data) => data.model);
+  }
 }

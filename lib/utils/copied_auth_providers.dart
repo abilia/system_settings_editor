@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:collection/collection.dart';
+import 'package:seagull/bloc/alarm/notification_cubit.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/config.dart';
 
@@ -22,6 +23,7 @@ List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
       _tryGetBloc<TimepillarCubit>(blocContext),
       _tryGetBloc<TimepillarMeasuresCubit>(blocContext),
       _tryGetBloc<TimerCubit>(blocContext),
+      _tryGetBloc<NotificationBloc>(blocContext),
       _tryGetBloc<TimerAlarmBloc>(blocContext),
       _tryGetBloc<SettingsCubit>(blocContext),
       if (Config.isMP) ...[

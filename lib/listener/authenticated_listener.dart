@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/listener/all.dart';
 import 'package:seagull/models/notification/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
@@ -68,26 +69,24 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        BlocListener<ActivitiesBloc, ActivitiesState>(
-          listenWhen: (_, current) => current is ActivitiesLoaded,
-          listener: (context, activitiesState) => _scheduleNotifications(
-            context,
-            activitiesState: activitiesState,
-          ),
-        ),
-        BlocListener<MemoplannerSettingBloc, MemoplannerSettingsState>(
-          listenWhen: (previous, current) =>
-              (previous is MemoplannerSettingsNotLoaded &&
-                  current is! MemoplannerSettingsNotLoaded) ||
-              previous.alarm != current.alarm,
-          listener: (context, state) => _scheduleNotifications(
-            context,
-            settingsState: state,
-          ),
-        ),
-        BlocListener<TimerCubit, TimerState>(
-          listener: (context, s) => _scheduleNotifications(context),
-        ),
+        // BlocListener<ActivitiesBloc, ActivitiesState>(
+        //   listenWhen: (_, current) => current is ActivitiesLoaded,
+        //   listener: (context, activitiesState) => _scheduleNotifications(
+        //     context,
+        //   ),
+        // ),
+        // BlocListener<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        //   listenWhen: (previous, current) =>
+        //       (previous is MemoplannerSettingsNotLoaded &&
+        //           current is! MemoplannerSettingsNotLoaded) ||
+        //       previous.alarm != current.alarm,
+        //   listener: (context, state) => _scheduleNotifications(
+        //     context,
+        //   ),
+        // ),
+        // BlocListener<TimerCubit, TimerState>(
+        //   listener: (context, s) => _scheduleNotifications(context),
+        // ),
         BlocListener<LicenseCubit, LicenseState>(
           listener: (context, state) async {
             if (state is NoValidLicense) {
@@ -125,29 +124,26 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
       !(previous.status[Permission.notification]?.isDeniedOrPermenantlyDenied ??
           false);
 
-  Future _scheduleNotifications(
-    BuildContext context, {
-    ActivitiesState? activitiesState,
-    MemoplannerSettingsState? settingsState,
-  }) async {
-    activitiesState ??= context.read<ActivitiesBloc>().state;
-    settingsState ??= context.read<MemoplannerSettingBloc>().state;
-    if (settingsState is! MemoplannerSettingsNotLoaded &&
-        activitiesState is ActivitiesLoaded) {
-      final language = Localizations.localeOf(context).toLanguageTag();
-      final alwaysUse24HourFormat =
-          MediaQuery.of(context).alwaysUse24HourFormat;
-      final timers = await GetIt.I<TimerDb>().getRunningTimersFrom(
-        DateTime.now(),
-      );
-      await scheduleAlarmNotificationsIsolated(
-        activities: activitiesState.activities,
-        timers: timers.toAlarm(),
-        language: language,
-        alwaysUse24HourFormat: alwaysUse24HourFormat,
-        settings: settingsState.settings.alarm,
-        fileStorage: GetIt.I<FileStorage>(),
-      );
-    }
+  Future _scheduleNotifications(BuildContext context) async {
+    // final activitiesState = context.read<ActivitiesBloc>().state;
+    // final settingsState = context.read<MemoplannerSettingBloc>().state;
+    // final activityRepository = context.read<ActivityRepository>();
+    // final settingsDb = GetIt.I<SettingsDb>();
+    // if (settingsState is! MemoplannerSettingsNotLoaded &&
+    //     activitiesState is ActivitiesLoaded) {
+    //   final timers = await GetIt.I<TimerDb>().getRunningTimersFrom(
+    //     DateTime.now(),
+    //   );
+    //   final now = DateTime.now();
+    //   final activities = await activityRepository.allAfter(now);
+    //   await scheduleAlarmNotificationsIsolated(
+    //     activities: activities,
+    //     timers: timers.toAlarm(),
+    //     language: settingsDb.language,
+    //     alwaysUse24HourFormat: settingsDb.alwaysUse24HourFormat,
+    //     settings: settingsState.settings.alarm,
+    //     fileStorage: GetIt.I<FileStorage>(),
+    //   );
+    // }
   }
 }
