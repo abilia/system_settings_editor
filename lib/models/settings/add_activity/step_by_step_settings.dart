@@ -18,7 +18,6 @@ class StepByStepSettings extends Equatable {
   final bool template,
       title,
       image,
-      time,
       datePicker,
       type,
       checkable,
@@ -33,7 +32,6 @@ class StepByStepSettings extends Equatable {
     this.template = true,
     this.title = true,
     this.image = true,
-    this.time = true,
     this.datePicker = true,
     this.type = false,
     this.checkable = true,
@@ -171,6 +169,5 @@ class StepByStepSettings extends Equatable {
         checklist,
         notes,
         reminders,
-        time,
       ];
 }

@@ -47,6 +47,7 @@ Future<void> initServices() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // DO NOT REMOVE. The isAutoInitEnabled call is needed to make push work https://github.com/firebase/flutterfire/issues/6011
   FirebaseMessaging.instance.isAutoInitEnabled;
+
   final documentDirectory = await getApplicationDocumentsDirectory();
   final applicationSupportDirectory = await getApplicationSupportDirectory();
   final preferences = await SharedPreferences.getInstance();

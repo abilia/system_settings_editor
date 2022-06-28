@@ -72,6 +72,18 @@ void main() {
 
   tearDown(GetIt.I.reset);
 
+  Future<void> skipTitleAndTimeWidgets(WidgetTester tester) async {
+    expect(find.byType(TitleWiz), findsOneWidget);
+    await tester.enterText(find.byType(TextField), 'title');
+    await tester.tap(find.byType(NextButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TimeWiz), findsOneWidget);
+    await tester.enterTime(find.byKey(TestKey.startTimeInput), '1137');
+    await tester.tap(find.byType(NextButton));
+    await tester.pumpAndSettle();
+  }
+
   Widget wizardPage({
     bool use24 = false,
     BasicActivityDataItem? basicActivityData,
@@ -575,9 +587,8 @@ void main() {
       addActivityTypeAdvanced: false,
       stepByStep: StepByStepSettings(
         template: false,
-        title: false,
+        title: true,
         image: false,
-        time: false,
         datePicker: false,
         type: false,
         removeAfter: false,
@@ -598,8 +609,10 @@ void main() {
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();
-
       expect(find.byType(ActivityWizardPage), findsOneWidget);
+
+      await skipTitleAndTimeWidgets(tester);
+
       expect(find.byType(AvailableForWiz), findsOneWidget);
     });
   });
@@ -611,8 +624,7 @@ void main() {
         template: false,
         datePicker: false,
         image: false,
-        title: false,
-        time: false,
+        title: true,
         type: false,
         availability: false,
         checkable: true,
@@ -634,6 +646,9 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ActivityWizardPage), findsOneWidget);
+
+      await skipTitleAndTimeWidgets(tester);
+
       expect(find.byType(CheckableWiz), findsOneWidget);
     });
   });
@@ -645,8 +660,7 @@ void main() {
         template: false,
         datePicker: false,
         image: false,
-        title: false,
-        time: false,
+        title: true,
         type: false,
         availability: false,
         checkable: false,
@@ -666,6 +680,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ActivityWizardPage), findsOneWidget);
+
+      await skipTitleAndTimeWidgets(tester);
 
       expect(find.byType(RemoveAfterWiz), findsOneWidget);
     });
