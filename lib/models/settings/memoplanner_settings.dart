@@ -163,7 +163,7 @@ class MemoplannerSettings extends Equatable {
     this.monthCaptionShowYear = true,
     this.monthCaptionShowClock = true,
     this.calendarMonthViewShowColors = 1,
-    this.dotsInTimepillar = true,
+    this.dotsInTimepillar = false,
     this.imageMenuDisplayPhotoItem = true,
     this.imageMenuDisplayCameraItem = true,
     this.imageMenuDisplayMyPhotosItem = true,
@@ -387,7 +387,7 @@ class MemoplannerSettings extends Equatable {
       ),
       dotsInTimepillar: settings.getBool(
         dotsInTimepillarKey,
-        defaultValue: true,
+        defaultValue: false,
       ),
       viewOptionsZoom: settings.parse(
         viewOptionsZoomKey,
