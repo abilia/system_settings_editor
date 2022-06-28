@@ -17,6 +17,7 @@ selectedSupportPersons	Selected support persons	Utvalda stödpersoner
 supportPersons	Support Persons	Stödpersoner					
 disableAlarms	Disable alarms	Inaktivera alarm					
 enterTask	Enter task						Legg inn oppgave
+showVibrationAlarm	Show vibration
 onlyAppliesToGo	Only applies to MEMOplanner Go	Gäller endast MEMOplanner Go					Gjelder kun MEMOplanner Go
 selectADayToViewDetails	Select a day to view more details	Välj en dag för att se mer detaljer					Velg en dag for å se mer detaljer
 voice	Voice	Röst					Talesyntese

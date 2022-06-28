@@ -384,7 +384,7 @@ void main() {
       testWidgets('Select vibration', (tester) async {
         await tester.goToDefaultsTab();
         expect(find.byType(AddActivityDefaultSettingsTab), findsOneWidget);
-        await tester.tap(find.text(translate.vibration));
+        await tester.tap(find.text(translate.vibrationIfAvailable));
         await tester.pumpAndSettle();
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
