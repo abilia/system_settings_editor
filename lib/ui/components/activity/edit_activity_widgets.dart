@@ -49,7 +49,7 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final isTemplate =
         context.read<WizardCubit>() is TemplateActivityWizardCubit;
-    if (isTemplate) return translate.enterNameForBasicActivity;
+    if (isTemplate) return translate.enterNameForActivity;
     return translate.enterNameForActivity;
   }
 }

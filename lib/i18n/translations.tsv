@@ -110,9 +110,9 @@ left	Left	Vänster	Venstre	Links	Vasen	Links	Venstre
 right	Right	Höger	Højre	Rechts	Oikea	Rechts	Høyre
 check	Check	Kvittera	Kvittere	Afvinken	Tarkista	Kontrollieren	Kvittere
 undo	Undo	Ångra	Fortryd	Ongedaan maken	Peruuta	Rückgängig	Angre
-fromBasicActivity	From basic activity	Från basaktivitet	Fra standardaktivitet	Uit standaardactiviteit	Perusaktiviteetista	Von Standardaktivität	Fra standardaktivitet
+fromTemplateActivity	From template	Från mall	Fra standardaktivitet	Uit standaardactiviteit	Perusaktiviteetista	Von Standardaktivität	Fra standardaktivitet
 createActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuwe activiteit	Uusi aktiviteetti	Neue Aktivität	Ny aktivitet
-selectBasicActivity	Select basic activity	Välj basaktivitet	Vælg standardaktivitet	Standaardactiviteit selecteren	Valitse perusaktiviteetti	Standardaktivität auswählen	Velg standardaktivitet
+selectTemplateActivity	Select activity	Välj aktivitet	Vælg standardaktivitet	Standaardactiviteit selecteren	Valitse perusaktiviteetti	Standardaktivität auswählen	Velg standardaktivitet
 deleteActivity	Do you want to delete this activity?	Är du säker på att du vill ta bort aktiviteten?	Er du sikker på, at du vil slette aktiviteten?	Wilt u deze activiteit verwijderen?	Haluatko poistaa tämän aktiviteetin?	Möchten Sie diese Aktivität löschen?	Er du sikker på at du vil slette aktiviteten?
 editRecurringActivity	Edit recurring activity	Ändra återkommande aktivitet	Ændre gentagende aktivitet	Terugkerende activiteit bewerken	Muokkaa toistuvaa aktiviteettia	Wiederkehrende Aktivität bearbeiten	Endre gjentakende aktivitet
 deleteRecurringActivity	Delete recurring activity	Ta bort återkommande aktivitet	Slet gentagende aktivitet	Terugkerende activiteit verwijder	Poista toistuva aktiviteettia	Wiederkehrende Aktivitäten löschen	Slett gjentakende aktivitet
@@ -125,11 +125,8 @@ inTimePre	in	om	om	in	&empty&	in	om
 timeAgoPre	&empty&	för	for	&empty&	&empty&	vor	for
 timeAgoPost	ago	sen	siden	geleden	sitten	&empty&	siden
 checklistDoneInfo	All checklist tasks in your activity are completed. Do you want to complete the activity?	Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?	Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?	Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?	Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?	Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?	Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?
-basicTemplates	Basic templates	Basmallar					Maler
-basicActivities	Basic activities	Basaktiviteter	Standardaktiviteter	Standaard activiteiten	Perusaktiviteetit	Standardaktivitäten	Standardaktiviteter
-newBasicActivity	New basic activity	Ny basaktivitet	Ny standardaktivitet	Nieuwe standaardactiviteit	Uusi perusaktiviteetti	Neue Standardaktivität	Ny standardaktivitet
-editBasicActivity	Edit basic activity	Ändra basaktivitet	Rediger standardaktivitet	Standaardactiviteit bewerken	Muokkaa perusaktiviteettia	Standardaktivität bearbeiten	Endre standardaktivitet
-enterNameForBasicActivity	Enter name for basic activity	Ange namn för basaktivitet					Angi navn på standardaktivitet
+templates	Templates	Mallar					Maler
+templateActivities	Activities	Aktiviteter	Standardaktiviteter	Standaard activiteiten	Perusaktiviteetit	Standardaktivitäten	Standardaktiviteter
 timeTo	to	till	til	tot	-	bis	til
 							
 ### Timer related							
@@ -139,13 +136,12 @@ newTimer	New timer	Ny timer	Ny timer	Nieuwe timer	Uusi ajastin	Neuer Timer	Ny ti
 selectDuration	Select duration	Välj tidslängd	Angiv varighed	Duur selecteren	Valitse kesto	Dauer auswählen	Angi varighet
 startTimer	Start timer	Starta timer	Start timeren	Start timer	Käynnistysajastin	Timer starten	Start timer
 enterNameForTimer	Enter name for timer	Ange namn för timer					Angi navn på timer
-fromBasicTimer	From basic timer	Från bastimers	Fra standardtimer	Uit standaardtimers	Perusajastimesta	Von Standardtimer	Fra standardtimere
-noBasicTimers	You have no basic timers	Du har inga bastimers	Du har ingen standardtimer	Je hebt geen standaardtimers	Sinulla ei ole perusajastimia	Sie haben keine Standardtimer	Du har ingen standardtimere
-selectBaseTimer	Select basic timer	Välj bastimer	Vælg bastimer	Standaardtimers selecteren	Valitse perusajastin	Standardtimer auswählen	Velg standardtimere
+fromTemplateTimer	From template	Från mall	Fra standardtimer	Uit standaardtimers	Perusajastimesta	Von Standardtimer	Fra standardtimere
+selectTemplateTimer	Select timer	Välj timer	Vælg bastimer	Standaardtimers selecteren	Valitse perusajastin	Standardtimer auswählen	Velg standardtimere
 timer	Timer	Timer	Timer	Tijdopnemer	Ajastin	Timer	Tidtaker
 timeIsUp	Time is up	Tiden är slut					Tiden er slutt
-basicTimers	Basic timers	Bastimers	Standardtimers	Standaard timers	Perusajastimet	Standardtimer	Standardtimere
-newBasicTimer	New basic timer	Ny bastimer					Ny standardtimer
+templateTimers	Timers	Timers	Standardtimers	Standaard timers	Perusajastimet	Standardtimer	Standardtimere
+editTimer	Edit timer	Ändra timer
 							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
@@ -174,7 +170,7 @@ date	Date	Datum	Dato	Datum	Päivämäärä	Datum	Dato
 startTime	Start time	Starttid	Starttid	Starttijd	Aloitusaika	Startzeit	Starttid
 endTime	End time	Sluttid	Sluttid	Eindtijd	Päättymisaika	Endezeit	Sluttid
 emptyFolder	The folder is empty	Mappen är tom	Mappen er tom	De map is leeg	Kansio on tyhjä	Der Ordner leer ist	Mappen er tom
-noBasicActivities	You have no basic activities	Du har inga basaktiviteter	Du har ingen standardaktiviteter	Je hebt geen standaardactiviteiten	Sinulla ei ole perusaktiviteettit	Sie haben keine Standardaktivitäten	Du har ingen standardaktiviteter
+noTemplates	You have no templates	Du har inga mallar
 noChecklists	You have no checklists	Du har inga checklistor	Du har ingen tjeklister	Je hebt geen checklists	Sinulla ei ole tarkistuslistoja	Sie haben keine Checklisten	Du har ingen sjekklister
 noNotes	You have no notes	Du har inga anteckningar	Du har ingen noter	Je hebt geen aantekeningen	Sinulla ei ole muistiinpanoja	Sie haben keine Notizen	Du har ingen notater
 noImages	You have no images	Du har inga bilder	Du har ingen billeder	Je hebt geen afbeeldingen	Sinulla ei ole kuvia	Sie haben keine Bilder	Du har ingen bilder
@@ -199,9 +195,9 @@ missingStartTime	You must enter a start time.	Du måste ange en starttid.	Du ska
 startTimeBeforeNowError	You have selected a start time which has already passed. This is not allowed.	Du har valt en starttid som är före aktuell tid. Det är inte tillåtet.	Starttiden er allerede passeret. Det er ikke tilladt.	U heeft een starttijd geselecteerd die al voorbij is. Dit is niet toegestaan.	Valitsit aloitusajan, joka on jo mennyt. Tätä ei sallita.	Die gewählte Startzeit liegt in der Vergangenheit. Dies ist nicht zulässig.	Starttiden er allerede passert. Det er ikke tillatt.
 startTimeBeforeNowWarning	You have selected a start time which has already passed. Press OK to continue.	Du har valt en starttid som är före aktuell tid. Tryck ok om du vill fortsätta.	Starttiden er allerede passeret. Tryk på OK for at fortsætte.	U heeft een starttijd geselecteerd die al voorbij is. Druk op OK om door te gaan.	Valitsit aloitusajan, joka on jo mennyt. Jatka painamalla OK.	Die gewählte Startzeit liegt in der Vergangenheit. Drücken Sie auf OK, um fortzufahren.	Starttiden er allerede passert. Trykk på OK for å fortsette.
 conflictWarning	There are activities conflicting with this activity. Press OK to continue.	Det finns aktiviteter som krockar med din aktivitet. Tryck ok om du vill fortsätta.	Der er aktiviteter, der falder sammen med denne aktivitet. Tryk på OK for at fortsætte.	Er zijn activiteiten die conflicteren met deze activiteit. Druk op OK om door te gaan.	On olemassa aktiviteetteja, jotka ovat ristiriidassa tämän aktiviteetin kanssa. Jatka painamalla OK.	Mit dieser Aktivität stehen andere Aktivitäten im Konflikt. Drücken Sie auf OK, um fortzufahren.	Der er aktiviteter som kolliderer med denne aktivitet. Trykk på OK for å fortsette.
-noBasicActivityError1	There are no basic activities and you have not selected name or image in adding an activity step-by-step.	Det finns inga basaktiviteter och du har inte valt namn och bild i lägga in stegvis.	Det er ingen standardaktivitet, og du har ikke valgt navn og billede i sekvensmodus.	Er zijn geen standaardactiviteiten en u heeft geen naam of afbeelding geselecteerd in het stap voor stap toevoegen van een activiteit.	Perusaktiviteetteja ei ole, etkä ole valinnut nimeä tai kuvaa lisätessäsi aktiviteettia vaiheittain.	Es gibt keine Standardaktivitäten und Sie haben beim schrittweisen Hinzufügen einer Aktivität keinen Namen oder kein Bild ausgewählt.	Det er ingen standardaktivitet, og du har ikke valgt navn og bilde i sekvensmodus.
-noBasicActivityError2	To fix this, either create basic activities or select either name or image for step-by-step.	För att åtgärda, skapa några basaktiviteter eller aktivera antingen namn eller bild i lägga in stegvis.	For at fikse det skal der oprettes standardaktiviteter eller aktiveres enten navn eller billede i sekvensmodus.	Om dit op te lossen creëert u standaardactiviteiten of selecteer een naam of afbeelding voor stap voor stap.	Korjaa tämä joko luomalla perusaktiviteetteja tai valitsemalla joko nimi tai kuva vaiheittaisten ohjeiden mukaisesti.	Um dies zu beheben, erstellen Sie entweder Standardaktivitäten oder wählen einen Namen oder ein Bild für die schrittweise Prozedur aus.	For å fikse, opprette noen standardaktiviteter eller aktivere enten navn eller bilde i sekvensmodus.
-missingRequiredActivitySetting	You need either “Show basic activities”, “Select name” or “Select image” selected.	Du behöver ha antingen “Visa basaktiviteter”, “Välj namn”, eller “Välj bild” vald.	Du skal have enten “Vis standardaktiviteter”, “Vælg navn”, eller “Vælg billede” valgt.	U moet ofwel “Toon basisactiviteiten”, “Naam selecteren” of “Afbeelding selecteren” selecteren.	Sinun on valittava joko “Näytä perustoiminnot”, “Valitse nimi” tai “Valitse kuva”.	Sie müssen entweder “Grundaktivitäten anzeigen”, “Namen auswählen” oder “Bild auswählen” auswählen.	Du må ha enten “Vis liste med standardaktiviteter”, “Velg navn”, eller “Velg bilde” valgt.
+noTemplateActivityError1	There are no templates and you have not selected name or image in adding an activity step-by-step.	Det finns inga mallar och du har inte valt namn och bild i lägga in stegvis.	Det er ingen standardaktivitet, og du har ikke valgt navn og billede i sekvensmodus.	Er zijn geen standaardactiviteiten en u heeft geen naam of afbeelding geselecteerd in het stap voor stap toevoegen van een activiteit.	Perusaktiviteetteja ei ole, etkä ole valinnut nimeä tai kuvaa lisätessäsi aktiviteettia vaiheittain.	Es gibt keine Standardaktivitäten und Sie haben beim schrittweisen Hinzufügen einer Aktivität keinen Namen oder kein Bild ausgewählt.	Det er ingen standardaktivitet, og du har ikke valgt navn og bilde i sekvensmodus.
+noTemplateActivityError2	To fix this, either create templates or select either name or image for step-by-step.	För att åtgärda, skapa mallar eller aktivera antingen namn eller bild i lägga in stegvis.	For at fikse det skal der oprettes standardaktiviteter eller aktiveres enten navn eller billede i sekvensmodus.	Om dit op te lossen creëert u standaardactiviteiten of selecteer een naam of afbeelding voor stap voor stap.	Korjaa tämä joko luomalla perusaktiviteetteja tai valitsemalla joko nimi tai kuva vaiheittaisten ohjeiden mukaisesti.	Um dies zu beheben, erstellen Sie entweder Standardaktivitäten oder wählen einen Namen oder ein Bild für die schrittweise Prozedur aus.	For å fikse, opprette noen standardaktiviteter eller aktivere enten navn eller bilde i sekvensmodus.
+missingRequiredActivitySetting	You need either “Show templates”, “Select name” or “Select image” selected.	Du behöver ha antingen “Visa mallar”, “Välj namn”, eller “Välj bild” vald.	Du skal have enten “Vis standardaktiviteter”, “Vælg navn”, eller “Vælg billede” valgt.	U moet ofwel “Toon basisactiviteiten”, “Naam selecteren” of “Afbeelding selecteren” selecteren.	Sinun on valittava joko “Näytä perustoiminnot”, “Valitse nimi” tai “Valitse kuva”.	Sie müssen entweder “Grundaktivitäten anzeigen”, “Namen auswählen” oder “Bild auswählen” auswählen.	Du må ha enten “Vis liste med standardaktiviteter”, “Velg navn”, eller “Velg bilde” valgt.
 							
 ### Privacy							
 availableFor	Available for	Tillgänglig för	Fås til	Beschikbaar voor	Käytettävissä	Verfügbar für	Tilgjengelig for
@@ -345,7 +341,7 @@ showNoAlarm	Show no alarm	Visa inget larm	Vis ingen alarm	Geen alarmen weergeven
 throughEditView	Through Edit View	Via Ändravyn	Via Redigersiden	Door bewerkweergave	Muokkausnäkymässä	Durch Bearbeitungsanzeige	Via endrevindu
 androidSettings	Android Settings	Android-inställningar	Android-indstillinger	Android-instellingen	Android-asetukset	Android-Einstellungen	Android-innstillinger
 stepByStep	Step-by-step	Stegvis	Trinvist	Stap voor stap	Vaihe vaiheelta	Schritt für Schritt	Via sekvens
-showBasicActivities	Show basic activities	Visa basaktiviteter	Vis standardaktiviteter	Toon standaardactiviteiten	Näytä perusaktiviteetit	Standardaktivitäten anzeigen	Vis liste med standardaktiviteter
+showTemplates	Show templates	Visa mallar
 selectName	Select name	Välj namn	Vælg navn	Naam selecteren	Valitse nimi	Name auswählen	Velg navn
 selectDate	Select date	Välj datum	Vælg dato	Datum selecteren	Valitse päivämäärä	Datum auswählen	Velg dato
 selectType	Select type	Välj typ	Vælg type	Type selecteren	Valitse tyyppi	Typ auswählen	Velg type
@@ -471,7 +467,7 @@ doYouWantToDeleteThisPhoto	Are you sure you want to delete this photo?	Är du s�
 							
 ### Starter set							
 installStarterSet	Install starter set?	Installera startuppsättning?					
-doYouWantToImportADefaultSet	Do you want to import a default set of data with basic activities, timers, checklists and image archive?	Vill du importera startuppsättning av basaktiviteter, timers, checklistor och bildarkiv?	Ønsker du at importere startopsætning med standardaktiviteter, standardtimer, tjeklister og billedarkiv?	Wilt u een standaard dataset importeren met standaard activiteiten, timers, checklists en afbeeldingenarchief?	Haluatko tuoda oletustiedot perusaktiviteettien, ajastimien, tarkistusluettelojen ja kuva-arkiston mukana?	Möchten Sie einen Standard-Datenbestand mit Standardaktivitäten, Timern, Checklisten und Bildarchiv importieren?	Ønsker du å importere startoppsett av standardaktiviteter, standardtimere, sjekklister og bildearkiv?
+doYouWantToImportADefaultSet	Do you want to import a default set of data with activities, timers, checklists and image archive?	Vill du importera startuppsättning av aktiviteter, timers, checklistor och bildarkiv?	Ønsker du at importere startopsætning med standardaktiviteter, standardtimer, tjeklister og billedarkiv?	Wilt u een standaard dataset importeren met standaard activiteiten, timers, checklists en afbeeldingenarchief?	Haluatko tuoda oletustiedot perusaktiviteettien, ajastimien, tarkistusluettelojen ja kuva-arkiston mukana?	Möchten Sie einen Standard-Datenbestand mit Standardaktivitäten, Timern, Checklisten und Bildarchiv importieren?	Ønsker du å importere startoppsett av standardaktiviteter, standardtimere, sjekklister og bildearkiv?
 							
 ### Start guide							
 welcome	Welcome!	Välkommen!	Velkommen!	Welkom!	Tervetuloa!	Willkommen!	Velkommen!

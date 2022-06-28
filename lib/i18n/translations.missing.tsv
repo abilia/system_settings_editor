@@ -6,18 +6,19 @@ timerResume	Do you want to continue the timer?	Vill du fortsätta timern?
 timerPaused	Paused	Pausad					
 pause	Pause	Pausa					
 resume	Continue	Fortsätt					
-basicTemplates	Basic templates	Basmallar					Maler
-enterNameForBasicActivity	Enter name for basic activity	Ange namn för basaktivitet					Angi navn på standardaktivitet
+templates	Templates	Mallar					Maler
 addTimer	Add Timer	Lägga in timer					Legg inn timer
 enterNameForTimer	Enter name for timer	Ange namn för timer					Angi navn på timer
 timeIsUp	Time is up	Tiden är slut					Tiden er slutt
-newBasicTimer	New basic timer	Ny bastimer					Ny standardtimer
+editTimer	Edit timer	Ändra timer
+noTemplates	You have no templates	Du har inga mallar
 allSupportPersons	All my support persons	Alla mina stödpersoner					
 selectedSupportPersons	Selected support persons	Utvalda stödpersoner					
 supportPersons	Support Persons	Stödpersoner					
 disableAlarms	Disable alarms	Inaktivera alarm					
 enterTask	Enter task						Legg inn oppgave
 showVibrationAlarm	Show vibration
+showTemplates	Show templates	Visa mallar
 onlyAppliesToGo	Only applies to MEMOplanner Go	Gäller endast MEMOplanner Go					Gjelder kun MEMOplanner Go
 selectADayToViewDetails	Select a day to view more details	Välj en dag för att se mer detaljer					Velg en dag for å se mer detaljer
 voice	Voice	Röst					Talesyntese
