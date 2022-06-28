@@ -338,7 +338,7 @@ void main() {
 extension on WidgetTester {
   Future<void> goToActivityPage() async {
     await pumpApp();
-    await tap(find.byType(ActivityCard));
+    await tap(find.byType(ActivityTimepillarCard));
     await pumpAndSettle();
   }
 

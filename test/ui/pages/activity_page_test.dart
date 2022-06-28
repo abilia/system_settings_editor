@@ -22,6 +22,7 @@ import '../../test_helpers/verify_generic.dart';
 void main() {
   late MockActivityDb mockActivityDb;
   late MockGenericDb mockGenericDb;
+  Iterable<Generic> generics;
 
   final translate = Locales.language.values.first;
   final startTime = DateTime(2111, 11, 11, 11, 11);
@@ -58,6 +59,14 @@ void main() {
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
+    generics = [
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+            data: DayCalendarType.list.index,
+            identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+      ),
+    ];
+
     mockActivityDb = MockActivityDb();
     when(() => mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value(<DbActivity>[]));
@@ -65,7 +74,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
-        .thenAnswer((_) => Future.value([]));
+        .thenAnswer((_) => Future.value(generics));
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -1290,7 +1299,12 @@ void main() {
         (_) => Future.value(
           <Generic>[
             memoplannerSetting(
-                false, MemoplannerSettings.displayDeleteButtonKey)
+                false, MemoplannerSettings.displayDeleteButtonKey),
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                  data: DayCalendarType.list.index,
+                  identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+            ),
           ],
         ),
       );
@@ -1312,6 +1326,11 @@ void main() {
             memoplannerSetting(
                 false, MemoplannerSettings.displayAlarmButtonKey),
             memoplannerSetting(false, MemoplannerSettings.displayEditButtonKey),
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                  data: DayCalendarType.list.index,
+                  identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+            ),
           ],
         ),
       );
@@ -1330,6 +1349,11 @@ void main() {
           <Generic>[
             memoplannerSetting(
                 false, MemoplannerSettings.displayQuarterHourKey),
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                  data: DayCalendarType.list.index,
+                  identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+            ),
           ],
         ),
       );

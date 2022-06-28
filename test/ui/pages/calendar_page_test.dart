@@ -286,11 +286,11 @@ void main() {
       ),
     );
 
-    testWidgets('no settings shows agenda', (WidgetTester tester) async {
+    testWidgets('no settings shows timepillar', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      expect(find.byType(TimepillarCalendar), findsNothing);
-      expect(find.byType(Agenda), findsOneWidget);
+      expect(find.byType(TimepillarCalendar), findsOneWidget);
+      expect(find.byType(Agenda), findsNothing);
     });
 
     testWidgets(
@@ -308,13 +308,18 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      await goToTimePillar(tester);
+      await tester.tap(find.byType(EyeButtonDay));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.calendarList));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.ok));
+      await tester.pumpAndSettle();
 
       verifyUnsyncGeneric(
         tester,
         mockGenericDb,
         key: MemoplannerSettings.viewOptionsTimeViewKey,
-        matcher: DayCalendarType.oneTimepillar.index,
+        matcher: DayCalendarType.list.index,
       );
     });
 
@@ -322,7 +327,7 @@ void main() {
       testWidgets('default', (WidgetTester tester) async {
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        expect(find.byType(Agenda), findsOneWidget);
+        expect(find.byType(OneTimepillarCalendar), findsOneWidget);
       });
 
       testWidgets('week', (WidgetTester tester) async {
@@ -366,7 +371,7 @@ void main() {
             ];
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        expect(find.byType(Agenda), findsOneWidget);
+        expect(find.byType(OneTimepillarCalendar), findsOneWidget);
       });
     });
   });
@@ -910,7 +915,7 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
-      expect(find.byType(Agenda), findsOneWidget);
+      expect(find.byType(OneTimepillarCalendar), findsOneWidget);
 
       expect(find.text(todaytitle), findsOneWidget);
       await tester.tap(find.byIcon(AbiliaIcons.week));
@@ -922,7 +927,7 @@ void main() {
       await tester.tap(find.text(dayString));
       await tester.pumpAndSettle();
 
-      expect(find.byType(Agenda), findsOneWidget);
+      expect(find.byType(OneTimepillarCalendar), findsOneWidget);
       expect(find.text(fridayTitle), findsOneWidget);
 
       await tester.tap(find.byType(GoToNowButton));
@@ -935,7 +940,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      expect(find.byType(Agenda), findsOneWidget);
+      expect(find.byType(OneTimepillarCalendar), findsOneWidget);
 
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
