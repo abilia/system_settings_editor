@@ -127,6 +127,8 @@ void main() {
                   measures: measures,
                   topMargin: layout.timepillar.topMargin,
                   bottomMargin: layout.timepillar.bottomMargin,
+                  showCategoryColor:
+                      mockMemoplannerSettingsBloc.state.showCategoryColor,
                 ),
                 categoryMinWidth: 400,
                 timepillarWidth: measures.cardTotalWidth,
@@ -158,7 +160,7 @@ void main() {
     expect(find.text(title), findsOneWidget);
   });
 
-  testWidgets('long title without white spave ', (WidgetTester tester) async {
+  testWidgets('long title without white space ', (WidgetTester tester) async {
     const title = 'DDDDDDDDDD'
         'DDDDDDDDDD'
         'DDDDDDDDDD'
@@ -426,6 +428,7 @@ void main() {
         measures: TimepillarMeasures(interval, 1),
         topMargin: layout.timepillar.topMargin,
         bottomMargin: layout.timepillar.bottomMargin,
+        showCategoryColor: mockMemoplannerSettingsBloc.state.showCategoryColor,
       );
       final uniques =
           boardData.cards.map((f) => {f.cardPosition.top, f.column});
