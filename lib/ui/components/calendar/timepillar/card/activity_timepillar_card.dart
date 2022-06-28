@@ -9,6 +9,7 @@ class ActivityTimepillarCard extends TimepillarCard {
   final DayParts dayParts;
   final TimepillarSide timepillarSide;
   final TimepillarMeasures measures;
+  final BoxDecoration decoration;
 
   const ActivityTimepillarCard({
     Key? key,
@@ -19,6 +20,7 @@ class ActivityTimepillarCard extends TimepillarCard {
     required this.dayParts,
     required this.timepillarSide,
     required this.measures,
+    required this.decoration,
   }) : super(column, cardPosition, key: key);
 
   @override
@@ -27,130 +29,117 @@ class ActivityTimepillarCard extends TimepillarCard {
     final hasImage = activity.hasImage,
         hasTitle = activity.hasTitle,
         signedOff = activityOccasion.isSignedOff,
-        current = activityOccasion.occasion.isCurrent,
-        past = activityOccasion.isPast,
-        inactive = past || signedOff;
-
+        past = activityOccasion.isPast;
     final endTime = activityOccasion.end;
     final startTime = activityOccasion.start;
     final dotHeight = cardPosition.dots * measures.dotDistance;
-
     final right = TimepillarSide.right == timepillarSide;
     final timepillarInterval = measures.interval;
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      buildWhen: (previous, current) =>
-          previous.dotsInTimepillar != current.dotsInTimepillar ||
-          previous.showCategoryColor != current.showCategoryColor,
-      builder: (context, settings) {
-        final decoration = getCategoryBoxDecoration(
-          current: current,
-          inactive: inactive,
-          showCategoryColor: settings.showCategoryColor,
-          category: activity.category,
-          zoom: measures.zoom,
-        );
-        return Positioned(
-          right: right ? null : column * measures.cardTotalWidth,
-          left: right ? column * measures.cardTotalWidth : null,
-          top: cardPosition.top,
-          child: Tts.fromSemantics(
-            activity.semanticsProperties(context),
-            child: Stack(
-              textDirection: right ? TextDirection.ltr : TextDirection.rtl,
-              children: <Widget>[
-                if (settings.dotsInTimepillar)
-                  SideDots(
-                    startTime: startTime.isBefore(timepillarInterval.start)
-                        ? timepillarInterval.start
-                        : startTime,
-                    endTime: endTime.isAfter(timepillarInterval.end)
-                        ? timepillarInterval.end
-                        : endTime,
-                    dots: cardPosition.dots,
-                    dayParts: dayParts,
-                  )
-                else
-                  SideTime(
-                    occasion: activityOccasion.occasion,
-                    height: dotHeight +
-                        (dotHeight > 0
-                            ? (decoration.border?.dimensions.vertical ?? 0)
-                            : 0),
-                    width: measures.cardWidth,
-                    category: activity.category,
-                    showCategoryColor: settings.showCategoryColor,
+    final dotsInTimepillar = context.select(
+        (MemoplannerSettingBloc settingsBloc) =>
+            settingsBloc.state.dotsInTimepillar);
+    final showCategoryColor = context.select(
+        (MemoplannerSettingBloc settingsBloc) =>
+            settingsBloc.state.showCategoryColor);
+
+    return Positioned(
+      right: right ? null : column * measures.cardTotalWidth,
+      left: right ? column * measures.cardTotalWidth : null,
+      top: cardPosition.top,
+      child: Tts.fromSemantics(
+        activity.semanticsProperties(context),
+        child: Stack(
+          textDirection: right ? TextDirection.ltr : TextDirection.rtl,
+          children: <Widget>[
+            if (dotsInTimepillar)
+              SideDots(
+                startTime: startTime.isBefore(timepillarInterval.start)
+                    ? timepillarInterval.start
+                    : startTime,
+                endTime: endTime.isAfter(timepillarInterval.end)
+                    ? timepillarInterval.end
+                    : endTime,
+                dots: cardPosition.dots,
+                dayParts: dayParts,
+              )
+            else
+              SideTime(
+                occasion: activityOccasion.occasion,
+                height: dotHeight +
+                    (dotHeight > 0
+                        ? (decoration.border?.dimensions.vertical ?? 0)
+                        : 0),
+                width: measures.cardWidth,
+                category: activity.category,
+                showCategoryColor: showCategoryColor,
+              ),
+            GestureDetector(
+              onTap: () {
+                final authProviders = copiedAuthProviders(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => MultiBlocProvider(
+                      providers: authProviders,
+                      child: ActivityPage(activityDay: activityOccasion),
+                    ),
+                    settings: RouteSettings(
+                      name: 'ActivityPage $activityOccasion',
+                    ),
                   ),
-                GestureDetector(
-                  onTap: () {
-                    final authProviders = copiedAuthProviders(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => MultiBlocProvider(
-                          providers: authProviders,
-                          child: ActivityPage(activityDay: activityOccasion),
-                        ),
-                        settings: RouteSettings(
-                          name: 'ActivityPage $activityOccasion',
-                        ),
+                );
+              },
+              child: Container(
+                margin: right
+                    ? EdgeInsets.only(
+                        left: measures.dotSize + measures.hourIntervalPadding,
+                      )
+                    : EdgeInsets.only(
+                        right: measures.dotSize + measures.hourIntervalPadding,
                       ),
-                    );
-                  },
-                  child: Container(
-                    margin: right
-                        ? EdgeInsets.only(
-                            left:
-                                measures.dotSize + measures.hourIntervalPadding,
-                          )
-                        : EdgeInsets.only(
-                            right:
-                                measures.dotSize + measures.hourIntervalPadding,
+                width: measures.cardWidth,
+                decoration: decoration,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: measures.activityCardMinHeight,
+                    maxHeight: cardPosition.height,
+                  ),
+                  child: Padding(
+                    padding: measures.cardPadding,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        if (hasTitle)
+                          SizedBox(
+                            height: textHeight,
+                            child: Text(activity.title),
                           ),
-                    width: measures.cardWidth,
-                    decoration: decoration,
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: measures.activityCardMinHeight,
-                        maxHeight: cardPosition.height,
-                      ),
-                      child: Padding(
-                        padding: measures.cardPadding,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            if (hasTitle)
-                              SizedBox(
-                                height: textHeight,
-                                child: Text(activity.title),
+                        if (hasImage || signedOff || past)
+                          Padding(
+                            padding:
+                                EdgeInsets.only(top: measures.cardPadding.top),
+                            child: SizedBox(
+                              height: cardPosition.height -
+                                  textHeight -
+                                  measures.cardPadding.vertical -
+                                  measures.cardPadding.top,
+                              child: EventImage.fromEventOccasion(
+                                fit: BoxFit.scaleDown,
+                                eventOccasion: activityOccasion,
+                                crossPadding: measures.cardPadding,
+                                checkPadding: measures.cardPadding * 2,
                               ),
-                            if (hasImage || signedOff || past)
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    top: measures.cardPadding.top),
-                                child: SizedBox(
-                                  height: cardPosition.height -
-                                      textHeight -
-                                      measures.cardPadding.vertical -
-                                      measures.cardPadding.top,
-                                  child: EventImage.fromEventOccasion(
-                                    fit: BoxFit.scaleDown,
-                                    eventOccasion: activityOccasion,
-                                    crossPadding: measures.cardPadding,
-                                    checkPadding: measures.cardPadding * 2,
-                                  ),
-                                ),
-                              )
-                          ],
-                        ),
-                      ),
+                            ),
+                          )
+                      ],
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 }

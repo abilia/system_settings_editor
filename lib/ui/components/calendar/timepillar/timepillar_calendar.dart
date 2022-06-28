@@ -121,7 +121,9 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
   @override
   Widget build(BuildContext context) {
     final mediaData = MediaQuery.of(context);
-
+    final showCategoryColor = context.select(
+        (MemoplannerSettingBloc settingsBloc) =>
+            settingsBloc.state.showCategoryColor);
     final textStyle = layout.timepillar.card.textStyle(measures.zoom);
     final textScaleFactor = mediaData.textScaleFactor;
     final events = widget.timepillarState.eventsForInterval(interval);
@@ -145,6 +147,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
           measures: measures,
           topMargin: topMargin,
           bottomMargin: bottomMargin,
+          showCategoryColor: showCategoryColor,
         );
         final rightBoardData = TimepillarBoard.positionTimepillarCards(
           eventOccasions: (widget.showCategories
@@ -159,6 +162,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
           measures: measures,
           topMargin: topMargin,
           bottomMargin: bottomMargin,
+          showCategoryColor: showCategoryColor,
         );
 
         // Anchor is the starting point of the central sliver (timepillar).
