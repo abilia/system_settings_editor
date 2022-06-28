@@ -300,7 +300,6 @@ class MediumLayout extends Layout {
           login: const LoginLayout(
             topFormDistance: 48,
             logoSize: 96,
-            progressWidth: 9,
             logoHeight: 96,
             createAccountPadding: EdgeInsets.fromLTRB(16, 8, 16, 32),
             loginButtonPadding: EdgeInsets.fromLTRB(24, 48, 24, 0),
@@ -371,6 +370,7 @@ class MediumLayout extends Layout {
           selector: const SelectorLayoutMedium(),
           startupPage: const StartupPageLayoutMedium(),
           starterSetDialog: const StarterSetDialogLayoutMedium(),
+          progressIndicator: const ProgressIndicatorLayoutMedium(),
           supportPerson: const SupportPersonLayoutMedium(),
         );
 }

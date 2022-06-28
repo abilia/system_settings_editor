@@ -207,10 +207,7 @@ class MyAbiliaLogo extends StatelessWidget {
           return SizedBox(
             width: layout.login.logoSize,
             height: layout.login.logoSize,
-            child: CircularProgressIndicator(
-              valueColor: const AlwaysStoppedAnimation(AbiliaColors.red),
-              strokeWidth: layout.login.progressWidth,
-            ),
+            child: const AbiliaProgressIndicator(),
           );
         }
         return FadeInImage(

@@ -107,10 +107,7 @@ void main() {
     },
     expect: () => [
       CalendarInactivityThresholdReached(initialTime),
-      HomeScreenInactivityThresholdReached(
-        startView: StartView.values.first,
-        showScreensaver: false,
-      ),
+      const HomeScreenInactivityThresholdReached(),
     ],
   );
 
@@ -137,10 +134,7 @@ void main() {
     },
     expect: () => [
       CalendarInactivityThresholdReached(initialTime),
-      HomeScreenInactivityThresholdReached(
-        startView: StartView.values.first,
-        showScreensaver: false,
-      ),
+      const HomeScreenInactivityThresholdReached(),
     ],
   );
 

@@ -317,6 +317,58 @@ void main() {
         matcher: DayCalendarType.oneTimepillar.index,
       );
     });
+
+    group('start calendar', () {
+      testWidgets('default', (WidgetTester tester) async {
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(Agenda), findsOneWidget);
+      });
+
+      testWidgets('week', (WidgetTester tester) async {
+        genericResponse = () => [
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: StartView.weekCalendar.index,
+                  identifier: MemoplannerSettings.functionMenuStartViewKey,
+                ),
+              ),
+            ];
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(Agenda), findsNothing);
+        expect(find.byType(WeekCalendar), findsOneWidget);
+      });
+
+      testWidgets('month', (WidgetTester tester) async {
+        genericResponse = () => [
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: StartView.monthCalendar.index,
+                  identifier: MemoplannerSettings.functionMenuStartViewKey,
+                ),
+              ),
+            ];
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(Agenda), findsNothing);
+        expect(find.byType(MonthCalendar), findsOneWidget);
+      });
+
+      testWidgets('photo album', (WidgetTester tester) async {
+        genericResponse = () => [
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: StartView.photoAlbum.index,
+                  identifier: MemoplannerSettings.functionMenuStartViewKey,
+                ),
+              ),
+            ];
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(Agenda), findsOneWidget);
+      });
+    });
   });
 
   group('MemoPlanner settings', () {
