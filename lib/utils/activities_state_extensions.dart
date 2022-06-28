@@ -36,8 +36,6 @@ extension ActivitiesStateExtensions on ActivitiesState {
     return false;
   }
 
-  bool isPartOfSeries(Activity activity) => activities.any((other) =>
-      activity.id != other.id && activity.seriesId == other.seriesId);
 }
 
 extension ActivityDayConflict on ActivityDay {

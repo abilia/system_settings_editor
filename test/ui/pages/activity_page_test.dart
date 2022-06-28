@@ -599,7 +599,8 @@ void main() {
       expect(tester.widget<OkButton>(okButtonFinder).onPressed, isNotNull);
     });
 
-    testWidgets('Changing alarm on single instance should show apply to dialog',
+    testWidgets(
+        'Changing alarm on single instance should not show apply to dialog',
         (WidgetTester tester) async {
       // Arrange
       when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
@@ -615,7 +616,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(SelectRecurrentTypePage), findsOneWidget);
+      expect(find.byType(SelectRecurrentTypePage), findsNothing);
     });
   });
 
@@ -693,7 +694,7 @@ void main() {
     });
 
     testWidgets(
-        'When delete button pressed Delete recurring is showing for single instance',
+        'When delete button pressed Delete recurring is not showing for single instance',
         (WidgetTester tester) async {
       // Arrange
       when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
@@ -706,11 +707,11 @@ void main() {
       await tester.tap(yesButtonFinder);
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(SelectRecurrentTypePage), findsOneWidget);
+      expect(find.byType(SelectRecurrentTypePage), findsNothing);
     });
 
     testWidgets(
-        'SGC-1709 When delete button pressed for single recurring No this day and forward question shown',
+        'SGC-1709 When delete button pressed for single recurring with start date equal to end date No this day and forward question shown',
         (WidgetTester tester) async {
       // Arrangeflutter
       when(() => mockActivityDb.getAllNonDeleted())
