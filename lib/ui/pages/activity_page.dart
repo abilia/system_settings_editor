@@ -148,9 +148,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
     );
 
     if (result != null) {
-      final startDate = activity.startTime;
-      final endDate = activity.recurs.end;
-      if (activity.isRecurring && !startDate.isAtSameDay(endDate)) {
+      if (activity.isNoneSingleInstanceRecurring) {
         final applyTo = await navigator.push<ApplyTo>(
           MaterialPageRoute(
             builder: (_) => SelectRecurrentTypePage(
@@ -190,9 +188,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
       ),
     );
     if (shouldDelete == true) {
-      final startDate = activity.startTime;
-      final endDate = activity.recurs.end;
-      if (activity.isRecurring && !startDate.isAtSameDay(endDate)) {
+      if (activity.isNoneSingleInstanceRecurring) {
         final applyTo = await navigator.push<ApplyTo>(
           MaterialPageRoute(
             builder: (_) => SelectRecurrentTypePage(
