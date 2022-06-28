@@ -31,15 +31,6 @@ void main() {
 
   final translate = Locales.language.values.first;
 
-  Future goToTimePillar(WidgetTester tester) async {
-    await tester.tap(find.byType(EyeButtonDay));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.timeline));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.ok));
-    await tester.pumpAndSettle();
-  }
-
   Widget wrapWithMaterialApp(
     Widget widget, {
     MemoplannerSettingBloc? memoplannerSettingBloc,
@@ -607,8 +598,6 @@ void main() {
         expect(nextDayButtonFinder, findsOneWidget);
         expect(previousDayButtonFinder, findsOneWidget);
 
-        await goToTimePillar(tester);
-
         expect(nextDayButtonFinder, findsOneWidget);
         expect(previousDayButtonFinder, findsOneWidget);
       });
@@ -627,8 +616,6 @@ void main() {
 
         expect(nextDayButtonFinder, findsNothing);
         expect(previousDayButtonFinder, findsNothing);
-
-        await goToTimePillar(tester);
 
         expect(nextDayButtonFinder, findsNothing);
         expect(previousDayButtonFinder, findsNothing);

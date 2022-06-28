@@ -37,6 +37,12 @@ void main() {
 
   Iterable<Generic> generics;
 
+  final agendaView = Generic.createNew<MemoplannerSettingData>(
+    data: MemoplannerSettingData.fromData(
+        data: DayCalendarType.list.index,
+        identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+  );
+
   Widget wrapWithMaterialApp(
     Widget widget, {
     MemoplannerSettingBloc? memoplannerSettingBloc,
@@ -97,13 +103,7 @@ void main() {
     when(() => mockActivityDb.insert(any()))
         .thenAnswer((_) => Future.value(100));
 
-    generics = [
-      Generic.createNew<MemoplannerSettingData>(
-        data: MemoplannerSettingData.fromData(
-            data: DayCalendarType.list.index,
-            identifier: MemoplannerSettings.viewOptionsTimeViewKey),
-      ),
-    ];
+    generics = [agendaView];
 
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
@@ -144,6 +144,7 @@ void main() {
       ..client = Fakes.client(
         activityResponse: activityResponse,
         sortableResponse: sortableResponse,
+        genericResponse: () => generics,
       )
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
@@ -221,11 +222,6 @@ void main() {
             data: false,
             identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
           ),
-        );
-        final agendaView = Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-              data: DayCalendarType.list.index,
-              identifier: MemoplannerSettings.viewOptionsTimeViewKey),
         );
         generics = [wizardSetting, agendaView];
 
@@ -319,11 +315,6 @@ void main() {
             data: false,
             identifier: StepByStepSettings.dateKey,
           ),
-        );
-        final agendaView = Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-              data: DayCalendarType.list.index,
-              identifier: MemoplannerSettings.viewOptionsTimeViewKey),
         );
         generics = [
           wizardSetting,
