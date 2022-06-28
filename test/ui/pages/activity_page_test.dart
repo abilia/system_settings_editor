@@ -1513,7 +1513,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
       );
       await tester.verifyTts(
         find.byKey(const ObjectKey(AlarmType.vibration)),
-        exact: translate.vibration,
+        exact: translate.vibrationIfAvailable,
       );
       await tester.verifyTts(
         find.byIcon(AbiliaIcons.handiNoAlarmVibration),

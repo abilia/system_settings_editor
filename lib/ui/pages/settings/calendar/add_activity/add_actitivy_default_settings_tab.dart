@@ -31,7 +31,7 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
               groupValue: alarm.type,
               onChanged:
                   context.read<AddActivitySettingsCubit>().defaultAlarmType,
-              text: Text(t.vibration),
+              text: Text(t.vibrationIfAvailable),
               leading: const Icon(
                 AbiliaIcons.handiVibration,
               ),

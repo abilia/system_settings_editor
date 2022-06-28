@@ -64,10 +64,8 @@ class SelectAlarmTypeBody extends StatelessWidget {
           children: <Widget>[
             ...[
               if (addActivity.showAlarm) AlarmType.soundAndVibration,
-              if (addActivity.showSilentAlarm) ...[
-                AlarmType.vibration,
-                AlarmType.silent,
-              ],
+              if (addActivity.showVibrationAlarm) AlarmType.vibration,
+              if (addActivity.showSilentAlarm) AlarmType.silent,
               if (addActivity.showNoAlarm) AlarmType.noAlarm,
             ].map((type) => Alarm(type: type)).map(
                   (alarmType) => RadioField(
