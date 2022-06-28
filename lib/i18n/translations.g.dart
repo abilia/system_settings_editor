@@ -1525,6 +1525,9 @@ class SV extends Translated {
   final String alarmAndVibration = 'Larm + vibration';
 
   @override
+  final String vibrationIfAvailable = 'Vibration (om tillgängligt)';
+
+  @override
   final String noAlarm = 'Inget larm';
 
   @override
@@ -2794,6 +2797,9 @@ class DA extends Translated {
   final String alarmAndVibration = 'Alarm + vibration';
 
   @override
+  final String vibrationIfAvailable = 'Vibration (hvis tilgængelig)';
+
+  @override
   final String noAlarm = 'Ingen alarm';
 
   @override
@@ -4008,6 +4014,9 @@ class NL extends Translated {
 
   @override
   final String alarmAndVibration = 'Alarm + trilfunctie';
+
+  @override
+  final String vibrationIfAvailable = 'Trilfunctie (indien beschikbaar)';
 
   @override
   final String noAlarm = 'Geen alarm';
@@ -5231,6 +5240,9 @@ class FI extends Translated {
   final String alarmAndVibration = 'Hälytys + värinä';
 
   @override
+  final String vibrationIfAvailable = 'Värinä (jos käytettävissä)';
+
+  @override
   final String noAlarm = 'Ei hälytystä';
 
   @override
@@ -6452,6 +6464,9 @@ class DE extends Translated {
 
   @override
   final String alarmAndVibration = 'Alarm + Vibration';
+
+  @override
+  final String vibrationIfAvailable = 'Vibration (falls verfügbar)';
 
   @override
   final String noAlarm = 'Kein Alarm';
@@ -7695,6 +7710,9 @@ class NB extends Translated {
 
   @override
   final String alarmAndVibration = 'Alarm + Vibrasjon';
+
+  @override
+  final String vibrationIfAvailable = 'Vibrasjon (om tilgjengelig)';
 
   @override
   final String noAlarm = 'Ingen alarm';

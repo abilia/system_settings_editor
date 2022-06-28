@@ -214,7 +214,7 @@ supportPersons	Support Persons	Stödpersoner
 ### Alarm							
 selectAlarmType	Select alarm	Ange larm	Vælg alarm	Alarm selecteren	Valitse hälytys	Alarm auswählen	Angi alarm
 alarmAndVibration	Alarm + vibration	Larm + vibration	Alarm + vibration	Alarm + trilfunctie	Hälytys + värinä	Alarm + Vibration	Alarm + Vibrasjon
-vibrationIfAvailable	Vibration (if available)
+vibrationIfAvailable	Vibration (if available)	Vibration (om tillgängligt)	Vibration (hvis tilgængelig)	Trilfunctie (indien beschikbaar)	Värinä (jos käytettävissä)	Vibration (falls verfügbar)	Vibrasjon (om tilgjengelig)
 noAlarm	No alarm	Inget larm	Ingen alarm	Geen alarm	Ei hälytystä	Kein Alarm	Ingen alarm
 silentAlarm	Silent alarm	Tyst larm	Stille alarm	Stil alarm	Äänetön hälytys	Stiller Alarm	Stille alarm
 alarmOnlyAtStartTime	Alarm only at Start time	Larm endast vid starttid	Kun alarm ved starttidspunkt	Alarm alleen op begintijd	Vain hälytys alkamisaikaan	Alarm nur zur Startzeit	Alarm kun på starttid
