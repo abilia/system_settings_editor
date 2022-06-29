@@ -72,6 +72,18 @@ void main() {
 
   tearDown(GetIt.I.reset);
 
+  Future<void> skipTitleAndTimeWidgets(WidgetTester tester) async {
+    expect(find.byType(TitleWiz), findsOneWidget);
+    await tester.enterText(find.byType(TextField), 'title');
+    await tester.tap(find.byType(NextButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TimeWiz), findsOneWidget);
+    await tester.enterTime(find.byKey(TestKey.startTimeInput), '1137');
+    await tester.tap(find.byType(NextButton));
+    await tester.pumpAndSettle();
+  }
+
   Widget wizardPage({
     bool use24 = false,
     BasicActivityDataItem? basicActivityData,
@@ -154,10 +166,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(ActivityWizardPage), findsOneWidget);
-    expect(find.byType(DatePickerWiz), findsOneWidget);
-    await tester.tap(find.byType(NextButton));
-    await tester.pumpAndSettle();
-
     expect(find.byType(TitleWiz), findsOneWidget);
     await tester.enterText(find.byType(TextField), 'title');
     await tester.tap(find.byType(NextButton));
@@ -167,7 +175,12 @@ void main() {
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
-    expect(find.byType(AvailableForWiz), findsOneWidget);
+    expect(find.byType(DatePickerWiz), findsOneWidget);
+    await tester.tap(find.byType(NextButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TimeWiz), findsOneWidget);
+    await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
@@ -175,8 +188,7 @@ void main() {
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
-    expect(find.byType(TimeWiz), findsOneWidget);
-    await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
+    expect(find.byType(AvailableForWiz), findsOneWidget);
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
@@ -575,14 +587,14 @@ void main() {
       addActivityTypeAdvanced: false,
       stepByStep: StepByStepSettings(
         template: false,
-        datePicker: false,
+        title: true,
         image: false,
-        title: false,
+        datePicker: false,
         type: false,
-        availability: true,
-        checkable: false,
         removeAfter: false,
+        availability: true,
         alarm: false,
+        checkable: false,
         notes: false,
         reminders: false,
       ),
@@ -597,8 +609,10 @@ void main() {
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();
-
       expect(find.byType(ActivityWizardPage), findsOneWidget);
+
+      await skipTitleAndTimeWidgets(tester);
+
       expect(find.byType(AvailableForWiz), findsOneWidget);
     });
   });
@@ -610,7 +624,7 @@ void main() {
         template: false,
         datePicker: false,
         image: false,
-        title: false,
+        title: true,
         type: false,
         availability: false,
         checkable: true,
@@ -632,6 +646,9 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ActivityWizardPage), findsOneWidget);
+
+      await skipTitleAndTimeWidgets(tester);
+
       expect(find.byType(CheckableWiz), findsOneWidget);
     });
   });
@@ -643,7 +660,7 @@ void main() {
         template: false,
         datePicker: false,
         image: false,
-        title: false,
+        title: true,
         type: false,
         availability: false,
         checkable: false,
@@ -663,6 +680,9 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ActivityWizardPage), findsOneWidget);
+
+      await skipTitleAndTimeWidgets(tester);
+
       expect(find.byType(RemoveAfterWiz), findsOneWidget);
     });
   });
