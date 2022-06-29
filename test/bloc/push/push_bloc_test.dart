@@ -57,12 +57,12 @@ void main() {
       ));
 
       await tester.pumpAndSettle();
-      expect(find.byType(ActivityCard), findsNothing);
+      expect(find.byType(ActivityTimepillarCard), findsNothing);
 
       pushCubit.update('calendar');
 
       await tester.pumpAndSettle();
-      expect(find.byType(ActivityCard), findsOneWidget);
+      expect(find.byType(ActivityTimepillarCard), findsOneWidget);
     });
   });
 }

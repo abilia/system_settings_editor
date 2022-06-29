@@ -73,6 +73,14 @@ void main() {
     when(() => mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activityResponse()));
 
+    genericResponse = () => [
+          Generic.createNew<MemoplannerSettingData>(
+            data: MemoplannerSettingData.fromData(
+                data: DayCalendarType.list.index,
+                identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+          ),
+        ];
+
     final mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
@@ -851,6 +859,11 @@ void main() {
                 identifier:
                     MemoplannerSettings.calendarActivityTypeShowTypesKey,
               ),
+            ),
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                  data: DayCalendarType.list.index,
+                  identifier: MemoplannerSettings.viewOptionsTimeViewKey),
             ),
           ];
 

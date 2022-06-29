@@ -259,7 +259,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(ActivityWizardPage), findsNothing);
-        expect(find.byType(Agenda), findsOneWidget);
+        expect(find.byType(OneTimepillarCalendar), findsOneWidget);
 
         final captured =
             verify(() => mockActivityDb.insertAndAddDirty(captureAny()))
@@ -363,7 +363,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(ActivityWizardPage), findsNothing);
-        expect(find.byType(Agenda), findsOneWidget);
+        expect(find.byType(OneTimepillarCalendar), findsOneWidget);
 
         final captured =
             verify(() => mockActivityDb.insertAndAddDirty(captureAny()))
@@ -766,6 +766,13 @@ void main() {
 
       final activities = [Activity.createNew(title: title1, startTime: d)];
       activityResponse = () => activities;
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                  data: DayCalendarType.list.index,
+                  identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+            ),
+          ];
       when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(activities));
 
@@ -853,7 +860,7 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
-        expect(find.byType(TimerCard), findsOneWidget);
+        expect(find.byType(TimerTimepillardCard), findsOneWidget);
         expect(find.text('20 minutes'), findsOneWidget);
 
         final captured =
@@ -891,7 +898,7 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
-        expect(find.byType(TimerCard), findsOneWidget);
+        expect(find.byType(TimerTimepillardCard), findsOneWidget);
         expect(find.text('45 minutes'), findsOneWidget);
 
         final captured =
@@ -976,7 +983,7 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
-        expect(find.byType(TimerCard), findsOneWidget);
+        expect(find.byType(TimerTimepillardCard), findsOneWidget);
         expect(find.byType(TimerTopInfo), findsNothing);
 
         final captured =
