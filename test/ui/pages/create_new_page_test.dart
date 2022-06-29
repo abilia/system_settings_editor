@@ -35,14 +35,6 @@ void main() {
 
   final translate = Locales.language.values.first;
 
-  Iterable<Generic> generics;
-
-  final agendaView = Generic.createNew<MemoplannerSettingData>(
-    data: MemoplannerSettingData.fromData(
-        data: DayCalendarType.list.index,
-        identifier: MemoplannerSettings.viewOptionsTimeViewKey),
-  );
-
   Widget wrapWithMaterialApp(
     Widget widget, {
     MemoplannerSettingBloc? memoplannerSettingBloc,
@@ -73,6 +65,7 @@ void main() {
 
   ActivityResponse activityResponse = () => [];
   SortableResponse sortableResponse = () => [];
+  GenericResponse genericResponse = () => [];
   final initialDay = DateTime(2020, 08, 05);
 
   setUpAll(() {
@@ -103,11 +96,9 @@ void main() {
     when(() => mockActivityDb.insert(any()))
         .thenAnswer((_) => Future.value(100));
 
-    generics = [agendaView];
-
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
-        .thenAnswer((_) => Future.value(generics));
+        .thenAnswer((_) => Future.value(genericResponse()));
     when(() => mockGenericDb.getById(any()))
         .thenAnswer((_) => Future.value(null));
     when(() => mockGenericDb.insert(any())).thenAnswer((_) async {});
@@ -144,7 +135,7 @@ void main() {
       ..client = Fakes.client(
         activityResponse: activityResponse,
         sortableResponse: sortableResponse,
-        genericResponse: () => generics,
+        genericResponse: genericResponse,
       )
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
@@ -161,7 +152,7 @@ void main() {
   tearDown(() {
     activityResponse = () => [];
     sortableResponse = () => [];
-    generics = [];
+    genericResponse = () => [];
     GetIt.I.reset();
   });
 
@@ -202,7 +193,7 @@ void main() {
               identifier: MemoplannerSettings.functionMenuDisplayNewTimerKey,
             ),
           );
-          generics = [settings];
+          genericResponse = () => [settings];
 
           await tester.pumpWidget(App());
           await tester.pumpAndSettle();
@@ -223,7 +214,7 @@ void main() {
             identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
           ),
         );
-        generics = [wizardSetting, agendaView];
+        genericResponse = () => [wizardSetting];
 
         const title = 'title';
         await tester.pumpApp(use24: true);
@@ -268,7 +259,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(ActivityWizardPage), findsNothing);
-        expect(find.byType(Agenda), findsOneWidget);
+        expect(find.byType(OneTimepillarCalendar), findsOneWidget);
 
         final captured =
             verify(() => mockActivityDb.insertAndAddDirty(captureAny()))
@@ -316,15 +307,14 @@ void main() {
             identifier: StepByStepSettings.dateKey,
           ),
         );
-        generics = [
-          wizardSetting,
-          removeAfter,
-          reminderStep,
-          noBasic,
-          noImage,
-          noDate,
-          agendaView
-        ];
+        genericResponse = () => [
+              wizardSetting,
+              removeAfter,
+              reminderStep,
+              noBasic,
+              noImage,
+              noDate,
+            ];
 
         const title = 'title';
         await tester.pumpApp(use24: true);
@@ -373,7 +363,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(ActivityWizardPage), findsNothing);
-        expect(find.byType(Agenda), findsOneWidget);
+        expect(find.byType(OneTimepillarCalendar), findsOneWidget);
 
         final captured =
             verify(() => mockActivityDb.insertAndAddDirty(captureAny()))
@@ -389,20 +379,20 @@ void main() {
       group('basic activity', () {
         testWidgets('No option for basic activity when step-by-step',
             (WidgetTester tester) async {
-          generics = [
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
-                data: false,
-                identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
-              ),
-            ),
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
-                data: false,
-                identifier: StepByStepSettings.templateKey,
-              ),
-            ),
-          ];
+          genericResponse = () => [
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
+                  ),
+                ),
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: StepByStepSettings.templateKey,
+                  ),
+                ),
+              ];
           await tester.pumpWidget(App());
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
@@ -413,14 +403,14 @@ void main() {
 
         testWidgets('No option for basic activity when option set',
             (WidgetTester tester) async {
-          generics = [
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
-                data: false,
-                identifier: EditActivitySettings.templateKey,
-              ),
-            ),
-          ];
+          genericResponse = () => [
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: EditActivitySettings.templateKey,
+                  ),
+                ),
+              ];
           await tester.pumpWidget(App());
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
@@ -432,20 +422,20 @@ void main() {
         testWidgets(
             'New activity - name and title off: only basic activity choice ',
             (WidgetTester tester) async {
-          generics = [
-            Generic.createNew(
-              data: MemoplannerSettingData.fromData(
-                data: false,
-                identifier: EditActivitySettings.titleKey,
-              ),
-            ),
-            Generic.createNew(
-              data: MemoplannerSettingData.fromData(
-                data: false,
-                identifier: EditActivitySettings.imageKey,
-              ),
-            ),
-          ];
+          genericResponse = () => [
+                Generic.createNew(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: EditActivitySettings.titleKey,
+                  ),
+                ),
+                Generic.createNew(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: EditActivitySettings.imageKey,
+                  ),
+                ),
+              ];
           await tester.pumpWidget(App());
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
@@ -470,26 +460,26 @@ void main() {
             'if wizard enabled, title and image disabled and '
             'one basic activites: No new activity option',
             (WidgetTester tester) async {
-          generics = [
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
-                data: false,
-                identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
-              ),
-            ),
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
-                data: false,
-                identifier: StepByStepSettings.titleKey,
-              ),
-            ),
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
-                data: false,
-                identifier: StepByStepSettings.imageKey,
-              ),
-            ),
-          ];
+          genericResponse = () => [
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
+                  ),
+                ),
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: StepByStepSettings.titleKey,
+                  ),
+                ),
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: StepByStepSettings.imageKey,
+                  ),
+                ),
+              ];
 
           final basicActivity = Sortable.createNew(
             data: BasicActivityDataItem.createNew(title: 'title'),
@@ -776,6 +766,13 @@ void main() {
 
       final activities = [Activity.createNew(title: title1, startTime: d)];
       activityResponse = () => activities;
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                  data: DayCalendarType.list.index,
+                  identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+            ),
+          ];
       when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(activities));
 
@@ -821,7 +818,7 @@ void main() {
               identifier: MemoplannerSettings.functionMenuDisplayNewActivityKey,
             ),
           );
-          generics = [settings];
+          genericResponse = () => [settings];
 
           await tester.pumpWidget(App());
           await tester.pumpAndSettle();
@@ -863,7 +860,7 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
-        expect(find.byType(TimerCard), findsOneWidget);
+        expect(find.byType(TimerTimepillardCard), findsOneWidget);
         expect(find.text('20 minutes'), findsOneWidget);
 
         final captured =
@@ -901,7 +898,7 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
-        expect(find.byType(TimerCard), findsOneWidget);
+        expect(find.byType(TimerTimepillardCard), findsOneWidget);
         expect(find.text('45 minutes'), findsOneWidget);
 
         final captured =
@@ -986,7 +983,7 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
-        expect(find.byType(TimerCard), findsOneWidget);
+        expect(find.byType(TimerTimepillardCard), findsOneWidget);
         expect(find.byType(TimerTopInfo), findsNothing);
 
         final captured =

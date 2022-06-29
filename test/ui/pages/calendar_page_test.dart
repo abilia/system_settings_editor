@@ -277,7 +277,7 @@ void main() {
       ),
     );
 
-    testWidgets('no settings shows timepillar', (WidgetTester tester) async {
+    testWidgets('SGC-1707 no settings shows timepillar', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byType(TimepillarCalendar), findsOneWidget);

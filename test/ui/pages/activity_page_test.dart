@@ -97,7 +97,7 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  Future<void> navigateToFullActivityPage(WidgetTester tester) async {
+  Future<void> navigateToFullDayActivityPage(WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
     await tester.tap(activityCardFinder);
@@ -120,7 +120,7 @@ void main() {
         (WidgetTester tester) async {
       when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.fullday(startTime)]));
-      await navigateToFullActivityPage(tester);
+      await navigateToFullDayActivityPage(tester);
       expect(alarmButtonFinder, findsNothing);
     });
 
