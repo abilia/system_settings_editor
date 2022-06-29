@@ -182,7 +182,7 @@ class MemoplannerSettings extends Equatable {
     this.calendarActivityTypeShowColor = true,
     this.calendarDayColor = 0,
     this.viewOptionsTimeInterval = 1,
-    this.viewOptionsTimeView = 0,
+    this.viewOptionsTimeView = 1,
     this.viewOptionsZoom = 1,
     this.alarm = const AlarmSettings(),
     this.functionMenuDisplayWeek = true,
@@ -383,7 +383,7 @@ class MemoplannerSettings extends Equatable {
       ),
       viewOptionsTimeView: settings.parse(
         viewOptionsTimeViewKey,
-        DayCalendarType.list.index,
+        DayCalendarType.oneTimepillar.index,
       ),
       dotsInTimepillar: settings.getBool(
         dotsInTimepillarKey,
