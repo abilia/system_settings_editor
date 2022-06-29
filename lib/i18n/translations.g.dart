@@ -697,7 +697,7 @@ abstract class Translated {
 
   final String toolbar = 'Toolbar';
 
-  final String toolbarSettingsHint = 'Views displayed in the Toolbar';
+  final String toolbarSettingsHint = 'Functions displayed in bottom of page';
 
   final String homeScreen = 'Home screen';
 
@@ -714,7 +714,7 @@ abstract class Translated {
   final String activateScreensaver = 'Activate Screensaver';
 
   final String menuRemovalWarning =
-      'Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking on the category symbols in the day calendar; left – right – left. This works even if they are hidden.';
+      'Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking under the category symbols in the day calendar; left – right – left. This works even if they are hidden.';
 
   final String selectADayToViewDetails = 'Select a day to view more details';
 
@@ -1912,7 +1912,7 @@ class SV extends Translated {
   final String toolbar = 'Knapprad';
 
   @override
-  final String toolbarSettingsHint = 'Visningar visas i verktygsfältet';
+  final String toolbarSettingsHint = 'Funktioner som visas längst ner på sidan';
 
   @override
   final String homeScreen = 'Startsida';
@@ -1935,7 +1935,7 @@ class SV extends Translated {
 
   @override
   final String menuRemovalWarning =
-      'Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka på kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.';
+      'Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka under kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.';
 
   @override
   final String selectADayToViewDetails = 'Välj en dag för att se mer detaljer';
