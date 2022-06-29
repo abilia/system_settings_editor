@@ -116,6 +116,8 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                   Expanded(
                     child: BlocBuilder<MemoplannerSettingBloc,
                         MemoplannerSettingsState>(
+                      buildWhen: (previous, current) =>
+                          previous.dayCalendarType != current.dayCalendarType,
                       builder: (context, memoplannerSettingsState) =>
                           LayoutBuilder(builder: (context, boxConstraints) {
                         final categoryLabelWidth = (boxConstraints.maxWidth -

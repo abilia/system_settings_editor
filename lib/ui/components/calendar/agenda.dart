@@ -72,10 +72,6 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
                 ),
               ),
             ),
-            // if (memoplannerSettingsState.showCategories) ...[
-            //   LeftCategory(maxWidth: categoryLabelWidth),
-            //   RightCategory(maxWidth: categoryLabelWidth),
-            // ],
           ],
         ),
       ),
