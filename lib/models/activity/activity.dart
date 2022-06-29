@@ -32,6 +32,9 @@ class Activity extends DataModel {
 
   bool get hasAttachment => infoItem is! NoInfoItem;
 
+  bool get isNoneSingleInstanceRecurring =>
+      recurs.isRecurring && !startTime.isAtSameDay(recurs.end);
+
   AvailableForType get availableFor => !secret
       ? AvailableForType.allSupportPersons
       : secretExemptions.isEmpty

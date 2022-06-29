@@ -330,8 +330,10 @@ void main() {
       timezone: 'time/zone',
     );
     final dbModel = a.wrapWithDbModel();
-    final json = dbModel.toJson();
-    final db = dbModel.toMapForDb()..remove('dirty');
+    final json = dbModel.toJson()..remove('secretExemptions');
+    final db = dbModel.toMapForDb()
+      ..remove('dirty')
+      ..remove('secret_exemptions');
     final jsonWithoutBool = json.values
         .map((value) => value is bool ? (value ? 1 : 0) : value)
         .toList();

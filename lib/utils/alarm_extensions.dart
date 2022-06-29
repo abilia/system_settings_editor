@@ -13,7 +13,7 @@ extension AlarmTypeExtensions on Alarm {
 
   String text(Translated translator) {
     if (sound) return translator.alarmAndVibration;
-    if (vibrate) return translator.vibration;
+    if (vibrate) return translator.vibrationIfAvailable;
     if (silent) return translator.silentAlarm;
     return translator.noAlarm;
   }

@@ -148,8 +148,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
     );
 
     if (result != null) {
-      if (activity.isRecurring ||
-          activitiesBloc.state.isPartOfSeries(activity)) {
+      if (activity.isNoneSingleInstanceRecurring) {
         final applyTo = await navigator.push<ApplyTo>(
           MaterialPageRoute(
             builder: (_) => SelectRecurrentTypePage(
@@ -189,8 +188,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
       ),
     );
     if (shouldDelete == true) {
-      if (activity.isRecurring ||
-          activitiesBloc.state.isPartOfSeries(activity)) {
+      if (activity.isNoneSingleInstanceRecurring) {
         final applyTo = await navigator.push<ApplyTo>(
           MaterialPageRoute(
             builder: (_) => SelectRecurrentTypePage(

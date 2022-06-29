@@ -285,7 +285,7 @@ class BasicTemplatesButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MenuItemButton(
       style: blackMenuButtonStyle,
-      text: Translator.of(context).translate.basicTemplates,
+      text: Translator.of(context).translate.templates,
       icon: AbiliaIcons.favoritesShow,
       onPressed: () {
         final authProviders = copiedAuthProviders(context);

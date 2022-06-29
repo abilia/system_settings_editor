@@ -42,7 +42,7 @@ class EditBasicTimerPage extends StatelessWidget {
     final t = Translator.of(context).translate;
 
     return _EditTimerPage(
-      title: t.newBasicTimer,
+      title: t.editTimer,
       icon: AbiliaIcons.basicTimers,
       bottomNavigation: BottomNavigation(
         backNavigationWidget: const CancelButton(),

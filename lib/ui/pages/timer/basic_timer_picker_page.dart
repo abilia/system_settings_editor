@@ -20,10 +20,10 @@ class BasicTimerPickerPage extends StatelessWidget {
           return Scaffold(
             appBar: AbiliaAppBar(
               iconData: AbiliaIcons.basicTimers,
-              title: translate.fromBasicTimer,
+              title: translate.fromTemplateTimer,
             ),
             body: ListLibrary<BasicTimerData>(
-              emptyLibraryMessage: translate.noBasicTimers,
+              emptyLibraryMessage: translate.noTemplates,
               selectableItems: false,
               libraryItemGenerator: (sortable, onTap, _, __) {
                 final sortableData = sortable.data;

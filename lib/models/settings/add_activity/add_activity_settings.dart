@@ -6,6 +6,7 @@ class AddActivitySettings extends Equatable {
       addRecurringActivityKey = 'add_activity_recurring_step',
       showEndTimeKey = 'add_activity_end_time',
       showAlarmKey = 'add_activity_display_alarm',
+      showVibrationAlarmKey = 'add_activity_display_vibration_alarm',
       showSilentAlarmKey = 'add_activity_display_silent_alarm',
       showNoAlarmKey = 'add_activity_display_no_alarm';
 
@@ -13,6 +14,7 @@ class AddActivitySettings extends Equatable {
       addRecurringActivity,
       showEndTime,
       showAlarm,
+      showVibrationAlarm,
       showSilentAlarm,
       showNoAlarm;
 
@@ -20,8 +22,8 @@ class AddActivitySettings extends Equatable {
   bool get abilityToSelectAlarm =>
       [
         showAlarm,
-        showSilentAlarm, // for Vibration
-        showSilentAlarm, // and Silent
+        showVibrationAlarm,
+        showSilentAlarm,
         showNoAlarm,
       ].where((e) => e).length >=
       2;
@@ -31,6 +33,7 @@ class AddActivitySettings extends Equatable {
     this.addRecurringActivity = true,
     this.showEndTime = true,
     this.showAlarm = true,
+    this.showVibrationAlarm = true,
     this.showSilentAlarm = true,
     this.showNoAlarm = true,
   });
@@ -40,6 +43,7 @@ class AddActivitySettings extends Equatable {
     bool? addRecurringActivity,
     bool? showEndTime,
     bool? showAlarm,
+    bool? showVibrationAlarm,
     bool? showSilentAlarm,
     bool? showNoAlarm,
   }) =>
@@ -48,6 +52,7 @@ class AddActivitySettings extends Equatable {
         addRecurringActivity: addRecurringActivity ?? this.addRecurringActivity,
         showEndTime: showEndTime ?? this.showEndTime,
         showAlarm: showAlarm ?? this.showAlarm,
+        showVibrationAlarm: showVibrationAlarm ?? this.showVibrationAlarm,
         showSilentAlarm: showSilentAlarm ?? this.showSilentAlarm,
         showNoAlarm: showNoAlarm ?? this.showNoAlarm,
       );
@@ -59,6 +64,7 @@ class AddActivitySettings extends Equatable {
         addRecurringActivity: settings.getBool(addRecurringActivityKey),
         showEndTime: settings.getBool(showEndTimeKey),
         showAlarm: settings.getBool(showAlarmKey),
+        showVibrationAlarm: settings.getBool(showVibrationAlarmKey),
         showSilentAlarm: settings.getBool(showSilentAlarmKey),
         showNoAlarm: settings.getBool(showNoAlarmKey),
       );
@@ -73,6 +79,8 @@ class AddActivitySettings extends Equatable {
         MemoplannerSettingData.fromData(
             data: showAlarm, identifier: showAlarmKey),
         MemoplannerSettingData.fromData(
+            data: showVibrationAlarm, identifier: showVibrationAlarmKey),
+        MemoplannerSettingData.fromData(
             data: showSilentAlarm, identifier: showSilentAlarmKey),
         MemoplannerSettingData.fromData(
             data: showNoAlarm, identifier: showNoAlarmKey),
@@ -84,6 +92,7 @@ class AddActivitySettings extends Equatable {
         addRecurringActivity,
         showEndTime,
         showAlarm,
+        showVibrationAlarm,
         showSilentAlarm,
         showNoAlarm,
       ];

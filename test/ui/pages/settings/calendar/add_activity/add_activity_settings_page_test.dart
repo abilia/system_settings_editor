@@ -259,7 +259,7 @@ void main() {
       group('Step-by-step -', () {
         testWidgets('deselect Show basic activities', (tester) async {
           await tester.verifyStepByStep(
-            find.text(translate.showBasicActivities),
+            find.text(translate.showTemplates),
             genericDb,
             key: StepByStepSettings.templateKey,
             matcher: isFalse,
@@ -292,7 +292,7 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(find.text(translate.selectName));
           await tester.pumpAndSettle();
-          await tester.tap(find.text(translate.showBasicActivities));
+          await tester.tap(find.text(translate.showTemplates));
           await tester.pumpAndSettle();
           expect(find.byType(ErrorDialog), findsOneWidget);
         });
@@ -384,7 +384,7 @@ void main() {
       testWidgets('Select vibration', (tester) async {
         await tester.goToDefaultsTab();
         expect(find.byType(AddActivityDefaultSettingsTab), findsOneWidget);
-        await tester.tap(find.text(translate.vibration));
+        await tester.tap(find.text(translate.vibrationIfAvailable));
         await tester.pumpAndSettle();
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();

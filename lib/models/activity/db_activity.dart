@@ -49,8 +49,7 @@ class DbActivity extends DbModel<Activity> {
               : json['timezone'],
           extras: Extras.fromJsonString(json['extras']),
           calendarId: json['calendarId'] ?? '',
-          secretExemptions:
-              _parseExemptions(json['secretExemptions'].toString()),
+          secretExemptions: _exemptionsListToSet(json['secretExemptions']),
         ),
         revision: json['revision'],
         dirty: 0,
@@ -116,7 +115,7 @@ class DbActivity extends DbModel<Activity> {
         'revision': revision,
         'timezone': activity.timezone,
         'extras': activity.extras.toJsonString(),
-        'secretExemptions': activity.secretExemptions.join(';'),
+        'secretExemptions': activity.secretExemptions.toList(),
         if (activity.calendarId.isNotEmpty) 'calendarId': activity.calendarId,
       };
 
@@ -161,6 +160,14 @@ class DbActivity extends DbModel<Activity> {
               .where((v) => v != null)
               .cast<int>() ??
           []);
+
+  static UnmodifiableSetView<int> _exemptionsListToSet(dynamic exemptions) {
+    try {
+      return UnmodifiableSetView(exemptions.cast<int>().toSet());
+    } catch (_) {
+      return UnmodifiableSetView({});
+    }
+  }
 
   static UnmodifiableSetView<int> _parseExemptions(String? secretExemptions) =>
       UnmodifiableSetView(secretExemptions

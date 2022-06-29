@@ -14,8 +14,6 @@ class _HiddenSettingState extends State<HiddenSetting> {
   bool rightTapped = false, leftTapped = false;
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-
     return Align(
       alignment: Alignment.topLeft,
       child: Padding(
@@ -28,23 +26,30 @@ class _HiddenSettingState extends State<HiddenSetting> {
             GestureDetector(
               key: TestKey.hiddenSettingsButtonLeft,
               behavior: HitTestBehavior.translucent,
-              onTap: () {
+              onTap: () async {
                 if (!leftTapped) {
                   leftTapped = true;
                   rightTapped = false;
                 } else if (rightTapped) {
                   leftTapped = false;
                   rightTapped = false;
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
+                  final navigator = Navigator.of(context);
+                  final authProviders = copiedAuthProviders(context);
+                  final accessGranted = await codeProtectAccess(
+                    context,
+                    restricted: (codeSettings) => codeSettings.protectSettings,
+                    name: Translator.of(context).translate.settings,
+                  );
+                  if (accessGranted) {
+                    navigator.push(MaterialPageRoute(
                       builder: (_) => MultiBlocProvider(
                         providers: authProviders,
                         child: const SettingsPage(),
                       ),
                       settings:
                           const RouteSettings(name: 'SettingsPage from hidden'),
-                    ),
-                  );
+                    ));
+                  }
                 }
               },
               child: SizedBox(

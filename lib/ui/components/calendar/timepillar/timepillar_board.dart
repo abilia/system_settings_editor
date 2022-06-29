@@ -43,6 +43,7 @@ class TimepillarBoard extends StatelessWidget {
     required TimepillarMeasures measures,
     required double topMargin,
     required double bottomMargin,
+    required bool showCategoryColor,
   }) {
     final maxCardHeight = measures.cardPadding.vertical +
         measures.cardMinImageHeight +
@@ -68,6 +69,7 @@ class TimepillarBoard extends StatelessWidget {
               topMargin: topMargin,
               dayParts: dayParts,
               timepillarSide: timepillarSide,
+              showCategoryColor: showCategoryColor,
             )
           : eo is TimerOccasion
               ? _timerCard(
@@ -116,11 +118,23 @@ BoardCardGenerator _activityCard({
   required double topMargin,
   required DayParts dayParts,
   required TimepillarSide timepillarSide,
+  required bool showCategoryColor,
 }) {
+  final decoration = getCategoryBoxDecoration(
+    current: activityOccasion.occasion.isCurrent,
+    inactive: activityOccasion.isPast || activityOccasion.isSignedOff,
+    showCategoryColor: showCategoryColor,
+    category: activityOccasion.activity.category,
+    zoom: measures.zoom,
+  );
+
   final a = activityOccasion.activity;
   final textHeight = (a.hasTitle
       ? a.title
-          .textPainter(textStyle, measures.cardTextWidth,
+          .textPainter(
+              textStyle,
+              measures.cardTextWidth -
+                  (decoration.border?.dimensions.horizontal ?? 0),
               scaleFactor: textScaleFactor)
           .height
       : 0.0);
@@ -151,6 +165,7 @@ BoardCardGenerator _activityCard({
       dayParts: dayParts,
       timepillarSide: timepillarSide,
       measures: measures,
+      decoration: decoration,
     ),
   );
 }

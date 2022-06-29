@@ -51,7 +51,7 @@ class CreateNewPage extends StatelessWidget {
                 PickField(
                   key: TestKey.basicActivityChoice,
                   leading: const Icon(AbiliaIcons.basicActivities),
-                  text: Text(t.fromBasicActivity),
+                  text: Text(t.fromTemplateActivity),
                   onTap: () async {
                     final navigator = Navigator.of(context);
                     final memoplannerSettingBloc =
@@ -102,7 +102,7 @@ class CreateNewPage extends StatelessWidget {
                 PickField(
                   key: TestKey.basicTimerChoice,
                   leading: const Icon(AbiliaIcons.basicTimers),
-                  text: Text(t.fromBasicTimer),
+                  text: Text(t.fromTemplateTimer),
                   onTap: () async {
                     final navigator = Navigator.of(context);
                     final timerStarted = await navigator.push<AbiliaTimer>(
