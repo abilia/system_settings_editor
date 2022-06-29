@@ -114,28 +114,38 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                       day: eventState.day,
                     ),
                   Expanded(
-                    child: BlocSelector<MemoplannerSettingBloc,
-                        MemoplannerSettingsState, DayCalendarType>(
-                      selector: (state) => state.dayCalendarType,
-                      builder: (context, dayCalendarType) => Stack(
-                        children: [
-                          if (dayCalendarType == DayCalendarType.list)
-                            Agenda(eventState: eventState)
-                          else
-                            const TimepillarCalendar(),
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                top: layout.commonCalendar.goToNowButtonTop,
+                    child: BlocBuilder<MemoplannerSettingBloc,
+                        MemoplannerSettingsState>(
+                      builder: (context, memoplannerSettingsState) =>
+                          LayoutBuilder(builder: (context, boxConstraints) {
+                        final categoryLabelWidth = (boxConstraints.maxWidth -
+                                layout.timepillar.width) /
+                            2;
+                        return Stack(
+                          children: [
+                            if (memoplannerSettingsState.dayCalendarType ==
+                                DayCalendarType.list)
+                              Agenda(eventState: eventState)
+                            else
+                              const TimepillarCalendar(),
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  top: layout.commonCalendar.goToNowButtonTop,
+                                ),
+                                child: const GoToNowButton(),
                               ),
-                              child: const GoToNowButton(),
                             ),
-                          ),
-                        ],
-                      ),
+                            if (memoplannerSettingsState.showCategories) ...[
+                              LeftCategory(maxWidth: categoryLabelWidth),
+                              RightCategory(maxWidth: categoryLabelWidth),
+                            ],
+                          ],
+                        );
+                      }),
                     ),
-                  ),
+                  )
                 ],
               );
             },
