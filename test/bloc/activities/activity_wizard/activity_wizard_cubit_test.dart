@@ -89,12 +89,12 @@ void main() {
         0,
         UnmodifiableListView(
           [
-            WizardStep.date,
             WizardStep.title,
             WizardStep.image,
-            WizardStep.availableFor,
-            WizardStep.checkable,
+            WizardStep.date,
             WizardStep.time,
+            WizardStep.checkable,
+            WizardStep.availableFor,
             WizardStep.recurring,
           ],
         ),
@@ -1756,12 +1756,12 @@ void main() {
         WizardState(
           0,
           const [
-            WizardStep.date,
             WizardStep.title,
             WizardStep.image,
-            WizardStep.availableFor,
-            WizardStep.checkable,
+            WizardStep.date,
             WizardStep.time,
+            WizardStep.checkable,
+            WizardStep.availableFor,
             WizardStep.recurring,
           ],
         ),
@@ -1806,11 +1806,11 @@ void main() {
           0,
           const [
             WizardStep.type,
-            WizardStep.deleteAfter,
             WizardStep.time,
+            WizardStep.deleteAfter,
             WizardStep.alarm,
-            WizardStep.connectedFunction,
             WizardStep.reminder,
+            WizardStep.connectedFunction,
           ],
         ),
       );
@@ -1882,18 +1882,18 @@ void main() {
     );
 
     const allWizStep = [
-      WizardStep.date,
       WizardStep.title,
       WizardStep.image,
+      WizardStep.date,
       WizardStep.type,
-      WizardStep.availableFor,
+      WizardStep.time,
       WizardStep.checkable,
       WizardStep.deleteAfter,
-      WizardStep.time,
+      WizardStep.availableFor,
       WizardStep.alarm,
-      WizardStep.connectedFunction,
       WizardStep.reminder,
       WizardStep.recurring,
+      WizardStep.connectedFunction,
     ];
 
     test('all steps on', () async {
@@ -1943,14 +1943,13 @@ void main() {
           allWizStep,
         ),
       );
-      wizCubit.next(); // date
       wizCubit.next(); // title
       wizCubit.next(); // image ---> error
 
       expect(
         wizCubit.state,
         WizardState(
-          2,
+          1,
           allWizStep,
           saveErrors: const {SaveError.noTitleOrImage},
           sucessfullSave: false,
@@ -1961,17 +1960,15 @@ void main() {
         activity.copyWith(title: 'one title please'),
       );
 
-      wizCubit.next(); // title
+      wizCubit.next(); // image
+      wizCubit.next(); // date
       wizCubit.next(); // type
-      wizCubit.next(); // availible for
-      wizCubit.next(); // checkable
-      wizCubit.next(); // delete after
       wizCubit.next(); // time ---> error
 
       expect(
         wizCubit.state,
         WizardState(
-          7,
+          4,
           allWizStep,
           saveErrors: const {SaveError.noStartTime},
           sucessfullSave: false,
@@ -1983,9 +1980,12 @@ void main() {
 
       wizCubit.next(); // time
       wizCubit.next(); // alarm,
-      wizCubit.next(); // note,
+      wizCubit.next(); // checkable,
+      wizCubit.next(); // deleteAfter,
       wizCubit.next(); // reminder,
       wizCubit.next(); // recurring,
+      wizCubit.next(); // checklist,
+      wizCubit.next(); // connectedFunction,
 
       expect(
         wizCubit.state,
@@ -2025,15 +2025,15 @@ void main() {
         wizCubit.stream,
         emitsInOrder([
           WizardState(0, const [
-            WizardStep.date,
             WizardStep.title,
             WizardStep.image,
+            WizardStep.date,
             WizardStep.type,
-            WizardStep.availableFor,
             WizardStep.checkable,
             WizardStep.deleteAfter,
-            WizardStep.connectedFunction,
+            WizardStep.availableFor,
             WizardStep.recurring,
+            WizardStep.connectedFunction,
           ]),
           WizardState(0, allWizStep),
         ]),
@@ -2064,8 +2064,14 @@ void main() {
       await expectLater(
         wizCubit.stream,
         emitsInOrder([
-          WizardState(0, const [...allWizStep, WizardStep.recursMonthly]),
-          WizardState(0, const [...allWizStep, WizardStep.recursWeekly]),
+          WizardState(0, [
+            ...List.from(allWizStep)
+              ..insert(allWizStep.length - 1, WizardStep.recursMonthly)
+          ]),
+          WizardState(0, [
+            ...List.from(allWizStep)
+              ..insert(allWizStep.length - 1, WizardStep.recursWeekly)
+          ]),
           WizardState(0, allWizStep),
         ]),
       );

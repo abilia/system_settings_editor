@@ -224,10 +224,6 @@ void main() {
 
         await tester.tap(find.byKey(TestKey.newActivityChoice));
         await tester.pumpAndSettle();
-        expect(find.byType(DatePickerWiz), findsOneWidget);
-
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
         expect(find.byType(TitleWiz), findsOneWidget);
 
         await tester.enterText(find.byType(TextField), title);
@@ -238,8 +234,12 @@ void main() {
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
+        expect(find.byType(DatePickerWiz), findsOneWidget);
+        await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
-        expect(find.byType(AvailableForWiz), findsOneWidget);
+
+        expect(find.byType(TimeWiz), findsOneWidget);
+        await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
@@ -249,8 +249,7 @@ void main() {
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
-        expect(find.byType(TimeWiz), findsOneWidget);
-        await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
+        expect(find.byType(AvailableForWiz), findsOneWidget);
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
@@ -329,8 +328,8 @@ void main() {
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
-        await tester.pumpAndSettle();
-        expect(find.byType(AvailableForWiz), findsOneWidget);
+        expect(find.byType(TimeWiz), findsOneWidget);
+        await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
@@ -346,8 +345,7 @@ void main() {
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
-        expect(find.byType(TimeWiz), findsOneWidget);
-        await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
+        expect(find.byType(AvailableForWiz), findsOneWidget);
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
