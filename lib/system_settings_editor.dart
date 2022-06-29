@@ -26,6 +26,11 @@ class SystemSettingsEditor {
         .invokeMethod('setSoundEffectsEnabled', {'soundEffectsEnabled': on});
   }
 
+  static Future<void> setHapticFeedbackEnabled(bool on) async {
+    await _channel
+        .invokeMethod('setHapticFeedbackEnabled', {'hapticFeedbackEnabled': on});
+  }
+
   static Future<Duration?> get screenOffTimeout async {
     final r = await _channel.invokeMethod('getScreenOffTimeout');
     return Duration(milliseconds: r);

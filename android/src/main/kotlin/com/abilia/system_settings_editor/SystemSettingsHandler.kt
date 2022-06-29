@@ -64,6 +64,17 @@ class SystemSettingsHandler(private val context: Context) {
       }
   }
 
+  internal fun setHapticFeedbackHandler(call: MethodCall, result: MethodChannel.Result) {
+    val enabled: Boolean? = call.argument("hapticFeedbackEnabled")
+    enabled?.let {
+      setHapticFeedbackEnabled(it)
+      result.success(true)
+    }
+            ?: run {
+              result.error("ARGUMENT", "No argument haptic_feedback_enabled of type int provided", null)
+            }
+  }
+
   private fun setBrightness(activity: Activity?, brightness: Double) {
     activity?.let {
       val lp = it.window.attributes
@@ -100,6 +111,11 @@ class SystemSettingsHandler(private val context: Context) {
   private fun setSoundEffectsEnabled(on: Boolean) {
     val cResolver: ContentResolver = context.contentResolver
     Settings.System.putInt(cResolver, Settings.System.SOUND_EFFECTS_ENABLED, if (on) 1 else 0)
+  }
+
+  private fun setHapticFeedbackEnabled(on: Boolean) {
+    val cResolver: ContentResolver = context.contentResolver
+    Settings.System.putInt(cResolver, Settings.System.HAPTIC_FEEDBACK_ENABLED, if (on) 1 else 0);
   }
 
   internal fun setScreenOffTimeoutHandler(call: MethodCall, result: MethodChannel.Result) {

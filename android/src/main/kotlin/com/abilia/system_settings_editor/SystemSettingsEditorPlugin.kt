@@ -56,6 +56,7 @@ class SystemSettingsEditorPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
               "getBrightness" -> result.success(systemSettingsHandler.getBrightness())
               "setBrightness" -> systemSettingsHandler.setBrightnessHandler(activity, call, result)
               "setSoundEffectsEnabled" -> systemSettingsHandler.setSoundEffectsHandler(call, result)
+              "setHapticFeedbackEnabled" -> systemSettingsHandler.setHapticFeedbackHandler(call, result)
               "setScreenOffTimeout" ->
                   systemSettingsHandler.setScreenOffTimeoutHandler(call, result)
               else -> result.notImplemented()
