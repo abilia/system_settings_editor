@@ -40,16 +40,17 @@ class AlarmPage extends StatelessWidget {
         ),
         body: Padding(
           padding: layout.templates.s1,
-          child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
-            selector: (activitiesState) => ActivityDay(
-              activitiesState
-                  .newActivityFromLoadedOrGiven(alarm.activityDay.activity),
-              alarm.activityDay.day,
+          child: BlocProvider<ActivityCubit>(
+            create: (context) => ActivityCubit(
+              ad: alarm.activityDay,
+              activitiesBloc: context.read<ActivitiesBloc>(),
             ),
-            builder: (context, ad) => ActivityInfo(
-              ad,
-              previewImage: previewImage,
-              alarm: alarm,
+            child: BlocBuilder<ActivityCubit, ActivityState>(
+              builder: (context, state) => ActivityInfo(
+                state.activityDay,
+                previewImage: previewImage,
+                alarm: alarm,
+              ),
             ),
           ),
         ),
@@ -107,14 +108,15 @@ class ReminderPage extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child:
-                    BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
-                  selector: (activitiesState) => ActivityDay(
-                    activitiesState.newActivityFromLoadedOrGiven(
-                        reminder.activityDay.activity),
-                    reminder.activityDay.day,
+                child: BlocProvider<ActivityCubit>(
+                  create: (context) => ActivityCubit(
+                    ad: reminder.activityDay,
+                    activitiesBloc: context.read<ActivitiesBloc>(),
                   ),
-                  builder: (context, ad) => ActivityInfo(ad, alarm: reminder),
+                  child: BlocBuilder<ActivityCubit, ActivityState>(
+                    builder: (context, state) =>
+                        ActivityInfo(state.activityDay, alarm: reminder),
+                  ),
                 ),
               ),
             ],

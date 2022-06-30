@@ -20,12 +20,6 @@ class NotificationBloc extends Bloc<NotificationEvent, dynamic> {
   }) : super(NotificationEvent()) {
     on<NotificationEvent>(_scheduleNotifications,
         transformer: throttle(const Duration(seconds: 5)));
-    _activitySubscription =
-        activitiesBloc.stream.listen((_) => add(NotificationEvent()));
-    _settingsSubscription =
-        memoplannerSettingBloc.stream.listen((_) => add(NotificationEvent()));
-    _timerSubscription =
-        timerCubit.stream.listen((_) => add(NotificationEvent()));
   }
 
   final ActivityRepository activityRepository;
@@ -76,4 +70,4 @@ class NotificationEvent {}
 EventTransformer<Event> throttle<Event>(Duration delay) =>
     (events, mapper) => events
         .throttleTime(delay, trailing: false, leading: true)
-        .asyncExpand(mapper); // sequential
+        .asyncExpand(mapper);

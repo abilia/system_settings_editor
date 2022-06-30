@@ -2,7 +2,6 @@ import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/background/all.dart';
-import 'package:seagull/bloc/alarm/notification_cubit.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';

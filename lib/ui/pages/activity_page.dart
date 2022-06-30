@@ -17,27 +17,26 @@ class ActivityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: abiliaWhiteTheme,
-      child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
-        selector: (activitiesState) {
-          final a = activitiesState
-              .newActivityFromLoadedOrGiven(activityDay.activity);
-          return ActivityDay(
-            a,
-            a.isRecurring ? activityDay.day : a.startTime,
-          );
-        },
-        builder: (context, ad) {
-          return Scaffold(
-            appBar: DayAppBar(
-              day: ad.day,
-            ),
-            body: ActivityInfoWithDots(
-              ad,
-              previewImage: previewImage,
-            ),
-            bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
-          );
-        },
+      child: BlocProvider<ActivityCubit>(
+        create: (context) => ActivityCubit(
+          ad: activityDay,
+          activitiesBloc: context.read<ActivitiesBloc>(),
+        ),
+        child: BlocBuilder<ActivityCubit, ActivityState>(
+          builder: (context, state) {
+            final ad = state.activityDay;
+            return Scaffold(
+              appBar: DayAppBar(
+                day: ad.day,
+              ),
+              body: ActivityInfoWithDots(
+                ad,
+                previewImage: previewImage,
+              ),
+              bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
+            );
+          },
+        ),
       ),
     );
   }

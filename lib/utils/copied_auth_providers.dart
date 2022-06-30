@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:collection/collection.dart';
-import 'package:seagull/bloc/alarm/notification_cubit.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/config.dart';
 
