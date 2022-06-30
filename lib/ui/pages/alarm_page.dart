@@ -42,7 +42,7 @@ class AlarmPage extends StatelessWidget {
           padding: layout.templates.s1,
           child: BlocProvider<ActivityCubit>(
             create: (context) => ActivityCubit(
-              ad: alarm.activityDay,
+              activityDay: alarm.activityDay,
               activitiesBloc: context.read<ActivitiesBloc>(),
             ),
             child: BlocBuilder<ActivityCubit, ActivityState>(
@@ -110,7 +110,7 @@ class ReminderPage extends StatelessWidget {
               Expanded(
                 child: BlocProvider<ActivityCubit>(
                   create: (context) => ActivityCubit(
-                    ad: reminder.activityDay,
+                    activityDay: reminder.activityDay,
                     activitiesBloc: context.read<ActivitiesBloc>(),
                   ),
                   child: BlocBuilder<ActivityCubit, ActivityState>(

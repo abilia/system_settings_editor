@@ -19,7 +19,7 @@ class ActivityPage extends StatelessWidget {
       data: abiliaWhiteTheme,
       child: BlocProvider<ActivityCubit>(
         create: (context) => ActivityCubit(
-          ad: activityDay,
+          activityDay: activityDay,
           activitiesBloc: context.read<ActivitiesBloc>(),
         ),
         child: BlocBuilder<ActivityCubit, ActivityState>(

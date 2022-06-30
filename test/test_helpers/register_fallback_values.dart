@@ -32,4 +32,5 @@ void registerFallbackValues() {
   );
   registerFallbackValue(const LoadSortables());
   registerFallbackValue(Request('GET', ''.toUri()));
+  registerFallbackValue(NotificationEvent());
 }

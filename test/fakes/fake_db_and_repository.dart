@@ -30,6 +30,8 @@ class FakeSettingsDb extends Fake implements SettingsDb {
 
   @override
   Future setAlwaysUse24HourFormat(bool alwaysUse24HourFormat) async {}
+  @override
+  bool get alwaysUse24HourFormat => true;
 }
 
 class FakeLoginDb extends Fake implements LoginDb {

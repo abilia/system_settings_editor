@@ -26,6 +26,9 @@ class MockMemoplannerSettingBloc
 class MockTimepillarCubit extends MockCubit<TimepillarState>
     implements TimepillarCubit {}
 
+class MockNotificationBloc extends MockCubit<String>
+    implements NotificationBloc {}
+
 class MockTimepillarMeasuresCubit extends MockCubit<TimepillarMeasures>
     implements TimepillarMeasuresCubit {}
 

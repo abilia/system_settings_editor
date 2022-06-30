@@ -9,28 +9,23 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/models/all.dart';
 
-class NotificationBloc extends Bloc<NotificationEvent, dynamic> {
+class NotificationBloc extends Bloc<NotificationEvent, String> {
   NotificationBloc({
     required this.activityRepository,
     required this.activitiesBloc,
-    required this.timerCubit,
     required this.timerDb,
     required this.settingsDb,
     required this.memoplannerSettingBloc,
-  }) : super(NotificationEvent()) {
+  }) : super('init') {
     on<NotificationEvent>(_scheduleNotifications,
         transformer: throttle(const Duration(seconds: 5)));
   }
 
   final ActivityRepository activityRepository;
   final ActivitiesBloc activitiesBloc;
-  final TimerCubit timerCubit;
   final TimerDb timerDb;
   final SettingsDb settingsDb;
   final MemoplannerSettingBloc memoplannerSettingBloc;
-  late final StreamSubscription _activitySubscription;
-  late final StreamSubscription _settingsSubscription;
-  late final StreamSubscription _timerSubscription;
 
   Future _scheduleNotifications(
     NotificationEvent event,
@@ -54,14 +49,6 @@ class NotificationBloc extends Bloc<NotificationEvent, dynamic> {
         fileStorage: GetIt.I<FileStorage>(),
       );
     }
-  }
-
-  @override
-  Future<void> close() async {
-    await _activitySubscription.cancel();
-    await _settingsSubscription.cancel();
-    await _timerSubscription.cancel();
-    return super.close();
   }
 }
 
