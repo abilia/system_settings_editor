@@ -9,7 +9,9 @@ const transitionDuration = Duration(seconds: 1);
 
 class TimepillarCalendar extends StatelessWidget {
   static const nightBackgroundColor = AbiliaColors.black;
+
   const TimepillarCalendar({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
@@ -84,10 +86,14 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
 
   bool get enableScrollNotification =>
       widget.timepillarState.isToday && widget.scrollToTimeOffset;
+
   bool get showTimeLine =>
       widget.timepillarState.isToday && widget.displayTimeline;
+
   TimepillarMeasures get measures => widget.timepillarMeasures;
+
   double get topMargin => widget.topMargin;
+
   double get bottomMargin => widget.topMargin;
 
   TimepillarInterval get interval => widget.timepillarMeasures.interval;
@@ -171,6 +177,8 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
         return LayoutBuilder(
           builder: (context, boxConstraints) {
             final maxWidth = boxConstraints.maxWidth;
+            final categoryMinWidth =
+                (maxWidth - measures.timePillarTotalWidth) / 2;
             final timePillarPercentOfTotalScreen =
                 (measures.timePillarTotalWidth / 2) / maxWidth;
             final horizontalAnchor = widget.showCategories
@@ -254,6 +262,16 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                 scrollDirection: Axis.horizontal,
                                 controller: horizontalScrollController,
                                 slivers: <Widget>[
+                                  if (widget.showCategories)
+                                    SliverToBoxAdapter(
+                                      child: TimepillarBoard(
+                                        leftBoardData,
+                                        categoryMinWidth: categoryMinWidth,
+                                        timepillarWidth:
+                                            measures.cardTotalWidth,
+                                        textStyle: textStyle,
+                                      ),
+                                    ),
                                   SliverTimePillar(
                                     key: center,
                                     child: BlocBuilder<MemoplannerSettingBloc,
@@ -278,6 +296,16 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                       ),
                                     ),
                                   ),
+                                  if (widget.showCategories)
+                                    SliverToBoxAdapter(
+                                      child: TimepillarBoard(
+                                        rightBoardData,
+                                        categoryMinWidth: categoryMinWidth,
+                                        timepillarWidth:
+                                            measures.cardTotalWidth,
+                                        textStyle: textStyle,
+                                      ),
+                                    ),
                                 ],
                               ),
                             ],
@@ -323,6 +351,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
 
 class SnapToCenterScrollController extends ScrollController {
   double prevScroll = 0;
+
   SnapToCenterScrollController() {
     addListener(() {
       final currentScroll = position.pixels;
@@ -354,12 +383,14 @@ class ScrollTranslated extends StatefulWidget {
     required this.controller,
     required this.child,
   }) : super(key: key);
+
   @override
   _ScrollTranslated createState() => _ScrollTranslated();
 }
 
 class _ScrollTranslated extends State<ScrollTranslated> {
   late double scrollOffset;
+
   @override
   void initState() {
     widget.controller.addListener(listener);

@@ -44,7 +44,7 @@ class CalendarScaffold extends StatelessWidget {
         floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
         body: Stack(
           children: [
-            const Calendars(),
+            Calendars(showCategories: settingState.showCategories),
             if (settingState.settingsInaccessible)
               HiddenSetting(settingState.showCategories),
           ],
@@ -55,7 +55,12 @@ class CalendarScaffold extends StatelessWidget {
 }
 
 class Calendars extends StatefulWidget {
-  const Calendars({Key? key}) : super(key: key);
+  final bool showCategories;
+
+  const Calendars({
+    required this.showCategories,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _CalendarsState createState() => _CalendarsState();
@@ -114,19 +119,17 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                       day: eventState.day,
                     ),
                   Expanded(
-                    child: BlocBuilder<MemoplannerSettingBloc,
-                        MemoplannerSettingsState>(
-                      buildWhen: (previous, current) =>
-                          previous.dayCalendarType != current.dayCalendarType,
-                      builder: (context, memoplannerSettingsState) =>
+                    child: BlocSelector<MemoplannerSettingBloc,
+                        MemoplannerSettingsState, DayCalendarType>(
+                      selector: (state) => state.dayCalendarType,
+                      builder: (context, dayCalendarType) =>
                           LayoutBuilder(builder: (context, boxConstraints) {
                         final categoryLabelWidth = (boxConstraints.maxWidth -
                                 layout.timepillar.width) /
                             2;
                         return Stack(
                           children: [
-                            if (memoplannerSettingsState.dayCalendarType ==
-                                DayCalendarType.list)
+                            if (dayCalendarType == DayCalendarType.list)
                               Agenda(eventState: eventState)
                             else
                               const TimepillarCalendar(),
@@ -139,7 +142,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                                 child: const GoToNowButton(),
                               ),
                             ),
-                            if (memoplannerSettingsState.showCategories) ...[
+                            if (widget.showCategories) ...[
                               LeftCategory(maxWidth: categoryLabelWidth),
                               RightCategory(maxWidth: categoryLabelWidth),
                             ],

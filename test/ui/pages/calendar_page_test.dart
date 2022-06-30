@@ -189,6 +189,36 @@ void main() {
           initialTime.onlyDays());
     });
 
+    testWidgets(
+        'SGC-1757 category buttons doesnt change position when changing day interval ',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(EyeButtonDay));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.dayNight));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      Finder leftCategory = find.byType(LeftCategory);
+      Offset leftCategoryOffset = tester.getCenter(leftCategory);
+
+      await tester.tap(find.byType(MenuButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.day));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(EyeButtonDay));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.sun));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      expect(leftCategoryOffset, tester.getCenter(leftCategory));
+    });
+
     group('Premissions', () {
       final translate = Locales.language.values.first;
 
