@@ -23,7 +23,10 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeDependencies();
-    if (state == AppLifecycleState.resumed) _checkWriteSettingsPermission();
+    if (state == AppLifecycleState.resumed) {
+      _checkWriteSettingsPermission();
+      setState(() {});
+    }
   }
 
   Future<void> _checkWriteSettingsPermission() async {
@@ -32,7 +35,6 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
       SystemSettingsEditor.setSoundEffectsEnabled(false);
       SystemSettingsEditor.setHapticFeedbackEnabled(false);
     }
-    setState(() {});
   }
 
   @override
