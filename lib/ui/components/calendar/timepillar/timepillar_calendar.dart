@@ -9,9 +9,7 @@ const transitionDuration = Duration(seconds: 1);
 
 class TimepillarCalendar extends StatelessWidget {
   static const nightBackgroundColor = AbiliaColors.black;
-
   const TimepillarCalendar({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
@@ -86,14 +84,10 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
 
   bool get enableScrollNotification =>
       widget.timepillarState.isToday && widget.scrollToTimeOffset;
-
   bool get showTimeLine =>
       widget.timepillarState.isToday && widget.displayTimeline;
-
   TimepillarMeasures get measures => widget.timepillarMeasures;
-
   double get topMargin => widget.topMargin;
-
   double get bottomMargin => widget.topMargin;
 
   TimepillarInterval get interval => widget.timepillarMeasures.interval;
@@ -351,7 +345,6 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
 
 class SnapToCenterScrollController extends ScrollController {
   double prevScroll = 0;
-
   SnapToCenterScrollController() {
     addListener(() {
       final currentScroll = position.pixels;
@@ -383,14 +376,12 @@ class ScrollTranslated extends StatefulWidget {
     required this.controller,
     required this.child,
   }) : super(key: key);
-
   @override
   _ScrollTranslated createState() => _ScrollTranslated();
 }
 
 class _ScrollTranslated extends State<ScrollTranslated> {
   late double scrollOffset;
-
   @override
   void initState() {
     widget.controller.addListener(listener);
