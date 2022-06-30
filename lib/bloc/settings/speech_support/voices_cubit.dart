@@ -8,6 +8,8 @@ import 'package:seagull/models/settings/speech_support/voice_data.dart';
 import 'package:seagull/repository/data_repository/voice_repository.dart';
 import 'package:seagull/tts/tts_handler.dart';
 
+const _defaultLanguageCode = 'en';
+
 class VoicesCubit extends Cubit<VoicesState> {
   VoicesCubit({
     required this.speechSettingsCubit,
@@ -38,11 +40,9 @@ class VoicesCubit extends Cubit<VoicesState> {
         (await Devicelocale.currentLocale)?.split(RegExp('-|_'))[0];
     final languageIsSupported = Locales.language.keys
         .any((locale) => locale.languageCode == languageCode);
-
-    const defaultLanguageCode = 'en';
     return languageIsSupported
-        ? languageCode ?? defaultLanguageCode
-        : defaultLanguageCode;
+        ? languageCode ?? _defaultLanguageCode
+        : _defaultLanguageCode;
   }
 
   Future<void> updateLocale() async {
@@ -103,13 +103,13 @@ class VoicesState extends Equatable {
   final List<VoiceData> available;
   final List<String> downloaded;
   final List<String> downloading;
-  final String? languageCode;
+  final String languageCode;
 
   const VoicesState({
     this.downloading = const [],
     this.downloaded = const [],
     this.available = const [],
-    this.languageCode,
+    this.languageCode = _defaultLanguageCode,
   });
 
   VoicesState copyWith({
