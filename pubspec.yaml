@@ -44,7 +44,7 @@ dependencies:
   system_settings_editor:
     git:
       url: https://github.com/abilia/system_settings_editor.git
-      ref: v1.3.3
+      ref: 7b12cd54dd04ba57c57790f06fd683397b0c4603
   flutter_tts: ^3.2.2
   get_it: ^7.2.0
   google_fonts: ^2.1.0
