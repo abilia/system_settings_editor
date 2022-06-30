@@ -190,7 +190,7 @@ void main() {
     });
 
     testWidgets(
-        'SGC-1757 category buttons doesnt change position when changing day interval ',
+        'SGC-1757 category buttons doesnt change position when changing day interval',
         (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -202,8 +202,8 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      Finder leftCategory = find.byType(LeftCategory);
-      Offset leftCategoryOffset = tester.getCenter(leftCategory);
+      final leftCategory = find.byType(LeftCategory);
+      final leftCategoryOffset = tester.getCenter(leftCategory);
 
       await tester.tap(find.byType(MenuButton));
       await tester.pumpAndSettle();
@@ -216,7 +216,7 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      expect(leftCategoryOffset, tester.getCenter(leftCategory));
+      expect(tester.getCenter(leftCategory), leftCategoryOffset);
     });
 
     group('Premissions', () {
