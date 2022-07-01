@@ -164,7 +164,6 @@ class SupportPersonsWidget extends StatelessWidget {
                       _onSupportPersonChanged(context, person.id),
                   child: Text(
                     person.name,
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ).pad(
                   EdgeInsets.only(
