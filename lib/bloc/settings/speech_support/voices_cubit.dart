@@ -1,19 +1,22 @@
 import 'package:collection/collection.dart';
+import 'package:devicelocale/devicelocale.dart';
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/settings/speech_support/voice_data.dart';
 import 'package:seagull/repository/data_repository/voice_repository.dart';
 import 'package:seagull/tts/tts_handler.dart';
+
+const _defaultLanguageCode = 'en';
 
 class VoicesCubit extends Cubit<VoicesState> {
   VoicesCubit({
     required this.speechSettingsCubit,
     required this.voiceRepository,
     required this.ttsHandler,
-    required String locale,
   }) : super(const VoicesState()) {
-    _initialize(locale);
+    _initialize();
   }
 
   final _log = Logger((VoicesCubit).toString());
@@ -21,15 +24,34 @@ class VoicesCubit extends Cubit<VoicesState> {
   final SpeechSettingsCubit speechSettingsCubit;
   final TtsInterface ttsHandler;
 
-  void _initialize(String locale) async {
-    final availableVoices = await voiceRepository.readAvailableVoices(locale);
-    final downloadedVoices = await _readDownloadedVoices();
+  void _initialize() async {
+    final languageCode = await _currentLanguageCode();
     emit(
       VoicesState(
-        available: availableVoices,
-        downloaded: downloadedVoices,
+        available: await voiceRepository.readAvailableVoices(languageCode),
+        downloaded: await _readDownloadedVoices(),
+        languageCode: languageCode,
       ),
     );
+  }
+
+  Future<String> _currentLanguageCode() async {
+    final languageCode =
+        (await Devicelocale.currentLocale)?.split(RegExp('-|_'))[0];
+    final languageIsSupported = Locales.language.keys
+        .any((locale) => locale.languageCode == languageCode);
+    return languageIsSupported
+        ? languageCode ?? _defaultLanguageCode
+        : _defaultLanguageCode;
+  }
+
+  Future<void> updateLocale() async {
+    final languageCode = await _currentLanguageCode();
+
+    emit(state.copyWith(
+      available: await voiceRepository.readAvailableVoices(languageCode),
+      languageCode: languageCode,
+    ));
   }
 
   Future<List<String>> _readDownloadedVoices() async =>
@@ -81,22 +103,26 @@ class VoicesState extends Equatable {
   final List<VoiceData> available;
   final List<String> downloaded;
   final List<String> downloading;
+  final String languageCode;
 
   const VoicesState({
     this.downloading = const [],
     this.downloaded = const [],
     this.available = const [],
+    this.languageCode = _defaultLanguageCode,
   });
 
   VoicesState copyWith({
     List<VoiceData>? available,
     List<String>? downloaded,
     List<String>? downloading,
+    String? languageCode,
   }) {
     return VoicesState(
       available: available ?? this.available,
       downloaded: downloaded ?? this.downloaded,
       downloading: downloading ?? this.downloading,
+      languageCode: languageCode ?? this.languageCode,
     );
   }
 
@@ -105,5 +131,6 @@ class VoicesState extends Equatable {
         downloading,
         downloaded,
         available,
+        languageCode,
       ];
 }
