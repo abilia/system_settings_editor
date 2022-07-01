@@ -8,6 +8,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? trailing;
   final PreferredSizeWidget? bottom;
   final BorderRadiusGeometry? borderRadius;
+  final bool useVerticalSafeArea;
   @override
   final Size preferredSize;
 
@@ -19,6 +20,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.bottom,
     this.trailing,
     this.borderRadius,
+    this.useVerticalSafeArea = true,
     double? height,
   })  : preferredSize = Size.fromHeight(height ??
             AbiliaAppBar.height + (bottom?.preferredSize.height ?? 0.0)),
@@ -43,6 +45,8 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
           borderRadius: borderRadius,
         ),
         child: SafeArea(
+          top: useVerticalSafeArea,
+          bottom: useVerticalSafeArea,
           child: (trailing != null || bottom != null)
               ? Column(
                   children: [

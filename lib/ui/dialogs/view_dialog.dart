@@ -54,7 +54,7 @@ class ViewDialog extends StatelessWidget {
                       )
                     : bodyContainer,
                 BottomNavigation(
-                  useSafeArea: false,
+                  useVerticalSafeArea: false,
                   backNavigationWidget: backNavigationWidget,
                   forwardNavigationWidget: forwardNavigationWidget,
                 )
