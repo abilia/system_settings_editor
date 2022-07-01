@@ -50,19 +50,24 @@ class AvailableForPageBody extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            ...AvailableForType.values.map(
-              (type) => AvailableForRadioField(
-                type,
-                state.availableFor,
-                onChanged: (value) => _onAvailableForChanged(context, value),
-              ).pad(
-                EdgeInsets.only(
-                  left: layout.templates.m1.left,
-                  right: layout.templates.m1.right,
-                  bottom: layout.formPadding.verticalItemDistance,
+            ...AvailableForType.values
+                .where((element) =>
+                    element != AvailableForType.selectedSupportPersons ||
+                    state.allSupportPersons.isNotEmpty)
+                .map(
+                  (type) => AvailableForRadioField(
+                    type,
+                    state.availableFor,
+                    onChanged: (value) =>
+                        _onAvailableForChanged(context, value),
+                  ).pad(
+                    EdgeInsets.only(
+                      left: layout.templates.m1.left,
+                      right: layout.templates.m1.right,
+                      bottom: layout.formPadding.verticalItemDistance,
+                    ),
+                  ),
                 ),
-              ),
-            ),
             if (state.availableFor ==
                 AvailableForType.selectedSupportPersons) ...[
               Padding(
@@ -157,7 +162,10 @@ class SupportPersonsWidget extends StatelessWidget {
                   value: state.selectedSupportPersons.contains(person.id),
                   onChanged: (selected) =>
                       _onSupportPersonChanged(context, person.id),
-                  child: Text(person.name),
+                  child: Text(
+                    person.name,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ).pad(
                   EdgeInsets.only(
                     left: layout.templates.m1.left,
