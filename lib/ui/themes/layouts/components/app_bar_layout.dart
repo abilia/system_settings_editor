@@ -49,8 +49,8 @@ class AppBarLayoutMedium extends AppBarLayout {
           clockPadding: clockPadding ?? 16,
           largeHeight: largeHeight ?? 148,
           mediumHeight: mediumHeight ?? 148,
-          smallHeight: smallHeight ?? 104,
-          monthStepperHeight: monthStepperHeight ?? 104,
+          smallHeight: 104,
+          monthStepperHeight: monthStepperHeight ?? 116,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(32),
             topRight: Radius.circular(32),
