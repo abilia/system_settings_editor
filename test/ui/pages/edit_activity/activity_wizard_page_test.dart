@@ -362,7 +362,7 @@ void main() {
       expect(find.text(title), findsOneWidget);
     });
 
-    testWidgets('SGC-1730 TTS Play buttons appears when entering a title',
+    testWidgets('SGC-1730 TTS play button appears when entering a title',
         (WidgetTester tester) async {
       setupFakeTts();
       const title = 'title';
