@@ -43,8 +43,6 @@ class TwoTimepillarCalendar extends StatelessWidget {
             final nightTimepillarMeasures =
                 TimepillarMeasures(nightInterval, zoom);
             final dayTimepillarMeasures = TimepillarMeasures(dayInterval, zoom);
-            final categoryLabelWidth =
-                (boxConstraints.maxWidth - layout.timepillar.width) / 2;
             final nightTimepillarHeight =
                 nightTimepillarMeasures.timePillarHeight +
                     layout.timepillar.twoTimePillar.verticalMargin * 2;
@@ -111,10 +109,6 @@ class TwoTimepillarCalendar extends StatelessWidget {
                     ),
                   ],
                 ),
-                if (showCategories) ...[
-                  LeftCategory(maxWidth: categoryLabelWidth),
-                  RightCategory(maxWidth: categoryLabelWidth),
-                ],
               ],
             );
           },

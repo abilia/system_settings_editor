@@ -54,37 +54,27 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
   @override
   Widget build(BuildContext context) {
     final state = widget.eventState;
-    return LayoutBuilder(
-      builder: (context, boxConstraints) {
-        final categoryLabelWidth =
-            (boxConstraints.maxWidth - layout.timepillar.width) / 2;
-        return RefreshIndicator(
-          onRefresh: refresh,
-          child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-            buildWhen: (previous, current) =>
-                previous.showCategories != current.showCategories,
-            builder: (context, memoplannerSettingsState) => Stack(
-              children: <Widget>[
-                NotificationListener<ScrollNotification>(
-                  onNotification: state.isToday ? onScrollNotification : null,
-                  child: AbiliaScrollBar(
-                    controller: scrollController,
-                    child: EventList(
-                      scrollController: scrollController,
-                      bottomPadding: layout.agenda.bottomPadding,
-                      topPadding: layout.agenda.topPadding,
-                    ),
-                  ),
+    return RefreshIndicator(
+      onRefresh: refresh,
+      child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        buildWhen: (previous, current) =>
+            previous.showCategories != current.showCategories,
+        builder: (context, memoplannerSettingsState) => Stack(
+          children: <Widget>[
+            NotificationListener<ScrollNotification>(
+              onNotification: state.isToday ? onScrollNotification : null,
+              child: AbiliaScrollBar(
+                controller: scrollController,
+                child: EventList(
+                  scrollController: scrollController,
+                  bottomPadding: layout.agenda.bottomPadding,
+                  topPadding: layout.agenda.topPadding,
                 ),
-                if (memoplannerSettingsState.showCategories) ...[
-                  LeftCategory(maxWidth: categoryLabelWidth),
-                  RightCategory(maxWidth: categoryLabelWidth),
-                ],
-              ],
+              ),
             ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 }
