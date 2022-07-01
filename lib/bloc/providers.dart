@@ -320,7 +320,6 @@ class TopLevelBlocsProvider extends StatelessWidget {
                 speechSettingsCubit: context.read<SpeechSettingsCubit>(),
                 ttsHandler: GetIt.I<TtsInterface>(),
                 voiceRepository: context.read<VoiceRepository>(),
-                locale: GetIt.I<SettingsDb>().language,
               ),
             ),
           ],

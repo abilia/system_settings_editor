@@ -7,41 +7,43 @@ class VoicesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final voicesState = context.watch<VoicesCubit>().state;
+    final speechSettingsState = context.watch<SpeechSettingsCubit>().state;
+    if (Localizations.localeOf(context).languageCode !=
+        voicesState.languageCode) {
+      context.read<VoicesCubit>().updateLocale();
+    }
     final t = Translator.of(context).translate;
     final scrollController = ScrollController();
-    return BlocBuilder<VoicesCubit, VoicesState>(
-      builder: (context, state) =>
-          BlocBuilder<SpeechSettingsCubit, SpeechSettingsState>(
-        builder: (context, settingsState) => Scaffold(
-          appBar: AbiliaAppBar(
-            title: t.voices,
-            label: t.textToSpeech,
-            iconData: AbiliaIcons.speakText,
+
+    return Scaffold(
+      appBar: AbiliaAppBar(
+        title: t.voices,
+        label: t.textToSpeech,
+        iconData: AbiliaIcons.speakText,
+      ),
+      body: Padding(
+        padding: layout.templates.m1.withoutBottom - m1ItemPadding.onlyTop,
+        child: ScrollArrows.vertical(
+          controller: scrollController,
+          child: ListView(
+            controller: scrollController,
+            children: voicesState.available.map((VoiceData voice) {
+              final name = voice.name;
+              final selectedVoice = speechSettingsState.voice;
+              return _VoiceRow(
+                voice: voice,
+                downloaded: voicesState.downloaded.contains(name),
+                downloading: voicesState.downloading.contains(name),
+                selectedVoice: selectedVoice,
+              );
+            }).toList(),
           ),
-          body: Padding(
-            padding: layout.templates.m1.withoutBottom - m1ItemPadding.onlyTop,
-            child: ScrollArrows.vertical(
-              controller: scrollController,
-              child: ListView(
-                controller: scrollController,
-                children: state.available.map((VoiceData voice) {
-                  final name = voice.name;
-                  final selectedVoice = settingsState.voice;
-                  return _VoiceRow(
-                    voice: voice,
-                    downloaded: state.downloaded.contains(name),
-                    downloading: state.downloading.contains(name),
-                    selectedVoice: selectedVoice,
-                  );
-                }).toList(),
-              ),
-            ),
-          ),
-          bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: OkButton(
-              onPressed: () => Navigator.of(context).maybePop(),
-            ),
-          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigation(
+        backNavigationWidget: OkButton(
+          onPressed: () => Navigator.of(context).maybePop(),
         ),
       ),
     );
