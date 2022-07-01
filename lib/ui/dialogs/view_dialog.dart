@@ -44,7 +44,7 @@ class ViewDialog extends StatelessWidget {
               children: [
                 if (heading != null)
                   Container(
-                    height: AbiliaAppBar.height,
+                    height: layout.appBar.smallHeight,
                     color: AbiliaColors.black80,
                     child: Center(child: heading),
                   ),

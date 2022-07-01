@@ -6,7 +6,8 @@ class AppBarLayout {
       clockPadding,
       largeHeight,
       mediumHeight,
-      smallHeight;
+      smallHeight,
+      monthStepperHeight;
 
   final BorderRadius borderRadius;
   final TextStyle _textStyle;
@@ -17,6 +18,7 @@ class AppBarLayout {
     this.largeHeight = 80,
     this.mediumHeight = 80,
     this.smallHeight = 68,
+    this.monthStepperHeight = 68,
     this.borderRadius = const BorderRadius.only(
       topLeft: Radius.circular(24),
       topRight: Radius.circular(24),
@@ -40,6 +42,7 @@ class AppBarLayoutMedium extends AppBarLayout {
     double? smallHeight,
     double? horizontalPadding,
     double? clockPadding,
+    double? monthStepperHeight,
     TextStyle? textStyle,
   }) : super(
           horizontalPadding: horizontalPadding ?? 16,
@@ -47,6 +50,7 @@ class AppBarLayoutMedium extends AppBarLayout {
           largeHeight: largeHeight ?? 148,
           mediumHeight: mediumHeight ?? 148,
           smallHeight: smallHeight ?? 104,
+          monthStepperHeight: monthStepperHeight ?? 104,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(32),
             topRight: Radius.circular(32),
@@ -65,7 +69,7 @@ class AppBarLayoutLarge extends AppBarLayoutMedium {
   const AppBarLayoutLarge()
       : super(
           largeHeight: 200,
-          smallHeight: 200,
+          monthStepperHeight: 200,
           horizontalPadding: 32,
           textStyle: const TextStyle(
             fontSize: 48,
