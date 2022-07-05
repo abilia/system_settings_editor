@@ -108,8 +108,7 @@ class _TimeInputContentState extends State<TimeInputContent> {
       ..requestFocus()
       ..addListener(() {
         if (!startTimeFocus.hasFocus) {
-          setState(() => validatedNewStartTime =
-              _focusChangedValidation(validatedNewStartTime));
+          setState(() => validatedNewStartTime = _focusChangedValidation());
         }
       });
 
@@ -125,7 +124,7 @@ class _TimeInputContentState extends State<TimeInputContent> {
 
     startTimeController = TextEditingController(text: validatedNewStartTime)
       ..addListener(() {
-        if (valid(startTimeController)) {
+        if (valid(startTimeController) || startTimeController.text.isEmpty) {
           _onNewValidTime();
         }
       });
