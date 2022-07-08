@@ -46,7 +46,7 @@ class _NoteBlockState extends State<NoteBlock> {
                 child: Stack(
                   children: [
                     Lines(
-                      textRenderingSize: widget.text.calulcateTextRenderSize(
+                      textRenderingSize: widget.text.calculateTextRenderSize(
                         constraints: constraints,
                         textStyle: textStyle,
                         padding: layout.note.notePadding,

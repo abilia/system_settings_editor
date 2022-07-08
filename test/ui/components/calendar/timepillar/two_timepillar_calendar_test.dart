@@ -619,6 +619,35 @@ void main() {
       expect(cardFinder, findsNWidgets(2));
     });
 
+    testWidgets(
+        'Shows activity starting close to beginning of night interval - BUG SGC-1789',
+        (WidgetTester tester) async {
+      // Arrange
+      final startTime = time.copyWith(hour: 22, minute: 55);
+      activityResponse = () => [
+            Activity.createNew(
+              startTime: startTime,
+              duration: 1.hours(),
+              alarmType: alarmSilent,
+              title: rightTitle,
+            ),
+            Activity.createNew(
+              startTime: startTime,
+              duration: 1.hours(),
+              alarmType: alarmSilent,
+              title: leftTitle,
+              category: Category.left,
+            ),
+          ];
+      // Act
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Assert
+      expect(leftActivityFinder, findsNWidgets(2));
+      expect(rightActivityFinder, findsNWidgets(2));
+      expect(cardFinder, findsNWidgets(4));
+    });
+
     testWidgets('tts', (WidgetTester tester) async {
       // Act
       await tester.pumpWidget(App());
