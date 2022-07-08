@@ -74,7 +74,7 @@ class _EditNotePageState extends State<EditNotePage> {
               LayoutBuilder(
                 builder: (context, constraints) {
                   final textRenderSize =
-                      _textEditingController.text.calulcateTextRenderSize(
+                      _textEditingController.text.calculateTextRenderSize(
                     constraints: constraints,
                     textStyle:
                         Theme.of(context).textTheme.bodyText1 ?? bodyText1,
