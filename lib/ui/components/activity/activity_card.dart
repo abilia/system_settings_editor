@@ -108,7 +108,12 @@ class ActivityCard extends StatelessWidget {
                                         style: Theme.of(context)
                                             .textTheme
                                             .subtitle1
-                                            ?.copyWith(height: 1),
+                                            ?.copyWith(
+                                              height: 1,
+                                              decoration: signedOff
+                                                  ? TextDecoration.lineThrough
+                                                  : null,
+                                            ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       SizedBox(
