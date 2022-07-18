@@ -2,12 +2,17 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class WizardBottomNavigation extends StatelessWidget {
-  const WizardBottomNavigation({Key? key}) : super(key: key);
+  final bool useVerticalSafeArea;
+  const WizardBottomNavigation({
+    Key? key,
+    this.useVerticalSafeArea = false,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => const BottomNavigation(
-        backNavigationWidget: PreviousWizardStepButton(),
-        forwardNavigationWidget: NextWizardStepButton(),
+  Widget build(BuildContext context) => BottomNavigation(
+        useVerticalSafeArea: useVerticalSafeArea,
+        backNavigationWidget: const PreviousWizardStepButton(),
+        forwardNavigationWidget: const NextWizardStepButton(),
       );
 }
 

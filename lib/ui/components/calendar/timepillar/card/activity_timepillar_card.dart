@@ -5,7 +5,6 @@ import 'package:seagull/utils/all.dart';
 
 class ActivityTimepillarCard extends TimepillarCard {
   final ActivityOccasion activityOccasion;
-  final double textHeight;
   final DayParts dayParts;
   final TimepillarSide timepillarSide;
   final TimepillarMeasures measures;
@@ -16,7 +15,6 @@ class ActivityTimepillarCard extends TimepillarCard {
     required this.activityOccasion,
     required CardPosition cardPosition,
     required int column,
-    required this.textHeight,
     required this.dayParts,
     required this.timepillarSide,
     required this.measures,
@@ -90,6 +88,10 @@ class ActivityTimepillarCard extends TimepillarCard {
                 );
               },
               child: Container(
+                constraints: BoxConstraints(
+                  minHeight: measures.activityCardMinHeight,
+                  maxHeight: cardPosition.height,
+                ),
                 margin: right
                     ? EdgeInsets.only(
                         left: measures.dotSize + measures.hourIntervalPadding,
@@ -99,40 +101,26 @@ class ActivityTimepillarCard extends TimepillarCard {
                       ),
                 width: measures.cardWidth,
                 decoration: decoration,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: measures.activityCardMinHeight,
-                    maxHeight: cardPosition.height,
-                  ),
-                  child: Padding(
-                    padding: measures.cardPadding,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        if (hasTitle)
-                          SizedBox(
-                            height: textHeight,
-                            child: Text(activity.title),
-                          ),
-                        if (hasImage || signedOff || past)
-                          Padding(
+                child: Padding(
+                  padding: measures.cardPadding,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      if (hasTitle) Text(activity.title),
+                      if (hasImage || signedOff || past)
+                        Expanded(
+                          child: Padding(
                             padding:
                                 EdgeInsets.only(top: measures.cardPadding.top),
-                            child: SizedBox(
-                              height: cardPosition.height -
-                                  textHeight -
-                                  measures.cardPadding.vertical -
-                                  measures.cardPadding.top,
-                              child: EventImage.fromEventOccasion(
-                                fit: BoxFit.scaleDown,
-                                eventOccasion: activityOccasion,
-                                crossPadding: measures.cardPadding,
-                                checkPadding: measures.cardPadding * 2,
-                              ),
+                            child: EventImage.fromEventOccasion(
+                              fit: BoxFit.scaleDown,
+                              eventOccasion: activityOccasion,
+                              crossPadding: measures.cardPadding,
+                              checkPadding: measures.cardPadding * 2,
                             ),
-                          )
-                      ],
-                    ),
+                          ),
+                        )
+                    ],
                   ),
                 ),
               ),

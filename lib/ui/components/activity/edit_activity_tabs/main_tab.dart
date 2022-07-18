@@ -25,8 +25,7 @@ class MainTab extends StatelessWidget with EditActivityTab {
                 const Divider().pad(dividerPadding),
                 const DateAndTimeWidget()
                     .pad(layout.templates.m1.withoutBottom),
-                if (memoSettingsState.showCategories ||
-                    memoSettingsState.settings.editActivity.type)
+                if (memoSettingsState.showCategories)
                   CollapsableWidget(
                     collapsed: activity.fullDay,
                     child: Column(

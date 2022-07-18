@@ -290,16 +290,14 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                       ),
                                     ),
                                   ),
-                                  if (widget.showCategories)
-                                    SliverToBoxAdapter(
-                                      child: TimepillarBoard(
-                                        rightBoardData,
-                                        categoryMinWidth: categoryMinWidth,
-                                        timepillarWidth:
-                                            measures.cardTotalWidth,
-                                        textStyle: textStyle,
-                                      ),
+                                  SliverToBoxAdapter(
+                                    child: TimepillarBoard(
+                                      rightBoardData,
+                                      categoryMinWidth: categoryMinWidth,
+                                      timepillarWidth: measures.cardTotalWidth,
+                                      textStyle: textStyle,
                                     ),
+                                  ),
                                 ],
                               ),
                             ],

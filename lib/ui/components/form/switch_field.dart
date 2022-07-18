@@ -55,24 +55,30 @@ class SwitchField extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    if (leading != null) ...[
-                      IconTheme(
-                        data: Theme.of(context)
-                            .iconTheme
-                            .copyWith(size: layout.icon.small),
-                        child: leading,
-                      ),
-                      SizedBox(
-                        width: layout.formPadding.largeHorizontalItemDistance,
+                Expanded(
+                  child: Row(
+                    children: <Widget>[
+                      if (leading != null) ...[
+                        IconTheme(
+                          data: Theme.of(context)
+                              .iconTheme
+                              .copyWith(size: layout.icon.small),
+                          child: leading,
+                        ),
+                        SizedBox(
+                          width: layout.formPadding.largeHorizontalItemDistance,
+                        ),
+                      ],
+                      Expanded(
+                        child: DefaultTextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyText1 ??
+                              bodyText1,
+                          child: child,
+                        ),
                       ),
                     ],
-                    DefaultTextStyle(
-                      style: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
-                      child: child,
-                    ),
-                  ],
+                  ),
                 ),
                 SizedBox(
                   height: layout.switchField.toggleSize,

@@ -109,14 +109,6 @@ class _EditActivitySettingsWidget extends StatelessWidget {
               child: Text(t.selectDate),
             ),
             SwitchField(
-              leading: const Icon(AbiliaIcons.sendAndReceive),
-              value: addTabState.type,
-              onChanged: (v) => context
-                  .read<AddActivitySettingsCubit>()
-                  .editSettings(addTabState.copyWith(type: v)),
-              child: Text(t.selectType),
-            ),
-            SwitchField(
               leading: const Icon(AbiliaIcons.handiCheck),
               value: addTabState.checkable,
               onChanged: (v) => context

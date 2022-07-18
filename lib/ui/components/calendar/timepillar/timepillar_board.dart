@@ -129,21 +129,24 @@ BoardCardGenerator _activityCard({
   );
 
   final a = activityOccasion.activity;
-  final textHeight = (a.hasTitle
+  final textHeight = a.hasTitle
       ? a.title
           .textPainter(
-              textStyle,
-              measures.cardTextWidth -
-                  (decoration.border?.dimensions.horizontal ?? 0),
-              scaleFactor: textScaleFactor)
+            textStyle,
+            measures.cardTextWidth - (decoration.padding?.horizontal ?? 0),
+            TimepillarCard.maxTitleLines,
+            scaleFactor: textScaleFactor,
+          )
           .height
-      : 0.0);
+      : 0.0;
   final imageHeight =
       a.hasImage || activityOccasion.isSignedOff || activityOccasion.isPast
           ? measures.cardMinImageHeight + measures.cardPadding.top
           : 0.0;
-  final contentHeight =
-      measures.cardPadding.vertical + textHeight + imageHeight;
+  final contentHeight = measures.cardPadding.vertical +
+      textHeight +
+      imageHeight +
+      (decoration.padding?.vertical ?? 0);
   final cardPosition = CardPosition.calculate(
     eventOccasion: activityOccasion,
     measures: measures,
@@ -161,7 +164,6 @@ BoardCardGenerator _activityCard({
       activityOccasion: activityOccasion,
       cardPosition: cardPosition,
       column: col,
-      textHeight: textHeight,
       dayParts: dayParts,
       timepillarSide: timepillarSide,
       measures: measures,
@@ -181,8 +183,12 @@ BoardCardGenerator _timerCard({
   final contentHeight = timerOccasion.hasImage
       ? measures.cardMinImageHeight
       : timerOccasion.timer.title
-          .textPainter(textStyle, measures.cardTextWidth,
-              scaleFactor: textScaleFactor)
+          .textPainter(
+            textStyle,
+            measures.cardTextWidth,
+            TimepillarCard.maxTitleLines,
+            scaleFactor: textScaleFactor,
+          )
           .height;
 
   final totalContentHeight = measures.cardPadding.vertical +
@@ -238,7 +244,7 @@ class CardPosition {
         ? 0.0
         : timeToPixels(minuteStartPosition.hour, minuteStartPosition.minute,
                 measures.dotDistance) -
-            measures.topOffset(startTime);
+            measures.topOffset(minuteStartPosition);
 
     final endTime = endsAfterInterval ? interval.end : eventOccasion.end;
     final dots = hasSideDots

@@ -160,6 +160,7 @@ class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {
       title: widget.inputHeading,
       iconData: widget.icon,
       borderRadius: layout.appBar.borderRadius,
+      useVerticalSafeArea: false,
     );
 
     return Tts.fromSemantics(
@@ -216,6 +217,7 @@ class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {
             ),
           ),
           BottomNavigation(
+            useVerticalSafeArea: false,
             backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: OkButton(
               key: TestKey.inputOk,

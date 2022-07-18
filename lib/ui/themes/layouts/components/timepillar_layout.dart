@@ -147,6 +147,7 @@ class TimepillarCardLayout {
           height: fontHeight,
           color: AbiliaColors.black,
           fontWeight: FontWeight.w400,
+          overflow: TextOverflow.ellipsis,
           leadingDistribution: TextLeadingDistribution.even,
         ),
       );
