@@ -72,7 +72,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     pageController = PageController(
       initialPage: context.read<DayPickerBloc>().state.index,
     );
@@ -80,7 +80,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     pageController.dispose();
     super.dispose();
   }

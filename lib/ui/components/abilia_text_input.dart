@@ -241,12 +241,12 @@ abstract class StateWithFocusOnResume<T extends StatefulWidget> extends State<T>
   void initState() {
     super.initState();
     focusNode = FocusNode();
-    if (Platform.isAndroid) WidgetsBinding.instance?.addObserver(this);
+    if (Platform.isAndroid) WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
-    if (Platform.isAndroid) WidgetsBinding.instance?.removeObserver(this);
+    if (Platform.isAndroid) WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 

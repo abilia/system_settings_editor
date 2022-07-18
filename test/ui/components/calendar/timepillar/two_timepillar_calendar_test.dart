@@ -130,7 +130,10 @@ void main() {
     });
 
     testWidgets('tts on 24 h two timepillar', (WidgetTester tester) async {
-      tester.binding.window.alwaysUse24HourFormatTestValue = true;
+      addTearDown(
+        tester.binding.platformDispatcher.clearAlwaysUse24HourTestValue,
+      );
+      tester.binding.platformDispatcher.alwaysUse24HourFormatTestValue = true;
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       final hour = DateFormat('H').format(time);

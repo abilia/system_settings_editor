@@ -17,7 +17,7 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -39,7 +39,7 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 

@@ -50,7 +50,6 @@ void main() {
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     mockTicker = StreamController<DateTime>();
-    await clearNotificationSubject();
 
     final response = [activity];
 
@@ -95,6 +94,7 @@ void main() {
 
   tearDown(() async {
     await GetIt.I.reset();
+    await clearNotificationSubject();
     notificationsPluginInstance = null;
     mockTicker.close();
     setupPermissions();
@@ -295,15 +295,15 @@ void main() {
 
     testWidgets('SGC-844 alarm does not open when app is paused',
         (WidgetTester tester) async {
-      // Act
-      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
       addTearDown(() => tester.binding
           .handleAppLifecycleStateChanged(AppLifecycleState.resumed));
-
-      selectNotificationSubject.add(payload);
+      // Act
       await tester.pumpApp();
       await tester.pumpAndSettle();
-
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+      await tester.pumpAndSettle();
+      selectNotificationSubject.add(payload);
+      await tester.pumpAndSettle();
       // Assert
       expect(find.byType(PopAwareAlarmPage), findsNothing);
     });
