@@ -227,6 +227,20 @@ final actionButtonStyleDark = _actionButtonStyle.copyWith(
   }),
 );
 
+final actionButtonStyleNoneTransparantDark = actionButtonStyleDark.copyWith(
+  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return Colors.transparent;
+      }
+      if (states.contains(MaterialState.pressed)) {
+        return AbiliaColors.white140;
+      }
+      return AbiliaColors.white120;
+    },
+  ),
+);
+
 final actionButtonStyleDarkLarge = actionButtonStyleDark.copyWith(
   minimumSize: MaterialStateProperty.all(
     Size(layout.actionButton.largeSize, layout.actionButton.largeSize),

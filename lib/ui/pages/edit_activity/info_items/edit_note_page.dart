@@ -114,8 +114,11 @@ class _EditNotePageState extends State<EditNotePage> {
               ),
               Padding(
                 padding: layout.fab.padding,
-                child: TtsPlayButton(controller: _textEditingController),
-              )
+                child: TtsPlayButton(
+                  controller: _textEditingController,
+                  buttonStyle: actionButtonStyleNoneTransparantDark,
+                ),
+              ),
             ],
           ),
         ),
