@@ -89,9 +89,10 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                                       : 0,
                                 ),
                                 child: TtsPlayButton(
-                                    tts: state.voice.isNotEmpty
-                                        ? t.speechTest
-                                        : ''),
+                                  tts: state.voice.isNotEmpty
+                                      ? t.speechTest
+                                      : '',
+                                ),
                               ),
                             ],
                           ),
