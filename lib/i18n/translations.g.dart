@@ -2793,7 +2793,7 @@ class DA extends Translated {
   final String activityAvailableFor = 'Fås til';
 
   @override
-  final String allSupportPersons = 'Alla mina stödpersoner';
+  final String allSupportPersons = 'Alle mine støttepersoner';
 
   @override
   final String onlyMe = 'Bare mig';
@@ -4092,7 +4092,7 @@ class NL extends Translated {
   final String activityAvailableFor = 'Beschikbaar voor';
 
   @override
-  final String allSupportPersons = 'Alle mine støttepersoner';
+  final String allSupportPersons = 'Al mijn ondersteuningspersonen';
 
   @override
   final String onlyMe = 'Mij alleen';
@@ -5193,7 +5193,7 @@ class FI extends Translated {
   final String timeTo = '-';
 
   @override
-  final String addTimer = 'Timer toevoegen';
+  final String addTimer = 'Lisää ajastin';
 
   @override
   final String start = 'Alkaa';
@@ -5394,7 +5394,7 @@ class FI extends Translated {
   final String activityAvailableFor = 'Käytettävissä';
 
   @override
-  final String allSupportPersons = 'Al mijn ondersteuningspersonen';
+  final String allSupportPersons = 'Kaikki tukihenkilöt';
 
   @override
   final String onlyMe = 'Vain minä';
@@ -6492,7 +6492,7 @@ class DE extends Translated {
   final String timeTo = 'bis';
 
   @override
-  final String addTimer = 'Lisää ajastin';
+  final String addTimer = 'Timer hinzufügen';
 
   @override
   final String start = 'Anfang';
@@ -6693,7 +6693,7 @@ class DE extends Translated {
   final String activityAvailableFor = 'Verfügbar für';
 
   @override
-  final String allSupportPersons = 'Kaikki tukihenkilöt';
+  final String allSupportPersons = 'Alle meine Hilfspersonen';
 
   @override
   final String onlyMe = 'Nur für mich';
@@ -7793,7 +7793,7 @@ class NB extends Translated {
   final String timeTo = 'til';
 
   @override
-  final String addTimer = 'Timer hinzufügen';
+  final String addTimer = 'Legg inn timer';
 
   @override
   final String start = 'Start';
@@ -7993,7 +7993,7 @@ class NB extends Translated {
   final String activityAvailableFor = 'Tilgjengelig for';
 
   @override
-  final String allSupportPersons = 'Alle meine Hilfspersonen';
+  final String allSupportPersons = 'Alle mine støttepersoner';
 
   @override
   final String onlyMe = 'Bare meg';
