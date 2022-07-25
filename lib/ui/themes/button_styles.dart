@@ -213,9 +213,9 @@ final actionButtonStyleDark = _actionButtonStyle.copyWith(
         return Colors.transparent;
       }
       if (states.contains(MaterialState.pressed)) {
-        return AbiliaColors.white140;
+        return AbiliaColors.transparentBlack40;
       }
-      return AbiliaColors.white120;
+      return AbiliaColors.transparentBlack20;
     },
   ),
   shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
