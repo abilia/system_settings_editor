@@ -92,8 +92,6 @@ class _TimeInputContentState extends State<TimeInputContent> {
   late DayPeriod endTimePeriod;
   late FocusNode startTimeFocus;
   late FocusNode endTimeFocus;
-  late String validatedNewStartTime;
-  late String validatedNewEndTime;
 
   bool get twelveHourClock => !widget.is24HoursFormat;
 
@@ -108,28 +106,28 @@ class _TimeInputContentState extends State<TimeInputContent> {
       ..requestFocus()
       ..addListener(() {
         if (!startTimeFocus.hasFocus) {
-          setState(() => validatedNewStartTime = _focusChangedValidation());
+          _focusChangedValidation();
         }
       });
 
     endTimeFocus = FocusNode()
       ..addListener(() {
         if (!endTimeFocus.hasFocus) {
-          setState(() => validatedNewEndTime = _focusChangedValidation());
+          _focusChangedValidation();
         }
       });
 
-    validatedNewStartTime = widget.timeInput.rawStartTime(twelveHourClock);
-    validatedNewEndTime = widget.timeInput.rawEndTime(twelveHourClock);
+    final startTime = widget.timeInput.rawStartTime(twelveHourClock);
+    final endTime = widget.timeInput.rawEndTime(twelveHourClock);
 
-    startTimeController = TextEditingController(text: validatedNewStartTime)
+    startTimeController = TextEditingController(text: startTime)
       ..addListener(() {
-        if (valid(startTimeController) || startTimeController.text.isEmpty) {
+        if (valid(startTimeController)) {
           _onNewValidTime();
         }
       });
 
-    endTimeController = TextEditingController(text: validatedNewEndTime)
+    endTimeController = TextEditingController(text: endTime)
       ..addListener(() {
         if (valid(endTimeController) || endTimeController.text.isEmpty) {
           _onNewValidTime();
@@ -144,12 +142,12 @@ class _TimeInputContentState extends State<TimeInputContent> {
     }
   }
 
-  String _focusChangedValidation([final String oldValidTime = '']) {
+  String _focusChangedValidation() {
     final controller =
         startTimeFocus.hasFocus ? endTimeController : startTimeController;
     controller.selection =
         TextSelection(baseOffset: 0, extentOffset: controller.text.length);
-    return controller.text = valid(controller) ? controller.text : oldValidTime;
+    return controller.text = valid(controller) ? controller.text : '';
   }
 
   @override
@@ -277,7 +275,7 @@ class _TimeInputContentState extends State<TimeInputContent> {
                   AbiliaNumPad(
                     delete: _deleteOneDigit,
                     onNumPress: _numPadKeyPress,
-                    onClear: () => focusedController.clear(),
+                    onClear: _clearPress,
                   ),
                 ],
               ),
@@ -301,6 +299,7 @@ class _TimeInputContentState extends State<TimeInputContent> {
     final controller = focusedController;
     if (controller.text.isEmpty) return;
     controller.text = controller.text.substring(0, controller.text.length - 1);
+    setState(() {});
   }
 
   void _numPadKeyPress(String value) {
@@ -315,6 +314,12 @@ class _TimeInputContentState extends State<TimeInputContent> {
     if (startTimeFocus.hasFocus && valid(startTimeController)) {
       endTimeFocus.requestFocus();
     }
+    setState(() {});
+  }
+
+  void _clearPress() {
+    focusedController.clear();
+    setState(() {});
   }
 
   String _validate(String oldValue, String newValue) {
