@@ -26,7 +26,7 @@ abstract class Translated {
 
   final String password = 'Password';
 
-  final String loginHintMP = 'Use your myAbilia account to Login';
+  final String loginHintMP = 'Use your myAbilia account to Log in';
 
   final String loginHintMPGO =
       'Login with the same username and password as on your MEMOplanner';
@@ -1633,6 +1633,9 @@ class SV extends Translated {
   final String task = 'Uppgift';
 
   @override
+  final String enterTask = 'Ange uppgift';
+
+  @override
   final String screenBrightness = 'Skärmens ljusstyrka';
 
   @override
@@ -2257,6 +2260,9 @@ class DA extends Translated {
       'Supportere eller Admin-brugere kan ikke logge ind på MEMOplanner Go. Brug venligst myAbilia.';
 
   @override
+  final String loggedOutMessage = 'Du er blevet logget ud. Log ind igen.';
+
+  @override
   final String createAccountHint = 'Har du ikke en myAbilia-konto endnu?';
 
   @override
@@ -2479,6 +2485,24 @@ class DA extends Translated {
   final String timerInvalidDuration = 'Varigheden kan ikke være nul.';
 
   @override
+  final String timerDelete = 'Ønsker du at slette timeren?';
+
+  @override
+  final String timerPause = 'Ønsker du at sætte timeren på pause?';
+
+  @override
+  final String timerResume = 'Ønsker du at slette timeren?';
+
+  @override
+  final String timerPaused = 'Sat på pause';
+
+  @override
+  final String pause = 'Pause';
+
+  @override
+  final String resume = 'Fortsæt';
+
+  @override
   final String activity = 'Aktivitet';
 
   @override
@@ -2560,10 +2584,16 @@ class DA extends Translated {
       'Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?';
 
   @override
+  final String templates = 'Skabeloner';
+
+  @override
   final String templateActivities = 'Standardaktiviteter';
 
   @override
   final String timeTo = 'til';
+
+  @override
+  final String addTimer = 'Tilføj timer';
 
   @override
   final String start = 'Start';
@@ -2578,6 +2608,9 @@ class DA extends Translated {
   final String startTimer = 'Start timeren';
 
   @override
+  final String enterNameForTimer = 'Indtast navn på timer';
+
+  @override
   final String fromTemplateTimer = 'Fra standardtimer';
 
   @override
@@ -2587,7 +2620,13 @@ class DA extends Translated {
   final String timer = 'Timer';
 
   @override
+  final String timeIsUp = 'Tiden er gået';
+
+  @override
   final String templateTimers = 'Standardtimers';
+
+  @override
+  final String editTimer = 'Rediger timer';
 
   @override
   final String menu = 'Menu';
@@ -2660,6 +2699,9 @@ class DA extends Translated {
 
   @override
   final String emptyFolder = 'Mappen er tom';
+
+  @override
+  final String noTemplates = 'Du har ingen skabeloner';
 
   @override
   final String noChecklists = 'Du har ingen tjeklister';
@@ -2749,6 +2791,9 @@ class DA extends Translated {
 
   @override
   final String activityAvailableFor = 'Fås til';
+
+  @override
+  final String allSupportPersons = 'Alla mina stödpersoner';
 
   @override
   final String onlyMe = 'Bare mig';
@@ -2885,6 +2930,9 @@ class DA extends Translated {
 
   @override
   final String task = 'Opgave';
+
+  @override
+  final String enterTask = 'Indtast opgave';
 
   @override
   final String screenBrightness = 'Skærmens lysstyrke';
@@ -3117,6 +3165,9 @@ class DA extends Translated {
   final String stepByStep = 'Trinvist';
 
   @override
+  final String showTemplates = 'Vis skabeloner';
+
+  @override
   final String selectName = 'Vælg navn';
 
   @override
@@ -3154,6 +3205,9 @@ class DA extends Translated {
   final String defaults = 'Forvalg';
 
   @override
+  final String onlyAppliesToGo = 'Kun relevant for MEMOplanner Go';
+
+  @override
   final String showOngoingActivityInFullScreen =
       'Vis nuværende aktivitet i fuld skærm';
 
@@ -3186,6 +3240,10 @@ class DA extends Translated {
   @override
   final String menuRemovalWarning =
       'Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke på kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.';
+
+  @override
+  final String selectADayToViewDetails =
+      'Vælg en dag for at se flere oplysninger';
 
   @override
   final String topField = 'Topfelt';
@@ -3275,10 +3333,19 @@ class DA extends Translated {
   final String speechRate = 'Talehastighed';
 
   @override
+  final String voice = 'Stemme';
+
+  @override
   final String noVoicesInstalled = 'Der er ikke installeret nogen stemmer';
 
   @override
+  final String installingVoice = 'Installering';
+
+  @override
   final String speechTest = 'Test af talehastighed';
+
+  @override
+  final String voices = 'Ääni';
 
   @override
   final String codeProtect = 'Kodebeskyttelse';
@@ -3294,6 +3361,12 @@ class DA extends Translated {
 
   @override
   final String codeProtectAndroidSettings = 'Kodebeskyt Android-indstillinger';
+
+  @override
+  final String enterCode = 'Indtast kode';
+
+  @override
+  final String enterYourCodeToAccess = 'Indtast din kode for at få adgang';
 
   @override
   final String enterNewCode = 'Angiv nyt kodeord';
@@ -3401,6 +3474,24 @@ class DA extends Translated {
   final String quickSettingsMenu = 'Hurtig-\nindstillinger';
 
   @override
+  final String allPhotos = 'Alle fotos';
+
+  @override
+  final String addToPhotoCalendarQuestion =
+      'Ønsker du at tilføje dette foto til din fotokalender?';
+
+  @override
+  final String removeFromPhotoCalendarQuestion =
+      'Ønsker du at fjerne dette foto fra din fotokalender?';
+
+  @override
+  final String doYouWantToDeleteThisPhoto =
+      'Er du sikker på, du ønsker at slette dette foto?';
+
+  @override
+  final String installStarterSet = 'Vil du installere startersættet?';
+
+  @override
   final String doYouWantToImportADefaultSet =
       'Ønsker du at importere startopsætning med standardaktiviteter, standardtimer, tjeklister og billedarkiv?';
 
@@ -3413,6 +3504,15 @@ class DA extends Translated {
 
   @override
   final String checkInternetConnection = 'Kontroller din internetforbindelse';
+
+  @override
+  final String step = 'Trin';
+
+  @override
+  final String downloadVoiceText = 'Download stemme til stemmerapport';
+
+  @override
+  final String finsish = 'Afslut';
 
   @override
   final String notSelected = 'Ikke valgt';
@@ -3457,6 +3557,10 @@ class NL extends Translated {
   @override
   final String userTypeNotSupported =
       'Gebruikers van het type Ondersteuningspersoon of Beheerder kunnen niet inloggen op MEMOPlanner Go. Gebruik myAbilia.';
+
+  @override
+  final String loggedOutMessage =
+      'U bent uitgelogd. Log alstublieft opnieuw in.';
 
   @override
   final String createAccountHint = 'Heeft u nog geen myAbilia-account?';
@@ -3681,6 +3785,24 @@ class NL extends Translated {
   final String timerInvalidDuration = 'De duur kan niet nul zijn.';
 
   @override
+  final String timerDelete = 'Wilt u de timer verwijderen?';
+
+  @override
+  final String timerPause = 'Wilt u de timer pauzeren?';
+
+  @override
+  final String timerResume = 'Wilt u de timer verwijderen?';
+
+  @override
+  final String timerPaused = 'Gepauzeerd';
+
+  @override
+  final String pause = 'Pauzeren';
+
+  @override
+  final String resume = 'Doorgaan';
+
+  @override
   final String activity = 'Activiteit';
 
   @override
@@ -3760,10 +3882,16 @@ class NL extends Translated {
       'Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?';
 
   @override
+  final String templates = 'Sjablonen';
+
+  @override
   final String templateActivities = 'Standaard activiteiten';
 
   @override
   final String timeTo = 'tot';
+
+  @override
+  final String addTimer = 'Timer toevoegen';
 
   @override
   final String start = 'Begin';
@@ -3778,6 +3906,9 @@ class NL extends Translated {
   final String startTimer = 'Start timer';
 
   @override
+  final String enterNameForTimer = 'Voer naam in voor timer';
+
+  @override
   final String fromTemplateTimer = 'Uit standaardtimers';
 
   @override
@@ -3787,7 +3918,13 @@ class NL extends Translated {
   final String timer = 'Tijdopnemer';
 
   @override
+  final String timeIsUp = 'De tijd is om';
+
+  @override
   final String templateTimers = 'Standaard timers';
+
+  @override
+  final String editTimer = 'Timer bewerken';
 
   @override
   final String menu = 'Menu';
@@ -3860,6 +3997,9 @@ class NL extends Translated {
 
   @override
   final String emptyFolder = 'De map is leeg';
+
+  @override
+  final String noTemplates = 'Je hebt geen sjablonen';
 
   @override
   final String noChecklists = 'Je hebt geen checklists';
@@ -3950,6 +4090,9 @@ class NL extends Translated {
 
   @override
   final String activityAvailableFor = 'Beschikbaar voor';
+
+  @override
+  final String allSupportPersons = 'Alle mine støttepersoner';
 
   @override
   final String onlyMe = 'Mij alleen';
@@ -4086,6 +4229,9 @@ class NL extends Translated {
 
   @override
   final String task = 'Taak';
+
+  @override
+  final String enterTask = 'Voer taak in';
 
   @override
   final String screenBrightness = 'Schermhelderheid';
@@ -4318,6 +4464,9 @@ class NL extends Translated {
   final String stepByStep = 'Stap voor stap';
 
   @override
+  final String showTemplates = 'Toon sjablonen';
+
+  @override
   final String selectName = 'Naam selecteren';
 
   @override
@@ -4355,6 +4504,9 @@ class NL extends Translated {
   final String defaults = 'Voorselectie';
 
   @override
+  final String onlyAppliesToGo = 'Geldt alleen voor MEMOplanner Go';
+
+  @override
   final String showOngoingActivityInFullScreen =
       'Lopende activiteit in volledig scherm tonen';
 
@@ -4387,6 +4539,10 @@ class NL extends Translated {
   @override
   final String menuRemovalWarning =
       'Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door op de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.';
+
+  @override
+  final String selectADayToViewDetails =
+      'Selecteer een dag om meer details te bekijken';
 
   @override
   final String topField = 'Bovenste veld';
@@ -4477,7 +4633,13 @@ class NL extends Translated {
   final String speechRate = 'Spraaksnelheid';
 
   @override
+  final String voice = 'Stem';
+
+  @override
   final String noVoicesInstalled = 'Geen stemmen geïnstalleerd';
+
+  @override
+  final String installingVoice = 'Installeren';
 
   @override
   final String speechTest = 'Test van spraaksnelheid';
@@ -4500,6 +4662,13 @@ class NL extends Translated {
   @override
   final String codeProtectAndroidSettings =
       'Codebeschermingsinstellingen Android';
+
+  @override
+  final String enterCode = 'Voer code in';
+
+  @override
+  final String enterYourCodeToAccess =
+      'Voer uw code in om toegang te krijgen naar';
 
   @override
   final String enterNewCode = 'Voer nieuwe code in';
@@ -4607,6 +4776,24 @@ class NL extends Translated {
   final String quickSettingsMenu = 'Snelle\ninstellingen';
 
   @override
+  final String allPhotos = "Alle foto's";
+
+  @override
+  final String addToPhotoCalendarQuestion =
+      'Wilt u deze foto toevoegen aan de fotokalender?';
+
+  @override
+  final String removeFromPhotoCalendarQuestion =
+      'Wilt u deze foto uit de fotokalender verwijderen?';
+
+  @override
+  final String doYouWantToDeleteThisPhoto =
+      'Weet u zeker dat u deze foto wilt verwijderen?';
+
+  @override
+  final String installStarterSet = 'Standaard dataset installeren?';
+
+  @override
   final String doYouWantToImportADefaultSet =
       'Wilt u een standaard dataset importeren met standaard activiteiten, timers, checklists en afbeeldingenarchief?';
 
@@ -4619,6 +4806,15 @@ class NL extends Translated {
 
   @override
   final String checkInternetConnection = 'Controleer uw internetverbinding';
+
+  @override
+  final String step = 'Stap';
+
+  @override
+  final String downloadVoiceText = 'Dowload stem voor spraakondersteuning';
+
+  @override
+  final String finsish = 'Voltooien';
 
   @override
   final String notSelected = 'Niet geselecteerd';
@@ -4663,6 +4859,10 @@ class FI extends Translated {
   @override
   final String userTypeNotSupported =
       'ukihenkilö- tai järjestelmänvalvojatyyppiset käyttäjät eivät voi kirjautua sisään MEMOPlanner Go -palveluun. Käytä myAbiliaa.';
+
+  @override
+  final String loggedOutMessage =
+      'Olet kirjautunut ulos. Kirjaudu sisään uudelleen.';
 
   @override
   final String createAccountHint = 'Eikö sinulla ole vielä myAbilia-tiliä?';
@@ -4886,6 +5086,24 @@ class FI extends Translated {
   final String timerInvalidDuration = 'Kesto ei voi olla nolla.';
 
   @override
+  final String timerDelete = 'Haluatko poistaa ajastimen?';
+
+  @override
+  final String timerPause = 'Haluatko keskeyttää ajastimen?';
+
+  @override
+  final String timerResume = 'Haluatko poistaa ajastimen?';
+
+  @override
+  final String timerPaused = 'Keskeytetty';
+
+  @override
+  final String pause = 'Keskeytä';
+
+  @override
+  final String resume = 'Jatka';
+
+  @override
   final String activity = 'Aktiviteetti';
 
   @override
@@ -4966,10 +5184,16 @@ class FI extends Translated {
       'Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?';
 
   @override
+  final String templates = 'Mallit';
+
+  @override
   final String templateActivities = 'Perusaktiviteetit';
 
   @override
   final String timeTo = '-';
+
+  @override
+  final String addTimer = 'Timer toevoegen';
 
   @override
   final String start = 'Alkaa';
@@ -4984,6 +5208,9 @@ class FI extends Translated {
   final String startTimer = 'Käynnistysajastin';
 
   @override
+  final String enterNameForTimer = 'Lisää nimi ajastimeen';
+
+  @override
   final String fromTemplateTimer = 'Perusajastimesta';
 
   @override
@@ -4993,7 +5220,13 @@ class FI extends Translated {
   final String timer = 'Ajastin';
 
   @override
+  final String timeIsUp = 'Aika loppui';
+
+  @override
   final String templateTimers = 'Perusajastimet';
+
+  @override
+  final String editTimer = 'Muokkaa ajastin';
 
   @override
   final String menu = 'Valikko';
@@ -5066,6 +5299,9 @@ class FI extends Translated {
 
   @override
   final String emptyFolder = 'Kansio on tyhjä';
+
+  @override
+  final String noTemplates = 'Sinulla ei ole mallit';
 
   @override
   final String noChecklists = 'Sinulla ei ole tarkistuslistoja';
@@ -5156,6 +5392,9 @@ class FI extends Translated {
 
   @override
   final String activityAvailableFor = 'Käytettävissä';
+
+  @override
+  final String allSupportPersons = 'Al mijn ondersteuningspersonen';
 
   @override
   final String onlyMe = 'Vain minä';
@@ -5292,6 +5531,9 @@ class FI extends Translated {
 
   @override
   final String task = 'Tehtävä';
+
+  @override
+  final String enterTask = 'Syötä tehtävä';
 
   @override
   final String screenBrightness = 'Näytön kirkkaus';
@@ -5524,6 +5766,9 @@ class FI extends Translated {
   final String stepByStep = 'Vaihe vaiheelta';
 
   @override
+  final String showTemplates = 'Näytä mallit';
+
+  @override
   final String selectName = 'Valitse nimi';
 
   @override
@@ -5561,6 +5806,9 @@ class FI extends Translated {
   final String defaults = 'Esivalinta';
 
   @override
+  final String onlyAppliesToGo = 'Koskee vain MEMOplanner Gota';
+
+  @override
   final String showOngoingActivityInFullScreen =
       'Näytä käynnissä oleva aktiviteetti koko näytössä';
 
@@ -5593,6 +5841,9 @@ class FI extends Translated {
   @override
   final String menuRemovalWarning =
       'Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää napsauttamalla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.';
+
+  @override
+  final String selectADayToViewDetails = 'Valitse päivä nähdäksesi lisätietoja';
 
   @override
   final String topField = 'Yläkenttä';
@@ -5686,6 +5937,9 @@ class FI extends Translated {
   final String noVoicesInstalled = 'Ääniä ei ole asennettu';
 
   @override
+  final String installingVoice = 'Asentaa';
+
+  @override
   final String speechTest = 'Puhenopeuden testaus';
 
   @override
@@ -5705,6 +5959,12 @@ class FI extends Translated {
 
   @override
   final String codeProtectAndroidSettings = 'Suojaa Android-asetukset koodilla';
+
+  @override
+  final String enterCode = 'Syötä koodi';
+
+  @override
+  final String enterYourCodeToAccess = 'Syötä koodi päästäksesi sisään';
 
   @override
   final String enterNewCode = 'Anna uusi koodi';
@@ -5811,6 +6071,24 @@ class FI extends Translated {
   final String quickSettingsMenu = 'Pika-\nasetukset';
 
   @override
+  final String allPhotos = 'Kaikki kuvat';
+
+  @override
+  final String addToPhotoCalendarQuestion =
+      'Haluatko lisätä tämän kuvan valokuvakalenteriin?';
+
+  @override
+  final String removeFromPhotoCalendarQuestion =
+      'Haluatko poistaa tämän kuvan valokuvakalenterista?';
+
+  @override
+  final String doYouWantToDeleteThisPhoto =
+      'Haluatko varmasti poistaa tämän kuvan?';
+
+  @override
+  final String installStarterSet = 'Aseta aloitussarja';
+
+  @override
   final String doYouWantToImportADefaultSet =
       'Haluatko tuoda oletustiedot perusaktiviteettien, ajastimien, tarkistusluettelojen ja kuva-arkiston mukana?';
 
@@ -5823,6 +6101,15 @@ class FI extends Translated {
 
   @override
   final String checkInternetConnection = 'Tarkista Internet-yhteys';
+
+  @override
+  final String step = 'Vaihe';
+
+  @override
+  final String downloadVoiceText = 'Lataa ääni puhetukea varten';
+
+  @override
+  final String finsish = 'Lopeta';
 
   @override
   final String notSelected = 'Ei valittu';
@@ -5868,6 +6155,10 @@ class DE extends Translated {
   @override
   final String userTypeNotSupported =
       'Benutzer vom Typ Supportperson oder Admin können sich nicht bei MEMOPlanner Go anmelden. Bitte verwenden Sie myAbilia.';
+
+  @override
+  final String loggedOutMessage =
+      'Sie wurden abgemeldet. Bitte melden Sie sich erneut an.';
 
   @override
   final String createAccountHint = 'Sie haben noch kein myAbilia-Konto?';
@@ -6094,6 +6385,24 @@ class DE extends Translated {
   final String timerInvalidDuration = 'Dauer kann nicht Null sein';
 
   @override
+  final String timerDelete = 'Möchten Sie den Timer löschen?';
+
+  @override
+  final String timerPause = 'Möchten Sie den Timer pausieren?';
+
+  @override
+  final String timerResume = 'Möchten Sie den Timer löschen?';
+
+  @override
+  final String timerPaused = 'Pausiert';
+
+  @override
+  final String pause = 'Pausieren';
+
+  @override
+  final String resume = 'Fortsetzen';
+
+  @override
   final String activity = 'Aktivität';
 
   @override
@@ -6174,10 +6483,16 @@ class DE extends Translated {
       'Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?';
 
   @override
+  final String templates = 'Vorlagen';
+
+  @override
   final String templateActivities = 'Standardaktivitäten';
 
   @override
   final String timeTo = 'bis';
+
+  @override
+  final String addTimer = 'Lisää ajastin';
 
   @override
   final String start = 'Anfang';
@@ -6192,6 +6507,9 @@ class DE extends Translated {
   final String startTimer = 'Timer starten';
 
   @override
+  final String enterNameForTimer = 'Namen für den Timer angeben';
+
+  @override
   final String fromTemplateTimer = 'Von Standardtimer';
 
   @override
@@ -6201,7 +6519,13 @@ class DE extends Translated {
   final String timer = 'Timer';
 
   @override
+  final String timeIsUp = 'Die Zeit ist abgelaufen';
+
+  @override
   final String templateTimers = 'Standardtimer';
+
+  @override
+  final String editTimer = 'Timer bearbeiten';
 
   @override
   final String menu = 'Menü';
@@ -6274,6 +6598,9 @@ class DE extends Translated {
 
   @override
   final String emptyFolder = 'Der Ordner leer ist';
+
+  @override
+  final String noTemplates = 'Sie haben keine vorlagen';
 
   @override
   final String noChecklists = 'Sie haben keine Checklisten';
@@ -6364,6 +6691,9 @@ class DE extends Translated {
 
   @override
   final String activityAvailableFor = 'Verfügbar für';
+
+  @override
+  final String allSupportPersons = 'Kaikki tukihenkilöt';
 
   @override
   final String onlyMe = 'Nur für mich';
@@ -6501,6 +6831,9 @@ class DE extends Translated {
 
   @override
   final String task = 'Aufgabe';
+
+  @override
+  final String enterTask = 'Aufgabe eingeben';
 
   @override
   final String screenBrightness = 'Bildschirmhelligkeit';
@@ -6734,6 +7067,9 @@ class DE extends Translated {
   final String stepByStep = 'Schritt für Schritt';
 
   @override
+  final String showTemplates = 'Vorlagen anzeigen';
+
+  @override
   final String selectName = 'Name auswählen';
 
   @override
@@ -6771,6 +7107,9 @@ class DE extends Translated {
   final String defaults = 'Vorauswahl';
 
   @override
+  final String onlyAppliesToGo = 'Gilt nur für MEMOplanner Go';
+
+  @override
   final String showOngoingActivityInFullScreen =
       'Laufende Aktivität im Vollbild zeigen';
 
@@ -6803,6 +7142,10 @@ class DE extends Translated {
   @override
   final String menuRemovalWarning =
       'Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie die Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.';
+
+  @override
+  final String selectADayToViewDetails =
+      'Tag auswählen, um weitere Details anzuzeigen';
 
   @override
   final String topField = 'Oberstes Feld';
@@ -6895,6 +7238,9 @@ class DE extends Translated {
   final String noVoicesInstalled = 'Keine Stimmen installiert';
 
   @override
+  final String installingVoice = 'Wird installiert';
+
+  @override
   final String speechTest = 'Test des Sprechtempos';
 
   @override
@@ -6915,6 +7261,13 @@ class DE extends Translated {
   @override
   final String codeProtectAndroidSettings =
       'Android-Einstellungen mit Code schützen';
+
+  @override
+  final String enterCode = 'Code eingeben';
+
+  @override
+  final String enterYourCodeToAccess =
+      'Geben Sie Ihren Code ein, um darauf zuzugreifen';
 
   @override
   final String enterNewCode = 'Neuen Code eingeben';
@@ -7022,6 +7375,24 @@ class DE extends Translated {
   final String quickSettingsMenu = 'Schnell-\neinstellungen';
 
   @override
+  final String allPhotos = 'Alle Fotos';
+
+  @override
+  final String addToPhotoCalendarQuestion =
+      'Möchten Sie dieses Foto dem Fotokalender hinzufügen?';
+
+  @override
+  final String removeFromPhotoCalendarQuestion =
+      'Möchten Sie dieses Foto aus dem Fotokalender entfernen?';
+
+  @override
+  final String doYouWantToDeleteThisPhoto =
+      'Sind Sie sicher, dass Sie dieses Foto löschen möchten?';
+
+  @override
+  final String installStarterSet = 'Einstiegspaket installieren?';
+
+  @override
   final String doYouWantToImportADefaultSet =
       'Möchten Sie einen Standard-Datenbestand mit Standardaktivitäten, Timern, Checklisten und Bildarchiv importieren?';
 
@@ -7035,6 +7406,16 @@ class DE extends Translated {
   @override
   final String checkInternetConnection =
       'Überprüfen Sie Ihre Internetverbindung';
+
+  @override
+  final String step = 'Schritt';
+
+  @override
+  final String downloadVoiceText =
+      'Stimme für Sprachunterstützung herunterladen';
+
+  @override
+  final String finsish = 'Abschließen';
 
   @override
   final String notSelected = 'Nicht ausgewählt';
@@ -7079,6 +7460,9 @@ class NB extends Translated {
   @override
   final String userTypeNotSupported =
       'Brukere av typen Støtteperson eller Admin kan ikke logge inn på MEMOplanner Go. Vennligst bruk myAbilia.';
+
+  @override
+  final String loggedOutMessage = 'Du har blitt logget ut. Logg på igjen.';
 
   @override
   final String createAccountHint = 'Har du ikke en myAbilia-konto ennå?';
@@ -7305,6 +7689,21 @@ class NB extends Translated {
   final String timerDelete = 'Vil du slette timeren?';
 
   @override
+  final String timerPause = 'Vil du sette tidtakeren på pause?';
+
+  @override
+  final String timerResume = 'Vil du slette timeren?';
+
+  @override
+  final String timerPaused = 'Pauset';
+
+  @override
+  final String pause = 'Pause';
+
+  @override
+  final String resume = 'Fortsette';
+
+  @override
   final String activity = 'Aktivitet';
 
   @override
@@ -7394,7 +7793,7 @@ class NB extends Translated {
   final String timeTo = 'til';
 
   @override
-  final String addTimer = 'Legg inn timer';
+  final String addTimer = 'Timer hinzufügen';
 
   @override
   final String start = 'Start';
@@ -7425,6 +7824,9 @@ class NB extends Translated {
 
   @override
   final String templateTimers = 'Standardtimere';
+
+  @override
+  final String editTimer = 'Endre timere';
 
   @override
   final String menu = 'Meny';
@@ -7497,6 +7899,9 @@ class NB extends Translated {
 
   @override
   final String emptyFolder = 'Mappen er tom';
+
+  @override
+  final String noTemplates = 'Du har ingen maler';
 
   @override
   final String noChecklists = 'Du har ingen sjekklister';
@@ -7586,6 +7991,9 @@ class NB extends Translated {
 
   @override
   final String activityAvailableFor = 'Tilgjengelig for';
+
+  @override
+  final String allSupportPersons = 'Alle meine Hilfspersonen';
 
   @override
   final String onlyMe = 'Bare meg';
@@ -7956,6 +8364,9 @@ class NB extends Translated {
   final String stepByStep = 'Via sekvens';
 
   @override
+  final String showTemplates = 'Vis maler';
+
+  @override
   final String selectName = 'Velg navn';
 
   @override
@@ -8279,6 +8690,9 @@ class NB extends Translated {
       'Er du sikker på at du vil slette dette foto?';
 
   @override
+  final String installStarterSet = 'Installere startoppsett?';
+
+  @override
   final String doYouWantToImportADefaultSet =
       'Ønsker du å importere startoppsett av standardaktiviteter, standardtimere, sjekklister og bildearkiv?';
 
@@ -8291,6 +8705,15 @@ class NB extends Translated {
 
   @override
   final String checkInternetConnection = 'Sjekk din Internettforbindelse';
+
+  @override
+  final String step = 'Trinn';
+
+  @override
+  final String downloadVoiceText = 'Last ned stemme for talestøtte';
+
+  @override
+  final String finsish = 'Slutte';
 
   @override
   final String notSelected = 'Ikke valgt';
