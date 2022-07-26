@@ -54,4 +54,9 @@ class SettingsDb {
       return fallback;
     }
   }
+
+  Future<void> restore() async {
+    await setLeftCategoryExpanded(true);
+    await setRightCategoryExpanded(true);
+  }
 }
