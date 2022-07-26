@@ -381,7 +381,10 @@ class TitleAndOrImage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (hasImage) image,
+              if (hasImage)
+                image
+              else if (activityDay.isSignedOff)
+                const CheckMark(),
               if (hasImage && hasTitle)
                 SizedBox(
                   width: layout.activityPage.titleImageHorizontalSpacing,
