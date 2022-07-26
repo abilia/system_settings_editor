@@ -109,7 +109,7 @@ class ScrollArrows extends StatelessWidget {
               if (child != null)
                 if (verticalScrollBar)
                   AbiliaScrollBar(
-                    isAlwaysShown: verticalScrollBarAlwaysShown,
+                    thumbVisibility: verticalScrollBarAlwaysShown,
                     controller: verticalController,
                     child: child,
                   )
@@ -295,7 +295,7 @@ class _ArrowState extends State<_Arrow> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) => listener());
+    WidgetsBinding.instance.addPostFrameCallback((_) => listener());
     return ClipRect(
       child: AnimatedContainer(
         transform: condition ? widget.translation : widget.hiddenTranslation,

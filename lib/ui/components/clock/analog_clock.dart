@@ -61,7 +61,6 @@ class ScreensaverAnalogClock extends StatelessWidget {
 
 // A modified copy of: https://github.com/conghaonet/flutter_analog_clock
 class _AnalogClock extends StatelessWidget {
-  final VoidCallback? onPressed;
   final Color dialPlateColor;
   final Color hourHandColor;
   final Color minuteHandColor;
@@ -69,20 +68,13 @@ class _AnalogClock extends StatelessWidget {
   final Color borderColor;
   final Color centerPointColor;
   final double? centerPointRadius;
-  final bool showBorder;
-  final bool showMinuteHand;
-  final bool showNumber;
   final double? borderWidth;
   final double hourNumberScale;
-  final List<String> hourNumbers;
-  final bool isLive;
   final double width;
   final double height;
   final double? fontSize;
   final double? minuteHandLength;
   final double? hourHandLength;
-  final BoxDecoration decoration;
-  final Widget? child;
 
   const _AnalogClock({
     this.dialPlateColor = AbiliaColors.white,
@@ -92,21 +84,13 @@ class _AnalogClock extends StatelessWidget {
     this.borderColor = AbiliaColors.black,
     this.centerPointColor = AbiliaColors.black,
     this.centerPointRadius,
-    this.showBorder = true,
-    this.showMinuteHand = true,
-    this.showNumber = true,
     this.borderWidth,
     this.hourNumberScale = 1.0,
     this.fontSize,
-    this.hourNumbers = ClockPainter.defaultHourNumbers,
-    this.isLive = true,
     this.width = double.infinity,
     this.height = double.infinity,
-    this.decoration = const BoxDecoration(),
     this.hourHandLength,
     this.minuteHandLength,
-    this.child,
-    this.onPressed,
     Key? key,
   }) : super(key: key);
 
@@ -115,35 +99,30 @@ class _AnalogClock extends StatelessWidget {
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, time) =>
           BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, memoState) => GestureDetector(
-          onTap: onPressed,
-          child: Tts.data(
-            data: analogTimeStringWithInterval(
-                Translator.of(context), time, memoState.dayParts),
-            child: Container(
-              width: width,
-              height: height,
-              decoration: decoration,
-              child: CustomPaint(
-                painter: ClockPainter(
-                  time,
-                  dialPlateColor: dialPlateColor,
-                  hourHandColor: hourHandColor,
-                  minuteHandColor: minuteHandColor,
-                  numberColor: numberColor,
-                  borderColor: borderColor,
-                  centerPointColor: centerPointColor,
-                  centerPointRadius: centerPointRadius,
-                  showBorder: showBorder,
-                  showMinuteHand: showMinuteHand,
-                  showNumber: showNumber,
-                  borderWidth: borderWidth,
-                  fontSize: fontSize,
-                  minuteHandLength: minuteHandLength,
-                  hourHandLength: hourHandLength,
-                  hourNumbers: hourNumbers,
-                ),
-                child: child,
+        builder: (context, memoState) => Tts.data(
+          data: analogTimeStringWithInterval(
+              Translator.of(context), time, memoState.dayParts),
+          child: SizedBox(
+            width: width,
+            height: height,
+            child: CustomPaint(
+              painter: ClockPainter(
+                time,
+                dialPlateColor: dialPlateColor,
+                hourHandColor: hourHandColor,
+                minuteHandColor: minuteHandColor,
+                numberColor: numberColor,
+                borderColor: borderColor,
+                centerPointColor: centerPointColor,
+                centerPointRadius: centerPointRadius,
+                showBorder: true,
+                showMinuteHand: true,
+                showNumber: true,
+                borderWidth: borderWidth,
+                fontSize: fontSize,
+                minuteHandLength: minuteHandLength,
+                hourHandLength: hourHandLength,
+                hourNumbers: ClockPainter.defaultHourNumbers,
               ),
             ),
           ),
