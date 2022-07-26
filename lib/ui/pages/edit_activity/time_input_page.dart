@@ -4,8 +4,9 @@ import 'package:seagull/ui/all.dart';
 
 class TimeInputPage extends StatelessWidget {
   final TimeInput timeInput;
+  final timeInputKey = GlobalKey<_TimeInputContentState>();
 
-  const TimeInputPage({
+  TimeInputPage({
     Key? key,
     required this.timeInput,
   }) : super(key: key);
@@ -27,12 +28,22 @@ class TimeInputPage extends StatelessWidget {
         ),
       ),
       body: TimeInputContent(
+        key: timeInputKey,
         timeInput: timeInput,
         is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
-        bottomNavigationBuilder: (context, newTimeInput) => BottomNavigation(
+        bottomNavigationBuilder: (
+          context,
+          newTimeInput,
+          savedStartTimeInput,
+        ) =>
+            BottomNavigation(
           backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: OkButton(
-            onPressed: () => onSave(context, newTimeInput),
+            onPressed: () => onSave(
+              context,
+              newTimeInput,
+              savedStartTimeInput,
+            ),
           ),
         ),
       ),
@@ -42,6 +53,7 @@ class TimeInputPage extends StatelessWidget {
   Future<bool> onSave(
     BuildContext context,
     TimeInput? newTimInput,
+    String savedStartTimeInput,
   ) async {
     if (newTimInput != null) {
       Navigator.of(context).maybePop(newTimInput);
@@ -53,6 +65,7 @@ class TimeInputPage extends StatelessWidget {
           text: Translator.of(context).translate.missingStartTime,
         ),
       );
+      timeInputKey.currentState?.updateStartTimeInput(savedStartTimeInput);
       return false;
     }
   }
@@ -81,7 +94,7 @@ class TimeInputContent extends StatefulWidget {
 String pad0(String s) => s.padLeft(2, '0');
 
 typedef BottomNavigationBuilder = Widget Function(
-    BuildContext context, TimeInput? newTimeInput);
+    BuildContext context, TimeInput? newTimeInput, String savedStartTimeInput);
 
 typedef OnValidTimeInput = void Function(TimeInput newTimeInput);
 
@@ -285,10 +298,15 @@ class _TimeInputContentState extends State<TimeInputContent> {
             bottomNavigationBuilder(
               context,
               valid(startTimeController) ? newTimeInput : null,
+              startTimeController.text,
             ),
         ],
       ),
     );
+  }
+
+  void updateStartTimeInput(String text) {
+    startTimeController.text = text;
   }
 
   void _deleteOneDigit() {
