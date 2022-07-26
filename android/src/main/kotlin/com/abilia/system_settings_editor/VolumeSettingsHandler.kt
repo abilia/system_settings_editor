@@ -10,7 +10,7 @@ class VolumeSettingsHandler(context: Context) {
   private val audioManager: AudioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
   internal fun getAlarmVolume(): Double {
-    return audioManager.getStreamVolume(AudioManager.STREAM_NOTIFICATION) / getAlarmMaxVolume().toDouble()
+    return audioManager.getStreamVolume(AudioManager.STREAM_ALARM) / getAlarmMaxVolume().toDouble()
   }
 
   internal fun getMediaVolume(): Double {
@@ -38,7 +38,7 @@ class VolumeSettingsHandler(context: Context) {
   }
 
   internal fun getAlarmMaxVolume(): Int {
-    return audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION)
+    return audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM)
   }
 
   internal fun getMediaMaxVolume(): Int {
@@ -49,7 +49,7 @@ class VolumeSettingsHandler(context: Context) {
   private fun setAlarmVolume(volume: Double) {
     val max = getAlarmMaxVolume().toDouble();
     val add = 1.0 / (max + 1) * 0.5;
-    audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, ((volume + add) * max).toInt(), 0)
+    audioManager.setStreamVolume(AudioManager.STREAM_ALARM, ((volume + add) * max).toInt(), 0)
   }
 
   private fun setMediaVolume(volume: Double) {
