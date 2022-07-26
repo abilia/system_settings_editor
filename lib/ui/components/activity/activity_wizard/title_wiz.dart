@@ -29,6 +29,7 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
       label: Translator.of(context).translate.newActivity,
       title: t.enterNameForActivity,
       borderRadius: layout.appBar.borderRadius,
+      useVerticalSafeArea: false,
     );
 
     return BlocListener<WizardCubit, WizardState>(
@@ -90,7 +91,7 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
                   ),
                 ),
               ),
-              const WizardBottomNavigation(),
+              const WizardBottomNavigation(useVerticalSafeArea: false),
             ],
           ),
         ),

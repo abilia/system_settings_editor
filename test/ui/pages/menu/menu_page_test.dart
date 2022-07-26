@@ -109,7 +109,8 @@ void main() {
             'maxWidth': null,
             'maxHeight': null,
             'imageQuality': null,
-            'cameraDevice': 0
+            'cameraDevice': 0,
+            'requestFullMetadata': true,
           }),
         ],
       );

@@ -2296,24 +2296,6 @@ text''';
       expect(datePicker.onChange, isNull);
     });
 
-    testWidgets('category not visible - edit settings ',
-        (WidgetTester tester) async {
-      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
-            editActivity: EditActivitySettings(
-              type: false,
-            ),
-          ),
-        ),
-      );
-      await tester.pumpWidget(createEditActivityPage());
-      await tester.pumpAndSettle();
-
-      expect(find.byKey(TestKey.leftCategoryRadio), findsNothing);
-      expect(find.byKey(TestKey.rightCategoryRadio), findsNothing);
-    });
-
     testWidgets('category not visible - category show settings',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(

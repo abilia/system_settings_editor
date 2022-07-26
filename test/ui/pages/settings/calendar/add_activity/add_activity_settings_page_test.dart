@@ -219,15 +219,6 @@ void main() {
           );
         });
 
-        testWidgets('deselect Select type', (tester) async {
-          await tester.verifyInAddTab(
-            find.text(translate.selectType),
-            genericDb,
-            key: EditActivitySettings.typeKey,
-            matcher: isFalse,
-          );
-        });
-
         testWidgets('deselect Checkable', (tester) async {
           await tester.verifyInAddTab(
             find.text(translate.selectCheckable),

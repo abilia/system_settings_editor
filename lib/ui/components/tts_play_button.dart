@@ -9,10 +9,12 @@ class TtsPlayButton extends StatelessWidget {
     this.controller,
     this.padding = EdgeInsets.zero,
     this.tts = '',
+    this.buttonStyle,
   }) : super(key: key);
   final TextEditingController? controller;
   final EdgeInsets padding;
   final String tts;
+  final ButtonStyle? buttonStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +25,14 @@ class TtsPlayButton extends StatelessWidget {
         builder: (context, child) => _TtsPlayButton(
           text: controller.text,
           padding: padding,
+          buttonStyle: buttonStyle,
         ),
       );
     } else {
       return _TtsPlayButton(
         text: tts,
         padding: padding,
+        buttonStyle: buttonStyle,
       );
     }
   }
@@ -39,10 +43,12 @@ class _TtsPlayButton extends StatefulWidget {
     Key? key,
     required this.text,
     this.padding = EdgeInsets.zero,
+    this.buttonStyle,
   }) : super(key: key);
 
   final String text;
   final EdgeInsets padding;
+  final ButtonStyle? buttonStyle;
 
   @override
   State<_TtsPlayButton> createState() => _TtsPlayButtonState();
@@ -64,7 +70,7 @@ class _TtsPlayButtonState extends State<_TtsPlayButton> {
             padding: widget.padding,
             child: IconActionButton(
               key: TestKey.ttsPlayButton,
-              style: actionButtonStyleDark,
+              style: widget.buttonStyle ?? actionButtonStyleDark,
               onPressed: () => ttsIsPlaying ? _stop() : _play(),
               child: Icon(
                 ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,

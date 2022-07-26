@@ -61,12 +61,12 @@ class _Tts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      BlocBuilder<SettingsCubit, SettingsState>(
-        builder: (context, settingsState) => GestureDetector(
+      BlocSelector<SettingsCubit, SettingsState, bool>(
+        selector: (state) => state.textToSpeech,
+        builder: (context, textToSpeech) => GestureDetector(
           behavior: HitTestBehavior.translucent,
           excludeFromSemantics: true,
-          onLongPress: settingsState.textToSpeech &&
-                  (onLongPress != null || data != null)
+          onLongPress: textToSpeech && (onLongPress != null || data != null)
               ? _playTts
               : null,
           child: child,

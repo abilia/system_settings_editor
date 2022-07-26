@@ -135,7 +135,10 @@ void main() {
     });
 
     testWidgets('tts on 24 h', (WidgetTester tester) async {
-      tester.binding.window.alwaysUse24HourFormatTestValue = true;
+      addTearDown(
+        tester.binding.platformDispatcher.clearAlwaysUse24HourTestValue,
+      );
+      tester.binding.platformDispatcher.alwaysUse24HourFormatTestValue = true;
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       final hour = DateFormat('H').format(time);
@@ -587,6 +590,29 @@ void main() {
     });
 
     testWidgets('Shows activity', (WidgetTester tester) async {
+      // Act
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Assert
+      expect(leftActivityFinder, findsOneWidget);
+      expect(rightActivityFinder, findsOneWidget);
+      expect(cardFinder, findsNWidgets(2));
+    });
+
+    testWidgets('Shows activity when categories are disabled - BUG SGC-1808',
+        (WidgetTester tester) async {
+      // Arrange
+      genericResponse = () => [
+            timepillarGeneric,
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: false,
+                identifier:
+                    MemoplannerSettings.calendarActivityTypeShowTypesKey,
+              ),
+            ),
+          ];
+
       // Act
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();

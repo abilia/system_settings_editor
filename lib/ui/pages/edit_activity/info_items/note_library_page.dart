@@ -46,7 +46,7 @@ class LibraryNote extends StatelessWidget {
             children: <Widget>[
               Lines(
                 textRenderingSize: content
-                    .calulcateTextRenderSize(
+                    .calculateTextRenderSize(
                       constraints: constraints,
                       textStyle: Theme.of(context).textTheme.caption ?? caption,
                     )

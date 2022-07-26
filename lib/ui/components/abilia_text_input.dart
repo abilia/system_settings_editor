@@ -160,6 +160,7 @@ class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {
       title: widget.inputHeading,
       iconData: widget.icon,
       borderRadius: layout.appBar.borderRadius,
+      useVerticalSafeArea: false,
     );
 
     return Tts.fromSemantics(
@@ -216,6 +217,7 @@ class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {
             ),
           ),
           BottomNavigation(
+            useVerticalSafeArea: false,
             backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: OkButton(
               key: TestKey.inputOk,
@@ -239,12 +241,12 @@ abstract class StateWithFocusOnResume<T extends StatefulWidget> extends State<T>
   void initState() {
     super.initState();
     focusNode = FocusNode();
-    if (Platform.isAndroid) WidgetsBinding.instance?.addObserver(this);
+    if (Platform.isAndroid) WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
-    if (Platform.isAndroid) WidgetsBinding.instance?.removeObserver(this);
+    if (Platform.isAndroid) WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 

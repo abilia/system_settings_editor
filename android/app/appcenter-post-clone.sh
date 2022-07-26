@@ -9,7 +9,7 @@ set -e
 set -x
 
 cd ..
-git clone --depth 1 --branch 2.10.3 https://github.com/flutter/flutter.git
+git clone --depth 1 --branch 3.0.4 https://github.com/flutter/flutter.git
 export PATH=`pwd`/flutter/bin:$PATH
 
 flutter doctor

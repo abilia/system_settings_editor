@@ -3,7 +3,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-enum _addButtonConfiguration {
+enum _AddButtonConfiguration {
   none,
   mpGo,
   onlyNewActivity,
@@ -17,22 +17,22 @@ class AddButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
-        _addButtonConfiguration>(
+        _AddButtonConfiguration>(
       selector: (state) => _configuration(
         state.displayNewActivity,
         state.displayNewTimer,
       ),
       builder: (context, configuration) {
         switch (configuration) {
-          case _addButtonConfiguration.none:
+          case _AddButtonConfiguration.none:
             return SizedBox(width: layout.actionButton.size);
-          case _addButtonConfiguration.mpGo:
+          case _AddButtonConfiguration.mpGo:
             return const _AddButtonMPGO();
-          case _addButtonConfiguration.onlyNewActivity:
+          case _AddButtonConfiguration.onlyNewActivity:
             return const _AddActivityButton();
-          case _addButtonConfiguration.onlyNewTimer:
+          case _AddButtonConfiguration.onlyNewTimer:
             return const _AddTimerButton();
-          case _addButtonConfiguration.newActivityAndNewTimer:
+          case _AddButtonConfiguration.newActivityAndNewTimer:
             return const _AddActivityOrTimerButtons();
         }
       },
@@ -44,32 +44,32 @@ class AddButton extends StatelessWidget {
     bool displayNewTimer,
   ) {
     switch (_configuration(displayNewActivity, displayNewTimer)) {
-      case _addButtonConfiguration.none:
-      case _addButtonConfiguration.mpGo:
-      case _addButtonConfiguration.onlyNewActivity:
-      case _addButtonConfiguration.onlyNewTimer:
+      case _AddButtonConfiguration.none:
+      case _AddButtonConfiguration.mpGo:
+      case _AddButtonConfiguration.onlyNewActivity:
+      case _AddButtonConfiguration.onlyNewTimer:
         return layout.actionButton.size;
-      case _addButtonConfiguration.newActivityAndNewTimer:
+      case _AddButtonConfiguration.newActivityAndNewTimer:
         return _AddActivityOrTimerButtons.width;
     }
   }
 
-  static _addButtonConfiguration _configuration(
+  static _AddButtonConfiguration _configuration(
     bool displayNewActivity,
     bool displayNewTimer,
   ) {
     if (Config.isMPGO) {
       return displayNewActivity || displayNewTimer
-          ? _addButtonConfiguration.mpGo
-          : _addButtonConfiguration.none;
+          ? _AddButtonConfiguration.mpGo
+          : _AddButtonConfiguration.none;
     }
     return displayNewActivity && displayNewTimer
-        ? _addButtonConfiguration.newActivityAndNewTimer
+        ? _AddButtonConfiguration.newActivityAndNewTimer
         : displayNewActivity
-            ? _addButtonConfiguration.onlyNewActivity
+            ? _AddButtonConfiguration.onlyNewActivity
             : displayNewTimer
-                ? _addButtonConfiguration.onlyNewTimer
-                : _addButtonConfiguration.none;
+                ? _AddButtonConfiguration.onlyNewTimer
+                : _AddButtonConfiguration.none;
   }
 }
 
