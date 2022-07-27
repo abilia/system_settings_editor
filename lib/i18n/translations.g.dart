@@ -2799,6 +2799,9 @@ class DA extends Translated {
   final String onlyMe = 'Bare mig';
 
   @override
+  final String supportPersons = 'Støttepersoner';
+
+  @override
   final String selectAlarmType = 'Vælg alarm';
 
   @override
@@ -7997,6 +8000,12 @@ class NB extends Translated {
 
   @override
   final String onlyMe = 'Bare meg';
+
+  @override
+  final String selectedSupportPersons = 'Utvalgte støttepersoner';
+
+  @override
+  final String supportPersons = 'Støttepersoner';
 
   @override
   final String selectAlarmType = 'Angi alarm';

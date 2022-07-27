@@ -1,6 +1,6 @@
 _id_	en	sv	da	nl	fi	de	nb
-selectedSupportPersons	Selected support persons	Utvalda stödpersoner					
-supportPersons	Support Persons	Stödpersoner					
+selectedSupportPersons	Selected support persons	Utvalda stödpersoner					Utvalgte støttepersoner
+supportPersons	Support Persons	Stödpersoner	Støttepersoner				Støttepersoner
 disableAlarms	Disable alarms	Inaktivera alarm					
 showVibrationAlarm	Show vibration						
 voice	Voice	Röst	Stemme	Stem			Talesyntese
