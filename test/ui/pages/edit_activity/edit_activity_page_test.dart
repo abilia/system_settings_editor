@@ -1661,7 +1661,7 @@ text''';
       expect(find.text('12:55 AM'), findsOneWidget);
     });
 
-    testWidgets('removing original leaves same value',
+    testWidgets('SGC-1787 start time gives error dialog must enter start time',
         (WidgetTester tester) async {
       // Arrange
       final clear =
@@ -1687,7 +1687,7 @@ text''';
       await tester.pumpAndSettle();
 
       // Assert -- time is same
-      expect(find.text('3:44 AM'), findsOneWidget);
+      expect(find.byType(ErrorDialog), findsOneWidget);
     });
 
     testWidgets('Changes focus to endTime when startTime is filled in',
@@ -1775,12 +1775,11 @@ text''';
 
       await tester.tap(endTimeInputFinder, warnIfMissed: false);
       await tester.pumpAndSettle();
-      expect(find.text('13:44'),
-          findsOneWidget); // Time resets when no valid time is entered
 
       // Type '1111'
       await tester.enterTime(startTimeInputFinder, '1111');
-      expect(find.text('11:11'), findsOneWidget);
+      expect(find.text('11:11'), findsOneWidget); // End time
+      expect(find.text('--:--'), findsOneWidget); // Start time
 
       // Type '0001'
       await tester.enterTime(startTimeInputFinder, '0001');
