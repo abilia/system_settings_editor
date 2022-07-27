@@ -210,13 +210,14 @@ class QuestionView extends StatelessWidget {
                       Expanded(
                         child: Padding(
                           padding: layout.checklist.question.titlePadding,
-                          child: Text(question.name,
-                              style:
-                                  layout.checklist.question.textStyle.copyWith(
-                                decoration: signedOff
-                                    ? TextDecoration.lineThrough
-                                    : null,
-                              )),
+                          child: Text(
+                            question.name,
+                            style: layout.checklist.question.textStyle.copyWith(
+                              decoration: signedOff //
+                                  ? TextDecoration.lineThrough
+                                  : null,
+                            ),
+                          ),
                         ),
                       ),
                     if (!inactive)
