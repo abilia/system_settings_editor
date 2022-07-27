@@ -58,7 +58,7 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
             ),
             const Divider(),
             SwitchField(
-              leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+              leading: const Icon(AbiliaIcons.handiAlarm),
               value: alarm.onlyStart,
               onChanged: (v) => context
                   .read<AddActivitySettingsCubit>()

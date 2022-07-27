@@ -59,7 +59,7 @@ class CodeProtectSettingsPage extends StatelessWidget {
               ),
               SwitchField(
                 leading:
-                    const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+                    const Icon(AbiliaIcons.android),
                 value: state.protectAndroidSettings,
                 onChanged: (v) => context
                     .read<CodeProtectCubit>()

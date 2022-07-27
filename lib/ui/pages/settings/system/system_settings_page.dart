@@ -57,7 +57,7 @@ class SystemSettingsPage extends StatelessWidget {
           ),
         ),
         PickField(
-          leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+          leading: const Icon(AbiliaIcons.android),
           text: Text(t.androidSettings),
           onTap: () async {
             final accessGranted = await codeProtectAccess(

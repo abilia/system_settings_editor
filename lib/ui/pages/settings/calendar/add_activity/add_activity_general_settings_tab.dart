@@ -17,7 +17,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
               Tts(child: Text(t.general)),
               SwitchField(
                 leading:
-                    const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+                    const Icon(AbiliaIcons.clock),
                 value: settings.allowPassedStartTime,
                 onChanged: (v) => context
                     .read<AddActivitySettingsCubit>()
@@ -36,7 +36,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
               ),
               SwitchField(
                 leading:
-                    const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+                    const Icon(AbiliaIcons.endTime),
                 value: settings.showEndTime,
                 onChanged: (v) => context
                     .read<AddActivitySettingsCubit>()

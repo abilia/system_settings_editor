@@ -19,14 +19,14 @@ class AddActivityAddSettingsTab extends StatelessWidget {
             groupValue: newActivityMode,
             onChanged: context.read<AddActivitySettingsCubit>().newActivityMode,
             text: Text(t.throughEditView),
-            leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+            leading: const Icon(AbiliaIcons.editView),
           ),
           RadioField(
             value: NewActivityMode.stepByStep,
             groupValue: newActivityMode,
             onChanged: context.read<AddActivitySettingsCubit>().newActivityMode,
             text: Text(t.stepByStep),
-            leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+            leading: const Icon(AbiliaIcons.stepByStep),
           ),
           const Divider(),
           if (newActivityMode == NewActivityMode.editView)
