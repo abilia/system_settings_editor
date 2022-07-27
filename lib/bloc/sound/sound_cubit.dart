@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:rxdart/rxdart.dart';
-import 'package:audioplayers/audioplayers.dart' hide Logger;
+import 'package:audioplayers/audioplayers.dart';
 
 import 'package:equatable/equatable.dart';
 import 'package:path/path.dart' as _path;
@@ -29,32 +29,28 @@ class SoundCubit extends Cubit<SoundState> {
 
   late final StreamSubscription audioPositionChanged;
   late final StreamSubscription onPlayerCompletion;
-  late final StreamSubscription onPlayerError;
 
   SoundCubit({
     required this.storage,
     required this.userFileCubit,
   }) : super(const NoSoundPlaying()) {
-    onPlayerCompletion = audioPlayer.onPlayerCompletion.listen((_) {
+    onPlayerCompletion = audioPlayer.onPlayerComplete.listen((_) {
       emit(const NoSoundPlaying());
     });
-    onPlayerError = audioPlayer.onPlayerError.listen((event) {
-      log.warning(event);
-      emit(const NoSoundPlaying());
-    });
-    audioPositionChanged = audioPlayer.onAudioPositionChanged
+    audioPositionChanged = audioPlayer.onPositionChanged
         .throttleTime(const Duration(milliseconds: 25))
         .listen(
       (position) async {
         final s = state;
         if (s is SoundPlaying) {
-          final duration =
-              s.duration == 0 ? await audioPlayer.getDuration() : s.duration;
+          final duration = s.duration == 0
+              ? (await audioPlayer.getDuration())?.inMilliseconds
+              : s.duration;
           if (!isClosed) {
             emit(
               SoundPlaying(
                 s.currentSound,
-                duration: duration,
+                duration: duration ?? s.duration,
                 position: position,
               ),
             );
@@ -69,7 +65,7 @@ class SoundCubit extends Cubit<SoundState> {
     final file = await resolveFile(abiliaFile);
     if (file != null) {
       log.fine('playing: $file');
-      await audioPlayer.play(file.path, isLocal: true);
+      await audioPlayer.play(DeviceFileSource(file.path));
       emit(SoundPlaying(abiliaFile));
     } else {
       log.warning('could not resolve $abiliaFile from user files');
@@ -131,6 +127,5 @@ class SoundCubit extends Cubit<SoundState> {
     await audioPlayer.dispose();
     await audioPositionChanged.cancel();
     await onPlayerCompletion.cancel();
-    await onPlayerError.cancel();
   }
 }
