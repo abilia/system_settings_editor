@@ -35,14 +35,19 @@ class EditTimerPage extends StatelessWidget {
 }
 
 class EditBasicTimerPage extends StatelessWidget {
-  const EditBasicTimerPage({Key? key}) : super(key: key);
+  final String title;
+
+  const EditBasicTimerPage({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
 
     return _EditTimerPage(
-      title: t.editTimer,
+      title: title,
       icon: AbiliaIcons.basicTimers,
       bottomNavigation: BottomNavigation(
         backNavigationWidget: const CancelButton(),

@@ -34,7 +34,11 @@ class BasicTemplatesPage extends StatelessWidget {
             ListLibrary<BasicTimerData>(
               emptyLibraryMessage: translate.noTemplates,
               libraryItemGenerator: BasicTemplatePickField.new,
-              onTapEdit: _onEditTemplateTimer,
+              onTapEdit: (context, sortables) => _onEditTemplateTimer(
+                context,
+                sortables,
+                translate.editTimer,
+              ),
             ),
           ],
         ),
@@ -43,7 +47,11 @@ class BasicTemplatesPage extends StatelessWidget {
         ),
         floatingActionButton: AddTemplateButton(
           activityTemplateIndex: 0,
-          onNewTimerTemplate: _onEditTemplateTimer,
+          onNewTimerTemplate: (context, sortables) => _onEditTemplateTimer(
+            context,
+            sortables,
+            translate.newTimer,
+          ),
         ),
       ),
     );
@@ -79,7 +87,10 @@ class BasicTemplatesPage extends StatelessWidget {
   }
 
   void _onEditTemplateTimer(
-      BuildContext context, Sortable<BasicTimerData> sortable) async {
+    BuildContext context,
+    Sortable<BasicTimerData> sortable,
+    String title,
+  ) async {
     final authProviders = copiedAuthProviders(context);
     final sortableBloc = context.read<SortableBloc>();
 
@@ -97,7 +108,9 @@ class BasicTemplatesPage extends StatelessWidget {
               ),
             ),
           ],
-          child: const EditBasicTimerPage(),
+          child: EditBasicTimerPage(
+            title: title,
+          ),
         ),
       ),
     );
