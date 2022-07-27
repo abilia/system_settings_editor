@@ -16,8 +16,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
             children: [
               Tts(child: Text(t.general)),
               SwitchField(
-                leading:
-                    const Icon(AbiliaIcons.clock),
+                leading: const Icon(AbiliaIcons.clock),
                 value: settings.allowPassedStartTime,
                 onChanged: (v) => context
                     .read<AddActivitySettingsCubit>()
@@ -35,8 +34,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
                 child: Text(t.addRecurringActivity),
               ),
               SwitchField(
-                leading:
-                    const Icon(AbiliaIcons.endTime),
+                leading: const Icon(AbiliaIcons.endTime),
                 value: settings.showEndTime,
                 onChanged: (v) => context
                     .read<AddActivitySettingsCubit>()

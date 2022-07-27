@@ -216,8 +216,7 @@ void main() {
         await tester.goToFunctionSettingsPage(pump: true);
         await tester.tap(find.byIcon(AbiliaIcons.browserHome));
         await tester.pumpAndSettle();
-        await tester
-            .tap(find.byIcon(AbiliaIcons.photoCalendar));
+        await tester.tap(find.byIcon(AbiliaIcons.photoCalendar));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(OkButton));
@@ -261,8 +260,7 @@ void main() {
 
         await tester.tap(find.text('5 ${translate.minutes}'));
         await tester.pumpAndSettle();
-        await tester
-            .tap(find.byIcon(AbiliaIcons.screenSaverNight));
+        await tester.tap(find.byIcon(AbiliaIcons.screenSaverNight));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(OkButton));
@@ -283,8 +281,7 @@ void main() {
 
         await tester.tap(find.text('5 ${translate.minutes}'));
         await tester.pumpAndSettle();
-        await tester
-            .tap(find.byIcon(AbiliaIcons.screenSaverNight));
+        await tester.tap(find.byIcon(AbiliaIcons.screenSaverNight));
         await tester.pumpAndSettle();
         await tester.tap(find.text(translate.noTimeout));
         await tester.pumpAndSettle();
