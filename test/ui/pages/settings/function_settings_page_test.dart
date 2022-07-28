@@ -131,7 +131,7 @@ void main() {
         expect(find.byIcon(AbiliaIcons.month), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.appMenu), findsOneWidget);
         expect(
-          find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard),
+          find.byIcon(AbiliaIcons.photoCalendar),
           findsOneWidget,
         );
 
@@ -156,7 +156,7 @@ void main() {
         expect(find.byIcon(AbiliaIcons.month), findsNothing);
         expect(find.byIcon(AbiliaIcons.appMenu), findsNothing);
         expect(
-          find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard),
+          find.byIcon(AbiliaIcons.photoCalendar),
           findsOneWidget,
         );
       });
@@ -216,8 +216,7 @@ void main() {
         await tester.goToFunctionSettingsPage(pump: true);
         await tester.tap(find.byIcon(AbiliaIcons.browserHome));
         await tester.pumpAndSettle();
-        await tester
-            .tap(find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard));
+        await tester.tap(find.byIcon(AbiliaIcons.photoCalendar));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(OkButton));
@@ -261,8 +260,7 @@ void main() {
 
         await tester.tap(find.text('5 ${translate.minutes}'));
         await tester.pumpAndSettle();
-        await tester
-            .tap(find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard));
+        await tester.tap(find.byIcon(AbiliaIcons.screenSaverNight));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(OkButton));
@@ -283,8 +281,7 @@ void main() {
 
         await tester.tap(find.text('5 ${translate.minutes}'));
         await tester.pumpAndSettle();
-        await tester
-            .tap(find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard));
+        await tester.tap(find.byIcon(AbiliaIcons.screenSaverNight));
         await tester.pumpAndSettle();
         await tester.tap(find.text(translate.noTimeout));
         await tester.pumpAndSettle();

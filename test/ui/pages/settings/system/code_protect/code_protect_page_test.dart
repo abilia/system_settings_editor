@@ -91,7 +91,7 @@ void main() {
       await tester._goToCodeProtectPage();
 
       await tester.tap(
-        find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard),
+        find.byIcon(AbiliaIcons.android),
       );
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
@@ -248,7 +248,7 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.technicalSettings));
       await tester.pumpAndSettle();
       await tester.tap(
-        find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard),
+        find.byIcon(AbiliaIcons.android),
       );
       await tester.pumpAndSettle();
       expect(find.byType(CodeProtectPage), findsOneWidget);
