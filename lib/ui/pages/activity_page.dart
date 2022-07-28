@@ -2,6 +2,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/listener/all.dart';
 
 class ActivityPage extends StatelessWidget {
   final ActivityDay activityDay;
@@ -17,27 +18,37 @@ class ActivityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: abiliaWhiteTheme,
-      child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
-        selector: (activitiesState) {
-          final a = activitiesState
-              .newActivityFromLoadedOrGiven(activityDay.activity);
-          return ActivityDay(
-            a,
-            a.isRecurring ? activityDay.day : a.startTime,
-          );
-        },
-        builder: (context, ad) {
-          return Scaffold(
-            appBar: DayAppBar(
-              day: ad.day,
-            ),
-            body: ActivityInfoWithDots(
-              ad,
-              previewImage: previewImage,
-            ),
-            bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
-          );
-        },
+      child: ActivityListener(
+        activity: activityDay.activity,
+        onActivityDeleted: () => Navigator.of(context).maybePop(),
+        child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay?>(
+          selector: (activitiesState) {
+            final a = activitiesState
+                .newActivityFromLoadedOrNull(activityDay.activity);
+            return a == null
+                ? null
+                : ActivityDay(
+                    a,
+                    a.isRecurring ? activityDay.day : a.startTime,
+                  );
+          },
+          builder: (context, ad) {
+            if (ad == null) {
+              Navigator.of(context).maybePop();
+              return Container();
+            }
+            return Scaffold(
+              appBar: DayAppBar(
+                day: ad.day,
+              ),
+              body: ActivityInfoWithDots(
+                ad,
+                previewImage: previewImage,
+              ),
+              bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
+            );
+          },
+        ),
       ),
     );
   }
