@@ -23,29 +23,33 @@ class ActivityPage extends StatelessWidget {
         onActivityDeleted: () => Navigator.of(context).maybePop(),
         child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay?>(
           selector: (activitiesState) {
-            final a = activitiesState
-                .newActivityFromLoadedOrNull(activityDay.activity);
-            return a == null
-                ? null
-                : ActivityDay(
-                    a,
-                    a.isRecurring ? activityDay.day : a.startTime,
-                  );
+            final activity = previewImage == null
+                ? activitiesState
+                    .newActivityFromLoadedOrNull(activityDay.activity)
+                : activityDay.activity;
+            if (activity == null) {
+              return null;
+            }
+            return ActivityDay(
+              activity,
+              activity.isRecurring ? activityDay.day : activity.startTime,
+            );
           },
-          builder: (context, ad) {
-            if (ad == null) {
+          builder: (context, activityDay) {
+            if (activityDay == null) {
               Navigator.of(context).maybePop();
               return Container();
             }
             return Scaffold(
               appBar: DayAppBar(
-                day: ad.day,
+                day: activityDay.day,
               ),
               body: ActivityInfoWithDots(
-                ad,
+                activityDay,
                 previewImage: previewImage,
               ),
-              bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
+              bottomNavigationBar:
+                  _ActivityBottomAppBar(activityDay: activityDay),
             );
           },
         ),
