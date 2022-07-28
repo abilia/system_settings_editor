@@ -6,7 +6,6 @@ class SettingsDb {
   static final _log = Logger((SettingsDb).toString());
   static const String _languageRecord = 'language',
       _alwaysUse24Record = 'ALWAYS_USE_24',
-      _textToSpeechRecord = 'TEXT_TO_SPEECH',
       _categoryLeftExpanded = 'CATEGORY_LEFT_EXPANDED',
       _categoryRightExpanded = 'CATEGORY_RIGHT_EXPANDED';
 
@@ -30,11 +29,6 @@ class SettingsDb {
       preferences.setBool(_alwaysUse24Record, alwaysUse24HourFormat);
 
   bool get alwaysUse24HourFormat => _tryGetBool(_alwaysUse24Record, true);
-
-  Future setTextToSpeech(bool textToSpeech) =>
-      preferences.setBool(_textToSpeechRecord, textToSpeech);
-
-  bool get textToSpeech => _tryGetBool(_textToSpeechRecord, true);
 
   Future setRightCategoryExpanded(bool expanded) =>
       preferences.setBool(_categoryRightExpanded, expanded);

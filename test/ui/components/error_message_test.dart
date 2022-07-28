@@ -9,8 +9,11 @@ void main() {
   testWidgets('Bug SGC-516 No style in error message', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: BlocProvider<SettingsCubit>(
-          create: (context) => SettingsCubit(settingsDb: FakeSettingsDb()),
+        home: BlocProvider<SpeechSettingsCubit>(
+          create: (context) => SpeechSettingsCubit(
+            voiceDb: FakeVoiceDb(),
+            acapelaTts: FakeAcapelaTts(),
+          ),
           child: const ErrorMessage(text: Text('')),
         ),
       ),

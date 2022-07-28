@@ -47,7 +47,7 @@ class SystemSettingsPage extends StatelessWidget {
                 providers: copiedAuthProviders(context),
                 child: SpeechSupportSettingsPage(
                   textToSpeech:
-                      context.read<SettingsCubit>().state.textToSpeech,
+                      context.read<SpeechSettingsCubit>().state.textToSpeech,
                   speechRate:
                       context.read<SpeechSettingsCubit>().state.speechRate,
                 ),

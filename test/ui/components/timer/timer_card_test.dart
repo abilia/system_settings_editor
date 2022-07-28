@@ -43,8 +43,11 @@ void main() {
         textDirection: TextDirection.ltr,
         child: MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (context) => SettingsCubit(settingsDb: FakeSettingsDb()),
+            BlocProvider<SpeechSettingsCubit>(
+              create: (context) => SpeechSettingsCubit(
+                voiceDb: FakeVoiceDb(),
+                acapelaTts: FakeAcapelaTts(),
+              ),
             ),
             BlocProvider<DayEventsCubit>(
               create: (context) => dayEventsCubitMock,

@@ -6,13 +6,13 @@ class TextToSpeechSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, SettingsState>(
+    return BlocBuilder<SpeechSettingsCubit, SpeechSettingsState>(
       builder: (context, settingsState) => Row(children: [
         Expanded(
           child: SwitchField(
             value: settingsState.textToSpeech,
             leading: const Icon(AbiliaIcons.speakText),
-            onChanged: context.read<SettingsCubit>().setTextToSpeech,
+            onChanged: context.read<SpeechSettingsCubit>().setTextToSpeech,
             child: Text(Translator.of(context).translate.textToSpeech),
           ),
         ),

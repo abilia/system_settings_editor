@@ -42,6 +42,7 @@ class DeviceRepository extends Repository {
   Future<void> setSerialId(String serialId) => deviceDb.setSerialId(serialId);
   String get serialId => deviceDb.serialId;
   Future<String> getClientId() => deviceDb.getClientId();
-  Future<void> setStartGuideCompleted() => deviceDb.setStartGuideCompleted();
+  Future<void> setStartGuideCompleted([bool complete = true]) =>
+      deviceDb.setStartGuideCompleted(complete);
   bool get isStartGuideCompleted => deviceDb.startGuideCompleted;
 }

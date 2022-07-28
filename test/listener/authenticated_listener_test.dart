@@ -83,20 +83,24 @@ void main() {
     Authenticated state = const Authenticated(userId: 5),
   }) =>
       MaterialApp(
-        home: TopLevelBlocsProvider(
-          child: AuthenticatedBlocsProvider(
-            authenticatedState: state,
-            child: MultiBlocProvider(
-              providers: [
-                BlocProvider.value(value: activitiesBloc),
-                BlocProvider.value(value: sortableBloc),
-                BlocProvider.value(value: timerCubit),
-                BlocProvider.value(value: memoplannerSettingBloc),
-                BlocProvider<SettingsCubit>(create: (c) => FakeSettingsCubit()),
-              ],
-              child: AuthenticatedListener(
-                newlyLoggedIn: state.newlyLoggedIn,
-                child: const SizedBox.shrink(),
+        home: TopLevelProvider(
+          child: AuthenticationBlocProvider(
+            child: AuthenticatedBlocsProvider(
+              authenticatedState: state,
+              child: MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(value: activitiesBloc),
+                  BlocProvider.value(value: sortableBloc),
+                  BlocProvider.value(value: timerCubit),
+                  BlocProvider.value(value: memoplannerSettingBloc),
+                  BlocProvider<SpeechSettingsCubit>(
+                    create: (c) => FakeSpeechSettingsCubit(),
+                  ),
+                ],
+                child: AuthenticatedListener(
+                  newlyLoggedIn: state.newlyLoggedIn,
+                  child: const SizedBox.shrink(),
+                ),
               ),
             ),
           ),

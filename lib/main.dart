@@ -45,7 +45,8 @@ void main() async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // DO NOT REMOVE. The isAutoInitEnabled call is needed to make push work https://github.com/firebase/flutterfire/issues/6011
+  // DO NOT REMOVE. The isAutoInitEnabled call is needed to make push work
+  // https://github.com/firebase/flutterfire/issues/6011
   FirebaseMessaging.instance.isAutoInitEnabled;
 
   final documentDirectory = await getApplicationDocumentsDirectory();
@@ -119,17 +120,19 @@ class App extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => TopLevelBlocsProvider(
+  Widget build(BuildContext context) => TopLevelProvider(
         pushCubit: pushCubit,
         child: BlocBuilder<StartupCubit, StartupState>(
           builder: (context, productionGuideState) =>
               productionGuideState is StartupDone
-                  ? TopLevelListener(
-                      navigatorKey: _navigatorKey,
-                      payload: payload,
-                      child: SeagullApp(
+                  ? AuthenticationBlocProvider(
+                      child: TopLevelListener(
                         navigatorKey: _navigatorKey,
-                        analytics: analytics,
+                        payload: payload,
+                        child: SeagullApp(
+                          navigatorKey: _navigatorKey,
+                          analytics: analytics,
+                        ),
                       ),
                     )
                   : productionGuideState is WelcomeGuide
@@ -150,36 +153,32 @@ class SeagullApp extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Listener(
-        onPointerDown: context.read<TouchDetectionCubit>().onPointerDown,
-        child: MaterialApp(
-          navigatorKey: navigatorKey,
-          builder: (context, child) => child != null
-              ? MediaQuery(
-                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                  child: child,
-                )
-              : const SplashPage(),
-          title: Config.flavor.name,
-          theme: abiliaTheme,
-          navigatorObservers: [
-            if (analytics) AnalyticsService.observer,
-            RouteLoggingObserver(),
-          ],
-          supportedLocales: Translator.supportedLocals,
-          localizationsDelegates: const [
-            Translator.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            DefaultCupertinoLocalizations.delegate,
-          ],
-          localeResolutionCallback: (locale, supportedLocales) =>
-              supportedLocales.firstWhere(
-                  (l) => l.languageCode == locale?.languageCode,
-                  // English should be the first one and also the default.
-                  orElse: () => supportedLocales.first),
-          home: const SplashPage(),
-        ),
+  Widget build(BuildContext context) => MaterialApp(
+        navigatorKey: navigatorKey,
+        builder: (context, child) => child != null
+            ? MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                child: child,
+              )
+            : const SplashPage(),
+        title: Config.flavor.name,
+        theme: abiliaTheme,
+        navigatorObservers: [
+          if (analytics) AnalyticsService.observer,
+          RouteLoggingObserver(),
+        ],
+        supportedLocales: Translator.supportedLocals,
+        localizationsDelegates: const [
+          Translator.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate,
+        ],
+        localeResolutionCallback: (locale, supportedLocales) => supportedLocales
+            .firstWhere((l) => l.languageCode == locale?.languageCode,
+                // English should be the first one and also the default.
+                orElse: () => supportedLocales.first),
+        home: const SplashPage(),
       );
 }

@@ -62,9 +62,10 @@ void main() {
                     BlocProvider<MemoplannerSettingBloc>(
                       create: (context) => FakeMemoplannerSettingsBloc(),
                     ),
-                    BlocProvider<SettingsCubit>(
-                      create: (context) => SettingsCubit(
-                        settingsDb: FakeSettingsDb(),
+                    BlocProvider<SpeechSettingsCubit>(
+                      create: (context) => SpeechSettingsCubit(
+                        voiceDb: FakeVoiceDb(),
+                        acapelaTts: FakeAcapelaTts(),
                       ),
                     ),
                   ],

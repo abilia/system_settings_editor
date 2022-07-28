@@ -36,7 +36,7 @@ void main() {
     MemoplannerSettingBloc? memoplannerSettingBloc,
     SortableBloc? sortableBloc,
   }) =>
-      TopLevelBlocsProvider(
+      TopLevelProvider(
         child: AuthenticatedBlocsProvider(
           memoplannerSettingBloc: memoplannerSettingBloc,
           sortableBloc: sortableBloc,

@@ -52,11 +52,22 @@ class VoiceRepository {
   }
 
   Future<void> deleteVoice(VoiceData voice) async {
-    final dls = voice.files.map((file) async {
-      final path = voiceDb.applicationSupportDirectory + file.localPath;
-      File(path).delete(recursive: true);
-    });
+    final dls = voice.files.map((file) =>
+        File('${voiceDb.applicationSupportDirectory}${file.localPath}')
+            .delete(recursive: true));
     await Future.wait(dls);
     _log.fine('Deleted voice; ${voice.name}');
+  }
+
+  Future<void> deleteAllVoices() async {
+    final voicePath =
+        Directory('${voiceDb.applicationSupportDirectory}/system/voices');
+    if (await voicePath.exists()) {
+      _log.info('Removing all voices in $voicePath');
+      await voicePath.delete(recursive: true);
+      return;
+    } else {
+      _log.info('no downloaded voices present');
+    }
   }
 }

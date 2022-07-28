@@ -56,9 +56,11 @@ void main() {
             providers: [
               BlocProvider<AuthenticationBloc>(
                   create: (context) => FakeAuthenticationBloc()),
-              BlocProvider<SettingsCubit>(
-                create: (context) =>
-                    SettingsCubit(settingsDb: FakeSettingsDb()),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => SpeechSettingsCubit(
+                  voiceDb: FakeVoiceDb(),
+                  acapelaTts: FakeAcapelaTts(),
+                ),
               ),
               BlocProvider<ActivitiesBloc>(
                 create: (context) => FakeActivitiesBloc(),

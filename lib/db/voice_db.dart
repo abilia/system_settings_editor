@@ -1,3 +1,4 @@
+import 'package:seagull/config.dart';
 import 'package:seagull/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -5,6 +6,7 @@ class VoiceDb {
   static final _log = Logger((VoiceDb).toString());
   static const String _speechRate = 'SPEECH_RATE',
       _speakEveryWord = 'SPEAK_EVERY_WORD',
+      textToSpeechRecord = 'TEXT_TO_SPEECH',
       _voice = 'VOICE';
 
   final SharedPreferences preferences;
@@ -12,6 +14,11 @@ class VoiceDb {
   final String applicationSupportDirectory;
 
   VoiceDb(this.preferences, this.applicationSupportDirectory);
+
+  Future<void> setTextToSpeech(bool textToSpeech) =>
+      preferences.setBool(textToSpeechRecord, textToSpeech);
+
+  bool get textToSpeech => _tryGetBool(textToSpeechRecord, Config.isMPGO);
 
   Future setSpeechRate(double speechRate) =>
       preferences.setDouble(_speechRate, speechRate);

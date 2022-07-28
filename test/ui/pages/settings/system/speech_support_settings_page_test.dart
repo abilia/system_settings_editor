@@ -33,7 +33,6 @@ void main() {
       when(() => genericDb.insert(any())).thenAnswer((_) async {});
 
       settingsDb = MockSettingsDb();
-      when(() => settingsDb.textToSpeech).thenAnswer((_) => true);
       when(() => settingsDb.alwaysUse24HourFormat).thenAnswer((_) => true);
       when(() => settingsDb.setAlwaysUse24HourFormat(any()))
           .thenAnswer((_) => Future.value());
@@ -46,6 +45,7 @@ void main() {
       when(() => settingsDb.language).thenReturn('en');
 
       voiceDb = MockVoiceDb();
+      when(() => voiceDb.textToSpeech).thenAnswer((_) => true);
       when(() => voiceDb.speechRate).thenAnswer((_) => 100);
       when(() => voiceDb.speakEveryWord).thenAnswer((_) => false);
       when(() => voiceDb.voice).thenAnswer((_) => '');
@@ -60,6 +60,7 @@ void main() {
         ..settingsDb = settingsDb
         ..ttsHandler = AcapelaTtsHandler()
         ..deviceDb = FakeDeviceDb()
+        ..voiceDb = voiceDb
         ..init();
     });
 
@@ -82,7 +83,7 @@ void main() {
 
     testWidgets('When TTS setting false, no other options should be available',
         (tester) async {
-      when(() => settingsDb.textToSpeech).thenAnswer((_) => false);
+      when(() => voiceDb.textToSpeech).thenAnswer((_) => false);
 
       await tester.goToSpeechSettingsPage();
       expect(find.byType(TtsPlayButton), findsNothing);

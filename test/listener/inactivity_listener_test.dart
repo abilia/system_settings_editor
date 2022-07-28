@@ -69,7 +69,7 @@ void main() {
       GetIt.I.reset();
     });
 
-    Widget _wrapWithMaterialApp({Widget? child}) => TopLevelBlocsProvider(
+    Widget _wrapWithMaterialApp({Widget? child}) => TopLevelProvider(
           child: AuthenticatedBlocsProvider(
             memoplannerSettingBloc: mockSettingBloc,
             authenticatedState: const Authenticated(userId: 1),

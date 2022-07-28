@@ -40,6 +40,11 @@ class StartupCubit extends Cubit<StartupState> {
     await deviceRepository.setStartGuideCompleted();
     emit(StartupDone());
   }
+
+  void resetStartGuideDone() async {
+    await deviceRepository.setStartGuideCompleted(false);
+    emit(WelcomeGuide());
+  }
 }
 
 abstract class StartupState {}

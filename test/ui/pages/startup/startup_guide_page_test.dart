@@ -53,7 +53,7 @@ void main() {
 
       await tester.tap(find.text(_translator.translate.start));
       await tester.pumpAndSettle();
-      expect(find.byType(PageOne), findsOneWidget);
+      expect(find.byType(PageOneWifi), findsOneWidget);
     });
   }, skip: !Config.isMP);
 }

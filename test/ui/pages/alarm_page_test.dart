@@ -86,9 +86,10 @@ void main() {
               BlocProvider<ClockBloc>(
                 create: (context) => ClockBloc.fixed(day),
               ),
-              BlocProvider<SettingsCubit>(
-                create: (context) => SettingsCubit(
-                  settingsDb: FakeSettingsDb(),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => SpeechSettingsCubit(
+                  voiceDb: FakeVoiceDb(),
+                  acapelaTts: FakeAcapelaTts(),
                 ),
               ),
               BlocProvider<MemoplannerSettingBloc>(

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:seagull/db/all.dart';
+import 'package:seagull/tts/tts_handler.dart';
 import 'package:test/fake.dart';
 import 'fake_client.dart';
 import 'package:seagull/models/all.dart';
@@ -23,8 +24,7 @@ class FakeSettingsDb extends Fake implements SettingsDb {
   Future setLeftCategoryExpanded(bool expanded) async {}
   @override
   Future setRightCategoryExpanded(bool expanded) async {}
-  @override
-  bool get textToSpeech => true;
+
   @override
   String get language => 'en';
 
@@ -179,6 +179,9 @@ class FakeFirebasePushService extends Fake implements FirebasePushService {
 
 class FakeVoiceDb extends Fake implements VoiceDb {
   @override
+  bool get textToSpeech => true;
+
+  @override
   bool get speakEveryWord => false;
 
   @override
@@ -200,3 +203,5 @@ class FakeDeviceDb extends Fake implements DeviceDb {
   @override
   bool get startGuideCompleted => true;
 }
+
+class FakeAcapelaTts extends Fake implements TtsInterface {}

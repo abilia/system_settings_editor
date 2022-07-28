@@ -13,7 +13,7 @@ Future<T?> showViewDialog<T>({
 }) {
   final authProviders = wrapWithAuthProviders
       ? copiedAuthProviders(context)
-      : [BlocProvider.value(value: context.read<SettingsCubit>())];
+      : [BlocProvider.value(value: context.read<SpeechSettingsCubit>())];
   return showDialog<T>(
     context: context,
     builder: (_) => MultiBlocProvider(

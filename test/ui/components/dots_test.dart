@@ -35,9 +35,10 @@ void main() {
             BlocProvider<MemoplannerSettingBloc>(
               create: (context) => mockMemoplannerSettingsBloc,
             ),
-            BlocProvider<SettingsCubit>(
-              create: (context) => SettingsCubit(
-                settingsDb: FakeSettingsDb(),
+            BlocProvider<SpeechSettingsCubit>(
+              create: (context) => SpeechSettingsCubit(
+                voiceDb: FakeVoiceDb(),
+                acapelaTts: FakeAcapelaTts(),
               ),
             ),
             BlocProvider<TimepillarMeasuresCubit>(
