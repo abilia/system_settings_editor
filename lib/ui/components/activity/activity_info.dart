@@ -348,30 +348,30 @@ class TitleAndOrImage extends StatelessWidget {
   final ActivityDay activityDay;
   final Widget? previewImage;
 
+  Widget get image =>
+      previewImage ??
+      (activityDay.activity.hasAttachment
+          ? CheckedImageWithImagePopup(activityDay: activityDay)
+          : CheckedImageWithImagePopup(
+              activityDay: activityDay,
+              checkPadding: layout.activityPage.checkPadding,
+            ));
+
+  Widget get title => Tts(
+        child: Text(
+          activityDay.activity.title,
+          style: layout.activityPage.headline4_2(),
+          overflow: TextOverflow.visible,
+          textAlign: TextAlign.center,
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     final activity = activityDay.activity;
     final hasImage = activity.hasImage || previewImage != null;
     final hasTitle = activity.hasTitle;
     final hasAttachment = activity.hasAttachment;
-
-    final checkableImage = CheckedImageWithImagePopup(
-      activityDay: activityDay,
-      checkPadding: layout.activityPage.checkPadding,
-    );
-
-    final title = hasTitle
-        ? Tts(
-            child: Text(
-              activity.title,
-              style: layout.activityPage.headline4_2(),
-              overflow: TextOverflow.visible,
-              textAlign: TextAlign.center,
-            ),
-          )
-        : const SizedBox.shrink();
-
-    final image = previewImage ?? checkableImage;
 
     if (hasAttachment) {
       return SizedBox(
@@ -389,10 +389,7 @@ class TitleAndOrImage extends StatelessWidget {
                 SizedBox(
                   width: layout.activityPage.titleImageHorizontalSpacing,
                 ),
-              if (hasTitle)
-                Expanded(
-                  child: title,
-                ),
+              if (hasTitle) Expanded(child: title),
             ],
           ),
         ),
@@ -405,17 +402,13 @@ class TitleAndOrImage extends StatelessWidget {
             if (hasTitle)
               SizedBox(
                 height: layout.activityPage.topInfoHeight,
-                child: Center(
-                  child: title,
-                ),
+                child: Center(child: title),
               ),
             if (hasImage || activityDay.isSignedOff)
               Expanded(
                 child: Padding(
                   padding: layout.activityPage.imagePadding,
-                  child: Center(
-                    child: image,
-                  ),
+                  child: Center(child: image),
                 ),
               ),
           ],
