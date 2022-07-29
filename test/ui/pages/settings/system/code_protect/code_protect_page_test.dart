@@ -153,6 +153,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ErrorDialog), findsOneWidget);
+      expect(find.text('Enter new code'), findsNWidgets(2));
       await tester.tap(find.byType(PreviousButton));
       await tester.pumpAndSettle();
       await tester._type('123');
@@ -160,6 +161,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ErrorDialog), findsOneWidget);
+      expect(find.text('Enter new code'), findsNWidgets(2));
       await tester.tap(find.byType(PreviousButton));
       await tester.pumpAndSettle();
       await tester._type('1234');
@@ -170,6 +172,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ErrorDialog), findsOneWidget);
+      expect(find.text('Incorrect code'), findsOneWidget);
       await tester.tap(find.byType(PreviousButton));
       await tester.pumpAndSettle();
 
