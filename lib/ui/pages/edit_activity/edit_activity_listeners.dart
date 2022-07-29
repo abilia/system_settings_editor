@@ -167,11 +167,13 @@ class OnDeletedListener extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<EditActivityCubit, EditActivityState, Activity>(
-        selector: (state) => state.activity,
-        builder: (context, activity) => ActivityListener(
-              activity: activity,
-              onActivityDeleted: () => Navigator.of(context).maybePop(),
-              child: child,
-            ));
+      selector: (state) => state.activity,
+      builder: (context, activity) => ActivityListener(
+        activity: activity,
+        onActivityDeleted: () =>
+            Navigator.of(context).popUntil((route) => route.isFirst),
+        child: child,
+      ),
+    );
   }
 }

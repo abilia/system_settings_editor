@@ -20,36 +20,27 @@ class ActivityPage extends StatelessWidget {
       data: abiliaWhiteTheme,
       child: ActivityListener(
         activity: activityDay.activity,
-        onActivityDeleted: () => Navigator.of(context).maybePop(),
-        child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay?>(
+        onActivityDeleted: () =>
+            Navigator.of(context).popUntil((route) => route.isFirst),
+        child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
           selector: (activitiesState) {
-            final activity = previewImage == null
-                ? activitiesState
-                    .newActivityFromLoadedOrNull(activityDay.activity)
-                : activityDay.activity;
-            if (activity == null) {
-              return null;
-            }
+            final a = activitiesState
+                .newActivityFromLoadedOrGiven(activityDay.activity);
             return ActivityDay(
-              activity,
-              activity.isRecurring ? activityDay.day : activity.startTime,
+              a,
+              a.isRecurring ? activityDay.day : a.startTime,
             );
           },
-          builder: (context, activityDay) {
-            if (activityDay == null) {
-              Navigator.of(context).maybePop();
-              return Container();
-            }
+          builder: (context, ad) {
             return Scaffold(
               appBar: DayAppBar(
-                day: activityDay.day,
+                day: ad.day,
               ),
               body: ActivityInfoWithDots(
-                activityDay,
+                ad,
                 previewImage: previewImage,
               ),
-              bottomNavigationBar:
-                  _ActivityBottomAppBar(activityDay: activityDay),
+              bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
             );
           },
         ),

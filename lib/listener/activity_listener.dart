@@ -11,8 +11,6 @@ class ActivityListener extends BlocListener<ActivitiesBloc, ActivitiesState> {
     required Widget child,
   }) : super(
           key: key,
-          listenWhen: (previous, current) =>
-              previous.activities != current.activities,
           listener: (context, state) {
             final updatedActivity = state.newActivityFromLoadedOrNull(activity);
             if (updatedActivity == null) {
