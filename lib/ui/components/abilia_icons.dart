@@ -501,5 +501,13 @@ class AbiliaIcons {
       sun = IconData(0xEB2A, fontFamily: fontFamily),
       dayInterval = IconData(0xEB2B, fontFamily: fontFamily),
       selectedSupport = IconData(0xEB35, fontFamily: fontFamily),
-      dayNight = IconData(0xEB2C, fontFamily: fontFamily);
+      dayNight = IconData(0xEB2C, fontFamily: fontFamily),
+      categories = IconData(0xEB49, fontFamily: fontFamily),
+      endTime = IconData(0xEB46, fontFamily: fontFamily),
+      endView = IconData(0xEB49, fontFamily: fontFamily),
+      editView = IconData(0xEB45, fontFamily: fontFamily),
+      stepByStep = IconData(0xEB44, fontFamily: fontFamily),
+      screenSaverNight = IconData(0xEB47, fontFamily: fontFamily),
+      digitalTime = IconData(0xEB4A, fontFamily: fontFamily),
+      android = IconData(0xEB43, fontFamily: fontFamily);
 }

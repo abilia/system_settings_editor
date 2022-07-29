@@ -192,7 +192,7 @@ class HomeScreenSettingsTab extends StatelessWidget {
                 onChanged: onChange,
               ),
             RadioField(
-              leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+              leading: const Icon(AbiliaIcons.photoCalendar),
               text: Text(t.photoCalendar.singleLine),
               value: StartView.photoAlbum,
               groupValue: state.startView,
@@ -232,7 +232,7 @@ class TimeoutSettingsTab extends StatelessWidget {
                 ),
             const Divider(),
             SwitchField(
-              leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+              leading: const Icon(AbiliaIcons.screenSaverNight),
               value: state.shouldUseScreenSaver,
               onChanged: state.hasTimeOut
                   ? (v) => context

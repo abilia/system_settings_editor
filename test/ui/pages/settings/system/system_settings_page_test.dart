@@ -149,7 +149,7 @@ void main() {
   testWidgets('android settings availible', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard));
+    await tester.tap(find.byIcon(AbiliaIcons.android));
     await tester.pumpAndSettle();
   });
 }

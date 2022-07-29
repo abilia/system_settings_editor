@@ -204,8 +204,8 @@ availableFor	Available for	Tillgänglig för	Fås til	Beschikbaar voor	Käytett�
 activityAvailableFor	Available for	Tillgänglig för	Fås til	Beschikbaar voor	Käytettävissä	Verfügbar für	Tilgjengelig for
 allSupportPersons	All my support persons	Alla mina stödpersoner	Alle mine støttepersoner	Al mijn ondersteuningspersonen	Kaikki tukihenkilöt	Alle meine Hilfspersonen	Alle mine støttepersoner
 onlyMe	Only me	Bara mig	Bare mig	Mij alleen	Vain minä	Nur für mich	Bare meg
-selectedSupportPersons	Selected support persons	Utvalda stödpersoner					
-supportPersons	Support Persons	Stödpersoner					
+selectedSupportPersons	Selected support persons	Utvalda stödpersoner					Utvalgte støttepersoner
+supportPersons	Support Persons	Stödpersoner	Støttepersoner				Støttepersoner
 							
 ### Alarm							
 selectAlarmType	Select alarm	Ange larm	Vælg alarm	Alarm selecteren	Valitse hälytys	Alarm auswählen	Angi alarm
