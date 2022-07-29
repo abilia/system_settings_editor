@@ -49,10 +49,7 @@ void main() {
                 value: mockSortableBloc,
               ),
               BlocProvider<SpeechSettingsCubit>(
-                create: (context) => SpeechSettingsCubit(
-                  voiceDb: FakeVoiceDb(),
-                  acapelaTts: FakeAcapelaTts(),
-                ),
+                create: (context) => FakeSpeechSettingsCubit(),
               ),
             ], child: child!),
           ),

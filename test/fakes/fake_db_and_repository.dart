@@ -204,4 +204,22 @@ class FakeDeviceDb extends Fake implements DeviceDb {
   bool get startGuideCompleted => true;
 }
 
-class FakeAcapelaTts extends Fake implements TtsInterface {}
+class FakeTtsHandler extends Fake implements TtsInterface {
+  @override
+  Future<dynamic> speak(String text) async {}
+
+  @override
+  Future<dynamic> stop() async {}
+
+  @override
+  Future<dynamic> pause() async {}
+
+  @override
+  Future<dynamic> setVoice(Map<String, String> voice) async {}
+
+  @override
+  Future<dynamic> setSpeechRate(double speechRate) async {}
+
+  @override
+  Future<List<Object?>> get availableVoices => Future.value(List.empty());
+}

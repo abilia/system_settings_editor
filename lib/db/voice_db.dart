@@ -11,9 +11,7 @@ class VoiceDb {
 
   final SharedPreferences preferences;
 
-  final String applicationSupportDirectory;
-
-  VoiceDb(this.preferences, this.applicationSupportDirectory);
+  const VoiceDb(this.preferences);
 
   Future<void> setTextToSpeech(bool textToSpeech) =>
       preferences.setBool(textToSpeechRecord, textToSpeech);

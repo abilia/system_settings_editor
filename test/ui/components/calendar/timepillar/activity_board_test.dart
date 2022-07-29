@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -97,10 +96,7 @@ void main() {
               create: (context) => ClockBloc.fixed(initialTime ?? startTime),
             ),
             BlocProvider<SpeechSettingsCubit>(
-              create: (context) => SpeechSettingsCubit(
-                voiceDb: FakeVoiceDb(),
-                acapelaTts: FakeAcapelaTts(),
-              ),
+              create: (context) => FakeSpeechSettingsCubit(),
             ),
             BlocProvider<MemoplannerSettingBloc>(
               create: (context) => mockMemoplannerSettingsBloc,

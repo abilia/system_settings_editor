@@ -18,10 +18,7 @@ void main() {
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),
         home: BlocProvider<SpeechSettingsCubit>(
-          create: (context) => SpeechSettingsCubit(
-            voiceDb: FakeVoiceDb(),
-            acapelaTts: FakeAcapelaTts(),
-          ),
+          create: (context) => FakeSpeechSettingsCubit(),
           child: EditTimerDurationPage(
             initialDuration: initialDuration,
           ),

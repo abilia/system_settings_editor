@@ -3,17 +3,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../fakes/fake_db_and_repository.dart';
+import '../../fakes/all.dart';
 
 void main() {
   testWidgets('Bug SGC-516 No style in error message', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
         home: BlocProvider<SpeechSettingsCubit>(
-          create: (context) => SpeechSettingsCubit(
-            voiceDb: FakeVoiceDb(),
-            acapelaTts: FakeAcapelaTts(),
-          ),
+          create: (context) => FakeSpeechSettingsCubit(),
           child: const ErrorMessage(text: Text('')),
         ),
       ),

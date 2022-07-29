@@ -32,10 +32,7 @@ void main() {
             create: (context) => FakeMemoplannerSettingsBloc(),
           ),
           BlocProvider<SpeechSettingsCubit>(
-            create: (context) => SpeechSettingsCubit(
-              voiceDb: FakeVoiceDb(),
-              acapelaTts: FakeAcapelaTts(),
-            ),
+            create: (context) => FakeSpeechSettingsCubit(),
           ),
           BlocProvider<WakeLockCubit>.value(value: mockWakeLockCubit),
         ], child: widget),

@@ -1,9 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/generic/generic.dart';
-import 'package:seagull/repository/ticker.dart';
-import 'package:seagull/tts/tts_handler.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../../fakes/all.dart';
@@ -58,9 +58,13 @@ void main() {
         ..genericDb = genericDb
         ..battery = FakeBattery()
         ..settingsDb = settingsDb
-        ..ttsHandler = AcapelaTtsHandler()
+        ..ttsHandler = FakeTtsHandler()
         ..deviceDb = FakeDeviceDb()
         ..voiceDb = voiceDb
+        ..directories = Directories(
+          applicationSupport: Directory('applicationSupport'),
+          documents: Directory('documents'),
+        )
         ..init();
     });
 

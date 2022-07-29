@@ -121,10 +121,7 @@ void main() {
                 ),
               ),
               BlocProvider<SpeechSettingsCubit>(
-                create: (context) => SpeechSettingsCubit(
-                  voiceDb: FakeVoiceDb(),
-                  acapelaTts: FakeAcapelaTts(),
-                ),
+                create: (context) => FakeSpeechSettingsCubit(),
               ),
               BlocProvider<PermissionCubit>(
                 create: (context) => PermissionCubit()..checkAll(),

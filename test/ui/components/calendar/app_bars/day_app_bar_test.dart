@@ -36,10 +36,7 @@ void main() {
             create: (context) => memoplannerSettingsBlocMock,
           ),
           BlocProvider<SpeechSettingsCubit>(
-            create: (context) => SpeechSettingsCubit(
-              voiceDb: FakeVoiceDb(),
-              acapelaTts: FakeAcapelaTts(),
-            ),
+            create: (context) => FakeSpeechSettingsCubit(),
           ),
         ], child: widget),
       );

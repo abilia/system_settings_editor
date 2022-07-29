@@ -12,7 +12,7 @@ class CalendarPage extends StatelessWidget {
       child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
           builder: (context, settingsState) {
         if (settingsState is MemoplannerSettingsNotLoaded) {
-          return const Center(child: AbiliaProgressIndicator());
+          return const Scaffold(body: Center(child: AbiliaProgressIndicator()));
         }
         return DefaultTabController(
           length: settingsState.calendarCount,

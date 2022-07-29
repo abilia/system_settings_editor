@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:seagull/repository/all.dart';
@@ -63,10 +62,7 @@ void main() {
                       create: (context) => FakeMemoplannerSettingsBloc(),
                     ),
                     BlocProvider<SpeechSettingsCubit>(
-                      create: (context) => SpeechSettingsCubit(
-                        voiceDb: FakeVoiceDb(),
-                        acapelaTts: FakeAcapelaTts(),
-                      ),
+                      create: (context) => FakeSpeechSettingsCubit(),
                     ),
                   ],
                   child: Material(
