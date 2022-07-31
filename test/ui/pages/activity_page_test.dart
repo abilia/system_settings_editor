@@ -189,24 +189,27 @@ void main() {
     testWidgets(
         'When activity is deleted from myAbilia Pop back to CalendarPage',
         (WidgetTester tester) async {
-          // Arrange
-          final pushCubit = PushCubit();
-          List<List<Activity>> activitiesList = [[FakeActivity.starts(startTime)], []];
-          when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-                  (_) => Future.value(activitiesList.removeAt(0)));
+      // Arrange
+      final pushCubit = PushCubit();
+      List<List<Activity>> activitiesList = [
+        [FakeActivity.starts(startTime)],
+        []
+      ];
+      when(() => mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value(activitiesList.removeAt(0)));
 
-          // Act
-          await tester.pumpWidget(App(pushCubit: pushCubit));
-          await tester.pumpAndSettle();
-          await tester.tap(activityTimepillarCardFinder);
-          await tester.pumpAndSettle();
+      // Act
+      await tester.pumpWidget(App(pushCubit: pushCubit));
+      await tester.pumpAndSettle();
+      await tester.tap(activityTimepillarCardFinder);
+      await tester.pumpAndSettle();
 
-          pushCubit.update('refresh');
-          await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      pushCubit.update('refresh');
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
-          // Assert
-          expect(find.byType(CalendarPage), findsOneWidget);
-        });
+      // Assert
+      expect(find.byType(CalendarPage), findsOneWidget);
+    });
   });
 
   group('Edit activity', () {
