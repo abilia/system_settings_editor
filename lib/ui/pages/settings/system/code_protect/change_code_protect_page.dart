@@ -63,8 +63,8 @@ class _ChangeCodeProtectPageState extends State<ChangeCodeProtectPage> {
     final t = Translator.of(context).translate;
     showDialog(
       context: context,
-      builder: (context) =>
-          ErrorDialog(text: firstCode == null ? t.enterNewCode : t.incorrectCode),
+      builder: (context) => ErrorDialog(
+          text: firstCode == null ? t.enterNewCode : t.incorrectCode),
     );
   }
 }
