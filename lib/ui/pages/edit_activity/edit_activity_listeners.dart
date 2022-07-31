@@ -1,7 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/listener/all.dart';
 
 class ErrorPopupListener extends StatelessWidget {
   final Widget child;
@@ -153,27 +152,5 @@ class ScrollToErrorPageListener extends StatelessWidget {
             duration: kTabScrollDuration, curve: Curves.ease);
       }
     }
-  }
-}
-
-class OnDeletedListener extends StatelessWidget {
-  final Widget child;
-
-  const OnDeletedListener({
-    Key? key,
-    required this.child,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocSelector<EditActivityCubit, EditActivityState, Activity>(
-      selector: (state) => state.activity,
-      builder: (context, activity) => ActivityListener(
-        activity: activity,
-        onActivityDeleted: () =>
-            Navigator.of(context).popUntil((route) => route.isFirst),
-        child: child,
-      ),
-    );
   }
 }
