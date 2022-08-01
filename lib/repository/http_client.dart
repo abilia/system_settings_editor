@@ -141,6 +141,7 @@ class ClientWithDefaultHeaders extends ListenableClient {
       ),
       headers: jsonHeader,
     );
+
     switch (response.statusCode) {
       case 200:
         return LoginInfo.fromJson(response.json());
