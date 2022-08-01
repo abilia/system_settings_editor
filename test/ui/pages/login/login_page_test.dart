@@ -418,7 +418,7 @@ void main() {
     expect(find.text(secretPassword), findsNothing);
   });
 
-  testWidgets('Redirect to login when deautorized',
+  testWidgets('Redirect to login when deauthorized',
       (WidgetTester tester) async {
     await tester.pumpApp();
     await tester.pumpAndSettle();
