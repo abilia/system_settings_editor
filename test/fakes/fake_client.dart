@@ -187,7 +187,7 @@ class ListenableMockClient extends MockClient implements ListenableClient {
     _stateController.close();
   }
 
-  void fakeUnauthorized() {
+  void fakeDeauthorized() {
     _stateController.add(HttpMessage.deauthorized);
   }
 }

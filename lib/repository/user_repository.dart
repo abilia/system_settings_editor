@@ -38,8 +38,10 @@ class UserRepository extends Repository {
     required DateTime time,
   }) async {
     final clientId = await deviceDb.getClientId();
-    final response =
-        await (client as ClientWithDefaultHeaders).postAsUnAuthorized(
+    final post = client.runtimeType == ClientWithDefaultHeaders
+        ? (client as ClientWithDefaultHeaders).postAsUnAuthorized
+        : client.post;
+    final response = await post(
       '$baseUrl/api/v$postApiVersion/auth/client/me'.toUri(),
       headers: {
         HttpHeaders.authorizationHeader:
