@@ -19,7 +19,7 @@ class LoggedIn extends AuthenticationEvent {
 enum LoggedOutReason {
   licenseExpired,
   logOut,
-  deautorized,
+  deauthorized,
 }
 
 class LoggedOut extends AuthenticationEvent {

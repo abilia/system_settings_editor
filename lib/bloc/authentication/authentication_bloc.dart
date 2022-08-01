@@ -27,7 +27,7 @@ class AuthenticationBloc
         .where((event) => event == HttpMessage.deauthorized)
         .listen(
           (event) => add(
-              const LoggedOut(loggedOutReason: LoggedOutReason.deautorized)),
+              const LoggedOut(loggedOutReason: LoggedOutReason.deauthorized)),
         );
     on<AuthenticationEvent>(_onAuthenticationEvent, transformer: sequential());
   }

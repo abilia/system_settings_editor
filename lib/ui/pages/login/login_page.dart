@@ -68,7 +68,7 @@ class LoginPage extends StatelessWidget {
             body: SafeArea(
               child: LoginForm(
                   message:
-                      authState.loggedOutReason == LoggedOutReason.deautorized
+                      authState.loggedOutReason == LoggedOutReason.deauthorized
                           ? translate.loggedOutMessage
                           : ''),
             ),

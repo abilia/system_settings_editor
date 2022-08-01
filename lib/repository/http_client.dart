@@ -37,7 +37,7 @@ class ClientWithDefaultHeaders extends ListenableClient {
     final response = await super.get(url, headers: headers);
     if (response.statusCode == 401) {
       _log.info('Got 401 on $url');
-      await _renewToken(url.origin, true);
+      await _renewToken(url.origin);
       return super.get(url, headers: headers);
     }
     return response;
@@ -49,13 +49,16 @@ class ClientWithDefaultHeaders extends ListenableClient {
       _renewOn401(super.post, url,
           headers: headers, body: body, encoding: encoding);
 
-  Future<Response> postAsUnAuthorized(Uri url,
+  Future<Response> postUnauthorized(Uri url,
           {Map<String, String>? headers, Object? body, Encoding? encoding}) =>
-      _renewOn401(super.post, url,
-          headers: headers,
-          body: body,
-          encoding: encoding,
-          isAuthorized: false);
+      _renewOn401(
+        super.post,
+        url,
+        headers: headers,
+        body: body,
+        encoding: encoding,
+        isAuthorized: false,
+      );
 
   @override
   Future<Response> put(Uri url,
@@ -97,7 +100,7 @@ class ClientWithDefaultHeaders extends ListenableClient {
     return _inner.send(request);
   }
 
-  Future<void> _renewToken(String host, bool isAuthorized) async {
+  Future<void> _renewToken(String host, [bool isAuthorized = true]) async {
     _log.fine('Will try to renew token...');
     return synchronized(() async {
       if (await _hasAccess(host)) {

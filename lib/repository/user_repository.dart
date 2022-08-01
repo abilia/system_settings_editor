@@ -39,7 +39,7 @@ class UserRepository extends Repository {
   }) async {
     final clientId = await deviceDb.getClientId();
     final post = client.runtimeType == ClientWithDefaultHeaders
-        ? (client as ClientWithDefaultHeaders).postAsUnAuthorized
+        ? (client as ClientWithDefaultHeaders).postUnauthorized
         : client.post;
     final response = await post(
       '$baseUrl/api/v$postApiVersion/auth/client/me'.toUri(),
