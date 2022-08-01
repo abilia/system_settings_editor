@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:seagull/background/all.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
 
@@ -183,6 +184,31 @@ void main() {
 
       await navigateToActivityPage(tester);
       expect(find.byType(YoutubePlayer), findsOneWidget);
+    });
+
+    testWidgets(
+        'When activity is deleted from myAbilia Pop back to CalendarPage',
+        (WidgetTester tester) async {
+      // Arrange
+      final pushCubit = PushCubit();
+      List<List<Activity>> activitiesList = [
+        [FakeActivity.starts(startTime)],
+        []
+      ];
+      when(() => mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value(activitiesList.removeAt(0)));
+
+      // Act
+      await tester.pumpWidget(App(pushCubit: pushCubit));
+      await tester.pumpAndSettle();
+      await tester.tap(activityTimepillarCardFinder);
+      await tester.pumpAndSettle();
+
+      pushCubit.update('refresh');
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+      // Assert
+      expect(find.byType(CalendarPage), findsOneWidget);
     });
   });
 
