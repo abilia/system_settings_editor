@@ -45,7 +45,7 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
           emit(UnchangedRecordingSoundState(s.recordedFile, event));
         }
       });
-      audioPlayer.setUrl(file.path);
+      audioPlayer.setSource(DeviceFileSource(file.path));
     }
   }
 
