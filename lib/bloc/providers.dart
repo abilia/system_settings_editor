@@ -325,6 +325,8 @@ class AuthenticationBlocProvider extends StatelessWidget {
                 notificationPlugin.cancelAll(),
                 GetIt.I<FileStorage>().deleteUserFolder(),
                 GetIt.I<SupportPersonsDb>().deleteAll(),
+                GetIt.I<LicenseDb>().delete(),
+                GetIt.I<SettingsDb>().restore(),
               ],
             ),
             client: GetIt.I<ListenableClient>(),
