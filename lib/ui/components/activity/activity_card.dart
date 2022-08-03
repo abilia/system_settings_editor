@@ -155,8 +155,8 @@ class ActivityCard extends StatelessWidget {
             if (!activity.fullDay && activity.reminderBefore.isNotEmpty)
               AbiliaIcons.handiReminder,
             if (activity.hasAttachment) AbiliaIcons.handiInfo,
+            activity.availableFor.icon,
           ].map((icon) => CardIcon(icon)),
-          AvailableForIcon(activity.availableFor, inactive),
         ],
       );
 }
@@ -175,55 +175,5 @@ class CardIcon extends StatelessWidget {
       padding: layout.eventCard.cardIconPadding,
       child: Icon(icon, size: layout.eventCard.iconSize),
     );
-  }
-}
-
-class AvailableForIcon extends StatelessWidget {
-  final AvailableForType availableFor;
-  final bool inactive;
-
-  const AvailableForIcon(
-    this.availableFor,
-    this.inactive, {
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return IconTheme(
-      data: Theme.of(context).iconTheme.copyWith(
-            size: layout.eventCard.iconSize,
-            color: iconColor,
-          ),
-      child: AnimatedContainer(
-        margin: layout.eventCard.cardIconPadding,
-        duration: ActivityCard.duration,
-        width: layout.eventCard.privateIconSize,
-        height: layout.eventCard.privateIconSize,
-        decoration: BoxDecoration(
-          color: decorationColor,
-          borderRadius: borderRadius,
-        ),
-        child: Icon(availableFor.icon),
-      ),
-    );
-  }
-
-  Color get iconColor {
-    switch (availableFor) {
-      case AvailableForType.onlyMe:
-        return inactive ? AbiliaColors.white110 : AbiliaColors.white;
-      default:
-        return inactive ? AbiliaColors.white140 : AbiliaColors.black75;
-    }
-  }
-
-  Color get decorationColor {
-    switch (availableFor) {
-      case AvailableForType.onlyMe:
-        return inactive ? AbiliaColors.white140 : AbiliaColors.black75;
-      default:
-        return inactive ? AbiliaColors.white110 : AbiliaColors.white;
-    }
   }
 }
