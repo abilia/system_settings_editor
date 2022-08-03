@@ -19,6 +19,7 @@ void main() {
     final speechSettingsCubit = SpeechSettingsCubit(
       voiceDb: voiceDb,
       acapelaTts: FakeTtsHandler(),
+      localeStream: const Stream.empty(),
     );
 
     final voiceRepository = MockVoiceRepository();
@@ -31,6 +32,7 @@ void main() {
       speechSettingsCubit: speechSettingsCubit,
       voiceRepository: voiceRepository,
       ttsHandler: FakeTtsHandler(),
+      localeStream: const Stream.empty(),
     );
 
     final deviceRepository = MockDeviceRepository();

@@ -278,12 +278,16 @@ class TopLevelProvider extends StatelessWidget {
             ),
           ),
           BlocProvider(
+            create: (context) => LocaleCubit(GetIt.I<SettingsDb>()),
+          ),
+          BlocProvider(
             create: (context) => TouchDetectionCubit(),
           ),
           BlocProvider<SpeechSettingsCubit>(
             create: (context) => SpeechSettingsCubit(
               voiceDb: GetIt.I<VoiceDb>(),
               acapelaTts: GetIt.I<TtsInterface>(),
+              localeStream: context.read<LocaleCubit>().stream,
             ),
           ),
           if (Config.isMP)
@@ -293,6 +297,7 @@ class TopLevelProvider extends StatelessWidget {
                 speechSettingsCubit: context.read<SpeechSettingsCubit>(),
                 ttsHandler: GetIt.I<TtsInterface>(),
                 voiceRepository: context.read<VoiceRepository>(),
+                localeStream: context.read<LocaleCubit>().stream,
               ),
             ),
         ],

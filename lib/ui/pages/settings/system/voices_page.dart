@@ -9,10 +9,6 @@ class VoicesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final voicesState = context.watch<VoicesCubit>().state;
     final selectedVoice = context.watch<SpeechSettingsCubit>().state.voice;
-    final languageCode = Localizations.localeOf(context).languageCode;
-    if (languageCode != voicesState.languageCode) {
-      context.read<VoicesCubit>().updateLocale(languageCode);
-    }
     final t = Translator.of(context).translate;
     final scrollController = ScrollController();
 

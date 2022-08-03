@@ -15,11 +15,11 @@ class VoiceRepository {
   final BaseClient client;
   final String voicesPath;
 
-  static const String _baseUrl = 'https://handi.se/systemfiles2';
+  static const String baseUrl = 'https://handi.se/systemfiles2';
   final _log = Logger((VoiceRepository).toString());
 
   Future<List<VoiceData>> readAvailableVoices(String locale) async {
-    var url = '$_baseUrl/$locale/'.toUri();
+    var url = '$baseUrl/$locale/'.toUri();
     final response = await client.get(url);
 
     final statusCode = response.statusCode;
