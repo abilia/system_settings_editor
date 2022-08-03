@@ -26,7 +26,7 @@ class AuthenticationBloc
     _clientSubscription = client?.messageStream
         .where((event) => event == HttpMessage.unauthorized)
         .listen((event) {
-          if(state is Authenticated) {
+      if (state is Authenticated) {
         add(const LoggedOut(loggedOutReason: LoggedOutReason.unautorized));
       }
     });
