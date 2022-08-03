@@ -342,6 +342,7 @@ void main() {
     expect(find.byType(CalendarPage), findsNothing);
     expect(find.byType(ErrorDialog), findsOneWidget);
     expect(find.text(translate.userTypeNotSupported), findsOneWidget);
+    expect(find.text(translate.loggedOutMessage), findsNothing);
   });
 
   testWidgets('Cant press OK with too short username',
@@ -416,7 +417,7 @@ void main() {
     expect(find.text(secretPassword), findsNothing);
   });
 
-  testWidgets('Redirect to login when unautorized',
+  testWidgets('Redirect to login when unauthorized',
       (WidgetTester tester) async {
     await tester.pumpApp();
     await tester.pumpAndSettle();
