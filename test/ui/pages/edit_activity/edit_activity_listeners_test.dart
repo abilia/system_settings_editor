@@ -120,10 +120,8 @@ void main() {
                   clockBloc: context.read<ClockBloc>(),
                 ),
               ),
-              BlocProvider<SettingsCubit>(
-                create: (context) => SettingsCubit(
-                  settingsDb: FakeSettingsDb(),
-                ),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => FakeSpeechSettingsCubit(),
               ),
               BlocProvider<PermissionCubit>(
                 create: (context) => PermissionCubit()..checkAll(),

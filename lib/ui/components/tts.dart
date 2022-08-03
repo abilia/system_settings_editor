@@ -61,7 +61,7 @@ class _Tts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      BlocSelector<SettingsCubit, SettingsState, bool>(
+      BlocSelector<SpeechSettingsCubit, SpeechSettingsState, bool>(
         selector: (state) => state.textToSpeech,
         builder: (context, textToSpeech) => GestureDetector(
           behavior: HitTestBehavior.translucent,

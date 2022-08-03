@@ -9,3 +9,4 @@ export 'timezone.dart';
 export 'data_repository/all.dart';
 export 'device_repository.dart';
 export 'json_response.dart';
+export 'directories.dart';

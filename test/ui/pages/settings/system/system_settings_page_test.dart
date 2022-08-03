@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:package_info/package_info.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -17,7 +16,6 @@ import '../../../../test_helpers/register_fallback_values.dart';
 import '../../../../test_helpers/tts.dart';
 
 void main() {
-  late MockSettingsDb mockSettingsDb;
   const user = User(
       id: 1,
       name: 'Slartibartfast',
@@ -29,8 +27,6 @@ void main() {
     await initializeDateFormatting();
     setupFakeTts();
     registerFallbackValues();
-    mockSettingsDb = MockSettingsDb();
-    when(() => mockSettingsDb.textToSpeech).thenReturn(true);
     final userDb = MockUserDb();
     when(() => userDb.getUser()).thenReturn(user);
     GetItInitializer()
@@ -58,8 +54,8 @@ void main() {
             providers: [
               BlocProvider<AuthenticationBloc>(
                   create: (context) => FakeAuthenticationBloc()),
-              BlocProvider<SettingsCubit>(
-                create: (context) => SettingsCubit(settingsDb: mockSettingsDb),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => FakeSpeechSettingsCubit(),
               ),
               BlocProvider<ActivitiesBloc>(
                 create: (context) => FakeActivitiesBloc(),

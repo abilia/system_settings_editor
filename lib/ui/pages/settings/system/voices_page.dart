@@ -8,10 +8,10 @@ class VoicesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final voicesState = context.watch<VoicesCubit>().state;
-    final speechSettingsState = context.watch<SpeechSettingsCubit>().state;
-    if (Localizations.localeOf(context).languageCode !=
-        voicesState.languageCode) {
-      context.read<VoicesCubit>().updateLocale();
+    final selectedVoice = context.watch<SpeechSettingsCubit>().state.voice;
+    final languageCode = Localizations.localeOf(context).languageCode;
+    if (languageCode != voicesState.languageCode) {
+      context.read<VoicesCubit>().updateLocale(languageCode);
     }
     final t = Translator.of(context).translate;
     final scrollController = ScrollController();
@@ -30,7 +30,6 @@ class VoicesPage extends StatelessWidget {
             controller: scrollController,
             children: voicesState.available.map((VoiceData voice) {
               final name = voice.name;
-              final selectedVoice = speechSettingsState.voice;
               return _VoiceRow(
                 voice: voice,
                 downloaded: voicesState.downloaded.contains(name),

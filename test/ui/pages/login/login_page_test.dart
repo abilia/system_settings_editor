@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -497,6 +496,11 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.byType(StarterSetDialog), findsNothing);
       });
+
+      testWidgets('hidden resets device button ', (WidgetTester tester) async {
+        await tester.pumpApp();
+        expect(find.byType(AbiliaLogoWithReset), findsOneWidget);
+      }, skip: !Config.isMP);
     });
   });
 }

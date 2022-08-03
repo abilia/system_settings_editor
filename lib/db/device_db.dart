@@ -14,8 +14,8 @@ class DeviceDb {
 
   String get serialId => prefs.getString(_serialIdRecord) ?? '';
 
-  Future<void> setStartGuideCompleted() =>
-      prefs.setBool(_startGuideCompletedRecord, true);
+  Future<void> setStartGuideCompleted(bool completed) =>
+      prefs.setBool(_startGuideCompletedRecord, completed);
 
   bool get startGuideCompleted =>
       prefs.getBool(_startGuideCompletedRecord) ?? false;

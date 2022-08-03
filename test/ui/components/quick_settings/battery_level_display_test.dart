@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/ui/all.dart';
@@ -43,10 +42,8 @@ void main() {
           BlocProvider<MemoplannerSettingBloc>(
             create: (context) => FakeMemoplannerSettingsBloc(),
           ),
-          BlocProvider<SettingsCubit>(
-            create: (context) => SettingsCubit(
-              settingsDb: FakeSettingsDb(),
-            ),
+          BlocProvider<SpeechSettingsCubit>(
+            create: (context) => FakeSpeechSettingsCubit(),
           ),
         ], child: widget),
       );

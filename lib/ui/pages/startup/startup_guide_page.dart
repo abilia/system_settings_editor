@@ -30,10 +30,10 @@ class StartupGuidePage extends StatelessWidget {
             WelcomePage(
               pageController: pageController,
             ),
-            PageOne(
+            PageOneWifi(
               pageController: pageController,
             ),
-            PageTwo(
+            PageTwoVoiceSupport(
               pageController: pageController,
             ),
           ],

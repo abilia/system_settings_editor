@@ -101,15 +101,6 @@ class FakeTimepillarMeasuresCubit extends Fake
   Future<void> close() async {}
 }
 
-class FakeSettingsCubit extends Fake implements SettingsCubit {
-  @override
-  Stream<SettingsState> get stream => const Stream.empty();
-  @override
-  SettingsState get state => const SettingsState(textToSpeech: false);
-  @override
-  Future<void> close() async {}
-}
-
 class FakeUserFileCubit extends Fake implements UserFileCubit {
   @override
   Stream<UserFileState> get stream => const Stream.empty();
@@ -165,7 +156,8 @@ class FakeSpeechSettingsCubit extends Fake implements SpeechSettingsCubit {
   Stream<SpeechSettingsState> get stream => const Stream.empty();
 
   @override
-  SpeechSettingsState get state => const SpeechSettingsState();
+  SpeechSettingsState get state =>
+      const SpeechSettingsState(textToSpeech: true);
 
   @override
   Future<void> close() async {}
@@ -176,7 +168,7 @@ class FakeVoicesCubit extends Fake implements VoicesCubit {
   Stream<VoicesState> get stream => const Stream.empty();
 
   @override
-  VoicesState get state => const VoicesState();
+  VoicesState get state => const VoicesState(languageCode: 'en');
 
   @override
   Future<void> close() async {}

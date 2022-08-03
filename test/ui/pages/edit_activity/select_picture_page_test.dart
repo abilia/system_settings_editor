@@ -48,10 +48,8 @@ void main() {
               BlocProvider<SortableBloc>.value(
                 value: mockSortableBloc,
               ),
-              BlocProvider<SettingsCubit>(
-                create: (context) => SettingsCubit(
-                  settingsDb: FakeSettingsDb(),
-                ),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => FakeSpeechSettingsCubit(),
               ),
             ], child: child!),
           ),
