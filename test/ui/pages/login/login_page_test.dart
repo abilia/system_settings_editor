@@ -417,7 +417,7 @@ void main() {
     expect(find.text(secretPassword), findsNothing);
   });
 
-  testWidgets('Redirect to login when deauthorized',
+  testWidgets('Redirect to login when unauthorized',
       (WidgetTester tester) async {
     await tester.pumpApp();
     await tester.pumpAndSettle();
@@ -428,7 +428,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(CalendarPage), findsOneWidget);
 
-    client.fakeDeauthorized();
+    client.fakeUnauthorized();
     await tester.pumpAndSettle();
     expect(find.byType(LoginPage), findsOneWidget);
     expect(find.text(translate.loggedOutMessage), findsOneWidget);
