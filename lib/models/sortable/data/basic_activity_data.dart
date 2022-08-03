@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class BasicActivityDataItem extends BasicActivityData {
   final int alarmType, category, duration, startTime;
   final bool checkable, fullDay, removeAfter, secret;
   final String fileId, icon, info, reminders, activityTitle, name;
+  final UnmodifiableSetView<int> secretExemptions;
 
   BasicActivityDataItem._({
     this.alarmType = 0,
@@ -26,6 +28,7 @@ class BasicActivityDataItem extends BasicActivityData {
     this.reminders = '',
     this.activityTitle = '',
     this.name = '',
+    required this.secretExemptions,
   });
 
   factory BasicActivityDataItem.fromJson(String data) {
@@ -45,6 +48,8 @@ class BasicActivityDataItem extends BasicActivityData {
       reminders: sortableData['reminders'] ?? '',
       activityTitle: sortableData['title'] ?? '',
       name: sortableData['name'] ?? '',
+      secretExemptions:
+          DbActivity.exemptionsListToSet(sortableData['secretExemptions']),
     );
   }
 
@@ -57,6 +62,7 @@ class BasicActivityDataItem extends BasicActivityData {
         activityTitle: title,
         startTime: startTime.inMilliseconds,
         duration: duration.inMilliseconds,
+        secretExemptions: UnmodifiableSetView({}),
       );
 
   factory BasicActivityDataItem.fromActivity(Activity activity) =>
@@ -78,6 +84,7 @@ class BasicActivityDataItem extends BasicActivityData {
         icon: activity.icon,
         info: activity.infoItem.infoItemJson(),
         reminders: activity.reminderBefore.join(';'),
+        secretExemptions: activity.secretExemptions,
       );
 
   TimeOfDay? get startTimeOfDay =>
@@ -110,6 +117,7 @@ class BasicActivityDataItem extends BasicActivityData {
         reminders,
         activityTitle,
         name,
+        secretExemptions,
       ];
 
   @override
@@ -131,6 +139,7 @@ class BasicActivityDataItem extends BasicActivityData {
         'reminders': reminders,
         'title': activityTitle,
         'name': name,
+        'secretExemptions': secretExemptions.toList(),
       });
 
   Activity toActivity({
@@ -154,6 +163,7 @@ class BasicActivityDataItem extends BasicActivityData {
         infoItem: InfoItem.fromJsonString(info),
         reminderBefore: DbActivity.parseReminders(reminders),
         calendarId: calendarId,
+        secretExemptions: secretExemptions,
       );
 
   TimeInterval toTimeInterval({required DateTime startDate}) => TimeInterval(
