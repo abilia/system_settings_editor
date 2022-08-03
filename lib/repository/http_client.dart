@@ -49,17 +49,6 @@ class ClientWithDefaultHeaders extends ListenableClient {
       _renewOn401(super.post, url,
           headers: headers, body: body, encoding: encoding);
 
-  Future<Response> postUnauthorized(Uri url,
-          {Map<String, String>? headers, Object? body, Encoding? encoding}) =>
-      _renewOn401(
-        super.post,
-        url,
-        headers: headers,
-        body: body,
-        encoding: encoding,
-        isAuthorized: false,
-      );
-
   @override
   Future<Response> put(Uri url,
           {Map<String, String>? headers, Object? body, Encoding? encoding}) =>
@@ -80,13 +69,12 @@ class ClientWithDefaultHeaders extends ListenableClient {
     Map<String, String>? headers,
     Object? body,
     Encoding? encoding,
-    bool isAuthorized = true,
   }) async {
     final response =
         await request(url, headers: headers, body: body, encoding: encoding);
     if (response.statusCode != 401) return response;
     _log.info('Got 401 on $response');
-    await _renewToken(url.origin, isAuthorized);
+    await _renewToken(url.origin);
     return request(url, headers: headers, body: body, encoding: encoding);
   }
 
@@ -100,7 +88,7 @@ class ClientWithDefaultHeaders extends ListenableClient {
     return _inner.send(request);
   }
 
-  Future<void> _renewToken(String host, [bool isAuthorized = true]) async {
+  Future<void> _renewToken(String host) async {
     _log.fine('Will try to renew token...');
     return synchronized(() async {
       if (await _hasAccess(host)) {
@@ -109,7 +97,7 @@ class ClientWithDefaultHeaders extends ListenableClient {
       }
       _log.fine('Has NO access. Will request token.');
       try {
-        final loginInfo = await _requestToken(host, isAuthorized);
+        final loginInfo = await _requestToken(host);
         await loginDb.persistLoginInfo(loginInfo);
         _log.fine('Persisted new loginInfo');
       } catch (e) {
@@ -127,7 +115,7 @@ class ClientWithDefaultHeaders extends ListenableClient {
     return response.statusCode != 401;
   }
 
-  Future<LoginInfo> _requestToken(String host, bool isAuthorized) async {
+  Future<LoginInfo> _requestToken(String host) async {
     final loginInfo = loginDb.getLoginInfo();
     final clientId = await deviceDb.getClientId();
     _log.fine('Requesting new token with clientId: $clientId');
@@ -146,9 +134,7 @@ class ClientWithDefaultHeaders extends ListenableClient {
       case 200:
         return LoginInfo.fromJson(response.json());
       case 401:
-        if (isAuthorized) {
-          _stateController.add(HttpMessage.deauthorized);
-        }
+        _stateController.add(HttpMessage.unauthorized);
         throw RequestTokenException(
           badRequest: BadRequest.fromJson(
             response.json(),
@@ -169,7 +155,7 @@ class ClientWithDefaultHeaders extends ListenableClient {
   }
 }
 
-enum HttpMessage { deauthorized }
+enum HttpMessage { unauthorized }
 
 abstract class ListenableClient extends BaseClient {
   Stream<HttpMessage> get messageStream;

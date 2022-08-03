@@ -24,11 +24,12 @@ class AuthenticationBloc
     ListenableClient? client,
   }) : super(const AuthenticationLoading()) {
     _clientSubscription = client?.messageStream
-        .where((event) => event == HttpMessage.deauthorized)
-        .listen(
-          (event) => add(
-              const LoggedOut(loggedOutReason: LoggedOutReason.deauthorized)),
-        );
+        .where((event) => event == HttpMessage.unauthorized)
+        .listen((event) {
+          if(state is Authenticated) {
+        add(const LoggedOut(loggedOutReason: LoggedOutReason.unautorized));
+      }
+    });
     on<AuthenticationEvent>(_onAuthenticationEvent, transformer: sequential());
   }
 
