@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
-import 'package:seagull/db/voice_db.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/settings/speech_support/voice_data.dart';
 import 'package:seagull/utils/strings.dart';
@@ -10,11 +9,11 @@ import 'package:seagull/utils/strings.dart';
 class VoiceRepository {
   VoiceRepository({
     required this.client,
-    required this.voiceDb,
+    required this.voicesPath,
   });
 
   final BaseClient client;
-  final VoiceDb voiceDb;
+  final String voicesPath;
 
   static const String _baseUrl = 'https://handi.se/systemfiles2';
   final _log = Logger((VoiceRepository).toString());
@@ -38,7 +37,7 @@ class VoiceRepository {
     try {
       final dls = voice.files.map((file) async {
         final response = await client.get(file.downloadUrl.toUri());
-        final path = voiceDb.applicationSupportDirectory + file.localPath;
+        final path = voicesPath + file.localPath;
         _log.finer('Creating file; $path');
         final f = await File(path).create(recursive: true);
         await f.writeAsBytes(response.bodyBytes);
@@ -52,11 +51,20 @@ class VoiceRepository {
   }
 
   Future<void> deleteVoice(VoiceData voice) async {
-    final dls = voice.files.map((file) async {
-      final path = voiceDb.applicationSupportDirectory + file.localPath;
-      File(path).delete(recursive: true);
-    });
+    final dls = voice.files.map(
+        (file) => File('$voicesPath${file.localPath}').delete(recursive: true));
     await Future.wait(dls);
     _log.fine('Deleted voice; ${voice.name}');
+  }
+
+  Future<void> deleteAllVoices() async {
+    final voicePath = Directory('$voicesPath/system/voices');
+    if (await voicePath.exists()) {
+      _log.info('Removing all voices in $voicePath');
+      await voicePath.delete(recursive: true);
+      return;
+    } else {
+      _log.info('no downloaded voices present');
+    }
   }
 }

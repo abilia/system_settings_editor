@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:seagull/background/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -69,7 +68,7 @@ void main() {
       GetIt.I.reset();
     });
 
-    Widget _wrapWithMaterialApp({Widget? child}) => TopLevelBlocsProvider(
+    Widget _wrapWithMaterialApp({Widget? child}) => TopLevelProvider(
           child: AuthenticatedBlocsProvider(
             memoplannerSettingBloc: mockSettingBloc,
             authenticatedState: const Authenticated(userId: 1),

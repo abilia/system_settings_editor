@@ -51,6 +51,11 @@ abstract class Translated {
   final String loggedOutMessage =
       'You have been logged out. Please log in again.';
 
+  final String resetDeviceHeading = 'Reset device';
+
+  final String resetDeviceBody =
+      'Do you really want to reset the device? You will be redirected to the first page of the initial startup guide.';
+
   final String createAccountHint = 'Don’t have a myAbilia account yet?';
 
   final String createAccount = 'Create Account';

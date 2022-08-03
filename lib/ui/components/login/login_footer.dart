@@ -25,7 +25,7 @@ class MEMOplannerLoginFooter extends StatelessWidget {
         ),
         Row(
           children: const [
-            AbiliaLogo(),
+            AbiliaLogoWithReset(),
             Spacer(),
             IconActionButtonDark(
               onPressed: AndroidIntents.openSettings,
@@ -63,6 +63,33 @@ class GoToCreateAccountButton extends StatelessWidget {
         },
         child: Text(translate.createAccount),
       ),
+    );
+  }
+}
+
+class AbiliaLogoWithReset extends StatelessWidget {
+  const AbiliaLogoWithReset({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    return GestureDetector(
+      child: const AbiliaLogo(),
+      onLongPress: () async {
+        final reset = await showViewDialog<bool>(
+          context: context,
+          wrapWithAuthProviders: false,
+          builder: (context) => YesNoDialog(
+            heading: translate.resetDeviceHeading,
+            headingIcon: AbiliaIcons.reset,
+            text: translate.resetDeviceBody,
+          ),
+        );
+        if (reset == true) {
+          context.read<VoicesCubit>().deleteAllVoices();
+          context.read<StartupCubit>().resetStartGuideDone();
+        }
+      },
     );
   }
 }

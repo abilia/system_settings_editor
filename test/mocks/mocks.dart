@@ -94,3 +94,7 @@ class MockConnectivity extends Mock implements Connectivity {}
 class MockBattery extends Mock implements Battery {}
 
 class MockSpeechSettingsCubit extends Mock implements SpeechSettingsCubit {}
+
+class MockVoiceRepository extends Mock implements VoiceRepository {}
+
+class MockDeviceRepository extends Mock implements DeviceRepository {}

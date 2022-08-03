@@ -45,11 +45,11 @@ void main() async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // DO NOT REMOVE. The isAutoInitEnabled call is needed to make push work https://github.com/firebase/flutterfire/issues/6011
+  // DO NOT REMOVE. The isAutoInitEnabled call is needed to make push work
+  // https://github.com/firebase/flutterfire/issues/6011
   FirebaseMessaging.instance.isAutoInitEnabled;
 
   final documentDirectory = await getApplicationDocumentsDirectory();
-  final applicationSupportDirectory = await getApplicationSupportDirectory();
   final preferences = await SharedPreferences.getInstance();
   final seagullLogger = SeagullLogger(
     documentsDir: documentDirectory.path,
@@ -62,20 +62,29 @@ Future<void> initServices() async {
   if (currentLocale != null) {
     await settingsDb.setLanguage(currentLocale.split(RegExp('-|_'))[0]);
   }
-  final voiceDb = VoiceDb(preferences, applicationSupportDirectory.path);
+  final voiceDb = VoiceDb(preferences);
   final baseUrlDb = BaseUrlDb(preferences);
   await baseUrlDb.initialize();
 
+  final applicationSupportDirectory = await getApplicationSupportDirectory();
+
   GetItInitializer()
-    ..documentsDirectory = documentDirectory
-    ..applicationSupportDirectory = applicationSupportDirectory
+    ..directories = Directories(
+      applicationSupport: applicationSupportDirectory,
+      documents: documentDirectory,
+    )
     ..sharedPreferences = preferences
     ..settingsDb = settingsDb
     ..baseUrlDb = baseUrlDb
     ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
     ..voiceDb = voiceDb
-    ..ttsHandler = await TtsInterface.implementation(voiceDb)
+    ..ttsHandler = Config.isMPGO
+        ? await FlutterTtsHandler.implementation()
+        : await AcapelaTtsHandler.implementation(
+            voiceDb: voiceDb,
+            voicesPath: applicationSupportDirectory.path,
+          )
     ..packageInfo = await PackageInfo.fromPlatform()
     ..syncDelay = const SyncDelays()
     ..init();
@@ -119,17 +128,19 @@ class App extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => TopLevelBlocsProvider(
+  Widget build(BuildContext context) => TopLevelProvider(
         pushCubit: pushCubit,
         child: BlocBuilder<StartupCubit, StartupState>(
           builder: (context, productionGuideState) =>
               productionGuideState is StartupDone
-                  ? TopLevelListener(
-                      navigatorKey: _navigatorKey,
-                      payload: payload,
-                      child: SeagullApp(
+                  ? AuthenticationBlocProvider(
+                      child: TopLevelListener(
                         navigatorKey: _navigatorKey,
-                        analytics: analytics,
+                        payload: payload,
+                        child: SeagullApp(
+                          navigatorKey: _navigatorKey,
+                          analytics: analytics,
+                        ),
                       ),
                     )
                   : productionGuideState is WelcomeGuide
@@ -150,36 +161,32 @@ class SeagullApp extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Listener(
-        onPointerDown: context.read<TouchDetectionCubit>().onPointerDown,
-        child: MaterialApp(
-          navigatorKey: navigatorKey,
-          builder: (context, child) => child != null
-              ? MediaQuery(
-                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                  child: child,
-                )
-              : const SplashPage(),
-          title: Config.flavor.name,
-          theme: abiliaTheme,
-          navigatorObservers: [
-            if (analytics) AnalyticsService.observer,
-            RouteLoggingObserver(),
-          ],
-          supportedLocales: Translator.supportedLocals,
-          localizationsDelegates: const [
-            Translator.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            DefaultCupertinoLocalizations.delegate,
-          ],
-          localeResolutionCallback: (locale, supportedLocales) =>
-              supportedLocales.firstWhere(
-                  (l) => l.languageCode == locale?.languageCode,
-                  // English should be the first one and also the default.
-                  orElse: () => supportedLocales.first),
-          home: const SplashPage(),
-        ),
+  Widget build(BuildContext context) => MaterialApp(
+        navigatorKey: navigatorKey,
+        builder: (context, child) => child != null
+            ? MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                child: child,
+              )
+            : const SplashPage(),
+        title: Config.flavor.name,
+        theme: abiliaTheme,
+        navigatorObservers: [
+          if (analytics) AnalyticsService.observer,
+          RouteLoggingObserver(),
+        ],
+        supportedLocales: Translator.supportedLocals,
+        localizationsDelegates: const [
+          Translator.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate,
+        ],
+        localeResolutionCallback: (locale, supportedLocales) => supportedLocales
+            .firstWhere((l) => l.languageCode == locale?.languageCode,
+                // English should be the first one and also the default.
+                orElse: () => supportedLocales.first),
+        home: const SplashPage(),
       );
 }

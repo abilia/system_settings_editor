@@ -8,24 +8,38 @@ import 'package:seagull/models/all.dart';
 
 class AlarmSoundCubit extends Cubit<Sound?> {
   final AudioPlayer audioPlayer;
-  final AudioCache audioCache;
   late final StreamSubscription onPlayerCompletion;
 
   AlarmSoundCubit()
       : audioPlayer = AudioPlayer(),
-        audioCache = AudioCache(),
         super(null) {
-    audioCache.fixedPlayer = audioPlayer;
-    onPlayerCompletion =
-        audioPlayer.onPlayerCompletion.listen((_) => emit(null));
+    onPlayerCompletion = audioPlayer.onPlayerComplete.listen((_) => emit(null));
+    audioPlayer.setAudioContext(
+      AudioContext(
+        android: AudioContextAndroid(
+          isSpeakerphoneOn: false,
+          stayAwake: false,
+          contentType: AndroidContentType.sonification,
+          usageType: AndroidUsageType.alarm,
+          audioFocus: AndroidAudioFocus.gainTransient,
+        ),
+        iOS: AudioContextIOS(
+          defaultToSpeaker: true,
+          category: AVAudioSessionCategory.multiRoute,
+          options: [],
+        ),
+      ),
+    );
   }
 
   Future<void> playSound(Sound sound) async {
     if (sound == Sound.Default) {
-      await FlutterRingtonePlayer.playNotification();
+      await FlutterRingtonePlayer.playNotification(asAlarm: true);
       emit(null);
     } else {
-      await audioCache.play('sounds/${sound.fileName()}.mp3');
+      await audioPlayer.play(
+        AssetSource('sounds/${sound.fileName()}.mp3'),
+      );
       emit(sound);
     }
   }

@@ -33,7 +33,8 @@ class SpeechSupportSettingsPage extends StatelessWidget {
             ),
             body: DividerTheme(
               data: layout.settingsBasePage.dividerThemeData,
-              child: BlocSelector<SettingsCubit, SettingsState, bool>(
+              child:
+                  BlocSelector<SpeechSettingsCubit, SpeechSettingsState, bool>(
                 selector: (state) => state.textToSpeech,
                 builder: (context, textToSpeech) => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,7 +162,9 @@ class SpeechSupportSettingsPage extends StatelessWidget {
               backNavigationWidget: CancelButton(
                 onPressed: () {
                   if (!_disabledIfNoDownloadedVoice(context)) {
-                    context.read<SettingsCubit>().setTextToSpeech(textToSpeech);
+                    context
+                        .read<SpeechSettingsCubit>()
+                        .setTextToSpeech(textToSpeech);
                     context
                         .read<SpeechSettingsCubit>()
                         .setSpeechRate(speechRate);
@@ -184,7 +187,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
     if (context.read<VoicesCubit>().state.downloaded.isEmpty &&
         context.read<VoicesCubit>().state.downloading.isEmpty) {
       context.read<SpeechSettingsCubit>().setVoice('');
-      context.read<SettingsCubit>().setTextToSpeech(false);
+      context.read<SpeechSettingsCubit>().setTextToSpeech(false);
       return true;
     }
     return false;

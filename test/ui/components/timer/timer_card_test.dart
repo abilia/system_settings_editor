@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/abilia_timer.dart';
@@ -43,8 +42,8 @@ void main() {
         textDirection: TextDirection.ltr,
         child: MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (context) => SettingsCubit(settingsDb: FakeSettingsDb()),
+            BlocProvider<SpeechSettingsCubit>(
+              create: (context) => FakeSpeechSettingsCubit(),
             ),
             BlocProvider<DayEventsCubit>(
               create: (context) => dayEventsCubitMock,

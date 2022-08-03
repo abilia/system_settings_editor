@@ -14,78 +14,58 @@ import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+export 'package:get_it/get_it.dart';
+
 class GetItInitializer {
-  Directory? _applicationSupportDirectory;
-
-  set applicationSupportDirectory(Directory applicationSupportDirectory) =>
-      _applicationSupportDirectory = applicationSupportDirectory;
-
-  Directory? _documentsDirectory;
-
-  set documentsDirectory(Directory documentsDirectory) =>
-      _documentsDirectory = documentsDirectory;
+  Directories? _directories;
+  set directories(Directories directories) => _directories = directories;
 
   late SharedPreferences _sharedPreferences;
-
   set sharedPreferences(SharedPreferences sharedPreferences) =>
       _sharedPreferences = sharedPreferences;
 
   ActivityDb? _activityDb;
-
   set activityDb(ActivityDb activityDb) => _activityDb = activityDb;
 
   TimerDb? _timerDb;
-
   set timerDb(TimerDb timerDb) => _timerDb = timerDb;
 
   late FirebasePushService _firebasePushService = FirebasePushService();
-
   set fireBasePushService(FirebasePushService firebasePushService) =>
       _firebasePushService = firebasePushService;
 
   UserDb? _userDb;
-
   set userDb(UserDb userDb) => _userDb = userDb;
 
   LoginDb? _loginDb;
-
   set loginDb(LoginDb loginDb) => _loginDb = loginDb;
 
   LicenseDb? _licenseDb;
-
   set licenseDb(LicenseDb licenseDb) => _licenseDb = licenseDb;
 
   late Ticker _ticker = Ticker(initialTime: DateTime.now());
-
   set ticker(Ticker ticker) => _ticker = ticker;
 
   BaseUrlDb? _baseUrlDb;
-
   set baseUrlDb(BaseUrlDb baseUrlDb) => _baseUrlDb = baseUrlDb;
 
   DeviceDb? _deviceDb;
-
   set deviceDb(DeviceDb deviceDb) => _deviceDb = deviceDb;
 
   ListenableClient? _listenableClient;
-
   set client(ListenableClient listenableClient) =>
       _listenableClient = listenableClient;
 
   SortableDb? _sortableDb;
-
   set sortableDb(SortableDb sortableDb) => _sortableDb = sortableDb;
 
   GenericDb? _genericDb;
-
   set genericDb(GenericDb genericDb) => _genericDb = genericDb;
 
   UserFileDb? _userFileDb;
-
   set userFileDb(UserFileDb userFileDb) => _userFileDb = userFileDb;
 
   FileStorage? _fileStorage;
-
   set fileStorage(FileStorage fileStorage) => _fileStorage = fileStorage;
 
   SettingsDb? _settingsDb;
@@ -95,45 +75,36 @@ class GetItInitializer {
   set calendarDb(CalendarDb calendarDb) => _calendarDb = calendarDb;
 
   VoiceDb? _voiceDb;
-
   set voiceDb(VoiceDb voiceDb) => _voiceDb = voiceDb;
 
   late MultipartRequestBuilder _multipartRequestBuilder =
       MultipartRequestBuilder();
-
   set multipartRequestBuilder(
           MultipartRequestBuilder multipartRequestBuilder) =>
       _multipartRequestBuilder = multipartRequestBuilder;
 
   late SyncDelays _syncDelay = SyncDelays.zero;
-
   set syncDelay(SyncDelays syncDelay) => _syncDelay = syncDelay;
 
   late Database _database;
-
   set database(Database database) => _database = database;
 
   late SeagullLogger _seagullLogger = SeagullLogger.nothing();
-
   set seagullLogger(SeagullLogger seagullLogger) =>
       _seagullLogger = seagullLogger;
 
   late AlarmNavigator _alarmNavigator = AlarmNavigator();
-
   set alarmNavigator(AlarmNavigator alarmNavigator) =>
       _alarmNavigator = alarmNavigator;
 
   late PackageInfo _packageInfo =
       PackageInfo(appName: '', buildNumber: '', packageName: '', version: '');
-
   set packageInfo(PackageInfo packageInfo) => _packageInfo = packageInfo;
 
   late Battery _battery = Battery();
-
   set battery(Battery battery) => _battery = battery;
 
   late TtsInterface _ttsHandler = FlutterTtsHandler();
-
   set ttsHandler(TtsInterface ttsHandler) => _ttsHandler = ttsHandler;
 
   static const platformChannel = 'memoplanner/intent_actions';
@@ -141,11 +112,10 @@ class GetItInitializer {
       const EventChannel(platformChannel)
           .receiveBroadcastStream()
           .whereType<String>();
-
   set actionIntentStream(ActionIntentStream actionIntentStream) =>
       _actionIntentStream = actionIntentStream;
-  SupportPersonsDb? _supportPersonsDb;
 
+  SupportPersonsDb? _supportPersonsDb;
   set supportPersonsDb(SupportPersonsDb supportPersonsDb) =>
       _supportPersonsDb = supportPersonsDb;
 
@@ -180,16 +150,22 @@ class GetItInitializer {
           _settingsDb ?? SettingsDb(_sharedPreferences))
       ..registerSingleton<CalendarDb>(_calendarDb ?? CalendarDb(_database))
       ..registerSingleton<FileStorage>(
-          _fileStorage ?? FileStorage(_documentsDirectory?.path))
+          _fileStorage ?? FileStorage(_directories?.documents.path))
       ..registerSingleton<MultipartRequestBuilder>(_multipartRequestBuilder)
       ..registerSingleton<SyncDelays>(_syncDelay)
       ..registerSingleton<PackageInfo>(_packageInfo)
       ..registerSingleton<Battery>(_battery)
       ..registerSingleton<TtsInterface>(_ttsHandler)
-      ..registerSingleton<VoiceDb>(_voiceDb ??
-          VoiceDb(_sharedPreferences, _applicationSupportDirectory?.path ?? ''))
+      ..registerSingleton<VoiceDb>(_voiceDb ?? VoiceDb(_sharedPreferences))
       ..registerSingleton<ActionIntentStream>(_actionIntentStream)
       ..registerSingleton<SupportPersonsDb>(
-          _supportPersonsDb ?? SupportPersonsDb(_sharedPreferences));
+          _supportPersonsDb ?? SupportPersonsDb(_sharedPreferences))
+      ..registerSingleton<Directories>(
+        _directories ??
+            Directories(
+              applicationSupport: Directory.systemTemp,
+              documents: Directory.systemTemp,
+            ),
+      );
   }
 }

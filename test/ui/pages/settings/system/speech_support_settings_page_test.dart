@@ -1,9 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/generic/generic.dart';
-import 'package:seagull/repository/ticker.dart';
-import 'package:seagull/tts/tts_handler.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../../fakes/all.dart';
@@ -33,7 +33,6 @@ void main() {
       when(() => genericDb.insert(any())).thenAnswer((_) async {});
 
       settingsDb = MockSettingsDb();
-      when(() => settingsDb.textToSpeech).thenAnswer((_) => true);
       when(() => settingsDb.alwaysUse24HourFormat).thenAnswer((_) => true);
       when(() => settingsDb.setAlwaysUse24HourFormat(any()))
           .thenAnswer((_) => Future.value());
@@ -46,6 +45,7 @@ void main() {
       when(() => settingsDb.language).thenReturn('en');
 
       voiceDb = MockVoiceDb();
+      when(() => voiceDb.textToSpeech).thenAnswer((_) => true);
       when(() => voiceDb.speechRate).thenAnswer((_) => 100);
       when(() => voiceDb.speakEveryWord).thenAnswer((_) => false);
       when(() => voiceDb.voice).thenAnswer((_) => '');
@@ -58,8 +58,13 @@ void main() {
         ..genericDb = genericDb
         ..battery = FakeBattery()
         ..settingsDb = settingsDb
-        ..ttsHandler = AcapelaTtsHandler()
+        ..ttsHandler = FakeTtsHandler()
         ..deviceDb = FakeDeviceDb()
+        ..voiceDb = voiceDb
+        ..directories = Directories(
+          applicationSupport: Directory('applicationSupport'),
+          documents: Directory('documents'),
+        )
         ..init();
     });
 
@@ -82,7 +87,7 @@ void main() {
 
     testWidgets('When TTS setting false, no other options should be available',
         (tester) async {
-      when(() => settingsDb.textToSpeech).thenAnswer((_) => false);
+      when(() => voiceDb.textToSpeech).thenAnswer((_) => false);
 
       await tester.goToSpeechSettingsPage();
       expect(find.byType(TtsPlayButton), findsNothing);
