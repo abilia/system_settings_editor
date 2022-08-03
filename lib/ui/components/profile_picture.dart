@@ -3,7 +3,7 @@ import 'package:seagull/ui/all.dart';
 
 class ProfilePicture extends StatelessWidget {
   final String baseUrl;
-  final String image;
+  final String? image;
   final String initial;
   static final radius = layout.logout.profilePictureSize;
   final double? size;
@@ -45,12 +45,12 @@ class ProfilePicture extends StatelessWidget {
                   color: AbiliaColors.black75,
                   size: layout.icon.huge,
                 ),
-              if (image.isNotEmpty && baseUrl.isNotEmpty)
+              if (image != null && image!.isNotEmpty && baseUrl.isNotEmpty)
                 FadeInImage.memoryNetwork(
                   fit: BoxFit.cover,
                   placeholder: kTransparentImage,
                   image:
-                      profileImageUrl(baseUrl, image, size: widthHeight.ceil()),
+                      profileImageUrl(baseUrl, image!, size: widthHeight.ceil()),
                 )
             ],
           ),

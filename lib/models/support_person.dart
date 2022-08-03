@@ -9,7 +9,7 @@ class SupportPerson extends Equatable {
 
   final int id;
   final String name;
-  final String image;
+  final String? image;
 
   @override
   List<Object?> get props => [id, name, image];
