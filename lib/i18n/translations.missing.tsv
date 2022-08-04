@@ -1,9 +1,3 @@
 _id_	en	sv	da	nl	fi	de	nb
 resetDeviceHeading	Reset device						
 resetDeviceBody	Do you really want to reset the device? You will be redirected to the first page of the initial startup guide.						
-selectedSupportPersons	Selected support persons	Utvalda stödpersoner					Utvalgte støttepersoner
-supportPersons	Support Persons	Stödpersoner	Støttepersoner				Støttepersoner
-disableAlarms	Disable alarms	Inaktivera alarm					
-showVibrationAlarm	Show vibration						
-voice	Voice	Röst	Stemme	Stem			Talesyntese
-remove	Remove	Ta bort					Slette

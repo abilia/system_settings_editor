@@ -220,7 +220,7 @@ class PlayTimerButton extends StatelessWidget {
             context: context,
             builder: (context) => YesNoDialog(
               headingIcon: AbiliaIcons.playSound,
-              heading: t.resume,
+              heading: t.continue_,
               text: t.timerResume,
             ),
           );

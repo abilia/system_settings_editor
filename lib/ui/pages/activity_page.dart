@@ -190,7 +190,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
       builder: (_) => YesNoDialog(
         heading: Translator.of(context).translate.delete,
         headingIcon: AbiliaIcons.deleteAllClear,
-        text: Translator.of(context).translate.deleteActivity,
+        text: Translator.of(context).translate.deleteActivityQuestion,
       ),
     );
     if (shouldDelete == true) {

@@ -102,7 +102,7 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
         headingIcon: AbiliaIcons.deleteAllClear,
         text: sortable.data is BasicTimerData
             ? translate.timerDelete
-            : translate.deleteActivity,
+            : translate.deleteActivityQuestion,
       ),
     );
 

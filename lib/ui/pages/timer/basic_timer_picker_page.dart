@@ -19,9 +19,8 @@ class BasicTimerPickerPage extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             appBar: AbiliaAppBar(
-              iconData: AbiliaIcons.basicTimers,
-              title: translate.fromTemplateTimer,
-            ),
+                iconData: AbiliaIcons.basicTimers,
+                title: translate.fromTemplate),
             body: ListLibrary<BasicTimerData>(
               emptyLibraryMessage: translate.noTemplates,
               selectableItems: false,
