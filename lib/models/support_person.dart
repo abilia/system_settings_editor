@@ -9,7 +9,7 @@ class SupportPerson extends Equatable {
 
   final int id;
   final String name;
-  final String? image;
+  final String image;
 
   @override
   List<Object?> get props => [id, name, image];
@@ -26,6 +26,6 @@ class SupportPerson extends Equatable {
   static SupportPerson fromJson(Map<String, dynamic> json) => SupportPerson(
         id: json['id'],
         name: json['name'],
-        image: json['image'],
+        image: json['image'] ?? '',
       );
 }
