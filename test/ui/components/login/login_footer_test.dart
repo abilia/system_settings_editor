@@ -26,12 +26,13 @@ void main() {
     when(() => voiceRepository.deleteAllVoices()).thenAnswer((_) async {});
     when(() => voiceRepository.readAvailableVoices(any()))
         .thenAnswer((_) async => []);
+    when(() => voiceRepository.readDownloadedVoices())
+        .thenAnswer((_) async => []);
 
     final voicesCubit = VoicesCubit(
       languageCode: 'en',
       speechSettingsCubit: speechSettingsCubit,
       voiceRepository: voiceRepository,
-      ttsHandler: FakeTtsHandler(),
       localeStream: const Stream.empty(),
     );
 

@@ -1,47 +1,45 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/settings/speech_support/voice_data.dart';
 import 'package:seagull/repository/data_repository/voice_repository.dart';
-import 'package:seagull/tts/tts_handler.dart';
 
 class VoicesCubit extends Cubit<VoicesState> {
   VoicesCubit({
     required String languageCode,
     required this.speechSettingsCubit,
     required this.voiceRepository,
-    required this.ttsHandler,
     required Stream<Locale> localeStream,
   }) : super(const VoicesState()) {
-    _localeSubscription =
-        localeStream.map((locale) => locale.languageCode).listen(_initialize);
+    _localeSubscription = localeStream
+        .map((locale) => locale.languageCode)
+        .listen(_changeLanguage);
     _initialize(languageCode);
   }
 
   final _log = Logger((VoicesCubit).toString());
   final VoiceRepository voiceRepository;
   final SpeechSettingsCubit speechSettingsCubit;
-  final TtsInterface ttsHandler;
   late final StreamSubscription _localeSubscription;
 
-  Future<void> _initialize(String languageCode) async {
+  Future<void> _initialize(String languageCode) async => emit(
+        state.copyWith(
+          available: await voiceRepository.readAvailableVoices(languageCode),
+          downloaded: await voiceRepository.readDownloadedVoices(),
+        ),
+      );
+
+  Future<void> _changeLanguage(String languageCode) async {
     emit(
       state.copyWith(
         available: await voiceRepository.readAvailableVoices(languageCode),
-        downloaded: await _readDownloadedVoices(),
       ),
     );
+    speechSettingsCubit.setVoice('');
   }
-
-  Future<List<String>> _readDownloadedVoices() async =>
-      (await ttsHandler.availableVoices)
-          .whereNotNull()
-          .map((e) => '$e')
-          .toList();
 
   Future<void> downloadVoice(VoiceData voice) async {
     emit(
@@ -76,9 +74,7 @@ class VoicesCubit extends Cubit<VoicesState> {
     await voiceRepository.deleteVoice(voice);
     final downloaded = [...state.downloaded]..remove(voice.name);
     if (speechSettingsCubit.state.voice == voice.name) {
-      speechSettingsCubit.setVoice(
-        downloaded.isNotEmpty ? downloaded.first : '',
-      );
+      speechSettingsCubit.setVoice('');
     }
     emit(state.copyWith(downloaded: downloaded));
   }
