@@ -100,7 +100,7 @@ class ToolbarSettingsTab extends StatelessWidget {
                   .read<FunctionSettingsCubit>()
                   .changeFunctionSettings(
                       state.copyWith(displayNewActivity: v)),
-              child: Text(t.createActivity),
+              child: Text(t.newActivity),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.stopWatch),

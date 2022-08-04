@@ -44,7 +44,7 @@ class PageTwoVoiceSupport extends StatelessWidget {
                   context.watch<VoicesCubit>().state.downloading.isNotEmpty;
               final voice = context.watch<SpeechSettingsCubit>().state.voice;
               final trailingText = voice.isEmpty
-                  ? (downloadningVoices ? t.installingVoice : t.notSelected)
+                  ? (downloadningVoices ? t.installing : t.notSelected)
                   : voice;
               return PickField(
                 leading: const Icon(AbiliaIcons.speakText),

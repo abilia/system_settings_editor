@@ -19,8 +19,8 @@ class BasicTemplatesPage extends StatelessWidget {
           title: translate.templates,
           bottom: AbiliaTabBar(
             tabs: <Widget>[
-              TabItem(translate.templateActivities, AbiliaIcons.basicActivity),
-              TabItem(translate.templateTimers, AbiliaIcons.stopWatch),
+              TabItem(translate.activities, AbiliaIcons.basicActivity),
+              TabItem(translate.timers, AbiliaIcons.stopWatch),
             ],
           ),
         ),
