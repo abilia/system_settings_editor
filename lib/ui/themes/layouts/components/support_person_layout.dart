@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 
 class SupportPersonLayout {
   final EdgeInsets switchFieldPadding;
+  final double iconSize;
 
   const SupportPersonLayout({
-    this.switchFieldPadding = const EdgeInsets.only(left: 4, right: 4),
+    this.switchFieldPadding = const EdgeInsets.only(left: 8, right: 8),
+    this.iconSize = 36.0,
   });
 }
 
 class SupportPersonLayoutMedium extends SupportPersonLayout {
   const SupportPersonLayoutMedium()
       : super(
-          switchFieldPadding: const EdgeInsets.only(left: 6, right: 6),
+          switchFieldPadding: const EdgeInsets.only(left: 12, right: 12),
+          iconSize: 54.0,
         );
 }

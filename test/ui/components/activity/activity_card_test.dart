@@ -235,7 +235,6 @@ void main() {
         secret: true,
       ),
     );
-    expect(find.byType(AvailableForIcon), findsOneWidget);
     expect(find.byIcon(AbiliaIcons.lock), findsOneWidget);
   });
 

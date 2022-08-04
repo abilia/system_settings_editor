@@ -155,7 +155,7 @@ class SupportPersonsWidget extends StatelessWidget {
                       GetIt.I<BaseUrlDb>().baseUrl,
                       person.image,
                       initial: person.name.substring(0, 1).capitalize(),
-                      size: layout.icon.normal,
+                      size: layout.supportPerson.iconSize,
                     ),
                   ),
                   padding: layout.supportPerson.switchFieldPadding,
