@@ -28,8 +28,8 @@ class BasicActivityDataItem extends BasicActivityData {
     this.reminders = '',
     this.activityTitle = '',
     this.name = '',
-    required this.secretExemptions,
-  });
+    Set<int> secretExemptions = const {},
+  }) : secretExemptions = UnmodifiableSetView(secretExemptions);
 
   factory BasicActivityDataItem.fromJson(String data) {
     final sortableData = json.decode(data);
@@ -62,7 +62,6 @@ class BasicActivityDataItem extends BasicActivityData {
         activityTitle: title,
         startTime: startTime.inMilliseconds,
         duration: duration.inMilliseconds,
-        secretExemptions: UnmodifiableSetView({}),
       );
 
   factory BasicActivityDataItem.fromActivity(Activity activity) =>
