@@ -408,7 +408,7 @@ voice	Voice	Röst	Stemme	Stem	Ääni	Stimme	Stemme
 noVoicesInstalled	No voices installed	Inga röster är installerade	Der er ikke installeret nogen stemmer	Geen stemmen geïnstalleerd	Ääniä ei ole asennettu	Keine Stimmen installiert	Ingen stemmer er installert
 installing	Installing	Installerar	Installering	Installeren	Asentaa	Wird installiert	Installerer
 testOfSpeechRate	Test of speech rate	Test av talhastighet	Test af talehastighed	Test van spraaksnelheid	Puhenopeuden testaus	Test des Sprechtempos	Test av talehastighet
-voices	Voices	Röster	Stemmer	Stemmen	Äänet	Stimmen	Talesynteser
+voices	Voices	Röster	Stemmer	Stemmen	Äänet	Stimmen	Stemmer
 							
 ### Code protect							
 codeProtect	Code protect	Kodskydd	Kodebeskyttelse	Codebescherming	Suojakoodi	Schutz durch Code	Kodebeskyttelse

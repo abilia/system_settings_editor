@@ -8550,7 +8550,7 @@ class NB extends Translated {
   final String testOfSpeechRate = 'Test av talehastighet';
 
   @override
-  final String voices = 'Talesynteser';
+  final String voices = 'Stemmer';
 
   @override
   final String codeProtect = 'Kodebeskyttelse';
