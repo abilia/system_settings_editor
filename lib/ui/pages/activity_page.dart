@@ -9,9 +9,9 @@ class ActivityPage extends StatelessWidget {
   final Widget? previewImage;
 
   const ActivityPage({
-    Key? key,
     required this.activityDay,
     this.previewImage,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -51,8 +51,8 @@ class ActivityPage extends StatelessWidget {
 
 class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
   const _ActivityBottomAppBar({
-    Key? key,
     required this.activityDay,
+    Key? key,
   }) : super(key: key);
 
   final ActivityDay activityDay;
@@ -190,7 +190,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
       builder: (_) => YesNoDialog(
         heading: Translator.of(context).translate.delete,
         headingIcon: AbiliaIcons.deleteAllClear,
-        text: Translator.of(context).translate.deleteActivity,
+        text: Translator.of(context).translate.deleteActivityQuestion,
       ),
     );
     if (shouldDelete == true) {
@@ -221,8 +221,8 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
 
 class EditActivityButton extends StatelessWidget {
   const EditActivityButton({
-    Key? key,
     required this.activityDay,
+    Key? key,
   }) : super(key: key);
 
   final ActivityDay activityDay;

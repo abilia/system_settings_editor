@@ -15,9 +15,8 @@ class BasicActivityPickerPage extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar: AbiliaAppBar(
-            iconData: AbiliaIcons.basicActivities,
-            title: translate.fromTemplateActivity,
-          ),
+              iconData: AbiliaIcons.basicActivities,
+              title: translate.fromTemplate),
           body: ListLibrary<BasicActivityData>(
             emptyLibraryMessage: translate.noTemplates,
             selectableItems: false,

@@ -5,8 +5,8 @@ class EditNotePage extends StatefulWidget {
   final String text;
   static const padding = EdgeInsets.symmetric(vertical: 9.0, horizontal: 16.0);
   const EditNotePage({
-    Key? key,
     required this.text,
+    Key? key,
   }) : super(key: key);
 
   @override

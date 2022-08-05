@@ -413,7 +413,7 @@ extension on WidgetTester {
     Finder f,
     MockGenericDb genericDb, {
     required String key,
-    required dynamic matcher,
+    required matcher,
   }) async {
     await goToAddTab();
     await tap(f);
@@ -433,7 +433,7 @@ extension on WidgetTester {
     Finder finder,
     MockGenericDb genericDb, {
     required String key,
-    required dynamic matcher,
+    required matcher,
   }) async {
     await goToAddTab();
     await tap(find.text(Locales.language.values.first.stepByStep));

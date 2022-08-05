@@ -66,9 +66,9 @@ class FunctionSettingsPage extends StatelessWidget {
 
 class _SettingsTab extends StatelessWidget {
   const _SettingsTab({
-    Key? key,
     required this.hint,
     this.children = const [],
+    Key? key,
   }) : super(key: key);
   final List<Widget> children;
   final String hint;
@@ -100,7 +100,7 @@ class ToolbarSettingsTab extends StatelessWidget {
                   .read<FunctionSettingsCubit>()
                   .changeFunctionSettings(
                       state.copyWith(displayNewActivity: v)),
-              child: Text(t.createActivity),
+              child: Text(t.newActivity),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.stopWatch),

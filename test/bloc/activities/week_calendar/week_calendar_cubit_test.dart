@@ -310,7 +310,7 @@ class _WeekCalendarLoadedMatcher extends Matcher {
       'WeekCalendarLoaded { currentWeekStart: ${value.currentWeekStart}, activities: ${value.currentWeekActivities}}');
 
   @override
-  bool matches(dynamic object, Map matchState) {
+  bool matches(object, Map matchState) {
     return value.currentWeekStart == object.currentWeekStart &&
         const DeepCollectionEquality()
             .equals(value.currentWeekActivities, object.currentWeekActivities);

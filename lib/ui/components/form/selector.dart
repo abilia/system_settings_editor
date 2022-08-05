@@ -14,11 +14,11 @@ class Selector<T> extends StatelessWidget {
   final List<SelectorItem> items;
 
   const Selector({
-    Key? key,
+    required this.items,
     this.heading,
     this.groupValue,
     this.onChanged,
-    required this.items,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -80,13 +80,14 @@ class _SelectButton<T> extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const _SelectButton({
-    this.onPressed,
     required this.value,
-    this.groupValue,
     required this.text,
     required this.borderRadius,
     required this.icon,
-  });
+    this.onPressed,
+    this.groupValue,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -6,9 +6,9 @@ class CheckActivityConfirmDialog extends StatelessWidget {
   final String? message;
 
   const CheckActivityConfirmDialog({
-    Key? key,
     required this.activityDay,
     this.message,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -20,9 +20,7 @@ class CheckActivityConfirmDialog extends StatelessWidget {
       headingIcon:
           signedOff ? AbiliaIcons.handiUncheck : AbiliaIcons.handiCheck,
       text: message ??
-          (signedOff
-              ? translate.unCheckActivityQuestion
-              : translate.checkActivityQuestion),
+          (signedOff ? translate.unCheckActivityQuestion : translate.completed),
     );
   }
 }

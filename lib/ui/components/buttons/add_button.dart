@@ -177,12 +177,12 @@ enum _AddTabPosition { left, right }
 
 class _AddTab extends StatelessWidget {
   const _AddTab({
-    Key? key,
     required this.text,
     required this.icon,
     required this.position,
     required this.onTap,
     this.ttsData,
+    Key? key,
   }) : super(key: key);
 
   final String text;

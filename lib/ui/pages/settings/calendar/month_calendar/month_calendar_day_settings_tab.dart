@@ -77,8 +77,8 @@ class _MonthCalendarPreview extends StatelessWidget {
 class _MonthDayView extends StatelessWidget {
   final DayTheme dayTheme;
   const _MonthDayView({
-    Key? key,
     required this.dayTheme,
+    Key? key,
   }) : super(key: key);
 
   @override

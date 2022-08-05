@@ -16,7 +16,6 @@ class TimePillar extends StatelessWidget {
   final TimepillarMeasures measures;
 
   const TimePillar({
-    Key? key,
     required this.interval,
     required this.dayOccasion,
     required this.use12h,
@@ -26,6 +25,7 @@ class TimePillar extends StatelessWidget {
     required this.topMargin,
     required this.measures,
     this.preview = false,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -97,11 +97,11 @@ class TimePillar extends StatelessWidget {
 
 class Hour extends StatelessWidget {
   const Hour({
-    Key? key,
     required this.hour,
     required this.dots,
     required this.isNight,
     required this.measures,
+    Key? key,
   }) : super(key: key);
 
   final String hour;

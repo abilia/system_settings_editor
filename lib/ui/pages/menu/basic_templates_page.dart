@@ -19,8 +19,8 @@ class BasicTemplatesPage extends StatelessWidget {
           title: translate.templates,
           bottom: AbiliaTabBar(
             tabs: <Widget>[
-              TabItem(translate.templateActivities, AbiliaIcons.basicActivity),
-              TabItem(translate.templateTimers, AbiliaIcons.stopWatch),
+              TabItem(translate.activities, AbiliaIcons.basicActivity),
+              TabItem(translate.timers, AbiliaIcons.stopWatch),
             ],
           ),
         ),
@@ -201,8 +201,8 @@ class _PickFolder extends StatelessWidget {
   final SortableData sortableData;
 
   const _PickFolder({
-    Key? key,
     required this.sortableData,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -241,9 +241,9 @@ class AddTemplateButton extends StatelessWidget {
   final Function onNewTimerTemplate;
 
   const AddTemplateButton({
-    Key? key,
     required this.activityTemplateIndex,
     required this.onNewTimerTemplate,
+    Key? key,
   }) : super(key: key);
 
   @override

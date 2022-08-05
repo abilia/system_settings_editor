@@ -8,12 +8,12 @@ class User extends Equatable {
   final String language;
   final String image;
   const User({
-    this.username = '',
-    this.language = '',
-    this.image = '',
     required this.id,
     required this.type,
     required this.name,
+    this.username = '',
+    this.language = '',
+    this.image = '',
   });
 
   factory User.fromJson(Map<String, dynamic> json) {

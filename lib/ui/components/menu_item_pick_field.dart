@@ -7,10 +7,10 @@ class MenuItemPickField extends StatelessWidget {
   final String text;
   final Widget navigateTo;
   const MenuItemPickField({
-    Key? key,
     required this.icon,
     required this.text,
     required this.navigateTo,
+    Key? key,
   }) : super(key: key);
 
   @override

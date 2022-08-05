@@ -103,9 +103,9 @@ class DayHeading extends StatelessWidget {
   final DateTime day;
   final DayColor dayColor;
   const DayHeading({
-    Key? key,
     required this.day,
     required this.dayColor,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -151,9 +151,9 @@ class DayColumn extends StatelessWidget {
   final DayColor dayColor;
 
   const DayColumn({
-    Key? key,
     required this.day,
     required this.dayColor,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -9,8 +9,8 @@ class LoginPage extends StatelessWidget {
   final Unauthenticated authState;
 
   const LoginPage({
-    Key? key,
     required this.authState,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -11,7 +11,6 @@ class WizardScaffold extends StatelessWidget {
   final Color? backgroundColor;
 
   const WizardScaffold({
-    Key? key,
     required this.iconData,
     required this.title,
     required this.body,
@@ -21,6 +20,7 @@ class WizardScaffold extends StatelessWidget {
     this.appBarHeight,
     this.showAppBar = true,
     this.backgroundColor,
+    Key? key,
   }) : super(key: key);
 
   @override

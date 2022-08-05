@@ -27,8 +27,10 @@ class AnalogClock extends StatelessWidget {
 }
 
 class ScreensaverAnalogClock extends StatelessWidget {
-  const ScreensaverAnalogClock({Key? key, required this.isNight})
-      : super(key: key);
+  const ScreensaverAnalogClock({
+    required this.isNight,
+    Key? key,
+  }) : super(key: key);
   final bool isNight;
 
   @override

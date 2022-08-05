@@ -3,9 +3,9 @@ import 'package:seagull/ui/all.dart';
 
 class SpeechSupportSettingsPage extends StatelessWidget {
   const SpeechSupportSettingsPage({
-    Key? key,
     required this.textToSpeech,
     required this.speechRate,
+    Key? key,
   }) : super(key: key);
 
   final bool textToSpeech;
@@ -71,7 +71,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                                     text: Text(state.voice.isEmpty
                                         ? downloadingVoices.isEmpty
                                             ? t.noVoicesInstalled
-                                            : t.installingVoice
+                                            : t.installing
                                         : state.voice),
                                     onTap: () async =>
                                         await Navigator.of(context).push(
@@ -91,7 +91,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                                 ),
                                 child: TtsPlayButton(
                                   tts: state.voice.isNotEmpty
-                                      ? t.speechTest
+                                      ? t.testOfSpeechRate
                                       : '',
                                 ),
                               ),

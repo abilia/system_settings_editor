@@ -7,8 +7,8 @@ class DatePickerPage extends StatelessWidget {
   final DateTime? notBefore;
 
   const DatePickerPage({
-    Key? key,
     required this.date,
+    Key? key,
     this.notBefore,
   }) : super(key: key);
 

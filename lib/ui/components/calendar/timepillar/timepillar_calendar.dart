@@ -56,7 +56,6 @@ class OneTimepillarCalendar extends StatefulWidget {
   final double topMargin, bottomMargin;
 
   OneTimepillarCalendar({
-    Key? key,
     required this.timepillarState,
     required this.showCategories,
     required this.displayHourLines,
@@ -67,6 +66,7 @@ class OneTimepillarCalendar extends StatefulWidget {
     double? topMargin,
     double? bottomMargin,
     bool? showCategoryLabels,
+    Key? key,
   })  : showCategoryLabels = showCategoryLabels ?? showCategories,
         topMargin = topMargin ?? layout.timepillar.topMargin,
         bottomMargin = bottomMargin ?? layout.timepillar.bottomMargin,

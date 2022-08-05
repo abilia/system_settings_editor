@@ -17,16 +17,16 @@ class CalendarAppBar extends StatelessWidget {
   static final size = Size.fromHeight(layout.appBar.largeHeight);
 
   const CalendarAppBar({
-    Key? key,
+    required this.rows,
+    required this.day,
     this.leftAction,
     this.rightAction,
     this.clockReplacement,
     this.crossedOver = false,
     this.showClock = true,
-    required this.rows,
-    required this.day,
     this.calendarDayColor = DayColor.noColors,
     this.textStyle,
+    Key? key,
   }) : super(key: key);
 
   @override
