@@ -48,7 +48,7 @@ class VoicesCubit extends Cubit<VoicesState> {
       ),
     );
     bool downloadSuccess = await voiceRepository.downloadVoice(voice);
-    final downloadingVoices = [...state.downloading]..remove(voice.name);
+    final downloadingVoices = state.downloading..remove(voice.name);
 
     if (!downloadSuccess) {
       _log.warning('Failed downloading $voice');
@@ -82,7 +82,7 @@ class VoicesCubit extends Cubit<VoicesState> {
   Future<void> deleteAllVoices() async {
     while (state.downloading.isNotEmpty) {
       _log.warning(
-        "can't delete while downloadning, retrying in 2 seconds",
+        "can't delete while downloading, retrying in 2 seconds",
       );
       await Future.delayed(const Duration(seconds: 2));
     }
@@ -127,4 +127,8 @@ class VoicesState extends Equatable {
         downloaded,
         available,
       ];
+}
+
+class VoicesLoading extends VoicesState {
+  const VoicesLoading({required String languageCode}) : super();
 }

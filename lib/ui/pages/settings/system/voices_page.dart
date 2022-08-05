@@ -18,24 +18,27 @@ class VoicesPage extends StatelessWidget {
         label: t.textToSpeech,
         iconData: AbiliaIcons.speakText,
       ),
-      body: Padding(
-        padding: layout.templates.m1.withoutBottom - m1ItemPadding.onlyTop,
-        child: ScrollArrows.vertical(
-          controller: scrollController,
-          child: ListView(
-            controller: scrollController,
-            children: voicesState.available.map((VoiceData voice) {
-              final name = voice.name;
-              return _VoiceRow(
-                voice: voice,
-                downloaded: voicesState.downloaded.contains(name),
-                downloading: voicesState.downloading.contains(name),
-                selectedVoice: selectedVoice,
-              );
-            }).toList(),
-          ),
-        ),
-      ),
+      body: voicesState is VoicesLoading
+          ? const Center(child: AbiliaProgressIndicator())
+          : Padding(
+              padding:
+                  layout.templates.m1.withoutBottom - m1ItemPadding.onlyTop,
+              child: ScrollArrows.vertical(
+                controller: scrollController,
+                child: ListView(
+                  controller: scrollController,
+                  children: voicesState.available.map((VoiceData voice) {
+                    final name = voice.name;
+                    return _VoiceRow(
+                      voice: voice,
+                      downloaded: voicesState.downloaded.contains(name),
+                      downloading: voicesState.downloading.contains(name),
+                      selectedVoice: selectedVoice,
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: OkButton(
           onPressed: () => Navigator.of(context).maybePop(),
