@@ -6,10 +6,10 @@ class SelectInfoTypePage extends StatefulWidget {
   final bool showNote, showChecklist;
 
   const SelectInfoTypePage({
-    Key? key,
     required this.infoItemType,
     required this.showNote,
     required this.showChecklist,
+    Key? key,
   }) : super(key: key);
 
   @override

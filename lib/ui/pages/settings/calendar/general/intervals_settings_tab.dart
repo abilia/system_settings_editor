@@ -30,7 +30,10 @@ class IntervalStepper extends StatelessWidget {
   static Key leftStepKey(DayPart part) => Key('$part-Left');
   static Key rightStepKey(DayPart part) => Key('$part-Right');
 
-  const IntervalStepper({Key? key, required this.part}) : super(key: key);
+  const IntervalStepper({
+    required this.part,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

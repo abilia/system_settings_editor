@@ -68,7 +68,10 @@ class _NoteBlockState extends State<NoteBlock> {
 class Lines extends StatelessWidget {
   final TextRenderingSize textRenderingSize;
 
-  const Lines({Key? key, required this.textRenderingSize}) : super(key: key);
+  const Lines({
+    required this.textRenderingSize,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

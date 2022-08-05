@@ -54,8 +54,8 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
   final TabController tabController;
 
   const _ToggleAlarmAndEyeButtons({
-    Key? key,
     required this.tabController,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -11,10 +11,10 @@ class TimerCard extends StatelessWidget {
   final bool useOpacity;
 
   const TimerCard({
-    Key? key,
     required this.timerOccasion,
     required this.day,
     this.useOpacity = false,
+    Key? key,
   }) : super(key: key);
 
   @override

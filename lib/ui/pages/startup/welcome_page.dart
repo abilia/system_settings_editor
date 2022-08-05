@@ -3,8 +3,8 @@ import 'package:seagull/utils/all.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({
-    Key? key,
     required this.pageController,
+    Key? key,
   }) : super(key: key);
 
   final PageController pageController;

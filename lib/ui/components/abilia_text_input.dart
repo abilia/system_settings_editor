@@ -16,13 +16,12 @@ class AbiliaTextInput extends StatelessWidget {
   final void Function(String)? onChanged;
 
   const AbiliaTextInput({
-    Key? key,
-    this.formKey,
     required this.icon,
     required this.heading,
     required this.inputHeading,
     required this.initialValue,
     required this.onChanged,
+    this.formKey,
     this.keyboardType,
     this.textCapitalization = TextCapitalization.none,
     this.inputFormatters = const <TextInputFormatter>[],
@@ -31,6 +30,7 @@ class AbiliaTextInput extends StatelessWidget {
     this.autoCorrect = true,
     this.inputValid,
     this.wrapWithAuthProviders = true,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -98,17 +98,17 @@ class AbiliaTextInput extends StatelessWidget {
 
 class DefaultTextInput extends StatefulWidget {
   const DefaultTextInput({
-    Key? key,
     required this.inputHeading,
     required this.icon,
     required this.text,
     required this.heading,
-    this.keyboardType,
     required this.inputFormatters,
     required this.textCapitalization,
     required this.maxLines,
     required this.inputValid,
     required this.autocorrect,
+    this.keyboardType,
+    Key? key,
   }) : super(key: key);
 
   final String inputHeading;

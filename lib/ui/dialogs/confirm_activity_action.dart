@@ -6,9 +6,9 @@ class CheckActivityConfirmDialog extends StatelessWidget {
   final String? message;
 
   const CheckActivityConfirmDialog({
-    Key? key,
     required this.activityDay,
     this.message,
+    Key? key,
   }) : super(key: key);
 
   @override

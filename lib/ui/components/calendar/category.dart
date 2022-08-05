@@ -34,11 +34,11 @@ class CategoryLeft extends StatelessWidget {
   final double maxWidth;
 
   const CategoryLeft({
-    Key? key,
     required this.categoryName,
     required this.fileId,
     required this.showColors,
     this.maxWidth = double.infinity,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -91,11 +91,11 @@ class CategoryRight extends StatelessWidget {
   final double maxWidth;
 
   const CategoryRight({
-    Key? key,
     required this.categoryName,
     required this.fileId,
     required this.showColors,
     this.maxWidth = double.infinity,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -129,7 +129,6 @@ class _Category extends StatefulWidget {
   final bool showColors;
   final int letters;
   _Category({
-    Key? key,
     required this.label,
     required this.fileId,
     required this.expanded,
@@ -138,6 +137,7 @@ class _Category extends StatefulWidget {
     required this.category,
     required this.maxWidth,
     required this.showColors,
+    Key? key,
   })  : letters = showColors || fileId.isNotEmpty ? 0 : 1,
         super(key: key);
 
@@ -296,11 +296,11 @@ class CategoryImage extends StatelessWidget {
   final double diameter;
 
   CategoryImage({
-    Key? key,
     required this.fileId,
     required this.color,
     required this.showBorder,
     required this.diameter,
+    Key? key,
   })  : assert(fileId.isNotEmpty || showBorder),
         borderRadius = BorderRadius.circular(diameter / 2),
         noColorsImageSize = layout.category.noColorsImageSize,

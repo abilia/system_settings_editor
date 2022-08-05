@@ -77,8 +77,8 @@ class QuickSettingsPage extends StatelessWidget {
 
 class QuickSettingsGroup extends StatelessWidget {
   const QuickSettingsGroup({
-    Key? key,
     required this.children,
+    Key? key,
   }) : super(key: key);
 
   final List<Widget> children;

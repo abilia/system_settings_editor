@@ -9,12 +9,12 @@ class CollapsableWidget extends StatelessWidget {
   final Axis axis;
 
   const CollapsableWidget({
-    Key? key,
     required this.child,
     required this.collapsed,
     this.padding = EdgeInsets.zero,
     this.alignment = Alignment.topLeft,
     this.axis = Axis.vertical,
+    Key? key,
   }) : super(key: key);
 
   @override

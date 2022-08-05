@@ -179,10 +179,10 @@ mixin ActivityMixin {
 
 class ActivityContainer extends StatelessWidget {
   const ActivityContainer({
-    Key? key,
     required this.activityDay,
     this.alarm,
     this.previewImage,
+    Key? key,
   }) : super(key: key);
 
   final ActivityDay activityDay;
@@ -241,9 +241,9 @@ class Attachment extends StatelessWidget with ActivityMixin {
   final ActivityAlarm? alarm;
 
   const Attachment({
-    Key? key,
     required this.activityDay,
     this.alarm,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -340,9 +340,9 @@ class CheckButton extends StatelessWidget {
 
 class TitleAndOrImage extends StatelessWidget {
   const TitleAndOrImage({
-    Key? key,
     required this.activityDay,
     this.previewImage,
+    Key? key,
   }) : super(key: key);
 
   final ActivityDay activityDay;

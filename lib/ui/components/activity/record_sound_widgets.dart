@@ -10,9 +10,9 @@ class RecordSoundWidget extends StatelessWidget {
   final ValueChanged<Activity>? soundChanged;
 
   const RecordSoundWidget({
-    Key? key,
     required this.activity,
     this.soundChanged,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -112,11 +112,11 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
   final ValueChanged<AbiliaFile> onResult;
 
   const SelectOrPlaySoundWidget({
-    Key? key,
     required this.permissionStatus,
     required this.label,
     required this.recordedAudio,
     required this.onResult,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -279,8 +279,8 @@ class _NotPaddedRoundedRectSliderTrackShape
   @override
   Rect getPreferredRect({
     required RenderBox parentBox,
-    Offset offset = Offset.zero,
     required SliderThemeData sliderTheme,
+    Offset offset = Offset.zero,
     bool isEnabled = false,
     bool isDiscrete = false,
   }) {

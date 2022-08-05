@@ -10,11 +10,11 @@ class _SelectAlarmTypePage extends StatelessWidget {
   final GestureTapCallback? onOk;
 
   const _SelectAlarmTypePage({
-    Key? key,
     required this.alarm,
     required this.onChanged,
     this.trailing = const <Widget>[],
     this.onOk,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -42,12 +42,12 @@ class SelectAlarmTypeBody extends StatelessWidget {
   final ValueChanged<AlarmType?> onChanged;
   final List<Widget> trailing;
 
-  const SelectAlarmTypeBody(
-      {Key? key,
-      required this.alarm,
-      required this.onChanged,
-      required this.trailing})
-      : super(key: key);
+  const SelectAlarmTypeBody({
+    required this.alarm,
+    required this.onChanged,
+    required this.trailing,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +101,10 @@ class SelectAlarmTypeBody extends StatelessWidget {
 class SelectAlarmTypePage extends StatefulWidget {
   final AlarmType alarm;
 
-  const SelectAlarmTypePage({Key? key, required this.alarm}) : super(key: key);
+  const SelectAlarmTypePage({
+    required this.alarm,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _SelectAlarmTypePageState createState() => _SelectAlarmTypePageState();
@@ -130,7 +133,10 @@ class _SelectAlarmTypePageState extends State<SelectAlarmTypePage> {
 class SelectAlarmPage extends StatefulWidget {
   final Activity activity;
 
-  const SelectAlarmPage({Key? key, required this.activity}) : super(key: key);
+  const SelectAlarmPage({
+    required this.activity,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _SelectAlarmPageState createState() => _SelectAlarmPageState();

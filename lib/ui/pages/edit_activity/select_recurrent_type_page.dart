@@ -7,11 +7,11 @@ class SelectRecurrentTypePage extends StatefulWidget {
   final IconData headingIcon;
 
   const SelectRecurrentTypePage({
-    Key? key,
-    this.allDaysVisible = false,
-    this.thisDayAndForwardVisible = true,
     required this.heading,
     required this.headingIcon,
+    this.allDaysVisible = false,
+    this.thisDayAndForwardVisible = true,
+    Key? key,
   }) : super(key: key);
   @override
   _SelectRecurrentTypePageState createState() =>

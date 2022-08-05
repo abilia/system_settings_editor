@@ -3,8 +3,8 @@ import 'package:seagull/ui/all.dart';
 
 class MenuButton extends StatelessWidget {
   const MenuButton({
-    Key? key,
     required this.tabIndex,
+    Key? key,
   }) : super(key: key);
 
   final int tabIndex;

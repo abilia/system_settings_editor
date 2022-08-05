@@ -96,8 +96,10 @@ class Activity extends DataModel {
         super(id);
 
   factory Activity({
-    String title = '',
     required DateTime startTime,
+    required String timezone,
+    required String calendarId,
+    String title = '',
     Duration duration = Duration.zero,
     int category = Category.right,
     Recurs recurs = Recurs.not,
@@ -111,9 +113,7 @@ class Activity extends DataModel {
     String icon = '',
     Iterable<int> reminderBefore = const [],
     Iterable<String> signedOffDates = const [],
-    required String timezone,
     Extras extras = Extras.empty,
-    required String calendarId,
     Set<int> secretExemptions = const {},
   }) {
     final id = const Uuid().v4();
@@ -145,8 +145,8 @@ class Activity extends DataModel {
 
   @visibleForTesting
   factory Activity.createNew({
-    String title = '',
     required DateTime startTime,
+    String title = '',
     Duration duration = Duration.zero,
     int category = Category.right,
     Recurs recurs = Recurs.not,

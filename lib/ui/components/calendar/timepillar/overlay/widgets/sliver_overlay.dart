@@ -28,10 +28,10 @@ class SliverOverlayState {
 
 class SliverOverlay extends RenderObjectWidget {
   const SliverOverlay({
-    Key? key,
     required this.overlay,
     required this.sliver,
     required this.height,
+    Key? key,
   }) : super(key: key);
 
   final Widget overlay;
@@ -60,10 +60,10 @@ class SliverOverlay extends RenderObjectWidget {
 
 class SliverOverlayBuilder extends StatelessWidget {
   const SliverOverlayBuilder({
-    Key? key,
     required this.builder,
     required this.sliver,
     required this.height,
+    Key? key,
   }) : super(key: key);
 
   final SliverOverlayWidgetBuilder builder;

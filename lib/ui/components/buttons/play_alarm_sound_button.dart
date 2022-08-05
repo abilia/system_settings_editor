@@ -5,8 +5,8 @@ import 'package:seagull/bloc/all.dart';
 class PlayAlarmSoundButton extends StatelessWidget {
   final Sound sound;
   const PlayAlarmSoundButton({
-    Key? key,
     required this.sound,
+    Key? key,
   }) : super(key: key);
 
   @override
