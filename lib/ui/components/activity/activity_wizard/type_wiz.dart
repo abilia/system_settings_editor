@@ -29,17 +29,17 @@ class _TypeWidget extends StatelessWidget {
               previous.activity.fullDay != current.activity.fullDay ||
               previous.activity.category != current.activity.category,
           builder: (typeContext, state) {
-            const _fullDayValue = -1;
+            const fullDayValue = -1;
             final activity = state.activity;
             void _onChange(int? value) =>
                 context.read<EditActivityCubit>().replaceActivity(
                       activity.copyWith(
-                        fullDay: value == _fullDayValue,
+                        fullDay: value == fullDayValue,
                         category: value?.isNegative == true ? null : value,
                       ),
                     );
             final groupValue =
-                activity.fullDay ? _fullDayValue : activity.category;
+                activity.fullDay ? fullDayValue : activity.category;
 
             return Column(
               children: <Widget>[
@@ -52,7 +52,7 @@ class _TypeWidget extends StatelessWidget {
                       AbiliaIcons.restore,
                       size: layout.icon.small,
                     ),
-                    value: _fullDayValue,
+                    value: fullDayValue,
                     groupValue: groupValue,
                     onChanged: _onChange),
                 SizedBox(height: layout.formPadding.verticalItemDistance),

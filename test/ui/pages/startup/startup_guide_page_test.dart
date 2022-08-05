@@ -9,7 +9,6 @@ import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
 
 void main() {
-  const Translator _translator = Translator(Locale('en'));
   group('Startup', () {
     late DeviceDb deviceDb;
     setUp(() async {
@@ -51,7 +50,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(WelcomePage), findsOneWidget);
 
-      await tester.tap(find.text(_translator.translate.start));
+      await tester.tap(find.text(const EN().start));
       await tester.pumpAndSettle();
       expect(find.byType(PageOneWifi), findsOneWidget);
     });

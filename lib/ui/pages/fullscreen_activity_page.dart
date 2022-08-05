@@ -69,14 +69,13 @@ class _FullScreenActivityTabBar extends StatelessWidget with ActivityMixin {
 
   @override
   Widget build(BuildContext context) {
-    final _layout = layout.ongoingFullscreen;
     final ScrollController scrollController = ScrollController();
     return DefaultTextStyle(
       overflow: TextOverflow.fade,
       style: (Theme.of(context).textTheme.caption ?? caption),
       textAlign: TextAlign.center,
       child: Container(
-        height: _layout.height,
+        height: layout.ongoingFullscreen.height,
         color: AbiliaColors.white110,
         child: ScrollArrows.horizontal(
           controller: scrollController,
@@ -86,7 +85,7 @@ class _FullScreenActivityTabBar extends StatelessWidget with ActivityMixin {
             builder: (context, eventsList) => ListView.builder(
               controller: scrollController,
               scrollDirection: Axis.horizontal,
-              padding: _layout.padding,
+              padding: layout.ongoingFullscreen.padding,
               itemCount: eventsList.length,
               itemBuilder: (context, index) => FullScreenActivityTabItem(
                 activityOccasion: eventsList[index],
@@ -112,7 +111,7 @@ class FullScreenActivityTabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _layout = layout.ongoingFullscreen.activity;
+    final layout_ = layout.ongoingFullscreen.activity;
     return BlocSelector<FullScreenActivityCubit, FullScreenActivityState, bool>(
       selector: (state) =>
           activityOccasion.activity.id == state.selected.activity.id,
@@ -122,7 +121,7 @@ class FullScreenActivityTabItem extends StatelessWidget {
             activityOccasion.end.isAtSameMomentAs(minutes),
         builder: (context, current) {
           final border =
-              current || selected ? _layout.activeBorder : _layout.border;
+              current || selected ? layout_.activeBorder : layout_.border;
           final borderColor = current
               ? AbiliaColors.red
               : selected
@@ -132,7 +131,7 @@ class FullScreenActivityTabItem extends StatelessWidget {
               BorderRadius.all(innerRadiusFromBorderSize(border));
           return AnimatedPadding(
             duration: _animationDuration,
-            padding: selected ? _layout.selectedPadding : _layout.padding,
+            padding: selected ? layout_.selectedPadding : layout_.padding,
             child: AspectRatio(
               aspectRatio: 1,
               child: BlocSelector<MemoplannerSettingBloc,
@@ -165,7 +164,7 @@ class FullScreenActivityTabItem extends StatelessWidget {
                                   : Matrix4.translation(
                                       Vector3(
                                         0.0,
-                                        _layout.arrowSize.height,
+                                        layout_.arrowSize.height,
                                         0.0,
                                       ),
                                     ),
@@ -230,8 +229,7 @@ class _ActivityArrow extends StatelessWidget {
   }) : super(key: key);
 
   static Path arrrowPath(Size size) {
-    final _layout = layout.ongoingFullscreen.activity;
-    final tweak = _layout.arrowPointRadius.x;
+    final tweak = layout.ongoingFullscreen.activity.arrowPointRadius.x;
     final midPoint = size.width / 2;
     return Path()
       ..lineTo(
@@ -243,7 +241,7 @@ class _ActivityArrow extends StatelessWidget {
           midPoint + tweak / 2,
           -size.height + tweak,
         ),
-        radius: _layout.arrowPointRadius,
+        radius: layout.ongoingFullscreen.activity.arrowPointRadius,
       )
       ..lineTo(size.width, 0);
   }

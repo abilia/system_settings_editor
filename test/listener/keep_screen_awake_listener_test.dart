@@ -17,12 +17,12 @@ void main() {
 
   late WakeLockCubit wakeLockCubit;
   late Battery mockBattery;
-  late StreamController<BatteryState> _batteryStreamController;
+  late StreamController<BatteryState> batteryStreamController;
   late MemoplannerSettingBloc mockMemoplannerSettingBloc;
 
-  const _setScreenOffTimeout = 'setScreenOffTimeout',
-      _getScreenOffTimeout = 'getScreenOffTimeout',
-      _canWriteSettings = 'canWriteSettings';
+  const setScreenOffTimeout = 'setScreenOffTimeout',
+      getScreenOffTimeout = 'getScreenOffTimeout',
+      canWriteSettings = 'canWriteSettings';
 
   const systemTimeOutMs = 60000;
   Map<String, int> systemSettingsChannelCallCounter = {};
@@ -31,7 +31,7 @@ void main() {
       MethodChannel('system_settings_editor');
   void setUpMockSystemSettingsChannel({
     int screenOffTimeout = systemTimeOutMs,
-    bool canWriteSettings = true,
+    bool canWrite = true,
   }) {
     systemSettingsChannelCallCounter = {};
     systemSettingsChannelCallArguments = {};
@@ -44,9 +44,9 @@ void main() {
             methodCall.arguments;
       }
       switch (methodCall.method) {
-        case _canWriteSettings:
-          return canWriteSettings;
-        case _getScreenOffTimeout:
+        case canWriteSettings:
+          return canWrite;
+        case getScreenOffTimeout:
           return screenOffTimeout;
       }
     });
@@ -57,9 +57,9 @@ void main() {
     registerFallbackValues();
 
     mockBattery = MockBattery();
-    _batteryStreamController = StreamController<BatteryState>();
+    batteryStreamController = StreamController<BatteryState>();
     when(() => mockBattery.onBatteryStateChanged)
-        .thenAnswer((_) => _batteryStreamController.stream);
+        .thenAnswer((_) => batteryStreamController.stream);
     mockMemoplannerSettingBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingBloc.state)
         .thenReturn(const MemoplannerSettingsNotLoaded());
@@ -74,7 +74,7 @@ void main() {
   });
 
   tearDown(() {
-    _batteryStreamController.close();
+    batteryStreamController.close();
   });
 
   Widget _wrapWithMaterialApp() => MaterialApp(
@@ -99,7 +99,7 @@ void main() {
     wakeLockCubit.setScreenTimeout(newTimeout);
     await tester.pumpAndSettle();
 
-    expect(systemSettingsChannelCallCounter[_setScreenOffTimeout], isNull);
+    expect(systemSettingsChannelCallCounter[setScreenOffTimeout], isNull);
   });
 
   testWidgets('When new timeout, not same as settings, change', (tester) async {
@@ -110,8 +110,8 @@ void main() {
     wakeLockCubit.setScreenTimeout(newTimeout);
     await tester.pumpAndSettle();
 
-    expect(systemSettingsChannelCallCounter[_setScreenOffTimeout], 1);
-    expect(systemSettingsChannelCallArguments[_setScreenOffTimeout]['timeout'],
+    expect(systemSettingsChannelCallCounter[setScreenOffTimeout], 1);
+    expect(systemSettingsChannelCallArguments[setScreenOffTimeout]['timeout'],
         newTimeout.inMilliseconds);
   });
 }

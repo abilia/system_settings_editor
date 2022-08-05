@@ -6,7 +6,7 @@ class MainTab extends StatelessWidget with EditActivityTab {
 
   @override
   Widget build(BuildContext context) {
-    final _scrollController = ScrollController();
+    final scrollController = ScrollController();
     return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, editActivityState) {
         final activity = editActivityState.activity;
@@ -15,9 +15,9 @@ class MainTab extends StatelessWidget with EditActivityTab {
               previous.showCategories != current.showCategories ||
               previous.settings.editActivity != current.settings.editActivity,
           builder: (context, memoSettingsState) => ScrollArrows.vertical(
-            controller: _scrollController,
+            controller: scrollController,
             child: ListView(
-              controller: _scrollController,
+              controller: scrollController,
               padding: EdgeInsets.only(bottom: layout.templates.m1.bottom),
               children: <Widget>[
                 const ActivityNameAndPictureWidget()

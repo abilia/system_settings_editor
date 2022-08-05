@@ -8,7 +8,7 @@ class PhotoCalendarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _layout = layout.photoCalendarLayout;
+    final layout_ = layout.photoCalendarLayout;
     final clockType = context
         .select((MemoplannerSettingBloc settings) => settings.state.clockType);
     final calendarDayColor = context.select(
@@ -30,7 +30,7 @@ class PhotoCalendarPage extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: _layout.clockRowHeight,
+                height: layout_.clockRowHeight,
                 child: Stack(
                   children: [
                     Row(
@@ -38,26 +38,26 @@ class PhotoCalendarPage extends StatelessWidget {
                       children: [
                         if (clockType != ClockType.digital)
                           SizedBox(
-                            height: _layout.analogClockSize +
+                            height: layout_.analogClockSize +
                                 layout.clock.borderWidth * 2,
-                            width: _layout.analogClockSize,
+                            width: layout_.analogClockSize,
                             child: const FittedBox(child: AnalogClock()),
                           ),
                         if (clockType == ClockType.analogueDigital)
-                          SizedBox(width: _layout.clockDistance),
+                          SizedBox(width: layout_.clockDistance),
                         if (clockType != ClockType.analogue)
                           DigitalClock(
-                            style: _layout.textStyle(clockType),
+                            style: layout_.textStyle(clockType),
                           ),
                       ],
                     ).pad(
                       clockType == ClockType.digital
-                          ? _layout.digitalClockPadding
-                          : _layout.analogClockPadding,
+                          ? layout_.digitalClockPadding
+                          : layout_.analogClockPadding,
                     ),
                     Positioned(
-                      bottom: _layout.backButtonPosition.dy,
-                      right: _layout.backButtonPosition.dx,
+                      bottom: layout_.backButtonPosition.dy,
+                      right: layout_.backButtonPosition.dx,
                       child: IconActionButton(
                         style: theme.isLight
                             ? actionButtonStyleLight

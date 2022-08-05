@@ -162,17 +162,17 @@ class WeekCalenderHeadingContent extends StatelessWidget {
     final borderWidth = selected || occasion.isCurrent
         ? wLayout.selectedDay.dayColumnBorderWidth
         : wLayout.notSelectedDay.dayColumnBorderWidth;
-    final _bodyText1 = (dayTheme.theme.textTheme.bodyText1 ?? bodyText1)
+    final bodyText1_ = (dayTheme.theme.textTheme.bodyText1 ?? bodyText1)
         .copyWith(height: 18 / 16);
     final innerRadius = Radius.circular(wLayout.columnRadius.x - borderWidth);
-    final _fullDayPadding =
+    final fullDayPadding_ =
         wLayout.notSelectedDay.innerDayPadding.horizontal / 2;
     final fullDayActivitiesPadding = EdgeInsets.symmetric(
       horizontal: max(
-        _fullDayPadding - borderWidth,
+        fullDayPadding_ - borderWidth,
         0,
       ),
-      vertical: _fullDayPadding,
+      vertical: fullDayPadding_,
     );
 
     return Flexible(
@@ -227,10 +227,10 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                               '${day.day}\n${Translator.of(context).translate.shortWeekday(day.weekday)}',
                               textAlign: TextAlign.center,
                               style: occasion.isPast
-                                  ? _bodyText1.copyWith(
+                                  ? bodyText1_.copyWith(
                                       color: AbiliaColors.white,
                                     )
-                                  : _bodyText1,
+                                  : bodyText1_,
                             ),
                           ),
                         ),
@@ -381,12 +381,12 @@ class _WeekDayColumn extends StatelessWidget {
                         : columnColor == AbiliaColors.white
                             ? AbiliaColors.white120
                             : dayTheme.borderColor ?? dayTheme.secondaryColor;
-            final _tempPadding = selected
+            final tempPadding_ = selected
                 ? wLayout.selectedDay.innerDayPadding
                 : wLayout.notSelectedDay.innerDayPadding;
-            final innerDayPadding = _tempPadding.copyWith(
-              left: max(_tempPadding.left - borderWidth, 0),
-              right: max(_tempPadding.right - borderWidth, 0),
+            final innerDayPadding = tempPadding_.copyWith(
+              left: max(tempPadding_.left - borderWidth, 0),
+              right: max(tempPadding_.right - borderWidth, 0),
             );
             final innerRadius = Radius.circular(
               wLayout.columnRadius.x - borderWidth,

@@ -102,11 +102,11 @@ class SeagullLogger {
   Future<void> sendLogsToBackend() async {
     if (fileLogging) {
       final time = DateFormat('yyyyMMddHHmm').format(DateTime.now());
-      final _logArchivePath = '$documentsDir/$logArchivePath';
-      final logArchiveDir = Directory(_logArchivePath);
+      final logArchivePath_ = '$documentsDir/$logArchivePath';
+      final logArchiveDir = Directory(logArchivePath_);
       await logArchiveDir.create(recursive: true);
       final archiveFilePath =
-          '$_logArchivePath/${Config.flavor.id}_log_$time.log';
+          '$logArchivePath_/${Config.flavor.id}_log_$time.log';
       await _logFileLock.synchronized(() async {
         await _logFile?.copy(archiveFilePath);
         await _logFile?.writeAsString('');
@@ -235,10 +235,10 @@ class SeagullLogger {
     });
   }
 
+  final _postLog = Logger('postLogFile');
   Future<bool> _postLogFile(
     File file,
   ) async {
-    final _log = Logger('postLogFile');
     try {
       final prefs = preferences;
       if (prefs != null) {
@@ -266,11 +266,11 @@ class SeagullLogger {
           return true;
         }
         final response = await Response.fromStream(streamedResponse);
-        _log.warning(
+        _postLog.warning(
             'Could not save log file: ${streamedResponse.statusCode}, ${response.body}');
       }
     } catch (e) {
-      _log.severe('Could not save log file.', e);
+      _postLog.severe('Could not save log file.', e);
     }
     return false;
   }

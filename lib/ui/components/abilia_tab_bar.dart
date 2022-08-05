@@ -143,14 +143,14 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
 
   @override
   void didUpdateWidget(_Tab oldWidget) {
-    final _collapsed = widget.collapsed();
-    if (_collapsed != collapsed) {
-      if (_collapsed) {
+    final collapsed_ = widget.collapsed();
+    if (collapsed_ != collapsed) {
+      if (collapsed_) {
         _collapsedController.forward();
       } else {
         _collapsedController.reverse();
       }
-      collapsed = _collapsed;
+      collapsed = collapsed_;
     }
     super.didUpdateWidget(oldWidget);
   }

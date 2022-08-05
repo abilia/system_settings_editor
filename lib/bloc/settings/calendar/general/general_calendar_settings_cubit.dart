@@ -68,37 +68,37 @@ extension on DayParts {
     final int? eveningStart,
     final int? nightStart,
   }) {
-    var _morningStart = morningStart ?? this.morningStart;
-    var _dayStart = dayStart ?? this.dayStart;
-    var _eveningStart = eveningStart ?? this.eveningStart;
-    var _nightStart = nightStart ?? this.nightStart;
+    var morningStart_ = morningStart ?? this.morningStart;
+    var dayStart_ = dayStart ?? this.dayStart;
+    var eveningStart_ = eveningStart ?? this.eveningStart;
+    var nightStart_ = nightStart ?? this.nightStart;
 
-    _morningStart = DayParts.morningLimit.clamp(_morningStart);
-    _dayStart = DayParts.dayLimit.clamp(_dayStart);
-    _eveningStart = DayParts.eveningLimit.clamp(_eveningStart);
-    _nightStart = DayParts.nightLimit.clamp(_nightStart);
+    morningStart_ = DayParts.morningLimit.clamp(morningStart_);
+    dayStart_ = DayParts.dayLimit.clamp(dayStart_);
+    eveningStart_ = DayParts.eveningLimit.clamp(eveningStart_);
+    nightStart_ = DayParts.nightLimit.clamp(nightStart_);
 
     if (increased) {
-      _dayStart +=
-          _dayStart <= _morningStart ? Duration.millisecondsPerHour : 0;
-      _eveningStart +=
-          _eveningStart <= _dayStart ? Duration.millisecondsPerHour : 0;
-      _nightStart +=
-          _nightStart <= _eveningStart ? Duration.millisecondsPerHour : 0;
+      dayStart_ +=
+          dayStart_ <= morningStart_ ? Duration.millisecondsPerHour : 0;
+      eveningStart_ +=
+          eveningStart_ <= dayStart_ ? Duration.millisecondsPerHour : 0;
+      nightStart_ +=
+          nightStart_ <= eveningStart_ ? Duration.millisecondsPerHour : 0;
     } else {
-      _eveningStart -=
-          _eveningStart >= _nightStart ? Duration.millisecondsPerHour : 0;
-      _dayStart -=
-          _dayStart >= _eveningStart ? Duration.millisecondsPerHour : 0;
-      _morningStart -=
-          _morningStart >= _dayStart ? Duration.millisecondsPerHour : 0;
+      eveningStart_ -=
+          eveningStart_ >= nightStart_ ? Duration.millisecondsPerHour : 0;
+      dayStart_ -=
+          dayStart_ >= eveningStart_ ? Duration.millisecondsPerHour : 0;
+      morningStart_ -=
+          morningStart_ >= dayStart_ ? Duration.millisecondsPerHour : 0;
     }
 
     return DayParts(
-      morningStart: _morningStart,
-      dayStart: _dayStart,
-      eveningStart: _eveningStart,
-      nightStart: _nightStart,
+      morningStart: morningStart_,
+      dayStart: dayStart_,
+      eveningStart: eveningStart_,
+      nightStart: nightStart_,
     );
   }
 }

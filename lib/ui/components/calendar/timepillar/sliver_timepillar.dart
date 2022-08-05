@@ -47,7 +47,7 @@ class RenderSliverTimePillar extends RenderSliverSingleBoxAdapter {
         ? constraints.scrollOffset
         : -(childExtent - constraints.remainingPaintExtent);
 
-    final _geometry = SliverGeometry(
+    final geometry_ = SliverGeometry(
       scrollExtent: childExtent,
       paintExtent: paintedChildSize,
       maxPaintExtent: childExtent,
@@ -55,8 +55,8 @@ class RenderSliverTimePillar extends RenderSliverSingleBoxAdapter {
       hasVisualOverflow: true,
       visible: true,
     );
-    geometry = _geometry;
-    setChildParentData(child, constraints, _geometry);
+    geometry = geometry_;
+    setChildParentData(child, constraints, geometry_);
 
     final childParentData = child.parentData;
     if (childParentData is SliverPhysicalParentData) {
@@ -74,9 +74,9 @@ class RenderSliverTimePillar extends RenderSliverSingleBoxAdapter {
           trailingEdgeOffset = offset + childParentData.paintOffset;
         }
 
-        final _trailingEdgeOffset = trailingEdgeOffset;
-        if (offTrailingEdge && _trailingEdgeOffset != null) {
-          context.paintChild(child, _trailingEdgeOffset);
+        final trailingEdgeOffset_ = trailingEdgeOffset;
+        if (offTrailingEdge && trailingEdgeOffset_ != null) {
+          context.paintChild(child, trailingEdgeOffset_);
           return;
         }
 
