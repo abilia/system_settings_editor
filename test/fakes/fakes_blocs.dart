@@ -168,7 +168,7 @@ class FakeVoicesCubit extends Fake implements VoicesCubit {
   Stream<VoicesState> get stream => const Stream.empty();
 
   @override
-  VoicesState get state => const VoicesState(languageCode: 'en');
+  VoicesState get state => const VoicesState();
 
   @override
   Future<void> close() async {}

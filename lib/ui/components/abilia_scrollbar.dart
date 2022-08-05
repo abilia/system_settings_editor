@@ -6,9 +6,9 @@ class AbiliaScrollBar extends StatelessWidget {
   final bool thumbVisibility;
 
   const AbiliaScrollBar({
+    required this.child,
     Key? key,
     this.controller,
-    required this.child,
     this.thumbVisibility = false,
   }) : super(key: key);
   @override

@@ -5,8 +5,8 @@ import 'package:collection/collection.dart';
 
 class PhotoPage extends StatelessWidget {
   const PhotoPage({
-    Key? key,
     required this.sortable,
+    Key? key,
   }) : super(key: key);
 
   final Sortable<ImageArchiveData> sortable;

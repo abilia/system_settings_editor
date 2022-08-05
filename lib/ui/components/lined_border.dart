@@ -7,10 +7,10 @@ class LinedBorder extends StatelessWidget {
   final GestureTapCallback? onTap;
   final bool errorState;
   const LinedBorder({
-    Key? key,
     required this.child,
     this.onTap,
     this.errorState = false,
+    Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {

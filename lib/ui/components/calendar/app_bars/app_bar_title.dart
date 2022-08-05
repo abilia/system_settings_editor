@@ -6,9 +6,9 @@ import 'package:seagull/utils/all.dart';
 
 class AppBarTitle extends StatelessWidget {
   const AppBarTitle({
-    Key? key,
     required this.rows,
     this.style,
+    Key? key,
   }) : super(key: key);
 
   final AppBarTitleRows rows;
@@ -61,16 +61,16 @@ class AppBarTitleRows {
       DateFormat('d MMM yy', langCode);
 
   factory AppBarTitleRows.day({
-    bool displayWeekDay = true,
-    bool displayPartOfDay = true,
-    bool displayDate = true,
-    bool compactDay = false,
-    bool currentNight = false,
     required DateTime currentTime,
     required DateTime day,
     required DayParts dayParts,
     required String langCode,
     required Translated translator,
+    bool displayWeekDay = true,
+    bool displayPartOfDay = true,
+    bool displayDate = true,
+    bool compactDay = false,
+    bool currentNight = false,
   }) {
     final weekday = displayWeekDay
         ? currentNight

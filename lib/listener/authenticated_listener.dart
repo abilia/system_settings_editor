@@ -15,9 +15,9 @@ import 'package:seagull/utils/all.dart';
 class AuthenticatedListener extends StatefulWidget {
   final bool newlyLoggedIn;
   const AuthenticatedListener({
-    Key? key,
     required this.child,
     required this.newlyLoggedIn,
+    Key? key,
   }) : super(key: key);
 
   final Widget child;

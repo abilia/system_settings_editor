@@ -40,10 +40,10 @@ class TtsPlayButton extends StatelessWidget {
 
 class _TtsPlayButton extends StatefulWidget {
   const _TtsPlayButton({
-    Key? key,
     required this.text,
     this.padding = EdgeInsets.zero,
     this.buttonStyle,
+    Key? key,
   }) : super(key: key);
 
   final String text;

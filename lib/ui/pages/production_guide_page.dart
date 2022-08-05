@@ -160,8 +160,8 @@ class _DebugRow extends StatelessWidget {
 
 class _FancyHeader extends StatelessWidget {
   const _FancyHeader({
-    Key? key,
     required this.text,
+    Key? key,
   }) : super(key: key);
 
   final String text;

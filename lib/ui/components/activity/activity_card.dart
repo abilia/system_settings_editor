@@ -11,12 +11,12 @@ class ActivityCard extends StatelessWidget {
   static const Duration duration = Duration(seconds: 1);
 
   const ActivityCard({
-    Key? key,
     required this.activityOccasion,
     this.preview = false,
     this.showCategoryColor = false,
     this.showInfoIcons = true,
     this.useOpacity = false,
+    Key? key,
   }) : super(key: key);
 
   @override

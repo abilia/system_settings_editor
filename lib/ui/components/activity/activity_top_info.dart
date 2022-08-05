@@ -163,10 +163,10 @@ class _ActivityTopInfo extends StatelessWidget {
 
 class _TimeBox extends StatelessWidget {
   const _TimeBox({
-    Key? key,
     required this.text,
     required this.occasion,
     required this.maxWidth,
+    Key? key,
   }) : super(key: key);
 
   final Occasion occasion;

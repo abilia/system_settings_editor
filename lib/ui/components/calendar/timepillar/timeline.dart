@@ -8,10 +8,10 @@ class Timeline extends StatelessWidget {
   final TimepillarMeasures measures;
   final DateTime now;
   const Timeline({
-    Key? key,
     required this.now,
     required this.width,
     required this.measures,
+    Key? key,
     this.offset = 0,
   }) : super(key: key);
 

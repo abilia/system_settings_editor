@@ -3,13 +3,13 @@ import 'package:seagull/ui/all.dart';
 
 class SortableToolbar extends StatelessWidget {
   const SortableToolbar({
-    Key? key,
-    this.disableUp = false,
-    this.disableDown = false,
-    this.margin,
     required this.onTapEdit,
     required this.onTapDelete,
     required this.onTapReorder,
+    this.disableUp = false,
+    this.disableDown = false,
+    this.margin,
+    Key? key,
   }) : super(key: key);
 
   final bool disableUp, disableDown;

@@ -4,8 +4,8 @@ import 'package:seagull/utils/all.dart';
 
 class PageTwoVoiceSupport extends StatelessWidget {
   const PageTwoVoiceSupport({
-    Key? key,
     required this.pageController,
+    Key? key,
   }) : super(key: key);
 
   final PageController pageController;

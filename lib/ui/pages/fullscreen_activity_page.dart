@@ -10,8 +10,8 @@ class FullScreenActivityPage extends StatelessWidget {
   final NewAlarm alarm;
 
   const FullScreenActivityPage({
-    Key? key,
     required this.alarm,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -62,8 +62,10 @@ class FullScreenActivityPage extends StatelessWidget {
 class _FullScreenActivityTabBar extends StatelessWidget with ActivityMixin {
   final ActivityDay selectedActivityDay;
 
-  _FullScreenActivityTabBar({Key? key, required this.selectedActivityDay})
-      : super(key: key);
+  _FullScreenActivityTabBar({
+    required this.selectedActivityDay,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -100,8 +102,8 @@ class _FullScreenActivityTabBar extends StatelessWidget with ActivityMixin {
 @visibleForTesting
 class FullScreenActivityTabItem extends StatelessWidget {
   const FullScreenActivityTabItem({
-    Key? key,
     required this.activityOccasion,
+    Key? key,
   }) : super(key: key);
 
   final ActivityOccasion activityOccasion;
@@ -222,9 +224,9 @@ class _ActivityArrow extends StatelessWidget {
   final Color color;
 
   const _ActivityArrow({
-    Key? key,
     required this.border,
     required this.color,
+    Key? key,
   }) : super(key: key);
 
   static Path arrrowPath(Size size) {
@@ -303,9 +305,9 @@ class _ActivityArrowFillPainter extends CustomPainter {
 
 class _CategoryDot extends StatelessWidget {
   const _CategoryDot({
-    Key? key,
     required this.category,
     required this.selected,
+    Key? key,
   }) : super(key: key);
 
   final Duration _animationDuration = ActivityInfo.animationDuration;

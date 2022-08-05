@@ -8,8 +8,8 @@ class AllDayList extends StatelessWidget {
   final DateTime day;
 
   const AllDayList({
-    Key? key,
     required this.day,
+    Key? key,
   }) : super(key: key);
 
   @override

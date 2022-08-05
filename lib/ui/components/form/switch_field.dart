@@ -12,7 +12,6 @@ class SwitchField extends StatelessWidget {
   static final defaultHeight = layout.switchField.height;
 
   const SwitchField({
-    Key? key,
     required this.child,
     this.onChanged,
     this.leading,
@@ -22,6 +21,7 @@ class SwitchField extends StatelessWidget {
     this.decoration,
     this.padding,
     this.ttsData,
+    Key? key,
   })  : assert(child is Text || ttsData != null),
         super(key: key);
 

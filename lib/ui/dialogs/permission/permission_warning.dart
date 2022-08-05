@@ -4,8 +4,8 @@ class NotificationPermissionOffWarningDialog extends StatelessWidget {
   final GestureTapCallback onOk;
 
   const NotificationPermissionOffWarningDialog({
-    Key? key,
     required this.onOk,
+    Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -61,8 +61,11 @@ class NotificationPermissionWarningDialog extends StatelessWidget {
 }
 
 class _WarningContent extends StatelessWidget {
-  const _WarningContent({Key? key, required this.heading, required this.body})
-      : super(key: key);
+  const _WarningContent({
+    required this.heading,
+    required this.body,
+    Key? key,
+  }) : super(key: key);
   final String heading;
   final Widget body;
   @override

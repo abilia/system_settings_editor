@@ -66,9 +66,9 @@ class FunctionSettingsPage extends StatelessWidget {
 
 class _SettingsTab extends StatelessWidget {
   const _SettingsTab({
-    Key? key,
     required this.hint,
     this.children = const [],
+    Key? key,
   }) : super(key: key);
   final List<Widget> children;
   final String hint;

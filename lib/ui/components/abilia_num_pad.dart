@@ -6,10 +6,10 @@ class AbiliaNumPad extends StatelessWidget {
   final void Function(String n) onNumPress;
 
   const AbiliaNumPad({
-    Key? key,
     required this.delete,
     required this.onClear,
     required this.onNumPress,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -50,9 +50,9 @@ class KeyboardNumberButton extends StatelessWidget {
   final void Function(String) onNumPress;
 
   const KeyboardNumberButton({
-    Key? key,
     required this.number,
     required this.onNumPress,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -70,9 +70,9 @@ class KeyboardNumberButton extends StatelessWidget {
 
 class KeyboardActionButton extends StatelessWidget {
   const KeyboardActionButton({
+    required this.iconData,
     Key? key,
     this.onPressed,
-    required this.iconData,
   }) : super(key: key);
 
   final VoidCallback? onPressed;

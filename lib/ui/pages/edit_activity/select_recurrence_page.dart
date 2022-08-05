@@ -5,8 +5,10 @@ import 'package:seagull/utils/all.dart';
 class SelectRecurrencePage extends StatefulWidget {
   final RecurrentType recurrentType;
 
-  const SelectRecurrencePage({Key? key, required this.recurrentType})
-      : super(key: key);
+  const SelectRecurrencePage({
+    required this.recurrentType,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _SelectRecurrencePageState createState() => _SelectRecurrencePageState();

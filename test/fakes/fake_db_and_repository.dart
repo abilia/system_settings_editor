@@ -26,7 +26,10 @@ class FakeSettingsDb extends Fake implements SettingsDb {
   Future setRightCategoryExpanded(bool expanded) async {}
 
   @override
-  String get language => 'en';
+  String language = 'en';
+
+  @override
+  Future setLanguage(String language) async {}
 
   @override
   Future setAlwaysUse24HourFormat(bool alwaysUse24HourFormat) async {}

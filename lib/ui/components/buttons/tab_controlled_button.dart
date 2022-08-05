@@ -8,8 +8,8 @@ class TabControlledButton extends StatefulWidget {
   const TabControlledButton(
     this.text,
     this.iconData, {
-    Key? key,
     required this.tabIndex,
+    Key? key,
   }) : super(key: key);
 
   @override

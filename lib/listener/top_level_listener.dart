@@ -12,9 +12,9 @@ class TopLevelListener extends StatelessWidget {
   final NotificationAlarm? payload;
 
   const TopLevelListener({
-    Key? key,
     required this.child,
     required this.navigatorKey,
+    Key? key,
     this.payload,
   }) : super(key: key);
 

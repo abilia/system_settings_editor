@@ -1,17 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:path/path.dart' as p;
+import 'package:collection/collection.dart';
 import 'package:http/http.dart';
+import 'package:path/path.dart' as p;
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/utils/strings.dart';
 
 class VoiceRepository {
   VoiceRepository({
     required this.client,
     required this.baseUrlDb,
+    required this.ttsHandler,
     required String applicationSupportPath,
   }) : voicesPath = p.join(applicationSupportPath, folder);
   static const folder = 'system';
@@ -19,6 +22,7 @@ class VoiceRepository {
   final BaseClient client;
   final BaseUrlDb baseUrlDb;
   final String voicesPath;
+  final TtsInterface ttsHandler;
 
   static const String baseUrl = 'library.myabilia.com';
   static const String pathSegments = '/voices/v1/index';
@@ -47,6 +51,12 @@ class VoiceRepository {
     );
     return [];
   }
+
+  Future<List<String>> readDownloadedVoices() async =>
+      (await ttsHandler.availableVoices)
+          .whereNotNull()
+          .map((e) => '$e')
+          .toList();
 
   Future<bool> downloadVoice(VoiceData voice) async {
     try {

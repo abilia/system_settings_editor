@@ -15,7 +15,6 @@ void main() {
   group('Speech support settings page', () {
     Iterable<Generic> generics = [];
     late MockGenericDb genericDb;
-    late MockSettingsDb settingsDb;
     late MockVoiceDb voiceDb;
 
     setUp(() async {
@@ -24,41 +23,45 @@ void main() {
 
       genericDb = MockGenericDb();
       when(() => genericDb.getAllNonDeletedMaxRevision())
-          .thenAnswer((_) => Future.value(generics));
-      when(() => genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+          .thenAnswer((_) async => generics);
+      when(() => genericDb.getAllDirty()).thenAnswer((_) async => []);
       when(() => genericDb.insertAndAddDirty(any()))
-          .thenAnswer((_) => Future.value(true));
-      when(() => genericDb.getById(any()))
-          .thenAnswer((_) => Future.value(null));
+          .thenAnswer((_) async => true);
+      when(() => genericDb.getById(any())).thenAnswer((_) async => null);
       when(() => genericDb.insert(any())).thenAnswer((_) async {});
 
-      settingsDb = MockSettingsDb();
-      when(() => settingsDb.alwaysUse24HourFormat).thenAnswer((_) => true);
-      when(() => settingsDb.setAlwaysUse24HourFormat(any()))
-          .thenAnswer((_) => Future.value());
-      when(() => settingsDb.leftCategoryExpanded).thenReturn(true);
-      when(() => settingsDb.setLeftCategoryExpanded(any()))
-          .thenAnswer((_) => Future.value());
-      when(() => settingsDb.rightCategoryExpanded).thenReturn(true);
-      when(() => settingsDb.setRightCategoryExpanded(any()))
-          .thenAnswer((_) => Future.value());
-      when(() => settingsDb.language).thenReturn('en');
-
       voiceDb = MockVoiceDb();
-      when(() => voiceDb.textToSpeech).thenAnswer((_) => true);
-      when(() => voiceDb.speechRate).thenAnswer((_) => 100);
-      when(() => voiceDb.speakEveryWord).thenAnswer((_) => false);
-      when(() => voiceDb.voice).thenAnswer((_) => '');
+      when(() => voiceDb.textToSpeech).thenReturn(true);
+      when(() => voiceDb.speechRate).thenReturn(100);
+      when(() => voiceDb.speakEveryWord).thenReturn(false);
+      when(() => voiceDb.voice).thenReturn('');
+      when(() => voiceDb.setTextToSpeech(any())).thenAnswer((_) async {});
+      when(() => voiceDb.setVoice(any())).thenAnswer((_) async {});
+
+      final ttsHandler = MockTtsHandler();
+      when(() => ttsHandler.availableVoices)
+          .thenAnswer((_) async => ['en', 'sv']);
 
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..ticker = Ticker.fake(initialTime: DateTime(2021, 04, 17, 09, 20))
-        ..client = Fakes.client(genericResponse: () => generics)
+        ..client = Fakes.client(
+          genericResponse: () => generics,
+          activityResponse: () => [],
+          voicesResponse: (language) => [
+            {
+              'name': language,
+              'type': 1,
+              'lang': language,
+              'files': [],
+            },
+          ],
+        )
         ..database = FakeDatabase()
         ..genericDb = genericDb
         ..battery = FakeBattery()
-        ..settingsDb = settingsDb
-        ..ttsHandler = FakeTtsHandler()
+        ..settingsDb = FakeSettingsDb()
+        ..ttsHandler = ttsHandler
         ..deviceDb = FakeDeviceDb()
         ..voiceDb = voiceDb
         ..directories = Directories(
@@ -107,6 +110,59 @@ void main() {
       await tester.tap(find.byType(PickField));
       await tester.pumpAndSettle();
       expect(find.byType(VoicesPage), findsOneWidget);
+    });
+
+    const en = 'en: 0 MB', sv = 'sv: 0 MB';
+    testWidgets('Changing language changes available voices', (tester) async {
+      await tester.goToSpeechSettingsPage();
+      await tester.tap(find.byType(PickField));
+      await tester.pumpAndSettle();
+      expect(find.widgetWithText(RadioField<String>, en), findsOneWidget);
+      expect(find.widgetWithText(RadioField<String>, sv), findsNothing);
+      await tester.binding.setLocale('sv', 'se');
+      await tester.pumpAndSettle();
+      expect(find.widgetWithText(RadioField<String>, sv), findsOneWidget);
+      expect(find.widgetWithText(RadioField<String>, en), findsNothing);
+    });
+
+    testWidgets('Changing language unsets selected voice SGC-1783',
+        (tester) async {
+      when(() => voiceDb.voice).thenReturn('en');
+      await tester.goToSpeechSettingsPage();
+      expect(find.widgetWithText(PickField, 'en'), findsOneWidget);
+      await tester.binding.setLocale('sv', 'se');
+      await tester.pumpAndSettle();
+      expect(find.byType(PickField), findsNothing);
+      await tester.tap(find.byType(TextToSpeechSwitch));
+      await tester.pumpAndSettle();
+      expect(
+        find.widgetWithText(PickField, const SV().noVoicesInstalled),
+        findsOneWidget,
+      );
+      expect(find.widgetWithText(PickField, 'en'), findsNothing);
+      expect(find.widgetWithText(PickField, 'sv'), findsNothing);
+    });
+
+    testWidgets('Delete voice does not select other voice SGC-1783',
+        (tester) async {
+      when(() => voiceDb.voice).thenReturn('en');
+      await tester.goToSpeechSettingsPage();
+      await tester.tap(find.byType(PickField));
+      await tester.pumpAndSettle();
+      expect(find.widgetWithText(RadioField<String>, en), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.deleteAllClear));
+      await tester.pumpAndSettle();
+      expect(find.byIcon(AbiliaIcons.deleteAllClear), findsNothing);
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(VoicesPage), findsNothing);
+      expect(find.byType(SpeechSupportSettingsPage), findsOneWidget);
+      expect(
+        find.widgetWithText(PickField, const EN().noVoicesInstalled),
+        findsOneWidget,
+      );
+      expect(find.widgetWithText(PickField, 'en'), findsNothing);
+      expect(find.widgetWithText(PickField, 'sv'), findsNothing);
     });
   }, skip: !Config.isMP);
 }

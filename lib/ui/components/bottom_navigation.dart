@@ -6,10 +6,10 @@ class BottomNavigation extends StatelessWidget {
   final bool useVerticalSafeArea;
 
   const BottomNavigation({
-    Key? key,
     required this.backNavigationWidget,
     this.forwardNavigationWidget,
     this.useVerticalSafeArea = true,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -35,9 +35,9 @@ class BottomNavigation extends StatelessWidget {
 class _BottomNavigation extends StatelessWidget {
   final bool useVerticalSafeArea;
   const _BottomNavigation({
-    Key? key,
     required this.child,
     this.useVerticalSafeArea = true,
+    Key? key,
   }) : super(key: key);
 
   final Widget child;

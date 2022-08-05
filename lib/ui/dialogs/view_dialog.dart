@@ -9,13 +9,13 @@ class ViewDialog extends StatelessWidget {
   final bool expanded;
 
   const ViewDialog({
-    Key? key,
-    this.heading,
     required this.body,
-    this.expanded = false,
     required this.backNavigationWidget,
+    this.heading,
+    this.expanded = false,
     this.forwardNavigationWidget,
     this.bodyPadding,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -72,9 +72,9 @@ class ErrorDialog extends StatelessWidget {
   final Widget? backNavigationWidget;
 
   const ErrorDialog({
-    Key? key,
     required this.text,
     this.backNavigationWidget,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -93,10 +93,10 @@ class YesNoDialog extends StatelessWidget {
   final String heading;
   final IconData? headingIcon;
   const YesNoDialog({
-    Key? key,
     required this.text,
     required this.heading,
     this.headingIcon,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -116,8 +116,8 @@ class YesNoDialog extends StatelessWidget {
 class ConfirmWarningDialog extends StatelessWidget {
   final String text;
   const ConfirmWarningDialog({
-    Key? key,
     required this.text,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -140,8 +140,8 @@ class WarningDialog extends StatelessWidget {
   final String text;
 
   const WarningDialog({
-    Key? key,
     required this.text,
+    Key? key,
   }) : super(key: key);
 
   @override

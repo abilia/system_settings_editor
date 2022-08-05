@@ -220,8 +220,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
 
 class TopLevelProvider extends StatelessWidget {
   const TopLevelProvider({
-    Key? key,
     required this.child,
+    Key? key,
     this.pushCubit,
   }) : super(key: key);
 
@@ -257,6 +257,7 @@ class TopLevelProvider extends StatelessWidget {
               baseUrlDb: GetIt.I<BaseUrlDb>(),
               applicationSupportPath:
                   GetIt.I<Directories>().applicationSupport.path,
+              ttsHandler: GetIt.I<TtsInterface>(),
             ),
           ),
         ],
@@ -280,22 +281,25 @@ class TopLevelProvider extends StatelessWidget {
             ),
           ),
           BlocProvider(
+            create: (context) => LocaleCubit(GetIt.I<SettingsDb>()),
+          ),
+          BlocProvider(
             create: (context) => TouchDetectionCubit(),
           ),
           BlocProvider<SpeechSettingsCubit>(
             create: (context) => SpeechSettingsCubit(
               voiceDb: GetIt.I<VoiceDb>(),
               acapelaTts: GetIt.I<TtsInterface>(),
+              localeStream: context.read<LocaleCubit>().stream,
             ),
           ),
           if (Config.isMP)
             BlocProvider<VoicesCubit>(
               create: (context) => VoicesCubit(
-                languageCode: GetIt.I<SettingsDb>().language,
                 speechSettingsCubit: context.read<SpeechSettingsCubit>(),
-                ttsHandler: GetIt.I<TtsInterface>(),
                 voiceRepository: context.read<VoiceRepository>(),
-              )..fetchVoices(),
+                localeStream: context.read<LocaleCubit>().stream,
+              )..fetchVoices(GetIt.I<SettingsDb>().language),
             ),
         ],
         child: child,
@@ -306,8 +310,8 @@ class TopLevelProvider extends StatelessWidget {
 
 class AuthenticationBlocProvider extends StatelessWidget {
   const AuthenticationBlocProvider({
-    Key? key,
     required this.child,
+    Key? key,
   }) : super(key: key);
 
   final Widget child;

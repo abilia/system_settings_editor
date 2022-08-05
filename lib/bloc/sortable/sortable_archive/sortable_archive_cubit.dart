@@ -139,9 +139,9 @@ class SortableArchiveCubit<T extends SortableData>
     required Iterable<Sortable> sortables,
     required String initialFolderId,
     required String currentFolderId,
+    required bool showFolder,
     bool Function(Sortable<T>)? visibilityFilter,
     Sortable<T>? selected,
-    required bool showFolder,
   }) {
     final sortableArchive = sortables
         .whereType<Sortable<T>>()

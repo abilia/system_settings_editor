@@ -5,10 +5,10 @@ import 'package:seagull/utils/all.dart';
 
 class ActivityListener extends BlocListener<ActivitiesBloc, ActivitiesState> {
   ActivityListener({
-    Key? key,
     required Activity activity,
     required Function() onActivityDeleted,
     required Widget child,
+    Key? key,
   }) : super(
           key: key,
           listener: (context, state) {
