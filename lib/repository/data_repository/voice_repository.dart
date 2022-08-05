@@ -28,7 +28,7 @@ class VoiceRepository {
     final url = Uri.https(
       baseUrl,
       '$pathSegments/$lang',
-      {'environment': baseUrlDb.envoirment},
+      {'environment': baseUrlDb.environment},
     );
 
     final response = await client.get(url);
