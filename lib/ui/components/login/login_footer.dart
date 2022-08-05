@@ -73,6 +73,8 @@ class AbiliaLogoWithReset extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
+    final voicesCubit = context.read<VoicesCubit>();
+    final startupCubit = context.read<StartupCubit>();
     return GestureDetector(
       child: const AbiliaLogo(),
       onLongPress: () async {
@@ -86,8 +88,8 @@ class AbiliaLogoWithReset extends StatelessWidget {
           ),
         );
         if (reset == true) {
-          context.read<VoicesCubit>().deleteAllVoices();
-          context.read<StartupCubit>().resetStartGuideDone();
+          voicesCubit.deleteAllVoices();
+          startupCubit.resetStartGuideDone();
         }
       },
     );

@@ -7,7 +7,7 @@ class HiddenSetting extends StatefulWidget {
   final bool showCategories;
 
   @override
-  _HiddenSettingState createState() => _HiddenSettingState();
+  State createState() => _HiddenSettingState();
 }
 
 class _HiddenSettingState extends State<HiddenSetting> {

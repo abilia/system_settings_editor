@@ -8,7 +8,7 @@ class FakeTicker extends StatefulWidget {
   const FakeTicker({Key? key}) : super(key: key);
 
   @override
-  _FakeTickerState createState() => _FakeTickerState();
+  State createState() => _FakeTickerState();
 }
 
 class _FakeTickerState extends State<FakeTicker> {

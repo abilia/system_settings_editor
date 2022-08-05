@@ -88,7 +88,7 @@ class TimeInputContent extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _TimeInputContentState createState() => _TimeInputContentState();
+  State createState() => _TimeInputContentState();
 }
 
 String pad0(String s) => s.padLeft(2, '0');

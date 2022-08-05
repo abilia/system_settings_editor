@@ -100,44 +100,45 @@ class ScrollArrows extends StatelessWidget {
     );
 
     return ValueListenableBuilder(
-        child: scrollMetricsNotifyingChild,
-        valueListenable: maxScrollExtent,
-        builder: (context, value, child) {
-          assert(child != null, 'child should never be null');
-          return Stack(
-            children: [
-              if (child != null)
-                if (verticalScrollBar)
-                  AbiliaScrollBar(
-                    thumbVisibility: verticalScrollBarAlwaysShown,
-                    controller: verticalController,
-                    child: child,
-                  )
-                else
-                  child,
-              if (upArrow)
-                _ArrowUp(
+      valueListenable: maxScrollExtent,
+      builder: (context, value, child) {
+        assert(child != null, 'child should never be null');
+        return Stack(
+          children: [
+            if (child != null)
+              if (verticalScrollBar)
+                AbiliaScrollBar(
+                  thumbVisibility: verticalScrollBarAlwaysShown,
                   controller: verticalController,
-                  collapseMargin: upCollapseMargin,
-                ),
-              if (downArrow)
-                _ArrowDown(
-                  controller: verticalController,
-                  collapseMargin: downCollapseMargin,
-                ),
-              if (leftArrow)
-                _ArrowLeft(
-                  controller: horizontalController,
-                  collapseMargin: leftCollapseMargin,
-                ),
-              if (rightArrow)
-                _ArrowRight(
-                  controller: horizontalController,
-                  collapseMargin: rightCollapseMargin,
-                ),
-            ],
-          );
-        });
+                  child: child,
+                )
+              else
+                child,
+            if (upArrow)
+              _ArrowUp(
+                controller: verticalController,
+                collapseMargin: upCollapseMargin,
+              ),
+            if (downArrow)
+              _ArrowDown(
+                controller: verticalController,
+                collapseMargin: downCollapseMargin,
+              ),
+            if (leftArrow)
+              _ArrowLeft(
+                controller: horizontalController,
+                collapseMargin: leftCollapseMargin,
+              ),
+            if (rightArrow)
+              _ArrowRight(
+                controller: horizontalController,
+                collapseMargin: rightCollapseMargin,
+              ),
+          ],
+        );
+      },
+      child: scrollMetricsNotifyingChild,
+    );
   }
 }
 

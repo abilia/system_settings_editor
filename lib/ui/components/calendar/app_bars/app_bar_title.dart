@@ -89,7 +89,7 @@ class AppBarTitleRows {
             : '';
     final date = displayDate ? longDate(langCode).format(day) : '';
     final dateShort = displayDate ? shortDate(langCode).format(day) : '';
-    return AppBarTitleRows._(weekday + (compactDay ? ', ' + daypart : ''),
+    return AppBarTitleRows._(weekday + (compactDay ? ', $daypart' : ''),
         compactDay ? '' : daypart, date, dateShort);
   }
 

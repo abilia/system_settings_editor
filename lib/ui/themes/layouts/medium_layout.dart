@@ -75,7 +75,7 @@ class MediumLayout extends Layout {
             selectorDistance: 3,
           ),
           weekCalendar: const WeekCalendarLayout(
-            selectedDay: _WeekDayColumnLayout(
+            selectedDay: WeekDayColumnLayout(
               everyDayFlex: 318,
               weekdaysFlex: 318,
               activityBorderWidth: 4,
@@ -87,7 +87,7 @@ class MediumLayout extends Layout {
                 horizontal: 8,
               ),
             ),
-            notSelectedDay: _WeekDayColumnLayout(
+            notSelectedDay: WeekDayColumnLayout(
               everyDayFlex: 79,
               weekdaysFlex: 119,
               activityBorderWidth: 2,
@@ -165,7 +165,7 @@ class MediumLayout extends Layout {
           ),
           dataItem: const DataItemLayout(
             borderRadius: 20,
-            picture: _DataItemPictureLayout(
+            picture: DataItemPictureLayout(
               stickerIconSize: 24,
               stickerSize: Size(48, 48),
               imagePadding: EdgeInsets.only(left: 11, right: 11, bottom: 7),

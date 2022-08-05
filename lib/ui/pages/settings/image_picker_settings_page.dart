@@ -6,8 +6,7 @@ class ImagePickerSettingsPage extends StatefulWidget {
   const ImagePickerSettingsPage({Key? key}) : super(key: key);
 
   @override
-  _ImagePickerSettingsPageState createState() =>
-      _ImagePickerSettingsPageState();
+  State createState() => _ImagePickerSettingsPageState();
 }
 
 class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {

@@ -10,7 +10,7 @@ class EditNotePage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _EditNotePageState createState() => _EditNotePageState();
+  State createState() => _EditNotePageState();
 }
 
 class _EditNotePageState extends State<EditNotePage> {

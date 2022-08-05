@@ -17,7 +17,7 @@ class EyeButtonDayDialog extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _EyeButtonDayDialogState createState() => _EyeButtonDayDialogState();
+  State createState() => _EyeButtonDayDialogState();
 }
 
 class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {

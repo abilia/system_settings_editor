@@ -41,6 +41,8 @@ linter:
     avoid_bool_literals_in_conditional_expressions: true
     prefer_single_quotes: true
 
+    # // TODO
+    no_leading_underscores_for_local_identifiers: false
   # Pub Rules
 
 # Additional information about this file can be found at

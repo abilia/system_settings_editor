@@ -23,7 +23,7 @@ class AuthenticatedListener extends StatefulWidget {
   final Widget child;
 
   @override
-  _AuthenticatedListenerState createState() => _AuthenticatedListenerState();
+  State createState() => _AuthenticatedListenerState();
 }
 
 class _AuthenticatedListenerState extends State<AuthenticatedListener>

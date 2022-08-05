@@ -5,7 +5,7 @@ class BadRequest extends Equatable {
   final int status;
   final String message;
   final int errorId;
-  final List<_Errors> errors;
+  final List<BadRequestError> errors;
 
   const BadRequest({
     required this.status,
@@ -18,7 +18,7 @@ class BadRequest extends Equatable {
         status: json['status'] ?? -1,
         message: json['message'] ?? '',
         errorId: json['errorId'] ?? -1,
-        errors: [for (var e in json['errors'] ?? []) _Errors._fromJson(e)],
+        errors: [for (var e in json['errors'] ?? []) BadRequestError._fromJson(e)],
       );
 
   @override
@@ -28,13 +28,13 @@ class BadRequest extends Equatable {
   List<Object> get props => [status, message, errorId, errors];
 }
 
-class _Errors extends Equatable {
+class BadRequestError extends Equatable {
   final String code;
   final String message;
 
-  const _Errors._({required this.code, required this.message});
+  const BadRequestError._({required this.code, required this.message});
 
-  static _Errors _fromJson(Map<String, dynamic> json) => _Errors._(
+  static BadRequestError _fromJson(Map<String, dynamic> json) => BadRequestError._(
         code: json['code'] ?? '',
         message: json['message'] ?? '',
       );

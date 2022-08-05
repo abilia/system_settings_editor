@@ -100,7 +100,7 @@ class PasswordInputBottomSheet extends StatefulWidget {
   final String? inputHeading;
 
   @override
-  _PasswordInputBottomSheetState createState() =>
+  State createState() =>
       _PasswordInputBottomSheetState();
 }
 
