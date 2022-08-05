@@ -3,7 +3,7 @@ export 'components/all.dart';
 export 'widget_test_keys.dart';
 export 'dialogs/all.dart';
 export 'pages/all.dart';
-export 'seagull_app.dart';
+export 'material_app_wrapper.dart';
 
 export 'package:seagull/i18n/all.dart';
 export 'package:seagull/config.dart';

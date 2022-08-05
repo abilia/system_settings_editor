@@ -7,7 +7,7 @@ class StartupGuidePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageController = PageController();
-    return SeagullApp(
+    return MaterialAppWrapper(
       home: Scaffold(
         body: PageView(
           physics: const NeverScrollableScrollPhysics(),

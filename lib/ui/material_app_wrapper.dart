@@ -5,12 +5,12 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/ui/all.dart';
 
-class SeagullApp extends StatelessWidget {
+class MaterialAppWrapper extends StatelessWidget {
   final GlobalKey<NavigatorState>? navigatorKey;
   final bool analytics;
   final Widget home;
 
-  const SeagullApp({
+  const MaterialAppWrapper({
     Key? key,
     this.navigatorKey,
     this.analytics = false,

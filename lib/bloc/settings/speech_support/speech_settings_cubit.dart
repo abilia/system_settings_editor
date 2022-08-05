@@ -30,7 +30,7 @@ class SpeechSettingsCubit extends Cubit<SpeechSettingsState> {
         localeStream.map((locale) => locale.languageCode).listen(_updateLocale);
   }
 
-  Future<void> _updateLocale(String languageCode) async {
+  Future<void> _updateLocale(_) async {
     await setVoice('');
     await setTextToSpeech(false);
   }

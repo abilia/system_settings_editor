@@ -127,7 +127,7 @@ class App extends StatelessWidget {
                       child: TopLevelListener(
                         navigatorKey: _navigatorKey,
                         payload: payload,
-                        child: SeagullApp(
+                        child: MaterialAppWrapper(
                           navigatorKey: _navigatorKey,
                           analytics: analytics,
                         ),
