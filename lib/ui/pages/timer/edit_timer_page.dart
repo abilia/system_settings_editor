@@ -38,8 +38,8 @@ class EditBasicTimerPage extends StatelessWidget {
   final String title;
 
   const EditBasicTimerPage({
-    Key? key,
     required this.title,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -72,10 +72,10 @@ class EditBasicTimerPage extends StatelessWidget {
 
 class _EditTimerPage extends StatelessWidget {
   const _EditTimerPage({
-    Key? key,
     required this.bottomNavigation,
     required this.title,
     required this.icon,
+    Key? key,
   }) : super(key: key);
 
   final BottomNavigation bottomNavigation;

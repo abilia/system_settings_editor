@@ -9,7 +9,7 @@ void verifySyncGeneric(
   WidgetTester tester,
   MockGenericDb genericDb, {
   required String key,
-  dynamic matcher,
+  matcher,
 }) {
   final v = verify(() => genericDb.insertAndAddDirty(captureAny()));
   expect(v.callCount, 1);
@@ -23,7 +23,7 @@ void verifyUnsyncGeneric(
   WidgetTester tester,
   MockGenericDb genericDb, {
   required String key,
-  dynamic matcher,
+  matcher,
 }) {
   if (Config.isMP) {
     return verifySyncGeneric(tester, genericDb, key: key, matcher: matcher);

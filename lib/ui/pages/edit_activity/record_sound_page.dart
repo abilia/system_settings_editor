@@ -6,7 +6,10 @@ import 'package:seagull/ui/all.dart';
 class RecordSoundPage extends StatelessWidget {
   final String title;
 
-  const RecordSoundPage({Key? key, required this.title}) : super(key: key);
+  const RecordSoundPage({
+    required this.title,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

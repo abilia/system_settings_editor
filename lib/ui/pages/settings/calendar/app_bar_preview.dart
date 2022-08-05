@@ -5,10 +5,10 @@ class AppBarPreview extends StatelessWidget {
   final AppBarTitleRows rows;
   final bool showBrowseButtons, showClock;
   const AppBarPreview({
-    Key? key,
     required this.showBrowseButtons,
     required this.showClock,
     required this.rows,
+    Key? key,
   }) : super(key: key);
 
   @override

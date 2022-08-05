@@ -29,7 +29,10 @@ class ChecklistLibraryPage extends StatelessWidget {
 
 class LibraryChecklist extends StatelessWidget {
   final Checklist checklist;
-  const LibraryChecklist({Key? key, required this.checklist}) : super(key: key);
+  const LibraryChecklist({
+    required this.checklist,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -78,8 +81,8 @@ class LibraryChecklist extends StatelessWidget {
 
 class FullScreenChecklist extends StatelessWidget {
   const FullScreenChecklist({
-    Key? key,
     required this.checklist,
+    Key? key,
   }) : super(key: key);
   final Checklist checklist;
 

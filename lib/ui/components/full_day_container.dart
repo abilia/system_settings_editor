@@ -5,9 +5,9 @@ import 'package:seagull/utils/all.dart';
 
 class FullDayContainer extends StatelessWidget {
   const FullDayContainer({
-    Key? key,
     required this.fullDayActivities,
     required this.day,
+    Key? key,
   }) : super(key: key);
 
   final List<ActivityOccasion> fullDayActivities;
@@ -72,9 +72,9 @@ class FullDayContainer extends StatelessWidget {
 
 class ShowAllFullDayActivitiesButton extends StatelessWidget {
   const ShowAllFullDayActivitiesButton({
-    Key? key,
     required this.fullDayActivities,
     required this.day,
+    Key? key,
   }) : super(key: key);
 
   final List<ActivityDay> fullDayActivities;

@@ -11,7 +11,6 @@ class ListDataItem extends StatelessWidget {
   final String? semanticsLabel;
 
   const ListDataItem({
-    Key? key,
     required this.text,
     required this.onTap,
     required this.leading,
@@ -20,6 +19,7 @@ class ListDataItem extends StatelessWidget {
     this.alwaysShowTrailing = false,
     this.semanticsLabel,
     this.secondaryText,
+    Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {

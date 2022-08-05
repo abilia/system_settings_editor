@@ -63,8 +63,8 @@ class ReminderPage extends StatelessWidget {
   final NewReminder reminder;
 
   const ReminderPage({
-    Key? key,
     required this.reminder,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -167,8 +167,8 @@ class _PopAwareAlarmPageState extends State<PopAwareAlarmPage> {
 
 class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
   const AlarmBottomNavigationBar({
-    Key? key,
     required this.alarm,
+    Key? key,
   }) : super(key: key);
 
   final ActivityAlarm alarm;
@@ -235,8 +235,8 @@ class TimerAlarmPage extends StatelessWidget with ActivityMixin {
   final TimerAlarm timerAlarm;
 
   const TimerAlarmPage({
-    Key? key,
     required this.timerAlarm,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -319,8 +319,8 @@ class TimerAlarmPage extends StatelessWidget with ActivityMixin {
 
 class FinishedTimerWheel extends StatefulWidget {
   const FinishedTimerWheel({
-    Key? key,
     required this.timer,
+    Key? key,
   }) : super(key: key);
 
   final AbiliaTimer timer;

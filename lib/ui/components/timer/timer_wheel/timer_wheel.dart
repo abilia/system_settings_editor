@@ -12,9 +12,9 @@ import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_styles.dart'
 
 class TimerWheel extends StatefulWidget {
   const TimerWheel.interactive({
-    Key? key,
     required int lengthInSeconds,
     this.onMinutesSelectedChanged,
+    Key? key,
   })  : activeSeconds = lengthInSeconds,
         finished = false,
         style = TimerWheelStyle.interactive,
@@ -25,10 +25,10 @@ class TimerWheel extends StatefulWidget {
         super(key: key);
 
   const TimerWheel.nonInteractive({
-    Key? key,
     required int secondsLeft,
     this.lengthInMinutes,
     this.paused = false,
+    Key? key,
   })  : assert(secondsLeft >= 0, 'seconds cannot be negative'),
         isPast = secondsLeft == 0 && !paused,
         activeSeconds = secondsLeft,
@@ -39,10 +39,10 @@ class TimerWheel extends StatefulWidget {
         super(key: key);
 
   const TimerWheel.simplified({
-    Key? key,
     required int secondsLeft,
     this.lengthInMinutes,
     this.paused = false,
+    Key? key,
   })  : assert(secondsLeft >= 0, 'seconds cannot be negative'),
         isPast = secondsLeft == 0 && !paused,
         activeSeconds = secondsLeft,

@@ -56,11 +56,11 @@ class _VoiceRow extends StatelessWidget {
   final String selectedVoice;
 
   const _VoiceRow({
-    Key? key,
     required this.voice,
+    required this.selectedVoice,
     this.downloaded = false,
     this.downloading = false,
-    required this.selectedVoice,
+    Key? key,
   }) : super(key: key);
 
   @override

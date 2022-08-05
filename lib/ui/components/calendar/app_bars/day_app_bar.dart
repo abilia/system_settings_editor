@@ -10,10 +10,10 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
   final DateTime day;
 
   const DayAppBar({
-    Key? key,
+    required this.day,
     this.leftAction,
     this.rightAction,
-    required this.day,
+    Key? key,
   }) : super(key: key);
 
   @override

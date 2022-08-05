@@ -10,11 +10,11 @@ class SelectAlarmDurationPage extends StatefulWidget {
   final String appBarTitle;
   final String? appBarLabel;
   const SelectAlarmDurationPage({
-    Key? key,
     required this.duration,
     required this.appBarIcon,
     required this.appBarTitle,
     this.appBarLabel,
+    Key? key,
   }) : super(key: key);
 
   @override

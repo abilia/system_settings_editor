@@ -18,9 +18,9 @@ class EventsState extends Equatable {
   EventsState({
     required List<ActivityDay> activities,
     required List<TimerOccasion> timers,
-    List<ActivityOccasion> fullDayActivities = const [],
     required this.day,
     required this.occasion,
+    List<ActivityOccasion> fullDayActivities = const [],
   })  : activities = UnmodifiableListView(activities),
         timers = UnmodifiableListView(timers),
         fullDayActivities = UnmodifiableListView(fullDayActivities),
