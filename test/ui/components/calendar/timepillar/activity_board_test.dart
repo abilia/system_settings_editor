@@ -231,9 +231,6 @@ void main() {
     // The actual size of the Text widget
     final textWidgetSize = titleTextElement.size;
 
-    debugPrint(
-        'calculatedTextSize: $calculatedTextSize, textWidgetSize: $textWidgetSize');
-
     // Assert
     expect(calculatedTextSize == textWidgetSize, true);
   });

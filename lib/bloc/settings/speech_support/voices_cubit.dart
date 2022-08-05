@@ -1,58 +1,45 @@
-import 'package:collection/collection.dart';
+import 'dart:async';
+import 'dart:ui';
+
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/settings/speech_support/voice_data.dart';
 import 'package:seagull/repository/data_repository/voice_repository.dart';
-import 'package:seagull/tts/tts_handler.dart';
 
 class VoicesCubit extends Cubit<VoicesState> {
   VoicesCubit({
     required String languageCode,
     required this.speechSettingsCubit,
     required this.voiceRepository,
-    required this.ttsHandler,
-  }) : super(VoicesState(languageCode: languageCode)) {
-    _initialize();
+    required Stream<Locale> localeStream,
+  }) : super(const VoicesState()) {
+    _localeSubscription = localeStream
+        .map((locale) => locale.languageCode)
+        .listen(_changeLanguage);
+    _initialize(languageCode);
   }
 
   final _log = Logger((VoicesCubit).toString());
   final VoiceRepository voiceRepository;
   final SpeechSettingsCubit speechSettingsCubit;
-  final TtsInterface ttsHandler;
+  late final StreamSubscription _localeSubscription;
 
-  void _initialize() async {
+  Future<void> _initialize(String languageCode) async => emit(
+        state.copyWith(
+          available: await voiceRepository.readAvailableVoices(languageCode),
+          downloaded: await voiceRepository.readDownloadedVoices(),
+        ),
+      );
+
+  Future<void> _changeLanguage(String languageCode) async {
     emit(
       state.copyWith(
-        available:
-            await voiceRepository.readAvailableVoices(state.languageCode),
-        downloaded: await _readDownloadedVoices(),
+        available: await voiceRepository.readAvailableVoices(languageCode),
       ),
     );
+    speechSettingsCubit.setVoice('');
   }
-
-  Future<void> updateLocale(String languageCode) async {
-    final supportedLocals = Locales.language.keys;
-    final supportedLocal = supportedLocals.firstWhere(
-      (locale) => locale.languageCode == languageCode,
-      orElse: () => supportedLocals.first,
-    );
-
-    emit(
-      state.copyWith(
-        available: await voiceRepository
-            .readAvailableVoices(supportedLocal.languageCode),
-        languageCode: languageCode,
-      ),
-    );
-  }
-
-  Future<List<String>> _readDownloadedVoices() async =>
-      (await ttsHandler.availableVoices)
-          .whereNotNull()
-          .map((e) => '$e')
-          .toList();
 
   Future<void> downloadVoice(VoiceData voice) async {
     emit(
@@ -87,9 +74,7 @@ class VoicesCubit extends Cubit<VoicesState> {
     await voiceRepository.deleteVoice(voice);
     final downloaded = [...state.downloaded]..remove(voice.name);
     if (speechSettingsCubit.state.voice == voice.name) {
-      speechSettingsCubit.setVoice(
-        downloaded.isNotEmpty ? downloaded.first : '',
-      );
+      speechSettingsCubit.setVoice('');
     }
     emit(state.copyWith(downloaded: downloaded));
   }
@@ -106,16 +91,20 @@ class VoicesCubit extends Cubit<VoicesState> {
     await speechSettingsCubit.setVoice('');
     await speechSettingsCubit.setTextToSpeech(false);
   }
+
+  @override
+  Future<void> close() {
+    _localeSubscription.cancel();
+    return super.close();
+  }
 }
 
 class VoicesState extends Equatable {
   final List<VoiceData> available;
   final List<String> downloaded;
   final List<String> downloading;
-  final String languageCode;
 
   const VoicesState({
-    required this.languageCode,
     this.downloading = const [],
     this.downloaded = const [],
     this.available = const [],
@@ -125,13 +114,11 @@ class VoicesState extends Equatable {
     List<VoiceData>? available,
     List<String>? downloaded,
     List<String>? downloading,
-    String? languageCode,
   }) =>
       VoicesState(
         available: available ?? this.available,
         downloaded: downloaded ?? this.downloaded,
         downloading: downloading ?? this.downloading,
-        languageCode: languageCode ?? this.languageCode,
       );
 
   @override
@@ -139,6 +126,5 @@ class VoicesState extends Equatable {
         downloading,
         downloaded,
         available,
-        languageCode,
       ];
 }

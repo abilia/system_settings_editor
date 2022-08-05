@@ -1,25 +1,29 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:http/http.dart';
 import 'package:seagull/logging.dart';
-import 'package:seagull/models/settings/speech_support/voice_data.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/utils/strings.dart';
 
 class VoiceRepository {
   VoiceRepository({
     required this.client,
     required this.voicesPath,
+    required this.ttsHandler,
   });
 
   final BaseClient client;
   final String voicesPath;
+  final TtsInterface ttsHandler;
 
-  static const String _baseUrl = 'https://handi.se/systemfiles2';
+  static const String baseUrl = 'https://handi.se/systemfiles2';
   final _log = Logger((VoiceRepository).toString());
 
   Future<List<VoiceData>> readAvailableVoices(String locale) async {
-    var url = '$_baseUrl/$locale/'.toUri();
+    var url = '$baseUrl/$locale/'.toUri();
     final response = await client.get(url);
 
     final statusCode = response.statusCode;
@@ -32,6 +36,12 @@ class VoiceRepository {
     }
     throw Exception(response.body);
   }
+
+  Future<List<String>> readDownloadedVoices() async =>
+      (await ttsHandler.availableVoices)
+          .whereNotNull()
+          .map((e) => '$e')
+          .toList();
 
   Future<bool> downloadVoice(VoiceData voice) async {
     try {

@@ -14,6 +14,8 @@ typedef ActivityResponse = Iterable<Activity> Function();
 typedef SortableResponse = Iterable<Sortable> Function();
 typedef GenericResponse = Iterable<Generic> Function();
 typedef TimerResponse = Iterable<AbiliaTimer> Function();
+typedef VoicesResponse = Iterable<Map<String, dynamic>> Function(
+    String language);
 
 class Fakes {
   Fakes._();
@@ -30,6 +32,7 @@ class Fakes {
     ActivityResponse? activityResponse,
     SortableResponse? sortableResponse,
     GenericResponse? genericResponse,
+    VoicesResponse? voicesResponse,
     Response Function()? licenseResponse,
   }) =>
       ListenableMockClient(
@@ -107,6 +110,17 @@ class Fakes {
             } else {
               response = Response(json.encode(List.empty()), 401);
             }
+          }
+
+          if (pathSegments
+              .containsAll(VoiceRepository.baseUrl.toUri().pathSegments)) {
+            response = Response(
+              json.encode((voicesResponse?.call(pathSegments
+                          .lastWhere((segment) => segment.isNotEmpty)) ??
+                      [])
+                  .toList()),
+              200,
+            );
           }
 
           return Future.value(

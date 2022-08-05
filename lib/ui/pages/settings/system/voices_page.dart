@@ -9,10 +9,6 @@ class VoicesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final voicesState = context.watch<VoicesCubit>().state;
     final selectedVoice = context.watch<SpeechSettingsCubit>().state.voice;
-    final languageCode = Localizations.localeOf(context).languageCode;
-    if (languageCode != voicesState.languageCode) {
-      context.read<VoicesCubit>().updateLocale(languageCode);
-    }
     final t = Translator.of(context).translate;
     final scrollController = ScrollController();
 
@@ -105,7 +101,7 @@ class _VoiceRow extends StatelessWidget {
                     }
                   : null,
               value: voice.name,
-              text: Text('${voice.name}: ${voice.size}MB'),
+              text: Text('${voice.name}: ${voice.size} MB'),
             ),
           ),
         ),
