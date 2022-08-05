@@ -296,10 +296,11 @@ class TopLevelProvider extends StatelessWidget {
           if (Config.isMP)
             BlocProvider<VoicesCubit>(
               create: (context) => VoicesCubit(
+                languageCode: GetIt.I<SettingsDb>().language,
                 speechSettingsCubit: context.read<SpeechSettingsCubit>(),
                 voiceRepository: context.read<VoiceRepository>(),
                 localeStream: context.read<LocaleCubit>().stream,
-              )..fetchVoices(GetIt.I<SettingsDb>().language),
+              ),
             ),
         ],
         child: child,

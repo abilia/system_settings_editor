@@ -30,6 +30,7 @@ void main() {
         .thenAnswer((_) async => []);
 
     final voicesCubit = VoicesCubit(
+      languageCode: 'en',
       speechSettingsCubit: speechSettingsCubit,
       voiceRepository: voiceRepository,
       localeStream: const Stream.empty(),

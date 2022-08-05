@@ -9,6 +9,7 @@ import 'package:seagull/repository/data_repository/voice_repository.dart';
 
 class VoicesCubit extends Cubit<VoicesState> {
   VoicesCubit({
+    required String languageCode,
     required this.speechSettingsCubit,
     required this.voiceRepository,
     required Stream<Locale> localeStream,
@@ -16,6 +17,7 @@ class VoicesCubit extends Cubit<VoicesState> {
     _localeSubscription = localeStream
         .map((locale) => locale.languageCode)
         .listen(_changeLanguage);
+    _initialize(languageCode);
   }
 
   final _log = Logger((VoicesCubit).toString());
@@ -23,14 +25,12 @@ class VoicesCubit extends Cubit<VoicesState> {
   final SpeechSettingsCubit speechSettingsCubit;
   late final StreamSubscription _localeSubscription;
 
-  Future<void> fetchVoices(String languageCode) async {
-    emit(
-      state.copyWith(
-        available: await voiceRepository.readAvailableVoices(languageCode),
-        downloaded: await voiceRepository.readDownloadedVoices(),
-      ),
-    );
-  }
+  Future<void> _initialize(String languageCode) async => emit(
+        state.copyWith(
+          available: await voiceRepository.readAvailableVoices(languageCode),
+          downloaded: await voiceRepository.readDownloadedVoices(),
+        ),
+      );
 
   Future<void> _changeLanguage(String languageCode) async {
     emit(
