@@ -22,7 +22,7 @@ class OverlayConstraints extends BoxConstraints {
       super.isNormalized;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(other) {
     assert(debugAssertIsValid());
     if (identical(this, other)) return true;
     if (other is! OverlayConstraints) return false;

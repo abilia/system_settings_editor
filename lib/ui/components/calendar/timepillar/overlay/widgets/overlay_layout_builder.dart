@@ -110,8 +110,7 @@ class _OvlerlayLayoutBuilderElement extends RenderObjectElement {
   }
 
   @override
-  void insertRenderObjectChild(
-      covariant RenderObject child, covariant dynamic slot) {
+  void insertRenderObjectChild(covariant RenderObject child, covariant slot) {
     final RenderObjectWithChildMixin<RenderObject> renderObject =
         renderOverlayLayoutBuilder;
     assert(slot == null);
@@ -121,14 +120,13 @@ class _OvlerlayLayoutBuilderElement extends RenderObjectElement {
   }
 
   @override
-  void moveRenderObjectChild(covariant RenderObject child,
-      covariant dynamic oldSlot, covariant dynamic newSlot) {
+  void moveRenderObjectChild(
+      covariant RenderObject child, covariant oldSlot, covariant newSlot) {
     assert(false);
   }
 
   @override
-  void removeRenderObjectChild(
-      covariant RenderObject child, covariant dynamic slot) {
+  void removeRenderObjectChild(covariant RenderObject child, covariant slot) {
     final renderObject = this.renderObject;
     assert(renderOverlayLayoutBuilder.child == child);
     renderOverlayLayoutBuilder.child = null;
@@ -138,7 +136,7 @@ class _OvlerlayLayoutBuilderElement extends RenderObjectElement {
 
 FlutterErrorDetails _debugReportException(
   String context,
-  dynamic exception,
+  exception,
   StackTrace stack,
 ) {
   final details = FlutterErrorDetails(
