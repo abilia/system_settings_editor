@@ -2,10 +2,10 @@ import 'package:seagull/ui/all.dart';
 
 class AppBarHeading extends StatelessWidget {
   const AppBarHeading({
-    Key? key,
     required this.text,
     this.label = '',
     this.iconData,
+    Key? key,
   }) : super(key: key);
 
   final String text;

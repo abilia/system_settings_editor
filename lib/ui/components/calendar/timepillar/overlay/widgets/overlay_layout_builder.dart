@@ -14,8 +14,8 @@ class OverlayLayoutBuilder extends RenderObjectWidget {
   ///
   /// The [builder] argument must not be null.
   const OverlayLayoutBuilder({
-    Key? key,
     required this.builder,
+    Key? key,
   }) : super(key: key);
 
   /// Called at layout time to construct the widget tree. The builder must not

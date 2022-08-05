@@ -8,12 +8,12 @@ class IconAndTextButton extends StatelessWidget {
   final EdgeInsets? padding;
 
   const IconAndTextButton({
-    Key? key,
     required this.text,
     required this.icon,
     required this.style,
     this.onPressed,
     this.padding,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -49,10 +49,10 @@ class LightButton extends StatelessWidget {
   final IconData icon;
 
   const LightButton({
-    Key? key,
     required this.text,
     required this.icon,
     this.onPressed,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -91,10 +91,10 @@ class GreenButton extends StatelessWidget {
   final IconData icon;
 
   const GreenButton({
-    Key? key,
     required this.text,
     required this.icon,
     this.onPressed,
+    Key? key,
   }) : super(key: key);
 
   @override

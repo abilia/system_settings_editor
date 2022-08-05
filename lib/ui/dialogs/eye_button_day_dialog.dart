@@ -9,11 +9,11 @@ class EyeButtonDayDialog extends StatefulWidget {
   final TimepillarIntervalType currentDayInterval;
 
   const EyeButtonDayDialog({
-    Key? key,
     required this.currentCalendarType,
     required this.currentDotsInTimepillar,
     required this.currentZoom,
     required this.currentDayInterval,
+    Key? key,
   }) : super(key: key);
 
   @override

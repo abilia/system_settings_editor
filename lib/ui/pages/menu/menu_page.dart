@@ -237,11 +237,11 @@ class MenuItemButton extends StatelessWidget {
   final IconData icon;
 
   const MenuItemButton({
-    Key? key,
     required this.onPressed,
     required this.text,
     required this.icon,
     required this.style,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -14,9 +14,9 @@ class DayTheme {
     this.color,
     this.secondaryColor,
     bool background, {
+    required this.isLight,
     Color? onSurface,
     this.isColor = true,
-    required this.isLight,
     Color? monthColor,
     Color? monthSurfaceColor,
     this.borderColor,

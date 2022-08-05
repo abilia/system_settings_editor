@@ -953,6 +953,13 @@ class SV extends Translated {
       'Du har blivit utloggad. Vänligen logga in igen.';
 
   @override
+  final String resetDeviceHeading = 'Återställ enheten';
+
+  @override
+  final String resetDeviceBody =
+      'Vill du verkligen återställa enheten? Efter det kommer första sidan i konfigurationsguiden att visas.';
+
+  @override
   final String createAccountHint = 'Har du inte ett myAbilia konto än?';
 
   @override
@@ -2249,6 +2256,13 @@ class DA extends Translated {
 
   @override
   final String loggedOutMessage = 'Du er blevet logget ud. Log ind igen.';
+
+  @override
+  final String resetDeviceHeading = 'Nulstil enheden';
+
+  @override
+  final String resetDeviceBody =
+      'Er du sikker på, at du vil nulstille din enhed? Derefter vises den første side i konfigurationsguiden.';
 
   @override
   final String createAccountHint = 'Har du ikke en myAbilia-konto endnu?';
@@ -3552,6 +3566,13 @@ class NL extends Translated {
   @override
   final String loggedOutMessage =
       'U bent uitgelogd. Log alstublieft opnieuw in.';
+
+  @override
+  final String resetDeviceHeading = 'Reset het apparaat';
+
+  @override
+  final String resetDeviceBody =
+      'Wil je het apparaat echt resetten? U wordt doorgestuurd naar de eerste pagina van de initiële opstartgids.';
 
   @override
   final String createAccountHint = 'Heeft u nog geen myAbilia-account?';
@@ -4859,6 +4880,13 @@ class FI extends Translated {
       'Olet kirjautunut ulos. Kirjaudu sisään uudelleen.';
 
   @override
+  final String resetDeviceHeading = 'Nollaa laite';
+
+  @override
+  final String resetDeviceBody =
+      'Haluatko todella nollata laitteen? Sinut ohjataan ensimmäisen aloitusoppaan ensimmäiselle sivulle.';
+
+  @override
   final String createAccountHint = 'Eikö sinulla ole vielä myAbilia-tiliä?';
 
   @override
@@ -6159,6 +6187,13 @@ class DE extends Translated {
   @override
   final String loggedOutMessage =
       'Sie wurden abgemeldet. Bitte melden Sie sich erneut an.';
+
+  @override
+  final String resetDeviceHeading = 'Rückstelleinrichtung';
+
+  @override
+  final String resetDeviceBody =
+      'Möchten Sie das Gerät wirklich zurücksetzen? Sie werden auf die erste Seite der Erstinbetriebnahmeanleitung weitergeleitet.';
 
   @override
   final String createAccountHint = 'Sie haben noch kein myAbilia-Konto?';
@@ -7469,6 +7504,13 @@ class NB extends Translated {
 
   @override
   final String loggedOutMessage = 'Du har blitt logget ut. Logg på igjen.';
+
+  @override
+  final String resetDeviceHeading = 'Tilbakestill enheten';
+
+  @override
+  final String resetDeviceBody =
+      'Er du sikker på at du vil tilbakestille enheten? Etter det vil den første siden av konfigurasjonsveiledningen vises.';
 
   @override
   final String createAccountHint = 'Har du ikke en myAbilia-konto ennå?';

@@ -7,12 +7,12 @@ class SettingsBasePage extends StatelessWidget {
   final String? label;
   final Widget? bottomNavigationBar;
   const SettingsBasePage({
-    Key? key,
     required this.widgets,
     required this.icon,
     required this.title,
     this.label,
     this.bottomNavigationBar,
+    Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {

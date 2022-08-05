@@ -8,8 +8,10 @@ import 'fakes_blocs.dart';
 class FakeAuthenticatedBlocsProvider extends StatelessWidget {
   final Widget child;
 
-  const FakeAuthenticatedBlocsProvider({Key? key, required this.child})
-      : super(key: key);
+  const FakeAuthenticatedBlocsProvider({
+    required this.child,
+    Key? key,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(

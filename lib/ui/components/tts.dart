@@ -8,8 +8,8 @@ class Tts extends StatelessWidget {
   final Text child;
 
   const Tts({
-    Key? key,
     required this.child,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -52,10 +52,10 @@ class _Tts extends StatelessWidget {
   final String Function()? onLongPress;
 
   const _Tts({
-    Key? key,
     required this.child,
     this.data,
     this.onLongPress,
+    Key? key,
   })  : assert(data != null || onLongPress != null),
         super(key: key);
 

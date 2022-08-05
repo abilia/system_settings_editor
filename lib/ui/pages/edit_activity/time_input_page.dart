@@ -7,8 +7,8 @@ class TimeInputPage extends StatelessWidget {
   final timeInputKey = GlobalKey<_TimeInputContentState>();
 
   TimeInputPage({
-    Key? key,
     required this.timeInput,
+    Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -80,11 +80,11 @@ class TimeInputContent extends StatefulWidget {
   final bool is24HoursFormat;
 
   const TimeInputContent({
-    Key? key,
     required this.timeInput,
     required this.is24HoursFormat,
     this.bottomNavigationBuilder,
     this.onValidTimeInput,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -380,7 +380,6 @@ class _TimeInputContentState extends State<TimeInputContent> {
 
 class _TimeInput extends StatelessWidget {
   const _TimeInput({
-    Key? key,
     required this.heading,
     required this.controller,
     required this.focusNode,
@@ -390,6 +389,7 @@ class _TimeInput extends StatelessWidget {
     required this.amRadioFieldKey,
     required this.pmRadioFieldKey,
     required this.inputKey,
+    Key? key,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -443,9 +443,9 @@ class _TimeInputField extends StatefulWidget {
   final Key? inputKey;
 
   const _TimeInputField({
-    this.inputKey,
     required this.editingController,
     required this.focus,
+    this.inputKey,
   });
   @override
   _TimeInputFieldState createState() => _TimeInputFieldState();
@@ -558,11 +558,11 @@ class AmPmSelector extends StatelessWidget {
   final Key? pmRadioFieldKey;
 
   const AmPmSelector({
-    Key? key,
     required this.groupValue,
     required this.onChanged,
     this.amRadioFieldKey,
     this.pmRadioFieldKey,
+    Key? key,
   }) : super(key: key);
 
   @override

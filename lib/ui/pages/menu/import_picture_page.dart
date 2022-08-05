@@ -35,9 +35,11 @@ class _ImportPictureBody extends StatelessWidget {
   final ValueChanged<AbiliaFile> imageCallback;
   final VoidCallback? onCancel;
 
-  const _ImportPictureBody(
-      {Key? key, required this.imageCallback, this.onCancel})
-      : super(key: key);
+  const _ImportPictureBody({
+    required this.imageCallback,
+    this.onCancel,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

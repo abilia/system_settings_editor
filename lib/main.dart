@@ -155,8 +155,8 @@ class SeagullApp extends StatelessWidget {
   final bool analytics;
 
   const SeagullApp({
-    Key? key,
     required this.navigatorKey,
+    Key? key,
     this.analytics = false,
   }) : super(key: key);
 

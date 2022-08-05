@@ -138,12 +138,12 @@ class _AlarmSelector extends StatelessWidget {
   final ValueChanged<Sound> onChanged;
   final bool noSoundOption;
   const _AlarmSelector({
-    Key? key,
     required this.heading,
     required this.icon,
     required this.sound,
     required this.onChanged,
     this.noSoundOption = false,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -196,8 +196,8 @@ class _AlarmSelector extends StatelessWidget {
 class _AlarmDurationSelector extends StatelessWidget {
   final AlarmDuration duration;
   const _AlarmDurationSelector({
-    Key? key,
     required this.duration,
+    Key? key,
   }) : super(key: key);
 
   @override

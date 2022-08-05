@@ -220,8 +220,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
 
 class TopLevelProvider extends StatelessWidget {
   const TopLevelProvider({
-    Key? key,
     required this.child,
+    Key? key,
     this.pushCubit,
   }) : super(key: key);
 
@@ -304,8 +304,8 @@ class TopLevelProvider extends StatelessWidget {
 
 class AuthenticationBlocProvider extends StatelessWidget {
   const AuthenticationBlocProvider({
-    Key? key,
     required this.child,
+    Key? key,
   }) : super(key: key);
 
   final Widget child;

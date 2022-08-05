@@ -5,12 +5,12 @@ import 'package:seagull/utils/all.dart';
 
 class TwoTimepillarCalendar extends StatelessWidget {
   const TwoTimepillarCalendar({
-    Key? key,
     required this.showCategories,
     required this.displayHourLines,
     required this.displayTimeline,
     required this.dayParts,
     required this.timepillarState,
+    Key? key,
   }) : super(key: key);
 
   final bool showCategories, displayHourLines, displayTimeline;

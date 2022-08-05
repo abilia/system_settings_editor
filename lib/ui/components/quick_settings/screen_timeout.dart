@@ -54,8 +54,8 @@ class ScreenTimeOutSelector extends StatefulWidget {
   final Duration timeout;
 
   const ScreenTimeOutSelector({
-    Key? key,
     required this.timeout,
+    Key? key,
   }) : super(key: key);
 
   @override
