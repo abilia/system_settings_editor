@@ -42,9 +42,8 @@ class TimepillarCubit extends Cubit<TimepillarState> {
       (streamState) => _onTimepillarConditionsChanged(
         showNightCalendar: streamState is DayPickerState &&
                 !(streamState.lastEvent is NextDay ||
-                    streamState.lastEvent is PreviousDay)
-            ? true
-            : state.showNightCalendar,
+                    streamState.lastEvent is PreviousDay) ||
+            state.showNightCalendar,
       ),
     );
   }

@@ -21,7 +21,7 @@ class FullDayContainer extends StatelessWidget {
     final timePillarState = context.watch<TimepillarCubit>().state;
     bool isTimepillar =
         memoSettingsState.dayCalendarType != DayCalendarType.list;
-    bool isNight = (isTimepillar ? timePillarState.showNightCalendar : true) &&
+    bool isNight = (!isTimepillar || timePillarState.showNightCalendar) &&
         currentHour.isAtSameDay(day) &&
         currentHour.dayPart(memoSettingsState.dayParts) == DayPart.night;
 
