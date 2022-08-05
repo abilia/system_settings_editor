@@ -22,7 +22,7 @@ class VoicesPage extends StatelessWidget {
         label: t.textToSpeech,
         iconData: AbiliaIcons.speakText,
       ),
-      body: voicesState is VoicesLoadning
+      body: voicesState is VoicesLoading
           ? const Center(child: AbiliaProgressIndicator())
           : Padding(
               padding:

@@ -42,7 +42,7 @@ class VoiceRepository {
           .toList();
     }
     _log.severe(
-      'statusCode: ${response.statusCode} when downloadning voices from $url',
+      'statusCode: ${response.statusCode} when downloading voices from $url',
       response,
     );
     return [];

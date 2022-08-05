@@ -13,7 +13,7 @@ class VoicesCubit extends Cubit<VoicesState> {
     required this.speechSettingsCubit,
     required this.voiceRepository,
     required this.ttsHandler,
-  }) : super(VoicesLoadning(languageCode: languageCode));
+  }) : super(VoicesLoading(languageCode: languageCode));
 
   final _log = Logger((VoicesCubit).toString());
   final VoiceRepository voiceRepository;
@@ -95,7 +95,7 @@ class VoicesCubit extends Cubit<VoicesState> {
   Future<void> deleteAllVoices() async {
     while (state.downloading.isNotEmpty) {
       _log.warning(
-        "can't delete while downloadning, retrying in 2 seconds",
+        "can't delete while downloading, retrying in 2 seconds",
       );
       await Future.delayed(const Duration(seconds: 2));
     }
@@ -141,7 +141,7 @@ class VoicesState extends Equatable {
       ];
 }
 
-class VoicesLoadning extends VoicesState {
-  const VoicesLoadning({required String languageCode})
+class VoicesLoading extends VoicesState {
+  const VoicesLoading({required String languageCode})
       : super(languageCode: languageCode);
 }
