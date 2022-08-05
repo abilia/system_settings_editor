@@ -79,12 +79,10 @@ Future<void> initServices() async {
     ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
     ..voiceDb = voiceDb
-    ..ttsHandler = Config.isMPGO
-        ? await FlutterTtsHandler.implementation()
-        : await AcapelaTtsHandler.implementation(
-            voiceDb: voiceDb,
-            voicesPath: applicationSupportDirectory.path,
-          )
+    ..ttsHandler = await TtsInterface.implementation(
+      voiceDb: voiceDb,
+      voicesPath: applicationSupportDirectory.path,
+    )
     ..packageInfo = await PackageInfo.fromPlatform()
     ..syncDelay = const SyncDelays()
     ..init();

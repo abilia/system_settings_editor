@@ -330,6 +330,7 @@ void main() {
             () => mockClient.post(captureAny(), headers: any(named: 'headers')))
         .captured
         .single;
-    expect(capturedPost.path, contains('a767ebec-50db-4f5f-8acf-d653c59c1418'));
+    expect(capturedPost.pathSegments,
+        contains('a767ebec-50db-4f5f-8acf-d653c59c1418'));
   });
 }

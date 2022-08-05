@@ -2,10 +2,28 @@ import 'dart:io';
 
 import 'package:acapela_tts/acapela_tts.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/db/voice_db.dart';
 import 'package:seagull/logging.dart';
 
 abstract class TtsInterface {
+  static Future<TtsInterface> implementation({
+    required VoiceDb voiceDb,
+    required String voicesPath,
+  }) async {
+    try {
+      if (Config.isMP) {
+        return AcapelaTtsHandler.implementation(
+          voiceDb: voiceDb,
+          voicesPath: voicesPath,
+        );
+      }
+    } catch (e) {
+      AcapelaTtsHandler._log.severe('failed to initialize acapela', e);
+    }
+    return FlutterTtsHandler.implementation();
+  }
+
   Future<dynamic> speak(String text);
 
   Future<dynamic> stop();
@@ -16,7 +34,7 @@ abstract class TtsInterface {
 
   Future<dynamic> setSpeechRate(double speechRate);
 
-  Future<List<Object?>> get availableVoices => Future.value(List.empty());
+  Future<List<Object?>> get availableVoices;
 }
 
 class AcapelaTtsHandler extends AcapelaTts implements TtsInterface {

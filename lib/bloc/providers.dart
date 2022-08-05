@@ -254,7 +254,9 @@ class TopLevelProvider extends StatelessWidget {
           RepositoryProvider<VoiceRepository>(
             create: (context) => VoiceRepository(
               client: GetIt.I<ListenableClient>(),
-              voicesPath: GetIt.I<Directories>().applicationSupport.path,
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              applicationSupportPath:
+                  GetIt.I<Directories>().applicationSupport.path,
             ),
           ),
         ],
@@ -293,7 +295,7 @@ class TopLevelProvider extends StatelessWidget {
                 speechSettingsCubit: context.read<SpeechSettingsCubit>(),
                 ttsHandler: GetIt.I<TtsInterface>(),
                 voiceRepository: context.read<VoiceRepository>(),
-              ),
+              )..fetchVoices(),
             ),
         ],
         child: child,

@@ -13,16 +13,14 @@ class VoicesCubit extends Cubit<VoicesState> {
     required this.speechSettingsCubit,
     required this.voiceRepository,
     required this.ttsHandler,
-  }) : super(VoicesState(languageCode: languageCode)) {
-    _initialize();
-  }
+  }) : super(VoicesLoadning(languageCode: languageCode));
 
   final _log = Logger((VoicesCubit).toString());
   final VoiceRepository voiceRepository;
   final SpeechSettingsCubit speechSettingsCubit;
   final TtsInterface ttsHandler;
 
-  void _initialize() async {
+  Future<void> fetchVoices() async {
     emit(
       state.copyWith(
         available:
@@ -61,7 +59,7 @@ class VoicesCubit extends Cubit<VoicesState> {
       ),
     );
     bool downloadSuccess = await voiceRepository.downloadVoice(voice);
-    final downloadingVoices = [...state.downloading]..remove(voice.name);
+    final downloadingVoices = state.downloading..remove(voice.name);
 
     if (!downloadSuccess) {
       _log.warning('Failed downloading $voice');
@@ -141,4 +139,9 @@ class VoicesState extends Equatable {
         available,
         languageCode,
       ];
+}
+
+class VoicesLoadning extends VoicesState {
+  const VoicesLoadning({required String languageCode})
+      : super(languageCode: languageCode);
 }
