@@ -6,8 +6,8 @@ class EditCategoryBottomSheet extends StatelessWidget {
   final String hintText;
 
   const EditCategoryBottomSheet({
-    this.imageAndName,
     required this.hintText,
+    this.imageAndName,
     Key? key,
   }) : super(key: key);
   @override

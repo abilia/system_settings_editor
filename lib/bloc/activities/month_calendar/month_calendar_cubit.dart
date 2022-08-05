@@ -18,9 +18,9 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
   late final StreamSubscription _clockSubscription;
 
   MonthCalendarCubit({
-    this.activitiesBloc,
     required this.clockBloc,
     required this.dayPickerBloc,
+    this.activitiesBloc,
     DateTime? initialDay,
   }) : super(
           _mapToState(

@@ -93,8 +93,8 @@ class _FakeMemoplannerSetting extends StatelessWidget {
   final Widget child;
 
   const _FakeMemoplannerSetting({
-    Key? key,
     required this.child,
+    Key? key,
   }) : super(key: key);
 
   @override

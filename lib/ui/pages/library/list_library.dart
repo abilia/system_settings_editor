@@ -12,11 +12,11 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
   final bool selectableItems;
 
   const ListLibrary({
-    Key? key,
     required this.emptyLibraryMessage,
     required this.libraryItemGenerator,
     this.onTapEdit,
     this.selectableItems = true,
+    Key? key,
   }) : super(key: key);
 
   @override

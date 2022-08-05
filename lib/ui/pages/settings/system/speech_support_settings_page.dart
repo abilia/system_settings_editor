@@ -3,9 +3,9 @@ import 'package:seagull/ui/all.dart';
 
 class SpeechSupportSettingsPage extends StatelessWidget {
   const SpeechSupportSettingsPage({
-    Key? key,
     required this.textToSpeech,
     required this.speechRate,
+    Key? key,
   }) : super(key: key);
 
   final bool textToSpeech;

@@ -4,7 +4,10 @@ import 'package:seagull/ui/components/abilia_icons.dart';
 import 'package:seagull/ui/components/buttons/icon_action_button.dart';
 
 class LeftNavButton extends StatelessWidget {
-  const LeftNavButton({Key? key, required this.onPressed}) : super(key: key);
+  const LeftNavButton({
+    required this.onPressed,
+    Key? key,
+  }) : super(key: key);
 
   final Function() onPressed;
   @override
@@ -16,7 +19,10 @@ class LeftNavButton extends StatelessWidget {
 }
 
 class RightNavButton extends StatelessWidget {
-  const RightNavButton({Key? key, required this.onPressed}) : super(key: key);
+  const RightNavButton({
+    required this.onPressed,
+    Key? key,
+  }) : super(key: key);
 
   final Function() onPressed;
   @override

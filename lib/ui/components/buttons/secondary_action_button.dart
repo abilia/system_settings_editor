@@ -2,10 +2,10 @@ import 'package:seagull/ui/all.dart';
 
 class SecondaryActionButton extends StatelessWidget {
   const SecondaryActionButton({
-    Key? key,
-    this.onPressed,
     required this.style,
     required this.child,
+    this.onPressed,
+    Key? key,
   }) : super(key: key);
 
   final ButtonStyle style;
@@ -25,9 +25,9 @@ class SecondaryActionButton extends StatelessWidget {
 
 class SecondaryActionButtonLight extends StatelessWidget {
   const SecondaryActionButtonLight({
-    Key? key,
-    this.onPressed,
     required this.child,
+    this.onPressed,
+    Key? key,
   }) : super(key: key);
 
   final Widget child;
@@ -43,9 +43,9 @@ class SecondaryActionButtonLight extends StatelessWidget {
 
 class SecondaryActionButtonDark extends StatelessWidget {
   const SecondaryActionButtonDark({
-    Key? key,
-    this.onPressed,
     required this.child,
+    this.onPressed,
+    Key? key,
   }) : super(key: key);
 
   final Widget child;

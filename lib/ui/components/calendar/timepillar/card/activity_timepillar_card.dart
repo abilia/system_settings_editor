@@ -11,7 +11,6 @@ class ActivityTimepillarCard extends TimepillarCard {
   final BoxDecoration decoration;
 
   const ActivityTimepillarCard({
-    Key? key,
     required this.activityOccasion,
     required CardPosition cardPosition,
     required int column,
@@ -19,6 +18,7 @@ class ActivityTimepillarCard extends TimepillarCard {
     required this.timepillarSide,
     required this.measures,
     required this.decoration,
+    Key? key,
   }) : super(column, cardPosition, key: key);
 
   @override
@@ -140,12 +140,12 @@ class SideTime extends StatelessWidget {
   final bool showCategoryColor;
 
   const SideTime({
-    Key? key,
     required this.occasion,
     required this.height,
     required this.width,
     required this.category,
     required this.showCategoryColor,
+    Key? key,
   }) : super(key: key);
 
   @override

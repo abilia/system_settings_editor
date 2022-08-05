@@ -115,10 +115,10 @@ class VoicesState extends Equatable {
   final String languageCode;
 
   const VoicesState({
+    required this.languageCode,
     this.downloading = const [],
     this.downloaded = const [],
     this.available = const [],
-    required this.languageCode,
   });
 
   VoicesState copyWith({

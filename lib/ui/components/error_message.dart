@@ -2,8 +2,8 @@ import 'package:seagull/ui/all.dart';
 
 class ErrorMessage extends StatelessWidget {
   const ErrorMessage({
-    Key? key,
     required this.text,
+    Key? key,
   }) : super(key: key);
 
   final Text text;

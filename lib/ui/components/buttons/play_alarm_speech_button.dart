@@ -10,8 +10,8 @@ import 'package:seagull/ui/all.dart';
 class PlayAlarmSpeechButton extends StatelessWidget {
   final NewAlarm alarm;
   const PlayAlarmSpeechButton({
-    Key? key,
     required this.alarm,
+    Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) => BlocProvider(

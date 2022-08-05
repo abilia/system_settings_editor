@@ -62,11 +62,11 @@ class GeneralCalendarSettingsCubit extends Cubit<GeneralCalendarSettingsState> {
 
 extension on DayParts {
   DayParts copyWith({
+    required final bool increased,
     final int? morningStart,
     final int? dayStart,
     final int? eveningStart,
     final int? nightStart,
-    required final bool increased,
   }) {
     var _morningStart = morningStart ?? this.morningStart;
     var _dayStart = dayStart ?? this.dayStart;

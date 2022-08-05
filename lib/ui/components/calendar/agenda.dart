@@ -7,8 +7,8 @@ class Agenda extends StatefulWidget {
   final EventsState eventState;
 
   const Agenda({
-    Key? key,
     required this.eventState,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -83,10 +83,10 @@ class EventList extends StatelessWidget {
   final center = GlobalKey();
 
   EventList({
-    Key? key,
-    this.scrollController,
     required this.bottomPadding,
     required this.topPadding,
+    this.scrollController,
+    Key? key,
   }) : super(key: key);
 
   final ScrollController? scrollController;

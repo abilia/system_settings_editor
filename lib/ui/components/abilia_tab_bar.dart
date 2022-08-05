@@ -24,10 +24,10 @@ class TabItem extends StatelessWidget {
 
 class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
   const AbiliaTabBar({
-    Key? key,
     required this.tabs,
     this.collapsedCondition,
     this.onTabTap,
+    Key? key,
   }) : super(key: key);
 
   final List<Widget> tabs;
@@ -52,10 +52,10 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
 
 class AbiliaTabs extends StatelessWidget {
   const AbiliaTabs({
-    Key? key,
     required this.tabs,
     this.collapsedCondition,
     this.onTabTap,
+    Key? key,
   }) : super(key: key);
 
   final List<Widget> tabs;
@@ -95,7 +95,6 @@ class AbiliaTabs extends StatelessWidget {
 
 class _Tab extends StatefulWidget {
   const _Tab({
-    Key? key,
     required this.index,
     required this.offset,
     required this.last,
@@ -103,6 +102,7 @@ class _Tab extends StatefulWidget {
     required this.child,
     required this.controller,
     this.onTabTap,
+    Key? key,
   }) : super(key: key);
 
   final int index, offset;
@@ -197,7 +197,6 @@ class _AnimatedTab extends AnimatedWidget {
       lastInnerBorderRadius = BorderRadius.horizontal(
           right: innerRadiusFromBorderSize(layout.tabBar.item.border));
   _AnimatedTab({
-    Key? key,
     required this.child,
     required this.collapsedAnimation,
     required this.selectedTabAnimation,
@@ -211,6 +210,7 @@ class _AnimatedTab extends AnimatedWidget {
     required this.last,
     required this.first,
     required this.onTap,
+    Key? key,
   })  : selectedDecoration = first
             ? BoxDecoration(
                 borderRadius: firstBorderRadius,

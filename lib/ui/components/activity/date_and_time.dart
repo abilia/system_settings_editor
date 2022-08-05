@@ -71,8 +71,8 @@ class DateAndTimeWidget extends StatelessWidget {
 
 class ReminderSwitch extends StatelessWidget {
   const ReminderSwitch({
-    Key? key,
     required this.activity,
+    Key? key,
   }) : super(key: key);
 
   final Activity activity;
@@ -227,9 +227,9 @@ class TimePicker extends StatelessWidget {
   const TimePicker(
     this.text,
     this.timeInput, {
-    Key? key,
     required this.onTap,
     this.errorState = false,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -272,9 +272,9 @@ class Reminders extends StatelessWidget {
   final bool expanded;
 
   const Reminders({
-    Key? key,
     required this.activity,
     this.expanded = false,
+    Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {

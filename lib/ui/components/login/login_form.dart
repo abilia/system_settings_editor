@@ -6,8 +6,8 @@ import 'package:seagull/ui/all.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({
-    Key? key,
     required this.message,
+    Key? key,
   }) : super(key: key);
 
   final String message;
@@ -74,11 +74,11 @@ class LoginForm extends StatelessWidget {
 
 class UsernameInput extends StatelessWidget {
   const UsernameInput({
-    Key? key,
     required this.initialValue,
     this.errorState = false,
     this.onChanged,
     this.inputValid,
+    Key? key,
   }) : super(key: key);
 
   final String initialValue;
