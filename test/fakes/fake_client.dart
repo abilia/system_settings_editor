@@ -112,8 +112,9 @@ class Fakes {
             }
           }
 
-          if (pathSegments
-              .containsAll(VoiceRepository.baseUrl.toUri().pathSegments)) {
+          if (pathSegments.containsAll(VoiceRepository.pathSegments
+              .split('/')
+              .where((s) => s.isNotEmpty))) {
             response = Response(
               json.encode((voicesResponse?.call(pathSegments
                           .lastWhere((segment) => segment.isNotEmpty)) ??
