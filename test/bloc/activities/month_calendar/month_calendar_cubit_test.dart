@@ -1147,7 +1147,7 @@ class _MonthCalendarStateMatcher extends Matcher {
   Description describe(Description description) => description.add('');
 
   @override
-  bool matches(dynamic object, Map matchState) {
+  bool matches(object, Map matchState) {
     return object is MonthCalendarState &&
         value.firstDay == object.firstDay &&
         value.occasion == object.occasion &&

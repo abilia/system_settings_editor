@@ -162,7 +162,7 @@ class DbActivity extends DbModel<Activity> {
               .cast<int>() ??
           []);
 
-  static Set<int> exemptionsListToSet(dynamic exemptions) =>
+  static Set<int> exemptionsListToSet(exemptions) =>
       exemptions is Iterable ? exemptions.whereType<int>().toSet() : {};
 
   static UnmodifiableSetView<int> _parseExemptions(String? secretExemptions) =>

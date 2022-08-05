@@ -12,7 +12,7 @@ class SliverOverlayState {
   final double scrollPercentage;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(other) {
     if (identical(this, other)) return true;
     if (other is! SliverOverlayState) return false;
     final typedOther = other;
@@ -125,8 +125,7 @@ class SliverOverlayRenderObjectElement extends RenderObjectElement {
   }
 
   @override
-  void insertRenderObjectChild(
-      covariant RenderObject child, covariant dynamic slot) {
+  void insertRenderObjectChild(covariant RenderObject child, covariant slot) {
     final renderObject = this.renderObject;
     if (renderObject is RenderSliverOverlay) {
       if (slot == 0) renderObject.overlay = child as RenderBox;
@@ -137,14 +136,13 @@ class SliverOverlayRenderObjectElement extends RenderObjectElement {
   }
 
   @override
-  void moveRenderObjectChild(covariant RenderObject child,
-      covariant dynamic oldSlot, covariant dynamic newSlot) {
+  void moveRenderObjectChild(
+      covariant RenderObject child, covariant oldSlot, covariant newSlot) {
     assert(false);
   }
 
   @override
-  void removeRenderObjectChild(
-      covariant RenderObject child, covariant dynamic slot) {
+  void removeRenderObjectChild(covariant RenderObject child, covariant slot) {
     final renderObject = this.renderObject;
     if (renderObject is RenderSliverOverlay) {
       if (renderObject.overlay == child) renderObject.overlay = null;
