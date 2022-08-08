@@ -27,15 +27,7 @@ void main() async {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   }
   final payload = await getOrAddPayloadToStream();
-  BlocOverrides.runZoned(
-    () => runApp(
-      App(
-        payload: payload,
-        analytics: Config.release,
-      ),
-    ),
-    blocObserver: BlocLoggingObserver(analyticsLogging: Config.release),
-  );
+  runApp(App(payload: payload, analytics: Config.release));
 }
 
 Future<void> initServices() async {
@@ -44,9 +36,9 @@ Future<void> initServices() async {
   // DO NOT REMOVE. The isAutoInitEnabled call is needed to make push work
   // https://github.com/firebase/flutterfire/issues/6011
   FirebaseMessaging.instance.isAutoInitEnabled;
-
   final documentDirectory = await getApplicationDocumentsDirectory();
   final preferences = await SharedPreferences.getInstance();
+  Bloc.observer = BlocLoggingObserver(analyticsLogging: Config.release);
   final seagullLogger = SeagullLogger(
     documentsDir: documentDirectory.path,
     preferences: preferences,
