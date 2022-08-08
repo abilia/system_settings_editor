@@ -91,7 +91,6 @@ Future cancelNotifications(Iterable<ActivityAlarm> notificationAlarms) async {
   }
 }
 
-// ignore: prefer_function_declarations_over_variables
 AlarmScheduler scheduleAlarmNotificationsIsolated = ({
   required Iterable<Activity> activities,
   required Iterable<TimerAlarm> timers,

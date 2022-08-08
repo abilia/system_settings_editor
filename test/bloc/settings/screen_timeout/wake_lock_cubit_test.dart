@@ -27,8 +27,7 @@ void main() {
   setUpAll(registerFallbackValues);
 
   setUp(() {
-    memoSettingsStreamController =
-        StreamController<MemoplannerSettingsState>();
+    memoSettingsStreamController = StreamController<MemoplannerSettingsState>();
     mockMemoplannerSettingBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingBloc.state)
         .thenReturn(const MemoplannerSettingsNotLoaded());
