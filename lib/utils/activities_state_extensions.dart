@@ -4,9 +4,6 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 extension ActivitiesStateExtensions on ActivitiesState {
-  Activity newActivityFromLoadedOrGiven(Activity activity) =>
-      activities.firstWhere((a) => a.id == activity.id, orElse: () => activity);
-
   Activity? newActivityFromLoadedOrNull(Activity activity) =>
       activities.firstWhereOrNull((a) => a.id == activity.id);
 
