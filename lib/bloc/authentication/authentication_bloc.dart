@@ -25,10 +25,11 @@ class AuthenticationBloc
   }) : super(const AuthenticationLoading()) {
     _clientSubscription = client?.messageStream
         .where((event) => event == HttpMessage.unauthorized)
-        .listen(
-          (event) => add(
-              const LoggedOut(loggedOutReason: LoggedOutReason.unautorized)),
-        );
+        .listen((event) {
+      if (state is Authenticated) {
+        add(const LoggedOut(loggedOutReason: LoggedOutReason.unautorized));
+      }
+    });
     on<AuthenticationEvent>(_onAuthenticationEvent, transformer: sequential());
   }
 

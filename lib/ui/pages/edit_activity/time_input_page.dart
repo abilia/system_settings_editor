@@ -4,10 +4,11 @@ import 'package:seagull/ui/all.dart';
 
 class TimeInputPage extends StatelessWidget {
   final TimeInput timeInput;
+  final timeInputKey = GlobalKey<_TimeInputContentState>();
 
-  const TimeInputPage({
-    Key? key,
+  TimeInputPage({
     required this.timeInput,
+    Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -27,12 +28,22 @@ class TimeInputPage extends StatelessWidget {
         ),
       ),
       body: TimeInputContent(
+        key: timeInputKey,
         timeInput: timeInput,
         is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
-        bottomNavigationBuilder: (context, newTimeInput) => BottomNavigation(
+        bottomNavigationBuilder: (
+          context,
+          newTimeInput,
+          savedStartTimeInput,
+        ) =>
+            BottomNavigation(
           backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: OkButton(
-            onPressed: () => onSave(context, newTimeInput),
+            onPressed: () => onSave(
+              context,
+              newTimeInput,
+              savedStartTimeInput,
+            ),
           ),
         ),
       ),
@@ -42,6 +53,7 @@ class TimeInputPage extends StatelessWidget {
   Future<bool> onSave(
     BuildContext context,
     TimeInput? newTimInput,
+    String savedStartTimeInput,
   ) async {
     if (newTimInput != null) {
       Navigator.of(context).maybePop(newTimInput);
@@ -53,6 +65,7 @@ class TimeInputPage extends StatelessWidget {
           text: Translator.of(context).translate.missingStartTime,
         ),
       );
+      timeInputKey.currentState?.updateStartTimeInput(savedStartTimeInput);
       return false;
     }
   }
@@ -67,11 +80,11 @@ class TimeInputContent extends StatefulWidget {
   final bool is24HoursFormat;
 
   const TimeInputContent({
-    Key? key,
     required this.timeInput,
     required this.is24HoursFormat,
     this.bottomNavigationBuilder,
     this.onValidTimeInput,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -81,7 +94,7 @@ class TimeInputContent extends StatefulWidget {
 String pad0(String s) => s.padLeft(2, '0');
 
 typedef BottomNavigationBuilder = Widget Function(
-    BuildContext context, TimeInput? newTimeInput);
+    BuildContext context, TimeInput? newTimeInput, String savedStartTimeInput);
 
 typedef OnValidTimeInput = void Function(TimeInput newTimeInput);
 
@@ -92,8 +105,6 @@ class _TimeInputContentState extends State<TimeInputContent> {
   late DayPeriod endTimePeriod;
   late FocusNode startTimeFocus;
   late FocusNode endTimeFocus;
-  late String validatedNewStartTime;
-  late String validatedNewEndTime;
 
   bool get twelveHourClock => !widget.is24HoursFormat;
 
@@ -108,29 +119,28 @@ class _TimeInputContentState extends State<TimeInputContent> {
       ..requestFocus()
       ..addListener(() {
         if (!startTimeFocus.hasFocus) {
-          setState(() => validatedNewStartTime =
-              _focusChangedValidation(validatedNewStartTime));
+          _focusChangedValidation();
         }
       });
 
     endTimeFocus = FocusNode()
       ..addListener(() {
         if (!endTimeFocus.hasFocus) {
-          setState(() => validatedNewEndTime = _focusChangedValidation());
+          _focusChangedValidation();
         }
       });
 
-    validatedNewStartTime = widget.timeInput.rawStartTime(twelveHourClock);
-    validatedNewEndTime = widget.timeInput.rawEndTime(twelveHourClock);
+    final startTime = widget.timeInput.rawStartTime(twelveHourClock);
+    final endTime = widget.timeInput.rawEndTime(twelveHourClock);
 
-    startTimeController = TextEditingController(text: validatedNewStartTime)
+    startTimeController = TextEditingController(text: startTime)
       ..addListener(() {
         if (valid(startTimeController)) {
           _onNewValidTime();
         }
       });
 
-    endTimeController = TextEditingController(text: validatedNewEndTime)
+    endTimeController = TextEditingController(text: endTime)
       ..addListener(() {
         if (valid(endTimeController) || endTimeController.text.isEmpty) {
           _onNewValidTime();
@@ -145,12 +155,12 @@ class _TimeInputContentState extends State<TimeInputContent> {
     }
   }
 
-  String _focusChangedValidation([final String oldValidTime = '']) {
+  String _focusChangedValidation() {
     final controller =
         startTimeFocus.hasFocus ? endTimeController : startTimeController;
     controller.selection =
         TextSelection(baseOffset: 0, extentOffset: controller.text.length);
-    return controller.text = valid(controller) ? controller.text : oldValidTime;
+    return controller.text = valid(controller) ? controller.text : '';
   }
 
   @override
@@ -278,7 +288,7 @@ class _TimeInputContentState extends State<TimeInputContent> {
                   AbiliaNumPad(
                     delete: _deleteOneDigit,
                     onNumPress: _numPadKeyPress,
-                    onClear: () => focusedController.clear(),
+                    onClear: _clearPress,
                   ),
                 ],
               ),
@@ -288,10 +298,15 @@ class _TimeInputContentState extends State<TimeInputContent> {
             bottomNavigationBuilder(
               context,
               valid(startTimeController) ? newTimeInput : null,
+              startTimeController.text,
             ),
         ],
       ),
     );
+  }
+
+  void updateStartTimeInput(String text) {
+    startTimeController.text = text;
   }
 
   void _deleteOneDigit() {
@@ -302,6 +317,7 @@ class _TimeInputContentState extends State<TimeInputContent> {
     final controller = focusedController;
     if (controller.text.isEmpty) return;
     controller.text = controller.text.substring(0, controller.text.length - 1);
+    setState(() {});
   }
 
   void _numPadKeyPress(String value) {
@@ -316,6 +332,12 @@ class _TimeInputContentState extends State<TimeInputContent> {
     if (startTimeFocus.hasFocus && valid(startTimeController)) {
       endTimeFocus.requestFocus();
     }
+    setState(() {});
+  }
+
+  void _clearPress() {
+    focusedController.clear();
+    setState(() {});
   }
 
   String _validate(String oldValue, String newValue) {
@@ -358,7 +380,6 @@ class _TimeInputContentState extends State<TimeInputContent> {
 
 class _TimeInput extends StatelessWidget {
   const _TimeInput({
-    Key? key,
     required this.heading,
     required this.controller,
     required this.focusNode,
@@ -368,6 +389,7 @@ class _TimeInput extends StatelessWidget {
     required this.amRadioFieldKey,
     required this.pmRadioFieldKey,
     required this.inputKey,
+    Key? key,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -421,9 +443,9 @@ class _TimeInputField extends StatefulWidget {
   final Key? inputKey;
 
   const _TimeInputField({
-    this.inputKey,
     required this.editingController,
     required this.focus,
+    this.inputKey,
   });
   @override
   _TimeInputFieldState createState() => _TimeInputFieldState();
@@ -536,11 +558,11 @@ class AmPmSelector extends StatelessWidget {
   final Key? pmRadioFieldKey;
 
   const AmPmSelector({
-    Key? key,
     required this.groupValue,
     required this.onChanged,
     this.amRadioFieldKey,
     this.pmRadioFieldKey,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -9,12 +9,12 @@ class PasswordInput extends StatelessWidget {
   final String? inputHeading;
 
   const PasswordInput({
-    Key? key,
     required this.password,
     required this.onPasswordChange,
     required this.errorState,
     required this.validator,
     this.inputHeading,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -91,9 +91,9 @@ class PasswordInput extends StatelessWidget {
 
 class PasswordInputBottomSheet extends StatefulWidget {
   const PasswordInputBottomSheet({
-    Key? key,
     required this.password,
     this.inputHeading,
+    Key? key,
   }) : super(key: key);
 
   final String password;

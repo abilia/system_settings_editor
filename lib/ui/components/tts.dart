@@ -8,8 +8,8 @@ class Tts extends StatelessWidget {
   final Text child;
 
   const Tts({
-    Key? key,
     required this.child,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -52,21 +52,21 @@ class _Tts extends StatelessWidget {
   final String Function()? onLongPress;
 
   const _Tts({
-    Key? key,
     required this.child,
     this.data,
     this.onLongPress,
+    Key? key,
   })  : assert(data != null || onLongPress != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) =>
-      BlocBuilder<SettingsCubit, SettingsState>(
-        builder: (context, settingsState) => GestureDetector(
+      BlocSelector<SpeechSettingsCubit, SpeechSettingsState, bool>(
+        selector: (state) => state.textToSpeech,
+        builder: (context, textToSpeech) => GestureDetector(
           behavior: HitTestBehavior.translucent,
           excludeFromSemantics: true,
-          onLongPress: settingsState.textToSpeech &&
-                  (onLongPress != null || data != null)
+          onLongPress: textToSpeech && (onLongPress != null || data != null)
               ? _playTts
               : null,
           child: child,

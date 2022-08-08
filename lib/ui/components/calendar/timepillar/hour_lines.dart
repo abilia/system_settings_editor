@@ -5,9 +5,9 @@ class HourLines extends StatelessWidget {
   final int numberOfLines;
   final double hourHeight;
   const HourLines({
-    Key? key,
-    this.numberOfLines = 24,
     required this.hourHeight,
+    this.numberOfLines = 24,
+    Key? key,
   }) : super(key: key);
 
   @override

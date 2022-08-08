@@ -97,8 +97,8 @@ class _WeekCalendarDayHeading extends StatelessWidget {
   final DateTime day;
 
   const _WeekCalendarDayHeading({
-    Key? key,
     required this.day,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -133,12 +133,12 @@ class _WeekCalendarDayHeading extends StatelessWidget {
 
 class WeekCalenderHeadingContent extends StatelessWidget {
   const WeekCalenderHeadingContent({
-    Key? key,
     required this.day,
     required this.dayTheme,
     required this.selected,
     required this.weekDisplayDays,
     required this.occasion,
+    Key? key,
   }) : super(key: key);
 
   final DateTime day;
@@ -261,9 +261,9 @@ class _FullDayActivities extends StatelessWidget {
   final bool selected;
 
   const _FullDayActivities({
-    Key? key,
     required this.day,
     required this.selected,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -339,7 +339,10 @@ class _WeekCalendarBody extends StatelessWidget {
 class _WeekDayColumn extends StatelessWidget {
   final DateTime day;
 
-  const _WeekDayColumn({Key? key, required this.day}) : super(key: key);
+  const _WeekDayColumn({
+    required this.day,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -448,11 +451,11 @@ class _WeekDayColumnItems extends StatelessWidget {
   final bool selected, showCategories, showCategoryColor;
 
   const _WeekDayColumnItems({
-    Key? key,
     required this.day,
     required this.selected,
     required this.showCategories,
     required this.showCategoryColor,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -535,9 +538,9 @@ class _WeekDayColumnItems extends StatelessWidget {
 
 class _WeekActivityContent extends StatelessWidget {
   const _WeekActivityContent({
-    Key? key,
     required this.activityOccasion,
     required this.selected,
+    Key? key,
   }) : super(key: key);
 
   final ActivityOccasion activityOccasion;

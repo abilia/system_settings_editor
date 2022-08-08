@@ -15,8 +15,11 @@ class SelectPicturePage extends StatelessWidget {
   final AbiliaFile selectedImage;
   final String? label;
 
-  const SelectPicturePage({Key? key, required this.selectedImage, this.label})
-      : super(key: key);
+  const SelectPicturePage({
+    required this.selectedImage,
+    this.label,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +53,12 @@ class SelectPictureBody extends StatelessWidget {
   final AbiliaFile selectedImage;
   final VoidCallback? onCancel;
 
-  const SelectPictureBody(
-      {Key? key,
-      required this.imageCallback,
-      required this.selectedImage,
-      this.onCancel})
-      : super(key: key);
+  const SelectPictureBody({
+    required this.imageCallback,
+    required this.selectedImage,
+    this.onCancel,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -181,11 +184,11 @@ class SelectPictureBody extends StatelessWidget {
 
 class ImageSourceWidget extends StatelessWidget {
   ImageSourceWidget({
-    Key? key,
     required this.imageSource,
     required this.permission,
     required this.text,
     required this.imageCallback,
+    Key? key,
   }) : super(key: key);
 
   final ImageSource imageSource;

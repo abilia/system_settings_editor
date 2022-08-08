@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:seagull/db/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/ui/all.dart';
@@ -53,7 +53,7 @@ void main() {
 
       await tester.tap(find.text(_translator.translate.start));
       await tester.pumpAndSettle();
-      expect(find.byType(PageOne), findsOneWidget);
+      expect(find.byType(PageOneWifi), findsOneWidget);
     });
   }, skip: !Config.isMP);
 }

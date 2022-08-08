@@ -4,17 +4,19 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 extension SizeOfText on String {
-  TextPainter textPainter(TextStyle style, double width,
+  TextPainter textPainter(TextStyle style, double width, int? maxLines,
           {double scaleFactor = 1.0}) =>
       TextPainter(
-          text: TextSpan(text: this, style: style),
-          textScaleFactor: scaleFactor,
-          textDirection: TextDirection.ltr)
-        ..layout(maxWidth: width);
+        text: TextSpan(text: this, style: style),
+        textScaleFactor: scaleFactor,
+        maxLines: maxLines,
+        textDirection: TextDirection.ltr,
+      )..layout(maxWidth: width);
 
-  TextRenderingSize calulcateTextRenderSize({
+  TextRenderingSize calculateTextRenderSize({
     required BoxConstraints constraints,
     required TextStyle textStyle,
+    int? maxLines,
     EdgeInsets padding = EdgeInsets.zero,
     double textScaleFactor = 1.0,
   }) {
@@ -23,6 +25,7 @@ extension SizeOfText on String {
     final painter = textPainter(
       textStyle,
       width,
+      maxLines,
       scaleFactor: textScaleFactor,
     );
     final numberOfLines = max(

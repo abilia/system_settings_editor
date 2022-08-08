@@ -85,23 +85,23 @@ class ActivityWizardCubit extends WizardCubit {
     required Activity activity,
   }) =>
       [
-        if (stepByStep.datePicker) WizardStep.date,
         if (stepByStep.title) WizardStep.title,
         if (stepByStep.image) WizardStep.image,
+        if (stepByStep.datePicker) WizardStep.date,
         if (stepByStep.type) WizardStep.type,
-        if (stepByStep.availability) WizardStep.availableFor,
+        if (!activity.fullDay) WizardStep.time,
         if (stepByStep.checkable) WizardStep.checkable,
         if (stepByStep.removeAfter) WizardStep.deleteAfter,
-        if (!activity.fullDay) WizardStep.time,
+        if (stepByStep.availability) WizardStep.availableFor,
         if (!activity.fullDay && stepByStep.alarm) WizardStep.alarm,
-        if (stepByStep.checklist || stepByStep.notes)
-          WizardStep.connectedFunction,
         if (stepByStep.reminders && !activity.fullDay) WizardStep.reminder,
         if (addRecurringActivity) WizardStep.recurring,
         if (activity.recurs.weekly) WizardStep.recursWeekly,
         if (activity.recurs.monthly) WizardStep.recursMonthly,
         if (activity.isRecurring && !activity.recurs.hasNoEnd)
           WizardStep.endDate,
+        if (stepByStep.checklist || stepByStep.notes)
+          WizardStep.connectedFunction,
       ];
 
   ActivityWizardCubit.edit({

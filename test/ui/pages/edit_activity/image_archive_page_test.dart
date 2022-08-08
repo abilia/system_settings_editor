@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:seagull/bloc/all.dart';
@@ -85,10 +84,8 @@ void main() {
                 userFileRepository: FakeUserFileRepository(),
               ),
             ),
-            BlocProvider<SettingsCubit>(
-              create: (context) => SettingsCubit(
-                settingsDb: FakeSettingsDb(),
-              ),
+            BlocProvider<SpeechSettingsCubit>(
+              create: (context) => FakeSpeechSettingsCubit(),
             ),
           ], child: child!),
         ),

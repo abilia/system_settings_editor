@@ -29,6 +29,7 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
       label: Translator.of(context).translate.newActivity,
       title: t.enterNameForActivity,
       borderRadius: layout.appBar.borderRadius,
+      useVerticalSafeArea: false,
     );
 
     return BlocListener<WizardCubit, WizardState>(
@@ -62,22 +63,35 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       SubHeading(t.name),
-                      TextField(
-                        controller: controller,
-                        textCapitalization: TextCapitalization.sentences,
-                        style: Theme.of(context).textTheme.bodyText1,
-                        autofocus: true,
-                        focusNode: focusNode,
-                        onChanged: (s) => context
-                            .read<EditActivityCubit>()
-                            .replaceActivity(activity.copyWith(title: s)),
-                        maxLines: 1,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: controller,
+                              textCapitalization: TextCapitalization.sentences,
+                              style: Theme.of(context).textTheme.bodyText1,
+                              autofocus: true,
+                              focusNode: focusNode,
+                              onChanged: (s) => context
+                                  .read<EditActivityCubit>()
+                                  .replaceActivity(activity.copyWith(title: s)),
+                              maxLines: 1,
+                            ),
+                          ),
+                          TtsPlayButton(
+                            controller: controller,
+                            padding: EdgeInsets.only(
+                              left: layout.defaultTextInputPage
+                                  .textFieldActionButtonSpacing,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
               ),
-              const WizardBottomNavigation(),
+              const WizardBottomNavigation(useVerticalSafeArea: false),
             ],
           ),
         ),

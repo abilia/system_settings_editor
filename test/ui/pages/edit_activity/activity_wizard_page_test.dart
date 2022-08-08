@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
@@ -17,6 +16,7 @@ import '../../../mocks/mock_bloc.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
+import '../../../test_helpers/tts.dart';
 
 void main() {
   final startTime = DateTime(2021, 09, 22, 12, 46);
@@ -72,6 +72,18 @@ void main() {
 
   tearDown(GetIt.I.reset);
 
+  Future<void> skipTitleAndTimeWidgets(WidgetTester tester) async {
+    expect(find.byType(TitleWiz), findsOneWidget);
+    await tester.enterText(find.byType(TextField), 'title');
+    await tester.tap(find.byType(NextButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TimeWiz), findsOneWidget);
+    await tester.enterTime(find.byKey(TestKey.startTimeInput), '1137');
+    await tester.tap(find.byType(NextButton));
+    await tester.pumpAndSettle();
+  }
+
   Widget wizardPage({
     bool use24 = false,
     BasicActivityDataItem? basicActivityData,
@@ -118,10 +130,8 @@ void main() {
                   clockBloc: context.read<ClockBloc>(),
                 ),
               ),
-              BlocProvider<SettingsCubit>(
-                create: (context) => SettingsCubit(
-                  settingsDb: FakeSettingsDb(),
-                ),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => FakeSpeechSettingsCubit(),
               ),
               BlocProvider<PermissionCubit>(
                 create: (context) => PermissionCubit()..checkAll(),
@@ -154,10 +164,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(ActivityWizardPage), findsOneWidget);
-    expect(find.byType(DatePickerWiz), findsOneWidget);
-    await tester.tap(find.byType(NextButton));
-    await tester.pumpAndSettle();
-
     expect(find.byType(TitleWiz), findsOneWidget);
     await tester.enterText(find.byType(TextField), 'title');
     await tester.tap(find.byType(NextButton));
@@ -167,7 +173,12 @@ void main() {
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
-    expect(find.byType(AvailableForWiz), findsOneWidget);
+    expect(find.byType(DatePickerWiz), findsOneWidget);
+    await tester.tap(find.byType(NextButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TimeWiz), findsOneWidget);
+    await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
@@ -175,8 +186,7 @@ void main() {
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
-    expect(find.byType(TimeWiz), findsOneWidget);
-    await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
+    expect(find.byType(AvailableForWiz), findsOneWidget);
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
@@ -347,6 +357,25 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(TitleWiz), findsOneWidget);
       expect(find.text(title), findsOneWidget);
+    });
+
+    testWidgets('SGC-1730 TTS play button appears when entering a title',
+        (WidgetTester tester) async {
+      setupFakeTts();
+      const title = 'title';
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextField), title);
+      await tester.pumpAndSettle();
+      expect(find.byType(TtsPlayButton), findsOneWidget);
+      expect(find.text(title), findsOneWidget);
+
+      await tester.verifyTts(
+        find.byType(TtsPlayButton),
+        exact: title,
+        useTap: true,
+      );
     });
   });
 
@@ -575,14 +604,14 @@ void main() {
       addActivityTypeAdvanced: false,
       stepByStep: StepByStepSettings(
         template: false,
-        datePicker: false,
+        title: true,
         image: false,
-        title: false,
+        datePicker: false,
         type: false,
-        availability: true,
-        checkable: false,
         removeAfter: false,
+        availability: true,
         alarm: false,
+        checkable: false,
         notes: false,
         reminders: false,
       ),
@@ -597,8 +626,10 @@ void main() {
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();
-
       expect(find.byType(ActivityWizardPage), findsOneWidget);
+
+      await skipTitleAndTimeWidgets(tester);
+
       expect(find.byType(AvailableForWiz), findsOneWidget);
     });
   });
@@ -610,7 +641,7 @@ void main() {
         template: false,
         datePicker: false,
         image: false,
-        title: false,
+        title: true,
         type: false,
         availability: false,
         checkable: true,
@@ -632,6 +663,9 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ActivityWizardPage), findsOneWidget);
+
+      await skipTitleAndTimeWidgets(tester);
+
       expect(find.byType(CheckableWiz), findsOneWidget);
     });
   });
@@ -643,7 +677,7 @@ void main() {
         template: false,
         datePicker: false,
         image: false,
-        title: false,
+        title: true,
         type: false,
         availability: false,
         checkable: false,
@@ -663,6 +697,9 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ActivityWizardPage), findsOneWidget);
+
+      await skipTitleAndTimeWidgets(tester);
+
       expect(find.byType(RemoveAfterWiz), findsOneWidget);
     });
   });

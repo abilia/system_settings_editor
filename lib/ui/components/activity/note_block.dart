@@ -46,7 +46,7 @@ class _NoteBlockState extends State<NoteBlock> {
                 child: Stack(
                   children: [
                     Lines(
-                      textRenderingSize: widget.text.calulcateTextRenderSize(
+                      textRenderingSize: widget.text.calculateTextRenderSize(
                         constraints: constraints,
                         textStyle: textStyle,
                         padding: layout.note.notePadding,
@@ -68,7 +68,10 @@ class _NoteBlockState extends State<NoteBlock> {
 class Lines extends StatelessWidget {
   final TextRenderingSize textRenderingSize;
 
-  const Lines({Key? key, required this.textRenderingSize}) : super(key: key);
+  const Lines({
+    required this.textRenderingSize,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

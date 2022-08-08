@@ -9,12 +9,12 @@ class SelectSoundPage extends StatefulWidget {
   final bool noSoundOption;
 
   const SelectSoundPage({
-    Key? key,
     required this.sound,
     required this.appBarIcon,
     required this.appBarTitle,
     this.appBarLabel,
     this.noSoundOption = false,
+    Key? key,
   }) : super(key: key);
 
   @override

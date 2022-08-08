@@ -14,19 +14,19 @@ class AbiliaTimer extends Event {
 
   const AbiliaTimer({
     required this.id,
+    required this.startTime,
+    required this.duration,
     this.title = '',
     this.fileId = '',
     this.paused = false,
-    required this.startTime,
-    required this.duration,
     this.pausedAt = Duration.zero,
   });
 
   factory AbiliaTimer.createNew({
-    String? title = '',
-    String? fileId = '',
     required DateTime startTime,
     required Duration duration,
+    String? title = '',
+    String? fileId = '',
   }) =>
       AbiliaTimer(
         id: const Uuid().v4(),

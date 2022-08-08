@@ -7,9 +7,9 @@ class TimerPage extends StatelessWidget {
   final DateTime day;
 
   const TimerPage({
-    Key? key,
     required this.timerOccasion,
     required this.day,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -105,8 +105,8 @@ class TimerPage extends StatelessWidget {
 
 class TimerTopInfo extends StatelessWidget {
   const TimerTopInfo({
-    Key? key,
     required this.timer,
+    Key? key,
   }) : super(key: key);
 
   final AbiliaTimer timer;
@@ -152,8 +152,8 @@ class TimerTopInfo extends StatelessWidget {
 
 class _TimerBottomBar extends StatelessWidget {
   const _TimerBottomBar({
-    Key? key,
     required this.timer,
+    Key? key,
   }) : super(key: key);
 
   final AbiliaTimer timer;
@@ -204,8 +204,8 @@ class _TimerBottomBar extends StatelessWidget {
 
 class PlayTimerButton extends StatelessWidget {
   const PlayTimerButton({
-    Key? key,
     required this.timer,
+    Key? key,
   }) : super(key: key);
 
   final AbiliaTimer timer;
@@ -220,7 +220,7 @@ class PlayTimerButton extends StatelessWidget {
             context: context,
             builder: (context) => YesNoDialog(
               headingIcon: AbiliaIcons.playSound,
-              heading: t.resume,
+              heading: t.continue_,
               text: t.timerResume,
             ),
           );
@@ -234,8 +234,8 @@ class PlayTimerButton extends StatelessWidget {
 
 class PauseTimerButton extends StatelessWidget {
   const PauseTimerButton({
-    Key? key,
     required this.timer,
+    Key? key,
   }) : super(key: key);
 
   final AbiliaTimer timer;

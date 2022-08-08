@@ -19,14 +19,14 @@ class AddActivityAddSettingsTab extends StatelessWidget {
             groupValue: newActivityMode,
             onChanged: context.read<AddActivitySettingsCubit>().newActivityMode,
             text: Text(t.throughEditView),
-            leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+            leading: const Icon(AbiliaIcons.editView),
           ),
           RadioField(
             value: NewActivityMode.stepByStep,
             groupValue: newActivityMode,
             onChanged: context.read<AddActivitySettingsCubit>().newActivityMode,
             text: Text(t.stepByStep),
-            leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+            leading: const Icon(AbiliaIcons.stepByStep),
           ),
           const Divider(),
           if (newActivityMode == NewActivityMode.editView)
@@ -109,14 +109,6 @@ class _EditActivitySettingsWidget extends StatelessWidget {
               child: Text(t.selectDate),
             ),
             SwitchField(
-              leading: const Icon(AbiliaIcons.sendAndReceive),
-              value: addTabState.type,
-              onChanged: (v) => context
-                  .read<AddActivitySettingsCubit>()
-                  .editSettings(addTabState.copyWith(type: v)),
-              child: Text(t.selectType),
-            ),
-            SwitchField(
               leading: const Icon(AbiliaIcons.handiCheck),
               value: addTabState.checkable,
               onChanged: (v) => context
@@ -125,20 +117,20 @@ class _EditActivitySettingsWidget extends StatelessWidget {
               child: Text(t.selectCheckable),
             ),
             SwitchField(
-              leading: const Icon(AbiliaIcons.passwordProtection),
-              value: addTabState.availability,
-              onChanged: (v) => context
-                  .read<AddActivitySettingsCubit>()
-                  .editSettings(addTabState.copyWith(availability: v)),
-              child: Text(t.selectAvailableFor),
-            ),
-            SwitchField(
               leading: const Icon(AbiliaIcons.deleteAllClear),
               value: addTabState.removeAfter,
               onChanged: (v) => context
                   .read<AddActivitySettingsCubit>()
                   .editSettings(addTabState.copyWith(removeAfter: v)),
               child: Text(t.deleteAfter),
+            ),
+            SwitchField(
+              leading: const Icon(AbiliaIcons.passwordProtection),
+              value: addTabState.availability,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .editSettings(addTabState.copyWith(availability: v)),
+              child: Text(t.selectAvailableFor),
             ),
           ]
               .map((c) => Padding(
@@ -239,14 +231,6 @@ class _StepByStepSettingsWidget extends StatelessWidget {
               child: Text(t.selectCheckable),
             ),
             SwitchField(
-              leading: const Icon(AbiliaIcons.passwordProtection),
-              value: settings.availability,
-              onChanged: (v) => context
-                  .read<AddActivitySettingsCubit>()
-                  .stepByStepSetting(settings.copyWith(selectAvailableFor: v)),
-              child: Text(t.selectAvailableFor),
-            ),
-            SwitchField(
               leading: const Icon(AbiliaIcons.deleteAllClear),
               value: settings.removeAfter,
               onChanged: (v) => context
@@ -255,12 +239,28 @@ class _StepByStepSettingsWidget extends StatelessWidget {
               child: Text(t.deleteAfter),
             ),
             SwitchField(
+              leading: const Icon(AbiliaIcons.passwordProtection),
+              value: settings.availability,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .stepByStepSetting(settings.copyWith(selectAvailableFor: v)),
+              child: Text(t.selectAvailableFor),
+            ),
+            SwitchField(
               leading: const Icon(AbiliaIcons.handiAlarm),
               value: settings.alarm,
               onChanged: (v) => context
                   .read<AddActivitySettingsCubit>()
                   .stepByStepSetting(settings.copyWith(selectAlarm: v)),
               child: Text(t.selectAlarm),
+            ),
+            SwitchField(
+              leading: const Icon(AbiliaIcons.handiReminder),
+              value: settings.reminders,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .stepByStepSetting(settings.copyWith(selectReminder: v)),
+              child: Text(t.selectReminder),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.radiocheckboxUnselected),
@@ -277,14 +277,6 @@ class _StepByStepSettingsWidget extends StatelessWidget {
                   .read<AddActivitySettingsCubit>()
                   .stepByStepSetting(settings.copyWith(selectNote: v)),
               child: Text(t.selectNote),
-            ),
-            SwitchField(
-              leading: const Icon(AbiliaIcons.handiReminder),
-              value: settings.reminders,
-              onChanged: (v) => context
-                  .read<AddActivitySettingsCubit>()
-                  .stepByStepSetting(settings.copyWith(selectReminder: v)),
-              child: Text(t.selectReminder),
             ),
           ]
               .map((c) => Padding(

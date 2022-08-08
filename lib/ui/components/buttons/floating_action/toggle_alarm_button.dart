@@ -48,8 +48,10 @@ class ToggleAlarmButtonActive extends StatelessWidget {
 }
 
 class ToggleAlarmButtonInactive extends StatelessWidget {
-  const ToggleAlarmButtonInactive({Key? key, required this.now})
-      : super(key: key);
+  const ToggleAlarmButtonInactive({
+    required this.now,
+    Key? key,
+  }) : super(key: key);
   final DateTime now;
 
   @override

@@ -16,13 +16,12 @@ class AbiliaTextInput extends StatelessWidget {
   final void Function(String)? onChanged;
 
   const AbiliaTextInput({
-    Key? key,
-    this.formKey,
     required this.icon,
     required this.heading,
     required this.inputHeading,
     required this.initialValue,
     required this.onChanged,
+    this.formKey,
     this.keyboardType,
     this.textCapitalization = TextCapitalization.none,
     this.inputFormatters = const <TextInputFormatter>[],
@@ -31,6 +30,7 @@ class AbiliaTextInput extends StatelessWidget {
     this.autoCorrect = true,
     this.inputValid,
     this.wrapWithAuthProviders = true,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -98,17 +98,17 @@ class AbiliaTextInput extends StatelessWidget {
 
 class DefaultTextInput extends StatefulWidget {
   const DefaultTextInput({
-    Key? key,
     required this.inputHeading,
     required this.icon,
     required this.text,
     required this.heading,
-    this.keyboardType,
     required this.inputFormatters,
     required this.textCapitalization,
     required this.maxLines,
     required this.inputValid,
     required this.autocorrect,
+    this.keyboardType,
+    Key? key,
   }) : super(key: key);
 
   final String inputHeading;
@@ -160,6 +160,7 @@ class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {
       title: widget.inputHeading,
       iconData: widget.icon,
       borderRadius: layout.appBar.borderRadius,
+      useVerticalSafeArea: false,
     );
 
     return Tts.fromSemantics(
@@ -216,6 +217,7 @@ class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {
             ),
           ),
           BottomNavigation(
+            useVerticalSafeArea: false,
             backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: OkButton(
               key: TestKey.inputOk,
@@ -239,12 +241,12 @@ abstract class StateWithFocusOnResume<T extends StatefulWidget> extends State<T>
   void initState() {
     super.initState();
     focusNode = FocusNode();
-    if (Platform.isAndroid) WidgetsBinding.instance?.addObserver(this);
+    if (Platform.isAndroid) WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
-    if (Platform.isAndroid) WidgetsBinding.instance?.removeObserver(this);
+    if (Platform.isAndroid) WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 

@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:seagull/background/all.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
 
@@ -28,9 +28,10 @@ void main() {
   final tenDaysAgo = DateTime(2111, 11, 01, 11, 11);
 
   final activityBackButtonFinder = find.byKey(TestKey.activityBackButton);
+  final activityTimepillarCardFinder = find.byType(ActivityTimepillarCard);
   final activityCardFinder = find.byType(ActivityCard);
   final activityPageFinder = find.byType(ActivityPage);
-  final agendaFinder = find.byType(Agenda);
+  final timepillarFinder = find.byType(OneTimepillarCalendar);
 
   final editActivityButtonFinder = find.byIcon(AbiliaIcons.edit);
   final finishActivityFinder = find.byType(NextWizardStepButton);
@@ -92,6 +93,13 @@ void main() {
   Future<void> navigateToActivityPage(WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
+    await tester.tap(activityTimepillarCardFinder);
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> navigateToFullDayActivityPage(WidgetTester tester) async {
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
     await tester.tap(activityCardFinder);
     await tester.pumpAndSettle();
   }
@@ -105,14 +113,14 @@ void main() {
       expect(activityBackButtonFinder, findsOneWidget);
       await tester.tap(activityBackButtonFinder);
       await tester.pumpAndSettle();
-      expect(activityCardFinder, findsOneWidget);
+      expect(activityTimepillarCardFinder, findsOneWidget);
     });
 
     testWidgets('Full day activity page does not show edit alarm',
         (WidgetTester tester) async {
       when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.fullday(startTime)]));
-      await navigateToActivityPage(tester);
+      await navigateToFullDayActivityPage(tester);
       expect(alarmButtonFinder, findsNothing);
     });
 
@@ -175,6 +183,31 @@ void main() {
 
       await navigateToActivityPage(tester);
       expect(find.byType(YoutubePlayer), findsOneWidget);
+    });
+
+    testWidgets(
+        'When activity is deleted from myAbilia Pop back to CalendarPage',
+        (WidgetTester tester) async {
+      // Arrange
+      final pushCubit = PushCubit();
+      List<List<Activity>> activitiesList = [
+        [FakeActivity.starts(startTime)],
+        []
+      ];
+      when(() => mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value(activitiesList.removeAt(0)));
+
+      // Act
+      await tester.pumpWidget(App(pushCubit: pushCubit));
+      await tester.pumpAndSettle();
+      await tester.tap(activityTimepillarCardFinder);
+      await tester.pumpAndSettle();
+
+      pushCubit.update('refresh');
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+      // Assert
+      expect(find.byType(CalendarPage), findsOneWidget);
     });
   });
 
@@ -355,7 +388,7 @@ void main() {
     testWidgets(
         'SGC-934 Change date for past activity to future updates Occasion state (no cross over)',
         (WidgetTester tester) async {
-      final _startTime = startTime.subtract(1.days()).add(1.hours());
+      final _startTime = startTime.subtract(1.days()).add(1.minutes());
       final toDay = startTime.day;
       // Arrange
       when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
@@ -374,7 +407,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       await tester.pumpAndSettle();
-      await tester.tap(activityCardFinder);
+      await tester.tap(activityTimepillarCardFinder);
       await tester.pumpAndSettle();
 
       // Assert -- is past, crossover showing and no sideDots showing
@@ -688,9 +721,9 @@ void main() {
       expect(deleteButtonFinder, findsNothing);
       expect(yesNoDialogFinder, findsNothing);
       expect(yesButtonFinder, findsNothing);
-      expect(activityCardFinder, findsNothing);
+      expect(activityTimepillarCardFinder, findsNothing);
       expect(activityPageFinder, findsNothing);
-      expect(agendaFinder, findsOneWidget);
+      expect(timepillarFinder, findsOneWidget);
     });
 
     testWidgets(
@@ -906,9 +939,9 @@ void main() {
         expect(deleteButtonFinder, findsNothing);
         expect(yesNoDialogFinder, findsNothing);
         expect(okButtonFinder, findsNothing);
-        expect(activityCardFinder, findsNothing);
+        expect(activityTimepillarCardFinder, findsNothing);
         expect(activityPageFinder, findsNothing);
-        expect(agendaFinder, findsOneWidget);
+        expect(timepillarFinder, findsOneWidget);
       });
 
       final goToNextPageFinder = find.byIcon(AbiliaIcons.goToNextPage);
@@ -936,7 +969,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert
-        expect(activityCardFinder, findsOneWidget);
+        expect(activityTimepillarCardFinder, findsOneWidget);
         expect(find.text(title), findsOneWidget);
 
         // Act -- to to yesterday
@@ -945,7 +978,7 @@ void main() {
         await tester.tap(goToPreviusPageFinder);
         await tester.pumpAndSettle();
 
-        expect(activityCardFinder, findsOneWidget);
+        expect(activityTimepillarCardFinder, findsOneWidget);
         expect(find.text(title), findsOneWidget);
       });
 
@@ -973,7 +1006,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert
-        expect(activityCardFinder, findsNothing);
+        expect(activityTimepillarCardFinder, findsNothing);
         expect(find.text(title), findsNothing);
 
         await tester.tap(goToNextPageFinder);
@@ -982,7 +1015,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert
-        expect(activityCardFinder, findsNothing);
+        expect(activityTimepillarCardFinder, findsNothing);
         expect(find.text(title), findsNothing);
       });
 
@@ -1008,7 +1041,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert
-        expect(activityCardFinder, findsNothing);
+        expect(activityTimepillarCardFinder, findsNothing);
         expect(find.text(title), findsNothing);
 
         // Act -- go to yesterday
@@ -1016,7 +1049,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert
-        expect(activityCardFinder, findsOneWidget);
+        expect(activityTimepillarCardFinder, findsOneWidget);
         expect(find.text(title), findsOneWidget);
 
         // Act -- go to tomorrow
@@ -1026,7 +1059,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert
-        expect(activityCardFinder, findsNothing);
+        expect(activityTimepillarCardFinder, findsNothing);
         expect(find.text(title), findsNothing);
       });
     });
@@ -1482,8 +1515,8 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
       await tester.pumpAndSettle();
       await tester.verifyTts(find.text(translate.delete),
           exact: translate.delete);
-      await tester.verifyTts(find.text(translate.deleteActivity),
-          exact: translate.deleteActivity);
+      await tester.verifyTts(find.text(translate.deleteActivityQuestion),
+          exact: translate.deleteActivityQuestion);
     });
 
     testWidgets('alarms', (WidgetTester tester) async {

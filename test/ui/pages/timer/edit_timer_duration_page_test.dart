@@ -17,13 +17,12 @@ void main() {
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),
-        home: BlocProvider<SettingsCubit>(
-            create: (context) => SettingsCubit(
-                  settingsDb: FakeSettingsDb(),
-                ),
-            child: EditTimerDurationPage(
-              initialDuration: initialDuration,
-            )),
+        home: BlocProvider<SpeechSettingsCubit>(
+          create: (context) => FakeSpeechSettingsCubit(),
+          child: EditTimerDurationPage(
+            initialDuration: initialDuration,
+          ),
+        ),
       );
 
   testWidgets('Page visible', (WidgetTester tester) async {

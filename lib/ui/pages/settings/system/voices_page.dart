@@ -7,41 +7,41 @@ class VoicesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final voicesState = context.watch<VoicesCubit>().state;
+    final selectedVoice = context.watch<SpeechSettingsCubit>().state.voice;
     final t = Translator.of(context).translate;
     final scrollController = ScrollController();
-    return BlocBuilder<VoicesCubit, VoicesState>(
-      builder: (context, state) =>
-          BlocBuilder<SpeechSettingsCubit, SpeechSettingsState>(
-        builder: (context, settingsState) => Scaffold(
-          appBar: AbiliaAppBar(
-            title: t.voices,
-            label: t.textToSpeech,
-            iconData: AbiliaIcons.speakText,
-          ),
-          body: Padding(
-            padding: layout.templates.m1.withoutBottom - m1ItemPadding.onlyTop,
-            child: ScrollArrows.vertical(
-              controller: scrollController,
-              child: ListView(
+
+    return Scaffold(
+      appBar: AbiliaAppBar(
+        title: t.voices,
+        label: t.textToSpeech,
+        iconData: AbiliaIcons.speakText,
+      ),
+      body: voicesState is VoicesLoading
+          ? const Center(child: AbiliaProgressIndicator())
+          : Padding(
+              padding:
+                  layout.templates.m1.withoutBottom - m1ItemPadding.onlyTop,
+              child: ScrollArrows.vertical(
                 controller: scrollController,
-                children: state.available.map((VoiceData voice) {
-                  final name = voice.name;
-                  final selectedVoice = settingsState.voice;
-                  return _VoiceRow(
-                    voice: voice,
-                    downloaded: state.downloaded.contains(name),
-                    downloading: state.downloading.contains(name),
-                    selectedVoice: selectedVoice,
-                  );
-                }).toList(),
+                child: ListView(
+                  controller: scrollController,
+                  children: voicesState.available.map((VoiceData voice) {
+                    final name = voice.name;
+                    return _VoiceRow(
+                      voice: voice,
+                      downloaded: voicesState.downloaded.contains(name),
+                      downloading: voicesState.downloading.contains(name),
+                      selectedVoice: selectedVoice,
+                    );
+                  }).toList(),
+                ),
               ),
             ),
-          ),
-          bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: OkButton(
-              onPressed: () => Navigator.of(context).maybePop(),
-            ),
-          ),
+      bottomNavigationBar: BottomNavigation(
+        backNavigationWidget: OkButton(
+          onPressed: () => Navigator.of(context).maybePop(),
         ),
       ),
     );
@@ -55,11 +55,11 @@ class _VoiceRow extends StatelessWidget {
   final String selectedVoice;
 
   const _VoiceRow({
-    Key? key,
     required this.voice,
+    required this.selectedVoice,
     this.downloaded = false,
     this.downloading = false,
-    required this.selectedVoice,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -104,7 +104,7 @@ class _VoiceRow extends StatelessWidget {
                     }
                   : null,
               value: voice.name,
-              text: Text('${voice.name}: ${voice.size}MB'),
+              text: Text('${voice.name}: ${voice.size} MB'),
             ),
           ),
         ),

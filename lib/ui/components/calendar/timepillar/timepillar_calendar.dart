@@ -56,7 +56,6 @@ class OneTimepillarCalendar extends StatefulWidget {
   final double topMargin, bottomMargin;
 
   OneTimepillarCalendar({
-    Key? key,
     required this.timepillarState,
     required this.showCategories,
     required this.displayHourLines,
@@ -67,6 +66,7 @@ class OneTimepillarCalendar extends StatefulWidget {
     double? topMargin,
     double? bottomMargin,
     bool? showCategoryLabels,
+    Key? key,
   })  : showCategoryLabels = showCategoryLabels ?? showCategories,
         topMargin = topMargin ?? layout.timepillar.topMargin,
         bottomMargin = bottomMargin ?? layout.timepillar.bottomMargin,
@@ -99,7 +99,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
         ? _timeOffsetVerticalScroll()
         : ScrollController();
     horizontalScrollController = SnapToCenterScrollController();
-    WidgetsBinding.instance?.addPostFrameCallback(
+    WidgetsBinding.instance.addPostFrameCallback(
       (_) => context.read<ScrollPositionCubit>().scrollViewRenderComplete(
             verticalScrollController,
             createdTime: context.read<ClockBloc>().state,
@@ -257,19 +257,13 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                 controller: horizontalScrollController,
                                 slivers: <Widget>[
                                   if (widget.showCategories)
-                                    category(
-                                      widget.showCategoryLabels
-                                          ? const LeftCategory()
-                                          : null,
-                                      height: boxConstraints.maxHeight,
-                                      sliver: SliverToBoxAdapter(
-                                        child: TimepillarBoard(
-                                          leftBoardData,
-                                          categoryMinWidth: categoryMinWidth,
-                                          timepillarWidth:
-                                              measures.cardTotalWidth,
-                                          textStyle: textStyle,
-                                        ),
+                                    SliverToBoxAdapter(
+                                      child: TimepillarBoard(
+                                        leftBoardData,
+                                        categoryMinWidth: categoryMinWidth,
+                                        timepillarWidth:
+                                            measures.cardTotalWidth,
+                                        textStyle: textStyle,
                                       ),
                                     ),
                                   SliverTimePillar(
@@ -296,19 +290,12 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                       ),
                                     ),
                                   ),
-                                  category(
-                                    widget.showCategoryLabels
-                                        ? const RightCategory()
-                                        : null,
-                                    height: boxConstraints.maxHeight,
-                                    sliver: SliverToBoxAdapter(
-                                      child: TimepillarBoard(
-                                        rightBoardData,
-                                        categoryMinWidth: categoryMinWidth,
-                                        timepillarWidth:
-                                            measures.cardTotalWidth,
-                                        textStyle: textStyle,
-                                      ),
+                                  SliverToBoxAdapter(
+                                    child: TimepillarBoard(
+                                      rightBoardData,
+                                      categoryMinWidth: categoryMinWidth,
+                                      timepillarWidth: measures.cardTotalWidth,
+                                      textStyle: textStyle,
                                     ),
                                   ),
                                 ],
@@ -352,22 +339,6 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                 measures.dotDistance))
     ];
   }
-
-  Widget category(
-    Widget? category, {
-    required Widget sliver,
-    required double height,
-  }) =>
-      category != null
-          ? SliverOverlay(
-              height: height,
-              overlay: ScrollTranslated(
-                controller: verticalScrollController,
-                child: category,
-              ),
-              sliver: sliver,
-            )
-          : sliver;
 }
 
 class SnapToCenterScrollController extends ScrollController {
@@ -392,46 +363,4 @@ class NightPart {
   final double start, length;
 
   NightPart(this.start, this.length);
-}
-
-class ScrollTranslated extends StatefulWidget {
-  final ScrollController controller;
-  final Widget child;
-
-  const ScrollTranslated({
-    Key? key,
-    required this.controller,
-    required this.child,
-  }) : super(key: key);
-  @override
-  _ScrollTranslated createState() => _ScrollTranslated();
-}
-
-class _ScrollTranslated extends State<ScrollTranslated> {
-  late double scrollOffset;
-  @override
-  void initState() {
-    widget.controller.addListener(listener);
-    scrollOffset =
-        widget.controller.hasClients ? widget.controller.offset : 0.0;
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    widget.controller.removeListener(listener);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Transform.translate(
-        offset: Offset(0.0, scrollOffset), child: widget.child);
-  }
-
-  void listener() {
-    if (widget.controller.offset != scrollOffset) {
-      setState(() => scrollOffset = max(widget.controller.offset, 0));
-    }
-  }
 }

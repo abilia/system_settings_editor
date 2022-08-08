@@ -1,26 +1,40 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:http/http.dart';
-import 'package:seagull/db/voice_db.dart';
+import 'package:path/path.dart' as p;
+import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
-import 'package:seagull/models/settings/speech_support/voice_data.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/utils/strings.dart';
 
 class VoiceRepository {
   VoiceRepository({
     required this.client,
-    required this.voiceDb,
-  });
+    required this.baseUrlDb,
+    required this.ttsHandler,
+    required String applicationSupportPath,
+  }) : voicesPath = p.join(applicationSupportPath, folder);
+  static const folder = 'system';
 
   final BaseClient client;
-  final VoiceDb voiceDb;
+  final BaseUrlDb baseUrlDb;
+  final String voicesPath;
+  final TtsInterface ttsHandler;
 
-  static const String _baseUrl = 'https://handi.se/systemfiles2';
+  static const String baseUrl = 'library.myabilia.com';
+  static const String pathSegments = '/voices/v1/index';
   final _log = Logger((VoiceRepository).toString());
 
-  Future<List<VoiceData>> readAvailableVoices(String locale) async {
-    var url = '$_baseUrl/$locale/'.toUri();
+  Future<List<VoiceData>> readAvailableVoices(String lang) async {
+    final url = Uri.https(
+      baseUrl,
+      '$pathSegments/$lang',
+      {'environment': baseUrlDb.environment},
+    );
+
     final response = await client.get(url);
 
     final statusCode = response.statusCode;
@@ -31,19 +45,35 @@ class VoiceRepository {
           .map((jsonVoice) => VoiceData.fromJson(jsonVoice))
           .toList();
     }
-    throw Exception(response.body);
+    _log.severe(
+      'statusCode: ${response.statusCode} when downloading voices from $url',
+      response,
+    );
+    return [];
   }
+
+  Future<List<String>> readDownloadedVoices() async =>
+      (await ttsHandler.availableVoices)
+          .whereNotNull()
+          .map((e) => '$e')
+          .toList();
 
   Future<bool> downloadVoice(VoiceData voice) async {
     try {
-      final dls = voice.files.map((file) async {
-        final response = await client.get(file.downloadUrl.toUri());
-        final path = voiceDb.applicationSupportDirectory + file.localPath;
-        _log.finer('Creating file; $path');
-        final f = await File(path).create(recursive: true);
-        await f.writeAsBytes(response.bodyBytes);
-      });
-      await Future.wait(dls);
+      await Future.wait<File>(
+        voice.files.map(
+          (file) async {
+            final response = await client.get(file.downloadUrl.toUri());
+            final path = _path(file.localPath);
+            _log.finer('Creating file; $path');
+            final f = await File(path).create(recursive: true);
+            await f.writeAsBytes(response.bodyBytes);
+            return f;
+          },
+        ),
+        cleanUp: (f) => f.deleteSync(),
+        eagerError: true,
+      );
       return true;
     } catch (ex) {
       _log.warning('Download failed: $ex');
@@ -51,12 +81,34 @@ class VoiceRepository {
     }
   }
 
-  Future<void> deleteVoice(VoiceData voice) async {
-    final dls = voice.files.map((file) async {
-      final path = voiceDb.applicationSupportDirectory + file.localPath;
-      File(path).delete(recursive: true);
-    });
-    await Future.wait(dls);
+  Future<bool> deleteVoice(VoiceData voice) async {
+    try {
+      await Future.wait(
+        voice.files.map(
+          (file) => File(_path(file.localPath)).delete(recursive: true),
+        ),
+      );
+    } on Exception catch (e) {
+      _log.warning('Failed to deleted voice; ${voice.name}', e);
+      return false;
+    }
     _log.fine('Deleted voice; ${voice.name}');
+    return true;
+  }
+
+  String _path([String path = '']) => p.join(
+        voicesPath,
+        path.replaceFirst('/$folder/', ''),
+      );
+
+  Future<void> deleteAllVoices() async {
+    final voicePath = Directory(_path());
+    if (await voicePath.exists()) {
+      _log.info('Removing all voices in $voicePath');
+      await voicePath.delete(recursive: true);
+      return;
+    } else {
+      _log.info('no downloaded voices present');
+    }
   }
 }

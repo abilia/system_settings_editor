@@ -7,8 +7,8 @@ void main() {
   testWidgets('Build AbiliaNumPad', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
         home: Material(
-            child: BlocProvider<SettingsCubit>(
-      create: (_) => FakeSettingsCubit(),
+            child: BlocProvider<SpeechSettingsCubit>(
+      create: (_) => FakeSpeechSettingsCubit(),
       child: AbiliaNumPad(
           delete: () => {}, onClear: () => {}, onNumPress: (value) => value),
     ))));

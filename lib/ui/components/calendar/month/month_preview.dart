@@ -7,8 +7,8 @@ class MonthListPreview extends StatelessWidget {
   final List<DayTheme> dayThemes;
 
   const MonthListPreview({
-    Key? key,
     required this.dayThemes,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -84,10 +84,10 @@ class MonthPreview extends StatelessWidget {
 
 class MonthDayPreviewHeading extends StatelessWidget {
   const MonthDayPreviewHeading({
-    Key? key,
     required this.day,
     required this.isLight,
     required this.occasion,
+    Key? key,
   }) : super(key: key);
 
   final DateTime day;

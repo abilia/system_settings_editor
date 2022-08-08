@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -72,6 +71,14 @@ void main() {
     final mockActivityDb = MockActivityDb();
     when(() => mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activityResponse()));
+
+    genericResponse = () => [
+          Generic.createNew<MemoplannerSettingData>(
+            data: MemoplannerSettingData.fromData(
+                data: DayCalendarType.list.index,
+                identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+          ),
+        ];
 
     final mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
@@ -851,6 +858,11 @@ void main() {
                 identifier:
                     MemoplannerSettings.calendarActivityTypeShowTypesKey,
               ),
+            ),
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                  data: DayCalendarType.list.index,
+                  identifier: MemoplannerSettings.viewOptionsTimeViewKey),
             ),
           ];
 

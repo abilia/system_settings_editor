@@ -17,18 +17,29 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeDependencies();
-    if (state == AppLifecycleState.resumed) setState(() {});
+    if (state == AppLifecycleState.resumed) {
+      _checkWriteSettingsPermission();
+      setState(() {});
+    }
+  }
+
+  Future<void> _checkWriteSettingsPermission() async {
+    final status = await SystemSettingsEditor.canWriteSettings;
+    if (status) {
+      SystemSettingsEditor.setSoundEffectsEnabled(false);
+      SystemSettingsEditor.setHapticFeedbackEnabled(false);
+    }
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -149,8 +160,8 @@ class _DebugRow extends StatelessWidget {
 
 class _FancyHeader extends StatelessWidget {
   const _FancyHeader({
-    Key? key,
     required this.text,
+    Key? key,
   }) : super(key: key);
 
   final String text;

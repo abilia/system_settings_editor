@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/getit.dart';
@@ -338,7 +337,7 @@ void main() {
 extension on WidgetTester {
   Future<void> goToActivityPage() async {
     await pumpApp();
-    await tap(find.byType(ActivityCard));
+    await tap(find.byType(ActivityTimepillarCard));
     await pumpAndSettle();
   }
 

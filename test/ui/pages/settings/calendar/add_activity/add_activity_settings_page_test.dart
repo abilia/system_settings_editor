@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/getit.dart';
@@ -219,15 +218,6 @@ void main() {
           );
         });
 
-        testWidgets('deselect Select type', (tester) async {
-          await tester.verifyInAddTab(
-            find.text(translate.selectType),
-            genericDb,
-            key: EditActivitySettings.typeKey,
-            matcher: isFalse,
-          );
-        });
-
         testWidgets('deselect Checkable', (tester) async {
           await tester.verifyInAddTab(
             find.text(translate.selectCheckable),
@@ -423,7 +413,7 @@ extension on WidgetTester {
     Finder f,
     MockGenericDb genericDb, {
     required String key,
-    required dynamic matcher,
+    required matcher,
   }) async {
     await goToAddTab();
     await tap(f);
@@ -443,7 +433,7 @@ extension on WidgetTester {
     Finder finder,
     MockGenericDb genericDb, {
     required String key,
-    required dynamic matcher,
+    required matcher,
   }) async {
     await goToAddTab();
     await tap(find.text(Locales.language.values.first.stepByStep));

@@ -9,7 +9,6 @@ class SelectableField extends StatelessWidget {
   final String? ttsData;
 
   const SelectableField({
-    Key? key,
     required this.selected,
     required this.onTap,
     required this.text,
@@ -17,6 +16,7 @@ class SelectableField extends StatelessWidget {
     this.height,
     this.width,
     this.ttsData,
+    Key? key,
   }) : super(key: key);
 
   @override

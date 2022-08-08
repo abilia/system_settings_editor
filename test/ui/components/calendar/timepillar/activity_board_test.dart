@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -96,8 +95,8 @@ void main() {
             BlocProvider(
               create: (context) => ClockBloc.fixed(initialTime ?? startTime),
             ),
-            BlocProvider<SettingsCubit>(
-              create: (context) => SettingsCubit(settingsDb: FakeSettingsDb()),
+            BlocProvider<SpeechSettingsCubit>(
+              create: (context) => FakeSpeechSettingsCubit(),
             ),
             BlocProvider<MemoplannerSettingBloc>(
               create: (context) => mockMemoplannerSettingsBloc,
@@ -179,6 +178,61 @@ void main() {
       ),
     );
     expect(find.text(title), findsOneWidget);
+  });
+
+  testWidgets(
+      'text height of long titles are correct, and without extra empty space. BUG SGC-1812',
+      (WidgetTester tester) async {
+    // Arrange
+    const title = 'DDDDDDDDDD'
+        'DDDDDDDDDD'
+        'DDDDDDDDDD'
+        'DDDDDDDDDD'
+        'DDDDDDDDDD';
+    await tester.pumpWidget(
+      wrap(
+        ActivityOccasion(
+          Activity.createNew(
+            title: title,
+            startTime: startTime,
+          ),
+          startTime.onlyDays(),
+          Occasion.current,
+        ),
+      ),
+    );
+
+    final titleTextElement = tester.firstElement(find.text(title));
+    final activityCardWidget =
+        (tester.firstWidget(find.byType(ActivityTimepillarCard))
+            as ActivityTimepillarCard);
+    final textStyle =
+        (titleTextElement.findAncestorWidgetOfExactType<DefaultTextStyle>()
+                as DefaultTextStyle)
+            .style;
+    final textScaleFactor = (titleTextElement
+            .findAncestorWidgetOfExactType<MediaQuery>() as MediaQuery)
+        .data
+        .textScaleFactor;
+
+    // Act
+
+    // The method we use to calculate the Text widget size
+    final calculatedTextSize = title
+        .textPainter(
+          textStyle,
+          activityCardWidget.measures.cardTextWidth -
+              (activityCardWidget.decoration.padding?.horizontal ?? 0),
+          TimepillarCard.maxTitleLines,
+          scaleFactor: textScaleFactor,
+        )
+        .size;
+
+    // The actual size of the Text widget
+    final textWidgetSize = titleTextElement.size;
+
+    // Assert
+    expect(calculatedTextSize == textWidgetSize, true);
   });
 
   testWidgets('tts', (WidgetTester tester) async {
@@ -290,7 +344,7 @@ void main() {
       final activityB = ActivityOccasion(
         Activity.createNew(
           title: 'b',
-          startTime: time.add(2.hours()),
+          startTime: time.add(1.hours() + 45.minutes()),
         ),
         time.onlyDays(),
         Occasion.current,
@@ -342,7 +396,7 @@ void main() {
           greaterThanOrEqualTo(measures.cardTotalWidth));
     });
     testWidgets(
-        'two activities to sufficient time distance but the first with a long title does not has same vertical position',
+        'two activities with sufficient time distance but the first with a long title does not has same horizontal position',
         (WidgetTester tester) async {
       final time = DateTime(2020, 04, 21, 07, 30);
       final activityA = ActivityOccasion(
@@ -357,7 +411,7 @@ void main() {
       final activityB = ActivityOccasion(
         Activity.createNew(
           title: 'b',
-          startTime: time.add(2.hours()),
+          startTime: time.add(1.hours() + 45.minutes()),
         ),
         time.onlyDays(),
         Occasion.current,

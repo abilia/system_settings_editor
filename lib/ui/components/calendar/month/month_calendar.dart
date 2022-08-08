@@ -40,9 +40,9 @@ class MonthCalendar extends StatelessWidget {
 
 class MonthBody extends StatelessWidget {
   const MonthBody({
-    Key? key,
     required this.calendarDayColor,
     this.showPreview = true,
+    Key? key,
   }) : super(key: key);
 
   final DayColor calendarDayColor;
@@ -90,9 +90,11 @@ class MonthBody extends StatelessWidget {
 }
 
 class MonthContent extends StatelessWidget {
-  const MonthContent(
-      {Key? key, required this.dayThemes, required this.dayBuilder})
-      : super(key: key);
+  const MonthContent({
+    required this.dayThemes,
+    required this.dayBuilder,
+    Key? key,
+  }) : super(key: key);
 
   final MonthDayWidgetBuilder dayBuilder;
   final List<DayTheme> dayThemes;
@@ -147,9 +149,9 @@ class WeekRow extends StatelessWidget {
 
   const WeekRow(
     this.week, {
-    Key? key,
     required this.dayThemes,
     required this.builder,
+    Key? key,
   }) : super(key: key);
   final List<DayTheme> dayThemes;
 
@@ -172,9 +174,9 @@ class WeekRow extends StatelessWidget {
 
 class MonthHeading extends StatelessWidget {
   const MonthHeading({
-    Key? key,
     required this.dayThemes,
     this.showLeadingWeekShort = true,
+    Key? key,
   }) : super(key: key);
   final List<DayTheme> dayThemes;
   final bool showLeadingWeekShort;
@@ -226,8 +228,8 @@ class MonthDayView extends StatelessWidget {
 
   const MonthDayView(
     this.day, {
-    Key? key,
     required this.dayTheme,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -392,8 +394,8 @@ class MonthDayViewCompact extends StatelessWidget {
 
   const MonthDayViewCompact(
     this.day, {
-    Key? key,
     required this.dayTheme,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -516,12 +518,12 @@ class WeekNumber extends StatelessWidget {
 
 class MonthActivityContent extends StatelessWidget {
   const MonthActivityContent({
-    Key? key,
     required this.activityDay,
     required this.isPast,
     this.width,
     this.height,
     this.goToActivityOnTap = false,
+    Key? key,
   }) : super(key: key);
 
   final ActivityDay activityDay;

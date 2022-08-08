@@ -104,7 +104,7 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
           child: Text(t.myPhotos),
         ),
         SwitchField(
-          leading: const Icon(AbiliaIcons.day),
+          leading: const Icon(AbiliaIcons.photoCalendar),
           value: photoCalendar,
           onChanged: (v) => setState(() => photoCalendar = v),
           child: Text(t.photoCalendar.singleLine),

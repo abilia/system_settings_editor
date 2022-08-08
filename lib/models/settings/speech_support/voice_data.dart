@@ -26,6 +26,9 @@ class VoiceData extends Equatable {
 
   @override
   List<Object?> get props => [name, type, lang, files, size];
+
+  @override
+  String toString() => 'VoiceData [ $name:$lang, $size kb ]';
 }
 
 class VoiceFile extends Equatable {

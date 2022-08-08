@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:package_info/package_info.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -56,9 +55,8 @@ void main() {
             providers: [
               BlocProvider<AuthenticationBloc>(
                   create: (context) => FakeAuthenticationBloc()),
-              BlocProvider<SettingsCubit>(
-                create: (context) =>
-                    SettingsCubit(settingsDb: FakeSettingsDb()),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => FakeSpeechSettingsCubit(),
               ),
               BlocProvider<ActivitiesBloc>(
                 create: (context) => FakeActivitiesBloc(),

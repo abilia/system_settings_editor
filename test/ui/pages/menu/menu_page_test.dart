@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -109,7 +108,8 @@ void main() {
             'maxWidth': null,
             'maxHeight': null,
             'imageQuality': null,
-            'cameraDevice': 0
+            'cameraDevice': 0,
+            'requestFullMetadata': true,
           }),
         ],
       );

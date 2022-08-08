@@ -10,6 +10,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
+import 'package:seagull/tts/tts_handler.dart';
 
 export 'package:mocktail/mocktail.dart';
 
@@ -94,3 +95,9 @@ class MockConnectivity extends Mock implements Connectivity {}
 class MockBattery extends Mock implements Battery {}
 
 class MockSpeechSettingsCubit extends Mock implements SpeechSettingsCubit {}
+
+class MockVoiceRepository extends Mock implements VoiceRepository {}
+
+class MockDeviceRepository extends Mock implements DeviceRepository {}
+
+class MockTtsHandler extends Mock implements TtsInterface {}

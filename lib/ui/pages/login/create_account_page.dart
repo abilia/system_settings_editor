@@ -6,8 +6,10 @@ import 'package:seagull/ui/all.dart';
 class CreateAccountPage extends StatelessWidget {
   final UserRepository userRepository;
 
-  const CreateAccountPage({Key? key, required this.userRepository})
-      : super(key: key);
+  const CreateAccountPage({
+    required this.userRepository,
+    Key? key,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context);
@@ -68,14 +70,14 @@ class CreateAccountPage extends StatelessWidget {
                   SizedBox(height: layout.formPadding.largeGroupDistance),
                   Tts(
                     child: Text(
-                      t.createAaccountHeading,
+                      t.createAccountHeading,
                       style: textTheme.headline6,
                     ),
                   ),
                   SizedBox(height: layout.formPadding.verticalItemDistance),
                   Tts(
                     child: Text(
-                      t.createAaccountSubheading,
+                      t.createAccountSubheading,
                       style: textTheme.bodyText2,
                     ),
                   ),
@@ -155,12 +157,12 @@ class AcceptTermsSwitch extends StatelessWidget {
   final bool errorState;
 
   const AcceptTermsSwitch({
-    Key? key,
     required this.linkText,
     required this.url,
     required this.value,
     required this.onChanged,
     required this.errorState,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -5,8 +5,8 @@ class EditNotePage extends StatefulWidget {
   final String text;
   static const padding = EdgeInsets.symmetric(vertical: 9.0, horizontal: 16.0);
   const EditNotePage({
-    Key? key,
     required this.text,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -74,7 +74,7 @@ class _EditNotePageState extends State<EditNotePage> {
               LayoutBuilder(
                 builder: (context, constraints) {
                   final textRenderSize =
-                      _textEditingController.text.calulcateTextRenderSize(
+                      _textEditingController.text.calculateTextRenderSize(
                     constraints: constraints,
                     textStyle:
                         Theme.of(context).textTheme.bodyText1 ?? bodyText1,
@@ -114,8 +114,11 @@ class _EditNotePageState extends State<EditNotePage> {
               ),
               Padding(
                 padding: layout.fab.padding,
-                child: TtsPlayButton(controller: _textEditingController),
-              )
+                child: TtsPlayButton(
+                  controller: _textEditingController,
+                  buttonStyle: actionButtonStyleNoneTransparantDark,
+                ),
+              ),
             ],
           ),
         ),

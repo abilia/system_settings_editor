@@ -9,6 +9,7 @@ class FakeSharedPreferences {
   static Future<SharedPreferences> getInstance({bool loggedIn = true}) {
     SharedPreferences.setMockInitialValues({
       if (loggedIn) LoginDb.tokenKey: Fakes.token,
+      VoiceDb.textToSpeechRecord: true,
     });
     return SharedPreferences.getInstance();
   }

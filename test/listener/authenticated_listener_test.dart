@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/listener/all.dart';
@@ -84,21 +83,25 @@ void main() {
     Authenticated state = const Authenticated(userId: 5),
   }) =>
       MaterialApp(
-        home: TopLevelBlocsProvider(
-          child: AuthenticatedBlocsProvider(
-            authenticatedState: state,
-            child: MultiBlocProvider(
-              providers: [
-                BlocProvider.value(value: activitiesBloc),
-                BlocProvider.value(value: sortableBloc),
-                BlocProvider.value(value: timerCubit),
-                BlocProvider.value(value: memoplannerSettingBloc),
-                BlocProvider.value(value: notificationBloc),
-                BlocProvider<SettingsCubit>(create: (c) => FakeSettingsCubit()),
-              ],
-              child: AuthenticatedListener(
-                newlyLoggedIn: state.newlyLoggedIn,
-                child: const SizedBox.shrink(),
+        home: TopLevelProvider(
+          child: AuthenticationBlocProvider(
+            child: AuthenticatedBlocsProvider(
+              authenticatedState: state,
+              child: MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(value: activitiesBloc),
+                  BlocProvider.value(value: sortableBloc),
+                  BlocProvider.value(value: timerCubit),
+                  BlocProvider.value(value: memoplannerSettingBloc),
+                  BlocProvider.value(value: notificationBloc),
+                  BlocProvider<SpeechSettingsCubit>(
+                    create: (c) => FakeSpeechSettingsCubit(),
+                  ),
+                ],
+                child: AuthenticatedListener(
+                  newlyLoggedIn: state.newlyLoggedIn,
+                  child: const SizedBox.shrink(),
+                ),
               ),
             ),
           ),

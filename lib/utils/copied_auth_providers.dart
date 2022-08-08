@@ -24,7 +24,7 @@ List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
       _tryGetBloc<TimerCubit>(blocContext),
       _tryGetBloc<NotificationBloc>(blocContext),
       _tryGetBloc<TimerAlarmBloc>(blocContext),
-      _tryGetBloc<SettingsCubit>(blocContext),
+      _tryGetBloc<SpeechSettingsCubit>(blocContext),
       if (Config.isMP) ...[
         _tryGetBloc<WakeLockCubit>(blocContext),
         _tryGetBloc<InactivityCubit>(blocContext),

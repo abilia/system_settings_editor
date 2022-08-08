@@ -3,9 +3,9 @@ import 'package:seagull/ui/all.dart';
 
 class SpeechSupportSettingsPage extends StatelessWidget {
   const SpeechSupportSettingsPage({
-    Key? key,
     required this.textToSpeech,
     required this.speechRate,
+    Key? key,
   }) : super(key: key);
 
   final bool textToSpeech;
@@ -33,7 +33,8 @@ class SpeechSupportSettingsPage extends StatelessWidget {
             ),
             body: DividerTheme(
               data: layout.settingsBasePage.dividerThemeData,
-              child: BlocSelector<SettingsCubit, SettingsState, bool>(
+              child:
+                  BlocSelector<SpeechSettingsCubit, SpeechSettingsState, bool>(
                 selector: (state) => state.textToSpeech,
                 builder: (context, textToSpeech) => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,7 +71,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                                     text: Text(state.voice.isEmpty
                                         ? downloadingVoices.isEmpty
                                             ? t.noVoicesInstalled
-                                            : t.installingVoice
+                                            : t.installing
                                         : state.voice),
                                     onTap: () async =>
                                         await Navigator.of(context).push(
@@ -89,9 +90,10 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                                       : 0,
                                 ),
                                 child: TtsPlayButton(
-                                    tts: state.voice.isNotEmpty
-                                        ? t.speechTest
-                                        : ''),
+                                  tts: state.voice.isNotEmpty
+                                      ? t.testOfSpeechRate
+                                      : '',
+                                ),
                               ),
                             ],
                           ),
@@ -160,7 +162,9 @@ class SpeechSupportSettingsPage extends StatelessWidget {
               backNavigationWidget: CancelButton(
                 onPressed: () {
                   if (!_disabledIfNoDownloadedVoice(context)) {
-                    context.read<SettingsCubit>().setTextToSpeech(textToSpeech);
+                    context
+                        .read<SpeechSettingsCubit>()
+                        .setTextToSpeech(textToSpeech);
                     context
                         .read<SpeechSettingsCubit>()
                         .setSpeechRate(speechRate);
@@ -183,7 +187,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
     if (context.read<VoicesCubit>().state.downloaded.isEmpty &&
         context.read<VoicesCubit>().state.downloading.isEmpty) {
       context.read<SpeechSettingsCubit>().setVoice('');
-      context.read<SettingsCubit>().setTextToSpeech(false);
+      context.read<SpeechSettingsCubit>().setTextToSpeech(false);
       return true;
     }
     return false;
