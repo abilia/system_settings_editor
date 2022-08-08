@@ -2,7 +2,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/listener/all.dart';
 
 class ActivityPage extends StatelessWidget {
   final ActivityDay activityDay;
@@ -23,21 +22,19 @@ class ActivityPage extends StatelessWidget {
           activityDay: activityDay,
           activitiesBloc: context.read<ActivitiesBloc>(),
         ),
-        child: BlocBuilder<ActivityCubit, ActivityState>(
-          builder: (context, state) {
-            final ad = state.activityDay;
+        child: BlocBuilder<ActivityCubit, ActivityDay>(
+          builder: (context, activityDay) {
             return Scaffold(
               appBar: DayAppBar(
-                day: ad.day,
+                day: activityDay.day,
               ),
               body: ActivityInfoWithDots(
-                ad,
+                activityDay,
                 previewImage: previewImage,
               ),
-              bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
+              bottomNavigationBar: _ActivityBottomAppBar(activityDay: activityDay),
             );
           },
-        ),
         ),
       ),
     );
