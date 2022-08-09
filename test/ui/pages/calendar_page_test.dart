@@ -358,7 +358,7 @@ void main() {
               Generic.createNew<MemoplannerSettingData>(
                 data: MemoplannerSettingData.fromData(
                   data: StartView.weekCalendar.index,
-                  identifier: MemoplannerSettings.functionMenuStartViewKey,
+                  identifier: FunctionSettings.functionMenuStartViewKey,
                 ),
               ),
             ];
@@ -373,7 +373,7 @@ void main() {
               Generic.createNew<MemoplannerSettingData>(
                 data: MemoplannerSettingData.fromData(
                   data: StartView.monthCalendar.index,
-                  identifier: MemoplannerSettings.functionMenuStartViewKey,
+                  identifier: FunctionSettings.functionMenuStartViewKey,
                 ),
               ),
             ];
@@ -388,7 +388,7 @@ void main() {
               Generic.createNew<MemoplannerSettingData>(
                 data: MemoplannerSettingData.fromData(
                   data: StartView.photoAlbum.index,
-                  identifier: MemoplannerSettings.functionMenuStartViewKey,
+                  identifier: FunctionSettings.functionMenuStartViewKey,
                 ),
               ),
             ];

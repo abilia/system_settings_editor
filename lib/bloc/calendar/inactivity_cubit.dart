@@ -41,20 +41,18 @@ class InactivityCubit extends Cubit<InactivityState> {
   void _ticking(DateTime time) {
     final state = this.state;
     if (state is! _NotFinalState) return;
-    final settings = settingsBloc.state;
-    final activityTimeout = settings.activityTimeout;
-    final hasTimeout = activityTimeout > Duration.zero;
+    final screensaver = settingsBloc.state.settings.functions.screensaver;
     final calendarInactivityTime =
-        hasTimeout && _calendarInactivityTime > activityTimeout
-            ? activityTimeout
+        screensaver.hasTimeOut && _calendarInactivityTime > screensaver.timeout
+            ? screensaver.timeout
             : _calendarInactivityTime;
 
     if (time
         .isAtSameMomentOrAfter(state.timeStamp.add(calendarInactivityTime))) {
       emit(CalendarInactivityThresholdReached(state.timeStamp));
     }
-    if (hasTimeout &&
-        time.isAtSameMomentOrAfter(state.timeStamp.add(activityTimeout))) {
+    if (screensaver.hasTimeOut &&
+        time.isAtSameMomentOrAfter(state.timeStamp.add(screensaver.timeout))) {
       emit(
         const HomeScreenInactivityThresholdReached(),
       );

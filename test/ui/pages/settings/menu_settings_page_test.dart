@@ -106,7 +106,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MenuSettings.showBasicTemplatesKey,
+        key: MenuSettings.showTemplatesKey,
         matcher: isFalse,
       );
     });
@@ -237,7 +237,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MenuSettings.showBasicTemplatesKey,
+            identifier: MenuSettings.showTemplatesKey,
           ),
         ),
       ];
@@ -314,7 +314,7 @@ void main() {
       Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: false,
-          identifier: MenuSettings.showBasicTemplatesKey,
+          identifier: MenuSettings.showTemplatesKey,
         ),
       ),
       Generic.createNew<MemoplannerSettingData>(

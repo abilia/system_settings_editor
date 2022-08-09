@@ -13,35 +13,39 @@ void main() {
   });
 
   test('initial state', () {
-    const settingsState = MemoplannerSettingsNotLoaded();
+    const settingsState = FunctionSettings();
     final functionSettingsCubit = FunctionSettingsCubit(
-      settingsState: settingsState,
+      functionSettings: settingsState,
       genericCubit: FakeGenericCubit(),
     );
 
     expect(
-      functionSettingsCubit.state.displayWeek,
-      settingsState.displayWeekCalendar,
+      functionSettingsCubit.state.display.week,
+      settingsState.display.week,
     );
     expect(
-      functionSettingsCubit.state.displayMonth,
-      settingsState.displayMonthCalendar,
+      functionSettingsCubit.state.display.month,
+      settingsState.display.week,
     );
     expect(
-      functionSettingsCubit.state.displayNewActivity,
-      settingsState.displayNewActivity,
+      functionSettingsCubit.state.display.newActivity,
+      settingsState.display.newActivity,
     );
     expect(
-      functionSettingsCubit.state.displayMenu,
-      settingsState.displayMenu,
+      functionSettingsCubit.state.display.menuValue,
+      settingsState.display.menuValue,
     );
     expect(
-      functionSettingsCubit.state.timeout,
-      settingsState.activityTimeout.inMilliseconds,
+      functionSettingsCubit.state.screensaver.timeout,
+      settingsState.screensaver.timeout,
     );
     expect(
-      functionSettingsCubit.state.useScreensaver,
-      settingsState.useScreensaver,
+      functionSettingsCubit.state.screensaver.use,
+      settingsState.screensaver.use,
+    );
+    expect(
+      functionSettingsCubit.state.screensaver.onlyDuringNight,
+      settingsState.screensaver.onlyDuringNight,
     );
     expect(
       functionSettingsCubit.state.startView,
@@ -51,41 +55,50 @@ void main() {
 
   test('state after all change', () {
     final functionSettingsCubit = FunctionSettingsCubit(
-      settingsState: const MemoplannerSettingsNotLoaded(),
+      functionSettings: const FunctionSettings(),
       genericCubit: FakeGenericCubit(),
     );
 
     functionSettingsCubit.changeFunctionSettings(
       functionSettingsCubit.state.copyWith(
-        displayWeek: false,
-        displayMonth: false,
-        displayNewActivity: false,
-        displayMenu: false,
-        timeout: 60000,
-        useScreensaver: true,
+        display: const DisplaySettings(
+          week: false,
+          month: false,
+          newActivity: false,
+          menuValue: false,
+        ),
+        screensaver: const ScreensaverSettings(
+          timeout: Duration(minutes: 1),
+          use: true,
+          onlyDuringNight: true,
+        ),
         startView: StartView.photoAlbum,
       ),
     );
 
-    expect(functionSettingsCubit.state.displayWeek, false);
+    expect(functionSettingsCubit.state.display.week, false);
     expect(
-      functionSettingsCubit.state.displayMonth,
+      functionSettingsCubit.state.display.month,
       false,
     );
     expect(
-      functionSettingsCubit.state.displayNewActivity,
+      functionSettingsCubit.state.display.newActivity,
       false,
     );
     expect(
-      functionSettingsCubit.state.displayMenu,
+      functionSettingsCubit.state.display.menuValue,
       false,
     );
     expect(
-      functionSettingsCubit.state.timeout,
-      60000,
+      functionSettingsCubit.state.screensaver.timeout,
+      const Duration(minutes: 1),
     );
     expect(
-      functionSettingsCubit.state.useScreensaver,
+      functionSettingsCubit.state.screensaver.use,
+      true,
+    );
+    expect(
+      functionSettingsCubit.state.screensaver.use,
       true,
     );
     expect(
@@ -97,7 +110,7 @@ void main() {
   test('Removing a display state changes start view', () {
     // Arrange
     final functionSettingsCubit = FunctionSettingsCubit(
-      settingsState: const MemoplannerSettingsNotLoaded(),
+      functionSettings: const FunctionSettings(),
       genericCubit: FakeGenericCubit(),
     );
 
@@ -110,7 +123,7 @@ void main() {
 
     // Assert
     expect(
-      functionSettingsCubit.state.displayWeek,
+      functionSettingsCubit.state.display.week,
       true,
     );
 
@@ -122,13 +135,13 @@ void main() {
     // Act -- Disable week calendar
     functionSettingsCubit.changeFunctionSettings(
       functionSettingsCubit.state.copyWith(
-        displayWeek: false,
+        display: functionSettingsCubit.state.display.copyWith(week: false),
       ),
     );
 
     // Assert -- start view fallback to day calendar
     expect(
-      functionSettingsCubit.state.displayWeek,
+      functionSettingsCubit.state.display.week,
       false,
     );
     expect(
@@ -165,7 +178,7 @@ void main() {
     // Act -- disable month calendar
     functionSettingsCubit.changeFunctionSettings(
       functionSettingsCubit.state.copyWith(
-        displayMonth: false,
+        display: functionSettingsCubit.state.display.copyWith(month: false),
       ),
     );
 
@@ -191,7 +204,7 @@ void main() {
     // Act -- disable month calendar
     functionSettingsCubit.changeFunctionSettings(
       functionSettingsCubit.state.copyWith(
-        displayMenu: false,
+        display: functionSettingsCubit.state.display.copyWith(menuValue: false),
       ),
     );
 
@@ -205,19 +218,24 @@ void main() {
   test('saving', () async {
     final genericCubit = MockGenericCubit();
     final functionSettingsCubit = FunctionSettingsCubit(
-      settingsState: const MemoplannerSettingsNotLoaded(),
+      functionSettings: const FunctionSettings(),
       genericCubit: genericCubit,
     );
 
     functionSettingsCubit.changeFunctionSettings(
       functionSettingsCubit.state.copyWith(
-        displayWeek: false,
-        displayMonth: false,
-        displayNewActivity: false,
-        displayNewTimer: false,
-        displayMenu: false,
-        timeout: 0,
-        useScreensaver: true,
+        display: const DisplaySettings(
+          week: false,
+          month: false,
+          newActivity: false,
+          newTimer: false,
+          menuValue: false,
+        ),
+        screensaver: const ScreensaverSettings(
+          timeout: Duration.zero,
+          use: true,
+          onlyDuringNight: true,
+        ),
         startView: StartView.photoAlbum,
       ),
     );
@@ -225,34 +243,37 @@ void main() {
     final expectedSettingsData = [
       MemoplannerSettingData<dynamic>.fromData(
         data: false,
-        identifier: MemoplannerSettings.functionMenuDisplayWeekKey,
+        identifier: DisplaySettings.functionMenuDisplayWeekKey,
       ),
       MemoplannerSettingData<dynamic>.fromData(
         data: false,
-        identifier: MemoplannerSettings.functionMenuDisplayMonthKey,
+        identifier: DisplaySettings.functionMenuDisplayMonthKey,
       ),
       MemoplannerSettingData<dynamic>.fromData(
         data: false,
-        identifier: MemoplannerSettings.functionMenuDisplayNewActivityKey,
+        identifier: DisplaySettings.functionMenuDisplayNewActivityKey,
       ),
       MemoplannerSettingData<dynamic>.fromData(
         data: false,
-        identifier: MemoplannerSettings.functionMenuDisplayNewTimerKey,
+        identifier: DisplaySettings.functionMenuDisplayNewTimerKey,
       ),
       MemoplannerSettingData<dynamic>.fromData(
-          data: false,
-          identifier: MemoplannerSettings.functionMenuDisplayMenuKey),
+          data: false, identifier: DisplaySettings.functionMenuDisplayMenuKey),
       MemoplannerSettingData<dynamic>.fromData(
         data: 0,
-        identifier: MemoplannerSettings.activityTimeoutKey,
+        identifier: ScreensaverSettings.activityTimeoutKey,
       ),
       MemoplannerSettingData<dynamic>.fromData(
         data: false, // if timeout is 0 screensaver should be false
-        identifier: MemoplannerSettings.useScreensaverKey,
+        identifier: ScreensaverSettings.useScreensaverKey,
+      ),
+      MemoplannerSettingData<dynamic>.fromData(
+        data: true,
+        identifier: ScreensaverSettings.screenSaverOnlyDuringNightKey,
       ),
       MemoplannerSettingData<dynamic>.fromData(
         data: StartView.photoAlbum.index,
-        identifier: MemoplannerSettings.functionMenuStartViewKey,
+        identifier: FunctionSettings.functionMenuStartViewKey,
       ),
     ];
 

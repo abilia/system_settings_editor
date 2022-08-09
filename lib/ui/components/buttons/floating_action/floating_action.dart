@@ -67,9 +67,6 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
           previous.displayEyeButton != current.displayEyeButton ||
-          previous.displayAlarmButton != current.displayAlarmButton ||
-          previous.calendarCount != current.calendarCount ||
-          previous.monthCalendarTabIndex != current.monthCalendarTabIndex ||
           previous.alarm.showAlarmOnOffSwitch !=
               current.alarm.showAlarmOnOffSwitch,
       builder: (context, state) {

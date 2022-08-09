@@ -90,10 +90,14 @@ void main() {
           'When timeout is reached, screen saver is false, app switches to WeekCalendar',
           (tester) async {
         when(() => mockSettingBloc.state).thenReturn(
-          MemoplannerSettingsLoaded(
+          const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              functionMenuStartView: StartView.weekCalendar.index,
-              useScreensaver: false,
+              functions: FunctionSettings(
+                startView: StartView.weekCalendar,
+                screensaver: ScreensaverSettings(
+                  use: false,
+                ),
+              ),
             ),
           ),
         );
@@ -108,10 +112,14 @@ void main() {
           'When timeout is reached, screen saver is false, app switches to MonthCalendar',
           (tester) async {
         when(() => mockSettingBloc.state).thenReturn(
-          MemoplannerSettingsLoaded(
+          const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              functionMenuStartView: StartView.monthCalendar.index,
-              useScreensaver: false,
+              functions: FunctionSettings(
+                startView: StartView.monthCalendar,
+                screensaver: ScreensaverSettings(
+                  use: false,
+                ),
+              ),
             ),
           ),
         );
@@ -128,10 +136,14 @@ void main() {
           'When timeout is reached, screen saver is false, app switches to Menu',
           (tester) async {
         when(() => mockSettingBloc.state).thenReturn(
-          MemoplannerSettingsLoaded(
+          const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              functionMenuStartView: StartView.menu.index,
-              useScreensaver: false,
+              functions: FunctionSettings(
+                startView: StartView.menu,
+                screensaver: ScreensaverSettings(
+                  use: false,
+                ),
+              ),
             ),
           ),
         );
@@ -148,10 +160,14 @@ void main() {
           'When timeout is reached, screen saver is false, app switches to PhotoCalendar',
           (tester) async {
         when(() => mockSettingBloc.state).thenReturn(
-          MemoplannerSettingsLoaded(
+          const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              functionMenuStartView: StartView.photoAlbum.index,
-              useScreensaver: false,
+              functions: FunctionSettings(
+                startView: StartView.photoAlbum,
+                screensaver: ScreensaverSettings(
+                  use: false,
+                ),
+              ),
             ),
           ),
         );
@@ -168,10 +184,14 @@ void main() {
           'When timeout is reached, screen saver is true, app switches to ScreenSaver',
           (tester) async {
         when(() => mockSettingBloc.state).thenReturn(
-          MemoplannerSettingsLoaded(
+          const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              functionMenuStartView: StartView.menu.index,
-              useScreensaver: true,
+              functions: FunctionSettings(
+                startView: StartView.menu,
+                screensaver: ScreensaverSettings(
+                  use: true,
+                ),
+              ),
             ),
           ),
         );
@@ -188,10 +208,14 @@ void main() {
           'When timeout is reached, screen saver is false, '
           'app switches to DayCalendar from Menu', (tester) async {
         when(() => mockSettingBloc.state).thenReturn(
-          MemoplannerSettingsLoaded(
+          const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              functionMenuStartView: StartView.dayCalendar.index,
-              useScreensaver: false,
+              functions: FunctionSettings(
+                startView: StartView.dayCalendar,
+                screensaver: ScreensaverSettings(
+                  use: false,
+                ),
+              ),
             ),
           ),
         );
@@ -252,21 +276,21 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: minutes.minutes().inMilliseconds,
-            identifier: MemoplannerSettings.activityTimeoutKey,
+            identifier: ScreensaverSettings.activityTimeoutKey,
           ),
         );
     Generic startViewGeneric(StartView startView) =>
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: startView.index,
-            identifier: MemoplannerSettings.functionMenuStartViewKey,
+            identifier: FunctionSettings.functionMenuStartViewKey,
           ),
         );
 
     final useScreensaverGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(
         data: true,
-        identifier: MemoplannerSettings.useScreensaverKey,
+        identifier: ScreensaverSettings.useScreensaverKey,
       ),
     );
 

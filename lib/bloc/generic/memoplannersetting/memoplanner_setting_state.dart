@@ -27,26 +27,12 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get displayHourLines => settings.settingDisplayHourLines;
   bool get displayTimeline => settings.settingDisplayTimeline;
   bool get columnOfDots => settings.settingTimePillarTimeline;
-  bool get displayWeekCalendar => settings.functionMenuDisplayWeek;
-  bool get displayMonthCalendar => settings.functionMenuDisplayMonth;
-  bool get displayOnlyDayCalendar =>
-      !displayWeekCalendar && !displayMonthCalendar;
-  bool get displayBottomBar =>
-      displayMenu ||
-      displayNewActivity ||
-      displayMonthCalendar ||
-      displayWeekCalendar ||
-      displayNewTimer;
-  bool get displayNewActivity => settings.functionMenuDisplayNewActivity;
-  bool get displayNewTimer => settings.functionMenuDisplayNewTimer;
-  bool get displayMenu =>
-      settings.functionMenuDisplayMenu && !settings.menu.allDisabled;
-  bool get useScreensaver => settings.useScreensaver;
   bool get displayLocalImages => settings.imageMenuDisplayPhotoItem;
   bool get displayCamera => settings.imageMenuDisplayCameraItem;
   bool get displayMyPhotos => settings.imageMenuDisplayMyPhotosItem;
 
-  bool get settingsInaccessible => !displayMenu || !settings.menu.showSettings;
+  bool get settingsInaccessible =>
+      !settings.functions.display.menu || !settings.menu.showSettings;
 
   bool get dotsInTimepillar => settings.dotsInTimepillar;
   bool get settingViewOptionsTimeView => settings.settingViewOptionsTimeView;
@@ -80,22 +66,12 @@ abstract class MemoplannerSettingsState extends Equatable {
   int get dayStart => settings.dayIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
-  Duration get activityTimeout =>
-      Duration(milliseconds: settings.activityTimeout);
-
-  int get weekCalendarTabIndex => (displayWeekCalendar ? 1 : 0);
-  int get monthCalendarTabIndex =>
-      weekCalendarTabIndex + (displayMonthCalendar ? 1 : 0);
-  int get menuTabIndex => monthCalendarTabIndex + (displayMenu ? 1 : 0);
-  int get photoAlbumTabIndex => menuTabIndex + 1;
-  int get calendarCount => photoAlbumTabIndex + 1;
 
   DayColor get calendarDayColor => DayColor.values[settings.calendarDayColor];
   TimepillarIntervalType get timepillarIntervalType =>
       TimepillarIntervalType.values[settings.viewOptionsTimeInterval];
   DayCalendarType get dayCalendarType => DayCalendarType.values[
       min(settings.viewOptionsTimeView, DayCalendarType.values.length - 1)];
-  StartView get startView => StartView.values[settings.functionMenuStartView];
   TimepillarZoom get timepillarZoom =>
       TimepillarZoom.values[settings.viewOptionsZoom];
   ClockType get clockType => ClockType.values[settings.settingClockType];
@@ -198,30 +174,6 @@ abstract class MemoplannerSettingsState extends Equatable {
           );
         }
     }
-  }
-
-  int get startViewIndex {
-    switch (startView) {
-      case StartView.weekCalendar:
-        if (displayWeekCalendar) {
-          return weekCalendarTabIndex;
-        }
-        break;
-      case StartView.monthCalendar:
-        if (displayMonthCalendar) {
-          return monthCalendarTabIndex;
-        }
-        break;
-      case StartView.menu:
-        if (displayMenu) {
-          return menuTabIndex;
-        }
-        break;
-      case StartView.photoAlbum:
-        return photoAlbumTabIndex;
-      default:
-    }
-    return 0;
   }
 
   DayParts get dayParts => DayParts(

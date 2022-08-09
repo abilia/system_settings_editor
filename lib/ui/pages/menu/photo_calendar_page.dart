@@ -9,7 +9,9 @@ class PhotoCalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _layout = layout.photoCalendarLayout;
-    final settingsState = context.read<MemoplannerSettingBloc>().state;
+    final functions = context
+        .select((MemoplannerSettingBloc bloc) => bloc.state.settings.functions);
+    final display = functions.display;
     final clockType = context
         .select((MemoplannerSettingBloc settings) => settings.state.clockType);
     final calendarDayColor = context.select(
@@ -26,8 +28,7 @@ class PhotoCalendarPage extends StatelessWidget {
       data: theme.theme,
       child: WillPopScope(
         onWillPop: () async {
-          final index =
-              settingsState.displayMenu ? settingsState.menuTabIndex : 0;
+          final index = display.menu ? display.menuTabIndex : 0;
           DefaultTabController.of(context)?.index = index;
           return false;
         },
@@ -72,14 +73,12 @@ class PhotoCalendarPage extends StatelessWidget {
                               : actionButtonStyleDark,
                           onPressed: () {
                             final index =
-                                settingsState.startView == StartView.photoAlbum
+                                functions.startView == StartView.photoAlbum
                                     ? 0
-                                    : settingsState.startViewIndex;
+                                    : functions.startViewIndex;
                             DefaultTabController.of(context)?.index = index;
                           },
-                          child: Icon(
-                            settingsState.startView.icon,
-                          ),
+                          child: Icon(functions.startView.icon),
                         ),
                       ),
                     ],

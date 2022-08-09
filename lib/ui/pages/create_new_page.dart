@@ -24,9 +24,11 @@ class CreateNewPage extends StatelessWidget {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoplannerSettingsState) {
         final displayNewActivity =
-            memoplannerSettingsState.displayNewActivity && showActivities;
+            memoplannerSettingsState.settings.functions.display.newActivity &&
+                showActivities;
         final displayNewTimer =
-            memoplannerSettingsState.displayNewTimer && showTimers;
+            memoplannerSettingsState.settings.functions.display.newTimer &&
+                showTimers;
 
         return Scaffold(
           appBar: _appBar(t, displayNewActivity, displayNewTimer),

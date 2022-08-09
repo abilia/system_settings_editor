@@ -54,14 +54,6 @@ class MemoplannerSettings extends Equatable {
       viewOptionsZoomKey = 'view_options_zoom',
       viewOptionsTimeViewKey = 'view_options_time_view',
       dotsInTimepillarKey = 'dots_in_timepillar',
-      functionMenuDisplayWeekKey = 'function_menu_display_week',
-      functionMenuDisplayMonthKey = 'function_menu_display_month',
-      functionMenuDisplayNewActivityKey = 'function_menu_display_new_activity',
-      functionMenuDisplayNewTimerKey = 'function_menu_display_new_timer',
-      functionMenuDisplayMenuKey = 'function_menu_display_menu',
-      activityTimeoutKey = 'activity_timeout',
-      useScreensaverKey = 'use_screensaver',
-      functionMenuStartViewKey = 'function_menu_start_view',
       imageMenuDisplayPhotoItemKey = 'image_menu_display_photo_item',
       imageMenuDisplayCameraItemKey = 'image_menu_display_camera_item',
       imageMenuDisplayMyPhotosItemKey = 'image_menu_display_my_photos_item',
@@ -96,12 +88,6 @@ class MemoplannerSettings extends Equatable {
       settingDisplayHourLines,
       settingDisplayTimeline,
       dotsInTimepillar,
-      functionMenuDisplayWeek,
-      functionMenuDisplayMonth,
-      functionMenuDisplayNewActivity,
-      functionMenuDisplayNewTimer,
-      functionMenuDisplayMenu,
-      useScreensaver,
       imageMenuDisplayPhotoItem,
       imageMenuDisplayCameraItem,
       imageMenuDisplayMyPhotosItem,
@@ -122,8 +108,6 @@ class MemoplannerSettings extends Equatable {
       weekDisplayShowFullWeek,
       weekDisplayShowColorMode,
       calendarMonthViewShowColors,
-      activityTimeout,
-      functionMenuStartView,
       settingClockType,
       activityDefaultAlarmType;
 
@@ -139,6 +123,7 @@ class MemoplannerSettings extends Equatable {
   final MenuSettings menu;
   final EditActivitySettings editActivity;
   final AddActivitySettings addActivity;
+  final FunctionSettings functions;
 
   const MemoplannerSettings({
     this.displayAlarmButton = true,
@@ -185,14 +170,6 @@ class MemoplannerSettings extends Equatable {
     this.viewOptionsTimeView = 1,
     this.viewOptionsZoom = 1,
     this.alarm = const AlarmSettings(),
-    this.functionMenuDisplayWeek = true,
-    this.functionMenuDisplayMonth = true,
-    this.functionMenuDisplayNewActivity = true,
-    this.functionMenuDisplayNewTimer = true,
-    this.functionMenuDisplayMenu = true,
-    this.activityTimeout = 0,
-    this.useScreensaver = false,
-    this.functionMenuStartView = 0,
     this.settingClockType = 0,
     this.settingTimePillarTimeline = false,
     this.settingViewOptionsTimeView = true,
@@ -205,6 +182,7 @@ class MemoplannerSettings extends Equatable {
     this.keepScreenAwakeSettings = const KeepScreenAwakeSettings(),
     this.editActivity = const EditActivitySettings(),
     this.addActivity = const AddActivitySettings(),
+    this.functions = const FunctionSettings(),
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -297,25 +275,6 @@ class MemoplannerSettings extends Equatable {
       settingDisplayTimeline: settings.getBool(
         settingDisplayTimelineKey,
       ),
-      functionMenuDisplayWeek: settings.getBool(
-        functionMenuDisplayWeekKey,
-      ),
-      functionMenuDisplayMonth: settings.getBool(
-        functionMenuDisplayMonthKey,
-      ),
-      functionMenuDisplayNewActivity: settings.getBool(
-        functionMenuDisplayNewActivityKey,
-      ),
-      functionMenuDisplayNewTimer: settings.getBool(
-        functionMenuDisplayNewTimerKey,
-      ),
-      functionMenuDisplayMenu: settings.getBool(
-        functionMenuDisplayMenuKey,
-      ),
-      useScreensaver: settings.getBool(
-        useScreensaverKey,
-        defaultValue: false,
-      ),
       imageMenuDisplayPhotoItem: settings.getBool(
         imageMenuDisplayPhotoItemKey,
       ),
@@ -344,14 +303,6 @@ class MemoplannerSettings extends Equatable {
       nightIntervalStart: settings.parse(
         nightIntervalStartKey,
         DayParts.nightDefault,
-      ),
-      activityTimeout: settings.parse(
-        activityTimeoutKey,
-        0,
-      ),
-      functionMenuStartView: settings.parse(
-        functionMenuStartViewKey,
-        0,
       ),
       settingClockType: settings.parse(
         settingClockTypeKey,
@@ -413,6 +364,7 @@ class MemoplannerSettings extends Equatable {
           KeepScreenAwakeSettings.fromSettingsMap(settings),
       editActivity: EditActivitySettings.fromSettingsMap(settings),
       addActivity: AddActivitySettings.fromSettingsMap(settings),
+      functions: FunctionSettings.fromSettingsMap(settings),
     );
   }
 
@@ -459,14 +411,6 @@ class MemoplannerSettings extends Equatable {
         dotsInTimepillar,
         viewOptionsZoom,
         alarm,
-        functionMenuDisplayWeek,
-        functionMenuDisplayMonth,
-        functionMenuDisplayNewActivity,
-        functionMenuDisplayNewTimer,
-        functionMenuDisplayMenu,
-        activityTimeout,
-        useScreensaver,
-        functionMenuStartView,
         imageMenuDisplayPhotoItem,
         imageMenuDisplayCameraItem,
         imageMenuDisplayMyPhotosItem,
@@ -482,6 +426,7 @@ class MemoplannerSettings extends Equatable {
         keepScreenAwakeSettings,
         editActivity,
         addActivity,
+        functions,
       ];
 }
 

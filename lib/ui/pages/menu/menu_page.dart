@@ -32,7 +32,7 @@ class MenuPage extends StatelessWidget {
                   if (menu.showPhotos) const MyPhotosButton(),
                   if (menu.photoCalendarEnabled) const PhotoCalendarButton(),
                   if (menu.quickSettingsEnabled) const QuickSettingsButton(),
-                  if (menu.showBasicTemplates) const BasicTemplatesButton(),
+                  if (menu.showTemplates) const BasicTemplatesButton(),
                   if (menu.showSettings) const SettingsButton(),
                 ],
               ),
@@ -141,9 +141,14 @@ class PhotoCalendarButton extends StatelessWidget {
     return MenuItemButton(
       icon: AbiliaIcons.photoCalendar,
       onPressed: () {
-        final settingsState = context.read<MemoplannerSettingBloc>().state;
-        DefaultTabController.of(context)?.index =
-            settingsState.photoAlbumTabIndex;
+        final photoAlbumTabIndex = context
+            .read<MemoplannerSettingBloc>()
+            .state
+            .settings
+            .functions
+            .display
+            .photoAlbumTabIndex;
+        DefaultTabController.of(context)?.index = photoAlbumTabIndex;
       },
       style: blueMenuButtonStyle,
       text: Translator.of(context).translate.photoCalendar,
