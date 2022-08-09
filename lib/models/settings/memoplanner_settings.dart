@@ -36,20 +36,6 @@ class MemoplannerSettings extends Equatable {
       monthCaptionShowYearKey = 'month_caption_show_year',
       monthCaptionShowClockKey = 'month_caption_show_clock',
       calendarMonthViewShowColorsKey = 'calendar_month_view_show_colors',
-      morningIntervalStartKey = 'morning_interval_start',
-      forenoonIntervalStartKey = 'forenoon_interval_start',
-      eveningIntervalStartKey = 'evening_interval_start',
-      nightIntervalStartKey = 'night_interval_start',
-      calendarActivityTypeLeftKey = 'calendar_activity_type_left',
-      calendarActivityTypeRightKey = 'calendar_activity_type_right',
-      calendarActivityTypeLeftImageKey = 'calendar_activity_type_image_left',
-      calendarActivityTypeRightImageKey = 'calendar_activity_type_image_right',
-      calendarActivityTypeShowTypesKey = 'calendar_activity_type_show_types',
-      calendarActivityTypeShowColorKey = 'calendar_activity_type_show_color',
-      calendarDayColorKey = 'calendar_daycolor',
-      setting12hTimeFormatTimelineKey = 'setting_12h_time_format_timeline',
-      settingDisplayHourLinesKey = 'setting_display_hour_lines',
-      settingDisplayTimelineKey = 'setting_display_line_timeline',
       viewOptionsTimeIntervalKey = 'view_options_time_interval',
       viewOptionsZoomKey = 'view_options_zoom',
       viewOptionsTimeViewKey = 'view_options_time_view',
@@ -57,8 +43,6 @@ class MemoplannerSettings extends Equatable {
       imageMenuDisplayPhotoItemKey = 'image_menu_display_photo_item',
       imageMenuDisplayCameraItemKey = 'image_menu_display_camera_item',
       imageMenuDisplayMyPhotosItemKey = 'image_menu_display_my_photos_item',
-      settingClockTypeKey = 'setting_clock_type',
-      settingTimePillarTimelineKey = 'setting_time_pillar_timeline',
       settingViewOptionsTimeViewKey = 'setting_view_options_time_view',
       settingViewOptionsTimeIntervalKey = 'setting_view_options_time_interval',
       settingViewOptionsZoomKey = 'setting_view_options_zoom',
@@ -82,39 +66,22 @@ class MemoplannerSettings extends Equatable {
       monthCaptionShowMonthButtons,
       monthCaptionShowYear,
       monthCaptionShowClock,
-      calendarActivityTypeShowTypes,
-      calendarActivityTypeShowColor,
-      setting12hTimeFormatTimeline,
-      settingDisplayHourLines,
-      settingDisplayTimeline,
       dotsInTimepillar,
       imageMenuDisplayPhotoItem,
       imageMenuDisplayCameraItem,
       imageMenuDisplayMyPhotosItem,
-      settingTimePillarTimeline,
       settingViewOptionsTimeView,
       settingViewOptionsTimeInterval,
       settingViewOptionsZoom,
       settingViewOptionsDurationDots;
 
-  final int morningIntervalStart,
-      dayIntervalStart,
-      eveningIntervalStart,
-      nightIntervalStart,
-      calendarDayColor,
-      viewOptionsTimeInterval,
+  final int viewOptionsTimeInterval,
       viewOptionsTimeView,
       viewOptionsZoom,
       weekDisplayShowFullWeek,
       weekDisplayShowColorMode,
       calendarMonthViewShowColors,
-      settingClockType,
       activityDefaultAlarmType;
-
-  final String calendarActivityTypeLeft,
-      calendarActivityTypeRight,
-      calendarActivityTypeLeftImage,
-      calendarActivityTypeRightImage;
 
   final AlarmSettings alarm;
   final StepByStepSettings stepByStep;
@@ -124,6 +91,7 @@ class MemoplannerSettings extends Equatable {
   final EditActivitySettings editActivity;
   final AddActivitySettings addActivity;
   final FunctionSettings functions;
+  final GeneralCalendarSettings calendar;
 
   const MemoplannerSettings({
     this.displayAlarmButton = true,
@@ -152,26 +120,10 @@ class MemoplannerSettings extends Equatable {
     this.imageMenuDisplayPhotoItem = true,
     this.imageMenuDisplayCameraItem = true,
     this.imageMenuDisplayMyPhotosItem = true,
-    this.setting12hTimeFormatTimeline = false,
-    this.settingDisplayHourLines = false,
-    this.settingDisplayTimeline = true,
-    this.morningIntervalStart = DayParts.morningDefault,
-    this.dayIntervalStart = DayParts.dayDefault,
-    this.eveningIntervalStart = DayParts.eveningDefault,
-    this.nightIntervalStart = DayParts.nightDefault,
-    this.calendarActivityTypeLeft = '',
-    this.calendarActivityTypeRight = '',
-    this.calendarActivityTypeLeftImage = '',
-    this.calendarActivityTypeRightImage = '',
-    this.calendarActivityTypeShowTypes = true,
-    this.calendarActivityTypeShowColor = true,
-    this.calendarDayColor = 0,
     this.viewOptionsTimeInterval = 1,
     this.viewOptionsTimeView = 1,
     this.viewOptionsZoom = 1,
     this.alarm = const AlarmSettings(),
-    this.settingClockType = 0,
-    this.settingTimePillarTimeline = false,
     this.settingViewOptionsTimeView = true,
     this.settingViewOptionsTimeInterval = true,
     this.settingViewOptionsZoom = true,
@@ -183,6 +135,7 @@ class MemoplannerSettings extends Equatable {
     this.editActivity = const EditActivitySettings(),
     this.addActivity = const AddActivitySettings(),
     this.functions = const FunctionSettings(),
+    this.calendar = const GeneralCalendarSettings(),
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -258,23 +211,6 @@ class MemoplannerSettings extends Equatable {
         calendarMonthViewShowColorsKey,
         WeekColor.columns.index,
       ),
-      calendarActivityTypeShowTypes: settings.getBool(
-        calendarActivityTypeShowTypesKey,
-      ),
-      calendarActivityTypeShowColor: settings.getBool(
-        calendarActivityTypeShowColorKey,
-      ),
-      setting12hTimeFormatTimeline: settings.getBool(
-        setting12hTimeFormatTimelineKey,
-        defaultValue: false,
-      ),
-      settingDisplayHourLines: settings.getBool(
-        settingDisplayHourLinesKey,
-        defaultValue: false,
-      ),
-      settingDisplayTimeline: settings.getBool(
-        settingDisplayTimelineKey,
-      ),
       imageMenuDisplayPhotoItem: settings.getBool(
         imageMenuDisplayPhotoItemKey,
       ),
@@ -283,50 +219,6 @@ class MemoplannerSettings extends Equatable {
       ),
       imageMenuDisplayMyPhotosItem: settings.getBool(
         imageMenuDisplayMyPhotosItemKey,
-      ),
-      settingTimePillarTimeline: settings.getBool(
-        settingTimePillarTimelineKey,
-        defaultValue: false,
-      ),
-      morningIntervalStart: settings.parse(
-        morningIntervalStartKey,
-        DayParts.morningDefault,
-      ),
-      dayIntervalStart: settings.parse(
-        forenoonIntervalStartKey,
-        DayParts.dayDefault,
-      ),
-      eveningIntervalStart: settings.parse(
-        eveningIntervalStartKey,
-        DayParts.eveningDefault,
-      ),
-      nightIntervalStart: settings.parse(
-        nightIntervalStartKey,
-        DayParts.nightDefault,
-      ),
-      settingClockType: settings.parse(
-        settingClockTypeKey,
-        0,
-      ),
-      calendarActivityTypeLeft: settings.parse<String>(
-        calendarActivityTypeLeftKey,
-        '',
-      ),
-      calendarActivityTypeRight: settings.parse<String>(
-        calendarActivityTypeRightKey,
-        '',
-      ),
-      calendarActivityTypeLeftImage: settings.parse<String>(
-        calendarActivityTypeLeftImageKey,
-        '',
-      ),
-      calendarActivityTypeRightImage: settings.parse<String>(
-        calendarActivityTypeRightImageKey,
-        '',
-      ),
-      calendarDayColor: settings.parse(
-        calendarDayColorKey,
-        0,
       ),
       viewOptionsTimeInterval: settings.parse(
         viewOptionsTimeIntervalKey,
@@ -365,6 +257,7 @@ class MemoplannerSettings extends Equatable {
       editActivity: EditActivitySettings.fromSettingsMap(settings),
       addActivity: AddActivitySettings.fromSettingsMap(settings),
       functions: FunctionSettings.fromSettingsMap(settings),
+      calendar: GeneralCalendarSettings.fromSettingsMap(settings),
     );
   }
 
@@ -392,20 +285,6 @@ class MemoplannerSettings extends Equatable {
         monthCaptionShowYear,
         monthCaptionShowClock,
         calendarMonthViewShowColors,
-        setting12hTimeFormatTimeline,
-        settingDisplayHourLines,
-        settingDisplayTimeline,
-        morningIntervalStart,
-        dayIntervalStart,
-        eveningIntervalStart,
-        nightIntervalStart,
-        calendarActivityTypeLeft,
-        calendarActivityTypeRight,
-        calendarActivityTypeLeftImage,
-        calendarActivityTypeRightImage,
-        calendarActivityTypeShowTypes,
-        calendarActivityTypeShowColor,
-        calendarDayColor,
         viewOptionsTimeInterval,
         viewOptionsTimeView,
         dotsInTimepillar,
@@ -414,8 +293,6 @@ class MemoplannerSettings extends Equatable {
         imageMenuDisplayPhotoItem,
         imageMenuDisplayCameraItem,
         imageMenuDisplayMyPhotosItem,
-        settingClockType,
-        settingTimePillarTimeline,
         settingViewOptionsTimeView,
         settingViewOptionsTimeInterval,
         settingViewOptionsZoom,
@@ -427,6 +304,7 @@ class MemoplannerSettings extends Equatable {
         editActivity,
         addActivity,
         functions,
+        calendar,
       ];
 }
 

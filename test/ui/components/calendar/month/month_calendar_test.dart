@@ -316,8 +316,7 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: false,
-                identifier:
-                    MemoplannerSettings.calendarActivityTypeShowTypesKey,
+                identifier: CategoriesSetting.calendarActivityTypeShowTypesKey,
               ),
             ),
           ],

@@ -1,9 +1,15 @@
 import 'package:equatable/equatable.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/datetime.dart';
 
 enum DayPart { morning, day, evening, night }
 
 class DayParts extends Equatable {
+  static const morningIntervalStartKey = 'morning_interval_start',
+      forenoonIntervalStartKey = 'forenoon_interval_start',
+      eveningIntervalStartKey = 'evening_interval_start',
+      nightIntervalStartKey = 'night_interval_start';
+
   static const int morningDefault = 6 * Duration.millisecondsPerHour,
       dayDefault = 10 * Duration.millisecondsPerHour,
       afternoonDefault = 12 * Duration.millisecondsPerHour,
@@ -28,29 +34,12 @@ class DayParts extends Equatable {
 
   final int morningStart, dayStart, eveningStart, nightStart;
 
-  factory DayParts.standard() => DayParts(
-        morningStart: DayParts.morningDefault,
-        dayStart: DayParts.dayDefault,
-        eveningStart: DayParts.eveningDefault,
-        nightStart: DayParts.nightDefault,
-      );
-
-  DayParts({
+  const DayParts({
     this.morningStart = morningDefault,
     this.dayStart = dayDefault,
     this.eveningStart = eveningDefault,
     this.nightStart = nightDefault,
-  })  : assert(morningStart >= morningLimit.min),
-        assert(morningStart <= morningLimit.max),
-        assert(morningStart <= dayStart - Duration.millisecondsPerHour),
-        assert(dayStart >= dayLimit.min),
-        assert(dayStart <= dayLimit.max),
-        assert(dayStart <= eveningStart - Duration.millisecondsPerHour),
-        assert(eveningStart >= eveningLimit.min),
-        assert(eveningStart <= eveningLimit.max),
-        assert(eveningStart <= nightStart - Duration.millisecondsPerHour),
-        assert(nightStart >= nightLimit.min),
-        assert(nightStart <= nightLimit.max);
+  });
 
   int fromDayPart(DayPart dayPart) {
     switch (dayPart) {
@@ -67,6 +56,50 @@ class DayParts extends Equatable {
 
   DateTime nightEnd(DateTime day) => day.nextDay().add(morning);
   DateTime nightBegins(DateTime day) => day.add(night);
+
+  bool atMax(DayPart part) => fromDayPart(part) >= DayParts.limits[part]!.max;
+  bool atMin(DayPart part) => fromDayPart(part) <= DayParts.limits[part]!.min;
+
+  factory DayParts.fromSettingsMap(
+    Map<String, MemoplannerSettingData> settings,
+  ) =>
+      DayParts(
+        morningStart: settings.parse(
+          morningIntervalStartKey,
+          DayParts.morningDefault,
+        ),
+        dayStart: settings.parse(
+          forenoonIntervalStartKey,
+          DayParts.dayDefault,
+        ),
+        eveningStart: settings.parse(
+          eveningIntervalStartKey,
+          DayParts.eveningDefault,
+        ),
+        nightStart: settings.parse(
+          nightIntervalStartKey,
+          DayParts.nightDefault,
+        ),
+      );
+
+  List<MemoplannerSettingData> get memoplannerSettingData => [
+        MemoplannerSettingData.fromData(
+          data: morningStart,
+          identifier: DayParts.morningIntervalStartKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: dayStart,
+          identifier: DayParts.forenoonIntervalStartKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: eveningStart,
+          identifier: DayParts.eveningIntervalStartKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: nightStart,
+          identifier: DayParts.nightIntervalStartKey,
+        ),
+      ];
 
   @override
   List<Object> get props => [

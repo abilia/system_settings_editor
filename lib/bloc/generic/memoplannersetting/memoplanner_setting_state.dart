@@ -20,13 +20,13 @@ abstract class MemoplannerSettingsState extends Equatable {
       activityDisplayDate ||
       activityDisplayClock ||
       dayCaptionShowDayButtons;
-  bool get showCategories => settings.calendarActivityTypeShowTypes;
+  bool get showCategories => settings.calendar.categories.show;
   bool get showCategoryColor =>
-      showCategories && settings.calendarActivityTypeShowColor;
-  bool get timepillar12HourFormat => settings.setting12hTimeFormatTimeline;
-  bool get displayHourLines => settings.settingDisplayHourLines;
-  bool get displayTimeline => settings.settingDisplayTimeline;
-  bool get columnOfDots => settings.settingTimePillarTimeline;
+      showCategories && settings.calendar.categories.colors;
+  bool get timepillar12HourFormat => settings.calendar.timepillar.use12h;
+  bool get displayHourLines => settings.calendar.timepillar.hourLines;
+  bool get displayTimeline => settings.calendar.timepillar.timeline;
+  bool get columnOfDots => settings.calendar.timepillar.columnOfDots;
   bool get displayLocalImages => settings.imageMenuDisplayPhotoItem;
   bool get displayCamera => settings.imageMenuDisplayCameraItem;
   bool get displayMyPhotos => settings.imageMenuDisplayMyPhotosItem;
@@ -62,19 +62,19 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   int get defaultAlarmTypeSetting => settings.activityDefaultAlarmType;
 
-  int get morningStart => settings.morningIntervalStart;
-  int get dayStart => settings.dayIntervalStart;
-  int get eveningStart => settings.eveningIntervalStart;
-  int get nightStart => settings.nightIntervalStart;
+  int get morningStart => settings.calendar.dayParts.morningStart;
+  int get dayStart => settings.calendar.dayParts.dayStart;
+  int get eveningStart => settings.calendar.dayParts.eveningStart;
+  int get nightStart => settings.calendar.dayParts.nightStart;
 
-  DayColor get calendarDayColor => DayColor.values[settings.calendarDayColor];
+  DayColor get calendarDayColor => settings.calendar.dayColor;
   TimepillarIntervalType get timepillarIntervalType =>
       TimepillarIntervalType.values[settings.viewOptionsTimeInterval];
   DayCalendarType get dayCalendarType => DayCalendarType.values[
       min(settings.viewOptionsTimeView, DayCalendarType.values.length - 1)];
   TimepillarZoom get timepillarZoom =>
       TimepillarZoom.values[settings.viewOptionsZoom];
-  ClockType get clockType => ClockType.values[settings.settingClockType];
+  ClockType get clockType => settings.calendar.clockType;
 
   AlarmSettings get alarm => settings.alarm;
 
@@ -183,10 +183,10 @@ abstract class MemoplannerSettingsState extends Equatable {
         nightStart: nightStart,
       );
 
-  String get leftCategoryName => settings.calendarActivityTypeLeft;
-  String get rightCategoryName => settings.calendarActivityTypeRight;
-  String get leftCategoryImage => settings.calendarActivityTypeLeftImage;
-  String get rightCategoryImage => settings.calendarActivityTypeRightImage;
+  String get leftCategoryName => settings.calendar.categories.left.name;
+  String get rightCategoryName => settings.calendar.categories.right.name;
+  String get leftCategoryImage => settings.calendar.categories.left.image.id;
+  String get rightCategoryImage => settings.calendar.categories.right.image.id;
 
   @override
   List<Object> get props => settings.props;

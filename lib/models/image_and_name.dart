@@ -6,7 +6,7 @@ class ImageAndName extends Equatable {
   final AbiliaFile image;
   const ImageAndName(this.name, this.image);
 
-  static ImageAndName get empty => const ImageAndName('', AbiliaFile.empty);
+  static const ImageAndName empty = ImageAndName('', AbiliaFile.empty);
 
   ImageAndName copyWith({
     String? name,

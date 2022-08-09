@@ -184,8 +184,15 @@ void main() {
       (WidgetTester tester) async {
     final noEvening = DateTime(2020, 10, 05, 18, 00);
     final clockBloc = ClockBloc.fixed(noEvening);
-    _expectSettings(const MemoplannerSettings(
-        eveningIntervalStart: 19 * 60 * 60 * 1000)); // 19.00 in milliseconds
+    _expectSettings(
+      const MemoplannerSettings(
+        calendar: GeneralCalendarSettings(
+            dayParts: DayParts(
+          eveningStart: 19 * 60 * 60 * 1000,
+        ) // 19.00 in milliseconds
+            ),
+      ),
+    );
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
     await tester.pumpAndSettle();

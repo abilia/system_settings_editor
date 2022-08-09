@@ -517,10 +517,15 @@ void main() {
 
       testWidgets('Color settings with colors on all days',
           (WidgetTester tester) async {
-        when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(calendarDayColor: DayColor.allDays.index),
-        ));
+        when(() => memoplannerSettingBlocMock.state).thenReturn(
+          const MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              calendar: GeneralCalendarSettings(
+                dayColor: DayColor.allDays,
+              ),
+            ),
+          ),
+        );
         await tester.pumpWidget(wrapWithMaterialApp(
           const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
@@ -549,11 +554,15 @@ void main() {
 
       testWidgets('Color settings with colors only on weekends',
           (WidgetTester tester) async {
-        when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(
-              calendarDayColor: DayColor.saturdayAndSunday.index),
-        ));
+        when(() => memoplannerSettingBlocMock.state).thenReturn(
+          const MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              calendar: GeneralCalendarSettings(
+                dayColor: DayColor.saturdayAndSunday,
+              ),
+            ),
+          ),
+        );
         await tester.pumpWidget(wrapWithMaterialApp(
           const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
@@ -582,10 +591,15 @@ void main() {
       });
 
       testWidgets('Color settings with no colors', (WidgetTester tester) async {
-        when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(calendarDayColor: DayColor.noColors.index),
-        ));
+        when(() => memoplannerSettingBlocMock.state).thenReturn(
+          const MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              calendar: GeneralCalendarSettings(
+                dayColor: DayColor.noColors,
+              ),
+            ),
+          ),
+        );
         await tester.pumpWidget(wrapWithMaterialApp(
           const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
@@ -660,7 +674,9 @@ void main() {
         when(() => memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            calendarActivityTypeShowTypes: false,
+            calendar: const GeneralCalendarSettings(
+              categories: CategoriesSetting(show: false),
+            ),
             viewOptionsTimeView: DayCalendarType.oneTimepillar.index,
           ),
         ));
@@ -681,7 +697,9 @@ void main() {
         when(() => memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            calendarActivityTypeShowTypes: true,
+            calendar: const GeneralCalendarSettings(
+              categories: CategoriesSetting(show: true),
+            ),
             viewOptionsTimeView: DayCalendarType.oneTimepillar.index,
           ),
         ));

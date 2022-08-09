@@ -1,25 +1,20 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
-part 'general_calendar_settings_state.dart';
-
-class GeneralCalendarSettingsCubit extends Cubit<GeneralCalendarSettingsState> {
+class GeneralCalendarSettingsCubit extends Cubit<GeneralCalendarSettings> {
   final GenericCubit genericCubit;
 
   GeneralCalendarSettingsCubit({
-    required MemoplannerSettingsState settingsState,
+    required GeneralCalendarSettings initial,
     required this.genericCubit,
-  }) : super(GeneralCalendarSettingsState.fromMemoplannerSettings(
-            settingsState));
+  }) : super(initial);
 
-  void changeSettings(GeneralCalendarSettingsState newState) => emit(newState);
+  void changeSettings(GeneralCalendarSettings newState) => emit(newState);
 
-  void changeTimepillarSettings(TimepillarSettingState newState) =>
+  void changeTimepillarSettings(TimepillarSettings newState) =>
       changeSettings(state.copyWith(timepillar: newState));
 
-  void changeCategorySettings(CategoriesSettingState newState) =>
+  void changeCategorySettings(CategoriesSetting newState) =>
       changeSettings(state.copyWith(categories: newState));
 
   void save() => genericCubit.genericUpdated(state.memoplannerSettingData);

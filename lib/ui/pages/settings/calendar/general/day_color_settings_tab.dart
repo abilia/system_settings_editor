@@ -8,7 +8,7 @@ class DayColorsSettingsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final languageCode = Localizations.localeOf(context).languageCode;
     return BlocBuilder<GeneralCalendarSettingsCubit,
-        GeneralCalendarSettingsState>(
+        GeneralCalendarSettings>(
       builder: (context, state) {
         return SettingsTab(
           children: [

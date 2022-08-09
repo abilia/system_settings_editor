@@ -37,8 +37,7 @@ class IntervalStepper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GeneralCalendarSettingsCubit,
-        GeneralCalendarSettingsState>(
+    return BlocBuilder<GeneralCalendarSettingsCubit, GeneralCalendarSettings>(
       buildWhen: (previous, current) => previous.dayParts != current.dayParts,
       builder: (context, state) {
         return Column(
