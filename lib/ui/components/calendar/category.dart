@@ -13,16 +13,16 @@ class LeftCategory extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => BlocSelector<MemoplannerSettingBloc,
-          MemoplannerSettingsState, CategoriesSetting>(
-        selector: (state) => state.settings.calendar.categories,
-        builder: (context, categories) => CategoryLeft(
-          maxWidth: maxWidth,
-          categoryName: categories.left.name,
-          fileId: categories.left.image.id,
-          showColors: categories.showColors,
-        ),
-      );
+  Widget build(BuildContext context) {
+    final categories = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.calendar.categories);
+    return CategoryLeft(
+      maxWidth: maxWidth,
+      categoryName: categories.left.name,
+      fileId: categories.left.image.id,
+      showColors: categories.showColors,
+    );
+  }
 }
 
 class CategoryLeft extends StatelessWidget {
@@ -67,16 +67,16 @@ class RightCategory extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => BlocSelector<MemoplannerSettingBloc,
-          MemoplannerSettingsState, CategoriesSetting>(
-        selector: (state) => state.settings.calendar.categories,
-        builder: (context, categories) => CategoryRight(
-          maxWidth: maxWidth,
-          categoryName: categories.right.name,
-          fileId: categories.right.image.id,
-          showColors: categories.showColors,
-        ),
-      );
+  Widget build(BuildContext context) {
+    final categories = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.calendar.categories);
+    return CategoryRight(
+      maxWidth: maxWidth,
+      categoryName: categories.right.name,
+      fileId: categories.right.image.id,
+      showColors: categories.showColors,
+    );
+  }
 }
 
 class CategoryRight extends StatelessWidget {

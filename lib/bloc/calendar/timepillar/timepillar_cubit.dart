@@ -120,8 +120,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
       }
 
       return TimepillarInterval.dayAndNight(
-        day.add(memoSettings.settings.calendar.dayParts.morningStart
-            .milliseconds()),
+        day.add(memoSettings.settings.calendar.dayParts.morning),
       );
     }
 

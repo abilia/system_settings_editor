@@ -185,12 +185,12 @@ void main() {
     final noEvening = DateTime(2020, 10, 05, 18, 00);
     final clockBloc = ClockBloc.fixed(noEvening);
     _expectSettings(
-      const MemoplannerSettings(
+      MemoplannerSettings(
         calendar: GeneralCalendarSettings(
-            dayParts: DayParts(
-          eveningStart: 19 * 60 * 60 * 1000,
-        ) // 19.00 in milliseconds
-            ),
+          dayParts: DayParts(
+            evening: 19.hours(),
+          ),
+        ),
       ),
     );
     await tester

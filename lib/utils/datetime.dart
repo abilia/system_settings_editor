@@ -143,15 +143,15 @@ extension DateTimeExtensions on DateTime {
       copyWith(hour: timeOfDay?.hour, minute: timeOfDay?.minute);
 
   DayPart dayPart(DayParts dayParts) {
-    final msAfterMidnight = difference(onlyDays()).inMilliseconds;
+    final timeAfterMidnight = difference(onlyDays());
 
-    if (msAfterMidnight >= dayParts.nightStart) return DayPart.night;
+    if (timeAfterMidnight >= dayParts.night) return DayPart.night;
 
-    if (msAfterMidnight >= dayParts.eveningStart) return DayPart.evening;
+    if (timeAfterMidnight >= dayParts.evening) return DayPart.evening;
 
-    if (msAfterMidnight >= dayParts.dayStart) return DayPart.day;
+    if (timeAfterMidnight >= dayParts.day) return DayPart.day;
 
-    if (msAfterMidnight >= dayParts.morningStart) return DayPart.morning;
+    if (timeAfterMidnight >= dayParts.morning) return DayPart.morning;
 
     return DayPart.night;
   }
@@ -163,8 +163,8 @@ extension DateTimeExtensions on DateTime {
   }
 
   bool isNightBeforeMidnight(DayParts dayParts) {
-    final msAfterMidnight = difference(onlyDays()).inMilliseconds;
-    return msAfterMidnight >= dayParts.nightStart;
+    final afterMidnight = difference(onlyDays());
+    return afterMidnight >= dayParts.night;
   }
 
   int get dayIndex => millisecondsSinceEpoch ~/ Duration.millisecondsPerDay;

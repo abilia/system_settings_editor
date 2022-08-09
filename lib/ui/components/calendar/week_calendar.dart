@@ -115,8 +115,8 @@ class _WeekCalendarDayHeading extends StatelessWidget {
     final weekDisplayDays =
         context.select<MemoplannerSettingBloc, WeekDisplayDays>(
             (bloc) => bloc.state.weekDisplayDays);
-    final dayOccasion = context
-        .select<ClockBloc, Occasion>((bloc) => day.dayOccasion(bloc.state));
+    final dayOccasion =
+        context.select((ClockBloc clock) => day.dayOccasion(clock.state));
     return WeekCalenderHeadingContent(
       selected: selected,
       day: day,
@@ -555,108 +555,99 @@ class _WeekActivityContent extends StatelessWidget {
         ? wLayout.selectedDay.activityRadius
         : wLayout.notSelectedDay.activityRadius;
 
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      buildWhen: (previous, current) =>
-          previous.settings.calendar.categories.showColors !=
-              current.settings.calendar.categories.showColors &&
-          previous.settings.calendar.categories.show !=
-              current.settings.calendar.categories.show,
-      builder: (context, settings) {
-        final categoryBorder = getCategoryBorder(
-          inactive: inactive,
-          current: activityOccasion.isCurrent,
-          showCategoryColor: settings.settings.calendar.categories.showColors &&
-              !activityOccasion.activity.fullDay,
-          category: activityOccasion.activity.category,
-          borderWidth: selected && !activityOccasion.activity.fullDay
-              ? wLayout.selectedDay.activityBorderWidth
-              : wLayout.notSelectedDay.activityBorderWidth,
-          currentBorderWidth: selected && !activityOccasion.activity.fullDay
-              ? wLayout.selectedDay.currentActivityBorderWidth
-              : wLayout.notSelectedDay.currentActivityBorderWidth,
-        );
-        return Tts.fromSemantics(
-          activityOccasion.activity.semanticsProperties(context),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => MultiBlocProvider(
-                    providers: authProviders,
-                    child: ActivityPage(activityDay: activityOccasion),
-                  ),
-                  settings: RouteSettings(
-                    name: 'ActivityPage $activityOccasion',
-                  ),
-                ),
-              );
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                border: categoryBorder,
-                borderRadius: borderRadius,
+    final showColors = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.calendar.categories.showColors);
+    final categoryBorder = getCategoryBorder(
+      inactive: inactive,
+      current: activityOccasion.isCurrent,
+      showCategoryColor: showColors && !activityOccasion.activity.fullDay,
+      category: activityOccasion.activity.category,
+      borderWidth: selected && !activityOccasion.activity.fullDay
+          ? wLayout.selectedDay.activityBorderWidth
+          : wLayout.notSelectedDay.activityBorderWidth,
+      currentBorderWidth: selected && !activityOccasion.activity.fullDay
+          ? wLayout.selectedDay.currentActivityBorderWidth
+          : wLayout.notSelectedDay.currentActivityBorderWidth,
+    );
+    return Tts.fromSemantics(
+      activityOccasion.activity.semanticsProperties(context),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => MultiBlocProvider(
+                providers: authProviders,
+                child: ActivityPage(activityDay: activityOccasion),
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(
-                  borderRadius.topRight.x - categoryBorder.left.width,
-                ),
-                child: Container(
-                  color: activityOccasion.isPast &&
-                          !activityOccasion.activity.fullDay
+              settings: RouteSettings(
+                name: 'ActivityPage $activityOccasion',
+              ),
+            ),
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            border: categoryBorder,
+            borderRadius: borderRadius,
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(
+              borderRadius.topRight.x - categoryBorder.left.width,
+            ),
+            child: Container(
+              color:
+                  activityOccasion.isPast && !activityOccasion.activity.fullDay
                       ? AbiliaColors.white110
                       : AbiliaColors.white,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      if (activityOccasion.activity.hasImage)
-                        AnimatedOpacity(
-                          duration: const Duration(milliseconds: 400),
-                          opacity: inactive ? 0.5 : 1.0,
-                          child: FadeInAbiliaImage(
-                            fit: selected ? BoxFit.scaleDown : BoxFit.cover,
-                            imageFileId: activityOccasion.activity.fileId,
-                            imageFilePath: activityOccasion.activity.icon,
-                            height: double.infinity,
-                            width: double.infinity,
-                            borderRadius: BorderRadius.zero,
-                          ),
-                        )
-                      else
-                        Center(
-                          child: Text(
-                            activityOccasion.activity.title,
-                            overflow: TextOverflow.clip,
-                            style:
-                                Theme.of(context).textTheme.caption ?? caption,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      if (activityOccasion.isPast)
-                        AspectRatio(
-                          aspectRatio: 1,
-                          child: CrossOver(
-                            style: CrossOverStyle.darkSecondary,
-                            padding: wLayout.crossOverActivityPadding,
-                          ),
-                        ),
-                      if (activityOccasion.isSignedOff)
-                        AspectRatio(
-                          aspectRatio: 1,
-                          child: FractionallySizedBox(
-                            widthFactor: scaleFactor,
-                            heightFactor: scaleFactor,
-                            child: const CheckMark(),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  if (activityOccasion.activity.hasImage)
+                    AnimatedOpacity(
+                      duration: const Duration(milliseconds: 400),
+                      opacity: inactive ? 0.5 : 1.0,
+                      child: FadeInAbiliaImage(
+                        fit: selected ? BoxFit.scaleDown : BoxFit.cover,
+                        imageFileId: activityOccasion.activity.fileId,
+                        imageFilePath: activityOccasion.activity.icon,
+                        height: double.infinity,
+                        width: double.infinity,
+                        borderRadius: BorderRadius.zero,
+                      ),
+                    )
+                  else
+                    Center(
+                      child: Text(
+                        activityOccasion.activity.title,
+                        overflow: TextOverflow.clip,
+                        style: Theme.of(context).textTheme.caption ?? caption,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  if (activityOccasion.isPast)
+                    AspectRatio(
+                      aspectRatio: 1,
+                      child: CrossOver(
+                        style: CrossOverStyle.darkSecondary,
+                        padding: wLayout.crossOverActivityPadding,
+                      ),
+                    ),
+                  if (activityOccasion.isSignedOff)
+                    AspectRatio(
+                      aspectRatio: 1,
+                      child: FractionallySizedBox(
+                        widthFactor: scaleFactor,
+                        heightFactor: scaleFactor,
+                        child: const CheckMark(),
+                      ),
+                    ),
+                ],
               ),
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

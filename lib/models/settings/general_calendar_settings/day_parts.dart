@@ -10,16 +10,20 @@ class DayParts extends Equatable {
       eveningIntervalStartKey = 'evening_interval_start',
       nightIntervalStartKey = 'night_interval_start';
 
-  static const int morningDefault = 6 * Duration.millisecondsPerHour,
-      dayDefault = 10 * Duration.millisecondsPerHour,
-      afternoonDefault = 12 * Duration.millisecondsPerHour,
-      eveningDefault = 18 * Duration.millisecondsPerHour,
-      nightDefault = 23 * Duration.millisecondsPerHour;
+  static const int morningDefaultHour = 6,
+      dayDefaultHour = 10,
+      eveningDefaultHour = 18,
+      nightDefaultHour = 23;
+  static const Duration morningDefault = Duration(hours: morningDefaultHour),
+      dayDefault = Duration(hours: dayDefaultHour),
+      eveningDefault = Duration(hours: eveningDefaultHour),
+      nightDefault = Duration(hours: nightDefaultHour);
 
-  static const morningLimit = _DayPartRange(5, 10),
-      dayLimit = _DayPartRange(8, 18),
-      eveningLimit = _DayPartRange(16, 21),
-      nightLimit = _DayPartRange(19, 24);
+  static const morningLimit =
+          _DayPartRange(Duration(hours: 5), Duration(hours: 10)),
+      dayLimit = _DayPartRange(Duration(hours: 8), Duration(hours: 18)),
+      eveningLimit = _DayPartRange(Duration(hours: 16), Duration(hours: 21)),
+      nightLimit = _DayPartRange(Duration(hours: 19), Duration(hours: 24));
 
   static const limits = {
     DayPart.morning: morningLimit,
@@ -28,30 +32,25 @@ class DayParts extends Equatable {
     DayPart.night: nightLimit,
   };
 
-  Duration get morning => Duration(milliseconds: morningStart);
-  Duration get day => Duration(milliseconds: dayStart);
-  Duration get night => Duration(milliseconds: nightStart);
-  Duration get evening => Duration(milliseconds: eveningStart);
-
-  final int morningStart, dayStart, eveningStart, nightStart;
+  final Duration morning, day, night, evening;
 
   const DayParts({
-    this.morningStart = morningDefault,
-    this.dayStart = dayDefault,
-    this.eveningStart = eveningDefault,
-    this.nightStart = nightDefault,
+    this.morning = morningDefault,
+    this.day = dayDefault,
+    this.evening = eveningDefault,
+    this.night = nightDefault,
   });
 
-  int fromDayPart(DayPart dayPart) {
+  Duration fromDayPart(DayPart dayPart) {
     switch (dayPart) {
       case DayPart.morning:
-        return morningStart;
+        return morning;
       case DayPart.day:
-        return dayStart;
+        return day;
       case DayPart.evening:
-        return eveningStart;
+        return evening;
       case DayPart.night:
-        return nightStart;
+        return night;
     }
   }
 
@@ -64,7 +63,6 @@ class DayParts extends Equatable {
   TimepillarInterval todayTimepillarIntervalFromType(
       DateTime now, TimepillarIntervalType timepillarIntervalType) {
     final day = now.onlyDays();
-
     switch (timepillarIntervalType) {
       case TimepillarIntervalType.interval:
         return dayPartInterval(now);
@@ -75,10 +73,10 @@ class DayParts extends Equatable {
             end: day.add(morning),
             intervalPart: IntervalPart.night,
           );
-        } else if (now.isAtSameMomentOrAfter(day.add(morning))) {
+        } else if (now.isAtSameMomentOrAfter(day.add(night))) {
           return TimepillarInterval(
             start: day.add(night),
-            end: day.nextDay().add(night),
+            end: day.nextDay().add(morning),
             intervalPart: IntervalPart.night,
           );
         }
@@ -135,59 +133,67 @@ class DayParts extends Equatable {
     Map<String, MemoplannerSettingData> settings,
   ) =>
       DayParts(
-        morningStart: settings.parse(
-          morningIntervalStartKey,
-          DayParts.morningDefault,
+        morning: Duration(
+          milliseconds: settings.parse(
+            morningIntervalStartKey,
+            DayParts.morningDefaultHour * Duration.millisecondsPerHour,
+          ),
         ),
-        dayStart: settings.parse(
-          forenoonIntervalStartKey,
-          DayParts.dayDefault,
+        day: Duration(
+          milliseconds: settings.parse(
+            forenoonIntervalStartKey,
+            DayParts.dayDefaultHour * Duration.millisecondsPerHour,
+          ),
         ),
-        eveningStart: settings.parse(
-          eveningIntervalStartKey,
-          DayParts.eveningDefault,
+        evening: Duration(
+          milliseconds: settings.parse(
+            eveningIntervalStartKey,
+            DayParts.eveningDefaultHour * Duration.millisecondsPerHour,
+          ),
         ),
-        nightStart: settings.parse(
-          nightIntervalStartKey,
-          DayParts.nightDefault,
+        night: Duration(
+          milliseconds: settings.parse(
+            nightIntervalStartKey,
+            DayParts.nightDefaultHour * Duration.millisecondsPerHour,
+          ),
         ),
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
         MemoplannerSettingData.fromData(
-          data: morningStart,
+          data: morning.inMilliseconds,
           identifier: DayParts.morningIntervalStartKey,
         ),
         MemoplannerSettingData.fromData(
-          data: dayStart,
+          data: day.inMilliseconds,
           identifier: DayParts.forenoonIntervalStartKey,
         ),
         MemoplannerSettingData.fromData(
-          data: eveningStart,
+          data: evening.inMilliseconds,
           identifier: DayParts.eveningIntervalStartKey,
         ),
         MemoplannerSettingData.fromData(
-          data: nightStart,
+          data: night.inMilliseconds,
           identifier: DayParts.nightIntervalStartKey,
         ),
       ];
 
   @override
   List<Object> get props => [
-        morningStart,
-        dayStart,
-        eveningStart,
-        nightStart,
+        morning,
+        day,
+        evening,
+        night,
       ];
 }
 
 class _DayPartRange {
-  final int min, max;
-  int clamp(int value) => value.clamp(min, max);
-  const _DayPartRange(int min, int max)
-      : assert(min >= 0),
-        assert(min < max),
-        assert(max <= Duration.millisecondsPerDay),
-        min = min * Duration.millisecondsPerHour,
-        max = max * Duration.millisecondsPerHour;
+  final Duration min, max;
+  Duration clamp(Duration value) => value < min
+      ? min
+      : value > max
+          ? max
+          : value;
+
+  const _DayPartRange(this.min, this.max);
 }

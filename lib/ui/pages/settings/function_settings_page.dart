@@ -93,8 +93,7 @@ class ToolbarSettingsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
 
-    final state = context
-        .select<FunctionSettingsCubit, DisplaySettings>((s) => s.state.display);
+    final state = context.select((FunctionSettingsCubit s) => s.state.display);
 
     return _SettingsTab(
       hint: t.toolbarSettingsHint,
@@ -218,8 +217,8 @@ class TimeoutSettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    final state = context.select<FunctionSettingsCubit, ScreensaverSettings>(
-      (value) => value.state.screensaver,
+    final screensaver = context.select(
+      (FunctionSettingsCubit value) => value.state.screensaver,
     );
 
     return _SettingsTab(
@@ -233,36 +232,37 @@ class TimeoutSettingsTab extends StatelessWidget {
                       : d.toDurationString(t, shortMin: false),
                 ),
                 value: d,
-                groupValue: state.timeout,
+                groupValue: screensaver.timeout,
                 onChanged: (v) => context
                     .read<FunctionSettingsCubit>()
-                    .changeScreensaverSettings(state.copyWith(timeout: v)),
+                    .changeScreensaverSettings(
+                        screensaver.copyWith(timeout: v)),
               ),
             ),
         const Divider(),
         SwitchField(
           leading: const Icon(AbiliaIcons.screenSaverNight),
-          value: state.shouldUseScreenSaver,
-          onChanged: state.hasTimeOut
+          value: screensaver.shouldUseScreenSaver,
+          onChanged: screensaver.hasTimeOut
               ? (v) => context
                   .read<FunctionSettingsCubit>()
-                  .changeScreensaverSettings(state.copyWith(use: v))
+                  .changeScreensaverSettings(screensaver.copyWith(use: v))
               : null,
           child: Text(t.activateScreensaver),
         ),
         CollapsableWidget(
           child: SwitchField(
             leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
-            value: state.onlyDuringNight,
-            onChanged: state.hasTimeOut
+            value: screensaver.onlyDuringNight,
+            onChanged: screensaver.hasTimeOut
                 ? (v) => context
                     .read<FunctionSettingsCubit>()
                     .changeScreensaverSettings(
-                        state.copyWith(onlyDuringNight: v))
+                        screensaver.copyWith(onlyDuringNight: v))
                 : null,
             child: Text(t.onlyActivateScreenSaverDuringNight),
           ),
-          collapsed: !state.shouldUseScreenSaver,
+          collapsed: !screensaver.shouldUseScreenSaver,
         ),
       ],
     );

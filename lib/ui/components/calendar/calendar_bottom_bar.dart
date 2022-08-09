@@ -9,8 +9,10 @@ class CalendarBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, settingsState) {
-        final display = context.select((MemoplannerSettingBloc bloc) =>
-            bloc.state.settings.functions.display);
+        final display = context.select(
+          (MemoplannerSettingBloc bloc) =>
+              bloc.state.settings.functions.display,
+        );
         return DefaultTabControllerBuilder(
           builder: (context, tabController) {
             final translate = Translator.of(context).translate;

@@ -66,6 +66,7 @@ class IntervalStepper extends StatelessWidget {
                       hourAndMinuteFormat(context)(
                         state.dayParts
                             .fromDayPart(part)
+                            .inMilliseconds
                             .fromMillisecondsSinceEpoch(isUtc: true),
                       ),
                       style: abiliaTextTheme.headline5,
