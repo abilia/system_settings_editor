@@ -141,7 +141,7 @@ selectTemplateTimer	Select timer	Välj timer	Vælg bastimer	Standaardtimers sele
 timer	Timer	Timer	Timer	Tijdopnemer	Ajastin	Timer	Tidtaker
 timeIsUp	Time is up	Tiden är slut					Tiden er slutt
 templateTimers	Timers	Timers	Standardtimers	Standaard timers	Perusajastimet	Standardtimer	Standardtimere
-editTimer	Edit timer	Ändra timer
+editTimer	Edit timer	Ändra timer					
 							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
@@ -155,7 +155,7 @@ ok	OK	OK	OK	OK	OK	OK	OK
 record	Record	Spela in	Indspil	Opnemen	Nauhoita	Aufnahme	Spill inn
 newText	New	Ny	Ny	Nieuw	Uusi	Neu	Ny
 							
-### Edit activity
+### Edit activity							
 newActivityChoice	New	Helt ny	Helt ny	Nieuw	Uusi	Neu	Helt ny
 newActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuw activiteit	Uusi aktiviteettia	Neu Aktivität	Ny aktivitet
 editActivity	Edit activity	Ändra aktivitet	Ændre aktivitet	Activiteit bewerken	Muokkaa aktiviteettia	Aktivität bearbeiten	Endre aktivitet
@@ -170,7 +170,7 @@ date	Date	Datum	Dato	Datum	Päivämäärä	Datum	Dato
 startTime	Start time	Starttid	Starttid	Starttijd	Aloitusaika	Startzeit	Starttid
 endTime	End time	Sluttid	Sluttid	Eindtijd	Päättymisaika	Endezeit	Sluttid
 emptyFolder	The folder is empty	Mappen är tom	Mappen er tom	De map is leeg	Kansio on tyhjä	Der Ordner leer ist	Mappen er tom
-noTemplates	You have no templates	Du har inga mallar
+noTemplates	You have no templates	Du har inga mallar					
 noChecklists	You have no checklists	Du har inga checklistor	Du har ingen tjeklister	Je hebt geen checklists	Sinulla ei ole tarkistuslistoja	Sie haben keine Checklisten	Du har ingen sjekklister
 noNotes	You have no notes	Du har inga anteckningar	Du har ingen noter	Je hebt geen aantekeningen	Sinulla ei ole muistiinpanoja	Sie haben keine Notizen	Du har ingen notater
 noImages	You have no images	Du har inga bilder	Du har ingen billeder	Je hebt geen afbeeldingen	Sinulla ei ole kuvia	Sie haben keine Bilder	Du har ingen bilder
@@ -236,6 +236,7 @@ noEndDate	No end date	Inget slutdatum	Ingen slutdato	Geen einddatum	Ei päättym
 endDate	End date	Slutdatum	Slutdato	Einddatum	Päättymispäivä	Enddatum	Sluttdato
 everyOtherWeek	Every other week	Varannan vecka	Hver anden uge	Om de week	Kahden viikon välein	Vierzehntägig	Annenhver uke
 recurringDataEmptyErrorMessage	Select at least one day.	Välj minst en dag.	Vælg mindst en dag	Selecteer ten minste één dag.	Valitse vähintään yksi päivä.	Mindestens einen Tag auswählen.	Velg minst en dag.
+endDateNotSpecifiedErrorMessage	You must enter an end date.	Du måste ange ett slutdatum.					
 selectAll	Select all	Markera alla	Markere alle	Alles selecteren	Valitse kaikki	Alles auswählen	Markere alle
 deselectAll	Deselect all	Avmarkera alla	Fravælg alle	Alles deselecteren	Poista kaikki valinnat	Auswahl aufheben	Avmarkere alle
 mo	Mon	mån	man	Ma	Ma	Mo	man
@@ -335,13 +336,13 @@ allowPassedStartTime	Allow passed start time	Lägga in på passerad tid	Indsæt 
 addRecurringActivity	Add recurring activity	Lägga in återkommande aktivitet	>Indsæt gentagende aktivitet	Terugkerende activiteit toevoegen	Lisää toistuva aktiviteetti	Wiederkehrende Aktivität hinzufügen	Legg inn gjentakende aktivitet
 showEndTime	Show end time	Visa sluttid	Vis sluttid	Eindtijd tonen	Näytä päättymisaika	Endezeit anzeigen	Vis sluttid
 showAlarm	Show alarm	Visa larm	Vis alarm	Alarmen weergeven	Näytä hälytykset	Alarme anzeigen	Vis alarm
-showVibrationAlarm	Show vibration
+showVibrationAlarm	Show vibration						
 showSilentAlarm	Show silent alarm	Visa tyst larm	Vis stille alarm	Stille alarmen weergeven	Näytä hiljaiset hälytykset	Stille Alarme anzeigen	Vis stille alarm
 showNoAlarm	Show no alarm	Visa inget larm	Vis ingen alarm	Geen alarmen weergeven	Älä näytä hälytystä	Kein Alarm anzeigen	Vis ingen alarm
 throughEditView	Through Edit View	Via Ändravyn	Via Redigersiden	Door bewerkweergave	Muokkausnäkymässä	Durch Bearbeitungsanzeige	Via endrevindu
 androidSettings	Android Settings	Android-inställningar	Android-indstillinger	Android-instellingen	Android-asetukset	Android-Einstellungen	Android-innstillinger
 stepByStep	Step-by-step	Stegvis	Trinvist	Stap voor stap	Vaihe vaiheelta	Schritt für Schritt	Via sekvens
-showTemplates	Show templates	Visa mallar
+showTemplates	Show templates	Visa mallar					
 selectName	Select name	Välj namn	Vælg navn	Naam selecteren	Valitse nimi	Name auswählen	Velg navn
 selectDate	Select date	Välj datum	Vælg dato	Datum selecteren	Valitse päivämäärä	Datum auswählen	Velg dato
 selectType	Select type	Välj typ	Vælg type	Type selecteren	Valitse tyyppi	Typ auswählen	Velg type
@@ -368,7 +369,7 @@ noTimeout	No timeout	Ingen timeout	Ingen timeout	Geen time-out	Ei aikakatkaisua	
 activateScreensaver	Activate Screensaver	Aktivera skärmsläckare	Aktivér pauseskærm	Screensaver activeren	Aktivoi näytönsäästäjä	Bildschirmschoner aktivieren	Aktiver skjermsparer
 menuRemovalWarning	Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking under the category symbols in the day calendar; left – right – left. This works even if they are hidden.	Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka under kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.	Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke på kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.	Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door op de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.	Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää napsauttamalla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.	Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie die Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.	Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke på kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.
 							
-## Month Calendar
+## Month Calendar							
 selectADayToViewDetails	Select a day to view more details	Välj en dag för att se mer detaljer					Velg en dag for å se mer detaljer
 ## Day Calendar Settings							
 topField	Top Field	Toppfält	Topfelt	Bovenste veld	Yläkenttä	Oberstes Feld	Toppfelt

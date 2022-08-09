@@ -245,7 +245,7 @@ void main() {
           title: 'title',
           startTime: startTime,
           duration: const Duration(hours: 4),
-          recurs: Recurs.weeklyOnDay(DateTime.friday),
+          recurs: Recurs.weeklyOnDay(DateTime.friday, ends: Recurs.noEndDate),
         );
 
         // act
@@ -268,7 +268,8 @@ void main() {
             title: 'title',
             startTime: startTime,
             duration: const Duration(hours: 36),
-            recurs: Recurs.weeklyOnDay(DateTime.friday));
+            recurs:
+                Recurs.weeklyOnDay(DateTime.friday, ends: Recurs.noEndDate));
 
         // act
         final thursdayResult =
@@ -304,7 +305,7 @@ void main() {
           title: 'title',
           startTime: startTime,
           duration: const Duration(hours: 36),
-          recurs: Recurs.monthly(29),
+          recurs: Recurs.monthly(29, ends: Recurs.noEndDate),
         );
 
         // act
@@ -341,7 +342,7 @@ void main() {
           title: 'title',
           startTime: startTime,
           duration: const Duration(hours: 36),
-          recurs: Recurs.yearly(friday),
+          recurs: Recurs.yearly(friday, ends: Recurs.noEndDate),
         );
 
         // act

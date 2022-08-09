@@ -464,6 +464,8 @@ abstract class Translated {
 
   final String recurringDataEmptyErrorMessage = 'Select at least one day.';
 
+  final String endDateNotSpecifiedErrorMessage = 'You must enter an end date.';
+
   final String selectAll = 'Select all';
 
   final String deselectAll = 'Deselect all';
@@ -1568,6 +1570,9 @@ class SV extends Translated {
 
   @override
   final String recurringDataEmptyErrorMessage = 'Välj minst en dag.';
+
+  @override
+  final String endDateNotSpecifiedErrorMessage = 'Du måste ange ett slutdatum.';
 
   @override
   final String selectAll = 'Markera alla';

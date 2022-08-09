@@ -133,6 +133,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
         ),
       );
     } else if (state.activity.isRecurring &&
+        !state.activity.recurs.endNotSpecified &&
         state.activity.recurs.end.isDayBefore(date)) {
       emit(
         state.copyWith(
@@ -185,28 +186,28 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     }
     final type = newType ?? state.activity.recurs.recurrance;
     final endDate = newEndDate ??
-        (state.activity.isRecurring
-            ? state.activity.recurs.end
-            : state.timeInterval.startDate);
+        (state.activity.isRecurring ? state.activity.recurs.end : null);
     replaceActivity(
       state.activity.copyWith(
         recurs: _newRecurs(
           type,
+          state.timeInterval.startDate,
           endDate,
         ),
       ),
     );
   }
 
-  Recurs _newRecurs(RecurrentType type, DateTime endDate) {
-    final endOfDay = endDate.nextDay().onlyDays().millisecondBefore();
+  Recurs _newRecurs(RecurrentType type, DateTime startDate, DateTime? endDate) {
+    final endOfDay = endDate?.nextDay().onlyDays().millisecondBefore();
     switch (type) {
       case RecurrentType.weekly:
-        return Recurs.weeklyOnDay(endOfDay.weekday, ends: endOfDay);
+        return Recurs.weeklyOnDay(endOfDay?.weekday ?? startDate.weekday,
+            ends: endOfDay);
       case RecurrentType.monthly:
-        return Recurs.monthly(endOfDay.day, ends: endOfDay);
+        return Recurs.monthly(endOfDay?.day ?? startDate.day, ends: endOfDay);
       case RecurrentType.yearly:
-        return Recurs.yearly(endOfDay);
+        return Recurs.yearly(startDate, ends: Recurs.noEndDate);
       default:
         return Recurs.not;
     }

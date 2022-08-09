@@ -37,8 +37,10 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                               errorState: recurringDataError,
                             ).pad(m1ItemPadding),
                           const Divider().pad(dividerPadding),
-                          const EndDateWidget()
-                              .pad(layout.templates.m1.withoutBottom),
+                          EndDateWidget(
+                            errorState: wizState.saveErrors
+                                .contains(SaveError.noRecurringEndDate),
+                          ).pad(layout.templates.m1.withoutBottom),
                         ],
                       );
                     }),
@@ -52,6 +54,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
 
 class Weekly extends StatelessWidget with EditActivityTab {
   final bool errorState;
+
   Weekly({
     Key? key,
     required this.errorState,

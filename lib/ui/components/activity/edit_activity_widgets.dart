@@ -1,12 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:intl/intl.dart';
 
 class ActivityNameAndPictureWidget extends StatelessWidget {
   const ActivityNameAndPictureWidget({Key? key}) : super(key: key);
@@ -617,7 +617,9 @@ class RecurrenceWidget extends StatelessWidget {
 }
 
 class EndDateWidget extends StatelessWidget {
-  const EndDateWidget({Key? key}) : super(key: key);
+  const EndDateWidget({Key? key, required this.errorState}) : super(key: key);
+
+  final bool errorState;
 
   @override
   Widget build(BuildContext context) {
@@ -637,13 +639,17 @@ class EndDateWidget extends StatelessWidget {
                 children: [
                   SubHeading(translate.endDate),
                   DatePicker(
-                    activity.recurs.end,
+                    activity.recurs.endNotSpecified
+                        ? state.timeInterval.startDate
+                        : activity.recurs.end,
                     notBefore: state.timeInterval.startDate,
                     onChange: disabled
                         ? null
                         : (newDate) => context
                             .read<EditActivityCubit>()
                             .newRecurrence(newEndDate: newDate),
+                    dateNotSpecified: activity.recurs.endNotSpecified,
+                    errorState: errorState,
                   ),
                   SizedBox(height: layout.formPadding.groupBottomDistance),
                 ],

@@ -731,7 +731,7 @@ void main() {
       expect(find.byType(SaveButton), findsNothing);
       expect(find.byType(NextButton), findsOneWidget);
 
-      await tester.tap(find.byIcon(AbiliaIcons.basicActivity));
+      await tester.tap(find.byIcon(AbiliaIcons.basicActivity)); // yearly
       await tester.pumpAndSettle();
       expect(find.byType(SaveButton), findsOneWidget);
       expect(find.byType(NextButton), findsNothing);
@@ -819,7 +819,7 @@ void main() {
       expect(find.byType(ErrorDialog), findsNothing);
     });
 
-    testWidgets('monthly recurring shows monthy recurring',
+    testWidgets('monthly recurring shows monthly recurring',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(MemoplannerSettings(

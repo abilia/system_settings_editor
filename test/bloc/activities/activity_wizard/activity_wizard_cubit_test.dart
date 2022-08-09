@@ -1636,7 +1636,8 @@ void main() {
       startTime: aTime.subtract(
         100.days(),
       ),
-      recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
+      recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7],
+          ends: Recurs.noEndDate),
     );
     final mockActivitiesBloc = MockActivitiesBloc();
     when(() => mockActivitiesBloc.state)
@@ -1713,12 +1714,12 @@ void main() {
     final nextDay = aTime.add(1.days());
     final expectedActivity = activity.copyWith(
       startTime: nextDay,
-      recurs: Recurs.yearly(nextDay),
+      recurs: Recurs.yearly(nextDay, ends: Recurs.noEndDate),
     );
 
     // Acts
-    editActivityCubit.replaceActivity(
-        activity.copyWith(recurs: Recurs.yearly(activity.startTime)));
+    editActivityCubit.replaceActivity(activity.copyWith(
+        recurs: Recurs.yearly(activity.startTime, ends: Recurs.noEndDate)));
     editActivityCubit.changeDate(nextDay);
 
     wizCubit.next(saveRecurring: SaveRecurring(ApplyTo.onlyThisDay, aDay));
@@ -2056,10 +2057,10 @@ void main() {
         settings: const MemoplannerSettingsLoaded(allWizStepsSettings),
       );
 
-      editActivityCubit
-          .replaceActivity(activity.copyWith(recurs: Recurs.monthly(aDay.day)));
-      editActivityCubit.replaceActivity(
-          activity.copyWith(recurs: Recurs.weeklyOnDay(aDay.weekday)));
+      editActivityCubit.replaceActivity(activity.copyWith(
+          recurs: Recurs.monthly(aDay.day, ends: Recurs.noEndDate)));
+      editActivityCubit.replaceActivity(activity.copyWith(
+          recurs: Recurs.weeklyOnDay(aDay.weekday, ends: Recurs.noEndDate)));
       editActivityCubit.replaceActivity(activity.copyWith(recurs: Recurs.not));
       await expectLater(
         wizCubit.stream,
@@ -2077,7 +2078,7 @@ void main() {
       );
     });
 
-    test('Saving recuring weekly without any days yeilds warning', () async {
+    test('Saving recurring weekly without any days yields warning', () async {
       // Arrange
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
@@ -2116,7 +2117,8 @@ void main() {
           startTime: const TimeOfDay(hour: 22, minute: 22));
 
       editActivityCubit.replaceActivity(activity.copyWith(
-          title: 'titlte', recurs: Recurs.weeklyOnDays(const [])));
+          title: 'title',
+          recurs: Recurs.weeklyOnDays(const [], ends: Recurs.noEndDate)));
 
       await expectLater(
         wizCubit.stream,

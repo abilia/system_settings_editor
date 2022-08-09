@@ -171,7 +171,8 @@ void main() {
               Activity.createNew(
                 title: 'recurring',
                 startTime: initialDay.previousMonth().add(1.minutes()),
-                recurs: Recurs.monthlyOnDays((recuresOnMonthDaySet)),
+                recurs: Recurs.monthlyOnDays(recuresOnMonthDaySet,
+                    ends: Recurs.noEndDate),
               ),
             ];
       });

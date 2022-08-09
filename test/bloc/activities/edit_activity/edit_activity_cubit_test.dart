@@ -382,7 +382,7 @@ void main() {
   });
 
   test(
-      'Setting new recurrence without end date sets the end time one millisecond before midnight on activity date',
+      'Setting new recurrence without end date sets the end time to unspecified',
       () async {
     // Arrange
     final editActivityCubit = EditActivityCubit.newActivity(
@@ -398,7 +398,7 @@ void main() {
     final expectedActivity = activity.copyWith(
       recurs: Recurs.weeklyOnDay(
         aDay.weekday,
-        ends: aDay.nextDay().onlyDays().millisecondBefore(),
+        ends: DateTime.fromMillisecondsSinceEpoch(Recurs.unspecifiedEnd),
       ),
     );
 

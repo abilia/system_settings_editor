@@ -8,6 +8,7 @@ import 'package:seagull/utils/all.dart';
 
 void main() {
   final day = DateTime(2020, 10, 06);
+  final noEnd = DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd);
 
   blocTest(
     'Initial state',
@@ -17,7 +18,7 @@ void main() {
           Activity.createNew(
               title: 'title',
               startTime: day,
-              recurs: Recurs.weeklyOnDay(day.weekday)),
+              recurs: Recurs.weeklyOnDay(day.weekday, ends: noEnd)),
           day,
         ),
       ),
@@ -34,7 +35,7 @@ void main() {
       );
       expect(
         cubit.state.recurs,
-        Recurs.weeklyOnDays({day.weekday}),
+        Recurs.weeklyOnDays({day.weekday}, ends: noEnd),
       );
     },
   );
@@ -46,7 +47,7 @@ void main() {
                 Activity.createNew(
                     title: 'null',
                     startTime: day,
-                    recurs: Recurs.weeklyOnDay(day.weekday)),
+                    recurs: Recurs.weeklyOnDay(day.weekday, ends: noEnd)),
                 day,
               ),
             ),
@@ -149,7 +150,7 @@ void main() {
                 Activity.createNew(
                     title: 'null',
                     startTime: day,
-                    recurs: Recurs.weeklyOnDay(day.weekday)),
+                    recurs: Recurs.weeklyOnDay(day.weekday, ends: noEnd)),
                 day,
               ),
             ),
@@ -224,13 +225,12 @@ void main() {
         Activity.createNew(
             title: 'null',
             startTime: day,
-            recurs: Recurs.weeklyOnDay(day.weekday)),
+            recurs: Recurs.weeklyOnDay(day.weekday, ends: noEnd)),
         day,
       ),
     );
     final newStartDate = day.add(7.days());
 
-    final noEnd = DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd);
     blocTest(
       'Changing to every other week on even weeks',
       build: () => RecurringWeekCubit(editActivityBloc),

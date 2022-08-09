@@ -10,15 +10,16 @@ templates	Templates	Mallar					Maler
 addTimer	Add Timer	Lägga in timer					Legg inn timer
 enterNameForTimer	Enter name for timer	Ange namn för timer					Angi navn på timer
 timeIsUp	Time is up	Tiden är slut					Tiden er slutt
-editTimer	Edit timer	Ändra timer
-noTemplates	You have no templates	Du har inga mallar
+editTimer	Edit timer	Ändra timer					
+noTemplates	You have no templates	Du har inga mallar					
 allSupportPersons	All my support persons	Alla mina stödpersoner					
 selectedSupportPersons	Selected support persons	Utvalda stödpersoner					
 supportPersons	Support Persons	Stödpersoner					
 disableAlarms	Disable alarms	Inaktivera alarm					
+endDateNotSpecifiedErrorMessage	You must enter an end date.	Du måste ange ett slutdatum.					
 enterTask	Enter task						Legg inn oppgave
-showVibrationAlarm	Show vibration
-showTemplates	Show templates	Visa mallar
+showVibrationAlarm	Show vibration						
+showTemplates	Show templates	Visa mallar					
 onlyAppliesToGo	Only applies to MEMOplanner Go	Gäller endast MEMOplanner Go					Gjelder kun MEMOplanner Go
 selectADayToViewDetails	Select a day to view more details	Välj en dag för att se mer detaljer					Velg en dag for å se mer detaljer
 voice	Voice	Röst					Talesyntese

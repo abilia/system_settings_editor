@@ -1111,7 +1111,8 @@ void main() {
         final activity = Activity.createNew(
           title: 'title',
           startTime: startTime.subtract(100.days()),
-          recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
+          recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7],
+              ends: Recurs.noEndDate),
         );
         when(() => mockActivityDb.getAllNonDeleted())
             .thenAnswer((_) => Future.value(<Activity>[activity]));
@@ -1134,7 +1135,8 @@ void main() {
         final activity = Activity.createNew(
           title: 'title',
           startTime: startTime.subtract(100.days()),
-          recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
+          recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7],
+              ends: Recurs.noEndDate),
         );
         when(() => mockActivityDb.getAllNonDeleted())
             .thenAnswer((_) => Future.value(<Activity>[activity]));
@@ -1160,7 +1162,8 @@ void main() {
               Activity.createNew(
                 title: oldTitle,
                 startTime: startTime.subtract(100.days()),
-                recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
+                recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7],
+                    ends: Recurs.noEndDate),
               )
             ],
           ),

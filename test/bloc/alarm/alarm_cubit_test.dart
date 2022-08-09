@@ -257,7 +257,8 @@ void main() {
       expect: () => [StartAlarm(ActivityDay(recursTheThisDayOfMonth, day))],
     );
 
-    final recursTheThisDayOfYear = FakeActivity.reocurrsOnDate(nextMinute);
+    final recursTheThisDayOfYear =
+        FakeActivity.reocurrsOnDate(nextMinute, null, Recurs.noEndDate);
     blocTest(
       'Recurring yearly alarms shows',
       setUp: () => when(() => mockActivityRepository.load())
