@@ -1475,6 +1475,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Act -- tap att start time
       await tester.tap(timeFieldFinder);
@@ -1495,6 +1496,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Act
       await tester.tap(timeFieldFinder);
@@ -1517,6 +1519,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Assert -- that the activities start time shows
       expect(find.text('9:33 AM'), findsNothing);
@@ -1546,6 +1549,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Assert -- that correct start and end time shows
       expect(find.text('11:55 AM - 2:55 PM'), findsOneWidget);
@@ -1588,6 +1592,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Assert -- that the activities start time shows
       expect(find.text('9:33 AM'), findsNothing);
@@ -1615,6 +1620,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Assert -- time is in am
       expect(find.text('11:55 AM'), findsOneWidget);
@@ -1642,6 +1648,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Assert -- time starts in pm
       expect(find.text('12:55 PM'), findsOneWidget);
@@ -1672,6 +1679,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Act -- remove values
       await tester.tap(timeFieldFinder);
@@ -1700,6 +1708,7 @@ text''';
         ),
       );
       await tester.pump();
+      await tester.scrollDown(dy: -100);
       // Assert -- start time set but not end time endTime
       expect(find.text('3:04 AM'), findsOneWidget);
       expect(find.text('11:11 AM - 11:12 PM'), findsNothing);
@@ -1753,6 +1762,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Assert -- is 24h clock
       expect(find.text('13:44'), findsOneWidget);
@@ -1803,6 +1813,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
       await tester.enterTime(startTimeInputFinder, '9');
@@ -1819,6 +1830,7 @@ text''';
       );
       await tester.pumpWidget(createEditActivityPage(givenActivity: acivity));
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
 
@@ -1854,6 +1866,7 @@ text''';
 
       await tester.pumpWidget(createEditActivityPage(givenActivity: acivity));
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Assert -- that correct start and end time shows
       expect(find.text('11:55 AM - 2:55 PM'), findsOneWidget);
@@ -2131,6 +2144,7 @@ text''';
       // Arrange -- enter title
       await tester.ourEnterText(
           find.byKey(TestKey.editTitleTextFormField), 'newActivtyTitle');
+      await tester.scrollDown(dy: -100);
 
       // Arrange -- enter start time
       await tester.tap(timeFieldFinder);
@@ -2189,6 +2203,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Act -- Change end time to 17:00
       await tester.tap(find.byType(TimeIntervallPicker));
@@ -2441,6 +2456,7 @@ text''';
       );
 
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
@@ -2473,6 +2489,7 @@ text''';
       );
 
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
@@ -2506,6 +2523,7 @@ text''';
       );
 
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
@@ -2611,6 +2629,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Assert -- that the activities time shows
       await tester.verifyTts(timeFieldFinder, exact: translate.time);
@@ -2653,6 +2672,7 @@ text''';
           ),
         );
         await tester.pumpAndSettle();
+        await tester.scrollDown(dy: -100);
 
         // Act -- remove end time
         await tester.tap(timeFieldFinder);
@@ -2705,6 +2725,7 @@ text''';
           ),
         );
         await tester.pumpAndSettle();
+        await tester.scrollDown(dy: -100);
 
         // Act -- remove end time
         await tester.tap(timeFieldFinder);
@@ -2733,6 +2754,7 @@ text''';
           ),
         );
         await tester.pumpAndSettle();
+        await tester.scrollDown(dy: -100);
 
         // Act -- remove values
         await tester.tap(timeFieldFinder);
