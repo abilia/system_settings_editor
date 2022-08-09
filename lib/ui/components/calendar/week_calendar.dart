@@ -103,30 +103,26 @@ class _WeekCalendarDayHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      buildWhen: (previous, current) =>
-          previous.calendarDayColor != current.calendarDayColor,
-      builder: (context, memosettings) => BlocBuilder<ClockBloc, DateTime>(
-        buildWhen: (previous, current) =>
-            previous.isAtSameDay(day) != current.isAtSameDay(day),
-        builder: (context, now) => BlocBuilder<DayPickerBloc, DayPickerState>(
-          builder: (context, dayPickerState) {
-            final selected = dayPickerState.day.isAtSameDay(day);
-            final dayTheme = weekdayTheme(
-              dayColor: memosettings.calendarDayColor,
-              languageCode: Localizations.localeOf(context).languageCode,
-              weekday: day.weekday,
-            );
-            return WeekCalenderHeadingContent(
-              selected: selected,
-              day: day,
-              dayTheme: dayTheme,
-              weekDisplayDays: memosettings.weekDisplayDays,
-              occasion: day.dayOccasion(now),
-            );
-          },
-        ),
-      ),
+    final dayColor = context.select<MemoplannerSettingBloc, DayColor>(
+        (bloc) => bloc.state.settings.calendar.dayColor);
+    final dayTheme = weekdayTheme(
+      dayColor: dayColor,
+      languageCode: Localizations.localeOf(context).languageCode,
+      weekday: day.weekday,
+    );
+    final selected = context
+        .select<DayPickerBloc, bool>((bloc) => bloc.state.day.isAtSameDay(day));
+    final weekDisplayDays =
+        context.select<MemoplannerSettingBloc, WeekDisplayDays>(
+            (bloc) => bloc.state.weekDisplayDays);
+    final dayOccasion = context
+        .select<ClockBloc, Occasion>((bloc) => day.dayOccasion(bloc.state));
+    return WeekCalenderHeadingContent(
+      selected: selected,
+      day: day,
+      dayTheme: dayTheme,
+      weekDisplayDays: weekDisplayDays,
+      occasion: dayOccasion,
     );
   }
 }
@@ -349,7 +345,8 @@ class _WeekDayColumn extends StatelessWidget {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
           previous.weekColor != current.weekColor ||
-          previous.calendarDayColor != current.calendarDayColor,
+          previous.settings.calendar.dayColor !=
+              current.settings.calendar.dayColor,
       builder: (context, memosettings) => BlocBuilder<ClockBloc, DateTime>(
         buildWhen: (previous, current) =>
             previous.isAtSameDay(day) != current.isAtSameDay(day),
@@ -363,7 +360,7 @@ class _WeekDayColumn extends StatelessWidget {
                 ? wLayout.selectedDay.dayColumnBorderWidth
                 : wLayout.notSelectedDay.dayColumnBorderWidth;
             final dayTheme = weekdayTheme(
-              dayColor: memosettings.calendarDayColor,
+              dayColor: memosettings.settings.calendar.dayColor,
               languageCode: Localizations.localeOf(context).languageCode,
               weekday: day.weekday,
             );
@@ -430,8 +427,10 @@ class _WeekDayColumn extends StatelessWidget {
                         child: _WeekDayColumnItems(
                           day: day,
                           selected: selected,
-                          showCategories: memosettings.showCategories,
-                          showCategoryColor: memosettings.showCategoryColor,
+                          showCategories:
+                              memosettings.settings.calendar.categories.show,
+                          showCategoryColor: memosettings
+                              .settings.calendar.categories.showColors,
                         ),
                       ),
                     ),
@@ -558,14 +557,16 @@ class _WeekActivityContent extends StatelessWidget {
 
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
-          previous.showCategoryColor != current.showCategoryColor &&
-          previous.showCategories != current.showCategories,
+          previous.settings.calendar.categories.showColors !=
+              current.settings.calendar.categories.showColors &&
+          previous.settings.calendar.categories.show !=
+              current.settings.calendar.categories.show,
       builder: (context, settings) {
         final categoryBorder = getCategoryBorder(
           inactive: inactive,
           current: activityOccasion.isCurrent,
-          showCategoryColor:
-              settings.showCategoryColor && !activityOccasion.activity.fullDay,
+          showCategoryColor: settings.settings.calendar.categories.showColors &&
+              !activityOccasion.activity.fullDay,
           category: activityOccasion.activity.category,
           borderWidth: selected && !activityOccasion.activity.fullDay
               ? wLayout.selectedDay.activityBorderWidth

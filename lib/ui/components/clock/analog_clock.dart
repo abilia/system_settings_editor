@@ -98,34 +98,33 @@ class _AnalogClock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dayParts = context.select(
+        (MemoplannerSettingBloc bloc) => bloc.state.settings.calendar.dayParts);
     return BlocBuilder<ClockBloc, DateTime>(
-      builder: (context, time) =>
-          BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, memoState) => Tts.data(
-          data: analogTimeStringWithInterval(
-              Translator.of(context), time, memoState.dayParts),
-          child: SizedBox(
-            width: width,
-            height: height,
-            child: CustomPaint(
-              painter: ClockPainter(
-                time,
-                dialPlateColor: dialPlateColor,
-                hourHandColor: hourHandColor,
-                minuteHandColor: minuteHandColor,
-                numberColor: numberColor,
-                borderColor: borderColor,
-                centerPointColor: centerPointColor,
-                centerPointRadius: centerPointRadius,
-                showBorder: true,
-                showMinuteHand: true,
-                showNumber: true,
-                borderWidth: borderWidth,
-                fontSize: fontSize,
-                minuteHandLength: minuteHandLength,
-                hourHandLength: hourHandLength,
-                hourNumbers: ClockPainter.defaultHourNumbers,
-              ),
+      builder: (context, time) => Tts.data(
+        data: analogTimeStringWithInterval(
+            Translator.of(context), time, dayParts),
+        child: SizedBox(
+          width: width,
+          height: height,
+          child: CustomPaint(
+            painter: ClockPainter(
+              time,
+              dialPlateColor: dialPlateColor,
+              hourHandColor: hourHandColor,
+              minuteHandColor: minuteHandColor,
+              numberColor: numberColor,
+              borderColor: borderColor,
+              centerPointColor: centerPointColor,
+              centerPointRadius: centerPointRadius,
+              showBorder: true,
+              showMinuteHand: true,
+              showNumber: true,
+              borderWidth: borderWidth,
+              fontSize: fontSize,
+              minuteHandLength: minuteHandLength,
+              hourHandLength: hourHandLength,
+              hourNumbers: ClockPainter.defaultHourNumbers,
             ),
           ),
         ),

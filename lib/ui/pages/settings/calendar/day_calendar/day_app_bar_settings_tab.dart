@@ -59,25 +59,22 @@ class DayAppBarPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DayCalendarSettingsCubit, DayCalendarSettingsState>(
-      builder: (context, state) =>
-          BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, memoSettingsState) =>
-            BlocBuilder<ClockBloc, DateTime>(
-          builder: (context, currentTime) => AppBarPreview(
-            showBrowseButtons: state.showBrowseButtons,
-            showClock: state.showClock,
-            rows: AppBarTitleRows.day(
-              displayWeekDay: state.showWeekday,
-              displayPartOfDay: state.showDayPeriod,
-              displayDate: state.showDate,
-              currentTime: currentTime,
-              day: currentTime.onlyDays(),
-              dayParts: memoSettingsState.dayParts,
-              langCode: Localizations.localeOf(context).toLanguageTag(),
-              translator: Translator.of(context).translate,
-            ),
-          ),
+    final dayParts = context.select((MemoplannerSettingBloc settings) =>
+        settings.state.settings.calendar.dayParts);
+    final state = context.watch<DayCalendarSettingsCubit>().state;
+    return BlocBuilder<ClockBloc, DateTime>(
+      builder: (context, currentTime) => AppBarPreview(
+        showBrowseButtons: state.showBrowseButtons,
+        showClock: state.showClock,
+        rows: AppBarTitleRows.day(
+          displayWeekDay: state.showWeekday,
+          displayPartOfDay: state.showDayPeriod,
+          displayDate: state.showDate,
+          currentTime: currentTime,
+          day: currentTime.onlyDays(),
+          dayParts: dayParts,
+          langCode: Localizations.localeOf(context).toLanguageTag(),
+          translator: Translator.of(context).translate,
         ),
       ),
     );

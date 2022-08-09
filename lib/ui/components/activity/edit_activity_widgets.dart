@@ -334,16 +334,16 @@ class CategoryRadioField extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, state) {
-        final fileId =
-            isRight ? state.rightCategoryImage : state.leftCategoryImage;
+        final imageAndName = isRight
+            ? state.settings.calendar.categories.right
+            : state.settings.calendar.categories.left;
+        final fileId = imageAndName.image.id;
 
-        final label = isRight
-            ? (state.rightCategoryName.isEmpty
+        final label = imageAndName.hasName
+            ? imageAndName.name
+            : isRight
                 ? Translator.of(context).translate.right
-                : state.rightCategoryName)
-            : state.leftCategoryName.isEmpty
-                ? Translator.of(context).translate.left
-                : state.leftCategoryName;
+                : Translator.of(context).translate.left;
 
         final nothing =
             fileId.isEmpty && !state.settings.calendar.categories.showColors;
@@ -724,7 +724,7 @@ class WeekDays extends StatelessWidget {
                 (day) => BlocSelector<MemoplannerSettingBloc,
                     MemoplannerSettingsState, DayTheme>(
                   selector: (state) => weekdayTheme(
-                    dayColor: state.calendarDayColor,
+                    dayColor: state.settings.calendar.dayColor,
                     languageCode: Localizations.localeOf(context).languageCode,
                     weekday: day,
                   ),

@@ -12,10 +12,10 @@ class PhotoCalendarPage extends StatelessWidget {
     final functions = context
         .select((MemoplannerSettingBloc bloc) => bloc.state.settings.functions);
     final display = functions.display;
-    final clockType = context
-        .select((MemoplannerSettingBloc settings) => settings.state.clockType);
-    final calendarDayColor = context.select(
-        (MemoplannerSettingBloc settings) => settings.state.calendarDayColor);
+    final clockType = context.select((MemoplannerSettingBloc settings) =>
+        settings.state.settings.calendar.clockType);
+    final calendarDayColor = context.select((MemoplannerSettingBloc settings) =>
+        settings.state.settings.calendar.dayColor);
     final weekday =
         context.select((ClockBloc currentTime) => currentTime.state.weekday);
     final theme = weekdayTheme(
@@ -166,14 +166,14 @@ class PhotoCalendarAppBar extends StatelessWidget
     return CalendarAppBar(
       textStyle: Theme.of(context).textTheme.headline4,
       day: time.onlyDays(),
-      calendarDayColor: memoSettingsState.calendarDayColor,
+      calendarDayColor: memoSettingsState.settings.calendar.dayColor,
       rows: AppBarTitleRows.day(
         displayWeekDay: memoSettingsState.activityDisplayWeekDay,
         displayPartOfDay: memoSettingsState.activityDisplayDayPeriod,
         displayDate: memoSettingsState.activityDisplayDate,
         currentTime: time,
         day: time.onlyDays(),
-        dayParts: memoSettingsState.dayParts,
+        dayParts: memoSettingsState.settings.calendar.dayParts,
         langCode: Localizations.localeOf(context).toLanguageTag(),
         translator: Translator.of(context).translate,
         compactDay: false,

@@ -138,7 +138,8 @@ class FullScreenActivityTabItem extends StatelessWidget {
               child: BlocSelector<MemoplannerSettingBloc,
                   MemoplannerSettingsState, bool>(
                 selector: (state) =>
-                    state.showCategories && state.showCategoryColor,
+                    state.settings.calendar.categories.show &&
+                    state.settings.calendar.categories.showColors,
                 builder: (context, showCategories) => Tts.fromSemantics(
                   activityOccasion.activity.semanticsProperties(context),
                   child: GestureDetector(

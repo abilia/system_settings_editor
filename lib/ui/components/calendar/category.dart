@@ -13,17 +13,14 @@ class LeftCategory extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        buildWhen: (previous, current) =>
-            previous.leftCategoryName != current.leftCategoryName ||
-            previous.leftCategoryImage != current.leftCategoryImage ||
-            previous.showCategoryColor != current.showCategoryColor,
-        builder: (context, memoplannerSettingsState) => CategoryLeft(
+  Widget build(BuildContext context) => BlocSelector<MemoplannerSettingBloc,
+          MemoplannerSettingsState, CategoriesSetting>(
+        selector: (state) => state.settings.calendar.categories,
+        builder: (context, categories) => CategoryLeft(
           maxWidth: maxWidth,
-          categoryName: memoplannerSettingsState.leftCategoryName,
-          fileId: memoplannerSettingsState.leftCategoryImage,
-          showColors: memoplannerSettingsState.showCategoryColor,
+          categoryName: categories.left.name,
+          fileId: categories.left.image.id,
+          showColors: categories.showColors,
         ),
       );
 }
@@ -70,17 +67,14 @@ class RightCategory extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        buildWhen: (previous, current) =>
-            previous.rightCategoryName != current.rightCategoryName ||
-            previous.rightCategoryImage != current.rightCategoryImage ||
-            previous.showCategoryColor != current.showCategoryColor,
-        builder: (context, memoplannerSettingsState) => CategoryRight(
+  Widget build(BuildContext context) => BlocSelector<MemoplannerSettingBloc,
+          MemoplannerSettingsState, CategoriesSetting>(
+        selector: (state) => state.settings.calendar.categories,
+        builder: (context, categories) => CategoryRight(
           maxWidth: maxWidth,
-          categoryName: memoplannerSettingsState.rightCategoryName,
-          fileId: memoplannerSettingsState.rightCategoryImage,
-          showColors: memoplannerSettingsState.showCategoryColor,
+          categoryName: categories.right.name,
+          fileId: categories.right.image.id,
+          showColors: categories.showColors,
         ),
       );
 }

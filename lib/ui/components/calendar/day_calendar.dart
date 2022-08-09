@@ -115,7 +115,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                                 bloc.state.dayCalendarType);
                         final showCategories = context.select(
                             (MemoplannerSettingBloc bloc) =>
-                                bloc.state.showCategories);
+                                bloc.state.settings.calendar.categories.show);
                         final settingsInaccessible = context.select(
                             (MemoplannerSettingBloc bloc) =>
                                 bloc.state.settingsInaccessible);

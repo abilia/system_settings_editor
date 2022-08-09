@@ -89,7 +89,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
         memoState.dayCalendarType,
         selectedDay,
         now,
-        memoState.dayParts,
+        memoState.settings.calendar.dayParts,
       ),
       occasion: interval.occasion(now),
       showNightCalendar: showNightCalendar,
@@ -107,18 +107,21 @@ class TimepillarCubit extends Cubit<TimepillarState> {
         memoSettings.dayCalendarType == DayCalendarType.twoTimepillars;
 
     if (twoTimepillars) {
-      bool shouldShowNightCalendar =
-          showNightCalendar && isToday && now.isNight(memoSettings.dayParts);
+      bool shouldShowNightCalendar = showNightCalendar &&
+          isToday &&
+          now.isNight(memoSettings.settings.calendar.dayParts);
 
       if (shouldShowNightCalendar) {
-        return memoSettings.todayTimepillarIntervalFromType(
+        return memoSettings.settings.calendar.dayParts
+            .todayTimepillarIntervalFromType(
           now,
           TimepillarIntervalType.interval,
         );
       }
 
       return TimepillarInterval.dayAndNight(
-        day.add(memoSettings.dayParts.morningStart.milliseconds()),
+        day.add(memoSettings.settings.calendar.dayParts.morningStart
+            .milliseconds()),
       );
     }
 
@@ -200,11 +203,11 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     if (!_isTonight(
       day: dayPickerBloc.state.day,
       now: clockBloc.state,
-      dayParts: memeSettings.dayParts,
+      dayParts: memeSettings.settings.calendar.dayParts,
     )) return true;
 
-    final isBeforeMidNight =
-        clockBloc.state.isNightBeforeMidnight(memeSettings.dayParts);
+    final isBeforeMidNight = clockBloc.state
+        .isNightBeforeMidnight(memeSettings.settings.calendar.dayParts);
 
     final beforeMidnightGoingForwardOrAfterMidnightGoingBack =
         (forward ? isBeforeMidNight : !isBeforeMidNight) ==
