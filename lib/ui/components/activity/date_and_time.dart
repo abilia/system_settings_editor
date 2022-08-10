@@ -9,6 +9,7 @@ class DateAndTimeWidget extends StatelessWidget {
   const DateAndTimeWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final translator = Translator.of(context).translate;
     return BlocBuilder<EditActivityCubit, EditActivityState>(
         builder: (context, editActivityState) {
       final fullDay = editActivityState.activity.fullDay;
@@ -23,7 +24,7 @@ class DateAndTimeWidget extends StatelessWidget {
                 children: <Widget>[
                   if (context.read<WizardCubit>()
                       is! TemplateActivityWizardCubit) ...[
-                    SubHeading(Translator.of(context).translate.date),
+                    SubHeading(translator.date),
                     DatePicker(
                       editActivityState.timeInterval.startDate,
                       onChange: canEditDate
@@ -34,20 +35,7 @@ class DateAndTimeWidget extends StatelessWidget {
                     ),
                     SizedBox(height: layout.formPadding.groupTopDistance),
                   ],
-                  CollapsableWidget(
-                    collapsed: fullDay,
-                    padding: EdgeInsets.only(
-                      bottom: layout.formPadding.verticalItemDistance,
-                    ),
-                    child: BlocBuilder<WizardCubit, WizardState>(
-                      builder: (context, wizState) => TimeIntervallPicker(
-                          editActivityState.timeInterval,
-                          startTimeError: wizState.saveErrors.any({
-                            SaveError.noStartTime,
-                            SaveError.startTimeBeforeNow
-                          }.contains)),
-                    ),
-                  ),
+                  SubHeading(translator.time),
                   SwitchField(
                     key: TestKey.fullDaySwitch,
                     leading: Icon(
@@ -59,7 +47,24 @@ class DateAndTimeWidget extends StatelessWidget {
                         context.read<EditActivityCubit>().replaceActivity(
                               editActivityState.activity.copyWith(fullDay: v),
                             ),
-                    child: Text(Translator.of(context).translate.fullDay),
+                    child: Text(translator.fullDay),
+                  ),
+                  CollapsableWidget(
+                    collapsed: fullDay,
+                    padding: EdgeInsets.only(
+                      top: layout.formPadding.verticalItemDistance,
+                    ),
+                    child: BlocBuilder<WizardCubit, WizardState>(
+                      builder: (context, wizState) => TimeIntervallPicker(
+                        editActivityState.timeInterval,
+                        startTimeError: wizState.saveErrors.any(
+                          {
+                            SaveError.noStartTime,
+                            SaveError.startTimeBeforeNow,
+                          }.contains,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -248,7 +253,6 @@ class TimePicker extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SubHeading(text),
         PickField(
           semanticsLabel: text,
           onTap: onTap,
