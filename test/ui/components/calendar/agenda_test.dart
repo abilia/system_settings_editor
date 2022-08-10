@@ -71,6 +71,8 @@ void main() {
     final mockActivityDb = MockActivityDb();
     when(() => mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activityResponse()));
+    when(() => mockActivityDb.getAllAfter(any()))
+        .thenAnswer((_) => Future.value(activityResponse()));
 
     genericResponse = () => [
           Generic.createNew<MemoplannerSettingData>(

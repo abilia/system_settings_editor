@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -10,31 +11,32 @@ class ActivityCubit extends Cubit<ActivityState> {
     required ActivityDay activityDay,
     required this.activitiesBloc,
   }) : super(ActivityLoaded(activityDay)) {
-    activitiesSubscription = activitiesBloc.stream.listen((event) {
-      _onNewState(event.activities);
-    });
+    activitiesSubscription = activitiesBloc.stream
+        .map((event) => event.activities)
+        .listen(_onNewState);
   }
   late final StreamSubscription activitiesSubscription;
   final ActivitiesBloc activitiesBloc;
 
-  Future<void> _onNewState(List<Activity> activities) async {
-    try {
-      final found = activities.firstWhere((a) => a.id == state.activityDay.id);
-      final day = found.isRecurring
-          ? state.activityDay.day
-          : found.startTime.onlyDays();
-      emit(ActivityLoaded(ActivityDay(found, day)));
-    } catch (_) {
-      emit(ActivityDeleted(state.activityDay));
+  void _onNewState(List<Activity> activities) {
+    final found =
+        activities.firstWhereOrNull((a) => a.id == state.activityDay.id);
+    if (found == null) {
+      return emit(ActivityDeleted(state.activityDay));
     }
+    _emitActivity(found);
   }
 
   void onActivityUpdated(Activity activity) async {
+    _emitActivity(activity);
+    activitiesBloc.add(UpdateActivity(activity));
+  }
+
+  void _emitActivity(Activity activity) {
     final day = activity.isRecurring
         ? state.activityDay.day
         : activity.startTime.onlyDays();
     emit(ActivityLoaded(ActivityDay(activity, day)));
-    activitiesBloc.add(UpdateActivity(activity));
   }
 
   @override

@@ -38,6 +38,8 @@ void main() {
     when(() => activityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activities));
     when(() => activityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => activityDb.getAllAfter(any()))
+        .thenAnswer((_) => Future.value([]));
     when(() => activityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 

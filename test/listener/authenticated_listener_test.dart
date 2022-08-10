@@ -114,6 +114,7 @@ void main() {
     when(() => memoplannerSettingBloc.state)
         .thenReturn(const MemoplannerSettingsFailed());
     await tester.pumpWidget(_authListener());
+    verifyNever(() => notificationBloc.add(any()));
 
     // Act
     activitiesStreamController.add(

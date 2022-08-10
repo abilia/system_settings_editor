@@ -17,11 +17,14 @@ void main() {
     final translate = Locales.language.values.first;
     final initialTime = DateTime(2021, 04, 17, 09, 20);
     Iterable<Generic> generics = [];
+    Iterable<Activity> activities = [];
     late MockGenericDb genericDb;
+    late MockActivityDb activityDb;
 
     setUp(() async {
       setupPermissions();
       notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
+      scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
       genericDb = MockGenericDb();
       when(() => genericDb.getAllNonDeletedMaxRevision())
@@ -33,18 +36,35 @@ void main() {
           .thenAnswer((_) => Future.value(null));
       when(() => genericDb.insert(any())).thenAnswer((_) async {});
 
+      activityDb = MockActivityDb();
+      when(() => activityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value(activities));
+      when(() => activityDb.getAllAfter(any()))
+          .thenAnswer((_) => Future.value(activities));
+      when(() => genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+      when(() => genericDb.insertAndAddDirty(any()))
+          .thenAnswer((_) => Future.value(true));
+      when(() => genericDb.getById(any()))
+          .thenAnswer((_) => Future.value(null));
+      when(() => genericDb.insert(any())).thenAnswer((_) async {});
+
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..ticker = Ticker.fake(initialTime: initialTime)
-        ..client = Fakes.client(genericResponse: () => generics)
+        ..client = Fakes.client()
         ..database = FakeDatabase()
         ..genericDb = genericDb
+        ..activityDb = activityDb
         ..battery = FakeBattery()
         ..deviceDb = FakeDeviceDb()
         ..init();
     });
 
-    tearDown(GetIt.I.reset);
+    tearDown(() {
+      GetIt.I.reset();
+      generics = [];
+      activities = [];
+    });
 
     testWidgets('The page shows', (tester) async {
       await tester.goToAlarmSettingsPage();
@@ -204,6 +224,27 @@ void main() {
         matcher: true,
       );
     }, skip: Config.isMPGO);
+
+    testWidgets('Changes to alarm triggers an alarm scheduling',
+        (tester) async {
+      activities = [Activity.createNew(startTime: initialTime.add(1.hours()))];
+      await tester.goToAlarmSettingsPage();
+      await tester.tap(find.byKey(TestKey.vibrateAtReminderSelector));
+      await tester.pumpAndSettle();
+      final preCalls = alarmScheduleCalls;
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      expect(alarmScheduleCalls, greaterThanOrEqualTo(preCalls + 1));
+    });
+
+    testWidgets('No changes to alarm triggers no alarm scheduling',
+        (tester) async {
+      await tester.goToAlarmSettingsPage();
+      final preCalls = alarmScheduleCalls;
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      expect(alarmScheduleCalls, preCalls);
+    });
 
     testWidgets(
         'SGC-1347 Fullscreen activity setting should only be visible on MP',

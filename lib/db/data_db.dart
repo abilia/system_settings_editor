@@ -46,22 +46,12 @@ abstract class DataDb<M extends DataModel> {
 
   Future<Iterable<DbModel<M>>> getAllDirty() async {
     final result = await db.rawQuery(getAllDirtySql);
-    return result
-        .exceptionSafeMap(
-          convertToDataModel,
-          onException: log.logAndReturnNull,
-        )
-        .whereNotNull();
+    return rowsToDbModels(result);
   }
 
   Future<DbModel<M>?> getById(String id) async {
     final result = await db.rawQuery(getByIdSql, [id]);
-    final userFiles = result
-        .exceptionSafeMap(
-          convertToDataModel,
-          onException: log.logAndReturnNull,
-        )
-        .whereNotNull();
+    final userFiles = rowsToDbModels(result);
     if (userFiles.length == 1) {
       return userFiles.first;
     } else {
@@ -71,24 +61,12 @@ abstract class DataDb<M extends DataModel> {
 
   Future<Iterable<M>> getAll() async {
     final result = await db.rawQuery(getAllSql);
-    return result
-        .exceptionSafeMap(
-          convertToDataModel,
-          onException: log.logAndReturnNull,
-        )
-        .whereNotNull()
-        .map((data) => data.model);
+    return rowsToModels(result);
   }
 
   Future<Iterable<M>> getAllNonDeleted() async {
     final result = await db.rawQuery(getAllNonDeletedSql);
-    return result
-        .exceptionSafeMap(
-          convertToDataModel,
-          onException: log.logAndReturnNull,
-        )
-        .whereNotNull()
-        .map((data) => data.model);
+    return rowsToModels(result);
   }
 
   Future<int> getLastRevision() async {
@@ -120,13 +98,10 @@ abstract class DataDb<M extends DataModel> {
     return res.isNotEmpty;
   }
 
-  Iterable<M> rowsToModels(List<Map<String, Object?>> rows) {
-    return rows
-        .exceptionSafeMap(
-          convertToDataModel,
-          onException: log.logAndReturnNull,
-        )
-        .whereNotNull()
-        .map((data) => data.model);
-  }
+  Iterable<DbModel<M>> rowsToDbModels(List<Map<String, Object?>> rows) => rows
+      .exceptionSafeMap(convertToDataModel, onException: log.logAndReturnNull)
+      .whereNotNull();
+
+  Iterable<M> rowsToModels(List<Map<String, Object?>> rows) =>
+      rowsToDbModels(rows).map((data) => data.model);
 }

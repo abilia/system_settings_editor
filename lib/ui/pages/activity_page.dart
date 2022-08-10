@@ -23,11 +23,9 @@ class ActivityPage extends StatelessWidget {
           activitiesBloc: context.read<ActivitiesBloc>(),
         ),
         child: BlocConsumer<ActivityCubit, ActivityState>(
-          listener: (context, state) {
-            if (state is ActivityDeleted) {
-              Navigator.of(context).maybePop();
-            }
-          },
+          listenWhen: (previous, current) => current is ActivityDeleted,
+          listener: (context, state) =>
+              Navigator.of(context).popUntil((route) => route.isFirst),
           builder: (context, state) {
             return Scaffold(
               appBar: DayAppBar(

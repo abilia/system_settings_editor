@@ -195,6 +195,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 activityRepository: context.read<ActivityRepository>(),
                 settingsDb: GetIt.I<SettingsDb>(),
                 timerDb: GetIt.I<TimerDb>(),
+                syncDelays: GetIt.I<SyncDelays>(),
               ),
             ),
             if (Config.isMP) ...[
