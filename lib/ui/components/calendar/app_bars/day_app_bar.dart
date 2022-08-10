@@ -26,7 +26,7 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
     final timePillarState = context.watch<TimepillarCubit>().state;
     bool isTimepillar =
         memoSettingsState.dayCalendarType != DayCalendarType.list;
-    bool isNight = (isTimepillar ? timePillarState.showNightCalendar : true) &&
+    bool isNight = (!isTimepillar || timePillarState.showNightCalendar) &&
         currentMinute.isAtSameDay(day) &&
         currentMinute.dayPart(memoSettingsState.dayParts) == DayPart.night;
 
