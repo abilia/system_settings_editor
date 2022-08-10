@@ -70,7 +70,7 @@ class QuickSettingsPage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar:
-          const BottomNavigation(backNavigationWidget: PreviousButton()),
+          const BottomNavigation(backNavigationWidget: CloseButton()),
     );
   }
 }

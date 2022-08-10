@@ -98,6 +98,7 @@ class Layout {
   final CodeProtectLayoutMedium codeProtect;
   final SelectorLayout selector;
   final ProgressIndicatorLayout progressIndicator;
+  final AboutLayout about;
 
   const Layout({
     this.radius = 12,
@@ -176,6 +177,7 @@ class Layout {
     this.codeProtect = const CodeProtectLayoutMedium(),
     this.selector = const SelectorLayout(),
     this.progressIndicator = const ProgressIndicatorLayout(),
+    this.about = const AboutLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -891,25 +893,6 @@ class EditTimerLayout {
     this.inputTimeWidth = 120,
     this.inputTimePadding = 16,
     this.wheelPadding = const EdgeInsets.only(top: 11),
-  });
-}
-
-class ButtonLayout {
-  final double baseButtonMinHeight, secondaryActionButtonMinSize;
-  final Size redButtonMinSize;
-  final EdgeInsets textButtonInsets,
-      actionButtonIconTextPadding,
-      startBasicTimerPadding;
-
-  const ButtonLayout({
-    this.baseButtonMinHeight = 64,
-    this.redButtonMinSize = const Size(0, 48),
-    this.secondaryActionButtonMinSize = 40,
-    this.textButtonInsets =
-        const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-    this.actionButtonIconTextPadding =
-        const EdgeInsets.fromLTRB(10, 10, 20, 10),
-    this.startBasicTimerPadding = const EdgeInsets.fromLTRB(0, 4, 4, 4),
   });
 }
 

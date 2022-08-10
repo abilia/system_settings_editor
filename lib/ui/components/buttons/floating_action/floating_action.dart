@@ -40,7 +40,11 @@ class FloatingActions extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
+                  )
+                else
+                  const Spacer(),
+                if (tabController != null && tabController.index == 3)
+                  const _AboutButton(),
               ],
             );
           },
@@ -85,5 +89,32 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class _AboutButton extends StatelessWidget {
+  const _AboutButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    return InfoButton(
+      onTap: () {
+        showViewDialog(
+            context: context,
+            builder: (_) {
+              return ViewDialog(
+                heading: AppBarHeading(
+                  text: translate.about,
+                  iconData: AbiliaIcons.information,
+                ),
+                backNavigationWidget: const CloseButton(),
+                body: const AboutContent(updateButton: false),
+                bodyPadding: EdgeInsets.zero,
+                expanded: true,
+              );
+            });
+      },
+    ).pad(layout.menuPage.aboutButtonPadding);
   }
 }

@@ -18,6 +18,7 @@ class MediumLayout extends Layout {
     BorderLayout? borders,
     EventCardLayout? eventCard,
     AlarmPageLayout? alarmPage,
+    AboutLayout? about,
   }) : super(
           radius: 18,
           appBar: appBar ?? const AppBarLayoutMedium(),
@@ -348,14 +349,7 @@ class MediumLayout extends Layout {
             inputTimePadding: 24,
             wheelPadding: EdgeInsets.only(top: 32),
           ),
-          button: const ButtonLayout(
-              baseButtonMinHeight: 96,
-              redButtonMinSize: Size(0, 72),
-              secondaryActionButtonMinSize: 60,
-              textButtonInsets:
-                  EdgeInsets.symmetric(horizontal: 48, vertical: 30),
-              actionButtonIconTextPadding: EdgeInsets.fromLTRB(15, 15, 30, 15),
-              startBasicTimerPadding: EdgeInsets.fromLTRB(0, 8, 8, 8)),
+          button: const ButtonLayoutMedium(),
           theme: const ThemeLayout(
             circleRadius: 36,
             inputPadding: EdgeInsets.symmetric(vertical: 21, horizontal: 24),
@@ -372,5 +366,6 @@ class MediumLayout extends Layout {
           starterSetDialog: const StarterSetDialogLayoutMedium(),
           progressIndicator: const ProgressIndicatorLayoutMedium(),
           supportPerson: const SupportPersonLayoutMedium(),
+          about: const AboutLayoutMedium(),
         );
 }

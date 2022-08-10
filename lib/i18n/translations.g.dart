@@ -856,7 +856,25 @@ abstract class Translated {
 
   final String about = 'About';
 
+  final String aboutMemoplanner = 'About';
+
+  final String licenseNumber = 'License number';
+
+  final String licenseValidDate = 'License valid date';
+
+  final String loggedInUser = 'Logged in user account';
+
+  final String aboutDevice = 'About the device';
+
+  final String deviceName = 'Device name';
+
+  final String serialNumber = 'Serial number';
+
   final String version = 'Version';
+
+  final String androidVersion = 'Android version';
+
+  final String iosVersion = 'iOS version';
 
   final String producer = 'Producer';
 
