@@ -617,7 +617,7 @@ class RecurrenceWidget extends StatelessWidget {
 }
 
 class EndDateWidget extends StatelessWidget {
-  const EndDateWidget({Key? key, required this.errorState}) : super(key: key);
+  const EndDateWidget({required this.errorState, Key? key}) : super(key: key);
 
   final bool errorState;
 
