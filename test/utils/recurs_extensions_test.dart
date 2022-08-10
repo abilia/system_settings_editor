@@ -342,7 +342,7 @@ void main() {
           title: 'title',
           startTime: startTime,
           duration: const Duration(hours: 36),
-          recurs: Recurs.yearly(friday, ends: Recurs.noEndDate),
+          recurs: Recurs.yearly(friday),
         );
 
         // act

@@ -1714,12 +1714,12 @@ void main() {
     final nextDay = aTime.add(1.days());
     final expectedActivity = activity.copyWith(
       startTime: nextDay,
-      recurs: Recurs.yearly(nextDay, ends: Recurs.noEndDate),
+      recurs: Recurs.yearly(nextDay),
     );
 
     // Acts
-    editActivityCubit.replaceActivity(activity.copyWith(
-        recurs: Recurs.yearly(activity.startTime, ends: Recurs.noEndDate)));
+    editActivityCubit.replaceActivity(
+        activity.copyWith(recurs: Recurs.yearly(activity.startTime)));
     editActivityCubit.changeDate(nextDay);
 
     wizCubit.next(saveRecurring: SaveRecurring(ApplyTo.onlyThisDay, aDay));

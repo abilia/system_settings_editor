@@ -207,7 +207,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
       case RecurrentType.monthly:
         return Recurs.monthly(endOfDay?.day ?? startDate.day, ends: endOfDay);
       case RecurrentType.yearly:
-        return Recurs.yearly(startDate, ends: Recurs.noEndDate);
+        return Recurs.yearly(startDate);
       default:
         return Recurs.not;
     }

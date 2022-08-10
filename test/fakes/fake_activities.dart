@@ -27,37 +27,37 @@ class FakeActivity {
   static Activity reocurrsEveryDay([DateTime? startDate]) => _reoccurs(
       startDate,
       Recurs.weeklyOnDays(List.generate(7, (d) => d + 1),
-          ends: DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd + 1)),
+          ends: DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd)),
       title: 'recurs everyday');
   static Activity reocurrsWeekends([DateTime? startDate]) => _reoccurs(
       startDate,
       Recurs.weeklyOnDays(const [DateTime.saturday, DateTime.sunday],
-          ends: DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd + 1)),
+          ends: DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd)),
       title: 'recurs weekend');
   static Activity reocurrsMondays([DateTime? startDate]) => _reoccurs(
       startDate,
       Recurs.weeklyOnDay(DateTime.monday,
-          ends: DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd + 1)),
+          ends: DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd)),
       title: 'recurs monday');
   static Activity reocurrsTuedays([DateTime? startDate]) => _reoccurs(
       startDate,
       Recurs.weeklyOnDay(DateTime.tuesday,
-          ends: DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd + 1)),
+          ends: DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd)),
       title: 'recurs tuesday');
   static Activity reocurrsWednesdays([DateTime? startDate]) => _reoccurs(
       startDate,
       Recurs.weeklyOnDay(DateTime.wednesday,
-          ends: DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd + 1)),
+          ends: DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd)),
       title: 'recurs wednesday');
   static Activity reocurrsThursdays([DateTime? startDate]) => _reoccurs(
       startDate,
       Recurs.weeklyOnDay(DateTime.thursday,
-          ends: DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd + 1)),
+          ends: DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd)),
       title: 'recurs thursday');
   static Activity reocurrsFridays([DateTime? startDate]) => _reoccurs(
       startDate,
       Recurs.weeklyOnDay(DateTime.friday,
-          ends: DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd + 1)),
+          ends: DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd)),
       title: 'recurs friday');
 
   static Activity reocurrsOnDay(int day,
@@ -67,7 +67,7 @@ class FakeActivity {
 
   static Activity reocurrsOnDate(DateTime day,
           [DateTime? startTime, DateTime? endTime]) =>
-      _reoccurs(startTime ?? day, Recurs.yearly(day, ends: endTime),
+      _reoccurs(startTime ?? day, Recurs.yearly(day),
           title: 'recurs on date $day');
 
   static List<Activity> singleInstance(DateTime startDate) {
