@@ -781,7 +781,10 @@ void main() {
       WizardState(
         0,
         const [WizardStep.advance],
-        saveErrors: const {SaveError.noRecurringDays},
+        saveErrors: const {
+          SaveError.noRecurringDays,
+          SaveError.noRecurringEndDate
+        },
         sucessfullSave: false,
       ),
     );
@@ -1065,7 +1068,8 @@ void main() {
           startTime: aTime.subtract(
             100.days(),
           ),
-          recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
+          recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7],
+              ends: Recurs.noEndDate),
         );
 
         final editActivityCubit = EditActivityCubit.edit(
@@ -1601,7 +1605,7 @@ void main() {
       startTime: TimeOfDay.fromDateTime(aTime),
     );
     final recurringActivity = activity.copyWith(
-      recurs: Recurs.weeklyOnDay(aTime.weekday),
+      recurs: Recurs.weeklyOnDay(aTime.weekday, ends: Recurs.noEndDate),
     );
 
     final expected1 = expectLater(

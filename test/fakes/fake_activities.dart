@@ -67,7 +67,7 @@ class FakeActivity {
 
   static Activity reocurrsOnDate(DateTime day,
           [DateTime? startTime, DateTime? endTime]) =>
-      _reoccurs(startTime ?? day, Recurs.yearly(day),
+      _reoccurs(startTime ?? day, Recurs.yearly(day, ends: endTime),
           title: 'recurs on date $day');
 
   static List<Activity> singleInstance(DateTime startDate) {

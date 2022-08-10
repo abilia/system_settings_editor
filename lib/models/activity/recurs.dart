@@ -35,10 +35,10 @@ class Recurs extends Equatable {
         noEnd,
       );
 
-  factory Recurs.yearly(DateTime dayOfYear) => Recurs.raw(
+  factory Recurs.yearly(DateTime dayOfYear, {DateTime? ends}) => Recurs.raw(
         typeYearly,
         dayOfYearData(dayOfYear),
-        noEnd,
+        ends?.millisecondsSinceEpoch ?? noEnd,
       );
 
   factory Recurs.monthly(int dayOfMonth, {DateTime? ends}) => Recurs.raw(

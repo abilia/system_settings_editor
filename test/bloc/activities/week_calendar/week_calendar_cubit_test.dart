@@ -183,7 +183,7 @@ void main() {
       final removeAfter = Activity.createNew(
         title: 'Remove after',
         startTime: DateTime(2010, 01, 01, 15, 00),
-        recurs: Recurs.weeklyOnDays(const [4, 5, 6]),
+        recurs: Recurs.weeklyOnDays(const [4, 5, 6], ends: Recurs.noEndDate),
         removeAfter: true,
       );
       // Arrange
