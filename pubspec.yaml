@@ -23,6 +23,7 @@ dependencies:
   bloc_concurrency: ^0.2.0
   collection: ^1.15.0
   connectivity_plus: ^2.1.0
+  device_info_plus: ^4.0.2
   devicelocale: ^0.5.0
   dotted_border: ^2.0.0
   dotted_line: ^3.1.0

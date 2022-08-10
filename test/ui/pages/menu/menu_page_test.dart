@@ -139,6 +139,16 @@ void main() {
     });
   });
 
+  testWidgets('About button', (tester) async {
+    await tester.pumpApp();
+    await tester.tap(find.byType(MenuButton));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.handiInfo));
+    await tester.pumpAndSettle();
+    expect(find.byType(AboutContent), findsOneWidget);
+    expect(find.byType(SearchForUpdateButton), findsNothing);
+  });
+
   testWidgets(
       'BUG SGC-1655 - Wrong day in header in Menu/photo calendar/screen saver',
       (tester) async {
