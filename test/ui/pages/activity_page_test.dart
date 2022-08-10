@@ -991,6 +991,8 @@ void main() {
             Future.value(<Activity>[
               FakeActivity.reocurrsEveryDay(startTime).copyWith(title: title)
             ]));
+        when(() => mockActivityDb.getAllAfter(any()))
+            .thenAnswer((_) => Future.value(<Activity>[]));
         await navigateToActivityPage(tester);
 
         // Act
@@ -1028,6 +1030,8 @@ void main() {
             Future.value(<Activity>[
               FakeActivity.reocurrsEveryDay(tenDaysAgo).copyWith(title: title)
             ]));
+        when(() => mockActivityDb.getAllAfter(any()))
+            .thenAnswer((_) => Future.value(<Activity>[]));
         await navigateToActivityPage(tester);
 
         // Act

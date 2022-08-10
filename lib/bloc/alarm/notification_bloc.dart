@@ -8,6 +8,7 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class NotificationBloc extends Bloc<NotificationEvent, String> {
   NotificationBloc({
@@ -35,11 +36,12 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
     final settingsState = memoplannerSettingBloc.state;
     if (settingsState is! MemoplannerSettingsNotLoaded &&
         activitiesState is ActivitiesLoaded) {
-      final timers = await timerDb.getRunningTimersFrom(
-        DateTime.now(),
-      );
       final now = DateTime.now();
-      final activities = await activityRepository.allAfter(now);
+      final timers = await timerDb.getRunningTimersFrom(
+        now,
+      );
+      final activities = await activityRepository.allAfter(
+          now.subtract(2.hours())); // subtracting to get all reminders
       await scheduleAlarmNotificationsIsolated(
         activities: activities,
         timers: timers.toAlarm(),
@@ -56,5 +58,5 @@ class NotificationEvent {}
 
 EventTransformer<Event> throttle<Event>(Duration delay) =>
     (events, mapper) => events
-        .throttleTime(delay, trailing: false, leading: true)
+        .throttleTime(delay, trailing: true, leading: false)
         .asyncExpand(mapper);

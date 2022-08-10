@@ -45,9 +45,9 @@ class AlarmPage extends StatelessWidget {
               activityDay: alarm.activityDay,
               activitiesBloc: context.read<ActivitiesBloc>(),
             ),
-            child: BlocBuilder<ActivityCubit, ActivityDay>(
-              builder: (context, activityDay) => ActivityInfo(
-                activityDay,
+            child: BlocBuilder<ActivityCubit, ActivityState>(
+              builder: (context, state) => ActivityInfo(
+                state.activityDay,
                 previewImage: previewImage,
                 alarm: alarm,
               ),
@@ -113,9 +113,9 @@ class ReminderPage extends StatelessWidget {
                     activityDay: reminder.activityDay,
                     activitiesBloc: context.read<ActivitiesBloc>(),
                   ),
-                  child: BlocBuilder<ActivityCubit, ActivityDay>(
-                    builder: (context, activityDay) =>
-                        ActivityInfo(activityDay, alarm: reminder),
+                  child: BlocBuilder<ActivityCubit, ActivityState>(
+                    builder: (context, state) =>
+                        ActivityInfo(state.activityDay, alarm: reminder),
                   ),
                 ),
               ),

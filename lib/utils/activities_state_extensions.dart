@@ -1,12 +1,8 @@
-import 'package:collection/collection.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 extension ActivitiesStateExtensions on ActivitiesState {
-  Activity? newActivityFromLoadedOrNull(Activity activity) =>
-      activities.firstWhereOrNull((a) => a.id == activity.id);
-
   bool anyConflictWith(Activity activity) {
     if (activity.fullDay) return false;
     if (activity.isRecurring) return false;

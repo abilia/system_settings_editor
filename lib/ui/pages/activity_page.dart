@@ -22,17 +22,23 @@ class ActivityPage extends StatelessWidget {
           activityDay: activityDay,
           activitiesBloc: context.read<ActivitiesBloc>(),
         ),
-        child: BlocBuilder<ActivityCubit, ActivityDay>(
-          builder: (context, activityDay) {
+        child: BlocConsumer<ActivityCubit, ActivityState>(
+          listener: (context, state) {
+            if (state is ActivityDeleted) {
+              Navigator.of(context).maybePop();
+            }
+          },
+          builder: (context, state) {
             return Scaffold(
               appBar: DayAppBar(
-                day: activityDay.day,
+                day: state.activityDay.day,
               ),
               body: ActivityInfoWithDots(
-                activityDay,
+                state.activityDay,
                 previewImage: previewImage,
               ),
-              bottomNavigationBar: _ActivityBottomAppBar(activityDay: activityDay),
+              bottomNavigationBar:
+                  _ActivityBottomAppBar(activityDay: state.activityDay),
             );
           },
         ),
