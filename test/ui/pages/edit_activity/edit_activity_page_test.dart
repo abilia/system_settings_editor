@@ -2089,7 +2089,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
 
-      // Assert -- end date defaults to start date
+      // Assert -- end date defaults to unspecified
       expect(
           find.descendant(of: find.byType(DatePicker), matching: find.text('')),
           findsOneWidget);
