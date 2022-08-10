@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:seagull/firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:seagull/background/all.dart';
@@ -14,6 +16,7 @@ import 'package:seagull/storage/all.dart';
 import 'package:seagull/utils/all.dart';
 
 Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final documentDirectory = await getApplicationDocumentsDirectory();
   final preferences = await SharedPreferences.getInstance();
 

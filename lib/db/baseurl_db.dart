@@ -10,6 +10,8 @@ class BaseUrlDb {
   Future setBaseUrl(String baseUrl) => prefs.setString(_baseUrlRecord, baseUrl);
 
   String get baseUrl => prefs.getString(_baseUrlRecord) ?? prod;
+  String get environment =>
+      backendEnvironments[baseUrl] ?? backendEnvironments.values.first;
 
   Future<void> initialize() async =>
       prefs.containsKey(_baseUrlRecord) ? baseUrl : await setBaseUrl(prod);

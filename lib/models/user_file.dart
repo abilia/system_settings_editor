@@ -12,10 +12,10 @@ class UserFile extends DataModel {
     required this.sha1,
     required this.md5,
     required this.path,
-    this.contentType,
     required this.fileSize,
     required this.deleted,
     required this.fileLoaded,
+    this.contentType,
   }) : super(id);
 
   UserFile setLoaded() => UserFile(

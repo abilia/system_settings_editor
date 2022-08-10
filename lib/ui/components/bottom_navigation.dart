@@ -3,20 +3,20 @@ import 'package:seagull/ui/all.dart';
 class BottomNavigation extends StatelessWidget {
   final Widget backNavigationWidget;
   final Widget? forwardNavigationWidget;
-  final bool useSafeArea;
+  final bool useVerticalSafeArea;
 
   const BottomNavigation({
-    Key? key,
     required this.backNavigationWidget,
     this.forwardNavigationWidget,
-    this.useSafeArea = true,
+    this.useVerticalSafeArea = true,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final forwardNavigationWidget = this.forwardNavigationWidget;
     return _BottomNavigation(
-      useSafeArea: useSafeArea,
+      useVerticalSafeArea: useVerticalSafeArea,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -33,34 +33,30 @@ class BottomNavigation extends StatelessWidget {
 }
 
 class _BottomNavigation extends StatelessWidget {
-  final bool useSafeArea;
+  final bool useVerticalSafeArea;
   const _BottomNavigation({
-    Key? key,
     required this.child,
-    this.useSafeArea = true,
+    this.useVerticalSafeArea = true,
+    Key? key,
   }) : super(key: key);
 
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    final bottom = Container(
+    return Container(
       color: AbiliaColors.black80,
-      height: layout.navigationBar.height,
-      child: Padding(
-        padding: layout.templates.bottomNavigation,
-        child: child,
+      child: SafeArea(
+        top: useVerticalSafeArea,
+        bottom: useVerticalSafeArea,
+        child: SizedBox(
+          height: layout.navigationBar.height,
+          child: Padding(
+            padding: layout.templates.bottomNavigation,
+            child: child,
+          ),
+        ),
       ),
     );
-
-    if (useSafeArea) {
-      return Container(
-        color: AbiliaColors.black80,
-        child: SafeArea(
-          child: bottom,
-        ),
-      );
-    }
-    return bottom;
   }
 }

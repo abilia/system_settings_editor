@@ -12,7 +12,7 @@ class CalendarPage extends StatelessWidget {
       child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
           builder: (context, settingsState) {
         if (settingsState is MemoplannerSettingsNotLoaded) {
-          return const Center(child: AbiliaProgressIndicator());
+          return const Scaffold(body: Center(child: AbiliaProgressIndicator()));
         }
         return DefaultTabController(
           length: settingsState.calendarCount,
@@ -27,7 +27,13 @@ class CalendarPage extends StatelessWidget {
               selector: (state) => state is ActivitiesNotLoaded,
               builder: (context, activitiesNotLoaded) {
                 if (activitiesNotLoaded) {
-                  return const Center(child: AbiliaProgressIndicator());
+                  return Center(
+                    child: SizedBox(
+                      width: layout.login.logoSize,
+                      height: layout.login.logoSize,
+                      child: const AbiliaProgressIndicator(),
+                    ),
+                  );
                 }
                 return ReturnToHomeScreenListener(
                   child: TabBarView(

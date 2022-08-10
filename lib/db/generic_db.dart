@@ -11,8 +11,8 @@ class GenericDb extends DataDb<Generic> {
     final genericDataModels = result.map(convertToDataModel);
     final groupByIdentifier = groupBy<DbModel<Generic>, String>(
         genericDataModels, (m) => m.model.data.identifier);
-    final maxRevisionPerIdentifier = groupByIdentifier.values.map((idList) =>
-        maxBy<DbModel<Generic>, int>(idList, (v) => v?.revision ?? -1));
+    final maxRevisionPerIdentifier = groupByIdentifier.values.map(
+        (idList) => maxBy<DbModel<Generic>, int>(idList, (v) => v.revision));
     return maxRevisionPerIdentifier.whereNotNull().map((data) => data.model);
   }
 

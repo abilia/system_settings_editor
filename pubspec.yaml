@@ -1,6 +1,6 @@
 name: seagull
 description: The seagull app.
-version: 4.0.0
+version: 4.1.0
 publish_to: none
 
 environment:
@@ -17,7 +17,7 @@ dependencies:
       url: https://github.com/abilia/acapela_tts.git
       ref: v1.1.3
   android_intent_plus: ^3.0.1
-  audioplayers: ^0.20.1
+  audioplayers: ^1.0.1
   auto_size_text: ^3.0.0-nullsafety.0
   battery_plus: ^2.0.1
   bloc_concurrency: ^0.2.0
@@ -30,8 +30,8 @@ dependencies:
   firebase_analytics: ^9.1.2
   firebase_core: ^1.8.0
   firebase_crashlytics: ^2.2.4
-  firebase_messaging: ^11.1.0
-  flutter_archive: ^4.0.1
+  firebase_messaging: ^12.0.1
+  flutter_archive: ^5.0.0
   flutter_bloc: ^8.0.1
   flutter_local_notifications:
     git:
@@ -44,20 +44,20 @@ dependencies:
   system_settings_editor:
     git:
       url: https://github.com/abilia/system_settings_editor.git
-      ref: 7b12cd54dd04ba57c57790f06fd683397b0c4603
+      ref: v1.3.5
   flutter_tts: ^3.2.2
   get_it: ^7.2.0
-  google_fonts: ^2.1.0
-  http: ^0.13.4
+  google_fonts: ^3.0.1
+  http: ^0.13.5
   image_picker: ^0.8.4
   logging: ^1.0.1
-  meta: ^1.3.0
+  meta: ^1.7.0
   mime: ^1.0.1
   package_info: ^2.0.2
   path_provider: ^2.0.5
-  permission_handler: ^9.2.0
+  permission_handler: ^10.0.0
   photo_view: ^0.14.0
-  record: ^3.0.0
+  record: ^4.3.2
   rxdart: ^0.27.1
   shared_preferences: ^2.0.8
   sqflite: ^2.0.0+3

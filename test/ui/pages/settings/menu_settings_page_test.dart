@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -54,7 +53,7 @@ void main() {
       expect(find.byType(CancelButton), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.cameraPhoto), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.myPhotos), findsWidgets);
-      expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.photoCalendar), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.favoritesShow), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.menuSetup), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.settings), findsOneWidget);
@@ -88,7 +87,7 @@ void main() {
 
     testWidgets('change display photo calendar is stored', (tester) async {
       await tester.goToMenuSettingPage();
-      await tester.tap(find.byIcon(AbiliaIcons.day));
+      await tester.tap(find.byIcon(AbiliaIcons.photoCalendar));
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       verifySyncGeneric(

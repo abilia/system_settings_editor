@@ -10,7 +10,6 @@ class RadioField<T> extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   const RadioField({
-    Key? key,
     required this.value,
     required this.groupValue,
     required this.onChanged,
@@ -19,6 +18,7 @@ class RadioField<T> extends StatelessWidget {
     this.heigth,
     this.width,
     this.padding,
+    Key? key,
   }) : super(key: key);
 
   bool get disabled => onChanged == null;
@@ -95,11 +95,11 @@ class RadioField<T> extends StatelessWidget {
 
 class PositionedRadio<T> extends StatelessWidget {
   const PositionedRadio({
-    Key? key,
     required this.value,
     required this.groupValue,
     required this.onChanged,
     this.radioKey,
+    Key? key,
   }) : super(key: key);
 
   final T value;
@@ -135,7 +135,6 @@ class PositionedRadio<T> extends StatelessWidget {
 
 class AbiliaRadio<T> extends StatefulWidget {
   const AbiliaRadio({
-    Key? key,
     required this.value,
     required this.groupValue,
     required this.onChanged,
@@ -151,6 +150,7 @@ class AbiliaRadio<T> extends StatefulWidget {
     this.visualDensity,
     this.focusNode,
     this.autofocus = false,
+    Key? key,
   }) : super(key: key);
 
   final T value;

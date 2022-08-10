@@ -56,8 +56,8 @@ class PastDots extends StatelessWidget {
   final bool isNight;
 
   const PastDots({
-    Key? key,
     required this.isNight,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -68,10 +68,10 @@ class PastDots extends StatelessWidget {
 
 class CurrentDots extends StatelessWidget {
   const CurrentDots({
-    Key? key,
     required this.hour,
     required this.isNight,
     required this.columnOfDots,
+    Key? key,
   }) : super(key: key);
 
   final DateTime hour;
@@ -114,8 +114,8 @@ class FutureDots extends StatelessWidget {
   final bool isNight;
 
   const FutureDots({
-    Key? key,
     required this.isNight,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -127,7 +127,10 @@ class FutureDots extends StatelessWidget {
 class Dots extends StatelessWidget {
   final Decoration decoration;
 
-  const Dots({Key? key, required this.decoration}) : super(key: key);
+  const Dots({
+    required this.decoration,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -155,10 +158,10 @@ class AnimatedDot extends StatelessWidget {
   final Widget? child;
 
   const AnimatedDot({
-    Key? key,
-    @required this.decoration,
+    required this.decoration,
     this.size,
     this.child,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -183,11 +186,11 @@ class SideDots extends StatelessWidget {
   final DayParts dayParts;
 
   const SideDots({
-    Key? key,
     required this.startTime,
     required this.endTime,
     required this.dots,
     required this.dayParts,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -294,13 +297,13 @@ class ActivityInfoSideDots extends StatelessWidget {
 
 @visibleForTesting
 class SideDotsLarge extends StatelessWidget {
-  const SideDotsLarge(
-      {Key? key,
-      required this.dots,
-      required this.startTime,
-      required this.endTime,
-      required this.now})
-      : super(key: key);
+  const SideDotsLarge({
+    required this.dots,
+    required this.startTime,
+    required this.endTime,
+    required this.now,
+    Key? key,
+  }) : super(key: key);
 
   final int dots;
   final DateTime startTime, endTime, now;
@@ -355,11 +358,11 @@ class _BigDots extends StatelessWidget {
   final DateTime startTime, endTime, now;
 
   const _BigDots({
-    Key? key,
     required this.dots,
     required this.startTime,
     required this.endTime,
     required this.now,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -392,7 +395,10 @@ class _BigDots extends StatelessWidget {
 class SubQuarterDot extends StatelessWidget {
   final int minutes;
 
-  const SubQuarterDot({Key? key, required this.minutes}) : super(key: key);
+  const SubQuarterDot({
+    required this.minutes,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => minutes > minutesPerDot
@@ -452,9 +458,9 @@ class ColorDot extends StatelessWidget {
   final double radius;
 
   const ColorDot({
-    Key? key,
-    this.color = AbiliaColors.white,
     required this.radius,
+    this.color = AbiliaColors.white,
+    Key? key,
   }) : super(key: key);
 
   @override

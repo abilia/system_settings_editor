@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:seagull/bloc/settings/settings_cubit.dart';
+import 'package:seagull/bloc/settings/all.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_config.dart';
@@ -12,9 +12,9 @@ import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_styles.dart'
 
 class TimerWheel extends StatefulWidget {
   const TimerWheel.interactive({
-    Key? key,
     required int lengthInSeconds,
     this.onMinutesSelectedChanged,
+    Key? key,
   })  : activeSeconds = lengthInSeconds,
         finished = false,
         style = TimerWheelStyle.interactive,
@@ -25,10 +25,10 @@ class TimerWheel extends StatefulWidget {
         super(key: key);
 
   const TimerWheel.nonInteractive({
-    Key? key,
     required int secondsLeft,
     this.lengthInMinutes,
     this.paused = false,
+    Key? key,
   })  : assert(secondsLeft >= 0, 'seconds cannot be negative'),
         isPast = secondsLeft == 0 && !paused,
         activeSeconds = secondsLeft,
@@ -39,10 +39,10 @@ class TimerWheel extends StatefulWidget {
         super(key: key);
 
   const TimerWheel.simplified({
-    Key? key,
     required int secondsLeft,
     this.lengthInMinutes,
     this.paused = false,
+    Key? key,
   })  : assert(secondsLeft >= 0, 'seconds cannot be negative'),
         isPast = secondsLeft == 0 && !paused,
         activeSeconds = secondsLeft,
@@ -122,14 +122,14 @@ class _TimerWheelState extends State<TimerWheel> {
         if (widget.style != TimerWheelStyle.interactive) {
           return timerWheel;
         } else {
-          return BlocBuilder<SettingsCubit, SettingsState>(
-            builder: (context, settingsState) => GestureDetector(
+          return BlocSelector<SpeechSettingsCubit, SpeechSettingsState, bool>(
+            selector: (state) => state.textToSpeech,
+            builder: (context, textToSpeech) => GestureDetector(
               onPanDown: (details) => _onPanDown(details, config),
               onPanUpdate: (details) => _onPanUpdate(details, config),
               onTapUp: (details) => _onTapUp(details, config),
-              onLongPressStart: (details) => settingsState.textToSpeech
-                  ? _playTtsOnNumbers(details, config)
-                  : () {},
+              onLongPressStart: (details) =>
+                  textToSpeech ? _playTtsOnNumbers(details, config) : () {},
               child: timerWheel,
             ),
           );

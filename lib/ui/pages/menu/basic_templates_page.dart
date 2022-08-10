@@ -19,8 +19,8 @@ class BasicTemplatesPage extends StatelessWidget {
           title: translate.templates,
           bottom: AbiliaTabBar(
             tabs: <Widget>[
-              TabItem(translate.templateActivities, AbiliaIcons.basicActivity),
-              TabItem(translate.templateTimers, AbiliaIcons.stopWatch),
+              TabItem(translate.activities, AbiliaIcons.basicActivity),
+              TabItem(translate.timers, AbiliaIcons.stopWatch),
             ],
           ),
         ),
@@ -34,7 +34,11 @@ class BasicTemplatesPage extends StatelessWidget {
             ListLibrary<BasicTimerData>(
               emptyLibraryMessage: translate.noTemplates,
               libraryItemGenerator: BasicTemplatePickField.new,
-              onTapEdit: _onEditTemplateTimer,
+              onTapEdit: (context, sortables) => _onEditTemplateTimer(
+                context,
+                sortables,
+                translate.editTimer,
+              ),
             ),
           ],
         ),
@@ -43,7 +47,11 @@ class BasicTemplatesPage extends StatelessWidget {
         ),
         floatingActionButton: AddTemplateButton(
           activityTemplateIndex: 0,
-          onNewTimerTemplate: _onEditTemplateTimer,
+          onNewTimerTemplate: (context, sortables) => _onEditTemplateTimer(
+            context,
+            sortables,
+            translate.newTimer,
+          ),
         ),
       ),
     );
@@ -79,7 +87,10 @@ class BasicTemplatesPage extends StatelessWidget {
   }
 
   void _onEditTemplateTimer(
-      BuildContext context, Sortable<BasicTimerData> sortable) async {
+    BuildContext context,
+    Sortable<BasicTimerData> sortable,
+    String title,
+  ) async {
     final authProviders = copiedAuthProviders(context);
     final sortableBloc = context.read<SortableBloc>();
 
@@ -97,7 +108,9 @@ class BasicTemplatesPage extends StatelessWidget {
               ),
             ),
           ],
-          child: const EditBasicTimerPage(),
+          child: EditBasicTimerPage(
+            title: title,
+          ),
         ),
       ),
     );
@@ -188,8 +201,8 @@ class _PickFolder extends StatelessWidget {
   final SortableData sortableData;
 
   const _PickFolder({
-    Key? key,
     required this.sortableData,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -228,9 +241,9 @@ class AddTemplateButton extends StatelessWidget {
   final Function onNewTimerTemplate;
 
   const AddTemplateButton({
-    Key? key,
     required this.activityTemplateIndex,
     required this.onNewTimerTemplate,
+    Key? key,
   }) : super(key: key);
 
   @override

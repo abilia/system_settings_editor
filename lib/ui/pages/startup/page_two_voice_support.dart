@@ -2,10 +2,10 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class PageTwo extends StatelessWidget {
-  const PageTwo({
-    Key? key,
+class PageTwoVoiceSupport extends StatelessWidget {
+  const PageTwoVoiceSupport({
     required this.pageController,
+    Key? key,
   }) : super(key: key);
 
   final PageController pageController;
@@ -21,40 +21,47 @@ class PageTwo extends StatelessWidget {
         children: <Widget>[
           MEMOplannerLogo(height: layout.login.logoHeight),
           SizedBox(height: layout.startupPage.logoDistance),
-          Text(
-            '${t.step} 2/2',
-            style: abiliaTextTheme.bodyText2
-                ?.copyWith(color: AbiliaColors.black75),
+          Tts(
+            child: Text(
+              '${t.step} 2/2',
+              style: abiliaTextTheme.bodyText2
+                  ?.copyWith(color: AbiliaColors.black75),
+            ),
           ),
           SizedBox(height: layout.formPadding.smallVerticalItemDistance),
-          Text(
-            t.downloadVoiceText,
-            style: abiliaTextTheme.headline6
-                ?.copyWith(color: AbiliaColors.black75),
+          Tts(
+            child: Text(
+              t.downloadVoiceText,
+              style: abiliaTextTheme.headline6
+                  ?.copyWith(color: AbiliaColors.black75),
+            ),
           ),
           SizedBox(height: layout.startupPage.textPickDistance),
           SizedBox(
             width: layout.startupPage.contentWidth,
-            child: BlocBuilder<SpeechSettingsCubit, SpeechSettingsState>(
-              builder: (context, state) => PickField(
+            child: Builder(builder: (context) {
+              final downloadingVoices =
+                  context.watch<VoicesCubit>().state.downloading.isNotEmpty;
+              final voice = context.watch<SpeechSettingsCubit>().state.voice;
+              final trailingText = voice.isEmpty
+                  ? (downloadingVoices ? t.installing : t.notSelected)
+                  : voice;
+              return PickField(
                 leading: const Icon(AbiliaIcons.speakText),
                 text: Text(t.textToSpeech),
                 trailingText: Text(
-                  state.voice.isEmpty ? t.notSelected : state.voice,
+                  trailingText,
                   style: (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
                       .copyWith(
-                    color: state.voice.isEmpty
-                        ? AbiliaColors.red
-                        : AbiliaColors.green,
+                    color:
+                        voice.isEmpty ? AbiliaColors.red : AbiliaColors.green,
                   ),
                 ),
                 onTap: () async => await Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const VoicesPage(),
-                  ),
+                  MaterialPageRoute(builder: (_) => const VoicesPage()),
                 ),
-              ),
-            ),
+              );
+            }),
           ),
           SizedBox(
             height: layout.startupPage.textPickDistance,

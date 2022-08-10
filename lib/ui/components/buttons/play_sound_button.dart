@@ -7,9 +7,9 @@ class PlaySoundButton extends StatelessWidget {
   final ButtonStyle? buttonStyle;
 
   const PlaySoundButton({
-    Key? key,
     required this.sound,
     this.buttonStyle,
+    Key? key,
   }) : super(key: key);
 
   @override

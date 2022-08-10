@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
@@ -17,6 +16,7 @@ import '../../../mocks/mock_bloc.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
+import '../../../test_helpers/tts.dart';
 
 void main() {
   final startTime = DateTime(2021, 09, 22, 12, 46);
@@ -130,10 +130,8 @@ void main() {
                   clockBloc: context.read<ClockBloc>(),
                 ),
               ),
-              BlocProvider<SettingsCubit>(
-                create: (context) => SettingsCubit(
-                  settingsDb: FakeSettingsDb(),
-                ),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => FakeSpeechSettingsCubit(),
               ),
               BlocProvider<PermissionCubit>(
                 create: (context) => PermissionCubit()..checkAll(),
@@ -359,6 +357,25 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(TitleWiz), findsOneWidget);
       expect(find.text(title), findsOneWidget);
+    });
+
+    testWidgets('SGC-1730 TTS play button appears when entering a title',
+        (WidgetTester tester) async {
+      setupFakeTts();
+      const title = 'title';
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextField), title);
+      await tester.pumpAndSettle();
+      expect(find.byType(TtsPlayButton), findsOneWidget);
+      expect(find.text(title), findsOneWidget);
+
+      await tester.verifyTts(
+        find.byType(TtsPlayButton),
+        exact: title,
+        useTap: true,
+      );
     });
   });
 

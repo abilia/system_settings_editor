@@ -54,9 +54,9 @@ class PermissionSetting extends StatelessWidget {
 
 class PermissionSwitch extends StatelessWidget {
   const PermissionSwitch({
-    Key? key,
     required this.permission,
     required this.status,
+    Key? key,
   }) : super(key: key);
 
   final Permission permission;
@@ -85,8 +85,8 @@ class NotificationPermissionSwitch extends StatelessWidget {
   final PermissionStatus status;
 
   const NotificationPermissionSwitch({
-    Key? key,
     required this.status,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -162,8 +162,8 @@ class FullscreenPermissionSwitch extends StatelessWidget {
   final PermissionStatus status;
 
   const FullscreenPermissionSwitch({
-    Key? key,
     required this.status,
+    Key? key,
   }) : super(key: key);
 
   @override

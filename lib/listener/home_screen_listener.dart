@@ -10,8 +10,8 @@ class ReturnToHomeScreenListener extends StatelessWidget {
   final Widget child;
 
   const ReturnToHomeScreenListener({
-    Key? key,
     required this.child,
+    Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {

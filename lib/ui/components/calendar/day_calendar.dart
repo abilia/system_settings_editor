@@ -44,7 +44,7 @@ class CalendarScaffold extends StatelessWidget {
         floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
         body: Stack(
           children: [
-            const Calendars(),
+            Calendars(showCategories: settingState.showCategories),
             if (settingState.settingsInaccessible)
               HiddenSetting(settingState.showCategories),
           ],
@@ -55,7 +55,12 @@ class CalendarScaffold extends StatelessWidget {
 }
 
 class Calendars extends StatefulWidget {
-  const Calendars({Key? key}) : super(key: key);
+  final bool showCategories;
+
+  const Calendars({
+    required this.showCategories,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _CalendarsState createState() => _CalendarsState();
@@ -67,7 +72,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     pageController = PageController(
       initialPage: context.read<DayPickerBloc>().state.index,
     );
@@ -75,7 +80,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     pageController.dispose();
     super.dispose();
   }
@@ -117,25 +122,36 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                     child: BlocSelector<MemoplannerSettingBloc,
                         MemoplannerSettingsState, DayCalendarType>(
                       selector: (state) => state.dayCalendarType,
-                      builder: (context, dayCalendarType) => Stack(
-                        children: [
-                          if (dayCalendarType == DayCalendarType.list)
-                            Agenda(eventState: eventState)
-                          else
-                            const TimepillarCalendar(),
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                top: layout.commonCalendar.goToNowButtonTop,
+                      builder: (context, dayCalendarType) => LayoutBuilder(
+                        builder: (context, boxConstraints) {
+                          final categoryLabelWidth = (boxConstraints.maxWidth -
+                                  layout.timepillar.width) /
+                              2;
+                          return Stack(
+                            children: [
+                              if (dayCalendarType == DayCalendarType.list)
+                                Agenda(eventState: eventState)
+                              else
+                                const TimepillarCalendar(),
+                              Align(
+                                alignment: Alignment.topCenter,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    top: layout.commonCalendar.goToNowButtonTop,
+                                  ),
+                                  child: const GoToNowButton(),
+                                ),
                               ),
-                              child: const GoToNowButton(),
-                            ),
-                          ),
-                        ],
+                              if (widget.showCategories) ...[
+                                LeftCategory(maxWidth: categoryLabelWidth),
+                                RightCategory(maxWidth: categoryLabelWidth),
+                              ],
+                            ],
+                          );
+                        },
                       ),
                     ),
-                  ),
+                  )
                 ],
               );
             },

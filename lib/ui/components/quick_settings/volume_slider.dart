@@ -80,7 +80,7 @@ abstract class _VolumeSliderState extends State<_VolumeSlider>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     _initVolume();
   }
 
@@ -134,7 +134,7 @@ abstract class _VolumeSliderState extends State<_VolumeSlider>
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 }

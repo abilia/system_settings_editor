@@ -28,7 +28,10 @@ class NoteLibraryPage extends StatelessWidget {
 
 class LibraryNote extends StatelessWidget {
   final String content;
-  const LibraryNote({Key? key, required this.content}) : super(key: key);
+  const LibraryNote({
+    required this.content,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +49,7 @@ class LibraryNote extends StatelessWidget {
             children: <Widget>[
               Lines(
                 textRenderingSize: content
-                    .calulcateTextRenderSize(
+                    .calculateTextRenderSize(
                       constraints: constraints,
                       textStyle: Theme.of(context).textTheme.caption ?? caption,
                     )
@@ -68,8 +71,8 @@ class LibraryNote extends StatelessWidget {
 
 class FullScreenNote extends StatelessWidget {
   const FullScreenNote({
-    Key? key,
     required this.noteData,
+    Key? key,
   }) : super(key: key);
   final NoteData noteData;
 

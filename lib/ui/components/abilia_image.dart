@@ -32,8 +32,8 @@ class EventImage extends StatelessWidget {
   }) : super(key: key);
 
   static Widget fromEventOccasion({
-    Key? key,
     required EventOccasion eventOccasion,
+    Key? key,
     ImageSize imageSize = ImageSize.thumb,
     BoxFit fit = BoxFit.cover,
     bool preview = false,
@@ -145,8 +145,8 @@ class CheckedImageWithImagePopup extends StatelessWidget {
   final EdgeInsets? checkPadding;
 
   const CheckedImageWithImagePopup({
-    Key? key,
     required this.activityDay,
+    Key? key,
     this.checkPadding,
   }) : super(key: key);
 
@@ -194,10 +194,10 @@ class PhotoCalendarImage extends StatelessWidget {
   final Widget? errorContent;
 
   const PhotoCalendarImage({
-    Key? key,
     required this.fileId,
     required this.filePath,
     this.errorContent,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -245,12 +245,12 @@ class FullScreenImage extends StatelessWidget {
   final bool tightMode;
 
   const FullScreenImage({
-    Key? key,
     required this.fileId,
     required this.filePath,
     this.backgroundDecoration,
     this.onTap,
     this.tightMode = false,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -302,13 +302,13 @@ class FadeInCalendarImage extends StatelessWidget {
   final BoxFit fit;
   final BorderRadius? radius;
   const FadeInCalendarImage({
-    Key? key,
     required this.imageFile,
     this.width,
     this.height,
     this.imageSize = ImageSize.thumb,
     this.fit = BoxFit.cover,
     this.radius,
+    Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -358,13 +358,13 @@ class FadeInAbiliaImage extends StatelessWidget {
   final BorderRadius? borderRadius;
 
   const FadeInAbiliaImage({
-    Key? key,
     required this.imageFileId,
     this.imageFilePath = '',
     this.height,
     this.width,
     this.fit = BoxFit.cover,
     this.borderRadius,
+    Key? key,
   }) : super(key: key);
 
   @override

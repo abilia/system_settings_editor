@@ -12,11 +12,11 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
   final bool selectableItems;
 
   const ListLibrary({
-    Key? key,
     required this.emptyLibraryMessage,
     required this.libraryItemGenerator,
     this.onTapEdit,
     this.selectableItems = true,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -102,7 +102,7 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
         headingIcon: AbiliaIcons.deleteAllClear,
         text: sortable.data is BasicTimerData
             ? translate.timerDelete
-            : translate.deleteActivity,
+            : translate.deleteActivityQuestion,
       ),
     );
 

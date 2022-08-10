@@ -49,7 +49,10 @@ class ImageArchivePage extends StatelessWidget {
 
 class ArchiveImage extends StatelessWidget {
   final Sortable<ImageArchiveData> sortable;
-  const ArchiveImage({Key? key, required this.sortable}) : super(key: key);
+  const ArchiveImage({
+    required this.sortable,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +96,8 @@ class ArchiveImage extends StatelessWidget {
 
 class FullScreenArchiveImage extends StatelessWidget {
   const FullScreenArchiveImage({
-    Key? key,
     required this.selected,
+    Key? key,
   }) : super(key: key);
   final ImageArchiveData selected;
 

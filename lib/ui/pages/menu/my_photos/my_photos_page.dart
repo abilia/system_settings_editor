@@ -74,8 +74,8 @@ class _AllPhotosTab extends StatelessWidget {
   final String myPhotoFolderId;
 
   const _AllPhotosTab({
-    Key? key,
     required this.myPhotoFolderId,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -95,8 +95,8 @@ class _PhotoCalendarTab extends StatelessWidget {
   final String myPhotoFolderId;
 
   const _PhotoCalendarTab({
-    Key? key,
     required this.myPhotoFolderId,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -123,9 +123,9 @@ class _PhotoCalendarTab extends StatelessWidget {
 
 class _AddPhotoButton extends StatelessWidget {
   const _AddPhotoButton({
-    Key? key,
     required this.myPhotoFolderId,
     required this.photoCalendarTabIndex,
+    Key? key,
   }) : super(key: key);
 
   final String myPhotoFolderId;

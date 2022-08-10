@@ -1,14 +1,11 @@
 import 'package:seagull/models/all.dart';
 
-const prod = 'https://myabilia.com',
-    whale = 'https://whale.abilia-gbg.se',
-    t1 = 'https://t1.abilia-gbg.se',
-    debug = 'https://debug.abilia-gbg.se';
-const Map<String, String> backendEnvironments = {
-  prod: 'Prod',
-  whale: 'Whale',
-  t1: 'T1',
-  debug: 'Debug',
+const prod = 'https://myabilia.com';
+const backendEnvironments = {
+  prod: 'PROD',
+  'https://whale.abilia-gbg.se': 'STAGING',
+  'https://t1.abilia-gbg.se': 'TEST',
+  'https://debug.abilia-gbg.se': 'DEBUG',
 };
 
 String fileIdUrl(String baseUrl, int userId, String imageFileId) =>

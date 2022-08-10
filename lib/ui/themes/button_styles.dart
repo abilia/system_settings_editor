@@ -162,6 +162,23 @@ final _actionButtonStyle = ButtonStyle(
 final actionButtonStyleRed = _actionButtonStyle.copyWith(
   backgroundColor: buttonBackgroundRed,
   foregroundColor: foregroundLight,
+  shape: MaterialStateProperty.resolveWith(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return noBorderShape.copyWith(borderRadius: borderRadius);
+      }
+      return RoundedRectangleBorder(
+        borderRadius: borderRadius,
+        side: BorderSide(
+          color: AbiliaColors.red140,
+          width: layout.borders.thin,
+        ),
+      );
+    },
+  ),
+);
+
+final actionButtonStyleRedLarge = actionButtonStyleRed.copyWith(
   minimumSize: MaterialStateProperty.all(
     Size(layout.actionButton.largeSize, layout.actionButton.largeSize),
   ),
@@ -208,6 +225,20 @@ final actionButtonStyleDark = _actionButtonStyle.copyWith(
     }
     return darkShapeBorder;
   }),
+);
+
+final actionButtonStyleNoneTransparantDark = actionButtonStyleDark.copyWith(
+  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return Colors.transparent;
+      }
+      if (states.contains(MaterialState.pressed)) {
+        return AbiliaColors.white140;
+      }
+      return AbiliaColors.white120;
+    },
+  ),
 );
 
 final actionButtonStyleDarkLarge = actionButtonStyleDark.copyWith(

@@ -22,7 +22,7 @@ class CategoriesSettingsTab extends StatelessWidget {
                   .changeCategorySettings(
                     state.categories.copyWith(show: value),
                   ),
-              leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+              leading: const Icon(AbiliaIcons.categories),
               child: Text(t.showCagetories),
             ),
             CollapsableWidget(
@@ -70,10 +70,10 @@ class _CategoryPickField extends StatelessWidget {
   final CategoriesSettingState Function(ImageAndName) onResult;
 
   const _CategoryPickField({
-    Key? key,
     required this.imageAndName,
     required this.defaultName,
     required this.onResult,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -118,8 +118,8 @@ class _CategoryPickField extends StatelessWidget {
 
 class _CategoriesPreview extends StatelessWidget {
   const _CategoriesPreview({
-    Key? key,
     required this.state,
+    Key? key,
   }) : super(key: key);
   final GeneralCalendarSettingsState state;
 

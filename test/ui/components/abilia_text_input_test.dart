@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/ui/all.dart';
@@ -18,17 +17,8 @@ void main() {
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),
-        home: MultiBlocProvider(
-          providers: [
-            BlocProvider<SettingsCubit>(
-              create: (context) => SettingsCubit(
-                settingsDb: FakeSettingsDb(),
-              ),
-            ),
-            BlocProvider<SpeechSettingsCubit>(
-              create: (context) => mockSpeechSettingsCubit,
-            ),
-          ],
+        home: BlocProvider<SpeechSettingsCubit>(
+          create: (context) => mockSpeechSettingsCubit,
           child: Material(child: widget),
         ),
       );
@@ -44,7 +34,7 @@ void main() {
     when(() => mockSpeechSettingsCubit.stream)
         .thenAnswer((_) => const Stream.empty());
     when(() => mockSpeechSettingsCubit.state)
-        .thenAnswer((_) => const SpeechSettingsState());
+        .thenAnswer((_) => const SpeechSettingsState(textToSpeech: true));
 
     when(() => mockSpeechSettingsCubit.close())
         .thenAnswer((_) => Future.value());
@@ -213,7 +203,11 @@ void main() {
         'Speak every word outputs last word in sentence only',
         (WidgetTester tester) async {
           when(() => mockSpeechSettingsCubit.state).thenAnswer(
-              (_) => const SpeechSettingsState(speakEveryWord: true));
+            (_) => const SpeechSettingsState(
+              textToSpeech: true,
+              speakEveryWord: true,
+            ),
+          );
 
           const ttsText = 'This is ';
 

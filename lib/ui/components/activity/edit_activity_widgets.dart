@@ -65,15 +65,15 @@ class NameAndPictureWidget extends StatelessWidget {
   final String? inputHeadingForNameField;
 
   const NameAndPictureWidget({
-    Key? key,
     required this.selectedImage,
+    required this.text,
     this.onImageSelected,
     this.onTextEdit,
     this.errorState = false,
     this.maxLines = 1,
     this.inputFormatters = const <TextInputFormatter>[],
-    required this.text,
     this.inputHeadingForNameField,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -112,12 +112,12 @@ class SelectPictureWidget extends StatelessWidget {
   final String? label;
 
   const SelectPictureWidget({
-    Key? key,
     required this.selectedImage,
     required this.onImageSelected,
     this.errorState = false,
     this.isLarge = false,
     this.label,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -181,11 +181,11 @@ class SelectedImageWidget extends StatelessWidget {
   final bool errorState, isLarge;
 
   const SelectedImageWidget({
-    Key? key,
     required this.selectedImage,
     this.errorState = false,
     this.isLarge = false,
     this.onTap,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -237,13 +237,13 @@ class SelectedImageWidget extends StatelessWidget {
 
 class NameInput extends StatelessWidget {
   const NameInput({
-    Key? key,
     required this.text,
     required this.onEdit,
     this.errorState = false,
     this.maxLines = 1,
     this.inputFormatters = const <TextInputFormatter>[],
     this.inputHeading,
+    Key? key,
   }) : super(key: key);
 
   final String text;
@@ -323,10 +323,10 @@ class CategoryRadioField extends StatelessWidget {
   final bool isRight;
 
   const CategoryRadioField({
-    Key? key,
     required this.category,
     required this.groupValue,
     this.onChanged,
+    Key? key,
   })  : isRight = category == Category.right,
         super(key: key);
 
@@ -438,9 +438,9 @@ class AlarmWidget extends StatelessWidget {
 
 class AlarmOnlyAtStartSwitch extends StatelessWidget {
   const AlarmOnlyAtStartSwitch({
-    Key? key,
     required this.alarm,
     required this.onChanged,
+    Key? key,
   }) : super(key: key);
 
   final Alarm alarm;

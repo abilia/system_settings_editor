@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
@@ -135,10 +134,8 @@ void main() {
                   clockBloc: context.read<ClockBloc>(),
                 ),
               ),
-              BlocProvider<SettingsCubit>(
-                create: (context) => SettingsCubit(
-                  settingsDb: FakeSettingsDb(),
-                ),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => FakeSpeechSettingsCubit(),
               ),
               BlocProvider<PermissionCubit>(
                 create: (context) => PermissionCubit()..checkAll(),

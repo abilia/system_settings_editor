@@ -120,10 +120,8 @@ void main() {
                   clockBloc: context.read<ClockBloc>(),
                 ),
               ),
-              BlocProvider<SettingsCubit>(
-                create: (context) => SettingsCubit(
-                  settingsDb: FakeSettingsDb(),
-                ),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => FakeSpeechSettingsCubit(),
               ),
               BlocProvider<PermissionCubit>(
                 create: (context) => PermissionCubit()..checkAll(),
@@ -259,6 +257,7 @@ void main() {
     await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField), 'newActivtyName');
     await tester.pumpAndSettle();
+    await tester.scrollDown(dy: -100);
 
     // Act -- Change input to new start time
     await tester.tap(timeFieldFinder);
@@ -312,6 +311,7 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(createEditActivityPage(newActivity: true));
     await tester.pumpAndSettle();
+    await tester.scrollDown(dy: -100);
 
     // Act -- Change input to new start time
     await tester.tap(timeFieldFinder);
@@ -337,6 +337,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    await tester.scrollDown(dy: 100);
     await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField), 'newActivtyName');
     await tester.pumpAndSettle();
@@ -367,6 +368,7 @@ void main() {
     );
     await tester.pumpWidget(createEditActivityPage(givenActivity: edit));
     await tester.pumpAndSettle();
+    await tester.scrollDown(dy: -100);
 
     // Act -- Change input to new start time
     await tester.tap(timeFieldFinder);
@@ -417,6 +419,7 @@ void main() {
     await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField), 'newActivtyName');
     await tester.pumpAndSettle();
+    await tester.scrollDown(dy: -100);
 
     // Act -- Change input to new start time
     await tester.tap(timeFieldFinder);
@@ -482,6 +485,7 @@ void main() {
     await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField), 'newActivtyName');
     await tester.pumpAndSettle();
+    await tester.scrollDown(dy: -100);
 
     // Act -- Change input to new start time
     await tester.tap(timeFieldFinder);

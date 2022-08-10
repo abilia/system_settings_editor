@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -36,7 +35,7 @@ void main() {
     MemoplannerSettingBloc? memoplannerSettingBloc,
     SortableBloc? sortableBloc,
   }) =>
-      TopLevelBlocsProvider(
+      TopLevelProvider(
         child: AuthenticatedBlocsProvider(
           memoplannerSettingBloc: memoplannerSettingBloc,
           sortableBloc: sortableBloc,
@@ -187,6 +186,36 @@ void main() {
       await tester.pumpAndSettle();
       expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day,
           initialTime.onlyDays());
+    });
+
+    testWidgets(
+        'SGC-1757 category buttons doesnt change position when changing day interval',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(EyeButtonDay));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.dayNight));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      final leftCategory = find.byType(LeftCategory);
+      final leftCategoryOffset = tester.getCenter(leftCategory);
+
+      await tester.tap(find.byType(MenuButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.day));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(EyeButtonDay));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.sun));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      expect(tester.getCenter(leftCategory), leftCategoryOffset);
     });
 
     group('Premissions', () {

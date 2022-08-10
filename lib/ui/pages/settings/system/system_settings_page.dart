@@ -47,7 +47,7 @@ class SystemSettingsPage extends StatelessWidget {
                 providers: copiedAuthProviders(context),
                 child: SpeechSupportSettingsPage(
                   textToSpeech:
-                      context.read<SettingsCubit>().state.textToSpeech,
+                      context.read<SpeechSettingsCubit>().state.textToSpeech,
                   speechRate:
                       context.read<SpeechSettingsCubit>().state.speechRate,
                 ),
@@ -57,7 +57,7 @@ class SystemSettingsPage extends StatelessWidget {
           ),
         ),
         PickField(
-          leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+          leading: const Icon(AbiliaIcons.android),
           text: Text(t.androidSettings),
           onTap: () async {
             final accessGranted = await codeProtectAccess(

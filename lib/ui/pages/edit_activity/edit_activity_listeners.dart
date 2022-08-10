@@ -5,7 +5,10 @@ import 'package:seagull/ui/all.dart';
 class ErrorPopupListener extends StatelessWidget {
   final Widget child;
 
-  const ErrorPopupListener({Key? key, required this.child}) : super(key: key);
+  const ErrorPopupListener({
+    required this.child,
+    Key? key,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocListener<WizardCubit, WizardState>(
@@ -107,7 +110,10 @@ class ErrorPopupListener extends StatelessWidget {
 class PopOnSaveListener extends StatelessWidget {
   final Widget child;
 
-  const PopOnSaveListener({Key? key, required this.child}) : super(key: key);
+  const PopOnSaveListener({
+    required this.child,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => BlocListener<WizardCubit, WizardState>(
@@ -122,9 +128,9 @@ class ScrollToErrorPageListener extends StatelessWidget {
   final Widget child;
 
   const ScrollToErrorPageListener({
-    Key? key,
     required this.nrTabs,
     required this.child,
+    Key? key,
   }) : super(key: key);
 
   @override

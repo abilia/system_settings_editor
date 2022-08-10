@@ -4,12 +4,12 @@ import 'package:seagull/utils/all.dart';
 
 class FullDayStack extends StatelessWidget {
   const FullDayStack({
-    Key? key,
     required this.numberOfActivities,
     this.width,
     this.height,
     this.goToActivitiesListOnTap = false,
     this.day,
+    Key? key,
   })  : assert(!(goToActivitiesListOnTap && day == null)),
         super(key: key);
 

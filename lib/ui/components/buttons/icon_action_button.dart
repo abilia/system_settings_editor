@@ -2,11 +2,11 @@ import 'package:seagull/ui/all.dart';
 
 class IconActionButton extends StatelessWidget {
   const IconActionButton({
+    required this.child,
     Key? key,
     this.onPressed,
     this.style,
     this.ttsData,
-    required this.child,
   }) : super(key: key);
 
   final ButtonStyle? style;
@@ -30,9 +30,9 @@ class IconActionButton extends StatelessWidget {
 
 class IconActionButtonLight extends StatelessWidget {
   const IconActionButtonLight({
+    required this.child,
     Key? key,
     this.onPressed,
-    required this.child,
   }) : super(key: key);
 
   final Widget child;
@@ -48,9 +48,9 @@ class IconActionButtonLight extends StatelessWidget {
 
 class IconActionButtonDark extends StatelessWidget {
   const IconActionButtonDark({
+    required this.child,
     Key? key,
     this.onPressed,
-    required this.child,
   }) : super(key: key);
 
   final Widget child;
@@ -66,10 +66,10 @@ class IconActionButtonDark extends StatelessWidget {
 
 class IconActionButtonBlack extends StatelessWidget {
   const IconActionButtonBlack({
-    Key? key,
     required this.child,
     this.onPressed,
     this.ttsData,
+    Key? key,
   }) : super(key: key);
 
   final Widget child;

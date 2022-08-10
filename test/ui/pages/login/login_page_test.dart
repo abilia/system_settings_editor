@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -343,6 +342,7 @@ void main() {
     expect(find.byType(CalendarPage), findsNothing);
     expect(find.byType(ErrorDialog), findsOneWidget);
     expect(find.text(translate.userTypeNotSupported), findsOneWidget);
+    expect(find.text(translate.loggedOutMessage), findsNothing);
   });
 
   testWidgets('Cant press OK with too short username',
@@ -417,7 +417,7 @@ void main() {
     expect(find.text(secretPassword), findsNothing);
   });
 
-  testWidgets('Redirect to login when unautorized',
+  testWidgets('Redirect to login when unauthorized',
       (WidgetTester tester) async {
     await tester.pumpApp();
     await tester.pumpAndSettle();
@@ -497,6 +497,11 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.byType(StarterSetDialog), findsNothing);
       });
+
+      testWidgets('hidden resets device button ', (WidgetTester tester) async {
+        await tester.pumpApp();
+        expect(find.byType(AbiliaLogoWithReset), findsOneWidget);
+      }, skip: !Config.isMP);
     });
   });
 }

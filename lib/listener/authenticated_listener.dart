@@ -15,9 +15,9 @@ import 'package:seagull/utils/all.dart';
 class AuthenticatedListener extends StatefulWidget {
   final bool newlyLoggedIn;
   const AuthenticatedListener({
-    Key? key,
     required this.child,
     required this.newlyLoggedIn,
+    Key? key,
   }) : super(key: key);
 
   final Widget child;
@@ -31,7 +31,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -43,7 +43,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 

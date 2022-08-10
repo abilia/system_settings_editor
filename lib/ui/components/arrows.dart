@@ -14,30 +14,30 @@ class ScrollArrows extends StatelessWidget {
   late final ValueNotifier<double?> maxScrollExtent = ValueNotifier(null);
 
   ScrollArrows({
-    Key? key,
     required this.child,
     required this.upArrow,
     required this.downArrow,
     required this.leftArrow,
     required this.rightArrow,
+    required this.verticalScrollBar,
     this.upCollapseMargin,
     this.downCollapseMargin,
     this.leftCollapseMargin,
     this.rightCollapseMargin,
-    required this.verticalScrollBar,
     this.verticalScrollBarAlwaysShown = false,
     this.verticalController,
     this.horizontalController,
+    Key? key,
   }) : super(key: key);
 
   ScrollArrows.vertical({
-    Key? key,
     required this.child,
     this.upCollapseMargin,
     this.downCollapseMargin,
     bool hasScrollBar = true,
     bool scrollbarAlwaysShown = false,
     ScrollController? controller,
+    Key? key,
   })  : verticalScrollBar = hasScrollBar,
         verticalController = controller,
         verticalScrollBarAlwaysShown = scrollbarAlwaysShown,
@@ -51,7 +51,6 @@ class ScrollArrows extends StatelessWidget {
         super(key: key);
 
   ScrollArrows.all({
-    Key? key,
     required this.child,
     this.upCollapseMargin,
     this.downCollapseMargin,
@@ -61,6 +60,7 @@ class ScrollArrows extends StatelessWidget {
     this.verticalScrollBarAlwaysShown = false,
     this.verticalController,
     this.horizontalController,
+    Key? key,
   })  : upArrow = true,
         downArrow = true,
         leftArrow = true,
@@ -68,7 +68,6 @@ class ScrollArrows extends StatelessWidget {
         super(key: key);
 
   ScrollArrows.horizontal({
-    Key? key,
     required this.child,
     this.leftCollapseMargin,
     this.rightCollapseMargin,
@@ -78,6 +77,7 @@ class ScrollArrows extends StatelessWidget {
     this.verticalScrollBar = false,
     this.verticalScrollBarAlwaysShown = false,
     this.verticalController,
+    Key? key,
   })  : upArrow = false,
         downArrow = false,
         leftArrow = true,
@@ -109,7 +109,7 @@ class ScrollArrows extends StatelessWidget {
               if (child != null)
                 if (verticalScrollBar)
                   AbiliaScrollBar(
-                    isAlwaysShown: verticalScrollBarAlwaysShown,
+                    thumbVisibility: verticalScrollBarAlwaysShown,
                     controller: verticalController,
                     child: child,
                   )
@@ -263,11 +263,11 @@ class _Arrow extends StatefulWidget {
   _Arrow({
     required this.icon,
     required this.borderRadius,
+    required this.conditionFunction,
     required Vector3 vectorTranslation,
     this.width,
     this.heigth,
     this.controller,
-    required this.conditionFunction,
   })  : translation = Matrix4.identity(),
         hiddenTranslation = Matrix4.translation(vectorTranslation);
 
@@ -295,7 +295,7 @@ class _ArrowState extends State<_Arrow> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) => listener());
+    WidgetsBinding.instance.addPostFrameCallback((_) => listener());
     return ClipRect(
       child: AnimatedContainer(
         transform: condition ? widget.translation : widget.hiddenTranslation,

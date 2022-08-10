@@ -2,42 +2,48 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/listener/all.dart';
 
 class ActivityPage extends StatelessWidget {
   final ActivityDay activityDay;
   final Widget? previewImage;
 
   const ActivityPage({
-    Key? key,
     required this.activityDay,
     this.previewImage,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Theme(
       data: abiliaWhiteTheme,
-      child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
-        selector: (activitiesState) {
-          final a = activitiesState
-              .newActivityFromLoadedOrGiven(activityDay.activity);
-          return ActivityDay(
-            a,
-            a.isRecurring ? activityDay.day : a.startTime,
-          );
-        },
-        builder: (context, ad) {
-          return Scaffold(
-            appBar: DayAppBar(
-              day: ad.day,
-            ),
-            body: ActivityInfoWithDots(
-              ad,
-              previewImage: previewImage,
-            ),
-            bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
-          );
-        },
+      child: ActivityListener(
+        activity: activityDay.activity,
+        onActivityDeleted: () =>
+            Navigator.of(context).popUntil((route) => route.isFirst),
+        child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
+          selector: (activitiesState) {
+            final a = activitiesState
+                .newActivityFromLoadedOrGiven(activityDay.activity);
+            return ActivityDay(
+              a,
+              a.isRecurring ? activityDay.day : a.startTime,
+            );
+          },
+          builder: (context, ad) {
+            return Scaffold(
+              appBar: DayAppBar(
+                day: ad.day,
+              ),
+              body: ActivityInfoWithDots(
+                ad,
+                previewImage: previewImage,
+              ),
+              bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
+            );
+          },
+        ),
       ),
     );
   }
@@ -45,8 +51,8 @@ class ActivityPage extends StatelessWidget {
 
 class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
   const _ActivityBottomAppBar({
-    Key? key,
     required this.activityDay,
+    Key? key,
   }) : super(key: key);
 
   final ActivityDay activityDay;
@@ -184,7 +190,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
       builder: (_) => YesNoDialog(
         heading: Translator.of(context).translate.delete,
         headingIcon: AbiliaIcons.deleteAllClear,
-        text: Translator.of(context).translate.deleteActivity,
+        text: Translator.of(context).translate.deleteActivityQuestion,
       ),
     );
     if (shouldDelete == true) {
@@ -215,8 +221,8 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
 
 class EditActivityButton extends StatelessWidget {
   const EditActivityButton({
-    Key? key,
     required this.activityDay,
+    Key? key,
   }) : super(key: key);
 
   final ActivityDay activityDay;

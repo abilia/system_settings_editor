@@ -7,9 +7,21 @@ import 'package:seagull/db/voice_db.dart';
 import 'package:seagull/logging.dart';
 
 abstract class TtsInterface {
-  static Future<TtsInterface> implementation(VoiceDb voiceDb) async {
-    if (Config.isMPGO) return await FlutterTtsHandler.implementation();
-    return await AcapelaTtsHandler.implementation(voiceDb);
+  static Future<TtsInterface> implementation({
+    required VoiceDb voiceDb,
+    required String voicesPath,
+  }) async {
+    try {
+      if (Config.isMP) {
+        return AcapelaTtsHandler.implementation(
+          voiceDb: voiceDb,
+          voicesPath: voicesPath,
+        );
+      }
+    } catch (e) {
+      AcapelaTtsHandler._log.severe('failed to initialize acapela', e);
+    }
+    return FlutterTtsHandler.implementation();
   }
 
   Future<dynamic> speak(String text);
@@ -22,13 +34,16 @@ abstract class TtsInterface {
 
   Future<dynamic> setSpeechRate(double speechRate);
 
-  Future<List<Object?>> get availableVoices => Future.value(List.empty());
+  Future<List<Object?>> get availableVoices;
 }
 
 class AcapelaTtsHandler extends AcapelaTts implements TtsInterface {
   static final Logger _log = Logger((AcapelaTts).toString());
 
-  static Future<AcapelaTtsHandler> implementation(VoiceDb voiceDb) async {
+  static Future<AcapelaTtsHandler> implementation({
+    required VoiceDb voiceDb,
+    required String voicesPath,
+  }) async {
     final acapela = AcapelaTtsHandler();
     bool initialized = await acapela.initialize(
       userId: 0x7a323547,
@@ -37,7 +52,7 @@ class AcapelaTtsHandler extends AcapelaTts implements TtsInterface {
           'VimydOpXm@G7mAD\$VyO!eL%3JVAuNstBxpBi!gMZOXb7CZ6wq3i#\n'
           'V2%VyjWqtZliBRu%@pga5pAjKcadHfW4JhbwUUi7goHwjpIB\n'
           'RK\$@cHvZ!G9GsQ%lnEmu3S##',
-      voicesPath: voiceDb.applicationSupportDirectory,
+      voicesPath: voicesPath,
     );
     if (initialized &&
         voiceDb.voice.isNotEmpty &&

@@ -14,7 +14,6 @@ typedef BasicTemplateItemGenerator<T extends SortableData> = Widget Function(
 
 class LibraryPage<T extends SortableData> extends StatelessWidget {
   const LibraryPage.nonSelectable({
-    Key? key,
     required this.libraryItemGenerator,
     required this.emptyLibraryMessage,
     this.onCancel,
@@ -23,13 +22,13 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     this.showBottomNavigationBar = true,
     this.gridCrossAxisCount,
     this.gridChildAspectRatio,
+    Key? key,
   })  : selectableItems = false,
         selectedItemGenerator = null,
         onOk = null,
         super(key: key);
 
   const LibraryPage.selectable({
-    Key? key,
     required this.selectedItemGenerator,
     required this.libraryItemGenerator,
     required this.emptyLibraryMessage,
@@ -40,6 +39,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     this.showBottomNavigationBar = true,
     this.gridCrossAxisCount,
     this.gridChildAspectRatio,
+    Key? key,
   })  : selectableItems = true,
         assert(
             onOk != null, 'onOk should not be null in LibraryPage.selectable'),
@@ -103,10 +103,10 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
 
 class LibraryHeading<T extends SortableData> extends StatelessWidget {
   const LibraryHeading({
-    Key? key,
     required this.sortableArchiveState,
     required this.rootHeading,
     this.showOnlyFolders = false,
+    Key? key,
   }) : super(key: key);
   final SortableArchiveState<T> sortableArchiveState;
   final String rootHeading;
@@ -231,7 +231,10 @@ class _SortableLibraryState<T extends SortableData>
 }
 
 class Folder<T extends SortableData> extends StatelessWidget {
-  const Folder({Key? key, required this.sortable}) : super(key: key);
+  const Folder({
+    required this.sortable,
+    Key? key,
+  }) : super(key: key);
 
   final Sortable<T> sortable;
 
@@ -251,9 +254,9 @@ class Folder<T extends SortableData> extends StatelessWidget {
 
 class SelectableItem<T extends SortableData> extends StatelessWidget {
   const SelectableItem({
-    Key? key,
     required this.sortable,
     required this.libraryItemGenerator,
+    Key? key,
   }) : super(key: key);
 
   final Sortable<T> sortable;
@@ -275,9 +278,9 @@ class SelectableItem<T extends SortableData> extends StatelessWidget {
 
 class EmptyLibraryMessage extends StatelessWidget {
   const EmptyLibraryMessage({
-    Key? key,
     required this.emptyLibraryMessage,
     required this.rootFolder,
+    Key? key,
   }) : super(key: key);
 
   final String emptyLibraryMessage;
@@ -309,8 +312,8 @@ class LibraryFolder extends StatelessWidget {
   final SortableData sortableData;
 
   const LibraryFolder({
-    Key? key,
     required this.sortableData,
+    Key? key,
   }) : super(key: key);
 
   @override

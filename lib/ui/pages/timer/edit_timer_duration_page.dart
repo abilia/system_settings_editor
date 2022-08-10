@@ -27,8 +27,10 @@ class EditTimerDurationPage extends StatelessWidget {
 class _TimerInputContent extends StatefulWidget {
   final Duration initialDuration;
 
-  const _TimerInputContent({Key? key, required this.initialDuration})
-      : super(key: key);
+  const _TimerInputContent({
+    required this.initialDuration,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<_TimerInputContent> createState() => _TimerInputContentState();
@@ -164,10 +166,10 @@ class _TimeTextField extends StatelessWidget {
   final TextEditingController controller;
 
   const _TimeTextField({
-    Key? key,
     required this.header,
     required this.controller,
     this.focusNode,
+    Key? key,
   }) : super(key: key);
 
   @override

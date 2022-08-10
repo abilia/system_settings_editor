@@ -14,8 +14,8 @@ extension IncreaseSizeOnMp on WidgetTester {
       addTearDown(binding.window.clearDevicePixelRatioTestValue);
     }
     if (use24) {
-      binding.window.alwaysUse24HourFormatTestValue = use24;
-      addTearDown(binding.window.clearAlwaysUse24HourTestValue);
+      binding.platformDispatcher.alwaysUse24HourFormatTestValue = use24;
+      addTearDown(binding.platformDispatcher.clearAlwaysUse24HourTestValue);
     }
     await pumpWidget(App(pushCubit: pushCubit));
     await pumpAndSettle();

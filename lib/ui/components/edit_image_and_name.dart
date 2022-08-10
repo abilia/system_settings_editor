@@ -109,7 +109,7 @@ class _EditImageAndNameState extends State<EditImageAndName> {
           ),
         ),
         BottomNavigation(
-          useSafeArea: false,
+          useVerticalSafeArea: false,
           backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: OkButton(
             key: TestKey.bottomSheetOKButton,

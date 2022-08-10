@@ -168,14 +168,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 GetIt.I<SettingsDb>(),
               ),
             ),
-            BlocProvider<LicenseCubit>(
-              create: (context) => LicenseCubit(
-                clockBloc: context.read<ClockBloc>(),
-                pushCubit: context.read<PushCubit>(),
-                userRepository: context.read<UserRepository>(),
-                authenticationBloc: context.read<AuthenticationBloc>(),
-              )..reloadLicenses(),
-            ),
             BlocProvider<PermissionCubit>(
               create: (context) => PermissionCubit()
                 ..requestPermissions([Permission.notification])
@@ -226,10 +218,10 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
       );
 }
 
-class TopLevelBlocsProvider extends StatelessWidget {
-  const TopLevelBlocsProvider({
-    Key? key,
+class TopLevelProvider extends StatelessWidget {
+  const TopLevelProvider({
     required this.child,
+    Key? key,
     this.pushCubit,
   }) : super(key: key);
 
@@ -262,39 +254,21 @@ class TopLevelBlocsProvider extends StatelessWidget {
           RepositoryProvider<VoiceRepository>(
             create: (context) => VoiceRepository(
               client: GetIt.I<ListenableClient>(),
-              voiceDb: GetIt.I<VoiceDb>(),
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              applicationSupportPath:
+                  GetIt.I<Directories>().applicationSupport.path,
+              ttsHandler: GetIt.I<TtsInterface>(),
             ),
           ),
         ],
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<AuthenticationBloc>(
-            create: (context) => AuthenticationBloc(
-              context.read<UserRepository>(),
-              onLogout: () => Future.wait<void>(
-                [
-                  DatabaseRepository.clearAll(GetIt.I<Database>()),
-                  GetIt.I<SeagullLogger>().sendLogsToBackend(),
-                  clearNotificationSubject(),
-                  notificationPlugin.cancelAll(),
-                  GetIt.I<FileStorage>().deleteUserFolder(),
-                  GetIt.I<SupportPersonsDb>().deleteAll(),
-                ],
-              ),
-              client: GetIt.I<ListenableClient>(),
-            )..add(CheckAuthentication()),
-          ),
           BlocProvider<PushCubit>(
             create: (context) => pushCubit ?? PushCubit(),
           ),
           BlocProvider<ClockBloc>(
             create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),
-          ),
-          BlocProvider<SettingsCubit>(
-            create: (context) => SettingsCubit(
-              settingsDb: GetIt.I<SettingsDb>(),
-            ),
           ),
           BlocProvider(
             create: (context) => StartupCubit(
@@ -307,26 +281,74 @@ class TopLevelBlocsProvider extends StatelessWidget {
             ),
           ),
           BlocProvider(
+            create: (context) => LocaleCubit(GetIt.I<SettingsDb>()),
+          ),
+          BlocProvider(
             create: (context) => TouchDetectionCubit(),
           ),
-          if (Config.isMP) ...[
-            BlocProvider<SpeechSettingsCubit>(
-              create: (context) => SpeechSettingsCubit(
-                  voiceDb: GetIt.I<VoiceDb>(),
-                  acapelaTts: GetIt.I<TtsInterface>()),
+          BlocProvider<SpeechSettingsCubit>(
+            create: (context) => SpeechSettingsCubit(
+              voiceDb: GetIt.I<VoiceDb>(),
+              acapelaTts: GetIt.I<TtsInterface>(),
+              localeStream: context.read<LocaleCubit>().stream,
             ),
+          ),
+          if (Config.isMP)
             BlocProvider<VoicesCubit>(
               create: (context) => VoicesCubit(
+                languageCode: GetIt.I<SettingsDb>().language,
                 speechSettingsCubit: context.read<SpeechSettingsCubit>(),
-                ttsHandler: GetIt.I<TtsInterface>(),
                 voiceRepository: context.read<VoiceRepository>(),
-                locale: GetIt.I<SettingsDb>().language,
+                localeStream: context.read<LocaleCubit>().stream,
               ),
             ),
-          ],
         ],
         child: child,
       ),
+    );
+  }
+}
+
+class AuthenticationBlocProvider extends StatelessWidget {
+  const AuthenticationBlocProvider({
+    required this.child,
+    Key? key,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthenticationBloc>(
+          create: (context) => AuthenticationBloc(
+            context.read<UserRepository>(),
+            onLogout: () => Future.wait<void>(
+              [
+                DatabaseRepository.clearAll(GetIt.I<Database>()),
+                GetIt.I<SeagullLogger>().sendLogsToBackend(),
+                clearNotificationSubject(),
+                notificationPlugin.cancelAll(),
+                GetIt.I<FileStorage>().deleteUserFolder(),
+                GetIt.I<SupportPersonsDb>().deleteAll(),
+                GetIt.I<LicenseDb>().delete(),
+                GetIt.I<SettingsDb>().restore(),
+              ],
+            ),
+            client: GetIt.I<ListenableClient>(),
+          )..add(CheckAuthentication()),
+        ),
+        BlocProvider<LicenseCubit>(
+          create: (context) => LicenseCubit(
+            clockBloc: context.read<ClockBloc>(),
+            pushCubit: context.read<PushCubit>(),
+            userRepository: context.read<UserRepository>(),
+            authenticationBloc: context.read<AuthenticationBloc>(),
+          )..reloadLicenses(),
+        ),
+      ],
+      child: child,
     );
   }
 }

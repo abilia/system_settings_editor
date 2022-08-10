@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -136,10 +135,8 @@ void main() {
                   clockBloc: context.read<ClockBloc>(),
                 ),
               ),
-              BlocProvider<SettingsCubit>(
-                create: (context) => SettingsCubit(
-                  settingsDb: FakeSettingsDb(),
-                ),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => FakeSpeechSettingsCubit(),
               ),
               BlocProvider<PermissionCubit>(
                 create: (context) => PermissionCubit()..checkAll(),
@@ -1484,6 +1481,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Act -- tap att start time
       await tester.tap(timeFieldFinder);
@@ -1504,6 +1502,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Act
       await tester.tap(timeFieldFinder);
@@ -1526,6 +1525,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Assert -- that the activities start time shows
       expect(find.text('9:33 AM'), findsNothing);
@@ -1555,6 +1555,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Assert -- that correct start and end time shows
       expect(find.text('11:55 AM - 2:55 PM'), findsOneWidget);
@@ -1597,6 +1598,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Assert -- that the activities start time shows
       expect(find.text('9:33 AM'), findsNothing);
@@ -1624,6 +1626,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Assert -- time is in am
       expect(find.text('11:55 AM'), findsOneWidget);
@@ -1651,6 +1654,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Assert -- time starts in pm
       expect(find.text('12:55 PM'), findsOneWidget);
@@ -1667,7 +1671,7 @@ text''';
       expect(find.text('12:55 AM'), findsOneWidget);
     });
 
-    testWidgets('removing original leaves same value',
+    testWidgets('SGC-1787 start time gives error dialog must enter start time',
         (WidgetTester tester) async {
       // Arrange
       final clear =
@@ -1681,6 +1685,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Act -- remove values
       await tester.tap(timeFieldFinder);
@@ -1693,7 +1698,7 @@ text''';
       await tester.pumpAndSettle();
 
       // Assert -- time is same
-      expect(find.text('3:44 AM'), findsOneWidget);
+      expect(find.byType(ErrorDialog), findsOneWidget);
     });
 
     testWidgets('Changes focus to endTime when startTime is filled in',
@@ -1709,6 +1714,7 @@ text''';
         ),
       );
       await tester.pump();
+      await tester.scrollDown(dy: -100);
       // Assert -- start time set but not end time endTime
       expect(find.text('3:04 AM'), findsOneWidget);
       expect(find.text('11:11 AM - 11:12 PM'), findsNothing);
@@ -1762,6 +1768,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Assert -- is 24h clock
       expect(find.text('13:44'), findsOneWidget);
@@ -1781,12 +1788,11 @@ text''';
 
       await tester.tap(endTimeInputFinder, warnIfMissed: false);
       await tester.pumpAndSettle();
-      expect(find.text('13:44'),
-          findsOneWidget); // Time resets when no valid time is entered
 
       // Type '1111'
       await tester.enterTime(startTimeInputFinder, '1111');
-      expect(find.text('11:11'), findsOneWidget);
+      expect(find.text('11:11'), findsOneWidget); // End time
+      expect(find.text('--:--'), findsOneWidget); // Start time
 
       // Type '0001'
       await tester.enterTime(startTimeInputFinder, '0001');
@@ -1813,6 +1819,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
       await tester.enterTime(startTimeInputFinder, '9');
@@ -1829,6 +1836,7 @@ text''';
       );
       await tester.pumpWidget(createEditActivityPage(givenActivity: acivity));
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
 
@@ -1864,6 +1872,7 @@ text''';
 
       await tester.pumpWidget(createEditActivityPage(givenActivity: acivity));
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Assert -- that correct start and end time shows
       expect(find.text('11:55 AM - 2:55 PM'), findsOneWidget);
@@ -2144,6 +2153,7 @@ text''';
       // Arrange -- enter title
       await tester.ourEnterText(
           find.byKey(TestKey.editTitleTextFormField), 'newActivtyTitle');
+      await tester.scrollDown(dy: -100);
 
       // Arrange -- enter start time
       await tester.tap(timeFieldFinder);
@@ -2202,6 +2212,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Act -- Change end time to 17:00
       await tester.tap(find.byType(TimeIntervallPicker));
@@ -2416,24 +2427,6 @@ text''';
       expect(datePicker.onChange, isNull);
     });
 
-    testWidgets('category not visible - edit settings ',
-        (WidgetTester tester) async {
-      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
-            editActivity: EditActivitySettings(
-              type: false,
-            ),
-          ),
-        ),
-      );
-      await tester.pumpWidget(createEditActivityPage());
-      await tester.pumpAndSettle();
-
-      expect(find.byKey(TestKey.leftCategoryRadio), findsNothing);
-      expect(find.byKey(TestKey.rightCategoryRadio), findsNothing);
-    });
-
     testWidgets('category not visible - category show settings',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
@@ -2583,6 +2576,7 @@ text''';
       );
 
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
@@ -2615,6 +2609,7 @@ text''';
       );
 
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
@@ -2648,6 +2643,7 @@ text''';
       );
 
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
@@ -2753,6 +2749,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
 
       // Assert -- that the activities time shows
       await tester.verifyTts(timeFieldFinder, exact: translate.time);
@@ -2795,6 +2792,7 @@ text''';
           ),
         );
         await tester.pumpAndSettle();
+        await tester.scrollDown(dy: -100);
 
         // Act -- remove end time
         await tester.tap(timeFieldFinder);
@@ -2847,6 +2845,7 @@ text''';
           ),
         );
         await tester.pumpAndSettle();
+        await tester.scrollDown(dy: -100);
 
         // Act -- remove end time
         await tester.tap(timeFieldFinder);
@@ -2875,6 +2874,7 @@ text''';
           ),
         );
         await tester.pumpAndSettle();
+        await tester.scrollDown(dy: -100);
 
         // Act -- remove values
         await tester.tap(timeFieldFinder);

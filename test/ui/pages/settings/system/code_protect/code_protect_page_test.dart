@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/getit.dart';
@@ -91,7 +90,7 @@ void main() {
       await tester._goToCodeProtectPage();
 
       await tester.tap(
-        find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard),
+        find.byIcon(AbiliaIcons.android),
       );
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
@@ -153,6 +152,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ErrorDialog), findsOneWidget);
+      expect(find.text('Enter new code'), findsNWidgets(2));
       await tester.tap(find.byType(PreviousButton));
       await tester.pumpAndSettle();
       await tester._type('123');
@@ -160,6 +160,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ErrorDialog), findsOneWidget);
+      expect(find.text('Enter new code'), findsNWidgets(2));
       await tester.tap(find.byType(PreviousButton));
       await tester.pumpAndSettle();
       await tester._type('1234');
@@ -170,6 +171,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ErrorDialog), findsOneWidget);
+      expect(find.text('Incorrect code'), findsOneWidget);
       await tester.tap(find.byType(PreviousButton));
       await tester.pumpAndSettle();
 
@@ -248,7 +250,7 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.technicalSettings));
       await tester.pumpAndSettle();
       await tester.tap(
-        find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard),
+        find.byIcon(AbiliaIcons.android),
       );
       await tester.pumpAndSettle();
       expect(find.byType(CodeProtectPage), findsOneWidget);

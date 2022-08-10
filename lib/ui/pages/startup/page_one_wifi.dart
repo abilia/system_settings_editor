@@ -2,10 +2,10 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class PageOne extends StatelessWidget {
-  const PageOne({
-    Key? key,
+class PageOneWifi extends StatelessWidget {
+  const PageOneWifi({
     required this.pageController,
+    Key? key,
   }) : super(key: key);
 
   final PageController pageController;
@@ -23,14 +23,18 @@ class PageOne extends StatelessWidget {
             height: layout.login.logoHeight,
           ),
           SizedBox(height: layout.startupPage.logoDistance),
-          Text('${t.step} 1/2',
-              style: abiliaTextTheme.bodyText2
-                  ?.copyWith(color: AbiliaColors.black75)),
+          Tts(
+            child: Text('${t.step} 1/2',
+                style: abiliaTextTheme.bodyText2
+                    ?.copyWith(color: AbiliaColors.black75)),
+          ),
           SizedBox(height: layout.formPadding.smallVerticalItemDistance),
-          Text(
-            t.checkInternetConnection,
-            style: abiliaTextTheme.headline6
-                ?.copyWith(color: AbiliaColors.black75),
+          Tts(
+            child: Text(
+              t.checkInternetConnection,
+              style: abiliaTextTheme.headline6
+                  ?.copyWith(color: AbiliaColors.black75),
+            ),
           ),
           SizedBox(height: layout.startupPage.textPickDistance),
           SizedBox(
@@ -46,15 +50,18 @@ class PageOne extends StatelessWidget {
                   snapshot.hasData && snapshot.data != ConnectivityResult.none
                       ? SizedBox(
                           width: layout.startupPage.contentWidth,
-                          child: TextButton(
-                            style: textButtonStyleGreen,
-                            onPressed: () {
-                              pageController.nextPage(
-                                duration: 500.milliseconds(),
-                                curve: Curves.easeOutQuad,
-                              );
-                            },
-                            child: Text(t.next),
+                          child: Tts.data(
+                            data: t.next,
+                            child: TextButton(
+                              style: textButtonStyleGreen,
+                              onPressed: () {
+                                pageController.nextPage(
+                                  duration: 500.milliseconds(),
+                                  curve: Curves.easeOutQuad,
+                                );
+                              },
+                              child: Text(t.next),
+                            ),
                           ),
                         )
                       : Container()),

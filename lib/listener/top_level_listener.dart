@@ -12,68 +12,71 @@ class TopLevelListener extends StatelessWidget {
   final NotificationAlarm? payload;
 
   const TopLevelListener({
-    Key? key,
     required this.child,
     required this.navigatorKey,
+    Key? key,
     this.payload,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => MultiBlocListener(
-        listeners: [
-          BlocListener<ClockBloc, DateTime>(
-            listener: (context, state) =>
-                GetIt.I<SeagullLogger>().maybeUploadLogs(),
-          ),
-          BlocListener<AuthenticationBloc, AuthenticationState>(
-            listenWhen: (previous, current) =>
-                previous.runtimeType != current.runtimeType ||
-                previous.forcedNewState != current.forcedNewState,
-            listener: (context, state) async {
-              final _navigator = navigatorKey.currentState;
-              if (_navigator == null) {
-                context.read<AuthenticationBloc>().add(NotReady());
-                return;
-              }
-              if (state is Authenticated) {
-                await Permission.notification.request();
-                final _payload = payload;
-                if (_payload == null) {
-                  await _navigator.pushAndRemoveUntil<void>(
-                    MaterialPageRoute<void>(
-                      builder: (_) => AuthenticatedBlocsProvider(
-                        authenticatedState: state,
-                        child: AlarmListener(
-                          child: AuthenticatedListener(
-                            newlyLoggedIn: state.newlyLoggedIn,
-                            child: const CalendarPage(),
+  Widget build(BuildContext context) => Listener(
+        onPointerDown: context.read<TouchDetectionCubit>().onPointerDown,
+        child: MultiBlocListener(
+          listeners: [
+            BlocListener<ClockBloc, DateTime>(
+              listener: (context, state) =>
+                  GetIt.I<SeagullLogger>().maybeUploadLogs(),
+            ),
+            BlocListener<AuthenticationBloc, AuthenticationState>(
+              listenWhen: (previous, current) =>
+                  previous.runtimeType != current.runtimeType ||
+                  previous.forcedNewState != current.forcedNewState,
+              listener: (context, state) async {
+                final _navigator = navigatorKey.currentState;
+                if (_navigator == null) {
+                  context.read<AuthenticationBloc>().add(NotReady());
+                  return;
+                }
+                if (state is Authenticated) {
+                  await Permission.notification.request();
+                  final _payload = payload;
+                  if (_payload == null) {
+                    await _navigator.pushAndRemoveUntil<void>(
+                      MaterialPageRoute<void>(
+                        builder: (_) => AuthenticatedBlocsProvider(
+                          authenticatedState: state,
+                          child: AlarmListener(
+                            child: AuthenticatedListener(
+                              newlyLoggedIn: state.newlyLoggedIn,
+                              child: const CalendarPage(),
+                            ),
                           ),
                         ),
                       ),
+                      (_) => false,
+                    );
+                  } else {
+                    await _navigator.pushAndRemoveUntil(
+                        GetIt.I<AlarmNavigator>().getFullscreenAlarmRoute(
+                          authenticatedState: state,
+                          alarm: _payload,
+                        ),
+                        (_) => false);
+                  }
+                } else if (state is Unauthenticated) {
+                  await _navigator.pushAndRemoveUntil<void>(
+                    MaterialPageRoute<void>(
+                      builder: (_) {
+                        return LoginPage(authState: state);
+                      },
                     ),
                     (_) => false,
                   );
-                } else {
-                  await _navigator.pushAndRemoveUntil(
-                      GetIt.I<AlarmNavigator>().getFullscreenAlarmRoute(
-                        authenticatedState: state,
-                        alarm: _payload,
-                      ),
-                      (_) => false);
                 }
-              } else if (state is Unauthenticated) {
-                await _navigator.pushAndRemoveUntil<void>(
-                  MaterialPageRoute<void>(
-                    builder: (_) {
-                      return LoginPage(authState: state);
-                    },
-                  ),
-                  (_) => false,
-                );
-              }
-            },
-          ),
-        ],
-        child: child,
+              },
+            ),
+          ],
+          child: child,
+        ),
       );
 }

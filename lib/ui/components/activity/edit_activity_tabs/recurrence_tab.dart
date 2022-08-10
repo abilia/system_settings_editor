@@ -56,8 +56,8 @@ class Weekly extends StatelessWidget with EditActivityTab {
   final bool errorState;
 
   Weekly({
-    Key? key,
     required this.errorState,
+    Key? key,
   }) : super(key: key);
 
   @override

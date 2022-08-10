@@ -42,10 +42,10 @@ class PickInfoItem extends StatelessWidget {
   final bool showChecklist, showNote;
   final InfoItem infoItem;
   const PickInfoItem({
-    Key? key,
     required this.showChecklist,
     required this.showNote,
     required this.infoItem,
+    Key? key,
   }) : super(key: key);
 
   bool get isChecklist => infoItem is Checklist;
@@ -75,9 +75,9 @@ class ChangeInfoItemPicker extends StatelessWidget {
 
   const ChangeInfoItemPicker(
     this.infoItem, {
-    Key? key,
     required this.showChecklist,
     required this.showNote,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -127,7 +127,10 @@ class LibraryButton extends StatelessWidget {
 
   bool get isChecklist => infoItem is Checklist;
 
-  const LibraryButton({Key? key, required this.infoItem}) : super(key: key);
+  const LibraryButton({
+    required this.infoItem,
+    Key? key,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) => IconActionButtonDark(
         onPressed: () async {
@@ -247,7 +250,10 @@ class AddNewQuestionButton extends StatelessWidget {
 class EditNoteWidget extends StatelessWidget {
   final NoteInfoItem infoItem;
 
-  const EditNoteWidget({Key? key, required this.infoItem}) : super(key: key);
+  const EditNoteWidget({
+    required this.infoItem,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Expanded(

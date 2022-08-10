@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:seagull/db/all.dart';
+import 'package:seagull/tts/tts_handler.dart';
 import 'package:test/fake.dart';
 import 'fake_client.dart';
 import 'package:seagull/models/all.dart';
@@ -23,10 +24,12 @@ class FakeSettingsDb extends Fake implements SettingsDb {
   Future setLeftCategoryExpanded(bool expanded) async {}
   @override
   Future setRightCategoryExpanded(bool expanded) async {}
+
   @override
-  bool get textToSpeech => true;
+  String language = 'en';
+
   @override
-  String get language => 'en';
+  Future setLanguage(String language) async {}
 
   @override
   Future setAlwaysUse24HourFormat(bool alwaysUse24HourFormat) async {}
@@ -179,6 +182,9 @@ class FakeFirebasePushService extends Fake implements FirebasePushService {
 
 class FakeVoiceDb extends Fake implements VoiceDb {
   @override
+  bool get textToSpeech => true;
+
+  @override
   bool get speakEveryWord => false;
 
   @override
@@ -199,4 +205,24 @@ class FakeDeviceDb extends Fake implements DeviceDb {
 
   @override
   bool get startGuideCompleted => true;
+}
+
+class FakeTtsHandler extends Fake implements TtsInterface {
+  @override
+  Future<dynamic> speak(String text) async {}
+
+  @override
+  Future<dynamic> stop() async {}
+
+  @override
+  Future<dynamic> pause() async {}
+
+  @override
+  Future<dynamic> setVoice(Map<String, String> voice) async {}
+
+  @override
+  Future<dynamic> setSpeechRate(double speechRate) async {}
+
+  @override
+  Future<List<Object?>> get availableVoices => Future.value(List.empty());
 }

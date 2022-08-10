@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:photo_view/photo_view.dart';
@@ -39,10 +38,8 @@ void main() {
             BlocProvider<ClockBloc>(
               create: (context) => ClockBloc.fixed(startTime),
             ),
-            BlocProvider<SettingsCubit>(
-              create: (context) => SettingsCubit(
-                settingsDb: FakeSettingsDb(),
-              ),
+            BlocProvider<SpeechSettingsCubit>(
+              create: (context) => FakeSpeechSettingsCubit(),
             ),
             BlocProvider<TimepillarCubit>(
               create: (context) => FakeTimepillarCubit(),

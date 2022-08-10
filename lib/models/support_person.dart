@@ -26,6 +26,6 @@ class SupportPerson extends Equatable {
   static SupportPerson fromJson(Map<String, dynamic> json) => SupportPerson(
         id: json['id'],
         name: json['name'],
-        image: json['image'],
+        image: json['image'] ?? '',
       );
 }
