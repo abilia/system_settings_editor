@@ -251,6 +251,7 @@ class TimeoutSettingsTab extends StatelessWidget {
           child: Text(t.activateScreensaver),
         ),
         CollapsableWidget(
+          collapsed: !screensaver.shouldUseScreenSaver,
           child: SwitchField(
             leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
             value: screensaver.onlyDuringNight,
@@ -262,7 +263,6 @@ class TimeoutSettingsTab extends StatelessWidget {
                 : null,
             child: Text(t.onlyActivateScreenSaverDuringNight),
           ),
-          collapsed: !screensaver.shouldUseScreenSaver,
         ),
       ],
     );

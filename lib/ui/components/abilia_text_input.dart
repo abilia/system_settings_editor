@@ -123,7 +123,7 @@ class DefaultTextInput extends StatefulWidget {
   final bool Function(String) inputValid;
 
   @override
-  _DefaultInputPageState createState() => _DefaultInputPageState();
+  State createState() => _DefaultInputPageState();
 }
 
 class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {

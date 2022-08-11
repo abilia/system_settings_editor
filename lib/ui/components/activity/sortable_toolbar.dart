@@ -34,27 +34,27 @@ class SortableToolbar extends StatelessWidget {
           children: [
             SizedBox(width: spacing),
             SecondaryActionButtonLight(
-              child: const Icon(AbiliaIcons.cursorUp),
               onPressed: disableUp
                   ? null
                   : () => onTapReorder(SortableReorderDirection.up),
+              child: const Icon(AbiliaIcons.cursorUp),
             ),
             SizedBox(width: spacing),
             SecondaryActionButtonLight(
-              child: const Icon(AbiliaIcons.deleteAllClear),
               onPressed: onTapDelete,
+              child: const Icon(AbiliaIcons.deleteAllClear),
             ),
             SizedBox(width: spacing),
             SecondaryActionButtonLight(
-              child: const Icon(AbiliaIcons.edit),
               onPressed: onTapEdit,
+              child: const Icon(AbiliaIcons.edit),
             ),
             SizedBox(width: spacing),
             SecondaryActionButtonLight(
-              child: const Icon(AbiliaIcons.cursorDown),
               onPressed: disableDown
                   ? null
                   : () => onTapReorder(SortableReorderDirection.down),
+              child: const Icon(AbiliaIcons.cursorDown),
             ),
             SizedBox(width: spacing),
           ],

@@ -119,10 +119,10 @@ class ClockPainter extends CustomPainter {
   double _paintHourText(Canvas canvas, double radius) {
     var maxTextHeight = 0.0;
     for (var i = 0; i < 12; i++) {
-      final _angle = i * 30.0;
+      final angle = i * 30.0;
       canvas.save();
-      final hourNumberX = cos(getRadians(_angle)) * radius;
-      final hourNumberY = sin(getRadians(_angle)) * radius;
+      final hourNumberX = cos(getRadians(angle)) * radius;
+      final hourNumberY = sin(getRadians(angle)) * radius;
       canvas.translate(hourNumberX, hourNumberY);
       var intHour = i + 3;
       if (intHour > 12) intHour = intHour - 12;

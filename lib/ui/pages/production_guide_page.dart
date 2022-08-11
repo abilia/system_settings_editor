@@ -67,8 +67,8 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                       TextButton(
                         onPressed:
                             AndroidIntents.openWriteSettingsPermissionSettings,
-                        child: const Text('Grant Write Settings permission'),
                         style: textButtonStyleDarkGrey,
+                        child: const Text('Grant Write Settings permission'),
                       )
                     else ...[
                       Row(
@@ -105,8 +105,8 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                         onPressed: () => context
                             .read<StartupCubit>()
                             .verifySerialId(serialIdController.text),
-                        child: const Text('Verify'),
                         style: textButtonStyleGreen,
+                        child: const Text('Verify'),
                       ),
                       BlocBuilder<StartupCubit, StartupState>(
                         builder: (context, productionGuideState) =>

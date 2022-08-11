@@ -235,12 +235,12 @@ class EditActivityCubit extends Cubit<EditActivityState> {
 
   void toggleSupportPerson(int id) {
     final activity = state.activity;
-    final _supportPersons = Set<int>.from(activity.secretExemptions);
-    if (!_supportPersons.remove(id)) {
-      _supportPersons.add(id);
+    final supportPersons = Set<int>.from(activity.secretExemptions);
+    if (!supportPersons.remove(id)) {
+      supportPersons.add(id);
     }
     replaceActivity(
-      activity.copyWith(secretExemptions: _supportPersons),
+      activity.copyWith(secretExemptions: supportPersons),
     );
   }
 }

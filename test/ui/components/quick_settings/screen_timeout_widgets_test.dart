@@ -9,7 +9,7 @@ import '../../../mocks/mock_bloc.dart';
 
 void main() {
   late MockWakeLockCubit mockWakeLockCubit;
-  const Translator _translator = Translator(Locale('en'));
+  const translate = EN();
   const baseState = WakeLockState(
     keepScreenAwakeSettings: KeepScreenAwakeSettings(),
   );
@@ -48,8 +48,7 @@ void main() {
         .pumpWidget(wrapWithMaterialApp(const ScreenTimeoutPickField()));
     await tester.pumpAndSettle();
 
-    expect(find.text(time.toDurationString(_translator.translate)),
-        findsOneWidget);
+    expect(find.text(time.toDurationString(translate)), findsOneWidget);
   }, skip: !Config.isMP);
 
   testWidgets('Timeout set to 30 minutes', (WidgetTester tester) async {
@@ -61,8 +60,7 @@ void main() {
         .pumpWidget(wrapWithMaterialApp(const ScreenTimeoutPickField()));
     await tester.pumpAndSettle();
 
-    expect(find.text(time.toDurationString(_translator.translate)),
-        findsOneWidget);
+    expect(find.text(time.toDurationString(translate)), findsOneWidget);
   }, skip: !Config.isMP);
 
   testWidgets('Timeout disabled', (WidgetTester tester) async {
@@ -77,6 +75,6 @@ void main() {
         .pumpWidget(wrapWithMaterialApp(const ScreenTimeoutPickField()));
     await tester.pumpAndSettle();
 
-    expect(find.text(_translator.translate.alwaysOn), findsOneWidget);
+    expect(find.text(translate.alwaysOn), findsOneWidget);
   }, skip: !Config.isMP);
 }

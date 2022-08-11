@@ -21,11 +21,11 @@ class ChecklistView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _controller = ScrollController();
+    final controller = ScrollController();
     return ScrollArrows.vertical(
-      controller: _controller,
+      controller: controller,
       child: ListView.separated(
-        controller: _controller,
+        controller: controller,
         padding: padding,
         itemCount: checklist.questions.length,
         itemBuilder: (context, i) {
@@ -51,13 +51,13 @@ class EditChecklistView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _controller = ScrollController();
+    final controller = ScrollController();
     return ScrollArrows.vertical(
-      controller: _controller,
+      controller: controller,
       child: BlocSelector<EditChecklistCubit, EditChecklistState, Checklist>(
         selector: (state) => state.checklist,
         builder: (context, checklist) => ListView.separated(
-          controller: _controller,
+          controller: controller,
           padding: layout.checklist.listPadding,
           itemCount: checklist.questions.length,
           itemBuilder: (context, i) => EditQuestionView(checklist.questions[i]),

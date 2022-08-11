@@ -186,7 +186,7 @@ class AbiliaRadio<T> extends StatefulWidget {
   bool get _selected => value == groupValue;
 
   @override
-  _RadioState<T> createState() => _RadioState<T>();
+  State createState() => _RadioState<T>();
 }
 
 class _RadioState<T> extends State<AbiliaRadio<T>>

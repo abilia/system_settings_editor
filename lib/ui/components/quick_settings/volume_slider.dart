@@ -8,7 +8,7 @@ class AlarmVolumeSlider extends _VolumeSlider {
       : super(key: key, onVolumeSet: onVolumeSet);
 
   @override
-  State<_VolumeSlider> createState() => _AlarmVolumeSliderState();
+  State createState() => _AlarmVolumeSliderState();
 }
 
 class MediaVolumeSlider extends _VolumeSlider {
@@ -16,7 +16,7 @@ class MediaVolumeSlider extends _VolumeSlider {
       : super(key: key, onVolumeSet: onVolumeSet);
 
   @override
-  State<_VolumeSlider> createState() => _MediaVolumeSliderState();
+  State createState() => _MediaVolumeSliderState();
 }
 
 abstract class _VolumeSlider extends StatefulWidget {

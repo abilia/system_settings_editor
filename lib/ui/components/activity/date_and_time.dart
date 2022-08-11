@@ -247,9 +247,7 @@ class TimePicker extends StatelessWidget {
         : timeFormat(DateTime(0, 0, 0, startTime.hour, startTime.minute)) +
             (endTime == null
                 ? ''
-                : ' - ' +
-                    timeFormat(
-                        DateTime(0, 0, 0, endTime.hour, endTime.minute)));
+                : ' - ${timeFormat(DateTime(0, 0, 0, endTime.hour, endTime.minute))}');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

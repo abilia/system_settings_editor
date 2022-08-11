@@ -1,5 +1,4 @@
 export 'package:flutter_bloc/flutter_bloc.dart';
-export 'package:bloc/bloc.dart';
 export 'activities/all.dart';
 export 'authentication/authentication_bloc.dart';
 export 'login/all.dart';

@@ -57,36 +57,31 @@ class GeneralCalendarSettingsCubit extends Cubit<GeneralCalendarSettings> {
 extension on DayParts {
   DayParts copyWith({
     required final bool increased,
-    final Duration? morning,
-    final Duration? day,
-    final Duration? evening,
-    final Duration? night,
+    Duration? morning,
+    Duration? day,
+    Duration? evening,
+    Duration? night,
   }) {
-    var _morningStart = morning ?? this.morning;
-    var _dayStart = day ?? this.day;
-    var _eveningStart = evening ?? this.evening;
-    var _nightStart = night ?? this.night;
-
-    _morningStart = DayParts.morningLimit.clamp(_morningStart);
-    _dayStart = DayParts.dayLimit.clamp(_dayStart);
-    _eveningStart = DayParts.eveningLimit.clamp(_eveningStart);
-    _nightStart = DayParts.nightLimit.clamp(_nightStart);
+    morning = DayParts.morningLimit.clamp(morning ?? this.morning);
+    day = DayParts.dayLimit.clamp(day ?? this.day);
+    evening = DayParts.eveningLimit.clamp(evening ?? this.evening);
+    night = DayParts.nightLimit.clamp(night ?? this.night);
 
     if (increased) {
-      _dayStart += _dayStart <= _morningStart ? oneHour : Duration.zero;
-      _eveningStart += _eveningStart <= _dayStart ? oneHour : Duration.zero;
-      _nightStart += _nightStart <= _eveningStart ? oneHour : Duration.zero;
+      day += day <= morning ? oneHour : Duration.zero;
+      evening += evening <= day ? oneHour : Duration.zero;
+      night += night <= evening ? oneHour : Duration.zero;
     } else {
-      _eveningStart -= _eveningStart >= _nightStart ? oneHour : Duration.zero;
-      _dayStart -= _dayStart >= _eveningStart ? oneHour : Duration.zero;
-      _morningStart -= _morningStart >= _dayStart ? oneHour : Duration.zero;
+      evening -= evening >= night ? oneHour : Duration.zero;
+      day -= day >= evening ? oneHour : Duration.zero;
+      morning -= morning >= day ? oneHour : Duration.zero;
     }
 
     return DayParts(
-      morning: _morningStart,
-      day: _dayStart,
-      evening: _eveningStart,
-      night: _nightStart,
+      morning: morning,
+      day: day,
+      evening: evening,
+      night: night,
     );
   }
 }

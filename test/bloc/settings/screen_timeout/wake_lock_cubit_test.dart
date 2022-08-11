@@ -16,62 +16,61 @@ abstract class _Callback {
 class _MockCallback extends Mock implements _Callback {}
 
 void main() {
-  const _timout = Duration(minutes: 30);
-  late WakeLockCubit _wakeLockCubit;
-  late MockMemoplannerSettingBloc _mockMemoplannerSettingBloc;
-  late MockBattery _mockBattery;
-  late _MockCallback _mockCallback;
-  late StreamController<BatteryState> _batteryStreamController;
-  late StreamController<MemoplannerSettingsState> _memoSettingsStreamController;
+  const timout = Duration(minutes: 30);
+  late WakeLockCubit wakeLockCubit;
+  late MockMemoplannerSettingBloc mockMemoplannerSettingBloc;
+  late MockBattery mockBattery;
+  late _MockCallback mockCallback;
+  late StreamController<BatteryState> batteryStreamController;
+  late StreamController<MemoplannerSettingsState> memoSettingsStreamController;
 
   setUpAll(registerFallbackValues);
 
   setUp(() {
-    _memoSettingsStreamController =
-        StreamController<MemoplannerSettingsState>();
-    _mockMemoplannerSettingBloc = MockMemoplannerSettingBloc();
-    when(() => _mockMemoplannerSettingBloc.state)
+    memoSettingsStreamController = StreamController<MemoplannerSettingsState>();
+    mockMemoplannerSettingBloc = MockMemoplannerSettingBloc();
+    when(() => mockMemoplannerSettingBloc.state)
         .thenReturn(const MemoplannerSettingsNotLoaded());
-    when(() => _mockMemoplannerSettingBloc.stream)
-        .thenAnswer((_) => _memoSettingsStreamController.stream);
-    _mockBattery = MockBattery();
-    _batteryStreamController = StreamController<BatteryState>();
-    when(() => _mockBattery.onBatteryStateChanged)
-        .thenAnswer((invocation) => _batteryStreamController.stream);
+    when(() => mockMemoplannerSettingBloc.stream)
+        .thenAnswer((_) => memoSettingsStreamController.stream);
+    mockBattery = MockBattery();
+    batteryStreamController = StreamController<BatteryState>();
+    when(() => mockBattery.onBatteryStateChanged)
+        .thenAnswer((invocation) => batteryStreamController.stream);
 
-    _mockCallback = _MockCallback();
-    when(() => _mockCallback.timeoutCallback())
-        .thenAnswer((_) => Future.value(_timout));
-    _wakeLockCubit = WakeLockCubit(
-      screenTimeoutCallback: _mockCallback.timeoutCallback(),
-      memoSettingsBloc: _mockMemoplannerSettingBloc,
-      battery: _mockBattery,
+    mockCallback = _MockCallback();
+    when(() => mockCallback.timeoutCallback())
+        .thenAnswer((_) => Future.value(timout));
+    wakeLockCubit = WakeLockCubit(
+      screenTimeoutCallback: mockCallback.timeoutCallback(),
+      memoSettingsBloc: mockMemoplannerSettingBloc,
+      battery: mockBattery,
     );
   });
 
   tearDown(() {
-    _batteryStreamController.close();
-    _memoSettingsStreamController.close();
+    batteryStreamController.close();
+    memoSettingsStreamController.close();
   });
 
   test('set screen on while charging', () {
     expectLater(
-      _wakeLockCubit.stream,
+      wakeLockCubit.stream,
       emits(
         const WakeLockState(
-          screenTimeout: _timout,
+          screenTimeout: timout,
           keepScreenAwakeSettings: KeepScreenAwakeSettings(),
           batteryCharging: true,
         ),
       ),
     );
-    _batteryStreamController.add(BatteryState.charging);
+    batteryStreamController.add(BatteryState.charging);
   });
 
   test('set timeout to 15 minutes, defaults to 30', () {
     const newTimeout = Duration(minutes: 15);
     expectLater(
-      _wakeLockCubit.stream,
+      wakeLockCubit.stream,
       emits(
         const WakeLockState(
           screenTimeout: newTimeout,
@@ -80,13 +79,13 @@ void main() {
         ),
       ),
     );
-    _wakeLockCubit.setScreenTimeout(newTimeout);
+    wakeLockCubit.setScreenTimeout(newTimeout);
   });
 
   test('set timeout to 0 minutes', () {
     const newTimeout = Duration.zero;
     expectLater(
-      _wakeLockCubit.stream,
+      wakeLockCubit.stream,
       emits(
         const WakeLockState(
           screenTimeout: newTimeout,
@@ -95,15 +94,15 @@ void main() {
         ),
       ),
     );
-    _wakeLockCubit.setScreenTimeout(newTimeout);
+    wakeLockCubit.setScreenTimeout(newTimeout);
   });
 
   test('screenTimeoutCallback is called and emits', () {
-    verify(() => _mockCallback.timeoutCallback()).called(1);
+    verify(() => mockCallback.timeoutCallback()).called(1);
     expect(
-      _wakeLockCubit.state,
+      wakeLockCubit.state,
       const WakeLockState(
-        screenTimeout: _timout,
+        screenTimeout: timout,
         keepScreenAwakeSettings: KeepScreenAwakeSettings(),
         batteryCharging: false,
       ),
@@ -112,49 +111,49 @@ void main() {
 
   test('when battery stream changes to charging', () {
     expectLater(
-      _wakeLockCubit.stream,
+      wakeLockCubit.stream,
       emitsInOrder([
         const WakeLockState(
-          screenTimeout: _timout,
+          screenTimeout: timout,
           keepScreenAwakeSettings: KeepScreenAwakeSettings(),
           batteryCharging: true,
         ),
         const WakeLockState(
-          screenTimeout: _timout,
+          screenTimeout: timout,
           keepScreenAwakeSettings: KeepScreenAwakeSettings(),
           batteryCharging: false,
         ),
         const WakeLockState(
-          screenTimeout: _timout,
+          screenTimeout: timout,
           keepScreenAwakeSettings: KeepScreenAwakeSettings(),
           batteryCharging: true,
         ),
       ]),
     );
-    _batteryStreamController.add(BatteryState.charging);
-    _batteryStreamController.add(BatteryState.discharging);
-    _batteryStreamController.add(BatteryState.full);
+    batteryStreamController.add(BatteryState.charging);
+    batteryStreamController.add(BatteryState.discharging);
+    batteryStreamController.add(BatteryState.full);
   });
 
   test('when KeepScreenAwakeSettings changes', () {
     expectLater(
-      _wakeLockCubit.stream,
+      wakeLockCubit.stream,
       emitsInOrder([
         const WakeLockState(
-          screenTimeout: _timout,
+          screenTimeout: timout,
           keepScreenAwakeSettings:
               KeepScreenAwakeSettings(keepScreenOnAlways: true),
           batteryCharging: false,
         ),
         const WakeLockState(
-          screenTimeout: _timout,
+          screenTimeout: timout,
           keepScreenAwakeSettings:
               KeepScreenAwakeSettings(keepScreenOnWhileCharging: true),
           batteryCharging: false,
         ),
       ]),
     );
-    _memoSettingsStreamController.add(
+    memoSettingsStreamController.add(
       const MemoplannerSettingsLoaded(
         MemoplannerSettings(
           keepScreenAwakeSettings: KeepScreenAwakeSettings(
@@ -163,7 +162,7 @@ void main() {
         ),
       ),
     );
-    _memoSettingsStreamController.add(
+    memoSettingsStreamController.add(
       const MemoplannerSettingsLoaded(
         MemoplannerSettings(
           keepScreenAwakeSettings: KeepScreenAwakeSettings(

@@ -6,7 +6,7 @@ class HiddenSetting extends StatefulWidget {
   const HiddenSetting({Key? key}) : super(key: key);
 
   @override
-  _HiddenSettingState createState() => _HiddenSettingState();
+  State createState() => _HiddenSettingState();
 }
 
 class _HiddenSettingState extends State<HiddenSetting> {

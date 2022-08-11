@@ -11,6 +11,7 @@ class StartupGuidePage extends StatelessWidget {
       home: Scaffold(
         body: PageView(
           physics: const NeverScrollableScrollPhysics(),
+          controller: pageController,
           children: [
             WelcomePage(
               pageController: pageController,
@@ -22,7 +23,6 @@ class StartupGuidePage extends StatelessWidget {
               pageController: pageController,
             ),
           ],
-          controller: pageController,
         ),
         bottomNavigationBar: Padding(
           padding: layout.templates.m7.copyWith(top: 0),

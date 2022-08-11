@@ -29,7 +29,7 @@ void main() {
 
   final fullScreenActivityPageFinder = find.byType(FullScreenActivityPage);
 
-  final AlarmNavigator _alarmNavigator = AlarmNavigator();
+  final AlarmNavigator alarmNavigator = AlarmNavigator();
   late ClockBloc clockBloc;
 
   final List<Activity> fakeActivities = [
@@ -167,7 +167,7 @@ void main() {
           wrapWithMaterialApp(
             PopAwareAlarmPage(
               alarm: startAlarm,
-              alarmNavigator: _alarmNavigator,
+              alarmNavigator: alarmNavigator,
               child: FullScreenActivityPage(alarm: alarms.first),
             ),
           ),
@@ -183,7 +183,7 @@ void main() {
           wrapWithMaterialApp(
             PopAwareAlarmPage(
               alarm: startAlarm,
-              alarmNavigator: _alarmNavigator,
+              alarmNavigator: alarmNavigator,
               child: FullScreenActivityPage(alarm: alarms.first),
             ),
           ),
@@ -203,7 +203,7 @@ void main() {
           wrapWithMaterialApp(
             PopAwareAlarmPage(
               alarm: startAlarm,
-              alarmNavigator: _alarmNavigator,
+              alarmNavigator: alarmNavigator,
               child: FullScreenActivityPage(alarm: alarms[1]),
             ),
           ),

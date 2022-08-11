@@ -84,7 +84,6 @@ class Version extends StatelessWidget {
       Tts(child: Text(versionText(GetIt.I<PackageInfo>())));
 
   static String versionText(PackageInfo packageInfo) =>
-      packageInfo.version +
-      ' (${packageInfo.buildNumber})' +
-      (Config.beta ? '-dev' : '');
+      '${packageInfo.version} (${packageInfo.buildNumber})'
+      '${Config.beta ? '-dev' : ''}';
 }

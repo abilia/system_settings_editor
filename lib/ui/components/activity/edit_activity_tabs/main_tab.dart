@@ -7,8 +7,7 @@ class MainTab extends StatelessWidget with EditActivityTab {
 
   @override
   Widget build(BuildContext context) {
-    final _scrollController = ScrollController();
-
+    final scrollController = ScrollController();
     final activity = context
         .select<EditActivityCubit, Activity>((cubit) => cubit.state.activity);
     final editActivitySettings =
@@ -18,9 +17,9 @@ class MainTab extends StatelessWidget with EditActivityTab {
         (cubit) => cubit.state.settings.calendar.categories.show);
 
     return ScrollArrows.vertical(
-      controller: _scrollController,
+      controller: scrollController,
       child: ListView(
-        controller: _scrollController,
+        controller: scrollController,
         padding: EdgeInsets.only(bottom: layout.templates.m1.bottom),
         children: <Widget>[
           const ActivityNameAndPictureWidget()

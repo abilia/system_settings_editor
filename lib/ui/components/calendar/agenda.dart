@@ -12,7 +12,7 @@ class Agenda extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AgendaState createState() => _AgendaState();
+  State createState() => _AgendaState();
 }
 
 class _AgendaState extends State<Agenda> with CalendarStateMixin {

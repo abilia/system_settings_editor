@@ -6,15 +6,15 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
 
   @override
   Widget build(BuildContext context) {
-    final _scrollController = ScrollController();
+    final scrollController = ScrollController();
     return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) {
         final activity = state.activity;
         final recurs = activity.recurs;
         return ScrollArrows.vertical(
-          controller: _scrollController,
+          controller: scrollController,
           child: ListView(
-            controller: _scrollController,
+            controller: scrollController,
             padding: EdgeInsets.only(
               bottom: layout.templates.m1.bottom,
             ),
