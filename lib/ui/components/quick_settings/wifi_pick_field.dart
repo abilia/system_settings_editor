@@ -19,15 +19,15 @@ class WiFiPickField extends StatelessWidget {
         return FutureBuilder(
           future: c.checkConnectivity(),
           builder: (context, snapshot) {
-            final bool _connected = snapshot.data != ConnectivityResult.none;
+            final bool connected = snapshot.data != ConnectivityResult.none;
             return PickField(
-              leading: Icon(_connected ? AbiliaIcons.wifi : AbiliaIcons.noWifi),
+              leading: Icon(connected ? AbiliaIcons.wifi : AbiliaIcons.noWifi),
               text: Text(t.wifi),
               trailingText: Text(
-                _connected ? t.connected : t.notConnected,
+                connected ? t.connected : t.notConnected,
                 style: (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
                     .copyWith(
-                  color: _connected ? AbiliaColors.green : AbiliaColors.red,
+                  color: connected ? AbiliaColors.green : AbiliaColors.red,
                 ),
               ),
               onTap: AndroidIntents.openWifiSettings,

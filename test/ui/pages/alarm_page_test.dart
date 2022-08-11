@@ -64,7 +64,7 @@ void main() {
   final EndAlarm endAlarmWithSpeech = EndAlarm(
     ActivityDay(activityWithStartAndEndSpeech, day),
   );
-  AlarmNavigator _alarmNavigator = AlarmNavigator();
+  AlarmNavigator alarmNavigator = AlarmNavigator();
   late MockMemoplannerSettingBloc mockMPSettingsBloc;
   late StreamController<MemoplannerSettingsState> mockMPSettingsBlocStream;
   late MockUserFileCubit mockUserFileCubit;
@@ -181,7 +181,7 @@ void main() {
           wrapWithMaterialApp(
             PopAwareAlarmPage(
               alarm: startAlarm,
-              alarmNavigator: _alarmNavigator,
+              alarmNavigator: alarmNavigator,
               child: AlarmPage(
                 alarm: startAlarm,
               ),
@@ -198,7 +198,7 @@ void main() {
           wrapWithMaterialApp(
             PopAwareAlarmPage(
               alarm: startAlarm,
-              alarmNavigator: _alarmNavigator,
+              alarmNavigator: alarmNavigator,
               child: AlarmPage(alarm: startAlarm),
             ),
           ),
@@ -224,7 +224,7 @@ void main() {
             wrapWithMaterialApp(
               PopAwareAlarmPage(
                 alarm: fullscreenStartAlarm,
-                alarmNavigator: _alarmNavigator,
+                alarmNavigator: alarmNavigator,
                 child: AlarmPage(alarm: fullscreenStartAlarm),
               ),
             ),
@@ -240,7 +240,7 @@ void main() {
           wrapWithMaterialApp(
             PopAwareAlarmPage(
               alarm: startAlarm,
-              alarmNavigator: _alarmNavigator,
+              alarmNavigator: alarmNavigator,
               child: AlarmPage(alarm: endAlarmWithNoSpeech),
             ),
           ),
@@ -254,7 +254,7 @@ void main() {
         await tester.pumpWidget(
           wrapWithMaterialApp(PopAwareAlarmPage(
             alarm: startAlarm,
-            alarmNavigator: _alarmNavigator,
+            alarmNavigator: alarmNavigator,
             child: AlarmPage(alarm: endAlarmWithSpeech),
           )),
         );
@@ -272,7 +272,7 @@ void main() {
           wrapWithMaterialApp(
             PopAwareAlarmPage(
               alarm: startAlarm,
-              alarmNavigator: _alarmNavigator,
+              alarmNavigator: alarmNavigator,
               child: AlarmPage(alarm: startAlarm),
             ),
           ),
@@ -294,7 +294,7 @@ void main() {
           wrapWithMaterialApp(
             PopAwareAlarmPage(
               alarm: startAlarm,
-              alarmNavigator: _alarmNavigator,
+              alarmNavigator: alarmNavigator,
               child: AlarmPage(alarm: startAlarm),
             ),
           ),
@@ -316,7 +316,7 @@ void main() {
           wrapWithMaterialApp(
             PopAwareAlarmPage(
               alarm: startAlarm,
-              alarmNavigator: _alarmNavigator,
+              alarmNavigator: alarmNavigator,
               child: AlarmPage(
                 alarm: startAlarm,
               ),
@@ -344,7 +344,7 @@ void main() {
           wrapWithMaterialApp(
             PopAwareAlarmPage(
               alarm: startAlarm,
-              alarmNavigator: _alarmNavigator,
+              alarmNavigator: alarmNavigator,
               child: AlarmPage(alarm: startAlarm),
             ),
           ),
@@ -373,7 +373,7 @@ void main() {
           wrapWithMaterialApp(
             PopAwareAlarmPage(
               alarm: startAlarm,
-              alarmNavigator: _alarmNavigator,
+              alarmNavigator: alarmNavigator,
               child: AlarmPage(
                 alarm: startAlarm,
               ),
@@ -407,7 +407,7 @@ void main() {
     await tester.pumpWidget(
       wrapWithMaterialApp(PopAwareAlarmPage(
         alarm: startAlarm,
-        alarmNavigator: _alarmNavigator,
+        alarmNavigator: alarmNavigator,
         child: AlarmPage(alarm: endAlarmWithNoSpeech),
       )),
     );
@@ -439,7 +439,7 @@ void main() {
       wrapWithMaterialApp(
         PopAwareAlarmPage(
           alarm: startAlarm,
-          alarmNavigator: _alarmNavigator,
+          alarmNavigator: alarmNavigator,
           child: AlarmPage(alarm: startAlarm),
         ),
       ),
@@ -474,7 +474,7 @@ void main() {
         wrapWithMaterialApp(
           PopAwareAlarmPage(
             alarm: alarm,
-            alarmNavigator: _alarmNavigator,
+            alarmNavigator: alarmNavigator,
             child: AlarmPage(alarm: alarm),
           ),
         ),
@@ -499,7 +499,7 @@ void main() {
         wrapWithMaterialApp(
           PopAwareAlarmPage(
             alarm: alarm,
-            alarmNavigator: _alarmNavigator,
+            alarmNavigator: alarmNavigator,
             child: AlarmPage(alarm: alarm),
           ),
         ),
@@ -523,7 +523,7 @@ void main() {
         wrapWithMaterialApp(
           PopAwareAlarmPage(
             alarm: alarm,
-            alarmNavigator: _alarmNavigator,
+            alarmNavigator: alarmNavigator,
             child: AlarmPage(alarm: alarm),
           ),
         ),
@@ -551,7 +551,7 @@ void main() {
         wrapWithMaterialApp(
           PopAwareAlarmPage(
             alarm: alarm,
-            alarmNavigator: _alarmNavigator,
+            alarmNavigator: alarmNavigator,
             child: AlarmPage(alarm: alarm),
           ),
         ),
@@ -574,7 +574,7 @@ void main() {
         wrapWithMaterialApp(
           PopAwareAlarmPage(
             alarm: alarm,
-            alarmNavigator: _alarmNavigator,
+            alarmNavigator: alarmNavigator,
             child: AlarmPage(alarm: alarm),
           ),
         ),
@@ -600,7 +600,7 @@ void main() {
         wrapWithMaterialApp(
           PopAwareAlarmPage(
             alarm: reminder,
-            alarmNavigator: _alarmNavigator,
+            alarmNavigator: alarmNavigator,
             child: ReminderPage(reminder: reminder),
           ),
         ),
@@ -626,7 +626,7 @@ void main() {
         wrapWithMaterialApp(
           PopAwareAlarmPage(
             alarm: reminder,
-            alarmNavigator: _alarmNavigator,
+            alarmNavigator: alarmNavigator,
             child: ReminderPage(reminder: reminder),
           ),
         ),

@@ -237,8 +237,8 @@ class SearchForUpdateButton extends StatelessWidget {
         constraints: const BoxConstraints(minWidth: double.infinity),
         child: TextButton(
           style: textButtonStyleGreen,
-          child: Text(translate.searchForUpdate),
           onPressed: AndroidIntents.openPlayStore,
+          child: Text(translate.searchForUpdate),
         ),
       ),
     );

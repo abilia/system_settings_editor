@@ -21,7 +21,7 @@ class BatteryLevel extends StatelessWidget {
             children: [
               SubHeading(t.battery),
               Tts.data(
-                data: batteryLevel.toString() + '%',
+                data: '$batteryLevel%',
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
@@ -37,7 +37,7 @@ class BatteryLevel extends StatelessWidget {
                     ),
                     SizedBox(width: layout.formPadding.groupHorizontalDistance),
                     Text(
-                      batteryLevel > 0 ? batteryLevel.toString() + '%' : '',
+                      batteryLevel > 0 ? '$batteryLevel%' : '',
                       style: Theme.of(context).textTheme.headline6,
                       textAlign: TextAlign.center,
                     ),

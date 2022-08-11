@@ -41,8 +41,8 @@ class ToggleAlarmButtonActive extends StatelessWidget {
           ),
         ],
       ),
-      child: const Icon(AbiliaIcons.handiNoAlarmVibration),
       ttsData: Translator.of(context).translate.disableAlarms,
+      child: const Icon(AbiliaIcons.handiNoAlarmVibration),
     );
   }
 }
@@ -73,8 +73,8 @@ class ToggleAlarmButtonInactive extends StatelessWidget {
           ],
         );
       },
-      child: const Icon(AbiliaIcons.handiAlarmVibration),
       ttsData: Translator.of(context).translate.disableAlarms,
+      child: const Icon(AbiliaIcons.handiAlarmVibration),
     );
   }
 }

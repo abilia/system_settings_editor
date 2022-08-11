@@ -13,7 +13,7 @@ class SelectInfoTypePage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SelectInfoTypePageState createState() => _SelectInfoTypePageState();
+  State createState() => _SelectInfoTypePageState();
 }
 
 class _SelectInfoTypePageState extends State<SelectInfoTypePage> {

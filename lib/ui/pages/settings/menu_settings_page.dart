@@ -7,7 +7,7 @@ class MenuSettingsPage extends StatefulWidget {
   const MenuSettingsPage({Key? key}) : super(key: key);
 
   @override
-  _MenuSettingsPageState createState() => _MenuSettingsPageState();
+  State createState() => _MenuSettingsPageState();
 }
 
 class _MenuSettingsPageState extends State<MenuSettingsPage> {

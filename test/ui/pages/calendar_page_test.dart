@@ -994,10 +994,10 @@ void main() {
               widget is WeekCalenderHeadingContent && widget.selected));
       expect(selectedHeadingsnextWeekPreSelect, isEmpty);
 
-      final _dateTime = initialTime.addDays(8);
-      final d = _dateTime.day;
+      final dateTime = initialTime.addDays(8);
+      final d = dateTime.day;
       await tester
-          .tap(find.text('$d\n${translate.shortWeekday(_dateTime.weekday)}'));
+          .tap(find.text('$d\n${translate.shortWeekday(dateTime.weekday)}'));
       await tester.pumpAndSettle();
       final selectedHeadingsnextWeekPostSelect = tester.widgetList(
           find.byWidgetPredicate((widget) =>

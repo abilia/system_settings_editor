@@ -10,7 +10,7 @@ targets:
 
 builders:
   translatorBuilder:
-    import: 'package:seagull/i18n/src/code_generators.dart'
+    import: 'src/code_generators.dart'
     builder_factories: ['translationBuilder']
     build_extensions: 
       .tsv:

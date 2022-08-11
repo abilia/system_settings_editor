@@ -733,7 +733,7 @@ void main() {
   });
 
   group('recurring step', () {
-    const _recurringOnly = MemoplannerSettings(
+    const recurringOnly = MemoplannerSettings(
       addActivityTypeAdvanced: false,
       stepByStep: StepByStepSettings(
         template: false,
@@ -754,7 +754,7 @@ void main() {
     testWidgets('changing recurring changes save button',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(_recurringOnly),
+        const MemoplannerSettingsLoaded(recurringOnly),
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();

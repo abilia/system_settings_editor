@@ -94,13 +94,14 @@ class ActivityAlarmPreview extends StatelessWidget {
                   ),
                   alarm: StartAlarm(
                     ActivityDay(
-                      // ignore: invalid_use_of_visible_for_testing_member
-                      Activity.createNew(
+                      Activity(
                         title: Translator.of(context)
                             .translate
                             .previewActivityTitle,
                         startTime: startTime,
                         duration: 3.hours(),
+                        calendarId: '',
+                        timezone: '',
                       ),
                       startTime.onlyDays(),
                     ),

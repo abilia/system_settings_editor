@@ -34,8 +34,7 @@ class LogoutPage extends StatelessWidget {
 class ProfilePictureNameAndEmail extends StatefulWidget {
   const ProfilePictureNameAndEmail({Key? key}) : super(key: key);
   @override
-  _ProfilePictureNameAndEmailState createState() =>
-      _ProfilePictureNameAndEmailState();
+  State createState() => _ProfilePictureNameAndEmailState();
 }
 
 class _ProfilePictureNameAndEmailState

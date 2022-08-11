@@ -15,7 +15,7 @@ ReplaySubject<NotificationAlarm> _selectNotificationSubject =
 
 void onNotification(String? payload) async {
   if (payload != null) {
-    _log.fine('notification payload: ' + payload);
+    _log.fine('notification payload: $payload');
     try {
       selectNotificationSubject.add(NotificationAlarm.decode(payload));
     } catch (e) {

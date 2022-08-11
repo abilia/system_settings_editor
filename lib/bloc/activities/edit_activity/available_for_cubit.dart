@@ -39,11 +39,11 @@ class AvailableForCubit extends Cubit<AvailableForState> {
       );
 
   void toggleSupportPerson(int id) {
-    final _supportPersons = Set<int>.from(state.selectedSupportPersons);
-    if (!_supportPersons.remove(id)) {
-      _supportPersons.add(id);
+    final supportPersons = Set<int>.from(state.selectedSupportPersons);
+    if (!supportPersons.remove(id)) {
+      supportPersons.add(id);
     }
-    emit(state.copyWith(selectedSupportPersons: _supportPersons));
+    emit(state.copyWith(selectedSupportPersons: supportPersons));
   }
 }
 

@@ -6,8 +6,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 import 'package:equatable/equatable.dart';
-import 'package:path/path.dart' as _path;
-import 'package:mime/mime.dart' as _mime;
+import 'package:path/path.dart' as path;
+import 'package:mime/mime.dart' as mime;
 import 'package:path_provider/path_provider.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -97,14 +97,14 @@ class SoundCubit extends Cubit<SoundState> {
 
     if (file == null || !await file.exists()) return null;
 
-    if (!Platform.isIOS || _path.extension(file.path).isNotEmpty) return file;
+    if (!Platform.isIOS || path.extension(file.path).isNotEmpty) return file;
 
     final contentType = userFile.contentType;
     final extension = contentType != null
-        ? _mime.extensionFromMime(contentType)
+        ? mime.extensionFromMime(contentType)
         : tmpFileEnding;
 
-    final tmpPath = _path.join(
+    final tmpPath = path.join(
       (await getTemporaryDirectory()).path,
       '${userFile.id}.$extension',
     );

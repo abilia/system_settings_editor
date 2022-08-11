@@ -15,7 +15,7 @@ class NoteBlock extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _NoteBlockState createState() => _NoteBlockState();
+  State createState() => _NoteBlockState();
 }
 
 class _NoteBlockState extends State<NoteBlock> {

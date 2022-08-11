@@ -177,7 +177,7 @@ class SortableLibrary<T extends SortableData> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SortableLibraryState<T> createState() => _SortableLibraryState<T>();
+  State createState() => _SortableLibraryState<T>();
 }
 
 class _SortableLibraryState<T extends SortableData>
