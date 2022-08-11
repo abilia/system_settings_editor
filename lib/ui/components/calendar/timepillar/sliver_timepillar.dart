@@ -13,7 +13,7 @@ class SliverTimePillar extends SingleChildRenderObjectWidget {
 
 /// Adapted from [RenderSliverToBoxAdapter]
 class RenderSliverTimePillar extends RenderSliverSingleBoxAdapter {
-  Offset? trailingEdgeOffset;
+  Offset? _trailingEdgeOffset;
 
   RenderSliverTimePillar({
     RenderBox? child,
@@ -23,7 +23,7 @@ class RenderSliverTimePillar extends RenderSliverSingleBoxAdapter {
   void performLayout() {
     final child = this.child;
     if (child == null) {
-      geometry = SliverGeometry.zero;
+      this.geometry = SliverGeometry.zero;
       return;
     }
 
@@ -47,7 +47,7 @@ class RenderSliverTimePillar extends RenderSliverSingleBoxAdapter {
         ? constraints.scrollOffset
         : -(childExtent - constraints.remainingPaintExtent);
 
-    final geometry_ = SliverGeometry(
+    final geometry = SliverGeometry(
       scrollExtent: childExtent,
       paintExtent: paintedChildSize,
       maxPaintExtent: childExtent,
@@ -55,8 +55,8 @@ class RenderSliverTimePillar extends RenderSliverSingleBoxAdapter {
       hasVisualOverflow: true,
       visible: true,
     );
-    geometry = geometry_;
-    setChildParentData(child, constraints, geometry_);
+    this.geometry = geometry;
+    setChildParentData(child, constraints, geometry);
 
     final childParentData = child.parentData;
     if (childParentData is SliverPhysicalParentData) {
@@ -70,13 +70,13 @@ class RenderSliverTimePillar extends RenderSliverSingleBoxAdapter {
     if (child != null && geometry?.visible == true) {
       final childParentData = child.parentData;
       if (childParentData is SliverPhysicalParentData) {
-        if (!offTrailingEdge && startedClippiing) {
-          trailingEdgeOffset = offset + childParentData.paintOffset;
+        if (!offTrailingEdge && startedClipping) {
+          _trailingEdgeOffset = offset + childParentData.paintOffset;
         }
 
-        final trailingEdgeOffset_ = trailingEdgeOffset;
-        if (offTrailingEdge && trailingEdgeOffset_ != null) {
-          context.paintChild(child, trailingEdgeOffset_);
+        final trailingEdgeOffset = _trailingEdgeOffset;
+        if (offTrailingEdge && trailingEdgeOffset != null) {
+          context.paintChild(child, trailingEdgeOffset);
           return;
         }
 
@@ -86,6 +86,6 @@ class RenderSliverTimePillar extends RenderSliverSingleBoxAdapter {
   }
 
   bool get offTrailingEdge => constraints.remainingPaintExtent <= 0;
-  bool get startedClippiing =>
+  bool get startedClipping =>
       constraints.remainingPaintExtent < (geometry?.maxPaintExtent ?? 0.0);
 }

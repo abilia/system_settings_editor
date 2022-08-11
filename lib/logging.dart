@@ -72,7 +72,7 @@ class SeagullLogger {
 
   static const latestUploadKey = 'LATEST-LOG-UPLOAD-MILLIS';
   static const uploadInterval = Duration(hours: 24);
-  static const logArchivePath = 'logarchive';
+  static const logArchiveDirectory = 'logarchive';
 
   Future<void> cancelLogging() async {
     if (loggingSubscriptions.isNotEmpty) {
@@ -102,11 +102,11 @@ class SeagullLogger {
   Future<void> sendLogsToBackend() async {
     if (fileLogging) {
       final time = DateFormat('yyyyMMddHHmm').format(DateTime.now());
-      final logArchivePath_ = '$documentsDir/$logArchivePath';
-      final logArchiveDir = Directory(logArchivePath_);
+      final logArchivePath = '$documentsDir/$logArchiveDirectory';
+      final logArchiveDir = Directory(logArchivePath);
       await logArchiveDir.create(recursive: true);
       final archiveFilePath =
-          '$logArchivePath_/${Config.flavor.id}_log_$time.log';
+          '$logArchivePath/${Config.flavor.id}_log_$time.log';
       await _logFileLock.synchronized(() async {
         await _logFile?.copy(archiveFilePath);
         await _logFile?.writeAsString('');

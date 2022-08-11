@@ -111,7 +111,7 @@ class FullScreenActivityTabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final layout_ = layout.ongoingFullscreen.activity;
+    final activityLayout = layout.ongoingFullscreen.activity;
     return BlocSelector<FullScreenActivityCubit, FullScreenActivityState, bool>(
       selector: (state) =>
           activityOccasion.activity.id == state.selected.activity.id,
@@ -120,8 +120,9 @@ class FullScreenActivityTabItem extends StatelessWidget {
             activityOccasion.start.isAtSameMomentAs(minutes) ||
             activityOccasion.end.isAtSameMomentAs(minutes),
         builder: (context, current) {
-          final border =
-              current || selected ? layout_.activeBorder : layout_.border;
+          final border = current || selected
+              ? activityLayout.activeBorder
+              : activityLayout.border;
           final borderColor = current
               ? AbiliaColors.red
               : selected
@@ -131,7 +132,9 @@ class FullScreenActivityTabItem extends StatelessWidget {
               BorderRadius.all(innerRadiusFromBorderSize(border));
           return AnimatedPadding(
             duration: _animationDuration,
-            padding: selected ? layout_.selectedPadding : layout_.padding,
+            padding: selected
+                ? activityLayout.selectedPadding
+                : activityLayout.padding,
             child: AspectRatio(
               aspectRatio: 1,
               child: BlocSelector<MemoplannerSettingBloc,
@@ -164,7 +167,7 @@ class FullScreenActivityTabItem extends StatelessWidget {
                                   : Matrix4.translation(
                                       Vector3(
                                         0.0,
-                                        layout_.arrowSize.height,
+                                        activityLayout.arrowSize.height,
                                         0.0,
                                       ),
                                     ),

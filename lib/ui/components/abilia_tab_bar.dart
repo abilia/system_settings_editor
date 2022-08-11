@@ -120,17 +120,17 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
   _TabState();
   late AnimationController _collapsedController;
   late Animation<double> _collapseAnimation;
-  late bool collapsed;
+  late bool _collapsed;
 
   @override
   void initState() {
     super.initState();
-    collapsed = widget.collapsed();
+    _collapsed = widget.collapsed();
     _collapsedController =
         AnimationController(vsync: this, duration: kTabScrollDuration);
     _collapseAnimation = _collapsedController
         .drive(ReverseTween<double>(Tween<double>(begin: 0.0, end: 1.0)));
-    if (collapsed) {
+    if (_collapsed) {
       _collapsedController.forward(from: 1.0);
     }
   }
@@ -143,14 +143,14 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
 
   @override
   void didUpdateWidget(_Tab oldWidget) {
-    final collapsed_ = widget.collapsed();
-    if (collapsed_ != collapsed) {
-      if (collapsed_) {
+    final collapsed = widget.collapsed();
+    if (collapsed != _collapsed) {
+      if (collapsed) {
         _collapsedController.forward();
       } else {
         _collapsedController.reverse();
       }
-      collapsed = collapsed_;
+      _collapsed = collapsed;
     }
     super.didUpdateWidget(oldWidget);
   }

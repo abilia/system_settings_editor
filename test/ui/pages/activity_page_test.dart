@@ -390,14 +390,13 @@ void main() {
     testWidgets(
         'SGC-934 Change date for past activity to future updates Occasion state (no cross over)',
         (WidgetTester tester) async {
-      final startTime_ = startTime.subtract(1.days()).add(1.minutes());
       final toDay = startTime.day;
       // Arrange
       when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Activity>[
             Activity.createNew(
-              startTime: startTime_,
+              startTime: startTime.subtract(1.days()).add(1.minutes()),
               title: 'a title for activity',
             )
           ],
