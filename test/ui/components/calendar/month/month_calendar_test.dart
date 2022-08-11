@@ -39,6 +39,8 @@ void main() {
         .thenAnswer((_) => Future.value(activityResponse()));
     when(() => mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value([]));
+    when(() => mockActivityDb.getAllAfter(any()))
+        .thenAnswer((_) => Future.value([]));
     when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 

@@ -41,6 +41,18 @@
       ],
     },
     {
+      "name": "Profile MP",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "args": [
+        "--dart-define",
+        "flavor=mp",
+        "--flavor",
+        "mp",
+      ],
+    },
+    {
       "name": "Test as MEMOplanner Go",
       "type": "dart",
       "request": "launch",

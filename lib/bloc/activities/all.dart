@@ -11,3 +11,4 @@ export 'activity_wizard/activity_wizard_cubit.dart';
 export 'activity_wizard/template_activity_wizard_cubit.dart';
 export 'record_sound/record_sound_cubit.dart';
 export 'fullscreen_activity_cubit.dart';
+export 'activity_cubit.dart';

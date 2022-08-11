@@ -188,6 +188,16 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 memoplannerSettingsBloc: context.read<MemoplannerSettingBloc>(),
               ),
             ),
+            BlocProvider<NotificationBloc>(
+              create: (context) => NotificationBloc(
+                memoplannerSettingBloc: context.read<MemoplannerSettingBloc>(),
+                activitiesBloc: context.read<ActivitiesBloc>(),
+                activityRepository: context.read<ActivityRepository>(),
+                settingsDb: GetIt.I<SettingsDb>(),
+                timerDb: GetIt.I<TimerDb>(),
+                syncDelays: GetIt.I<SyncDelays>(),
+              ),
+            ),
             if (Config.isMP) ...[
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(

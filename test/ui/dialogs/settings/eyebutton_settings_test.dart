@@ -30,6 +30,8 @@ void main() {
         Future.value([Activity.createNew(title: 'null', startTime: initTime)]));
     when(() => mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value([]));
+    when(() => mockActivityDb.getAllAfter(any()))
+        .thenAnswer((_) => Future.value([]));
 
     final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(

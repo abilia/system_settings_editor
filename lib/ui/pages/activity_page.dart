@@ -2,7 +2,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/listener/all.dart';
 
 class ActivityPage extends StatelessWidget {
   final ActivityDay activityDay;
@@ -18,29 +17,26 @@ class ActivityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: abiliaWhiteTheme,
-      child: ActivityListener(
-        activity: activityDay.activity,
-        onActivityDeleted: () =>
-            Navigator.of(context).popUntil((route) => route.isFirst),
-        child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
-          selector: (activitiesState) {
-            final a = activitiesState
-                .newActivityFromLoadedOrGiven(activityDay.activity);
-            return ActivityDay(
-              a,
-              a.isRecurring ? activityDay.day : a.startTime,
-            );
-          },
-          builder: (context, ad) {
+      child: BlocProvider<ActivityCubit>(
+        create: (context) => ActivityCubit(
+          activityDay: activityDay,
+          activitiesBloc: context.read<ActivitiesBloc>(),
+        ),
+        child: BlocConsumer<ActivityCubit, ActivityState>(
+          listenWhen: (previous, current) => current is ActivityDeleted,
+          listener: (context, state) =>
+              Navigator.of(context).popUntil((route) => route.isFirst),
+          builder: (context, state) {
             return Scaffold(
               appBar: DayAppBar(
-                day: ad.day,
+                day: state.activityDay.day,
               ),
               body: ActivityInfoWithDots(
-                ad,
+                state.activityDay,
                 previewImage: previewImage,
               ),
-              bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
+              bottomNavigationBar:
+                  _ActivityBottomAppBar(activityDay: state.activityDay),
             );
           },
         ),

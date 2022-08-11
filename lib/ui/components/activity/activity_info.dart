@@ -266,9 +266,7 @@ class Attachment extends StatelessWidget with ActivityMixin {
           final updatedActivity = activity.copyWith(
             infoItem: signedOff,
           );
-          BlocProvider.of<ActivitiesBloc>(context).add(
-            UpdateActivity(updatedActivity),
-          );
+          context.read<ActivityCubit>().onActivityUpdated(updatedActivity);
 
           if (signedOff.allSignedOff(activityDay.day) &&
               updatedActivity.checkable &&
