@@ -76,6 +76,9 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
                                   .read<EditActivityCubit>()
                                   .replaceActivity(activity.copyWith(title: s)),
                               maxLines: 1,
+                              onSubmitted: (_) {
+                                context.read<WizardCubit>().next();
+                              },
                             ),
                           ),
                           TtsPlayButton(
