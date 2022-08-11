@@ -243,7 +243,7 @@ void main() {
     });
 
     testWidgets(
-        'SGC-1805 submitting from the keyboard behave the same as clicking on the next button',
+        'SGC-1805 submitting from the keyboard behaves the same as clicking next',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
