@@ -8,7 +8,7 @@ class PhotoCalendarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final layout_ = layout.photoCalendarLayout;
+    final photoCalendarLayout = layout.photoCalendarLayout;
     final settingsState = context.read<MemoplannerSettingBloc>().state;
     final clockType = context
         .select((MemoplannerSettingBloc settings) => settings.state.clockType);
@@ -38,7 +38,7 @@ class PhotoCalendarPage extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(
-                  height: layout_.clockRowHeight,
+                  height: photoCalendarLayout.clockRowHeight,
                   child: Stack(
                     children: [
                       Row(
@@ -46,26 +46,26 @@ class PhotoCalendarPage extends StatelessWidget {
                         children: [
                           if (clockType != ClockType.digital)
                             SizedBox(
-                              height: layout_.analogClockSize +
+                              height: photoCalendarLayout.analogClockSize +
                                   layout.clock.borderWidth * 2,
-                              width: layout_.analogClockSize,
+                              width: photoCalendarLayout.analogClockSize,
                               child: const FittedBox(child: AnalogClock()),
                             ),
                           if (clockType == ClockType.analogueDigital)
-                            SizedBox(width: layout_.clockDistance),
+                            SizedBox(width: photoCalendarLayout.clockDistance),
                           if (clockType != ClockType.analogue)
                             DigitalClock(
-                              style: layout_.textStyle(clockType),
+                              style: photoCalendarLayout.textStyle(clockType),
                             ),
                         ],
                       ).pad(
                         clockType == ClockType.digital
-                            ? layout_.digitalClockPadding
-                            : layout_.analogClockPadding,
+                            ? photoCalendarLayout.digitalClockPadding
+                            : photoCalendarLayout.analogClockPadding,
                       ),
                       Positioned(
-                        bottom: layout_.backButtonPosition.dy,
-                        right: layout_.backButtonPosition.dx,
+                        bottom: photoCalendarLayout.backButtonPosition.dy,
+                        right: photoCalendarLayout.backButtonPosition.dx,
                         child: IconActionButton(
                           style: theme.isLight
                               ? actionButtonStyleLight
