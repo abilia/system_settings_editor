@@ -111,7 +111,9 @@ void main() {
       testWidgets('Can navigate back to calendar', (tester) async {
         await tester.goToPhotoCalendarPage(pump: true);
         expect(find.byType(PhotoCalendarPage), findsOneWidget);
-        await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
+        await tester.tap(
+          find.widgetWithIcon(IconActionButton, AbiliaIcons.day),
+        );
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
       });

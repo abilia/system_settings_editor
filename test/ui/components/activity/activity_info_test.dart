@@ -24,7 +24,8 @@ void main() {
       as NoteInfoItem;
   final translate = Locales.language.values.first;
 
-  Widget wrapWithMaterialApp(Widget widget) => FakeAuthenticatedBlocsProvider(
+  Widget wrapWithMaterialApp(ActivityInfo activityInfo) =>
+      FakeAuthenticatedBlocsProvider(
         child: MultiBlocProvider(
           providers: [
             BlocProvider<UserFileCubit>(
@@ -54,6 +55,12 @@ void main() {
             BlocProvider<TimerCubit>(
               create: (context) => MockTimerCubit(),
             ),
+            BlocProvider<ActivityCubit>(
+              create: (context) => ActivityCubit(
+                activityDay: activityInfo.activityDay,
+                activitiesBloc: FakeActivitiesBloc(),
+              ),
+            ),
           ],
           child: MaterialApp(
             supportedLocales: Translator.supportedLocals,
@@ -62,7 +69,7 @@ void main() {
                 supportedLocales.firstWhere(
                     (l) => l.languageCode == locale?.languageCode,
                     orElse: () => supportedLocales.first),
-            home: Material(child: widget),
+            home: Material(child: activityInfo),
           ),
         ),
       );

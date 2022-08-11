@@ -6,4 +6,3 @@ export 'inactivity_listener.dart';
 export 'fullscreen_alarm_premission_listener.dart';
 export 'starter_set_listener.dart';
 export 'home_screen_listener.dart';
-export 'activity_listener.dart';

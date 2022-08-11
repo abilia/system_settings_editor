@@ -383,12 +383,12 @@ void main() {
 
       // Act
       await tester.pumpApp();
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(PhotoCalendarPage), findsOneWidget);
       clockStreamController.add(initialTime.add(1.minutes()));
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(DayCalendar), findsNothing);
+      expect(find.byType(PhotoCalendarPage), findsNothing);
       expect(find.byType(ScreenSaverPage), findsOneWidget);
 
       // Act

@@ -90,6 +90,8 @@ void main() {
         .thenAnswer((_) => Future.value(100));
     when(() => mockActivityDb.insert(any()))
         .thenAnswer((_) => Future.value(100));
+    when(() => mockActivityDb.getAllAfter(any()))
+        .thenAnswer((_) => Future.value([]));
 
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
@@ -392,7 +394,7 @@ void main() {
             ];
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        expect(find.byType(OneTimepillarCalendar), findsOneWidget);
+        expect(find.byType(PhotoCalendarPage), findsOneWidget);
       });
     });
   });

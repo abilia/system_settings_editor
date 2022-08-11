@@ -9,6 +9,7 @@ class PhotoCalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final layout_ = layout.photoCalendarLayout;
+    final settingsState = context.read<MemoplannerSettingBloc>().state;
     final clockType = context
         .select((MemoplannerSettingBloc settings) => settings.state.clockType);
     final calendarDayColor = context.select(
@@ -23,63 +24,91 @@ class PhotoCalendarPage extends StatelessWidget {
 
     return Theme(
       data: theme.theme,
-      child: Scaffold(
-        appBar: const PhotoCalendarAppBar(),
-        backgroundColor: theme.color,
-        body: SafeArea(
-          child: Column(
-            children: [
-              SizedBox(
-                height: layout_.clockRowHeight,
-                child: Stack(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (clockType != ClockType.digital)
-                          SizedBox(
-                            height: layout_.analogClockSize +
-                                layout.clock.borderWidth * 2,
-                            width: layout_.analogClockSize,
-                            child: const FittedBox(child: AnalogClock()),
-                          ),
-                        if (clockType == ClockType.analogueDigital)
-                          SizedBox(width: layout_.clockDistance),
-                        if (clockType != ClockType.analogue)
-                          DigitalClock(
-                            style: layout_.textStyle(clockType),
-                          ),
-                      ],
-                    ).pad(
-                      clockType == ClockType.digital
-                          ? layout_.digitalClockPadding
-                          : layout_.analogClockPadding,
-                    ),
-                    Positioned(
-                      bottom: layout_.backButtonPosition.dy,
-                      right: layout_.backButtonPosition.dx,
-                      child: IconActionButton(
-                        style: theme.isLight
-                            ? actionButtonStyleLight
-                            : actionButtonStyleDark,
-                        onPressed: () {
-                          Navigator.of(context)
-                              .popUntil((route) => route.isFirst);
-                        },
-                        child: const Icon(AbiliaIcons.closeProgram),
+      child: WillPopScope(
+        onWillPop: () async {
+          final index =
+              settingsState.displayMenu ? settingsState.menuTabIndex : 0;
+          DefaultTabController.of(context)?.index = index;
+          return false;
+        },
+        child: Scaffold(
+          appBar: const PhotoCalendarAppBar(),
+          backgroundColor: theme.color,
+          body: SafeArea(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: layout_.clockRowHeight,
+                  child: Stack(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (clockType != ClockType.digital)
+                            SizedBox(
+                              height: layout_.analogClockSize +
+                                  layout.clock.borderWidth * 2,
+                              width: layout_.analogClockSize,
+                              child: const FittedBox(child: AnalogClock()),
+                            ),
+                          if (clockType == ClockType.analogueDigital)
+                            SizedBox(width: layout_.clockDistance),
+                          if (clockType != ClockType.analogue)
+                            DigitalClock(
+                              style: layout_.textStyle(clockType),
+                            ),
+                        ],
+                      ).pad(
+                        clockType == ClockType.digital
+                            ? layout_.digitalClockPadding
+                            : layout_.analogClockPadding,
                       ),
-                    ),
-                  ],
+                      Positioned(
+                        bottom: layout_.backButtonPosition.dy,
+                        right: layout_.backButtonPosition.dx,
+                        child: IconActionButton(
+                          style: theme.isLight
+                              ? actionButtonStyleLight
+                              : actionButtonStyleDark,
+                          onPressed: () {
+                            final index =
+                                settingsState.startView == StartView.photoAlbum
+                                    ? 0
+                                    : settingsState.startViewIndex;
+                            DefaultTabController.of(context)?.index = index;
+                          },
+                          child: Icon(
+                            settingsState.startView.icon,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const Expanded(
-                child: SlideShow(),
-              )
-            ],
+                const Expanded(
+                  child: SlideShow(),
+                )
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+}
+
+extension StartViewExtension on StartView {
+  IconData get icon {
+    switch (this) {
+      case StartView.weekCalendar:
+        return AbiliaIcons.week;
+      case StartView.monthCalendar:
+        return AbiliaIcons.month;
+      case StartView.menu:
+        return AbiliaIcons.appMenu;
+      default:
+        return AbiliaIcons.day;
+    }
   }
 }
 

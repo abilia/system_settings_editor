@@ -33,6 +33,8 @@ class FakeSettingsDb extends Fake implements SettingsDb {
 
   @override
   Future setAlwaysUse24HourFormat(bool alwaysUse24HourFormat) async {}
+  @override
+  bool get alwaysUse24HourFormat => true;
 }
 
 class FakeLoginDb extends Fake implements LoginDb {
@@ -112,6 +114,8 @@ class FakeActivityDb extends Fake implements ActivityDb {
   Future<int> getLastRevision() => Future.value(0);
   @override
   Future<Iterable<Activity>> getAllNonDeleted() => Future.value([]);
+  @override
+  Future<Iterable<Activity>> getAllAfter(DateTime time) => Future.value([]);
 }
 
 class FakeDatabase extends Fake implements Database {

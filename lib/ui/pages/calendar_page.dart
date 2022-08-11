@@ -10,49 +10,52 @@ class CalendarPage extends StatelessWidget {
     return Theme(
       data: abiliaWhiteTheme,
       child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-          builder: (context, settingsState) {
-        if (settingsState is MemoplannerSettingsNotLoaded) {
-          return const Scaffold(body: Center(child: AbiliaProgressIndicator()));
-        }
-        return DefaultTabController(
-          length: settingsState.calendarCount,
-          initialIndex: settingsState.startViewIndex,
-          child: Scaffold(
-            bottomNavigationBar:
-                settingsState is! MemoplannerSettingsNotLoaded &&
-                        settingsState.displayBottomBar
-                    ? const CalendarBottomBar()
-                    : null,
-            body: BlocSelector<ActivitiesBloc, ActivitiesState, bool>(
-              selector: (state) => state is ActivitiesNotLoaded,
-              builder: (context, activitiesNotLoaded) {
-                if (activitiesNotLoaded) {
-                  return Center(
-                    child: SizedBox(
-                      width: layout.login.logoSize,
-                      height: layout.login.logoSize,
-                      child: const AbiliaProgressIndicator(),
+        builder: (context, settingsState) {
+          if (settingsState is MemoplannerSettingsNotLoaded) {
+            return const Scaffold(
+                body: Center(child: AbiliaProgressIndicator()));
+          }
+          return DefaultTabController(
+            length: settingsState.calendarCount,
+            initialIndex: settingsState.startViewIndex,
+            child: Scaffold(
+              bottomNavigationBar:
+                  settingsState is! MemoplannerSettingsNotLoaded &&
+                          settingsState.displayBottomBar
+                      ? const CalendarBottomBar()
+                      : null,
+              body: BlocSelector<ActivitiesBloc, ActivitiesState, bool>(
+                selector: (state) => state is ActivitiesNotLoaded,
+                builder: (context, activitiesNotLoaded) {
+                  if (activitiesNotLoaded) {
+                    return Center(
+                      child: SizedBox(
+                        width: layout.login.logoSize,
+                        height: layout.login.logoSize,
+                        child: const AbiliaProgressIndicator(),
+                      ),
+                    );
+                  }
+                  return ReturnToHomeScreenListener(
+                    child: TabBarView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        const DayCalendar(),
+                        if (settingsState.displayWeekCalendar)
+                          const WeekCalendarTab(),
+                        if (settingsState.displayMonthCalendar)
+                          const MonthCalendarTab(),
+                        if (settingsState.displayMenu) const MenuPage(),
+                        const PhotoCalendarPage(),
+                      ],
                     ),
                   );
-                }
-                return ReturnToHomeScreenListener(
-                  child: TabBarView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      const DayCalendar(),
-                      if (settingsState.displayWeekCalendar)
-                        const WeekCalendarTab(),
-                      if (settingsState.displayMonthCalendar)
-                        const MonthCalendarTab(),
-                      if (settingsState.displayMenu) const MenuPage(),
-                    ],
-                  ),
-                );
-              },
+                },
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:seagull/ui/all.dart';
 
-class TabControlledButton extends StatefulWidget {
+class TabControlledButton extends StatelessWidget {
   final String text;
   final IconData iconData;
 
@@ -13,37 +13,12 @@ class TabControlledButton extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<TabControlledButton> createState() => _TabControlledButtonState();
-}
-
-class _TabControlledButtonState extends State<TabControlledButton> {
-  TabController? controller;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    controller?.removeListener(_tabControllerListener);
-    controller = DefaultTabController.of(context)
-      ?..addListener(_tabControllerListener);
-  }
-
-  @override
-  void dispose() {
-    controller?.removeListener(_tabControllerListener);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextAndOrIconActionButtonLight(
-      widget.text,
-      widget.iconData,
-      onPressed: () {
-        controller?.index = widget.tabIndex;
-      },
-      selected: controller?.index == widget.tabIndex,
-    );
-  }
-
-  void _tabControllerListener() => setState(() {});
+  Widget build(BuildContext context) => DefaultTabControllerBuilder(
+        builder: (context, controller) => TextAndOrIconActionButtonLight(
+          text,
+          iconData,
+          onPressed: () => controller?.index = tabIndex,
+          selected: controller?.index == tabIndex,
+        ),
+      );
 }
