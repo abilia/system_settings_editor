@@ -40,7 +40,6 @@ void main() {
       when(() => mockSettingBloc.stream)
           .thenAnswer((invocation) => const Stream.empty());
       inactivityCubit = InactivityCubit(
-        const Duration(minutes: 1),
         fakeTicker,
         mockSettingBloc,
         TouchDetectionCubit().stream,

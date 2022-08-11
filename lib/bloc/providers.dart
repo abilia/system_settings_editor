@@ -215,7 +215,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               ),
               BlocProvider<InactivityCubit>(
                 create: (context) => InactivityCubit(
-                  const Duration(minutes: 5),
                   GetIt.I<Ticker>(),
                   context.read<MemoplannerSettingBloc>(),
                   context.read<TouchDetectionCubit>().stream,

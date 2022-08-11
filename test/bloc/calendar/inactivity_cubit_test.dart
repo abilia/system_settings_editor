@@ -44,7 +44,6 @@ void main() {
   blocTest<InactivityCubit, InactivityState>(
     'initial state',
     build: () => InactivityCubit(
-      const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
       activityDetectionCubit.stream,
@@ -73,7 +72,6 @@ void main() {
       );
     },
     build: () => InactivityCubit(
-      const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
       activityDetectionCubit.stream,
@@ -103,7 +101,6 @@ void main() {
       );
     },
     build: () => InactivityCubit(
-      const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
       activityDetectionCubit.stream,
@@ -135,7 +132,6 @@ void main() {
       );
     },
     build: () => InactivityCubit(
-      const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
       activityDetectionCubit.stream,
@@ -166,7 +162,6 @@ void main() {
       );
     },
     build: () => InactivityCubit(
-      const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
       activityDetectionCubit.stream,
@@ -198,7 +193,6 @@ void main() {
       );
     },
     build: () => InactivityCubit(
-      const Duration(minutes: 5),
       fakeTicker,
       settingsBloc,
       activityDetectionCubit.stream,
@@ -235,7 +229,6 @@ void main() {
       );
     },
     build: () => InactivityCubit(
-      const Duration(minutes: 5),
       fakeTicker,
       settingsBloc,
       activityDetectionCubit.stream,
@@ -269,7 +262,6 @@ void main() {
       );
     },
     build: () => InactivityCubit(
-      const Duration(minutes: 5),
       fakeTicker,
       settingsBloc,
       activityDetectionCubit.stream,

@@ -8,8 +8,9 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
+const timeToReturnToToday = Duration(minutes: 5);
+
 class InactivityCubit extends Cubit<InactivityState> {
-  final Duration _calendarInactivityTime;
   final Ticker ticker;
   final MemoplannerSettingBloc settingsBloc;
 
@@ -17,7 +18,6 @@ class InactivityCubit extends Cubit<InactivityState> {
   late StreamSubscription _activitySubscription;
 
   InactivityCubit(
-    this._calendarInactivityTime,
     this.ticker,
     this.settingsBloc,
     Stream<Touch> activityDetectedStream,
@@ -41,22 +41,19 @@ class InactivityCubit extends Cubit<InactivityState> {
   void _ticking(DateTime time) {
     final state = this.state;
     if (state is! _NotFinalState) return;
-    final timeoutSettings = settingsBloc.state.settings.functions.timeout;
-    final calendarInactivityTime = timeoutSettings.hasDuration &&
-            _calendarInactivityTime > timeoutSettings.duration
-        ? timeoutSettings.duration
-        : _calendarInactivityTime;
+    final screensaver = settingsBloc.state.settings.functions.timeout;
+    final realTimeToReturnToToday =
+        screensaver.hasDuration && timeToReturnToToday > screensaver.duration
+            ? screensaver.duration
+            : timeToReturnToToday;
 
     if (time
-        .isAtSameMomentOrAfter(state.timeStamp.add(calendarInactivityTime))) {
+        .isAtSameMomentOrAfter(state.timeStamp.add(realTimeToReturnToToday))) {
       emit(CalendarInactivityThresholdReached(state.timeStamp));
     }
-    if (timeoutSettings.hasDuration &&
-        time.isAtSameMomentOrAfter(
-            state.timeStamp.add(timeoutSettings.duration))) {
-      emit(
-        const HomeScreenInactivityThresholdReached(),
-      );
+    if (screensaver.hasDuration &&
+        time.isAtSameMomentOrAfter(state.timeStamp.add(screensaver.duration))) {
+      emit(const HomeScreenInactivityThresholdReached());
     }
   }
 
