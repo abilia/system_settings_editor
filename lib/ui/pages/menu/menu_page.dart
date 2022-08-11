@@ -141,15 +141,9 @@ class PhotoCalendarButton extends StatelessWidget {
     return MenuItemButton(
       icon: AbiliaIcons.photoCalendar,
       onPressed: () {
-        final authProviders = copiedAuthProviders(context);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => MultiBlocProvider(
-              providers: authProviders,
-              child: const PhotoCalendarPage(),
-            ),
-          ),
-        );
+        final settingsState = context.read<MemoplannerSettingBloc>().state;
+        DefaultTabController.of(context)?.index =
+            settingsState.photoAlbumTabIndex;
       },
       style: blueMenuButtonStyle,
       text: Translator.of(context).translate.photoCalendar,

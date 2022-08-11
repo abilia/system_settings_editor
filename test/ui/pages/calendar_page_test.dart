@@ -394,7 +394,7 @@ void main() {
             ];
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        expect(find.byType(OneTimepillarCalendar), findsOneWidget);
+        expect(find.byType(PhotoCalendarPage), findsOneWidget);
       });
     });
   });
