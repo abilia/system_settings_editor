@@ -17,9 +17,10 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
     required this.timerDb,
     required this.settingsDb,
     required this.memoplannerSettingBloc,
+    required SyncDelays syncDelays,
   }) : super('init') {
     on<NotificationEvent>(_scheduleNotifications,
-        transformer: throttle(const Duration(seconds: 5)));
+        transformer: _throttle(syncDelays.betweenSync));
   }
 
   final ActivityRepository activityRepository;
@@ -27,6 +28,8 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
   final TimerDb timerDb;
   final SettingsDb settingsDb;
   final MemoplannerSettingBloc memoplannerSettingBloc;
+  final maxReminder =
+      unsignedOffActivityReminders.reduce((v, e) => v > e ? v : e);
 
   Future _scheduleNotifications(
     NotificationEvent event,
@@ -34,29 +37,28 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
   ) async {
     final activitiesState = activitiesBloc.state;
     final settingsState = memoplannerSettingBloc.state;
-    if (settingsState is! MemoplannerSettingsNotLoaded &&
-        activitiesState is ActivitiesLoaded) {
-      final now = DateTime.now();
-      final timers = await timerDb.getRunningTimersFrom(
-        now,
-      );
-      final activities = await activityRepository.allAfter(
-          now.subtract(2.hours())); // subtracting to get all reminders
-      await scheduleAlarmNotificationsIsolated(
-        activities: activities,
-        timers: timers.toAlarm(),
-        language: settingsDb.language,
-        alwaysUse24HourFormat: settingsDb.alwaysUse24HourFormat,
-        settings: settingsState.settings.alarm,
-        fileStorage: GetIt.I<FileStorage>(),
-      );
-    }
+    if (settingsState is MemoplannerSettingsNotLoaded ||
+        activitiesState is! ActivitiesLoaded) return;
+
+    final now = DateTime.now();
+    final timers = await timerDb.getRunningTimersFrom(now);
+    final activities = await activityRepository.allAfter(
+      now.subtract(maxReminder), // subtracting to get all reminders
+    );
+    await scheduleAlarmNotificationsIsolated(
+      activities: activities,
+      timers: timers.toAlarm(),
+      language: settingsDb.language,
+      alwaysUse24HourFormat: settingsDb.alwaysUse24HourFormat,
+      settings: settingsState.settings.alarm,
+      fileStorage: GetIt.I<FileStorage>(),
+    );
   }
 }
 
 class NotificationEvent {}
 
-EventTransformer<Event> throttle<Event>(Duration delay) =>
+EventTransformer<Event> _throttle<Event>(Duration delay) =>
     (events, mapper) => events
         .throttleTime(delay, trailing: true, leading: false)
         .asyncExpand(mapper);

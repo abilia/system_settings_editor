@@ -35,6 +35,7 @@ void main() {
           .thenAnswer((_) => Future.value(0));
       when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(dbActivityAnswers.removeAt(0)));
+      when(() => mockActivityDb.getAllAfter(any())).thenAnswer((_) async => []);
 
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()

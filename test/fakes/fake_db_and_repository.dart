@@ -114,6 +114,8 @@ class FakeActivityDb extends Fake implements ActivityDb {
   Future<int> getLastRevision() => Future.value(0);
   @override
   Future<Iterable<Activity>> getAllNonDeleted() => Future.value([]);
+  @override
+  Future<Iterable<Activity>> getAllAfter(DateTime time) => Future.value([]);
 }
 
 class FakeDatabase extends Fake implements Database {

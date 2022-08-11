@@ -54,6 +54,8 @@ void main() {
         .thenAnswer((_) => Future.value([]));
     when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
+    when(() => mockActivityDb.getAllAfter(any()))
+        .thenAnswer((_) => Future.value(activityResponse()));
 
     final mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
