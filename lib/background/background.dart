@@ -21,7 +21,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
   final preferences = await SharedPreferences.getInstance();
 
   final logger = SeagullLogger(
-    documentsDir: documentDirectory.path,
+    documentsDirectory: documentDirectory.path,
     preferences: preferences,
   );
   final log = Logger('BackgroundMessageHandler');
