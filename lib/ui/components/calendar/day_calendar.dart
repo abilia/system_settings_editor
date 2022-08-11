@@ -38,11 +38,7 @@ class CalendarScaffold extends StatelessWidget {
       appBar: displayDayCalendarAppBar ? const DayCalendarAppBar() : null,
       floatingActionButton: const FloatingActions(),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      body: Stack(
-        children: const [
-          Calendars(),
-        ],
-      ),
+      body: const Calendars(),
     );
   }
 }
