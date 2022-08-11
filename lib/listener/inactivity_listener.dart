@@ -1,7 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -31,35 +30,20 @@ class ScreenSaverListener
           listener: (context, state) {
             Navigator.of(context)
                 .popUntil((route) => route.isFirst || route is AlarmRoute);
-            final settingsState = context.read<MemoplannerSettingBloc>().state;
-            if (state is! HomeScreenInactivityThresholdReached ||
-                !settingsState.screensaverOrPhotoAlbum) return;
 
+            if (!context.read<MemoplannerSettingBloc>().state.useScreensaver) {
+              return;
+            }
             final authProviders = copiedAuthProviders(context);
-
-            if (settingsState.startView == StartView.photoAlbum) {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => MultiBlocProvider(
-                    providers: authProviders,
-                    child: const PhotoCalendarPage(),
-                  ),
-                  settings: const RouteSettings(name: 'PhotoCalendarPage'),
-                ),
-              );
-            }
-
-            if (settingsState.useScreensaver) {
-              final screenSaverRoute = MaterialPageRoute(
-                builder: (context) => MultiBlocProvider(
-                  providers: authProviders,
-                  child: const ScreenSaverPage(),
-                ),
-                settings: const RouteSettings(name: 'ScreenSaverPage'),
-              );
-              GetIt.I<AlarmNavigator>().addScreenSaver(screenSaverRoute);
-              Navigator.of(context).push(screenSaverRoute);
-            }
+            final screenSaverRoute = MaterialPageRoute(
+              builder: (context) => MultiBlocProvider(
+                providers: authProviders,
+                child: const ScreenSaverPage(),
+              ),
+              settings: const RouteSettings(name: 'ScreenSaverPage'),
+            );
+            GetIt.I<AlarmNavigator>().addScreenSaver(screenSaverRoute);
+            Navigator.of(context).push(screenSaverRoute);
           },
         );
 }

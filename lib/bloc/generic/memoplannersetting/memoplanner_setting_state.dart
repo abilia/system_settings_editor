@@ -42,8 +42,6 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get displayMenu =>
       settings.functionMenuDisplayMenu && !settings.menu.allDisabled;
   bool get useScreensaver => settings.useScreensaver;
-  bool get screensaverOrPhotoAlbum =>
-      useScreensaver || startView == StartView.photoAlbum;
   bool get displayLocalImages => settings.imageMenuDisplayPhotoItem;
   bool get displayCamera => settings.imageMenuDisplayCameraItem;
   bool get displayMyPhotos => settings.imageMenuDisplayMyPhotosItem;
@@ -89,7 +87,8 @@ abstract class MemoplannerSettingsState extends Equatable {
   int get monthCalendarTabIndex =>
       weekCalendarTabIndex + (displayMonthCalendar ? 1 : 0);
   int get menuTabIndex => monthCalendarTabIndex + (displayMenu ? 1 : 0);
-  int get calendarCount => menuTabIndex + 1;
+  int get photoAlbumTabIndex => menuTabIndex + 1;
+  int get calendarCount => photoAlbumTabIndex + 1;
 
   DayColor get calendarDayColor => DayColor.values[settings.calendarDayColor];
   TimepillarIntervalType get timepillarIntervalType =>
@@ -218,6 +217,8 @@ abstract class MemoplannerSettingsState extends Equatable {
           return menuTabIndex;
         }
         break;
+      case StartView.photoAlbum:
+        return photoAlbumTabIndex;
       default:
     }
     return 0;
