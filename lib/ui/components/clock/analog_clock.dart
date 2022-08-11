@@ -98,12 +98,11 @@ class _AnalogClock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dayParts = context.select(
-        (MemoplannerSettingBloc bloc) => bloc.state.settings.calendar.dayParts);
+    final dayPart = context.watch<DayPartCubit>().state;
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, time) => Tts.data(
-        data: analogTimeStringWithInterval(
-            Translator.of(context), time, dayParts),
+        data:
+            analogTimeStringWithInterval(Translator.of(context), time, dayPart),
         child: SizedBox(
           width: width,
           height: height,

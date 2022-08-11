@@ -2,14 +2,16 @@ import 'package:meta/meta.dart';
 import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/i18n/translations_extensions.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/datetime.dart';
 
 const String _clockNoMinutesTts = '%s';
 
 String analogTimeStringWithInterval(
-    Translator translator, DateTime time, DayParts dayParts) {
+  Translator translator,
+  DateTime time,
+  DayPart dayPart,
+) {
   String timeWithInterval = translator.translate.replaceInString(
-      intervalString(translator, time.dayPart(dayParts), time.hour),
+      intervalString(translator, dayPart, time.hour),
       analogTimeString(translator, time));
   return translator.translate.replaceInString(
       translator.translate.clockTheTimeIsTts, timeWithInterval);

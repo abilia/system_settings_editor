@@ -155,6 +155,9 @@ void main() {
               BlocProvider<VoicesCubit>(
                 create: (context) => FakeVoicesCubit(),
               ),
+              BlocProvider<DayPartCubit>(
+                create: (context) => FakeDayPartCubit(),
+              ),
             ],
             child: child!,
           ),
@@ -2332,6 +2335,7 @@ text''';
       )));
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
       expect(endTimeInputFinder, findsNothing);

@@ -99,17 +99,15 @@ class EventList extends StatelessWidget {
       child: Builder(builder: (context) {
         final eventState = context.watch<DayEventsCubit>().state;
         final now = context.watch<ClockBloc>().state;
-        final dayPartsSetting = context.select((MemoplannerSettingBloc bloc) =>
-            bloc.state.settings.calendar.dayParts);
 
-        final isNight = eventState.day.isAtSameDay(now) &&
-            now.dayPart(dayPartsSetting) == DayPart.night;
+        final todayNight = eventState.day.isAtSameDay(now) &&
+            context.read<DayPartCubit>().state.isNight;
         final pastEvents = eventState.pastEvents(now);
         final notPastEvents = eventState.notPastEvents(now);
         final isTodayAndNoPast = eventState.isToday && pastEvents.isEmpty;
         return Container(
           key: TestKey.calendarBackgroundColor,
-          color: isNight ? TimepillarCalendar.nightBackgroundColor : null,
+          color: todayNight ? TimepillarCalendar.nightBackgroundColor : null,
           child: CustomScrollView(
             center: eventState.isToday ? center : null,
             controller: sc,
@@ -130,7 +128,7 @@ class EventList extends StatelessWidget {
                         pastEvents,
                         notPastEvents,
                       ),
-                      isNight: isNight,
+                      isNight: todayNight,
                     ),
                   ),
                 SliverPadding(
@@ -142,7 +140,7 @@ class EventList extends StatelessWidget {
                   sliver: SliverEventList(
                     notPastEvents,
                     eventState.day,
-                    isNight: isNight,
+                    isNight: todayNight,
                   ),
                 ),
               ],

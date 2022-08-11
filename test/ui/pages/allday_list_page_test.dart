@@ -41,6 +41,9 @@ void main() {
           BlocProvider<SpeechSettingsCubit>(
             create: (context) => FakeSpeechSettingsCubit(),
           ),
+          BlocProvider<DayPartCubit>(
+            create: (context) => FakeDayPartCubit(),
+          ),
         ], child: widget),
       );
 

@@ -105,7 +105,10 @@ void main() {
               ),
               BlocProvider<TimepillarCubit>(
                 create: (context) => FakeTimepillarCubit(),
-              )
+              ),
+              BlocProvider<DayPartCubit>(
+                create: (context) => FakeDayPartCubit(),
+              ),
             ],
             child: Builder(
               builder: (context) => Listener(
