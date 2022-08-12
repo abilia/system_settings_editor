@@ -20,33 +20,12 @@ abstract class MemoplannerSettingsState extends Equatable {
       activityDisplayDate ||
       activityDisplayClock ||
       dayCaptionShowDayButtons;
-  bool get showCategories => settings.calendarActivityTypeShowTypes;
-  bool get showCategoryColor =>
-      showCategories && settings.calendarActivityTypeShowColor;
-  bool get timepillar12HourFormat => settings.setting12hTimeFormatTimeline;
-  bool get displayHourLines => settings.settingDisplayHourLines;
-  bool get displayTimeline => settings.settingDisplayTimeline;
-  bool get columnOfDots => settings.settingTimePillarTimeline;
-  bool get displayWeekCalendar => settings.functionMenuDisplayWeek;
-  bool get displayMonthCalendar => settings.functionMenuDisplayMonth;
-  bool get displayOnlyDayCalendar =>
-      !displayWeekCalendar && !displayMonthCalendar;
-  bool get displayBottomBar =>
-      displayMenu ||
-      displayNewActivity ||
-      displayMonthCalendar ||
-      displayWeekCalendar ||
-      displayNewTimer;
-  bool get displayNewActivity => settings.functionMenuDisplayNewActivity;
-  bool get displayNewTimer => settings.functionMenuDisplayNewTimer;
-  bool get displayMenu =>
-      settings.functionMenuDisplayMenu && !settings.menu.allDisabled;
-  bool get useScreensaver => settings.useScreensaver;
   bool get displayLocalImages => settings.imageMenuDisplayPhotoItem;
   bool get displayCamera => settings.imageMenuDisplayCameraItem;
   bool get displayMyPhotos => settings.imageMenuDisplayMyPhotosItem;
 
-  bool get settingsInaccessible => !displayMenu || !settings.menu.showSettings;
+  bool get settingsInaccessible =>
+      !settings.functions.display.menu || !settings.menu.showSettings;
 
   bool get dotsInTimepillar => settings.dotsInTimepillar;
   bool get settingViewOptionsTimeView => settings.settingViewOptionsTimeView;
@@ -76,29 +55,12 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   int get defaultAlarmTypeSetting => settings.activityDefaultAlarmType;
 
-  int get morningStart => settings.morningIntervalStart;
-  int get dayStart => settings.dayIntervalStart;
-  int get eveningStart => settings.eveningIntervalStart;
-  int get nightStart => settings.nightIntervalStart;
-  Duration get activityTimeout =>
-      Duration(milliseconds: settings.activityTimeout);
-
-  int get weekCalendarTabIndex => (displayWeekCalendar ? 1 : 0);
-  int get monthCalendarTabIndex =>
-      weekCalendarTabIndex + (displayMonthCalendar ? 1 : 0);
-  int get menuTabIndex => monthCalendarTabIndex + (displayMenu ? 1 : 0);
-  int get photoAlbumTabIndex => menuTabIndex + 1;
-  int get calendarCount => photoAlbumTabIndex + 1;
-
-  DayColor get calendarDayColor => DayColor.values[settings.calendarDayColor];
   TimepillarIntervalType get timepillarIntervalType =>
       TimepillarIntervalType.values[settings.viewOptionsTimeInterval];
   DayCalendarType get dayCalendarType => DayCalendarType.values[
       min(settings.viewOptionsTimeView, DayCalendarType.values.length - 1)];
-  StartView get startView => StartView.values[settings.functionMenuStartView];
   TimepillarZoom get timepillarZoom =>
       TimepillarZoom.values[settings.viewOptionsZoom];
-  ClockType get clockType => ClockType.values[settings.settingClockType];
 
   AlarmSettings get alarm => settings.alarm;
 
@@ -127,114 +89,9 @@ abstract class MemoplannerSettingsState extends Equatable {
       WeekColor.values[settings.calendarMonthViewShowColors];
 
   TimepillarInterval todayTimepillarInterval(DateTime now) {
-    return todayTimepillarIntervalFromType(now, timepillarIntervalType);
+    return settings.calendar.dayParts
+        .todayTimepillarIntervalFromType(now, timepillarIntervalType);
   }
-
-  TimepillarInterval todayTimepillarIntervalFromType(
-      DateTime now, TimepillarIntervalType timepillarIntervalType) {
-    final day = now.onlyDays();
-    switch (timepillarIntervalType) {
-      case TimepillarIntervalType.interval:
-        return dayPartInterval(now);
-      case TimepillarIntervalType.day:
-        if (now.isBefore(day.add(morningStart.milliseconds()))) {
-          return TimepillarInterval(
-            start: day.previousDay().add(nightStart.milliseconds()),
-            end: day.add(morningStart.milliseconds()),
-            intervalPart: IntervalPart.night,
-          );
-        } else if (now
-            .isAtSameMomentOrAfter(day.add(nightStart.milliseconds()))) {
-          return TimepillarInterval(
-            start: day.add(nightStart.milliseconds()),
-            end: day.nextDay().add(morningStart.milliseconds()),
-            intervalPart: IntervalPart.night,
-          );
-        }
-        return TimepillarInterval(
-          start: day.add(morningStart.milliseconds()),
-          end: day.add(nightStart.milliseconds()),
-        );
-      default:
-        return TimepillarInterval(
-          start: day,
-          end: day.nextDay(),
-          intervalPart: IntervalPart.dayAndNight,
-        );
-    }
-  }
-
-  TimepillarInterval dayPartInterval(DateTime now) {
-    final part = now.dayPart(dayParts);
-    final base = now.onlyDays();
-    switch (part) {
-      case DayPart.morning:
-        return TimepillarInterval(
-          start: base.add(morningStart.milliseconds()),
-          end: base.add(dayStart.milliseconds()),
-        );
-      case DayPart.day:
-        return TimepillarInterval(
-          start: base.add(dayStart.milliseconds()),
-          end: base.add(eveningStart.milliseconds()),
-        );
-      case DayPart.evening:
-        return TimepillarInterval(
-          start: base.add(eveningStart.milliseconds()),
-          end: base.add(nightStart.milliseconds()),
-        );
-      case DayPart.night:
-        if (now.isBefore(base.add(morningStart.milliseconds()))) {
-          return TimepillarInterval(
-            start: base.previousDay().add(nightStart.milliseconds()),
-            end: base.add(morningStart.milliseconds()),
-            intervalPart: IntervalPart.night,
-          );
-        } else {
-          return TimepillarInterval(
-            start: base.add(nightStart.milliseconds()),
-            end: base.nextDay().add(morningStart.milliseconds()),
-            intervalPart: IntervalPart.night,
-          );
-        }
-    }
-  }
-
-  int get startViewIndex {
-    switch (startView) {
-      case StartView.weekCalendar:
-        if (displayWeekCalendar) {
-          return weekCalendarTabIndex;
-        }
-        break;
-      case StartView.monthCalendar:
-        if (displayMonthCalendar) {
-          return monthCalendarTabIndex;
-        }
-        break;
-      case StartView.menu:
-        if (displayMenu) {
-          return menuTabIndex;
-        }
-        break;
-      case StartView.photoAlbum:
-        return photoAlbumTabIndex;
-      default:
-    }
-    return 0;
-  }
-
-  DayParts get dayParts => DayParts(
-        morningStart: morningStart,
-        dayStart: dayStart,
-        eveningStart: eveningStart,
-        nightStart: nightStart,
-      );
-
-  String get leftCategoryName => settings.calendarActivityTypeLeft;
-  String get rightCategoryName => settings.calendarActivityTypeRight;
-  String get leftCategoryImage => settings.calendarActivityTypeLeftImage;
-  String get rightCategoryImage => settings.calendarActivityTypeRightImage;
 
   @override
   List<Object> get props => settings.props;

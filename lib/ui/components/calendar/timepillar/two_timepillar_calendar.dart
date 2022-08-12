@@ -24,7 +24,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
       builder: (context, day) {
         final nightInterval = TimepillarInterval(
           start: day.add(dayParts.night),
-          end: day.nextDay().add(dayParts.morningStart.milliseconds()),
+          end: day.nextDay().add(dayParts.morning),
           intervalPart: IntervalPart.night,
         );
         final dayInterval = TimepillarInterval(

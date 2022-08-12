@@ -98,9 +98,8 @@ class AppBarTitleRows {
     DayParts dayParts,
     String langCode,
   ) {
-    final msAfterMidnight =
-        currentTime.difference(currentTime.onlyDays()).inMilliseconds;
-    final beforeMidnight = msAfterMidnight >= dayParts.nightStart;
+    final afterMidnight = currentTime.difference(currentTime.onlyDays());
+    final beforeMidnight = afterMidnight >= dayParts.night;
     if (beforeMidnight) {
       String firstDay = DateFormat.E(langCode).format(currentTime);
       String secondDay = DateFormat.E(langCode).format(currentTime.nextDay());

@@ -40,7 +40,7 @@ class EndDatePickerWiz extends StatelessWidget {
               },
               child: BlocSelector<MemoplannerSettingBloc,
                   MemoplannerSettingsState, DayColor>(
-                selector: (state) => state.calendarDayColor,
+                selector: (state) => state.settings.calendar.dayColor,
                 builder: (context, calendarDayColor) => MonthBody(
                   calendarDayColor: calendarDayColor,
                   showPreview: false,

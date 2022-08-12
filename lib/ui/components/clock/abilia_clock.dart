@@ -9,15 +9,11 @@ class AbiliaClock extends StatelessWidget {
     this.style,
   }) : super(key: key);
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        buildWhen: (previous, current) =>
-            previous.clockType != current.clockType,
-        builder: (context, state) => FittedAbiliaClock(
-          state.clockType,
-          style: style,
-        ),
-      );
+  Widget build(BuildContext context) {
+    final clockType = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.calendar.clockType);
+    return FittedAbiliaClock(clockType, style: style);
+  }
 }
 
 class FittedAbiliaClock extends StatelessWidget {

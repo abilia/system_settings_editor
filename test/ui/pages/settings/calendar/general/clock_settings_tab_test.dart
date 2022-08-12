@@ -83,7 +83,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.settingClockTypeKey,
+        key: GeneralCalendarSettings.settingClockTypeKey,
         matcher: ClockType.digital.index,
       );
     });
@@ -100,7 +100,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.settingClockTypeKey,
+        key: GeneralCalendarSettings.settingClockTypeKey,
         matcher: ClockType.analogue.index,
       );
     });
@@ -121,7 +121,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: ClockType.analogue.index,
-            identifier: MemoplannerSettings.settingClockTypeKey,
+            identifier: GeneralCalendarSettings.settingClockTypeKey,
           ),
         ),
       ];
@@ -138,7 +138,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: ClockType.digital.index,
-            identifier: MemoplannerSettings.settingClockTypeKey,
+            identifier: GeneralCalendarSettings.settingClockTypeKey,
           ),
         ),
       ];
@@ -196,7 +196,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.setting12hTimeFormatTimelineKey,
+        key: TimepillarSettings.setting12hTimeFormatTimelineKey,
         matcher: isTrue,
       );
     });
@@ -226,7 +226,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.settingTimePillarTimelineKey,
+        key: TimepillarSettings.settingTimePillarTimelineKey,
         matcher: isTrue,
       );
     });
@@ -252,7 +252,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.settingDisplayTimelineKey,
+        key: TimepillarSettings.settingDisplayTimelineKey,
         matcher: isFalse,
       );
     });
@@ -278,7 +278,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.settingDisplayHourLinesKey,
+        key: TimepillarSettings.settingDisplayHourLinesKey,
         matcher: isTrue,
       );
     });
@@ -312,7 +312,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: true,
-            identifier: MemoplannerSettings.setting12hTimeFormatTimelineKey,
+            identifier: TimepillarSettings.setting12hTimeFormatTimelineKey,
           ),
         ),
         timepillarGeneric,
@@ -329,7 +329,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: true,
-            identifier: MemoplannerSettings.settingTimePillarTimelineKey,
+            identifier: TimepillarSettings.settingTimePillarTimelineKey,
           ),
         ),
         timepillarGeneric,
@@ -346,7 +346,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.settingDisplayTimelineKey,
+            identifier: TimepillarSettings.settingDisplayTimelineKey,
           ),
         ),
         timepillarGeneric,
@@ -360,7 +360,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: true,
-            identifier: MemoplannerSettings.settingDisplayHourLinesKey,
+            identifier: TimepillarSettings.settingDisplayHourLinesKey,
           ),
         ),
         timepillarGeneric,

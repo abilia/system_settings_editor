@@ -332,48 +332,44 @@ class CategoryRadioField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, state) {
-        final fileId =
-            isRight ? state.rightCategoryImage : state.leftCategoryImage;
+    final categoriesSettings = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.calendar.categories);
+    final imageAndName =
+        isRight ? categoriesSettings.right : categoriesSettings.left;
+    final fileId = imageAndName.image.id;
 
-        final label = isRight
-            ? (state.rightCategoryName.isEmpty
-                ? Translator.of(context).translate.right
-                : state.rightCategoryName)
-            : state.leftCategoryName.isEmpty
-                ? Translator.of(context).translate.left
-                : state.leftCategoryName;
+    final label = imageAndName.hasName
+        ? imageAndName.name
+        : isRight
+            ? Translator.of(context).translate.right
+            : Translator.of(context).translate.left;
 
-        final nothing = fileId.isEmpty && !state.showCategoryColor;
-        return RadioField<int>(
-          key: isRight ? TestKey.rightCategoryRadio : TestKey.leftCategoryRadio,
-          padding: nothing ? null : layout.category.activityRadioPadding,
-          onChanged: onChanged,
-          leading: nothing
-              ? null
-              : Container(
-                  foregroundDecoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: border,
-                  ),
-                  child: CategoryImage(
-                    fileId: fileId,
-                    showBorder: fileId.isEmpty,
-                    color: fileId.isEmpty
-                        ? categoryColor(category: category)
-                        : null,
-                    diameter: layout.category.radioImageDiameter,
-                  ),
-                ),
-          text: Text(
-            label,
-            overflow: TextOverflow.ellipsis,
-          ),
-          groupValue: groupValue,
-          value: category,
-        );
-      },
+    final nothing = fileId.isEmpty && !categoriesSettings.showColors;
+    return RadioField<int>(
+      key: isRight ? TestKey.rightCategoryRadio : TestKey.leftCategoryRadio,
+      padding: nothing ? null : layout.category.activityRadioPadding,
+      onChanged: onChanged,
+      leading: nothing
+          ? null
+          : Container(
+              foregroundDecoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: border,
+              ),
+              child: CategoryImage(
+                fileId: fileId,
+                showBorder: fileId.isEmpty,
+                color:
+                    fileId.isEmpty ? categoryColor(category: category) : null,
+                diameter: layout.category.radioImageDiameter,
+              ),
+            ),
+      text: Text(
+        label,
+        overflow: TextOverflow.ellipsis,
+      ),
+      groupValue: groupValue,
+      value: category,
     );
   }
 }
@@ -723,7 +719,7 @@ class WeekDays extends StatelessWidget {
                 (day) => BlocSelector<MemoplannerSettingBloc,
                     MemoplannerSettingsState, DayTheme>(
                   selector: (state) => weekdayTheme(
-                    dayColor: state.calendarDayColor,
+                    dayColor: state.settings.calendar.dayColor,
                     languageCode: Localizations.localeOf(context).languageCode,
                     weekday: day,
                   ),

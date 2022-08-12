@@ -1,133 +1,106 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
+import 'package:seagull/models/settings/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class MenuSettingsPage extends StatefulWidget {
+class MenuSettingsPage extends StatelessWidget {
   const MenuSettingsPage({Key? key}) : super(key: key);
-
-  @override
-  State createState() => _MenuSettingsPageState();
-}
-
-class _MenuSettingsPageState extends State<MenuSettingsPage> {
-  late bool camera,
-      myPhotos,
-      photoCalendar,
-      showBasicTemplates,
-      quickSettings,
-      settings;
-  late final bool settingsInitial;
-
-  @override
-  void initState() {
-    super.initState();
-    final memosettingsState =
-        context.read<MemoplannerSettingBloc>().state.settings.menu;
-    camera = memosettingsState.showCamera;
-    myPhotos = memosettingsState.showPhotos;
-    photoCalendar = memosettingsState.showPhotoCalendar;
-    showBasicTemplates = memosettingsState.showBasicTemplates;
-    quickSettings = memosettingsState.showQuickSettings;
-    settingsInitial = settings = memosettingsState.showSettings;
-  }
 
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return SettingsBasePage(
-      icon: AbiliaIcons.appMenu,
-      title: Translator.of(context).translate.menu,
-      label: Config.isMP ? Translator.of(context).translate.settings : null,
-      bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: const CancelButton(),
-        forwardNavigationWidget: Builder(
-          builder: (context) => OkButton(
-            onPressed: () async {
-              final settingsChangeToDisable = settingsInitial && !settings;
-              final genericCubit = context.read<GenericCubit>();
-              final navigator = Navigator.of(context);
-              if (settingsChangeToDisable) {
-                final answer = await showViewDialog<bool>(
-                  context: context,
-                  builder: (context) => YesNoDialog(
-                    heading: t.menu,
-                    text: t.menuRemovalWarning,
-                  ),
-                );
-                if (answer != true) return;
-              }
-              genericCubit.genericUpdated(
-                [
-                  MemoplannerSettingData.fromData(
-                    data: camera,
-                    identifier: MenuSettings.showCameraKey,
-                  ),
-                  MemoplannerSettingData.fromData(
-                    data: myPhotos,
-                    identifier: MenuSettings.showPhotosKey,
-                  ),
-                  MemoplannerSettingData.fromData(
-                    data: photoCalendar,
-                    identifier: MenuSettings.showPhotoCalendarKey,
-                  ),
-                  MemoplannerSettingData.fromData(
-                    data: showBasicTemplates,
-                    identifier: MenuSettings.showBasicTemplatesKey,
-                  ),
-                  MemoplannerSettingData.fromData(
-                    data: quickSettings,
-                    identifier: MenuSettings.showQuickSettingsKey,
-                  ),
-                  MemoplannerSettingData.fromData(
-                    data: settings,
-                    identifier: MenuSettings.showSettingsKey,
-                  ),
-                ],
-              );
-              navigator.pop();
-            },
-          ),
-        ),
+    final initial = context.read<MemoplannerSettingBloc>().state.settings.menu;
+    return BlocProvider<MenuSettingsCubit>(
+      create: (context) => MenuSettingsCubit(
+        initial,
+        context.read<GenericCubit>(),
       ),
-      widgets: [
-        SwitchField(
-          leading: const Icon(AbiliaIcons.cameraPhoto),
-          value: camera,
-          onChanged: (v) => setState(() => camera = v),
-          child: Text(t.camera),
-        ),
-        SwitchField(
-          leading: const Icon(AbiliaIcons.myPhotos),
-          value: myPhotos,
-          onChanged: (v) => setState(() => myPhotos = v),
-          child: Text(t.myPhotos),
-        ),
-        SwitchField(
-          leading: const Icon(AbiliaIcons.photoCalendar),
-          value: photoCalendar,
-          onChanged: (v) => setState(() => photoCalendar = v),
-          child: Text(t.photoCalendar.singleLine),
-        ),
-        SwitchField(
-          leading: const Icon(AbiliaIcons.favoritesShow),
-          value: showBasicTemplates,
-          onChanged: (v) => setState(() => showBasicTemplates = v),
-          child: Text(t.templates.singleLine),
-        ),
-        SwitchField(
-          leading: const Icon(AbiliaIcons.menuSetup),
-          value: quickSettings,
-          onChanged: (v) => setState(() => quickSettings = v),
-          child: Text(t.quickSettingsMenu.singleLine),
-        ),
-        SwitchField(
-          leading: const Icon(AbiliaIcons.settings),
-          value: settings,
-          onChanged: (v) => setState(() => settings = v),
-          child: Text(t.settings),
-        ),
-      ],
+      child: BlocBuilder<MenuSettingsCubit, MenuSettings>(
+        builder: (context, state) {
+          return SettingsBasePage(
+            icon: AbiliaIcons.appMenu,
+            title: Translator.of(context).translate.menu,
+            label:
+                Config.isMP ? Translator.of(context).translate.settings : null,
+            bottomNavigationBar: BottomNavigation(
+              backNavigationWidget: const CancelButton(),
+              forwardNavigationWidget: Builder(
+                builder: (context) => OkButton(
+                  onPressed: () async {
+                    final menuSetttingsCubit =
+                        context.read<MenuSettingsCubit>();
+                    final showSettingsChangeToDisable = initial.showSettings &&
+                        !menuSetttingsCubit.state.showSettings;
+                    final navigator = Navigator.of(context);
+                    if (showSettingsChangeToDisable) {
+                      final answer = await showViewDialog<bool>(
+                        context: context,
+                        builder: (context) => YesNoDialog(
+                          heading: t.menu,
+                          text: t.menuRemovalWarning,
+                        ),
+                      );
+                      if (answer != true) return;
+                    }
+                    menuSetttingsCubit.save();
+                    navigator.pop();
+                  },
+                ),
+              ),
+            ),
+            widgets: [
+              SwitchField(
+                leading: const Icon(AbiliaIcons.cameraPhoto),
+                value: state.showCamera,
+                onChanged: (v) => context
+                    .read<MenuSettingsCubit>()
+                    .change(state.copyWith(showCamera: v)),
+                child: Text(t.camera),
+              ),
+              SwitchField(
+                leading: const Icon(AbiliaIcons.myPhotos),
+                value: state.showPhotos,
+                onChanged: (v) => context
+                    .read<MenuSettingsCubit>()
+                    .change(state.copyWith(showPhotos: v)),
+                child: Text(t.myPhotos),
+              ),
+              SwitchField(
+                leading: const Icon(AbiliaIcons.photoCalendar),
+                value: state.showPhotoCalendar,
+                onChanged: (v) => context
+                    .read<MenuSettingsCubit>()
+                    .change(state.copyWith(showPhotoCalendar: v)),
+                child: Text(t.photoCalendar.singleLine),
+              ),
+              SwitchField(
+                leading: const Icon(AbiliaIcons.favoritesShow),
+                value: state.showTemplates,
+                onChanged: (v) => context
+                    .read<MenuSettingsCubit>()
+                    .change(state.copyWith(showTemplates: v)),
+                child: Text(t.templates.singleLine),
+              ),
+              SwitchField(
+                leading: const Icon(AbiliaIcons.menuSetup),
+                value: state.showQuickSettings,
+                onChanged: (v) => context
+                    .read<MenuSettingsCubit>()
+                    .change(state.copyWith(showQuickSettings: v)),
+                child: Text(t.quickSettingsMenu.singleLine),
+              ),
+              SwitchField(
+                leading: const Icon(AbiliaIcons.settings),
+                value: state.showSettings,
+                onChanged: (v) => context
+                    .read<MenuSettingsCubit>()
+                    .change(state.copyWith(showSettings: v)),
+                child: Text(t.settings),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

@@ -26,7 +26,11 @@ void main() {
     when(() => memoplannerSettingBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(
       MemoplannerSettings(
-        calendarActivityTypeShowTypes: false,
+        calendar: const GeneralCalendarSettings(
+          categories: CategoriesSettings(
+            show: false,
+          ),
+        ),
         viewOptionsTimeView: DayCalendarType.oneTimepillar.index,
       ),
     ));

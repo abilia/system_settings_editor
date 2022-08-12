@@ -64,7 +64,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.functionMenuDisplayNewActivityKey,
+          key: DisplaySettings.functionMenuDisplayNewActivityKey,
           matcher: isFalse,
         );
       });
@@ -79,7 +79,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.functionMenuDisplayWeekKey,
+          key: DisplaySettings.functionMenuDisplayWeekKey,
           matcher: isFalse,
         );
       });
@@ -94,7 +94,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.functionMenuDisplayMonthKey,
+          key: DisplaySettings.functionMenuDisplayMonthKey,
           matcher: isFalse,
         );
       });
@@ -111,8 +111,48 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.functionMenuDisplayMenuKey,
+          key: DisplaySettings.functionMenuDisplayMenuKey,
           matcher: isFalse,
+        );
+      });
+
+      testWidgets('all menu item disabled disables menu switch',
+          (tester) async {
+        generics = [
+          MenuSettings.showCameraKey,
+          MenuSettings.showPhotosKey,
+          MenuSettings.showPhotoCalendarKey,
+          MenuSettings.showTemplatesKey,
+          MenuSettings.showQuickSettingsKey,
+          MenuSettings.showSettingsKey,
+        ].map(
+          (id) => Generic.createNew<MemoplannerSettingData>(
+            data: MemoplannerSettingData.fromData(data: false, identifier: id),
+          ),
+        );
+        await tester.pumpApp();
+        expect(find.byType(MenuButton), findsNothing);
+        await tester.tap(find.byKey(TestKey.hiddenSettingsButtonLeft));
+        await tester.tap(find.byKey(TestKey.hiddenSettingsButtonRight));
+        await tester.tap(find.byKey(TestKey.hiddenSettingsButtonLeft));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
+        await tester.pumpAndSettle();
+
+        expect(
+            tester
+                .widget<SwitchField>(
+                    find.widgetWithIcon(SwitchField, AbiliaIcons.appMenu))
+                .onChanged,
+            isNull);
+
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        verifySyncGeneric(
+          tester,
+          genericDb,
+          key: DisplaySettings.functionMenuDisplayMenuKey,
+          matcher: isTrue,
         );
       });
     });
@@ -172,7 +212,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.functionMenuStartViewKey,
+          key: FunctionsSettings.functionMenuStartViewKey,
           matcher: StartView.weekCalendar.index,
         );
       });
@@ -189,7 +229,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.functionMenuStartViewKey,
+          key: FunctionsSettings.functionMenuStartViewKey,
           matcher: StartView.monthCalendar.index,
         );
       });
@@ -206,7 +246,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.functionMenuStartViewKey,
+          key: FunctionsSettings.functionMenuStartViewKey,
           matcher: StartView.menu.index,
         );
       });
@@ -223,7 +263,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.functionMenuStartViewKey,
+          key: FunctionsSettings.functionMenuStartViewKey,
           matcher: StartView.photoAlbum.index,
         );
       });
@@ -248,7 +288,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.activityTimeoutKey,
+          key: TimeoutSettings.activityTimeoutKey,
           matcher: 5 * 60 * 1000,
         );
       });
@@ -267,7 +307,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.useScreensaverKey,
+          key: TimeoutSettings.useScreensaverKey,
           matcher: isTrue,
         );
       });
@@ -290,7 +330,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.useScreensaverKey,
+          key: TimeoutSettings.useScreensaverKey,
           matcher: isFalse,
         );
       });
@@ -319,7 +359,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.functionMenuDisplayNewActivityKey,
+            identifier: DisplaySettings.functionMenuDisplayNewActivityKey,
           ),
         ),
       ];
@@ -337,7 +377,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.functionMenuDisplayNewTimerKey,
+            identifier: DisplaySettings.functionMenuDisplayNewTimerKey,
           ),
         ),
       ];
@@ -353,8 +393,8 @@ void main() {
         (tester) async {
       // Arrange
       generics = [
-        MemoplannerSettings.functionMenuDisplayNewActivityKey,
-        MemoplannerSettings.functionMenuDisplayNewTimerKey,
+        DisplaySettings.functionMenuDisplayNewActivityKey,
+        DisplaySettings.functionMenuDisplayNewTimerKey,
       ].map(
         (id) => Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(data: false, identifier: id),
@@ -374,7 +414,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.functionMenuDisplayMenuKey,
+            identifier: DisplaySettings.functionMenuDisplayMenuKey,
           ),
         ),
       ];
@@ -391,7 +431,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.functionMenuDisplayWeekKey,
+            identifier: DisplaySettings.functionMenuDisplayWeekKey,
           ),
         ),
       ];
@@ -409,7 +449,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.functionMenuDisplayMonthKey,
+            identifier: DisplaySettings.functionMenuDisplayMonthKey,
           ),
         ),
       ];
@@ -424,8 +464,8 @@ void main() {
     testWidgets('hide Month and week calendar in bottomBar', (tester) async {
       // Arrange
       generics = [
-        MemoplannerSettings.functionMenuDisplayMonthKey,
-        MemoplannerSettings.functionMenuDisplayWeekKey,
+        DisplaySettings.functionMenuDisplayMonthKey,
+        DisplaySettings.functionMenuDisplayWeekKey,
       ].map(
         (id) => Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(data: false, identifier: id),
@@ -446,8 +486,8 @@ void main() {
         (tester) async {
       // Arrange
       generics = [
-        MemoplannerSettings.functionMenuDisplayMonthKey,
-        MemoplannerSettings.functionMenuDisplayWeekKey,
+        DisplaySettings.functionMenuDisplayMonthKey,
+        DisplaySettings.functionMenuDisplayWeekKey,
       ].map(
         (id) => Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(data: false, identifier: id),
@@ -458,8 +498,8 @@ void main() {
       // Assert -- There is still a icon with day calendar
       expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
       generics = [
-        MemoplannerSettings.functionMenuDisplayMonthKey,
-        MemoplannerSettings.functionMenuDisplayWeekKey,
+        DisplaySettings.functionMenuDisplayMonthKey,
+        DisplaySettings.functionMenuDisplayWeekKey,
       ].map(
         (id) => Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(data: true, identifier: id),
@@ -476,11 +516,11 @@ void main() {
     testWidgets('hides bottomBar', (tester) async {
       // Arrange
       generics = [
-        MemoplannerSettings.functionMenuDisplayMonthKey,
-        MemoplannerSettings.functionMenuDisplayWeekKey,
-        MemoplannerSettings.functionMenuDisplayNewActivityKey,
-        MemoplannerSettings.functionMenuDisplayNewTimerKey,
-        MemoplannerSettings.functionMenuDisplayMenuKey,
+        DisplaySettings.functionMenuDisplayMonthKey,
+        DisplaySettings.functionMenuDisplayWeekKey,
+        DisplaySettings.functionMenuDisplayNewActivityKey,
+        DisplaySettings.functionMenuDisplayNewTimerKey,
+        DisplaySettings.functionMenuDisplayMenuKey,
       ].map(
         (id) => Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(data: false, identifier: id),
@@ -496,11 +536,11 @@ void main() {
         (tester) async {
       // Arrange
       generics = [
-        MemoplannerSettings.functionMenuDisplayMonthKey,
-        MemoplannerSettings.functionMenuDisplayWeekKey,
-        MemoplannerSettings.functionMenuDisplayNewActivityKey,
-        MemoplannerSettings.functionMenuDisplayNewTimerKey,
-        MemoplannerSettings.functionMenuDisplayMenuKey,
+        DisplaySettings.functionMenuDisplayMonthKey,
+        DisplaySettings.functionMenuDisplayWeekKey,
+        DisplaySettings.functionMenuDisplayNewActivityKey,
+        DisplaySettings.functionMenuDisplayNewTimerKey,
+        DisplaySettings.functionMenuDisplayMenuKey,
       ].map(
         (id) => Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(data: false, identifier: id),

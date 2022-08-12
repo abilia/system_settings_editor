@@ -23,7 +23,7 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
             showClock: memoSettingsState.weekCaptionShowClock,
             day: time.onlyDays(),
             calendarDayColor: state.currentWeekStart.isSameWeek(time.onlyDays())
-                ? memoSettingsState.calendarDayColor
+                ? memoSettingsState.settings.calendar.dayColor
                 : DayColor.noColors,
             rows: AppBarTitleRows.week(
               selectedWeekStart: state.currentWeekStart,

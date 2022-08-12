@@ -30,10 +30,16 @@ class ScreenSaverListener
           listener: (context, state) {
             Navigator.of(context)
                 .popUntil((route) => route.isFirst || route is AlarmRoute);
+            final useScreensaver = context
+                .read<MemoplannerSettingBloc>()
+                .state
+                .settings
+                .functions
+                .timeout
+                .screensaver;
 
-            if (!context.read<MemoplannerSettingBloc>().state.useScreensaver) {
-              return;
-            }
+            if (!useScreensaver) return;
+
             final authProviders = copiedAuthProviders(context);
             final screenSaverRoute = MaterialPageRoute(
               builder: (context) => MultiBlocProvider(

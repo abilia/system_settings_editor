@@ -191,7 +191,7 @@ void main() {
           final settings = Generic.createNew<MemoplannerSettingData>(
             data: MemoplannerSettingData.fromData(
               data: false,
-              identifier: MemoplannerSettings.functionMenuDisplayNewTimerKey,
+              identifier: DisplaySettings.functionMenuDisplayNewTimerKey,
             ),
           );
           genericResponse = () => [settings];
@@ -814,7 +814,7 @@ void main() {
           final settings = Generic.createNew<MemoplannerSettingData>(
             data: MemoplannerSettingData.fromData(
               data: false,
-              identifier: MemoplannerSettings.functionMenuDisplayNewActivityKey,
+              identifier: DisplaySettings.functionMenuDisplayNewActivityKey,
             ),
           );
           genericResponse = () => [settings];

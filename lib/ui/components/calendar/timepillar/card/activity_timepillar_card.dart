@@ -38,7 +38,7 @@ class ActivityTimepillarCard extends TimepillarCard {
             settingsBloc.state.dotsInTimepillar);
     final showCategoryColor = context.select(
         (MemoplannerSettingBloc settingsBloc) =>
-            settingsBloc.state.showCategoryColor);
+            settingsBloc.state.settings.calendar.categories.showColors);
 
     return Positioned(
       right: right ? null : column * measures.cardTotalWidth,

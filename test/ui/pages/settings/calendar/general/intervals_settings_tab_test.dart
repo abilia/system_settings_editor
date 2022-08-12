@@ -86,8 +86,7 @@ void main() {
       await tester.pumpAndSettle();
 
       verifyGenerics(tester, genericDb, keyMatch: {
-        MemoplannerSettings.morningIntervalStartKey:
-            7 * Duration.millisecondsPerHour,
+        DayParts.morningIntervalStartKey: 7 * Duration.millisecondsPerHour,
       });
     });
 
@@ -100,8 +99,7 @@ void main() {
       await tester.pumpAndSettle();
 
       verifyGenerics(tester, genericDb, keyMatch: {
-        MemoplannerSettings.forenoonIntervalStartKey:
-            11 * Duration.millisecondsPerHour,
+        DayParts.forenoonIntervalStartKey: 11 * Duration.millisecondsPerHour,
       });
     });
 
@@ -131,14 +129,10 @@ void main() {
       await tester.pumpAndSettle();
 
       verifyGenerics(tester, genericDb, keyMatch: {
-        MemoplannerSettings.morningIntervalStartKey:
-            10 * Duration.millisecondsPerHour,
-        MemoplannerSettings.forenoonIntervalStartKey:
-            18 * Duration.millisecondsPerHour,
-        MemoplannerSettings.eveningIntervalStartKey:
-            21 * Duration.millisecondsPerHour,
-        MemoplannerSettings.nightIntervalStartKey:
-            24 * Duration.millisecondsPerHour,
+        DayParts.morningIntervalStartKey: 10 * Duration.millisecondsPerHour,
+        DayParts.forenoonIntervalStartKey: 18 * Duration.millisecondsPerHour,
+        DayParts.eveningIntervalStartKey: 21 * Duration.millisecondsPerHour,
+        DayParts.nightIntervalStartKey: 24 * Duration.millisecondsPerHour,
       });
     });
 
@@ -168,14 +162,10 @@ void main() {
       await tester.pumpAndSettle();
 
       verifyGenerics(tester, genericDb, keyMatch: {
-        MemoplannerSettings.morningIntervalStartKey:
-            5 * Duration.millisecondsPerHour,
-        MemoplannerSettings.forenoonIntervalStartKey:
-            8 * Duration.millisecondsPerHour,
-        MemoplannerSettings.eveningIntervalStartKey:
-            16 * Duration.millisecondsPerHour,
-        MemoplannerSettings.nightIntervalStartKey:
-            19 * Duration.millisecondsPerHour,
+        DayParts.morningIntervalStartKey: 5 * Duration.millisecondsPerHour,
+        DayParts.forenoonIntervalStartKey: 8 * Duration.millisecondsPerHour,
+        DayParts.eveningIntervalStartKey: 16 * Duration.millisecondsPerHour,
+        DayParts.nightIntervalStartKey: 19 * Duration.millisecondsPerHour,
       });
     });
 
@@ -204,25 +194,26 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: 10 * Duration.millisecondsPerHour,
-            identifier: MemoplannerSettings.morningIntervalStartKey,
+            identifier: DayParts.morningIntervalStartKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: 12 * Duration.millisecondsPerHour,
-            identifier: MemoplannerSettings.forenoonIntervalStartKey,
+            identifier: DayParts.forenoonIntervalStartKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: 19 * Duration.millisecondsPerHour,
-            identifier: MemoplannerSettings.nightIntervalStartKey,
+            identifier: DayParts.nightIntervalStartKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
-              data: DayCalendarType.oneTimepillar.index,
-              identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+            data: DayCalendarType.oneTimepillar.index,
+            identifier: MemoplannerSettings.viewOptionsTimeViewKey,
+          ),
         ),
       ];
       // Act
@@ -240,19 +231,19 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: 10 * Duration.millisecondsPerHour,
-            identifier: MemoplannerSettings.morningIntervalStartKey,
+            identifier: DayParts.morningIntervalStartKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: 12 * Duration.millisecondsPerHour,
-            identifier: MemoplannerSettings.forenoonIntervalStartKey,
+            identifier: DayParts.forenoonIntervalStartKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: 19 * Duration.millisecondsPerHour,
-            identifier: MemoplannerSettings.nightIntervalStartKey,
+            identifier: DayParts.nightIntervalStartKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(

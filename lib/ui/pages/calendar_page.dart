@@ -9,21 +9,23 @@ class CalendarPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: abiliaWhiteTheme,
-      child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, settingsState) {
-          if (settingsState is MemoplannerSettingsNotLoaded) {
+      child: Builder(
+        builder: (context) {
+          final isNotLoaded = context.select((MemoplannerSettingBloc bloc) =>
+              bloc.state is MemoplannerSettingsNotLoaded);
+          if (isNotLoaded) {
             return const Scaffold(
                 body: Center(child: AbiliaProgressIndicator()));
           }
+          final functions = context.select(
+              (MemoplannerSettingBloc bloc) => bloc.state.settings.functions);
+          final display = functions.display;
           return DefaultTabController(
-            length: settingsState.calendarCount,
-            initialIndex: settingsState.startViewIndex,
+            length: display.calendarCount,
+            initialIndex: functions.startViewIndex,
             child: Scaffold(
               bottomNavigationBar:
-                  settingsState is! MemoplannerSettingsNotLoaded &&
-                          settingsState.displayBottomBar
-                      ? const CalendarBottomBar()
-                      : null,
+                  display.bottomBar ? const CalendarBottomBar() : null,
               body: BlocSelector<ActivitiesBloc, ActivitiesState, bool>(
                 selector: (state) => state is ActivitiesNotLoaded,
                 builder: (context, activitiesNotLoaded) {
@@ -41,11 +43,9 @@ class CalendarPage extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
                         const DayCalendar(),
-                        if (settingsState.displayWeekCalendar)
-                          const WeekCalendarTab(),
-                        if (settingsState.displayMonthCalendar)
-                          const MonthCalendarTab(),
-                        if (settingsState.displayMenu) const MenuPage(),
+                        if (display.week) const WeekCalendarTab(),
+                        if (display.month) const MonthCalendarTab(),
+                        if (display.menu) const MenuPage(),
                         const PhotoCalendarPage(),
                       ],
                     ),

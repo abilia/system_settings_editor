@@ -9,24 +9,27 @@ class CalendarBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, settingsState) {
+        final display = context.select(
+          (MemoplannerSettingBloc bloc) =>
+              bloc.state.settings.functions.display,
+        );
         return DefaultTabControllerBuilder(
           builder: (context, tabController) {
             final translate = Translator.of(context).translate;
-            final height =
-                settingsState.photoAlbumTabIndex == tabController?.index
-                    ? 0.0
-                    : layout.toolbar.height;
+            final height = display.photoAlbumTabIndex == tabController?.index
+                ? 0.0
+                : layout.toolbar.height;
             final tabItems = [
               TabItem(
                 translate.day.capitalize(),
                 AbiliaIcons.day,
               ),
-              if (settingsState.displayWeekCalendar)
+              if (display.week)
                 TabItem(
                   translate.week.capitalize(),
                   AbiliaIcons.week,
                 ),
-              if (settingsState.displayMonthCalendar)
+              if (display.month)
                 TabItem(
                   translate.month,
                   AbiliaIcons.month,
@@ -47,7 +50,7 @@ class CalendarBottomBar extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       const AddButton(),
-                      if (!settingsState.displayOnlyDayCalendar)
+                      if (!display.onlyDayCalendar)
                         AbiliaTabs(
                           tabs: tabItems,
                           onTabTap: (index) {
@@ -58,7 +61,7 @@ class CalendarBottomBar extends StatelessWidget {
                               case 0:
                                 return;
                               case 1:
-                                if (settingsState.displayWeekCalendar) {
+                                if (display.week) {
                                   return context
                                       .read<WeekCalendarCubit>()
                                       .goToCurrentWeek();
@@ -79,15 +82,10 @@ class CalendarBottomBar extends StatelessWidget {
                       Row(
                         children: [
                           SizedBox(
-                            width: AddButton.width(
-                                  settingsState.displayNewActivity,
-                                  settingsState.displayNewTimer,
-                                ) -
-                                (settingsState.displayMenu
-                                    ? layout.actionButton.size
-                                    : 0),
+                            width: AddButton.width(display) -
+                                (display.menu ? layout.actionButton.size : 0),
                           ),
-                          if (settingsState.displayMenu)
+                          if (display.menu)
                             MenuButton(tabIndex: tabItems.length),
                         ],
                       ),

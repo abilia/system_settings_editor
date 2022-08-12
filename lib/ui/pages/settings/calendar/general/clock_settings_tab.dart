@@ -10,8 +10,7 @@ class ClockSettingsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final is24h = MediaQuery.of(context).alwaysUse24HourFormat;
     final t = Translator.of(context).translate;
-    return BlocBuilder<GeneralCalendarSettingsCubit,
-        GeneralCalendarSettingsState>(
+    return BlocBuilder<GeneralCalendarSettingsCubit, GeneralCalendarSettings>(
       builder: (context, state) {
         final tpState = state.timepillar;
         void onClockChanged(v) => context
@@ -125,7 +124,7 @@ class PreviewTimePillar extends StatelessWidget {
             child: SizedBox(
               width: layout.settings.previewTimePillarWidth,
               child: BlocBuilder<GeneralCalendarSettingsCubit,
-                  GeneralCalendarSettingsState>(
+                  GeneralCalendarSettings>(
                 buildWhen: (previous, current) =>
                     previous.timepillar != current.timepillar,
                 builder: (context, state) {
@@ -141,7 +140,7 @@ class PreviewTimePillar extends StatelessWidget {
                         child: TimePillar(
                           preview: true,
                           dayOccasion: Occasion.current,
-                          dayParts: DayParts.standard(),
+                          dayParts: const DayParts(),
                           use12h: tpState.use12h,
                           nightParts: const [],
                           interval: interval,

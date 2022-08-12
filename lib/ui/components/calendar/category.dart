@@ -13,19 +13,16 @@ class LeftCategory extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        buildWhen: (previous, current) =>
-            previous.leftCategoryName != current.leftCategoryName ||
-            previous.leftCategoryImage != current.leftCategoryImage ||
-            previous.showCategoryColor != current.showCategoryColor,
-        builder: (context, memoplannerSettingsState) => CategoryLeft(
-          maxWidth: maxWidth,
-          categoryName: memoplannerSettingsState.leftCategoryName,
-          fileId: memoplannerSettingsState.leftCategoryImage,
-          showColors: memoplannerSettingsState.showCategoryColor,
-        ),
-      );
+  Widget build(BuildContext context) {
+    final categories = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.calendar.categories);
+    return CategoryLeft(
+      maxWidth: maxWidth,
+      categoryName: categories.left.name,
+      fileId: categories.left.image.id,
+      showColors: categories.showColors,
+    );
+  }
 }
 
 class CategoryLeft extends StatelessWidget {
@@ -70,19 +67,16 @@ class RightCategory extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        buildWhen: (previous, current) =>
-            previous.rightCategoryName != current.rightCategoryName ||
-            previous.rightCategoryImage != current.rightCategoryImage ||
-            previous.showCategoryColor != current.showCategoryColor,
-        builder: (context, memoplannerSettingsState) => CategoryRight(
-          maxWidth: maxWidth,
-          categoryName: memoplannerSettingsState.rightCategoryName,
-          fileId: memoplannerSettingsState.rightCategoryImage,
-          showColors: memoplannerSettingsState.showCategoryColor,
-        ),
-      );
+  Widget build(BuildContext context) {
+    final categories = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.calendar.categories);
+    return CategoryRight(
+      maxWidth: maxWidth,
+      categoryName: categories.right.name,
+      fileId: categories.right.image.id,
+      showColors: categories.showColors,
+    );
+  }
 }
 
 class CategoryRight extends StatelessWidget {

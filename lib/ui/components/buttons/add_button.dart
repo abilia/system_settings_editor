@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -18,10 +19,7 @@ class AddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
         _AddButtonConfiguration>(
-      selector: (state) => _configuration(
-        state.displayNewActivity,
-        state.displayNewTimer,
-      ),
+      selector: (state) => _configuration(state.settings.functions.display),
       builder: (context, configuration) {
         switch (configuration) {
           case _AddButtonConfiguration.none:
@@ -39,11 +37,8 @@ class AddButton extends StatelessWidget {
     );
   }
 
-  static double width(
-    bool displayNewActivity,
-    bool displayNewTimer,
-  ) {
-    switch (_configuration(displayNewActivity, displayNewTimer)) {
+  static double width(DisplaySettings settings) {
+    switch (_configuration(settings)) {
       case _AddButtonConfiguration.none:
       case _AddButtonConfiguration.mpGo:
       case _AddButtonConfiguration.onlyNewActivity:
@@ -55,19 +50,18 @@ class AddButton extends StatelessWidget {
   }
 
   static _AddButtonConfiguration _configuration(
-    bool displayNewActivity,
-    bool displayNewTimer,
+    DisplaySettings settings,
   ) {
     if (Config.isMPGO) {
-      return displayNewActivity || displayNewTimer
+      return settings.newActivity || settings.newTimer
           ? _AddButtonConfiguration.mpGo
           : _AddButtonConfiguration.none;
     }
-    return displayNewActivity && displayNewTimer
+    return settings.newActivity && settings.newTimer
         ? _AddButtonConfiguration.newActivityAndNewTimer
-        : displayNewActivity
+        : settings.newActivity
             ? _AddButtonConfiguration.onlyNewActivity
-            : displayNewTimer
+            : settings.newTimer
                 ? _AddButtonConfiguration.onlyNewTimer
                 : _AddButtonConfiguration.none;
   }

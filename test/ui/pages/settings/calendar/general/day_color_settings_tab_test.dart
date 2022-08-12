@@ -73,7 +73,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.calendarDayColorKey,
+        key: GeneralCalendarSettings.calendarDayColorKey,
         matcher: DayColor.allDays.index,
       );
     });
@@ -93,7 +93,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.calendarDayColorKey,
+        key: GeneralCalendarSettings.calendarDayColorKey,
         matcher: DayColor.saturdayAndSunday.index,
       );
     });
@@ -113,7 +113,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.calendarDayColorKey,
+        key: GeneralCalendarSettings.calendarDayColorKey,
         matcher: DayColor.noColors.index,
       );
     });
@@ -144,7 +144,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: DayColor.noColors.index,
-            identifier: MemoplannerSettings.calendarDayColorKey,
+            identifier: GeneralCalendarSettings.calendarDayColorKey,
           ),
         ),
       ];
@@ -162,7 +162,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: DayColor.saturdayAndSunday.index,
-            identifier: MemoplannerSettings.calendarDayColorKey,
+            identifier: GeneralCalendarSettings.calendarDayColorKey,
           ),
         ),
       ];

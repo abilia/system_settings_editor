@@ -28,13 +28,9 @@ class MonthCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      buildWhen: (previous, current) =>
-          previous.calendarDayColor != current.calendarDayColor,
-      builder: (context, memoSettingsState) => MonthBody(
-        calendarDayColor: memoSettingsState.calendarDayColor,
-      ),
-    );
+    final dayColor = context.select(
+        (MemoplannerSettingBloc bloc) => bloc.state.settings.calendar.dayColor);
+    return MonthBody(calendarDayColor: dayColor);
   }
 }
 

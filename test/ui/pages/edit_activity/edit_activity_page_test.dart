@@ -2312,7 +2312,9 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            calendarActivityTypeShowTypes: false,
+            calendar: GeneralCalendarSettings(
+              categories: CategoriesSettings(show: false),
+            ),
           ),
         ),
       );
@@ -2546,8 +2548,12 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            calendarActivityTypeLeft: leftCategoryName,
-            calendarActivityTypeRight: rightCategoryName,
+            calendar: GeneralCalendarSettings(
+              categories: CategoriesSettings(
+                left: ImageAndName(leftCategoryName, AbiliaFile.empty),
+                right: ImageAndName(rightCategoryName, AbiliaFile.empty),
+              ),
+            ),
           ),
         ),
       );
@@ -2567,7 +2573,9 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            calendarActivityTypeShowTypes: false,
+            calendar: GeneralCalendarSettings(
+              categories: CategoriesSettings(show: false),
+            ),
           ),
         ),
       );
