@@ -633,22 +633,22 @@ class EndDateWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CollapsableWidget(
-              collapsed: recurs.hasNoEnd,
+              collapsed: state.hasEndDate && recurs.hasNoEnd,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SubHeading(translate.endDate),
                   DatePicker(
-                    activity.recurs.endNotSpecified
-                        ? state.timeInterval.startDate
-                        : activity.recurs.end,
+                    state.hasEndDate
+                        ? state.timeInterval.endDate!
+                        : state.timeInterval.startDate,
                     notBefore: state.timeInterval.startDate,
                     onChange: disabled
                         ? null
                         : (newDate) => context
                             .read<EditActivityCubit>()
                             .newRecurrence(newEndDate: newDate),
-                    dateNotSpecified: activity.recurs.endNotSpecified,
+                    dateNotSpecified: !state.hasEndDate,
                     errorState: errorState,
                   ),
                   SizedBox(height: layout.formPadding.groupBottomDistance),
@@ -661,7 +661,7 @@ class EndDateWidget extends StatelessWidget {
                 AbiliaIcons.basicActivity,
                 size: layout.icon.small,
               ),
-              value: recurs.hasNoEnd,
+              value: state.hasEndDate && recurs.hasNoEnd,
               onChanged: disabled
                   ? null
                   : (v) => context.read<EditActivityCubit>().newRecurrence(

@@ -14,19 +14,13 @@ class Recurs extends Equatable {
   bool get monthly => type == typeMonthly;
   bool get yearly => type == typeYearly;
   bool get once => type == typeNone;
-  bool get endNotSpecified =>
-      endTime <= unspecifiedEnd + 86400000; // any time during 1/1/1970
 
   @visibleForTesting
   const Recurs.raw(this.type, this.data, int? endTime)
       : assert(type >= typeNone && type <= typeYearly),
         assert(type != typeWeekly || data < 0x4000),
         assert(type != typeMonthly || data < 0x80000000),
-        endTime = endTime == null
-            ? unspecifiedEnd
-            : endTime > noEnd
-                ? noEnd
-                : endTime;
+        endTime = endTime == null || endTime > noEnd ? noEnd : endTime;
 
   static const not = Recurs.raw(typeNone, 0, noEnd),
       everyDay = Recurs.raw(
@@ -38,7 +32,7 @@ class Recurs extends Equatable {
   factory Recurs.yearly(DateTime dayOfYear, {DateTime? ends}) => Recurs.raw(
         typeYearly,
         dayOfYearData(dayOfYear),
-        ends?.millisecondsSinceEpoch ?? noEnd,
+        ends?.millisecondsSinceEpoch,
       );
 
   factory Recurs.monthly(int dayOfMonth, {DateTime? ends}) => Recurs.raw(
@@ -157,7 +151,6 @@ class Recurs extends Equatable {
       allWeekends = evenWeekends | oddWeekends,
       allDaysOfWeek = allWeekdays | allWeekends;
 
-  static const unspecifiedEnd = 0;
   static const noEnd = 253402297199000;
   static final noEndDate = DateTime.fromMillisecondsSinceEpoch(noEnd);
 

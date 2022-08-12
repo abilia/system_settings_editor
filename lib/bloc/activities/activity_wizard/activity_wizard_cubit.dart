@@ -215,11 +215,10 @@ extension SaveErrorExtension on EditActivityState {
             activitiesState.anyConflictWith(activityToStore()))
           SaveError.unconfirmedActivityConflict,
         if (activity.isRecurring &&
-            !activity.recurs.endNotSpecified &&
+            hasEndDate &&
             activity.recurs.end.isBefore(timeInterval.startDate))
           SaveError.endDateBeforeStart,
-        if (activity.isRecurring && activity.recurs.endNotSpecified)
-          SaveError.noRecurringEndDate
+        if (activity.isRecurring && !hasEndDate) SaveError.noRecurringEndDate
       };
 
   SaveError? stepErrors({

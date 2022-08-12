@@ -31,12 +31,8 @@ class EndDatePickerWiz extends StatelessWidget {
             bottom: const MonthAppBarStepper(),
             body: BlocListener<DayPickerBloc, DayPickerState>(
               listener: (context, state) {
-                BlocProvider.of<EditActivityCubit>(context).replaceActivity(
-                  editActivityState.activity.copyWith(
-                    recurs: editActivityState.activity.recurs
-                        .changeEnd(context.read<DayPickerBloc>().state.day),
-                  ),
-                );
+                BlocProvider.of<EditActivityCubit>(context)
+                    .changeEndDate(context.read<DayPickerBloc>().state.day);
               },
               child: BlocSelector<MemoplannerSettingBloc,
                   MemoplannerSettingsState, DayColor>(

@@ -705,7 +705,7 @@ void main() {
         title: 'Recurs.MONDAY',
         startTime: longAgo,
         duration: 10.hours(),
-        recurs: Recurs.weeklyOnDay(DateTime.monday, ends: Recurs.noEndDate),
+        recurs: Recurs.weeklyOnDay(DateTime.monday),
       );
       final earlyActivity = Activity.createNew(
         title: 'earlyActivity',

@@ -22,6 +22,10 @@ class EditActivityCubit extends Cubit<EditActivityState> {
                     activityDay.activity.hasEndTime
                         ? activityDay.activity.endClock(activityDay.day)
                         : null,
+                    !activityDay.activity.recurs.once
+                        ? DateTime.fromMillisecondsSinceEpoch(
+                            activityDay.activity.recurs.endTime)
+                        : null,
                   ),
             activityDay.day,
           ),
@@ -90,14 +94,27 @@ class EditActivityCubit extends Cubit<EditActivityState> {
   void changeTimeInterval({
     final TimeOfDay? startTime,
     final TimeOfDay? endTime,
+    final DateTime? endDate,
   }) {
+    var timeInterval = state.timeInterval
+        .copyWith(startTime: startTime, endTime: endTime ?? startTime);
     emit(
       state.copyWith(
         state.activity,
-        timeInterval: state.timeInterval.copyWith(
-          startTime: startTime,
-          endTime: endTime ?? startTime,
+        timeInterval: endDate != null
+            ? timeInterval.changeEndDate(endDate)
+            : timeInterval,
+      ),
+    );
+  }
+
+  void changeEndDate(DateTime endDate) {
+    emit(
+      state.copyWith(
+        state.activity.copyWith(
+          recurs: state.activity.recurs.changeEnd(endDate),
         ),
+        timeInterval: state.timeInterval.changeEndDate(endDate),
       ),
     );
   }
@@ -123,7 +140,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     emit(state.copyWith(state.activity.copyWith(reminderBefore: reminders)));
   }
 
-  void changeDate(DateTime date) {
+  void changeStartDate(DateTime date) {
     final newTimeInterval = state.timeInterval.copyWith(startDate: date);
     if (state.activity.recurs.yearly) {
       emit(
@@ -133,7 +150,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
         ),
       );
     } else if (state.activity.isRecurring &&
-        !state.activity.recurs.endNotSpecified &&
+        !state.hasEndDate &&
         state.activity.recurs.end.isDayBefore(date)) {
       emit(
         state.copyWith(
@@ -170,29 +187,41 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     );
   }
 
-  void _loadRecurrence() {
-    replaceActivity(
-      state.activity.copyWith(
-        recurs: state.originalActivity.recurs,
-      ),
-    );
-  }
-
-  void newRecurrence({RecurrentType? newType, DateTime? newEndDate}) {
+  void newRecurrence({
+    RecurrentType? newType,
+    DateTime? startDate,
+    DateTime? newEndDate,
+  }) {
     if (state.storedRecurring &&
         newType == state.originalActivity.recurs.recurrance) {
-      _loadRecurrence();
+      changeRecurrence(state.originalActivity.recurs);
       return;
     }
     final type = newType ?? state.activity.recurs.recurrance;
     final endDate = newEndDate ??
-        (state.activity.isRecurring ? state.activity.recurs.end : null);
-    replaceActivity(
-      state.activity.copyWith(
-        recurs: _newRecurs(
-          type,
-          state.timeInterval.startDate,
-          endDate,
+        (state.activity.isRecurring ? state.timeInterval.endDate : null);
+    emit(
+      state.copyWith(
+        state.activity.copyWith(
+          recurs: _newRecurs(
+            type,
+            startDate ?? state.timeInterval.startDate,
+            endDate,
+          ),
+        ),
+        timeInterval: state.timeInterval.changeEndDate(
+          newType == RecurrentType.yearly ? Recurs.noEndDate : endDate,
+        ),
+      ),
+    );
+  }
+
+  void changeRecurrence(Recurs recurs) {
+    emit(
+      state.copyWith(
+        state.activity.copyWith(recurs: recurs),
+        timeInterval: state.timeInterval.copyWith(
+          endDate: DateTime.fromMillisecondsSinceEpoch(recurs.endTime),
         ),
       ),
     );

@@ -30,11 +30,7 @@ class RecurringWeekCubit extends Cubit<RecurringWeekState> {
     });
 
     _selfSubscription = stream.listen((recurringWeekState) {
-      editActivityCubit.replaceActivity(
-        editActivityCubit.state.activity.copyWith(
-          recurs: recurringWeekState.recurs,
-        ),
-      );
+      editActivityCubit.changeRecurrence(recurringWeekState.recurs);
     });
   }
 

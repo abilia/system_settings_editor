@@ -39,6 +39,8 @@ abstract class EditActivityState extends Equatable with Finest {
       ? timeInterval.startDate.onlyDays().isBefore(now.onlyDays())
       : hasStartTime && timeInterval.starts.isBefore(now);
 
+  bool get hasEndDate => timeInterval.endDate != null;
+
   AbiliaFile get selectedImage => AbiliaFile.from(
         id: activity.fileId,
         path: activity.icon,

@@ -8,7 +8,6 @@ import 'package:seagull/utils/all.dart';
 
 void main() {
   final day = DateTime(2020, 10, 06);
-  final noEnd = DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd);
 
   blocTest(
     'Initial state',
@@ -18,7 +17,7 @@ void main() {
           Activity.createNew(
               title: 'title',
               startTime: day,
-              recurs: Recurs.weeklyOnDay(day.weekday, ends: noEnd)),
+              recurs: Recurs.weeklyOnDay(day.weekday)),
           day,
         ),
       ),
@@ -35,7 +34,7 @@ void main() {
       );
       expect(
         cubit.state.recurs,
-        Recurs.weeklyOnDays({day.weekday}, ends: noEnd),
+        Recurs.weeklyOnDays({day.weekday}),
       );
     },
   );
@@ -47,7 +46,7 @@ void main() {
                 Activity.createNew(
                     title: 'null',
                     startTime: day,
-                    recurs: Recurs.weeklyOnDay(day.weekday, ends: noEnd)),
+                    recurs: Recurs.weeklyOnDay(day.weekday)),
                 day,
               ),
             ),
@@ -88,14 +87,14 @@ void main() {
             ),
           ]);
 
-  final ad = ActivityDay(
+  final activityDay = ActivityDay(
     Activity.createNew(
         title: 'null', startTime: day, recurs: Recurs.weeklyOnDay(day.weekday)),
     day,
   );
 
   blocTest('Adding and removing days on EditActivityBloc',
-      build: () => EditActivityCubit.edit(ad),
+      build: () => EditActivityCubit.edit(activityDay),
       act: (EditActivityCubit bloc) {
         final cubit = RecurringWeekCubit(bloc);
         cubit.addOrRemoveWeekday(DateTime.monday);
@@ -103,14 +102,17 @@ void main() {
         cubit.addOrRemoveWeekday(day.weekday);
       },
       expect: () {
-        final initialS = StoredActivityState(
-          ad.activity,
-          TimeInterval.fromDateTime(ad.activity.startClock(ad.day), null),
+        final initialState = StoredActivityState(
+          activityDay.activity,
+          TimeInterval.fromDateTime(
+              activityDay.activity.startClock(activityDay.day),
+              null,
+              Recurs.noEndDate),
           day,
         );
         return [
-          initialS.copyWith(
-            initialS.activity.copyWith(
+          initialState.copyWith(
+            initialState.activity.copyWith(
               recurs: Recurs.weeklyOnDays(
                 {
                   day.weekday,
@@ -119,8 +121,8 @@ void main() {
               ),
             ),
           ),
-          initialS.copyWith(
-            initialS.activity.copyWith(
+          initialState.copyWith(
+            initialState.activity.copyWith(
               recurs: Recurs.weeklyOnDays(
                 {
                   day.weekday,
@@ -130,8 +132,8 @@ void main() {
               ),
             ),
           ),
-          initialS.copyWith(
-            initialS.activity.copyWith(
+          initialState.copyWith(
+            initialState.activity.copyWith(
               recurs: Recurs.weeklyOnDays(
                 const {
                   DateTime.monday,
@@ -150,7 +152,7 @@ void main() {
                 Activity.createNew(
                     title: 'null',
                     startTime: day,
-                    recurs: Recurs.weeklyOnDay(day.weekday, ends: noEnd)),
+                    recurs: Recurs.weeklyOnDay(day.weekday)),
                 day,
               ),
             ),
@@ -181,7 +183,7 @@ void main() {
           ]);
 
   blocTest('Changing to every other week on EditActivityBloc',
-      build: () => EditActivityCubit.edit(ad),
+      build: () => EditActivityCubit.edit(activityDay),
       act: (EditActivityCubit bloc) {
         final recurringWeekBloc = RecurringWeekCubit(bloc);
 
@@ -190,14 +192,17 @@ void main() {
         recurringWeekBloc.changeEveryOtherWeek(true);
       },
       expect: () {
-        final initialS = StoredActivityState(
-          ad.activity,
-          TimeInterval.fromDateTime(ad.activity.startClock(ad.day), null),
+        final initialState = StoredActivityState(
+          activityDay.activity,
+          TimeInterval.fromDateTime(
+              activityDay.activity.startClock(activityDay.day),
+              null,
+              Recurs.noEndDate),
           day,
         );
         return [
-          initialS.copyWith(
-            initialS.activity.copyWith(
+          initialState.copyWith(
+            initialState.activity.copyWith(
               recurs: Recurs.weeklyOnDays(
                 {
                   day.weekday,
@@ -206,8 +211,8 @@ void main() {
               ),
             ),
           ),
-          initialS.copyWith(
-            initialS.activity.copyWith(
+          initialState.copyWith(
+            initialState.activity.copyWith(
               recurs: Recurs.biWeeklyOnDays(
                 odds: {
                   day.weekday,
@@ -225,12 +230,13 @@ void main() {
         Activity.createNew(
             title: 'null',
             startTime: day,
-            recurs: Recurs.weeklyOnDay(day.weekday, ends: noEnd)),
+            recurs: Recurs.weeklyOnDay(day.weekday)),
         day,
       ),
     );
     final newStartDate = day.add(7.days());
 
+    final noEnd = DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd);
     blocTest(
       'Changing to every other week on even weeks',
       build: () => RecurringWeekCubit(editActivityBloc),
@@ -240,7 +246,7 @@ void main() {
         // Act
         cubit.addOrRemoveWeekday(DateTime.monday);
         cubit.changeEveryOtherWeek(true);
-        editActivityBloc.changeDate(newStartDate);
+        editActivityBloc.changeStartDate(newStartDate);
       },
       expect: () => [
         RecurringWeekState(
@@ -300,8 +306,11 @@ void main() {
           ),
         );
     final newStartDay = day.add(7.days());
-    final EditActivityState initialState = StoredActivityState(activity,
-        TimeInterval.fromDateTime(activity.startClock(day), null), day);
+    final EditActivityState initialState = StoredActivityState(
+        activity,
+        TimeInterval.fromDateTime(
+            activity.startClock(day), null, Recurs.noEndDate),
+        day);
     final TimeInterval newTimeInterval =
         initialState.timeInterval.copyWith(startDate: newStartDay);
 
@@ -314,7 +323,7 @@ void main() {
         await bloc.stream.any((element) => true);
         rwc.changeEveryOtherWeek(true);
         await bloc.stream.any((element) => true);
-        bloc.changeDate(newStartDay);
+        bloc.changeStartDate(newStartDay);
       },
       expect: () => [
         initialState.copyWith(activity2),

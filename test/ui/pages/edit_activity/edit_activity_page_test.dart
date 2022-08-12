@@ -1355,7 +1355,7 @@ text''';
       expect(find.text('2020'), findsOneWidget);
     });
 
-    testWidgets('changes date then add recurring sets end date to start date',
+    testWidgets('changes date then add recurring sets end date to no end',
         (WidgetTester tester) async {
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
@@ -2069,8 +2069,7 @@ text''';
       expect(find.text(translate.endDate), findsOneWidget);
     });
 
-    testWidgets('end date defaults to unspecified',
-        (WidgetTester tester) async {
+    testWidgets('end date defaults to no end', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(createEditActivityPage(
         newActivity: true,
@@ -2206,7 +2205,7 @@ text''';
               title: 'null',
               startTime: startTime,
               duration: const Duration(minutes: 15),
-              recurs: Recurs.weeklyOnDay(1, ends: Recurs.noEndDate),
+              recurs: Recurs.weeklyOnDay(1),
               alarmType: alarmSoundOnlyOnStart),
           use24H: true,
         ),
@@ -2323,7 +2322,7 @@ text''';
       expect(find.byType(ErrorDialog), findsNothing);
     });
 
-    testWidgets('SGC-1721 yearly recurrance requires no end date',
+    testWidgets('SGC-1721 yearly recurrence requires no end date',
         (WidgetTester tester) async {
       // Arrange
       final activity = Activity.createNew(title: 'Title', startTime: startTime);

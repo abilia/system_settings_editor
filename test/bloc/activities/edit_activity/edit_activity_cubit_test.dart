@@ -13,7 +13,7 @@ import '../../../test_helpers/matchers.dart';
 void main() {
   final nowTime = DateTime(2000, 02, 22, 22, 30);
   final aTime = DateTime(2022, 02, 22, 22, 30);
-  final aDay = DateTime(2022, 02, 22);
+  final feb22nd = DateTime(2022, 02, 22);
   const calendarId = 'Some-calendar-id';
 
   setUp(() {
@@ -24,7 +24,7 @@ void main() {
     // Arrange
     final activity = Activity.createNew(title: '', startTime: aTime);
     final editActivityCubit = EditActivityCubit.edit(
-      ActivityDay(activity, aDay),
+      ActivityDay(activity, feb22nd),
     );
     // Act // Assert
     expect(editActivityCubit.state, isA<StoredActivityState>());
@@ -91,7 +91,7 @@ void main() {
     );
 
     // Act
-    editActivityCubit.changeDate(newDate);
+    editActivityCubit.changeStartDate(newDate);
 
     // Assert
     await expect;
@@ -136,7 +136,7 @@ void main() {
     // Act
     editActivityCubit.changeTimeInterval(
         startTime: const TimeOfDay(hour: 1, minute: 1));
-    editActivityCubit.changeDate(newDate);
+    editActivityCubit.changeStartDate(newDate);
     editActivityCubit.replaceActivity(newActivity);
 
     // Assert
@@ -285,7 +285,7 @@ void main() {
         Activity.createNew(title: 'null', startTime: aTime, infoItem: note);
     final withChecklist = withNote.copyWith(infoItem: Checklist());
     final withNoInfoItem = withNote.copyWith(infoItem: const NoInfoItem());
-    final activityDay = ActivityDay(withNote, aDay);
+    final activityDay = ActivityDay(withNote, feb22nd);
     final timeInterval = TimeInterval(
       startTime: TimeOfDay.fromDateTime(aTime),
       startDate: aTime,
@@ -300,7 +300,7 @@ void main() {
         StoredActivityState(
           withChecklist,
           timeInterval,
-          aDay,
+          feb22nd,
         ).copyWith(
           withChecklist,
           infoItems: {
@@ -310,7 +310,7 @@ void main() {
         StoredActivityState(
           withNote,
           timeInterval,
-          aDay,
+          feb22nd,
         ).copyWith(
           withNote,
           infoItems: {
@@ -321,7 +321,7 @@ void main() {
         StoredActivityState(
           withNoInfoItem,
           timeInterval,
-          aDay,
+          feb22nd,
         ).copyWith(withNoInfoItem, infoItems: {
           NoteInfoItem: note,
           Checklist: Checklist(),
@@ -342,7 +342,7 @@ void main() {
       () async {
     // Arrange
     final editActivityCubit = EditActivityCubit.newActivity(
-      day: aDay,
+      day: feb22nd,
       defaultAlarmTypeSetting: noAlarm,
       calendarId: calendarId,
     );
@@ -376,17 +376,17 @@ void main() {
     );
 
     editActivityCubit.replaceActivity(recurringActivity);
-    editActivityCubit.changeDate(in60Days);
+    editActivityCubit.changeStartDate(in60Days);
 
     await expect;
   });
 
   test(
-      'Setting new recurrence without end date sets the end time to unspecified',
+      'Setting new recurrence without end date sets the end time to unspecified end',
       () async {
     // Arrange
     final editActivityCubit = EditActivityCubit.newActivity(
-      day: aDay,
+      day: feb22nd,
       defaultAlarmTypeSetting: noAlarm,
       calendarId: calendarId,
     );
@@ -397,8 +397,7 @@ void main() {
 
     final expectedActivity = activity.copyWith(
       recurs: Recurs.weeklyOnDay(
-        aDay.weekday,
-        ends: DateTime.fromMillisecondsSinceEpoch(Recurs.unspecifiedEnd),
+        feb22nd.weekday,
       ),
     );
 
@@ -422,16 +421,17 @@ void main() {
       () async {
     // Arrange
     final editActivityCubit = EditActivityCubit.newActivity(
-      day: aDay,
+      day: feb22nd,
       defaultAlarmTypeSetting: noAlarm,
       calendarId: calendarId,
     );
 
-    final endDate = aDay.addDays(30);
+    final endDate = feb22nd.addDays(30);
 
     final activity = editActivityCubit.state.activity;
 
-    final timeInterval = editActivityCubit.state.timeInterval;
+    final timeInterval =
+        editActivityCubit.state.timeInterval.copyWith(endDate: endDate);
 
     final expectedActivity = activity.copyWith(
       recurs: Recurs.monthly(
@@ -458,25 +458,25 @@ void main() {
   test('Load recurrence by switching back to original recurrence type',
       () async {
     // Arrange
-    final endDate = aDay.addDays(30);
+    final endDate = feb22nd.addDays(30);
 
     final recurs = Recurs.monthly(
       endDate.day,
       ends: endDate.nextDay().onlyDays().millisecondBefore(),
     );
 
-    final originalActivity =
-        Activity.createNew(title: 'a title', startTime: aDay, recurs: recurs);
+    final originalActivity = Activity.createNew(
+        title: 'a title', startTime: feb22nd, recurs: recurs);
 
     final editActivityCubit =
-        EditActivityCubit.edit(ActivityDay(originalActivity, aDay));
+        EditActivityCubit.edit(ActivityDay(originalActivity, feb22nd));
 
     final timeInterval = editActivityCubit.state.timeInterval;
 
     final expectedActivity = originalActivity.copyWith(
       recurs: Recurs.weeklyOnDay(
-        aDay.addDays(10).weekday,
-        ends: aDay.addDays(10).nextDay().onlyDays().millisecondBefore(),
+        feb22nd.addDays(10).weekday,
+        ends: feb22nd.addDays(10).nextDay().onlyDays().millisecondBefore(),
       ),
     );
 
@@ -484,14 +484,15 @@ void main() {
       editActivityCubit.stream,
       emitsInOrder(
         [
-          StoredActivityState(expectedActivity, timeInterval, aDay),
-          StoredActivityState(originalActivity, timeInterval, aDay)
+          StoredActivityState(expectedActivity,
+              timeInterval.copyWith(endDate: feb22nd.addDays(10)), feb22nd),
+          StoredActivityState(originalActivity, timeInterval, feb22nd)
         ],
       ),
     );
 
     editActivityCubit.newRecurrence(
-        newType: RecurrentType.weekly, newEndDate: aDay.addDays(10));
+        newType: RecurrentType.weekly, newEndDate: feb22nd.addDays(10));
     editActivityCubit.newRecurrence(newType: RecurrentType.monthly);
 
     await expect;
