@@ -41,7 +41,7 @@ class InactivityCubit extends Cubit<InactivityState> {
   void _ticking(DateTime time) {
     final state = this.state;
     if (state is! _NotFinalState) return;
-    final screensaver = settingsBloc.state.settings.functions.screensaver;
+    final screensaver = settingsBloc.state.settings.functions.timeout;
     final calendarInactivityTime = screensaver.hasDuration &&
             _calendarInactivityTime > screensaver.duration
         ? screensaver.duration

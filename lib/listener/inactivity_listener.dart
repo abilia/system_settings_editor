@@ -35,8 +35,8 @@ class ScreenSaverListener
                 .state
                 .settings
                 .functions
-                .screensaver
-                .use;
+                .timeout
+                .screensaver;
 
             if (!useScreensaver) return;
 

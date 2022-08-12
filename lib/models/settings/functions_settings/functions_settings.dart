@@ -5,7 +5,7 @@ class FunctionsSettings extends Equatable {
   static const functionMenuStartViewKey = 'function_menu_start_view';
 
   final DisplaySettings display;
-  final TimeoutSettings screensaver;
+  final TimeoutSettings timeout;
   final StartView _startView;
 
   int get startViewIndex {
@@ -47,18 +47,18 @@ class FunctionsSettings extends Equatable {
 
   const FunctionsSettings({
     this.display = const DisplaySettings(),
-    this.screensaver = const TimeoutSettings(),
+    this.timeout = const TimeoutSettings(),
     StartView startView = StartView.dayCalendar,
   }) : _startView = startView;
 
   FunctionsSettings copyWith({
     DisplaySettings? display,
-    TimeoutSettings? screensaver,
+    TimeoutSettings? timeout,
     StartView? startView,
   }) =>
       FunctionsSettings(
         display: display ?? this.display,
-        screensaver: screensaver ?? this.screensaver,
+        timeout: timeout ?? this.timeout,
         startView: startView ?? this.startView,
       );
 
@@ -66,14 +66,14 @@ class FunctionsSettings extends Equatable {
           Map<String, MemoplannerSettingData> settings) =>
       FunctionsSettings(
         display: DisplaySettings.fromSettingsMap(settings),
-        screensaver: TimeoutSettings.fromSettingsMap(settings),
+        timeout: TimeoutSettings.fromSettingsMap(settings),
         startView:
             StartView.values[settings.parse(functionMenuStartViewKey, 0)],
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
         ...display.memoplannerSettingData,
-        ...screensaver.memoplannerSettingData,
+        ...timeout.memoplannerSettingData,
         MemoplannerSettingData.fromData(
           data: startView.index,
           identifier: functionMenuStartViewKey,
@@ -83,7 +83,7 @@ class FunctionsSettings extends Equatable {
   @override
   List<Object> get props => [
         display,
-        screensaver,
+        timeout,
         _startView,
       ];
 }

@@ -7,25 +7,25 @@ class TimeoutSettings extends Equatable {
       screenSaverOnlyDuringNightKey = 'screensaver_only_active_during_night';
 
   final Duration duration;
-  final bool use, onlyDuringNight;
+  final bool screensaver, onlyDuringNight;
 
   bool get hasDuration => duration > Duration.zero;
-  bool get shouldUseScreenSaver => hasDuration && use;
+  bool get shouldUseScreenSaver => hasDuration && screensaver;
 
   const TimeoutSettings({
     this.duration = Duration.zero,
-    this.use = false,
+    this.screensaver = false,
     this.onlyDuringNight = false,
   });
 
   TimeoutSettings copyWith({
     Duration? duration,
-    bool? use,
+    bool? screensaver,
     bool? onlyDuringNight,
   }) =>
       TimeoutSettings(
         duration: duration ?? this.duration,
-        use: use ?? this.use,
+        screensaver: screensaver ?? this.screensaver,
         onlyDuringNight: onlyDuringNight ?? this.onlyDuringNight,
       );
 
@@ -33,7 +33,7 @@ class TimeoutSettings extends Equatable {
           Map<String, MemoplannerSettingData> settings) =>
       TimeoutSettings(
         duration: Duration(milliseconds: settings.parse(activityTimeoutKey, 0)),
-        use: settings.getBool(
+        screensaver: settings.getBool(
           useScreensaverKey,
           defaultValue: false,
         ),
@@ -58,7 +58,7 @@ class TimeoutSettings extends Equatable {
   @override
   List<Object> get props => [
         duration,
-        use,
+        screensaver,
         onlyDuringNight,
       ];
 }

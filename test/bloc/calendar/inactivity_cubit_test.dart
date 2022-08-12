@@ -64,7 +64,7 @@ void main() {
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
             functions: FunctionsSettings(
-              screensaver: TimeoutSettings(
+              timeout: TimeoutSettings(
                 duration: 10.minutes(),
               ),
             ),
@@ -96,7 +96,7 @@ void main() {
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
             functions: FunctionsSettings(
-              screensaver: TimeoutSettings(duration: 10.minutes()),
+              timeout: TimeoutSettings(duration: 10.minutes()),
             ),
           ),
         ),
@@ -128,7 +128,7 @@ void main() {
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
             functions: FunctionsSettings(
-              screensaver: TimeoutSettings(duration: 1.minutes()),
+              timeout: TimeoutSettings(duration: 1.minutes()),
             ),
           ),
         ),
@@ -159,7 +159,7 @@ void main() {
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
             functions: FunctionsSettings(
-              screensaver: TimeoutSettings(duration: 1.minutes()),
+              timeout: TimeoutSettings(duration: 1.minutes()),
             ),
           ),
         ),
@@ -191,7 +191,7 @@ void main() {
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             functions: FunctionsSettings(
-              screensaver: TimeoutSettings(duration: Duration.zero),
+              timeout: TimeoutSettings(duration: Duration.zero),
             ),
           ),
         ),
@@ -228,7 +228,7 @@ void main() {
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             functions: FunctionsSettings(
-              screensaver: TimeoutSettings(duration: Duration.zero),
+              timeout: TimeoutSettings(duration: Duration.zero),
             ),
           ),
         ),
@@ -262,7 +262,7 @@ void main() {
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             functions: FunctionsSettings(
-              screensaver: TimeoutSettings(duration: Duration.zero),
+              timeout: TimeoutSettings(duration: Duration.zero),
             ),
           ),
         ),

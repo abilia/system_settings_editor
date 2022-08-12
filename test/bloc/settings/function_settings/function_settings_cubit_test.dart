@@ -36,16 +36,16 @@ void main() {
       settingsState.display.menuValue,
     );
     expect(
-      functionSettingsCubit.state.screensaver.duration,
-      settingsState.screensaver.duration,
+      functionSettingsCubit.state.timeout.duration,
+      settingsState.timeout.duration,
     );
     expect(
-      functionSettingsCubit.state.screensaver.use,
-      settingsState.screensaver.use,
+      functionSettingsCubit.state.timeout.screensaver,
+      settingsState.timeout.screensaver,
     );
     expect(
-      functionSettingsCubit.state.screensaver.onlyDuringNight,
-      settingsState.screensaver.onlyDuringNight,
+      functionSettingsCubit.state.timeout.onlyDuringNight,
+      settingsState.timeout.onlyDuringNight,
     );
     expect(
       functionSettingsCubit.state.startView,
@@ -67,9 +67,9 @@ void main() {
           newActivity: false,
           menuValue: false,
         ),
-        screensaver: const TimeoutSettings(
+        timeout: const TimeoutSettings(
           duration: Duration(minutes: 1),
-          use: true,
+          screensaver: true,
           onlyDuringNight: true,
         ),
         startView: StartView.photoAlbum,
@@ -90,11 +90,11 @@ void main() {
       false,
     );
     expect(
-      functionSettingsCubit.state.screensaver.duration,
+      functionSettingsCubit.state.timeout.duration,
       const Duration(minutes: 1),
     );
     expect(
-      functionSettingsCubit.state.screensaver.use,
+      functionSettingsCubit.state.timeout.screensaver,
       true,
     );
     expect(
@@ -227,9 +227,9 @@ void main() {
           newTimer: false,
           menuValue: false,
         ),
-        screensaver: const TimeoutSettings(
+        timeout: const TimeoutSettings(
           duration: Duration.zero,
-          use: true,
+          screensaver: true,
           onlyDuringNight: true,
         ),
         startView: StartView.photoAlbum,

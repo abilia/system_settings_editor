@@ -94,8 +94,8 @@ void main() {
             MemoplannerSettings(
               functions: FunctionsSettings(
                 startView: StartView.weekCalendar,
-                screensaver: TimeoutSettings(
-                  use: false,
+                timeout: TimeoutSettings(
+                  screensaver: false,
                 ),
               ),
             ),
@@ -116,8 +116,8 @@ void main() {
             MemoplannerSettings(
               functions: FunctionsSettings(
                 startView: StartView.monthCalendar,
-                screensaver: TimeoutSettings(
-                  use: false,
+                timeout: TimeoutSettings(
+                  screensaver: false,
                 ),
               ),
             ),
@@ -140,8 +140,8 @@ void main() {
             MemoplannerSettings(
               functions: FunctionsSettings(
                 startView: StartView.menu,
-                screensaver: TimeoutSettings(
-                  use: false,
+                timeout: TimeoutSettings(
+                  screensaver: false,
                 ),
               ),
             ),
@@ -164,8 +164,8 @@ void main() {
             MemoplannerSettings(
               functions: FunctionsSettings(
                 startView: StartView.photoAlbum,
-                screensaver: TimeoutSettings(
-                  use: false,
+                timeout: TimeoutSettings(
+                  screensaver: false,
                 ),
               ),
             ),
@@ -188,8 +188,8 @@ void main() {
             MemoplannerSettings(
               functions: FunctionsSettings(
                 startView: StartView.menu,
-                screensaver: TimeoutSettings(
-                  use: true,
+                timeout: TimeoutSettings(
+                  screensaver: true,
                 ),
               ),
             ),
@@ -212,8 +212,8 @@ void main() {
             MemoplannerSettings(
               functions: FunctionsSettings(
                 startView: StartView.dayCalendar,
-                screensaver: TimeoutSettings(
-                  use: false,
+                timeout: TimeoutSettings(
+                  screensaver: false,
                 ),
               ),
             ),
