@@ -90,7 +90,7 @@ class MemoplannerSettings extends Equatable {
   final MenuSettings menu;
   final EditActivitySettings editActivity;
   final AddActivitySettings addActivity;
-  final FunctionSettings functions;
+  final FunctionsSettings functions;
   final GeneralCalendarSettings calendar;
 
   const MemoplannerSettings({
@@ -134,7 +134,7 @@ class MemoplannerSettings extends Equatable {
     this.keepScreenAwakeSettings = const KeepScreenAwakeSettings(),
     this.editActivity = const EditActivitySettings(),
     this.addActivity = const AddActivitySettings(),
-    this.functions = const FunctionSettings(),
+    this.functions = const FunctionsSettings(),
     this.calendar = const GeneralCalendarSettings(),
   });
 
@@ -256,7 +256,7 @@ class MemoplannerSettings extends Equatable {
           KeepScreenAwakeSettings.fromSettingsMap(settings),
       editActivity: EditActivitySettings.fromSettingsMap(settings),
       addActivity: AddActivitySettings.fromSettingsMap(settings),
-      functions: FunctionSettings.fromSettingsMap(settings),
+      functions: FunctionsSettings.fromSettingsMap(settings),
       calendar: GeneralCalendarSettings.fromSettingsMap(settings),
     );
   }

@@ -8,14 +8,14 @@ class GeneralCalendarSettings extends Equatable {
   final TimepillarSettings timepillar;
   final DayParts dayParts;
   final DayColor dayColor;
-  final CategoriesSetting categories;
+  final CategoriesSettings categories;
 
   const GeneralCalendarSettings({
     this.clockType = ClockType.analogueDigital,
     this.timepillar = const TimepillarSettings(),
     this.dayParts = const DayParts(),
     this.dayColor = DayColor.allDays,
-    this.categories = const CategoriesSetting(),
+    this.categories = const CategoriesSettings(),
   });
 
   factory GeneralCalendarSettings.fromSettingsMap(
@@ -26,7 +26,7 @@ class GeneralCalendarSettings extends Equatable {
         timepillar: TimepillarSettings.fromSettingsMap(settings),
         dayParts: DayParts.fromSettingsMap(settings),
         dayColor: DayColor.values[settings.parse(calendarDayColorKey, 0)],
-        categories: CategoriesSetting.fromSettingsMap(settings),
+        categories: CategoriesSettings.fromSettingsMap(settings),
       );
 
   GeneralCalendarSettings copyWith({
@@ -34,7 +34,7 @@ class GeneralCalendarSettings extends Equatable {
     TimepillarSettings? timepillar,
     DayParts? dayParts,
     DayColor? dayColor,
-    CategoriesSetting? categories,
+    CategoriesSettings? categories,
   }) =>
       GeneralCalendarSettings(
         clockType: clockType ?? this.clockType,

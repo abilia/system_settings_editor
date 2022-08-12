@@ -332,49 +332,44 @@ class CategoryRadioField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, state) {
-        final imageAndName = isRight
-            ? state.settings.calendar.categories.right
-            : state.settings.calendar.categories.left;
-        final fileId = imageAndName.image.id;
+    final categoriesSettings = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.calendar.categories);
+    final imageAndName =
+        isRight ? categoriesSettings.right : categoriesSettings.left;
+    final fileId = imageAndName.image.id;
 
-        final label = imageAndName.hasName
-            ? imageAndName.name
-            : isRight
-                ? Translator.of(context).translate.right
-                : Translator.of(context).translate.left;
+    final label = imageAndName.hasName
+        ? imageAndName.name
+        : isRight
+            ? Translator.of(context).translate.right
+            : Translator.of(context).translate.left;
 
-        final nothing =
-            fileId.isEmpty && !state.settings.calendar.categories.showColors;
-        return RadioField<int>(
-          key: isRight ? TestKey.rightCategoryRadio : TestKey.leftCategoryRadio,
-          padding: nothing ? null : layout.category.activityRadioPadding,
-          onChanged: onChanged,
-          leading: nothing
-              ? null
-              : Container(
-                  foregroundDecoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: border,
-                  ),
-                  child: CategoryImage(
-                    fileId: fileId,
-                    showBorder: fileId.isEmpty,
-                    color: fileId.isEmpty
-                        ? categoryColor(category: category)
-                        : null,
-                    diameter: layout.category.radioImageDiameter,
-                  ),
-                ),
-          text: Text(
-            label,
-            overflow: TextOverflow.ellipsis,
-          ),
-          groupValue: groupValue,
-          value: category,
-        );
-      },
+    final nothing = fileId.isEmpty && !categoriesSettings.showColors;
+    return RadioField<int>(
+      key: isRight ? TestKey.rightCategoryRadio : TestKey.leftCategoryRadio,
+      padding: nothing ? null : layout.category.activityRadioPadding,
+      onChanged: onChanged,
+      leading: nothing
+          ? null
+          : Container(
+              foregroundDecoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: border,
+              ),
+              child: CategoryImage(
+                fileId: fileId,
+                showBorder: fileId.isEmpty,
+                color:
+                    fileId.isEmpty ? categoryColor(category: category) : null,
+                diameter: layout.category.radioImageDiameter,
+              ),
+            ),
+      text: Text(
+        label,
+        overflow: TextOverflow.ellipsis,
+      ),
+      groupValue: groupValue,
+      value: category,
     );
   }
 }

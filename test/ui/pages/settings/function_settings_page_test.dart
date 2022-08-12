@@ -212,7 +212,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: FunctionSettings.functionMenuStartViewKey,
+          key: FunctionsSettings.functionMenuStartViewKey,
           matcher: StartView.weekCalendar.index,
         );
       });
@@ -229,7 +229,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: FunctionSettings.functionMenuStartViewKey,
+          key: FunctionsSettings.functionMenuStartViewKey,
           matcher: StartView.monthCalendar.index,
         );
       });
@@ -246,7 +246,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: FunctionSettings.functionMenuStartViewKey,
+          key: FunctionsSettings.functionMenuStartViewKey,
           matcher: StartView.menu.index,
         );
       });
@@ -263,7 +263,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: FunctionSettings.functionMenuStartViewKey,
+          key: FunctionsSettings.functionMenuStartViewKey,
           matcher: StartView.photoAlbum.index,
         );
       });
@@ -288,7 +288,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: ScreensaverSettings.activityTimeoutKey,
+          key: TimeoutSettings.activityTimeoutKey,
           matcher: 5 * 60 * 1000,
         );
       });
@@ -307,7 +307,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: ScreensaverSettings.useScreensaverKey,
+          key: TimeoutSettings.useScreensaverKey,
           matcher: isTrue,
         );
       });
@@ -330,7 +330,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: ScreensaverSettings.useScreensaverKey,
+          key: TimeoutSettings.useScreensaverKey,
           matcher: isFalse,
         );
       });

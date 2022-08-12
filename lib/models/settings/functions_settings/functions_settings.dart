@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
 
-class FunctionSettings extends Equatable {
+class FunctionsSettings extends Equatable {
   static const functionMenuStartViewKey = 'function_menu_start_view';
 
   final DisplaySettings display;
-  final ScreensaverSettings screensaver;
+  final TimeoutSettings timeout;
   final StartView _startView;
 
   int get startViewIndex {
@@ -45,35 +45,35 @@ class FunctionSettings extends Equatable {
     }
   }
 
-  const FunctionSettings({
+  const FunctionsSettings({
     this.display = const DisplaySettings(),
-    this.screensaver = const ScreensaverSettings(),
+    this.timeout = const TimeoutSettings(),
     StartView startView = StartView.dayCalendar,
   }) : _startView = startView;
 
-  FunctionSettings copyWith({
+  FunctionsSettings copyWith({
     DisplaySettings? display,
-    ScreensaverSettings? screensaver,
+    TimeoutSettings? timeout,
     StartView? startView,
   }) =>
-      FunctionSettings(
+      FunctionsSettings(
         display: display ?? this.display,
-        screensaver: screensaver ?? this.screensaver,
+        timeout: timeout ?? this.timeout,
         startView: startView ?? this.startView,
       );
 
-  factory FunctionSettings.fromSettingsMap(
+  factory FunctionsSettings.fromSettingsMap(
           Map<String, MemoplannerSettingData> settings) =>
-      FunctionSettings(
+      FunctionsSettings(
         display: DisplaySettings.fromSettingsMap(settings),
-        screensaver: ScreensaverSettings.fromSettingsMap(settings),
+        timeout: TimeoutSettings.fromSettingsMap(settings),
         startView:
             StartView.values[settings.parse(functionMenuStartViewKey, 0)],
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
         ...display.memoplannerSettingData,
-        ...screensaver.memoplannerSettingData,
+        ...timeout.memoplannerSettingData,
         MemoplannerSettingData.fromData(
           data: startView.index,
           identifier: functionMenuStartViewKey,
@@ -83,7 +83,7 @@ class FunctionSettings extends Equatable {
   @override
   List<Object> get props => [
         display,
-        screensaver,
+        timeout,
         _startView,
       ];
 }

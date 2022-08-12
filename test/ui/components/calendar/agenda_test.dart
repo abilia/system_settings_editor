@@ -608,13 +608,13 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: leftCategoryName,
-                identifier: CategoriesSetting.calendarActivityTypeLeftKey,
+                identifier: CategoriesSettings.calendarActivityTypeLeftKey,
               ),
             ),
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: rightCategoryName,
-                identifier: CategoriesSetting.calendarActivityTypeRightKey,
+                identifier: CategoriesSettings.calendarActivityTypeRightKey,
               ),
             )
           ];
@@ -634,7 +634,7 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: false,
-                identifier: CategoriesSetting.calendarActivityTypeShowTypesKey,
+                identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
             ),
           ];
@@ -664,13 +664,13 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: leftCategoryName,
-                identifier: CategoriesSetting.calendarActivityTypeLeftKey,
+                identifier: CategoriesSettings.calendarActivityTypeLeftKey,
               ),
             ),
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: rightCategoryName,
-                identifier: CategoriesSetting.calendarActivityTypeRightKey,
+                identifier: CategoriesSettings.calendarActivityTypeRightKey,
               ),
             )
           ];
@@ -699,7 +699,7 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: false,
-                identifier: CategoriesSetting.calendarActivityTypeShowTypesKey,
+                identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
             ),
           ];
@@ -744,7 +744,7 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: false,
-                identifier: CategoriesSetting.calendarActivityTypeShowColorKey,
+                identifier: CategoriesSettings.calendarActivityTypeShowColorKey,
               ),
             ),
           ];
@@ -761,13 +761,13 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: false,
-                identifier: CategoriesSetting.calendarActivityTypeShowColorKey,
+                identifier: CategoriesSettings.calendarActivityTypeShowColorKey,
               ),
             ),
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: 'fileid',
-                identifier: CategoriesSetting.calendarActivityTypeLeftImageKey,
+                identifier: CategoriesSettings.calendarActivityTypeLeftImageKey,
               ),
             ),
           ];
@@ -845,13 +845,13 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: true,
-                identifier: CategoriesSetting.calendarActivityTypeShowColorKey,
+                identifier: CategoriesSettings.calendarActivityTypeShowColorKey,
               ),
             ),
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: false,
-                identifier: CategoriesSetting.calendarActivityTypeShowTypesKey,
+                identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
             ),
             Generic.createNew<MemoplannerSettingData>(

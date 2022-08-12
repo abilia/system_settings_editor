@@ -418,7 +418,7 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: false,
-                identifier: CategoriesSetting.calendarActivityTypeShowTypesKey,
+                identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
             ),
           ];
@@ -445,7 +445,7 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: false,
-                identifier: CategoriesSetting.calendarActivityTypeShowTypesKey,
+                identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
             ),
           ];
@@ -535,7 +535,7 @@ void main() {
                 data: MemoplannerSettingData.fromData(
                   data: false,
                   identifier:
-                      CategoriesSetting.calendarActivityTypeShowColorKey,
+                      CategoriesSettings.calendarActivityTypeShowColorKey,
                 ),
               ),
             ];
@@ -606,7 +606,7 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: false,
-                identifier: CategoriesSetting.calendarActivityTypeShowTypesKey,
+                identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
             ),
           ];

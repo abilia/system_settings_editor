@@ -61,21 +61,20 @@ class DayAppBarPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final dayParts = context.select((MemoplannerSettingBloc settings) =>
         settings.state.settings.calendar.dayParts);
-    final state = context.watch<DayCalendarSettingsCubit>().state;
-    return BlocBuilder<ClockBloc, DateTime>(
-      builder: (context, currentTime) => AppBarPreview(
-        showBrowseButtons: state.showBrowseButtons,
-        showClock: state.showClock,
-        rows: AppBarTitleRows.day(
-          displayWeekDay: state.showWeekday,
-          displayPartOfDay: state.showDayPeriod,
-          displayDate: state.showDate,
-          currentTime: currentTime,
-          day: currentTime.onlyDays(),
-          dayParts: dayParts,
-          langCode: Localizations.localeOf(context).toLanguageTag(),
-          translator: Translator.of(context).translate,
-        ),
+    final settingsState = context.watch<DayCalendarSettingsCubit>().state;
+    final currentTime = context.watch<ClockBloc>().state;
+    return AppBarPreview(
+      showBrowseButtons: settingsState.showBrowseButtons,
+      showClock: settingsState.showClock,
+      rows: AppBarTitleRows.day(
+        displayWeekDay: settingsState.showWeekday,
+        displayPartOfDay: settingsState.showDayPeriod,
+        displayDate: settingsState.showDate,
+        currentTime: currentTime,
+        day: currentTime.onlyDays(),
+        dayParts: dayParts,
+        langCode: Localizations.localeOf(context).toLanguageTag(),
+        translator: Translator.of(context).translate,
       ),
     );
   }

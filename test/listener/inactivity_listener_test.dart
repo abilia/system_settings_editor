@@ -92,10 +92,10 @@ void main() {
         when(() => mockSettingBloc.state).thenReturn(
           const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              functions: FunctionSettings(
+              functions: FunctionsSettings(
                 startView: StartView.weekCalendar,
-                screensaver: ScreensaverSettings(
-                  use: false,
+                timeout: TimeoutSettings(
+                  screensaver: false,
                 ),
               ),
             ),
@@ -114,10 +114,10 @@ void main() {
         when(() => mockSettingBloc.state).thenReturn(
           const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              functions: FunctionSettings(
+              functions: FunctionsSettings(
                 startView: StartView.monthCalendar,
-                screensaver: ScreensaverSettings(
-                  use: false,
+                timeout: TimeoutSettings(
+                  screensaver: false,
                 ),
               ),
             ),
@@ -138,10 +138,10 @@ void main() {
         when(() => mockSettingBloc.state).thenReturn(
           const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              functions: FunctionSettings(
+              functions: FunctionsSettings(
                 startView: StartView.menu,
-                screensaver: ScreensaverSettings(
-                  use: false,
+                timeout: TimeoutSettings(
+                  screensaver: false,
                 ),
               ),
             ),
@@ -162,10 +162,10 @@ void main() {
         when(() => mockSettingBloc.state).thenReturn(
           const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              functions: FunctionSettings(
+              functions: FunctionsSettings(
                 startView: StartView.photoAlbum,
-                screensaver: ScreensaverSettings(
-                  use: false,
+                timeout: TimeoutSettings(
+                  screensaver: false,
                 ),
               ),
             ),
@@ -186,10 +186,10 @@ void main() {
         when(() => mockSettingBloc.state).thenReturn(
           const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              functions: FunctionSettings(
+              functions: FunctionsSettings(
                 startView: StartView.menu,
-                screensaver: ScreensaverSettings(
-                  use: true,
+                timeout: TimeoutSettings(
+                  screensaver: true,
                 ),
               ),
             ),
@@ -210,10 +210,10 @@ void main() {
         when(() => mockSettingBloc.state).thenReturn(
           const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              functions: FunctionSettings(
+              functions: FunctionsSettings(
                 startView: StartView.dayCalendar,
-                screensaver: ScreensaverSettings(
-                  use: false,
+                timeout: TimeoutSettings(
+                  screensaver: false,
                 ),
               ),
             ),
@@ -276,21 +276,21 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: minutes.minutes().inMilliseconds,
-            identifier: ScreensaverSettings.activityTimeoutKey,
+            identifier: TimeoutSettings.activityTimeoutKey,
           ),
         );
     Generic startViewGeneric(StartView startView) =>
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: startView.index,
-            identifier: FunctionSettings.functionMenuStartViewKey,
+            identifier: FunctionsSettings.functionMenuStartViewKey,
           ),
         );
 
     final useScreensaverGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(
         data: true,
-        identifier: ScreensaverSettings.useScreensaverKey,
+        identifier: TimeoutSettings.useScreensaverKey,
       ),
     );
 

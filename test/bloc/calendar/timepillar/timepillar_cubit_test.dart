@@ -27,7 +27,7 @@ void main() {
         .thenReturn(MemoplannerSettingsLoaded(
       MemoplannerSettings(
         calendar: const GeneralCalendarSettings(
-          categories: CategoriesSetting(
+          categories: CategoriesSettings(
             show: false,
           ),
         ),
