@@ -16,7 +16,7 @@ class GeneralCalendarSettingsCubit extends Cubit<GeneralCalendarSettings> {
   void changeTimepillarSettings(TimepillarSettings newState) =>
       changeSettings(state.copyWith(timepillar: newState));
 
-  void changeCategorySettings(CategoriesSetting newState) =>
+  void changeCategorySettings(CategoriesSettings newState) =>
       changeSettings(state.copyWith(categories: newState));
 
   void save() => genericCubit.genericUpdated(state.memoplannerSettingData);

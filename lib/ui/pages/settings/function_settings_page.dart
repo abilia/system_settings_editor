@@ -93,25 +93,26 @@ class ToolbarSettingsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
 
-    final state = context.select((FunctionSettingsCubit s) => s.state.display);
+    final display =
+        context.select((FunctionSettingsCubit s) => s.state.display);
 
     return _SettingsTab(
       hint: t.toolbarSettingsHint,
       children: [
         SwitchField(
           leading: const Icon(AbiliaIcons.plus),
-          value: state.newActivity,
+          value: display.newActivity,
           onChanged: (v) => context
               .read<FunctionSettingsCubit>()
-              .changeDisplaySettings(state.copyWith(newActivity: v)),
+              .changeDisplaySettings(display.copyWith(newActivity: v)),
           child: Text(t.newActivity),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.stopWatch),
-          value: state.newTimer,
+          value: display.newTimer,
           onChanged: (v) => context
               .read<FunctionSettingsCubit>()
-              .changeDisplaySettings(state.copyWith(newTimer: v)),
+              .changeDisplaySettings(display.copyWith(newTimer: v)),
           child: Text(t.newTimer),
         ),
         SwitchField(
@@ -121,30 +122,30 @@ class ToolbarSettingsTab extends StatelessWidget {
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.week),
-          value: state.week,
+          value: display.week,
           onChanged: (v) => context
               .read<FunctionSettingsCubit>()
-              .changeDisplaySettings(state.copyWith(week: v)),
+              .changeDisplaySettings(display.copyWith(week: v)),
           child: Text(t.weekCalendar),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.month),
-          value: state.month,
+          value: display.month,
           onChanged: (v) => context
               .read<FunctionSettingsCubit>()
-              .changeDisplaySettings(state.copyWith(month: v)),
+              .changeDisplaySettings(display.copyWith(month: v)),
           child: Text(t.monthCalendar),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.appMenu),
-          value: state.menuValue,
-          onChanged: state.allMenuItemsDisabled
+          value: display.menuValue,
+          onChanged: display.allMenuItemsDisabled
               ? null
               : (v) => context
                   .read<FunctionSettingsCubit>()
-                  .changeDisplaySettings(state.copyWith(menuValue: v)),
+                  .changeDisplaySettings(display.copyWith(menuValue: v)),
           child: Text(
-            '${t.menu}${state.allMenuItemsDisabled ? ' (${t.menuItemsDisabled})' : ''}',
+            '${t.menu}${display.allMenuItemsDisabled ? ' (${t.menuItemsDisabled})' : ''}',
           ),
         ),
       ],
@@ -158,11 +159,11 @@ class HomeScreenSettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocBuilder<FunctionSettingsCubit, FunctionSettings>(
-      builder: (context, state) {
+    return BlocBuilder<FunctionSettingsCubit, FunctionsSettings>(
+      builder: (context, functions) {
         void onChange(v) => context
             .read<FunctionSettingsCubit>()
-            .changeFunctionSettings(state.copyWith(startView: v));
+            .changeFunctionSettings(functions.copyWith(startView: v));
         return _SettingsTab(
           hint: t.homeScreenSettingsHint,
           children: [
@@ -170,38 +171,38 @@ class HomeScreenSettingsTab extends StatelessWidget {
               leading: const Icon(AbiliaIcons.day),
               text: Text(t.calendarView),
               value: StartView.dayCalendar,
-              groupValue: state.startView,
+              groupValue: functions.startView,
               onChanged: onChange,
             ),
-            if (state.display.week)
+            if (functions.display.week)
               RadioField(
                 leading: const Icon(AbiliaIcons.week),
                 text: Text(t.weekCalendar),
                 value: StartView.weekCalendar,
-                groupValue: state.startView,
+                groupValue: functions.startView,
                 onChanged: onChange,
               ),
-            if (state.display.month)
+            if (functions.display.month)
               RadioField(
                 leading: const Icon(AbiliaIcons.month),
                 text: Text(t.monthCalendar),
                 value: StartView.monthCalendar,
-                groupValue: state.startView,
+                groupValue: functions.startView,
                 onChanged: onChange,
               ),
-            if (state.display.menuValue)
+            if (functions.display.menuValue)
               RadioField(
                 leading: const Icon(AbiliaIcons.appMenu),
                 text: Text(t.menu),
                 value: StartView.menu,
-                groupValue: state.startView,
+                groupValue: functions.startView,
                 onChanged: onChange,
               ),
             RadioField(
               leading: const Icon(AbiliaIcons.photoCalendar),
               text: Text(t.photoCalendar.singleLine),
               value: StartView.photoAlbum,
-              groupValue: state.startView,
+              groupValue: functions.startView,
               onChanged: onChange,
             ),
           ],
@@ -232,18 +233,18 @@ class TimeoutSettingsTab extends StatelessWidget {
                       : d.toDurationString(t, shortMin: false),
                 ),
                 value: d,
-                groupValue: screensaver.timeout,
+                groupValue: screensaver.duration,
                 onChanged: (v) => context
                     .read<FunctionSettingsCubit>()
                     .changeScreensaverSettings(
-                        screensaver.copyWith(timeout: v)),
+                        screensaver.copyWith(duration: v)),
               ),
             ),
         const Divider(),
         SwitchField(
           leading: const Icon(AbiliaIcons.screenSaverNight),
           value: screensaver.shouldUseScreenSaver,
-          onChanged: screensaver.hasTimeOut
+          onChanged: screensaver.hasDuration
               ? (v) => context
                   .read<FunctionSettingsCubit>()
                   .changeScreensaverSettings(screensaver.copyWith(use: v))
@@ -255,7 +256,7 @@ class TimeoutSettingsTab extends StatelessWidget {
           child: SwitchField(
             leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
             value: screensaver.onlyDuringNight,
-            onChanged: screensaver.hasTimeOut
+            onChanged: screensaver.hasDuration
                 ? (v) => context
                     .read<FunctionSettingsCubit>()
                     .changeScreensaverSettings(

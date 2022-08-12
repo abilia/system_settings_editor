@@ -2313,7 +2313,7 @@ text''';
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             calendar: GeneralCalendarSettings(
-              categories: CategoriesSetting(show: false),
+              categories: CategoriesSettings(show: false),
             ),
           ),
         ),
@@ -2549,7 +2549,7 @@ text''';
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             calendar: GeneralCalendarSettings(
-              categories: CategoriesSetting(
+              categories: CategoriesSettings(
                 left: ImageAndName(leftCategoryName, AbiliaFile.empty),
                 right: ImageAndName(rightCategoryName, AbiliaFile.empty),
               ),
@@ -2574,7 +2574,7 @@ text''';
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             calendar: GeneralCalendarSettings(
-              categories: CategoriesSetting(show: false),
+              categories: CategoriesSettings(show: false),
             ),
           ),
         ),

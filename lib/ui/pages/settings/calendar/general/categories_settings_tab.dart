@@ -66,7 +66,7 @@ class CategoriesSettingsTab extends StatelessWidget {
 class _CategoryPickField extends StatelessWidget {
   final ImageAndName imageAndName;
   final String defaultName;
-  final CategoriesSetting Function(ImageAndName) onResult;
+  final CategoriesSettings Function(ImageAndName) onResult;
 
   const _CategoryPickField({
     required this.imageAndName,

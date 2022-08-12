@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
 
-class CategoriesSetting extends Equatable {
+class CategoriesSettings extends Equatable {
   static const calendarActivityTypeShowTypesKey =
           'calendar_activity_type_show_types',
       calendarActivityTypeShowColorKey = 'calendar_activity_type_show_color',
@@ -14,17 +14,17 @@ class CategoriesSetting extends Equatable {
 
   bool get showColors => show && colors;
 
-  const CategoriesSetting({
+  const CategoriesSettings({
     this.show = true,
     this.colors = true,
     this.left = ImageAndName.empty,
     this.right = ImageAndName.empty,
   });
 
-  factory CategoriesSetting.fromSettingsMap(
+  factory CategoriesSettings.fromSettingsMap(
     Map<String, MemoplannerSettingData> settings,
   ) =>
-      CategoriesSetting(
+      CategoriesSettings(
         show: settings.getBool(
           calendarActivityTypeShowTypesKey,
         ),
@@ -56,13 +56,13 @@ class CategoriesSetting extends Equatable {
         ),
       );
 
-  CategoriesSetting copyWith({
+  CategoriesSettings copyWith({
     bool? show,
     bool? colors,
     ImageAndName? left,
     ImageAndName? right,
   }) =>
-      CategoriesSetting(
+      CategoriesSettings(
         show: show ?? this.show,
         colors: colors ?? this.colors,
         left: left ?? this.left,

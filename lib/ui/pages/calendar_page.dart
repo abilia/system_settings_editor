@@ -11,8 +11,9 @@ class CalendarPage extends StatelessWidget {
       data: abiliaWhiteTheme,
       child: Builder(
         builder: (context) {
-          if (context.select((MemoplannerSettingBloc bloc) =>
-              bloc.state is MemoplannerSettingsNotLoaded)) {
+          final isNotLoaded = context.select((MemoplannerSettingBloc bloc) =>
+              bloc.state is MemoplannerSettingsNotLoaded);
+          if (isNotLoaded) {
             return const Scaffold(
                 body: Center(child: AbiliaProgressIndicator()));
           }

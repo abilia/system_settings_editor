@@ -208,8 +208,8 @@ class SliverEventList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categoriesSetting =
-        context.select<MemoplannerSettingBloc, CategoriesSetting>(
+    final categoriesSettings =
+        context.select<MemoplannerSettingBloc, CategoriesSettings>(
             (bloc) => bloc.state.settings.calendar.categories);
     return SliverPadding(
       padding: layout.templates.m1.onlyHorizontal,
@@ -218,7 +218,7 @@ class SliverEventList extends StatelessWidget {
           (context, index) {
             if (reversed) index = _maxIndex - index;
             final event = events[index];
-            final padding = categoriesSetting.show
+            final padding = categoriesSettings.show
                 ? _padding(index)
                 : EdgeInsets.only(bottom: layout.eventCard.marginSmall);
             if (event is ActivityOccasion) {
@@ -226,7 +226,7 @@ class SliverEventList extends StatelessWidget {
                 padding: padding,
                 child: ActivityCard(
                   activityOccasion: event,
-                  showCategoryColor: categoriesSetting.showColors,
+                  showCategoryColor: categoriesSettings.showColors,
                   useOpacity: isNight,
                 ),
               );

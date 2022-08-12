@@ -1,38 +1,38 @@
 import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
 
-class ScreensaverSettings extends Equatable {
+class TimeoutSettings extends Equatable {
   static const activityTimeoutKey = 'activity_timeout',
       useScreensaverKey = 'use_screensaver',
       screenSaverOnlyDuringNightKey = 'screensaver_only_active_during_night';
 
-  final Duration timeout;
+  final Duration duration;
   final bool use, onlyDuringNight;
 
-  bool get hasTimeOut => timeout > Duration.zero;
-  bool get shouldUseScreenSaver => hasTimeOut && use;
+  bool get hasDuration => duration > Duration.zero;
+  bool get shouldUseScreenSaver => hasDuration && use;
 
-  const ScreensaverSettings({
-    this.timeout = Duration.zero,
+  const TimeoutSettings({
+    this.duration = Duration.zero,
     this.use = false,
     this.onlyDuringNight = false,
   });
 
-  ScreensaverSettings copyWith({
-    Duration? timeout,
+  TimeoutSettings copyWith({
+    Duration? duration,
     bool? use,
     bool? onlyDuringNight,
   }) =>
-      ScreensaverSettings(
-        timeout: timeout ?? this.timeout,
+      TimeoutSettings(
+        duration: duration ?? this.duration,
         use: use ?? this.use,
         onlyDuringNight: onlyDuringNight ?? this.onlyDuringNight,
       );
 
-  factory ScreensaverSettings.fromSettingsMap(
+  factory TimeoutSettings.fromSettingsMap(
           Map<String, MemoplannerSettingData> settings) =>
-      ScreensaverSettings(
-        timeout: Duration(milliseconds: settings.parse(activityTimeoutKey, 0)),
+      TimeoutSettings(
+        duration: Duration(milliseconds: settings.parse(activityTimeoutKey, 0)),
         use: settings.getBool(
           useScreensaverKey,
           defaultValue: false,
@@ -42,7 +42,7 @@ class ScreensaverSettings extends Equatable {
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
         MemoplannerSettingData.fromData(
-          data: timeout.inMilliseconds,
+          data: duration.inMilliseconds,
           identifier: activityTimeoutKey,
         ),
         MemoplannerSettingData.fromData(
@@ -57,7 +57,7 @@ class ScreensaverSettings extends Equatable {
 
   @override
   List<Object> get props => [
-        timeout,
+        duration,
         use,
         onlyDuringNight,
       ];

@@ -103,31 +103,31 @@ void main() {
       Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: false,
-          identifier: CategoriesSetting.calendarActivityTypeShowTypesKey,
+          identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
         ),
       ),
       Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: leftName,
-          identifier: CategoriesSetting.calendarActivityTypeLeftKey,
+          identifier: CategoriesSettings.calendarActivityTypeLeftKey,
         ),
       ),
       Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: rightName,
-          identifier: CategoriesSetting.calendarActivityTypeRightKey,
+          identifier: CategoriesSettings.calendarActivityTypeRightKey,
         ),
       ),
       Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: fileIdLeft,
-          identifier: CategoriesSetting.calendarActivityTypeLeftImageKey,
+          identifier: CategoriesSettings.calendarActivityTypeLeftImageKey,
         ),
       ),
       Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: fileIdRight,
-          identifier: CategoriesSetting.calendarActivityTypeRightImageKey,
+          identifier: CategoriesSettings.calendarActivityTypeRightImageKey,
         ),
       ),
     ];
@@ -176,7 +176,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: CategoriesSetting.calendarActivityTypeShowColorKey,
+        key: CategoriesSettings.calendarActivityTypeShowColorKey,
         matcher: false,
       );
     });
@@ -202,7 +202,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: CategoriesSetting.calendarActivityTypeShowTypesKey,
+        key: CategoriesSettings.calendarActivityTypeShowTypesKey,
         matcher: false,
       );
     });
@@ -227,7 +227,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: CategoriesSetting.calendarActivityTypeLeftKey,
+        key: CategoriesSettings.calendarActivityTypeLeftKey,
         matcher: newLeftName,
       );
     });
@@ -252,7 +252,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: CategoriesSetting.calendarActivityTypeRightKey,
+        key: CategoriesSettings.calendarActivityTypeRightKey,
         matcher: newRightName,
       );
     });
@@ -292,7 +292,7 @@ void main() {
           verifySyncGeneric(
             tester,
             genericDb,
-            key: CategoriesSetting.calendarActivityTypeRightImageKey,
+            key: CategoriesSettings.calendarActivityTypeRightImageKey,
             matcher: fileId,
           );
         });
@@ -333,7 +333,7 @@ void main() {
           verifySyncGeneric(
             tester,
             genericDb,
-            key: CategoriesSetting.calendarActivityTypeLeftImageKey,
+            key: CategoriesSettings.calendarActivityTypeLeftImageKey,
             matcher: fileId,
           );
         });
@@ -353,7 +353,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: CategoriesSetting.calendarActivityTypeShowTypesKey,
+            identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
           ),
         ),
       ];
@@ -371,7 +371,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: CategoriesSetting.calendarActivityTypeShowTypesKey,
+            identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
           ),
         ),
       ];
@@ -390,7 +390,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: true,
-            identifier: CategoriesSetting.calendarActivityTypeShowTypesKey,
+            identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
           ),
         ),
       ];
@@ -408,7 +408,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: right,
-            identifier: CategoriesSetting.calendarActivityTypeRightKey,
+            identifier: CategoriesSettings.calendarActivityTypeRightKey,
           ),
         ),
       ];
@@ -429,7 +429,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: right,
-            identifier: CategoriesSetting.calendarActivityTypeRightKey,
+            identifier: CategoriesSettings.calendarActivityTypeRightKey,
           ),
         ),
       ];
@@ -449,7 +449,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: left,
-            identifier: CategoriesSetting.calendarActivityTypeLeftKey,
+            identifier: CategoriesSettings.calendarActivityTypeLeftKey,
           ),
         ),
       ];
@@ -470,7 +470,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: left,
-            identifier: CategoriesSetting.calendarActivityTypeLeftKey,
+            identifier: CategoriesSettings.calendarActivityTypeLeftKey,
           ),
         ),
       ];
@@ -491,13 +491,13 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: fileIdLeft,
-            identifier: CategoriesSetting.calendarActivityTypeLeftImageKey,
+            identifier: CategoriesSettings.calendarActivityTypeLeftImageKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: fileIdRight,
-            identifier: CategoriesSetting.calendarActivityTypeRightImageKey,
+            identifier: CategoriesSettings.calendarActivityTypeRightImageKey,
           ),
         ),
       ];
@@ -527,25 +527,25 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: fileIdLeft,
-            identifier: CategoriesSetting.calendarActivityTypeLeftImageKey,
+            identifier: CategoriesSettings.calendarActivityTypeLeftImageKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: fileIdRight,
-            identifier: CategoriesSetting.calendarActivityTypeRightImageKey,
+            identifier: CategoriesSettings.calendarActivityTypeRightImageKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: leftName,
-            identifier: CategoriesSetting.calendarActivityTypeLeftKey,
+            identifier: CategoriesSettings.calendarActivityTypeLeftKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: rightName,
-            identifier: CategoriesSetting.calendarActivityTypeRightKey,
+            identifier: CategoriesSettings.calendarActivityTypeRightKey,
           ),
         ),
       ];
@@ -572,13 +572,13 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: fileIdLeft,
-            identifier: CategoriesSetting.calendarActivityTypeLeftImageKey,
+            identifier: CategoriesSettings.calendarActivityTypeLeftImageKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: fileIdRight,
-            identifier: CategoriesSetting.calendarActivityTypeRightImageKey,
+            identifier: CategoriesSettings.calendarActivityTypeRightImageKey,
           ),
         ),
       ];
@@ -608,25 +608,25 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: nameLeft,
-            identifier: CategoriesSetting.calendarActivityTypeLeftKey,
+            identifier: CategoriesSettings.calendarActivityTypeLeftKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: nameRight,
-            identifier: CategoriesSetting.calendarActivityTypeRightKey,
+            identifier: CategoriesSettings.calendarActivityTypeRightKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: fileIdLeft,
-            identifier: CategoriesSetting.calendarActivityTypeLeftImageKey,
+            identifier: CategoriesSettings.calendarActivityTypeLeftImageKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: fileIdRight,
-            identifier: CategoriesSetting.calendarActivityTypeRightImageKey,
+            identifier: CategoriesSettings.calendarActivityTypeRightImageKey,
           ),
         ),
       ];

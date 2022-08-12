@@ -358,7 +358,7 @@ void main() {
               Generic.createNew<MemoplannerSettingData>(
                 data: MemoplannerSettingData.fromData(
                   data: StartView.weekCalendar.index,
-                  identifier: FunctionSettings.functionMenuStartViewKey,
+                  identifier: FunctionsSettings.functionMenuStartViewKey,
                 ),
               ),
             ];
@@ -373,7 +373,7 @@ void main() {
               Generic.createNew<MemoplannerSettingData>(
                 data: MemoplannerSettingData.fromData(
                   data: StartView.monthCalendar.index,
-                  identifier: FunctionSettings.functionMenuStartViewKey,
+                  identifier: FunctionsSettings.functionMenuStartViewKey,
                 ),
               ),
             ];
@@ -388,7 +388,7 @@ void main() {
               Generic.createNew<MemoplannerSettingData>(
                 data: MemoplannerSettingData.fromData(
                   data: StartView.photoAlbum.index,
-                  identifier: FunctionSettings.functionMenuStartViewKey,
+                  identifier: FunctionsSettings.functionMenuStartViewKey,
                 ),
               ),
             ];
@@ -675,7 +675,7 @@ void main() {
             .thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(
             calendar: const GeneralCalendarSettings(
-              categories: CategoriesSetting(show: false),
+              categories: CategoriesSettings(show: false),
             ),
             viewOptionsTimeView: DayCalendarType.oneTimepillar.index,
           ),
@@ -698,7 +698,7 @@ void main() {
             .thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(
             calendar: const GeneralCalendarSettings(
-              categories: CategoriesSetting(show: true),
+              categories: CategoriesSettings(show: true),
             ),
             viewOptionsTimeView: DayCalendarType.oneTimepillar.index,
           ),

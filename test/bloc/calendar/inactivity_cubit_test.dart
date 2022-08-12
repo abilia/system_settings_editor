@@ -63,9 +63,9 @@ void main() {
       when(() => settingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            functions: FunctionSettings(
-              screensaver: ScreensaverSettings(
-                timeout: 10.minutes(),
+            functions: FunctionsSettings(
+              screensaver: TimeoutSettings(
+                duration: 10.minutes(),
               ),
             ),
           ),
@@ -95,8 +95,8 @@ void main() {
       when(() => settingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            functions: FunctionSettings(
-              screensaver: ScreensaverSettings(timeout: 10.minutes()),
+            functions: FunctionsSettings(
+              screensaver: TimeoutSettings(duration: 10.minutes()),
             ),
           ),
         ),
@@ -127,8 +127,8 @@ void main() {
       when(() => settingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            functions: FunctionSettings(
-              screensaver: ScreensaverSettings(timeout: 1.minutes()),
+            functions: FunctionsSettings(
+              screensaver: TimeoutSettings(duration: 1.minutes()),
             ),
           ),
         ),
@@ -158,8 +158,8 @@ void main() {
       when(() => settingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            functions: FunctionSettings(
-              screensaver: ScreensaverSettings(timeout: 1.minutes()),
+            functions: FunctionsSettings(
+              screensaver: TimeoutSettings(duration: 1.minutes()),
             ),
           ),
         ),
@@ -190,8 +190,8 @@ void main() {
       when(() => settingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            functions: FunctionSettings(
-              screensaver: ScreensaverSettings(timeout: Duration.zero),
+            functions: FunctionsSettings(
+              screensaver: TimeoutSettings(duration: Duration.zero),
             ),
           ),
         ),
@@ -227,8 +227,8 @@ void main() {
       when(() => settingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            functions: FunctionSettings(
-              screensaver: ScreensaverSettings(timeout: Duration.zero),
+            functions: FunctionsSettings(
+              screensaver: TimeoutSettings(duration: Duration.zero),
             ),
           ),
         ),
@@ -261,8 +261,8 @@ void main() {
       when(() => settingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            functions: FunctionSettings(
-              screensaver: ScreensaverSettings(timeout: Duration.zero),
+            functions: FunctionsSettings(
+              screensaver: TimeoutSettings(duration: Duration.zero),
             ),
           ),
         ),

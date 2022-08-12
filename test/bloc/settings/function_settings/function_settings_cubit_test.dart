@@ -13,7 +13,7 @@ void main() {
   });
 
   test('initial state', () {
-    const settingsState = FunctionSettings();
+    const settingsState = FunctionsSettings();
     final functionSettingsCubit = FunctionSettingsCubit(
       functionSettings: settingsState,
       genericCubit: FakeGenericCubit(),
@@ -36,8 +36,8 @@ void main() {
       settingsState.display.menuValue,
     );
     expect(
-      functionSettingsCubit.state.screensaver.timeout,
-      settingsState.screensaver.timeout,
+      functionSettingsCubit.state.screensaver.duration,
+      settingsState.screensaver.duration,
     );
     expect(
       functionSettingsCubit.state.screensaver.use,
@@ -55,7 +55,7 @@ void main() {
 
   test('state after all change', () {
     final functionSettingsCubit = FunctionSettingsCubit(
-      functionSettings: const FunctionSettings(),
+      functionSettings: const FunctionsSettings(),
       genericCubit: FakeGenericCubit(),
     );
 
@@ -67,8 +67,8 @@ void main() {
           newActivity: false,
           menuValue: false,
         ),
-        screensaver: const ScreensaverSettings(
-          timeout: Duration(minutes: 1),
+        screensaver: const TimeoutSettings(
+          duration: Duration(minutes: 1),
           use: true,
           onlyDuringNight: true,
         ),
@@ -90,12 +90,8 @@ void main() {
       false,
     );
     expect(
-      functionSettingsCubit.state.screensaver.timeout,
+      functionSettingsCubit.state.screensaver.duration,
       const Duration(minutes: 1),
-    );
-    expect(
-      functionSettingsCubit.state.screensaver.use,
-      true,
     );
     expect(
       functionSettingsCubit.state.screensaver.use,
@@ -110,7 +106,7 @@ void main() {
   test('Removing a display state changes start view', () {
     // Arrange
     final functionSettingsCubit = FunctionSettingsCubit(
-      functionSettings: const FunctionSettings(),
+      functionSettings: const FunctionsSettings(),
       genericCubit: FakeGenericCubit(),
     );
 
@@ -218,7 +214,7 @@ void main() {
   test('saving', () async {
     final genericCubit = MockGenericCubit();
     final functionSettingsCubit = FunctionSettingsCubit(
-      functionSettings: const FunctionSettings(),
+      functionSettings: const FunctionsSettings(),
       genericCubit: genericCubit,
     );
 
@@ -231,8 +227,8 @@ void main() {
           newTimer: false,
           menuValue: false,
         ),
-        screensaver: const ScreensaverSettings(
-          timeout: Duration.zero,
+        screensaver: const TimeoutSettings(
+          duration: Duration.zero,
           use: true,
           onlyDuringNight: true,
         ),
@@ -261,19 +257,19 @@ void main() {
           data: false, identifier: DisplaySettings.functionMenuDisplayMenuKey),
       MemoplannerSettingData<dynamic>.fromData(
         data: 0,
-        identifier: ScreensaverSettings.activityTimeoutKey,
+        identifier: TimeoutSettings.activityTimeoutKey,
       ),
       MemoplannerSettingData<dynamic>.fromData(
         data: false, // if timeout is 0 screensaver should be false
-        identifier: ScreensaverSettings.useScreensaverKey,
+        identifier: TimeoutSettings.useScreensaverKey,
       ),
       MemoplannerSettingData<dynamic>.fromData(
         data: true,
-        identifier: ScreensaverSettings.screenSaverOnlyDuringNightKey,
+        identifier: TimeoutSettings.screenSaverOnlyDuringNightKey,
       ),
       MemoplannerSettingData<dynamic>.fromData(
         data: StartView.photoAlbum.index,
-        identifier: FunctionSettings.functionMenuStartViewKey,
+        identifier: FunctionsSettings.functionMenuStartViewKey,
       ),
     ];
 
