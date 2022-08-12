@@ -247,7 +247,8 @@ class TimeoutSettingsTab extends StatelessWidget {
           onChanged: screensaver.hasDuration
               ? (v) => context
                   .read<FunctionSettingsCubit>()
-                  .changeScreensaverSettings(screensaver.copyWith(screensaver: v))
+                  .changeScreensaverSettings(
+                      screensaver.copyWith(screensaver: v))
               : null,
           child: Text(t.activateScreensaver),
         ),
