@@ -89,7 +89,7 @@ class AboutMemoplannerColumn extends StatelessWidget {
         ),
         DoubleText(
           translate.licenseNumber,
-          license != null ? _licenseNumber(license) : '',
+          license != null ? _licenseKey(license) : '',
         ),
         DoubleText(
           translate.licenseValidDate,
@@ -100,8 +100,8 @@ class AboutMemoplannerColumn extends StatelessWidget {
     );
   }
 
-  String _licenseNumber(License license) {
-    return license.id.toString();
+  String _licenseKey(License license) {
+    return license.key.toString();
   }
 
   String _licenseValidDate(License license) {
@@ -166,14 +166,15 @@ class AboutDeviceColumn extends StatelessWidget {
                   translate.serialNumber, _serialNumber(GetIt.I<DeviceDb>())),
             if (deviceInfo is AndroidDeviceInfo) ...[
               if (deviceInfo.device != null)
-                DoubleText(translate.deviceName, deviceInfo.device ?? ''),
+                DoubleText(translate.deviceName, deviceInfo.model ?? ''),
               if (deviceInfo.version.release != null)
                 DoubleText(
                     translate.androidVersion, deviceInfo.version.release ?? ''),
             ],
             if (deviceInfo is IosDeviceInfo) ...[
               if (deviceInfo.model != null)
-                DoubleText(translate.deviceName, deviceInfo.model ?? ''),
+                DoubleText(
+                    translate.deviceName, deviceInfo.utsname.machine ?? ''),
               if (deviceInfo.systemVersion != null)
                 DoubleText(
                     translate.iosVersion, deviceInfo.systemVersion ?? ''),
