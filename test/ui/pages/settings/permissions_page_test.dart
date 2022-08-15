@@ -74,6 +74,9 @@ void main() {
               BlocProvider<TimerCubit>(
                 create: (context) => MockTimerCubit(),
               ),
+              BlocProvider<DayPartCubit>(
+                create: (context) => FakeDayPartCubit(),
+              ),
             ],
             child: child!,
           ),

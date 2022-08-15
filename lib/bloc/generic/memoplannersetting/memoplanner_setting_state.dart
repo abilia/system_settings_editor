@@ -88,11 +88,6 @@ abstract class MemoplannerSettingsState extends Equatable {
   WeekColor get monthWeekColor =>
       WeekColor.values[settings.calendarMonthViewShowColors];
 
-  TimepillarInterval todayTimepillarInterval(DateTime now) {
-    return settings.calendar.dayParts
-        .todayTimepillarIntervalFromType(now, timepillarIntervalType);
-  }
-
   @override
   List<Object> get props => settings.props;
 

@@ -4,7 +4,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class IntervalsSettingsTab extends StatelessWidget {
-  static const dayparts = [
+  static const dayParts = [
     DayPart.morning,
     DayPart.day,
     DayPart.evening,
@@ -18,9 +18,9 @@ class IntervalsSettingsTab extends StatelessWidget {
               layout.templates.m1.top - layout.formPadding.verticalItemDistance,
           bottom: layout.templates.m1.bottom,
         ),
-        itemBuilder: (context, index) => IntervalStepper(part: dayparts[index]),
+        itemBuilder: (context, index) => IntervalStepper(part: dayParts[index]),
         separatorBuilder: (_, __) => const Divider(),
-        itemCount: dayparts.length,
+        itemCount: dayParts.length,
       );
 }
 
