@@ -32,38 +32,43 @@ class AllDayList extends StatelessWidget {
         fullDayActivities.sort(
             (a, b) => b.title.toLowerCase().compareTo(a.title.toLowerCase()));
 
-        return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-          builder: (context, memoSettingsState) => Theme(
-            data: weekdayTheme(
-                    dayColor: memoSettingsState.calendarDayColor,
-                    languageCode: Localizations.localeOf(context).languageCode,
-                    weekday: day.weekday)
-                .theme,
-            child: Builder(
-              builder: (context) => Scaffold(
-                body: Scrollbar(
-                  child: ListView.builder(
-                    itemExtent:
-                        layout.eventCard.height + layout.eventCard.marginSmall,
-                    padding: layout.templates.s1,
-                    itemCount: fullDayActivities.length,
-                    itemBuilder: (context, index) => Padding(
-                      padding: EdgeInsets.only(
-                        bottom: layout.eventCard.marginSmall,
-                      ),
-                      child: ActivityCard(
-                        activityOccasion: fullDayActivities[index],
+        return Builder(
+          builder: (context) {
+            final dayColor = context.select((MemoplannerSettingBloc bloc) =>
+                bloc.state.settings.calendar.dayColor);
+            return Theme(
+              data: weekdayTheme(
+                      dayColor: dayColor,
+                      languageCode:
+                          Localizations.localeOf(context).languageCode,
+                      weekday: day.weekday)
+                  .theme,
+              child: Builder(
+                builder: (context) => Scaffold(
+                  body: Scrollbar(
+                    child: ListView.builder(
+                      itemExtent: layout.eventCard.height +
+                          layout.eventCard.marginSmall,
+                      padding: layout.templates.s1,
+                      itemCount: fullDayActivities.length,
+                      itemBuilder: (context, index) => Padding(
+                        padding: EdgeInsets.only(
+                          bottom: layout.eventCard.marginSmall,
+                        ),
+                        child: ActivityCard(
+                          activityOccasion: fullDayActivities[index],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                appBar: DayAppBar(day: day),
-                bottomNavigationBar: const BottomNavigation(
-                  backNavigationWidget: CloseButton(),
+                  appBar: DayAppBar(day: day),
+                  bottomNavigationBar: const BottomNavigation(
+                    backNavigationWidget: CloseButton(),
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );

@@ -9,8 +9,7 @@ Set<Permission> requestedPermissions = {};
 Map<Permission, PermissionStatus> _permissions = const {};
 int openAppSettingsCalls = 0;
 
-// ignore: prefer_function_declarations_over_variables
-final _handler = (MethodCall methodCall) async {
+Future _handler(MethodCall methodCall) async {
   switch (methodCall.method) {
     case 'requestPermissions':
       requestedPermissions.addAll(
@@ -30,7 +29,7 @@ final _handler = (MethodCall methodCall) async {
       break;
   }
   return null;
-};
+}
 
 void setupPermissions(
     [Map<Permission, PermissionStatus> permissions = const {}]) {

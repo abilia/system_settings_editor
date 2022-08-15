@@ -84,11 +84,11 @@ class SelectableField extends StatelessWidget {
                 padding: outerBoxPadding,
                 child: Ink(
                   decoration: innerDecoration,
+                  padding: textPadding,
                   child: Align(
                     widthFactor: 1,
                     child: text,
                   ),
-                  padding: textPadding,
                 ),
               ),
               Positioned(

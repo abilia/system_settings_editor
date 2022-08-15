@@ -8,11 +8,14 @@ class PhotoCalendarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _layout = layout.photoCalendarLayout;
-    final clockType = context
-        .select((MemoplannerSettingBloc settings) => settings.state.clockType);
-    final calendarDayColor = context.select(
-        (MemoplannerSettingBloc settings) => settings.state.calendarDayColor);
+    final photoCalendarLayout = layout.photoCalendarLayout;
+    final functions = context
+        .select((MemoplannerSettingBloc bloc) => bloc.state.settings.functions);
+    final display = functions.display;
+    final clockType = context.select((MemoplannerSettingBloc settings) =>
+        settings.state.settings.calendar.clockType);
+    final calendarDayColor = context.select((MemoplannerSettingBloc settings) =>
+        settings.state.settings.calendar.dayColor);
     final weekday =
         context.select((ClockBloc currentTime) => currentTime.state.weekday);
     final theme = weekdayTheme(
@@ -23,63 +26,88 @@ class PhotoCalendarPage extends StatelessWidget {
 
     return Theme(
       data: theme.theme,
-      child: Scaffold(
-        appBar: const PhotoCalendarAppBar(),
-        backgroundColor: theme.color,
-        body: SafeArea(
-          child: Column(
-            children: [
-              SizedBox(
-                height: _layout.clockRowHeight,
-                child: Stack(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (clockType != ClockType.digital)
-                          SizedBox(
-                            height: _layout.analogClockSize +
-                                layout.clock.borderWidth * 2,
-                            width: _layout.analogClockSize,
-                            child: const FittedBox(child: AnalogClock()),
-                          ),
-                        if (clockType == ClockType.analogueDigital)
-                          SizedBox(width: _layout.clockDistance),
-                        if (clockType != ClockType.analogue)
-                          DigitalClock(
-                            style: _layout.textStyle(clockType),
-                          ),
-                      ],
-                    ).pad(
-                      clockType == ClockType.digital
-                          ? _layout.digitalClockPadding
-                          : _layout.analogClockPadding,
-                    ),
-                    Positioned(
-                      bottom: _layout.backButtonPosition.dy,
-                      right: _layout.backButtonPosition.dx,
-                      child: IconActionButton(
-                        style: theme.isLight
-                            ? actionButtonStyleLight
-                            : actionButtonStyleDark,
-                        onPressed: () {
-                          Navigator.of(context)
-                              .popUntil((route) => route.isFirst);
-                        },
-                        child: const Icon(AbiliaIcons.closeProgram),
+      child: WillPopScope(
+        onWillPop: () async {
+          final index = display.menu ? display.menuTabIndex : 0;
+          DefaultTabController.of(context)?.index = index;
+          return false;
+        },
+        child: Scaffold(
+          appBar: const PhotoCalendarAppBar(),
+          backgroundColor: theme.color,
+          body: SafeArea(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: photoCalendarLayout.clockRowHeight,
+                  child: Stack(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (clockType != ClockType.digital)
+                            SizedBox(
+                              height: photoCalendarLayout.analogClockSize +
+                                  layout.clock.borderWidth * 2,
+                              width: photoCalendarLayout.analogClockSize,
+                              child: const FittedBox(child: AnalogClock()),
+                            ),
+                          if (clockType == ClockType.analogueDigital)
+                            SizedBox(width: photoCalendarLayout.clockDistance),
+                          if (clockType != ClockType.analogue)
+                            DigitalClock(
+                              style: photoCalendarLayout.textStyle(clockType),
+                            ),
+                        ],
+                      ).pad(
+                        clockType == ClockType.digital
+                            ? photoCalendarLayout.digitalClockPadding
+                            : photoCalendarLayout.analogClockPadding,
                       ),
-                    ),
-                  ],
+                      Positioned(
+                        bottom: photoCalendarLayout.backButtonPosition.dy,
+                        right: photoCalendarLayout.backButtonPosition.dx,
+                        child: IconActionButton(
+                          style: theme.isLight
+                              ? actionButtonStyleLight
+                              : actionButtonStyleDark,
+                          onPressed: () {
+                            final index =
+                                functions.startView == StartView.photoAlbum
+                                    ? 0
+                                    : functions.startViewIndex;
+                            DefaultTabController.of(context)?.index = index;
+                          },
+                          child: Icon(functions.startView.icon),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const Expanded(
-                child: SlideShow(),
-              )
-            ],
+                const Expanded(
+                  child: SlideShow(),
+                )
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+}
+
+extension StartViewExtension on StartView {
+  IconData get icon {
+    switch (this) {
+      case StartView.weekCalendar:
+        return AbiliaIcons.week;
+      case StartView.monthCalendar:
+        return AbiliaIcons.month;
+      case StartView.menu:
+        return AbiliaIcons.appMenu;
+      default:
+        return AbiliaIcons.day;
+    }
   }
 }
 
@@ -138,14 +166,14 @@ class PhotoCalendarAppBar extends StatelessWidget
     return CalendarAppBar(
       textStyle: Theme.of(context).textTheme.headline4,
       day: time.onlyDays(),
-      calendarDayColor: memoSettingsState.calendarDayColor,
+      calendarDayColor: memoSettingsState.settings.calendar.dayColor,
       rows: AppBarTitleRows.day(
         displayWeekDay: memoSettingsState.activityDisplayWeekDay,
         displayPartOfDay: memoSettingsState.activityDisplayDayPeriod,
         displayDate: memoSettingsState.activityDisplayDate,
         currentTime: time,
         day: time.onlyDays(),
-        dayParts: memoSettingsState.dayParts,
+        dayParts: memoSettingsState.settings.calendar.dayParts,
         langCode: Localizations.localeOf(context).toLanguageTag(),
         translator: Translator.of(context).translate,
         compactDay: false,

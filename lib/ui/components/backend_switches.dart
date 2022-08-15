@@ -1,3 +1,5 @@
+import 'package:get_it/get_it.dart';
+import 'package:package_info/package_info.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -72,4 +74,16 @@ class BackendButton extends StatelessWidget {
       ),
     );
   }
+}
+
+class Version extends StatelessWidget {
+  const Version({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) =>
+      Tts(child: Text(versionText(GetIt.I<PackageInfo>())));
+
+  static String versionText(PackageInfo packageInfo) =>
+      '${packageInfo.version} (${packageInfo.buildNumber})'
+      '${Config.beta ? '-dev' : ''}';
 }

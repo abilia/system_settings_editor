@@ -1,17 +1,18 @@
-import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
-part 'function_settings_state.dart';
-
-class FunctionSettingsCubit extends Cubit<FunctionSettingsState> {
+class FunctionSettingsCubit extends Cubit<FunctionsSettings> {
   final GenericCubit genericCubit;
 
   FunctionSettingsCubit({
-    required MemoplannerSettingsState settingsState,
+    required FunctionsSettings functionSettings,
     required this.genericCubit,
-  }) : super(FunctionSettingsState.fromMemoplannerSettings(settingsState));
+  }) : super(functionSettings);
 
-  void changeFunctionSettings(FunctionSettingsState newState) => emit(newState);
+  void changeFunctionSettings(FunctionsSettings newState) => emit(newState);
+  void changeDisplaySettings(DisplaySettings newState) =>
+      emit(state.copyWith(display: newState));
+  void changeScreensaverSettings(TimeoutSettings newState) =>
+      emit(state.copyWith(timeout: newState));
   void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
 }

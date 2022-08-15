@@ -7,10 +7,9 @@ part 'large_layout.dart';
 
 part 'medium_layout.dart';
 
-late final ui.Size screenSize =
-    ui.window.physicalSize / ui.window.devicePixelRatio;
+final ui.Size screenSize = ui.window.physicalSize / ui.window.devicePixelRatio;
 
-late Layout _layout = screenSize.longestSide > 1500
+Layout _layout = screenSize.longestSide > 1500
     ? const LargeLayout()
     : screenSize.longestSide > 1000
         ? const MediumLayout()
@@ -98,6 +97,7 @@ class Layout {
   final CodeProtectLayoutMedium codeProtect;
   final SelectorLayout selector;
   final ProgressIndicatorLayout progressIndicator;
+  final AboutLayout about;
 
   const Layout({
     this.radius = 12,
@@ -176,6 +176,7 @@ class Layout {
     this.codeProtect = const CodeProtectLayoutMedium(),
     this.selector = const SelectorLayout(),
     this.progressIndicator = const ProgressIndicatorLayout(),
+    this.about = const AboutLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -294,7 +295,7 @@ class FormPaddingLayout {
 }
 
 class WeekCalendarLayout {
-  final _WeekDayColumnLayout selectedDay, notSelectedDay;
+  final WeekDayColumnLayout selectedDay, notSelectedDay;
 
   final double dayDistance, headerHeight, activityDistance, categoryInset;
 
@@ -313,12 +314,12 @@ class WeekCalendarLayout {
     this.crossOverDayHeadingPadding = const EdgeInsets.fromLTRB(3, 7, 3, 8),
     this.crossOverActivityPadding = const EdgeInsets.all(5),
     this.bodyPadding = const EdgeInsets.fromLTRB(2, 4, 2, 4),
-    this.selectedDay = const _WeekDayColumnLayout(
+    this.selectedDay = const WeekDayColumnLayout(
       everyDayFlex: 82,
       weekdaysFlex: 116,
       dayColumnBorderWidth: 2,
     ),
-    this.notSelectedDay = const _WeekDayColumnLayout(
+    this.notSelectedDay = const WeekDayColumnLayout(
       everyDayFlex: 48,
       weekdaysFlex: 64,
       dayColumnBorderWidth: 1,
@@ -326,7 +327,7 @@ class WeekCalendarLayout {
   });
 }
 
-class _WeekDayColumnLayout {
+class WeekDayColumnLayout {
   final int everyDayFlex, weekdaysFlex;
 
   final double activityBorderWidth,
@@ -337,7 +338,7 @@ class _WeekDayColumnLayout {
 
   final EdgeInsets innerDayPadding;
 
-  const _WeekDayColumnLayout({
+  const WeekDayColumnLayout({
     required this.everyDayFlex,
     required this.weekdaysFlex,
     required this.dayColumnBorderWidth,
@@ -489,20 +490,20 @@ class OngoingCategoryDotLayout {
 
 class DataItemLayout {
   final double borderRadius;
-  final _DataItemPictureLayout picture;
+  final DataItemPictureLayout picture;
 
   const DataItemLayout({
     this.borderRadius = 12,
-    this.picture = const _DataItemPictureLayout(),
+    this.picture = const DataItemPictureLayout(),
   });
 }
 
-class _DataItemPictureLayout {
+class DataItemPictureLayout {
   final double stickerIconSize;
   final Size stickerSize;
   final EdgeInsets imagePadding, titlePadding;
 
-  const _DataItemPictureLayout({
+  const DataItemPictureLayout({
     this.stickerIconSize = 16,
     this.stickerSize = const Size(32, 32),
     this.imagePadding = const EdgeInsets.only(left: 12, right: 12, bottom: 3),
@@ -891,25 +892,6 @@ class EditTimerLayout {
     this.inputTimeWidth = 120,
     this.inputTimePadding = 16,
     this.wheelPadding = const EdgeInsets.only(top: 11),
-  });
-}
-
-class ButtonLayout {
-  final double baseButtonMinHeight, secondaryActionButtonMinSize;
-  final Size redButtonMinSize;
-  final EdgeInsets textButtonInsets,
-      actionButtonIconTextPadding,
-      startBasicTimerPadding;
-
-  const ButtonLayout({
-    this.baseButtonMinHeight = 64,
-    this.redButtonMinSize = const Size(0, 48),
-    this.secondaryActionButtonMinSize = 40,
-    this.textButtonInsets =
-        const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-    this.actionButtonIconTextPadding =
-        const EdgeInsets.fromLTRB(10, 10, 20, 10),
-    this.startBasicTimerPadding = const EdgeInsets.fromLTRB(0, 4, 4, 4),
   });
 }
 

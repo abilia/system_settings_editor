@@ -11,7 +11,7 @@ class SelectRecurrencePage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SelectRecurrencePageState createState() => _SelectRecurrencePageState();
+  State createState() => _SelectRecurrencePageState();
 }
 
 class _SelectRecurrencePageState extends State<SelectRecurrencePage> {

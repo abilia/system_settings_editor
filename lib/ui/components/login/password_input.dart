@@ -20,7 +20,7 @@ class PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final _subheading =
+    final subheading =
         inputHeading ?? Translator.of(context).translate.password;
     return BlocProvider(
       create: (_) => PasswordCubit(password, validator),
@@ -29,14 +29,14 @@ class PasswordInput extends StatelessWidget {
         builder: (context, state) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SubHeading(_subheading),
+            SubHeading(subheading),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Expanded(
                   child: Tts.fromSemantics(
                     SemanticsProperties(
-                      label: _subheading,
+                      label: subheading,
                       value: password,
                       textField: true,
                       obscured: state.hide,
@@ -49,7 +49,7 @@ class PasswordInput extends StatelessWidget {
                             value: context.read<PasswordCubit>(),
                             child: PasswordInputBottomSheet(
                               password: password,
-                              inputHeading: _subheading,
+                              inputHeading: subheading,
                             ),
                           ),
                         );
@@ -100,8 +100,7 @@ class PasswordInputBottomSheet extends StatefulWidget {
   final String? inputHeading;
 
   @override
-  _PasswordInputBottomSheetState createState() =>
-      _PasswordInputBottomSheetState();
+  State createState() => _PasswordInputBottomSheetState();
 }
 
 class _PasswordInputBottomSheetState
@@ -121,7 +120,7 @@ class _PasswordInputBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    final _subheading =
+    final subheading =
         widget.inputHeading ?? Translator.of(context).translate.password;
     final appBar = AbiliaAppBar(
       title: Translator.of(context).translate.password,
@@ -138,7 +137,7 @@ class _PasswordInputBottomSheetState
           ),
           Tts.fromSemantics(
             SemanticsProperties(
-              label: _subheading,
+              label: subheading,
               value: controller.value.text,
               textField: true,
               obscured: true,
@@ -150,7 +149,7 @@ class _PasswordInputBottomSheetState
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    SubHeading(_subheading),
+                    SubHeading(subheading),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[

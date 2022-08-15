@@ -10,7 +10,7 @@ class EditNotePage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _EditNotePageState createState() => _EditNotePageState();
+  State createState() => _EditNotePageState();
 }
 
 class _EditNotePageState extends State<EditNotePage> {
@@ -41,7 +41,7 @@ class _EditNotePageState extends State<EditNotePage> {
 
   @override
   Widget build(BuildContext context) {
-    final _bottomPadding = EdgeInsets.only(bottom: layout.navigationBar.height);
+    final bottomPadding = EdgeInsets.only(bottom: layout.navigationBar.height);
     final translate = Translator.of(context).translate;
     return Theme(
       data: abiliaTheme.copyWith(
@@ -67,7 +67,7 @@ class _EditNotePageState extends State<EditNotePage> {
           ),
         ),
         body: Padding(
-          padding: _bottomPadding,
+          padding: bottomPadding,
           child: Stack(
             alignment: Alignment.bottomRight,
             children: [
@@ -87,7 +87,7 @@ class _EditNotePageState extends State<EditNotePage> {
                     downCollapseMargin: layout.navigationBar.height,
                     child: SingleChildScrollView(
                       controller: _scrollController,
-                      padding: EditNotePage.padding.add(_bottomPadding),
+                      padding: EditNotePage.padding.add(bottomPadding),
                       child: Stack(
                         children: <Widget>[
                           Lines(textRenderingSize: textRenderSize),

@@ -16,14 +16,14 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
           if (memoSettingsState.displayDayCalendarAppBar) {
             return CalendarAppBar(
               day: time,
-              calendarDayColor: memoSettingsState.calendarDayColor,
+              calendarDayColor: memoSettingsState.settings.calendar.dayColor,
               rows: AppBarTitleRows.day(
                 displayWeekDay: memoSettingsState.activityDisplayWeekDay,
                 displayPartOfDay: memoSettingsState.activityDisplayDayPeriod,
                 displayDate: memoSettingsState.activityDisplayDate,
                 currentTime: time,
                 day: time,
-                dayParts: memoSettingsState.dayParts,
+                dayParts: memoSettingsState.settings.calendar.dayParts,
                 langCode: Localizations.localeOf(context).toLanguageTag(),
                 translator: Translator.of(context).translate,
               ),

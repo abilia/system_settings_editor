@@ -148,9 +148,6 @@ final actionIconTextButtonStyleRed = ButtonStyle(
   ),
 );
 
-final double secondaryActionButtonMinSize =
-    layout.button.secondaryActionButtonMinSize;
-
 final _actionButtonStyle = ButtonStyle(
   textStyle:
       MaterialStateProperty.all(abiliaTextTheme.caption?.copyWith(height: 1)),
@@ -260,14 +257,12 @@ final secondaryActionButtonStyleDark = actionButtonStyleDark.copyWith(
         states.contains(MaterialState.pressed)) return noBorderShape;
     return darkShapeBorder.copyWith(borderRadius: circleRadius);
   }),
-  minimumSize: MaterialStateProperty.all(Size(
-    secondaryActionButtonMinSize,
-    secondaryActionButtonMinSize,
-  )),
-  fixedSize: MaterialStateProperty.all(Size(
-    secondaryActionButtonMinSize,
-    secondaryActionButtonMinSize,
-  )),
+  minimumSize: MaterialStateProperty.all(
+    layout.button.secondaryActionButtonSize,
+  ),
+  fixedSize: MaterialStateProperty.all(
+    layout.button.secondaryActionButtonSize,
+  ),
 );
 
 final actionButtonStyleBlack = _actionButtonStyle.copyWith(
@@ -386,14 +381,12 @@ final secondaryActionButtonStyleLight = actionButtonStyleLight.copyWith(
         states.contains(MaterialState.pressed)) return noBorderShape;
     return ligthShapeBorder.copyWith(borderRadius: circleRadius);
   }),
-  minimumSize: MaterialStateProperty.all(Size(
-    secondaryActionButtonMinSize,
-    secondaryActionButtonMinSize,
-  )),
-  fixedSize: MaterialStateProperty.all(Size(
-    secondaryActionButtonMinSize,
-    secondaryActionButtonMinSize,
-  )),
+  minimumSize: MaterialStateProperty.all(
+    layout.button.secondaryActionButtonSize,
+  ),
+  fixedSize: MaterialStateProperty.all(
+    layout.button.secondaryActionButtonSize,
+  ),
 );
 
 ButtonStyle tabButtonStyle({

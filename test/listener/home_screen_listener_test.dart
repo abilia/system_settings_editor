@@ -32,7 +32,7 @@ void main() {
       Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: startView.index,
-          identifier: MemoplannerSettings.functionMenuStartViewKey,
+          identifier: FunctionsSettings.functionMenuStartViewKey,
         ),
       );
 

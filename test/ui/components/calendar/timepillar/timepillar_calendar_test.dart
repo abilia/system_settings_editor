@@ -53,6 +53,8 @@ void main() {
         .thenAnswer((_) => Future.value([]));
     when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
+    when(() => mockActivityDb.getAllAfter(any()))
+        .thenAnswer((_) => Future.value([]));
 
     genericResponse = () => [timepillarGeneric];
     final mockGenericDb = MockGenericDb();
@@ -289,7 +291,7 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: false,
-                identifier: MemoplannerSettings.settingDisplayTimelineKey,
+                identifier: TimepillarSettings.settingDisplayTimelineKey,
               ),
             ),
           ];
@@ -313,7 +315,7 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: false,
-                identifier: MemoplannerSettings.settingDisplayTimelineKey,
+                identifier: TimepillarSettings.settingDisplayTimelineKey,
               ),
             ),
           ];
@@ -368,7 +370,7 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: true,
-                identifier: MemoplannerSettings.settingDisplayHourLinesKey,
+                identifier: TimepillarSettings.settingDisplayHourLinesKey,
               ),
             ),
           ];
@@ -388,7 +390,7 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: true,
-                identifier: MemoplannerSettings.settingDisplayHourLinesKey,
+                identifier: TimepillarSettings.settingDisplayHourLinesKey,
               ),
             ),
           ];
@@ -416,8 +418,7 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: false,
-                identifier:
-                    MemoplannerSettings.calendarActivityTypeShowTypesKey,
+                identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
             ),
           ];
@@ -444,8 +445,7 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: false,
-                identifier:
-                    MemoplannerSettings.calendarActivityTypeShowTypesKey,
+                identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
             ),
           ];
@@ -535,7 +535,7 @@ void main() {
                 data: MemoplannerSettingData.fromData(
                   data: false,
                   identifier:
-                      MemoplannerSettings.calendarActivityTypeShowColorKey,
+                      CategoriesSettings.calendarActivityTypeShowColorKey,
                 ),
               ),
             ];
@@ -606,8 +606,7 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: false,
-                identifier:
-                    MemoplannerSettings.calendarActivityTypeShowTypesKey,
+                identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
             ),
           ];

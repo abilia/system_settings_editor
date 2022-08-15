@@ -107,7 +107,7 @@ class SelectAlarmTypePage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SelectAlarmTypePageState createState() => _SelectAlarmTypePageState();
+  State createState() => _SelectAlarmTypePageState();
 }
 
 class _SelectAlarmTypePageState extends State<SelectAlarmTypePage> {
@@ -139,7 +139,7 @@ class SelectAlarmPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SelectAlarmPageState createState() => _SelectAlarmPageState();
+  State createState() => _SelectAlarmPageState();
 }
 
 class _SelectAlarmPageState extends State<SelectAlarmPage> {

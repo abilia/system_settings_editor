@@ -242,6 +242,34 @@ void main() {
       expect(find.byType(TimeWiz), findsOneWidget);
     });
 
+    testWidgets(
+        'SGC-1805 submitting from the keyboard behaves the same as clicking next',
+        (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          titleOnlyMemoSettings,
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ActivityWizardPage), findsOneWidget);
+      expect(find.byType(TitleWiz), findsOneWidget);
+      await tester.testTextInput.receiveAction(TextInputAction.done);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ErrorDialog), findsOneWidget);
+      expect(find.text(translate.missingTitleOrImage), findsOneWidget);
+      await tester.tapAt(Offset.zero);
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextField), 'title');
+      await tester.testTextInput.receiveAction(TextInputAction.done);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TimeWiz), findsOneWidget);
+    });
+
     testWidgets('title and image shows no warning step',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
@@ -705,7 +733,7 @@ void main() {
   });
 
   group('recurring step', () {
-    const _recurringOnly = MemoplannerSettings(
+    const recurringOnly = MemoplannerSettings(
       addActivityTypeAdvanced: false,
       stepByStep: StepByStepSettings(
         template: false,
@@ -726,7 +754,7 @@ void main() {
     testWidgets('changing recurring changes save button',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(_recurringOnly),
+        const MemoplannerSettingsLoaded(recurringOnly),
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();

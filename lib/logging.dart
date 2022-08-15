@@ -28,7 +28,7 @@ class SeagullLogger {
   final Set<LoggingType> loggingType;
   List<StreamSubscription> loggingSubscriptions = [];
   final _log = Logger((SeagullLogger).toString());
-  final String documentsDir;
+  final String documentsDirectory;
   final SharedPreferences? preferences;
 
   bool get fileLogging => loggingType.contains(LoggingType.file);
@@ -39,18 +39,18 @@ class SeagullLogger {
 
   factory SeagullLogger.test() => SeagullLogger(
         loggingType: const {LoggingType.print},
-        documentsDir: '',
+        documentsDirectory: '',
         level: Level.ALL,
       );
 
   factory SeagullLogger.nothing() => SeagullLogger(
         loggingType: const {},
-        documentsDir: '',
+        documentsDirectory: '',
         level: Level.OFF,
       );
 
   SeagullLogger({
-    required this.documentsDir,
+    required this.documentsDirectory,
     this.preferences,
     this.loggingType = const {
       if (kDebugMode)
@@ -72,7 +72,7 @@ class SeagullLogger {
 
   static const latestUploadKey = 'LATEST-LOG-UPLOAD-MILLIS';
   static const uploadInterval = Duration(hours: 24);
-  static const logArchivePath = 'logarchive';
+  static const logArchiveDirectory = 'logarchive';
 
   Future<void> cancelLogging() async {
     if (loggingSubscriptions.isNotEmpty) {
@@ -102,17 +102,17 @@ class SeagullLogger {
   Future<void> sendLogsToBackend() async {
     if (fileLogging) {
       final time = DateFormat('yyyyMMddHHmm').format(DateTime.now());
-      final _logArchivePath = '$documentsDir/$logArchivePath';
-      final logArchiveDir = Directory(_logArchivePath);
+      final logArchivePath = '$documentsDirectory/$logArchiveDirectory';
+      final logArchiveDir = Directory(logArchivePath);
       await logArchiveDir.create(recursive: true);
       final archiveFilePath =
-          '$_logArchivePath/${Config.flavor.id}_log_$time.log';
+          '$logArchivePath/${Config.flavor.id}_log_$time.log';
       await _logFileLock.synchronized(() async {
         await _logFile?.copy(archiveFilePath);
         await _logFile?.writeAsString('');
       });
 
-      final zipFile = File('$documentsDir/tmp_log_zip.zip');
+      final zipFile = File('$documentsDirectory/tmp_log_zip.zip');
       await ZipFile.createFromDirectory(
         sourceDir: logArchiveDir,
         zipFile: zipFile,
@@ -165,9 +165,9 @@ class SeagullLogger {
   }
 
   void _initFileLogging() {
-    assert(documentsDir.isNotEmpty, 'documents dir empty');
+    assert(documentsDirectory.isNotEmpty, 'documents dir empty');
     assert(preferences != null, 'preferences is null');
-    _logFile = File('$documentsDir/$logFileName');
+    _logFile = File('$documentsDirectory/$logFileName');
     loggingSubscriptions.add(
       Logger.root.onRecord.listen(
         (record) async {
@@ -235,10 +235,10 @@ class SeagullLogger {
     });
   }
 
+  final _postLog = Logger('postLogFile');
   Future<bool> _postLogFile(
     File file,
   ) async {
-    final _log = Logger('postLogFile');
     try {
       final prefs = preferences;
       if (prefs != null) {
@@ -266,11 +266,11 @@ class SeagullLogger {
           return true;
         }
         final response = await Response.fromStream(streamedResponse);
-        _log.warning(
+        _postLog.warning(
             'Could not save log file: ${streamedResponse.statusCode}, ${response.body}');
       }
     } catch (e) {
-      _log.severe('Could not save log file.', e);
+      _postLog.severe('Could not save log file.', e);
     }
     return false;
   }

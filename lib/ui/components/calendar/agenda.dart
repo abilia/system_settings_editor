@@ -12,7 +12,7 @@ class Agenda extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AgendaState createState() => _AgendaState();
+  State createState() => _AgendaState();
 }
 
 class _AgendaState extends State<Agenda> with CalendarStateMixin {
@@ -56,24 +56,20 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
     final state = widget.eventState;
     return RefreshIndicator(
       onRefresh: refresh,
-      child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        buildWhen: (previous, current) =>
-            previous.showCategories != current.showCategories,
-        builder: (context, memoplannerSettingsState) => Stack(
-          children: <Widget>[
-            NotificationListener<ScrollNotification>(
-              onNotification: state.isToday ? onScrollNotification : null,
-              child: AbiliaScrollBar(
-                controller: scrollController,
-                child: EventList(
-                  scrollController: scrollController,
-                  bottomPadding: layout.agenda.bottomPadding,
-                  topPadding: layout.agenda.topPadding,
-                ),
+      child: Stack(
+        children: <Widget>[
+          NotificationListener<ScrollNotification>(
+            onNotification: state.isToday ? onScrollNotification : null,
+            child: AbiliaScrollBar(
+              controller: scrollController,
+              child: EventList(
+                scrollController: scrollController,
+                bottomPadding: layout.agenda.bottomPadding,
+                topPadding: layout.agenda.topPadding,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -103,8 +99,8 @@ class EventList extends StatelessWidget {
       child: Builder(builder: (context) {
         final eventState = context.watch<DayEventsCubit>().state;
         final now = context.watch<ClockBloc>().state;
-        final dayPartsSetting = context
-            .select((MemoplannerSettingBloc bloc) => bloc.state.dayParts);
+        final dayPartsSetting = context.select((MemoplannerSettingBloc bloc) =>
+            bloc.state.settings.calendar.dayParts);
 
         final isNight = eventState.day.isAtSameDay(now) &&
             now.dayPart(dayPartsSetting) == DayPart.night;
@@ -212,46 +208,42 @@ class SliverEventList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final categoriesSettings =
+        context.select<MemoplannerSettingBloc, CategoriesSettings>(
+            (bloc) => bloc.state.settings.calendar.categories);
     return SliverPadding(
       padding: layout.templates.m1.onlyHorizontal,
-      sliver: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        buildWhen: (previous, current) =>
-            previous.showCategories != current.showCategories ||
-            previous.showCategoryColor != current.showCategoryColor,
-        builder: (context, setting) {
-          return SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                if (reversed) index = _maxIndex - index;
-                final event = events[index];
-                final padding = setting.showCategories
-                    ? _padding(index)
-                    : EdgeInsets.only(bottom: layout.eventCard.marginSmall);
-                if (event is ActivityOccasion) {
-                  return Padding(
-                    padding: padding,
-                    child: ActivityCard(
-                      activityOccasion: event,
-                      showCategoryColor: setting.showCategoryColor,
-                      useOpacity: isNight,
-                    ),
-                  );
-                } else if (event is TimerOccasion) {
-                  return Padding(
-                    padding: padding,
-                    child: TimerCard(
-                      timerOccasion: event,
-                      day: day,
-                      useOpacity: isNight,
-                    ),
-                  );
-                }
-                return null;
-              },
-              childCount: events.length,
-            ),
-          );
-        },
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            if (reversed) index = _maxIndex - index;
+            final event = events[index];
+            final padding = categoriesSettings.show
+                ? _padding(index)
+                : EdgeInsets.only(bottom: layout.eventCard.marginSmall);
+            if (event is ActivityOccasion) {
+              return Padding(
+                padding: padding,
+                child: ActivityCard(
+                  activityOccasion: event,
+                  showCategoryColor: categoriesSettings.showColors,
+                  useOpacity: isNight,
+                ),
+              );
+            } else if (event is TimerOccasion) {
+              return Padding(
+                padding: padding,
+                child: TimerCard(
+                  timerOccasion: event,
+                  day: day,
+                  useOpacity: isNight,
+                ),
+              );
+            }
+            return null;
+          },
+          childCount: events.length,
+        ),
       ),
     );
   }

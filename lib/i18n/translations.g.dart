@@ -712,8 +712,13 @@ abstract class Translated {
 
   final String activateScreensaver = 'Activate Screensaver';
 
+  final String onlyActivateScreenSaverDuringNight =
+      'Only activate screen saver during night';
+
   final String menuRemovalWarning =
       'Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking directly under the category symbols in the day calendar; left – right – left. This works even if they are hidden.';
+
+  final String menuItemsDisabled = 'all menu items are disabled';
 
   final String selectADayToViewDetails = 'Select a day to view more details';
 
@@ -858,7 +863,25 @@ abstract class Translated {
 
   final String about = 'About';
 
+  final String aboutMemoplanner = 'About';
+
+  final String licenseNumber = 'License number';
+
+  final String licenseValidDate = 'License valid date';
+
+  final String loggedInUser = 'Logged in user account';
+
+  final String aboutDevice = 'About the device';
+
+  final String deviceName = 'Device name';
+
+  final String serialNumber = 'Serial number';
+
   final String version = 'Version';
+
+  final String androidVersion = 'Android version';
+
+  final String iosVersion = 'iOS version';
 
   final String producer = 'Producer';
 

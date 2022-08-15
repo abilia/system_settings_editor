@@ -13,32 +13,30 @@ class AppBarPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) => BlocBuilder<ClockBloc, DateTime>(
-        builder: (context, currentTime) {
-          return FittedBox(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: CalendarAppBar.size.height,
-              child: CalendarAppBar(
-                leftAction: showBrowseButtons
-                    ? LeftNavButton(
-                        onPressed: () {},
-                      )
-                    : null,
-                rightAction: showBrowseButtons
-                    ? RightNavButton(
-                        onPressed: () {},
-                      )
-                    : null,
-                day: currentTime,
-                calendarDayColor: memoSettingsState.calendarDayColor,
-                showClock: showClock,
-                rows: rows,
-              ),
-            ),
-          );
-        },
+    final dayColor = context.select((MemoplannerSettingBloc settings) =>
+        settings.state.settings.calendar.dayColor);
+    final currentTime = context.watch<ClockBloc>().state;
+
+    return FittedBox(
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: CalendarAppBar.size.height,
+        child: CalendarAppBar(
+          leftAction: showBrowseButtons
+              ? LeftNavButton(
+                  onPressed: () {},
+                )
+              : null,
+          rightAction: showBrowseButtons
+              ? RightNavButton(
+                  onPressed: () {},
+                )
+              : null,
+          day: currentTime,
+          calendarDayColor: dayColor,
+          showClock: showClock,
+          rows: rows,
+        ),
       ),
     );
   }

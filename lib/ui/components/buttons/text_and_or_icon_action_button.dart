@@ -58,10 +58,10 @@ class TextAndOrIconActionButtonLight extends StatelessWidget {
         child: layout.go
             ? IconActionButton(
                 onPressed: onPressed,
-                child: Icon(iconData),
                 style: selected
                     ? actionButtonStyleLightSelected
                     : actionButtonStyleLight,
+                child: Icon(iconData),
               )
             : _TextAndIconActionButton(
                 text,
@@ -92,8 +92,8 @@ class TextAndOrIconActionButtonBlack extends StatelessWidget {
         child: layout.go
             ? IconActionButton(
                 onPressed: onPressed,
-                child: Icon(iconData),
                 style: actionButtonStyleBlack,
+                child: Icon(iconData),
               )
             : _TextAndIconActionButton(
                 text,

@@ -12,34 +12,28 @@ class TimepillarCalendar extends StatelessWidget {
   const TimepillarCalendar({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      buildWhen: (previous, current) =>
-          previous.dayParts != current.dayParts ||
-          previous.displayTimeline != current.displayTimeline ||
-          previous.showCategories != current.showCategories ||
-          previous.displayHourLines != current.displayHourLines,
-      builder: (context, memoplannerSettingsState) =>
-          BlocBuilder<TimepillarCubit, TimepillarState>(
-        builder: (context, timepillarState) => timepillarState.calendarType ==
-                DayCalendarType.oneTimepillar
-            ? BlocBuilder<TimepillarMeasuresCubit, TimepillarMeasures>(
-                builder: (context, measures) => OneTimepillarCalendar(
-                  timepillarState: timepillarState,
-                  timepillarMeasures: measures,
-                  dayParts: memoplannerSettingsState.dayParts,
-                  displayTimeline: memoplannerSettingsState.displayTimeline,
-                  showCategories: memoplannerSettingsState.showCategories,
-                  displayHourLines: memoplannerSettingsState.displayHourLines,
-                ),
-              )
-            : TwoTimepillarCalendar(
-                timepillarState: timepillarState,
-                showCategories: memoplannerSettingsState.showCategories,
-                displayHourLines: memoplannerSettingsState.displayHourLines,
-                displayTimeline: memoplannerSettingsState.displayTimeline,
-                dayParts: memoplannerSettingsState.dayParts,
-              ),
-      ),
+    final calendarSettings = context
+        .select((MemoplannerSettingBloc bloc) => bloc.state.settings.calendar);
+    final timepillarState = context.watch<TimepillarCubit>().state;
+
+    if (timepillarState.calendarType == DayCalendarType.oneTimepillar) {
+      return BlocBuilder<TimepillarMeasuresCubit, TimepillarMeasures>(
+        builder: (context, measures) => OneTimepillarCalendar(
+          timepillarState: timepillarState,
+          timepillarMeasures: measures,
+          dayParts: calendarSettings.dayParts,
+          displayTimeline: calendarSettings.timepillar.timeline,
+          showCategories: calendarSettings.categories.show,
+          displayHourLines: calendarSettings.timepillar.hourLines,
+        ),
+      );
+    }
+    return TwoTimepillarCalendar(
+      timepillarState: timepillarState,
+      showCategories: calendarSettings.categories.show,
+      displayHourLines: calendarSettings.timepillar.hourLines,
+      displayTimeline: calendarSettings.timepillar.timeline,
+      dayParts: calendarSettings.dayParts,
     );
   }
 }
@@ -73,7 +67,7 @@ class OneTimepillarCalendar extends StatefulWidget {
         super(key: key);
 
   @override
-  _OneTimepillarCalendarState createState() => _OneTimepillarCalendarState();
+  State createState() => _OneTimepillarCalendarState();
 }
 
 class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
@@ -123,7 +117,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
     final mediaData = MediaQuery.of(context);
     final showCategoryColor = context.select(
         (MemoplannerSettingBloc settingsBloc) =>
-            settingsBloc.state.showCategoryColor);
+            settingsBloc.state.settings.calendar.categories.showColors);
     final textStyle = layout.timepillar.card.textStyle(measures.zoom);
     final textScaleFactor = mediaData.textScaleFactor;
     final events = widget.timepillarState.eventsForInterval(interval);
@@ -268,23 +262,21 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                     ),
                                   SliverTimePillar(
                                     key: center,
-                                    child: BlocBuilder<MemoplannerSettingBloc,
-                                        MemoplannerSettingsState>(
-                                      buildWhen: (previous, current) =>
-                                          previous.timepillar12HourFormat !=
-                                              current.timepillar12HourFormat ||
-                                          previous.columnOfDots !=
-                                              current.columnOfDots,
-                                      builder: (context, memoSettings) =>
+                                    child: BlocSelector<
+                                        MemoplannerSettingBloc,
+                                        MemoplannerSettingsState,
+                                        TimepillarSettings>(
+                                      selector: (state) =>
+                                          state.settings.calendar.timepillar,
+                                      builder: (context, timepillar) =>
                                           TimePillar(
                                         interval: interval,
                                         dayOccasion:
                                             widget.timepillarState.occasion,
-                                        use12h:
-                                            memoSettings.timepillar12HourFormat,
+                                        use12h: timepillar.use12h,
                                         nightParts: np,
                                         dayParts: widget.dayParts,
-                                        columnOfDots: memoSettings.columnOfDots,
+                                        columnOfDots: timepillar.columnOfDots,
                                         topMargin: topMargin,
                                         measures: measures,
                                       ),

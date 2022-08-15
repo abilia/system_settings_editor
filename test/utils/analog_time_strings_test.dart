@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/i18n/all.dart';
-import 'package:seagull/models/day_parts.dart';
-import 'package:seagull/utils/analog_time_strings.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 void main() {
   group('minutes. five min interval', () {

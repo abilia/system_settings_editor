@@ -18,7 +18,7 @@ class SelectSoundPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SelectSoundPageState createState() => _SelectSoundPageState();
+  State createState() => _SelectSoundPageState();
 }
 
 class _SelectSoundPageState extends State<SelectSoundPage> {
@@ -34,7 +34,7 @@ class _SelectSoundPageState extends State<SelectSoundPage> {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     final widgets = Sound.values
-        .where((s) => widget.noSoundOption ? true : s != Sound.NoSound)
+        .where((s) => widget.noSoundOption || s != Sound.NoSound)
         .map(
           (s) => Row(
             children: [

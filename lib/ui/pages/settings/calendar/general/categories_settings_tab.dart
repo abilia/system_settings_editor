@@ -7,8 +7,7 @@ class CategoriesSettingsTab extends StatelessWidget {
   const CategoriesSettingsTab({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GeneralCalendarSettingsCubit,
-        GeneralCalendarSettingsState>(
+    return BlocBuilder<GeneralCalendarSettingsCubit, GeneralCalendarSettings>(
       builder: (context, state) {
         final t = Translator.of(context).translate;
         return SettingsTab(
@@ -67,7 +66,7 @@ class CategoriesSettingsTab extends StatelessWidget {
 class _CategoryPickField extends StatelessWidget {
   final ImageAndName imageAndName;
   final String defaultName;
-  final CategoriesSettingState Function(ImageAndName) onResult;
+  final CategoriesSettings Function(ImageAndName) onResult;
 
   const _CategoryPickField({
     required this.imageAndName,
@@ -121,7 +120,7 @@ class _CategoriesPreview extends StatelessWidget {
     required this.state,
     Key? key,
   }) : super(key: key);
-  final GeneralCalendarSettingsState state;
+  final GeneralCalendarSettings state;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -153,7 +152,7 @@ class _CategoriesPreview extends StatelessWidget {
                       child: TimePillar(
                         preview: true,
                         dayOccasion: Occasion.current,
-                        dayParts: DayParts.standard(),
+                        dayParts: const DayParts(),
                         use12h: state.timepillar.use12h,
                         nightParts: const [],
                         interval: TimepillarInterval(

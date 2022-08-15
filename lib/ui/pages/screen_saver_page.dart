@@ -13,7 +13,7 @@ class ScreenSaverPage extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       child: BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
           DayParts>(
-        selector: (state) => state.dayParts,
+        selector: (state) => state.settings.calendar.dayParts,
         builder: (context, dayParts) => BlocSelector<ClockBloc, DateTime, bool>(
           selector: (time) => time.isNight(dayParts),
           builder: (context, isNight) => Scaffold(
@@ -27,7 +27,7 @@ class ScreenSaverPage extends StatelessWidget {
                     padding: layout.screenSaver.clockPadding,
                     child: BlocSelector<MemoplannerSettingBloc,
                         MemoplannerSettingsState, ClockType>(
-                      selector: (state) => state.clockType,
+                      selector: (state) => state.settings.calendar.clockType,
                       builder: (context, clockType) => Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -74,7 +74,7 @@ class ScreenSaverAppBar extends StatelessWidget {
                 displayDate: memoSettingsState.activityDisplayDate,
                 currentTime: time,
                 day: time.onlyDays(),
-                dayParts: memoSettingsState.dayParts,
+                dayParts: memoSettingsState.settings.calendar.dayParts,
                 langCode: Localizations.localeOf(context).toLanguageTag(),
                 translator: Translator.of(context).translate,
               ),

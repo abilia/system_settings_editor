@@ -40,7 +40,7 @@ Future<void> initServices() async {
   final preferences = await SharedPreferences.getInstance();
   Bloc.observer = BlocLoggingObserver(analyticsLogging: Config.release);
   final seagullLogger = SeagullLogger(
-    documentsDir: documentDirectory.path,
+    documentsDirectory: documentDirectory.path,
     preferences: preferences,
   );
   _log.fine('Initializing services');

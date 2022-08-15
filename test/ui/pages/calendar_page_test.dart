@@ -90,6 +90,8 @@ void main() {
         .thenAnswer((_) => Future.value(100));
     when(() => mockActivityDb.insert(any()))
         .thenAnswer((_) => Future.value(100));
+    when(() => mockActivityDb.getAllAfter(any()))
+        .thenAnswer((_) => Future.value([]));
 
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
@@ -356,7 +358,7 @@ void main() {
               Generic.createNew<MemoplannerSettingData>(
                 data: MemoplannerSettingData.fromData(
                   data: StartView.weekCalendar.index,
-                  identifier: MemoplannerSettings.functionMenuStartViewKey,
+                  identifier: FunctionsSettings.functionMenuStartViewKey,
                 ),
               ),
             ];
@@ -371,7 +373,7 @@ void main() {
               Generic.createNew<MemoplannerSettingData>(
                 data: MemoplannerSettingData.fromData(
                   data: StartView.monthCalendar.index,
-                  identifier: MemoplannerSettings.functionMenuStartViewKey,
+                  identifier: FunctionsSettings.functionMenuStartViewKey,
                 ),
               ),
             ];
@@ -386,13 +388,13 @@ void main() {
               Generic.createNew<MemoplannerSettingData>(
                 data: MemoplannerSettingData.fromData(
                   data: StartView.photoAlbum.index,
-                  identifier: MemoplannerSettings.functionMenuStartViewKey,
+                  identifier: FunctionsSettings.functionMenuStartViewKey,
                 ),
               ),
             ];
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        expect(find.byType(OneTimepillarCalendar), findsOneWidget);
+        expect(find.byType(PhotoCalendarPage), findsOneWidget);
       });
     });
   });
@@ -515,10 +517,15 @@ void main() {
 
       testWidgets('Color settings with colors on all days',
           (WidgetTester tester) async {
-        when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(calendarDayColor: DayColor.allDays.index),
-        ));
+        when(() => memoplannerSettingBlocMock.state).thenReturn(
+          const MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              calendar: GeneralCalendarSettings(
+                dayColor: DayColor.allDays,
+              ),
+            ),
+          ),
+        );
         await tester.pumpWidget(wrapWithMaterialApp(
           const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
@@ -547,11 +554,15 @@ void main() {
 
       testWidgets('Color settings with colors only on weekends',
           (WidgetTester tester) async {
-        when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(
-              calendarDayColor: DayColor.saturdayAndSunday.index),
-        ));
+        when(() => memoplannerSettingBlocMock.state).thenReturn(
+          const MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              calendar: GeneralCalendarSettings(
+                dayColor: DayColor.saturdayAndSunday,
+              ),
+            ),
+          ),
+        );
         await tester.pumpWidget(wrapWithMaterialApp(
           const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
@@ -580,10 +591,15 @@ void main() {
       });
 
       testWidgets('Color settings with no colors', (WidgetTester tester) async {
-        when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(calendarDayColor: DayColor.noColors.index),
-        ));
+        when(() => memoplannerSettingBlocMock.state).thenReturn(
+          const MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              calendar: GeneralCalendarSettings(
+                dayColor: DayColor.noColors,
+              ),
+            ),
+          ),
+        );
         await tester.pumpWidget(wrapWithMaterialApp(
           const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
@@ -658,7 +674,9 @@ void main() {
         when(() => memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            calendarActivityTypeShowTypes: false,
+            calendar: const GeneralCalendarSettings(
+              categories: CategoriesSettings(show: false),
+            ),
             viewOptionsTimeView: DayCalendarType.oneTimepillar.index,
           ),
         ));
@@ -679,7 +697,9 @@ void main() {
         when(() => memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            calendarActivityTypeShowTypes: true,
+            calendar: const GeneralCalendarSettings(
+              categories: CategoriesSettings(show: true),
+            ),
             viewOptionsTimeView: DayCalendarType.oneTimepillar.index,
           ),
         ));
@@ -992,10 +1012,10 @@ void main() {
               widget is WeekCalenderHeadingContent && widget.selected));
       expect(selectedHeadingsnextWeekPreSelect, isEmpty);
 
-      final _dateTime = initialTime.addDays(8);
-      final d = _dateTime.day;
+      final dateTime = initialTime.addDays(8);
+      final d = dateTime.day;
       await tester
-          .tap(find.text('$d\n${translate.shortWeekday(_dateTime.weekday)}'));
+          .tap(find.text('$d\n${translate.shortWeekday(dateTime.weekday)}'));
       await tester.pumpAndSettle();
       final selectedHeadingsnextWeekPostSelect = tester.widgetList(
           find.byWidgetPredicate((widget) =>

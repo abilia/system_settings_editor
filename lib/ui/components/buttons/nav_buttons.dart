@@ -13,8 +13,8 @@ class LeftNavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IconActionButton(
         onPressed: onPressed,
-        child: const Icon(AbiliaIcons.returnToPreviousPage),
         ttsData: Translator.of(context).translate.back,
+        child: const Icon(AbiliaIcons.returnToPreviousPage),
       );
 }
 
@@ -28,7 +28,7 @@ class RightNavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IconActionButton(
         onPressed: onPressed,
-        child: const Icon(AbiliaIcons.goToNextPage),
         ttsData: Translator.of(context).translate.next,
+        child: const Icon(AbiliaIcons.goToNextPage),
       );
 }

@@ -94,6 +94,8 @@ void main() {
         .thenAnswer((_) => Future.value(100));
     when(() => mockActivityDb.insert(any()))
         .thenAnswer((_) => Future.value(100));
+    when(() => mockActivityDb.getAllAfter(any()))
+        .thenAnswer((_) => Future.value([]));
 
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
@@ -189,7 +191,7 @@ void main() {
           final settings = Generic.createNew<MemoplannerSettingData>(
             data: MemoplannerSettingData.fromData(
               data: false,
-              identifier: MemoplannerSettings.functionMenuDisplayNewTimerKey,
+              identifier: DisplaySettings.functionMenuDisplayNewTimerKey,
             ),
           );
           genericResponse = () => [settings];
@@ -812,7 +814,7 @@ void main() {
           final settings = Generic.createNew<MemoplannerSettingData>(
             data: MemoplannerSettingData.fromData(
               data: false,
-              identifier: MemoplannerSettings.functionMenuDisplayNewActivityKey,
+              identifier: DisplaySettings.functionMenuDisplayNewActivityKey,
             ),
           );
           genericResponse = () => [settings];

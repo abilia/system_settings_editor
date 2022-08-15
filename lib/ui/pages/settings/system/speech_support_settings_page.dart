@@ -110,8 +110,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                         children: [
                           Tts(
                             child: Text(
-                              t.speechRate +
-                                  ' ${_speechRateToProgress(state.speechRate).round()}',
+                              '${t.speechRate} ${_speechRateToProgress(state.speechRate).round()}',
                               style: textStyle,
                             ),
                           ).pad(

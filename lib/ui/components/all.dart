@@ -37,5 +37,6 @@ export 'lined_border.dart';
 export 'collapsable_widget.dart';
 export 'abilia_progress_indicator.dart';
 export 'activity/youtube_player.dart';
+export 'default_tab_controller_builder.dart';
 
 export 'package:flutter/semantics.dart';

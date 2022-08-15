@@ -62,7 +62,13 @@ void main() {
     setUp: () {
       when(() => settingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
-          MemoplannerSettings(activityTimeout: 10.minutes().inMilliseconds),
+          MemoplannerSettings(
+            functions: FunctionsSettings(
+              timeout: TimeoutSettings(
+                duration: 10.minutes(),
+              ),
+            ),
+          ),
         ),
       );
     },
@@ -88,7 +94,11 @@ void main() {
     setUp: () {
       when(() => settingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
-          MemoplannerSettings(activityTimeout: 10.minutes().inMilliseconds),
+          MemoplannerSettings(
+            functions: FunctionsSettings(
+              timeout: TimeoutSettings(duration: 10.minutes()),
+            ),
+          ),
         ),
       );
     },
@@ -116,7 +126,11 @@ void main() {
     setUp: () {
       when(() => settingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
-          MemoplannerSettings(activityTimeout: 1.minutes().inMilliseconds),
+          MemoplannerSettings(
+            functions: FunctionsSettings(
+              timeout: TimeoutSettings(duration: 1.minutes()),
+            ),
+          ),
         ),
       );
     },
@@ -143,7 +157,11 @@ void main() {
     setUp: () {
       when(() => settingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
-          MemoplannerSettings(activityTimeout: 1.minutes().inMilliseconds),
+          MemoplannerSettings(
+            functions: FunctionsSettings(
+              timeout: TimeoutSettings(duration: 1.minutes()),
+            ),
+          ),
         ),
       );
     },
@@ -171,7 +189,11 @@ void main() {
     setUp: () {
       when(() => settingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
-          MemoplannerSettings(activityTimeout: 0),
+          MemoplannerSettings(
+            functions: FunctionsSettings(
+              timeout: TimeoutSettings(duration: Duration.zero),
+            ),
+          ),
         ),
       );
     },
@@ -204,7 +226,11 @@ void main() {
     setUp: () {
       when(() => settingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
-          MemoplannerSettings(activityTimeout: 0),
+          MemoplannerSettings(
+            functions: FunctionsSettings(
+              timeout: TimeoutSettings(duration: Duration.zero),
+            ),
+          ),
         ),
       );
     },
@@ -234,7 +260,11 @@ void main() {
     setUp: () {
       when(() => settingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
-          MemoplannerSettings(activityTimeout: 0),
+          MemoplannerSettings(
+            functions: FunctionsSettings(
+              timeout: TimeoutSettings(duration: Duration.zero),
+            ),
+          ),
         ),
       );
     },

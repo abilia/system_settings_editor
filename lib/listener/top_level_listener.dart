@@ -32,16 +32,16 @@ class TopLevelListener extends StatelessWidget {
                   previous.runtimeType != current.runtimeType ||
                   previous.forcedNewState != current.forcedNewState,
               listener: (context, state) async {
-                final _navigator = navigatorKey.currentState;
-                if (_navigator == null) {
+                final navigator = navigatorKey.currentState;
+                if (navigator == null) {
                   context.read<AuthenticationBloc>().add(NotReady());
                   return;
                 }
                 if (state is Authenticated) {
                   await Permission.notification.request();
-                  final _payload = payload;
-                  if (_payload == null) {
-                    await _navigator.pushAndRemoveUntil<void>(
+                  final payload_ = payload;
+                  if (payload_ == null) {
+                    await navigator.pushAndRemoveUntil<void>(
                       MaterialPageRoute<void>(
                         builder: (_) => AuthenticatedBlocsProvider(
                           authenticatedState: state,
@@ -56,15 +56,15 @@ class TopLevelListener extends StatelessWidget {
                       (_) => false,
                     );
                   } else {
-                    await _navigator.pushAndRemoveUntil(
+                    await navigator.pushAndRemoveUntil(
                         GetIt.I<AlarmNavigator>().getFullscreenAlarmRoute(
                           authenticatedState: state,
-                          alarm: _payload,
+                          alarm: payload_,
                         ),
                         (_) => false);
                   }
                 } else if (state is Unauthenticated) {
-                  await _navigator.pushAndRemoveUntil<void>(
+                  await navigator.pushAndRemoveUntil<void>(
                     MaterialPageRoute<void>(
                       builder: (_) {
                         return LoginPage(authState: state);

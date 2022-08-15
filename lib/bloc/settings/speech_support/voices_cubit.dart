@@ -13,7 +13,7 @@ class VoicesCubit extends Cubit<VoicesState> {
     required this.speechSettingsCubit,
     required this.voiceRepository,
     required Stream<Locale> localeStream,
-  }) : super(const VoicesState()) {
+  }) : super(const VoicesLoading()) {
     _localeSubscription = localeStream
         .map((locale) => locale.languageCode)
         .listen(_changeLanguage);
@@ -130,5 +130,5 @@ class VoicesState extends Equatable {
 }
 
 class VoicesLoading extends VoicesState {
-  const VoicesLoading({required String languageCode}) : super();
+  const VoicesLoading() : super();
 }

@@ -5,12 +5,14 @@ import 'package:seagull/ui/themes/colors.dart';
 class MenuPageLayout {
   final double crossAxisSpacing, mainAxisSpacing;
   final TextStyle _textStyle;
+  final EdgeInsets aboutButtonPadding;
 
   final MenuButtonsLayout buttons;
 
   const MenuPageLayout({
     this.crossAxisSpacing = 7.5,
     this.mainAxisSpacing = 7,
+    this.aboutButtonPadding = const EdgeInsets.only(right: 24),
     this.buttons = const MenuButtonsLayout(),
     TextStyle? textStyle,
   }) : _textStyle = textStyle ??

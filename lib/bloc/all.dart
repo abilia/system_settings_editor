@@ -1,5 +1,4 @@
 export 'package:flutter_bloc/flutter_bloc.dart';
-export 'package:bloc/bloc.dart';
 export 'activities/all.dart';
 export 'authentication/authentication_bloc.dart';
 export 'login/all.dart';
@@ -33,4 +32,5 @@ export 'start_guide/startup_cubit.dart';
 export 'sync/base_url_cubit.dart';
 export 'calendar/touch_detection_cubit.dart';
 export 'android/action_intent_cubit.dart';
+export 'alarm/notification_bloc.dart';
 export 'locale/locale_cubit.dart';

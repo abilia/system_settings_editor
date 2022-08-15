@@ -14,7 +14,7 @@ class MonthAppBar extends StatelessWidget implements PreferredSizeWidget {
         showYear: settingState.monthCaptionShowYear,
         showBrowseButtons: settingState.monthCaptionShowBrowseButtons,
         showClock: settingState.monthCaptionShowClock,
-        dayColor: settingState.calendarDayColor,
+        dayColor: settingState.settings.calendar.dayColor,
         showDay: true,
       ),
     );

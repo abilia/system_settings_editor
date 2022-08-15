@@ -80,7 +80,7 @@ class IconActionButtonBlack extends StatelessWidget {
   Widget build(BuildContext context) => IconActionButton(
         onPressed: onPressed,
         style: actionButtonStyleBlack,
-        child: child,
         ttsData: ttsData,
+        child: child,
       );
 }

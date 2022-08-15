@@ -1203,7 +1203,7 @@ void main() {
         activitiesBloc.add(LoadActivities());
 
         dayPickerBloc.add(GoTo(day: startTime));
-        for (final _ in allOtherDays) {
+        for (var i = 0; i < allOtherDays.length; i++) {
           dayPickerBloc.add(NextDay());
         }
 

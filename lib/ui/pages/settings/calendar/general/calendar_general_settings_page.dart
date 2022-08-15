@@ -8,7 +8,7 @@ class CalendarGeneralSettingsPage extends StatelessWidget {
     final t = Translator.of(context).translate;
     return BlocProvider<GeneralCalendarSettingsCubit>(
       create: (context) => GeneralCalendarSettingsCubit(
-        settingsState: context.read<MemoplannerSettingBloc>().state,
+        initial: context.read<MemoplannerSettingBloc>().state.settings.calendar,
         genericCubit: context.read<GenericCubit>(),
       ),
       child: DefaultTabController(

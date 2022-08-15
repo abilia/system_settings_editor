@@ -76,7 +76,7 @@ class TimerWheel extends StatefulWidget {
   final bool showTimeText;
 
   @override
-  _TimerWheelState createState() => _TimerWheelState();
+  State createState() => _TimerWheelState();
 }
 
 class _TimerWheelState extends State<TimerWheel> {

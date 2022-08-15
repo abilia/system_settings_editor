@@ -21,7 +21,7 @@ class EditImageAndName extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _EditImageAndNameState createState() => _EditImageAndNameState();
+  State createState() => _EditImageAndNameState();
 }
 
 class _EditImageAndNameState extends State<EditImageAndName> {

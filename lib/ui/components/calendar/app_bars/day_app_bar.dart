@@ -22,25 +22,26 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final memoSettingsState = context.watch<MemoplannerSettingBloc>().state;
+    final calendarSettings = memoSettingsState.settings.calendar;
     final currentMinute = context.watch<ClockBloc>().state;
-    final timePillarState = context.watch<TimepillarCubit>().state;
+    final showNightCalendar = context.select<TimepillarCubit, bool>(
+        (cubit) => cubit.state.showNightCalendar);
     bool isTimepillar =
         memoSettingsState.dayCalendarType != DayCalendarType.list;
-    bool isNight = (isTimepillar ? timePillarState.showNightCalendar : true) &&
+    bool isNight = (!isTimepillar || showNightCalendar) &&
         currentMinute.isAtSameDay(day) &&
-        currentMinute.dayPart(memoSettingsState.dayParts) == DayPart.night;
+        currentMinute.dayPart(calendarSettings.dayParts) == DayPart.night;
 
     return CalendarAppBar(
       day: day,
-      calendarDayColor:
-          isNight ? DayColor.noColors : memoSettingsState.calendarDayColor,
+      calendarDayColor: isNight ? DayColor.noColors : calendarSettings.dayColor,
       rows: AppBarTitleRows.day(
         displayWeekDay: memoSettingsState.activityDisplayWeekDay,
         displayPartOfDay: memoSettingsState.activityDisplayDayPeriod,
         displayDate: memoSettingsState.activityDisplayDate,
         currentTime: currentMinute,
         day: day,
-        dayParts: memoSettingsState.dayParts,
+        dayParts: calendarSettings.dayParts,
         langCode: Localizations.localeOf(context).toLanguageTag(),
         translator: Translator.of(context).translate,
         currentNight: isNight,

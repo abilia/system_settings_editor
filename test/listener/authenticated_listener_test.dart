@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/listener/all.dart';
@@ -25,14 +24,14 @@ void main() {
   late StreamController<MemoplannerSettingsState> settingsStreamController;
   late Stream<MemoplannerSettingsState> settingsStream;
 
+  late NotificationBloc notificationBloc;
+
   late TimerCubit timerCubit;
   late StreamController<TimerState> timerStreamController;
   late Stream<TimerState> timerStream;
 
   setUpAll(registerFallbackValues);
   setUp(() async {
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
-
     activitiesBloc = MockActivitiesBloc();
     when(() => activitiesBloc.state).thenReturn(ActivitiesNotLoaded());
     activitiesStreamController = StreamController<ActivitiesState>();
@@ -55,6 +54,8 @@ void main() {
     settingsStream = settingsStreamController.stream.asBroadcastStream();
     when(() => memoplannerSettingBloc.stream)
         .thenAnswer((invocation) => settingsStream);
+
+    notificationBloc = MockNotificationBloc();
 
     timerCubit = MockTimerCubit();
     when(() => timerCubit.state).thenReturn(TimerState());
@@ -92,6 +93,7 @@ void main() {
                   BlocProvider.value(value: sortableBloc),
                   BlocProvider.value(value: timerCubit),
                   BlocProvider.value(value: memoplannerSettingBloc),
+                  BlocProvider.value(value: notificationBloc),
                   BlocProvider<SpeechSettingsCubit>(
                     create: (c) => FakeSpeechSettingsCubit(),
                   ),
@@ -112,7 +114,7 @@ void main() {
     when(() => memoplannerSettingBloc.state)
         .thenReturn(const MemoplannerSettingsFailed());
     await tester.pumpWidget(_authListener());
-    expect(alarmScheduleCalls, 0);
+    verifyNever(() => notificationBloc.add(any()));
 
     // Act
     activitiesStreamController.add(
@@ -123,7 +125,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert
-    expect(alarmScheduleCalls, 1);
+    verify(() => notificationBloc.add(any()));
   });
 
   testWidgets('when settings we schedule alarms', (tester) async {
@@ -139,7 +141,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert
-    expect(alarmScheduleCalls, 1);
+    verify(() => notificationBloc.add(any()));
   });
 
   testWidgets('when timers update, we schedule alarms', (tester) async {
@@ -163,7 +165,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert
-    expect(alarmScheduleCalls, 1);
+    verify(() => notificationBloc.add(any()));
   });
 
   group('Starter set', () {

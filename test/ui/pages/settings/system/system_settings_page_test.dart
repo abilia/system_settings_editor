@@ -109,6 +109,11 @@ void main() {
     await tester.tap(find.byIcon(AbiliaIcons.information));
     await tester.pumpAndSettle();
     expect(find.byType(AboutPage), findsOneWidget);
+    expect(find.byType(AboutMemoplannerColumn), findsOneWidget);
+    expect(find.byType(LoggedInAccountColumn), findsOneWidget);
+    expect(find.byType(AboutDeviceColumn), findsOneWidget);
+    expect(find.byType(ProducerColumn), findsOneWidget);
+    await tester.scrollDown(-200);
     expect(
       find.byType(SearchForUpdateButton),
       Config.isMP ? findsOneWidget : findsNothing,
@@ -117,6 +122,7 @@ void main() {
       find.text(translate.searchForUpdate),
       Config.isMP ? findsOneWidget : findsNothing,
     );
+    await tester.scrollDown(200);
     final textWidgets = find
         .byType(Text)
         .evaluate()
@@ -130,6 +136,7 @@ void main() {
         .where((s) => s != 'System' && s != 'About');
     for (var text in textWidgets) {
       await tester.verifyTts(find.text(text), exact: text);
+      await tester.scrollDown(-20);
     }
   });
 
@@ -142,10 +149,18 @@ void main() {
     expect(find.byType(CodeProtectSettingsPage), findsOneWidget);
   });
 
-  testWidgets('android settings availible', (WidgetTester tester) async {
+  testWidgets('android settings available', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.android));
     await tester.pumpAndSettle();
   });
+}
+
+extension on WidgetTester {
+  Future scrollDown(double dy) async {
+    final center = getCenter(find.byType(AboutContent));
+    await dragFrom(center, Offset(0.0, dy));
+    await pump();
+  }
 }

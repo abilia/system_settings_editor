@@ -18,8 +18,7 @@ class SelectAlarmDurationPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SelectAlarmDurationPageState createState() =>
-      _SelectAlarmDurationPageState();
+  State createState() => _SelectAlarmDurationPageState();
 }
 
 class _SelectAlarmDurationPageState extends State<SelectAlarmDurationPage> {

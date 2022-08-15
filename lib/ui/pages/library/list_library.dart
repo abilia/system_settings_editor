@@ -21,7 +21,7 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _controller = ScrollController();
+    final controller = ScrollController();
     return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
         final onTapEdit = this.onTapEdit;
@@ -41,9 +41,9 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
                       rootFolder: archiveState.isAtRoot,
                     )
                   : ScrollArrows.vertical(
-                      controller: _controller,
+                      controller: controller,
                       child: ListView.separated(
-                        controller: _controller,
+                        controller: controller,
                         padding: layout.templates.m1,
                         itemCount: content.length,
                         separatorBuilder: (context, index) => SizedBox(

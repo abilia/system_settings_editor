@@ -9,50 +9,53 @@ class CalendarPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: abiliaWhiteTheme,
-      child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-          builder: (context, settingsState) {
-        if (settingsState is MemoplannerSettingsNotLoaded) {
-          return const Scaffold(body: Center(child: AbiliaProgressIndicator()));
-        }
-        return DefaultTabController(
-          length: settingsState.calendarCount,
-          initialIndex: settingsState.startViewIndex,
-          child: Scaffold(
-            bottomNavigationBar:
-                settingsState is! MemoplannerSettingsNotLoaded &&
-                        settingsState.displayBottomBar
-                    ? const CalendarBottomBar()
-                    : null,
-            body: BlocSelector<ActivitiesBloc, ActivitiesState, bool>(
-              selector: (state) => state is ActivitiesNotLoaded,
-              builder: (context, activitiesNotLoaded) {
-                if (activitiesNotLoaded) {
-                  return Center(
-                    child: SizedBox(
-                      width: layout.login.logoSize,
-                      height: layout.login.logoSize,
-                      child: const AbiliaProgressIndicator(),
+      child: Builder(
+        builder: (context) {
+          final isNotLoaded = context.select((MemoplannerSettingBloc bloc) =>
+              bloc.state is MemoplannerSettingsNotLoaded);
+          if (isNotLoaded) {
+            return const Scaffold(
+                body: Center(child: AbiliaProgressIndicator()));
+          }
+          final functions = context.select(
+              (MemoplannerSettingBloc bloc) => bloc.state.settings.functions);
+          final display = functions.display;
+          return DefaultTabController(
+            length: display.calendarCount,
+            initialIndex: functions.startViewIndex,
+            child: Scaffold(
+              bottomNavigationBar:
+                  display.bottomBar ? const CalendarBottomBar() : null,
+              body: BlocSelector<ActivitiesBloc, ActivitiesState, bool>(
+                selector: (state) => state is ActivitiesNotLoaded,
+                builder: (context, activitiesNotLoaded) {
+                  if (activitiesNotLoaded) {
+                    return Center(
+                      child: SizedBox(
+                        width: layout.login.logoSize,
+                        height: layout.login.logoSize,
+                        child: const AbiliaProgressIndicator(),
+                      ),
+                    );
+                  }
+                  return ReturnToHomeScreenListener(
+                    child: TabBarView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        const DayCalendar(),
+                        if (display.week) const WeekCalendarTab(),
+                        if (display.month) const MonthCalendarTab(),
+                        if (display.menu) const MenuPage(),
+                        const PhotoCalendarPage(),
+                      ],
                     ),
                   );
-                }
-                return ReturnToHomeScreenListener(
-                  child: TabBarView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      const DayCalendar(),
-                      if (settingsState.displayWeekCalendar)
-                        const WeekCalendarTab(),
-                      if (settingsState.displayMonthCalendar)
-                        const MonthCalendarTab(),
-                      if (settingsState.displayMenu) const MenuPage(),
-                    ],
-                  ),
-                );
-              },
+                },
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 }

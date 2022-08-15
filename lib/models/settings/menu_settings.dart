@@ -6,7 +6,7 @@ class MenuSettings extends Equatable {
   bool get allDisabled =>
       !showCamera &&
       !showPhotos &&
-      !showBasicTemplates &&
+      !showTemplates &&
       !showSettings &&
       !photoCalendarEnabled &&
       !quickSettingsEnabled;
@@ -17,14 +17,14 @@ class MenuSettings extends Equatable {
   static const showCameraKey = 'settings_menu_show_camera',
       showPhotosKey = 'settings_menu_show_photos',
       showPhotoCalendarKey = 'settings_menu_show_photo_calendar',
-      showBasicTemplatesKey = 'settings_menu_show_basic_template',
+      showTemplatesKey = 'settings_menu_show_basic_template',
       showQuickSettingsKey = 'settings_menu_show_quick_settings',
       showSettingsKey = 'settings_menu_show_settings';
 
   final bool showCamera,
       showPhotos,
       showPhotoCalendar,
-      showBasicTemplates,
+      showTemplates,
       showQuickSettings,
       showSettings;
 
@@ -32,10 +32,27 @@ class MenuSettings extends Equatable {
     this.showCamera = true,
     this.showPhotos = true,
     this.showPhotoCalendar = true,
-    this.showBasicTemplates = true,
+    this.showTemplates = true,
     this.showQuickSettings = true,
     this.showSettings = true,
   });
+
+  MenuSettings copyWith({
+    bool? showCamera,
+    bool? showPhotos,
+    bool? showPhotoCalendar,
+    bool? showTemplates,
+    bool? showQuickSettings,
+    bool? showSettings,
+  }) =>
+      MenuSettings(
+        showCamera: showCamera ?? this.showCamera,
+        showPhotos: showPhotos ?? this.showPhotos,
+        showPhotoCalendar: showPhotoCalendar ?? this.showPhotoCalendar,
+        showTemplates: showTemplates ?? this.showTemplates,
+        showQuickSettings: showQuickSettings ?? this.showQuickSettings,
+        showSettings: showSettings ?? this.showSettings,
+      );
 
   factory MenuSettings.fromSettingsMap(
           Map<String, MemoplannerSettingData> settings) =>
@@ -49,8 +66,8 @@ class MenuSettings extends Equatable {
         showPhotoCalendar: settings.getBool(
           showPhotoCalendarKey,
         ),
-        showBasicTemplates: settings.getBool(
-          showBasicTemplatesKey,
+        showTemplates: settings.getBool(
+          showTemplatesKey,
         ),
         showQuickSettings: settings.getBool(
           showQuickSettingsKey,
@@ -60,12 +77,39 @@ class MenuSettings extends Equatable {
         ),
       );
 
+  List<MemoplannerSettingData> get memoplannerSettingData => [
+        MemoplannerSettingData.fromData(
+          data: showCamera,
+          identifier: MenuSettings.showCameraKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: showPhotos,
+          identifier: MenuSettings.showPhotosKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: showPhotoCalendar,
+          identifier: MenuSettings.showPhotoCalendarKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: showTemplates,
+          identifier: MenuSettings.showTemplatesKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: showQuickSettings,
+          identifier: MenuSettings.showQuickSettingsKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: showSettings,
+          identifier: MenuSettings.showSettingsKey,
+        ),
+      ];
+
   @override
   List<Object?> get props => [
         showCamera,
         showPhotos,
         showPhotoCalendar,
-        showBasicTemplates,
+        showTemplates,
         showQuickSettings,
         showSettings
       ];

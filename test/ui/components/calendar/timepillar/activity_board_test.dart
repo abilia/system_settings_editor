@@ -121,13 +121,13 @@ void main() {
                   eventOccasions: activityOccasions,
                   textStyle: caption,
                   textScaleFactor: 1.0,
-                  dayParts: DayParts.standard(),
+                  dayParts: const DayParts(),
                   timepillarSide: TimepillarSide.right,
                   measures: measures,
                   topMargin: layout.timepillar.topMargin,
                   bottomMargin: layout.timepillar.bottomMargin,
-                  showCategoryColor:
-                      mockMemoplannerSettingsBloc.state.showCategoryColor,
+                  showCategoryColor: mockMemoplannerSettingsBloc
+                      .state.settings.calendar.categories.showColors,
                 ),
                 categoryMinWidth: 400,
                 timepillarWidth: measures.cardTotalWidth,
@@ -477,12 +477,13 @@ void main() {
         eventOccasions: activities,
         textStyle: caption,
         textScaleFactor: 1.0,
-        dayParts: DayParts.standard(),
+        dayParts: const DayParts(),
         timepillarSide: TimepillarSide.right,
         measures: TimepillarMeasures(interval, 1),
         topMargin: layout.timepillar.topMargin,
         bottomMargin: layout.timepillar.bottomMargin,
-        showCategoryColor: mockMemoplannerSettingsBloc.state.showCategoryColor,
+        showCategoryColor: mockMemoplannerSettingsBloc
+            .state.settings.calendar.categories.showColors,
       );
       final uniques =
           boardData.cards.map((f) => {f.cardPosition.top, f.column});

@@ -34,7 +34,7 @@ class DatePickerWiz extends StatelessWidget {
               bottom: const MonthAppBarStepper(),
               body: BlocSelector<MemoplannerSettingBloc,
                   MemoplannerSettingsState, DayColor>(
-                selector: (state) => state.calendarDayColor,
+                selector: (state) => state.settings.calendar.dayColor,
                 builder: (context, calendarDayColor) => MonthBody(
                   calendarDayColor: calendarDayColor,
                   showPreview: false,
