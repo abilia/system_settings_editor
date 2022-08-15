@@ -27,7 +27,7 @@ class DatePickerWiz extends StatelessWidget {
           ],
           child: BlocListener<DayPickerBloc, DayPickerState>(
             listener: (context, state) =>
-                context.read<EditActivityCubit>().changeStartDate(state.day),
+                context.read<EditActivityCubit>().changeDate(state.day),
             child: WizardScaffold(
               title: Translator.of(context).translate.selectDate,
               iconData: AbiliaIcons.day,

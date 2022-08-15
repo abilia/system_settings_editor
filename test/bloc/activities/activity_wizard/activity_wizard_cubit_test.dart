@@ -371,7 +371,7 @@ void main() {
     // Act
     editActivityCubit.changeTimeInterval(
         startTime: const TimeOfDay(hour: 1, minute: 1));
-    editActivityCubit.changeStartDate(newDate);
+    editActivityCubit.changeDate(newDate);
     editActivityCubit.replaceActivity(newActivity);
 
     // Assert
@@ -931,7 +931,7 @@ void main() {
             ],
           ),
         );
-        editActivityCubit.changeStartDate(saveTime);
+        editActivityCubit.changeDate(saveTime);
         editActivityCubit.replaceActivity(activity);
 
         // Assert
@@ -1731,7 +1731,7 @@ void main() {
     // Acts
     editActivityCubit.newRecurrence(
         newType: RecurrentType.yearly, startDate: activity.startTime);
-    editActivityCubit.changeStartDate(nextDay);
+    editActivityCubit.changeDate(nextDay);
 
     wizCubit.next(saveRecurring: SaveRecurring(ApplyTo.onlyThisDay, aDay));
 
@@ -2129,7 +2129,7 @@ void main() {
 
       editActivityCubit.replaceActivity(activity.copyWith(
           title: 'title', recurs: Recurs.weeklyOnDays(const [])));
-      editActivityCubit.changeEndDate(Recurs.noEndDate);
+      editActivityCubit.changeTimeInterval(endDate: Recurs.noEndDate);
       await expectLater(
         wizCubit.stream,
         emitsInOrder([
@@ -2204,7 +2204,7 @@ void main() {
         ),
       );
 
-      editActivityCubit.changeStartDate(nowTime.add(7.days()).onlyDays());
+      editActivityCubit.changeDate(nowTime.add(7.days()).onlyDays());
       editActivityCubit.changeTimeInterval(
         startTime: const TimeOfDay(hour: 12, minute: 34),
       );
@@ -2217,7 +2217,7 @@ void main() {
           ),
         ),
       );
-      editActivityCubit.changeEndDate(nowTime.add(1.days()).onlyDays());
+      editActivityCubit.changeTimeInterval(endDate: nowTime.add(1.days()).onlyDays());
 
       await expectLater(
         wizCubit.stream,

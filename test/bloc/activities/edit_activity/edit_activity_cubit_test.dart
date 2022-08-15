@@ -91,7 +91,7 @@ void main() {
     );
 
     // Act
-    editActivityCubit.changeStartDate(newDate);
+    editActivityCubit.changeDate(newDate);
 
     // Assert
     await expect;
@@ -136,7 +136,7 @@ void main() {
     // Act
     editActivityCubit.changeTimeInterval(
         startTime: const TimeOfDay(hour: 1, minute: 1));
-    editActivityCubit.changeStartDate(newDate);
+    editActivityCubit.changeDate(newDate);
     editActivityCubit.replaceActivity(newActivity);
 
     // Assert
@@ -376,7 +376,7 @@ void main() {
     );
 
     editActivityCubit.replaceActivity(recurringActivity);
-    editActivityCubit.changeStartDate(in60Days);
+    editActivityCubit.changeDate(in60Days);
 
     await expect;
   });

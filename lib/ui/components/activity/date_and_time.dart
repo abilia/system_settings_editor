@@ -30,7 +30,7 @@ class DateAndTimeWidget extends StatelessWidget {
                       onChange: canEditDate
                           ? (newDate) => context
                               .read<EditActivityCubit>()
-                              .changeStartDate(newDate)
+                              .changeDate(newDate)
                           : null,
                     ),
                     SizedBox(height: layout.formPadding.groupTopDistance),

@@ -32,7 +32,7 @@ class EndDatePickerWiz extends StatelessWidget {
             body: BlocListener<DayPickerBloc, DayPickerState>(
               listener: (context, state) {
                 BlocProvider.of<EditActivityCubit>(context)
-                    .changeEndDate(context.read<DayPickerBloc>().state.day);
+                    .changeTimeInterval(endDate: context.read<DayPickerBloc>().state.day);
               },
               child: BlocSelector<MemoplannerSettingBloc,
                   MemoplannerSettingsState, DayColor>(

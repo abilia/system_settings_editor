@@ -108,17 +108,6 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     );
   }
 
-  void changeEndDate(DateTime endDate) {
-    emit(
-      state.copyWith(
-        state.activity.copyWith(
-          recurs: state.activity.recurs.changeEnd(endDate),
-        ),
-        timeInterval: state.timeInterval.changeEndDate(endDate),
-      ),
-    );
-  }
-
   void imageSelected(AbiliaFile event) {
     emit(
       state.copyWith(
@@ -140,7 +129,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     emit(state.copyWith(state.activity.copyWith(reminderBefore: reminders)));
   }
 
-  void changeStartDate(DateTime date) {
+  void changeDate(DateTime date) {
     final newTimeInterval = state.timeInterval.copyWith(startDate: date);
     if (state.activity.recurs.yearly) {
       emit(
