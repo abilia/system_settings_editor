@@ -78,7 +78,7 @@ class AboutMemoplannerColumn extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '${translate.about} ${Config.flavor.name}',
+          '${translate.aboutMemoplanner} ${Config.flavor.name}',
           style: textTheme.headline6,
         ).withTts().pad(layout.templates.m1.withoutBottom),
         SizedBox(height: layout.formPadding.groupBottomDistance),
