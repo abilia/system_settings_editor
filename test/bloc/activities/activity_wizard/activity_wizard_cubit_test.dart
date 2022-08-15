@@ -2217,7 +2217,8 @@ void main() {
           ),
         ),
       );
-      editActivityCubit.changeTimeInterval(endDate: nowTime.add(1.days()).onlyDays());
+      editActivityCubit.changeTimeInterval(
+          endDate: nowTime.add(1.days()).onlyDays());
 
       await expectLater(
         wizCubit.stream,
