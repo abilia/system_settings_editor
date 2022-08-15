@@ -2628,6 +2628,46 @@ text''';
       expect(find.text(translate.reminders), findsNothing);
     });
 
+    testWidgets('Select Checklist off', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(checklist: false),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      await tester.goToInfoItemTab();
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(PickInfoItem));
+      await tester.pumpAndSettle();
+
+      // Assert -- Checklist option hidden
+      expect(find.text(translate.addChecklist), findsNothing);
+    });
+
+    testWidgets('Select Notes off', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(notes: false),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      await tester.goToInfoItemTab();
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(PickInfoItem));
+      await tester.pumpAndSettle();
+
+      // Assert -- Notes option hidden
+      expect(find.text(translate.addNote), findsNothing);
+    });
+
     testWidgets(
         'Alarm tab hidden when Alarm, Reminders and Speech options are all hidden ',
         (WidgetTester tester) async {
@@ -2647,6 +2687,26 @@ text''';
 
       // Assert -- Alarm tab hidden
       expect(find.byIcon(AbiliaIcons.attention), findsNothing);
+    });
+
+    testWidgets('Extra tab hidden when Notes and Checklist options are hidden ',
+        (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(
+              notes: false,
+              checklist: false,
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+
+      // Assert -- Extra tab hidden
+      expect(find.byIcon(AbiliaIcons.attachment), findsNothing);
     });
   });
 
