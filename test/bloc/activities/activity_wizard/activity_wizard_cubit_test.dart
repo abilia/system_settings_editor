@@ -1506,7 +1506,8 @@ void main() {
           ),
         );
 
-        editActivityCubit.changeTimeInterval(startTime: time);
+        editActivityCubit.changeTimeInterval(
+            startTime: time, endDate: Recurs.noEndDate);
         editActivityCubit.replaceActivity(activity);
 
         // Assert
