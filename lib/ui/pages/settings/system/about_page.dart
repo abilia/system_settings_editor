@@ -165,14 +165,14 @@ class AboutDeviceColumn extends StatelessWidget {
               DoubleText(
                   translate.serialNumber, _serialNumber(GetIt.I<DeviceDb>())),
             if (deviceInfo is AndroidDeviceInfo) ...[
-              if (deviceInfo.device != null)
+              if (deviceInfo.model != null)
                 DoubleText(translate.deviceName, deviceInfo.model ?? ''),
               if (deviceInfo.version.release != null)
                 DoubleText(
                     translate.androidVersion, deviceInfo.version.release ?? ''),
             ],
             if (deviceInfo is IosDeviceInfo) ...[
-              if (deviceInfo.model != null)
+              if (deviceInfo.utsname.machine != null)
                 DoubleText(
                     translate.deviceName, deviceInfo.utsname.machine ?? ''),
               if (deviceInfo.systemVersion != null)
