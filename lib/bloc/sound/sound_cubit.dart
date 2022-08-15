@@ -23,41 +23,18 @@ class SoundCubit extends Cubit<SoundState> {
 
   final FileStorage storage;
   final UserFileCubit userFileCubit;
-  final AudioPlayer audioPlayer = AudioPlayer();
 
   final Map<AbiliaFile, File> _fileMap = {};
 
-  late final StreamSubscription audioPositionChanged;
-  late final StreamSubscription onPlayerCompletion;
+  late AudioPlayer audioPlayer;
+  late StreamSubscription audioPositionChanged;
+  late StreamSubscription onPlayerCompletion;
 
   SoundCubit({
     required this.storage,
     required this.userFileCubit,
   }) : super(const NoSoundPlaying()) {
-    onPlayerCompletion = audioPlayer.onPlayerComplete.listen((_) {
-      emit(const NoSoundPlaying());
-    });
-    audioPositionChanged = audioPlayer.onPositionChanged
-        .throttleTime(const Duration(milliseconds: 25))
-        .listen(
-      (position) async {
-        final s = state;
-        if (s is SoundPlaying) {
-          final duration = s.duration == 0
-              ? (await audioPlayer.getDuration())?.inMilliseconds
-              : s.duration;
-          if (!isClosed) {
-            emit(
-              SoundPlaying(
-                s.currentSound,
-                duration: duration ?? s.duration,
-                position: position,
-              ),
-            );
-          }
-        }
-      },
-    );
+    resetAudioPlayer();
   }
 
   Future<void> play(AbiliaFile abiliaFile) async {
@@ -119,6 +96,34 @@ class SoundCubit extends Cubit<SoundState> {
   Future<void> stopSound() async {
     await audioPlayer.stop();
     emit(const NoSoundPlaying());
+  }
+
+  Future<void> resetAudioPlayer() async {
+    audioPlayer = AudioPlayer();
+    onPlayerCompletion = audioPlayer.onPlayerComplete.listen((_) {
+      emit(const NoSoundPlaying());
+    });
+    audioPositionChanged = audioPlayer.onPositionChanged
+        .throttleTime(const Duration(milliseconds: 25))
+        .listen(
+      (position) async {
+        final s = state;
+        if (s is SoundPlaying) {
+          final duration = s.duration == 0
+              ? (await audioPlayer.getDuration())?.inMilliseconds
+              : s.duration;
+          if (!isClosed) {
+            emit(
+              SoundPlaying(
+                s.currentSound,
+                duration: duration ?? s.duration,
+                position: position,
+              ),
+            );
+          }
+        }
+      },
+    );
   }
 
   @override
