@@ -200,29 +200,26 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     final type = newType ?? state.activity.recurs.recurrance;
     final endDate = newEndDate ??
         (state.activity.isRecurring ? state.timeInterval.endDate : null);
-    emit(
-      state.copyWith(
-        state.activity.copyWith(
-          recurs: _newRecurs(
-            type,
-            startDate ?? state.timeInterval.startDate,
-            endDate,
-          ),
-        ),
-        timeInterval: state.timeInterval.changeEndDate(
-          newType == RecurrentType.yearly ? Recurs.noEndDate : endDate,
-        ),
+    changeRecurrence(
+      _newRecurs(
+        type,
+        startDate ?? state.timeInterval.startDate,
+        endDate,
+      ),
+      timeInterval: state.timeInterval.changeEndDate(
+        newType == RecurrentType.yearly ? Recurs.noEndDate : endDate,
       ),
     );
   }
 
-  void changeRecurrence(Recurs recurs) {
+  void changeRecurrence(Recurs recurs, {TimeInterval? timeInterval}) {
     emit(
       state.copyWith(
         state.activity.copyWith(recurs: recurs),
-        timeInterval: state.timeInterval.copyWith(
-          endDate: DateTime.fromMillisecondsSinceEpoch(recurs.endTime),
-        ),
+        timeInterval: timeInterval ??
+            state.timeInterval.copyWith(
+              endDate: DateTime.fromMillisecondsSinceEpoch(recurs.endTime),
+            ),
       ),
     );
   }

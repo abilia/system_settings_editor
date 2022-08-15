@@ -1024,7 +1024,7 @@ void main() {
 
         editActivityCubit.changeTimeInterval(startTime: time);
         editActivityCubit.replaceActivity(activity1);
-        editActivityCubit.changeRecurrence(Recurs.everyDay);
+        editActivityCubit.changeRecurrence(activity2.recurs);
 
         // Assert
         await expected1;

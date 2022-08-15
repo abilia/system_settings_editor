@@ -105,13 +105,13 @@ class DatePicker extends StatelessWidget {
   final DateTime date;
   final Function(DateTime)? onChange;
   final DateTime? notBefore;
-  final bool dateNotSpecified;
+  final bool noText;
   final bool errorState;
   const DatePicker(
     this.date, {
     required this.onChange,
     this.notBefore,
-    this.dateNotSpecified = false,
+    this.noText = false,
     this.errorState = false,
     Key? key,
   }) : super(key: key);
@@ -160,7 +160,7 @@ class DatePicker extends StatelessWidget {
               },
         leading: const Icon(AbiliaIcons.calendar),
         text: Text(
-          dateNotSpecified
+          noText
               ? ''
               : (time.isAtSameDay(date)
                       ? '(${Translator.of(context).translate.today}) '

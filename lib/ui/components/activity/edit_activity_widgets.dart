@@ -635,16 +635,14 @@ class EndDateWidget extends StatelessWidget {
                 children: [
                   SubHeading(translate.endDate),
                   DatePicker(
-                    state.hasEndDate
-                        ? state.timeInterval.endDate!
-                        : state.timeInterval.startDate,
+                    state.timeInterval.endDate ?? state.timeInterval.startDate,
                     notBefore: state.timeInterval.startDate,
                     onChange: disabled
                         ? null
                         : (newDate) => context
                             .read<EditActivityCubit>()
                             .newRecurrence(newEndDate: newDate),
-                    dateNotSpecified: !state.hasEndDate,
+                    noText: !state.hasEndDate,
                     errorState: errorState,
                   ),
                   SizedBox(height: layout.formPadding.groupBottomDistance),
@@ -781,12 +779,10 @@ class MonthDays extends StatelessWidget {
                     if (!selectedMonthDays.add(d)) {
                       selectedMonthDays.remove(d);
                     }
-                    context.read<EditActivityCubit>().replaceActivity(
-                          state.activity.copyWith(
-                            recurs: Recurs.monthlyOnDays(
-                              selectedMonthDays,
-                              ends: state.activity.recurs.end,
-                            ),
+                    context.read<EditActivityCubit>().changeRecurrence(
+                          Recurs.monthlyOnDays(
+                            selectedMonthDays,
+                            ends: state.activity.recurs.end,
                           ),
                         );
                   },
