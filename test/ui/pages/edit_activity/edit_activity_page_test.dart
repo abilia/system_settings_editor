@@ -15,7 +15,6 @@ import 'package:intl/intl.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
-
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
@@ -76,6 +75,7 @@ void main() {
     DateTime? day,
     bool use24H = false,
     bool newActivity = false,
+    bool isTemplate = false,
   }) {
     final activity = givenActivity ?? startActivity;
     return MaterialApp(
@@ -109,24 +109,35 @@ void main() {
                       ),
               ),
               BlocProvider<WizardCubit>(
-                create: (context) => newActivity
-                    ? ActivityWizardCubit.newActivity(
-                        activitiesBloc: context.read<ActivitiesBloc>(),
-                        clockBloc: context.read<ClockBloc>(),
+                create: (context) => isTemplate
+                    ? TemplateActivityWizardCubit(
                         editActivityCubit: context.read<EditActivityCubit>(),
-                        settings: context.read<MemoplannerSettingBloc>().state,
+                        sortableBloc: mockSortableBloc,
+                        original: Sortable.createNew(
+                          data: BasicActivityDataItem.createNew(),
+                        ),
                       )
-                    : ActivityWizardCubit.edit(
-                        activitiesBloc: context.read<ActivitiesBloc>(),
-                        clockBloc: context.read<ClockBloc>(),
-                        editActivityCubit: context.read<EditActivityCubit>(),
-                        allowPassedStartTime: context
-                            .read<MemoplannerSettingBloc>()
-                            .state
-                            .settings
-                            .addActivity
-                            .allowPassedStartTime,
-                      ),
+                    : newActivity
+                        ? ActivityWizardCubit.newActivity(
+                            activitiesBloc: context.read<ActivitiesBloc>(),
+                            clockBloc: context.read<ClockBloc>(),
+                            editActivityCubit:
+                                context.read<EditActivityCubit>(),
+                            settings:
+                                context.read<MemoplannerSettingBloc>().state,
+                          )
+                        : ActivityWizardCubit.edit(
+                            activitiesBloc: context.read<ActivitiesBloc>(),
+                            clockBloc: context.read<ClockBloc>(),
+                            editActivityCubit:
+                                context.read<EditActivityCubit>(),
+                            allowPassedStartTime: context
+                                .read<MemoplannerSettingBloc>()
+                                .state
+                                .settings
+                                .addActivity
+                                .allowPassedStartTime,
+                          ),
               ),
               BlocProvider<SortableBloc>.value(value: mockSortableBloc),
               BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),
@@ -2538,7 +2549,7 @@ text''';
       expect(find.text(translate.startTimeBeforeNowError), findsNothing);
     });
 
-    testWidgets('calendarActivityType-Left/Rigth given name',
+    testWidgets('calendarActivityType-Left/Right given name',
         (WidgetTester tester) async {
       const leftCategoryName = 'VÄNSTER',
           rightCategoryName =
@@ -2579,6 +2590,63 @@ text''';
       expect(find.byType(CategoryWidget), findsNothing);
       await tester.scrollDown();
       expect(find.byType(CategoryWidget), findsNothing);
+    });
+
+    testWidgets('Select Alarm off', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(alarm: false),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      await tester.goToAlarmTab();
+      await tester.pumpAndSettle();
+
+      // Assert -- Alarm options hidden
+      expect(find.byType(AlarmWidget), findsNothing);
+    });
+
+    testWidgets('Select Reminders off', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(reminders: false),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      await tester.goToAlarmTab();
+      await tester.pumpAndSettle();
+
+      // Assert -- Reminder options hidden
+      expect(find.text(translate.reminders), findsNothing);
+    });
+
+    testWidgets(
+        'Alarm tab hidden when Alarm, Reminders and Speech options are all hidden ',
+        (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(
+              alarm: false,
+              reminders: false,
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createEditActivityPage(isTemplate: true));
+      await tester.pumpAndSettle();
+
+      // Assert -- Alarm tab hidden
+      expect(find.byIcon(AbiliaIcons.attention), findsNothing);
     });
   });
 
