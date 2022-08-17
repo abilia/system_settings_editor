@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/models/all.dart';
 
 class DisplaySettings extends Equatable {
@@ -22,7 +23,8 @@ class DisplaySettings extends Equatable {
   int get monthCalendarTabIndex => weekCalendarTabIndex + (month ? 1 : 0);
   int get menuTabIndex => monthCalendarTabIndex + (menu ? 1 : 0);
   int get photoAlbumTabIndex => menuTabIndex + 1;
-  int get calendarCount => photoAlbumTabIndex + 1;
+  int get calendarCount =>
+      (Config.isMP ? photoAlbumTabIndex : menuTabIndex) + 1;
 
   bool get bottomBar => newActivity || newTimer || week || month || menu;
 
