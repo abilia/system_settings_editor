@@ -142,6 +142,9 @@ void main() {
               BlocProvider<VoicesCubit>(
                 create: (context) => FakeVoicesCubit(),
               ),
+              BlocProvider<DayPartCubit>(
+                create: (context) => FakeDayPartCubit(),
+              ),
             ],
             child: child!,
           ),

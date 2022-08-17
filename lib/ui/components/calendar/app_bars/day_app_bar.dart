@@ -24,13 +24,14 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
     final memoSettingsState = context.watch<MemoplannerSettingBloc>().state;
     final calendarSettings = memoSettingsState.settings.calendar;
     final currentMinute = context.watch<ClockBloc>().state;
+    final dayPart = context.read<DayPartCubit>().state;
     final showNightCalendar = context.select<TimepillarCubit, bool>(
         (cubit) => cubit.state.showNightCalendar);
     bool isTimepillar =
         memoSettingsState.dayCalendarType != DayCalendarType.list;
     bool isNight = (!isTimepillar || showNightCalendar) &&
         currentMinute.isAtSameDay(day) &&
-        currentMinute.dayPart(calendarSettings.dayParts) == DayPart.night;
+        dayPart.isNight;
 
     return CalendarAppBar(
       day: day,
@@ -45,6 +46,7 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
         langCode: Localizations.localeOf(context).toLanguageTag(),
         translator: Translator.of(context).translate,
         currentNight: isNight,
+        dayPart: dayPart,
       ),
       rightAction: rightAction,
       leftAction: leftAction,

@@ -218,7 +218,7 @@ class TimeoutSettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    final screensaver = context.select(
+    final timeoutSettings = context.select(
       (FunctionSettingsCubit value) => value.state.timeout,
     );
 
@@ -233,35 +233,35 @@ class TimeoutSettingsTab extends StatelessWidget {
                       : d.toDurationString(t, shortMin: false),
                 ),
                 value: d,
-                groupValue: screensaver.duration,
+                groupValue: timeoutSettings.duration,
                 onChanged: (v) => context
                     .read<FunctionSettingsCubit>()
                     .changeScreensaverSettings(
-                        screensaver.copyWith(duration: v)),
+                        timeoutSettings.copyWith(duration: v)),
               ),
             ),
         const Divider(),
         SwitchField(
           leading: const Icon(AbiliaIcons.screenSaverNight),
-          value: screensaver.shouldUseScreenSaver,
-          onChanged: screensaver.hasDuration
+          value: timeoutSettings.shouldUseScreenSaver,
+          onChanged: timeoutSettings.hasDuration
               ? (v) => context
                   .read<FunctionSettingsCubit>()
                   .changeScreensaverSettings(
-                      screensaver.copyWith(screensaver: v))
+                      timeoutSettings.copyWith(screensaver: v))
               : null,
           child: Text(t.activateScreensaver),
         ),
         CollapsableWidget(
-          collapsed: !screensaver.shouldUseScreenSaver,
+          collapsed: !timeoutSettings.shouldUseScreenSaver,
           child: SwitchField(
             leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
-            value: screensaver.onlyDuringNight,
-            onChanged: screensaver.hasDuration
+            value: timeoutSettings.onlyDuringNight,
+            onChanged: timeoutSettings.hasDuration
                 ? (v) => context
                     .read<FunctionSettingsCubit>()
                     .changeScreensaverSettings(
-                        screensaver.copyWith(onlyDuringNight: v))
+                        timeoutSettings.copyWith(onlyDuringNight: v))
                 : null,
             child: Text(t.onlyActivateScreenSaverDuringNight),
           ),

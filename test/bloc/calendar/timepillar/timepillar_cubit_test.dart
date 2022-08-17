@@ -6,6 +6,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
+import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
 
 void main() {
@@ -55,12 +56,12 @@ void main() {
       fullDayActivity,
     ])),
     build: () => TimepillarCubit(
-      clockBloc: clockBloc,
-      activitiesBloc: activitiesBloc,
-      dayPickerBloc: dayPickerBloc,
-      memoSettingsBloc: memoplannerSettingBloc,
-      timerAlarmBloc: timerAlarmBloc,
-    ),
+        clockBloc: clockBloc,
+        activitiesBloc: activitiesBloc,
+        dayPickerBloc: dayPickerBloc,
+        memoSettingsBloc: memoplannerSettingBloc,
+        timerAlarmBloc: timerAlarmBloc,
+        dayPartCubit: FakeDayPartCubit()),
     verify: (cubit) => expect(
       cubit.state,
       TimepillarState(
@@ -100,6 +101,7 @@ void main() {
       dayPickerBloc: dayPickerBloc,
       memoSettingsBloc: memoplannerSettingBloc,
       timerAlarmBloc: timerAlarmBloc,
+      dayPartCubit: FakeDayPartCubit(),
     ),
     act: (cubit) => cubit.previous(),
     expect: () => [

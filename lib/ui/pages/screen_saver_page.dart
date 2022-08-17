@@ -8,46 +8,40 @@ class ScreenSaverPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isNight = context.select((DayPartCubit cubit) => cubit.state.isNight);
     return Listener(
       onPointerDown: (event) => Navigator.of(context).pop(),
       behavior: HitTestBehavior.translucent,
-      child: BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
-          DayParts>(
-        selector: (state) => state.settings.calendar.dayParts,
-        builder: (context, dayParts) => BlocSelector<ClockBloc, DateTime, bool>(
-          selector: (time) => time.isNight(dayParts),
-          builder: (context, isNight) => Scaffold(
-            backgroundColor: AbiliaColors.black,
-            body: Opacity(
-              opacity: isNight ? 0.3 : 1,
-              child: Column(
-                children: [
-                  const ScreenSaverAppBar(),
-                  Padding(
-                    padding: layout.screenSaver.clockPadding,
-                    child: BlocSelector<MemoplannerSettingBloc,
-                        MemoplannerSettingsState, ClockType>(
-                      selector: (state) => state.settings.calendar.clockType,
-                      builder: (context, clockType) => Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (clockType != ClockType.digital)
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: layout.screenSaver.clockSeparation),
-                              child: ScreensaverAnalogClock(isNight: isNight),
-                            ),
-                          if (clockType != ClockType.analogue)
-                            DigitalClock(
-                              style: layout.screenSaver.digitalClockTextStyle,
-                            ),
-                        ],
-                      ),
-                    ),
+      child: Scaffold(
+        backgroundColor: AbiliaColors.black,
+        body: Opacity(
+          opacity: isNight ? 0.3 : 1,
+          child: Column(
+            children: [
+              const ScreenSaverAppBar(),
+              Padding(
+                padding: layout.screenSaver.clockPadding,
+                child: BlocSelector<MemoplannerSettingBloc,
+                    MemoplannerSettingsState, ClockType>(
+                  selector: (state) => state.settings.calendar.clockType,
+                  builder: (context, clockType) => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (clockType != ClockType.digital)
+                        Padding(
+                          padding: EdgeInsets.only(
+                              right: layout.screenSaver.clockSeparation),
+                          child: ScreensaverAnalogClock(isNight: isNight),
+                        ),
+                      if (clockType != ClockType.analogue)
+                        DigitalClock(
+                          style: layout.screenSaver.digitalClockTextStyle,
+                        ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),
@@ -74,6 +68,7 @@ class ScreenSaverAppBar extends StatelessWidget {
                 displayDate: memoSettingsState.activityDisplayDate,
                 currentTime: time,
                 day: time.onlyDays(),
+                dayPart: context.read<DayPartCubit>().state,
                 dayParts: memoSettingsState.settings.calendar.dayParts,
                 langCode: Localizations.localeOf(context).toLanguageTag(),
                 translator: Translator.of(context).translate,

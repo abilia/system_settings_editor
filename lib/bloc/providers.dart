@@ -173,6 +173,12 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 ..requestPermissions([Permission.notification])
                 ..checkAll(),
             ),
+            BlocProvider<DayPartCubit>(
+              create: (context) => DayPartCubit(
+                context.read<MemoplannerSettingBloc>(),
+                context.read<ClockBloc>(),
+              ),
+            ),
             BlocProvider<TimepillarCubit>(
               create: (context) => TimepillarCubit(
                 clockBloc: context.read<ClockBloc>(),
@@ -180,6 +186,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 timerAlarmBloc: context.read<TimerAlarmBloc>(),
+                dayPartCubit: context.read<DayPartCubit>(),
               ),
             ),
             BlocProvider<TimepillarMeasuresCubit>(
