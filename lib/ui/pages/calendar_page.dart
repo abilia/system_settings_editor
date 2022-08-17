@@ -46,7 +46,7 @@ class CalendarPage extends StatelessWidget {
                         if (display.week) const WeekCalendarTab(),
                         if (display.month) const MonthCalendarTab(),
                         if (display.menu) const MenuPage(),
-                        const PhotoCalendarPage(),
+                        if (Config.isMP) const PhotoCalendarPage(),
                       ],
                     ),
                   );
