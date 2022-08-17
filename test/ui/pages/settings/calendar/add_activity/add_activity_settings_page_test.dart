@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:seagull/background/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
@@ -241,6 +240,42 @@ void main() {
             find.text(translate.deleteAfter),
             genericDb,
             key: EditActivitySettings.removeAfterKey,
+            matcher: isFalse,
+          );
+        });
+
+        testWidgets('deselect Alarm', (tester) async {
+          await tester.verifyInAddTab(
+            find.text(translate.selectAlarm),
+            genericDb,
+            key: EditActivitySettings.alarmKey,
+            matcher: isFalse,
+          );
+        });
+
+        testWidgets('deselect Checklist', (tester) async {
+          await tester.verifyInAddTab(
+            find.text(translate.selectChecklist),
+            genericDb,
+            key: EditActivitySettings.checklistKey,
+            matcher: isFalse,
+          );
+        });
+
+        testWidgets('deselect Note', (tester) async {
+          await tester.verifyInAddTab(
+            find.text(translate.selectNote),
+            genericDb,
+            key: EditActivitySettings.notesKey,
+            matcher: isFalse,
+          );
+        });
+
+        testWidgets('deselect Reminder', (tester) async {
+          await tester.verifyInAddTab(
+            find.text(translate.selectReminder),
+            genericDb,
+            key: EditActivitySettings.remindersKey,
             matcher: isFalse,
           );
         });
