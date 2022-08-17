@@ -33,6 +33,7 @@ void main() {
       );
       weekCalendarBloc = WeekCalendarCubit(
         activitiesBloc: activitiesBloc,
+        activityRepository: mockActivityRepository,
         clockBloc: clockBloc,
       );
     });
