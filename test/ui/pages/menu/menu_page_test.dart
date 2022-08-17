@@ -150,7 +150,7 @@ void main() {
   });
 
   testWidgets(
-      'BUG SGC-1655 - Wrong day in header in Menu/photo calendar/screen saver',
+      'BUG SGC-1655 - Wrong day in header in Menu/photo calendar/screensaver',
       (tester) async {
     final locale = Intl.getCurrentLocale();
     await tester.pumpApp();

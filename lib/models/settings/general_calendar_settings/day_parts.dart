@@ -5,6 +5,7 @@ enum DayPart { morning, day, evening, night }
 
 extension DayPartExtension on DayPart {
   bool get isNight => this == DayPart.night;
+  bool get isMorning => this == DayPart.morning;
 }
 
 class DayParts extends Equatable {

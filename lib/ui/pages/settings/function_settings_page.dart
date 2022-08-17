@@ -225,7 +225,7 @@ class TimeoutSettingsTab extends StatelessWidget {
     return _SettingsTab(
       hint: t.timeoutSettingsHint,
       children: [
-        ...[0, 10, 5, 1].map((d) => d.minutes()).map(
+        ...TimeoutSettings.timoutOptions.map((d) => d.minutes()).map(
               (d) => RadioField<Duration>(
                 text: Text(
                   d == Duration.zero
@@ -236,34 +236,34 @@ class TimeoutSettingsTab extends StatelessWidget {
                 groupValue: timeoutSettings.duration,
                 onChanged: (v) => context
                     .read<FunctionSettingsCubit>()
-                    .changeScreensaverSettings(
+                    .changeTimeoutSettings(
                         timeoutSettings.copyWith(duration: v)),
               ),
             ),
         const Divider(),
         SwitchField(
-          leading: const Icon(AbiliaIcons.screenSaverNight),
-          value: timeoutSettings.shouldUseScreenSaver,
+          leading: const Icon(AbiliaIcons.screensaver),
+          value: timeoutSettings.shouldUseScreensaver,
           onChanged: timeoutSettings.hasDuration
               ? (v) => context
                   .read<FunctionSettingsCubit>()
-                  .changeScreensaverSettings(
+                  .changeTimeoutSettings(
                       timeoutSettings.copyWith(screensaver: v))
               : null,
           child: Text(t.activateScreensaver),
         ),
         CollapsableWidget(
-          collapsed: !timeoutSettings.shouldUseScreenSaver,
+          collapsed: !timeoutSettings.shouldUseScreensaver,
           child: SwitchField(
-            leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
-            value: timeoutSettings.onlyDuringNight,
+            leading: const Icon(AbiliaIcons.screensaverNight),
+            value: timeoutSettings.screensaverOnlyDuringNight,
             onChanged: timeoutSettings.hasDuration
                 ? (v) => context
                     .read<FunctionSettingsCubit>()
-                    .changeScreensaverSettings(
-                        timeoutSettings.copyWith(onlyDuringNight: v))
+                    .changeTimeoutSettings(
+                        timeoutSettings.copyWith(screensaverOnlyDuringNight: v))
                 : null,
-            child: Text(t.onlyActivateScreenSaverDuringNight),
+            child: Text(t.onlyActivateScreensaverDuringNight),
           ),
         ),
       ],

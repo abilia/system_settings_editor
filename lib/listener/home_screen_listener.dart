@@ -22,11 +22,11 @@ class ReturnToHomeScreenListener extends StatelessWidget {
     return MultiBlocListener(
       listeners: [
         BlocListener<InactivityCubit, InactivityState>(
-            listenWhen: (previous, current) =>
-                current is HomeScreenInactivityThresholdReached &&
-                previous is! HomeScreenInactivityThresholdReached,
-            listener: (context, state) =>
-                DefaultTabController.of(context)?.index = startViewIndex),
+          listenWhen: (previous, current) =>
+              previous is! HomeScreenState && current is HomeScreenState,
+          listener: (context, state) =>
+              DefaultTabController.of(context)?.index = startViewIndex,
+        ),
         BlocListener<ActionIntentCubit, String>(
           listenWhen: (_, current) => current == AndroidIntentAction.homeButton,
           listener: (context, state) {
