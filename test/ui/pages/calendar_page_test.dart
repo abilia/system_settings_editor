@@ -176,6 +176,8 @@ void main() {
 
     testWidgets('Tapping Day in TabBar returns to this week',
         (WidgetTester tester) async {
+      when(() => mockActivityDb.getAllBetween(any(), any()))
+          .thenAnswer((_) => Future.value([]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.tap(nextDayButtonFinder);
@@ -882,6 +884,8 @@ void main() {
       activityResponse = () => activities;
       when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(activities));
+      when(() => mockActivityDb.getAllBetween(any(), any()))
+          .thenAnswer((_) => Future.value(activities));
     });
     testWidgets('Can navigate to week calendar', (WidgetTester tester) async {
       await tester.pumpWidget(App());
@@ -1072,6 +1076,8 @@ void main() {
       activityResponse = () => activities;
       when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(activities));
+      when(() => mockActivityDb.getAllBetween(any(), any()))
+          .thenAnswer((_) => Future.value(activities));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
@@ -1089,6 +1095,8 @@ void main() {
       FakeActivity.fullday(initialTime.addDays(1), 'two'),
     ];
     when(() => mockActivityDb.getAllNonDeleted())
+        .thenAnswer((_) => Future.value(activities));
+    when(() => mockActivityDb.getAllBetween(any(), any()))
         .thenAnswer((_) => Future.value(activities));
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
