@@ -101,7 +101,7 @@ class AboutMemoplannerColumn extends StatelessWidget {
   }
 
   String _licenseKey(License license) {
-    return license.key.toString();
+    return license.key;
   }
 
   String _licenseValidDate(License license) {
