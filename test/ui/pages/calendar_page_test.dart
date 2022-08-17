@@ -394,7 +394,8 @@ void main() {
             ];
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        expect(find.byType(PhotoCalendarPage), findsOneWidget);
+        expect(find.byType(Config.isMP ? PhotoCalendarPage : CalendarPage),
+            findsOneWidget);
       });
     });
   });
