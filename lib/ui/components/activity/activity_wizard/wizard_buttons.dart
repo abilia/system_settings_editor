@@ -5,7 +5,7 @@ class WizardBottomNavigation extends StatelessWidget {
   final bool useVerticalSafeArea;
   const WizardBottomNavigation({
     Key? key,
-    this.useVerticalSafeArea = false,
+    this.useVerticalSafeArea = true,
   }) : super(key: key);
 
   @override
