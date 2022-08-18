@@ -98,6 +98,16 @@ class SoundCubit extends Cubit<SoundState> {
     emit(const NoSoundPlaying());
   }
 
+  /// 220818 - audioPlayer v1.0.1
+  /// Creating a new AudioPlayer is necessary because the current plugin tries
+  /// to set the previous source before setting the newly supplied source and
+  /// since we have deleted it, it won't work.
+  /// No official issue has been raised at this point, but there are some
+  /// possible fixes:
+  /// 1. Allow null as source. Then we could pass null before our new sound
+  /// 2. Null source in WrappedPlayer when calling release() (Easiest?)
+  /// 3. Don't try to set old source before new one in WrappedPlayer. (Maybe
+  /// other implications).
   Future<void> resetAudioPlayer() async {
     audioPlayer = AudioPlayer();
     onPlayerCompletion = audioPlayer.onPlayerComplete.listen((_) {
