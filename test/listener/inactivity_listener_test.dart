@@ -1,20 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/intl.dart';
-import 'package:seagull/background/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
-import 'package:seagull/bloc/all.dart';
+import 'package:seagull/background/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/listener/inactivity_listener.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../fakes/all.dart';
-import '../mocks/mock_bloc.dart';
 import '../mocks/mocks.dart';
 import '../test_helpers/app_pumper.dart';
 import '../test_helpers/register_fallback_values.dart';
@@ -24,248 +20,6 @@ void main() {
     tz.initializeTimeZones();
     setupPermissions();
     registerFallbackValues();
-  });
-
-  group('minimum', () {
-    final DateTime initialTime = DateTime(2122, 06, 06, 06, 00);
-    final Ticker fakeTicker = Ticker.fake(initialTime: initialTime);
-    late MockMemoplannerSettingBloc mockSettingBloc;
-    late InactivityCubit inactivityCubit;
-
-    setUp(() async {
-      mockSettingBloc = MockMemoplannerSettingBloc();
-      when(() => mockSettingBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(MemoplannerSettings()),
-      );
-      when(() => mockSettingBloc.stream)
-          .thenAnswer((invocation) => const Stream.empty());
-      inactivityCubit = InactivityCubit(
-        const Duration(minutes: 1),
-        fakeTicker,
-        mockSettingBloc,
-        TouchDetectionCubit().stream,
-        const Stream.empty(),
-        const Stream.empty(),
-      );
-      final mockFirebasePushService = MockFirebasePushService();
-      when(() => mockFirebasePushService.initPushToken())
-          .thenAnswer((_) => Future.value('fakeToken'));
-
-      GetItInitializer()
-        ..sharedPreferences = await FakeSharedPreferences.getInstance()
-        ..ticker = fakeTicker
-        ..client = Fakes.client(
-          activityResponse: () => [],
-        )
-        ..battery = FakeBattery()
-        ..database = FakeDatabase()
-        ..deviceDb = FakeDeviceDb()
-        ..init();
-    });
-
-    tearDown(() {
-      inactivityCubit.close();
-      GetIt.I.reset();
-    });
-
-    Widget _wrapWithMaterialApp({Widget? child}) => TopLevelProvider(
-          child: AuthenticatedBlocsProvider(
-            memoplannerSettingBloc: mockSettingBloc,
-            authenticatedState: const Authenticated(userId: 1),
-            child: BlocProvider<InactivityCubit>(
-              create: (context) => inactivityCubit,
-              child: MaterialApp(
-                theme: abiliaTheme,
-                home: MultiBlocListener(listeners: [
-                  CalendarInactivityListener(),
-                  ScreenSaverListener(),
-                ], child: child ?? const CalendarPage()),
-              ),
-            ),
-          ),
-        );
-
-    group('Home screen inactivity', () {
-      testWidgets(
-          'When timeout is reached, screen saver is false, app switches to WeekCalendar',
-          (tester) async {
-        when(() => mockSettingBloc.state).thenReturn(
-          const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              functions: FunctionsSettings(
-                startView: StartView.weekCalendar,
-                timeout: TimeoutSettings(
-                  screensaver: false,
-                ),
-              ),
-            ),
-          ),
-        );
-        await tester
-            .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
-        inactivityCubit.emit(const HomeScreenInactivityThresholdReached());
-        await tester.pumpAndSettle();
-        expect(find.byType(WeekCalendar), findsOneWidget);
-      });
-
-      testWidgets(
-          'When timeout is reached, screen saver is false, app switches to MonthCalendar',
-          (tester) async {
-        when(() => mockSettingBloc.state).thenReturn(
-          const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              functions: FunctionsSettings(
-                startView: StartView.monthCalendar,
-                timeout: TimeoutSettings(
-                  screensaver: false,
-                ),
-              ),
-            ),
-          ),
-        );
-        await tester
-            .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
-        inactivityCubit.emit(
-          const HomeScreenInactivityThresholdReached(),
-        );
-        await tester.pumpAndSettle();
-        expect(find.byType(MonthCalendar), findsOneWidget);
-      });
-
-      testWidgets(
-          'When timeout is reached, screen saver is false, app switches to Menu',
-          (tester) async {
-        when(() => mockSettingBloc.state).thenReturn(
-          const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              functions: FunctionsSettings(
-                startView: StartView.menu,
-                timeout: TimeoutSettings(
-                  screensaver: false,
-                ),
-              ),
-            ),
-          ),
-        );
-        await tester
-            .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
-        inactivityCubit.emit(
-          const HomeScreenInactivityThresholdReached(),
-        );
-        await tester.pumpAndSettle();
-        expect(find.byType(MenuPage), findsOneWidget);
-      });
-
-      testWidgets(
-          'When timeout is reached, screen saver is false, app switches to PhotoCalendar',
-          (tester) async {
-        when(() => mockSettingBloc.state).thenReturn(
-          const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              functions: FunctionsSettings(
-                startView: StartView.photoAlbum,
-                timeout: TimeoutSettings(
-                  screensaver: false,
-                ),
-              ),
-            ),
-          ),
-        );
-        await tester
-            .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
-        inactivityCubit.emit(
-          const HomeScreenInactivityThresholdReached(),
-        );
-        await tester.pumpAndSettle();
-        expect(find.byType(PhotoCalendarPage), findsOneWidget);
-      });
-
-      testWidgets(
-          'When timeout is reached, screen saver is true, app switches to ScreenSaver',
-          (tester) async {
-        when(() => mockSettingBloc.state).thenReturn(
-          const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              functions: FunctionsSettings(
-                startView: StartView.menu,
-                timeout: TimeoutSettings(
-                  screensaver: true,
-                ),
-              ),
-            ),
-          ),
-        );
-        await tester
-            .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
-        inactivityCubit.emit(
-          const HomeScreenInactivityThresholdReached(),
-        );
-        await tester.pumpAndSettle();
-        expect(find.byType(ScreenSaverPage), findsOneWidget);
-      });
-
-      testWidgets(
-          'When timeout is reached, screen saver is false, '
-          'app switches to DayCalendar from Menu', (tester) async {
-        when(() => mockSettingBloc.state).thenReturn(
-          const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              functions: FunctionsSettings(
-                startView: StartView.dayCalendar,
-                timeout: TimeoutSettings(
-                  screensaver: false,
-                ),
-              ),
-            ),
-          ),
-        );
-        await tester
-            .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
-        await tester.tap(find.byType(MenuButton));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(SettingsButton));
-        await tester.pumpAndSettle();
-        inactivityCubit.emit(
-          const HomeScreenInactivityThresholdReached(),
-        );
-        await tester.pumpAndSettle();
-        expect(find.byType(DayCalendar), findsOneWidget);
-      });
-    }, skip: !Config.isMP);
-
-    group('Calendar inactivity', () {
-      final local = Intl.getCurrentLocale();
-      testWidgets(
-          'When timeout is reached, day calendar switches to current day',
-          (tester) async {
-        await tester
-            .pumpWidget(_wrapWithMaterialApp(child: const DayCalendar()));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
-        await tester.pumpAndSettle();
-        expect(find.text(DateFormat.EEEE(local).format(initialTime)),
-            findsNothing);
-        inactivityCubit.emit(
-          CalendarInactivityThresholdReached(initialTime),
-        );
-        await tester.pumpAndSettle();
-        expect(find.byType(DayCalendar), findsOneWidget);
-        expect(find.text(DateFormat.EEEE(local).format(initialTime)),
-            findsOneWidget);
-      });
-
-      testWidgets('When timeout is reached, if not in calendar, do nothing',
-          (tester) async {
-        await tester
-            .pumpWidget(_wrapWithMaterialApp(child: const SettingsPage()));
-        await tester.pumpAndSettle();
-        inactivityCubit.emit(
-          CalendarInactivityThresholdReached(initialTime),
-        );
-        await tester.pumpAndSettle();
-        expect(find.byType(DayCalendar), findsNothing);
-      });
-    });
   });
 
   group('app', () {
@@ -364,7 +118,7 @@ void main() {
       expect(find.byType(MenuPage), findsOneWidget);
     });
 
-    testWidgets('Goes from ay calendar to screen saver and menu under',
+    testWidgets('Goes from day calendar to screensaver and menu under',
         (tester) async {
       // Arrange
       genericResponse = () => [
@@ -385,18 +139,18 @@ void main() {
 
       // Assert
       expect(find.byType(DayCalendar), findsNothing);
-      expect(find.byType(ScreenSaverPage), findsOneWidget);
+      expect(find.byType(ScreensaverPage), findsOneWidget);
 
       // Act
       await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(ScreenSaverPage), findsNothing);
+      expect(find.byType(ScreensaverPage), findsNothing);
       expect(find.byType(MenuPage), findsOneWidget);
     });
 
-    testWidgets('Stacks PhotoCalendarPage then screen saver under',
+    testWidgets('Stacks PhotoCalendarPage then screensaver under',
         (tester) async {
       // Arrange
       genericResponse = () => [
@@ -413,14 +167,14 @@ void main() {
 
       // Assert
       expect(find.byType(PhotoCalendarPage), findsNothing);
-      expect(find.byType(ScreenSaverPage), findsOneWidget);
+      expect(find.byType(ScreensaverPage), findsOneWidget);
 
       // Act
       await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(ScreenSaverPage), findsNothing);
+      expect(find.byType(ScreensaverPage), findsNothing);
       expect(find.byType(PhotoCalendarPage), findsOneWidget);
     });
 
@@ -453,7 +207,7 @@ void main() {
       clockStreamController.add(initialTime.add(15.minutes()));
       await tester.pumpAndSettle();
       expect(find.byType(DayCalendar), findsNothing);
-      expect(find.byType(ScreenSaverPage), findsOneWidget);
+      expect(find.byType(ScreensaverPage), findsOneWidget);
     });
 
     testWidgets('Timer alarm fire screen does not time out', (tester) async {
@@ -489,7 +243,7 @@ void main() {
       clockStreamController.add(initialTime.add(15.minutes()));
       await tester.pumpAndSettle();
       expect(find.byType(TimerAlarmPage), findsNothing);
-      expect(find.byType(ScreenSaverPage), findsOneWidget);
+      expect(find.byType(ScreensaverPage), findsOneWidget);
     });
 
     testWidgets('Activity alarm fire screen does not time out', (tester) async {
@@ -527,10 +281,10 @@ void main() {
       clockStreamController.add(activityTime.add(10.minutes()));
       await tester.pumpAndSettle();
       expect(find.byType(AlarmPage), findsNothing);
-      expect(find.byType(ScreenSaverPage), findsOneWidget);
+      expect(find.byType(ScreensaverPage), findsOneWidget);
     });
 
-    testWidgets('Alarm removes screen saver', (tester) async {
+    testWidgets('Alarm removes screensaver', (tester) async {
       // Arrange
       genericResponse = () => [
             activityTimeoutGeneric(1),
@@ -549,8 +303,8 @@ void main() {
       clockStreamController.add(initialTime.add(1.minutes()));
       await tester.pumpAndSettle();
 
-      // Assert -- ScreenSaverPage
-      expect(find.byType(ScreenSaverPage), findsOneWidget);
+      // Assert -- ScreensaverPage
+      expect(find.byType(ScreensaverPage), findsOneWidget);
       expect(find.byType(DayCalendar), findsNothing);
 
       // Act -- tick 4 min
@@ -559,16 +313,16 @@ void main() {
 
       // Assert -- TimerAlarm Fired, on timer alarm
       expect(find.byType(TimerAlarmPage), findsOneWidget);
-      expect(find.byType(ScreenSaverPage), findsNothing);
+      expect(find.byType(ScreensaverPage), findsNothing);
 
       // Act -- close TimerAlarmPage
       await tester.tap(find.byType(CloseButton));
       await tester.pumpAndSettle();
 
-      // Assert -- no screen saver,
+      // Assert -- no screensaver,
       expect(find.byType(DayCalendar), findsOneWidget);
       expect(find.byType(TimerAlarmPage), findsNothing);
-      expect(find.byType(ScreenSaverPage), findsNothing);
+      expect(find.byType(ScreensaverPage), findsNothing);
 
       // Assert -- alarm is canceled
 
@@ -577,6 +331,74 @@ void main() {
       expect(verification.callCount, 1);
       final id = TimerAlarm(timer).hashCode;
       expect(verification.captured.single, id);
+    });
+
+    testWidgets('Screensaver only during night', (tester) async {
+      // Arrange
+      const dayParts = DayParts();
+      final night = dayParts.night;
+      final morning = dayParts.morning;
+      genericResponse = () => [
+            activityTimeoutGeneric(1),
+            useScreensaverGeneric,
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: true,
+                identifier: TimeoutSettings.screensaverOnlyDuringNightKey,
+              ),
+            ),
+          ];
+
+      await tester.pumpApp();
+      expect(find.byType(DayCalendar), findsOneWidget);
+      // Act -- go to menu page
+      await tester.tap(find.byType(MenuButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(DayCalendar), findsNothing);
+
+      // Act -- tick 1 min
+      clockStreamController.add(initialTime.add(1.minutes()));
+      await tester.pumpAndSettle();
+      // Assert -- no screensaver page but returned to DayCalendar
+      expect(find.byType(ScreensaverPage), findsNothing);
+      expect(find.byType(DayCalendar), findsOneWidget);
+
+      // Act -- Tick until one minute before night
+      clockStreamController.add(
+        initialTime.onlyDays().add(night).subtract(1.minutes()),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert -- still no screensaver
+      expect(find.byType(ScreensaverPage), findsNothing);
+
+      // Act -- Tick until to night
+      clockStreamController.add(initialTime.onlyDays().add(night));
+      await tester.pumpAndSettle();
+
+      // Assert -- now shows screensaver
+      expect(find.byType(ScreensaverPage), findsOneWidget);
+      expect(find.byType(DayCalendar), findsNothing);
+
+      // Act -- one hour into night
+      clockStreamController.add(
+        initialTime.onlyDays().add(night).add(1.hours()),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert -- still screensaver
+      expect(find.byType(ScreensaverPage), findsOneWidget);
+      expect(find.byType(DayCalendar), findsNothing);
+
+      // Act -- Tick until to morning
+      clockStreamController.add(
+        initialTime.nextDay().onlyDays().add(morning),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert -- woke up, no more screensaver
+      expect(find.byType(ScreensaverPage), findsNothing);
+      expect(find.byType(DayCalendar), findsOneWidget);
     });
   }, skip: !Config.isMP);
 }

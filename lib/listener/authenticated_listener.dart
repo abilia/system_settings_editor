@@ -103,7 +103,8 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
         if (widget.newlyLoggedIn) StarterSetListener(),
         if (Config.isMP) ...[
           CalendarInactivityListener(),
-          ScreenSaverListener(),
+          ScreensaverListener(),
+          PopScreensaverListener(),
           KeepScreenAwakeListener(),
         ] else if (!Platform.isIOS && widget.newlyLoggedIn)
           FullscreenAlarmPremissionListener(),

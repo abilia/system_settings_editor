@@ -6,50 +6,54 @@ import 'package:seagull/utils/all.dart';
 
 class CalendarInactivityListener
     extends BlocListener<InactivityCubit, InactivityState> {
-  CalendarInactivityListener({Key? key})
+  CalendarInactivityListener({Widget? child, Key? key})
       : super(
           key: key,
           listenWhen: (previous, current) =>
-              previous is SomethingHappened && current is! SomethingHappened,
+              previous is! ReturnToTodayState && current is ReturnToTodayState,
           listener: (context, state) {
             context.read<MonthCalendarCubit>().goToCurrentMonth();
             context.read<WeekCalendarCubit>().goToCurrentWeek();
             context.read<DayPickerBloc>().add(const CurrentDay());
           },
+          child: child,
         );
 }
 
-class ScreenSaverListener
+class ScreensaverListener
     extends BlocListener<InactivityCubit, InactivityState> {
-  ScreenSaverListener({Key? key})
+  ScreensaverListener({Key? key})
       : super(
           key: key,
-          listenWhen: (previous, current) =>
-              current is HomeScreenInactivityThresholdReached &&
-              previous is! HomeScreenInactivityThresholdReached,
+          listenWhen: (previous, current) => current is HomeScreenState,
           listener: (context, state) {
+            // Need to pop to root here and not in [ReturnToHomeScreenListener]
+            // since otherwise we might push the screensaver page before we pop
+            // to root
             Navigator.of(context)
                 .popUntil((route) => route.isFirst || route is AlarmRoute);
-            final useScreensaver = context
-                .read<MemoplannerSettingBloc>()
-                .state
-                .settings
-                .functions
-                .timeout
-                .screensaver;
-
-            if (!useScreensaver) return;
-
+            if (state is! ScreensaverState) return;
             final authProviders = copiedAuthProviders(context);
-            final screenSaverRoute = MaterialPageRoute(
+            final screensaverRoute = MaterialPageRoute(
               builder: (context) => MultiBlocProvider(
                 providers: authProviders,
-                child: const ScreenSaverPage(),
+                child: const ScreensaverPage(),
               ),
-              settings: const RouteSettings(name: 'ScreenSaverPage'),
+              settings: const RouteSettings(name: 'ScreensaverPage'),
             );
-            GetIt.I<AlarmNavigator>().addScreenSaver(screenSaverRoute);
-            Navigator.of(context).push(screenSaverRoute);
+            GetIt.I<AlarmNavigator>().addScreensaver(screensaverRoute);
+            Navigator.of(context).push(screensaverRoute);
           },
+        );
+}
+
+class PopScreensaverListener
+    extends BlocListener<InactivityCubit, InactivityState> {
+  PopScreensaverListener({Key? key})
+      : super(
+          key: key,
+          listenWhen: (previous, current) => current is SomethingHappened,
+          listener: (context, state) =>
+              GetIt.I<AlarmNavigator>().popScreensaverRoute(),
         );
 }

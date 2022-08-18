@@ -55,7 +55,7 @@ class Layout {
   final IconTextButtonStyle iconTextButton;
   final IconTextButtonStyle nextButton;
   final AlarmPageLayout alarmPage;
-  final ScreenSaverLayout screenSaver;
+  final ScreensaverLayout screensaver;
   final AlarmSettingsPageLayout alarmSettingsPage;
   final ComponentsLayout components;
   final PickFieldLayout pickField;
@@ -134,7 +134,7 @@ class Layout {
       padding: EdgeInsets.only(left: 8),
     ),
     this.alarmPage = const AlarmPageLayout(),
-    this.screenSaver = const ScreenSaverLayout(),
+    this.screensaver = const ScreensaverLayout(),
     this.alarmSettingsPage = const AlarmSettingsPageLayout(),
     this.components = const ComponentsLayout(),
     this.pickField = const PickFieldLayout(),
@@ -561,14 +561,14 @@ class IconTextButtonStyle {
   });
 }
 
-class ScreenSaverLayout {
+class ScreensaverLayout {
   final double clockHeight,
       clockSeparation,
       digitalClockTextSize,
       digitalClockLineHeight;
   final EdgeInsets clockPadding, titleBarPadding;
 
-  const ScreenSaverLayout({
+  const ScreensaverLayout({
     this.clockHeight = 288,
     this.clockSeparation = 48,
     this.digitalClockTextSize = 80,

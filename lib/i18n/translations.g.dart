@@ -710,8 +710,8 @@ abstract class Translated {
 
   final String activateScreensaver = 'Activate Screensaver';
 
-  final String onlyActivateScreenSaverDuringNight =
-      'Only activate screen saver during night';
+  final String onlyActivateScreensaverDuringNight =
+      'Only activate screensaver during night';
 
   final String menuRemovalWarning =
       'Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking directly under the category symbols in the day calendar; left – right – left. This works even if they are hidden.';

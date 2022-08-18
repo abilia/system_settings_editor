@@ -44,8 +44,8 @@ void main() {
       settingsState.timeout.screensaver,
     );
     expect(
-      functionSettingsCubit.state.timeout.onlyDuringNight,
-      settingsState.timeout.onlyDuringNight,
+      functionSettingsCubit.state.timeout.screensaverOnlyDuringNight,
+      settingsState.timeout.screensaverOnlyDuringNight,
     );
     expect(
       functionSettingsCubit.state.startView,
@@ -70,7 +70,7 @@ void main() {
         timeout: const TimeoutSettings(
           duration: Duration(minutes: 1),
           screensaver: true,
-          onlyDuringNight: true,
+          screensaverOnlyDuringNight: true,
         ),
         startView: StartView.photoAlbum,
       ),
@@ -230,7 +230,7 @@ void main() {
         timeout: const TimeoutSettings(
           duration: Duration.zero,
           screensaver: true,
-          onlyDuringNight: true,
+          screensaverOnlyDuringNight: true,
         ),
         startView: StartView.photoAlbum,
       ),
@@ -265,7 +265,7 @@ void main() {
       ),
       MemoplannerSettingData<dynamic>.fromData(
         data: true,
-        identifier: TimeoutSettings.screenSaverOnlyDuringNightKey,
+        identifier: TimeoutSettings.screensaverOnlyDuringNightKey,
       ),
       MemoplannerSettingData<dynamic>.fromData(
         data: StartView.photoAlbum.index,

@@ -37,7 +37,7 @@ class ScreensaverAnalogClock extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = isNight ? AbiliaColors.white : AbiliaColors.black;
     return SizedBox(
-      height: layout.screenSaver.clockHeight,
+      height: layout.screensaver.clockHeight,
       child: FittedBox(
         fit: BoxFit.fitHeight,
         child: _AnalogClock(
