@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
 
 class TimeoutSettings extends Equatable {
-  static const timoutOptions = [0, 10, 5, 1];
+  static const timeoutOptions = [0, 10, 5, 1];
 
   static const activityTimeoutKey = 'activity_timeout',
       useScreensaverKey = 'use_screensaver',

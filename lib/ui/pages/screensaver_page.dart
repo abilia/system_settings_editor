@@ -17,7 +17,7 @@ class ScreensaverPage extends StatelessWidget {
         opacity: isNight ? 0.3 : 1,
         child: Column(
           children: [
-            const ScreensaverAppBar(),
+            const _ScreensaverAppBar(),
             Padding(
               padding: layout.screensaver.clockPadding,
               child: Row(
@@ -43,8 +43,8 @@ class ScreensaverPage extends StatelessWidget {
   }
 }
 
-class ScreensaverAppBar extends StatelessWidget {
-  const ScreensaverAppBar({Key? key}) : super(key: key);
+class _ScreensaverAppBar extends StatelessWidget {
+  const _ScreensaverAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
