@@ -395,7 +395,10 @@ class DeleteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IconActionButtonDark(
-        onPressed: () => context.read<RecordSoundCubit>().deleteRecording(),
+        onPressed: () {
+          context.read<RecordSoundCubit>().deleteRecording();
+          context.read<SoundCubit>().resetAudioPlayer();
+        },
         child: const Icon(AbiliaIcons.deleteAllClear),
       );
 }
