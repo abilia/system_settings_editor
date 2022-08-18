@@ -7,7 +7,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
-const timeToReturnToToday = Duration(minutes: 5);
+const _timeToReturnToToday = Duration(minutes: 5);
 
 class InactivityCubit extends Cubit<InactivityState> {
   final Ticker ticker;
@@ -69,9 +69,9 @@ class InactivityCubit extends Cubit<InactivityState> {
     if (state is! _NotFinalState) return;
     final timeout = settingsBloc.state.settings.functions.timeout;
     final realTimeToReturnToToday =
-        timeout.hasDuration && timeToReturnToToday > timeout.duration
+        timeout.hasDuration && _timeToReturnToToday > timeout.duration
             ? timeout.duration
-            : timeToReturnToToday;
+            : _timeToReturnToToday;
 
     final returnToTodayThresholdNotReached =
         time.isBefore(state.timeStamp.add(realTimeToReturnToToday));
@@ -84,9 +84,9 @@ class InactivityCubit extends Cubit<InactivityState> {
     }
 
     // from here Timeout is set
-    final timoutThresholdNotReached =
+    final timeoutThresholdNotReached =
         time.isBefore(state.timeStamp.add(timeout.duration));
-    if (timoutThresholdNotReached) {
+    if (timeoutThresholdNotReached) {
       return emit(ReturnToTodayThresholdReached(state.timeStamp));
     }
 

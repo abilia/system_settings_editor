@@ -225,7 +225,7 @@ class TimeoutSettingsTab extends StatelessWidget {
     return _SettingsTab(
       hint: t.timeoutSettingsHint,
       children: [
-        ...TimeoutSettings.timoutOptions.map((d) => d.minutes()).map(
+        ...TimeoutSettings.timeoutOptions.map((d) => d.minutes()).map(
               (d) => RadioField<Duration>(
                 text: Text(
                   d == Duration.zero
