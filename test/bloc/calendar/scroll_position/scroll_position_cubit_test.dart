@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -252,6 +251,31 @@ void main() {
 
     // Assert
     await expect;
+  });
+
+  test('Bug SGC-1701 Now button not working correctly', () async {
+    // Arrange
+    when(() => mockScrollController.offset).thenReturn(0);
+    when(() => mockScrollController.initialScrollOffset).thenReturn(0);
+    when(() => mockScrollPosition.maxScrollExtent).thenReturn(800);
+
+    final expect = expectLater(
+      scrollPositionCubit.stream,
+      emitsThrough(InView(mockScrollController)),
+    );
+
+    final expect2 = expectLater(
+      scrollPositionCubit.stream,
+      neverEmits(Unready()),
+    );
+
+    // Act
+    scrollPositionCubit.scrollViewRenderComplete(mockScrollController);
+    await scrollPositionCubit.goToNow();
+    scrollPositionCubit.close();
+    // Assert
+    await expect;
+    await expect2;
   });
 
   group('go to now follows now', () {
