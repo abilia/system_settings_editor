@@ -261,7 +261,7 @@ void main() {
 
     final expect = expectLater(
       scrollPositionCubit.stream,
-      emitsThrough(InView(mockScrollController)),
+      emits(InView(mockScrollController)),
     );
 
     final expect2 = expectLater(
