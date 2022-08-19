@@ -7760,10 +7760,10 @@ class NB extends Translated {
   final String timerDelete = 'Vil du slette timeren?';
 
   @override
-  final String timerPause = 'Vil du sette tidtakeren på pause?';
+  final String timerPause = 'Vil du sette timeren på pause?';
 
   @override
-  final String timerResume = 'Vil du fortsette tidtakeren?';
+  final String timerResume = 'Vil du fortsette timeren?';
 
   @override
   final String timerPaused = 'Pauset';
@@ -7877,7 +7877,7 @@ class NB extends Translated {
   final String selectTemplateTimer = 'Velg timere';
 
   @override
-  final String timer = 'Tidtaker';
+  final String timer = 'Timer';
 
   @override
   final String timeIsUp = 'Tiden er slutt';
