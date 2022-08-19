@@ -361,49 +361,73 @@ void main() {
     expect(find.byType(EditActivityPage), findsNothing);
   });
 
-  testWidgets(
-      'pressing add activity on other tab scrolls to recurring page on recurrence error',
-      (WidgetTester tester) async {
+  Future<void> testRecurrenceError(WidgetTester tester) async {
     await tester.pumpWidget(createEditActivityPage(newActivity: true));
     await tester.pumpAndSettle();
 
-    // Act enter title
+    // Act -- enter title
     await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField), 'activityName');
     await tester.pumpAndSettle();
     await tester.scrollDown(dy: -100);
 
-    // Act set time
+    // Act -- set time
     await tester.tap(timeFieldFinder);
     await tester.pumpAndSettle();
     await tester.enterTime(find.byKey(TestKey.startTimeInput), '1130');
     await tester.tap(okButtonFinder);
     await tester.pumpAndSettle();
 
-    // Act go to recurrence tab
+    // Act -- go to recurrence tab
     await tester.goToRecurrenceTab();
     await tester.pumpAndSettle();
 
-    // Act set to weekly, deselect all days
+    // Act -- set to weekly, deselect all days
     await tester.tap(find.byIcon(AbiliaIcons.week));
     await tester.pumpAndSettle();
     await tester.tap(find.byWidgetPredicate(
         (widget) => widget is SelectableField && widget.selected));
     await tester.pumpAndSettle();
 
-    // Act press submit
+    // Act -- go to main tab
+    await tester.goToTab(AbiliaIcons.myPhotos);
+    await tester.pumpAndSettle();
+
+    // Act -- press submit
     await tester.tap(submitButtonFinder);
     await tester.pumpAndSettle();
 
-    // Assert error message
+    // Assert -- error message
     expect(find.text(translate.recurringDataEmptyErrorMessage), findsOneWidget);
 
-    // Act dissmiss
+    // Act -- dissmiss
     await tester.tapAt(Offset.zero);
     await tester.pumpAndSettle();
 
-    // Assert at recurrence tab
+    // Assert -- at recurrence tab
     expect(find.byType(RecurrenceTab), findsOneWidget);
+  }
+
+  testWidgets(
+      'pressing add activity on other tab scrolls to recurring page on recurrence error',
+      (WidgetTester tester) async {
+    await testRecurrenceError(tester);
+  });
+
+  testWidgets(
+      'pressing add activity on other tab scrolls to recurring page on recurrence error, when InfoItemTab is hidden',
+      (WidgetTester tester) async {
+    // Act -- hide InfoItemTab
+    when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+      const MemoplannerSettingsLoaded(
+        MemoplannerSettings(
+          editActivity: EditActivitySettings(notes: false, checklist: false),
+        ),
+      ),
+    );
+
+    // Assert -- works with InfoItemTab hidden
+    await testRecurrenceError(tester);
   });
 
   testWidgets(
