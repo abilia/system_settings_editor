@@ -366,8 +366,85 @@ void main() {
     expect(find.byType(EditActivityPage), findsNothing);
   });
 
+  Future<void> testRecurrenceError(WidgetTester tester) async {
+    await tester.pumpWidget(createEditActivityPage(newActivity: true));
+    await tester.pumpAndSettle();
+
+    // Act -- enter title
+    await tester.ourEnterText(
+        find.byKey(TestKey.editTitleTextFormField), 'activityName');
+    await tester.pumpAndSettle();
+    await tester.scrollDown(dy: -100);
+
+    // Act -- set time
+    await tester.tap(timeFieldFinder);
+    await tester.pumpAndSettle();
+    await tester.enterTime(find.byKey(TestKey.startTimeInput), '1130');
+    await tester.tap(okButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Act -- go to recurrence tab
+    await tester.goToRecurrenceTab();
+    await tester.pumpAndSettle();
+
+    // Act -- set to weekly, deselect all days
+    await tester.tap(find.byIcon(AbiliaIcons.week));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byWidgetPredicate(
+        (widget) => widget is SelectableField && widget.selected));
+    await tester.pumpAndSettle();
+
+    // Act -- go to main tab
+    await tester.goToTab(AbiliaIcons.myPhotos);
+    await tester.pumpAndSettle();
+
+    // Act -- press submit
+    await tester.tap(submitButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Assert -- error message
+    expect(find.text(translate.recurringDataEmptyErrorMessage), findsOneWidget);
+
+    // Act -- dissmiss
+    await tester.tapAt(Offset.zero);
+    await tester.pumpAndSettle();
+
+    // Assert -- at recurrence tab
+    expect(find.byType(RecurrenceTab), findsOneWidget);
+  }
+
   testWidgets(
-      'edit recurrint activity TDO change time before now shows warning',
+      'pressing add activity on other tab scrolls to recurring page on recurrence error',
+      (WidgetTester tester) async {
+    await testRecurrenceError(tester);
+  });
+
+  testWidgets(
+      'pressing add activity on other tab scrolls to recurring page on recurrence error, when InfoItemTab is hidden',
+      (WidgetTester tester) async {
+    // Act -- hide InfoItemTab
+    when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+      const MemoplannerSettingsLoaded(
+        MemoplannerSettings(
+          addActivity: AddActivitySettings(
+            editActivity: EditActivitySettings(notes: false, checklist: false),
+          ),
+        ),
+      ),
+    );
+
+    // Assert -- InfoItemTab hidden
+    expect(
+        find.byWidgetPredicate((widget) =>
+            widget is TabItem && widget.iconData == AbiliaIcons.attachment),
+        findsNothing);
+
+    // Assert -- works with InfoItemTab hidden
+    await testRecurrenceError(tester);
+  });
+
+  testWidgets(
+      'edit recurring activity TDO change time before now shows warning',
       (WidgetTester tester) async {
     final edit = Activity.createNew(
       title: 'recurring',
@@ -557,6 +634,8 @@ extension on WidgetTester {
   }
 
   Future goToAlarmTab() async => goToTab(AbiliaIcons.attention);
+
+  Future goToRecurrenceTab() async => goToTab(AbiliaIcons.repeat);
 
   Future goToTab(IconData icon) async {
     await tap(find.byIcon(icon));
