@@ -4,20 +4,18 @@ import 'package:seagull/models/all.dart';
 class DefaultsAddActivitySettings extends Equatable {
   static const defaultCheckableKey = 'add_activity_default_checkable',
       defaultRemoveAtEndOfDayKey = 'add_activity_default_remove_end_of_day',
-      defaultNoEndDateKey = 'add_activity_default_no_end_date',
       defaultAvailableForTypeKey = 'add_activity_default_available_for_type',
       defaultAlarmTypeKey = 'add_activity_default_alarm_type';
 
   final Alarm alarm;
   final AvailableForType availableForType;
-  final bool checkable, removeAtEndOfDay, noEndDate;
+  final bool checkable, removeAtEndOfDay;
 
   const DefaultsAddActivitySettings({
     this.alarm = const Alarm(type: AlarmType.soundAndVibration),
     this.availableForType = AvailableForType.allSupportPersons,
     this.checkable = false,
     this.removeAtEndOfDay = false,
-    this.noEndDate = true,
   });
 
   DefaultsAddActivitySettings copyWith({
@@ -32,7 +30,6 @@ class DefaultsAddActivitySettings extends Equatable {
         alarm: alarm ?? this.alarm,
         checkable: checkable ?? this.checkable,
         removeAtEndOfDay: removeAtEndOfDay ?? this.removeAtEndOfDay,
-        noEndDate: noEndDate ?? this.noEndDate,
       );
 
   factory DefaultsAddActivitySettings.fromSettingsMap(
@@ -56,10 +53,6 @@ class DefaultsAddActivitySettings extends Equatable {
           defaultRemoveAtEndOfDayKey,
           defaultValue: false,
         ),
-        noEndDate: settings.getBool(
-          defaultNoEndDateKey,
-          defaultValue: true,
-        ),
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
@@ -79,17 +72,12 @@ class DefaultsAddActivitySettings extends Equatable {
           data: removeAtEndOfDay,
           identifier: defaultRemoveAtEndOfDayKey,
         ),
-        MemoplannerSettingData.fromData(
-          data: noEndDate,
-          identifier: defaultNoEndDateKey,
-        ),
       ];
 
   @override
   List<Object?> get props => [
         checkable,
         removeAtEndOfDay,
-        noEndDate,
         availableForType,
         alarm,
       ];

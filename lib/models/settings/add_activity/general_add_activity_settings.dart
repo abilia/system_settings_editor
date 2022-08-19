@@ -10,8 +10,7 @@ class GeneralAddActivitySettings extends Equatable {
       showSilentAlarmKey = 'add_activity_display_silent_alarm',
       showNoAlarmKey = 'add_activity_display_no_alarm',
       showAlarmOnlyAtStartKey = 'add_activity_display_alarm_only_at_start',
-      showSpeechAtAlarmKey = 'add_activity_display_speech_at_alarm',
-      showSelectEndDateKey = 'add_activity_display_select_end_date';
+      showSpeechAtAlarmKey = 'add_activity_display_speech_at_alarm';
 
   final bool allowPassedStartTime,
       addRecurringActivity,
@@ -21,8 +20,7 @@ class GeneralAddActivitySettings extends Equatable {
       showSilentAlarm,
       showNoAlarm,
       showAlarmOnlyAtStart,
-      showSpeechAtAlarm,
-      showSelectEndDate;
+      showSpeechAtAlarm;
 
   // Properties derived from one or more settings
   bool get abilityToSelectAlarm =>
@@ -44,7 +42,6 @@ class GeneralAddActivitySettings extends Equatable {
     this.showNoAlarm = true,
     this.showAlarmOnlyAtStart = true,
     this.showSpeechAtAlarm = true,
-    this.showSelectEndDate = true,
   });
 
   GeneralAddActivitySettings copyWith({
@@ -69,7 +66,6 @@ class GeneralAddActivitySettings extends Equatable {
         showNoAlarm: showNoAlarm ?? this.showNoAlarm,
         showAlarmOnlyAtStart: showAlarmOnlyAtStart ?? this.showAlarmOnlyAtStart,
         showSpeechAtAlarm: showSpeechAtAlarm ?? this.showSpeechAtAlarm,
-        showSelectEndDate: showSelectEndDate ?? this.showSelectEndDate,
       );
 
   factory GeneralAddActivitySettings.fromSettingsMap(
@@ -84,7 +80,6 @@ class GeneralAddActivitySettings extends Equatable {
         showNoAlarm: settings.getBool(showNoAlarmKey),
         showAlarmOnlyAtStart: settings.getBool(showAlarmOnlyAtStartKey),
         showSpeechAtAlarm: settings.getBool(showSpeechAtAlarmKey),
-        showSelectEndDate: settings.getBool(showSelectEndDateKey),
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
@@ -106,8 +101,6 @@ class GeneralAddActivitySettings extends Equatable {
             data: showAlarmOnlyAtStart, identifier: showAlarmOnlyAtStartKey),
         MemoplannerSettingData.fromData(
             data: showSpeechAtAlarm, identifier: showSpeechAtAlarmKey),
-        MemoplannerSettingData.fromData(
-            data: showSelectEndDate, identifier: showSelectEndDateKey),
       ];
 
   @override
@@ -121,6 +114,5 @@ class GeneralAddActivitySettings extends Equatable {
         showNoAlarm,
         showAlarmOnlyAtStart,
         showSpeechAtAlarm,
-        showSelectEndDate,
       ];
 }

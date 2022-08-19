@@ -93,15 +93,6 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
                   generalSettings.copyWith(addRecurringActivity: v)),
           child: Text(t.addRecurringActivity),
         ),
-        // SwitchField(
-        //   leading: const Icon(AbiliaIcons.basicActivity),
-        //   value: settings.showSelectEndDate,
-        //   onChanged: (v) => context
-        //       .read<AddActivitySettingsCubit>()
-        //       .addGeneralSettings(
-        //           settings.copyWith(showSelectEndDate: v)),
-        //   child: Text(t.showSelectEndDate),
-        // ),
       ],
     );
   }

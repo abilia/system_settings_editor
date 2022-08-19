@@ -120,16 +120,6 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
                   alarm: defaultsSettings.alarm.copyWith(onlyStart: v))),
           child: Text(t.alarmOnlyAtStartTime),
         ),
-        // const Divider(),
-        // Tts(child: Text(t.recurring)),
-        // SwitchField(
-        //   leading: const Icon(AbiliaIcons.basicActivity),
-        //   value: settings.noEndDate,
-        //   onChanged: (v) => context
-        //       .read<AddActivitySettingsCubit>()
-        //       .addDefaultsSettings(settings.copyWith(noEndDate: v)),
-        //   child: Text(t.noEndDate),
-        // ),
       ],
     );
   }
