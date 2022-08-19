@@ -1,12 +1,11 @@
 _id_	en	sv	da	nl	fi	de	nb
-onlyActivateScreensaverDuringNight	Only activate screensaver during night
 showAlarmOnlyAtStartTime	Show alarm only at start time
 showSpeechAtAlarm	Show speech at alarm
 showReminders	Show reminders
 showSelectEndDate	Show select end date
 recurring	Recurring
-onlyActivateScreenSaverDuringNight	Only activate screen saver during night						
-menuItemsDisabled	all menu items are disabled
+onlyActivateScreensaverDuringNight	Only activate screensaver during night						
+menuItemsDisabled	all menu items are disabled						
 aboutMemoplanner	About						
 licenseNumber	License number						
 licenseValidDate	License valid date						
