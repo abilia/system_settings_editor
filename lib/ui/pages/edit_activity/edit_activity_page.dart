@@ -1,6 +1,8 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
+enum EditActivityPageTab { main, alarm, recurrence, infoItem }
+
 class EditActivityPage extends StatelessWidget {
   const EditActivityPage({Key? key}) : super(key: key);
   @override
@@ -8,8 +10,6 @@ class EditActivityPage extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final addRecurringActivity = context.select((MemoplannerSettingBloc bloc) =>
         bloc.state.settings.addActivity.addRecurringActivity);
-    final showRecurrence = addRecurringActivity &&
-        context.read<WizardCubit>() is! TemplateActivityWizardCubit;
     final fullDay =
         context.select((EditActivityCubit bloc) => bloc.state.activity.fullDay);
     final showChecklists = context.select((MemoplannerSettingBloc bloc) =>
@@ -23,8 +23,18 @@ class EditActivityPage extends StatelessWidget {
     final showReminders = context.select((MemoplannerSettingBloc bloc) =>
         bloc.state.settings.editActivity.reminders);
     final showAlarmTab = !fullDay && (showAlarm || showReminders || showSpeech);
+    final showRecurrenceTab = addRecurringActivity &&
+        context.read<WizardCubit>() is! TemplateActivityWizardCubit;
+    final showInfoItemTab = showChecklists || showNotes;
 
-    final tabs = [
+    final enabledTabs = [
+      EditActivityPageTab.main,
+      if (showAlarmTab) EditActivityPageTab.alarm,
+      if (showRecurrenceTab) EditActivityPageTab.recurrence,
+      if (showInfoItemTab) EditActivityPageTab.infoItem
+    ];
+
+    final tabWidgets = [
       const MainTab(),
       if (showAlarmTab)
         AlarmAndReminderTab(
@@ -32,8 +42,8 @@ class EditActivityPage extends StatelessWidget {
           showReminders: showReminders,
           showSpeech: showSpeech,
         ),
-      if (showRecurrence) const RecurrenceTab(),
-      if (showChecklists || showNotes)
+      if (showRecurrenceTab) const RecurrenceTab(),
+      if (showInfoItemTab)
         InfoItemTab(
           showChecklist: showChecklists,
           showNote: showNotes,
@@ -42,9 +52,9 @@ class EditActivityPage extends StatelessWidget {
 
     return DefaultTabController(
       initialIndex: 0,
-      length: tabs.length,
+      length: tabWidgets.length,
       child: ScrollToErrorPageListener(
-        nrTabs: tabs.length,
+        enabledTabs: enabledTabs,
         child: Scaffold(
           appBar: AbiliaAppBar(
             iconData: AbiliaIcons.plus,
@@ -55,9 +65,9 @@ class EditActivityPage extends StatelessWidget {
                   case 1:
                     return !showAlarmTab;
                   case 2:
-                    return !showRecurrence;
+                    return !showRecurrenceTab;
                   case 3:
-                    return !showChecklists && !showNotes;
+                    return !showInfoItemTab;
                   default:
                     return false;
                 }
@@ -70,9 +80,7 @@ class EditActivityPage extends StatelessWidget {
               ],
             ),
           ),
-          body: TabBarView(
-            children: tabs,
-          ),
+          body: TabBarView(children: tabWidgets),
           bottomNavigationBar: const WizardBottomNavigation(),
         ),
       ),
