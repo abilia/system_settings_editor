@@ -426,6 +426,12 @@ void main() {
       ),
     );
 
+    // Assert -- InfoItemTab hidden
+    expect(
+        find.byWidgetPredicate((widget) =>
+            widget is TabItem && widget.iconData == AbiliaIcons.attachment),
+        findsNothing);
+
     // Assert -- works with InfoItemTab hidden
     await testRecurrenceError(tester);
   });
