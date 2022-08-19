@@ -3,25 +3,26 @@ import 'package:seagull/ui/all.dart';
 
 class EditActivityPage extends StatelessWidget {
   const EditActivityPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    final addRecurringActivity = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.addActivity.addRecurringActivity);
+    final generalSettings = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.addActivity.general);
+    final editActivitySettings = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.addActivity.editActivity);
+    final addRecurringActivity = generalSettings.addRecurringActivity;
     final showRecurrence = addRecurringActivity &&
         context.read<WizardCubit>() is! TemplateActivityWizardCubit;
     final fullDay =
         context.select((EditActivityCubit bloc) => bloc.state.activity.fullDay);
-    final showChecklists = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.editActivity.checklist);
-    final showNotes = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.editActivity.notes);
+    final showChecklists = editActivitySettings.checklist;
+    final showNotes = editActivitySettings.notes;
     final showSpeech =
-        context.read<WizardCubit>() is! TemplateActivityWizardCubit;
-    final showAlarm = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.editActivity.alarm);
-    final showReminders = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.editActivity.reminders);
+        context.read<WizardCubit>() is! TemplateActivityWizardCubit &&
+            generalSettings.showSpeechAtAlarm;
+    final showAlarm = editActivitySettings.alarm;
+    final showReminders = editActivitySettings.reminders;
     final showAlarmTab = !fullDay && (showAlarm || showReminders || showSpeech);
 
     final tabs = [

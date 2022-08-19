@@ -417,7 +417,9 @@ void main() {
       when(() => memoplannerSettingBlocMock.state)
           .thenReturn(const MemoplannerSettingsLoaded(
         MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
+          addActivity: AddActivitySettings(
+            general: GeneralAddActivitySettings(allowPassedStartTime: false),
+          ),
         ),
       ));
       await tester.pumpWidget(wrapWithMaterialApp(
@@ -456,7 +458,9 @@ void main() {
       when(() => memoplannerSettingBlocMock.state)
           .thenReturn(const MemoplannerSettingsLoaded(
         MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
+          addActivity: AddActivitySettings(
+            general: GeneralAddActivitySettings(allowPassedStartTime: false),
+          ),
         ),
       ));
       await tester.pumpWidget(wrapWithMaterialApp(

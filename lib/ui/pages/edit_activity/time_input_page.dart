@@ -10,6 +10,7 @@ class TimeInputPage extends StatelessWidget {
     required this.timeInput,
     Key? key,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -207,101 +208,100 @@ class _TimeInputContentState extends State<TimeInputContent> {
     final theme = Theme.of(context);
     final translate = Translator.of(context).translate;
     final bottomNavigationBuilder = widget.bottomNavigationBuilder;
-    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
-      selector: (state) => state.settings.addActivity.showEndTime,
-      builder: (context, showEndTime) => Column(
-        children: [
-          Theme(
-            data: theme.copyWith(
-                textSelectionTheme: theme.textSelectionTheme.copyWith(
-                  selectionColor: AbiliaColors.white,
-                ),
-                textTheme: theme.textTheme
-                    .copyWith(subtitle1: abiliaTextTheme.headline4)),
-            child: Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      _TimeInput(
-                        inputKey: TestKey.startTimeInput,
-                        amRadioFieldKey: TestKey.startTimeAmRadioField,
-                        pmRadioFieldKey: TestKey.startTimePmRadioField,
-                        heading: translate.startTime,
-                        period: startTimePeriod,
-                        onPeriodChanged: (period) {
-                          _onNewValidTime();
-                          setState(() => startTimePeriod = period);
-                        },
-                        twelveHourClock: twelveHourClock,
-                        focusNode: startTimeFocus,
-                        controller: startTimeController,
-                      ),
-                      if (showEndTime) ...[
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Center(
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: layout
-                                      .formPadding.groupHorizontalDistance,
-                                ),
-                                child: Text(
-                                  '—',
-                                  style: abiliaTextTheme.headline5,
-                                ),
+    final showEndTime = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.addActivity.general.showEndTime);
+    return Column(
+      children: [
+        Theme(
+          data: theme.copyWith(
+              textSelectionTheme: theme.textSelectionTheme.copyWith(
+                selectionColor: AbiliaColors.white,
+              ),
+              textTheme: theme.textTheme
+                  .copyWith(subtitle1: abiliaTextTheme.headline4)),
+          child: Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    _TimeInput(
+                      inputKey: TestKey.startTimeInput,
+                      amRadioFieldKey: TestKey.startTimeAmRadioField,
+                      pmRadioFieldKey: TestKey.startTimePmRadioField,
+                      heading: translate.startTime,
+                      period: startTimePeriod,
+                      onPeriodChanged: (period) {
+                        _onNewValidTime();
+                        setState(() => startTimePeriod = period);
+                      },
+                      twelveHourClock: twelveHourClock,
+                      focusNode: startTimeFocus,
+                      controller: startTimeController,
+                    ),
+                    if (showEndTime) ...[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal:
+                                    layout.formPadding.groupHorizontalDistance,
+                              ),
+                              child: Text(
+                                '—',
+                                style: abiliaTextTheme.headline5,
                               ),
                             ),
-                            SizedBox(
-                              height: layout.timeInput.timeDashAlignValue +
-                                  layout.formPadding.verticalItemDistance +
-                                  (twelveHourClock
-                                      ? layout.timeInput.amPmHeight
-                                      : 0),
-                            ),
-                          ],
-                        ),
-                        _TimeInput(
-                          inputKey: TestKey.endTimeInput,
-                          amRadioFieldKey: TestKey.endTimeAmRadioField,
-                          pmRadioFieldKey: TestKey.endTimePmRadioField,
-                          heading: translate.endTime,
-                          period: endTimePeriod,
-                          onPeriodChanged: (period) {
-                            _onNewValidTime();
-                            setState(() => endTimePeriod = period);
-                          },
-                          twelveHourClock: twelveHourClock,
-                          focusNode: endTimeFocus,
-                          controller: endTimeController,
-                        ),
-                      ],
+                          ),
+                          SizedBox(
+                            height: layout.timeInput.timeDashAlignValue +
+                                layout.formPadding.verticalItemDistance +
+                                (twelveHourClock
+                                    ? layout.timeInput.amPmHeight
+                                    : 0),
+                          ),
+                        ],
+                      ),
+                      _TimeInput(
+                        inputKey: TestKey.endTimeInput,
+                        amRadioFieldKey: TestKey.endTimeAmRadioField,
+                        pmRadioFieldKey: TestKey.endTimePmRadioField,
+                        heading: translate.endTime,
+                        period: endTimePeriod,
+                        onPeriodChanged: (period) {
+                          _onNewValidTime();
+                          setState(() => endTimePeriod = period);
+                        },
+                        twelveHourClock: twelveHourClock,
+                        focusNode: endTimeFocus,
+                        controller: endTimeController,
+                      ),
                     ],
-                  ),
-                  SizedBox(
-                    height: layout.timeInput.inputKeyboardDistance,
-                  ),
-                  AbiliaNumPad(
-                    delete: _deleteOneDigit,
-                    onNumPress: _numPadKeyPress,
-                    onClear: _clearPress,
-                  ),
-                ],
-              ),
+                  ],
+                ),
+                SizedBox(
+                  height: layout.timeInput.inputKeyboardDistance,
+                ),
+                AbiliaNumPad(
+                  delete: _deleteOneDigit,
+                  onNumPress: _numPadKeyPress,
+                  onClear: _clearPress,
+                ),
+              ],
             ),
           ),
-          if (bottomNavigationBuilder != null)
-            bottomNavigationBuilder(
-              context,
-              valid(startTimeController) ? newTimeInput : null,
-              startTimeController.text,
-            ),
-        ],
-      ),
+        ),
+        if (bottomNavigationBuilder != null)
+          bottomNavigationBuilder(
+            context,
+            valid(startTimeController) ? newTimeInput : null,
+            startTimeController.text,
+          ),
+      ],
     );
   }
 
@@ -447,6 +447,7 @@ class _TimeInputField extends StatefulWidget {
     required this.focus,
     this.inputKey,
   });
+
   @override
   _TimeInputFieldState createState() => _TimeInputFieldState();
 }

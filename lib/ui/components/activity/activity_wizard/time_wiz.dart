@@ -36,7 +36,7 @@ class _TimeWizContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
-      selector: (state) => state.settings.addActivity.showEndTime,
+      selector: (state) => state.settings.addActivity.general.showEndTime,
       builder: (context, showEndTime) =>
           BlocSelector<EditActivityCubit, EditActivityState, TimeInterval>(
         selector: (state) => state.timeInterval,

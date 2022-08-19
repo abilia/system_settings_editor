@@ -20,7 +20,6 @@ class MemoplannerSettings extends Equatable {
       displayQuarterHourKey = 'activity_detailed_setting_display_qhw',
       displayTimeLeftKey = 'activity_detailed_setting_display_qhw_time_left',
       dayCaptionShowDayButtonsKey = 'day_caption_show_day_buttons',
-      activityDefaultAlarmTypeKey = 'activity_default_alarm_type',
       activityDisplayDayPeriodKey = 'day_caption_show_period',
       activityDisplayWeekDayKey = 'day_caption_show_weekday',
       activityDisplayDateKey = 'day_caption_show_date',
@@ -80,18 +79,15 @@ class MemoplannerSettings extends Equatable {
       viewOptionsZoom,
       weekDisplayShowFullWeek,
       weekDisplayShowColorMode,
-      calendarMonthViewShowColors,
-      activityDefaultAlarmType;
+      calendarMonthViewShowColors;
 
   final AlarmSettings alarm;
-  final StepByStepSettings stepByStep;
   final CodeProtectSettings codeProtect;
-  final KeepScreenAwakeSettings keepScreenAwakeSettings;
+  final KeepScreenAwakeSettings keepScreenAwake;
   final MenuSettings menu;
-  final EditActivitySettings editActivity;
-  final AddActivitySettings addActivity;
   final FunctionsSettings functions;
   final GeneralCalendarSettings calendar;
+  final AddActivitySettings addActivity;
 
   const MemoplannerSettings({
     this.displayAlarmButton = true,
@@ -100,7 +96,6 @@ class MemoplannerSettings extends Equatable {
     this.displayQuarterHour = true,
     this.displayTimeLeft = true,
     this.dayCaptionShowDayButtons = true,
-    this.activityDefaultAlarmType = alarmSoundAndVibration,
     this.activityDisplayDayPeriod = true,
     this.activityDisplayWeekDay = true,
     this.activityDisplayDate = true,
@@ -128,14 +123,12 @@ class MemoplannerSettings extends Equatable {
     this.settingViewOptionsTimeInterval = true,
     this.settingViewOptionsZoom = true,
     this.settingViewOptionsDurationDots = true,
-    this.stepByStep = const StepByStepSettings(),
     this.codeProtect = const CodeProtectSettings(),
     this.menu = const MenuSettings(),
-    this.keepScreenAwakeSettings = const KeepScreenAwakeSettings(),
-    this.editActivity = const EditActivitySettings(),
-    this.addActivity = const AddActivitySettings(),
+    this.keepScreenAwake = const KeepScreenAwakeSettings(),
     this.functions = const FunctionsSettings(),
     this.calendar = const GeneralCalendarSettings(),
+    this.addActivity = const AddActivitySettings(),
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -158,10 +151,6 @@ class MemoplannerSettings extends Equatable {
       ),
       dayCaptionShowDayButtons: settings.getBool(
         dayCaptionShowDayButtonsKey,
-      ),
-      activityDefaultAlarmType: settings.parse(
-        activityDefaultAlarmTypeKey,
-        alarmSoundAndVibration,
       ),
       activityDisplayDayPeriod: settings.getBool(
         activityDisplayDayPeriodKey,
@@ -249,15 +238,12 @@ class MemoplannerSettings extends Equatable {
       settingViewOptionsDurationDots: settings.getBool(
         settingViewOptionsDurationDotsKey,
       ),
-      stepByStep: StepByStepSettings.fromSettingsMap(settings),
       codeProtect: CodeProtectSettings.fromSettingsMap(settings),
       menu: MenuSettings.fromSettingsMap(settings),
-      keepScreenAwakeSettings:
-          KeepScreenAwakeSettings.fromSettingsMap(settings),
-      editActivity: EditActivitySettings.fromSettingsMap(settings),
-      addActivity: AddActivitySettings.fromSettingsMap(settings),
+      keepScreenAwake: KeepScreenAwakeSettings.fromSettingsMap(settings),
       functions: FunctionsSettings.fromSettingsMap(settings),
       calendar: GeneralCalendarSettings.fromSettingsMap(settings),
+      addActivity: AddActivitySettings.fromSettingsMap(settings),
     );
   }
 
@@ -269,7 +255,6 @@ class MemoplannerSettings extends Equatable {
         displayQuarterHour,
         displayTimeLeft,
         dayCaptionShowDayButtons,
-        activityDefaultAlarmType,
         activityDisplayDayPeriod,
         activityDisplayWeekDay,
         activityDisplayDate,
@@ -297,14 +282,12 @@ class MemoplannerSettings extends Equatable {
         settingViewOptionsTimeInterval,
         settingViewOptionsZoom,
         settingViewOptionsDurationDots,
-        stepByStep,
         codeProtect,
         menu,
-        keepScreenAwakeSettings,
-        editActivity,
-        addActivity,
+        keepScreenAwake,
         functions,
         calendar,
+        addActivity,
       ];
 }
 

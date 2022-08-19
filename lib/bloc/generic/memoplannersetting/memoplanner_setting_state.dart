@@ -53,8 +53,6 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get monthCaptionShowYear => settings.monthCaptionShowYear;
   bool get monthCaptionShowClock => settings.monthCaptionShowClock;
 
-  int get defaultAlarmTypeSetting => settings.activityDefaultAlarmType;
-
   TimepillarIntervalType get timepillarIntervalType =>
       TimepillarIntervalType.values[settings.viewOptionsTimeInterval];
   DayCalendarType get dayCalendarType => DayCalendarType.values[
@@ -70,15 +68,17 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   bool get basicActivityOption =>
       (addActivityType == NewActivityMode.editView &&
-          settings.editActivity.template) ||
+          settings.addActivity.editActivity.template) ||
       (addActivityType == NewActivityMode.stepByStep &&
-          settings.stepByStep.template);
+          settings.addActivity.stepByStep.template);
 
   bool get newActivityOption =>
       (addActivityType == NewActivityMode.editView &&
-          (settings.editActivity.title || settings.editActivity.image)) ||
+          (settings.addActivity.editActivity.title ||
+              settings.addActivity.editActivity.image)) ||
       (addActivityType == NewActivityMode.stepByStep &&
-          (settings.stepByStep.title || settings.stepByStep.image));
+          (settings.addActivity.stepByStep.title ||
+              settings.addActivity.stepByStep.image));
 
   WeekDisplayDays get weekDisplayDays =>
       WeekDisplayDays.values[settings.weekDisplayShowFullWeek];

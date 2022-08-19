@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class AddActivityGeneralSettingsTab extends StatelessWidget {
@@ -8,75 +7,102 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocSelector<AddActivitySettingsCubit, AddActivitySettingsState,
-            AddActivitySettings>(
-        selector: (state) => state.addActivitySetting,
-        builder: (context, settings) {
-          return SettingsTab(
-            children: [
-              Tts(child: Text(t.general)),
-              SwitchField(
-                leading: const Icon(AbiliaIcons.clock),
-                value: settings.allowPassedStartTime,
-                onChanged: (v) => context
-                    .read<AddActivitySettingsCubit>()
-                    .addActivitySetting(
-                        settings.copyWith(allowPassedStartTime: v)),
-                child: Text(t.allowPassedStartTime),
-              ),
-              SwitchField(
-                leading: const Icon(AbiliaIcons.week),
-                value: settings.addRecurringActivity,
-                onChanged: (v) => context
-                    .read<AddActivitySettingsCubit>()
-                    .addActivitySetting(
-                        settings.copyWith(addRecurringActivity: v)),
-                child: Text(t.addRecurringActivity),
-              ),
-              SwitchField(
-                leading: const Icon(AbiliaIcons.endTime),
-                value: settings.showEndTime,
-                onChanged: (v) => context
-                    .read<AddActivitySettingsCubit>()
-                    .addActivitySetting(settings.copyWith(showEndTime: v)),
-                child: Text(t.showEndTime),
-              ),
-              const SizedBox(),
-              SwitchField(
-                leading: const Icon(AbiliaIcons.handiAlarmVibration),
-                value: settings.showAlarm,
-                onChanged: (v) => context
-                    .read<AddActivitySettingsCubit>()
-                    .addActivitySetting(settings.copyWith(showAlarm: v)),
-                child: Text(t.showAlarm),
-              ),
-              SwitchField(
-                leading: const Icon(AbiliaIcons.handiVibration),
-                value: settings.showVibrationAlarm,
-                onChanged: (v) => context
-                    .read<AddActivitySettingsCubit>()
-                    .addActivitySetting(
-                        settings.copyWith(showVibrationAlarm: v)),
-                child: Text(t.showVibrationAlarm),
-              ),
-              SwitchField(
-                leading: const Icon(AbiliaIcons.handiAlarm),
-                value: settings.showSilentAlarm,
-                onChanged: (v) => context
-                    .read<AddActivitySettingsCubit>()
-                    .addActivitySetting(settings.copyWith(showSilentAlarm: v)),
-                child: Text(t.showSilentAlarm),
-              ),
-              SwitchField(
-                leading: const Icon(AbiliaIcons.handiNoAlarm),
-                value: settings.showNoAlarm,
-                onChanged: (v) => context
-                    .read<AddActivitySettingsCubit>()
-                    .addActivitySetting(settings.copyWith(showNoAlarm: v)),
-                child: Text(t.showNoAlarm),
-              ),
-            ],
-          );
-        });
+    final generalSettings = context.select(
+        (AddActivitySettingsCubit cubit) => cubit.state.generalSettings);
+    return SettingsTab(
+      children: [
+        Tts(child: Text(t.time)),
+        SwitchField(
+          leading: const Icon(AbiliaIcons.clock),
+          value: generalSettings.allowPassedStartTime,
+          onChanged: (v) => context
+              .read<AddActivitySettingsCubit>()
+              .addGeneralSettings(
+                  generalSettings.copyWith(allowPassedStartTime: v)),
+          child: Text(t.allowPassedStartTime),
+        ),
+        SwitchField(
+          leading: const Icon(AbiliaIcons.endTime),
+          value: generalSettings.showEndTime,
+          onChanged: (v) => context
+              .read<AddActivitySettingsCubit>()
+              .addGeneralSettings(generalSettings.copyWith(showEndTime: v)),
+          child: Text(t.showEndTime),
+        ),
+        const Divider(),
+        Tts(child: Text(t.alarm)),
+        SwitchField(
+          leading: const Icon(AbiliaIcons.handiAlarmVibration),
+          value: generalSettings.showAlarm,
+          onChanged: (v) => context
+              .read<AddActivitySettingsCubit>()
+              .addGeneralSettings(generalSettings.copyWith(showAlarm: v)),
+          child: Text(t.showAlarm),
+        ),
+        SwitchField(
+          leading: const Icon(AbiliaIcons.handiVibration),
+          value: generalSettings.showVibrationAlarm,
+          onChanged: (v) => context
+              .read<AddActivitySettingsCubit>()
+              .addGeneralSettings(
+                  generalSettings.copyWith(showVibrationAlarm: v)),
+          child: Text(t.showVibrationAlarm),
+        ),
+        SwitchField(
+          leading: const Icon(AbiliaIcons.handiAlarm),
+          value: generalSettings.showSilentAlarm,
+          onChanged: (v) => context
+              .read<AddActivitySettingsCubit>()
+              .addGeneralSettings(generalSettings.copyWith(showSilentAlarm: v)),
+          child: Text(t.showSilentAlarm),
+        ),
+        SwitchField(
+          leading: const Icon(AbiliaIcons.handiNoAlarm),
+          value: generalSettings.showNoAlarm,
+          onChanged: (v) => context
+              .read<AddActivitySettingsCubit>()
+              .addGeneralSettings(generalSettings.copyWith(showNoAlarm: v)),
+          child: Text(t.showNoAlarm),
+        ),
+        SwitchField(
+          leading: const Icon(AbiliaIcons.handiAlarm),
+          value: generalSettings.showAlarmOnlyAtStart,
+          onChanged: (v) => context
+              .read<AddActivitySettingsCubit>()
+              .addGeneralSettings(
+                  generalSettings.copyWith(showAlarmOnlyAtStart: v)),
+          child: Text(t.showAlarmOnlyAtStartTime),
+        ),
+        SwitchField(
+          leading: const Icon(AbiliaIcons.dictaphone),
+          value: generalSettings.showSpeechAtAlarm,
+          onChanged: (v) => context
+              .read<AddActivitySettingsCubit>()
+              .addGeneralSettings(
+                  generalSettings.copyWith(showSpeechAtAlarm: v)),
+          child: Text(t.showSpeechAtAlarm),
+        ),
+        const Divider(),
+        Tts(child: Text(t.recurring)),
+        SwitchField(
+          leading: const Icon(AbiliaIcons.week),
+          value: generalSettings.addRecurringActivity,
+          onChanged: (v) => context
+              .read<AddActivitySettingsCubit>()
+              .addGeneralSettings(
+                  generalSettings.copyWith(addRecurringActivity: v)),
+          child: Text(t.addRecurringActivity),
+        ),
+        // SwitchField(
+        //   leading: const Icon(AbiliaIcons.basicActivity),
+        //   value: settings.showSelectEndDate,
+        //   onChanged: (v) => context
+        //       .read<AddActivitySettingsCubit>()
+        //       .addGeneralSettings(
+        //           settings.copyWith(showSelectEndDate: v)),
+        //   child: Text(t.showSelectEndDate),
+        // ),
+      ],
+    );
   }
 }

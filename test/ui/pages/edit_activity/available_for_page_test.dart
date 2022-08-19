@@ -46,7 +46,9 @@ void main() {
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
       const MemoplannerSettingsLoaded(
         MemoplannerSettings(
-          editActivity: EditActivitySettings(template: false),
+          addActivity: AddActivitySettings(
+            editActivity: EditActivitySettings(template: false),
+          ),
         ),
       ),
     );
@@ -99,8 +101,8 @@ void main() {
                 create: (context) => newActivity
                     ? EditActivityCubit.newActivity(
                         day: today,
-                        defaultAlarmTypeSetting: mockMemoplannerSettingsBloc
-                            .state.defaultAlarmTypeSetting,
+                        defaultsSettings: mockMemoplannerSettingsBloc
+                            .state.settings.addActivity.defaults,
                         calendarId: 'calendarId',
                       )
                     : EditActivityCubit.edit(
@@ -124,6 +126,7 @@ void main() {
                             .state
                             .settings
                             .addActivity
+                            .general
                             .allowPassedStartTime,
                       ),
               ),

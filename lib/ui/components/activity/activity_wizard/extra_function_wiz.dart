@@ -12,7 +12,7 @@ class ExtraFunctionWiz extends StatelessWidget {
       title: Translator.of(context).translate.selectInfoType,
       body: BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
           StepByStepSettings>(
-        selector: (state) => state.settings.stepByStep,
+        selector: (state) => state.settings.addActivity.stepByStep,
         builder: (context, stepByStep) => InfoItemTab(
           showChecklist: stepByStep.checklist,
           showNote: stepByStep.notes,

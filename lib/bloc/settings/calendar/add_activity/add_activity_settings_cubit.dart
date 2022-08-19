@@ -12,17 +12,16 @@ class AddActivitySettingsCubit extends Cubit<AddActivitySettingsState> {
     required this.genericCubit,
   }) : super(AddActivitySettingsState.fromMemoplannerSettings(settingsState));
 
-  void change(AddActivitySettingsState newState) => emit(newState);
-  void addActivitySetting(AddActivitySettings settings) =>
-      change(state.copyWith(addActivitySetting: settings));
+  void change(AddActivitySettingsState state) => emit(state);
+  void addGeneralSettings(GeneralAddActivitySettings settings) =>
+      change(state.copyWith(generalSettings: settings));
+  void addDefaultsSettings(DefaultsAddActivitySettings settings) =>
+      change(state.copyWith(defaultsSettings: settings));
   void newActivityMode(NewActivityMode? mode) =>
       change(state.copyWith(newActivityMode: mode));
-  void stepByStepSetting(StepByStepSettings setting) =>
-      change(state.copyWith(stepByStepSetting: setting));
-  void editSettings(EditActivitySettings setting) =>
-      change(state.copyWith(editActivitySetting: setting));
-  void defaultAlarm(Alarm alarm) => change(state.copyWith(defaultAlarm: alarm));
-  void defaultAlarmType(AlarmType? alarmType) =>
-      defaultAlarm(state.defaultAlarm.copyWith(type: alarmType));
+  void stepByStepSetting(StepByStepSettings settings) =>
+      change(state.copyWith(stepByStepSettings: settings));
+  void editSettings(EditActivitySettings settings) =>
+      change(state.copyWith(editActivitySettings: settings));
   void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
 }

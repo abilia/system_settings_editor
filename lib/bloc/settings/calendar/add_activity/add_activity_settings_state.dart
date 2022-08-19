@@ -1,66 +1,63 @@
 part of 'add_activity_settings_cubit.dart';
 
 class AddActivitySettingsState extends Equatable {
-  final AddActivitySettings addActivitySetting;
+  final GeneralAddActivitySettings generalSettings;
+  final DefaultsAddActivitySettings defaultsSettings;
+  final EditActivitySettings editActivitySettings;
+  final StepByStepSettings stepByStepSettings;
   final NewActivityMode newActivityMode;
-  final EditActivitySettings editActivitySetting;
-  final StepByStepSettings stepByStepSetting;
-  final Alarm defaultAlarm;
 
   const AddActivitySettingsState._({
-    required this.addActivitySetting,
+    required this.generalSettings,
+    required this.defaultsSettings,
+    required this.editActivitySettings,
+    required this.stepByStepSettings,
     required this.newActivityMode,
-    required this.editActivitySetting,
-    required this.stepByStepSetting,
-    required this.defaultAlarm,
   });
 
   factory AddActivitySettingsState.fromMemoplannerSettings(
     MemoplannerSettingsState state,
   ) =>
       AddActivitySettingsState._(
-        addActivitySetting: state.settings.addActivity,
+        generalSettings: state.settings.addActivity.general,
+        defaultsSettings: state.settings.addActivity.defaults,
+        editActivitySettings: state.settings.addActivity.editActivity,
+        stepByStepSettings: state.settings.addActivity.stepByStep,
         newActivityMode: state.addActivityType,
-        editActivitySetting: state.settings.editActivity,
-        stepByStepSetting: state.settings.stepByStep,
-        defaultAlarm: Alarm.fromInt(state.defaultAlarmTypeSetting),
       );
 
   AddActivitySettingsState copyWith({
-    AddActivitySettings? addActivitySetting,
+    GeneralAddActivitySettings? generalSettings,
+    DefaultsAddActivitySettings? defaultsSettings,
+    EditActivitySettings? editActivitySettings,
+    StepByStepSettings? stepByStepSettings,
     NewActivityMode? newActivityMode,
-    EditActivitySettings? editActivitySetting,
-    StepByStepSettings? stepByStepSetting,
-    Alarm? defaultAlarm,
   }) =>
       AddActivitySettingsState._(
-        addActivitySetting: addActivitySetting ?? this.addActivitySetting,
+        generalSettings: generalSettings ?? this.generalSettings,
+        defaultsSettings: defaultsSettings ?? this.defaultsSettings,
+        editActivitySettings: editActivitySettings ?? this.editActivitySettings,
+        stepByStepSettings: stepByStepSettings ?? this.stepByStepSettings,
         newActivityMode: newActivityMode ?? this.newActivityMode,
-        editActivitySetting: editActivitySetting ?? this.editActivitySetting,
-        stepByStepSetting: stepByStepSetting ?? this.stepByStepSetting,
-        defaultAlarm: defaultAlarm ?? this.defaultAlarm,
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
-        ...addActivitySetting.memoplannerSettingData,
+        ...generalSettings.memoplannerSettingData,
+        ...defaultsSettings.memoplannerSettingData,
+        ...editActivitySettings.memoplannerSettingData,
+        ...stepByStepSettings.memoplannerSettingData,
         MemoplannerSettingData.fromData(
           data: newActivityMode == NewActivityMode.editView,
           identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
-        ),
-        ...editActivitySetting.memoplannerSettingData,
-        ...stepByStepSetting.memoplannerSettingData,
-        MemoplannerSettingData.fromData(
-          data: defaultAlarm.toInt,
-          identifier: MemoplannerSettings.activityDefaultAlarmTypeKey,
         ),
       ];
 
   @override
   List<Object> get props => [
-        addActivitySetting,
+        generalSettings,
+        defaultsSettings,
+        editActivitySettings,
+        stepByStepSettings,
         newActivityMode,
-        editActivitySetting,
-        stepByStepSetting,
-        defaultAlarm,
       ];
 }

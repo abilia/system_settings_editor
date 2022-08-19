@@ -2,6 +2,7 @@ export 'settings/all.dart';
 export 'sortable/all.dart';
 export 'activity/activity.dart';
 export 'occasion/all.dart';
+export 'settings/all.dart';
 export 'data_update_response.dart';
 export 'alarm.dart';
 export 'category.dart';

@@ -21,19 +21,19 @@ class AddActivitySettingsPage extends StatelessWidget {
             iconData: AbiliaIcons.newIcon,
             bottom: AbiliaTabBar(
               tabs: <Widget>[
-                TabItem(t.general, AbiliaIcons.settings),
                 TabItem(
                   t.add,
                   AbiliaIcons.newIcon,
                   key: TestKey.addSettingsTab,
                 ),
+                TabItem(t.general, AbiliaIcons.settings),
                 TabItem(t.defaults, AbiliaIcons.technicalSettings),
               ],
             ),
           ),
           body: const TabBarView(children: [
-            AddActivityGeneralSettingsTab(),
             AddActivityAddSettingsTab(),
+            AddActivityGeneralSettingsTab(),
             AddActivityDefaultSettingsTab(),
           ]),
           bottomNavigationBar: BottomNavigation(

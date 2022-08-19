@@ -28,16 +28,18 @@ class ActivityWizardCubit extends WizardCubit {
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
         allowPassedStartTime:
-            settings.settings.addActivity.allowPassedStartTime,
+            settings.settings.addActivity.general.allowPassedStartTime,
       );
     }
     return ActivityWizardCubit.newStepByStep(
       activitiesBloc: activitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      allowPassedStartTime: settings.settings.addActivity.allowPassedStartTime,
-      stepByStep: settings.settings.stepByStep,
-      addRecurringActivity: settings.settings.addActivity.addRecurringActivity,
+      allowPassedStartTime:
+          settings.settings.addActivity.general.allowPassedStartTime,
+      stepByStep: settings.settings.addActivity.stepByStep,
+      addRecurringActivity:
+          settings.settings.addActivity.general.addRecurringActivity,
     );
   }
 

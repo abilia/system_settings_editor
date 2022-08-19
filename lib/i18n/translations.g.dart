@@ -654,6 +654,16 @@ abstract class Translated {
 
   final String showNoAlarm = 'Show no alarm';
 
+  final String showAlarmOnlyAtStartTime = 'Show alarm only at start time';
+
+  final String showSpeechAtAlarm = 'Show speech at alarm';
+
+  final String showReminders = 'Show reminders';
+
+  final String showSelectEndDate = 'Show select end date';
+
+  final String recurring = 'Recurring';
+
   final String throughEditView = 'Through Edit View';
 
   final String androidSettings = 'Android Settings';

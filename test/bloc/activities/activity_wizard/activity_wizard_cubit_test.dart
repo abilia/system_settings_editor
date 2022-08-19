@@ -74,7 +74,8 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: EditActivityCubit.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: noAlarm,
+        defaultsSettings:
+            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
         calendarId: calendarId,
       ),
       clockBloc: clockBloc,
@@ -124,11 +125,12 @@ void main() {
     );
   });
 
-  test('Initial state with no title and no image is not saveable', () {
+  test('Initial state with no title and no image is not savable', () {
     // Arrange
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDay,
-      defaultAlarmTypeSetting: noAlarm,
+      defaultsSettings:
+          DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
       calendarId: calendarId,
     );
 
@@ -165,7 +167,8 @@ void main() {
 
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aTime,
-      defaultAlarmTypeSetting: noAlarm,
+      defaultsSettings:
+          DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
       calendarId: calendarId,
     );
     final activityWizardCubit = ActivityWizardCubit.newActivity(
@@ -174,7 +177,9 @@ void main() {
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(
-          editActivity: EditActivitySettings(template: false),
+          addActivity: AddActivitySettings(
+            editActivity: EditActivitySettings(template: false),
+          ),
         ),
       ),
     );
@@ -317,7 +322,8 @@ void main() {
 
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDate,
-      defaultAlarmTypeSetting: noAlarm,
+      defaultsSettings:
+          DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
       calendarId: calendarId,
     );
 
@@ -327,7 +333,9 @@ void main() {
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(
-          editActivity: EditActivitySettings(template: false),
+          addActivity: AddActivitySettings(
+            editActivity: EditActivitySettings(template: false),
+          ),
         ),
       ),
     );
@@ -728,7 +736,8 @@ void main() {
     // Arrange
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDay,
-      defaultAlarmTypeSetting: noAlarm,
+      defaultsSettings:
+          DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
       calendarId: calendarId,
     );
 
@@ -738,7 +747,9 @@ void main() {
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(
-          editActivity: EditActivitySettings(template: false),
+          addActivity: AddActivitySettings(
+            editActivity: EditActivitySettings(template: false),
+          ),
         ),
       ),
     );
@@ -794,7 +805,8 @@ void main() {
 
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
-          defaultAlarmTypeSetting: noAlarm,
+          defaultsSettings:
+              DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
           calendarId: calendarId,
         );
 
@@ -804,7 +816,9 @@ void main() {
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           settings: const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              editActivity: EditActivitySettings(template: false),
+              addActivity: AddActivitySettings(
+                editActivity: EditActivitySettings(template: false),
+              ),
             ),
           ),
         );
@@ -884,7 +898,8 @@ void main() {
 
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
-          defaultAlarmTypeSetting: noAlarm,
+          defaultsSettings:
+              DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
           calendarId: calendarId,
         );
 
@@ -894,7 +909,9 @@ void main() {
           clockBloc: ClockBloc.fixed(time),
           settings: const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              editActivity: EditActivitySettings(template: false),
+              addActivity: AddActivitySettings(
+                editActivity: EditActivitySettings(template: false),
+              ),
             ),
           ),
         );
@@ -972,7 +989,8 @@ void main() {
         // Arrange
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
-          defaultAlarmTypeSetting: noAlarm,
+          defaultsSettings:
+              DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
           calendarId: calendarId,
         );
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -981,7 +999,9 @@ void main() {
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           settings: const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              editActivity: EditActivitySettings(template: false),
+              addActivity: AddActivitySettings(
+                editActivity: EditActivitySettings(template: false),
+              ),
             ),
           ),
         );
@@ -1158,7 +1178,8 @@ void main() {
             .thenReturn(ActivitiesLoaded([stored]));
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
-          defaultAlarmTypeSetting: noAlarm,
+          defaultsSettings:
+              DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
           calendarId: calendarId,
         );
 
@@ -1168,7 +1189,9 @@ void main() {
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
           settings: const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              editActivity: EditActivitySettings(template: false),
+              addActivity: AddActivitySettings(
+                editActivity: EditActivitySettings(template: false),
+              ),
             ),
           ),
         );
@@ -1246,7 +1269,8 @@ void main() {
             .thenReturn(ActivitiesLoaded([stored]));
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
-          defaultAlarmTypeSetting: noAlarm,
+          defaultsSettings:
+              DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
           calendarId: calendarId,
         );
 
@@ -1256,7 +1280,9 @@ void main() {
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           settings: const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              editActivity: EditActivitySettings(template: false),
+              addActivity: AddActivitySettings(
+                editActivity: EditActivitySettings(template: false),
+              ),
             ),
           ),
         );
@@ -1391,7 +1417,8 @@ void main() {
 
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
-          defaultAlarmTypeSetting: noAlarm,
+          defaultsSettings:
+              DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
           calendarId: calendarId,
         );
 
@@ -1401,7 +1428,9 @@ void main() {
           clockBloc: ClockBloc.fixed(aTime),
           settings: const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              editActivity: EditActivitySettings(template: false),
+              addActivity: AddActivitySettings(
+                editActivity: EditActivitySettings(template: false),
+              ),
             ),
           ),
         );
@@ -1454,7 +1483,8 @@ void main() {
             .thenReturn(ActivitiesLoaded([stored]));
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
-          defaultAlarmTypeSetting: noAlarm,
+          defaultsSettings:
+              DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
           calendarId: calendarId,
         );
 
@@ -1464,7 +1494,9 @@ void main() {
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
           settings: const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              editActivity: EditActivitySettings(template: false),
+              addActivity: AddActivitySettings(
+                editActivity: EditActivitySettings(template: false),
+              ),
             ),
           ),
         );
@@ -1738,7 +1770,8 @@ void main() {
       // Arrange
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: noAlarm,
+        defaultsSettings:
+            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
         calendarId: calendarId,
       );
 
@@ -1772,7 +1805,8 @@ void main() {
       // Arrange
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: noAlarm,
+        defaultsSettings:
+            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
         calendarId: calendarId,
       );
 
@@ -1783,19 +1817,21 @@ void main() {
         settings: const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            stepByStep: StepByStepSettings(
-              datePicker: false,
-              image: false,
-              title: false,
-              type: true,
-              availability: false,
-              checkable: false,
-              removeAfter: true,
-              alarm: true,
-              notes: true,
-              reminders: true,
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(addRecurringActivity: false),
+              stepByStep: StepByStepSettings(
+                datePicker: false,
+                image: false,
+                title: false,
+                type: true,
+                availability: false,
+                checkable: false,
+                removeAfter: true,
+                alarm: true,
+                notes: true,
+                reminders: true,
+              ),
             ),
-            addActivity: AddActivitySettings(addRecurringActivity: false),
           ),
         ),
       );
@@ -1820,7 +1856,8 @@ void main() {
       // Arrange
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: noAlarm,
+        defaultsSettings:
+            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
         calendarId: calendarId,
       );
 
@@ -1831,21 +1868,25 @@ void main() {
         settings: const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            stepByStep: StepByStepSettings(
-              template: false,
-              datePicker: false,
-              image: false,
-              title: true,
-              type: false,
-              availability: false,
-              checkable: false,
-              removeAfter: false,
-              alarm: false,
-              checklist: false,
-              notes: false,
-              reminders: false,
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(
+                addRecurringActivity: false,
+              ),
+              stepByStep: StepByStepSettings(
+                template: false,
+                datePicker: false,
+                image: false,
+                title: true,
+                type: false,
+                availability: false,
+                checkable: false,
+                removeAfter: false,
+                alarm: false,
+                checklist: false,
+                notes: false,
+                reminders: false,
+              ),
             ),
-            addActivity: AddActivitySettings(addRecurringActivity: false),
           ),
         ),
       );
@@ -1864,21 +1905,25 @@ void main() {
 
     const allWizStepsSettings = MemoplannerSettings(
       addActivityTypeAdvanced: false,
-      stepByStep: StepByStepSettings(
-        template: true,
-        datePicker: true,
-        image: true,
-        title: true,
-        type: true,
-        availability: true,
-        checkable: true,
-        removeAfter: true,
-        alarm: true,
-        checklist: true,
-        notes: true,
-        reminders: true,
+      addActivity: AddActivitySettings(
+        general: GeneralAddActivitySettings(
+          addRecurringActivity: true,
+        ),
+        stepByStep: StepByStepSettings(
+          template: true,
+          datePicker: true,
+          image: true,
+          title: true,
+          type: true,
+          availability: true,
+          checkable: true,
+          removeAfter: true,
+          alarm: true,
+          checklist: true,
+          notes: true,
+          reminders: true,
+        ),
       ),
-      addActivity: AddActivitySettings(addRecurringActivity: true),
     );
 
     const allWizStep = [
@@ -1900,7 +1945,8 @@ void main() {
       // Arrange
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: noAlarm,
+        defaultsSettings:
+            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
         calendarId: calendarId,
       );
 
@@ -1924,7 +1970,8 @@ void main() {
       // Arrange
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: noAlarm,
+        defaultsSettings:
+            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
         calendarId: calendarId,
       );
       final activity = editActivityCubit.state.activity;
@@ -2001,7 +2048,8 @@ void main() {
       // Arrange
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: noAlarm,
+        defaultsSettings:
+            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
         calendarId: calendarId,
       );
       final activity = editActivityCubit.state.activity;
@@ -2044,7 +2092,8 @@ void main() {
       // Arrange
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: noAlarm,
+        defaultsSettings:
+            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
         calendarId: calendarId,
       );
       final activity = editActivityCubit.state.activity;
@@ -2081,7 +2130,8 @@ void main() {
       // Arrange
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: noAlarm,
+        defaultsSettings:
+            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
         calendarId: calendarId,
       );
       final activity = editActivityCubit.state.activity;
@@ -2093,21 +2143,25 @@ void main() {
         settings: const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            stepByStep: StepByStepSettings(
-              template: false,
-              datePicker: false,
-              image: false,
-              title: false,
-              type: false,
-              availability: false,
-              checkable: false,
-              removeAfter: false,
-              alarm: false,
-              checklist: false,
-              notes: false,
-              reminders: false,
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(
+                addRecurringActivity: true,
+              ),
+              stepByStep: StepByStepSettings(
+                template: false,
+                datePicker: false,
+                image: false,
+                title: false,
+                type: false,
+                availability: false,
+                checkable: false,
+                removeAfter: false,
+                alarm: false,
+                checklist: false,
+                notes: false,
+                reminders: false,
+              ),
             ),
-            addActivity: AddActivitySettings(addRecurringActivity: true),
           ),
         ),
       );
@@ -2161,7 +2215,8 @@ void main() {
       // Arrange
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: noAlarm,
+        defaultsSettings:
+            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
         calendarId: '',
       );
       final activity = editActivityCubit.state.activity;
@@ -2173,21 +2228,25 @@ void main() {
         settings: const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            stepByStep: StepByStepSettings(
-              template: false,
-              title: false,
-              image: false,
-              datePicker: false,
-              type: false,
-              availability: false,
-              checkable: false,
-              removeAfter: false,
-              alarm: false,
-              checklist: false,
-              notes: false,
-              reminders: false,
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(
+                addRecurringActivity: true,
+              ),
+              stepByStep: StepByStepSettings(
+                template: false,
+                title: false,
+                image: false,
+                datePicker: false,
+                type: false,
+                availability: false,
+                checkable: false,
+                removeAfter: false,
+                alarm: false,
+                checklist: false,
+                notes: false,
+                reminders: false,
+              ),
             ),
-            addActivity: AddActivitySettings(addRecurringActivity: true),
           ),
         ),
       );

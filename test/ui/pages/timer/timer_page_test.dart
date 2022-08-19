@@ -47,7 +47,9 @@ void main() {
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
       const MemoplannerSettingsLoaded(
         MemoplannerSettings(
-          editActivity: EditActivitySettings(template: false),
+          addActivity: AddActivitySettings(
+            editActivity: EditActivitySettings(template: false),
+          ),
         ),
       ),
     );

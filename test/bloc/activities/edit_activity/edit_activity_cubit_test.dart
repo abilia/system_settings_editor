@@ -41,7 +41,8 @@ void main() {
     );
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aTime,
-      defaultAlarmTypeSetting: alarmSoundAndVibration,
+      defaultsSettings: DefaultsAddActivitySettings(
+          alarm: Alarm.fromInt(alarmSoundAndVibration)),
       calendarId: calendarId,
     );
     // Act // Assert
@@ -52,7 +53,8 @@ void main() {
     // Arrange
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aTime,
-      defaultAlarmTypeSetting: noAlarm,
+      defaultsSettings:
+          DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
       calendarId: calendarId,
     );
     final activity = editActivityCubit.state.activity;
@@ -77,7 +79,8 @@ void main() {
 
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDate,
-      defaultAlarmTypeSetting: noAlarm,
+      defaultsSettings:
+          DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
       calendarId: calendarId,
     );
     final activity = editActivityCubit.state.activity;
@@ -103,7 +106,8 @@ void main() {
 
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDate,
-      defaultAlarmTypeSetting: noAlarm,
+      defaultsSettings:
+          DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
       calendarId: calendarId,
     );
 
@@ -197,7 +201,8 @@ void main() {
 
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDay,
-      defaultAlarmTypeSetting: noAlarm,
+      defaultsSettings:
+          DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
       calendarId: calendarId,
     );
 
@@ -207,7 +212,9 @@ void main() {
       clockBloc: ClockBloc.fixed(nowTime),
       settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(
-          editActivity: EditActivitySettings(template: false),
+          addActivity: AddActivitySettings(
+            editActivity: EditActivitySettings(template: false),
+          ),
         ),
       ),
     );
@@ -343,7 +350,8 @@ void main() {
     // Arrange
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDay,
-      defaultAlarmTypeSetting: noAlarm,
+      defaultsSettings:
+          DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
       calendarId: calendarId,
     );
 
@@ -387,7 +395,8 @@ void main() {
     // Arrange
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDay,
-      defaultAlarmTypeSetting: noAlarm,
+      defaultsSettings:
+          DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
       calendarId: calendarId,
     );
 
@@ -423,7 +432,8 @@ void main() {
     // Arrange
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDay,
-      defaultAlarmTypeSetting: noAlarm,
+      defaultsSettings:
+          DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
       calendarId: calendarId,
     );
 

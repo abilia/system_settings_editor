@@ -29,7 +29,8 @@ class CreateNewPage extends StatelessWidget {
         final displayNewTimer =
             memoplannerSettingsState.settings.functions.display.newTimer &&
                 showTimers;
-
+        final defaultsSettings =
+            memoplannerSettingsState.settings.addActivity.defaults;
         return Scaffold(
           appBar: _appBar(t, displayNewActivity, displayNewTimer),
           body: Column(
@@ -43,8 +44,7 @@ class CreateNewPage extends StatelessWidget {
                   onTap: () => navigateToActivityWizard(
                     authProviders: authProviders,
                     navigator: Navigator.of(context),
-                    memoplannerSettingBloc:
-                        context.read<MemoplannerSettingBloc>(),
+                    defaultsSettings: defaultsSettings,
                     day: context.read<DayPickerBloc>().state.day,
                   ),
                 ).pad(layout.templates.m1.withoutBottom),
@@ -56,8 +56,6 @@ class CreateNewPage extends StatelessWidget {
                   text: Text(t.fromTemplate),
                   onTap: () async {
                     final navigator = Navigator.of(context);
-                    final memoplannerSettingBloc =
-                        context.read<MemoplannerSettingBloc>();
                     final day = context.read<DayPickerBloc>().state.day;
                     final basicActivityData =
                         await Navigator.of(context).push<BasicActivityData>(
@@ -80,7 +78,7 @@ class CreateNewPage extends StatelessWidget {
                       navigateToActivityWizard(
                         authProviders: authProviders,
                         navigator: navigator,
-                        memoplannerSettingBloc: memoplannerSettingBloc,
+                        defaultsSettings: defaultsSettings,
                         day: day,
                         basicActivity: basicActivityData,
                       );
@@ -223,14 +221,19 @@ class CreateNewPage extends StatelessWidget {
       navigateToActivityWizard(
         authProviders: authProviders,
         navigator: Navigator.of(context),
-        memoplannerSettingBloc: context.read<MemoplannerSettingBloc>(),
+        defaultsSettings: context
+            .read<MemoplannerSettingBloc>()
+            .state
+            .settings
+            .addActivity
+            .defaults,
         day: context.read<DayPickerBloc>().state.day,
       );
 
   Future<void> navigateToActivityWizard({
     required NavigatorState navigator,
     required DateTime day,
-    required MemoplannerSettingBloc memoplannerSettingBloc,
+    required DefaultsAddActivitySettings defaultsSettings,
     required List<BlocProvider> authProviders,
     BasicActivityDataItem? basicActivity,
   }) async {
@@ -244,8 +247,7 @@ class CreateNewPage extends StatelessWidget {
               create: (_) => EditActivityCubit.newActivity(
                 day: day,
                 calendarId: calendarId,
-                defaultAlarmTypeSetting:
-                    memoplannerSettingBloc.state.defaultAlarmTypeSetting,
+                defaultsSettings: defaultsSettings,
                 basicActivityData: basicActivity,
               ),
             ),
@@ -257,18 +259,18 @@ class CreateNewPage extends StatelessWidget {
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
                         clockBloc: context.read<ClockBloc>(),
-                        allowPassedStartTime:
-                            settings.settings.addActivity.allowPassedStartTime,
+                        allowPassedStartTime: settings
+                            .settings.addActivity.general.allowPassedStartTime,
                       )
                     : ActivityWizardCubit.newStepByStep(
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
                         clockBloc: context.read<ClockBloc>(),
-                        allowPassedStartTime:
-                            settings.settings.addActivity.allowPassedStartTime,
-                        stepByStep: settings.settings.stepByStep,
-                        addRecurringActivity:
-                            settings.settings.addActivity.addRecurringActivity,
+                        allowPassedStartTime: settings
+                            .settings.addActivity.general.allowPassedStartTime,
+                        stepByStep: settings.settings.addActivity.stepByStep,
+                        addRecurringActivity: settings
+                            .settings.addActivity.general.addRecurringActivity,
                       );
               },
             ),

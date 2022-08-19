@@ -109,8 +109,9 @@ void main() {
               BlocProvider<EditActivityCubit>(
                 create: (context) => EditActivityCubit.newActivity(
                   day: today,
-                  defaultAlarmTypeSetting:
-                      mockMemoplannerSettingsBloc.state.defaultAlarmTypeSetting,
+                  defaultsSettings: DefaultsAddActivitySettings(
+                      alarm: mockMemoplannerSettingsBloc
+                          .state.settings.addActivity.defaults.alarm),
                   basicActivityData: basicActivityData,
                   calendarId: 'calendarId',
                 ),
@@ -203,20 +204,24 @@ void main() {
   group('title step', () {
     const titleOnlyMemoSettings = MemoplannerSettings(
       addActivityTypeAdvanced: false,
-      stepByStep: StepByStepSettings(
-        template: false,
-        datePicker: false,
-        image: false,
-        title: true,
-        type: false,
-        availability: false,
-        checkable: false,
-        removeAfter: false,
-        alarm: false,
-        notes: false,
-        reminders: false,
+      addActivity: AddActivitySettings(
+        general: GeneralAddActivitySettings(
+          addRecurringActivity: false,
+        ),
+        stepByStep: StepByStepSettings(
+          template: false,
+          datePicker: false,
+          image: false,
+          title: true,
+          type: false,
+          availability: false,
+          checkable: false,
+          removeAfter: false,
+          alarm: false,
+          notes: false,
+          reminders: false,
+        ),
       ),
-      addActivity: AddActivitySettings(addRecurringActivity: false),
     );
 
     testWidgets('only title step', (WidgetTester tester) async {
@@ -279,20 +284,21 @@ void main() {
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            stepByStep: StepByStepSettings(
-              template: false,
-              datePicker: false,
-              image: true,
-              title: true,
-              type: false,
-              availability: false,
-              checkable: false,
-              removeAfter: false,
-              alarm: false,
-              notes: false,
-              reminders: false,
+            addActivity: AddActivitySettings(
+              stepByStep: StepByStepSettings(
+                template: false,
+                datePicker: false,
+                image: true,
+                title: true,
+                type: false,
+                availability: false,
+                checkable: false,
+                removeAfter: false,
+                alarm: false,
+                notes: false,
+                reminders: false,
+              ),
             ),
-            addActivity: AddActivitySettings(addRecurringActivity: false),
           ),
         ),
       );
@@ -361,20 +367,24 @@ void main() {
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            stepByStep: StepByStepSettings(
-              template: true,
-              datePicker: false,
-              image: false,
-              title: true,
-              type: false,
-              availability: false,
-              checkable: false,
-              removeAfter: false,
-              alarm: false,
-              notes: false,
-              reminders: false,
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(
+                addRecurringActivity: false,
+              ),
+              stepByStep: StepByStepSettings(
+                template: true,
+                datePicker: false,
+                image: false,
+                title: true,
+                type: false,
+                availability: false,
+                checkable: false,
+                removeAfter: false,
+                alarm: false,
+                notes: false,
+                reminders: false,
+              ),
             ),
-            addActivity: AddActivitySettings(addRecurringActivity: false),
           ),
         ),
       );
@@ -416,20 +426,24 @@ void main() {
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            stepByStep: StepByStepSettings(
-              template: true,
-              datePicker: false,
-              image: false,
-              title: true,
-              type: false,
-              availability: false,
-              checkable: false,
-              removeAfter: false,
-              alarm: false,
-              notes: false,
-              reminders: false,
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(
+                addRecurringActivity: false,
+              ),
+              stepByStep: StepByStepSettings(
+                template: true,
+                datePicker: false,
+                image: false,
+                title: true,
+                type: false,
+                availability: false,
+                checkable: false,
+                removeAfter: false,
+                alarm: false,
+                notes: false,
+                reminders: false,
+              ),
             ),
-            addActivity: AddActivitySettings(addRecurringActivity: false),
           ),
         ),
       );
@@ -463,20 +477,24 @@ void main() {
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            stepByStep: StepByStepSettings(
-              template: false,
-              datePicker: false,
-              image: false,
-              title: true,
-              type: false,
-              availability: false,
-              checkable: false,
-              removeAfter: false,
-              alarm: false,
-              notes: false,
-              reminders: false,
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(
+                addRecurringActivity: false,
+              ),
+              stepByStep: StepByStepSettings(
+                template: false,
+                datePicker: false,
+                image: false,
+                title: true,
+                type: false,
+                availability: false,
+                checkable: false,
+                removeAfter: false,
+                alarm: false,
+                notes: false,
+                reminders: false,
+              ),
             ),
-            addActivity: AddActivitySettings(addRecurringActivity: false),
           ),
         ),
       );
@@ -507,20 +525,24 @@ void main() {
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            stepByStep: StepByStepSettings(
-              template: false,
-              datePicker: false,
-              image: false,
-              title: true,
-              type: false,
-              availability: false,
-              checkable: false,
-              removeAfter: false,
-              alarm: false,
-              notes: false,
-              reminders: true,
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(
+                addRecurringActivity: false,
+              ),
+              stepByStep: StepByStepSettings(
+                template: false,
+                datePicker: false,
+                image: false,
+                title: true,
+                type: false,
+                availability: false,
+                checkable: false,
+                removeAfter: false,
+                alarm: false,
+                notes: false,
+                reminders: true,
+              ),
             ),
-            addActivity: AddActivitySettings(addRecurringActivity: false),
           ),
         ),
       );
@@ -551,20 +573,24 @@ void main() {
   group('type step', () {
     const typeOnlyMemoSettings = MemoplannerSettings(
       addActivityTypeAdvanced: false,
-      stepByStep: StepByStepSettings(
-        template: false,
-        datePicker: false,
-        image: false,
-        title: false,
-        type: true,
-        availability: false,
-        checkable: false,
-        removeAfter: false,
-        alarm: false,
-        notes: false,
-        reminders: false,
+      addActivity: AddActivitySettings(
+        general: GeneralAddActivitySettings(
+          addRecurringActivity: false,
+        ),
+        stepByStep: StepByStepSettings(
+          template: false,
+          datePicker: false,
+          image: false,
+          title: false,
+          type: true,
+          availability: false,
+          checkable: false,
+          removeAfter: false,
+          alarm: false,
+          notes: false,
+          reminders: false,
+        ),
       ),
-      addActivity: AddActivitySettings(addRecurringActivity: false),
     );
 
     testWidgets('only type step', (WidgetTester tester) async {
@@ -589,20 +615,24 @@ void main() {
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            stepByStep: StepByStepSettings(
-              template: false,
-              datePicker: false,
-              image: false,
-              title: true,
-              type: true,
-              availability: false,
-              checkable: false,
-              removeAfter: false,
-              alarm: false,
-              notes: false,
-              reminders: false,
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(
+                addRecurringActivity: false,
+              ),
+              stepByStep: StepByStepSettings(
+                template: false,
+                datePicker: false,
+                image: false,
+                title: true,
+                type: true,
+                availability: false,
+                checkable: false,
+                removeAfter: false,
+                alarm: false,
+                notes: false,
+                reminders: false,
+              ),
             ),
-            addActivity: AddActivitySettings(addRecurringActivity: false),
           ),
         ),
       );
@@ -633,20 +663,24 @@ void main() {
   group('available for step', () {
     const availableForOnlyMemoSettings = MemoplannerSettings(
       addActivityTypeAdvanced: false,
-      stepByStep: StepByStepSettings(
-        template: false,
-        title: true,
-        image: false,
-        datePicker: false,
-        type: false,
-        removeAfter: false,
-        availability: true,
-        alarm: false,
-        checkable: false,
-        notes: false,
-        reminders: false,
+      addActivity: AddActivitySettings(
+        general: GeneralAddActivitySettings(
+          addRecurringActivity: false,
+        ),
+        stepByStep: StepByStepSettings(
+          template: false,
+          title: true,
+          image: false,
+          datePicker: false,
+          type: false,
+          removeAfter: false,
+          availability: true,
+          alarm: false,
+          checkable: false,
+          notes: false,
+          reminders: false,
+        ),
       ),
-      addActivity: AddActivitySettings(addRecurringActivity: false),
     );
 
     testWidgets('only available for step', (WidgetTester tester) async {
@@ -668,20 +702,24 @@ void main() {
   group('checkable step', () {
     const checkableOnlyMemoSettings = MemoplannerSettings(
       addActivityTypeAdvanced: false,
-      stepByStep: StepByStepSettings(
-        template: false,
-        datePicker: false,
-        image: false,
-        title: true,
-        type: false,
-        availability: false,
-        checkable: true,
-        removeAfter: false,
-        alarm: false,
-        notes: false,
-        reminders: false,
+      addActivity: AddActivitySettings(
+        general: GeneralAddActivitySettings(
+          addRecurringActivity: false,
+        ),
+        stepByStep: StepByStepSettings(
+          template: false,
+          datePicker: false,
+          image: false,
+          title: true,
+          type: false,
+          availability: false,
+          checkable: true,
+          removeAfter: false,
+          alarm: false,
+          notes: false,
+          reminders: false,
+        ),
       ),
-      addActivity: AddActivitySettings(addRecurringActivity: false),
     );
 
     testWidgets('only checkable step', (WidgetTester tester) async {
@@ -704,20 +742,24 @@ void main() {
   group('remove after step', () {
     const removeAfterOnlyMemoSettings = MemoplannerSettings(
       addActivityTypeAdvanced: false,
-      stepByStep: StepByStepSettings(
-        template: false,
-        datePicker: false,
-        image: false,
-        title: true,
-        type: false,
-        availability: false,
-        checkable: false,
-        removeAfter: true,
-        alarm: false,
-        notes: false,
-        reminders: false,
+      addActivity: AddActivitySettings(
+        general: GeneralAddActivitySettings(
+          addRecurringActivity: false,
+        ),
+        stepByStep: StepByStepSettings(
+          template: false,
+          datePicker: false,
+          image: false,
+          title: true,
+          type: false,
+          availability: false,
+          checkable: false,
+          removeAfter: true,
+          alarm: false,
+          notes: false,
+          reminders: false,
+        ),
       ),
-      addActivity: AddActivitySettings(addRecurringActivity: false),
     );
 
     testWidgets('only remove after step', (WidgetTester tester) async {
@@ -738,20 +780,24 @@ void main() {
   group('recurring step', () {
     const recurringOnly = MemoplannerSettings(
       addActivityTypeAdvanced: false,
-      stepByStep: StepByStepSettings(
-        template: false,
-        datePicker: false,
-        image: false,
-        title: false,
-        type: true,
-        availability: false,
-        checkable: false,
-        removeAfter: false,
-        alarm: false,
-        notes: false,
-        reminders: false,
+      addActivity: AddActivitySettings(
+        general: GeneralAddActivitySettings(
+          addRecurringActivity: true,
+        ),
+        stepByStep: StepByStepSettings(
+          template: false,
+          datePicker: false,
+          image: false,
+          title: false,
+          type: true,
+          availability: false,
+          checkable: false,
+          removeAfter: false,
+          alarm: false,
+          notes: false,
+          reminders: false,
+        ),
       ),
-      addActivity: AddActivitySettings(addRecurringActivity: true),
     );
 
     testWidgets('changing recurring changes save button',
@@ -795,20 +841,24 @@ void main() {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(MemoplannerSettings(
           addActivityTypeAdvanced: false,
-          stepByStep: StepByStepSettings(
-            template: false,
-            datePicker: false,
-            image: false,
-            title: true,
-            type: true,
-            availability: false,
-            checkable: false,
-            removeAfter: false,
-            alarm: false,
-            notes: false,
-            reminders: false,
+          addActivity: AddActivitySettings(
+            general: GeneralAddActivitySettings(
+              addRecurringActivity: true,
+            ),
+            stepByStep: StepByStepSettings(
+              template: false,
+              datePicker: false,
+              image: false,
+              title: true,
+              type: true,
+              availability: false,
+              checkable: false,
+              removeAfter: false,
+              alarm: false,
+              notes: false,
+              reminders: false,
+            ),
           ),
-          addActivity: AddActivitySettings(addRecurringActivity: true),
         )),
       );
       await tester.pumpWidget(wizardPage());
@@ -872,20 +922,24 @@ void main() {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(MemoplannerSettings(
           addActivityTypeAdvanced: false,
-          stepByStep: StepByStepSettings(
-            template: false,
-            datePicker: false,
-            image: false,
-            title: true,
-            type: true,
-            availability: false,
-            checkable: false,
-            removeAfter: false,
-            alarm: false,
-            notes: false,
-            reminders: false,
+          addActivity: AddActivitySettings(
+            general: GeneralAddActivitySettings(
+              addRecurringActivity: true,
+            ),
+            stepByStep: StepByStepSettings(
+              template: false,
+              datePicker: false,
+              image: false,
+              title: true,
+              type: true,
+              availability: false,
+              checkable: false,
+              removeAfter: false,
+              alarm: false,
+              notes: false,
+              reminders: false,
+            ),
           ),
-          addActivity: AddActivitySettings(addRecurringActivity: true),
         )),
       );
       await tester.pumpWidget(wizardPage());
@@ -948,20 +1002,24 @@ void main() {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(MemoplannerSettings(
           addActivityTypeAdvanced: false,
-          stepByStep: StepByStepSettings(
-            template: false,
-            datePicker: false,
-            image: false,
-            title: true,
-            type: true,
-            availability: false,
-            checkable: false,
-            removeAfter: false,
-            alarm: false,
-            notes: false,
-            reminders: false,
+          addActivity: AddActivitySettings(
+            general: GeneralAddActivitySettings(
+              addRecurringActivity: true,
+            ),
+            stepByStep: StepByStepSettings(
+              template: false,
+              datePicker: false,
+              image: false,
+              title: true,
+              type: true,
+              availability: false,
+              checkable: false,
+              removeAfter: false,
+              alarm: false,
+              notes: false,
+              reminders: false,
+            ),
           ),
-          addActivity: AddActivitySettings(addRecurringActivity: true),
         )),
       );
 
@@ -994,20 +1052,24 @@ void main() {
   group('image step', () {
     const imageOnlyMemoSettings = MemoplannerSettings(
       addActivityTypeAdvanced: false,
-      stepByStep: StepByStepSettings(
-        template: false,
-        datePicker: false,
-        image: true,
-        title: false,
-        type: false,
-        availability: false,
-        checkable: false,
-        removeAfter: false,
-        alarm: false,
-        notes: false,
-        reminders: false,
+      addActivity: AddActivitySettings(
+        general: GeneralAddActivitySettings(
+          addRecurringActivity: false,
+        ),
+        stepByStep: StepByStepSettings(
+          template: false,
+          datePicker: false,
+          image: true,
+          title: false,
+          type: false,
+          availability: false,
+          checkable: false,
+          removeAfter: false,
+          alarm: false,
+          notes: false,
+          reminders: false,
+        ),
       ),
-      addActivity: AddActivitySettings(addRecurringActivity: false),
     );
 
     testWidgets('only image step', (WidgetTester tester) async {
@@ -1025,21 +1087,25 @@ void main() {
   group('reminders step', () {
     const remindersOnlyMemoSettings = MemoplannerSettings(
       addActivityTypeAdvanced: false,
-      stepByStep: StepByStepSettings(
-        template: false,
-        datePicker: false,
-        image: false,
-        title: false,
-        type: true,
-        availability: false,
-        checkable: false,
-        removeAfter: false,
-        alarm: false,
-        checklist: false,
-        notes: false,
-        reminders: true,
+      addActivity: AddActivitySettings(
+        general: GeneralAddActivitySettings(
+          addRecurringActivity: false,
+        ),
+        stepByStep: StepByStepSettings(
+          template: false,
+          datePicker: false,
+          image: false,
+          title: false,
+          type: true,
+          availability: false,
+          checkable: false,
+          removeAfter: false,
+          alarm: false,
+          checklist: false,
+          notes: false,
+          reminders: true,
+        ),
       ),
-      addActivity: AddActivitySettings(addRecurringActivity: false),
     );
 
     testWidgets('reminders step present', (WidgetTester tester) async {
@@ -1082,21 +1148,25 @@ void main() {
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            stepByStep: StepByStepSettings(
-              template: false,
-              datePicker: false,
-              image: false,
-              title: false,
-              type: true,
-              availability: false,
-              checkable: false,
-              removeAfter: false,
-              alarm: false,
-              notes: true,
-              checklist: true,
-              reminders: false,
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(
+                addRecurringActivity: false,
+              ),
+              stepByStep: StepByStepSettings(
+                template: false,
+                datePicker: false,
+                image: false,
+                title: false,
+                type: true,
+                availability: false,
+                checkable: false,
+                removeAfter: false,
+                alarm: false,
+                notes: true,
+                checklist: true,
+                reminders: false,
+              ),
             ),
-            addActivity: AddActivitySettings(addRecurringActivity: false),
           ),
         ),
       );
@@ -1120,21 +1190,25 @@ void main() {
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            stepByStep: StepByStepSettings(
-              template: false,
-              datePicker: false,
-              image: false,
-              title: false,
-              type: true,
-              availability: false,
-              checkable: false,
-              removeAfter: false,
-              alarm: false,
-              notes: true,
-              checklist: false,
-              reminders: false,
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(
+                addRecurringActivity: false,
+              ),
+              stepByStep: StepByStepSettings(
+                template: false,
+                datePicker: false,
+                image: false,
+                title: false,
+                type: true,
+                availability: false,
+                checkable: false,
+                removeAfter: false,
+                alarm: false,
+                notes: true,
+                checklist: false,
+                reminders: false,
+              ),
             ),
-            addActivity: AddActivitySettings(addRecurringActivity: false),
           ),
         ),
       );
@@ -1164,21 +1238,25 @@ void main() {
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            stepByStep: StepByStepSettings(
-              template: false,
-              datePicker: false,
-              image: false,
-              title: false,
-              type: true,
-              availability: false,
-              checkable: false,
-              removeAfter: false,
-              alarm: false,
-              notes: false,
-              checklist: true,
-              reminders: false,
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(
+                addRecurringActivity: false,
+              ),
+              stepByStep: StepByStepSettings(
+                template: false,
+                datePicker: false,
+                image: false,
+                title: false,
+                type: true,
+                availability: false,
+                checkable: false,
+                removeAfter: false,
+                alarm: false,
+                notes: false,
+                checklist: true,
+                reminders: false,
+              ),
             ),
-            addActivity: AddActivitySettings(addRecurringActivity: false),
           ),
         ),
       );
@@ -1207,21 +1285,25 @@ void main() {
   group('alarm step', () {
     const memoSettings = MemoplannerSettings(
       addActivityTypeAdvanced: false,
-      stepByStep: StepByStepSettings(
-        template: false,
-        datePicker: false,
-        image: false,
-        title: false,
-        type: true,
-        availability: false,
-        checkable: false,
-        removeAfter: false,
-        alarm: true,
-        notes: false,
-        checklist: false,
-        reminders: false,
+      addActivity: AddActivitySettings(
+        general: GeneralAddActivitySettings(
+          addRecurringActivity: false,
+        ),
+        stepByStep: StepByStepSettings(
+          template: false,
+          datePicker: false,
+          image: false,
+          title: false,
+          type: true,
+          availability: false,
+          checkable: false,
+          removeAfter: false,
+          alarm: true,
+          notes: false,
+          checklist: false,
+          reminders: false,
+        ),
       ),
-      addActivity: AddActivitySettings(addRecurringActivity: false),
     );
 
     testWidgets('alarm step shown', (WidgetTester tester) async {
