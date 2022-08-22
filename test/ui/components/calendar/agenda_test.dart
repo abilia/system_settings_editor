@@ -73,6 +73,8 @@ void main() {
         .thenAnswer((_) => Future.value(activityResponse()));
     when(() => mockActivityDb.getAllAfter(any()))
         .thenAnswer((_) => Future.value(activityResponse()));
+    when(() => mockActivityDb.getAllBetween(any(), any()))
+        .thenAnswer((_) => Future.value(activityResponse()));
 
     genericResponse = () => [
           Generic.createNew<MemoplannerSettingData>(

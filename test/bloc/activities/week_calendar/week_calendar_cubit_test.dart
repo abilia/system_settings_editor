@@ -16,7 +16,7 @@ void main() {
   late ClockBloc clockBloc;
   late StreamController<DateTime> mockedTicker;
   final initialMinutes = DateTime(2021, 03, 12, 10, 00);
-  group('WeekCalendarBlocTest', () {
+  group('WeekCalendarCubitTest', () {
     setUp(() {
       mockedTicker = StreamController<DateTime>();
       clockBloc = ClockBloc(mockedTicker.stream, initialTime: initialMinutes);
@@ -33,6 +33,7 @@ void main() {
       );
       weekCalendarBloc = WeekCalendarCubit(
         activitiesBloc: activitiesBloc,
+        activityRepository: mockActivityRepository,
         clockBloc: clockBloc,
       );
     });
@@ -51,7 +52,7 @@ void main() {
         'state is WeekCalendarLoaded when ActivitiesBloc activities are loaded',
         () {
       // Arrange
-      when(() => mockActivityRepository.load())
+      when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value(const Iterable.empty()));
       // Act
       activitiesBloc.add(LoadActivities());
@@ -71,9 +72,8 @@ void main() {
 
     test('week changes with NextWeek and PreviousWeek events', () async {
       // Arrange
-      when(() => mockActivityRepository.load())
+      when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value(const Iterable.empty()));
-      // Act
 
       // Assert
       final expected = expectLater(
@@ -96,10 +96,9 @@ void main() {
         ),
       );
 
-      activitiesBloc.add(LoadActivities());
-      weekCalendarBloc.nextWeek();
-      weekCalendarBloc.previousWeek();
-      weekCalendarBloc.previousWeek();
+      await weekCalendarBloc.nextWeek();
+      await weekCalendarBloc.previousWeek();
+      await weekCalendarBloc.previousWeek();
 
       await expected;
     });
@@ -107,7 +106,7 @@ void main() {
     test('Activities updates when changing week', () async {
       final fridayActivity = FakeActivity.starts(initialMinutes);
       // Arrange
-      when(() => mockActivityRepository.load())
+      when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([fridayActivity]));
       final expected = expectLater(
         weekCalendarBloc.stream,
@@ -170,9 +169,9 @@ void main() {
         ),
       );
 
-      weekCalendarBloc.nextWeek();
-      weekCalendarBloc.previousWeek();
-      weekCalendarBloc.previousWeek();
+      await weekCalendarBloc.nextWeek();
+      await weekCalendarBloc.previousWeek();
+      await weekCalendarBloc.previousWeek();
 
       await expected2;
 
@@ -187,7 +186,7 @@ void main() {
         removeAfter: true,
       );
       // Arrange
-      when(() => mockActivityRepository.load())
+      when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([removeAfter]));
       // Act
       activitiesBloc.add(LoadActivities());
@@ -231,7 +230,7 @@ void main() {
             startTime: initialMinutes.add(1.minutes()),
           );
       // Arrange
-      when(() => mockActivityRepository.load()).thenAnswer(
+      when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
           (_) => Future.value([initalMinActivity, nextMinActivity]));
       // Act
       activitiesBloc.add(LoadActivities());

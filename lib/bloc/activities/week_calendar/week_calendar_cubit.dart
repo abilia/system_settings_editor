@@ -2,68 +2,55 @@ import 'dart:async';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 part 'week_calendar_state.dart';
 
 class WeekCalendarCubit extends Cubit<WeekCalendarState> {
-  final ActivitiesBloc activitiesBloc;
+  final ActivityRepository activityRepository;
   final ClockBloc clockBloc;
   late final StreamSubscription _activitiesSubscription;
   late final StreamSubscription _clockSubscription;
   WeekCalendarCubit({
-    required this.activitiesBloc,
+    required ActivitiesBloc activitiesBloc,
+    required this.activityRepository,
     required this.clockBloc,
-  }) : super(activitiesBloc.state is ActivitiesLoaded
-            ? _mapToState(
-                clockBloc.state.firstInWeek(),
-                (activitiesBloc.state as ActivitiesLoaded).activities,
-                clockBloc.state)
-            : WeekCalendarInitial(clockBloc.state.firstInWeek())) {
-    _activitiesSubscription = activitiesBloc.stream.listen((state) {
-      final activityState = state;
-      if (activityState is ActivitiesLoaded) {
-        _updateWeekActivities(activityState.activities);
-      }
+  }) : super(WeekCalendarInitial(clockBloc.state.firstInWeek())) {
+    _activitiesSubscription = activitiesBloc.stream.listen((_) {
+      _mapToState(state.currentWeekStart, clockBloc.state);
     });
     _clockSubscription = clockBloc.stream.listen((_) {
-      final activityState = activitiesBloc.state;
-      if (activityState is ActivitiesLoaded) {
-        _updateWeekActivities(activityState.activities);
-      }
+      _mapToState(state.currentWeekStart, clockBloc.state);
     });
   }
 
-  void nextWeek() => emit(_mapToState(state.currentWeekStart.nextWeek(),
-      activitiesBloc.state.activities, clockBloc.state));
-
-  void previousWeek() => emit(_mapToState(state.currentWeekStart.previousWeek(),
-      activitiesBloc.state.activities, clockBloc.state));
-
-  void goToCurrentWeek() => emit(_mapToState(clockBloc.state.firstInWeek(),
-      activitiesBloc.state.activities, clockBloc.state));
-
-  void _updateWeekActivities(List<Activity> activities) => emit(
-        _mapToState(
-          state.currentWeekStart,
-          activities,
-          clockBloc.state,
-        ),
-      );
-
-  static WeekCalendarState _mapToState(
-    DateTime weekStart,
-    Iterable<Activity> activities,
-    DateTime now,
-  ) {
-    final weekActivityOccasions = {
-      for (final dayIndex in List<int>.generate(7, (i) => i))
-        dayIndex: occasionsForDay(activities, weekStart.addDays(dayIndex), now)
-    };
-    return WeekCalendarLoaded(weekStart, weekActivityOccasions);
+  Future<void> nextWeek() {
+    return _mapToState(state.currentWeekStart.nextWeek(), clockBloc.state);
   }
 
-  static List<ActivityOccasion> occasionsForDay(
+  Future<void> previousWeek() {
+    return _mapToState(state.currentWeekStart.previousWeek(), clockBloc.state);
+  }
+
+  Future<void> goToCurrentWeek() {
+    return _mapToState(clockBloc.state.firstInWeek(), clockBloc.state);
+  }
+
+  Future<void> _mapToState(
+    DateTime weekStart,
+    DateTime now,
+  ) async {
+    final activities =
+        await activityRepository.allBetween(weekStart, weekStart.addDays(7));
+    final weekActivityOccasions = {
+      for (final dayIndex in List<int>.generate(7, (i) => i))
+        dayIndex: _occasionsForDay(activities, weekStart.addDays(dayIndex), now)
+    };
+    emit(WeekCalendarLoaded(weekStart, weekActivityOccasions));
+  }
+
+  List<ActivityOccasion> _occasionsForDay(
       Iterable<Activity> activities, DateTime day, DateTime now) {
     return activities
         .expand((activity) => activity.dayActivitiesForDay(day))
