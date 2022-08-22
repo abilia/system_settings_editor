@@ -33,6 +33,7 @@ void main() {
       (_) => Future.value([
         License(
           id: 1,
+          key: 'licenseKey',
           endTime: time.add(24.hours()),
           product: 'memoplanner3',
         ),
@@ -50,6 +51,7 @@ void main() {
       (_) => Future.value([
         License(
           id: 1,
+          key: 'licenseKey',
           endTime: time.subtract(24.hours()),
           product: 'memoplanner3',
         ),

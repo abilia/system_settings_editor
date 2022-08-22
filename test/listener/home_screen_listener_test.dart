@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/listener/all.dart';
 
 import 'package:seagull/utils/all.dart';
 
@@ -15,6 +18,7 @@ import 'package:seagull/ui/all.dart';
 
 import '../fakes/all.dart';
 
+import '../mocks/mock_bloc.dart';
 import '../mocks/mocks.dart';
 import '../test_helpers/app_pumper.dart';
 import '../test_helpers/register_fallback_values.dart';
@@ -25,84 +29,280 @@ void main() {
     setupPermissions();
     registerFallbackValues();
   });
-  GenericResponse genericResponse = () => [];
-  TimerResponse timerResponse = () => [];
 
-  Generic startViewGeneric(StartView startView) =>
-      Generic.createNew<MemoplannerSettingData>(
-        data: MemoplannerSettingData.fromData(
-          data: startView.index,
-          identifier: FunctionsSettings.functionMenuStartViewKey,
+  group('Home screen inactivity', () {
+    final DateTime initialTime = DateTime(2122, 06, 06, 06, 00);
+    final Ticker fakeTicker = Ticker.fake(initialTime: initialTime);
+    late MockMemoplannerSettingBloc mockSettingBloc;
+    late InactivityCubit inactivityCubit;
+
+    setUp(() async {
+      mockSettingBloc = MockMemoplannerSettingBloc();
+      when(() => mockSettingBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(MemoplannerSettings()),
+      );
+      when(() => mockSettingBloc.stream)
+          .thenAnswer((invocation) => const Stream.empty());
+      inactivityCubit = InactivityCubit(
+        fakeTicker,
+        mockSettingBloc,
+        DayPartCubit(mockSettingBloc, ClockBloc.withTicker(fakeTicker)),
+        TouchDetectionCubit().stream,
+        const Stream.empty(),
+        const Stream.empty(),
+      );
+      final mockFirebasePushService = MockFirebasePushService();
+      when(() => mockFirebasePushService.initPushToken())
+          .thenAnswer((_) => Future.value('fakeToken'));
+
+      GetItInitializer()
+        ..sharedPreferences = await FakeSharedPreferences.getInstance()
+        ..ticker = fakeTicker
+        ..client = Fakes.client(
+          activityResponse: () => [],
+        )
+        ..battery = FakeBattery()
+        ..database = FakeDatabase()
+        ..deviceDb = FakeDeviceDb()
+        ..init();
+    });
+
+    tearDown(() {
+      GetIt.I.reset();
+    });
+
+    Widget _wrapWithMaterialApp({Widget? child}) => TopLevelProvider(
+          child: AuthenticatedBlocsProvider(
+            memoplannerSettingBloc: mockSettingBloc,
+            authenticatedState: const Authenticated(userId: 1),
+            child: BlocProvider<InactivityCubit>(
+              create: (context) => inactivityCubit,
+              child: MaterialApp(
+                theme: abiliaTheme,
+                home: MultiBlocListener(
+                  listeners: [
+                    CalendarInactivityListener(),
+                    ScreensaverListener(),
+                  ],
+                  child: ReturnToHomeScreenListener(
+                    child: child ?? const CalendarPage(),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+
+    testWidgets('switches to WeekCalendar', (tester) async {
+      when(() => mockSettingBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            functions: FunctionsSettings(
+              startView: StartView.weekCalendar,
+            ),
+          ),
         ),
       );
+      await tester.pumpWidget(
+        _wrapWithMaterialApp(child: const CalendarPage()),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(WeekCalendar), findsOneWidget);
+      await tester.tap(find.byType(MenuButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(WeekCalendar), findsNothing);
+      inactivityCubit.emit(HomeScreenThresholdReached(initialTime));
+      await tester.pumpAndSettle();
+      expect(find.byType(WeekCalendar), findsOneWidget);
+    });
 
-  final initialTime = DateTime(2022, 03, 14, 13, 27);
+    testWidgets('switches to Menu', (tester) async {
+      when(() => mockSettingBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            functions: FunctionsSettings(
+              startView: StartView.menu,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpWidget(
+        _wrapWithMaterialApp(child: const CalendarPage()),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(MenuPage), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      expect(find.byType(MenuPage), findsNothing);
+      inactivityCubit.emit(HomeScreenThresholdReached(initialTime));
+      await tester.pumpAndSettle();
+      expect(find.byType(MenuPage), findsOneWidget);
+    });
 
-  late StreamController<DateTime> clockStreamController;
-  late MockFlutterLocalNotificationsPlugin mockFlutterLocalNotificationsPlugin;
-  late MockAndroidFlutterLocalNotificationsPlugin
-      mockAndroidFlutterLocalNotificationsPlugin;
-  late StreamController<String> intentStreamController;
+    testWidgets('switches to WeekCalendar', (tester) async {
+      when(() => mockSettingBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            functions: FunctionsSettings(
+              startView: StartView.photoAlbum,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpWidget(
+        _wrapWithMaterialApp(child: const CalendarPage()),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(PhotoCalendarPage), findsOneWidget);
+      await tester.tap(
+        find.widgetWithIcon(IconActionButton, AbiliaIcons.day),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(PhotoCalendarPage), findsNothing);
+      inactivityCubit.emit(HomeScreenThresholdReached(initialTime));
+      await tester.pumpAndSettle();
+      expect(find.byType(PhotoCalendarPage), findsOneWidget);
+    });
 
-  setUp(() async {
-    mockFlutterLocalNotificationsPlugin = MockFlutterLocalNotificationsPlugin();
-    when(() => mockFlutterLocalNotificationsPlugin.cancel(any()))
-        .thenAnswer((_) => Future.value());
-    mockAndroidFlutterLocalNotificationsPlugin =
-        MockAndroidFlutterLocalNotificationsPlugin();
-    when(() => mockFlutterLocalNotificationsPlugin
-            .resolvePlatformSpecificImplementation<
-                AndroidFlutterLocalNotificationsPlugin>())
-        .thenReturn(mockAndroidFlutterLocalNotificationsPlugin);
-    when(
-      () => mockAndroidFlutterLocalNotificationsPlugin.getActiveNotifications(),
-    ).thenAnswer((invocation) => Future.value([]));
+    testWidgets(
+        'When timeout is reached, screensaver is true, app switches to Screensaver',
+        (tester) async {
+      await tester
+          .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
+      inactivityCubit.emit(const ScreensaverState());
+      await tester.pumpAndSettle();
+      expect(find.byType(ScreensaverPage), findsOneWidget);
+      expect(find.byType(ScreensaverPage), findsOneWidget);
+    });
 
-    notificationsPluginInstance = mockFlutterLocalNotificationsPlugin;
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
-    clockStreamController = StreamController<DateTime>();
-    final mockGenericDb = MockGenericDb();
-    when(() => mockGenericDb.getAllNonDeletedMaxRevision())
-        .thenAnswer((_) => Future.value(genericResponse()));
+    testWidgets(
+        'When timeout is reached, screensaver is false, '
+        'app switches to DayCalendar from Menu', (tester) async {
+      await tester
+          .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
+      await tester.tap(find.byType(MenuButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(SettingsButton));
+      await tester.pumpAndSettle();
+      inactivityCubit.emit(
+        const HomescreenFinalState(),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(DayCalendar), findsOneWidget);
+    });
 
-    final mockTimerDb = MockTimerDb();
-    when(() => mockTimerDb.getAllTimers())
-        .thenAnswer((_) => Future.value(timerResponse()));
-    when(() => mockTimerDb.getRunningTimersFrom(any()))
-        .thenAnswer((_) => Future.value(timerResponse()));
+    group('Calendar inactivity', () {
+      final local = Intl.getCurrentLocale();
+      testWidgets(
+          'When timeout is reached, day calendar switches to current day',
+          (tester) async {
+        await tester
+            .pumpWidget(_wrapWithMaterialApp(child: const DayCalendar()));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
+        await tester.pumpAndSettle();
+        expect(find.text(DateFormat.EEEE(local).format(initialTime)),
+            findsNothing);
+        inactivityCubit.emit(
+          ReturnToTodayThresholdReached(initialTime),
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(DayCalendar), findsOneWidget);
+        expect(find.text(DateFormat.EEEE(local).format(initialTime)),
+            findsOneWidget);
+      });
 
-    intentStreamController = StreamController<String>();
-
-    GetItInitializer()
-      ..sharedPreferences = await FakeSharedPreferences.getInstance()
-      ..database = FakeDatabase()
-      ..genericDb = mockGenericDb
-      ..timerDb = mockTimerDb
-      ..client = Fakes.client()
-      ..ticker = Ticker.fake(
-        initialTime: initialTime,
-        stream: clockStreamController.stream,
-      )
-      ..battery = FakeBattery()
-      ..deviceDb = FakeDeviceDb()
-      ..actionIntentStream = intentStreamController.stream.asBroadcastStream()
-      ..init();
-  });
-
-  tearDown(() {
-    GetIt.I.reset();
-    genericResponse = () => [];
-    timerResponse = () => [];
-    clearNotificationSubject();
-    clockStreamController.close();
-    intentStreamController.close();
-  });
-
-  group('inactivity', () {
-    /// see test/listener/inactivity_listener_test.dart
-  });
+      testWidgets('When timeout is reached, if not in calendar, do nothing',
+          (tester) async {
+        await tester
+            .pumpWidget(_wrapWithMaterialApp(child: const SettingsPage()));
+        await tester.pumpAndSettle();
+        inactivityCubit.emit(
+          ReturnToTodayThresholdReached(initialTime),
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(DayCalendar), findsNothing);
+      });
+    });
+  }, skip: !Config.isMP);
 
   group('home button', () {
+    GenericResponse genericResponse = () => [];
+    TimerResponse timerResponse = () => [];
+
+    Generic startViewGeneric(StartView startView) =>
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: startView.index,
+            identifier: FunctionsSettings.functionMenuStartViewKey,
+          ),
+        );
+
+    final initialTime = DateTime(2022, 03, 14, 13, 27);
+
+    late StreamController<DateTime> clockStreamController;
+    late MockFlutterLocalNotificationsPlugin
+        mockFlutterLocalNotificationsPlugin;
+    late MockAndroidFlutterLocalNotificationsPlugin
+        mockAndroidFlutterLocalNotificationsPlugin;
+    late StreamController<String> intentStreamController;
+
+    setUp(() async {
+      mockFlutterLocalNotificationsPlugin =
+          MockFlutterLocalNotificationsPlugin();
+      when(() => mockFlutterLocalNotificationsPlugin.cancel(any()))
+          .thenAnswer((_) => Future.value());
+      mockAndroidFlutterLocalNotificationsPlugin =
+          MockAndroidFlutterLocalNotificationsPlugin();
+      when(() => mockFlutterLocalNotificationsPlugin
+              .resolvePlatformSpecificImplementation<
+                  AndroidFlutterLocalNotificationsPlugin>())
+          .thenReturn(mockAndroidFlutterLocalNotificationsPlugin);
+      when(
+        () =>
+            mockAndroidFlutterLocalNotificationsPlugin.getActiveNotifications(),
+      ).thenAnswer((invocation) => Future.value([]));
+
+      notificationsPluginInstance = mockFlutterLocalNotificationsPlugin;
+      scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+      clockStreamController = StreamController<DateTime>();
+      final mockGenericDb = MockGenericDb();
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision())
+          .thenAnswer((_) => Future.value(genericResponse()));
+
+      final mockTimerDb = MockTimerDb();
+      when(() => mockTimerDb.getAllTimers())
+          .thenAnswer((_) => Future.value(timerResponse()));
+      when(() => mockTimerDb.getRunningTimersFrom(any()))
+          .thenAnswer((_) => Future.value(timerResponse()));
+
+      intentStreamController = StreamController<String>();
+
+      GetItInitializer()
+        ..sharedPreferences = await FakeSharedPreferences.getInstance()
+        ..database = FakeDatabase()
+        ..genericDb = mockGenericDb
+        ..timerDb = mockTimerDb
+        ..client = Fakes.client()
+        ..ticker = Ticker.fake(
+          initialTime: initialTime,
+          stream: clockStreamController.stream,
+        )
+        ..battery = FakeBattery()
+        ..deviceDb = FakeDeviceDb()
+        ..actionIntentStream = intentStreamController.stream.asBroadcastStream()
+        ..init();
+    });
+
+    tearDown(() {
+      GetIt.I.reset();
+      genericResponse = () => [];
+      timerResponse = () => [];
+      clearNotificationSubject();
+      clockStreamController.close();
+      intentStreamController.close();
+    });
+
     testWidgets('Goes from day calendar to Menu page when pressing home button',
         (tester) async {
       // Arrange

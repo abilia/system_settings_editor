@@ -15,7 +15,6 @@ import 'package:intl/intl.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
-
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
@@ -76,6 +75,7 @@ void main() {
     DateTime? day,
     bool use24H = false,
     bool newActivity = false,
+    bool isTemplate = false,
   }) {
     final activity = givenActivity ?? startActivity;
     return MaterialApp(
@@ -109,24 +109,35 @@ void main() {
                       ),
               ),
               BlocProvider<WizardCubit>(
-                create: (context) => newActivity
-                    ? ActivityWizardCubit.newActivity(
-                        activitiesBloc: context.read<ActivitiesBloc>(),
-                        clockBloc: context.read<ClockBloc>(),
+                create: (context) => isTemplate
+                    ? TemplateActivityWizardCubit(
                         editActivityCubit: context.read<EditActivityCubit>(),
-                        settings: context.read<MemoplannerSettingBloc>().state,
+                        sortableBloc: mockSortableBloc,
+                        original: Sortable.createNew(
+                          data: BasicActivityDataItem.createNew(),
+                        ),
                       )
-                    : ActivityWizardCubit.edit(
-                        activitiesBloc: context.read<ActivitiesBloc>(),
-                        clockBloc: context.read<ClockBloc>(),
-                        editActivityCubit: context.read<EditActivityCubit>(),
-                        allowPassedStartTime: context
-                            .read<MemoplannerSettingBloc>()
-                            .state
-                            .settings
-                            .addActivity
-                            .allowPassedStartTime,
-                      ),
+                    : newActivity
+                        ? ActivityWizardCubit.newActivity(
+                            activitiesBloc: context.read<ActivitiesBloc>(),
+                            clockBloc: context.read<ClockBloc>(),
+                            editActivityCubit:
+                                context.read<EditActivityCubit>(),
+                            settings:
+                                context.read<MemoplannerSettingBloc>().state,
+                          )
+                        : ActivityWizardCubit.edit(
+                            activitiesBloc: context.read<ActivitiesBloc>(),
+                            clockBloc: context.read<ClockBloc>(),
+                            editActivityCubit:
+                                context.read<EditActivityCubit>(),
+                            allowPassedStartTime: context
+                                .read<MemoplannerSettingBloc>()
+                                .state
+                                .settings
+                                .addActivity
+                                .allowPassedStartTime,
+                          ),
               ),
               BlocProvider<SortableBloc>.value(value: mockSortableBloc),
               BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),
@@ -154,6 +165,9 @@ void main() {
               ),
               BlocProvider<VoicesCubit>(
                 create: (context) => FakeVoicesCubit(),
+              ),
+              BlocProvider<DayPartCubit>(
+                create: (context) => FakeDayPartCubit(),
               ),
             ],
             child: child!,
@@ -1369,11 +1383,7 @@ text''';
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.goToRecurrenceTab();
-      await tester.tap(find.byKey(TestKey.changeRecurrence));
-      await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
       expect(find.text('February 14, 2020'), findsOneWidget);
@@ -1385,11 +1395,7 @@ text''';
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.goToRecurrenceTab();
-      await tester.tap(find.byKey(TestKey.changeRecurrence));
-      await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
       expect(find.text('(Today) February 10, 2020'), findsOneWidget);
@@ -1416,11 +1422,7 @@ text''';
       ));
       await tester.pumpAndSettle();
       await tester.goToRecurrenceTab();
-      await tester.tap(find.byKey(TestKey.changeRecurrence));
-      await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
       await tester.tap(find.byType(DatePicker));
@@ -1929,11 +1931,8 @@ text''';
       await tester.pumpAndSettle();
       // Act
       await tester.goToRecurrenceTab();
-      await tester.tap(find.byKey(TestKey.changeRecurrence));
-      await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(SelectRecurrencePage), findsOneWidget);
       expect(find.text(translate.recurrence), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
       expect(find.text(translate.once), findsOneWidget);
@@ -1956,22 +1955,20 @@ text''';
       await tester.goToRecurrenceTab();
 
       // Assert -- Once selected
-      expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
-      expect(find.text(translate.once), findsOneWidget);
+      var radioWidget = tester.firstWidget(
+        find.byType(RadioField<RecurrentType>),
+      ) as RadioField<RecurrentType>;
+      expect(radioWidget.groupValue, RecurrentType.none);
 
       // Act -- Change to Yearly
-      await tester.tap(find.byKey(TestKey.changeRecurrence));
-      await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.basicActivity));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
 
-      // Assert -- Yearly selected, not Once
-      expect(find.byIcon(AbiliaIcons.day), findsNothing);
-      expect(find.text(translate.once), findsNothing);
-      expect(find.byIcon(AbiliaIcons.basicActivity), findsOneWidget);
-      expect(find.text(translate.yearly), findsOneWidget);
+      // Assert -- Yearly selected
+      radioWidget = tester.firstWidget(
+        find.byType(RadioField<RecurrentType>),
+      ) as RadioField<RecurrentType>;
+      expect(radioWidget.groupValue, RecurrentType.yearly);
     });
 
     testWidgets('can change to monthly', (WidgetTester tester) async {
@@ -1985,22 +1982,20 @@ text''';
       await tester.goToRecurrenceTab();
 
       // Assert -- Once selected
-      expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
-      expect(find.text(translate.once), findsOneWidget);
+      var radioWidget = tester.firstWidget(
+        find.byType(RadioField<RecurrentType>),
+      ) as RadioField<RecurrentType>;
+      expect(radioWidget.groupValue, RecurrentType.none);
 
-      // Act -- Change to montly
-      await tester.tap(find.byKey(TestKey.changeRecurrence));
-      await tester.pumpAndSettle();
+      // Act -- Change to Monthly
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
 
-      // Assert -- monthly selected, not Once
-      expect(find.byIcon(AbiliaIcons.day), findsNothing);
-      expect(find.text(translate.once), findsNothing);
-      expect(find.byIcon(AbiliaIcons.month), findsOneWidget);
-      expect(find.text(translate.monthly), findsOneWidget);
+      // Assert -- Monthly selected
+      radioWidget = tester.firstWidget(
+        find.byType(RadioField<RecurrentType>),
+      ) as RadioField<RecurrentType>;
+      expect(radioWidget.groupValue, RecurrentType.monthly);
 
       expect(find.byType(MonthDays), findsOneWidget);
       expect(find.byType(EndDateWidget), findsOneWidget);
@@ -2017,22 +2012,20 @@ text''';
       await tester.goToRecurrenceTab();
 
       // Assert -- Once selected
-      expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
-      expect(find.text(translate.once), findsOneWidget);
+      var radioWidget = tester.firstWidget(
+        find.byType(RadioField<RecurrentType>),
+      ) as RadioField<RecurrentType>;
+      expect(radioWidget.groupValue, RecurrentType.none);
 
-      // Act -- Change to weekly
-      await tester.tap(find.byKey(TestKey.changeRecurrence));
-      await tester.pumpAndSettle();
+      // Act -- Change to Weekly
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
 
-      // Assert -- Weekly selected, not Once
-      expect(find.byIcon(AbiliaIcons.day), findsNothing);
-      expect(find.text(translate.once), findsNothing);
-      expect(find.byIcon(AbiliaIcons.week), findsOneWidget);
-      expect(find.text(translate.weekly), findsOneWidget);
+      // Assert -- Weekly selected
+      radioWidget = tester.firstWidget(
+        find.byType(RadioField<RecurrentType>),
+      ) as RadioField<RecurrentType>;
+      expect(radioWidget.groupValue, RecurrentType.weekly);
 
       expect(find.byType(WeekDays), findsOneWidget);
       expect(find.byType(EndDateWidget), findsOneWidget);
@@ -2049,11 +2042,7 @@ text''';
       await tester.goToRecurrenceTab();
 
       // Act -- Change to weekly
-      await tester.tap(find.byKey(TestKey.changeRecurrence));
-      await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
 
@@ -2074,11 +2063,7 @@ text''';
       await tester.goToRecurrenceTab();
 
       // Act -- Change to weekly
-      await tester.tap(find.byKey(TestKey.changeRecurrence));
-      await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
 
@@ -2154,14 +2139,10 @@ text''';
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
-      // Arrange -- set weekly recurance
+      // Arrange -- set weekly recurrence
       await tester.goToRecurrenceTab();
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.changeRecurrence));
-      await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
       // Arrange -- deselect preselect
@@ -2239,11 +2220,7 @@ text''';
       await tester.goToRecurrenceTab();
 
       // Act -- Change to monthly
-      await tester.tap(find.byKey(TestKey.changeRecurrence));
-      await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
       // Assert -- end date is still 30 days after startTime
@@ -2332,6 +2309,7 @@ text''';
       )));
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
       expect(endTimeInputFinder, findsNothing);
@@ -2540,7 +2518,7 @@ text''';
       expect(find.text(translate.startTimeBeforeNowError), findsNothing);
     });
 
-    testWidgets('calendarActivityType-Left/Rigth given name',
+    testWidgets('calendarActivityType-Left/Right given name',
         (WidgetTester tester) async {
       const leftCategoryName = 'VÄNSTER',
           rightCategoryName =
@@ -2587,6 +2565,123 @@ text''';
       expect(find.byType(CategoryWidget), findsNothing);
       await tester.scrollDown();
       expect(find.byType(CategoryWidget), findsNothing);
+    });
+
+    testWidgets('Select Alarm off', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(alarm: false),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      await tester.goToAlarmTab();
+      await tester.pumpAndSettle();
+
+      // Assert -- Alarm options hidden
+      expect(find.byType(AlarmWidget), findsNothing);
+    });
+
+    testWidgets('Select Reminders off', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(reminders: false),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      await tester.goToAlarmTab();
+      await tester.pumpAndSettle();
+
+      // Assert -- Reminder options hidden
+      expect(find.text(translate.reminders), findsNothing);
+    });
+
+    testWidgets('Select Checklist off', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(checklist: false),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      await tester.goToInfoItemTab();
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(PickInfoItem));
+      await tester.pumpAndSettle();
+
+      // Assert -- Checklist option hidden
+      expect(find.text(translate.addChecklist), findsNothing);
+    });
+
+    testWidgets('Select Notes off', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(notes: false),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      await tester.goToInfoItemTab();
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(PickInfoItem));
+      await tester.pumpAndSettle();
+
+      // Assert -- Notes option hidden
+      expect(find.text(translate.addNote), findsNothing);
+    });
+
+    testWidgets(
+        'Alarm tab hidden when Alarm, Reminders and Speech options are all hidden ',
+        (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(
+              alarm: false,
+              reminders: false,
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createEditActivityPage(isTemplate: true));
+      await tester.pumpAndSettle();
+
+      // Assert -- Alarm tab hidden
+      expect(find.byIcon(AbiliaIcons.attention), findsNothing);
+    });
+
+    testWidgets('Extra tab hidden when Notes and Checklist options are hidden ',
+        (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(
+              notes: false,
+              checklist: false,
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+
+      // Assert -- Extra tab hidden
+      expect(find.byIcon(AbiliaIcons.attachment), findsNothing);
     });
   });
 
@@ -2925,9 +3020,6 @@ text''';
       await tester.goToRecurrenceTab();
       await tester.verifyTts(find.byIcon(AbiliaIcons.day),
           exact: translate.once);
-      await tester.tap(find.byIcon(AbiliaIcons.day));
-      await tester.pumpAndSettle();
-
       await tester.verifyTts(find.byIcon(AbiliaIcons.week),
           exact: translate.weekly);
       await tester.verifyTts(find.byIcon(AbiliaIcons.month),
@@ -2937,9 +3029,7 @@ text''';
 
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
-      await tester.scrollDown(dy: -250);
+      await tester.scrollDown(dy: -350);
 
       await tester.verifyTts(find.byType(EndDateWidget),
           exact: '(Today) February 10, 2020');
@@ -2970,13 +3060,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.goToRecurrenceTab();
 
-      await tester.tap(find.byIcon(AbiliaIcons.day));
-      await tester.pumpAndSettle();
-
       await tester.tap(find.byIcon(AbiliaIcons.week));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
       // Check day colors for Selectable fields: Mon, Tue, Wen, Thu, Fri, Sat, Sun

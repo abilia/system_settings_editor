@@ -15,7 +15,7 @@ class AlarmRoute<T> extends MaterialPageRoute<T> {
 
 class AlarmNavigator {
   static const _fullScreenActivityKey = 'fullScreenActivity',
-      _screenSaverKey = 'screenSaver';
+      _screensaverKey = 'screensaver';
   final _routesOnStack = <String, MaterialPageRoute>{};
   static final log = Logger((AlarmNavigator).toString());
 
@@ -35,6 +35,7 @@ class AlarmNavigator {
   }
 
   void popFullscreenRoute() => _popRoute(_fullScreenActivityKey);
+  void popScreensaverRoute() => _popRoute(_screensaverKey);
 
   void _popRoute(String key) {
     final route = _routesOnStack.remove(key);
@@ -44,14 +45,14 @@ class AlarmNavigator {
     }
   }
 
-  void addScreenSaver(MaterialPageRoute screenSaverRoute) =>
-      _routesOnStack['screenSaver'] = screenSaverRoute;
+  void addScreensaver(MaterialPageRoute screensaverRoute) =>
+      _routesOnStack[_screensaverKey] = screensaverRoute;
 
   Future pushAlarm(
     BuildContext context,
     NotificationAlarm alarm,
   ) async {
-    _popRoute(_screenSaverKey);
+    popScreensaverRoute();
     final authProviders = copiedAuthProviders(context);
     final activityRepository = context.read<ActivityRepository>();
     log.fine('pushAlarm: $alarm');

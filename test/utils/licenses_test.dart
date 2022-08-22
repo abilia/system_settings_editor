@@ -10,6 +10,7 @@ void main() {
         [
           License(
               id: 1,
+              key: 'licenseKey',
               endTime: now.add(24.hours()),
               product: memoplannerLicenseName)
         ].anyValidLicense(now),
@@ -21,6 +22,7 @@ void main() {
         [
           License(
               id: 1,
+              key: 'licenseKey',
               endTime: now.subtract(24.hours()),
               product: memoplannerLicenseName)
         ].anyValidLicense(now),
@@ -32,11 +34,13 @@ void main() {
         [
           License(
             id: 1,
+            key: 'licenseKey',
             endTime: now.subtract(24.hours()),
             product: memoplannerLicenseName,
           ),
           License(
             id: 4,
+            key: 'licenseKey',
             endTime: now.add(24.hours()),
             product: 'other-product',
           ),
@@ -49,11 +53,13 @@ void main() {
         [
           License(
             id: 1,
+            key: 'licenseKey',
             endTime: now.add(24.hours()),
             product: memoplannerLicenseName,
           ),
           License(
             id: 4,
+            key: 'licenseKey',
             endTime: now.subtract(24.hours()),
             product: 'other-product',
           ),

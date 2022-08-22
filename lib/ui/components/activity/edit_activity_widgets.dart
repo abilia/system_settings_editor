@@ -574,44 +574,6 @@ class AvailableForWidget extends StatelessWidget {
       );
 }
 
-class RecurrenceWidget extends StatelessWidget {
-  final EditActivityState state;
-
-  const RecurrenceWidget(this.state, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final translator = Translator.of(context).translate;
-    final activity = state.activity;
-    final recurrentType = activity.recurs.recurrance;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        SubHeading(translator.recurrence),
-        PickField(
-          key: TestKey.changeRecurrence,
-          leading: Icon(recurrentType.iconData()),
-          text: Text(recurrentType.text(translator)),
-          onTap: () async {
-            final editActivityCubit = context.read<EditActivityCubit>();
-            final result = await Navigator.of(context).push<RecurrentType>(
-              MaterialPageRoute(
-                builder: (_) => SelectRecurrencePage(
-                  recurrentType: recurrentType,
-                ),
-                settings: const RouteSettings(name: 'SelectRecurrencePage'),
-              ),
-            );
-            if (result != null) {
-              editActivityCubit.newRecurrence(newType: result);
-            }
-          },
-        ),
-      ],
-    );
-  }
-}
-
 class EndDateWidget extends StatelessWidget {
   const EndDateWidget({Key? key}) : super(key: key);
 

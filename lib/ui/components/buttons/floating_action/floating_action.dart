@@ -16,13 +16,13 @@ class FloatingActions extends StatelessWidget {
               previous.displayAlarmButton != current.displayAlarmButton ||
               previous.alarm.showAlarmOnOffSwitch !=
                   current.alarm.showAlarmOnOffSwitch,
-          builder: (context, settings) {
+          builder: (context, state) {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 if (tabController != null)
                   _ToggleAlarmAndEyeButtons(tabController: tabController)
-                else if (settings.alarm.showAlarmOnOffSwitch)
+                else if (state.alarm.showAlarmOnOffSwitch)
                   const ToggleAlarmButton(),
                 if (permission.notificationDenied)
                   Expanded(
@@ -43,7 +43,9 @@ class FloatingActions extends StatelessWidget {
                   )
                 else
                   const Spacer(),
-                if (tabController != null && tabController.index == 3)
+                if (tabController != null &&
+                    tabController.index ==
+                        state.settings.functions.display.menuTabIndex)
                   const _AboutButton(),
               ],
             );

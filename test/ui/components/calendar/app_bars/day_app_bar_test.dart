@@ -35,6 +35,12 @@ void main() {
           BlocProvider<MemoplannerSettingBloc>(
             create: (context) => memoplannerSettingsBlocMock,
           ),
+          BlocProvider<DayPartCubit>(
+            create: (context) => DayPartCubit(
+              memoplannerSettingsBlocMock,
+              clockBloc,
+            ),
+          ),
           BlocProvider<SpeechSettingsCubit>(
             create: (context) => FakeSpeechSettingsCubit(),
           ),

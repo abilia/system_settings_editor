@@ -62,8 +62,9 @@ void main() {
       when(() => mockUserRepository.getLicensesFromApi()).thenAnswer(
         (_) => Future.value([
           License(
-            endTime: time.add(const Duration(hours: 24)),
             id: 1,
+            key: 'licenseKey',
+            endTime: time.add(const Duration(hours: 24)),
             product: memoplannerLicenseName,
           ),
         ]),
@@ -193,8 +194,9 @@ void main() {
       when(() => mockedUserRepository.getLicensesFromApi())
           .thenAnswer((_) => Future.value([
                 License(
-                    endTime: time.add(const Duration(hours: 24)),
                     id: 1,
+                    key: 'licenseKey',
+                    endTime: time.add(const Duration(hours: 24)),
                     product: memoplannerLicenseName)
               ]));
     });

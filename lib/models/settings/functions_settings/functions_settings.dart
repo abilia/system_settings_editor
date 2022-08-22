@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/models/all.dart';
 
 class FunctionsSettings extends Equatable {
@@ -26,7 +27,7 @@ class FunctionsSettings extends Equatable {
         }
         break;
       case StartView.photoAlbum:
-        return display.photoAlbumTabIndex;
+        return Config.isMP ? display.photoAlbumTabIndex : 0;
       default:
     }
     return 0;
