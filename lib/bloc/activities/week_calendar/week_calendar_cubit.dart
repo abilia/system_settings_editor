@@ -17,27 +17,27 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
     required this.activityRepository,
     required this.clockBloc,
   }) : super(WeekCalendarInitial(clockBloc.state.firstInWeek())) {
-    _activitiesSubscription = activitiesBloc.stream.listen((_) async {
+    _activitiesSubscription = activitiesBloc.stream.listen((_) {
       _mapToState(state.currentWeekStart, clockBloc.state);
     });
-    _clockSubscription = clockBloc.stream.listen((_) async {
+    _clockSubscription = clockBloc.stream.listen((_) {
       _mapToState(state.currentWeekStart, clockBloc.state);
     });
   }
 
-  Future<void> nextWeek() async {
+  Future<void> nextWeek() {
     return _mapToState(state.currentWeekStart.nextWeek(), clockBloc.state);
   }
 
-  Future<void> previousWeek() async {
+  Future<void> previousWeek() {
     return _mapToState(state.currentWeekStart.previousWeek(), clockBloc.state);
   }
 
-  Future<void> goToCurrentWeek() async {
+  Future<void> goToCurrentWeek() {
     return _mapToState(clockBloc.state.firstInWeek(), clockBloc.state);
   }
 
-  void _mapToState(
+  Future<void> _mapToState(
     DateTime weekStart,
     DateTime now,
   ) async {
