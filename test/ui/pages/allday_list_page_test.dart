@@ -115,4 +115,23 @@ void main() {
     await tester.pumpAndSettle();
     await tester.verifyTts(find.text(title0), contains: title0);
   });
+
+  testWidgets('SGC-1870 Order of ActivityCards', (WidgetTester tester) async {
+    final titles = [title0, title1, title2, title3];
+    await tester.pumpWidget(
+      wrapWithMaterialApp(
+        AllDayList(
+          day: day,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    Finder finder = find.byType(ActivityCard);
+
+    List<Element> list = finder.evaluate().toList();
+    for (var element in list) {
+      ActivityCard card = element.widget as ActivityCard;
+      expect(card.activityOccasion.title, titles[list.indexOf(element)]);
+    }
+  });
 }

@@ -29,8 +29,6 @@ class AllDayList extends StatelessWidget {
             .where((activityDay) => activityDay.activity.fullDay)
             .map((e) => ActivityOccasion(e.activity, day, occasion))
             .toList();
-        fullDayActivities.sort(
-            (a, b) => b.title.toLowerCase().compareTo(a.title.toLowerCase()));
 
         return Builder(
           builder: (context) {
