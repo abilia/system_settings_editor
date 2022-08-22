@@ -30,19 +30,6 @@ class AlarmListener extends StatelessWidget {
               }
             },
           ),
-          BlocListener<TimerAlarmBloc, TimerAlarmState>(
-            listenWhen: (previous, current) =>
-                previous.firedAlarm != current.firedAlarm,
-            listener: (context, state) async {
-              final alarm = state.firedAlarm;
-              if (alarm != null) {
-                await GetIt.I<AlarmNavigator>().pushAlarm(
-                  context,
-                  alarm,
-                );
-              }
-            },
-          ),
         ],
         child: child,
       ),
