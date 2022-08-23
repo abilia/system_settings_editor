@@ -157,7 +157,8 @@ class AppBarTitleRows {
     final week = showWeekNumber
         ? '$weekTranslation ${selectedWeekStart.getWeekNumber()}'
         : '';
-    final year = showYear ? DateFormat.y(langCode).format(selectedWeekStart) : '';
+    final year =
+        showYear ? DateFormat.y(langCode).format(selectedWeekStart) : '';
 
     return AppBarTitleRows._(day, week, year);
   }

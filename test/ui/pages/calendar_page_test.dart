@@ -930,7 +930,8 @@ void main() {
       await tester.verifyTts(find.byType(WeekAppBar), contains: 'week 32');
     });
 
-    testWidgets('SGC-1869 - Week calendar shows correct year', (WidgetTester tester) async {
+    testWidgets('SGC-1869 - Week calendar shows correct year',
+        (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
