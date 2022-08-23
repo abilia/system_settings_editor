@@ -1001,6 +1001,38 @@ void main() {
         expect(find.byType(ActivityTimepillarCard), findsOneWidget);
       });
 
+      testWidgets(
+          'SGC-1891 - Activity that spans over two days only shows one card',
+          (WidgetTester tester) async {
+        final startTime = DateTime(2020, 12, 01, 10, 00);
+        genericResponse = () => [
+              timepillarGeneric,
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: TimepillarIntervalType.dayAndNight.index,
+                  identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+                ),
+              ),
+            ];
+        activityResponse = () => [
+              Activity.createNew(
+                title: 'title',
+                startTime: startTime,
+                duration: 23.hours(),
+                alarmType: noAlarm,
+              )
+            ];
+
+        mockTicker.add(startTime);
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityTimepillarCard), findsNWidgets(1));
+
+        mockTicker.add(startTime.add(1.days()));
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityTimepillarCard), findsNWidgets(1));
+      });
+
       testWidgets('Activity is shown when interval is whole day',
           (WidgetTester tester) async {
         final activityStartTime = DateTime(2020, 12, 01, 10, 00);
