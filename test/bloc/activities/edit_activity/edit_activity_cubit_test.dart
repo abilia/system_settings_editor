@@ -210,12 +210,8 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
       clockBloc: ClockBloc.fixed(nowTime),
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(
-            editActivity: EditActivitySettings(template: false),
-          ),
-        ),
+      settings: const AddActivitySettings(
+        editActivity: EditActivitySettings(template: false),
       ),
     );
     final activity = editActivityCubit.state.activity;

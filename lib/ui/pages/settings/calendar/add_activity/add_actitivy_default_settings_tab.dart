@@ -8,8 +8,8 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    final defaultsSettings = context.select(
-        (AddActivitySettingsCubit cubit) => cubit.state.defaultsSettings);
+    final defaultsSettings = context
+        .select((AddActivitySettingsCubit cubit) => cubit.state.defaults);
 
     return SettingsTab(
       children: [

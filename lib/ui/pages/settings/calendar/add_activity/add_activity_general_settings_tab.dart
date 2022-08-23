@@ -7,8 +7,8 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    final generalSettings = context.select(
-        (AddActivitySettingsCubit cubit) => cubit.state.generalSettings);
+    final generalSettings =
+        context.select((AddActivitySettingsCubit cubit) => cubit.state.general);
     return SettingsTab(
       children: [
         Tts(child: Text(t.time)),

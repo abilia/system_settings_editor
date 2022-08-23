@@ -21,130 +21,121 @@ class CreateNewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
     final t = Translator.of(context).translate;
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoplannerSettingsState) {
-        final displayNewActivity =
-            memoplannerSettingsState.settings.functions.display.newActivity &&
-                showActivities;
-        final displayNewTimer =
-            memoplannerSettingsState.settings.functions.display.newTimer &&
-                showTimers;
-        final defaultsSettings =
-            memoplannerSettingsState.settings.addActivity.defaults;
-        return Scaffold(
-          appBar: _appBar(t, displayNewActivity, displayNewTimer),
-          body: Column(
-            children: [
-              if (memoplannerSettingsState.newActivityOption &&
-                  displayNewActivity)
-                PickField(
-                  key: TestKey.newActivityChoice,
-                  leading: const Icon(AbiliaIcons.basicActivity),
-                  text: Text(t.newActivity),
-                  onTap: () => navigateToActivityWizard(
-                    authProviders: authProviders,
-                    navigator: Navigator.of(context),
-                    defaultsSettings: defaultsSettings,
-                    day: context.read<DayPickerBloc>().state.day,
+    final displaysSettings = context.select(
+        (MemoplannerSettingBloc bloc) => bloc.state.settings.functions.display);
+    final addActivitySettings = context.select(
+        (MemoplannerSettingBloc bloc) => bloc.state.settings.addActivity);
+    final displayNewActivity = displaysSettings.newActivity && showActivities;
+    final displayNewTimer = displaysSettings.newTimer && showTimers;
+
+    final defaultsSettings = addActivitySettings.defaults;
+    return Scaffold(
+      appBar: _appBar(t, displayNewActivity, displayNewTimer),
+      body: Column(
+        children: [
+          if (addActivitySettings.newActivityOption && displayNewActivity)
+            PickField(
+              key: TestKey.newActivityChoice,
+              leading: const Icon(AbiliaIcons.basicActivity),
+              text: Text(t.newActivity),
+              onTap: () => navigateToActivityWizard(
+                authProviders: authProviders,
+                navigator: Navigator.of(context),
+                defaultsSettings: defaultsSettings,
+                day: context.read<DayPickerBloc>().state.day,
+              ),
+            ).pad(layout.templates.m1.withoutBottom),
+          if (addActivitySettings.basicActivityOption && displayNewActivity)
+            PickField(
+              key: TestKey.basicActivityChoice,
+              leading: const Icon(AbiliaIcons.basicActivities),
+              text: Text(t.fromTemplate),
+              onTap: () async {
+                final navigator = Navigator.of(context);
+                final day = context.read<DayPickerBloc>().state.day;
+                final basicActivityData =
+                    await Navigator.of(context).push<BasicActivityData>(
+                  MaterialPageRoute(
+                    builder: (_) => MultiBlocProvider(
+                      providers: authProviders,
+                      child:
+                          BlocProvider<SortableArchiveCubit<BasicActivityData>>(
+                        create: (_) => SortableArchiveCubit<BasicActivityData>(
+                          sortableBloc: BlocProvider.of<SortableBloc>(context),
+                        ),
+                        child: const BasicActivityPickerPage(),
+                      ),
+                    ),
                   ),
-                ).pad(layout.templates.m1.withoutBottom),
-              if (memoplannerSettingsState.basicActivityOption &&
-                  displayNewActivity)
-                PickField(
-                  key: TestKey.basicActivityChoice,
-                  leading: const Icon(AbiliaIcons.basicActivities),
-                  text: Text(t.fromTemplate),
-                  onTap: () async {
-                    final navigator = Navigator.of(context);
-                    final day = context.read<DayPickerBloc>().state.day;
-                    final basicActivityData =
-                        await Navigator.of(context).push<BasicActivityData>(
-                      MaterialPageRoute(
-                        builder: (_) => MultiBlocProvider(
-                          providers: authProviders,
-                          child: BlocProvider<
-                              SortableArchiveCubit<BasicActivityData>>(
-                            create: (_) =>
-                                SortableArchiveCubit<BasicActivityData>(
-                              sortableBloc:
-                                  BlocProvider.of<SortableBloc>(context),
-                            ),
-                            child: const BasicActivityPickerPage(),
+                );
+                if (basicActivityData is BasicActivityDataItem) {
+                  navigateToActivityWizard(
+                    authProviders: authProviders,
+                    navigator: navigator,
+                    defaultsSettings: defaultsSettings,
+                    day: day,
+                    basicActivity: basicActivityData,
+                  );
+                }
+              },
+            ).pad(m1ItemPadding),
+          if (displayNewActivity && displayNewTimer)
+            const Divider().pad(
+              EdgeInsets.only(
+                top: layout.formPadding.groupBottomDistance,
+              ),
+            ),
+          if (displayNewTimer)
+            PickField(
+              key: TestKey.newTimerChoice,
+              leading: const Icon(AbiliaIcons.stopWatch),
+              text: Text(t.newTimer),
+              onTap: () => navigateToEditTimerPage(context, authProviders),
+            ).pad(layout.templates.m1.withoutBottom),
+          if (displayNewTimer)
+            PickField(
+              key: TestKey.basicTimerChoice,
+              leading: const Icon(AbiliaIcons.basicTimers),
+              text: Text(t.fromTemplate),
+              onTap: () async {
+                final navigator = Navigator.of(context);
+                final timerStarted = await navigator.push<AbiliaTimer>(
+                  MaterialPageRoute(
+                    builder: (_) => MultiBlocProvider(
+                      providers: [
+                        ...authProviders,
+                        BlocProvider<SortableArchiveCubit<BasicTimerData>>(
+                          create: (_) => SortableArchiveCubit<BasicTimerData>(
+                            sortableBloc:
+                                BlocProvider.of<SortableBloc>(context),
                           ),
                         ),
-                      ),
-                    );
-                    if (basicActivityData is BasicActivityDataItem) {
-                      navigateToActivityWizard(
-                        authProviders: authProviders,
-                        navigator: navigator,
-                        defaultsSettings: defaultsSettings,
-                        day: day,
-                        basicActivity: basicActivityData,
-                      );
-                    }
-                  },
-                ).pad(m1ItemPadding),
-              if (displayNewActivity && displayNewTimer)
-                const Divider().pad(
-                  EdgeInsets.only(
-                    top: layout.formPadding.groupBottomDistance,
-                  ),
-                ),
-              if (displayNewTimer)
-                PickField(
-                  key: TestKey.newTimerChoice,
-                  leading: const Icon(AbiliaIcons.stopWatch),
-                  text: Text(t.newTimer),
-                  onTap: () => navigateToEditTimerPage(context, authProviders),
-                ).pad(layout.templates.m1.withoutBottom),
-              if (displayNewTimer)
-                PickField(
-                  key: TestKey.basicTimerChoice,
-                  leading: const Icon(AbiliaIcons.basicTimers),
-                  text: Text(t.fromTemplate),
-                  onTap: () async {
-                    final navigator = Navigator.of(context);
-                    final timerStarted = await navigator.push<AbiliaTimer>(
-                      MaterialPageRoute(
-                        builder: (_) => MultiBlocProvider(
-                          providers: [
-                            ...authProviders,
-                            BlocProvider<SortableArchiveCubit<BasicTimerData>>(
-                              create: (_) =>
-                                  SortableArchiveCubit<BasicTimerData>(
-                                sortableBloc:
-                                    BlocProvider.of<SortableBloc>(context),
-                              ),
-                            ),
-                            BlocProvider<EditTimerCubit>(
-                              create: (_) => EditTimerCubit(
-                                timerCubit: context.read<TimerCubit>(),
-                                translate: t,
-                                ticker: GetIt.I<Ticker>(),
-                              ),
-                            ),
-                          ],
-                          child: const BasicTimerPickerPage(),
+                        BlocProvider<EditTimerCubit>(
+                          create: (_) => EditTimerCubit(
+                            timerCubit: context.read<TimerCubit>(),
+                            translate: t,
+                            ticker: GetIt.I<Ticker>(),
+                          ),
                         ),
-                      ),
-                    );
-                    if (timerStarted != null) {
-                      navigateToTimerPage(
-                        navigator,
-                        authProviders,
-                        timerStarted,
-                      );
-                    }
-                  },
-                ).pad(m1ItemPadding),
-            ],
-          ),
-          bottomNavigationBar: const BottomNavigation(
-            backNavigationWidget: CancelButton(),
-          ),
-        );
-      },
+                      ],
+                      child: const BasicTimerPickerPage(),
+                    ),
+                  ),
+                );
+                if (timerStarted != null) {
+                  navigateToTimerPage(
+                    navigator,
+                    authProviders,
+                    timerStarted,
+                  );
+                }
+              },
+            ).pad(m1ItemPadding),
+        ],
+      ),
+      bottomNavigationBar: const BottomNavigation(
+        backNavigationWidget: CancelButton(),
+      ),
     );
   }
 
@@ -253,24 +244,28 @@ class CreateNewPage extends StatelessWidget {
             ),
             BlocProvider<WizardCubit>(
               create: (context) {
-                final settings = context.read<MemoplannerSettingBloc>().state;
-                return settings.addActivityType == NewActivityMode.editView
+                final settings = context
+                    .read<MemoplannerSettingBloc>()
+                    .state
+                    .settings
+                    .addActivity;
+                return settings.mode == AddActivityMode.editView
                     ? ActivityWizardCubit.newAdvanced(
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
                         clockBloc: context.read<ClockBloc>(),
-                        allowPassedStartTime: settings
-                            .settings.addActivity.general.allowPassedStartTime,
+                        allowPassedStartTime:
+                            settings.general.allowPassedStartTime,
                       )
                     : ActivityWizardCubit.newStepByStep(
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
                         clockBloc: context.read<ClockBloc>(),
-                        allowPassedStartTime: settings
-                            .settings.addActivity.general.allowPassedStartTime,
-                        stepByStep: settings.settings.addActivity.stepByStep,
-                        addRecurringActivity: settings
-                            .settings.addActivity.general.addRecurringActivity,
+                        allowPassedStartTime:
+                            settings.general.allowPassedStartTime,
+                        stepByStep: settings.stepByStep,
+                        addRecurringActivity:
+                            settings.general.addRecurringActivity,
                       );
               },
             ),

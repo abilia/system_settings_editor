@@ -55,7 +55,9 @@ void main() {
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
       const MemoplannerSettingsLoaded(
         MemoplannerSettings(
-          addActivityTypeAdvanced: false,
+          addActivity: AddActivitySettings(
+            mode: AddActivityMode.stepByStep,
+          ),
         ),
       ),
     );
@@ -121,7 +123,11 @@ void main() {
                   activitiesBloc: context.read<ActivitiesBloc>(),
                   clockBloc: context.read<ClockBloc>(),
                   editActivityCubit: context.read<EditActivityCubit>(),
-                  settings: context.read<MemoplannerSettingBloc>().state,
+                  settings: context
+                      .read<MemoplannerSettingBloc>()
+                      .state
+                      .settings
+                      .addActivity,
                 ),
               ),
               BlocProvider<SortableBloc>.value(value: mockSortableBloc),
@@ -203,8 +209,8 @@ void main() {
 
   group('title step', () {
     const titleOnlyMemoSettings = MemoplannerSettings(
-      addActivityTypeAdvanced: false,
       addActivity: AddActivitySettings(
+        mode: AddActivityMode.stepByStep,
         general: GeneralAddActivitySettings(
           addRecurringActivity: false,
         ),
@@ -283,8 +289,8 @@ void main() {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            addActivityTypeAdvanced: false,
             addActivity: AddActivitySettings(
+              mode: AddActivityMode.stepByStep,
               stepByStep: StepByStepSettings(
                 template: false,
                 datePicker: false,
@@ -366,8 +372,8 @@ void main() {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            addActivityTypeAdvanced: false,
             addActivity: AddActivitySettings(
+              mode: AddActivityMode.stepByStep,
               general: GeneralAddActivitySettings(
                 addRecurringActivity: false,
               ),
@@ -425,8 +431,8 @@ void main() {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            addActivityTypeAdvanced: false,
             addActivity: AddActivitySettings(
+              mode: AddActivityMode.stepByStep,
               general: GeneralAddActivitySettings(
                 addRecurringActivity: false,
               ),
@@ -476,8 +482,8 @@ void main() {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            addActivityTypeAdvanced: false,
             addActivity: AddActivitySettings(
+              mode: AddActivityMode.stepByStep,
               general: GeneralAddActivitySettings(
                 addRecurringActivity: false,
               ),
@@ -524,8 +530,8 @@ void main() {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            addActivityTypeAdvanced: false,
             addActivity: AddActivitySettings(
+              mode: AddActivityMode.stepByStep,
               general: GeneralAddActivitySettings(
                 addRecurringActivity: false,
               ),
@@ -572,8 +578,8 @@ void main() {
 
   group('type step', () {
     const typeOnlyMemoSettings = MemoplannerSettings(
-      addActivityTypeAdvanced: false,
       addActivity: AddActivitySettings(
+        mode: AddActivityMode.stepByStep,
         general: GeneralAddActivitySettings(
           addRecurringActivity: false,
         ),
@@ -614,8 +620,8 @@ void main() {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            addActivityTypeAdvanced: false,
             addActivity: AddActivitySettings(
+              mode: AddActivityMode.stepByStep,
               general: GeneralAddActivitySettings(
                 addRecurringActivity: false,
               ),
@@ -662,8 +668,8 @@ void main() {
 
   group('available for step', () {
     const availableForOnlyMemoSettings = MemoplannerSettings(
-      addActivityTypeAdvanced: false,
       addActivity: AddActivitySettings(
+        mode: AddActivityMode.stepByStep,
         general: GeneralAddActivitySettings(
           addRecurringActivity: false,
         ),
@@ -701,8 +707,8 @@ void main() {
 
   group('checkable step', () {
     const checkableOnlyMemoSettings = MemoplannerSettings(
-      addActivityTypeAdvanced: false,
       addActivity: AddActivitySettings(
+        mode: AddActivityMode.stepByStep,
         general: GeneralAddActivitySettings(
           addRecurringActivity: false,
         ),
@@ -741,8 +747,8 @@ void main() {
 
   group('remove after step', () {
     const removeAfterOnlyMemoSettings = MemoplannerSettings(
-      addActivityTypeAdvanced: false,
       addActivity: AddActivitySettings(
+        mode: AddActivityMode.stepByStep,
         general: GeneralAddActivitySettings(
           addRecurringActivity: false,
         ),
@@ -779,8 +785,8 @@ void main() {
 
   group('recurring step', () {
     const recurringOnly = MemoplannerSettings(
-      addActivityTypeAdvanced: false,
       addActivity: AddActivitySettings(
+        mode: AddActivityMode.stepByStep,
         general: GeneralAddActivitySettings(
           addRecurringActivity: true,
         ),
@@ -840,8 +846,8 @@ void main() {
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(MemoplannerSettings(
-          addActivityTypeAdvanced: false,
           addActivity: AddActivitySettings(
+            mode: AddActivityMode.stepByStep,
             general: GeneralAddActivitySettings(
               addRecurringActivity: true,
             ),
@@ -921,8 +927,8 @@ void main() {
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(MemoplannerSettings(
-          addActivityTypeAdvanced: false,
           addActivity: AddActivitySettings(
+            mode: AddActivityMode.stepByStep,
             general: GeneralAddActivitySettings(
               addRecurringActivity: true,
             ),
@@ -1001,8 +1007,8 @@ void main() {
       // Arrange
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(MemoplannerSettings(
-          addActivityTypeAdvanced: false,
           addActivity: AddActivitySettings(
+            mode: AddActivityMode.stepByStep,
             general: GeneralAddActivitySettings(
               addRecurringActivity: true,
             ),
@@ -1051,8 +1057,8 @@ void main() {
 
   group('image step', () {
     const imageOnlyMemoSettings = MemoplannerSettings(
-      addActivityTypeAdvanced: false,
       addActivity: AddActivitySettings(
+        mode: AddActivityMode.stepByStep,
         general: GeneralAddActivitySettings(
           addRecurringActivity: false,
         ),
@@ -1086,8 +1092,8 @@ void main() {
 
   group('reminders step', () {
     const remindersOnlyMemoSettings = MemoplannerSettings(
-      addActivityTypeAdvanced: false,
       addActivity: AddActivitySettings(
+        mode: AddActivityMode.stepByStep,
         general: GeneralAddActivitySettings(
           addRecurringActivity: false,
         ),
@@ -1147,8 +1153,8 @@ void main() {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            addActivityTypeAdvanced: false,
             addActivity: AddActivitySettings(
+              mode: AddActivityMode.stepByStep,
               general: GeneralAddActivitySettings(
                 addRecurringActivity: false,
               ),
@@ -1189,8 +1195,8 @@ void main() {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            addActivityTypeAdvanced: false,
             addActivity: AddActivitySettings(
+              mode: AddActivityMode.stepByStep,
               general: GeneralAddActivitySettings(
                 addRecurringActivity: false,
               ),
@@ -1237,8 +1243,8 @@ void main() {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            addActivityTypeAdvanced: false,
             addActivity: AddActivitySettings(
+              mode: AddActivityMode.stepByStep,
               general: GeneralAddActivitySettings(
                 addRecurringActivity: false,
               ),
@@ -1284,8 +1290,8 @@ void main() {
 
   group('alarm step', () {
     const memoSettings = MemoplannerSettings(
-      addActivityTypeAdvanced: false,
       addActivity: AddActivitySettings(
+        mode: AddActivityMode.stepByStep,
         general: GeneralAddActivitySettings(
           addRecurringActivity: false,
         ),

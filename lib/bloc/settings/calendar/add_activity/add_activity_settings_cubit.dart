@@ -1,27 +1,24 @@
-import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
-part 'add_activity_settings_state.dart';
-
-class AddActivitySettingsCubit extends Cubit<AddActivitySettingsState> {
+class AddActivitySettingsCubit extends Cubit<AddActivitySettings> {
   final GenericCubit genericCubit;
 
   AddActivitySettingsCubit({
-    required MemoplannerSettingsState settingsState,
+    required AddActivitySettings settingsState,
     required this.genericCubit,
-  }) : super(AddActivitySettingsState.fromMemoplannerSettings(settingsState));
+  }) : super(settingsState);
 
-  void change(AddActivitySettingsState state) => emit(state);
+  void change(AddActivitySettings state) => emit(state);
   void addGeneralSettings(GeneralAddActivitySettings settings) =>
-      change(state.copyWith(generalSettings: settings));
+      change(state.copyWith(general: settings));
   void addDefaultsSettings(DefaultsAddActivitySettings settings) =>
-      change(state.copyWith(defaultsSettings: settings));
-  void newActivityMode(NewActivityMode? mode) =>
-      change(state.copyWith(newActivityMode: mode));
+      change(state.copyWith(defaults: settings));
+  void newActivityMode(AddActivityMode? mode) =>
+      change(state.copyWith(mode: mode));
   void stepByStepSetting(StepByStepSettings settings) =>
-      change(state.copyWith(stepByStepSettings: settings));
+      change(state.copyWith(stepByStep: settings));
   void editSettings(EditActivitySettings settings) =>
-      change(state.copyWith(editActivitySettings: settings));
+      change(state.copyWith(editActivity: settings));
   void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
 }

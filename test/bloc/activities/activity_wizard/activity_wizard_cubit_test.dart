@@ -52,7 +52,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: FakeEditActivityCubit(),
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsNotLoaded(),
+      settings: const AddActivitySettings(),
     );
 
     expect(
@@ -79,9 +79,7 @@ void main() {
         calendarId: calendarId,
       ),
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(addActivityTypeAdvanced: false),
-      ),
+      settings: const AddActivitySettings(mode: AddActivityMode.stepByStep),
     );
 
     expect(
@@ -175,12 +173,8 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(
-            editActivity: EditActivitySettings(template: false),
-          ),
-        ),
+      settings: const AddActivitySettings(
+        editActivity: EditActivitySettings(template: false),
       ),
     );
 
@@ -331,12 +325,8 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(
-            editActivity: EditActivitySettings(template: false),
-          ),
-        ),
+      settings: const AddActivitySettings(
+        editActivity: EditActivitySettings(template: false),
       ),
     );
 
@@ -745,12 +735,8 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(
-            editActivity: EditActivitySettings(template: false),
-          ),
-        ),
+      settings: const AddActivitySettings(
+        editActivity: EditActivitySettings(template: false),
       ),
     );
 
@@ -814,12 +800,8 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
-          settings: const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              addActivity: AddActivitySettings(
-                editActivity: EditActivitySettings(template: false),
-              ),
-            ),
+          settings: const AddActivitySettings(
+            editActivity: EditActivitySettings(template: false),
           ),
         );
 
@@ -907,12 +889,8 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(time),
-          settings: const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              addActivity: AddActivitySettings(
-                editActivity: EditActivitySettings(template: false),
-              ),
-            ),
+          settings: const AddActivitySettings(
+            editActivity: EditActivitySettings(template: false),
           ),
         );
 
@@ -997,12 +975,8 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
-          settings: const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              addActivity: AddActivitySettings(
-                editActivity: EditActivitySettings(template: false),
-              ),
-            ),
+          settings: const AddActivitySettings(
+            editActivity: EditActivitySettings(template: false),
           ),
         );
 
@@ -1187,12 +1161,8 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
-          settings: const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              addActivity: AddActivitySettings(
-                editActivity: EditActivitySettings(template: false),
-              ),
-            ),
+          settings: const AddActivitySettings(
+            editActivity: EditActivitySettings(template: false),
           ),
         );
 
@@ -1278,12 +1248,8 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
-          settings: const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              addActivity: AddActivitySettings(
-                editActivity: EditActivitySettings(template: false),
-              ),
-            ),
+          settings: const AddActivitySettings(
+            editActivity: EditActivitySettings(template: false),
           ),
         );
 
@@ -1426,12 +1392,8 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime),
-          settings: const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              addActivity: AddActivitySettings(
-                editActivity: EditActivitySettings(template: false),
-              ),
-            ),
+          settings: const AddActivitySettings(
+            editActivity: EditActivitySettings(template: false),
           ),
         );
 
@@ -1492,12 +1454,8 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
-          settings: const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              addActivity: AddActivitySettings(
-                editActivity: EditActivitySettings(template: false),
-              ),
-            ),
+          settings: const AddActivitySettings(
+            editActivity: EditActivitySettings(template: false),
           ),
         );
 
@@ -1779,9 +1737,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const MemoplannerSettingsLoaded(
-          MemoplannerSettings(addActivityTypeAdvanced: false),
-        ),
+        settings: const AddActivitySettings(mode: AddActivityMode.stepByStep),
       );
 
       expect(
@@ -1814,24 +1770,20 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
-            addActivityTypeAdvanced: false,
-            addActivity: AddActivitySettings(
-              general: GeneralAddActivitySettings(addRecurringActivity: false),
-              stepByStep: StepByStepSettings(
-                datePicker: false,
-                image: false,
-                title: false,
-                type: true,
-                availability: false,
-                checkable: false,
-                removeAfter: true,
-                alarm: true,
-                notes: true,
-                reminders: true,
-              ),
-            ),
+        settings: const AddActivitySettings(
+          mode: AddActivityMode.stepByStep,
+          general: GeneralAddActivitySettings(addRecurringActivity: false),
+          stepByStep: StepByStepSettings(
+            datePicker: false,
+            image: false,
+            title: false,
+            type: true,
+            availability: false,
+            checkable: false,
+            removeAfter: true,
+            alarm: true,
+            notes: true,
+            reminders: true,
           ),
         ),
       );
@@ -1865,28 +1817,24 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
-            addActivityTypeAdvanced: false,
-            addActivity: AddActivitySettings(
-              general: GeneralAddActivitySettings(
-                addRecurringActivity: false,
-              ),
-              stepByStep: StepByStepSettings(
-                template: false,
-                datePicker: false,
-                image: false,
-                title: true,
-                type: false,
-                availability: false,
-                checkable: false,
-                removeAfter: false,
-                alarm: false,
-                checklist: false,
-                notes: false,
-                reminders: false,
-              ),
-            ),
+        settings: const AddActivitySettings(
+          mode: AddActivityMode.stepByStep,
+          general: GeneralAddActivitySettings(
+            addRecurringActivity: false,
+          ),
+          stepByStep: StepByStepSettings(
+            template: false,
+            datePicker: false,
+            image: false,
+            title: true,
+            type: false,
+            availability: false,
+            checkable: false,
+            removeAfter: false,
+            alarm: false,
+            checklist: false,
+            notes: false,
+            reminders: false,
           ),
         ),
       );
@@ -1903,26 +1851,24 @@ void main() {
       );
     });
 
-    const allWizStepsSettings = MemoplannerSettings(
-      addActivityTypeAdvanced: false,
-      addActivity: AddActivitySettings(
-        general: GeneralAddActivitySettings(
-          addRecurringActivity: true,
-        ),
-        stepByStep: StepByStepSettings(
-          template: true,
-          datePicker: true,
-          image: true,
-          title: true,
-          type: true,
-          availability: true,
-          checkable: true,
-          removeAfter: true,
-          alarm: true,
-          checklist: true,
-          notes: true,
-          reminders: true,
-        ),
+    const allWizStepsSettings = AddActivitySettings(
+      mode: AddActivityMode.stepByStep,
+      general: GeneralAddActivitySettings(
+        addRecurringActivity: true,
+      ),
+      stepByStep: StepByStepSettings(
+        template: true,
+        datePicker: true,
+        image: true,
+        title: true,
+        type: true,
+        availability: true,
+        checkable: true,
+        removeAfter: true,
+        alarm: true,
+        checklist: true,
+        notes: true,
+        reminders: true,
       ),
     );
 
@@ -1954,7 +1900,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const MemoplannerSettingsLoaded(allWizStepsSettings),
+        settings: allWizStepsSettings,
       );
 
       expect(
@@ -1980,7 +1926,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const MemoplannerSettingsLoaded(allWizStepsSettings),
+        settings: allWizStepsSettings,
       );
 
       expect(
@@ -2058,7 +2004,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const MemoplannerSettingsLoaded(allWizStepsSettings),
+        settings: allWizStepsSettings,
       );
 
       expect(
@@ -2102,7 +2048,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const MemoplannerSettingsLoaded(allWizStepsSettings),
+        settings: allWizStepsSettings,
       );
 
       editActivityCubit
@@ -2140,28 +2086,24 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
-            addActivityTypeAdvanced: false,
-            addActivity: AddActivitySettings(
-              general: GeneralAddActivitySettings(
-                addRecurringActivity: true,
-              ),
-              stepByStep: StepByStepSettings(
-                template: false,
-                datePicker: false,
-                image: false,
-                title: false,
-                type: false,
-                availability: false,
-                checkable: false,
-                removeAfter: false,
-                alarm: false,
-                checklist: false,
-                notes: false,
-                reminders: false,
-              ),
-            ),
+        settings: const AddActivitySettings(
+          mode: AddActivityMode.stepByStep,
+          general: GeneralAddActivitySettings(
+            addRecurringActivity: true,
+          ),
+          stepByStep: StepByStepSettings(
+            template: false,
+            datePicker: false,
+            image: false,
+            title: false,
+            type: false,
+            availability: false,
+            checkable: false,
+            removeAfter: false,
+            alarm: false,
+            checklist: false,
+            notes: false,
+            reminders: false,
           ),
         ),
       );
@@ -2225,28 +2167,24 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
-            addActivityTypeAdvanced: false,
-            addActivity: AddActivitySettings(
-              general: GeneralAddActivitySettings(
-                addRecurringActivity: true,
-              ),
-              stepByStep: StepByStepSettings(
-                template: false,
-                title: false,
-                image: false,
-                datePicker: false,
-                type: false,
-                availability: false,
-                checkable: false,
-                removeAfter: false,
-                alarm: false,
-                checklist: false,
-                notes: false,
-                reminders: false,
-              ),
-            ),
+        settings: const AddActivitySettings(
+          mode: AddActivityMode.stepByStep,
+          general: GeneralAddActivitySettings(
+            addRecurringActivity: true,
+          ),
+          stepByStep: StepByStepSettings(
+            template: false,
+            title: false,
+            image: false,
+            datePicker: false,
+            type: false,
+            availability: false,
+            checkable: false,
+            removeAfter: false,
+            alarm: false,
+            checklist: false,
+            notes: false,
+            reminders: false,
           ),
         ),
       );
