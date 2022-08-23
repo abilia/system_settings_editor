@@ -45,7 +45,8 @@ class OneTimepillarCalendar extends StatefulWidget {
       displayHourLines,
       displayTimeline,
       showCategoryLabels,
-      scrollToTimeOffset;
+      scrollToTimeOffset,
+      pullToRefresh;
   final DayParts dayParts;
   final double topMargin, bottomMargin;
 
@@ -57,6 +58,7 @@ class OneTimepillarCalendar extends StatefulWidget {
     required this.dayParts,
     required this.timepillarMeasures,
     this.scrollToTimeOffset = true,
+    this.pullToRefresh = true,
     double? topMargin,
     double? bottomMargin,
     bool? showCategoryLabels,
@@ -180,7 +182,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
             return RefreshIndicator(
               onRefresh: refresh,
               notificationPredicate: (scrollNotification) =>
-                  widget.scrollToTimeOffset &&
+                  widget.pullToRefresh &&
                   defaultScrollNotificationPredicate(scrollNotification),
               child: Container(
                 key: TestKey.calendarBackgroundColor,
