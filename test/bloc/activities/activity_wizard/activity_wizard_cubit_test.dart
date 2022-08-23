@@ -1453,7 +1453,7 @@ void main() {
         await expected2;
       });
 
-      test('no conflict for recuring', () async {
+      test('no conflict for recurring', () async {
         // Arrange
         final stored = Activity.createNew(title: 'stored', startTime: aTime);
         final mockActivitiesBloc = MockActivitiesBloc();
@@ -1489,6 +1489,8 @@ void main() {
           startDate: aDay,
           endDate: Recurs.noEndDate,
         );
+
+        editActivityCubit.changeTimeInterval(startTime: time);
         final expectedActivity = activity.copyWith(startTime: aTime);
         final expected1 = expectLater(
           editActivityCubit.stream,
@@ -1506,8 +1508,8 @@ void main() {
           ),
         );
 
-        editActivityCubit.changeTimeInterval(
-            startTime: time, endDate: Recurs.noEndDate);
+        editActivityCubit.newRecurrence(
+            startDate: aDay, newEndDate: Recurs.noEndDate);
         editActivityCubit.replaceActivity(activity);
 
         // Assert
@@ -2123,13 +2125,11 @@ void main() {
           ),
         ),
       );
-
+      editActivityCubit.replaceActivity(activity.copyWith(title: 'title'));
       editActivityCubit.changeTimeInterval(
           startTime: const TimeOfDay(hour: 22, minute: 22));
 
-      editActivityCubit.replaceActivity(activity.copyWith(
-          title: 'title', recurs: Recurs.weeklyOnDays(const [])));
-      editActivityCubit.changeTimeInterval(endDate: Recurs.noEndDate);
+      editActivityCubit.changeRecurrence(Recurs.weeklyOnDays(const []));
       await expectLater(
         wizCubit.stream,
         emitsInOrder([
@@ -2217,8 +2217,8 @@ void main() {
           ),
         ),
       );
-      editActivityCubit.changeTimeInterval(
-          endDate: nowTime.add(1.days()).onlyDays());
+      editActivityCubit.newRecurrence(
+          newEndDate: nowTime.add(1.days()).onlyDays());
 
       await expectLater(
         wizCubit.stream,

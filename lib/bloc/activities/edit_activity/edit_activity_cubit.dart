@@ -18,13 +18,10 @@ class EditActivityCubit extends Cubit<EditActivityState> {
             activityDay.activity.fullDay
                 ? TimeInterval(startDate: activityDay.day)
                 : TimeInterval.fromDateTime(
-                    activityDay.activity.startClock(activityDay.day),
-                    activityDay.activity.hasEndTime
-                        ? activityDay.activity.endClock(activityDay.day)
-                        : null,
-                    !activityDay.activity.recurs.once
-                        ? DateTime.fromMillisecondsSinceEpoch(
-                            activityDay.activity.recurs.endTime)
+                    activityDay.start,
+                    activityDay.activity.hasEndTime ? activityDay.end : null,
+                    activityDay.activity.isRecurring
+                        ? activityDay.activity.recurs.end
                         : null,
                   ),
             activityDay.day,
@@ -94,17 +91,11 @@ class EditActivityCubit extends Cubit<EditActivityState> {
   void changeTimeInterval({
     final TimeOfDay? startTime,
     final TimeOfDay? endTime,
-    final DateTime? endDate,
   }) {
     var timeInterval = state.timeInterval
         .copyWith(startTime: startTime, endTime: endTime ?? startTime);
     emit(
-      state.copyWith(
-        state.activity,
-        timeInterval: endDate != null
-            ? timeInterval.changeEndDate(endDate)
-            : timeInterval,
-      ),
+      state.copyWith(state.activity, timeInterval: timeInterval),
     );
   }
 
@@ -214,13 +205,11 @@ class EditActivityCubit extends Cubit<EditActivityState> {
   }
 
   Recurs _newRecurs(RecurrentType type, DateTime startDate, DateTime? endDate) {
-    final endOfDay = endDate?.nextDay().onlyDays().millisecondBefore();
     switch (type) {
       case RecurrentType.weekly:
-        return Recurs.weeklyOnDay(endOfDay?.weekday ?? startDate.weekday,
-            ends: endOfDay);
+        return Recurs.weeklyOnDay(startDate.weekday, ends: endDate);
       case RecurrentType.monthly:
-        return Recurs.monthly(endOfDay?.day ?? startDate.day, ends: endOfDay);
+        return Recurs.monthly(startDate.day, ends: endDate);
       case RecurrentType.yearly:
         return Recurs.yearly(startDate);
       default:

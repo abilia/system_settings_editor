@@ -780,11 +780,12 @@ class MonthDays extends StatelessWidget {
                       selectedMonthDays.remove(d);
                     }
                     context.read<EditActivityCubit>().changeRecurrence(
-                        Recurs.monthlyOnDays(
-                          selectedMonthDays,
-                          ends: state.activity.recurs.end,
-                        ),
-                        timeInterval: state.timeInterval);
+                          Recurs.monthlyOnDays(
+                            selectedMonthDays,
+                            ends: state.activity.recurs.end,
+                          ),
+                          timeInterval: state.timeInterval,
+                        );
                   },
                 );
               },
