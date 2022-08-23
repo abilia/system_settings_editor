@@ -212,7 +212,7 @@ void main() {
         final wizardSetting = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
+            identifier: AddActivitySettings.addActivityTypeAdvancedKey,
           ),
         );
         genericResponse = () => [wizardSetting];
@@ -274,7 +274,7 @@ void main() {
         final wizardSetting = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
+            identifier: AddActivitySettings.addActivityTypeAdvancedKey,
           ),
         );
         final removeAfter = Generic.createNew<MemoplannerSettingData>(
@@ -382,7 +382,7 @@ void main() {
                 Generic.createNew<MemoplannerSettingData>(
                   data: MemoplannerSettingData.fromData(
                     data: false,
-                    identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
+                    identifier: AddActivitySettings.addActivityTypeAdvancedKey,
                   ),
                 ),
                 Generic.createNew<MemoplannerSettingData>(
@@ -463,7 +463,7 @@ void main() {
                 Generic.createNew<MemoplannerSettingData>(
                   data: MemoplannerSettingData.fromData(
                     data: false,
-                    identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
+                    identifier: AddActivitySettings.addActivityTypeAdvancedKey,
                   ),
                 ),
                 Generic.createNew<MemoplannerSettingData>(

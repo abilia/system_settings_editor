@@ -8,7 +8,7 @@ enum StartView { dayCalendar, weekCalendar, monthCalendar, menu, photoAlbum }
 
 enum ClockType { analogueDigital, analogue, digital }
 
-enum NewActivityMode { editView, stepByStep }
+enum AddActivityMode { editView, stepByStep }
 
 enum WeekDisplayDays { everyDay, weekdays }
 

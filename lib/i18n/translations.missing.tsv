@@ -1,4 +1,9 @@
 _id_	en	sv	da	nl	fi	de	nb
+showAlarmOnlyAtStartTime	Show alarm only at start time
+showSpeechAtAlarm	Show speech at alarm
+showReminders	Show reminders
+showSelectEndDate	Show select end date
+recurring	Recurring
 onlyActivateScreensaverDuringNight	Only activate screensaver during night						
 menuItemsDisabled	all menu items are disabled						
 aboutMemoplanner	About						

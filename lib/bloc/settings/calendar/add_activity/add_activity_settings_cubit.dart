@@ -1,28 +1,24 @@
-import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
-part 'add_activity_settings_state.dart';
-
-class AddActivitySettingsCubit extends Cubit<AddActivitySettingsState> {
+class AddActivitySettingsCubit extends Cubit<AddActivitySettings> {
   final GenericCubit genericCubit;
 
   AddActivitySettingsCubit({
-    required MemoplannerSettingsState settingsState,
+    required AddActivitySettings settingsState,
     required this.genericCubit,
-  }) : super(AddActivitySettingsState.fromMemoplannerSettings(settingsState));
+  }) : super(settingsState);
 
-  void change(AddActivitySettingsState newState) => emit(newState);
-  void addActivitySetting(AddActivitySettings settings) =>
-      change(state.copyWith(addActivitySetting: settings));
-  void newActivityMode(NewActivityMode? mode) =>
-      change(state.copyWith(newActivityMode: mode));
-  void stepByStepSetting(StepByStepSettings setting) =>
-      change(state.copyWith(stepByStepSetting: setting));
-  void editSettings(EditActivitySettings setting) =>
-      change(state.copyWith(editActivitySetting: setting));
-  void defaultAlarm(Alarm alarm) => change(state.copyWith(defaultAlarm: alarm));
-  void defaultAlarmType(AlarmType? alarmType) =>
-      defaultAlarm(state.defaultAlarm.copyWith(type: alarmType));
+  void change(AddActivitySettings state) => emit(state);
+  void addGeneralSettings(GeneralAddActivitySettings settings) =>
+      change(state.copyWith(general: settings));
+  void addDefaultsSettings(DefaultsAddActivitySettings settings) =>
+      change(state.copyWith(defaults: settings));
+  void newActivityMode(AddActivityMode? mode) =>
+      change(state.copyWith(mode: mode));
+  void stepByStepSetting(StepByStepSettings settings) =>
+      change(state.copyWith(stepByStep: settings));
+  void editSettings(EditActivitySettings settings) =>
+      change(state.copyWith(editActivity: settings));
   void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
 }
