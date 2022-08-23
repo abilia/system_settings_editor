@@ -94,8 +94,8 @@ timeEveningTts	%s in the evening	%s på kvällen	%s om aftenen	%s 's avonds	%s i
 timeNightTts	%s at night	%s på natten	%s om natten	%s 's nachts	%s yöllä	%s abends	%s på natten
 timerInvalidDuration	Duration can not be zero.	Tidslängden kan inte vara noll.	Varigheden kan ikke være nul.	De duur kan niet nul zijn.	Kesto ei voi olla nolla.	Dauer kann nicht Null sein	Varigheten kan ikke være null.
 timerDelete	Do you want to delete the timer?	Vill du ta bort timern?	Ønsker du at slette timeren?	Wilt u de timer verwijderen?	Haluatko poistaa ajastimen?	Möchten Sie den Timer löschen?	Vil du slette timeren?
-timerPause	Do you want to pause the timer?	Vill du pausa timern?	Ønsker du at sætte timeren på pause?	Wilt u de timer pauzeren?	Haluatko keskeyttää ajastimen?	Möchten Sie den Timer pausieren?	Vil du sette tidtakeren på pause?
-timerResume	Do you want to continue the timer?	Vill du fortsätta timern?	Ønsker du at fortsætte timeren?	Wilt u doorgaan met de timer?	Haluatko jatkaa ajastimen käyttöä?	Möchten Sie den Timer fortsetzen?	Vil du fortsette tidtakeren?
+timerPause	Do you want to pause the timer?	Vill du pausa timern?	Ønsker du at sætte timeren på pause?	Wilt u de timer pauzeren?	Haluatko keskeyttää ajastimen?	Möchten Sie den Timer pausieren?	Vil du sette timeren på pause?
+timerResume	Do you want to continue the timer?	Vill du fortsätta timern?	Ønsker du at fortsætte timeren?	Wilt u doorgaan met de timer?	Haluatko jatkaa ajastimen käyttöä?	Möchten Sie den Timer fortsetzen?	Vil du fortsette timeren?
 timerPaused	Paused	Pausad	Sat på pause	Gepauzeerd	Keskeytetty	Pausiert	Pauset
 pause	Pause	Pausa	Pause	Pauzeren	Keskeytä	Pausieren	Pause
 continue_	Continue	Fortsätt	Fortsæt	Doorgaan	Jatka	Fortsetzen	Fortsette
@@ -136,7 +136,7 @@ selectDuration	Select duration	Välj tidslängd	Angiv varighed	Duur selecteren	V
 startTimer	Start timer	Starta timer	Start timeren	Start timer	Käynnistysajastin	Timer starten	Start timer
 enterNameForTimer	Enter name for timer	Ange namn för timer	Indtast navn på timer	Voer naam in voor timer	Lisää nimi ajastimeen	Namen für den Timer angeben	Angi navn på timer
 selectTemplateTimer	Select timer	Välj timer	Vælg timer	Timers selecteren	Valitse ajastin	Timer auswählen	Velg timere
-timer	Timer	Timer	Timer	Tijdopnemer	Ajastin	Timer	Tidtaker
+timer	Timer	Timer	Timer	Tijdopnemer	Ajastin	Timer	Timer
 timeIsUp	Time is up	Tiden är slut	Tiden er gået	De tijd is om	Aika loppui	Die Zeit ist abgelaufen	Tiden er slutt
 timers	Timers	Timers	Timere	Timers	Ajastimet	Timer	Timere
 editTimer	Edit timer	Ändra timer	Rediger timer	Timer bewerken	Muokkaa ajastin	Timer bearbeiten	Endre timere
