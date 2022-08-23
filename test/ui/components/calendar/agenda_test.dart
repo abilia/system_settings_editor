@@ -263,7 +263,26 @@ void main() {
 
     expect(find.text(firstFullDayTitle), findsOneWidget);
     expect(find.text(secondFullDayTitle), findsOneWidget);
-    expect(find.byType(ShowAllFullDayActivitiesButton), findsNothing);
+    expect(find.byType(FullDayActivitiesButton), findsNothing);
+  });
+
+  testWidgets(
+      'full day activites are placed in correct order both in FullDayContainer and FullDayList',
+      (WidgetTester tester) async {
+    activityResponse = () => [firstFullDay, secondFullDay, thirdFullDay];
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    final t1AgendaPos = tester.getCenter(find.text(firstFullDayTitle));
+    final t2AgendaPos = tester.getCenter(find.text(secondFullDayTitle));
+    expect(t1AgendaPos.dx, lessThan(t2AgendaPos.dx));
+    await tester.tap(find.byType(FullDayActivitiesButton));
+    await tester.pumpAndSettle();
+    expect(find.byType(FullDayListPage), findsOneWidget);
+    final t1FulldayListPos = tester.getCenter(find.text(firstFullDayTitle));
+    final t2FulldayListPos = tester.getCenter(find.text(secondFullDayTitle));
+    final t3FulldayListPos = tester.getCenter(find.text(thirdFullDayTitle));
+    expect(t1FulldayListPos.dy, lessThan(t2FulldayListPos.dy));
+    expect(t2FulldayListPos.dy, lessThan(t3FulldayListPos.dy));
   });
 
   testWidgets(
@@ -276,7 +295,7 @@ void main() {
     expect(find.text(firstFullDayTitle), findsOneWidget);
     expect(find.text(secondFullDayTitle), findsOneWidget);
     expect(find.text(thirdFullDayTitle), findsNothing);
-    expect(find.byType(ShowAllFullDayActivitiesButton), findsOneWidget);
+    expect(find.byType(FullDayActivitiesButton), findsOneWidget);
   });
 
   testWidgets('tapping show-all-full-day-button shows all full days',
@@ -294,9 +313,9 @@ void main() {
     expect(find.text(secondFullDayTitle), findsOneWidget);
     expect(find.text(thirdFullDayTitle), findsNothing);
     expect(find.text(forthFullDayTitle), findsNothing);
-    expect(find.byType(ShowAllFullDayActivitiesButton), findsOneWidget);
+    expect(find.byType(FullDayActivitiesButton), findsOneWidget);
 
-    await tester.tap(find.byType(ShowAllFullDayActivitiesButton));
+    await tester.tap(find.byType(FullDayActivitiesButton));
     await tester.pumpAndSettle();
 
     expect(find.text(firstFullDayTitle), findsOneWidget);
@@ -329,7 +348,7 @@ void main() {
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    await tester.tap(find.byType(ShowAllFullDayActivitiesButton));
+    await tester.tap(find.byType(FullDayActivitiesButton));
     await tester.pumpAndSettle();
     await tester.tap(find.text(forthFullDayTitle));
     await tester.pumpAndSettle();

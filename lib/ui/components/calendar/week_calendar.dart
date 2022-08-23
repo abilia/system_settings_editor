@@ -264,31 +264,22 @@ class _FullDayActivities extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final weekdayIndex = day.weekday - 1;
-    return BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
-      buildWhen: (previous, current) =>
-          previous.currentWeekActivities[weekdayIndex] !=
-          current.currentWeekActivities[weekdayIndex],
-      builder: (context, state) {
-        final fullDayActivities = state.currentWeekActivities[weekdayIndex]
-                ?.where((a) => a.activity.fullDay)
-                .toList() ??
-            [];
-        if (fullDayActivities.length > 1) {
-          return FullDayStack(
-            numberOfActivities: fullDayActivities.length,
-            goToActivitiesListOnTap: true,
-            day: day,
-          );
-        } else if (fullDayActivities.length == 1) {
-          return _WeekActivityContent(
-            activityOccasion: fullDayActivities.first,
-            selected: selected,
-          );
-        }
-        return const SizedBox.shrink();
-      },
-    );
+    final fullDayActivities = context.select(
+        (WeekCalendarCubit cubit) => cubit.state.fullDayActivities(day));
+    if (fullDayActivities.length > 1) {
+      return ClickableFullDayStack(
+        fulldayActivitiesBuilder: (context) => context.select(
+            (WeekCalendarCubit cubit) => cubit.state.fullDayActivities(day)),
+        numberOfActivities: fullDayActivities.length,
+        day: day,
+      );
+    } else if (fullDayActivities.length == 1) {
+      return _WeekActivityContent(
+        activityOccasion: fullDayActivities.first,
+        selected: selected,
+      );
+    }
+    return const SizedBox.shrink();
   }
 }
 
