@@ -241,6 +241,47 @@ void main() {
         },
         skip: Config.isMPGO,
       );
+
+      testWidgets(
+        'SGC-1871 don\'t speak every word when text to speech is false',
+        (WidgetTester tester) async {
+          when(() => mockSpeechSettingsCubit.state).thenAnswer(
+            (_) => const SpeechSettingsState(
+              textToSpeech: false,
+              speakEveryWord: true,
+            ),
+          );
+
+          const ttsText = 'This is ';
+
+          // Act
+          await tester.pumpWidget(
+            wrapWithMaterialApp(
+              DefaultTextInput(
+                maxLines: 1,
+                icon: AbiliaIcons.edit,
+                text: '',
+                inputValid: (s) => true,
+                autocorrect: false,
+                textCapitalization: TextCapitalization.sentences,
+                inputFormatters: const [],
+                inputHeading: '',
+                heading: '',
+              ),
+            ),
+          );
+          await tester.pumpAndSettle();
+
+          await tester.enterText(find.byKey(TestKey.input), ttsText);
+          await tester.pumpAndSettle();
+
+          // Assert
+          await tester.verifyNoTts(
+            find.byKey(TestKey.input),
+          );
+        },
+        skip: Config.isMPGO,
+      );
     });
   });
 }
