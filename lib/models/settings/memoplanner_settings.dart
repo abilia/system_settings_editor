@@ -24,7 +24,6 @@ class MemoplannerSettings extends Equatable {
       activityDisplayWeekDayKey = 'day_caption_show_weekday',
       activityDisplayDateKey = 'day_caption_show_date',
       activityDisplayClockKey = 'day_caption_show_clock',
-      addActivityTypeAdvancedKey = 'add_activity_type_advanced',
       weekCaptionShowBrowseButtonsKey = 'week_caption_show_week_buttons',
       weekCaptionShowWeekNumberKey = 'week_caption_show_week_number',
       weekCaptionShowYearKey = 'week_caption_show_year',
@@ -57,7 +56,6 @@ class MemoplannerSettings extends Equatable {
       activityDisplayWeekDay,
       activityDisplayDate,
       activityDisplayClock,
-      addActivityTypeAdvanced,
       weekCaptionShowBrowseButtons,
       weekCaptionShowWeekNumber,
       weekCaptionShowYear,
@@ -100,7 +98,6 @@ class MemoplannerSettings extends Equatable {
     this.activityDisplayWeekDay = true,
     this.activityDisplayDate = true,
     this.activityDisplayClock = true,
-    this.addActivityTypeAdvanced = true,
     this.weekCaptionShowBrowseButtons = true,
     this.weekCaptionShowWeekNumber = true,
     this.weekCaptionShowYear = true,
@@ -163,9 +160,6 @@ class MemoplannerSettings extends Equatable {
       ),
       activityDisplayClock: settings.getBool(
         activityDisplayClockKey,
-      ),
-      addActivityTypeAdvanced: settings.getBool(
-        addActivityTypeAdvancedKey,
       ),
       weekCaptionShowBrowseButtons: settings.getBool(
         weekCaptionShowBrowseButtonsKey,
@@ -259,7 +253,6 @@ class MemoplannerSettings extends Equatable {
         activityDisplayWeekDay,
         activityDisplayDate,
         activityDisplayClock,
-        addActivityTypeAdvanced,
         weekCaptionShowBrowseButtons,
         weekCaptionShowWeekNumber,
         weekCaptionShowYear,

@@ -194,7 +194,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.addActivityTypeAdvancedKey,
+          key: AddActivitySettings.addActivityTypeAdvancedKey,
           matcher: isFalse,
         );
       });
