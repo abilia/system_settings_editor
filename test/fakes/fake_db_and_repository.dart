@@ -117,6 +117,9 @@ class FakeActivityDb extends Fake implements ActivityDb {
   Future<Iterable<Activity>> getAllNonDeleted() => Future.value([]);
   @override
   Future<Iterable<Activity>> getAllAfter(DateTime time) => Future.value([]);
+  @override
+  Future<Iterable<Activity>> getAllBetween(DateTime start, DateTime end) =>
+      Future.value([]);
 }
 
 class FakeDatabase extends Fake implements Database {

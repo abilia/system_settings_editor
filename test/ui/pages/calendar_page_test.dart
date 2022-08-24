@@ -92,6 +92,8 @@ void main() {
         .thenAnswer((_) => Future.value(100));
     when(() => mockActivityDb.getAllAfter(any()))
         .thenAnswer((_) => Future.value([]));
+    when(() => mockActivityDb.getAllBetween(any(), any()))
+        .thenAnswer((_) => Future.value([]));
 
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
