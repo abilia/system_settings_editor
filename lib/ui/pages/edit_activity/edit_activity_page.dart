@@ -27,7 +27,6 @@ class EditActivityPage extends StatelessWidget {
     final showRecurrenceTab = addRecurringActivity &&
         context.read<WizardCubit>() is! TemplateActivityWizardCubit;
     final showInfoItemTab = showChecklists || showNotes;
-    final showTabs = showAlarmTab || showRecurrenceTab || showInfoItemTab;
 
     final enabledTabs = [
       EditActivityPageTab.main,
@@ -61,7 +60,7 @@ class EditActivityPage extends StatelessWidget {
           appBar: AbiliaAppBar(
             iconData: AbiliaIcons.plus,
             title: getTitle(context),
-            bottom: showTabs
+            bottom: enabledTabs.length > 1
                 ? AbiliaTabBar(
                     collapsedCondition: (i) {
                       switch (i) {

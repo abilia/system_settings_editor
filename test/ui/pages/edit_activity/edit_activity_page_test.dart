@@ -3315,7 +3315,7 @@ text''';
     });
   });
 
-  testWidgets('TabBar doesn\'t show when there is only one tab',
+  testWidgets("TabBar doesn't show when there is only one tab",
       (WidgetTester tester) async {
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
       const MemoplannerSettingsLoaded(
