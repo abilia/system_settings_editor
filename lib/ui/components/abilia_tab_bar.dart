@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:seagull/ui/all.dart';
 
 class TabItem extends StatelessWidget {
@@ -66,6 +68,13 @@ class AbiliaTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final nonCollapsedIndexes =
+        [for (var i = 0; i < tabs.length; i++) i].where((j) => !isCollapsed(j));
+
+    if (nonCollapsedIndexes.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
     var offset = 0;
     final tabController = DefaultTabController.of(context);
     final wrappedTabs = [
@@ -74,7 +83,8 @@ class AbiliaTabs extends StatelessWidget {
           _Tab(
             index: i,
             offset: isCollapsed(i) ? offset++ : offset,
-            last: (tabs.length - 1) == i,
+            first: i == nonCollapsedIndexes.reduce(min),
+            last: i == nonCollapsedIndexes.reduce(max),
             collapsed: () => isCollapsed(i),
             controller: tabController,
             onTabTap: onTabTap,
@@ -97,6 +107,7 @@ class _Tab extends StatefulWidget {
   const _Tab({
     required this.index,
     required this.offset,
+    required this.first,
     required this.last,
     required this.collapsed,
     required this.child,
@@ -106,7 +117,7 @@ class _Tab extends StatefulWidget {
   }) : super(key: key);
 
   final int index, offset;
-  final bool last;
+  final bool first, last;
   final Widget child;
   final TabController controller;
   final bool Function() collapsed;
@@ -169,7 +180,7 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
           Listenable.merge([widget.controller.animation, _collapsedController]),
       index: widget.index,
       offset: widget.offset,
-      first: widget.index == 0,
+      first: widget.first,
       last: widget.last,
       beginIconThemeData: iconTheme.copyWith(
         size: layout.actionButton.withTextIconSize,
@@ -211,52 +222,37 @@ class _AnimatedTab extends AnimatedWidget {
     required this.first,
     required this.onTap,
     Key? key,
-  })  : selectedDecoration = first
-            ? BoxDecoration(
-                borderRadius: firstBorderRadius,
-                color: AbiliaColors.white,
-              )
-            : last
-                ? BoxDecoration(
-                    borderRadius: lastBorderRadius,
-                    color: AbiliaColors.white,
-                  )
-                : const BoxDecoration(color: AbiliaColors.white),
-        notSelectedBorder = first
-            ? BoxDecoration(
-                borderRadius: firstBorderRadius,
-                color: AbiliaColors.transparentWhite30,
-              )
-            : last
-                ? BoxDecoration(
-                    borderRadius: lastBorderRadius,
-                    color: AbiliaColors.transparentWhite30,
-                  )
-                : const BoxDecoration(color: AbiliaColors.transparentWhite30),
-        notSelectedInnerDecoration = first
-            ? BoxDecoration(
-                borderRadius: firstInnerBorderRadius,
-                color: AbiliaColors.transparentWhite20,
-              )
-            : last
-                ? BoxDecoration(
-                    borderRadius: lastInnerBorderRadius,
-                    color: AbiliaColors.transparentWhite20,
-                  )
-                : const BoxDecoration(color: AbiliaColors.transparentWhite20),
-        padding = first
-            ? EdgeInsets.only(
-                left: layout.tabBar.item.border,
-                top: layout.tabBar.item.border,
-                bottom: layout.tabBar.item.border)
-            : last
-                ? EdgeInsets.only(
-                    top: layout.tabBar.item.border,
-                    right: layout.tabBar.item.border,
-                    bottom: layout.tabBar.item.border)
-                : EdgeInsets.symmetric(vertical: layout.tabBar.item.border),
-        super(key: key, listenable: listenable);
-
+  })  : padding = EdgeInsets.only(
+          left: first ? layout.tabBar.item.border : 0,
+          right: last ? layout.tabBar.item.border : 0,
+          top: layout.tabBar.item.border,
+          bottom: layout.tabBar.item.border,
+        ),
+        super(key: key, listenable: listenable) {
+    selectedDecoration =
+        const BoxDecoration(color: AbiliaColors.white).copyWith(
+      borderRadius: first && last
+          ? firstBorderRadius + lastBorderRadius
+          : first
+              ? firstBorderRadius
+              : last
+                  ? lastBorderRadius
+                  : null,
+    );
+    notSelectedBorder = selectedDecoration.copyWith(
+      color: AbiliaColors.transparentWhite30,
+    );
+    notSelectedInnerDecoration =
+        const BoxDecoration(color: AbiliaColors.transparentWhite20).copyWith(
+      borderRadius: first && last
+          ? firstInnerBorderRadius + lastInnerBorderRadius
+          : first
+              ? firstInnerBorderRadius
+              : last
+                  ? lastInnerBorderRadius
+                  : null,
+    );
+  }
   final Widget child;
   final Animation<double> selectedTabAnimation;
   final Animation<double> collapsedAnimation;
@@ -266,7 +262,7 @@ class _AnimatedTab extends AnimatedWidget {
   final TextStyle beginTextStyle, endTextStyle;
   final GestureTapCallback onTap;
 
-  final BoxDecoration selectedDecoration,
+  late final BoxDecoration selectedDecoration,
       notSelectedBorder,
       notSelectedInnerDecoration;
 
@@ -279,11 +275,13 @@ class _AnimatedTab extends AnimatedWidget {
         (selectedTabAnimation.value - index + offset).abs().clamp(0.0, 1.0);
     final marginValue = layout.tabBar.item.border * collapsedValue / 2;
     return InkWell(
-      borderRadius: first
-          ? borderRadiusLeft
-          : last
-              ? borderRadiusRight
-              : null,
+      borderRadius: first && last
+          ? borderRadiusLeft + borderRadiusRight
+          : first
+              ? borderRadiusLeft
+              : last
+                  ? borderRadiusRight
+                  : null,
       onTap: onTap,
       child: ConstrainedBox(
         constraints: BoxConstraints(
@@ -304,11 +302,10 @@ class _AnimatedTab extends AnimatedWidget {
               ),
             ).lerp(selectedValue),
             child: Padding(
-              padding: last
-                  ? EdgeInsets.only(left: marginValue)
-                  : first
-                      ? EdgeInsets.only(right: marginValue)
-                      : EdgeInsets.symmetric(horizontal: marginValue),
+              padding: EdgeInsets.only(
+                left: first ? 0 : marginValue,
+                right: last ? 0 : marginValue,
+              ),
               child: Ink(
                 decoration: DecorationTween(
                   begin: null,

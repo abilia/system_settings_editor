@@ -25,13 +25,13 @@ class FullDayContainer extends StatelessWidget {
         context.select((ClockBloc bloc) => bloc.state.onlyHours());
     final timePillarState = context.watch<TimepillarCubit>().state;
     bool isTimepillar = dayCalendarType != DayCalendarType.list;
-    bool isNight = (!isTimepillar || timePillarState.showNightCalendar) &&
+    bool nightMode = (!isTimepillar || timePillarState.showNightCalendar) &&
         currentHour.isAtSameDay(day) &&
-        currentHour.dayPart(calendarSettings.dayParts) == DayPart.night;
+        context.read<DayPartCubit>().state.isNight;
 
     return Theme(
       data: weekdayTheme(
-        dayColor: isNight ? DayColor.noColors : calendarSettings.dayColor,
+        dayColor: nightMode ? DayColor.noColors : calendarSettings.dayColor,
         languageCode: Localizations.localeOf(context).languageCode,
         weekday: day.weekday,
       ).theme,

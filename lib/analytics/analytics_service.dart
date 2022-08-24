@@ -21,7 +21,7 @@ class AnalyticsService {
       'fullDay': activity.fullDay,
       'checkable': activity.checkable,
       'removeAfter': activity.removeAfter,
-      'alarm': activity.alarm.toInt,
+      'alarm': activity.alarm.intValue,
       'recurring': activity.recurs.recurrance.toString(),
     };
     await analytics.logEvent(

@@ -15,7 +15,7 @@ class DateAndTimeWidget extends StatelessWidget {
       final fullDay = editActivityState.activity.fullDay;
       return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
               bool>(
-          selector: (state) => state.settings.editActivity.date,
+          selector: (state) => state.settings.addActivity.editActivity.date,
           builder: (context, canEditDate) {
             return SizedBox(
               width: double.infinity,
@@ -184,7 +184,7 @@ class TimeIntervallPicker extends StatelessWidget {
     final authProviders = copiedAuthProviders(context);
     final translator = Translator.of(context).translate;
     return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
-      selector: (state) => state.settings.addActivity.showEndTime,
+      selector: (state) => state.settings.addActivity.general.showEndTime,
       builder: (context, showEndTime) => Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[

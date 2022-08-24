@@ -94,8 +94,8 @@ timeEveningTts	%s in the evening	%s på kvällen	%s om aftenen	%s 's avonds	%s i
 timeNightTts	%s at night	%s på natten	%s om natten	%s 's nachts	%s yöllä	%s abends	%s på natten
 timerInvalidDuration	Duration can not be zero.	Tidslängden kan inte vara noll.	Varigheden kan ikke være nul.	De duur kan niet nul zijn.	Kesto ei voi olla nolla.	Dauer kann nicht Null sein	Varigheten kan ikke være null.
 timerDelete	Do you want to delete the timer?	Vill du ta bort timern?	Ønsker du at slette timeren?	Wilt u de timer verwijderen?	Haluatko poistaa ajastimen?	Möchten Sie den Timer löschen?	Vil du slette timeren?
-timerPause	Do you want to pause the timer?	Vill du pausa timern?	Ønsker du at sætte timeren på pause?	Wilt u de timer pauzeren?	Haluatko keskeyttää ajastimen?	Möchten Sie den Timer pausieren?	Vil du sette tidtakeren på pause?
-timerResume	Do you want to continue the timer?	Vill du fortsätta timern?	Ønsker du at fortsætte timeren?	Wilt u doorgaan met de timer?	Haluatko jatkaa ajastimen käyttöä?	Möchten Sie den Timer fortsetzen?	Vil du fortsette tidtakeren?
+timerPause	Do you want to pause the timer?	Vill du pausa timern?	Ønsker du at sætte timeren på pause?	Wilt u de timer pauzeren?	Haluatko keskeyttää ajastimen?	Möchten Sie den Timer pausieren?	Vil du sette timeren på pause?
+timerResume	Do you want to continue the timer?	Vill du fortsätta timern?	Ønsker du at fortsætte timeren?	Wilt u doorgaan met de timer?	Haluatko jatkaa ajastimen käyttöä?	Möchten Sie den Timer fortsetzen?	Vil du fortsette timeren?
 timerPaused	Paused	Pausad	Sat på pause	Gepauzeerd	Keskeytetty	Pausiert	Pauset
 pause	Pause	Pausa	Pause	Pauzeren	Keskeytä	Pausieren	Pause
 continue_	Continue	Fortsätt	Fortsæt	Doorgaan	Jatka	Fortsetzen	Fortsette
@@ -136,7 +136,7 @@ selectDuration	Select duration	Välj tidslängd	Angiv varighed	Duur selecteren	V
 startTimer	Start timer	Starta timer	Start timeren	Start timer	Käynnistysajastin	Timer starten	Start timer
 enterNameForTimer	Enter name for timer	Ange namn för timer	Indtast navn på timer	Voer naam in voor timer	Lisää nimi ajastimeen	Namen für den Timer angeben	Angi navn på timer
 selectTemplateTimer	Select timer	Välj timer	Vælg timer	Timers selecteren	Valitse ajastin	Timer auswählen	Velg timere
-timer	Timer	Timer	Timer	Tijdopnemer	Ajastin	Timer	Tidtaker
+timer	Timer	Timer	Timer	Tijdopnemer	Ajastin	Timer	Timer
 timeIsUp	Time is up	Tiden är slut	Tiden er gået	De tijd is om	Aika loppui	Die Zeit ist abgelaufen	Tiden er slutt
 timers	Timers	Timers	Timere	Timers	Ajastimet	Timer	Timere
 editTimer	Edit timer	Ändra timer	Rediger timer	Timer bewerken	Muokkaa ajastin	Timer bearbeiten	Endre timere
@@ -337,6 +337,11 @@ showAlarm	Show alarm	Visa larm	Vis alarm	Alarmen weergeven	Näytä hälytykset	A
 showVibrationAlarm	Show vibration	Visa vibration	Vis vibration	Trilfunctie tonen	Näytä värinä	Vibration anzeigen	Vis vibrasjon
 showSilentAlarm	Show silent alarm	Visa tyst larm	Vis stille alarm	Stille alarmen weergeven	Näytä hiljaiset hälytykset	Stille Alarme anzeigen	Vis stille alarm
 showNoAlarm	Show no alarm	Visa inget larm	Vis ingen alarm	Geen alarmen weergeven	Älä näytä hälytystä	Kein Alarm anzeigen	Vis ingen alarm
+showAlarmOnlyAtStartTime	Show alarm only at start time
+showSpeechAtAlarm	Show speech at alarm
+showReminders	Show reminders
+showSelectEndDate	Show select end date
+recurring	Recurring
 throughEditView	Through Edit View	Via Ändravyn	Via Redigersiden	Door bewerkweergave	Muokkausnäkymässä	Durch Bearbeitungsanzeige	Via endrevindu
 androidSettings	Android Settings	Android-inställningar	Android-indstillinger	Android-instellingen	Android-asetukset	Android-Einstellungen	Android-innstillinger
 stepByStep	Step-by-step	Stegvis	Trinvist	Stap voor stap	Vaihe vaiheelta	Schritt für Schritt	Via sekvens
@@ -365,7 +370,7 @@ timeout	Timeout	Timeout	Timeout	Time-out	Aikakatkaisu	Zeitüberschreitung	Timeou
 timeoutSettingsHint	Returns to the home screen after a period of inactivity	Återgång till startsidan efter en tids inaktivitet	Gå tilbage til startsiden, efter en periode med inaktivitet	Gaat terug naar het thuisscherm na een periode van inactiviteit	Palaa aloitusnäyttöön käyttämättömyysjakson jälkeen	Rückkehr zum Startbildschirm nach einer Zeit der Inaktivität	Återgång till startsidan efter en tids inaktivitet
 noTimeout	No timeout	Ingen timeout	Ingen timeout	Geen time-out	Ei aikakatkaisua	Keine Zeitüberschreitung	Ingen timeout
 activateScreensaver	Activate Screensaver	Aktivera skärmsläckare	Aktivér pauseskærm	Screensaver activeren	Aktivoi näytönsäästäjä	Bildschirmschoner aktivieren	Aktiver skjermsparer
-onlyActivateScreenSaverDuringNight	Only activate screen saver during night						
+onlyActivateScreensaverDuringNight	Only activate screensaver during night						
 menuRemovalWarning	Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking directly under the category symbols in the day calendar; left – right – left. This works even if they are hidden.	Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka direkt under kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.	Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke direkte nedenfor kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.	Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door direct hieronder de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.	Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää klikkaamalla alla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.	Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie unter Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.	Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke rett nedenfor kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.
 menuItemsDisabled	all menu items are disabled						
 							

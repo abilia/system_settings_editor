@@ -47,7 +47,9 @@ void main() {
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
       const MemoplannerSettingsLoaded(
         MemoplannerSettings(
-          editActivity: EditActivitySettings(template: false),
+          addActivity: AddActivitySettings(
+            editActivity: EditActivitySettings(template: false),
+          ),
         ),
       ),
     );
@@ -110,6 +112,9 @@ void main() {
             ),
             BlocProvider<SpeechSettingsCubit>(
               create: (context) => FakeSpeechSettingsCubit(),
+            ),
+            BlocProvider<DayPartCubit>(
+              create: (context) => FakeDayPartCubit(),
             ),
           ], child: child!),
       home: TimerPage(

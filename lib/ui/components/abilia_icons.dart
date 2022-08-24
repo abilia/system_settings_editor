@@ -507,7 +507,8 @@ class AbiliaIcons {
       endView = IconData(0xEB49, fontFamily: fontFamily),
       editView = IconData(0xEB45, fontFamily: fontFamily),
       stepByStep = IconData(0xEB44, fontFamily: fontFamily),
-      screenSaverNight = IconData(0xEB47, fontFamily: fontFamily),
+      screensaverNight = IconData(0xEB47, fontFamily: fontFamily),
+      screensaver = IconData(0xEB48, fontFamily: fontFamily),
       digitalTime = IconData(0xEB4A, fontFamily: fontFamily),
       android = IconData(0xEB43, fontFamily: fontFamily);
 }

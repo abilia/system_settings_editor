@@ -7,9 +7,9 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
   final bool showNote, showChecklist;
 
   const InfoItemTab({
+    required this.showNote,
+    required this.showChecklist,
     Key? key,
-    this.showNote = true,
-    this.showChecklist = true,
   }) : super(key: key);
 
   @override

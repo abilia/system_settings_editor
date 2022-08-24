@@ -8,8 +8,17 @@ class ActivityDb extends DataDb<Activity> {
   static const String allAfter =
       'SELECT * FROM ${DatabaseRepository.activityTableName} WHERE end_time >= ? AND deleted == 0';
 
+  static const String allBetween =
+      'SELECT * FROM ${DatabaseRepository.activityTableName} WHERE end_time >= ? AND start_time <= ? AND deleted == 0';
+
   Future<Iterable<Activity>> getAllAfter(DateTime time) async {
     final result = await db.rawQuery(allAfter, [time.millisecondsSinceEpoch]);
+    return rowsToModels(result);
+  }
+
+  Future<Iterable<Activity>> getAllBetween(DateTime start, DateTime end) async {
+    final result = await db.rawQuery(
+        allBetween, [start.millisecondsSinceEpoch, end.millisecondsSinceEpoch]);
     return rowsToModels(result);
   }
 

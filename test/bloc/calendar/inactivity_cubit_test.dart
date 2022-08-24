@@ -13,7 +13,8 @@ import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   late MemoplannerSettingBloc settingsBloc;
-  final initialTime = DateTime(2000);
+  late DayPartCubit dayPartCubit;
+  final initialTime = DateTime(2000, 01, 01, 14, 00);
   late StreamController<DateTime> tickerController;
   late Ticker fakeTicker;
   late TouchDetectionCubit activityDetectionCubit;
@@ -33,6 +34,7 @@ void main() {
     activityDetectionCubit = TouchDetectionCubit();
     timers = StreamController<TimerAlarmState>();
     notificationAlarm = StreamController<NotificationAlarm?>();
+    dayPartCubit = DayPartCubit(settingsBloc, ClockBloc.withTicker(fakeTicker));
   });
 
   tearDown(() {
@@ -44,9 +46,9 @@ void main() {
   blocTest<InactivityCubit, InactivityState>(
     'initial state',
     build: () => InactivityCubit(
-      const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
+      dayPartCubit,
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
@@ -73,9 +75,9 @@ void main() {
       );
     },
     build: () => InactivityCubit(
-      const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
+      dayPartCubit,
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
@@ -85,7 +87,7 @@ void main() {
       tickerController.add(initialTime.add(6.minutes()));
     },
     expect: () => [
-      CalendarInactivityThresholdReached(initialTime),
+      ReturnToTodayThresholdReached(initialTime),
     ],
   );
 
@@ -103,9 +105,9 @@ void main() {
       );
     },
     build: () => InactivityCubit(
-      const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
+      dayPartCubit,
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
@@ -116,8 +118,8 @@ void main() {
       tickerController.add(initialTime.add(10.minutes()));
     },
     expect: () => [
-      CalendarInactivityThresholdReached(initialTime),
-      const HomeScreenInactivityThresholdReached(),
+      ReturnToTodayThresholdReached(initialTime),
+      const HomescreenFinalState(),
     ],
   );
 
@@ -135,9 +137,9 @@ void main() {
       );
     },
     build: () => InactivityCubit(
-      const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
+      dayPartCubit,
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
@@ -147,8 +149,7 @@ void main() {
       tickerController.add(initialTime.add(6.minutes()));
     },
     expect: () => [
-      CalendarInactivityThresholdReached(initialTime),
-      const HomeScreenInactivityThresholdReached(),
+      const HomescreenFinalState(),
     ],
   );
 
@@ -166,9 +167,9 @@ void main() {
       );
     },
     build: () => InactivityCubit(
-      const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
+      dayPartCubit,
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
@@ -198,21 +199,21 @@ void main() {
       );
     },
     build: () => InactivityCubit(
-      const Duration(minutes: 5),
       fakeTicker,
       settingsBloc,
+      dayPartCubit,
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
     ),
-    act: (c) async {
+    act: (c) {
       tickerController.add(initialTime.add(1.minutes()));
       tickerController.add(initialTime.add(2.minutes()));
       tickerController.add(initialTime.add(3.minutes()));
       tickerController.add(initialTime.add(4.minutes()));
       tickerController.add(initialTime.add(5.minutes()));
     },
-    expect: () => [CalendarInactivityThresholdReached(initialTime)],
+    expect: () => [const ReturnToTodayFinalState()],
   );
 
   final activityAlarm = StartAlarm(ActivityDay(
@@ -235,9 +236,9 @@ void main() {
       );
     },
     build: () => InactivityCubit(
-      const Duration(minutes: 5),
       fakeTicker,
       settingsBloc,
+      dayPartCubit,
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
@@ -269,9 +270,9 @@ void main() {
       );
     },
     build: () => InactivityCubit(
-      const Duration(minutes: 5),
       fakeTicker,
       settingsBloc,
+      dayPartCubit,
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
@@ -287,4 +288,197 @@ void main() {
     },
     expect: () => [SomethingHappened(timerAlarm.notificationTime)],
   );
+
+  group('screensaver', () {
+    blocTest<InactivityCubit, InactivityState>(
+      'screensaver on 10 minutes emits first Return to today then ',
+      setUp: () {
+        when(() => settingsBloc.state).thenReturn(
+          const MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              functions: FunctionsSettings(
+                timeout: TimeoutSettings(
+                  duration: Duration(minutes: 10),
+                  screensaver: true,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+      build: () => InactivityCubit(
+        fakeTicker,
+        settingsBloc,
+        dayPartCubit,
+        activityDetectionCubit.stream,
+        notificationAlarm.stream,
+        timers.stream,
+      ),
+      act: (c) {
+        tickerController.add(initialTime.add(1.minutes()));
+        tickerController.add(initialTime.add(5.minutes()));
+        tickerController.add(initialTime.add(10.minutes()));
+        tickerController.add(initialTime.add(20.minutes()));
+      },
+      expect: () => [
+        ReturnToTodayThresholdReached(initialTime),
+        const ScreensaverState(),
+      ],
+    );
+
+    blocTest<InactivityCubit, InactivityState>(
+      'screensaver on 5 minutes emits only screensaver ',
+      setUp: () {
+        when(() => settingsBloc.state).thenReturn(
+          const MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              functions: FunctionsSettings(
+                timeout: TimeoutSettings(
+                  duration: Duration(minutes: 5),
+                  screensaver: true,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+      build: () => InactivityCubit(
+        fakeTicker,
+        settingsBloc,
+        dayPartCubit,
+        activityDetectionCubit.stream,
+        notificationAlarm.stream,
+        timers.stream,
+      ),
+      act: (c) {
+        tickerController.add(initialTime.add(1.minutes()));
+        tickerController.add(initialTime.add(5.minutes()));
+        tickerController.add(initialTime.add(10.minutes()));
+        tickerController.add(initialTime.add(20.minutes()));
+      },
+      expect: () => [
+        const ScreensaverState(),
+      ],
+    );
+
+    blocTest<InactivityCubit, InactivityState>(
+      'screensaver only during night does not emit screensaver state during day',
+      setUp: () {
+        when(() => settingsBloc.state).thenReturn(
+          const MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              functions: FunctionsSettings(
+                timeout: TimeoutSettings(
+                  duration: Duration(minutes: 5),
+                  screensaver: true,
+                  screensaverOnlyDuringNight: true,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+      build: () => InactivityCubit(
+        fakeTicker,
+        settingsBloc,
+        dayPartCubit,
+        activityDetectionCubit.stream,
+        notificationAlarm.stream,
+        timers.stream,
+      ),
+      act: (c) {
+        tickerController.add(initialTime.add(1.minutes()));
+        tickerController.add(initialTime.add(5.minutes()));
+        tickerController.add(initialTime.add(10.minutes()));
+        tickerController.add(initialTime.add(20.minutes()));
+      },
+      expect: () => [
+        HomeScreenThresholdReached(initialTime),
+      ],
+    );
+
+    final night = initialTime.onlyDays().add(const DayParts().night);
+
+    blocTest<InactivityCubit, InactivityState>(
+      'screensaver only during night emits screensaver when night',
+      setUp: () {
+        when(() => settingsBloc.state).thenReturn(
+          const MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              functions: FunctionsSettings(
+                timeout: TimeoutSettings(
+                  duration: Duration(minutes: 10),
+                  screensaver: true,
+                  screensaverOnlyDuringNight: true,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+      build: () => InactivityCubit(
+        fakeTicker,
+        settingsBloc,
+        dayPartCubit,
+        activityDetectionCubit.stream,
+        notificationAlarm.stream,
+        timers.stream,
+      ),
+      act: (c) {
+        tickerController.add(initialTime.add(1.minutes()));
+        tickerController.add(initialTime.add(5.minutes()));
+        tickerController.add(initialTime.add(10.minutes()));
+        tickerController.add(initialTime.add(20.minutes()));
+        tickerController.add(night);
+      },
+      expect: () => [
+        ReturnToTodayThresholdReached(initialTime),
+        HomeScreenThresholdReached(initialTime),
+        const ScreensaverState(),
+      ],
+    );
+
+    final morning = initialTime.onlyDays().add(const DayParts().morning);
+    blocTest<InactivityCubit, InactivityState>(
+      'screensaver only during night wakes screen in morning',
+      setUp: () {
+        when(() => settingsBloc.state).thenReturn(
+          const MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              functions: FunctionsSettings(
+                timeout: TimeoutSettings(
+                  duration: Duration(minutes: 10),
+                  screensaver: true,
+                  screensaverOnlyDuringNight: true,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+      build: () => InactivityCubit(
+        fakeTicker,
+        settingsBloc,
+        dayPartCubit,
+        activityDetectionCubit.stream,
+        notificationAlarm.stream,
+        timers.stream,
+      ),
+      act: (c) async {
+        tickerController.add(initialTime.add(1.minutes()));
+        tickerController.add(initialTime.add(5.minutes()));
+        tickerController.add(initialTime.add(10.minutes()));
+        tickerController.add(initialTime.add(20.minutes()));
+        tickerController.add(night);
+        await c.dayPartCubit.stream.firstWhere((state) => state.isNight);
+        tickerController.add(morning);
+      },
+      expect: () => [
+        ReturnToTodayThresholdReached(initialTime),
+        HomeScreenThresholdReached(initialTime),
+        const ScreensaverState(),
+        SomethingHappened(morning),
+      ],
+    );
+  });
 }

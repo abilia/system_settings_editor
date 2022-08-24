@@ -11,6 +11,6 @@ export 'timer/all.dart';
 export 'create_new_page.dart';
 export 'fullscreen_activity_page.dart';
 export 'production_guide_page.dart';
-export 'screen_saver_page.dart';
+export 'screensaver_page.dart';
 export 'library/all.dart';
 export 'startup/all.dart';

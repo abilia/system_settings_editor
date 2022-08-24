@@ -98,6 +98,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
                             showCategories: showCategories,
                             showCategoryLabels: false,
                             scrollToTimeOffset: false,
+                            pullToRefresh: false,
                             displayHourLines: displayHourLines,
                             topMargin:
                                 layout.timepillar.twoTimePillar.verticalMargin,

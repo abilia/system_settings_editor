@@ -105,7 +105,10 @@ void main() {
               ),
               BlocProvider<TimepillarCubit>(
                 create: (context) => FakeTimepillarCubit(),
-              )
+              ),
+              BlocProvider<DayPartCubit>(
+                create: (context) => FakeDayPartCubit(),
+              ),
             ],
             child: Builder(
               builder: (context) => Listener(
@@ -542,7 +545,7 @@ void main() {
             duration: 5.minutes(),
             checkable: true,
             alarmType:
-                const Alarm(type: AlarmType.silent, onlyStart: true).toInt,
+                const Alarm(type: AlarmType.silent, onlyStart: true).intValue,
           ),
           day,
         ),

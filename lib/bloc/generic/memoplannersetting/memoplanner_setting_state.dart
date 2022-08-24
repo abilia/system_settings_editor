@@ -53,8 +53,6 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get monthCaptionShowYear => settings.monthCaptionShowYear;
   bool get monthCaptionShowClock => settings.monthCaptionShowClock;
 
-  int get defaultAlarmTypeSetting => settings.activityDefaultAlarmType;
-
   TimepillarIntervalType get timepillarIntervalType =>
       TimepillarIntervalType.values[settings.viewOptionsTimeInterval];
   DayCalendarType get dayCalendarType => DayCalendarType.values[
@@ -64,22 +62,6 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   AlarmSettings get alarm => settings.alarm;
 
-  NewActivityMode get addActivityType => settings.addActivityTypeAdvanced
-      ? NewActivityMode.editView
-      : NewActivityMode.stepByStep;
-
-  bool get basicActivityOption =>
-      (addActivityType == NewActivityMode.editView &&
-          settings.editActivity.template) ||
-      (addActivityType == NewActivityMode.stepByStep &&
-          settings.stepByStep.template);
-
-  bool get newActivityOption =>
-      (addActivityType == NewActivityMode.editView &&
-          (settings.editActivity.title || settings.editActivity.image)) ||
-      (addActivityType == NewActivityMode.stepByStep &&
-          (settings.stepByStep.title || settings.stepByStep.image));
-
   WeekDisplayDays get weekDisplayDays =>
       WeekDisplayDays.values[settings.weekDisplayShowFullWeek];
 
@@ -87,11 +69,6 @@ abstract class MemoplannerSettingsState extends Equatable {
       WeekColor.values[settings.weekDisplayShowColorMode];
   WeekColor get monthWeekColor =>
       WeekColor.values[settings.calendarMonthViewShowColors];
-
-  TimepillarInterval todayTimepillarInterval(DateTime now) {
-    return settings.calendar.dayParts
-        .todayTimepillarIntervalFromType(now, timepillarIntervalType);
-  }
 
   @override
   List<Object> get props => settings.props;

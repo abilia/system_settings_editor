@@ -247,6 +247,7 @@ class EditActivityButton extends StatelessWidget {
                           .state
                           .settings
                           .addActivity
+                          .general
                           .allowPassedStartTime,
                     ),
                   ),

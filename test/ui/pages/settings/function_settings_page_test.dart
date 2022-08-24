@@ -5,6 +5,7 @@ import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
@@ -292,14 +293,22 @@ void main() {
           matcher: 5 * 60 * 1000,
         );
       });
-      testWidgets('screen saver settings saved', (tester) async {
+
+      testWidgets('screensaver settings saved', (tester) async {
         await tester.goToFunctionSettingsPage(pump: true);
         await tester.tap(find.byIcon(AbiliaIcons.restore));
         await tester.pumpAndSettle();
 
+        expect(
+            tester
+                .widget<SwitchField>(
+                    find.widgetWithIcon(SwitchField, AbiliaIcons.screensaver))
+                .onChanged,
+            isNull);
+
         await tester.tap(find.text('5 ${translate.minutes}'));
         await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.screenSaverNight));
+        await tester.tap(find.byIcon(AbiliaIcons.screensaver));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(OkButton));
@@ -312,7 +321,7 @@ void main() {
         );
       });
 
-      testWidgets('screen saver settings saved as false when no timeout ',
+      testWidgets('screensaver settings saved as false when no timeout ',
           (tester) async {
         await tester.goToFunctionSettingsPage(pump: true);
         await tester.tap(find.byIcon(AbiliaIcons.restore));
@@ -320,7 +329,7 @@ void main() {
 
         await tester.tap(find.text('5 ${translate.minutes}'));
         await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.screenSaverNight));
+        await tester.tap(find.byIcon(AbiliaIcons.screensaver));
         await tester.pumpAndSettle();
         await tester.tap(find.text(translate.noTimeout));
         await tester.pumpAndSettle();
@@ -334,6 +343,102 @@ void main() {
           matcher: isFalse,
         );
       });
+    });
+
+    testWidgets('screensaver only during night saved', (tester) async {
+      await tester.goToFunctionSettingsPage(pump: true);
+      await tester.tap(find.byIcon(AbiliaIcons.restore));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('5 ${translate.minutes}'));
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(AbiliaIcons.screensaverNight), findsNothing);
+      await tester.tap(find.byIcon(AbiliaIcons.screensaver));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.screensaverNight));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      verifySyncGeneric(
+        tester,
+        genericDb,
+        key: TimeoutSettings.screensaverOnlyDuringNightKey,
+        matcher: isTrue,
+      );
+    });
+
+    testWidgets('screensaver only during night false when screensaver is false',
+        (tester) async {
+      await tester.goToFunctionSettingsPage(pump: true);
+      await tester.tap(find.byIcon(AbiliaIcons.restore));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('5 ${translate.minutes}'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.screensaver));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.screensaverNight));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.screensaver));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      verifySyncGeneric(
+        tester,
+        genericDb,
+        key: TimeoutSettings.screensaverOnlyDuringNightKey,
+        matcher: isFalse,
+      );
+    });
+
+    testWidgets('timout settings correct', (tester) async {
+      generics = [
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: 5.minutes().inMilliseconds,
+            identifier: TimeoutSettings.activityTimeoutKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: true,
+            identifier: TimeoutSettings.useScreensaverKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: true,
+            identifier: TimeoutSettings.screensaverOnlyDuringNightKey,
+          ),
+        ),
+      ];
+      await tester.goToFunctionSettingsPage(pump: true);
+      await tester.tap(find.byIcon(AbiliaIcons.restore));
+      await tester.pumpAndSettle();
+
+      expect(
+        tester
+            .widget<RadioField<Duration>>(
+                find.widgetWithText(RadioField<Duration>, '5 minutes'))
+            .groupValue,
+        const Duration(minutes: 5),
+      );
+
+      expect(
+          tester
+              .widget<SwitchField>(
+                  find.widgetWithIcon(SwitchField, AbiliaIcons.screensaver))
+              .value,
+          isTrue);
+      expect(
+          tester
+              .widget<SwitchField>(find.widgetWithIcon(
+                  SwitchField, AbiliaIcons.screensaverNight))
+              .value,
+          isTrue);
     });
   }, skip: !Config.isMP);
 

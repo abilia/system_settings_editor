@@ -1,8 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/datetime.dart';
 
 enum DayPart { morning, day, evening, night }
+
+extension DayPartExtension on DayPart {
+  bool get isNight => this == DayPart.night;
+  bool get isMorning => this == DayPart.morning;
+}
 
 class DayParts extends Equatable {
   static const morningIntervalStartKey = 'morning_interval_start',
@@ -54,80 +58,8 @@ class DayParts extends Equatable {
     }
   }
 
-  DateTime nightEnd(DateTime day) => day.nextDay().add(morning);
-  DateTime nightBegins(DateTime day) => day.add(night);
-
   bool atMax(DayPart part) => fromDayPart(part) >= DayParts.limits[part]!.max;
   bool atMin(DayPart part) => fromDayPart(part) <= DayParts.limits[part]!.min;
-
-  TimepillarInterval todayTimepillarIntervalFromType(
-      DateTime now, TimepillarIntervalType timepillarIntervalType) {
-    final day = now.onlyDays();
-    switch (timepillarIntervalType) {
-      case TimepillarIntervalType.interval:
-        return dayPartInterval(now);
-      case TimepillarIntervalType.day:
-        if (now.isBefore(day.add(morning))) {
-          return TimepillarInterval(
-            start: day.previousDay().add(night),
-            end: day.add(morning),
-            intervalPart: IntervalPart.night,
-          );
-        } else if (now.isAtSameMomentOrAfter(day.add(night))) {
-          return TimepillarInterval(
-            start: day.add(night),
-            end: day.nextDay().add(morning),
-            intervalPart: IntervalPart.night,
-          );
-        }
-        return TimepillarInterval(
-          start: day.add(morning),
-          end: day.add(night),
-        );
-      default:
-        return TimepillarInterval(
-          start: day,
-          end: day.nextDay(),
-          intervalPart: IntervalPart.dayAndNight,
-        );
-    }
-  }
-
-  TimepillarInterval dayPartInterval(DateTime now) {
-    final part = now.dayPart(this);
-    final base = now.onlyDays();
-    switch (part) {
-      case DayPart.morning:
-        return TimepillarInterval(
-          start: base.add(morning),
-          end: base.add(day),
-        );
-      case DayPart.day:
-        return TimepillarInterval(
-          start: base.add(day),
-          end: base.add(evening),
-        );
-      case DayPart.evening:
-        return TimepillarInterval(
-          start: base.add(evening),
-          end: base.add(night),
-        );
-      case DayPart.night:
-        if (now.isBefore(base.add(morning))) {
-          return TimepillarInterval(
-            start: base.previousDay().add(night),
-            end: base.add(morning),
-            intervalPart: IntervalPart.night,
-          );
-        } else {
-          return TimepillarInterval(
-            start: base.add(night),
-            end: base.nextDay().add(morning),
-            intervalPart: IntervalPart.night,
-          );
-        }
-    }
-  }
 
   factory DayParts.fromSettingsMap(
     Map<String, MemoplannerSettingData> settings,

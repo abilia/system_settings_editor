@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -124,12 +125,12 @@ class PopOnSaveListener extends StatelessWidget {
 }
 
 class ScrollToErrorPageListener extends StatelessWidget {
-  final int nrTabs;
   final Widget child;
+  final List<EditActivityPageTab> enabledTabs;
 
   const ScrollToErrorPageListener({
-    required this.nrTabs,
     required this.child,
+    required this.enabledTabs,
     Key? key,
   }) : super(key: key);
 
@@ -142,7 +143,10 @@ class ScrollToErrorPageListener extends StatelessWidget {
         if (errors.mainPageErrors) {
           await _scrollToTab(context, 0);
         } else if (errors.contains(SaveError.noRecurringDays)) {
-          await _scrollToTab(context, nrTabs - 2);
+          await _scrollToTab(
+            context,
+            max(enabledTabs.indexOf(EditActivityPageTab.recurrence), 0),
+          );
         }
       },
       child: child,

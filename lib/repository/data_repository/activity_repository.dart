@@ -27,4 +27,8 @@ class ActivityRepository extends DataRepository<Activity> {
   Future<Iterable<Activity>> allAfter(DateTime time) {
     return activityDb.getAllAfter(time);
   }
+
+  Future<Iterable<Activity>> allBetween(DateTime start, DateTime end) {
+    return activityDb.getAllBetween(start, end);
+  }
 }

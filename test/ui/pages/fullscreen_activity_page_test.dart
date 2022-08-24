@@ -145,6 +145,9 @@ void main() {
             BlocProvider<TouchDetectionCubit>(
               create: (context) => TouchDetectionCubit(),
             ),
+            BlocProvider<DayPartCubit>(
+              create: (context) => FakeDayPartCubit(),
+            ),
           ],
           child: MaterialApp(
             supportedLocales: Translator.supportedLocals,

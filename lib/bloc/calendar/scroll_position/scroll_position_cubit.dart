@@ -43,6 +43,8 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
           s.scrollControllerCreatedTime,
         ),
       );
+    } else if (s is InView) {
+      emit(InView(s.scrollController));
     } else {
       emit(Unready());
     }

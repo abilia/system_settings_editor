@@ -64,6 +64,7 @@ class AppBarTitleRows {
     required DateTime currentTime,
     required DateTime day,
     required DayParts dayParts,
+    required DayPart dayPart,
     required String langCode,
     required Translated translator,
     bool displayWeekDay = true,
@@ -72,25 +73,27 @@ class AppBarTitleRows {
     bool compactDay = false,
     bool currentNight = false,
   }) {
-    final weekday = displayWeekDay
+    final weekDayString = displayWeekDay
         ? currentNight
             ? nightDay(currentTime, dayParts, langCode)
             : DateFormat.EEEE(langCode).format(day)
         : '';
-    final daypart =
-        (currentTime.dayPart(dayParts) != DayPart.night || currentNight) &&
-                displayPartOfDay
-            ? _getPartOfDay(
-                currentTime.isAtSameDay(day),
-                currentTime.hour,
-                currentTime.dayPart(dayParts),
-                translator,
-              )
-            : '';
+    final dayPartString = (!dayPart.isNight || currentNight) && displayPartOfDay
+        ? _getPartOfDay(
+            currentTime.isAtSameDay(day),
+            currentTime.hour,
+            dayPart,
+            translator,
+          )
+        : '';
     final date = displayDate ? longDate(langCode).format(day) : '';
     final dateShort = displayDate ? shortDate(langCode).format(day) : '';
-    return AppBarTitleRows._(weekday + (compactDay ? ', $daypart' : ''),
-        compactDay ? '' : daypart, date, dateShort);
+    return AppBarTitleRows._(
+      weekDayString + (compactDay ? ', $dayPartString' : ''),
+      compactDay ? '' : dayPartString,
+      date,
+      dateShort,
+    );
   }
 
   static String nightDay(
@@ -146,7 +149,7 @@ class AppBarTitleRows {
     required String langCode,
     required Translated translator,
   }) {
-    final displayWeekDay = selectedDay.isSameWeek(selectedWeekStart);
+    final displayWeekDay = selectedDay.isSameWeekAndYear(selectedWeekStart);
     final day =
         displayWeekDay ? DateFormat.EEEE(langCode).format(selectedDay) : '';
     final weekTranslation =
@@ -154,7 +157,8 @@ class AppBarTitleRows {
     final week = showWeekNumber
         ? '$weekTranslation ${selectedWeekStart.getWeekNumber()}'
         : '';
-    final year = showYear ? DateFormat.y(langCode).format(selectedDay) : '';
+    final year =
+        showYear ? DateFormat.y(langCode).format(selectedWeekStart) : '';
 
     return AppBarTitleRows._(day, week, year);
   }

@@ -41,7 +41,6 @@ class TestKey {
       preview = Key('preview'),
       edgePreview = Key('edgePreview'),
       dotsPreview = Key('dotsPreview'),
-      changeRecurrence = Key('changeRecurrence'),
       noEndDateSwitch = Key('noEndDateSwitch'),
       startTime = Key('startTime'),
       endTime = Key('endTime'),
