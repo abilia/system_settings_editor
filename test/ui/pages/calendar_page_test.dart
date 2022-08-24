@@ -92,6 +92,8 @@ void main() {
         .thenAnswer((_) => Future.value(100));
     when(() => mockActivityDb.getAllAfter(any()))
         .thenAnswer((_) => Future.value([]));
+    when(() => mockActivityDb.getAllBetween(any(), any()))
+        .thenAnswer((_) => Future.value([]));
 
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
@@ -733,8 +735,7 @@ void main() {
     final day2Finder = find.text(title2);
     final day3Finder = find.text(title3);
     final cardFinder = find.byType(ActivityCard);
-    final showAllFullDayButtonFinder =
-        find.byType(ShowAllFullDayActivitiesButton);
+    final showAllFullDayButtonFinder = find.byType(FullDayActivitiesButton);
     final editPictureFinder = find.byKey(TestKey.addPicture);
 
     setUp(() {
@@ -1118,7 +1119,7 @@ void main() {
   });
 
   testWidgets(
-      'SGC-1748 AllDayList page is shown when clicking on a day with multiple full day activities in week calendar',
+      'SGC-1748 FullDayListPage page is shown when clicking on a day with multiple full day activities in week calendar',
       (WidgetTester tester) async {
     final activities = [
       FakeActivity.fullday(initialTime.addDays(1), 'one'),
@@ -1134,7 +1135,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byType(FullDayStack));
     await tester.pumpAndSettle();
-    expect(find.byType(AllDayList), findsOneWidget);
+    expect(find.byType(FullDayListPage), findsOneWidget);
     expect(find.text(activities[0].title), findsOneWidget);
     expect(find.text(activities[1].title), findsOneWidget);
   });

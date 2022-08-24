@@ -6,6 +6,12 @@ abstract class WeekCalendarState {
   final DateTime currentWeekStart;
   final Map<int, List<ActivityOccasion>> currentWeekActivities;
 
+  List<ActivityOccasion> fullDayActivities(DateTime day) =>
+      currentWeekActivities[day.weekday - 1]
+          ?.where((a) => a.activity.fullDay)
+          .toList() ??
+      [];
+
   int get index => currentWeekStart.difference(zero).inDays ~/ 7;
 
   const WeekCalendarState(

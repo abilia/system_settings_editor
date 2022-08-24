@@ -59,8 +59,8 @@ class FullDayContainer extends StatelessWidget {
                     )
                     .followedBy([
                   if (fullDayActivities.length >= 3)
-                    ShowAllFullDayActivitiesButton(
-                      fullDayActivities: fullDayActivities,
+                    FullDayActivitiesButton(
+                      numberOfFullDayActivities: fullDayActivities.length,
                       day: day,
                     )
                 ]).toList(),
@@ -73,14 +73,14 @@ class FullDayContainer extends StatelessWidget {
   }
 }
 
-class ShowAllFullDayActivitiesButton extends StatelessWidget {
-  const ShowAllFullDayActivitiesButton({
-    required this.fullDayActivities,
+class FullDayActivitiesButton extends StatelessWidget {
+  const FullDayActivitiesButton({
+    required this.numberOfFullDayActivities,
     required this.day,
     Key? key,
   }) : super(key: key);
 
-  final List<ActivityDay> fullDayActivities;
+  final int numberOfFullDayActivities;
   final DateTime day;
 
   @override
@@ -101,16 +101,21 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
                     parent: animation,
                     curve: Curves.easeOut,
                   ),
-                  child: AllDayList(
-                    day: day,
+                  child: Builder(
+                    builder: (context) => FullDayListPage(
+                      fullDayActivities: context.select(
+                          (DayEventsCubit cubit) =>
+                              cubit.state.fullDayActivities),
+                      day: day,
+                    ),
                   ),
                 ),
               ),
-              settings: RouteSettings(name: 'AllDayList $day'),
+              settings: RouteSettings(name: 'FullDayListPage $day'),
             ),
           );
         },
-        child: Text('+ ${fullDayActivities.length - 2}'),
+        child: Text('+ ${numberOfFullDayActivities - 2}'),
       ),
     );
   }
