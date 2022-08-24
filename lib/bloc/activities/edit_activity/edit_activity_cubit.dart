@@ -162,7 +162,8 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     emit(
       state.copyWith(
         state.activity.copyWith(
-          infoItem: infoItems[newInfoType] ?? _newInfoItem(newInfoType),
+          infoItemString:
+              (infoItems[newInfoType] ?? _newInfoItem(newInfoType)).toBase64(),
         ),
         infoItems: infoItems,
       ),

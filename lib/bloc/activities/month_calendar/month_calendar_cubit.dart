@@ -5,13 +5,13 @@ import 'package:equatable/equatable.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 part 'month_calendar_state.dart';
 
 class MonthCalendarCubit extends Cubit<MonthCalendarState> {
-  /// ActivitiesBloc is null when this bloc is used for date picking
-  final ActivitiesBloc? activitiesBloc;
+  final ActivityRepository activityRepository;
   final ClockBloc clockBloc;
   final DayPickerBloc dayPickerBloc;
   late final StreamSubscription? _activitiesSubscription;
@@ -20,12 +20,14 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
   MonthCalendarCubit({
     required this.clockBloc,
     required this.dayPickerBloc,
-    this.activitiesBloc,
+    required this.activityRepository,
+    ActivitiesBloc?
+        activitiesBloc, // ActivitiesBloc is null when this bloc is used for date picking
     DateTime? initialDay,
   }) : super(
           _mapToState(
             (initialDay ?? clockBloc.state).firstDayOfMonth(),
-            activitiesBloc?.state.activities,
+            [],
             clockBloc.state,
           ),
         ) {
@@ -42,34 +44,40 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         .listen(_updateMonth);
   }
 
-  void goToNextMonth() {
+  void goToNextMonth() async {
     _maybeGoToCurrentDay(state.firstDay.nextMonth());
+    final first = state.firstDay.nextMonth();
+    final last = first.nextMonth();
     emit(
       _mapToState(
-        state.firstDay.nextMonth(),
-        activitiesBloc?.state.activities,
+        first,
+        await activityRepository.allBetween(first, last),
         clockBloc.state,
       ),
     );
   }
 
-  void goToPreviousMonth() {
+  void goToPreviousMonth() async {
     _maybeGoToCurrentDay(state.firstDay.previousMonth());
+    final first = state.firstDay.previousMonth();
+    final last = first.nextMonth();
     emit(
       _mapToState(
-        state.firstDay.previousMonth(),
-        activitiesBloc?.state.activities,
+        first,
+        await activityRepository.allBetween(first, last),
         clockBloc.state,
       ),
     );
   }
 
-  void goToCurrentMonth() {
+  void goToCurrentMonth() async {
     dayPickerBloc.add(GoTo(day: clockBloc.state));
+    final first = clockBloc.state.firstDayOfMonth();
+    final last = first.nextMonth();
     emit(
       _mapToState(
-        clockBloc.state.firstDayOfMonth(),
-        activitiesBloc?.state.activities,
+        first,
+        await activityRepository.allBetween(first, last),
         clockBloc.state,
       ),
     );
@@ -82,13 +90,17 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     }
   }
 
-  void _updateMonth([_]) => emit(
-        _mapToState(
-          state.firstDay,
-          activitiesBloc?.state.activities,
-          clockBloc.state,
-        ),
-      );
+  void _updateMonth([_]) async {
+    final first = state.firstDay;
+    final last = first.nextMonth().addDays(-1);
+    emit(
+      _mapToState(
+        state.firstDay,
+        await activityRepository.allBetween(first, last),
+        clockBloc.state,
+      ),
+    );
+  }
 
   static MonthCalendarState _mapToState(
     DateTime firstDayOfMonth,

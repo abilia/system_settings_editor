@@ -1,5 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class DatePickerWiz extends StatelessWidget {
@@ -19,6 +20,7 @@ class DatePickerWiz extends StatelessWidget {
             ),
             BlocProvider(
               create: (context) => MonthCalendarCubit(
+                activityRepository: context.read<ActivityRepository>(),
                 clockBloc: context.read<ClockBloc>(),
                 initialDay: editActivityState.timeInterval.startDate,
                 dayPickerBloc: context.read<DayPickerBloc>(),

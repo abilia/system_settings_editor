@@ -282,9 +282,9 @@ void main() {
     // Arrange
     const note = NoteInfoItem('anote');
     final withNote =
-        Activity.createNew(title: 'null', startTime: aTime, infoItem: note);
-    final withChecklist = withNote.copyWith(infoItem: Checklist());
-    final withNoInfoItem = withNote.copyWith(infoItem: const NoInfoItem());
+        Activity.createNew(title: 'null', startTime: aTime, infoItemString: note.toBase64());
+    final withChecklist = withNote.copyWith(infoItemString: Checklist().toBase64());
+    final withNoInfoItem = withNote.copyWith(infoItemString: const NoInfoItem().toBase64());
     final activityDay = ActivityDay(withNote, aDay);
     final timeInterval = TimeInterval(
       startTime: TimeOfDay.fromDateTime(aTime),

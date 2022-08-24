@@ -47,6 +47,7 @@ void main() {
     test('initial state basics', () {
       // Arrange
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -63,6 +64,7 @@ void main() {
     test('initial state', () {
       // Arrange
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -168,6 +170,7 @@ void main() {
     test('next month, basic', () async {
       // Arrange
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -189,6 +192,7 @@ void main() {
     blocTest<MonthCalendarCubit, MonthCalendarState>(
       'next month',
       build: () => MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -311,6 +315,7 @@ void main() {
     test('previous month, basic', () async {
       // Arrange
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -332,6 +337,7 @@ void main() {
     blocTest<MonthCalendarCubit, MonthCalendarState>(
       'previous month',
       build: () => MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -452,6 +458,7 @@ void main() {
     test('when new day day is updated', () async {
       // Arrange
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -489,6 +496,7 @@ void main() {
 
       clockBloc = ClockBloc.fixed(january15);
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -601,6 +609,7 @@ void main() {
 
       clockBloc = ClockBloc.fixed(mayThe4);
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -709,6 +718,7 @@ void main() {
       );
 
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -849,6 +859,7 @@ void main() {
       );
 
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -1011,6 +1022,7 @@ void main() {
       );
 
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,

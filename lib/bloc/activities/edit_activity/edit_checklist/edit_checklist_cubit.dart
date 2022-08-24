@@ -48,7 +48,8 @@ class EditChecklistCubit extends Cubit<EditChecklistState> {
 
       editActivityCubit.replaceActivity(
         editActivityCubit.state.activity.copyWith(
-          infoItem: state.checklist.copyWith(questions: questions),
+          infoItemString:
+              state.checklist.copyWith(questions: questions).toBase64(),
         ),
       );
     }
@@ -62,7 +63,8 @@ class EditChecklistCubit extends Cubit<EditChecklistState> {
           state.checklist.questions.where((q) => q.id != deletedQuestion.id);
       editActivityCubit.replaceActivity(
         editActivityCubit.state.activity.copyWith(
-          infoItem: checklist.copyWith(questions: filteredQuestions),
+          infoItemString:
+              checklist.copyWith(questions: filteredQuestions).toBase64(),
         ),
       );
     }
@@ -86,7 +88,8 @@ class EditChecklistCubit extends Cubit<EditChecklistState> {
 
       editActivityCubit.replaceActivity(
         editActivityCubit.state.activity.copyWith(
-          infoItem: checklist.copyWith(questions: questionMap.values),
+          infoItemString:
+              checklist.copyWith(questions: questionMap.values).toBase64(),
         ),
       );
     }
@@ -96,7 +99,7 @@ class EditChecklistCubit extends Cubit<EditChecklistState> {
     final uniqueId = DateTime.now().millisecondsSinceEpoch;
     editActivityCubit.replaceActivity(
       editActivityCubit.state.activity.copyWith(
-        infoItem: state.checklist.copyWith(
+        infoItemString: state.checklist.copyWith(
           questions: [
             ...state.checklist.questions,
             Question(
@@ -106,7 +109,7 @@ class EditChecklistCubit extends Cubit<EditChecklistState> {
               image: result.image.path,
             ),
           ],
-        ),
+        ).toBase64(),
       ),
     );
   }

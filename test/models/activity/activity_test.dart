@@ -267,7 +267,7 @@ void main() {
       fileId: fileId,
       checkable: true,
       signedOffDates: const ['00-02-20'],
-      infoItem: infoItem,
+      infoItemString: infoItem.toBase64(),
       extras: Extras.createNew(
         startTimeExtraAlarm: AbiliaFile.from(path: 'startTimeExtraAlarm'),
       ),

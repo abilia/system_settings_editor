@@ -264,7 +264,7 @@ class Attachment extends StatelessWidget with ActivityMixin {
         onTap: (question) async {
           final signedOff = item.signOff(question, activityDay.day);
           final updatedActivity = activity.copyWith(
-            infoItem: signedOff,
+            infoItemString: signedOff.toBase64(),
           );
           context.read<ActivityCubit>().onActivityUpdated(updatedActivity);
 

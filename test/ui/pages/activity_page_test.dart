@@ -176,9 +176,10 @@ void main() {
         (_) => Future.value(
           <Activity>[
             Activity.createNew(
-                title: 'title',
-                startTime: startTime,
-                infoItem: const UrlInfoItem(url))
+              title: 'title',
+              startTime: startTime,
+              infoItemString: const UrlInfoItem(url).toBase64(),
+            )
           ],
         ),
       );
@@ -1218,12 +1219,13 @@ void main() {
       (WidgetTester tester) async {
     const tag = 'tag';
     final activity = Activity.createNew(
-        title: 'title',
-        startTime: startTime,
-        infoItem: Checklist(questions: const [
-          Question(id: 0, name: tag),
-          Question(id: 1, name: 'another'),
-        ]));
+      title: 'title',
+      startTime: startTime,
+      infoItemString: Checklist(questions: const [
+        Question(id: 0, name: tag),
+        Question(id: 1, name: 'another'),
+      ]).toBase64(),
+    );
 
     // Arrange
     when(() => mockActivityDb.getAllNonDeleted())
@@ -1260,13 +1262,14 @@ void main() {
       (WidgetTester tester) async {
     const tag1 = 'tag', tag2 = 'another';
     final activity = Activity.createNew(
-        title: 'title',
-        startTime: startTime,
-        checkable: true,
-        infoItem: Checklist(questions: const [
-          Question(id: 0, name: tag1),
-          Question(id: 1, name: tag2),
-        ]));
+      title: 'title',
+      startTime: startTime,
+      checkable: true,
+      infoItemString: Checklist(questions: const [
+        Question(id: 0, name: tag1),
+        Question(id: 1, name: tag2),
+      ]).toBase64(),
+    );
 
     // Arrange
     when(() => mockActivityDb.getAllNonDeleted())
@@ -1435,9 +1438,10 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
         (_) => Future.value(
           <Activity>[
             Activity.createNew(
-                title: 'title',
-                startTime: startTime,
-                infoItem: const NoteInfoItem(noteText))
+              title: 'title',
+              startTime: startTime,
+              infoItemString: const NoteInfoItem(noteText).toBase64(),
+            )
           ],
         ),
       );
@@ -1454,8 +1458,9 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
             Activity.createNew(
               title: 'title',
               startTime: startTime,
-              infoItem:
-                  Checklist(questions: const [Question(id: 1, name: item1)]),
+              infoItemString:
+                  Checklist(questions: const [Question(id: 1, name: item1)])
+                      .toBase64(),
             )
           ],
         ),

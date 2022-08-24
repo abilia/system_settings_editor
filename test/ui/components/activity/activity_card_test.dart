@@ -220,7 +220,7 @@ void main() {
       Activity.createNew(
         title: 'title',
         startTime: startTime,
-        infoItem: const NoteInfoItem('text'),
+        infoItemString: const NoteInfoItem('text').toBase64(),
       ),
     );
     expect(find.byIcon(AbiliaIcons.handiInfo), findsOneWidget);
