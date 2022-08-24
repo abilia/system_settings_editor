@@ -1,4 +1,5 @@
 _id_	en	sv	da	nl	fi	de	nb
+endDateNotSpecifiedErrorMessage	You must enter an end date.	Du måste ange ett slutdatum.					
 showAlarmOnlyAtStartTime	Show alarm only at start time
 showSpeechAtAlarm	Show speech at alarm
 showReminders	Show reminders
