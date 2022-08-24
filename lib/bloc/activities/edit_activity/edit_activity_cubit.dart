@@ -173,7 +173,6 @@ class EditActivityCubit extends Cubit<EditActivityState> {
 
   void newRecurrence({
     RecurrentType? newType,
-    DateTime? startDate,
     DateTime? newEndDate,
   }) {
     if (state.storedRecurring &&
@@ -187,7 +186,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     changeRecurrence(
       _newRecurs(
         type,
-        startDate ?? state.timeInterval.startDate,
+        state.timeInterval.startDate,
         endDate,
       ),
       timeInterval: state.timeInterval.changeEndDate(

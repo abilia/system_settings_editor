@@ -2304,6 +2304,11 @@ text''';
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
 
+      await tester.tap(find.ancestor(
+        of: find.text('25'),
+        matching: find.byKey(TestKey.monthCalendarDay),
+      ));
+      await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 

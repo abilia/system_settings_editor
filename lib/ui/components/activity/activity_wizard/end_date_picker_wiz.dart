@@ -33,8 +33,6 @@ class EndDatePickerWiz extends StatelessWidget {
               listener: (context, state) {
                 BlocProvider.of<EditActivityCubit>(context).newRecurrence(
                     newEndDate: context.read<DayPickerBloc>().state.day);
-                // changeTimeInterval(
-                //     endDate: context.read<DayPickerBloc>().state.day);
               },
               child: BlocSelector<MemoplannerSettingBloc,
                   MemoplannerSettingsState, DayColor>(

@@ -587,14 +587,12 @@ class EndDateWidget extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) {
-        final activity = state.activity;
-        final recurs = activity.recurs;
         final disabled = state.storedRecurring;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CollapsableWidget(
-              collapsed: state.hasEndDate && recurs.hasNoEnd,
+              collapsed: state.hasNoEnd,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -607,7 +605,7 @@ class EndDateWidget extends StatelessWidget {
                         : (newDate) => context
                             .read<EditActivityCubit>()
                             .newRecurrence(newEndDate: newDate),
-                    noText: !state.hasEndDate,
+                    emptyText: !state.hasEndDate,
                     errorState: errorState,
                   ),
                   SizedBox(height: layout.formPadding.groupBottomDistance),
@@ -620,7 +618,7 @@ class EndDateWidget extends StatelessWidget {
                 AbiliaIcons.basicActivity,
                 size: layout.icon.small,
               ),
-              value: state.hasEndDate && recurs.hasNoEnd,
+              value: state.hasNoEnd,
               onChanged: disabled
                   ? null
                   : (v) => context.read<EditActivityCubit>().newRecurrence(
@@ -644,15 +642,13 @@ class EndDateWizWidget extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) {
-        final activity = state.activity;
-        final recurs = activity.recurs;
         return SwitchField(
           key: TestKey.noEndDateSwitch,
           leading: Icon(
             AbiliaIcons.basicActivity,
             size: layout.icon.small,
           ),
-          value: recurs.hasNoEnd,
+          value: state.hasNoEnd,
           onChanged: (v) => context.read<EditActivityCubit>().newRecurrence(
                 newEndDate: v ? Recurs.noEndDate : state.timeInterval.startDate,
               ),

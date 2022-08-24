@@ -36,7 +36,6 @@ class RecurringWiz extends StatelessWidget {
                       onChanged: (v) =>
                           context.read<EditActivityCubit>().newRecurrence(
                                 newType: type,
-                                startDate: state.activity.startTime,
                                 newEndDate: state.activity.startTime,
                               ),
                       value: type,

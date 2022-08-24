@@ -1498,8 +1498,7 @@ void main() {
           ),
         );
 
-        editActivityCubit.newRecurrence(
-            startDate: aDay, newEndDate: Recurs.noEndDate);
+        editActivityCubit.newRecurrence(newEndDate: Recurs.noEndDate);
         editActivityCubit.replaceActivity(activity);
 
         // Assert
@@ -1721,8 +1720,7 @@ void main() {
     );
 
     // Acts
-    editActivityCubit.newRecurrence(
-        newType: RecurrentType.yearly, startDate: activity.startTime);
+    editActivityCubit.newRecurrence(newType: RecurrentType.yearly);
     editActivityCubit.changeDate(nextDay);
 
     wizCubit.next(saveRecurring: SaveRecurring(ApplyTo.onlyThisDay, aDay));

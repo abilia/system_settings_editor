@@ -468,16 +468,16 @@ void main() {
       ends: endDate.nextDay().onlyDays().millisecondBefore(),
     );
 
-    final originalActivity = Activity.createNew(
-        title: 'a title', startTime: aDay, recurs: recurs);
+    final originalActivity =
+        Activity.createNew(title: 'a title', startTime: aDay, recurs: recurs);
 
     final editActivityCubit =
         EditActivityCubit.edit(ActivityDay(originalActivity, aDay));
 
     final timeInterval = editActivityCubit.state.timeInterval;
 
-    final weekly = Recurs.weeklyOnDay(aDay.addDays(10).weekday,
-        ends: aDay.addDays(10));
+    final weekly =
+        Recurs.weeklyOnDay(aDay.addDays(10).weekday, ends: aDay.addDays(10));
     final expectedActivity = originalActivity.copyWith(
       recurs: weekly,
     );
