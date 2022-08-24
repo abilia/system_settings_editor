@@ -2506,26 +2506,6 @@ text''';
       expect(find.byType(RecordSoundWidget), findsNothing);
     });
 
-    testWidgets('Show speech at alarm', (WidgetTester tester) async {
-      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
-            addActivity: AddActivitySettings(
-              general: GeneralAddActivitySettings(
-                showSpeechAtAlarm: false,
-              ),
-            ),
-          ),
-        ),
-      );
-      await tester.pumpWidget(createEditActivityPage());
-      await tester.pumpAndSettle();
-      await tester.goToAlarmTab();
-      await tester.pumpAndSettle();
-
-      expect(find.byType(RecordSoundWidget), findsNothing);
-    });
-
     testWidgets(
         'activityTimeBeforeCurrent true - Cant save when start time is past',
         (WidgetTester tester) async {
@@ -3340,6 +3320,33 @@ text''';
       expect(find.byType(RecordSoundWidget), findsOneWidget);
       expect(find.byType(SelectOrPlaySoundWidget), findsNWidgets(2));
     });
+  });
+
+  testWidgets("TabBar doesn't show when there is only one tab",
+      (WidgetTester tester) async {
+    when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+      const MemoplannerSettingsLoaded(
+        MemoplannerSettings(
+          addActivity: AddActivitySettings(
+            mode: AddActivityMode.editView,
+            editActivity: EditActivitySettings(
+              alarm: false,
+              checklist: false,
+              notes: false,
+              reminders: false,
+            ),
+            general: GeneralAddActivitySettings(
+              showSpeechAtAlarm: false,
+              addRecurringActivity: false,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpWidget(createEditActivityPage());
+    await tester.pumpAndSettle();
+    expect(find.byType(AbiliaAppBar), findsOneWidget);
+    expect(find.byType(AbiliaTabBar), findsNothing);
   });
 }
 
