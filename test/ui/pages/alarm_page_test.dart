@@ -432,7 +432,7 @@ void main() {
       title: 'Checkable',
       startTime: startTime,
       checkable: true,
-      infoItemString: checklist.toBase64(),
+      infoItem: checklist,
     );
 
     final StartAlarm startAlarm = StartAlarm(

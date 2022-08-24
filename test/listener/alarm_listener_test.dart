@@ -439,7 +439,7 @@ void main() {
         title: 'checkableActivityWithChecklist',
         startTime: startTime,
         checkable: true,
-        infoItemString: Checklist(
+        infoItem: Checklist(
           questions: const [
             Question(id: 0, name: 'checked'),
             Question(id: 1, name: unchecked),
@@ -447,7 +447,7 @@ void main() {
           checked: {
             Checklist.dayKey(startDay): const {0}
           },
-        ).toBase64(),
+        ),
       );
       final checkableActivityPayload = StartAlarm(
         ActivityDay(

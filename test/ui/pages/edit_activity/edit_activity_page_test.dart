@@ -667,14 +667,13 @@ void main() {
         (WidgetTester tester) async {
       const q1 = 'q1', q2 = 'q2', q3 = 'q3', noteText = 'noteText';
       final activity = Activity.createNew(
-        title: 'null',
-        startTime: startTime,
-        infoItemString: Checklist(questions: const [
-          Question(id: 1, name: q1),
-          Question(id: 2, name: q3),
-          Question(id: 3, name: q2)
-        ]).toBase64(),
-      );
+          title: 'null',
+          startTime: startTime,
+          infoItem: Checklist(questions: const [
+            Question(id: 1, name: q1),
+            Question(id: 2, name: q3),
+            Question(id: 3, name: q2)
+          ]));
       await tester.pumpWidget(createEditActivityPage(givenActivity: activity));
       await tester.pumpAndSettle();
       await tester.goToInfoItemTab();
@@ -751,10 +750,9 @@ I am typing for testing
 that it is visible in the info item tab
 ''';
         final activity = Activity.createNew(
-          title: 'null',
-          startTime: startTime,
-          infoItemString: const NoteInfoItem(aLongNote).toBase64(),
-        );
+            title: 'null',
+            startTime: startTime,
+            infoItem: const NoteInfoItem(aLongNote));
         await tester
             .pumpWidget(createEditActivityPage(givenActivity: activity));
         await tester.pumpAndSettle();
@@ -771,10 +769,9 @@ I am typing for testing
 that it is visible in the info item tab
 ''';
         final activity = Activity.createNew(
-          title: 'null',
-          startTime: startTime,
-          infoItemString: const NoteInfoItem(aLongNote).toBase64(),
-        );
+            title: 'null',
+            startTime: startTime,
+            infoItem: const NoteInfoItem(aLongNote));
         await tester
             .pumpWidget(createEditActivityPage(givenActivity: activity));
         await tester.pumpAndSettle();
@@ -967,10 +964,7 @@ Internal improvements to tests and examples.''';
               questions.keys.map((k) => Question(id: k, name: questions[k]!)));
 
       final activityWithChecklist = Activity.createNew(
-        title: 'null',
-        startTime: startTime,
-        infoItemString: checklist.toBase64(),
-      );
+          title: 'null', startTime: startTime, infoItem: checklist);
       Future goToChecklist(WidgetTester tester) async {
         await tester.goToInfoItemTab();
 
@@ -1009,9 +1003,9 @@ Internal improvements to tests and examples.''';
             givenActivity: Activity.createNew(
               title: 'null',
               startTime: startTime,
-              infoItemString: Checklist(
+              infoItem: Checklist(
                 questions: const [Question(id: 0, fileId: 'fileid')],
-              ).toBase64(),
+              ),
             ),
           ),
         );
@@ -1200,13 +1194,12 @@ question''',
         };
 
         final activityWithChecklist = Activity.createNew(
-          title: 'null',
-          startTime: startTime,
-          infoItemString: Checklist(
-              name: 'a checklist',
-              questions: questions.keys
-                  .map((k) => Question(id: k, name: questions[k]!))).toBase64(),
-        );
+            title: 'null',
+            startTime: startTime,
+            infoItem: Checklist(
+                name: 'a checklist',
+                questions: questions.keys
+                    .map((k) => Question(id: k, name: questions[k]!))));
         const newQuestionName = '''
 yet
 more

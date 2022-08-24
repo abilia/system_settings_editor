@@ -148,8 +148,7 @@ class LibraryButton extends StatelessWidget {
           );
           if (infoItem != null && infoItem != this.infoItem) {
             editActivityCubit.replaceActivity(
-              editActivityCubit.state.activity
-                  .copyWith(infoItemString: infoItem.toBase64()),
+              editActivityCubit.state.activity.copyWith(infoItem: infoItem),
             );
           }
         },
@@ -301,7 +300,7 @@ class EditNoteWidget extends StatelessWidget {
     if (result != null && result != infoItem.text) {
       editActivityCubit.replaceActivity(
         editActivityCubit.state.activity.copyWith(
-          infoItemString: NoteInfoItem(result).toBase64(),
+          infoItem: NoteInfoItem(result),
         ),
       );
     }
