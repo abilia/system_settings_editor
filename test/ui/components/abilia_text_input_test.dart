@@ -276,9 +276,7 @@ void main() {
           await tester.pumpAndSettle();
 
           // Assert
-          await tester.verifyNoTts(
-            find.byKey(TestKey.input),
-          );
+          await tester.verifyNoTts();
         },
         skip: Config.isMPGO,
       );
