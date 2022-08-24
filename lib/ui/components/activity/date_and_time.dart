@@ -135,8 +135,6 @@ class DatePicker extends StatelessWidget {
                         ),
                         BlocProvider(
                           create: (context) => MonthCalendarCubit(
-                            activityRepository:
-                                context.read<ActivityRepository>(),
                             clockBloc: context.read<ClockBloc>(),
                             initialDay: date,
                             dayPickerBloc: context.read<DayPickerBloc>(),

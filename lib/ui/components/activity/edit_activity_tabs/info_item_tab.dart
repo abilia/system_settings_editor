@@ -148,7 +148,8 @@ class LibraryButton extends StatelessWidget {
           );
           if (infoItem != null && infoItem != this.infoItem) {
             editActivityCubit.replaceActivity(
-              editActivityCubit.state.activity.copyWith(infoItemString: infoItem.toBase64()),
+              editActivityCubit.state.activity
+                  .copyWith(infoItemString: infoItem.toBase64()),
             );
           }
         },

@@ -43,6 +43,8 @@ void main() {
     setUp(() {
       when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(const Iterable.empty()));
+      when(() => mockActivityRepository.allBetween(any(), any()))
+          .thenAnswer((_) => Future.value(const Iterable.empty()));
     });
     test('initial state basics', () {
       // Arrange
@@ -177,7 +179,7 @@ void main() {
       );
 
       // Act
-      monthCalendarCubit.goToNextMonth();
+      await monthCalendarCubit.goToNextMonth();
       final state = monthCalendarCubit.state;
 
       // Assert
@@ -322,7 +324,7 @@ void main() {
       );
 
       // Act
-      monthCalendarCubit.goToPreviousMonth();
+      await monthCalendarCubit.goToPreviousMonth();
       final state = monthCalendarCubit.state;
 
       // Assert
@@ -705,7 +707,7 @@ void main() {
   group('month activities', () {
     test('monthly recurrent activity', () async {
       // Arrange
-      when(() => mockActivityRepository.load()).thenAnswer(
+      when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
         (_) => Future.value(
           [
             Activity.createNew(
@@ -850,7 +852,7 @@ void main() {
         recurs: Recurs.weeklyOnDays(const [6, 7]),
         fullDay: true,
       );
-      when(() => mockActivityRepository.load()).thenAnswer(
+      when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
         (_) => Future.value(
           [
             weekendFullDay,
@@ -1013,7 +1015,7 @@ void main() {
         recurs: Recurs.weeklyOnDays(const [4, 5, 6]),
         removeAfter: true,
       );
-      when(() => mockActivityRepository.load()).thenAnswer(
+      when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
         (_) => Future.value(
           [
             removeAfter,

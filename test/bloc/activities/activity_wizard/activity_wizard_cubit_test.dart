@@ -630,9 +630,13 @@ void main() {
   test('Trying to save an empty checklist saves noInfoItem', () async {
     // Arrange
     final activity = Activity.createNew(
-        title: 'null', startTime: aTime, infoItemString: const NoteInfoItem('anote').toBase64());
-    final activityWithEmptyChecklist = activity.copyWith(infoItemString: Checklist().toBase64());
-    final expectedActivity = activity.copyWith(infoItemString: InfoItem.none.toBase64());
+        title: 'null',
+        startTime: aTime,
+        infoItemString: const NoteInfoItem('anote').toBase64());
+    final activityWithEmptyChecklist =
+        activity.copyWith(infoItemString: Checklist().toBase64());
+    final expectedActivity =
+        activity.copyWith(infoItemString: InfoItem.none.toBase64());
     final activityDay = ActivityDay(activity, aDay);
     final timeInterval = TimeInterval(
       startTime: TimeOfDay.fromDateTime(aTime),
@@ -679,8 +683,11 @@ void main() {
     final activity = Activity.createNew(
         title: 'null',
         startTime: aTime,
-        infoItemString: Checklist(questions: const [Question(id: 0, name: 'name')]).toBase64());
-    final expectedActivity = activity.copyWith(infoItemString: InfoItem.none.toBase64());
+        infoItemString:
+            Checklist(questions: const [Question(id: 0, name: 'name')])
+                .toBase64());
+    final expectedActivity =
+        activity.copyWith(infoItemString: InfoItem.none.toBase64());
     final activityWithEmptyNote =
         activity.copyWith(infoItemString: const NoteInfoItem().toBase64());
     final activityDay = ActivityDay(activity, aDay);

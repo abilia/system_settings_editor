@@ -30,7 +30,7 @@ class Activity extends DataModel {
 
   bool get hasTitle => title.isNotEmpty;
 
-  bool get hasAttachment => infoItem is! NoInfoItem;
+  bool get hasAttachment => infoItemString.isNotEmpty;
 
   bool get isNoneSingleInstanceRecurring =>
       recurs.isRecurring && !startTime.isAtSameDay(recurs.end);
@@ -315,7 +315,7 @@ class Activity extends DataModel {
         alarmType,
         reminderBefore,
         fileId,
-        infoItem,
+        infoItemString,
         icon,
         signedOffDates,
         timezone,

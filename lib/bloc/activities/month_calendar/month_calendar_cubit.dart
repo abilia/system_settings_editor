@@ -11,7 +11,7 @@ import 'package:seagull/utils/all.dart';
 part 'month_calendar_state.dart';
 
 class MonthCalendarCubit extends Cubit<MonthCalendarState> {
-  final ActivityRepository activityRepository;
+  final ActivityRepository? activityRepository;
   final ClockBloc clockBloc;
   final DayPickerBloc dayPickerBloc;
   late final StreamSubscription? _activitiesSubscription;
@@ -20,7 +20,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
   MonthCalendarCubit({
     required this.clockBloc,
     required this.dayPickerBloc,
-    required this.activityRepository,
+    this.activityRepository, // ActivityRepository is null when this bloc is used for date picking
     ActivitiesBloc?
         activitiesBloc, // ActivitiesBloc is null when this bloc is used for date picking
     DateTime? initialDay,
@@ -44,40 +44,40 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         .listen(_updateMonth);
   }
 
-  void goToNextMonth() async {
+  Future<void> goToNextMonth() async {
     _maybeGoToCurrentDay(state.firstDay.nextMonth());
     final first = state.firstDay.nextMonth();
     final last = first.nextMonth();
     emit(
       _mapToState(
         first,
-        await activityRepository.allBetween(first, last),
+        await activityRepository?.allBetween(first, last) ?? [],
         clockBloc.state,
       ),
     );
   }
 
-  void goToPreviousMonth() async {
+  Future<void> goToPreviousMonth() async {
     _maybeGoToCurrentDay(state.firstDay.previousMonth());
     final first = state.firstDay.previousMonth();
     final last = first.nextMonth();
     emit(
       _mapToState(
         first,
-        await activityRepository.allBetween(first, last),
+        await activityRepository?.allBetween(first, last) ?? [],
         clockBloc.state,
       ),
     );
   }
 
-  void goToCurrentMonth() async {
+  Future<void> goToCurrentMonth() async {
     dayPickerBloc.add(GoTo(day: clockBloc.state));
     final first = clockBloc.state.firstDayOfMonth();
     final last = first.nextMonth();
     emit(
       _mapToState(
         first,
-        await activityRepository.allBetween(first, last),
+        await activityRepository?.allBetween(first, last) ?? [],
         clockBloc.state,
       ),
     );
@@ -90,13 +90,13 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     }
   }
 
-  void _updateMonth([_]) async {
+  Future<void> _updateMonth([_]) async {
     final first = state.firstDay;
     final last = first.nextMonth().addDays(-1);
     emit(
       _mapToState(
         state.firstDay,
-        await activityRepository.allBetween(first, last),
+        await activityRepository?.allBetween(first, last) ?? [],
         clockBloc.state,
       ),
     );
@@ -104,7 +104,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
 
   static MonthCalendarState _mapToState(
     DateTime firstDayOfMonth,
-    Iterable<Activity>? activities,
+    Iterable<Activity> activities,
     DateTime now,
   ) {
     assert(firstDayOfMonth.day == 1);
@@ -130,7 +130,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
                 d < DateTime.daysPerWeek;
                 dayIterator = dayIterator.nextDay(), d++)
               if (dayIterator.month == month)
-                _getDay(activities ?? [], dayIterator, now)
+                _getDay(activities, dayIterator, now)
               else
                 NotInMonthDay()
           ],
