@@ -38,6 +38,11 @@ extension SaveErrors on Set<SaveError> {
         SaveError.startTimeBeforeNow,
       }.contains);
 
+  bool get recurringPageErrors => any({
+        SaveError.noRecurringDays,
+        SaveError.noRecurringEndDate,
+      }.contains);
+
   bool get noGoErrors => any({
         SaveError.noStartTime,
         SaveError.noTitleOrImage,
