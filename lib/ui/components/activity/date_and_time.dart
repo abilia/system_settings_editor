@@ -258,9 +258,10 @@ class TimePicker extends StatelessWidget {
           leading: const Icon(AbiliaIcons.clock),
           text: Text(time),
           trailing: errorState
-              ? const Icon(
+              ? Icon(
                   AbiliaIcons.irError,
                   color: AbiliaColors.red,
+                  size: layout.icon.small,
                 )
               : PickField.trailingArrow,
         )
