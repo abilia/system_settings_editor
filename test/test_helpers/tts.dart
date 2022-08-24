@@ -45,9 +45,8 @@ extension VerifyTts on WidgetTester {
     }
   }
 
-  Future verifyNoTts(Finder finder) async {
-    _spoken = null;
-    await longPress(finder);
+  Future verifyNoTts([Finder? finder]) async {
+    if (finder != null) await longPress(finder);
     expect(_spoken, isNull);
   }
 }
