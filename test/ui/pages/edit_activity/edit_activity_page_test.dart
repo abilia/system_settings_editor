@@ -56,7 +56,9 @@ void main() {
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
       const MemoplannerSettingsLoaded(
         MemoplannerSettings(
-          editActivity: EditActivitySettings(template: false),
+          addActivity: AddActivitySettings(
+            editActivity: EditActivitySettings(template: false),
+          ),
         ),
       ),
     );
@@ -100,8 +102,10 @@ void main() {
                 create: (context) => newActivity
                     ? EditActivityCubit.newActivity(
                         day: today,
-                        defaultAlarmTypeSetting: mockMemoplannerSettingsBloc
-                            .state.defaultAlarmTypeSetting,
+                        defaultsSettings: DefaultsAddActivitySettings(
+                          alarm: mockMemoplannerSettingsBloc
+                              .state.settings.addActivity.defaults.alarm,
+                        ),
                         calendarId: 'calendarId',
                       )
                     : EditActivityCubit.edit(
@@ -123,8 +127,11 @@ void main() {
                             clockBloc: context.read<ClockBloc>(),
                             editActivityCubit:
                                 context.read<EditActivityCubit>(),
-                            settings:
-                                context.read<MemoplannerSettingBloc>().state,
+                            settings: context
+                                .read<MemoplannerSettingBloc>()
+                                .state
+                                .settings
+                                .addActivity,
                           )
                         : ActivityWizardCubit.edit(
                             activitiesBloc: context.read<ActivitiesBloc>(),
@@ -136,6 +143,7 @@ void main() {
                                 .state
                                 .settings
                                 .addActivity
+                                .general
                                 .allowPassedStartTime,
                           ),
               ),
@@ -1589,7 +1597,9 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            addActivity: AddActivitySettings(showEndTime: false),
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(showEndTime: false),
+            ),
           ),
         ),
       );
@@ -1865,7 +1875,9 @@ text''';
       // Arrange
       when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        addActivity: AddActivitySettings(showEndTime: false),
+        addActivity: AddActivitySettings(
+          general: GeneralAddActivitySettings(showEndTime: false),
+        ),
       )));
 
       final acivity = Activity.createNew(
@@ -2240,7 +2252,9 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            editActivity: EditActivitySettings(title: false),
+            addActivity: AddActivitySettings(
+              editActivity: EditActivitySettings(title: false),
+            ),
           ),
         ),
       );
@@ -2259,7 +2273,9 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            editActivity: EditActivitySettings(image: false),
+            addActivity: AddActivitySettings(
+              editActivity: EditActivitySettings(image: false),
+            ),
           ),
         ),
       );
@@ -2279,7 +2295,9 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            editActivity: EditActivitySettings(date: false),
+            addActivity: AddActivitySettings(
+              editActivity: EditActivitySettings(date: false),
+            ),
           ),
         ),
       );
@@ -2312,7 +2330,9 @@ text''';
     testWidgets('No end time', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        addActivity: AddActivitySettings(showEndTime: false),
+        addActivity: AddActivitySettings(
+          general: GeneralAddActivitySettings(showEndTime: false),
+        ),
       )));
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
@@ -2326,7 +2346,9 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            editActivity: EditActivitySettings(availability: false),
+            addActivity: AddActivitySettings(
+              editActivity: EditActivitySettings(availability: false),
+            ),
           ),
         ),
       );
@@ -2341,7 +2363,9 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            editActivity: EditActivitySettings(checkable: false),
+            addActivity: AddActivitySettings(
+              editActivity: EditActivitySettings(checkable: false),
+            ),
           ),
         ),
       );
@@ -2356,7 +2380,9 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            editActivity: EditActivitySettings(removeAfter: false),
+            addActivity: AddActivitySettings(
+              editActivity: EditActivitySettings(removeAfter: false),
+            ),
           ),
         ),
       );
@@ -2370,7 +2396,9 @@ text''';
     testWidgets('No recurring option', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        addActivity: AddActivitySettings(addRecurringActivity: false),
+        addActivity: AddActivitySettings(
+          general: GeneralAddActivitySettings(addRecurringActivity: false),
+        ),
       )));
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
@@ -2379,14 +2407,19 @@ text''';
     });
 
     testWidgets('Alarm options, only one option', (WidgetTester tester) async {
-      when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        addActivity: AddActivitySettings(
-          showAlarm: false,
-          showSilentAlarm: false,
-          showVibrationAlarm: false,
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(
+                showAlarm: false,
+                showSilentAlarm: false,
+                showVibrationAlarm: false,
+              ),
+            ),
+          ),
         ),
-      )));
+      );
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.goToAlarmTab();
@@ -2401,13 +2434,18 @@ text''';
 
     testWidgets('Alarm options - silent option alarm and vibration',
         (WidgetTester tester) async {
-      when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        addActivity: AddActivitySettings(
-          showAlarm: false,
-          showNoAlarm: false,
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(
+                showAlarm: false,
+                showNoAlarm: false,
+              ),
+            ),
+          ),
         ),
-      )));
+      );
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.goToAlarmTab();
@@ -2427,13 +2465,79 @@ text''';
       expect(find.text(translate.vibrationIfAvailable), findsOneWidget);
     });
 
+    testWidgets('Alarm options - alarm only at start time',
+        (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(
+                showAlarmOnlyAtStart: false,
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      await tester.goToAlarmTab();
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AlarmOnlyAtStartSwitch), findsNothing);
+    });
+
+    testWidgets('Show speech at alarm', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(
+                showSpeechAtAlarm: false,
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      await tester.goToAlarmTab();
+      await tester.pumpAndSettle();
+
+      expect(find.byType(RecordSoundWidget), findsNothing);
+    });
+
+    testWidgets('Show speech at alarm', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(
+                showSpeechAtAlarm: false,
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      await tester.goToAlarmTab();
+      await tester.pumpAndSettle();
+
+      expect(find.byType(RecordSoundWidget), findsNothing);
+    });
+
     testWidgets(
         'activityTimeBeforeCurrent true - Cant save when start time is past',
         (WidgetTester tester) async {
-      when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        addActivity: AddActivitySettings(allowPassedStartTime: false),
-      )));
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(allowPassedStartTime: false),
+            ),
+          ),
+        ),
+      );
       await tester.pumpWidget(
         createEditActivityPage(
           use24H: true,
@@ -2464,10 +2568,15 @@ text''';
     testWidgets(
         'activityTimeBeforeCurrent true - CAN save when start time is future',
         (WidgetTester tester) async {
-      when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        addActivity: AddActivitySettings(allowPassedStartTime: false),
-      )));
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(allowPassedStartTime: false),
+            ),
+          ),
+        ),
+      );
       await tester.pumpWidget(
         createEditActivityPage(
           givenActivity:
@@ -2494,10 +2603,15 @@ text''';
     testWidgets(
         'activityTimeBeforeCurrent true - CAN save recurring when start time is future',
         (WidgetTester tester) async {
-      when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        addActivity: AddActivitySettings(allowPassedStartTime: false),
-      )));
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivity: AddActivitySettings(
+              general: GeneralAddActivitySettings(allowPassedStartTime: false),
+            ),
+          ),
+        ),
+      );
 
       final activity = Activity.createNew(
         title: 't i t l e',
@@ -2578,7 +2692,9 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            editActivity: EditActivitySettings(alarm: false),
+            addActivity: AddActivitySettings(
+              editActivity: EditActivitySettings(alarm: false),
+            ),
           ),
         ),
       );
@@ -2596,7 +2712,9 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            editActivity: EditActivitySettings(reminders: false),
+            addActivity: AddActivitySettings(
+              editActivity: EditActivitySettings(reminders: false),
+            ),
           ),
         ),
       );
@@ -2614,7 +2732,9 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            editActivity: EditActivitySettings(checklist: false),
+            addActivity: AddActivitySettings(
+              editActivity: EditActivitySettings(checklist: false),
+            ),
           ),
         ),
       );
@@ -2634,7 +2754,9 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            editActivity: EditActivitySettings(notes: false),
+            addActivity: AddActivitySettings(
+              editActivity: EditActivitySettings(notes: false),
+            ),
           ),
         ),
       );
@@ -2656,9 +2778,11 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            editActivity: EditActivitySettings(
-              alarm: false,
-              reminders: false,
+            addActivity: AddActivitySettings(
+              editActivity: EditActivitySettings(
+                alarm: false,
+                reminders: false,
+              ),
             ),
           ),
         ),
@@ -2676,9 +2800,11 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            editActivity: EditActivitySettings(
-              notes: false,
-              checklist: false,
+            addActivity: AddActivitySettings(
+              editActivity: EditActivitySettings(
+                notes: false,
+                checklist: false,
+              ),
             ),
           ),
         ),
@@ -3225,8 +3351,11 @@ extension on WidgetTester {
   }
 
   Future goToMainTab() async => goToTab(AbiliaIcons.myPhotos);
+
   Future goToAlarmTab() async => goToTab(AbiliaIcons.attention);
+
   Future goToRecurrenceTab() async => goToTab(AbiliaIcons.repeat);
+
   Future goToInfoItemTab() async => goToTab(AbiliaIcons.attachment);
 
   Future goToTab(IconData icon) async {

@@ -48,7 +48,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
 
   EditActivityCubit.newActivity({
     required DateTime day,
-    required int defaultAlarmTypeSetting,
+    required DefaultsAddActivitySettings defaultsSettings,
     required String calendarId,
     BasicActivityDataItem? basicActivityData,
   }) : super(
@@ -57,7 +57,11 @@ class EditActivityCubit extends Cubit<EditActivityState> {
                   Activity(
                     startTime: day,
                     timezone: tz.local.name,
-                    alarmType: defaultAlarmTypeSetting,
+                    alarmType: defaultsSettings.alarm.intValue,
+                    secret: defaultsSettings.availableForType ==
+                        AvailableForType.onlyMe,
+                    checkable: defaultsSettings.checkable,
+                    removeAfter: defaultsSettings.removeAtEndOfDay,
                     calendarId: calendarId,
                   ),
                   TimeInterval(startDate: day),

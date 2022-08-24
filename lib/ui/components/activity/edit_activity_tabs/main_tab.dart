@@ -12,7 +12,7 @@ class MainTab extends StatelessWidget with EditActivityTab {
         .select<EditActivityCubit, Activity>((cubit) => cubit.state.activity);
     final editActivitySettings =
         context.select<MemoplannerSettingBloc, EditActivitySettings>(
-            (cubit) => cubit.state.settings.editActivity);
+            (cubit) => cubit.state.settings.addActivity.editActivity);
     final showCategories = context.select<MemoplannerSettingBloc, bool>(
         (cubit) => cubit.state.settings.calendar.categories.show);
 

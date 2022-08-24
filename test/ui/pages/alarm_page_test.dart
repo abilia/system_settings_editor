@@ -545,7 +545,7 @@ void main() {
             duration: 5.minutes(),
             checkable: true,
             alarmType:
-                const Alarm(type: AlarmType.silent, onlyStart: true).toInt,
+                const Alarm(type: AlarmType.silent, onlyStart: true).intValue,
           ),
           day,
         ),

@@ -18,7 +18,7 @@ void main() {
     late ActivitiesBloc activitiesBloc;
     late GenericCubit genericCubit;
     late MemoplannerSettingBloc memoplannerSettingBloc;
-    late AlarmCubit alarmCubit;
+
     late MockActivityRepository mockActivityRepository;
     late MockGenericRepository mockGenericRepository;
     late StreamController<DateTime> mockedTicker;
@@ -56,13 +56,6 @@ void main() {
       memoplannerSettingBloc = MemoplannerSettingBloc(
         genericCubit: genericCubit,
       );
-
-      alarmCubit = AlarmCubit(
-        clockBloc: clockBloc,
-        activitiesBloc: activitiesBloc,
-        settingsBloc: memoplannerSettingBloc,
-        selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
-      );
     });
 
     final nowActivity = FakeActivity.starts(thisMinute);
@@ -79,6 +72,7 @@ void main() {
         activitiesBloc: activitiesBloc,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+        timerAlarm: const Stream.empty(),
       ),
       act: (cubit) {
         activitiesBloc.add(LoadActivities());
@@ -96,6 +90,7 @@ void main() {
         activitiesBloc: activitiesBloc,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+        timerAlarm: const Stream.empty(),
       ),
       act: (cubit) async {
         await _tick();
@@ -116,6 +111,7 @@ void main() {
         activitiesBloc: activitiesBloc,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+        timerAlarm: const Stream.empty(),
       ),
       act: (cubit) async {
         await _tick();
@@ -133,6 +129,7 @@ void main() {
         activitiesBloc: activitiesBloc,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+        timerAlarm: const Stream.empty(),
       ),
       act: (cubit) => activitiesBloc.add(LoadActivities()),
       expect: () => [],
@@ -147,6 +144,7 @@ void main() {
         activitiesBloc: activitiesBloc,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+        timerAlarm: const Stream.empty(),
       ),
       act: (cubit) {
         activitiesBloc.add(LoadActivities());
@@ -164,6 +162,7 @@ void main() {
         activitiesBloc: activitiesBloc,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+        timerAlarm: const Stream.empty(),
       ),
       act: (cubit) {
         activitiesBloc.add(LoadActivities());
@@ -184,6 +183,7 @@ void main() {
         activitiesBloc: activitiesBloc,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+        timerAlarm: const Stream.empty(),
       ),
       act: (cubit) async {
         activitiesBloc.add(LoadActivities());
@@ -209,6 +209,7 @@ void main() {
         activitiesBloc: activitiesBloc,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+        timerAlarm: const Stream.empty(),
       ),
       act: (cubit) async {
         activitiesBloc.add(LoadActivities());
@@ -228,6 +229,7 @@ void main() {
         activitiesBloc: activitiesBloc,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+        timerAlarm: const Stream.empty(),
       ),
       act: (cubit) {
         activitiesBloc.add(LoadActivities());
@@ -249,6 +251,7 @@ void main() {
         activitiesBloc: activitiesBloc,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+        timerAlarm: const Stream.empty(),
       ),
       act: (cubit) {
         activitiesBloc.add(LoadActivities());
@@ -267,6 +270,7 @@ void main() {
         activitiesBloc: activitiesBloc,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+        timerAlarm: const Stream.empty(),
       ),
       act: (cubit) {
         activitiesBloc.add(LoadActivities());
@@ -285,6 +289,7 @@ void main() {
         activitiesBloc: activitiesBloc,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+        timerAlarm: const Stream.empty(),
       ),
       act: (cubit) {
         activitiesBloc.add(LoadActivities());
@@ -305,6 +310,7 @@ void main() {
         activitiesBloc: activitiesBloc,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+        timerAlarm: const Stream.empty(),
       ),
       act: (cubit) async {
         activitiesBloc.add(LoadActivities());
@@ -329,6 +335,7 @@ void main() {
         activitiesBloc: activitiesBloc,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+        timerAlarm: const Stream.empty(),
       ),
       act: (cubit) async {
         activitiesBloc.add(LoadActivities());
@@ -366,6 +373,7 @@ void main() {
         activitiesBloc: activitiesBloc,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+        timerAlarm: const Stream.empty(),
       ),
       act: (cubit) async {
         activitiesBloc.add(LoadActivities());
@@ -379,7 +387,6 @@ void main() {
       activitiesBloc.close();
       clockBloc.close();
       mockedTicker.close();
-      alarmCubit.close();
     });
   });
 
@@ -408,6 +415,7 @@ void main() {
         clockBloc: ClockBloc.fixed(aTime),
         settingsBloc: FakeMemoplannerSettingsBloc(),
         selectedNotificationSubject: notificationSelected,
+        timerAlarm: const Stream.empty(),
       );
     });
 
@@ -467,6 +475,7 @@ void main() {
         clockBloc: ClockBloc.fixed(aTime),
         settingsBloc: FakeMemoplannerSettingsBloc(),
         selectedNotificationSubject: notificationSelected,
+        timerAlarm: const Stream.empty(),
       ),
       act: (cubit) => notificationSelected.add(aTimer),
       expect: () => [aTimer],

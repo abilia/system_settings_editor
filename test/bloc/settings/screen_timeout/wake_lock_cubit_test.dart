@@ -156,7 +156,7 @@ void main() {
     memoSettingsStreamController.add(
       const MemoplannerSettingsLoaded(
         MemoplannerSettings(
-          keepScreenAwakeSettings: KeepScreenAwakeSettings(
+          keepScreenAwake: KeepScreenAwakeSettings(
             keepScreenOnAlways: true,
           ),
         ),
@@ -165,7 +165,7 @@ void main() {
     memoSettingsStreamController.add(
       const MemoplannerSettingsLoaded(
         MemoplannerSettings(
-          keepScreenAwakeSettings: KeepScreenAwakeSettings(
+          keepScreenAwake: KeepScreenAwakeSettings(
             keepScreenOnWhileCharging: true,
           ),
         ),

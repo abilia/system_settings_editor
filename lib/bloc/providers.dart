@@ -1,6 +1,7 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:rxdart/transformers.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/config.dart';
@@ -163,6 +164,11 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 settingsBloc: context.read<MemoplannerSettingBloc>(),
                 selectedNotificationSubject: selectNotificationSubject,
+                timerAlarm: context
+                    .read<TimerAlarmBloc>()
+                    .stream
+                    .map((event) => event.firedAlarm)
+                    .whereNotNull(),
               ),
             ),
             BlocProvider<CalendarViewCubit>(

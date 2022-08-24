@@ -137,6 +137,7 @@ void main() {
                 activitiesBloc: mockActivitiesBloc,
                 clockBloc: clockBloc,
                 settingsBloc: mockMemoplannerSettingBloc,
+                timerAlarm: const Stream.empty(),
               ),
             ),
             BlocProvider<TimepillarMeasuresCubit>(

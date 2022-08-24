@@ -248,7 +248,7 @@ class Activity extends DataModel {
             : this.reminderBefore,
         fileId: fileId ?? this.fileId,
         icon: icon ?? this.icon,
-        alarmType: alarmType ?? alarm?.toInt ?? this.alarmType,
+        alarmType: alarmType ?? alarm?.intValue ?? this.alarmType,
         infoItemString: infoItemString ?? this.infoItemString,
         signedOffDates: signedOffDates != null
             ? UnmodifiableListView(signedOffDates)

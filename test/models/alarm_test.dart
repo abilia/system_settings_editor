@@ -3,7 +3,7 @@ import 'package:seagull/models/alarm.dart';
 
 void main() {
   void fromIntSameAsToInt(int value) =>
-      expect(Alarm.fromInt(value).toInt, value);
+      expect(Alarm.fromInt(value).intValue, value);
 
   test('alarmType fromInt same as toInt', () {
     fromIntSameAsToInt(alarmSoundAndVibration);
@@ -20,12 +20,12 @@ void main() {
   test('Changing on end time', () {
     var at = Alarm.fromInt(alarmSoundAndVibration);
     at = at.copyWith(onlyStart: true);
-    expect(at.toInt, alarmSoundAndVibrationOnlyOnStart);
+    expect(at.intValue, alarmSoundAndVibrationOnlyOnStart);
   });
 
   test('Changing alarm type', () {
     var at = Alarm.fromInt(alarmSoundAndVibration);
     at = at.copyWith(type: AlarmType.silent);
-    expect(at.toInt, alarmSilent);
+    expect(at.intValue, alarmSilent);
   });
 }
