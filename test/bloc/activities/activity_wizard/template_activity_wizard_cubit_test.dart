@@ -25,7 +25,8 @@ void main() {
     build: () => TemplateActivityWizardCubit(
       editActivityCubit: EditActivityCubit.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: noAlarm,
+        defaultsSettings:
+            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
         calendarId: 'calendarId',
       ),
       sortableBloc: mockSortableBloc,
@@ -46,7 +47,8 @@ void main() {
     build: () => TemplateActivityWizardCubit(
       editActivityCubit: EditActivityCubit.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: noAlarm,
+        defaultsSettings:
+            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
         calendarId: 'calendarId',
       ),
       sortableBloc: mockSortableBloc,
@@ -67,7 +69,8 @@ void main() {
     build: () => TemplateActivityWizardCubit(
       editActivityCubit: EditActivityCubit.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: noAlarm,
+        defaultsSettings:
+            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
         calendarId: 'calendarId',
       ),
       sortableBloc: mockSortableBloc,
@@ -96,7 +99,8 @@ void main() {
     build: () => TemplateActivityWizardCubit(
       editActivityCubit: EditActivityCubit.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: noAlarm,
+        defaultsSettings:
+            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
         calendarId: 'calendarId',
       ),
       sortableBloc: mockSortableBloc,

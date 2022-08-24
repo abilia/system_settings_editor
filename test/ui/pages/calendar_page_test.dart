@@ -176,6 +176,8 @@ void main() {
 
     testWidgets('Tapping Day in TabBar returns to this week',
         (WidgetTester tester) async {
+      when(() => mockActivityDb.getAllBetween(any(), any()))
+          .thenAnswer((_) => Future.value([]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.tap(nextDayButtonFinder);
@@ -417,7 +419,9 @@ void main() {
       when(() => memoplannerSettingBlocMock.state)
           .thenReturn(const MemoplannerSettingsLoaded(
         MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
+          addActivity: AddActivitySettings(
+            general: GeneralAddActivitySettings(allowPassedStartTime: false),
+          ),
         ),
       ));
       await tester.pumpWidget(wrapWithMaterialApp(
@@ -456,7 +460,9 @@ void main() {
       when(() => memoplannerSettingBlocMock.state)
           .thenReturn(const MemoplannerSettingsLoaded(
         MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
+          addActivity: AddActivitySettings(
+            general: GeneralAddActivitySettings(allowPassedStartTime: false),
+          ),
         ),
       ));
       await tester.pumpWidget(wrapWithMaterialApp(
@@ -882,6 +888,8 @@ void main() {
       activityResponse = () => activities;
       when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(activities));
+      when(() => mockActivityDb.getAllBetween(any(), any()))
+          .thenAnswer((_) => Future.value(activities));
     });
     testWidgets('Can navigate to week calendar', (WidgetTester tester) async {
       await tester.pumpWidget(App());
@@ -923,6 +931,31 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(GoToCurrentActionButton), findsNothing);
       await tester.verifyTts(find.byType(WeekAppBar), contains: 'week 32');
+    });
+
+    testWidgets('SGC-1869 - Week calendar shows correct year',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      expect(find.text(initialTime.year.toString()), findsOneWidget);
+
+      for (int i = 0; i < 52; i++) {
+        await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
+      }
+      await tester.pumpAndSettle();
+      expect(find.text((initialTime.year + 1).toString()), findsOneWidget);
+
+      await tester.tap(find.byType(GoToCurrentActionButton));
+      await tester.pumpAndSettle();
+      expect(find.text(initialTime.year.toString()), findsOneWidget);
+
+      for (int i = 0; i < 52; i++) {
+        await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
+      }
+      await tester.pumpAndSettle();
+      expect(find.text((initialTime.year - 1).toString()), findsOneWidget);
     });
 
     testWidgets('Tapping week in TabBar, current day is selected',
@@ -1072,6 +1105,8 @@ void main() {
       activityResponse = () => activities;
       when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(activities));
+      when(() => mockActivityDb.getAllBetween(any(), any()))
+          .thenAnswer((_) => Future.value(activities));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
@@ -1089,6 +1124,8 @@ void main() {
       FakeActivity.fullday(initialTime.addDays(1), 'two'),
     ];
     when(() => mockActivityDb.getAllNonDeleted())
+        .thenAnswer((_) => Future.value(activities));
+    when(() => mockActivityDb.getAllBetween(any(), any()))
         .thenAnswer((_) => Future.value(activities));
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();

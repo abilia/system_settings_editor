@@ -149,7 +149,7 @@ class AppBarTitleRows {
     required String langCode,
     required Translated translator,
   }) {
-    final displayWeekDay = selectedDay.isSameWeek(selectedWeekStart);
+    final displayWeekDay = selectedDay.isSameWeekAndYear(selectedWeekStart);
     final day =
         displayWeekDay ? DateFormat.EEEE(langCode).format(selectedDay) : '';
     final weekTranslation =
@@ -157,7 +157,8 @@ class AppBarTitleRows {
     final week = showWeekNumber
         ? '$weekTranslation ${selectedWeekStart.getWeekNumber()}'
         : '';
-    final year = showYear ? DateFormat.y(langCode).format(selectedDay) : '';
+    final year =
+        showYear ? DateFormat.y(langCode).format(selectedWeekStart) : '';
 
     return AppBarTitleRows._(day, week, year);
   }

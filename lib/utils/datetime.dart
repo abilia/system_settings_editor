@@ -62,8 +62,13 @@ extension DateTimeExtensions on DateTime {
       month == otherDate.month &&
       day == otherDate.day;
 
-  bool isSameWeek(DateTime otherDate) =>
+  bool isSameWeekAndYear(DateTime otherDate) =>
+      _isSameWeek(otherDate) && _isSameYear(otherDate);
+
+  bool _isSameWeek(DateTime otherDate) =>
       getWeekNumber() == otherDate.getWeekNumber();
+
+  bool _isSameYear(DateTime otherDate) => year == otherDate.year;
 
   bool isDayBefore(DateTime otherDate) =>
       year < otherDate.year ||

@@ -22,6 +22,8 @@ class Alarm extends Equatable {
         return const Alarm(type: AlarmType.vibration);
       case alarmSilent:
         return const Alarm(type: AlarmType.silent);
+      case noAlarm:
+        return const Alarm(type: AlarmType.noAlarm);
       case alarmSoundAndVibrationOnlyOnStart:
         return const Alarm(type: AlarmType.soundAndVibration, onlyStart: true);
       case alarmSoundOnlyOnStart:
@@ -30,7 +32,6 @@ class Alarm extends Equatable {
         return const Alarm(type: AlarmType.vibration, onlyStart: true);
       case alarmSilentOnlyOnStart:
         return const Alarm(type: AlarmType.silent, onlyStart: true);
-      case noAlarm:
       default:
         return const Alarm(type: AlarmType.noAlarm, onlyStart: true);
     }
@@ -38,12 +39,17 @@ class Alarm extends Equatable {
 
   bool get vibrate =>
       type == AlarmType.soundAndVibration || type == AlarmType.vibration;
+
   bool get sound =>
       type == AlarmType.soundAndVibration || type == AlarmType.sound;
+
   bool get silent => type == AlarmType.silent;
+
   bool get shouldAlarm => type != AlarmType.noAlarm;
+
   bool get atEnd => !onlyStart;
-  int get toInt {
+
+  int get intValue {
     if (onlyStart) {
       switch (type) {
         case AlarmType.soundAndVibration:
@@ -55,7 +61,7 @@ class Alarm extends Equatable {
         case AlarmType.silent:
           return alarmSilentOnlyOnStart;
         case AlarmType.noAlarm:
-          return noAlarm;
+          return noAlarmOnlyOnStart;
       }
     }
     switch (type) {

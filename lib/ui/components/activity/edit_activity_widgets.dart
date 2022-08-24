@@ -14,7 +14,7 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocSelector<MemoplannerSettingBloc,
           MemoplannerSettingsState, EditActivitySettings>(
-        selector: (state) => state.settings.editActivity,
+        selector: (state) => state.settings.addActivity.editActivity,
         builder: (context, editActivity) =>
             BlocBuilder<EditActivityCubit, EditActivityState>(
           builder: (context, state) =>
@@ -383,51 +383,54 @@ class AlarmWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
     final alarm = activity.alarm;
-    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
-      selector: (state) => state.settings.addActivity.abilityToSelectAlarm,
-      builder: (context, abilityToSelectAlarm) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SubHeading(translator.alarm),
-          PickField(
-            key: TestKey.selectAlarm,
-            leading: Icon(alarm.iconData()),
-            text: Text(alarm.text(translator)),
-            onTap: abilityToSelectAlarm
-                ? () async {
-                    final authProviders = copiedAuthProviders(context);
-                    final editActivityCubit = context.read<EditActivityCubit>();
-                    final result = await Navigator.of(context).push<AlarmType>(
-                      MaterialPageRoute(
-                        builder: (_) => MultiBlocProvider(
-                          providers: authProviders,
-                          child: SelectAlarmTypePage(
-                            alarm: alarm.typeSeagull,
-                          ),
+    final generalSettings = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.addActivity.general);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SubHeading(translator.alarm),
+        PickField(
+          key: TestKey.selectAlarm,
+          leading: Icon(alarm.iconData()),
+          text: Text(alarm.text(translator)),
+          onTap: generalSettings.abilityToSelectAlarm
+              ? () async {
+                  final authProviders = copiedAuthProviders(context);
+                  final editActivityCubit = context.read<EditActivityCubit>();
+                  final result = await Navigator.of(context).push<AlarmType>(
+                    MaterialPageRoute(
+                      builder: (_) => MultiBlocProvider(
+                        providers: authProviders,
+                        child: SelectAlarmTypePage(
+                          alarm: alarm.typeSeagull,
                         ),
-                        settings:
-                            const RouteSettings(name: 'SelectAlarmTypePage'),
+                      ),
+                      settings:
+                          const RouteSettings(name: 'SelectAlarmTypePage'),
+                    ),
+                  );
+                  if (result != null) {
+                    editActivityCubit.replaceActivity(
+                      activity.copyWith(
+                        alarm: activity.alarm.copyWith(type: result),
                       ),
                     );
-                    if (result != null) {
-                      editActivityCubit.replaceActivity(
-                        activity.copyWith(
-                          alarm: activity.alarm.copyWith(type: result),
-                        ),
-                      );
-                    }
                   }
-                : null,
-          ),
+                }
+              : null,
+        ),
+        if (generalSettings.showAlarmOnlyAtStart) ...[
           SizedBox(height: layout.formPadding.verticalItemDistance),
           AlarmOnlyAtStartSwitch(
             alarm: alarm,
             onChanged: (v) => context.read<EditActivityCubit>().replaceActivity(
-                  activity.copyWith(alarm: alarm.copyWith(onlyStart: v)),
+                  activity.copyWith(
+                    alarm: alarm.copyWith(onlyStart: v),
+                  ),
                 ),
           ),
         ],
-      ),
+      ],
     );
   }
 }
@@ -466,7 +469,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
     final translator = Translator.of(context).translate;
     return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
         EditActivitySettings>(
-      selector: (state) => state.settings.editActivity,
+      selector: (state) => state.settings.addActivity.editActivity,
       builder: (context, editActivity) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

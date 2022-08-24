@@ -53,46 +53,44 @@ class SelectAlarmTypeBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
     final translate = Translator.of(context).translate;
-    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
-        AddActivitySettings>(
-      selector: (state) => state.settings.addActivity,
-      builder: (context, addActivity) => ScrollArrows.vertical(
+    final generalSettings = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.addActivity.general);
+    return ScrollArrows.vertical(
+      controller: scrollController,
+      child: ListView(
         controller: scrollController,
-        child: ListView(
-          controller: scrollController,
-          padding: layout.templates.m1.onlyVertical,
-          children: <Widget>[
-            ...[
-              if (addActivity.showAlarm) AlarmType.soundAndVibration,
-              if (addActivity.showVibrationAlarm) AlarmType.vibration,
-              if (addActivity.showSilentAlarm) AlarmType.silent,
-              if (addActivity.showNoAlarm) AlarmType.noAlarm,
-            ].map((type) => Alarm(type: type)).map(
-                  (alarmType) => RadioField(
-                    key: ObjectKey(alarmType.typeSeagull),
-                    groupValue: alarm,
-                    onChanged: onChanged,
-                    value: alarmType.typeSeagull,
-                    leading: Icon(alarmType.iconData()),
-                    text: Text(alarmType.text(translate)),
-                  ),
+        padding: layout.templates.m1.onlyVertical,
+        children: <Widget>[
+          ...[
+            if (generalSettings.showAlarm) AlarmType.soundAndVibration,
+            if (generalSettings.showVibrationAlarm) AlarmType.vibration,
+            if (generalSettings.showSilentAlarm) AlarmType.silent,
+            if (generalSettings.showNoAlarm) AlarmType.noAlarm,
+          ].map((type) => Alarm(type: type)).map(
+                (alarmType) => RadioField(
+                  key: ObjectKey(alarmType.typeSeagull),
+                  groupValue: alarm,
+                  onChanged: onChanged,
+                  value: alarmType.typeSeagull,
+                  leading: Icon(alarmType.iconData()),
+                  text: Text(alarmType.text(translate)),
                 ),
-            ...trailing
-          ]
-              .map(
-                (widget) => widget is Divider
-                    ? widget
-                    : Padding(
-                        padding: EdgeInsets.only(
-                          left: layout.templates.m1.left,
-                          right: layout.templates.m1.right,
-                          bottom: layout.formPadding.verticalItemDistance,
-                        ),
-                        child: widget,
+              ),
+          ...trailing
+        ]
+            .map(
+              (widget) => widget is Divider
+                  ? widget
+                  : Padding(
+                      padding: EdgeInsets.only(
+                        left: layout.templates.m1.left,
+                        right: layout.templates.m1.right,
+                        bottom: layout.formPadding.verticalItemDistance,
                       ),
-              )
-              .toList(),
-        ),
+                      child: widget,
+                    ),
+            )
+            .toList(),
       ),
     );
   }

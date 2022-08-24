@@ -68,7 +68,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: AddActivitySettings.allowPassedStartTimeKey,
+          key: GeneralAddActivitySettings.allowPassedStartTimeKey,
           matcher: isFalse,
         );
       });
@@ -83,7 +83,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: AddActivitySettings.addRecurringActivityKey,
+          key: GeneralAddActivitySettings.addRecurringActivityKey,
           matcher: isFalse,
         );
       });
@@ -98,7 +98,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: AddActivitySettings.showEndTimeKey,
+          key: GeneralAddActivitySettings.showEndTimeKey,
           matcher: isFalse,
         );
       });
@@ -113,7 +113,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: AddActivitySettings.showAlarmKey,
+          key: GeneralAddActivitySettings.showAlarmKey,
           matcher: isFalse,
         );
       });
@@ -128,7 +128,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: AddActivitySettings.showSilentAlarmKey,
+          key: GeneralAddActivitySettings.showSilentAlarmKey,
           matcher: isFalse,
         );
       });
@@ -146,7 +146,37 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: AddActivitySettings.showNoAlarmKey,
+          key: GeneralAddActivitySettings.showNoAlarmKey,
+          matcher: isFalse,
+        );
+      });
+
+      testWidgets('Show alarm only at start time', (tester) async {
+        await tester.goToNewActivitySettingsPage();
+        await tester.tap(find.text(translate.showAlarmOnlyAtStartTime));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        verifySyncGeneric(
+          tester,
+          genericDb,
+          key: GeneralAddActivitySettings.showAlarmOnlyAtStartKey,
+          matcher: isFalse,
+        );
+      });
+
+      testWidgets('Show speech at alarm', (tester) async {
+        await tester.goToNewActivitySettingsPage();
+        await tester.tap(find.text(translate.showSpeechAtAlarm));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        verifySyncGeneric(
+          tester,
+          genericDb,
+          key: GeneralAddActivitySettings.showSpeechAtAlarmKey,
           matcher: isFalse,
         );
       });
@@ -164,7 +194,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.addActivityTypeAdvancedKey,
+          key: AddActivitySettings.addActivityTypeAdvancedKey,
           matcher: isFalse,
         );
       });
@@ -417,7 +447,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.activityDefaultAlarmTypeKey,
+          key: DefaultsAddActivitySettings.defaultAlarmTypeKey,
           matcher: alarmVibration,
         );
       });
@@ -435,8 +465,73 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.activityDefaultAlarmTypeKey,
+          key: DefaultsAddActivitySettings.defaultAlarmTypeKey,
           matcher: alarmSilentOnlyOnStart,
+        );
+      });
+
+      testWidgets('Select checkable', (tester) async {
+        await tester.goToDefaultsTab();
+        expect(find.byType(AddActivityDefaultSettingsTab), findsOneWidget);
+        await tester.tap(find.text(translate.checkable));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        verifySyncGeneric(
+          tester,
+          genericDb,
+          key: DefaultsAddActivitySettings.defaultCheckableKey,
+          matcher: isTrue,
+        );
+      });
+
+      testWidgets('Select remove at the end of day', (tester) async {
+        await tester.goToDefaultsTab();
+        expect(find.byType(AddActivityDefaultSettingsTab), findsOneWidget);
+        await tester.tap(find.text(translate.deleteAfter));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        verifySyncGeneric(
+          tester,
+          genericDb,
+          key: DefaultsAddActivitySettings.defaultRemoveAtEndOfDayKey,
+          matcher: isTrue,
+        );
+      });
+
+      testWidgets('Available for - select only me', (tester) async {
+        await tester.goToDefaultsTab();
+        expect(find.byType(AddActivityDefaultSettingsTab), findsOneWidget);
+        await tester.tap(find.text(translate.onlyMe));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        verifySyncGeneric(
+          tester,
+          genericDb,
+          key: DefaultsAddActivitySettings.defaultAvailableForTypeKey,
+          matcher: AvailableForType.onlyMe.index,
+        );
+      });
+
+      testWidgets('Available for - select all my support persons',
+          (tester) async {
+        await tester.goToDefaultsTab();
+        expect(find.byType(AddActivityDefaultSettingsTab), findsOneWidget);
+        await tester.tap(find.text(translate.allSupportPersons));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        verifySyncGeneric(
+          tester,
+          genericDb,
+          key: DefaultsAddActivitySettings.defaultAvailableForTypeKey,
+          matcher: AvailableForType.allSupportPersons.index,
         );
       });
     });
@@ -511,6 +606,8 @@ extension on WidgetTester {
     await tap(find.byIcon(AbiliaIcons.month));
     await pumpAndSettle();
     await tap(find.byIcon(AbiliaIcons.newIcon));
+    await pumpAndSettle();
+    await tap(find.byIcon(AbiliaIcons.settings));
     await pumpAndSettle();
   }
 }
