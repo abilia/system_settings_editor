@@ -92,7 +92,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
 
   Future<void> _updateMonth([_]) async {
     final first = state.firstDay;
-    final last = first.nextMonth().addDays(-1);
+    final last = first.nextMonth();
     emit(
       _mapToState(
         state.firstDay,
