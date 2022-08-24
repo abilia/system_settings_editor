@@ -60,7 +60,7 @@ class FullDayContainer extends StatelessWidget {
                     .followedBy([
                   if (fullDayActivities.length >= 3)
                     FullDayActivitiesButton(
-                      numberOffullDayActivities: fullDayActivities.length,
+                      numberOfFullDayActivities: fullDayActivities.length,
                       day: day,
                     )
                 ]).toList(),
@@ -75,12 +75,12 @@ class FullDayContainer extends StatelessWidget {
 
 class FullDayActivitiesButton extends StatelessWidget {
   const FullDayActivitiesButton({
-    required this.numberOffullDayActivities,
+    required this.numberOfFullDayActivities,
     required this.day,
     Key? key,
   }) : super(key: key);
 
-  final int numberOffullDayActivities;
+  final int numberOfFullDayActivities;
   final DateTime day;
 
   @override
@@ -115,7 +115,7 @@ class FullDayActivitiesButton extends StatelessWidget {
             ),
           );
         },
-        child: Text('+ ${numberOffullDayActivities - 2}'),
+        child: Text('+ ${numberOfFullDayActivities - 2}'),
       ),
     );
   }
