@@ -41,6 +41,9 @@ void main() {
         .thenAnswer((_) => Future.value([]));
     when(() => mockActivityDb.getAllAfter(any()))
         .thenAnswer((_) => Future.value([]));
+    when(() => mockActivityDb.getAll()).thenAnswer((_) => Future.value([]));
+    when(() => mockActivityDb.getAllBetween(any(), any()))
+        .thenAnswer((_) => Future.value([]));
     when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
