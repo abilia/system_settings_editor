@@ -27,6 +27,7 @@ class EditActivityPage extends StatelessWidget {
     final showRecurrenceTab = addRecurringActivity &&
         context.read<WizardCubit>() is! TemplateActivityWizardCubit;
     final showInfoItemTab = showChecklists || showNotes;
+    final showTabs = showAlarmTab || showRecurrenceTab || showInfoItemTab;
 
     final enabledTabs = [
       EditActivityPageTab.main,
@@ -60,26 +61,28 @@ class EditActivityPage extends StatelessWidget {
           appBar: AbiliaAppBar(
             iconData: AbiliaIcons.plus,
             title: getTitle(context),
-            bottom: AbiliaTabBar(
-              collapsedCondition: (i) {
-                switch (i) {
-                  case 1:
-                    return !showAlarmTab;
-                  case 2:
-                    return !showRecurrenceTab;
-                  case 3:
-                    return !showInfoItemTab;
-                  default:
-                    return false;
-                }
-              },
-              tabs: <Widget>[
-                TabItem(translate.name, AbiliaIcons.myPhotos),
-                TabItem(translate.alarm, AbiliaIcons.attention),
-                TabItem(translate.recurrence, AbiliaIcons.repeat),
-                TabItem(translate.extra, AbiliaIcons.attachment),
-              ],
-            ),
+            bottom: showTabs
+                ? AbiliaTabBar(
+                    collapsedCondition: (i) {
+                      switch (i) {
+                        case 1:
+                          return !showAlarmTab;
+                        case 2:
+                          return !showRecurrenceTab;
+                        case 3:
+                          return !showInfoItemTab;
+                        default:
+                          return false;
+                      }
+                    },
+                    tabs: <Widget>[
+                      TabItem(translate.name, AbiliaIcons.myPhotos),
+                      TabItem(translate.alarm, AbiliaIcons.attention),
+                      TabItem(translate.recurrence, AbiliaIcons.repeat),
+                      TabItem(translate.extra, AbiliaIcons.attachment),
+                    ],
+                  )
+                : null,
           ),
           body: TabBarView(children: tabWidgets),
           bottomNavigationBar: const WizardBottomNavigation(),
