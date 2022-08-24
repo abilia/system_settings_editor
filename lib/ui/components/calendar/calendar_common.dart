@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -7,17 +8,13 @@ class FullDayStack extends StatelessWidget {
     required this.numberOfActivities,
     this.width,
     this.height,
-    this.goToActivitiesListOnTap = false,
-    this.day,
     Key? key,
-  })  : assert(!(goToActivitiesListOnTap && day == null)),
-        super(key: key);
+  }) : super(key: key);
 
-  final int numberOfActivities;
   final double? width;
   final double? height;
-  final bool goToActivitiesListOnTap;
-  final DateTime? day;
+
+  final int numberOfActivities;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +23,7 @@ class FullDayStack extends StatelessWidget {
       borderRadius: BorderRadius.circular(layout.monthCalendar.dayRadius),
       border: border,
     );
-
-    final body = Stack(
+    return Stack(
       children: [
         Container(
           margin: EdgeInsets.only(
@@ -50,39 +46,58 @@ class FullDayStack extends StatelessWidget {
         ),
       ],
     );
-
-    return goToActivitiesListOnTap
-        ? _wrapWithGestureDetector(context, day, body)
-        : body;
   }
+}
 
-  Widget _wrapWithGestureDetector(
-      BuildContext context, DateTime? day, Widget body) {
+class ClickableFullDayStack extends StatelessWidget {
+  const ClickableFullDayStack({
+    required this.fulldayActivitiesBuilder,
+    required this.numberOfActivities,
+    required this.day,
+    this.width,
+    this.height,
+    Key? key,
+  }) : super(key: key);
+
+  final List<ActivityOccasion> Function(BuildContext context)
+      fulldayActivitiesBuilder;
+  final int numberOfActivities;
+  final DateTime day;
+  final double? width;
+  final double? height;
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         final authProviders = copiedAuthProviders(context);
-        if (day != null) {
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              pageBuilder: (_, animation, secondaryAnimation) =>
-                  MultiBlocProvider(
-                providers: authProviders,
-                child: FadeTransition(
-                  opacity: CurvedAnimation(
-                    parent: animation,
-                    curve: Curves.easeOut,
-                  ),
-                  child: AllDayList(
-                    day: day,
-                  ),
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            pageBuilder: (_, animation, secondaryAnimation) =>
+                MultiBlocProvider(
+              providers: authProviders,
+              child: FadeTransition(
+                opacity: CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.easeOut,
                 ),
+                child: Builder(builder: (context) {
+                  return FullDayListPage(
+                    day: day,
+                    fullDayActivities: fulldayActivitiesBuilder(context),
+                  );
+                }),
               ),
-              settings: RouteSettings(name: 'AllDayList $day'),
             ),
-          );
-        }
+            settings: RouteSettings(name: 'FullDayListPage $day'),
+          ),
+        );
       },
-      child: body,
+      child: FullDayStack(
+        width: width,
+        height: height,
+        numberOfActivities: numberOfActivities,
+      ),
     );
   }
 }
