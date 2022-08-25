@@ -44,6 +44,10 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         .listen(_updateMonth);
   }
 
+  void initialize() {
+    _updateMonth();
+  }
+
   Future<void> goToNextMonth() async {
     _maybeGoToCurrentDay(state.firstDay.nextMonth());
     final first = state.firstDay.nextMonth();
@@ -95,7 +99,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     final last = first.nextMonth();
     emit(
       _mapToState(
-        state.firstDay,
+        first,
         await activityRepository?.allBetween(first, last) ?? [],
         clockBloc.state,
       ),
