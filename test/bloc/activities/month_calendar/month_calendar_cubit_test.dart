@@ -43,10 +43,13 @@ void main() {
     setUp(() {
       when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(const Iterable.empty()));
+      when(() => mockActivityRepository.allBetween(any(), any()))
+          .thenAnswer((_) => Future.value(const Iterable.empty()));
     });
     test('initial state basics', () {
       // Arrange
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -63,6 +66,7 @@ void main() {
     test('initial state', () {
       // Arrange
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -168,13 +172,14 @@ void main() {
     test('next month, basic', () async {
       // Arrange
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
       );
 
       // Act
-      monthCalendarCubit.goToNextMonth();
+      await monthCalendarCubit.goToNextMonth();
       final state = monthCalendarCubit.state;
 
       // Assert
@@ -189,6 +194,7 @@ void main() {
     blocTest<MonthCalendarCubit, MonthCalendarState>(
       'next month',
       build: () => MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -311,13 +317,14 @@ void main() {
     test('previous month, basic', () async {
       // Arrange
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
       );
 
       // Act
-      monthCalendarCubit.goToPreviousMonth();
+      await monthCalendarCubit.goToPreviousMonth();
       final state = monthCalendarCubit.state;
 
       // Assert
@@ -332,6 +339,7 @@ void main() {
     blocTest<MonthCalendarCubit, MonthCalendarState>(
       'previous month',
       build: () => MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -452,6 +460,7 @@ void main() {
     test('when new day day is updated', () async {
       // Arrange
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -489,6 +498,7 @@ void main() {
 
       clockBloc = ClockBloc.fixed(january15);
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -601,6 +611,7 @@ void main() {
 
       clockBloc = ClockBloc.fixed(mayThe4);
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -696,7 +707,7 @@ void main() {
   group('month activities', () {
     test('monthly recurrent activity', () async {
       // Arrange
-      when(() => mockActivityRepository.load()).thenAnswer(
+      when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
         (_) => Future.value(
           [
             Activity.createNew(
@@ -709,6 +720,7 @@ void main() {
       );
 
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -840,7 +852,7 @@ void main() {
         recurs: Recurs.weeklyOnDays(const [6, 7]),
         fullDay: true,
       );
-      when(() => mockActivityRepository.load()).thenAnswer(
+      when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
         (_) => Future.value(
           [
             weekendFullDay,
@@ -849,6 +861,7 @@ void main() {
       );
 
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
@@ -1002,7 +1015,7 @@ void main() {
         recurs: Recurs.weeklyOnDays(const [4, 5, 6]),
         removeAfter: true,
       );
-      when(() => mockActivityRepository.load()).thenAnswer(
+      when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
         (_) => Future.value(
           [
             removeAfter,
@@ -1011,6 +1024,7 @@ void main() {
       );
 
       monthCalendarCubit = MonthCalendarCubit(
+        activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
