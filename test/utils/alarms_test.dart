@@ -403,8 +403,7 @@ void main() {
     test('reaccurs daily gives back all daily', () {
       final activity = FakeActivity.reocurrsEveryDay(now)
           .copyWith(alarmType: alarmSoundOnlyOnStart);
-      final got =
-          <Activity>[activity].alarmsFrom(now, take: 100, maxDays: 500);
+      final got = <Activity>[activity].alarmsFrom(now, take: 100, maxDays: 500);
       expect(got, hasLength(100));
     });
 
@@ -413,8 +412,8 @@ void main() {
       const maxDays = 400;
       final activity = FakeActivity.reocurrsFridays(now)
           .copyWith(alarmType: alarmSoundOnlyOnStart);
-      final got = <Activity>[activity]
-          .alarmsFrom(now, take: lenght, maxDays: maxDays);
+      final got =
+          <Activity>[activity].alarmsFrom(now, take: lenght, maxDays: maxDays);
       expect(got, hasLength(maxDays ~/ 7));
     });
 
@@ -476,8 +475,7 @@ void main() {
           (i) => Activity.createNew(
               title: 'has a reminder', startTime: tomorrow.add(i.minutes())));
 
-      final got =
-          manyTomorrow.followedBy(manyToday).alarmsFrom(now, take: 50);
+      final got = manyTomorrow.followedBy(manyToday).alarmsFrom(now, take: 50);
 
       expect(got, hasLength(50));
       expect(
@@ -585,8 +583,7 @@ void main() {
       final activities = [checkable];
 
       // Act
-      final alarms =
-          activities.alarmsFrom(startDate.add(1.hours())).toList();
+      final alarms = activities.alarmsFrom(startDate.add(1.hours())).toList();
       // Assert
       expect(
           alarms,
