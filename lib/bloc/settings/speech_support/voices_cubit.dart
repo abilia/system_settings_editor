@@ -17,7 +17,7 @@ class VoicesCubit extends Cubit<VoicesState> {
   }) : super(const VoicesLoading()) {
     _localeSubscription = localeStream
         .map((locale) => locale.languageCode)
-        .listen(_changeLanguage);
+        .listen(readAvailableVoices);
     _initialize(languageCode);
   }
 
@@ -28,16 +28,17 @@ class VoicesCubit extends Cubit<VoicesState> {
 
   Future<void> _initialize(String languageCode) async => emit(
         state.copyWith(
-          available: await voiceRepository.readAvailableVoices(languageCode),
+          allAvailable:
+              (await voiceRepository.readAvailableVoices(languageCode)).toSet(),
           downloaded: await voiceRepository.readDownloadedVoices(),
         ),
       );
 
-  Future<void> _changeLanguage(String languageCode) async {
+  Future<void> readAvailableVoices(String languageCode) async {
+    final allAvailable = Set<VoiceData>.from(state.allAvailable)
+      ..addAll(await voiceRepository.readAvailableVoices(languageCode));
     emit(
-      state.copyWith(
-        available: await voiceRepository.readAvailableVoices(languageCode),
-      ),
+      state.copyWith(allAvailable: allAvailable),
     );
     speechSettingsCubit.setVoice('');
   }
@@ -49,11 +50,12 @@ class VoicesCubit extends Cubit<VoicesState> {
       ),
     );
     bool downloadSuccess = await voiceRepository.downloadVoice(voice);
-    final downloadingVoices = state.downloading..remove(voice.name);
+    final downloadingVoices = [...state.downloading]..remove(voice.name);
 
     if (!downloadSuccess) {
       _log.warning('Failed downloading $voice');
       emit(state.copyWith(downloading: downloadingVoices));
+      return;
     }
 
     _log.fine('Downloaded voice; $voice');
@@ -107,23 +109,26 @@ class VoicesCubit extends Cubit<VoicesState> {
 }
 
 class VoicesState extends Equatable {
-  final List<VoiceData> available;
+  final Set<VoiceData> allAvailable;
   final List<String> downloaded;
   final List<String> downloading;
+
+  List<VoiceData> availableIn(String languageCode) =>
+      allAvailable.where((v) => v.lang == languageCode).toList();
 
   const VoicesState({
     this.downloading = const [],
     this.downloaded = const [],
-    this.available = const [],
+    this.allAvailable = const {},
   });
 
   VoicesState copyWith({
-    List<VoiceData>? available,
+    Set<VoiceData>? allAvailable,
     List<String>? downloaded,
     List<String>? downloading,
   }) =>
       VoicesState(
-        available: available ?? this.available,
+        allAvailable: allAvailable ?? this.allAvailable,
         downloaded: downloaded ?? this.downloaded,
         downloading: downloading ?? this.downloading,
       );
@@ -132,7 +137,7 @@ class VoicesState extends Equatable {
   List<Object?> get props => [
         downloading,
         downloaded,
-        available,
+        allAvailable,
       ];
 }
 
