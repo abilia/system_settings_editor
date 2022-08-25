@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class VoiceDb {
   static final _log = Logger((VoiceDb).toString());
+  static const defaultSpeechRate = 100.0;
   static const String _speechRate = 'SPEECH_RATE',
       _speakEveryWord = 'SPEAK_EVERY_WORD',
       textToSpeechRecord = 'TEXT_TO_SPEECH',
@@ -21,7 +22,7 @@ class VoiceDb {
   Future setSpeechRate(double speechRate) =>
       preferences.setDouble(_speechRate, speechRate);
 
-  double get speechRate => _tryGetDouble(_speechRate, 100);
+  double get speechRate => _tryGetDouble(_speechRate, defaultSpeechRate);
 
   Future setSpeakEveryWord(bool speakEveryWord) =>
       preferences.setBool(_speakEveryWord, speakEveryWord);

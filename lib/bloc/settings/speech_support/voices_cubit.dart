@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/voice_db.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/settings/speech_support/voice_data.dart';
 import 'package:seagull/repository/data_repository/voice_repository.dart';
@@ -79,6 +80,13 @@ class VoicesCubit extends Cubit<VoicesState> {
     emit(state.copyWith(downloaded: downloaded));
   }
 
+  Future<void> resetSpeechSettings() async {
+    await speechSettingsCubit.setSpeechRate(VoiceDb.defaultSpeechRate);
+    await speechSettingsCubit.setSpeakEveryWord(false);
+    await deleteAllVoices();
+    await speechSettingsCubit.setTextToSpeech(false);
+  }
+
   Future<void> deleteAllVoices() async {
     while (state.downloading.isNotEmpty) {
       _log.warning(
@@ -89,7 +97,6 @@ class VoicesCubit extends Cubit<VoicesState> {
     await voiceRepository.deleteAllVoices();
     emit(state.copyWith(downloaded: []));
     await speechSettingsCubit.setVoice('');
-    await speechSettingsCubit.setTextToSpeech(false);
   }
 
   @override
