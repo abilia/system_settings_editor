@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -30,11 +29,8 @@ class RecurringWeekCubit extends Cubit<RecurringWeekState> {
     });
 
     _selfSubscription = stream.listen((recurringWeekState) {
-      editActivityCubit.replaceActivity(
-        editActivityCubit.state.activity.copyWith(
-          recurs: recurringWeekState.recurs,
-        ),
-      );
+      editActivityCubit.changeRecurrence(recurringWeekState.recurs,
+          timeInterval: editActivityCubit.state.timeInterval);
     });
   }
 

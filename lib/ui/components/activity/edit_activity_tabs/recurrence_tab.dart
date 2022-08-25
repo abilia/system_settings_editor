@@ -64,7 +64,10 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                         top: layout.formPadding.groupBottomDistance,
                       ),
                     ),
-                    const EndDateWidget().pad(
+                    EndDateWidget(
+                      errorState: wizState.saveErrors
+                          .contains(SaveError.noRecurringEndDate),
+                    ).pad(
                       layout.templates.m1.withoutBottom,
                     ),
                   ],
@@ -79,6 +82,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
 
 class Weekly extends StatelessWidget with EditActivityTab {
   final bool errorState;
+
   Weekly({
     required this.errorState,
     Key? key,

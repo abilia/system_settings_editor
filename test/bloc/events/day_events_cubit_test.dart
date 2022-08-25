@@ -696,7 +696,7 @@ void main() {
       );
     });
 
-    test(' overlapping into this day before starting early today', () async {
+    test('overlapping into this day before starting early today', () async {
       // Arrange
       final longAgo = initialMinutes.copyWith(hour: 23).subtract(1111.days());
       final monday = initialDay.previousDay();

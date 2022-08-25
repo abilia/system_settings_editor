@@ -28,6 +28,7 @@ enum SaveError {
   noRecurringDays,
   storedRecurring,
   endDateBeforeStart,
+  noRecurringEndDate,
 }
 
 extension SaveErrors on Set<SaveError> {
@@ -37,12 +38,18 @@ extension SaveErrors on Set<SaveError> {
         SaveError.startTimeBeforeNow,
       }.contains);
 
+  bool get recurringPageErrors => any({
+        SaveError.noRecurringDays,
+        SaveError.noRecurringEndDate,
+      }.contains);
+
   bool get noGoErrors => any({
         SaveError.noStartTime,
         SaveError.noTitleOrImage,
         SaveError.startTimeBeforeNow,
         SaveError.noRecurringDays,
         SaveError.endDateBeforeStart,
+        SaveError.noRecurringEndDate,
       }.contains);
 }
 

@@ -778,7 +778,10 @@ void main() {
       WizardState(
         0,
         const [WizardStep.advance],
-        saveErrors: const {SaveError.noRecurringDays},
+        saveErrors: const {
+          SaveError.noRecurringDays,
+          SaveError.noRecurringEndDate
+        },
         sucessfullSave: false,
       ),
     );
@@ -985,10 +988,13 @@ void main() {
         final activity1 = originalActivity.copyWith(title: 'null');
         final activity2 = activity1.copyWith(recurs: Recurs.everyDay);
         final time = TimeOfDay.fromDateTime(aTime);
-        final timeIntervall = TimeInterval(
+        final timeInterval = TimeInterval(
           startTime: time,
           endTime: time,
           startDate: aDay,
+        );
+        final recursTimeInterval = timeInterval.copyWith(
+          endDate: Recurs.noEndDate,
         );
 
         final expectedActivity = activity2.copyWith(startTime: aTime);
@@ -998,21 +1004,21 @@ void main() {
             emitsInOrder([
               UnstoredActivityState(
                 originalActivity,
-                timeIntervall,
+                timeInterval,
               ),
               UnstoredActivityState(
                 activity1,
-                timeIntervall,
+                timeInterval,
               ),
               UnstoredActivityState(
                 activity2,
-                timeIntervall,
+                recursTimeInterval,
               ),
             ]));
 
         editActivityCubit.changeTimeInterval(startTime: time);
         editActivityCubit.replaceActivity(activity1);
-        editActivityCubit.replaceActivity(activity2);
+        editActivityCubit.changeRecurrence(activity2.recurs);
 
         // Assert
         await expected1;
@@ -1022,7 +1028,7 @@ void main() {
             emits(
               StoredActivityState(
                 expectedActivity,
-                timeIntervall,
+                recursTimeInterval,
                 aDay,
               ),
             ));
@@ -1076,6 +1082,7 @@ void main() {
         final expectedTimeIntervall = TimeInterval(
           startTime: TimeOfDay.fromDateTime(aTime),
           startDate: aDay,
+          endDate: Recurs.noEndDate,
         );
 
         final activityWithNewTitle = activity.copyWith(title: 'new title');
@@ -1437,7 +1444,7 @@ void main() {
         await expected2;
       });
 
-      test('no conflict for recuring', () async {
+      test('no conflict for recurring', () async {
         // Arrange
         final stored = Activity.createNew(title: 'stored', startTime: aTime);
         final mockActivitiesBloc = MockActivitiesBloc();
@@ -1470,7 +1477,10 @@ void main() {
           startTime: time,
           endTime: time,
           startDate: aDay,
+          endDate: Recurs.noEndDate,
         );
+
+        editActivityCubit.changeTimeInterval(startTime: time);
         final expectedActivity = activity.copyWith(startTime: aTime);
         final expected1 = expectLater(
           editActivityCubit.stream,
@@ -1487,7 +1497,8 @@ void main() {
             ],
           ),
         );
-        editActivityCubit.changeTimeInterval(startTime: time);
+
+        editActivityCubit.newRecurrence(newEndDate: Recurs.noEndDate);
         editActivityCubit.replaceActivity(activity);
 
         // Assert
@@ -1589,9 +1600,10 @@ void main() {
     final expectedTimeIntervall = TimeInterval(
       startDate: aDay,
       startTime: TimeOfDay.fromDateTime(aTime),
+      endDate: Recurs.noEndDate,
     );
     final recurringActivity = activity.copyWith(
-      recurs: Recurs.weeklyOnDay(aTime.weekday),
+      recurs: Recurs.weeklyOnDay(aTime.weekday, ends: Recurs.noEndDate),
     );
 
     final expected1 = expectLater(
@@ -1606,8 +1618,8 @@ void main() {
     );
 
     // Act
-    editActivityCubit.replaceActivity(recurringActivity);
-
+    editActivityCubit.changeRecurrence(
+        Recurs.weeklyOnDay(aTime.weekday, ends: Recurs.noEndDate));
     // Assert
     await expected1;
 
@@ -1654,6 +1666,7 @@ void main() {
             TimeInterval(
               startTime: TimeOfDay.fromDateTime(activity.startTime),
               startDate: aDay,
+              endDate: Recurs.noEndDate,
             ),
             aDay,
           ),
@@ -1707,8 +1720,7 @@ void main() {
     );
 
     // Acts
-    editActivityCubit.replaceActivity(
-        activity.copyWith(recurs: Recurs.yearly(activity.startTime)));
+    editActivityCubit.newRecurrence(newType: RecurrentType.yearly);
     editActivityCubit.changeDate(nextDay);
 
     wizCubit.next(saveRecurring: SaveRecurring(ApplyTo.onlyThisDay, aDay));
@@ -2072,7 +2084,7 @@ void main() {
       );
     });
 
-    test('Saving recuring weekly without any days yeilds warning', () async {
+    test('Saving recurring weekly without any days yields warning', () async {
       // Arrange
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
@@ -2107,13 +2119,11 @@ void main() {
           ),
         ),
       );
-
+      editActivityCubit.replaceActivity(activity.copyWith(title: 'title'));
       editActivityCubit.changeTimeInterval(
           startTime: const TimeOfDay(hour: 22, minute: 22));
 
-      editActivityCubit.replaceActivity(activity.copyWith(
-          title: 'titlte', recurs: Recurs.weeklyOnDays(const [])));
-
+      editActivityCubit.changeRecurrence(Recurs.weeklyOnDays(const []));
       await expectLater(
         wizCubit.stream,
         emitsInOrder([
@@ -2153,7 +2163,7 @@ void main() {
 
     test(
         'BUG SGC-1595 '
-        'Saving recuring weekly without any days yeilds warning', () async {
+        'Saving recurring weekly without any days yields warning', () async {
       // Arrange
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
@@ -2202,6 +2212,8 @@ void main() {
           ),
         ),
       );
+      editActivityCubit.newRecurrence(
+          newEndDate: nowTime.add(1.days()).onlyDays());
 
       await expectLater(
         wizCubit.stream,
