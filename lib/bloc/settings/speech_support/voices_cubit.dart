@@ -83,11 +83,12 @@ class VoicesCubit extends Cubit<VoicesState> {
   Future<void> resetSpeechSettings() async {
     await speechSettingsCubit.setSpeechRate(VoiceDb.defaultSpeechRate);
     await speechSettingsCubit.setSpeakEveryWord(false);
-    await deleteAllVoices();
     await speechSettingsCubit.setTextToSpeech(false);
+    await speechSettingsCubit.setVoice('');
+    await _deleteAllVoices();
   }
 
-  Future<void> deleteAllVoices() async {
+  Future<void> _deleteAllVoices() async {
     while (state.downloading.isNotEmpty) {
       _log.warning(
         "can't delete while downloading, retrying in 2 seconds",
@@ -96,7 +97,6 @@ class VoicesCubit extends Cubit<VoicesState> {
     }
     await voiceRepository.deleteAllVoices();
     emit(state.copyWith(downloaded: []));
-    await speechSettingsCubit.setVoice('');
   }
 
   @override
