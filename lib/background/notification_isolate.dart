@@ -67,7 +67,7 @@ Future scheduleAlarmNotifications(
   final from = settings.disabledUntilDate.isAfter(now())
       ? settings.disabledUntilDate
       : now().nextMinute();
-  final activityNotifications = activities.alarmsFromDay(
+  final activityNotifications = activities.alarmsFrom(
     from,
     take: max(maxNotifications - timers.length, 0),
   );
@@ -136,7 +136,7 @@ List<Map<String, dynamic>> alarmsFromIsolate(List<dynamic> args) {
       serialized.map<Activity>((e) => DbActivity.fromJson(e).activity).toList();
   final now = args[1] as DateTime;
   final take = args[2] as int;
-  final notificationAlarms = allActivities.alarmsFromDay(now, take: take);
+  final notificationAlarms = allActivities.alarmsFrom(now, take: take);
   return notificationAlarms.map((e) => e.toJson()).toList();
 }
 

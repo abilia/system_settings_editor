@@ -28,18 +28,16 @@ extension IterableActivity on Iterable<Activity> {
       );
 
   List<ActivityAlarm> _alarmsForDay(
-    DateTime time, {
+    DateTime day, {
     required bool Function(ActivityDay) startTimeTest,
     required bool Function(ActivityDay) endTimeTest,
     required bool Function(ActivityAlarm) reminderTest,
     bool includeMidnight = false,
   }) {
-    final day = time.onlyDays();
+    day = day.onlyDays();
     final activitiesThisDay = where((a) => !a.fullDay)
-        .expand((a) => a.dayActivitiesForDay(
-              day,
-              includeMidnight: includeMidnight,
-            ))
+        .expand(
+            (a) => a.dayActivitiesForDay(day, includeMidnight: includeMidnight))
         .where((ad) => !ad.isSignedOff)
         .toList();
     final activitiesWithAlarm =
@@ -65,7 +63,7 @@ extension IterableActivity on Iterable<Activity> {
     return [...startTimeAlarms, ...endTimeAlarms, ...reminders];
   }
 
-  Iterable<ActivityAlarm> alarmsFromDay(
+  Iterable<ActivityAlarm> alarmsFrom(
     DateTime time, {
     int take = maxNotifications,
     int maxDays = 60,
