@@ -34,12 +34,17 @@ extension RecursExtensions on RecurrentType {
 }
 
 extension RecurringActivityExtension on Activity {
-  List<ActivityDay> dayActivitiesForDay(DateTime day) {
+  List<ActivityDay> dayActivitiesForDay(
+    DateTime day, {
+    bool includeMidnight = false,
+  }) {
     if (!isRecurring) {
+      final range =
+          includeMidnight ? day.inRangeWithInclusiveEnd : day.inExclusiveRange;
       return [
         if (day.isAtSameDay(startTime) ||
             (!fullDay &&
-                day.inExclusiveRange(
+                range(
                   startDate: startTime,
                   endDate: noneRecurringEnd,
                 )))

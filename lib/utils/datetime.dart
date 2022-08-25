@@ -104,6 +104,14 @@ extension DateTimeExtensions on DateTime {
     return false;
   }
 
+  bool inRangeWithInclusiveEnd(
+      {required DateTime startDate, required DateTime endDate}) {
+    if (endDate.isBefore(startDate)) return false;
+    if (isBefore(endDate) && isAfter(startDate)) return true;
+    if (isAtSameMomentAs(endDate)) return true;
+    return false;
+  }
+
   bool inExclusiveRange(
       {required DateTime startDate, required DateTime endDate}) {
     if (endDate.isBefore(startDate)) return false;
