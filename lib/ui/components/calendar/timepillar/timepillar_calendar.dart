@@ -177,7 +177,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
             final tsHeight =
                 measures.timePillarHeight + topMargin + bottomMargin;
             final calendarHeight =
-                max(tsHeight, max(leftBoardData.heigth, rightBoardData.heigth));
+                max(tsHeight, max(leftBoardData.height, rightBoardData.height));
             final height = max(calendarHeight, boxConstraints.maxHeight);
             return RefreshIndicator(
               onRefresh: refresh,

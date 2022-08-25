@@ -58,10 +58,10 @@ class TimepillarBoard extends StatelessWidget {
     eventOccasions.sort((a1, a2) => a1.start.compareTo(a2.start));
     final scheduled = <List<TimepillarCard>>[];
     ActivityLoop:
-    for (final eo in eventOccasions) {
-      final cardGenerator = eo is ActivityOccasion
+    for (final eventOccasion in eventOccasions) {
+      final card = eventOccasion is ActivityOccasion
           ? _activityCard(
-              activityOccasion: eo,
+              activityOccasion: eventOccasion,
               measures: measures,
               textScaleFactor: textScaleFactor,
               maxEndPos: maxEndPos,
@@ -71,9 +71,9 @@ class TimepillarBoard extends StatelessWidget {
               timepillarSide: timepillarSide,
               showCategoryColor: showCategoryColor,
             )
-          : eo is TimerOccasion
+          : eventOccasion is TimerOccasion
               ? _timerCard(
-                  timerOccasion: eo,
+                  timerOccasion: eventOccasion,
                   measures: measures,
                   topMargin: topMargin,
                   maxEndPos: maxEndPos,
@@ -81,17 +81,17 @@ class TimepillarBoard extends StatelessWidget {
                   textScaleFactor: textScaleFactor,
                 )
               : null;
-      assert(cardGenerator != null);
-      if (cardGenerator == null) continue ActivityLoop;
+      assert(card != null);
+      if (card == null) continue ActivityLoop;
 
       for (var col = 0; col < scheduled.length; col++) {
         final column = scheduled[col];
-        if (cardGenerator.top > column.last.endPos) {
-          column.add(cardGenerator.builder(col));
+        if (card.top > column.last.endPos) {
+          column.add(card.builder(col));
           continue ActivityLoop;
         }
       }
-      scheduled.add([cardGenerator.builder(scheduled.length)]);
+      scheduled.add([card.builder(scheduled.length)]);
     }
 
     return TimePillarBoardData(
@@ -263,13 +263,13 @@ class CardPosition {
 
 class TimePillarBoardData {
   final UnmodifiableListView<TimepillarCard> cards;
-  final double heigth;
+  final double height;
   final int columns;
 
   TimePillarBoardData(
     this.cards, {
     required this.columns,
-  }) : heigth = cards.map((card) => card.endPos).fold(0.0, max);
+  }) : height = cards.map((card) => card.endPos).fold(0.0, max);
 }
 
 enum TimepillarSide {
