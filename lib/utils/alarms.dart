@@ -19,21 +19,28 @@ Iterable<ReminderUnchecked> uncheckedReminders(ActivityDay activityDay) =>
         .map((r) => ReminderUnchecked(activityDay, reminder: r));
 
 extension IterableActivity on Iterable<Activity> {
-  List<ActivityAlarm> alarmsOnExactMinute(DateTime time) => _alarmsFor(time,
-      startTimeTest: (a) => a.start.isAtSameMomentAs(time),
-      endTimeTest: (a) => a.end.isAtSameMomentAs(time),
-      reminderTest: (rs) => rs.notificationTime.isAtSameMomentAs(time));
+  List<ActivityAlarm> alarmsOnExactMinute(DateTime time) => _alarmsForDay(
+        time,
+        startTimeTest: (a) => a.start.isAtSameMomentAs(time),
+        endTimeTest: (a) => a.end.isAtSameMomentAs(time),
+        reminderTest: (rs) => rs.notificationTime.isAtSameMomentAs(time),
+        includeMidnight: true,
+      );
 
-  List<ActivityAlarm> _alarmsFor(
+  List<ActivityAlarm> _alarmsForDay(
     DateTime time, {
     required bool Function(ActivityDay) startTimeTest,
     required bool Function(ActivityDay) endTimeTest,
     required bool Function(ActivityAlarm) reminderTest,
+    bool includeMidnight = false,
   }) {
     final day = time.onlyDays();
     final activitiesThisDay = where((a) => !a.fullDay)
-        .expand((a) => a.dayActivitiesForDay(day))
-        .where((a) => !a.isSignedOff)
+        .expand((a) => a.dayActivitiesForDay(
+              day,
+              includeMidnight: includeMidnight,
+            ))
+        .where((ad) => !ad.isSignedOff)
         .toList();
     final activitiesWithAlarm =
         activitiesThisDay.where((ad) => ad.activity.alarm.shouldAlarm);
@@ -58,7 +65,7 @@ extension IterableActivity on Iterable<Activity> {
     return [...startTimeAlarms, ...endTimeAlarms, ...reminders];
   }
 
-  Iterable<ActivityAlarm> alarmsFrom(
+  Iterable<ActivityAlarm> alarmsFromDay(
     DateTime time, {
     int take = maxNotifications,
     int maxDays = 60,
@@ -66,7 +73,7 @@ extension IterableActivity on Iterable<Activity> {
     final nextDay = time.nextDay().onlyDays();
     final endTime = nextDay.subtract(1.minutes());
     final alarmsToday = _alarmsForRestOfDay(time, endTime);
-    final alarmsTomorrowAndForward = _alarmsForDay(
+    final alarmsTomorrowAndForward = _alarmsFromDay(
       nextDay,
       notBefore: time,
       take: take - alarmsToday.length,
@@ -76,7 +83,7 @@ extension IterableActivity on Iterable<Activity> {
   }
 
   List<ActivityAlarm> _alarmsForRestOfDay(DateTime start, DateTime end) =>
-      _alarmsFor(start,
+      _alarmsForDay(start,
           startTimeTest: (a) =>
               a.start.inInclusiveRange(startDate: start, endDate: end),
           endTimeTest: (a) =>
@@ -84,7 +91,7 @@ extension IterableActivity on Iterable<Activity> {
           reminderTest: (rs) =>
               rs.notificationTime.isAtSameMomentOrAfter(start));
 
-  Iterable<ActivityAlarm> _alarmsForDay(
+  Iterable<ActivityAlarm> _alarmsFromDay(
     DateTime day, {
     required DateTime notBefore,
     required int take,
@@ -92,7 +99,7 @@ extension IterableActivity on Iterable<Activity> {
   }) {
     if (depth < 0) return <ActivityAlarm>[];
 
-    final alarms = _alarmsFor(
+    final alarms = _alarmsForDay(
       day,
       startTimeTest: (a) => a.start.isAtSameDay(day),
       endTimeTest: (a) => a.start.isAtSameDay(day),
@@ -101,7 +108,7 @@ extension IterableActivity on Iterable<Activity> {
     );
     return [
       ...alarms,
-      ..._alarmsForDay(
+      ..._alarmsFromDay(
         day.nextDay(),
         notBefore: notBefore,
         take: take - alarms.length,
