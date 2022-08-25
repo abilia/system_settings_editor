@@ -67,7 +67,7 @@ class TopLevelListener extends StatelessWidget {
                   await navigator.pushAndRemoveUntil<void>(
                     MaterialPageRoute<void>(
                       builder: (_) {
-                        return LoginPage(authState: state);
+                        return LoginPage(unauthenticatedState: state);
                       },
                     ),
                     (_) => false,

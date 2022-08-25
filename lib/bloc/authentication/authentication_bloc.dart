@@ -26,7 +26,7 @@ class AuthenticationBloc
         .where((event) => event == HttpMessage.unauthorized)
         .listen((event) {
       if (state is Authenticated) {
-        add(const LoggedOut(loggedOutReason: LoggedOutReason.unautorized));
+        add(const LoggedOut(loggedOutReason: LoggedOutReason.unauthorized));
       }
     });
     on<AuthenticationEvent>(_onAuthenticationEvent, transformer: sequential());

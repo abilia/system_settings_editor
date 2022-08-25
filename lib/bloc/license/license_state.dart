@@ -11,3 +11,5 @@ class LicensesNotLoaded extends LicenseState {}
 class ValidLicense extends LicenseState {}
 
 class NoValidLicense extends LicenseState {}
+
+class NoLicense extends NoValidLicense {}

@@ -36,6 +36,7 @@ void main() {
       activityRepository: mockActivityRepository,
       pushCubit: mockPushCubit,
       syncBloc: mockSyncBloc,
+      licenseCubit: FakeLicenseCubit(),
     );
   });
 
@@ -46,6 +47,7 @@ void main() {
         activityRepository: mockActivityRepository,
         pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
+        licenseCubit: FakeLicenseCubit(),
       ),
       verify: (ActivitiesBloc bloc) => expect(
         bloc.state,
@@ -59,6 +61,7 @@ void main() {
         activityRepository: mockActivityRepository,
         pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
+        licenseCubit: FakeLicenseCubit(),
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
       verify: (ActivitiesBloc bloc) =>
@@ -73,6 +76,7 @@ void main() {
         activityRepository: mockActivityRepository,
         pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
+        licenseCubit: FakeLicenseCubit(),
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
       expect: () => [ActivitiesLoaded(const [])],
@@ -99,6 +103,7 @@ void main() {
         activityRepository: mockActivityRepository,
         pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
+        licenseCubit: FakeLicenseCubit(),
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
       expect: () => [
@@ -113,6 +118,7 @@ void main() {
               activityRepository: mockActivityRepository,
               pushCubit: mockPushCubit,
               syncBloc: mockSyncBloc,
+              licenseCubit: FakeLicenseCubit(),
             ),
         act: (ActivitiesBloc bloc) => bloc
           ..add(LoadActivities())
@@ -136,6 +142,7 @@ void main() {
               activityRepository: mockActivityRepository,
               pushCubit: mockPushCubit,
               syncBloc: mockSyncBloc,
+              licenseCubit: FakeLicenseCubit(),
             ),
         act: (ActivitiesBloc bloc) => bloc
           ..add(LoadActivities())
@@ -160,6 +167,7 @@ void main() {
               activityRepository: mockActivityRepository,
               pushCubit: mockPushCubit,
               syncBloc: mockSyncBloc,
+              licenseCubit: FakeLicenseCubit(),
             ),
         act: (ActivitiesBloc bloc) => bloc
           ..add(LoadActivities())
@@ -186,6 +194,7 @@ void main() {
         activityRepository: mockActivityRepository,
         pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
+        licenseCubit: FakeLicenseCubit(),
       ),
       act: (ActivitiesBloc bloc) => bloc
         ..add(LoadActivities())
@@ -215,6 +224,7 @@ void main() {
         activityRepository: mockActivityRepository,
         pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
+        licenseCubit: FakeLicenseCubit(),
       ),
       act: (ActivitiesBloc bloc) => bloc
         ..add(LoadActivities())

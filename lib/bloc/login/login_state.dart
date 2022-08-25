@@ -96,8 +96,11 @@ class LoginFailure extends LoginState {
       );
 
   bool get licenseError =>
-      cause == LoginFailureCause.licenseExpired ||
+      (cause == LoginFailureCause.licenseExpired && Config.isMPGO) ||
       cause == LoginFailureCause.noLicense;
+
+  bool get expiredLicenseWarning =>
+      cause == LoginFailureCause.licenseExpired && Config.isMP;
 
   @override
   bool get credentialError => cause == LoginFailureCause.credentials;

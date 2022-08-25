@@ -2,29 +2,38 @@ import 'dart:async';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
 part 'activities_event.dart';
+
 part 'activities_state.dart';
 
 class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     with EditRecurringMixin {
   final ActivityRepository activityRepository;
   late final StreamSubscription pushSubscription;
+  late final StreamSubscription licenseSubscription;
   final SyncBloc syncBloc;
+  late bool validLicense;
+  bool awaitingSync = false;
 
   ActivitiesBloc({
     required this.activityRepository,
     required this.syncBloc,
     required PushCubit pushCubit,
+    required LicenseCubit licenseCubit,
   }) : super(ActivitiesNotLoaded()) {
+    validLicense = licenseCubit.state is ValidLicense;
     pushSubscription = pushCubit.stream.listen((state) {
       if (state is PushReceived) {
         add(LoadActivities());
       }
+    });
+    licenseSubscription = licenseCubit.stream.listen((state) {
+      validLicense = state is ValidLicense;
+      if (validLicense && awaitingSync) add(LoadActivities());
     });
     on<ActivitiesEvent>(_onEvent, transformer: sequential());
   }
@@ -33,7 +42,13 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     ActivitiesEvent event,
     Emitter<ActivitiesState> emit,
   ) async {
+    if (!validLicense) {
+      if (event is LoadActivities) awaitingSync = true;
+      emit(ActivitiesLoaded(const []));
+      return;
+    }
     if (event is LoadActivities) {
+      awaitingSync = false;
       await _mapLoadActivitiesToState(event, emit);
     } else if (event is ManipulateActivitiesEvent) {
       if (event is AddActivity) {
@@ -177,6 +192,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
   @override
   Future<void> close() async {
     await pushSubscription.cancel();
+    await licenseSubscription.cancel();
     return super.close();
   }
 }

@@ -85,9 +85,25 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
         BlocListener<LicenseCubit, LicenseState>(
           listener: (context, state) async {
             if (state is NoValidLicense) {
+              if (Config.isMPGO) {
+                BlocProvider.of<AuthenticationBloc>(context).add(
+                  const LoggedOut(
+                    loggedOutReason: LoggedOutReason.noLicense,
+                  ),
+                );
+              } else {
+                showViewDialog(
+                  context: context,
+                  builder: (context) => WarningDialog(
+                    text:
+                        Translator.of(context).translate.licenseExpiredMessage,
+                  ),
+                );
+              }
+            } else if (state is NoLicense) {
               BlocProvider.of<AuthenticationBloc>(context).add(
                 const LoggedOut(
-                  loggedOutReason: LoggedOutReason.licenseExpired,
+                  loggedOutReason: LoggedOutReason.noLicense,
                 ),
               );
             }

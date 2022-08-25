@@ -32,6 +32,7 @@ void main() {
       activityRepository: mockActivityRepository,
       syncBloc: FakeSyncBloc(),
       pushCubit: FakePushCubit(),
+      licenseCubit: FakeLicenseCubit(),
     );
   });
 

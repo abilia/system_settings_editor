@@ -6,24 +6,25 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class LoginPage extends StatelessWidget {
-  final Unauthenticated authState;
+  final Unauthenticated unauthenticatedState;
 
   const LoginPage({
-    required this.authState,
+    required this.unauthenticatedState,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    if (authState.loggedOutReason == LoggedOutReason.licenseExpired) {
+    final reason = unauthenticatedState.loggedOutReason;
+    if (reason != LoggedOutReason.logOut) {
       Future.delayed(
         Duration.zero,
         () => showViewDialog(
           context: context,
           builder: (_) => LicenseErrorDialog(
-            heading: translate.licenseExpired,
-            message: translate.licenseExpiredMessage,
+            heading: reason.header(translate),
+            message: reason.message(translate),
           ),
           wrapWithAuthProviders: false,
         ),
@@ -51,6 +52,19 @@ class LoginPage extends StatelessWidget {
                 ),
                 wrapWithAuthProviders: false,
               );
+            } else if (state.expiredLicenseWarning) {
+              final loginCubit = context.read<LoginCubit>();
+              final confirmWarningDialog = await showViewDialog(
+                context: context,
+                builder: (context) => ConfirmWarningDialog(
+                  text: Translator.of(context)
+                      .translate
+                      .licenseExpiredLogOutWarning,
+                ),
+              );
+              if (confirmWarningDialog) {
+                loginCubit.loginButtonPressed(confirmExpiredLicense: true);
+              }
             } else {
               await showViewDialog(
                 context: context,
@@ -67,10 +81,10 @@ class LoginPage extends StatelessWidget {
           child: Scaffold(
             body: SafeArea(
               child: LoginForm(
-                  message:
-                      authState.loggedOutReason == LoggedOutReason.unautorized
-                          ? translate.loggedOutMessage
-                          : ''),
+                  message: unauthenticatedState.loggedOutReason ==
+                          LoggedOutReason.unauthorized
+                      ? translate.loggedOutMessage
+                      : ''),
             ),
             resizeToAvoidBottomInset: false,
           ),

@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
@@ -10,6 +9,7 @@ import 'package:seagull/ui/all.dart';
 
 class LogoutPage extends StatelessWidget {
   const LogoutPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +33,7 @@ class LogoutPage extends StatelessWidget {
 
 class ProfilePictureNameAndEmail extends StatefulWidget {
   const ProfilePictureNameAndEmail({Key? key}) : super(key: key);
+
   @override
   State createState() => _ProfilePictureNameAndEmailState();
 }
@@ -93,12 +94,29 @@ class _ProfilePictureNameAndEmailState
 
 class LogoutButton extends StatelessWidget {
   const LogoutButton({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => IconAndTextButton(
         text: Translator.of(context).translate.logout,
         icon: AbiliaIcons.powerOffOn,
-        onPressed: () =>
-            BlocProvider.of<AuthenticationBloc>(context).add(const LoggedOut()),
+        onPressed: () async {
+          final authContext = BlocProvider.of<AuthenticationBloc>(context);
+          if (BlocProvider.of<LicenseCubit>(context).state is ValidLicense) {
+            authContext.add(const LoggedOut());
+          } else {
+            final confirmWarningDialog = await showViewDialog(
+              context: context,
+              builder: (context) => ConfirmWarningDialog(
+                text: Translator.of(context)
+                    .translate
+                    .licenseExpiredLogOutWarning,
+              ),
+            );
+            if (confirmWarningDialog) {
+              authContext.add(const LoggedOut());
+            }
+          }
+        },
         style: iconTextButtonStyleRed,
       );
 }

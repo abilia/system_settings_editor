@@ -26,6 +26,7 @@ void main() {
       activityRepository: mockActivityRepository,
       syncBloc: FakeSyncBloc(),
       pushCubit: FakePushCubit(),
+      licenseCubit: FakeLicenseCubit(),
     );
     dayEventsCubit = DayEventsCubit(
       dayPickerBloc: dayPickerBloc,
@@ -762,6 +763,7 @@ void main() {
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
         pushCubit: FakePushCubit(),
+        licenseCubit: FakeLicenseCubit(),
       );
       final ticker = Ticker.fake(initialTime: initialMinutes);
 
@@ -1035,6 +1037,7 @@ void main() {
           activityRepository: mockActivityRepository,
           syncBloc: FakeSyncBloc(),
           pushCubit: FakePushCubit(),
+          licenseCubit: FakeLicenseCubit(),
         );
         final ticker = Ticker.fake(initialTime: today);
         dayEventsCubit = DayEventsCubit(

@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
@@ -10,7 +9,6 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/all.dart';
-
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
 import '../../../test_helpers/enter_text.dart';
@@ -325,7 +323,52 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(LicenseErrorDialog), findsOneWidget);
     expect(find.byType(LoginPage), findsOneWidget);
-  });
+  }, skip: Config.isMP);
+
+  testWidgets('Can login when valid license, no action when expires',
+      (WidgetTester tester) async {
+    final pushCubit = PushCubit();
+    await tester.pumpApp(pushCubit: pushCubit);
+    await tester.pumpAndSettle();
+    await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+    await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(LoginButton));
+    await tester.pumpAndSettle();
+    expect(find.byType(CalendarPage), findsOneWidget);
+
+    licensExpireTime = time.subtract(10.days());
+
+    pushCubit.update('license');
+    await tester.pumpAndSettle();
+    expect(find.byType(LicenseErrorDialog), findsNothing);
+    expect(find.byType(LoginPage), findsNothing);
+    expect(find.byType(CalendarPage), findsOneWidget);
+  }, skip: Config.isMPGO);
+
+  testWidgets('Can login when no valid expired license, sync warning',
+      (WidgetTester tester) async {
+    licensExpireTime = time.subtract(10.days());
+
+    await tester.pumpApp();
+
+    await tester.pumpAndSettle();
+
+    await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+    await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(LoginButton));
+    await tester.pumpAndSettle();
+    expect(find.byType(ConfirmWarningDialog), findsOneWidget);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(OkButton));
+    await tester.pumpAndSettle();
+    expect(find.byType(CalendarPage), findsOneWidget);
+
+    expect(find.byType(LicenseErrorDialog), findsNothing);
+    expect(find.byType(LoginPage), findsNothing);
+    expect(find.byType(CalendarPage), findsOneWidget);
+  }, skip: Config.isMPGO);
 
   testWidgets('Error message when incorrect user type',
       (WidgetTester tester) async {

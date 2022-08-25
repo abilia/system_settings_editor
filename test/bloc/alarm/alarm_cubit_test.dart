@@ -42,6 +42,7 @@ void main() {
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
         pushCubit: FakePushCubit(),
+        licenseCubit: FakeLicenseCubit(),
       );
       mockGenericRepository = MockGenericRepository();
       when(() => mockGenericRepository.load())
@@ -411,6 +412,7 @@ void main() {
           activityRepository: FakeActivityRepository(),
           syncBloc: FakeSyncBloc(),
           pushCubit: FakePushCubit(),
+          licenseCubit: FakeLicenseCubit(),
         ),
         clockBloc: ClockBloc.fixed(aTime),
         settingsBloc: FakeMemoplannerSettingsBloc(),
@@ -471,6 +473,7 @@ void main() {
           activityRepository: MockActivityRepository(),
           syncBloc: FakeSyncBloc(),
           pushCubit: FakePushCubit(),
+          licenseCubit: FakeLicenseCubit(),
         ),
         clockBloc: ClockBloc.fixed(aTime),
         settingsBloc: FakeMemoplannerSettingsBloc(),
