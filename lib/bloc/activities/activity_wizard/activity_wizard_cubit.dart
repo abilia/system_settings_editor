@@ -114,10 +114,10 @@ class ActivityWizardCubit extends WizardCubit {
   void next({
     bool warningConfirmed = false,
     SaveRecurring? saveRecurring,
-  }) {
+  }) async {
     if (state.isLastStep) {
       return emit(
-        _saveActivity(
+        await _saveActivity(
           editActivityCubit.state,
           beforeNowWarningConfirmed:
               warningConfirmed || !state.steps.contains(WizardStep.advance),
@@ -141,29 +141,31 @@ class ActivityWizardCubit extends WizardCubit {
     emit(state.copyWith(newStep: (state.step + 1)));
   }
 
-  WizardState _saveActivity(
+  Future<WizardState> _saveActivity(
     EditActivityState editState, {
     required bool beforeNowWarningConfirmed,
     required bool conflictWarningConfirmed,
     required SaveRecurring? saveRecurring,
-  }) {
+  }) async {
     if (editState is StoredActivityState && editState.unchanged) {
       return state.saveSucess();
     }
+
+    final activity = editState.activityToStore();
 
     final errors = editState.saveErrors(
       beforeNowWarningConfirmed: beforeNowWarningConfirmed,
       conflictWarningConfirmed: conflictWarningConfirmed,
       saveReccuringDefined: saveRecurring != null,
       allowPassedStartTime: allowPassedStartTime,
-      activitiesState: activitiesBloc.state,
+      activities: await activitiesBloc.activityRepository.allBetween(
+          activity.startTime.onlyDays(),
+          activity.startTime.onlyDays().nextDay()),
       now: clockBloc.state,
     );
     if (errors.isNotEmpty) {
       return state.failSave(errors);
     }
-
-    final activity = editState.activityToStore();
 
     if (editState is UnstoredActivityState) {
       activitiesBloc.add(AddActivity(activity));
@@ -196,7 +198,7 @@ extension SaveErrorExtension on EditActivityState {
     required bool saveReccuringDefined,
     required bool allowPassedStartTime,
     required DateTime now,
-    required ActivitiesState activitiesState,
+    required Iterable<Activity> activities,
   }) =>
       {
         if (!hasTitleOrImage) SaveError.noTitleOrImage,
@@ -211,7 +213,7 @@ extension SaveErrorExtension on EditActivityState {
         if (hasStartTime &&
             !conflictWarningConfirmed &&
             !unchangedTime &&
-            activitiesState.anyConflictWith(activityToStore()))
+            activities.anyConflictWith(activityToStore()))
           SaveError.unconfirmedActivityConflict,
         if (activity.isRecurring &&
             hasEndDate &&
