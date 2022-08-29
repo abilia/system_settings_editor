@@ -208,7 +208,7 @@ supportPersons	Support persons	Stödpersoner	Støttepersoner	Ondersteuningsperso
 ### Alarm							
 selectAlarmType	Select alarm	Ange larm	Vælg alarm	Alarm selecteren	Valitse hälytys	Alarm auswählen	Angi alarm
 alarmAndVibration	Alarm + vibration	Larm + vibration	Alarm + vibration	Alarm + trilfunctie	Hälytys + värinä	Alarm + Vibration	Alarm + Vibrasjon
-vibrationIfAvailable	Vibration (if available)	Vibration (om tillgängligt)	Vibration (hvis tilgængelig)	Trilfunctie (indien beschikbaar)	Värinä (jos käytettävissä)	Vibration (falls verfügbar)	Vibrasjon (om tilgjengelig)
+vibrationIfAvailable	Vibration (if available)	Vibration (om tillgängligt)	Vibration (hvis tilgængelig)	Trilfunctie (indien beschikbaar)	Värinä (jos käytettävissä)	Vibration (falls verfügbar)	Vibrasjon (hvis tilgjengelig)
 noAlarm	No alarm	Inget larm	Ingen alarm	Geen alarm	Ei hälytystä	Kein Alarm	Ingen alarm
 silentAlarm	Silent alarm	Tyst larm	Stille alarm	Stil alarm	Äänetön hälytys	Stiller Alarm	Stille alarm
 alarmOnlyAtStartTime	Alarm only at Start time	Larm endast vid starttid	Kun alarm ved starttidspunkt	Alarm alleen op begintijd	Vain hälytys alkamisaikaan	Alarm nur zur Startzeit	Alarm kun på starttid
@@ -477,7 +477,7 @@ quickSettingsMenu	Quick settings	Snabb-\ninställningar	Hurtig-\nindstillinger	S
 allPhotos	All photos	Alla foton	Alle fotos	Alle foto's	Kaikki kuvat	Alle Fotos	Alle foto
 addToPhotoCalendarQuestion	Do you want to add this photo to Photo-calendar?	Vill du lägga in detta foto i fotokalendern?	Ønsker du at tilføje dette foto til din fotokalender?	Wilt u deze foto toevoegen aan de fotokalender?	Haluatko lisätä tämän kuvan valokuvakalenteriin?	Möchten Sie dieses Foto dem Fotokalender hinzufügen?	Vil du legge inn dette foto i fotokalenderen?
 removeFromPhotoCalendarQuestion	Do you want to remove this photo from Photo-calendar?	Vill du ta bort detta foto från fotokalendern?	Ønsker du at fjerne dette foto fra din fotokalender?	Wilt u deze foto uit de fotokalender verwijderen?	Haluatko poistaa tämän kuvan valokuvakalenterista?	Möchten Sie dieses Foto aus dem Fotokalender entfernen?	Vil du slette dette foto fra fotokalenderen?
-remove	Remove	Ta bort	Slet	Verwijderen	Poista	Löschen	Slett
+remove	Remove	Ta bort	Slet	Verwijderen	Poista	Löschen	Fjern
 doYouWantToDeleteThisPhoto	Are you sure you want to delete this photo?	Är du säker på att du vill ta bort detta foto?	Er du sikker på, du ønsker at slette dette foto?	Weet u zeker dat u deze foto wilt verwijderen?	Haluatko varmasti poistaa tämän kuvan?	Sind Sie sicher, dass Sie dieses Foto löschen möchten?	Er du sikker på at du vil slette dette foto?
 							
 ### Starter set							

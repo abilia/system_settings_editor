@@ -88,7 +88,7 @@ class AbiliaLogoWithReset extends StatelessWidget {
           ),
         );
         if (reset == true) {
-          voicesCubit.deleteAllVoices();
+          voicesCubit.resetSpeechSettings();
           startupCubit.resetStartGuideDone();
         }
       },

@@ -8086,7 +8086,7 @@ class NB extends Translated {
   final String alarmAndVibration = 'Alarm + Vibrasjon';
 
   @override
-  final String vibrationIfAvailable = 'Vibrasjon (om tilgjengelig)';
+  final String vibrationIfAvailable = 'Vibrasjon (hvis tilgjengelig)';
 
   @override
   final String noAlarm = 'Ingen alarm';
@@ -8770,7 +8770,7 @@ class NB extends Translated {
       'Vil du slette dette foto fra fotokalenderen?';
 
   @override
-  final String remove = 'Slett';
+  final String remove = 'Fjern';
 
   @override
   final String doYouWantToDeleteThisPhoto =
