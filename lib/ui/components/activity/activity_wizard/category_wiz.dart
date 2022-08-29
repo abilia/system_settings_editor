@@ -32,15 +32,15 @@ class _CategoryWidget extends StatelessWidget {
         CategoryRadioField(
           category: Category.left,
           groupValue: category,
-          onChanged: (value) =>
-              editActivityCubit.replaceActivity(activity.copyWith(category: value)),
+          onChanged: (value) => editActivityCubit
+              .replaceActivity(activity.copyWith(category: value)),
         ),
         SizedBox(height: layout.formPadding.verticalItemDistance),
         CategoryRadioField(
           category: Category.right,
           groupValue: category,
-          onChanged: (value) =>
-              editActivityCubit.replaceActivity(activity.copyWith(category: value)),
+          onChanged: (value) => editActivityCubit
+              .replaceActivity(activity.copyWith(category: value)),
         ),
       ],
     );
