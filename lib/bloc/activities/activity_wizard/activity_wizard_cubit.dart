@@ -111,7 +111,7 @@ class ActivityWizardCubit extends WizardCubit {
   }) : super(WizardState(0, const [WizardStep.advance]));
 
   @override
-  void next({
+  Future<void> next({
     bool warningConfirmed = false,
     SaveRecurring? saveRecurring,
   }) async {

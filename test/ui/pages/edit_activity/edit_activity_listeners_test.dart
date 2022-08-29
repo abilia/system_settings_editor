@@ -12,6 +12,7 @@ import 'package:timezone/data/latest.dart' as tz;
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
@@ -28,6 +29,7 @@ void main() {
   final okButtonFinder = find.byType(OkButton);
 
   late MockActivitiesBloc mockActivitiesBloc;
+  late MockActivityRepository mockActivityRepository;
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
   setUpAll(() {
@@ -41,6 +43,11 @@ void main() {
     when(() => mockActivitiesBloc.state).thenReturn(ActivitiesLoaded(const []));
     when(() => mockActivitiesBloc.stream)
         .thenAnswer((_) => const Stream.empty());
+    mockActivityRepository = MockActivityRepository();
+    when(() => mockActivityRepository.allBetween(any(), any()))
+        .thenAnswer((_) => Future.value([]));
+    when(() => mockActivitiesBloc.activityRepository)
+        .thenReturn(mockActivityRepository);
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
       const MemoplannerSettingsLoaded(
@@ -545,8 +552,8 @@ void main() {
       startTime: startTime,
       duration: 30.minutes(),
     );
-    when(() => mockActivitiesBloc.state)
-        .thenReturn(ActivitiesLoaded([conflicting]));
+    when(() => mockActivityRepository.allBetween(any(), any()))
+        .thenAnswer((_) => Future.value([conflicting]));
     await tester.pumpWidget(createEditActivityPage(newActivity: true));
     await tester.pumpAndSettle();
 
@@ -611,8 +618,8 @@ void main() {
       startTime: startTime.subtract(10.minutes()),
       duration: 30.minutes(),
     );
-    when(() => mockActivitiesBloc.state)
-        .thenReturn(ActivitiesLoaded([conflictingActivity]));
+    when(() => mockActivityRepository.allBetween(any(), any()))
+        .thenAnswer((_) => Future.value([conflictingActivity]));
     await tester.pumpWidget(createEditActivityPage(newActivity: true));
     await tester.pumpAndSettle();
 

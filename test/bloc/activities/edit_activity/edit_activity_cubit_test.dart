@@ -271,7 +271,7 @@ void main() {
       ),
     );
     // Act
-    wizCubit.next();
+    await wizCubit.next();
     // Assert
     expect(
       wizCubit.state,
