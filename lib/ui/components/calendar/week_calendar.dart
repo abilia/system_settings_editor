@@ -152,9 +152,7 @@ class WeekCalenderHeadingContent extends StatelessWidget {
         ? AbiliaColors.red
         : selected
             ? AbiliaColors.black
-            : occasion.isPast
-                ? AbiliaColors.black80
-                : dayTheme.borderColor ?? dayTheme.color;
+            : dayTheme.borderColor ?? dayTheme.color;
     final borderWidth = selected || occasion.isCurrent
         ? wLayout.selectedDay.dayColumnBorderWidth
         : wLayout.notSelectedDay.dayColumnBorderWidth;
@@ -200,7 +198,7 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                 top: borderWidth,
               ),
               decoration: BoxDecoration(
-                color: occasion.isPast ? AbiliaColors.black80 : dayTheme.color,
+                color: dayTheme.color,
                 borderRadius: BorderRadius.only(
                   topLeft: innerRadius,
                   topRight: innerRadius,

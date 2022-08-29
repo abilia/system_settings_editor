@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
 
 import 'package:seagull/ui/all.dart';
 
@@ -11,11 +12,13 @@ void main() {
     // Arrange
     final voiceDb = MockVoiceDb();
     when(() => voiceDb.textToSpeech).thenReturn(true);
-    when(() => voiceDb.voice).thenReturn('');
-    when(() => voiceDb.speakEveryWord).thenReturn(false);
-    when(() => voiceDb.speechRate).thenReturn(100);
+    when(() => voiceDb.voice).thenReturn('test voice');
+    when(() => voiceDb.speakEveryWord).thenReturn(true);
+    when(() => voiceDb.speechRate).thenReturn(0);
     when(() => voiceDb.setVoice(any())).thenAnswer((_) async {});
     when(() => voiceDb.setTextToSpeech(any())).thenAnswer((_) async {});
+    when(() => voiceDb.setSpeakEveryWord(any())).thenAnswer((_) async {});
+    when(() => voiceDb.setSpeechRate(any())).thenAnswer((_) async {});
     final speechSettingsCubit = SpeechSettingsCubit(
       voiceDb: voiceDb,
       acapelaTts: FakeTtsHandler(),
@@ -67,6 +70,8 @@ void main() {
     // Assert
     verify(() => voiceRepository.deleteAllVoices()).called(1);
     verify(() => voiceDb.setVoice('')).called(1);
+    verify(() => voiceDb.setSpeakEveryWord(false)).called(1);
+    verify(() => voiceDb.setSpeechRate(VoiceDb.defaultSpeechRate)).called(1);
     verify(() => voiceDb.setTextToSpeech(false)).called(1);
     verify(() => deviceRepository.setStartGuideCompleted(false)).called(1);
   }, skip: !Config.isMP);
