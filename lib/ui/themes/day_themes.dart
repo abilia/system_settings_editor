@@ -7,7 +7,10 @@ class DayTheme {
   final Color color, secondaryColor, monthColor, monthSurfaceColor;
   final Color? borderColor;
   final bool isColor, isLight;
+
   Color? get dayColor => isColor ? color : null;
+
+  bool get showDivider => this == _white;
 
   DayTheme._(
     ThemeData theme,
