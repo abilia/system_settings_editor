@@ -92,6 +92,7 @@ void main() {
             WizardStep.image,
             WizardStep.date,
             WizardStep.time,
+            WizardStep.category,
             WizardStep.checkable,
             WizardStep.availableFor,
             WizardStep.recurring,
@@ -1761,6 +1762,7 @@ void main() {
             WizardStep.image,
             WizardStep.date,
             WizardStep.time,
+            WizardStep.category,
             WizardStep.checkable,
             WizardStep.availableFor,
             WizardStep.recurring,
@@ -1786,10 +1788,10 @@ void main() {
           mode: AddActivityMode.stepByStep,
           general: GeneralAddActivitySettings(addRecurringActivity: false),
           stepByStep: StepByStepSettings(
-            datePicker: false,
+            date: false,
             image: false,
             title: false,
-            type: true,
+            fullDay: true,
             availability: false,
             checkable: false,
             removeAfter: true,
@@ -1805,8 +1807,9 @@ void main() {
         WizardState(
           0,
           const [
-            WizardStep.type,
+            WizardStep.fullDay,
             WizardStep.time,
+            WizardStep.category,
             WizardStep.deleteAfter,
             WizardStep.alarm,
             WizardStep.reminder,
@@ -1836,10 +1839,10 @@ void main() {
           ),
           stepByStep: StepByStepSettings(
             template: false,
-            datePicker: false,
+            date: false,
             image: false,
             title: true,
-            type: false,
+            fullDay: false,
             availability: false,
             checkable: false,
             removeAfter: false,
@@ -1858,6 +1861,7 @@ void main() {
           const [
             WizardStep.title,
             WizardStep.time,
+            WizardStep.category,
           ],
         ),
       );
@@ -1870,10 +1874,10 @@ void main() {
       ),
       stepByStep: StepByStepSettings(
         template: true,
-        datePicker: true,
+        date: true,
         image: true,
         title: true,
-        type: true,
+        fullDay: true,
         availability: true,
         checkable: true,
         removeAfter: true,
@@ -1888,8 +1892,9 @@ void main() {
       WizardStep.title,
       WizardStep.image,
       WizardStep.date,
-      WizardStep.type,
+      WizardStep.fullDay,
       WizardStep.time,
+      WizardStep.category,
       WizardStep.checkable,
       WizardStep.deleteAfter,
       WizardStep.availableFor,
@@ -1967,7 +1972,7 @@ void main() {
 
       wizCubit.next(); // image
       wizCubit.next(); // date
-      wizCubit.next(); // type
+      wizCubit.next(); // full day
       wizCubit.next(); // time ---> error
 
       expect(
@@ -1984,6 +1989,7 @@ void main() {
           startTime: const TimeOfDay(hour: 4, minute: 4));
 
       wizCubit.next(); // time
+      wizCubit.next(); // category
       wizCubit.next(); // alarm,
       wizCubit.next(); // checkable,
       wizCubit.next(); // deleteAfter,
@@ -1995,7 +2001,7 @@ void main() {
       expect(
         wizCubit.state,
         WizardState(
-          11,
+          12,
           allWizStep,
           sucessfullSave: true,
         ),
@@ -2034,7 +2040,7 @@ void main() {
             WizardStep.title,
             WizardStep.image,
             WizardStep.date,
-            WizardStep.type,
+            WizardStep.fullDay,
             WizardStep.checkable,
             WizardStep.deleteAfter,
             WizardStep.availableFor,
@@ -2105,10 +2111,10 @@ void main() {
           ),
           stepByStep: StepByStepSettings(
             template: false,
-            datePicker: false,
+            date: false,
             image: false,
             title: false,
-            type: false,
+            fullDay: false,
             availability: false,
             checkable: false,
             removeAfter: false,
@@ -2129,12 +2135,13 @@ void main() {
         emitsInOrder([
           WizardState(
             0,
-            const [WizardStep.time, WizardStep.recurring],
+            const [WizardStep.time, WizardStep.category, WizardStep.recurring],
           ),
           WizardState(
             0,
             const [
               WizardStep.time,
+              WizardStep.category,
               WizardStep.recurring,
               WizardStep.recursWeekly
             ],
@@ -2145,13 +2152,15 @@ void main() {
       wizCubit.next();
       wizCubit.next();
       wizCubit.next();
+      wizCubit.next();
 
       expect(
         wizCubit.state,
         WizardState(
-          2,
+          3,
           const [
             WizardStep.time,
+            WizardStep.category,
             WizardStep.recurring,
             WizardStep.recursWeekly
           ],
@@ -2186,8 +2195,8 @@ void main() {
             template: false,
             title: false,
             image: false,
-            datePicker: false,
-            type: false,
+            date: false,
+            fullDay: false,
             availability: false,
             checkable: false,
             removeAfter: false,
@@ -2222,6 +2231,7 @@ void main() {
             0,
             const [
               WizardStep.time,
+              WizardStep.category,
               WizardStep.recurring,
             ],
           ),
@@ -2229,6 +2239,7 @@ void main() {
             0,
             const [
               WizardStep.time,
+              WizardStep.category,
               WizardStep.recurring,
               WizardStep.recursWeekly,
               WizardStep.endDate,
@@ -2241,13 +2252,15 @@ void main() {
       wizCubit.next();
       wizCubit.next();
       wizCubit.next();
+      wizCubit.next();
 
       expect(
         wizCubit.state,
         WizardState(
-          3,
+          4,
           const [
             WizardStep.time,
+            WizardStep.category,
             WizardStep.recurring,
             WizardStep.recursWeekly,
             WizardStep.endDate,

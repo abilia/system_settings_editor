@@ -1,10 +1,13 @@
 _id_	en	sv	da	nl	fi	de	nb
+allDay	All day						
 endDateNotSpecifiedErrorMessage	You must enter an end date.	Du måste ange ett slutdatum.					
 showAlarmOnlyAtStartTime	Show alarm only at start time
 showSpeechAtAlarm	Show speech at alarm
 showReminders	Show reminders
 showSelectEndDate	Show select end date
 recurring	Recurring
+selectAllDay	Select all day						
+selectCategory	Select category						
 onlyActivateScreensaverDuringNight	Only activate screensaver during night						
 menuItemsDisabled	all menu items are disabled						
 aboutMemoplanner	About						

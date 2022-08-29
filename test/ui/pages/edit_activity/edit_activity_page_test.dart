@@ -2986,6 +2986,47 @@ text''';
       // Assert -- Extra tab hidden
       expect(find.byIcon(AbiliaIcons.attachment), findsNothing);
     });
+
+    testWidgets('Full day off', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivity: AddActivitySettings(
+              editActivity: EditActivitySettings(
+                fullDay: false,
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const ObjectKey(TestKey.fullDaySwitch)), findsNothing);
+    });
+
+    testWidgets('Activity is full day and full day is off shows no heading',
+        (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivity: AddActivitySettings(
+              editActivity: EditActivitySettings(
+                fullDay: false,
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createEditActivityPage(
+          givenActivity: Activity.createNew(
+              title: 'Title', startTime: startTime, fullDay: true)));
+      await tester.pumpAndSettle();
+
+      expect(find.text(translate.time), findsNothing);
+    });
   });
 
   group('tts', () {

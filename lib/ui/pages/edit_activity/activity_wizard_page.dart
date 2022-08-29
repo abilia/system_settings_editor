@@ -44,8 +44,10 @@ class ActivityWizardPage extends StatelessWidget {
         return const AvailableForWiz();
       case WizardStep.checkable:
         return const CheckableWiz();
-      case WizardStep.type:
-        return const TypeWiz();
+      case WizardStep.fullDay:
+        return const FullDayWiz();
+      case WizardStep.category:
+        return const CategoryWiz();
       case WizardStep.recurring:
         return const RecurringWiz();
       case WizardStep.deleteAfter:
