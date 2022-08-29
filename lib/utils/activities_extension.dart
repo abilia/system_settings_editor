@@ -31,4 +31,3 @@ extension ActivitiesExtensions on Iterable<Activity> {
     return false;
   }
 }
-
