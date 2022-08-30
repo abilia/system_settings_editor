@@ -13,9 +13,8 @@ class _VoicesPageState extends State<VoicesPage> {
   @override
   void initState() {
     super.initState();
-    final languageCode = context.read<LocaleCubit>().state.languageCode;
-    if (context.read<VoicesCubit>().state.availableIn(languageCode).isEmpty) {
-      context.read<VoicesCubit>().readAvailableVoices(languageCode);
+    if (context.read<VoicesCubit>().state.available.isEmpty) {
+      context.read<VoicesCubit>().readAvailableVoices();
     }
   }
 
@@ -31,7 +30,6 @@ class _VoicesPageState extends State<VoicesPage> {
         iconData: AbiliaIcons.speakText,
       ),
       body: Builder(builder: (context) {
-        final languageCode = context.read<LocaleCubit>().state.languageCode;
         final voicesState = context.watch<VoicesCubit>().state;
         final selectedVoice =
             context.select((SpeechSettingsCubit c) => c.state.voice);
@@ -45,9 +43,7 @@ class _VoicesPageState extends State<VoicesPage> {
                   controller: scrollController,
                   child: ListView(
                     controller: scrollController,
-                    children: voicesState
-                        .availableIn(languageCode)
-                        .map((VoiceData voice) {
+                    children: voicesState.available.map((VoiceData voice) {
                       final name = voice.name;
                       return _VoiceRow(
                         voice: voice,
