@@ -13,7 +13,7 @@ abstract class TtsInterface {
   }) async {
     try {
       if (Config.isMP) {
-        return AcapelaTtsHandler.implementation(
+        return await AcapelaTtsHandler.implementation(
           voiceDb: voiceDb,
           voicesPath: voicesPath,
         );
