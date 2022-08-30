@@ -958,6 +958,8 @@ void main() {
         );
         when(() => mockActivityDb.getAllNonDeleted())
             .thenAnswer((_) => Future.value([activity, activity2]));
+        when(() => mockActivityDb.getAllBetween(any(), any()))
+            .thenAnswer((_) => Future.value([activity, activity2]));
 
         when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
           (_) => Future.value(
