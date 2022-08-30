@@ -35,9 +35,10 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
   }
 
   void _initialize() async {
+    final activities = await activityRepository.allBetween(
+        state.selected.day, state.selected.day.nextDay());
     emit(_stateFrom(
-      await activityRepository.allBetween(
-          state.selected.day, state.selected.day.nextDay()),
+      activities,
       clockBloc.state,
       state.selected,
     ));
@@ -51,9 +52,10 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
 
   void _updateState() async {
     final day = clockBloc.state.onlyDays();
+    final activities = await activityRepository.allBetween(day, day.nextDay());
     emit(
       _stateFrom(
-        await activityRepository.allBetween(day, day.nextDay()),
+        activities,
         clockBloc.state,
         state.selected,
       ),

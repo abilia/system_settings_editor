@@ -22,6 +22,7 @@ void main() {
   late MockActivityDb mockActivityDb;
   late MockGenericDb mockGenericDb;
   late MockMemoplannerSettingBloc mockMemoplannerSettingBloc;
+  late MockActivityRepository mockActivityRepository;
   late MockActivitiesBloc mockActivitiesBloc;
   final startTimeOne = DateTime(2122, 06, 06, 06, 00);
   final startTimeTwo = DateTime(2122, 06, 06, 06, 02);
@@ -64,6 +65,7 @@ void main() {
   setUp(() async {
     await initializeDateFormatting();
     mockMemoplannerSettingBloc = MockMemoplannerSettingBloc();
+
     when(() => mockMemoplannerSettingBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(MemoplannerSettings(
             alarm: AlarmSettings(showOngoingActivityInFullScreen: true))));
@@ -74,8 +76,6 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(() => mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(fakeActivities));
-    when(() => mockActivityDb.getAllBetween(any(), any()))
-        .thenAnswer((_) => Future.value(fakeActivities));
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value([]));
@@ -83,6 +83,10 @@ void main() {
     mockActivitiesBloc = MockActivitiesBloc();
     clockBloc = ClockBloc.fixed(initialMinutes);
     mockTicker = StreamController<DateTime>();
+
+    mockActivityRepository = MockActivityRepository();
+    when(() => mockActivityRepository.allBetween(any(), any()))
+        .thenAnswer((_) => Future.value(fakeActivities));
 
     final expected = ActivitiesLoaded(fakeActivities);
 
@@ -116,50 +120,53 @@ void main() {
   });
 
   Widget wrapWithMaterialApp(Widget widget) => FakeAuthenticatedBlocsProvider(
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider<ActivitiesBloc>(
-              create: (context) => mockActivitiesBloc,
-            ),
-            BlocProvider<ClockBloc>(
-              create: (context) => clockBloc,
-            ),
-            BlocProvider<SpeechSettingsCubit>(
-              create: (context) => FakeSpeechSettingsCubit(),
-            ),
-            BlocProvider<MemoplannerSettingBloc>(
-              create: (context) => mockMemoplannerSettingBloc,
-            ),
-            BlocProvider<TimepillarCubit>(
-              create: (context) => FakeTimepillarCubit(),
-            ),
-            BlocProvider<AlarmCubit>(
-              create: (context) => AlarmCubit(
-                selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
-                activitiesBloc: mockActivitiesBloc,
-                clockBloc: clockBloc,
-                settingsBloc: mockMemoplannerSettingBloc,
-                timerAlarm: const Stream.empty(),
+        child: RepositoryProvider(
+          create: (_) => mockActivitiesBloc,
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<ActivitiesBloc>(
+                create: (context) => mockActivitiesBloc,
               ),
+              BlocProvider<ClockBloc>(
+                create: (context) => clockBloc,
+              ),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => FakeSpeechSettingsCubit(),
+              ),
+              BlocProvider<MemoplannerSettingBloc>(
+                create: (context) => mockMemoplannerSettingBloc,
+              ),
+              BlocProvider<TimepillarCubit>(
+                create: (context) => FakeTimepillarCubit(),
+              ),
+              BlocProvider<AlarmCubit>(
+                create: (context) => AlarmCubit(
+                  selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+                  activitiesBloc: mockActivitiesBloc,
+                  clockBloc: clockBloc,
+                  settingsBloc: mockMemoplannerSettingBloc,
+                  timerAlarm: const Stream.empty(),
+                ),
+              ),
+              BlocProvider<TimepillarMeasuresCubit>(
+                create: (context) => FakeTimepillarMeasuresCubit(),
+              ),
+              BlocProvider<TouchDetectionCubit>(
+                create: (context) => TouchDetectionCubit(),
+              ),
+              BlocProvider<DayPartCubit>(
+                create: (context) => FakeDayPartCubit(),
+              ),
+            ],
+            child: MaterialApp(
+              supportedLocales: Translator.supportedLocals,
+              localizationsDelegates: const [Translator.delegate],
+              localeResolutionCallback: (locale, supportedLocales) =>
+                  supportedLocales.firstWhere(
+                      (l) => l.languageCode == locale?.languageCode,
+                      orElse: () => supportedLocales.first),
+              home: Material(child: widget),
             ),
-            BlocProvider<TimepillarMeasuresCubit>(
-              create: (context) => FakeTimepillarMeasuresCubit(),
-            ),
-            BlocProvider<TouchDetectionCubit>(
-              create: (context) => TouchDetectionCubit(),
-            ),
-            BlocProvider<DayPartCubit>(
-              create: (context) => FakeDayPartCubit(),
-            ),
-          ],
-          child: MaterialApp(
-            supportedLocales: Translator.supportedLocals,
-            localizationsDelegates: const [Translator.delegate],
-            localeResolutionCallback: (locale, supportedLocales) =>
-                supportedLocales.firstWhere(
-                    (l) => l.languageCode == locale?.languageCode,
-                    orElse: () => supportedLocales.first),
-            home: Material(child: widget),
           ),
         ),
       );
