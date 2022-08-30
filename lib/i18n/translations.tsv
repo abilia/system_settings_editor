@@ -140,6 +140,8 @@ timer	Timer	Timer	Timer	Tijdopnemer	Ajastin	Timer	Timer
 timeIsUp	Time is up	Tiden är slut	Tiden er gået	De tijd is om	Aika loppui	Die Zeit ist abgelaufen	Tiden er slutt
 timers	Timers	Timers	Timere	Timers	Ajastimet	Timer	Timere
 editTimer	Edit timer	Ändra timer	Rediger timer	Timer bewerken	Muokkaa ajastin	Timer bearbeiten	Endre timere
+newTimerTemplate	New timer template	Ny timer mall					
+editTimerTemplate	Edit timer template	Ändra timer mall					
 							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
@@ -157,6 +159,8 @@ newText	New	Ny	Ny	Nieuw	Uusi	Neu	Ny
 fromTemplate	From template	Från mall	Fra skabelon	Uit sjabloon	Mallit	Von vorlage	Fra malen
 newActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuw activiteit	Uusi aktiviteettia	Neu Aktivität	Ny aktivitet
 editActivity	Edit activity	Ändra aktivitet	Rediger aktivitet	Activiteit bewerken	Muokkaa aktiviteettia	Aktivität bearbeiten	Endre aktivitet
+newActivityTemplate	New activity template	Ny aktivitetsmall					
+editActivityTemplate	Edit activity template	Ändra aktivitetsmall					
 category	Category	Kategori	Kategori	Categorie	Kategoria	Kategorie	Kategori
 checkable	Checkable	Kvitterbar	Kvitterbar	Afvinkbaar	Tarkistettava	Kontrollabfrage	Kvitterbar
 notCheckable	Not checkable	Inte kvitterbar	Ikke kvitterbar	Niet afvinkbaar	Ei-tarkistettava	Nicht kontrollabfrage	Ikke kvitterbar

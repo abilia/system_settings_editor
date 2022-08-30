@@ -37,7 +37,7 @@ class BasicTemplatesPage extends StatelessWidget {
               onTapEdit: (context, sortables) => _onEditTemplateTimer(
                 context,
                 sortables,
-                translate.editTimer,
+                translate.editTimerTemplate,
               ),
             ),
           ],
@@ -50,7 +50,7 @@ class BasicTemplatesPage extends StatelessWidget {
           onNewTimerTemplate: (context, sortables) => _onEditTemplateTimer(
             context,
             sortables,
-            translate.newTimer,
+            translate.newTimerTemplate,
           ),
         ),
       ),
