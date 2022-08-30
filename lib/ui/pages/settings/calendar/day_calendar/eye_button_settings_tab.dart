@@ -119,18 +119,6 @@ class EyeButtonSettingsTab extends StatelessWidget {
   Widget _buildSelector(String title, List<SelectorItem> items) {
     return Column(
       children: [
-        Center(
-          child: Tts(
-            child: Text(
-              title,
-              style: (bodyText2).copyWith(
-                color: AbiliaColors.black75,
-              ),
-            ),
-          ).pad(
-            layout.templates.m1.onlyHorizontal,
-          ),
-        ),
         Padding(
           padding: EdgeInsets.only(
             left: layout.templates.m1.left,
@@ -138,6 +126,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
             top: layout.formPadding.verticalItemDistance,
           ),
           child: Selector(
+            heading: title,
             groupValue: 0,
             items: items,
           ),
