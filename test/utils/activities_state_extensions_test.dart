@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -15,7 +14,7 @@ void main() {
           Activity.createNew(title: 'old', startTime: atNine);
       final newActivity = Activity.createNew(title: 'new', startTime: atNine);
       expect(
-        ActivitiesLoaded([storedActivity]).anyConflictWith(newActivity),
+        [storedActivity].anyConflictWith(newActivity),
         isTrue,
       );
     });
@@ -30,7 +29,7 @@ void main() {
           Activity.createNew(title: 'old', startTime: atNine.add(1.minutes()));
       final newActivity = Activity.createNew(title: 'new', startTime: atNine);
       expect(
-        ActivitiesLoaded([storedActivity]).anyConflictWith(newActivity),
+        [storedActivity].anyConflictWith(newActivity),
         isFalse,
       );
     });
@@ -50,7 +49,7 @@ void main() {
         startTime: atNine,
       );
       expect(
-        ActivitiesLoaded([storedActivity]).anyConflictWith(newActivity),
+        [storedActivity].anyConflictWith(newActivity),
         isTrue,
       );
     });
@@ -70,7 +69,7 @@ void main() {
         startTime: atNine.add(2.hours()),
       );
       expect(
-        ActivitiesLoaded([storedActivity]).anyConflictWith(newActivity),
+        [storedActivity].anyConflictWith(newActivity),
         isFalse,
       );
     });
@@ -89,7 +88,7 @@ void main() {
         duration: 3.hours(),
       );
       expect(
-        ActivitiesLoaded([storedActivity]).anyConflictWith(newActivity),
+        [storedActivity].anyConflictWith(newActivity),
         isTrue,
       );
     });
@@ -110,7 +109,7 @@ void main() {
         duration: 15.minutes(),
       );
       expect(
-        ActivitiesLoaded([storedActivity]).anyConflictWith(newActivity),
+        [storedActivity].anyConflictWith(newActivity),
         isTrue,
       );
     });
@@ -130,7 +129,7 @@ void main() {
         duration: 5.minutes(),
       );
       expect(
-        ActivitiesLoaded([storedActivity]).anyConflictWith(newActivity),
+        [storedActivity].anyConflictWith(newActivity),
         isFalse,
       );
     });
@@ -150,7 +149,7 @@ void main() {
         startTime: atNine.add(3.minutes()),
       );
       expect(
-        ActivitiesLoaded([storedActivity]).anyConflictWith(newActivity),
+        [storedActivity].anyConflictWith(newActivity),
         isTrue,
       );
     });
@@ -166,7 +165,7 @@ void main() {
       );
       final newActivity = Activity.createNew(title: 'new', startTime: atNine);
       expect(
-        ActivitiesLoaded([storedActivity]).anyConflictWith(newActivity),
+        [storedActivity].anyConflictWith(newActivity),
         isFalse,
       );
     });
@@ -182,7 +181,7 @@ void main() {
         fullDay: true,
       );
       expect(
-        ActivitiesLoaded([storedActivity]).anyConflictWith(newActivity),
+        [storedActivity].anyConflictWith(newActivity),
         isFalse,
       );
     });
@@ -198,7 +197,7 @@ void main() {
         recurs: Recurs.everyDay,
       );
       expect(
-        ActivitiesLoaded([storedActivity]).anyConflictWith(newActivity),
+        [storedActivity].anyConflictWith(newActivity),
         isFalse,
       );
     });
@@ -219,7 +218,7 @@ void main() {
         ),
       );
       expect(
-        ActivitiesLoaded([storedActivity]).anyConflictWith(edited),
+        [storedActivity].anyConflictWith(edited),
         isFalse,
       );
     });
@@ -241,7 +240,7 @@ void main() {
         startTime: atNine.subtract(1.hours()),
       );
       expect(
-        ActivitiesLoaded([storedActivity]).anyConflictWith(newActivity),
+        [storedActivity].anyConflictWith(newActivity),
         isFalse,
       );
     });
@@ -266,7 +265,7 @@ void main() {
         startTime: atNine,
       );
       expect(
-        ActivitiesLoaded([storedActivity]).anyConflictWith(newActivity),
+        [storedActivity].anyConflictWith(newActivity),
         isTrue,
       );
     });
@@ -290,7 +289,7 @@ void main() {
         duration: 13.hours(),
       );
       expect(
-        ActivitiesLoaded([storedActivity]).anyConflictWith(newActivity),
+        [storedActivity].anyConflictWith(newActivity),
         isTrue,
       );
     });
