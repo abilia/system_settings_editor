@@ -16,10 +16,9 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
     required AlarmCubit alarmCubit,
     required ActivityDay startingActivity,
   }) : super(
-          _stateFrom(
-            [],
-            clockBloc.state,
-            startingActivity,
+          FullScreenActivityState(
+            eventsList: const [],
+            selected: startingActivity,
           ),
         ) {
     _activityBlocSubscription = activitiesBloc.stream.listen(
