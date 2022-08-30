@@ -33,7 +33,7 @@ void main() {
   setUpAll(registerFallbackValues);
   setUp(() async {
     activitiesBloc = MockActivitiesBloc();
-    when(() => activitiesBloc.state).thenReturn(ActivitiesNotLoaded());
+    when(() => activitiesBloc.state).thenReturn(const ActivitiesNotLoaded());
     activitiesStreamController = StreamController<ActivitiesState>();
     activitiesStream = activitiesStreamController.stream.asBroadcastStream();
     when(() => activitiesBloc.stream)

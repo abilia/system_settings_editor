@@ -51,7 +51,7 @@ void main() {
       ),
       verify: (ActivitiesBloc bloc) => expect(
         bloc.state,
-        ActivitiesNotLoaded(),
+        const ActivitiesNotLoaded(),
       ),
     );
 

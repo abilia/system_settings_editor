@@ -20,6 +20,8 @@ class FakeSyncBloc extends Fake implements SyncBloc {
 
 class FakeAuthenticationBloc extends Fake implements AuthenticationBloc {
   @override
+  void add(AuthenticationEvent event) {}
+  @override
   Stream<AuthenticationState> get stream => const Stream.empty();
   @override
   AuthenticationState get state => const Authenticated(userId: 1);
@@ -47,7 +49,7 @@ class FakeActivitiesBloc extends Fake implements ActivitiesBloc {
   @override
   Stream<ActivitiesState> get stream => const Stream.empty();
   @override
-  ActivitiesState get state => ActivitiesNotLoaded();
+  ActivitiesState get state => const ActivitiesNotLoaded();
   @override
   void add(ActivitiesEvent event) {}
   @override
@@ -138,6 +140,9 @@ class FakeCalendarViewBloc extends Fake implements CalendarViewCubit {
 }
 
 class FakeLicenseCubit extends Fake implements LicenseCubit {
+  @override
+  ValidLicense get state => ValidLicense();
+
   @override
   Stream<LicenseState> get stream => const Stream.empty();
   @override

@@ -42,7 +42,7 @@ class LoginPage extends StatelessWidget {
         listener: (context, state) async {
           if (state is LoginFailure) {
             final cause = state.cause;
-            if (state.licenseError) {
+            if (state.noValidLicense) {
               context.read<LoginCubit>().clearFailure();
               await showViewDialog(
                 context: context,
@@ -52,7 +52,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 wrapWithAuthProviders: false,
               );
-            } else if (state.expiredLicenseWarning) {
+            } else if (state.expiredLicenseMp) {
               final loginCubit = context.read<LoginCubit>();
               final confirmWarningDialog = await showViewDialog(
                 context: context,

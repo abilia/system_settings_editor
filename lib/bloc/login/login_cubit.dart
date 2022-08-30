@@ -61,12 +61,10 @@ class LoginCubit extends Cubit<LoginState> {
       userRepository.persistLoginInfo(loginInfo);
       final licenses = await userRepository.getLicensesFromApi();
       if (licenses.anyValidLicense(clockBloc.state)) {
-        authenticationBloc.add(const LoggedIn());
-        emit(const LoginSucceeded());
+        _loginSuccess();
       } else if (Config.isMP && licenses.anyMemoplannerLicense()) {
         if (confirmExpiredLicense) {
-          authenticationBloc.add(const LoggedIn());
-          emit(const LoginSucceeded());
+          _loginSuccess();
         } else {
           emit(state.failure(cause: LoginFailureCause.licenseExpired));
         }
@@ -87,10 +85,15 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  static const minUsernameLenght = 3;
+  void _loginSuccess() {
+    authenticationBloc.add(const LoggedIn());
+    emit(const LoginSucceeded());
+  }
+
+  static const minUsernameLength = 3;
 
   static bool usernameValid(String username) =>
-      username.length >= minUsernameLenght;
+      username.length >= minUsernameLength;
 
   static bool passwordValid(String password) => password.isNotEmpty;
 }

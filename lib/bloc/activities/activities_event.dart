@@ -11,6 +11,8 @@ abstract class ActivitiesEvent extends Equatable {
 
 class LoadActivities extends ActivitiesEvent {}
 
+class EnableSync extends ActivitiesEvent {}
+
 abstract class ManipulateActivitiesEvent extends ActivitiesEvent {
   const ManipulateActivitiesEvent();
   Activity get activity;

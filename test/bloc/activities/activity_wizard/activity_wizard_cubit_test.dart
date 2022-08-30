@@ -28,7 +28,7 @@ void main() {
   setUp(() {
     mockActivitiesBloc = MockActivitiesBloc();
     when(() => mockActivitiesBloc.state)
-        .thenAnswer((_) => ActivitiesNotLoaded());
+        .thenAnswer((_) => const ActivitiesNotLoaded());
 
     clockBloc = ClockBloc.fixed(nowTime);
   });
@@ -161,7 +161,8 @@ void main() {
       () async {
     // Arrange
     final mockActivitiesBloc = MockActivitiesBloc();
-    when(() => mockActivitiesBloc.state).thenReturn(ActivitiesNotLoaded());
+    when(() => mockActivitiesBloc.state)
+        .thenReturn(const ActivitiesNotLoaded());
 
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aTime,
