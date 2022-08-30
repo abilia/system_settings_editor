@@ -13,9 +13,7 @@ class _VoicesPageState extends State<VoicesPage> {
   @override
   void initState() {
     super.initState();
-    if (context.read<VoicesCubit>().state.available.isEmpty) {
-      context.read<VoicesCubit>().readAvailableVoices();
-    }
+    context.read<VoicesCubit>().readAvailableVoices();
   }
 
   @override
