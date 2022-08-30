@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/ticker.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/alarm_navigator.dart';
 import 'package:seagull/utils/datetime.dart';
@@ -120,8 +120,8 @@ void main() {
   });
 
   Widget wrapWithMaterialApp(Widget widget) => FakeAuthenticatedBlocsProvider(
-        child: RepositoryProvider(
-          create: (_) => mockActivitiesBloc,
+        child: RepositoryProvider<ActivityRepository>(
+          create: (_) => mockActivityRepository,
           child: MultiBlocProvider(
             providers: [
               BlocProvider<ActivitiesBloc>(
