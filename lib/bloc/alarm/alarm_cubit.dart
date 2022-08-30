@@ -20,17 +20,20 @@ class AlarmCubit extends Cubit<NotificationAlarm?> {
   }) : super(null) {
     _selectedNotificationSubscription =
         selectedNotificationSubject.listen((payload) => emit(payload));
-    _clockSubscription = clockBloc.stream.listen((now) => _newMinute(now));
+    _clockSubscription =
+        clockBloc.stream.listen((now) async => await _newMinute(now));
     _timerSubscription = timerAlarm.listen(emit);
   }
 
-  void _newMinute(DateTime now) {
+  Future<void> _newMinute(DateTime now) async {
     if (settingsBloc.state.alarm.disabledUntilDate.isAfter(now)) {
       return;
     }
     final state = activitiesBloc.state;
     if (state is ActivitiesLoaded) {
-      final alarmsAndReminders = state.activities.alarmsOnExactMinute(now);
+      final activities = await activitiesBloc.activityRepository
+          .allBetween(now.previousDay(), now.add(2.hours()));
+      final alarmsAndReminders = activities.alarmsOnExactMinute(now);
       for (final alarm in alarmsAndReminders) {
         emit(alarm);
       }

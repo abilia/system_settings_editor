@@ -28,7 +28,7 @@ void main() {
     final inTwoMin = thisMinute.add(const Duration(minutes: 2));
     final day = thisMinute.onlyDays();
 
-    Future _tick() {
+    Future<void> _tick() {
       final nextMin = clockBloc.state.add(const Duration(minutes: 1));
       mockedTicker.add(nextMin);
       return clockBloc.stream.firstWhere((d) => d == nextMin);
@@ -65,7 +65,7 @@ void main() {
 
     blocTest(
       'Load activities with current alarm shows alarm',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([soonActivity])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -244,7 +244,7 @@ void main() {
         nextMinute.add(const Duration(days: 60)));
     blocTest(
       'Recurring monthly alarms shows',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([recursTheThisDayOfMonth])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -253,17 +253,18 @@ void main() {
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
         timerAlarm: const Stream.empty(),
       ),
-      act: (cubit) {
+      act: (cubit) async {
         activitiesBloc.add(LoadActivities());
-        _tick();
+        await _tick();
       },
+      wait: const Duration(milliseconds: 3000),
       expect: () => [StartAlarm(ActivityDay(recursTheThisDayOfMonth, day))],
     );
 
     final recursTheThisDayOfYear = FakeActivity.reocurrsOnDate(nextMinute);
     blocTest(
       'Recurring yearly alarms shows',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([recursTheThisDayOfYear])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -272,9 +273,9 @@ void main() {
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
         timerAlarm: const Stream.empty(),
       ),
-      act: (cubit) {
+      act: (cubit) async {
         activitiesBloc.add(LoadActivities());
-        _tick();
+        await _tick();
       },
       expect: () => [StartAlarm(ActivityDay(recursTheThisDayOfYear, day))],
     );
@@ -282,7 +283,7 @@ void main() {
     final activityEnding = FakeActivity.ends(nextMinute);
     blocTest(
       'Alarm on EndTime shows',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([activityEnding])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -291,9 +292,9 @@ void main() {
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
         timerAlarm: const Stream.empty(),
       ),
-      act: (cubit) {
+      act: (cubit) async {
         activitiesBloc.add(LoadActivities());
-        _tick();
+        await _tick();
       },
       expect: () => [EndAlarm(ActivityDay(activityEnding, day))],
     );
@@ -315,7 +316,7 @@ void main() {
       act: (cubit) async {
         activitiesBloc.add(LoadActivities());
         await _tick();
-        _tick();
+        await _tick();
       },
       expect: () => [
         StartAlarm(ActivityDay(nextAlarm, day)),
