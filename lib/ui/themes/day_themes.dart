@@ -10,7 +10,8 @@ class DayTheme {
 
   Color? get dayColor => isColor ? color : null;
 
-  bool get showDivider => this == _white;
+  CrossOverStyle get crossOverStyle =>
+      isLight ? CrossOverStyle.lightDefault : CrossOverStyle.darkDefault;
 
   DayTheme._(
     ThemeData theme,

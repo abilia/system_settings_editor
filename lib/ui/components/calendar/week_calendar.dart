@@ -193,9 +193,7 @@ class WeekCalenderHeadingContent extends StatelessWidget {
             ),
             child: Container(
               margin: EdgeInsetsDirectional.only(
-                start: borderWidth,
-                end: borderWidth,
-                top: borderWidth,
+                bottom: occasion.isPast ? borderWidth : 0.0,
               ),
               decoration: BoxDecoration(
                 color: dayTheme.color,
@@ -213,9 +211,7 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                         buildWhen: (previous, current) =>
                             !previous.isAtSameDay(current),
                         builder: (context, now) => CrossOver(
-                          style: dayTheme.isLight
-                              ? CrossOverStyle.lightDefault
-                              : CrossOverStyle.darkDefault,
+                          style: dayTheme.crossOverStyle,
                           applyCross: occasion.isPast,
                           padding: wLayout.crossOverDayHeadingPadding,
                           child: Center(
@@ -238,8 +234,6 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (occasion.isPast && dayTheme.showDivider)
-                    const Divider(endIndent: 0),
                 ],
               ),
             ),
