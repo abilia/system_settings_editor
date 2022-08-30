@@ -3093,7 +3093,7 @@ class DA extends Translated {
   final String dayAndNight = 'Døgnet';
 
   @override
-  final String zoom = 'Zoom';
+  final String zoom = 'Tidslinjens zoom';
 
   @override
   final String small = 'Lille';
