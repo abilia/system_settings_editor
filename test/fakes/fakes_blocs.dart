@@ -141,8 +141,9 @@ class FakeCalendarViewBloc extends Fake implements CalendarViewCubit {
 
 class FakeLicenseCubit extends Fake implements LicenseCubit {
   @override
+  bool get validLicense => true;
+  @override
   ValidLicense get state => ValidLicense();
-
   @override
   Stream<LicenseState> get stream => const Stream.empty();
   @override

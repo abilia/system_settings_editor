@@ -1,6 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -19,6 +18,7 @@ void main() {
   late MockActivityRepository mockActivityRepository;
   late PushCubit mockPushCubit;
   late SyncBloc mockSyncBloc;
+  late LicenseCubit mockLicenseCubit;
 
   setUpAll(registerFallbackValues);
 
@@ -26,17 +26,23 @@ void main() {
     mockActivityRepository = MockActivityRepository();
     mockPushCubit = MockPushCubit();
     mockSyncBloc = MockSyncBloc();
+    mockLicenseCubit = MockLicenseCubit();
+
     when(() => mockPushCubit.stream).thenAnswer((_) => const Stream.empty());
     when(() => mockActivityRepository.load())
         .thenAnswer((_) => Future.value(<Activity>[]));
     when(() => mockActivityRepository.save(any()))
         .thenAnswer((_) => Future.value(true));
 
+    when(() => mockLicenseCubit.stream).thenAnswer((_) => const Stream.empty());
+    when(() => mockLicenseCubit.state).thenAnswer((_) => ValidLicense());
+    when(() => mockLicenseCubit.validLicense).thenAnswer((_) => true);
+
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
       pushCubit: mockPushCubit,
       syncBloc: mockSyncBloc,
-      licenseCubit: FakeLicenseCubit(),
+      licenseCubit: mockLicenseCubit,
     );
   });
 
@@ -47,7 +53,7 @@ void main() {
         activityRepository: mockActivityRepository,
         pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
-        licenseCubit: FakeLicenseCubit(),
+        licenseCubit: mockLicenseCubit,
       ),
       verify: (ActivitiesBloc bloc) => expect(
         bloc.state,
@@ -61,7 +67,7 @@ void main() {
         activityRepository: mockActivityRepository,
         pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
-        licenseCubit: FakeLicenseCubit(),
+        licenseCubit: mockLicenseCubit,
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
       verify: (ActivitiesBloc bloc) =>
@@ -76,7 +82,7 @@ void main() {
         activityRepository: mockActivityRepository,
         pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
-        licenseCubit: FakeLicenseCubit(),
+        licenseCubit: mockLicenseCubit,
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
       expect: () => [ActivitiesLoaded(const [])],
@@ -103,7 +109,7 @@ void main() {
         activityRepository: mockActivityRepository,
         pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
-        licenseCubit: FakeLicenseCubit(),
+        licenseCubit: mockLicenseCubit,
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
       expect: () => [
@@ -118,7 +124,7 @@ void main() {
               activityRepository: mockActivityRepository,
               pushCubit: mockPushCubit,
               syncBloc: mockSyncBloc,
-              licenseCubit: FakeLicenseCubit(),
+              licenseCubit: mockLicenseCubit,
             ),
         act: (ActivitiesBloc bloc) => bloc
           ..add(LoadActivities())
@@ -142,7 +148,7 @@ void main() {
               activityRepository: mockActivityRepository,
               pushCubit: mockPushCubit,
               syncBloc: mockSyncBloc,
-              licenseCubit: FakeLicenseCubit(),
+              licenseCubit: mockLicenseCubit,
             ),
         act: (ActivitiesBloc bloc) => bloc
           ..add(LoadActivities())
@@ -167,7 +173,7 @@ void main() {
               activityRepository: mockActivityRepository,
               pushCubit: mockPushCubit,
               syncBloc: mockSyncBloc,
-              licenseCubit: FakeLicenseCubit(),
+              licenseCubit: mockLicenseCubit,
             ),
         act: (ActivitiesBloc bloc) => bloc
           ..add(LoadActivities())
@@ -194,7 +200,7 @@ void main() {
         activityRepository: mockActivityRepository,
         pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
-        licenseCubit: FakeLicenseCubit(),
+        licenseCubit: mockLicenseCubit,
       ),
       act: (ActivitiesBloc bloc) => bloc
         ..add(LoadActivities())
@@ -224,7 +230,7 @@ void main() {
         activityRepository: mockActivityRepository,
         pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
-        licenseCubit: FakeLicenseCubit(),
+        licenseCubit: mockLicenseCubit,
       ),
       act: (ActivitiesBloc bloc) => bloc
         ..add(LoadActivities())
@@ -235,6 +241,51 @@ void main() {
       ],
       verify: (bloc) => verify(() => mockSyncBloc.add(const ActivitySaved())),
     );
+
+    group('License', () {
+      test('valid license will sync with repo', () async {
+        final List<Activity> activityList = [activity1, activity2, activity3];
+        when(() => mockActivityRepository.load())
+            .thenAnswer((_) => Future.value(activityList));
+        when(() => mockLicenseCubit.validLicense).thenAnswer((_) => true);
+        activitiesBloc.add(LoadActivities());
+
+        await expectLater(
+          activitiesBloc.stream,
+          emitsInOrder([
+            ActivitiesLoaded(activityList),
+          ]),
+        );
+      });
+
+      test('no valid license will return empty list', () async {
+        when(() => mockActivityRepository.load()).thenAnswer(
+            (_) => Future.value(<Activity>[activity1, activity2, activity3]));
+        when(() => mockLicenseCubit.validLicense).thenAnswer((_) => false);
+        activitiesBloc.add(LoadActivities());
+
+        await expectLater(
+          activitiesBloc.stream,
+          emitsInOrder([
+            ActivitiesLoaded(const []),
+          ]),
+        );
+      });
+
+      test('can add activity with no valid license, no sync', () async {
+        when(() => mockActivityRepository.load())
+            .thenAnswer((_) => Future.value(<Activity>[activity2, activity3]));
+        when(() => mockLicenseCubit.validLicense).thenAnswer((_) => false);
+        final expect = expectLater(
+          activitiesBloc.stream,
+          emits(
+            ActivitiesLoaded([activity1]),
+          ),
+        );
+        activitiesBloc.add(AddActivity(activity1));
+        await expect;
+      });
+    });
   });
 
   group('Delete recurring activity', () {

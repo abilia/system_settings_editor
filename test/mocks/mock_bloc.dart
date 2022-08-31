@@ -47,3 +47,6 @@ class MockRecordSoundCubit extends MockCubit<RecordSoundState>
     implements RecordSoundCubit {}
 
 class MockSoundCubit extends MockCubit<SoundState> implements SoundCubit {}
+
+class MockLicenseCubit extends MockCubit<LicenseState> implements LicenseCubit {
+}
