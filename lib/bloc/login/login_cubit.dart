@@ -69,11 +69,7 @@ class LoginCubit extends Cubit<LoginState> {
           emit(state.failure(cause: LoginFailureCause.licenseExpired));
         }
       } else {
-        emit(state.failure(
-          cause: licenses.anyMemoplannerLicense()
-              ? LoginFailureCause.licenseExpired
-              : LoginFailureCause.noLicense,
-        ));
+        emit(state.failure(cause: LoginFailureCause.noLicense));
       }
     } on UnauthorizedException {
       emit(state.failure(cause: LoginFailureCause.credentials));
