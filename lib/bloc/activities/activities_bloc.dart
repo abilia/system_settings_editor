@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -16,23 +17,21 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
   late final StreamSubscription _pushSubscription;
   late final StreamSubscription _licenseSubscription;
   final SyncBloc syncBloc;
+  final LicenseCubit licenseCubit;
 
   ActivitiesBloc({
     required this.activityRepository,
     required this.syncBloc,
     required PushCubit pushCubit,
-    required LicenseCubit licenseCubit,
-  }) : super(const ActivitiesNotLoaded(validLicense: false)) {
-    _pushSubscription = pushCubit.stream.listen((state) {
-      if (state is PushReceived) {
-        add(LoadActivities());
-      }
-    });
-    _licenseSubscription = licenseCubit.stream.listen((licenseState) {
-      if (licenseState is ValidLicense && !state.validLicense) {
-        add(EnableSync());
-        add(LoadActivities());
-      }
+    required this.licenseCubit,
+  }) : super(ActivitiesNotLoaded()) {
+    _pushSubscription = pushCubit.stream
+        .whereType<PushReceived>()
+        .listen((state) => add(LoadActivities()));
+    _licenseSubscription =
+        licenseCubit.stream.whereType<ValidLicense>().listen((licenseState) {
+      _saveActivities(state.activities);
+      add(LoadActivities());
     });
     on<ActivitiesEvent>(_onEvent, transformer: sequential());
   }
@@ -41,14 +40,6 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     ActivitiesEvent event,
     Emitter<ActivitiesState> emit,
   ) async {
-    if (!state.validLicense) {
-      if (event is EnableSync) {
-        emit(const ActivitiesNotLoaded(validLicense: true));
-      } else if (event is LoadActivities) {
-        emit(const ActivitiesLoadedFailed(validLicense: false));
-      }
-      return;
-    }
     if (event is LoadActivities) {
       await _mapLoadActivitiesToState(event, emit);
     } else if (event is ManipulateActivitiesEvent) {
@@ -71,10 +62,12 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     Emitter<ActivitiesState> emit,
   ) async {
     try {
-      final activities = await activityRepository.load();
+      final activities = licenseCubit.validLicense
+          ? await activityRepository.load()
+          : state.activities;
       emit(ActivitiesLoaded(activities));
     } catch (_) {
-      emit(ActivitiesLoadedFailed(validLicense: state.validLicense));
+      emit(ActivitiesLoadedFailed());
     }
   }
 
@@ -186,8 +179,10 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
   }
 
   Future<void> _saveActivities(Iterable<Activity> activities) async {
-    await activityRepository.save(activities);
-    syncBloc.add(const ActivitySaved());
+    if (licenseCubit.validLicense) {
+      await activityRepository.save(activities);
+      syncBloc.add(const ActivitySaved());
+    }
   }
 
   @override

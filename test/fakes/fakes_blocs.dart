@@ -49,7 +49,7 @@ class FakeActivitiesBloc extends Fake implements ActivitiesBloc {
   @override
   Stream<ActivitiesState> get stream => const Stream.empty();
   @override
-  ActivitiesState get state => const ActivitiesNotLoaded();
+  ActivitiesState get state => ActivitiesNotLoaded();
   @override
   void add(ActivitiesEvent event) {}
   @override
