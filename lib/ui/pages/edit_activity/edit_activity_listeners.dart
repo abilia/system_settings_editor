@@ -48,6 +48,8 @@ class ErrorPopupListener extends StatelessWidget {
       return showError(translate.recurringDataEmptyErrorMessage);
     } else if (errors.contains(SaveError.endDateBeforeStart)) {
       return showError(translate.endBeforeStartError);
+    } else if (errors.contains(SaveError.noRecurringEndDate)) {
+      return showError(translate.endDateNotSpecifiedErrorMessage);
     }
   }
 
@@ -140,7 +142,7 @@ class ScrollToErrorPageListener extends StatelessWidget {
         final errors = state.saveErrors;
         if (errors.mainPageErrors) {
           await _scrollToTab(context, 0);
-        } else if (errors.contains(SaveError.noRecurringDays)) {
+        } else if (errors.recurringPageErrors) {
           await _scrollToTab(
             context,
             max(enabledTabs.indexOf(EditActivityPageTab.recurrence), 0),

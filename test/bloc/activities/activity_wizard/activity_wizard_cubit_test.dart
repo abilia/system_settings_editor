@@ -8,12 +8,14 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../fakes/fakes_blocs.dart';
+import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   late MockActivitiesBloc mockActivitiesBloc;
+  late MockActivityRepository mockActivityRepository;
   late ClockBloc clockBloc;
   final nowTime = DateTime(2000, 02, 22, 22, 30);
   final aTime = DateTime(2022, 02, 22, 22, 30);
@@ -29,6 +31,11 @@ void main() {
     mockActivitiesBloc = MockActivitiesBloc();
     when(() => mockActivitiesBloc.state)
         .thenAnswer((_) => ActivitiesNotLoaded());
+    mockActivityRepository = MockActivityRepository();
+    when(() => mockActivityRepository.allBetween(any(), any()))
+        .thenAnswer((_) => Future.value([]));
+    when(() => mockActivitiesBloc.activityRepository)
+        .thenReturn(mockActivityRepository);
 
     clockBloc = ClockBloc.fixed(nowTime);
   });
@@ -123,7 +130,7 @@ void main() {
     );
   });
 
-  test('Initial state with no title and no image is not savable', () {
+  test('Initial state with no title and no image is not savable', () async {
     // Arrange
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDay,
@@ -140,7 +147,7 @@ void main() {
     );
 
     // Act
-    activityWizardCubit.next();
+    await activityWizardCubit.next();
 
     // Assert
     expect(
@@ -160,9 +167,6 @@ void main() {
       'Trying to save uncompleted activity yields failed save and does not try to save',
       () async {
     // Arrange
-    final mockActivitiesBloc = MockActivitiesBloc();
-    when(() => mockActivitiesBloc.state).thenReturn(ActivitiesNotLoaded());
-
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aTime,
       defaultsSettings:
@@ -195,7 +199,7 @@ void main() {
     final expectedSaved = activityWithTitle.copyWith(startTime: newTime);
 
     // Act
-    activityWizardCubit.next();
+    await activityWizardCubit.next();
     expect(
       activityWizardCubit.state,
       WizardState(
@@ -220,7 +224,7 @@ void main() {
     await expect1;
 
     // Act
-    activityWizardCubit.next();
+    await activityWizardCubit.next();
     expect(
       activityWizardCubit.state,
       WizardState(
@@ -242,7 +246,7 @@ void main() {
     await expect2;
 
     // Act
-    activityWizardCubit.next();
+    await activityWizardCubit.next();
     expect(
       activityWizardCubit.state,
       WizardState(
@@ -302,7 +306,7 @@ void main() {
     // Assert
     await expect1;
     // Act
-    activityWizardCubit.next();
+    await activityWizardCubit.next();
 
     // Assert
     expect(activityWizardCubit.state, wizState.saveSucess());
@@ -386,7 +390,7 @@ void main() {
       ),
     );
     // Act
-    wizCubit.next();
+    await wizCubit.next();
     // Assert
     expect(
       wizCubit.state,
@@ -464,7 +468,7 @@ void main() {
               expetedNewActivity, expectedNewTimeInterval, aDay),
         ),
       );
-      wizCubit.next();
+      await wizCubit.next();
 
       expect(
         wizCubit.state,
@@ -541,7 +545,7 @@ void main() {
       ),
     );
 
-    wizCubit.next();
+    await wizCubit.next();
     expect(
       wizCubit.state,
       WizardState(0, const [WizardStep.advance], sucessfullSave: true),
@@ -610,7 +614,7 @@ void main() {
     );
 
     // Act
-    wizCubit.next();
+    await wizCubit.next();
 
     // Assert
     expect(
@@ -771,14 +775,17 @@ void main() {
     // Assert
     await expected1;
 
-    wizCubit.next();
+    await wizCubit.next();
 
     expect(
       wizCubit.state,
       WizardState(
         0,
         const [WizardStep.advance],
-        saveErrors: const {SaveError.noRecurringDays},
+        saveErrors: const {
+          SaveError.noRecurringDays,
+          SaveError.noRecurringEndDate
+        },
         sucessfullSave: false,
       ),
     );
@@ -844,7 +851,7 @@ void main() {
             ),
           ),
         );
-        wizCubit.next();
+        await wizCubit.next();
         expect(
           wizCubit.state,
           WizardState(
@@ -855,7 +862,7 @@ void main() {
           ),
         );
 
-        wizCubit.next(warningConfirmed: true);
+        await wizCubit.next(warningConfirmed: true);
 
         expect(
           wizCubit.state,
@@ -939,7 +946,7 @@ void main() {
           ),
         );
 
-        wizCubit.next();
+        await wizCubit.next();
         expect(
           wizCubit.state,
           WizardState(
@@ -949,7 +956,7 @@ void main() {
             sucessfullSave: false,
           ),
         );
-        wizCubit.next(warningConfirmed: true);
+        await wizCubit.next(warningConfirmed: true);
         expect(
           wizCubit.state,
           WizardState(
@@ -985,10 +992,13 @@ void main() {
         final activity1 = originalActivity.copyWith(title: 'null');
         final activity2 = activity1.copyWith(recurs: Recurs.everyDay);
         final time = TimeOfDay.fromDateTime(aTime);
-        final timeIntervall = TimeInterval(
+        final timeInterval = TimeInterval(
           startTime: time,
           endTime: time,
           startDate: aDay,
+        );
+        final recursTimeInterval = timeInterval.copyWith(
+          endDate: Recurs.noEndDate,
         );
 
         final expectedActivity = activity2.copyWith(startTime: aTime);
@@ -998,21 +1008,21 @@ void main() {
             emitsInOrder([
               UnstoredActivityState(
                 originalActivity,
-                timeIntervall,
+                timeInterval,
               ),
               UnstoredActivityState(
                 activity1,
-                timeIntervall,
+                timeInterval,
               ),
               UnstoredActivityState(
                 activity2,
-                timeIntervall,
+                recursTimeInterval,
               ),
             ]));
 
         editActivityCubit.changeTimeInterval(startTime: time);
         editActivityCubit.replaceActivity(activity1);
-        editActivityCubit.replaceActivity(activity2);
+        editActivityCubit.changeRecurrence(activity2.recurs);
 
         // Assert
         await expected1;
@@ -1022,12 +1032,12 @@ void main() {
             emits(
               StoredActivityState(
                 expectedActivity,
-                timeIntervall,
+                recursTimeInterval,
                 aDay,
               ),
             ));
 
-        wizCubit.next();
+        await wizCubit.next();
         expect(
           wizCubit.state,
           WizardState(
@@ -1037,7 +1047,7 @@ void main() {
             sucessfullSave: false,
           ),
         );
-        wizCubit.next(warningConfirmed: true);
+        await wizCubit.next(warningConfirmed: true);
         expect(
           wizCubit.state,
           WizardState(
@@ -1076,6 +1086,7 @@ void main() {
         final expectedTimeIntervall = TimeInterval(
           startTime: TimeOfDay.fromDateTime(aTime),
           startDate: aDay,
+          endDate: Recurs.noEndDate,
         );
 
         final activityWithNewTitle = activity.copyWith(title: 'new title');
@@ -1108,7 +1119,7 @@ void main() {
             )));
 
         // Act
-        wizCubit.next();
+        await wizCubit.next();
 
         // Assert
         expect(
@@ -1125,7 +1136,7 @@ void main() {
         );
 
         // Act
-        wizCubit.next(
+        await wizCubit.next(
             warningConfirmed: true,
             saveRecurring: SaveRecurring(ApplyTo.onlyThisDay, aDay));
         // Assert
@@ -1145,11 +1156,9 @@ void main() {
       // base case, just a conflict
       test('Trying to save with conflict yields warning', () async {
         // Arrange
-
         final stored = Activity.createNew(title: 'stored', startTime: aTime);
-        final mockActivitiesBloc = MockActivitiesBloc();
-        when(() => mockActivitiesBloc.state)
-            .thenReturn(ActivitiesLoaded([stored]));
+        when(() => mockActivityRepository.allBetween(any(), any()))
+            .thenAnswer((_) => Future.value([stored]));
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultsSettings:
@@ -1205,7 +1214,7 @@ void main() {
           ),
         );
 
-        wizCubit.next();
+        await wizCubit.next();
         expect(
           wizCubit.state,
           WizardState(
@@ -1216,7 +1225,7 @@ void main() {
           ),
         );
 
-        wizCubit.next(warningConfirmed: true);
+        await wizCubit.next(warningConfirmed: true);
         expect(
           wizCubit.state,
           WizardState(
@@ -1234,9 +1243,8 @@ void main() {
           () async {
         // Arrange
         final stored = Activity.createNew(title: 'stored', startTime: aTime);
-        final mockActivitiesBloc = MockActivitiesBloc();
-        when(() => mockActivitiesBloc.state)
-            .thenReturn(ActivitiesLoaded([stored]));
+        when(() => mockActivityRepository.allBetween(any(), any()))
+            .thenAnswer((_) => Future.value([stored]));
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultsSettings:
@@ -1290,7 +1298,7 @@ void main() {
           ),
         );
 
-        wizCubit.next();
+        await wizCubit.next();
         expect(
           wizCubit.state,
           WizardState(
@@ -1303,7 +1311,7 @@ void main() {
             sucessfullSave: false,
           ),
         );
-        wizCubit.next(warningConfirmed: true);
+        await wizCubit.next(warningConfirmed: true);
         expect(
           wizCubit.state,
           WizardState(
@@ -1319,9 +1327,8 @@ void main() {
       test('No self conflicts', () async {
         // Arrange
         final stored = Activity.createNew(title: 'stored', startTime: aTime);
-        final mockActivitiesBloc = MockActivitiesBloc();
-        when(() => mockActivitiesBloc.state)
-            .thenReturn(ActivitiesLoaded([stored]));
+        when(() => mockActivityRepository.allBetween(any(), any()))
+            .thenAnswer((_) => Future.value([stored]));
         final editActivityCubit = EditActivityCubit.edit(
           ActivityDay(stored, aDay),
         );
@@ -1357,7 +1364,7 @@ void main() {
         // Assert
         await expected1;
 
-        wizCubit.next();
+        await wizCubit.next();
 
         expect(
           wizCubit.state,
@@ -1377,9 +1384,8 @@ void main() {
       test('no conflict for fullday', () async {
         // Arrange
         final stored = Activity.createNew(title: 'stored', startTime: aTime);
-        final mockActivitiesBloc = MockActivitiesBloc();
-        when(() => mockActivitiesBloc.state)
-            .thenReturn(ActivitiesLoaded([stored]));
+        when(() => mockActivityRepository.allBetween(any(), any()))
+            .thenAnswer((_) => Future.value([stored]));
 
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
@@ -1429,7 +1435,7 @@ void main() {
               aDay,
             )));
 
-        wizCubit.next();
+        await wizCubit.next();
         expect(
           wizCubit.state,
           WizardState(0, const [WizardStep.advance], sucessfullSave: true),
@@ -1437,12 +1443,11 @@ void main() {
         await expected2;
       });
 
-      test('no conflict for recuring', () async {
+      test('no conflict for recurring', () async {
         // Arrange
         final stored = Activity.createNew(title: 'stored', startTime: aTime);
-        final mockActivitiesBloc = MockActivitiesBloc();
-        when(() => mockActivitiesBloc.state)
-            .thenReturn(ActivitiesLoaded([stored]));
+        when(() => mockActivityRepository.allBetween(any(), any()))
+            .thenAnswer((_) => Future.value([stored]));
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultsSettings:
@@ -1470,7 +1475,10 @@ void main() {
           startTime: time,
           endTime: time,
           startDate: aDay,
+          endDate: Recurs.noEndDate,
         );
+
+        editActivityCubit.changeTimeInterval(startTime: time);
         final expectedActivity = activity.copyWith(startTime: aTime);
         final expected1 = expectLater(
           editActivityCubit.stream,
@@ -1487,7 +1495,8 @@ void main() {
             ],
           ),
         );
-        editActivityCubit.changeTimeInterval(startTime: time);
+
+        editActivityCubit.newRecurrence(newEndDate: Recurs.noEndDate);
         editActivityCubit.replaceActivity(activity);
 
         // Assert
@@ -1502,7 +1511,7 @@ void main() {
             ),
           ),
         );
-        wizCubit.next();
+        await wizCubit.next();
         expect(
           wizCubit.state,
           WizardState(0, const [WizardStep.advance], sucessfullSave: true),
@@ -1515,9 +1524,8 @@ void main() {
         // Arrange
         final stored = Activity.createNew(title: 'stored', startTime: aTime);
         final stored2 = Activity.createNew(title: 'stored2', startTime: aTime);
-        final mockActivitiesBloc = MockActivitiesBloc();
-        when(() => mockActivitiesBloc.state)
-            .thenReturn(ActivitiesLoaded([stored, stored2]));
+        when(() => mockActivityRepository.allBetween(any(), any()))
+            .thenAnswer((_) => Future.value([stored, stored2]));
 
         final editActivityCubit = EditActivityCubit.edit(
           ActivityDay(stored, aDay),
@@ -1554,7 +1562,7 @@ void main() {
         // Assert
         await expected1;
 
-        wizCubit.next();
+        await wizCubit.next();
         expect(
           wizCubit.state,
           WizardState(0, const [WizardStep.advance], sucessfullSave: true),
@@ -1589,9 +1597,10 @@ void main() {
     final expectedTimeIntervall = TimeInterval(
       startDate: aDay,
       startTime: TimeOfDay.fromDateTime(aTime),
+      endDate: Recurs.noEndDate,
     );
     final recurringActivity = activity.copyWith(
-      recurs: Recurs.weeklyOnDay(aTime.weekday),
+      recurs: Recurs.weeklyOnDay(aTime.weekday, ends: Recurs.noEndDate),
     );
 
     final expected1 = expectLater(
@@ -1606,12 +1615,12 @@ void main() {
     );
 
     // Act
-    editActivityCubit.replaceActivity(recurringActivity);
-
+    editActivityCubit.changeRecurrence(
+        Recurs.weeklyOnDay(aTime.weekday, ends: Recurs.noEndDate));
     // Assert
     await expected1;
 
-    wizCubit.next();
+    await wizCubit.next();
     expect(
       wizCubit.state,
       WizardState(0, const [WizardStep.advance], sucessfullSave: true),
@@ -1628,9 +1637,8 @@ void main() {
       ),
       recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
     );
-    final mockActivitiesBloc = MockActivitiesBloc();
-    when(() => mockActivitiesBloc.state)
-        .thenReturn(ActivitiesLoaded([activity]));
+    when(() => mockActivityRepository.allBetween(any(), any()))
+        .thenAnswer((_) => Future.value([activity]));
 
     final editActivityCubit = EditActivityCubit.edit(
       ActivityDay(activity, aDay),
@@ -1654,6 +1662,7 @@ void main() {
             TimeInterval(
               startTime: TimeOfDay.fromDateTime(activity.startTime),
               startDate: aDay,
+              endDate: Recurs.noEndDate,
             ),
             aDay,
           ),
@@ -1665,7 +1674,8 @@ void main() {
     await expected1;
 
     // Act
-    wizCubit.next(saveRecurring: SaveRecurring(ApplyTo.onlyThisDay, aDay));
+    await wizCubit.next(
+        saveRecurring: SaveRecurring(ApplyTo.onlyThisDay, aDay));
 
     // Assert - correct day is saved
     await untilCalled(() => mockActivitiesBloc.add(any()));
@@ -1685,9 +1695,8 @@ void main() {
       title: 'title',
       startTime: aTime,
     );
-    final mockActivitiesBloc = MockActivitiesBloc();
-    when(() => mockActivitiesBloc.state)
-        .thenReturn(ActivitiesLoaded([activity]));
+    when(() => mockActivityRepository.allBetween(any(), any()))
+        .thenAnswer((_) => Future.value([activity]));
 
     final editActivityCubit = EditActivityCubit.edit(
       ActivityDay(activity, aDay),
@@ -1707,11 +1716,11 @@ void main() {
     );
 
     // Acts
-    editActivityCubit.replaceActivity(
-        activity.copyWith(recurs: Recurs.yearly(activity.startTime)));
+    editActivityCubit.newRecurrence(newType: RecurrentType.yearly);
     editActivityCubit.changeDate(nextDay);
 
-    wizCubit.next(saveRecurring: SaveRecurring(ApplyTo.onlyThisDay, aDay));
+    await wizCubit.next(
+        saveRecurring: SaveRecurring(ApplyTo.onlyThisDay, aDay));
 
     await untilCalled(() => mockActivitiesBloc.add(any()));
     expect(
@@ -1936,8 +1945,8 @@ void main() {
           allWizStep,
         ),
       );
-      wizCubit.next(); // title
-      wizCubit.next(); // image ---> error
+      await wizCubit.next(); // title
+      await wizCubit.next(); // image ---> error
 
       expect(
         wizCubit.state,
@@ -1953,10 +1962,10 @@ void main() {
         activity.copyWith(title: 'one title please'),
       );
 
-      wizCubit.next(); // image
-      wizCubit.next(); // date
-      wizCubit.next(); // type
-      wizCubit.next(); // time ---> error
+      await wizCubit.next(); // image
+      await wizCubit.next(); // date
+      await wizCubit.next(); // type
+      await wizCubit.next(); // time ---> error
 
       expect(
         wizCubit.state,
@@ -1971,14 +1980,14 @@ void main() {
       editActivityCubit.changeTimeInterval(
           startTime: const TimeOfDay(hour: 4, minute: 4));
 
-      wizCubit.next(); // time
-      wizCubit.next(); // alarm,
-      wizCubit.next(); // checkable,
-      wizCubit.next(); // deleteAfter,
-      wizCubit.next(); // reminder,
-      wizCubit.next(); // recurring,
-      wizCubit.next(); // checklist,
-      wizCubit.next(); // connectedFunction,
+      await wizCubit.next(); // time
+      await wizCubit.next(); // alarm,
+      await wizCubit.next(); // checkable,
+      await wizCubit.next(); // deleteAfter,
+      await wizCubit.next(); // reminder,
+      await wizCubit.next(); // recurring,
+      await wizCubit.next(); // checklist,
+      await wizCubit.next(); // connectedFunction,
 
       expect(
         wizCubit.state,
@@ -2072,7 +2081,7 @@ void main() {
       );
     });
 
-    test('Saving recuring weekly without any days yeilds warning', () async {
+    test('Saving recurring weekly without any days yields warning', () async {
       // Arrange
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
@@ -2107,13 +2116,11 @@ void main() {
           ),
         ),
       );
-
+      editActivityCubit.replaceActivity(activity.copyWith(title: 'title'));
       editActivityCubit.changeTimeInterval(
           startTime: const TimeOfDay(hour: 22, minute: 22));
 
-      editActivityCubit.replaceActivity(activity.copyWith(
-          title: 'titlte', recurs: Recurs.weeklyOnDays(const [])));
-
+      editActivityCubit.changeRecurrence(Recurs.weeklyOnDays(const []));
       await expectLater(
         wizCubit.stream,
         emitsInOrder([
@@ -2132,9 +2139,9 @@ void main() {
         ]),
       );
 
-      wizCubit.next();
-      wizCubit.next();
-      wizCubit.next();
+      await wizCubit.next();
+      await wizCubit.next();
+      await wizCubit.next();
 
       expect(
         wizCubit.state,
@@ -2153,7 +2160,7 @@ void main() {
 
     test(
         'BUG SGC-1595 '
-        'Saving recuring weekly without any days yeilds warning', () async {
+        'Saving recurring weekly without any days yields warning', () async {
       // Arrange
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
@@ -2202,6 +2209,8 @@ void main() {
           ),
         ),
       );
+      editActivityCubit.newRecurrence(
+          newEndDate: nowTime.add(1.days()).onlyDays());
 
       await expectLater(
         wizCubit.stream,
@@ -2225,10 +2234,10 @@ void main() {
         ]),
       );
 
-      wizCubit.next();
-      wizCubit.next();
-      wizCubit.next();
-      wizCubit.next();
+      await wizCubit.next();
+      await wizCubit.next();
+      await wizCubit.next();
+      await wizCubit.next();
 
       expect(
         wizCubit.state,

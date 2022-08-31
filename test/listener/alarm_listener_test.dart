@@ -117,6 +117,28 @@ void main() {
       expect(find.byType(AlarmPage), findsOneWidget);
     });
 
+    testWidgets('SGC-1874 alarm with end time at midnight will show',
+        (WidgetTester tester) async {
+      // Arrange
+      final startTime = DateTime(2011, 11, 11, 23, 00);
+      final activity = Activity.createNew(
+        startTime: startTime,
+        duration: 1.hours(),
+        title: 'activity',
+        checkable: true,
+      );
+      when(() => mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value([activity]));
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Act
+      mockTicker.add(startTime.add(1.hours()));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(PopAwareAlarmPage), findsOneWidget);
+    });
+
     testWidgets('SGC-1710 Alarms does not show when disable for 24h is set',
         (WidgetTester tester) async {
       // Arrange
@@ -935,6 +957,8 @@ void main() {
           reminderBefore: [5.minutes().inMilliseconds],
         );
         when(() => mockActivityDb.getAllNonDeleted())
+            .thenAnswer((_) => Future.value([activity, activity2]));
+        when(() => mockActivityDb.getAllBetween(any(), any()))
             .thenAnswer((_) => Future.value([activity, activity2]));
 
         when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(

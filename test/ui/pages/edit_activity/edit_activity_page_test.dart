@@ -1377,7 +1377,7 @@ text''';
       expect(find.text('2020'), findsOneWidget);
     });
 
-    testWidgets('changes date then add recurring sets end date to start date',
+    testWidgets('changes date then add recurring sets end date to no end',
         (WidgetTester tester) async {
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
@@ -1393,12 +1393,19 @@ text''';
       await tester.goToRecurrenceTab();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
       expect(find.text('February 14, 2020'), findsOneWidget);
     });
 
     testWidgets(
-        'changes date after added recurring sets end date to start date',
+        'changes date after added recurring does not set end date to start date',
         (WidgetTester tester) async {
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
@@ -1406,7 +1413,9 @@ text''';
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
-      expect(find.text('(Today) February 10, 2020'), findsOneWidget);
+      expect(
+          find.descendant(of: find.byType(DatePicker), matching: find.text('')),
+          findsOneWidget);
       await tester.goToMainTab();
       // Act change start date to 14th
       await tester.tap(find.byType(DatePicker));
@@ -1419,7 +1428,10 @@ text''';
 
       await tester.goToRecurrenceTab();
       await tester.scrollDown(dy: -250);
-      expect(find.text('February 14, 2020'), findsOneWidget);
+      expect(find.text('February 14, 2020'), findsNothing);
+      expect(
+          find.descendant(of: find.byType(DatePicker), matching: find.text('')),
+          findsOneWidget);
     });
 
     testWidgets('cant pick recurring end date before start date',
@@ -2064,7 +2076,7 @@ text''';
       expect(find.text(translate.endDate), findsOneWidget);
     });
 
-    testWidgets('end date defaults to start date', (WidgetTester tester) async {
+    testWidgets('end date defaults to no end', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(createEditActivityPage(
         newActivity: true,
@@ -2079,8 +2091,10 @@ text''';
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
 
-      // Assert -- end date defaults to start date
-      expect(find.text('(Today) February 10, 2020'), findsOneWidget);
+      // Assert -- end date defaults to unspecified
+      expect(
+          find.descendant(of: find.byType(DatePicker), matching: find.text('')),
+          findsOneWidget);
       final noEndDateSwitchValue = (find
               .byKey(TestKey.noEndDateSwitch)
               .evaluate()
@@ -2237,6 +2251,189 @@ text''';
 
       // Assert -- end date is still 30 days after startTime
       expect(find.text('March 11, 2020'), findsOneWidget);
+    });
+
+    testWidgets('SGC-1721 setting recurrence requires specifying end date',
+        (WidgetTester tester) async {
+      // Arrange
+      final activity = Activity.createNew(title: 'Title', startTime: startTime);
+
+      await tester.pumpWidget(createEditActivityPage(
+        givenActivity: activity,
+      ));
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.goToRecurrenceTab();
+
+      // Assert -- Once selected
+      expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
+      expect(find.text(translate.once), findsOneWidget);
+
+      // Act -- Change to weekly
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(SaveButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ErrorDialog), findsOneWidget);
+      expect(
+          find.text(translate.endDateNotSpecifiedErrorMessage), findsOneWidget);
+      await tester.tapAt(Offset.zero);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(SaveButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ErrorDialog), findsOneWidget);
+      expect(
+          find.text(translate.endDateNotSpecifiedErrorMessage), findsOneWidget);
+      await tester.tapAt(Offset.zero);
+      await tester.pumpAndSettle();
+
+      await tester.scrollDown();
+
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.ancestor(
+        of: find.text('25'),
+        matching: find.byKey(TestKey.monthCalendarDay),
+      ));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(SaveButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(ErrorDialog), findsNothing);
+    });
+
+    testWidgets('SGC-1721 yearly recurrence requires no end date',
+        (WidgetTester tester) async {
+      // Arrange
+      final activity = Activity.createNew(title: 'Title', startTime: startTime);
+
+      await tester.pumpWidget(createEditActivityPage(
+        givenActivity: activity,
+      ));
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.goToRecurrenceTab();
+
+      // Assert -- Once selected
+      expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
+      expect(find.text(translate.once), findsOneWidget);
+
+      // Act -- Change to weekly
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(SaveButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ErrorDialog), findsOneWidget);
+      expect(
+          find.text(translate.endDateNotSpecifiedErrorMessage), findsOneWidget);
+      await tester.tapAt(Offset.zero);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(translate.yearly));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(SaveButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ErrorDialog), findsNothing);
+    });
+
+    testWidgets('Changing week days retains end date',
+        (WidgetTester tester) async {
+      // Arrange
+      final activity = Activity.createNew(title: 'Title', startTime: startTime);
+
+      await tester.pumpWidget(createEditActivityPage(
+        givenActivity: activity,
+      ));
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.goToRecurrenceTab();
+
+      // Act -- Change to weekly
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      await tester.scrollDown(dy: -250);
+
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.ancestor(
+        of: find.text('17'),
+        matching: find.byKey(TestKey.monthCalendarDay),
+      ));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
+
+      expect(find.text('February 17, 2020'), findsOneWidget);
+
+      await tester.tap(find.text('Thu'));
+      await tester.tap(find.text('Sun'));
+
+      await tester.pumpAndSettle();
+
+      expect(find.text('February 17, 2020'), findsOneWidget);
+
+      await tester.tap(find.byType(SaveButton));
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets(
+        'Changing week days with no date set doesn\'t remove DatePicker',
+        (WidgetTester tester) async {
+      // Arrange
+      final activity = Activity.createNew(title: 'Title', startTime: startTime);
+
+      await tester.pumpWidget(createEditActivityPage(
+        givenActivity: activity,
+      ));
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.goToRecurrenceTab();
+
+      // Act -- Change to weekly
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Thu'));
+      await tester.tap(find.text('Sun'));
+
+      await tester.pumpAndSettle();
+
+      expect(find.byType(DatePicker), findsOneWidget);
+
+      await tester.tap(find.byType(SaveButton));
+      await tester.pumpAndSettle();
     });
   });
 
@@ -3136,9 +3333,6 @@ text''';
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -350);
-
-      await tester.verifyTts(find.byType(EndDateWidget),
-          exact: '(Today) February 10, 2020');
 
       await tester.tap(find.byKey(TestKey.noEndDateSwitch));
       await tester.pumpAndSettle();

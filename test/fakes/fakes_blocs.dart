@@ -1,6 +1,9 @@
 import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
+
+import 'all.dart';
 
 class FakePushCubit extends Fake implements PushCubit {
   @override
@@ -46,6 +49,11 @@ class FakeGenericCubit extends Fake implements GenericCubit {
 }
 
 class FakeActivitiesBloc extends Fake implements ActivitiesBloc {
+  @override
+  late final ActivityRepository activityRepository;
+  FakeActivitiesBloc({ActivityRepository? activityRepository}) {
+    this.activityRepository = activityRepository ?? FakeActivityRepository();
+  }
   @override
   Stream<ActivitiesState> get stream => const Stream.empty();
   @override
@@ -174,7 +182,7 @@ class FakeVoicesCubit extends Fake implements VoicesCubit {
   Stream<VoicesState> get stream => const Stream.empty();
 
   @override
-  VoicesState get state => const VoicesState();
+  VoicesState get state => VoicesState(languageCode: 'en');
 
   @override
   Future<void> close() async {}

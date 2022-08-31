@@ -1,12 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:intl/intl.dart';
 
 class ActivityNameAndPictureWidget extends StatelessWidget {
   const ActivityNameAndPictureWidget({Key? key}) : super(key: key);
@@ -578,33 +578,35 @@ class AvailableForWidget extends StatelessWidget {
 }
 
 class EndDateWidget extends StatelessWidget {
-  const EndDateWidget({Key? key}) : super(key: key);
+  const EndDateWidget({required this.errorState, Key? key}) : super(key: key);
+
+  final bool errorState;
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) {
-        final activity = state.activity;
-        final recurs = activity.recurs;
         final disabled = state.storedRecurring;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CollapsableWidget(
-              collapsed: recurs.hasNoEnd,
+              collapsed: state.hasNoEnd,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SubHeading(translate.endDate),
                   DatePicker(
-                    activity.recurs.end,
+                    state.timeInterval.endDate ?? state.timeInterval.startDate,
                     notBefore: state.timeInterval.startDate,
                     onChange: disabled
                         ? null
                         : (newDate) => context
                             .read<EditActivityCubit>()
                             .newRecurrence(newEndDate: newDate),
+                    emptyText: !state.hasEndDate,
+                    errorState: errorState,
                   ),
                   SizedBox(height: layout.formPadding.groupBottomDistance),
                 ],
@@ -616,7 +618,7 @@ class EndDateWidget extends StatelessWidget {
                 AbiliaIcons.basicActivity,
                 size: layout.icon.small,
               ),
-              value: recurs.hasNoEnd,
+              value: state.hasNoEnd,
               onChanged: disabled
                   ? null
                   : (v) => context.read<EditActivityCubit>().newRecurrence(
@@ -640,15 +642,13 @@ class EndDateWizWidget extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) {
-        final activity = state.activity;
-        final recurs = activity.recurs;
         return SwitchField(
           key: TestKey.noEndDateSwitch,
           leading: Icon(
             AbiliaIcons.basicActivity,
             size: layout.icon.small,
           ),
-          value: recurs.hasNoEnd,
+          value: state.hasNoEnd,
           onChanged: (v) => context.read<EditActivityCubit>().newRecurrence(
                 newEndDate: v ? Recurs.noEndDate : state.timeInterval.startDate,
               ),
@@ -740,13 +740,12 @@ class MonthDays extends StatelessWidget {
                     if (!selectedMonthDays.add(d)) {
                       selectedMonthDays.remove(d);
                     }
-                    context.read<EditActivityCubit>().replaceActivity(
-                          state.activity.copyWith(
-                            recurs: Recurs.monthlyOnDays(
-                              selectedMonthDays,
-                              ends: state.activity.recurs.end,
-                            ),
+                    context.read<EditActivityCubit>().changeRecurrence(
+                          Recurs.monthlyOnDays(
+                            selectedMonthDays,
+                            ends: state.activity.recurs.end,
                           ),
+                          timeInterval: state.timeInterval,
                         );
                   },
                 );

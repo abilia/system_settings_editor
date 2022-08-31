@@ -30,7 +30,7 @@ class Activity extends DataModel {
 
   bool get hasTitle => title.isNotEmpty;
 
-  bool get hasAttachment => infoItem is! NoInfoItem;
+  bool get hasAttachment => infoItemString.isNotEmpty;
 
   bool get isNoneSingleInstanceRecurring =>
       recurs.isRecurring && !startTime.isAtSameDay(recurs.end);
@@ -57,7 +57,7 @@ class Activity extends DataModel {
   final bool deleted, fullDay, checkable, removeAfter, secret;
   final UnmodifiableListView<int> reminderBefore;
   final UnmodifiableListView<String> signedOffDates;
-  final InfoItem infoItem;
+  final String infoItemString;
   final Recurs recurs;
   final Extras extras;
   final UnmodifiableSetView<int> secretExemptions;
@@ -67,6 +67,7 @@ class Activity extends DataModel {
     reminderBefore.map((ms) => Duration(milliseconds: ms)).toSet(),
   );
   late final Alarm alarm = Alarm.fromInt(alarmType);
+  late final InfoItem infoItem = InfoItem.fromBase64(infoItemString);
 
   Activity._({
     required String id,
@@ -83,7 +84,7 @@ class Activity extends DataModel {
     required this.fullDay,
     required this.recurs,
     required this.reminderBefore,
-    required this.infoItem,
+    required this.infoItemString,
     required this.icon,
     required this.fileId,
     required this.signedOffDates,
@@ -108,7 +109,7 @@ class Activity extends DataModel {
     bool removeAfter = false,
     bool secret = false,
     int alarmType = alarmSoundAndVibration,
-    InfoItem infoItem = const NoInfoItem(),
+    String infoItemString = '',
     String fileId = '',
     String icon = '',
     Iterable<int> reminderBefore = const [],
@@ -134,7 +135,7 @@ class Activity extends DataModel {
       recurs: _newRecurrence(recurs, startTime, duration, fullDay),
       reminderBefore: UnmodifiableListView(reminderBefore),
       alarmType: alarmType,
-      infoItem: infoItem,
+      infoItemString: infoItemString,
       signedOffDates: UnmodifiableListView(signedOffDates),
       timezone: timezone,
       extras: extras,
@@ -179,7 +180,7 @@ class Activity extends DataModel {
         recurs: recurs,
         reminderBefore: reminderBefore,
         alarmType: alarmType,
-        infoItem: infoItem,
+        infoItemString: infoItem.toBase64(),
         signedOffDates: signedOffDates,
         timezone: timezone,
         extras: extras,
@@ -248,7 +249,7 @@ class Activity extends DataModel {
         fileId: fileId ?? this.fileId,
         icon: icon ?? this.icon,
         alarmType: alarmType ?? alarm?.intValue ?? this.alarmType,
-        infoItem: infoItem ?? this.infoItem,
+        infoItemString: infoItem?.toBase64() ?? infoItemString,
         signedOffDates: signedOffDates != null
             ? UnmodifiableListView(signedOffDates)
             : this.signedOffDates,
@@ -314,7 +315,7 @@ class Activity extends DataModel {
         alarmType,
         reminderBefore,
         fileId,
-        infoItem,
+        infoItemString,
         icon,
         signedOffDates,
         timezone,

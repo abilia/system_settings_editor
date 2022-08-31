@@ -28,7 +28,11 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    // change to
+    // compileSdkVersion flutter.compileSdkVersion
+    // when flutter change to >= 33 in
+    // https://github.com/flutter/flutter/blob/master/packages/flutter_tools/gradle/flutter.gradle#L33
+    compileSdkVersion 33
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -46,7 +50,11 @@ android {
     defaultConfig {
         applicationId "com.abilia"
         minSdkVersion 21
-        targetSdkVersion flutter.targetSdkVersion
+        // change to
+        // targetSdkVersion flutter.targetSdkVersion
+        // when flutter change to >= 33 in
+        // https://github.com/flutter/flutter/blob/master/packages/flutter_tools/gradle/flutter.gradle#L39
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

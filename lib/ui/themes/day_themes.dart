@@ -7,7 +7,11 @@ class DayTheme {
   final Color color, secondaryColor, monthColor, monthSurfaceColor;
   final Color? borderColor;
   final bool isColor, isLight;
+
   Color? get dayColor => isColor ? color : null;
+
+  CrossOverStyle get crossOverStyle =>
+      isLight ? CrossOverStyle.lightDefault : CrossOverStyle.darkDefault;
 
   DayTheme._(
     ThemeData theme,

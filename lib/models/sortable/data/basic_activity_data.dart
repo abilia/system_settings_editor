@@ -159,7 +159,7 @@ class BasicActivityDataItem extends BasicActivityData {
         secret: secret,
         fileId: fileId,
         icon: icon,
-        infoItem: InfoItem.fromJsonString(info),
+        infoItemString: InfoItem.fromJsonString(info).toBase64(),
         reminderBefore: DbActivity.parseReminders(reminders),
         calendarId: calendarId,
         secretExemptions: secretExemptions,

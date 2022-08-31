@@ -34,13 +34,9 @@ class RecurringWiz extends StatelessWidget {
                     child: RadioField<RecurrentType>(
                       groupValue: state.activity.recurs.recurrance,
                       onChanged: (v) =>
-                          context.read<EditActivityCubit>().replaceActivity(
-                                state.activity.copyWith(
-                                  recurs: _newRecurs(
-                                    type,
-                                    state.activity.startTime,
-                                  ),
-                                ),
+                          context.read<EditActivityCubit>().newRecurrence(
+                                newType: type,
+                                newEndDate: state.activity.startTime,
                               ),
                       value: type,
                       leading: Icon(type.iconData()),
@@ -54,18 +50,5 @@ class RecurringWiz extends StatelessWidget {
         );
       },
     );
-  }
-
-  Recurs _newRecurs(RecurrentType type, DateTime startDate) {
-    switch (type) {
-      case RecurrentType.weekly:
-        return Recurs.weeklyOnDay(startDate.weekday, ends: startDate);
-      case RecurrentType.monthly:
-        return Recurs.monthly(startDate.day, ends: startDate);
-      case RecurrentType.yearly:
-        return Recurs.yearly(startDate);
-      default:
-        return Recurs.not;
-    }
   }
 }

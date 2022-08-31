@@ -47,6 +47,8 @@
       "flutterMode": "profile",
       "args": [
         "--dart-define",
+        "release=alpha",
+        "--dart-define",
         "flavor=mp",
         "--flavor",
         "mp",

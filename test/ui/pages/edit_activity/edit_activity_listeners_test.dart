@@ -12,6 +12,7 @@ import 'package:timezone/data/latest.dart' as tz;
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
@@ -28,6 +29,7 @@ void main() {
   final okButtonFinder = find.byType(OkButton);
 
   late MockActivitiesBloc mockActivitiesBloc;
+  late MockActivityRepository mockActivityRepository;
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
   setUpAll(() {
@@ -41,6 +43,11 @@ void main() {
     when(() => mockActivitiesBloc.state).thenReturn(ActivitiesLoaded(const []));
     when(() => mockActivitiesBloc.stream)
         .thenAnswer((_) => const Stream.empty());
+    mockActivityRepository = MockActivityRepository();
+    when(() => mockActivityRepository.allBetween(any(), any()))
+        .thenAnswer((_) => Future.value([]));
+    when(() => mockActivitiesBloc.activityRepository)
+        .thenReturn(mockActivityRepository);
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
       const MemoplannerSettingsLoaded(
@@ -448,6 +455,52 @@ void main() {
   });
 
   testWidgets(
+      'saving recurring activity without end date tab scrolls '
+      'to recurring page and shows error', (WidgetTester tester) async {
+    await tester.pumpWidget(createEditActivityPage(newActivity: true));
+    await tester.pumpAndSettle();
+
+    // Act -- enter title
+    await tester.ourEnterText(find.byKey(TestKey.editTitleTextFormField), 'AW');
+    await tester.pumpAndSettle();
+    await tester.scrollDown(dy: -100);
+
+    // Act -- set time
+    await tester.tap(timeFieldFinder);
+    await tester.pumpAndSettle();
+    await tester.enterTime(find.byKey(TestKey.startTimeInput), '1130');
+    await tester.tap(okButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Act -- go to recurrence tab
+    await tester.goToRecurrenceTab();
+    await tester.pumpAndSettle();
+
+    // Act -- set to weekly, deselect all days
+    await tester.tap(find.byIcon(AbiliaIcons.week));
+    await tester.pumpAndSettle();
+
+    // Act -- go to main tab
+    await tester.goToTab(AbiliaIcons.myPhotos);
+    await tester.pumpAndSettle();
+
+    // Act -- press submit
+    await tester.tap(submitButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Assert -- error message
+    expect(
+        find.text(translate.endDateNotSpecifiedErrorMessage), findsOneWidget);
+
+    // Act -- dissmiss
+    await tester.tapAt(Offset.zero);
+    await tester.pumpAndSettle();
+
+    // Assert -- at recurrence tab
+    expect(find.byType(RecurrenceTab), findsOneWidget);
+  });
+
+  testWidgets(
       'edit recurring activity TDO change time before now shows warning',
       (WidgetTester tester) async {
     final edit = Activity.createNew(
@@ -499,8 +552,8 @@ void main() {
       startTime: startTime,
       duration: 30.minutes(),
     );
-    when(() => mockActivitiesBloc.state)
-        .thenReturn(ActivitiesLoaded([conflicting]));
+    when(() => mockActivityRepository.allBetween(any(), any()))
+        .thenAnswer((_) => Future.value([conflicting]));
     await tester.pumpWidget(createEditActivityPage(newActivity: true));
     await tester.pumpAndSettle();
 
@@ -565,8 +618,8 @@ void main() {
       startTime: startTime.subtract(10.minutes()),
       duration: 30.minutes(),
     );
-    when(() => mockActivitiesBloc.state)
-        .thenReturn(ActivitiesLoaded([conflictingActivity]));
+    when(() => mockActivityRepository.allBetween(any(), any()))
+        .thenAnswer((_) => Future.value([conflictingActivity]));
     await tester.pumpWidget(createEditActivityPage(newActivity: true));
     await tester.pumpAndSettle();
 

@@ -141,6 +141,8 @@ timer	Timer	Timer	Timer	Tijdopnemer	Ajastin	Timer	Timer
 timeIsUp	Time is up	Tiden är slut	Tiden er gået	De tijd is om	Aika loppui	Die Zeit ist abgelaufen	Tiden er slutt
 timers	Timers	Timers	Timere	Timers	Ajastimet	Timer	Timere
 editTimer	Edit timer	Ändra timer	Rediger timer	Timer bewerken	Muokkaa ajastin	Timer bearbeiten	Endre timere
+newTimerTemplate	New timer template	Ny timer mall					
+editTimerTemplate	Edit timer template	Ändra timer mall					
 							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
@@ -158,6 +160,8 @@ newText	New	Ny	Ny	Nieuw	Uusi	Neu	Ny
 fromTemplate	From template	Från mall	Fra skabelon	Uit sjabloon	Mallit	Von vorlage	Fra malen
 newActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuw activiteit	Uusi aktiviteettia	Neu Aktivität	Ny aktivitet
 editActivity	Edit activity	Ändra aktivitet	Rediger aktivitet	Activiteit bewerken	Muokkaa aktiviteettia	Aktivität bearbeiten	Endre aktivitet
+newActivityTemplate	New activity template	Ny aktivitetsmall					
+editActivityTemplate	Edit activity template	Ändra aktivitetsmall					
 category	Category	Kategori	Kategori	Categorie	Kategoria	Kategorie	Kategori
 checkable	Checkable	Kvitterbar	Kvitterbar	Afvinkbaar	Tarkistettava	Kontrollabfrage	Kvitterbar
 notCheckable	Not checkable	Inte kvitterbar	Ikke kvitterbar	Niet afvinkbaar	Ei-tarkistettava	Nicht kontrollabfrage	Ikke kvitterbar
@@ -209,7 +213,7 @@ supportPersons	Support persons	Stödpersoner	Støttepersoner	Ondersteuningsperso
 ### Alarm							
 selectAlarmType	Select alarm	Ange larm	Vælg alarm	Alarm selecteren	Valitse hälytys	Alarm auswählen	Angi alarm
 alarmAndVibration	Alarm + vibration	Larm + vibration	Alarm + vibration	Alarm + trilfunctie	Hälytys + värinä	Alarm + Vibration	Alarm + Vibrasjon
-vibrationIfAvailable	Vibration (if available)	Vibration (om tillgängligt)	Vibration (hvis tilgængelig)	Trilfunctie (indien beschikbaar)	Värinä (jos käytettävissä)	Vibration (falls verfügbar)	Vibrasjon (om tilgjengelig)
+vibrationIfAvailable	Vibration (if available)	Vibration (om tillgängligt)	Vibration (hvis tilgængelig)	Trilfunctie (indien beschikbaar)	Värinä (jos käytettävissä)	Vibration (falls verfügbar)	Vibrasjon (hvis tilgjengelig)
 noAlarm	No alarm	Inget larm	Ingen alarm	Geen alarm	Ei hälytystä	Kein Alarm	Ingen alarm
 silentAlarm	Silent alarm	Tyst larm	Stille alarm	Stil alarm	Äänetön hälytys	Stiller Alarm	Stille alarm
 alarmOnlyAtStartTime	Alarm only at Start time	Larm endast vid starttid	Kun alarm ved starttidspunkt	Alarm alleen op begintijd	Vain hälytys alkamisaikaan	Alarm nur zur Startzeit	Alarm kun på starttid
@@ -235,6 +239,7 @@ noEndDate	No end date	Inget slutdatum	Ingen slutdato	Geen einddatum	Ei päättym
 endDate	End date	Slutdatum	Slutdato	Einddatum	Päättymispäivä	Enddatum	Sluttdato
 everyOtherWeek	Every other week	Varannan vecka	Hver anden uge	Om de week	Kahden viikon välein	Vierzehntägig	Annenhver uke
 recurringDataEmptyErrorMessage	Select at least one day.	Välj minst en dag.	Vælg mindst en dag	Selecteer ten minste één dag.	Valitse vähintään yksi päivä.	Mindestens einen Tag auswählen.	Velg minst en dag.
+endDateNotSpecifiedErrorMessage	You must enter an end date.	Du måste ange ett slutdatum.					
 selectAll	Select all	Markera alla	Markere alle	Alles selecteren	Valitse kaikki	Alles auswählen	Markere alle
 deselectAll	Deselect all	Avmarkera alla	Fravælg alle	Alles deselecteren	Poista kaikki valinnat	Auswahl aufheben	Avmarkere alle
 mo	Mon	mån	man	Ma	Ma	Mo	man
@@ -296,7 +301,7 @@ intervals	Intervals	Intervaller	Intervaller	Intervallen	Aikavälit	Intervalle	In
 categories	Categories	Kategorier	Kategorier	Categorieën	Kategoriat	Kategorien	Kategorier
 viewDay	Day	Dagen	Dagen	Dag	Päivä	Tag	Dagen
 dayAndNight	Day and night	Dygnet	Døgnet	Dag en nacht	Päivä ja yö	Tag und Nacht	Døgnet
-zoom	Timeline zoom	Tidslinjens zoom	Zoom	Zoom tijdlijn	Aikajanan zoomaus	Zeitstrahl Zoom	Zoom
+zoom	Timeline zoom	Tidslinjens zoom	Tidslinjens zoom	Zoom tijdlijn	Aikajanan zoomaus	Zeitstrahl Zoom	Zoom
 small	Small	Liten	Lille	Klein	Pieni	Klein	Liten
 medium	Medium	Mellan	Mellem	Medium	Keskikokoinen	Mittel	Mellom
 large	Large	Stor	Stor	Groot	Suuri	Groß	Stor
@@ -477,7 +482,7 @@ quickSettingsMenu	Quick settings	Snabb-\ninställningar	Hurtig-\nindstillinger	S
 allPhotos	All photos	Alla foton	Alle fotos	Alle foto's	Kaikki kuvat	Alle Fotos	Alle foto
 addToPhotoCalendarQuestion	Do you want to add this photo to Photo-calendar?	Vill du lägga in detta foto i fotokalendern?	Ønsker du at tilføje dette foto til din fotokalender?	Wilt u deze foto toevoegen aan de fotokalender?	Haluatko lisätä tämän kuvan valokuvakalenteriin?	Möchten Sie dieses Foto dem Fotokalender hinzufügen?	Vil du legge inn dette foto i fotokalenderen?
 removeFromPhotoCalendarQuestion	Do you want to remove this photo from Photo-calendar?	Vill du ta bort detta foto från fotokalendern?	Ønsker du at fjerne dette foto fra din fotokalender?	Wilt u deze foto uit de fotokalender verwijderen?	Haluatko poistaa tämän kuvan valokuvakalenterista?	Möchten Sie dieses Foto aus dem Fotokalender entfernen?	Vil du slette dette foto fra fotokalenderen?
-remove	Remove	Ta bort	Slet	Verwijderen	Poista	Löschen	Slett
+remove	Remove	Ta bort	Slet	Verwijderen	Poista	Löschen	Fjern
 doYouWantToDeleteThisPhoto	Are you sure you want to delete this photo?	Är du säker på att du vill ta bort detta foto?	Er du sikker på, du ønsker at slette dette foto?	Weet u zeker dat u deze foto wilt verwijderen?	Haluatko varmasti poistaa tämän kuvan?	Sind Sie sicher, dass Sie dieses Foto löschen möchten?	Er du sikker på at du vil slette dette foto?
 							
 ### Starter set							
