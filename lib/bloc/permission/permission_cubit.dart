@@ -19,7 +19,7 @@ class PermissionCubit extends Cubit<PermissionState> with Info {
   PermissionCubit() : super(PermissionState.empty());
 
   Future<void> requestPermissions(
-    final List<Permission> permissions,
+    List<Permission> permissions,
   ) async {
     emit(
       state.update(await permissions.request()),
@@ -27,7 +27,7 @@ class PermissionCubit extends Cubit<PermissionState> with Info {
   }
 
   Future<void> checkStatusForPermissions(
-    final Iterable<Permission> permissions,
+    Iterable<Permission> permissions,
   ) async {
     emit(
       state.update(

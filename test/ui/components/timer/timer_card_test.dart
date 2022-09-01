@@ -38,7 +38,7 @@ void main() {
 
   tearDown(GetIt.I.reset);
 
-  Widget wrap(final Widget child) => Directionality(
+  Widget wrap(Widget child) => Directionality(
         textDirection: TextDirection.ltr,
         child: MultiBlocProvider(
           providers: [
