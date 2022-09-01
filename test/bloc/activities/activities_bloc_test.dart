@@ -258,7 +258,7 @@ void main() {
         );
       });
 
-      test('no valid license will return empty list', () async {
+      test('no valid license will emit ActivitiesLoadedFailed', () async {
         when(() => mockActivityRepository.load()).thenAnswer(
             (_) => Future.value(<Activity>[activity1, activity2, activity3]));
         when(() => mockLicenseCubit.validLicense).thenAnswer((_) => false);
@@ -267,7 +267,7 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(const []),
+            ActivitiesLoadedFailed(),
           ]),
         );
       });

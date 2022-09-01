@@ -63,7 +63,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     try {
       final activities = licenseCubit.validLicense
           ? await activityRepository.load()
-          : state.activities;
+          : await activityRepository.all();
       emit(ActivitiesLoaded(activities));
     } catch (_) {
       emit(ActivitiesLoadedFailed());
