@@ -122,6 +122,22 @@ void main() {
         expect(find.byType(SortableToolbar), findsNothing);
       });
 
+      testWidgets('SGC-1639 - Switching tabs resets selected item',
+          (tester) async {
+        await tester.goToTemplates();
+        await tester.tap(find.text(activityNameOne));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(SortableToolbar), findsOneWidget);
+
+        await tester.tap(find.byIcon(AbiliaIcons.stopWatch));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.basicActivity));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(SortableToolbar), findsNothing);
+      });
+
       testWidgets('Tapping down moves activity down and changes sort order',
           (tester) async {
         await tester.goToTemplates();
