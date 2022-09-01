@@ -28,9 +28,9 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     _pushSubscription = pushCubit.stream
         .whereType<PushReceived>()
         .listen((state) => add(LoadActivities()));
-    _licenseSubscription =
-        licenseCubit.stream.whereType<ValidLicense>().listen((licenseState) {
-      _saveActivities(state.activities);
+    _licenseSubscription = licenseCubit.stream
+        .whereType<ValidLicense>()
+        .listen((licenseState) {
       add(LoadActivities());
     });
     on<ActivitiesEvent>(_onEvent, transformer: sequential());
@@ -179,8 +179,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
   }
 
   Future<void> _saveActivities(Iterable<Activity> activities) async {
+    await activityRepository.save(activities);
     if (licenseCubit.validLicense) {
-      await activityRepository.save(activities);
       syncBloc.add(const ActivitySaved());
     }
   }

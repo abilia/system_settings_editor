@@ -23,8 +23,6 @@ class FakeSyncBloc extends Fake implements SyncBloc {
 
 class FakeAuthenticationBloc extends Fake implements AuthenticationBloc {
   @override
-  void add(AuthenticationEvent event) {}
-  @override
   Stream<AuthenticationState> get stream => const Stream.empty();
   @override
   AuthenticationState get state => const Authenticated(userId: 1);
