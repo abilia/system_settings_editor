@@ -28,9 +28,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     _pushSubscription = pushCubit.stream
         .whereType<PushReceived>()
         .listen((state) => add(LoadActivities()));
-    _licenseSubscription = licenseCubit.stream
-        .whereType<ValidLicense>()
-        .listen((licenseState) {
+    _licenseSubscription =
+        licenseCubit.stream.whereType<ValidLicense>().listen((licenseState) {
       add(LoadActivities());
     });
     on<ActivitiesEvent>(_onEvent, transformer: sequential());
