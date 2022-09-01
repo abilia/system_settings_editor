@@ -91,7 +91,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
                   text: Translator.of(context).translate.licenseExpiredMessage,
                 ),
               );
-            } else if (Config.isMPGO || state is NoLicense) {
+            } else if (state is! ValidLicense) {
               BlocProvider.of<AuthenticationBloc>(context).add(
                 const LoggedOut(
                   loggedOutReason: LoggedOutReason.noLicense,

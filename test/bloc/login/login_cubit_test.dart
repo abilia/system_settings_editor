@@ -336,7 +336,7 @@ void main() {
         emitsThrough(
           const LoginState(username: username, password: password)
               .loading()
-              .failure(cause: LoginFailureCause.licenseExpired),
+              .failure(cause: LoginFailureCause.noLicense),
         ),
       );
 

@@ -315,6 +315,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
+
     expect(find.byType(CalendarPage), findsOneWidget);
 
     licensExpireTime = time.subtract(10.days());
