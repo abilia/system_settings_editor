@@ -582,7 +582,9 @@ abstract class Translated {
 
   final String dayAndNight = 'Day and night';
 
-  final String zoom = 'Timeline zoom';
+  final String timelineZoom = 'Timeline zoom';
+
+  final String zoom = 'Zoom';
 
   final String small = 'Small';
 
@@ -1786,7 +1788,7 @@ class SV extends Translated {
   final String dayAndNight = 'Dygnet';
 
   @override
-  final String zoom = 'Tidslinjens zoom';
+  final String timelineZoom = 'Tidslinjens zoom';
 
   @override
   final String small = 'Liten';
@@ -3093,7 +3095,7 @@ class DA extends Translated {
   final String dayAndNight = 'Døgnet';
 
   @override
-  final String zoom = 'Tidslinjens zoom';
+  final String timelineZoom = 'Tidslinjens zoom';
 
   @override
   final String small = 'Lille';
@@ -4402,7 +4404,7 @@ class NL extends Translated {
   final String dayAndNight = 'Dag en nacht';
 
   @override
-  final String zoom = 'Zoom tijdlijn';
+  final String timelineZoom = 'Zoom tijdlijn';
 
   @override
   final String small = 'Klein';
@@ -5714,7 +5716,7 @@ class FI extends Translated {
   final String dayAndNight = 'Päivä ja yö';
 
   @override
-  final String zoom = 'Aikajanan zoomaus';
+  final String timelineZoom = 'Aikajanan zoomaus';
 
   @override
   final String small = 'Pieni';
@@ -7028,7 +7030,7 @@ class DE extends Translated {
   final String dayAndNight = 'Tag und Nacht';
 
   @override
-  final String zoom = 'Zeitstrahl Zoom';
+  final String timelineZoom = 'Zeitstrahl Zoom';
 
   @override
   final String small = 'Klein';
@@ -8339,7 +8341,7 @@ class NB extends Translated {
   final String dayAndNight = 'Døgnet';
 
   @override
-  final String zoom = 'Zoom';
+  final String timelineZoom = 'Zoom';
 
   @override
   final String small = 'Liten';
