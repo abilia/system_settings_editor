@@ -13,7 +13,7 @@ import '../../../test_helpers/app_pumper.dart';
 import '../../../test_helpers/verify_generic.dart';
 
 void main() {
-  group('Alarm setting spage', () {
+  group('Alarm settings page', () {
     final translate = Locales.language.values.first;
     final initialTime = DateTime(2021, 04, 17, 09, 20);
     Iterable<Generic> generics = [];
@@ -41,12 +41,12 @@ void main() {
           .thenAnswer((_) => Future.value(activities));
       when(() => activityDb.getAllAfter(any()))
           .thenAnswer((_) => Future.value(activities));
-      when(() => genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-      when(() => genericDb.insertAndAddDirty(any()))
+      when(() => activityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+      when(() => activityDb.insertAndAddDirty(any()))
           .thenAnswer((_) => Future.value(true));
-      when(() => genericDb.getById(any()))
+      when(() => activityDb.getById(any()))
           .thenAnswer((_) => Future.value(null));
-      when(() => genericDb.insert(any())).thenAnswer((_) async {});
+      when(() => activityDb.insert(any())).thenAnswer((_) async {});
 
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()

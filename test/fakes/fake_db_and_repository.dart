@@ -120,6 +120,8 @@ class FakeActivityDb extends Fake implements ActivityDb {
   @override
   Future<Iterable<Activity>> getAllBetween(DateTime start, DateTime end) =>
       Future.value([]);
+  @override
+  Future<Iterable<DbModel<Activity>>> getAllDirty() => Future.value([]);
 }
 
 class FakeDatabase extends Fake implements Database {

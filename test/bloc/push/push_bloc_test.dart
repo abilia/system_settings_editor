@@ -35,6 +35,8 @@ void main() {
           .thenAnswer((_) => Future.value(0));
       when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(dbActivityAnswers.removeAt(0)));
+      when(() => mockActivityDb.getAllDirty())
+          .thenAnswer((_) => Future.value([]));
       when(() => mockActivityDb.getAllAfter(any())).thenAnswer((_) async => []);
 
       GetItInitializer()

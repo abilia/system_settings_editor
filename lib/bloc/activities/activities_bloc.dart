@@ -31,6 +31,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     _licenseSubscription =
         licenseCubit.stream.whereType<ValidLicense>().listen((licenseState) {
       add(LoadActivities());
+      syncBloc.add(const ActivitySaved());
     });
     on<ActivitiesEvent>(_onEvent, transformer: sequential());
   }
