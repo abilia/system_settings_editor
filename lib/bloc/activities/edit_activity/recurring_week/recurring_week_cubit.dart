@@ -34,10 +34,10 @@ class RecurringWeekCubit extends Cubit<RecurringWeekState> {
     });
   }
 
-  void changeEveryOtherWeek(final bool everyOtherWeek) =>
+  void changeEveryOtherWeek(bool everyOtherWeek) =>
       emit(state.copyWith(everyOtherWeek: everyOtherWeek));
 
-  void addOrRemoveWeekday(final int day) {
+  void addOrRemoveWeekday(int day) {
     final weekdays = state.weekdays.toSet();
     if (!weekdays.remove(day)) {
       weekdays.add(day);
@@ -45,7 +45,7 @@ class RecurringWeekCubit extends Cubit<RecurringWeekState> {
     emit(state.copyWith(weekdays: weekdays));
   }
 
-  void selectWeekdays([final Set<int> days = const {}]) =>
+  void selectWeekdays([Set<int> days = const {}]) =>
       emit(state.copyWith(weekdays: days));
 
   @override
