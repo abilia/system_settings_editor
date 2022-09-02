@@ -49,7 +49,7 @@ class _CrossOverPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Size rectSize = Size(
+    final rectSize = Size(
       size.width - padding.horizontal,
       size.height - padding.vertical,
     );

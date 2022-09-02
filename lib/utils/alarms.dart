@@ -34,7 +34,7 @@ extension IterableActivity on Iterable<Activity> {
     required bool Function(ActivityAlarm) reminderTest,
     bool includeMidnight = false,
   }) {
-    DateTime day = time.onlyDays();
+    final day = time.onlyDays();
     final activitiesThisDay = where((a) => !a.fullDay)
         .expand(
             (a) => a.dayActivitiesForDay(day, includeMidnight: includeMidnight))

@@ -57,7 +57,7 @@ class VoicesCubit extends Cubit<VoicesState> {
 
   Future<void> downloadVoice(VoiceData voice) async {
     emit(state.copyWith(downloading: [...state.downloading, voice.name]));
-    bool downloadSuccess = await voiceRepository.downloadVoice(voice);
+    final downloadSuccess = await voiceRepository.downloadVoice(voice);
 
     emit(
       state.copyWith(downloading: [...state.downloading]..remove(voice.name)),

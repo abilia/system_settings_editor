@@ -49,7 +49,7 @@ abstract class EditActivityState extends Equatable with Finest {
       );
 
   Activity activityToStore() {
-    var storeActivity = (activity.hasAttachment && activity.infoItem.isEmpty)
+    final storeActivity = (activity.hasAttachment && activity.infoItem.isEmpty)
         ? activity.copyWith(infoItem: InfoItem.none)
         : activity;
 

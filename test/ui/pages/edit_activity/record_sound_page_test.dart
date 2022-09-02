@@ -23,7 +23,7 @@ void main() {
   const filePath = 'hmm.m4a';
   setUp(() async {
     final fileContent = base64.decode(recordedBytes);
-    File file = MemoryFileSystem().file(filePath);
+    final file = MemoryFileSystem().file(filePath);
     await file.writeAsBytes(fileContent);
     mockRecorder = MockRecord();
     when(() => mockRecorder.start()).thenAnswer((_) => Future.value());
