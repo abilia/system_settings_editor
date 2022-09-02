@@ -40,14 +40,14 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void loginButtonPressed() {
-    login();
+    _login();
   }
 
   void confirmLicenseExpiredWarning() {
-    login(confirmExpiredLicense: true);
+    _login(confirmExpiredLicense: true);
   }
 
-  void login({bool confirmExpiredLicense = false}) async {
+  void _login({bool confirmExpiredLicense = false}) async {
     emit(state.loading());
     if (!state.isUsernameValid) {
       emit(state.failure(cause: LoginFailureCause.noUsername));
