@@ -172,7 +172,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
             final horizontalAnchor = widget.showCategories
                 ? 0.5 - timePillarPercentOfTotalScreen / 2
                 : 0.0;
-            var categoryMinWidth =
+            final categoryMinWidth =
                 (1 - timePillarPercentOfTotalScreen) * maxWidth / 2;
 
             final tsHeight =
