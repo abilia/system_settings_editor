@@ -52,7 +52,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 wrapWithAuthProviders: false,
               );
-            } else if (state.expiredLicenseMp) {
+            } else if (state.showLicenseExpiredWarning) {
               final loginCubit = context.read<LoginCubit>();
               final confirmWarningDialog = await showViewDialog(
                 context: context,
@@ -63,7 +63,7 @@ class LoginPage extends StatelessWidget {
                 ),
               );
               if (confirmWarningDialog) {
-                loginCubit.loginButtonPressed(confirmExpiredLicense: true);
+                loginCubit.confirmLicenseExpiredWarning();
               }
             } else {
               await showViewDialog(

@@ -370,6 +370,7 @@ void main() {
       loginCubit.passwordChanged(password);
 
       loginCubit.loginButtonPressed();
+      loginCubit.confirmLicenseExpiredWarning();
 
       // Assert
       await expected;

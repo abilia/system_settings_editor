@@ -303,7 +303,7 @@ void main() {
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
     expect(find.byType(LicenseErrorDialog), findsOneWidget);
-  });
+  }, skip: Config.isMP);
 
   testWidgets('Can login when valid license, but gets logged out when invalid',
       (WidgetTester tester) async {
@@ -326,7 +326,7 @@ void main() {
     expect(find.byType(LoginPage), findsOneWidget);
   }, skip: Config.isMP);
 
-  testWidgets('Can login when valid license, no action when expires',
+  testWidgets('Can login when valid license, warning when expires',
       (WidgetTester tester) async {
     final pushCubit = PushCubit();
     await tester.pumpApp(pushCubit: pushCubit);
@@ -342,9 +342,11 @@ void main() {
 
     pushCubit.update('license');
     await tester.pumpAndSettle();
+
     expect(find.byType(LicenseErrorDialog), findsNothing);
     expect(find.byType(LoginPage), findsNothing);
     expect(find.byType(CalendarPage), findsOneWidget);
+    expect(find.byType(WarningDialog), findsOneWidget);
   }, skip: Config.isMPGO);
 
   testWidgets('Can login when no valid expired license, sync warning',
