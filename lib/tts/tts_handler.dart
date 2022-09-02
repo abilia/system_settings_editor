@@ -45,7 +45,7 @@ class AcapelaTtsHandler extends AcapelaTts implements TtsInterface {
     required String voicesPath,
   }) async {
     final acapela = AcapelaTtsHandler();
-    bool initialized = await acapela.initialize(
+    final initialized = await acapela.initialize(
       userId: 0x7a323547,
       password: 0x00302bc1,
       license: '"5917 0 G52z #COMMERCIAL#Abilia Norway"\n'

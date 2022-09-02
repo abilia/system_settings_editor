@@ -282,9 +282,9 @@ void main() {
 
         final sortable = (captured as List).single as Sortable<SortableData>;
 
-        BasicTimerDataItem data = sortable.data as BasicTimerDataItem;
-        expect(data.basicTimerTitle, newTitle);
-        expect(data.duration, const Duration(minutes: 19).inMilliseconds);
+        final dataItem = sortable.data as BasicTimerDataItem;
+        expect(dataItem.basicTimerTitle, newTitle);
+        expect(dataItem.duration, const Duration(minutes: 19).inMilliseconds);
       });
     });
 
@@ -355,9 +355,9 @@ void main() {
 
         final sortable = (captured as List).single as Sortable<SortableData>;
 
-        BasicTimerDataItem data = sortable.data as BasicTimerDataItem;
-        expect(data.basicTimerTitle, enteredTitle);
-        expect(data.duration, duration);
+        final dataItem = sortable.data as BasicTimerDataItem;
+        expect(dataItem.basicTimerTitle, enteredTitle);
+        expect(dataItem.duration, duration);
       });
     });
   });

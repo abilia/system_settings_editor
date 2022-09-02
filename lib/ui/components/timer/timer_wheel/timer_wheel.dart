@@ -213,7 +213,7 @@ class _TimerWheelState extends State<TimerWheel> {
   void _onTapUp(TapUpDetails details, TimerWheelConfiguration config) {
     if (minutesSelectedOnTapDown ==
         _minutesFromPoint(details.localPosition, config)) {
-      int desiredMinutesLeft =
+      final desiredMinutesLeft =
           (_minutesFromPoint(details.localPosition, config) / 5).ceil() * 5;
       assert(
         desiredMinutesLeft >= 0 &&

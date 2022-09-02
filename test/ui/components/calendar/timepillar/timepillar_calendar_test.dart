@@ -1285,7 +1285,7 @@ void main() {
       mockTicker.add(DateTime(2022, 04, 27, 00, 30));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      Container background =
+      final background =
           tester.firstWidget(find.byKey(TestKey.calendarBackgroundColor))
               as Container;
       expect(background.color, TimepillarCalendar.nightBackgroundColor);
@@ -1296,7 +1296,7 @@ void main() {
       mockTicker.add(DateTime(2022, 04, 27, 00, 30));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      CalendarAppBar appBar =
+      final appBar =
           tester.firstWidget(find.byType(CalendarAppBar)) as CalendarAppBar;
       expect(appBar.calendarDayColor, DayColor.noColors);
     });

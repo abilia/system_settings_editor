@@ -94,7 +94,7 @@ class BasicTemplatesPage extends StatelessWidget {
     final authProviders = copiedAuthProviders(context);
     final sortableBloc = context.read<SortableBloc>();
 
-    AbiliaTimer? timer = await Navigator.of(context).push(
+    final timer = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => MultiBlocProvider(
           providers: [
@@ -259,7 +259,7 @@ class AddTemplateButton extends StatelessWidget {
           onPressed: tabController.index == activityTemplateIndex
               ? () => _addNewActivityTemplate(context)
               : () {
-                  SortableArchiveState state = context
+                  final state = context
                       .read<SortableArchiveCubit<BasicTimerData>>()
                       .state;
                   onNewTimerTemplate(

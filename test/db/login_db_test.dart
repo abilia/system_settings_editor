@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   test('Persist login info', () async {
     SharedPreferences.setMockInitialValues({});
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    final loginDb = LoginDb(pref);
+    final preferences = await SharedPreferences.getInstance();
+    final loginDb = LoginDb(preferences);
 
     expect(loginDb.getLoginInfo(), null);
 

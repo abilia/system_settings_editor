@@ -6,11 +6,11 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   test('Test danish tuesday not same as others', () {
-    DayTheme danishTheme = weekdayTheme(
+    final danishTheme = weekdayTheme(
         dayColor: DayColor.allDays,
         languageCode: 'da',
         weekday: DateTime.tuesday);
-    DayTheme englishTheme = weekdayTheme(
+    final englishTheme = weekdayTheme(
         dayColor: DayColor.allDays,
         languageCode: 'en',
         weekday: DateTime.tuesday);
@@ -19,11 +19,11 @@ void main() {
   });
 
   test('Test danish wednesday not same as others', () {
-    DayTheme danishTheme = weekdayTheme(
+    final danishTheme = weekdayTheme(
         dayColor: DayColor.allDays,
         languageCode: 'da',
         weekday: DateTime.wednesday);
-    DayTheme englishTheme = weekdayTheme(
+    final englishTheme = weekdayTheme(
         dayColor: DayColor.allDays,
         languageCode: 'en',
         weekday: DateTime.wednesday);
