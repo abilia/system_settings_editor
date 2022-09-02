@@ -59,8 +59,8 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
   }
 
   void scrollViewRenderComplete(
-    final ScrollController scrollController, {
-    final DateTime? createdTime,
+    ScrollController scrollController, {
+    DateTime? createdTime,
   }) {
     if (!wrongDaySelected()) {
       emit(
