@@ -10,7 +10,7 @@ String analogTimeStringWithInterval(
   DateTime time,
   DayPart dayPart,
 ) {
-  String timeWithInterval = translator.translate.replaceInString(
+  final timeWithInterval = translator.translate.replaceInString(
       intervalString(translator, dayPart, time.hour),
       analogTimeString(translator, time));
   return translator.translate.replaceInString(
@@ -36,7 +36,7 @@ String intervalString(Translator translator, DayPart dayPart, int hour) {
 
 @visibleForTesting
 String analogTimeString(Translator translator, DateTime time) {
-  int hour = hourForTime(translator.locale.languageCode, time);
+  final hour = hourForTime(translator.locale.languageCode, time);
   return translator.translate.replaceInString(
       _analogMinuteString(translator, time),
       _analogHourString(translator, hour));
@@ -55,13 +55,13 @@ String _analogHourString(Translator translator, int hour) {
 }
 
 String _analogMinuteString(Translator translator, DateTime time) {
-  var interval = fiveMinInterval(time);
+  final interval = fiveMinInterval(time);
   return _stringForInterval(translator, interval);
 }
 
 @visibleForTesting
 int hourForTime(String language, DateTime time) {
-  int minute = time.minute;
+  final minute = time.minute;
   int hour = time.hour;
   if (minute > 17 && language == 'nb') {
     hour++;
@@ -83,7 +83,7 @@ int fiveMinInterval(DateTime time) {
 }
 
 String _stringForInterval(Translator translator, int interval) {
-  var translate = translator.translate;
+  final translate = translator.translate;
   switch (interval) {
     case 1:
       return translate.clockFiveMinutesPastTts;

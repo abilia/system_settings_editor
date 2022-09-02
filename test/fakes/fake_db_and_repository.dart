@@ -166,6 +166,10 @@ class FakeGenericRepository extends Fake implements GenericRepository {
 class FakeActivityRepository extends Fake implements ActivityRepository {
   @override
   Future<bool> synchronize() => Future.value(true);
+
+  @override
+  Future<Iterable<Activity>> allBetween(DateTime start, DateTime end) =>
+      Future.value([]);
 }
 
 class FakeFileStorage extends Fake implements FileStorage {

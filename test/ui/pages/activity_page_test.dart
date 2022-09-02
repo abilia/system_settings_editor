@@ -194,7 +194,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       final pushCubit = PushCubit();
-      List<List<Activity>> activitiesList = [
+      final List<List<Activity>> activitiesList = [
         [FakeActivity.starts(startTime)],
         []
       ];

@@ -134,12 +134,12 @@ class AboutDeviceColumn extends StatelessWidget {
   const AboutDeviceColumn({Key? key}) : super(key: key);
 
   Future<BaseDeviceInfo?> deviceInfo() async {
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    final deviceInfo = DeviceInfoPlugin();
     if (Platform.isAndroid) {
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      final androidInfo = await deviceInfo.androidInfo;
       return androidInfo;
     } else if (Platform.isIOS) {
-      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      final iosInfo = await deviceInfo.iosInfo;
       return iosInfo;
     }
     return null;

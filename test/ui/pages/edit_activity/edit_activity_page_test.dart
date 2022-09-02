@@ -2435,6 +2435,45 @@ text''';
       await tester.tap(find.byType(SaveButton));
       await tester.pumpAndSettle();
     });
+
+    testWidgets('SGC-1845 - Changing end date does not reset selected days',
+        (WidgetTester tester) async {
+      // Arrange
+      final activity = Activity.createNew(title: 'Title', startTime: startTime);
+
+      await tester.pumpWidget(createEditActivityPage(
+        givenActivity: activity,
+      ));
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.goToRecurrenceTab();
+
+      // Act -- Change to Monthly
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      // Assert -- One day selected
+      expect(find.byIcon(AbiliaIcons.radiocheckboxSelected), findsNWidgets(1));
+
+      // Act -- Select two more days
+      await tester.tap(find.text('5'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('6'));
+      await tester.pumpAndSettle();
+      // Assert -- Three days selected
+      expect(find.byIcon(AbiliaIcons.radiocheckboxSelected), findsNWidgets(3));
+
+      // Act -- Change end date
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.byIcon(AbiliaIcons.calendar));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('20'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      // Assert -- Still three days selected
+      expect(find.byIcon(AbiliaIcons.radiocheckboxSelected), findsNWidgets(3));
+    });
   });
 
   group('Memoplanner settings -', () {

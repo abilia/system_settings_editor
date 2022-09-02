@@ -295,6 +295,10 @@ abstract class Translated {
 
   final String editTimer = 'Edit timer';
 
+  final String newTimerTemplate = 'New timer template';
+
+  final String editTimerTemplate = 'Edit timer template';
+
   final String menu = 'Menu';
 
   final String cancel = 'Cancel';
@@ -320,6 +324,10 @@ abstract class Translated {
   final String newActivity = 'New activity';
 
   final String editActivity = 'Edit activity';
+
+  final String newActivityTemplate = 'New activity template';
+
+  final String editActivityTemplate = 'Edit activity template';
 
   final String category = 'Category';
 
@@ -1354,6 +1362,12 @@ class SV extends Translated {
   final String editTimer = 'Ändra timer';
 
   @override
+  final String newTimerTemplate = 'Ny timer mall';
+
+  @override
+  final String editTimerTemplate = 'Ändra timer mall';
+
+  @override
   final String menu = 'Meny';
 
   @override
@@ -1391,6 +1405,12 @@ class SV extends Translated {
 
   @override
   final String editActivity = 'Ändra aktivitet';
+
+  @override
+  final String newActivityTemplate = 'Ny aktivitetsmall';
+
+  @override
+  final String editActivityTemplate = 'Ändra aktivitetsmall';
 
   @override
   final String category = 'Kategori';
@@ -3079,7 +3099,7 @@ class DA extends Translated {
   final String dayAndNight = 'Døgnet';
 
   @override
-  final String zoom = 'Zoom';
+  final String zoom = 'Tidslinjens zoom';
 
   @override
   final String small = 'Lille';
@@ -8092,7 +8112,7 @@ class NB extends Translated {
   final String alarmAndVibration = 'Alarm + Vibrasjon';
 
   @override
-  final String vibrationIfAvailable = 'Vibrasjon (om tilgjengelig)';
+  final String vibrationIfAvailable = 'Vibrasjon (hvis tilgjengelig)';
 
   @override
   final String noAlarm = 'Ingen alarm';
@@ -8776,7 +8796,7 @@ class NB extends Translated {
       'Vil du slette dette foto fra fotokalenderen?';
 
   @override
-  final String remove = 'Slett';
+  final String remove = 'Fjern';
 
   @override
   final String doYouWantToDeleteThisPhoto =

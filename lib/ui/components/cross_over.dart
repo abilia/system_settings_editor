@@ -49,7 +49,7 @@ class _CrossOverPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    size = Size(
+    final rectSize = Size(
       size.width - padding.horizontal,
       size.height - padding.vertical,
     );
@@ -59,7 +59,8 @@ class _CrossOverPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = layout.crossOver.strokeWidth
       ..strokeCap = StrokeCap.round;
-    final rect = Offset(padding.left, padding.top) & size;
+    final offset = Offset(padding.left, padding.top);
+    final rect = offset & rectSize;
     final path = Path()
       ..addPolygon(<Offset>[rect.topRight, rect.bottomLeft], false)
       ..addPolygon(<Offset>[rect.topLeft, rect.bottomRight], false);

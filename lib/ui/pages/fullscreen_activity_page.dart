@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:vector_math/vector_math_64.dart' hide Colors;
 
 import 'package:seagull/bloc/all.dart';
@@ -21,6 +22,7 @@ class FullScreenActivityPage extends StatelessWidget {
       child: BlocProvider<FullScreenActivityCubit>(
         create: (context) => FullScreenActivityCubit(
           activitiesBloc: context.read<ActivitiesBloc>(),
+          activityRepository: context.read<ActivityRepository>(),
           clockBloc: context.read<ClockBloc>(),
           alarmCubit: context.read<AlarmCubit>(),
           startingActivity: alarm.activityDay,

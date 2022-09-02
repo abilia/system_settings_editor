@@ -1,6 +1,10 @@
 _id_	en	sv	da	nl	fi	de	nb
-allDay	All day						
-endDateNotSpecifiedErrorMessage	You must enter an end date.	Du måste ange ett slutdatum.					
+allDay	All day
+newTimerTemplate	New timer template	Ny timer mall
+editTimerTemplate	Edit timer template	Ändra timer mall					
+newActivityTemplate	New activity template	Ny aktivitetsmall					
+editActivityTemplate	Edit activity template	Ändra aktivitetsmall					
+endDateNotSpecifiedErrorMessage	You must enter an end date.	Du måste ange ett slutdatum.
 showAlarmOnlyAtStartTime	Show alarm only at start time
 showSpeechAtAlarm	Show speech at alarm
 showReminders	Show reminders

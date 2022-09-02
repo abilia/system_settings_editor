@@ -37,7 +37,7 @@ void main() {
     systemSettingsChannelCallArguments = {};
     systemSettingsChannel
         .setMockMethodCallHandler((MethodCall methodCall) async {
-      var cc = systemSettingsChannelCallCounter[methodCall.method] ?? 0;
+      final cc = systemSettingsChannelCallCounter[methodCall.method] ?? 0;
       systemSettingsChannelCallCounter[methodCall.method] = cc + 1;
       if (methodCall.arguments != null) {
         systemSettingsChannelCallArguments[methodCall.method] =

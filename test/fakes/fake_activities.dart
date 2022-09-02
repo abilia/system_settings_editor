@@ -58,8 +58,8 @@ class FakeActivity {
           title: 'recurs on date $day');
 
   static List<Activity> singleInstance(DateTime startDate) {
-    Activity activity = starts(startDate);
-    Activity activity2 = activity.copyWith(
+    final activity = starts(startDate);
+    final activity2 = activity.copyWith(
         newId: true,
         title: 'activity2',
         startTime: startDate.add(const Duration(days: 31)));

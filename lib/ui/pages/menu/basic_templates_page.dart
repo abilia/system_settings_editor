@@ -13,48 +13,65 @@ class BasicTemplatesPage extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return DefaultTabController(
       length: 2,
-      child: Scaffold(
-        appBar: AbiliaAppBar(
-          iconData: AbiliaIcons.favoritesShow,
-          title: translate.templates,
-          bottom: AbiliaTabBar(
-            tabs: <Widget>[
-              TabItem(translate.activities, AbiliaIcons.basicActivity),
-              TabItem(translate.timers, AbiliaIcons.stopWatch),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            ListLibrary<BasicActivityData>(
-              emptyLibraryMessage: translate.noTemplates,
-              libraryItemGenerator: BasicTemplatePickField.new,
-              onTapEdit: _onEditTemplateActivity,
-            ),
-            ListLibrary<BasicTimerData>(
-              emptyLibraryMessage: translate.noTemplates,
-              libraryItemGenerator: BasicTemplatePickField.new,
-              onTapEdit: (context, sortables) => _onEditTemplateTimer(
-                context,
-                sortables,
-                translate.editTimer,
+      child: Builder(
+        builder: (context) {
+          final tabController = DefaultTabController.of(context);
+          tabController?.addListener(() => _onTabChanged(context));
+          return Scaffold(
+            appBar: AbiliaAppBar(
+              iconData: AbiliaIcons.favoritesShow,
+              title: translate.templates,
+              bottom: AbiliaTabBar(
+                tabs: <Widget>[
+                  TabItem(translate.activities, AbiliaIcons.basicActivity),
+                  TabItem(translate.timers, AbiliaIcons.stopWatch),
+                ],
               ),
             ),
-          ],
-        ),
-        bottomNavigationBar: const BottomNavigation(
-          backNavigationWidget: CloseButton(),
-        ),
-        floatingActionButton: AddTemplateButton(
-          activityTemplateIndex: 0,
-          onNewTimerTemplate: (context, sortables) => _onEditTemplateTimer(
-            context,
-            sortables,
-            translate.newTimer,
-          ),
-        ),
+            body: TabBarView(
+              controller: tabController,
+              children: [
+                ListLibrary<BasicActivityData>(
+                  emptyLibraryMessage: translate.noTemplates,
+                  libraryItemGenerator: BasicTemplatePickField.new,
+                  onTapEdit: _onEditTemplateActivity,
+                ),
+                ListLibrary<BasicTimerData>(
+                  emptyLibraryMessage: translate.noTemplates,
+                  libraryItemGenerator: BasicTemplatePickField.new,
+                  onTapEdit: (context, sortables) => _onEditTemplateTimer(
+                    context,
+                    sortables,
+                    translate.editTimerTemplate,
+                  ),
+                ),
+              ],
+            ),
+            bottomNavigationBar: const BottomNavigation(
+              backNavigationWidget: CloseButton(),
+            ),
+            floatingActionButton: AddTemplateButton(
+              activityTemplateIndex: 0,
+              onNewTimerTemplate: (context, sortables) => _onEditTemplateTimer(
+                context,
+                sortables,
+                translate.newTimerTemplate,
+              ),
+            ),
+          );
+        },
       ),
     );
+  }
+
+  void _onTabChanged(BuildContext context) =>
+      _unselectSortableArchives(context);
+
+  void _unselectSortableArchives(BuildContext context) {
+    context.read<SortableArchiveCubit<BasicTimerData>>().sortableSelected(null);
+    context
+        .read<SortableArchiveCubit<BasicActivityData>>()
+        .sortableSelected(null);
   }
 
   void _onEditTemplateActivity(
@@ -94,7 +111,7 @@ class BasicTemplatesPage extends StatelessWidget {
     final authProviders = copiedAuthProviders(context);
     final sortableBloc = context.read<SortableBloc>();
 
-    AbiliaTimer? timer = await Navigator.of(context).push(
+    final timer = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => MultiBlocProvider(
           providers: [
@@ -259,7 +276,7 @@ class AddTemplateButton extends StatelessWidget {
           onPressed: tabController.index == activityTemplateIndex
               ? () => _addNewActivityTemplate(context)
               : () {
-                  SortableArchiveState state = context
+                  final state = context
                       .read<SortableArchiveCubit<BasicTimerData>>()
                       .state;
                   onNewTimerTemplate(

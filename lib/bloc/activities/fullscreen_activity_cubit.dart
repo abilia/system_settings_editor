@@ -5,40 +5,51 @@ import 'package:collection/collection.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
   FullScreenActivityCubit({
-    required this.activitiesBloc,
+    required ActivitiesBloc activitiesBloc,
+    required this.activityRepository,
     required this.clockBloc,
     required AlarmCubit alarmCubit,
     required ActivityDay startingActivity,
   }) : super(
-          _stateFrom(
-            activitiesBloc.state,
-            clockBloc.state,
-            startingActivity,
+          FullScreenActivityState(
+            eventsList: const [],
+            selected: startingActivity,
           ),
         ) {
     _activityBlocSubscription = activitiesBloc.stream.listen(
-      (activitiesState) => _emit(activitiesState, clockBloc.state),
+      (_) => _updateState(),
     );
     _clockBlocSubscription = clockBloc.stream.listen(
-      (time) => _emit(activitiesBloc.state, time),
+      (_) => _updateState(),
     );
     _alarmCubitSubscription = alarmCubit.stream
         .whereType<NewAlarm>()
         .listen((alarm) => setCurrentActivity(alarm.activityDay));
+    _updateState();
   }
 
-  final ActivitiesBloc activitiesBloc;
+  final ActivityRepository activityRepository;
   final ClockBloc clockBloc;
   late final StreamSubscription _activityBlocSubscription;
   late final StreamSubscription _clockBlocSubscription;
   late final StreamSubscription _alarmCubitSubscription;
 
-  void _emit(ActivitiesState activitiesState, DateTime time) =>
-      emit(_stateFrom(activitiesState, time, state.selected));
+  void _updateState() async {
+    final day = clockBloc.state.onlyDays();
+    final activities = await activityRepository.allBetween(day, day.nextDay());
+    emit(
+      _stateFrom(
+        activities,
+        clockBloc.state,
+        state.selected,
+      ),
+    );
+  }
 
   void setCurrentActivity(ActivityDay activityDay) {
     emit(
@@ -50,12 +61,12 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
   }
 
   static FullScreenActivityState _stateFrom(
-    ActivitiesState activitiesState,
+    Iterable<Activity> activities,
     DateTime time,
     ActivityDay selectedActivity,
   ) {
     final day = time.onlyDays();
-    final ongoingActivities = activitiesState.activities
+    final ongoingActivities = activities
         .where((a) => !a.fullDay)
         .expand((a) => a.dayActivitiesForDay(day))
         .map((ad) => ad.toOccasion(time))

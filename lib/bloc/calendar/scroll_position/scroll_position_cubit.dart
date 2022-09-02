@@ -59,8 +59,8 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
   }
 
   void scrollViewRenderComplete(
-    final ScrollController scrollController, {
-    final DateTime? createdTime,
+    ScrollController scrollController, {
+    DateTime? createdTime,
   }) {
     if (!wrongDaySelected()) {
       emit(
@@ -91,7 +91,7 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
     }
     final scrollPosition = scrollController.offset;
     final maxScrollExtent = scrollController.position.maxScrollExtent;
-    var nowPosition = scrollController.initialScrollOffset +
+    final nowPosition = scrollController.initialScrollOffset +
         timeFromCreation(scrollControllerCreatedTime);
 
     if (_atBottomOfList(
@@ -149,7 +149,7 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
   Future _jumpToActivity(ScrollPositionState state) async {
     if (state is OutOfView) {
       final sc = state.scrollController;
-      var nowPos = sc.initialScrollOffset +
+      final nowPos = sc.initialScrollOffset +
           timeFromCreation(state.scrollControllerCreatedTime);
 
       final offset = min(nowPos, sc.position.maxScrollExtent);

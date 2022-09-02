@@ -1,8 +1,7 @@
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-extension ActivitiesStateExtensions on ActivitiesState {
+extension ActivitiesExtensions on Iterable<Activity> {
   bool anyConflictWith(Activity activity) {
     if (activity.fullDay) return false;
     if (activity.isRecurring) return false;
@@ -10,8 +9,7 @@ extension ActivitiesStateExtensions on ActivitiesState {
     final day = activity.startTime.onlyDays();
     final activityDay = ActivityDay(activity, day);
 
-    final valids =
-        activities.where((a) => !a.fullDay).where((a) => a.id != activity.id);
+    final valids = where((a) => !a.fullDay).where((a) => a.id != activity.id);
 
     final startDayConflict = valids
         .expand((activity) => activity.dayActivitiesForDay(day))
@@ -32,24 +30,4 @@ extension ActivitiesStateExtensions on ActivitiesState {
 
     return false;
   }
-}
-
-extension ActivityDayConflict on ActivityDay {
-  bool conflictsWith(ActivityDay ad) => activity.hasEndTime
-      ? ad.start.inInclusiveRange(
-            startDate: start,
-            endDate: end,
-          ) ||
-          ad.end.inInclusiveRange(
-            startDate: start,
-            endDate: end,
-          )
-      : start.inInclusiveRange(
-            startDate: ad.start,
-            endDate: ad.end,
-          ) ||
-          end.inInclusiveRange(
-            startDate: ad.start,
-            endDate: ad.end,
-          );
 }

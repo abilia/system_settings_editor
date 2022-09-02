@@ -23,7 +23,7 @@ void main() {
 
     final fromDb = supportPersonsDb.getAll();
 
-    Function listEquals = const SetEquality().equals;
+    final listEquals = const SetEquality().equals;
 
     expect(listEquals(supportUsers, fromDb), true);
   });
