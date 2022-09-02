@@ -168,13 +168,13 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
           builder: (context, boxConstraints) {
             final maxWidth = boxConstraints.maxWidth;
             final timePillarPercentOfTotalScreen =
-                (measures.timePillarTotalWidth / 2) / maxWidth;
+                (measures.timePillarTotalWidth) / maxWidth;
             final horizontalAnchor = widget.showCategories
-                ? 0.5 - timePillarPercentOfTotalScreen
+                ? 0.5 - timePillarPercentOfTotalScreen / 2
                 : 0.0;
-            var categoryMinWidth = horizontalAnchor != 0
-                ? horizontalAnchor * maxWidth
-                : (maxWidth - measures.timePillarTotalWidth) / 2;
+            var categoryMinWidth =
+                (1 - timePillarPercentOfTotalScreen) * maxWidth / 2;
+
             final tsHeight =
                 measures.timePillarHeight + topMargin + bottomMargin;
             final calendarHeight =
@@ -337,25 +337,18 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
 }
 
 class SnapToCenterScrollController extends ScrollController {
-  double? prevScroll;
-  bool snappedToCenter = false;
-
+  double prevScroll = 0;
   SnapToCenterScrollController() {
     addListener(() {
       final currentScroll = position.pixels;
-      if (prevScroll == null) {
+      if (prevScroll == 0) {
         prevScroll = currentScroll;
         return;
       }
-      if (!snappedToCenter &&
-          currentScroll.isNegative != prevScroll?.isNegative) {
+      if (currentScroll.isNegative != prevScroll.isNegative) {
         prevScroll = 0;
-        snappedToCenter = true;
         jumpTo(0);
         return;
-      }
-      if (prevScroll != 0 || currentScroll != 0) {
-        snappedToCenter = false;
       }
       prevScroll = currentScroll;
     });
