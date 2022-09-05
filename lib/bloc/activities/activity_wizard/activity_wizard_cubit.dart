@@ -20,24 +20,24 @@ class ActivityWizardCubit extends WizardCubit {
     required ActivitiesBloc activitiesBloc,
     required EditActivityCubit editActivityCubit,
     required ClockBloc clockBloc,
-    required AddActivitySettings settings,
+    required AddActivitySettings addActivitySettings,
     bool showCategories = true,
   }) {
-    if (settings.mode == AddActivityMode.editView) {
+    if (addActivitySettings.mode == AddActivityMode.editView) {
       return ActivityWizardCubit.newAdvanced(
         activitiesBloc: activitiesBloc,
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        allowPassedStartTime: settings.general.allowPassedStartTime,
+        allowPassedStartTime: addActivitySettings.general.allowPassedStartTime,
       );
     }
     return ActivityWizardCubit.newStepByStep(
       activitiesBloc: activitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      allowPassedStartTime: settings.general.allowPassedStartTime,
-      stepByStep: settings.stepByStep,
-      addRecurringActivity: settings.general.addRecurringActivity,
+      allowPassedStartTime: addActivitySettings.general.allowPassedStartTime,
+      stepByStep: addActivitySettings.stepByStep,
+      addRecurringActivity: addActivitySettings.general.addRecurringActivity,
       showCategories: showCategories,
     );
   }

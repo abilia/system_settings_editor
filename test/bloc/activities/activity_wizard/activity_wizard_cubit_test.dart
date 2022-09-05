@@ -59,7 +59,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: FakeEditActivityCubit(),
       clockBloc: clockBloc,
-      settings: const AddActivitySettings(),
+      addActivitySettings: const AddActivitySettings(),
     );
 
     expect(
@@ -86,7 +86,7 @@ void main() {
         calendarId: calendarId,
       ),
       clockBloc: clockBloc,
-      settings: const AddActivitySettings(mode: AddActivityMode.stepByStep),
+      addActivitySettings: const AddActivitySettings(mode: AddActivityMode.stepByStep),
     );
 
     expect(
@@ -178,7 +178,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const AddActivitySettings(
+      addActivitySettings: const AddActivitySettings(
         editActivity: EditActivitySettings(template: false),
       ),
     );
@@ -330,7 +330,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const AddActivitySettings(
+      addActivitySettings: const AddActivitySettings(
         editActivity: EditActivitySettings(template: false),
       ),
     );
@@ -740,7 +740,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const AddActivitySettings(
+      addActivitySettings: const AddActivitySettings(
         editActivity: EditActivitySettings(template: false),
       ),
     );
@@ -808,7 +808,7 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
-          settings: const AddActivitySettings(
+          addActivitySettings: const AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
         );
@@ -897,7 +897,7 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(time),
-          settings: const AddActivitySettings(
+          addActivitySettings: const AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
         );
@@ -983,7 +983,7 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
-          settings: const AddActivitySettings(
+          addActivitySettings: const AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
         );
@@ -1171,7 +1171,7 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
-          settings: const AddActivitySettings(
+          addActivitySettings: const AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
         );
@@ -1257,7 +1257,7 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
-          settings: const AddActivitySettings(
+          addActivitySettings: const AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
         );
@@ -1399,7 +1399,7 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime),
-          settings: const AddActivitySettings(
+          addActivitySettings: const AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
         );
@@ -1460,7 +1460,7 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
-          settings: const AddActivitySettings(
+          addActivitySettings: const AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
         );
@@ -1747,7 +1747,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const AddActivitySettings(mode: AddActivityMode.stepByStep),
+        addActivitySettings: const AddActivitySettings(mode: AddActivityMode.stepByStep),
       );
 
       expect(
@@ -1781,7 +1781,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const AddActivitySettings(
+        addActivitySettings: const AddActivitySettings(
           mode: AddActivityMode.stepByStep,
           general: GeneralAddActivitySettings(addRecurringActivity: false),
           stepByStep: StepByStepSettings(
@@ -1829,7 +1829,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const AddActivitySettings(
+        addActivitySettings: const AddActivitySettings(
           mode: AddActivityMode.stepByStep,
           general: GeneralAddActivitySettings(
             addRecurringActivity: false,
@@ -1914,7 +1914,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: allWizStepsSettings,
+        addActivitySettings: allWizStepsSettings,
       );
 
       expect(
@@ -1940,7 +1940,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: allWizStepsSettings,
+        addActivitySettings: allWizStepsSettings,
       );
 
       expect(
@@ -2019,7 +2019,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: allWizStepsSettings,
+        addActivitySettings: allWizStepsSettings,
       );
 
       expect(
@@ -2063,7 +2063,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: allWizStepsSettings,
+        addActivitySettings: allWizStepsSettings,
       );
 
       editActivityCubit
@@ -2101,7 +2101,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const AddActivitySettings(
+        addActivitySettings: const AddActivitySettings(
           mode: AddActivityMode.stepByStep,
           general: GeneralAddActivitySettings(
             addRecurringActivity: true,
@@ -2183,7 +2183,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const AddActivitySettings(
+        addActivitySettings: const AddActivitySettings(
           mode: AddActivityMode.stepByStep,
           general: GeneralAddActivitySettings(
             addRecurringActivity: true,
