@@ -607,7 +607,7 @@ void main() {
       ),
     );
 
-    testWidgets('only type step', (WidgetTester tester) async {
+    testWidgets('only full day step', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           fullDayOnlyMemoSettings,
@@ -697,26 +697,6 @@ void main() {
         ),
       ),
     );
-
-    testWidgets('Checking full day activity hides category step',
-        (WidgetTester tester) async {
-      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          fullDayAndCheckableMemoSettings,
-        ),
-      );
-      await tester.pumpWidget(wizardPage());
-      await tester.pumpAndSettle();
-
-      expect(find.byType(FullDayWiz), findsOneWidget);
-
-      await tester.tap(find.byIcon(AbiliaIcons.restore));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(NextButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(CategoryWiz), findsNothing);
-      expect(find.byType(CheckableWiz), findsOneWidget);
-    });
 
     testWidgets('Not checking full day activity shows category step',
         (WidgetTester tester) async {

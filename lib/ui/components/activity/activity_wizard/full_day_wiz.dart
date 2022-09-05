@@ -7,7 +7,7 @@ class FullDayWiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WizardScaffold(
-      iconData: AbiliaIcons.plus,
+      iconData: AbiliaIcons.restore,
       title: Translator.of(context).translate.allDay,
       body: Padding(
         padding: layout.templates.m1,
