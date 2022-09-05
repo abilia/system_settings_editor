@@ -86,7 +86,8 @@ void main() {
         calendarId: calendarId,
       ),
       clockBloc: clockBloc,
-      addActivitySettings: const AddActivitySettings(mode: AddActivityMode.stepByStep),
+      addActivitySettings:
+          const AddActivitySettings(mode: AddActivityMode.stepByStep),
     );
 
     expect(
@@ -1747,7 +1748,8 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        addActivitySettings: const AddActivitySettings(mode: AddActivityMode.stepByStep),
+        addActivitySettings:
+            const AddActivitySettings(mode: AddActivityMode.stepByStep),
       );
 
       expect(

@@ -33,16 +33,14 @@ class CategoriesSettingsTab extends StatelessWidget {
                 key: TestKey.editLeftCategory,
                 imageAndName: generalSettings.categories.left,
                 defaultName: t.left,
-                onResult: (r) =>
-                    generalSettings.categories.copyWith(left: r),
+                onResult: (r) => generalSettings.categories.copyWith(left: r),
               ),
               SizedBox(height: layout.formPadding.verticalItemDistance),
               _CategoryPickField(
                 key: TestKey.editRigthCategory,
                 imageAndName: generalSettings.categories.right,
                 defaultName: t.right,
-                onResult: (r) =>
-                    generalSettings.categories.copyWith(right: r),
+                onResult: (r) => generalSettings.categories.copyWith(right: r),
               ),
               SizedBox(height: layout.formPadding.groupBottomDistance),
               SwitchField(
