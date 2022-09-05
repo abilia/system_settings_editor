@@ -244,28 +244,28 @@ class CreateNewPage extends StatelessWidget {
             ),
             BlocProvider<WizardCubit>(
               create: (context) {
-                final settings = context
-                    .read<MemoplannerSettingBloc>()
-                    .state
-                    .settings
-                    .addActivity;
-                return settings.mode == AddActivityMode.editView
+                final settings =
+                    context.read<MemoplannerSettingBloc>().state.settings;
+                final addActivity = settings.addActivity;
+                final showCategories = settings.calendar.categories.show;
+                return addActivity.mode == AddActivityMode.editView
                     ? ActivityWizardCubit.newAdvanced(
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
                         clockBloc: context.read<ClockBloc>(),
                         allowPassedStartTime:
-                            settings.general.allowPassedStartTime,
+                            addActivity.general.allowPassedStartTime,
                       )
                     : ActivityWizardCubit.newStepByStep(
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
                         clockBloc: context.read<ClockBloc>(),
                         allowPassedStartTime:
-                            settings.general.allowPassedStartTime,
-                        stepByStep: settings.stepByStep,
+                            addActivity.general.allowPassedStartTime,
+                        stepByStep: addActivity.stepByStep,
                         addRecurringActivity:
-                            settings.general.addRecurringActivity,
+                            addActivity.general.addRecurringActivity,
+                        showCategories: showCategories,
                       );
               },
             ),

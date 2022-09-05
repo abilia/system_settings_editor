@@ -21,6 +21,7 @@ class ActivityWizardCubit extends WizardCubit {
     required EditActivityCubit editActivityCubit,
     required ClockBloc clockBloc,
     required AddActivitySettings settings,
+    bool showCategories = true,
   }) {
     if (settings.mode == AddActivityMode.editView) {
       return ActivityWizardCubit.newAdvanced(
@@ -37,6 +38,7 @@ class ActivityWizardCubit extends WizardCubit {
       allowPassedStartTime: settings.general.allowPassedStartTime,
       stepByStep: settings.stepByStep,
       addRecurringActivity: settings.general.addRecurringActivity,
+      showCategories: showCategories,
     );
   }
 
@@ -54,12 +56,14 @@ class ActivityWizardCubit extends WizardCubit {
     required this.allowPassedStartTime,
     required StepByStepSettings stepByStep,
     required bool addRecurringActivity,
+    required bool showCategories,
   }) : super(
           WizardState(
             0,
             _generateWizardSteps(
               stepByStep: stepByStep,
               addRecurringActivity: addRecurringActivity,
+              showCategories: showCategories,
               activity: editActivityCubit.state.activity,
             ),
           ),
@@ -69,6 +73,7 @@ class ActivityWizardCubit extends WizardCubit {
         final newSteps = _generateWizardSteps(
           stepByStep: stepByStep,
           addRecurringActivity: addRecurringActivity,
+          showCategories: showCategories,
           activity: event.activity,
         );
         if (newSteps != state.steps) {
@@ -81,6 +86,7 @@ class ActivityWizardCubit extends WizardCubit {
   static List<WizardStep> _generateWizardSteps({
     required StepByStepSettings stepByStep,
     required bool addRecurringActivity,
+    required bool showCategories,
     required Activity activity,
   }) =>
       [
@@ -89,7 +95,7 @@ class ActivityWizardCubit extends WizardCubit {
         if (stepByStep.date) WizardStep.date,
         if (stepByStep.fullDay) WizardStep.fullDay,
         if (!activity.fullDay) WizardStep.time,
-        if (!activity.fullDay) WizardStep.category,
+        if (!activity.fullDay && showCategories) WizardStep.category,
         if (stepByStep.checkable) WizardStep.checkable,
         if (stepByStep.removeAfter) WizardStep.deleteAfter,
         if (stepByStep.availability) WizardStep.availableFor,
