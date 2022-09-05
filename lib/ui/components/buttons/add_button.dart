@@ -77,7 +77,7 @@ class _AddButtonMPGO extends StatelessWidget {
       AbiliaIcons.plus,
       key: TestKey.addActivityButton,
       ttsData: Translator.of(context).translate.addActivity,
-      onPressed: () => _navigateToCreateNewPage(context: context),
+      onPressed: () => _onAddButtonPressed(context: context),
     );
   }
 }
@@ -92,7 +92,7 @@ class _AddActivityButton extends StatelessWidget {
       AbiliaIcons.plus,
       key: TestKey.addActivityButton,
       ttsData: Translator.of(context).translate.addActivity,
-      onPressed: () => _navigateToCreateNewPage(
+      onPressed: () => _onAddButtonPressed(
         context: context,
         showTimers: false,
       ),
@@ -110,7 +110,7 @@ class _AddTimerButton extends StatelessWidget {
       AbiliaIcons.stopWatch,
       key: TestKey.addTimerButton,
       ttsData: Translator.of(context).translate.addTimer,
-      onPressed: () => _navigateToCreateNewPage(
+      onPressed: () => _onAddButtonPressed(
         context: context,
         showActivities: false,
       ),
@@ -142,7 +142,7 @@ class _AddActivityOrTimerButtons extends StatelessWidget {
             icon: AbiliaIcons.plus,
             position: _AddTabPosition.left,
             ttsData: Translator.of(context).translate.addActivity,
-            onTap: () => _navigateToCreateNewPage(
+            onTap: () => _onAddButtonPressed(
               context: context,
               showTimers: false,
             ),
@@ -156,7 +156,7 @@ class _AddActivityOrTimerButtons extends StatelessWidget {
             icon: AbiliaIcons.stopWatch,
             position: _AddTabPosition.right,
             ttsData: Translator.of(context).translate.addTimer,
-            onTap: () => _navigateToCreateNewPage(
+            onTap: () => _onAddButtonPressed(
               context: context,
               showActivities: false,
             ),
@@ -253,14 +253,29 @@ class _AddTab extends StatelessWidget {
   }
 }
 
-void _navigateToCreateNewPage({
+Future _onAddButtonPressed({
   required BuildContext context,
   bool showActivities = true,
   bool showTimers = true,
 }) {
   final authProviders = copiedAuthProviders(context);
+  final addActivity =
+      context.read<MemoplannerSettingBloc>().state.settings.addActivity;
+  final basicActivityOption = addActivity.basicActivityOption;
+  final newActivityOption = addActivity.newActivityOption;
+  final showOnlyActivities = showActivities && !showTimers;
 
-  Navigator.of(context).push(
+  if (showOnlyActivities && Config.isMP) {
+    if (newActivityOption && !basicActivityOption) {
+      return CreateNewPage.navigateToActivityWizardWithContext(
+          context, authProviders);
+    } else if (basicActivityOption && !newActivityOption) {
+      return CreateNewPage.navigateToBasicActivityPicker(
+          context, authProviders, addActivity.defaults);
+    }
+  }
+
+  return Navigator.of(context).push(
     MaterialPageRoute(
       builder: (_) => MultiBlocProvider(
         providers: authProviders,

@@ -28,7 +28,6 @@ class CreateNewPage extends StatelessWidget {
     final displayNewActivity = displaysSettings.newActivity && showActivities;
     final displayNewTimer = displaysSettings.newTimer && showTimers;
 
-    final defaultsSettings = addActivitySettings.defaults;
     return Scaffold(
       appBar: _appBar(t, displayNewActivity, displayNewTimer),
       body: Column(
@@ -38,11 +37,9 @@ class CreateNewPage extends StatelessWidget {
               key: TestKey.newActivityChoice,
               leading: const Icon(AbiliaIcons.basicActivity),
               text: Text(t.newActivity),
-              onTap: () => navigateToActivityWizard(
-                authProviders: authProviders,
-                navigator: Navigator.of(context),
-                defaultsSettings: defaultsSettings,
-                day: context.read<DayPickerBloc>().state.day,
+              onTap: () => navigateToActivityWizardWithContext(
+                context,
+                authProviders,
               ),
             ).pad(layout.templates.m1.withoutBottom),
           if (addActivitySettings.basicActivityOption && displayNewActivity)
@@ -50,34 +47,11 @@ class CreateNewPage extends StatelessWidget {
               key: TestKey.basicActivityChoice,
               leading: const Icon(AbiliaIcons.basicActivities),
               text: Text(t.fromTemplate),
-              onTap: () async {
-                final navigator = Navigator.of(context);
-                final day = context.read<DayPickerBloc>().state.day;
-                final basicActivityData =
-                    await Navigator.of(context).push<BasicActivityData>(
-                  MaterialPageRoute(
-                    builder: (_) => MultiBlocProvider(
-                      providers: authProviders,
-                      child:
-                          BlocProvider<SortableArchiveCubit<BasicActivityData>>(
-                        create: (_) => SortableArchiveCubit<BasicActivityData>(
-                          sortableBloc: BlocProvider.of<SortableBloc>(context),
-                        ),
-                        child: const BasicActivityPickerPage(),
-                      ),
-                    ),
-                  ),
-                );
-                if (basicActivityData is BasicActivityDataItem) {
-                  navigateToActivityWizard(
-                    authProviders: authProviders,
-                    navigator: navigator,
-                    defaultsSettings: defaultsSettings,
-                    day: day,
-                    basicActivity: basicActivityData,
-                  );
-                }
-              },
+              onTap: () => navigateToBasicActivityPicker(
+                context,
+                authProviders,
+                addActivitySettings.defaults,
+              ),
             ).pad(m1ItemPadding),
           if (displayNewActivity && displayNewTimer)
             const Divider().pad(
@@ -204,12 +178,43 @@ class CreateNewPage extends StatelessWidget {
     );
   }
 
-  Future<void> navigateToActivityWizardWithContext(
+  static Future<void> navigateToBasicActivityPicker(
     BuildContext context,
-    List<BlocProvider> authProviders, [
-    BasicActivityDataItem? basicActivity,
-  ]) =>
-      navigateToActivityWizard(
+    List<BlocProvider> authProviders,
+    DefaultsAddActivitySettings defaultsSettings,
+  ) async {
+    final navigator = Navigator.of(context);
+    final day = context.read<DayPickerBloc>().state.day;
+    final basicActivityData =
+        await Navigator.of(context).push<BasicActivityData>(
+      MaterialPageRoute(
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
+          child: BlocProvider<SortableArchiveCubit<BasicActivityData>>(
+            create: (_) => SortableArchiveCubit<BasicActivityData>(
+              sortableBloc: BlocProvider.of<SortableBloc>(context),
+            ),
+            child: const BasicActivityPickerPage(),
+          ),
+        ),
+      ),
+    );
+    if (basicActivityData is BasicActivityDataItem) {
+      _navigateToActivityWizard(
+        authProviders: authProviders,
+        navigator: navigator,
+        defaultsSettings: defaultsSettings,
+        day: day,
+        basicActivity: basicActivityData,
+      );
+    }
+  }
+
+  static Future<void> navigateToActivityWizardWithContext(
+    BuildContext context,
+    List<BlocProvider> authProviders,
+  ) =>
+      _navigateToActivityWizard(
         authProviders: authProviders,
         navigator: Navigator.of(context),
         defaultsSettings: context
@@ -221,7 +226,7 @@ class CreateNewPage extends StatelessWidget {
         day: context.read<DayPickerBloc>().state.day,
       );
 
-  Future<void> navigateToActivityWizard({
+  static Future<void> _navigateToActivityWizard({
     required NavigatorState navigator,
     required DateTime day,
     required DefaultsAddActivitySettings defaultsSettings,
@@ -277,7 +282,7 @@ class CreateNewPage extends StatelessWidget {
     if (activityCreated == true) navigator.pop();
   }
 
-  Route<T> _createRoute<T>(Widget page) => PageRouteBuilder<T>(
+  static Route<T> _createRoute<T>(Widget page) => PageRouteBuilder<T>(
         pageBuilder: (context, animation, secondaryAnimation) => page,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             SlideTransition(
