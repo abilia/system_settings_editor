@@ -293,7 +293,7 @@ void main() {
         );
         final noBasic = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
-            data: false,
+            data: true,
             identifier: StepByStepSettings.templateKey,
           ),
         );
@@ -398,7 +398,8 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
           await tester.pumpAndSettle();
-          expect(find.byType(CreateNewPage), findsOneWidget);
+          expect(find.byType(CreateNewPage),
+              Config.isMP ? findsNothing : findsOneWidget);
           expect(find.byKey(TestKey.basicActivityChoice), findsNothing);
         });
 
@@ -416,7 +417,8 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
           await tester.pumpAndSettle();
-          expect(find.byType(CreateNewPage), findsOneWidget);
+          expect(find.byType(CreateNewPage),
+              Config.isMP ? findsNothing : findsOneWidget);
           expect(find.byKey(TestKey.basicActivityChoice), findsNothing);
         });
 
@@ -441,9 +443,11 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
           await tester.pumpAndSettle();
-          expect(find.byType(CreateNewPage), findsOneWidget);
+          expect(find.byType(CreateNewPage),
+              Config.isMP ? findsNothing : findsOneWidget);
           expect(find.byKey(TestKey.newActivityChoice), findsNothing);
-          expect(find.byKey(TestKey.basicActivityChoice), findsOneWidget);
+          expect(find.byKey(TestKey.basicActivityChoice),
+              Config.isMP ? findsNothing : findsOneWidget);
         });
 
         testWidgets('Empty message when no basic activities',
@@ -493,7 +497,8 @@ void main() {
           await tester.tap(addActivityButtonFinder);
           await tester.pumpAndSettle();
           expect(find.byKey(TestKey.newActivityChoice), findsNothing);
-          expect(find.byKey(TestKey.basicActivityChoice), findsOneWidget);
+          expect(find.byKey(TestKey.basicActivityChoice),
+              Config.isMP ? findsNothing : findsOneWidget);
         });
 
         testWidgets('New activity from basic activity gets correct title',
