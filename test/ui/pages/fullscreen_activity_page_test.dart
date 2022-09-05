@@ -90,6 +90,8 @@ void main() {
 
     final expected = ActivitiesLoaded(fakeActivities);
 
+    when(() => mockActivitiesBloc.activityRepository)
+        .thenReturn(mockActivityRepository);
     when(() => mockActivitiesBloc.state).thenReturn(expected);
     when(() => mockActivitiesBloc.stream)
         .thenAnswer((_) => Stream.fromIterable([expected]));

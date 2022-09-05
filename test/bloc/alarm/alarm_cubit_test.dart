@@ -28,7 +28,7 @@ void main() {
     final inTwoMin = thisMinute.add(const Duration(minutes: 2));
     final day = thisMinute.onlyDays();
 
-    Future<void> _tick() {
+    Future<DateTime> _tick() {
       final nextMin = clockBloc.state.add(const Duration(minutes: 1));
       mockedTicker.add(nextMin);
       return clockBloc.stream.firstWhere((d) => d == nextMin);
@@ -65,8 +65,12 @@ void main() {
 
     blocTest(
       'Load activities with current alarm shows alarm',
-      setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
-          .thenAnswer((_) => Future.value([soonActivity])),
+      setUp: () {
+        when(() => mockActivityRepository.allBetween(any(), any()))
+            .thenAnswer((_) => Future.value([soonActivity]));
+        when(() => mockActivityRepository.load())
+            .thenAnswer((_) => Future.value([soonActivity]));
+      },
       build: () => AlarmCubit(
         clockBloc: clockBloc,
         activitiesBloc: activitiesBloc,
@@ -74,9 +78,9 @@ void main() {
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
         timerAlarm: const Stream.empty(),
       ),
-      act: (cubit) {
+      act: (cubit) async {
         activitiesBloc.add(LoadActivities());
-        _tick();
+        await _tick();
       },
       expect: () => [StartAlarm(ActivityDay(soonActivity, day))],
     );
@@ -137,8 +141,12 @@ void main() {
 
     blocTest(
       'Next minut alarm alarm next minute',
-      setUp: () => when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value([soonActivity])),
+      setUp: () {
+        when(() => mockActivityRepository.load())
+            .thenAnswer((_) => Future.value([soonActivity]));
+        when(() => mockActivityRepository.allBetween(any(), any()))
+            .thenAnswer((_) => Future.value([soonActivity]));
+      },
       build: () => AlarmCubit(
         clockBloc: clockBloc,
         activitiesBloc: activitiesBloc,
@@ -155,8 +163,12 @@ void main() {
 
     blocTest(
       'Two activities at the same time emits',
-      setUp: () => when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value([soonActivity, soonActivity2])),
+      setUp: () {
+        when(() => mockActivityRepository.load())
+            .thenAnswer((_) => Future.value([soonActivity, soonActivity2]));
+        when(() => mockActivityRepository.allBetween(any(), any()))
+            .thenAnswer((_) => Future.value([soonActivity, soonActivity2]));
+      },
       build: () => AlarmCubit(
         clockBloc: clockBloc,
         activitiesBloc: activitiesBloc,
@@ -176,8 +188,12 @@ void main() {
 
     blocTest(
       'two activities starts in order',
-      setUp: () => when(() => mockActivityRepository.load()).thenAnswer(
-          (_) => Future.value([inTwoMinActivity, nowActivity, soonActivity])),
+      setUp: () {
+        when(() => mockActivityRepository.load()).thenAnswer(
+            (_) => Future.value([inTwoMinActivity, nowActivity, soonActivity]));
+        when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
+            (_) => Future.value([inTwoMinActivity, nowActivity, soonActivity]));
+      },
       build: () => AlarmCubit(
         clockBloc: clockBloc,
         activitiesBloc: activitiesBloc,
@@ -202,8 +218,13 @@ void main() {
 
     blocTest(
       'Activity with no alarm set does not trigger an alarm',
-      setUp: () => when(() => mockActivityRepository.load()).thenAnswer((_) =>
-          Future.value([inTwoMinActivity, inOneMinuteWithoutAlarmActivity])),
+      setUp: () {
+        when(() => mockActivityRepository.load()).thenAnswer((_) =>
+            Future.value([inTwoMinActivity, inOneMinuteWithoutAlarmActivity]));
+        when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
+            (_) => Future.value(
+                [inTwoMinActivity, inOneMinuteWithoutAlarmActivity]));
+      },
       build: () => AlarmCubit(
         clockBloc: clockBloc,
         activitiesBloc: activitiesBloc,
@@ -222,8 +243,12 @@ void main() {
     final recursThursday = FakeActivity.reocurrsTuedays(nextMinute);
     blocTest(
       'Recurring weekly alarms shows',
-      setUp: () => when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value([recursThursday])),
+      setUp: () {
+        when(() => mockActivityRepository.load())
+            .thenAnswer((_) => Future.value([recursThursday]));
+        when(() => mockActivityRepository.allBetween(any(), any()))
+            .thenAnswer((_) => Future.value([recursThursday]));
+      },
       build: () => AlarmCubit(
         clockBloc: clockBloc,
         activitiesBloc: activitiesBloc,
@@ -244,8 +269,12 @@ void main() {
         nextMinute.add(const Duration(days: 60)));
     blocTest(
       'Recurring monthly alarms shows',
-      setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
-          .thenAnswer((_) => Future.value([recursTheThisDayOfMonth])),
+      setUp: () {
+        when(() => mockActivityRepository.allBetween(any(), any()))
+            .thenAnswer((_) => Future.value([recursTheThisDayOfMonth]));
+        when(() => mockActivityRepository.load())
+            .thenAnswer((_) => Future.value([recursTheThisDayOfMonth]));
+      },
       build: () => AlarmCubit(
         clockBloc: clockBloc,
         activitiesBloc: activitiesBloc,
@@ -264,8 +293,12 @@ void main() {
     final recursTheThisDayOfYear = FakeActivity.reocurrsOnDate(nextMinute);
     blocTest(
       'Recurring yearly alarms shows',
-      setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
-          .thenAnswer((_) => Future.value([recursTheThisDayOfYear])),
+      setUp: () {
+        when(() => mockActivityRepository.allBetween(any(), any()))
+            .thenAnswer((_) => Future.value([recursTheThisDayOfYear]));
+        when(() => mockActivityRepository.load())
+            .thenAnswer((_) => Future.value([recursTheThisDayOfYear]));
+      },
       build: () => AlarmCubit(
         clockBloc: clockBloc,
         activitiesBloc: activitiesBloc,
@@ -283,8 +316,12 @@ void main() {
     final activityEnding = FakeActivity.ends(nextMinute);
     blocTest(
       'Alarm on EndTime shows',
-      setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
-          .thenAnswer((_) => Future.value([activityEnding])),
+      setUp: () {
+        when(() => mockActivityRepository.allBetween(any(), any()))
+            .thenAnswer((_) => Future.value([activityEnding]));
+        when(() => mockActivityRepository.load())
+            .thenAnswer((_) => Future.value([activityEnding]));
+      },
       build: () => AlarmCubit(
         clockBloc: clockBloc,
         activitiesBloc: activitiesBloc,
@@ -304,8 +341,12 @@ void main() {
         FakeActivity.starts(inTwoMin, duration: Duration.zero);
     blocTest(
       'Alarm on EndTime does not show when it has no end time (start time is same as end time)',
-      setUp: () => when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value([nextAlarm, afterThatAlarm])),
+      setUp: () {
+        when(() => mockActivityRepository.load())
+            .thenAnswer((_) => Future.value([nextAlarm, afterThatAlarm]));
+        when(() => mockActivityRepository.allBetween(any(), any()))
+            .thenAnswer((_) => Future.value([nextAlarm, afterThatAlarm]));
+      },
       build: () => AlarmCubit(
         clockBloc: clockBloc,
         activitiesBloc: activitiesBloc,
@@ -329,8 +370,12 @@ void main() {
         .copyWith(reminderBefore: [reminderTime.inMilliseconds]);
     blocTest(
       'Reminders shows',
-      setUp: () => when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value([remind1HourBefore])),
+      setUp: () {
+        when(() => mockActivityRepository.load())
+            .thenAnswer((_) => Future.value([remind1HourBefore]));
+        when(() => mockActivityRepository.allBetween(any(), any()))
+            .thenAnswer((_) => Future.value([remind1HourBefore]));
+      },
       build: () => AlarmCubit(
         clockBloc: clockBloc,
         activitiesBloc: activitiesBloc,
