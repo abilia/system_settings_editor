@@ -16,7 +16,8 @@ class ActivityCubit extends Cubit<ActivityState> {
   final ActivitiesBloc activitiesBloc;
 
   void _onNewState() async {
-    final found = await activitiesBloc.activityRepository.byId(state.activityDay.id);
+    final found =
+        await activitiesBloc.activityRepository.byId(state.activityDay.id);
     if (found == null || found.deleted) {
       return emit(ActivityDeleted(state.activityDay));
     }
