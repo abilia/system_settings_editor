@@ -27,4 +27,5 @@ export 'copied_auth_providers.dart';
 export 'activity_day_extensions.dart';
 export 'spoken_text_edit_controller.dart';
 export 'available_for.dart';
-export 'activity_and_timer_navigator.dart';
+export 'activity_navigator.dart';
+export 'timer_navigator.dart';
