@@ -8339,7 +8339,7 @@ class NB extends Translated {
   final String dayAndNight = 'Døgnet';
 
   @override
-  final String timelineZoom = 'Zoom';
+  final String timelineZoom = 'Tidslinjens zoom';
 
   @override
   final String small = 'Liten';
