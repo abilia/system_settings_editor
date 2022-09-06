@@ -259,19 +259,19 @@ Future _onAddButtonPressed({
   bool showTimers = true,
 }) {
   final authProviders = copiedAuthProviders(context);
-  final addActivity =
+  final addActivitySettings =
       context.read<MemoplannerSettingBloc>().state.settings.addActivity;
-  final basicActivityOption = addActivity.basicActivityOption;
-  final newActivityOption = addActivity.newActivityOption;
+  final basicActivityOption = addActivitySettings.basicActivityOption;
+  final newActivityOption = addActivitySettings.newActivityOption;
   final showOnlyActivities = showActivities && !showTimers;
 
   if (showOnlyActivities && Config.isMP) {
     if (newActivityOption && !basicActivityOption) {
-      return CreateNewPage.navigateToActivityWizardWithContext(
+      return NewActivityWidget.navigateToActivityWizardWithContext(
           context, authProviders);
     } else if (basicActivityOption && !newActivityOption) {
-      return CreateNewPage.navigateToBasicActivityPicker(
-          context, authProviders, addActivity.defaults);
+      return NewActivityWidget.navigateToBasicActivityPicker(
+          context, authProviders, addActivitySettings.defaults);
     }
   }
 
