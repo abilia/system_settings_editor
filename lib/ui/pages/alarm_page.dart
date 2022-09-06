@@ -29,8 +29,9 @@ class AlarmPage extends StatelessWidget {
           activityDay: alarm.activityDay,
           activitiesBloc: context.read<ActivitiesBloc>(),
         ),
-        child: BlocBuilder<ActivityCubit, ActivityState>(
-          builder: (context, state) => Scaffold(
+        child: BlocSelector<ActivityCubit, ActivityState, NewAlarm>(
+          selector: (state) => alarm.copyWith(state.activityDay),
+          builder: (context, alarm) => Scaffold(
             appBar: AbiliaAppBar(
               title: Translator.of(context).translate.alarm,
               iconData: AbiliaIcons.handiAlarmVibration,
@@ -47,13 +48,12 @@ class AlarmPage extends StatelessWidget {
             body: Padding(
               padding: layout.templates.s1,
               child: ActivityInfo(
-                state.activityDay,
+                alarm.activityDay,
                 previewImage: previewImage,
                 alarm: alarm,
               ),
             ),
-            bottomNavigationBar: AlarmBottomNavigationBar(
-                alarm: alarm, activityDay: state.activityDay),
+            bottomNavigationBar: AlarmBottomNavigationBar(alarm: alarm),
           ),
         ),
       ),
@@ -81,8 +81,9 @@ class ReminderPage extends StatelessWidget {
           activityDay: reminder.activityDay,
           activitiesBloc: context.read<ActivitiesBloc>(),
         ),
-        child: BlocBuilder<ActivityCubit, ActivityState>(
-          builder: (context, state) => Scaffold(
+        child: BlocSelector<ActivityCubit, ActivityState, NewReminder>(
+          selector: (state) => reminder.copyWith(state.activityDay),
+          builder: (context, reminder) => Scaffold(
             appBar: AbiliaAppBar(
               title: translate.reminder,
               iconData: AbiliaIcons.handiReminder,
@@ -115,13 +116,12 @@ class ReminderPage extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: ActivityInfo(state.activityDay, alarm: reminder),
+                    child: ActivityInfo(reminder.activityDay, alarm: reminder),
                   ),
                 ],
               ),
             ),
-            bottomNavigationBar: AlarmBottomNavigationBar(
-                alarm: reminder, activityDay: state.activityDay),
+            bottomNavigationBar: AlarmBottomNavigationBar(alarm: reminder),
           ),
         ),
       ),
@@ -172,16 +172,14 @@ class _PopAwareAlarmPageState extends State<PopAwareAlarmPage> {
 class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
   const AlarmBottomNavigationBar({
     required this.alarm,
-    required this.activityDay,
     Key? key,
   }) : super(key: key);
 
   final ActivityAlarm alarm;
-  final ActivityDay activityDay;
 
   bool get _displayCheckButton {
-    final activity = activityDay.activity;
-    if (activity.checkable && !activityDay.isSignedOff) {
+    final activity = alarm.activityDay.activity;
+    if (activity.checkable && !alarm.activityDay.isSignedOff) {
       if (alarm is ReminderUnchecked) return true;
       if (alarm is ReminderBefore) return false;
       if (alarm is EndAlarm) return true;
@@ -223,7 +221,7 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
                   icon: AbiliaIcons.handiCheck,
                   onPressed: () => checkConfirmationAndRemoveAlarm(
                     context,
-                    activityDay,
+                    alarm.activityDay,
                     alarm: alarm,
                   ),
                 ),
