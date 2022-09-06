@@ -106,6 +106,8 @@ abstract class ActivityAlarm extends NotificationAlarm {
     }
   }
 
+  ActivityAlarm copyWith(ActivityDay activityDay);
+
   @override
   List<Object?> get props => [activityDay.activity, activityDay.day];
 }
@@ -128,6 +130,9 @@ abstract class NewAlarm extends ActivityAlarm {
       : settings.nonCheckableActivity.toSound();
 
   AbiliaFile get speech;
+
+  @override
+  NewAlarm copyWith(ActivityDay activityDay);
 }
 
 class StartAlarm extends NewAlarm {
@@ -149,6 +154,10 @@ class StartAlarm extends NewAlarm {
   @override
   String get type => typeName;
   static const String typeName = 'StartAlarm';
+
+  @override
+  StartAlarm copyWith(ActivityDay activityDay) =>
+      StartAlarm(activityDay, fullScreenActivity: fullScreenActivity);
 }
 
 class EndAlarm extends NewAlarm {
@@ -171,6 +180,10 @@ class EndAlarm extends NewAlarm {
       EndAlarm(activityDay, fullScreenActivity: fullScreenActivity);
 
   static const String typeName = 'EndAlarm';
+
+  @override
+  EndAlarm copyWith(ActivityDay activityDay) =>
+      EndAlarm(activityDay, fullScreenActivity: fullScreenActivity);
 }
 
 abstract class NewReminder extends ActivityAlarm {
@@ -189,6 +202,9 @@ abstract class NewReminder extends ActivityAlarm {
   Sound sound(AlarmSettings settings) => settings.reminder.toSound();
 
   @override
+  NewReminder copyWith(ActivityDay activityDay);
+
+  @override
   List<Object?> get props => [reminder, ...super.props];
 }
 
@@ -197,6 +213,10 @@ class ReminderBefore extends NewReminder {
       : super(activityDay, reminder);
   @override
   DateTime get notificationTime => activityDay.start.subtract(reminder);
+
+  @override
+  ReminderBefore copyWith(ActivityDay activityDay) =>
+      ReminderBefore(activityDay, reminder: reminder);
 
   @override
   String get type => typeName;
@@ -208,6 +228,10 @@ class ReminderUnchecked extends NewReminder {
       : super(activityDay, reminder);
   @override
   DateTime get notificationTime => activityDay.end.add(reminder);
+
+  @override
+  ReminderUnchecked copyWith(ActivityDay activityDay) =>
+      ReminderUnchecked(activityDay, reminder: reminder);
 
   @override
   String get type => typeName;
