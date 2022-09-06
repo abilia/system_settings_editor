@@ -63,10 +63,7 @@ class ActivityTimepillarCard extends TimepillarCard {
             else
               SideTime(
                 occasion: activityOccasion.occasion,
-                height: dotHeight +
-                    (dotHeight > 0
-                        ? (decoration.border?.dimensions.vertical ?? 0)
-                        : 0),
+                height: dotHeight,
                 width: measures.cardWidth,
                 category: activity.category,
                 showCategoryColor: showCategoryColor,
