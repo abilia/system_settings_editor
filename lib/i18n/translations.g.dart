@@ -250,6 +250,8 @@ abstract class Translated {
 
   final String allDays = 'All days';
 
+  final String allDay = 'All day';
+
   final String thisDayAndForward = 'This day and forward';
 
   final String completed = 'Completed?';
@@ -687,6 +689,10 @@ abstract class Translated {
   final String selectDate = 'Select date';
 
   final String selectType = 'Select type';
+
+  final String selectAllDay = 'Select all day';
+
+  final String selectCategory = 'Select category';
 
   final String selectCheckable = 'Select checkable';
 

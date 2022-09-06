@@ -10,67 +10,66 @@ class DateAndTimeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
-    return BlocBuilder<EditActivityCubit, EditActivityState>(
-        builder: (context, editActivityState) {
-      final fullDay = editActivityState.activity.fullDay;
-      return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
-              bool>(
-          selector: (state) => state.settings.addActivity.editActivity.date,
-          builder: (context, canEditDate) {
-            return SizedBox(
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  if (context.read<WizardCubit>()
-                      is! TemplateActivityWizardCubit) ...[
-                    SubHeading(translator.date),
-                    DatePicker(
-                      editActivityState.timeInterval.startDate,
-                      onChange: canEditDate
-                          ? (newDate) => context
-                              .read<EditActivityCubit>()
-                              .changeDate(newDate)
-                          : null,
-                    ),
-                    SizedBox(height: layout.formPadding.groupTopDistance),
-                  ],
-                  SubHeading(translator.time),
-                  SwitchField(
-                    key: TestKey.fullDaySwitch,
-                    leading: Icon(
-                      AbiliaIcons.restore,
-                      size: layout.icon.small,
-                    ),
-                    value: fullDay,
-                    onChanged: (v) =>
-                        context.read<EditActivityCubit>().replaceActivity(
-                              editActivityState.activity.copyWith(fullDay: v),
-                            ),
-                    child: Text(translator.fullDay),
-                  ),
-                  CollapsableWidget(
-                    collapsed: fullDay,
-                    padding: EdgeInsets.only(
-                      top: layout.formPadding.verticalItemDistance,
-                    ),
-                    child: BlocBuilder<WizardCubit, WizardState>(
-                      builder: (context, wizState) => TimeIntervallPicker(
-                        editActivityState.timeInterval,
-                        startTimeError: wizState.saveErrors.any(
-                          {
-                            SaveError.noStartTime,
-                            SaveError.startTimeBeforeNow,
-                          }.contains,
+    final editActivityState = context.watch<EditActivityCubit>().state;
+    final isFullDay = editActivityState.activity.fullDay;
+    final showFullDay = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.addActivity.editActivity.fullDay);
+    final showTimeWidgets = !isFullDay || showFullDay;
+    final canEditDate = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.addActivity.editActivity.date);
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          if (context.read<WizardCubit>() is! TemplateActivityWizardCubit) ...[
+            SubHeading(translator.date),
+            DatePicker(
+              editActivityState.timeInterval.startDate,
+              onChange: canEditDate
+                  ? (newDate) =>
+                      context.read<EditActivityCubit>().changeDate(newDate)
+                  : null,
+            ),
+          ],
+          if (showTimeWidgets) ...[
+            SizedBox(height: layout.formPadding.groupTopDistance),
+            SubHeading(translator.time),
+            if (showFullDay)
+              SwitchField(
+                key: TestKey.fullDaySwitch,
+                leading: Icon(
+                  AbiliaIcons.restore,
+                  size: layout.icon.small,
+                ),
+                value: isFullDay,
+                onChanged: (v) =>
+                    context.read<EditActivityCubit>().replaceActivity(
+                          editActivityState.activity.copyWith(fullDay: v),
                         ),
-                      ),
-                    ),
-                  ),
-                ],
+                child: Text(translator.fullDay),
               ),
-            );
-          });
-    });
+            CollapsableWidget(
+              collapsed: isFullDay,
+              padding: EdgeInsets.only(
+                top: showFullDay ? layout.formPadding.verticalItemDistance : 0,
+              ),
+              child: BlocBuilder<WizardCubit, WizardState>(
+                builder: (context, wizState) => TimeIntervallPicker(
+                  editActivityState.timeInterval,
+                  startTimeError: wizState.saveErrors.any(
+                    {
+                      SaveError.noStartTime,
+                      SaveError.startTimeBeforeNow,
+                    }.contains,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
   }
 }
 

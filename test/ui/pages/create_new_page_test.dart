@@ -246,6 +246,10 @@ void main() {
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
+        expect(find.byType(CategoryWiz), findsOneWidget);
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
         expect(find.byType(CheckableWiz), findsOneWidget);
         await tester.tap(find.byKey(TestKey.checkableRadio));
         await tester.pumpAndSettle();
@@ -333,6 +337,10 @@ void main() {
 
         expect(find.byType(TimeWiz), findsOneWidget);
         await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(CategoryWiz), findsOneWidget);
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
