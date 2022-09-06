@@ -163,7 +163,7 @@ void main() {
                 .captured
                 .whereType<List<Sortable>>()
                 .expand((l) => l);
-        expect(capturedSortable, hasLength(3));
+        expect(capturedSortable, hasLength(1));
         expect(capturedSortable.last.deleted, isTrue);
       });
 

@@ -115,7 +115,8 @@ void main() {
         .toList();
 
     // Act
-    final res = (await sortableRepository.load()).toList();
+    await sortableRepository.synchronize();
+    final res = (await sortableRepository.getAll()).toList();
 
     // Verify
     expect(res, expectedFiles);

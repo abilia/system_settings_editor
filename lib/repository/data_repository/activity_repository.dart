@@ -32,7 +32,6 @@ class ActivityRepository extends DataRepository<Activity> {
     return activityDb.getAllBetween(start, end);
   }
 
-  Future<Iterable<Activity>> getAll() {
-    return activityDb.getAll();
-  }
+  @override
+  Future<Iterable<Activity>> getAll() => activityDb.getAllNonDeleted();
 }

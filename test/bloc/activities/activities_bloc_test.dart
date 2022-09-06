@@ -29,8 +29,7 @@ void main() {
     mockLicenseCubit = MockLicenseCubit();
 
     when(() => mockPushCubit.stream).thenAnswer((_) => const Stream.empty());
-    when(() => mockActivityRepository.load())
-        .thenAnswer((_) => Future.value(<Activity>[]));
+
     when(() => mockActivityRepository.save(any()))
         .thenAnswer((_) => Future.value(true));
 
@@ -40,9 +39,7 @@ void main() {
 
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
-      pushCubit: mockPushCubit,
       syncBloc: mockSyncBloc,
-      licenseCubit: mockLicenseCubit,
     );
   });
 
@@ -51,9 +48,7 @@ void main() {
       'initial state is ActivitiesNotLoaded',
       build: () => ActivitiesBloc(
         activityRepository: mockActivityRepository,
-        pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
-        licenseCubit: mockLicenseCubit,
       ),
       verify: (ActivitiesBloc bloc) => expect(
         bloc.state,
@@ -65,24 +60,20 @@ void main() {
       'load activities calls load activities on mockActivityRepostitory',
       build: () => ActivitiesBloc(
         activityRepository: mockActivityRepository,
-        pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
-        licenseCubit: mockLicenseCubit,
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
       verify: (ActivitiesBloc bloc) =>
-          verify(() => mockActivityRepository.load()),
+          verify(() => mockActivityRepository.getAll()),
     );
 
     blocTest(
       'LoadActivities event returns ActivitiesLoaded state',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value(<Activity>[])),
       build: () => ActivitiesBloc(
         activityRepository: mockActivityRepository,
-        pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
-        licenseCubit: mockLicenseCubit,
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
       expect: () => [ActivitiesLoaded(const [])],
@@ -103,13 +94,11 @@ void main() {
 
     blocTest(
       'LoadActivities event returns ActivitiesLoaded state with Activity',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value(<Activity>[storedActivity])),
       build: () => ActivitiesBloc(
         activityRepository: mockActivityRepository,
-        pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
-        licenseCubit: mockLicenseCubit,
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
       expect: () => [
@@ -118,13 +107,11 @@ void main() {
     );
 
     blocTest('calls add activities on mockActivityRepostitory',
-        setUp: () => when(() => mockActivityRepository.load())
+        setUp: () => when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value(<Activity>[storedActivity])),
         build: () => ActivitiesBloc(
               activityRepository: mockActivityRepository,
-              pushCubit: mockPushCubit,
               syncBloc: mockSyncBloc,
-              licenseCubit: mockLicenseCubit,
             ),
         act: (ActivitiesBloc bloc) => bloc
           ..add(LoadActivities())
@@ -133,22 +120,18 @@ void main() {
               ActivitiesLoaded([storedActivity]),
               ActivitiesLoaded([storedActivity, activity1])
             ],
-        verify: (bloc) async {
-          await untilCalled(() => mockActivityRepository.save(any()));
-          await untilCalled(() => mockSyncBloc.add(const ActivitySaved()));
+        verify: (bloc) {
           verify(() => mockActivityRepository.save([activity1]));
           verify(() => mockSyncBloc.add(const ActivitySaved()));
         });
 
     blocTest(
         'UpdateActivities calls save activities on mockActivityRepostitory',
-        setUp: () => when(() => mockActivityRepository.load())
+        setUp: () => when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value(<Activity>[activity1])),
         build: () => ActivitiesBloc(
               activityRepository: mockActivityRepository,
-              pushCubit: mockPushCubit,
               syncBloc: mockSyncBloc,
-              licenseCubit: mockLicenseCubit,
             ),
         act: (ActivitiesBloc bloc) => bloc
           ..add(LoadActivities())
@@ -157,23 +140,18 @@ void main() {
               ActivitiesLoaded([activity1]),
               ActivitiesLoaded([updatedActivity1]),
             ],
-        verify: (bloc) async {
-          await untilCalled(
-              () => mockActivityRepository.save([updatedActivity1]));
-          await untilCalled(() => mockSyncBloc.add(const ActivitySaved()));
+        verify: (bloc) {
           verify(() => mockActivityRepository.save([updatedActivity1]));
           verify(() => mockSyncBloc.add(const ActivitySaved()));
         });
 
     blocTest(
         'DeleteActivities calls save activities on mockActivityRepostitory',
-        setUp: () => when(() => mockActivityRepository.load())
+        setUp: () => when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value(<Activity>[storedActivity])),
         build: () => ActivitiesBloc(
               activityRepository: mockActivityRepository,
-              pushCubit: mockPushCubit,
               syncBloc: mockSyncBloc,
-              licenseCubit: mockLicenseCubit,
             ),
         act: (ActivitiesBloc bloc) => bloc
           ..add(LoadActivities())
@@ -182,10 +160,7 @@ void main() {
               ActivitiesLoaded([storedActivity]),
               ActivitiesLoaded(const []),
             ],
-        verify: (bloc) async {
-          await untilCalled(
-              () => mockActivityRepository.save([deletedStoredActivity]));
-          await untilCalled(() => mockSyncBloc.add(const ActivitySaved()));
+        verify: (bloc) {
           verify(() => mockActivityRepository.save([deletedStoredActivity]));
           verify(() => mockSyncBloc.add(const ActivitySaved()));
         });
@@ -194,13 +169,11 @@ void main() {
         activityListDeleted = [activity1, activity2, activity4];
     blocTest(
       'DeleteActivities does not yeild the deleted activity',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value(fullActivityList)),
       build: () => ActivitiesBloc(
         activityRepository: mockActivityRepository,
-        pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
-        licenseCubit: mockLicenseCubit,
       ),
       act: (ActivitiesBloc bloc) => bloc
         ..add(LoadActivities())
@@ -221,16 +194,14 @@ void main() {
     blocTest(
       'UpdateActivities state order',
       setUp: () {
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value(fullActivityList));
         when(() => mockActivityRepository.save(updatedActivityList))
             .thenAnswer((_) => Future.value(true));
       },
       build: () => ActivitiesBloc(
         activityRepository: mockActivityRepository,
-        pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
-        licenseCubit: mockLicenseCubit,
       ),
       act: (ActivitiesBloc bloc) => bloc
         ..add(LoadActivities())
@@ -245,7 +216,7 @@ void main() {
     group('License', () {
       test('valid license will sync with repo', () async {
         final List<Activity> activityList = [activity1, activity2, activity3];
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value(activityList));
         when(() => mockLicenseCubit.validLicense).thenAnswer((_) => true);
         activitiesBloc.add(LoadActivities());
@@ -258,22 +229,8 @@ void main() {
         );
       });
 
-      test('no valid license will emit ActivitiesLoadedFailed', () async {
-        when(() => mockActivityRepository.load()).thenAnswer(
-            (_) => Future.value(<Activity>[activity1, activity2, activity3]));
-        when(() => mockLicenseCubit.validLicense).thenAnswer((_) => false);
-        activitiesBloc.add(LoadActivities());
-
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            ActivitiesLoadedFailed(),
-          ]),
-        );
-      });
-
       test('can add activity with no valid license, no sync', () async {
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value(<Activity>[activity2, activity3]));
         when(() => mockLicenseCubit.validLicense).thenAnswer((_) => false);
         final expect = expectLater(
@@ -301,7 +258,7 @@ void main() {
         recurrringActivity2
       ];
 
-      when(() => mockActivityRepository.load())
+      when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value(activityList));
 
       // Act
@@ -344,7 +301,7 @@ void main() {
           recurrringActivity2
         ];
 
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value(activityList));
 
         final expextedRecurring =
@@ -395,7 +352,7 @@ void main() {
           recurrringActivity2
         ];
 
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value(activityList));
 
         final expextedRecurring = recurrringActivity
@@ -436,7 +393,7 @@ void main() {
 
         final activityList = [recurrringActivity];
 
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value(activityList));
 
         final expextedRecurring1 = recurrringActivity
@@ -492,7 +449,7 @@ void main() {
           recurrringActivity2
         ];
 
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value(activityList));
 
         // Act
@@ -527,7 +484,7 @@ void main() {
 
         final activityList = [recurrringActivity];
 
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value(activityList));
 
         // Act
@@ -569,7 +526,7 @@ void main() {
 
         final activityList = [recurrringActivity1, recurrringActivity2];
 
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value(activityList));
 
         final recurrringActivity1AfterDelete = recurrringActivity1
@@ -606,7 +563,7 @@ void main() {
         // Arrange
         final recurring = FakeActivity.reocurrsEveryDay(anyTime)
             .copyWithRecurringEnd(anyDay.nextDay().millisecondBefore());
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value([recurring]));
         final starttime = anyTime.subtract(1.hours());
         final updated = recurring.copyWith(
@@ -641,7 +598,7 @@ void main() {
         // Arrange
         final recurring = FakeActivity.reocurrsEveryDay(anyTime)
             .copyWithRecurringEnd(anyDay.add(5.days()).millisecondBefore());
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value([recurring]));
 
         final starttime = recurring.startTime.subtract(1.hours());
@@ -702,7 +659,7 @@ void main() {
           ),
         );
 
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value([recurring]));
 
         final newStartTime = recurring.startClock(lastDay).subtract(1.hours());
@@ -755,7 +712,7 @@ void main() {
           ),
         );
 
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value([recurring]));
 
         final updated = recurring.copyWith(
@@ -803,7 +760,7 @@ void main() {
         // Arrange
         final aDay = DateTime(2020, 04, 01);
         final recurring = FakeActivity.reocurrsEveryDay(anyTime);
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value([recurring]));
 
         final fullday = recurring.copyWith(
@@ -859,7 +816,7 @@ void main() {
         final updatedRecurrringActivity =
             recurrringActivity.copyWith(title: 'new title');
 
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value([recurrringActivity]));
 
         // Act
@@ -896,7 +853,7 @@ void main() {
         );
         final onAndAfterModifiedDay = updatedRecurrringActivity.copyWith();
 
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value([recurrringActivity]));
 
         final exptected = [beforeModifiedDay, onAndAfterModifiedDay];
@@ -933,7 +890,7 @@ void main() {
         final updatedRecurrringActivity =
             recurrringActivity.copyWith(title: 'new title', startTime: inAWeek);
 
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value([recurrringActivity]));
 
         final expectedPreModified = recurrringActivity.copyWithRecurringEnd(
@@ -978,7 +935,7 @@ void main() {
         final updatedRecurrringActivity = recurrringActivity.copyWith(
             title: 'new title', startTime: inTwoWeeks);
 
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value([recurrringActivity]));
 
         final expectedPreModified = recurrringActivity.copyWithRecurringEnd(
@@ -1046,7 +1003,7 @@ void main() {
             .copyWithRecurringEnd(inFiveDays.add(66.minutes()));
 
         final currentActivities = [before, after, stray, stray2];
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value(currentActivities));
 
         const newTitle = 'newTitle';
@@ -1152,7 +1109,7 @@ void main() {
           startTime: a3Time,
           recurs: Recurs.not,
         );
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value([a1, a2, a3]));
 
         const newTitle = 'updated';

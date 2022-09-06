@@ -17,19 +17,22 @@ part 'sortable_state.dart';
 class SortableBloc extends Bloc<SortableEvent, SortableState> {
   static final _log = Logger((SortableBloc).toString());
   final SortableRepository sortableRepository;
-  late final StreamSubscription pushSubscription;
+  late final StreamSubscription syncSubscription;
   StreamSubscription? _refreshAfterAddedStarterSetSubscription;
   final SyncBloc syncBloc;
 
   SortableBloc({
     required this.sortableRepository,
-    required PushCubit pushCubit,
     required this.syncBloc,
   }) : super(SortablesNotLoaded()) {
-    pushSubscription = pushCubit.stream.listen((state) {
-      if (state is PushReceived) {
-        add(const LoadSortables());
-      }
+    syncSubscription = syncBloc.stream.listen((_) {
+      final state = this.state;
+      add(
+        LoadSortables(
+          initDefaults: state is SortablesNotLoaded ||
+              state is SortablesLoaded && state.sortables.isEmpty,
+        ),
+      );
     });
     on<SortableEvent>(_onEvent, transformer: sequential());
   }
@@ -52,7 +55,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
   Future<void> _mapLoadSortablesToState(
       bool initDefaults, Emitter<SortableState> emit) async {
     try {
-      final sortables = await sortableRepository.load();
+      final sortables = await sortableRepository.getAll();
       emit(SortablesLoaded(sortables: sortables));
       if (initDefaults) {
         await _addMissingDefaults(sortables);
@@ -180,7 +183,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
 
   @override
   Future<void> close() async {
-    await pushSubscription.cancel();
+    await syncSubscription.cancel();
     await _refreshAfterAddedStarterSetSubscription?.cancel();
     return super.close();
   }

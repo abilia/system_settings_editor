@@ -102,7 +102,7 @@ void main() {
       test('saves all as dirty', () async {
         await genericRepository.save(oneSyncOneUnsync);
         final dirty = await genericDb.getAllDirty();
-        final all = await genericDb.getAll();
+        final all = await genericDb.getAllNonDeleted();
         expect(dirty, oneSyncOneUnsync.map((e) => e.wrapWithDbModel(dirty: 1)));
         expect(all, oneSyncOneUnsync);
       });
@@ -110,7 +110,7 @@ void main() {
       test('saves all unsynced as dirty', () async {
         await genericRepository.save(allUnsynced);
         final dirty = await genericDb.getAllDirty();
-        final all = await genericDb.getAll();
+        final all = await genericDb.getAllNonDeleted();
         expect(
             dirty,
             unorderedEquals(
@@ -123,7 +123,7 @@ void main() {
       test('only save syncables dirty', () async {
         await genericRepository.save(oneSyncOneUnsync);
         final dirty = await genericDb.getAllDirty();
-        final all = await genericDb.getAll();
+        final all = await genericDb.getAllNonDeleted();
         expect(dirty, [synced.wrapWithDbModel(dirty: 1)]);
         expect(all, unorderedEquals(oneSyncOneUnsync));
       });
@@ -131,7 +131,7 @@ void main() {
       test('save none unsyncables as dirty', () async {
         await genericRepository.save(allUnsynced);
         final dirty = await genericDb.getAllDirty();
-        final all = await genericDb.getAll();
+        final all = await genericDb.getAllNonDeleted();
         expect(dirty, isEmpty);
         expect(all, unorderedEquals(allUnsynced));
       });
@@ -192,8 +192,9 @@ void main() {
     });
 
     test('revision 0 stores all incoming generics', () async {
-      final res = await genericRepository.load();
-      final all = await genericDb.getAll();
+      await genericRepository.synchronize();
+      final res = await genericRepository.getAll();
+      final all = await genericDb.getAllNonDeleted();
 
       expect(all, unorderedEquals(repsonseAll));
       expect(res, unorderedEquals(repsonseAll));
@@ -204,8 +205,9 @@ void main() {
         unsynced.wrapWithDbModel(revision: 1) as DbModel<Generic<GenericData>>
       ]);
 
-      final res = await genericRepository.load();
-      final all = await genericDb.getAll();
+      await genericRepository.synchronize();
+      final res = await genericRepository.getAll();
+      final all = await genericDb.getAllNonDeleted();
 
       expect(all, unorderedEquals(oneSyncOneUnsync));
       expect(res, unorderedEquals(oneSyncOneUnsync));

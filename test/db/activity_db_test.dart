@@ -15,13 +15,13 @@ void main() {
   });
 
   test('Test add activity', () async {
-    final all = await activityDb.getAll();
+    final all = await activityDb.getAllNonDeleted();
     expect(all.length, 0);
 
     final a = Activity.createNew(title: 'Hey', startTime: DateTime(100));
     await activityDb.insert([a.wrapWithDbModel()]);
 
-    final all2 = await activityDb.getAll();
+    final all2 = await activityDb.getAllNonDeleted();
     expect(all2.length, 1);
   });
 

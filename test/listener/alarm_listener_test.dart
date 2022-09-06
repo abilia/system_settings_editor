@@ -69,11 +69,10 @@ void main() {
     when(() => mockTimerDb.getAllTimers()).thenAnswer((_) => Future.value([]));
     when(() => mockTimerDb.getRunningTimersFrom(any()))
         .thenAnswer((_) => Future.value([]));
-    when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
-      (realInvocation) => Future.value(
-        [],
-      ),
-    );
+    when(() => mockGenericDb.getAllNonDeletedMaxRevision())
+        .thenAnswer((realInvocation) => Future.value([]));
+    when(() => mockGenericDb.getAllDirty())
+        .thenAnswer((realInvocation) => Future.value([]));
 
     getItInitializer
       ..sharedPreferences = await FakeSharedPreferences.getInstance()

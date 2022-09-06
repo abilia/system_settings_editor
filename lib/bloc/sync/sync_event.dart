@@ -9,6 +9,10 @@ abstract class SyncEvent {
   String toString() => '$runtimeType(${id ?? ''})';
 }
 
+class SyncAll extends SyncEvent {
+  const SyncAll() : super();
+}
+
 class ActivitySaved extends SyncEvent {
   const ActivitySaved([String? id]) : super(id);
 }

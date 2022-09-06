@@ -79,7 +79,6 @@ void main() {
             BlocProvider<UserFileCubit>(
               create: (context) => UserFileCubit(
                 fileStorage: FakeFileStorage(),
-                pushCubit: FakePushCubit(),
                 syncBloc: FakeSyncBloc(),
                 userFileRepository: FakeUserFileRepository(),
               ),
