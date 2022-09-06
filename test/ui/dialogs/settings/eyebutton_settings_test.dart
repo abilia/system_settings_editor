@@ -119,7 +119,8 @@ void main() {
         exact: translate.twoTimePillarsView);
 
     // Verify correct TTS zoom. Small and medium has same icon for now
-    await tester.verifyTts(find.text(translate.zoom), exact: translate.zoom);
+    await tester.verifyTts(find.text(translate.timelineZoom),
+        exact: translate.timelineZoom);
     await tester.verifyTts(find.text(translate.small), exact: translate.small);
     await tester.verifyTts(find.text(translate.medium),
         exact: translate.medium);

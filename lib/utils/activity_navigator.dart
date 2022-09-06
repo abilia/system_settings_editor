@@ -76,28 +76,28 @@ mixin ActivityNavigator {
             ),
             BlocProvider<WizardCubit>(
               create: (context) {
-                final settings = context
-                    .read<MemoplannerSettingBloc>()
-                    .state
-                    .settings
-                    .addActivity;
-                return settings.mode == AddActivityMode.editView
+                final settings =
+                    context.read<MemoplannerSettingBloc>().state.settings;
+                final addActivitySettings = settings.addActivity;
+                final showCategories = settings.calendar.categories.show;
+                return addActivitySettings.mode == AddActivityMode.editView
                     ? ActivityWizardCubit.newAdvanced(
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
                         clockBloc: context.read<ClockBloc>(),
                         allowPassedStartTime:
-                            settings.general.allowPassedStartTime,
+                            addActivitySettings.general.allowPassedStartTime,
                       )
                     : ActivityWizardCubit.newStepByStep(
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
                         clockBloc: context.read<ClockBloc>(),
                         allowPassedStartTime:
-                            settings.general.allowPassedStartTime,
-                        stepByStep: settings.stepByStep,
+                            addActivitySettings.general.allowPassedStartTime,
+                        stepByStep: addActivitySettings.stepByStep,
                         addRecurringActivity:
-                            settings.general.addRecurringActivity,
+                            addActivitySettings.general.addRecurringActivity,
+                        showCategories: showCategories,
                       );
               },
             ),
