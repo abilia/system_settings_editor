@@ -14,10 +14,12 @@ class EyeButtonSettingsTab extends StatelessWidget {
           controller: scrollController,
           padding: layout.templates.m1.onlyVertical,
           children: [
+            Tts(child: Text(t.viewSettings)).pad(
+              layout.templates.m1.onlyHorizontal,
+            ),
             CollapsableWidget(
               collapsed: !state.showTypeOfDisplay,
               child: _buildSelector(
-                t.viewMode,
                 [
                   SelectorItem(t.listView, AbiliaIcons.calendarList),
                   SelectorItem(t.oneTimePillarView, AbiliaIcons.timeline),
@@ -28,7 +30,6 @@ class EyeButtonSettingsTab extends StatelessWidget {
             CollapsableWidget(
               collapsed: !state.showTimepillarLength,
               child: _buildSelector(
-                t.dayInterval,
                 [
                   SelectorItem(t.interval, AbiliaIcons.dayInterval),
                   SelectorItem(t.viewDay, AbiliaIcons.sun),
@@ -39,7 +40,6 @@ class EyeButtonSettingsTab extends StatelessWidget {
             CollapsableWidget(
               collapsed: !state.showTimelineZoom,
               child: _buildSelector(
-                t.zoom,
                 [
                   SelectorItem(t.small, AbiliaIcons.decreaseText),
                   SelectorItem(t.medium, AbiliaIcons.mediumText),
@@ -50,7 +50,6 @@ class EyeButtonSettingsTab extends StatelessWidget {
             CollapsableWidget(
               collapsed: !state.showDurationSelection,
               child: _buildSelector(
-                t.duration,
                 [
                   SelectorItem(t.dots, AbiliaIcons.options),
                   SelectorItem(t.edge, AbiliaIcons.flarp),
@@ -67,7 +66,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
                       state.copyWith(showTypeOfDisplay: v),
                     ),
               },
-              child: Text(t.typeOfDisplay),
+              child: Text(t.viewMode),
             ).pad(EdgeInsets.fromLTRB(
               layout.templates.m1.left,
               layout.formPadding.groupBottomDistance,
@@ -84,7 +83,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
                       state.copyWith(showTimepillarLength: v),
                     ),
               },
-              child: Text(t.timelineLength),
+              child: Text(t.dayInterval),
             ).pad(m1ItemPadding),
             SwitchField(
               key: TestKey.showTimelineZoomSwitch,
@@ -96,7 +95,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
                       state.copyWith(showTimelineZoom: v),
                     ),
               },
-              child: Text(t.zoom),
+              child: Text(t.timelineZoom),
             ).pad(m1ItemPadding),
             SwitchField(
               key: TestKey.showDurationSelectionSwitch,
@@ -116,7 +115,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
     );
   }
 
-  Widget _buildSelector(String title, List<SelectorItem> items) {
+  Widget _buildSelector(List<SelectorItem> items) {
     return Column(
       children: [
         Padding(
@@ -126,7 +125,6 @@ class EyeButtonSettingsTab extends StatelessWidget {
             top: layout.formPadding.verticalItemDistance,
           ),
           child: Selector(
-            heading: title,
             groupValue: 0,
             items: items,
           ),
