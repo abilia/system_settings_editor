@@ -584,8 +584,6 @@ abstract class Translated {
 
   final String timelineZoom = 'Timeline zoom';
 
-  final String zoom = 'Zoom';
-
   final String small = 'Small';
 
   final String medium = 'Medium';

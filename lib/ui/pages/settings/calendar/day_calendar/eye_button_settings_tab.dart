@@ -95,7 +95,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
                       state.copyWith(showTimelineZoom: v),
                     ),
               },
-              child: Text(t.zoom),
+              child: Text(t.timelineZoom),
             ).pad(m1ItemPadding),
             SwitchField(
               key: TestKey.showDurationSelectionSwitch,
