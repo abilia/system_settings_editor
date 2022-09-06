@@ -4,6 +4,12 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
+typedef OnAddButtonPressed = Future Function(
+  BuildContext context, {
+  bool showActivities,
+  bool showTimers,
+});
+
 enum _AddButtonConfiguration {
   none,
   mpGo,
@@ -12,7 +18,7 @@ enum _AddButtonConfiguration {
   newActivityAndNewTimer,
 }
 
-class AddButton extends StatelessWidget {
+class AddButton extends StatelessWidget with ActivityNavigator, TimerNavigator {
   const AddButton({Key? key}) : super(key: key);
 
   @override
@@ -25,13 +31,13 @@ class AddButton extends StatelessWidget {
           case _AddButtonConfiguration.none:
             return SizedBox(width: layout.actionButton.size);
           case _AddButtonConfiguration.mpGo:
-            return const _AddButtonMPGO();
+            return _AddButtonMPGO(_onAddButtonPressed);
           case _AddButtonConfiguration.onlyNewActivity:
-            return const _AddActivityButton();
+            return _AddActivityButton(_onAddButtonPressed);
           case _AddButtonConfiguration.onlyNewTimer:
-            return const _AddTimerButton();
+            return _AddTimerButton(_onAddButtonPressed);
           case _AddButtonConfiguration.newActivityAndNewTimer:
-            return const _AddActivityOrTimerButtons();
+            return _AddActivityOrTimerButtons(_onAddButtonPressed);
         }
       },
     );
@@ -65,10 +71,59 @@ class AddButton extends StatelessWidget {
                 ? _AddButtonConfiguration.onlyNewTimer
                 : _AddButtonConfiguration.none;
   }
+
+  Future _onAddButtonPressed(
+    BuildContext context, {
+    bool showActivities = true,
+    bool showTimers = true,
+  }) {
+    final authProviders = copiedAuthProviders(context);
+    final addActivitySettings =
+        context.read<MemoplannerSettingBloc>().state.settings.addActivity;
+    final basicActivityOption = addActivitySettings.basicActivityOption;
+    final newActivityOption = addActivitySettings.newActivityOption;
+    final showOnlyActivities = showActivities && !showTimers;
+
+    if (showOnlyActivities && Config.isMP) {
+      if (newActivityOption && !basicActivityOption) {
+        return navigateToActivityWizardWithContext(context, authProviders);
+      } else if (basicActivityOption && !newActivityOption) {
+        return navigateToBasicActivityPicker(
+            context, authProviders, addActivitySettings.defaults);
+      }
+    }
+
+    return _navigateToCreateNewPage(
+      context,
+      authProviders,
+      showActivities,
+      showTimers,
+    );
+  }
+
+  Future _navigateToCreateNewPage(
+    BuildContext context,
+    List<BlocProvider> authProviders,
+    bool showActivities,
+    bool showTimers,
+  ) =>
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: authProviders,
+            child: CreateNewPage(
+              showActivities: showActivities,
+              showTimers: showTimers,
+            ),
+          ),
+        ),
+      );
 }
 
 class _AddButtonMPGO extends StatelessWidget {
-  const _AddButtonMPGO({Key? key}) : super(key: key);
+  final OnAddButtonPressed onAddButtonPressed;
+
+  const _AddButtonMPGO(this.onAddButtonPressed, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -77,13 +132,20 @@ class _AddButtonMPGO extends StatelessWidget {
       AbiliaIcons.plus,
       key: TestKey.addActivityButton,
       ttsData: Translator.of(context).translate.addActivity,
-      onPressed: () => _navigateToCreateNewPage(context: context),
+      onPressed: () => onAddButtonPressed(
+        context,
+        showActivities: true,
+        showTimers: true,
+      ),
     );
   }
 }
 
 class _AddActivityButton extends StatelessWidget {
-  const _AddActivityButton({Key? key}) : super(key: key);
+  final OnAddButtonPressed onAddButtonPressed;
+
+  const _AddActivityButton(this.onAddButtonPressed, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +154,9 @@ class _AddActivityButton extends StatelessWidget {
       AbiliaIcons.plus,
       key: TestKey.addActivityButton,
       ttsData: Translator.of(context).translate.addActivity,
-      onPressed: () => _navigateToCreateNewPage(
-        context: context,
+      onPressed: () => onAddButtonPressed(
+        context,
+        showActivities: true,
         showTimers: false,
       ),
     );
@@ -101,7 +164,9 @@ class _AddActivityButton extends StatelessWidget {
 }
 
 class _AddTimerButton extends StatelessWidget {
-  const _AddTimerButton({Key? key}) : super(key: key);
+  final OnAddButtonPressed onAddButtonPressed;
+
+  const _AddTimerButton(this.onAddButtonPressed, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -110,16 +175,20 @@ class _AddTimerButton extends StatelessWidget {
       AbiliaIcons.stopWatch,
       key: TestKey.addTimerButton,
       ttsData: Translator.of(context).translate.addTimer,
-      onPressed: () => _navigateToCreateNewPage(
-        context: context,
+      onPressed: () => onAddButtonPressed(
+        context,
         showActivities: false,
+        showTimers: true,
       ),
     );
   }
 }
 
 class _AddActivityOrTimerButtons extends StatelessWidget {
-  const _AddActivityOrTimerButtons({Key? key}) : super(key: key);
+  final OnAddButtonPressed onAddButtonPressed;
+
+  const _AddActivityOrTimerButtons(this.onAddButtonPressed, {Key? key})
+      : super(key: key);
 
   static final width = layout.actionButton.size * 2 + layout.tabBar.item.border;
 
@@ -142,8 +211,9 @@ class _AddActivityOrTimerButtons extends StatelessWidget {
             icon: AbiliaIcons.plus,
             position: _AddTabPosition.left,
             ttsData: Translator.of(context).translate.addActivity,
-            onTap: () => _navigateToCreateNewPage(
-              context: context,
+            onTap: () => onAddButtonPressed(
+              context,
+              showActivities: true,
               showTimers: false,
             ),
           ),
@@ -156,9 +226,10 @@ class _AddActivityOrTimerButtons extends StatelessWidget {
             icon: AbiliaIcons.stopWatch,
             position: _AddTabPosition.right,
             ttsData: Translator.of(context).translate.addTimer,
-            onTap: () => _navigateToCreateNewPage(
-              context: context,
+            onTap: () => onAddButtonPressed(
+              context,
               showActivities: false,
+              showTimers: true,
             ),
           ),
         ],
@@ -251,24 +322,4 @@ class _AddTab extends StatelessWidget {
       ),
     );
   }
-}
-
-void _navigateToCreateNewPage({
-  required BuildContext context,
-  bool showActivities = true,
-  bool showTimers = true,
-}) {
-  final authProviders = copiedAuthProviders(context);
-
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (_) => MultiBlocProvider(
-        providers: authProviders,
-        child: CreateNewPage(
-          showActivities: showActivities,
-          showTimers: showTimers,
-        ),
-      ),
-    ),
-  );
 }

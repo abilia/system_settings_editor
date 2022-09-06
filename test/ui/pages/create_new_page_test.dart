@@ -297,7 +297,7 @@ void main() {
         );
         final noBasic = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
-            data: false,
+            data: true,
             identifier: StepByStepSettings.templateKey,
           ),
         );
@@ -406,7 +406,8 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
           await tester.pumpAndSettle();
-          expect(find.byType(CreateNewPage), findsOneWidget);
+          expect(find.byType(CreateNewPage),
+              Config.isMP ? findsNothing : findsOneWidget);
           expect(find.byKey(TestKey.basicActivityChoice), findsNothing);
         });
 
@@ -424,7 +425,8 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
           await tester.pumpAndSettle();
-          expect(find.byType(CreateNewPage), findsOneWidget);
+          expect(find.byType(CreateNewPage),
+              Config.isMP ? findsNothing : findsOneWidget);
           expect(find.byKey(TestKey.basicActivityChoice), findsNothing);
         });
 
@@ -449,9 +451,11 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
           await tester.pumpAndSettle();
-          expect(find.byType(CreateNewPage), findsOneWidget);
+          expect(find.byType(CreateNewPage),
+              Config.isMP ? findsNothing : findsOneWidget);
           expect(find.byKey(TestKey.newActivityChoice), findsNothing);
-          expect(find.byKey(TestKey.basicActivityChoice), findsOneWidget);
+          expect(find.byKey(TestKey.basicActivityChoice),
+              Config.isMP ? findsNothing : findsOneWidget);
         });
 
         testWidgets('Empty message when no basic activities',
@@ -501,7 +505,8 @@ void main() {
           await tester.tap(addActivityButtonFinder);
           await tester.pumpAndSettle();
           expect(find.byKey(TestKey.newActivityChoice), findsNothing);
-          expect(find.byKey(TestKey.basicActivityChoice), findsOneWidget);
+          expect(find.byKey(TestKey.basicActivityChoice),
+              Config.isMP ? findsNothing : findsOneWidget);
         });
 
         testWidgets('New activity from basic activity gets correct title',
@@ -1102,6 +1107,66 @@ void main() {
 
         // Assert - Back at calendar page
         expect(find.byType(CalendarPage), findsOneWidget);
+      });
+    });
+
+    group('Skip create new page only on MP', () {
+      testWidgets('Only activity shown skips create new page on MP',
+          (WidgetTester tester) async {
+        genericResponse = () => [
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: false,
+                  identifier: DisplaySettings.functionMenuDisplayNewTimerKey,
+                ),
+              ),
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: false,
+                  identifier: EditActivitySettings.templateKey,
+                ),
+              ),
+            ];
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(addActivityButtonFinder);
+        await tester.pumpAndSettle();
+        expect(
+          find.byType(Config.isMP ? ActivityWizardPage : CreateNewPage),
+          findsOneWidget,
+        );
+      });
+
+      testWidgets('Only basic activity shown skips create new page on MP',
+          (WidgetTester tester) async {
+        genericResponse = () => [
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: false,
+                  identifier: DisplaySettings.functionMenuDisplayNewTimerKey,
+                ),
+              ),
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: false,
+                  identifier: EditActivitySettings.titleKey,
+                ),
+              ),
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: false,
+                  identifier: EditActivitySettings.imageKey,
+                ),
+              ),
+            ];
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(addActivityButtonFinder);
+        await tester.pumpAndSettle();
+        expect(
+          find.byType(Config.isMP ? BasicActivityPickerPage : CreateNewPage),
+          findsOneWidget,
+        );
       });
     });
   });
