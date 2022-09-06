@@ -127,7 +127,7 @@ void main() {
         title: 'activity',
         checkable: true,
       );
-      when(() => mockActivityDb.getAllNonDeleted())
+      when(() => mockActivityDb.getAllBetween(any(), any()))
           .thenAnswer((_) => Future.value([activity]));
 
       await tester.pumpWidget(App());
@@ -171,7 +171,7 @@ void main() {
     testWidgets('Reminder shows', (WidgetTester tester) async {
       // Arrange
       final reminder = 15.minutes();
-      when(() => mockActivityDb.getAllNonDeleted())
+      when(() => mockActivityDb.getAllBetween(any(), any()))
           .thenAnswer((_) => Future.value([
                 Activity.createNew(
                   title: 'Reminder',
@@ -195,7 +195,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       final reminder = 15.minutes();
-      when(() => mockActivityDb.getAllNonDeleted())
+      when(() => mockActivityDb.getAllBetween(any(), any()))
           .thenAnswer((_) => Future.value([
                 Activity.createNew(
                   title: 'unchecked reminder',
@@ -219,7 +219,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       final reminder = 15.minutes();
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllBetween(any(), any())).thenAnswer(
         (_) => Future.value(
           [
             Activity.createNew(
@@ -246,7 +246,7 @@ void main() {
       // Arrange
       final reminder = 15.minutes();
       final duration = 1.hours();
-      when(() => mockActivityDb.getAllNonDeleted())
+      when(() => mockActivityDb.getAllBetween(any(), any()))
           .thenAnswer((_) => Future.value([
                 Activity.createNew(
                   title: 'Reminder',
@@ -556,7 +556,7 @@ void main() {
     testWidgets('Start alarm is displayed on top if tapped on notification',
         (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted())
+      when(() => mockActivityDb.getAllBetween(any(), any()))
           .thenAnswer((_) => Future.value([activity1]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -583,7 +583,7 @@ void main() {
 
     testWidgets('Overlapping activities', (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted())
+      when(() => mockActivityDb.getAllBetween(any(), any()))
           .thenAnswer((_) => Future.value([activity1, activity2]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -633,7 +633,7 @@ void main() {
     testWidgets('Start alarm can show twice after close (BUG SGC-244)',
         (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted())
+      when(() => mockActivityDb.getAllBetween(any(), any()))
           .thenAnswer((_) => Future.value([activity1]));
       final activity1Updated =
           activity1.copyWith(startTime: activity1StartTime.add(1.minutes()));
@@ -735,7 +735,7 @@ void main() {
             title: 'ALARM_SILENT reminder 10 min before'),
       ];
 
-      when(() => mockActivityDb.getAllNonDeleted())
+      when(() => mockActivityDb.getAllBetween(any(), any()))
           .thenAnswer((_) => Future.value(activities));
 
       await tester.pumpWidget(App());

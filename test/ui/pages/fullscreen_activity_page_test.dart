@@ -90,6 +90,8 @@ void main() {
 
     final expected = ActivitiesLoaded(fakeActivities);
 
+    when(() => mockActivitiesBloc.activityRepository)
+        .thenReturn(mockActivityRepository);
     when(() => mockActivitiesBloc.state).thenReturn(expected);
     when(() => mockActivitiesBloc.stream)
         .thenAnswer((_) => Stream.fromIterable([expected]));
@@ -142,7 +144,7 @@ void main() {
               BlocProvider<AlarmCubit>(
                 create: (context) => AlarmCubit(
                   selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
-                  activitiesBloc: mockActivitiesBloc,
+                  activityRepository: mockActivityRepository,
                   clockBloc: clockBloc,
                   settingsBloc: mockMemoplannerSettingBloc,
                   timerAlarm: const Stream.empty(),
