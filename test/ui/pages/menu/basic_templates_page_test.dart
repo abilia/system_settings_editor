@@ -79,7 +79,7 @@ void main() {
   group('Basic Templates page', () {
     testWidgets('Page shows', (tester) async {
       await tester.goToTemplates();
-      expect(find.byType(BasicTemplatesPage), findsOneWidget);
+      expect(find.byType(TemplatesPage), findsOneWidget);
       expect(find.byType(CloseButton), findsOneWidget);
     });
 
@@ -237,7 +237,7 @@ void main() {
         await tester.tap(find.byType(SaveButton));
         await tester.pumpAndSettle();
 
-        expect(find.byType(BasicTemplatesPage), findsOneWidget);
+        expect(find.byType(TemplatesPage), findsOneWidget);
 
         final capturedSortable =
             verify(() => mockSortableDb.insertAndAddDirty(captureAny()))

@@ -5,8 +5,8 @@ import 'package:seagull/repository/ticker.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class BasicTemplatesPage extends StatelessWidget {
-  const BasicTemplatesPage({Key? key}) : super(key: key);
+class TemplatesPage extends StatelessWidget {
+  const TemplatesPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
