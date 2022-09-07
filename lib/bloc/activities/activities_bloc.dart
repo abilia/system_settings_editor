@@ -105,8 +105,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
       case ApplyTo.allDays:
         final series =
             activities.where((a) => a.seriesId == activity.seriesId).toSet();
-        emit(ActivitiesLoaded(activities.difference(series)));
         await _saveActivities(series.map((a) => a.copyWith(deleted: true)));
+        emit(ActivitiesLoaded(activities.difference(series)));
         break;
       case ApplyTo.thisDayAndForward:
         await _handleResult(
