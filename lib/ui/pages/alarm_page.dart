@@ -196,10 +196,9 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
   Widget build(BuildContext context) {
     final closeButton = CloseButton(
       onPressed: () => popAlarm(
-        activityRepository: context.read<ActivityRepository>(),
+        activityRepository: context.read<LicenseCubit>().validLicense ? context.read<ActivityRepository>() : null,
         navigator: Navigator.of(context),
         alarm: alarm,
-        validLicense: context.read<LicenseCubit>().validLicense,
       ),
     );
     return BottomAppBar(
