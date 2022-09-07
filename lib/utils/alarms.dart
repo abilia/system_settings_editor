@@ -28,13 +28,13 @@ extension IterableActivity on Iterable<Activity> {
       );
 
   List<ActivityAlarm> _alarmsForDay(
-    DateTime day, {
+    DateTime time, {
     required bool Function(ActivityDay) startTimeTest,
     required bool Function(ActivityDay) endTimeTest,
     required bool Function(ActivityAlarm) reminderTest,
     bool includeMidnight = false,
   }) {
-    day = day.onlyDays();
+    final day = time.onlyDays();
     final activitiesThisDay = where((a) => !a.fullDay)
         .expand(
             (a) => a.dayActivitiesForDay(day, includeMidnight: includeMidnight))

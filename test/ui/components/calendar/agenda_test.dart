@@ -162,7 +162,7 @@ void main() {
     timeTicker.add(now.add(const Duration(hours: 16)));
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    Container background = tester
+    final background = tester
         .firstWidget(find.byKey(TestKey.calendarBackgroundColor)) as Container;
     expect(background.color, TimepillarCalendar.nightBackgroundColor);
   });
@@ -1132,8 +1132,8 @@ void main() {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
-    Finder finder = find.byType(Opacity).first;
-    Opacity op = finder.evaluate().single.widget as Opacity;
+    final finder = find.byType(Opacity).first;
+    final op = finder.evaluate().single.widget as Opacity;
     expect(op.opacity, 0.4);
   });
 }

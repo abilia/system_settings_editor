@@ -71,7 +71,7 @@ abstract class DataDb<M extends DataModel> {
   /// Returns true if any dirty data added to the database and needs sync
   Future<bool> insertAndAddDirty(Iterable<M> data) async {
     final insertResult = data.map((model) async {
-      List<Map> existingDirtyAndRevision = await db.query(tableName,
+      final List<Map> existingDirtyAndRevision = await db.query(tableName,
           columns: ['dirty', 'revision'],
           where: 'id = ?',
           whereArgs: [model.id]);

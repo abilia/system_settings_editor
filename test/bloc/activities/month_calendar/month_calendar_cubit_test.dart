@@ -466,8 +466,8 @@ void main() {
       );
 
       var week11 = monthCalendarCubit.state.weeks[2];
-      var day18 = week11.days[3] as MonthDay,
-          day19 = week11.days[4] as MonthDay,
+      final day18 = week11.days[3] as MonthDay;
+      var day19 = week11.days[4] as MonthDay,
           day20 = week11.days[5] as MonthDay;
 
       // Assert

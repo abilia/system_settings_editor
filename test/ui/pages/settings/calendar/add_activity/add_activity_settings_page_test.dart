@@ -361,11 +361,11 @@ void main() {
           );
         });
 
-        testWidgets('deselect Select type', (tester) async {
+        testWidgets('deselect Select full day', (tester) async {
           await tester.verifyStepByStep(
             find.text(translate.selectImage),
             genericDb,
-            key: StepByStepSettings.typeKey,
+            key: StepByStepSettings.fullDayKey,
             matcher: isFalse,
           );
         });

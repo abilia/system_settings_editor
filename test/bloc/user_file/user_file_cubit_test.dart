@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:file/memory.dart';
 import 'package:crypto/crypto.dart';
@@ -79,7 +78,7 @@ void main() {
       'SGC-583 LoadUserFiles repeatedly calls download and store untill no more files do download, but does not starve an image add call event',
       () async {
     // Arrange
-    File file = MemoryFileSystem().file(filePath);
+    final file = MemoryFileSystem().file(filePath);
     await file.writeAsBytes(fileContent);
     final processedFile1 = await adjustImageSizeAndRotation(fileContent);
 
@@ -146,7 +145,7 @@ void main() {
       'State contains UserFilesLoaded with correct user file when file is added',
       () async {
     // Arrange
-    File file = MemoryFileSystem().file(filePath);
+    final file = MemoryFileSystem().file(filePath);
     await file.writeAsBytes(fileContent);
     final processedFile1 = await adjustImageSizeAndRotation(fileContent);
 
@@ -187,7 +186,7 @@ void main() {
   test('State contains temp files when UserFileNotLoaded when file is added',
       () async {
     // Arrange
-    File file = MemoryFileSystem().file(filePath);
+    final file = MemoryFileSystem().file(filePath);
     await file.writeAsBytes(fileContent);
 
     final expectedStream = expectLater(
@@ -208,13 +207,13 @@ void main() {
   test('State contains two files when two is added in loaded state', () async {
     // Arrange
     const filePath1 = 'test';
-    File file = MemoryFileSystem().file(filePath1);
+    final file = MemoryFileSystem().file(filePath1);
     await file.writeAsBytes(fileContent);
     final processedFile1 = await adjustImageSizeAndRotation(fileContent);
 
     const fileId2 = 'fileId1';
     const filePath2 = 'test.dart';
-    File file2 = MemoryFileSystem().file(filePath2);
+    final file2 = MemoryFileSystem().file(filePath2);
     await file2.writeAsBytes(fileContent);
 
     when(() => mockUserFileRepository.getAllLoadedFiles())
@@ -271,12 +270,12 @@ void main() {
   test('State contains two temp files when not loaded state', () async {
     // Arrange
     const filePath1 = 'test';
-    File file = MemoryFileSystem().file(filePath1);
+    final file = MemoryFileSystem().file(filePath1);
     await file.writeAsBytes(fileContent);
 
     const fileId2 = 'fileId1';
     const filePath2 = 'test.dart';
-    File file2 = MemoryFileSystem().file(filePath2);
+    final file2 = MemoryFileSystem().file(filePath2);
     await file2.writeAsBytes(fileContent);
 
     final expectStream = expectLater(

@@ -59,7 +59,7 @@ class TimerAlarmBloc extends Bloc<TimerAlarmEvent, TimerAlarmState> {
 
   static TimerAlarmState _timersToState(
     Iterable<AbiliaTimer> timers,
-    final DateTime time,
+    DateTime time,
   ) {
     final deadline = time.subtract(timerLifespan);
     return TimerAlarmState.sort(

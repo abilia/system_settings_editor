@@ -38,7 +38,7 @@ void main() {
 
   tearDown(GetIt.I.reset);
 
-  Widget wrap(final Widget child) => Directionality(
+  Widget wrap(Widget child) => Directionality(
         textDirection: TextDirection.ltr,
         child: MultiBlocProvider(
           providers: [
@@ -120,8 +120,8 @@ void main() {
         day: nowTime,
       )),
     );
-    Finder finder = find.byType(Opacity).first;
-    Opacity op = finder.evaluate().single.widget as Opacity;
+    final finder = find.byType(Opacity).first;
+    final op = finder.evaluate().single.widget as Opacity;
     expect(op.opacity, 1.0);
   });
 
@@ -142,8 +142,8 @@ void main() {
         useOpacity: true,
       )),
     );
-    Finder finder = find.byType(Opacity).first;
-    Opacity op = finder.evaluate().single.widget as Opacity;
+    final finder = find.byType(Opacity).first;
+    final op = finder.evaluate().single.widget as Opacity;
     expect(op.opacity, 0.4);
   });
 }

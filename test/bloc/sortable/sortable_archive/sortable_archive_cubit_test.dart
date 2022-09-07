@@ -76,9 +76,8 @@ void main() {
 
     group('reorder', () {
       test('first down', () {
-        SortableArchiveCubit<BasicActivityData> cubit =
-            SortableArchiveCubit<BasicActivityData>(
-                sortableBloc: mockSortableBloc);
+        final cubit = SortableArchiveCubit<BasicActivityData>(
+            sortableBloc: mockSortableBloc);
 
         cubit.sortableSelected(first);
         cubit.reorder(SortableReorderDirection.down);
@@ -98,9 +97,8 @@ void main() {
       });
 
       test('first up, no change', () {
-        SortableArchiveCubit<BasicActivityData> cubit =
-            SortableArchiveCubit<BasicActivityData>(
-                sortableBloc: mockSortableBloc);
+        final cubit = SortableArchiveCubit<BasicActivityData>(
+            sortableBloc: mockSortableBloc);
 
         cubit.sortableSelected(first);
         cubit.reorder(SortableReorderDirection.up);
@@ -109,9 +107,8 @@ void main() {
       });
 
       test('second down', () {
-        SortableArchiveCubit<BasicActivityData> cubit =
-            SortableArchiveCubit<BasicActivityData>(
-                sortableBloc: mockSortableBloc);
+        final cubit = SortableArchiveCubit<BasicActivityData>(
+            sortableBloc: mockSortableBloc);
 
         cubit.sortableSelected(second);
         cubit.reorder(SortableReorderDirection.down);
@@ -131,9 +128,8 @@ void main() {
       });
 
       test('second up', () async {
-        SortableArchiveCubit<BasicActivityData> cubit =
-            SortableArchiveCubit<BasicActivityData>(
-                sortableBloc: mockSortableBloc);
+        final cubit = SortableArchiveCubit<BasicActivityData>(
+            sortableBloc: mockSortableBloc);
 
         cubit.sortableSelected(second);
         cubit.reorder(SortableReorderDirection.up);

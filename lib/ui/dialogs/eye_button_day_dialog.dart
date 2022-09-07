@@ -112,7 +112,7 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                       ],
                       if (state.settingViewOptionsZoom) ...[
                         Selector<TimepillarZoom>(
-                          heading: t.zoom,
+                          heading: t.timelineZoom,
                           groupValue: timepillarZoom,
                           items: [
                             SelectorItem(

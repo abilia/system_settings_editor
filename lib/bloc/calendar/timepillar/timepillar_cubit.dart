@@ -115,7 +115,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
         memoSettings.dayCalendarType == DayCalendarType.twoTimepillars;
 
     if (twoTimepillars) {
-      bool shouldShowNightCalendar =
+      final shouldShowNightCalendar =
           showNightCalendar && isToday && dayPart.isNight;
 
       if (shouldShowNightCalendar) {
@@ -177,7 +177,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     DateTime now,
     DayPart dayPart,
   ) {
-    bool shouldShowNightCalendar = showNightCalendar &&
+    final shouldShowNightCalendar = showNightCalendar &&
         settingsDayCalendarType == DayCalendarType.twoTimepillars &&
         _isTonight(day: selectedDay, now: now, dayPart: dayPart);
     return shouldShowNightCalendar

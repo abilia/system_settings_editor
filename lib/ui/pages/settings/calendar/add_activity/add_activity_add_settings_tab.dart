@@ -105,6 +105,14 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           child: Text(t.selectDate),
         ),
         SwitchField(
+          leading: const Icon(AbiliaIcons.restore),
+          value: editActivitySettings.fullDay,
+          onChanged: (v) => context
+              .read<AddActivitySettingsCubit>()
+              .editSettings(editActivitySettings.copyWith(fullDay: v)),
+          child: Text(t.selectAllDay),
+        ),
+        SwitchField(
           leading: const Icon(AbiliaIcons.handiCheck),
           value: editActivitySettings.checkable,
           onChanged: (v) => context
@@ -137,6 +145,14 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           child: Text(t.selectAlarm),
         ),
         SwitchField(
+          leading: const Icon(AbiliaIcons.handiReminder),
+          value: editActivitySettings.reminders,
+          onChanged: (v) => context
+              .read<AddActivitySettingsCubit>()
+              .editSettings(editActivitySettings.copyWith(reminders: v)),
+          child: Text(t.selectReminder),
+        ),
+        SwitchField(
           leading: const Icon(AbiliaIcons.radiocheckboxUnselected),
           value: editActivitySettings.checklist,
           onChanged: (v) => context
@@ -151,14 +167,6 @@ class _EditActivitySettingsWidget extends StatelessWidget {
               .read<AddActivitySettingsCubit>()
               .editSettings(editActivitySettings.copyWith(notes: v)),
           child: Text(t.selectNote),
-        ),
-        SwitchField(
-          leading: const Icon(AbiliaIcons.handiReminder),
-          value: editActivitySettings.reminders,
-          onChanged: (v) => context
-              .read<AddActivitySettingsCubit>()
-              .editSettings(editActivitySettings.copyWith(reminders: v)),
-          child: Text(t.selectReminder),
         ),
       ]
           .map((c) => Padding(
@@ -234,19 +242,19 @@ class _StepByStepSettingsWidget extends StatelessWidget {
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.month),
-          value: settings.datePicker,
+          value: settings.date,
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .stepByStepSetting(settings.copyWith(setDate: v)),
           child: Text(t.selectDate),
         ),
         SwitchField(
-          leading: const Icon(AbiliaIcons.sendAndReceive),
-          value: settings.type,
+          leading: const Icon(AbiliaIcons.restore),
+          value: settings.fullDay,
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
-              .stepByStepSetting(settings.copyWith(selectType: v)),
-          child: Text(t.selectType),
+              .stepByStepSetting(settings.copyWith(showFullDay: v)),
+          child: Text(t.selectAllDay),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.handiCheck),
@@ -281,6 +289,14 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           child: Text(t.selectAlarm),
         ),
         SwitchField(
+          leading: const Icon(AbiliaIcons.handiReminder),
+          value: settings.reminders,
+          onChanged: (v) => context
+              .read<AddActivitySettingsCubit>()
+              .stepByStepSetting(settings.copyWith(selectReminder: v)),
+          child: Text(t.selectReminder),
+        ),
+        SwitchField(
           leading: const Icon(AbiliaIcons.radiocheckboxUnselected),
           value: settings.checklist,
           onChanged: (v) => context
@@ -295,14 +311,6 @@ class _StepByStepSettingsWidget extends StatelessWidget {
               .read<AddActivitySettingsCubit>()
               .stepByStepSetting(settings.copyWith(selectNote: v)),
           child: Text(t.selectNote),
-        ),
-        SwitchField(
-          leading: const Icon(AbiliaIcons.handiReminder),
-          value: settings.reminders,
-          onChanged: (v) => context
-              .read<AddActivitySettingsCubit>()
-              .stepByStepSetting(settings.copyWith(selectReminder: v)),
-          child: Text(t.selectReminder),
         ),
       ]
           .map((c) => Padding(

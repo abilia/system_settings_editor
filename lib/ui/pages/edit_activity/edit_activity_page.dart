@@ -58,8 +58,8 @@ class EditActivityPage extends StatelessWidget {
         enabledTabs: enabledTabs,
         child: Scaffold(
           appBar: AbiliaAppBar(
-            iconData: AbiliaIcons.plus,
-            title: getTitle(context),
+            iconData: _getIcon(context),
+            title: _getTitle(context),
             bottom: enabledTabs.length > 1
                 ? AbiliaTabBar(
                     collapsedCondition: (i) {
@@ -90,7 +90,13 @@ class EditActivityPage extends StatelessWidget {
     );
   }
 
-  String getTitle(BuildContext context) {
+  IconData _getIcon(BuildContext context) {
+    final isTemplate =
+        context.read<WizardCubit>() is TemplateActivityWizardCubit;
+    return isTemplate ? AbiliaIcons.basicActivities : AbiliaIcons.plus;
+  }
+
+  String _getTitle(BuildContext context) {
     final translate = Translator.of(context).translate;
     final isTemplate =
         context.read<WizardCubit>() is TemplateActivityWizardCubit;

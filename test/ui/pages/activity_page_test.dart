@@ -196,7 +196,7 @@ void main() {
       // Arrange
       final pushCubit = PushCubit();
       final activity = Activity.createNew(startTime: startTime);
-      List<List<Activity>> activitiesList = [
+      final List<List<Activity>> activitiesList = [
         [activity],
         [activity],
         [],

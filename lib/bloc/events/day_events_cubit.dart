@@ -53,10 +53,10 @@ class DayEventsCubit extends Cubit<EventsState> {
       );
 
   static EventsState _mapToState(
-    final Iterable<Activity> activities,
-    final Iterable<TimerOccasion> timers,
-    final DateTime day,
-    final Occasion occasion,
+    Iterable<Activity> activities,
+    Iterable<TimerOccasion> timers,
+    DateTime day,
+    Occasion occasion,
   ) {
     final dayActivities = activities
         .expand((activity) => activity.dayActivitiesForDay(day))

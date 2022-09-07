@@ -15,7 +15,7 @@ void main() {
   group('week calendar settings page', () {
     final translate = Locales.language.values.first;
     final initialTime = DateTime(2021, 04, 17, 09, 20);
-    Iterable<Generic> generics = [];
+    final Iterable<Generic> generics = [];
     late MockGenericDb genericDb;
 
     setUp(() async {

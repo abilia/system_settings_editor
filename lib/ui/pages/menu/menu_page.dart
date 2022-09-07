@@ -306,7 +306,7 @@ class BasicTemplatesButton extends StatelessWidget {
                     ),
                   ),
                 ],
-                child: const BasicTemplatesPage(),
+                child: const TemplatesPage(),
               ),
             ),
           ),

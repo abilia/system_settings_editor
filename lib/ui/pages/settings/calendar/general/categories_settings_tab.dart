@@ -5,60 +5,58 @@ import 'package:seagull/utils/all.dart';
 
 class CategoriesSettingsTab extends StatelessWidget {
   const CategoriesSettingsTab({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GeneralCalendarSettingsCubit, GeneralCalendarSettings>(
-      builder: (context, state) {
-        final t = Translator.of(context).translate;
-        return SettingsTab(
-          children: [
-            _CategoriesPreview(state: state),
-            const SizedBox.shrink(),
-            SwitchField(
-              value: state.categories.show,
-              onChanged: (value) => context
-                  .read<GeneralCalendarSettingsCubit>()
-                  .changeCategorySettings(
-                    state.categories.copyWith(show: value),
-                  ),
-              leading: const Icon(AbiliaIcons.categories),
-              child: Text(t.showCagetories),
-            ),
-            CollapsableWidget(
-              collapsed: !state.categories.show,
-              child: Column(
-                children: [
-                  SizedBox(height: layout.formPadding.verticalItemDistance),
-                  _CategoryPickField(
-                    key: TestKey.editLeftCategory,
-                    imageAndName: state.categories.left,
-                    defaultName: t.left,
-                    onResult: (r) => state.categories.copyWith(left: r),
-                  ),
-                  SizedBox(height: layout.formPadding.verticalItemDistance),
-                  _CategoryPickField(
-                    key: TestKey.editRigthCategory,
-                    imageAndName: state.categories.right,
-                    defaultName: t.right,
-                    onResult: (r) => state.categories.copyWith(right: r),
-                  ),
-                  SizedBox(height: layout.formPadding.groupBottomDistance),
-                  SwitchField(
-                    value: state.categories.colors,
-                    onChanged: (value) => context
-                        .read<GeneralCalendarSettingsCubit>()
-                        .changeCategorySettings(
-                          state.categories.copyWith(colors: value),
-                        ),
-                    leading: const Icon(AbiliaIcons.changePageColor),
-                    child: Text(t.showColours),
-                  ),
-                ],
+    final generalSettings = context.watch<GeneralCalendarSettingsCubit>().state;
+    final t = Translator.of(context).translate;
+    return SettingsTab(
+      children: [
+        _CategoriesPreview(state: generalSettings),
+        const SizedBox.shrink(),
+        SwitchField(
+          value: generalSettings.categories.show,
+          onChanged: (value) => context
+              .read<GeneralCalendarSettingsCubit>()
+              .changeCategorySettings(
+                generalSettings.categories.copyWith(show: value),
               ),
-            ),
-          ],
-        );
-      },
+          leading: const Icon(AbiliaIcons.categories),
+          child: Text(t.showCagetories),
+        ),
+        CollapsableWidget(
+          collapsed: !generalSettings.categories.show,
+          child: Column(
+            children: [
+              SizedBox(height: layout.formPadding.verticalItemDistance),
+              _CategoryPickField(
+                key: TestKey.editLeftCategory,
+                imageAndName: generalSettings.categories.left,
+                defaultName: t.left,
+                onResult: (r) => generalSettings.categories.copyWith(left: r),
+              ),
+              SizedBox(height: layout.formPadding.verticalItemDistance),
+              _CategoryPickField(
+                key: TestKey.editRigthCategory,
+                imageAndName: generalSettings.categories.right,
+                defaultName: t.right,
+                onResult: (r) => generalSettings.categories.copyWith(right: r),
+              ),
+              SizedBox(height: layout.formPadding.groupBottomDistance),
+              SwitchField(
+                value: generalSettings.categories.colors,
+                onChanged: (value) => context
+                    .read<GeneralCalendarSettingsCubit>()
+                    .changeCategorySettings(
+                      generalSettings.categories.copyWith(colors: value),
+                    ),
+                leading: const Icon(AbiliaIcons.changePageColor),
+                child: Text(t.showColours),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

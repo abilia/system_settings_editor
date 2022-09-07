@@ -115,7 +115,7 @@ void main() {
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         clockBloc: context.read<ClockBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
-                        settings: context
+                        addActivitySettings: context
                             .read<MemoplannerSettingBloc>()
                             .state
                             .settings

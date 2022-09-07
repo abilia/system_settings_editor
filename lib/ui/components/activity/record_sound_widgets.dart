@@ -68,7 +68,7 @@ class RecordSoundWidget extends StatelessWidget {
                           permissionStatus: permission,
                           recordedAudio: activity.extras.endTimeExtraAlarm,
                           onResult: (AbiliaFile result) {
-                            Activity newActivity = activity.copyWith(
+                            final newActivity = activity.copyWith(
                               extras: activity.extras.copyWith(
                                 endTimeExtraAlarm: result,
                               ),

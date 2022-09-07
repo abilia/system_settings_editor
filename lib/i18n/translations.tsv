@@ -118,6 +118,7 @@ editRecurringActivity	Edit recurring activity	Ändra återkommande aktivitet	Æn
 deleteRecurringActivity	Delete recurring activity	Ta bort återkommande aktivitet	Slet gentagende aktivitet	Terugkerende activiteit verwijder	Poista toistuva aktiviteettia	Wiederkehrende Aktivitäten löschen	Slett gjentakende aktivitet
 onlyThisDay	Only this day	Endast denna dag	Kun denne dag	Alleen deze dag	Vain tänä päivänä	Nur an diesem Tag	Bare denne dagen
 allDays	All days	Alla dagar	Alle dage	Alle dagen	Kaikki päivät	Alle Tage	Alle dager
+allDay	All day						
 thisDayAndForward	This day and forward	Denna dag och framåt	Denne dag og frem	Deze dag en verder	Tästä päivästä lähtien	Von diesem Tag an	Denne dagen og fremover
 completed	Completed?	Klar?	Færdig?	Afgerond?	Valmis?	Bist Du fertig?	Ferdig?
 unCheckActivityQuestion	Do you want to uncheck the activity?	Vill du ångra kvitteringen av aktiviteten?	Vil du fjerne markeringen af aktiviteten?	Wilt u de activiteit uitvinken?	Haluatko poistaa valinnan aktiviteetista?	Möchten Sie die Auswahl rückgängig machen?	Vil du fjerne merket for aktiviteten?
@@ -301,7 +302,7 @@ intervals	Intervals	Intervaller	Intervaller	Intervallen	Aikavälit	Intervalle	In
 categories	Categories	Kategorier	Kategorier	Categorieën	Kategoriat	Kategorien	Kategorier
 viewDay	Day	Dagen	Dagen	Dag	Päivä	Tag	Dagen
 dayAndNight	Day and night	Dygnet	Døgnet	Dag en nacht	Päivä ja yö	Tag und Nacht	Døgnet
-zoom	Timeline zoom	Tidslinjens zoom	Tidslinjens zoom	Zoom tijdlijn	Aikajanan zoomaus	Zeitstrahl Zoom	Zoom
+timelineZoom	Timeline zoom	Tidslinjens zoom	Tidslinjens zoom	Zoom tijdlijn	Aikajanan zoomaus	Zeitstrahl Zoom	Tidslinjens zoom
 small	Small	Liten	Lille	Klein	Pieni	Klein	Liten
 medium	Medium	Mellan	Mellem	Medium	Keskikokoinen	Mittel	Mellom
 large	Large	Stor	Stor	Groot	Suuri	Groß	Stor
@@ -354,6 +355,8 @@ showTemplates	Show templates	Visa mallar	Vis skabeloner	Toon sjablonen	Näytä m
 selectName	Select name	Välj namn	Vælg navn	Naam selecteren	Valitse nimi	Name auswählen	Velg navn
 selectDate	Select date	Välj datum	Vælg dato	Datum selecteren	Valitse päivämäärä	Datum auswählen	Velg dato
 selectType	Select type	Välj typ	Vælg type	Type selecteren	Valitse tyyppi	Typ auswählen	Velg type
+selectAllDay	Select all day						
+selectCategory	Select category						
 selectCheckable	Select checkable	Välj kvitterbar	Vælg kvittering	Afvinkbaarheid selecteren	Valitse tarkistettava	Kontrollierbar auswählen	Velg kvittering
 selectAvailableFor	Select available for	Välj tillgänglig för	Vælg tilgængelig for	Selecteer beschikbaar voor	Valitse käytettävissä	Wählen Sie verfügbar für	Velg tilgjengelig for
 selectAlarm	Select alarm	Välj larm	Vælg alarm	Alarm selecteren	Valitse hälytys	Alarm auswählen	Velg alarm

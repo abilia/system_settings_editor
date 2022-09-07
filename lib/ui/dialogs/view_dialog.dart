@@ -48,11 +48,7 @@ class ViewDialog extends StatelessWidget {
                     color: AbiliaColors.black80,
                     child: Center(child: heading),
                   ),
-                expanded
-                    ? Flexible(
-                        child: bodyContainer,
-                      )
-                    : bodyContainer,
+                if (expanded) Flexible(child: bodyContainer) else bodyContainer,
                 BottomNavigation(
                   useVerticalSafeArea: false,
                   backNavigationWidget: backNavigationWidget,

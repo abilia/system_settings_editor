@@ -24,7 +24,7 @@ class TimerCubit extends Cubit<TimerState> {
   }
 
   Future<void> deleteTimer(AbiliaTimer timer) async {
-    int result = await timerDb.delete(timer);
+    final result = await timerDb.delete(timer);
     if (result > 0) {
       emit(TimerState(timers: List.of(state.timers)..remove(timer)));
     }

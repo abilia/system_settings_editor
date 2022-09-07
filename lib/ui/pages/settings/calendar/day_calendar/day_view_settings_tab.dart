@@ -62,7 +62,7 @@ class DayViewSettingsTab extends StatelessWidget {
             ),
             const Divider(),
             Selector<TimepillarZoom>(
-              heading: t.zoom,
+              heading: t.timelineZoom,
               groupValue: state.timepillarZoom,
               items: [
                 SelectorItem(
@@ -72,7 +72,7 @@ class DayViewSettingsTab extends StatelessWidget {
                 ),
                 SelectorItem(
                   t.medium,
-                  AbiliaIcons.decreaseText,
+                  AbiliaIcons.mediumText,
                   TimepillarZoom.normal,
                 ),
                 SelectorItem(

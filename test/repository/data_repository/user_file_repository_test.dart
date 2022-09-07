@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:file/memory.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -126,7 +125,7 @@ void main() {
     when(() => mockUserFileDb.getLastRevision())
         .thenAnswer((_) => Future.value(lastRevision));
 
-    File file = MemoryFileSystem().file('hej.txt');
+    final file = MemoryFileSystem().file('hej.txt');
     await file.writeAsString('hej');
     when(() => mockFileStorage.getFile(userFileId)).thenAnswer((_) => file);
     final MultipartRequest mockMultipartRequest = MockMultipartRequest();

@@ -31,7 +31,7 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
         (event, emit) => emit(_generateState(clockBloc.state, event)));
     on<GoTo>((event, emit) => emit(_generateState(event.day, event)));
     on<TimeChanged>((event, emit) {
-      bool moveToNextDay = event.now.isMidnight() &&
+      final moveToNextDay = event.now.isMidnight() &&
           event.now.previousDay().isAtSameDay(state.day);
       emit(DayPickerState(
           moveToNextDay ? event.now : state.day, event.now, event));

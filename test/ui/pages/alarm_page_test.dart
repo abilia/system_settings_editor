@@ -64,7 +64,7 @@ void main() {
   final EndAlarm endAlarmWithSpeech = EndAlarm(
     ActivityDay(activityWithStartAndEndSpeech, day),
   );
-  AlarmNavigator alarmNavigator = AlarmNavigator();
+  final alarmNavigator = AlarmNavigator();
   late MockMemoplannerSettingBloc mockMPSettingsBloc;
   late StreamController<MemoplannerSettingsState> mockMPSettingsBlocStream;
   late MockUserFileCubit mockUserFileCubit;
@@ -108,6 +108,9 @@ void main() {
               ),
               BlocProvider<DayPartCubit>(
                 create: (context) => FakeDayPartCubit(),
+              ),
+              BlocProvider<LicenseCubit>(
+                create: (context) => FakeLicenseCubit(),
               ),
             ],
             child: Builder(

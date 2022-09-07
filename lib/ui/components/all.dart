@@ -38,5 +38,7 @@ export 'collapsable_widget.dart';
 export 'abilia_progress_indicator.dart';
 export 'activity/youtube_player.dart';
 export 'default_tab_controller_builder.dart';
+export 'new_activity_widget.dart';
+export 'new_timer_widget.dart';
 
 export 'package:flutter/semantics.dart';

@@ -45,7 +45,7 @@ void main() {
 
     final extras = Extras.fromJsonString(jsonTestString1);
 
-    var extrasChanged = extras.copyWith(
+    final extrasChanged = extras.copyWith(
         startTimeExtraAlarm: AbiliaFile.from(path: 'new startTimeExtraAlarm'));
     expect(extrasChanged.startTimeExtraAlarm,
         AbiliaFile.from(path: 'new startTimeExtraAlarm'));
@@ -58,7 +58,8 @@ void main() {
 
     final extras = Extras.fromJsonString(jsonTestString1);
 
-    var extrasChanged = extras.copyWith(startTimeExtraAlarm: AbiliaFile.empty);
+    final extrasChanged =
+        extras.copyWith(startTimeExtraAlarm: AbiliaFile.empty);
     expect(extrasChanged.startTimeExtraAlarm.id, '');
     expect(extrasChanged.startTimeExtraAlarm.path, '');
     expect(extrasChanged.startTimeExtraAlarm.isEmpty, isTrue);
@@ -71,7 +72,7 @@ void main() {
 
     const extras = Extras.empty;
 
-    var extrasChanged = extras.copyWith(
+    final extrasChanged = extras.copyWith(
         startTimeExtraAlarm: AbiliaFile.from(
           path: 'abcdef',
           id: 'ghijkl',

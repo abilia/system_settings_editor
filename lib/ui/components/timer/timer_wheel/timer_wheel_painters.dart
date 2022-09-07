@@ -35,7 +35,7 @@ class TimerWheelBackgroundPainter extends CustomPainter {
       (size.height - config.outerCircleDiameter) / 2,
     ));
 
-    Path inactiveSectionArc = Path()
+    final inactiveSectionArc = Path()
       ..arcTo(
         Rect.fromCircle(
           center: config.centerPoint,
@@ -56,7 +56,7 @@ class TimerWheelBackgroundPainter extends CustomPainter {
       )
       ..close();
 
-    Path inactiveTime = Path.combine(
+    final inactiveTime = Path.combine(
       PathOperation.intersect,
       inactiveSectionArc,
       wheelShape,
@@ -94,7 +94,7 @@ class TimerWheelBackgroundPainter extends CustomPainter {
             ..moveTo(startX, startY)
             ..lineTo(endX, endY);
 
-          var roundedEdge = Path()
+          final roundedEdge = Path()
             ..addOval(Rect.fromCircle(
               center: Offset(endX, endY),
               radius: config.numberPointerRoundedEdgeRadius,
@@ -168,7 +168,7 @@ class TimerWheelForegroundPainter extends CustomPainter {
       (size.height - config.outerCircleDiameter) / 2,
     ));
 
-    Path timeLeftArc = Path()
+    final timeLeftArc = Path()
       ..arcTo(
         Rect.fromCircle(
           center: config.centerPoint,
@@ -189,7 +189,7 @@ class TimerWheelForegroundPainter extends CustomPainter {
       )
       ..close();
 
-    Path timeLeft = Path.combine(
+    final timeLeft = Path.combine(
       PathOperation.intersect,
       timeLeftArc,
       wheelShape,

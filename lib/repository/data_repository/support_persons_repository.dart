@@ -30,7 +30,7 @@ class SupportPersonsRepository extends Repository {
       }
 
       final decoded = response.json() as List;
-      Iterable<SupportPerson> result = decoded
+      final result = decoded
           .where((element) => element['role']?['id'] == supportPersonRoleId)
           .exceptionSafeMap(
             (element) => SupportPerson.fromJson(element['entity']),

@@ -210,7 +210,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
       clockBloc: ClockBloc.fixed(nowTime),
-      settings: const AddActivitySettings(
+      addActivitySettings: const AddActivitySettings(
         editActivity: EditActivitySettings(template: false),
       ),
     );

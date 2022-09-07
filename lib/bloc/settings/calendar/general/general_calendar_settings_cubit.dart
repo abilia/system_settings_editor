@@ -56,32 +56,32 @@ class GeneralCalendarSettingsCubit extends Cubit<GeneralCalendarSettings> {
 
 extension on DayParts {
   DayParts copyWith({
-    required final bool increased,
+    required bool increased,
     Duration? morning,
     Duration? day,
     Duration? evening,
     Duration? night,
   }) {
-    morning = DayParts.morningLimit.clamp(morning ?? this.morning);
-    day = DayParts.dayLimit.clamp(day ?? this.day);
-    evening = DayParts.eveningLimit.clamp(evening ?? this.evening);
-    night = DayParts.nightLimit.clamp(night ?? this.night);
+    Duration newMorning = DayParts.morningLimit.clamp(morning ?? this.morning);
+    Duration newDay = DayParts.dayLimit.clamp(day ?? this.day);
+    Duration newEvening = DayParts.eveningLimit.clamp(evening ?? this.evening);
+    Duration newNight = DayParts.nightLimit.clamp(night ?? this.night);
 
     if (increased) {
-      day += day <= morning ? oneHour : Duration.zero;
-      evening += evening <= day ? oneHour : Duration.zero;
-      night += night <= evening ? oneHour : Duration.zero;
+      newDay += newDay <= newMorning ? oneHour : Duration.zero;
+      newEvening += newEvening <= newDay ? oneHour : Duration.zero;
+      newNight += newNight <= newEvening ? oneHour : Duration.zero;
     } else {
-      evening -= evening >= night ? oneHour : Duration.zero;
-      day -= day >= evening ? oneHour : Duration.zero;
-      morning -= morning >= day ? oneHour : Duration.zero;
+      newEvening -= newEvening >= newNight ? oneHour : Duration.zero;
+      newDay -= newDay >= newEvening ? oneHour : Duration.zero;
+      newMorning -= newMorning >= newDay ? oneHour : Duration.zero;
     }
 
     return DayParts(
-      morning: morning,
-      day: day,
-      evening: evening,
-      night: night,
+      morning: newMorning,
+      day: newDay,
+      evening: newEvening,
+      night: newNight,
     );
   }
 }
