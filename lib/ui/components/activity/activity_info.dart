@@ -147,6 +147,7 @@ mixin ActivityMixin {
   }) async {
     final activityRepository =
         alarm != null ? context.read<ActivityRepository>() : null;
+    final validLicense = context.read<LicenseCubit>().validLicense;
     final navigator = Navigator.of(context);
     final checked = await checkConfirmation(
       context,
@@ -159,6 +160,7 @@ mixin ActivityMixin {
         activityRepository: activityRepository,
         navigator: navigator,
         alarm: alarm,
+        validLicense: validLicense,
       );
     }
   }
@@ -166,13 +168,13 @@ mixin ActivityMixin {
   Future popAlarm({
     required NavigatorState navigator,
     required NotificationAlarm alarm,
+    required bool validLicense,
     ActivityRepository? activityRepository,
   }) async {
     _log.fine('pop Alarm: $alarm');
     if (!await navigator.maybePop()) {
       _log.info('Could not pop (root?) will -> SystemNavigator.pop');
-      await activityRepository
-          ?.synchronize(); // TODO Dont sync if no valid license
+      if (validLicense) await activityRepository?.synchronize();
       await SystemNavigator.pop();
     }
   }

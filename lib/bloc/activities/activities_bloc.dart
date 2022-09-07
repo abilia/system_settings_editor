@@ -51,8 +51,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     Emitter<ActivitiesState> emit,
   ) async {
     try {
-      final activities = await activityRepository.getAll();
-      emit(ActivitiesLoaded(activities));
+      emit(ActivitiesLoaded(await activityRepository.getAll()));
     } catch (_) {
       emit(ActivitiesLoadedFailed());
     }
