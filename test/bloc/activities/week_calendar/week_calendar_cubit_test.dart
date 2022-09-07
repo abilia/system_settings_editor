@@ -24,14 +24,10 @@ void main() {
       activitiesBloc = ActivitiesBloc(
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
-        pushCubit: FakePushCubit(),
-        licenseCubit: FakeLicenseCubit(),
       );
       activitiesBloc = ActivitiesBloc(
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
-        pushCubit: FakePushCubit(),
-        licenseCubit: FakeLicenseCubit(),
       );
       weekCalendarBloc = WeekCalendarCubit(
         activitiesBloc: activitiesBloc,

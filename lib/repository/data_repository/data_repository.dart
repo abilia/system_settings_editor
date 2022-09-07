@@ -38,15 +38,13 @@ abstract class DataRepository<M extends DataModel> extends Repository {
   /// returns true if any data need to be synced after saved
   Future<bool> save(Iterable<M> data) => db.insertAndAddDirty(data);
 
-  Future<Iterable<M>> load() async {
-    await fetchIntoDatabaseSynchronized();
-    return db.getAllNonDeleted();
-  }
+  Future<Iterable<M>> getAll();
 
-  Future fetchIntoDatabaseSynchronized() => synchronized(fetchIntoDatabase);
+  Future<void> fetchIntoDatabaseSynchronized() =>
+      synchronized(fetchIntoDatabase);
 
   @protected
-  Future fetchIntoDatabase() async {
+  Future<void> fetchIntoDatabase() async {
     log.fine('loading $path...');
     try {
       final revision = await db.getLastRevision();

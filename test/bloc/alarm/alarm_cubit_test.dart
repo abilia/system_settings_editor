@@ -41,17 +41,14 @@ void main() {
       activitiesBloc = ActivitiesBloc(
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
-        pushCubit: FakePushCubit(),
-        licenseCubit: FakeLicenseCubit(),
       );
       mockGenericRepository = MockGenericRepository();
-      when(() => mockGenericRepository.load())
+      when(() => mockGenericRepository.getAll())
           .thenAnswer((invocation) => Future.value([]));
 
       genericCubit = GenericCubit(
         genericRepository: mockGenericRepository,
         syncBloc: FakeSyncBloc(),
-        pushCubit: FakePushCubit(),
       );
 
       memoplannerSettingBloc = MemoplannerSettingBloc(
@@ -66,7 +63,7 @@ void main() {
 
     blocTest(
       'Load activities with current alarm shows alarm',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value([soonActivity])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -84,7 +81,7 @@ void main() {
 
     blocTest(
       'Ticks before Load activities does nothing',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value([soonActivity])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -105,7 +102,7 @@ void main() {
 
     blocTest(
       'Does not show if clock is not on start time',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value([nowActivity])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -123,7 +120,7 @@ void main() {
 
     blocTest(
       'Next minut alarm does nothing',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value([soonActivity])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -138,7 +135,7 @@ void main() {
 
     blocTest(
       'Next minut alarm alarm next minute',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value([soonActivity])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -156,7 +153,7 @@ void main() {
 
     blocTest(
       'Two activities at the same time emits',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value([soonActivity, soonActivity2])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -177,7 +174,7 @@ void main() {
 
     blocTest(
       'two activities starts in order',
-      setUp: () => when(() => mockActivityRepository.load()).thenAnswer(
+      setUp: () => when(() => mockActivityRepository.getAll()).thenAnswer(
           (_) => Future.value([inTwoMinActivity, nowActivity, soonActivity])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -203,7 +200,7 @@ void main() {
 
     blocTest(
       'Activity with no alarm set does not trigger an alarm',
-      setUp: () => when(() => mockActivityRepository.load()).thenAnswer((_) =>
+      setUp: () => when(() => mockActivityRepository.getAll()).thenAnswer((_) =>
           Future.value([inTwoMinActivity, inOneMinuteWithoutAlarmActivity])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -223,7 +220,7 @@ void main() {
     final recursThursday = FakeActivity.reocurrsTuedays(nextMinute);
     blocTest(
       'Recurring weekly alarms shows',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value([recursThursday])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -245,7 +242,7 @@ void main() {
         nextMinute.add(const Duration(days: 60)));
     blocTest(
       'Recurring monthly alarms shows',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value([recursTheThisDayOfMonth])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -264,7 +261,7 @@ void main() {
     final recursTheThisDayOfYear = FakeActivity.reocurrsOnDate(nextMinute);
     blocTest(
       'Recurring yearly alarms shows',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value([recursTheThisDayOfYear])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -283,7 +280,7 @@ void main() {
     final activityEnding = FakeActivity.ends(nextMinute);
     blocTest(
       'Alarm on EndTime shows',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value([activityEnding])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -304,7 +301,7 @@ void main() {
         FakeActivity.starts(inTwoMin, duration: Duration.zero);
     blocTest(
       'Alarm on EndTime does not show when it has no end time (start time is same as end time)',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value([nextAlarm, afterThatAlarm])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -329,7 +326,7 @@ void main() {
         .copyWith(reminderBefore: [reminderTime.inMilliseconds]);
     blocTest(
       'Reminders shows',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value([remind1HourBefore])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -354,9 +351,9 @@ void main() {
     blocTest(
       'SGC-1710 Nothing when disable until is set',
       setUp: () {
-        when(() => mockActivityRepository.load())
+        when(() => mockActivityRepository.getAll())
             .thenAnswer((_) => Future.value([soonActivity]));
-        when(() => mockGenericRepository.load()).thenAnswer(
+        when(() => mockGenericRepository.getAll()).thenAnswer(
           (invocation) => Future.value(
             [
               Generic.createNew<MemoplannerSettingData>(
@@ -411,8 +408,6 @@ void main() {
         activitiesBloc: ActivitiesBloc(
           activityRepository: FakeActivityRepository(),
           syncBloc: FakeSyncBloc(),
-          pushCubit: FakePushCubit(),
-          licenseCubit: FakeLicenseCubit(),
         ),
         clockBloc: ClockBloc.fixed(aTime),
         settingsBloc: FakeMemoplannerSettingsBloc(),
@@ -472,8 +467,6 @@ void main() {
         activitiesBloc: ActivitiesBloc(
           activityRepository: MockActivityRepository(),
           syncBloc: FakeSyncBloc(),
-          pushCubit: FakePushCubit(),
-          licenseCubit: FakeLicenseCubit(),
         ),
         clockBloc: ClockBloc.fixed(aTime),
         settingsBloc: FakeMemoplannerSettingsBloc(),

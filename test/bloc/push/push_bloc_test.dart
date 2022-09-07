@@ -20,15 +20,14 @@ void main() {
       scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
       final time = DateTime(2020, 06, 05, 13, 23);
+      final activity = Activity.createNew(startTime: time, duration: 1.hours());
 
       final dbActivityAnswers = [
         <Activity>[],
-        [FakeActivity.starts(time, duration: 1.hours())]
-      ];
-      final serverActivityAnswers = [
         <Activity>[],
-        [FakeActivity.starts(time, duration: 1.hours())]
+        [activity],
       ];
+      final serverActivityAnswers = [...dbActivityAnswers];
 
       final mockActivityDb = MockActivityDb();
       when(() => mockActivityDb.getLastRevision())

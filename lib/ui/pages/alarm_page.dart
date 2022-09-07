@@ -4,8 +4,8 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class AlarmPage extends StatelessWidget {
   final NewAlarm alarm;
@@ -146,6 +146,7 @@ class PopAwareAlarmPage extends StatefulWidget {
 
 class _PopAwareAlarmPageState extends State<PopAwareAlarmPage> {
   bool isCanceled = false;
+
   @override
   Widget build(BuildContext context) => WillPopScope(
         onWillPop: () async {
@@ -195,7 +196,9 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
   Widget build(BuildContext context) {
     final closeButton = CloseButton(
       onPressed: () => popAlarm(
-        activityRepository: context.read<ActivityRepository>(),
+        activityRepository: context.read<LicenseCubit>().validLicense
+            ? context.read<ActivityRepository>()
+            : null,
         navigator: Navigator.of(context),
         alarm: alarm,
       ),

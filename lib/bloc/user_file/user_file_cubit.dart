@@ -7,7 +7,6 @@ import 'package:crypto/crypto.dart';
 import 'package:equatable/equatable.dart';
 import 'package:collection/collection.dart';
 import 'package:mime/mime.dart';
-import 'package:rxdart/rxdart.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -21,21 +20,20 @@ class UserFileCubit extends Cubit<UserFileState> {
   final UserFileRepository userFileRepository;
   final SyncBloc syncBloc;
   final FileStorage fileStorage;
-  late final StreamSubscription _pushSubscription;
+  late final StreamSubscription _syncSubscription;
 
   UserFileCubit({
     required this.userFileRepository,
     required this.syncBloc,
     required this.fileStorage,
-    required PushCubit pushCubit,
   }) : super(const UserFilesNotLoaded()) {
-    _pushSubscription =
-        pushCubit.stream.whereType<PushReceived>().listen(loadUserFiles);
+    _syncSubscription = syncBloc.stream.listen(loadUserFiles);
   }
 
   Future loadUserFiles([_]) async {
     await userFileRepository.fetchIntoDatabaseSynchronized();
     final storedFiles = await userFileRepository.getAllLoadedFiles();
+    if (isClosed) return;
     emit(UserFilesLoaded(storedFiles, state._tempFiles));
     _downloadUserFiles();
   }
@@ -43,7 +41,7 @@ class UserFileCubit extends Cubit<UserFileState> {
   Future _downloadUserFiles() async {
     final downloadedUserFiles =
         await userFileRepository.downloadUserFiles(limit: 10);
-    if (downloadedUserFiles.isNotEmpty) {
+    if (downloadedUserFiles.isNotEmpty && !isClosed) {
       emit(
         UserFilesLoaded(
           [...state.userFiles, ...downloadedUserFiles],
@@ -113,7 +111,7 @@ class UserFileCubit extends Cubit<UserFileState> {
 
   @override
   Future<void> close() async {
-    await _pushSubscription.cancel();
+    await _syncSubscription.cancel();
     return super.close();
   }
 }

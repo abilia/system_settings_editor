@@ -32,24 +32,43 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     final version =
         await PackageInfo.fromPlatform().then((value) => value.version);
     final loginDb = LoginDb(preferences);
-    final user = UserDb(preferences).getUser();
-    final token = LoginDb(preferences).getToken();
+    final userDb = UserDb(preferences);
+    final user = userDb.getUser();
+    final token = loginDb.getToken();
     if (user == null || token == null) {
       log.severe('No user or token: {token $token} {user $user}');
       return;
     }
 
-    final client = ClientWithDefaultHeaders(version,
-        loginDb: loginDb, deviceDb: DeviceDb(preferences));
+    final deviceDb = DeviceDb(preferences);
+    final client = ClientWithDefaultHeaders(
+      version,
+      loginDb: loginDb,
+      deviceDb: deviceDb,
+    );
     final database = await DatabaseRepository.createSqfliteDb();
     final baseUrlDb = BaseUrlDb(preferences);
 
-    final activities = await ActivityRepository(
+    final activityRepository = ActivityRepository(
       baseUrlDb: baseUrlDb,
       client: client,
       activityDb: ActivityDb(database),
       userId: user.id,
-    ).load();
+    );
+
+    final licenses = await UserRepository(
+      baseUrlDb: baseUrlDb,
+      client: client,
+      loginDb: loginDb,
+      userDb: userDb,
+      licenseDb: LicenseDb(preferences),
+      deviceDb: deviceDb,
+      calendarDb: CalendarDb(database),
+    ).getLicenses();
+    if (licenses.anyValidLicense(DateTime.now())) {
+      await activityRepository.synchronize();
+    }
+    final activities = await activityRepository.getAll();
 
     final fileStorage = FileStorage(documentDirectory.path);
 
@@ -61,16 +80,18 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       fileStorage: fileStorage,
       userId: user.id,
       multipartRequestBuilder: MultipartRequestBuilder(),
-    ).load();
+    ).synchronize();
 
     final settingsDb = SettingsDb(preferences);
 
-    final generics = await GenericRepository(
+    final genericRepository = GenericRepository(
       baseUrlDb: baseUrlDb,
       client: client,
       genericDb: GenericDb(database),
       userId: user.id,
-    ).load();
+    );
+    await genericRepository.synchronize();
+    final generics = await genericRepository.getAll();
 
     final genericsMap = generics.toGenericKeyMap();
     final settings = MemoplannerSettings.fromSettingsMap(
@@ -95,7 +116,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       client: client,
       sortableDb: SortableDb(database),
       userId: user.id,
-    ).load();
+    ).synchronize();
   } catch (e) {
     log.severe('Exception when running background handler', e);
   } finally {

@@ -40,8 +40,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       userFileDb.getAllLoadedFiles();
 
   @override
-  Future<Iterable<UserFile>> load() async {
-    await fetchIntoDatabaseSynchronized();
+  Future<Iterable<UserFile>> getAll() async {
     await downloadUserFiles();
     return userFileDb.getAllLoadedFiles();
   }

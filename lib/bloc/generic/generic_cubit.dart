@@ -11,19 +11,14 @@ part 'generic_state.dart';
 
 class GenericCubit extends Cubit<GenericState> {
   final GenericRepository genericRepository;
-  late final StreamSubscription pushSubscription;
+  late final StreamSubscription syncSubscription;
   final SyncBloc syncBloc;
 
   GenericCubit({
     required this.genericRepository,
-    required PushCubit pushCubit,
     required this.syncBloc,
   }) : super(GenericsNotLoaded()) {
-    pushSubscription = pushCubit.stream.listen((state) {
-      if (state is PushReceived) {
-        loadGenerics();
-      }
-    });
+    syncSubscription = syncBloc.stream.listen((state) => loadGenerics());
   }
 
   void genericUpdated(Iterable<GenericData> genericData) async {
@@ -53,7 +48,7 @@ class GenericCubit extends Cubit<GenericState> {
 
   Future<void> loadGenerics() async {
     try {
-      final generics = await genericRepository.load();
+      final generics = await genericRepository.getAll();
       emit(
         GenericsLoaded(
           generics: generics.toGenericKeyMap(),
@@ -66,7 +61,7 @@ class GenericCubit extends Cubit<GenericState> {
 
   @override
   Future<void> close() async {
-    await pushSubscription.cancel();
+    await syncSubscription.cancel();
     return super.close();
   }
 }

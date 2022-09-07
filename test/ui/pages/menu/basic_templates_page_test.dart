@@ -163,7 +163,7 @@ void main() {
                 .captured
                 .whereType<List<Sortable>>()
                 .expand((l) => l);
-        expect(capturedSortable, hasLength(3));
+        expect(capturedSortable, hasLength(3)); // 1 and 2 are fixed folders
         expect(capturedSortable.last.deleted, isTrue);
       });
 

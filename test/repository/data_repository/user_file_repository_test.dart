@@ -104,7 +104,8 @@ void main() {
     );
 
     // Act
-    await userFileRepository.load();
+    await userFileRepository.fetchIntoDatabaseSynchronized();
+    await userFileRepository.downloadUserFiles();
 
     // Verify
     verify(() => mockUserFileDb.insert(expectedFiles));

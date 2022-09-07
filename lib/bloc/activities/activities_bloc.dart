@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -14,25 +13,15 @@ part 'activities_state.dart';
 class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     with EditRecurringMixin {
   final ActivityRepository activityRepository;
-  late final StreamSubscription _pushSubscription;
-  late final StreamSubscription _licenseSubscription;
   final SyncBloc syncBloc;
-  final LicenseCubit licenseCubit;
+  late final StreamSubscription _syncSubscription;
 
   ActivitiesBloc({
     required this.activityRepository,
     required this.syncBloc,
-    required PushCubit pushCubit,
-    required this.licenseCubit,
   }) : super(ActivitiesNotLoaded()) {
-    _pushSubscription = pushCubit.stream
-        .whereType<PushReceived>()
-        .listen((state) => add(LoadActivities()));
-    _licenseSubscription =
-        licenseCubit.stream.whereType<ValidLicense>().listen((licenseState) {
-      add(LoadActivities());
-      syncBloc.add(const ActivitySaved());
-    });
+    _syncSubscription =
+        syncBloc.stream.listen((state) => add(LoadActivities()));
     on<ActivitiesEvent>(_onEvent, transformer: sequential());
   }
 
@@ -62,10 +51,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     Emitter<ActivitiesState> emit,
   ) async {
     try {
-      final activities = licenseCubit.validLicense
-          ? await activityRepository.load()
-          : await activityRepository.getAll();
-      emit(ActivitiesLoaded(activities));
+      emit(ActivitiesLoaded(await activityRepository.getAll()));
     } catch (_) {
       emit(ActivitiesLoadedFailed());
     }
@@ -180,15 +166,12 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
 
   Future<void> _saveActivities(Iterable<Activity> activities) async {
     await activityRepository.save(activities);
-    if (licenseCubit.validLicense) {
-      syncBloc.add(const ActivitySaved());
-    }
+    syncBloc.add(const ActivitySaved());
   }
 
   @override
   Future<void> close() async {
-    await _pushSubscription.cancel();
-    await _licenseSubscription.cancel();
+    await _syncSubscription.cancel();
     return super.close();
   }
 }

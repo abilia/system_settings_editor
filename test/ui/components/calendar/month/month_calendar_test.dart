@@ -41,7 +41,6 @@ void main() {
         .thenAnswer((_) => Future.value([]));
     when(() => mockActivityDb.getAllAfter(any()))
         .thenAnswer((_) => Future.value([]));
-    when(() => mockActivityDb.getAll()).thenAnswer((_) => Future.value([]));
     when(() => mockActivityDb.getAllBetween(any(), any()))
         .thenAnswer((_) => Future.value(activityResponse()));
     when(() => mockActivityDb.insertAndAddDirty(any()))
@@ -52,6 +51,7 @@ void main() {
         .thenAnswer((_) => Future.value(false));
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value([]));
+    when(() => mockGenericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     when(() => mockGenericDb.getById(any()))
         .thenAnswer((_) => Future.value(null));
     when(() => mockGenericDb.insert(any())).thenAnswer((_) => Future.value());

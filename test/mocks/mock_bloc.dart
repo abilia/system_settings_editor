@@ -9,7 +9,8 @@ class MockActivitiesBloc extends MockBloc<ActivitiesEvent, ActivitiesState>
 class MockDayEventsCubit extends MockCubit<EventsState>
     implements DayEventsCubit {}
 
-class MockSyncBloc extends MockBloc<SyncEvent, dynamic> implements SyncBloc {}
+class MockSyncBloc extends MockBloc<SyncEvent, PleaseReload>
+    implements SyncBloc {}
 
 class MockPushCubit extends MockCubit<PushState> implements PushCubit {}
 

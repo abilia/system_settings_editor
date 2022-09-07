@@ -271,6 +271,8 @@ void main() {
       final mockGenericDb = MockGenericDb();
       when(() => mockGenericDb.getAllNonDeletedMaxRevision())
           .thenAnswer((_) => Future.value(genericResponse()));
+      when(() => mockGenericDb.getAllDirty())
+          .thenAnswer((_) => Future.value([]));
 
       final mockTimerDb = MockTimerDb();
       when(() => mockTimerDb.getAllTimers())

@@ -71,6 +71,7 @@ void main() {
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value([]));
+    when(() => mockGenericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -194,9 +195,11 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       final pushCubit = PushCubit();
+      final activity = Activity.createNew(startTime: startTime);
       List<List<Activity>> activitiesList = [
-        [FakeActivity.starts(startTime)],
-        []
+        [activity],
+        [activity],
+        [],
       ];
       when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(activitiesList.removeAt(0)));
