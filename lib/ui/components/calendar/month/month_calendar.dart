@@ -312,7 +312,7 @@ class MonthDayView extends StatelessWidget {
                             children: [
                               Text('${day.day.day}'),
                               const Spacer(),
-                              if (day.hasActivities)
+                              if (day.hasActivitiesOrTimers)
                                 Padding(
                                   padding: layout
                                       .monthCalendar.hasActivitiesDotPadding,
@@ -464,7 +464,7 @@ class MonthDayViewCompact extends StatelessWidget {
                   child: Stack(
                     children: [
                       Center(child: Text('${day.day.day}')),
-                      if (day.hasActivities)
+                      if (day.hasActivitiesOrTimers)
                         Align(
                           alignment: Alignment.topRight,
                           child: ColorDot(

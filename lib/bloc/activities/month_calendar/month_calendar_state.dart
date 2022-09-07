@@ -32,15 +32,20 @@ class MonthDay extends MonthCalendarDay {
   final DateTime day;
   final ActivityDay? fullDayActivity;
   final int fullDayActivityCount;
-  final bool hasActivities;
+  final bool hasActivities, hasTimers;
   final Occasion occasion;
+
   bool get isCurrent => occasion.isCurrent;
+
   bool get isPast => occasion.isPast;
+
+  bool get hasActivitiesOrTimers => hasActivities || hasTimers;
 
   MonthDay(
     this.day,
     this.fullDayActivity,
     this.hasActivities,
+    this.hasTimers,
     this.fullDayActivityCount,
     this.occasion,
   );
@@ -50,6 +55,7 @@ class MonthDay extends MonthCalendarDay {
         day,
         fullDayActivity,
         hasActivities,
+        hasTimers,
         fullDayActivityCount,
         occasion,
       ];

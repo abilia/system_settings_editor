@@ -21,6 +21,7 @@ void main() {
   late SharedPreferences sharedPreferences;
 
   ActivityResponse activityResponse = () => [];
+  TimerResponse timerResponse = () => [];
   final initialDay = DateTime(2020, 08, 05);
 
   setUpAll(() async {
@@ -47,6 +48,12 @@ void main() {
     when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
+    final mockTimerDb = MockTimerDb();
+    when(() => mockTimerDb.getAllTimers())
+        .thenAnswer((_) => Future.value(timerResponse()));
+    when(() => mockTimerDb.getRunningTimersFrom(any()))
+        .thenAnswer((_) => Future.value(timerResponse()));
+
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(false));
@@ -59,6 +66,7 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = sharedPreferences
       ..activityDb = mockActivityDb
+      ..timerDb = mockTimerDb
       ..client = Fakes.client(activityResponse: activityResponse)
       ..database = FakeDatabase()
       ..genericDb = mockGenericDb
@@ -539,5 +547,17 @@ void main() {
     await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
     await tester.pumpAndSettle();
     expect(find.text('Wednesday'), findsNothing);
+  });
+
+  testWidgets('Show color dot if day has timer.', (WidgetTester tester) async {
+    activityResponse = () => [];
+    timerResponse = () => [
+          AbiliaTimer(id: 'id', startTime: initialDay, duration: 20.minutes()),
+        ];
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.month));
+    await tester.pumpAndSettle();
+    expect(find.byType(ColorDot), findsOneWidget);
   });
 }
