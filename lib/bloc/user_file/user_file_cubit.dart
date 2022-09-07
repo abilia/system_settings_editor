@@ -33,6 +33,7 @@ class UserFileCubit extends Cubit<UserFileState> {
   Future loadUserFiles([_]) async {
     await userFileRepository.fetchIntoDatabaseSynchronized();
     final storedFiles = await userFileRepository.getAllLoadedFiles();
+    if (isClosed) return;
     emit(UserFilesLoaded(storedFiles, state._tempFiles));
     _downloadUserFiles();
   }
@@ -40,7 +41,7 @@ class UserFileCubit extends Cubit<UserFileState> {
   Future _downloadUserFiles() async {
     final downloadedUserFiles =
         await userFileRepository.downloadUserFiles(limit: 10);
-    if (downloadedUserFiles.isNotEmpty) {
+    if (downloadedUserFiles.isNotEmpty && !isClosed) {
       emit(
         UserFilesLoaded(
           [...state.userFiles, ...downloadedUserFiles],

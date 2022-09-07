@@ -146,7 +146,10 @@ mixin ActivityMixin {
     String? message,
   }) async {
     final activityRepository =
-        alarm != null ? context.read<ActivityRepository>() : null;
+        alarm != null && context.read<LicenseCubit>().validLicense
+            ? context.read<ActivityRepository>()
+            : null;
+
     final navigator = Navigator.of(context);
     final checked = await checkConfirmation(
       context,
@@ -171,8 +174,7 @@ mixin ActivityMixin {
     _log.fine('pop Alarm: $alarm');
     if (!await navigator.maybePop()) {
       _log.info('Could not pop (root?) will -> SystemNavigator.pop');
-      await activityRepository
-          ?.synchronize(); // TODO Dont sync if no valid license
+      await activityRepository?.synchronize();
       await SystemNavigator.pop();
     }
   }

@@ -116,12 +116,12 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               lazy: false,
             ),
             BlocProvider<SortableBloc>(
-              create: (context) => sortableBloc ??
+              create: (context) =>
+                  sortableBloc ??
                   SortableBloc(
                     sortableRepository: context.read<SortableRepository>(),
                     syncBloc: context.read<SyncBloc>(),
-                  )
-                ..add(const LoadSortables()),
+                  ),
               lazy: false,
             ),
             BlocProvider<GenericCubit>(
