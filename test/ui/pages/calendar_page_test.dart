@@ -20,6 +20,7 @@ import '../../test_helpers/register_fallback_values.dart';
 import '../../test_helpers/tap_link.dart';
 import '../../test_helpers/tts.dart';
 import '../../test_helpers/verify_generic.dart';
+import '../../test_helpers/activity_db_in_memory.dart';
 
 void main() {
   final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
@@ -53,12 +54,11 @@ void main() {
         ),
       );
 
-  late MockActivityDb mockActivityDb;
+  late ActivityDbInMemory mockActivityDb;
   late MockGenericDb mockGenericDb;
   late MockSortableDb mockSortableDb;
   late MockTimerDb mockTimerDb;
 
-  ActivityResponse activityResponse = () => [];
   SortableResponse sortableResponse = () => [];
   GenericResponse genericResponse = () => [];
   final initialTime = DateTime(2020, 08, 05, 14, 10, 00);
@@ -79,21 +79,8 @@ void main() {
     when(() => mockFirebasePushService.initPushToken())
         .thenAnswer((_) => Future.value('fakeToken'));
 
-    mockActivityDb = MockActivityDb();
-    when(() => mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(activityResponse()));
-    when(() => mockActivityDb.getAllDirty())
-        .thenAnswer((_) => Future.value([]));
-    when(() => mockActivityDb.insertAndAddDirty(any()))
-        .thenAnswer((_) => Future.value(true));
-    when(() => mockActivityDb.getLastRevision())
-        .thenAnswer((_) => Future.value(100));
-    when(() => mockActivityDb.insert(any()))
-        .thenAnswer((_) => Future.value(100));
-    when(() => mockActivityDb.getAllAfter(any()))
-        .thenAnswer((_) => Future.value([]));
-    when(() => mockActivityDb.getAllBetween(any(), any()))
-        .thenAnswer((_) => Future.value(activityResponse()));
+    mockActivityDb = ActivityDbInMemory();
+    // mockActivityDb.insertTestActivities(activityResponse());
 
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
@@ -132,7 +119,6 @@ void main() {
       ..ticker = Ticker.fake(initialTime: initialTime)
       ..fireBasePushService = mockFirebasePushService
       ..client = Fakes.client(
-        activityResponse: activityResponse,
         sortableResponse: sortableResponse,
         genericResponse: genericResponse,
       )
@@ -149,7 +135,6 @@ void main() {
   });
 
   tearDown(() {
-    activityResponse = () => [];
     sortableResponse = () => [];
     genericResponse = () => [];
     GetIt.I.reset();
@@ -178,8 +163,6 @@ void main() {
 
     testWidgets('Tapping Day in TabBar returns to this week',
         (WidgetTester tester) async {
-      when(() => mockActivityDb.getAllBetween(any(), any()))
-          .thenAnswer((_) => Future.value([]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.tap(nextDayButtonFinder);
@@ -744,9 +727,7 @@ void main() {
         FakeActivity.fullday(date, title2),
         FakeActivity.fullday(date, title3),
       ];
-      activityResponse = () => fullDayActivities;
-      when(() => mockActivityDb.getAllNonDeleted())
-          .thenAnswer((_) => Future.value(fullDayActivities));
+      mockActivityDb.initWithActivities(fullDayActivities);
     });
 
     testWidgets('Show full days activity', (WidgetTester tester) async {
@@ -887,11 +868,7 @@ void main() {
         FakeActivity.starts(friday, title: fridayTitle),
         FakeActivity.starts(nextWeek, title: nextWeekTitle),
       ];
-      activityResponse = () => activities;
-      when(() => mockActivityDb.getAllNonDeleted())
-          .thenAnswer((_) => Future.value(activities));
-      when(() => mockActivityDb.getAllBetween(any(), any()))
-          .thenAnswer((_) => Future.value(activities));
+      mockActivityDb.initWithActivities(activities);
     });
     testWidgets('Can navigate to week calendar', (WidgetTester tester) async {
       await tester.pumpWidget(App());
@@ -1104,11 +1081,7 @@ void main() {
         FakeActivity.starts(initialTime, title: 'twelve')
             .copyWith(startTime: initialTime.add(const Duration(hours: 12))),
       ];
-      activityResponse = () => activities;
-      when(() => mockActivityDb.getAllNonDeleted())
-          .thenAnswer((_) => Future.value(activities));
-      when(() => mockActivityDb.getAllBetween(any(), any()))
-          .thenAnswer((_) => Future.value(activities));
+      mockActivityDb.initWithActivities(activities);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
@@ -1125,10 +1098,7 @@ void main() {
       FakeActivity.fullday(initialTime.addDays(1), 'one'),
       FakeActivity.fullday(initialTime.addDays(1), 'two'),
     ];
-    when(() => mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(activities));
-    when(() => mockActivityDb.getAllBetween(any(), any()))
-        .thenAnswer((_) => Future.value(activities));
+    mockActivityDb.initWithActivities(activities);
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.week));

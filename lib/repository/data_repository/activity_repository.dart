@@ -32,7 +32,7 @@ class ActivityRepository extends DataRepository<Activity> {
     return activityDb.getAllBetween(start, end);
   }
 
-  Future<Activity?> byId(String id) async {
+  Future<Activity?> getById(String id) async {
     return (await activityDb.getById(id))?.model;
   }
 }

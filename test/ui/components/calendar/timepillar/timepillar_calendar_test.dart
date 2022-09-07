@@ -18,9 +18,11 @@ import '../../../../fakes/all.dart';
 import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/app_pumper.dart';
 import '../../../../test_helpers/tts.dart';
+import '../../../../test_helpers/activity_db_in_memory.dart';
 
 void main() {
   late StreamController<DateTime> mockTicker;
+  late final ActivityDbInMemory mockActivityDb;
   final time = DateTime(2007, 08, 09, 13, 11);
   const leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RigthCategoryActivity';
@@ -38,6 +40,10 @@ void main() {
   final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
   final previusDayButtonFinder = find.byIcon(AbiliaIcons.returnToPreviousPage);
 
+  setUpAll(() {
+    mockActivityDb = ActivityDbInMemory();
+  });
+
   setUp(() async {
     setupPermissions();
     setupFakeTts();
@@ -46,17 +52,6 @@ void main() {
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     mockTicker = StreamController<DateTime>();
-    final mockActivityDb = MockActivityDb();
-    when(() => mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(activityResponse()));
-    when(() => mockActivityDb.getAllDirty())
-        .thenAnswer((_) => Future.value([]));
-    when(() => mockActivityDb.insertAndAddDirty(any()))
-        .thenAnswer((_) => Future.value(true));
-    when(() => mockActivityDb.getAllAfter(any()))
-        .thenAnswer((_) => Future.value([]));
-    when(() => mockActivityDb.getAllBetween(any(), any()))
-        .thenAnswer((_) => Future.value([]));
 
     genericResponse = () => [timepillarGeneric];
     final mockGenericDb = MockGenericDb();
@@ -115,7 +110,7 @@ void main() {
         fullDay: true,
         reminderBefore: const [60 * 60 * 1000],
         alarmType: noAlarm);
-    activityResponse = () => [activity];
+    mockActivityDb.initWithActivity(activity);
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
     expect(find.byType(FullDayContainer), findsOneWidget);
@@ -213,13 +208,11 @@ void main() {
     testWidgets(
         'SGC-1638 Full day activity should not be present in timepillar',
         (WidgetTester tester) async {
-      activityResponse = () => [
-            Activity.createNew(
-              title: 'title',
-              startTime: time,
-              fullDay: true,
-            )
-          ];
+      mockActivityDb.initWithActivity(Activity.createNew(
+        title: 'title',
+        startTime: time,
+        fullDay: true,
+      ));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsNothing);
@@ -483,7 +476,7 @@ void main() {
               title: 'right just',
               category: Category.right,
             );
-        activityResponse = () => [a1, a2, a3, a4];
+        mockActivityDb.initWithActivities([a1, a2, a3, a4]);
 
         void expectCorrectColor(String title, Color expectedColor) {
           final boxDecoration = tester
@@ -530,7 +523,7 @@ void main() {
               title: 'right just',
               category: Category.right,
             );
-        activityResponse = () => [a1, a2, a3, a4];
+        mockActivityDb.initWithActivities([a1, a2, a3, a4]);
         genericResponse = () => [
               timepillarGeneric,
               Generic.createNew<MemoplannerSettingData>(
@@ -574,20 +567,20 @@ void main() {
     final rightActivityFinder = find.text(rightTitle);
     final cardFinder = find.byType(ActivityTimepillarCard);
     setUp(() {
-      activityResponse = () => [
-            FakeActivity.starts(
-              time,
-              title: rightTitle,
-            ).copyWith(
-              checkable: true,
-            ),
-            FakeActivity.starts(
-              time,
-              title: leftTitle,
-            ).copyWith(
-              category: Category.left,
-            ),
-          ];
+      mockActivityDb.initWithActivities([
+        FakeActivity.starts(
+          time,
+          title: rightTitle,
+        ).copyWith(
+          checkable: true,
+        ),
+        FakeActivity.starts(
+          time,
+          title: leftTitle,
+        ).copyWith(
+          category: Category.left,
+        ),
+      ]);
     });
 
     testWidgets('Shows activity', (WidgetTester tester) async {
@@ -699,8 +692,8 @@ void main() {
     testWidgets('current activity shows no CrossOver',
         (WidgetTester tester) async {
       // Arrange
-      activityResponse =
-          () => [Activity.createNew(title: 'title', startTime: time)];
+      mockActivityDb.initWithActivities(
+          [Activity.createNew(title: 'title', startTime: time)]);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
@@ -709,10 +702,10 @@ void main() {
 
     testWidgets('past activity shows CrossOver', (WidgetTester tester) async {
       // Arrange
-      activityResponse = () => [
-            Activity.createNew(
-                title: 'title', startTime: time.subtract(10.minutes()))
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+            title: 'title', startTime: time.subtract(10.minutes()))
+      ]);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
@@ -722,13 +715,13 @@ void main() {
     testWidgets('past activity with endtime shows CrossOver - long activity',
         (WidgetTester tester) async {
       // Arrange
-      activityResponse = () => [
-            Activity.createNew(
-              title: 'title',
-              startTime: time.subtract(9.hours()),
-              duration: 8.hours(),
-            )
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+          title: 'title',
+          startTime: time.subtract(9.hours()),
+          duration: 8.hours(),
+        )
+      ]);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
@@ -738,13 +731,13 @@ void main() {
     testWidgets('past activity with endtime shows CrossOver - short activity',
         (WidgetTester tester) async {
       // Arrange
-      activityResponse = () => [
-            Activity.createNew(
-              title: 'title',
-              startTime: time.subtract(2.hours()),
-              duration: 1.hours(),
-            )
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+          title: 'title',
+          startTime: time.subtract(2.hours()),
+          duration: 1.hours(),
+        )
+      ]);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
@@ -754,14 +747,14 @@ void main() {
     testWidgets('SGC-735 past activity with long title shows CrossOver',
         (WidgetTester tester) async {
       // Arrange
-      activityResponse = () => [
-            Activity.createNew(
-              title: 'title title title title title title title '
-                  'title title title title title title title title '
-                  'title title title title title title title title ',
-              startTime: time.subtract(2.hours()),
-            )
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+          title: 'title title title title title title title '
+              'title title title title title title title title '
+              'title title title title title title title title ',
+          startTime: time.subtract(2.hours()),
+        )
+      ]);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
@@ -771,13 +764,13 @@ void main() {
     testWidgets('signed off past activity shows CrossOver',
         (WidgetTester tester) async {
       // Arrange
-      activityResponse = () => [
-            Activity.createNew(
-                title: 'title',
-                startTime: time.subtract(40.minutes()),
-                checkable: true,
-                signedOffDates: [time].map(whaleDateFormat))
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+            title: 'title',
+            startTime: time.subtract(40.minutes()),
+            checkable: true,
+            signedOffDates: [time].map(whaleDateFormat))
+      ]);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
@@ -924,12 +917,12 @@ void main() {
     group('Activities', () {
       testWidgets('Activity outside interval is not visible',
           (WidgetTester tester) async {
-        activityResponse = () => [
-              Activity.createNew(
-                title: 'title',
-                startTime: time.copyWith(hour: 8, minute: 0),
-              )
-            ];
+        mockActivityDb.initWithActivities([
+          Activity.createNew(
+            title: 'title',
+            startTime: time.copyWith(hour: 8, minute: 0),
+          )
+        ]);
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
         expect(find.byType(ActivityTimepillarCard), findsNothing);
@@ -937,12 +930,12 @@ void main() {
 
       testWidgets('Activity inside interval is visible',
           (WidgetTester tester) async {
-        activityResponse = () => [
-              Activity.createNew(
-                title: 'title',
-                startTime: time,
-              )
-            ];
+        mockActivityDb.initWithActivities([
+          Activity.createNew(
+            title: 'title',
+            startTime: time,
+          )
+        ]);
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
         expect(find.byType(ActivityTimepillarCard), findsOneWidget);
@@ -951,13 +944,13 @@ void main() {
       testWidgets('Activity spanning two intervals',
           (WidgetTester tester) async {
         final activityTime = DateTime(2020, 12, 01, 01, 00);
-        activityResponse = () => [
-              Activity.createNew(
-                title: 'title',
-                startTime: activityTime,
-                duration: 6.hours(),
-              )
-            ];
+        mockActivityDb.initWithActivities([
+          Activity.createNew(
+            title: 'title',
+            startTime: activityTime,
+            duration: 6.hours(),
+          )
+        ]);
 
         mockTicker.add(
             activityTime); // Shows night interval. Activity should be visible here.
@@ -979,13 +972,13 @@ void main() {
       testWidgets('Activity without duration starts on interval',
           (WidgetTester tester) async {
         final activityStartTime = DateTime(2020, 12, 01, 10, 00);
-        activityResponse = () => [
-              Activity.createNew(
-                title: 'title',
-                startTime: activityStartTime,
-                alarmType: noAlarm,
-              )
-            ];
+        mockActivityDb.initWithActivities([
+          Activity.createNew(
+            title: 'title',
+            startTime: activityStartTime,
+            alarmType: noAlarm,
+          )
+        ]);
 
         mockTicker.add(DateTime(2020, 12, 01, 01, 01));
         await tester.pumpWidget(App());
@@ -1014,14 +1007,14 @@ void main() {
                 ),
               ),
             ];
-        activityResponse = () => [
-              Activity.createNew(
-                title: 'title',
-                startTime: startTime,
-                duration: 23.hours(),
-                alarmType: noAlarm,
-              )
-            ];
+        mockActivityDb.initWithActivities([
+          Activity.createNew(
+            title: 'title',
+            startTime: startTime,
+            duration: 23.hours(),
+            alarmType: noAlarm,
+          )
+        ]);
 
         mockTicker.add(startTime);
         await tester.pumpWidget(App());
@@ -1036,12 +1029,12 @@ void main() {
       testWidgets('Activity is shown when interval is whole day',
           (WidgetTester tester) async {
         final activityStartTime = DateTime(2020, 12, 01, 10, 00);
-        activityResponse = () => [
-              Activity.createNew(
-                title: 'title',
-                startTime: activityStartTime,
-              )
-            ];
+        mockActivityDb.initWithActivities([
+          Activity.createNew(
+            title: 'title',
+            startTime: activityStartTime,
+          )
+        ]);
 
         genericResponse = () => [
               timepillarGeneric,
@@ -1063,13 +1056,13 @@ void main() {
           'Day activity is only shown in day interval when interval is DAY',
           (WidgetTester tester) async {
         final activityStartTime = DateTime(2020, 12, 01, 10, 00);
-        activityResponse = () => [
-              Activity.createNew(
-                title: 'title',
-                startTime: activityStartTime,
-                alarmType: noAlarm,
-              )
-            ];
+        mockActivityDb.initWithActivities([
+          Activity.createNew(
+            title: 'title',
+            startTime: activityStartTime,
+            alarmType: noAlarm,
+          )
+        ]);
 
         genericResponse = () => [
               timepillarGeneric,
@@ -1225,12 +1218,12 @@ void main() {
     testWidgets('Night interval shows whole night',
         (WidgetTester tester) async {
       const nightActivityTitle = 'nighttitle';
-      activityResponse = () => [
-            Activity.createNew(
-              startTime: DateTime(2022, 04, 27, 02, 00),
-              title: nightActivityTitle,
-            )
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+          startTime: DateTime(2022, 04, 27, 02, 00),
+          title: nightActivityTitle,
+        )
+      ]);
       mockTicker.add(DateTime(2022, 04, 26, 23, 30));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -1241,16 +1234,16 @@ void main() {
         (WidgetTester tester) async {
       const nightActivityTitle = 'nighttitle';
       const eveningTitle = 'eveningtitle';
-      activityResponse = () => [
-            Activity.createNew(
-              startTime: DateTime(2022, 04, 27, 02, 00),
-              title: nightActivityTitle,
-            ),
-            Activity.createNew(
-              startTime: DateTime(2022, 04, 27, 23, 30),
-              title: eveningTitle,
-            )
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+          startTime: DateTime(2022, 04, 27, 02, 00),
+          title: nightActivityTitle,
+        ),
+        Activity.createNew(
+          startTime: DateTime(2022, 04, 27, 23, 30),
+          title: eveningTitle,
+        )
+      ]);
       mockTicker.add(DateTime(2022, 04, 26, 23, 30));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -1265,12 +1258,12 @@ void main() {
     testWidgets('Navigate previous when before midnight shows full current day',
         (WidgetTester tester) async {
       const dayActivity = 'nighttitle';
-      activityResponse = () => [
-            Activity.createNew(
-              startTime: DateTime(2022, 04, 26, 13, 00),
-              title: dayActivity,
-            ),
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+          startTime: DateTime(2022, 04, 26, 13, 00),
+          title: dayActivity,
+        ),
+      ]);
       mockTicker.add(DateTime(2022, 04, 26, 23, 30));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();

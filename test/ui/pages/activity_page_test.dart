@@ -18,9 +18,10 @@ import '../../mocks/mocks.dart';
 import '../../test_helpers/enter_text.dart';
 import '../../test_helpers/tts.dart';
 import '../../test_helpers/verify_generic.dart';
+import '../../test_helpers/activity_db_in_memory.dart';
 
 void main() {
-  late MockActivityDb mockActivityDb;
+  late ActivityDbInMemory mockActivityDb;
   late MockGenericDb mockGenericDb;
 
   final translate = Locales.language.values.first;
@@ -59,15 +60,7 @@ void main() {
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
-    mockActivityDb = MockActivityDb();
-    when(() => mockActivityDb.getAllDirty())
-        .thenAnswer((_) => Future.value(<DbActivity>[]));
-    when(() => mockActivityDb.insertAndAddDirty(any()))
-        .thenAnswer((_) => Future.value(true));
-    when(() => mockActivityDb.getAllAfter(any()))
-        .thenAnswer((_) => Future.value([]));
-    when(() => mockActivityDb.getAllBetween(any(), any()))
-        .thenAnswer((_) => Future.value([]));
+    mockActivityDb = ActivityDbInMemory();
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value([]));
@@ -92,7 +85,9 @@ void main() {
       ..init();
   });
 
-  tearDown(GetIt.I.reset);
+  tearDown(() {
+    GetIt.I.reset();
+  });
 
   Future<void> navigateToActivityPage(WidgetTester tester) async {
     await tester.pumpWidget(App());
@@ -111,8 +106,7 @@ void main() {
   group('Activity page', () {
     testWidgets('Navigate to activity page and back',
         (WidgetTester tester) async {
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
+      mockActivityDb.initWithActivity(FakeActivity.starts(startTime));
       await navigateToActivityPage(tester);
       expect(activityBackButtonFinder, findsOneWidget);
       await tester.tap(activityBackButtonFinder);
@@ -122,8 +116,7 @@ void main() {
 
     testWidgets('Full day activity page does not show edit alarm',
         (WidgetTester tester) async {
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.fullday(startTime)]));
+      mockActivityDb.initWithActivity(FakeActivity.fullday(startTime));
       await navigateToFullDayActivityPage(tester);
       expect(alarmButtonFinder, findsNothing);
     });
@@ -146,8 +139,7 @@ void main() {
           ),
         ),
       );
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[activityWithStartAndEndSpeech]));
+      mockActivityDb.initWithActivity(activityWithStartAndEndSpeech);
       await navigateToActivityPage(tester);
       expect(find.byType(PlaySoundButton), findsNWidgets(2));
     });
@@ -165,8 +157,7 @@ void main() {
           ),
         ),
       );
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[activityWithStartAndEndSpeech]));
+      mockActivityDb.initWithActivity(activityWithStartAndEndSpeech);
       await navigateToActivityPage(tester);
       expect(find.byType(PlaySoundButton), findsOneWidget);
     });
@@ -174,16 +165,12 @@ void main() {
     testWidgets('Youtube video is shown when UrlInfoItem url is a youtube link',
         (WidgetTester tester) async {
       const url = 'https://www.youtube.com/watch?v=A_LWGAOBy04';
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-        (_) => Future.value(
-          <Activity>[
-            Activity.createNew(
-                title: 'title',
-                startTime: startTime,
-                infoItem: const UrlInfoItem(url))
-          ],
-        ),
-      );
+
+      mockActivityDb.initWithActivity(Activity.createNew(
+        title: 'title',
+        startTime: startTime,
+        infoItem: const UrlInfoItem(url),
+      ));
 
       await navigateToActivityPage(tester);
       expect(find.byType(YoutubePlayer), findsOneWidget);
@@ -194,12 +181,8 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       final pushCubit = PushCubit();
-      final List<List<Activity>> activitiesList = [
-        [FakeActivity.starts(startTime)],
-        []
-      ];
-      when(() => mockActivityDb.getAllNonDeleted())
-          .thenAnswer((_) => Future.value(activitiesList.removeAt(0)));
+      final activity = FakeActivity.starts(startTime);
+      mockActivityDb.initWithActivity(activity);
 
       // Act
       await tester.pumpWidget(App(pushCubit: pushCubit));
@@ -207,6 +190,7 @@ void main() {
       await tester.tap(activityTimepillarCardFinder);
       await tester.pumpAndSettle();
 
+      mockActivityDb.insertAndAddDirty([activity.copyWith(deleted: true)]);
       pushCubit.update('refresh');
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
@@ -218,10 +202,10 @@ void main() {
   group('Edit activity', () {
     final editActivityPageFinder = find.byType(EditActivityPage);
     final titleTextFormFieldFinder = find.byKey(TestKey.editTitleTextFormField);
+
     testWidgets('Edit activity button shows', (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
+      mockActivityDb.insert([FakeActivity.starts(startTime).wrapWithDbModel()]);
       // Act
       await navigateToActivityPage(tester);
       // Assert -- Find the edit activity button
@@ -230,8 +214,7 @@ void main() {
 
     testWidgets('Can open edit activity page', (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
+      mockActivityDb.initWithActivity(FakeActivity.starts(startTime));
       await navigateToActivityPage(tester);
       // Act -- tap the edit activity button
       await tester.tap(editActivityButtonFinder);
@@ -244,10 +227,8 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       const title = 'an interesting title';
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-          Future.value(<Activity>[
-            FakeActivity.starts(startTime).copyWith(title: title)
-          ]));
+      mockActivityDb.initWithActivity(
+          FakeActivity.starts(startTime).copyWith(title: title));
       await navigateToActivityPage(tester);
 
       // Act -- tap the edit activity button
@@ -265,10 +246,8 @@ void main() {
       // Arrange
       const title = 'an interesting title';
       const newTitle = 'an new super interesting title';
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-          Future.value(<Activity>[
-            FakeActivity.starts(startTime).copyWith(title: title)
-          ]));
+      final activity = FakeActivity.starts(startTime).copyWith(title: title);
+      mockActivityDb.initWithActivity(activity);
       await navigateToActivityPage(tester);
 
       // Assert -- original title
@@ -285,7 +264,7 @@ void main() {
       // Act -- Enter new title and save
       await tester.ourEnterText(titleTextFormFieldFinder, newTitle);
       await tester.tap(finishActivityFinder);
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(2.seconds());
 
       // Assert -- we are at activity page, the old title is not there, the new title is
       expect(find.text(title), findsNothing);
@@ -311,8 +290,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       const day = 14;
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
+      mockActivityDb.initWithActivity(FakeActivity.starts(startTime));
       await navigateToActivityPage(tester);
 
       expect(find.textContaining('11 November 2111'), findsOneWidget);
@@ -342,8 +320,8 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       const day = 14;
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-          Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
+      mockActivityDb.initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
+
       await navigateToActivityPage(tester);
 
       expect(find.textContaining('11 November 2111'), findsOneWidget);
@@ -370,8 +348,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       const day = 19;
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-          Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
+      mockActivityDb.initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
       await navigateToActivityPage(tester);
 
       expect(find.textContaining('11 November 2111'), findsOneWidget);
@@ -394,16 +371,10 @@ void main() {
         (WidgetTester tester) async {
       final toDay = startTime.day;
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-        (_) => Future.value(
-          <Activity>[
-            Activity.createNew(
-              startTime: startTime.subtract(1.days()).add(1.minutes()),
-              title: 'a title for activity',
-            )
-          ],
-        ),
-      );
+      mockActivityDb.initWithActivity(Activity.createNew(
+        startTime: startTime.subtract(1.days()).add(1.minutes()),
+        title: 'a title for activity',
+      ));
 
       // Act -- go back one day and open activity
       await tester.pumpWidget(App());
@@ -462,8 +433,7 @@ void main() {
 
     testWidgets('Alarm view dialog shows', (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
+      mockActivityDb.initWithActivity(FakeActivity.starts(startTime));
       await navigateToActivityPage(tester);
       // Act
       await tester.tap(alarmButtonFinder);
@@ -475,10 +445,9 @@ void main() {
     testWidgets('Alarm button shows correct icon vibration',
         (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-          Future.value(<Activity>[
-            FakeActivity.starts(startTime).copyWith(alarmType: alarmVibration)
-          ]));
+      mockActivityDb.initWithActivity(
+          FakeActivity.starts(startTime).copyWith(alarmType: alarmVibration));
+
       // Act
       await navigateToActivityPage(tester);
       // Assert
@@ -488,11 +457,10 @@ void main() {
     testWidgets('Alarm button shows correct icon sound and vibration',
         (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted())
-          .thenAnswer((_) => Future.value(<Activity>[
-                FakeActivity.starts(startTime)
-                    .copyWith(alarmType: alarmSoundAndVibrationOnlyOnStart)
-              ]));
+      mockActivityDb.initWithActivity(FakeActivity.starts(startTime)
+          .copyWith(alarmType: alarmSoundAndVibrationOnlyOnStart));
+      FakeActivity.starts(startTime).copyWith(alarmType: alarmVibration);
+
       // Act
       await navigateToActivityPage(tester);
       // Assert
@@ -502,10 +470,8 @@ void main() {
     testWidgets('Alarm button shows correct icon no alarm',
         (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-          Future.value(<Activity>[
-            FakeActivity.starts(startTime).copyWith(alarmType: noAlarm)
-          ]));
+      mockActivityDb.initWithActivity(
+          FakeActivity.starts(startTime).copyWith(alarmType: noAlarm));
       // Act
       await navigateToActivityPage(tester);
       // Assert
@@ -515,10 +481,9 @@ void main() {
     testWidgets('Alarm button changes alarm correct icon',
         (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-          Future.value(<Activity>[
-            FakeActivity.starts(startTime).copyWith(alarmType: noAlarm)
-          ]));
+      mockActivityDb.initWithActivity(
+          FakeActivity.starts(startTime).copyWith(alarmType: noAlarm));
+
       // Act
       await navigateToActivityPage(tester);
       await tester.tap(alarmButtonFinder);
@@ -536,17 +501,12 @@ void main() {
     testWidgets('SGC-359 Alarm type maps Only alarm to SoundAndVibration',
         (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-        (_) => Future.value(
-          <Activity>[
-            Activity.createNew(
-              title: 'null',
-              startTime: startTime,
-              alarmType: alarmSound,
-            )
-          ],
-        ),
-      );
+      mockActivityDb.initWithActivity(Activity.createNew(
+        title: 'null',
+        startTime: startTime,
+        alarmType: alarmSound,
+      ));
+
       await navigateToActivityPage(tester);
       // Act
       await tester.tap(alarmButtonFinder);
@@ -566,17 +526,12 @@ void main() {
     testWidgets('SGC-359 Alarm type maps ALARM_SILENT to Silent',
         (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-        (_) => Future.value(
-          <Activity>[
-            Activity.createNew(
-              title: 'null',
-              startTime: startTime,
-              alarmType: alarmSilent,
-            )
-          ],
-        ),
-      );
+      mockActivityDb.initWithActivity(Activity.createNew(
+        title: 'null',
+        startTime: startTime,
+        alarmType: alarmSilent,
+      ));
+
       await navigateToActivityPage(tester);
       // Act
       await tester.tap(alarmButtonFinder);
@@ -596,10 +551,8 @@ void main() {
     testWidgets('Alarm on start time is disabled when no alarm',
         (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-          Future.value(<Activity>[
-            FakeActivity.starts(startTime).copyWith(alarmType: noAlarm)
-          ]));
+      mockActivityDb.initWithActivity(
+          FakeActivity.starts(startTime).copyWith(alarmType: noAlarm));
 
       // Act
       await navigateToActivityPage(tester);
@@ -618,11 +571,8 @@ void main() {
 
     testWidgets('Alarm on start time changes', (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted())
-          .thenAnswer((_) => Future.value(<Activity>[
-                FakeActivity.starts(startTime)
-                    .copyWith(alarmType: alarmSoundAndVibrationOnlyOnStart)
-              ]));
+      mockActivityDb.initWithActivity(FakeActivity.starts(startTime)
+          .copyWith(alarmType: alarmSoundAndVibrationOnlyOnStart));
 
       // Act
       await navigateToActivityPage(tester);
@@ -639,8 +589,7 @@ void main() {
         'Changing alarm on single instance should not show apply to dialog',
         (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(FakeActivity.singleInstance(startTime)));
+      mockActivityDb.insertAndAddDirty(FakeActivity.singleInstance(startTime));
       await navigateToActivityPage(tester);
 
       // Act
@@ -660,8 +609,8 @@ void main() {
     testWidgets('Finds delete button and no delete app bar',
         (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
+      mockActivityDb.initWithActivity(FakeActivity.starts(startTime));
+
       // Act
       await navigateToActivityPage(tester);
 
@@ -674,8 +623,7 @@ void main() {
     testWidgets('When delete button pressed Delete Activity Dialog is showing',
         (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
+      mockActivityDb.initWithActivity(FakeActivity.starts(startTime));
       await navigateToActivityPage(tester);
 
       // Act
@@ -690,8 +638,7 @@ void main() {
     testWidgets('When cancel pressed, nothing happens',
         (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
+      mockActivityDb.initWithActivity(FakeActivity.starts(startTime));
       await navigateToActivityPage(tester);
 
       // Act
@@ -710,8 +657,7 @@ void main() {
         'When delete then confirm delete pressed, navigate back and do not show origial widget',
         (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
+      mockActivityDb.initWithActivity(FakeActivity.starts(startTime));
       await navigateToActivityPage(tester);
 
       // Act
@@ -733,8 +679,7 @@ void main() {
         'When delete button pressed Delete recurring is not showing for single instance',
         (WidgetTester tester) async {
       // Arrange
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(FakeActivity.singleInstance(startTime)));
+      mockActivityDb.insertAndAddDirty(FakeActivity.singleInstance(startTime));
       await navigateToActivityPage(tester);
 
       // Act
@@ -749,19 +694,18 @@ void main() {
     testWidgets(
         'SGC-1709 When delete button pressed for single recurring with start date equal to end date No this day and forward question shown',
         (WidgetTester tester) async {
-      // Arrangeflutter
-      when(() => mockActivityDb.getAllNonDeleted())
-          .thenAnswer((_) => Future.value(<Activity>[
-                Activity.createNew(
-                    title: 'title',
-                    startTime: (startTime),
-                    recurs: Recurs.raw(
-                      Recurs.typeWeekly,
-                      Recurs.allDaysOfWeek,
-                      startTime.millisecondsSinceEpoch,
-                    ),
-                    alarmType: alarmSilent)
-              ]));
+      // Arrange
+      mockActivityDb.initWithActivity(
+        Activity.createNew(
+            title: 'title',
+            startTime: (startTime),
+            recurs: Recurs.raw(
+              Recurs.typeWeekly,
+              Recurs.allDaysOfWeek,
+              startTime.millisecondsSinceEpoch,
+            ),
+            alarmType: alarmSilent),
+      );
       await navigateToActivityPage(tester);
 
       // Act
@@ -785,8 +729,8 @@ void main() {
       testWidgets('Deleting recurring should show apply to dialog',
           (WidgetTester tester) async {
         // Arrange
-        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
+        mockActivityDb
+            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -803,8 +747,8 @@ void main() {
           'Does not delete activity when not pressing confirm on recurring delete dialog',
           (WidgetTester tester) async {
         // Arrange
-        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
+        mockActivityDb
+            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -823,8 +767,8 @@ void main() {
           'When delete recurring activity then show three alternativs for deletion',
           (WidgetTester tester) async {
         // Arrange
-        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
+        mockActivityDb
+            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -842,8 +786,8 @@ void main() {
       testWidgets('When delete recurring the choosen alternativ is onlyThisDay',
           (WidgetTester tester) async {
         // Arrange
-        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
+        mockActivityDb
+            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -871,8 +815,8 @@ void main() {
       testWidgets('When delete recurring tapping All days',
           (WidgetTester tester) async {
         // Arrange
-        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
+        mockActivityDb
+            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -898,8 +842,8 @@ void main() {
       testWidgets('When delete recurring tapping This day and forward',
           (WidgetTester tester) async {
         // Arrange
-        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
+        mockActivityDb
+            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -926,8 +870,8 @@ void main() {
           'When delete recurring and confirm Only this day, navigate back and do not show origial widget',
           (WidgetTester tester) async {
         // Arrange
-        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
+        mockActivityDb
+            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -955,10 +899,8 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         const title = 'Unique title to search for';
-        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[
-              FakeActivity.reocurrsEveryDay(tenDaysAgo).copyWith(title: title)
-            ]));
+        mockActivityDb.initWithActivity(
+            FakeActivity.reocurrsEveryDay(tenDaysAgo).copyWith(title: title));
         await navigateToActivityPage(tester);
 
         // Act
@@ -990,12 +932,8 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         const title = 'Unique title to search for';
-        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[
-              FakeActivity.reocurrsEveryDay(startTime).copyWith(title: title)
-            ]));
-        when(() => mockActivityDb.getAllAfter(any()))
-            .thenAnswer((_) => Future.value(<Activity>[]));
+        mockActivityDb.initWithActivity(
+            FakeActivity.reocurrsEveryDay(startTime).copyWith(title: title));
         await navigateToActivityPage(tester);
 
         // Act
@@ -1029,12 +967,8 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         const title = 'Unique title to search for';
-        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[
-              FakeActivity.reocurrsEveryDay(tenDaysAgo).copyWith(title: title)
-            ]));
-        when(() => mockActivityDb.getAllAfter(any()))
-            .thenAnswer((_) => Future.value(<Activity>[]));
+        mockActivityDb.initWithActivity(
+            FakeActivity.reocurrsEveryDay(tenDaysAgo).copyWith(title: title));
         await navigateToActivityPage(tester);
 
         // Act
@@ -1075,8 +1009,8 @@ void main() {
       testWidgets('Changing alarm on recurring should show apply to dialog',
           (WidgetTester tester) async {
         // Arrange
-        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
+        mockActivityDb
+            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -1098,8 +1032,8 @@ void main() {
       testWidgets('Edit an recurring should show Apply to dialog when edited',
           (WidgetTester tester) async {
         // Arrange
-        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
+        mockActivityDb
+            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -1118,8 +1052,8 @@ void main() {
       testWidgets('Edit an recurring Only this days shows changes',
           (WidgetTester tester) async {
         // Arrange
-        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-            Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
+        mockActivityDb
+            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
         await navigateToActivityPage(tester);
         const newTitle = 'newTitle';
 
@@ -1145,8 +1079,7 @@ void main() {
           startTime: startTime.subtract(100.days()),
           recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
         );
-        when(() => mockActivityDb.getAllNonDeleted())
-            .thenAnswer((_) => Future.value(<Activity>[activity]));
+        mockActivityDb.initWithActivity(activity);
         await navigateToActivityPage(tester);
 
         // Act -- tap the edit activity button
@@ -1168,8 +1101,7 @@ void main() {
           startTime: startTime.subtract(100.days()),
           recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
         );
-        when(() => mockActivityDb.getAllNonDeleted())
-            .thenAnswer((_) => Future.value(<Activity>[activity]));
+        mockActivityDb.initWithActivity(activity);
         await navigateToActivityPage(tester);
 
         // Act -- tap the edit activity button
@@ -1186,17 +1118,11 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         const newTitle = 'new Title', oldTitle = 'old title';
-        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(
-            <Activity>[
-              Activity.createNew(
-                title: oldTitle,
-                startTime: startTime.subtract(100.days()),
-                recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
-              )
-            ],
-          ),
-        );
+        mockActivityDb.initWithActivity(Activity.createNew(
+          title: oldTitle,
+          startTime: startTime.subtract(100.days()),
+          recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
+        ));
         await navigateToActivityPage(tester);
 
         // Act
@@ -1228,8 +1154,7 @@ void main() {
         ]));
 
     // Arrange
-    when(() => mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(<Activity>[activity]));
+    mockActivityDb.initWithActivity(activity);
     await navigateToActivityPage(tester);
 
     // Assert no checklist item is checked
@@ -1271,8 +1196,7 @@ void main() {
         ]));
 
     // Arrange
-    when(() => mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(<Activity>[activity]));
+    mockActivityDb.initWithActivity(activity);
     await navigateToActivityPage(tester);
 
     // Act sign off question
@@ -1287,10 +1211,9 @@ void main() {
 
   testWidgets('Check and uncheck activity with confirmation',
       (WidgetTester tester) async {
-    when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-        Future.value(<Activity>[
-          FakeActivity.starts(startTime).copyWith(checkable: true)
-        ]));
+    mockActivityDb.initWithActivity(
+        FakeActivity.starts(startTime).copyWith(checkable: true));
+
     await navigateToActivityPage(tester);
     expect(checkButtonFinder, findsOneWidget);
     expect(uncheckButtonFinder, findsNothing);
@@ -1324,8 +1247,7 @@ void main() {
   group('Memoplanner settings', () {
     testWidgets('Do not display delete button when setting is false',
         (WidgetTester tester) async {
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
+      mockActivityDb.initWithActivity(FakeActivity.starts(startTime));
       when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           <Generic>[
@@ -1342,8 +1264,7 @@ void main() {
 
     testWidgets('Do not display any button when all settings are false',
         (WidgetTester tester) async {
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
+      mockActivityDb.initWithActivity(FakeActivity.starts(startTime));
       when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           <Generic>[
@@ -1363,8 +1284,7 @@ void main() {
 
     testWidgets('Do not display side dots when setting is false',
         (WidgetTester tester) async {
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
+      mockActivityDb.initWithActivity(FakeActivity.starts(startTime));
       when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           <Generic>[
@@ -1379,10 +1299,8 @@ void main() {
   });
   group('tts', () {
     testWidgets('heading', (WidgetTester tester) async {
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-          Future.value(<Activity>[
-            Activity.createNew(title: 'title', startTime: startTime)
-          ]));
+      mockActivityDb.initWithActivity(
+          Activity.createNew(title: 'title', startTime: startTime));
 
       await navigateToActivityPage(tester);
       await tester.verifyTts(find.byType(AppBar), contains: 'Wednesday');
@@ -1390,10 +1308,8 @@ void main() {
 
     testWidgets('title', (WidgetTester tester) async {
       const title = 'generic title';
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-          Future.value(<Activity>[
-            Activity.createNew(title: title, startTime: startTime)
-          ]));
+      mockActivityDb.initWithActivity(
+          Activity.createNew(title: title, startTime: startTime));
 
       await navigateToActivityPage(tester);
       await tester.verifyTts(find.text(title), exact: title);
@@ -1401,10 +1317,8 @@ void main() {
 
     testWidgets('start time', (WidgetTester tester) async {
       const expectedTts = '11:11 AM';
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-          Future.value(<Activity>[
-            Activity.createNew(title: 'title', startTime: startTime)
-          ]));
+      mockActivityDb.initWithActivity(
+          Activity.createNew(title: 'title', startTime: startTime));
 
       await navigateToActivityPage(tester);
       await tester.verifyTts(find.byKey(TestKey.startTime), exact: expectedTts);
@@ -1412,16 +1326,11 @@ void main() {
 
     testWidgets('end time', (WidgetTester tester) async {
       const expectedTts = '3:11 PM';
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-        (_) => Future.value(
-          <Activity>[
-            Activity.createNew(
-                title: 'title',
-                startTime: startTime.add(2.hours()),
-                duration: 2.hours())
-          ],
-        ),
-      );
+      mockActivityDb.initWithActivity(Activity.createNew(
+        title: 'title',
+        startTime: startTime.add(2.hours()),
+        duration: 2.hours(),
+      ));
 
       await navigateToActivityPage(tester);
       await tester.verifyTts(find.byKey(TestKey.endTime), exact: expectedTts);
@@ -1433,16 +1342,11 @@ void main() {
 Asien sweet and SourBowl – Sesam marinerad kycklingfile, plocksallad, picklade morötter, risnudlar, sojabönor toppas med rostade sesamfrön och koriander, chili och apelsindressing
 Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade morötter, risnudlar, sojabönor toppas med rostade sesamfrön och koriander, chili och apelsindressing
 ''';
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-        (_) => Future.value(
-          <Activity>[
-            Activity.createNew(
-                title: 'title',
-                startTime: startTime,
-                infoItem: const NoteInfoItem(noteText))
-          ],
-        ),
-      );
+      mockActivityDb.initWithActivity(Activity.createNew(
+        title: 'title',
+        startTime: startTime,
+        infoItem: const NoteInfoItem(noteText),
+      ));
 
       await navigateToActivityPage(tester);
       await tester.verifyTts(find.byType(NoteBlock), exact: noteText);
@@ -1450,18 +1354,11 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
 
     testWidgets('checklist', (WidgetTester tester) async {
       const item1 = 'first thing on the list';
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-        (_) => Future.value(
-          <Activity>[
-            Activity.createNew(
-              title: 'title',
-              startTime: startTime,
-              infoItem:
-                  Checklist(questions: const [Question(id: 1, name: item1)]),
-            )
-          ],
-        ),
-      );
+      mockActivityDb.initWithActivity(Activity.createNew(
+        title: 'title',
+        startTime: startTime,
+        infoItem: Checklist(questions: const [Question(id: 1, name: item1)]),
+      ));
 
       await navigateToActivityPage(tester);
       await tester.verifyTts(find.byType(QuestionView), exact: item1);
@@ -1469,16 +1366,11 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
 
     testWidgets('timepillar left to start', (WidgetTester tester) async {
       const expectedTts = '2 h\n2 min';
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-        (_) => Future.value(
-          <Activity>[
-            Activity.createNew(
-                title: 'title',
-                startTime: startTime.add(2.hours() + 2.minutes()),
-                duration: 2.hours())
-          ],
-        ),
-      );
+      mockActivityDb.initWithActivity(Activity.createNew(
+        title: 'title',
+        startTime: startTime.add(2.hours() + 2.minutes()),
+        duration: 2.hours(),
+      ));
 
       await navigateToActivityPage(tester);
       await tester.verifyTts(find.byKey(TestKey.sideDotsTimeText),
@@ -1487,14 +1379,9 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
 
     testWidgets('check button', (WidgetTester tester) async {
       const title = 'just some title';
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-        (_) => Future.value(
-          <Activity>[
-            Activity.createNew(
-                title: title, startTime: startTime, checkable: true),
-          ],
-        ),
-      );
+      mockActivityDb.initWithActivity(Activity.createNew(
+          title: title, startTime: startTime, checkable: true));
+
       await navigateToActivityPage(tester);
       expect(checkButtonFinder, findsOneWidget);
       expect(uncheckButtonFinder, findsNothing);
@@ -1508,14 +1395,8 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
 
     testWidgets('delete activity', (WidgetTester tester) async {
       const title = 'just some title';
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-        (_) => Future.value(
-          <Activity>[
-            Activity.createNew(
-                title: title, startTime: startTime, checkable: true),
-          ],
-        ),
-      );
+      mockActivityDb.initWithActivity(Activity.createNew(
+          title: title, startTime: startTime, checkable: true));
 
       await navigateToActivityPage(tester);
       await tester.tap(deleteButtonFinder);
@@ -1528,16 +1409,12 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
 
     testWidgets('alarms', (WidgetTester tester) async {
       const title = 'just some title';
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
-        (_) => Future.value(
-          <Activity>[
-            Activity.createNew(
-              title: title,
-              startTime: startTime,
-              checkable: true,
-              alarmType: alarmVibration,
-            ),
-          ],
+      mockActivityDb.initWithActivity(
+        Activity.createNew(
+          title: title,
+          startTime: startTime,
+          checkable: true,
+          alarmType: alarmVibration,
         ),
       );
 
