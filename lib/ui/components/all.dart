@@ -2,7 +2,7 @@ export 'abilia_icons.dart';
 export 'error_message.dart';
 export 'abilia_image.dart';
 export 'login/all.dart';
-export 'backend_switches.dart';
+export 'backend_switcher.dart';
 export 'profile_picture.dart';
 export 'abilia_app_bar.dart';
 export 'abilia_bottom_sheet.dart';

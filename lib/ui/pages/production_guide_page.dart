@@ -147,7 +147,7 @@ class _DebugRow extends StatelessWidget {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (context) => const BackendSwitchesDialog(),
+                builder: (context) => const BackendSwitcherDialog(),
               );
             },
             child: Text('Switch backend (${backendEnvironments[baseUrl]})'),

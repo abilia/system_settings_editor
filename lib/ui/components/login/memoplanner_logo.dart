@@ -17,7 +17,7 @@ class MEMOplannerLogoWithLoginProgress extends StatelessWidget {
                   context.read<LoginCubit>().clearFailure();
                   showDialog(
                     context: context,
-                    builder: (context) => const BackendSwitchesDialog(),
+                    builder: (context) => const BackendSwitcherDialog(),
                   );
                 },
                 child: MEMOplannerLogo(
