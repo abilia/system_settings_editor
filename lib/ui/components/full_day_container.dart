@@ -24,8 +24,8 @@ class FullDayContainer extends StatelessWidget {
     final currentHour =
         context.select((ClockBloc bloc) => bloc.state.onlyHours());
     final timePillarState = context.watch<TimepillarCubit>().state;
-    bool isTimepillar = dayCalendarType != DayCalendarType.list;
-    bool nightMode = (!isTimepillar || timePillarState.showNightCalendar) &&
+    final isTimepillar = dayCalendarType != DayCalendarType.list;
+    final nightMode = (!isTimepillar || timePillarState.showNightCalendar) &&
         currentHour.isAtSameDay(day) &&
         context.read<DayPartCubit>().state.isNight;
 

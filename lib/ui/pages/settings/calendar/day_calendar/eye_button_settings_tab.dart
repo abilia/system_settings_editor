@@ -23,7 +23,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
                 [
                   SelectorItem(t.listView, AbiliaIcons.calendarList),
                   SelectorItem(t.oneTimePillarView, AbiliaIcons.timeline),
-                  SelectorItem(t.twoTimePillarsView, AbiliaIcons.timeline),
+                  SelectorItem(t.twoTimePillarsView, AbiliaIcons.twoTimelines),
                 ],
               ),
             ),
@@ -42,7 +42,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
               child: _buildSelector(
                 [
                   SelectorItem(t.small, AbiliaIcons.decreaseText),
-                  SelectorItem(t.medium, AbiliaIcons.decreaseText),
+                  SelectorItem(t.medium, AbiliaIcons.mediumText),
                   SelectorItem(t.large, AbiliaIcons.enlargeText),
                 ],
               ),
@@ -66,7 +66,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
                       state.copyWith(showTypeOfDisplay: v),
                     ),
               },
-              child: Text(t.typeOfDisplay),
+              child: Text(t.viewMode),
             ).pad(EdgeInsets.fromLTRB(
               layout.templates.m1.left,
               layout.formPadding.groupBottomDistance,
@@ -83,7 +83,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
                       state.copyWith(showTimepillarLength: v),
                     ),
               },
-              child: Text(t.timelineLength),
+              child: Text(t.dayInterval),
             ).pad(m1ItemPadding),
             SwitchField(
               key: TestKey.showTimelineZoomSwitch,
@@ -95,7 +95,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
                       state.copyWith(showTimelineZoom: v),
                     ),
               },
-              child: Text(t.zoom),
+              child: Text(t.timelineZoom),
             ).pad(m1ItemPadding),
             SwitchField(
               key: TestKey.showDurationSelectionSwitch,

@@ -39,6 +39,10 @@ linter:
     - always_put_required_named_parameters_first
     - avoid_annotating_with_dynamic
     - avoid_bool_literals_in_conditional_expressions
+    - prefer_final_locals
+    - prefer_if_elements_to_conditional_expressions
+    - avoid_final_parameters
+    - parameter_assignments
     - prefer_single_quotes
 
   # Pub Rules

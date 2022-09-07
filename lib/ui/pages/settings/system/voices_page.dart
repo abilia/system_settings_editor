@@ -2,13 +2,22 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/settings/speech_support/voice_data.dart';
 import 'package:seagull/ui/all.dart';
 
-class VoicesPage extends StatelessWidget {
+class VoicesPage extends StatefulWidget {
   const VoicesPage({Key? key}) : super(key: key);
 
   @override
+  State<VoicesPage> createState() => _VoicesPageState();
+}
+
+class _VoicesPageState extends State<VoicesPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<VoicesCubit>().readAvailableVoices();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final voicesState = context.watch<VoicesCubit>().state;
-    final selectedVoice = context.watch<SpeechSettingsCubit>().state.voice;
     final t = Translator.of(context).translate;
     final scrollController = ScrollController();
 
@@ -18,27 +27,33 @@ class VoicesPage extends StatelessWidget {
         label: t.textToSpeech,
         iconData: AbiliaIcons.speakText,
       ),
-      body: voicesState is VoicesLoading
-          ? const Center(child: AbiliaProgressIndicator())
-          : Padding(
-              padding:
-                  layout.templates.m1.withoutBottom - m1ItemPadding.onlyTop,
-              child: ScrollArrows.vertical(
-                controller: scrollController,
-                child: ListView(
+      body: Builder(builder: (context) {
+        final voicesState = context.watch<VoicesCubit>().state;
+        final selectedVoice =
+            context.select((SpeechSettingsCubit c) => c.state.voice);
+
+        return voicesState is VoicesLoading
+            ? const Center(child: AbiliaProgressIndicator())
+            : Padding(
+                padding:
+                    layout.templates.m1.withoutBottom - m1ItemPadding.onlyTop,
+                child: ScrollArrows.vertical(
                   controller: scrollController,
-                  children: voicesState.available.map((VoiceData voice) {
-                    final name = voice.name;
-                    return _VoiceRow(
-                      voice: voice,
-                      downloaded: voicesState.downloaded.contains(name),
-                      downloading: voicesState.downloading.contains(name),
-                      selectedVoice: selectedVoice,
-                    );
-                  }).toList(),
+                  child: ListView(
+                    controller: scrollController,
+                    children: voicesState.available.map((VoiceData voice) {
+                      final name = voice.name;
+                      return _VoiceRow(
+                        voice: voice,
+                        downloaded: voicesState.downloaded.contains(name),
+                        downloading: voicesState.downloading.contains(name),
+                        selectedVoice: selectedVoice,
+                      );
+                    }).toList(),
+                  ),
                 ),
-              ),
-            ),
+              );
+      }),
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: OkButton(
           onPressed: () => Navigator.of(context).maybePop(),

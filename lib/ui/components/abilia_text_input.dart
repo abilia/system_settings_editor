@@ -252,6 +252,8 @@ abstract class StateWithFocusOnResume<T extends StatefulWidget> extends State<T>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    final route = ModalRoute.of(context);
+    if (route == null || !route.isCurrent) return;
     if (state == AppLifecycleState.resumed) {
       focusNode.requestFocus();
     } else if (state == AppLifecycleState.paused) {

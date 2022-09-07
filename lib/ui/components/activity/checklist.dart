@@ -108,7 +108,7 @@ class EditQuestionView extends StatelessWidget {
   }
 
   void _editQuestion(
-    final Question oldQuestion,
+    Question oldQuestion,
     BuildContext context,
   ) async {
     final editChecklistCubit = context.read<EditChecklistCubit>();

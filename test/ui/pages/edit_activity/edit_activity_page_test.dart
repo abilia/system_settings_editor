@@ -127,7 +127,7 @@ void main() {
                             clockBloc: context.read<ClockBloc>(),
                             editActivityCubit:
                                 context.read<EditActivityCubit>(),
-                            settings: context
+                            addActivitySettings: context
                                 .read<MemoplannerSettingBloc>()
                                 .state
                                 .settings
@@ -2435,6 +2435,45 @@ text''';
       await tester.tap(find.byType(SaveButton));
       await tester.pumpAndSettle();
     });
+
+    testWidgets('SGC-1845 - Changing end date does not reset selected days',
+        (WidgetTester tester) async {
+      // Arrange
+      final activity = Activity.createNew(title: 'Title', startTime: startTime);
+
+      await tester.pumpWidget(createEditActivityPage(
+        givenActivity: activity,
+      ));
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.goToRecurrenceTab();
+
+      // Act -- Change to Monthly
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      // Assert -- One day selected
+      expect(find.byIcon(AbiliaIcons.radiocheckboxSelected), findsNWidgets(1));
+
+      // Act -- Select two more days
+      await tester.tap(find.text('5'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('6'));
+      await tester.pumpAndSettle();
+      // Assert -- Three days selected
+      expect(find.byIcon(AbiliaIcons.radiocheckboxSelected), findsNWidgets(3));
+
+      // Act -- Change end date
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.byIcon(AbiliaIcons.calendar));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('20'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      // Assert -- Still three days selected
+      expect(find.byIcon(AbiliaIcons.radiocheckboxSelected), findsNWidgets(3));
+    });
   });
 
   group('Memoplanner settings -', () {
@@ -2985,6 +3024,47 @@ text''';
 
       // Assert -- Extra tab hidden
       expect(find.byIcon(AbiliaIcons.attachment), findsNothing);
+    });
+
+    testWidgets('Full day off', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivity: AddActivitySettings(
+              editActivity: EditActivitySettings(
+                fullDay: false,
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const ObjectKey(TestKey.fullDaySwitch)), findsNothing);
+    });
+
+    testWidgets('Activity is full day and full day is off shows no heading',
+        (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivity: AddActivitySettings(
+              editActivity: EditActivitySettings(
+                fullDay: false,
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createEditActivityPage(
+          givenActivity: Activity.createNew(
+              title: 'Title', startTime: startTime, fullDay: true)));
+      await tester.pumpAndSettle();
+
+      expect(find.text(translate.time), findsNothing);
     });
   });
 

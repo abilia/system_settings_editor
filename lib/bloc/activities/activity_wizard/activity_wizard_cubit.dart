@@ -20,23 +20,25 @@ class ActivityWizardCubit extends WizardCubit {
     required ActivitiesBloc activitiesBloc,
     required EditActivityCubit editActivityCubit,
     required ClockBloc clockBloc,
-    required AddActivitySettings settings,
+    required AddActivitySettings addActivitySettings,
+    bool showCategories = true,
   }) {
-    if (settings.mode == AddActivityMode.editView) {
+    if (addActivitySettings.mode == AddActivityMode.editView) {
       return ActivityWizardCubit.newAdvanced(
         activitiesBloc: activitiesBloc,
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        allowPassedStartTime: settings.general.allowPassedStartTime,
+        allowPassedStartTime: addActivitySettings.general.allowPassedStartTime,
       );
     }
     return ActivityWizardCubit.newStepByStep(
       activitiesBloc: activitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      allowPassedStartTime: settings.general.allowPassedStartTime,
-      stepByStep: settings.stepByStep,
-      addRecurringActivity: settings.general.addRecurringActivity,
+      allowPassedStartTime: addActivitySettings.general.allowPassedStartTime,
+      stepByStep: addActivitySettings.stepByStep,
+      addRecurringActivity: addActivitySettings.general.addRecurringActivity,
+      showCategories: showCategories,
     );
   }
 
@@ -54,12 +56,14 @@ class ActivityWizardCubit extends WizardCubit {
     required this.allowPassedStartTime,
     required StepByStepSettings stepByStep,
     required bool addRecurringActivity,
+    required bool showCategories,
   }) : super(
           WizardState(
             0,
             _generateWizardSteps(
               stepByStep: stepByStep,
               addRecurringActivity: addRecurringActivity,
+              showCategories: showCategories,
               activity: editActivityCubit.state.activity,
             ),
           ),
@@ -69,6 +73,7 @@ class ActivityWizardCubit extends WizardCubit {
         final newSteps = _generateWizardSteps(
           stepByStep: stepByStep,
           addRecurringActivity: addRecurringActivity,
+          showCategories: showCategories,
           activity: event.activity,
         );
         if (newSteps != state.steps) {
@@ -81,14 +86,16 @@ class ActivityWizardCubit extends WizardCubit {
   static List<WizardStep> _generateWizardSteps({
     required StepByStepSettings stepByStep,
     required bool addRecurringActivity,
+    required bool showCategories,
     required Activity activity,
   }) =>
       [
         if (stepByStep.title) WizardStep.title,
         if (stepByStep.image) WizardStep.image,
-        if (stepByStep.datePicker) WizardStep.date,
-        if (stepByStep.type) WizardStep.type,
+        if (stepByStep.date) WizardStep.date,
+        if (stepByStep.fullDay) WizardStep.fullDay,
         if (!activity.fullDay) WizardStep.time,
+        if (!activity.fullDay && showCategories) WizardStep.category,
         if (stepByStep.checkable) WizardStep.checkable,
         if (stepByStep.removeAfter) WizardStep.deleteAfter,
         if (stepByStep.availability) WizardStep.availableFor,

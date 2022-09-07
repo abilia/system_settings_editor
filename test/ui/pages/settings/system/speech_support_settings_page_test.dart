@@ -13,7 +13,7 @@ import '../../../../test_helpers/tts.dart';
 
 void main() {
   group('Speech support settings page', () {
-    Iterable<Generic> generics = [];
+    final Iterable<Generic> generics = [];
     late MockGenericDb genericDb;
     late MockVoiceDb voiceDb;
 

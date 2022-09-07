@@ -74,7 +74,7 @@ void main() {
 
   tearDown(GetIt.I.reset);
 
-  Future<void> skipTitleAndTimeWidgets(WidgetTester tester) async {
+  Future<void> skipTitleTimeAndCategoryWidgets(WidgetTester tester) async {
     expect(find.byType(TitleWiz), findsOneWidget);
     await tester.enterText(find.byType(TextField), 'title');
     await tester.tap(find.byType(NextButton));
@@ -82,6 +82,10 @@ void main() {
 
     expect(find.byType(TimeWiz), findsOneWidget);
     await tester.enterTime(find.byKey(TestKey.startTimeInput), '1137');
+    await tester.tap(find.byType(NextButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(CategoryWiz), findsOneWidget);
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
   }
@@ -123,11 +127,18 @@ void main() {
                   activitiesBloc: context.read<ActivitiesBloc>(),
                   clockBloc: context.read<ClockBloc>(),
                   editActivityCubit: context.read<EditActivityCubit>(),
-                  settings: context
+                  addActivitySettings: context
                       .read<MemoplannerSettingBloc>()
                       .state
                       .settings
                       .addActivity,
+                  showCategories: context
+                      .read<MemoplannerSettingBloc>()
+                      .state
+                      .settings
+                      .calendar
+                      .categories
+                      .show,
                 ),
               ),
               BlocProvider<SortableBloc>.value(value: mockSortableBloc),
@@ -192,6 +203,10 @@ void main() {
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
+    expect(find.byType(CategoryWiz), findsOneWidget);
+    await tester.tap(find.byType(NextButton));
+    await tester.pumpAndSettle();
+
     expect(find.byType(CheckableWiz), findsOneWidget);
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
@@ -216,10 +231,10 @@ void main() {
         ),
         stepByStep: StepByStepSettings(
           template: false,
-          datePicker: false,
+          date: false,
           image: false,
           title: true,
-          type: false,
+          fullDay: false,
           availability: false,
           checkable: false,
           removeAfter: false,
@@ -293,10 +308,10 @@ void main() {
               mode: AddActivityMode.stepByStep,
               stepByStep: StepByStepSettings(
                 template: false,
-                datePicker: false,
+                date: false,
                 image: true,
                 title: true,
-                type: false,
+                fullDay: false,
                 availability: false,
                 checkable: false,
                 removeAfter: false,
@@ -379,10 +394,10 @@ void main() {
               ),
               stepByStep: StepByStepSettings(
                 template: true,
-                datePicker: false,
+                date: false,
                 image: false,
                 title: true,
-                type: false,
+                fullDay: false,
                 availability: false,
                 checkable: false,
                 removeAfter: false,
@@ -438,10 +453,10 @@ void main() {
               ),
               stepByStep: StepByStepSettings(
                 template: true,
-                datePicker: false,
+                date: false,
                 image: false,
                 title: true,
-                type: false,
+                fullDay: false,
                 availability: false,
                 checkable: false,
                 removeAfter: false,
@@ -489,10 +504,10 @@ void main() {
               ),
               stepByStep: StepByStepSettings(
                 template: false,
-                datePicker: false,
+                date: false,
                 image: false,
                 title: true,
-                type: false,
+                fullDay: false,
                 availability: false,
                 checkable: false,
                 removeAfter: false,
@@ -537,10 +552,10 @@ void main() {
               ),
               stepByStep: StepByStepSettings(
                 template: false,
-                datePicker: false,
+                date: false,
                 image: false,
                 title: true,
-                type: false,
+                fullDay: false,
                 availability: false,
                 checkable: false,
                 removeAfter: false,
@@ -576,8 +591,8 @@ void main() {
     });
   });
 
-  group('type step', () {
-    const typeOnlyMemoSettings = MemoplannerSettings(
+  group('full day step', () {
+    const fullDayOnlyMemoSettings = MemoplannerSettings(
       addActivity: AddActivitySettings(
         mode: AddActivityMode.stepByStep,
         general: GeneralAddActivitySettings(
@@ -585,10 +600,10 @@ void main() {
         ),
         stepByStep: StepByStepSettings(
           template: false,
-          datePicker: false,
+          date: false,
           image: false,
           title: false,
-          type: true,
+          fullDay: true,
           availability: false,
           checkable: false,
           removeAfter: false,
@@ -599,23 +614,21 @@ void main() {
       ),
     );
 
-    testWidgets('only type step', (WidgetTester tester) async {
+    testWidgets('only full day step', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
-          typeOnlyMemoSettings,
+          fullDayOnlyMemoSettings,
         ),
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();
 
       expect(find.byType(ActivityWizardPage), findsOneWidget);
-      expect(find.byType(TypeWiz), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.restore), findsOneWidget);
-      expect(find.byKey(TestKey.leftCategoryRadio), findsOneWidget);
-      expect(find.byKey(TestKey.rightCategoryRadio), findsOneWidget);
+      expect(find.byType(FullDayWiz), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.restore), findsNWidgets(2));
     });
 
-    testWidgets('Select full day removes time step',
+    testWidgets('Select full day removes time and category step',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
@@ -627,12 +640,12 @@ void main() {
               ),
               stepByStep: StepByStepSettings(
                 template: false,
-                datePicker: false,
+                date: false,
                 image: false,
                 title: true,
-                type: true,
+                fullDay: true,
                 availability: false,
-                checkable: false,
+                checkable: true,
                 removeAfter: false,
                 alarm: false,
                 notes: false,
@@ -649,7 +662,7 @@ void main() {
       await tester.enterText(find.byType(TextField), 'title');
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
-      expect(find.byType(TypeWiz), findsOneWidget);
+      expect(find.byType(FullDayWiz), findsOneWidget);
 
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
@@ -657,12 +670,108 @@ void main() {
 
       await tester.tap(find.byType(PreviousButton));
       await tester.pumpAndSettle();
-      expect(find.byType(TypeWiz), findsOneWidget);
+      expect(find.byType(FullDayWiz), findsOneWidget);
 
-      await tester.tap(find.byIcon(AbiliaIcons.restore)); // all day radio
+      await tester.tap(find.byType(SwitchField)); // all day radio
       await tester.pumpAndSettle();
-      expect(find.byType(NextButton), findsNothing);
-      expect(find.byType(SaveButton), findsOneWidget);
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(TimeWiz), findsNothing);
+      expect(find.byType(CategoryWiz), findsNothing);
+      expect(find.byType(CheckableWiz), findsOneWidget);
+    });
+  });
+
+  group('category step', () {
+    const fullDayAndCheckableMemoSettings = MemoplannerSettings(
+      addActivity: AddActivitySettings(
+        mode: AddActivityMode.stepByStep,
+        general: GeneralAddActivitySettings(
+          addRecurringActivity: false,
+        ),
+        stepByStep: StepByStepSettings(
+          template: false,
+          date: false,
+          image: false,
+          title: false,
+          fullDay: true,
+          availability: false,
+          checkable: true,
+          removeAfter: false,
+          alarm: false,
+          notes: false,
+          reminders: false,
+        ),
+      ),
+    );
+
+    testWidgets('Not checking full day activity shows category step',
+        (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          fullDayAndCheckableMemoSettings,
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(FullDayWiz), findsOneWidget);
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TimeWiz), findsOneWidget);
+      await tester.enterTime(find.byKey(TestKey.startTimeInput), '1111');
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(CategoryWiz), findsOneWidget);
+    });
+
+    testWidgets('If categories is off do not show category step',
+        (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            calendar: GeneralCalendarSettings(
+              categories: CategoriesSettings(
+                show: false,
+              ),
+            ),
+            addActivity: AddActivitySettings(
+              mode: AddActivityMode.stepByStep,
+              general: GeneralAddActivitySettings(
+                addRecurringActivity: false,
+              ),
+              stepByStep: StepByStepSettings(
+                template: false,
+                date: false,
+                image: false,
+                title: false,
+                fullDay: true,
+                availability: false,
+                checkable: true,
+                removeAfter: false,
+                alarm: false,
+                notes: false,
+                reminders: false,
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(FullDayWiz), findsOneWidget);
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TimeWiz), findsOneWidget);
+      await tester.enterTime(find.byKey(TestKey.startTimeInput), '1111');
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(CategoryWiz), findsNothing);
     });
   });
 
@@ -677,8 +786,8 @@ void main() {
           template: false,
           title: true,
           image: false,
-          datePicker: false,
-          type: false,
+          date: false,
+          fullDay: false,
           removeAfter: false,
           availability: true,
           alarm: false,
@@ -699,7 +808,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(ActivityWizardPage), findsOneWidget);
 
-      await skipTitleAndTimeWidgets(tester);
+      await skipTitleTimeAndCategoryWidgets(tester);
 
       expect(find.byType(AvailableForWiz), findsOneWidget);
     });
@@ -714,10 +823,10 @@ void main() {
         ),
         stepByStep: StepByStepSettings(
           template: false,
-          datePicker: false,
+          date: false,
           image: false,
           title: true,
-          type: false,
+          fullDay: false,
           availability: false,
           checkable: true,
           removeAfter: false,
@@ -739,7 +848,7 @@ void main() {
 
       expect(find.byType(ActivityWizardPage), findsOneWidget);
 
-      await skipTitleAndTimeWidgets(tester);
+      await skipTitleTimeAndCategoryWidgets(tester);
 
       expect(find.byType(CheckableWiz), findsOneWidget);
     });
@@ -754,10 +863,10 @@ void main() {
         ),
         stepByStep: StepByStepSettings(
           template: false,
-          datePicker: false,
+          date: false,
           image: false,
           title: true,
-          type: false,
+          fullDay: false,
           availability: false,
           checkable: false,
           removeAfter: true,
@@ -777,7 +886,7 @@ void main() {
 
       expect(find.byType(ActivityWizardPage), findsOneWidget);
 
-      await skipTitleAndTimeWidgets(tester);
+      await skipTitleTimeAndCategoryWidgets(tester);
 
       expect(find.byType(RemoveAfterWiz), findsOneWidget);
     });
@@ -792,10 +901,10 @@ void main() {
         ),
         stepByStep: StepByStepSettings(
           template: false,
-          datePicker: false,
+          date: false,
           image: false,
           title: false,
-          type: true,
+          fullDay: true,
           availability: false,
           checkable: false,
           removeAfter: false,
@@ -815,8 +924,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ActivityWizardPage), findsOneWidget);
-      expect(find.byType(TypeWiz), findsOneWidget);
-      await tester.tap(find.byIcon(AbiliaIcons.restore));
+      expect(find.byType(FullDayWiz), findsOneWidget);
+      await tester.tap(find.byType(SwitchField));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(NextButton));
@@ -853,10 +962,10 @@ void main() {
             ),
             stepByStep: StepByStepSettings(
               template: false,
-              datePicker: false,
+              date: false,
               image: false,
               title: true,
-              type: true,
+              fullDay: true,
               availability: false,
               checkable: false,
               removeAfter: false,
@@ -875,8 +984,8 @@ void main() {
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
 
-      expect(find.byType(TypeWiz), findsOneWidget);
-      await tester.tap(find.byIcon(AbiliaIcons.restore));
+      expect(find.byType(FullDayWiz), findsOneWidget);
+      await tester.tap(find.byType(SwitchField));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(NextButton));
@@ -934,10 +1043,10 @@ void main() {
             ),
             stepByStep: StepByStepSettings(
               template: false,
-              datePicker: false,
+              date: false,
               image: false,
               title: true,
-              type: true,
+              fullDay: true,
               availability: false,
               checkable: false,
               removeAfter: false,
@@ -956,8 +1065,8 @@ void main() {
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
 
-      expect(find.byType(TypeWiz), findsOneWidget);
-      await tester.tap(find.byIcon(AbiliaIcons.restore));
+      expect(find.byType(FullDayWiz), findsOneWidget);
+      await tester.tap(find.byType(SwitchField));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(NextButton));
@@ -1014,10 +1123,10 @@ void main() {
             ),
             stepByStep: StepByStepSettings(
               template: false,
-              datePicker: false,
+              date: false,
               image: false,
               title: true,
-              type: true,
+              fullDay: true,
               availability: false,
               checkable: false,
               removeAfter: false,
@@ -1035,7 +1144,7 @@ void main() {
       await tester.enterText(find.byType(TextField), 'title');
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.restore));
+      await tester.tap(find.byType(SwitchField));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
@@ -1064,10 +1173,10 @@ void main() {
         ),
         stepByStep: StepByStepSettings(
           template: false,
-          datePicker: false,
+          date: false,
           image: true,
           title: false,
-          type: false,
+          fullDay: false,
           availability: false,
           checkable: false,
           removeAfter: false,
@@ -1099,10 +1208,10 @@ void main() {
         ),
         stepByStep: StepByStepSettings(
           template: false,
-          datePicker: false,
+          date: false,
           image: false,
           title: false,
-          type: true,
+          fullDay: true,
           availability: false,
           checkable: false,
           removeAfter: false,
@@ -1122,11 +1231,14 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ActivityWizardPage), findsOneWidget);
-      expect(find.byType(TypeWiz), findsOneWidget);
+      expect(find.byType(FullDayWiz), findsOneWidget);
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(TimeWiz), findsOneWidget);
       await tester.enterTime(find.byKey(TestKey.startTimeInput), '1111');
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(CategoryWiz), findsOneWidget);
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(RemindersWiz), findsOneWidget);
@@ -1140,8 +1252,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ActivityWizardPage), findsOneWidget);
-      expect(find.byType(TypeWiz), findsOneWidget);
-      await tester.tap(find.byIcon(AbiliaIcons.restore));
+      expect(find.byType(FullDayWiz), findsOneWidget);
+      await tester.tap(find.byType(SwitchField));
       await tester.pumpAndSettle();
       expect(find.byType(NextButton), findsNothing);
       expect(find.byType(SaveButton), findsOneWidget);
@@ -1160,10 +1272,10 @@ void main() {
               ),
               stepByStep: StepByStepSettings(
                 template: false,
-                datePicker: false,
+                date: false,
                 image: false,
                 title: false,
-                type: true,
+                fullDay: true,
                 availability: false,
                 checkable: false,
                 removeAfter: false,
@@ -1178,7 +1290,7 @@ void main() {
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.restore)); // fullday
+      await tester.tap(find.byType(SwitchField)); // fullday
       await tester.pumpAndSettle();
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
@@ -1202,10 +1314,10 @@ void main() {
               ),
               stepByStep: StepByStepSettings(
                 template: false,
-                datePicker: false,
+                date: false,
                 image: false,
                 title: false,
-                type: true,
+                fullDay: true,
                 availability: false,
                 checkable: false,
                 removeAfter: false,
@@ -1220,7 +1332,7 @@ void main() {
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.restore)); // fullday
+      await tester.tap(find.byType(SwitchField)); // fullday
       await tester.pumpAndSettle();
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
@@ -1250,10 +1362,10 @@ void main() {
               ),
               stepByStep: StepByStepSettings(
                 template: false,
-                datePicker: false,
+                date: false,
                 image: false,
                 title: false,
-                type: true,
+                fullDay: true,
                 availability: false,
                 checkable: false,
                 removeAfter: false,
@@ -1268,7 +1380,7 @@ void main() {
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.restore)); // fullday
+      await tester.tap(find.byType(SwitchField)); // fullday
       await tester.pumpAndSettle();
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
@@ -1297,10 +1409,10 @@ void main() {
         ),
         stepByStep: StepByStepSettings(
           template: false,
-          datePicker: false,
+          date: false,
           image: false,
           title: false,
-          type: true,
+          fullDay: true,
           availability: false,
           checkable: false,
           removeAfter: false,
@@ -1320,12 +1432,14 @@ void main() {
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.leftCategoryRadio)); // type wiz
-      await tester.pumpAndSettle();
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       await tester.enterTime(
           find.byKey(TestKey.startTimeInput), '1111'); // time wiz
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(CategoryWiz), findsOneWidget);
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
 
@@ -1341,7 +1455,7 @@ void main() {
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.restore)); // fullday
+      await tester.tap(find.byType(SwitchField)); // fullday
       await tester.pumpAndSettle();
 
       expect(find.byType(SaveButton), findsOneWidget);

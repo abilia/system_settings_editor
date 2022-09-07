@@ -11,7 +11,7 @@ class _TestObject with EditRecurringMixin {}
 void main() {
   final anyTime = DateTime(2020, 03, 28, 15, 20);
   final anyDay = DateTime(2020, 03, 28);
-  EditRecurringMixin editRecurringMixin = _TestObject();
+  final editRecurringMixin = _TestObject();
 
   group('Delete recurring activity', () {
     group('Only this day', () {

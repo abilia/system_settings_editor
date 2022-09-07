@@ -62,9 +62,7 @@ class CalendarAppBar extends StatelessWidget {
                     ),
                   Flexible(
                     child: CrossOver(
-                      style: theme.isLight
-                          ? CrossOverStyle.lightDefault
-                          : CrossOverStyle.darkDefault,
+                      style: theme.crossOverStyle,
                       applyCross: crossedOver,
                       padding: EdgeInsets.all(
                         layout.formPadding.verticalItemDistance,

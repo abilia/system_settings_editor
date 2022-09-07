@@ -35,20 +35,23 @@ class VoiceRepository {
       {'environment': baseUrlDb.environment},
     );
 
-    final response = await client.get(url);
-
-    final statusCode = response.statusCode;
-    if (statusCode == 200) {
-      final json = jsonDecode(response.body) as List;
-      return json
-          .where((jsonVoice) => jsonVoice['type'] == 1)
-          .map((jsonVoice) => VoiceData.fromJson(jsonVoice))
-          .toList();
+    try {
+      final response = await client.get(url);
+      final statusCode = response.statusCode;
+      if (statusCode == 200) {
+        final json = jsonDecode(response.body) as List;
+        return json
+            .where((jsonVoice) => jsonVoice['type'] == 1)
+            .map((jsonVoice) => VoiceData.fromJson(jsonVoice))
+            .toList();
+      }
+      _log.severe(
+        'statusCode: ${response.statusCode} when downloading voices from $url',
+        response,
+      );
+    } catch (e) {
+      _log.severe('Error when downloading voices from $url, offline?', e);
     }
-    _log.severe(
-      'statusCode: ${response.statusCode} when downloading voices from $url',
-      response,
-    );
     return [];
   }
 
