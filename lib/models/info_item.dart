@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:logging/logging.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/utils/strings.dart';
 
 abstract class InfoItem extends Equatable {
   const InfoItem();
@@ -97,7 +98,7 @@ class NoteInfoItem extends InfoItem {
   List<Object> get props => [text];
 
   @override
-  Map<String, dynamic> toJson() => {'text': text};
+  Map<String, dynamic> toJson() => {'text': text.nullOnEmpty()};
 
   @override
   String get typeId => typeName;
@@ -114,7 +115,7 @@ class UrlInfoItem extends InfoItem {
   List<Object> get props => [url];
 
   @override
-  Map<String, dynamic> toJson() => {'url': url};
+  Map<String, dynamic> toJson() => {'url': url.nullOnEmpty()};
 
   @override
   String get typeId => typeName;
@@ -208,9 +209,9 @@ class Checklist extends InfoItem {
         'checked':
             checked.map((k, v) => MapEntry<String, List<int>>(k, List.from(v))),
         'questions': List.from(questions.map((x) => x.toJson())),
-        'image': image,
-        'name': name,
-        'fileId': fileId,
+        'image': image.nullOnEmpty(),
+        'name': name.nullOnEmpty(),
+        'fileId': fileId.nullOnEmpty(),
       };
 
   @override
@@ -265,9 +266,9 @@ class Question extends Equatable {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'name': name,
-        'image': image,
-        'fileId': fileId,
+        'name': name.nullOnEmpty(),
+        'image': image.nullOnEmpty(),
+        'fileId': fileId.nullOnEmpty(),
         'checked': checked,
       };
 

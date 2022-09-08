@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/strings.dart';
 
 abstract class NotificationAlarm extends Equatable {
   final Event event;
@@ -59,7 +60,7 @@ class TimerAlarm extends NotificationAlarm {
   @override
   Map<String, dynamic> toJson() => {
         'timer': timer.toMapForDb(),
-        'type': type,
+        'type': type.nullOnEmpty(),
       };
 }
 
@@ -82,7 +83,7 @@ abstract class ActivityAlarm extends NotificationAlarm {
   Map<String, dynamic> toJson() => {
         'day': day.millisecondsSinceEpoch,
         'activity': activity.wrapWithDbModel().toJson(),
-        'type': type,
+        'type': type.nullOnEmpty(),
         if (this is NewReminder)
           'reminder': (this as NewReminder).reminder.inMilliseconds,
       };

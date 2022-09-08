@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/utils/strings.dart';
 
 @immutable
 class LoginInfo extends Equatable {
@@ -23,9 +24,9 @@ class LoginInfo extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
-        'token': token,
+        'token': token.nullOnEmpty(),
         'endDate': endDate,
-        'renewToken': renewToken,
+        'renewToken': renewToken.nullOnEmpty(),
       };
 
   @override
