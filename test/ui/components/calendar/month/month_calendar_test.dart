@@ -534,7 +534,7 @@ void main() {
   });
 
   testWidgets('Show color dot if day has timer.', (WidgetTester tester) async {
-    activityResponse = () => [];
+    mockActivityDb.initWithActivities([]);
     timerResponse = () => [
           AbiliaTimer(id: 'id', startTime: initialDay, duration: 20.minutes()),
         ];
