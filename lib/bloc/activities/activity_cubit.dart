@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -11,17 +10,15 @@ class ActivityCubit extends Cubit<ActivityState> {
     required ActivityDay activityDay,
     required this.activitiesBloc,
   }) : super(ActivityLoaded(activityDay)) {
-    activitiesSubscription = activitiesBloc.stream
-        .map((event) => event.activities)
-        .listen(_onNewState);
+    activitiesSubscription = activitiesBloc.stream.listen((_) => _onNewState());
   }
   late final StreamSubscription activitiesSubscription;
   final ActivitiesBloc activitiesBloc;
 
-  void _onNewState(List<Activity> activities) {
+  void _onNewState() async {
     final found =
-        activities.firstWhereOrNull((a) => a.id == state.activityDay.id);
-    if (found == null) {
+        await activitiesBloc.activityRepository.getById(state.activityDay.id);
+    if (found == null || found.deleted) {
       return emit(ActivityDeleted(state.activityDay));
     }
     _emitActivity(found);

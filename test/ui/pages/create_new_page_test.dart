@@ -22,6 +22,7 @@ import '../../test_helpers/app_pumper.dart';
 import '../../test_helpers/register_fallback_values.dart';
 import '../../test_helpers/tts.dart';
 import '../../test_helpers/enter_text.dart';
+import '../../fakes/activity_db_in_memory.dart';
 
 void main() {
   final editActivityButtonFinder = find.byIcon(AbiliaIcons.edit);
@@ -57,7 +58,7 @@ void main() {
         ),
       );
 
-  late MockActivityDb mockActivityDb;
+  late ActivityDbInMemory mockActivityDb;
   late MockGenericDb mockGenericDb;
   late MockSortableDb mockSortableDb;
   late MockTimerDb mockTimerDb;
@@ -83,21 +84,7 @@ void main() {
     when(() => mockFirebasePushService.initPushToken())
         .thenAnswer((_) => Future.value('fakeToken'));
 
-    mockActivityDb = MockActivityDb();
-    when(() => mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(activityResponse()));
-    when(() => mockActivityDb.getAllDirty())
-        .thenAnswer((_) => Future.value([]));
-    when(() => mockActivityDb.insertAndAddDirty(any()))
-        .thenAnswer((_) => Future.value(true));
-    when(() => mockActivityDb.getLastRevision())
-        .thenAnswer((_) => Future.value(100));
-    when(() => mockActivityDb.insert(any()))
-        .thenAnswer((_) => Future.value(100));
-    when(() => mockActivityDb.getAllAfter(any()))
-        .thenAnswer((_) => Future.value([]));
-    when(() => mockActivityDb.getAllBetween(any(), any()))
-        .thenAnswer((_) => Future.value([]));
+    mockActivityDb = ActivityDbInMemory();
 
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
@@ -211,6 +198,7 @@ void main() {
 
       testWidgets('New activity with wizard, default steps',
           (WidgetTester tester) async {
+        mockActivityDb.clear();
         final wizardSetting = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
@@ -267,12 +255,11 @@ void main() {
         expect(find.byType(ActivityWizardPage), findsNothing);
         expect(find.byType(OneTimepillarCalendar), findsOneWidget);
 
-        final captured =
-            verify(() => mockActivityDb.insertAndAddDirty(captureAny()))
-                .captured;
-        final savedActivity = captured.single.single as Activity;
-        expect(savedActivity.title, title);
-        expect(savedActivity.checkable, true);
+        final activities = await mockActivityDb.getAll();
+        final activity = activities.first;
+        expect(activities.length, 1);
+        expect(activity.title, title);
+        expect(activity.checkable, true);
       });
 
       testWidgets('New activity with wizard, custom steps',
@@ -374,10 +361,7 @@ void main() {
         expect(find.byType(ActivityWizardPage), findsNothing);
         expect(find.byType(OneTimepillarCalendar), findsOneWidget);
 
-        final captured =
-            verify(() => mockActivityDb.insertAndAddDirty(captureAny()))
-                .captured;
-        final savedActivity = captured.single.single as Activity;
+        final savedActivity = (await mockActivityDb.getAll()).first;
         expect(savedActivity.title, title);
         expect(savedActivity.checkable, true);
         expect(savedActivity.removeAfter, true);
@@ -779,7 +763,7 @@ void main() {
       final aFinder = find.text(title1);
 
       final activities = [Activity.createNew(title: title1, startTime: d)];
-      activityResponse = () => activities;
+      mockActivityDb.initWithActivities(activities);
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
@@ -787,8 +771,6 @@ void main() {
                   identifier: MemoplannerSettings.viewOptionsTimeViewKey),
             ),
           ];
-      when(() => mockActivityDb.getAllNonDeleted())
-          .thenAnswer((_) => Future.value(activities));
 
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
