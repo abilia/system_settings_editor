@@ -32,20 +32,17 @@ class MonthDay extends MonthCalendarDay {
   final DateTime day;
   final ActivityDay? fullDayActivity;
   final int fullDayActivityCount;
-  final bool hasActivities, hasTimers;
+  final bool hasEvent;
   final Occasion occasion;
 
   bool get isCurrent => occasion.isCurrent;
 
   bool get isPast => occasion.isPast;
 
-  bool get hasActivitiesOrTimers => hasActivities || hasTimers;
-
   MonthDay(
     this.day,
     this.fullDayActivity,
-    this.hasActivities,
-    this.hasTimers,
+    this.hasEvent,
     this.fullDayActivityCount,
     this.occasion,
   );
@@ -54,8 +51,7 @@ class MonthDay extends MonthCalendarDay {
   List<Object?> get props => [
         day,
         fullDayActivity,
-        hasActivities,
-        hasTimers,
+        hasEvent,
         fullDayActivityCount,
         occasion,
       ];

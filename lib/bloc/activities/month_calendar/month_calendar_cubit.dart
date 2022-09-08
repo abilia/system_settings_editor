@@ -180,22 +180,21 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         .removeAfter(now)
         .toList();
 
-    final hasTimers = timers.any((timer) => timer.startTime.isAtSameDay(day));
+    final hasTimer = timers.any((timer) => timer.startTime.isAtSameDay(day));
 
     if (activitiesThatDay.isEmpty) {
-      return MonthDay(day, null, false, hasTimers, 0, occasion);
+      return MonthDay(day, null, hasTimer, 0, occasion);
     }
-    final fullDayActivity =
-        activitiesThatDay.firstWhereOrNull((a) => a.activity.fullDay);
-    final fullDayActivityCount =
-        activitiesThatDay.where((a) => a.activity.fullDay).length;
-    final hasActivities = activitiesThatDay.any((a) => !a.activity.fullDay);
+    final mapByFullDay = activitiesThatDay
+        .groupListsBy((activityDay) => activityDay.activity.fullDay);
+    final fullDayActivities = mapByFullDay[true] ?? [];
+    final noneFullDayActivities = mapByFullDay[false] ?? [];
+    final hasEvent = hasTimer || noneFullDayActivities.isNotEmpty;
     return MonthDay(
       day,
-      fullDayActivity,
-      hasActivities,
-      hasTimers,
-      fullDayActivityCount,
+      fullDayActivities.firstOrNull,
+      hasEvent,
+      fullDayActivities.length,
       occasion,
     );
   }
