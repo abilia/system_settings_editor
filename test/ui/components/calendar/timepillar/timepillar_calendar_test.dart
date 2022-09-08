@@ -18,7 +18,7 @@ import '../../../../fakes/all.dart';
 import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/app_pumper.dart';
 import '../../../../test_helpers/tts.dart';
-import '../../../../test_helpers/activity_db_in_memory.dart';
+import '../../../../fakes/activity_db_in_memory.dart';
 
 void main() {
   late StreamController<DateTime> mockTicker;

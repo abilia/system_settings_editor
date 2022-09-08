@@ -170,8 +170,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
   }
 
   Future<void> _saveActivities(Iterable<Activity> activities) async {
-    syncBloc.add(const ActivitySaved());
     await activityRepository.save(activities);
+    syncBloc.add(const ActivitySaved());
   }
 
   @override

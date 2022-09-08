@@ -18,7 +18,7 @@ import '../../mocks/mocks.dart';
 import '../../test_helpers/enter_text.dart';
 import '../../test_helpers/tts.dart';
 import '../../test_helpers/verify_generic.dart';
-import '../../test_helpers/activity_db_in_memory.dart';
+import '../../fakes/activity_db_in_memory.dart';
 
 void main() {
   late ActivityDbInMemory mockActivityDb;

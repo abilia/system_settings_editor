@@ -15,7 +15,7 @@ import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/register_fallback_values.dart';
 import '../../../../test_helpers/tts.dart';
 import '../../../../test_helpers/enter_text.dart';
-import '../../../../test_helpers/activity_db_in_memory.dart';
+import '../../../../fakes/activity_db_in_memory.dart';
 
 void main() {
   late MockGenericDb mockGenericDb;
