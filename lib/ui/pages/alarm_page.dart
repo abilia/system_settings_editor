@@ -4,8 +4,8 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class AlarmPage extends StatelessWidget {
   final NewAlarm alarm;
@@ -24,37 +24,38 @@ class AlarmPage extends StatelessWidget {
     }
     return Theme(
       data: abiliaWhiteTheme,
-      child: Scaffold(
-        appBar: AbiliaAppBar(
-          title: Translator.of(context).translate.alarm,
-          iconData: AbiliaIcons.handiAlarmVibration,
-          height: layout.appBar.mediumHeight,
-          trailing: Padding(
-            padding: layout.alarmPage.clockPadding,
-            child: AbiliaClock(
-              style: Theme.of(context).textTheme.caption?.copyWith(
-                    color: AbiliaColors.white,
-                  ),
-            ),
-          ),
+      child: BlocProvider<ActivityCubit>(
+        create: (context) => ActivityCubit(
+          activityDay: alarm.activityDay,
+          activitiesBloc: context.read<ActivitiesBloc>(),
         ),
-        body: Padding(
-          padding: layout.templates.s1,
-          child: BlocProvider<ActivityCubit>(
-            create: (context) => ActivityCubit(
-              activityDay: alarm.activityDay,
-              activitiesBloc: context.read<ActivitiesBloc>(),
+        child: BlocSelector<ActivityCubit, ActivityState, NewAlarm>(
+          selector: (state) => alarm.copyWith(state.activityDay),
+          builder: (context, alarm) => Scaffold(
+            appBar: AbiliaAppBar(
+              title: Translator.of(context).translate.alarm,
+              iconData: AbiliaIcons.handiAlarmVibration,
+              height: layout.appBar.mediumHeight,
+              trailing: Padding(
+                padding: layout.alarmPage.clockPadding,
+                child: AbiliaClock(
+                  style: Theme.of(context).textTheme.caption?.copyWith(
+                        color: AbiliaColors.white,
+                      ),
+                ),
+              ),
             ),
-            child: BlocBuilder<ActivityCubit, ActivityState>(
-              builder: (context, state) => ActivityInfo(
-                state.activityDay,
+            body: Padding(
+              padding: layout.templates.s1,
+              child: ActivityInfo(
+                alarm.activityDay,
                 previewImage: previewImage,
                 alarm: alarm,
               ),
             ),
+            bottomNavigationBar: AlarmBottomNavigationBar(alarm: alarm),
           ),
         ),
-        bottomNavigationBar: AlarmBottomNavigationBar(alarm: alarm),
       ),
     );
   }
@@ -75,54 +76,54 @@ class ReminderPage extends StatelessWidget {
         .toReminderHeading(translate, reminder is ReminderBefore);
     return Theme(
       data: abiliaWhiteTheme,
-      child: Scaffold(
-        appBar: AbiliaAppBar(
-          title: translate.reminder,
-          iconData: AbiliaIcons.handiReminder,
-          height: layout.appBar.mediumHeight,
-          trailing: Padding(
-            padding: layout.alarmPage.clockPadding,
-            child: AbiliaClock(
-              style: Theme.of(context).textTheme.caption?.copyWith(
-                    color: AbiliaColors.white,
-                  ),
-            ),
-          ),
+      child: BlocProvider<ActivityCubit>(
+        create: (context) => ActivityCubit(
+          activityDay: reminder.activityDay,
+          activitiesBloc: context.read<ActivitiesBloc>(),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: <Widget>[
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 18, bottom: 30),
-                  child: Tts(
-                    child: Text(
-                      text,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline4
-                          ?.copyWith(color: AbiliaColors.red),
+        child: BlocSelector<ActivityCubit, ActivityState, NewReminder>(
+          selector: (state) => reminder.copyWith(state.activityDay),
+          builder: (context, reminder) => Scaffold(
+            appBar: AbiliaAppBar(
+              title: translate.reminder,
+              iconData: AbiliaIcons.handiReminder,
+              height: layout.appBar.mediumHeight,
+              trailing: Padding(
+                padding: layout.alarmPage.clockPadding,
+                child: AbiliaClock(
+                  style: Theme.of(context).textTheme.caption?.copyWith(
+                        color: AbiliaColors.white,
+                      ),
+                ),
+              ),
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                children: <Widget>[
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 18, bottom: 30),
+                      child: Tts(
+                        child: Text(
+                          text,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4
+                              ?.copyWith(color: AbiliaColors.red),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              Expanded(
-                child: BlocProvider<ActivityCubit>(
-                  create: (context) => ActivityCubit(
-                    activityDay: reminder.activityDay,
-                    activitiesBloc: context.read<ActivitiesBloc>(),
+                  Expanded(
+                    child: ActivityInfo(reminder.activityDay, alarm: reminder),
                   ),
-                  child: BlocBuilder<ActivityCubit, ActivityState>(
-                    builder: (context, state) =>
-                        ActivityInfo(state.activityDay, alarm: reminder),
-                  ),
-                ),
+                ],
               ),
-            ],
+            ),
+            bottomNavigationBar: AlarmBottomNavigationBar(alarm: reminder),
           ),
         ),
-        bottomNavigationBar: AlarmBottomNavigationBar(alarm: reminder),
       ),
     );
   }
@@ -146,6 +147,7 @@ class PopAwareAlarmPage extends StatefulWidget {
 
 class _PopAwareAlarmPageState extends State<PopAwareAlarmPage> {
   bool isCanceled = false;
+
   @override
   Widget build(BuildContext context) => WillPopScope(
         onWillPop: () async {
@@ -175,10 +177,9 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
 
   final ActivityAlarm alarm;
 
-  bool get displayCheckButton {
-    final activityDay = alarm.activityDay;
-    final activity = activityDay.activity;
-    if (activity.checkable && !activityDay.isSignedOff) {
+  bool get _displayCheckButton {
+    final activity = alarm.activityDay.activity;
+    if (activity.checkable && !alarm.activityDay.isSignedOff) {
       if (alarm is ReminderUnchecked) return true;
       if (alarm is ReminderBefore) return false;
       if (alarm is EndAlarm) return true;
@@ -204,11 +205,11 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
       child: Padding(
         padding: layout.navigationBar.padding,
         child: Row(
-          mainAxisAlignment: displayCheckButton
+          mainAxisAlignment: _displayCheckButton
               ? MainAxisAlignment.spaceBetween
               : MainAxisAlignment.center,
           children: [
-            if (!displayCheckButton)
+            if (!_displayCheckButton)
               closeButton
             else ...[
               Expanded(child: closeButton),
