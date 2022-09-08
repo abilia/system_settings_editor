@@ -1158,21 +1158,27 @@ void main() {
       final firstDay = DateTime(2021, 03, 01);
       when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value(const Iterable.empty()));
+      final ticker = Ticker.fake(initialTime: initial);
       final timerCubit = TimerCubit(
         timerDb: MockTimerDb(),
-        ticker: Ticker.fake(initialTime: initial),
+        ticker: ticker,
+      );
+      final timerAlarmBloc = TimerAlarmBloc(
+        timerCubit: timerCubit,
+        ticker: ticker,
       );
       monthCalendarCubit = MonthCalendarCubit(
         activityRepository: mockActivityRepository,
         activitiesBloc: activitiesBloc,
-        timerCubit: timerCubit,
+        timerAlarmBloc: timerAlarmBloc,
         clockBloc: clockBloc,
         dayPickerBloc: dayPickerBloc,
       );
 
       // Act
-      timerCubit.emit(TimerState(timers: [
+      timerAlarmBloc.emit(TimerAlarmState.sort([
         AbiliaTimer(id: 'id', startTime: firstDay, duration: 20.minutes())
+            .toOccasion(initial)
       ]));
       await monthCalendarCubit.stream.first;
 

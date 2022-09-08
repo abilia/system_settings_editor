@@ -12,7 +12,7 @@ part 'month_calendar_state.dart';
 
 class MonthCalendarCubit extends Cubit<MonthCalendarState> {
   final ActivityRepository? activityRepository;
-  final TimerCubit? timerCubit;
+  final TimerAlarmBloc? timerAlarmBloc;
   final ClockBloc clockBloc;
   final DayPickerBloc dayPickerBloc;
   late final StreamSubscription? _activitiesSubscription;
@@ -23,7 +23,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     required this.clockBloc,
     required this.dayPickerBloc,
     this.activityRepository, // ActivityRepository is null when this bloc is used for date picking
-    this.timerCubit,
+    this.timerAlarmBloc,
     ActivitiesBloc?
         activitiesBloc, // ActivitiesBloc is null when this bloc is used for date picking
     DateTime? initialDay,
@@ -36,7 +36,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
           ),
         ) {
     _activitiesSubscription = activitiesBloc?.stream.listen(_updateMonth);
-    _timersSubscription = timerCubit?.stream.listen(_updateMonth);
+    _timersSubscription = timerAlarmBloc?.stream.listen(_updateMonth);
     _clockSubscription = clockBloc.stream
         .where((time) =>
             state.weeks
@@ -61,7 +61,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
       _mapToState(
         first,
         await activityRepository?.allBetween(first, last) ?? [],
-        timerCubit?.state.timers ?? [],
+        timerAlarmBloc?.state.timers ?? [],
         clockBloc.state,
       ),
     );
@@ -75,7 +75,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
       _mapToState(
         first,
         await activityRepository?.allBetween(first, last) ?? [],
-        timerCubit?.state.timers ?? [],
+        timerAlarmBloc?.state.timers ?? [],
         clockBloc.state,
       ),
     );
@@ -89,7 +89,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
       _mapToState(
         first,
         await activityRepository?.allBetween(first, last) ?? [],
-        timerCubit?.state.timers ?? [],
+        timerAlarmBloc?.state.timers ?? [],
         clockBloc.state,
       ),
     );
@@ -109,7 +109,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
       _mapToState(
         first,
         await activityRepository?.allBetween(first, last) ?? [],
-        timerCubit?.state.timers ?? [],
+        timerAlarmBloc?.state.timers ?? [],
         clockBloc.state,
       ),
     );
@@ -118,7 +118,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
   static MonthCalendarState _mapToState(
     DateTime firstDayOfMonth,
     Iterable<Activity> activities,
-    Iterable<AbiliaTimer> timers,
+    Iterable<TimerOccasion> timerOccasions,
     DateTime now,
   ) {
     assert(firstDayOfMonth.day == 1);
@@ -144,7 +144,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
                 d < DateTime.daysPerWeek;
                 dayIterator = dayIterator.nextDay(), d++)
               if (dayIterator.month == month)
-                _getDay(activities, timers, dayIterator, now)
+                _getDay(activities, timerOccasions, dayIterator, now)
               else
                 NotInMonthDay()
           ],
@@ -165,7 +165,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
 
   static MonthDay _getDay(
     Iterable<Activity> activities,
-    Iterable<AbiliaTimer> timers,
+    Iterable<TimerOccasion> timerOccasions,
     DateTime day,
     DateTime now,
   ) {
@@ -180,7 +180,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         .removeAfter(now)
         .toList();
 
-    final hasTimer = timers.any((timer) => timer.startTime.isAtSameDay(day));
+    final hasTimer = timerOccasions.onDay(day).isNotEmpty;
 
     if (activitiesThatDay.isEmpty) {
       return MonthDay(day, null, hasTimer, 0, occasion);
