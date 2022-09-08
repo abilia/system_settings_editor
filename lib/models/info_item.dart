@@ -98,7 +98,7 @@ class NoteInfoItem extends InfoItem {
   List<Object> get props => [text];
 
   @override
-  Map<String, dynamic> toJson() => {'text': text.nullOnEmpty()};
+  Map<String, dynamic> toJson() => {'text': text};
 
   @override
   String get typeId => typeName;
@@ -115,7 +115,7 @@ class UrlInfoItem extends InfoItem {
   List<Object> get props => [url];
 
   @override
-  Map<String, dynamic> toJson() => {'url': url.nullOnEmpty()};
+  Map<String, dynamic> toJson() => {'url': url};
 
   @override
   String get typeId => typeName;

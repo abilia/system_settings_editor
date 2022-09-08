@@ -110,10 +110,9 @@ class DbActivity extends DbModel<Activity> {
         'recurrentData': activity.recurs.data,
         'reminderBefore': activity.reminderBefore.join(';'),
         'icon': activity.icon.nullOnEmpty(),
-        'infoItem': activity.infoItemString.nullOnEmpty(),
+        'infoItem': activity.infoItemString,
         'alarmType': activity.alarmType,
-        'signedOffDates':
-            activity.signedOffDates.tryEncodeSignedOffDates()?.nullOnEmpty(),
+        'signedOffDates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'revision': revision,
         'timezone': activity.timezone,
         'extras': activity.extras.toJsonString().nullOnEmpty(),
