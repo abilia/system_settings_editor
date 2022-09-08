@@ -31,4 +31,8 @@ class ActivityRepository extends DataRepository<Activity> {
   Future<Iterable<Activity>> allBetween(DateTime start, DateTime end) {
     return activityDb.getAllBetween(start, end);
   }
+
+  Future<Activity?> getById(String id) async {
+    return (await activityDb.getById(id))?.model;
+  }
 }

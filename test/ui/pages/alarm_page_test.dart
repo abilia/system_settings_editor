@@ -14,6 +14,7 @@ import 'package:seagull/utils/all.dart';
 
 import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';
+import '../../mocks/mocks.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
@@ -67,6 +68,7 @@ void main() {
   late StreamController<ActivitiesState> mockActivitiesBlocStream;
   late MockUserFileCubit mockUserFileCubit;
   late MockActivitiesBloc mockActivitiesBloc;
+  late MockActivityRepository mockActivityRepository;
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
@@ -166,6 +168,9 @@ void main() {
     when(() => mockActivitiesBloc.stream).thenAnswer((_) => activitiesStream);
     when(() => mockActivitiesBloc.state)
         .thenAnswer((_) => ActivitiesNotLoaded());
+    mockActivityRepository = MockActivityRepository();
+    when(() => mockActivitiesBloc.activityRepository)
+        .thenAnswer((_) => mockActivityRepository);
     await initializeDateFormatting();
     GetItInitializer()
       ..fileStorage = FakeFileStorage()
@@ -683,6 +688,8 @@ void main() {
       );
 
       mockActivitiesBlocStream.add(ActivitiesLoaded([checkedActivity]));
+      when(() => mockActivityRepository.getById(any()))
+          .thenAnswer((_) => Future.value(checkedActivity));
 
       await tester.pumpAndSettle();
 
