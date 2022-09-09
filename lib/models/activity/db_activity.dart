@@ -95,7 +95,7 @@ class DbActivity extends DbModel<Activity> {
   Map<String, dynamic> toJson() => {
         'id': activity.id,
         'seriesId': activity.seriesId.nullOnEmpty(),
-        'title': activity.title,
+        'title': activity.title.nullOnEmpty(),
         'startTime': activity.startTime.millisecondsSinceEpoch,
         'endTime': activity.recurs.endTime,
         'duration': activity.duration.inMilliseconds,
