@@ -57,8 +57,7 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
         dayIndex: [
           ..._activityOccasionsForDay(
               activities, weekStart.addDays(dayIndex), now),
-          ..._timerOccasionsForDay(
-              timerOccasions, weekStart.addDays(dayIndex), now)
+          ..._timerOccasionsForDay(timerOccasions, weekStart.addDays(dayIndex))
         ]
     };
 
@@ -97,9 +96,8 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
   }
 
   List<TimerOccasion> _timerOccasionsForDay(
-      Iterable<TimerOccasion> timerOccasions, DateTime day, DateTime now) {
+      Iterable<TimerOccasion> timerOccasions, DateTime day) {
     return timerOccasions
-        .onDay(now)
         .where((occasion) => occasion.start.isAtSameDay(day))
         .toList();
   }
