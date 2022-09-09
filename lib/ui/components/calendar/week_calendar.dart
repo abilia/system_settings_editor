@@ -257,11 +257,12 @@ class _FullDayActivities extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fullDayActivities = context.select(
-        (WeekCalendarCubit cubit) => cubit.state.fullDayActivities(day));
+        (WeekCalendarCubit cubit) => cubit.state.fullDayActivities[day] ?? []);
     if (fullDayActivities.length > 1) {
       return ClickableFullDayStack(
         fulldayActivitiesBuilder: (context) => context.select(
-            (WeekCalendarCubit cubit) => cubit.state.fullDayActivities(day)),
+            (WeekCalendarCubit cubit) =>
+                cubit.state.fullDayActivities[day] ?? []),
         numberOfActivities: fullDayActivities.length,
         day: day,
       );
@@ -442,56 +443,43 @@ class _WeekDayColumnItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentWeekActivities = context
-        .select((WeekCalendarCubit cubit) => cubit.state.currentWeekActivities);
-    final currentWeekTimers = context
-        .select((WeekCalendarCubit cubit) => cubit.state.currentWeekTimers);
-    final List<Widget> items = [];
-    final activityOccasions = currentWeekActivities[day.weekday - 1]
-            ?.where((ao) => !ao.activity.fullDay)
-            .toList() ??
-        [];
-    final timerOccasions = currentWeekTimers[day.weekday - 1]?.toList() ?? [];
-    final occasions = [...timerOccasions, ...activityOccasions]..sort();
-    for (int i = 0; i < occasions.length; i++) {
-      final newCategory =
-          i > 0 && occasions[i - 1].category != occasions[i].category;
-
-      items.add(
-        Padding(
-          padding: _categoryPadding(
-            showCategories,
-            selected,
-            occasions[i].category,
-            newCategory,
-          ),
-          child: selected && !layout.go
-              ? occasions[i] is ActivityOccasion
-                  ? ActivityCard(
-                      activityOccasion: occasions[i] as ActivityOccasion,
-                      showCategoryColor: showCategoryColor,
-                      showInfoIcons: false,
-                    )
-                  : TimerCard(
-                      timerOccasion: occasions[i] as TimerOccasion,
-                      day: day,
-                    )
-              : occasions[i] is ActivityOccasion
-                  ? _WeekActivityContent(
-                      activityOccasion: occasions[i] as ActivityOccasion,
-                      selected: selected,
-                    )
-                  : _WeekTimerContent(
-                      timerOccasion: occasions[i] as TimerOccasion,
-                      selected: selected,
-                    ),
-        ),
-      );
-    }
+    final currentWeekEvents = context
+        .select((WeekCalendarCubit cubit) => cubit.state.currentWeekEvents);
+    final occasions = currentWeekEvents[day.weekday - 1] ?? [];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: items,
+      children: [
+        for (int i = 0; i < occasions.length; i++)
+          Padding(
+            padding: _categoryPadding(
+              showCategories,
+              selected,
+              occasions[i].category,
+              i > 0 && occasions[i - 1].category != occasions[i].category,
+            ),
+            child: selected && !layout.go
+                ? occasions[i] is ActivityOccasion
+                    ? ActivityCard(
+                        activityOccasion: occasions[i] as ActivityOccasion,
+                        showCategoryColor: showCategoryColor,
+                        showInfoIcons: false,
+                      )
+                    : TimerCard(
+                        timerOccasion: occasions[i] as TimerOccasion,
+                        day: day,
+                      )
+                : occasions[i] is ActivityOccasion
+                    ? _WeekActivityContent(
+                        activityOccasion: occasions[i] as ActivityOccasion,
+                        selected: selected,
+                      )
+                    : _WeekTimerContent(
+                        timerOccasion: occasions[i] as TimerOccasion,
+                        selected: selected,
+                      ),
+          ),
+      ],
     );
   }
 
