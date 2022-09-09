@@ -1,21 +1,20 @@
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:seagull/background/all.dart';
-import 'package:seagull/repository/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../fakes/activity_db_in_memory.dart';
 import '../../../../fakes/all.dart';
 import '../../../../mocks/mocks.dart';
+import '../../../../test_helpers/enter_text.dart';
 import '../../../../test_helpers/register_fallback_values.dart';
 import '../../../../test_helpers/tts.dart';
-import '../../../../test_helpers/enter_text.dart';
-import '../../../../fakes/activity_db_in_memory.dart';
 
 void main() {
   late MockGenericDb mockGenericDb;
@@ -517,6 +516,34 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(MonthPreview), findsOneWidget);
       expect(find.text('new title'), findsOneWidget);
+    });
+
+    testWidgets('Preview header is one line. Sep 30 is long.',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('30'));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
+      final Text text = find
+          .byKey(TestKey.monthPreviewHeaderTitle)
+          .evaluate()
+          .first
+          .widget as Text;
+      expect(text.data, 'Wednesday, September 30');
+      final Size textSize =
+          tester.getSize(find.byKey(TestKey.monthPreviewHeaderTitle));
+
+      final TextRenderingSize renderSize = text.data!.calculateTextRenderSize(
+          constraints: BoxConstraints(
+              maxWidth: textSize.width, maxHeight: textSize.height),
+          textStyle: text.style!);
+      expect(renderSize.numberOfLines, 1);
     });
   });
 

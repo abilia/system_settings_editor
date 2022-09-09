@@ -166,11 +166,11 @@ class MonthDayPreviewHeading extends StatelessWidget {
                         : CrossOverStyle.darkDefault,
                     applyCross: occasion.isPast,
                     fallbackHeight: previewLayout.dateTextCrossOverSize.height,
-                    fallbackWidth: previewLayout.dateTextCrossOverSize.width,
                     child: Center(
                       child: Text(
                         dateText,
                         style: Theme.of(context).textTheme.subtitle1,
+                        key: TestKey.monthPreviewHeaderTitle,
                       ),
                     ),
                   ),
