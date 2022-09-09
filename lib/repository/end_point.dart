@@ -5,7 +5,6 @@ const backendEnvironments = {
   prod: 'PROD',
   'https://whale.abilia-gbg.se': 'STAGING',
   'https://t1.abilia-gbg.se': 'TEST',
-  'https://debug.abilia-gbg.se': 'DEBUG',
 };
 
 String fileIdUrl(String baseUrl, int userId, String imageFileId) =>

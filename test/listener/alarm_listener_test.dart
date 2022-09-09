@@ -65,6 +65,7 @@ void main() {
         .thenAnswer((_) => Future.value(response));
     when(() => mockActivityDb.getAllBetween(any(), any()))
         .thenAnswer((_) => Future.value(response));
+    when(() => mockActivityDb.getById(any())).thenAnswer((_) => Future.value());
 
     when(() => mockTimerDb.getAllTimers()).thenAnswer((_) => Future.value([]));
     when(() => mockTimerDb.getRunningTimersFrom(any()))

@@ -32,6 +32,10 @@ class ActivityRepository extends DataRepository<Activity> {
     return activityDb.getAllBetween(start, end);
   }
 
+  Future<Activity?> getById(String id) async {
+    return (await activityDb.getById(id))?.model;
+  }
+
   @override
   Future<Iterable<Activity>> getAll() => activityDb.getAllNonDeleted();
 }

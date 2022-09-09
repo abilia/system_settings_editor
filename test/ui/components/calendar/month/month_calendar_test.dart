@@ -15,12 +15,13 @@ import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/register_fallback_values.dart';
 import '../../../../test_helpers/tts.dart';
 import '../../../../test_helpers/enter_text.dart';
+import '../../../../fakes/activity_db_in_memory.dart';
 
 void main() {
   late MockGenericDb mockGenericDb;
   late SharedPreferences sharedPreferences;
-
-  ActivityResponse activityResponse = () => [];
+  TimerResponse timerResponse = () => [];
+  late ActivityDbInMemory mockActivityDb;
   final initialDay = DateTime(2020, 08, 05);
 
   setUpAll(() async {
@@ -34,17 +35,13 @@ void main() {
   setUp(() {
     setupFakeTts();
 
-    final mockActivityDb = MockActivityDb();
-    when(() => mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(activityResponse()));
-    when(() => mockActivityDb.getAllDirty())
-        .thenAnswer((_) => Future.value([]));
-    when(() => mockActivityDb.getAllAfter(any()))
-        .thenAnswer((_) => Future.value([]));
-    when(() => mockActivityDb.getAllBetween(any(), any()))
-        .thenAnswer((_) => Future.value(activityResponse()));
-    when(() => mockActivityDb.insertAndAddDirty(any()))
-        .thenAnswer((_) => Future.value(true));
+    mockActivityDb = ActivityDbInMemory();
+
+    final mockTimerDb = MockTimerDb();
+    when(() => mockTimerDb.getAllTimers())
+        .thenAnswer((_) => Future.value(timerResponse()));
+    when(() => mockTimerDb.getRunningTimersFrom(any()))
+        .thenAnswer((_) => Future.value(timerResponse()));
 
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.insertAndAddDirty(any()))
@@ -59,7 +56,8 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = sharedPreferences
       ..activityDb = mockActivityDb
-      ..client = Fakes.client(activityResponse: activityResponse)
+      ..timerDb = mockTimerDb
+      ..client = Fakes.client()
       ..database = FakeDatabase()
       ..genericDb = mockGenericDb
       ..voiceDb = FakeVoiceDb()
@@ -71,7 +69,6 @@ void main() {
   });
 
   tearDown(() {
-    activityResponse = () => [];
     GetIt.I.reset();
   });
 
@@ -163,21 +160,19 @@ void main() {
       final recuresOnMonthDaySet = {1, 5, 6, 9, 22, 23};
 
       setUp(() {
-        activityResponse = () => [
-              Activity.createNew(
-                  title: fridayTitle, startTime: friday, fullDay: true),
-              Activity.createNew(
-                  title: nextMonthTitle, startTime: nextMonth, fullDay: true),
-              Activity.createNew(
-                  title: 't1', startTime: initialDay, fullDay: true),
-              Activity.createNew(
-                  title: 't2', startTime: initialDay, fullDay: true),
-              Activity.createNew(
-                title: 'recurring',
-                startTime: initialDay.previousMonth().add(1.minutes()),
-                recurs: Recurs.monthlyOnDays((recuresOnMonthDaySet)),
-              ),
-            ];
+        mockActivityDb.initWithActivities([
+          Activity.createNew(
+              title: fridayTitle, startTime: friday, fullDay: true),
+          Activity.createNew(
+              title: nextMonthTitle, startTime: nextMonth, fullDay: true),
+          Activity.createNew(title: 't1', startTime: initialDay, fullDay: true),
+          Activity.createNew(title: 't2', startTime: initialDay, fullDay: true),
+          Activity.createNew(
+            title: 'recurring',
+            startTime: initialDay.previousMonth().add(1.minutes()),
+            recurs: Recurs.monthlyOnDays((recuresOnMonthDaySet)),
+          ),
+        ]);
       });
 
       testWidgets('shows fullday ', (WidgetTester tester) async {
@@ -218,11 +213,11 @@ void main() {
     const title1 = 'i1', title2 = 't2', fridayTitle = 'ft1';
     final friday = time.addDays(2);
     setUp(() {
-      activityResponse = () => [
-            Activity.createNew(title: title1, startTime: time),
-            Activity.createNew(title: title2, startTime: time),
-            Activity.createNew(title: fridayTitle, startTime: friday),
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(title: title1, startTime: time),
+        Activity.createNew(title: title2, startTime: time),
+        Activity.createNew(title: fridayTitle, startTime: friday),
+      ]);
     });
 
     testWidgets(
@@ -353,7 +348,7 @@ void main() {
       final activities = [
         FakeActivity.starts(initialDay, title: 'one').copyWith(fullDay: true),
       ];
-      activityResponse = () => activities;
+      mockActivityDb.initWithActivities(activities);
 
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -381,7 +376,7 @@ void main() {
           signedOffDates: [time].map(whaleDateFormat),
         )
       ];
-      activityResponse = () => activities;
+      mockActivityDb.initWithActivities(activities);
 
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -410,7 +405,7 @@ void main() {
         FakeActivity.starts(initialDay, title: 'one').copyWith(fullDay: true),
         FakeActivity.starts(initialDay, title: 'two').copyWith(fullDay: true),
       ];
-      activityResponse = () => activities;
+      mockActivityDb.initWithActivities(activities);
 
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -446,7 +441,7 @@ void main() {
           signedOffDates: [time].map(whaleDateFormat),
         )
       ];
-      activityResponse = () => activities;
+      mockActivityDb.initWithActivities(activities);
 
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -471,15 +466,13 @@ void main() {
 
     testWidgets('Past day text has CrossOver', (WidgetTester tester) async {
       // Arrange
-      activityResponse = () => [
-            Activity.createNew(
-              title: 'title',
-              startTime: time.subtract(1.hours()),
-              duration: 30.minutes(),
-              checkable: true,
-              signedOffDates: [time].map(whaleDateFormat),
-            )
-          ];
+      mockActivityDb.initWithActivity(Activity.createNew(
+        title: 'title',
+        startTime: time.subtract(1.hours()),
+        duration: 30.minutes(),
+        checkable: true,
+        signedOffDates: [time].map(whaleDateFormat),
+      ));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
@@ -539,5 +532,17 @@ void main() {
     await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
     await tester.pumpAndSettle();
     expect(find.text('Wednesday'), findsNothing);
+  });
+
+  testWidgets('Show color dot if day has timer.', (WidgetTester tester) async {
+    mockActivityDb.initWithActivities([]);
+    timerResponse = () => [
+          AbiliaTimer(id: 'id', startTime: initialDay, duration: 20.minutes()),
+        ];
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.month));
+    await tester.pumpAndSettle();
+    expect(find.byType(ColorDot), findsOneWidget);
   });
 }

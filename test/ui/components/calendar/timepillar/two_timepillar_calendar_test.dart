@@ -17,14 +17,15 @@ import 'package:seagull/ui/all.dart';
 import '../../../../fakes/all.dart';
 import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/tts.dart';
+import '../../../../fakes/activity_db_in_memory.dart';
 
 void main() {
   late StreamController<DateTime> mockTicker;
+  late ActivityDbInMemory mockActivityDb;
   final time = DateTime(2021, 09, 02, 12, 47);
   const leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RigthCategoryActivity';
 
-  ActivityResponse activityResponse = () => [];
   GenericResponse genericResponse = () => [];
   TimerResponse timerResponse = () => [];
 
@@ -47,17 +48,7 @@ void main() {
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     mockTicker = StreamController<DateTime>();
-    final mockActivityDb = MockActivityDb();
-    when(() => mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(activityResponse()));
-    when(() => mockActivityDb.getAllDirty())
-        .thenAnswer((_) => Future.value([]));
-    when(() => mockActivityDb.insertAndAddDirty(any()))
-        .thenAnswer((_) => Future.value(true));
-    when(() => mockActivityDb.getAllAfter(any()))
-        .thenAnswer((_) => Future.value(activityResponse()));
-    when(() => mockActivityDb.getAllBetween(any(), any()))
-        .thenAnswer((_) => Future.value(activityResponse()));
+    mockActivityDb = ActivityDbInMemory();
 
     final mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
@@ -81,7 +72,6 @@ void main() {
       ..ticker = Ticker.fake(stream: mockTicker.stream, initialTime: time)
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(
-        activityResponse: activityResponse,
         genericResponse: genericResponse,
       )
       ..fileStorage = FakeFileStorage()
@@ -94,7 +84,6 @@ void main() {
 
   tearDown(() {
     genericResponse = () => [];
-    activityResponse = () => [];
     timerResponse = () => [];
     mockTicker.close();
     GetIt.I.reset();
@@ -426,7 +415,7 @@ void main() {
               title: 'right just',
               category: Category.right,
             );
-        activityResponse = () => [a1, a2, a3, a4];
+        mockActivityDb.initWithActivities([a1, a2, a3, a4]);
 
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
@@ -461,7 +450,7 @@ void main() {
               title: 'right just',
               category: Category.right,
             );
-        activityResponse = () => [a1, a2, a3, a4];
+        mockActivityDb.initWithActivities([a1, a2, a3, a4]);
         genericResponse = () => [
               twoTimepillarGeneric,
               Generic.createNew<MemoplannerSettingData>(
@@ -596,22 +585,22 @@ void main() {
     final cardFinder = find.byType(ActivityTimepillarCard);
     final atNightTime = time.add(12.hours());
     setUp(() {
-      activityResponse = () => [
-            Activity.createNew(
-              startTime: atNightTime,
-              duration: 1.hours(),
-              alarmType: alarmSilent,
-              title: rightTitle,
-              checkable: true,
-            ),
-            Activity.createNew(
-              startTime: atNightTime,
-              duration: 1.hours(),
-              alarmType: alarmSilent,
-              title: leftTitle,
-              category: Category.left,
-            ),
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+          startTime: atNightTime,
+          duration: 1.hours(),
+          alarmType: alarmSilent,
+          title: rightTitle,
+          checkable: true,
+        ),
+        Activity.createNew(
+          startTime: atNightTime,
+          duration: 1.hours(),
+          alarmType: alarmSilent,
+          title: leftTitle,
+          category: Category.left,
+        ),
+      ]);
     });
 
     testWidgets('Shows activity', (WidgetTester tester) async {
@@ -629,21 +618,21 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       final startTime = time.copyWith(hour: 22, minute: 55);
-      activityResponse = () => [
-            Activity.createNew(
-              startTime: startTime,
-              duration: 1.hours(),
-              alarmType: alarmSilent,
-              title: rightTitle,
-            ),
-            Activity.createNew(
-              startTime: startTime,
-              duration: 1.hours(),
-              alarmType: alarmSilent,
-              title: leftTitle,
-              category: Category.left,
-            ),
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+          startTime: startTime,
+          duration: 1.hours(),
+          alarmType: alarmSilent,
+          title: rightTitle,
+        ),
+        Activity.createNew(
+          startTime: startTime,
+          duration: 1.hours(),
+          alarmType: alarmSilent,
+          title: leftTitle,
+          category: Category.left,
+        ),
+      ]);
       // Act
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -716,8 +705,8 @@ void main() {
     testWidgets('current activity shows no CrossOver',
         (WidgetTester tester) async {
       // Arrange
-      activityResponse =
-          () => [Activity.createNew(title: 'title', startTime: time)];
+      mockActivityDb.initWithActivities(
+          [Activity.createNew(title: 'title', startTime: time)]);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Act
@@ -728,10 +717,10 @@ void main() {
 
     testWidgets('past activity shows CrossOver', (WidgetTester tester) async {
       // Arrange
-      activityResponse = () => [
-            Activity.createNew(
-                title: 'title', startTime: time.subtract(10.minutes()))
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+            title: 'title', startTime: time.subtract(10.minutes()))
+      ]);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Act
@@ -743,13 +732,13 @@ void main() {
     testWidgets('past activity with endtime shows CrossOver',
         (WidgetTester tester) async {
       // Arrange
-      activityResponse = () => [
-            Activity.createNew(
-              title: 'title',
-              startTime: time.subtract(9.hours()),
-              duration: 8.hours(),
-            )
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+          title: 'title',
+          startTime: time.subtract(9.hours()),
+          duration: 8.hours(),
+        )
+      ]);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Act
@@ -761,13 +750,13 @@ void main() {
     testWidgets('signed off past activity shows CrossOver',
         (WidgetTester tester) async {
       // Arrange
-      activityResponse = () => [
-            Activity.createNew(
-                title: 'title',
-                startTime: time.subtract(40.minutes()),
-                checkable: true,
-                signedOffDates: [time].map(whaleDateFormat))
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+            title: 'title',
+            startTime: time.subtract(40.minutes()),
+            checkable: true,
+            signedOffDates: [time].map(whaleDateFormat))
+      ]);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
@@ -816,13 +805,13 @@ void main() {
       mockTicker.add(night);
       const dayActivityTitle = 'Day activity';
 
-      activityResponse = () => [
-            Activity.createNew(
-              title: dayActivityTitle,
-              startTime: DateTime(2022, 04, 26, 13, 00),
-              duration: 1.hours(),
-            )
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+          title: dayActivityTitle,
+          startTime: DateTime(2022, 04, 26, 13, 00),
+          duration: 1.hours(),
+        )
+      ]);
 
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -845,13 +834,13 @@ void main() {
       mockTicker.add(night);
       const previousDayTitle = 'prevday';
 
-      activityResponse = () => [
-            Activity.createNew(
-              title: previousDayTitle,
-              startTime: DateTime(2022, 04, 26, 13, 00),
-              duration: 1.hours(),
-            )
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+          title: previousDayTitle,
+          startTime: DateTime(2022, 04, 26, 13, 00),
+          duration: 1.hours(),
+        )
+      ]);
 
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -871,13 +860,13 @@ void main() {
       mockTicker.add(night);
       const dayActivityTitle = 'day activity';
 
-      activityResponse = () => [
-            Activity.createNew(
-              title: dayActivityTitle,
-              startTime: DateTime(2022, 04, 27, 13, 00),
-              duration: 1.hours(),
-            )
-          ];
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+          title: dayActivityTitle,
+          startTime: DateTime(2022, 04, 27, 13, 00),
+          duration: 1.hours(),
+        )
+      ]);
 
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();

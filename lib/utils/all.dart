@@ -29,4 +29,5 @@ export 'spoken_text_edit_controller.dart';
 export 'available_for.dart';
 export 'activity_navigator.dart';
 export 'timer_navigator.dart';
+export 'occasion_extensions.dart';
 export 'logout_messages.dart';

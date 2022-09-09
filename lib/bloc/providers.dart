@@ -147,6 +147,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 activityRepository: context.read<ActivityRepository>(),
                 clockBloc: context.read<ClockBloc>(),
+                timerAlarmBloc: context.read<TimerAlarmBloc>(),
                 dayPickerBloc: context.read<DayPickerBloc>(),
               )..initialize(),
             ),

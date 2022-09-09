@@ -2,12 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:seagull/background/all.dart';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
@@ -17,6 +14,7 @@ import 'package:seagull/utils/all.dart';
 
 import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';
+import '../../mocks/mocks.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
@@ -67,7 +65,10 @@ void main() {
   final alarmNavigator = AlarmNavigator();
   late MockMemoplannerSettingBloc mockMPSettingsBloc;
   late StreamController<MemoplannerSettingsState> mockMPSettingsBlocStream;
+  late StreamController<ActivitiesState> mockActivitiesBlocStream;
   late MockUserFileCubit mockUserFileCubit;
+  late MockActivitiesBloc mockActivitiesBloc;
+  late MockActivityRepository mockActivityRepository;
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
@@ -80,7 +81,7 @@ void main() {
           child: MultiBlocProvider(
             providers: [
               BlocProvider<ActivitiesBloc>(
-                create: (context) => FakeActivitiesBloc(),
+                create: (context) => mockActivitiesBloc,
               ),
               BlocProvider<ClockBloc>(
                 create: (context) => ClockBloc.fixed(day),
@@ -154,7 +155,6 @@ void main() {
     mockUserFileCubit = MockUserFileCubit();
     when(() => mockUserFileCubit.stream)
         .thenAnswer((_) => const Stream.empty());
-    mockUserFileCubit = MockUserFileCubit();
     when(() => mockUserFileCubit.state)
         .thenReturn(const UserFilesLoaded([userFile]));
     mockMPSettingsBloc = MockMemoplannerSettingBloc();
@@ -164,8 +164,17 @@ void main() {
     mockMPSettingsBlocStream = StreamController<MemoplannerSettingsState>();
     final settingsStream = mockMPSettingsBlocStream.stream.asBroadcastStream();
     when(() => mockMPSettingsBloc.stream).thenAnswer((_) => settingsStream);
+    mockActivitiesBloc = MockActivitiesBloc();
+    mockActivitiesBlocStream = StreamController<ActivitiesState>();
+    final activitiesStream =
+        mockActivitiesBlocStream.stream.asBroadcastStream();
+    when(() => mockActivitiesBloc.stream).thenAnswer((_) => activitiesStream);
+    when(() => mockActivitiesBloc.state)
+        .thenAnswer((_) => ActivitiesNotLoaded());
+    mockActivityRepository = MockActivityRepository();
+    when(() => mockActivitiesBloc.activityRepository)
+        .thenAnswer((_) => mockActivityRepository);
     await initializeDateFormatting();
-    // ticker = ;
     GetItInitializer()
       ..fileStorage = FakeFileStorage()
       ..database = FakeDatabase()
@@ -178,6 +187,7 @@ void main() {
     GetIt.I.reset();
     clearNotificationSubject();
     mockMPSettingsBlocStream.close();
+    mockActivitiesBlocStream.close();
   });
 
   group('alarm speech', () {
@@ -639,6 +649,54 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
+    });
+
+    testWidgets(
+        'BUG SGC-1886 - Checklist gets unchecked when checking on two devices',
+        (WidgetTester tester) async {
+      final checklist = Checklist(
+        questions: const [
+          Question(id: 1, name: '1one'),
+        ],
+      );
+
+      final checkableWithChecklist = Activity.createNew(
+        title: 'Checkable',
+        startTime: startTime,
+        checkable: true,
+        infoItem: checklist,
+      );
+
+      final checkedActivity = checkableWithChecklist.copyWith(
+        title: 'Checkable checked',
+        infoItem: checklist.copyWith(
+          checked: {
+            Checklist.dayKey(startTime): const {0}
+          },
+        ),
+        signedOffDates: [startTime].map(whaleDateFormat),
+      );
+
+      final StartAlarm startAlarm = StartAlarm(
+        ActivityDay(checkableWithChecklist, day),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: startAlarm,
+            alarmNavigator: alarmNavigator,
+            child: AlarmPage(alarm: startAlarm),
+          ),
+        ),
+      );
+
+      mockActivitiesBlocStream.add(ActivitiesLoaded([checkedActivity]));
+      when(() => mockActivityRepository.getById(any()))
+          .thenAnswer((_) => Future.value(checkedActivity));
+
+      await tester.pumpAndSettle();
+
+      expect(find.byType(GreenButton), findsNothing);
     });
   });
 }

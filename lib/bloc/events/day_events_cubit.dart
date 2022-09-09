@@ -54,7 +54,7 @@ class DayEventsCubit extends Cubit<EventsState> {
 
   static EventsState _mapToState(
     Iterable<Activity> activities,
-    Iterable<TimerOccasion> timers,
+    Iterable<TimerOccasion> timerOccasions,
     DateTime day,
     Occasion occasion,
   ) {
@@ -67,10 +67,7 @@ class DayEventsCubit extends Cubit<EventsState> {
       activities: dayActivities
           .where((activityDay) => !activityDay.activity.fullDay)
           .toList(),
-      timers: timers
-          .where((timer) =>
-              timer.start.isAtSameDay(day) || timer.end.isAtSameDay(day))
-          .toList(),
+      timers: timerOccasions.onDay(day),
       fullDayActivities: dayActivities
           .where((activityDay) => activityDay.activity.fullDay)
           .map((e) => ActivityOccasion(e.activity, day, fullDayOccasion))

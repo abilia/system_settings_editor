@@ -62,8 +62,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     Emitter<ActivitiesState> emit,
   ) async {
     final activities = state.activities;
-    emit(ActivitiesLoaded(activities.followedBy([event.activity])));
     await _saveActivities([event.activity]);
+    emit(ActivitiesLoaded(activities.followedBy([event.activity])));
   }
 
   Future _mapDeleteActivityToState(
@@ -72,8 +72,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
   ) async {
     final activities = state.activities.toSet();
     if (activities.remove(event.activity)) {
-      emit(ActivitiesLoaded(activities));
       await _saveActivities([event.activity.copyWith(deleted: true)]);
+      emit(ActivitiesLoaded(activities));
     }
   }
 
@@ -86,8 +86,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     final updatedActivities = activities.map<Activity>((a) {
       return a.id == activity.id ? activity : a;
     }).toList(growable: false);
-    emit(ActivitiesLoaded(updatedActivities));
     await _saveActivities([activity]);
+    emit(ActivitiesLoaded(updatedActivities));
   }
 
   Future _mapDeleteRecurringToState(
@@ -100,8 +100,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
       case ApplyTo.allDays:
         final series =
             activities.where((a) => a.seriesId == activity.seriesId).toSet();
-        emit(ActivitiesLoaded(activities.difference(series)));
         await _saveActivities(series.map((a) => a.copyWith(deleted: true)));
+        emit(ActivitiesLoaded(activities.difference(series)));
         break;
       case ApplyTo.thisDayAndForward:
         await _handleResult(
@@ -160,8 +160,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     ActivityMappingResult res,
     Emitter<ActivitiesState> emit,
   ) async {
-    emit(ActivitiesLoaded(res.state));
     await _saveActivities(res.save);
+    emit(ActivitiesLoaded(res.state));
   }
 
   Future<void> _saveActivities(Iterable<Activity> activities) async {
