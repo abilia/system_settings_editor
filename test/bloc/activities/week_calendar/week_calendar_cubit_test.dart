@@ -356,7 +356,7 @@ void main() {
               1: const [],
               2: const [],
               3: const [],
-              4: const [],
+              4: [timerOccasion], // Day has timer
               5: const [],
               6: const []
             },
@@ -365,7 +365,6 @@ void main() {
               1: const [],
               2: const [],
               3: const [],
-              4: [timerOccasion], // Day has timer
               5: const [],
               6: const []
             },
@@ -383,14 +382,15 @@ class _WeekCalendarLoadedMatcher extends Matcher {
 
   @override
   Description describe(Description description) => description.add(
-      'WeekCalendarLoaded { currentWeekStart: ${value.currentWeekStart}, activities: ${value.currentWeekActivities}}, timers: ${value.currentWeekTimers}}');
+      'WeekCalendarLoaded { currentWeekStart: ${value.currentWeekStart}, '
+      'events: ${value.currentWeekEvents}}, fullday: ${value.fullDayActivities}}');
 
   @override
   bool matches(object, Map matchState) {
     return value.currentWeekStart == object.currentWeekStart &&
-        const DeepCollectionEquality().equals(
-            value.currentWeekActivities, object.currentWeekActivities) &&
         const DeepCollectionEquality()
-            .equals(value.currentWeekTimers, object.currentWeekTimers);
+            .equals(value.currentWeekEvents, object.currentWeekEvents) &&
+        const DeepCollectionEquality()
+            .equals(value.fullDayActivities, object.fullDayActivities);
   }
 }
