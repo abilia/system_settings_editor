@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:seagull/utils/strings.dart';
 
 class User extends Equatable {
   final int id;
@@ -29,11 +30,11 @@ class User extends Equatable {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'type': type,
-        'name': name,
-        'username': username,
-        'language': language,
-        'image': image,
+        'type': type.nullOnEmpty(),
+        'name': name.nullOnEmpty(),
+        'username': username.nullOnEmpty(),
+        'language': language.nullOnEmpty(),
+        'image': image.nullOnEmpty(),
       };
 
   @override

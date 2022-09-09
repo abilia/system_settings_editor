@@ -94,12 +94,12 @@ class DbActivity extends DbModel<Activity> {
   @override
   Map<String, dynamic> toJson() => {
         'id': activity.id,
-        'seriesId': activity.seriesId,
-        'title': activity.title,
+        'seriesId': activity.seriesId.nullOnEmpty(),
+        'title': activity.title.nullOnEmpty(),
         'startTime': activity.startTime.millisecondsSinceEpoch,
         'endTime': activity.recurs.endTime,
         'duration': activity.duration.inMilliseconds,
-        'fileId': activity.fileId,
+        'fileId': activity.fileId.nullOnEmpty(),
         'category': activity.category,
         'deleted': activity.deleted,
         'checkable': activity.checkable,
@@ -109,15 +109,16 @@ class DbActivity extends DbModel<Activity> {
         'recurrentType': activity.recurs.type,
         'recurrentData': activity.recurs.data,
         'reminderBefore': activity.reminderBefore.join(';'),
-        'icon': activity.icon,
+        'icon': activity.icon.nullOnEmpty(),
         'infoItem': activity.infoItemString,
         'alarmType': activity.alarmType,
         'signedOffDates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'revision': revision,
         'timezone': activity.timezone,
-        'extras': activity.extras.toJsonString(),
+        'extras': activity.extras.toJsonString().nullOnEmpty(),
         'secretExemptions': activity.secretExemptions.toList(),
-        if (activity.calendarId.isNotEmpty) 'calendarId': activity.calendarId,
+        if (activity.calendarId.isNotEmpty)
+          'calendarId': activity.calendarId.nullOnEmpty(),
       };
 
   @override

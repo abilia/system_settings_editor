@@ -149,10 +149,10 @@ class DbSortable extends DbModel<Sortable> {
   @override
   Map<String, dynamic> toJson() => {
         'id': sortable.id,
-        'type': sortable.type,
-        'data': sortable.data.toRaw(),
-        'groupId': sortable.groupId,
-        'sortOrder': sortable.sortOrder,
+        'type': sortable.type.nullOnEmpty(),
+        'data': sortable.data.toRaw().nullOnEmpty(),
+        'groupId': sortable.groupId.nullOnEmpty(),
+        'sortOrder': sortable.sortOrder.nullOnEmpty(),
         'deleted': sortable.deleted,
         'group': sortable.isGroup,
         'visible': sortable.visible,
