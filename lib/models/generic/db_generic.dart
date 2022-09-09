@@ -57,8 +57,8 @@ class DbGeneric extends DbModel<Generic> {
   @override
   Map<String, dynamic> toJson() => {
         'id': generic.id,
-        'type': generic.type,
-        'identifier': generic.data.identifier,
+        'type': generic.type?.nullOnEmpty(),
+        'identifier': generic.data.identifier.nullOnEmpty(),
         'data': generic.data.toRaw(),
         'deleted': generic.deleted,
         'revision': revision,

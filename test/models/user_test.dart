@@ -56,7 +56,7 @@ void main() {
     "name" : "Testcase user",
     "username" : "testcase",
     "language" : "sv",
-    "image" : ""
+    "image" : null
   }''';
 
     final asJson = json.decode(response);
