@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/utils/strings.dart';
+import 'package:seagull/utils/all.dart';
 
 @immutable
 class LoginInfo extends Equatable {

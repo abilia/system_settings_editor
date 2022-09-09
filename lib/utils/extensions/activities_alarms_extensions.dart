@@ -18,7 +18,7 @@ Iterable<ReminderUnchecked> uncheckedReminders(ActivityDay activityDay) =>
     unsignedOffActivityReminders
         .map((r) => ReminderUnchecked(activityDay, reminder: r));
 
-extension IterableActivity on Iterable<Activity> {
+extension AlarmsExtension on Iterable<Activity> {
   List<ActivityAlarm> alarmsOnExactMinute(DateTime time) => _alarmsForDay(
         time,
         startTimeTest: (a) => a.start.isAtSameMomentAs(time),

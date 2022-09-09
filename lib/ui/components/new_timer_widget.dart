@@ -1,7 +1,7 @@
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class NewTimerWidget extends StatelessWidget with TimerNavigator {
+class NewTimerWidget extends StatelessWidget with TimerNavigation {
   const NewTimerWidget({Key? key}) : super(key: key);
 
   @override

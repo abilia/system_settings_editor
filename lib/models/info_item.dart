@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:logging/logging.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/utils/strings.dart';
+import 'package:seagull/utils/all.dart';
 
 abstract class InfoItem extends Equatable {
   const InfoItem();

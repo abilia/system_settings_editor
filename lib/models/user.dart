@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:seagull/utils/strings.dart';
+import 'package:seagull/utils/all.dart';
 
 class User extends Equatable {
   final int id;
