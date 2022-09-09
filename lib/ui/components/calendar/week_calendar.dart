@@ -256,13 +256,13 @@ class _FullDayActivities extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fullDayActivities = context.select(
-        (WeekCalendarCubit cubit) => cubit.state.fullDayActivities[day] ?? []);
+    final fullDayActivities = context.select((WeekCalendarCubit cubit) =>
+        cubit.state.fullDayActivities[day.weekday - 1] ?? []);
     if (fullDayActivities.length > 1) {
       return ClickableFullDayStack(
         fulldayActivitiesBuilder: (context) => context.select(
             (WeekCalendarCubit cubit) =>
-                cubit.state.fullDayActivities[day] ?? []),
+                cubit.state.fullDayActivities[day.weekday - 1] ?? []),
         numberOfActivities: fullDayActivities.length,
         day: day,
       );
