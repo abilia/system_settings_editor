@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -50,19 +51,40 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
   ) async {
     final activities =
         await activityRepository.allBetween(weekStart, weekStart.addDays(7));
-    final weekActivityOccasions = {
-      for (final dayIndex in List<int>.generate(7, (i) => i))
-        dayIndex: _activityOccasionsForDay(
-            activities, weekStart.addDays(dayIndex), now)
-    };
     final timerOccasions = timerAlarmBloc.state.timers;
-    final weekTimerOccasions = {
+    final weekEventOccasions = {
       for (final dayIndex in List<int>.generate(7, (i) => i))
-        dayIndex: _timerOccasionsForDay(
-            timerOccasions, weekStart.addDays(dayIndex), now)
+        dayIndex: [
+          ..._activityOccasionsForDay(
+              activities, weekStart.addDays(dayIndex), now),
+          ..._timerOccasionsForDay(
+              timerOccasions, weekStart.addDays(dayIndex), now)
+        ]
     };
-    emit(WeekCalendarLoaded(
-        weekStart, weekActivityOccasions, weekTimerOccasions));
+
+    final mapByFullDay = weekEventOccasions.map(
+      (key, value) => MapEntry(
+        key,
+        value.groupListsBy(
+          (eventDay) =>
+              eventDay is ActivityOccasion && eventDay.activity.fullDay,
+        ),
+      ),
+    );
+    final fullDayActivities = mapByFullDay.map(
+      (key, value) => MapEntry(
+        key,
+        value[true]?.whereType<ActivityOccasion>().toList() ?? [],
+      ),
+    );
+    final noneFullDayEvents = mapByFullDay.map(
+      (key, value) => MapEntry(
+        key,
+        (value[false] ?? [])..sort(),
+      ),
+    );
+
+    emit(WeekCalendarLoaded(weekStart, noneFullDayEvents, fullDayActivities));
   }
 
   List<ActivityOccasion> _activityOccasionsForDay(
@@ -71,9 +93,7 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
         .expand((activity) => activity.dayActivitiesForDay(day))
         .removeAfter(now)
         .map((e) => e.toOccasion(now))
-        .toList()
-      ..sort((a, b) =>
-          a.activity.startClock(a.day).compareTo(b.activity.startClock(b.day)));
+        .toList();
   }
 
   List<TimerOccasion> _timerOccasionsForDay(
