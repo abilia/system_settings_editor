@@ -10,7 +10,7 @@ export 'permission_extensions.dart';
 export 'iterable_extensions.dart';
 export 'semantics_properties_extensions.dart';
 export 'login_extensions.dart';
-export 'generic_extensions.dart';
+export 'generics_extensions.dart';
 export 'sort_order_extensions.dart';
 export 'sortables_extensions.dart';
 export 'time_of_day_extensions.dart';
