@@ -122,8 +122,13 @@ class TimerCard extends StatelessWidget {
 
 class TimeLeft extends StatelessWidget {
   final TimerOccasion timerOccasion;
+  final TextStyle? textStyle;
 
-  const TimeLeft(this.timerOccasion, {Key? key}) : super(key: key);
+  const TimeLeft(
+    this.timerOccasion, {
+    this.textStyle,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +138,7 @@ class TimeLeft extends StatelessWidget {
     );
 
     return DefaultTextStyle(
-      style: bodyText4,
+      style: textStyle ?? bodyText4,
       overflow: TextOverflow.ellipsis,
       child: timerOccasion.isOngoing
           ? TimerTickerBuilder(

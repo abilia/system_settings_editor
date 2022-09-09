@@ -6,6 +6,7 @@ abstract class EventOccasion extends Event implements Comparable {
   const EventOccasion(this.occasion);
   final Occasion occasion;
   bool get isPast => occasion.isPast;
+  bool get isCurrent => occasion.isCurrent;
 }
 
 extension OccasionExtension on Occasion {

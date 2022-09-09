@@ -102,6 +102,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               create: (context) => WeekCalendarCubit(
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 activityRepository: context.read<ActivityRepository>(),
+                timerAlarmBloc: context.read<TimerAlarmBloc>(),
                 clockBloc: context.read<ClockBloc>(),
               ),
             ),
