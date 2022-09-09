@@ -566,7 +566,7 @@ void main() {
           await tester.tap(find.text(title));
           await tester.pumpAndSettle();
           final dateAndTime = tester
-              .widget<TimeIntervallPicker>(find.byType(TimeIntervallPicker));
+              .widget<TimeIntervalPicker>(find.byType(TimeIntervalPicker));
           final timeInterval = dateAndTime.timeInterval;
           expect(timeInterval, TimeInterval(startDate: initialDay));
           expect(find.text('00:00'), findsNothing);

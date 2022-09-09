@@ -211,7 +211,7 @@ void main() {
           SaveError.noTitleOrImage,
           SaveError.noStartTime,
         },
-        sucessfullSave: false,
+        successfulSave: false,
       ),
     );
 
@@ -254,7 +254,7 @@ void main() {
       WizardState(
         0,
         const [WizardStep.advance],
-        sucessfullSave: true,
+        successfulSave: true,
       ),
     );
     verify(() => mockActivitiesBloc.add(AddActivity(expectedSaved)));
@@ -311,7 +311,7 @@ void main() {
     await activityWizardCubit.next();
 
     // Assert
-    expect(activityWizardCubit.state, wizState.saveSucess());
+    expect(activityWizardCubit.state, wizState.saveSuccess());
     verify(() =>
         mockActivitiesBloc.add(UpdateActivity(activityExpectedToBeSaved)));
   });
@@ -399,7 +399,7 @@ void main() {
       WizardState(
         0,
         const [WizardStep.advance],
-        sucessfullSave: true,
+        successfulSave: true,
       ),
     );
 
@@ -477,7 +477,7 @@ void main() {
         WizardState(
           0,
           const [WizardStep.advance],
-          sucessfullSave: true,
+          successfulSave: true,
         ),
       );
 
@@ -550,7 +550,7 @@ void main() {
     await wizCubit.next();
     expect(
       wizCubit.state,
-      WizardState(0, const [WizardStep.advance], sucessfullSave: true),
+      WizardState(0, const [WizardStep.advance], successfulSave: true),
     );
 
     // Assert
@@ -624,7 +624,7 @@ void main() {
       WizardState(
         0,
         const [WizardStep.advance],
-        sucessfullSave: true,
+        successfulSave: true,
       ),
     );
 
@@ -788,7 +788,7 @@ void main() {
           SaveError.noRecurringDays,
           SaveError.noRecurringEndDate
         },
-        sucessfullSave: false,
+        successfulSave: false,
       ),
     );
   });
@@ -860,7 +860,7 @@ void main() {
             0,
             const [WizardStep.advance],
             saveErrors: const {SaveError.unconfirmedStartTimeBeforeNow},
-            sucessfullSave: false,
+            successfulSave: false,
           ),
         );
 
@@ -871,7 +871,7 @@ void main() {
           WizardState(
             0,
             const [WizardStep.advance],
-            sucessfullSave: true,
+            successfulSave: true,
           ),
         );
 
@@ -955,7 +955,7 @@ void main() {
             0,
             const [WizardStep.advance],
             saveErrors: const {SaveError.unconfirmedStartTimeBeforeNow},
-            sucessfullSave: false,
+            successfulSave: false,
           ),
         );
         await wizCubit.next(warningConfirmed: true);
@@ -964,7 +964,7 @@ void main() {
           WizardState(
             0,
             const [WizardStep.advance],
-            sucessfullSave: true,
+            successfulSave: true,
           ),
         );
 
@@ -1046,7 +1046,7 @@ void main() {
             0,
             const [WizardStep.advance],
             saveErrors: const {SaveError.unconfirmedStartTimeBeforeNow},
-            sucessfullSave: false,
+            successfulSave: false,
           ),
         );
         await wizCubit.next(warningConfirmed: true);
@@ -1055,7 +1055,7 @@ void main() {
           WizardState(
             0,
             const [WizardStep.advance],
-            sucessfullSave: true,
+            successfulSave: true,
           ),
         );
 
@@ -1133,7 +1133,7 @@ void main() {
               SaveError.unconfirmedStartTimeBeforeNow,
               SaveError.storedRecurring,
             },
-            sucessfullSave: false,
+            successfulSave: false,
           ),
         );
 
@@ -1147,7 +1147,7 @@ void main() {
           WizardState(
             0,
             const [WizardStep.advance],
-            sucessfullSave: true,
+            successfulSave: true,
           ),
         );
 
@@ -1223,7 +1223,7 @@ void main() {
             0,
             const [WizardStep.advance],
             saveErrors: const {SaveError.unconfirmedActivityConflict},
-            sucessfullSave: false,
+            successfulSave: false,
           ),
         );
 
@@ -1233,7 +1233,7 @@ void main() {
           WizardState(
             0,
             const [WizardStep.advance],
-            sucessfullSave: true,
+            successfulSave: true,
           ),
         );
 
@@ -1310,7 +1310,7 @@ void main() {
               SaveError.unconfirmedActivityConflict,
               SaveError.unconfirmedStartTimeBeforeNow,
             },
-            sucessfullSave: false,
+            successfulSave: false,
           ),
         );
         await wizCubit.next(warningConfirmed: true);
@@ -1319,7 +1319,7 @@ void main() {
           WizardState(
             0,
             const [WizardStep.advance],
-            sucessfullSave: true,
+            successfulSave: true,
           ),
         );
 
@@ -1370,7 +1370,7 @@ void main() {
 
         expect(
           wizCubit.state,
-          WizardState(0, const [WizardStep.advance], sucessfullSave: true),
+          WizardState(0, const [WizardStep.advance], successfulSave: true),
         );
 
         expect(
@@ -1440,7 +1440,7 @@ void main() {
         await wizCubit.next();
         expect(
           wizCubit.state,
-          WizardState(0, const [WizardStep.advance], sucessfullSave: true),
+          WizardState(0, const [WizardStep.advance], successfulSave: true),
         );
         await expected2;
       });
@@ -1516,7 +1516,7 @@ void main() {
         await wizCubit.next();
         expect(
           wizCubit.state,
-          WizardState(0, const [WizardStep.advance], sucessfullSave: true),
+          WizardState(0, const [WizardStep.advance], successfulSave: true),
         );
 
         await expected2;
@@ -1567,7 +1567,7 @@ void main() {
         await wizCubit.next();
         expect(
           wizCubit.state,
-          WizardState(0, const [WizardStep.advance], sucessfullSave: true),
+          WizardState(0, const [WizardStep.advance], successfulSave: true),
         );
 
         expect(
@@ -1625,7 +1625,7 @@ void main() {
     await wizCubit.next();
     expect(
       wizCubit.state,
-      WizardState(0, const [WizardStep.advance], sucessfullSave: true),
+      WizardState(0, const [WizardStep.advance], successfulSave: true),
     );
   });
 
@@ -1961,7 +1961,7 @@ void main() {
           1,
           allWizStep,
           saveErrors: const {SaveError.noTitleOrImage},
-          sucessfullSave: false,
+          successfulSave: false,
         ),
       );
 
@@ -1980,7 +1980,7 @@ void main() {
           4,
           allWizStep,
           saveErrors: const {SaveError.noStartTime},
-          sucessfullSave: false,
+          successfulSave: false,
         ),
       );
 
@@ -2002,7 +2002,7 @@ void main() {
         WizardState(
           12,
           allWizStep,
-          sucessfullSave: true,
+          successfulSave: true,
         ),
       );
     });
@@ -2164,7 +2164,7 @@ void main() {
             WizardStep.recursWeekly
           ],
           saveErrors: const {SaveError.noRecurringDays},
-          sucessfullSave: false,
+          successfulSave: false,
         ),
       );
     });
@@ -2265,7 +2265,7 @@ void main() {
             WizardStep.endDate,
           ],
           saveErrors: const {SaveError.endDateBeforeStart},
-          sucessfullSave: false,
+          successfulSave: false,
         ),
       );
     });

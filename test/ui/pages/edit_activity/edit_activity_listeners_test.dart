@@ -25,7 +25,7 @@ void main() {
   );
   final translate = Locales.language.values.first;
 
-  final timeFieldFinder = find.byType(TimeIntervallPicker);
+  final timeFieldFinder = find.byType(TimeIntervalPicker);
   final okButtonFinder = find.byType(OkButton);
 
   late MockActivitiesBloc mockActivitiesBloc;
