@@ -5,11 +5,11 @@ editTimerTemplate	Edit timer template	Ändra timer mall
 newActivityTemplate	New activity template	Ny aktivitetsmall					
 editActivityTemplate	Edit activity template	Ändra aktivitetsmall					
 endDateNotSpecifiedErrorMessage	You must enter an end date.	Du måste ange ett slutdatum.					
-showAlarmOnlyAtStartTime	Show alarm only at start time
-showSpeechAtAlarm	Show speech at alarm
-showReminders	Show reminders
-showSelectEndDate	Show select end date
-recurring	Recurring
+showAlarmOnlyAtStartTime	Show alarm only at start time						
+showSpeechAtAlarm	Show speech at alarm						
+showReminders	Show reminders						
+showSelectEndDate	Show select end date						
+recurring	Recurring						
 selectAllDay	Select all day						
 selectCategory	Select category						
 onlyActivateScreensaverDuringNight	Only activate screensaver during night						

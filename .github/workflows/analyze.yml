@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: |
-        if [[ $(tr -d -c '\t\n' < lib/i18n/translations.tsv | uniq -u) ]]; then
+        if (( $(tr -d -c '\t\n' < lib/i18n/translations.tsv | uniq -c | wc -l) > 1 )); then
           echo >&2 "translations.tsv is not uniformed in tabs"
           exit 1
         fi
