@@ -12,38 +12,34 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
   const ActivityNameAndPictureWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => BlocSelector<MemoplannerSettingBloc,
-          MemoplannerSettingsState, EditActivitySettings>(
-        selector: (state) => state.settings.addActivity.editActivity,
-        builder: (context, editActivity) =>
-            BlocBuilder<EditActivityCubit, EditActivityState>(
-          builder: (context, state) =>
-              BlocSelector<WizardCubit, WizardState, Set<SaveError>>(
-            selector: (state) => state.saveErrors,
-            builder: (context, saveErrors) => NameAndPictureWidget(
-              selectedImage: state.selectedImage,
-              errorState: saveErrors.contains(SaveError.noTitleOrImage),
-              text: state.activity.title,
-              inputFormatters: [LengthLimitingTextInputFormatter(50)],
-              onImageSelected: editActivity.image
-                  ? (selectedImage) => context
-                      .read<EditActivityCubit>()
-                      .imageSelected(selectedImage)
-                  : null,
-              onTextEdit: editActivity.title
-                  ? (text) {
-                      if (state.activity.title != text) {
-                        context.read<EditActivityCubit>().replaceActivity(
-                              state.activity.copyWith(title: text),
-                            );
-                      }
-                    }
-                  : null,
-              inputHeadingForNameField: _heading(context),
-            ),
-          ),
-        ),
-      );
+  Widget build(BuildContext context) {
+    final editActivitySettings = context.select((MemoplannerSettingBloc b) =>
+        b.state.settings.addActivity.editActivity);
+    final selectedImage =
+        context.select((EditActivityCubit c) => c.state.selectedImage);
+    final activity = context.select((EditActivityCubit c) => c.state.activity);
+    final saveErrors = context.select((WizardCubit c) => c.state.saveErrors);
+
+    return NameAndPictureWidget(
+      selectedImage: selectedImage,
+      errorState: saveErrors.contains(SaveError.noTitleOrImage),
+      text: activity.title,
+      inputFormatters: [LengthLimitingTextInputFormatter(50)],
+      onImageSelected: editActivitySettings.image
+          ? context.read<EditActivityCubit>().imageSelected
+          : null,
+      onTextEdit: editActivitySettings.title
+          ? (text) {
+              if (activity.title != text) {
+                context
+                    .read<EditActivityCubit>()
+                    .replaceActivity(activity.copyWith(title: text));
+              }
+            }
+          : null,
+      inputHeadingForNameField: _heading(context),
+    );
+  }
 
   String _heading(BuildContext context) {
     final translate = Translator.of(context).translate;

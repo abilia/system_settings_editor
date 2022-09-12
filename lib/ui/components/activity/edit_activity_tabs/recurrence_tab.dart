@@ -38,7 +38,6 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
             ),
           if (recurs.weekly || recurs.monthly)
             BlocBuilder<WizardCubit, WizardState>(
-              buildWhen: (prev, current) => current.saveErrors.isNotEmpty,
               builder: (context, wizState) {
                 final recurringDataError =
                     wizState.saveErrors.contains(SaveError.noRecurringDays);
