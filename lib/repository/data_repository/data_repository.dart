@@ -43,10 +43,12 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     return db.getAllNonDeleted();
   }
 
-  Future fetchIntoDatabaseSynchronized() => synchronized(fetchIntoDatabase);
+  Future<void> fetchIntoDatabaseSynchronized() {
+    return synchronized(fetchIntoDatabase);
+  }
 
   @protected
-  Future fetchIntoDatabase() async {
+  Future<void> fetchIntoDatabase() async {
     log.fine('loading $path...');
     try {
       final revision = await db.getLastRevision();
