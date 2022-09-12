@@ -56,18 +56,12 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       userId: user.id,
     );
 
-    final licenses = await UserRepository(
-      baseUrlDb: baseUrlDb,
-      client: client,
-      loginDb: loginDb,
-      userDb: userDb,
-      licenseDb: LicenseDb(preferences),
-      deviceDb: deviceDb,
-      calendarDb: CalendarDb(database),
-    ).getLicenses();
-    if (licenses.anyValidLicense(DateTime.now())) {
-      await activityRepository.synchronize();
+    final licenses = LicenseDb(preferences).getLicenses();
+    if (!licenses.anyValidLicense(DateTime.now())) {
+      return;
     }
+    await activityRepository.synchronize();
+
     final activities = await activityRepository.getAll();
 
     final fileStorage = FileStorage(documentDirectory.path);
@@ -80,7 +74,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       fileStorage: fileStorage,
       userId: user.id,
       multipartRequestBuilder: MultipartRequestBuilder(),
-    ).synchronize();
+    ).fetchIntoDatabase();
 
     final settingsDb = SettingsDb(preferences);
 
@@ -90,7 +84,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       genericDb: GenericDb(database),
       userId: user.id,
     );
-    await genericRepository.synchronize();
+    await genericRepository.fetchIntoDatabase();
     final generics = await genericRepository.getAll();
 
     final genericsMap = generics.toGenericKeyMap();
@@ -110,13 +104,6 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       settings.alarm,
       fileStorage,
     );
-
-    await SortableRepository(
-      baseUrlDb: baseUrlDb,
-      client: client,
-      sortableDb: SortableDb(database),
-      userId: user.id,
-    ).synchronize();
   } catch (e) {
     log.severe('Exception when running background handler', e);
   } finally {

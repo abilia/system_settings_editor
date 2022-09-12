@@ -63,7 +63,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       try {
         final lastRevision = await db.getLastRevision();
         final syncResponses = await _postUserFiles(dirtyFiles, lastRevision);
-        await handleSuccessfullSync(syncResponses, dirtyFiles);
+        await handleSuccessfulSync(syncResponses, dirtyFiles);
         return true;
       } on WrongRevisionException catch (_) {
         log.info('Wrong revision when posting user files');

@@ -9,9 +9,9 @@ import 'package:seagull/repository/all.dart';
 
 part 'sync_event.dart';
 
-class PleaseReload {}
+class SyncPerformed {}
 
-class SyncBloc extends Bloc<SyncEvent, PleaseReload> {
+class SyncBloc extends Bloc<SyncEvent, SyncPerformed> {
   final PushCubit pushCubit;
   final LicenseCubit licenseCubit;
 
@@ -32,7 +32,7 @@ class SyncBloc extends Bloc<SyncEvent, PleaseReload> {
     required this.sortableRepository,
     required this.genericRepository,
     required this.syncDelay,
-  }) : super(PleaseReload()) {
+  }) : super(SyncPerformed()) {
     _pushSubscription = pushCubit.stream.listen((v) => add(const SyncAll()));
     on<ActivitySaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<FileSaved>(_trySync, transformer: bufferTimer(syncDelay));
@@ -51,7 +51,7 @@ class SyncBloc extends Bloc<SyncEvent, PleaseReload> {
       _log.info('retrying $event');
       add(event);
     }
-    if (event is SyncAll) emit(PleaseReload());
+    if (event is SyncAll) emit(SyncPerformed());
   }
 
   Future<bool> _sync(SyncEvent event) async {

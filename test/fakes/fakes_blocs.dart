@@ -14,7 +14,7 @@ class FakePushCubit extends Fake implements PushCubit {
 
 class FakeSyncBloc extends Fake implements SyncBloc {
   @override
-  Stream<PleaseReload> get stream => const Stream.empty();
+  Stream<SyncPerformed> get stream => const Stream.empty();
   @override
   void add(SyncEvent event) {}
   @override
