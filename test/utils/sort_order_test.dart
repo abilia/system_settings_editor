@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/utils/sort_order.dart';
+import 'package:seagull/utils/all.dart';
 
 void main() {
   group('Test sort order algorithm', () {

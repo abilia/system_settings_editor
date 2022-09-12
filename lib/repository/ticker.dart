@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:meta/meta.dart';
-import 'package:seagull/utils/datetime.dart';
+import 'package:seagull/utils/all.dart';
 
 class Ticker {
   final _streamController = StreamController<DateTime>();

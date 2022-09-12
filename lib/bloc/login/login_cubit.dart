@@ -3,7 +3,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/utils/licenses.dart';
+import 'package:seagull/utils/all.dart';
 
 part 'login_state.dart';
 

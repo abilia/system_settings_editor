@@ -1,5 +1,5 @@
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/strings.dart';
+import 'package:seagull/utils/all.dart';
 
 String _pad0(String s) => s.padLeft(2, '0');
 const _emptyPattern = '00';

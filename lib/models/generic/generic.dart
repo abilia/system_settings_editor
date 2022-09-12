@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 import 'package:uuid/uuid.dart';
-import 'package:seagull/utils/strings.dart';
 
 part 'db_generic.dart';
 part 'generic_data.dart';
