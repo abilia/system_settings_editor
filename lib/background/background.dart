@@ -60,7 +60,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     if (!licenses.anyValidLicense(DateTime.now())) {
       return;
     }
-    await activityRepository.synchronize();
+    await activityRepository.fetchIntoDatabase();
 
     final activities = await activityRepository.getAll();
 
