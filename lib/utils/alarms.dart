@@ -13,6 +13,8 @@ const List<Duration> unsignedOffActivityReminders = [
   Duration(hours: 1, minutes: 45),
   Duration(hours: 2),
 ];
+final maxReminder =
+    unsignedOffActivityReminders.reduce((v, e) => v > e ? v : e);
 
 Iterable<ReminderUnchecked> uncheckedReminders(ActivityDay activityDay) =>
     unsignedOffActivityReminders
