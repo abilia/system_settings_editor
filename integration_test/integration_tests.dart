@@ -113,7 +113,7 @@ extension on WidgetTester {
     await tap(find.byType(OkButton));
     await pumpAndSettle();
 
-    await tap(find.byType(TimeIntervallPicker));
+    await tap(find.byType(TimeIntervalPicker));
     await pumpAndSettle();
 
     await tap(find.byKey(TestKey.startTimeInput));

@@ -12,7 +12,10 @@ abstract class WizardCubit extends Cubit<WizardState> {
     SaveRecurring? saveRecurring,
   });
 
-  void previous() => emit(state.copyWith(newStep: (state.step - 1)));
+  void previous() =>
+      emit(state.copyWith(newStep: (state.step - 1), saveErrors: {}));
+
+  void removeCorrectedErrors();
 }
 
 class SaveRecurring {

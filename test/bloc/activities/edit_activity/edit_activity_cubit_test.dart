@@ -275,7 +275,7 @@ void main() {
     // Assert
     expect(
       wizCubit.state,
-      WizardState(0, const [WizardStep.advance], sucessfullSave: true),
+      WizardState(0, const [WizardStep.advance], successfulSave: true),
     );
     // Assert
     await expect2;

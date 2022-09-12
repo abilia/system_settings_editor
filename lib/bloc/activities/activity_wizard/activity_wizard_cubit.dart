@@ -77,7 +77,7 @@ class ActivityWizardCubit extends WizardCubit {
           activity: event.activity,
         );
         if (newSteps != state.steps) {
-          emit(state.copyWith(newSteps: newSteps));
+          emit(state.copyWith(newSteps: newSteps, saveErrors: {}));
         }
       },
     );
@@ -134,7 +134,7 @@ class ActivityWizardCubit extends WizardCubit {
       );
     }
 
-    final error = editActivityCubit.state.stepErrors(
+    final error = editActivityCubit.state.stepError(
       wizState: state,
       now: clockBloc.state,
       allowPassedStartTime: allowPassedStartTime,
@@ -145,7 +145,32 @@ class ActivityWizardCubit extends WizardCubit {
       return emit(state.failSave({error}));
     }
 
-    emit(state.copyWith(newStep: (state.step + 1)));
+    emit(state.copyWith(
+      newStep: (state.step + 1),
+      saveErrors: {},
+      showDialogWarnings: true,
+    ));
+  }
+
+  @override
+  void removeCorrectedErrors() async {
+    if (state.saveErrors.isEmpty || !state.isLastStep) {
+      return;
+    }
+
+    final errors = editActivityCubit.state
+        .saveErrors(
+          beforeNowWarningConfirmed: false,
+          conflictWarningConfirmed: false,
+          saveRecurringDefined: false,
+          allowPassedStartTime: allowPassedStartTime,
+          activities: [],
+          now: clockBloc.state,
+        )
+        //Ensures that errors can only be removed, not added
+        .intersection(state.saveErrors);
+
+    emit(state.copyWith(saveErrors: errors, showDialogWarnings: false));
   }
 
   Future<WizardState> _saveActivity(
@@ -155,7 +180,7 @@ class ActivityWizardCubit extends WizardCubit {
     required SaveRecurring? saveRecurring,
   }) async {
     if (editState is StoredActivityState && editState.unchanged) {
-      return state.saveSucess();
+      return state.saveSuccess();
     }
 
     final activity = editState.activityToStore();
@@ -163,7 +188,7 @@ class ActivityWizardCubit extends WizardCubit {
     final errors = editState.saveErrors(
       beforeNowWarningConfirmed: beforeNowWarningConfirmed,
       conflictWarningConfirmed: conflictWarningConfirmed,
-      saveReccuringDefined: saveRecurring != null,
+      saveRecurringDefined: saveRecurring != null,
       allowPassedStartTime: allowPassedStartTime,
       activities: await activitiesBloc.activityRepository.allBetween(
           activity.startTime.onlyDays(),
@@ -188,7 +213,7 @@ class ActivityWizardCubit extends WizardCubit {
     }
 
     editActivityCubit.activitySaved(activity);
-    return state.saveSucess();
+    return state.saveSuccess();
   }
 
   @override
@@ -202,7 +227,7 @@ extension SaveErrorExtension on EditActivityState {
   Set<SaveError> saveErrors({
     required bool beforeNowWarningConfirmed,
     required bool conflictWarningConfirmed,
-    required bool saveReccuringDefined,
+    required bool saveRecurringDefined,
     required bool allowPassedStartTime,
     required DateTime now,
     required Iterable<Activity> activities,
@@ -216,7 +241,7 @@ extension SaveErrorExtension on EditActivityState {
           else if (!beforeNowWarningConfirmed)
             SaveError.unconfirmedStartTimeBeforeNow,
         if (emptyRecurringData) SaveError.noRecurringDays,
-        if (storedRecurring && !saveReccuringDefined) SaveError.storedRecurring,
+        if (storedRecurring && !saveRecurringDefined) SaveError.storedRecurring,
         if (hasStartTime &&
             !conflictWarningConfirmed &&
             !unchangedTime &&
@@ -229,7 +254,7 @@ extension SaveErrorExtension on EditActivityState {
         if (activity.isRecurring && !hasEndDate) SaveError.noRecurringEndDate
       };
 
-  SaveError? stepErrors({
+  SaveError? stepError({
     required WizardState wizState,
     required DateTime now,
     required bool allowPassedStartTime,

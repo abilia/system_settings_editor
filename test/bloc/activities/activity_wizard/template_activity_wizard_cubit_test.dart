@@ -86,7 +86,7 @@ void main() {
         0,
         const [WizardStep.advance],
         saveErrors: const {SaveError.noTitleOrImage},
-        sucessfullSave: false,
+        successfulSave: false,
       ),
     ],
     verify: (c) {
@@ -119,7 +119,7 @@ void main() {
       WizardState(
         0,
         const [WizardStep.advance],
-        sucessfullSave: true,
+        successfulSave: true,
       ),
     ],
     verify: (c) {
