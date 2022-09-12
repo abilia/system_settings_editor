@@ -49,6 +49,7 @@ android {
 
     defaultConfig {
         applicationId "com.abilia"
+        // Certificate issue causing need to bump minSdkVersion: https://github.com/dart-lang/http/issues/627
         minSdkVersion 26
         // change to
         // targetSdkVersion flutter.targetSdkVersion
