@@ -112,7 +112,7 @@ abstract class Translated {
   final String licenseExpired = 'License is expired';
 
   final String licenseExpiredMessage =
-      'License is expired, MEMOPlanner won’t synchronize with myAbilia';
+      'Your license has expired and MEMOplanner will no longer synchronize with myAbilia';
 
   final String toLogin = 'to Log in';
 
@@ -1089,6 +1089,10 @@ class SV extends Translated {
 
   @override
   final String licenseExpired = 'Licensen har gått ut';
+
+  @override
+  final String licenseExpiredMessage =
+      'Licensen har gått ut och MEMOplanner kommer inte längre att synkronisera med myAbilia';
 
   @override
   final String toLogin = 'till Logga in';
@@ -2408,6 +2412,10 @@ class DA extends Translated {
   final String licenseExpired = 'Licensen er udløbet';
 
   @override
+  final String licenseExpiredMessage =
+      'Licensen er udløbet, og MEMOplanner vil ikke længere synkronisere med myAbilia';
+
+  @override
   final String toLogin = 'til Log ind';
 
   @override
@@ -3712,6 +3720,10 @@ class NL extends Translated {
 
   @override
   final String licenseExpired = 'Licentie verlopen';
+
+  @override
+  final String licenseExpiredMessage =
+      'Uw licentie is verlopen en MEMOplanner zal niet langer synchroniseren met myAbilia';
 
   @override
   final String toLogin = 'naar Inloggen';
@@ -5019,6 +5031,10 @@ class FI extends Translated {
 
   @override
   final String licenseExpired = 'Lisenssi on vanhentunut';
+
+  @override
+  final String licenseExpiredMessage =
+      'Lisenssisi on vanhentunut, eikä MEMOplanner enää synkronoidu myAbilian kanssa';
 
   @override
   final String toLogin = 'kirjautumissivulle';
@@ -6329,6 +6345,10 @@ class DE extends Translated {
   final String licenseExpired = 'Lizenz abgelaufen';
 
   @override
+  final String licenseExpiredMessage =
+      'Ihre Lizenz ist abgelaufen und MEMOplanner kann nicht mehr mit myAbilia synchronisiert werden';
+
+  @override
   final String toLogin = 'zur Anmelden';
 
   @override
@@ -7637,6 +7657,10 @@ class NB extends Translated {
 
   @override
   final String licenseExpired = 'Lisensen har utløpt';
+
+  @override
+  final String licenseExpiredMessage =
+      'Lisensen har utløpt og Memoplanner vil ikke lenger kunne synkronisere med myAbilia';
 
   @override
   final String toLogin = 'til Logg inn';
