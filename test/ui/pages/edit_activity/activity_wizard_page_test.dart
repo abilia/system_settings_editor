@@ -198,6 +198,10 @@ void main() {
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
+    expect(find.byType(FullDayWiz), findsOneWidget);
+    await tester.tap(find.byType(NextButton));
+    await tester.pumpAndSettle();
+
     expect(find.byType(TimeWiz), findsOneWidget);
     await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
     await tester.tap(find.byType(NextButton));
