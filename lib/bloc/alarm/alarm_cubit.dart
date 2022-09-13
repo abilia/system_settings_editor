@@ -30,7 +30,9 @@ class AlarmCubit extends Cubit<NotificationAlarm?> {
       return;
     }
     final activities = await activityRepository.allBetween(
-        now.previousDay(), now.add(NotificationBloc.maxReminder));
+      now.previousDay(),
+      now.add(maxReminder),
+    );
     final alarmsAndReminders = activities.alarmsOnExactMinute(now);
     for (final alarm in alarmsAndReminders) {
       emit(alarm);
