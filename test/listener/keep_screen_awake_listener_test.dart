@@ -77,7 +77,7 @@ void main() {
     batteryStreamController.close();
   });
 
-  Widget _wrapWithMaterialApp() => MaterialApp(
+  Widget wrapWithMaterialApp() => MaterialApp(
         builder: (context, child) => BlocProvider<WakeLockCubit>(
           create: (context) => wakeLockCubit,
           child: MultiBlocListener(
@@ -94,7 +94,7 @@ void main() {
     const newTimeout = Duration(minutes: 3);
     setUpMockSystemSettingsChannel(screenOffTimeout: newTimeout.inMilliseconds);
 
-    await tester.pumpWidget(_wrapWithMaterialApp());
+    await tester.pumpWidget(wrapWithMaterialApp());
     await tester.pumpAndSettle();
     wakeLockCubit.setScreenTimeout(newTimeout);
     await tester.pumpAndSettle();
@@ -105,7 +105,7 @@ void main() {
   testWidgets('When new timeout, not same as settings, change', (tester) async {
     const newTimeout = Duration(minutes: 3);
 
-    await tester.pumpWidget(_wrapWithMaterialApp());
+    await tester.pumpWidget(wrapWithMaterialApp());
     await tester.pumpAndSettle();
     wakeLockCubit.setScreenTimeout(newTimeout);
     await tester.pumpAndSettle();

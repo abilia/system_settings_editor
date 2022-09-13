@@ -93,13 +93,6 @@ PODS:
   - flutter_archive (0.0.1):
     - Flutter
     - ZIPFoundation (= 0.9.11)
-  - flutter_inappwebview (0.0.1):
-    - Flutter
-    - flutter_inappwebview/Core (= 0.0.1)
-    - OrderedSet (~> 5.0)
-  - flutter_inappwebview/Core (0.0.1):
-    - Flutter
-    - OrderedSet (~> 5.0)
   - flutter_local_notifications (0.0.1):
     - Flutter
   - flutter_native_timezone (0.0.1):
@@ -163,7 +156,6 @@ PODS:
     - nanopb/encode (= 2.30909.0)
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
-  - OrderedSet (5.0.0)
   - package_info (0.0.1):
     - Flutter
   - path_provider_ios (0.0.1):
@@ -199,7 +191,6 @@ DEPENDENCIES:
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
   - flutter_archive (from `.symlinks/plugins/flutter_archive/ios`)
-  - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_native_timezone (from `.symlinks/plugins/flutter_native_timezone/ios`)
   - flutter_ringtone_player (from `.symlinks/plugins/flutter_ringtone_player/ios`)
@@ -231,7 +222,6 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - nanopb
-    - OrderedSet
     - PromisesObjC
     - ReachabilitySwift
     - ZIPFoundation
@@ -259,8 +249,6 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_archive:
     :path: ".symlinks/plugins/flutter_archive/ios"
-  flutter_inappwebview:
-    :path: ".symlinks/plugins/flutter_inappwebview/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
   flutter_native_timezone:
@@ -310,9 +298,8 @@ SPEC CHECKSUMS:
   FirebaseCrashlytics: 121ea1d37f4906c94c4c9307297af5121b98b789
   FirebaseInstallations: 41f811b530c41dd90973d0174381cdb3fcb5e839
   FirebaseMessaging: 4e220eddd356181469ba2ec5f7d5fafbc2312841
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_archive: 141014f758a0b31fde29add54952729eb1d61c95
-  flutter_inappwebview: bfd58618f49dc62f2676de690fc6dcda1d6c3721
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   flutter_native_timezone: 5f05b2de06c9776b4cc70e1839f03de178394d22
   flutter_ringtone_player: 15eba85187230b87b2512f0e1b92225618bc03e7
@@ -324,7 +311,6 @@ SPEC CHECKSUMS:
   image_picker_ios: b786a5dcf033a8336a657191401bfdf12017dabb
   integration_test: a1e7d09bd98eca2fc37aefd79d4f41ad37bdbbe5
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
-  OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce

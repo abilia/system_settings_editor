@@ -37,6 +37,6 @@ class OverlayConstraints extends BoxConstraints {
   @override
   int get hashCode {
     assert(debugAssertIsValid());
-    return hashValues(minWidth, maxWidth, minHeight, maxHeight, state);
+    return Object.hash(minWidth, maxWidth, minHeight, maxHeight, state);
   }
 }

@@ -71,7 +71,7 @@ void main() {
       GetIt.I.reset();
     });
 
-    Widget _wrapWithMaterialApp({Widget? child}) => TopLevelProvider(
+    Widget wrapWithMaterialApp({Widget? child}) => TopLevelProvider(
           child: AuthenticationBlocProvider(
             child: AuthenticatedBlocsProvider(
               memoplannerSettingBloc: mockSettingBloc,
@@ -106,7 +106,7 @@ void main() {
         ),
       );
       await tester.pumpWidget(
-        _wrapWithMaterialApp(child: const CalendarPage()),
+        wrapWithMaterialApp(child: const CalendarPage()),
       );
       await tester.pumpAndSettle();
       expect(find.byType(WeekCalendar), findsOneWidget);
@@ -129,7 +129,7 @@ void main() {
         ),
       );
       await tester.pumpWidget(
-        _wrapWithMaterialApp(child: const CalendarPage()),
+        wrapWithMaterialApp(child: const CalendarPage()),
       );
       await tester.pumpAndSettle();
       expect(find.byType(MenuPage), findsOneWidget);
@@ -152,7 +152,7 @@ void main() {
         ),
       );
       await tester.pumpWidget(
-        _wrapWithMaterialApp(child: const CalendarPage()),
+        wrapWithMaterialApp(child: const CalendarPage()),
       );
       await tester.pumpAndSettle();
       expect(find.byType(PhotoCalendarPage), findsOneWidget);
@@ -169,8 +169,7 @@ void main() {
     testWidgets(
         'When timeout is reached, screensaver is true, app switches to Screensaver',
         (tester) async {
-      await tester
-          .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(child: const CalendarPage()));
       inactivityCubit.emit(const ScreensaverState());
       await tester.pumpAndSettle();
       expect(find.byType(ScreensaverPage), findsOneWidget);
@@ -180,8 +179,7 @@ void main() {
     testWidgets(
         'When timeout is reached, screensaver is false, '
         'app switches to DayCalendar from Menu', (tester) async {
-      await tester
-          .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
+      await tester.pumpWidget(wrapWithMaterialApp(child: const CalendarPage()));
       await tester.tap(find.byType(MenuButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(SettingsButton));
@@ -199,7 +197,7 @@ void main() {
           'When timeout is reached, day calendar switches to current day',
           (tester) async {
         await tester
-            .pumpWidget(_wrapWithMaterialApp(child: const DayCalendar()));
+            .pumpWidget(wrapWithMaterialApp(child: const DayCalendar()));
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
         await tester.pumpAndSettle();
@@ -217,7 +215,7 @@ void main() {
       testWidgets('When timeout is reached, if not in calendar, do nothing',
           (tester) async {
         await tester
-            .pumpWidget(_wrapWithMaterialApp(child: const SettingsPage()));
+            .pumpWidget(wrapWithMaterialApp(child: const SettingsPage()));
         await tester.pumpAndSettle();
         inactivityCubit.emit(
           ReturnToTodayThresholdReached(initialTime),

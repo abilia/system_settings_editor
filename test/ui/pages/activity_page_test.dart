@@ -273,7 +273,7 @@ void main() {
       expect(find.text(newTitle), findsOneWidget);
     });
 
-    Future _changeDate(WidgetTester tester, int day) async {
+    Future changeDate(WidgetTester tester, int day) async {
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
       await tester.tap(
@@ -301,7 +301,7 @@ void main() {
       await tester.tap(editActivityButtonFinder);
       await tester.pumpAndSettle();
 
-      await _changeDate(tester, day);
+      await changeDate(tester, day);
 
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
@@ -329,7 +329,7 @@ void main() {
       await tester.tap(editActivityButtonFinder);
       await tester.pumpAndSettle();
 
-      await _changeDate(tester, day);
+      await changeDate(tester, day);
 
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
@@ -356,7 +356,7 @@ void main() {
       await tester.tap(editActivityButtonFinder);
       await tester.pumpAndSettle();
 
-      await _changeDate(tester, day);
+      await changeDate(tester, day);
 
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
@@ -402,7 +402,7 @@ void main() {
       // Act --  edit acvtivity date to today and save
       await tester.tap(editActivityButtonFinder);
       await tester.pumpAndSettle();
-      await _changeDate(tester, toDay);
+      await changeDate(tester, toDay);
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
 

@@ -16,25 +16,22 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
   @override
   void initState() {
     super.initState();
-    final uri = Uri.parse(widget.url);
-    final startAtParam = uri.queryParameters['t'];
-
-    final videoId = YoutubePlayerController.convertUrlToId(widget.url);
-    _controller = YoutubePlayerController(
-      initialVideoId: videoId ?? '',
-      params: YoutubePlayerParams(
+    final url =
+        widget.url.startsWith('http') ? widget.url : 'https://${widget.url}';
+    final videoId = YoutubePlayerController.convertUrlToId(url);
+    _controller = YoutubePlayerController.fromVideoId(
+      videoId: videoId ?? '',
+      params: const YoutubePlayerParams(
         strictRelatedVideos: true,
         showFullscreenButton: true,
-        startAt: startAtParam != null
-            ? Duration(seconds: int.parse(startAtParam))
-            : Duration.zero,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return YoutubePlayerIFrame(
+    return YoutubePlayerScaffold(
+      builder: (context, player) => player,
       controller: _controller,
       aspectRatio: 3,
     );
