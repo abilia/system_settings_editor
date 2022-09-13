@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:seagull/utils/all.dart';
 
 const memoplannerLicenseName = 'memoplanner';
 
@@ -32,8 +33,8 @@ class License extends Equatable {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'licenseKey': _key,
-        'product': product,
+        'licenseKey': _key.nullOnEmpty(),
+        'product': product.nullOnEmpty(),
         'endTime': endTime.millisecondsSinceEpoch,
       };
 

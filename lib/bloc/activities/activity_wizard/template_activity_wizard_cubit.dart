@@ -25,6 +25,14 @@ class TemplateActivityWizardCubit extends WizardCubit {
     final sortable = original.copyWith(data: item);
     sortableBloc.add(SortableUpdated(sortable));
 
-    emit(state.saveSucess());
+    emit(state.saveSuccess());
+  }
+
+  @override
+  void removeCorrectedErrors() async {
+    if (state.saveErrors.isNotEmpty &&
+        editActivityCubit.state.hasTitleOrImage) {
+      return emit(state.copyWith(saveErrors: {}));
+    }
   }
 }

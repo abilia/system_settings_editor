@@ -1,4 +1,5 @@
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class UserFile extends DataModel {
   static const imageEndings = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff'];
@@ -116,9 +117,9 @@ class DbUserFile extends DbModel<UserFile> {
   @override
   Map<String, dynamic> toJson() => {
         'id': userFile.id,
-        'sha1Hex': userFile.sha1,
-        'md5Hex': userFile.md5,
-        'path': userFile.path,
+        'sha1Hex': userFile.sha1.nullOnEmpty(),
+        'md5Hex': userFile.md5.nullOnEmpty(),
+        'path': userFile.path.nullOnEmpty(),
         'contentType': userFile.contentType,
         'size': userFile.fileSize,
         'deleted': userFile.deleted,

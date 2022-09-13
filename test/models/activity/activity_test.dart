@@ -389,7 +389,7 @@ void main() {
       "groupActivityId": null,
       "title": "af",
       "timezone": "Europe/Stockholm",
-      "icon": "",
+      "icon": null,
       "signedOffDates": null,
       "infoItem": "",
       "reminderBefore": "",
@@ -405,12 +405,12 @@ void main() {
       "checkable": false,
       "removeAfter": false,
       "secret": false,
-      "description": "",
+      "description": null,
       "textToSpeech": false,
       "showInDayplan": true,
       "calendarId": "36a50dae-bede-4bdb-89ec-10229777c889",
       "secretExemptions" : [],
-      "fileId": ""
+      "fileId": null
 }''';
     final decoded = json.decode(response) as Map<String, dynamic>;
     final parsed = DbActivity.fromJson(decoded);

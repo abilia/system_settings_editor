@@ -58,13 +58,15 @@ class WizardState extends Equatable {
   final int step;
   final UnmodifiableListView<WizardStep> steps;
   final Set<SaveError> saveErrors;
-  final bool? sucessfullSave;
+  final bool? successfulSave;
+  final bool showDialogWarnings;
 
   WizardState(
     this.step,
     Iterable<WizardStep> steps, {
     this.saveErrors = const UnmodifiableSetView.empty(),
-    this.sucessfullSave,
+    this.successfulSave,
+    this.showDialogWarnings = true,
   }) : steps = UnmodifiableListView(steps);
 
   bool get isFirstStep => step == 0;
@@ -74,27 +76,34 @@ class WizardState extends Equatable {
   WizardState copyWith({
     int? newStep,
     List<WizardStep>? newSteps,
+    Set<SaveError>? saveErrors,
+    bool? showDialogWarnings,
   }) {
     newStep ??= step;
     newSteps ??= steps;
-    return WizardState(newStep.clamp(0, newSteps.length - 1), newSteps);
+    return WizardState(
+      newStep.clamp(0, newSteps.length - 1),
+      newSteps,
+      saveErrors: saveErrors ?? this.saveErrors,
+      showDialogWarnings: showDialogWarnings ?? this.showDialogWarnings,
+    );
   }
 
   WizardState failSave(Set<SaveError> saveErrors) => WizardState(
         step,
         steps,
         saveErrors: saveErrors,
-        sucessfullSave: sucessfullSave == null
+        successfulSave: successfulSave == null
             ? false
             : null, // this ugly trick to force state change each failSave
       );
 
-  WizardState saveSucess() => WizardState(
+  WizardState saveSuccess() => WizardState(
         step,
         steps,
-        sucessfullSave: true,
+        successfulSave: true,
       );
 
   @override
-  List<Object?> get props => [step, steps, saveErrors, sucessfullSave];
+  List<Object?> get props => [step, steps, saveErrors, successfulSave];
 }

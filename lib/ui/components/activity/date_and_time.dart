@@ -55,7 +55,7 @@ class DateAndTimeWidget extends StatelessWidget {
                 top: showFullDay ? layout.formPadding.verticalItemDistance : 0,
               ),
               child: BlocBuilder<WizardCubit, WizardState>(
-                builder: (context, wizState) => TimeIntervallPicker(
+                builder: (context, wizState) => TimeIntervalPicker(
                   editActivityState.timeInterval,
                   startTimeError: wizState.saveErrors.any(
                     {
@@ -172,10 +172,10 @@ class DatePicker extends StatelessWidget {
   }
 }
 
-class TimeIntervallPicker extends StatelessWidget {
+class TimeIntervalPicker extends StatelessWidget {
   final TimeInterval timeInterval;
   final bool startTimeError;
-  const TimeIntervallPicker(this.timeInterval,
+  const TimeIntervalPicker(this.timeInterval,
       {this.startTimeError = false, Key? key})
       : super(key: key);
   @override

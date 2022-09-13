@@ -51,40 +51,44 @@ class EditActivityPage extends StatelessWidget {
         ),
     ];
 
-    return DefaultTabController(
-      initialIndex: 0,
-      length: tabWidgets.length,
-      child: ScrollToErrorPageListener(
-        enabledTabs: enabledTabs,
-        child: Scaffold(
-          appBar: AbiliaAppBar(
-            iconData: _getIcon(context),
-            title: _getTitle(context),
-            bottom: enabledTabs.length > 1
-                ? AbiliaTabBar(
-                    collapsedCondition: (i) {
-                      switch (i) {
-                        case 1:
-                          return !showAlarmTab;
-                        case 2:
-                          return !showRecurrenceTab;
-                        case 3:
-                          return !showInfoItemTab;
-                        default:
-                          return false;
-                      }
-                    },
-                    tabs: <Widget>[
-                      TabItem(translate.name, AbiliaIcons.myPhotos),
-                      TabItem(translate.alarm, AbiliaIcons.attention),
-                      TabItem(translate.recurrence, AbiliaIcons.repeat),
-                      TabItem(translate.extra, AbiliaIcons.attachment),
-                    ],
-                  )
-                : null,
+    return BlocListener<EditActivityCubit, EditActivityState>(
+      listener: (context, state) =>
+          context.read<WizardCubit>().removeCorrectedErrors(),
+      child: DefaultTabController(
+        initialIndex: 0,
+        length: tabWidgets.length,
+        child: ScrollToErrorPageListener(
+          enabledTabs: enabledTabs,
+          child: Scaffold(
+            appBar: AbiliaAppBar(
+              iconData: _getIcon(context),
+              title: _getTitle(context),
+              bottom: enabledTabs.length > 1
+                  ? AbiliaTabBar(
+                      collapsedCondition: (i) {
+                        switch (i) {
+                          case 1:
+                            return !showAlarmTab;
+                          case 2:
+                            return !showRecurrenceTab;
+                          case 3:
+                            return !showInfoItemTab;
+                          default:
+                            return false;
+                        }
+                      },
+                      tabs: <Widget>[
+                        TabItem(translate.name, AbiliaIcons.myPhotos),
+                        TabItem(translate.alarm, AbiliaIcons.attention),
+                        TabItem(translate.recurrence, AbiliaIcons.repeat),
+                        TabItem(translate.extra, AbiliaIcons.attachment),
+                      ],
+                    )
+                  : null,
+            ),
+            body: TabBarView(children: tabWidgets),
+            bottomNavigationBar: const WizardBottomNavigation(),
           ),
-          body: TabBarView(children: tabWidgets),
-          bottomNavigationBar: const WizardBottomNavigation(),
         ),
       ),
     );

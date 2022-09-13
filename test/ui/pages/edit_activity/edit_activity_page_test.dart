@@ -29,7 +29,7 @@ void main() {
   );
   final translate = Locales.language.values.first;
 
-  final timeFieldFinder = find.byType(TimeIntervallPicker);
+  final timeFieldFinder = find.byType(TimeIntervalPicker);
   final okButtonFinder = find.byType(OkButton);
   final cancelButtonFinder = find.byType(CancelButton);
 
@@ -1930,7 +1930,7 @@ text''';
       await tester.goToRecurrenceTab();
       // Assert
       expect(find.byType(RecurrenceTab), findsOneWidget);
-      expect(find.byType(TimeIntervallPicker), findsNothing);
+      expect(find.byType(TimeIntervalPicker), findsNothing);
     });
 
     testWidgets('No recurrance selected', (WidgetTester tester) async {
@@ -2213,7 +2213,7 @@ text''';
       await tester.scrollDown(dy: -100);
 
       // Act -- Change end time to 17:00
-      await tester.tap(find.byType(TimeIntervallPicker));
+      await tester.tap(find.byType(TimeIntervalPicker));
       await tester.pumpAndSettle();
       await tester.enterTime(endTimeInputFinder, '1700');
       await tester.pumpAndSettle();
@@ -2406,7 +2406,7 @@ text''';
     });
 
     testWidgets(
-        'Changing week days with no date set doesn\'t remove DatePicker',
+        'Changing week days with no date set does not remove DatePicker',
         (WidgetTester tester) async {
       // Arrange
       final activity = Activity.createNew(title: 'Title', startTime: startTime);
@@ -3614,6 +3614,240 @@ text''';
     await tester.pumpAndSettle();
     expect(find.byType(AbiliaAppBar), findsOneWidget);
     expect(find.byType(AbiliaTabBar), findsNothing);
+  });
+
+  group('Correcting errors', () {
+    Future<void> saveAndDismissErrorDialog(WidgetTester tester) async {
+      // Act -- Save and dismiss error dialog
+      await tester.tap(find.byType(SaveButton));
+      await tester.pumpAndSettle();
+      final prevButton = tester.firstWidget(find.descendant(
+          of: find.byType(ErrorDialog), matching: find.byType(PreviousButton)));
+      await tester.tap(find.byWidget(prevButton));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('Error marking is removed after adding recurring days - weekly',
+        (WidgetTester tester) async {
+      Weekly weeklyFinder() {
+        return tester.firstWidget(find.byType(Weekly)) as Weekly;
+      }
+
+      // Arrange
+      final activity = Activity.createNew(title: 'Title', startTime: startTime);
+      await tester.pumpWidget(createEditActivityPage(givenActivity: activity));
+      await tester.pumpAndSettle();
+
+      // Act -- Change to weekly
+      await tester.goToRecurrenceTab();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
+
+      // Assert -- Error marker is not shown before trying to save
+      expect(weeklyFinder().errorState, false);
+
+      // Act -- Deselect all days
+      final allSelectedDaysWidgets = tester.widgetList(
+        find.descendant(
+          of: find.byType(WeekDays),
+          matching: find.byWidgetPredicate(
+            (w) => w is SelectableField && w.selected,
+          ),
+        ),
+      );
+
+      for (var weekDay in allSelectedDaysWidgets) {
+        await tester.tap(find.byWidget(weekDay));
+        await tester.pumpAndSettle();
+      }
+
+      // Act -- Save and dismiss error dialog
+      await saveAndDismissErrorDialog(tester);
+
+      // Assert -- Error marker is shown
+      expect(weeklyFinder().errorState, true);
+
+      // Act -- Add a weekday
+      await tester.tap(
+        find
+            .descendant(
+              of: find.byType(WeekDays),
+              matching: find.byWidgetPredicate((w) => w is SelectableField),
+            )
+            .first,
+      );
+      await tester.pumpAndSettle();
+
+      // Assert -- Error marker is not shown after adding a weekday
+      expect(weeklyFinder().errorState, false);
+    });
+
+    testWidgets(
+        'Error marking is removed after adding recurring days - monthly',
+        (WidgetTester tester) async {
+      bool monthDaysAreErrorDecorated() {
+        final container = tester.firstWidget(
+          find.ancestor(
+            of: find.byType(MonthDays),
+            matching: find.byWidgetPredicate((w) => w is Container),
+          ),
+        ) as Container;
+
+        return container.decoration == errorBoxDecoration;
+      }
+
+      // Arrange
+      final activity = Activity.createNew(title: 'Title', startTime: startTime);
+      await tester.pumpWidget(createEditActivityPage(givenActivity: activity));
+      await tester.pumpAndSettle();
+
+      // Act -- Change to monthly
+      await tester.goToRecurrenceTab();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
+
+      // Assert -- Error marker is not shown before trying to save
+      expect(monthDaysAreErrorDecorated(), false);
+
+      // Act -- Deselect all days
+      final allSelectedDaysWidgets = tester.widgetList(
+        find.descendant(
+          of: find.byType(MonthDays),
+          matching: find.byWidgetPredicate(
+            (w) => w is SelectableField && w.selected,
+          ),
+        ),
+      );
+
+      for (var monthDay in allSelectedDaysWidgets) {
+        await tester.tap(find.byWidget(monthDay));
+        await tester.pumpAndSettle();
+      }
+
+      // Act -- Save and dismiss error dialog
+      await saveAndDismissErrorDialog(tester);
+
+      // Assert -- Error marker is shown
+      expect(monthDaysAreErrorDecorated(), true);
+
+      // Act -- Add a month day
+      await tester.tap(
+        find
+            .descendant(
+              of: find.byType(MonthDays),
+              matching: find.byWidgetPredicate((w) => w is SelectableField),
+            )
+            .first,
+      );
+      await tester.pumpAndSettle();
+
+      // Assert -- Error marker is not shown after adding a month day
+      expect(monthDaysAreErrorDecorated(), false);
+    });
+
+    testWidgets('Error marking is removed after adding recurring end date',
+        (WidgetTester tester) async {
+      bool endDateIsErrorDecorated() {
+        return (tester.firstWidget(find.byType(EndDateWidget)) as EndDateWidget)
+            .errorState;
+      }
+
+      // Arrange
+      final activity = Activity.createNew(title: 'Title', startTime: startTime);
+      await tester.pumpWidget(createEditActivityPage(givenActivity: activity));
+      await tester.pumpAndSettle();
+
+      // Act -- Change to monthly
+      await tester.goToRecurrenceTab();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
+
+      // Assert -- Error marker is not shown before trying to save
+      expect(endDateIsErrorDecorated(), false);
+
+      // Act -- Save and dismiss error dialog
+      await saveAndDismissErrorDialog(tester);
+
+      // Assert -- Error marker is shown
+      expect(endDateIsErrorDecorated(), true);
+
+      // Act -- Add an end date
+      await tester.tap(find.byIcon(AbiliaIcons.calendar));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('20'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      // Assert -- Error marker is not shown after adding end date
+      expect(endDateIsErrorDecorated(), false);
+    });
+
+    testWidgets('Error marking is removed after adding title',
+        (WidgetTester tester) async {
+      bool nameAndPictureIsErrorDecorated() {
+        return (tester.firstWidget(find.byType(NameAndPictureWidget))
+                as NameAndPictureWidget)
+            .errorState;
+      }
+
+      // Arrange
+      await tester.pumpWidget(createEditActivityPage(newActivity: true));
+      await tester.pumpAndSettle();
+
+      // Assert -- Error marker is not shown before trying to save
+      expect(nameAndPictureIsErrorDecorated(), false);
+
+      // Act -- Save and dismiss error dialog
+      await saveAndDismissErrorDialog(tester);
+
+      // Assert -- Error marker is shown
+      expect(nameAndPictureIsErrorDecorated(), true);
+
+      // Act -- Enter title
+      await tester.ourEnterText(
+        find.byKey(TestKey.editTitleTextFormField),
+        'activityTitle',
+      );
+
+      // Assert -- Error marker is not shown after entering a title
+      expect(nameAndPictureIsErrorDecorated(), false);
+    });
+
+    testWidgets('Error marking is removed after adding start time',
+        (WidgetTester tester) async {
+      bool timeIntervalIsErrorDecorated() {
+        return (tester.firstWidget(timeFieldFinder) as TimeIntervalPicker)
+            .startTimeError;
+      }
+
+      // Arrange
+      await tester.pumpWidget(createEditActivityPage(newActivity: true));
+      await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -100);
+
+      // Assert -- Error marker is not shown before trying to save
+      expect(timeIntervalIsErrorDecorated(), false);
+
+      // Act -- Save and dismiss error dialog
+      await saveAndDismissErrorDialog(tester);
+
+      // Assert -- Error marker is shown
+      expect(timeIntervalIsErrorDecorated(), true);
+
+      // Act -- Enter start time
+      await tester.tap(timeFieldFinder);
+      await tester.pumpAndSettle();
+      await tester.enterTime(startTimeInputFinder, '1100');
+      await tester.tap(okButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert -- Error marker is not shown after entering a start time
+      expect(timeIntervalIsErrorDecorated(), false);
+    });
   });
 }
 

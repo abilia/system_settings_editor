@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:seagull/utils/all.dart';
 
 class SupportPerson extends Equatable {
   const SupportPerson({
@@ -19,8 +20,8 @@ class SupportPerson extends Equatable {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'name': name,
-        'image': image,
+        'name': name.nullOnEmpty(),
+        'image': image.nullOnEmpty(),
       };
 
   static SupportPerson fromJson(Map<String, dynamic> json) => SupportPerson(
