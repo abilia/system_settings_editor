@@ -149,13 +149,12 @@ class PopAwareAlarmPage extends StatefulWidget {
 
 class _PopAwareAlarmPageState extends State<PopAwareAlarmPage> {
   bool isCanceled = false;
-  late final AlarmCanceler alarmCanceler;
+  late final RemoteAlarm remoteAlarm;
   @override
   void initState() {
-    alarmCanceler = AlarmCanceler(
+    remoteAlarm = RemoteAlarm(
       baseUrlDb: GetIt.I<BaseUrlDb>(),
       client: GetIt.I<ListenableClient>(),
-      notificationPlugin: notificationPlugin,
     );
     super.initState();
   }
@@ -164,16 +163,18 @@ class _PopAwareAlarmPageState extends State<PopAwareAlarmPage> {
   Widget build(BuildContext context) => WillPopScope(
         onWillPop: () async {
           AlarmNavigator.log.fine('onWillPop ${widget.alarm}');
-          widget.alarmNavigator.removedFromRoutes(widget.alarm);
+          widget.alarmNavigator.removedFromRoutes(widget.alarm.stackId);
           if (!isCanceled) {
-            alarmCanceler.stopAlarmSound(widget.alarm);
+            notificationPlugin.cancel(widget.alarm.hashCode);
           }
+          remoteAlarm.stop(widget.alarm, pop: true);
           return true;
         },
         child: BlocListener<TouchDetectionCubit, Touch>(
           listenWhen: (previous, current) => !isCanceled,
           listener: (context, state) async {
-            alarmCanceler.stopAlarmSound(widget.alarm);
+            notificationPlugin.cancel(widget.alarm.hashCode);
+            remoteAlarm.stop(widget.alarm);
             isCanceled = true;
           },
           child: widget.child,

@@ -10,4 +10,4 @@ export 'data_repository/all.dart';
 export 'device_repository.dart';
 export 'json_response.dart';
 export 'directories.dart';
-export 'alarm_canceler.dart';
+export 'remote_alarm.dart';

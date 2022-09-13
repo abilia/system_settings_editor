@@ -487,8 +487,9 @@ void main() {
   });
 
   group('Stopping alarms', () {
-    testWidgets('touching page stops alarms and sends to packend',
-        (WidgetTester tester) async {
+    testWidgets(
+        'touching page stops alarms '
+        'and sends to backend to stop sound', (WidgetTester tester) async {
       final alarm = StartAlarm(
         ActivityDay(Activity.createNew(startTime: startTime), day),
       );
@@ -518,11 +519,13 @@ void main() {
 
       expect(
         captured.single,
-        '{"${AlarmCanceler.cancelAlarmKey}":${alarm.hashCode}}',
+        '{"${RemoteAlarm.stopSoundKey}":${alarm.hashCode}}',
       );
     });
 
-    testWidgets('go back on alarm stops alarms and sends to packend',
+    testWidgets(
+        'go back on alarm stops alarms '
+        'and sends to backend to stop alarm sound and pop',
         (WidgetTester tester) async {
       final alarm = StartAlarm(
         ActivityDay(Activity.createNew(startTime: startTime), day),
@@ -554,7 +557,10 @@ void main() {
 
       expect(
         captured.single,
-        '{"${AlarmCanceler.cancelAlarmKey}":${alarm.hashCode}}',
+        '{'
+        '"${RemoteAlarm.popKey}":"${alarm.stackId}",'
+        '"${RemoteAlarm.stopSoundKey}":${alarm.hashCode}'
+        '}',
       );
     });
   });

@@ -34,10 +34,19 @@ class AlarmListener extends StatelessWidget {
           ),
           BlocListener<PushCubit, RemoteMessage>(
             listenWhen: (previous, current) =>
-                current.data.containsKey(AlarmCanceler.cancelAlarmKey),
+                current.data.containsKey(RemoteAlarm.stopSoundKey) ||
+                current.data.containsKey(RemoteAlarm.popKey),
             listener: (context, state) {
-              final id = state.alarmKey;
-              if (id != null) notificationPlugin.cancel(id);
+              final hash = state.stopAlarmSoundKey;
+              if (hash != null) notificationPlugin.cancel(hash);
+              final stackId = state.popAlarmKey;
+              if (stackId != null) {
+                final route =
+                    GetIt.I<AlarmNavigator>().removedFromRoutes(stackId);
+                if (route != null) {
+                  Navigator.of(context).removeRoute(route);
+                }
+              }
             },
           ),
         ],

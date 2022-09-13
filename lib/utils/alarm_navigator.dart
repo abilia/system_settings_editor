@@ -99,9 +99,9 @@ class AlarmNavigator {
                     : throw UnsupportedError('$alarm not supported'),
       );
 
-  MaterialPageRoute? removedFromRoutes(NotificationAlarm alarm) {
-    log.info('removedFromRoutes: $alarm');
-    return _routesOnStack.remove(alarm.stackId);
+  MaterialPageRoute? removedFromRoutes(String stackId) {
+    log.info('removedFromRoutes: $stackId');
+    return _routesOnStack.remove(stackId);
   }
 
   void clearAlarmStack() => _routesOnStack.clear();

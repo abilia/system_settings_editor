@@ -1029,7 +1029,9 @@ void main() {
   });
 
   group('stopping alarm on push', () {
-    testWidgets('timer alarm is canceled', (WidgetTester tester) async {
+    testWidgets('timer alarm stoped sound and poped',
+        (WidgetTester tester) async {
+      // Arrange
       final t = AbiliaTimer.createNew(
           startTime: DateTime(2011, 11, 11, 11, 11), duration: 1.minutes());
       final timerAlarm = TimerAlarm(t);
@@ -1038,24 +1040,31 @@ void main() {
       when(() => mockTimerDb.getRunningTimersFrom(any()))
           .thenAnswer((_) => Future.value([t]));
       final pushCubit = PushCubit();
-
       await tester.pumpWidget(App(
         pushCubit: pushCubit,
       ));
       await tester.pumpAndSettle();
       selectNotificationSubject.add(TimerAlarm(t));
       await tester.pumpAndSettle();
+      // Act
       expect(find.byType(TimerAlarmPage), findsOneWidget);
       pushCubit.fakePush(
-        data: {AlarmCanceler.cancelAlarmKey: '${timerAlarm.hashCode}'},
+        data: {
+          RemoteAlarm.stopSoundKey: '${timerAlarm.hashCode}',
+          RemoteAlarm.popKey: timerAlarm.stackId,
+        },
       );
       await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byType(TimerAlarmPage), findsNothing);
       final captured = verify(() => notificationsPluginInstance!
           .cancel(captureAny(), tag: any(named: 'tag'))).captured;
       expect(captured.single, timerAlarm.hashCode);
     });
 
-    testWidgets('Activity Alarms is canceled', (WidgetTester tester) async {
+    testWidgets('Activity Alarms stop sound and poped',
+        (WidgetTester tester) async {
       // Arrange
       final pushCubit = PushCubit();
       await tester.pumpWidget(App(
@@ -1065,13 +1074,42 @@ void main() {
       // Act
       mockTicker.add(activityWithAlarmTime);
       await tester.pumpAndSettle();
-      // Assert
-
       expect(find.byType(AlarmPage), findsOneWidget);
       pushCubit.fakePush(
-        data: {AlarmCanceler.cancelAlarmKey: '${payload.hashCode}'},
+        data: {
+          RemoteAlarm.stopSoundKey: '${payload.hashCode}',
+          RemoteAlarm.popKey: payload.stackId,
+        },
+      );
+
+      // Assert
+      await tester.pumpAndSettle();
+      expect(find.byType(AlarmPage), findsNothing);
+      final captured = verify(() => notificationsPluginInstance!
+          .cancel(captureAny(), tag: any(named: 'tag'))).captured;
+      expect(captured.single, payload.hashCode);
+    });
+
+    testWidgets('Alarms just sound and not poped', (WidgetTester tester) async {
+      // Arrange
+      final pushCubit = PushCubit();
+      await tester.pumpWidget(App(
+        pushCubit: pushCubit,
+      ));
+      await tester.pumpAndSettle();
+
+      // Act
+      mockTicker.add(activityWithAlarmTime);
+      await tester.pumpAndSettle();
+      pushCubit.fakePush(
+        data: {
+          RemoteAlarm.stopSoundKey: '${payload.hashCode}',
+        },
       );
       await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byType(AlarmPage), findsOneWidget);
       final captured = verify(() => notificationsPluginInstance!
           .cancel(captureAny(), tag: any(named: 'tag'))).captured;
       expect(captured.single, payload.hashCode);

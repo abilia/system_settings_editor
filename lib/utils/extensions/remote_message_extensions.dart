@@ -2,8 +2,16 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/repository/all.dart';
 
 extension AlarmKeyExtension on RemoteMessage {
-  int? get alarmKey {
-    final idString = data[AlarmCanceler.cancelAlarmKey];
+  String? get popAlarmKey {
+    final idString = data[RemoteAlarm.popKey];
+    if (idString is String) {
+      return idString;
+    }
+    return null;
+  }
+
+  int? get stopAlarmSoundKey {
+    final idString = data[RemoteAlarm.stopSoundKey];
     if (idString is String) {
       return int.tryParse(idString);
     }
