@@ -19,3 +19,4 @@ export 'alarm_extensions.dart';
 export 'activities_extensions.dart';
 export 'string_extensions.dart';
 export 'logger_extensions.dart';
+export 'remote_message_extensions.dart';

@@ -1027,4 +1027,54 @@ void main() {
       });
     });
   });
+
+  group('stopping alarm on push', () {
+    testWidgets('timer alarm is canceled', (WidgetTester tester) async {
+      final t = AbiliaTimer.createNew(
+          startTime: DateTime(2011, 11, 11, 11, 11), duration: 1.minutes());
+      final timerAlarm = TimerAlarm(t);
+      when(() => mockTimerDb.getAllTimers())
+          .thenAnswer((_) => Future.value([t]));
+      when(() => mockTimerDb.getRunningTimersFrom(any()))
+          .thenAnswer((_) => Future.value([t]));
+      final pushCubit = PushCubit();
+
+      await tester.pumpWidget(App(
+        pushCubit: pushCubit,
+      ));
+      await tester.pumpAndSettle();
+      selectNotificationSubject.add(TimerAlarm(t));
+      await tester.pumpAndSettle();
+      expect(find.byType(TimerAlarmPage), findsOneWidget);
+      pushCubit.fakePush(
+        data: {AlarmCanceler.cancelAlarmKey: '${timerAlarm.hashCode}'},
+      );
+      await tester.pumpAndSettle();
+      final captured = verify(() => notificationsPluginInstance!
+          .cancel(captureAny(), tag: any(named: 'tag'))).captured;
+      expect(captured.single, timerAlarm.hashCode);
+    });
+
+    testWidgets('Activity Alarms is canceled', (WidgetTester tester) async {
+      // Arrange
+      final pushCubit = PushCubit();
+      await tester.pumpWidget(App(
+        pushCubit: pushCubit,
+      ));
+      await tester.pumpAndSettle();
+      // Act
+      mockTicker.add(activityWithAlarmTime);
+      await tester.pumpAndSettle();
+      // Assert
+
+      expect(find.byType(AlarmPage), findsOneWidget);
+      pushCubit.fakePush(
+        data: {AlarmCanceler.cancelAlarmKey: '${payload.hashCode}'},
+      );
+      await tester.pumpAndSettle();
+      final captured = verify(() => notificationsPluginInstance!
+          .cancel(captureAny(), tag: any(named: 'tag'))).captured;
+      expect(captured.single, payload.hashCode);
+    });
+  });
 }

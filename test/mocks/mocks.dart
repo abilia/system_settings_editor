@@ -61,7 +61,7 @@ class MockScrollController extends Mock implements ScrollController {}
 
 class MockScrollPosition extends Mock implements ScrollPosition {}
 
-class MockBaseClient extends Mock implements BaseClient {}
+class MockBaseClient extends Mock implements BaseClient, ListenableClient {}
 
 // Storage
 class MockFileStorage extends Mock implements FileStorage {}

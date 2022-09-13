@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -69,6 +70,7 @@ void main() {
   late MockUserFileCubit mockUserFileCubit;
   late MockActivitiesBloc mockActivitiesBloc;
   late MockActivityRepository mockActivityRepository;
+  late MockBaseClient mockClient;
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
@@ -174,12 +176,19 @@ void main() {
     mockActivityRepository = MockActivityRepository();
     when(() => mockActivitiesBloc.activityRepository)
         .thenAnswer((_) => mockActivityRepository);
+
+    mockClient = MockBaseClient();
+    when(() => mockClient.post(any(),
+            headers: any(named: 'headers'), body: any(named: 'body')))
+        .thenAnswer((invocation) async => Response('body', 200));
+
     await initializeDateFormatting();
     GetItInitializer()
       ..fileStorage = FakeFileStorage()
       ..database = FakeDatabase()
       ..ticker = Ticker.fake(initialTime: startTime)
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
+      ..client = mockClient
       ..init();
   });
 
@@ -475,6 +484,79 @@ void main() {
         greaterThanOrEqualTo(unsignedOffActivityReminders.length + 1),
       ),
     );
+  });
+
+  group('Stopping alarms', () {
+    testWidgets('touching page stops alarms and sends to packend',
+        (WidgetTester tester) async {
+      final alarm = StartAlarm(
+        ActivityDay(Activity.createNew(startTime: startTime), day),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: alarm,
+            alarmNavigator: alarmNavigator,
+            child: AlarmPage(alarm: alarm),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tapAt(tester.getCenter(find.byType(AlarmPage)));
+      await tester.pumpAndSettle();
+
+      expect(
+        localNotificationLog
+            .where((call) => call.method == 'cancel')
+            .single
+            .arguments,
+        {'id': alarm.hashCode, 'tag': null},
+      );
+      final captured = verify(() => mockClient.post(any(),
+          headers: any(named: 'headers'),
+          body: captureAny(named: 'body'))).captured;
+
+      expect(
+        captured.single,
+        '{"${AlarmCanceler.cancelAlarmKey}":${alarm.hashCode}}',
+      );
+    });
+
+    testWidgets('go back on alarm stops alarms and sends to packend',
+        (WidgetTester tester) async {
+      final alarm = StartAlarm(
+        ActivityDay(Activity.createNew(startTime: startTime), day),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: alarm,
+            alarmNavigator: alarmNavigator,
+            child: AlarmPage(alarm: alarm),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      final dynamic widgetsAppState = tester.state(find.byType(WidgetsApp));
+      await widgetsAppState.didPopRoute();
+      await tester.pumpAndSettle();
+
+      expect(
+        localNotificationLog
+            .where((call) => call.method == 'cancel')
+            .single
+            .arguments,
+        {'id': alarm.hashCode, 'tag': null},
+      );
+      final captured = verify(() => mockClient.post(any(),
+          headers: any(named: 'headers'),
+          body: captureAny(named: 'body'))).captured;
+
+      expect(
+        captured.single,
+        '{"${AlarmCanceler.cancelAlarmKey}":${alarm.hashCode}}',
+      );
+    });
   });
 
   group('When checkable activity shows check button', () {
