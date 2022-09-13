@@ -1,9 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/utils/licenses.dart';
+import 'package:seagull/utils/all.dart';
 
 part 'login_state.dart';
 
@@ -38,7 +39,15 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith());
   }
 
-  void loginButtonPressed() async {
+  void loginButtonPressed() {
+    _login();
+  }
+
+  void confirmLicenseExpiredWarning() {
+    _login(confirmExpiredLicense: true);
+  }
+
+  void _login({bool confirmExpiredLicense = false}) async {
     emit(state.loading());
     if (!state.isUsernameValid) {
       emit(state.failure(cause: LoginFailureCause.noUsername));
@@ -60,14 +69,15 @@ class LoginCubit extends Cubit<LoginState> {
       userRepository.persistLoginInfo(loginInfo);
       final licenses = await userRepository.getLicensesFromApi();
       if (licenses.anyValidLicense(clockBloc.state)) {
-        authenticationBloc.add(const LoggedIn());
-        emit(const LoginSucceeded());
+        _loginSuccess();
+      } else if (Config.isMP && licenses.anyMemoplannerLicense()) {
+        if (confirmExpiredLicense) {
+          _loginSuccess();
+        } else {
+          emit(state.failure(cause: LoginFailureCause.licenseExpired));
+        }
       } else {
-        emit(state.failure(
-          cause: licenses.anyMemoplannerLicense()
-              ? LoginFailureCause.licenseExpired
-              : LoginFailureCause.noLicense,
-        ));
+        emit(state.failure(cause: LoginFailureCause.noLicense));
       }
     } on UnauthorizedException {
       emit(state.failure(cause: LoginFailureCause.credentials));
@@ -79,9 +89,15 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  static const minUsernameLenght = 3;
+  void _loginSuccess() {
+    authenticationBloc.add(const LoggedIn());
+    emit(const LoginSucceeded());
+  }
+
+  static const minUsernameLength = 3;
+
   static bool usernameValid(String username) =>
-      username.length >= minUsernameLenght;
+      username.length >= minUsernameLength;
 
   static bool passwordValid(String password) => password.isNotEmpty;
 }

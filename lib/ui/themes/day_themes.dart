@@ -89,7 +89,7 @@ final _noColor = DayTheme._light(
     _saturday = DayTheme._light(AbiliaColors.pink, AbiliaColors.saturdayPink40),
     _danishTuesday =
         DayTheme._light(AbiliaColors.purple60, AbiliaColors.purple40),
-    _danishWednesDay =
+    _danishWednesday =
         DayTheme._light(AbiliaColors.orange120, AbiliaColors.orange60);
 
 DayTheme weekdayTheme({
@@ -135,7 +135,7 @@ DayTheme _danish(int weekday) {
     case DateTime.tuesday:
       return _danishTuesday;
     case DateTime.wednesday:
-      return _danishWednesDay;
+      return _danishWednesday;
     case DateTime.thursday:
       return _blue;
     case DateTime.friday:

@@ -33,12 +33,16 @@ class LicenseCubit extends Cubit<LicenseState> {
 
   final UserRepository userRepository;
 
+  bool get validLicense => state is ValidLicense;
+
   void reloadLicenses() async {
     final licenses = await userRepository.getLicenses();
     if (licenses.anyValidLicense(clockBloc.state)) {
       emit(ValidLicense());
-    } else {
+    } else if (licenses.anyMemoplannerLicense()) {
       emit(NoValidLicense());
+    } else {
+      emit(NoLicense());
     }
   }
 

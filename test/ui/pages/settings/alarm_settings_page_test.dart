@@ -14,7 +14,7 @@ import '../../../test_helpers/app_pumper.dart';
 import '../../../test_helpers/verify_generic.dart';
 
 void main() {
-  group('Alarm setting spage', () {
+  group('Alarm settings page', () {
     final translate = Locales.language.values.first;
     final initialTime = DateTime(2021, 04, 17, 09, 20);
     Iterable<Generic> generics = [];

@@ -28,11 +28,6 @@ class ActivityDbInMemory implements ActivityDb {
   Database get db => throw UnimplementedError();
 
   @override
-  Future<Iterable<Activity>> getAll() async {
-    return activities.map((e) => e.model);
-  }
-
-  @override
   Future<Iterable<Activity>> getAllAfter(DateTime time) async {
     return activities.map((e) => e.model).where((a) => !a.deleted);
   }
@@ -57,9 +52,6 @@ class ActivityDbInMemory implements ActivityDb {
 
   @override
   String get getAllNonDeletedSql => throw UnimplementedError();
-
-  @override
-  String get getAllSql => throw UnimplementedError();
 
   @override
   Future<DbModel<Activity>?> getById(String id) async {

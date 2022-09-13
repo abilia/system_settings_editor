@@ -103,4 +103,7 @@ class SortableRepository extends DataRepository<Sortable> {
     }
     return false;
   }
+
+  @override
+  Future<Iterable<Sortable<SortableData>>> getAll() => db.getAllNonDeleted();
 }

@@ -1,8 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:package_info/package_info.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:collection/collection.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
@@ -81,7 +81,7 @@ void main() {
         home: widget,
       );
 
-  testWidgets('Settings page shows', (WidgetTester tester) async {
+  testWidgets('Log out page shows', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.powerOffOn), findsOneWidget);

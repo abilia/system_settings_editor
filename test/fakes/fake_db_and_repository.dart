@@ -66,6 +66,8 @@ class FakeUserFileDb extends Fake implements UserFileDb {
   @override
   Future<Iterable<UserFile>> getAllLoadedFiles() => Future.value([]);
   @override
+  Future<Iterable<DbModel<UserFile>>> getAllDirty() => Future.value([]);
+  @override
   Future<int> getLastRevision() => Future.value(0);
   @override
   Future insert(Iterable<DbModel<UserFile>> dataModels) => Future.value();
@@ -120,6 +122,8 @@ class FakeActivityDb extends Fake implements ActivityDb {
   @override
   Future<Iterable<Activity>> getAllBetween(DateTime start, DateTime end) =>
       Future.value([]);
+  @override
+  Future<Iterable<DbModel<Activity>>> getAllDirty() => Future.value([]);
 }
 
 class FakeDatabase extends Fake implements Database {

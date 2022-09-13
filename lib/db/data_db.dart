@@ -20,7 +20,6 @@ abstract class DataDb<M extends DataModel> {
   String get getByIdSql => 'SELECT * FROM $tableName WHERE id == ?';
   String get getAllNonDeletedSql =>
       'SELECT * FROM $tableName WHERE deleted == 0';
-  String get getAllSql => 'SELECT * FROM $tableName';
   String get maxRevisionSql =>
       'SELECT max(revision) as max_revision FROM $tableName';
 
@@ -57,11 +56,6 @@ abstract class DataDb<M extends DataModel> {
     } else {
       return null;
     }
-  }
-
-  Future<Iterable<M>> getAll() async {
-    final result = await db.rawQuery(getAllSql);
-    return rowsToModels(result);
   }
 
   Future<Iterable<M>> getAllNonDeleted() async {

@@ -14,7 +14,6 @@ void main() {
     mockSortableRepository = MockSortableRepository();
     sortableBloc = SortableBloc(
       sortableRepository: mockSortableRepository,
-      pushCubit: FakePushCubit(),
       syncBloc: FakeSyncBloc(),
     );
   });
@@ -24,7 +23,7 @@ void main() {
   });
 
   test('Sortables loaded after successful loading of sortables', () async {
-    when(() => mockSortableRepository.load())
+    when(() => mockSortableRepository.getAll())
         .thenAnswer((_) => Future.value([]));
     sortableBloc.add(const LoadSortables());
     await expectLater(
@@ -34,7 +33,7 @@ void main() {
   });
 
   test('State is SortablesLoadedFailed if repository fails to load', () async {
-    when(() => mockSortableRepository.load()).thenThrow(Exception());
+    when(() => mockSortableRepository.getAll()).thenThrow(Exception());
     sortableBloc.add(const LoadSortables());
     await expectLater(
       sortableBloc.stream,
@@ -43,7 +42,7 @@ void main() {
   });
 
   test('Defaults are created', () async {
-    when(() => mockSortableRepository.load())
+    when(() => mockSortableRepository.getAll())
         .thenAnswer((_) => Future.value([]));
     when(() => mockSortableRepository.createUploadsFolder())
         .thenAnswer((_) => Future.value());
@@ -69,7 +68,7 @@ void main() {
       sortOrder: 'A',
       data: const ImageArchiveData(upload: true),
     );
-    when(() => mockSortableRepository.load())
+    when(() => mockSortableRepository.getAll())
         .thenAnswer((_) => Future.value([uploadFolder]));
     when(() => mockSortableRepository.save(any()))
         .thenAnswer((_) => Future.value(true));

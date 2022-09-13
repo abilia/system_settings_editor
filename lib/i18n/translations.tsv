@@ -43,8 +43,9 @@ backToLogin	Back to Login	Tillbaka till login	Zurück zur Anmeldung	Zurück zur 
 ### License							
 noLicense	This account has no valid license.	Det här kontot saknar giltig licens. Du kan därför inte logga in.	Problemer med at logge ind!\nDu har ikke en gyldig licens.	Dit account heeft geen geldige licentie.	Tällä tilillä ei ole kelvollista lisenssiä.	Für dieses Konto gibt es keine gültige Lizenz.	Problemer med å logge inn!\nDu har ikke en gyldig lisens.
 licenseExpired	License is expired	Licensen har gått ut	Licensen er udløbet	Licentie verlopen	Lisenssi on vanhentunut	Lizenz abgelaufen	Lisensen har utløpt
-licenseExpiredMessage	Your license has expired and MEMOplanner Go can no longer be used. Contact your supplier to extend the license.	Licensen har gått ut och Memoplanner kan därför inte längre användas. Kontakta din förskrivare om du vill förlänga licensen.	Licensen er udløbet, og MEMOplanner Go kan ikke længere bruges. Kontakt din bevilgende kontaktperson, hvis du ønsker at forlænge licensen.	De licentie is verlopen en MEMOplanner Go kan niet langer worden gebruikt. Neem contact op met uw aanbieder om de licentie te verlengen.	Lisenssisi on vanhentunut, eikä Memoplanneria voi enää käyttää. Jatka lisenssiä ottamalla yhteyttä jälleenmyyjään.	Ihre Lizenz ist abgelaufen und MEMOplanner Go kann nicht mehr genutzt werden. Wenden Sie sich an Ihre Bezugsquelle, um die Lizenz zu verlängern.	Lisensen er utløpt og MEMOplanner Go kan ikke lenger brukes. Kontakt din forskriver hvis du ønsker å forlenge lisensen.
+licenseExpiredMessage	Your license has expired and MEMOplanner will no longer synchronize with myAbilia	Licensen har gått ut och MEMOplanner kommer inte längre att synkronisera med myAbilia	Licensen er udløbet, og MEMOplanner vil ikke længere synkronisere med myAbilia	Uw licentie is verlopen en MEMOplanner zal niet langer synchroniseren met myAbilia	Lisenssisi on vanhentunut, eikä MEMOplanner enää synkronoidu myAbilian kanssa	Ihre Lizenz ist abgelaufen und MEMOplanner kann nicht mehr mit myAbilia synchronisiert werden	Lisensen har utløpt og Memoplanner vil ikke lenger kunne synkronisere med myAbilia
 toLogin	to Log in	till Logga in	til Log ind	naar Inloggen	kirjautumissivulle	zur Anmelden	til Logg inn
+licenseExpiredLogOutWarning	License is expired, all data will be lost if you log out						
 							
 ### Time related							
 fullDay	All day	Heldag	Hele dagen	Hele dag	Koko päivä	Ganztägig	Hele dagen
@@ -342,11 +343,11 @@ showAlarm	Show alarm	Visa larm	Vis alarm	Alarmen weergeven	Näytä hälytykset	A
 showVibrationAlarm	Show vibration	Visa vibration	Vis vibration	Trilfunctie tonen	Näytä värinä	Vibration anzeigen	Vis vibrasjon
 showSilentAlarm	Show silent alarm	Visa tyst larm	Vis stille alarm	Stille alarmen weergeven	Näytä hiljaiset hälytykset	Stille Alarme anzeigen	Vis stille alarm
 showNoAlarm	Show no alarm	Visa inget larm	Vis ingen alarm	Geen alarmen weergeven	Älä näytä hälytystä	Kein Alarm anzeigen	Vis ingen alarm
-showAlarmOnlyAtStartTime	Show alarm only at start time
-showSpeechAtAlarm	Show speech at alarm
-showReminders	Show reminders
-showSelectEndDate	Show select end date
-recurring	Recurring
+showAlarmOnlyAtStartTime	Show alarm only at start time						
+showSpeechAtAlarm	Show speech at alarm						
+showReminders	Show reminders						
+showSelectEndDate	Show select end date						
+recurring	Recurring						
 throughEditView	Through Edit View	Via Ändravyn	Via Redigersiden	Door bewerkweergave	Muokkausnäkymässä	Durch Bearbeitungsanzeige	Via endrevindu
 androidSettings	Android Settings	Android-inställningar	Android-indstillinger	Android-instellingen	Android-asetukset	Android-Einstellungen	Android-innstillinger
 stepByStep	Step-by-step	Stegvis	Trinvist	Stap voor stap	Vaihe vaiheelta	Schritt für Schritt	Via sekvens

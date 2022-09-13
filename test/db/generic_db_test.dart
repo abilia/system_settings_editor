@@ -14,7 +14,7 @@ void main() {
   });
 
   test('Several with same identifier should get last revision', () async {
-    final all = await genericDb.getAll();
+    final all = await genericDb.getAllNonDeleted();
     expect(all.length, 0);
 
     final g1 =

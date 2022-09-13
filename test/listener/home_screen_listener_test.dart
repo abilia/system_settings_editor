@@ -72,20 +72,22 @@ void main() {
     });
 
     Widget _wrapWithMaterialApp({Widget? child}) => TopLevelProvider(
-          child: AuthenticatedBlocsProvider(
-            memoplannerSettingBloc: mockSettingBloc,
-            authenticatedState: const Authenticated(userId: 1),
-            child: BlocProvider<InactivityCubit>(
-              create: (context) => inactivityCubit,
-              child: MaterialApp(
-                theme: abiliaTheme,
-                home: MultiBlocListener(
-                  listeners: [
-                    CalendarInactivityListener(),
-                    ScreensaverListener(),
-                  ],
-                  child: ReturnToHomeScreenListener(
-                    child: child ?? const CalendarPage(),
+          child: AuthenticationBlocProvider(
+            child: AuthenticatedBlocsProvider(
+              memoplannerSettingBloc: mockSettingBloc,
+              authenticatedState: const Authenticated(userId: 1),
+              child: BlocProvider<InactivityCubit>(
+                create: (context) => inactivityCubit,
+                child: MaterialApp(
+                  theme: abiliaTheme,
+                  home: MultiBlocListener(
+                    listeners: [
+                      CalendarInactivityListener(),
+                      ScreensaverListener(),
+                    ],
+                    child: ReturnToHomeScreenListener(
+                      child: child ?? const CalendarPage(),
+                    ),
                   ),
                 ),
               ),
@@ -269,6 +271,8 @@ void main() {
       final mockGenericDb = MockGenericDb();
       when(() => mockGenericDb.getAllNonDeletedMaxRevision())
           .thenAnswer((_) => Future.value(genericResponse()));
+      when(() => mockGenericDb.getAllDirty())
+          .thenAnswer((_) => Future.value([]));
 
       final mockTimerDb = MockTimerDb();
       when(() => mockTimerDb.getAllTimers())

@@ -38,16 +38,11 @@ abstract class DataRepository<M extends DataModel> extends Repository {
   /// returns true if any data need to be synced after saved
   Future<bool> save(Iterable<M> data) => db.insertAndAddDirty(data);
 
-  Future<Iterable<M>> load() async {
-    await fetchIntoDatabaseSynchronized();
-    return db.getAllNonDeleted();
-  }
+  Future<Iterable<M>> getAll();
 
-  Future<void> fetchIntoDatabaseSynchronized() {
-    return synchronized(fetchIntoDatabase);
-  }
+  Future<void> fetchIntoDatabaseSynchronized() =>
+      synchronized(fetchIntoDatabase);
 
-  @protected
   Future<void> fetchIntoDatabase() async {
     log.fine('loading $path...');
     try {
@@ -84,7 +79,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
         final res = await postData(dirtyData);
         if (res.succeded.isNotEmpty) {
           // Update revision and dirty for all successful saves
-          await handleSuccessfullSync(res.succeded, dirtyData);
+          await handleSuccessfulSync(res.succeded, dirtyData);
         }
         if (res.failed.isNotEmpty) {
           // If we have failed a fetch from backend needs to be performed
@@ -140,7 +135,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
   }
 
   @protected
-  Future handleSuccessfullSync(
+  Future handleSuccessfulSync(
     Iterable<DataRevisionUpdate> succeeded,
     Iterable<DbModel<M>> dirtyData,
   ) async {

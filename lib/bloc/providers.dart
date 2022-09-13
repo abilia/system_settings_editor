@@ -72,18 +72,20 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           providers: [
             BlocProvider<SyncBloc>(
               create: (context) => SyncBloc(
+                pushCubit: context.read<PushCubit>(),
+                licenseCubit: context.read<LicenseCubit>(),
                 activityRepository: context.read<ActivityRepository>(),
                 userFileRepository: context.read<UserFileRepository>(),
                 sortableRepository: context.read<SortableRepository>(),
                 genericRepository: context.read<GenericRepository>(),
                 syncDelay: GetIt.I<SyncDelays>(),
-              ),
+              )..add(const SyncAll()),
+              lazy: false,
             ),
             BlocProvider<ActivitiesBloc>(
               create: (context) => ActivitiesBloc(
                 activityRepository: context.read<ActivityRepository>(),
                 syncBloc: context.read<SyncBloc>(),
-                pushCubit: context.read<PushCubit>(),
               )..add(LoadActivities()),
             ),
             BlocProvider<TimerCubit>(
@@ -102,6 +104,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               create: (context) => WeekCalendarCubit(
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 activityRepository: context.read<ActivityRepository>(),
+                timerAlarmBloc: context.read<TimerAlarmBloc>(),
                 clockBloc: context.read<ClockBloc>(),
               ),
             ),
@@ -110,25 +113,22 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 userFileRepository: context.read<UserFileRepository>(),
                 syncBloc: context.read<SyncBloc>(),
                 fileStorage: GetIt.I<FileStorage>(),
-                pushCubit: context.read<PushCubit>(),
               )..loadUserFiles(),
               lazy: false,
             ),
             BlocProvider<SortableBloc>(
-              create: (context) => sortableBloc ??
+              create: (context) =>
+                  sortableBloc ??
                   SortableBloc(
                     sortableRepository: context.read<SortableRepository>(),
                     syncBloc: context.read<SyncBloc>(),
-                    pushCubit: context.read<PushCubit>(),
-                  )
-                ..add(const LoadSortables(initDefaults: true)),
+                  ),
               lazy: false,
             ),
             BlocProvider<GenericCubit>(
               create: (context) => GenericCubit(
                 genericRepository: context.read<GenericRepository>(),
                 syncBloc: context.read<SyncBloc>(),
-                pushCubit: context.read<PushCubit>(),
               )..loadGenerics(),
             ),
             BlocProvider<MemoplannerSettingBloc>(

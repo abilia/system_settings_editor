@@ -5,7 +5,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-mixin TimerNavigator {
+mixin TimerNavigation {
   Future<void> navigateToBasicTimerPage(
       BuildContext context, List<BlocProvider> authProviders) async {
     final navigator = Navigator.of(context);

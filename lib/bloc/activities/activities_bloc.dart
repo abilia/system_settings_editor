@@ -2,30 +2,26 @@ import 'dart:async';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
 part 'activities_event.dart';
+
 part 'activities_state.dart';
 
 class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     with EditRecurringMixin {
   final ActivityRepository activityRepository;
-  late final StreamSubscription pushSubscription;
   final SyncBloc syncBloc;
+  late final StreamSubscription _syncSubscription;
 
   ActivitiesBloc({
     required this.activityRepository,
     required this.syncBloc,
-    required PushCubit pushCubit,
   }) : super(ActivitiesNotLoaded()) {
-    pushSubscription = pushCubit.stream.listen((state) {
-      if (state is PushReceived) {
-        add(LoadActivities());
-      }
-    });
+    _syncSubscription =
+        syncBloc.stream.listen((state) => add(LoadActivities()));
     on<ActivitiesEvent>(_onEvent, transformer: sequential());
   }
 
@@ -55,8 +51,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     Emitter<ActivitiesState> emit,
   ) async {
     try {
-      final activities = await activityRepository.load();
-      emit(ActivitiesLoaded(activities));
+      emit(ActivitiesLoaded(await activityRepository.getAll()));
     } catch (_) {
       emit(ActivitiesLoadedFailed());
     }
@@ -176,7 +171,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
 
   @override
   Future<void> close() async {
-    await pushSubscription.cancel();
+    await _syncSubscription.cancel();
     return super.close();
   }
 }

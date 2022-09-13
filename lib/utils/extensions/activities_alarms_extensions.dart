@@ -13,12 +13,14 @@ const List<Duration> unsignedOffActivityReminders = [
   Duration(hours: 1, minutes: 45),
   Duration(hours: 2),
 ];
+final maxReminder =
+    unsignedOffActivityReminders.reduce((v, e) => v > e ? v : e);
 
 Iterable<ReminderUnchecked> uncheckedReminders(ActivityDay activityDay) =>
     unsignedOffActivityReminders
         .map((r) => ReminderUnchecked(activityDay, reminder: r));
 
-extension IterableActivity on Iterable<Activity> {
+extension AlarmsExtension on Iterable<Activity> {
   List<ActivityAlarm> alarmsOnExactMinute(DateTime time) => _alarmsForDay(
         time,
         startTimeTest: (a) => a.start.isAtSameMomentAs(time),

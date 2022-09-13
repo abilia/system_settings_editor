@@ -18,7 +18,8 @@ enum _AddButtonConfiguration {
   newActivityAndNewTimer,
 }
 
-class AddButton extends StatelessWidget with ActivityNavigator, TimerNavigator {
+class AddButton extends StatelessWidget
+    with ActivityNavigation, TimerNavigation {
   const AddButton({Key? key}) : super(key: key);
 
   @override

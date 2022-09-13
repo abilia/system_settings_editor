@@ -37,19 +37,21 @@ void main() {
     SortableBloc? sortableBloc,
   }) =>
       TopLevelProvider(
-        child: AuthenticatedBlocsProvider(
-          memoplannerSettingBloc: memoplannerSettingBloc,
-          sortableBloc: sortableBloc,
-          authenticatedState: const Authenticated(userId: 1),
-          child: MaterialApp(
-            theme: abiliaTheme,
-            supportedLocales: Translator.supportedLocals,
-            localizationsDelegates: const [Translator.delegate],
-            localeResolutionCallback: (locale, supportedLocales) =>
-                supportedLocales.firstWhere(
-                    (l) => l.languageCode == locale?.languageCode,
-                    orElse: () => supportedLocales.first),
-            home: Material(child: widget),
+        child: AuthenticationBlocProvider(
+          child: AuthenticatedBlocsProvider(
+            memoplannerSettingBloc: memoplannerSettingBloc,
+            sortableBloc: sortableBloc,
+            authenticatedState: const Authenticated(userId: 1),
+            child: MaterialApp(
+              theme: abiliaTheme,
+              supportedLocales: Translator.supportedLocals,
+              localizationsDelegates: const [Translator.delegate],
+              localeResolutionCallback: (locale, supportedLocales) =>
+                  supportedLocales.firstWhere(
+                      (l) => l.languageCode == locale?.languageCode,
+                      orElse: () => supportedLocales.first),
+              home: Material(child: widget),
+            ),
           ),
         ),
       );
@@ -58,6 +60,7 @@ void main() {
   late MockGenericDb mockGenericDb;
   late MockSortableDb mockSortableDb;
   late MockTimerDb mockTimerDb;
+  TimerResponse timerResponse = () => [];
 
   SortableResponse sortableResponse = () => [];
   GenericResponse genericResponse = () => [];
@@ -108,7 +111,8 @@ void main() {
         .thenAnswer((_) => Future.value(100));
 
     mockTimerDb = MockTimerDb();
-    when(() => mockTimerDb.getAllTimers()).thenAnswer((_) => Future.value([]));
+    when(() => mockTimerDb.getAllTimers())
+        .thenAnswer((_) => Future.value(timerResponse()));
     when(() => mockTimerDb.insert(any())).thenAnswer((_) => Future.value(1));
     when(() => mockTimerDb.getRunningTimersFrom(any()))
         .thenAnswer((_) => Future.value([]));
@@ -983,6 +987,19 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text(fridayTitle), findsNothing);
       expect(find.text(todaytitle), findsOneWidget);
+    });
+
+    testWidgets('Timer shown in week calendar', (WidgetTester tester) async {
+      timerResponse = () => [
+            AbiliaTimer(
+                id: 'id', startTime: initialTime, duration: 20.minutes()),
+          ];
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      expect(find.byType(WeekCalendar), findsOneWidget);
+      expect(find.byType(TimerCardWheel), findsOneWidget);
     });
 
     testWidgets('Clicking activity in week calendar navigates to activity view',

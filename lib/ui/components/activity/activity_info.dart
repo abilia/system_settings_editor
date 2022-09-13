@@ -146,7 +146,10 @@ mixin ActivityMixin {
     String? message,
   }) async {
     final activityRepository =
-        alarm != null ? context.read<ActivityRepository>() : null;
+        alarm != null && context.read<LicenseCubit>().validLicense
+            ? context.read<ActivityRepository>()
+            : null;
+
     final navigator = Navigator.of(context);
     final checked = await checkConfirmation(
       context,

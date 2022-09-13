@@ -4,7 +4,7 @@ import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-mixin ActivityNavigator {
+mixin ActivityNavigation {
   Future<void> navigateToBasicActivityPicker(
     BuildContext context,
     List<BlocProvider> authProviders,

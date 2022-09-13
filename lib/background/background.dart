@@ -28,32 +28,46 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
 
   try {
     log.info('Handling background message...');
+    final now = DateTime.now();
+    final licenses = LicenseDb(preferences).getLicenses();
+    if (!licenses.anyValidLicense(now)) {
+      log.warning('no valid license, among $licenses, will ignore push');
+      return;
+    }
     await configureLocalTimeZone();
     final version =
         await PackageInfo.fromPlatform().then((value) => value.version);
     final loginDb = LoginDb(preferences);
-    final user = UserDb(preferences).getUser();
-    final token = LoginDb(preferences).getToken();
+    final userDb = UserDb(preferences);
+    final user = userDb.getUser();
+    final token = loginDb.getToken();
     if (user == null || token == null) {
       log.severe('No user or token: {token $token} {user $user}');
       return;
     }
 
-    final client = ClientWithDefaultHeaders(version,
-        loginDb: loginDb, deviceDb: DeviceDb(preferences));
+    final deviceDb = DeviceDb(preferences);
+    final client = ClientWithDefaultHeaders(
+      version,
+      loginDb: loginDb,
+      deviceDb: deviceDb,
+    );
     final database = await DatabaseRepository.createSqfliteDb();
     final baseUrlDb = BaseUrlDb(preferences);
 
-    final activities = await ActivityRepository(
+    final activityRepository = ActivityRepository(
       baseUrlDb: baseUrlDb,
       client: client,
       activityDb: ActivityDb(database),
       userId: user.id,
-    ).load();
+    );
+    await activityRepository.fetchIntoDatabase();
+    final activities =
+        await activityRepository.allAfter(now.subtract(maxReminder));
 
     final fileStorage = FileStorage(documentDirectory.path);
 
-    await UserFileRepository(
+    final userFileRepository = UserFileRepository(
       baseUrlDb: baseUrlDb,
       client: client,
       userFileDb: UserFileDb(database),
@@ -61,24 +75,28 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       fileStorage: fileStorage,
       userId: user.id,
       multipartRequestBuilder: MultipartRequestBuilder(),
-    ).load();
+    );
+    await userFileRepository.fetchIntoDatabase();
+    await userFileRepository.downloadUserFiles();
 
     final settingsDb = SettingsDb(preferences);
 
-    final generics = await GenericRepository(
+    final genericRepository = GenericRepository(
       baseUrlDb: baseUrlDb,
       client: client,
       genericDb: GenericDb(database),
       userId: user.id,
-    ).load();
+    );
+    await genericRepository.fetchIntoDatabase();
+    final generics = await genericRepository.getAll();
 
-    final genericsMap = generics.toGenericKeyMap();
     final settings = MemoplannerSettings.fromSettingsMap(
-        genericsMap.filterMemoplannerSettingsData());
+      generics.toGenericKeyMap().filterMemoplannerSettingsData(),
+    );
 
     log.fine('finding alarms from ${activities.length} activities');
 
-    final timers = await TimerDb(database).getRunningTimersFrom(DateTime.now());
+    final timers = await TimerDb(database).getRunningTimersFrom(now);
     log.fine('active timers: ${timers.length}');
 
     await scheduleAlarmNotifications(
@@ -89,13 +107,6 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       settings.alarm,
       fileStorage,
     );
-
-    await SortableRepository(
-      baseUrlDb: baseUrlDb,
-      client: client,
-      sortableDb: SortableDb(database),
-      userId: user.id,
-    ).load();
   } catch (e) {
     log.severe('Exception when running background handler', e);
   } finally {

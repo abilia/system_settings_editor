@@ -2,7 +2,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class NewActivityWidget extends StatelessWidget with ActivityNavigator {
+class NewActivityWidget extends StatelessWidget with ActivityNavigation {
   const NewActivityWidget({Key? key}) : super(key: key);
 
   @override
