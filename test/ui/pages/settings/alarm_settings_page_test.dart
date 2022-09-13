@@ -7,6 +7,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
+import '../../../fakes/activity_db_in_memory.dart';
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
@@ -19,7 +20,7 @@ void main() {
     Iterable<Generic> generics = [];
     Iterable<Activity> activities = [];
     late MockGenericDb genericDb;
-    late MockActivityDb activityDb;
+    late ActivityDbInMemory activityDb;
 
     setUp(() async {
       setupPermissions();
@@ -36,17 +37,8 @@ void main() {
           .thenAnswer((_) => Future.value(null));
       when(() => genericDb.insert(any())).thenAnswer((_) async {});
 
-      activityDb = MockActivityDb();
-      when(() => activityDb.getAllNonDeleted())
-          .thenAnswer((_) => Future.value(activities));
-      when(() => activityDb.getAllAfter(any()))
-          .thenAnswer((_) => Future.value(activities));
-      when(() => genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-      when(() => genericDb.insertAndAddDirty(any()))
-          .thenAnswer((_) => Future.value(true));
-      when(() => genericDb.getById(any()))
-          .thenAnswer((_) => Future.value(null));
-      when(() => genericDb.insert(any())).thenAnswer((_) async {});
+      activityDb = ActivityDbInMemory();
+      activityDb.initWithActivities(activities);
 
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()

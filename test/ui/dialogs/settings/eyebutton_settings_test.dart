@@ -8,6 +8,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
+import '../../../fakes/activity_db_in_memory.dart';
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/tts.dart';
@@ -25,13 +26,9 @@ void main() {
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
-    final mockActivityDb = MockActivityDb();
-    when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-        Future.value([Activity.createNew(title: 'null', startTime: initTime)]));
-    when(() => mockActivityDb.getAllDirty())
-        .thenAnswer((_) => Future.value([]));
-    when(() => mockActivityDb.getAllAfter(any()))
-        .thenAnswer((_) => Future.value([]));
+    final mockActivityDb = ActivityDbInMemory();
+    mockActivityDb.initWithActivity(
+        Activity.createNew(title: 'null', startTime: initTime));
 
     final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(

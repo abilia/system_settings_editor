@@ -34,12 +34,12 @@ class ActivityDbInMemory implements ActivityDb {
 
   @override
   Future<Iterable<Activity>> getAllAfter(DateTime time) async {
-    return activities.map((e) => e.model);
+    return activities.map((e) => e.model).where((a) => !a.deleted);
   }
 
   @override
   Future<Iterable<Activity>> getAllBetween(DateTime start, DateTime end) async {
-    return activities.map((e) => e.model);
+    return activities.map((e) => e.model).where((a) => !a.deleted);
   }
 
   @override
