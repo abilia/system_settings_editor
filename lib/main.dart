@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';

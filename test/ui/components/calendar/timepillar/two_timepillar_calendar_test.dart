@@ -232,7 +232,7 @@ void main() {
               ),
             ),
           ];
-      pushCubit.update('collapse_key');
+      pushCubit.fakePush();
       await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsNothing);
     });
@@ -307,7 +307,7 @@ void main() {
               ),
             ),
           ];
-      pushCubit.update('collapse_key');
+      pushCubit.fakePush();
       await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsNWidgets(2));
     });
@@ -362,7 +362,7 @@ void main() {
               ),
             ),
           ];
-      pushCubit.update('collapse_key');
+      pushCubit.fakePush();
 
       await tester.pumpAndSettle();
 

@@ -320,7 +320,7 @@ void main() {
 
     licensExpireTime = time.subtract(10.days());
 
-    pushCubit.update('license');
+    pushCubit.fakePush();
     await tester.pumpAndSettle();
     expect(find.byType(LicenseErrorDialog), findsOneWidget);
     expect(find.byType(LoginPage), findsOneWidget);
@@ -340,7 +340,7 @@ void main() {
 
     licensExpireTime = time.subtract(10.days());
 
-    pushCubit.update('license');
+    pushCubit.fakePush();
     await tester.pumpAndSettle();
 
     expect(find.byType(LicenseErrorDialog), findsNothing);

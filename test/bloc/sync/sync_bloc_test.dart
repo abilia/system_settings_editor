@@ -7,7 +7,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks/mock_bloc.dart';
+import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
 
 void main() {
@@ -15,18 +15,14 @@ void main() {
   late UserFileRepository userFileRepository;
   late SortableRepository sortableRepository;
   late GenericRepository genericRepository;
-  late PushCubit pushCubit;
-  late LicenseCubit licenseCubit;
 
   setUp(() {
     activityRepository = MockActivityRepository();
     userFileRepository = MockUserFileRepository();
     sortableRepository = MockSortableRepository();
     genericRepository = MockGenericRepository();
-    pushCubit = MockPushCubit();
-    licenseCubit = MockLicenseCubit();
-    when(() => licenseCubit.validLicense).thenReturn(true);
   });
+
   group('happy caseas', () {
     setUp(() {
       when(() => activityRepository.synchronize())
@@ -42,8 +38,8 @@ void main() {
     blocTest(
       'ActivitySaved event calls synchronize on activity repository',
       build: () => SyncBloc(
-        pushCubit: pushCubit,
-        licenseCubit: licenseCubit,
+        pushCubit: FakePushCubit(),
+        licenseCubit: FakeLicenseCubit(),
         activityRepository: activityRepository,
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
@@ -57,8 +53,8 @@ void main() {
     blocTest(
       'FileSaved event calls synchronize on user file repository',
       build: () => SyncBloc(
-        pushCubit: pushCubit,
-        licenseCubit: licenseCubit,
+        pushCubit: FakePushCubit(),
+        licenseCubit: FakeLicenseCubit(),
         activityRepository: activityRepository,
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
@@ -72,8 +68,8 @@ void main() {
     blocTest(
       'SortableSaved event calls synchronize on sortable repository',
       build: () => SyncBloc(
-        pushCubit: pushCubit,
-        licenseCubit: licenseCubit,
+        pushCubit: FakePushCubit(),
+        licenseCubit: FakeLicenseCubit(),
         activityRepository: activityRepository,
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
@@ -87,8 +83,8 @@ void main() {
     blocTest(
       'GenericSaved event calls synchronize on sortable repository',
       build: () => SyncBloc(
-        pushCubit: pushCubit,
-        licenseCubit: licenseCubit,
+        pushCubit: FakePushCubit(),
+        licenseCubit: FakeLicenseCubit(),
         activityRepository: activityRepository,
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
@@ -102,8 +98,8 @@ void main() {
     blocTest('all event calls synchronize on all repository',
         wait: 1.milliseconds(),
         build: () => SyncBloc(
-              pushCubit: pushCubit,
-              licenseCubit: licenseCubit,
+              pushCubit: FakePushCubit(),
+              licenseCubit: FakeLicenseCubit(),
               activityRepository: activityRepository,
               userFileRepository: userFileRepository,
               sortableRepository: sortableRepository,
@@ -138,8 +134,8 @@ void main() {
       setUp: () => when(() => activityRepository.synchronize())
           .thenAnswer((_) => Future.value(failThenSucceed.removeAt(0))),
       build: () => SyncBloc(
-        pushCubit: pushCubit,
-        licenseCubit: licenseCubit,
+        pushCubit: FakePushCubit(),
+        licenseCubit: FakeLicenseCubit(),
         activityRepository: activityRepository,
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
@@ -156,8 +152,8 @@ void main() {
       setUp: () => when(() => userFileRepository.synchronize())
           .thenAnswer((_) => Future.value(failThenSucceed.removeAt(0))),
       build: () => SyncBloc(
-        pushCubit: pushCubit,
-        licenseCubit: licenseCubit,
+        pushCubit: FakePushCubit(),
+        licenseCubit: FakeLicenseCubit(),
         activityRepository: activityRepository,
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
@@ -174,8 +170,8 @@ void main() {
       setUp: () => when(() => sortableRepository.synchronize())
           .thenAnswer((_) => Future.value(failThenSucceed.removeAt(0))),
       build: () => SyncBloc(
-        pushCubit: pushCubit,
-        licenseCubit: licenseCubit,
+        pushCubit: FakePushCubit(),
+        licenseCubit: FakeLicenseCubit(),
         activityRepository: activityRepository,
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
@@ -192,8 +188,8 @@ void main() {
       setUp: () => when(() => genericRepository.synchronize())
           .thenAnswer((_) => Future.value(failThenSucceed.removeAt(0))),
       build: () => SyncBloc(
-        pushCubit: pushCubit,
-        licenseCubit: licenseCubit,
+        pushCubit: FakePushCubit(),
+        licenseCubit: FakeLicenseCubit(),
         activityRepository: activityRepository,
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
@@ -222,8 +218,8 @@ void main() {
 
     test('calls all repositories', () async {
       final syncBloc = SyncBloc(
-          pushCubit: pushCubit,
-          licenseCubit: licenseCubit,
+          pushCubit: FakePushCubit(),
+          licenseCubit: FakeLicenseCubit(),
           activityRepository: activityRepository,
           userFileRepository: userFileRepository,
           sortableRepository: sortableRepository,
@@ -244,8 +240,8 @@ void main() {
 
     test('throttles invocations of event', () async {
       final syncBloc = SyncBloc(
-          pushCubit: pushCubit,
-          licenseCubit: licenseCubit,
+          pushCubit: FakePushCubit(),
+          licenseCubit: FakeLicenseCubit(),
           activityRepository: activityRepository,
           userFileRepository: userFileRepository,
           sortableRepository: sortableRepository,
@@ -284,8 +280,8 @@ void main() {
       when(() => activityRepository.synchronize())
           .thenAnswer((_) => Future.value(false));
       final syncBloc = SyncBloc(
-          pushCubit: pushCubit,
-          licenseCubit: licenseCubit,
+          pushCubit: FakePushCubit(),
+          licenseCubit: FakeLicenseCubit(),
           activityRepository: activityRepository,
           userFileRepository: userFileRepository,
           sortableRepository: sortableRepository,

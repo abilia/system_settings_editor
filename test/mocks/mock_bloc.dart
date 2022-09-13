@@ -12,7 +12,7 @@ class MockDayEventsCubit extends MockCubit<EventsState>
 class MockSyncBloc extends MockBloc<SyncEvent, SyncPerformed>
     implements SyncBloc {}
 
-class MockPushCubit extends MockCubit<PushState> implements PushCubit {}
+class MockPushCubit extends MockCubit<RemoteMessage> implements PushCubit {}
 
 class MockGenericCubit extends MockCubit<GenericState> implements GenericCubit {
 }

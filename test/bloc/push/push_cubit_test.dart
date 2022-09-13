@@ -53,7 +53,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsNothing);
 
-      pushCubit.update('calendar');
+      pushCubit.fakePush();
 
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsOneWidget);

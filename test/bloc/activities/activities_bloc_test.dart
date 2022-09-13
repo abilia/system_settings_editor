@@ -16,7 +16,6 @@ void main() {
 
   late ActivitiesBloc activitiesBloc;
   late MockActivityRepository mockActivityRepository;
-  late PushCubit mockPushCubit;
   late SyncBloc mockSyncBloc;
   late LicenseCubit mockLicenseCubit;
 
@@ -24,11 +23,8 @@ void main() {
 
   setUp(() {
     mockActivityRepository = MockActivityRepository();
-    mockPushCubit = MockPushCubit();
     mockSyncBloc = MockSyncBloc();
     mockLicenseCubit = MockLicenseCubit();
-
-    when(() => mockPushCubit.stream).thenAnswer((_) => const Stream.empty());
 
     when(() => mockActivityRepository.save(any()))
         .thenAnswer((_) => Future.value(true));
@@ -1148,6 +1144,5 @@ void main() {
 
   tearDown(() {
     activitiesBloc.close();
-    mockPushCubit.close();
   });
 }

@@ -664,7 +664,7 @@ void main() {
       // Activity change forward one minute from backend and is pushed
       when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value([activity1Updated]));
-      pushCubit.update('calendar');
+      pushCubit.fakePush();
       await tester.pumpAndSettle();
 
       // Act - the user taps notification of start time alarm

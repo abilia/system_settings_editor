@@ -51,7 +51,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           MediaQuery.of(context).alwaysUse24HourFormat);
       context
         ..read<ClockBloc>().setTime(DateTime.now())
-        ..read<PushCubit>().update('app-resumed')
+        ..read<SyncBloc>().add(const SyncAll())
         ..read<PermissionCubit>().checkAll();
       if (Config.isMP) {
         context

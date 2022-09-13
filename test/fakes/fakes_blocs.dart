@@ -7,7 +7,7 @@ import 'all.dart';
 
 class FakePushCubit extends Fake implements PushCubit {
   @override
-  Stream<PushState> get stream => const Stream.empty();
+  Stream<RemoteMessage> get stream => const Stream.empty();
   @override
   Future<void> close() async {}
 }
