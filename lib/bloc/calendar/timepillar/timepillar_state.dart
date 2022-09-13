@@ -54,7 +54,7 @@ class TimepillarMeasures extends Equatable {
 
   // TimerTimepillarCard
   late final Size timerWheelSize = _layout.card.timer.wheelSize * zoom;
-  late final double timerMinHeight = _layout.card.timer.minHeigth * zoom;
+  late final double timerMinHeight = _layout.card.timer.minHeight * zoom;
   late final EdgeInsets timerWheelPadding =
       _layout.card.timer.wheelPadding * zoom;
 
