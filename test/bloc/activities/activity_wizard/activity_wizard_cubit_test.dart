@@ -99,6 +99,7 @@ void main() {
             WizardStep.title,
             WizardStep.image,
             WizardStep.date,
+            WizardStep.fullDay,
             WizardStep.time,
             WizardStep.category,
             WizardStep.checkable,
@@ -1760,6 +1761,7 @@ void main() {
             WizardStep.title,
             WizardStep.image,
             WizardStep.date,
+            WizardStep.fullDay,
             WizardStep.time,
             WizardStep.category,
             WizardStep.checkable,
@@ -1790,7 +1792,7 @@ void main() {
             date: false,
             image: false,
             title: false,
-            fullDay: true,
+            fullDay: false,
             availability: false,
             checkable: false,
             removeAfter: true,
@@ -1806,7 +1808,6 @@ void main() {
         WizardState(
           0,
           const [
-            WizardStep.fullDay,
             WizardStep.time,
             WizardStep.category,
             WizardStep.deleteAfter,

@@ -33,7 +33,7 @@ class StepByStepSettings extends Equatable {
     this.title = true,
     this.image = true,
     this.date = true,
-    this.fullDay = false,
+    this.fullDay = true,
     this.checkable = true,
     this.availability = true,
     this.removeAfter = false,
