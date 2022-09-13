@@ -4,19 +4,15 @@ final DateTime zero = DateTime.fromMillisecondsSinceEpoch(0);
 
 abstract class WeekCalendarState {
   final DateTime currentWeekStart;
-  final Map<int, List<ActivityOccasion>> currentWeekActivities;
-
-  List<ActivityOccasion> fullDayActivities(DateTime day) =>
-      currentWeekActivities[day.weekday - 1]
-          ?.where((a) => a.activity.fullDay)
-          .toList() ??
-      [];
+  final Map<int, List<EventOccasion>> currentWeekEvents;
+  final Map<int, List<ActivityOccasion>> fullDayActivities;
 
   int get index => currentWeekStart.difference(zero).inDays ~/ 7;
 
   const WeekCalendarState(
     this.currentWeekStart,
-    this.currentWeekActivities,
+    this.currentWeekEvents,
+    this.fullDayActivities,
   );
 }
 
@@ -25,16 +21,18 @@ class WeekCalendarInitial extends WeekCalendarState {
       : super(
           currentWeekStart,
           const {},
+          const {},
         );
 }
 
 class WeekCalendarLoaded extends WeekCalendarState {
   const WeekCalendarLoaded(
     DateTime currentWeekStart,
-    Map<int, List<ActivityOccasion>> currentWeekActivities,
-  ) : super(currentWeekStart, currentWeekActivities);
+    Map<int, List<EventOccasion>> currentWeekEvents,
+    Map<int, List<ActivityOccasion>> fullDayActivities,
+  ) : super(currentWeekStart, currentWeekEvents, fullDayActivities);
 
   @override
   String toString() =>
-      'WeekCalendarLoaded { currentWeekStart: $currentWeekStart, activities: ${currentWeekActivities.length} }';
+      'WeekCalendarLoaded { currentWeekStart: $currentWeekStart, events: ${currentWeekEvents.length} fullday: ${fullDayActivities.length} }';
 }

@@ -24,5 +24,6 @@ class LargeLayout extends MediumLayout {
           eventCard: const EventCardLayoutLarge(),
           borders: const BorderLayoutLarge(),
           alarmPage: const AlarmPageLayoutLarge(),
+          weekCalendar: const WeekCalendarLayoutLarge(),
         );
 }

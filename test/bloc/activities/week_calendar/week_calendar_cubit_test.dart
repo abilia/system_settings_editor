@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/all.dart';
@@ -12,6 +13,7 @@ import '../../../mocks/mocks.dart';
 void main() {
   late WeekCalendarCubit weekCalendarBloc;
   late ActivitiesBloc activitiesBloc;
+  late TimerAlarmBloc timerAlarmBloc;
   late MockActivityRepository mockActivityRepository;
   late ClockBloc clockBloc;
   late StreamController<DateTime> mockedTicker;
@@ -25,12 +27,22 @@ void main() {
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
       );
+      final timerDb = MockTimerDb();
+      final timerCubit = TimerCubit(
+        ticker: Ticker.fake(initialTime: initialMinutes),
+        timerDb: timerDb,
+      );
+      timerAlarmBloc = TimerAlarmBloc(
+        ticker: Ticker.fake(initialTime: initialMinutes),
+        timerCubit: timerCubit,
+      );
       activitiesBloc = ActivitiesBloc(
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
       );
       weekCalendarBloc = WeekCalendarCubit(
         activitiesBloc: activitiesBloc,
+        timerAlarmBloc: timerAlarmBloc,
         activityRepository: mockActivityRepository,
         clockBloc: clockBloc,
       );
@@ -62,6 +74,7 @@ void main() {
             WeekCalendarLoaded(
               initialMinutes.firstInWeek(),
               const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
             ),
           ),
         ),
@@ -81,13 +94,16 @@ void main() {
             _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek().nextWeek(),
               const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
             )),
             _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek(),
               const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
             )),
             _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek().previousWeek(),
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
               const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
             )),
           ],
@@ -125,6 +141,7 @@ void main() {
                 5: const [],
                 6: const []
               },
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
             )),
           ],
         ),
@@ -142,6 +159,7 @@ void main() {
             _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek().nextWeek(),
               const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
             )),
             _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek(),
@@ -158,9 +176,11 @@ void main() {
                 5: [],
                 6: []
               },
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
             )),
             _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek().previousWeek(),
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
               const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
             )),
           ],
@@ -212,6 +232,7 @@ void main() {
                 ],
                 6: const []
               },
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
             )),
           ],
         ),
@@ -258,6 +279,7 @@ void main() {
               5: const [],
               6: const []
             },
+            const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
           )),
         ),
       );
@@ -290,7 +312,62 @@ void main() {
               5: const [],
               6: const []
             },
+            const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
           )),
+        ),
+      );
+    });
+
+    test('Adding new timer updates WeekCalendarState', () async {
+      // Arrange
+      when(() => mockActivityRepository.allBetween(any(), any()))
+          .thenAnswer((_) => Future.value(const Iterable.empty()));
+      final ticker = Ticker.fake(initialTime: initialMinutes);
+      final timerCubit = TimerCubit(
+        timerDb: MockTimerDb(),
+        ticker: ticker,
+      );
+      final timerAlarmBloc = TimerAlarmBloc(
+        timerCubit: timerCubit,
+        ticker: ticker,
+      );
+      weekCalendarBloc = WeekCalendarCubit(
+        activitiesBloc: activitiesBloc,
+        timerAlarmBloc: timerAlarmBloc,
+        activityRepository: mockActivityRepository,
+        clockBloc: clockBloc,
+      );
+
+      final timerOccasion = AbiliaTimer(
+              id: 'id', startTime: initialMinutes, duration: 20.minutes())
+          .toOccasion(initialMinutes);
+      // Act
+      timerAlarmBloc.emit(TimerAlarmState.sort([timerOccasion]));
+      await weekCalendarBloc.stream.first;
+      expect(
+        weekCalendarBloc.state,
+        _WeekCalendarLoadedMatcher(
+          WeekCalendarLoaded(
+            initialMinutes.firstInWeek(),
+            {
+              0: const [],
+              1: const [],
+              2: const [],
+              3: const [],
+              4: [timerOccasion], // Day has timer
+              5: const [],
+              6: const []
+            },
+            {
+              0: const [],
+              1: const [],
+              2: const [],
+              4: const [],
+              3: const [],
+              5: const [],
+              6: const []
+            },
+          ),
         ),
       );
     });
@@ -304,12 +381,15 @@ class _WeekCalendarLoadedMatcher extends Matcher {
 
   @override
   Description describe(Description description) => description.add(
-      'WeekCalendarLoaded { currentWeekStart: ${value.currentWeekStart}, activities: ${value.currentWeekActivities}}');
+      'WeekCalendarLoaded { currentWeekStart: ${value.currentWeekStart}, '
+      'events: ${value.currentWeekEvents}}, fullday: ${value.fullDayActivities}}');
 
   @override
   bool matches(object, Map matchState) {
     return value.currentWeekStart == object.currentWeekStart &&
         const DeepCollectionEquality()
-            .equals(value.currentWeekActivities, object.currentWeekActivities);
+            .equals(value.currentWeekEvents, object.currentWeekEvents) &&
+        const DeepCollectionEquality()
+            .equals(value.fullDayActivities, object.fullDayActivities);
   }
 }

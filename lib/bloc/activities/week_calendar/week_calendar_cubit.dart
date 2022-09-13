@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -10,14 +11,21 @@ part 'week_calendar_state.dart';
 class WeekCalendarCubit extends Cubit<WeekCalendarState> {
   final ActivityRepository activityRepository;
   final ClockBloc clockBloc;
+  final TimerAlarmBloc timerAlarmBloc;
   late final StreamSubscription _activitiesSubscription;
+  late final StreamSubscription _timersSubscription;
   late final StreamSubscription _clockSubscription;
+
   WeekCalendarCubit({
     required ActivitiesBloc activitiesBloc,
     required this.activityRepository,
+    required this.timerAlarmBloc,
     required this.clockBloc,
   }) : super(WeekCalendarInitial(clockBloc.state.firstInWeek())) {
     _activitiesSubscription = activitiesBloc.stream.listen((_) {
+      _mapToState(state.currentWeekStart, clockBloc.state);
+    });
+    _timersSubscription = timerAlarmBloc.stream.listen((_) {
       _mapToState(state.currentWeekStart, clockBloc.state);
     });
     _clockSubscription = clockBloc.stream.listen((_) {
@@ -43,27 +51,61 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
   ) async {
     final activities =
         await activityRepository.allBetween(weekStart, weekStart.addDays(7));
-    final weekActivityOccasions = {
+    final timerOccasions = timerAlarmBloc.state.timers;
+    final weekEventOccasions = {
       for (final dayIndex in List<int>.generate(7, (i) => i))
-        dayIndex: _occasionsForDay(activities, weekStart.addDays(dayIndex), now)
+        dayIndex: [
+          ..._activityOccasionsForDay(
+              activities, weekStart.addDays(dayIndex), now),
+          ..._timerOccasionsForDay(timerOccasions, weekStart.addDays(dayIndex))
+        ]
     };
-    emit(WeekCalendarLoaded(weekStart, weekActivityOccasions));
+
+    final mapByFullDay = weekEventOccasions.map(
+      (key, value) => MapEntry(
+        key,
+        value.groupListsBy(
+          (eventDay) =>
+              eventDay is ActivityOccasion && eventDay.activity.fullDay,
+        ),
+      ),
+    );
+    final fullDayActivities = mapByFullDay.map(
+      (key, value) => MapEntry(
+        key,
+        value[true]?.whereType<ActivityOccasion>().toList() ?? [],
+      ),
+    );
+    final noneFullDayEvents = mapByFullDay.map(
+      (key, value) => MapEntry(
+        key,
+        (value[false] ?? [])..sort(),
+      ),
+    );
+
+    emit(WeekCalendarLoaded(weekStart, noneFullDayEvents, fullDayActivities));
   }
 
-  List<ActivityOccasion> _occasionsForDay(
+  List<ActivityOccasion> _activityOccasionsForDay(
       Iterable<Activity> activities, DateTime day, DateTime now) {
     return activities
         .expand((activity) => activity.dayActivitiesForDay(day))
         .removeAfter(now)
         .map((e) => e.toOccasion(now))
-        .toList()
-      ..sort((a, b) =>
-          a.activity.startClock(a.day).compareTo(b.activity.startClock(b.day)));
+        .toList();
+  }
+
+  List<TimerOccasion> _timerOccasionsForDay(
+      Iterable<TimerOccasion> timerOccasions, DateTime day) {
+    return timerOccasions
+        .where((occasion) => occasion.start.isAtSameDay(day))
+        .toList();
   }
 
   @override
   Future<void> close() async {
     await _activitiesSubscription.cancel();
+    await _timersSubscription.cancel();
     await _clockSubscription.cancel();
     return super.close();
   }
