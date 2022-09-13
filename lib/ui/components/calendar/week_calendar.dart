@@ -443,9 +443,9 @@ class _WeekDayColumnItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentWeekEvents = context
-        .select((WeekCalendarCubit cubit) => cubit.state.currentWeekEvents);
-    final occasions = currentWeekEvents[day.weekday - 1] ?? [];
+    final occasions = context.select((WeekCalendarCubit cubit) =>
+            cubit.state.currentWeekEvents)[day.weekday - 1] ??
+        [];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
