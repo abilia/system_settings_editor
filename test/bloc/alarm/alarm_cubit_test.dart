@@ -41,16 +41,14 @@ void main() {
       activitiesBloc = ActivitiesBloc(
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
-        pushCubit: FakePushCubit(),
       );
       mockGenericRepository = MockGenericRepository();
-      when(() => mockGenericRepository.load())
+      when(() => mockGenericRepository.getAll())
           .thenAnswer((invocation) => Future.value([]));
 
       genericCubit = GenericCubit(
         genericRepository: mockGenericRepository,
         syncBloc: FakeSyncBloc(),
-        pushCubit: FakePushCubit(),
       );
 
       memoplannerSettingBloc = MemoplannerSettingBloc(
@@ -65,6 +63,24 @@ void main() {
 
     blocTest(
       'Load activities with current alarm shows alarm',
+      setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
+          .thenAnswer((_) => Future.value([soonActivity])),
+      build: () => AlarmCubit(
+        clockBloc: clockBloc,
+        activityRepository: mockActivityRepository,
+        settingsBloc: memoplannerSettingBloc,
+        selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
+        timerAlarm: const Stream.empty(),
+      ),
+      act: (cubit) {
+        activitiesBloc.add(LoadActivities());
+        _tick();
+      },
+      expect: () => [StartAlarm(ActivityDay(soonActivity, day))],
+    );
+
+    blocTest(
+      'Ticks before Load activities does nothing',
       setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([soonActivity])),
       build: () => AlarmCubit(
@@ -99,7 +115,7 @@ void main() {
 
     blocTest(
       'Next minut alarm does nothing',
-      setUp: () => when(() => mockActivityRepository.load())
+      setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value([soonActivity])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
@@ -322,7 +338,9 @@ void main() {
     blocTest(
       'SGC-1710 Nothing when disable until is set',
       setUp: () {
-        when(() => mockGenericRepository.load()).thenAnswer(
+        when(() => mockActivityRepository.getAll())
+            .thenAnswer((_) => Future.value([soonActivity]));
+        when(() => mockGenericRepository.getAll()).thenAnswer(
           (invocation) => Future.value(
             [
               Generic.createNew<MemoplannerSettingData>(

@@ -41,19 +41,21 @@ void main() {
     SortableBloc? sortableBloc,
   }) =>
       TopLevelProvider(
-        child: AuthenticatedBlocsProvider(
-          memoplannerSettingBloc: memoplannerSettingBloc,
-          sortableBloc: sortableBloc,
-          authenticatedState: const Authenticated(userId: 1),
-          child: MaterialApp(
-            theme: abiliaTheme,
-            supportedLocales: Translator.supportedLocals,
-            localizationsDelegates: const [Translator.delegate],
-            localeResolutionCallback: (locale, supportedLocales) =>
-                supportedLocales.firstWhere(
-                    (l) => l.languageCode == locale?.languageCode,
-                    orElse: () => supportedLocales.first),
-            home: Material(child: widget),
+        child: AuthenticationBlocProvider(
+          child: AuthenticatedBlocsProvider(
+            memoplannerSettingBloc: memoplannerSettingBloc,
+            sortableBloc: sortableBloc,
+            authenticatedState: const Authenticated(userId: 1),
+            child: MaterialApp(
+              theme: abiliaTheme,
+              supportedLocales: Translator.supportedLocals,
+              localizationsDelegates: const [Translator.delegate],
+              localeResolutionCallback: (locale, supportedLocales) =>
+                  supportedLocales.firstWhere(
+                      (l) => l.languageCode == locale?.languageCode,
+                      orElse: () => supportedLocales.first),
+              home: Material(child: widget),
+            ),
           ),
         ),
       );
@@ -255,7 +257,7 @@ void main() {
         expect(find.byType(ActivityWizardPage), findsNothing);
         expect(find.byType(OneTimepillarCalendar), findsOneWidget);
 
-        final activities = await mockActivityDb.getAll();
+        final activities = await mockActivityDb.getAllNonDeleted();
         final activity = activities.first;
         expect(activities.length, 1);
         expect(activity.title, title);
@@ -361,7 +363,7 @@ void main() {
         expect(find.byType(ActivityWizardPage), findsNothing);
         expect(find.byType(OneTimepillarCalendar), findsOneWidget);
 
-        final savedActivity = (await mockActivityDb.getAll()).first;
+        final savedActivity = (await mockActivityDb.getAllNonDeleted()).first;
         expect(savedActivity.title, title);
         expect(savedActivity.checkable, true);
         expect(savedActivity.removeAfter, true);

@@ -28,8 +28,6 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
   final TimerDb timerDb;
   final SettingsDb settingsDb;
   final MemoplannerSettingBloc memoplannerSettingBloc;
-  static final maxReminder =
-      unsignedOffActivityReminders.reduce((v, e) => v > e ? v : e);
 
   Future _scheduleNotifications(
     NotificationEvent event,

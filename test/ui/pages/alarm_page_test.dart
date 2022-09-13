@@ -110,6 +110,9 @@ void main() {
               BlocProvider<DayPartCubit>(
                 create: (context) => FakeDayPartCubit(),
               ),
+              BlocProvider<LicenseCubit>(
+                create: (context) => FakeLicenseCubit(),
+              ),
             ],
             child: Builder(
               builder: (context) => Listener(

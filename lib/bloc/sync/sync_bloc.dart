@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 
 import 'package:seagull/models/all.dart';
@@ -9,7 +9,12 @@ import 'package:seagull/repository/all.dart';
 
 part 'sync_event.dart';
 
-class SyncBloc extends Bloc<SyncEvent, dynamic> {
+class SyncPerformed {}
+
+class SyncBloc extends Bloc<SyncEvent, SyncPerformed> {
+  final PushCubit pushCubit;
+  final LicenseCubit licenseCubit;
+
   final ActivityRepository activityRepository;
   final UserFileRepository userFileRepository;
   final SortableRepository sortableRepository;
@@ -17,17 +22,23 @@ class SyncBloc extends Bloc<SyncEvent, dynamic> {
   final SyncDelays syncDelay;
   final _log = Logger('SyncBloc');
 
+  late StreamSubscription _pushSubscription;
+
   SyncBloc({
+    required this.pushCubit,
+    required this.licenseCubit,
     required this.activityRepository,
     required this.userFileRepository,
     required this.sortableRepository,
-    required this.syncDelay,
     required this.genericRepository,
-  }) : super(null) {
+    required this.syncDelay,
+  }) : super(SyncPerformed()) {
+    _pushSubscription = pushCubit.stream.listen((v) => add(const SyncAll()));
     on<ActivitySaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<FileSaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<SortableSaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<GenericSaved>(_trySync, transformer: bufferTimer(syncDelay));
+    on<SyncAll>(_trySync, transformer: bufferTimer(syncDelay));
   }
 
   Future _trySync(
@@ -40,12 +51,16 @@ class SyncBloc extends Bloc<SyncEvent, dynamic> {
       _log.info('retrying $event');
       add(event);
     }
+    if (event is SyncAll) emit(SyncPerformed());
   }
 
   Future<bool> _sync(SyncEvent event) async {
     switch (event.runtimeType) {
+      case SyncAll:
+        return _syncAll();
       case ActivitySaved:
-        return activityRepository.synchronize();
+        if (licenseCubit.validLicense) return activityRepository.synchronize();
+        return true;
       case FileSaved:
         return userFileRepository.synchronize();
       case SortableSaved:
@@ -54,6 +69,22 @@ class SyncBloc extends Bloc<SyncEvent, dynamic> {
         return genericRepository.synchronize();
     }
     throw Exception('Unknown event type $event');
+  }
+
+  Future<bool> _syncAll() async {
+    final results = await Future.wait([
+      if (licenseCubit.validLicense) activityRepository.synchronize(),
+      userFileRepository.synchronize(),
+      sortableRepository.synchronize(),
+      genericRepository.synchronize(),
+    ]);
+    return results.fold<bool>(true, (prev, next) => prev && next);
+  }
+
+  @override
+  Future<void> close() async {
+    await _pushSubscription.cancel();
+    return super.close();
   }
 }
 

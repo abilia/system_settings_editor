@@ -57,10 +57,7 @@ class GenericRepository extends DataRepository<Generic> {
   }
 
   @override
-  Future<Iterable<Generic>> load() async {
-    await fetchIntoDatabaseSynchronized();
-    return genericDb.getAllNonDeletedMaxRevision();
-  }
+  Future<Iterable<Generic>> getAll() => genericDb.getAllNonDeletedMaxRevision();
 
   @override
   Future fetchIntoDatabase() async {

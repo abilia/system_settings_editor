@@ -47,6 +47,7 @@ void main() {
         .thenAnswer((_) => Future.value(false));
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value([]));
+    when(() => mockGenericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     when(() => mockGenericDb.getById(any()))
         .thenAnswer((_) => Future.value(null));
     when(() => mockGenericDb.insert(any())).thenAnswer((_) => Future.value());

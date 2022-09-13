@@ -63,4 +63,15 @@ void main() {
       emits(NoValidLicense()),
     );
   });
+
+  test('License has been removed, or no license', () async {
+    when(() => userRepository.getLicenses()).thenAnswer(
+      (_) => Future.value([]),
+    );
+    licenseCubit.reloadLicenses();
+    await expectLater(
+      licenseCubit.stream,
+      emits(NoLicense()),
+    );
+  });
 }

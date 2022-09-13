@@ -37,19 +37,21 @@ void main() {
     SortableBloc? sortableBloc,
   }) =>
       TopLevelProvider(
-        child: AuthenticatedBlocsProvider(
-          memoplannerSettingBloc: memoplannerSettingBloc,
-          sortableBloc: sortableBloc,
-          authenticatedState: const Authenticated(userId: 1),
-          child: MaterialApp(
-            theme: abiliaTheme,
-            supportedLocales: Translator.supportedLocals,
-            localizationsDelegates: const [Translator.delegate],
-            localeResolutionCallback: (locale, supportedLocales) =>
-                supportedLocales.firstWhere(
-                    (l) => l.languageCode == locale?.languageCode,
-                    orElse: () => supportedLocales.first),
-            home: Material(child: widget),
+        child: AuthenticationBlocProvider(
+          child: AuthenticatedBlocsProvider(
+            memoplannerSettingBloc: memoplannerSettingBloc,
+            sortableBloc: sortableBloc,
+            authenticatedState: const Authenticated(userId: 1),
+            child: MaterialApp(
+              theme: abiliaTheme,
+              supportedLocales: Translator.supportedLocals,
+              localizationsDelegates: const [Translator.delegate],
+              localeResolutionCallback: (locale, supportedLocales) =>
+                  supportedLocales.firstWhere(
+                      (l) => l.languageCode == locale?.languageCode,
+                      orElse: () => supportedLocales.first),
+              home: Material(child: widget),
+            ),
           ),
         ),
       );

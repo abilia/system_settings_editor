@@ -75,6 +75,8 @@ void main() {
         .thenAnswer((_) => Future.value(activityResponse()));
     when(() => mockActivityDb.getAllBetween(any(), any()))
         .thenAnswer((_) => Future.value(activityResponse()));
+    when(() => mockActivityDb.getAllDirty())
+        .thenAnswer((_) => Future.value([]));
 
     genericResponse = () => [
           Generic.createNew<MemoplannerSettingData>(
@@ -87,6 +89,7 @@ void main() {
     final mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
+    when(() => mockGenericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
 
     final mockTimerDb = MockTimerDb();
     when(() => mockTimerDb.getAllTimers())

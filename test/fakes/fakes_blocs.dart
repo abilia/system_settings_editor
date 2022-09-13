@@ -14,7 +14,7 @@ class FakePushCubit extends Fake implements PushCubit {
 
 class FakeSyncBloc extends Fake implements SyncBloc {
   @override
-  Stream<dynamic> get stream => const Stream.empty();
+  Stream<SyncPerformed> get stream => const Stream.empty();
   @override
   void add(SyncEvent event) {}
   @override
@@ -146,6 +146,10 @@ class FakeCalendarViewBloc extends Fake implements CalendarViewCubit {
 }
 
 class FakeLicenseCubit extends Fake implements LicenseCubit {
+  @override
+  bool get validLicense => true;
+  @override
+  ValidLicense get state => ValidLicense();
   @override
   Stream<LicenseState> get stream => const Stream.empty();
   @override

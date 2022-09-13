@@ -31,7 +31,6 @@ void main() {
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
       syncBloc: FakeSyncBloc(),
-      pushCubit: FakePushCubit(),
     );
   });
 
@@ -41,7 +40,7 @@ void main() {
 
   group('Calendar days are correct', () {
     setUp(() {
-      when(() => mockActivityRepository.load())
+      when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value(const Iterable.empty()));
       when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value(const Iterable.empty()));

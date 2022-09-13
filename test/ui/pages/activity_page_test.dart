@@ -64,6 +64,7 @@ void main() {
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value([]));
+    when(() => mockGenericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()

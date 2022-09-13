@@ -13,7 +13,7 @@ void main() {
   testWidgets('sortable db ...', (tester) async {});
 
   test('Test add sortable', () async {
-    final all = await sortableDb.getAll();
+    final all = await sortableDb.getAllNonDeleted();
     expect(all.length, 0);
     final s = Sortable.createNew<BasicActivityDataItem>(
       data: BasicActivityDataItem.createNew(title: 'title'),
@@ -21,7 +21,7 @@ void main() {
     final ss = s as DbModel<Sortable<SortableData>>;
     await sortableDb.insert([ss]);
 
-    final all2 = await sortableDb.getAll();
+    final all2 = await sortableDb.getAllNonDeleted();
     expect(all2.length, 1);
   });
 
