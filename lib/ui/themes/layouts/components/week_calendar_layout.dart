@@ -50,30 +50,8 @@ class WeekCalendarLayoutMedium extends WeekCalendarLayout {
                 imagePadding: EdgeInsets.only(top: 8),
                 textPadding: EdgeInsets.all(4),
               ),
-          selectedDay: const WeekDayColumnLayout(
-            everyDayFlex: 318,
-            weekdaysFlex: 318,
-            activityBorderWidth: 4,
-            currentActivityBorderWidth: 6,
-            dayColumnBorderWidth: 3,
-            activityRadius: BorderRadius.all(Radius.circular(20)),
-            innerDayPadding: EdgeInsets.symmetric(
-              vertical: 9,
-              horizontal: 8,
-            ),
-          ),
-          notSelectedDay: const WeekDayColumnLayout(
-            everyDayFlex: 79,
-            weekdaysFlex: 119,
-            activityBorderWidth: 2,
-            currentActivityBorderWidth: 6,
-            dayColumnBorderWidth: 2,
-            activityRadius: BorderRadius.all(Radius.circular(12)),
-            innerDayPadding: EdgeInsets.symmetric(
-              vertical: 9,
-              horizontal: 6,
-            ),
-          ),
+          selectedDay: const _WeekDayColumnLayoutSelectedMedium(),
+          notSelectedDay: const _WeekDayColumnLayoutNotSelectedMedium(),
           dayDistance: 3,
           headerHeight: 132,
           activityDistance: 4,
@@ -120,4 +98,36 @@ class WeekDayColumnLayout {
       horizontal: 4,
     ),
   });
+}
+
+class _WeekDayColumnLayoutSelectedMedium extends WeekDayColumnLayout {
+  const _WeekDayColumnLayoutSelectedMedium()
+      : super(
+          everyDayFlex: 318,
+          weekdaysFlex: 318,
+          activityBorderWidth: 4,
+          currentActivityBorderWidth: 6,
+          dayColumnBorderWidth: 3,
+          activityRadius: const BorderRadius.all(Radius.circular(20)),
+          innerDayPadding: const EdgeInsets.symmetric(
+            vertical: 9,
+            horizontal: 8,
+          ),
+        );
+}
+
+class _WeekDayColumnLayoutNotSelectedMedium extends WeekDayColumnLayout {
+  const _WeekDayColumnLayoutNotSelectedMedium()
+      : super(
+          everyDayFlex: 79,
+          weekdaysFlex: 119,
+          activityBorderWidth: 2,
+          currentActivityBorderWidth: 6,
+          dayColumnBorderWidth: 2,
+          activityRadius: const BorderRadius.all(Radius.circular(12)),
+          innerDayPadding: const EdgeInsets.symmetric(
+            vertical: 9,
+            horizontal: 6,
+          ),
+        );
 }
