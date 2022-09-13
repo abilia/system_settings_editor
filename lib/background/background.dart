@@ -28,6 +28,12 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
 
   try {
     log.info('Handling background message...');
+    final now = DateTime.now();
+    final licenses = LicenseDb(preferences).getLicenses();
+    if (!licenses.anyValidLicense(now)) {
+      log.warning('no valid license, among $licenses, will ignore push');
+      return;
+    }
     await configureLocalTimeZone();
     final version =
         await PackageInfo.fromPlatform().then((value) => value.version);
@@ -55,18 +61,13 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       activityDb: ActivityDb(database),
       userId: user.id,
     );
-
-    final licenses = LicenseDb(preferences).getLicenses();
-    if (!licenses.anyValidLicense(DateTime.now())) {
-      return;
-    }
     await activityRepository.fetchIntoDatabase();
-
-    final activities = await activityRepository.getAll();
+    final activities =
+        await activityRepository.allAfter(now.subtract(maxReminder));
 
     final fileStorage = FileStorage(documentDirectory.path);
 
-    await UserFileRepository(
+    final userFileRepository = UserFileRepository(
       baseUrlDb: baseUrlDb,
       client: client,
       userFileDb: UserFileDb(database),
@@ -74,7 +75,9 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       fileStorage: fileStorage,
       userId: user.id,
       multipartRequestBuilder: MultipartRequestBuilder(),
-    ).fetchIntoDatabase();
+    );
+    await userFileRepository.fetchIntoDatabase();
+    await userFileRepository.downloadUserFiles();
 
     final settingsDb = SettingsDb(preferences);
 
@@ -87,13 +90,13 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     await genericRepository.fetchIntoDatabase();
     final generics = await genericRepository.getAll();
 
-    final genericsMap = generics.toGenericKeyMap();
     final settings = MemoplannerSettings.fromSettingsMap(
-        genericsMap.filterMemoplannerSettingsData());
+      generics.toGenericKeyMap().filterMemoplannerSettingsData(),
+    );
 
     log.fine('finding alarms from ${activities.length} activities');
 
-    final timers = await TimerDb(database).getRunningTimersFrom(DateTime.now());
+    final timers = await TimerDb(database).getRunningTimersFrom(now);
     log.fine('active timers: ${timers.length}');
 
     await scheduleAlarmNotifications(
