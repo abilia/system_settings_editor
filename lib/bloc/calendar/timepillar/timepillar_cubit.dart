@@ -27,11 +27,10 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     required this.timerAlarmBloc,
     required this.activitiesBloc,
     required this.dayPartCubit,
-  }) : super(_generateState(
+  }) : super(_initialEmptyState(
           clockBloc.state,
           dayPickerBloc.state.day,
           memoSettingsBloc.state,
-          activitiesBloc.state.activities,
           timerAlarmBloc.state.timers,
           true,
           dayPartCubit.state,
@@ -50,15 +49,23 @@ class TimepillarCubit extends Cubit<TimepillarState> {
             state.showNightCalendar,
       ),
     );
+    _initialize();
   }
 
-  void _onTimepillarConditionsChanged({required bool showNightCalendar}) {
+  void _initialize() {
+    _onTimepillarConditionsChanged(showNightCalendar: state.showNightCalendar);
+  }
+
+  Future<void> _onTimepillarConditionsChanged(
+      {required bool showNightCalendar}) async {
+    final activities = await activitiesBloc.activityRepository
+        .allBetween(state.interval.start, state.interval.end);
     emit(
       _generateState(
         clockBloc.state,
         dayPickerBloc.state.day,
         memoSettingsBloc.state,
-        activitiesBloc.state.activities,
+        activities,
         timerAlarmBloc.state.timers,
         showNightCalendar,
         dayPartCubit.state,
@@ -66,11 +73,30 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     );
   }
 
+  static TimepillarState _initialEmptyState(
+    DateTime now,
+    DateTime selectedDay,
+    MemoplannerSettingsState memoState,
+    List<TimerOccasion> timers,
+    bool showNightCalendar,
+    DayPart dayPart,
+  ) {
+    return _generateState(
+      now,
+      selectedDay,
+      memoState,
+      [],
+      timers,
+      showNightCalendar,
+      dayPart,
+    );
+  }
+
   static TimepillarState _generateState(
     DateTime now,
     DateTime selectedDay,
     MemoplannerSettingsState memoState,
-    List<Activity> activities,
+    Iterable<Activity> activities,
     List<TimerOccasion> timers,
     bool showNightCalendar,
     DayPart dayPart,
@@ -146,7 +172,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
 
   static List<Event> _generateEvents(
     Occasion occasion,
-    List<Activity> activities,
+    Iterable<Activity> activities,
     List<TimerOccasion> timers,
     TimepillarInterval interval,
   ) {

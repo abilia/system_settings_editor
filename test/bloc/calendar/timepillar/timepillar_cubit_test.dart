@@ -4,13 +4,16 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../mocks/mocks.dart';
 
 void main() {
   late ClockBloc clockBloc;
+  late ActivityRepository mockActivityRepository;
   late ActivitiesBloc activitiesBloc;
   late DayPickerBloc dayPickerBloc;
   late MemoplannerSettingBloc memoplannerSettingBloc;
@@ -22,6 +25,9 @@ void main() {
     clockStream = StreamController();
     clockBloc = ClockBloc(clockStream.stream, initialTime: now);
     activitiesBloc = MockActivitiesBloc();
+    mockActivityRepository = MockActivityRepository();
+    when(() => activitiesBloc.activityRepository)
+        .thenReturn(mockActivityRepository);
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
     memoplannerSettingBloc = MockMemoplannerSettingBloc();
     when(() => memoplannerSettingBloc.state)
@@ -51,10 +57,8 @@ void main() {
 
   blocTest<TimepillarCubit, TimepillarState>(
     'No full day in timepillar state',
-    setUp: () => when(() => activitiesBloc.state).thenReturn(ActivitiesLoaded([
-      nowActivity,
-      fullDayActivity,
-    ])),
+    setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
+        .thenAnswer((_) => Future.value([nowActivity, fullDayActivity])),
     build: () => TimepillarCubit(
         clockBloc: clockBloc,
         activitiesBloc: activitiesBloc,
@@ -92,9 +96,8 @@ void main() {
 
   blocTest<TimepillarCubit, TimepillarState>(
     'remove activities that has remove after',
-    setUp: () => when(() => activitiesBloc.state).thenReturn(
-      ActivitiesLoaded([removeAfter, removeAfterRecurring]),
-    ),
+    setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
+        .thenAnswer((_) => Future.value([removeAfter, removeAfterRecurring])),
     build: () => TimepillarCubit(
       clockBloc: clockBloc,
       activitiesBloc: activitiesBloc,
@@ -105,6 +108,19 @@ void main() {
     ),
     act: (cubit) => cubit.previous(),
     expect: () => [
+      TimepillarState(
+        interval: TimepillarInterval(
+          start: DateTime(2022, 05, 12, 6),
+          end: DateTime(2022, 05, 12, 23),
+          intervalPart: IntervalPart.day,
+        ),
+        events: <Event>[
+          ActivityDay(removeAfterRecurring, DateTime(2022, 05, 12, 6))
+        ],
+        calendarType: DayCalendarType.oneTimepillar,
+        occasion: Occasion.current,
+        showNightCalendar: true,
+      ),
       TimepillarState(
         interval: TimepillarInterval(
           start: DateTime(2022, 05, 11),

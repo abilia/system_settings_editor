@@ -7,6 +7,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
+import '../../../../fakes/activity_db_in_memory.dart';
 import '../../../../fakes/all.dart';
 import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/app_pumper.dart';
@@ -16,14 +17,12 @@ void main() {
   final translate = Locales.language.values.first;
   final initialTime = DateTime(2021, 05, 04, 19, 20);
   Iterable<Generic> generics = [];
-  Iterable<Activity> activities = [];
   late MockGenericDb genericDb;
-  late MockActivityDb activityDb;
+  late ActivityDbInMemory activityDb;
 
   setUp(() async {
     setupPermissions();
     generics = [];
-    activities = [];
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
@@ -34,21 +33,14 @@ void main() {
     when(() => genericDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
-    activityDb = MockActivityDb();
-    when(() => activityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(activities));
-    when(() => activityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(() => activityDb.getAllAfter(any()))
-        .thenAnswer((_) => Future.value([]));
-    when(() => activityDb.insertAndAddDirty(any()))
-        .thenAnswer((_) => Future.value(true));
+    activityDb = ActivityDbInMemory();
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..ticker = Ticker.fake(initialTime: initialTime)
       ..client = Fakes.client(
         genericResponse: () => generics,
-        activityResponse: () => activities,
+        activityResponse: () => [],
       )
       ..database = FakeDatabase()
       ..genericDb = genericDb
@@ -275,12 +267,13 @@ void main() {
 
   group('settings in acivity view', () {
     testWidgets('defaults', (tester) async {
-      activities = [
+      final activities = [
         Activity.createNew(
           title: 'title',
           startTime: initialTime.add(1.hours()),
         )
       ];
+      activityDb.initWithActivities(activities);
 
       await tester.goToActivityPage();
 
@@ -292,12 +285,13 @@ void main() {
     });
 
     testWidgets('all hidden', (tester) async {
-      activities = [
+      final activities = [
         Activity.createNew(
           title: 'title',
           startTime: initialTime.add(1.hours()),
         )
       ];
+      activityDb.initWithActivities(activities);
       generics = [
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
