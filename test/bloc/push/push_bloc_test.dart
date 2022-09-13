@@ -24,15 +24,12 @@ void main() {
       scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
       final time = DateTime(2020, 06, 05, 13, 23);
-      final activity = Activity.createNew(startTime: time, duration: 1.hours());
 
+      final serverActivityAnswers = [
         <Activity>[],
-        [activity],
+        [FakeActivity.starts(time, duration: 1.hours())]
       ];
-      final serverActivityAnswers = [...dbActivityAnswers];
 
-      when(() => mockActivityDb.getAllDirty())
-          .thenAnswer((_) => Future.value([]));
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..activityDb = ActivityDbInMemory()
