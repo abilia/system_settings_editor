@@ -342,11 +342,11 @@ showAlarm	Show alarm	Visa larm	Vis alarm	Alarmen weergeven	Näytä hälytykset	A
 showVibrationAlarm	Show vibration	Visa vibration	Vis vibration	Trilfunctie tonen	Näytä värinä	Vibration anzeigen	Vis vibrasjon
 showSilentAlarm	Show silent alarm	Visa tyst larm	Vis stille alarm	Stille alarmen weergeven	Näytä hiljaiset hälytykset	Stille Alarme anzeigen	Vis stille alarm
 showNoAlarm	Show no alarm	Visa inget larm	Vis ingen alarm	Geen alarmen weergeven	Älä näytä hälytystä	Kein Alarm anzeigen	Vis ingen alarm
-showAlarmOnlyAtStartTime	Show alarm only at start time
-showSpeechAtAlarm	Show speech at alarm
-showReminders	Show reminders
-showSelectEndDate	Show select end date
-recurring	Recurring
+showAlarmOnlyAtStartTime	Show alarm only at start time						
+showSpeechAtAlarm	Show speech at alarm						
+showReminders	Show reminders						
+showSelectEndDate	Show select end date						
+recurring	Recurring						
 throughEditView	Through Edit View	Via Ändravyn	Via Redigersiden	Door bewerkweergave	Muokkausnäkymässä	Durch Bearbeitungsanzeige	Via endrevindu
 androidSettings	Android Settings	Android-inställningar	Android-indstillinger	Android-instellingen	Android-asetukset	Android-Einstellungen	Android-innstillinger
 stepByStep	Step-by-step	Stegvis	Trinvist	Stap voor stap	Vaihe vaiheelta	Schritt für Schritt	Via sekvens
