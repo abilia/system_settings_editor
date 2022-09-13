@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 
 class TimerCardLayout {
   final double minHeight;
-  final Size wheelSize;
-  final EdgeInsets wheelPadding;
+  final Size smallWheelSize, largeWheelSize;
+  final EdgeInsets wheelPadding, textPadding, imagePadding;
+  final double borderRadius;
 
   const TimerCardLayout({
     this.minHeight = 76,
-    this.wheelSize = const Size.square(44),
+    this.smallWheelSize = const Size.square(24),
+    this.largeWheelSize = const Size.square(44),
     this.wheelPadding = const EdgeInsets.symmetric(vertical: 4),
+    this.textPadding = EdgeInsets.zero,
+    this.imagePadding = EdgeInsets.zero,
+    this.borderRadius = 10,
   });
 }

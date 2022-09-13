@@ -1,7 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:seagull/ui/all.dart';
 
 class WeekCalendarLayout {
   final WeekDayColumnLayout selectedDay, notSelectedDay;
+
+  final TimerCardLayout timerCard;
 
   final double dayDistance, headerHeight, activityDistance, categoryInset;
 
@@ -20,6 +22,11 @@ class WeekCalendarLayout {
     this.crossOverDayHeadingPadding = const EdgeInsets.fromLTRB(3, 7, 3, 8),
     this.crossOverActivityPadding = const EdgeInsets.all(5),
     this.bodyPadding = const EdgeInsets.fromLTRB(2, 4, 2, 4),
+    this.timerCard = const TimerCardLayout(
+      wheelPadding: EdgeInsets.only(top: 8),
+      imagePadding: EdgeInsets.fromLTRB(2, 4, 2, 2),
+      textPadding: EdgeInsets.fromLTRB(2, 4, 2, 2),
+    ),
     this.selectedDay = const WeekDayColumnLayout(
       everyDayFlex: 82,
       weekdaysFlex: 116,
@@ -34,10 +41,17 @@ class WeekCalendarLayout {
 }
 
 class WeekCalendarLayoutMedium extends WeekCalendarLayout {
-  const WeekCalendarLayoutMedium()
-      : super(
-          selectedDay: const WeekDayColumnLayoutSelectedMedium(),
-          notSelectedDay: const WeekDayColumnLayoutNotSelectedMedium(),
+  const WeekCalendarLayoutMedium({
+    TimerCardLayout? timerCard,
+  }) : super(
+          timerCard: timerCard ??
+              const TimerCardLayout(
+                wheelPadding: EdgeInsets.only(top: 12),
+                imagePadding: EdgeInsets.only(top: 8),
+                textPadding: EdgeInsets.all(4),
+              ),
+          selectedDay: const _WeekDayColumnLayoutSelectedMedium(),
+          notSelectedDay: const _WeekDayColumnLayoutNotSelectedMedium(),
           dayDistance: 3,
           headerHeight: 132,
           activityDistance: 4,
@@ -45,6 +59,19 @@ class WeekCalendarLayoutMedium extends WeekCalendarLayout {
           crossOverDayHeadingPadding: const EdgeInsets.fromLTRB(6, 6, 6, 18),
           crossOverActivityPadding: const EdgeInsets.all(7),
           bodyPadding: const EdgeInsets.fromLTRB(3, 6, 3, 6),
+        );
+}
+
+class WeekCalendarLayoutLarge extends WeekCalendarLayoutMedium {
+  const WeekCalendarLayoutLarge({
+    double? bodyText4Size,
+  }) : super(
+          timerCard: const TimerCardLayout(
+            wheelPadding: EdgeInsets.only(top: 12),
+            imagePadding: EdgeInsets.only(top: 4),
+            textPadding:
+                EdgeInsets.only(top: 4, bottom: 10, left: 10, right: 10),
+          ),
         );
 }
 
@@ -73,8 +100,8 @@ class WeekDayColumnLayout {
   });
 }
 
-class WeekDayColumnLayoutSelectedMedium extends WeekDayColumnLayout {
-  const WeekDayColumnLayoutSelectedMedium()
+class _WeekDayColumnLayoutSelectedMedium extends WeekDayColumnLayout {
+  const _WeekDayColumnLayoutSelectedMedium()
       : super(
           everyDayFlex: 318,
           weekdaysFlex: 318,
@@ -89,8 +116,8 @@ class WeekDayColumnLayoutSelectedMedium extends WeekDayColumnLayout {
         );
 }
 
-class WeekDayColumnLayoutNotSelectedMedium extends WeekDayColumnLayout {
-  const WeekDayColumnLayoutNotSelectedMedium()
+class _WeekDayColumnLayoutNotSelectedMedium extends WeekDayColumnLayout {
+  const _WeekDayColumnLayoutNotSelectedMedium()
       : super(
           everyDayFlex: 79,
           weekdaysFlex: 119,
