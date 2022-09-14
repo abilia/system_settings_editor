@@ -3,7 +3,7 @@ import 'package:seagull/bloc/all.dart';
 
 mixin CalendarStateMixin<T extends StatefulWidget> on State<T> {
   Future<void> refresh() {
-    context.read<PushCubit>().update('refresh');
+    context.read<SyncBloc>().add(const SyncAll());
     return Future.delayed(const Duration(milliseconds: 500));
   }
 

@@ -28,6 +28,13 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
 
   try {
     log.info('Handling background message...');
+    final alarmId = message.stopAlarmSoundKey;
+    if (alarmId != null) {
+      notificationPlugin.cancel(alarmId);
+      log.info('Handling alarm and canceling: $alarmId');
+      return;
+    }
+
     final now = DateTime.now();
     final licenses = LicenseDb(preferences).getLicenses();
     if (!licenses.anyValidLicense(now)) {

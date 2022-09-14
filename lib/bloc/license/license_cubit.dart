@@ -18,12 +18,7 @@ class LicenseCubit extends Cubit<LicenseState> {
     required PushCubit pushCubit,
     required AuthenticationBloc authenticationBloc,
   }) : super(LicensesNotLoaded()) {
-    pushSubscription = pushCubit.stream.listen((state) {
-      if (state is PushReceived) {
-        reloadLicenses();
-      }
-    });
-
+    pushSubscription = pushCubit.stream.listen((state) => reloadLicenses());
     authSubscription = authenticationBloc.stream.listen((state) {
       if (state is Authenticated) {
         reloadLicenses();

@@ -698,7 +698,7 @@ void main() {
               ),
             )
           ];
-      pushCubit.update('collapse_key');
+      pushCubit.fakePush();
 
       await tester.pumpAndSettle();
 
@@ -727,7 +727,7 @@ void main() {
               ),
             ),
           ];
-      pushCubit.update('collapse_key');
+      pushCubit.fakePush();
 
       await tester.pumpAndSettle();
 

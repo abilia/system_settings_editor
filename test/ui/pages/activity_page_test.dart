@@ -192,7 +192,7 @@ void main() {
       await tester.pumpAndSettle();
 
       mockActivityDb.insertAndAddDirty([activity.copyWith(deleted: true)]);
-      pushCubit.update('refresh');
+      pushCubit.fakePush();
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
       // Assert

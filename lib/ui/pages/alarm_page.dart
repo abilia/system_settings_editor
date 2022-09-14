@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:get_it/get_it.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -147,22 +149,33 @@ class PopAwareAlarmPage extends StatefulWidget {
 
 class _PopAwareAlarmPageState extends State<PopAwareAlarmPage> {
   bool isCanceled = false;
+  late final RemoteAlarm remoteAlarm;
+  @override
+  void initState() {
+    remoteAlarm = RemoteAlarm(
+      baseUrlDb: GetIt.I<BaseUrlDb>(),
+      client: GetIt.I<ListenableClient>(),
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) => WillPopScope(
         onWillPop: () async {
           AlarmNavigator.log.fine('onWillPop ${widget.alarm}');
-          widget.alarmNavigator.removedFromRoutes(widget.alarm);
+          widget.alarmNavigator.removedFromRoutes(widget.alarm.stackId);
           if (!isCanceled) {
-            await notificationPlugin.cancel(widget.alarm.hashCode);
+            notificationPlugin.cancel(widget.alarm.hashCode);
           }
+          remoteAlarm.stop(widget.alarm, pop: true);
           return true;
         },
         child: BlocListener<TouchDetectionCubit, Touch>(
           listenWhen: (previous, current) => !isCanceled,
           listener: (context, state) async {
+            notificationPlugin.cancel(widget.alarm.hashCode);
+            remoteAlarm.stop(widget.alarm);
             isCanceled = true;
-            await notificationPlugin.cancel(widget.alarm.hashCode);
           },
           child: widget.child,
         ),

@@ -1,22 +1,25 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
+export 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:logging/logging.dart';
+import 'package:meta/meta.dart';
 import 'package:seagull/background/background.dart';
 import 'package:seagull/bloc/all.dart';
 
-part 'push_state.dart';
-
-class PushCubit extends Cubit<PushState> {
+class PushCubit extends Cubit<RemoteMessage> {
   static final _log = Logger((PushCubit).toString());
-  PushCubit() : super(PushReady()) {
+  PushCubit() : super(const RemoteMessage()) {
     _initFirebaseListener();
   }
 
-  void update([String? collapseKey]) => emit(PushReceived(collapseKey));
+  @visibleForTesting
+  void fakePush({
+    Map<String, String> data = const {},
+  }) =>
+      emit(RemoteMessage(data: data));
 
   void _initFirebaseListener() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      update(message.collapseKey);
-      _log.fine('onMessage push: ${message.collapseKey}');
+      emit(message);
+      _log.fine('onMessage push: ${message.toMap()}');
     });
     FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
   }

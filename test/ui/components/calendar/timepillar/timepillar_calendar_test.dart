@@ -315,7 +315,7 @@ void main() {
               ),
             ),
           ];
-      pushCubit.update('collapse_key');
+      pushCubit.fakePush();
       await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsNothing);
     });
@@ -390,7 +390,7 @@ void main() {
               ),
             ),
           ];
-      pushCubit.update('collapse_key');
+      pushCubit.fakePush();
       await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsOneWidget);
     });
@@ -445,7 +445,7 @@ void main() {
               ),
             ),
           ];
-      pushCubit.update('collapse_key');
+      pushCubit.fakePush();
 
       await tester.pumpAndSettle();
 
