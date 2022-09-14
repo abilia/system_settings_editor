@@ -19,11 +19,15 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
   void initState() {
     super.initState();
 
+    final startSeconds = double.tryParse(
+      Uri.parse(widget.url).queryParameters['t']?.replaceAll('s', '') ?? '',
+    );
     final videoId = yt.YoutubePlayerController.convertUrlToId(
       widget.url.startsWith('http') ? widget.url : 'https://${widget.url}',
     );
     _controller = yt.YoutubePlayerController.fromVideoId(
       videoId: videoId ?? '',
+      startSeconds: startSeconds,
       params: yt.YoutubePlayerParams(
         strictRelatedVideos: true,
         showVideoAnnotations: false,
