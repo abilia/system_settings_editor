@@ -124,7 +124,7 @@ void main() {
         fridayColor = AbiliaColors.yellow,
         saturdayColor = AbiliaColors.pink;
 
-    void _expectCorrectColor(WidgetTester tester, Color color) {
+    void expectCorrectColor(WidgetTester tester, Color color) {
       final at = find.byKey(TestKey.animatedTheme);
       expect(at, findsOneWidget);
       final theme = tester.firstWidget(at) as AnimatedTheme;
@@ -133,10 +133,10 @@ void main() {
 
     testWidgets('all colors standard respected ', (tester) async {
       await tester.pumpApp();
-      _expectCorrectColor(tester, fridayColor);
+      expectCorrectColor(tester, fridayColor);
       await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
-      _expectCorrectColor(tester, saturdayColor);
+      expectCorrectColor(tester, saturdayColor);
     });
 
     testWidgets('no color respected ', (tester) async {
@@ -151,10 +151,10 @@ void main() {
 
       await tester.pumpApp();
 
-      _expectCorrectColor(tester, noDayColor);
+      expectCorrectColor(tester, noDayColor);
       await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
-      _expectCorrectColor(tester, noDayColor);
+      expectCorrectColor(tester, noDayColor);
     });
 
     testWidgets('weekend color respected ', (tester) async {
@@ -169,10 +169,10 @@ void main() {
 
       await tester.pumpApp();
 
-      _expectCorrectColor(tester, noDayColor);
+      expectCorrectColor(tester, noDayColor);
       await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
-      _expectCorrectColor(tester, saturdayColor);
+      expectCorrectColor(tester, saturdayColor);
     });
   });
 }

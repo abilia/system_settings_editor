@@ -75,7 +75,7 @@ dependencies:
   vector_math: ^2.1.2
   wakelock: ^0.6.1
   webview_flutter: ^3.0.1
-  youtube_player_iframe: ^2.2.2
+  youtube_player_iframe: ^3.0.4
 
 dev_dependencies:
   test: any

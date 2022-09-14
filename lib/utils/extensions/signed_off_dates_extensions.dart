@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:meta/meta.dart';
 
 String whaleDateFormat(DateTime date) {
-  String _twoDigits(int n) => (n >= 10) ? '$n' : '0$n';
-  final year = _twoDigits(date.year % 100);
-  final month = _twoDigits(date.month);
-  final day = _twoDigits(date.day);
+  String twoDigits(int n) => (n >= 10) ? '$n' : '0$n';
+  final year = twoDigits(date.year % 100);
+  final month = twoDigits(date.month);
+  final day = twoDigits(date.day);
   return '$year-$month-$day';
 }
 

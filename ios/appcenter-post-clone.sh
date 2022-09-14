@@ -7,7 +7,7 @@ set -e
 set -x
 
 cd ..
-git clone --depth 1 --branch 3.0.5 https://github.com/flutter/flutter.git
+git clone --depth 1 --branch 3.3.1 https://github.com/flutter/flutter.git
 export PATH=`pwd`/flutter/bin:$PATH
 
 pod setup

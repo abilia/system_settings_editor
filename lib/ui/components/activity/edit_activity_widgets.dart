@@ -274,7 +274,7 @@ class CategoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
-    void _onChange(v) => context
+    void onChange(v) => context
         .read<EditActivityCubit>()
         .replaceActivity(activity.copyWith(category: v));
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
@@ -290,7 +290,7 @@ class CategoryWidget extends StatelessWidget {
                   child: CategoryRadioField(
                     category: Category.left,
                     groupValue: activity.category,
-                    onChanged: _onChange,
+                    onChanged: onChange,
                   ),
                 ),
                 SizedBox(width: layout.formPadding.verticalItemDistance),
@@ -298,7 +298,7 @@ class CategoryWidget extends StatelessWidget {
                   child: CategoryRadioField(
                     category: Category.right,
                     groupValue: activity.category,
-                    onChanged: _onChange,
+                    onChanged: onChange,
                   ),
                 ),
               ],

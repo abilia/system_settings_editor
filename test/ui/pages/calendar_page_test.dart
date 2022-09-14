@@ -495,7 +495,7 @@ void main() {
     });
 
     group('Color settings', () {
-      void _expectCorrectColor(WidgetTester tester, Color color) {
+      void expectCorrectColor(WidgetTester tester, Color color) {
         final at = find.byKey(TestKey.animatedTheme);
         expect(at, findsOneWidget);
         final theme = tester.firstWidget(at) as AnimatedTheme;
@@ -527,25 +527,25 @@ void main() {
           memoplannerSettingBloc: memoplannerSettingBlocMock,
         ));
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, wednesdayColor);
+        expectCorrectColor(tester, wednesdayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, thursdayColor);
+        expectCorrectColor(tester, thursdayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, fridayColor);
+        expectCorrectColor(tester, fridayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, saturdayColor);
+        expectCorrectColor(tester, saturdayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, sundayColor);
+        expectCorrectColor(tester, sundayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, mondayColor);
+        expectCorrectColor(tester, mondayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, tuesdayColor);
+        expectCorrectColor(tester, tuesdayColor);
       });
 
       testWidgets('Color settings with colors only on weekends',
@@ -565,25 +565,25 @@ void main() {
         ));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
-        _expectCorrectColor(tester, noDayColor);
+        expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, noDayColor);
+        expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, noDayColor);
+        expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, saturdayColor);
+        expectCorrectColor(tester, saturdayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, sundayColor);
+        expectCorrectColor(tester, sundayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, noDayColor);
+        expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, noDayColor);
+        expectCorrectColor(tester, noDayColor);
       });
 
       testWidgets('Color settings with no colors', (WidgetTester tester) async {
@@ -602,25 +602,25 @@ void main() {
         ));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
-        _expectCorrectColor(tester, noDayColor);
+        expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, noDayColor);
+        expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, noDayColor);
+        expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, noDayColor);
+        expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, noDayColor);
+        expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, noDayColor);
+        expectCorrectColor(tester, noDayColor);
         await tester.tap(nextDayButtonFinder);
         await tester.pumpAndSettle();
-        _expectCorrectColor(tester, noDayColor);
+        expectCorrectColor(tester, noDayColor);
       });
     });
 
