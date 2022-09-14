@@ -58,8 +58,15 @@ class TimepillarCubit extends Cubit<TimepillarState> {
 
   Future<void> _onTimepillarConditionsChanged(
       {required bool showNightCalendar}) async {
+    final interval = _getInterval(
+      clockBloc.state,
+      dayPickerBloc.state.day,
+      memoSettingsBloc.state,
+      showNightCalendar,
+      dayPartCubit.state,
+    );
     final activities = await activitiesBloc.activityRepository
-        .allBetween(state.interval.start, state.interval.end);
+        .allBetween(interval.start, interval.end);
     emit(
       _generateState(
         clockBloc.state,
