@@ -47,17 +47,55 @@ class WeekCalendar extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, item) =>
             BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
-          buildWhen: (oldState, newState) => newState.index == item,
-          builder: (context, state) {
-            if (state.index != item) return Container();
-            return Column(
-              mainAxisSize: MainAxisSize.max,
-              children: const [
-                _WeekCalendarTop(),
-                Expanded(
-                  child: _WeekCalendarBody(),
-                ),
-              ],
+          buildWhen: (previous, current) =>
+              current.index == item ||
+              previous.currentWeekStart != current.currentWeekStart,
+          builder: (context, weekState) {
+            if (weekState.index != item) return Container();
+            return BlocBuilder<MemoplannerSettingBloc,
+                MemoplannerSettingsState>(
+              buildWhen: (previous, current) =>
+                  previous.weekDisplayDays != current.weekDisplayDays ||
+                  previous.settings.calendar.dayColor !=
+                      current.settings.calendar.dayColor,
+              builder: (context, memosettings) {
+                final numberOfDays =
+                    memosettings.weekDisplayDays.numberOfDays();
+                final DateTime weekStart = weekState.currentWeekStart;
+                final weekDisplayDays =
+                    context.select<MemoplannerSettingBloc, WeekDisplayDays>(
+                        (bloc) => bloc.state.weekDisplayDays);
+                return Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    IntrinsicHeight(
+                      child: Row(
+                        children: List<_WeekCalendarDayHeading>.generate(
+                          numberOfDays,
+                          (i) => _WeekCalendarDayHeading(
+                            day: weekStart.addDays(i),
+                            weekDisplayDays: weekDisplayDays,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List<_WeekDayColumn>.generate(
+                            numberOfDays,
+                            (i) => _WeekDayColumn(
+                              day: weekStart.addDays(i),
+                              weekDisplayDays: weekDisplayDays,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             );
           },
         ),
@@ -66,38 +104,13 @@ class WeekCalendar extends StatelessWidget {
   }
 }
 
-class _WeekCalendarTop extends StatelessWidget {
-  const _WeekCalendarTop({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        buildWhen: (previous, current) =>
-            previous.weekDisplayDays != current.weekDisplayDays,
-        builder: (context, memosettings) =>
-            BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
-          buildWhen: (previous, current) =>
-              previous.currentWeekStart != current.currentWeekStart,
-          builder: (context, weekState) => Row(
-            children: List<_WeekCalendarDayHeading>.generate(
-              memosettings.weekDisplayDays.numberOfDays(),
-              (i) => _WeekCalendarDayHeading(
-                day: weekState.currentWeekStart.addDays(i),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class _WeekCalendarDayHeading extends StatelessWidget {
   final DateTime day;
+  final WeekDisplayDays weekDisplayDays;
 
   const _WeekCalendarDayHeading({
     required this.day,
+    required this.weekDisplayDays,
     Key? key,
   }) : super(key: key);
 
@@ -112,9 +125,7 @@ class _WeekCalendarDayHeading extends StatelessWidget {
     );
     final selected = context
         .select<DayPickerBloc, bool>((bloc) => bloc.state.day.isAtSameDay(day));
-    final weekDisplayDays =
-        context.select<MemoplannerSettingBloc, WeekDisplayDays>(
-            (bloc) => bloc.state.weekDisplayDays);
+
     final dayOccasion =
         context.select((ClockBloc clock) => day.dayOccasion(clock.state));
     return WeekCalenderHeadingContent(
@@ -193,7 +204,12 @@ class WeekCalenderHeadingContent extends StatelessWidget {
             ),
             child: Container(
               margin: EdgeInsetsDirectional.only(
-                bottom: occasion.isPast ? borderWidth : 0.0,
+                start: borderWidth,
+                end: borderWidth,
+                top: borderWidth,
+                bottom: occasion.isPast
+                    ? wLayout.notSelectedDay.dayColumnBorderWidth
+                    : 0.0,
               ),
               decoration: BoxDecoration(
                 color: dayTheme.color,
@@ -276,61 +292,20 @@ class _FullDayActivities extends StatelessWidget {
   }
 }
 
-class _WeekCalendarBody extends StatelessWidget {
-  const _WeekCalendarBody({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) => ListView(
-        children: [
-          Container(
-            constraints: BoxConstraints(
-              minHeight: constraints.maxHeight,
-            ),
-            child: IntrinsicHeight(
-              child:
-                  BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-                buildWhen: (previous, current) =>
-                    previous.weekDisplayDays != current.weekDisplayDays,
-                builder: (context, memosettings) =>
-                    BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
-                  buildWhen: (previous, current) =>
-                      previous.currentWeekStart != current.currentWeekStart,
-                  builder: (context, weekState) => Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List<_WeekDayColumn>.generate(
-                      memosettings.weekDisplayDays.numberOfDays(),
-                      (i) => _WeekDayColumn(
-                        day: weekState.currentWeekStart.addDays(i),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _WeekDayColumn extends StatelessWidget {
   final DateTime day;
+  final WeekDisplayDays weekDisplayDays;
 
   const _WeekDayColumn({
     required this.day,
+    required this.weekDisplayDays,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      buildWhen: (previous, current) =>
-          previous.weekColor != current.weekColor ||
-          previous.settings.calendar.dayColor !=
-              current.settings.calendar.dayColor,
+      buildWhen: (previous, current) => previous.weekColor != current.weekColor,
       builder: (context, memosettings) => BlocBuilder<ClockBloc, DateTime>(
         buildWhen: (previous, current) =>
             previous.isAtSameDay(day) != current.isAtSameDay(day),
@@ -353,15 +328,11 @@ class _WeekDayColumn extends StatelessWidget {
                 : memosettings.weekColor == WeekColor.columns
                     ? dayTheme.secondaryColor
                     : AbiliaColors.white;
-            final borderColor = today
-                ? AbiliaColors.red
-                : selected
-                    ? AbiliaColors.black
-                    : past
-                        ? AbiliaColors.white110
-                        : columnColor == AbiliaColors.white
-                            ? AbiliaColors.white120
-                            : dayTheme.borderColor ?? dayTheme.secondaryColor;
+            final borderColor =
+                _bodyColumnBorderColor(today, selected, past, columnColor) ??
+                    dayTheme.borderColor ??
+                    dayTheme.secondaryColor;
+
             final tempPadding = selected
                 ? wLayout.selectedDay.innerDayPadding
                 : wLayout.notSelectedDay.innerDayPadding;
@@ -374,7 +345,7 @@ class _WeekDayColumn extends StatelessWidget {
             );
 
             return Flexible(
-              flex: _dayColumnFlex(memosettings.weekDisplayDays, selected),
+              flex: _dayColumnFlex(weekDisplayDays, selected),
               child: GestureDetector(
                 onTap: () {
                   DefaultTabController.of(context)?.animateTo(0);
@@ -766,4 +737,13 @@ int _dayColumnFlex(WeekDisplayDays weekDisplayDays, bool selected) {
           ? layout.weekCalendar.selectedDay.weekdaysFlex
           : layout.weekCalendar.notSelectedDay.weekdaysFlex;
   }
+}
+
+Color? _bodyColumnBorderColor(
+    bool today, bool selected, bool past, Color columnColor) {
+  if (today) return AbiliaColors.red;
+  if (selected) return AbiliaColors.black;
+  if (past) return AbiliaColors.white110;
+  if (columnColor == AbiliaColors.white) return AbiliaColors.white120;
+  return null;
 }
