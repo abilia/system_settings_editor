@@ -945,7 +945,7 @@ void main() {
         );
       });
 
-      testWidgets('fullscreen mixed with reminder and timer',
+      testWidgets('ongoing fullscreen mixed with reminder and timer',
           (WidgetTester tester) async {
         final activity = Activity.createNew(
           title: 'Activity 1',
@@ -1005,7 +1005,48 @@ void main() {
         await tester.tap(find.byType(CloseButton));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
-      });
+      }, skip: !Config.isMP);
+
+      testWidgets('SGC-1939 no ongoing fullscreen on mpgo',
+          (WidgetTester tester) async {
+        final activity = Activity.createNew(
+          title: 'Activity 1',
+          startTime: activity1StartTime,
+          duration: 2.minutes(),
+        );
+        when(() => mockActivityDb.getAllNonDeleted())
+            .thenAnswer((_) => Future.value([activity]));
+        when(() => mockActivityDb.getAllBetween(any(), any()))
+            .thenAnswer((_) => Future.value([activity]));
+        when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+          (_) => Future.value(
+            [
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: true,
+                  identifier: AlarmSettings.showOngoingActivityInFullScreenKey,
+                ),
+              ),
+            ],
+          ),
+        );
+
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+
+        mockTicker.add(activity1StartTime);
+        await tester.pumpAndSettle();
+
+        expect(find.byType(AlarmPage), findsOneWidget);
+        expect(find.byType(FullScreenActivityPage), findsNothing);
+
+        selectNotificationSubject.add(TimerAlarm(AbiliaTimer.createNew(
+            startTime: DateTime(2011, 11, 11, 11, 11), duration: 1.minutes())));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(TimerAlarmPage), findsOneWidget);
+        expect(find.byType(FullScreenActivityPage), findsNothing);
+      }, skip: !Config.isMPGO);
     });
 
     group('timer alarms', () {
