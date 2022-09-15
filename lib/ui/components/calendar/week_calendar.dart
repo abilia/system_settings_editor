@@ -86,17 +86,21 @@ class WeekCalendar extends StatelessWidget {
                       ),
                     ),
                     Expanded(
-                      child: IntrinsicHeight(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: List<_WeekDayColumn>.generate(
-                            numberOfDays,
-                            (i) => _WeekDayColumn(
-                              day: weekStart.addDays(i),
-                              weekDisplayDays: weekDisplayDays,
+                      child: ListView(
+                        children: [
+                          IntrinsicHeight(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: List<_WeekDayColumn>.generate(
+                                numberOfDays,
+                                (i) => _WeekDayColumn(
+                                  day: weekStart.addDays(i),
+                                  weekDisplayDays: weekDisplayDays,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ],
@@ -172,7 +176,7 @@ class WeekCalenderHeadingContent extends StatelessWidget {
           borderWidth: borderWidth,
           borderColor: borderColor,
           wLayout: wLayout,
-          dayThemeColor: dayTheme.color,
+          columnColor: dayTheme.color,
           header: true,
           innerRadius: innerRadius,
           past: occasion.isPast,
@@ -310,7 +314,7 @@ class _WeekDayColumn extends StatelessWidget {
                   borderWidth: borderWidth,
                   borderColor: borderColor,
                   wLayout: wLayout,
-                  dayThemeColor: columnColor,
+                  columnColor: columnColor,
                   header: false,
                   innerRadius: innerRadius,
                   past: past,
@@ -691,7 +695,7 @@ Color? _bodyColumnBorderColor(
 class _WeekBorderedColumn extends StatelessWidget {
   final Widget child;
   final WeekCalendarLayout wLayout;
-  final Color borderColor, dayThemeColor;
+  final Color borderColor, columnColor;
   final double borderWidth;
   final Radius innerRadius;
   final bool past, header;
@@ -701,7 +705,7 @@ class _WeekBorderedColumn extends StatelessWidget {
     required this.wLayout,
     required this.borderColor,
     required this.borderWidth,
-    required this.dayThemeColor,
+    required this.columnColor,
     required this.innerRadius,
     required this.past,
     required this.header,
@@ -715,7 +719,7 @@ class _WeekBorderedColumn extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: wLayout.dayDistance),
       child: Container(
-        height: header ? wLayout.headerHeight : double.infinity,
+        height: header ? wLayout.headerHeight : null,
         decoration: BoxDecoration(
           color: borderColor,
           borderRadius: BorderRadius.only(
@@ -738,7 +742,7 @@ class _WeekBorderedColumn extends StatelessWidget {
                   : borderWidth,
             ),
             decoration: BoxDecoration(
-              color: dayThemeColor,
+              color: columnColor,
               borderRadius: BorderRadius.only(
                 topLeft: header ? innerRadius : Radius.zero,
                 topRight: header ? innerRadius : Radius.zero,
