@@ -423,35 +423,45 @@ class _WeekDayColumnItems extends StatelessWidget {
       children: [
         for (int i = 0; i < occasions.length; i++)
           Padding(
-            padding: _categoryPadding(
-              showCategories,
-              selected,
-              occasions[i].category,
-              i > 0 && occasions[i - 1].category != occasions[i].category,
-            ),
-            child: selected && !layout.go
-                ? occasions[i] is ActivityOccasion
-                    ? ActivityCard(
-                        activityOccasion: occasions[i] as ActivityOccasion,
-                        showCategoryColor: showCategoryColor,
-                        showInfoIcons: false,
-                      )
-                    : TimerCard(
-                        timerOccasion: occasions[i] as TimerOccasion,
-                        day: day,
-                      )
-                : occasions[i] is ActivityOccasion
-                    ? _WeekActivityContent(
-                        activityOccasion: occasions[i] as ActivityOccasion,
-                        selected: selected,
-                      )
-                    : _WeekTimerContent(
-                        timerOccasion: occasions[i] as TimerOccasion,
-                        selected: selected,
-                      ),
-          ),
+              padding: _categoryPadding(
+                showCategories,
+                selected,
+                occasions[i].category,
+                i > 0 && occasions[i - 1].category != occasions[i].category,
+              ),
+              child: occasions[i] is ActivityOccasion
+                  ? _activityWidget(occasions[i] as ActivityOccasion)
+                  : _timerWidget(occasions[i] as TimerOccasion)),
       ],
     );
+  }
+
+  Widget _activityWidget(ActivityOccasion occasion) {
+    return selected && !layout.go
+        ? ActivityCard(
+            activityOccasion: occasion,
+            showCategoryColor: showCategoryColor,
+            showInfoIcons: false,
+          )
+        : AspectRatio(
+            aspectRatio: 1,
+            child: _WeekActivityContent(
+              activityOccasion: occasion,
+              selected: selected,
+            ),
+          );
+  }
+
+  Widget _timerWidget(TimerOccasion occasion) {
+    return selected && !layout.go
+        ? TimerCard(
+            timerOccasion: occasion,
+            day: day,
+          )
+        : _WeekTimerContent(
+            timerOccasion: occasion,
+            selected: selected,
+          );
   }
 
   EdgeInsets _categoryPadding(
@@ -495,72 +505,70 @@ class _WeekActivityContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final wLayout = layout.weekCalendar;
     final inactive = activityOccasion.isPast || activityOccasion.isSignedOff;
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Tts.fromSemantics(
-        activityOccasion.activity.semanticsProperties(context),
-        child: _WeekEventContent(
-          occasion: activityOccasion,
-          selected: selected,
-          onClick: () {
-            final authProviders = copiedAuthProviders(context);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => MultiBlocProvider(
-                  providers: authProviders,
-                  child: ActivityPage(activityDay: activityOccasion),
+    return Tts.fromSemantics(
+      activityOccasion.activity.semanticsProperties(context),
+      child: _WeekEventContent(
+        occasion: activityOccasion,
+        selected: selected,
+        onClick: () {
+          final authProviders = copiedAuthProviders(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => MultiBlocProvider(
+                providers: authProviders,
+                child: ActivityPage(activityDay: activityOccasion),
+              ),
+              settings: RouteSettings(
+                name: 'ActivityPage $activityOccasion',
+              ),
+            ),
+          );
+        },
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            if (activityOccasion.activity.hasImage)
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 400),
+                opacity: inactive ? 0.5 : 1.0,
+                child: FadeInAbiliaImage(
+                  fit: selected ? BoxFit.scaleDown : BoxFit.cover,
+                  imageFileId: activityOccasion.activity.fileId,
+                  imageFilePath: activityOccasion.activity.icon,
+                  height: double.infinity,
+                  width: double.infinity,
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(wLayout.imageBorderRadius)),
                 ),
-                settings: RouteSettings(
-                  name: 'ActivityPage $activityOccasion',
+              )
+            else
+              Center(
+                child: Text(
+                  activityOccasion.activity.title,
+                  overflow: TextOverflow.clip,
+                  style: Theme.of(context).textTheme.caption ?? caption,
+                  textAlign: TextAlign.center,
                 ),
               ),
-            );
-          },
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              if (activityOccasion.activity.hasImage)
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 400),
-                  opacity: inactive ? 0.5 : 1.0,
-                  child: FadeInAbiliaImage(
-                    fit: selected ? BoxFit.scaleDown : BoxFit.cover,
-                    imageFileId: activityOccasion.activity.fileId,
-                    imageFilePath: activityOccasion.activity.icon,
-                    height: double.infinity,
-                    width: double.infinity,
-                    borderRadius: BorderRadius.zero,
-                  ),
-                )
-              else
-                Center(
-                  child: Text(
-                    activityOccasion.activity.title,
-                    overflow: TextOverflow.clip,
-                    style: Theme.of(context).textTheme.caption ?? caption,
-                    textAlign: TextAlign.center,
-                  ),
+            if (activityOccasion.isPast)
+              AspectRatio(
+                aspectRatio: 1,
+                child: CrossOver(
+                  style: CrossOverStyle.darkSecondary,
+                  padding: wLayout.crossOverActivityPadding,
                 ),
-              if (activityOccasion.isPast)
-                AspectRatio(
-                  aspectRatio: 1,
-                  child: CrossOver(
-                    style: CrossOverStyle.darkSecondary,
-                    padding: wLayout.crossOverActivityPadding,
-                  ),
+              ),
+            if (activityOccasion.isSignedOff)
+              AspectRatio(
+                aspectRatio: 1,
+                child: FractionallySizedBox(
+                  widthFactor: scaleFactor,
+                  heightFactor: scaleFactor,
+                  child: const CheckMark(),
                 ),
-              if (activityOccasion.isSignedOff)
-                AspectRatio(
-                  aspectRatio: 1,
-                  child: FractionallySizedBox(
-                    widthFactor: scaleFactor,
-                    heightFactor: scaleFactor,
-                    child: const CheckMark(),
-                  ),
-                ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );
@@ -617,12 +625,12 @@ class _WeekTimerContent extends StatelessWidget {
             if (timerOccasion.timer.hasImage)
               Padding(
                 padding: wLayout.timerCard.imagePadding,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    AspectRatio(
-                      aspectRatio: 1,
-                      child: AnimatedOpacity(
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      AnimatedOpacity(
                         duration: const Duration(milliseconds: 400),
                         opacity: timerOccasion.isPast ? 0.5 : 1.0,
                         child: FadeInAbiliaImage(
@@ -630,21 +638,17 @@ class _WeekTimerContent extends StatelessWidget {
                           imageFileId: timerOccasion.timer.fileId,
                           height: double.infinity,
                           width: double.infinity,
-                          borderRadius: BorderRadius.circular(
-                            wLayout.timerCard.borderRadius,
-                          ),
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(wLayout.imageBorderRadius)),
                         ),
                       ),
-                    ),
-                    if (timerOccasion.isPast)
-                      AspectRatio(
-                        aspectRatio: 1,
-                        child: CrossOver(
+                      if (timerOccasion.isPast)
+                        CrossOver(
                           style: CrossOverStyle.darkSecondary,
                           padding: wLayout.crossOverActivityPadding,
                         ),
-                      ),
-                  ],
+                    ],
+                  ),
                 ),
               )
             else if (timerOccasion.timer.hasTitle)

@@ -5,7 +5,11 @@ class WeekCalendarLayout {
 
   final TimerCardLayout timerCard;
 
-  final double dayDistance, headerHeight, activityDistance, categoryInset;
+  final double dayDistance,
+      headerHeight,
+      activityDistance,
+      categoryInset,
+      imageBorderRadius;
 
   final EdgeInsets crossOverDayHeadingPadding,
       crossOverActivityPadding,
@@ -37,6 +41,7 @@ class WeekCalendarLayout {
       weekdaysFlex: 64,
       dayColumnBorderWidth: 1,
     ),
+    this.imageBorderRadius = 8,
   });
 }
 

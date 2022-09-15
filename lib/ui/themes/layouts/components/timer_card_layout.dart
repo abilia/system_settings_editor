@@ -13,6 +13,6 @@ class TimerCardLayout {
     this.wheelPadding = const EdgeInsets.symmetric(vertical: 4),
     this.textPadding = EdgeInsets.zero,
     this.imagePadding = EdgeInsets.zero,
-    this.borderRadius = 10,
+    this.borderRadius = 8,
   });
 }

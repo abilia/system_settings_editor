@@ -71,6 +71,7 @@ class TimerCard extends StatelessWidget {
                                 eventOccasion: timerOccasion,
                                 fit: BoxFit.cover,
                                 crossPadding: layout.eventCard.crossPadding,
+                                radius: layout.eventCard.imageRadius,
                               ),
                             ),
                           ),
