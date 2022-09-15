@@ -3,11 +3,13 @@ import 'package:get_it/get_it.dart';
 import 'package:seagull/background/all.dart';
 
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/models/notification/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class AlarmListener extends StatelessWidget {
+  static final _log = Logger('AlarmListener');
   final Widget child;
 
   const AlarmListener({
@@ -37,10 +39,15 @@ class AlarmListener extends StatelessWidget {
                 current.data.containsKey(RemoteAlarm.stopSoundKey) ||
                 current.data.containsKey(RemoteAlarm.popKey),
             listener: (context, state) {
+              _log.fine('remote alarm stop: ${state.data}');
               final hash = state.stopAlarmSoundKey;
-              if (hash != null) notificationPlugin.cancel(hash);
+              if (hash != null) {
+                _log.info('canceling alarm with id: $hash');
+                notificationPlugin.cancel(hash);
+              }
               final stackId = state.popAlarmKey;
               if (stackId != null) {
+                _log.info('trying to pop alarm with id: $stackId');
                 final route =
                     GetIt.I<AlarmNavigator>().removedFromRoutes(stackId);
                 if (route != null) {

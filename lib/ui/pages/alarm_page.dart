@@ -31,32 +31,34 @@ class AlarmPage extends StatelessWidget {
           activityDay: alarm.activityDay,
           activitiesBloc: context.read<ActivitiesBloc>(),
         ),
-        child: BlocSelector<ActivityCubit, ActivityState, NewAlarm>(
-          selector: (state) => alarm.copyWith(state.activityDay),
-          builder: (context, alarm) => Scaffold(
-            appBar: AbiliaAppBar(
-              title: Translator.of(context).translate.alarm,
-              iconData: AbiliaIcons.handiAlarmVibration,
-              height: layout.appBar.mediumHeight,
-              trailing: Padding(
-                padding: layout.alarmPage.clockPadding,
-                child: AbiliaClock(
-                  style: Theme.of(context).textTheme.caption?.copyWith(
-                        color: AbiliaColors.white,
-                      ),
+        child: BlocBuilder<ActivityCubit, ActivityState>(
+          builder: (context, state) {
+            final alarm = this.alarm.copyWith(state.activityDay);
+            return Scaffold(
+              appBar: AbiliaAppBar(
+                title: Translator.of(context).translate.alarm,
+                iconData: AbiliaIcons.handiAlarmVibration,
+                height: layout.appBar.mediumHeight,
+                trailing: Padding(
+                  padding: layout.alarmPage.clockPadding,
+                  child: AbiliaClock(
+                    style: Theme.of(context).textTheme.caption?.copyWith(
+                          color: AbiliaColors.white,
+                        ),
+                  ),
                 ),
               ),
-            ),
-            body: Padding(
-              padding: layout.templates.s1,
-              child: ActivityInfo(
-                alarm.activityDay,
-                previewImage: previewImage,
-                alarm: alarm,
+              body: Padding(
+                padding: layout.templates.s1,
+                child: ActivityInfo(
+                  alarm.activityDay,
+                  previewImage: previewImage,
+                  alarm: alarm,
+                ),
               ),
-            ),
-            bottomNavigationBar: AlarmBottomNavigationBar(alarm: alarm),
-          ),
+              bottomNavigationBar: AlarmBottomNavigationBar(alarm: alarm),
+            );
+          },
         ),
       ),
     );
