@@ -494,49 +494,46 @@ class _WeekActivityContent extends StatelessWidget {
             ),
           );
         },
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            if (activityOccasion.activity.hasImage)
-              AnimatedOpacity(
-                duration: const Duration(milliseconds: 400),
-                opacity: inactive ? 0.5 : 1.0,
-                child: FadeInAbiliaImage(
-                  fit: selected || fullDay ? BoxFit.scaleDown : BoxFit.cover,
-                  imageFileId: activityOccasion.activity.fileId,
-                  imageFilePath: activityOccasion.activity.icon,
-                  height: double.infinity,
-                  width: double.infinity,
-                  borderRadius: BorderRadius.zero,
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              if (activityOccasion.activity.hasImage)
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 400),
+                  opacity: inactive ? 0.5 : 1.0,
+                  child: FadeInAbiliaImage(
+                    fit: selected || fullDay ? BoxFit.scaleDown : BoxFit.cover,
+                    imageFileId: activityOccasion.activity.fileId,
+                    imageFilePath: activityOccasion.activity.icon,
+                    height: double.infinity,
+                    width: double.infinity,
+                    borderRadius: BorderRadius.zero,
+                  ),
+                )
+              else
+                Center(
+                  child: Text(
+                    activityOccasion.activity.title,
+                    overflow: TextOverflow.clip,
+                    style: Theme.of(context).textTheme.caption ?? caption,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              )
-            else
-              Center(
-                child: Text(
-                  activityOccasion.activity.title,
-                  overflow: TextOverflow.clip,
-                  style: Theme.of(context).textTheme.caption ?? caption,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            if (activityOccasion.isPast)
-              AspectRatio(
-                aspectRatio: 1,
-                child: CrossOver(
+              if (activityOccasion.isPast)
+                CrossOver(
                   style: CrossOverStyle.darkSecondary,
                   padding: wLayout.crossOverActivityPadding,
                 ),
-              ),
-            if (activityOccasion.isSignedOff)
-              AspectRatio(
-                aspectRatio: 1,
-                child: FractionallySizedBox(
+              if (activityOccasion.isSignedOff)
+                FractionallySizedBox(
                   widthFactor: scaleFactor,
                   heightFactor: scaleFactor,
                   child: const CheckMark(),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );
