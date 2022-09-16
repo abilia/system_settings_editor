@@ -85,22 +85,18 @@ class WeekCalendar extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: ListView(
-                        children: [
-                          IntrinsicHeight(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: List<_WeekDayColumn>.generate(
-                                numberOfDays,
-                                (i) => _WeekDayColumn(
-                                  day: weekStart.addDays(i),
-                                  weekDisplayDays: weekDisplayDays,
-                                ),
-                              ),
+                    _WeekBodyContentWrapper(
+                      child: IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List<_WeekDayColumn>.generate(
+                            numberOfDays,
+                            (i) => _WeekDayColumn(
+                              day: weekStart.addDays(i),
+                              weekDisplayDays: weekDisplayDays,
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ],
@@ -160,13 +156,11 @@ class WeekCalenderHeadingContent extends StatelessWidget {
       ),
       vertical: fullDayPadding,
     );
-
     return Flexible(
       flex: _dayColumnFlex(weekDisplayDays, selected),
       child: GestureDetector(
         onTap: () {
-          final currentDay = context.read<DayPickerBloc>().state.day;
-          if (currentDay.isAtSameDay(day)) {
+          if (selected) {
             DefaultTabController.of(context)?.animateTo(0);
           } else {
             BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day));
@@ -180,6 +174,7 @@ class WeekCalenderHeadingContent extends StatelessWidget {
           header: true,
           innerRadius: innerRadius,
           past: occasion.isPast,
+          selected: selected,
           child: Column(
             children: [
               Expanded(
@@ -212,12 +207,44 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                   ),
                 ),
               ),
+              // special divider on past Wednesday to distinguish between header and body (same color)
+              if (occasion.isPast && day.weekday == DateTime.wednesday)
+                Divider(
+                  color: selected ? dayTheme.borderColor : borderColor,
+                  height: borderWidth,
+                  endIndent: 0,
+                ),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+class _WeekBodyContentWrapper extends StatelessWidget {
+  final Widget child;
+
+  const _WeekBodyContentWrapper({
+    required this.child,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Expanded(
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) =>
+              ListView(
+            children: [
+              Container(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
+                  ),
+                  child: child),
+            ],
+          ),
+        ),
+      );
 }
 
 class _FullDayActivities extends StatelessWidget {
@@ -318,6 +345,7 @@ class _WeekDayColumn extends StatelessWidget {
                   header: false,
                   innerRadius: innerRadius,
                   past: past,
+                  selected: selected,
                   child: Padding(
                     padding: innerDayPadding,
                     child: _WeekDayColumnItems(
@@ -578,8 +606,7 @@ class _WeekTimerContent extends StatelessWidget {
                           imageFileId: timerOccasion.timer.fileId,
                           height: double.infinity,
                           width: double.infinity,
-                          borderRadius:
-                              BorderRadius.circular(wLayout.imageBorderRadius),
+                          borderRadius: BorderRadius.all(wLayout.columnRadius),
                         ),
                       ),
                       if (timerOccasion.isPast)
@@ -698,7 +725,7 @@ class _WeekBorderedColumn extends StatelessWidget {
   final Color borderColor, columnColor;
   final double borderWidth;
   final Radius innerRadius;
-  final bool past, header;
+  final bool past, header, selected;
 
   const _WeekBorderedColumn({
     required this.child,
@@ -709,6 +736,7 @@ class _WeekBorderedColumn extends StatelessWidget {
     required this.innerRadius,
     required this.past,
     required this.header,
+    required this.selected,
     Key? key,
   }) : super(key: key);
 
@@ -716,6 +744,8 @@ class _WeekBorderedColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     final Radius topRadius = header ? wLayout.columnRadius : Radius.zero;
     final Radius bottomRadius = !header ? wLayout.columnRadius : Radius.zero;
+    final Radius topInnerRadius = header ? innerRadius : Radius.zero;
+    final Radius bottomInnerRadius = !header ? innerRadius : Radius.zero;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: wLayout.dayDistance),
       child: Container(
@@ -735,19 +765,15 @@ class _WeekBorderedColumn extends StatelessWidget {
               start: borderWidth,
               end: borderWidth,
               top: header ? borderWidth : 0.0,
-              bottom: header
-                  ? past
-                      ? wLayout.notSelectedDay.dayColumnBorderWidth
-                      : 0.0
-                  : borderWidth,
+              bottom: header ? 0.0 : borderWidth,
             ),
             decoration: BoxDecoration(
               color: columnColor,
               borderRadius: BorderRadius.only(
-                topLeft: header ? innerRadius : Radius.zero,
-                topRight: header ? innerRadius : Radius.zero,
-                bottomLeft: !header ? innerRadius : Radius.zero,
-                bottomRight: !header ? innerRadius : Radius.zero,
+                topLeft: topInnerRadius,
+                topRight: topInnerRadius,
+                bottomLeft: bottomInnerRadius,
+                bottomRight: bottomInnerRadius,
               ),
             ),
             child: child),
