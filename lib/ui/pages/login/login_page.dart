@@ -57,9 +57,7 @@ class LoginPage extends StatelessWidget {
               final confirmWarningDialog = await showViewDialog(
                 context: context,
                 builder: (context) => ConfirmWarningDialog(
-                  text: Translator.of(context)
-                      .translate
-                      .licenseExpiredLogOutWarning,
+                  text: Translator.of(context).translate.licenseExpiredMessage,
                 ),
               );
               if (confirmWarningDialog) {
