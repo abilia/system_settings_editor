@@ -416,7 +416,7 @@ void main() {
       ),
     );
 
-    editActivityCubit.newRecurrence(newType: RecurrentType.weekly);
+    editActivityCubit.changeRecurrentType(RecurrentType.weekly);
 
     await expect;
   });
@@ -435,37 +435,39 @@ void main() {
 
     final activity = editActivityCubit.state.activity;
 
-    final timeInterval =
-        editActivityCubit.state.timeInterval.copyWith(endDate: endDate);
-
-    final monthly = Recurs.monthly(
-      aDay.day,
-      ends: endDate,
+    final expectedTimeInterval1 = editActivityCubit.state.timeInterval;
+    final expectedTimeInterval2 =
+        expectedTimeInterval1.copyWith(endDate: endDate);
+    final monthly = Recurs.monthly(aDay.day);
+    final expectedActivity1 = activity.copyWith(recurs: monthly);
+    final expectedActivity2 = activity.copyWith(
+      recurs: monthly.changeEnd(endDate),
     );
-    final expectedActivity = activity.copyWith(recurs: monthly);
 
     final expect = expectLater(
       editActivityCubit.stream,
-      emits(
+      emitsInOrder([
         UnstoredActivityState(
-          expectedActivity,
-          timeInterval,
+          expectedActivity1,
+          expectedTimeInterval1,
         ),
-      ),
+        UnstoredActivityState(
+          expectedActivity2,
+          expectedTimeInterval2,
+        ),
+      ]),
     );
 
-    editActivityCubit.changeRecurrence(monthly);
+    editActivityCubit.changeRecurrentType(RecurrentType.monthly);
+    editActivityCubit.changeRecurrentEndDate(endDate);
     await expect;
   });
 
   test('Load recurrence by switching back to original recurrence type',
       () async {
     // Arrange
-    final endDate = aDay.addDays(30);
-
-    final recurs = Recurs.monthly(
-      endDate.day,
-      ends: endDate.nextDay().onlyDays().millisecondBefore(),
+    final recurs = Recurs.monthlyOnDays(
+      {aDay.day, aDay.addDays(1).day, aDay.addDays(2).day},
     );
 
     final originalActivity =
@@ -475,10 +477,11 @@ void main() {
         EditActivityCubit.edit(ActivityDay(originalActivity, aDay));
 
     final timeInterval = editActivityCubit.state.timeInterval;
-
-    final weekly =
-        Recurs.weeklyOnDay(aDay.addDays(10).weekday, ends: aDay.addDays(10));
-    final expectedActivity = originalActivity.copyWith(
+    final weekly = Recurs.weeklyOnDay(aDay.addDays(10).weekday);
+    final expectedActivity1 = originalActivity.copyWith(
+      recurs: Recurs.weeklyOnDay(aDay.weekday),
+    );
+    final expectedActivity2 = originalActivity.copyWith(
       recurs: weekly,
     );
 
@@ -486,15 +489,28 @@ void main() {
       editActivityCubit.stream,
       emitsInOrder(
         [
-          StoredActivityState(expectedActivity,
-              timeInterval.copyWith(endDate: aDay.addDays(10)), aDay),
-          StoredActivityState(originalActivity, timeInterval, aDay)
+          StoredActivityState(
+            expectedActivity1,
+            timeInterval,
+            aDay,
+          ),
+          StoredActivityState(
+            expectedActivity2,
+            timeInterval,
+            aDay,
+          ),
+          StoredActivityState(
+            originalActivity,
+            timeInterval,
+            aDay,
+          )
         ],
       ),
     );
 
-    editActivityCubit.changeRecurrence(weekly);
-    editActivityCubit.newRecurrence(newType: RecurrentType.monthly);
+    editActivityCubit.changeRecurrentType(RecurrentType.weekly);
+    editActivityCubit.changeWeeklyRecurring(weekly);
+    editActivityCubit.changeRecurrentType(RecurrentType.monthly);
 
     await expect;
   });

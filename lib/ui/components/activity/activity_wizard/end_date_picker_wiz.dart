@@ -14,13 +14,11 @@ class EndDatePickerWiz extends StatelessWidget {
             BlocProvider(
               create: (context) => DayPickerBloc(
                 clockBloc: context.read<ClockBloc>(),
-                initialDay: editActivityState.timeInterval.startDate,
               ),
             ),
             BlocProvider(
               create: (context) => MonthCalendarCubit(
                 clockBloc: context.read<ClockBloc>(),
-                initialDay: editActivityState.timeInterval.startDate,
                 dayPickerBloc: context.read<DayPickerBloc>(),
               ),
             ),
@@ -31,8 +29,10 @@ class EndDatePickerWiz extends StatelessWidget {
             bottom: const MonthAppBarStepper(),
             body: BlocListener<DayPickerBloc, DayPickerState>(
               listener: (context, state) {
-                BlocProvider.of<EditActivityCubit>(context).newRecurrence(
-                    newEndDate: context.read<DayPickerBloc>().state.day);
+                BlocProvider.of<EditActivityCubit>(context)
+                    .changeRecurrentEndDate(
+                  context.read<DayPickerBloc>().state.day,
+                );
               },
               child: BlocSelector<MemoplannerSettingBloc,
                   MemoplannerSettingsState, DayColor>(

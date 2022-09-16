@@ -41,7 +41,13 @@ abstract class EditActivityState extends Equatable with Finest {
 
   bool get hasEndDate => timeInterval.endDate != null;
 
-  bool get hasNoEnd => hasEndDate && activity.recurs.hasNoEnd;
+  bool get recursWithNoEnd {
+    final endDate = timeInterval.endDate;
+    return activity.isRecurring &&
+        endDate != null &&
+        endDate.millisecondsSinceEpoch >= Recurs.noEnd &&
+        activity.recurs.hasNoEnd;
+  }
 
   AbiliaFile get selectedImage => AbiliaFile.from(
         id: activity.fileId,
