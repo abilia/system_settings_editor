@@ -4,7 +4,7 @@ class TimerCardLayout {
   final double minHeight;
   final Size smallWheelSize, largeWheelSize;
   final EdgeInsets wheelPadding, textPadding, imagePadding;
-  final double borderRadius;
+  final Radius borderRadius;
 
   const TimerCardLayout({
     this.minHeight = 76,
@@ -13,6 +13,6 @@ class TimerCardLayout {
     this.wheelPadding = const EdgeInsets.symmetric(vertical: 4),
     this.textPadding = EdgeInsets.zero,
     this.imagePadding = EdgeInsets.zero,
-    this.borderRadius = 8,
+    this.borderRadius = const Radius.circular(10),
   });
 }

@@ -606,7 +606,9 @@ class _WeekTimerContent extends StatelessWidget {
                           imageFileId: timerOccasion.timer.fileId,
                           height: double.infinity,
                           width: double.infinity,
-                          borderRadius: BorderRadius.all(wLayout.columnRadius),
+                          borderRadius: BorderRadius.only(
+                              topLeft: wLayout.timerCard.borderRadius,
+                              topRight: wLayout.timerCard.borderRadius),
                         ),
                       ),
                       if (timerOccasion.isPast)
