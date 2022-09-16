@@ -184,7 +184,10 @@ class EditActivityCubit extends Cubit<EditActivityState> {
 
     if (state.storedRecurring &&
         newType == state.originalActivity.recurs.recurrance) {
-      _changeRecurrence(state.originalActivity.recurs);
+      _changeRecurrence(
+        state.originalActivity.recurs,
+        timeInterval: state.originalTimeInterval,
+      );
       return;
     }
 
@@ -195,9 +198,11 @@ class EditActivityCubit extends Cubit<EditActivityState> {
 
     final endDate = newType == RecurrentType.yearly
         ? Recurs.noEndDate
-        : setEndDateToDefault
-            ? newType.defaultEndDate
-            : state.timeInterval.endDate;
+        : state.storedRecurring
+            ? state.originalTimeInterval.endDate
+            : setEndDateToDefault
+                ? newType.defaultEndDate
+                : state.timeInterval.endDate;
 
     _changeRecurrence(
       newRecurs,
