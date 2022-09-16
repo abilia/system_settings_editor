@@ -49,7 +49,45 @@ final abiliaTheme = ThemeData(
     thickness: layout.borders.thin,
     space: 0,
   ),
+  extensions: [
+    PickFieldStyle(
+      backgroundColor: Colors.blue,
+      foregroundColor: Colors.white,
+    ),
+  ],
 );
+
+class PickFieldStyle extends ThemeExtension<PickFieldStyle> {
+  PickFieldStyle({
+    required this.backgroundColor,
+    required this.foregroundColor,
+  });
+
+  final Color? backgroundColor;
+  final Color? foregroundColor;
+
+  @override
+  ThemeExtension<PickFieldStyle> copyWith({
+    Color? backgroundColor,
+    Color? foregroundColor,
+  }) =>
+      PickFieldStyle(
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        foregroundColor: foregroundColor ?? this.foregroundColor,
+      );
+
+  @override
+  ThemeExtension<PickFieldStyle> lerp(
+      ThemeExtension<PickFieldStyle>? other, double t) {
+    if (other is! PickFieldStyle) {
+      return this;
+    }
+    return PickFieldStyle(
+      backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
+      foregroundColor: Color.lerp(foregroundColor, other.foregroundColor, t),
+    );
+  }
+}
 
 final abiliaWhiteTheme =
     abiliaTheme.copyWith(scaffoldBackgroundColor: AbiliaColors.white);
@@ -137,6 +175,12 @@ final transparentOutlineInputBorder = OutlineInputBorder(
   borderSide: BorderSide(color: Colors.transparent, width: layout.borders.thin),
   borderRadius: borderRadius,
 );
+final blueBorder = Border.fromBorderSide(
+  BorderSide(
+    color: AbiliaColors.transparentBlack30,
+    width: layout.borders.thin,
+  ),
+);
 
 // Box decorations
 final boxDecoration = BoxDecoration(
@@ -151,6 +195,11 @@ final whiteBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
   border: border,
+);
+final blueBoxDecoration = BoxDecoration(
+  color: AbiliaColors.blue120,
+  borderRadius: borderRadius,
+  border: blueBorder,
 );
 final selectedBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,

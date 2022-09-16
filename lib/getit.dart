@@ -71,6 +71,9 @@ class GetItInitializer {
   SettingsDb? _settingsDb;
   set settingsDb(SettingsDb settingsDb) => _settingsDb = settingsDb;
 
+  SessionsDb? _sessionsDb;
+  set sessionsDb(SessionsDb sessionsDb) => _sessionsDb = sessionsDb;
+
   CalendarDb? _calendarDb;
   set calendarDb(CalendarDb calendarDb) => _calendarDb = calendarDb;
 
@@ -148,6 +151,8 @@ class GetItInitializer {
       ..registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database))
       ..registerSingleton<SettingsDb>(
           _settingsDb ?? SettingsDb(_sharedPreferences))
+      ..registerSingleton<SessionsDb>(
+          _sessionsDb ?? SessionsDb(_sharedPreferences))
       ..registerSingleton<CalendarDb>(_calendarDb ?? CalendarDb(_database))
       ..registerSingleton<FileStorage>(
           _fileStorage ?? FileStorage(_directories?.documents.path))

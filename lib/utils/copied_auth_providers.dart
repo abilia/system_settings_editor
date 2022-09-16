@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:collection/collection.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/session/session_cubit.dart';
 import 'package:seagull/config.dart';
 
 /// Always use [copiedAuthProviders] outside the builder callback
@@ -27,6 +28,7 @@ List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
       _tryGetBloc<TimerAlarmBloc>(blocContext),
       _tryGetBloc<SpeechSettingsCubit>(blocContext),
       _tryGetBloc<WeekCalendarCubit>(blocContext),
+      _tryGetBloc<SessionCubit>(blocContext),
       if (Config.isMP) ...[
         _tryGetBloc<WakeLockCubit>(blocContext),
         _tryGetBloc<InactivityCubit>(blocContext),
