@@ -1,7 +1,16 @@
 import 'package:equatable/equatable.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/models/all.dart';
 
 class AlarmSettings extends Equatable {
+  Sound get nonCheckableSound => nonCheckableActivity.toSound();
+  Sound get checkableSound => checkableActivity.toSound();
+  Sound get reminderSound => reminder.toSound();
+  Sound get timerSound => timer.toSound();
+  AlarmDuration get alarmDuration => durationMs.toAlarmDuration();
+  bool get showOngoingActivityInFullScreen =>
+      Config.isMP && _showOngoingActivityInFullScreen;
+
   static const nonCheckableActivityAlarmKey = 'activity_alarm_without_confirm',
       checkableActivityAlarmKey = 'activity_alarm_with_confirm',
       reminderAlarmKey = 'activity_reminder_alarm',
@@ -28,7 +37,7 @@ class AlarmSettings extends Equatable {
   final int durationMs, disabledUntilEpoch;
   final bool vibrateAtReminder,
       showAlarmOnOffSwitch,
-      showOngoingActivityInFullScreen;
+      _showOngoingActivityInFullScreen;
 
   final String checkableActivity, nonCheckableActivity, reminder, timer;
 
@@ -54,8 +63,30 @@ class AlarmSettings extends Equatable {
     this.timer = SoundExtension.defaultName,
     this.disabledUntilEpoch = 0,
     this.showAlarmOnOffSwitch = false,
-    this.showOngoingActivityInFullScreen = false,
-  });
+    bool showOngoingActivityInFullScreen = false,
+  }) : _showOngoingActivityInFullScreen = showOngoingActivityInFullScreen;
+
+  AlarmSettings copyWith({
+    Sound? nonCheckableSound,
+    Sound? checkableSound,
+    Sound? reminderSound,
+    Sound? timerSound,
+    bool? vibrateAtReminder,
+    AlarmDuration? alarmDuration,
+    bool? showAlarmOnOffSwitch,
+    bool? showOngoingActivityInFullScreen,
+  }) =>
+      AlarmSettings(
+        durationMs: alarmDuration?.milliseconds() ?? durationMs,
+        nonCheckableActivity: nonCheckableSound?.name ?? nonCheckableActivity,
+        checkableActivity: checkableSound?.name ?? checkableActivity,
+        reminder: reminderSound?.name ?? reminder,
+        vibrateAtReminder: vibrateAtReminder ?? this.vibrateAtReminder,
+        timer: timerSound?.name ?? timer,
+        showAlarmOnOffSwitch: showAlarmOnOffSwitch ?? this.showAlarmOnOffSwitch,
+        showOngoingActivityInFullScreen:
+            showOngoingActivityInFullScreen ?? _showOngoingActivityInFullScreen,
+      );
 
   factory AlarmSettings.fromSettingsMap(
           Map<String, MemoplannerSettingData> settings) =>
@@ -92,9 +123,46 @@ class AlarmSettings extends Equatable {
           showAlarmOnOffSwitchKey,
           defaultValue: false,
         ),
-        showOngoingActivityInFullScreen: settings
-            .getBool(showOngoingActivityInFullScreenKey, defaultValue: false),
+        showOngoingActivityInFullScreen: settings.getBool(
+          showOngoingActivityInFullScreenKey,
+          defaultValue: false,
+        ),
       );
+
+  List<MemoplannerSettingData> get memoplannerSettingData => [
+        MemoplannerSettingData.fromData(
+          data: nonCheckableSound.name,
+          identifier: AlarmSettings.nonCheckableActivityAlarmKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: checkableSound.name,
+          identifier: AlarmSettings.checkableActivityAlarmKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: reminderSound.name,
+          identifier: AlarmSettings.reminderAlarmKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: timerSound.name,
+          identifier: AlarmSettings.timerAlarmKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: vibrateAtReminder,
+          identifier: AlarmSettings.vibrateAtReminderKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: alarmDuration.milliseconds(),
+          identifier: AlarmSettings.alarmDurationKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: showAlarmOnOffSwitch,
+          identifier: AlarmSettings.showAlarmOnOffSwitchKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: _showOngoingActivityInFullScreen,
+          identifier: AlarmSettings.showOngoingActivityInFullScreenKey,
+        )
+      ];
 
   @override
   List<Object?> get props => [
@@ -106,7 +174,7 @@ class AlarmSettings extends Equatable {
         timer,
         disabledUntilEpoch,
         showAlarmOnOffSwitch,
-        showOngoingActivityInFullScreen,
+        _showOngoingActivityInFullScreen,
       ];
 
   @override

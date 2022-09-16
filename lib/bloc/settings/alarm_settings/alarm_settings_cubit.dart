@@ -1,8 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
-part 'alarm_settings_state.dart';
-
 class AlarmSettingsCubit extends Cubit<AlarmSettings> {
   final GenericCubit genericCubit;
 
