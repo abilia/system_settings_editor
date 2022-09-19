@@ -31,9 +31,9 @@ class SeagullLogger {
   final String documentsDirectory;
   final SharedPreferences? preferences;
 
-  bool get fileLogging => loggingType.contains(LoggingType.file);
-  bool get printLogging => loggingType.contains(LoggingType.print);
-  bool get analyticLogging => loggingType.contains(LoggingType.analytic);
+  late final bool fileLogging = loggingType.contains(LoggingType.file);
+  late final bool printLogging = loggingType.contains(LoggingType.print);
+  late final bool analyticLogging = loggingType.contains(LoggingType.analytic);
 
   String get logFileName => '${Config.flavor.id}.log';
 
@@ -186,12 +186,12 @@ class SeagullLogger {
   }
 
   String format(LogRecord record) {
-    if (Platform.isIOS) {
-      return '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}';
+    if (printLogging && Platform.isAndroid) {
+      final start = _logColor(record.level);
+      const end = '\x1b[0m';
+      return '$start${record.level.name}:$end ${record.time}: $start${record.loggerName}: ${record.message}$end';
     }
-    final start = _logColor(record.level);
-    const end = '\x1b[0m';
-    return '$start${record.level.name}:$end ${record.time}: $start${record.loggerName}: ${record.message}$end';
+    return '${record.level.name}: ${record.time}: ${record.loggerName}: ${record.message}';
   }
 
   String _logColor(Level level) {

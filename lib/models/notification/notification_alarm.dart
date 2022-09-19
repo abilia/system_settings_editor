@@ -14,6 +14,7 @@ abstract class NotificationAlarm extends Equatable {
   Sound sound(AlarmSettings settings);
   DateTime get notificationTime;
   String get stackId;
+  String get type;
   String encode() => json.encode(toJson());
   factory NotificationAlarm.decode(String data) =>
       NotificationAlarm.fromJson(json.decode(data));
@@ -30,19 +31,20 @@ abstract class NotificationAlarm extends Equatable {
   NotificationAlarm setFullScreenActivity(bool fullScreenActivity) => this;
   @override
   String toString() =>
-      '$runtimeType {notificationTime: $notificationTime, ${event.id} }';
+      '$type {notificationTime: $notificationTime, ${event.id} -> $hashCode}';
+  @override
+  List<Object?> get props => [event.id, notificationTime];
 }
 
 class TimerAlarm extends NotificationAlarm {
   final AbiliaTimer timer;
   const TimerAlarm(this.timer) : super(timer);
+
+  @override
   final String type = 'timer';
 
   @override
   DateTime get notificationTime => timer.end;
-
-  @override
-  List<Object?> get props => [timer];
 
   @override
   String get stackId => timer.id;
@@ -77,8 +79,6 @@ abstract class ActivityAlarm extends NotificationAlarm {
     bool fullScreenActivity = false,
   }) : super(activityDay, fullScreenActivity: fullScreenActivity);
 
-  String get type;
-
   @override
   Map<String, dynamic> toJson() => {
         'day': day.millisecondsSinceEpoch,
@@ -108,9 +108,6 @@ abstract class ActivityAlarm extends NotificationAlarm {
   }
 
   ActivityAlarm copyWith(ActivityDay activityDay);
-
-  @override
-  List<Object?> get props => [activityDay.activity, activityDay.day];
 }
 
 abstract class NewAlarm extends ActivityAlarm {
@@ -204,9 +201,6 @@ abstract class NewReminder extends ActivityAlarm {
 
   @override
   NewReminder copyWith(ActivityDay activityDay);
-
-  @override
-  List<Object?> get props => [reminder, ...super.props];
 }
 
 class ReminderBefore extends NewReminder {
