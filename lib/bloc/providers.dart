@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:rxdart/transformers.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/session/session_cubit.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
