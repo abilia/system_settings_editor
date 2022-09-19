@@ -494,8 +494,6 @@ class _WeekActivityContent extends StatelessWidget {
             ),
           );
         },
-        child: AspectRatio(
-          aspectRatio: 1,
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -504,7 +502,7 @@ class _WeekActivityContent extends StatelessWidget {
                   duration: const Duration(milliseconds: 400),
                   opacity: inactive ? 0.5 : 1.0,
                   child: FadeInAbiliaImage(
-                    fit: selected || fullDay ? BoxFit.scaleDown : BoxFit.cover,
+                    fit: selected || !fullDay ? BoxFit.scaleDown : BoxFit.cover,
                     imageFileId: activityOccasion.activity.fileId,
                     imageFilePath: activityOccasion.activity.icon,
                     height: double.infinity,
@@ -533,7 +531,6 @@ class _WeekActivityContent extends StatelessWidget {
                   child: const CheckMark(),
                 ),
             ],
-          ),
         ),
       ),
     );
