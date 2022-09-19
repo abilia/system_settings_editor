@@ -82,6 +82,8 @@ class EditActivityCubit extends Cubit<EditActivityState> {
                 ),
         );
 
+  final _log = Logger((EditActivityCubit).toString());
+
   void replaceActivity(Activity activity) => emit(state.copyWith(activity));
 
   void activitySaved(Activity activitySaved) {
@@ -129,7 +131,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     emit(state.copyWith(state.activity.copyWith(reminderBefore: reminders)));
   }
 
-  void changeDate(DateTime date) {
+  void changeStartDate(DateTime date) {
     final newTimeInterval = state.timeInterval.copyWith(startDate: date);
     if (state.activity.recurs.yearly) {
       emit(
@@ -214,6 +216,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     if (state.storedRecurring ||
         state.activity.recurs.recurrance == RecurrentType.none ||
         state.activity.recurs.recurrance == RecurrentType.yearly) {
+      _log.warning('Invalid attempt at updating recurring end date');
       return;
     }
 
@@ -228,7 +231,10 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     if (recurs.recurrance != RecurrentType.weekly ||
         state.activity.recurs.recurrance != RecurrentType.weekly ||
         (state.storedRecurring &&
-            recurs.end != state.originalActivity.recurs.end)) {
+            recurs.end != state.originalActivity.recurs.end) ||
+        recurs.end != state.activity.recurs.end) {
+      _log.warning(
+          'Invalid attempt updating ${RecurrentType.weekly.name} recurring. ${(Recurs).toString()} provided: $recurs');
       return;
     }
 

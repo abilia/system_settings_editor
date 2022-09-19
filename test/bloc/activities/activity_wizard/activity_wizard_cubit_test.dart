@@ -376,7 +376,7 @@ void main() {
     // Act
     editActivityCubit.changeTimeInterval(
         startTime: const TimeOfDay(hour: 1, minute: 1));
-    editActivityCubit.changeDate(newDate);
+    editActivityCubit.changeStartDate(newDate);
     editActivityCubit.replaceActivity(newActivity);
 
     // Assert
@@ -933,7 +933,7 @@ void main() {
             ],
           ),
         );
-        editActivityCubit.changeDate(saveTime);
+        editActivityCubit.changeStartDate(saveTime);
         editActivityCubit.replaceActivity(activity);
 
         // Assert
@@ -1027,6 +1027,10 @@ void main() {
               ),
               UnstoredActivityState(
                 activity3,
+                timeInterval,
+              ),
+              UnstoredActivityState(
+                activity3,
                 recursTimeInterval,
               ),
             ]));
@@ -1035,6 +1039,7 @@ void main() {
         editActivityCubit.replaceActivity(activity1);
         editActivityCubit.changeRecurrentType(RecurrentType.weekly);
         editActivityCubit.changeWeeklyRecurring(Recurs.everyDay);
+        editActivityCubit.changeRecurrentEndDate(Recurs.noEndDate);
 
         // Assert
         await expected1;
@@ -1641,12 +1646,7 @@ void main() {
 
     // Act
     editActivityCubit.changeRecurrentType(RecurrentType.weekly);
-    editActivityCubit.changeWeeklyRecurring(
-      Recurs.weeklyOnDay(
-        aTime.weekday,
-        ends: Recurs.noEndDate,
-      ),
-    );
+    editActivityCubit.changeRecurrentEndDate(Recurs.noEndDate);
     // Assert
     await expected1;
 
@@ -1747,7 +1747,7 @@ void main() {
 
     // Acts
     editActivityCubit.changeRecurrentType(RecurrentType.yearly);
-    editActivityCubit.changeDate(nextDay);
+    editActivityCubit.changeStartDate(nextDay);
 
     await wizCubit.next(
         saveRecurring: SaveRecurring(ApplyTo.onlyThisDay, aDay));
@@ -2182,15 +2182,6 @@ void main() {
               WizardStep.endDate,
             ],
           ),
-          WizardState(
-            0,
-            const [
-              WizardStep.time,
-              WizardStep.category,
-              WizardStep.recurring,
-              WizardStep.recursWeekly
-            ],
-          ),
         ]),
       );
 
@@ -2207,7 +2198,8 @@ void main() {
             WizardStep.time,
             WizardStep.category,
             WizardStep.recurring,
-            WizardStep.recursWeekly
+            WizardStep.recursWeekly,
+            WizardStep.endDate,
           ],
           saveErrors: const {SaveError.noRecurringDays},
           successfulSave: false,
@@ -2253,7 +2245,7 @@ void main() {
         ),
       );
 
-      editActivityCubit.changeDate(nowTime.add(7.days()).onlyDays());
+      editActivityCubit.changeStartDate(nowTime.add(7.days()).onlyDays());
       editActivityCubit.changeTimeInterval(
         startTime: const TimeOfDay(hour: 12, minute: 34),
       );
