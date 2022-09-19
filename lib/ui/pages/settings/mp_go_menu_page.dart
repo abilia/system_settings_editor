@@ -10,8 +10,8 @@ class MpGoMenuPage extends StatelessWidget {
     final t = Translator.of(context).translate;
     return BlocBuilder<SessionCubit, bool>(
       builder: (context, hasMP4Session) => SettingsBasePage(
-        icon: AbiliaIcons.menu,
-        title: t.menu,
+        icon: hasMP4Session ? AbiliaIcons.menu : AbiliaIcons.settings,
+        title: hasMP4Session ? t.menu : t.settings,
         bottomNavigationBar:
             const BottomNavigation(backNavigationWidget: CloseButton()),
         widgets: [
