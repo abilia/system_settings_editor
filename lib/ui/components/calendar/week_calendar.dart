@@ -208,11 +208,12 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                 ),
               ),
               // special divider on past Wednesday to distinguish between header and body (same color)
-              if (occasion.isPast && day.weekday == DateTime.wednesday)
+              if (occasion.isPast && dayTheme.color == AbiliaColors.white110)
                 Divider(
                   color: selected ? dayTheme.borderColor : borderColor,
                   height: borderWidth,
                   endIndent: 0,
+                  key: TestKey.whiteColumnDivider,
                 ),
             ],
           ),
@@ -494,43 +495,43 @@ class _WeekActivityContent extends StatelessWidget {
             ),
           );
         },
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              if (activityOccasion.activity.hasImage)
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 400),
-                  opacity: inactive ? 0.5 : 1.0,
-                  child: FadeInAbiliaImage(
-                    fit: selected || !fullDay ? BoxFit.scaleDown : BoxFit.cover,
-                    imageFileId: activityOccasion.activity.fileId,
-                    imageFilePath: activityOccasion.activity.icon,
-                    height: double.infinity,
-                    width: double.infinity,
-                    borderRadius: BorderRadius.zero,
-                  ),
-                )
-              else
-                Center(
-                  child: Text(
-                    activityOccasion.activity.title,
-                    overflow: TextOverflow.clip,
-                    style: Theme.of(context).textTheme.caption ?? caption,
-                    textAlign: TextAlign.center,
-                  ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            if (activityOccasion.activity.hasImage)
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 400),
+                opacity: inactive ? 0.5 : 1.0,
+                child: FadeInAbiliaImage(
+                  fit: selected || !fullDay ? BoxFit.scaleDown : BoxFit.cover,
+                  imageFileId: activityOccasion.activity.fileId,
+                  imageFilePath: activityOccasion.activity.icon,
+                  height: double.infinity,
+                  width: double.infinity,
+                  borderRadius: BorderRadius.zero,
                 ),
-              if (activityOccasion.isPast)
-                CrossOver(
-                  style: CrossOverStyle.darkSecondary,
-                  padding: wLayout.crossOverActivityPadding,
+              )
+            else
+              Center(
+                child: Text(
+                  activityOccasion.activity.title,
+                  overflow: TextOverflow.clip,
+                  style: Theme.of(context).textTheme.caption ?? caption,
+                  textAlign: TextAlign.center,
                 ),
-              if (activityOccasion.isSignedOff)
-                FractionallySizedBox(
-                  widthFactor: scaleFactor,
-                  heightFactor: scaleFactor,
-                  child: const CheckMark(),
-                ),
-            ],
+              ),
+            if (activityOccasion.isPast)
+              CrossOver(
+                style: CrossOverStyle.darkSecondary,
+                padding: wLayout.crossOverActivityPadding,
+              ),
+            if (activityOccasion.isSignedOff)
+              FractionallySizedBox(
+                widthFactor: scaleFactor,
+                heightFactor: scaleFactor,
+                child: const CheckMark(),
+              ),
+          ],
         ),
       ),
     );
