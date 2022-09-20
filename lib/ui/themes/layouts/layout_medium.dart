@@ -1,7 +1,7 @@
 part of 'layout.dart';
 
-class MediumLayout extends Layout {
-  const MediumLayout({
+class LayoutMedium extends Layout {
+  const LayoutMedium({
     AppBarLayout? appBar,
     ActionButtonLayout? actionButton,
     TemplatesLayout? templates,
@@ -226,7 +226,7 @@ class MediumLayout extends Layout {
             deniedPadding: EdgeInsets.only(top: 6),
             deniedVerticalPadding: EdgeInsets.symmetric(vertical: 6),
           ),
-          editTimer: const EditTimerLayout(
+          editTimer: const EditTimerPageLayout(
             inputTimeWidth: 180,
             inputTimePadding: 24,
             wheelPadding: EdgeInsets.only(top: 32),
