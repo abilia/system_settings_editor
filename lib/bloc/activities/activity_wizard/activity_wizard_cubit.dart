@@ -64,7 +64,7 @@ class ActivityWizardCubit extends WizardCubit {
               stepByStep: stepByStep,
               addRecurringActivity: addRecurringActivity,
               showCategories: showCategories,
-              activity: editActivityCubit.state.activity,
+              editState: editActivityCubit.state,
             ),
           ),
         ) {
@@ -74,7 +74,7 @@ class ActivityWizardCubit extends WizardCubit {
           stepByStep: stepByStep,
           addRecurringActivity: addRecurringActivity,
           showCategories: showCategories,
-          activity: event.activity,
+          editState: event,
         );
         if (newSteps != state.steps) {
           emit(state.copyWith(newSteps: newSteps, saveErrors: {}));
@@ -87,24 +87,25 @@ class ActivityWizardCubit extends WizardCubit {
     required StepByStepSettings stepByStep,
     required bool addRecurringActivity,
     required bool showCategories,
-    required Activity activity,
+    required EditActivityState editState,
   }) =>
       [
         if (stepByStep.title) WizardStep.title,
         if (stepByStep.image) WizardStep.image,
         if (stepByStep.date) WizardStep.date,
         if (stepByStep.fullDay) WizardStep.fullDay,
-        if (!activity.fullDay) WizardStep.time,
-        if (!activity.fullDay && showCategories) WizardStep.category,
+        if (!editState.activity.fullDay) WizardStep.time,
+        if (!editState.activity.fullDay && showCategories) WizardStep.category,
         if (stepByStep.checkable) WizardStep.checkable,
         if (stepByStep.removeAfter) WizardStep.deleteAfter,
         if (stepByStep.availability) WizardStep.availableFor,
-        if (!activity.fullDay && stepByStep.alarm) WizardStep.alarm,
-        if (stepByStep.reminders && !activity.fullDay) WizardStep.reminder,
+        if (!editState.activity.fullDay && stepByStep.alarm) WizardStep.alarm,
+        if (stepByStep.reminders && !editState.activity.fullDay)
+          WizardStep.reminder,
         if (addRecurringActivity) WizardStep.recurring,
-        if (activity.recurs.weekly) WizardStep.recursWeekly,
-        if (activity.recurs.monthly) WizardStep.recursMonthly,
-        if (activity.isRecurring && !activity.recurs.hasNoEnd)
+        if (editState.activity.recurs.weekly) WizardStep.recursWeekly,
+        if (editState.activity.recurs.monthly) WizardStep.recursMonthly,
+        if (editState.activity.isRecurring && !editState.recursWithNoEnd)
           WizardStep.endDate,
         if (stepByStep.checklist || stepByStep.notes)
           WizardStep.connectedFunction,

@@ -2474,6 +2474,51 @@ text''';
       // Assert -- Still three days selected
       expect(find.byIcon(AbiliaIcons.radiocheckboxSelected), findsNWidgets(3));
     });
+
+    testWidgets(
+        'SGC-1926 - Changing from yearly to weekly or monthly changes end date to No End',
+        (WidgetTester tester) async {
+      bool endDateNotSet() {
+        final noEndDateSwitch = tester
+            .firstWidget(find.byKey(TestKey.noEndDateSwitch)) as SwitchField;
+        final datePicker =
+            tester.firstWidget(find.byType(DatePicker)) as DatePicker;
+        return !noEndDateSwitch.value && datePicker.emptyText;
+      }
+
+      // Arrange
+      await tester.pumpWidget(createEditActivityPage(
+        newActivity: true,
+      ));
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.goToRecurrenceTab();
+
+      // Assert -- Once selected
+      final radioWidget = tester.firstWidget(
+        find.byType(RadioField<RecurrentType>),
+      ) as RadioField<RecurrentType>;
+      expect(radioWidget.groupValue, RecurrentType.none);
+
+      // Act -- Change to Weekly
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      // Assert -- End date is not set
+      expect(endDateNotSet(), true);
+
+      // Act -- Change to Yearly
+      await tester.tap(find.text(RecurrentType.yearly.text(translate)));
+      await tester.pumpAndSettle();
+
+      // Act -- Change to back Weekly
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      // Assert -- End date is not set
+      expect(endDateNotSet(), true);
+    });
   });
 
   group('Memoplanner settings -', () {
