@@ -42,12 +42,6 @@ abstract class MemoplannerSettingsState extends Equatable {
               settingViewOptionsZoom ||
               settingViewOptionsDurationDots));
 
-  bool get weekCaptionShowBrowseButtons =>
-      settings.weekCaptionShowBrowseButtons;
-  bool get weekCaptionShowWeekNumber => settings.weekCaptionShowWeekNumber;
-  bool get weekCaptionShowYear => settings.weekCaptionShowYear;
-  bool get weekCaptionShowClock => settings.weekCaptionShowClock;
-
   bool get monthCaptionShowBrowseButtons =>
       settings.monthCaptionShowMonthButtons;
   bool get monthCaptionShowYear => settings.monthCaptionShowYear;
@@ -62,11 +56,6 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   AlarmSettings get alarm => settings.alarm;
 
-  WeekDisplayDays get weekDisplayDays =>
-      WeekDisplayDays.values[settings.weekDisplayShowFullWeek];
-
-  WeekColor get weekColor =>
-      WeekColor.values[settings.weekDisplayShowColorMode];
   WeekColor get monthWeekColor =>
       WeekColor.values[settings.calendarMonthViewShowColors];
 

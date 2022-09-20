@@ -6,6 +6,7 @@ class WeekCalendarSettingsState extends Equatable {
   final WeekDisplayDays weekDisplayDays;
   final WeekColor weekColor;
 
+
   const WeekCalendarSettingsState._({
     required this.showBrowseButtons,
     required this.showWeekNumber,
@@ -15,16 +16,16 @@ class WeekCalendarSettingsState extends Equatable {
     required this.weekColor,
   });
 
-  factory WeekCalendarSettingsState.fromMemoplannerSettings(
-    MemoplannerSettingsState state,
+  factory WeekCalendarSettingsState.fromSettings(
+    WeekCalendarSettings settings,
   ) =>
       WeekCalendarSettingsState._(
-        showBrowseButtons: state.weekCaptionShowBrowseButtons,
-        showWeekNumber: state.weekCaptionShowWeekNumber,
-        showYear: state.weekCaptionShowYear,
-        showClock: state.weekCaptionShowClock,
-        weekDisplayDays: state.weekDisplayDays,
-        weekColor: state.weekColor,
+        showBrowseButtons: settings.showBrowseButtons,
+        showWeekNumber: settings.showWeekNumber,
+        showYear: settings.showYear,
+        showClock: settings.showClock,
+        weekDisplayDays: settings.weekDisplayDays,
+        weekColor: settings.weekColor,
       );
 
   WeekCalendarSettingsState copyWith({
