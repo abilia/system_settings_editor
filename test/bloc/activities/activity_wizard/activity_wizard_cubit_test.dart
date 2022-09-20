@@ -844,7 +844,7 @@ void main() {
                 timeInterval,
               ),
             ]));
-        editActivityCubit.changeDate(aDay);
+        editActivityCubit.changeStartDate(aDay);
         editActivityCubit.replaceActivity(activity);
 
         // Assert
