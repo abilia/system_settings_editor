@@ -79,7 +79,7 @@ void main() {
     timerStreamController.close();
   });
 
-  Widget _authListener({
+  Widget authListener({
     Authenticated state = const Authenticated(userId: 5),
   }) =>
       MaterialApp(
@@ -113,7 +113,7 @@ void main() {
     // Arrange
     when(() => memoplannerSettingBloc.state)
         .thenReturn(const MemoplannerSettingsFailed());
-    await tester.pumpWidget(_authListener());
+    await tester.pumpWidget(authListener());
     verifyNever(() => notificationBloc.add(any()));
 
     // Act
@@ -133,7 +133,7 @@ void main() {
     when(() => activitiesBloc.state).thenReturn(
       ActivitiesLoaded([Activity.createNew(startTime: now)]),
     );
-    await tester.pumpWidget(_authListener());
+    await tester.pumpWidget(authListener());
     expect(alarmScheduleCalls, 0);
     // Act
     settingsStreamController
@@ -151,7 +151,7 @@ void main() {
     ));
     when(() => memoplannerSettingBloc.state)
         .thenReturn(const MemoplannerSettingsFailed());
-    await tester.pumpWidget(_authListener());
+    await tester.pumpWidget(authListener());
 
     // Act
     timerStreamController.add(
@@ -173,7 +173,7 @@ void main() {
         'Shows starter set dialog if newly logged in and user has no sortables, '
         'call add when pressed Yes', (tester) async {
       // Arrange
-      await tester.pumpWidget(_authListener(
+      await tester.pumpWidget(authListener(
           state: const Authenticated(userId: 7, newlyLoggedIn: true)));
 
       await tester.pumpAndSettle();
@@ -194,7 +194,7 @@ void main() {
         'DONT shows starter set dialog if NOT newly logged in and user has no sortables',
         (tester) async {
       // Arrange
-      await tester.pumpWidget(_authListener(
+      await tester.pumpWidget(authListener(
           state: const Authenticated(userId: 7, newlyLoggedIn: false)));
 
       await tester.pumpAndSettle();
@@ -211,7 +211,7 @@ void main() {
         (tester) async {
       // Arrange
       await tester.pumpWidget(
-        _authListener(
+        authListener(
           state: const Authenticated(userId: 7, newlyLoggedIn: true),
         ),
       );

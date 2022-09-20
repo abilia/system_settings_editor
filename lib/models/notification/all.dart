@@ -1,4 +1,4 @@
-export 'alarm.dart';
+export 'notification_alarm.dart';
 export 'converter.dart';
 
 import 'package:seagull/models/all.dart';

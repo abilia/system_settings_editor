@@ -59,7 +59,7 @@ void main() {
     timepillarCubit = FakeTimepillarCubit();
   });
 
-  void _expectSettings(MemoplannerSettings settings) {
+  void expectSettings(MemoplannerSettings settings) {
     when(() => memoplannerSettingsBlocMock.state)
         .thenReturn(MemoplannerSettingsLoaded(settings));
   }
@@ -77,7 +77,7 @@ void main() {
 
   testWidgets('Standard heading tomorrow - no day part',
       (WidgetTester tester) async {
-    _expectSettings(const MemoplannerSettings());
+    expectSettings(const MemoplannerSettings());
     await tester.pumpWidget(wrapWithMaterialApp(
         DayAppBar(day: day.add(24.hours())), defaultClockBloc));
     await tester.pumpAndSettle();
@@ -87,7 +87,7 @@ void main() {
   });
 
   testWidgets('No day part when setting is false', (WidgetTester tester) async {
-    _expectSettings(const MemoplannerSettings(activityDisplayDayPeriod: false));
+    expectSettings(const MemoplannerSettings(activityDisplayDayPeriod: false));
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
@@ -99,7 +99,7 @@ void main() {
   testWidgets(
       'No date when setting is false - and day and day part on different rows',
       (WidgetTester tester) async {
-    _expectSettings(const MemoplannerSettings(activityDisplayDate: false));
+    expectSettings(const MemoplannerSettings(activityDisplayDate: false));
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
@@ -109,7 +109,7 @@ void main() {
   });
 
   testWidgets('No weekday when setting is false', (WidgetTester tester) async {
-    _expectSettings(const MemoplannerSettings(activityDisplayWeekDay: false));
+    expectSettings(const MemoplannerSettings(activityDisplayWeekDay: false));
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
@@ -119,7 +119,7 @@ void main() {
   });
 
   testWidgets('Only weekday', (WidgetTester tester) async {
-    _expectSettings(const MemoplannerSettings(
+    expectSettings(const MemoplannerSettings(
       activityDisplayDate: false,
       activityDisplayDayPeriod: false,
     ));
@@ -132,7 +132,7 @@ void main() {
   });
 
   testWidgets('Only day part', (WidgetTester tester) async {
-    _expectSettings(const MemoplannerSettings(
+    expectSettings(const MemoplannerSettings(
       activityDisplayDate: false,
       activityDisplayDayPeriod: true,
       activityDisplayWeekDay: false,
@@ -146,7 +146,7 @@ void main() {
   });
 
   testWidgets('Only date', (WidgetTester tester) async {
-    _expectSettings(const MemoplannerSettings(
+    expectSettings(const MemoplannerSettings(
       activityDisplayDate: true,
       activityDisplayDayPeriod: false,
       activityDisplayWeekDay: false,
@@ -160,7 +160,7 @@ void main() {
   });
 
   testWidgets('Display nothing', (WidgetTester tester) async {
-    _expectSettings(const MemoplannerSettings(
+    expectSettings(const MemoplannerSettings(
       activityDisplayDate: false,
       activityDisplayDayPeriod: false,
       activityDisplayWeekDay: false,
@@ -177,7 +177,7 @@ void main() {
       (WidgetTester tester) async {
     final evening = DateTime(2020, 10, 05, 18, 00);
     final clockBloc = ClockBloc.fixed(evening);
-    _expectSettings(const MemoplannerSettings());
+    expectSettings(const MemoplannerSettings());
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
     await tester.pumpAndSettle();
@@ -190,7 +190,7 @@ void main() {
       (WidgetTester tester) async {
     final noEvening = DateTime(2020, 10, 05, 18, 00);
     final clockBloc = ClockBloc.fixed(noEvening);
-    _expectSettings(
+    expectSettings(
       MemoplannerSettings(
         calendar: GeneralCalendarSettings(
           dayParts: DayParts(
@@ -210,7 +210,7 @@ void main() {
   testWidgets('Forenoon at 11.59', (WidgetTester tester) async {
     final forenoon = DateTime(2020, 10, 05, 11, 59);
     final clockBloc = ClockBloc.fixed(forenoon);
-    _expectSettings(const MemoplannerSettings()); //
+    expectSettings(const MemoplannerSettings()); //
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
     await tester.pumpAndSettle();
@@ -222,7 +222,7 @@ void main() {
   testWidgets('afternoon at 12.00', (WidgetTester tester) async {
     final forenoon = DateTime(2020, 10, 05, 12);
     final clockBloc = ClockBloc.fixed(forenoon);
-    _expectSettings(const MemoplannerSettings()); //
+    expectSettings(const MemoplannerSettings()); //
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
     await tester.pumpAndSettle();
@@ -245,7 +245,7 @@ void main() {
     testWidgets('clock tts test afternoon', (WidgetTester tester) async {
       final forenoon = DateTime(2020, 10, 05, 12, 5);
       final clockBloc = ClockBloc.fixed(forenoon);
-      _expectSettings(const MemoplannerSettings());
+      expectSettings(const MemoplannerSettings());
       await tester
           .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
       await tester.pumpAndSettle();
@@ -256,7 +256,7 @@ void main() {
     testWidgets('clock tts test forenoon', (WidgetTester tester) async {
       final forenoon = DateTime(2020, 10, 05, 10, 25);
       final clockBloc = ClockBloc.fixed(forenoon);
-      _expectSettings(const MemoplannerSettings());
+      expectSettings(const MemoplannerSettings());
       await tester
           .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
       await tester.pumpAndSettle();
@@ -265,7 +265,7 @@ void main() {
     });
 
     testWidgets('tts on nav buttons', (WidgetTester tester) async {
-      _expectSettings(const MemoplannerSettings());
+      expectSettings(const MemoplannerSettings());
       await tester.pumpWidget(
         wrapWithMaterialApp(
             DayAppBar(

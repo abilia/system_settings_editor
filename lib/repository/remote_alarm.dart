@@ -16,15 +16,17 @@ class RemoteAlarm {
   Future<void> stop(
     NotificationAlarm alarm, {
     bool pop = false,
-  }) =>
-      client.post(
-        '${baseUrlDb.baseUrl}/api/v1/push'.toUri(),
-        headers: jsonHeader,
-        body: jsonEncode(
-          {
-            if (pop) popKey: alarm.stackId,
-            stopSoundKey: alarm.hashCode,
-          },
-        ),
-      );
+  }) async {
+    if (alarm is TimerAlarm) return;
+    await client.post(
+      '${baseUrlDb.baseUrl}/api/v1/push'.toUri(),
+      headers: jsonHeader,
+      body: jsonEncode(
+        {
+          if (pop) popKey: alarm.stackId,
+          stopSoundKey: alarm.hashCode,
+        },
+      ),
+    );
+  }
 }

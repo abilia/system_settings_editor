@@ -67,7 +67,7 @@ void main() {
       });
 
       testWidgets('Errors', (tester) async {
-        Future _expectErrorDialog(WidgetTester tester, String errorMessage,
+        Future expectErrorDialog(WidgetTester tester, String errorMessage,
             {Matcher matcher = findsOneWidget}) async {
           await tester.tap(find.byType(CreateAccountButton));
           await tester.pumpAndSettle();
@@ -88,46 +88,46 @@ void main() {
         await tester.tap(find.byType(GoToCreateAccountButton));
         await tester.pumpAndSettle();
 
-        await _expectErrorDialog(tester, translate.enterUsername);
+        await expectErrorDialog(tester, translate.enterUsername);
 
         await tester.ourEnterText(find.byType(UsernameInput), tooShortUsername);
 
-        await _expectErrorDialog(tester, translate.usernameToShort);
+        await expectErrorDialog(tester, translate.usernameToShort);
 
         await tester.ourEnterText(find.byType(UsernameInput), takenUsername);
 
-        await _expectErrorDialog(tester, translate.enterPassword);
+        await expectErrorDialog(tester, translate.enterPassword);
 
         await tester.ourEnterText(
             find.byKey(TestKey.createAccountPassword), tooShortPassword);
 
-        await _expectErrorDialog(tester, translate.passwordToShort);
+        await expectErrorDialog(tester, translate.passwordToShort);
 
         await tester.ourEnterText(
             find.byKey(TestKey.createAccountPassword), password);
 
-        await _expectErrorDialog(tester, translate.confirmPassword,
+        await expectErrorDialog(tester, translate.confirmPassword,
             matcher: findsNWidgets(2));
 
         await tester.ourEnterText(
             find.byKey(TestKey.createAccountPasswordConfirm), tooShortPassword);
 
-        await _expectErrorDialog(tester, translate.passwordMismatch);
+        await expectErrorDialog(tester, translate.passwordMismatch);
 
         await tester.ourEnterText(
             find.byKey(TestKey.createAccountPasswordConfirm), password);
 
-        await _expectErrorDialog(tester, translate.confirmTermsOfUse);
+        await expectErrorDialog(tester, translate.confirmTermsOfUse);
 
         await tester.tap(find.byType(Switch).first);
         await tester.pumpAndSettle();
 
-        await _expectErrorDialog(tester, translate.confirmPrivacyPolicy);
+        await expectErrorDialog(tester, translate.confirmPrivacyPolicy);
 
         await tester.tap(find.byType(Switch).last);
         await tester.pumpAndSettle();
 
-        await _expectErrorDialog(tester, translate.usernameTaken);
+        await expectErrorDialog(tester, translate.usernameTaken);
 
         await tester.ourEnterText(find.byType(UsernameInput), username);
 

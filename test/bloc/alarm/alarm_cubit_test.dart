@@ -28,7 +28,7 @@ void main() {
     final inTwoMin = thisMinute.add(const Duration(minutes: 2));
     final day = thisMinute.onlyDays();
 
-    Future<DateTime> _tick() {
+    Future<DateTime> tick() {
       final nextMin = clockBloc.state.add(const Duration(minutes: 1));
       mockedTicker.add(nextMin);
       return clockBloc.stream.firstWhere((d) => d == nextMin);
@@ -74,7 +74,7 @@ void main() {
       ),
       act: (cubit) {
         activitiesBloc.add(LoadActivities());
-        _tick();
+        tick();
       },
       expect: () => [StartAlarm(ActivityDay(soonActivity, day))],
     );
@@ -91,7 +91,7 @@ void main() {
         timerAlarm: const Stream.empty(),
       ),
       act: (cubit) async {
-        await _tick();
+        await tick();
       },
       expect: () => [StartAlarm(ActivityDay(soonActivity, day))],
     );
@@ -108,7 +108,7 @@ void main() {
         timerAlarm: const Stream.empty(),
       ),
       act: (cubit) async {
-        await _tick();
+        await tick();
       },
       expect: () => [],
     );
@@ -140,7 +140,7 @@ void main() {
         timerAlarm: const Stream.empty(),
       ),
       act: (cubit) {
-        _tick();
+        tick();
       },
       expect: () => [StartAlarm(ActivityDay(soonActivity, day))],
     );
@@ -157,7 +157,7 @@ void main() {
         timerAlarm: const Stream.empty(),
       ),
       act: (cubit) {
-        _tick();
+        tick();
       },
       expect: () => [
         StartAlarm(ActivityDay(soonActivity, day)),
@@ -178,8 +178,8 @@ void main() {
         timerAlarm: const Stream.empty(),
       ),
       act: (cubit) async {
-        await _tick();
-        await _tick();
+        await tick();
+        await tick();
       },
       expect: () => [
         StartAlarm(ActivityDay(soonActivity, day)),
@@ -204,8 +204,8 @@ void main() {
         timerAlarm: const Stream.empty(),
       ),
       act: (cubit) async {
-        await _tick();
-        _tick();
+        await tick();
+        tick();
       },
       expect: () => [StartAlarm(ActivityDay(inTwoMinActivity, day))],
     );
@@ -223,7 +223,7 @@ void main() {
         timerAlarm: const Stream.empty(),
       ),
       act: (cubit) {
-        _tick();
+        tick();
       },
       expect: () => [StartAlarm(ActivityDay(recursThursday, day))],
     );
@@ -244,7 +244,7 @@ void main() {
         timerAlarm: const Stream.empty(),
       ),
       act: (cubit) async {
-        await _tick();
+        await tick();
       },
       wait: const Duration(milliseconds: 3000),
       expect: () => [StartAlarm(ActivityDay(recursTheThisDayOfMonth, day))],
@@ -263,7 +263,7 @@ void main() {
         timerAlarm: const Stream.empty(),
       ),
       act: (cubit) async {
-        await _tick();
+        await tick();
       },
       expect: () => [StartAlarm(ActivityDay(recursTheThisDayOfYear, day))],
     );
@@ -281,7 +281,7 @@ void main() {
         timerAlarm: const Stream.empty(),
       ),
       act: (cubit) async {
-        await _tick();
+        await tick();
       },
       expect: () => [EndAlarm(ActivityDay(activityEnding, day))],
     );
@@ -301,8 +301,8 @@ void main() {
         timerAlarm: const Stream.empty(),
       ),
       act: (cubit) async {
-        await _tick();
-        await _tick();
+        await tick();
+        await tick();
       },
       expect: () => [
         StartAlarm(ActivityDay(nextAlarm, day)),
@@ -325,7 +325,7 @@ void main() {
         timerAlarm: const Stream.empty(),
       ),
       act: (cubit) async {
-        _tick();
+        tick();
       },
       expect: () => [
         ReminderBefore(
@@ -362,7 +362,7 @@ void main() {
       ),
       act: (cubit) async {
         await genericCubit.loadGenerics();
-        await _tick();
+        await tick();
       },
       expect: () => [],
     );

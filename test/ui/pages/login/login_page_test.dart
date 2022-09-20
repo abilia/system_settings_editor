@@ -363,6 +363,7 @@ void main() {
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
     expect(find.byType(ConfirmWarningDialog), findsOneWidget);
+    expect(find.text(translate.licenseExpiredMessage), findsOneWidget);
     await tester.pumpAndSettle();
     await tester.tap(find.byType(OkButton));
     await tester.pumpAndSettle();
