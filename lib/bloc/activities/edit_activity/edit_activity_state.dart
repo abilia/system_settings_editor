@@ -35,6 +35,9 @@ abstract class EditActivityState extends Equatable with Finest {
   bool get emptyRecurringData =>
       activity.isRecurring && activity.recurs.data <= 0;
 
+  bool startDateBeforeNow(DateTime now) =>
+      timeInterval.startDate.onlyDays().isBefore(now.onlyDays());
+
   bool startTimeBeforeNow(DateTime now) => activity.fullDay
       ? timeInterval.startDate.onlyDays().isBefore(now.onlyDays())
       : hasStartTime && timeInterval.starts.isBefore(now);

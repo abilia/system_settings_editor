@@ -269,6 +269,11 @@ extension SaveErrorExtension on EditActivityState {
       case WizardStep.image:
         if (!hasTitleOrImage) return SaveError.noTitleOrImage;
         break;
+      case WizardStep.date:
+        if (startDateBeforeNow(now) && !allowPassedStartTime) {
+          return SaveError.startTimeBeforeNow;
+        }
+        break;
       case WizardStep.time:
         if (!hasStartTime) return SaveError.noStartTime;
         if (startTimeBeforeNow(now)) {
@@ -282,7 +287,6 @@ extension SaveErrorExtension on EditActivityState {
       case WizardStep.recursWeekly:
       case WizardStep.recursMonthly:
         if (emptyRecurringData) return SaveError.noRecurringDays;
-
         break;
       case WizardStep.endDate:
         if (activity.recurs.end.isBefore(timeInterval.startDate)) {

@@ -796,6 +796,79 @@ void main() {
 
   group('warnings', () {
     group('before now', () {
+      test('Trying to set start date before today yields error in step-by-step',
+          () async {
+        // Arrange
+        final editActivityCubit = EditActivityCubit.newActivity(
+          day: aDay,
+          defaultsSettings:
+              DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
+          calendarId: calendarId,
+        );
+
+        final wizCubit = ActivityWizardCubit.newActivity(
+          activitiesBloc: mockActivitiesBloc,
+          editActivityCubit: editActivityCubit,
+          clockBloc: ClockBloc.fixed(aTime.add(1.days())),
+          addActivitySettings: const AddActivitySettings(
+              mode: AddActivityMode.stepByStep,
+              editActivity: EditActivitySettings(template: false),
+              general: GeneralAddActivitySettings(allowPassedStartTime: false),
+              stepByStep: StepByStepSettings(
+                template: false,
+                image: false,
+                checkable: false,
+                alarm: false,
+                availability: false,
+                notes: false,
+                reminders: false,
+                checklist: false,
+                fullDay: false,
+                removeAfter: false,
+              )),
+        );
+
+        // Act
+        final originalActivity = editActivityCubit.state.activity;
+        final activity = originalActivity.copyWith(title: 'title');
+        final timeInterval = TimeInterval(startDate: aDay);
+        final expected1 = expectLater(
+            editActivityCubit.stream,
+            emitsInOrder([
+              UnstoredActivityState(
+                originalActivity,
+                timeInterval,
+              ),
+              UnstoredActivityState(
+                activity,
+                timeInterval,
+              ),
+            ]));
+        editActivityCubit.changeDate(aDay);
+        editActivityCubit.replaceActivity(activity);
+
+        // Assert
+        await expected1;
+
+        await wizCubit.next();
+        await wizCubit.next();
+        expect(
+          wizCubit.state,
+          WizardState(
+            1,
+            const [
+              WizardStep.title,
+              WizardStep.date,
+              WizardStep.time,
+              WizardStep.category,
+              WizardStep.recurring,
+            ],
+            saveErrors: const {SaveError.startTimeBeforeNow},
+            successfulSave: false,
+          ),
+        );
+      });
+
       test('Trying to save before now yields warning', () async {
         // Arrange
 
@@ -820,7 +893,7 @@ void main() {
         final originalActivity = editActivityCubit.state.activity;
         final activity = originalActivity.copyWith(title: 'null');
         final time = TimeOfDay.fromDateTime(aTime);
-        final timeIntervall = TimeInterval(
+        final timeInterval = TimeInterval(
           startTime: time,
           endTime: time,
           startDate: aDay,
@@ -831,11 +904,11 @@ void main() {
             emitsInOrder([
               UnstoredActivityState(
                 originalActivity,
-                timeIntervall,
+                timeInterval,
               ),
               UnstoredActivityState(
                 activity,
-                timeIntervall,
+                timeInterval,
               ),
             ]));
         editActivityCubit.changeTimeInterval(startTime: time);
@@ -849,7 +922,7 @@ void main() {
           emits(
             StoredActivityState(
               expectedActivity,
-              timeIntervall,
+              timeInterval,
               aDay,
             ),
           ),
