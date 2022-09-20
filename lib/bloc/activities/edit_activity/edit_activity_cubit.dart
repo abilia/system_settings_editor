@@ -16,7 +16,12 @@ class EditActivityCubit extends Cubit<EditActivityState> {
           StoredActivityState(
             activityDay.activity,
             activityDay.activity.fullDay
-                ? TimeInterval(startDate: activityDay.day)
+                ? TimeInterval(
+                    startDate: activityDay.day,
+                    endDate: activityDay.activity.isRecurring
+                        ? activityDay.activity.recurs.end
+                        : null,
+                  )
                 : TimeInterval.fromDateTime(
                     activityDay.start,
                     activityDay.activity.hasEndTime ? activityDay.end : null,
@@ -77,6 +82,8 @@ class EditActivityCubit extends Cubit<EditActivityState> {
                 ),
         );
 
+  final _log = Logger((EditActivityCubit).toString());
+
   void replaceActivity(Activity activity) => emit(state.copyWith(activity));
 
   void activitySaved(Activity activitySaved) {
@@ -124,7 +131,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     emit(state.copyWith(state.activity.copyWith(reminderBefore: reminders)));
   }
 
-  void changeDate(DateTime date) {
+  void changeStartDate(DateTime date) {
     final newTimeInterval = state.timeInterval.copyWith(startDate: date);
     if (state.activity.recurs.yearly) {
       emit(
@@ -171,34 +178,89 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     );
   }
 
-  void newRecurrence({
-    RecurrentType? newType,
-    DateTime? newEndDate,
-  }) {
-    if (state.storedRecurring &&
-        newType == state.originalActivity.recurs.recurrance) {
-      changeRecurrence(state.originalActivity.recurs);
+  void changeRecurrentType(RecurrentType newType) {
+    final previousType = state.activity.recurs.recurrance;
+    if (newType == previousType) {
       return;
     }
-    final type = newType ?? state.activity.recurs.recurrance;
-    final endDate = newEndDate ??
-        (state.activity.isRecurring ? state.timeInterval.endDate : null);
-    final recurs = endDate != null && newType == null
-        ? state.activity.recurs.changeEnd(endDate)
-        : _newRecurs(
-            type,
-            state.timeInterval.startDate,
-            endDate,
-          );
-    changeRecurrence(
-      recurs,
-      timeInterval: state.timeInterval.changeEndDate(
-        newType == RecurrentType.yearly ? Recurs.noEndDate : endDate,
-      ),
+
+    if (state.storedRecurring &&
+        newType == state.originalActivity.recurs.recurrance) {
+      _changeRecurrence(
+        state.originalActivity.recurs,
+        timeInterval: state.originalTimeInterval,
+      );
+      return;
+    }
+
+    final setEndDateToDefault = !state.storedRecurring &&
+        previousType.defaultEndDate != newType.defaultEndDate;
+
+    final newRecurs = _newRecurs(newType, state.timeInterval.startDate);
+
+    DateTime? getEndDate() {
+      if (newType == RecurrentType.yearly) {
+        return Recurs.noEndDate;
+      }
+      if (state.storedRecurring) {
+        return state.originalTimeInterval.endDate;
+      }
+      if (setEndDateToDefault) {
+        return newType.defaultEndDate;
+      }
+      return state.timeInterval.endDate;
+    }
+
+    _changeRecurrence(
+      newRecurs,
+      timeInterval: state.timeInterval.changeEndDate(getEndDate()),
     );
   }
 
-  void changeRecurrence(Recurs recurs, {TimeInterval? timeInterval}) {
+  void changeRecurrentEndDate(DateTime? newEndDate) {
+    if (state.storedRecurring ||
+        state.activity.recurs.recurrance == RecurrentType.none ||
+        state.activity.recurs.recurrance == RecurrentType.yearly) {
+      _log.warning('Invalid attempt at updating recurring end date');
+      return;
+    }
+
+    final newTimeInterval = state.timeInterval.changeEndDate(newEndDate);
+    final newRecurs = state.activity.recurs.changeEnd(
+      newEndDate ?? Recurs.noEndDate,
+    );
+    _changeRecurrence(newRecurs, timeInterval: newTimeInterval);
+  }
+
+  void changeWeeklyRecurring(Recurs recurs) {
+    if (recurs.recurrance != RecurrentType.weekly ||
+        state.activity.recurs.recurrance != RecurrentType.weekly ||
+        (state.storedRecurring &&
+            recurs.end != state.originalActivity.recurs.end) ||
+        recurs.end != state.activity.recurs.end) {
+      _log.warning(
+          'Invalid attempt updating ${RecurrentType.weekly.name} recurring. ${(Recurs).toString()} provided: $recurs');
+      return;
+    }
+
+    _changeRecurrence(recurs, timeInterval: state.timeInterval);
+  }
+
+  void changeSelectedMonthDays(Set<int> selectedMonthDays) {
+    if (state.activity.recurs.recurrance != RecurrentType.monthly) {
+      return;
+    }
+
+    _changeRecurrence(
+      Recurs.monthlyOnDays(
+        selectedMonthDays,
+        ends: state.timeInterval.endDate,
+      ),
+      timeInterval: state.timeInterval,
+    );
+  }
+
+  void _changeRecurrence(Recurs recurs, {TimeInterval? timeInterval}) {
     emit(
       state.copyWith(
         state.activity.copyWith(recurs: recurs),
@@ -210,7 +272,11 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     );
   }
 
-  Recurs _newRecurs(RecurrentType type, DateTime startDate, DateTime? endDate) {
+  Recurs _newRecurs(
+    RecurrentType type,
+    DateTime startDate, {
+    DateTime? endDate,
+  }) {
     switch (type) {
       case RecurrentType.weekly:
         return Recurs.weeklyOnDay(startDate.weekday, ends: endDate);

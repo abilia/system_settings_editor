@@ -1030,6 +1030,8 @@ void main() {
       expect(find.byType(EndDatePickerWiz), findsOneWidget);
       expect(find.byType(SaveButton), findsOneWidget);
 
+      await tester.tap(find.text('${today.day + 1}'));
+      await tester.pumpAndSettle();
       await tester.tap(find.byType(SaveButton));
       await tester.pumpAndSettle();
 
@@ -1109,6 +1111,8 @@ void main() {
       expect(find.byType(EndDatePickerWiz), findsOneWidget);
       expect(find.byType(SaveButton), findsOneWidget);
 
+      await tester.tap(find.text('${today.day + 1}'));
+      await tester.pumpAndSettle();
       await tester.tap(find.byType(SaveButton));
       await tester.pumpAndSettle();
 

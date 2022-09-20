@@ -588,7 +588,7 @@ class EndDateWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CollapsableWidget(
-              collapsed: state.hasNoEnd,
+              collapsed: state.recursWithNoEnd,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -600,8 +600,8 @@ class EndDateWidget extends StatelessWidget {
                         ? null
                         : (newDate) => context
                             .read<EditActivityCubit>()
-                            .newRecurrence(newEndDate: newDate),
-                    emptyText: !state.hasEndDate,
+                            .changeRecurrentEndDate(newDate),
+                    emptyText: !state.hasEndDate || state.recursWithNoEnd,
                     errorState: errorState,
                   ),
                   SizedBox(height: layout.formPadding.groupBottomDistance),
@@ -614,13 +614,12 @@ class EndDateWidget extends StatelessWidget {
                 AbiliaIcons.basicActivity,
                 size: layout.icon.small,
               ),
-              value: state.hasNoEnd,
+              value: state.recursWithNoEnd,
               onChanged: disabled
                   ? null
-                  : (v) => context.read<EditActivityCubit>().newRecurrence(
-                        newEndDate:
-                            v ? Recurs.noEndDate : state.timeInterval.startDate,
-                      ),
+                  : (v) => context
+                      .read<EditActivityCubit>()
+                      .changeRecurrentEndDate(v ? Recurs.noEndDate : null),
               child: Text(translate.noEndDate),
             ),
           ],
@@ -644,10 +643,10 @@ class EndDateWizWidget extends StatelessWidget {
             AbiliaIcons.basicActivity,
             size: layout.icon.small,
           ),
-          value: state.hasNoEnd,
-          onChanged: (v) => context.read<EditActivityCubit>().newRecurrence(
-                newEndDate: v ? Recurs.noEndDate : state.timeInterval.startDate,
-              ),
+          value: state.recursWithNoEnd,
+          onChanged: (v) => context
+              .read<EditActivityCubit>()
+              .changeRecurrentEndDate(v ? Recurs.noEndDate : null),
           child: Text(translate.noEndDate),
         );
       },
@@ -736,13 +735,9 @@ class MonthDays extends StatelessWidget {
                     if (!selectedMonthDays.add(d)) {
                       selectedMonthDays.remove(d);
                     }
-                    context.read<EditActivityCubit>().changeRecurrence(
-                          Recurs.monthlyOnDays(
-                            selectedMonthDays,
-                            ends: state.activity.recurs.end,
-                          ),
-                          timeInterval: state.timeInterval,
-                        );
+                    context
+                        .read<EditActivityCubit>()
+                        .changeSelectedMonthDays(selectedMonthDays);
                   },
                 );
               },

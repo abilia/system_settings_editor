@@ -246,7 +246,7 @@ void main() {
         // Act
         cubit.addOrRemoveWeekday(DateTime.monday);
         cubit.changeEveryOtherWeek(true);
-        editActivityBloc.changeDate(newStartDate);
+        editActivityBloc.changeStartDate(newStartDate);
       },
       expect: () => [
         RecurringWeekState(
@@ -323,7 +323,7 @@ void main() {
         await bloc.stream.any((element) => true);
         rwc.changeEveryOtherWeek(true);
         await bloc.stream.any((element) => true);
-        bloc.changeDate(newStartDay);
+        bloc.changeStartDate(newStartDay);
       },
       expect: () => [
         initialState.copyWith(activity2),
