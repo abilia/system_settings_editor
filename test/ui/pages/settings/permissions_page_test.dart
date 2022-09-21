@@ -344,7 +344,7 @@ void main() {
       (WidgetTester tester) async {
     setupPermissions({Permission.systemAlertWindow: PermissionStatus.denied});
 
-    await tester.pumpWidget(wrapWithMaterialApp(const MpGoMenuPage()));
+    await tester.pumpWidget(wrapWithMaterialApp(const SettingsPage()));
     await tester.pumpAndSettle();
     expect(find.byType(PermissionPickField), findsNothing);
   }, skip: !Config.isMP);
