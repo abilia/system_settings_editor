@@ -12,3 +12,4 @@ export 'general_calendar_settings/all.dart';
 export 'add_activity/all.dart';
 export 'week_calendar_settings.dart';
 export 'activity_view_settings.dart';
+export 'photo_menu_settings.dart';

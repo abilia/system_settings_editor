@@ -76,7 +76,9 @@ void main() {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            imageMenuDisplayMyPhotosItem: false,
+            photoMenu: PhotoMenuSettings(
+              displayMyPhotos: false,
+            ),
           ),
         ),
       );
@@ -93,7 +95,9 @@ void main() {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            imageMenuDisplayCameraItem: false,
+            photoMenu: PhotoMenuSettings(
+              displayCamera: false,
+            ),
           ),
         ),
       );
@@ -110,7 +114,9 @@ void main() {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            imageMenuDisplayPhotoItem: false,
+            photoMenu: PhotoMenuSettings(
+              displayLocalImages: false,
+            ),
           ),
         ),
       );

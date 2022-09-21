@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/models/settings/photo_menu_settings.dart';
 
 class MemoplannerSettings extends Equatable {
   static const Set<String> noSyncSettings = {
@@ -26,9 +27,6 @@ class MemoplannerSettings extends Equatable {
       viewOptionsZoomKey = 'view_options_zoom',
       viewOptionsTimeViewKey = 'view_options_time_view',
       dotsInTimepillarKey = 'dots_in_timepillar',
-      imageMenuDisplayPhotoItemKey = 'image_menu_display_photo_item',
-      imageMenuDisplayCameraItemKey = 'image_menu_display_camera_item',
-      imageMenuDisplayMyPhotosItemKey = 'image_menu_display_my_photos_item',
       settingViewOptionsTimeViewKey = 'setting_view_options_time_view',
       settingViewOptionsTimeIntervalKey = 'setting_view_options_time_interval',
       settingViewOptionsZoomKey = 'setting_view_options_zoom',
@@ -43,9 +41,6 @@ class MemoplannerSettings extends Equatable {
       monthCaptionShowYear,
       monthCaptionShowClock,
       dotsInTimepillar,
-      imageMenuDisplayPhotoItem,
-      imageMenuDisplayCameraItem,
-      imageMenuDisplayMyPhotosItem,
       settingViewOptionsTimeView,
       settingViewOptionsTimeInterval,
       settingViewOptionsZoom,
@@ -65,6 +60,7 @@ class MemoplannerSettings extends Equatable {
   final AddActivitySettings addActivity;
   final WeekCalendarSettings weekCalendar;
   final ActivityViewSettings activityView;
+  final PhotoMenuSettings photoMenu;
 
   const MemoplannerSettings({
     this.dayCaptionShowDayButtons = true,
@@ -77,9 +73,6 @@ class MemoplannerSettings extends Equatable {
     this.monthCaptionShowClock = true,
     this.calendarMonthViewShowColors = 1,
     this.dotsInTimepillar = false,
-    this.imageMenuDisplayPhotoItem = true,
-    this.imageMenuDisplayCameraItem = true,
-    this.imageMenuDisplayMyPhotosItem = true,
     this.viewOptionsTimeInterval = 1,
     this.viewOptionsTimeView = 1,
     this.viewOptionsZoom = 1,
@@ -96,6 +89,7 @@ class MemoplannerSettings extends Equatable {
     this.addActivity = const AddActivitySettings(),
     this.weekCalendar = const WeekCalendarSettings(),
     this.activityView = const ActivityViewSettings(),
+    this.photoMenu = const PhotoMenuSettings(),
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -128,15 +122,6 @@ class MemoplannerSettings extends Equatable {
       calendarMonthViewShowColors: settings.parse(
         calendarMonthViewShowColorsKey,
         WeekColor.columns.index,
-      ),
-      imageMenuDisplayPhotoItem: settings.getBool(
-        imageMenuDisplayPhotoItemKey,
-      ),
-      imageMenuDisplayCameraItem: settings.getBool(
-        imageMenuDisplayCameraItemKey,
-      ),
-      imageMenuDisplayMyPhotosItem: settings.getBool(
-        imageMenuDisplayMyPhotosItemKey,
       ),
       viewOptionsTimeInterval: settings.parse(
         viewOptionsTimeIntervalKey,
@@ -175,6 +160,7 @@ class MemoplannerSettings extends Equatable {
       addActivity: AddActivitySettings.fromSettingsMap(settings),
       weekCalendar: WeekCalendarSettings.fromSettingsMap(settings),
       activityView: ActivityViewSettings.fromSettingsMap(settings),
+      photoMenu: PhotoMenuSettings.fromSettingsMap(settings),
     );
   }
 
@@ -194,9 +180,6 @@ class MemoplannerSettings extends Equatable {
         dotsInTimepillar,
         viewOptionsZoom,
         alarm,
-        imageMenuDisplayPhotoItem,
-        imageMenuDisplayCameraItem,
-        imageMenuDisplayMyPhotosItem,
         settingViewOptionsTimeView,
         settingViewOptionsTimeInterval,
         settingViewOptionsZoom,
@@ -209,6 +192,7 @@ class MemoplannerSettings extends Equatable {
         addActivity,
         weekCalendar,
         activityView,
+        photoMenu,
       ];
 }
 

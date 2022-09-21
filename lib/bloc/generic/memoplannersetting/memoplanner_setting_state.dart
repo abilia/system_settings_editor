@@ -15,9 +15,6 @@ abstract class MemoplannerSettingsState extends Equatable {
       activityDisplayDate ||
       activityDisplayClock ||
       dayCaptionShowDayButtons;
-  bool get displayLocalImages => settings.imageMenuDisplayPhotoItem;
-  bool get displayCamera => settings.imageMenuDisplayCameraItem;
-  bool get displayMyPhotos => settings.imageMenuDisplayMyPhotosItem;
 
   bool get settingsInaccessible =>
       !settings.functions.display.menu || !settings.menu.showSettings;

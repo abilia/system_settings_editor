@@ -1,6 +1,6 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/abilia_file.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class ImportPicturePage extends StatelessWidget {
@@ -44,8 +44,10 @@ class _ImportPictureBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, state) {
+    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
+        PhotoMenuSettings>(
+      selector: (state) => state.settings.photoMenu,
+      builder: (context, settings) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -53,7 +55,7 @@ class _ImportPictureBody extends StatelessWidget {
               padding: layout.templates.m1,
               child: Column(
                 children: [
-                  if (state.displayLocalImages) ...[
+                  if (settings.displayLocalImages) ...[
                     ImageSourceWidget(
                       text: translate.devicesLocalImages,
                       imageSource: ImageSource.gallery,
@@ -62,7 +64,7 @@ class _ImportPictureBody extends StatelessWidget {
                     ),
                     SizedBox(height: layout.formPadding.verticalItemDistance),
                   ],
-                  if (state.displayCamera)
+                  if (settings.displayCamera)
                     ImageSourceWidget(
                       text: translate.takeNewPhoto,
                       imageSource: ImageSource.camera,
