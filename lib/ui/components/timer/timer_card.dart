@@ -9,11 +9,13 @@ class TimerCard extends StatelessWidget {
   final TimerOccasion timerOccasion;
   final DateTime day;
   final bool useOpacity;
+  final TextOverflow overflow;
 
   const TimerCard({
     required this.timerOccasion,
     required this.day,
     this.useOpacity = false,
+    this.overflow = TextOverflow.ellipsis,
     Key? key,
   }) : super(key: key);
 
@@ -71,6 +73,7 @@ class TimerCard extends StatelessWidget {
                                 eventOccasion: timerOccasion,
                                 fit: BoxFit.cover,
                                 crossPadding: layout.eventCard.crossPadding,
+                                radius: layout.eventCard.imageRadius,
                               ),
                             ),
                           ),
@@ -88,7 +91,8 @@ class TimerCard extends StatelessWidget {
                                         .textTheme
                                         .subtitle1
                                         ?.copyWith(height: 1),
-                                    overflow: TextOverflow.ellipsis,
+                                    overflow: overflow,
+                                    maxLines: 1,
                                   ),
                                   SizedBox(
                                     height:

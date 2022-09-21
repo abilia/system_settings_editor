@@ -35,13 +35,22 @@ abstract class EditActivityState extends Equatable with Finest {
   bool get emptyRecurringData =>
       activity.isRecurring && activity.recurs.data <= 0;
 
+  bool startDateBeforeNow(DateTime now) =>
+      timeInterval.startDate.onlyDays().isBefore(now.onlyDays());
+
   bool startTimeBeforeNow(DateTime now) => activity.fullDay
       ? timeInterval.startDate.onlyDays().isBefore(now.onlyDays())
       : hasStartTime && timeInterval.starts.isBefore(now);
 
   bool get hasEndDate => timeInterval.endDate != null;
 
-  bool get hasNoEnd => hasEndDate && activity.recurs.hasNoEnd;
+  bool get recursWithNoEnd {
+    final endDate = timeInterval.endDate;
+    return activity.isRecurring &&
+        endDate != null &&
+        endDate.millisecondsSinceEpoch >= Recurs.noEnd &&
+        activity.recurs.hasNoEnd;
+  }
 
   AbiliaFile get selectedImage => AbiliaFile.from(
         id: activity.fileId,

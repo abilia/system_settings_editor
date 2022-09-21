@@ -108,5 +108,6 @@ class TestKey {
       timerAlarmSelector = Key('timerAlarmSelector'),
       basicTimerLibraryFolder = Key('basicTimerLibraryFolder'),
       calendarBackgroundColor = Key('calendarBackground'),
-      monthPreviewHeaderTitle = Key('monthPreviewHeaderTitle');
+      monthPreviewHeaderTitle = Key('monthPreviewHeaderTitle'),
+      whiteColumnDivider = Key('whiteColumnDivider');
 }

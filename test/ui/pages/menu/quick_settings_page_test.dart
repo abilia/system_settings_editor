@@ -59,7 +59,7 @@ void main() {
 
   group('MP', () {
     testWidgets('All fields are setup correctly medium layout', (tester) async {
-      layout = const MediumLayout();
+      layout = const LayoutMedium();
       await tester.goToQuickSettings();
       expect(find.byType(QuickSettingsPage), findsOneWidget);
       expect(find.byType(BatteryLevel), findsOneWidget);
@@ -76,7 +76,7 @@ void main() {
     });
 
     testWidgets('All fields are setup correctly large layout', (tester) async {
-      layout = const LargeLayout();
+      layout = const LayoutLarge();
       await tester.goToQuickSettings();
       expect(find.byType(QuickSettingsPage), findsOneWidget);
       expect(find.byType(WiFiPickField), findsOneWidget);

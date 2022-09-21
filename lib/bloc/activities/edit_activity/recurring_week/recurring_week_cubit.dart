@@ -29,8 +29,7 @@ class RecurringWeekCubit extends Cubit<RecurringWeekState> {
     });
 
     _selfSubscription = stream.listen((recurringWeekState) {
-      editActivityCubit.changeRecurrence(recurringWeekState.recurs,
-          timeInterval: editActivityCubit.state.timeInterval);
+      editActivityCubit.changeWeeklyRecurring(recurringWeekState.recurs);
     });
   }
 
