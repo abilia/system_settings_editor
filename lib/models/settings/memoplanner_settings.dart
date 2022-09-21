@@ -208,6 +208,7 @@ class MemoplannerSettings extends Equatable {
         calendar,
         addActivity,
         weekCalendar,
+        activityView,
       ];
 }
 
