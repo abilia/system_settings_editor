@@ -28,7 +28,7 @@ class DateAndTimeWidget extends StatelessWidget {
               editActivityState.timeInterval.startDate,
               onChange: canEditDate
                   ? (newDate) =>
-                      context.read<EditActivityCubit>().changeDate(newDate)
+                      context.read<EditActivityCubit>().changeStartDate(newDate)
                   : null,
             ),
           ],

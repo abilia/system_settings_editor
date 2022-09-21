@@ -10,7 +10,8 @@ class WeekCalendarSettingsCubit extends Cubit<WeekCalendarSettingsState> {
   WeekCalendarSettingsCubit({
     required MemoplannerSettingsState settingsState,
     required this.genericCubit,
-  }) : super(WeekCalendarSettingsState.fromSettings(settingsState.settings.weekCalendar));
+  }) : super(WeekCalendarSettingsState.fromSettings(
+            settingsState.settings.weekCalendar));
 
   void changeWeekCalendarSettings(WeekCalendarSettingsState newState) =>
       emit(newState);

@@ -25,7 +25,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
               groupValue: activity.recurs.recurrance,
               onChanged: (v) {
                 if (v != null) {
-                  editActivityCubit.newRecurrence(newType: v);
+                  editActivityCubit.changeRecurrentType(v);
                 }
               },
               value: RecurrentType.values[i],

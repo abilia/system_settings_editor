@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+class ChecklistLayout {
+  final ChecklistQuestionLayout question;
+  final EdgeInsets listPadding, addNewQButtonPadding, addNewQIconPadding;
+  const ChecklistLayout({
+    this.question = const ChecklistQuestionLayout(),
+    this.listPadding = const EdgeInsets.all(12),
+    this.addNewQButtonPadding = const EdgeInsets.fromLTRB(12, 8, 12, 12),
+    this.addNewQIconPadding = const EdgeInsets.symmetric(horizontal: 12),
+  });
+}
+
 class ChecklistQuestionLayout {
   final EdgeInsets imagePadding, titlePadding, iconPadding;
   final double imageSize, viewHeight, fontSize, lineHeight;

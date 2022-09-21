@@ -12,6 +12,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
+import '../../fakes/activity_db_in_memory.dart';
 import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';
 import '../../mocks/mocks.dart';
@@ -20,7 +21,6 @@ import '../../test_helpers/register_fallback_values.dart';
 import '../../test_helpers/tap_link.dart';
 import '../../test_helpers/tts.dart';
 import '../../test_helpers/verify_generic.dart';
-import '../../fakes/activity_db_in_memory.dart';
 
 void main() {
   final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
@@ -35,6 +35,7 @@ void main() {
     Widget widget, {
     MemoplannerSettingBloc? memoplannerSettingBloc,
     SortableBloc? sortableBloc,
+    String? languageOverride,
   }) =>
       TopLevelProvider(
         child: AuthenticationBlocProvider(
@@ -46,6 +47,8 @@ void main() {
               theme: abiliaTheme,
               supportedLocales: Translator.supportedLocals,
               localizationsDelegates: const [Translator.delegate],
+              locale:
+                  Locale.fromSubtags(languageCode: languageOverride ?? 'und'),
               localeResolutionCallback: (locale, supportedLocales) =>
                   supportedLocales.firstWhere(
                       (l) => l.languageCode == locale?.languageCode,
@@ -60,6 +63,7 @@ void main() {
   late MockGenericDb mockGenericDb;
   late MockSortableDb mockSortableDb;
   late MockTimerDb mockTimerDb;
+  late MockSettingsDb mockSettingsDb;
   TimerResponse timerResponse = () => [];
 
   SortableResponse sortableResponse = () => [];
@@ -117,6 +121,20 @@ void main() {
     when(() => mockTimerDb.getRunningTimersFrom(any()))
         .thenAnswer((_) => Future.value([]));
 
+    mockSettingsDb = MockSettingsDb();
+    when(() => mockSettingsDb.leftCategoryExpanded).thenReturn(true);
+    when(() => mockSettingsDb.setLeftCategoryExpanded(any()))
+        .thenAnswer((_) => Future.value());
+    when(() => mockSettingsDb.rightCategoryExpanded).thenReturn(true);
+    when(() => mockSettingsDb.setRightCategoryExpanded(any()))
+        .thenAnswer((_) => Future.value());
+    when(() => mockSettingsDb.language).thenReturn('en');
+    when(() => mockSettingsDb.setLanguage(any()))
+        .thenAnswer((_) => Future.value());
+    when(() => mockSettingsDb.setAlwaysUse24HourFormat(any()))
+        .thenAnswer((_) => Future.value());
+    when(() => mockSettingsDb.alwaysUse24HourFormat).thenReturn(true);
+
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
@@ -128,7 +146,7 @@ void main() {
       )
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
-      ..settingsDb = FakeSettingsDb()
+      ..settingsDb = mockSettingsDb
       ..genericDb = mockGenericDb
       ..sortableDb = mockSortableDb
       ..database = FakeDatabase()
@@ -1105,6 +1123,61 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('one'), findsOneWidget);
       expect(find.text('twelve'), findsOneWidget);
+    });
+
+    testWidgets('Divider between header and body on some past days',
+        (WidgetTester tester) async {
+      final mondayPreviousWeek = initialTime.addDays(-9);
+      final dayString =
+          '${mondayPreviousWeek.day}\n${translate.shortWeekday(mondayPreviousWeek.weekday)}';
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      // Nothing on current week
+      expect(find.byKey(TestKey.whiteColumnDivider), findsNothing);
+
+      // Past week, selected
+      await tester.tap(find.byType(LeftNavButton));
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.whiteColumnDivider), findsOneWidget);
+
+      // Still there when clicking another day
+      await tester.tap(find.text(dayString));
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.whiteColumnDivider), findsOneWidget);
+    });
+
+    group('danish', () {
+      setUp(() {
+        when(() => mockSettingsDb.language).thenReturn('da');
+      });
+      testWidgets('Divider between header and body on Danish Sunday',
+          (WidgetTester tester) async {
+        final sundayPreviousWeek = initialTime.addDays(-3);
+        final dayString =
+            '${sundayPreviousWeek.day}\n${translate.shortWeekday(sundayPreviousWeek.weekday)}';
+
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.week));
+        await tester.pumpAndSettle();
+
+        // Nothing on current week
+        expect(find.byKey(TestKey.whiteColumnDivider), findsNothing);
+
+        // Past week, not selected
+        await tester.tap(find.byType(LeftNavButton));
+        await tester.pumpAndSettle();
+        expect(find.byKey(TestKey.whiteColumnDivider), findsOneWidget);
+
+        // Selected past sunday
+        await tester.tap(find.text(dayString));
+        await tester.pumpAndSettle();
+        expect(find.byKey(TestKey.whiteColumnDivider), findsOneWidget);
+      });
     });
   });
 

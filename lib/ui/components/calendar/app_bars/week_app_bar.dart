@@ -30,11 +30,13 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
               selectedWeekStart: state.currentWeekStart,
               selectedDay: time.onlyDays(),
               translator: Translator.of(context).translate,
-              showWeekNumber: memoSettingsState.settings.weekCalendar.showWeekNumber,
+              showWeekNumber:
+                  memoSettingsState.settings.weekCalendar.showWeekNumber,
               showYear: memoSettingsState.settings.weekCalendar.showYear,
               langCode: Localizations.localeOf(context).toLanguageTag(),
             ),
-            leftAction: memoSettingsState.settings.weekCalendar.showBrowseButtons
+            leftAction: memoSettingsState
+                    .settings.weekCalendar.showBrowseButtons
                 ? LeftNavButton(
                     onPressed: () => BlocProvider.of<WeekCalendarCubit>(context)
                         .previousWeek(),
@@ -48,7 +50,8 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
                     },
                   )
                 : null,
-            rightAction: memoSettingsState.settings.weekCalendar.showBrowseButtons
+            rightAction: memoSettingsState
+                    .settings.weekCalendar.showBrowseButtons
                 ? RightNavButton(
                     onPressed: () =>
                         BlocProvider.of<WeekCalendarCubit>(context).nextWeek(),

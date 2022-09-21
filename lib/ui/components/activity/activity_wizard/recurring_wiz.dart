@@ -33,11 +33,9 @@ class RecurringWiz extends StatelessWidget {
                         bottom: layout.formPadding.verticalItemDistance),
                     child: RadioField<RecurrentType>(
                       groupValue: state.activity.recurs.recurrance,
-                      onChanged: (v) =>
-                          context.read<EditActivityCubit>().newRecurrence(
-                                newType: type,
-                                newEndDate: state.activity.startTime,
-                              ),
+                      onChanged: (v) => context
+                          .read<EditActivityCubit>()
+                          .changeRecurrentType(type),
                       value: type,
                       leading: Icon(type.iconData()),
                       text: Text(type.text(translate)),
