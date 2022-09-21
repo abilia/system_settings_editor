@@ -24,12 +24,6 @@ class MemoplannerSettings extends Equatable {
       activityDisplayWeekDayKey = 'day_caption_show_weekday',
       activityDisplayDateKey = 'day_caption_show_date',
       activityDisplayClockKey = 'day_caption_show_clock',
-      weekCaptionShowBrowseButtonsKey = 'week_caption_show_week_buttons',
-      weekCaptionShowWeekNumberKey = 'week_caption_show_week_number',
-      weekCaptionShowYearKey = 'week_caption_show_year',
-      weekCaptionShowClockKey = 'week_caption_show_clock',
-      weekDisplayShowFullWeekKey = 'week_display_show_full_week',
-      weekDisplayShowColorModeKey = 'week_display_show_color_mode',
       monthCaptionShowMonthButtonsKey = 'month_caption_show_month_buttons',
       monthCaptionShowYearKey = 'month_caption_show_year',
       monthCaptionShowClockKey = 'month_caption_show_clock',
@@ -56,10 +50,6 @@ class MemoplannerSettings extends Equatable {
       activityDisplayWeekDay,
       activityDisplayDate,
       activityDisplayClock,
-      weekCaptionShowBrowseButtons,
-      weekCaptionShowWeekNumber,
-      weekCaptionShowYear,
-      weekCaptionShowClock,
       monthCaptionShowMonthButtons,
       monthCaptionShowYear,
       monthCaptionShowClock,
@@ -75,8 +65,6 @@ class MemoplannerSettings extends Equatable {
   final int viewOptionsTimeInterval,
       viewOptionsTimeView,
       viewOptionsZoom,
-      weekDisplayShowFullWeek,
-      weekDisplayShowColorMode,
       calendarMonthViewShowColors;
 
   final AlarmSettings alarm;
@@ -86,6 +74,7 @@ class MemoplannerSettings extends Equatable {
   final FunctionsSettings functions;
   final GeneralCalendarSettings calendar;
   final AddActivitySettings addActivity;
+  final WeekCalendarSettings weekCalendar;
 
   const MemoplannerSettings({
     this.displayAlarmButton = true,
@@ -98,12 +87,6 @@ class MemoplannerSettings extends Equatable {
     this.activityDisplayWeekDay = true,
     this.activityDisplayDate = true,
     this.activityDisplayClock = true,
-    this.weekCaptionShowBrowseButtons = true,
-    this.weekCaptionShowWeekNumber = true,
-    this.weekCaptionShowYear = true,
-    this.weekCaptionShowClock = true,
-    this.weekDisplayShowFullWeek = 0,
-    this.weekDisplayShowColorMode = 1,
     this.monthCaptionShowMonthButtons = true,
     this.monthCaptionShowYear = true,
     this.monthCaptionShowClock = true,
@@ -126,6 +109,7 @@ class MemoplannerSettings extends Equatable {
     this.functions = const FunctionsSettings(),
     this.calendar = const GeneralCalendarSettings(),
     this.addActivity = const AddActivitySettings(),
+    this.weekCalendar = const WeekCalendarSettings(),
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -160,26 +144,6 @@ class MemoplannerSettings extends Equatable {
       ),
       activityDisplayClock: settings.getBool(
         activityDisplayClockKey,
-      ),
-      weekCaptionShowBrowseButtons: settings.getBool(
-        weekCaptionShowBrowseButtonsKey,
-      ),
-      weekCaptionShowWeekNumber: settings.getBool(
-        weekCaptionShowWeekNumberKey,
-      ),
-      weekCaptionShowYear: settings.getBool(
-        weekCaptionShowYearKey,
-      ),
-      weekCaptionShowClock: settings.getBool(
-        weekCaptionShowClockKey,
-      ),
-      weekDisplayShowFullWeek: settings.parse(
-        weekDisplayShowFullWeekKey,
-        WeekDisplayDays.everyDay.index,
-      ),
-      weekDisplayShowColorMode: settings.parse(
-        weekDisplayShowColorModeKey,
-        WeekColor.columns.index,
       ),
       monthCaptionShowMonthButtons: settings.getBool(
         monthCaptionShowMonthButtonsKey,
@@ -238,6 +202,7 @@ class MemoplannerSettings extends Equatable {
       functions: FunctionsSettings.fromSettingsMap(settings),
       calendar: GeneralCalendarSettings.fromSettingsMap(settings),
       addActivity: AddActivitySettings.fromSettingsMap(settings),
+      weekCalendar: WeekCalendarSettings.fromSettingsMap(settings),
     );
   }
 
@@ -253,12 +218,6 @@ class MemoplannerSettings extends Equatable {
         activityDisplayWeekDay,
         activityDisplayDate,
         activityDisplayClock,
-        weekCaptionShowBrowseButtons,
-        weekCaptionShowWeekNumber,
-        weekCaptionShowYear,
-        weekCaptionShowClock,
-        weekDisplayShowFullWeek,
-        weekDisplayShowColorMode,
         monthCaptionShowMonthButtons,
         monthCaptionShowYear,
         monthCaptionShowClock,
@@ -281,6 +240,7 @@ class MemoplannerSettings extends Equatable {
         functions,
         calendar,
         addActivity,
+        weekCalendar,
       ];
 }
 
