@@ -374,6 +374,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
                 GetIt.I<SupportPersonsDb>().deleteAll(),
                 GetIt.I<LicenseDb>().delete(),
                 GetIt.I<SettingsDb>().restore(),
+                GetIt.I<SessionsDb>().setHasMP4Session(false),
               ],
             ),
             client: GetIt.I<ListenableClient>(),
