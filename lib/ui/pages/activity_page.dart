@@ -1,7 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class ActivityPage extends StatelessWidget {
   final ActivityDay activityDay;
@@ -56,12 +56,14 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
   @override
   Widget build(BuildContext context) {
     final activity = activityDay.activity;
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) {
-        final displayDeleteButton = memoSettingsState.displayDeleteButton;
-        final displayEditButton = memoSettingsState.displayEditButton;
+    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
+        ActivityViewSettings>(
+      selector: (state) => state.settings.activityView,
+      builder: (context, settings) {
+        final displayDeleteButton = settings.displayDeleteButton;
+        final displayEditButton = settings.displayEditButton;
         final displayAlarmButton =
-            memoSettingsState.displayAlarmButton && !activity.fullDay;
+            settings.displayAlarmButton && !activity.fullDay;
         final displayUncheckButton = activityDay.isSignedOff;
         final noButtons = [
           displayDeleteButton,

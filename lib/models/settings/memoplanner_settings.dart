@@ -12,14 +12,8 @@ class MemoplannerSettings extends Equatable {
     dotsInTimepillarKey,
   };
 
-  static const String displayAlarmButtonKey =
-          'activity_detailed_setting_display_change_alarm_button',
-      displayDeleteButtonKey =
-          'activity_detailed_setting_display_delete_button',
-      displayEditButtonKey = 'activity_detailed_setting_display_edit_button',
-      displayQuarterHourKey = 'activity_detailed_setting_display_qhw',
-      displayTimeLeftKey = 'activity_detailed_setting_display_qhw_time_left',
-      dayCaptionShowDayButtonsKey = 'day_caption_show_day_buttons',
+  static const String dayCaptionShowDayButtonsKey =
+          'day_caption_show_day_buttons',
       activityDisplayDayPeriodKey = 'day_caption_show_period',
       activityDisplayWeekDayKey = 'day_caption_show_weekday',
       activityDisplayDateKey = 'day_caption_show_date',
@@ -40,12 +34,7 @@ class MemoplannerSettings extends Equatable {
       settingViewOptionsZoomKey = 'setting_view_options_zoom',
       settingViewOptionsDurationDotsKey = 'setting_view_options_duration_dots';
 
-  final bool displayAlarmButton,
-      displayDeleteButton,
-      displayEditButton,
-      displayQuarterHour,
-      displayTimeLeft,
-      dayCaptionShowDayButtons,
+  final bool dayCaptionShowDayButtons,
       activityDisplayDayPeriod,
       activityDisplayWeekDay,
       activityDisplayDate,
@@ -75,13 +64,9 @@ class MemoplannerSettings extends Equatable {
   final GeneralCalendarSettings calendar;
   final AddActivitySettings addActivity;
   final WeekCalendarSettings weekCalendar;
+  final ActivityViewSettings activityView;
 
   const MemoplannerSettings({
-    this.displayAlarmButton = true,
-    this.displayDeleteButton = true,
-    this.displayEditButton = true,
-    this.displayQuarterHour = true,
-    this.displayTimeLeft = true,
     this.dayCaptionShowDayButtons = true,
     this.activityDisplayDayPeriod = true,
     this.activityDisplayWeekDay = true,
@@ -110,26 +95,12 @@ class MemoplannerSettings extends Equatable {
     this.calendar = const GeneralCalendarSettings(),
     this.addActivity = const AddActivitySettings(),
     this.weekCalendar = const WeekCalendarSettings(),
+    this.activityView = const ActivityViewSettings(),
   });
 
   factory MemoplannerSettings.fromSettingsMap(
       Map<String, MemoplannerSettingData> settings) {
     return MemoplannerSettings(
-      displayAlarmButton: settings.getBool(
-        displayAlarmButtonKey,
-      ),
-      displayDeleteButton: settings.getBool(
-        displayDeleteButtonKey,
-      ),
-      displayEditButton: settings.getBool(
-        displayEditButtonKey,
-      ),
-      displayQuarterHour: settings.getBool(
-        displayQuarterHourKey,
-      ),
-      displayTimeLeft: settings.getBool(
-        displayTimeLeftKey,
-      ),
       dayCaptionShowDayButtons: settings.getBool(
         dayCaptionShowDayButtonsKey,
       ),
@@ -203,16 +174,12 @@ class MemoplannerSettings extends Equatable {
       calendar: GeneralCalendarSettings.fromSettingsMap(settings),
       addActivity: AddActivitySettings.fromSettingsMap(settings),
       weekCalendar: WeekCalendarSettings.fromSettingsMap(settings),
+      activityView: ActivityViewSettings.fromSettingsMap(settings),
     );
   }
 
   @override
   List<Object> get props => [
-        displayAlarmButton,
-        displayDeleteButton,
-        displayEditButton,
-        displayQuarterHour,
-        displayTimeLeft,
         dayCaptionShowDayButtons,
         activityDisplayDayPeriod,
         activityDisplayWeekDay,
