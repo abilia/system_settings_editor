@@ -14,8 +14,7 @@ typedef ActivityResponse = Iterable<Activity> Function();
 typedef SortableResponse = Iterable<Sortable> Function();
 typedef GenericResponse = Iterable<Generic> Function();
 typedef TimerResponse = Iterable<AbiliaTimer> Function();
-typedef VoicesResponse = Iterable<Map<String, dynamic>> Function(
-    String language);
+typedef VoicesResponse = Iterable<Map<String, dynamic>> Function();
 
 class Fakes {
   Fakes._();
@@ -116,10 +115,7 @@ class Fakes {
               .split('/')
               .where((s) => s.isNotEmpty))) {
             response = Response(
-              json.encode((voicesResponse?.call(pathSegments
-                          .lastWhere((segment) => segment.isNotEmpty)) ??
-                      [])
-                  .toList()),
+              json.encode((voicesResponse?.call() ?? []).toList()),
               200,
             );
           }

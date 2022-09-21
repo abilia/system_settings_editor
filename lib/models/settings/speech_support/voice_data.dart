@@ -1,44 +1,53 @@
 import 'package:equatable/equatable.dart';
+import 'package:seagull/utils/all.dart';
 
 class VoiceData extends Equatable {
-  final String name;
-  final int type;
-  final String lang;
-  final List<VoiceFile> files;
-  late final int size =
-      (files.fold<int>(0, (pre, e) => pre + e.size) / 1000000).round();
-  VoiceData(this.name, this.type, this.lang, this.files);
-  factory VoiceData.fromJson(Map<String, dynamic> json) => VoiceData(
-        json['name'],
-        json['type'],
-        json['lang'],
-        json['files']
-            .map<VoiceFile>(
-              (e) => VoiceFile(
-                e['downloadUrl'],
-                int.parse(e['size']),
-                e['md5'],
-                e['localPath'],
-              ),
-            )
-            .toList(),
+  final String name, lang, countryCode;
+  final VoiceFile file;
+
+  const VoiceData({
+    required this.name,
+    required this.lang,
+    required this.countryCode,
+    required this.file,
+  });
+
+  factory VoiceData.fromJson(json) => VoiceData(
+        name: json['name'],
+        lang: json['lang'],
+        countryCode: json['countryCode'],
+        file: VoiceFile.fromJson(json['file']),
       );
 
   @override
-  List<Object?> get props => [name, type, lang, files, size];
+  String toString() =>
+      '{ name: $name, lang: $lang, countryCode: $countryCode (${file.size}MB) }';
 
   @override
-  String toString() => 'VoiceData [ $name:$lang, $size kb ]';
+  List<Object?> get props => [name, lang, countryCode, file];
 }
 
 class VoiceFile extends Equatable {
-  final String downloadUrl;
-  final int size;
   final String md5;
-  final String localPath;
+  final Uri downloadUrl;
+  final int size, sizeB;
 
-  const VoiceFile(this.downloadUrl, this.size, this.md5, this.localPath);
+  VoiceFile({
+    required String downloadUrl,
+    required this.md5,
+    required this.sizeB,
+  })  : downloadUrl = downloadUrl.toUri(),
+        size = (sizeB / 1000000).round();
+
+  factory VoiceFile.fromJson(Map<String, dynamic> json) => VoiceFile(
+        downloadUrl: json['downloadUrl'],
+        md5: json['md5'],
+        sizeB: json['size'],
+      );
 
   @override
-  List<Object?> get props => [downloadUrl, size, md5, localPath];
+  String toString() => '{ md5: $md5, downloadUrl: $downloadUrl, size: $size }';
+
+  @override
+  List<Object?> get props => [md5];
 }

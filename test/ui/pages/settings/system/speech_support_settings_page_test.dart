@@ -39,8 +39,8 @@ void main() {
       when(() => voiceDb.setVoice(any())).thenAnswer((_) async {});
 
       final ttsHandler = MockTtsHandler();
-      when(() => ttsHandler.availableVoices)
-          .thenAnswer((_) async => ['en', 'sv']);
+      when(() => ttsHandler.availableVoices).thenAnswer((_) async => ['en']);
+      when(() => ttsHandler.setVoice(any())).thenAnswer((_) async {});
 
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -48,13 +48,19 @@ void main() {
         ..client = Fakes.client(
           genericResponse: () => generics,
           activityResponse: () => [],
-          voicesResponse: (language) => [
-            {
-              'name': language,
-              'type': 1,
-              'lang': language,
-              'files': [],
-            },
+          voicesResponse: () => [
+            ...['en', 'sv'].map(
+              (lang) => {
+                'name': lang,
+                'lang': lang,
+                'countryCode': 'SE',
+                'file': {
+                  'downloadUrl': 'https://voices.$lang',
+                  'md5': 'md5_$lang',
+                  'size': 0,
+                },
+              },
+            )
           ],
         )
         ..database = FakeDatabase()
@@ -67,6 +73,7 @@ void main() {
         ..directories = Directories(
           applicationSupport: Directory('applicationSupport'),
           documents: Directory('documents'),
+          temp: Directory('temp'),
         )
         ..init();
     });
@@ -157,6 +164,8 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(VoicesPage), findsNothing);
       expect(find.byType(SpeechSupportSettingsPage), findsOneWidget);
+      await tester.tap(find.byType(TextToSpeechSwitch));
+      await tester.pumpAndSettle();
       expect(
         find.widgetWithText(PickField, const EN().noVoicesInstalled),
         findsOneWidget,

@@ -165,6 +165,7 @@ class GetItInitializer {
             Directories(
               applicationSupport: Directory.systemTemp,
               documents: Directory.systemTemp,
+              temp: Directory.systemTemp,
             ),
       );
   }

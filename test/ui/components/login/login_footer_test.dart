@@ -22,12 +22,11 @@ void main() {
     final speechSettingsCubit = SpeechSettingsCubit(
       voiceDb: voiceDb,
       acapelaTts: FakeTtsHandler(),
-      localeStream: const Stream.empty(),
     );
 
     final voiceRepository = MockVoiceRepository();
     when(() => voiceRepository.deleteAllVoices()).thenAnswer((_) async {});
-    when(() => voiceRepository.readAvailableVoices(any()))
+    when(() => voiceRepository.readAvailableVoices())
         .thenAnswer((_) async => []);
     when(() => voiceRepository.readDownloadedVoices())
         .thenAnswer((_) async => []);
