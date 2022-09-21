@@ -60,7 +60,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.weekCaptionShowBrowseButtonsKey,
+        key: WeekCalendarSettings.showBrowseButtonsKey,
         matcher: isFalse,
       );
     });
@@ -75,7 +75,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.weekCaptionShowWeekNumberKey,
+        key: WeekCalendarSettings.showWeekNumberKey,
         matcher: isFalse,
       );
     });
@@ -90,7 +90,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.weekCaptionShowYearKey,
+        key: WeekCalendarSettings.showYearKey,
         matcher: isFalse,
       );
     });
@@ -105,7 +105,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.weekCaptionShowClockKey,
+        key: WeekCalendarSettings.showClockKey,
         matcher: isFalse,
       );
     });
@@ -122,7 +122,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.weekDisplayShowFullWeekKey,
+        key: WeekCalendarSettings.showFullWeekKey,
         matcher: WeekDisplayDays.weekdays.index,
       );
     });
@@ -142,7 +142,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.weekDisplayShowColorModeKey,
+        key: WeekCalendarSettings.showColorModeKey,
         matcher: WeekColor.captions.index,
       );
     });
