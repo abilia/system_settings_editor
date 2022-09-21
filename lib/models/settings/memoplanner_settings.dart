@@ -147,6 +147,7 @@ class MemoplannerSettings extends Equatable {
       addActivity: AddActivitySettings.fromSettingsMap(settings),
       weekCalendar: WeekCalendarSettings.fromSettingsMap(settings),
       activityView: ActivityViewSettings.fromSettingsMap(settings),
+      appBar: AppBarSettings.fromSettingsMap(settings),
     );
   }
 
