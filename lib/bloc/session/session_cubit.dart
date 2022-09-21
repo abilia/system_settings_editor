@@ -19,7 +19,7 @@ class SessionCubit extends Cubit<bool> {
           sessions.any((s) => s.type == 'flutter' && s.app == 'memoplanner');
       await sessionRepository.setHasMP4Session(hasMP4Session);
       emit(hasMP4Session);
-    } on FetchSessoionsException catch (e) {
+    } on FetchSessionsException catch (e) {
       _log.warning(
           'Could not fetch sessions from backend with status code ${e.statusCode}');
     } catch (e) {

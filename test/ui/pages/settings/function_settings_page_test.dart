@@ -455,7 +455,11 @@ void main() {
       expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.week), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.month), findsOneWidget);
-      expect(find.byType(MenuButton), findsOneWidget);
+      if (Config.isMP) {
+        expect(find.byType(MenuButton), findsOneWidget);
+      } else if (Config.isMPGO) {
+        expect(find.byType(MpGoMenuButton), findsOneWidget);
+      }
     });
 
     testWidgets('hides AddActivity Button in bottomBar', (tester) async {
@@ -612,10 +616,18 @@ void main() {
       );
       await tester.drag(find.byType(CalendarPage), const Offset(0, 500));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(MenuButton));
-      await tester.pumpAndSettle();
-      // Assert -- Can switch to MenuPage
-      expect(find.byType(MenuPage), findsOneWidget);
+      if (Config.isMP) {
+        await tester.tap(find.byType(MenuButton));
+        await tester.pumpAndSettle();
+        // Assert -- Can switch to MenuPage
+        expect(find.byType(MenuPage), findsOneWidget);
+      }
+      if (Config.isMPGO) {
+        await tester.tap(find.byType(MpGoMenuButton));
+        await tester.pumpAndSettle();
+        // Assert -- Can go to MenuPage
+        expect(find.byType(MpGoMenuPage), findsOneWidget);
+      }
     });
 
     testWidgets('hides bottomBar', (tester) async {

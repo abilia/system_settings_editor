@@ -11,4 +11,3 @@ export 'select_alarm_duration_page.dart';
 export 'quick_settings_page.dart';
 export 'permissions_page.dart';
 export 'fake_ticker.dart';
-export 'mp_go_menu_page.dart';

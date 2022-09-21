@@ -51,7 +51,7 @@ void main() {
   group('MPGO', () {
     testWidgets('No QuickSettingsButton', (tester) async {
       await tester.pumpApp();
-      await tester.tap(find.byType(MenuButton));
+      await tester.tap(find.byType(MpGoMenuButton));
       await tester.pumpAndSettle();
       expect(find.byType(QuickSettingsButton), findsNothing);
     });

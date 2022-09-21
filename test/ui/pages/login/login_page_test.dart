@@ -226,14 +226,20 @@ void main() {
     expect(find.byType(CalendarPage), findsOneWidget);
 
     // Logout
-    await tester.tap(find.byIcon(AbiliaIcons.appMenu));
-    await tester.pumpAndSettle();
-    expect(find.byType(MenuPage), findsOneWidget);
-    await tester.tap(find.byIcon(AbiliaIcons.settings));
-    await tester.pumpAndSettle();
     if (Config.isMP) {
+      await tester.tap(find.byIcon(AbiliaIcons.appMenu));
+      await tester.pumpAndSettle();
+      expect(find.byType(MenuPage), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.settings));
+      await tester.pumpAndSettle();
+
       await tester.tap(find.byIcon(AbiliaIcons.technicalSettings));
       await tester.pumpAndSettle();
+    } else if (Config.isMPGO) {
+      await tester.tap(find.byIcon(AbiliaIcons.menu));
+      await tester.pumpAndSettle();
+      expect(find.byType(MpGoMenuPage), findsOneWidget);
+      await tester.scrollDownMpGoMenu(dy: -200);
     }
     await tester.tap(find.byIcon(AbiliaIcons.powerOffOn));
     await tester.pumpAndSettle();
@@ -552,4 +558,12 @@ void main() {
       }, skip: !Config.isMP);
     });
   });
+}
+
+extension on WidgetTester {
+  Future scrollDownMpGoMenu({double dy = -800.0}) async {
+    final center = getCenter(find.byType(MpGoMenuPage));
+    await dragFrom(center, Offset(0.0, dy));
+    await pump();
+  }
 }

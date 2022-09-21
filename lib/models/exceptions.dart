@@ -49,7 +49,7 @@ class RequestTokenException implements Exception {
   RequestTokenException({required this.badRequest});
 }
 
-class FetchSessoionsException implements Exception {
-  FetchSessoionsException(this.statusCode);
+class FetchSessionsException implements Exception {
+  FetchSessionsException(this.statusCode);
   final int statusCode;
 }

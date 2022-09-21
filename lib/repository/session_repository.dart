@@ -31,7 +31,7 @@ class SessionRepository extends Repository {
           )
           .whereNotNull();
     }
-    throw FetchSessoionsException(response.statusCode);
+    throw FetchSessionsException(response.statusCode);
   }
 
   Future<void> setHasMP4Session(bool hasMP4Session) =>

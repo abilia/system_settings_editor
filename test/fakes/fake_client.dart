@@ -126,7 +126,8 @@ class Fakes {
             );
           }
 
-          if (pathSegments.containsAll(['auth', 'client'])) {
+          if (pathSegments.containsAll(['auth', 'client']) &&
+              !pathSegments.contains('me')) {
             response = Response(
                 json.encode((sessionsResponse?.call() ?? fakeSession).toList()),
                 200);
