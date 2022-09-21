@@ -16,7 +16,7 @@ class SessionRepository extends Repository {
 
   final SessionsDb sessionsDb;
 
-  Future<bool> hasMP4Session() async {
+  Future<Iterable<Session>> fetchSessions() async {
     final url = '$baseUrl/api/v1/auth/client';
     final response = await client.get(
       url.toUri(),
@@ -24,19 +24,18 @@ class SessionRepository extends Repository {
 
     if (response.statusCode == 200) {
       final decoded = response.json() as List;
-      final sessions = decoded
+      return decoded
           .exceptionSafeMap(
             (j) => Session.fromJson(j),
             onException: _log.logAndReturnNull,
           )
           .whereNotNull();
-
-      final hasMP4Session =
-          sessions.any((s) => s.type == 'flutter' && s.app == 'memoplanner');
-      await sessionsDb.setHasMP4Session(hasMP4Session);
-      return hasMP4Session;
-    } else {
-      return sessionsDb.hasMP4Session;
     }
+    throw FetchSessoionsException(response.statusCode);
   }
+
+  Future<void> setHasMP4Session(bool hasMP4Session) =>
+      sessionsDb.setHasMP4Session(hasMP4Session);
+
+  bool hasMP4Session() => sessionsDb.hasMP4Session;
 }

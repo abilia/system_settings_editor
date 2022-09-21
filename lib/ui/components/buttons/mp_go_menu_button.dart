@@ -1,6 +1,5 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/settings/mp_go_menu_page.dart';
 import 'package:seagull/utils/all.dart';
 
 class MpGoMenuButton extends StatelessWidget {

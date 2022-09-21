@@ -376,7 +376,7 @@ void main() {
         expect(dataItem.duration, duration);
       });
     });
-  });
+  }, skip: !Config.isMP);
 }
 
 extension on WidgetTester {
