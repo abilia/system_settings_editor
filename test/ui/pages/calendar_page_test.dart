@@ -647,7 +647,9 @@ void main() {
           (WidgetTester tester) async {
         when(() => memoplannerSettingBlocMock.state)
             .thenReturn(const MemoplannerSettingsLoaded(
-          MemoplannerSettings(dayCaptionShowDayButtons: true),
+          MemoplannerSettings(
+            appBar: AppBarSettings(dayCaptionShowDayButtons: true),
+          ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
           const CalendarPage(),
@@ -666,7 +668,9 @@ void main() {
           (WidgetTester tester) async {
         when(() => memoplannerSettingBlocMock.state)
             .thenReturn(const MemoplannerSettingsLoaded(
-          MemoplannerSettings(dayCaptionShowDayButtons: false),
+          MemoplannerSettings(
+            appBar: AppBarSettings(dayCaptionShowDayButtons: false),
+          ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
           const CalendarPage(),

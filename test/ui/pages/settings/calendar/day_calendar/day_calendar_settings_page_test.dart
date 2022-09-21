@@ -61,7 +61,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.dayCaptionShowDayButtonsKey,
+          key: AppBarSettings.dayCaptionShowDayButtonsKey,
           matcher: isFalse,
         );
       });
@@ -76,7 +76,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.activityDisplayWeekDayKey,
+          key: AppBarSettings.activityDisplayWeekDayKey,
           matcher: isFalse,
         );
       });
@@ -91,7 +91,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.activityDisplayDayPeriodKey,
+          key: AppBarSettings.activityDisplayDayPeriodKey,
           matcher: isFalse,
         );
       });
@@ -106,7 +106,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.activityDisplayDateKey,
+          key: AppBarSettings.activityDisplayDateKey,
           matcher: isFalse,
         );
       });
@@ -124,7 +124,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.activityDisplayClockKey,
+          key: AppBarSettings.activityDisplayClockKey,
           matcher: isFalse,
         );
       });
@@ -136,31 +136,31 @@ void main() {
           Generic.createNew<MemoplannerSettingData>(
             data: MemoplannerSettingData.fromData(
               data: false,
-              identifier: MemoplannerSettings.dayCaptionShowDayButtonsKey,
+              identifier: AppBarSettings.dayCaptionShowDayButtonsKey,
             ),
           ),
           Generic.createNew<MemoplannerSettingData>(
             data: MemoplannerSettingData.fromData(
               data: false,
-              identifier: MemoplannerSettings.activityDisplayWeekDayKey,
+              identifier: AppBarSettings.activityDisplayWeekDayKey,
             ),
           ),
           Generic.createNew<MemoplannerSettingData>(
             data: MemoplannerSettingData.fromData(
               data: false,
-              identifier: MemoplannerSettings.activityDisplayDayPeriodKey,
+              identifier: AppBarSettings.activityDisplayDayPeriodKey,
             ),
           ),
           Generic.createNew<MemoplannerSettingData>(
             data: MemoplannerSettingData.fromData(
               data: false,
-              identifier: MemoplannerSettings.activityDisplayDateKey,
+              identifier: AppBarSettings.activityDisplayDateKey,
             ),
           ),
           Generic.createNew<MemoplannerSettingData>(
             data: MemoplannerSettingData.fromData(
               data: false,
-              identifier: MemoplannerSettings.activityDisplayClockKey,
+              identifier: AppBarSettings.activityDisplayClockKey,
             ),
           ),
         ];

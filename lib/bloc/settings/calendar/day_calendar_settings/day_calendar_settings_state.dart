@@ -34,11 +34,11 @@ class DayCalendarSettingsState extends Equatable {
     MemoplannerSettingsState state,
   ) =>
       DayCalendarSettingsState._(
-        showBrowseButtons: state.dayCaptionShowDayButtons,
-        showWeekday: state.activityDisplayWeekDay,
-        showDayPeriod: state.activityDisplayDayPeriod,
-        showDate: state.activityDisplayDate,
-        showClock: state.activityDisplayClock,
+        showBrowseButtons: state.settings.appBar.dayCaptionShowDayButtons,
+        showWeekday: state.settings.appBar.activityDisplayWeekDay,
+        showDayPeriod: state.settings.appBar.activityDisplayDayPeriod,
+        showDate: state.settings.appBar.activityDisplayDate,
+        showClock: state.settings.appBar.activityDisplayClock,
         calendarType: state.dayCalendarType,
         dayInterval: state.timepillarIntervalType,
         dotsInTimePillar: state.dotsInTimepillar,
@@ -84,23 +84,23 @@ class DayCalendarSettingsState extends Equatable {
   List<MemoplannerSettingData> get memoplannerSettingData => [
         MemoplannerSettingData.fromData(
           data: showBrowseButtons,
-          identifier: MemoplannerSettings.dayCaptionShowDayButtonsKey,
+          identifier: AppBarSettings.dayCaptionShowDayButtonsKey,
         ),
         MemoplannerSettingData.fromData(
           data: showWeekday,
-          identifier: MemoplannerSettings.activityDisplayWeekDayKey,
+          identifier: AppBarSettings.activityDisplayWeekDayKey,
         ),
         MemoplannerSettingData.fromData(
           data: showDayPeriod,
-          identifier: MemoplannerSettings.activityDisplayDayPeriodKey,
+          identifier: AppBarSettings.activityDisplayDayPeriodKey,
         ),
         MemoplannerSettingData.fromData(
           data: showDate,
-          identifier: MemoplannerSettings.activityDisplayDateKey,
+          identifier: AppBarSettings.activityDisplayDateKey,
         ),
         MemoplannerSettingData.fromData(
           data: showClock,
-          identifier: MemoplannerSettings.activityDisplayClockKey,
+          identifier: AppBarSettings.activityDisplayClockKey,
         ),
         MemoplannerSettingData.fromData(
           data: calendarType.index,
