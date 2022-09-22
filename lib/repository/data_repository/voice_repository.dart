@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:crypto/crypto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as p;
@@ -18,7 +20,7 @@ class VoiceRepository {
     required this.ttsHandler,
     required Directory applicationSupportDirectory,
     required this.tempDirectory,
-  }) : voicesDirectory = Directory(
+  }) : _voicesDirectory = Directory(
           p.join(
             applicationSupportDirectory.path,
             folder,
@@ -28,7 +30,7 @@ class VoiceRepository {
 
   final BaseClient client;
   final BaseUrlDb baseUrlDb;
-  final Directory voicesDirectory, tempDirectory;
+  final Directory _voicesDirectory, tempDirectory;
   final TtsInterface ttsHandler;
 
   static const String baseUrl = 'library.myabilia.com';
@@ -78,8 +80,11 @@ class VoiceRepository {
     try {
       if (!await zipFile.exists()) {
         _log.finer('voice file: $voice does not exist, downloading...');
+
         final response = await client.get(voice.file.downloadUrl);
         if (response.statusCode != 200) return false;
+        if (!_verifyDownload(voice.file, response.bodyBytes)) return false;
+
         await zipFile.writeAsBytes(response.bodyBytes);
       }
 
@@ -92,6 +97,22 @@ class VoiceRepository {
       _log.warning('Failed to download or extracting voice { $voice }', ex);
       await zipFile.delete();
       await deleteVoice(voice);
+      return false;
+    }
+    return true;
+  }
+
+  bool _verifyDownload(VoiceFile voiceFile, Uint8List downloadedBytes) {
+    final int expectedSize = voiceFile.sizeB;
+    final int downloadedSize = downloadedBytes.length;
+    if (downloadedSize != expectedSize) {
+      _log.severe(
+          'voice file size mismatch: downloaded $downloadedSize bytes is not expected $expectedSize bytes');
+      return false;
+    }
+    final downloadedMd5 = md5.convert(downloadedBytes);
+    if (downloadedMd5.toString() != voiceFile.md5) {
+      _log.severe('voice file md5 mismatch');
       return false;
     }
     return true;
@@ -112,7 +133,7 @@ class VoiceRepository {
   /// Memoplanner 4.0 used https://www.handi.se/systemfiles2/{lang}/
   /// and stored files according to the json "localPath"
   Future<bool> _legacyDelete(VoiceData voice) async {
-    final oldFolder = Directory(p.join(voicesDirectory.path, 'voices'))
+    final oldFolder = Directory(p.join(_voicesDirectory.path, 'voices'))
         .listSync()
         .firstWhereOrNull((entity) => entity.path.contains(voice.name));
     try {
@@ -129,7 +150,7 @@ class VoiceRepository {
 
   Directory _voiceDirectory(VoiceData voice) => Directory(
         p.join(
-          voicesDirectory.path,
+          _voicesDirectory.path,
           voice.lang,
           voice.countryCode,
           voice.name,
@@ -144,9 +165,9 @@ class VoiceRepository {
       );
 
   Future<void> deleteAllVoices() async {
-    if (await voicesDirectory.exists()) {
-      _log.info('Removing all voices in $voicesDirectory');
-      await voicesDirectory.delete(recursive: true);
+    if (await _voicesDirectory.exists()) {
+      _log.info('Removing all voices in $_voicesDirectory');
+      await _voicesDirectory.delete(recursive: true);
     } else {
       _log.info('no downloaded voices present');
     }
