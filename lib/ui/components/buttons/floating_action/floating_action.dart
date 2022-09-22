@@ -1,4 +1,5 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/settings/memoplanner_settings.dart';
 import 'package:seagull/ui/all.dart';
 
 class FloatingActions extends StatelessWidget {
@@ -11,18 +12,16 @@ class FloatingActions extends StatelessWidget {
       buildWhen: (old, fresh) =>
           old.notificationDenied != fresh.notificationDenied,
       builder: (context, permission) {
-        return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-          buildWhen: (previous, current) =>
-              previous.displayAlarmButton != current.displayAlarmButton ||
-              previous.alarm.showAlarmOnOffSwitch !=
-                  current.alarm.showAlarmOnOffSwitch,
-          builder: (context, state) {
+        return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
+            MemoplannerSettings>(
+          selector: (state) => state.settings,
+          builder: (context, settings) {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 if (tabController != null)
                   _ToggleAlarmAndEyeButtons(tabController: tabController)
-                else if (state.alarm.showAlarmOnOffSwitch)
+                else if (settings.alarm.showAlarmOnOffSwitch)
                   const ToggleAlarmButton(),
                 if (permission.notificationDenied)
                   Expanded(
@@ -45,7 +44,7 @@ class FloatingActions extends StatelessWidget {
                   const Spacer(),
                 if (tabController != null &&
                     tabController.index ==
-                        state.settings.functions.display.menuTabIndex)
+                        settings.functions.display.menuTabIndex)
                   const _AboutButton(),
               ],
             );

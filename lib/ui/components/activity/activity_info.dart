@@ -22,7 +22,7 @@ class ActivityInfoWithDots extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
-        selector: (state) => state.displayQuarterHour,
+        selector: (state) => state.settings.activityView.displayQuarterHour,
         builder: (context, displayQuarter) => Row(
           children: [
             if (displayQuarter) ActivityInfoSideDots(activityDay),
