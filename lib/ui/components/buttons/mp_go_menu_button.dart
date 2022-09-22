@@ -18,6 +18,7 @@ class MpGoMenuButton extends StatelessWidget {
           children: [
             BlocBuilder<SessionCubit, bool>(
               builder: (context, hasMP4Session) => IconActionButton(
+                style: actionButtonStyleLight,
                 ttsData: t.menu,
                 onPressed: () {
                   final authProviders = copiedAuthProviders(context);
