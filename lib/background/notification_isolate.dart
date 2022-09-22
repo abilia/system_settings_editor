@@ -30,7 +30,7 @@ FlutterLocalNotificationsPlugin ensureNotificationPluginInitialized() {
   pluginInstance = FlutterLocalNotificationsPlugin();
   pluginInstance.initialize(
     const InitializationSettings(
-      android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+      android: AndroidInitializationSettings('icon_notification'),
       iOS: IOSInitializationSettings(
         requestSoundPermission: false,
         requestBadgePermission: false,
