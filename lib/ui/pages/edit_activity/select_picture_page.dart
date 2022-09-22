@@ -1,13 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:seagull/logging.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 final _log = Logger((SelectPicturePage).toString());
 
@@ -63,36 +62,37 @@ class SelectPictureBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            if (selectedImage.isNotEmpty)
-              Padding(
-                padding: EdgeInsets.only(top: layout.templates.m1.top),
-                child: Column(
-                  children: [
-                    SelectedImageWidget(selectedImage: selectedImage),
-                    SizedBox(
-                        height: layout.formPadding.largeVerticalItemDistance),
-                    RemoveButton(
-                      key: TestKey.removePicture,
-                      onTap: () {
-                        imageCallback.call(AbiliaFile.empty);
-                      },
-                      icon: Icon(
-                        AbiliaIcons.deleteAllClear,
-                        color: AbiliaColors.white,
-                        size: layout.icon.small,
-                      ),
-                      text: translate.removeImage,
-                    ),
-                    const Divider().pad(dividerPadding),
-                  ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        if (selectedImage.isNotEmpty)
+          Padding(
+            padding: EdgeInsets.only(top: layout.templates.m1.top),
+            child: Column(
+              children: [
+                SelectedImageWidget(selectedImage: selectedImage),
+                SizedBox(height: layout.formPadding.largeVerticalItemDistance),
+                RemoveButton(
+                  key: TestKey.removePicture,
+                  onTap: () {
+                    imageCallback.call(AbiliaFile.empty);
+                  },
+                  icon: Icon(
+                    AbiliaIcons.deleteAllClear,
+                    color: AbiliaColors.white,
+                    size: layout.icon.small,
+                  ),
+                  text: translate.removeImage,
                 ),
-              ),
-            Padding(
+                const Divider().pad(dividerPadding),
+              ],
+            ),
+          ),
+        BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
+            PhotoMenuSettings>(
+          selector: (state) => state.settings.photoMenu,
+          builder: (context, settings) {
+            return Padding(
               padding: layout.templates.m1,
               child: Column(
                 children: [
@@ -117,7 +117,7 @@ class SelectPictureBody extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: layout.formPadding.verticalItemDistance),
-                  if (state.displayMyPhotos) ...[
+                  if (settings.displayMyPhotos) ...[
                     BlocSelector<SortableBloc, SortableState,
                         Sortable<ImageArchiveData>?>(
                       selector: (state) => state is SortablesLoaded
@@ -154,7 +154,7 @@ class SelectPictureBody extends StatelessWidget {
                     ),
                     SizedBox(height: layout.formPadding.verticalItemDistance),
                   ],
-                  if (Config.isMPGO && state.displayLocalImages) ...[
+                  if (Config.isMPGO && settings.displayLocalImages) ...[
                     ImageSourceWidget(
                       key: TestKey.localImagesPickField,
                       text: translate.devicesLocalImages,
@@ -164,7 +164,7 @@ class SelectPictureBody extends StatelessWidget {
                     ),
                     SizedBox(height: layout.formPadding.verticalItemDistance),
                   ],
-                  if (state.displayCamera)
+                  if (settings.displayCamera)
                     ImageSourceWidget(
                       key: TestKey.cameraPickField,
                       text: translate.takeNewPhoto,
@@ -174,10 +174,10 @@ class SelectPictureBody extends StatelessWidget {
                     ),
                 ],
               ),
-            ),
-          ],
-        );
-      },
+            );
+          },
+        ),
+      ],
     );
   }
 }

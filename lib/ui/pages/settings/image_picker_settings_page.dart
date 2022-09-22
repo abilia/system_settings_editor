@@ -10,15 +10,16 @@ class ImagePickerSettingsPage extends StatefulWidget {
 }
 
 class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
-  late bool displayLocalImages, displayMyPhotos, displayCamera;
+  late bool _displayLocalImages, _displayMyPhotos, _displayCamera;
 
   @override
   void initState() {
     super.initState();
-    final memosettingsState = context.read<MemoplannerSettingBloc>().state;
-    displayCamera = memosettingsState.displayCamera;
-    displayMyPhotos = memosettingsState.displayMyPhotos;
-    displayLocalImages = memosettingsState.displayLocalImages;
+    final photoMenuSettings =
+        context.read<MemoplannerSettingBloc>().state.settings.photoMenu;
+    _displayCamera = photoMenuSettings.displayCamera;
+    _displayMyPhotos = photoMenuSettings.displayMyPhotos;
+    _displayLocalImages = photoMenuSettings.displayLocalImages;
   }
 
   @override
@@ -36,19 +37,16 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
               context.read<GenericCubit>().genericUpdated(
                 [
                   MemoplannerSettingData.fromData(
-                    data: displayMyPhotos,
-                    identifier:
-                        MemoplannerSettings.imageMenuDisplayMyPhotosItemKey,
+                    data: _displayMyPhotos,
+                    identifier: PhotoMenuSettings.displayMyPhotosKey,
                   ),
                   MemoplannerSettingData.fromData(
-                    data: displayCamera,
-                    identifier:
-                        MemoplannerSettings.imageMenuDisplayCameraItemKey,
+                    data: _displayCamera,
+                    identifier: PhotoMenuSettings.displayCameraKey,
                   ),
                   MemoplannerSettingData.fromData(
-                    data: displayLocalImages,
-                    identifier:
-                        MemoplannerSettings.imageMenuDisplayPhotoItemKey,
+                    data: _displayLocalImages,
+                    identifier: PhotoMenuSettings.displayPhotoKey,
                   ),
                 ],
               );
@@ -65,21 +63,21 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.myPhotos),
-          value: displayMyPhotos,
-          onChanged: (v) => setState(() => displayMyPhotos = v),
+          value: _displayMyPhotos,
+          onChanged: (v) => setState(() => _displayMyPhotos = v),
           child: Text(t.myPhotos),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.cameraPhoto),
-          value: displayCamera,
-          onChanged: (v) => setState(() => displayCamera = v),
+          value: _displayCamera,
+          onChanged: (v) => setState(() => _displayCamera = v),
           child: Text(t.takeNewPhoto),
         ),
         const Divider(),
         SwitchField(
           leading: const Icon(AbiliaIcons.phone),
-          value: displayLocalImages,
-          onChanged: (v) => setState(() => displayLocalImages = v),
+          value: _displayLocalImages,
+          onChanged: (v) => setState(() => _displayLocalImages = v),
           child: Text(t.devicesLocalImages),
         ),
         Tts(child: Text(t.onlyAppliesToGo)),

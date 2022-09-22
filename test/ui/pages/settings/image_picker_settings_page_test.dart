@@ -71,7 +71,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.imageMenuDisplayCameraItemKey,
+        key: PhotoMenuSettings.displayCameraKey,
         matcher: isFalse,
       );
     });
@@ -84,7 +84,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.imageMenuDisplayMyPhotosItemKey,
+        key: PhotoMenuSettings.displayMyPhotosKey,
         matcher: isFalse,
       );
     });
@@ -97,7 +97,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.imageMenuDisplayPhotoItemKey,
+        key: PhotoMenuSettings.displayPhotoKey,
         matcher: isFalse,
       );
     });
@@ -120,7 +120,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.imageMenuDisplayCameraItemKey,
+            identifier: PhotoMenuSettings.displayCameraKey,
           ),
         ),
       ];
@@ -134,7 +134,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.imageMenuDisplayPhotoItemKey,
+            identifier: PhotoMenuSettings.displayPhotoKey,
           ),
         ),
       ];

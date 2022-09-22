@@ -13,3 +13,4 @@ export 'add_activity/all.dart';
 export 'week_calendar_settings.dart';
 export 'activity_view_settings.dart';
 export 'app_bar_settings.dart';
+export 'photo_menu_settings.dart';
