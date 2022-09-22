@@ -51,19 +51,22 @@ class MyPhotosPickField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textStyle = (Theme.of(context).textTheme.bodyText1 ?? bodyText1);
+    final text = Translator.of(context).translate.myPhotos;
     return BlocSelector<SortableBloc, SortableState, String?>(
       selector: (state) => state is SortablesLoaded
           ? state.sortables.getMyPhotosFolder()?.id
           : null,
-      builder: (context, myPhotoFolderId) => DefaultTextStyle(
-        style: const TextStyle(color: AbiliaColors.white),
-        child: Tts.fromSemantics(
-          SemanticsProperties(
-            label: Translator.of(context).translate.myPhotos,
-            button: true,
-          ),
-          child: Material(
-            color: Colors.transparent,
+      builder: (context, myPhotoFolderId) => Material(
+        borderRadius: borderRadius,
+        textStyle: textStyle.copyWith(
+          color: AbiliaColors.white,
+          overflow: TextOverflow.ellipsis,
+        ),
+        child: IconTheme(
+          data: Theme.of(context).iconTheme.copyWith(color: AbiliaColors.white),
+          child: Tts.fromSemantics(
+            SemanticsProperties(label: text, button: true),
             child: InkWell(
               onTap: myPhotoFolderId != null
                   ? () {
@@ -86,38 +89,16 @@ class MyPhotosPickField extends StatelessWidget {
                 padding: layout.pickField.padding,
                 child: Row(
                   children: <Widget>[
-                    IconTheme(
-                      data: Theme.of(context).iconTheme.copyWith(
-                            size: layout.icon.small,
-                            color: AbiliaColors.white,
-                          ),
-                      child: Padding(
-                        padding: layout.pickField.leadingPadding,
-                        child: const Icon(AbiliaIcons.myPhotos),
+                    Padding(
+                      padding: layout.pickField.leadingPadding,
+                      child: Icon(
+                        AbiliaIcons.myPhotos,
+                        size: layout.icon.small,
                       ),
                     ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          DefaultTextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            style: (Theme.of(context).textTheme.bodyText1 ??
-                                    bodyText1)
-                                .copyWith(
-                              color: AbiliaColors.white,
-                            ),
-                            child:
-                                Text(Translator.of(context).translate.myPhotos),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Icon(
-                      AbiliaIcons.navigationNext,
-                      color: AbiliaColors.white,
-                    ),
+                    Text(text),
+                    const Spacer(),
+                    const Icon(AbiliaIcons.navigationNext),
                   ],
                 ),
               ),
