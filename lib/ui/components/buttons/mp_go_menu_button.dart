@@ -19,10 +19,9 @@ class MpGoMenuButton extends StatelessWidget {
             BlocBuilder<SessionCubit, bool>(
               builder: (context, hasMP4Session) => IconActionButton(
                 ttsData: t.menu,
-                onPressed: () async {
-                  final navigator = Navigator.of(context);
+                onPressed: () {
                   final authProviders = copiedAuthProviders(context);
-                  navigator.push(
+                  Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => MultiBlocProvider(
                         providers: authProviders,
