@@ -26,30 +26,13 @@ class WeekCalendarTab extends StatelessWidget {
   }
 }
 
-class WeekStateCache {
-  WeekStateCache(this.current);
-  WeekCalendarState current;
-  WeekCalendarState? previous;
-
-  void cacheWeek(WeekCalendarState newWeek) {
-    if (newWeek.index != current.index) {
-      previous = current;
-    }
-    current = newWeek;
-  }
-}
-
 class WeekCalendar extends StatelessWidget {
   const WeekCalendar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final weekStateCache = WeekStateCache(
-      context.read<WeekCalendarCubit>().state,
-    );
-    final pageController = PageController(
-      initialPage: context.read<WeekCalendarCubit>().state.index,
-    );
+    final weekCalendarState = context.read<WeekCalendarCubit>().state;
+    final pageController = PageController(initialPage: weekCalendarState.index);
     return BlocListener<WeekCalendarCubit, WeekCalendarState>(
       listener: (context, state) {
         pageController.animateToPage(
@@ -61,42 +44,38 @@ class WeekCalendar extends StatelessWidget {
       child: PageView.builder(
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, item) {
-          return Builder(
-            builder: (context) {
-              weekStateCache.cacheWeek(
-                context.watch<WeekCalendarCubit>().state,
-              );
-              final weekDisplayDays = context.select(
-                (MemoplannerSettingBloc b) =>
-                    b.state.settings.weekCalendar.weekDisplayDays,
-              );
-              final numberOfDays = weekDisplayDays.numberOfDays();
+        itemBuilder: (context, item) => Builder(
+          builder: (context) {
+            final weekCalendarCubit = context.watch<WeekCalendarCubit>();
+            final weekDisplayDays = context.select(
+                (MemoplannerSettingBloc bloc) =>
+                    bloc.state.settings.weekCalendar.weekDisplayDays);
+            final numberOfDays = weekDisplayDays.numberOfDays();
 
-              if (item == weekStateCache.current.index) {
-                return WeekCalendarPage(
-                  numberOfDays: numberOfDays,
-                  weekStart: weekStateCache.current.currentWeekStart,
-                  weekDisplayDays: weekDisplayDays,
-                  currentWeekEvents: weekStateCache.current.currentWeekEvents,
-                  fullDayActivities: weekStateCache.current.fullDayActivities,
-                );
-              }
+            final currentWeek = weekCalendarCubit.state;
+            if (item == currentWeek.index) {
+              return WeekCalendarPage(
+                numberOfDays: numberOfDays,
+                weekStart: currentWeek.currentWeekStart,
+                weekDisplayDays: weekDisplayDays,
+                currentWeekEvents: currentWeek.currentWeekEvents,
+                fullDayActivities: currentWeek.fullDayActivities,
+              );
+            }
 
-              final previousWeek = weekStateCache.previous;
-              if (previousWeek != null) {
-                return WeekCalendarPage(
-                  numberOfDays: numberOfDays,
-                  weekStart: previousWeek.currentWeekStart,
-                  weekDisplayDays: weekDisplayDays,
-                  currentWeekEvents: previousWeek.currentWeekEvents,
-                  fullDayActivities: previousWeek.fullDayActivities,
-                );
-              }
-              return Container();
-            },
-          );
-        },
+            final previousWeek = weekCalendarCubit.previousState;
+            if (previousWeek != null) {
+              return WeekCalendarPage(
+                numberOfDays: numberOfDays,
+                weekStart: previousWeek.currentWeekStart,
+                weekDisplayDays: weekDisplayDays,
+                currentWeekEvents: previousWeek.currentWeekEvents,
+                fullDayActivities: previousWeek.fullDayActivities,
+              );
+            }
+            return Container();
+          },
+        ),
       ),
     );
   }
@@ -293,10 +272,11 @@ class _WeekBodyContentWrapper extends StatelessWidget {
               ListView(
             children: [
               Container(
-                  constraints: BoxConstraints(
-                    minHeight: constraints.maxHeight,
-                  ),
-                  child: child),
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                child: child,
+              ),
             ],
           ),
         ),
@@ -353,7 +333,8 @@ class _WeekDayColumn extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.isAtSameDay(day) != current.isAtSameDay(day),
       builder: (context, now) {
-        final memoSettings = context.watch<MemoplannerSettingBloc>().state;
+        final settings = context.watch<MemoplannerSettingBloc>().state.settings;
+        final calendarSettings = settings.calendar;
         final dayPickerState = context.watch<DayPickerBloc>().state;
         final wLayout = layout.weekCalendar;
         final past = day.isBefore(now.onlyDays());
@@ -363,13 +344,13 @@ class _WeekDayColumn extends StatelessWidget {
             ? wLayout.selectedDay.dayColumnBorderWidth
             : wLayout.notSelectedDay.dayColumnBorderWidth;
         final dayTheme = weekdayTheme(
-          dayColor: memoSettings.settings.calendar.dayColor,
+          dayColor: calendarSettings.dayColor,
           languageCode: Localizations.localeOf(context).languageCode,
           weekday: day.weekday,
         );
         final columnColor = past
             ? AbiliaColors.white110
-            : memoSettings.settings.weekCalendar.weekColor == WeekColor.columns
+            : settings.weekCalendar.weekColor == WeekColor.columns
                 ? dayTheme.secondaryColor
                 : AbiliaColors.white;
         final borderColor =
@@ -409,10 +390,8 @@ class _WeekDayColumn extends StatelessWidget {
                 child: _WeekDayColumnItems(
                   day: day,
                   selected: selected,
-                  showCategories:
-                      memoSettings.settings.calendar.categories.show,
-                  showCategoryColor:
-                      memoSettings.settings.calendar.categories.showColors,
+                  showCategories: calendarSettings.categories.show,
+                  showCategoryColor: calendarSettings.categories.showColors,
                   occasions: occasions,
                 ),
               ),
