@@ -26,11 +26,27 @@ class WeekCalendarTab extends StatelessWidget {
   }
 }
 
+class WeekStateCache {
+  WeekStateCache(this.current);
+  WeekCalendarState current;
+  WeekCalendarState? previous;
+
+  void cacheWeek(WeekCalendarState newWeek) {
+    if (newWeek.index != current.index) {
+      previous = current;
+    }
+    current = newWeek;
+  }
+}
+
 class WeekCalendar extends StatelessWidget {
   const WeekCalendar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final weekStateCache = WeekStateCache(
+      context.read<WeekCalendarCubit>().state,
+    );
     final pageController = PageController(
       initialPage: context.read<WeekCalendarCubit>().state.index,
     );
@@ -45,67 +61,101 @@ class WeekCalendar extends StatelessWidget {
       child: PageView.builder(
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, item) =>
-            BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
-          buildWhen: (previous, current) =>
-              current.index == item ||
-              previous.currentWeekStart != current.currentWeekStart,
-          builder: (context, weekState) {
-            if (weekState.index != item) return Container();
-            return BlocBuilder<MemoplannerSettingBloc,
-                MemoplannerSettingsState>(
-              buildWhen: (previous, current) =>
-                  previous.weekDisplayDays != current.weekDisplayDays ||
-                  previous.settings.calendar.dayColor !=
-                      current.settings.calendar.dayColor ||
-                  previous.weekColor != current.weekColor,
-              builder: (context, memosettings) {
-                final numberOfDays =
-                    memosettings.weekDisplayDays.numberOfDays();
-                final DateTime weekStart = weekState.currentWeekStart;
-                final weekDisplayDays =
-                    context.select<MemoplannerSettingBloc, WeekDisplayDays>(
-                        (bloc) => bloc.state.weekDisplayDays);
-                return Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    IntrinsicHeight(
-                      child: Row(
-                        children: List<WeekCalenderHeadingContent>.generate(
-                          numberOfDays,
-                          (i) => WeekCalenderHeadingContent(
-                            day: weekStart.addDays(i),
-                            weekDisplayDays: weekDisplayDays,
-                            selected: context.select<DayPickerBloc, bool>(
-                              (bloc) => bloc.state.day.isAtSameDay(
-                                weekStart.addDays(i),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    _WeekBodyContentWrapper(
-                      child: IntrinsicHeight(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: List<_WeekDayColumn>.generate(
-                            numberOfDays,
-                            (i) => _WeekDayColumn(
-                              day: weekStart.addDays(i),
-                              weekDisplayDays: weekDisplayDays,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+        itemBuilder: (context, item) {
+          return Builder(
+            builder: (context) {
+              weekStateCache.cacheWeek(
+                context.watch<WeekCalendarCubit>().state,
+              );
+              final weekDisplayDays = context.select(
+                  (MemoplannerSettingBloc b) => b.state.weekDisplayDays);
+              final numberOfDays = weekDisplayDays.numberOfDays();
+
+              if (item == weekStateCache.current.index) {
+                return WeekCalendarPage(
+                  numberOfDays: numberOfDays,
+                  weekStart: weekStateCache.current.currentWeekStart,
+                  weekDisplayDays: weekDisplayDays,
+                  currentWeekEvents: weekStateCache.current.currentWeekEvents,
+                  fullDayActivities: weekStateCache.current.fullDayActivities,
                 );
-              },
-            );
-          },
-        ),
+              }
+
+              final previousWeek = weekStateCache.previous;
+              if (previousWeek != null) {
+                return WeekCalendarPage(
+                  numberOfDays: numberOfDays,
+                  weekStart: previousWeek.currentWeekStart,
+                  weekDisplayDays: weekDisplayDays,
+                  currentWeekEvents: previousWeek.currentWeekEvents,
+                  fullDayActivities: previousWeek.fullDayActivities,
+                );
+              }
+              return Container();
+            },
+          );
+        },
       ),
+    );
+  }
+}
+
+class WeekCalendarPage extends StatelessWidget {
+  const WeekCalendarPage({
+    required this.numberOfDays,
+    required this.weekStart,
+    required this.weekDisplayDays,
+    required this.currentWeekEvents,
+    required this.fullDayActivities,
+    Key? key,
+  }) : super(key: key);
+
+  final int numberOfDays;
+  final DateTime weekStart;
+  final WeekDisplayDays weekDisplayDays;
+  final Map<int, List<EventOccasion>> currentWeekEvents;
+  final Map<int, List<ActivityOccasion>> fullDayActivities;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        IntrinsicHeight(
+          child: Row(
+            children: List<WeekCalenderHeadingContent>.generate(
+              numberOfDays,
+              (i) => WeekCalenderHeadingContent(
+                day: weekStart.addDays(i),
+                weekDisplayDays: weekDisplayDays,
+                selected: context.select(
+                  (DayPickerBloc b) => b.state.day.isAtSameDay(
+                    weekStart.addDays(i),
+                  ),
+                ),
+                fullDayActivities:
+                    fullDayActivities[weekStart.addDays(i).weekday - 1] ?? [],
+              ),
+            ),
+          ),
+        ),
+        _WeekBodyContentWrapper(
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: List<_WeekDayColumn>.generate(
+                numberOfDays,
+                (i) => _WeekDayColumn(
+                  day: weekStart.addDays(i),
+                  weekDisplayDays: weekDisplayDays,
+                  occasions:
+                      currentWeekEvents[weekStart.addDays(i).weekday - 1] ?? [],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -115,20 +165,22 @@ class WeekCalenderHeadingContent extends StatelessWidget {
     required this.day,
     required this.weekDisplayDays,
     required this.selected,
+    required this.fullDayActivities,
     Key? key,
   }) : super(key: key);
 
   final DateTime day;
   final WeekDisplayDays weekDisplayDays;
   final bool selected;
+  final List<ActivityOccasion> fullDayActivities;
 
   @override
   Widget build(BuildContext context) {
     final wLayout = layout.weekCalendar;
-    final occasion =
-        context.select((ClockBloc clock) => day.dayOccasion(clock.state));
-    final dayColor = context.select<MemoplannerSettingBloc, DayColor>(
-        (bloc) => bloc.state.settings.calendar.dayColor);
+    final occasion = context.select((ClockBloc c) => day.dayOccasion(c.state));
+    final dayColor = context.select(
+      (MemoplannerSettingBloc b) => b.state.settings.calendar.dayColor,
+    );
     final dayTheme = weekdayTheme(
       dayColor: dayColor,
       languageCode: Localizations.localeOf(context).languageCode,
@@ -204,6 +256,7 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                   child: _FullDayActivities(
                     day: day,
                     selected: selected,
+                    fullDayActivities: fullDayActivities,
                   ),
                 ),
               ),
@@ -251,17 +304,17 @@ class _WeekBodyContentWrapper extends StatelessWidget {
 class _FullDayActivities extends StatelessWidget {
   final DateTime day;
   final bool selected;
+  final List<ActivityOccasion> fullDayActivities;
 
   const _FullDayActivities({
     required this.day,
     required this.selected,
+    required this.fullDayActivities,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final fullDayActivities = context.select((WeekCalendarCubit cubit) =>
-        cubit.state.fullDayActivities[day.weekday - 1] ?? []);
     if (fullDayActivities.length > 1) {
       return ClickableFullDayStack(
         fulldayActivitiesBuilder: (context) => fullDayActivities,
@@ -283,87 +336,89 @@ class _FullDayActivities extends StatelessWidget {
 class _WeekDayColumn extends StatelessWidget {
   final DateTime day;
   final WeekDisplayDays weekDisplayDays;
+  final List<EventOccasion> occasions;
 
   const _WeekDayColumn({
     required this.day,
     required this.weekDisplayDays,
+    required this.occasions,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memosettings) => BlocBuilder<ClockBloc, DateTime>(
-        buildWhen: (previous, current) =>
-            previous.isAtSameDay(day) != current.isAtSameDay(day),
-        builder: (context, now) => BlocBuilder<DayPickerBloc, DayPickerState>(
-          builder: (context, dayPickerState) {
-            final wLayout = layout.weekCalendar;
-            final past = day.isBefore(now.onlyDays());
-            final selected = day.isAtSameDay(dayPickerState.day);
-            final today = now.isAtSameDay(day);
-            final borderWidth = selected || today
-                ? wLayout.selectedDay.dayColumnBorderWidth
-                : wLayout.notSelectedDay.dayColumnBorderWidth;
-            final dayTheme = weekdayTheme(
-              dayColor: memosettings.settings.calendar.dayColor,
-              languageCode: Localizations.localeOf(context).languageCode,
-              weekday: day.weekday,
-            );
-            final columnColor = past
-                ? AbiliaColors.white110
-                : memosettings.weekColor == WeekColor.columns
-                    ? dayTheme.secondaryColor
-                    : AbiliaColors.white;
-            final borderColor =
-                _bodyColumnBorderColor(today, selected, past, columnColor) ??
-                    dayTheme.borderColor ??
-                    dayTheme.secondaryColor;
+    return BlocBuilder<ClockBloc, DateTime>(
+      buildWhen: (previous, current) =>
+          previous.isAtSameDay(day) != current.isAtSameDay(day),
+      builder: (context, now) {
+        final memoSettings = context.watch<MemoplannerSettingBloc>().state;
+        final dayPickerState = context.watch<DayPickerBloc>().state;
 
-            final tempPadding = selected
-                ? wLayout.selectedDay.innerDayPadding
-                : wLayout.notSelectedDay.innerDayPadding;
-            final innerDayPadding = tempPadding.copyWith(
-              left: max(tempPadding.left - borderWidth, 0),
-              right: max(tempPadding.right - borderWidth, 0),
-            );
-            final innerRadius = Radius.circular(
-              wLayout.columnRadius.x - borderWidth,
-            );
+        final wLayout = layout.weekCalendar;
+        final past = day.isBefore(now.onlyDays());
+        final selected = day.isAtSameDay(dayPickerState.day);
+        final today = now.isAtSameDay(day);
+        final borderWidth = selected || today
+            ? wLayout.selectedDay.dayColumnBorderWidth
+            : wLayout.notSelectedDay.dayColumnBorderWidth;
+        final dayTheme = weekdayTheme(
+          dayColor: memoSettings.settings.calendar.dayColor,
+          languageCode: Localizations.localeOf(context).languageCode,
+          weekday: day.weekday,
+        );
+        final columnColor = past
+            ? AbiliaColors.white110
+            : memoSettings.weekColor == WeekColor.columns
+                ? dayTheme.secondaryColor
+                : AbiliaColors.white;
+        final borderColor =
+            _bodyColumnBorderColor(today, selected, past, columnColor) ??
+                dayTheme.borderColor ??
+                dayTheme.secondaryColor;
 
-            return Flexible(
-              flex: _dayColumnFlex(weekDisplayDays, selected),
-              child: GestureDetector(
-                onTap: () {
-                  DefaultTabController.of(context)?.animateTo(0);
-                  BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day));
-                },
-                child: _WeekBorderedColumn(
-                  borderWidth: borderWidth,
-                  borderColor: borderColor,
-                  wLayout: wLayout,
-                  columnColor: columnColor,
-                  header: false,
-                  innerRadius: innerRadius,
-                  past: past,
+        final tempPadding = selected
+            ? wLayout.selectedDay.innerDayPadding
+            : wLayout.notSelectedDay.innerDayPadding;
+        final innerDayPadding = tempPadding.copyWith(
+          left: max(tempPadding.left - borderWidth, 0),
+          right: max(tempPadding.right - borderWidth, 0),
+        );
+        final innerRadius = Radius.circular(
+          wLayout.columnRadius.x - borderWidth,
+        );
+
+        return Flexible(
+          flex: _dayColumnFlex(weekDisplayDays, selected),
+          child: GestureDetector(
+            onTap: () {
+              DefaultTabController.of(context)?.animateTo(0);
+              BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day));
+            },
+            child: _WeekBorderedColumn(
+              borderWidth: borderWidth,
+              borderColor: borderColor,
+              wLayout: wLayout,
+              columnColor: columnColor,
+              header: false,
+              innerRadius: innerRadius,
+              past: past,
+              selected: selected,
+              child: Padding(
+                padding: innerDayPadding,
+                child: _WeekDayColumnItems(
+                  day: day,
                   selected: selected,
-                  child: Padding(
-                    padding: innerDayPadding,
-                    child: _WeekDayColumnItems(
-                      day: day,
-                      selected: selected,
-                      showCategories:
-                          memosettings.settings.calendar.categories.show,
-                      showCategoryColor:
-                          memosettings.settings.calendar.categories.showColors,
-                    ),
-                  ),
+                  showCategories:
+                      memoSettings.settings.calendar.categories.show,
+                  showCategoryColor:
+                      memoSettings.settings.calendar.categories.showColors,
+                  occasions: occasions,
                 ),
               ),
-            );
-          },
-        ),
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -371,21 +426,19 @@ class _WeekDayColumn extends StatelessWidget {
 class _WeekDayColumnItems extends StatelessWidget {
   final DateTime day;
   final bool selected, showCategories, showCategoryColor;
+  final List<EventOccasion> occasions;
 
   const _WeekDayColumnItems({
     required this.day,
     required this.selected,
     required this.showCategories,
     required this.showCategoryColor,
+    required this.occasions,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final occasions = context.select((WeekCalendarCubit cubit) =>
-            cubit.state.currentWeekEvents)[day.weekday - 1] ??
-        [];
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
