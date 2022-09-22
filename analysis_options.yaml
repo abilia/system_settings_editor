@@ -46,6 +46,8 @@ linter:
     - prefer_single_quotes
 
   # Pub Rules
+    - secure_pubspec_urls
+    - sort_pub_dependencies
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
