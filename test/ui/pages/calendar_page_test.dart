@@ -258,7 +258,7 @@ void main() {
         await tester.tap(find.byType(CloseButton));
         expect(find.byType(OrangeDot), findsOneWidget);
         expect(find.byType(ErrorMessage), findsOneWidget);
-      });
+      }, skip: Config.isMP);
 
       testWidgets('Granted premission shows nothing',
           (WidgetTester tester) async {

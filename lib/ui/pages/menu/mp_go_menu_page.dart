@@ -114,8 +114,7 @@ class MyPhotosPickField extends StatelessWidget {
                         ],
                       ),
                     ),
-                    // ignore: prefer_const_constructors
-                    Icon(
+                    const Icon(
                       AbiliaIcons.navigationNext,
                       color: AbiliaColors.white,
                     ),

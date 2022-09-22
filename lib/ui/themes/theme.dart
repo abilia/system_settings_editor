@@ -49,45 +49,7 @@ final abiliaTheme = ThemeData(
     thickness: layout.borders.thin,
     space: 0,
   ),
-  extensions: [
-    PickFieldStyle(
-      backgroundColor: Colors.blue,
-      foregroundColor: Colors.white,
-    ),
-  ],
 );
-
-class PickFieldStyle extends ThemeExtension<PickFieldStyle> {
-  PickFieldStyle({
-    required this.backgroundColor,
-    required this.foregroundColor,
-  });
-
-  final Color? backgroundColor;
-  final Color? foregroundColor;
-
-  @override
-  ThemeExtension<PickFieldStyle> copyWith({
-    Color? backgroundColor,
-    Color? foregroundColor,
-  }) =>
-      PickFieldStyle(
-        backgroundColor: backgroundColor ?? this.backgroundColor,
-        foregroundColor: foregroundColor ?? this.foregroundColor,
-      );
-
-  @override
-  ThemeExtension<PickFieldStyle> lerp(
-      ThemeExtension<PickFieldStyle>? other, double t) {
-    if (other is! PickFieldStyle) {
-      return this;
-    }
-    return PickFieldStyle(
-      backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
-      foregroundColor: Color.lerp(foregroundColor, other.foregroundColor, t),
-    );
-  }
-}
 
 final abiliaWhiteTheme =
     abiliaTheme.copyWith(scaffoldBackgroundColor: AbiliaColors.white);

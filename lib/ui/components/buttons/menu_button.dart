@@ -22,12 +22,6 @@ class MenuButton extends StatelessWidget {
               AbiliaIcons.appMenu,
               tabIndex: tabIndex,
             ),
-            if (importantPermissionMissing)
-              Positioned(
-                top: layout.menuButton.dotPosition,
-                right: layout.menuButton.dotPosition,
-                child: const OrangeDot(),
-              ),
           ],
         );
       },
