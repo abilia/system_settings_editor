@@ -52,30 +52,21 @@ class WeekCalendar extends StatelessWidget {
               previous.currentWeekStart != current.currentWeekStart,
           builder: (context, weekState) {
             if (weekState.index != item) return Container();
-            return BlocBuilder<MemoplannerSettingBloc,
-                MemoplannerSettingsState>(
-              buildWhen: (previous, current) =>
-                  previous.weekDisplayDays != current.weekDisplayDays ||
-                  previous.settings.calendar.dayColor !=
-                      current.settings.calendar.dayColor ||
-                  previous.weekColor != current.weekColor,
-              builder: (context, memosettings) {
-                final numberOfDays =
-                    memosettings.weekDisplayDays.numberOfDays();
+            return BlocSelector<MemoplannerSettingBloc,
+                MemoplannerSettingsState, WeekCalendarSettings>(
+              selector: (state) => state.settings.weekCalendar,
+              builder: (context, weekSettings) {
                 final DateTime weekStart = weekState.currentWeekStart;
-                final weekDisplayDays =
-                    context.select<MemoplannerSettingBloc, WeekDisplayDays>(
-                        (bloc) => bloc.state.weekDisplayDays);
                 return Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     IntrinsicHeight(
                       child: Row(
                         children: List<WeekCalenderHeadingContent>.generate(
-                          numberOfDays,
+                          weekSettings.weekDisplayDays.numberOfDays(),
                           (i) => WeekCalenderHeadingContent(
                             day: weekStart.addDays(i),
-                            weekDisplayDays: weekDisplayDays,
+                            weekDisplayDays: weekSettings.weekDisplayDays,
                             selected: context.select<DayPickerBloc, bool>(
                               (bloc) => bloc.state.day.isAtSameDay(
                                 weekStart.addDays(i),
@@ -90,10 +81,10 @@ class WeekCalendar extends StatelessWidget {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: List<_WeekDayColumn>.generate(
-                            numberOfDays,
+                            weekSettings.weekDisplayDays.numberOfDays(),
                             (i) => _WeekDayColumn(
                               day: weekStart.addDays(i),
-                              weekDisplayDays: weekDisplayDays,
+                              weekDisplayDays: weekSettings.weekDisplayDays,
                             ),
                           ),
                         ),
@@ -312,7 +303,8 @@ class _WeekDayColumn extends StatelessWidget {
             );
             final columnColor = past
                 ? AbiliaColors.white110
-                : memosettings.weekColor == WeekColor.columns
+                : memosettings.settings.weekCalendar.weekColor ==
+                        WeekColor.columns
                     ? dayTheme.secondaryColor
                     : AbiliaColors.white;
             final borderColor =

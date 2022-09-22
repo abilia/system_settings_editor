@@ -1253,7 +1253,7 @@ void main() {
         (_) => Future.value(
           <Generic>[
             memoplannerSetting(
-                false, MemoplannerSettings.displayDeleteButtonKey)
+                false, ActivityViewSettings.displayDeleteButtonKey)
           ],
         ),
       );
@@ -1270,10 +1270,11 @@ void main() {
         (_) => Future.value(
           <Generic>[
             memoplannerSetting(
-                false, MemoplannerSettings.displayDeleteButtonKey),
+                false, ActivityViewSettings.displayDeleteButtonKey),
             memoplannerSetting(
-                false, MemoplannerSettings.displayAlarmButtonKey),
-            memoplannerSetting(false, MemoplannerSettings.displayEditButtonKey),
+                false, ActivityViewSettings.displayAlarmButtonKey),
+            memoplannerSetting(
+                false, ActivityViewSettings.displayEditButtonKey),
           ],
         ),
       );
@@ -1290,7 +1291,7 @@ void main() {
         (_) => Future.value(
           <Generic>[
             memoplannerSetting(
-                false, MemoplannerSettings.displayQuarterHourKey),
+                false, ActivityViewSettings.displayQuarterHourKey),
           ],
         ),
       );
