@@ -28,10 +28,10 @@ linter:
     - avoid_type_to_string
     - cancel_subscriptions
     - close_sinks
-    - invariant_booleans
     - literal_only_boolean_expressions
     - no_adjacent_strings_in_list
     - test_types_in_equals
+    - throw_in_finally
     - unnecessary_statements
 
   # Style Rules
