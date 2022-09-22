@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:http/http.dart';
@@ -37,35 +36,25 @@ class VoiceRepository {
   static const String pathSegments = 'voices/v1/metadata';
   final _log = Logger((VoiceRepository).toString());
 
-  Future<Iterable<VoiceData>> readAvailableVoices({
-    bool useEnviromentParameters = true,
-  }) async {
+  Future<Iterable<VoiceData>> readAvailableVoices() async {
     final url = Uri.https(
       baseUrl,
       pathSegments,
-      {
-        if (useEnviromentParameters) 'environment': baseUrlDb.environment,
-      },
+      {'environment': baseUrlDb.environment},
     );
     try {
       final response = await client.get(url);
       final statusCode = response.statusCode;
-      if (statusCode == 200) {
-        final decoded = jsonDecode(response.body) as List;
-        if (decoded.isEmpty && useEnviromentParameters) {
-          return readAvailableVoices(useEnviromentParameters: false);
-        }
-        return decoded
-            .exceptionSafeMap(
-              VoiceData.fromJson,
-              onException: _log.logAndReturnNull,
-            )
-            .whereNotNull();
+      if (statusCode != 200) {
+        throw StatusCodeException(response);
       }
-      _log.severe(
-        'statusCode: ${response.statusCode} when fetching voices from $url',
-        response,
-      );
+      final decoded = jsonDecode(response.body) as List;
+      return decoded
+          .exceptionSafeMap(
+            VoiceData.fromJson,
+            onException: _log.logAndReturnNull,
+          )
+          .whereNotNull();
     } catch (e) {
       _log.severe('Error when fetching voices from $url, offline?', e);
     }
@@ -78,16 +67,20 @@ class VoiceRepository {
   Future<bool> downloadVoice(VoiceData voice) async {
     final zipFile = _tempFile(voice);
     try {
-      if (!await zipFile.exists()) {
-        _log.finer('voice file: $voice does not exist, downloading...');
-
+      if (!zipFile.existsSync()) {
+        _log.fine('$voice cache miss: downloading...');
         final response = await client.get(voice.file.downloadUrl);
-        if (response.statusCode != 200) return false;
-        if (!_verifyDownload(voice.file, response.bodyBytes)) return false;
-
+        if (response.statusCode != 200) {
+          throw StatusCodeException(response);
+        }
+        _verifyDownload(voice.file, response.bodyBytes);
+        _log.fine('writing zipfile...');
         await zipFile.writeAsBytes(response.bodyBytes);
+      } else {
+        _log.fine('$voice cache hit!');
       }
 
+      _log.fine('extracting voice file $zipFile');
       final voiceDir = await _voiceDirectory(voice).create(recursive: true);
       await ZipFile.extractToDirectory(
         zipFile: zipFile,
@@ -95,27 +88,22 @@ class VoiceRepository {
       );
     } catch (ex) {
       _log.warning('Failed to download or extracting voice { $voice }', ex);
-      await zipFile.delete();
       await deleteVoice(voice);
+      if (zipFile.existsSync()) await zipFile.delete();
       return false;
     }
     return true;
   }
 
-  bool _verifyDownload(VoiceFile voiceFile, Uint8List downloadedBytes) {
-    final int expectedSize = voiceFile.sizeB;
-    final int downloadedSize = downloadedBytes.length;
-    if (downloadedSize != expectedSize) {
-      _log.severe(
-          'voice file size mismatch: downloaded $downloadedSize bytes is not expected $expectedSize bytes');
-      return false;
+  void _verifyDownload(VoiceFile voiceFile, Uint8List downloadedBytes) {
+    if (downloadedBytes.length != voiceFile.sizeB) {
+      throw VoiceFileDownloadException(
+        voiceFile,
+        'voice file size mismatch: '
+        '(downloaded ${downloadedBytes.length} bytes '
+        '- expected ${voiceFile.sizeB} bytes)',
+      );
     }
-    final downloadedMd5 = md5.convert(downloadedBytes);
-    if (downloadedMd5.toString() != voiceFile.md5) {
-      _log.severe('voice file md5 mismatch');
-      return false;
-    }
-    return true;
   }
 
   Future<bool> deleteVoice(VoiceData voice) async {
@@ -133,17 +121,19 @@ class VoiceRepository {
   /// Memoplanner 4.0 used https://www.handi.se/systemfiles2/{lang}/
   /// and stored files according to the json "localPath"
   Future<bool> _legacyDelete(VoiceData voice) async {
-    final oldFolder = Directory(p.join(_voicesDirectory.path, 'voices'))
-        .listSync()
-        .firstWhereOrNull((entity) => entity.path.contains(voice.name));
     try {
-      if (oldFolder != null) {
-        await oldFolder.delete(recursive: true);
-        _log.info('successfully deleted legacy voice $voice from $oldFolder');
-        return true;
+      final oldFolder = Directory(p.join(_voicesDirectory.path, 'voices'))
+          .listSync()
+          .firstWhereOrNull((entity) => entity.path.contains(voice.name));
+      if (oldFolder == null) {
+        _log.warning('could not find $voice among old voices');
+        return false;
       }
+      await oldFolder.delete(recursive: true);
+      _log.info('successfully deleted legacy voice $voice from $oldFolder');
+      return true;
     } on Exception catch (e) {
-      _log.warning('Failed to deleted voice by legacy: $oldFolder', e);
+      _log.warning('Failed to deleted voice by legacy', e);
     }
     return false;
   }
