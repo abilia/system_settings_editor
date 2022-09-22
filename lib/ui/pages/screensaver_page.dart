@@ -49,6 +49,8 @@ class _ScreensaverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final memoSettingsState = context.watch<MemoplannerSettingBloc>().state;
+    final appBarSettings = memoSettingsState.settings.appBar;
+
     final time = context.watch<ClockBloc>().state;
     return Padding(
       padding: layout.screensaver.titleBarPadding,
@@ -57,9 +59,9 @@ class _ScreensaverAppBar extends StatelessWidget {
             .apply(color: AbiliaColors.white),
         rows: AppBarTitleRows.day(
           compactDay: true,
-          displayWeekDay: memoSettingsState.activityDisplayWeekDay,
-          displayPartOfDay: memoSettingsState.activityDisplayDayPeriod,
-          displayDate: memoSettingsState.activityDisplayDate,
+          displayWeekDay: appBarSettings.activityDisplayWeekDay,
+          displayPartOfDay: appBarSettings.activityDisplayDayPeriod,
+          displayDate: appBarSettings.activityDisplayDate,
           currentTime: time,
           day: time.onlyDays(),
           dayPart: context.read<DayPartCubit>().state,
