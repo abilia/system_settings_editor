@@ -15,6 +15,7 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
   late final StreamSubscription _activitiesSubscription;
   late final StreamSubscription _timersSubscription;
   late final StreamSubscription _clockSubscription;
+  WeekCalendarState? previousState;
 
   WeekCalendarCubit({
     required ActivitiesBloc activitiesBloc,
@@ -83,6 +84,7 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
       ),
     );
 
+    previousState = state;
     emit(WeekCalendarLoaded(weekStart, noneFullDayEvents, fullDayActivities));
   }
 

@@ -4,25 +4,6 @@ abstract class MemoplannerSettingsState extends Equatable {
   final MemoplannerSettings settings;
 
   const MemoplannerSettingsState(this.settings);
-  bool get displayAlarmButton => settings.displayAlarmButton;
-  bool get displayDeleteButton => settings.displayDeleteButton;
-  bool get displayEditButton => settings.displayEditButton;
-  bool get displayQuarterHour => settings.displayQuarterHour;
-  bool get displayTimeLeft => settings.displayTimeLeft;
-  bool get dayCaptionShowDayButtons => settings.dayCaptionShowDayButtons;
-  bool get activityDisplayDayPeriod => settings.activityDisplayDayPeriod;
-  bool get activityDisplayWeekDay => settings.activityDisplayWeekDay;
-  bool get activityDisplayDate => settings.activityDisplayDate;
-  bool get activityDisplayClock => settings.activityDisplayClock;
-  bool get displayDayCalendarAppBar =>
-      activityDisplayDayPeriod ||
-      activityDisplayWeekDay ||
-      activityDisplayDate ||
-      activityDisplayClock ||
-      dayCaptionShowDayButtons;
-  bool get displayLocalImages => settings.imageMenuDisplayPhotoItem;
-  bool get displayCamera => settings.imageMenuDisplayCameraItem;
-  bool get displayMyPhotos => settings.imageMenuDisplayMyPhotosItem;
 
   bool get settingsInaccessible =>
       !settings.functions.display.menu || !settings.menu.showSettings;
@@ -42,12 +23,6 @@ abstract class MemoplannerSettingsState extends Equatable {
               settingViewOptionsZoom ||
               settingViewOptionsDurationDots));
 
-  bool get weekCaptionShowBrowseButtons =>
-      settings.weekCaptionShowBrowseButtons;
-  bool get weekCaptionShowWeekNumber => settings.weekCaptionShowWeekNumber;
-  bool get weekCaptionShowYear => settings.weekCaptionShowYear;
-  bool get weekCaptionShowClock => settings.weekCaptionShowClock;
-
   bool get monthCaptionShowBrowseButtons =>
       settings.monthCaptionShowMonthButtons;
   bool get monthCaptionShowYear => settings.monthCaptionShowYear;
@@ -62,11 +37,6 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   AlarmSettings get alarm => settings.alarm;
 
-  WeekDisplayDays get weekDisplayDays =>
-      WeekDisplayDays.values[settings.weekDisplayShowFullWeek];
-
-  WeekColor get weekColor =>
-      WeekColor.values[settings.weekDisplayShowColorMode];
   WeekColor get monthWeekColor =>
       WeekColor.values[settings.calendarMonthViewShowColors];
 

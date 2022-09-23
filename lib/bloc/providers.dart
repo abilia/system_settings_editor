@@ -9,6 +9,7 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/repository/session_repository.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/tts/tts_handler.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
@@ -65,6 +66,13 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               client: GetIt.I<ListenableClient>(),
               genericDb: GetIt.I<GenericDb>(),
               userId: authenticatedState.userId,
+            ),
+          ),
+          RepositoryProvider<SessionRepository>(
+            create: (context) => SessionRepository(
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              client: GetIt.I<ListenableClient>(),
+              sessionsDb: GetIt.I<SessionsDb>(),
             ),
           ),
         ],
@@ -214,6 +222,12 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 syncDelays: GetIt.I<SyncDelays>(),
               ),
             ),
+            BlocProvider<SessionCubit>(
+              create: (context) => SessionCubit(
+                sessionRepository: context.read<SessionRepository>(),
+              ),
+              lazy: false,
+            ),
             if (Config.isMP) ...[
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(
@@ -361,6 +375,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
                 GetIt.I<SupportPersonsDb>().deleteAll(),
                 GetIt.I<LicenseDb>().delete(),
                 GetIt.I<SettingsDb>().restore(),
+                GetIt.I<SessionsDb>().setHasMP4Session(false),
               ],
             ),
             client: GetIt.I<ListenableClient>(),

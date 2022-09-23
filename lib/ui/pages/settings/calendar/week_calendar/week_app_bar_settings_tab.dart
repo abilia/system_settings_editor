@@ -1,4 +1,5 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/settings/week_calendar_settings.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -8,7 +9,7 @@ class WeekAppBarSettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettingsState>(
+    return BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettings>(
       builder: (context, state) => SettingsTab(
         children: [
           Tts(child: Text(t.topField)),
@@ -53,17 +54,19 @@ class WeekAppBarPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettingsState>(
-      builder: (context, state) => BlocBuilder<ClockBloc, DateTime>(
+    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
+        WeekCalendarSettings>(
+      selector: (state) => state.settings.weekCalendar,
+      builder: (context, settings) => BlocBuilder<ClockBloc, DateTime>(
         builder: (context, currentTime) => AppBarPreview(
-          showBrowseButtons: state.showBrowseButtons,
-          showClock: state.showClock,
+          showBrowseButtons: settings.showBrowseButtons,
+          showClock: settings.showClock,
           rows: AppBarTitleRows.week(
             translator: Translator.of(context).translate,
             selectedDay: currentTime.onlyDays(),
             selectedWeekStart: currentTime.firstInWeek(),
-            showWeekNumber: state.showWeekNumber,
-            showYear: state.showYear,
+            showWeekNumber: settings.showWeekNumber,
+            showYear: settings.showYear,
             langCode: Localizations.localeOf(context).toLanguageTag(),
           ),
         ),

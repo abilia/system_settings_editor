@@ -11,8 +11,8 @@ class ActivityViewSettingsState extends Equatable {
     required this.timeOnQuarterHour,
   });
 
-  factory ActivityViewSettingsState.fromMemoplannerSettings(
-    MemoplannerSettingsState state,
+  factory ActivityViewSettingsState.fromSettings(
+    ActivityViewSettings state,
   ) =>
       ActivityViewSettingsState._(
         alarm: state.displayAlarmButton,
@@ -40,23 +40,23 @@ class ActivityViewSettingsState extends Equatable {
   List<MemoplannerSettingData> get memoplannerSettingData => [
         MemoplannerSettingData.fromData(
           data: alarm,
-          identifier: MemoplannerSettings.displayAlarmButtonKey,
+          identifier: ActivityViewSettings.displayAlarmButtonKey,
         ),
         MemoplannerSettingData.fromData(
           data: delete,
-          identifier: MemoplannerSettings.displayDeleteButtonKey,
+          identifier: ActivityViewSettings.displayDeleteButtonKey,
         ),
         MemoplannerSettingData.fromData(
           data: edit,
-          identifier: MemoplannerSettings.displayEditButtonKey,
+          identifier: ActivityViewSettings.displayEditButtonKey,
         ),
         MemoplannerSettingData.fromData(
           data: quarterHour,
-          identifier: MemoplannerSettings.displayQuarterHourKey,
+          identifier: ActivityViewSettings.displayQuarterHourKey,
         ),
         MemoplannerSettingData.fromData(
           data: timeOnQuarterHour,
-          identifier: MemoplannerSettings.displayTimeLeftKey,
+          identifier: ActivityViewSettings.displayTimeLeftKey,
         ),
       ];
 

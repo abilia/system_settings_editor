@@ -28,5 +28,6 @@ export 'sync_delays.dart';
 export 'abilia_timer.dart';
 export 'calendar.dart';
 export 'support_person.dart';
+export 'session.dart';
 
 typedef ActionIntentStream = Stream<String>;

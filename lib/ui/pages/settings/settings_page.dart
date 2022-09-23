@@ -1,7 +1,4 @@
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/ui/pages/settings/fake_ticker.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -12,93 +9,33 @@ class SettingsPage extends StatelessWidget {
       icon: AbiliaIcons.settings,
       title: t.settings,
       widgets: [
-        if (Config.isMP) ...[
-          MenuItemPickField(
-            icon: AbiliaIcons.month,
-            text: t.calendar,
-            navigateTo: const CalendarSettingsPage(),
-          ),
-          MenuItemPickField(
-            icon: AbiliaIcons.menuSetup,
-            text: t.functions,
-            navigateTo: const FunctionSettingsPage(),
-          ),
-          MenuItemPickField(
-            icon: AbiliaIcons.myPhotos,
-            text: t.imagePicker,
-            navigateTo: const ImagePickerSettingsPage(),
-          ),
-          MenuItemPickField(
-            icon: AbiliaIcons.appMenu,
-            text: t.menu,
-            navigateTo: const MenuSettingsPage(),
-          ),
-          MenuItemPickField(
-            icon: AbiliaIcons.technicalSettings,
-            text: t.system,
-            navigateTo: const SystemSettingsPage(),
-          ),
-        ] else if (Config.isMPGO) ...[
-          Tts(child: Text(t.calendar)),
-          MenuItemPickField(
-            icon: AbiliaIcons.handiAlarmVibration,
-            text: t.alarmSettings,
-            navigateTo: const AlarmSettingsPage(),
-          ),
-          SizedBox(height: layout.formPadding.verticalItemDistance),
-          Tts(child: Text(t.system)),
-          const TextToSpeechSwitch(),
-          const PermissionPickField(),
-          MenuItemPickField(
-            icon: AbiliaIcons.information,
-            text: t.about,
-            navigateTo: const AboutPage(),
-          ),
-          MenuItemPickField(
-            icon: AbiliaIcons.powerOffOn,
-            text: t.logout,
-            navigateTo: const LogoutPage(),
-          ),
-        ],
+        MenuItemPickField(
+          icon: AbiliaIcons.month,
+          text: t.calendar,
+          navigateTo: const CalendarSettingsPage(),
+        ),
+        MenuItemPickField(
+          icon: AbiliaIcons.menuSetup,
+          text: t.functions,
+          navigateTo: const FunctionSettingsPage(),
+        ),
+        MenuItemPickField(
+          icon: AbiliaIcons.myPhotos,
+          text: t.imagePicker,
+          navigateTo: const ImagePickerSettingsPage(),
+        ),
+        MenuItemPickField(
+          icon: AbiliaIcons.appMenu,
+          text: t.menu,
+          navigateTo: const MenuSettingsPage(),
+        ),
+        MenuItemPickField(
+          icon: AbiliaIcons.technicalSettings,
+          text: t.system,
+          navigateTo: const SystemSettingsPage(),
+        ),
         if (Config.alpha) const FakeTicker(),
       ],
-    );
-  }
-}
-
-class PermissionPickField extends StatelessWidget {
-  const PermissionPickField({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<PermissionCubit, PermissionState>(
-      builder: (context, state) => Stack(
-        children: [
-          PickField(
-            leading: const Icon(AbiliaIcons.menuSetup),
-            text: Text(Translator.of(context).translate.permissions),
-            onTap: () async {
-              final authProviders = copiedAuthProviders(context);
-              context.read<PermissionCubit>().checkAll();
-              await Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => MultiBlocProvider(
-                    providers: authProviders,
-                    child: const PermissionsPage(),
-                  ),
-                  settings: const RouteSettings(name: 'PermissionPage'),
-                ),
-              );
-            },
-          ),
-          if (state.importantPermissionMissing)
-            Positioned(
-              top: layout.settings.permissionsDotPosition,
-              right: layout.settings.permissionsDotPosition,
-              child: const OrangeDot(),
-            ),
-        ],
-      ),
     );
   }
 }

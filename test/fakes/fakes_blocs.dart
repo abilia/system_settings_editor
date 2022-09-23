@@ -186,6 +186,17 @@ class FakeVoicesCubit extends Fake implements VoicesCubit {
   Future<void> close() async {}
 }
 
+class FakeSessionCubit extends Fake implements SessionCubit {
+  @override
+  Stream<bool> get stream => const Stream.empty();
+
+  @override
+  bool get state => false;
+
+  @override
+  Future<void> close() async {}
+}
+
 class FakeDayPartCubit extends Fake implements DayPartCubit {
   @override
   Stream<DayPart> get stream => const Stream.empty();

@@ -85,7 +85,9 @@ class CalendarBottomBar extends StatelessWidget {
                             width: AddButton.width(display) -
                                 (display.menu ? layout.actionButton.size : 0),
                           ),
-                          if (display.menu)
+                          if (Config.isMPGO)
+                            const MpGoMenuButton()
+                          else if (display.menu)
                             MenuButton(tabIndex: tabItems.length),
                         ],
                       ),

@@ -18,9 +18,9 @@ void main() {
     expect(all.length, 0);
 
     final g1 =
-        memoplannerSetting(true, MemoplannerSettings.displayDeleteButtonKey);
+        memoplannerSetting(true, ActivityViewSettings.displayDeleteButtonKey);
     final g2 =
-        memoplannerSetting(false, MemoplannerSettings.displayDeleteButtonKey);
+        memoplannerSetting(false, ActivityViewSettings.displayDeleteButtonKey);
     await genericDb.insert([g1.wrapWithDbModel(revision: 1)]
         .whereType<DbModel<Generic<GenericData>>>());
     await genericDb.insert([g2.wrapWithDbModel(revision: 2)]
@@ -32,11 +32,11 @@ void main() {
     final unique = await genericDb.getAllNonDeletedMaxRevision();
     expect(unique.length, 1);
     expect(unique.first.data.identifier,
-        MemoplannerSettings.displayDeleteButtonKey);
+        ActivityViewSettings.displayDeleteButtonKey);
     final settings = MemoplannerSettings.fromSettingsMap(
       {for (var e in unique) e.data.key: e.data as MemoplannerSettingData},
     );
-    expect(settings.displayDeleteButton, false);
+    expect(settings.activityView.displayDeleteButton, false);
   });
 
   tearDown(() {

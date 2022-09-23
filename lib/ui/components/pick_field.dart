@@ -9,7 +9,7 @@ class PickField extends StatelessWidget {
   final Widget? leading, trailing;
   final EdgeInsets? leadingPadding, padding;
   final Text text;
-  final bool errorState, selected;
+  final bool errorState;
   final String? semanticsLabel;
   final Text? trailingText, secondaryText;
 
@@ -20,7 +20,6 @@ class PickField extends StatelessWidget {
     this.trailing = trailingArrow,
     this.onTap,
     this.errorState = false,
-    this.selected = false,
     this.semanticsLabel,
     this.trailingText,
     this.secondaryText,
@@ -37,9 +36,7 @@ class PickField extends StatelessWidget {
         ? whiteErrorBoxDecoration
         : onTap == null
             ? disabledBoxDecoration
-            : selected
-                ? greySelectedBoxDecoration
-                : whiteBoxDecoration;
+            : whiteBoxDecoration;
 
     return Tts.fromSemantics(
       SemanticsProperties(

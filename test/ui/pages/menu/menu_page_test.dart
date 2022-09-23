@@ -69,10 +69,8 @@ void main() {
     const MethodChannel channel =
         MethodChannel('plugins.flutter.io/image_picker');
     const newImagePath = 'AnewImagePath';
-
     final List<MethodCall> log = <MethodCall>[];
 
-    // final ImagePicker picker = ImagePicker();
     setUp(() {
       channel.setMockMethodCallHandler((MethodCall methodCall) async {
         log.add(methodCall);
@@ -137,7 +135,7 @@ void main() {
       // Should probaly also check that the image is saved in UserFileCubit but
       // then we would probably need to mock the whole Cubit
     });
-  });
+  }, skip: !Config.isMP);
 
   testWidgets('About button', (tester) async {
     await tester.pumpApp();
@@ -147,7 +145,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(AboutContent), findsOneWidget);
     expect(find.byType(SearchForUpdateButton), findsNothing);
-  });
+  }, skip: !Config.isMP);
 
   testWidgets(
       'BUG SGC-1655 - Wrong day in header in Menu/photo calendar/screensaver',
@@ -157,5 +155,5 @@ void main() {
     await tester.tap(find.byType(MenuButton));
     await tester.pumpAndSettle();
     expect(find.text(DateFormat.EEEE(locale).format(time)), findsOneWidget);
-  });
+  }, skip: !Config.isMP);
 }

@@ -67,3 +67,8 @@ class StatusCodeException implements Exception {
   String toString() => 'Wrong status code in response: '
       '${response.statusCode}, $response, $message';
 }
+
+class FetchSessionsException implements Exception {
+  FetchSessionsException(this.statusCode);
+  final int statusCode;
+}
