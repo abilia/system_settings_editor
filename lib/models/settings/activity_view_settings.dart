@@ -45,6 +45,44 @@ class ActivityViewSettings extends Equatable {
         ),
       );
 
+  ActivityViewSettings copyWith({
+    bool? displayAlarmButton,
+    bool? displayDeleteButton,
+    bool? displayEditButton,
+    bool? displayQuarterHour,
+    bool? displayTimeLeft,
+  }) =>
+      ActivityViewSettings(
+        displayAlarmButton: displayAlarmButton ?? this.displayAlarmButton,
+        displayDeleteButton: displayDeleteButton ?? this.displayDeleteButton,
+        displayEditButton: displayEditButton ?? this.displayEditButton,
+        displayQuarterHour: displayQuarterHour ?? this.displayQuarterHour,
+        displayTimeLeft: displayTimeLeft ?? this.displayTimeLeft,
+      );
+
+  List<MemoplannerSettingData> get memoplannerSettingData => [
+        MemoplannerSettingData.fromData(
+          data: displayAlarmButton,
+          identifier: ActivityViewSettings.displayAlarmButtonKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: displayDeleteButton,
+          identifier: ActivityViewSettings.displayDeleteButtonKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: displayEditButton,
+          identifier: ActivityViewSettings.displayEditButtonKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: displayQuarterHour,
+          identifier: ActivityViewSettings.displayQuarterHourKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: displayTimeLeft,
+          identifier: ActivityViewSettings.displayTimeLeftKey,
+        ),
+      ];
+
   @override
   List<Object?> get props => [
         displayAlarmButton,
