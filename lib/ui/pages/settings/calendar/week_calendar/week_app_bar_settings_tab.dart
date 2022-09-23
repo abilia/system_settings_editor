@@ -9,7 +9,7 @@ class WeekAppBarSettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettingsState>(
+    return BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettings>(
       builder: (context, state) => SettingsTab(
         children: [
           Tts(child: Text(t.topField)),
