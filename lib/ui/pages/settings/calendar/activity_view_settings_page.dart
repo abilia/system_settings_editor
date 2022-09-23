@@ -43,7 +43,8 @@ class ActivityViewSettingsPage extends StatelessWidget {
               value: activityViewSettings.displayDeleteButton,
               onChanged: (v) => context
                   .read<ActivityViewSettingsCubit>()
-                  .changeSettings(activityViewSettings.copyWith(displayDeleteButton: v)),
+                  .changeSettings(
+                      activityViewSettings.copyWith(displayDeleteButton: v)),
               child: Text(t.delete),
             ),
             SwitchField(
@@ -52,7 +53,8 @@ class ActivityViewSettingsPage extends StatelessWidget {
               value: activityViewSettings.displayEditButton,
               onChanged: (v) => context
                   .read<ActivityViewSettingsCubit>()
-                  .changeSettings(activityViewSettings.copyWith(displayEditButton: v)),
+                  .changeSettings(
+                      activityViewSettings.copyWith(displayEditButton: v)),
               child: Text(t.edit),
             ),
             const SizedBox.shrink(),
