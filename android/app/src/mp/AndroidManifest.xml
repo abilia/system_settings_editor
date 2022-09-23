@@ -4,6 +4,7 @@
   package="com.abilia.memoplanner">
 
   <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:ignore="ProtectedPermissions" />
+  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" tools:node="remove"/>
 
   <application>
     <activity 
