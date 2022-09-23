@@ -16,6 +16,7 @@ typedef GenericResponse = Iterable<Generic> Function();
 typedef TimerResponse = Iterable<AbiliaTimer> Function();
 typedef VoicesResponse = Iterable<Map<String, dynamic>> Function(
     String language);
+typedef SessionsResponse = Iterable<Session> Function();
 
 class Fakes {
   Fakes._();
@@ -34,6 +35,7 @@ class Fakes {
     GenericResponse? genericResponse,
     VoicesResponse? voicesResponse,
     Response Function()? licenseResponse,
+    SessionsResponse? sessionsResponse,
   }) =>
       ListenableMockClient(
         (r) {
@@ -124,6 +126,13 @@ class Fakes {
             );
           }
 
+          if (pathSegments.containsAll(['auth', 'client']) &&
+              !pathSegments.contains('me')) {
+            response = Response(
+                json.encode((sessionsResponse?.call() ?? fakeSession).toList()),
+                200);
+          }
+
           return Future.value(
               response ?? Response(json.encode(List.empty()), 200));
         },
@@ -144,6 +153,8 @@ class Fakes {
     FakeActivity.reocurrsOnDate(DateTime(2000, 06, 21)),
     FakeActivity.reocurrsOnDate(DateTime(2000, 10, 06)),
   ];
+
+  static const fakeSession = [Session(app: 'memoplanner', type: 'flutter')];
 
   static final allSortables = <Sortable>[];
   static final allGenerics = <Generic>[];

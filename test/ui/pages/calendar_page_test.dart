@@ -215,8 +215,10 @@ void main() {
       final leftCategory = find.byType(LeftCategory);
       final leftCategoryOffset = tester.getCenter(leftCategory);
 
-      await tester.tap(find.byType(MenuButton));
-      await tester.pumpAndSettle();
+      if (Config.isMP) {
+        await tester.tap(find.byType(MenuButton));
+        await tester.pumpAndSettle();
+      }
       await tester.tap(find.byIcon(AbiliaIcons.day));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(EyeButtonDay));
@@ -256,7 +258,7 @@ void main() {
         await tester.tap(find.byType(CloseButton));
         expect(find.byType(OrangeDot), findsOneWidget);
         expect(find.byType(ErrorMessage), findsOneWidget);
-      });
+      }, skip: Config.isMP);
 
       testWidgets('Granted premission shows nothing',
           (WidgetTester tester) async {

@@ -43,6 +43,8 @@ class MockDatabase extends Mock implements Database {}
 
 class MockSettingsDb extends Mock implements SettingsDb {}
 
+class MockSessionDb extends Mock implements SessionsDb {}
+
 class MockBaseUrlDb extends Mock implements BaseUrlDb {}
 
 class MockDeviceDb extends Mock implements DeviceDb {}
