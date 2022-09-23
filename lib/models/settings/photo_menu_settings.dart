@@ -30,7 +30,6 @@ class PhotoMenuSettings extends Equatable {
       );
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
         displayLocalImages,
         displayCamera,
