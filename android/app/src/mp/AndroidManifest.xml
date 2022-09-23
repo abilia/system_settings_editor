@@ -6,7 +6,6 @@
   <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:ignore="ProtectedPermissions" />
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" tools:node="remove"/>
 
-    <!-- manageSpaceActivity changes 'Clear data' in Android Settings to 'Manage space'. .FlutterActivity disables button. -->
   <application android:manageSpaceActivity=".FlutterActivity">
     <activity 
       android:name=".MainActivity"
