@@ -66,7 +66,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
                 scrollController: scrollController,
                 bottomPadding: layout.agenda.bottomPadding,
                 topPadding: layout.agenda.topPadding,
-                eventsState: widget.eventsState,
+                events: widget.eventsState,
               ),
             ),
           ),
@@ -82,14 +82,14 @@ class EventList extends StatelessWidget {
   EventList({
     required this.bottomPadding,
     required this.topPadding,
-    this.eventsState,
+    required this.events,
     this.scrollController,
     Key? key,
   }) : super(key: key);
 
   final ScrollController? scrollController;
   final double bottomPadding, topPadding;
-  final EventsState? eventsState;
+  final EventsState events;
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +99,6 @@ class EventList extends StatelessWidget {
       downCollapseMargin: bottomPadding,
       controller: sc,
       child: Builder(builder: (context) {
-        final events = eventsState ?? context.watch<DayEventsCubit>().state;
         final now = context.watch<ClockBloc>().state;
 
         final todayNight = events.day.isAtSameDay(now) &&
