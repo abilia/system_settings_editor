@@ -7,6 +7,9 @@ class TimepillarMeasuresCubit extends Cubit<TimepillarMeasures> {
   final MemoplannerSettingBloc? _memoplannerSettingsBloc;
   StreamSubscription? _timepillarSubscription;
   StreamSubscription? _memoplannerSubscription;
+  //Makes animated page transitions possible in DayCalendar
+  TimepillarMeasures? previousState;
+
   TimepillarMeasuresCubit({
     required TimepillarCubit timepillarCubit,
     required MemoplannerSettingBloc memoplannerSettingsBloc,
@@ -32,6 +35,7 @@ class TimepillarMeasuresCubit extends Cubit<TimepillarMeasures> {
     final interval = _timepillarCubit?.state.interval;
     final zoom = _memoplannerSettingsBloc?.state.timepillarZoom.zoomValue;
     if (interval != null && zoom != null) {
+      previousState = state;
       emit(TimepillarMeasures(interval, zoom));
     }
   }

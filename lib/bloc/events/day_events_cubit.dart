@@ -11,6 +11,8 @@ class DayEventsCubit extends Cubit<EventsState> {
   late final StreamSubscription _activitiesSubscription;
   late final StreamSubscription _timerSubscription;
   late final StreamSubscription _dayPickerSubscription;
+  //Makes animated page transitions possible in DayCalendar
+  EventsState? previousState;
 
   DayEventsCubit({
     required this.activitiesBloc,
@@ -42,15 +44,17 @@ class DayEventsCubit extends Cubit<EventsState> {
     List<TimerOccasion>? timers,
     DateTime? day,
     Occasion? occasion,
-  }) =>
-      emit(
-        _mapToState(
-          activities ?? activitiesBloc.state.activities,
-          timers ?? timerAlarmBloc.state.timers,
-          day ?? dayPickerBloc.state.day,
-          occasion ?? dayPickerBloc.state.occasion,
-        ),
-      );
+  }) {
+    previousState = state;
+    emit(
+      _mapToState(
+        activities ?? activitiesBloc.state.activities,
+        timers ?? timerAlarmBloc.state.timers,
+        day ?? dayPickerBloc.state.day,
+        occasion ?? dayPickerBloc.state.occasion,
+      ),
+    );
+  }
 
   static EventsState _mapToState(
     Iterable<Activity> activities,
