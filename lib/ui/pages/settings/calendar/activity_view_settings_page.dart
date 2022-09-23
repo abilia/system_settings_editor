@@ -7,16 +7,18 @@ import 'package:seagull/utils/all.dart';
 
 class ActivityViewSettingsPage extends StatelessWidget {
   const ActivityViewSettingsPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     return BlocProvider(
       create: (context) => ActivityViewSettingsCubit(
-        settingsState: context.read<MemoplannerSettingBloc>().state,
+        activityViewSettings:
+            context.read<MemoplannerSettingBloc>().state.settings.activityView,
         genericCubit: context.read<GenericCubit>(),
       ),
-      child: BlocBuilder<ActivityViewSettingsCubit, ActivityViewSettingsState>(
-        builder: (context, state) => SettingsBasePage(
+      child: BlocBuilder<ActivityViewSettingsCubit, ActivityViewSettings>(
+        builder: (context, activityViewSettings) => SettingsBasePage(
           icon: AbiliaIcons.fullScreen,
           title: t.activityView,
           label: Config.isMP ? t.calendar : null,
@@ -28,46 +30,50 @@ class ActivityViewSettingsPage extends StatelessWidget {
             SwitchField(
               key: TestKey.activityViewAlarmSwitch,
               leading: const Icon(AbiliaIcons.handiAlarmVibration),
-              value: state.alarm,
+              value: activityViewSettings.displayAlarmButton,
               onChanged: (v) => context
                   .read<ActivityViewSettingsCubit>()
-                  .changeSettings(state.copyWith(alarm: v)),
+                  .changeSettings(
+                      activityViewSettings.copyWith(displayAlarmButton: v)),
               child: Text(t.alarm),
             ),
             SwitchField(
               key: TestKey.activityViewRemoveSwitch,
               leading: const Icon(AbiliaIcons.deleteAllClear),
-              value: state.delete,
+              value: activityViewSettings.displayDeleteButton,
               onChanged: (v) => context
                   .read<ActivityViewSettingsCubit>()
-                  .changeSettings(state.copyWith(delete: v)),
+                  .changeSettings(activityViewSettings.copyWith(displayDeleteButton: v)),
               child: Text(t.delete),
             ),
             SwitchField(
               key: TestKey.activityViewEditSwitch,
               leading: const Icon(AbiliaIcons.edit),
-              value: state.edit,
+              value: activityViewSettings.displayEditButton,
               onChanged: (v) => context
                   .read<ActivityViewSettingsCubit>()
-                  .changeSettings(state.copyWith(edit: v)),
+                  .changeSettings(activityViewSettings.copyWith(displayEditButton: v)),
               child: Text(t.edit),
             ),
             const SizedBox.shrink(),
             SwitchField(
               leading: const Icon(AbiliaIcons.timeline),
-              value: state.quarterHour,
+              value: activityViewSettings.displayQuarterHour,
               onChanged: (v) => context
                   .read<ActivityViewSettingsCubit>()
-                  .changeSettings(state.copyWith(quarterHour: v)),
+                  .changeSettings(
+                      activityViewSettings.copyWith(displayQuarterHour: v)),
               child: Text(t.showQuarterHourWatchBar),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.clock),
-              value: state.quarterHour && state.timeOnQuarterHour,
-              onChanged: state.quarterHour
+              value: activityViewSettings.displayQuarterHour &&
+                  activityViewSettings.displayTimeLeft,
+              onChanged: activityViewSettings.displayQuarterHour
                   ? (v) => context
                       .read<ActivityViewSettingsCubit>()
-                      .changeSettings(state.copyWith(timeOnQuarterHour: v))
+                      .changeSettings(
+                          activityViewSettings.copyWith(displayTimeLeft: v))
                   : null,
               child: Text(t.timeOnQuarterHourBar),
             )
@@ -108,13 +114,12 @@ class _FakeMemoplannerSetting extends StatelessWidget {
               context.read<ActivityViewSettingsCubit>().state,
             ),
           ),
-        child:
-            BlocListener<ActivityViewSettingsCubit, ActivityViewSettingsState>(
-          listener: (context, state) =>
+        child: BlocListener<ActivityViewSettingsCubit, ActivityViewSettings>(
+          listener: (context, activityViewSettings) =>
               context.read<MemoplannerSettingBloc>().add(
                     _updateSettings(
                       genericState,
-                      state,
+                      activityViewSettings,
                     ),
                   ),
           child: child,
@@ -125,14 +130,14 @@ class _FakeMemoplannerSetting extends StatelessWidget {
 
   UpdateMemoplannerSettings _updateSettings(
     GenericState genericState,
-    ActivityViewSettingsState activityViewSettingsState,
+    ActivityViewSettings activityViewSettings,
   ) =>
       UpdateMemoplannerSettings(
         MapView(
           (genericState is GenericsLoaded
               ? Map<String, Generic>.from(genericState.generics)
               : Map<String, Generic>.identity())
-            ..addAll(activityViewSettingsState.memoplannerSettingData
+            ..addAll(activityViewSettings.memoplannerSettingData
                 .map((data) =>
                     Generic.createNew<MemoplannerSettingData>(data: data))
                 .toGenericKeyMap()),
