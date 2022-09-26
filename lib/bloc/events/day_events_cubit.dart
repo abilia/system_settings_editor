@@ -11,8 +11,8 @@ class DayEventsCubit extends Cubit<EventsState> {
   late final StreamSubscription _activitiesSubscription;
   late final StreamSubscription _timerSubscription;
   late final StreamSubscription _dayPickerSubscription;
-  //Makes animated page transitions possible in DayCalendar
-  EventsState? previousState;
+  // Makes animated page transitions possible in DayCalendar
+  late EventsState previousState = state;
 
   DayEventsCubit({
     required this.activitiesBloc,

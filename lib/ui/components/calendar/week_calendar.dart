@@ -64,16 +64,13 @@ class WeekCalendar extends StatelessWidget {
             }
 
             final previousWeek = weekCalendarCubit.previousState;
-            if (previousWeek != null) {
-              return WeekCalendarPage(
-                numberOfDays: numberOfDays,
-                weekStart: previousWeek.currentWeekStart,
-                weekDisplayDays: weekDisplayDays,
-                currentWeekEvents: previousWeek.currentWeekEvents,
-                fullDayActivities: previousWeek.fullDayActivities,
-              );
-            }
-            return Container();
+            return WeekCalendarPage(
+              numberOfDays: numberOfDays,
+              weekStart: previousWeek.currentWeekStart,
+              weekDisplayDays: weekDisplayDays,
+              currentWeekEvents: previousWeek.currentWeekEvents,
+              fullDayActivities: previousWeek.fullDayActivities,
+            );
           },
         ),
       ),

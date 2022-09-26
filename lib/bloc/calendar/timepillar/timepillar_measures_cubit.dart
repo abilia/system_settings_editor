@@ -7,8 +7,8 @@ class TimepillarMeasuresCubit extends Cubit<TimepillarMeasures> {
   final MemoplannerSettingBloc? _memoplannerSettingsBloc;
   StreamSubscription? _timepillarSubscription;
   StreamSubscription? _memoplannerSubscription;
-  //Makes animated page transitions possible in DayCalendar
-  TimepillarMeasures? previousState;
+  // Makes animated page transitions possible in DayCalendar
+  late TimepillarMeasures previousState = state;
 
   TimepillarMeasuresCubit({
     required TimepillarCubit timepillarCubit,

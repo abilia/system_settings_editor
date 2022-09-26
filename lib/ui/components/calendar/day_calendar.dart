@@ -179,48 +179,12 @@ class CachedDayCalendar extends StatelessWidget {
     final isAgenda = context.select((MemoplannerSettingBloc b) =>
         b.state.settings.dayCalendar.viewOptions.calendarType ==
         DayCalendarType.list);
-    final timepillarCubit = isAgenda ? null : context.watch<TimepillarCubit>();
-    final timepillarMeasuresCubit =
-        isAgenda ? null : context.watch<TimepillarMeasuresCubit>();
+
     final dayEventsCubit = context.read<DayEventsCubit>();
+    final inPageTransition = index != dayEventsCubit.state.day.dayIndex;
+    final eventsState =
+        inPageTransition ? dayEventsCubit.previousState : dayEventsCubit.state;
 
-    if (index == dayEventsCubit.state.day.dayIndex) {
-      return DayCalendarContent(
-        eventsState: dayEventsCubit.state,
-        timepillarData: TimepillarData.nullable(
-          timepillarCubit?.state,
-          timepillarMeasuresCubit?.state,
-        ),
-      );
-    }
-
-    final previousEventsState = dayEventsCubit.previousState;
-    if (previousEventsState != null) {
-      return DayCalendarContent(
-        eventsState: previousEventsState,
-        timepillarData: TimepillarData.nullable(
-          timepillarCubit?.previousState,
-          timepillarMeasuresCubit?.previousState,
-        ),
-      );
-    }
-    return const SizedBox.shrink();
-  }
-}
-
-class DayCalendarContent extends StatelessWidget {
-  const DayCalendarContent({
-    required this.eventsState,
-    this.timepillarData,
-    Key? key,
-  }) : super(key: key);
-
-  final EventsState eventsState;
-  final TimepillarData? timepillarData;
-
-  @override
-  Widget build(BuildContext context) {
-    final tpData = timepillarData;
     return Column(
       children: <Widget>[
         if (eventsState.fullDayActivities.isNotEmpty)
@@ -229,38 +193,23 @@ class DayCalendarContent extends StatelessWidget {
             fullDayActivities: eventsState.fullDayActivities,
             day: eventsState.day,
           ),
-        Expanded(
-          child: tpData != null
-              ? TimepillarCalendar(
-                  timepillarState: tpData.timepillarState,
-                  timepillarMeasures: tpData.timepillarMeasures,
-                )
-              : Agenda(eventsState: eventsState),
-        )
+        if (isAgenda)
+          Expanded(child: Agenda(eventsState: eventsState))
+        else
+          Builder(
+            builder: (context) {
+              final timepillarState = context.watch<TimepillarCubit>().state;
+              final timepillarMeasures =
+                  context.watch<TimepillarMeasuresCubit>().state;
+              return Expanded(
+                child: TimepillarCalendar(
+                  timepillarState: timepillarState,
+                  timepillarMeasures: timepillarMeasures,
+                ),
+              );
+            },
+          )
       ],
     );
-  }
-}
-
-class TimepillarData {
-  const TimepillarData(
-    this.timepillarState,
-    this.timepillarMeasures,
-  );
-
-  final TimepillarState timepillarState;
-  final TimepillarMeasures timepillarMeasures;
-
-  static TimepillarData? nullable(
-    TimepillarState? timepillarState,
-    TimepillarMeasures? timepillarMeasures,
-  ) {
-    if (timepillarState != null && timepillarMeasures != null) {
-      return TimepillarData(
-        timepillarState,
-        timepillarMeasures,
-      );
-    }
-    return null;
   }
 }
