@@ -94,7 +94,7 @@ timeAfternoonTts	%s in the afternoon	%s på eftermiddagen	%s om eftermiddagen	%s
 timeEveningTts	%s in the evening	%s på kvällen	%s om aftenen	%s 's avonds	%s illalla	%s nachmittags	%s på kvelden
 timeNightTts	%s at night	%s på natten	%s om natten	%s 's nachts	%s yöllä	%s abends	%s på natten
 timerInvalidDuration	Duration can not be zero.	Tidslängden kan inte vara noll.	Varigheden kan ikke være nul.	De duur kan niet nul zijn.	Kesto ei voi olla nolla.	Dauer kann nicht Null sein	Varigheten kan ikke være null.
-timerDelete	Do you want to delete the timer?	Vill du ta bort timern?	Ønsker du at slette timeren?	Wilt u de timer verwijderen?	Haluatko poistaa ajastimen?	Möchten Sie den Timer löschen?	Vil du slette timeren?
+timerDelete	Do you want to delete the timer?	Vill du radera timern?	Ønsker du at slette timeren?	Wilt u de timer verwijderen?	Haluatko poistaa ajastimen?	Möchten Sie den Timer löschen?	Vil du slette timeren?
 timerPause	Do you want to pause the timer?	Vill du pausa timern?	Ønsker du at sætte timeren på pause?	Wilt u de timer pauzeren?	Haluatko keskeyttää ajastimen?	Möchten Sie den Timer pausieren?	Vil du sette timeren på pause?
 timerResume	Do you want to continue the timer?	Vill du fortsätta timern?	Ønsker du at fortsætte timeren?	Wilt u doorgaan met de timer?	Haluatko jatkaa ajastimen käyttöä?	Möchten Sie den Timer fortsetzen?	Vil du fortsette timeren?
 timerPaused	Paused	Pausad	Sat på pause	Gepauzeerd	Keskeytetty	Pausiert	Pauset
@@ -113,9 +113,9 @@ left	Left	Vänster	Venstre	Links	Vasen	Links	Venstre
 right	Right	Höger	Højre	Rechts	Oikea	Rechts	Høyre
 check	Check	Kvittera	Kvittere	Afvinken	Tarkista	Kontrollieren	Kvittere
 undo	Undo	Ångra	Fortryd	Ongedaan maken	Peruuta	Rückgängig	Angre
-deleteActivityQuestion	Do you want to delete this activity?	Är du säker på att du vill ta bort aktiviteten?	Er du sikker på, at du vil slette aktiviteten?	Wilt u deze activiteit verwijderen?	Haluatko poistaa tämän aktiviteetin?	Möchten Sie diese Aktivität löschen?	Er du sikker på at du vil slette aktiviteten?
+deleteActivityQuestion	Do you want to delete this activity?	Är du säker på att du vill radera aktiviteten?	Er du sikker på, at du vil slette aktiviteten?	Wilt u deze activiteit verwijderen?	Haluatko poistaa tämän aktiviteetin?	Möchten Sie diese Aktivität löschen?	Er du sikker på at du vil slette aktiviteten?
 editRecurringActivity	Edit recurring activity	Ändra återkommande aktivitet	Ændre gentagende aktivitet	Terugkerende activiteit bewerken	Muokkaa toistuvaa aktiviteettia	Wiederkehrende Aktivität bearbeiten	Endre gjentakende aktivitet
-deleteRecurringActivity	Delete recurring activity	Ta bort återkommande aktivitet	Slet gentagende aktivitet	Terugkerende activiteit verwijder	Poista toistuva aktiviteettia	Wiederkehrende Aktivitäten löschen	Slett gjentakende aktivitet
+deleteRecurringActivity	Delete recurring activity	Radera återkommande aktivitet	Slet gentagende aktivitet	Terugkerende activiteit verwijder	Poista toistuva aktiviteettia	Wiederkehrende Aktivitäten löschen	Slett gjentakende aktivitet
 onlyThisDay	Only this day	Endast denna dag	Kun denne dag	Alleen deze dag	Vain tänä päivänä	Nur an diesem Tag	Bare denne dagen
 allDays	All days	Alla dagar	Alle dage	Alle dagen	Kaikki päivät	Alle Tage	Alle dager
 allDay	All day						
@@ -166,7 +166,7 @@ editActivityTemplate	Edit activity template	Ändra aktivitetsmall
 category	Category	Kategori	Kategori	Categorie	Kategoria	Kategorie	Kategori
 checkable	Checkable	Kvitterbar	Kvitterbar	Afvinkbaar	Tarkistettava	Kontrollabfrage	Kvitterbar
 notCheckable	Not checkable	Inte kvitterbar	Ikke kvitterbar	Niet afvinkbaar	Ei-tarkistettava	Nicht kontrollabfrage	Ikke kvitterbar
-deleteAfter	Remove at the end of the day	Ta bort vid slutet av dagen	Fjern i slutningen af dagen	Aan het einde van de dag verwijderen	Poista päivän päätteeksi	am Endes des Tages löschen	Fjern på slutten av dagen
+deleteAfter	Delete at the end of the day	Radera vid slutet av dagen	Fjern i slutningen af dagen	Aan het einde van de dag verwijderen	Poista päivän päätteeksi	am Endes des Tages löschen	Fjern på slutten av dagen
 dontDeleteAfter	Don't remove at the end of the day	Ta inte bort vid slutet av dagen	Fjern ikke ved slutningen af ​​dagen	Niet verwijderen aan het einde van de dag	Älä poista päivän päätteeksi	Nicht am Ende des Tages entfernen	Ikke fjern på slutten av dagen
 name	Name	Namn	Navn	Naam	Nimi	Name	Navn
 picture	Image	Bild	Billede	Afbeelding	Kuva	Bild	Bilde
@@ -393,7 +393,7 @@ showDate	Show date	Visa datum	Vis dato	Datum tonen	Näytä päivämäärä	Datum
 showClock	Show clock	Visa klocka	Vis ur	Toon klok	Näytä kello	Uhr anzeigen	Vis klokken
 							
 ## Activity view Settings							
-delete	Delete	Ta bort	Slet	Verwijderen	Poista	Löschen	Slett
+delete	Delete	Radera	Slet	Verwijderen	Poista	Löschen	Slett
 edit	Edit	Ändra	Ændre	Bewerken	Muokkaa	Bearbeiten	Endre
 showQuarterHourWatchBar	Show Quarter Hour Watch bar	Visa kvartur	Vis kvartur	Kwartierkijkbalk tonen	Näytä aikapylväsnäkymä	Viertelstunden-Balken anzeigen	Vis kvarterur
 timeOnQuarterHourBar	Time on Quarter Hour bar	Tid på kvartur	Tid på kvartur	Tijd op kwartierbalk	Aika varttikellon palkissa	Zeit auf Viertelstunden-Balken	Tid på kvarterur
@@ -486,7 +486,7 @@ allPhotos	All photos	Alla foton	Alle fotos	Alle foto's	Kaikki kuvat	Alle Fotos	A
 addToPhotoCalendarQuestion	Do you want to add this photo to Photo-calendar?	Vill du lägga in detta foto i fotokalendern?	Ønsker du at tilføje dette foto til din fotokalender?	Wilt u deze foto toevoegen aan de fotokalender?	Haluatko lisätä tämän kuvan valokuvakalenteriin?	Möchten Sie dieses Foto dem Fotokalender hinzufügen?	Vil du legge inn dette foto i fotokalenderen?
 removeFromPhotoCalendarQuestion	Do you want to remove this photo from Photo-calendar?	Vill du ta bort detta foto från fotokalendern?	Ønsker du at fjerne dette foto fra din fotokalender?	Wilt u deze foto uit de fotokalender verwijderen?	Haluatko poistaa tämän kuvan valokuvakalenterista?	Möchten Sie dieses Foto aus dem Fotokalender entfernen?	Vil du slette dette foto fra fotokalenderen?
 remove	Remove	Ta bort	Slet	Verwijderen	Poista	Löschen	Fjern
-doYouWantToDeleteThisPhoto	Are you sure you want to delete this photo?	Är du säker på att du vill ta bort detta foto?	Er du sikker på, du ønsker at slette dette foto?	Weet u zeker dat u deze foto wilt verwijderen?	Haluatko varmasti poistaa tämän kuvan?	Sind Sie sicher, dass Sie dieses Foto löschen möchten?	Er du sikker på at du vil slette dette foto?
+doYouWantToDeleteThisPhoto	Are you sure you want to delete this photo?	Är du säker på att du vill radera detta foto?	Er du sikker på, du ønsker at slette dette foto?	Weet u zeker dat u deze foto wilt verwijderen?	Haluatko varmasti poistaa tämän kuvan?	Sind Sie sicher, dass Sie dieses Foto löschen möchten?	Er du sikker på at du vil slette dette foto?
 							
 ### Starter set							
 installStarterSet	Install starter set?	Installera startuppsättning?	Vil du installere startersættet?	Standaard dataset installeren?	Aseta aloitussarja	Einstiegspaket installieren?	Installere startoppsett?

@@ -338,7 +338,7 @@ abstract class Translated {
 
   final String notCheckable = 'Not checkable';
 
-  final String deleteAfter = 'Remove at the end of the day';
+  final String deleteAfter = 'Delete at the end of the day';
 
   final String dontDeleteAfter = "Don't remove at the end of the day";
 
@@ -1233,7 +1233,7 @@ class SV extends Translated {
   final String timerInvalidDuration = 'Tidslängden kan inte vara noll.';
 
   @override
-  final String timerDelete = 'Vill du ta bort timern?';
+  final String timerDelete = 'Vill du radera timern?';
 
   @override
   final String timerPause = 'Vill du pausa timern?';
@@ -1285,13 +1285,13 @@ class SV extends Translated {
 
   @override
   final String deleteActivityQuestion =
-      'Är du säker på att du vill ta bort aktiviteten?';
+      'Är du säker på att du vill radera aktiviteten?';
 
   @override
   final String editRecurringActivity = 'Ändra återkommande aktivitet';
 
   @override
-  final String deleteRecurringActivity = 'Ta bort återkommande aktivitet';
+  final String deleteRecurringActivity = 'Radera återkommande aktivitet';
 
   @override
   final String onlyThisDay = 'Endast denna dag';
@@ -1425,7 +1425,7 @@ class SV extends Translated {
   final String notCheckable = 'Inte kvitterbar';
 
   @override
-  final String deleteAfter = 'Ta bort vid slutet av dagen';
+  final String deleteAfter = 'Radera vid slutet av dagen';
 
   @override
   final String dontDeleteAfter = 'Ta inte bort vid slutet av dagen';
@@ -2024,7 +2024,7 @@ class SV extends Translated {
   final String showClock = 'Visa klocka';
 
   @override
-  final String delete = 'Ta bort';
+  final String delete = 'Radera';
 
   @override
   final String edit = 'Ändra';
@@ -2249,7 +2249,7 @@ class SV extends Translated {
 
   @override
   final String doYouWantToDeleteThisPhoto =
-      'Är du säker på att du vill ta bort detta foto?';
+      'Är du säker på att du vill radera detta foto?';
 
   @override
   final String installStarterSet = 'Installera startuppsättning?';
