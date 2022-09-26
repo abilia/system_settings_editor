@@ -94,7 +94,8 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
         itemBuilder: (context, index) {
           return BlocBuilder<DayEventsCubit, EventsState>(
             builder: (context, eventState) {
-              if (eventState.day.dayIndex != index) {
+              if (eventState is EventsLoading ||
+                  eventState.day.dayIndex != index) {
                 return const SizedBox.shrink();
               }
 
