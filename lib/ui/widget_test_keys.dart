@@ -88,6 +88,7 @@ class TestKey {
       speechAtStart = Key('speechAtStart'),
       speechAtEnd = Key('speechAtEnd'),
       fullDayCategoryRadio = Key('allDayCategoryRadio'),
+      fullDayContainer = Key('fullDayContainer'),
       checkableRadio = Key('checkableRadio'),
       removeAfterRadio = Key('removeAfterRadio'),
       myPhotosButton = Key('myPhotosButton'),

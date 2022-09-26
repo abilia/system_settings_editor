@@ -4,10 +4,10 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class Agenda extends StatefulWidget {
-  final EventsState eventState;
+  final EventsState eventsState;
 
   const Agenda({
-    required this.eventState,
+    required this.eventsState,
     Key? key,
   }) : super(key: key);
 
@@ -23,8 +23,8 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
 
   @override
   void initState() {
-    if (widget.eventState.isToday) {
-      if (widget.eventState
+    if (widget.eventsState.isToday) {
+      if (widget.eventsState
           .pastEvents(context.read<ClockBloc>().state)
           .isNotEmpty) {
         scrollController = ScrollController(
@@ -53,7 +53,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final state = widget.eventState;
+    final state = widget.eventsState;
     return RefreshIndicator(
       onRefresh: refresh,
       child: Stack(
@@ -66,6 +66,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
                 scrollController: scrollController,
                 bottomPadding: layout.agenda.bottomPadding,
                 topPadding: layout.agenda.topPadding,
+                eventsState: widget.eventsState,
               ),
             ),
           ),
@@ -81,13 +82,14 @@ class EventList extends StatelessWidget {
   EventList({
     required this.bottomPadding,
     required this.topPadding,
+    this.eventsState,
     this.scrollController,
     Key? key,
   }) : super(key: key);
 
   final ScrollController? scrollController;
-
   final double bottomPadding, topPadding;
+  final EventsState? eventsState;
 
   @override
   Widget build(BuildContext context) {
@@ -97,24 +99,23 @@ class EventList extends StatelessWidget {
       downCollapseMargin: bottomPadding,
       controller: sc,
       child: Builder(builder: (context) {
-        final eventState = context.watch<DayEventsCubit>().state;
+        final events = eventsState ?? context.watch<DayEventsCubit>().state;
         final now = context.watch<ClockBloc>().state;
 
-        final todayNight = eventState.day.isAtSameDay(now) &&
+        final todayNight = events.day.isAtSameDay(now) &&
             context.read<DayPartCubit>().state.isNight;
-        final pastEvents = eventState.pastEvents(now);
-        final notPastEvents = eventState.notPastEvents(now);
-        final isTodayAndNoPast = eventState.isToday && pastEvents.isEmpty;
+        final pastEvents = events.pastEvents(now);
+        final notPastEvents = events.notPastEvents(now);
+        final isTodayAndNoPast = events.isToday && pastEvents.isEmpty;
         return Container(
           key: TestKey.calendarBackgroundColor,
           color: todayNight ? TimepillarCalendar.nightBackgroundColor : null,
           child: CustomScrollView(
-            center: eventState.isToday ? center : null,
+            center: events.isToday ? center : null,
             controller: sc,
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
-              if (eventState.events.isEmpty &&
-                  eventState.fullDayActivities.isEmpty)
+              if (events.events.isEmpty && events.fullDayActivities.isEmpty)
                 SliverNoActivities(key: center)
               else ...[
                 if (!isTodayAndNoPast)
@@ -122,8 +123,8 @@ class EventList extends StatelessWidget {
                     padding: EdgeInsets.only(top: topPadding),
                     sliver: SliverEventList(
                       pastEvents,
-                      eventState.day,
-                      reversed: eventState.isToday,
+                      events.day,
+                      reversed: events.isToday,
                       lastMargin: _lastPastPadding(
                         pastEvents,
                         notPastEvents,
@@ -139,7 +140,7 @@ class EventList extends StatelessWidget {
                   ),
                   sliver: SliverEventList(
                     notPastEvents,
-                    eventState.day,
+                    events.day,
                     isNight: todayNight,
                   ),
                 ),
