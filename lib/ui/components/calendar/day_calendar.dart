@@ -184,7 +184,7 @@ class CachedDayCalendar extends StatelessWidget {
         b.state.settings.dayCalendar.viewOptions.calendarType ==
         DayCalendarType.list);
 
-    final dayEventsCubit = context.read<DayEventsCubit>();
+    final dayEventsCubit = context.watch<DayEventsCubit>();
     final timepillarCubit = context.watch<TimepillarCubit>();
     final timepillarMeasuresCubit = context.watch<TimepillarMeasuresCubit>();
     final inPageTransition = index != dayEventsCubit.state.day.dayIndex;
