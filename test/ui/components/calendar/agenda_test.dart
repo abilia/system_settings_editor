@@ -12,13 +12,14 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
+import '../../../fakes/activity_db_in_memory.dart';
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
   final now = DateTime(2020, 06, 04, 11, 24);
-  ActivityResponse activityResponse = () => [];
+  late ActivityDbInMemory activityDbInMemory;
   GenericResponse genericResponse = () => [];
   TimerResponse timerResponse = () => [];
 
@@ -65,18 +66,8 @@ void main() {
     setupFakeTts();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
-
     timeTicker = StreamController<DateTime>();
-
-    final mockActivityDb = MockActivityDb();
-    when(() => mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(activityResponse()));
-    when(() => mockActivityDb.getAllAfter(any()))
-        .thenAnswer((_) => Future.value(activityResponse()));
-    when(() => mockActivityDb.getAllBetween(any(), any()))
-        .thenAnswer((_) => Future.value(activityResponse()));
-    when(() => mockActivityDb.getAllDirty())
-        .thenAnswer((_) => Future.value([]));
+    activityDbInMemory = ActivityDbInMemory();
 
     genericResponse = () => [
           Generic.createNew<MemoplannerSettingData>(
@@ -99,7 +90,7 @@ void main() {
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
-      ..activityDb = mockActivityDb
+      ..activityDb = activityDbInMemory
       ..genericDb = mockGenericDb
       ..timerDb = mockTimerDb
       ..ticker = Ticker.fake(initialTime: now, stream: timeTicker.stream)
@@ -114,7 +105,6 @@ void main() {
   });
 
   tearDown(() async {
-    activityResponse = () => [];
     genericResponse = () => [];
     timerResponse = () => [];
     timeTicker.close();
@@ -134,7 +124,8 @@ void main() {
   });
 
   testWidgets('Should show one activity', (WidgetTester tester) async {
-    activityResponse = () => [FakeActivity.starts(now.add(1.hours()))];
+    activityDbInMemory
+        .initWithActivity(FakeActivity.starts(now.add(1.hours())));
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -150,7 +141,7 @@ void main() {
 
   testWidgets('Agenda with one activity should not show Go to now-button',
       (WidgetTester tester) async {
-    activityResponse = () => [FakeActivity.starts(now)];
+    activityDbInMemory.initWithActivity(FakeActivity.starts(now));
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -171,14 +162,14 @@ void main() {
       'Agenda with one activity and a lot of passed activities should show the activity',
       (WidgetTester tester) async {
     const key = 'KEYKEYKEYKEYKEY';
-    activityResponse = () => [
-          for (int i = 0; i < 10; i++)
-            Activity.createNew(
-                title: 'past $i',
-                startTime: now.subtract(Duration(minutes: i * 2)),
-                alarmType: alarmSilent),
-          Activity.createNew(title: key, startTime: now),
-        ];
+    activityDbInMemory.initWithActivities([
+      for (int i = 0; i < 10; i++)
+        Activity.createNew(
+            title: 'past $i',
+            startTime: now.subtract(Duration(minutes: i * 2)),
+            alarmType: alarmSilent),
+      Activity.createNew(title: key, startTime: now),
+    ]);
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -191,7 +182,7 @@ void main() {
     final previousDayButtonFinder =
         find.byIcon(AbiliaIcons.returnToPreviousPage);
     final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
-    activityResponse = () => [];
+    activityDbInMemory.initWithActivities([]);
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -206,7 +197,7 @@ void main() {
   });
 
   testWidgets('full day shows', (WidgetTester tester) async {
-    activityResponse = () => [firstFullDay];
+    activityDbInMemory.initWithActivity(firstFullDay);
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
@@ -219,35 +210,35 @@ void main() {
         pastTitle2 = 'past2',
         currentTitle = 'current',
         futureTitle = 'future';
-    activityResponse = () => [
-          Activity.createNew(
-            title: pastTitle,
-            startTime: now.subtract(2.hours()),
-            duration: 30.minutes(),
-          ),
-          Activity.createNew(
-            title: pastTitle2,
-            startTime: now.subtract(1.hours()),
-            duration: 30.minutes(),
-          ),
-          Activity.createNew(
-            title: currentTitle,
-            startTime: now.subtract(5.minutes()),
-            duration: 30.minutes(),
-          ),
-          Activity.createNew(
-            title: futureTitle,
-            startTime: now.add(5.minutes()),
-            duration: 30.minutes(),
-          )
-        ];
+    activityDbInMemory.initWithActivities([
+      Activity.createNew(
+        title: pastTitle,
+        startTime: now.subtract(2.hours()),
+        duration: 30.minutes(),
+      ),
+      Activity.createNew(
+        title: pastTitle2,
+        startTime: now.subtract(1.hours()),
+        duration: 30.minutes(),
+      ),
+      Activity.createNew(
+        title: currentTitle,
+        startTime: now.subtract(5.minutes()),
+        duration: 30.minutes(),
+      ),
+      Activity.createNew(
+        title: futureTitle,
+        startTime: now.add(5.minutes()),
+        duration: 30.minutes(),
+      ),
+    ]);
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
     expect(find.text(pastTitle), findsNothing);
     // Default scroll is showing part of the closest past activity
-    expect(find.text(pastTitle2), findsOneWidget);
+    expect(find.text(pastTitle2), findsNothing);
     expect(find.text(currentTitle), findsOneWidget);
     expect(find.text(futureTitle), findsOneWidget);
 
@@ -262,7 +253,7 @@ void main() {
 
   testWidgets('two full day shows, but no show all full days button',
       (WidgetTester tester) async {
-    activityResponse = () => [firstFullDay, secondFullDay];
+    activityDbInMemory.initWithActivities([firstFullDay, secondFullDay]);
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
@@ -274,7 +265,8 @@ void main() {
   testWidgets(
       'full day activites are placed in correct order both in FullDayContainer and FullDayList',
       (WidgetTester tester) async {
-    activityResponse = () => [firstFullDay, secondFullDay, thirdFullDay];
+    activityDbInMemory
+        .initWithActivities([firstFullDay, secondFullDay, thirdFullDay]);
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
     final t1AgendaPos = tester.getCenter(find.text(firstFullDayTitle));
@@ -293,7 +285,8 @@ void main() {
   testWidgets(
       'two full day and show-all-full-day-button shows, but not third full day',
       (WidgetTester tester) async {
-    activityResponse = () => [firstFullDay, secondFullDay, thirdFullDay];
+    activityDbInMemory
+        .initWithActivities([firstFullDay, secondFullDay, thirdFullDay]);
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
@@ -305,12 +298,12 @@ void main() {
 
   testWidgets('tapping show-all-full-day-button shows all full days',
       (WidgetTester tester) async {
-    activityResponse = () => [
-          firstFullDay,
-          secondFullDay,
-          thirdFullDay,
-          forthFullDay,
-        ];
+    activityDbInMemory.initWithActivities([
+      firstFullDay,
+      secondFullDay,
+      thirdFullDay,
+      forthFullDay,
+    ]);
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
@@ -331,7 +324,7 @@ void main() {
 
   testWidgets('tapping on a full day shows the full day',
       (WidgetTester tester) async {
-    activityResponse = () => [firstFullDay];
+    activityDbInMemory.initWithActivities([firstFullDay]);
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -344,12 +337,12 @@ void main() {
   testWidgets(
       'tapping show-all-full-day-button then on a full day shows all the tapped full day',
       (WidgetTester tester) async {
-    activityResponse = () => [
-          firstFullDay,
-          secondFullDay,
-          thirdFullDay,
-          forthFullDay,
-        ];
+    activityDbInMemory.initWithActivities([
+      firstFullDay,
+      secondFullDay,
+      thirdFullDay,
+      forthFullDay,
+    ]);
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -366,16 +359,16 @@ void main() {
       (WidgetTester tester) async {
     const yesterdayMorningTitle = 'yeterdayMorningTitle',
         yesterdayEveningTitle = 'yeterdayEveningTitle';
-    activityResponse = () => [
-          Activity.createNew(
-            title: yesterdayMorningTitle,
-            startTime: now.subtract(1.days()),
-          ),
-          Activity.createNew(
-            title: yesterdayEveningTitle,
-            startTime: now.subtract(1.days()).copyWith(hour: 22),
-          ),
-        ];
+    activityDbInMemory.initWithActivities([
+      Activity.createNew(
+        title: yesterdayMorningTitle,
+        startTime: now.subtract(1.days()),
+      ),
+      Activity.createNew(
+        title: yesterdayEveningTitle,
+        startTime: now.subtract(1.days()).copyWith(hour: 22),
+      ),
+    ]);
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -396,18 +389,18 @@ void main() {
             'leftTitleleftTitleleftTitleleftTitleleftTitleleftTitleleftTitleleftTitle',
         rightTitle =
             'rightTitlerightTitlerightTitlerightTitlerightTitlerightTitlerightTitle';
-    activityResponse = () => [
-          Activity.createNew(
-            title: leftTitle,
-            startTime: now,
-            category: Category.left,
-          ),
-          Activity.createNew(
-            title: rightTitle,
-            startTime: now,
-            category: Category.right,
-          ),
-        ];
+    activityDbInMemory.initWithActivities([
+      Activity.createNew(
+        title: leftTitle,
+        startTime: now,
+        category: Category.left,
+      ),
+      Activity.createNew(
+        title: rightTitle,
+        startTime: now,
+        category: Category.right,
+      ),
+    ]);
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -428,13 +421,13 @@ void main() {
   group('category offset', () {
     testWidgets('category right has category offset',
         (WidgetTester tester) async {
-      activityResponse = () => [
-            Activity.createNew(
-              title: 'right title',
-              startTime: now,
-              category: Category.right,
-            )
-          ];
+      activityDbInMemory.initWithActivities([
+        Activity.createNew(
+          title: 'right title',
+          startTime: now,
+          category: Category.right,
+        )
+      ]);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
@@ -455,13 +448,13 @@ void main() {
 
     testWidgets('category left has category offset',
         (WidgetTester tester) async {
-      activityResponse = () => [
-            Activity.createNew(
-              title: 'left title',
-              startTime: now,
-              category: Category.left,
-            )
-          ];
+      activityDbInMemory.initWithActivities([
+        Activity.createNew(
+          title: 'left title',
+          startTime: now,
+          category: Category.left,
+        )
+      ]);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
@@ -482,31 +475,32 @@ void main() {
   });
 
   testWidgets('CrossOver for past activities', (WidgetTester tester) async {
-    activityResponse = () => [
-          Activity.createNew(
-            title: 'test',
-            startTime: now.subtract(1.hours()),
-            duration: 30.minutes(),
-          ),
-        ];
+    activityDbInMemory.initWithActivities([
+      Activity.createNew(
+        title: 'test',
+        startTime: now.subtract(1.hours()),
+        duration: 30.minutes(),
+      ),
+    ]);
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
+    expect(find.byType(ActivityCard), findsOneWidget);
     expect(activityCardCrossOver(), true);
   });
 
   testWidgets('signed off past activity shows CrossOver',
       (WidgetTester tester) async {
     // Arrange
-    activityResponse = () => [
-          Activity.createNew(
-            title: 'title',
-            startTime: now.subtract(1.hours()),
-            duration: 30.minutes(),
-            checkable: true,
-            signedOffDates: [now].map(whaleDateFormat),
-          )
-        ];
+    activityDbInMemory.initWithActivities([
+      Activity.createNew(
+        title: 'title',
+        startTime: now.subtract(1.hours()),
+        duration: 30.minutes(),
+        checkable: true,
+        signedOffDates: [now].map(whaleDateFormat),
+      )
+    ]);
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
@@ -520,7 +514,7 @@ void main() {
       startTime: now,
       duration: 1.hours(),
     );
-    activityResponse = () => [activity, firstFullDay];
+    activityDbInMemory.initWithActivities([activity, firstFullDay]);
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
@@ -534,7 +528,7 @@ void main() {
   });
 
   testWidgets('tts no activities', (WidgetTester tester) async {
-    activityResponse = () => [];
+    activityDbInMemory.initWithActivities([]);
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
@@ -833,7 +827,7 @@ void main() {
             title: 'fullday',
             fullDay: true,
           );
-      activityResponse = () => [a1, a2, a3, a4, a5];
+      activityDbInMemory.initWithActivities([a1, a2, a3, a4, a5]);
 
       void expectCorrectColor(String title, Color expectedColor) {
         final boxDecoration = tester
@@ -908,7 +902,7 @@ void main() {
             title: 'right just',
             category: Category.right,
           );
-      activityResponse = () => [a1, a2, a3, a4];
+      activityDbInMemory.initWithActivities([a1, a2, a3, a4]);
 
       void expectCorrectColor(String title, Color expectedColor) {
         final boxDecoration = tester
@@ -1121,13 +1115,13 @@ void main() {
   testWidgets('Opacity for nighttime activities', (WidgetTester tester) async {
     final nightTime = DateTime(2020, 06, 04, 01, 24);
     GetIt.I<Ticker>().setFakeTime(nightTime, setTicker: false);
-    activityResponse = () => [
-          Activity.createNew(
-            title: 'test',
-            startTime: nightTime.subtract(1.minutes()),
-            duration: 30.minutes(),
-          ),
-        ];
+    activityDbInMemory.initWithActivities([
+      Activity.createNew(
+        title: 'test',
+        startTime: nightTime.subtract(1.minutes()),
+        duration: 30.minutes(),
+      ),
+    ]);
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
