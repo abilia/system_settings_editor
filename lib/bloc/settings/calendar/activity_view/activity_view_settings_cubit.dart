@@ -1,18 +1,14 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
-part 'activity_view_settings_state.dart';
-
-class ActivityViewSettingsCubit extends Cubit<ActivityViewSettingsState> {
+class ActivityViewSettingsCubit extends Cubit<ActivityViewSettings> {
   final GenericCubit genericCubit;
 
   ActivityViewSettingsCubit({
-    required MemoplannerSettingsState settingsState,
+    required ActivityViewSettings activityViewSettings,
     required this.genericCubit,
-  }) : super(ActivityViewSettingsState.fromMemoplannerSettings(settingsState));
+  }) : super(activityViewSettings);
 
-  void changeSettings(ActivityViewSettingsState newState) => emit(newState);
+  void changeSettings(ActivityViewSettings settings) => emit(settings);
   void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
 }

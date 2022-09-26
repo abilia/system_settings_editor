@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:seagull/background/all.dart';
+import 'package:seagull/db/all.dart';
 
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
@@ -14,11 +15,17 @@ import '../../../../test_helpers/app_pumper.dart';
 
 void main() {
   late MockSortableDb mockSortableDb;
+  late SessionsDb mockSessionDb;
   setUp(() async {
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
     mockSortableDb = MockSortableDb();
+    mockSessionDb = MockSessionDb();
+
+    when(() => mockSessionDb.setHasMP4Session(any()))
+        .thenAnswer((_) => Future.value());
+    when(() => mockSessionDb.hasMP4Session).thenReturn(true);
 
     final myPhotosFolder = Sortable.createNew(
       data: const ImageArchiveData(myPhotos: true),
@@ -72,16 +79,17 @@ void main() {
       ..sortableDb = mockSortableDb
       ..battery = FakeBattery()
       ..deviceDb = FakeDeviceDb()
+      ..sessionsDb = mockSessionDb
       ..init();
   });
 
   tearDown(GetIt.I.reset);
 
-  group('My photos page', () {
+  group('Mp go my photos', () {
     testWidgets('Pressing + sign on MPGo shows SelectPicturePage',
         (tester) async {
       await mockNetworkImages(() async {
-        await tester.goToMyPhotos();
+        await tester.goToMyPhotosMpGo();
         await tester.tap(find.byIcon(AbiliaIcons.plus));
         await tester.pumpAndSettle();
         expect(find.byType(ImportPicturePage), findsOneWidget);
@@ -89,7 +97,9 @@ void main() {
         expect(find.byType(PickField), findsNWidgets(2));
       });
     }, skip: Config.isMP);
+  });
 
+  group('My photos page on MP', () {
     testWidgets('The page shows', (tester) async {
       await mockNetworkImages(() async {
         await tester.goToMyPhotos();
@@ -185,7 +195,7 @@ void main() {
         expect(find.byIcon(AbiliaIcons.deleteAllClear), findsNothing);
       });
     });
-  });
+  }, skip: !Config.isMP);
 }
 
 extension on WidgetTester {
@@ -194,6 +204,14 @@ extension on WidgetTester {
     await tap(find.byType(MenuButton));
     await pumpAndSettle();
     await tap(find.byIcon(AbiliaIcons.myPhotos));
+    await pumpAndSettle();
+  }
+
+  Future<void> goToMyPhotosMpGo() async {
+    await pumpApp();
+    await tap(find.byType(MpGoMenuButton));
+    await pumpAndSettle();
+    await tap(find.byType(MyPhotosPickField));
     await pumpAndSettle();
   }
 }

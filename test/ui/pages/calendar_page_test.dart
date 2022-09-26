@@ -215,8 +215,10 @@ void main() {
       final leftCategory = find.byType(LeftCategory);
       final leftCategoryOffset = tester.getCenter(leftCategory);
 
-      await tester.tap(find.byType(MenuButton));
-      await tester.pumpAndSettle();
+      if (Config.isMP) {
+        await tester.tap(find.byType(MenuButton));
+        await tester.pumpAndSettle();
+      }
       await tester.tap(find.byIcon(AbiliaIcons.day));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(EyeButtonDay));
@@ -256,7 +258,7 @@ void main() {
         await tester.tap(find.byType(CloseButton));
         expect(find.byType(OrangeDot), findsOneWidget);
         expect(find.byType(ErrorMessage), findsOneWidget);
-      });
+      }, skip: Config.isMP);
 
       testWidgets('Granted premission shows nothing',
           (WidgetTester tester) async {
@@ -647,7 +649,9 @@ void main() {
           (WidgetTester tester) async {
         when(() => memoplannerSettingBlocMock.state)
             .thenReturn(const MemoplannerSettingsLoaded(
-          MemoplannerSettings(dayCaptionShowDayButtons: true),
+          MemoplannerSettings(
+            appBar: AppBarSettings(dayCaptionShowDayButtons: true),
+          ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
           const CalendarPage(),
@@ -666,7 +670,9 @@ void main() {
           (WidgetTester tester) async {
         when(() => memoplannerSettingBlocMock.state)
             .thenReturn(const MemoplannerSettingsLoaded(
-          MemoplannerSettings(dayCaptionShowDayButtons: false),
+          MemoplannerSettings(
+            appBar: AppBarSettings(dayCaptionShowDayButtons: false),
+          ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
           const CalendarPage(),

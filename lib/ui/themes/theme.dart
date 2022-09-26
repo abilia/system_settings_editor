@@ -137,6 +137,12 @@ final transparentOutlineInputBorder = OutlineInputBorder(
   borderSide: BorderSide(color: Colors.transparent, width: layout.borders.thin),
   borderRadius: borderRadius,
 );
+final blueBorder = Border.fromBorderSide(
+  BorderSide(
+    color: AbiliaColors.transparentBlack30,
+    width: layout.borders.thin,
+  ),
+);
 
 // Box decorations
 final boxDecoration = BoxDecoration(
@@ -151,6 +157,11 @@ final whiteBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
   border: border,
+);
+final blueBoxDecoration = BoxDecoration(
+  color: AbiliaColors.blue120,
+  borderRadius: borderRadius,
+  border: blueBorder,
 );
 final selectedBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,

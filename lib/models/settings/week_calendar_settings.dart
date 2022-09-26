@@ -13,22 +13,18 @@ class WeekCalendarSettings extends Equatable {
       showFullWeekKey = 'week_display_show_full_week',
       showColorModeKey = 'week_display_show_color_mode';
 
-  final int weekDisplayShowFullWeek, weekDisplayShowColorMode;
+  final WeekDisplayDays weekDisplayDays;
+  final WeekColor weekColor;
 
   const WeekCalendarSettings({
     this.showBrowseButtons = true,
     this.showWeekNumber = true,
     this.showYear = true,
     this.showClock = true,
-    this.weekDisplayShowFullWeek = 0,
-    this.weekDisplayShowColorMode = 1,
+    this.weekDisplayDays = WeekDisplayDays.everyDay,
+    this.weekColor = WeekColor.columns,
     Key? key,
   });
-
-  WeekColor get weekColor => WeekColor.values[weekDisplayShowColorMode];
-
-  WeekDisplayDays get weekDisplayDays =>
-      WeekDisplayDays.values[weekDisplayShowFullWeek];
 
   factory WeekCalendarSettings.fromSettingsMap(
           Map<String, MemoplannerSettingData> settings) =>
@@ -37,9 +33,59 @@ class WeekCalendarSettings extends Equatable {
         showWeekNumber: settings.parse(showWeekNumberKey, true),
         showYear: settings.parse(showYearKey, true),
         showClock: settings.parse(showClockKey, true),
-        weekDisplayShowFullWeek: settings.parse(showFullWeekKey, 0),
-        weekDisplayShowColorMode: settings.parse(showColorModeKey, 1),
+        weekDisplayDays: WeekDisplayDays.values[settings.parse(
+          showFullWeekKey,
+          WeekDisplayDays.everyDay.index,
+        )],
+        weekColor: WeekColor.values[settings.parse(
+          showFullWeekKey,
+          WeekColor.columns.index,
+        )],
       );
+
+  WeekCalendarSettings copyWith({
+    bool? showBrowseButtons,
+    bool? showWeekNumber,
+    bool? showYear,
+    bool? showClock,
+    WeekDisplayDays? weekDisplayDays,
+    WeekColor? weekColor,
+  }) =>
+      WeekCalendarSettings(
+        showBrowseButtons: showBrowseButtons ?? this.showBrowseButtons,
+        showWeekNumber: showWeekNumber ?? this.showWeekNumber,
+        showYear: showYear ?? this.showYear,
+        showClock: showClock ?? this.showClock,
+        weekDisplayDays: weekDisplayDays ?? this.weekDisplayDays,
+        weekColor: weekColor ?? this.weekColor,
+      );
+
+  List<MemoplannerSettingData> get memoplannerSettingData => [
+        MemoplannerSettingData.fromData(
+          data: showBrowseButtons,
+          identifier: WeekCalendarSettings.showBrowseButtonsKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: showWeekNumber,
+          identifier: WeekCalendarSettings.showWeekNumberKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: showYear,
+          identifier: WeekCalendarSettings.showYearKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: showClock,
+          identifier: WeekCalendarSettings.showClockKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: weekDisplayDays.index,
+          identifier: WeekCalendarSettings.showFullWeekKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: weekColor.index,
+          identifier: WeekCalendarSettings.showColorModeKey,
+        ),
+      ];
 
   @override
   List<Object> get props => [

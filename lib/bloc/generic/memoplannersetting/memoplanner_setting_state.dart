@@ -4,25 +4,6 @@ abstract class MemoplannerSettingsState extends Equatable {
   final MemoplannerSettings settings;
 
   const MemoplannerSettingsState(this.settings);
-  bool get displayAlarmButton => settings.displayAlarmButton;
-  bool get displayDeleteButton => settings.displayDeleteButton;
-  bool get displayEditButton => settings.displayEditButton;
-  bool get displayQuarterHour => settings.displayQuarterHour;
-  bool get displayTimeLeft => settings.displayTimeLeft;
-  bool get dayCaptionShowDayButtons => settings.dayCaptionShowDayButtons;
-  bool get activityDisplayDayPeriod => settings.activityDisplayDayPeriod;
-  bool get activityDisplayWeekDay => settings.activityDisplayWeekDay;
-  bool get activityDisplayDate => settings.activityDisplayDate;
-  bool get activityDisplayClock => settings.activityDisplayClock;
-  bool get displayDayCalendarAppBar =>
-      activityDisplayDayPeriod ||
-      activityDisplayWeekDay ||
-      activityDisplayDate ||
-      activityDisplayClock ||
-      dayCaptionShowDayButtons;
-  bool get displayLocalImages => settings.imageMenuDisplayPhotoItem;
-  bool get displayCamera => settings.imageMenuDisplayCameraItem;
-  bool get displayMyPhotos => settings.imageMenuDisplayMyPhotosItem;
 
   bool get settingsInaccessible =>
       !settings.functions.display.menu || !settings.menu.showSettings;

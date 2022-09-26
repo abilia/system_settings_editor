@@ -349,13 +349,17 @@ void main() {
       // Act logout
       await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(MenuButton));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.settings));
-      await tester.pumpAndSettle();
       if (Config.isMP) {
+        await tester.tap(find.byType(MenuButton));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.settings));
+        await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.technicalSettings));
         await tester.pumpAndSettle();
+      } else if (Config.isMPGO) {
+        await tester.tap(find.byType(MpGoMenuButton));
+        await tester.pumpAndSettle();
+        await tester.scrollDown(dy: -200);
       }
       await tester.tap(find.byIcon(AbiliaIcons.powerOffOn));
       await tester.pumpAndSettle();
@@ -1156,4 +1160,12 @@ void main() {
       expect(captured.single, payload.hashCode);
     });
   });
+}
+
+extension on WidgetTester {
+  Future scrollDown({double dy = -800.0}) async {
+    final center = getCenter(find.byType(MpGoMenuPage));
+    await dragFrom(center, Offset(0.0, dy));
+    await pump();
+  }
 }

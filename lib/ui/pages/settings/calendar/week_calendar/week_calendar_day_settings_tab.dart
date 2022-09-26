@@ -9,7 +9,7 @@ class WeekSettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettingsState>(
+    return BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettings>(
         builder: (context, state) {
       void onDisplaDaysChanged(WeekDisplayDays? w) => context
           .read<WeekCalendarSettingsCubit>()
@@ -66,9 +66,8 @@ class WeekCalendarDisplay extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.all(layout.formPadding.verticalItemDistance),
-        child:
-            BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettingsState>(
-                builder: (context, state) {
+        child: BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettings>(
+            builder: (context, state) {
           final days = state.weekDisplayDays.numberOfDays();
           return Column(
             children: [
@@ -167,8 +166,7 @@ class DayColumn extends StatelessWidget {
     return Flexible(
       child: Padding(
         padding: layout.settings.weekDaysPadding,
-        child:
-            BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettingsState>(
+        child: BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettings>(
           builder: (context, state) => Container(
             decoration: BoxDecoration(
               color: state.weekColor == WeekColor.columns &&

@@ -75,31 +75,31 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.displayAlarmButtonKey,
+            identifier: ActivityViewSettings.displayAlarmButtonKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.displayDeleteButtonKey,
+            identifier: ActivityViewSettings.displayDeleteButtonKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.displayEditButtonKey,
+            identifier: ActivityViewSettings.displayEditButtonKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.displayQuarterHourKey,
+            identifier: ActivityViewSettings.displayQuarterHourKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.displayTimeLeftKey,
+            identifier: ActivityViewSettings.displayTimeLeftKey,
           ),
         ),
       ];
@@ -123,31 +123,31 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: true,
-            identifier: MemoplannerSettings.displayAlarmButtonKey,
+            identifier: ActivityViewSettings.displayAlarmButtonKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.displayDeleteButtonKey,
+            identifier: ActivityViewSettings.displayDeleteButtonKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.displayEditButtonKey,
+            identifier: ActivityViewSettings.displayEditButtonKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: true,
-            identifier: MemoplannerSettings.displayQuarterHourKey,
+            identifier: ActivityViewSettings.displayQuarterHourKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.displayTimeLeftKey,
+            identifier: ActivityViewSettings.displayTimeLeftKey,
           ),
         ),
       ];
@@ -177,7 +177,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.displayAlarmButtonKey,
+        key: ActivityViewSettings.displayAlarmButtonKey,
         matcher: isFalse,
       );
     });
@@ -193,7 +193,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.displayDeleteButtonKey,
+        key: ActivityViewSettings.displayDeleteButtonKey,
         matcher: isFalse,
       );
     });
@@ -215,7 +215,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.displayEditButtonKey,
+        key: ActivityViewSettings.displayEditButtonKey,
         matcher: isFalse,
       );
     });
@@ -237,7 +237,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.displayQuarterHourKey,
+        key: ActivityViewSettings.displayQuarterHourKey,
         matcher: isFalse,
       );
     });
@@ -259,7 +259,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.displayTimeLeftKey,
+        key: ActivityViewSettings.displayTimeLeftKey,
         matcher: isFalse,
       );
     });
@@ -296,25 +296,25 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.displayAlarmButtonKey,
+            identifier: ActivityViewSettings.displayAlarmButtonKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.displayDeleteButtonKey,
+            identifier: ActivityViewSettings.displayDeleteButtonKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.displayEditButtonKey,
+            identifier: ActivityViewSettings.displayEditButtonKey,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.displayQuarterHourKey,
+            identifier: ActivityViewSettings.displayQuarterHourKey,
           ),
         ),
       ];

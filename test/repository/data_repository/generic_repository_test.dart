@@ -40,7 +40,7 @@ void main() {
   final synced = Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: false,
-          identifier: MemoplannerSettings.displayAlarmButtonKey,
+          identifier: ActivityViewSettings.displayAlarmButtonKey,
         ),
       ),
       unsynced = Generic.createNew<MemoplannerSettingData>(

@@ -32,7 +32,8 @@ class CalendarScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final displayDayCalendarAppBar = context.select(
-        (MemoplannerSettingBloc bloc) => bloc.state.displayDayCalendarAppBar);
+        (MemoplannerSettingBloc bloc) =>
+            bloc.state.settings.appBar.displayDayCalendarAppBar);
 
     return Scaffold(
       appBar: displayDayCalendarAppBar ? const DayCalendarAppBar() : null,

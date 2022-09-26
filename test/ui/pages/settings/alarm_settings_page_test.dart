@@ -259,13 +259,17 @@ extension on WidgetTester {
   Future<void> goToAlarmSettingsPage() async {
     await pumpApp();
 
-    await tap(find.byType(MenuButton));
-    await pumpAndSettle();
-    await tap(find.byType(SettingsButton));
-    await pumpAndSettle();
-
     if (Config.isMP) {
+      await tap(find.byType(MenuButton));
+      await pumpAndSettle();
+      await tap(find.byType(SettingsButton));
+      await pumpAndSettle();
       await tap(find.byIcon(AbiliaIcons.month));
+      await pumpAndSettle();
+    }
+
+    if (Config.isMPGO) {
+      await tap(find.byType(MpGoMenuButton));
       await pumpAndSettle();
     }
 
