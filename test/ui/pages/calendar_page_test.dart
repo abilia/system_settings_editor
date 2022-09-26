@@ -17,6 +17,7 @@ import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';
 import '../../mocks/mocks.dart';
 import '../../test_helpers/enter_text.dart';
+import '../../test_helpers/finders.dart';
 import '../../test_helpers/register_fallback_values.dart';
 import '../../test_helpers/tap_link.dart';
 import '../../test_helpers/tts.dart';
@@ -459,7 +460,10 @@ void main() {
       expect(find.text(translate.startTimeBeforeNowError), findsNothing);
       expect(find.byType(EditActivityPage), findsNothing);
       expect(find.byType(CalendarPage), findsOneWidget);
-      expect(find.text(testActivityTitle), findsOneWidget);
+      expect(
+        fullDayContainerDescendantFinder(find.text(testActivityTitle)),
+        findsOneWidget,
+      );
     });
 
     testWidgets(
@@ -746,7 +750,9 @@ void main() {
     final day2Finder = find.text(title2);
     final day3Finder = find.text(title3);
     final cardFinder = find.byType(ActivityCard);
-    final showAllFullDayButtonFinder = find.byType(FullDayActivitiesButton);
+    final showAllFullDayButtonFinder = fullDayContainerDescendantFinder(
+      find.byType(FullDayActivitiesButton),
+    );
     final editPictureFinder = find.byKey(TestKey.addPicture);
 
     setUp(() {
@@ -761,10 +767,10 @@ void main() {
     testWidgets('Show full days activity', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      expect(day1Finder, findsOneWidget);
-      expect(day2Finder, findsOneWidget);
-      expect(day3Finder, findsNothing);
-      expect(cardFinder, findsNWidgets(2));
+      expect(fullDayContainerDescendantFinder(day1Finder), findsOneWidget);
+      expect(fullDayContainerDescendantFinder(day2Finder), findsOneWidget);
+      expect(fullDayContainerDescendantFinder(day3Finder), findsNothing);
+      expect(fullDayContainerDescendantFinder(cardFinder), findsNWidgets(2));
       expect(showAllFullDayButtonFinder, findsOneWidget);
     });
 

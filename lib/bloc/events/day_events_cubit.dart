@@ -11,6 +11,8 @@ class DayEventsCubit extends Cubit<EventsState> {
   late final StreamSubscription _activitiesSubscription;
   late final StreamSubscription _timerSubscription;
   late final StreamSubscription _dayPickerSubscription;
+  //Makes animated page transitions possible in DayCalendar
+  EventsState? previousState;
 
   DayEventsCubit({
     required this.activitiesBloc,
@@ -36,6 +38,7 @@ class DayEventsCubit extends Cubit<EventsState> {
     DateTime? day,
     Occasion? occasion,
   }) async {
+    previousState = state;
     final newStateDay = day ?? dayPickerBloc.state.day;
     final activities = await activitiesBloc.activityRepository.allBetween(
       newStateDay.onlyDays(),

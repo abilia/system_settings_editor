@@ -19,6 +19,8 @@ class TimepillarCubit extends Cubit<TimepillarState> {
   final TimerAlarmBloc timerAlarmBloc;
   final DayPartCubit dayPartCubit;
   late StreamSubscription _streamSubscription;
+  //Makes animated page transitions possible in DayCalendar
+  TimepillarState? previousState;
 
   TimepillarCubit({
     required this.clockBloc,
@@ -67,6 +69,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     );
     final activities = await activitiesBloc.activityRepository
         .allBetween(interval.start, interval.end);
+    previousState = state;
     emit(
       _generateState(
         clockBloc.state,
