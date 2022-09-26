@@ -82,7 +82,8 @@ void main() {
           Generic.createNew<MemoplannerSettingData>(
             data: MemoplannerSettingData.fromData(
                 data: DayCalendarType.list.index,
-                identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+                identifier:
+                    DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
           ),
         ];
 
@@ -881,7 +882,8 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                   data: DayCalendarType.list.index,
-                  identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+                  identifier: DayCalendarViewOptionsSettings
+                      .viewOptionsCalendarTypeKey),
             ),
           ];
 

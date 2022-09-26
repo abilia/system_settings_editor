@@ -67,7 +67,8 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
-          previous.displayEyeButton != current.displayEyeButton ||
+          previous.settings.dayCalendar.viewOptions.displayEyeButton !=
+              current.settings.dayCalendar.viewOptions.displayEyeButton ||
           previous.alarm.showAlarmOnOffSwitch !=
               current.alarm.showAlarmOnOffSwitch,
       builder: (context, state) {
@@ -75,7 +76,7 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             if (state.alarm.showAlarmOnOffSwitch) const ToggleAlarmButton(),
-            if (state.displayEyeButton)
+            if (state.settings.dayCalendar.viewOptions.displayEyeButton)
               if (tabController.index == 0)
                 Padding(
                   padding: EdgeInsets.only(

@@ -315,7 +315,7 @@ void main() {
     final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(
         data: DayCalendarType.oneTimepillar.index,
-        identifier: MemoplannerSettings.viewOptionsTimeViewKey,
+        identifier: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey,
       ),
     );
 
@@ -352,7 +352,7 @@ void main() {
       verifyUnsyncGeneric(
         tester,
         mockGenericDb,
-        key: MemoplannerSettings.viewOptionsTimeViewKey,
+        key: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey,
         matcher: DayCalendarType.list.index,
       );
     });
@@ -650,7 +650,9 @@ void main() {
         when(() => memoplannerSettingBlocMock.state)
             .thenReturn(const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            appBar: AppBarSettings(dayCaptionShowDayButtons: true),
+            dayCalendar: DayCalendarSettings(
+              appBar: AppBarSettings(showBrowseButtons: true),
+            ),
           ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
@@ -671,7 +673,9 @@ void main() {
         when(() => memoplannerSettingBlocMock.state)
             .thenReturn(const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            appBar: AppBarSettings(dayCaptionShowDayButtons: false),
+            dayCalendar: DayCalendarSettings(
+              appBar: AppBarSettings(showBrowseButtons: false),
+            ),
           ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
@@ -692,12 +696,16 @@ void main() {
       testWidgets('Timepillar is left when no categories',
           (WidgetTester tester) async {
         when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(MemoplannerSettingsLoaded(
+            .thenReturn(const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            calendar: const GeneralCalendarSettings(
+            calendar: GeneralCalendarSettings(
               categories: CategoriesSettings(show: false),
             ),
-            viewOptionsTimeView: DayCalendarType.oneTimepillar.index,
+            dayCalendar: DayCalendarSettings(
+              viewOptions: DayCalendarViewOptionsSettings(
+                calendarTypeIndex: 1,
+              ),
+            ),
           ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
@@ -715,12 +723,16 @@ void main() {
           'Center of timepillar is center of page when categories are on',
           (WidgetTester tester) async {
         when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(MemoplannerSettingsLoaded(
+            .thenReturn(const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            calendar: const GeneralCalendarSettings(
+            calendar: GeneralCalendarSettings(
               categories: CategoriesSettings(show: true),
             ),
-            viewOptionsTimeView: DayCalendarType.oneTimepillar.index,
+            dayCalendar: DayCalendarSettings(
+              viewOptions: DayCalendarViewOptionsSettings(
+                calendarTypeIndex: 1,
+              ),
+            ),
           ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(

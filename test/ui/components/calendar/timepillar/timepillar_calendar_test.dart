@@ -30,7 +30,7 @@ void main() {
   final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
     data: MemoplannerSettingData.fromData(
         data: DayCalendarType.oneTimepillar.index,
-        identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+        identifier: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
   );
 
   ActivityResponse activityResponse = () => [];
@@ -681,7 +681,8 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                   data: false,
-                  identifier: MemoplannerSettings.dotsInTimepillarKey),
+                  identifier:
+                      DayCalendarViewOptionsSettings.viewOptionsDotsKey),
             ),
           ];
       await tester.pumpWidget(App());
@@ -910,7 +911,8 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: TimepillarIntervalType.interval.index,
-                identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+                identifier:
+                    DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,
               ),
             ),
           ];
@@ -1004,7 +1006,8 @@ void main() {
               Generic.createNew<MemoplannerSettingData>(
                 data: MemoplannerSettingData.fromData(
                   data: TimepillarIntervalType.dayAndNight.index,
-                  identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+                  identifier:
+                      DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,
                 ),
               ),
             ];
@@ -1042,7 +1045,8 @@ void main() {
               Generic.createNew<MemoplannerSettingData>(
                 data: MemoplannerSettingData.fromData(
                   data: TimepillarIntervalType.dayAndNight.index,
-                  identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+                  identifier:
+                      DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,
                 ),
               ),
             ];
@@ -1070,7 +1074,8 @@ void main() {
               Generic.createNew<MemoplannerSettingData>(
                 data: MemoplannerSettingData.fromData(
                   data: TimepillarIntervalType.day.index,
-                  identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+                  identifier:
+                      DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,
                 ),
               ),
             ];
@@ -1166,7 +1171,8 @@ void main() {
               Generic.createNew<MemoplannerSettingData>(
                 data: MemoplannerSettingData.fromData(
                   data: TimepillarIntervalType.dayAndNight.index,
-                  identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+                  identifier:
+                      DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,
                 ),
               ),
             ];
@@ -1194,7 +1200,8 @@ void main() {
               Generic.createNew<MemoplannerSettingData>(
                 data: MemoplannerSettingData.fromData(
                   data: TimepillarIntervalType.day.index,
-                  identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+                  identifier:
+                      DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,
                 ),
               ),
             ];

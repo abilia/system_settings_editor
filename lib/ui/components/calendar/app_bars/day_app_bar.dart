@@ -22,14 +22,15 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final memoSettingsState = context.watch<MemoplannerSettingBloc>().state;
-    final appBarSettings = memoSettingsState.settings.appBar;
+    final appBarSettings = memoSettingsState.settings.dayCalendar.appBar;
     final calendarSettings = memoSettingsState.settings.calendar;
     final currentMinute = context.watch<ClockBloc>().state;
     final dayPart = context.read<DayPartCubit>().state;
     final showNightCalendar = context.select<TimepillarCubit, bool>(
         (cubit) => cubit.state.showNightCalendar);
     final isTimepillar =
-        memoSettingsState.dayCalendarType != DayCalendarType.list;
+        memoSettingsState.settings.dayCalendar.viewOptions.calendarType !=
+            DayCalendarType.list;
     final isNight = (!isTimepillar || showNightCalendar) &&
         currentMinute.isAtSameDay(day) &&
         dayPart.isNight;
@@ -38,9 +39,9 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
       day: day,
       calendarDayColor: isNight ? DayColor.noColors : calendarSettings.dayColor,
       rows: AppBarTitleRows.day(
-        displayWeekDay: appBarSettings.activityDisplayWeekDay,
-        displayPartOfDay: appBarSettings.activityDisplayDayPeriod,
-        displayDate: appBarSettings.activityDisplayDate,
+        displayWeekDay: appBarSettings.showDayPeriod,
+        displayPartOfDay: appBarSettings.showWeekday,
+        displayDate: appBarSettings.showDate,
         currentTime: currentMinute,
         day: day,
         dayParts: calendarSettings.dayParts,
@@ -52,7 +53,7 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
       rightAction: rightAction,
       leftAction: leftAction,
       crossedOver: day.isDayBefore(currentMinute),
-      showClock: appBarSettings.activityDisplayClock,
+      showClock: appBarSettings.showClock,
     );
   }
 }

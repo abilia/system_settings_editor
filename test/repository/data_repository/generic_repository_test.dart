@@ -46,7 +46,7 @@ void main() {
       unsynced = Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: false,
-          identifier: MemoplannerSettings.dotsInTimepillarKey,
+          identifier: DayCalendarViewOptionsSettings.viewOptionsDotsKey,
         ),
       );
   final oneSyncOneUnsync = [synced, unsynced];
@@ -142,14 +142,16 @@ void main() {
       final data2 = Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: 200,
-          identifier: MemoplannerSettings.viewOptionsZoomKey,
+          identifier:
+              DayCalendarViewOptionsSettings.viewOptionsTimepillarZoomKey,
         ),
       );
       await genericRepository.db.insert([
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: 100,
-            identifier: MemoplannerSettings.viewOptionsZoomKey,
+            identifier:
+                DayCalendarViewOptionsSettings.viewOptionsTimepillarZoomKey,
           ),
         ).wrapWithDbModel(revision: 1) as DbModel<Generic<GenericData>>,
         data2.wrapWithDbModel(revision: 2) as DbModel<Generic<GenericData>>,
@@ -159,7 +161,8 @@ void main() {
       final data3 = data2.copyWithNewData(
         newData: MemoplannerSettingData.fromData(
           data: 300,
-          identifier: MemoplannerSettings.viewOptionsZoomKey,
+          identifier:
+              DayCalendarViewOptionsSettings.viewOptionsTimepillarZoomKey,
         ),
       );
       final allMaxRevisionPre = await genericDb.getAllNonDeletedMaxRevision();

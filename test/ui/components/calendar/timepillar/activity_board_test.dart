@@ -33,15 +33,21 @@ void main() {
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state)
         .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-      dotsInTimepillar: true,
-    )));
+            dayCalendar: DayCalendarSettings(
+                viewOptions: DayCalendarViewOptionsSettings(
+      dots: true,
+    )))));
 
     when(() => mockMemoplannerSettingsBloc.stream).thenAnswer(
       (_) => Stream.fromIterable(
         [
           const MemoplannerSettingsLoaded(
             MemoplannerSettings(
-              dotsInTimepillar: true,
+              dayCalendar: DayCalendarSettings(
+                viewOptions: DayCalendarViewOptionsSettings(
+                  dots: true,
+                ),
+              ),
             ),
           )
         ],
@@ -642,8 +648,10 @@ void main() {
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        dotsInTimepillar: false,
-      )));
+              dayCalendar: DayCalendarSettings(
+                  viewOptions: DayCalendarViewOptionsSettings(
+        dots: false,
+      )))));
 
       await tester.pumpWidget(
         wrap(

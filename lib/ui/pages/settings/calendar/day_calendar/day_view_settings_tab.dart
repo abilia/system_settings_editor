@@ -4,18 +4,19 @@ import 'package:seagull/ui/all.dart';
 
 class DayViewSettingsTab extends StatelessWidget {
   const DayViewSettingsTab({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocBuilder<DayCalendarSettingsCubit, DayCalendarSettingsState>(
-      builder: (context, state) {
-        final cubit = context.read<DayCalendarSettingsCubit>();
+    return BlocBuilder<DayCalendarSettingsCubit, DayCalendarSettings>(
+      builder: (context, settings) {
+        final dayCalendar = context.read<DayCalendarSettingsCubit>();
         return SettingsTab(
           dividerPadding: layout.formPadding.verticalItemDistance,
           children: [
             Selector<DayCalendarType>(
               heading: t.viewMode,
-              groupValue: state.calendarType,
+              groupValue: settings.viewOptions.calendarType,
               items: [
                 SelectorItem(
                   t.listView,
@@ -33,13 +34,14 @@ class DayViewSettingsTab extends StatelessWidget {
                   DayCalendarType.twoTimepillars,
                 ),
               ],
-              onChanged: (type) => cubit.changeDayCalendarSettings(
-                  state.copyWith(calendarType: type)),
+              onChanged: (type) => dayCalendar.changeSettings(settings.copyWith(
+                  viewOptions:
+                      settings.viewOptions.copyWith(calendarType: type))),
             ),
             const Divider(),
             Selector<TimepillarIntervalType>(
               heading: t.dayInterval,
-              groupValue: state.dayInterval,
+              groupValue: settings.viewOptions.intervalType,
               items: [
                 SelectorItem(
                   t.interval,
@@ -57,13 +59,15 @@ class DayViewSettingsTab extends StatelessWidget {
                   TimepillarIntervalType.dayAndNight,
                 ),
               ],
-              onChanged: (newDayInterval) => cubit.changeDayCalendarSettings(
-                  state.copyWith(dayInterval: newDayInterval)),
+              onChanged: (newDayInterval) => dayCalendar.changeSettings(
+                  settings.copyWith(
+                      viewOptions: settings.viewOptions
+                          .copyWith(intervalType: newDayInterval))),
             ),
             const Divider(),
             Selector<TimepillarZoom>(
               heading: t.timelineZoom,
-              groupValue: state.timepillarZoom,
+              groupValue: settings.viewOptions.timepillarZoom,
               items: [
                 SelectorItem(
                   t.small,
@@ -81,13 +85,15 @@ class DayViewSettingsTab extends StatelessWidget {
                   TimepillarZoom.large,
                 ),
               ],
-              onChanged: (newZoom) => cubit.changeDayCalendarSettings(
-                  state.copyWith(timepillarZoom: newZoom)),
+              onChanged: (newZoom) => dayCalendar.changeSettings(
+                  settings.copyWith(
+                      viewOptions: settings.viewOptions
+                          .copyWith(timepillarZoom: newZoom))),
             ),
             const Divider(),
             Selector<bool>(
               heading: t.activityDuration,
-              groupValue: state.dotsInTimePillar,
+              groupValue: settings.viewOptions.dots,
               items: [
                 SelectorItem(
                   t.dots,
@@ -100,8 +106,8 @@ class DayViewSettingsTab extends StatelessWidget {
                   false,
                 ),
               ],
-              onChanged: (dots) => cubit.changeDayCalendarSettings(
-                  state.copyWith(dotsInTimePillar: dots)),
+              onChanged: (dots) => dayCalendar.changeSettings(settings.copyWith(
+                  viewOptions: settings.viewOptions.copyWith(dots: dots))),
             ),
           ],
         );

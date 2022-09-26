@@ -34,14 +34,15 @@ class ZoomSettingUpdatedEvent extends SettingsUpdateEvent {
   final TimepillarZoom timepillarZoom;
 
   ZoomSettingUpdatedEvent(this.timepillarZoom)
-      : super(MemoplannerSettings.viewOptionsZoomKey, timepillarZoom.index);
+      : super(DayCalendarViewOptionsSettings.viewOptionsTimepillarZoomKey,
+            timepillarZoom.index);
 }
 
 class IntervalTypeUpdatedEvent extends SettingsUpdateEvent {
   final TimepillarIntervalType timepillarIntervalType;
 
   IntervalTypeUpdatedEvent(this.timepillarIntervalType)
-      : super(MemoplannerSettings.viewOptionsTimeIntervalKey,
+      : super(DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,
             timepillarIntervalType.index);
 }
 
@@ -49,13 +50,14 @@ class DayCalendarTypeUpdatedEvent extends SettingsUpdateEvent {
   final DayCalendarType dayCalendarType;
 
   DayCalendarTypeUpdatedEvent(this.dayCalendarType)
-      : super(
-            MemoplannerSettings.viewOptionsTimeViewKey, dayCalendarType.index);
+      : super(DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey,
+            dayCalendarType.index);
 }
 
 class DotsInTimepillarUpdatedEvent extends SettingsUpdateEvent {
   final bool dotsInTimepillar;
 
   const DotsInTimepillarUpdatedEvent(this.dotsInTimepillar)
-      : super(MemoplannerSettings.dotsInTimepillarKey, dotsInTimepillar);
+      : super(DayCalendarViewOptionsSettings.viewOptionsDotsKey,
+            dotsInTimepillar);
 }

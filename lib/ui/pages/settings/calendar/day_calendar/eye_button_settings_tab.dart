@@ -1,14 +1,18 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class EyeButtonSettingsTab extends StatelessWidget {
   const EyeButtonSettingsTab({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     final scrollController = ScrollController();
-    return BlocBuilder<DayCalendarSettingsCubit, DayCalendarSettingsState>(
-      builder: (context, state) => ScrollArrows.vertical(
+    return BlocBuilder<DayCalendarSettingsCubit, DayCalendarSettings>(
+        builder: (context, dayCalendarSettings) {
+      final displaySettings = dayCalendarSettings.viewOptions.display;
+      return ScrollArrows.vertical(
         controller: scrollController,
         child: ListView(
           controller: scrollController,
@@ -18,7 +22,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
               layout.templates.m1.onlyHorizontal,
             ),
             CollapsableWidget(
-              collapsed: !state.showTypeOfDisplay,
+              collapsed: !displaySettings.calendarType,
               child: _buildSelector(
                 [
                   SelectorItem(t.listView, AbiliaIcons.calendarList),
@@ -28,7 +32,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
               ),
             ),
             CollapsableWidget(
-              collapsed: !state.showTimepillarLength,
+              collapsed: !displaySettings.intervalType,
               child: _buildSelector(
                 [
                   SelectorItem(t.interval, AbiliaIcons.dayInterval),
@@ -38,7 +42,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
               ),
             ),
             CollapsableWidget(
-              collapsed: !state.showTimelineZoom,
+              collapsed: !displaySettings.timepillarZoom,
               child: _buildSelector(
                 [
                   SelectorItem(t.small, AbiliaIcons.decreaseText),
@@ -48,7 +52,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
               ),
             ),
             CollapsableWidget(
-              collapsed: !state.showDurationSelection,
+              collapsed: !displaySettings.duration,
               child: _buildSelector(
                 [
                   SelectorItem(t.dots, AbiliaIcons.options),
@@ -58,12 +62,13 @@ class EyeButtonSettingsTab extends StatelessWidget {
             ),
             SwitchField(
               key: TestKey.showTypeOfDisplaySwitch,
-              value: state.showTypeOfDisplay,
+              value: displaySettings.calendarType,
               onChanged: (v) => {
-                context
-                    .read<DayCalendarSettingsCubit>()
-                    .changeDayCalendarSettings(
-                      state.copyWith(showTypeOfDisplay: v),
+                context.read<DayCalendarSettingsCubit>().changeSettings(
+                      dayCalendarSettings.copyWith(
+                        viewOptions: dayCalendarSettings.viewOptions.copyWith(
+                            display: displaySettings.copyWith(calendarType: v)),
+                      ),
                     ),
               },
               child: Text(t.viewMode),
@@ -75,44 +80,50 @@ class EyeButtonSettingsTab extends StatelessWidget {
             )),
             SwitchField(
               key: TestKey.showTimepillarLengthSwitch,
-              value: state.showTimepillarLength,
+              value: displaySettings.intervalType,
               onChanged: (v) => {
-                context
-                    .read<DayCalendarSettingsCubit>()
-                    .changeDayCalendarSettings(
-                      state.copyWith(showTimepillarLength: v),
+                context.read<DayCalendarSettingsCubit>().changeSettings(
+                      dayCalendarSettings.copyWith(
+                        viewOptions: dayCalendarSettings.viewOptions.copyWith(
+                          display: displaySettings.copyWith(intervalType: v),
+                        ),
+                      ),
                     ),
               },
               child: Text(t.dayInterval),
             ).pad(m1ItemPadding),
             SwitchField(
               key: TestKey.showTimelineZoomSwitch,
-              value: state.showTimelineZoom,
+              value: displaySettings.timepillarZoom,
               onChanged: (v) => {
-                context
-                    .read<DayCalendarSettingsCubit>()
-                    .changeDayCalendarSettings(
-                      state.copyWith(showTimelineZoom: v),
+                context.read<DayCalendarSettingsCubit>().changeSettings(
+                      dayCalendarSettings.copyWith(
+                        viewOptions: dayCalendarSettings.viewOptions.copyWith(
+                          display: displaySettings.copyWith(timepillarZoom: v),
+                        ),
+                      ),
                     ),
               },
               child: Text(t.timelineZoom),
             ).pad(m1ItemPadding),
             SwitchField(
               key: TestKey.showDurationSelectionSwitch,
-              value: state.showDurationSelection,
+              value: displaySettings.duration,
               onChanged: (v) => {
-                context
-                    .read<DayCalendarSettingsCubit>()
-                    .changeDayCalendarSettings(
-                      state.copyWith(showDurationSelection: v),
+                context.read<DayCalendarSettingsCubit>().changeSettings(
+                      dayCalendarSettings.copyWith(
+                        viewOptions: dayCalendarSettings.viewOptions.copyWith(
+                          display: displaySettings.copyWith(duration: v),
+                        ),
+                      ),
                     ),
               },
               child: Text(t.activityDuration),
             ).pad(m1ItemPadding),
           ],
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildSelector(List<SelectorItem> items) {
