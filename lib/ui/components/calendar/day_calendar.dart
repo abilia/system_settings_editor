@@ -146,24 +146,28 @@ class CategoriesAndHiddenSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settingsInaccessible = context.select(
-        (MemoplannerSettingBloc bloc) => bloc.state.settingsInaccessible);
-    final showCategories = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.calendar.categories.show);
+    return LayoutBuilder(builder: (context, boxConstraints) {
+      final categoryLabelWidth =
+          (boxConstraints.maxWidth - layout.timepillar.width) / 2;
+      final settingsInaccessible = context.select(
+          (MemoplannerSettingBloc bloc) => bloc.state.settingsInaccessible);
+      final showCategories = context.select((MemoplannerSettingBloc bloc) =>
+          bloc.state.settings.calendar.categories.show);
 
-    return Column(
-      children: [
-        if (showCategories)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              LeftCategory(),
-              RightCategory(),
-            ],
-          ),
-        if (settingsInaccessible) const HiddenSetting(),
-      ],
-    );
+      return Column(
+        children: [
+          if (showCategories)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                LeftCategory(maxWidth: categoryLabelWidth),
+                RightCategory(maxWidth: categoryLabelWidth),
+              ],
+            ),
+          if (settingsInaccessible) const HiddenSetting(),
+        ],
+      );
+    });
   }
 }
 
@@ -181,6 +185,8 @@ class CachedDayCalendar extends StatelessWidget {
         DayCalendarType.list);
 
     final dayEventsCubit = context.read<DayEventsCubit>();
+    final timepillarCubit = context.watch<TimepillarCubit>();
+    final timepillarMeasuresCubit = context.watch<TimepillarMeasuresCubit>();
     final inPageTransition = index != dayEventsCubit.state.day.dayIndex;
     final eventsState =
         inPageTransition ? dayEventsCubit.previousState : dayEventsCubit.state;
@@ -198,13 +204,14 @@ class CachedDayCalendar extends StatelessWidget {
         else
           Builder(
             builder: (context) {
-              final timepillarState = context.watch<TimepillarCubit>().state;
-              final timepillarMeasures =
-                  context.watch<TimepillarMeasuresCubit>().state;
               return Expanded(
                 child: TimepillarCalendar(
-                  timepillarState: timepillarState,
-                  timepillarMeasures: timepillarMeasures,
+                  timepillarState: inPageTransition
+                      ? timepillarCubit.previousState
+                      : timepillarCubit.state,
+                  timepillarMeasures: inPageTransition
+                      ? timepillarMeasuresCubit.previousState
+                      : timepillarMeasuresCubit.state,
                 ),
               );
             },
