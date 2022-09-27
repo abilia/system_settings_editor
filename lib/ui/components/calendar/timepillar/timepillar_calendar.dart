@@ -9,23 +9,29 @@ const transitionDuration = Duration(seconds: 1);
 
 class TimepillarCalendar extends StatelessWidget {
   static const nightBackgroundColor = AbiliaColors.black;
-  const TimepillarCalendar({Key? key}) : super(key: key);
+
+  const TimepillarCalendar({
+    required this.timepillarState,
+    required this.timepillarMeasures,
+    Key? key,
+  }) : super(key: key);
+
+  final TimepillarState timepillarState;
+  final TimepillarMeasures timepillarMeasures;
+
   @override
   Widget build(BuildContext context) {
     final calendarSettings = context
         .select((MemoplannerSettingBloc bloc) => bloc.state.settings.calendar);
-    final timepillarState = context.watch<TimepillarCubit>().state;
 
     if (timepillarState.calendarType == DayCalendarType.oneTimepillar) {
-      return BlocBuilder<TimepillarMeasuresCubit, TimepillarMeasures>(
-        builder: (context, measures) => OneTimepillarCalendar(
-          timepillarState: timepillarState,
-          timepillarMeasures: measures,
-          dayParts: calendarSettings.dayParts,
-          displayTimeline: calendarSettings.timepillar.timeline,
-          showCategories: calendarSettings.categories.show,
-          displayHourLines: calendarSettings.timepillar.hourLines,
-        ),
+      return OneTimepillarCalendar(
+        timepillarState: timepillarState,
+        timepillarMeasures: timepillarMeasures,
+        dayParts: calendarSettings.dayParts,
+        displayTimeline: calendarSettings.timepillar.timeline,
+        showCategories: calendarSettings.categories.show,
+        displayHourLines: calendarSettings.timepillar.hourLines,
       );
     }
     return TwoTimepillarCalendar(

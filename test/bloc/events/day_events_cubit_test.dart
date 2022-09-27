@@ -21,6 +21,8 @@ void main() {
   setUp(() {
     dayPickerBloc = DayPickerBloc(clockBloc: ClockBloc.fixed(initialMinutes));
     mockActivityRepository = MockActivityRepository();
+    when(() => mockActivityRepository.allBetween(any(), any()))
+        .thenAnswer((_) => Future.value([]));
     final ticker = Ticker.fake(initialTime: initialMinutes);
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
@@ -40,15 +42,22 @@ void main() {
   });
 
   group('dayEventsCubit', () {
-    test('initial state is Loading', () {
-      expect(dayEventsCubit.state, EventsLoading(initialDay, Occasion.current));
+    test('initial state', () {
+      expect(
+        dayEventsCubit.state,
+        EventsState(
+          activities: const [],
+          day: initialDay,
+          occasion: Occasion.current,
+          timers: const [],
+        ),
+      );
     });
 
-    test('state is EventsOccasionLoaded when ActivitiesBloc loadeds activities',
-        () {
-      // Arrange
-      when(() => mockActivityRepository.getAll())
-          .thenAnswer((_) => Future.value(const Iterable.empty()));
+    test('State is reloaded when activities bloc gets new state', () {
+      final activity = FakeActivity.starts(initialMinutes);
+      when(() => mockActivityRepository.allBetween(any(), any()))
+          .thenAnswer((_) => Future.value([activity]));
       // Act
       activitiesBloc.add(LoadActivities());
       // Assert
@@ -57,7 +66,7 @@ void main() {
         emits(
           EventsState(
             timers: const [],
-            activities: const [],
+            activities: [ActivityDay(activity, initialDay)],
             fullDayActivities: const [],
             day: initialDay,
             occasion: Occasion.current,
@@ -74,7 +83,7 @@ void main() {
           FakeActivity.ends(initialMinutes.subtract(1.minutes()));
       final futureActivity =
           FakeActivity.starts(initialMinutes.add(1.minutes()));
-      when(() => mockActivityRepository.getAll()).thenAnswer(
+      when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
           (_) => Future.value([nowActivity, pastActivity, futureActivity]));
 
       // Act
@@ -106,7 +115,7 @@ void main() {
           FakeActivity.fullday(initialMinutes.add(1.days()));
       final yesterdayFullday =
           FakeActivity.fullday(initialMinutes.subtract(1.days()));
-      when(() => mockActivityRepository.getAll()).thenAnswer(
+      when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
         (_) => Future.value(
           [
             yesterdayFullday,
@@ -148,14 +157,15 @@ void main() {
       final fullDayActivity = FakeActivity.fullday(initialMinutes);
       final tomorrowActivity =
           FakeActivity.starts(initialMinutes.add(1.days()));
-      when(() => mockActivityRepository.getAll()).thenAnswer((_) =>
-          Future.value([
-            nowActivity,
-            pastActivity,
-            futureActivity,
-            fullDayActivity,
-            tomorrowActivity
-          ]));
+      when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
+        (_) => Future.value([
+          nowActivity,
+          pastActivity,
+          futureActivity,
+          fullDayActivity,
+          tomorrowActivity,
+        ]),
+      );
 
       // Act
       activitiesBloc.add(LoadActivities());
@@ -188,7 +198,7 @@ void main() {
           FakeActivity.fullday(initialMinutes.add(1.days()));
       final yesterdayFullday =
           FakeActivity.fullday(initialMinutes.subtract(1.days()));
-      when(() => mockActivityRepository.getAll())
+      when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([
                 yesterdayFullday,
                 tomorrowFullday,
@@ -262,8 +272,8 @@ void main() {
       final pastActivity = FakeActivity.ends(tomorrow.add(1.minutes()));
       final futureActivity = FakeActivity.starts(tomorrow.add(1.minutes()));
       final fulldayActivity = FakeActivity.fullday(tomorrow);
-      when(() => mockActivityRepository.getAll()).thenAnswer((_) =>
-          Future.value(
+      when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
+          (_) => Future.value(
               [nowActivity, pastActivity, futureActivity, fulldayActivity]));
       //Act
       activitiesBloc.add(LoadActivities());
@@ -298,8 +308,8 @@ void main() {
       final pastActivity = FakeActivity.ends(yesterday.add(1.minutes()));
       final futureActivity = FakeActivity.starts(yesterday.add(1.minutes()));
       final fulldayActivity = FakeActivity.fullday(yesterday);
-      when(() => mockActivityRepository.getAll()).thenAnswer((_) =>
-          Future.value(
+      when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
+          (_) => Future.value(
               [nowActivity, pastActivity, futureActivity, fulldayActivity]));
       //Act
       activitiesBloc.add(LoadActivities());
@@ -328,7 +338,7 @@ void main() {
     test('Activity ends this minute is current', () {
       // Arrange
       final endsSoon = FakeActivity.ends(initialMinutes);
-      when(() => mockActivityRepository.getAll())
+      when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([endsSoon]));
 
       // Act
@@ -353,7 +363,7 @@ void main() {
     test('Activity start this minute is current', () {
       // Arrange
       final startsNow = FakeActivity.starts(initialMinutes);
-      when(() => mockActivityRepository.getAll())
+      when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([startsNow]));
 
       // Act
@@ -384,8 +394,9 @@ void main() {
       final endsSoonActivity = FakeActivity.ends(initialMinutes);
       final startSoonActivity =
           FakeActivity.starts(initialMinutes.add(1.minutes()));
-      when(() => mockActivityRepository.getAll()).thenAnswer((_) =>
-          Future.value([nowActivity, startSoonActivity, endsSoonActivity]));
+      when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
+          (_) =>
+              Future.value([nowActivity, startSoonActivity, endsSoonActivity]));
 
       // Act
       activitiesBloc.add(LoadActivities());
@@ -440,7 +451,7 @@ void main() {
       final mondayRecurring = FakeActivity.reocurrsMondays(longAgo);
       final activities = const Iterable<Activity>.empty()
           .followedBy([weekendActivity, tuesdayRecurring, mondayRecurring]);
-      when(() => mockActivityRepository.getAll())
+      when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value(activities));
 
       final friday = initialDay.add(const Duration(days: 3));
@@ -561,7 +572,7 @@ void main() {
         tomorrowActivity,
         everyDayFullDayRecurring
       ]);
-      when(() => mockActivityRepository.getAll())
+      when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value(activities));
 
       // Act
@@ -655,7 +666,7 @@ void main() {
       final activities = const Iterable<Activity>.empty().followedBy([
         everyDayRecurring,
       ]);
-      when(() => mockActivityRepository.getAll())
+      when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value(activities));
 
       // Act
@@ -729,7 +740,7 @@ void main() {
         earlyActivity,
         earlyCurrent,
       ]);
-      when(() => mockActivityRepository.getAll())
+      when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value(activities));
 
       // Act
@@ -764,6 +775,8 @@ void main() {
         clockBloc: ClockBloc.fixed(today),
       );
       mockActivityRepository = MockActivityRepository();
+      when(() => mockActivityRepository.allBetween(any(), any()))
+          .thenAnswer((_) => Future.value([]));
 
       activitiesBloc = ActivitiesBloc(
         activityRepository: mockActivityRepository,
@@ -784,35 +797,13 @@ void main() {
       );
     });
 
-    test('state is EventsOccasionLoaded when ActivitiesBloc loadeds activities',
-        () {
-      // Arrange
-      const activities = Iterable<Activity>.empty();
-      when(() => mockActivityRepository.getAll())
-          .thenAnswer((_) => Future.value(activities));
-      // Act
-      activitiesBloc.add(LoadActivities());
-      // Assert
-      expectLater(
-        dayEventsCubit.stream,
-        emits(
-          EventsState(
-            activities: const [],
-            timers: const [],
-            day: today,
-            occasion: Occasion.current,
-          ),
-        ),
-      );
-    });
-
     test('EventsOccasionLoaded only loads todays activities', () {
       // Arrange
       final activitiesNow = [FakeActivity.starts(today)];
       final expected = activitiesNow.map((a) => ActivityDay(a, today)).toList();
       final activitiesTomorrow = [FakeActivity.starts(today.add(1.days()))];
 
-      when(() => mockActivityRepository.getAll()).thenAnswer(
+      when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
           (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
 
       // Act
@@ -841,7 +832,7 @@ void main() {
       final expextedTomorrow = activitiesTomorrow
           .map((a) => ActivityDay(a, today.nextDay()))
           .toList();
-      when(() => mockActivityRepository.getAll()).thenAnswer(
+      when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
           (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
 
       // Act
@@ -886,7 +877,7 @@ void main() {
       final expectedYesterday = activitiesYesterDay
           .map((e) => ActivityDay(e, today.previousDay()))
           .toList();
-      when(() => mockActivityRepository.getAll()).thenAnswer(
+      when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
           (_) => Future.value(activitiesNow.followedBy(activitiesYesterDay)));
 
       // Act
@@ -924,27 +915,12 @@ void main() {
       // Arrange
       final nextYear = today.add(const Duration(days: 365));
 
-      when(() => mockActivityRepository.getAll())
+      when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([
                 FakeActivity.starts(nextYear),
                 FakeActivity.starts(nextYear.add(1.days())),
                 FakeActivity.starts(nextYear.subtract(1.days())),
               ]));
-
-      // Act
-      activitiesBloc.add(LoadActivities());
-
-      // Assert
-      await expectLater(
-        dayEventsCubit.stream,
-        emits(
-          EventsState(
-              activities: const [],
-              timers: const [],
-              day: today,
-              occasion: Occasion.current),
-        ),
-      );
 
       // Act
       dayPickerBloc.add(NextDay());
@@ -988,27 +964,9 @@ void main() {
         FakeActivity.starts(today.add(1.days())),
         FakeActivity.starts(today.subtract(1.days())),
       ]).followedBy({});
-      when(() => mockActivityRepository.getAll())
-          .thenAnswer((_) => Future.value([]));
-
-      // Act
-      activitiesBloc.add(LoadActivities());
-
-      // Assert
-      await expectLater(
-        dayEventsCubit.stream,
-        emits(
-          EventsState(
-            activities: const [],
-            timers: const [],
-            day: today,
-            occasion: Occasion.current,
-          ),
-        ),
-      );
 
       // Arrange
-      when(() => mockActivityRepository.getAll())
+      when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value(activitiesAdded));
 
       // Act
@@ -1038,6 +996,8 @@ void main() {
       setUp(() {
         dayPickerBloc = DayPickerBloc(clockBloc: ClockBloc.fixed(firstDay));
         mockActivityRepository = MockActivityRepository();
+        when(() => mockActivityRepository.allBetween(any(), any()))
+            .thenAnswer((_) => Future.value([]));
         activitiesBloc = ActivitiesBloc(
           activityRepository: mockActivityRepository,
           syncBloc: FakeSyncBloc(),
@@ -1061,7 +1021,7 @@ void main() {
         final weekendActivity = [
           FakeActivity.reocurrsWeekends(DateTime(2000, 01, 01))
         ];
-        when(() => mockActivityRepository.getAll())
+        when(() => mockActivityRepository.allBetween(any(), any()))
             .thenAnswer((_) => Future.value(weekendActivity));
         // Act
         activitiesBloc.add(LoadActivities());
@@ -1117,7 +1077,7 @@ void main() {
         final christmas = [
           FakeActivity.reocurrsOnDate(chrismasEve, DateTime(2000, 01, 01))
         ];
-        when(() => mockActivityRepository.getAll())
+        when(() => mockActivityRepository.allBetween(any(), any()))
             .thenAnswer((_) => Future.value(christmas));
         // Act
         activitiesBloc.add(LoadActivities());
@@ -1160,7 +1120,7 @@ void main() {
           FakeActivity.reocurrsOnDate(
               chrismasEve, DateTime(2012, 01, 01), DateTime(2021, 01, 01))
         ]);
-        when(() => mockActivityRepository.getAll())
+        when(() => mockActivityRepository.allBetween(any(), any()))
             .thenAnswer((_) => Future.value(christmas));
         // Act
         activitiesBloc.add(LoadActivities());
@@ -1202,7 +1162,7 @@ void main() {
         ];
         final allOtherDays = List.generate(
             300, (i) => startTime.add(Duration(days: i)).onlyDays());
-        when(() => mockActivityRepository.getAll())
+        when(() => mockActivityRepository.allBetween(any(), any()))
             .thenAnswer((_) => Future.value(monthStartActivity));
 
         // Act
@@ -1270,23 +1230,9 @@ void main() {
           fullDay: true,
         );
 
-        when(() => mockActivityRepository.getAll()).thenAnswer(
+        when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
             (_) => Future.value([preSplitRecurring, splitRecurring]));
 
-        // Act
-        activitiesBloc.add(LoadActivities());
-        // Assert
-        await expectLater(
-          dayEventsCubit.stream,
-          emits(
-            EventsState(
-              activities: const [],
-              timers: const [],
-              day: firstDay,
-              occasion: Occasion.current,
-            ),
-          ),
-        );
         // Act
         dayPickerBloc.add(GoTo(day: dayBeforeSplit));
         dayPickerBloc.add(NextDay());

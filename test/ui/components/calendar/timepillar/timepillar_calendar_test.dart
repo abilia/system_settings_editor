@@ -114,8 +114,8 @@ void main() {
     mockActivityDb.initWithActivity(activity);
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    expect(find.byType(FullDayContainer), findsOneWidget);
-    await tester.verifyTts(find.byType(FullDayContainer),
+    expect(find.byKey(TestKey.fullDayContainer), findsOneWidget);
+    await tester.verifyTts(find.byKey(TestKey.fullDayContainer),
         contains: activity.title);
   });
 
