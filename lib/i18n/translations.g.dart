@@ -2031,7 +2031,7 @@ class SV extends Translated {
       'Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka direkt under kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.';
 
   @override
-  final String menuItemsDisabled = 'Alla menyalternativ är inaktiverade';
+  final String menuItemsDisabled = 'alla menyalternativ är inaktiverade';
 
   @override
   final String selectADayToViewDetails = 'Välj en dag för att se mer detaljer';
@@ -3412,7 +3412,7 @@ class DA extends Translated {
       'Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke direkte nedenfor kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.';
 
   @override
-  final String menuItemsDisabled = 'Alle menupunkter er inaktiveret';
+  final String menuItemsDisabled = 'alle menupunkter er inaktiveret';
 
   @override
   final String selectADayToViewDetails =
@@ -4796,7 +4796,7 @@ class NL extends Translated {
       'Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door direct hieronder de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.';
 
   @override
-  final String menuItemsDisabled = 'Alle menu-items zijn gedeactiveerd';
+  final String menuItemsDisabled = 'alle menu-items zijn gedeactiveerd';
 
   @override
   final String selectADayToViewDetails =
@@ -6181,7 +6181,7 @@ class FI extends Translated {
       'Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää klikkaamalla alla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.';
 
   @override
-  final String menuItemsDisabled = 'Kaikki valikkokohteet ovat pois käytöstä';
+  final String menuItemsDisabled = 'kaikki valikkokohteet ovat pois käytöstä';
 
   @override
   final String selectADayToViewDetails = 'Valitse päivä nähdäksesi lisätietoja';
@@ -7569,7 +7569,7 @@ class DE extends Translated {
       'Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie unter Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.';
 
   @override
-  final String menuItemsDisabled = 'Alle Menüpunkte sind deaktiviert';
+  final String menuItemsDisabled = 'alle Menüpunkte sind deaktiviert';
 
   @override
   final String selectADayToViewDetails =
@@ -8953,7 +8953,7 @@ class NB extends Translated {
       'Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke rett nedenfor kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.';
 
   @override
-  final String menuItemsDisabled = 'Alle menyvalg er deaktivert';
+  final String menuItemsDisabled = 'alle menyvalg er deaktivert';
 
   @override
   final String selectADayToViewDetails = 'Velg en dag for å se mer detaljer';
