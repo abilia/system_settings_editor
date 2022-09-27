@@ -671,7 +671,7 @@ abstract class Translated {
 
   final String showAlarmOnlyAtStartTime = 'Show alarm only at start time';
 
-  final String showSpeechAtAlarm = 'Show speech at alarm';
+  final String showSpeechAtAlarm = 'SShow speech at alarm';
 
   final String showReminders = 'Show reminders';
 
@@ -1300,6 +1300,9 @@ class SV extends Translated {
   final String allDays = 'Alla dagar';
 
   @override
+  final String allDay = 'Heldag';
+
+  @override
   final String thisDayAndForward = 'Denna dag och framåt';
 
   @override
@@ -1365,10 +1368,10 @@ class SV extends Translated {
   final String editTimer = 'Ändra timer';
 
   @override
-  final String newTimerTemplate = 'Ny timer mall';
+  final String newTimerTemplate = 'Ny timermall';
 
   @override
-  final String editTimerTemplate = 'Ändra timer mall';
+  final String editTimerTemplate = 'Ändra timermall';
 
   @override
   final String menu = 'Meny';
@@ -1918,6 +1921,21 @@ class SV extends Translated {
   final String showNoAlarm = 'Visa inget larm';
 
   @override
+  final String showAlarmOnlyAtStartTime = 'Larm endast vid starttid';
+
+  @override
+  final String showSpeechAtAlarm = 'Välj tal vid larm';
+
+  @override
+  final String showReminders = 'Påminnelser';
+
+  @override
+  final String showSelectEndDate = 'Ange slutdatum';
+
+  @override
+  final String recurring = 'Upprepning';
+
+  @override
   final String throughEditView = 'Via Ändravyn';
 
   @override
@@ -1937,6 +1955,12 @@ class SV extends Translated {
 
   @override
   final String selectType = 'Välj typ';
+
+  @override
+  final String selectAllDay = 'Välj heldag';
+
+  @override
+  final String selectCategory = 'Kategori';
 
   @override
   final String selectCheckable = 'Välj kvitterbar';
@@ -1999,8 +2023,15 @@ class SV extends Translated {
   final String activateScreensaver = 'Aktivera skärmsläckare';
 
   @override
+  final String onlyActivateScreensaverDuringNight =
+      'Aktivera skärmsläcSkärmsläckare endast på nattenkare endast under natten';
+
+  @override
   final String menuRemovalWarning =
       'Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka direkt under kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.';
+
+  @override
+  final String menuItemsDisabled = 'Alla menyalternativ är inaktiverade';
 
   @override
   final String selectADayToViewDetails = 'Välj en dag för att se mer detaljer';
@@ -2213,7 +2244,34 @@ class SV extends Translated {
   final String about = 'Information';
 
   @override
+  final String aboutMemoplanner = 'Information';
+
+  @override
+  final String licenseNumber = 'Licensnyckel';
+
+  @override
+  final String licenseValidDate = 'Licensens slutdatum';
+
+  @override
+  final String loggedInUser = 'Inloggat användarkonto';
+
+  @override
+  final String aboutDevice = 'Om enheten';
+
+  @override
+  final String deviceName = 'Enhetens namn';
+
+  @override
+  final String serialNumber = 'Serienummer';
+
+  @override
   final String version = 'Version';
+
+  @override
+  final String androidVersion = 'Android-version';
+
+  @override
+  final String iosVersion = 'iOS version';
 
   @override
   final String producer = 'Producent';
@@ -2621,6 +2679,9 @@ class DA extends Translated {
   final String allDays = 'Alle dage';
 
   @override
+  final String allDay = 'Hele dagen';
+
+  @override
   final String thisDayAndForward = 'Denne dag og frem';
 
   @override
@@ -2686,6 +2747,12 @@ class DA extends Translated {
   final String editTimer = 'Rediger timer';
 
   @override
+  final String newTimerTemplate = 'Ny timerskabelon';
+
+  @override
+  final String editTimerTemplate = 'Rediger timerskabelon';
+
+  @override
   final String menu = 'Menu';
 
   @override
@@ -2723,6 +2790,12 @@ class DA extends Translated {
 
   @override
   final String editActivity = 'Rediger aktivitet';
+
+  @override
+  final String newActivityTemplate = 'Ny aktivitetsskabelon';
+
+  @override
+  final String editActivityTemplate = 'Rediger aktivitetsskabelon';
 
   @override
   final String category = 'Kategori';
@@ -2933,6 +3006,9 @@ class DA extends Translated {
 
   @override
   final String recurringDataEmptyErrorMessage = 'Vælg mindst en dag';
+
+  @override
+  final String endDateNotSpecifiedErrorMessage = 'Du skal angive en slutdato.';
 
   @override
   final String selectAll = 'Markere alle';
@@ -3225,6 +3301,21 @@ class DA extends Translated {
   final String showNoAlarm = 'Vis ingen alarm';
 
   @override
+  final String showAlarmOnlyAtStartTime = 'Vis kun alarm ved starttidspunkt';
+
+  @override
+  final String showSpeechAtAlarm = 'Vælge tale ved alarm';
+
+  @override
+  final String showReminders = 'Vis påmindelser';
+
+  @override
+  final String showSelectEndDate = 'Vis vælg slutdato';
+
+  @override
+  final String recurring = 'Gentagende';
+
+  @override
   final String throughEditView = 'Via Redigersiden';
 
   @override
@@ -3244,6 +3335,12 @@ class DA extends Translated {
 
   @override
   final String selectType = 'Vælg type';
+
+  @override
+  final String selectAllDay = 'Vælg hele dagen';
+
+  @override
+  final String selectCategory = 'Vælg kategori';
 
   @override
   final String selectCheckable = 'Vælg kvittering';
@@ -3307,8 +3404,15 @@ class DA extends Translated {
   final String activateScreensaver = 'Aktivér pauseskærm';
 
   @override
+  final String onlyActivateScreensaverDuringNight =
+      'Aktiver kun pauseskærm om natten';
+
+  @override
   final String menuRemovalWarning =
       'Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke direkte nedenfor kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.';
+
+  @override
+  final String menuItemsDisabled = 'Alle menupunkter er inaktiveret';
 
   @override
   final String selectADayToViewDetails =
@@ -3522,7 +3626,34 @@ class DA extends Translated {
   final String about = 'Information';
 
   @override
+  final String aboutMemoplanner = 'Om';
+
+  @override
+  final String licenseNumber = 'Licensnummer';
+
+  @override
+  final String licenseValidDate = 'Licens gyldighedsdato';
+
+  @override
+  final String loggedInUser = 'Logget ind brugerkonto';
+
+  @override
+  final String aboutDevice = 'Om enheden';
+
+  @override
+  final String deviceName = 'Enhedsnavn';
+
+  @override
+  final String serialNumber = 'Serienummer';
+
+  @override
   final String version = 'Version';
+
+  @override
+  final String androidVersion = 'Android-version';
+
+  @override
+  final String iosVersion = 'iOS-version';
 
   @override
   final String producer = 'Producent';
@@ -3930,6 +4061,9 @@ class NL extends Translated {
   final String allDays = 'Alle dagen';
 
   @override
+  final String allDay = 'Hele dag';
+
+  @override
   final String thisDayAndForward = 'Deze dag en verder';
 
   @override
@@ -3994,6 +4128,12 @@ class NL extends Translated {
   final String editTimer = 'Timer bewerken';
 
   @override
+  final String newTimerTemplate = 'Nieuw timersjabloon';
+
+  @override
+  final String editTimerTemplate = 'Timersjabloon bewerken';
+
+  @override
   final String menu = 'Menu';
 
   @override
@@ -4031,6 +4171,12 @@ class NL extends Translated {
 
   @override
   final String editActivity = 'Activiteit bewerken';
+
+  @override
+  final String newActivityTemplate = 'Nieuw activiteitsjabloon';
+
+  @override
+  final String editActivityTemplate = 'Activiteitsjabloon bewerken';
 
   @override
   final String category = 'Categorie';
@@ -4242,6 +4388,10 @@ class NL extends Translated {
 
   @override
   final String recurringDataEmptyErrorMessage = 'Selecteer ten minste één dag.';
+
+  @override
+  final String endDateNotSpecifiedErrorMessage =
+      'U moet een einddatum instellen.';
 
   @override
   final String selectAll = 'Alles selecteren';
@@ -4534,6 +4684,22 @@ class NL extends Translated {
   final String showNoAlarm = 'Geen alarmen weergeven';
 
   @override
+  final String showAlarmOnlyAtStartTime =
+      'Alarm alleen bij starttijd weergeven';
+
+  @override
+  final String showSpeechAtAlarm = 'Kies spraak bij alarm';
+
+  @override
+  final String showReminders = 'Herinneringen weergeven';
+
+  @override
+  final String showSelectEndDate = 'Selecteer einddatum weergeven';
+
+  @override
+  final String recurring = 'Terugkerend';
+
+  @override
   final String throughEditView = 'Door bewerkweergave';
 
   @override
@@ -4553,6 +4719,12 @@ class NL extends Translated {
 
   @override
   final String selectType = 'Type selecteren';
+
+  @override
+  final String selectAllDay = 'Hele dag selecteren';
+
+  @override
+  final String selectCategory = 'Categorie selecteren';
 
   @override
   final String selectCheckable = 'Afvinkbaarheid selecteren';
@@ -4616,8 +4788,15 @@ class NL extends Translated {
   final String activateScreensaver = 'Screensaver activeren';
 
   @override
+  final String onlyActivateScreensaverDuringNight =
+      "Screensaver alleen 's nachts activeren";
+
+  @override
   final String menuRemovalWarning =
       'Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door direct hieronder de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.';
+
+  @override
+  final String menuItemsDisabled = 'Alle menu-items zijn gedeactiveerd';
 
   @override
   final String selectADayToViewDetails =
@@ -4834,7 +5013,34 @@ class NL extends Translated {
   final String about = 'Informatie';
 
   @override
+  final String aboutMemoplanner = 'Over';
+
+  @override
+  final String licenseNumber = 'Licentienummer';
+
+  @override
+  final String licenseValidDate = 'Geldigheidsdatum licentie';
+
+  @override
+  final String loggedInUser = 'Ingelogd gebruikersaccount';
+
+  @override
+  final String aboutDevice = 'Over het apparaat';
+
+  @override
+  final String deviceName = 'Apparaatnaam';
+
+  @override
+  final String serialNumber = 'Serienummer';
+
+  @override
   final String version = 'Versie';
+
+  @override
+  final String androidVersion = 'Android-versie';
+
+  @override
+  final String iosVersion = 'iOS-versie';
 
   @override
   final String producer = 'Producent';
@@ -5241,6 +5447,9 @@ class FI extends Translated {
   final String allDays = 'Kaikki päivät';
 
   @override
+  final String allDay = 'Koko päivä';
+
+  @override
   final String thisDayAndForward = 'Tästä päivästä lähtien';
 
   @override
@@ -5306,6 +5515,12 @@ class FI extends Translated {
   final String editTimer = 'Muokkaa ajastin';
 
   @override
+  final String newTimerTemplate = 'Uusi ajastinmallipohja';
+
+  @override
+  final String editTimerTemplate = 'Muokkaa ajastinmallipohjaa';
+
+  @override
   final String menu = 'Valikko';
 
   @override
@@ -5343,6 +5558,12 @@ class FI extends Translated {
 
   @override
   final String editActivity = 'Muokkaa aktiviteettia';
+
+  @override
+  final String newActivityTemplate = 'Uusi toimintomallipohja';
+
+  @override
+  final String editActivityTemplate = 'Muokkaa toimintomallipohjaa';
 
   @override
   final String category = 'Kategoria';
@@ -5554,6 +5775,9 @@ class FI extends Translated {
 
   @override
   final String recurringDataEmptyErrorMessage = 'Valitse vähintään yksi päivä.';
+
+  @override
+  final String endDateNotSpecifiedErrorMessage = 'Syötä päättymispäivä.';
 
   @override
   final String selectAll = 'Valitse kaikki';
@@ -5846,6 +6070,21 @@ class FI extends Translated {
   final String showNoAlarm = 'Älä näytä hälytystä';
 
   @override
+  final String showAlarmOnlyAtStartTime = 'Näytä hälytys vain alkamishetkellä';
+
+  @override
+  final String showSpeechAtAlarm = 'Näytä puhe hälytyksessä';
+
+  @override
+  final String showReminders = 'Näytä muistutukset';
+
+  @override
+  final String showSelectEndDate = 'Näytä valitse päättymispäivä';
+
+  @override
+  final String recurring = 'Toistuva';
+
+  @override
   final String throughEditView = 'Muokkausnäkymässä';
 
   @override
@@ -5865,6 +6104,12 @@ class FI extends Translated {
 
   @override
   final String selectType = 'Valitse tyyppi';
+
+  @override
+  final String selectAllDay = 'Valitse koko päivä';
+
+  @override
+  final String selectCategory = 'Valitse luokka';
 
   @override
   final String selectCheckable = 'Valitse tarkistettava';
@@ -5928,8 +6173,15 @@ class FI extends Translated {
   final String activateScreensaver = 'Aktivoi näytönsäästäjä';
 
   @override
+  final String onlyActivateScreensaverDuringNight =
+      'Ota näytönsäästäjä käyttöön vain öisin';
+
+  @override
   final String menuRemovalWarning =
       'Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää klikkaamalla alla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.';
+
+  @override
+  final String menuItemsDisabled = 'Kaikki valikkokohteet ovat pois käytöstä';
 
   @override
   final String selectADayToViewDetails = 'Valitse päivä nähdäksesi lisätietoja';
@@ -6142,7 +6394,34 @@ class FI extends Translated {
   final String about = 'Tiedot';
 
   @override
+  final String aboutMemoplanner = 'Lisätietoja';
+
+  @override
+  final String licenseNumber = 'Lisenssinumero';
+
+  @override
+  final String licenseValidDate = 'Lisenssin viimeinen voimassaolopäivä';
+
+  @override
+  final String loggedInUser = 'Kirjautunut käyttäjätili';
+
+  @override
+  final String aboutDevice = 'Tietoja laitteesta';
+
+  @override
+  final String deviceName = 'Laitteen nimi';
+
+  @override
+  final String serialNumber = 'Sarjanumero';
+
+  @override
   final String version = 'Versio';
+
+  @override
+  final String androidVersion = 'Android-versio';
+
+  @override
+  final String iosVersion = 'iOS-versio';
 
   @override
   final String producer = 'Valmistaja';
@@ -6553,6 +6832,9 @@ class DE extends Translated {
   final String allDays = 'Alle Tage';
 
   @override
+  final String allDay = 'Ganztägig';
+
+  @override
   final String thisDayAndForward = 'Von diesem Tag an';
 
   @override
@@ -6618,6 +6900,12 @@ class DE extends Translated {
   final String editTimer = 'Timer bearbeiten';
 
   @override
+  final String newTimerTemplate = 'Neue Timervorlage';
+
+  @override
+  final String editTimerTemplate = 'Timervorlage bearbeiten';
+
+  @override
   final String menu = 'Menü';
 
   @override
@@ -6655,6 +6943,12 @@ class DE extends Translated {
 
   @override
   final String editActivity = 'Aktivität bearbeiten';
+
+  @override
+  final String newActivityTemplate = 'Neue Aktivitätsvorlage';
+
+  @override
+  final String editActivityTemplate = 'Aktivitätsvorlage bearbeiten';
 
   @override
   final String category = 'Kategorie';
@@ -6867,6 +7161,10 @@ class DE extends Translated {
   @override
   final String recurringDataEmptyErrorMessage =
       'Mindestens einen Tag auswählen.';
+
+  @override
+  final String endDateNotSpecifiedErrorMessage =
+      'Sie müssen ein Enddatum eingeben.';
 
   @override
   final String selectAll = 'Alles auswählen';
@@ -7160,6 +7458,21 @@ class DE extends Translated {
   final String showNoAlarm = 'Kein Alarm anzeigen';
 
   @override
+  final String showAlarmOnlyAtStartTime = 'Alarm nur zur Startzeit anzeigen';
+
+  @override
+  final String showSpeechAtAlarm = 'Ansage zum Alarm auswählen';
+
+  @override
+  final String showReminders = 'Erinnerungen anzeigen';
+
+  @override
+  final String showSelectEndDate = 'Enddatum auswählen anzeigen';
+
+  @override
+  final String recurring = 'Wiederkehrend';
+
+  @override
   final String throughEditView = 'Durch Bearbeitungsanzeige';
 
   @override
@@ -7179,6 +7492,12 @@ class DE extends Translated {
 
   @override
   final String selectType = 'Typ auswählen';
+
+  @override
+  final String selectAllDay = 'Ganztägig auswählen';
+
+  @override
+  final String selectCategory = 'Kategorie auswählen';
 
   @override
   final String selectCheckable = 'Kontrollierbar auswählen';
@@ -7242,8 +7561,15 @@ class DE extends Translated {
   final String activateScreensaver = 'Bildschirmschoner aktivieren';
 
   @override
+  final String onlyActivateScreensaverDuringNight =
+      'Bildschirmschoner nur nachts aktivieren';
+
+  @override
   final String menuRemovalWarning =
       'Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie unter Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.';
+
+  @override
+  final String menuItemsDisabled = 'Alle Menüpunkte sind deaktiviert';
 
   @override
   final String selectADayToViewDetails =
@@ -7459,7 +7785,34 @@ class DE extends Translated {
   final String about = 'Information';
 
   @override
+  final String aboutMemoplanner = 'Über';
+
+  @override
+  final String licenseNumber = 'Lizenznummer';
+
+  @override
+  final String licenseValidDate = 'Gültigkeitsdatum Lizenz';
+
+  @override
+  final String loggedInUser = 'Angemeldetes Benutzerkonto';
+
+  @override
+  final String aboutDevice = 'Über das Gerät';
+
+  @override
+  final String deviceName = 'Gerätename';
+
+  @override
+  final String serialNumber = 'Seriennummer';
+
+  @override
   final String version = 'Version';
+
+  @override
+  final String androidVersion = 'Android-Version';
+
+  @override
+  final String iosVersion = 'iOS-Version';
 
   @override
   final String producer = 'Hersteller';
@@ -7868,6 +8221,9 @@ class NB extends Translated {
   final String allDays = 'Alle dager';
 
   @override
+  final String allDay = 'Hele dagen';
+
+  @override
   final String thisDayAndForward = 'Denne dagen og fremover';
 
   @override
@@ -7933,6 +8289,12 @@ class NB extends Translated {
   final String editTimer = 'Endre timere';
 
   @override
+  final String newTimerTemplate = 'Ny timer mal';
+
+  @override
+  final String editTimerTemplate = 'Rediger timer mal';
+
+  @override
   final String menu = 'Meny';
 
   @override
@@ -7970,6 +8332,12 @@ class NB extends Translated {
 
   @override
   final String editActivity = 'Endre aktivitet';
+
+  @override
+  final String newActivityTemplate = 'Ny aktivitet mal';
+
+  @override
+  final String editActivityTemplate = 'Rediger aktivitet mal';
 
   @override
   final String category = 'Kategori';
@@ -8180,6 +8548,9 @@ class NB extends Translated {
 
   @override
   final String recurringDataEmptyErrorMessage = 'Velg minst en dag.';
+
+  @override
+  final String endDateNotSpecifiedErrorMessage = 'Du må oppgi en sluttdato';
 
   @override
   final String selectAll = 'Markere alle';
@@ -8471,6 +8842,21 @@ class NB extends Translated {
   final String showNoAlarm = 'Vis ingen alarm';
 
   @override
+  final String showAlarmOnlyAtStartTime = 'Vis alarm kun på start tid';
+
+  @override
+  final String showSpeechAtAlarm = 'Vis tale ved alarm';
+
+  @override
+  final String showReminders = 'Vis påminnelser';
+
+  @override
+  final String showSelectEndDate = 'Vis velg slutt dato';
+
+  @override
+  final String recurring = 'Gjentakende';
+
+  @override
   final String throughEditView = 'Via endrevindu';
 
   @override
@@ -8490,6 +8876,12 @@ class NB extends Translated {
 
   @override
   final String selectType = 'Velg type';
+
+  @override
+  final String selectAllDay = 'Velg hele dagen';
+
+  @override
+  final String selectCategory = 'Velg kategori';
 
   @override
   final String selectCheckable = 'Velg kvittering';
@@ -8553,8 +8945,15 @@ class NB extends Translated {
   final String activateScreensaver = 'Aktiver skjermsparer';
 
   @override
+  final String onlyActivateScreensaverDuringNight =
+      'Bare aktiver skjermsparer om natten';
+
+  @override
   final String menuRemovalWarning =
       'Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke rett nedenfor kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.';
+
+  @override
+  final String menuItemsDisabled = 'Alle menyvalg er deaktivert';
 
   @override
   final String selectADayToViewDetails = 'Velg en dag for å se mer detaljer';
@@ -8767,7 +9166,34 @@ class NB extends Translated {
   final String about = 'Informasjon';
 
   @override
+  final String aboutMemoplanner = 'Om';
+
+  @override
+  final String licenseNumber = 'Lisens nummer';
+
+  @override
+  final String licenseValidDate = 'Lisens gyldig dato';
+
+  @override
+  final String loggedInUser = 'Innlogget brukerkonto';
+
+  @override
+  final String aboutDevice = 'Om enheten';
+
+  @override
+  final String deviceName = 'Enhetsnavn';
+
+  @override
+  final String serialNumber = 'Serienummer';
+
+  @override
   final String version = 'Versjon';
+
+  @override
+  final String androidVersion = 'Android versjon';
+
+  @override
+  final String iosVersion = 'iOS versjon';
 
   @override
   final String producer = 'Produsent';
