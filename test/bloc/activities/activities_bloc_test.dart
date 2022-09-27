@@ -72,7 +72,7 @@ void main() {
         syncBloc: mockSyncBloc,
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
-      expect: () => [ActivitiesLoaded(const [])],
+      expect: () => [ActivitiesLoaded()],
     );
 
     final storedActivity = Activity.createNew(
@@ -97,9 +97,7 @@ void main() {
         syncBloc: mockSyncBloc,
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
-      expect: () => [
-        ActivitiesLoaded([storedActivity])
-      ],
+      expect: () => [ActivitiesLoaded()],
     );
 
     blocTest('calls add activities on mockActivityRepostitory',
@@ -112,10 +110,7 @@ void main() {
         act: (ActivitiesBloc bloc) => bloc
           ..add(LoadActivities())
           ..add(AddActivity(activity1)),
-        expect: () => [
-              ActivitiesLoaded([storedActivity]),
-              ActivitiesLoaded([storedActivity, activity1])
-            ],
+        expect: () => [ActivitiesLoaded(), ActivitiesLoaded()],
         verify: (bloc) {
           verify(() => mockActivityRepository.save([activity1]));
           verify(() => mockSyncBloc.add(const ActivitySaved()));
@@ -133,8 +128,8 @@ void main() {
           ..add(LoadActivities())
           ..add(UpdateActivity(updatedActivity1)),
         expect: () => [
-              ActivitiesLoaded([activity1]),
-              ActivitiesLoaded([updatedActivity1]),
+              ActivitiesLoaded(),
+              ActivitiesLoaded(),
             ],
         verify: (bloc) {
           verify(() => mockActivityRepository.save([updatedActivity1]));
@@ -153,16 +148,15 @@ void main() {
           ..add(LoadActivities())
           ..add(DeleteActivity(storedActivity)),
         expect: () => [
-              ActivitiesLoaded([storedActivity]),
-              ActivitiesLoaded(const []),
+              ActivitiesLoaded(),
+              ActivitiesLoaded(),
             ],
         verify: (bloc) {
           verify(() => mockActivityRepository.save([deletedStoredActivity]));
           verify(() => mockSyncBloc.add(const ActivitySaved()));
         });
 
-    final fullActivityList = [activity1, activity2, activity3, activity4],
-        activityListDeleted = [activity1, activity2, activity4];
+    final fullActivityList = [activity1, activity2, activity3, activity4];
     blocTest(
       'DeleteActivities does not yeild the deleted activity',
       setUp: () => when(() => mockActivityRepository.getAll())
@@ -175,8 +169,8 @@ void main() {
         ..add(LoadActivities())
         ..add(DeleteActivity(activity3)),
       expect: () => [
-        ActivitiesLoaded(fullActivityList),
-        ActivitiesLoaded(activityListDeleted),
+        ActivitiesLoaded(),
+        ActivitiesLoaded(),
       ],
       verify: (bloc) => verify(() => mockSyncBloc.add(const ActivitySaved())),
     );
@@ -203,8 +197,8 @@ void main() {
         ..add(LoadActivities())
         ..add(UpdateActivity(updatedActivity1)),
       expect: () => [
-        ActivitiesLoaded(fullActivityList),
-        ActivitiesLoaded(updatedActivityList),
+        ActivitiesLoaded(),
+        ActivitiesLoaded(),
       ],
       verify: (bloc) => verify(() => mockSyncBloc.add(const ActivitySaved())),
     );
@@ -220,7 +214,7 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(activityList),
+            ActivitiesLoaded(),
           ]),
         );
       });
@@ -232,7 +226,7 @@ void main() {
         final expect = expectLater(
           activitiesBloc.stream,
           emits(
-            ActivitiesLoaded([activity1]),
+            ActivitiesLoaded(),
           ),
         );
         activitiesBloc.add(AddActivity(activity1));
@@ -266,8 +260,8 @@ void main() {
       await expectLater(
         activitiesBloc.stream,
         emitsInOrder([
-          ActivitiesLoaded(activityList),
-          ActivitiesLoaded([anActivity].followedBy([])),
+          ActivitiesLoaded(),
+          ActivitiesLoaded(),
         ]),
       );
       // Assert calls save with deleted recurring
@@ -303,11 +297,6 @@ void main() {
         final expextedRecurring =
             recurrringActivity.copyWith(startTime: anyTime.nextDay());
 
-        final activityList2 = [
-          anActivity,
-          expextedRecurring,
-          recurrringActivity2
-        ];
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(DeleteRecurringActivity(
@@ -317,8 +306,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(activityList),
-            ActivitiesLoaded(activityList2.followedBy({})),
+            ActivitiesLoaded(),
+            ActivitiesLoaded(),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -354,11 +343,6 @@ void main() {
         final expextedRecurring = recurrringActivity
             .copyWithRecurringEnd(in6Days.millisecondBefore());
 
-        final activityList2 = [
-          anActivity,
-          expextedRecurring,
-          recurrringActivity2
-        ];
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(DeleteRecurringActivity(
@@ -370,8 +354,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(activityList),
-            ActivitiesLoaded(activityList2.followedBy({})),
+            ActivitiesLoaded(),
+            ActivitiesLoaded(),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -415,7 +399,7 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(activityList),
+            ActivitiesLoaded(),
             MatchActivitiesWithoutId(expectedActivityList),
           ]),
         );
@@ -459,8 +443,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(activityList),
-            ActivitiesLoaded([anActivity].followedBy({})),
+            ActivitiesLoaded(),
+            ActivitiesLoaded(),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -493,8 +477,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(activityList),
-            ActivitiesLoaded([recurrringActivityWithEndTime].followedBy({})),
+            ActivitiesLoaded(),
+            ActivitiesLoaded(),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -538,8 +522,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(activityList),
-            ActivitiesLoaded([recurrringActivity1AfterDelete].followedBy({})),
+            ActivitiesLoaded(),
+            ActivitiesLoaded(),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -579,8 +563,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded([recurring]),
-            ActivitiesLoaded([expected].followedBy([])),
+            ActivitiesLoaded(),
+            ActivitiesLoaded(),
           ]),
         );
 
@@ -619,7 +603,7 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded([recurring]),
+            ActivitiesLoaded(),
             MatchActivitiesWithoutId(
                 [expcetedUpdatedActivity, updatedOldActivity]),
           ]),
@@ -683,7 +667,7 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded([recurring]),
+            ActivitiesLoaded(),
             exptected,
           ]),
         );
@@ -742,7 +726,7 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded([recurring]),
+            ActivitiesLoaded(),
             expected,
           ]),
         );
@@ -794,7 +778,7 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded([recurring]),
+            ActivitiesLoaded(),
             expected,
           ]),
         );
@@ -826,8 +810,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded([recurrringActivity]),
-            ActivitiesLoaded([updatedRecurrringActivity].followedBy([])),
+            ActivitiesLoaded(),
+            ActivitiesLoaded(),
           ]),
         );
 
@@ -868,7 +852,7 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded([recurrringActivity]),
+            ActivitiesLoaded(),
             MatchActivitiesWithoutId(exptected),
           ]),
         );
@@ -909,7 +893,7 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded([recurrringActivity]),
+            ActivitiesLoaded(),
             MatchActivitiesWithoutId(exptectedList),
           ]),
         );
@@ -954,7 +938,7 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded([recurrringActivity]),
+            ActivitiesLoaded(),
             MatchActivitiesWithoutId(exptectedList),
           ]),
         );
@@ -1062,7 +1046,7 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(currentActivities),
+            ActivitiesLoaded(),
             MatchActivitiesWithoutId(exptectedList),
           ]),
         );
@@ -1131,7 +1115,7 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded([a1, a2, a3]),
+            ActivitiesLoaded(),
             MatchActivitiesWithoutId([a1, a2Part1, updatedA2, expectedA3]),
           ]),
         );

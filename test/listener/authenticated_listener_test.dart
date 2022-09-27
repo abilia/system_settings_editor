@@ -118,9 +118,7 @@ void main() {
 
     // Act
     activitiesStreamController.add(
-      ActivitiesLoaded(
-        [Activity.createNew(startTime: now)],
-      ),
+      ActivitiesLoaded(),
     );
     await tester.pumpAndSettle();
 
@@ -131,7 +129,7 @@ void main() {
   testWidgets('when settings we schedule alarms', (tester) async {
     // Arrange
     when(() => activitiesBloc.state).thenReturn(
-      ActivitiesLoaded([Activity.createNew(startTime: now)]),
+      ActivitiesLoaded(),
     );
     await tester.pumpWidget(authListener());
     expect(alarmScheduleCalls, 0);
@@ -146,9 +144,7 @@ void main() {
 
   testWidgets('when timers update, we schedule alarms', (tester) async {
     // Arrange
-    when(() => activitiesBloc.state).thenReturn(ActivitiesLoaded(
-      [Activity.createNew(startTime: now)],
-    ));
+    when(() => activitiesBloc.state).thenReturn(ActivitiesLoaded());
     when(() => memoplannerSettingBloc.state)
         .thenReturn(const MemoplannerSettingsFailed());
     await tester.pumpWidget(authListener());
