@@ -33,7 +33,7 @@ class CalendarScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final displayDayCalendarAppBar = context.select(
         (MemoplannerSettingBloc bloc) =>
-            bloc.state.settings.appBar.displayDayCalendarAppBar);
+            bloc.state.settings.dayCalendar.appBar.displayDayCalendarAppBar);
 
     return Scaffold(
       appBar: displayDayCalendarAppBar ? const DayCalendarAppBar() : null,
@@ -111,7 +111,9 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                   builder: (context) {
                     final isAgenda = context.select(
                         (MemoplannerSettingBloc b) =>
-                            b.state.dayCalendarType == DayCalendarType.list);
+                            b.state.settings.dayCalendar.viewOptions
+                                .calendarType ==
+                            DayCalendarType.list);
                     final timepillarCubit =
                         isAgenda ? null : context.watch<TimepillarCubit>();
                     final timepillarMeasuresCubit = isAgenda

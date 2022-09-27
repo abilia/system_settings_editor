@@ -20,7 +20,7 @@ class FullDayContainer extends StatelessWidget {
             (bloc) => bloc.state.settings.calendar);
     final dayCalendarType =
         context.select<MemoplannerSettingBloc, DayCalendarType>(
-            (bloc) => bloc.state.dayCalendarType);
+            (bloc) => bloc.state.settings.dayCalendar.viewOptions.calendarType);
     final currentHour =
         context.select((ClockBloc bloc) => bloc.state.onlyHours());
     final timePillarState = context.watch<TimepillarCubit>().state;

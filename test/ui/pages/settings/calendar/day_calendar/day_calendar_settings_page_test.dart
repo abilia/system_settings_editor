@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:seagull/background/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
@@ -184,7 +183,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.viewOptionsTimeViewKey,
+          key: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey,
           matcher: DayCalendarType.list.index,
         );
       });
@@ -201,7 +200,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.viewOptionsTimeViewKey,
+          key: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey,
           matcher: DayCalendarType.twoTimepillars.index,
         );
       });
@@ -218,7 +217,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.viewOptionsTimeIntervalKey,
+          key: DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,
           matcher: TimepillarIntervalType.dayAndNight.index,
         );
       });
@@ -235,7 +234,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.viewOptionsZoomKey,
+          key: DayCalendarViewOptionsSettings.viewOptionsTimepillarZoomKey,
           matcher: TimepillarZoom.large.index,
         );
       });
@@ -255,7 +254,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.dotsInTimepillarKey,
+          key: DayCalendarViewOptionsSettings.viewOptionsDotsKey,
           matcher: isFalse,
         );
       });
@@ -272,7 +271,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.settingViewOptionsTimeViewKey,
+          key: DayCalendarViewOptionsDisplaySettings.displayCalendarTypeKey,
           matcher: isFalse,
         );
       });
@@ -287,7 +286,8 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.settingViewOptionsTimeIntervalKey,
+          key: DayCalendarViewOptionsDisplaySettings
+              .displayIntervalTypeIntervalKey,
           matcher: isFalse,
         );
       });
@@ -302,7 +302,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.settingViewOptionsZoomKey,
+          key: DayCalendarViewOptionsDisplaySettings.displayTimepillarZoomKey,
           matcher: isFalse,
         );
       });
@@ -317,7 +317,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.settingViewOptionsDurationDotsKey,
+          key: DayCalendarViewOptionsDisplaySettings.displayDurationKey,
           matcher: isFalse,
         );
       });

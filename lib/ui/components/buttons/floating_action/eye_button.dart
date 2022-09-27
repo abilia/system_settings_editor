@@ -31,30 +31,30 @@ class EyeButtonDay extends StatelessWidget {
       builder: (context, memoSettingsState) => _EyeButton(
         onPressed: () async {
           final settingsBloc = context.read<MemoplannerSettingBloc>();
+          final viewOptions =
+              settingsBloc.state.settings.dayCalendar.viewOptions;
           final settings = await showViewDialog<EyeButtonSettings?>(
             context: context,
             builder: (context) => EyeButtonDayDialog(
-              currentCalendarType: memoSettingsState.dayCalendarType,
-              currentDotsInTimepillar: memoSettingsState.dotsInTimepillar,
-              currentDayInterval: memoSettingsState.timepillarIntervalType,
-              currentZoom: memoSettingsState.timepillarZoom,
+              currentCalendarType: viewOptions.calendarType,
+              currentDotsInTimepillar: viewOptions.dots,
+              currentDayInterval: viewOptions.intervalType,
+              currentZoom: viewOptions.timepillarZoom,
             ),
           );
           if (settings != null) {
-            if (memoSettingsState.dayCalendarType != settings.calendarType) {
+            if (viewOptions.calendarType != settings.calendarType) {
               settingsBloc
                   .add(DayCalendarTypeUpdatedEvent(settings.calendarType));
             }
-            if (memoSettingsState.dotsInTimepillar !=
-                settings.dotsInTimepillar) {
+            if (viewOptions.dots != settings.dotsInTimepillar) {
               settingsBloc
                   .add(DotsInTimepillarUpdatedEvent(settings.dotsInTimepillar));
             }
-            if (memoSettingsState.timepillarIntervalType !=
-                settings.intervalType) {
+            if (viewOptions.intervalType != settings.intervalType) {
               settingsBloc.add(IntervalTypeUpdatedEvent(settings.intervalType));
             }
-            if (memoSettingsState.timepillarZoom != settings.timepillarZoom) {
+            if (viewOptions.timepillarZoom != settings.timepillarZoom) {
               settingsBloc
                   .add(ZoomSettingUpdatedEvent(settings.timepillarZoom));
             }

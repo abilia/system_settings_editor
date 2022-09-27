@@ -5,40 +5,20 @@ class MemoplannerSettings extends Equatable {
   static const Set<String> noSyncSettings = {
     ...AlarmSettings.keys,
     ...KeepScreenAwakeSettings.keys,
-    // eye button settings
-    viewOptionsZoomKey,
-    viewOptionsTimeIntervalKey,
-    viewOptionsTimeViewKey,
-    dotsInTimepillarKey,
+    ...DayCalendarViewOptionsSettings.keys,
   };
 
   static const String monthCaptionShowMonthButtonsKey =
           'month_caption_show_month_buttons',
       monthCaptionShowYearKey = 'month_caption_show_year',
       monthCaptionShowClockKey = 'month_caption_show_clock',
-      calendarMonthViewShowColorsKey = 'calendar_month_view_show_colors',
-      viewOptionsTimeIntervalKey = 'view_options_time_interval',
-      viewOptionsZoomKey = 'view_options_zoom',
-      viewOptionsTimeViewKey = 'view_options_time_view',
-      dotsInTimepillarKey = 'dots_in_timepillar',
-      settingViewOptionsTimeViewKey = 'setting_view_options_time_view',
-      settingViewOptionsTimeIntervalKey = 'setting_view_options_time_interval',
-      settingViewOptionsZoomKey = 'setting_view_options_zoom',
-      settingViewOptionsDurationDotsKey = 'setting_view_options_duration_dots';
+      calendarMonthViewShowColorsKey = 'calendar_month_view_show_colors';
 
   final bool monthCaptionShowMonthButtons,
       monthCaptionShowYear,
-      monthCaptionShowClock,
-      dotsInTimepillar,
-      settingViewOptionsTimeView,
-      settingViewOptionsTimeInterval,
-      settingViewOptionsZoom,
-      settingViewOptionsDurationDots;
+      monthCaptionShowClock;
 
-  final int viewOptionsTimeInterval,
-      viewOptionsTimeView,
-      viewOptionsZoom,
-      calendarMonthViewShowColors;
+  final int calendarMonthViewShowColors;
 
   final AlarmSettings alarm;
   final CodeProtectSettings codeProtect;
@@ -49,7 +29,7 @@ class MemoplannerSettings extends Equatable {
   final AddActivitySettings addActivity;
   final WeekCalendarSettings weekCalendar;
   final ActivityViewSettings activityView;
-  final AppBarSettings appBar;
+  final DayCalendarSettings dayCalendar;
   final PhotoMenuSettings photoMenu;
 
   const MemoplannerSettings({
@@ -57,15 +37,7 @@ class MemoplannerSettings extends Equatable {
     this.monthCaptionShowYear = true,
     this.monthCaptionShowClock = true,
     this.calendarMonthViewShowColors = 1,
-    this.dotsInTimepillar = false,
-    this.viewOptionsTimeInterval = 1,
-    this.viewOptionsTimeView = 1,
-    this.viewOptionsZoom = 1,
     this.alarm = const AlarmSettings(),
-    this.settingViewOptionsTimeView = true,
-    this.settingViewOptionsTimeInterval = true,
-    this.settingViewOptionsZoom = true,
-    this.settingViewOptionsDurationDots = true,
     this.codeProtect = const CodeProtectSettings(),
     this.menu = const MenuSettings(),
     this.keepScreenAwake = const KeepScreenAwakeSettings(),
@@ -74,7 +46,7 @@ class MemoplannerSettings extends Equatable {
     this.addActivity = const AddActivitySettings(),
     this.weekCalendar = const WeekCalendarSettings(),
     this.activityView = const ActivityViewSettings(),
-    this.appBar = const AppBarSettings(),
+    this.dayCalendar = const DayCalendarSettings(),
     this.photoMenu = const PhotoMenuSettings(),
   });
 
@@ -94,35 +66,7 @@ class MemoplannerSettings extends Equatable {
         calendarMonthViewShowColorsKey,
         WeekColor.columns.index,
       ),
-      viewOptionsTimeInterval: settings.parse(
-        viewOptionsTimeIntervalKey,
-        1,
-      ),
-      viewOptionsTimeView: settings.parse(
-        viewOptionsTimeViewKey,
-        DayCalendarType.oneTimepillar.index,
-      ),
-      dotsInTimepillar: settings.getBool(
-        dotsInTimepillarKey,
-        defaultValue: false,
-      ),
-      viewOptionsZoom: settings.parse(
-        viewOptionsZoomKey,
-        1,
-      ),
       alarm: AlarmSettings.fromSettingsMap(settings),
-      settingViewOptionsTimeView: settings.getBool(
-        settingViewOptionsTimeViewKey,
-      ),
-      settingViewOptionsTimeInterval: settings.getBool(
-        settingViewOptionsTimeIntervalKey,
-      ),
-      settingViewOptionsZoom: settings.getBool(
-        settingViewOptionsZoomKey,
-      ),
-      settingViewOptionsDurationDots: settings.getBool(
-        settingViewOptionsDurationDotsKey,
-      ),
       codeProtect: CodeProtectSettings.fromSettingsMap(settings),
       menu: MenuSettings.fromSettingsMap(settings),
       keepScreenAwake: KeepScreenAwakeSettings.fromSettingsMap(settings),
@@ -131,7 +75,7 @@ class MemoplannerSettings extends Equatable {
       addActivity: AddActivitySettings.fromSettingsMap(settings),
       weekCalendar: WeekCalendarSettings.fromSettingsMap(settings),
       activityView: ActivityViewSettings.fromSettingsMap(settings),
-      appBar: AppBarSettings.fromSettingsMap(settings),
+      dayCalendar: DayCalendarSettings.fromSettingsMap(settings),
       photoMenu: PhotoMenuSettings.fromSettingsMap(settings),
     );
   }
@@ -142,15 +86,7 @@ class MemoplannerSettings extends Equatable {
         monthCaptionShowYear,
         monthCaptionShowClock,
         calendarMonthViewShowColors,
-        viewOptionsTimeInterval,
-        viewOptionsTimeView,
-        dotsInTimepillar,
-        viewOptionsZoom,
         alarm,
-        settingViewOptionsTimeView,
-        settingViewOptionsTimeInterval,
-        settingViewOptionsZoom,
-        settingViewOptionsDurationDots,
         codeProtect,
         menu,
         keepScreenAwake,
@@ -159,7 +95,7 @@ class MemoplannerSettings extends Equatable {
         addActivity,
         weekCalendar,
         activityView,
-        appBar,
+        dayCalendar,
         photoMenu,
       ];
 }

@@ -8,32 +8,10 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get settingsInaccessible =>
       !settings.functions.display.menu || !settings.menu.showSettings;
 
-  bool get dotsInTimepillar => settings.dotsInTimepillar;
-  bool get settingViewOptionsTimeView => settings.settingViewOptionsTimeView;
-  bool get settingViewOptionsTimeInterval =>
-      settings.settingViewOptionsTimeInterval;
-  bool get settingViewOptionsZoom => settings.settingViewOptionsZoom;
-  bool get settingViewOptionsDurationDots =>
-      settings.settingViewOptionsDurationDots;
-
-  bool get displayEyeButton =>
-      settingViewOptionsTimeView ||
-      (dayCalendarType == DayCalendarType.oneTimepillar &&
-          (settingViewOptionsTimeInterval ||
-              settingViewOptionsZoom ||
-              settingViewOptionsDurationDots));
-
   bool get monthCaptionShowBrowseButtons =>
       settings.monthCaptionShowMonthButtons;
   bool get monthCaptionShowYear => settings.monthCaptionShowYear;
   bool get monthCaptionShowClock => settings.monthCaptionShowClock;
-
-  TimepillarIntervalType get timepillarIntervalType =>
-      TimepillarIntervalType.values[settings.viewOptionsTimeInterval];
-  DayCalendarType get dayCalendarType => DayCalendarType.values[
-      min(settings.viewOptionsTimeView, DayCalendarType.values.length - 1)];
-  TimepillarZoom get timepillarZoom =>
-      TimepillarZoom.values[settings.viewOptionsZoom];
 
   AlarmSettings get alarm => settings.alarm;
 
