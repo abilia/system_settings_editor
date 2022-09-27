@@ -344,7 +344,7 @@ showVibrationAlarm	Show vibration	Visa vibration	Vis vibration	Trilfunctie tonen
 showSilentAlarm	Show silent alarm	Visa tyst larm	Vis stille alarm	Stille alarmen weergeven	Näytä hiljaiset hälytykset	Stille Alarme anzeigen	Vis stille alarm
 showNoAlarm	Show no alarm	Visa inget larm	Vis ingen alarm	Geen alarmen weergeven	Älä näytä hälytystä	Kein Alarm anzeigen	Vis ingen alarm
 showAlarmOnlyAtStartTime	Show alarm only at start time	Larm endast vid starttid	Vis kun alarm ved starttidspunkt	Alarm alleen bij starttijd weergeven	Näytä hälytys vain alkamishetkellä	Alarm nur zur Startzeit anzeigen	Vis alarm kun på start tid
-showSpeechAtAlarm	SShow speech at alarm	Välj tal vid larm	Vælge tale ved alarm	Kies spraak bij alarm	Näytä puhe hälytyksessä	Ansage zum Alarm auswählen	Vis tale ved alarm
+showSpeechAtAlarm	Show speech at alarm	Välj tal vid larm	Vælge tale ved alarm	Kies spraak bij alarm	Näytä puhe hälytyksessä	Ansage zum Alarm auswählen	Vis tale ved alarm
 showReminders	Show reminders	Påminnelser	Vis påmindelser	Herinneringen weergeven	Näytä muistutukset	Erinnerungen anzeigen	Vis påminnelser
 showSelectEndDate	Show select end date	Ange slutdatum	Vis vælg slutdato	Selecteer einddatum weergeven	Näytä valitse päättymispäivä	Enddatum auswählen anzeigen	Vis velg slutt dato
 recurring	Recurring	Upprepning	Gentagende	Terugkerend	Toistuva	Wiederkehrend	Gjentakende

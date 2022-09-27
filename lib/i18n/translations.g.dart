@@ -671,7 +671,7 @@ abstract class Translated {
 
   final String showAlarmOnlyAtStartTime = 'Show alarm only at start time';
 
-  final String showSpeechAtAlarm = 'SShow speech at alarm';
+  final String showSpeechAtAlarm = 'Show speech at alarm';
 
   final String showReminders = 'Show reminders';
 
