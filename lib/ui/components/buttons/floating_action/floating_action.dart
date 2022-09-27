@@ -65,28 +65,23 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      buildWhen: (previous, current) =>
-          previous.settings.dayCalendar.viewOptions.displayEyeButton !=
-              current.settings.dayCalendar.viewOptions.displayEyeButton ||
-          previous.alarm.showAlarmOnOffSwitch !=
-              current.alarm.showAlarmOnOffSwitch,
-      builder: (context, state) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            if (state.alarm.showAlarmOnOffSwitch) const ToggleAlarmButton(),
-            if (state.settings.dayCalendar.viewOptions.displayEyeButton)
-              if (tabController.index == 0)
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: layout.formPadding.verticalItemDistance,
-                  ),
-                  child: const EyeButtonDay(),
-                ),
-          ],
-        );
-      },
+    final displayEyeButton = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.dayCalendar.viewOptions.displayEyeButton);
+    final showAlarmOnOffSwitch = context.select((MemoplannerSettingBloc bloc) =>
+        bloc.state.settings.alarm.showAlarmOnOffSwitch);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        if (showAlarmOnOffSwitch) const ToggleAlarmButton(),
+        if (displayEyeButton)
+          if (tabController.index == 0)
+            Padding(
+              padding: EdgeInsets.only(
+                top: layout.formPadding.verticalItemDistance,
+              ),
+              child: const EyeButtonDay(),
+            ),
+      ],
     );
   }
 }
