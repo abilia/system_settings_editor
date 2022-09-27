@@ -122,6 +122,10 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                       timepillarMeasuresCubit?.state,
                     );
 
+                    if (dayEventsCubit.state is EventsLoading) {
+                      return const SizedBox.shrink();
+                    }
+
                     if (index == dayEventsCubit.state.day.dayIndex) {
                       return DayCalendarPage(
                         eventsState: dayEventsCubit.state,

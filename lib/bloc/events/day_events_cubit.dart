@@ -19,44 +19,42 @@ class DayEventsCubit extends Cubit<EventsState> {
     required this.dayPickerBloc,
     required this.timerAlarmBloc,
   }) : super(
-          activitiesBloc.state is ActivitiesLoaded
-              ? _mapToState(
-                  activitiesBloc.state.activities,
-                  timerAlarmBloc.state.timers,
-                  dayPickerBloc.state.day,
-                  dayPickerBloc.state.occasion,
-                )
-              : EventsLoading(
-                  dayPickerBloc.state.day,
-                  dayPickerBloc.state.occasion,
-                ),
+          EventsLoading(
+            dayPickerBloc.state.day,
+            dayPickerBloc.state.occasion,
+          ),
         ) {
-    _activitiesSubscription = activitiesBloc.stream
-        .listen((state) => _updateState(activities: state.activities));
+    _activitiesSubscription =
+        activitiesBloc.stream.listen((state) => _updateState());
     _dayPickerSubscription = dayPickerBloc.stream.listen(
         ((state) => _updateState(day: state.day, occasion: state.occasion)));
     _timerSubscription = timerAlarmBloc.stream
         .listen((state) => _updateState(timers: state.timers));
+    _updateState();
   }
 
   void _updateState({
-    List<Activity>? activities,
     List<TimerOccasion>? timers,
     DateTime? day,
     Occasion? occasion,
-  }) {
+  }) async {
     previousState = state;
+    final newStateDay = day ?? dayPickerBloc.state.day;
+    final activities = await activitiesBloc.activityRepository.allBetween(
+      newStateDay.onlyDays(),
+      newStateDay.nextDay(),
+    );
     emit(
       _mapToState(
-        activities ?? activitiesBloc.state.activities,
+        activities,
         timers ?? timerAlarmBloc.state.timers,
-        day ?? dayPickerBloc.state.day,
+        newStateDay,
         occasion ?? dayPickerBloc.state.occasion,
       ),
     );
   }
 
-  static EventsState _mapToState(
+  EventsState _mapToState(
     Iterable<Activity> activities,
     Iterable<TimerOccasion> timerOccasions,
     DateTime day,
