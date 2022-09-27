@@ -137,6 +137,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
       ),
       occasion: interval.occasion(now),
       showNightCalendar: showNightCalendar,
+      day: selectedDay,
     );
   }
 

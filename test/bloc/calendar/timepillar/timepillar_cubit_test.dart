@@ -83,6 +83,7 @@ void main() {
         calendarType: DayCalendarType.oneTimepillar,
         occasion: Occasion.current,
         showNightCalendar: true,
+        day: DateTime(2022, 05, 12),
       ),
     ),
   );
@@ -125,6 +126,7 @@ void main() {
         calendarType: DayCalendarType.oneTimepillar,
         occasion: Occasion.current,
         showNightCalendar: true,
+        day: DateTime(2022, 05, 12),
       ),
       TimepillarState(
         interval: TimepillarInterval(
@@ -135,6 +137,7 @@ void main() {
         events: const <Event>[],
         calendarType: DayCalendarType.oneTimepillar,
         occasion: Occasion.past,
+        day: DateTime(2022, 05, 11),
         showNightCalendar: true,
       ),
     ],
