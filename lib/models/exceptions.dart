@@ -1,3 +1,4 @@
+import 'package:http/http.dart';
 import 'package:seagull/models/all.dart';
 
 class UnauthorizedException implements Exception {
@@ -47,6 +48,24 @@ class RequestTokenException implements Exception {
   final BadRequest badRequest;
 
   RequestTokenException({required this.badRequest});
+}
+
+class VoiceFileDownloadException implements Exception {
+  final VoiceFile voiceFile;
+  final String? message;
+  VoiceFileDownloadException(this.voiceFile, [this.message]);
+  @override
+  String toString() => 'failed to download voice file: $voiceFile, ($message)';
+}
+
+class StatusCodeException implements Exception {
+  final Response response;
+  final String? message;
+  StatusCodeException(this.response, [this.message])
+      : assert(response.statusCode != 200);
+  @override
+  String toString() => 'Wrong status code in response: '
+      '${response.statusCode}, $response, $message';
 }
 
 class FetchSessionsException implements Exception {

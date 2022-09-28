@@ -1,13 +1,15 @@
 import 'dart:async';
-import 'dart:collection';
 import 'dart:ui';
 
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
+
+part 'voices_state.dart';
 
 class VoicesCubit extends Cubit<VoicesState> {
   VoicesCubit({
@@ -18,8 +20,7 @@ class VoicesCubit extends Cubit<VoicesState> {
   }) : super(VoicesLoading(languageCode: languageCode)) {
     _localeSubscription = localeStream
         .map((locale) => locale.languageCode)
-        .listen(readAvailableVoices);
-    _initialize(languageCode);
+        .listen(onLocaleChanged);
   }
 
   final _log = Logger((VoicesCubit).toString());
@@ -27,40 +28,35 @@ class VoicesCubit extends Cubit<VoicesState> {
   final SpeechSettingsCubit speechSettingsCubit;
   late final StreamSubscription _localeSubscription;
 
-  Future<void> _initialize(String languageCode) async {
-    final allAvailible =
-        await voiceRepository.readAvailableVoices(languageCode);
-    final downloaded = await voiceRepository.readDownloadedVoices();
+  Future<void> initialize() async {
     emit(
       VoicesState(
-        languageCode: languageCode,
-        allAvailable: {languageCode: allAvailible},
-        allDownloaded: {languageCode: downloaded},
+        languageCode: state.languageCode,
+        allAvailable: await voiceRepository.readAvailableVoices(),
+        allDownloaded: await voiceRepository.readDownloadedVoices(),
       ),
     );
   }
 
-  Future<void> readAvailableVoices([String? languageCode]) async {
+  Future<void> onLocaleChanged(String languageCode) async {
+    if (state.languageCode == languageCode) return;
     emit(state.copyWith(languageCode: languageCode));
-    languageCode ??= state.languageCode;
-    final newAvailible =
-        await voiceRepository.readAvailableVoices(languageCode);
+    await _setNewOrUnsetVoice();
+  }
+
+  Future<void> readAvailableVoices() async {
+    if (state is VoicesLoading) return;
+    final newAvailible = await voiceRepository.readAvailableVoices();
     if (newAvailible.isEmpty) return;
-    emit(
-      state.copyWith(
-        allAvailable: Map<String, Iterable<VoiceData>>.from(state.allAvailable)
-          ..[languageCode] = newAvailible,
-      ),
-    );
-    speechSettingsCubit.setVoice('');
+    emit(state.copyWith(allAvailable: newAvailible));
   }
 
   Future<void> downloadVoice(VoiceData voice) async {
-    emit(state.copyWith(downloading: [...state.downloading, voice.name]));
+    emit(state.copyWith(downloading: {...state.downloading, voice.name}));
     final downloadSuccess = await voiceRepository.downloadVoice(voice);
 
     emit(
-      state.copyWith(downloading: [...state.downloading]..remove(voice.name)),
+      state.copyWith(downloading: {...state.downloading}..remove(voice.name)),
     );
 
     if (!downloadSuccess) {
@@ -76,25 +72,29 @@ class VoicesCubit extends Cubit<VoicesState> {
     await speechSettingsCubit.setTextToSpeech(true);
 
     emit(
-      state.copyWith(
-        allDownloaded: Map<String, Iterable<String>>.from(state.allDownloaded)
-          ..[voice.lang] = {
-            ...(state.allDownloaded[voice.lang] ?? {}),
-            voice.name,
-          },
-      ),
+      state.copyWith(allDownloaded: {...state.allDownloaded, voice.name}),
     );
   }
 
   Future<void> deleteVoice(VoiceData voice) async {
-    await voiceRepository.deleteVoice(voice);
+    emit(
+      state.copyWith(
+        allDownloaded: state.allDownloaded.toSet()..remove(voice.name),
+      ),
+    );
     if (speechSettingsCubit.state.voice == voice.name) {
-      speechSettingsCubit.setVoice('');
+      await _setNewOrUnsetVoice();
     }
+    await voiceRepository.deleteVoice(voice);
+  }
 
-    final downloadedCopy = Map<String, Set<String>>.from(state.allDownloaded);
-    downloadedCopy[state.languageCode] = state.downloaded..remove(voice.name);
-    emit(state.copyWith(allDownloaded: downloadedCopy));
+  Future<void> _setNewOrUnsetVoice() async {
+    if (state.downloaded.isEmpty) {
+      await speechSettingsCubit.setVoice('');
+      await speechSettingsCubit.setTextToSpeech(false);
+      return;
+    }
+    await speechSettingsCubit.setVoice(state.downloaded.first);
   }
 
   Future<void> resetSpeechSettings() async {
@@ -102,7 +102,9 @@ class VoicesCubit extends Cubit<VoicesState> {
     await speechSettingsCubit.setSpeakEveryWord(false);
     await speechSettingsCubit.setTextToSpeech(false);
     await speechSettingsCubit.setVoice('');
+    emit(VoicesLoading(languageCode: state.languageCode));
     await _deleteAllVoices();
+    await initialize();
   }
 
   Future<void> _deleteAllVoices() async {
@@ -113,7 +115,6 @@ class VoicesCubit extends Cubit<VoicesState> {
       await Future.delayed(const Duration(seconds: 2));
     }
     await voiceRepository.deleteAllVoices();
-    await _initialize(state.languageCode);
   }
 
   @override
@@ -121,58 +122,4 @@ class VoicesCubit extends Cubit<VoicesState> {
     _localeSubscription.cancel();
     return super.close();
   }
-}
-
-class VoicesState extends Equatable {
-  final UnmodifiableMapView<String, UnmodifiableSetView<VoiceData>>
-      allAvailable;
-  final UnmodifiableMapView<String, UnmodifiableSetView<String>> allDownloaded;
-  final UnmodifiableListView<String> downloading;
-  final String languageCode;
-
-  Set<VoiceData> get available => allAvailable[languageCode]?.toSet() ?? {};
-  Set<String> get downloaded => allDownloaded[languageCode]?.toSet() ?? {};
-
-  VoicesState({
-    required this.languageCode,
-    List<String> downloading = const [],
-    Map<String, Iterable<String>> allDownloaded = const {},
-    Map<String, Iterable<VoiceData>> allAvailable = const {},
-  })  : downloading = UnmodifiableListView(downloading),
-        allAvailable =
-            UnmodifiableMapView<String, UnmodifiableSetView<VoiceData>>(
-          allAvailable.map((key, value) =>
-              MapEntry(key, UnmodifiableSetView(value.toSet()))),
-        ),
-        allDownloaded =
-            UnmodifiableMapView<String, UnmodifiableSetView<String>>(
-          allDownloaded.map((key, value) =>
-              MapEntry(key, UnmodifiableSetView(value.toSet()))),
-        );
-
-  VoicesState copyWith({
-    String? languageCode,
-    Map<String, Iterable<VoiceData>>? allAvailable,
-    Map<String, Iterable<String>>? allDownloaded,
-    List<String>? downloading,
-  }) =>
-      VoicesState(
-        languageCode: languageCode ?? this.languageCode,
-        allAvailable: allAvailable ?? this.allAvailable,
-        allDownloaded: allDownloaded ?? this.allDownloaded,
-        downloading: downloading ?? this.downloading,
-      );
-
-  @override
-  List<Object?> get props => [
-        languageCode,
-        downloading,
-        allDownloaded,
-        allAvailable,
-      ];
-}
-
-class VoicesLoading extends VoicesState {
-  VoicesLoading({required String languageCode})
-      : super(languageCode: languageCode);
 }

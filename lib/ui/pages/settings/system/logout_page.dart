@@ -43,14 +43,12 @@ class _ProfilePictureNameAndEmailState
   bool showVersion = false;
   late final User? user;
   late final String baseUrl;
-  late final String environment;
 
   @override
   void initState() {
     super.initState();
     user = GetIt.I<UserDb>().getUser();
     baseUrl = GetIt.I<BaseUrlDb>().baseUrl;
-    environment = backendEnvironments[baseUrl] ?? 'Prod';
   }
 
   @override
@@ -85,7 +83,7 @@ class _ProfilePictureNameAndEmailState
                     ?.copyWith(color: AbiliaColors.black75),
               ),
             ),
-          if (showVersion) Text('${user.id} ($environment)'),
+          if (showVersion) Text('${user.id} (${backendName(baseUrl)})'),
         ]
       ],
     );
