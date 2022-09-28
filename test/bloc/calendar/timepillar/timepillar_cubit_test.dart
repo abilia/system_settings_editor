@@ -30,17 +30,22 @@ void main() {
         .thenReturn(mockActivityRepository);
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
     memoplannerSettingBloc = MockMemoplannerSettingBloc();
-    when(() => memoplannerSettingBloc.state)
-        .thenReturn(MemoplannerSettingsLoaded(
-      MemoplannerSettings(
-        calendar: const GeneralCalendarSettings(
-          categories: CategoriesSettings(
-            show: false,
+    when(() => memoplannerSettingBloc.state).thenReturn(
+      const MemoplannerSettingsLoaded(
+        MemoplannerSettings(
+          calendar: GeneralCalendarSettings(
+            categories: CategoriesSettings(
+              show: false,
+            ),
+          ),
+          dayCalendar: DayCalendarSettings(
+            viewOptions: DayCalendarViewOptionsSettings(
+              calendarTypeIndex: 1,
+            ),
           ),
         ),
-        viewOptionsTimeView: DayCalendarType.oneTimepillar.index,
       ),
-    ));
+    );
 
     timerAlarmBloc = MockTimerAlarmBloc();
     when(() => timerAlarmBloc.state).thenReturn(TimerAlarmState(

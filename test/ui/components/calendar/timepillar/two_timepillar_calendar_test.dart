@@ -37,7 +37,7 @@ void main() {
   final twoTimepillarGeneric = Generic.createNew<MemoplannerSettingData>(
     data: MemoplannerSettingData.fromData(
         data: DayCalendarType.twoTimepillars.index,
-        identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+        identifier: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
   );
 
   setUp(() async {
@@ -691,7 +691,8 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                   data: false,
-                  identifier: MemoplannerSettings.dotsInTimepillarKey),
+                  identifier:
+                      DayCalendarViewOptionsSettings.viewOptionsDotsKey),
             ),
           ];
       await tester.pumpWidget(App());

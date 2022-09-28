@@ -10,7 +10,7 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final memoSettingsState = context.watch<MemoplannerSettingBloc>().state;
-    final appBarSettings = memoSettingsState.settings.appBar;
+    final appBarSettings = memoSettingsState.settings.dayCalendar.appBar;
     final time = context.watch<ClockBloc>().state;
 
     if (appBarSettings.displayDayCalendarAppBar) {
@@ -18,9 +18,9 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
         day: time,
         calendarDayColor: memoSettingsState.settings.calendar.dayColor,
         rows: AppBarTitleRows.day(
-          displayWeekDay: appBarSettings.activityDisplayWeekDay,
-          displayPartOfDay: appBarSettings.activityDisplayDayPeriod,
-          displayDate: appBarSettings.activityDisplayDate,
+          displayWeekDay: appBarSettings.showDayPeriod,
+          displayPartOfDay: appBarSettings.showWeekday,
+          displayDate: appBarSettings.showDate,
           currentTime: time,
           day: time,
           dayPart: context.read<DayPartCubit>().state,
@@ -28,7 +28,7 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
           langCode: Localizations.localeOf(context).toLanguageTag(),
           translator: Translator.of(context).translate,
         ),
-        showClock: appBarSettings.activityDisplayClock,
+        showClock: appBarSettings.showClock,
       );
     }
     return const SizedBox.shrink();

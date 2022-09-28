@@ -28,7 +28,7 @@ class GoToNowButton extends StatelessWidget {
                     padding: EdgeInsets.zero,
                   ),
                 )
-              : null,
+              : const SizedBox.shrink(),
         ),
       );
 }

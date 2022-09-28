@@ -206,6 +206,9 @@ class FakeFirebasePushService extends Fake implements FirebasePushService {
 
 class FakeVoiceDb extends Fake implements VoiceDb {
   @override
+  Future setVoice(String voice) async {}
+
+  @override
   bool get textToSpeech => true;
 
   @override

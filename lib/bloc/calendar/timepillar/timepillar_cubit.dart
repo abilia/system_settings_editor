@@ -9,6 +9,7 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/models/all.dart';
 
 part 'timepillar_state.dart';
+
 part 'timepillar_interval_calculator.dart';
 
 class TimepillarCubit extends Cubit<TimepillarState> {
@@ -129,7 +130,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
       ),
       calendarType: _getCalendarType(
         showNightCalendar,
-        memoState.dayCalendarType,
+        memoState.settings.dayCalendar.viewOptions.calendarType,
         selectedDay,
         now,
         dayPart,
@@ -148,7 +149,8 @@ class TimepillarCubit extends Cubit<TimepillarState> {
   ) {
     final isToday = day.isAtSameDay(now);
     final twoTimepillars =
-        memoSettings.dayCalendarType == DayCalendarType.twoTimepillars;
+        memoSettings.settings.dayCalendar.viewOptions.calendarType ==
+            DayCalendarType.twoTimepillars;
 
     if (twoTimepillars) {
       final shouldShowNightCalendar =
@@ -171,7 +173,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     if (showNightCalendar && isToday) {
       return _todayTimepillarIntervalFromType(
         now,
-        memoSettings.timepillarIntervalType,
+        memoSettings.settings.dayCalendar.viewOptions.intervalType,
         memoSettings.settings.calendar.dayParts,
         dayPart,
       );
@@ -241,13 +243,17 @@ class TimepillarCubit extends Cubit<TimepillarState> {
   }
 
   bool _shouldStepDay({required bool forward}) {
-    final memeSettings = memoSettingsBloc.state;
+    final settings = memoSettingsBloc.state.settings;
+    final viewOptions = settings.dayCalendar.viewOptions;
 
-    if (memeSettings.dayCalendarType == DayCalendarType.list) return true;
+    if (viewOptions.calendarType == DayCalendarType.list) {
+      return true;
+    }
 
-    if (memeSettings.dayCalendarType == DayCalendarType.oneTimepillar &&
-        memeSettings.timepillarIntervalType ==
-            TimepillarIntervalType.dayAndNight) return true;
+    if (viewOptions.calendarType == DayCalendarType.oneTimepillar &&
+        viewOptions.intervalType == TimepillarIntervalType.dayAndNight) {
+      return true;
+    }
 
     if (!_isTonight(
       day: dayPickerBloc.state.day,
@@ -255,8 +261,8 @@ class TimepillarCubit extends Cubit<TimepillarState> {
       dayPart: dayPartCubit.state,
     )) return true;
 
-    final isBeforeMidNight = clockBloc.state
-        .isNightBeforeMidnight(memeSettings.settings.calendar.dayParts);
+    final isBeforeMidNight =
+        clockBloc.state.isNightBeforeMidnight(settings.calendar.dayParts);
 
     final beforeMidnightGoingForwardOrAfterMidnightGoingBack =
         (forward ? isBeforeMidNight : !isBeforeMidNight) ==

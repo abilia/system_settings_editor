@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -12,12 +11,10 @@ part 'speech_settings_state.dart';
 class SpeechSettingsCubit extends Cubit<SpeechSettingsState> {
   final VoiceDb voiceDb;
   final TtsInterface acapelaTts;
-  late final StreamSubscription _localeSubscription;
 
   SpeechSettingsCubit({
     required this.voiceDb,
     required this.acapelaTts,
-    required Stream<Locale> localeStream,
   }) : super(
           SpeechSettingsState(
             textToSpeech: voiceDb.textToSpeech,
@@ -25,15 +22,7 @@ class SpeechSettingsCubit extends Cubit<SpeechSettingsState> {
             speakEveryWord: voiceDb.speakEveryWord,
             voice: voiceDb.voice,
           ),
-        ) {
-    _localeSubscription =
-        localeStream.map((locale) => locale.languageCode).listen(_updateLocale);
-  }
-
-  Future<void> _updateLocale(_) async {
-    await setVoice('');
-    await setTextToSpeech(false);
-  }
+        );
 
   Future<void> setTextToSpeech(bool textToSpeech) async {
     emit(state.copyWith(textToSpeech: textToSpeech));
@@ -60,11 +49,5 @@ class SpeechSettingsCubit extends Cubit<SpeechSettingsState> {
     assert(Config.isMP, 'Cannot speak every word on mpgo!');
     emit(state.copyWith(speakEveryWord: speakEveryWord));
     await voiceDb.setSpeakEveryWord(speakEveryWord);
-  }
-
-  @override
-  Future<void> close() {
-    _localeSubscription.cancel();
-    return super.close();
   }
 }

@@ -27,12 +27,14 @@ void main() {
   final oneTimepillarGeneric = Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
             data: DayCalendarType.oneTimepillar.index,
-            identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+            identifier:
+                DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
       ),
       twoTimepillarsGeneric = Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
             data: DayCalendarType.twoTimepillars.index,
-            identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+            identifier:
+                DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
       );
   setUp(() async {
     tz.initializeTimeZones();

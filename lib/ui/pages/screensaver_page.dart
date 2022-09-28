@@ -49,7 +49,7 @@ class _ScreensaverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final memoSettingsState = context.watch<MemoplannerSettingBloc>().state;
-    final appBarSettings = memoSettingsState.settings.appBar;
+    final appBarSettings = memoSettingsState.settings.dayCalendar.appBar;
 
     final time = context.watch<ClockBloc>().state;
     return Padding(
@@ -59,9 +59,9 @@ class _ScreensaverAppBar extends StatelessWidget {
             .apply(color: AbiliaColors.white),
         rows: AppBarTitleRows.day(
           compactDay: true,
-          displayWeekDay: appBarSettings.activityDisplayWeekDay,
-          displayPartOfDay: appBarSettings.activityDisplayDayPeriod,
-          displayDate: appBarSettings.activityDisplayDate,
+          displayWeekDay: appBarSettings.showDayPeriod,
+          displayPartOfDay: appBarSettings.showWeekday,
+          displayDate: appBarSettings.showDate,
           currentTime: time,
           day: time.onlyDays(),
           dayPart: context.read<DayPartCubit>().state,

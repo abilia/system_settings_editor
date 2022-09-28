@@ -15,8 +15,10 @@ class TimepillarMeasuresCubit extends Cubit<TimepillarMeasures> {
     required MemoplannerSettingBloc memoplannerSettingsBloc,
   })  : _timepillarCubit = timepillarCubit,
         _memoplannerSettingsBloc = memoplannerSettingsBloc,
-        super(TimepillarMeasures(timepillarCubit.state.interval,
-            memoplannerSettingsBloc.state.timepillarZoom.zoomValue)) {
+        super(TimepillarMeasures(
+            timepillarCubit.state.interval,
+            memoplannerSettingsBloc.state.settings.dayCalendar.viewOptions
+                .timepillarZoom.zoomValue)) {
     _timepillarSubscription = timepillarCubit.stream.listen((state) {
       _onConditionsChanged();
     });
@@ -33,7 +35,8 @@ class TimepillarMeasuresCubit extends Cubit<TimepillarMeasures> {
 
   void _onConditionsChanged() {
     final interval = _timepillarCubit?.state.interval;
-    final zoom = _memoplannerSettingsBloc?.state.timepillarZoom.zoomValue;
+    final zoom = _memoplannerSettingsBloc
+        ?.state.settings.dayCalendar.viewOptions.timepillarZoom.zoomValue;
     if (interval != null && zoom != null) {
       previousState = state;
       emit(TimepillarMeasures(interval, zoom));

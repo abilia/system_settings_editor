@@ -54,6 +54,7 @@ Future<void> initServices() async {
     ..directories = Directories(
       applicationSupport: applicationSupportDirectory,
       documents: documentDirectory,
+      temp: await getTemporaryDirectory(),
     )
     ..sharedPreferences = preferences
     ..baseUrlDb = baseUrlDb

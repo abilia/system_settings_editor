@@ -1,18 +1,14 @@
-import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
-part 'day_calendar_settings_state.dart';
-
-class DayCalendarSettingsCubit extends Cubit<DayCalendarSettingsState> {
+class DayCalendarSettingsCubit extends Cubit<DayCalendarSettings> {
   final GenericCubit genericCubit;
 
   DayCalendarSettingsCubit({
-    required MemoplannerSettingsState settingsState,
+    required DayCalendarSettings dayCalendarSettings,
     required this.genericCubit,
-  }) : super(DayCalendarSettingsState.fromMemoplannerSettings(settingsState));
+  }) : super(dayCalendarSettings);
 
-  void changeDayCalendarSettings(DayCalendarSettingsState newState) =>
-      emit(newState);
+  void changeSettings(DayCalendarSettings settings) => emit(settings);
   void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
 }

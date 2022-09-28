@@ -118,7 +118,7 @@ editRecurringActivity	Edit recurring activity	Ändra återkommande aktivitet	Æn
 deleteRecurringActivity	Delete recurring activity	Radera återkommande aktivitet	Slet gentagende aktivitet	Terugkerende activiteit verwijder	Poista toistuva aktiviteettia	Wiederkehrende Aktivitäten löschen	Slett gjentakende aktivitet
 onlyThisDay	Only this day	Endast denna dag	Kun denne dag	Alleen deze dag	Vain tänä päivänä	Nur an diesem Tag	Bare denne dagen
 allDays	All days	Alla dagar	Alle dage	Alle dagen	Kaikki päivät	Alle Tage	Alle dager
-allDay	All day						
+allDay	All day	Heldag	Hele dagen	Hele dag	Koko päivä	Ganztägig	Hele dagen
 thisDayAndForward	This day and forward	Denna dag och framåt	Denne dag og frem	Deze dag en verder	Tästä päivästä lähtien	Von diesem Tag an	Denne dagen og fremover
 completed	Completed?	Klar?	Færdig?	Afgerond?	Valmis?	Bist Du fertig?	Ferdig?
 unCheckActivityQuestion	Do you want to uncheck the activity?	Vill du ångra kvitteringen av aktiviteten?	Vil du fjerne markeringen af aktiviteten?	Wilt u de activiteit uitvinken?	Haluatko poistaa valinnan aktiviteetista?	Möchten Sie die Auswahl rückgängig machen?	Vil du fjerne merket for aktiviteten?
@@ -142,8 +142,8 @@ timer	Timer	Timer	Timer	Tijdopnemer	Ajastin	Timer	Timer
 timeIsUp	Time is up	Tiden är slut	Tiden er gået	De tijd is om	Aika loppui	Die Zeit ist abgelaufen	Tiden er slutt
 timers	Timers	Timers	Timere	Timers	Ajastimet	Timer	Timere
 editTimer	Edit timer	Ändra timer	Rediger timer	Timer bewerken	Muokkaa ajastin	Timer bearbeiten	Endre timere
-newTimerTemplate	New timer template	Ny timer mall					
-editTimerTemplate	Edit timer template	Ändra timer mall					
+newTimerTemplate	New timer template	Ny timermall	Ny timerskabelon	Nieuw timersjabloon	Uusi ajastinmallipohja	Neue Timervorlage	Ny timer mal
+editTimerTemplate	Edit timer template	Ändra timermall	Rediger timerskabelon	Timersjabloon bewerken	Muokkaa ajastinmallipohjaa	Timervorlage bearbeiten	Rediger timer mal
 							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
@@ -161,8 +161,8 @@ newText	New	Ny	Ny	Nieuw	Uusi	Neu	Ny
 fromTemplate	From template	Från mall	Fra skabelon	Uit sjabloon	Mallit	Von vorlage	Fra malen
 newActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuw activiteit	Uusi aktiviteettia	Neu Aktivität	Ny aktivitet
 editActivity	Edit activity	Ändra aktivitet	Rediger aktivitet	Activiteit bewerken	Muokkaa aktiviteettia	Aktivität bearbeiten	Endre aktivitet
-newActivityTemplate	New activity template	Ny aktivitetsmall					
-editActivityTemplate	Edit activity template	Ändra aktivitetsmall					
+newActivityTemplate	New activity template	Ny aktivitetsmall	Ny aktivitetsskabelon	Nieuw activiteitsjabloon	Uusi toimintomallipohja	Neue Aktivitätsvorlage	Ny aktivitet mal
+editActivityTemplate	Edit activity template	Ändra aktivitetsmall	Rediger aktivitetsskabelon	Activiteitsjabloon bewerken	Muokkaa toimintomallipohjaa	Aktivitätsvorlage bearbeiten	Rediger aktivitet mal
 category	Category	Kategori	Kategori	Categorie	Kategoria	Kategorie	Kategori
 checkable	Checkable	Kvitterbar	Kvitterbar	Afvinkbaar	Tarkistettava	Kontrollabfrage	Kvitterbar
 notCheckable	Not checkable	Inte kvitterbar	Ikke kvitterbar	Niet afvinkbaar	Ei-tarkistettava	Nicht kontrollabfrage	Ikke kvitterbar
@@ -240,7 +240,7 @@ noEndDate	No end date	Inget slutdatum	Ingen slutdato	Geen einddatum	Ei päättym
 endDate	End date	Slutdatum	Slutdato	Einddatum	Päättymispäivä	Enddatum	Sluttdato
 everyOtherWeek	Every other week	Varannan vecka	Hver anden uge	Om de week	Kahden viikon välein	Vierzehntägig	Annenhver uke
 recurringDataEmptyErrorMessage	Select at least one day.	Välj minst en dag.	Vælg mindst en dag	Selecteer ten minste één dag.	Valitse vähintään yksi päivä.	Mindestens einen Tag auswählen.	Velg minst en dag.
-endDateNotSpecifiedErrorMessage	You must enter an end date.	Du måste ange ett slutdatum.					
+endDateNotSpecifiedErrorMessage	You must enter an end date.	Du måste ange ett slutdatum.	Du skal angive en slutdato.	U moet een einddatum instellen.	Syötä päättymispäivä.	Sie müssen ein Enddatum eingeben.	Du må oppgi en sluttdato
 selectAll	Select all	Markera alla	Markere alle	Alles selecteren	Valitse kaikki	Alles auswählen	Markere alle
 deselectAll	Deselect all	Avmarkera alla	Fravælg alle	Alles deselecteren	Poista kaikki valinnat	Auswahl aufheben	Avmarkere alle
 mo	Mon	mån	man	Ma	Ma	Mo	man
@@ -343,11 +343,11 @@ showAlarm	Show alarm	Visa larm	Vis alarm	Alarmen weergeven	Näytä hälytykset	A
 showVibrationAlarm	Show vibration	Visa vibration	Vis vibration	Trilfunctie tonen	Näytä värinä	Vibration anzeigen	Vis vibrasjon
 showSilentAlarm	Show silent alarm	Visa tyst larm	Vis stille alarm	Stille alarmen weergeven	Näytä hiljaiset hälytykset	Stille Alarme anzeigen	Vis stille alarm
 showNoAlarm	Show no alarm	Visa inget larm	Vis ingen alarm	Geen alarmen weergeven	Älä näytä hälytystä	Kein Alarm anzeigen	Vis ingen alarm
-showAlarmOnlyAtStartTime	Show alarm only at start time						
-showSpeechAtAlarm	Show speech at alarm						
-showReminders	Show reminders						
-showSelectEndDate	Show select end date						
-recurring	Recurring						
+showAlarmOnlyAtStartTime	Show alarm only at start time	Larm endast vid starttid	Vis kun alarm ved starttidspunkt	Alarm alleen bij starttijd weergeven	Näytä hälytys vain alkamishetkellä	Alarm nur zur Startzeit anzeigen	Vis alarm kun på start tid
+showSpeechAtAlarm	Show speech at alarm	Välj tal vid larm	Vælge tale ved alarm	Kies spraak bij alarm	Näytä puhe hälytyksessä	Ansage zum Alarm auswählen	Vis tale ved alarm
+showReminders	Show reminders	Påminnelser	Vis påmindelser	Herinneringen weergeven	Näytä muistutukset	Erinnerungen anzeigen	Vis påminnelser
+showSelectEndDate	Show select end date	Ange slutdatum	Vis vælg slutdato	Selecteer einddatum weergeven	Näytä valitse päättymispäivä	Enddatum auswählen anzeigen	Vis velg slutt dato
+recurring	Recurring	Upprepning	Gentagende	Terugkerend	Toistuva	Wiederkehrend	Gjentakende
 throughEditView	Through Edit View	Via Ändravyn	Via Redigersiden	Door bewerkweergave	Muokkausnäkymässä	Durch Bearbeitungsanzeige	Via endrevindu
 androidSettings	Android Settings	Android-inställningar	Android-indstillinger	Android-instellingen	Android-asetukset	Android-Einstellungen	Android-innstillinger
 stepByStep	Step-by-step	Stegvis	Trinvist	Stap voor stap	Vaihe vaiheelta	Schritt für Schritt	Via sekvens
@@ -355,8 +355,8 @@ showTemplates	Show templates	Visa mallar	Vis skabeloner	Toon sjablonen	Näytä m
 selectName	Select name	Välj namn	Vælg navn	Naam selecteren	Valitse nimi	Name auswählen	Velg navn
 selectDate	Select date	Välj datum	Vælg dato	Datum selecteren	Valitse päivämäärä	Datum auswählen	Velg dato
 selectType	Select type	Välj typ	Vælg type	Type selecteren	Valitse tyyppi	Typ auswählen	Velg type
-selectAllDay	Select all day						
-selectCategory	Select category						
+selectAllDay	Select all day	Välj heldag	Vælg hele dagen	Hele dag selecteren	Valitse koko päivä	Ganztägig auswählen	Velg hele dagen
+selectCategory	Select category	Kategori	Vælg kategori	Categorie selecteren	Valitse luokka	Kategorie auswählen	Velg kategori
 selectCheckable	Select checkable	Välj kvitterbar	Vælg kvittering	Afvinkbaarheid selecteren	Valitse tarkistettava	Kontrollierbar auswählen	Velg kvittering
 selectAvailableFor	Select available for	Välj tillgänglig för	Vælg tilgængelig for	Selecteer beschikbaar voor	Valitse käytettävissä	Wählen Sie verfügbar für	Velg tilgjengelig for
 selectAlarm	Select alarm	Välj larm	Vælg alarm	Alarm selecteren	Valitse hälytys	Alarm auswählen	Velg alarm
@@ -378,9 +378,9 @@ timeout	Timeout	Timeout	Timeout	Time-out	Aikakatkaisu	Zeitüberschreitung	Timeou
 timeoutSettingsHint	Returns to the home screen after a period of inactivity	Återgång till startsidan efter en tids inaktivitet	Gå tilbage til startsiden, efter en periode med inaktivitet	Gaat terug naar het thuisscherm na een periode van inactiviteit	Palaa aloitusnäyttöön käyttämättömyysjakson jälkeen	Rückkehr zum Startbildschirm nach einer Zeit der Inaktivität	Återgång till startsidan efter en tids inaktivitet
 noTimeout	No timeout	Ingen timeout	Ingen timeout	Geen time-out	Ei aikakatkaisua	Keine Zeitüberschreitung	Ingen timeout
 activateScreensaver	Activate Screensaver	Aktivera skärmsläckare	Aktivér pauseskærm	Screensaver activeren	Aktivoi näytönsäästäjä	Bildschirmschoner aktivieren	Aktiver skjermsparer
-onlyActivateScreensaverDuringNight	Only activate screensaver during night						
+onlyActivateScreensaverDuringNight	Only activate screensaver during night	Aktivera skärmsläcSkärmsläckare endast på nattenkare endast under natten	Aktiver kun pauseskærm om natten	Screensaver alleen 's nachts activeren	Ota näytönsäästäjä käyttöön vain öisin	Bildschirmschoner nur nachts aktivieren	Bare aktiver skjermsparer om natten
 menuRemovalWarning	Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking directly under the category symbols in the day calendar; left – right – left. This works even if they are hidden.	Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka direkt under kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.	Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke direkte nedenfor kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.	Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door direct hieronder de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.	Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää klikkaamalla alla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.	Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie unter Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.	Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke rett nedenfor kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.
-menuItemsDisabled	all menu items are disabled						
+menuItemsDisabled	all menu items are disabled	alla menyalternativ är inaktiverade	alle menupunkter er inaktiveret	alle menu-items zijn gedeactiveerd	kaikki valikkokohteet ovat pois käytöstä	alle Menüpunkte sind deaktiviert	alle menyvalg er deaktivert
 							
 ## Month Calendar							
 selectADayToViewDetails	Select a day to view more details	Välj en dag för att se mer detaljer	Vælg en dag for at se flere oplysninger	Selecteer een dag om meer details te bekijken	Valitse päivä nähdäksesi lisätietoja	Tag auswählen, um weitere Details anzuzeigen	Velg en dag for å se mer detaljer
@@ -463,16 +463,16 @@ allowAccessMicrophoneBody	Allow access to microphone to be able to record speech
 							
 ### About							
 about	About	Information	Information	Informatie	Tiedot	Information	Informasjon
-aboutMemoplanner	About						
-licenseNumber	License number						
-licenseValidDate	License valid date						
-loggedInUser	Logged in user account						
-aboutDevice	About the device						
-deviceName	Device name						
-serialNumber	Serial number						
+aboutMemoplanner	About	Information	Om	Over	Lisätietoja	Über	Om
+licenseNumber	License number	Licensnyckel	Licensnummer	Licentienummer	Lisenssinumero	Lizenznummer	Lisens nummer
+licenseValidDate	License valid date	Licensens slutdatum	Licens gyldighedsdato	Geldigheidsdatum licentie	Lisenssin viimeinen voimassaolopäivä	Gültigkeitsdatum Lizenz	Lisens gyldig dato
+loggedInUser	Logged in user account	Inloggat användarkonto	Logget ind brugerkonto	Ingelogd gebruikersaccount	Kirjautunut käyttäjätili	Angemeldetes Benutzerkonto	Innlogget brukerkonto
+aboutDevice	About the device	Om enheten	Om enheden	Over het apparaat	Tietoja laitteesta	Über das Gerät	Om enheten
+deviceName	Device name	Enhetens namn	Enhedsnavn	Apparaatnaam	Laitteen nimi	Gerätename	Enhetsnavn
+serialNumber	Serial number	Serienummer	Serienummer	Serienummer	Sarjanumero	Seriennummer	Serienummer
 version	Version	Version	Version	Versie	Versio	Version	Versjon
-androidVersion	Android version						
-iosVersion	iOS version						
+androidVersion	Android version	Android-version	Android-version	Android-versie	Android-versio	Android-Version	Android versjon
+iosVersion	iOS version	iOS version	iOS-version	iOS-versie	iOS-versio	iOS-Version	iOS versjon
 producer	Producer	Producent	Producent	Producent	Valmistaja	Hersteller	Produsent
 searchForUpdate	Search for update	Sök uppdatering	Søg opdatering	Zoeken naar update	Etsi päivitystä	Nach neuerer Version suchen	Søk oppdatering
 							

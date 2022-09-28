@@ -114,9 +114,7 @@ class LoginButton extends StatelessWidget {
     return Tts.data(
       data: translate.login,
       child: BlocBuilder<BaseUrlCubit, String>(builder: (context, baseUrl) {
-        final end = baseUrl == prod
-            ? ''
-            : ' (${backendEnvironments[baseUrl] ?? baseUrl})';
+        final end = baseUrl == prod ? '' : ' (${backendName(baseUrl)})';
         return BlocBuilder<LoginCubit, LoginState>(
           builder: (context, state) => ConstrainedBox(
             constraints: const BoxConstraints(minWidth: double.infinity),

@@ -33,7 +33,8 @@ void main() {
     final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(
           data: DayCalendarType.oneTimepillar.index,
-          identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+          identifier:
+              DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
     );
 
     mockGenericDb = MockGenericDb();
@@ -94,7 +95,7 @@ void main() {
     verifyUnsyncGeneric(
       tester,
       mockGenericDb,
-      key: MemoplannerSettings.dotsInTimepillarKey,
+      key: DayCalendarViewOptionsSettings.viewOptionsDotsKey,
       matcher: isTrue,
     );
   });

@@ -35,7 +35,7 @@ class ActivityTimepillarCard extends TimepillarCard {
     final timepillarInterval = measures.interval;
     final dotsInTimepillar = context.select(
         (MemoplannerSettingBloc settingsBloc) =>
-            settingsBloc.state.dotsInTimepillar);
+            settingsBloc.state.settings.dayCalendar.viewOptions.dots);
     final showCategoryColor = context.select(
         (MemoplannerSettingBloc settingsBloc) =>
             settingsBloc.state.settings.calendar.categories.showColors);
