@@ -74,7 +74,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           listenWhen: (previous, current) =>
               (previous is MemoplannerSettingsNotLoaded &&
                   current is! MemoplannerSettingsNotLoaded) ||
-              previous.alarm != current.alarm,
+              previous.settings.alarm != current.settings.alarm,
           listener: (context, state) =>
               context.read<NotificationBloc>().add(NotificationEvent()),
         ),

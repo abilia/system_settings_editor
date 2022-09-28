@@ -77,6 +77,7 @@ void main() {
       calendarType: DayCalendarType.oneTimepillar,
       occasion: Occasion.current,
       showNightCalendar: false,
+      day: startTime.onlyDays(),
     ));
     final measures = TimepillarMeasures(interval, 1);
     when(() => mocktimepillarMeasuresCubit.state).thenReturn(measures);
@@ -89,6 +90,7 @@ void main() {
             calendarType: DayCalendarType.oneTimepillar,
             occasion: Occasion.current,
             showNightCalendar: false,
+            day: startTime.onlyDays(),
           ),
         ],
       ),

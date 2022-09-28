@@ -4,6 +4,7 @@ import 'package:seagull/ui/all.dart';
 
 class AlarmSettingsPage extends StatelessWidget {
   const AlarmSettingsPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
@@ -14,7 +15,8 @@ class AlarmSettingsPage extends StatelessWidget {
     final scrollController = ScrollController();
     return BlocProvider<AlarmSettingsCubit>(
       create: (context) => AlarmSettingsCubit(
-        alarmSettings: context.read<MemoplannerSettingBloc>().state.alarm,
+        alarmSettings:
+            context.read<MemoplannerSettingBloc>().state.settings.alarm,
         genericCubit: context.read<GenericCubit>(),
       ),
       child: BlocProvider<AlarmSoundCubit>(
@@ -137,6 +139,7 @@ class _AlarmSelector extends StatelessWidget {
   final Sound sound;
   final ValueChanged<Sound> onChanged;
   final bool noSoundOption;
+
   const _AlarmSelector({
     required this.heading,
     required this.icon,
@@ -195,6 +198,7 @@ class _AlarmSelector extends StatelessWidget {
 
 class _AlarmDurationSelector extends StatelessWidget {
   final AlarmDuration duration;
+
   const _AlarmDurationSelector({
     required this.duration,
     Key? key,

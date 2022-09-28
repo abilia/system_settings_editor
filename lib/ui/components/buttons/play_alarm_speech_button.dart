@@ -23,14 +23,14 @@ class PlayAlarmSpeechButton extends StatelessWidget {
           children: [
             PlaySoundButton(sound: alarm.speech),
             BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-              builder: (context, settings) => settings
+              builder: (context, settingsState) => settingsState
                       is MemoplannerSettingsNotLoaded
                   ? const SizedBox.shrink()
                   : BlocProvider(
                       create: (context) => AlarmSpeechCubit(
                         alarm: alarm,
                         now: () => GetIt.I<Ticker>().time,
-                        alarmSettings: settings.alarm,
+                        alarmSettings: settingsState.settings.alarm,
                         soundCubit: context.read<SoundCubit>(),
                         touchStream: context.read<TouchDetectionCubit>().stream,
                         selectedNotificationStream:
