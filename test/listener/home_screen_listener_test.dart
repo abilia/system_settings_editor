@@ -39,7 +39,7 @@ void main() {
     setUp(() async {
       mockSettingBloc = MockMemoplannerSettingBloc();
       when(() => mockSettingBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(MemoplannerSettings()),
+        MemoplannerSettingsLoaded(const MemoplannerSettings()),
       );
       when(() => mockSettingBloc.stream)
           .thenAnswer((invocation) => const Stream.empty());
@@ -97,8 +97,8 @@ void main() {
 
     testWidgets('switches to WeekCalendar', (tester) async {
       when(() => mockSettingBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             functions: FunctionsSettings(
               startView: StartView.weekCalendar,
             ),
@@ -120,8 +120,8 @@ void main() {
 
     testWidgets('switches to Menu', (tester) async {
       when(() => mockSettingBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             functions: FunctionsSettings(
               startView: StartView.menu,
             ),
@@ -143,8 +143,8 @@ void main() {
 
     testWidgets('switches to WeekCalendar', (tester) async {
       when(() => mockSettingBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             functions: FunctionsSettings(
               startView: StartView.photoAlbum,
             ),

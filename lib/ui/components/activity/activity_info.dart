@@ -20,30 +20,30 @@ class ActivityInfoWithDots extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
-        selector: (state) => state.settings.activityView.displayQuarterHour,
-        builder: (context, displayQuarter) => Row(
-          children: [
-            if (displayQuarter) ActivityInfoSideDots(activityDay),
-            Expanded(
-              child: Padding(
-                padding: layout.activityPage.horizontalInfoPadding.copyWith(
-                  left: displayQuarter
-                      ? 0
-                      : layout.activityPage.horizontalInfoPadding.left,
-                ),
-                child: ActivityInfo(
-                  activityDay,
-                  previewImage: previewImage,
-                  alarm: alarm,
-                  showCheckButton: true,
-                ),
-              ),
+  Widget build(BuildContext context) {
+    final displayQuarterHour = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.activityView.displayQuarterHour);
+    return Row(
+      children: [
+        if (displayQuarterHour) ActivityInfoSideDots(activityDay),
+        Expanded(
+          child: Padding(
+            padding: layout.activityPage.horizontalInfoPadding.copyWith(
+              left: displayQuarterHour
+                  ? 0
+                  : layout.activityPage.horizontalInfoPadding.left,
             ),
-          ],
+            child: ActivityInfo(
+              activityDay,
+              previewImage: previewImage,
+              alarm: alarm,
+              showCheckButton: true,
+            ),
+          ),
         ),
-      );
+      ],
+    );
+  }
 }
 
 class ActivityInfo extends StatelessWidget with ActivityMixin {

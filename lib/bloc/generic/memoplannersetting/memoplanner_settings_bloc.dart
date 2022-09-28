@@ -7,16 +7,15 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-part 'memoplanner_setting_state.dart';
-part 'memoplanner_setting_event.dart';
+part 'memoplanner_settings_event.dart';
 
-class MemoplannerSettingBloc
-    extends Bloc<MemoplannerSettingsEvent, MemoplannerSettingsState> {
+class MemoplannerSettingsBloc
+    extends Bloc<MemoplannerSettingsEvent, MemoplannerSettings> {
   /// GenericBloc are null when faked in settings
   final GenericCubit? genericCubit;
   late final StreamSubscription? _genericSubscription;
 
-  MemoplannerSettingBloc({this.genericCubit})
+  MemoplannerSettingsBloc({this.genericCubit})
       : super(genericCubit?.state is GenericsLoaded
             ? MemoplannerSettingsLoaded(
                 MemoplannerSettings.fromSettingsMap(
@@ -37,7 +36,7 @@ class MemoplannerSettingBloc
   }
   Future _onEvent(
     MemoplannerSettingsEvent event,
-    Emitter<MemoplannerSettingsState> emit,
+    Emitter<MemoplannerSettings> emit,
   ) async {
     if (event is UpdateMemoplannerSettings) {
       await _mapUpdateMemoplannerSettings(event, emit);
@@ -51,7 +50,7 @@ class MemoplannerSettingBloc
   }
 
   Future _mapUpdateMemoplannerSettings(UpdateMemoplannerSettings event,
-      Emitter<MemoplannerSettingsState> emit) async {
+      Emitter<MemoplannerSettings> emit) async {
     emit(MemoplannerSettingsLoaded(
       MemoplannerSettings.fromSettingsMap(
         event.generics.filterMemoplannerSettingsData(),
@@ -60,7 +59,7 @@ class MemoplannerSettingBloc
   }
 
   Future _mapMemoplannerSettingsFailed(
-      Emitter<MemoplannerSettingsState> emit) async {
+      Emitter<MemoplannerSettings> emit) async {
     emit(const MemoplannerSettingsFailed());
   }
 

@@ -12,32 +12,30 @@ class MenuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final menuSettings =
+        context.select((MemoplannerSettingsBloc bloc) => bloc.state.menu);
     return Scaffold(
       appBar: const MenuAppBar(),
       floatingActionButton: const FloatingActions(),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       body: Padding(
         padding: layout.templates.m2,
-        child: BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
-            MenuSettings>(
-          selector: (state) => state.settings.menu,
-          builder: (context, menu) {
-            return Align(
-              alignment: Alignment.topCenter,
-              child: Wrap(
-                spacing: layout.menuPage.crossAxisSpacing,
-                runSpacing: layout.menuPage.mainAxisSpacing,
-                children: [
-                  if (menu.showCamera) const CameraButton(),
-                  if (menu.showPhotos) const MyPhotosButton(),
-                  if (menu.photoCalendarEnabled) const PhotoCalendarButton(),
-                  if (menu.quickSettingsEnabled) const QuickSettingsButton(),
-                  if (menu.showTemplates) const BasicTemplatesButton(),
-                  if (menu.showSettings) const SettingsButton(),
-                ],
-              ),
-            );
-          },
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: Wrap(
+            spacing: layout.menuPage.crossAxisSpacing,
+            runSpacing: layout.menuPage.mainAxisSpacing,
+            children: [
+              if (menuSettings.showCamera) const CameraButton(),
+              if (menuSettings.showPhotos) const MyPhotosButton(),
+              if (menuSettings.photoCalendarEnabled)
+                const PhotoCalendarButton(),
+              if (menuSettings.quickSettingsEnabled)
+                const QuickSettingsButton(),
+              if (menuSettings.showTemplates) const BasicTemplatesButton(),
+              if (menuSettings.showSettings) const SettingsButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -141,13 +139,9 @@ class PhotoCalendarButton extends StatelessWidget {
     return MenuItemButton(
       icon: AbiliaIcons.photoCalendar,
       onPressed: () {
-        final photoAlbumTabIndex = context
-            .read<MemoplannerSettingBloc>()
-            .state
-            .settings
-            .functions
-            .display
-            .photoAlbumTabIndex;
+        final settings = context.read<MemoplannerSettingsBloc>().state;
+        final photoAlbumTabIndex =
+            settings.functions.display.photoAlbumTabIndex;
         DefaultTabController.of(context)?.index = photoAlbumTabIndex;
       },
       style: blueMenuButtonStyle,

@@ -56,77 +56,72 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
   @override
   Widget build(BuildContext context) {
     final activity = activityDay.activity;
-    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
-        ActivityViewSettings>(
-      selector: (state) => state.settings.activityView,
-      builder: (context, settings) {
-        final displayDeleteButton = settings.displayDeleteButton;
-        final displayEditButton = settings.displayEditButton;
-        final displayAlarmButton =
-            settings.displayAlarmButton && !activity.fullDay;
-        final displayUncheckButton = activityDay.isSignedOff;
-        final noButtons = [
-          displayDeleteButton,
-          displayEditButton,
-          displayAlarmButton,
-          displayUncheckButton,
-        ].isEmpty;
+    final activityViewSettings = context
+        .select((MemoplannerSettingsBloc bloc) => bloc.state.activityView);
+    final displayDeleteButton = activityViewSettings.displayDeleteButton;
+    final displayEditButton = activityViewSettings.displayEditButton;
+    final displayAlarmButton =
+        activityViewSettings.displayAlarmButton && !activity.fullDay;
+    final displayUncheckButton = activityDay.isSignedOff;
+    final noButtons = [
+      displayDeleteButton,
+      displayEditButton,
+      displayAlarmButton,
+      displayUncheckButton,
+    ].isEmpty;
 
-        if (noButtons) return const SizedBox.shrink();
+    if (noButtons) return const SizedBox.shrink();
 
-        final t = Translator.of(context).translate;
-        return BottomAppBar(
-          child: SizedBox(
-            height: layout.toolbar.height,
-            child: Row(
-              children: <Widget>[
-                if (displayUncheckButton)
-                  TextAndOrIconActionButtonLight(
-                    t.undo,
-                    AbiliaIcons.handiUncheck,
-                    key: TestKey.uncheckButton,
-                    onPressed: () async {
-                      await checkConfirmation(
-                        context,
-                        activityDay,
-                      );
-                    },
-                  ),
-                if (displayAlarmButton)
-                  TextAndOrIconActionButtonLight(
-                    t.alarm,
-                    activity.alarm.iconData(),
-                    key: TestKey.editAlarm,
-                    onPressed: () => _alarmButtonPressed(
-                      context,
-                      activityDay,
-                    ),
-                  ),
-                if (displayDeleteButton)
-                  TextAndOrIconActionButtonLight(
-                    t.delete,
-                    AbiliaIcons.deleteAllClear,
-                    onPressed: () => _deleteButtonPressed(
-                      context,
-                      activity,
-                    ),
-                  ),
-                if (displayEditButton)
-                  EditActivityButton(activityDay: activityDay),
-                TextAndOrIconActionButtonLight(
-                  Translator.of(context).translate.close,
-                  AbiliaIcons.navigationPrevious,
-                  key: TestKey.activityBackButton,
-                  onPressed: () => Navigator.of(context).maybePop(),
+    final t = Translator.of(context).translate;
+    return BottomAppBar(
+      child: SizedBox(
+        height: layout.toolbar.height,
+        child: Row(
+          children: <Widget>[
+            if (displayUncheckButton)
+              TextAndOrIconActionButtonLight(
+                t.undo,
+                AbiliaIcons.handiUncheck,
+                key: TestKey.uncheckButton,
+                onPressed: () async {
+                  await checkConfirmation(
+                    context,
+                    activityDay,
+                  );
+                },
+              ),
+            if (displayAlarmButton)
+              TextAndOrIconActionButtonLight(
+                t.alarm,
+                activity.alarm.iconData(),
+                key: TestKey.editAlarm,
+                onPressed: () => _alarmButtonPressed(
+                  context,
+                  activityDay,
                 ),
-              ]
-                  .map((b) => [const Spacer(), b, const Spacer()])
-                  .expand((w) => w)
-                  .toList(),
+              ),
+            if (displayDeleteButton)
+              TextAndOrIconActionButtonLight(
+                t.delete,
+                AbiliaIcons.deleteAllClear,
+                onPressed: () => _deleteButtonPressed(
+                  context,
+                  activity,
+                ),
+              ),
+            if (displayEditButton) EditActivityButton(activityDay: activityDay),
+            TextAndOrIconActionButtonLight(
+              Translator.of(context).translate.close,
+              AbiliaIcons.navigationPrevious,
+              key: TestKey.activityBackButton,
+              onPressed: () => Navigator.of(context).maybePop(),
             ),
-          ),
-        );
-      },
+          ]
+              .map((b) => [const Spacer(), b, const Spacer()])
+              .expand((w) => w)
+              .toList(),
+        ),
+      ),
     );
   }
 
@@ -245,9 +240,8 @@ class EditActivityButton extends StatelessWidget {
                       editActivityCubit: context.read<EditActivityCubit>(),
                       clockBloc: context.read<ClockBloc>(),
                       allowPassedStartTime: context
-                          .read<MemoplannerSettingBloc>()
+                          .read<MemoplannerSettingsBloc>()
                           .state
-                          .settings
                           .addActivity
                           .general
                           .allowPassedStartTime,

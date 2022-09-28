@@ -27,15 +27,15 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
   final ActivitiesBloc activitiesBloc;
   final TimerDb timerDb;
   final SettingsDb settingsDb;
-  final MemoplannerSettingBloc memoplannerSettingBloc;
+  final MemoplannerSettingsBloc memoplannerSettingBloc;
 
   Future _scheduleNotifications(
     NotificationEvent event,
     Emitter emit,
   ) async {
     final activitiesState = activitiesBloc.state;
-    final settingsState = memoplannerSettingBloc.state;
-    if (settingsState is MemoplannerSettingsNotLoaded ||
+    final settings = memoplannerSettingBloc.state;
+    if (settings is MemoplannerSettingsNotLoaded ||
         activitiesState is! ActivitiesLoaded) return;
 
     final now = DateTime.now();
@@ -48,7 +48,7 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
       timers: timers.toAlarm(),
       language: settingsDb.language,
       alwaysUse24HourFormat: settingsDb.alwaysUse24HourFormat,
-      settings: settingsState.settings.alarm,
+      settings: settings.alarm,
       fileStorage: GetIt.I<FileStorage>(),
     );
   }

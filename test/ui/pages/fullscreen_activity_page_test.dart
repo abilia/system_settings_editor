@@ -65,7 +65,7 @@ void main() {
     mockMemoplannerSettingBloc = MockMemoplannerSettingBloc();
 
     when(() => mockMemoplannerSettingBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(MemoplannerSettings(
+        MemoplannerSettingsLoaded(const MemoplannerSettings(
             alarm: AlarmSettings(showOngoingActivityInFullScreen: true))));
     mockActivityDb = MockActivityDb();
     when(() => mockActivityDb.getAllDirty())
@@ -133,7 +133,7 @@ void main() {
               BlocProvider<SpeechSettingsCubit>(
                 create: (context) => FakeSpeechSettingsCubit(),
               ),
-              BlocProvider<MemoplannerSettingBloc>(
+              BlocProvider<MemoplannerSettingsBloc>(
                 create: (context) => mockMemoplannerSettingBloc,
               ),
               BlocProvider<TimepillarCubit>(

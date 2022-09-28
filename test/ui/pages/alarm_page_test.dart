@@ -65,7 +65,7 @@ void main() {
   );
   final alarmNavigator = AlarmNavigator();
   late MockMemoplannerSettingBloc mockMPSettingsBloc;
-  late StreamController<MemoplannerSettingsState> mockMPSettingsBlocStream;
+  late StreamController<MemoplannerSettings> mockMPSettingsBlocStream;
   late StreamController<ActivitiesState> mockActivitiesBlocStream;
   late MockUserFileCubit mockUserFileCubit;
   late MockActivitiesBloc mockActivitiesBloc;
@@ -91,7 +91,7 @@ void main() {
               BlocProvider<SpeechSettingsCubit>(
                 create: (context) => FakeSpeechSettingsCubit(),
               ),
-              BlocProvider<MemoplannerSettingBloc>(
+              BlocProvider<MemoplannerSettingsBloc>(
                 create: (context) => mockMPSettingsBloc,
               ),
               BlocProvider<UserFileCubit>(
@@ -160,10 +160,9 @@ void main() {
     when(() => mockUserFileCubit.state)
         .thenReturn(const UserFilesLoaded([userFile]));
     mockMPSettingsBloc = MockMemoplannerSettingBloc();
-    when(() => mockMPSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-            MemoplannerSettings(alarm: AlarmSettings(durationMs: 0))));
-    mockMPSettingsBlocStream = StreamController<MemoplannerSettingsState>();
+    when(() => mockMPSettingsBloc.state).thenReturn(MemoplannerSettingsLoaded(
+        const MemoplannerSettings(alarm: AlarmSettings(durationMs: 0))));
+    mockMPSettingsBlocStream = StreamController<MemoplannerSettings>();
     final settingsStream = mockMPSettingsBlocStream.stream.asBroadcastStream();
     when(() => mockMPSettingsBloc.stream).thenAnswer((_) => settingsStream);
     mockActivitiesBloc = MockActivitiesBloc();
@@ -417,8 +416,8 @@ void main() {
         expect(find.byIcon(AbiliaIcons.stop), findsNothing);
         GetIt.I<Ticker>()
             .setFakeTime(startTime.add(defaultDuration), setTicker: false);
-        mockMPSettingsBlocStream.add(const MemoplannerSettingsLoaded(
-            MemoplannerSettings(alarm: AlarmSettings(durationMs: 0))));
+        mockMPSettingsBlocStream.add(MemoplannerSettingsLoaded(
+            const MemoplannerSettings(alarm: AlarmSettings(durationMs: 0))));
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // Should play

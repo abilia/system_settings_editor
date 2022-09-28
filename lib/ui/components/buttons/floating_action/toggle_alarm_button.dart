@@ -8,8 +8,8 @@ class ToggleAlarmButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final disabledUntilDate = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.alarm.disabledUntilDate);
+    final disabledUntilDate = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.alarm.disabledUntilDate);
     final now = context.watch<ClockBloc>().state;
     return Material(
       color: Colors.transparent,

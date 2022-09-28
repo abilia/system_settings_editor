@@ -4,7 +4,7 @@ import 'package:seagull/models/all.dart';
 
 class TimepillarMeasuresCubit extends Cubit<TimepillarMeasures> {
   final TimepillarCubit? _timepillarCubit;
-  final MemoplannerSettingBloc? _memoplannerSettingsBloc;
+  final MemoplannerSettingsBloc? _memoplannerSettingsBloc;
   StreamSubscription? _timepillarSubscription;
   StreamSubscription? _memoplannerSubscription;
   // Makes animated page transitions possible in DayCalendar
@@ -12,13 +12,13 @@ class TimepillarMeasuresCubit extends Cubit<TimepillarMeasures> {
 
   TimepillarMeasuresCubit({
     required TimepillarCubit timepillarCubit,
-    required MemoplannerSettingBloc memoplannerSettingsBloc,
+    required MemoplannerSettingsBloc memoplannerSettingsBloc,
   })  : _timepillarCubit = timepillarCubit,
         _memoplannerSettingsBloc = memoplannerSettingsBloc,
         super(TimepillarMeasures(
             timepillarCubit.state.interval,
-            memoplannerSettingsBloc.state.settings.dayCalendar.viewOptions
-                .timepillarZoom.zoomValue)) {
+            memoplannerSettingsBloc
+                .state.dayCalendar.viewOptions.timepillarZoom.zoomValue)) {
     _timepillarSubscription = timepillarCubit.stream.listen((state) {
       _onConditionsChanged();
     });
@@ -36,7 +36,7 @@ class TimepillarMeasuresCubit extends Cubit<TimepillarMeasures> {
   void _onConditionsChanged() {
     final interval = _timepillarCubit?.state.interval;
     final zoom = _memoplannerSettingsBloc
-        ?.state.settings.dayCalendar.viewOptions.timepillarZoom.zoomValue;
+        ?.state.dayCalendar.viewOptions.timepillarZoom.zoomValue;
     if (interval != null && zoom != null) {
       previousState = state;
       emit(TimepillarMeasures(interval, zoom));

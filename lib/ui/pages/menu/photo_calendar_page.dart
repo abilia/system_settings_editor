@@ -9,13 +9,13 @@ class PhotoCalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final photoCalendarLayout = layout.photoCalendarLayout;
-    final functions = context
-        .select((MemoplannerSettingBloc bloc) => bloc.state.settings.functions);
-    final display = functions.display;
-    final clockType = context.select((MemoplannerSettingBloc settings) =>
-        settings.state.settings.calendar.clockType);
-    final calendarDayColor = context.select((MemoplannerSettingBloc settings) =>
-        settings.state.settings.calendar.dayColor);
+    final functionsSettings =
+        context.select((MemoplannerSettingsBloc bloc) => bloc.state.functions);
+    final displaySettings = functionsSettings.display;
+    final clockType = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.calendar.clockType);
+    final calendarDayColor = context
+        .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayColor);
     final weekday =
         context.select((ClockBloc currentTime) => currentTime.state.weekday);
     final theme = weekdayTheme(
@@ -28,7 +28,7 @@ class PhotoCalendarPage extends StatelessWidget {
       data: theme.theme,
       child: WillPopScope(
         onWillPop: () async {
-          final index = display.menu ? display.menuTabIndex : 0;
+          final index = displaySettings.menu ? displaySettings.menuTabIndex : 0;
           DefaultTabController.of(context)?.index = index;
           return false;
         },
@@ -72,13 +72,13 @@ class PhotoCalendarPage extends StatelessWidget {
                               ? actionButtonStyleLight
                               : actionButtonStyleDark,
                           onPressed: () {
-                            final index =
-                                functions.startView == StartView.photoAlbum
-                                    ? 0
-                                    : functions.startViewIndex;
+                            final index = functionsSettings.startView ==
+                                    StartView.photoAlbum
+                                ? 0
+                                : functionsSettings.startViewIndex;
                             DefaultTabController.of(context)?.index = index;
                           },
-                          child: Icon(functions.startView.icon),
+                          child: Icon(functionsSettings.startView.icon),
                         ),
                       ),
                     ],
@@ -161,13 +161,13 @@ class PhotoCalendarAppBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    final memoSettingsState = context.watch<MemoplannerSettingBloc>().state;
-    final appBarSettings = memoSettingsState.settings.dayCalendar.appBar;
+    final settings = context.watch<MemoplannerSettingsBloc>().state;
+    final appBarSettings = settings.dayCalendar.appBar;
     final time = context.watch<ClockBloc>().state;
     return CalendarAppBar(
       textStyle: Theme.of(context).textTheme.headline4,
       day: time.onlyDays(),
-      calendarDayColor: memoSettingsState.settings.calendar.dayColor,
+      calendarDayColor: settings.calendar.dayColor,
       rows: AppBarTitleRows.day(
         displayWeekDay: appBarSettings.showDayPeriod,
         displayPartOfDay: appBarSettings.showWeekday,
@@ -175,7 +175,7 @@ class PhotoCalendarAppBar extends StatelessWidget
         currentTime: time,
         day: time.onlyDays(),
         dayPart: context.read<DayPartCubit>().state,
-        dayParts: memoSettingsState.settings.calendar.dayParts,
+        dayParts: settings.calendar.dayParts,
         langCode: Localizations.localeOf(context).toLanguageTag(),
         translator: Translator.of(context).translate,
         compactDay: false,

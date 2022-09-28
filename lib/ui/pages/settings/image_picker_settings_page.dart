@@ -16,7 +16,7 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
   void initState() {
     super.initState();
     final photoMenuSettings =
-        context.read<MemoplannerSettingBloc>().state.settings.photoMenu;
+        context.read<MemoplannerSettingsBloc>().state.photoMenu;
     _displayCamera = photoMenuSettings.displayCamera;
     _displayMyPhotos = photoMenuSettings.displayMyPhotos;
     _displayLocalImages = photoMenuSettings.displayLocalImages;

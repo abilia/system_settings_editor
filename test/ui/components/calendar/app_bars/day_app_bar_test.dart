@@ -32,7 +32,7 @@ void main() {
           BlocProvider<TimepillarCubit>(
             create: (context) => timepillarCubit,
           ),
-          BlocProvider<MemoplannerSettingBloc>(
+          BlocProvider<MemoplannerSettingsBloc>(
             create: (context) => memoplannerSettingsBlocMock,
           ),
           BlocProvider<DayPartCubit>(
@@ -66,7 +66,7 @@ void main() {
 
   testWidgets('Standard heading today', (WidgetTester tester) async {
     when(() => memoplannerSettingsBlocMock.state)
-        .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings()));
+        .thenReturn(MemoplannerSettingsLoaded(const MemoplannerSettings()));
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();

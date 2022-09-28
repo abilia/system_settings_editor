@@ -9,12 +9,15 @@ class MonthAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settings = context.watch<MemoplannerSettingBloc>().state.settings;
+    final monthCalendarSettings = context
+        .select((MemoplannerSettingsBloc bloc) => bloc.state.monthCalendar);
+    final dayColor = context
+        .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayColor);
     return MonthAppBarStepper(
-      showYear: settings.monthCalendar.showYear,
-      showBrowseButtons: settings.monthCalendar.showBrowseButtons,
-      showClock: settings.monthCalendar.showClock,
-      dayColor: settings.calendar.dayColor,
+      showYear: monthCalendarSettings.showYear,
+      showBrowseButtons: monthCalendarSettings.showBrowseButtons,
+      showClock: monthCalendarSettings.showClock,
+      dayColor: dayColor,
       showDay: true,
     );
   }

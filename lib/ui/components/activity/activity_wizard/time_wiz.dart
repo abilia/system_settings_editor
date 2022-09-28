@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class TimeWiz extends StatelessWidget {
@@ -35,24 +34,21 @@ class _TimeWizContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
-      selector: (state) => state.settings.addActivity.general.showEndTime,
-      builder: (context, showEndTime) =>
-          BlocSelector<EditActivityCubit, EditActivityState, TimeInterval>(
-        selector: (state) => state.timeInterval,
-        builder: (context, timeInterval) => TimeInputContent(
-          timeInput: TimeInput(
-            timeInterval.startTime,
-            timeInterval.sameTime || !showEndTime ? null : timeInterval.endTime,
-          ),
-          is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
-          onValidTimeInput: (newTimeInput) =>
-              context.read<EditActivityCubit>().changeTimeInterval(
-                    startTime: newTimeInput.startTime,
-                    endTime: newTimeInput.endTime,
-                  ),
-        ),
+    final showEndTime = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.addActivity.general.showEndTime);
+    final timeInterval =
+        context.select((EditActivityCubit cubit) => cubit.state.timeInterval);
+    return TimeInputContent(
+      timeInput: TimeInput(
+        timeInterval.startTime,
+        timeInterval.sameTime || !showEndTime ? null : timeInterval.endTime,
       ),
+      is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
+      onValidTimeInput: (newTimeInput) =>
+          context.read<EditActivityCubit>().changeTimeInterval(
+                startTime: newTimeInput.startTime,
+                endTime: newTimeInput.endTime,
+              ),
     );
   }
 }

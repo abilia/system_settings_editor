@@ -31,12 +31,11 @@ class CalendarScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final displayDayCalendarAppBar = context.select(
-        (MemoplannerSettingBloc bloc) =>
-            bloc.state.settings.dayCalendar.appBar.displayDayCalendarAppBar);
+    final displayAppbar = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.dayCalendar.appBar.displayDayCalendarAppBar);
 
     return Scaffold(
-      appBar: displayDayCalendarAppBar ? const DayCalendarAppBar() : null,
+      appBar: displayAppbar ? const DayCalendarAppBar() : null,
       floatingActionButton: const FloatingActions(),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       body: const Calendars(),
@@ -84,8 +83,8 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final isAgenda = context.select((MemoplannerSettingBloc b) =>
-        b.state.settings.dayCalendar.viewOptions.calendarType ==
+    final isAgenda = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.dayCalendar.viewOptions.calendarType ==
         DayCalendarType.list);
     return BlocListener<DayPickerBloc, DayPickerState>(
       listenWhen: (previous, current) => previous.index != current.index,
@@ -153,10 +152,9 @@ class CategoriesAndHiddenSettings extends StatelessWidget {
       final categoryLabelWidth =
           (boxConstraints.maxWidth - layout.timepillar.width) / 2;
       final settingsInaccessible = context.select(
-          (MemoplannerSettingBloc bloc) =>
-              bloc.state.settings.settingsInaccessible);
-      final showCategories = context.select((MemoplannerSettingBloc bloc) =>
-          bloc.state.settings.calendar.categories.show);
+          (MemoplannerSettingsBloc bloc) => bloc.state.settingsInaccessible);
+      final showCategories = context.select((MemoplannerSettingsBloc bloc) =>
+          bloc.state.calendar.categories.show);
 
       return Column(
         children: [

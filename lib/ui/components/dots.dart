@@ -310,44 +310,41 @@ class SideDotsLarge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
-      selector: (state) => state.settings.activityView.displayTimeLeft,
-      builder: (context, displayTimeLeft) {
-        return Column(
-          children: <Widget>[
-            const Spacer(),
-            Padding(
-              padding: layout.activityPage.horizontalInfoPadding,
-              child: _BigDots(
-                dots: max(dots, 1),
-                startTime: startTime,
-                endTime: endTime,
-                now: now,
-              ),
-            ),
-            Expanded(
-              child: Column(
-                children: <Widget>[
-                  if (displayTimeLeft)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Tts(
-                        child: Text(
-                          endTime
-                              .difference(now)
-                              .toUntilString(Translator.of(context).translate),
-                          key: TestKey.sideDotsTimeText,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+    final displayTimeLeft = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.activityView.displayTimeLeft);
+    return Column(
+      children: <Widget>[
+        const Spacer(),
+        Padding(
+          padding: layout.activityPage.horizontalInfoPadding,
+          child: _BigDots(
+            dots: max(dots, 1),
+            startTime: startTime,
+            endTime: endTime,
+            now: now,
+          ),
+        ),
+        Expanded(
+          child: Column(
+            children: <Widget>[
+              if (displayTimeLeft)
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Tts(
+                    child: Text(
+                      endTime
+                          .difference(now)
+                          .toUntilString(Translator.of(context).translate),
+                      key: TestKey.sideDotsTimeText,
+                      textAlign: TextAlign.center,
                     ),
-                  const Spacer(),
-                ],
-              ),
-            ),
-          ],
-        );
-      },
+                  ),
+                ),
+              const Spacer(),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

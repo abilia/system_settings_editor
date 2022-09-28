@@ -28,8 +28,8 @@ class MonthCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dayColor = context.select(
-        (MemoplannerSettingBloc bloc) => bloc.state.settings.calendar.dayColor);
+    final dayColor = context
+        .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayColor);
     return MonthBody(calendarDayColor: dayColor);
   }
 }
@@ -237,8 +237,8 @@ class MonthDayView extends StatelessWidget {
       fontSize: layout.monthCalendar.dayHeadingFontSize,
     );
     final dayPickerState = context.read<DayPickerBloc>().state;
-    final monthWeekColor = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.monthCalendar.monthWeekColor);
+    final monthWeekColor = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.monthCalendar.monthWeekColor);
     final highlighted =
         (day.isCurrent || dayPickerState.day.isAtSameDay(day.day));
     final borderRadius = BorderRadius.circular(highlighted
@@ -388,8 +388,8 @@ class MonthDayViewCompact extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyle = dayTheme.theme.textTheme.subtitle1 ?? subtitle1;
     final dayPickerState = context.read<DayPickerBloc>().state;
-    final monthWeekColor = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.monthCalendar.monthWeekColor);
+    final monthWeekColor = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.monthCalendar.monthWeekColor);
     final dayIsHighlighted =
         (day.isCurrent || dayPickerState.day.isAtSameDay(day.day));
 

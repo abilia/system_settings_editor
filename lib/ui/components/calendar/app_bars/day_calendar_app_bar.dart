@@ -8,25 +8,20 @@ class DayCalendarAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
-      selector: (state) => state.settings.dayCalendar.appBar.showBrowseButtons,
-      builder: (context, dayCaptionShowDayButtons) =>
-          BlocBuilder<DayPickerBloc, DayPickerState>(
-        builder: (context, dayPickerState) {
-          if (!dayCaptionShowDayButtons) {
-            return DayAppBar(day: dayPickerState.day);
-          }
+    final showBrowseButtons = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.dayCalendar.appBar.showBrowseButtons);
+    final day = context.select((DayPickerBloc bloc) => bloc.state.day);
+    if (!showBrowseButtons) {
+      return DayAppBar(day: day);
+    }
 
-          return DayAppBar(
-            day: dayPickerState.day,
-            leftAction: LeftNavButton(
-              onPressed: BlocProvider.of<TimepillarCubit>(context).previous,
-            ),
-            rightAction: RightNavButton(
-              onPressed: BlocProvider.of<TimepillarCubit>(context).next,
-            ),
-          );
-        },
+    return DayAppBar(
+      day: day,
+      leftAction: LeftNavButton(
+        onPressed: BlocProvider.of<TimepillarCubit>(context).previous,
+      ),
+      rightAction: RightNavButton(
+        onPressed: BlocProvider.of<TimepillarCubit>(context).next,
       ),
     );
   }

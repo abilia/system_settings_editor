@@ -34,7 +34,7 @@ class FakeAuthenticatedBlocsProvider extends StatelessWidget {
         BlocProvider<UserFileCubit>(create: (context) => FakeUserFileCubit()),
         BlocProvider<SortableBloc>(create: (context) => FakeSortableBloc()),
         BlocProvider<GenericCubit>(create: (context) => FakeGenericCubit()),
-        BlocProvider<MemoplannerSettingBloc>(
+        BlocProvider<MemoplannerSettingsBloc>(
             create: (context) => FakeMemoplannerSettingsBloc()),
         BlocProvider<DayPickerBloc>(create: (context) => FakeDayPickerBloc()),
         BlocProvider<DayEventsCubit>(create: (context) => FakeDayEventsCubit()),

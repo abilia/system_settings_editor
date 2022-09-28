@@ -17,7 +17,7 @@ import 'package:system_settings_editor/system_settings_editor.dart';
 class AuthenticatedBlocsProvider extends StatelessWidget {
   final Authenticated authenticatedState;
   final Widget child;
-  final MemoplannerSettingBloc? memoplannerSettingBloc;
+  final MemoplannerSettingsBloc? memoplannerSettingBloc;
   final SortableBloc? sortableBloc;
 
   AuthenticatedBlocsProvider({
@@ -139,10 +139,10 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 syncBloc: context.read<SyncBloc>(),
               )..loadGenerics(),
             ),
-            BlocProvider<MemoplannerSettingBloc>(
+            BlocProvider<MemoplannerSettingsBloc>(
               create: (context) =>
                   memoplannerSettingBloc ??
-                  MemoplannerSettingBloc(
+                  MemoplannerSettingsBloc(
                     genericCubit: context.read<GenericCubit>(),
                   ),
             ),
@@ -171,7 +171,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               create: (context) => AlarmCubit(
                 clockBloc: context.read<ClockBloc>(),
                 activityRepository: context.read<ActivityRepository>(),
-                settingsBloc: context.read<MemoplannerSettingBloc>(),
+                settingsBloc: context.read<MemoplannerSettingsBloc>(),
                 selectedNotificationSubject: selectNotificationSubject,
                 timerAlarm: context
                     .read<TimerAlarmBloc>()
@@ -192,7 +192,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             ),
             BlocProvider<DayPartCubit>(
               create: (context) => DayPartCubit(
-                context.read<MemoplannerSettingBloc>(),
+                context.read<MemoplannerSettingsBloc>(),
                 context.read<ClockBloc>(),
               ),
             ),
@@ -200,7 +200,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               create: (context) => TimepillarCubit(
                 clockBloc: context.read<ClockBloc>(),
                 dayPickerBloc: context.read<DayPickerBloc>(),
-                memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
+                memoSettingsBloc: context.read<MemoplannerSettingsBloc>(),
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 timerAlarmBloc: context.read<TimerAlarmBloc>(),
                 dayPartCubit: context.read<DayPartCubit>(),
@@ -209,12 +209,13 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             BlocProvider<TimepillarMeasuresCubit>(
               create: (context) => TimepillarMeasuresCubit(
                 timepillarCubit: context.read<TimepillarCubit>(),
-                memoplannerSettingsBloc: context.read<MemoplannerSettingBloc>(),
+                memoplannerSettingsBloc:
+                    context.read<MemoplannerSettingsBloc>(),
               ),
             ),
             BlocProvider<NotificationBloc>(
               create: (context) => NotificationBloc(
-                memoplannerSettingBloc: context.read<MemoplannerSettingBloc>(),
+                memoplannerSettingBloc: context.read<MemoplannerSettingsBloc>(),
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 activityRepository: context.read<ActivityRepository>(),
                 settingsDb: GetIt.I<SettingsDb>(),
@@ -233,13 +234,13 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 create: (context) => WakeLockCubit(
                   screenTimeoutCallback: SystemSettingsEditor.screenOffTimeout,
                   battery: GetIt.I<Battery>(),
-                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
+                  memoSettingsBloc: context.read<MemoplannerSettingsBloc>(),
                 ),
               ),
               BlocProvider<InactivityCubit>(
                 create: (context) => InactivityCubit(
                   GetIt.I<Ticker>(),
-                  context.read<MemoplannerSettingBloc>(),
+                  context.read<MemoplannerSettingsBloc>(),
                   context.read<DayPartCubit>(),
                   context.read<TouchDetectionCubit>().stream,
                   context.read<AlarmCubit>().stream,

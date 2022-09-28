@@ -9,10 +9,10 @@ class EditActivityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    final generalSettings = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.addActivity.general);
-    final editActivitySettings = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.addActivity.editActivity);
+    final generalSettings = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.addActivity.general);
+    final editActivitySettings = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.addActivity.editActivity);
     final addRecurringActivity = generalSettings.addRecurringActivity;
     final fullDay =
         context.select((EditActivityCubit bloc) => bloc.state.activity.fullDay);

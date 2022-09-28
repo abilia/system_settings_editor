@@ -13,8 +13,8 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final editActivitySettings = context.select((MemoplannerSettingBloc b) =>
-        b.state.settings.addActivity.editActivity);
+    final editActivitySettings = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.addActivity.editActivity);
     final selectedImage =
         context.select((EditActivityCubit c) => c.state.selectedImage);
     final activity = context.select((EditActivityCubit c) => c.state.activity);
@@ -277,35 +277,31 @@ class CategoryWidget extends StatelessWidget {
     void onChange(v) => context
         .read<EditActivityCubit>()
         .replaceActivity(activity.copyWith(category: v));
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SubHeading(translator.category),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            SubHeading(translator.category),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Expanded(
-                  child: CategoryRadioField(
-                    category: Category.left,
-                    groupValue: activity.category,
-                    onChanged: onChange,
-                  ),
-                ),
-                SizedBox(width: layout.formPadding.verticalItemDistance),
-                Expanded(
-                  child: CategoryRadioField(
-                    category: Category.right,
-                    groupValue: activity.category,
-                    onChanged: onChange,
-                  ),
-                ),
-              ],
-            )
+            Expanded(
+              child: CategoryRadioField(
+                category: Category.left,
+                groupValue: activity.category,
+                onChanged: onChange,
+              ),
+            ),
+            SizedBox(width: layout.formPadding.verticalItemDistance),
+            Expanded(
+              child: CategoryRadioField(
+                category: Category.right,
+                groupValue: activity.category,
+                onChanged: onChange,
+              ),
+            ),
           ],
-        );
-      },
+        )
+      ],
     );
   }
 }
@@ -328,8 +324,8 @@ class CategoryRadioField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categoriesSettings = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.calendar.categories);
+    final categoriesSettings = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.calendar.categories);
     final imageAndName =
         isRight ? categoriesSettings.right : categoriesSettings.left;
     final fileId = imageAndName.image.id;
@@ -379,8 +375,8 @@ class AlarmWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
     final alarm = activity.alarm;
-    final generalSettings = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.addActivity.general);
+    final generalSettings = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.addActivity.general);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -463,45 +459,43 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
-    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
-        EditActivitySettings>(
-      selector: (state) => state.settings.addActivity.editActivity,
-      builder: (context, editActivity) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          if (editActivity.checkable)
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: layout.formPadding.verticalItemDistance,
-              ),
-              child: SwitchField(
-                key: TestKey.checkableSwitch,
-                leading: Icon(
-                  AbiliaIcons.handiCheck,
-                  size: layout.icon.small,
-                ),
-                value: activity.checkable,
-                onChanged: (v) => context
-                    .read<EditActivityCubit>()
-                    .replaceActivity(activity.copyWith(checkable: v)),
-                child: Text(translator.checkable),
-              ),
+    final editActivitySettings = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.addActivity.editActivity);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        if (editActivitySettings.checkable)
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: layout.formPadding.verticalItemDistance,
             ),
-          if (editActivity.removeAfter)
-            SwitchField(
-              key: TestKey.deleteAfterSwitch,
+            child: SwitchField(
+              key: TestKey.checkableSwitch,
               leading: Icon(
-                AbiliaIcons.deleteAllClear,
+                AbiliaIcons.handiCheck,
                 size: layout.icon.small,
               ),
-              value: activity.removeAfter,
+              value: activity.checkable,
               onChanged: (v) => context
                   .read<EditActivityCubit>()
-                  .replaceActivity(activity.copyWith(removeAfter: v)),
-              child: Text(translator.deleteAfter),
+                  .replaceActivity(activity.copyWith(checkable: v)),
+              child: Text(translator.checkable),
             ),
-        ],
-      ),
+          ),
+        if (editActivitySettings.removeAfter)
+          SwitchField(
+            key: TestKey.deleteAfterSwitch,
+            leading: Icon(
+              AbiliaIcons.deleteAllClear,
+              size: layout.icon.small,
+            ),
+            value: activity.removeAfter,
+            onChanged: (v) => context
+                .read<EditActivityCubit>()
+                .replaceActivity(activity.copyWith(removeAfter: v)),
+            child: Text(translator.deleteAfter),
+          ),
+      ],
     );
   }
 }
@@ -635,21 +629,19 @@ class EndDateWizWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return BlocBuilder<EditActivityCubit, EditActivityState>(
-      builder: (context, state) {
-        return SwitchField(
-          key: TestKey.noEndDateSwitch,
-          leading: Icon(
-            AbiliaIcons.basicActivity,
-            size: layout.icon.small,
-          ),
-          value: state.recursWithNoEnd,
-          onChanged: (v) => context
-              .read<EditActivityCubit>()
-              .changeRecurrentEndDate(v ? Recurs.noEndDate : null),
-          child: Text(translate.noEndDate),
-        );
-      },
+    final recursWithNoEnd = context
+        .select((EditActivityCubit cubit) => cubit.state.recursWithNoEnd);
+    return SwitchField(
+      key: TestKey.noEndDateSwitch,
+      leading: Icon(
+        AbiliaIcons.basicActivity,
+        size: layout.icon.small,
+      ),
+      value: recursWithNoEnd,
+      onChanged: (v) => context
+          .read<EditActivityCubit>()
+          .changeRecurrentEndDate(v ? Recurs.noEndDate : null),
+      child: Text(translate.noEndDate),
     );
   }
 }
@@ -663,42 +655,41 @@ class WeekDays extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     final dateFormat = DateFormat('', '${Localizations.localeOf(context)}');
-    final weekdays = dateFormat.dateSymbols.STANDALONEWEEKDAYS;
+    final weekdaysTts = dateFormat.dateSymbols.STANDALONEWEEKDAYS;
+    final weekdays =
+        context.select((RecurringWeekCubit bloc) => bloc.state.weekdays);
     return DefaultTextStyle(
       style: (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
           .copyWith(height: 1.5),
-      child: BlocBuilder<RecurringWeekCubit, RecurringWeekState>(
-        buildWhen: (previous, current) => previous.weekdays != current.weekdays,
-        builder: (context, state) => Padding(
-          padding: EdgeInsets.only(top: layout.selectableField.position.abs()),
-          child: Wrap(
-            spacing: layout.formPadding.horizontalItemDistance,
-            runSpacing: layout.formPadding.verticalItemDistance,
-            children: [
-              ...RecurringWeekState.allWeekdays.map(
-                (day) => BlocSelector<MemoplannerSettingBloc,
-                    MemoplannerSettingsState, DayTheme>(
-                  selector: (state) => weekdayTheme(
-                    dayColor: state.settings.calendar.dayColor,
-                    languageCode: Localizations.localeOf(context).languageCode,
-                    weekday: day,
+      child: Padding(
+        padding: EdgeInsets.only(top: layout.selectableField.position.abs()),
+        child: Wrap(
+          spacing: layout.formPadding.horizontalItemDistance,
+          runSpacing: layout.formPadding.verticalItemDistance,
+          children: [
+            ...RecurringWeekState.allWeekdays.map(
+              (day) => BlocSelector<MemoplannerSettingsBloc,
+                  MemoplannerSettings, DayTheme>(
+                selector: (state) => weekdayTheme(
+                  dayColor: state.calendar.dayColor,
+                  languageCode: Localizations.localeOf(context).languageCode,
+                  weekday: day,
+                ),
+                builder: (context, dayTheme) => SelectableField(
+                  text: Text(
+                    translate.shortWeekday(day),
+                    style: TextStyle(color: dayTheme.monthSurfaceColor),
                   ),
-                  builder: (context, dayTheme) => SelectableField(
-                    text: Text(
-                      translate.shortWeekday(day),
-                      style: TextStyle(color: dayTheme.monthSurfaceColor),
-                    ),
-                    color: dayTheme.dayColor,
-                    selected: state.weekdays.contains(day),
-                    onTap: () => context
-                        .read<RecurringWeekCubit>()
-                        .addOrRemoveWeekday(day),
-                    ttsData: weekdays[day % DateTime.daysPerWeek],
-                  ),
+                  color: dayTheme.dayColor,
+                  selected: weekdays.contains(day),
+                  onTap: () => context
+                      .read<RecurringWeekCubit>()
+                      .addOrRemoveWeekday(day),
+                  ttsData: weekdaysTts[day % DateTime.daysPerWeek],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

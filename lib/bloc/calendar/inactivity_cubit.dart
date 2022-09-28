@@ -11,7 +11,7 @@ const _timeToReturnToToday = Duration(minutes: 5);
 
 class InactivityCubit extends Cubit<InactivityState> {
   final Ticker ticker;
-  final MemoplannerSettingBloc settingsBloc;
+  final MemoplannerSettingsBloc settingsBloc;
   final DayPartCubit dayPartCubit;
 
   late StreamSubscription<DateTime> _clockSubscription;
@@ -36,8 +36,8 @@ class InactivityCubit extends Cubit<InactivityState> {
             .where(
               (state) =>
                   state.isNight &&
-                  settingsBloc.state.settings.functions.timeout
-                      .screensaverOnlyDuringNight,
+                  settingsBloc
+                      .state.functions.timeout.screensaverOnlyDuringNight,
             )
             .map((_) => ticker.time),
       ],
@@ -50,8 +50,8 @@ class InactivityCubit extends Cubit<InactivityState> {
             .where(
               (state) =>
                   state.isMorning &&
-                  settingsBloc.state.settings.functions.timeout
-                      .screensaverOnlyDuringNight,
+                  settingsBloc
+                      .state.functions.timeout.screensaverOnlyDuringNight,
             )
             .map((_) => ticker.time),
         MergeStream(
@@ -67,7 +67,7 @@ class InactivityCubit extends Cubit<InactivityState> {
   void _ticking(DateTime time) {
     final state = this.state;
     if (state is! _NotFinalState) return;
-    final timeout = settingsBloc.state.settings.functions.timeout;
+    final timeout = settingsBloc.state.functions.timeout;
     final realTimeToReturnToToday =
         timeout.hasDuration && _timeToReturnToToday > timeout.duration
             ? timeout.duration

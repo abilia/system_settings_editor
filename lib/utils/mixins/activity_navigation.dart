@@ -40,18 +40,16 @@ mixin ActivityNavigation {
   Future<void> navigateToActivityWizardWithContext(
     BuildContext context,
     List<BlocProvider> authProviders,
-  ) =>
-      _navigateToActivityWizard(
-        authProviders: authProviders,
-        navigator: Navigator.of(context),
-        defaultsSettings: context
-            .read<MemoplannerSettingBloc>()
-            .state
-            .settings
-            .addActivity
-            .defaults,
-        day: context.read<DayPickerBloc>().state.day,
-      );
+  ) {
+    final settings = context.read<MemoplannerSettingsBloc>().state;
+    final defaultsSettings = settings.addActivity.defaults;
+    return _navigateToActivityWizard(
+      authProviders: authProviders,
+      navigator: Navigator.of(context),
+      defaultsSettings: defaultsSettings,
+      day: context.read<DayPickerBloc>().state.day,
+    );
+  }
 
   Future<void> _navigateToActivityWizard({
     required NavigatorState navigator,
@@ -76,8 +74,7 @@ mixin ActivityNavigation {
             ),
             BlocProvider<WizardCubit>(
               create: (context) {
-                final settings =
-                    context.read<MemoplannerSettingBloc>().state.settings;
+                final settings = context.read<MemoplannerSettingsBloc>().state;
                 final addActivitySettings = settings.addActivity;
                 final showCategories = settings.calendar.categories.show;
                 return addActivitySettings.mode == AddActivityMode.editView

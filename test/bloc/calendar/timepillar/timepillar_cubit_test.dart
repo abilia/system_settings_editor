@@ -16,7 +16,7 @@ void main() {
   late ActivityRepository mockActivityRepository;
   late ActivitiesBloc activitiesBloc;
   late DayPickerBloc dayPickerBloc;
-  late MemoplannerSettingBloc memoplannerSettingBloc;
+  late MemoplannerSettingsBloc memoplannerSettingBloc;
   late TimerAlarmBloc timerAlarmBloc;
   late StreamController<DateTime> clockStream;
   final now = DateTime(2022, 05, 12, 13, 15);
@@ -31,8 +31,8 @@ void main() {
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
     memoplannerSettingBloc = MockMemoplannerSettingBloc();
     when(() => memoplannerSettingBloc.state).thenReturn(
-      const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
+      MemoplannerSettingsLoaded(
+        const MemoplannerSettings(
           calendar: GeneralCalendarSettings(
             categories: CategoriesSettings(
               show: false,

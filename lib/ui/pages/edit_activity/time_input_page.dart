@@ -208,8 +208,8 @@ class _TimeInputContentState extends State<TimeInputContent> {
     final theme = Theme.of(context);
     final translate = Translator.of(context).translate;
     final bottomNavigationBuilder = widget.bottomNavigationBuilder;
-    final showEndTime = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.addActivity.general.showEndTime);
+    final showEndTime = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.addActivity.general.showEndTime);
     return Column(
       children: [
         Theme(

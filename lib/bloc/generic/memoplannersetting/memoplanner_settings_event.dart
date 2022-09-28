@@ -1,4 +1,4 @@
-part of 'memoplanner_setting_bloc.dart';
+part of 'memoplanner_settings_bloc.dart';
 
 abstract class MemoplannerSettingsEvent extends Equatable {
   const MemoplannerSettingsEvent();

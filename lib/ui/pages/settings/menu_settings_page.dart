@@ -9,10 +9,10 @@ class MenuSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    final initial = context.read<MemoplannerSettingBloc>().state.settings.menu;
+    final settings = context.read<MemoplannerSettingsBloc>().state;
     return BlocProvider<MenuSettingsCubit>(
       create: (context) => MenuSettingsCubit(
-        initial,
+        settings.menu,
         context.read<GenericCubit>(),
       ),
       child: BlocBuilder<MenuSettingsCubit, MenuSettings>(
@@ -27,10 +27,10 @@ class MenuSettingsPage extends StatelessWidget {
               forwardNavigationWidget: Builder(
                 builder: (context) => OkButton(
                   onPressed: () async {
-                    final menuSetttingsCubit =
-                        context.read<MenuSettingsCubit>();
-                    final showSettingsChangeToDisable = initial.showSettings &&
-                        !menuSetttingsCubit.state.showSettings;
+                    final menuSettingsCubit = context.read<MenuSettingsCubit>();
+                    final showSettingsChangeToDisable =
+                        settings.menu.showSettings &&
+                            !menuSettingsCubit.state.showSettings;
                     final navigator = Navigator.of(context);
                     if (showSettingsChangeToDisable) {
                       final answer = await showViewDialog<bool>(
@@ -42,7 +42,7 @@ class MenuSettingsPage extends StatelessWidget {
                       );
                       if (answer != true) return;
                     }
-                    menuSetttingsCubit.save();
+                    menuSettingsCubit.save();
                     navigator.pop();
                   },
                 ),

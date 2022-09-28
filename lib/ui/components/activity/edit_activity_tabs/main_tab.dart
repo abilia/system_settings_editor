@@ -11,10 +11,10 @@ class MainTab extends StatelessWidget with EditActivityTab {
     final activity = context
         .select<EditActivityCubit, Activity>((cubit) => cubit.state.activity);
     final editActivitySettings =
-        context.select<MemoplannerSettingBloc, EditActivitySettings>(
-            (cubit) => cubit.state.settings.addActivity.editActivity);
-    final showCategories = context.select<MemoplannerSettingBloc, bool>(
-        (cubit) => cubit.state.settings.calendar.categories.show);
+        context.select<MemoplannerSettingsBloc, EditActivitySettings>(
+            (cubit) => cubit.state.addActivity.editActivity);
+    final showCategories = context.select<MemoplannerSettingsBloc, bool>(
+        (cubit) => cubit.state.calendar.categories.show);
 
     return ScrollArrows.vertical(
       controller: scrollController,

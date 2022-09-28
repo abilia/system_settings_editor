@@ -207,9 +207,8 @@ class SliverEventList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categoriesSettings =
-        context.select<MemoplannerSettingBloc, CategoriesSettings>(
-            (bloc) => bloc.state.settings.calendar.categories);
+    final categoriesSettings = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.calendar.categories);
     return SliverPadding(
       padding: layout.templates.m1.onlyHorizontal,
       sliver: SliverList(

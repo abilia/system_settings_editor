@@ -38,8 +38,8 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    final displaySettings = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.dayCalendar.viewOptions.display);
+    final displaySettings = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.dayCalendar.viewOptions.display);
     final dividerPad = EdgeInsets.only(
         top: layout.formPadding.horizontalItemDistance,
         bottom: layout.formPadding.groupBottomDistance);

@@ -33,7 +33,7 @@ void main() {
 
   Widget wrapWithMaterialApp(
     Widget widget, {
-    MemoplannerSettingBloc? memoplannerSettingBloc,
+    MemoplannerSettingsBloc? memoplannerSettingBloc,
     SortableBloc? sortableBloc,
     String? languageOverride,
   }) =>
@@ -412,7 +412,7 @@ void main() {
   });
 
   group('MemoPlanner settings', () {
-    late MemoplannerSettingBloc memoplannerSettingBlocMock;
+    late MemoplannerSettingsBloc memoplannerSettingBlocMock;
 
     setUp(() {
       initializeDateFormatting();
@@ -426,8 +426,8 @@ void main() {
         (WidgetTester tester) async {
       const testActivityTitle = 'fulldayactivity';
       when(() => memoplannerSettingBlocMock.state)
-          .thenReturn(const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
+          .thenReturn(MemoplannerSettingsLoaded(
+        const MemoplannerSettings(
           addActivity: AddActivitySettings(
             general: GeneralAddActivitySettings(allowPassedStartTime: false),
           ),
@@ -467,8 +467,8 @@ void main() {
         (WidgetTester tester) async {
       const testActivityTitle = 'fulldayactivity';
       when(() => memoplannerSettingBlocMock.state)
-          .thenReturn(const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
+          .thenReturn(MemoplannerSettingsLoaded(
+        const MemoplannerSettings(
           addActivity: AddActivitySettings(
             general: GeneralAddActivitySettings(allowPassedStartTime: false),
           ),
@@ -534,8 +534,8 @@ void main() {
       testWidgets('Color settings with colors on all days',
           (WidgetTester tester) async {
         when(() => memoplannerSettingBlocMock.state).thenReturn(
-          const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
+          MemoplannerSettingsLoaded(
+            const MemoplannerSettings(
               calendar: GeneralCalendarSettings(
                 dayColor: DayColor.allDays,
               ),
@@ -571,8 +571,8 @@ void main() {
       testWidgets('Color settings with colors only on weekends',
           (WidgetTester tester) async {
         when(() => memoplannerSettingBlocMock.state).thenReturn(
-          const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
+          MemoplannerSettingsLoaded(
+            const MemoplannerSettings(
               calendar: GeneralCalendarSettings(
                 dayColor: DayColor.saturdayAndSunday,
               ),
@@ -608,8 +608,8 @@ void main() {
 
       testWidgets('Color settings with no colors', (WidgetTester tester) async {
         when(() => memoplannerSettingBlocMock.state).thenReturn(
-          const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
+          MemoplannerSettingsLoaded(
+            const MemoplannerSettings(
               calendar: GeneralCalendarSettings(
                 dayColor: DayColor.noColors,
               ),
@@ -648,8 +648,8 @@ void main() {
       testWidgets('show next/previous day buttons',
           (WidgetTester tester) async {
         when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+            .thenReturn(MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             dayCalendar: DayCalendarSettings(
               appBar: AppBarSettings(showBrowseButtons: true),
             ),
@@ -671,8 +671,8 @@ void main() {
       testWidgets('do not show next/previous day buttons',
           (WidgetTester tester) async {
         when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+            .thenReturn(MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             dayCalendar: DayCalendarSettings(
               appBar: AppBarSettings(showBrowseButtons: false),
             ),
@@ -696,8 +696,8 @@ void main() {
       testWidgets('Timepillar is left when no categories',
           (WidgetTester tester) async {
         when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+            .thenReturn(MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             calendar: GeneralCalendarSettings(
               categories: CategoriesSettings(show: false),
             ),
@@ -723,8 +723,8 @@ void main() {
           'Center of timepillar is center of page when categories are on',
           (WidgetTester tester) async {
         when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+            .thenReturn(MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             calendar: GeneralCalendarSettings(
               categories: CategoriesSettings(show: true),
             ),
@@ -1219,7 +1219,7 @@ void main() {
   });
 
   group('disable alarm button', () {
-    late MemoplannerSettingBloc memoplannerSettingBlocMock;
+    late MemoplannerSettingsBloc memoplannerSettingBlocMock;
 
     setUp(() {
       initializeDateFormatting();
@@ -1230,8 +1230,9 @@ void main() {
 
     testWidgets('displays alarm button', (WidgetTester tester) async {
       when(() => memoplannerSettingBlocMock.state)
-          .thenReturn(const MemoplannerSettingsLoaded(
-        MemoplannerSettings(alarm: AlarmSettings(showAlarmOnOffSwitch: true)),
+          .thenReturn(MemoplannerSettingsLoaded(
+        const MemoplannerSettings(
+            alarm: AlarmSettings(showAlarmOnOffSwitch: true)),
       ));
 
       await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
@@ -1248,8 +1249,9 @@ void main() {
 
     testWidgets("don't display alarm button", (WidgetTester tester) async {
       when(() => memoplannerSettingBlocMock.state)
-          .thenReturn(const MemoplannerSettingsLoaded(
-        MemoplannerSettings(alarm: AlarmSettings(showAlarmOnOffSwitch: false)),
+          .thenReturn(MemoplannerSettingsLoaded(
+        const MemoplannerSettings(
+            alarm: AlarmSettings(showAlarmOnOffSwitch: false)),
       ));
 
       await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),

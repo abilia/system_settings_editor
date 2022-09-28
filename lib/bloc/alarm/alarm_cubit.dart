@@ -10,7 +10,7 @@ class AlarmCubit extends Cubit<NotificationAlarm?> {
   late final StreamSubscription _selectedNotificationSubscription;
   late final StreamSubscription _timerSubscription;
   final ActivityRepository activityRepository;
-  final MemoplannerSettingBloc settingsBloc;
+  final MemoplannerSettingsBloc settingsBloc;
 
   AlarmCubit({
     required Stream<NotificationAlarm> selectedNotificationSubject,
@@ -26,7 +26,7 @@ class AlarmCubit extends Cubit<NotificationAlarm?> {
   }
 
   Future<void> _newMinute(DateTime now) async {
-    if (settingsBloc.state.settings.alarm.disabledUntilDate.isAfter(now)) {
+    if (settingsBloc.state.alarm.disabledUntilDate.isAfter(now)) {
       return;
     }
     final activities = await activityRepository.allBetween(

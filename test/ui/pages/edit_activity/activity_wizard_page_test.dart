@@ -26,7 +26,7 @@ void main() {
   late MockSortableBloc mockSortableBloc;
   late MockUserFileCubit mockUserFileCubit;
   late MockTimerCubit mockTimerCubit;
-  late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
+  late MemoplannerSettingsBloc mockMemoplannerSettingsBloc;
 
   setUpAll(() {
     registerFallbackValues();
@@ -53,8 +53,8 @@ void main() {
     mockTimerCubit = MockTimerCubit();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-      const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
+      MemoplannerSettingsLoaded(
+        const MemoplannerSettings(
           addActivity: AddActivitySettings(
             mode: AddActivityMode.stepByStep,
           ),
@@ -108,7 +108,7 @@ void main() {
               BlocProvider<ClockBloc>(
                 create: (context) => ClockBloc.fixed(startTime),
               ),
-              BlocProvider<MemoplannerSettingBloc>.value(
+              BlocProvider<MemoplannerSettingsBloc>.value(
                 value: mockMemoplannerSettingsBloc,
               ),
               BlocProvider<ActivitiesBloc>(create: (_) => FakeActivitiesBloc()),
@@ -117,7 +117,7 @@ void main() {
                   day: today,
                   defaultsSettings: DefaultsAddActivitySettings(
                       alarm: mockMemoplannerSettingsBloc
-                          .state.settings.addActivity.defaults.alarm),
+                          .state.addActivity.defaults.alarm),
                   basicActivityData: basicActivityData,
                   calendarId: 'calendarId',
                 ),
@@ -127,15 +127,11 @@ void main() {
                   activitiesBloc: context.read<ActivitiesBloc>(),
                   clockBloc: context.read<ClockBloc>(),
                   editActivityCubit: context.read<EditActivityCubit>(),
-                  addActivitySettings: context
-                      .read<MemoplannerSettingBloc>()
-                      .state
-                      .settings
-                      .addActivity,
+                  addActivitySettings:
+                      context.read<MemoplannerSettingsBloc>().state.addActivity,
                   showCategories: context
-                      .read<MemoplannerSettingBloc>()
+                      .read<MemoplannerSettingsBloc>()
                       .state
-                      .settings
                       .calendar
                       .categories
                       .show,
@@ -157,7 +153,7 @@ void main() {
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(
                   screenTimeoutCallback: Future.value(30.minutes()),
-                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
+                  memoSettingsBloc: context.read<MemoplannerSettingsBloc>(),
                   battery: FakeBattery(),
                 ),
               ),
@@ -251,7 +247,7 @@ void main() {
 
     testWidgets('only title step', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
+        MemoplannerSettingsLoaded(
           titleOnlyMemoSettings,
         ),
       );
@@ -279,7 +275,7 @@ void main() {
         'SGC-1805 submitting from the keyboard behaves the same as clicking next',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
+        MemoplannerSettingsLoaded(
           titleOnlyMemoSettings,
         ),
       );
@@ -306,8 +302,8 @@ void main() {
     testWidgets('title and image shows no warning step',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               mode: AddActivityMode.stepByStep,
               stepByStep: StepByStepSettings(
@@ -361,7 +357,7 @@ void main() {
 
     testWidgets('title shows when going back', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
+        MemoplannerSettingsLoaded(
           titleOnlyMemoSettings,
         ),
       );
@@ -389,8 +385,8 @@ void main() {
 
     testWidgets('title from basic activity', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               mode: AddActivityMode.stepByStep,
               general: GeneralAddActivitySettings(
@@ -448,8 +444,8 @@ void main() {
   group('time step', () {
     testWidgets('time from basic activity', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               mode: AddActivityMode.stepByStep,
               general: GeneralAddActivitySettings(
@@ -499,8 +495,8 @@ void main() {
 
     testWidgets('can enter start and end time', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               mode: AddActivityMode.stepByStep,
               general: GeneralAddActivitySettings(
@@ -547,8 +543,8 @@ void main() {
 
     testWidgets('time is saved', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               mode: AddActivityMode.stepByStep,
               general: GeneralAddActivitySettings(
@@ -620,7 +616,7 @@ void main() {
 
     testWidgets('only full day step', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
+        MemoplannerSettingsLoaded(
           fullDayOnlyMemoSettings,
         ),
       );
@@ -635,8 +631,8 @@ void main() {
     testWidgets('Select full day removes time and category step',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               mode: AddActivityMode.stepByStep,
               general: GeneralAddActivitySettings(
@@ -712,7 +708,7 @@ void main() {
     testWidgets('Not checking full day activity shows category step',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
+        MemoplannerSettingsLoaded(
           fullDayAndCheckableMemoSettings,
         ),
       );
@@ -734,8 +730,8 @@ void main() {
     testWidgets('If categories is off do not show category step',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             calendar: GeneralCalendarSettings(
               categories: CategoriesSettings(
                 show: false,
@@ -804,7 +800,7 @@ void main() {
 
     testWidgets('only available for step', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
+        MemoplannerSettingsLoaded(
           availableForOnlyMemoSettings,
         ),
       );
@@ -843,7 +839,7 @@ void main() {
 
     testWidgets('only checkable step', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
+        MemoplannerSettingsLoaded(
           checkableOnlyMemoSettings,
         ),
       );
@@ -883,7 +879,7 @@ void main() {
 
     testWidgets('only remove after step', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(removeAfterOnlyMemoSettings),
+        MemoplannerSettingsLoaded(removeAfterOnlyMemoSettings),
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();
@@ -922,7 +918,7 @@ void main() {
     testWidgets('changing recurring changes save button',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(recurringOnly),
+        MemoplannerSettingsLoaded(recurringOnly),
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();
@@ -958,27 +954,29 @@ void main() {
     testWidgets('weekly recurring shows weekly recurring',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(MemoplannerSettings(
-          addActivity: AddActivitySettings(
-            mode: AddActivityMode.stepByStep,
-            general: GeneralAddActivitySettings(
-              addRecurringActivity: true,
-            ),
-            stepByStep: StepByStepSettings(
-              template: false,
-              date: false,
-              image: false,
-              title: true,
-              fullDay: true,
-              availability: false,
-              checkable: false,
-              removeAfter: false,
-              alarm: false,
-              notes: false,
-              reminders: false,
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
+            addActivity: AddActivitySettings(
+              mode: AddActivityMode.stepByStep,
+              general: GeneralAddActivitySettings(
+                addRecurringActivity: true,
+              ),
+              stepByStep: StepByStepSettings(
+                template: false,
+                date: false,
+                image: false,
+                title: true,
+                fullDay: true,
+                availability: false,
+                checkable: false,
+                removeAfter: false,
+                alarm: false,
+                notes: false,
+                reminders: false,
+              ),
             ),
           ),
-        )),
+        ),
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();
@@ -1041,7 +1039,7 @@ void main() {
     testWidgets('monthly recurring shows monthly recurring',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(MemoplannerSettings(
+        MemoplannerSettingsLoaded(const MemoplannerSettings(
           addActivity: AddActivitySettings(
             mode: AddActivityMode.stepByStep,
             general: GeneralAddActivitySettings(
@@ -1123,27 +1121,29 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(MemoplannerSettings(
-          addActivity: AddActivitySettings(
-            mode: AddActivityMode.stepByStep,
-            general: GeneralAddActivitySettings(
-              addRecurringActivity: true,
-            ),
-            stepByStep: StepByStepSettings(
-              template: false,
-              date: false,
-              image: false,
-              title: true,
-              fullDay: true,
-              availability: false,
-              checkable: false,
-              removeAfter: false,
-              alarm: false,
-              notes: false,
-              reminders: false,
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
+            addActivity: AddActivitySettings(
+              mode: AddActivityMode.stepByStep,
+              general: GeneralAddActivitySettings(
+                addRecurringActivity: true,
+              ),
+              stepByStep: StepByStepSettings(
+                template: false,
+                date: false,
+                image: false,
+                title: true,
+                fullDay: true,
+                availability: false,
+                checkable: false,
+                removeAfter: false,
+                alarm: false,
+                notes: false,
+                reminders: false,
+              ),
             ),
           ),
-        )),
+        ),
       );
 
       // Act
@@ -1197,7 +1197,7 @@ void main() {
 
     testWidgets('only image step', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(imageOnlyMemoSettings),
+        MemoplannerSettingsLoaded(imageOnlyMemoSettings),
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();
@@ -1233,7 +1233,7 @@ void main() {
 
     testWidgets('reminders step present', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(remindersOnlyMemoSettings),
+        MemoplannerSettingsLoaded(remindersOnlyMemoSettings),
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();
@@ -1254,7 +1254,7 @@ void main() {
 
     testWidgets('no reminders when full day', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(remindersOnlyMemoSettings),
+        MemoplannerSettingsLoaded(remindersOnlyMemoSettings),
       );
       await tester.pumpWidget(wizardPage());
       await tester.pumpAndSettle();
@@ -1271,8 +1271,8 @@ void main() {
   group('extra function step', () {
     testWidgets('Both show', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               mode: AddActivityMode.stepByStep,
               general: GeneralAddActivitySettings(
@@ -1313,8 +1313,8 @@ void main() {
 
     testWidgets('only note show', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               mode: AddActivityMode.stepByStep,
               general: GeneralAddActivitySettings(
@@ -1361,8 +1361,8 @@ void main() {
 
     testWidgets('only checklist show', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               mode: AddActivityMode.stepByStep,
               general: GeneralAddActivitySettings(
@@ -1434,7 +1434,7 @@ void main() {
 
     testWidgets('alarm step shown', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
+        MemoplannerSettingsLoaded(
           memoSettings,
         ),
       );
@@ -1457,7 +1457,7 @@ void main() {
 
     testWidgets('no alarm step when fullDay', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
+        MemoplannerSettingsLoaded(
           memoSettings,
         ),
       );
