@@ -8,37 +8,34 @@ class MonthDisplaySettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocBuilder<MonthCalendarSettingsCubit, MonthCalendarSettingsState>(
-      builder: (context, state) {
-        void onWeekColorChanged(WeekColor? w) => context
-            .read<MonthCalendarSettingsCubit>()
-            .changeMonthCalendarSettings(state.copyWith(color: w));
-        return SettingsTab(
-          children: [
-            Tts(child: Text(t.display)),
-            Padding(
-              padding: layout.settings.monthDaysPadding,
-              child: const _MonthCalendarPreview(),
-            ),
-            SizedBox(
-              height: layout.formPadding.verticalItemDistance,
-            ),
-            RadioField(
-              key: TestKey.monthColorSwith,
-              value: WeekColor.captions,
-              groupValue: state.color,
-              onChanged: onWeekColorChanged,
-              text: Text(t.captions),
-            ),
-            RadioField(
-              value: WeekColor.columns,
-              groupValue: state.color,
-              onChanged: onWeekColorChanged,
-              text: Text(t.columns),
-            ),
-          ],
-        );
-      },
+    final monthCalendarCubit = context.watch<MonthCalendarSettingsCubit>();
+    final settings = monthCalendarCubit.state;
+    void onWeekColorChanged(int? index) => monthCalendarCubit
+        .changeMonthCalendarSettings(settings.copyWith(colorTypeIndex: index));
+    return SettingsTab(
+      children: [
+        Tts(child: Text(t.display)),
+        Padding(
+          padding: layout.settings.monthDaysPadding,
+          child: const _MonthCalendarPreview(),
+        ),
+        SizedBox(
+          height: layout.formPadding.verticalItemDistance,
+        ),
+        RadioField(
+          key: TestKey.monthColorSwith,
+          value: WeekColor.captions.index,
+          groupValue: settings.colorTypeIndex,
+          onChanged: onWeekColorChanged,
+          text: Text(t.captions),
+        ),
+        RadioField(
+          value: WeekColor.columns.index,
+          groupValue: settings.colorTypeIndex,
+          onChanged: onWeekColorChanged,
+          text: Text(t.columns),
+        ),
+      ],
     );
   }
 }
@@ -83,6 +80,8 @@ class _MonthDayView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final weekColor = context.select(
+        (MonthCalendarSettingsCubit cubit) => cubit.state.monthWeekColor);
     return Expanded(
       child: Container(
         margin: layout.settings.monthDaysPadding,
@@ -102,19 +101,14 @@ class _MonthDayView extends StatelessWidget {
               height: layout.settings.monthPreviewHeaderHeight,
             ),
             Expanded(
-              child: BlocBuilder<MonthCalendarSettingsCubit,
-                  MonthCalendarSettingsState>(
-                buildWhen: (previous, current) =>
-                    previous.color != current.color,
-                builder: (context, state) => Container(
-                  key: TestKey.monthDisplaySettingsDayView,
-                  decoration: BoxDecoration(
-                    color: state.color == WeekColor.columns
-                        ? dayTheme.secondaryColor
-                        : AbiliaColors.white,
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(layout.monthCalendar.dayRadius),
-                    ),
+              child: Container(
+                key: TestKey.monthDisplaySettingsDayView,
+                decoration: BoxDecoration(
+                  color: weekColor == WeekColor.columns
+                      ? dayTheme.secondaryColor
+                      : AbiliaColors.white,
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(layout.monthCalendar.dayRadius),
                   ),
                 ),
               ),

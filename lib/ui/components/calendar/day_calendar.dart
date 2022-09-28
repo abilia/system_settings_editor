@@ -153,7 +153,8 @@ class CategoriesAndHiddenSettings extends StatelessWidget {
       final categoryLabelWidth =
           (boxConstraints.maxWidth - layout.timepillar.width) / 2;
       final settingsInaccessible = context.select(
-          (MemoplannerSettingBloc bloc) => bloc.state.settingsInaccessible);
+          (MemoplannerSettingBloc bloc) =>
+              bloc.state.settings.settingsInaccessible);
       final showCategories = context.select((MemoplannerSettingBloc bloc) =>
           bloc.state.settings.calendar.categories.show);
 
