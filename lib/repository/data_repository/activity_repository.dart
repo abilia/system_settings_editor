@@ -39,5 +39,6 @@ class ActivityRepository extends DataRepository<Activity> {
   @override
   Future<Iterable<Activity>> getAll() => activityDb.getAllNonDeleted();
 
-  Future<Iterable<Activity>> getBySerie(String seriesId) => activityDb.getBySerie(seriesId);
+  Future<Iterable<Activity>> getBySerie(String seriesId) =>
+      activityDb.getBySerie(seriesId);
 }
