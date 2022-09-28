@@ -65,19 +65,19 @@ void main() {
       generics = [
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
-            identifier: MemoplannerSettings.monthCaptionShowClockKey,
+            identifier: MonthCalendarSettings.monthCaptionShowClockKey,
             data: false,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
-            identifier: MemoplannerSettings.monthCaptionShowMonthButtonsKey,
+            identifier: MonthCalendarSettings.monthCaptionShowMonthButtonsKey,
             data: false,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
-            identifier: MemoplannerSettings.monthCaptionShowYearKey,
+            identifier: MonthCalendarSettings.monthCaptionShowYearKey,
             data: false,
           ),
         ),
@@ -101,7 +101,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.monthCaptionShowMonthButtonsKey,
+        key: MonthCalendarSettings.monthCaptionShowMonthButtonsKey,
         matcher: isFalse,
       );
     });
@@ -116,7 +116,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.monthCaptionShowYearKey,
+        key: MonthCalendarSettings.monthCaptionShowYearKey,
         matcher: isFalse,
       );
     });
@@ -131,7 +131,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.monthCaptionShowClockKey,
+        key: MonthCalendarSettings.monthCaptionShowClockKey,
         matcher: isFalse,
       );
     });
@@ -152,19 +152,19 @@ void main() {
       generics = [
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
-            identifier: MemoplannerSettings.monthCaptionShowClockKey,
+            identifier: MonthCalendarSettings.monthCaptionShowClockKey,
             data: false,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
-            identifier: MemoplannerSettings.monthCaptionShowMonthButtonsKey,
+            identifier: MonthCalendarSettings.monthCaptionShowMonthButtonsKey,
             data: false,
           ),
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
-            identifier: MemoplannerSettings.monthCaptionShowYearKey,
+            identifier: MonthCalendarSettings.monthCaptionShowYearKey,
             data: false,
           ),
         ),
@@ -184,7 +184,7 @@ void main() {
       await tester.goToDisplayTab();
       final w = tester.widget<AbiliaRadio>(
           find.byKey(const ObjectKey(TestKey.monthColorSwith)));
-      expect(w.groupValue, WeekColor.columns);
+      expect(w.groupValue, WeekColor.columns.index);
       final dayContainer = tester.firstWidget<Container>(
           find.byKey(TestKey.monthDisplaySettingsDayView));
       expect((dayContainer.decoration as BoxDecoration).color,
@@ -195,7 +195,7 @@ void main() {
       generics = [
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
-            identifier: MemoplannerSettings.calendarMonthViewShowColorsKey,
+            identifier: MonthCalendarSettings.calendarMonthViewShowColorsKey,
             data: WeekColor.captions.index,
           ),
         ),
@@ -203,7 +203,7 @@ void main() {
       await tester.goToDisplayTab();
       final w = tester.widget<AbiliaRadio>(
           find.byKey(const ObjectKey(TestKey.monthColorSwith)));
-      expect(w.groupValue, WeekColor.captions);
+      expect(w.groupValue, WeekColor.captions.index);
       final dayContainer = tester.firstWidget<Container>(
           find.byKey(TestKey.monthDisplaySettingsDayView));
       expect(
@@ -230,7 +230,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.calendarMonthViewShowColorsKey,
+        key: MonthCalendarSettings.calendarMonthViewShowColorsKey,
         matcher: WeekColor.captions.index,
       );
     });
@@ -261,7 +261,7 @@ void main() {
         generics = [
           Generic.createNew<MemoplannerSettingData>(
             data: MemoplannerSettingData.fromData(
-              identifier: MemoplannerSettings.calendarMonthViewShowColorsKey,
+              identifier: MonthCalendarSettings.calendarMonthViewShowColorsKey,
               data: WeekColor.captions.index,
             ),
           ),

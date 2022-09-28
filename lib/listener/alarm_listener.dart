@@ -21,7 +21,7 @@ class AlarmListener extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
       selector: (settingsState) =>
-          settingsState.alarm.showOngoingActivityInFullScreen,
+          settingsState.settings.alarm.showOngoingActivityInFullScreen,
       builder: (context, fullScreenActivity) => MultiBlocListener(
         listeners: [
           BlocListener<AlarmCubit, NotificationAlarm?>(
