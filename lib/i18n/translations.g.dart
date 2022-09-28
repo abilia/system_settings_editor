@@ -2024,7 +2024,7 @@ class SV extends Translated {
 
   @override
   final String onlyActivateScreensaverDuringNight =
-      'Aktivera skärmsläcSkärmsläckare endast på nattenkare endast under natten';
+      'Aktivera skärmsläckare endast på natten';
 
   @override
   final String menuRemovalWarning =
@@ -2271,7 +2271,7 @@ class SV extends Translated {
   final String androidVersion = 'Android-version';
 
   @override
-  final String iosVersion = 'iOS version';
+  final String iosVersion = 'iOS-version';
 
   @override
   final String producer = 'Producent';
