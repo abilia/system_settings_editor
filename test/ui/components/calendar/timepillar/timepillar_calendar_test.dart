@@ -105,18 +105,16 @@ void main() {
 
   testWidgets('all days activity tts', (WidgetTester tester) async {
     final activity = Activity.createNew(
-        title: 'fuyllday',
-        startTime: time.onlyDays(),
-        duration: 1.days() - 1.milliseconds(),
-        fullDay: true,
-        reminderBefore: const [60 * 60 * 1000],
-        alarmType: noAlarm);
+      title: 'fuyllday',
+      startTime: time.onlyDays(),
+      duration: 1.days() - 1.milliseconds(),
+      fullDay: true,
+    );
     mockActivityDb.initWithActivity(activity);
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    expect(find.byKey(TestKey.fullDayContainer), findsOneWidget);
-    await tester.verifyTts(find.byKey(TestKey.fullDayContainer),
-        contains: activity.title);
+    expect(find.byType(FullDayContainer), findsOneWidget);
+    await tester.verifyTts(find.text(activity.title), contains: activity.title);
   });
 
   group('timepillar', () {

@@ -6,6 +6,7 @@ class TimepillarState extends Equatable {
   final DayCalendarType calendarType;
   final Occasion occasion;
   final bool showNightCalendar;
+  final DateTime day;
 
   const TimepillarState({
     required this.interval,
@@ -13,10 +14,11 @@ class TimepillarState extends Equatable {
     required this.calendarType,
     required this.occasion,
     required this.showNightCalendar,
+    required this.day,
   });
 
   @override
-  List<Object> get props => [interval, events, calendarType, occasion];
+  List<Object> get props => [interval, events, calendarType, occasion, day];
 
   bool get isToday => occasion.isCurrent;
 

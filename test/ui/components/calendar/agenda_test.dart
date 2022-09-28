@@ -15,7 +15,6 @@ import 'package:seagull/utils/all.dart';
 import '../../../fakes/activity_db_in_memory.dart';
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
-import '../../../test_helpers/finders.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
@@ -202,12 +201,7 @@ void main() {
     activityDbInMemory.initWithActivity(firstFullDay);
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    expect(
-      fullDayContainerDescendantFinder(
-        find.text(firstFullDayTitle),
-      ),
-      findsOneWidget,
-    );
+    expect(find.text(firstFullDayTitle), findsOneWidget);
   });
 
   testWidgets('past activities are hidden by scroll',
@@ -263,18 +257,8 @@ void main() {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
-    expect(
-      fullDayContainerDescendantFinder(
-        find.text(firstFullDayTitle),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      fullDayContainerDescendantFinder(
-        find.text(secondFullDayTitle),
-      ),
-      findsOneWidget,
-    );
+    expect(find.text(firstFullDayTitle), findsOneWidget);
+    expect(find.text(secondFullDayTitle), findsOneWidget);
     expect(find.byType(FullDayActivitiesButton), findsNothing);
   });
 
@@ -285,16 +269,10 @@ void main() {
         .initWithActivities([firstFullDay, secondFullDay, thirdFullDay]);
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    final t1AgendaPos = tester.getCenter(
-      fullDayContainerDescendantFinder(find.text(firstFullDayTitle)),
-    );
-    final t2AgendaPos = tester.getCenter(
-      fullDayContainerDescendantFinder(find.text(secondFullDayTitle)),
-    );
+    final t1AgendaPos = tester.getCenter(find.text(firstFullDayTitle));
+    final t2AgendaPos = tester.getCenter(find.text(secondFullDayTitle));
     expect(t1AgendaPos.dx, lessThan(t2AgendaPos.dx));
-    await tester.tap(
-      fullDayContainerDescendantFinder(find.byType(FullDayActivitiesButton)),
-    );
+    await tester.tap(find.byType(FullDayActivitiesButton));
     await tester.pumpAndSettle();
     expect(find.byType(FullDayListPage), findsOneWidget);
     final t1FulldayListPos = tester.getCenter(find.text(firstFullDayTitle));
@@ -312,22 +290,10 @@ void main() {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
-    expect(
-      fullDayContainerDescendantFinder(find.text(firstFullDayTitle)),
-      findsOneWidget,
-    );
-    expect(
-      fullDayContainerDescendantFinder(find.text(secondFullDayTitle)),
-      findsOneWidget,
-    );
-    expect(
-      fullDayContainerDescendantFinder(find.text(thirdFullDayTitle)),
-      findsNothing,
-    );
-    expect(
-      fullDayContainerDescendantFinder(find.byType(FullDayActivitiesButton)),
-      findsOneWidget,
-    );
+    expect(find.text(firstFullDayTitle), findsOneWidget);
+    expect(find.text(secondFullDayTitle), findsOneWidget);
+    expect(find.text(thirdFullDayTitle), findsNothing);
+    expect(find.byType(FullDayActivitiesButton), findsOneWidget);
   });
 
   testWidgets('tapping show-all-full-day-button shows all full days',
@@ -341,30 +307,16 @@ void main() {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
+    expect(find.text(firstFullDayTitle), findsOneWidget);
+    expect(find.text(secondFullDayTitle), findsOneWidget);
+    expect(find.text(thirdFullDayTitle), findsNothing);
+    expect(find.text(forthFullDayTitle), findsNothing);
     expect(
-      fullDayContainerDescendantFinder(find.text(firstFullDayTitle)),
-      findsOneWidget,
-    );
-    expect(
-      fullDayContainerDescendantFinder(find.text(secondFullDayTitle)),
-      findsOneWidget,
-    );
-    expect(
-      fullDayContainerDescendantFinder(find.text(thirdFullDayTitle)),
-      findsNothing,
-    );
-    expect(
-      fullDayContainerDescendantFinder(find.text(forthFullDayTitle)),
-      findsNothing,
-    );
-    expect(
-      fullDayContainerDescendantFinder(find.byType(FullDayActivitiesButton)),
+      find.byType(FullDayActivitiesButton),
       findsOneWidget,
     );
 
-    await tester.tap(
-      fullDayContainerDescendantFinder(find.byType(FullDayActivitiesButton)),
-    );
+    await tester.tap(find.byType(FullDayActivitiesButton));
     await tester.pumpAndSettle();
 
     expect(find.text(firstFullDayTitle), findsOneWidget);
@@ -379,8 +331,7 @@ void main() {
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    await tester
-        .tap(fullDayContainerDescendantFinder(find.text(firstFullDayTitle)));
+    await tester.tap(find.text(firstFullDayTitle));
     await tester.pumpAndSettle();
 
     expect(find.byType(ActivityPage), findsOneWidget);
@@ -398,8 +349,7 @@ void main() {
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    await tester.tap(
-        fullDayContainerDescendantFinder(find.byType(FullDayActivitiesButton)));
+    await tester.tap(find.byType(FullDayActivitiesButton));
     await tester.pumpAndSettle();
     await tester.tap(find.text(forthFullDayTitle));
     await tester.pumpAndSettle();
@@ -573,11 +523,11 @@ void main() {
 
     await tester.verifyTts(find.text(activity.title), contains: activity.title);
     await tester.verifyTts(
-      fullDayContainerDescendantFinder(find.text(firstFullDay.title)),
+      find.text(firstFullDay.title),
       contains: firstFullDay.title,
     );
     await tester.verifyTts(
-      fullDayContainerDescendantFinder(find.text(firstFullDay.title)),
+      find.text(firstFullDay.title),
       contains: translate.fullDay,
     );
 

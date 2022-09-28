@@ -87,6 +87,7 @@ class FakeTimepillarCubit extends Fake implements TimepillarCubit {
         calendarType: DayCalendarType.oneTimepillar,
         occasion: Occasion.current,
         showNightCalendar: false,
+        day: DateTime(1066, 10, 14),
       );
   @override
   Future<void> close() async {}

@@ -76,6 +76,7 @@ class MonthPreview extends StatelessWidget {
           topPadding: layout.monthCalendar.monthPreview.activityListTopPadding,
           bottomPadding:
               layout.monthCalendar.monthPreview.activityListBottomPadding,
+          events: context.watch<DayEventsCubit>().state,
         ),
       ),
     );

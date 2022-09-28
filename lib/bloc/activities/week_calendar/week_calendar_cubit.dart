@@ -15,8 +15,8 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
   late final StreamSubscription _activitiesSubscription;
   late final StreamSubscription _timersSubscription;
   late final StreamSubscription _clockSubscription;
-  //Makes animated page transitions possible in WeekCalendar
-  WeekCalendarState? previousState;
+  // Makes animated page transitions possible in WeekCalendar
+  late WeekCalendarState previousState = state;
 
   WeekCalendarCubit({
     required ActivitiesBloc activitiesBloc,

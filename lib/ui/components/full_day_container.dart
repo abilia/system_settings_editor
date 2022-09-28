@@ -44,26 +44,24 @@ class FullDayContainer extends StatelessWidget {
             padding: layout.commonCalendar.fullDayPadding,
             child: SafeArea(
               child: Row(
-                children: fullDayActivities
-                    .take(2)
-                    .map<Widget>(
-                      (fd) => Flexible(
-                        flex: 2,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            right: layout.eventCard.marginSmall,
+                children: [
+                  ...fullDayActivities.take(2).map<Widget>(
+                        (fd) => Flexible(
+                          flex: 2,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              right: layout.eventCard.marginSmall,
+                            ),
+                            child: ActivityCard(activityOccasion: fd),
                           ),
-                          child: ActivityCard(activityOccasion: fd),
                         ),
                       ),
-                    )
-                    .followedBy([
                   if (fullDayActivities.length >= 3)
                     FullDayActivitiesButton(
                       numberOfFullDayActivities: fullDayActivities.length,
                       day: day,
                     )
-                ]).toList(),
+                ],
               ),
             ),
           ),

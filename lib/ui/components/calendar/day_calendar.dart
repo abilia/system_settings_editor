@@ -84,195 +84,168 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    final isAgenda = context.select((MemoplannerSettingBloc b) =>
+        b.state.settings.dayCalendar.viewOptions.calendarType ==
+        DayCalendarType.list);
     return BlocListener<DayPickerBloc, DayPickerState>(
-      listener: (context, state) {
-        pageController.animateToPage(
-          state.index,
-          duration: animationDuration,
-          curve: animationCurve,
-        );
-      },
-      child: LayoutBuilder(builder: (context, boxConstraints) {
-        final categoryLabelWidth =
-            (boxConstraints.maxWidth - layout.timepillar.width) / 2;
-        final showCategories = context.select((MemoplannerSettingBloc bloc) =>
-            bloc.state.settings.calendar.categories.show);
-        final settingsInaccessible = context.select(
-            (MemoplannerSettingBloc bloc) =>
-                bloc.state.settings.settingsInaccessible);
-        final dayEventsCubit = context.watch<DayEventsCubit>();
-
-        return Stack(
-          children: [
-            PageView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: pageController,
-              itemBuilder: (context, index) {
-                return Builder(
-                  builder: (context) {
-                    final isAgenda = context.select(
-                        (MemoplannerSettingBloc b) =>
-                            b.state.settings.dayCalendar.viewOptions
-                                .calendarType ==
-                            DayCalendarType.list);
-                    final timepillarCubit =
-                        isAgenda ? null : context.watch<TimepillarCubit>();
-                    final timepillarMeasuresCubit = isAgenda
-                        ? null
-                        : context.watch<TimepillarMeasuresCubit>();
-                    final timepillarData = TimepillarData.nullable(
-                      timepillarCubit?.state,
-                      timepillarMeasuresCubit?.state,
-                    );
-
-                    if (dayEventsCubit.state is EventsLoading) {
-                      return const SizedBox.shrink();
-                    }
-
-                    if (index == dayEventsCubit.state.day.dayIndex) {
-                      return DayCalendarPage(
-                        eventsState: dayEventsCubit.state,
-                        timepillarData: timepillarData,
-                      );
-                    }
-
-                    final previousEventsState = dayEventsCubit.previousState;
-                    final previousTimepillarState =
-                        timepillarCubit?.previousState;
-                    final previousTimepillarMeasures =
-                        timepillarMeasuresCubit?.previousState;
-                    final previousTimepillarData = TimepillarData.nullable(
-                      previousTimepillarState,
-                      previousTimepillarMeasures,
-                    );
-
-                    if (previousEventsState != null) {
-                      return DayCalendarPage(
-                        eventsState: previousEventsState,
-                        timepillarData: previousTimepillarData,
-                      );
-                    }
-
-                    return const SizedBox.shrink();
-                  },
-                );
-              },
-            ),
-            Column(
-              children: [
-                //Ensures position of category and now buttons are correct
-                AnimatedSize(
+      listenWhen: (previous, current) => previous.index != current.index,
+      listener: (context, state) => pageController.animateToPage(
+        state.index,
+        duration: animationDuration,
+        curve: animationCurve,
+      ),
+      child: Stack(
+        children: [
+          PageView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: pageController,
+            itemBuilder: (context, index) {
+              if (isAgenda) return CachedAgenda(index: index);
+              return CachedTimepillar(index: index);
+            },
+          ),
+          Column(
+            children: [
+              //Ensures position of category and now buttons are correct
+              BlocSelector<DayEventsCubit, EventsState, bool>(
+                selector: (state) => state.fullDayActivities.isNotEmpty,
+                builder: (context, hasFullday) => AnimatedSize(
                   duration: animationDuration,
                   curve: animationCurve,
-                  child: Visibility(
-                    visible: false,
-                    maintainSize:
-                        dayEventsCubit.state.fullDayActivities.isNotEmpty,
-                    maintainAnimation: true,
-                    maintainState: true,
-                    child: FullDayContainer(
-                      fullDayActivities: dayEventsCubit.state.fullDayActivities,
-                      day: dayEventsCubit.state.day,
+                  child: SafeArea(
+                    child: SizedBox(
+                      height: hasFullday
+                          ? layout.commonCalendar.fullDayPadding.vertical +
+                              layout.eventCard.height
+                          : null,
                     ),
                   ),
                 ),
-                Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          top: layout.commonCalendar.goToNowButtonTop,
-                        ),
-                        child: const GoToNowButton(),
+              ),
+              Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: layout.commonCalendar.goToNowButtonTop,
                       ),
+                      child: const GoToNowButton(),
                     ),
-                    Column(
-                      children: [
-                        if (showCategories)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              LeftCategory(
-                                maxWidth: categoryLabelWidth,
-                              ),
-                              RightCategory(
-                                maxWidth: categoryLabelWidth,
-                              ),
-                            ],
-                          ),
-                        if (settingsInaccessible) const HiddenSetting(),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        );
-      }),
+                  ),
+                  const CategoriesAndHiddenSettings(),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
 
-class DayCalendarPage extends StatelessWidget {
-  const DayCalendarPage({
-    required this.eventsState,
-    this.timepillarData,
-    Key? key,
-  }) : super(key: key);
-
-  final EventsState eventsState;
-  final TimepillarData? timepillarData;
+class CategoriesAndHiddenSettings extends StatelessWidget {
+  const CategoriesAndHiddenSettings({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final tpData = timepillarData;
+    return LayoutBuilder(builder: (context, boxConstraints) {
+      final categoryLabelWidth =
+          (boxConstraints.maxWidth - layout.timepillar.width) / 2;
+      final settingsInaccessible = context.select(
+          (MemoplannerSettingBloc bloc) =>
+              bloc.state.settings.settingsInaccessible);
+      final showCategories = context.select((MemoplannerSettingBloc bloc) =>
+          bloc.state.settings.calendar.categories.show);
+
+      return Column(
+        children: [
+          if (showCategories)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                LeftCategory(maxWidth: categoryLabelWidth),
+                RightCategory(maxWidth: categoryLabelWidth),
+              ],
+            ),
+          if (settingsInaccessible) const HiddenSetting(),
+        ],
+      );
+    });
+  }
+}
+
+class CachedAgenda extends StatelessWidget {
+  const CachedAgenda({
+    required this.index,
+    Key? key,
+  }) : super(key: key);
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    final dayEventsCubit = context.watch<DayEventsCubit>();
+    final inPageTransition = index != dayEventsCubit.state.day.dayIndex;
+    final eventsState =
+        inPageTransition ? dayEventsCubit.previousState : dayEventsCubit.state;
     return Column(
       children: <Widget>[
         if (eventsState.fullDayActivities.isNotEmpty)
           FullDayContainer(
-            key: TestKey.fullDayContainer,
             fullDayActivities: eventsState.fullDayActivities,
             day: eventsState.day,
           ),
-        Expanded(
-          child: Stack(
-            children: [
-              if (tpData != null)
-                TimepillarCalendar(
-                  timepillarState: tpData.timepillarState,
-                  timepillarMeasures: tpData.timepillarMeasures,
-                )
-              else
-                Agenda(eventsState: eventsState),
-            ],
-          ),
-        ),
+        Expanded(child: Agenda(eventsState: eventsState))
       ],
     );
   }
 }
 
-class TimepillarData {
-  const TimepillarData(
-    this.timepillarState,
-    this.timepillarMeasures,
-  );
+class CachedTimepillar extends StatelessWidget {
+  const CachedTimepillar({
+    required this.index,
+    Key? key,
+  }) : super(key: key);
+  final int index;
 
-  final TimepillarState timepillarState;
-  final TimepillarMeasures timepillarMeasures;
-
-  static TimepillarData? nullable(
-    TimepillarState? timepillarState,
-    TimepillarMeasures? timepillarMeasures,
-  ) {
-    if (timepillarState != null && timepillarMeasures != null) {
-      return TimepillarData(
-        timepillarState,
-        timepillarMeasures,
-      );
-    }
-    return null;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Builder(builder: (contxt) {
+          final dayEventsCubit = context.watch<DayEventsCubit>();
+          final inPageTransition = index != dayEventsCubit.state.day.dayIndex;
+          final eventsState = inPageTransition
+              ? dayEventsCubit.previousState
+              : dayEventsCubit.state;
+          if (eventsState.fullDayActivities.isEmpty) {
+            return const SizedBox.shrink();
+          }
+          return FullDayContainer(
+            fullDayActivities: eventsState.fullDayActivities,
+            day: eventsState.day,
+          );
+        }),
+        Builder(
+          builder: (context) {
+            final measuresCubit = context.watch<TimepillarMeasuresCubit>();
+            final timepillarCubit = context.watch<TimepillarCubit>();
+            final inPageTransition =
+                index != timepillarCubit.state.day.dayIndex;
+            return Expanded(
+              child: inPageTransition
+                  ? TimepillarCalendar(
+                      timepillarState: timepillarCubit.previousState,
+                      timepillarMeasures: measuresCubit.previousState,
+                    )
+                  : TimepillarCalendar(
+                      timepillarState: timepillarCubit.state,
+                      timepillarMeasures: measuresCubit.state,
+                    ),
+            );
+          },
+        ),
+      ],
+    );
   }
 }

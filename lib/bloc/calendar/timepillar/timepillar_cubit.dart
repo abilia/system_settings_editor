@@ -20,8 +20,8 @@ class TimepillarCubit extends Cubit<TimepillarState> {
   final TimerAlarmBloc timerAlarmBloc;
   final DayPartCubit dayPartCubit;
   late StreamSubscription _streamSubscription;
-  //Makes animated page transitions possible in DayCalendar
-  TimepillarState? previousState;
+  // Makes animated page transitions possible in DayCalendar
+  late TimepillarState previousState = state;
 
   TimepillarCubit({
     required this.clockBloc,
@@ -137,6 +137,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
       ),
       occasion: interval.occasion(now),
       showNightCalendar: showNightCalendar,
+      day: selectedDay,
     );
   }
 
