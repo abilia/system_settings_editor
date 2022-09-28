@@ -87,7 +87,6 @@ void main() {
         .thenAnswer((_) => Future.value('fakeToken'));
 
     mockActivityDb = ActivityDbInMemory();
-    // mockActivityDb.insertTestActivities(activityResponse());
 
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())

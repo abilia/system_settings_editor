@@ -53,14 +53,14 @@ void main() {
     );
 
     blocTest(
-      'load activities calls load activities on mockActivityRepostitory',
+      'load activities do not call load activities on mockActivityRepostitory',
       build: () => ActivitiesBloc(
         activityRepository: mockActivityRepository,
         syncBloc: mockSyncBloc,
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
       verify: (ActivitiesBloc bloc) =>
-          verify(() => mockActivityRepository.getAll()),
+          verifyNever(() => mockActivityRepository.getAll()),
     );
 
     blocTest(
@@ -72,7 +72,7 @@ void main() {
         syncBloc: mockSyncBloc,
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
-      expect: () => [ActivitiesLoaded()],
+      expect: () => [ActivitiesStateMatcher(ActivitiesLoaded())],
     );
 
     final storedActivity = Activity.createNew(
@@ -82,27 +82,10 @@ void main() {
           alarmType: alarmSilentOnlyOnStart,
         ),
         activity1 = Activity.createNew(title: 'a1', startTime: anyTime),
-        activity2 = Activity.createNew(title: 'a2', startTime: anyTime),
-        activity3 = Activity.createNew(title: 'a3', startTime: anyTime),
-        activity4 = Activity.createNew(title: 'a4', startTime: anyTime),
         updatedActivity1 = activity1.copyWith(title: 'new title'),
         deletedStoredActivity = storedActivity.copyWith(deleted: true);
 
-    blocTest(
-      'LoadActivities event returns ActivitiesLoaded state with Activity',
-      setUp: () => when(() => mockActivityRepository.getAll())
-          .thenAnswer((_) => Future.value(<Activity>[storedActivity])),
-      build: () => ActivitiesBloc(
-        activityRepository: mockActivityRepository,
-        syncBloc: mockSyncBloc,
-      ),
-      act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
-      expect: () => [ActivitiesLoaded()],
-    );
-
-    blocTest('calls add activities on mockActivityRepostitory',
-        setUp: () => when(() => mockActivityRepository.getAll())
-            .thenAnswer((_) => Future.value(<Activity>[storedActivity])),
+    blocTest('AddActivity calls save activities on mockActivityRepostitory',
         build: () => ActivitiesBloc(
               activityRepository: mockActivityRepository,
               syncBloc: mockSyncBloc,
@@ -110,7 +93,10 @@ void main() {
         act: (ActivitiesBloc bloc) => bloc
           ..add(LoadActivities())
           ..add(AddActivity(activity1)),
-        expect: () => [ActivitiesLoaded(), ActivitiesLoaded()],
+        expect: () => [
+              ActivitiesStateMatcher(ActivitiesLoaded()),
+              ActivitiesStateMatcher(ActivitiesLoaded()),
+            ],
         verify: (bloc) {
           verify(() => mockActivityRepository.save([activity1]));
           verify(() => mockSyncBloc.add(const ActivitySaved()));
@@ -118,8 +104,6 @@ void main() {
 
     blocTest(
         'UpdateActivities calls save activities on mockActivityRepostitory',
-        setUp: () => when(() => mockActivityRepository.getAll())
-            .thenAnswer((_) => Future.value(<Activity>[activity1])),
         build: () => ActivitiesBloc(
               activityRepository: mockActivityRepository,
               syncBloc: mockSyncBloc,
@@ -128,8 +112,8 @@ void main() {
           ..add(LoadActivities())
           ..add(UpdateActivity(updatedActivity1)),
         expect: () => [
-              ActivitiesLoaded(),
-              ActivitiesLoaded(),
+              ActivitiesStateMatcher(ActivitiesLoaded()),
+              ActivitiesStateMatcher(ActivitiesLoaded()),
             ],
         verify: (bloc) {
           verify(() => mockActivityRepository.save([updatedActivity1]));
@@ -137,9 +121,7 @@ void main() {
         });
 
     blocTest(
-        'DeleteActivities calls save activities on mockActivityRepostitory',
-        setUp: () => when(() => mockActivityRepository.getAll())
-            .thenAnswer((_) => Future.value(<Activity>[storedActivity])),
+        'DeleteActivities calls save activities with deleted activity on mockActivityRepostitory',
         build: () => ActivitiesBloc(
               activityRepository: mockActivityRepository,
               syncBloc: mockSyncBloc,
@@ -148,108 +130,26 @@ void main() {
           ..add(LoadActivities())
           ..add(DeleteActivity(storedActivity)),
         expect: () => [
-              ActivitiesLoaded(),
-              ActivitiesLoaded(),
+              ActivitiesStateMatcher(ActivitiesLoaded()),
+              ActivitiesStateMatcher(ActivitiesLoaded()),
             ],
         verify: (bloc) {
           verify(() => mockActivityRepository.save([deletedStoredActivity]));
           verify(() => mockSyncBloc.add(const ActivitySaved()));
         });
-
-    final fullActivityList = [activity1, activity2, activity3, activity4];
-    blocTest(
-      'DeleteActivities does not yeild the deleted activity',
-      setUp: () => when(() => mockActivityRepository.getAll())
-          .thenAnswer((_) => Future.value(fullActivityList)),
-      build: () => ActivitiesBloc(
-        activityRepository: mockActivityRepository,
-        syncBloc: mockSyncBloc,
-      ),
-      act: (ActivitiesBloc bloc) => bloc
-        ..add(LoadActivities())
-        ..add(DeleteActivity(activity3)),
-      expect: () => [
-        ActivitiesLoaded(),
-        ActivitiesLoaded(),
-      ],
-      verify: (bloc) => verify(() => mockSyncBloc.add(const ActivitySaved())),
-    );
-
-    final updatedActivityList = [
-      updatedActivity1,
-      activity2,
-      activity3,
-      activity4
-    ];
-    blocTest(
-      'UpdateActivities state order',
-      setUp: () {
-        when(() => mockActivityRepository.getAll())
-            .thenAnswer((_) => Future.value(fullActivityList));
-        when(() => mockActivityRepository.save(updatedActivityList))
-            .thenAnswer((_) => Future.value(true));
-      },
-      build: () => ActivitiesBloc(
-        activityRepository: mockActivityRepository,
-        syncBloc: mockSyncBloc,
-      ),
-      act: (ActivitiesBloc bloc) => bloc
-        ..add(LoadActivities())
-        ..add(UpdateActivity(updatedActivity1)),
-      expect: () => [
-        ActivitiesLoaded(),
-        ActivitiesLoaded(),
-      ],
-      verify: (bloc) => verify(() => mockSyncBloc.add(const ActivitySaved())),
-    );
-
-    group('License', () {
-      test('valid license will sync with repo', () async {
-        final List<Activity> activityList = [activity1, activity2, activity3];
-        when(() => mockActivityRepository.getAll())
-            .thenAnswer((_) => Future.value(activityList));
-        when(() => mockLicenseCubit.validLicense).thenAnswer((_) => true);
-        activitiesBloc.add(LoadActivities());
-
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            ActivitiesLoaded(),
-          ]),
-        );
-      });
-
-      test('can add activity with no valid license, no sync', () async {
-        when(() => mockActivityRepository.getAll())
-            .thenAnswer((_) => Future.value(<Activity>[activity2, activity3]));
-        when(() => mockLicenseCubit.validLicense).thenAnswer((_) => false);
-        final expect = expectLater(
-          activitiesBloc.stream,
-          emits(
-            ActivitiesLoaded(),
-          ),
-        );
-        activitiesBloc.add(AddActivity(activity1));
-        await expect;
-      });
-    });
   });
 
   group('Delete recurring activity', () {
     test('Delete All days recurring deletes all with seriesId', () async {
       // Arrange
-      final anActivity = FakeActivity.starts(anyTime);
       final recurrringActivity = FakeActivity.reocurrsFridays(anyTime);
       final recurrringActivity2 = recurrringActivity.copyWith(newId: true);
 
-      final activityList = [
-        anActivity,
-        recurrringActivity,
-        recurrringActivity2
-      ];
-
-      when(() => mockActivityRepository.getAll())
-          .thenAnswer((_) => Future.value(activityList));
+      when(() => mockActivityRepository.getBySerie(recurrringActivity.seriesId))
+          .thenAnswer((_) => Future.value([
+                recurrringActivity,
+                recurrringActivity2,
+              ]));
 
       // Act
       activitiesBloc.add(LoadActivities());
@@ -260,8 +160,8 @@ void main() {
       await expectLater(
         activitiesBloc.stream,
         emitsInOrder([
-          ActivitiesLoaded(),
-          ActivitiesLoaded(),
+          ActivitiesStateMatcher(ActivitiesLoaded()),
+          ActivitiesStateMatcher(ActivitiesLoaded()),
         ]),
       );
       // Assert calls save with deleted recurring
@@ -275,7 +175,6 @@ void main() {
     group('Only this day', () {
       test('for first day edits start time', () async {
         // Arrange
-        final anActivity = FakeActivity.starts(anyTime);
         final inAWeek = anyDay.add(7.days());
         final ogRecurrringActivity = FakeActivity.reocurrsFridays(anyTime);
         final recurrringActivity = ogRecurrringActivity
@@ -285,14 +184,10 @@ void main() {
           startTime: inAWeek,
         );
 
-        final activityList = [
-          anActivity,
-          recurrringActivity,
-          recurrringActivity2
-        ];
-
-        when(() => mockActivityRepository.getAll())
-            .thenAnswer((_) => Future.value(activityList));
+        when(() =>
+                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
+            .thenAnswer(
+                (_) => Future.value([recurrringActivity, recurrringActivity2]));
 
         final expextedRecurring =
             recurrringActivity.copyWith(startTime: anyTime.nextDay());
@@ -306,8 +201,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            ActivitiesLoaded(),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -319,7 +214,6 @@ void main() {
 
       test('for last day edits end time', () async {
         // Arrange
-        final anActivity = FakeActivity.starts(anyTime);
         final ogRecurrringActivity = FakeActivity.reocurrsFridays(anyTime);
         final inAWeek = anyTime.copyWith(day: anyTime.day + 7);
         final in6Days = inAWeek.previousDay();
@@ -331,14 +225,10 @@ void main() {
           startTime: inAWeek,
         );
 
-        final activityList = [
-          anActivity,
-          recurrringActivity,
-          recurrringActivity2
-        ];
-
-        when(() => mockActivityRepository.getAll())
-            .thenAnswer((_) => Future.value(activityList));
+        when(() =>
+                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
+            .thenAnswer(
+                (_) => Future.value([recurrringActivity, recurrringActivity2]));
 
         final expextedRecurring = recurrringActivity
             .copyWithRecurringEnd(in6Days.millisecondBefore());
@@ -354,8 +244,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            ActivitiesLoaded(),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -373,7 +263,8 @@ void main() {
 
         final activityList = [recurrringActivity];
 
-        when(() => mockActivityRepository.getAll())
+        when(() =>
+                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
             .thenAnswer((_) => Future.value(activityList));
 
         final expextedRecurring1 = recurrringActivity
@@ -399,8 +290,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            MatchActivitiesWithoutId(expectedActivityList),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -413,7 +304,6 @@ void main() {
     group('This day and forward', () {
       test('for first day deletes all with seriesId', () async {
         // Arrange
-        final anActivity = FakeActivity.starts(anyTime);
         final inAWeek = anyDay.add(7.days());
         final ogRecurrringActivity = FakeActivity.reocurrsFridays(anyTime);
         final recurrringActivity = ogRecurrringActivity
@@ -423,14 +313,10 @@ void main() {
           startTime: inAWeek,
         );
 
-        final activityList = [
-          anActivity,
-          recurrringActivity,
-          recurrringActivity2
-        ];
-
-        when(() => mockActivityRepository.getAll())
-            .thenAnswer((_) => Future.value(activityList));
+        when(() =>
+                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
+            .thenAnswer(
+                (_) => Future.value([recurrringActivity, recurrringActivity2]));
 
         // Act
         activitiesBloc.add(LoadActivities());
@@ -443,8 +329,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            ActivitiesLoaded(),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -462,10 +348,9 @@ void main() {
         final recurrringActivityWithEndTime = recurrringActivity
             .copyWithRecurringEnd(inAWeek.millisecondBefore());
 
-        final activityList = [recurrringActivity];
-
-        when(() => mockActivityRepository.getAll())
-            .thenAnswer((_) => Future.value(activityList));
+        when(() =>
+                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
+            .thenAnswer((_) => Future.value([recurrringActivity]));
 
         // Act
         activitiesBloc.add(LoadActivities());
@@ -477,8 +362,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            ActivitiesLoaded(),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -504,10 +389,10 @@ void main() {
               inTwoWeeks.copyWith(hour: anyTime.hour, minute: anyTime.minute),
         );
 
-        final activityList = [recurrringActivity1, recurrringActivity2];
-
-        when(() => mockActivityRepository.getAll())
-            .thenAnswer((_) => Future.value(activityList));
+        when(() =>
+            mockActivityRepository
+                .getBySerie(ogRecurrringActivity.seriesId)).thenAnswer(
+            (_) => Future.value([recurrringActivity1, recurrringActivity2]));
 
         final recurrringActivity1AfterDelete = recurrringActivity1
             .copyWithRecurringEnd(inAWeek.millisecondBefore());
@@ -522,8 +407,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            ActivitiesLoaded(),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -543,7 +428,7 @@ void main() {
         // Arrange
         final recurring = FakeActivity.reocurrsEveryDay(anyTime)
             .copyWithRecurringEnd(anyDay.nextDay().millisecondBefore());
-        when(() => mockActivityRepository.getAll())
+        when(() => mockActivityRepository.getBySerie(recurring.seriesId))
             .thenAnswer((_) => Future.value([recurring]));
         final starttime = anyTime.subtract(1.hours());
         final updated = recurring.copyWith(
@@ -563,8 +448,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            ActivitiesLoaded(),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
 
@@ -578,7 +463,7 @@ void main() {
         // Arrange
         final recurring = FakeActivity.reocurrsEveryDay(anyTime)
             .copyWithRecurringEnd(anyDay.add(5.days()).millisecondBefore());
-        when(() => mockActivityRepository.getAll())
+        when(() => mockActivityRepository.getBySerie(recurring.seriesId))
             .thenAnswer((_) => Future.value([recurring]));
 
         final starttime = recurring.startTime.subtract(1.hours());
@@ -603,9 +488,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            MatchActivitiesWithoutId(
-                [expcetedUpdatedActivity, updatedOldActivity]),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
 
@@ -639,7 +523,7 @@ void main() {
           ),
         );
 
-        when(() => mockActivityRepository.getAll())
+        when(() => mockActivityRepository.getBySerie(recurring.seriesId))
             .thenAnswer((_) => Future.value([recurring]));
 
         final newStartTime = recurring.startClock(lastDay).subtract(1.hours());
@@ -667,8 +551,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            exptected,
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
 
@@ -692,7 +576,7 @@ void main() {
           ),
         );
 
-        when(() => mockActivityRepository.getAll())
+        when(() => mockActivityRepository.getBySerie(recurring.seriesId))
             .thenAnswer((_) => Future.value([recurring]));
 
         final updated = recurring.copyWith(
@@ -726,8 +610,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            expected,
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
 
@@ -740,7 +624,7 @@ void main() {
         // Arrange
         final aDay = DateTime(2020, 04, 01);
         final recurring = FakeActivity.reocurrsEveryDay(anyTime);
-        when(() => mockActivityRepository.getAll())
+        when(() => mockActivityRepository.getBySerie(recurring.seriesId))
             .thenAnswer((_) => Future.value([recurring]));
 
         final fullday = recurring.copyWith(
@@ -778,8 +662,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            expected,
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
 
@@ -796,7 +680,8 @@ void main() {
         final updatedRecurrringActivity =
             recurrringActivity.copyWith(title: 'new title');
 
-        when(() => mockActivityRepository.getAll())
+        when(() =>
+                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
             .thenAnswer((_) => Future.value([recurrringActivity]));
 
         // Act
@@ -810,8 +695,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            ActivitiesLoaded(),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
 
@@ -833,7 +718,8 @@ void main() {
         );
         final onAndAfterModifiedDay = updatedRecurrringActivity.copyWith();
 
-        when(() => mockActivityRepository.getAll())
+        when(() =>
+                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
             .thenAnswer((_) => Future.value([recurrringActivity]));
 
         final exptected = [beforeModifiedDay, onAndAfterModifiedDay];
@@ -852,8 +738,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            MatchActivitiesWithoutId(exptected),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
         verify(() => mockActivityRepository
@@ -870,7 +756,8 @@ void main() {
         final updatedRecurrringActivity =
             recurrringActivity.copyWith(title: 'new title', startTime: inAWeek);
 
-        when(() => mockActivityRepository.getAll())
+        when(() =>
+                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
             .thenAnswer((_) => Future.value([recurrringActivity]));
 
         final expectedPreModified = recurrringActivity.copyWithRecurringEnd(
@@ -893,8 +780,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            MatchActivitiesWithoutId(exptectedList),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
 
@@ -915,7 +802,8 @@ void main() {
         final updatedRecurrringActivity = recurrringActivity.copyWith(
             title: 'new title', startTime: inTwoWeeks);
 
-        when(() => mockActivityRepository.getAll())
+        when(() =>
+                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
             .thenAnswer((_) => Future.value([recurrringActivity]));
 
         final expectedPreModified = recurrringActivity.copyWithRecurringEnd(
@@ -938,8 +826,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            MatchActivitiesWithoutId(exptectedList),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
 
@@ -983,7 +871,7 @@ void main() {
             .copyWithRecurringEnd(inFiveDays.add(66.minutes()));
 
         final currentActivities = [before, after, stray, stray2];
-        when(() => mockActivityRepository.getAll())
+        when(() => mockActivityRepository.getBySerie(og.seriesId))
             .thenAnswer((_) => Future.value(currentActivities));
 
         const newTitle = 'newTitle';
@@ -1046,8 +934,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            MatchActivitiesWithoutId(exptectedList),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
 
@@ -1089,7 +977,7 @@ void main() {
           startTime: a3Time,
           recurs: Recurs.not,
         );
-        when(() => mockActivityRepository.getAll())
+        when(() => mockActivityRepository.getBySerie(a1.seriesId))
             .thenAnswer((_) => Future.value([a1, a2, a3]));
 
         const newTitle = 'updated';
@@ -1115,8 +1003,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesLoaded(),
-            MatchActivitiesWithoutId([a1, a2Part1, updatedA2, expectedA3]),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
+            ActivitiesStateMatcher(ActivitiesLoaded()),
           ]),
         );
         verify(() => mockActivityRepository.save(any(

@@ -116,7 +116,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     }
   }
 
-  Future _mapUpdateRecurringToState(
+  Future<void> _mapUpdateRecurringToState(
     UpdateRecurringActivity event,
     Emitter<ActivitiesState> emit,
   ) async {
@@ -124,7 +124,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
         (await activityRepository.getBySerie(event.activity.seriesId)).toSet();
     switch (event.applyTo) {
       case ApplyTo.thisDayAndForward:
-        _handleResult(
+        await _handleResult(
           updateThisDayAndForward(
             activity: event.activity,
             activities: series,
@@ -134,7 +134,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
         );
         break;
       case ApplyTo.onlyThisDay:
-        _handleResult(
+        await _handleResult(
           updateOnlyThisDay(
             activities: series,
             activity: event.activity,

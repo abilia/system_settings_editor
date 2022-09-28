@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -11,6 +12,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 import '../../../fakes/activity_db_in_memory.dart';
 import '../../../fakes/all.dart';
@@ -22,6 +24,8 @@ void main() {
   late ActivityDbInMemory activityDbInMemory;
   GenericResponse genericResponse = () => [];
   TimerResponse timerResponse = () => [];
+  List<Activity> activityResponse = [];
+  Response licenseResponse = Fakes.licenseResponseExpires(now.add(5.days()));
 
   final translate = Locales.language.values.first;
 
@@ -61,6 +65,11 @@ void main() {
           .widget as CrossOver)
       .applyCross;
 
+  setUpAll(() {
+    tz.initializeTimeZones();
+    setupPermissions();
+  });
+
   setUp(() async {
     setupPermissions();
     setupFakeTts();
@@ -96,7 +105,10 @@ void main() {
       ..timerDb = mockTimerDb
       ..ticker = Ticker.fake(initialTime: now, stream: timeTicker.stream)
       ..fireBasePushService = FakeFirebasePushService()
-      ..client = Fakes.client()
+      ..client = Fakes.client(
+        licenseResponse: () => licenseResponse,
+        activityResponse: () => activityResponse,
+      )
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
       ..database = FakeDatabase()
@@ -108,6 +120,8 @@ void main() {
   tearDown(() async {
     genericResponse = () => [];
     timerResponse = () => [];
+    activityResponse = [];
+    licenseResponse = Fakes.licenseResponseExpires(now.add(5.days()));
     timeTicker.close();
     await GetIt.I.reset();
   });
@@ -131,6 +145,25 @@ void main() {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
     expect(find.byType(ActivityCard), findsOneWidget);
+  });
+
+  testWidgets('Activity loaded from backend when license is valid',
+      (WidgetTester tester) async {
+    activityResponse = [FakeActivity.starts(now.add(1.hours()))];
+
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    expect(find.byType(ActivityCard), findsOneWidget);
+  });
+
+  testWidgets('Activity not loaded from backend when license is invalid',
+      (WidgetTester tester) async {
+    licenseResponse = Fakes.licenseResponseExpires(now.subtract(5.days()));
+    activityResponse = [FakeActivity.starts(now.add(1.hours()))];
+
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    expect(find.byType(ActivityCard), findsNothing);
   });
 
   testWidgets('Empty agenda should not show Go to now-button',
