@@ -48,7 +48,7 @@ void main() {
       ),
       verify: (ActivitiesBloc bloc) => expect(
         bloc.state,
-        ActivitiesNotLoaded(),
+        ActivitiesStateMatcher(ActivitiesNotLoaded()),
       ),
     );
 
@@ -1129,4 +1129,18 @@ void main() {
   tearDown(() {
     activitiesBloc.close();
   });
+}
+
+class ActivitiesStateMatcher extends Matcher {
+  const ActivitiesStateMatcher(this.value);
+
+  final ActivitiesState value;
+
+  @override
+  Description describe(Description description) => description.add('<$value>');
+
+  @override
+  bool matches(object, Map matchState) {
+    return object.runtimeType == value.runtimeType;
+  }
 }
