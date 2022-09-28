@@ -16,7 +16,6 @@ import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
 
 import '../../test_helpers/enter_text.dart';
-import '../../test_helpers/finders.dart';
 import '../../test_helpers/tts.dart';
 import '../../test_helpers/verify_generic.dart';
 import '../../fakes/activity_db_in_memory.dart';
@@ -101,7 +100,7 @@ void main() {
   Future<void> navigateToFullDayActivityPage(WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    await tester.tap(fullDayContainerDescendantFinder(activityCardFinder));
+    await tester.tap(activityCardFinder);
     await tester.pumpAndSettle();
   }
 
