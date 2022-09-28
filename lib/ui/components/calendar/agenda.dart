@@ -16,38 +16,39 @@ class Agenda extends StatefulWidget {
 }
 
 class _AgendaState extends State<Agenda> with CalendarStateMixin {
-  var scrollController = ScrollController(
-    initialScrollOffset: 0,
-    keepScrollOffset: false,
-  );
+  late ScrollController scrollController;
 
   @override
   void initState() {
-    if (widget.eventsState.isToday) {
-      if (widget.eventsState
-          .pastEvents(context.read<ClockBloc>().state)
-          .isNotEmpty) {
-        scrollController = ScrollController(
-          initialScrollOffset: -layout.agenda.topPadding,
-          keepScrollOffset: false,
-        );
-      }
-    }
-
-    _addScrollViewRenderCompleteCallback();
     super.initState();
+    _setScrollController();
   }
 
   @override
   void didUpdateWidget(Agenda oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _addScrollViewRenderCompleteCallback();
+    _setScrollController();
   }
 
-  void _addScrollViewRenderCompleteCallback() {
+  void _setScrollController() {
+    final offset = widget.eventsState.isToday &&
+            widget.eventsState
+                .pastEvents(context.read<ClockBloc>().state)
+                .isNotEmpty
+        ? -layout.agenda.topPadding
+        : 0.0;
+
+    scrollController = ScrollController(
+      initialScrollOffset: offset,
+      keepScrollOffset: false,
+    );
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      BlocProvider.of<ScrollPositionCubit>(context)
-          .scrollViewRenderComplete(scrollController);
+      if (mounted) {
+        scrollController.jumpTo(offset);
+        BlocProvider.of<ScrollPositionCubit>(context)
+            .scrollViewRenderComplete(scrollController);
+      }
     });
   }
 

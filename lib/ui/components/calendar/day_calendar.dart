@@ -107,18 +107,17 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
           Column(
             children: [
               //Ensures position of category and now buttons are correct
-              BlocBuilder<DayEventsCubit, EventsState>(
-                builder: (context, state) => AnimatedSize(
+              BlocSelector<DayEventsCubit, EventsState, bool>(
+                selector: (state) => state.fullDayActivities.isNotEmpty,
+                builder: (context, hasFullday) => AnimatedSize(
                   duration: animationDuration,
                   curve: animationCurve,
-                  child: Visibility(
-                    visible: false,
-                    maintainSize: state.fullDayActivities.isNotEmpty,
-                    maintainAnimation: true,
-                    maintainState: true,
-                    child: FullDayContainer(
-                      fullDayActivities: state.fullDayActivities,
-                      day: state.day,
+                  child: SafeArea(
+                    child: SizedBox(
+                      height: hasFullday
+                          ? layout.commonCalendar.fullDayPadding.vertical +
+                              layout.eventCard.height
+                          : null,
                     ),
                   ),
                 ),
@@ -192,7 +191,6 @@ class CachedAgenda extends StatelessWidget {
       children: <Widget>[
         if (eventsState.fullDayActivities.isNotEmpty)
           FullDayContainer(
-            key: TestKey.fullDayContainer,
             fullDayActivities: eventsState.fullDayActivities,
             day: eventsState.day,
           ),
@@ -219,9 +217,10 @@ class CachedTimepillar extends StatelessWidget {
           final eventsState = inPageTransition
               ? dayEventsCubit.previousState
               : dayEventsCubit.state;
-          if (eventsState.activities.isEmpty) return const SizedBox.shrink();
+          if (eventsState.fullDayActivities.isEmpty) {
+            return const SizedBox.shrink();
+          }
           return FullDayContainer(
-            key: TestKey.fullDayContainer,
             fullDayActivities: eventsState.fullDayActivities,
             day: eventsState.day,
           );
