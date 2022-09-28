@@ -1,5 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/models/all.dart';
 
 class MonthAppBarSettingsTab extends StatelessWidget {
   const MonthAppBarSettingsTab({Key? key}) : super(key: key);
@@ -7,34 +8,37 @@ class MonthAppBarSettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocBuilder<MonthCalendarSettingsCubit, MonthCalendarSettingsState>(
-      builder: (context, state) => SettingsTab(
-        children: [
-          Tts(child: Text(t.topField)),
-          const _MonthAppBarPreview(),
-          SwitchField(
-            value: state.browseButtons,
-            onChanged: (v) => context
-                .read<MonthCalendarSettingsCubit>()
-                .changeMonthCalendarSettings(state.copyWith(browseButtons: v)),
-            child: Text(t.showBrowseButtons),
-          ),
-          SwitchField(
-            value: state.year,
-            onChanged: (v) => context
-                .read<MonthCalendarSettingsCubit>()
-                .changeMonthCalendarSettings(state.copyWith(year: v)),
-            child: Text(t.showYear),
-          ),
-          SwitchField(
-            value: state.clock,
-            onChanged: (v) => context
-                .read<MonthCalendarSettingsCubit>()
-                .changeMonthCalendarSettings(state.copyWith(clock: v)),
-            child: Text(t.showClock),
-          ),
-        ],
-      ),
+    final monthCalendarSettings =
+        context.watch<MonthCalendarSettingsCubit>().state;
+    return SettingsTab(
+      children: [
+        Tts(child: Text(t.topField)),
+        const _MonthAppBarPreview(),
+        SwitchField(
+          value: monthCalendarSettings.showBrowseButtons,
+          onChanged: (v) => context
+              .read<MonthCalendarSettingsCubit>()
+              .changeMonthCalendarSettings(
+                  monthCalendarSettings.copyWith(showBrowseButtons: v)),
+          child: Text(t.showBrowseButtons),
+        ),
+        SwitchField(
+          value: monthCalendarSettings.showYear,
+          onChanged: (v) => context
+              .read<MonthCalendarSettingsCubit>()
+              .changeMonthCalendarSettings(
+                  monthCalendarSettings.copyWith(showYear: v)),
+          child: Text(t.showYear),
+        ),
+        SwitchField(
+          value: monthCalendarSettings.showClock,
+          onChanged: (v) => context
+              .read<MonthCalendarSettingsCubit>()
+              .changeMonthCalendarSettings(
+                  monthCalendarSettings.copyWith(showClock: v)),
+          child: Text(t.showClock),
+        ),
+      ],
     );
   }
 }
@@ -44,15 +48,16 @@ class _MonthAppBarPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MonthCalendarSettingsCubit, MonthCalendarSettingsState>(
-      builder: (context, state) => BlocBuilder<ClockBloc, DateTime>(
+    return BlocBuilder<MonthCalendarSettingsCubit, MonthCalendarSettings>(
+      builder: (context, monthCalendarSettings) =>
+          BlocBuilder<ClockBloc, DateTime>(
         builder: (context, currentTime) => AppBarPreview(
-          showBrowseButtons: state.browseButtons,
-          showClock: state.clock,
+          showBrowseButtons: monthCalendarSettings.showBrowseButtons,
+          showClock: monthCalendarSettings.showClock,
           rows: AppBarTitleRows.month(
             currentTime: currentTime,
             langCode: Localizations.localeOf(context).toLanguageTag(),
-            showYear: state.year,
+            showYear: monthCalendarSettings.showYear,
             showDay: true,
           ),
         ),

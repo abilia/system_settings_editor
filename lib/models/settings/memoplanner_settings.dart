@@ -8,18 +8,6 @@ class MemoplannerSettings extends Equatable {
     ...DayCalendarViewOptionsSettings.keys,
   };
 
-  static const String monthCaptionShowMonthButtonsKey =
-          'month_caption_show_month_buttons',
-      monthCaptionShowYearKey = 'month_caption_show_year',
-      monthCaptionShowClockKey = 'month_caption_show_clock',
-      calendarMonthViewShowColorsKey = 'calendar_month_view_show_colors';
-
-  final bool monthCaptionShowMonthButtons,
-      monthCaptionShowYear,
-      monthCaptionShowClock;
-
-  final int calendarMonthViewShowColors;
-
   final AlarmSettings alarm;
   final CodeProtectSettings codeProtect;
   final KeepScreenAwakeSettings keepScreenAwake;
@@ -28,15 +16,15 @@ class MemoplannerSettings extends Equatable {
   final GeneralCalendarSettings calendar;
   final AddActivitySettings addActivity;
   final WeekCalendarSettings weekCalendar;
+  final MonthCalendarSettings monthCalendar;
   final ActivityViewSettings activityView;
   final DayCalendarSettings dayCalendar;
   final PhotoMenuSettings photoMenu;
 
+  bool get settingsInaccessible =>
+      !functions.display.menu || !menu.showSettings;
+
   const MemoplannerSettings({
-    this.monthCaptionShowMonthButtons = true,
-    this.monthCaptionShowYear = true,
-    this.monthCaptionShowClock = true,
-    this.calendarMonthViewShowColors = 1,
     this.alarm = const AlarmSettings(),
     this.codeProtect = const CodeProtectSettings(),
     this.menu = const MenuSettings(),
@@ -45,6 +33,7 @@ class MemoplannerSettings extends Equatable {
     this.calendar = const GeneralCalendarSettings(),
     this.addActivity = const AddActivitySettings(),
     this.weekCalendar = const WeekCalendarSettings(),
+    this.monthCalendar = const MonthCalendarSettings(),
     this.activityView = const ActivityViewSettings(),
     this.dayCalendar = const DayCalendarSettings(),
     this.photoMenu = const PhotoMenuSettings(),
@@ -53,19 +42,6 @@ class MemoplannerSettings extends Equatable {
   factory MemoplannerSettings.fromSettingsMap(
       Map<String, MemoplannerSettingData> settings) {
     return MemoplannerSettings(
-      monthCaptionShowMonthButtons: settings.getBool(
-        monthCaptionShowMonthButtonsKey,
-      ),
-      monthCaptionShowYear: settings.getBool(
-        monthCaptionShowYearKey,
-      ),
-      monthCaptionShowClock: settings.getBool(
-        monthCaptionShowClockKey,
-      ),
-      calendarMonthViewShowColors: settings.parse(
-        calendarMonthViewShowColorsKey,
-        WeekColor.columns.index,
-      ),
       alarm: AlarmSettings.fromSettingsMap(settings),
       codeProtect: CodeProtectSettings.fromSettingsMap(settings),
       menu: MenuSettings.fromSettingsMap(settings),
@@ -74,6 +50,7 @@ class MemoplannerSettings extends Equatable {
       calendar: GeneralCalendarSettings.fromSettingsMap(settings),
       addActivity: AddActivitySettings.fromSettingsMap(settings),
       weekCalendar: WeekCalendarSettings.fromSettingsMap(settings),
+      monthCalendar: MonthCalendarSettings.fromSettingsMap(settings),
       activityView: ActivityViewSettings.fromSettingsMap(settings),
       dayCalendar: DayCalendarSettings.fromSettingsMap(settings),
       photoMenu: PhotoMenuSettings.fromSettingsMap(settings),
@@ -82,10 +59,6 @@ class MemoplannerSettings extends Equatable {
 
   @override
   List<Object> get props => [
-        monthCaptionShowMonthButtons,
-        monthCaptionShowYear,
-        monthCaptionShowClock,
-        calendarMonthViewShowColors,
         alarm,
         codeProtect,
         menu,
@@ -94,6 +67,7 @@ class MemoplannerSettings extends Equatable {
         calendar,
         addActivity,
         weekCalendar,
+        monthCalendar,
         activityView,
         dayCalendar,
         photoMenu,

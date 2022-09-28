@@ -26,7 +26,7 @@ class AlarmCubit extends Cubit<NotificationAlarm?> {
   }
 
   Future<void> _newMinute(DateTime now) async {
-    if (settingsBloc.state.alarm.disabledUntilDate.isAfter(now)) {
+    if (settingsBloc.state.settings.alarm.disabledUntilDate.isAfter(now)) {
       return;
     }
     final activities = await activityRepository.allBetween(

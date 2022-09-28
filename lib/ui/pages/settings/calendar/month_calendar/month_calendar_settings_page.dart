@@ -3,12 +3,14 @@ import 'package:seagull/ui/all.dart';
 
 class MonthCalendarSettingsPage extends StatelessWidget {
   const MonthCalendarSettingsPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
+    final settings = context.read<MemoplannerSettingBloc>().state.settings;
     return BlocProvider<MonthCalendarSettingsCubit>(
       create: (context) => MonthCalendarSettingsCubit(
-        settingsState: context.read<MemoplannerSettingBloc>().state,
+        monthCalendarSettings: settings.monthCalendar,
         genericCubit: context.read<GenericCubit>(),
       ),
       child: DefaultTabController(

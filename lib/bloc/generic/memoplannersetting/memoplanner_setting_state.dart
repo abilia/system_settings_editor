@@ -5,19 +5,6 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   const MemoplannerSettingsState(this.settings);
 
-  bool get settingsInaccessible =>
-      !settings.functions.display.menu || !settings.menu.showSettings;
-
-  bool get monthCaptionShowBrowseButtons =>
-      settings.monthCaptionShowMonthButtons;
-  bool get monthCaptionShowYear => settings.monthCaptionShowYear;
-  bool get monthCaptionShowClock => settings.monthCaptionShowClock;
-
-  AlarmSettings get alarm => settings.alarm;
-
-  WeekColor get monthWeekColor =>
-      WeekColor.values[settings.calendarMonthViewShowColors];
-
   @override
   List<Object> get props => settings.props;
 
