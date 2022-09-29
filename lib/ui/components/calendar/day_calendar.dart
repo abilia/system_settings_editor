@@ -148,28 +148,28 @@ class CategoriesAndHiddenSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, boxConstraints) {
-      final categoryLabelWidth =
-          (boxConstraints.maxWidth - layout.timepillar.width) / 2;
-      final settingsInaccessible = context.select(
-          (MemoplannerSettingsBloc bloc) => bloc.state.settingsInaccessible);
-      final showCategories = context.select((MemoplannerSettingsBloc bloc) =>
-          bloc.state.calendar.categories.show);
+    final settingsInaccessible = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.settingsInaccessible);
+    final showCategories = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.calendar.categories.show);
 
-      return Column(
-        children: [
-          if (showCategories)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                LeftCategory(maxWidth: categoryLabelWidth),
-                RightCategory(maxWidth: categoryLabelWidth),
-              ],
-            ),
-          if (settingsInaccessible) const HiddenSetting(),
-        ],
-      );
-    });
+    return Column(
+      children: [
+        if (showCategories)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Expanded(child: LeftCategory()),
+              GoToNowButton.placeholder(context).pad(
+                EdgeInsets.symmetric(horizontal: layout.category.topMargin),
+              ),
+              const Expanded(child: RightCategory()),
+            ],
+          ),
+        if (settingsInaccessible) const HiddenSetting(),
+      ],
+    );
   }
 }
 
