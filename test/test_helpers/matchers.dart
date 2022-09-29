@@ -1,4 +1,3 @@
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:test/test.dart';
 import 'package:collection/collection.dart';
@@ -13,7 +12,6 @@ class MatchActivitiesWithoutId extends Matcher {
   @override
   bool matches(item, Map matchState) {
     Iterable<Activity>? activities;
-    if (item is ActivitiesLoaded) activities = item.activities;
     if (item is Iterable<Activity>) activities = item;
     if (activities == null) return false;
     final actual = activities.map((a) => a.props.sublist(1));

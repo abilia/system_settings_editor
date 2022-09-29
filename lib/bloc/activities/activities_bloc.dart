@@ -51,7 +51,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     Emitter<ActivitiesState> emit,
   ) async {
     try {
-      emit(ActivitiesLoaded(await activityRepository.getAll()));
+      emit(ActivitiesLoaded());
     } catch (_) {
       emit(ActivitiesLoadedFailed());
     }
@@ -61,52 +61,42 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     AddActivity event,
     Emitter<ActivitiesState> emit,
   ) async {
-    final activities = state.activities;
     await _saveActivities([event.activity]);
-    emit(ActivitiesLoaded(activities.followedBy([event.activity])));
+    emit(ActivitiesLoaded());
   }
 
   Future _mapDeleteActivityToState(
     DeleteActivity event,
     Emitter<ActivitiesState> emit,
   ) async {
-    final activities = state.activities.toSet();
-    if (activities.remove(event.activity)) {
-      await _saveActivities([event.activity.copyWith(deleted: true)]);
-      emit(ActivitiesLoaded(activities));
-    }
+    await _saveActivities([event.activity.copyWith(deleted: true)]);
+    emit(ActivitiesLoaded());
   }
 
   Future _mapUpdateActivityToState(
     UpdateActivity event,
     Emitter<ActivitiesState> emit,
   ) async {
-    final activities = state.activities;
-    final activity = event.activity;
-    final updatedActivities = activities.map<Activity>((a) {
-      return a.id == activity.id ? activity : a;
-    }).toList(growable: false);
-    await _saveActivities([activity]);
-    emit(ActivitiesLoaded(updatedActivities));
+    await _saveActivities([event.activity]);
+    emit(ActivitiesLoaded());
   }
 
   Future _mapDeleteRecurringToState(
     DeleteRecurringActivity event,
     Emitter<ActivitiesState> emit,
   ) async {
-    final activities = state.activities.toSet();
+    final series =
+        (await activityRepository.getBySerie(event.activity.seriesId)).toSet();
     final activity = event.activity;
     switch (event.applyTo) {
       case ApplyTo.allDays:
-        final series =
-            activities.where((a) => a.seriesId == activity.seriesId).toSet();
         await _saveActivities(series.map((a) => a.copyWith(deleted: true)));
-        emit(ActivitiesLoaded(activities.difference(series)));
+        emit(ActivitiesLoaded());
         break;
       case ApplyTo.thisDayAndForward:
         await _handleResult(
           deleteThisDayAndForwardToState(
-            activities: activities,
+            activities: series,
             activity: activity,
             day: event.day,
           ),
@@ -117,7 +107,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
         await _handleResult(
           deleteOnlyThisDay(
             activity: activity,
-            activities: activities,
+            activities: series,
             day: event.day,
           ),
           emit,
@@ -126,26 +116,27 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     }
   }
 
-  Future _mapUpdateRecurringToState(
+  Future<void> _mapUpdateRecurringToState(
     UpdateRecurringActivity event,
     Emitter<ActivitiesState> emit,
   ) async {
-    final activities = state.activities.toSet();
+    final series =
+        (await activityRepository.getBySerie(event.activity.seriesId)).toSet();
     switch (event.applyTo) {
       case ApplyTo.thisDayAndForward:
-        _handleResult(
+        await _handleResult(
           updateThisDayAndForward(
             activity: event.activity,
-            activities: activities,
+            activities: series,
             day: event.day,
           ),
           emit,
         );
         break;
       case ApplyTo.onlyThisDay:
-        _handleResult(
+        await _handleResult(
           updateOnlyThisDay(
-            activities: activities,
+            activities: series,
             activity: event.activity,
             day: event.day,
           ),
@@ -161,7 +152,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     Emitter<ActivitiesState> emit,
   ) async {
     await _saveActivities(res.save);
-    emit(ActivitiesLoaded(res.state));
+    emit(ActivitiesLoaded());
   }
 
   Future<void> _saveActivities(Iterable<Activity> activities) async {

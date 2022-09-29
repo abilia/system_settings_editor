@@ -108,4 +108,9 @@ class ActivityDbInMemory implements ActivityDb {
 
   @override
   String get tableName => '';
+
+  @override
+  Future<Iterable<Activity>> getBySerie(String seriesId) async {
+    return activities.map((e) => e.model).where((e) => e.seriesId == seriesId);
+  }
 }

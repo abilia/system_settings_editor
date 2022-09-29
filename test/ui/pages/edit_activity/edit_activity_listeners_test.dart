@@ -40,7 +40,7 @@ void main() {
   setUp(() async {
     await initializeDateFormatting();
     mockActivitiesBloc = MockActivitiesBloc();
-    when(() => mockActivitiesBloc.state).thenReturn(ActivitiesLoaded(const []));
+    when(() => mockActivitiesBloc.state).thenReturn(ActivitiesLoaded());
     when(() => mockActivitiesBloc.stream)
         .thenAnswer((_) => const Stream.empty());
     mockActivityRepository = MockActivityRepository();

@@ -778,7 +778,7 @@ void main() {
         ),
       );
 
-      mockActivitiesBlocStream.add(ActivitiesLoaded([checkedActivity]));
+      mockActivitiesBlocStream.add(ActivitiesLoaded());
       when(() => mockActivityRepository.getById(any()))
           .thenAnswer((_) => Future.value(checkedActivity));
 
