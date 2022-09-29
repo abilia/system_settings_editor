@@ -156,7 +156,7 @@ void main() {
       const fridayTitle = 'en rubrik', nextMonthTitle = 'next month';
       final friday = initialDay.addDays(2);
       final nextMonth = initialDay.nextMonth();
-      final recuresOnMonthDaySet = {1, 5, 6, 9, 22, 23};
+      final recursOnMonthDaySet = {1, 5, 6, 9, 22, 23};
 
       setUp(() {
         mockActivityDb.initWithActivities([
@@ -169,12 +169,12 @@ void main() {
           Activity.createNew(
             title: 'recurring',
             startTime: initialDay.previousMonth().add(1.minutes()),
-            recurs: Recurs.monthlyOnDays((recuresOnMonthDaySet)),
+            recurs: Recurs.monthlyOnDays((recursOnMonthDaySet)),
           ),
         ]);
       });
 
-      testWidgets('shows fullday ', (WidgetTester tester) async {
+      testWidgets('shows fullday', (WidgetTester tester) async {
         // Act
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
@@ -192,7 +192,14 @@ void main() {
         expect(find.text(nextMonthTitle), findsOneWidget);
       }, skip: Config.isMPGO);
 
-      testWidgets('shows activity as dot ', (WidgetTester tester) async {
+      testWidgets('BUG SGC-1994 shows all activities as dot on MPGO',
+          (WidgetTester tester) async {
+        final activitiesThisMonth =
+            recursOnMonthDaySet.union({friday.day}).length;
+
+        // Assert
+        expect(activitiesThisMonth, isNot(recursOnMonthDaySet.length));
+
         // Act
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
@@ -201,9 +208,23 @@ void main() {
         // Assert
         expect(
           find.byType(ColorDot),
-          findsNWidgets(recuresOnMonthDaySet.length),
+          findsNWidgets(activitiesThisMonth),
         );
-      });
+      }, skip: !Config.isMPGO);
+
+      testWidgets('shows only non-fullday activities as dot on MP',
+          (WidgetTester tester) async {
+        // Act
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.month));
+        await tester.pumpAndSettle();
+        // Assert
+        expect(
+          find.byType(ColorDot),
+          findsNWidgets(recursOnMonthDaySet.length),
+        );
+      }, skip: !Config.isMP);
     });
   });
 
