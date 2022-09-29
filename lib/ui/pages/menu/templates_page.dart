@@ -304,16 +304,15 @@ class AddTemplateButton extends StatelessWidget {
           providers: [
             ...authProviders,
             BlocProvider<EditActivityCubit>(
-              create: (_) => EditActivityCubit.newActivity(
-                day: context.read<DayPickerBloc>().state.day,
-                defaultsSettings: context
-                    .read<MemoplannerSettingBloc>()
-                    .state
-                    .settings
-                    .addActivity
-                    .defaults,
-                calendarId: '',
-              ),
+              create: (context) {
+                final settings = context.read<MemoplannerSettingsBloc>().state;
+                final defaultsSettings = settings.addActivity.defaults;
+                return EditActivityCubit.newActivity(
+                  day: context.read<DayPickerBloc>().state.day,
+                  defaultsSettings: defaultsSettings,
+                  calendarId: '',
+                );
+              },
             ),
             BlocProvider<WizardCubit>(
               create: (context) => TemplateActivityWizardCubit(

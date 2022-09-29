@@ -37,7 +37,7 @@ void main() {
 
   Widget wrapWithMaterialApp(
     Widget widget, {
-    MemoplannerSettingBloc? memoplannerSettingBloc,
+    MemoplannerSettingsBloc? memoplannerSettingBloc,
     SortableBloc? sortableBloc,
   }) =>
       TopLevelProvider(

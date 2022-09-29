@@ -14,8 +14,8 @@ class CreateNewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final displaysSettings = context.select(
-        (MemoplannerSettingBloc bloc) => bloc.state.settings.functions.display);
+    final displaysSettings = context
+        .select((MemoplannerSettingsBloc bloc) => bloc.state.functions.display);
     final displayNewActivity = displaysSettings.newActivity && showActivities;
     final displayNewTimer = displaysSettings.newTimer && showTimers;
 

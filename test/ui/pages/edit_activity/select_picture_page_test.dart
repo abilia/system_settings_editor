@@ -10,7 +10,7 @@ import '../../../test_helpers/register_fallback_values.dart';
 void main() {
   group('SelectPicturePage test', () {
     late MockSortableBloc mockSortableBloc;
-    late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
+    late MemoplannerSettingsBloc mockMemoplannerSettingsBloc;
 
     setUpAll(() {
       registerFallbackValues();
@@ -22,8 +22,8 @@ void main() {
           .thenAnswer((_) => const Stream.empty());
       mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               editActivity: EditActivitySettings(template: false),
             ),
@@ -44,7 +44,7 @@ void main() {
                   orElse: () => supportedLocales.first),
           builder: (context, child) => FakeAuthenticatedBlocsProvider(
             child: MultiBlocProvider(providers: [
-              BlocProvider<MemoplannerSettingBloc>.value(
+              BlocProvider<MemoplannerSettingsBloc>.value(
                 value: mockMemoplannerSettingsBloc,
               ),
               BlocProvider<SortableBloc>.value(
@@ -74,8 +74,8 @@ void main() {
       when(() => mockSortableBloc.state)
           .thenAnswer((_) => const SortablesLoaded(sortables: []));
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             photoMenu: PhotoMenuSettings(
               displayMyPhotos: false,
             ),
@@ -93,8 +93,8 @@ void main() {
       when(() => mockSortableBloc.state)
           .thenAnswer((_) => const SortablesLoaded(sortables: []));
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             photoMenu: PhotoMenuSettings(
               displayCamera: false,
             ),
@@ -112,8 +112,8 @@ void main() {
       when(() => mockSortableBloc.state)
           .thenAnswer((_) => const SortablesLoaded(sortables: []));
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             photoMenu: PhotoMenuSettings(
               displayLocalImages: false,
             ),

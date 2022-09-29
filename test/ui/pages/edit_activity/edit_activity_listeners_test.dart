@@ -30,7 +30,7 @@ void main() {
 
   late MockActivitiesBloc mockActivitiesBloc;
   late MockActivityRepository mockActivityRepository;
-  late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
+  late MemoplannerSettingsBloc mockMemoplannerSettingsBloc;
 
   setUpAll(() {
     registerFallbackValues();
@@ -50,8 +50,8 @@ void main() {
         .thenReturn(mockActivityRepository);
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-      const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
+      MemoplannerSettingsLoaded(
+        const MemoplannerSettings(
           addActivity: AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
@@ -84,7 +84,7 @@ void main() {
               BlocProvider<ClockBloc>(
                 create: (context) => ClockBloc.fixed(startTime),
               ),
-              BlocProvider<MemoplannerSettingBloc>(
+              BlocProvider<MemoplannerSettingsBloc>(
                 create: (_) => mockMemoplannerSettingsBloc,
               ),
               BlocProvider<ActivitiesBloc>.value(value: mockActivitiesBloc),
@@ -93,9 +93,8 @@ void main() {
                     ? EditActivityCubit.newActivity(
                         day: today,
                         defaultsSettings: context
-                            .read<MemoplannerSettingBloc>()
+                            .read<MemoplannerSettingsBloc>()
                             .state
-                            .settings
                             .addActivity
                             .defaults,
                         calendarId: 'calendarId',
@@ -111,9 +110,8 @@ void main() {
                         clockBloc: context.read<ClockBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
                         addActivitySettings: context
-                            .read<MemoplannerSettingBloc>()
+                            .read<MemoplannerSettingsBloc>()
                             .state
-                            .settings
                             .addActivity,
                       )
                     : ActivityWizardCubit.edit(
@@ -121,9 +119,8 @@ void main() {
                         clockBloc: context.read<ClockBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
                         allowPassedStartTime: context
-                            .read<MemoplannerSettingBloc>()
+                            .read<MemoplannerSettingsBloc>()
                             .state
-                            .settings
                             .addActivity
                             .general
                             .allowPassedStartTime,
@@ -145,7 +142,7 @@ void main() {
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(
                   screenTimeoutCallback: Future.value(30.minutes()),
-                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
+                  memoSettingsBloc: context.read<MemoplannerSettingsBloc>(),
                   battery: FakeBattery(),
                 ),
               ),
@@ -435,8 +432,8 @@ void main() {
       (WidgetTester tester) async {
     // Act -- hide InfoItemTab
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-      const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
+      MemoplannerSettingsLoaded(
+        const MemoplannerSettings(
           addActivity: AddActivitySettings(
             editActivity: EditActivitySettings(notes: false, checklist: false),
           ),

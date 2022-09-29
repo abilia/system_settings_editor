@@ -27,40 +27,36 @@ class EyeButtonDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) => _EyeButton(
-        onPressed: () async {
-          final settingsBloc = context.read<MemoplannerSettingBloc>();
-          final viewOptions =
-              settingsBloc.state.settings.dayCalendar.viewOptions;
-          final settings = await showViewDialog<EyeButtonSettings?>(
-            context: context,
-            builder: (context) => EyeButtonDayDialog(
-              currentCalendarType: viewOptions.calendarType,
-              currentDotsInTimepillar: viewOptions.dots,
-              currentDayInterval: viewOptions.intervalType,
-              currentZoom: viewOptions.timepillarZoom,
-            ),
-          );
-          if (settings != null) {
-            if (viewOptions.calendarType != settings.calendarType) {
-              settingsBloc
-                  .add(DayCalendarTypeUpdatedEvent(settings.calendarType));
-            }
-            if (viewOptions.dots != settings.dotsInTimepillar) {
-              settingsBloc
-                  .add(DotsInTimepillarUpdatedEvent(settings.dotsInTimepillar));
-            }
-            if (viewOptions.intervalType != settings.intervalType) {
-              settingsBloc.add(IntervalTypeUpdatedEvent(settings.intervalType));
-            }
-            if (viewOptions.timepillarZoom != settings.timepillarZoom) {
-              settingsBloc
-                  .add(ZoomSettingUpdatedEvent(settings.timepillarZoom));
-            }
+    return _EyeButton(
+      onPressed: () async {
+        final settingsBloc = context.read<MemoplannerSettingsBloc>();
+        final viewOptions = settingsBloc.state.dayCalendar.viewOptions;
+        final settings = await showViewDialog<EyeButtonSettings?>(
+          context: context,
+          builder: (context) => EyeButtonDayDialog(
+            currentCalendarType: viewOptions.calendarType,
+            currentDotsInTimepillar: viewOptions.dots,
+            currentDayInterval: viewOptions.intervalType,
+            currentZoom: viewOptions.timepillarZoom,
+          ),
+        );
+        if (settings != null) {
+          if (viewOptions.calendarType != settings.calendarType) {
+            settingsBloc
+                .add(DayCalendarTypeUpdatedEvent(settings.calendarType));
           }
-        },
-      ),
+          if (viewOptions.dots != settings.dotsInTimepillar) {
+            settingsBloc
+                .add(DotsInTimepillarUpdatedEvent(settings.dotsInTimepillar));
+          }
+          if (viewOptions.intervalType != settings.intervalType) {
+            settingsBloc.add(IntervalTypeUpdatedEvent(settings.intervalType));
+          }
+          if (viewOptions.timepillarZoom != settings.timepillarZoom) {
+            settingsBloc.add(ZoomSettingUpdatedEvent(settings.timepillarZoom));
+          }
+        }
+      },
     );
   }
 }

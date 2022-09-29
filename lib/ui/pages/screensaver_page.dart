@@ -9,8 +9,8 @@ class ScreensaverPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isNight = context.select((DayPartCubit cubit) => cubit.state.isNight);
-    final clockType = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.calendar.clockType);
+    final clockType = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.calendar.clockType);
     return Scaffold(
       backgroundColor: AbiliaColors.black,
       body: Opacity(
@@ -48,8 +48,10 @@ class _ScreensaverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final memoSettingsState = context.watch<MemoplannerSettingBloc>().state;
-    final appBarSettings = memoSettingsState.settings.dayCalendar.appBar;
+    final appBarSettings = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.dayCalendar.appBar);
+    final dayParts = context
+        .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayParts);
 
     final time = context.watch<ClockBloc>().state;
     return Padding(
@@ -65,7 +67,7 @@ class _ScreensaverAppBar extends StatelessWidget {
           currentTime: time,
           day: time.onlyDays(),
           dayPart: context.read<DayPartCubit>().state,
-          dayParts: memoSettingsState.settings.calendar.dayParts,
+          dayParts: dayParts,
           langCode: Localizations.localeOf(context).toLanguageTag(),
           translator: Translator.of(context).translate,
         ),

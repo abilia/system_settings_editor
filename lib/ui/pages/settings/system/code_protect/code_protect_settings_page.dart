@@ -9,11 +9,12 @@ class CodeProtectSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
+    final settings = context.read<MemoplannerSettingsBloc>().state;
 
     return BlocProvider(
       create: (context) => CodeProtectCubit(
         context.read<GenericCubit>(),
-        context.read<MemoplannerSettingBloc>().state.settings.codeProtect,
+        settings.codeProtect,
       ),
       child: BlocBuilder<CodeProtectCubit, CodeProtectSettings>(
         builder: (context, state) {

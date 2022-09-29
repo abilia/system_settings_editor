@@ -32,7 +32,7 @@ void main() {
 
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state)
-        .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
+        .thenReturn(MemoplannerSettingsLoaded(const MemoplannerSettings(
             dayCalendar: DayCalendarSettings(
                 viewOptions: DayCalendarViewOptionsSettings(
       dots: true,
@@ -41,8 +41,8 @@ void main() {
     when(() => mockMemoplannerSettingsBloc.stream).thenAnswer(
       (_) => Stream.fromIterable(
         [
-          const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
+          MemoplannerSettingsLoaded(
+            const MemoplannerSettings(
               dayCalendar: DayCalendarSettings(
                 viewOptions: DayCalendarViewOptionsSettings(
                   dots: true,
@@ -106,7 +106,7 @@ void main() {
             BlocProvider<SpeechSettingsCubit>(
               create: (context) => FakeSpeechSettingsCubit(),
             ),
-            BlocProvider<MemoplannerSettingBloc>(
+            BlocProvider<MemoplannerSettingsBloc>(
               create: (context) => mockMemoplannerSettingsBloc,
             ),
             BlocProvider<TimepillarCubit>(
@@ -135,7 +135,7 @@ void main() {
                   topMargin: layout.timepillar.topMargin,
                   bottomMargin: layout.timepillar.bottomMargin,
                   showCategoryColor: mockMemoplannerSettingsBloc
-                      .state.settings.calendar.categories.showColors,
+                      .state.calendar.categories.showColors,
                 ),
                 categoryMinWidth: 400,
                 timepillarWidth: measures.cardTotalWidth,
@@ -490,8 +490,8 @@ void main() {
         measures: TimepillarMeasures(interval, 1),
         topMargin: layout.timepillar.topMargin,
         bottomMargin: layout.timepillar.bottomMargin,
-        showCategoryColor: mockMemoplannerSettingsBloc
-            .state.settings.calendar.categories.showColors,
+        showCategoryColor:
+            mockMemoplannerSettingsBloc.state.calendar.categories.showColors,
       );
       final uniques =
           boardData.cards.map((f) => {f.cardPosition.top, f.column});
@@ -649,7 +649,7 @@ void main() {
     testWidgets('No side dots when setting is flarp',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
+          .thenReturn(MemoplannerSettingsLoaded(const MemoplannerSettings(
               dayCalendar: DayCalendarSettings(
                   viewOptions: DayCalendarViewOptionsSettings(
         dots: false,

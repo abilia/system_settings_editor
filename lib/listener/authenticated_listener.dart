@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:get_it/get_it.dart';
 import 'package:seagull/listener/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
@@ -70,11 +71,11 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           listener: (context, state) =>
               context.read<NotificationBloc>().add(NotificationEvent()),
         ),
-        BlocListener<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        BlocListener<MemoplannerSettingsBloc, MemoplannerSettings>(
           listenWhen: (previous, current) =>
               (previous is MemoplannerSettingsNotLoaded &&
                   current is! MemoplannerSettingsNotLoaded) ||
-              previous.settings.alarm != current.settings.alarm,
+              previous.alarm != current.alarm,
           listener: (context, state) =>
               context.read<NotificationBloc>().add(NotificationEvent()),
         ),

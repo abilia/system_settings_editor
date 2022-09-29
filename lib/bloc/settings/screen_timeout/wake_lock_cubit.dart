@@ -11,11 +11,10 @@ class WakeLockCubit extends Cubit<WakeLockState> {
 
   WakeLockCubit({
     required Battery battery,
-    required MemoplannerSettingBloc memoSettingsBloc,
+    required MemoplannerSettingsBloc memoSettingsBloc,
     required Future<Duration?> screenTimeoutCallback,
   }) : super(WakeLockState(
-          keepScreenAwakeSettings:
-              memoSettingsBloc.state.settings.keepScreenAwake,
+          keepScreenAwakeSettings: memoSettingsBloc.state.keepScreenAwake,
         )) {
     _batterySubscription = battery.onBatteryStateChanged.listen(
       (event) => emit(
@@ -28,7 +27,7 @@ class WakeLockCubit extends Cubit<WakeLockState> {
     _memosettingsSubsription = memoSettingsBloc.stream.listen(
       (event) => emit(
         state.copyWith(
-          keepScreenAwakeSettings: event.settings.keepScreenAwake,
+          keepScreenAwakeSettings: event.keepScreenAwake,
         ),
       ),
     );

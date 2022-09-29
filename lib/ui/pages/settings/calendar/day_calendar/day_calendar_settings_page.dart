@@ -7,10 +7,10 @@ class DayCalendarSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
+    final settings = context.read<MemoplannerSettingsBloc>().state;
     return BlocProvider<DayCalendarSettingsCubit>(
       create: (context) => DayCalendarSettingsCubit(
-        dayCalendarSettings:
-            context.read<MemoplannerSettingBloc>().state.settings.dayCalendar,
+        dayCalendarSettings: settings.dayCalendar,
         genericCubit: context.read<GenericCubit>(),
       ),
       child: DefaultTabController(

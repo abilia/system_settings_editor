@@ -12,11 +12,11 @@ class DateAndTimeWidget extends StatelessWidget {
     final translator = Translator.of(context).translate;
     final editActivityState = context.watch<EditActivityCubit>().state;
     final isFullDay = editActivityState.activity.fullDay;
-    final showFullDay = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.addActivity.editActivity.fullDay);
+    final showFullDay = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.addActivity.editActivity.fullDay);
     final showTimeWidgets = !isFullDay || showFullDay;
-    final canEditDate = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.addActivity.editActivity.date);
+    final canEditDate = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.addActivity.editActivity.date);
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -143,7 +143,7 @@ class DatePicker extends StatelessWidget {
                           ),
                         ),
                         BlocProvider.value(
-                          value: context.read<MemoplannerSettingBloc>(),
+                          value: context.read<MemoplannerSettingsBloc>(),
                         ),
                       ],
                       child: DatePickerPage(
@@ -182,50 +182,49 @@ class TimeIntervalPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
     final translator = Translator.of(context).translate;
-    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
-      selector: (state) => state.settings.addActivity.general.showEndTime,
-      builder: (context, showEndTime) => Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          Expanded(
-            flex: 148,
-            child: TimePicker(
-              translator.time,
-              TimeInput(
-                timeInterval.startTime,
-                timeInterval.sameTime ? null : timeInterval.endTime,
-              ),
-              errorState: startTimeError,
-              onTap: () async {
-                final editActivityCubit = context.read<EditActivityCubit>();
-                final newTimeInterval =
-                    await Navigator.of(context).push<TimeInput>(
-                  MaterialPageRoute(
-                    builder: (_) => MultiBlocProvider(
-                      providers: authProviders,
-                      child: TimeInputPage(
-                        timeInput: TimeInput(
-                            timeInterval.startTime,
-                            timeInterval.sameTime || !showEndTime
-                                ? null
-                                : timeInterval.endTime),
-                      ),
-                    ),
-                    settings: const RouteSettings(name: 'TimeInputPage'),
-                  ),
-                );
-
-                if (newTimeInterval != null) {
-                  editActivityCubit.changeTimeInterval(
-                    startTime: newTimeInterval.startTime,
-                    endTime: newTimeInterval.endTime,
-                  );
-                }
-              },
+    final showEndTime = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.addActivity.general.showEndTime);
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        Expanded(
+          flex: 148,
+          child: TimePicker(
+            translator.time,
+            TimeInput(
+              timeInterval.startTime,
+              timeInterval.sameTime ? null : timeInterval.endTime,
             ),
+            errorState: startTimeError,
+            onTap: () async {
+              final editActivityCubit = context.read<EditActivityCubit>();
+              final newTimeInterval =
+                  await Navigator.of(context).push<TimeInput>(
+                MaterialPageRoute(
+                  builder: (_) => MultiBlocProvider(
+                    providers: authProviders,
+                    child: TimeInputPage(
+                      timeInput: TimeInput(
+                          timeInterval.startTime,
+                          timeInterval.sameTime || !showEndTime
+                              ? null
+                              : timeInterval.endTime),
+                    ),
+                  ),
+                  settings: const RouteSettings(name: 'TimeInputPage'),
+                ),
+              );
+
+              if (newTimeInterval != null) {
+                editActivityCubit.changeTimeInterval(
+                  startTime: newTimeInterval.startTime,
+                  endTime: newTimeInterval.endTime,
+                );
+              }
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

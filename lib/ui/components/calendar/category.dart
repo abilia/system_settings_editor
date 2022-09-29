@@ -14,8 +14,8 @@ class LeftCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categories = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.calendar.categories);
+    final categories = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.calendar.categories);
     return CategoryLeft(
       maxWidth: maxWidth,
       categoryName: categories.left.name,
@@ -68,8 +68,8 @@ class RightCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categories = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.calendar.categories);
+    final categories = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.calendar.categories);
     return CategoryRight(
       maxWidth: maxWidth,
       categoryName: categories.right.name,

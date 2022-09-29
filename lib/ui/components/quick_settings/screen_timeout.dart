@@ -132,25 +132,23 @@ class KeepOnWhileChargingSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
-      selector: (state) =>
-          state.settings.keepScreenAwake.keepScreenOnWhileCharging,
-      builder: (context, keepScreenOnWhileCharging) => SwitchField(
-        value: keepScreenOnWhileCharging,
-        onChanged: (switchOn) {
-          context.read<GenericCubit>().genericUpdated(
-            [
-              MemoplannerSettingData.fromData(
-                data: switchOn,
-                identifier:
-                    KeepScreenAwakeSettings.keepScreenOnWhileChargingKey,
-              ),
-            ],
-          );
-        },
-        child:
-            Text(Translator.of(context).translate.keepScreenAwakeWhileCharging),
-      ),
+    final keepScreenOnWhileCharging = context.select(
+        (MemoplannerSettingsBloc bloc) =>
+            bloc.state.keepScreenAwake.keepScreenOnWhileCharging);
+    return SwitchField(
+      value: keepScreenOnWhileCharging,
+      onChanged: (switchOn) {
+        context.read<GenericCubit>().genericUpdated(
+          [
+            MemoplannerSettingData.fromData(
+              data: switchOn,
+              identifier: KeepScreenAwakeSettings.keepScreenOnWhileChargingKey,
+            ),
+          ],
+        );
+      },
+      child:
+          Text(Translator.of(context).translate.keepScreenAwakeWhileCharging),
     );
   }
 }

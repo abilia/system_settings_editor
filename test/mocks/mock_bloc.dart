@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 export 'package:mocktail/mocktail.dart';
 
 // Blocs
@@ -21,8 +22,8 @@ class MockSortableBloc extends MockBloc<SortableEvent, SortableState>
     implements SortableBloc {}
 
 class MockMemoplannerSettingBloc
-    extends MockBloc<MemoplannerSettingsEvent, MemoplannerSettingsState>
-    implements MemoplannerSettingBloc {}
+    extends MockBloc<MemoplannerSettingsEvent, MemoplannerSettings>
+    implements MemoplannerSettingsBloc {}
 
 class MockTimepillarCubit extends MockCubit<TimepillarState>
     implements TimepillarCubit {}

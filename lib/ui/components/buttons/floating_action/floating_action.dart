@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/settings/memoplanner_settings.dart';
 import 'package:seagull/ui/all.dart';
 
 class FloatingActions extends StatelessWidget {
@@ -8,47 +7,38 @@ class FloatingActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tabController = DefaultTabController.of(context);
+    final settings = context.watch<MemoplannerSettingsBloc>().state;
     return BlocBuilder<PermissionCubit, PermissionState>(
       buildWhen: (old, fresh) =>
           old.notificationDenied != fresh.notificationDenied,
       builder: (context, permission) {
-        return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
-            MemoplannerSettings>(
-          selector: (state) => state.settings,
-          builder: (context, settings) {
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                if (tabController != null)
-                  _ToggleAlarmAndEyeButtons(tabController: tabController)
-                else if (settings.alarm.showAlarmOnOffSwitch)
-                  const ToggleAlarmButton(),
-                if (permission.notificationDenied)
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: layout.formPadding.largeHorizontalItemDistance,
-                        right:
-                            layout.formPadding.largeHorizontalItemDistance * 2,
-                      ),
-                      child: ErrorMessage(
-                        text: Text(
-                          Translator.of(context)
-                              .translate
-                              .notificationsWarningText,
-                        ),
-                      ),
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            if (tabController != null)
+              _ToggleAlarmAndEyeButtons(tabController: tabController)
+            else if (settings.alarm.showAlarmOnOffSwitch)
+              const ToggleAlarmButton(),
+            if (permission.notificationDenied)
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: layout.formPadding.largeHorizontalItemDistance,
+                    right: layout.formPadding.largeHorizontalItemDistance * 2,
+                  ),
+                  child: ErrorMessage(
+                    text: Text(
+                      Translator.of(context).translate.notificationsWarningText,
                     ),
-                  )
-                else
-                  const Spacer(),
-                if (tabController != null &&
-                    tabController.index ==
-                        settings.functions.display.menuTabIndex)
-                  const _AboutButton(),
-              ],
-            );
-          },
+                  ),
+                ),
+              )
+            else
+              const Spacer(),
+            if (tabController != null &&
+                tabController.index == settings.functions.display.menuTabIndex)
+              const _AboutButton(),
+          ],
         );
       },
     );
@@ -65,10 +55,11 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final displayEyeButton = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.dayCalendar.viewOptions.displayEyeButton);
-    final showAlarmOnOffSwitch = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.alarm.showAlarmOnOffSwitch);
+    final displayEyeButton = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.dayCalendar.viewOptions.displayEyeButton);
+    final showAlarmOnOffSwitch = context.select(
+        (MemoplannerSettingsBloc bloc) =>
+            bloc.state.alarm.showAlarmOnOffSwitch);
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [

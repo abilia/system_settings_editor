@@ -9,23 +9,22 @@ class DayPartCubit extends Cubit<DayPart> {
     this.settingsBloc,
     this.clockBloc,
   ) : super(
-          clockBloc.state
-              .dayPart(settingsBloc.state.settings.calendar.dayParts),
+          clockBloc.state.dayPart(settingsBloc.state.calendar.dayParts),
         ) {
     _clockSubscription = clockBloc.stream.listen(_conditionChanged);
     _daypartsSubscription = settingsBloc.stream
-        .map((state) => state.settings.calendar.dayParts)
+        .map((state) => state.calendar.dayParts)
         .listen(_conditionChanged);
   }
   final ClockBloc clockBloc;
-  final MemoplannerSettingBloc settingsBloc;
+  final MemoplannerSettingsBloc settingsBloc;
   late final StreamSubscription _clockSubscription, _daypartsSubscription;
 
   void _conditionChanged([condition]) {
     final now = condition is DateTime ? condition : clockBloc.state;
     final dayParts = condition is DayParts
         ? condition
-        : settingsBloc.state.settings.calendar.dayParts;
+        : settingsBloc.state.calendar.dayParts;
     emit(now.dayPart(dayParts));
   }
 

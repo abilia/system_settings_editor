@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/listener/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../mocks/mock_bloc.dart';
@@ -18,7 +19,7 @@ void main() {
   late WakeLockCubit wakeLockCubit;
   late Battery mockBattery;
   late StreamController<BatteryState> batteryStreamController;
-  late MemoplannerSettingBloc mockMemoplannerSettingBloc;
+  late MemoplannerSettingsBloc mockMemoplannerSettingBloc;
 
   const setScreenOffTimeout = 'setScreenOffTimeout',
       getScreenOffTimeout = 'getScreenOffTimeout',

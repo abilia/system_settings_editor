@@ -20,9 +20,9 @@ void main() {
   late StreamController<SortableState> sortableStreamController;
   late Stream<SortableState> sortableStream;
 
-  late MemoplannerSettingBloc memoplannerSettingBloc;
-  late StreamController<MemoplannerSettingsState> settingsStreamController;
-  late Stream<MemoplannerSettingsState> settingsStream;
+  late MemoplannerSettingsBloc memoplannerSettingBloc;
+  late StreamController<MemoplannerSettings> settingsStreamController;
+  late Stream<MemoplannerSettings> settingsStream;
 
   late NotificationBloc notificationBloc;
 
@@ -50,7 +50,7 @@ void main() {
     memoplannerSettingBloc = MockMemoplannerSettingBloc();
     when(() => memoplannerSettingBloc.state)
         .thenReturn(const MemoplannerSettingsNotLoaded());
-    settingsStreamController = StreamController<MemoplannerSettingsState>();
+    settingsStreamController = StreamController<MemoplannerSettings>();
     settingsStream = settingsStreamController.stream.asBroadcastStream();
     when(() => memoplannerSettingBloc.stream)
         .thenAnswer((invocation) => settingsStream);
@@ -135,7 +135,7 @@ void main() {
     expect(alarmScheduleCalls, 0);
     // Act
     settingsStreamController
-        .add(const MemoplannerSettingsLoaded(MemoplannerSettings()));
+        .add(MemoplannerSettingsLoaded(const MemoplannerSettings()));
     await tester.pumpAndSettle();
 
     // Assert

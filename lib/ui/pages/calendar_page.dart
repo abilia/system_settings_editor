@@ -1,5 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/listener/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class CalendarPage extends StatelessWidget {
@@ -11,18 +12,18 @@ class CalendarPage extends StatelessWidget {
       data: abiliaWhiteTheme,
       child: Builder(
         builder: (context) {
-          final isNotLoaded = context.select((MemoplannerSettingBloc bloc) =>
+          final isNotLoaded = context.select((MemoplannerSettingsBloc bloc) =>
               bloc.state is MemoplannerSettingsNotLoaded);
           if (isNotLoaded) {
             return const Scaffold(
                 body: Center(child: AbiliaProgressIndicator()));
           }
-          final functions = context.select(
-              (MemoplannerSettingBloc bloc) => bloc.state.settings.functions);
-          final display = functions.display;
+          final functionsSettings = context
+              .select((MemoplannerSettingsBloc bloc) => bloc.state.functions);
+          final display = functionsSettings.display;
           return DefaultTabController(
             length: display.calendarCount,
-            initialIndex: functions.startViewIndex,
+            initialIndex: functionsSettings.startViewIndex,
             child: Scaffold(
               bottomNavigationBar:
                   display.bottomBar ? const CalendarBottomBar() : null,

@@ -33,12 +33,10 @@ class ActivityTimepillarCard extends TimepillarCard {
     final dotHeight = cardPosition.dots * measures.dotDistance;
     final right = TimepillarSide.right == timepillarSide;
     final timepillarInterval = measures.interval;
-    final dotsInTimepillar = context.select(
-        (MemoplannerSettingBloc settingsBloc) =>
-            settingsBloc.state.settings.dayCalendar.viewOptions.dots);
-    final showCategoryColor = context.select(
-        (MemoplannerSettingBloc settingsBloc) =>
-            settingsBloc.state.settings.calendar.categories.showColors);
+    final dotsInTimepillar = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.dayCalendar.viewOptions.dots);
+    final showCategoryColor = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.calendar.categories.showColors);
 
     return Positioned(
       right: right ? null : column * measures.cardTotalWidth,

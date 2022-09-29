@@ -48,7 +48,7 @@ void main() {
             BlocProvider<DayEventsCubit>(
               create: (context) => dayEventsCubitMock,
             ),
-            BlocProvider<MemoplannerSettingBloc>(
+            BlocProvider<MemoplannerSettingsBloc>(
               create: (context) => FakeMemoplannerSettingsBloc(),
             ),
             BlocProvider<ClockBloc>(

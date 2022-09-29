@@ -44,39 +44,35 @@ class _ImportPictureBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
-        PhotoMenuSettings>(
-      selector: (state) => state.settings.photoMenu,
-      builder: (context, settings) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Padding(
-              padding: layout.templates.m1,
-              child: Column(
-                children: [
-                  if (settings.displayLocalImages) ...[
-                    ImageSourceWidget(
-                      text: translate.devicesLocalImages,
-                      imageSource: ImageSource.gallery,
-                      permission: Permission.photos,
-                      imageCallback: imageCallback,
-                    ),
-                    SizedBox(height: layout.formPadding.verticalItemDistance),
-                  ],
-                  if (settings.displayCamera)
-                    ImageSourceWidget(
-                      text: translate.takeNewPhoto,
-                      imageSource: ImageSource.camera,
-                      permission: Permission.camera,
-                      imageCallback: imageCallback,
-                    ),
-                ],
-              ),
-            ),
-          ],
-        );
-      },
+    final photoMenuSettings =
+        context.select((MemoplannerSettingsBloc bloc) => bloc.state.photoMenu);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Padding(
+          padding: layout.templates.m1,
+          child: Column(
+            children: [
+              if (photoMenuSettings.displayLocalImages) ...[
+                ImageSourceWidget(
+                  text: translate.devicesLocalImages,
+                  imageSource: ImageSource.gallery,
+                  permission: Permission.photos,
+                  imageCallback: imageCallback,
+                ),
+                SizedBox(height: layout.formPadding.verticalItemDistance),
+              ],
+              if (photoMenuSettings.displayCamera)
+                ImageSourceWidget(
+                  text: translate.takeNewPhoto,
+                  imageSource: ImageSource.camera,
+                  permission: Permission.camera,
+                  imageCallback: imageCallback,
+                ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

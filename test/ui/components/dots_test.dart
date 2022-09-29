@@ -31,7 +31,7 @@ void main() {
             BlocProvider<ClockBloc>(
               create: (context) => ClockBloc.fixed(startTime),
             ),
-            BlocProvider<MemoplannerSettingBloc>(
+            BlocProvider<MemoplannerSettingsBloc>(
               create: (context) => mockMemoplannerSettingsBloc,
             ),
             BlocProvider<SpeechSettingsCubit>(
@@ -54,7 +54,7 @@ void main() {
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     // When settings are not loaded the default value will be used
     when(() => mockMemoplannerSettingsBloc.state)
-        .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings()));
+        .thenReturn(MemoplannerSettingsLoaded(const MemoplannerSettings()));
     when(() => mockMemoplannerSettingsBloc.stream)
         .thenAnswer((_) => const Stream.empty());
     await initializeDateFormatting();

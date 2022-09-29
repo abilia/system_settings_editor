@@ -48,8 +48,8 @@ class WeekCalendar extends StatelessWidget {
           builder: (context) {
             final weekCalendarCubit = context.watch<WeekCalendarCubit>();
             final weekDisplayDays = context.select(
-                (MemoplannerSettingBloc bloc) =>
-                    bloc.state.settings.weekCalendar.weekDisplayDays);
+                (MemoplannerSettingsBloc bloc) =>
+                    bloc.state.weekCalendar.weekDisplayDays);
             final numberOfDays = weekDisplayDays.numberOfDays();
 
             final currentWeek = weekCalendarCubit.state;
@@ -156,9 +156,8 @@ class WeekCalenderHeadingContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final wLayout = layout.weekCalendar;
     final occasion = context.select((ClockBloc c) => day.dayOccasion(c.state));
-    final dayColor = context.select(
-      (MemoplannerSettingBloc b) => b.state.settings.calendar.dayColor,
-    );
+    final dayColor = context
+        .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayColor);
     final dayTheme = weekdayTheme(
       dayColor: dayColor,
       languageCode: Localizations.localeOf(context).languageCode,
@@ -330,8 +329,10 @@ class _WeekDayColumn extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.isAtSameDay(day) != current.isAtSameDay(day),
       builder: (context, now) {
-        final settings = context.watch<MemoplannerSettingBloc>().state.settings;
-        final calendarSettings = settings.calendar;
+        final calendarSettings = context
+            .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar);
+        final weekColor = context.select((MemoplannerSettingsBloc bloc) =>
+            bloc.state.weekCalendar.weekColor);
         final dayPickerState = context.watch<DayPickerBloc>().state;
         final wLayout = layout.weekCalendar;
         final past = day.isBefore(now.onlyDays());
@@ -347,7 +348,7 @@ class _WeekDayColumn extends StatelessWidget {
         );
         final columnColor = past
             ? AbiliaColors.white110
-            : settings.weekCalendar.weekColor == WeekColor.columns
+            : weekColor == WeekColor.columns
                 ? dayTheme.secondaryColor
                 : AbiliaColors.white;
         final borderColor =
@@ -688,8 +689,8 @@ class _WeekEventContent extends StatelessWidget {
     final borderRadius = selected
         ? wLayout.selectedDay.activityRadius
         : wLayout.notSelectedDay.activityRadius;
-    final showColors = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.calendar.categories.showColors);
+    final showColors = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.calendar.categories.showColors);
     final categoryBorder = getCategoryBorder(
       inactive: occasion.isPast,
       current: occasion.isCurrent,

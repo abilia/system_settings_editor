@@ -12,7 +12,7 @@ import '../../mocks/mock_bloc.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
-  late MemoplannerSettingBloc settingsBloc;
+  late MemoplannerSettingsBloc settingsBloc;
   late DayPartCubit dayPartCubit;
   final initialTime = DateTime(2000, 01, 01, 14, 00);
   late StreamController<DateTime> tickerController;
@@ -26,7 +26,7 @@ void main() {
     tickerController = StreamController<DateTime>();
     settingsBloc = MockMemoplannerSettingBloc();
     when(() => settingsBloc.state)
-        .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings()));
+        .thenReturn(MemoplannerSettingsLoaded(const MemoplannerSettings()));
     when(() => settingsBloc.stream)
         .thenAnswer((invocation) => const Stream.empty());
     fakeTicker =
@@ -189,8 +189,8 @@ void main() {
     'SGC-1487 zero timout disables',
     setUp: () {
       when(() => settingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             functions: FunctionsSettings(
               timeout: TimeoutSettings(duration: Duration.zero),
             ),
@@ -226,8 +226,8 @@ void main() {
     'NotificationAlarm triggers new state',
     setUp: () {
       when(() => settingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             functions: FunctionsSettings(
               timeout: TimeoutSettings(duration: Duration.zero),
             ),
@@ -260,8 +260,8 @@ void main() {
     'TimerAlarm triggers new state',
     setUp: () {
       when(() => settingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             functions: FunctionsSettings(
               timeout: TimeoutSettings(duration: Duration.zero),
             ),
@@ -294,8 +294,8 @@ void main() {
       'screensaver on 10 minutes emits first Return to today then ',
       setUp: () {
         when(() => settingsBloc.state).thenReturn(
-          const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
+          MemoplannerSettingsLoaded(
+            const MemoplannerSettings(
               functions: FunctionsSettings(
                 timeout: TimeoutSettings(
                   duration: Duration(minutes: 10),
@@ -330,8 +330,8 @@ void main() {
       'screensaver on 5 minutes emits only screensaver ',
       setUp: () {
         when(() => settingsBloc.state).thenReturn(
-          const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
+          MemoplannerSettingsLoaded(
+            const MemoplannerSettings(
               functions: FunctionsSettings(
                 timeout: TimeoutSettings(
                   duration: Duration(minutes: 5),
@@ -365,8 +365,8 @@ void main() {
       'screensaver only during night does not emit screensaver state during day',
       setUp: () {
         when(() => settingsBloc.state).thenReturn(
-          const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
+          MemoplannerSettingsLoaded(
+            const MemoplannerSettings(
               functions: FunctionsSettings(
                 timeout: TimeoutSettings(
                   duration: Duration(minutes: 5),
@@ -403,8 +403,8 @@ void main() {
       'screensaver only during night emits screensaver when night',
       setUp: () {
         when(() => settingsBloc.state).thenReturn(
-          const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
+          MemoplannerSettingsLoaded(
+            const MemoplannerSettings(
               functions: FunctionsSettings(
                 timeout: TimeoutSettings(
                   duration: Duration(minutes: 10),
@@ -443,8 +443,8 @@ void main() {
       'screensaver only during night wakes screen in morning',
       setUp: () {
         when(() => settingsBloc.state).thenReturn(
-          const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
+          MemoplannerSettingsLoaded(
+            const MemoplannerSettings(
               functions: FunctionsSettings(
                 timeout: TimeoutSettings(
                   duration: Duration(minutes: 10),

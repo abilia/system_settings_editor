@@ -13,10 +13,10 @@ class AlarmSettingsPage extends StatelessWidget {
     final bottomPadding = layout.alarmSettingsPage.bottomPadding;
     final dividerPadding = layout.alarmSettingsPage.dividerPadding;
     final scrollController = ScrollController();
+    final settings = context.read<MemoplannerSettingsBloc>().state;
     return BlocProvider<AlarmSettingsCubit>(
       create: (context) => AlarmSettingsCubit(
-        alarmSettings:
-            context.read<MemoplannerSettingBloc>().state.settings.alarm,
+        alarmSettings: settings.alarm,
         genericCubit: context.read<GenericCubit>(),
       ),
       child: BlocProvider<AlarmSoundCubit>(

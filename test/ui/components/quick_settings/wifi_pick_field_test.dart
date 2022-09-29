@@ -22,7 +22,7 @@ void main() {
           BlocProvider<ClockBloc>(
             create: (context) => ClockBloc.fixed(DateTime(1919)),
           ),
-          BlocProvider<MemoplannerSettingBloc>(
+          BlocProvider<MemoplannerSettingsBloc>(
             create: (context) => FakeMemoplannerSettingsBloc(),
           ),
           BlocProvider<SpeechSettingsCubit>(

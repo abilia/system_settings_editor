@@ -59,8 +59,8 @@ class DayAppBarPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dayParts = context.select((MemoplannerSettingBloc settings) =>
-        settings.state.settings.calendar.dayParts);
+    final dayParts = context
+        .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayParts);
     final appBarSettings =
         context.select((DayCalendarSettingsCubit cubit) => cubit.state.appBar);
     final currentTime = context.watch<ClockBloc>().state;

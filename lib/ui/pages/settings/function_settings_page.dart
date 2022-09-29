@@ -8,11 +8,10 @@ class FunctionSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    final initialState =
-        context.read<MemoplannerSettingBloc>().state.settings.functions;
+    final settings = context.read<MemoplannerSettingsBloc>().state;
     return BlocProvider<FunctionSettingsCubit>(
       create: (context) => FunctionSettingsCubit(
-        functionSettings: initialState,
+        functionSettings: settings.functions,
         genericCubit: context.read<GenericCubit>(),
       ),
       child: DefaultTabController(
@@ -45,7 +44,7 @@ class FunctionSettingsPage extends StatelessWidget {
                   final navigator = Navigator.of(context);
                   final displayMenuChangedToDisabled =
                       !functionSettingsCubit.state.display.menuValue &&
-                          initialState.display.menuValue;
+                          settings.functions.display.menuValue;
                   if (displayMenuChangedToDisabled) {
                     final answer = await showViewDialog<bool>(
                       context: context,

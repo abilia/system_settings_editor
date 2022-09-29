@@ -9,8 +9,8 @@ class NewActivityWidget extends StatelessWidget with ActivityNavigation {
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
     final t = Translator.of(context).translate;
-    final addActivitySettings = context.select(
-        (MemoplannerSettingBloc bloc) => bloc.state.settings.addActivity);
+    final addActivitySettings = context
+        .select((MemoplannerSettingsBloc bloc) => bloc.state.addActivity);
     return Column(
       children: [
         if (addActivitySettings.newActivityOption)

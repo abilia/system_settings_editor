@@ -16,8 +16,8 @@ class ReturnToHomeScreenListener extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!Config.isMP) return child;
 
-    final startViewIndex = context.select((MemoplannerSettingBloc bloc) =>
-        bloc.state.settings.functions.startViewIndex);
+    final startViewIndex = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.functions.startViewIndex);
 
     return MultiBlocListener(
       listeners: [

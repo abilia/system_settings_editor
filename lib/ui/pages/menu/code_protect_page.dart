@@ -10,7 +10,7 @@ Future<bool> codeProtectAccess(
   required String name,
 }) async {
   final codeProtectSettings =
-      context.read<MemoplannerSettingBloc>().state.settings.codeProtect;
+      context.read<MemoplannerSettingsBloc>().state.codeProtect;
   final notRestricted = !restricted(codeProtectSettings);
   return notRestricted ||
       (await Navigator.of(context).push(

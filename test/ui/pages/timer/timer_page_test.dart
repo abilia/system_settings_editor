@@ -27,7 +27,7 @@ void main() {
       duration: const Duration(minutes: 5),
       startTime: startTime.subtract(const Duration(minutes: 10)));
   final pausedTimer = defaultTimer.pause(startTime);
-  late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
+  late MemoplannerSettingsBloc mockMemoplannerSettingsBloc;
   late MockUserFileCubit mockUserFileCubit;
   late MockTimerDb mockTimerDb;
   late MockTimerAlarmBloc mockTimerAlarmBloc;
@@ -45,8 +45,8 @@ void main() {
     navObserver = NavObserver();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-      const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
+      MemoplannerSettingsLoaded(
+        const MemoplannerSettings(
           addActivity: AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
@@ -102,7 +102,7 @@ void main() {
             BlocProvider<TimerCubit>(
               create: (context) => timerCubit,
             ),
-            BlocProvider<MemoplannerSettingBloc>.value(
+            BlocProvider<MemoplannerSettingsBloc>.value(
               value: mockMemoplannerSettingsBloc,
             ),
             BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),

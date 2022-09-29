@@ -22,12 +22,12 @@ void main() {
   late MockBattery mockBattery;
   late _MockCallback mockCallback;
   late StreamController<BatteryState> batteryStreamController;
-  late StreamController<MemoplannerSettingsState> memoSettingsStreamController;
+  late StreamController<MemoplannerSettings> memoSettingsStreamController;
 
   setUpAll(registerFallbackValues);
 
   setUp(() {
-    memoSettingsStreamController = StreamController<MemoplannerSettingsState>();
+    memoSettingsStreamController = StreamController<MemoplannerSettings>();
     mockMemoplannerSettingBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingBloc.state)
         .thenReturn(const MemoplannerSettingsNotLoaded());
@@ -154,8 +154,8 @@ void main() {
       ]),
     );
     memoSettingsStreamController.add(
-      const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
+      MemoplannerSettingsLoaded(
+        const MemoplannerSettings(
           keepScreenAwake: KeepScreenAwakeSettings(
             keepScreenOnAlways: true,
           ),
@@ -163,8 +163,8 @@ void main() {
       ),
     );
     memoSettingsStreamController.add(
-      const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
+      MemoplannerSettingsLoaded(
+        const MemoplannerSettings(
           keepScreenAwake: KeepScreenAwakeSettings(
             keepScreenOnWhileCharging: true,
           ),

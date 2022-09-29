@@ -13,8 +13,8 @@ class AppBarPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dayColor = context.select((MemoplannerSettingBloc settings) =>
-        settings.state.settings.calendar.dayColor);
+    final dayColor = context
+        .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayColor);
     final currentTime = context.watch<ClockBloc>().state;
 
     return FittedBox(

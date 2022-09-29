@@ -38,7 +38,7 @@ class WeekCalendarSettings extends Equatable {
           WeekDisplayDays.everyDay.index,
         )],
         weekColor: WeekColor.values[settings.parse(
-          showFullWeekKey,
+          showColorModeKey,
           WeekColor.columns.index,
         )],
       );

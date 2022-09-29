@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class ExtraFunctionWiz extends StatelessWidget {
@@ -7,16 +6,16 @@ class ExtraFunctionWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final checklist = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.addActivity.stepByStep.checklist);
+    final notes = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.addActivity.stepByStep.notes);
     return WizardScaffold(
       iconData: AbiliaIcons.addAttachment,
       title: Translator.of(context).translate.selectInfoType,
-      body: BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
-          StepByStepSettings>(
-        selector: (state) => state.settings.addActivity.stepByStep,
-        builder: (context, stepByStep) => InfoItemTab(
-          showChecklist: stepByStep.checklist,
-          showNote: stepByStep.notes,
-        ),
+      body: InfoItemTab(
+        showChecklist: checklist,
+        showNote: notes,
       ),
     );
   }

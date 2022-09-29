@@ -36,7 +36,7 @@ void main() {
   late MockSortableBloc mockSortableBloc;
   late MockUserFileCubit mockUserFileCubit;
   late MockTimerCubit mockTimerCubit;
-  late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
+  late MemoplannerSettingsBloc mockMemoplannerSettingsBloc;
   late MockSupportPersonsRepository supportUserRepo;
 
   setUpAll(() async {
@@ -54,8 +54,8 @@ void main() {
     mockTimerCubit = MockTimerCubit();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-      const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
+      MemoplannerSettingsLoaded(
+        const MemoplannerSettings(
           addActivity: AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
@@ -94,7 +94,7 @@ void main() {
               BlocProvider<ClockBloc>(
                 create: (context) => ClockBloc.fixed(startTime),
               ),
-              BlocProvider<MemoplannerSettingBloc>.value(
+              BlocProvider<MemoplannerSettingsBloc>.value(
                 value: mockMemoplannerSettingsBloc,
               ),
               BlocProvider<ActivitiesBloc>(create: (_) => FakeActivitiesBloc()),
@@ -104,7 +104,7 @@ void main() {
                         day: today,
                         defaultsSettings: DefaultsAddActivitySettings(
                           alarm: mockMemoplannerSettingsBloc
-                              .state.settings.addActivity.defaults.alarm,
+                              .state.addActivity.defaults.alarm,
                         ),
                         calendarId: 'calendarId',
                       )
@@ -128,9 +128,8 @@ void main() {
                             editActivityCubit:
                                 context.read<EditActivityCubit>(),
                             addActivitySettings: context
-                                .read<MemoplannerSettingBloc>()
+                                .read<MemoplannerSettingsBloc>()
                                 .state
-                                .settings
                                 .addActivity,
                           )
                         : ActivityWizardCubit.edit(
@@ -139,9 +138,8 @@ void main() {
                             editActivityCubit:
                                 context.read<EditActivityCubit>(),
                             allowPassedStartTime: context
-                                .read<MemoplannerSettingBloc>()
+                                .read<MemoplannerSettingsBloc>()
                                 .state
-                                .settings
                                 .addActivity
                                 .general
                                 .allowPassedStartTime,
@@ -163,7 +161,7 @@ void main() {
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(
                   screenTimeoutCallback: Future.value(30.minutes()),
-                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
+                  memoSettingsBloc: context.read<MemoplannerSettingsBloc>(),
                   battery: FakeBattery(),
                 ),
               ),
@@ -1600,8 +1598,8 @@ text''';
         (WidgetTester tester) async {
       // Arrange
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               general: GeneralAddActivitySettings(showEndTime: false),
             ),
@@ -1879,7 +1877,7 @@ text''';
         (WidgetTester tester) async {
       // Arrange
       when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
+          .thenReturn(MemoplannerSettingsLoaded(const MemoplannerSettings(
         addActivity: AddActivitySettings(
           general: GeneralAddActivitySettings(showEndTime: false),
         ),
@@ -2524,8 +2522,8 @@ text''';
   group('Memoplanner settings -', () {
     testWidgets('Select name off', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               editActivity: EditActivitySettings(title: false),
             ),
@@ -2545,8 +2543,8 @@ text''';
 
     testWidgets('Select image off', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               editActivity: EditActivitySettings(image: false),
             ),
@@ -2567,8 +2565,8 @@ text''';
     testWidgets('Date picker not available when setting says so',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               editActivity: EditActivitySettings(date: false),
             ),
@@ -2586,8 +2584,8 @@ text''';
     testWidgets('category not visible - category show settings',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             calendar: GeneralCalendarSettings(
               categories: CategoriesSettings(show: false),
             ),
@@ -2603,7 +2601,7 @@ text''';
 
     testWidgets('No end time', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
+          .thenReturn(MemoplannerSettingsLoaded(const MemoplannerSettings(
         addActivity: AddActivitySettings(
           general: GeneralAddActivitySettings(showEndTime: false),
         ),
@@ -2618,8 +2616,8 @@ text''';
 
     testWidgets('No Availible For', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               editActivity: EditActivitySettings(availability: false),
             ),
@@ -2635,8 +2633,8 @@ text''';
 
     testWidgets('No Checkable', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               editActivity: EditActivitySettings(checkable: false),
             ),
@@ -2652,8 +2650,8 @@ text''';
 
     testWidgets('No Remove after', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               editActivity: EditActivitySettings(removeAfter: false),
             ),
@@ -2669,7 +2667,7 @@ text''';
 
     testWidgets('No recurring option', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
+          .thenReturn(MemoplannerSettingsLoaded(const MemoplannerSettings(
         addActivity: AddActivitySettings(
           general: GeneralAddActivitySettings(addRecurringActivity: false),
         ),
@@ -2682,8 +2680,8 @@ text''';
 
     testWidgets('Alarm options, only one option', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               general: GeneralAddActivitySettings(
                 showAlarm: false,
@@ -2709,8 +2707,8 @@ text''';
     testWidgets('Alarm options - silent option alarm and vibration',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               general: GeneralAddActivitySettings(
                 showAlarm: false,
@@ -2742,8 +2740,8 @@ text''';
     testWidgets('Alarm options - alarm only at start time',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               general: GeneralAddActivitySettings(
                 showAlarmOnlyAtStart: false,
@@ -2762,8 +2760,8 @@ text''';
 
     testWidgets('Show speech at alarm', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               general: GeneralAddActivitySettings(
                 showSpeechAtAlarm: false,
@@ -2784,8 +2782,8 @@ text''';
         'activityTimeBeforeCurrent true - Cant save when start time is past',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               general: GeneralAddActivitySettings(allowPassedStartTime: false),
             ),
@@ -2823,8 +2821,8 @@ text''';
         'activityTimeBeforeCurrent true - CAN save when start time is future',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               general: GeneralAddActivitySettings(allowPassedStartTime: false),
             ),
@@ -2858,8 +2856,8 @@ text''';
         'activityTimeBeforeCurrent true - CAN save recurring when start time is future',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               general: GeneralAddActivitySettings(allowPassedStartTime: false),
             ),
@@ -2899,8 +2897,8 @@ text''';
           rightCategoryName =
               'HÖGER IS SUPER LONG AND WILL PROBABLY OVERFLOW BADLY!';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             calendar: GeneralCalendarSettings(
               categories: CategoriesSettings(
                 left: ImageAndName(leftCategoryName, AbiliaFile.empty),
@@ -2924,8 +2922,8 @@ text''';
     testWidgets('calendarActivityTypeShowTypes false does not show categories',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             calendar: GeneralCalendarSettings(
               categories: CategoriesSettings(show: false),
             ),
@@ -2944,8 +2942,8 @@ text''';
 
     testWidgets('Select Alarm off', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               editActivity: EditActivitySettings(alarm: false),
             ),
@@ -2964,8 +2962,8 @@ text''';
 
     testWidgets('Select Reminders off', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               editActivity: EditActivitySettings(reminders: false),
             ),
@@ -2984,8 +2982,8 @@ text''';
 
     testWidgets('Select Checklist off', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               editActivity: EditActivitySettings(checklist: false),
             ),
@@ -3006,8 +3004,8 @@ text''';
 
     testWidgets('Select Notes off', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               editActivity: EditActivitySettings(notes: false),
             ),
@@ -3030,8 +3028,8 @@ text''';
         'Alarm tab hidden when Alarm, Reminders and Speech options are all hidden ',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               editActivity: EditActivitySettings(
                 alarm: false,
@@ -3052,8 +3050,8 @@ text''';
     testWidgets('Extra tab hidden when Notes and Checklist options are hidden ',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               editActivity: EditActivitySettings(
                 notes: false,
@@ -3073,8 +3071,8 @@ text''';
 
     testWidgets('Full day off', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               editActivity: EditActivitySettings(
                 fullDay: false,
@@ -3093,8 +3091,8 @@ text''';
     testWidgets('Activity is full day and full day is off shows no heading',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
+        MemoplannerSettingsLoaded(
+          const MemoplannerSettings(
             addActivity: AddActivitySettings(
               editActivity: EditActivitySettings(
                 fullDay: false,
@@ -3637,8 +3635,8 @@ text''';
   testWidgets("TabBar doesn't show when there is only one tab",
       (WidgetTester tester) async {
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-      const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
+      MemoplannerSettingsLoaded(
+        const MemoplannerSettings(
           addActivity: AddActivitySettings(
             mode: AddActivityMode.editView,
             editActivity: EditActivitySettings(

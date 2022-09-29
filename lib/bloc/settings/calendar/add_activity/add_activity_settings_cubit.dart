@@ -5,9 +5,9 @@ class AddActivitySettingsCubit extends Cubit<AddActivitySettings> {
   final GenericCubit genericCubit;
 
   AddActivitySettingsCubit({
-    required AddActivitySettings settingsState,
+    required AddActivitySettings addActivitySettings,
     required this.genericCubit,
-  }) : super(settingsState);
+  }) : super(addActivitySettings);
 
   void change(AddActivitySettings state) => emit(state);
   void addGeneralSettings(GeneralAddActivitySettings settings) =>

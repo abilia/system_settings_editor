@@ -7,10 +7,10 @@ class AddActivitySettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
+    final settings = context.read<MemoplannerSettingsBloc>().state;
     return BlocProvider<AddActivitySettingsCubit>(
       create: (context) => AddActivitySettingsCubit(
-        settingsState:
-            context.read<MemoplannerSettingBloc>().state.settings.addActivity,
+        addActivitySettings: settings.addActivity,
         genericCubit: context.read<GenericCubit>(),
       ),
       child: DefaultTabController(

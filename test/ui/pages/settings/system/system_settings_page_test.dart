@@ -67,7 +67,7 @@ void main() {
                 create: (context) => WakeLockCubit(
                   screenTimeoutCallback:
                       Future.value(const Duration(minutes: 30)),
-                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
+                  memoSettingsBloc: context.read<MemoplannerSettingsBloc>(),
                   battery: FakeBattery(),
                 ),
               ),

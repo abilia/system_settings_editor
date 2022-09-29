@@ -62,6 +62,8 @@ class SelectPictureBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
+    final photoMenuSettings =
+        context.select((MemoplannerSettingsBloc bloc) => bloc.state.photoMenu);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -88,94 +90,86 @@ class SelectPictureBody extends StatelessWidget {
               ],
             ),
           ),
-        BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
-            PhotoMenuSettings>(
-          selector: (state) => state.settings.photoMenu,
-          builder: (context, settings) {
-            return Padding(
-              padding: layout.templates.m1,
-              child: Column(
-                children: [
-                  PickField(
-                    key: TestKey.imageArchiveButton,
-                    leading: const Icon(AbiliaIcons.folder),
-                    text: Text(translate.imageArchive),
-                    onTap: () async {
-                      final authProviders = copiedAuthProviders(context);
-                      final selectedImage =
-                          await Navigator.of(context).push<AbiliaFile>(
-                        MaterialPageRoute(
-                          builder: (_) => MultiBlocProvider(
-                            providers: authProviders,
-                            child: ImageArchivePage(onCancel: onCancel),
-                          ),
-                        ),
-                      );
-                      if (selectedImage != null) {
-                        imageCallback.call(selectedImage);
-                      }
-                    },
-                  ),
-                  SizedBox(height: layout.formPadding.verticalItemDistance),
-                  if (settings.displayMyPhotos) ...[
-                    BlocSelector<SortableBloc, SortableState,
-                        Sortable<ImageArchiveData>?>(
-                      selector: (state) => state is SortablesLoaded
-                          ? state.sortables.getMyPhotosFolder()
-                          : null,
-                      builder: (context, myPhotoFolder) => PickField(
-                        key: TestKey.myPhotosButton,
-                        leading: const Icon(AbiliaIcons.folder),
-                        text: Text(translate.myPhotos),
-                        onTap: (myPhotoFolder != null)
-                            ? () async {
-                                final authProviders =
-                                    copiedAuthProviders(context);
-                                final selectedImage =
-                                    await Navigator.of(context)
-                                        .push<AbiliaFile>(
-                                  MaterialPageRoute(
-                                    builder: (_) => MultiBlocProvider(
-                                      providers: authProviders,
-                                      child: ImageArchivePage(
-                                        onCancel: onCancel,
-                                        initialFolder: myPhotoFolder.id,
-                                        header: translate.myPhotos,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                                if (selectedImage != null) {
-                                  imageCallback.call(selectedImage);
-                                }
-                              }
-                            : null,
+        Padding(
+          padding: layout.templates.m1,
+          child: Column(
+            children: [
+              PickField(
+                key: TestKey.imageArchiveButton,
+                leading: const Icon(AbiliaIcons.folder),
+                text: Text(translate.imageArchive),
+                onTap: () async {
+                  final authProviders = copiedAuthProviders(context);
+                  final selectedImage =
+                      await Navigator.of(context).push<AbiliaFile>(
+                    MaterialPageRoute(
+                      builder: (_) => MultiBlocProvider(
+                        providers: authProviders,
+                        child: ImageArchivePage(onCancel: onCancel),
                       ),
                     ),
-                    SizedBox(height: layout.formPadding.verticalItemDistance),
-                  ],
-                  if (Config.isMPGO && settings.displayLocalImages) ...[
-                    ImageSourceWidget(
-                      key: TestKey.localImagesPickField,
-                      text: translate.devicesLocalImages,
-                      imageSource: ImageSource.gallery,
-                      permission: Permission.photos,
-                      imageCallback: imageCallback,
-                    ),
-                    SizedBox(height: layout.formPadding.verticalItemDistance),
-                  ],
-                  if (settings.displayCamera)
-                    ImageSourceWidget(
-                      key: TestKey.cameraPickField,
-                      text: translate.takeNewPhoto,
-                      imageSource: ImageSource.camera,
-                      permission: Permission.camera,
-                      imageCallback: imageCallback,
-                    ),
-                ],
+                  );
+                  if (selectedImage != null) {
+                    imageCallback.call(selectedImage);
+                  }
+                },
               ),
-            );
-          },
+              SizedBox(height: layout.formPadding.verticalItemDistance),
+              if (photoMenuSettings.displayMyPhotos) ...[
+                BlocSelector<SortableBloc, SortableState,
+                    Sortable<ImageArchiveData>?>(
+                  selector: (state) => state is SortablesLoaded
+                      ? state.sortables.getMyPhotosFolder()
+                      : null,
+                  builder: (context, myPhotoFolder) => PickField(
+                    key: TestKey.myPhotosButton,
+                    leading: const Icon(AbiliaIcons.folder),
+                    text: Text(translate.myPhotos),
+                    onTap: (myPhotoFolder != null)
+                        ? () async {
+                            final authProviders = copiedAuthProviders(context);
+                            final selectedImage =
+                                await Navigator.of(context).push<AbiliaFile>(
+                              MaterialPageRoute(
+                                builder: (_) => MultiBlocProvider(
+                                  providers: authProviders,
+                                  child: ImageArchivePage(
+                                    onCancel: onCancel,
+                                    initialFolder: myPhotoFolder.id,
+                                    header: translate.myPhotos,
+                                  ),
+                                ),
+                              ),
+                            );
+                            if (selectedImage != null) {
+                              imageCallback.call(selectedImage);
+                            }
+                          }
+                        : null,
+                  ),
+                ),
+                SizedBox(height: layout.formPadding.verticalItemDistance),
+              ],
+              if (Config.isMPGO && photoMenuSettings.displayLocalImages) ...[
+                ImageSourceWidget(
+                  key: TestKey.localImagesPickField,
+                  text: translate.devicesLocalImages,
+                  imageSource: ImageSource.gallery,
+                  permission: Permission.photos,
+                  imageCallback: imageCallback,
+                ),
+                SizedBox(height: layout.formPadding.verticalItemDistance),
+              ],
+              if (photoMenuSettings.displayCamera)
+                ImageSourceWidget(
+                  key: TestKey.cameraPickField,
+                  text: translate.takeNewPhoto,
+                  imageSource: ImageSource.camera,
+                  permission: Permission.camera,
+                  imageCallback: imageCallback,
+                ),
+            ],
+          ),
         ),
       ],
     );

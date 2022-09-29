@@ -63,12 +63,12 @@ class FakeActivitiesBloc extends Fake implements ActivitiesBloc {
 }
 
 class FakeMemoplannerSettingsBloc extends Fake
-    implements MemoplannerSettingBloc {
+    implements MemoplannerSettingsBloc {
   @override
-  Stream<MemoplannerSettingsState> get stream => const Stream.empty();
+  Stream<MemoplannerSettings> get stream => const Stream.empty();
   @override
-  MemoplannerSettingsState get state =>
-      const MemoplannerSettingsLoaded(MemoplannerSettings());
+  MemoplannerSettings get state =>
+      MemoplannerSettingsLoaded(const MemoplannerSettings());
   @override
   Future<void> close() async {}
 }

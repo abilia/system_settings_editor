@@ -17,7 +17,7 @@ void main() {
     late ClockBloc clockBloc;
     late ActivitiesBloc activitiesBloc;
     late GenericCubit genericCubit;
-    late MemoplannerSettingBloc memoplannerSettingBloc;
+    late MemoplannerSettingsBloc memoplannerSettingBloc;
 
     late MockActivityRepository mockActivityRepository;
     late MockGenericRepository mockGenericRepository;
@@ -51,7 +51,7 @@ void main() {
         syncBloc: FakeSyncBloc(),
       );
 
-      memoplannerSettingBloc = MemoplannerSettingBloc(
+      memoplannerSettingBloc = MemoplannerSettingsBloc(
         genericCubit: genericCubit,
       );
     });

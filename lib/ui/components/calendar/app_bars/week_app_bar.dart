@@ -11,56 +11,48 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) =>
-          BlocSelector<ClockBloc, DateTime, DateTime>(
-        selector: (state) => state.onlyDays(),
-        builder: (context, time) =>
-            BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
-          buildWhen: (previous, current) =>
-              previous.currentWeekStart != current.currentWeekStart,
-          builder: (context, state) => CalendarAppBar(
-            showClock: memoSettingsState.settings.weekCalendar.showClock,
-            day: time.onlyDays(),
-            calendarDayColor:
-                state.currentWeekStart.isSameWeekAndYear(time.onlyDays())
-                    ? memoSettingsState.settings.calendar.dayColor
-                    : DayColor.noColors,
-            rows: AppBarTitleRows.week(
-              selectedWeekStart: state.currentWeekStart,
-              selectedDay: time.onlyDays(),
-              translator: Translator.of(context).translate,
-              showWeekNumber:
-                  memoSettingsState.settings.weekCalendar.showWeekNumber,
-              showYear: memoSettingsState.settings.weekCalendar.showYear,
-              langCode: Localizations.localeOf(context).toLanguageTag(),
-            ),
-            leftAction: memoSettingsState
-                    .settings.weekCalendar.showBrowseButtons
-                ? LeftNavButton(
-                    onPressed: () => BlocProvider.of<WeekCalendarCubit>(context)
-                        .previousWeek(),
-                  )
-                : null,
-            clockReplacement: !state.currentWeekStart.isSameWeekAndYear(time)
-                ? GoToCurrentActionButton(
-                    onPressed: () {
-                      context.read<DayPickerBloc>().add(const CurrentDay());
-                      context.read<WeekCalendarCubit>().goToCurrentWeek();
-                    },
-                  )
-                : null,
-            rightAction: memoSettingsState
-                    .settings.weekCalendar.showBrowseButtons
-                ? RightNavButton(
-                    onPressed: () =>
-                        BlocProvider.of<WeekCalendarCubit>(context).nextWeek(),
-                  )
-                : null,
-            crossedOver: state.currentWeekStart.nextWeek().isBefore(time),
-          ),
-        ),
+    final calendarSettings =
+        context.select((MemoplannerSettingsBloc bloc) => bloc.state.calendar);
+    final weekCalendarSettings = context
+        .select((MemoplannerSettingsBloc bloc) => bloc.state.weekCalendar);
+    final time = context.select((ClockBloc bloc) => bloc.state.onlyDays());
+    final currentWeekStart =
+        context.select((WeekCalendarCubit bloc) => bloc.state.currentWeekStart);
+    return CalendarAppBar(
+      showClock: weekCalendarSettings.showClock,
+      day: time.onlyDays(),
+      calendarDayColor: currentWeekStart.isSameWeekAndYear(time.onlyDays())
+          ? calendarSettings.dayColor
+          : DayColor.noColors,
+      rows: AppBarTitleRows.week(
+        selectedWeekStart: currentWeekStart,
+        selectedDay: time.onlyDays(),
+        translator: Translator.of(context).translate,
+        showWeekNumber: weekCalendarSettings.showWeekNumber,
+        showYear: weekCalendarSettings.showYear,
+        langCode: Localizations.localeOf(context).toLanguageTag(),
       ),
+      leftAction: weekCalendarSettings.showBrowseButtons
+          ? LeftNavButton(
+              onPressed: () =>
+                  BlocProvider.of<WeekCalendarCubit>(context).previousWeek(),
+            )
+          : null,
+      clockReplacement: !currentWeekStart.isSameWeekAndYear(time)
+          ? GoToCurrentActionButton(
+              onPressed: () {
+                context.read<DayPickerBloc>().add(const CurrentDay());
+                context.read<WeekCalendarCubit>().goToCurrentWeek();
+              },
+            )
+          : null,
+      rightAction: weekCalendarSettings.showBrowseButtons
+          ? RightNavButton(
+              onPressed: () =>
+                  BlocProvider.of<WeekCalendarCubit>(context).nextWeek(),
+            )
+          : null,
+      crossedOver: currentWeekStart.nextWeek().isBefore(time),
     );
   }
 }

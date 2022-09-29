@@ -114,111 +114,98 @@ class FullScreenActivityTabItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activityLayout = layout.ongoingFullscreen.activity;
-    return BlocSelector<FullScreenActivityCubit, FullScreenActivityState, bool>(
-      selector: (state) =>
-          activityOccasion.activity.id == state.selected.activity.id,
-      builder: (context, selected) => BlocSelector<ClockBloc, DateTime, bool>(
-        selector: (minutes) =>
-            activityOccasion.start.isAtSameMomentAs(minutes) ||
-            activityOccasion.end.isAtSameMomentAs(minutes),
-        builder: (context, current) {
-          final border = current || selected
-              ? activityLayout.activeBorder
-              : activityLayout.border;
-          final borderColor = current
-              ? AbiliaColors.red
-              : selected
-                  ? AbiliaColors.black80
-                  : AbiliaColors.white140;
-          final innerBorder =
-              BorderRadius.all(innerRadiusFromBorderSize(border));
-          return AnimatedPadding(
-            duration: _animationDuration,
-            padding: selected
-                ? activityLayout.selectedPadding
-                : activityLayout.padding,
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: BlocSelector<MemoplannerSettingBloc,
-                  MemoplannerSettingsState, bool>(
-                selector: (state) =>
-                    state.settings.calendar.categories.show &&
-                    state.settings.calendar.categories.showColors,
-                builder: (context, showCategories) => Tts.fromSemantics(
-                  activityOccasion.activity.semanticsProperties(context),
-                  child: GestureDetector(
-                    onTap: () => context
-                        .read<FullScreenActivityCubit>()
-                        .setCurrentActivity(activityOccasion),
-                    child: Stack(
-                      children: [
-                        AnimatedContainer(
-                          duration: _animationDuration,
-                          decoration: BoxDecoration(
-                            border: Border.fromBorderSide(
-                              BorderSide(color: borderColor, width: border),
-                            ),
-                            borderRadius: borderRadius,
-                          ),
-                        ),
-                        Stack(
-                          children: [
-                            AnimatedContainer(
-                              duration: _animationDuration,
-                              transform: selected
-                                  ? Matrix4.identity()
-                                  : Matrix4.translation(
-                                      Vector3(
-                                        0.0,
-                                        activityLayout.arrowSize.height,
-                                        0.0,
-                                      ),
-                                    ),
-                              child: _ActivityArrow(
-                                border: border,
-                                color: borderColor,
-                              ),
-                            ),
-                            AnimatedContainer(
-                              duration: _animationDuration,
-                              decoration: activityOccasion.activity.hasImage
-                                  ? const BoxDecoration()
-                                  : BoxDecoration(
-                                      borderRadius: innerBorder,
-                                      color: AbiliaColors.white,
-                                    ),
-                              margin: EdgeInsets.all(border),
-                              child: activityOccasion.activity.hasImage
-                                  ? FadeInAbiliaImage(
-                                      imageFileId:
-                                          activityOccasion.activity.fileId,
-                                      imageFilePath:
-                                          activityOccasion.activity.icon,
-                                      height: double.infinity,
-                                      width: double.infinity,
-                                      borderRadius: innerBorder,
-                                    )
-                                  : Center(
-                                      child: Text(
-                                        activityOccasion.activity.title,
-                                      ),
-                                    ),
-                            ),
-                          ],
-                        ),
-                        if (showCategories)
-                          _CategoryDot(
-                            selected: selected,
-                            category: activityOccasion.category,
-                          ),
-                      ],
+    final selected = context.select((FullScreenActivityCubit bloc) =>
+        activityOccasion.activity.id == bloc.state.selected.activity.id);
+    final current = context.select((ClockBloc bloc) =>
+        activityOccasion.start.isAtSameMomentAs(bloc.state) ||
+        activityOccasion.end.isAtSameMomentAs(bloc.state));
+    final border = current || selected
+        ? activityLayout.activeBorder
+        : activityLayout.border;
+    final borderColor = current
+        ? AbiliaColors.red
+        : selected
+            ? AbiliaColors.black80
+            : AbiliaColors.white140;
+    final innerBorder = BorderRadius.all(innerRadiusFromBorderSize(border));
+    final showCategories = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.calendar.categories.show &&
+        bloc.state.calendar.categories.showColors);
+    return AnimatedPadding(
+      duration: _animationDuration,
+      padding:
+          selected ? activityLayout.selectedPadding : activityLayout.padding,
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Tts.fromSemantics(
+          activityOccasion.activity.semanticsProperties(context),
+          child: GestureDetector(
+            onTap: () => context
+                .read<FullScreenActivityCubit>()
+                .setCurrentActivity(activityOccasion),
+            child: Stack(
+              children: [
+                AnimatedContainer(
+                  duration: _animationDuration,
+                  decoration: BoxDecoration(
+                    border: Border.fromBorderSide(
+                      BorderSide(color: borderColor, width: border),
                     ),
+                    borderRadius: borderRadius,
                   ),
                 ),
-              ),
+                Stack(
+                  children: [
+                    AnimatedContainer(
+                      duration: _animationDuration,
+                      transform: selected
+                          ? Matrix4.identity()
+                          : Matrix4.translation(
+                              Vector3(
+                                0.0,
+                                activityLayout.arrowSize.height,
+                                0.0,
+                              ),
+                            ),
+                      child: _ActivityArrow(
+                        border: border,
+                        color: borderColor,
+                      ),
+                    ),
+                    AnimatedContainer(
+                      duration: _animationDuration,
+                      decoration: activityOccasion.activity.hasImage
+                          ? const BoxDecoration()
+                          : BoxDecoration(
+                              borderRadius: innerBorder,
+                              color: AbiliaColors.white,
+                            ),
+                      margin: EdgeInsets.all(border),
+                      child: activityOccasion.activity.hasImage
+                          ? FadeInAbiliaImage(
+                              imageFileId: activityOccasion.activity.fileId,
+                              imageFilePath: activityOccasion.activity.icon,
+                              height: double.infinity,
+                              width: double.infinity,
+                              borderRadius: innerBorder,
+                            )
+                          : Center(
+                              child: Text(
+                                activityOccasion.activity.title,
+                              ),
+                            ),
+                    ),
+                  ],
+                ),
+                if (showCategories)
+                  _CategoryDot(
+                    selected: selected,
+                    category: activityOccasion.category,
+                  ),
+              ],
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }

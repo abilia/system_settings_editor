@@ -24,24 +24,20 @@ class AddButton extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
-        _AddButtonConfiguration>(
-      selector: (state) => _configuration(state.settings.functions.display),
-      builder: (context, configuration) {
-        switch (configuration) {
-          case _AddButtonConfiguration.none:
-            return SizedBox(width: layout.actionButton.size);
-          case _AddButtonConfiguration.mpGo:
-            return _AddButtonMPGO(_onAddButtonPressed);
-          case _AddButtonConfiguration.onlyNewActivity:
-            return _AddActivityButton(_onAddButtonPressed);
-          case _AddButtonConfiguration.onlyNewTimer:
-            return _AddTimerButton(_onAddButtonPressed);
-          case _AddButtonConfiguration.newActivityAndNewTimer:
-            return _AddActivityOrTimerButtons(_onAddButtonPressed);
-        }
-      },
-    );
+    final configuration = context.select((MemoplannerSettingsBloc bloc) =>
+        _configuration(bloc.state.functions.display));
+    switch (configuration) {
+      case _AddButtonConfiguration.none:
+        return SizedBox(width: layout.actionButton.size);
+      case _AddButtonConfiguration.mpGo:
+        return _AddButtonMPGO(_onAddButtonPressed);
+      case _AddButtonConfiguration.onlyNewActivity:
+        return _AddActivityButton(_onAddButtonPressed);
+      case _AddButtonConfiguration.onlyNewTimer:
+        return _AddTimerButton(_onAddButtonPressed);
+      case _AddButtonConfiguration.newActivityAndNewTimer:
+        return _AddActivityOrTimerButtons(_onAddButtonPressed);
+    }
   }
 
   static double width(DisplaySettings settings) {
@@ -79,10 +75,9 @@ class AddButton extends StatelessWidget
     bool showTimers = true,
   }) {
     final authProviders = copiedAuthProviders(context);
-    final addActivitySettings =
-        context.read<MemoplannerSettingBloc>().state.settings.addActivity;
-    final basicActivityOption = addActivitySettings.basicActivityOption;
-    final newActivityOption = addActivitySettings.newActivityOption;
+    final settings = context.read<MemoplannerSettingsBloc>().state;
+    final basicActivityOption = settings.addActivity.basicActivityOption;
+    final newActivityOption = settings.addActivity.newActivityOption;
     final showOnlyActivities = showActivities && !showTimers;
 
     if (showOnlyActivities && Config.isMP) {
@@ -90,7 +85,7 @@ class AddButton extends StatelessWidget
         return navigateToActivityWizardWithContext(context, authProviders);
       } else if (basicActivityOption && !newActivityOption) {
         return navigateToBasicActivityPicker(
-            context, authProviders, addActivitySettings.defaults);
+            context, authProviders, settings.addActivity.defaults);
       }
     }
 

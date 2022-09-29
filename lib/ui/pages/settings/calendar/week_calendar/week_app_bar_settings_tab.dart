@@ -54,22 +54,19 @@ class WeekAppBarPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
-        WeekCalendarSettings>(
-      selector: (state) => state.settings.weekCalendar,
-      builder: (context, settings) => BlocBuilder<ClockBloc, DateTime>(
-        builder: (context, currentTime) => AppBarPreview(
-          showBrowseButtons: settings.showBrowseButtons,
-          showClock: settings.showClock,
-          rows: AppBarTitleRows.week(
-            translator: Translator.of(context).translate,
-            selectedDay: currentTime.onlyDays(),
-            selectedWeekStart: currentTime.firstInWeek(),
-            showWeekNumber: settings.showWeekNumber,
-            showYear: settings.showYear,
-            langCode: Localizations.localeOf(context).toLanguageTag(),
-          ),
-        ),
+    final weekCalendarSettings = context
+        .select((MemoplannerSettingsBloc bloc) => bloc.state.weekCalendar);
+    final currentTime = context.watch<ClockBloc>().state;
+    return AppBarPreview(
+      showBrowseButtons: weekCalendarSettings.showBrowseButtons,
+      showClock: weekCalendarSettings.showClock,
+      rows: AppBarTitleRows.week(
+        translator: Translator.of(context).translate,
+        selectedDay: currentTime.onlyDays(),
+        selectedWeekStart: currentTime.firstInWeek(),
+        showWeekNumber: weekCalendarSettings.showWeekNumber,
+        showYear: weekCalendarSettings.showYear,
+        langCode: Localizations.localeOf(context).toLanguageTag(),
       ),
     );
   }

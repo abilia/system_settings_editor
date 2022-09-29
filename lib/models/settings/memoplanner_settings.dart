@@ -74,6 +74,32 @@ class MemoplannerSettings extends Equatable {
       ];
 }
 
+class MemoplannerSettingsLoaded extends MemoplannerSettings {
+  MemoplannerSettingsLoaded(MemoplannerSettings settings)
+      : super(
+          alarm: settings.alarm,
+          codeProtect: settings.codeProtect,
+          menu: settings.menu,
+          keepScreenAwake: settings.keepScreenAwake,
+          functions: settings.functions,
+          calendar: settings.calendar,
+          addActivity: settings.addActivity,
+          weekCalendar: settings.weekCalendar,
+          monthCalendar: settings.monthCalendar,
+          activityView: settings.activityView,
+          dayCalendar: settings.dayCalendar,
+          photoMenu: settings.photoMenu,
+        );
+}
+
+class MemoplannerSettingsNotLoaded extends MemoplannerSettings {
+  const MemoplannerSettingsNotLoaded() : super();
+}
+
+class MemoplannerSettingsFailed extends MemoplannerSettings {
+  const MemoplannerSettingsFailed() : super();
+}
+
 extension Parsing on Map<String, MemoplannerSettingData> {
   T parse<T>(String settingName, T defaultValue) {
     try {

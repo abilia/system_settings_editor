@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -15,19 +14,17 @@ class DatePickerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dayColor = context
+        .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayColor);
     return Scaffold(
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.selectDate,
         iconData: AbiliaIcons.day,
         bottom: const MonthAppBarStepper(),
       ),
-      body: BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
-          DayColor>(
-        selector: (state) => state.settings.calendar.dayColor,
-        builder: (context, dayColor) => MonthBody(
-          calendarDayColor: dayColor,
-          showPreview: false,
-        ),
+      body: MonthBody(
+        calendarDayColor: dayColor,
+        showPreview: false,
       ),
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: const CancelButton(),
