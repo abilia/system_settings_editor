@@ -236,20 +236,6 @@ class MonthDayView extends StatelessWidget {
       height: 1,
       fontSize: layout.monthCalendar.dayHeadingFontSize,
     );
-    final dayPickerState = context.read<DayPickerBloc>().state;
-    final monthWeekColor = context.select((MemoplannerSettingsBloc bloc) =>
-        bloc.state.monthCalendar.monthWeekColor);
-    final highlighted =
-        (day.isCurrent || dayPickerState.day.isAtSameDay(day.day));
-    final borderRadius = BorderRadius.circular(highlighted
-        ? layout.monthCalendar.dayRadiusHighlighted
-        : layout.monthCalendar.dayRadius);
-
-    final backgroundColor = day.isPast
-        ? AbiliaColors.white110
-        : monthWeekColor == WeekColor.captions
-            ? AbiliaColors.white
-            : dayTheme.secondaryColor;
 
     return Tts.data(
       data:
@@ -262,72 +248,94 @@ class MonthDayView extends StatelessWidget {
               ? DefaultTabController.of(context)?.animateTo(0)
               : BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day));
         },
-        child: Container(
-          key: TestKey.monthCalendarDayBackgroundColor,
-          margin: highlighted
-              ? layout.monthCalendar.dayViewMarginHighlighted
-              : layout.monthCalendar.dayViewMargin,
-          padding: EdgeInsets.all(highlighted
-              ? layout.monthCalendar.dayBorderWidthHighlighted / 2
-              : 0),
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: borderRadius,
-          ),
-          foregroundDecoration: day.isCurrent
-              ? BoxDecoration(
-                  border: currentBorder,
-                  borderRadius: borderRadius,
-                )
-              : dayPickerState.day.isAtSameDay(day.day)
+        child: BlocBuilder<DayPickerBloc, DayPickerState>(
+          builder: (context, dayPickerState) {
+            final monthWeekColor = context.select(
+                (MemoplannerSettingsBloc bloc) =>
+                    bloc.state.monthCalendar.monthWeekColor);
+            final highlighted =
+                (day.isCurrent || dayPickerState.day.isAtSameDay(day.day));
+            final borderRadius = BorderRadius.circular(highlighted
+                ? layout.monthCalendar.dayRadiusHighlighted
+                : layout.monthCalendar.dayRadius);
+
+            final backgroundColor = day.isPast
+                ? AbiliaColors.white110
+                : monthWeekColor == WeekColor.captions
+                    ? AbiliaColors.white
+                    : dayTheme.secondaryColor;
+
+            return Container(
+              key: TestKey.monthCalendarDayBackgroundColor,
+              margin: highlighted
+                  ? layout.monthCalendar.dayViewMarginHighlighted
+                  : layout.monthCalendar.dayViewMargin,
+              padding: EdgeInsets.all(highlighted
+                  ? layout.monthCalendar.dayBorderWidthHighlighted / 2
+                  : 0),
+              decoration: BoxDecoration(
+                color: backgroundColor,
+                borderRadius: borderRadius,
+              ),
+              foregroundDecoration: day.isCurrent
                   ? BoxDecoration(
-                      border: selectedActivityBorder,
+                      border: currentBorder,
                       borderRadius: borderRadius,
                     )
-                  : BoxDecoration(
-                      border: transparentBlackBorder,
-                      borderRadius: borderRadius,
-                    ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                height: layout.monthCalendar.dayHeaderHeight,
-                decoration: BoxDecoration(
-                  color: day.isPast ? AbiliaColors.white140 : dayTheme.color,
-                  borderRadius:
-                      BorderRadius.vertical(top: borderRadius.topRight),
-                ),
-                padding: layout.monthCalendar.dayHeaderPadding,
-                child: DefaultTextStyle(
-                  style: headingTextStyleCorrectColor,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('${day.day.day}'),
-                      const Spacer(),
-                      if (day.hasEvent)
-                        Padding(
-                          padding: layout.monthCalendar.hasActivitiesDotPadding,
-                          child: ColorDot(
-                            radius: layout.monthCalendar.hasActivitiesDotRadius,
-                            color: day.isPast
-                                ? AbiliaColors.black
-                                : dayTheme.theme.colorScheme.onSurface,
-                          ),
+                  : dayPickerState.day.isAtSameDay(day.day)
+                      ? BoxDecoration(
+                          border: selectedActivityBorder,
+                          borderRadius: borderRadius,
+                        )
+                      : BoxDecoration(
+                          border: transparentBlackBorder,
+                          borderRadius: borderRadius,
                         ),
-                    ],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    height: layout.monthCalendar.dayHeaderHeight,
+                    decoration: BoxDecoration(
+                      color:
+                          day.isPast ? AbiliaColors.white140 : dayTheme.color,
+                      borderRadius:
+                          BorderRadius.vertical(top: borderRadius.topRight),
+                    ),
+                    padding: layout.monthCalendar.dayHeaderPadding,
+                    child: DefaultTextStyle(
+                      style: headingTextStyleCorrectColor,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('${day.day.day}'),
+                          const Spacer(),
+                          if (day.hasEvent)
+                            Padding(
+                              padding:
+                                  layout.monthCalendar.hasActivitiesDotPadding,
+                              child: ColorDot(
+                                radius:
+                                    layout.monthCalendar.hasActivitiesDotRadius,
+                                color: day.isPast
+                                    ? AbiliaColors.black
+                                    : dayTheme.theme.colorScheme.onSurface,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                  Expanded(
+                    child: MonthDayContainer(
+                      day: day,
+                      highlighted: highlighted,
+                    ),
+                  ),
+                ],
               ),
-              Expanded(
-                child: MonthDayContainer(
-                  day: day,
-                  highlighted: highlighted,
-                ),
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
@@ -387,28 +395,6 @@ class MonthDayViewCompact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = dayTheme.theme.textTheme.subtitle1 ?? subtitle1;
-    final dayPickerState = context.read<DayPickerBloc>().state;
-    final monthWeekColor = context.select((MemoplannerSettingsBloc bloc) =>
-        bloc.state.monthCalendar.monthWeekColor);
-    final dayIsHighlighted =
-        (day.isCurrent || dayPickerState.day.isAtSameDay(day.day));
-
-    final borderRadius = BorderRadius.circular(dayIsHighlighted
-        ? layout.monthCalendar.dayRadiusHighlighted
-        : layout.monthCalendar.dayRadius);
-
-    final dayTextStyle = day.isPast || monthWeekColor == WeekColor.captions
-        ? textStyle.copyWith(color: AbiliaColors.black)
-        : textStyle.copyWith(
-            color: dayTheme.monthSurfaceColor,
-          );
-
-    final backgroundColor = day.isPast
-        ? AbiliaColors.white110
-        : monthWeekColor == WeekColor.captions
-            ? AbiliaColors.white
-            : dayTheme.monthColor;
-
     return Tts.data(
       data:
           DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
@@ -420,54 +406,81 @@ class MonthDayViewCompact extends StatelessWidget {
               ? DefaultTabController.of(context)?.animateTo(0)
               : BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day));
         },
-        child: Container(
-          foregroundDecoration: day.isCurrent
-              ? BoxDecoration(
-                  border: currentBorder,
-                  borderRadius: borderRadius,
-                )
-              : dayPickerState.day.isAtSameDay(day.day)
+        child: BlocBuilder<DayPickerBloc, DayPickerState>(
+          builder: (context, dayPickerState) {
+            final monthWeekColor = context.select(
+                (MemoplannerSettingsBloc bloc) =>
+                    bloc.state.monthCalendar.monthWeekColor);
+            final dayIsHighlighted =
+                (day.isCurrent || dayPickerState.day.isAtSameDay(day.day));
+
+            final borderRadius = BorderRadius.circular(dayIsHighlighted
+                ? layout.monthCalendar.dayRadiusHighlighted
+                : layout.monthCalendar.dayRadius);
+
+            final dayTextStyle =
+                day.isPast || monthWeekColor == WeekColor.captions
+                    ? textStyle.copyWith(color: AbiliaColors.black)
+                    : textStyle.copyWith(
+                        color: dayTheme.monthSurfaceColor,
+                      );
+
+            final backgroundColor = day.isPast
+                ? AbiliaColors.white110
+                : monthWeekColor == WeekColor.captions
+                    ? AbiliaColors.white
+                    : dayTheme.monthColor;
+
+            return Container(
+              foregroundDecoration: day.isCurrent
                   ? BoxDecoration(
-                      border: selectedActivityBorder,
+                      border: currentBorder,
                       borderRadius: borderRadius,
                     )
-                  : BoxDecoration(
-                      border: transparentBlackBorder,
-                      borderRadius: borderRadius,
-                    ),
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: borderRadius,
-          ),
-          padding: dayIsHighlighted
-              ? layout.monthCalendar.dayViewPaddingHighlighted
-              : layout.monthCalendar.dayViewPadding,
-          margin: dayIsHighlighted
-              ? layout.monthCalendar.dayViewMarginHighlighted
-              : layout.monthCalendar.dayViewMargin,
-          child: DefaultTextStyle(
-            style: dayTextStyle,
-            child: Stack(
-              children: [
-                Center(child: Text('${day.day.day}')),
-                if (day.hasEvent)
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: ColorDot(
-                      radius: layout.monthCalendar.hasActivitiesDotRadius,
-                      color: AbiliaColors.black,
-                    ),
-                  ),
-                if (day.isPast)
-                  Padding(
-                    padding: layout.monthCalendar.crossOverPadding,
-                    child: const CrossOver(
-                      style: CrossOverStyle.darkSecondary,
-                    ),
-                  ),
-              ],
-            ),
-          ),
+                  : dayPickerState.day.isAtSameDay(day.day)
+                      ? BoxDecoration(
+                          border: selectedActivityBorder,
+                          borderRadius: borderRadius,
+                        )
+                      : BoxDecoration(
+                          border: transparentBlackBorder,
+                          borderRadius: borderRadius,
+                        ),
+              decoration: BoxDecoration(
+                color: backgroundColor,
+                borderRadius: borderRadius,
+              ),
+              padding: dayIsHighlighted
+                  ? layout.monthCalendar.dayViewPaddingHighlighted
+                  : layout.monthCalendar.dayViewPadding,
+              margin: dayIsHighlighted
+                  ? layout.monthCalendar.dayViewMarginHighlighted
+                  : layout.monthCalendar.dayViewMargin,
+              child: DefaultTextStyle(
+                style: dayTextStyle,
+                child: Stack(
+                  children: [
+                    Center(child: Text('${day.day.day}')),
+                    if (day.hasEvent)
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: ColorDot(
+                          radius: layout.monthCalendar.hasActivitiesDotRadius,
+                          color: AbiliaColors.black,
+                        ),
+                      ),
+                    if (day.isPast)
+                      Padding(
+                        padding: layout.monthCalendar.crossOverPadding,
+                        child: const CrossOver(
+                          style: CrossOverStyle.darkSecondary,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
