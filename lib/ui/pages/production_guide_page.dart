@@ -14,6 +14,9 @@ class ProductionGuidePage extends StatefulWidget {
 
 class _ProductionGuidePageState extends State<ProductionGuidePage>
     with WidgetsBindingObserver {
+  final serialIdController = TextEditingController();
+  final licenseNumberConroller = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -45,8 +48,6 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
 
   @override
   Widget build(BuildContext context) {
-    final serialIdController = TextEditingController();
-    final licenseNumberConroller = TextEditingController();
     return MaterialApp(
       theme: abiliaTheme,
       home: Scaffold(
@@ -57,7 +58,15 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
             builder: (context, writeSettingsSnapshot) {
               return Column(
                 children: [
-                  MEMOplannerLogo(height: layout.login.logoHeight),
+                  GestureDetector(
+                    onLongPress: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => const BackendSwitcherDialog(),
+                      );
+                    },
+                    child: MEMOplannerLogo(height: layout.login.logoHeight),
+                  ),
                   SizedBox(height: layout.formPadding.groupHorizontalDistance),
                   Text(
                     'Welcome to the production guide!',
@@ -66,41 +75,31 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                   const SizedBox(height: 50),
                   InputField(
                     heading: 'Serial number',
-                    serialIdController: serialIdController,
+                    textController: serialIdController,
                   ),
                   SizedBox(
                     height: layout.formPadding.smallVerticalItemDistance,
                   ),
                   Row(children: [
-                    TextButton(
+                    const GreyButton(
+                      iconData: AbiliaIcons.inputSettings,
+                      text: 'Fetch from settings',
                       onPressed: AndroidIntents.openDeviceInfoSettings,
-                      style: greyIconTextButtonStyle,
-                      child: Row(
-                        children: [
-                          Icon(
-                            AbiliaIcons.inputSettings,
-                            size: layout.icon.button,
-                          ),
-                          SizedBox(
-                            width: layout.formPadding.horizontalItemDistance,
-                          ),
-                          const Text('Fetch from settings'),
-                        ],
-                      ),
                     ),
                     SizedBox(
                       width: layout.formPadding.horizontalItemDistance,
                     ),
                     GreyButton(
-                      serialIdController: serialIdController,
-                      iconData: AbiliaIcons.past,
-                      text: 'Paste from clipboard',
-                    ),
+                        iconData: AbiliaIcons.past,
+                        text: 'Paste from clipboard',
+                        onPressed: () => Clipboard.getData(Clipboard.kTextPlain)
+                            .then((value) =>
+                                serialIdController.text = value?.text ?? '')),
                   ]),
                   const SizedBox(height: 50),
                   InputField(
                     heading: 'License key',
-                    serialIdController: licenseNumberConroller,
+                    textController: licenseNumberConroller,
                     subHeading:
                         'Enter license key to be connected to this device',
                   ),
@@ -128,7 +127,24 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                         productionGuideState is VerifySerialIdFailed
                             ? Text(productionGuideState.message)
                             : const Text(''),
-                  )
+                  ),
+                  const Spacer(),
+                  if (!Config.release)
+                    BlocBuilder<BaseUrlCubit, String>(
+                      builder: (context, baseUrl) => Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          const AbiliaLogo(),
+                          InkWell(
+                            onTap: () => context
+                                .read<StartupCubit>()
+                                .skipProductionGuide(),
+                            child: const Text('Skip production guide >'),
+                          ),
+                        ],
+                      ),
+                    ),
                 ],
               );
             },
@@ -141,21 +157,20 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
 
 class GreyButton extends StatelessWidget {
   const GreyButton({
-    required this.serialIdController,
     required this.iconData,
     required this.text,
+    required this.onPressed,
     Key? key,
   }) : super(key: key);
 
-  final TextEditingController serialIdController;
   final String text;
   final IconData iconData;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => Clipboard.getData(Clipboard.kTextPlain)
-          .then((value) => serialIdController.text = value?.text ?? ''),
+      onPressed: onPressed,
       style: greyIconTextButtonStyle,
       child: Row(
         children: [
@@ -176,13 +191,13 @@ class GreyButton extends StatelessWidget {
 class InputField extends StatelessWidget {
   const InputField({
     required this.heading,
-    required this.serialIdController,
+    required this.textController,
     this.subHeading,
     Key? key,
   }) : super(key: key);
 
   final String heading;
-  final TextEditingController serialIdController;
+  final TextEditingController textController;
   final String? subHeading;
 
   @override
@@ -194,7 +209,7 @@ class InputField extends StatelessWidget {
       children: [
         SubHeading(heading),
         TextField(
-          controller: serialIdController,
+          controller: textController,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
           ),
@@ -216,12 +231,6 @@ class _DebugRow extends StatelessWidget {
       builder: (context, baseUrl) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (!Config.release)
-            ElevatedButton(
-                    onPressed: () =>
-                        context.read<StartupCubit>().skipProductionGuide(),
-                    child: const Text('Skip production guide'))
-                .pad(const EdgeInsets.only(right: 20)),
           ElevatedButton(
             onPressed: () {
               showDialog(
