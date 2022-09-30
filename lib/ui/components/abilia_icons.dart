@@ -510,5 +510,6 @@ class AbiliaIcons {
       screensaverNight = IconData(0xEB47, fontFamily: fontFamily),
       screensaver = IconData(0xEB48, fontFamily: fontFamily),
       digitalTime = IconData(0xEB4A, fontFamily: fontFamily),
-      android = IconData(0xEB43, fontFamily: fontFamily);
+      android = IconData(0xEB43, fontFamily: fontFamily),
+      inputSettings = IconData(0xEB0D, fontFamily: fontFamily);
 }

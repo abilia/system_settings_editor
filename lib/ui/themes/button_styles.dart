@@ -294,6 +294,10 @@ final actionButtonStyleBlack = _actionButtonStyle.copyWith(
   }),
 );
 
+final greyIconTextButtonStyle = actionButtonStyleDark.copyWith(
+  textStyle: MaterialStateProperty.all(abiliaTextTheme.bodyText1),
+);
+
 final actionButtonStyleLight = _actionButtonStyle.copyWith(
   backgroundColor: MaterialStateProperty.resolveWith<Color>(
     (Set<MaterialState> states) {

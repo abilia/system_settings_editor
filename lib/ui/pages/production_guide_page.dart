@@ -46,82 +46,161 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
   @override
   Widget build(BuildContext context) {
     final serialIdController = TextEditingController();
+    final licenseNumberConroller = TextEditingController();
     return MaterialApp(
       theme: abiliaTheme,
       home: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Center(
-            child: FutureBuilder(
-              future: SystemSettingsEditor.canWriteSettings,
-              builder: (context, writeSettingsSnapshot) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const _FancyHeader(
-                        text: 'Welcome to the production guide!'),
-                    const SizedBox(height: 50),
-                    const _DebugRow(),
-                    const SizedBox(height: 50),
-                    if (writeSettingsSnapshot.data != true)
-                      TextButton(
-                        onPressed:
-                            AndroidIntents.openWriteSettingsPermissionSettings,
-                        style: textButtonStyleDarkGrey,
-                        child: const Text('Grant Write Settings permission'),
-                      )
-                    else ...[
-                      Row(
+          padding: layout.templates.m5,
+          child: FutureBuilder<bool>(
+            future: SystemSettingsEditor.canWriteSettings,
+            builder: (context, writeSettingsSnapshot) {
+              return Column(
+                children: [
+                  MEMOplannerLogo(height: layout.login.logoHeight),
+                  SizedBox(height: layout.formPadding.groupHorizontalDistance),
+                  Text(
+                    'Welcome to the production guide!',
+                    style: abiliaTextTheme.headline6,
+                  ),
+                  const SizedBox(height: 50),
+                  InputField(
+                    heading: 'Serial number',
+                    serialIdController: serialIdController,
+                  ),
+                  SizedBox(
+                    height: layout.formPadding.smallVerticalItemDistance,
+                  ),
+                  Row(children: [
+                    TextButton(
+                      onPressed: AndroidIntents.openDeviceInfoSettings,
+                      style: greyIconTextButtonStyle,
+                      child: Row(
                         children: [
-                          Expanded(
-                            child: TextField(
-                              controller: serialIdController,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Serial number',
-                              ),
-                            ),
+                          Icon(
+                            AbiliaIcons.inputSettings,
+                            size: layout.icon.button,
                           ),
-                          const SizedBox(width: 20),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const ElevatedButton(
-                                  onPressed:
-                                      AndroidIntents.openDeviceInfoSettings,
-                                  child: Text('Fetch from settings')),
-                              ElevatedButton(
-                                  onPressed: () =>
-                                      Clipboard.getData(Clipboard.kTextPlain)
-                                          .then((value) => serialIdController
-                                              .text = value?.text ?? ''),
-                                  child: const Text('Paste from clipboard')),
-                            ],
-                          )
+                          SizedBox(
+                            width: layout.formPadding.horizontalItemDistance,
+                          ),
+                          const Text('Fetch from settings'),
                         ],
                       ),
-                      const SizedBox(height: 50),
-                      TextButton(
-                        onPressed: () => context
+                    ),
+                    SizedBox(
+                      width: layout.formPadding.horizontalItemDistance,
+                    ),
+                    GreyButton(
+                      serialIdController: serialIdController,
+                      iconData: AbiliaIcons.past,
+                      text: 'Paste from clipboard',
+                    ),
+                  ]),
+                  const SizedBox(height: 50),
+                  InputField(
+                    heading: 'License key',
+                    serialIdController: licenseNumberConroller,
+                    subHeading:
+                        'Enter license key to be connected to this device',
+                  ),
+                  SizedBox(height: layout.formPadding.largeGroupDistance),
+                  SwitchField(
+                    value: writeSettingsSnapshot.data ?? false,
+                    child: const Text('Write system settings permission'),
+                    onChanged: (_) async {
+                      await AndroidIntents
+                          .openWriteSettingsPermissionSettings();
+                    },
+                  ),
+                  const SizedBox(height: 50),
+                  TextButton(
+                    onPressed: writeSettingsSnapshot.data ?? false
+                        ? () => context
                             .read<StartupCubit>()
-                            .verifySerialId(serialIdController.text),
-                        style: textButtonStyleGreen,
-                        child: const Text('Verify'),
-                      ),
-                      BlocBuilder<StartupCubit, StartupState>(
-                        builder: (context, productionGuideState) =>
-                            productionGuideState is VerifySerialIdFailed
-                                ? Text(productionGuideState.message)
-                                : const Text(''),
-                      )
-                    ],
-                  ],
-                );
-              },
-            ),
+                            .verifySerialId(serialIdController.text)
+                        : null,
+                    style: textButtonStyleGreen,
+                    child: const Text('Verify'),
+                  ),
+                  BlocBuilder<StartupCubit, StartupState>(
+                    builder: (context, productionGuideState) =>
+                        productionGuideState is VerifySerialIdFailed
+                            ? Text(productionGuideState.message)
+                            : const Text(''),
+                  )
+                ],
+              );
+            },
           ),
         ),
       ),
+    );
+  }
+}
+
+class GreyButton extends StatelessWidget {
+  const GreyButton({
+    required this.serialIdController,
+    required this.iconData,
+    required this.text,
+    Key? key,
+  }) : super(key: key);
+
+  final TextEditingController serialIdController;
+  final String text;
+  final IconData iconData;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () => Clipboard.getData(Clipboard.kTextPlain)
+          .then((value) => serialIdController.text = value?.text ?? ''),
+      style: greyIconTextButtonStyle,
+      child: Row(
+        children: [
+          Icon(
+            iconData,
+            size: layout.icon.button,
+          ),
+          SizedBox(
+            width: layout.formPadding.horizontalItemDistance,
+          ),
+          Text(text),
+        ],
+      ),
+    );
+  }
+}
+
+class InputField extends StatelessWidget {
+  const InputField({
+    required this.heading,
+    required this.serialIdController,
+    this.subHeading,
+    Key? key,
+  }) : super(key: key);
+
+  final String heading;
+  final TextEditingController serialIdController;
+  final String? subHeading;
+
+  @override
+  Widget build(BuildContext context) {
+    final sub = subHeading;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SubHeading(heading),
+        TextField(
+          controller: serialIdController,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+          ),
+        ),
+        if (sub != null) SubHeading(sub),
+      ],
     );
   }
 }
@@ -156,40 +235,6 @@ class _DebugRow extends StatelessWidget {
           )
         ],
       ),
-    );
-  }
-}
-
-class _FancyHeader extends StatelessWidget {
-  const _FancyHeader({
-    required this.text,
-    Key? key,
-  }) : super(key: key);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 40,
-            foreground: Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 6
-              ..color = Colors.blue[700]!,
-          ),
-        ),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 40,
-            color: Colors.grey[300],
-          ),
-        ),
-      ],
     );
   }
 }
