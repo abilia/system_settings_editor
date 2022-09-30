@@ -31,21 +31,6 @@ class GoToNowButton extends StatelessWidget {
               : const SizedBox.shrink(),
         ),
       );
-
-  static Widget placeholder(BuildContext context) {
-    return Visibility(
-      visible: false,
-      maintainState: true,
-      maintainSize: true,
-      maintainAnimation: true,
-      child: IconAndTextButton(
-        text: Translator.of(context).translate.now,
-        icon: AbiliaIcons.reset,
-        style: actionIconTextButtonStyleRed,
-        padding: EdgeInsets.zero,
-      ),
-    );
-  }
 }
 
 class GoToCurrentActionButton extends StatelessWidget {
