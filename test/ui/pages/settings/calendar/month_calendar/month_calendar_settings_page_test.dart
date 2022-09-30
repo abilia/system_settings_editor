@@ -244,7 +244,7 @@ void main() {
         final dayContainer = tester.firstWidget<Container>(
           find.descendant(
             of: find.byWidgetPredicate((widget) =>
-                widget is MonthDayView && widget.day.isPast == false),
+                widget is MonthDayView && widget.monthDay.isPast == false),
             matching: find.byKey(TestKey.monthCalendarDayBackgroundColor),
           ),
         );
