@@ -450,7 +450,7 @@ class MonthDayViewCompact extends StatelessWidget {
             child: Stack(
               children: [
                 Center(child: Text('${day.day.day}')),
-                if (day.hasEvent)
+                if (day.hasEvent || day.fullDayActivityCount > 0)
                   Align(
                     alignment: Alignment.topRight,
                     child: ColorDot(
