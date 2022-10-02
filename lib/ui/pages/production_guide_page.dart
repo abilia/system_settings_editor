@@ -115,9 +115,10 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                   const SizedBox(height: 50),
                   TextButton(
                     onPressed: writeSettingsSnapshot.data ?? false
-                        ? () => context
-                            .read<StartupCubit>()
-                            .verifySerialId(serialIdController.text)
+                        ? () => context.read<StartupCubit>().verifySerialId(
+                              serialIdController.text,
+                              licenseNumberConroller.text,
+                            )
                         : null,
                     style: textButtonStyleGreen,
                     child: const Text('Verify'),
