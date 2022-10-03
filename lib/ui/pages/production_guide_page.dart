@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
@@ -217,34 +216,6 @@ class InputField extends StatelessWidget {
         ),
         if (sub != null) SubHeading(sub),
       ],
-    );
-  }
-}
-
-class _DebugRow extends StatelessWidget {
-  const _DebugRow({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<BaseUrlCubit, String>(
-      builder: (context, baseUrl) => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => const BackendSwitcherDialog(),
-              );
-            },
-            child: Text(
-              'Switch backend (${backendName(baseUrl)})',
-            ),
-          )
-        ],
-      ),
     );
   }
 }

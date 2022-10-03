@@ -18,7 +18,7 @@ class StartupCubit extends Cubit<StartupState> {
     try {
       final clientId = await deviceRepository.getClientId();
       final verifiedOk =
-          await deviceRepository.verifyDevice(serialId, clientId);
+          await deviceRepository.verifyDevice(serialId, clientId, licenseKey);
       if (verifiedOk) {
         await deviceRepository.setSerialId(serialId);
         emit(WelcomeGuide());

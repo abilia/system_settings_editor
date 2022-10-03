@@ -16,7 +16,8 @@ class DeviceRepository extends Repository {
 
   final DeviceDb deviceDb;
 
-  Future<bool> verifyDevice(String serialId, String clientId) async {
+  Future<bool> verifyDevice(
+      String serialId, String clientId, String licenseKey) async {
     final url = '$baseUrl/open/v1/enrollment/verify-device/$serialId';
     final response = await client.post(
       url.toUri(),
@@ -24,7 +25,10 @@ class DeviceRepository extends Repository {
         HttpHeaders.contentTypeHeader: 'application/json',
         'api-key': 'huyf72P00mf8Hy53k',
       },
-      body: json.encode({'clientId': clientId}),
+      body: json.encode({
+        'clientId': clientId,
+        'licenseKey': licenseKey.replaceAll(RegExp('-| '), '')
+      }),
     );
 
     if (response.statusCode == 200) {
