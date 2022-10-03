@@ -9,9 +9,13 @@ import 'package:seagull/repository/all.dart';
 
 part 'sync_event.dart';
 
-class SyncPerformed {}
+class SyncState {}
 
-class SyncBloc extends Bloc<SyncEvent, SyncPerformed> {
+class SyncPerformed extends SyncState {}
+
+class SyncNotPerformed extends SyncState {}
+
+class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final PushCubit pushCubit;
   final LicenseCubit licenseCubit;
 
@@ -24,6 +28,8 @@ class SyncBloc extends Bloc<SyncEvent, SyncPerformed> {
 
   late StreamSubscription _pushSubscription;
 
+  bool get hasSynced => state is SyncPerformed;
+
   SyncBloc({
     required this.pushCubit,
     required this.licenseCubit,
@@ -32,7 +38,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncPerformed> {
     required this.sortableRepository,
     required this.genericRepository,
     required this.syncDelay,
-  }) : super(SyncPerformed()) {
+  }) : super(SyncNotPerformed()) {
     _pushSubscription = pushCubit.stream.listen((v) => add(const SyncAll()));
     on<ActivitySaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<FileSaved>(_trySync, transformer: bufferTimer(syncDelay));
