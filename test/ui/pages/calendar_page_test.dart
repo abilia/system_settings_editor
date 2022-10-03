@@ -1335,7 +1335,8 @@ void main() {
           .thenAnswer((_) => Future.value(true));
     });
 
-    testWidgets('Progress indicator is shown until SyncAll has been called when generics is empty',
+    testWidgets(
+        'Progress indicator is shown until SyncAll has been called when generics is empty',
         (WidgetTester tester) async {
       final syncBloc = SyncBloc(
         pushCubit: FakePushCubit(),

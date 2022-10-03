@@ -82,7 +82,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           providers: [
             BlocProvider<SyncBloc>(
               create: (context) => syncBloc ??
-                  (SyncBloc(
+                  SyncBloc(
                     pushCubit: context.read<PushCubit>(),
                     licenseCubit: context.read<LicenseCubit>(),
                     activityRepository: context.read<ActivityRepository>(),
@@ -90,7 +90,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                     sortableRepository: context.read<SortableRepository>(),
                     genericRepository: context.read<GenericRepository>(),
                     syncDelay: GetIt.I<SyncDelays>(),
-                  )..add(const SyncAll())),
+                  )
+                ..add(const SyncAll()),
               lazy: false,
             ),
             BlocProvider<ActivitiesBloc>(
