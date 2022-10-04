@@ -148,28 +148,60 @@ class CategoriesAndHiddenSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, boxConstraints) {
-      final categoryLabelWidth =
-          (boxConstraints.maxWidth - layout.timepillar.width) / 2;
-      final settingsInaccessible = context.select(
-          (MemoplannerSettingsBloc bloc) => bloc.state.settingsInaccessible);
-      final showCategories = context.select((MemoplannerSettingsBloc bloc) =>
-          bloc.state.calendar.categories.show);
+    final settingsInaccessible = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.settingsInaccessible);
+    final showCategories = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.calendar.categories.show);
 
-      return Column(
-        children: [
-          if (showCategories)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                LeftCategory(maxWidth: categoryLabelWidth),
-                RightCategory(maxWidth: categoryLabelWidth),
-              ],
+    return Column(
+      children: [
+        if (showCategories)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Expanded(child: LeftCategory()),
+              _GoToNowPlaceholder(),
+              Expanded(child: RightCategory()),
+            ],
+          ),
+        if (settingsInaccessible) const HiddenSetting(),
+      ],
+    );
+  }
+}
+
+class _GoToNowPlaceholder extends StatelessWidget {
+  const _GoToNowPlaceholder({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 300),
+      child: Builder(builder: (context) {
+        final showingNowButton = context.select((ScrollPositionCubit c) =>
+            c.state is WrongDay || c.state is OutOfView);
+
+        if (showingNowButton) {
+          return Visibility(
+            visible: false,
+            maintainState: true,
+            maintainSize: true,
+            maintainAnimation: true,
+            child: IconAndTextButton(
+              text: Translator.of(context).translate.now,
+              icon: AbiliaIcons.reset,
+              style: actionIconTextButtonStyleRed,
+              padding: EdgeInsets.zero,
+            ).pad(
+              EdgeInsets.symmetric(horizontal: layout.category.topMargin),
             ),
-          if (settingsInaccessible) const HiddenSetting(),
-        ],
-      );
-    });
+          );
+        }
+
+        return SizedBox(width: layout.timepillar.width);
+      }),
+    );
   }
 }
 
