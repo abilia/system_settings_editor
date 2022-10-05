@@ -17,8 +17,11 @@ class StartupCubit extends Cubit<StartupState> {
   void verifySerialId(String serialId, String licenseKey) async {
     try {
       final clientId = await deviceRepository.getClientId();
-      final verifiedOk =
-          await deviceRepository.verifyDevice(serialId, clientId, licenseKey);
+      final verifiedOk = await deviceRepository.verifyDevice(
+        serialId,
+        clientId,
+        licenseKey.replaceAll(RegExp('-| '), ''),
+      );
       if (verifiedOk) {
         await deviceRepository.setSerialId(serialId);
         emit(WelcomeGuide());
