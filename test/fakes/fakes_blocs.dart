@@ -208,3 +208,14 @@ class FakeDayPartCubit extends Fake implements DayPartCubit {
   @override
   Future<void> close() async {}
 }
+
+class FakeInactivityCubit extends Fake implements InactivityCubit {
+  @override
+  Stream<InactivityState> get stream => const Stream.empty();
+
+  @override
+  InactivityState get state => SomethingHappened(DateTime.now());
+
+  @override
+  Future<void> close() async {}
+}

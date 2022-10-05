@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -16,6 +17,7 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
   final DayPickerBloc dayPickerBloc;
   final ClockBloc clockBloc;
   final TimepillarMeasuresCubit timepillarMeasuresCubit;
+  final InactivityCubit? inactivityCubit;
   late final StreamSubscription dayPickerBlocSubscription;
   late final StreamSubscription clockBlocSubscription;
 
@@ -23,9 +25,11 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
     required this.dayPickerBloc,
     required this.clockBloc,
     required this.timepillarMeasuresCubit,
+    this.inactivityCubit,
     this.nowMarginTop = 8,
     this.nowMarginBottom = 8,
-  }) : super(dayPickerBloc.state.isToday ? Unready() : WrongDay()) {
+  })  : assert(!(Config.isMP && inactivityCubit == null)),
+        super(dayPickerBloc.state.isToday ? Unready() : WrongDay()) {
     dayPickerBlocSubscription = dayPickerBloc.stream
         .where((state) => !state.isToday)
         .listen((_) => wrongDaySelected());
@@ -43,12 +47,7 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
           s.scrollControllerCreatedTime,
         ),
       );
-    } else if (s is InView) {
-      emit(InView(
-        s.scrollController,
-        s.scrollControllerCreatedTime,
-      ));
-    } else {
+    } else if (s is! InView) {
       emit(Unready());
     }
   }
@@ -78,12 +77,17 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
   void scrollPositionUpdated() {
     final s = state;
     if (!wrongDaySelected() && s is ScrollPositionReadyState) {
-      emit(
-        _isActivityInView(
-          s.scrollController,
-          s.scrollControllerCreatedTime,
-        ),
+      final newState = _isActivityInView(
+        s.scrollController,
+        s.scrollControllerCreatedTime,
       );
+      if (Config.isMP &&
+          newState is OutOfView &&
+          inactivityCubit?.state is! SomethingHappened) {
+        _jumpToActivity(s);
+        return;
+      }
+      emit(newState);
     }
   }
 

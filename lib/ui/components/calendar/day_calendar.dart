@@ -13,18 +13,9 @@ class DayCalendar extends StatelessWidget {
         dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
         clockBloc: context.read<ClockBloc>(),
         timepillarMeasuresCubit: context.read<TimepillarMeasuresCubit>(),
+        inactivityCubit: Config.isMP ? context.read<InactivityCubit>() : null,
       ),
-      child: Config.isMP
-          ? BlocListener<ClockBloc, DateTime>(
-              listener: (context, now) {
-                final inactivityState = context.read<InactivityCubit>().state;
-                if (inactivityState is! SomethingHappened) {
-                  context.read<ScrollPositionCubit>().goToNow();
-                }
-              },
-              child: const CalendarScaffold(),
-            )
-          : const CalendarScaffold(),
+      child: const CalendarScaffold(),
     );
   }
 }
