@@ -145,5 +145,15 @@ void main() {
     );
 
     expect(alarm, activityOccasionoAlarm);
+
+    final reminder = ReminderUnchecked(ActivityDay(a, day),
+        reminder: const Duration(minutes: 30));
+
+    final activityOccasionoReminder = ReminderUnchecked(
+      ActivityOccasion(a, day, Occasion.current),
+      reminder: const Duration(minutes: 30),
+    );
+
+    expect(reminder, activityOccasionoReminder);
   });
 }
