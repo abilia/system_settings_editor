@@ -44,7 +44,10 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
         ),
       );
     } else if (s is InView) {
-      emit(InView(s.scrollController));
+      emit(InView(
+        s.scrollController,
+        s.scrollControllerCreatedTime,
+      ));
     } else {
       emit(Unready());
     }
@@ -147,7 +150,7 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
   }
 
   Future _jumpToActivity(ScrollPositionState state) async {
-    if (state is OutOfView) {
+    if (state is ScrollPositionReadyState) {
       final sc = state.scrollController;
       final nowPos = sc.initialScrollOffset +
           timeFromCreation(state.scrollControllerCreatedTime);

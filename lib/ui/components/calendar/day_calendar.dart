@@ -15,12 +15,15 @@ class DayCalendar extends StatelessWidget {
         timepillarMeasuresCubit: context.read<TimepillarMeasuresCubit>(),
       ),
       child: Config.isMP
-          ? BlocListener<InactivityCubit, InactivityState>(
-              listenWhen: (previous, current) =>
-                  current is ReturnToTodayThresholdReached,
-              listener: (context, state) =>
-                  BlocProvider.of<ScrollPositionCubit>(context).goToNow(),
-              child: const CalendarScaffold())
+          ? BlocListener<ClockBloc, DateTime>(
+              listener: (context, now) {
+                final inactivityState = context.read<InactivityCubit>().state;
+                if (inactivityState is! SomethingHappened) {
+                  context.read<ScrollPositionCubit>().goToNow();
+                }
+              },
+              child: const CalendarScaffold(),
+            )
           : const CalendarScaffold(),
     );
   }
