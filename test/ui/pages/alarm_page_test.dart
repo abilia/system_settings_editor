@@ -786,7 +786,7 @@ void main() {
       expect(find.byType(GreenButton), findsNothing);
     });
 
-    testWidgets('BUG SGC-2033 - Checklist not resposive on reminder',
+    testWidgets('BUG SGC-2033 - Checklist not responsive on reminder',
         (WidgetTester tester) async {
       const q1 = Question(id: 1, name: '1one');
 
@@ -795,7 +795,7 @@ void main() {
       );
 
       final checkableWithChecklist = Activity.createNew(
-        title: 'Checkist',
+        title: 'Checklist',
         startTime: startTime,
         infoItem: checklist,
         checkable: true,
