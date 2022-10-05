@@ -121,9 +121,9 @@ abstract class Translated {
 
   final String fullDay = 'All day';
 
-  final String morning = 'morning';
+  final String earlyMorning = 'early morning';
 
-  final String forenoon = 'forenoon';
+  final String midMorning = 'mid morning';
 
   final String lunch = 'Lunch';
 
@@ -1101,10 +1101,10 @@ class SV extends Translated {
   final String fullDay = 'Heldag';
 
   @override
-  final String morning = 'morgon';
+  final String earlyMorning = 'morgon';
 
   @override
-  final String forenoon = 'förmiddag';
+  final String midMorning = 'förmiddag';
 
   @override
   final String lunch = 'Lunch';
@@ -2480,10 +2480,10 @@ class DA extends Translated {
   final String fullDay = 'Hele dagen';
 
   @override
-  final String morning = 'morgen';
+  final String earlyMorning = 'morgen';
 
   @override
-  final String forenoon = 'formiddag';
+  final String midMorning = 'formiddag';
 
   @override
   final String lunch = 'Frokost';
@@ -3863,10 +3863,10 @@ class NL extends Translated {
   final String fullDay = 'Hele dag';
 
   @override
-  final String morning = 'ochtend';
+  final String earlyMorning = 'ochtend';
 
   @override
-  final String forenoon = 'midden-ochtend';
+  final String midMorning = 'midden-ochtend';
 
   @override
   final String lunch = 'Lunch';
@@ -5249,10 +5249,10 @@ class FI extends Translated {
   final String fullDay = 'Koko päivä';
 
   @override
-  final String morning = 'aamu';
+  final String earlyMorning = 'aamu';
 
   @override
-  final String forenoon = 'aamupäivän puolivälissä';
+  final String midMorning = 'aamupäivän puolivälissä';
 
   @override
   final String lunch = 'Lounas';
@@ -6634,10 +6634,10 @@ class DE extends Translated {
   final String fullDay = 'Ganztägig';
 
   @override
-  final String morning = 'frühmorgens';
+  final String earlyMorning = 'frühmorgens';
 
   @override
-  final String forenoon = 'Vormittag';
+  final String midMorning = 'Vormittag';
 
   @override
   final String lunch = 'Mittagessen';
@@ -8022,10 +8022,10 @@ class NB extends Translated {
   final String fullDay = 'Hele dagen';
 
   @override
-  final String morning = 'morgen';
+  final String earlyMorning = 'morgen';
 
   @override
-  final String forenoon = 'formiddag';
+  final String midMorning = 'formiddag';
 
   @override
   final String lunch = 'Lunsj';

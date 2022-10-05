@@ -49,8 +49,8 @@ licenseExpiredLogOutWarning	License is expired, all data will be lost if you log
 							
 ### Time related							
 fullDay	All day	Heldag	Hele dagen	Hele dag	Koko päivä	Ganztägig	Hele dagen
-morning	morning	morgon	morgen	ochtend	aamu	frühmorgens	morgen
-forenoon	forenoon	förmiddag	formiddag	midden-ochtend	aamupäivän puolivälissä	Vormittag	formiddag
+earlyMorning	early morning	morgon	morgen	ochtend	aamu	frühmorgens	morgen
+midMorning	mid morning	förmiddag	formiddag	midden-ochtend	aamupäivän puolivälissä	Vormittag	formiddag
 lunch	Lunch	Lunch	Frokost	Lunch	Lounas	Mittagessen	Lunsj
 afternoon	afternoon	eftermiddag	eftermiddag	middag	iltapäivä	Nachmittag	ettermiddag
 evening	evening	kväll	aften	avond	ilta	Abend	kveld
