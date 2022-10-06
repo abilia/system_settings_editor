@@ -14,11 +14,14 @@ class StartupCubit extends Cubit<StartupState> {
 
   final DeviceRepository deviceRepository;
 
-  void verifySerialId(String serialId) async {
+  void verifySerialId(String serialId, String licenseKey) async {
     try {
       final clientId = await deviceRepository.getClientId();
-      final verifiedOk =
-          await deviceRepository.verifyDevice(serialId, clientId);
+      final verifiedOk = await deviceRepository.verifyDevice(
+        serialId,
+        clientId,
+        licenseKey.replaceAll(RegExp('-| '), ''),
+      );
       if (verifiedOk) {
         await deviceRepository.setSerialId(serialId);
         emit(WelcomeGuide());
