@@ -27,7 +27,7 @@ class DeviceRepository extends Repository {
       },
       body: json.encode({
         'clientId': clientId,
-        'licenseKey': licenseKey.replaceAll(RegExp('-| '), '')
+        'licenseKey': licenseKey,
       }),
     );
 

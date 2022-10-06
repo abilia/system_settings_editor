@@ -55,6 +55,7 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
           child: FutureBuilder<bool>(
             future: SystemSettingsEditor.canWriteSettings,
             builder: (context, writeSettingsSnapshot) {
+              final canWriteSettings = writeSettingsSnapshot.data ?? false;
               return Column(
                 children: [
                   GestureDetector(
@@ -80,16 +81,16 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                     height: layout.formPadding.smallVerticalItemDistance,
                   ),
                   Row(children: [
-                    const GreyButton(
-                      iconData: AbiliaIcons.inputSettings,
+                    const IconAndTextButtonDark(
+                      icon: AbiliaIcons.inputSettings,
                       text: 'Fetch from settings',
                       onPressed: AndroidIntents.openDeviceInfoSettings,
                     ),
                     SizedBox(
                       width: layout.formPadding.horizontalItemDistance,
                     ),
-                    GreyButton(
-                        iconData: AbiliaIcons.past,
+                    IconAndTextButtonDark(
+                        icon: AbiliaIcons.past,
                         text: 'Paste from clipboard',
                         onPressed: () => Clipboard.getData(Clipboard.kTextPlain)
                             .then((value) =>
@@ -101,19 +102,25 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                     textController: licenseNumberConroller,
                     subHeading:
                         'Enter license key to be connected to this device',
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[\d -]')),
+                    ],
                   ),
                   SizedBox(height: layout.formPadding.largeGroupDistance),
-                  SwitchField(
-                    value: writeSettingsSnapshot.data ?? false,
-                    child: const Text('Write system settings permission'),
-                    onChanged: (_) async {
-                      await AndroidIntents
-                          .openWriteSettingsPermissionSettings();
-                    },
-                  ),
-                  const SizedBox(height: 50),
+                  if (!canWriteSettings) ...[
+                    SwitchField(
+                      value: canWriteSettings,
+                      child: const Text('Write system settings permission'),
+                      onChanged: (_) async {
+                        await AndroidIntents
+                            .openWriteSettingsPermissionSettings();
+                      },
+                    ),
+                    const SizedBox(height: 50),
+                  ],
                   TextButton(
-                    onPressed: writeSettingsSnapshot.data ?? false
+                    onPressed: canWriteSettings
                         ? () => context.read<StartupCubit>().verifySerialId(
                               serialIdController.text,
                               licenseNumberConroller.text,
@@ -155,50 +162,21 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
   }
 }
 
-class GreyButton extends StatelessWidget {
-  const GreyButton({
-    required this.iconData,
-    required this.text,
-    required this.onPressed,
-    Key? key,
-  }) : super(key: key);
-
-  final String text;
-  final IconData iconData;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: onPressed,
-      style: greyIconTextButtonStyle,
-      child: Row(
-        children: [
-          Icon(
-            iconData,
-            size: layout.icon.button,
-          ),
-          SizedBox(
-            width: layout.formPadding.horizontalItemDistance,
-          ),
-          Text(text),
-        ],
-      ),
-    );
-  }
-}
-
 class InputField extends StatelessWidget {
   const InputField({
     required this.heading,
     required this.textController,
     this.subHeading,
+    this.keyboardType,
+    this.inputFormatters,
     Key? key,
   }) : super(key: key);
 
   final String heading;
   final TextEditingController textController;
   final String? subHeading;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -210,6 +188,8 @@ class InputField extends StatelessWidget {
         SubHeading(heading),
         TextField(
           controller: textController,
+          inputFormatters: inputFormatters,
+          keyboardType: keyboardType,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
           ),
