@@ -85,9 +85,10 @@ class ReminderPage extends StatelessWidget {
           activityDay: reminder.activityDay,
           activitiesBloc: context.read<ActivitiesBloc>(),
         ),
-        child: BlocSelector<ActivityCubit, ActivityState, NewReminder>(
-          selector: (state) => reminder.copyWith(state.activityDay),
-          builder: (context, reminder) => Scaffold(
+        child: BlocBuilder<ActivityCubit, ActivityState>(
+            builder: (context, state) {
+          final reminder = this.reminder.copyWith(state.activityDay);
+          return Scaffold(
             appBar: AbiliaAppBar(
               title: translate.reminder,
               iconData: AbiliaIcons.handiReminder,
@@ -126,8 +127,8 @@ class ReminderPage extends StatelessWidget {
               ),
             ),
             bottomNavigationBar: AlarmBottomNavigationBar(alarm: reminder),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }

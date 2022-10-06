@@ -785,5 +785,47 @@ void main() {
 
       expect(find.byType(GreenButton), findsNothing);
     });
+
+    testWidgets('BUG SGC-2033 - Checklist not responsive on reminder',
+        (WidgetTester tester) async {
+      const q1 = Question(id: 1, name: '1one');
+
+      final checklist = Checklist(
+        questions: const [q1, Question(id: 2, name: '2one')],
+      );
+
+      final checkableWithChecklist = Activity.createNew(
+        title: 'Checklist',
+        startTime: startTime,
+        infoItem: checklist,
+        checkable: true,
+      );
+
+      final reminder = ReminderUnchecked(
+        ActivityDay(checkableWithChecklist, day),
+        reminder: const Duration(minutes: 15),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: reminder,
+            alarmNavigator: alarmNavigator,
+            child: ReminderPage(reminder: reminder),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+      final checklistBefore =
+          tester.widget<ChecklistView>(find.byType(ChecklistView));
+      expect(checklistBefore.checklist.isSignedOff(q1, day), isFalse);
+
+      await tester.tap(find.text(q1.name));
+      await tester.pumpAndSettle();
+      final checklistAfter =
+          tester.widget<ChecklistView>(find.byType(ChecklistView));
+
+      expect(checklistAfter.checklist.isSignedOff(q1, day), isTrue);
+    });
   });
 }
