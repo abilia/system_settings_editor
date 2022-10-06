@@ -18,6 +18,7 @@ void main() {
   final defaultClockBloc = ClockBloc.fixed(day);
   late MockMemoplannerSettingBloc memoplannerSettingsBlocMock;
   late FakeTimepillarCubit timepillarCubit;
+  final translate = Locales.language.values.first;
 
   Widget wrapWithMaterialApp(Widget widget, ClockBloc clockBloc) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
@@ -71,7 +72,7 @@ void main() {
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
     expect(find.text('Monday'), findsOneWidget);
-    expect(find.text('morning'), findsOneWidget);
+    expect(find.text(translate.earlyMorning), findsOneWidget);
     expect(find.text('5 October 2020'), findsOneWidget);
   });
 
@@ -82,7 +83,7 @@ void main() {
         DayAppBar(day: day.add(24.hours())), defaultClockBloc));
     await tester.pumpAndSettle();
     expect(find.text('Tuesday'), findsOneWidget);
-    expect(find.text('morning'), findsNothing);
+    expect(find.text(translate.earlyMorning), findsNothing);
     expect(find.text('6 October 2020'), findsOneWidget);
   });
 
@@ -94,7 +95,7 @@ void main() {
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
     expect(find.text('Monday'), findsOneWidget);
-    expect(find.text('morning'), findsNothing);
+    expect(find.text(translate.earlyMorning), findsNothing);
     expect(find.text('5 October 2020'), findsOneWidget);
   });
 
@@ -108,7 +109,7 @@ void main() {
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
     expect(find.text('Monday'), findsOneWidget);
-    expect(find.text('morning'), findsOneWidget);
+    expect(find.text(translate.earlyMorning), findsOneWidget);
     expect(find.text('5 October 2020'), findsNothing);
   });
 
@@ -120,7 +121,7 @@ void main() {
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
     expect(find.text('Monday'), findsNothing);
-    expect(find.text('morning'), findsOneWidget);
+    expect(find.text(translate.earlyMorning), findsOneWidget);
     expect(find.text('5 October 2020'), findsOneWidget);
   });
 
@@ -137,7 +138,7 @@ void main() {
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
     expect(find.text('Monday'), findsOneWidget);
-    expect(find.text('morning'), findsNothing);
+    expect(find.text(translate.earlyMorning), findsNothing);
     expect(find.text('5 October 2020'), findsNothing);
   });
 
@@ -155,7 +156,7 @@ void main() {
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
     expect(find.text('Monday'), findsNothing);
-    expect(find.text('morning'), findsOneWidget);
+    expect(find.text(translate.earlyMorning), findsOneWidget);
     expect(find.text('5 October 2020'), findsNothing);
   });
 
@@ -173,7 +174,7 @@ void main() {
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
     expect(find.text('Monday'), findsNothing);
-    expect(find.text('morning'), findsNothing);
+    expect(find.text(translate.earlyMorning), findsNothing);
     expect(find.text('5 October 2020'), findsOneWidget);
   });
 
@@ -191,7 +192,7 @@ void main() {
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
     expect(find.text('Monday'), findsNothing);
-    expect(find.text('morning'), findsNothing);
+    expect(find.text(translate.earlyMorning), findsNothing);
     expect(find.text('5 October 2020'), findsNothing);
   });
 
@@ -229,21 +230,21 @@ void main() {
     expect(find.text('5 October 2020'), findsOneWidget);
   });
 
-  testWidgets('Forenoon at 11.59', (WidgetTester tester) async {
-    final forenoon = DateTime(2020, 10, 05, 11, 59);
-    final clockBloc = ClockBloc.fixed(forenoon);
+  testWidgets('Mid morning at 11.59', (WidgetTester tester) async {
+    final midMorning = DateTime(2020, 10, 05, 11, 59);
+    final clockBloc = ClockBloc.fixed(midMorning);
     expectSettings(const MemoplannerSettings()); //
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
     await tester.pumpAndSettle();
     expect(find.text('Monday'), findsOneWidget);
-    expect(find.text('forenoon'), findsOneWidget);
+    expect(find.text(translate.midMorning), findsOneWidget);
     expect(find.text('5 October 2020'), findsOneWidget);
   });
 
   testWidgets('afternoon at 12.00', (WidgetTester tester) async {
-    final forenoon = DateTime(2020, 10, 05, 12);
-    final clockBloc = ClockBloc.fixed(forenoon);
+    final midMorning = DateTime(2020, 10, 05, 12);
+    final clockBloc = ClockBloc.fixed(midMorning);
     expectSettings(const MemoplannerSettings()); //
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
@@ -254,8 +255,6 @@ void main() {
   });
 
   group('tts tests', () {
-    final translate = Locales.language.values.first;
-
     setUpAll(() async {
       setupFakeTts();
       GetItInitializer()
@@ -265,8 +264,8 @@ void main() {
     });
 
     testWidgets('clock tts test afternoon', (WidgetTester tester) async {
-      final forenoon = DateTime(2020, 10, 05, 12, 5);
-      final clockBloc = ClockBloc.fixed(forenoon);
+      final midMorning = DateTime(2020, 10, 05, 12, 5);
+      final clockBloc = ClockBloc.fixed(midMorning);
       expectSettings(const MemoplannerSettings());
       await tester
           .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
@@ -275,9 +274,9 @@ void main() {
           exact: 'the time is five past 12 in the afternoon');
     });
 
-    testWidgets('clock tts test forenoon', (WidgetTester tester) async {
-      final forenoon = DateTime(2020, 10, 05, 10, 25);
-      final clockBloc = ClockBloc.fixed(forenoon);
+    testWidgets('clock tts test midMorning', (WidgetTester tester) async {
+      final midMorning = DateTime(2020, 10, 05, 10, 25);
+      final clockBloc = ClockBloc.fixed(midMorning);
       expectSettings(const MemoplannerSettings());
       await tester
           .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));

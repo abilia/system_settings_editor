@@ -29,10 +29,7 @@ class IconAndTextButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              IconTheme(
-                data: lightIconThemeData,
-                child: Icon(icon),
-              ),
+              Icon(icon, size: layout.icon.button),
               SizedBox(width: layout.iconTextButton.iconTextSpacing),
               Text(text),
             ],
@@ -61,6 +58,27 @@ class LightButton extends StatelessWidget {
         icon: icon,
         onPressed: onPressed,
         style: iconTextButtonStyleLight,
+      );
+}
+
+class IconAndTextButtonDark extends StatelessWidget {
+  const IconAndTextButtonDark({
+    required this.icon,
+    required this.text,
+    required this.onPressed,
+    Key? key,
+  }) : super(key: key);
+
+  final String text;
+  final IconData icon;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) => IconAndTextButton(
+        text: text,
+        icon: icon,
+        onPressed: onPressed,
+        style: actionButtonStyleDarkLarge,
       );
 }
 

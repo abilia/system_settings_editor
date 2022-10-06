@@ -140,10 +140,20 @@ void main() {
     );
     final alarm = StartAlarm(ActivityDay(a, day));
 
-    final activityOccasionoAlarm = StartAlarm(
+    final activityOccasionAlarm = StartAlarm(
       ActivityOccasion(a, day, Occasion.current),
     );
 
-    expect(alarm, activityOccasionoAlarm);
+    expect(alarm, activityOccasionAlarm);
+
+    final reminder = ReminderUnchecked(ActivityDay(a, day),
+        reminder: const Duration(minutes: 30));
+
+    final activityOccasionReminder = ReminderUnchecked(
+      ActivityOccasion(a, day, Occasion.current),
+      reminder: const Duration(minutes: 30),
+    );
+
+    expect(reminder, activityOccasionReminder);
   });
 }
