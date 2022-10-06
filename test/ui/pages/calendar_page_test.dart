@@ -34,14 +34,14 @@ void main() {
   Widget wrapWithMaterialApp(
     Widget widget, {
     MemoplannerSettingsBloc? memoplannerSettingBloc,
-    SortableBloc? sortableBloc,
+    SyncBloc? syncBloc,
     String? languageOverride,
   }) =>
       TopLevelProvider(
         child: AuthenticationBlocProvider(
           child: AuthenticatedBlocsProvider(
             memoplannerSettingBloc: memoplannerSettingBloc,
-            sortableBloc: sortableBloc,
+            syncBloc: syncBloc,
             authenticatedState: const Authenticated(userId: 1),
             child: MaterialApp(
               theme: abiliaTheme,
@@ -1314,6 +1314,80 @@ void main() {
       );
       expect(find.byType(ToggleAlarmButtonInactive), findsNothing);
       expect(find.byType(ToggleAlarmButtonActive), findsOneWidget);
+    });
+  });
+
+  group('Progress indicator', () {
+    final activityRepository = MockActivityRepository();
+    final userFileRepository = MockUserFileRepository();
+    final sortableRepository = MockSortableRepository();
+    final genericRepository = MockGenericRepository();
+
+    setUp(() {
+      initializeDateFormatting();
+      when(() => activityRepository.synchronize())
+          .thenAnswer((_) => Future.value(true));
+      when(() => userFileRepository.synchronize())
+          .thenAnswer((_) => Future.value(true));
+      when(() => sortableRepository.synchronize())
+          .thenAnswer((_) => Future.value(true));
+      when(() => genericRepository.synchronize())
+          .thenAnswer((_) => Future.value(true));
+    });
+
+    testWidgets(
+        'Progress indicator is shown until SyncAll has been called when generics is empty',
+        (WidgetTester tester) async {
+      final syncBloc = SyncBloc(
+        pushCubit: FakePushCubit(),
+        licenseCubit: FakeLicenseCubit(),
+        activityRepository: activityRepository,
+        userFileRepository: userFileRepository,
+        sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
+        syncDelay: SyncDelays.zero,
+      );
+
+      await tester.pumpWidget(wrapWithMaterialApp(
+        const CalendarPage(),
+        syncBloc: syncBloc,
+      ));
+      await tester.pump();
+      expect(find.byType(AbiliaProgressIndicator), findsOneWidget);
+
+      syncBloc.add(const SyncAll());
+      await tester.pumpAndSettle();
+      expect(find.byType(DayCalendar), findsOneWidget);
+    });
+
+    testWidgets(
+        'Progress indicator is not shown when having saved generics even when SyncAll has not been called',
+        (WidgetTester tester) async {
+      final syncBloc = SyncBloc(
+        pushCubit: FakePushCubit(),
+        licenseCubit: FakeLicenseCubit(),
+        activityRepository: activityRepository,
+        userFileRepository: userFileRepository,
+        sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
+        syncDelay: SyncDelays.zero,
+      );
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: true,
+                identifier: AlarmSettings.showAlarmOnOffSwitchKey,
+              ),
+            ),
+          ];
+
+      await tester.pumpWidget(wrapWithMaterialApp(
+        const CalendarPage(),
+        syncBloc: syncBloc,
+      ));
+      await tester.pumpAndSettle();
+      expect(find.byType(AbiliaProgressIndicator), findsNothing);
+      expect(find.byType(DayCalendar), findsOneWidget);
     });
   });
 }

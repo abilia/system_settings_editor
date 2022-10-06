@@ -19,12 +19,14 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
   final Widget child;
   final MemoplannerSettingsBloc? memoplannerSettingBloc;
   final SortableBloc? sortableBloc;
+  final SyncBloc? syncBloc;
 
   AuthenticatedBlocsProvider({
     required this.authenticatedState,
     required this.child,
     this.memoplannerSettingBloc,
     this.sortableBloc,
+    this.syncBloc,
     Key? key,
   }) : super(key: key) {
     ensureNotificationPluginInitialized();
@@ -79,15 +81,17 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
         child: MultiBlocProvider(
           providers: [
             BlocProvider<SyncBloc>(
-              create: (context) => SyncBloc(
-                pushCubit: context.read<PushCubit>(),
-                licenseCubit: context.read<LicenseCubit>(),
-                activityRepository: context.read<ActivityRepository>(),
-                userFileRepository: context.read<UserFileRepository>(),
-                sortableRepository: context.read<SortableRepository>(),
-                genericRepository: context.read<GenericRepository>(),
-                syncDelay: GetIt.I<SyncDelays>(),
-              )..add(const SyncAll()),
+              create: (context) =>
+                  syncBloc ??
+                  (SyncBloc(
+                    pushCubit: context.read<PushCubit>(),
+                    licenseCubit: context.read<LicenseCubit>(),
+                    activityRepository: context.read<ActivityRepository>(),
+                    userFileRepository: context.read<UserFileRepository>(),
+                    sortableRepository: context.read<SortableRepository>(),
+                    genericRepository: context.read<GenericRepository>(),
+                    syncDelay: GetIt.I<SyncDelays>(),
+                  )..add(const SyncAll())),
               lazy: false,
             ),
             BlocProvider<ActivitiesBloc>(
