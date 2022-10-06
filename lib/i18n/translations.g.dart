@@ -123,7 +123,7 @@ abstract class Translated {
 
   final String earlyMorning = 'early morning';
 
-  final String midMorning = 'mid morning';
+  final String midMorning = 'mid-morning';
 
   final String lunch = 'Lunch';
 
