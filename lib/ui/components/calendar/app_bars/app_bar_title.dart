@@ -130,9 +130,9 @@ class AppBarTitleRows {
           if (hour > 11) {
             return translator.afternoon;
           }
-          return translator.forenoon;
+          return translator.midMorning;
         case DayPart.morning:
-          return translator.morning;
+          return translator.earlyMorning;
         default:
           return '';
       }
