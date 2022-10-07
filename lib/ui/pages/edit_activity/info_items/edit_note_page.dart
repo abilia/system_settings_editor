@@ -99,6 +99,7 @@ class _EditNotePageState extends State<EditNotePage> {
                               key: TestKey.input,
                               style: abiliaTextTheme.bodyText1,
                               controller: _textEditingController,
+                              textCapitalization: TextCapitalization.sentences,
                               autofocus: true,
                               maxLines: null,
                               expands: true,
