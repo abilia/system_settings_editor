@@ -12,9 +12,26 @@ on:
       - '.*'
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        flavor: ['mp', 'mpgo']
+    steps:
+    - uses: actions/checkout@v2
+    - uses: subosito/flutter-action@v2.5.0
+      with:
+        flutter-version: '3.0.5'
+        channel: 'stable'
+
+    - run: |
+        flutter test --reporter expanded --dart-define flavor=${{ matrix.flavor }} --flavor ${{ matrix.flavor }}
+
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    needs: test
     outputs:
       releasetype: ${{ steps.set_release_type.outputs.releasetype }}
     strategy:
