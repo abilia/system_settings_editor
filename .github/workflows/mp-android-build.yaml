@@ -8,7 +8,8 @@ on:
       - test-*
     paths-ignore:
       - 'ios/**'
-      - 'test/**'
+      - 'test*/**'
+      - '.*'
 
 jobs:
   test:
@@ -116,4 +117,3 @@ jobs:
         uses: geekyeggo/delete-artifact@v1
         with:
           name: app-${{ matrix.flavor }}-release
-

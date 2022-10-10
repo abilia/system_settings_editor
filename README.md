@@ -31,17 +31,25 @@ for building with alpha features such as fake time and to be able to skip initia
 
 We will roughly follow the following branching model: [a-successful-git-branching-model](https://nvie.com/posts/a-successful-git-branching-model/)
 
-There are two main branches in the repository: master and release.
+There are two main branches in the repository: **master** and **release**.
 
-Each commit to the master branch should create and distribute an dev version for internal testing on both platforms.
+Each commit to the **master** branch should create and distribute an dev version for internal testing on both platforms.
 
-Each commit to the release branch should create a release candidate and should distribute a new version for testing
+Each commit to the **release** branch should create a release candidate and should distribute a new version for testing
 
-## Flow
+### Flow
 
-When starting implementing a story a new branch is created that starts with the story id of the JIRA story. The story is then reviewed and merged to the master branch. A new dev version is built from master. If the story fails testing it is moved back to in progress and a new branch is created that fixes the bugs found in test. When the story pass test it is moved do done.
+When starting implementing a story a new branch is created that starts with the story id of the JIRA story. The story is then reviewed and merged to the **master** branch. A new dev version is built from **master**. If the story fails testing it is moved back to in progress and a new branch is created that fixes the bugs found in test. When the story pass test it is moved do done.
 
 Squash commits for feature branches are permitted if there are trivial commits that clutter the history. Developer or reviewer can suggest squash, and it should be agreed on by both parties.
+
+## Version numbering
+
+[major].[minor].[patch]
+
+- Major will probably never be increased.
+- Minor is a version where new features are release.
+- Patch fixes bug in release.
 
 ## Releasing
 
@@ -53,19 +61,23 @@ Squash commits for feature branches are permitted if there are trivial commits t
 
 ### Creating the release candidate
 
-The master branch is then merged to the release branch.
+The **master** branch is then merged to the **release** branch.
 
-After first release candidate the version in the master branch should be increased to the next major or minor version.
+After first release candidate the version in the **master** branch should be increased to the next major or minor version.
 
-### Fixes in release candidate
+#### Fixes in release candidate
 
-[patch] should only be increased on released version fix-ups/bug fixes in a release version.
+If bugs are found in the release candidate that needs to be fixed, a release candidate branch is created starting with **release-rcX**, like **release-rc2**.
 
-Each fix to the release branch should be merged into the master branch.
+When all fixes are added to the **release-rcX** branch, the branch is merge down to **release** where a new release candidate is created.
 
 ### Releasing the app
 
 Once a release is created the last commit is tagged with the version number.
+
+## Fixing a bug in release
+
+A fix in release is is the same as fixing a bug in release candidate, with the exception of that the patch version is increased. Only fixes in released version will increase the patch version.
 
 ## Translations
 
@@ -88,7 +100,7 @@ All missing translations will be written to the file [lib/i18n/translation.missi
 To add new strings for translation:
 
 - add a unique id to a new row
-- separate with a ``(tab)
+- separate with a tab
 - write the english translation
 - run `$ flutter packages pub run build_runner build --delete-conflicting-outputs`
 
