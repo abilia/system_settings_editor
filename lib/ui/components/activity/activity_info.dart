@@ -251,8 +251,7 @@ class Attachment extends StatelessWidget with ActivityMixin {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-    final activity = activityDay.activity;
+    final activity = alarm?.activity ?? activityDay.activity;
     final item = activity.infoItem;
     if (item is NoteInfoItem) {
       return NoteBlock(
@@ -278,7 +277,7 @@ class Attachment extends StatelessWidget with ActivityMixin {
               context,
               ActivityDay(updatedActivity, activityDay.day),
               alarm: alarm,
-              message: translate.checklistDoneInfo,
+              message: Translator.of(context).translate.checklistDoneInfo,
             );
           }
         },
