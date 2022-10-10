@@ -15,7 +15,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: test
     outputs:
       releasetype: ${{ steps.set_release_type.outputs.releasetype }}
     strategy:
