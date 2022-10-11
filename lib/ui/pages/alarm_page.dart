@@ -21,20 +21,20 @@ class AlarmPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (alarm.fullScreenActivity) {
-      return FullScreenActivityPage(alarm: alarm);
-    }
-    return Theme(
-      data: abiliaWhiteTheme,
-      child: BlocProvider<ActivityCubit>(
-        create: (context) => ActivityCubit(
-          activityDay: alarm.activityDay,
-          activitiesBloc: context.read<ActivitiesBloc>(),
-        ),
-        child: BlocBuilder<ActivityCubit, ActivityState>(
-          builder: (context, state) {
-            final alarm = this.alarm.copyWith(state.activityDay);
-            return Scaffold(
+    return BlocProvider<ActivityCubit>(
+      create: (context) => ActivityCubit(
+        activityDay: alarm.activityDay,
+        activitiesBloc: context.read<ActivitiesBloc>(),
+      ),
+      child: BlocBuilder<ActivityCubit, ActivityState>(
+        builder: (context, state) {
+          final alarm = this.alarm.copyWith(state.activityDay);
+          if (alarm.fullScreenActivity) {
+            return FullScreenActivityPage(alarm: alarm);
+          }
+          return Theme(
+            data: abiliaWhiteTheme,
+            child: Scaffold(
               appBar: AbiliaAppBar(
                 title: Translator.of(context).translate.alarm,
                 iconData: AbiliaIcons.handiAlarmVibration,
@@ -57,9 +57,9 @@ class AlarmPage extends StatelessWidget {
                 ),
               ),
               bottomNavigationBar: AlarmBottomNavigationBar(alarm: alarm),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
