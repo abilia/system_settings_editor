@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -34,10 +36,10 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera needed to add pictures to calendar activity</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Photo library needed to add pictures to calendar activity</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Microphone needed to record alarms</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo library needed to add pictures to calendar activity</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -48,9 +50,7 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>telephony</string>
-	</array>
+	<array/>
 	<key>UIRequiresFullScreen</key>
 	<true/>
 	<key>UISupportedInterfaceOrientations</key>
@@ -65,8 +65,6 @@
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<true/>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 </dict>
 </plist>
