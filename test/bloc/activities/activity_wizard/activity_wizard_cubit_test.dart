@@ -427,7 +427,7 @@ void main() {
         startDate: aDate,
       );
 
-      final expetedNewActivity = activity.copyWith(duration: expectedDuration);
+      final expectedNewActivity = activity.copyWith(duration: expectedDuration);
       final expectedNewTimeInterval = TimeInterval(
         startTime: TimeOfDay.fromDateTime(activity.startTime),
         endTime:
@@ -468,7 +468,7 @@ void main() {
         editActivityCubit.stream,
         emits(
           StoredActivityState(
-              expetedNewActivity, expectedNewTimeInterval, aDay),
+              expectedNewActivity, expectedNewTimeInterval, aDay),
         ),
       );
       await wizCubit.next();
@@ -506,7 +506,7 @@ void main() {
       startDate: aDate,
     );
 
-    final expetedNewActivity = activity.copyWith(duration: expectedDuration);
+    final expectedNewActivity = activity.copyWith(duration: expectedDuration);
     final expectedNewTimeInterval = TimeInterval(
       startTime: TimeOfDay.fromDateTime(activity.startTime),
       endTime: TimeOfDay.fromDateTime(activity.startTime.add(expectedDuration)),
@@ -544,7 +544,7 @@ void main() {
     final expected2 = expectLater(
       editActivityCubit.stream,
       emits(
-        StoredActivityState(expetedNewActivity, expectedNewTimeInterval, aDay),
+        StoredActivityState(expectedNewActivity, expectedNewTimeInterval, aDay),
       ),
     );
 
@@ -635,7 +635,9 @@ void main() {
   test('Trying to save an empty checklist saves noInfoItem', () async {
     // Arrange
     final activity = Activity.createNew(
-        title: 'null', startTime: aTime, infoItem: const NoteInfoItem('anote'));
+        title: 'null',
+        startTime: aTime,
+        infoItem: const NoteInfoItem('a note'));
     final activityWithEmptyChecklist = activity.copyWith(infoItem: Checklist());
     final expectedActivity = activity.copyWith(infoItem: InfoItem.none);
     final activityDay = ActivityDay(activity, aDay);
@@ -729,7 +731,7 @@ void main() {
         UpdateActivity(expectedActivity));
   });
 
-  test('Trying to save recurrance withtout data yeilds error', () async {
+  test('Trying to save recurrence without data yields error', () async {
     // Arrange
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDay,
@@ -754,7 +756,7 @@ void main() {
       recurs: Recurs.monthlyOnDays(const []),
     );
     final time = TimeOfDay.fromDateTime(aTime);
-    final expectedTimeIntervall = TimeInterval(
+    final expectedTimeInterval = TimeInterval(
       startTime: time,
       endTime: time,
       startDate: aDay,
@@ -765,11 +767,11 @@ void main() {
         emitsInOrder([
           UnstoredActivityState(
             originalActivity,
-            expectedTimeIntervall,
+            expectedTimeInterval,
           ),
           UnstoredActivityState(
             activity,
-            expectedTimeIntervall,
+            expectedTimeInterval,
           ),
         ]));
     editActivityCubit.changeTimeInterval(startTime: time);
@@ -984,7 +986,7 @@ void main() {
             originalActivity.copyWith(title: 'null', fullDay: true);
 
         final saveTime = aDay.previousDay();
-        final timeIntervall = TimeInterval(
+        final timeInterval = TimeInterval(
           startDate: saveTime,
         );
 
@@ -997,11 +999,11 @@ void main() {
             [
               UnstoredActivityState(
                 originalActivity,
-                timeIntervall,
+                timeInterval,
               ),
               UnstoredActivityState(
                 activity,
-                timeIntervall,
+                timeInterval,
               ),
             ],
           ),
@@ -1016,7 +1018,7 @@ void main() {
           emits(
             StoredActivityState(
               expectedActivity,
-              timeIntervall,
+              timeInterval,
               saveTime,
             ),
           ),
@@ -1173,7 +1175,7 @@ void main() {
           allowPassedStartTime: true,
         );
 
-        final expectedTimeIntervall = TimeInterval(
+        final expectedTimeInterval = TimeInterval(
           startTime: TimeOfDay.fromDateTime(aTime),
           startDate: aDay,
           endDate: Recurs.noEndDate,
@@ -1181,7 +1183,7 @@ void main() {
 
         final activityWithNewTitle = activity.copyWith(title: 'new title');
 
-        final expetedActivityToSave =
+        final expectedActivityToSave =
             activityWithNewTitle.copyWith(startTime: activity.startClock(aDay));
 
         final expected1 = expectLater(
@@ -1189,7 +1191,7 @@ void main() {
             emits(
               StoredActivityState(
                 activityWithNewTitle,
-                expectedTimeIntervall,
+                expectedTimeInterval,
                 aDay,
               ),
             ));
@@ -1203,8 +1205,8 @@ void main() {
         final expected2 = expectLater(
             editActivityCubit.stream,
             emits(StoredActivityState(
-              expetedActivityToSave,
-              expectedTimeIntervall,
+              expectedActivityToSave,
+              expectedTimeInterval,
               aDay,
             )));
 
@@ -1269,7 +1271,7 @@ void main() {
         final originalActivity = editActivityCubit.state.activity;
         final activity = originalActivity.copyWith(title: 'null');
         final time = TimeOfDay.fromDateTime(aTime);
-        final timeIntervall = TimeInterval(
+        final timeInterval = TimeInterval(
           startTime: time,
           endTime: time,
           startDate: aDay,
@@ -1280,11 +1282,11 @@ void main() {
             emitsInOrder([
               UnstoredActivityState(
                 originalActivity,
-                timeIntervall,
+                timeInterval,
               ),
               UnstoredActivityState(
                 activity,
-                timeIntervall,
+                timeInterval,
               ),
             ]));
         editActivityCubit.changeTimeInterval(startTime: time);
@@ -1298,7 +1300,7 @@ void main() {
           emits(
             StoredActivityState(
               expectedActivity,
-              timeIntervall,
+              timeInterval,
               aDay,
             ),
           ),
@@ -1355,7 +1357,7 @@ void main() {
         final originalActivity = editActivityCubit.state.activity;
         final activity = originalActivity.copyWith(title: 'null');
         final time = TimeOfDay.fromDateTime(aTime);
-        final timeIntervall = TimeInterval(
+        final timeInterval = TimeInterval(
           startTime: time,
           endTime: time,
           startDate: aDay,
@@ -1365,10 +1367,10 @@ void main() {
         final expected1 = expectLater(
             editActivityCubit.stream,
             emitsInOrder([
-              UnstoredActivityState(originalActivity, timeIntervall),
+              UnstoredActivityState(originalActivity, timeInterval),
               UnstoredActivityState(
                 activity,
-                timeIntervall,
+                timeInterval,
               ),
             ]));
 
@@ -1382,7 +1384,7 @@ void main() {
           emits(
             StoredActivityState(
               expectedActivity,
-              timeIntervall,
+              timeInterval,
               aDay,
             ),
           ),
@@ -1433,7 +1435,7 @@ void main() {
         // Act
         final titleChanged = stored.copyWith(title: 'null');
         final time = TimeOfDay.fromDateTime(aTime);
-        final timeIntervall = TimeInterval(
+        final timeInterval = TimeInterval(
           startTime: time,
           startDate: aDay,
         );
@@ -1444,7 +1446,7 @@ void main() {
           emits(
             StoredActivityState(
               titleChanged,
-              timeIntervall,
+              timeInterval,
               aDay,
             ),
           ),
@@ -1465,13 +1467,13 @@ void main() {
           editActivityCubit.state,
           StoredActivityState(
             expectedActivity,
-            timeIntervall,
+            timeInterval,
             aDay,
           ),
         );
       });
 
-      test('no conflict for fullday', () async {
+      test('no conflict for full day', () async {
         // Arrange
         final stored = Activity.createNew(title: 'stored', startTime: aTime);
         when(() => mockActivityRepository.allBetween(any(), any()))
@@ -1500,7 +1502,7 @@ void main() {
           fullDay: true,
           alarmType: noAlarm,
         );
-        final timeIntervall = TimeInterval(
+        final timeInterval = TimeInterval(
           startDate: aDay,
         );
         final expectedActivity = activity.copyWith(startTime: aDay);
@@ -1510,7 +1512,7 @@ void main() {
             emits(
               UnstoredActivityState(
                 activity,
-                timeIntervall,
+                timeInterval,
               ),
             ));
         editActivityCubit.replaceActivity(activity);
@@ -1521,7 +1523,7 @@ void main() {
             editActivityCubit.stream,
             emits(StoredActivityState(
               expectedActivity,
-              timeIntervall,
+              timeInterval,
               aDay,
             )));
 
@@ -1634,7 +1636,7 @@ void main() {
         // Act
         final titleChanged = stored.copyWith(title: 'null');
         final time = TimeOfDay.fromDateTime(aTime);
-        final timeIntervall = TimeInterval(
+        final timeInterval = TimeInterval(
           startTime: time,
           startDate: aDay,
         );
@@ -1645,7 +1647,7 @@ void main() {
           emits(
             StoredActivityState(
               titleChanged,
-              timeIntervall,
+              timeInterval,
               aDay,
             ),
           ),
@@ -1665,7 +1667,7 @@ void main() {
           editActivityCubit.state,
           StoredActivityState(
             expectedActivity,
-            timeIntervall,
+            timeInterval,
             aDay,
           ),
         );
@@ -1755,7 +1757,7 @@ void main() {
     );
 
     final activityWithNewTitle = activity.copyWith(title: 'new title');
-    final expetedActivityToSave =
+    final expectedActivityToSave =
         activityWithNewTitle.copyWith(startTime: activity.startClock(aDay));
     final expected1 = expectLater(
         editActivityCubit.stream,
@@ -1785,7 +1787,7 @@ void main() {
     expect(
       verify(() => mockActivitiesBloc.add(captureAny())).captured.single,
       UpdateRecurringActivity(
-        ActivityDay(expetedActivityToSave, aDay),
+        ActivityDay(expectedActivityToSave, aDay),
         ApplyTo.onlyThisDay,
       ),
     );

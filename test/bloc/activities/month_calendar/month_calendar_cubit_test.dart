@@ -491,7 +491,7 @@ void main() {
       expect(day21.occasion, Occasion.future);
     });
 
-    test('january 2021', () {
+    test('January 2021', () {
       // Arrange
       final january15 = DateTime(2021, 01, 15, 15, 15);
 

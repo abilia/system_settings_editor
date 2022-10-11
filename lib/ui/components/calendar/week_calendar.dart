@@ -101,9 +101,9 @@ class WeekCalendarPage extends StatelessWidget {
       children: [
         IntrinsicHeight(
           child: Row(
-            children: List<WeekCalenderHeadingContent>.generate(
+            children: List<WeekCalendarHeadingContent>.generate(
               numberOfDays,
-              (i) => WeekCalenderHeadingContent(
+              (i) => WeekCalendarHeadingContent(
                 day: weekStart.addDays(i),
                 weekDisplayDays: weekDisplayDays,
                 selected: context.select(
@@ -138,8 +138,8 @@ class WeekCalendarPage extends StatelessWidget {
   }
 }
 
-class WeekCalenderHeadingContent extends StatelessWidget {
-  const WeekCalenderHeadingContent({
+class WeekCalendarHeadingContent extends StatelessWidget {
+  const WeekCalendarHeadingContent({
     required this.day,
     required this.weekDisplayDays,
     required this.selected,
@@ -295,7 +295,7 @@ class _FullDayActivities extends StatelessWidget {
   Widget build(BuildContext context) {
     if (fullDayActivities.length > 1) {
       return ClickableFullDayStack(
-        fulldayActivitiesBuilder: (context) => fullDayActivities,
+        fullDayActivitiesBuilder: (context) => fullDayActivities,
         numberOfActivities: fullDayActivities.length,
         day: day,
       );

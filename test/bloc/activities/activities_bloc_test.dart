@@ -53,7 +53,7 @@ void main() {
     );
 
     blocTest(
-      'load activities do not call load activities on mockActivityRepostitory',
+      'load activities do not call load activities on mockActivityRepository',
       build: () => ActivitiesBloc(
         activityRepository: mockActivityRepository,
         syncBloc: mockSyncBloc,
@@ -85,7 +85,7 @@ void main() {
         updatedActivity1 = activity1.copyWith(title: 'new title'),
         deletedStoredActivity = storedActivity.copyWith(deleted: true);
 
-    blocTest('AddActivity calls save activities on mockActivityRepostitory',
+    blocTest('AddActivity calls save activities on mockActivityRepository',
         build: () => ActivitiesBloc(
               activityRepository: mockActivityRepository,
               syncBloc: mockSyncBloc,
@@ -102,8 +102,7 @@ void main() {
           verify(() => mockSyncBloc.add(const ActivitySaved()));
         });
 
-    blocTest(
-        'UpdateActivities calls save activities on mockActivityRepostitory',
+    blocTest('UpdateActivities calls save activities on mockActivityRepository',
         build: () => ActivitiesBloc(
               activityRepository: mockActivityRepository,
               syncBloc: mockSyncBloc,
@@ -121,7 +120,7 @@ void main() {
         });
 
     blocTest(
-        'DeleteActivities calls save activities with deleted activity on mockActivityRepostitory',
+        'DeleteActivities calls save activities with deleted activity on mockActivityRepository',
         build: () => ActivitiesBloc(
               activityRepository: mockActivityRepository,
               syncBloc: mockSyncBloc,
@@ -142,19 +141,19 @@ void main() {
   group('Delete recurring activity', () {
     test('Delete All days recurring deletes all with seriesId', () async {
       // Arrange
-      final recurrringActivity = FakeActivity.reocurrsFridays(anyTime);
-      final recurrringActivity2 = recurrringActivity.copyWith(newId: true);
+      final recurringActivity = FakeActivity.reoccursFridays(anyTime);
+      final recurringActivity2 = recurringActivity.copyWith(newId: true);
 
-      when(() => mockActivityRepository.getBySerie(recurrringActivity.seriesId))
+      when(() => mockActivityRepository.getBySeries(recurringActivity.seriesId))
           .thenAnswer((_) => Future.value([
-                recurrringActivity,
-                recurrringActivity2,
+                recurringActivity,
+                recurringActivity2,
               ]));
 
       // Act
       activitiesBloc.add(LoadActivities());
       activitiesBloc.add(DeleteRecurringActivity(
-          ActivityDay(recurrringActivity, anyDay), ApplyTo.allDays));
+          ActivityDay(recurringActivity, anyDay), ApplyTo.allDays));
 
       // Assert
       await expectLater(
@@ -166,8 +165,8 @@ void main() {
       );
       // Assert calls save with deleted recurring
       verify(() => mockActivityRepository.save([
-            recurrringActivity,
-            recurrringActivity2
+            recurringActivity,
+            recurringActivity2
           ].map((a) => a.copyWith(deleted: true))));
       verify(() => mockSyncBloc.add(const ActivitySaved()));
     });
@@ -176,26 +175,26 @@ void main() {
       test('for first day edits start time', () async {
         // Arrange
         final inAWeek = anyDay.add(7.days());
-        final ogRecurrringActivity = FakeActivity.reocurrsFridays(anyTime);
-        final recurrringActivity = ogRecurrringActivity
+        final orgRecurringActivity = FakeActivity.reoccursFridays(anyTime);
+        final recurringActivity = orgRecurringActivity
             .copyWithRecurringEnd(inAWeek.millisecondBefore());
-        final recurrringActivity2 = ogRecurrringActivity.copyWith(
+        final recurringActivity2 = orgRecurringActivity.copyWith(
           newId: true,
           startTime: inAWeek,
         );
 
         when(() =>
-                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
+                mockActivityRepository.getBySeries(recurringActivity.seriesId))
             .thenAnswer(
-                (_) => Future.value([recurrringActivity, recurrringActivity2]));
+                (_) => Future.value([recurringActivity, recurringActivity2]));
 
-        final expextedRecurring =
-            recurrringActivity.copyWith(startTime: anyTime.nextDay());
+        final expectedRecurring =
+            recurringActivity.copyWith(startTime: anyTime.nextDay());
 
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(DeleteRecurringActivity(
-            ActivityDay(recurrringActivity, anyDay), ApplyTo.onlyThisDay));
+            ActivityDay(recurringActivity, anyDay), ApplyTo.onlyThisDay));
 
         // Assert
         await expectLater(
@@ -207,36 +206,36 @@ void main() {
         );
         // Assert calls save with deleted recurring
         verify(() => mockActivityRepository.save([
-              expextedRecurring,
+              expectedRecurring,
             ]));
         verify(() => mockSyncBloc.add(const ActivitySaved()));
       });
 
       test('for last day edits end time', () async {
         // Arrange
-        final ogRecurrringActivity = FakeActivity.reocurrsFridays(anyTime);
+        final orgRecurringActivity = FakeActivity.reoccursFridays(anyTime);
         final inAWeek = anyTime.copyWith(day: anyTime.day + 7);
         final in6Days = inAWeek.previousDay();
-        final recurrringActivity = ogRecurrringActivity
+        final recurringActivity = orgRecurringActivity
             .copyWithRecurringEnd(inAWeek.onlyDays().millisecondBefore());
-        final recurrringActivity2 = ogRecurrringActivity.copyWith(
+        final recurringActivity2 = orgRecurringActivity.copyWith(
           newId: true,
           title: 'other title',
           startTime: inAWeek,
         );
 
         when(() =>
-                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
+                mockActivityRepository.getBySeries(recurringActivity.seriesId))
             .thenAnswer(
-                (_) => Future.value([recurrringActivity, recurrringActivity2]));
+                (_) => Future.value([recurringActivity, recurringActivity2]));
 
-        final expextedRecurring = recurrringActivity
-            .copyWithRecurringEnd(in6Days.millisecondBefore());
+        final expectedRecurring =
+            recurringActivity.copyWithRecurringEnd(in6Days.millisecondBefore());
 
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(DeleteRecurringActivity(
-          ActivityDay(recurrringActivity, in6Days),
+          ActivityDay(recurringActivity, in6Days),
           ApplyTo.onlyThisDay,
         ));
 
@@ -250,39 +249,39 @@ void main() {
         );
         // Assert calls save with deleted recurring
         verify(() => mockActivityRepository.save([
-              expextedRecurring,
+              expectedRecurring,
             ]));
         verify(() => mockSyncBloc.add(const ActivitySaved()));
       });
 
       test('for a mid day splits the activity up', () async {
         // Arrange
-        final recurrringActivity = FakeActivity.reocurrsFridays(anyTime);
+        final recurringActivity = FakeActivity.reoccursFridays(anyTime);
         final inAWeek = anyTime.copyWith(day: anyTime.day + 7);
         final inAWeekDays = inAWeek.onlyDays();
 
-        final activityList = [recurrringActivity];
+        final activityList = [recurringActivity];
 
         when(() =>
-                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
+                mockActivityRepository.getBySeries(recurringActivity.seriesId))
             .thenAnswer((_) => Future.value(activityList));
 
-        final expextedRecurring1 = recurrringActivity
+        final expectedRecurring1 = recurringActivity
             .copyWithRecurringEnd(inAWeekDays.millisecondBefore());
-        final expextedRecurring2 = recurrringActivity.copyWith(
+        final expectedRecurring2 = recurringActivity.copyWith(
           newId: true,
           startTime: inAWeek.nextDay(),
         );
 
         final expectedActivityList = [
-          expextedRecurring1,
-          expextedRecurring2,
+          expectedRecurring1,
+          expectedRecurring2,
         ];
 
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(DeleteRecurringActivity(
-          ActivityDay(recurrringActivity, inAWeek.onlyDays()),
+          ActivityDay(recurringActivity, inAWeek.onlyDays()),
           ApplyTo.onlyThisDay,
         ));
 
@@ -305,23 +304,23 @@ void main() {
       test('for first day deletes all with seriesId', () async {
         // Arrange
         final inAWeek = anyDay.add(7.days());
-        final ogRecurrringActivity = FakeActivity.reocurrsFridays(anyTime);
-        final recurrringActivity = ogRecurrringActivity
+        final orgRecurringActivity = FakeActivity.reoccursFridays(anyTime);
+        final recurringActivity = orgRecurringActivity
             .copyWithRecurringEnd(inAWeek.millisecondBefore());
-        final recurrringActivity2 = ogRecurrringActivity.copyWith(
+        final recurringActivity2 = orgRecurringActivity.copyWith(
           newId: true,
           startTime: inAWeek,
         );
 
         when(() =>
-                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
+                mockActivityRepository.getBySeries(recurringActivity.seriesId))
             .thenAnswer(
-                (_) => Future.value([recurrringActivity, recurrringActivity2]));
+                (_) => Future.value([recurringActivity, recurringActivity2]));
 
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(DeleteRecurringActivity(
-          ActivityDay(recurrringActivity, anyDay),
+          ActivityDay(recurringActivity, anyDay),
           ApplyTo.thisDayAndForward,
         ));
 
@@ -335,8 +334,8 @@ void main() {
         );
         // Assert calls save with deleted recurring
         verify(() => mockActivityRepository.save([
-              recurrringActivity,
-              recurrringActivity2
+              recurringActivity,
+              recurringActivity2
             ].map((a) => a.copyWith(deleted: true))));
         verify(() => mockSyncBloc.add(const ActivitySaved()));
       });
@@ -344,18 +343,18 @@ void main() {
       test('for a day modifies end time on activity', () async {
         // Arrange
         final inAWeek = anyDay.add(7.days());
-        final recurrringActivity = FakeActivity.reocurrsFridays(anyTime);
-        final recurrringActivityWithEndTime = recurrringActivity
-            .copyWithRecurringEnd(inAWeek.millisecondBefore());
+        final recurringActivity = FakeActivity.reoccursFridays(anyTime);
+        final recurringActivityWithEndTime =
+            recurringActivity.copyWithRecurringEnd(inAWeek.millisecondBefore());
 
         when(() =>
-                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
-            .thenAnswer((_) => Future.value([recurrringActivity]));
+                mockActivityRepository.getBySeries(recurringActivity.seriesId))
+            .thenAnswer((_) => Future.value([recurringActivity]));
 
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(DeleteRecurringActivity(
-            ActivityDay(recurrringActivity, inAWeek),
+            ActivityDay(recurringActivity, inAWeek),
             ApplyTo.thisDayAndForward));
 
         // Assert
@@ -368,7 +367,7 @@ void main() {
         );
         // Assert calls save with deleted recurring
         verify(
-            () => mockActivityRepository.save([recurrringActivityWithEndTime]));
+            () => mockActivityRepository.save([recurringActivityWithEndTime]));
         verify(() => mockSyncBloc.add(const ActivitySaved()));
       });
 
@@ -378,28 +377,28 @@ void main() {
         final inTwoWeeks = anyDay.add(14.days());
         final inAWeek = anyDay.add(7.days());
 
-        final ogRecurrringActivity = FakeActivity.reocurrsFridays(anyTime);
+        final orgRecurringActivity = FakeActivity.reoccursFridays(anyTime);
 
-        final recurrringActivity1 = ogRecurrringActivity.copyWithRecurringEnd(
+        final recurringActivity1 = orgRecurringActivity.copyWithRecurringEnd(
           inTwoWeeks.millisecondBefore(),
         );
-        final recurrringActivity2 = ogRecurrringActivity.copyWith(
+        final recurringActivity2 = orgRecurringActivity.copyWith(
           newId: true,
           startTime:
               inTwoWeeks.copyWith(hour: anyTime.hour, minute: anyTime.minute),
         );
 
-        when(() =>
-            mockActivityRepository
-                .getBySerie(ogRecurrringActivity.seriesId)).thenAnswer(
-            (_) => Future.value([recurrringActivity1, recurrringActivity2]));
+        when(() => mockActivityRepository
+                .getBySeries(orgRecurringActivity.seriesId))
+            .thenAnswer(
+                (_) => Future.value([recurringActivity1, recurringActivity2]));
 
-        final recurrringActivity1AfterDelete = recurrringActivity1
+        final recurringActivity1AfterDelete = recurringActivity1
             .copyWithRecurringEnd(inAWeek.millisecondBefore());
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(DeleteRecurringActivity(
-          ActivityDay(recurrringActivity1, inAWeek),
+          ActivityDay(recurringActivity1, inAWeek),
           ApplyTo.thisDayAndForward,
         ));
 
@@ -413,8 +412,8 @@ void main() {
         );
         // Assert calls save with deleted recurring
         verify(() => mockActivityRepository.save([
-              recurrringActivity2.copyWith(deleted: true),
-              recurrringActivity1AfterDelete,
+              recurringActivity2.copyWith(deleted: true),
+              recurringActivity1AfterDelete,
             ]));
         verify(() => mockSyncBloc.add(const ActivitySaved()));
       });
@@ -426,14 +425,14 @@ void main() {
       test('on a recurring only spanning one day just updates that activity',
           () async {
         // Arrange
-        final recurring = FakeActivity.reocurrsEveryDay(anyTime)
+        final recurring = FakeActivity.reoccursEveryDay(anyTime)
             .copyWithRecurringEnd(anyDay.nextDay().millisecondBefore());
-        when(() => mockActivityRepository.getBySerie(recurring.seriesId))
+        when(() => mockActivityRepository.getBySeries(recurring.seriesId))
             .thenAnswer((_) => Future.value([recurring]));
-        final starttime = anyTime.subtract(1.hours());
+        final startTime = anyTime.subtract(1.hours());
         final updated = recurring.copyWith(
           title: 'new title',
-          startTime: starttime,
+          startTime: startTime,
         );
 
         final expected = updated.copyWith(recurs: Recurs.not);
@@ -458,19 +457,19 @@ void main() {
         verify(() => mockSyncBloc.add(const ActivitySaved()));
       });
 
-      test('on first day split activity in two and updates the activty ',
+      test('on first day split activity in two and updates the activity',
           () async {
         // Arrange
-        final recurring = FakeActivity.reocurrsEveryDay(anyTime)
+        final recurring = FakeActivity.reoccursEveryDay(anyTime)
             .copyWithRecurringEnd(anyDay.add(5.days()).millisecondBefore());
-        when(() => mockActivityRepository.getBySerie(recurring.seriesId))
+        when(() => mockActivityRepository.getBySeries(recurring.seriesId))
             .thenAnswer((_) => Future.value([recurring]));
 
-        final starttime = recurring.startTime.subtract(1.hours());
+        final startTime = recurring.startTime.subtract(1.hours());
         final updated =
-            recurring.copyWith(title: 'new title', startTime: starttime);
+            recurring.copyWith(title: 'new title', startTime: startTime);
 
-        final expcetedUpdatedActivity = updated.copyWith(
+        final expectedUpdatedActivity = updated.copyWith(
           newId: true,
           recurs: Recurs.not,
         );
@@ -496,11 +495,11 @@ void main() {
         // Assert calls save
         verify(() => mockActivityRepository.save(any(
             that: MatchActivitiesWithoutId(
-                [expcetedUpdatedActivity, updatedOldActivity]))));
+                [expectedUpdatedActivity, updatedOldActivity]))));
         verify(() => mockSyncBloc.add(const ActivitySaved()));
       });
 
-      test('on last day split activity in two and updates the activty ',
+      test('on last day split activity in two and updates the activity',
           () async {
         // Arrange
         final startTime = DateTime(2020, 01, 01, 15, 20);
@@ -523,7 +522,7 @@ void main() {
           ),
         );
 
-        when(() => mockActivityRepository.getBySerie(recurring.seriesId))
+        when(() => mockActivityRepository.getBySeries(recurring.seriesId))
             .thenAnswer((_) => Future.value([recurring]));
 
         final newStartTime = recurring.startClock(lastDay).subtract(1.hours());
@@ -534,11 +533,11 @@ void main() {
           recurs: Recurs.not,
           newId: true,
         );
-        final exptectedUpdatedOldActivity =
+        final expectedUpdatedOldActivity =
             recurring.copyWithRecurringEnd(lastDay.millisecondBefore());
 
-        final exptected = MatchActivitiesWithoutId(
-            [exptectedUpdatedOldActivity, expectedUpdatedActivity]);
+        final expected = MatchActivitiesWithoutId(
+            [expectedUpdatedOldActivity, expectedUpdatedActivity]);
 
         // Act
         activitiesBloc.add(LoadActivities());
@@ -557,12 +556,12 @@ void main() {
         );
 
         // Assert calls save
-        verify(() => mockActivityRepository.save(any(that: exptected)));
+        verify(() => mockActivityRepository.save(any(that: expected)));
         verify(() => mockSyncBloc.add(const ActivitySaved()));
       });
 
       test(
-          'on a day split in middle activity in three and updates the activty ',
+          'on a day split in middle activity in three and updates the activity',
           () async {
         // Arrange
         final updatedDay = anyDay.add(5.days()).onlyDays();
@@ -576,7 +575,7 @@ void main() {
           ),
         );
 
-        when(() => mockActivityRepository.getBySerie(recurring.seriesId))
+        when(() => mockActivityRepository.getBySeries(recurring.seriesId))
             .thenAnswer((_) => Future.value([recurring]));
 
         final updated = recurring.copyWith(
@@ -620,14 +619,14 @@ void main() {
         verify(() => mockSyncBloc.add(const ActivitySaved()));
       });
 
-      test('fullday split', () async {
+      test('fullDay split', () async {
         // Arrange
         final aDay = DateTime(2020, 04, 01);
-        final recurring = FakeActivity.reocurrsEveryDay(anyTime);
-        when(() => mockActivityRepository.getBySerie(recurring.seriesId))
+        final recurring = FakeActivity.reoccursEveryDay(anyTime);
+        when(() => mockActivityRepository.getBySeries(recurring.seriesId))
             .thenAnswer((_) => Future.value([recurring]));
 
-        final fullday = recurring.copyWith(
+        final fullDay = recurring.copyWith(
             title: 'new title',
             alarmType: noAlarm,
             reminderBefore: [],
@@ -635,7 +634,7 @@ void main() {
             duration: 1.days() - 1.milliseconds(),
             startTime: aDay);
 
-        final expectedUpdatedActivity = fullday.copyWith(
+        final expectedUpdatedActivity = fullDay.copyWith(
           newId: true,
           recurs: Recurs.not,
         );
@@ -654,7 +653,7 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(UpdateRecurringActivity(
-          ActivityDay(fullday, aDay),
+          ActivityDay(fullDay, aDay),
           ApplyTo.onlyThisDay,
         ));
 
@@ -674,20 +673,20 @@ void main() {
     });
 
     group('This day and forward', () {
-      test('on first day, just updates the activty ', () async {
+      test('on first day, just updates the activity', () async {
         // Arrange
-        final recurrringActivity = FakeActivity.reocurrsFridays(anyTime);
-        final updatedRecurrringActivity =
-            recurrringActivity.copyWith(title: 'new title');
+        final recurringActivity = FakeActivity.reoccursFridays(anyTime);
+        final updatedRecurringActivity =
+            recurringActivity.copyWith(title: 'new title');
 
         when(() =>
-                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
-            .thenAnswer((_) => Future.value([recurrringActivity]));
+                mockActivityRepository.getBySeries(recurringActivity.seriesId))
+            .thenAnswer((_) => Future.value([recurringActivity]));
 
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(UpdateRecurringActivity(
-          ActivityDay(updatedRecurrringActivity, anyDay),
+          ActivityDay(updatedRecurringActivity, anyDay),
           ApplyTo.thisDayAndForward,
         ));
 
@@ -701,34 +700,34 @@ void main() {
         );
 
         // Assert calls save with deleted recurring
-        verify(() => mockActivityRepository.save([updatedRecurrringActivity]));
+        verify(() => mockActivityRepository.save([updatedRecurringActivity]));
         verify(() => mockSyncBloc.add(const ActivitySaved()));
       });
 
       test('on second day splits the activity ', () async {
         // Arrange
-        final recurrringActivity = FakeActivity.reocurrsFridays(anyTime);
+        final recurringActivity = FakeActivity.reoccursFridays(anyTime);
         final aDay = anyDay.add(2.days()).onlyDays();
-        final updatedRecurrringActivity = recurrringActivity.copyWith(
+        final updatedRecurringActivity = recurringActivity.copyWith(
             title: 'new title', startTime: aDay.copyWith(hour: 4, minute: 4));
 
-        final beforeModifiedDay = recurrringActivity.copyWithRecurringEnd(
+        final beforeModifiedDay = recurringActivity.copyWithRecurringEnd(
           aDay.millisecondBefore(),
           newId: true,
         );
-        final onAndAfterModifiedDay = updatedRecurrringActivity.copyWith();
+        final onAndAfterModifiedDay = updatedRecurringActivity.copyWith();
 
         when(() =>
-                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
-            .thenAnswer((_) => Future.value([recurrringActivity]));
+                mockActivityRepository.getBySeries(recurringActivity.seriesId))
+            .thenAnswer((_) => Future.value([recurringActivity]));
 
-        final exptected = [beforeModifiedDay, onAndAfterModifiedDay];
+        final expected = [beforeModifiedDay, onAndAfterModifiedDay];
 
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(UpdateRecurringActivity(
           ActivityDay(
-            updatedRecurrringActivity,
+            updatedRecurringActivity,
             aDay,
           ),
           ApplyTo.thisDayAndForward,
@@ -743,34 +742,34 @@ void main() {
           ]),
         );
         verify(() => mockActivityRepository
-            .save(any(that: MatchActivitiesWithoutId(exptected))));
+            .save(any(that: MatchActivitiesWithoutId(expected))));
         verify(() => mockSyncBloc.add(const ActivitySaved()));
       });
 
-      test('change on occourance backwards ', () async {
+      test('change on occurrence backwards ', () async {
         // Arrange
-        final recurrringActivity = FakeActivity.reocurrsEveryDay(anyTime);
+        final recurringActivity = FakeActivity.reoccursEveryDay(anyTime);
         final inAWeek = anyTime.copyWith(day: anyTime.day + 7);
         final inTwoWeek = anyTime.copyWith(day: anyTime.day + 14);
 
-        final updatedRecurrringActivity =
-            recurrringActivity.copyWith(title: 'new title', startTime: inAWeek);
+        final updatedRecurringActivity =
+            recurringActivity.copyWith(title: 'new title', startTime: inAWeek);
 
         when(() =>
-                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
-            .thenAnswer((_) => Future.value([recurrringActivity]));
+                mockActivityRepository.getBySeries(recurringActivity.seriesId))
+            .thenAnswer((_) => Future.value([recurringActivity]));
 
-        final expectedPreModified = recurrringActivity.copyWithRecurringEnd(
+        final expectedPreModified = recurringActivity.copyWithRecurringEnd(
           inAWeek.onlyDays().millisecondBefore(),
           newId: true,
         );
-        final exptectedList = [expectedPreModified, updatedRecurrringActivity];
+        final expectedList = [expectedPreModified, updatedRecurringActivity];
 
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(UpdateRecurringActivity(
           ActivityDay(
-            updatedRecurrringActivity,
+            updatedRecurringActivity,
             inTwoWeek.onlyDays(),
           ),
           ApplyTo.thisDayAndForward,
@@ -786,37 +785,37 @@ void main() {
         );
 
         verify(() => mockActivityRepository
-            .save(any(that: MatchActivitiesWithoutId(exptectedList))));
+            .save(any(that: MatchActivitiesWithoutId(expectedList))));
         verify(() => mockSyncBloc.add(const ActivitySaved()));
       });
 
-      test('change on occourance forward ', () async {
+      test('change on occurrence forward ', () async {
         // Arrange
         final inAWeek = anyTime.copyWith(day: anyTime.day + 7);
         final inTwoWeeks = anyTime.copyWith(day: anyTime.day + 14);
         final inFourWeeks = anyTime.copyWith(day: anyTime.day + 4 * 7);
 
-        final recurrringActivity = FakeActivity.reocurrsEveryDay(anyTime)
+        final recurringActivity = FakeActivity.reoccursEveryDay(anyTime)
             .copyWithRecurringEnd(inFourWeeks);
 
-        final updatedRecurrringActivity = recurrringActivity.copyWith(
+        final updatedRecurringActivity = recurringActivity.copyWith(
             title: 'new title', startTime: inTwoWeeks);
 
         when(() =>
-                mockActivityRepository.getBySerie(recurrringActivity.seriesId))
-            .thenAnswer((_) => Future.value([recurrringActivity]));
+                mockActivityRepository.getBySeries(recurringActivity.seriesId))
+            .thenAnswer((_) => Future.value([recurringActivity]));
 
-        final expectedPreModified = recurrringActivity.copyWithRecurringEnd(
+        final expectedPreModified = recurringActivity.copyWithRecurringEnd(
           inTwoWeeks.onlyDays().millisecondBefore(),
           newId: true,
         );
-        final exptectedList = [expectedPreModified, updatedRecurrringActivity];
+        final expectedList = [expectedPreModified, updatedRecurringActivity];
 
         // Act
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(UpdateRecurringActivity(
           ActivityDay(
-            updatedRecurrringActivity,
+            updatedRecurringActivity,
             inAWeek.onlyDays(),
           ),
           ApplyTo.thisDayAndForward,
@@ -832,7 +831,7 @@ void main() {
         );
 
         verify(() => mockActivityRepository
-            .save(any(that: MatchActivitiesWithoutId(exptectedList))));
+            .save(any(that: MatchActivitiesWithoutId(expectedList))));
         verify(() => mockSyncBloc.add(const ActivitySaved()));
       });
 
@@ -843,18 +842,18 @@ void main() {
         final inNineDays = anyTime.copyWith(day: anyTime.day + 8);
         final in12Days = anyTime.copyWith(day: anyTime.day + 12);
 
-        final og = FakeActivity.reocurrsEveryDay(anyTime);
-        final before = og
+        final org = FakeActivity.reoccursEveryDay(anyTime);
+        final before = org
             .copyWith(title: 'original')
             .copyWithRecurringEnd(inSevenDays.onlyDays().millisecondBefore());
 
-        final after = og.copyWith(
+        final after = org.copyWith(
             newId: true,
             startTime: inNineDays,
             fullDay: true,
             title: 'now full day');
 
-        final stray = og.copyWith(
+        final stray = org.copyWith(
           newId: true,
           startTime: in12Days,
           duration: 10.minutes(),
@@ -862,7 +861,7 @@ void main() {
           title: 'a stray',
         );
 
-        final stray2 = og
+        final stray2 = org
             .copyWith(
                 newId: true,
                 startTime: inFiveDays,
@@ -871,14 +870,14 @@ void main() {
             .copyWithRecurringEnd(inFiveDays.add(66.minutes()));
 
         final currentActivities = [before, after, stray, stray2];
-        when(() => mockActivityRepository.getBySerie(og.seriesId))
+        when(() => mockActivityRepository.getBySeries(org.seriesId))
             .thenAnswer((_) => Future.value(currentActivities));
 
         const newTitle = 'newTitle';
         final newTime = inFiveDays.add(2.hours());
         final newDuration = 30.minutes();
 
-        final updatedRecurrringActivity = stray2.copyWith(
+        final updatedRecurringActivity = stray2.copyWith(
           title: newTitle,
           startTime: newTime,
           duration: newDuration,
@@ -912,9 +911,9 @@ void main() {
           removeAfter: true,
         );
 
-        final exptectedList = <Activity>[
+        final expectedList = <Activity>[
           beforePostMod,
-          updatedRecurrringActivity,
+          updatedRecurringActivity,
           beforeSplitPostMod,
           afterPostMod,
           strayPostMod
@@ -924,7 +923,7 @@ void main() {
         activitiesBloc.add(LoadActivities());
         activitiesBloc.add(UpdateRecurringActivity(
           ActivityDay(
-            updatedRecurrringActivity,
+            updatedRecurringActivity,
             inFiveDays.onlyDays(),
           ),
           ApplyTo.thisDayAndForward,
@@ -940,11 +939,11 @@ void main() {
         );
 
         verify(() => mockActivityRepository
-            .save(any(that: MatchActivitiesWithoutId(exptectedList))));
+            .save(any(that: MatchActivitiesWithoutId(expectedList))));
         verify(() => mockSyncBloc.add(const ActivitySaved()));
       });
 
-      test('dont edited activity before ', () async {
+      test("don't edited activity before", () async {
         final a1Start = DateTime(2020, 04, 01, 13, 00);
         final a1End = DateTime(2020, 04, 05).millisecondBefore();
         final a2Start = DateTime(2020, 04, 06, 13, 00);
@@ -977,7 +976,7 @@ void main() {
           startTime: a3Time,
           recurs: Recurs.not,
         );
-        when(() => mockActivityRepository.getBySerie(a1.seriesId))
+        when(() => mockActivityRepository.getBySeries(a1.seriesId))
             .thenAnswer((_) => Future.value([a1, a2, a3]));
 
         const newTitle = 'updated';

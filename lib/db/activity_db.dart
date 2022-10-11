@@ -11,7 +11,7 @@ class ActivityDb extends DataDb<Activity> {
   static const String allBetween =
       'SELECT * FROM ${DatabaseRepository.activityTableName} WHERE end_time >= ? AND start_time <= ? AND deleted == 0';
 
-  static const String getBySerieId =
+  static const String getBySeriesId =
       'SELECT * FROM ${DatabaseRepository.activityTableName} WHERE series_id = ?';
 
   Future<Iterable<Activity>> getAllAfter(DateTime time) async {
@@ -34,8 +34,8 @@ class ActivityDb extends DataDb<Activity> {
   @override
   Logger get log => _log;
 
-  Future<Iterable<Activity>> getBySerie(String seriesId) async {
-    final result = await db.rawQuery(getBySerieId, [seriesId]);
+  Future<Iterable<Activity>> getBySeries(String seriesId) async {
+    final result = await db.rawQuery(getBySeriesId, [seriesId]);
     return rowsToModels(result);
   }
 }

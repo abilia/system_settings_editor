@@ -153,7 +153,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           child: Text(t.selectReminder),
         ),
         SwitchField(
-          leading: const Icon(AbiliaIcons.radiocheckboxUnselected),
+          leading: const Icon(AbiliaIcons.radioCheckboxUnselected),
           value: editActivitySettings.checklist,
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
@@ -297,7 +297,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           child: Text(t.selectReminder),
         ),
         SwitchField(
-          leading: const Icon(AbiliaIcons.radiocheckboxUnselected),
+          leading: const Icon(AbiliaIcons.radioCheckboxUnselected),
           value: settings.checklist,
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()

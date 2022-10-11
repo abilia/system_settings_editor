@@ -35,7 +35,8 @@ void main() {
     });
 
     testWidgets(
-        'stored activity with range and new activity with start time inside range > conflicts',
+        'stored activity with range and new activity with '
+        'start time inside range > conflicts',
 // old: |----|
 // new:   |
 // conflicts
@@ -55,7 +56,8 @@ void main() {
     });
 
     testWidgets(
-        'stored activity with range and new activity with start time ousude range > no conflicts',
+        'stored activity with range and new activity with '
+        'start time outside range > no conflicts',
 // old: |----|
 // new:        |
 // does not conflict
@@ -156,7 +158,7 @@ void main() {
 
     testWidgets('Stored Full day never conflicts', (tester) async {
       final storedActivity = Activity.createNew(
-        title: 'old fullday',
+        title: 'old fullDay',
         startTime: atNine.onlyDays(),
         duration: 24.hours(),
         fullDay: true,
@@ -176,7 +178,7 @@ void main() {
         startTime: atNine.onlyDays(),
       );
       final newActivity = Activity.createNew(
-        title: 'new fullday',
+        title: 'new fullDay',
         startTime: atNine.onlyDays(),
         fullDay: true,
       );
@@ -204,7 +206,7 @@ void main() {
   });
 
   group('same activity', () {
-    testWidgets('Same activity does not collieds with self',
+    testWidgets('Same activity does not collides with self',
 // old:   |--|
 // edited:  |--|
 // does not conflict

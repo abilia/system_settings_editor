@@ -22,10 +22,10 @@ class Fakes {
 
   static int get userId => 1234;
   static const String token = 'token',
-      name = 'Testcase user',
+      name = 'Test case user',
       username = 'username',
-      type = 'testcase',
-      incorrectPassword = 'wrongwrongwrong',
+      type = 'test case',
+      incorrectPassword = 'wrong wrong wrong',
       supportUserName = 'supportUser';
 
   static ListenableMockClient client({
@@ -66,7 +66,7 @@ class Fakes {
                     .toList()),
                 200);
           }
-          if (pathSegments.containsAll(['data', 'sortableitems'])) {
+          if (pathSegments.containsAll(['data', 'sortable items'])) {
             response = Response(
                 json.encode((sortableResponse?.call() ?? allSortables)
                     .map((a) => a.wrapWithDbModel())
@@ -96,7 +96,7 @@ class Fakes {
               );
             } else {
               response = Response(
-                '{"id":492,"type":"user","name":"$uName","email":"qazxsw","image":null,"language":"en","shortname":null,"useShortname":false}',
+                '{"id":492,"type":"user","name":"$uName","email":"me@mail.se","image":null,"language":"en","shortname":null,"useShortname":false}',
                 200,
               );
             }
@@ -135,19 +135,19 @@ class Fakes {
       );
 
   static final allActivities = [
-    FakeActivity.reocurrsMondays(),
-    FakeActivity.reocurrsTuedays(),
-    FakeActivity.reocurrsWednesdays(),
-    FakeActivity.reocurrsThursdays(),
-    FakeActivity.reocurrsOnDay(1),
-    FakeActivity.reocurrsOnDay(15),
-    FakeActivity.reocurrsOnDay(22),
-    FakeActivity.reocurrsOnDay(30),
-    FakeActivity.reocurrsOnDay(31),
-    FakeActivity.reocurrsOnDate(DateTime(2000, 12, 24)),
-    FakeActivity.reocurrsOnDate(DateTime(2000, 01, 01)),
-    FakeActivity.reocurrsOnDate(DateTime(2000, 06, 21)),
-    FakeActivity.reocurrsOnDate(DateTime(2000, 10, 06)),
+    FakeActivity.reoccursMondays(),
+    FakeActivity.reoccursTuesdays(),
+    FakeActivity.reoccursWednesdays(),
+    FakeActivity.reoccursThursdays(),
+    FakeActivity.reoccursOnDay(1),
+    FakeActivity.reoccursOnDay(15),
+    FakeActivity.reoccursOnDay(22),
+    FakeActivity.reoccursOnDay(30),
+    FakeActivity.reoccursOnDay(31),
+    FakeActivity.reoccursOnDate(DateTime(2000, 12, 24)),
+    FakeActivity.reoccursOnDate(DateTime(2000, 01, 01)),
+    FakeActivity.reoccursOnDate(DateTime(2000, 06, 21)),
+    FakeActivity.reoccursOnDate(DateTime(2000, 10, 06)),
   ];
 
   static const fakeSession = [Session(app: 'memoplanner', type: 'flutter')];
@@ -176,7 +176,7 @@ class Fakes {
 
   static final Response calendarSuccessResponse = Response('''
     {
-      "id": "an-unique-calender-id-of-type-memoplanner",
+      "id": "an-unique-calendar-id-of-type-memoplanner",
       "type": "MEMOPLANNER",
       "owner": $userId,
       "main": true
@@ -198,7 +198,7 @@ class Fakes {
 }
 
 class ListenableMockClient extends MockClient implements ListenableClient {
-  ListenableMockClient(MockClientHandler fn) : super(fn);
+  ListenableMockClient(MockClientHandler handler) : super(handler);
   final _stateController = StreamController<HttpMessage>.broadcast();
 
   @override

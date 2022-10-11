@@ -40,7 +40,7 @@ void main() {
       alarmType: alarmSound,
       timezone: 'aTimeZone',
     ),
-    // 2 reminerds
+    // 2 reminders
     Activity.createNew(
       title: 'reminders',
       startTime: now.add(1.hours()),

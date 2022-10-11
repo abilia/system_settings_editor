@@ -220,13 +220,13 @@ void main() {
     });
 
     testWidgets('Can enter text', (WidgetTester tester) async {
-      const newActivtyTitle = 'activity title';
+      const newActivityTitle = 'activity title';
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
-      expect(find.text(newActivtyTitle), findsNothing);
+      expect(find.text(newActivityTitle), findsNothing);
       await tester.ourEnterText(
-          find.byKey(TestKey.editTitleTextFormField), newActivtyTitle);
-      expect(find.text(newActivtyTitle), findsOneWidget);
+          find.byKey(TestKey.editTitleTextFormField), newActivityTitle);
+      expect(find.text(newActivityTitle), findsOneWidget);
     });
 
     group('picture dialog', () {
@@ -336,14 +336,14 @@ void main() {
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -150);
-      // Assert -- Fullday switch is off
+      // Assert -- Full day switch is off
       expect(
           tester
               .widget<Switch>(
                   find.byKey(const ObjectKey(TestKey.fullDaySwitch)))
               .value,
           isFalse);
-      // Assert -- Start time, left and rigth category visible
+      // Assert -- Start time, left and right category visible
       expect(timeFieldFinder, findsOneWidget);
       expect(find.byKey(TestKey.leftCategoryRadio), findsOneWidget);
       expect(find.byKey(TestKey.rightCategoryRadio), findsOneWidget);
@@ -360,14 +360,14 @@ void main() {
       await tester.tap(find.byKey(TestKey.fullDaySwitch));
       await tester.pumpAndSettle();
 
-      // Assert -- Fullday switch is on,
+      // Assert -- Full day switch is on,
       expect(
           tester
               .widget<Switch>(
                   find.byKey(const ObjectKey(TestKey.fullDaySwitch)))
               .value,
           isTrue);
-      // Assert -- Start time, left and rigth category not visible
+      // Assert -- Start time, left and right category not visible
       expect(timeFieldFinder, findsNothing);
       expect(find.byKey(TestKey.leftCategoryRadio), findsNothing);
       expect(find.byKey(TestKey.rightCategoryRadio), findsNothing);
@@ -578,7 +578,7 @@ void main() {
           find.text(15.minutes().toDurationString(translate));
       final reminderDayFinder = find.text(1.days().toDurationString(translate));
       final remindersAllSelected =
-          find.byIcon(AbiliaIcons.radiocheckboxSelected);
+          find.byIcon(AbiliaIcons.radioCheckboxSelected);
       final remindersAll = find.byType(SelectableField);
       final reminderField = find.byType(Reminders);
 
@@ -661,7 +661,7 @@ void main() {
       expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
     });
 
-    testWidgets('Change beweeen info items preserves old info item state',
+    testWidgets('Change between info items preserves old info item state',
         (WidgetTester tester) async {
       const q1 = 'q1', q2 = 'q2', q3 = 'q3', noteText = 'noteText';
       final activity = Activity.createNew(
@@ -828,20 +828,20 @@ that it is visible in the info item tab
 
       testWidgets('Info item note can be edited', (WidgetTester tester) async {
         const noteText = '''4.1.1
-Mark the unexported and accidentally public setDefaultResponse as deprecated.
+Mark the un exported and accidentally public setDefaultResponse as deprecated.
 Mark the not useful, and not generally used, named function as deprecated.
 Produce a meaningful error message if an argument matcher is used outside of stubbing (when) or verification (verify and untilCalled).
 4.1.0 
 Add a Fake class for implementing a subset of a class API as overrides without misusing the Mock class.
 4.0.0 
-Replace the dependency on the test package with a dependency on the new test_api package. This dramatically reduces mockito's transitive dependencies.
+Replace the dependency on the test package with a dependency on the new test_api package. This dramatically reduces transitive dependencies.
 
 This bump can result in runtime errors when coupled with a version of the test package older than 1.4.0.
 
 3.0.2 
-Rollback the test_api part of the 3.0.1 release. This was breaking tests that use Flutter's current test tools, and will instead be released as part of Mockito 4.0.0.
+Rollback the test_api part of the 3.0.1 release. This was breaking tests that use Flutter's current test tools, and will instead be released as part of  4.0.0.
 3.0.1 
-Replace the dependency on the test package with a dependency on the new test_api package. This dramatically reduces mockito's transitive dependencies.
+Replace the dependency on the test package with a dependency on the new test_api package. This dramatically reduces transitive dependencies.
 Internal improvements to tests and examples.''';
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
@@ -870,15 +870,14 @@ Internal improvements to tests and examples.''';
       });
 
       testWidgets('note library shows', (WidgetTester tester) async {
-        const content =
-            'Etappen har sin början vid Bjursjöns strand, ett mycket populärt friluftsområde med närhet till Uddevalla tätort.';
+        const content = 'No pride like that of an enriched beggar.';
 
         when(() => mockSortableBloc.state).thenReturn(
           SortablesLoaded(
             sortables: [
               Sortable.createNew<NoteData>(
                 data: const NoteData(
-                  name: 'NAAAMAE',
+                  name: 'NAME',
                   text: content,
                 ),
                 sortOrder: startChar,
@@ -912,16 +911,16 @@ Internal improvements to tests and examples.''';
 
       testWidgets('notes from library is selectable',
           (WidgetTester tester) async {
-        const content =
-            'Etappen har sin början vid Bjursjöns strand, ett mycket populärt'
-            ' friluftsområde med närhet till Uddevalla tätort.';
+        const content = 'I have left Act I, for involution'
+            'And Act II. There, mired in complexity '
+            'I cannot write Act III. ';
 
         when(() => mockSortableBloc.state).thenReturn(
           SortablesLoaded(
             sortables: [
               Sortable.createNew<NoteData>(
                 data: const NoteData(
-                  name: 'NAAAMAE',
+                  name: 'NAME',
                   text: content,
                 ),
               ),
@@ -1002,7 +1001,7 @@ Internal improvements to tests and examples.''';
               title: 'null',
               startTime: startTime,
               infoItem: Checklist(
-                questions: const [Question(id: 0, fileId: 'fileid')],
+                questions: const [Question(id: 0, fileId: 'fileId')],
               ),
             ),
           ),
@@ -1160,7 +1159,7 @@ Internal improvements to tests and examples.''';
       });
 
       testWidgets('Can edit question', (WidgetTester tester) async {
-        const newQuestionName = 'laditatssss';
+        const newQuestionName = 'One who has control over his pants';
         await tester.pumpWidget(
             createEditActivityPage(givenActivity: activityWithChecklist));
         await tester.pumpAndSettle();
@@ -1238,7 +1237,7 @@ text''';
       testWidgets('checklist library shows', (WidgetTester tester) async {
         when(() => mockUserFileCubit.state)
             .thenReturn(const UserFilesNotLoaded());
-        const title1 = 'listtitle1';
+        const title1 = 'listTitle1';
         when(() => mockSortableBloc.state).thenReturn(
           SortablesLoaded(
             sortables: [
@@ -1246,7 +1245,7 @@ text''';
                   sortOrder: startChar,
                   data: ChecklistData(Checklist(
                       name: title1,
-                      fileId: 'fileid1',
+                      fileId: 'fileId1',
                       questions: const [
                         Question(id: 0, name: '1'),
                         Question(id: 1, name: '2', fileId: '2222')
@@ -1284,9 +1283,9 @@ text''';
           (WidgetTester tester) async {
         when(() => mockUserFileCubit.state)
             .thenReturn(const UserFilesNotLoaded());
-        const title1 = 'listtitle1';
-        const checklisttitle1 = 'checklisttitle1',
-            checklisttitle2 = 'checklisttitle2';
+        const title1 = 'listTitle1';
+        const checklistTitle1 = 'checklistTitle1',
+            checklistTitle2 = 'checklistTitle2';
         when(() => mockSortableBloc.state).thenReturn(
           SortablesLoaded(
             sortables: [
@@ -1294,10 +1293,10 @@ text''';
                 data: ChecklistData(
                   Checklist(
                     name: title1,
-                    fileId: 'fileid1',
+                    fileId: 'fileId1',
                     questions: const [
-                      Question(id: 0, name: checklisttitle1),
-                      Question(id: 1, name: checklisttitle2, fileId: '2222')
+                      Question(id: 0, name: checklistTitle1),
+                      Question(id: 1, name: checklistTitle2, fileId: '2222')
                     ],
                   ),
                 ),
@@ -1313,8 +1312,8 @@ text''';
         await tester.pumpAndSettle();
         await tester.tap(find.text(title1));
         await tester.pumpAndSettle();
-        expect(find.text(checklisttitle1), findsOneWidget);
-        expect(find.text(checklisttitle2), findsOneWidget);
+        expect(find.text(checklistTitle1), findsOneWidget);
+        expect(find.text(checklistTitle2), findsOneWidget);
         expect(find.byType(ChecklistView), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.checkboxUnselected), findsNothing);
       });
@@ -1487,17 +1486,17 @@ text''';
   group('Edit time', () {
     testWidgets('Start time shows start time', (WidgetTester tester) async {
       // Arrange
-      final acivity = Activity.createNew(
+      final activity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 11, 55));
       await tester.pumpWidget(
         createEditActivityPage(
-          givenActivity: acivity,
+          givenActivity: activity,
         ),
       );
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -100);
 
-      // Act -- tap att start time
+      // Act -- tap at start time
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
 
@@ -1531,11 +1530,11 @@ text''';
 
     testWidgets('can change start time', (WidgetTester tester) async {
       // Arrange
-      final acivity = Activity.createNew(
+      final activity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 11, 55));
       await tester.pumpWidget(
         createEditActivityPage(
-          givenActivity: acivity,
+          givenActivity: activity,
         ),
       );
       await tester.pumpAndSettle();
@@ -1558,14 +1557,14 @@ text''';
 
     testWidgets('can remove end time', (WidgetTester tester) async {
       // Arrange
-      final acivity = Activity.createNew(
+      final activity = Activity.createNew(
           title: '',
           startTime: DateTime(2000, 11, 22, 11, 55),
           duration: 3.hours());
 
       await tester.pumpWidget(
         createEditActivityPage(
-          givenActivity: acivity,
+          givenActivity: activity,
         ),
       );
       await tester.pumpAndSettle();
@@ -1606,11 +1605,11 @@ text''';
           ),
         ),
       );
-      final acivity = Activity.createNew(
+      final activity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 11, 55));
       await tester.pumpWidget(
         createEditActivityPage(
-          givenActivity: acivity,
+          givenActivity: activity,
         ),
       );
       await tester.pumpAndSettle();
@@ -1634,11 +1633,11 @@ text''';
 
     testWidgets('can change am to pm', (WidgetTester tester) async {
       // Arrange
-      final acivity = Activity.createNew(
+      final activity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 11, 55));
       await tester.pumpWidget(
         createEditActivityPage(
-          givenActivity: acivity,
+          givenActivity: activity,
         ),
       );
       await tester.pumpAndSettle();
@@ -1662,11 +1661,11 @@ text''';
 
     testWidgets('can change pm to am', (WidgetTester tester) async {
       // Arrange
-      final acivity = Activity.createNew(
+      final activity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 12, 55));
       await tester.pumpWidget(
         createEditActivityPage(
-          givenActivity: acivity,
+          givenActivity: activity,
         ),
       );
       await tester.pumpAndSettle();
@@ -1693,11 +1692,11 @@ text''';
       final clear =
           find.widgetWithIcon(KeyboardActionButton, AbiliaIcons.cancel);
 
-      final acivity = Activity.createNew(
+      final activity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 3, 44));
       await tester.pumpWidget(
         createEditActivityPage(
-          givenActivity: acivity,
+          givenActivity: activity,
         ),
       );
       await tester.pumpAndSettle();
@@ -1720,13 +1719,13 @@ text''';
     testWidgets('Changes focus to endTime when startTime is filled in',
         (WidgetTester tester) async {
       // Arrange
-      final acivity = Activity.createNew(
+      final activity = Activity.createNew(
         title: '',
         startTime: DateTime(2000, 11, 22, 3, 04),
       );
       await tester.pumpWidget(
         createEditActivityPage(
-          givenActivity: acivity,
+          givenActivity: activity,
         ),
       );
       await tester.pump();
@@ -1775,11 +1774,11 @@ text''';
       // Arrange
       Intl.defaultLocale = 'sv_SE';
       addTearDown(() => Intl.defaultLocale = null);
-      final acivity = Activity.createNew(
+      final activity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 13, 44));
       await tester.pumpWidget(
         createEditActivityPage(
-          givenActivity: acivity,
+          givenActivity: activity,
           use24H: true,
         ),
       );
@@ -1824,14 +1823,14 @@ text''';
 
     testWidgets('Leading 0 for hour not necessary when entering time',
         (WidgetTester tester) async {
-      final acivity = Activity.createNew(
+      final activity = Activity.createNew(
         title: '',
         startTime: DateTime(2020, 2, 20, 10, 00),
       );
 
       await tester.pumpWidget(
         createEditActivityPage(
-          givenActivity: acivity,
+          givenActivity: activity,
         ),
       );
       await tester.pumpAndSettle();
@@ -1846,11 +1845,11 @@ text''';
         (WidgetTester tester) async {
       final delete =
           find.widgetWithIcon(KeyboardActionButton, AbiliaIcons.delete);
-      final acivity = Activity.createNew(
+      final activity = Activity.createNew(
         title: '',
         startTime: DateTime(2020, 2, 20, 10, 00),
       );
-      await tester.pumpWidget(createEditActivityPage(givenActivity: acivity));
+      await tester.pumpWidget(createEditActivityPage(givenActivity: activity));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -100);
       await tester.tap(timeFieldFinder);
@@ -1883,12 +1882,12 @@ text''';
         ),
       )));
 
-      final acivity = Activity.createNew(
+      final activity = Activity.createNew(
           title: '',
           startTime: DateTime(2000, 11, 22, 11, 55),
           duration: 3.hours());
 
-      await tester.pumpWidget(createEditActivityPage(givenActivity: acivity));
+      await tester.pumpWidget(createEditActivityPage(givenActivity: activity));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -100);
 
@@ -1917,7 +1916,7 @@ text''';
   });
 
   group('Recurrence', () {
-    testWidgets('Does not shows time picker widget on fullday ',
+    testWidgets('Does not shows time picker widget on fullDay',
         (WidgetTester tester) async {
       // Arrange
       final activity = Activity.createNew(
@@ -1931,7 +1930,7 @@ text''';
       expect(find.byType(TimeIntervalPicker), findsNothing);
     });
 
-    testWidgets('No recurrance selected', (WidgetTester tester) async {
+    testWidgets('No recurrence selected', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(createEditActivityPage(
         newActivity: true,
@@ -1945,7 +1944,7 @@ text''';
       expect(find.text(translate.once), findsOneWidget);
     });
 
-    testWidgets('all recurrance present', (WidgetTester tester) async {
+    testWidgets('all recurrence present', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(createEditActivityPage(
         newActivity: true,
@@ -2144,7 +2143,7 @@ text''';
     });
 
     testWidgets(
-        'add activity without recurance data tab scrolls back to recurance tab',
+        'add activity without recurrence data tab scrolls back to recurrence tab',
         (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(createEditActivityPage(newActivity: true));
@@ -2152,7 +2151,7 @@ text''';
       await tester.pumpAndSettle();
       // Arrange -- enter title
       await tester.ourEnterText(
-          find.byKey(TestKey.editTitleTextFormField), 'newActivtyTitle');
+          find.byKey(TestKey.editTitleTextFormField), 'newActivityTitle');
       await tester.scrollDown(dy: -100);
 
       // Arrange -- enter start time
@@ -2185,7 +2184,7 @@ text''';
       expect(
           find.text(translate.recurringDataEmptyErrorMessage), findsOneWidget);
 
-      // Act dissmiss
+      // Act dismiss
       await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
 
@@ -2451,7 +2450,7 @@ text''';
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
       // Assert -- One day selected
-      expect(find.byIcon(AbiliaIcons.radiocheckboxSelected), findsNWidgets(1));
+      expect(find.byIcon(AbiliaIcons.radioCheckboxSelected), findsNWidgets(1));
 
       // Act -- Select two more days
       await tester.tap(find.text('5'));
@@ -2459,7 +2458,7 @@ text''';
       await tester.tap(find.text('6'));
       await tester.pumpAndSettle();
       // Assert -- Three days selected
-      expect(find.byIcon(AbiliaIcons.radiocheckboxSelected), findsNWidgets(3));
+      expect(find.byIcon(AbiliaIcons.radioCheckboxSelected), findsNWidgets(3));
 
       // Act -- Change end date
       await tester.scrollDown(dy: -250);
@@ -2470,7 +2469,7 @@ text''';
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       // Assert -- Still three days selected
-      expect(find.byIcon(AbiliaIcons.radiocheckboxSelected), findsNWidgets(3));
+      expect(find.byIcon(AbiliaIcons.radioCheckboxSelected), findsNWidgets(3));
     });
 
     testWidgets(
@@ -2614,7 +2613,7 @@ text''';
       expect(endTimeInputFinder, findsNothing);
     });
 
-    testWidgets('No Availible For', (WidgetTester tester) async {
+    testWidgets('No Available For', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           const MemoplannerSettings(
@@ -2893,9 +2892,9 @@ text''';
 
     testWidgets('calendarActivityType-Left/Right given name',
         (WidgetTester tester) async {
-      const leftCategoryName = 'VÄNSTER',
+      const leftCategoryName = 'LEFT',
           rightCategoryName =
-              'HÖGER IS SUPER LONG AND WILL PROBABLY OVERFLOW BADLY!';
+              'RIGHT IS SUPER LONG AND WILL PROBABLY OVERFLOW BADLY!';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           const MemoplannerSettings(
@@ -3188,16 +3187,16 @@ text''';
       );
     });
     group('time input tts', () {
-      testWidgets('start/endtime 12h', (WidgetTester tester) async {
+      testWidgets('start/endTime 12h', (WidgetTester tester) async {
         // Arrange
-        final acivity = Activity.createNew(
+        final activity = Activity.createNew(
             title: '',
             startTime: DateTime(2000, 11, 22, 11, 55),
             duration: 3.hours());
 
         await tester.pumpWidget(
           createEditActivityPage(
-            givenActivity: acivity,
+            givenActivity: activity,
           ),
         );
         await tester.pumpAndSettle();
@@ -3238,18 +3237,18 @@ text''';
         );
       });
 
-      testWidgets('start/endtime 24h', (WidgetTester tester) async {
+      testWidgets('start/endTime 24h', (WidgetTester tester) async {
         // Arrange
         Intl.defaultLocale = 'sv_SE';
         addTearDown(() => Intl.defaultLocale = null);
-        final acivity = Activity.createNew(
+        final activity = Activity.createNew(
             title: '',
             startTime: DateTime(2000, 11, 22, 11, 55),
             duration: 3.hours());
 
         await tester.pumpWidget(
           createEditActivityPage(
-            givenActivity: acivity,
+            givenActivity: activity,
             use24H: true,
           ),
         );
@@ -3275,11 +3274,11 @@ text''';
 
       testWidgets('invalid input tts', (WidgetTester tester) async {
         // Arrange
-        final acivity = Activity.createNew(
+        final activity = Activity.createNew(
             title: '', startTime: DateTime(2000, 11, 22, 3, 44));
         await tester.pumpWidget(
           createEditActivityPage(
-            givenActivity: acivity,
+            givenActivity: activity,
           ),
         );
         await tester.pumpAndSettle();
@@ -3305,7 +3304,7 @@ text''';
       });
     });
 
-    testWidgets('fullday', (WidgetTester tester) async {
+    testWidgets('fullDay', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
         createEditActivityPage(
@@ -3363,7 +3362,7 @@ text''';
           exact: translate.deleteAfter);
     });
 
-    testWidgets('availible for', (WidgetTester tester) async {
+    testWidgets('available for', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
         createEditActivityPage(
@@ -3435,7 +3434,7 @@ text''';
           exact: translate.vibrationIfAvailable);
     });
 
-    testWidgets('recurrance', (WidgetTester tester) async {
+    testWidgets('recurrence', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
         createEditActivityPage(
@@ -3536,7 +3535,7 @@ text''';
         // Arrange
         when(() => mockUserFileCubit.state)
             .thenReturn(const UserFilesNotLoaded());
-        const title1 = 'listtitle1';
+        const title1 = 'listTitle1';
         const item1Name = 'Item 1 name';
         when(() => mockSortableBloc.state).thenReturn(
           SortablesLoaded(
@@ -3544,7 +3543,7 @@ text''';
               Sortable.createNew<ChecklistData>(
                   data: ChecklistData(Checklist(
                       name: title1,
-                      fileId: 'fileid1',
+                      fileId: 'fileId1',
                       questions: const [
                     Question(id: 0, name: item1Name),
                     Question(id: 1, name: '2', fileId: '2222')

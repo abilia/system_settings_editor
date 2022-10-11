@@ -34,17 +34,17 @@ void main() {
       thirdFullDayTitle = 'third full day',
       forthFullDayTitle = 'forth full day';
   final firstFullDay =
-          FakeActivity.fullday(now).copyWith(title: firstFullDayTitle),
+          FakeActivity.fullDay(now).copyWith(title: firstFullDayTitle),
       secondFullDay =
-          FakeActivity.fullday(now).copyWith(title: secondFullDayTitle),
+          FakeActivity.fullDay(now).copyWith(title: secondFullDayTitle),
       thirdFullDay =
-          FakeActivity.fullday(now).copyWith(title: thirdFullDayTitle),
+          FakeActivity.fullDay(now).copyWith(title: thirdFullDayTitle),
       forthFullDay =
-          FakeActivity.fullday(now).copyWith(title: forthFullDayTitle);
+          FakeActivity.fullDay(now).copyWith(title: forthFullDayTitle);
 
   late StreamController<DateTime> timeTicker;
 
-  bool appbarCrossOver() => (find
+  bool appBarCrossOver() => (find
           .descendant(
             of: find.byType(CalendarAppBar),
             matching: find.byType(CrossOver),
@@ -195,7 +195,7 @@ void main() {
   testWidgets(
       'Agenda with one activity and a lot of passed activities should show the activity',
       (WidgetTester tester) async {
-    const key = 'KEYKEYKEYKEYKEY';
+    const key = 'KEY KEY KEY KEY KEY';
     activityDbInMemory.initWithActivities([
       for (int i = 0; i < 10; i++)
         Activity.createNew(
@@ -220,14 +220,14 @@ void main() {
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    expect(appbarCrossOver(), false);
+    expect(appBarCrossOver(), false);
     await tester.tap(nextDayButtonFinder);
     await tester.pumpAndSettle();
-    expect(appbarCrossOver(), false);
+    expect(appBarCrossOver(), false);
     await tester.tap(previousDayButtonFinder);
     await tester.tap(previousDayButtonFinder);
     await tester.pumpAndSettle();
-    expect(appbarCrossOver(), true);
+    expect(appBarCrossOver(), true);
   });
 
   testWidgets('full day shows', (WidgetTester tester) async {
@@ -296,7 +296,7 @@ void main() {
   });
 
   testWidgets(
-      'full day activites are placed in correct order both in FullDayContainer and FullDayList',
+      'full day activities are placed in correct order both in FullDayContainer and FullDayList',
       (WidgetTester tester) async {
     activityDbInMemory
         .initWithActivities([firstFullDay, secondFullDay, thirdFullDay]);
@@ -308,11 +308,11 @@ void main() {
     await tester.tap(find.byType(FullDayActivitiesButton));
     await tester.pumpAndSettle();
     expect(find.byType(FullDayListPage), findsOneWidget);
-    final t1FulldayListPos = tester.getCenter(find.text(firstFullDayTitle));
-    final t2FulldayListPos = tester.getCenter(find.text(secondFullDayTitle));
-    final t3FulldayListPos = tester.getCenter(find.text(thirdFullDayTitle));
-    expect(t1FulldayListPos.dy, lessThan(t2FulldayListPos.dy));
-    expect(t2FulldayListPos.dy, lessThan(t3FulldayListPos.dy));
+    final t1FullDayListPos = tester.getCenter(find.text(firstFullDayTitle));
+    final t2FullDayListPos = tester.getCenter(find.text(secondFullDayTitle));
+    final t3FullDayListPos = tester.getCenter(find.text(thirdFullDayTitle));
+    expect(t1FullDayListPos.dy, lessThan(t2FullDayListPos.dy));
+    expect(t2FullDayListPos.dy, lessThan(t3FullDayListPos.dy));
   });
 
   testWidgets(
@@ -393,8 +393,8 @@ void main() {
 
   testWidgets('past day activities are correctly sorted',
       (WidgetTester tester) async {
-    const yesterdayMorningTitle = 'yeterdayMorningTitle',
-        yesterdayEveningTitle = 'yeterdayEveningTitle';
+    const yesterdayMorningTitle = 'yesterdayMorningTitle',
+        yesterdayEveningTitle = 'yesterdayEveningTitle';
     activityDbInMemory.initWithActivities([
       Activity.createNew(
         title: yesterdayMorningTitle,
@@ -422,9 +422,9 @@ void main() {
   testWidgets('category left is left of category right, and vice versa',
       (WidgetTester tester) async {
     const leftTitle =
-            'leftTitleleftTitleleftTitleleftTitleleftTitleleftTitleleftTitleleftTitle',
+            'leftTitleLeftTitleLeftTitleLeftTitleLeftTitleLeftTitleLeftTitle',
         rightTitle =
-            'rightTitlerightTitlerightTitlerightTitlerightTitlerightTitlerightTitle';
+            'RightTitleRightTitleRightTitleRightTitleRightTitleRightTitleRight';
     activityDbInMemory.initWithActivities([
       Activity.createNew(
         title: leftTitle,
@@ -583,7 +583,7 @@ void main() {
     final leftFinder = find.text(left);
     final rightFinder = find.text(right);
     final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
-    final previusDayButtonFinder =
+    final previousDayButtonFinder =
         find.byIcon(AbiliaIcons.returnToPreviousPage);
 
     testWidgets('Exists', (WidgetTester tester) async {
@@ -642,7 +642,7 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.tap(leftFinder);
-      await tester.tap(previusDayButtonFinder);
+      await tester.tap(previousDayButtonFinder);
       await tester.pumpAndSettle();
       expect(leftFinder, findsNothing);
       expect(rightFinder, findsOneWidget);
@@ -824,7 +824,7 @@ void main() {
             ),
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
-                data: 'fileid',
+                data: 'file id',
                 identifier: CategoriesSettings.calendarActivityTypeLeftImageKey,
               ),
             ),
@@ -837,7 +837,7 @@ void main() {
     });
 
     testWidgets(
-        'memoplanner settings - show colors true, left, right, future, past, fullday correct color',
+        'memoplanner settings - show colors true, left, right, future, past, fullDay correct color',
         (WidgetTester tester) async {
       final soon = now.add(30.minutes());
       final just = now.subtract(30.minutes());
@@ -864,7 +864,7 @@ void main() {
           ),
           a5 = Activity.createNew(
             startTime: now.onlyDays(),
-            title: 'fullday',
+            title: 'fullDay',
             fullDay: true,
           );
       activityDbInMemory.initWithActivities([a1, a2, a3, a4, a5]);
@@ -1007,32 +1007,32 @@ void main() {
               startTime: now.subtract(10.minutes()),
               duration: 5.minutes(),
             ),
-            timerongoing = AbiliaTimer.createNew(
-              title: 'timerongoing',
+            timerOngoing = AbiliaTimer.createNew(
+              title: 'timerOngoing',
               startTime: now.subtract(20.minutes()),
               duration: 30.minutes(),
             );
-        timerResponse = () => [timerPast, timerongoing];
+        timerResponse = () => [timerPast, timerOngoing];
 
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
         expect(find.byType(TimerCard), findsNWidgets(2));
 
-        final ongoingPostition = tester.getBottomLeft(
+        final ongoingPosition = tester.getBottomLeft(
           find.ancestor(
-            of: find.text(timerongoing.title),
+            of: find.text(timerOngoing.title),
             matching: find.byType(TimerCard),
           ),
         );
 
-        final pastPostition = tester.getBottomLeft(
+        final pastPosition = tester.getBottomLeft(
           find.ancestor(
             of: find.text(timerPast.title),
             matching: find.byType(TimerCard),
           ),
         );
 
-        expect(ongoingPostition.dy, greaterThan(pastPostition.dy));
+        expect(ongoingPosition.dy, greaterThan(pastPosition.dy));
       });
 
       testWidgets('Timer when time ticks to past visible',
@@ -1049,9 +1049,9 @@ void main() {
         expect(find.byType(TimerCard), findsOneWidget);
         expect(find.text(timer.title), findsOneWidget);
 
-        final timercardBefore =
+        final timerCardBefore =
             tester.widget<TimerCard>(find.byType(TimerCard));
-        expect(timercardBefore.timerOccasion.occasion, Occasion.current);
+        expect(timerCardBefore.timerOccasion.occasion, Occasion.current);
 
         timeTicker.add(now.add(1.minutes() + 1.seconds()));
         await tester.pumpAndSettle();
@@ -1060,8 +1060,8 @@ void main() {
         await tester.tap(find.byType(CloseButton));
         await tester.pumpAndSettle();
 
-        final timercardAfter = tester.widget<TimerCard>(find.byType(TimerCard));
-        expect(timercardAfter.timerOccasion.occasion, Occasion.past);
+        final timerCardAfter = tester.widget<TimerCard>(find.byType(TimerCard));
+        expect(timerCardAfter.timerOccasion.occasion, Occasion.past);
       });
 
       testWidgets('Timer shows correct time left', (WidgetTester tester) async {

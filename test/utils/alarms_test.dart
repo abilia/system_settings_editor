@@ -28,9 +28,9 @@ void main() {
       // Assert
       expect(alarms, hasLength(1));
       expect(alarms.first.activityDay.activity, activity);
-      final exectedActivityDay = ActivityDay(activity, day);
-      expect(alarms.first.activityDay, exectedActivityDay);
-      final expectedAlarm = StartAlarm(exectedActivityDay);
+      final expectedActivityDay = ActivityDay(activity, day);
+      expect(alarms.first.activityDay, expectedActivityDay);
+      final expectedAlarm = StartAlarm(expectedActivityDay);
       final value = alarms.first;
       expect(value, expectedAlarm);
     });
@@ -118,7 +118,7 @@ void main() {
       // Assert
       expect(alarms, isEmpty);
     });
-    test('fullday with reminders or alarm is no alarm', () {
+    test('full day with reminders or alarm is no alarm', () {
       // Arrange
       final reminder = 5.minutes();
       final afterWithReminder = FakeActivity.starts(startDate.add(reminder))
@@ -394,26 +394,26 @@ void main() {
       expect(got, isEmpty);
     });
 
-    test('one activity gives back one ativity', () {
+    test('one activity gives back one activity', () {
       final activity = Activity.createNew(title: '', startTime: now);
       final got = <Activity>[activity].alarmsFrom(now, take: 100);
       expect(got, [StartAlarm(ActivityDay(activity, now))]);
     });
 
-    test('reaccurs daily gives back all daily', () {
-      final activity = FakeActivity.reocurrsEveryDay(now)
+    test('reoccurs daily gives back all daily', () {
+      final activity = FakeActivity.reoccursEveryDay(now)
           .copyWith(alarmType: alarmSoundOnlyOnStart);
       final got = <Activity>[activity].alarmsFrom(now, take: 100, maxDays: 500);
       expect(got, hasLength(100));
     });
 
-    test('reaccurs weekly gives back all week in the given days', () {
-      const lenght = 100;
+    test('reoccurs weekly gives back all week in the given days', () {
+      const length = 100;
       const maxDays = 400;
-      final activity = FakeActivity.reocurrsFridays(now)
+      final activity = FakeActivity.reoccursFridays(now)
           .copyWith(alarmType: alarmSoundOnlyOnStart);
       final got =
-          <Activity>[activity].alarmsFrom(now, take: lenght, maxDays: maxDays);
+          <Activity>[activity].alarmsFrom(now, take: length, maxDays: maxDays);
       expect(got, hasLength(maxDays ~/ 7));
     });
 
@@ -429,18 +429,18 @@ void main() {
     });
 
     test(
-        'reaccurs daily and one other activity gives back that other one aswell',
+        'reoccurs daily and one other activity gives back that other one as well',
         () {
-      const lenght = 100;
+      const length = 100;
       final in50Days = now.copyWith(day: now.day + 50);
-      final reoccuringActivity = FakeActivity.reocurrsEveryDay(now)
+      final reoccurringActivity = FakeActivity.reoccursEveryDay(now)
           .copyWith(alarmType: alarmSoundOnlyOnStart);
       final normalActivity = Activity.createNew(
           title: 'THIS HAPPENS IN 20 days',
           startTime: in50Days,
           alarmType: alarmSoundAndVibration);
-      final got = <Activity>[reoccuringActivity, normalActivity]
-          .alarmsFrom(now, take: lenght, maxDays: 1000);
+      final got = <Activity>[reoccurringActivity, normalActivity]
+          .alarmsFrom(now, take: length, maxDays: 1000);
 
       expect(got, hasLength(100));
       expect(got, contains(StartAlarm(ActivityDay(normalActivity, in50Days))));
@@ -491,21 +491,21 @@ void main() {
         2.hours(),
         1.days(),
       ].map((r) => r.inMilliseconds);
-      final reoccuringActivity = FakeActivity.reocurrsEveryDay(now)
+      final reoccurringActivity = FakeActivity.reoccursEveryDay(now)
           .copyWith(reminderBefore: remindersDates);
 
       final got = <Activity>[
-        reoccuringActivity,
+        reoccurringActivity,
       ].alarmsFrom(now, take: 100);
 
       expect(got, hasLength(100));
       expect(
           got,
           containsAll([
-            StartAlarm(ActivityDay(reoccuringActivity, now)),
-            EndAlarm(ActivityDay(reoccuringActivity, now)),
-            StartAlarm(ActivityDay(reoccuringActivity, tomorrow)),
-            EndAlarm(ActivityDay(reoccuringActivity, tomorrow)),
+            StartAlarm(ActivityDay(reoccurringActivity, now)),
+            EndAlarm(ActivityDay(reoccurringActivity, now)),
+            StartAlarm(ActivityDay(reoccurringActivity, tomorrow)),
+            EndAlarm(ActivityDay(reoccurringActivity, tomorrow)),
           ]));
 
       expect(
@@ -513,7 +513,7 @@ void main() {
         containsAll(
           remindersDates.map(
             (r) => ReminderBefore(
-              ActivityDay(reoccuringActivity, tomorrow),
+              ActivityDay(reoccurringActivity, tomorrow),
               reminder: Duration(milliseconds: r),
             ),
           ),
@@ -523,14 +523,14 @@ void main() {
       final shouldNotContainTheseReminders = remindersDates
           .map(
             (r) => ReminderBefore(
-              ActivityDay(reoccuringActivity, now),
+              ActivityDay(reoccurringActivity, now),
               reminder: Duration(milliseconds: r),
             ),
           )
           .toSet();
       expect(got.toSet().intersection(shouldNotContainTheseReminders), isEmpty);
     });
-    test('fullday is not alarm or reminders ', () {
+    test('full day is not alarm or reminders ', () {
       // Arrange
       final reminder = 5.minutes();
       final afterWithReminder = FakeActivity.starts(startDate.add(reminder),
@@ -588,7 +588,7 @@ void main() {
       expect(
           alarms,
           containsAll(unsignedOffActivityReminders
-              .where((rt) => rt >= 1.hours())
+              .where((d) => d >= 1.hours())
               .map((r) => ReminderUnchecked(ActivityDay(checkable, day),
                   reminder: r))));
     });

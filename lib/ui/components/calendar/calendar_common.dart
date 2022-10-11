@@ -51,7 +51,7 @@ class FullDayStack extends StatelessWidget {
 
 class ClickableFullDayStack extends StatelessWidget {
   const ClickableFullDayStack({
-    required this.fulldayActivitiesBuilder,
+    required this.fullDayActivitiesBuilder,
     required this.numberOfActivities,
     required this.day,
     this.width,
@@ -60,7 +60,7 @@ class ClickableFullDayStack extends StatelessWidget {
   }) : super(key: key);
 
   final List<ActivityOccasion> Function(BuildContext context)
-      fulldayActivitiesBuilder;
+      fullDayActivitiesBuilder;
   final int numberOfActivities;
   final DateTime day;
   final double? width;
@@ -84,7 +84,7 @@ class ClickableFullDayStack extends StatelessWidget {
                 child: Builder(builder: (context) {
                   return FullDayListPage(
                     day: day,
-                    fullDayActivities: fulldayActivitiesBuilder(context),
+                    fullDayActivities: fullDayActivitiesBuilder(context),
                   );
                 }),
               ),

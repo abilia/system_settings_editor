@@ -199,8 +199,8 @@ void main() {
     });
 
     testWidgets(
-        'SGC-1757 category buttons doesnt change position when changing day interval',
-        (WidgetTester tester) async {
+        "SGC-1757 category buttons doesn't change position "
+        'when changing day interval', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
@@ -230,7 +230,7 @@ void main() {
       expect(tester.getCenter(leftCategory), leftCategoryOffset);
     });
 
-    group('Premissions', () {
+    group('Permissions', () {
       final translate = Locales.language.values.first;
 
       tearDown(() {
@@ -259,7 +259,7 @@ void main() {
         expect(find.byType(ErrorMessage), findsOneWidget);
       }, skip: Config.isMP);
 
-      testWidgets('Granted premission shows nothing',
+      testWidgets('Granted permission shows nothing',
           (WidgetTester tester) async {
         setupPermissions({
           Permission.notification: PermissionStatus.granted,
@@ -310,7 +310,7 @@ void main() {
     });
   });
 
-  group('Choosen calendar setting', () {
+  group('Chosen calendar setting', () {
     final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(
         data: DayCalendarType.oneTimepillar.index,
@@ -327,7 +327,7 @@ void main() {
     });
 
     testWidgets(
-        'timepillar is choosen in memoplanner settings shows timepillar view',
+        'timepillar is chosen in memoplanner settings shows timepillar view',
         (WidgetTester tester) async {
       genericResponse = () => [timepillarGeneric];
 
@@ -348,7 +348,7 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.ok));
       await tester.pumpAndSettle();
 
-      verifyUnsyncGeneric(
+      verifyUnsyncedGeneric(
         tester,
         mockGenericDb,
         key: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey,
@@ -423,7 +423,7 @@ void main() {
     testWidgets(
         'SGC-533 Can save full day on current day when activityTimeBeforeCurrent is false',
         (WidgetTester tester) async {
-      const testActivityTitle = 'fulldayactivity';
+      const testActivityTitle = 'fullDayActivity';
       when(() => memoplannerSettingBlocMock.state)
           .thenReturn(MemoplannerSettingsLoaded(
         const MemoplannerSettings(
@@ -464,7 +464,7 @@ void main() {
     testWidgets(
         'SGC-533 Cannot save full day activity on yesterday when activityTimeBeforeCurrent is false',
         (WidgetTester tester) async {
-      const testActivityTitle = 'fulldayactivity';
+      const testActivityTitle = 'fullDayActivity';
       when(() => memoplannerSettingBlocMock.state)
           .thenReturn(MemoplannerSettingsLoaded(
         const MemoplannerSettings(
@@ -748,8 +748,8 @@ void main() {
   });
 
   group('edit all day', () {
-    const title1 = 'fulldaytitle1';
-    const title2 = 'fullday title 2';
+    const title1 = 'fullDay title1';
+    const title2 = 'fullDay title 2';
     const title3 = 'full day title 3';
     final date = initialTime.onlyDays();
 
@@ -762,9 +762,9 @@ void main() {
 
     setUp(() {
       final fullDayActivities = [
-        FakeActivity.fullday(date, title1),
-        FakeActivity.fullday(date, title2),
-        FakeActivity.fullday(date, title3),
+        FakeActivity.fullDay(date, title1),
+        FakeActivity.fullDay(date, title2),
+        FakeActivity.fullDay(date, title3),
       ];
       mockActivityDb.initWithActivities(fullDayActivities);
     });
@@ -898,12 +898,12 @@ void main() {
   group('Week calendar', () {
     const fridayTitle = 'f-r-i-d-a-y',
         nextWeekTitle = 'N-e-x-t week title',
-        todaytitle = 't-o-d-a-y';
+        todayTitle = 't-o-d-a-y';
     final friday = initialTime.addDays(2);
     final nextWeek = initialTime.nextWeek();
     setUp(() {
       final activities = [
-        FakeActivity.starts(initialTime, title: todaytitle),
+        FakeActivity.starts(initialTime, title: todayTitle),
         FakeActivity.starts(friday, title: fridayTitle),
         FakeActivity.starts(nextWeek, title: nextWeekTitle),
       ];
@@ -987,8 +987,8 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
 
-      final allHeadings = tester.widgetList<WeekCalenderHeadingContent>(
-          find.byType(WeekCalenderHeadingContent));
+      final allHeadings = tester.widgetList<WeekCalendarHeadingContent>(
+          find.byType(WeekCalendarHeadingContent));
 
       final selected = allHeadings.firstWhere((element) => element.selected);
 
@@ -1005,7 +1005,7 @@ void main() {
 
       expect(find.byType(OneTimepillarCalendar), findsOneWidget);
 
-      expect(find.text(todaytitle), findsOneWidget);
+      expect(find.text(todayTitle), findsOneWidget);
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
       expect(find.byType(WeekCalendar), findsOneWidget);
@@ -1021,7 +1021,7 @@ void main() {
       await tester.tap(find.byType(GoToNowButton));
       await tester.pumpAndSettle();
       expect(find.text(fridayTitle), findsNothing);
-      expect(find.text(todaytitle), findsOneWidget);
+      expect(find.text(todayTitle), findsOneWidget);
     });
 
     testWidgets('Timer shown in week calendar', (WidgetTester tester) async {
@@ -1065,33 +1065,33 @@ void main() {
       await tester.pumpAndSettle();
 
       final selectedHeadingsInitial = tester.widgetList(find.byWidgetPredicate(
-          (widget) => widget is WeekCalenderHeadingContent && widget.selected));
+          (widget) => widget is WeekCalendarHeadingContent && widget.selected));
       expect(selectedHeadingsInitial, hasLength(1));
 
       await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
 
-      final selectedHeadingsnextWeekPreSelect = tester.widgetList(
+      final selectedHeadingsNextWeekPreSelect = tester.widgetList(
           find.byWidgetPredicate((widget) =>
-              widget is WeekCalenderHeadingContent && widget.selected));
-      expect(selectedHeadingsnextWeekPreSelect, isEmpty);
+              widget is WeekCalendarHeadingContent && widget.selected));
+      expect(selectedHeadingsNextWeekPreSelect, isEmpty);
 
       final dateTime = initialTime.addDays(8);
       final d = dateTime.day;
       await tester
           .tap(find.text('$d\n${translate.shortWeekday(dateTime.weekday)}'));
       await tester.pumpAndSettle();
-      final selectedHeadingsnextWeekPostSelect = tester.widgetList(
+      final selectedHeadingsNextWeekPostSelect = tester.widgetList(
           find.byWidgetPredicate((widget) =>
-              widget is WeekCalenderHeadingContent && widget.selected));
-      expect(selectedHeadingsnextWeekPostSelect, hasLength(1));
+              widget is WeekCalendarHeadingContent && widget.selected));
+      expect(selectedHeadingsNextWeekPostSelect, hasLength(1));
 
       await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       await tester.pumpAndSettle();
 
       final selectedHeadingsInitialPostSelect = tester.widgetList(
           find.byWidgetPredicate((widget) =>
-              widget is WeekCalenderHeadingContent && widget.selected));
+              widget is WeekCalendarHeadingContent && widget.selected));
       expect(selectedHeadingsInitialPostSelect, isEmpty);
 
       await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
@@ -1101,7 +1101,7 @@ void main() {
       await tester.pumpAndSettle();
 
       final goToCurrentSelect = tester.widgetList(find.byWidgetPredicate(
-          (widget) => widget is WeekCalenderHeadingContent && widget.selected));
+          (widget) => widget is WeekCalendarHeadingContent && widget.selected));
       expect(goToCurrentSelect, hasLength(1));
     });
 
@@ -1202,8 +1202,8 @@ void main() {
       'SGC-1748 FullDayListPage page is shown when clicking on a day with multiple full day activities in week calendar',
       (WidgetTester tester) async {
     final activities = [
-      FakeActivity.fullday(initialTime.addDays(1), 'one'),
-      FakeActivity.fullday(initialTime.addDays(1), 'two'),
+      FakeActivity.fullDay(initialTime.addDays(1), 'one'),
+      FakeActivity.fullDay(initialTime.addDays(1), 'two'),
     ];
     mockActivityDb.initWithActivities(activities);
     await tester.pumpWidget(App());
@@ -1270,7 +1270,7 @@ void main() {
           exact: translate.display);
     });
 
-    testWidgets('SGC-1129 alarm button toggleable',
+    testWidgets('SGC-1129 alarm button toggle-able',
         (WidgetTester tester) async {
       final expectedTime =
           initialTime.onlyDays().nextDay().millisecondsSinceEpoch;
@@ -1306,7 +1306,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      verifyUnsyncGeneric(
+      verifyUnsyncedGeneric(
         tester,
         mockGenericDb,
         key: AlarmSettings.alarmsDisabledUntilKey,
