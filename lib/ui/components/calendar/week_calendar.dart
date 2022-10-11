@@ -511,6 +511,7 @@ class _WeekActivityContent extends StatelessWidget {
       child: _WeekEventContent(
         occasion: activityOccasion,
         selected: selected && !fullDay,
+        fullDay: fullDay,
         onClick: () {
           final authProviders = copiedAuthProviders(context);
           Navigator.push(
@@ -673,6 +674,7 @@ class _WeekEventContent extends StatelessWidget {
   final EventOccasion occasion;
   final Function()? onClick;
   final bool selected;
+  final bool fullDay;
   final Widget child;
 
   const _WeekEventContent({
@@ -680,6 +682,7 @@ class _WeekEventContent extends StatelessWidget {
     required this.onClick,
     required this.selected,
     required this.child,
+    this.fullDay = false,
     Key? key,
   }) : super(key: key);
 
@@ -694,7 +697,7 @@ class _WeekEventContent extends StatelessWidget {
     final categoryBorder = getCategoryBorder(
       inactive: occasion.isPast,
       current: occasion.isCurrent,
-      showCategoryColor: showColors,
+      showCategoryColor: showColors && !fullDay,
       category: occasion.category,
       borderWidth: selected
           ? wLayout.selectedDay.activityBorderWidth
