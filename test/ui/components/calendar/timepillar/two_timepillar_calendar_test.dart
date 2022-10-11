@@ -763,6 +763,39 @@ void main() {
       // Assert
       expect(applyCrossOver(), true);
     });
+
+    testWidgets('Recurring activity - on night will show up',
+        (WidgetTester tester) async {
+      // Arrange
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+          title: 'title',
+          startTime: time.onlyDays().add(2.hours()),
+          recurs: Recurs.everyDay,
+        ),
+      ]);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.text('title'), findsOneWidget);
+    });
+
+    testWidgets('Recurring activity - last activity will show up',
+        (WidgetTester tester) async {
+      // Arrange
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+          title: 'title',
+          startTime: time.addDays(-5),
+          recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7],
+              ends: time.onlyDays()),
+        ),
+      ]);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.text('title'), findsOneWidget);
+    });
   });
 
   group('Night', () {

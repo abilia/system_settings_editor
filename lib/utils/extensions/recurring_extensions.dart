@@ -85,7 +85,7 @@ extension RecurringActivityExtension on Activity {
   List<ActivityDay> dayActivitiesForInterval(TimepillarInterval interval) =>
       List.generate(
         interval.daySpan,
-        interval.start.addDays,
+        interval.start.onlyDays().addDays,
       ).expand(dayActivitiesForDay).toList();
 
   bool recursOnDay(DateTime day) => recurs.recursOnDay(day);

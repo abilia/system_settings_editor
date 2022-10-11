@@ -121,7 +121,7 @@ void main() {
           intervalPart: IntervalPart.day,
         ),
         events: <Event>[
-          ActivityDay(removeAfterRecurring, DateTime(2022, 05, 12, 6))
+          ActivityDay(removeAfterRecurring, DateTime(2022, 05, 12))
         ],
         calendarType: DayCalendarType.oneTimepillar,
         occasion: Occasion.current,
