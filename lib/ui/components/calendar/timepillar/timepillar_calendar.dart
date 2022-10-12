@@ -185,8 +185,8 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                 (MemoplannerSettingsBloc bloc) =>
                     bloc.state.calendar.timepillar);
             return ScrollListener(
-              disable:
-                  !widget.timepillarState.isToday || !widget.scrollToTimeOffset,
+              enabled:
+                  widget.timepillarState.isToday && widget.scrollToTimeOffset,
               scrollController: verticalScrollController,
               getNowOffset: (now) =>
                   currentDotMidPosition(now, measures, topMargin: topMargin) -

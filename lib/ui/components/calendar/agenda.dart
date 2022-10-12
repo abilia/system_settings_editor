@@ -61,7 +61,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
             scrollController: scrollController,
             getNowOffset: (_) => _getNowOffset(),
             inViewMargin: layout.eventCard.height / 2,
-            disable: !widget.eventsState.isToday,
+            enabled: widget.eventsState.isToday,
             child: AbiliaScrollBar(
               controller: scrollController,
               child: EventList(

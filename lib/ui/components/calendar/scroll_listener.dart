@@ -10,7 +10,7 @@ class ScrollListener extends StatelessWidget {
     required this.inViewMargin,
     required this.child,
     this.timepillarMeasures,
-    this.disable = false,
+    this.enabled = true,
     Key? key,
   }) : super(key: key);
 
@@ -19,11 +19,11 @@ class ScrollListener extends StatelessWidget {
   final double inViewMargin;
   final Widget child;
   final TimepillarMeasures? timepillarMeasures;
-  final bool disable;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
-    if (disable) {
+    if (!enabled) {
       return BlocListener<DayPickerBloc, DayPickerState>(
         listenWhen: (previous, current) {
           return !previous.isToday && current.isToday;
@@ -136,16 +136,20 @@ class _AutoScrollToNow extends StatelessWidget {
   final Widget child;
   final GetNowOffset getNowOffset;
 
+  void _scrollToNow(BuildContext context) {
+    context.read<ScrollPositionCubit>().goToNow(
+          duration: transitionDuration,
+          curve: Curves.linear,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<InactivityCubit, InactivityState>(
       listenWhen: (previous, current) {
         return previous is! ReturnToTodayState && current is ReturnToTodayState;
       },
-      listener: (context, _) => context.read<ScrollPositionCubit>().goToNow(
-            duration: transitionDuration,
-            curve: Curves.linear,
-          ),
+      listener: (context, _) => _scrollToNow(context),
       child: BlocListener<ClockBloc, DateTime>(
         listener: (context, now) {
           final scrollState = context.read<ScrollPositionCubit>().state;
@@ -163,10 +167,7 @@ class _AutoScrollToNow extends StatelessWidget {
           final scrollToNow = isToday && inactivityState is! SomethingHappened;
 
           if (scrollToNow) {
-            context.read<ScrollPositionCubit>().goToNow(
-                  duration: transitionDuration,
-                  curve: Curves.linear,
-                );
+            _scrollToNow(context);
           }
         },
         child: child,
