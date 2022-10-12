@@ -3,14 +3,6 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class AgendaScrollController extends ScrollController {
-  AgendaScrollController()
-      : super(
-          initialScrollOffset: -layout.agenda.topPadding,
-          keepScrollOffset: false,
-        );
-}
-
 class Agenda extends StatelessWidget with CalendarStateMixin {
   final EventsState eventsState;
 
@@ -21,7 +13,7 @@ class Agenda extends StatelessWidget with CalendarStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final scrollController = AgendaScrollController();
+    final scrollController = ScrollController();
     return RefreshIndicator(
       onRefresh: () => refresh(context),
       child: Stack(
@@ -64,7 +56,8 @@ class EventList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sc = scrollController ?? AgendaScrollController();
+    final sc = scrollController ?? ScrollController();
+    _scrollToInitialOffset(sc);
     return ScrollArrows.vertical(
       upCollapseMargin: topPadding,
       downCollapseMargin: bottomPadding,
@@ -82,7 +75,7 @@ class EventList extends StatelessWidget {
           color: todayNight ? TimepillarCalendar.nightBackgroundColor : null,
           child: CustomScrollView(
             center: events.isToday ? center : null,
-            controller: scrollController,
+            controller: sc,
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
               if (events.events.isEmpty && events.fullDayActivities.isEmpty)
@@ -115,6 +108,14 @@ class EventList extends StatelessWidget {
         );
       }),
     );
+  }
+
+  void _scrollToInitialOffset(ScrollController sc) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (sc.hasClients) {
+        sc.jumpTo(-layout.agenda.topPadding);
+      }
+    });
   }
 
   double _lastPastPadding(
