@@ -429,17 +429,17 @@ class MonthDayViewCompact extends StatelessWidget {
                 : monthWeekColor == WeekColor.captions
                     ? AbiliaColors.white
                     : dayTheme.monthColor;
+            final Border border = monthDay.isCurrent
+                ? currentBorder
+                : pickedDay.isAtSameDay(monthDay.day)
+                    ? selectedActivityBorder
+                    : transparentBlackBorder;
 
             return Container(
-              foregroundDecoration: monthDay.isCurrent
-                  ? BoxDecoration(
-                      border: currentBorder,
-                      borderRadius: borderRadius,
-                    )
-                  : BoxDecoration(
-                      border: transparentBlackBorder,
-                      borderRadius: borderRadius,
-                    ),
+              foregroundDecoration: BoxDecoration(
+                border: border,
+                borderRadius: borderRadius,
+              ),
               decoration: BoxDecoration(
                 color: backgroundColor,
                 borderRadius: borderRadius,
