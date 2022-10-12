@@ -71,7 +71,7 @@ class _ScrollListenerState extends State<_ScrollListener> {
     super.initState();
     _updateScrollState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
+      if (mounted && context.read<DayPickerBloc>().state.isToday) {
         context.read<ScrollPositionCubit>().goToNow();
       }
     });
