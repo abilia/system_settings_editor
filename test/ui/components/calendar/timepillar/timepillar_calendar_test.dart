@@ -170,7 +170,8 @@ void main() {
 
     testWidgets('BUG SGC-1427 GoToNowButton should not expand in width',
         (WidgetTester tester) async {
-      final screenWidth = tester.binding.window.physicalSize.width;
+      final screenWidth = tester.binding.window.physicalSize.width /
+          tester.binding.window.devicePixelRatio;
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
