@@ -101,7 +101,7 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
       return WrongDay();
     }
 
-    if (!(sc.positions.length == 1)) {
+    if (sc.positions.length != 1) {
       return Unready();
     }
 

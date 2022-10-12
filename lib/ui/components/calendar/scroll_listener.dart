@@ -97,19 +97,13 @@ class _ScrollListenerState extends State<_ScrollListener> {
         return;
       }
 
-      final scrollState = context.read<ScrollPositionCubit>().state;
       final nowOffset = widget.getNowOffset(context.read<ClockBloc>().state);
 
-      if (scrollState is! ScrollPositionReadyState ||
-          scrollState.scrollController != widget.scrollController ||
-          scrollState.nowOffset != nowOffset ||
-          scrollState.inViewMargin != widget.inViewMargin) {
-        context.read<ScrollPositionCubit>().updateState(
-              scrollController: widget.scrollController,
-              nowOffset: nowOffset,
-              inViewMargin: widget.inViewMargin,
-            );
-      }
+      context.read<ScrollPositionCubit>().updateState(
+            scrollController: widget.scrollController,
+            nowOffset: nowOffset,
+            inViewMargin: widget.inViewMargin,
+          );
     });
   }
 
@@ -142,20 +136,16 @@ class _AutoScrollToNow extends StatelessWidget {
   final Widget child;
   final GetNowOffset getNowOffset;
 
-  void _scrollToNow(BuildContext context) {
-    context.read<ScrollPositionCubit>().goToNow(
-          duration: transitionDuration,
-          curve: Curves.linear,
-        );
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<InactivityCubit, InactivityState>(
       listenWhen: (previous, current) {
         return previous is! ReturnToTodayState && current is ReturnToTodayState;
       },
-      listener: (context, _) => _scrollToNow(context),
+      listener: (context, _) => context.read<ScrollPositionCubit>().goToNow(
+            duration: transitionDuration,
+            curve: Curves.linear,
+          ),
       child: BlocListener<ClockBloc, DateTime>(
         listener: (context, now) {
           final scrollState = context.read<ScrollPositionCubit>().state;
@@ -164,18 +154,19 @@ class _AutoScrollToNow extends StatelessWidget {
           }
 
           final nowOffset = getNowOffset(now);
-          if (scrollState.nowOffset != nowOffset) {
-            context.read<ScrollPositionCubit>().updateNowOffset(
-                  nowOffset: nowOffset,
-                );
-          }
+          context.read<ScrollPositionCubit>().updateNowOffset(
+                nowOffset: nowOffset,
+              );
 
           final isToday = context.read<DayPickerBloc>().state.isToday;
           final inactivityState = context.read<InactivityCubit>().state;
           final scrollToNow = isToday && inactivityState is! SomethingHappened;
 
           if (scrollToNow) {
-            _scrollToNow(context);
+            context.read<ScrollPositionCubit>().goToNow(
+                  duration: transitionDuration,
+                  curve: Curves.linear,
+                );
           }
         },
         child: child,
