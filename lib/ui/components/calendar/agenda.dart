@@ -3,7 +3,15 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class Agenda extends StatefulWidget {
+class AgendaScrollController extends ScrollController {
+  AgendaScrollController()
+      : super(
+          initialScrollOffset: -layout.agenda.topPadding,
+          keepScrollOffset: false,
+        );
+}
+
+class Agenda extends StatelessWidget with CalendarStateMixin {
   final EventsState eventsState;
 
   const Agenda({
@@ -12,63 +20,24 @@ class Agenda extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State createState() => _AgendaState();
-}
-
-class _AgendaState extends State<Agenda> with CalendarStateMixin {
-  late ScrollController scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _setScrollController();
-  }
-
-  @override
-  void didUpdateWidget(Agenda oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _setScrollController();
-  }
-
-  double _getNowOffset() {
-    return widget.eventsState.events.isEmpty &&
-            widget.eventsState.fullDayActivities.isEmpty
-        ? 0
-        : -layout.agenda.topPadding;
-  }
-
-  void _setScrollController() {
-    final offset = _getNowOffset();
-    scrollController = ScrollController(
-      initialScrollOffset: offset,
-      keepScrollOffset: false,
-    );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        scrollController.jumpTo(offset);
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final scrollController = AgendaScrollController();
     return RefreshIndicator(
-      onRefresh: refresh,
+      onRefresh: () => refresh(context),
       child: Stack(
         children: <Widget>[
           ScrollListener(
             scrollController: scrollController,
-            getNowOffset: (_) => _getNowOffset(),
+            getNowOffset: (_) => -layout.agenda.topPadding,
             inViewMargin: layout.eventCard.height / 2,
-            enabled: widget.eventsState.isToday,
+            enabled: eventsState.isToday,
             child: AbiliaScrollBar(
               controller: scrollController,
               child: EventList(
                 scrollController: scrollController,
                 bottomPadding: layout.agenda.bottomPadding,
                 topPadding: layout.agenda.topPadding,
-                events: widget.eventsState,
+                events: eventsState,
               ),
             ),
           ),
@@ -95,7 +64,7 @@ class EventList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sc = scrollController ?? ScrollController();
+    final sc = scrollController ?? AgendaScrollController();
     return ScrollArrows.vertical(
       upCollapseMargin: topPadding,
       downCollapseMargin: bottomPadding,
@@ -113,7 +82,7 @@ class EventList extends StatelessWidget {
           color: todayNight ? TimepillarCalendar.nightBackgroundColor : null,
           child: CustomScrollView(
             center: events.isToday ? center : null,
-            controller: sc,
+            controller: scrollController,
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
               if (events.events.isEmpty && events.fullDayActivities.isEmpty)
