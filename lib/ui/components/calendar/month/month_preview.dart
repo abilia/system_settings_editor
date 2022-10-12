@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class MonthListPreview extends StatelessWidget {
   final List<DayTheme> dayThemes;
@@ -13,6 +14,7 @@ class MonthListPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = AgendaScrollController();
     return BlocBuilder<DayPickerBloc, DayPickerState>(
         builder: (context, dayPickerState) {
       return BlocBuilder<MonthCalendarCubit, MonthCalendarState>(
@@ -35,22 +37,21 @@ class MonthListPreview extends StatelessWidget {
             } else {
               final dayTheme = dayThemes[dayPickerState.day.weekday - 1];
 
-              return Padding(
-                padding:
-                    layout.monthCalendar.monthPreview.monthListPreviewPadding,
-                child: Column(
-                  children: [
-                    AnimatedTheme(
-                      data: dayTheme.theme,
-                      child: MonthDayPreviewHeading(
-                        day: dayPickerState.day,
-                        isLight: dayTheme.isLight,
-                        occasion: dayPickerState.occasion,
-                      ),
+              return Column(
+                children: [
+                  AnimatedTheme(
+                    data: dayTheme.theme,
+                    child: MonthDayPreviewHeading(
+                      day: dayPickerState.day,
+                      isLight: dayTheme.isLight,
+                      occasion: dayPickerState.occasion,
                     ),
-                    const Expanded(child: MonthPreview()),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                      child: MonthPreview(
+                    scrollController: scrollController,
+                  )),
+                ],
               );
             }
           });
@@ -59,12 +60,16 @@ class MonthListPreview extends StatelessWidget {
 }
 
 class MonthPreview extends StatelessWidget {
+  final ScrollController scrollController;
+
   const MonthPreview({
+    required this.scrollController,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    _scrollToInitialOffset(context);
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: layout.monthCalendar.monthPreview.monthPreviewBorderWidth,
@@ -73,6 +78,7 @@ class MonthPreview extends StatelessWidget {
       child: Container(
         decoration: const BoxDecoration(color: AbiliaColors.white),
         child: EventList(
+          scrollController: scrollController,
           topPadding: layout.monthCalendar.monthPreview.activityListTopPadding,
           bottomPadding:
               layout.monthCalendar.monthPreview.activityListBottomPadding,
@@ -80,6 +86,21 @@ class MonthPreview extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _scrollToInitialOffset(BuildContext context) {
+    final now = context.read<ClockBloc>().state;
+    final events = context.read<DayEventsCubit>().state;
+    final isToday = events.day.isAtSameDay(now);
+    final hasPastEvents = events.pastEvents(now).isNotEmpty;
+
+    if (isToday && scrollController.hasClients) {
+      if (!hasPastEvents) {
+        return scrollController
+            .jumpTo(-layout.monthCalendar.monthPreview.activityListTopPadding);
+      }
+      return scrollController.jumpTo(-layout.agenda.topPadding);
+    }
   }
 }
 
