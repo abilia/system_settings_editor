@@ -170,10 +170,7 @@ void main() {
 
     testWidgets('BUG SGC-1427 GoToNowButton should not expand in width',
         (WidgetTester tester) async {
-      final originalScreenSize = tester.binding.renderView.size;
-      const screenWidth = 600.0;
-      await tester.binding
-          .setSurfaceSize(const Size(screenWidth, screenWidth * 2));
+      final screenWidth = tester.binding.window.physicalSize.width;
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
@@ -184,8 +181,6 @@ void main() {
       //Doesn't actually test that the width is exactly correct,
       //just that it won't expand to fill as much space as it can.
       expect(nowButton.size!.width, lessThan(screenWidth));
-
-      await tester.binding.setSurfaceSize(originalScreenSize);
     });
 
     testWidgets('SGC-967 go to now button works more than once',
