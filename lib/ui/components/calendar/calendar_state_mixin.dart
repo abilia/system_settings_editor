@@ -6,9 +6,4 @@ mixin CalendarStateMixin<T extends StatefulWidget> on State<T> {
     context.read<SyncBloc>().add(const SyncAll());
     return Future.delayed(const Duration(milliseconds: 500));
   }
-
-  bool onScrollNotification(_) {
-    context.read<ScrollPositionCubit>().scrollPositionUpdated();
-    return false;
-  }
 }

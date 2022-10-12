@@ -151,13 +151,13 @@ class PreviewTimePillar extends StatelessWidget {
                       ),
                       if (tpState.timeline)
                         Timeline(
-                          now: _time,
+                          top: currentDotMidPosition(
+                                _time,
+                                measures,
+                                topMargin: 0,
+                              ) -
+                              layout.timepillar.timeLineHeight / 2,
                           width: measures.timePillarTotalWidth * 3,
-                          measures: measures,
-                          offset: hoursToPixels(
-                            interval.start.hour,
-                            measures.dotDistance,
-                          ),
                         ),
                     ],
                   );

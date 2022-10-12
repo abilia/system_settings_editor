@@ -22,7 +22,7 @@ import '../../../../fakes/activity_db_in_memory.dart';
 
 void main() {
   late StreamController<DateTime> mockTicker;
-  late final ActivityDbInMemory mockActivityDb;
+  late ActivityDbInMemory mockActivityDb;
   final time = DateTime(2007, 08, 09, 13, 11);
   const leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RigthCategoryActivity';
@@ -40,10 +40,6 @@ void main() {
   final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
   final previusDayButtonFinder = find.byIcon(AbiliaIcons.returnToPreviousPage);
 
-  setUpAll(() {
-    mockActivityDb = ActivityDbInMemory();
-  });
-
   setUp(() async {
     setupPermissions();
     setupFakeTts();
@@ -52,6 +48,7 @@ void main() {
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     mockTicker = StreamController<DateTime>();
+    mockActivityDb = ActivityDbInMemory();
 
     genericResponse = () => [timepillarGeneric];
     final mockGenericDb = MockGenericDb();
@@ -392,6 +389,61 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsOneWidget);
     });
+
+    testWidgets(
+      'Scrolling follows now - timeline stays in place',
+      (WidgetTester tester) async {
+        // Arrange
+        genericResponse = () => [
+              timepillarGeneric,
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: TimepillarIntervalType.dayAndNight.index,
+                  identifier:
+                      DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,
+                ),
+              ),
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: TimepillarZoom.large.index,
+                  identifier: DayCalendarViewOptionsSettings
+                      .viewOptionsTimepillarZoomKey,
+                ),
+              ),
+            ];
+
+        double timeLinePosY() =>
+            tester.getTopLeft(find.byType(Timeline).first).dy;
+
+        double timeTextPosY() => tester
+            .getTopLeft(
+              find.descendant(
+                of: find.byType(TimePillar),
+                matching: find.text('3').first,
+              ),
+            )
+            .dy;
+
+        final testTime = time.copyWith(hour: 14, minute: 0);
+
+        // Act
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        mockTicker.add(testTime);
+        await tester.pumpAndSettle();
+        final firstTimelinePositionY = timeLinePosY();
+        final firstTimeTextPositionY = timeTextPosY();
+        mockTicker.add(testTime.add(const Duration(minutes: 45)));
+        await tester.pumpAndSettle();
+        final secondTimelinePositionY = timeLinePosY();
+        final secondTimeTextPositionY = timeTextPosY();
+
+        // Assert
+        expect(secondTimelinePositionY, firstTimelinePositionY);
+        expect(secondTimeTextPositionY, isNot(firstTimeTextPositionY));
+      },
+      skip: !Config.isMP,
+    );
   });
 
   group('categories', () {

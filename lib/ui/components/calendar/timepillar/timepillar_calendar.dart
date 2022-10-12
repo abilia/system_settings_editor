@@ -84,9 +84,6 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
   late final ScrollController horizontalScrollController;
   final Key center = const Key('center');
 
-  bool get enableScrollNotification =>
-      widget.timepillarState.isToday && widget.scrollToTimeOffset;
-
   bool get showTimeLine =>
       widget.timepillarState.isToday && widget.displayTimeline;
 
@@ -105,12 +102,6 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
         ? _timeOffsetVerticalScroll()
         : ScrollController();
     horizontalScrollController = SnapToCenterScrollController();
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => context.read<ScrollPositionCubit>().scrollViewRenderComplete(
-            verticalScrollController,
-            createdTime: context.read<ClockBloc>().state,
-          ),
-    );
   }
 
   ScrollController _timeOffsetVerticalScroll() {
@@ -193,24 +184,34 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
             final timepillarSettings = context.select(
                 (MemoplannerSettingsBloc bloc) =>
                     bloc.state.calendar.timepillar);
-            return RefreshIndicator(
-              onRefresh: refresh,
-              notificationPredicate: (scrollNotification) =>
-                  widget.pullToRefresh &&
-                  defaultScrollNotificationPredicate(scrollNotification),
-              child: Container(
-                key: TestKey.calendarBackgroundColor,
-                color: interval.intervalPart == IntervalPart.night
-                    ? TimepillarCalendar.nightBackgroundColor
-                    : Theme.of(context).scaffoldBackgroundColor,
-                child: ScrollArrows.all(
-                  upCollapseMargin: topMargin,
-                  downCollapseMargin: bottomMargin,
-                  horizontalController: horizontalScrollController,
-                  verticalController: verticalScrollController,
-                  child: NotificationListener<ScrollNotification>(
-                    onNotification:
-                        enableScrollNotification ? onScrollNotification : null,
+            return ScrollListener(
+              disable:
+                  !widget.timepillarState.isToday || !widget.scrollToTimeOffset,
+              scrollController: verticalScrollController,
+              getNowOffset: (now) =>
+                  currentDotMidPosition(now, measures, topMargin: topMargin) -
+                  (boxConstraints.maxHeight / 4),
+              inViewMargin: timeToPixels(
+                0,
+                minutesPerDotDuration.inMinutes,
+                measures.dotDistance,
+              ),
+              timepillarMeasures: widget.timepillarMeasures,
+              child: RefreshIndicator(
+                onRefresh: refresh,
+                notificationPredicate: (scrollNotification) =>
+                    widget.pullToRefresh &&
+                    defaultScrollNotificationPredicate(scrollNotification),
+                child: Container(
+                  key: TestKey.calendarBackgroundColor,
+                  color: interval.intervalPart == IntervalPart.night
+                      ? TimepillarCalendar.nightBackgroundColor
+                      : Theme.of(context).scaffoldBackgroundColor,
+                  child: ScrollArrows.all(
+                    upCollapseMargin: topMargin,
+                    downCollapseMargin: bottomMargin,
+                    horizontalController: horizontalScrollController,
+                    verticalController: verticalScrollController,
                     child: SingleChildScrollView(
                       controller: verticalScrollController,
                       physics: const AlwaysScrollableScrollPhysics(),
@@ -249,11 +250,13 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                       startDate: measures.interval.start,
                                       endDate: measures.interval.end)) {
                                     return Timeline(
-                                      now: now,
+                                      top: currentDotMidPosition(
+                                            now,
+                                            measures,
+                                            topMargin: topMargin,
+                                          ) -
+                                          layout.timepillar.timeLineHeight / 2,
                                       width: boxConstraints.maxWidth,
-                                      offset:
-                                          measures.topOffset(now) - topMargin,
-                                      measures: measures,
                                     );
                                   }
                                   return const SizedBox.shrink();
@@ -363,4 +366,19 @@ class NightPart {
   final double start, length;
 
   NightPart(this.start, this.length);
+}
+
+double currentDotMidPosition(
+  DateTime now,
+  TimepillarMeasures measures, {
+  double? topMargin,
+}) {
+  return timeToMidDotPixelDistance(
+        now: now,
+        dotDistance: measures.dotDistance,
+        dotSize: measures.dotSize,
+      ) +
+      (topMargin ?? layout.timepillar.topMargin) -
+      measures.topOffset(now) +
+      measures.topPadding;
 }

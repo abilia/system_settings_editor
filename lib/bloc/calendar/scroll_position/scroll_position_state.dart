@@ -11,27 +11,40 @@ class WrongDay extends ScrollPositionState {}
 
 abstract class ScrollPositionReadyState extends ScrollPositionState {
   final ScrollController scrollController;
-  final DateTime? scrollControllerCreatedTime;
+  final double nowOffset, inViewMargin;
   ScrollPositionReadyState(
-      this.scrollController, this.scrollControllerCreatedTime);
+    this.scrollController,
+    this.nowOffset,
+    this.inViewMargin,
+  );
   @override
-  List<Object?> get props => [scrollController, scrollControllerCreatedTime];
+  List<Object?> get props => [
+        scrollController,
+        nowOffset,
+        inViewMargin,
+      ];
 }
 
 class InView extends ScrollPositionReadyState {
-  InView(ScrollController scrollController,
-      [DateTime? scrollControllerCreatedTime])
-      : super(
+  InView(
+    ScrollController scrollController,
+    double nowOffset,
+    double inViewMargin,
+  ) : super(
           scrollController,
-          scrollControllerCreatedTime,
+          nowOffset,
+          inViewMargin,
         );
 }
 
 class OutOfView extends ScrollPositionReadyState {
-  OutOfView(ScrollController scrollController,
-      [DateTime? scrollControllerCreatedTime])
-      : super(
+  OutOfView(
+    ScrollController scrollController,
+    double nowOffset,
+    double inViewMargin,
+  ) : super(
           scrollController,
-          scrollControllerCreatedTime,
+          nowOffset,
+          inViewMargin,
         );
 }

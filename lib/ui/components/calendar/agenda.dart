@@ -30,14 +30,15 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
     _setScrollController();
   }
 
-  void _setScrollController() {
-    final offset = widget.eventsState.isToday &&
-            widget.eventsState
-                .pastEvents(context.read<ClockBloc>().state)
-                .isNotEmpty
-        ? -layout.agenda.topPadding
-        : 0.0;
+  double _getNowOffset() {
+    return widget.eventsState.events.isEmpty &&
+            widget.eventsState.fullDayActivities.isEmpty
+        ? 0
+        : -layout.agenda.topPadding;
+  }
 
+  void _setScrollController() {
+    final offset = _getNowOffset();
     scrollController = ScrollController(
       initialScrollOffset: offset,
       keepScrollOffset: false,
@@ -46,21 +47,21 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         scrollController.jumpTo(offset);
-        BlocProvider.of<ScrollPositionCubit>(context)
-            .scrollViewRenderComplete(scrollController);
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = widget.eventsState;
     return RefreshIndicator(
       onRefresh: refresh,
       child: Stack(
         children: <Widget>[
-          NotificationListener<ScrollNotification>(
-            onNotification: state.isToday ? onScrollNotification : null,
+          ScrollListener(
+            scrollController: scrollController,
+            getNowOffset: (_) => _getNowOffset(),
+            inViewMargin: layout.eventCard.height / 2,
+            disable: !widget.eventsState.isToday,
             child: AbiliaScrollBar(
               controller: scrollController,
               child: EventList(
@@ -118,31 +119,26 @@ class EventList extends StatelessWidget {
               if (events.events.isEmpty && events.fullDayActivities.isEmpty)
                 SliverNoActivities(key: center)
               else ...[
-                if (!isTodayAndNoPast)
-                  SliverPadding(
-                    padding: EdgeInsets.only(top: topPadding),
-                    sliver: SliverEventList(
-                      pastEvents,
-                      events.day,
-                      reversed: events.isToday,
-                      lastMargin: _lastPastPadding(
-                        pastEvents,
-                        notPastEvents,
-                      ),
-                      isNight: todayNight,
-                    ),
-                  ),
                 SliverPadding(
+                  padding: EdgeInsets.only(top: topPadding),
+                  sliver: isTodayAndNoPast
+                      ? null
+                      : SliverEventList(
+                          pastEvents,
+                          events.day,
+                          reversed: events.isToday,
+                          lastMargin: _lastPastPadding(
+                            pastEvents,
+                            notPastEvents,
+                          ),
+                          isNight: todayNight,
+                        ),
+                ),
+                SliverEventList(
+                  notPastEvents,
+                  events.day,
+                  isNight: todayNight,
                   key: center,
-                  padding: EdgeInsets.only(
-                    top: isTodayAndNoPast ? topPadding : 0.0,
-                    bottom: bottomPadding,
-                  ),
-                  sliver: SliverEventList(
-                    notPastEvents,
-                    events.day,
-                    isNight: todayNight,
-                  ),
                 ),
               ],
             ],
