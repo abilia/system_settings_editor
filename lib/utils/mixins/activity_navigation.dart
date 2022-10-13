@@ -103,7 +103,7 @@ mixin ActivityNavigation {
         ),
       ),
     );
-    if (activityCreated == true) navigator.pop();
+    if (activityCreated == true) navigator.maybePop();
   }
 
   Route<T> _createRoute<T>(Widget page) => PageRouteBuilder<T>(

@@ -120,7 +120,7 @@ class PopOnSaveListener extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocListener<WizardCubit, WizardState>(
         listenWhen: (_, current) => current.successfulSave == true,
-        listener: (context, state) => Navigator.of(context).pop(true),
+        listener: (context, state) => Navigator.of(context).maybePop(true),
         child: child,
       );
 }

@@ -417,6 +417,39 @@ void main() {
         });
 
         testWidgets(
+            'BUG - 2060 can save when template activity when option not set',
+            (WidgetTester tester) async {
+          genericResponse = () => [
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: EditActivitySettings.templateKey,
+                  ),
+                ),
+              ];
+          // Act - Go to add activity page
+          await tester.pumpWidget(App());
+          await tester.pumpAndSettle();
+          await tester.tap(addActivityButtonFinder);
+          await tester.pumpAndSettle();
+          if (Config.isMPGO) {
+            await tester.tap(find.byKey(TestKey.newActivityChoice));
+            await tester.pumpAndSettle();
+          }
+          expect(find.byType(EditActivityPage), findsOneWidget);
+          // Act - fill in min
+          await tester.tap(find.byKey(TestKey.fullDaySwitch));
+          await tester.pumpAndSettle();
+          await tester.ourEnterText(editTitleFieldFinder, 'title');
+          // Act - save
+          await tester.tap(find.byType(SaveButton));
+          await tester.pumpAndSettle();
+          // Assert - Back at CalendarPage
+          expect(find.byType(CalendarPage), findsOneWidget);
+          expect(find.widgetWithText(ActivityCard, 'title'), findsOneWidget);
+        });
+
+        testWidgets(
             'New activity - name and title off: only basic activity choice ',
             (WidgetTester tester) async {
           genericResponse = () => [
