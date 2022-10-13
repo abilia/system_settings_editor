@@ -3,14 +3,6 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class AgendaScrollController extends ScrollController {
-  AgendaScrollController()
-      : super(
-          initialScrollOffset: -layout.agenda.topPadding,
-          keepScrollOffset: false,
-        );
-}
-
 class Agenda extends StatelessWidget with CalendarStateMixin {
   final EventsState eventsState;
 
@@ -21,7 +13,9 @@ class Agenda extends StatelessWidget with CalendarStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final scrollController = AgendaScrollController();
+    final scrollController = ScrollController(
+      initialScrollOffset: -layout.agenda.topPadding,
+    );
     _scrollToInitialOffset(context, scrollController);
     return RefreshIndicator(
       onRefresh: () => refresh(context),
@@ -60,7 +54,7 @@ class EventList extends StatelessWidget {
     required this.bottomPadding,
     required this.topPadding,
     required this.events,
-    this.scrollController,
+    required this.scrollController,
     Key? key,
   }) : super(key: key);
 
@@ -70,11 +64,10 @@ class EventList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sc = scrollController ?? AgendaScrollController();
     return ScrollArrows.vertical(
       upCollapseMargin: topPadding,
       downCollapseMargin: bottomPadding,
-      controller: sc,
+      controller: scrollController,
       child: Builder(builder: (context) {
         final now = context.watch<ClockBloc>().state;
 
@@ -88,7 +81,7 @@ class EventList extends StatelessWidget {
           color: todayNight ? TimepillarCalendar.nightBackgroundColor : null,
           child: CustomScrollView(
             center: events.isToday ? center : null,
-            controller: sc,
+            controller: scrollController,
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
               if (events.events.isEmpty && events.fullDayActivities.isEmpty)
