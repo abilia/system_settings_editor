@@ -105,19 +105,9 @@ void main() {
               orElse: () => supportedLocales.first),
       builder: (context, child) {
         WidgetsBinding.instance.addPostFrameCallback(
-          (_) async {
-            while (navKey.currentState == null) {
-              await Future.delayed(Duration.zero);
-            }
-            final navState = navKey.currentState;
-            if (navState != null) {
-              navState.push(
-                MaterialPageRoute(
-                  builder: (context) => const ActivityWizardPage(),
-                ),
-              );
-            }
-          },
+          (_) => navKey.currentState?.push(
+            MaterialPageRoute(builder: (context) => const ActivityWizardPage()),
+          ),
         );
 
         return MediaQuery(
