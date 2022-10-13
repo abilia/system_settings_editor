@@ -24,35 +24,35 @@ class FakeActivity {
           duration: duration,
           alarmType: alarmSilent);
 
-  static Activity reocurrsEveryDay([DateTime? startDate]) =>
+  static Activity reoccursEveryDay([DateTime? startDate]) =>
       _reoccurs(startDate, Recurs.weeklyOnDays(List.generate(7, (d) => d + 1)),
           title: 'recurs everyday');
-  static Activity reocurrsWeekends([DateTime? startDate]) => _reoccurs(
+  static Activity reoccursWeekends([DateTime? startDate]) => _reoccurs(
       startDate,
       Recurs.weeklyOnDays(const [DateTime.saturday, DateTime.sunday]),
       title: 'recurs weekend');
-  static Activity reocurrsMondays([DateTime? startDate]) =>
+  static Activity reoccursMondays([DateTime? startDate]) =>
       _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.monday),
           title: 'recurs monday');
-  static Activity reocurrsTuedays([DateTime? startDate]) =>
+  static Activity reoccursTuesdays([DateTime? startDate]) =>
       _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.tuesday),
           title: 'recurs tuesday');
-  static Activity reocurrsWednesdays([DateTime? startDate]) =>
+  static Activity reoccursWednesdays([DateTime? startDate]) =>
       _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.wednesday),
-          title: 'recurs wednesday');
-  static Activity reocurrsThursdays([DateTime? startDate]) =>
+          title: 'recurs Wednesday');
+  static Activity reoccursThursdays([DateTime? startDate]) =>
       _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.thursday),
           title: 'recurs thursday');
-  static Activity reocurrsFridays([DateTime? startDate]) =>
+  static Activity reoccursFridays([DateTime? startDate]) =>
       _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.friday),
           title: 'recurs friday');
 
-  static Activity reocurrsOnDay(int day,
+  static Activity reoccursOnDay(int day,
           [DateTime? startDate, DateTime? endDate]) =>
       _reoccurs(startDate, Recurs.monthly(day, ends: endDate),
           title: 'recurs on month day $day');
 
-  static Activity reocurrsOnDate(DateTime day,
+  static Activity reoccursOnDate(DateTime day,
           [DateTime? startTime, DateTime? endTime]) =>
       _reoccurs(startTime ?? day, Recurs.yearly(day, ends: endTime),
           title: 'recurs on date $day');
@@ -78,7 +78,7 @@ class FakeActivity {
           recurs: recurs,
           alarmType: alarmSilent);
 
-  static Activity fullday(DateTime when, [String title = 'fullday']) =>
+  static Activity fullDay(DateTime when, [String title = 'full day']) =>
       Activity.createNew(
           title: title,
           startTime: when.onlyDays(),

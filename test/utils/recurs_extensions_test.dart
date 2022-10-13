@@ -43,7 +43,7 @@ void main() {
       // Arrange
       final day = DateTime(2020, 06, 02);
       final splitRecurring = Activity.createNew(
-        title: 'Fullday ',
+        title: 'FullDay ',
         recurs: Recurs.everyDay,
         alarmType: 104,
         // NO_ALARM
@@ -80,7 +80,7 @@ void main() {
     });
 
     test(
-        'Activity with endtime before start time does not shows ( bug SGC-148 )',
+        'Activity with end time before start time does not shows ( bug SGC-148 )',
         () {
       // Arrange
       const splitStartTime = 1585735200000, splitEndTime = 1585605599999;
@@ -168,15 +168,15 @@ void main() {
       expect(resultDay2, [ActivityDay(overlapping, day)]);
       expect(resultDay3, isEmpty);
     });
-    test('Fullday', () {
+    test('FullDay', () {
       // Arrange
       final initialMinutes =
           DateTime(2006, 06, 06, 06, 06, 06, 06).onlyMinutes();
-      final fullDayActivity = FakeActivity.fullday(initialMinutes);
-      final tomorrowFullday =
-          FakeActivity.fullday(initialMinutes.add(1.days()));
-      final yesterdayFullday =
-          FakeActivity.fullday(initialMinutes.subtract(1.days()));
+      final fullDayActivity = FakeActivity.fullDay(initialMinutes);
+      final tomorrowFullDay =
+          FakeActivity.fullDay(initialMinutes.add(1.days()));
+      final yesterdayFullDay =
+          FakeActivity.fullDay(initialMinutes.subtract(1.days()));
 
       final today = initialMinutes.onlyDays();
       final tomorrow = initialMinutes.nextDay().onlyDays();
@@ -184,16 +184,16 @@ void main() {
 
       // Act
       final result1Day1 = fullDayActivity.dayActivitiesForDay(today);
-      final result2Day1 = tomorrowFullday.dayActivitiesForDay(today);
-      final result3Day1 = yesterdayFullday.dayActivitiesForDay(today);
+      final result2Day1 = tomorrowFullDay.dayActivitiesForDay(today);
+      final result3Day1 = yesterdayFullDay.dayActivitiesForDay(today);
 
       final result1Day2 = fullDayActivity.dayActivitiesForDay(tomorrow);
-      final result2Day2 = tomorrowFullday.dayActivitiesForDay(tomorrow);
-      final result3Day2 = yesterdayFullday.dayActivitiesForDay(tomorrow);
+      final result2Day2 = tomorrowFullDay.dayActivitiesForDay(tomorrow);
+      final result3Day2 = yesterdayFullDay.dayActivitiesForDay(tomorrow);
 
       final result1Day3 = fullDayActivity.dayActivitiesForDay(yesterday);
-      final result2Day3 = tomorrowFullday.dayActivitiesForDay(yesterday);
-      final result3Day3 = yesterdayFullday.dayActivitiesForDay(yesterday);
+      final result2Day3 = tomorrowFullDay.dayActivitiesForDay(yesterday);
+      final result3Day3 = yesterdayFullDay.dayActivitiesForDay(yesterday);
 
       // Assert
       expect(result1Day1, [ActivityDay(fullDayActivity, today)]);
@@ -201,15 +201,15 @@ void main() {
       expect(result3Day1, isEmpty);
 
       expect(result1Day2, isEmpty);
-      expect(result2Day2, [ActivityDay(tomorrowFullday, tomorrow)]);
+      expect(result2Day2, [ActivityDay(tomorrowFullDay, tomorrow)]);
       expect(result3Day2, isEmpty);
 
       expect(result1Day3, isEmpty);
       expect(result2Day3, isEmpty);
-      expect(result3Day3, [ActivityDay(yesterdayFullday, yesterday)]);
+      expect(result3Day3, [ActivityDay(yesterdayFullDay, yesterday)]);
     });
 
-    test('Fullday with duration should be ignored', () {
+    test('FullDay with duration should be ignored', () {
       // Arrange
       final initialMinutes = DateTime(2006, 06, 06, 06, 06, 06, 06);
       final fullDayActivity = Activity.createNew(
@@ -235,7 +235,7 @@ void main() {
     });
 
     group('dayActivitiesForDay with longer than 24h duration', () {
-      test('weekly recurrance past midnight is true for next day', () {
+      test('weekly recurrence past midnight is true for next day', () {
         final startTime = DateTime(2010, 01, 01, 22, 00);
         final saturday = DateTime(2020, 05, 30);
         final friday = DateTime(2020, 05, 29);
@@ -255,7 +255,7 @@ void main() {
         expect(result, [ActivityDay(overlappingFridayRecurring, friday)]);
       });
 
-      test('weekly recurrance with duration 36 hours is true for 3 day', () {
+      test('weekly recurrence with duration 36 hours is true for 3 day', () {
         final startTime = DateTime(2010, 01, 01, 22, 00);
         final thursday = DateTime(2020, 05, 28);
         final friday = DateTime(2020, 05, 29);
@@ -291,7 +291,7 @@ void main() {
         expect(mondayResult, isEmpty);
       });
 
-      test('monthly recurrance with 36 hours duration is true for 3 day', () {
+      test('monthly recurrence with 36 hours duration is true for 3 day', () {
         final startTime = DateTime(2010, 01, 01, 22, 00);
         final thursday = DateTime(2020, 05, 28);
         final friday = DateTime(2020, 05, 29);
@@ -328,7 +328,7 @@ void main() {
         expect(mondayResult, isEmpty);
       });
 
-      test('yearly recurrance with 36 hours duration is true for 3 day', () {
+      test('yearly recurrence with 36 hours duration is true for 3 day', () {
         final startTime = DateTime(2010, 01, 01, 22, 00);
         final thursday = DateTime(2020, 05, 28);
         final friday = DateTime(2020, 05, 29);
@@ -366,8 +366,8 @@ void main() {
       });
 
       test(
-          'recurrance spanning over midnight two days in a row should show up twice 1',
-          () {
+          'recurrence spanning over midnight '
+          'two days in a row should show up twice 1', () {
         final startTime = DateTime(2010, 01, 01, 21, 00);
         final wednesday = DateTime(2020, 05, 27);
         final thursday = DateTime(2020, 05, 28);
@@ -394,8 +394,8 @@ void main() {
       });
 
       test(
-          'recurrance spanning over midnight two days in a row should show up twice 2',
-          () {
+          'recurrence spanning over midnight '
+          'two days in a row should show up twice 2', () {
         final startTime = DateTime(2010, 01, 01, 21, 00);
         final wednesday = DateTime(2020, 05, 27);
         final thursday = DateTime(2020, 05, 28);
@@ -457,7 +457,7 @@ void main() {
     test('Split up activity shows on day it was split up on ( bug test )', () {
       final day = DateTime(2019, 11, 22);
       final test = Activity.createNew(
-        title: 'Pre split Recurring fullday ',
+        title: 'Pre split Recurring fullDay ',
         startTime: DateTime(2019, 11, 12),
         duration: const Duration(
             hours: 23, minutes: 59, seconds: 59, milliseconds: 999),

@@ -92,7 +92,7 @@ void main() {
     await tester.tap(find.byType(OkButton));
     await tester.pumpAndSettle();
 
-    verifyUnsyncGeneric(
+    verifyUnsyncedGeneric(
       tester,
       mockGenericDb,
       key: DayCalendarViewOptionsSettings.viewOptionsDotsKey,

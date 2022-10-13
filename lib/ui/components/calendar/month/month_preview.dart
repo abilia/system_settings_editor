@@ -131,7 +131,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
                               padding: previewLayout.crossOverPadding,
                               child: (fullDayActivities > 1)
                                   ? ClickableFullDayStack(
-                                      fulldayActivitiesBuilder: (context) =>
+                                      fullDayActivitiesBuilder: (context) =>
                                           context.select(
                                               (DayEventsCubit cubit) => cubit
                                                   .state.fullDayActivities),

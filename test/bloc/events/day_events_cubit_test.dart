@@ -16,7 +16,7 @@ void main() {
   final initialMinutes = DateTime(2006, 06, 06, 06, 06);
   final initialDay = initialMinutes.onlyDays();
   final nextDay = initialDay.nextDay();
-  final previusDay = initialDay.previousDay();
+  final previousDay = initialDay.previousDay();
 
   setUp(() {
     dayPickerBloc = DayPickerBloc(clockBloc: ClockBloc.fixed(initialMinutes));
@@ -108,18 +108,18 @@ void main() {
       );
     });
 
-    test('fullday activities', () {
+    test('full day activities', () {
       // Arrange
-      final fullDayActivity = FakeActivity.fullday(initialMinutes);
-      final tomorrowFullday =
-          FakeActivity.fullday(initialMinutes.add(1.days()));
-      final yesterdayFullday =
-          FakeActivity.fullday(initialMinutes.subtract(1.days()));
+      final fullDayActivity = FakeActivity.fullDay(initialMinutes);
+      final tomorrowFullDay =
+          FakeActivity.fullDay(initialMinutes.add(1.days()));
+      final yesterdayFullDay =
+          FakeActivity.fullDay(initialMinutes.subtract(1.days()));
       when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
         (_) => Future.value(
           [
-            yesterdayFullday,
-            tomorrowFullday,
+            yesterdayFullDay,
+            tomorrowFullDay,
             fullDayActivity,
           ],
         ),
@@ -146,7 +146,7 @@ void main() {
     });
 
     test(
-        'only loads todays activities with correct occasion in correct order and fullday activities',
+        'only loads todays activities with correct occasion in correct order and fullDay activities',
         () {
       // Arrange
       final nowActivity = FakeActivity.starts(initialMinutes);
@@ -154,7 +154,7 @@ void main() {
           FakeActivity.ends(initialMinutes.subtract(1.minutes()));
       final futureActivity =
           FakeActivity.starts(initialMinutes.add(1.minutes()));
-      final fullDayActivity = FakeActivity.fullday(initialMinutes);
+      final fullDayActivity = FakeActivity.fullDay(initialMinutes);
       final tomorrowActivity =
           FakeActivity.starts(initialMinutes.add(1.days()));
       when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
@@ -191,17 +191,17 @@ void main() {
       );
     });
 
-    test('fullday activities, today, tomorrow, yesterday', () async {
+    test('fullDay activities, today, tomorrow, yesterday', () async {
       // Arrange
-      final fullDayActivity = FakeActivity.fullday(initialMinutes);
-      final tomorrowFullday =
-          FakeActivity.fullday(initialMinutes.add(1.days()));
-      final yesterdayFullday =
-          FakeActivity.fullday(initialMinutes.subtract(1.days()));
+      final fullDayActivity = FakeActivity.fullDay(initialMinutes);
+      final tomorrowFullDay =
+          FakeActivity.fullDay(initialMinutes.add(1.days()));
+      final yesterdayFullDay =
+          FakeActivity.fullDay(initialMinutes.subtract(1.days()));
       when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([
-                yesterdayFullday,
-                tomorrowFullday,
+                yesterdayFullDay,
+                tomorrowFullDay,
                 fullDayActivity,
               ]));
 
@@ -235,7 +235,7 @@ void main() {
           EventsState(
             activities: const [],
             fullDayActivities: [
-              ActivityOccasion(tomorrowFullday, nextDay, Occasion.future)
+              ActivityOccasion(tomorrowFullDay, nextDay, Occasion.future)
             ],
             timers: const [],
             day: nextDay,
@@ -253,10 +253,10 @@ void main() {
           EventsState(
             activities: const [],
             fullDayActivities: [
-              ActivityOccasion(yesterdayFullday, previusDay, Occasion.past)
+              ActivityOccasion(yesterdayFullDay, previousDay, Occasion.past)
             ],
             timers: const [],
-            day: previusDay,
+            day: previousDay,
             occasion: Occasion.past,
           ),
         ]),
@@ -271,10 +271,10 @@ void main() {
       final nowActivity = FakeActivity.starts(tomorrow);
       final pastActivity = FakeActivity.ends(tomorrow.add(1.minutes()));
       final futureActivity = FakeActivity.starts(tomorrow.add(1.minutes()));
-      final fulldayActivity = FakeActivity.fullday(tomorrow);
+      final fullDayActivity = FakeActivity.fullDay(tomorrow);
       when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
           (_) => Future.value(
-              [nowActivity, pastActivity, futureActivity, fulldayActivity]));
+              [nowActivity, pastActivity, futureActivity, fullDayActivity]));
       //Act
       activitiesBloc.add(LoadActivities());
       dayPickerBloc.add(NextDay());
@@ -290,7 +290,7 @@ void main() {
             ],
             timers: const [],
             fullDayActivities: [
-              ActivityOccasion(fulldayActivity, nextDay, Occasion.future)
+              ActivityOccasion(fullDayActivity, nextDay, Occasion.future)
             ],
             day: nextDay,
             occasion: Occasion.future,
@@ -307,10 +307,10 @@ void main() {
       final nowActivity = FakeActivity.starts(yesterday);
       final pastActivity = FakeActivity.ends(yesterday.add(1.minutes()));
       final futureActivity = FakeActivity.starts(yesterday.add(1.minutes()));
-      final fulldayActivity = FakeActivity.fullday(yesterday);
+      final fullDayActivity = FakeActivity.fullDay(yesterday);
       when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
           (_) => Future.value(
-              [nowActivity, pastActivity, futureActivity, fulldayActivity]));
+              [nowActivity, pastActivity, futureActivity, fullDayActivity]));
       //Act
       activitiesBloc.add(LoadActivities());
       dayPickerBloc.add(PreviousDay());
@@ -320,15 +320,15 @@ void main() {
         emits(
           EventsState(
             activities: [
-              ActivityDay(nowActivity, previusDay),
-              ActivityDay(pastActivity, previusDay),
-              ActivityDay(futureActivity, previusDay),
+              ActivityDay(nowActivity, previousDay),
+              ActivityDay(pastActivity, previousDay),
+              ActivityDay(futureActivity, previousDay),
             ],
             timers: const [],
             fullDayActivities: [
-              ActivityOccasion(fulldayActivity, previusDay, Occasion.past)
+              ActivityOccasion(fullDayActivity, previousDay, Occasion.past)
             ],
-            day: previusDay,
+            day: previousDay,
             occasion: Occasion.past,
           ),
         ),
@@ -421,18 +421,18 @@ void main() {
 
       final dayEventsState = dayEventsCubit.state;
 
-      final thisMinpastEvents = dayEventsState.pastEvents(initialMinutes);
+      final thisMinPastEvents = dayEventsState.pastEvents(initialMinutes);
       final thisMinNotPastEvents = dayEventsState.notPastEvents(initialMinutes);
-      expect(thisMinpastEvents, isEmpty);
+      expect(thisMinPastEvents, isEmpty);
       expect(thisMinNotPastEvents, [
         ActivityOccasion(nowActivity, initialDay, Occasion.current),
         ActivityOccasion(endsSoonActivity, initialDay, Occasion.current),
         ActivityOccasion(startSoonActivity, initialDay, Occasion.future),
       ]);
 
-      final nextMinpastEvents = dayEventsState.pastEvents(nextMinute);
+      final nextMinPastEvents = dayEventsState.pastEvents(nextMinute);
       final nextMinNotPastEvents = dayEventsState.notPastEvents(nextMinute);
-      expect(nextMinpastEvents, [
+      expect(nextMinPastEvents, [
         ActivityOccasion(endsSoonActivity, initialDay, Occasion.past),
       ]);
       expect(nextMinNotPastEvents, [
@@ -446,9 +446,9 @@ void main() {
     test('Shows recurring past, present and future', () async {
       // Arrange
       final longAgo = initialMinutes.subtract(const Duration(days: 1111));
-      final weekendActivity = FakeActivity.reocurrsWeekends(longAgo);
-      final tuesdayRecurring = FakeActivity.reocurrsTuedays(longAgo);
-      final mondayRecurring = FakeActivity.reocurrsMondays(longAgo);
+      final weekendActivity = FakeActivity.reoccursWeekends(longAgo);
+      final tuesdayRecurring = FakeActivity.reoccursTuesdays(longAgo);
+      final mondayRecurring = FakeActivity.reoccursMondays(longAgo);
       final activities = const Iterable<Activity>.empty()
           .followedBy([weekendActivity, tuesdayRecurring, mondayRecurring]);
       when(() => mockActivityRepository.allBetween(any(), any()))
@@ -494,7 +494,7 @@ void main() {
               ],
               timers: const [],
               fullDayActivities: const [],
-              day: previusDay,
+              day: previousDay,
               occasion: Occasion.past,
             ),
             // Friday
@@ -541,8 +541,8 @@ void main() {
 
   group('Remove after', () {
     test(
-        'Dont show past days remove after activities, but show present and future',
-        () async {
+        "Don't show past days remove after activities, "
+        'but show present and future', () async {
       // Arrange
       final longAgo = initialMinutes.subtract(1111.days());
       final yesterday = initialDay.subtract(1.days());
@@ -550,14 +550,14 @@ void main() {
       final in1Hour = initialMinutes.add(1.hours());
 
       final everyDayRecurring =
-          FakeActivity.reocurrsEveryDay(longAgo).copyWith(removeAfter: true);
+          FakeActivity.reoccursEveryDay(longAgo).copyWith(removeAfter: true);
       final todayActivity =
           FakeActivity.starts(in1Hour).copyWith(removeAfter: true);
       final yesterdayActivity = FakeActivity.starts(in1Hour.subtract(1.days()))
           .copyWith(removeAfter: true);
       final tomorrowActivity = FakeActivity.starts(in1Hour.add(1.days()))
           .copyWith(removeAfter: true);
-      final everyDayFullDayRecurring = FakeActivity.fullday(longAgo).copyWith(
+      final everyDayFullDayRecurring = FakeActivity.fullDay(longAgo).copyWith(
         removeAfter: true,
         recurs: Recurs.weeklyOnDays(
           List.generate(5, (d) => d + 1),
@@ -653,7 +653,7 @@ void main() {
       // Arrange
       final longAgo = initialMinutes.subtract(1111.days());
       final yesterday = initialDay.previousDay();
-      final dayBeforeyesterday = yesterday.previousDay();
+      final dayBeforeYesterday = yesterday.previousDay();
       final tomorrow = initialDay.nextDay();
 
       final everyDayRecurring = Activity.createNew(
@@ -681,7 +681,7 @@ void main() {
             activities: [
               ActivityDay(everyDayRecurring, initialDay),
               ActivityDay(everyDayRecurring, yesterday),
-              ActivityDay(everyDayRecurring, dayBeforeyesterday),
+              ActivityDay(everyDayRecurring, dayBeforeYesterday),
             ],
             timers: const [],
             fullDayActivities: const [],
@@ -826,10 +826,10 @@ void main() {
     test('next day loads next days activities', () async {
       // Arrange
       final activitiesNow = [FakeActivity.starts(today)];
-      final expextedToday =
+      final expectedToday =
           activitiesNow.map((a) => ActivityDay(a, today)).toList();
       final activitiesTomorrow = [FakeActivity.starts(tomorrow)];
-      final expextedTomorrow = activitiesTomorrow
+      final expectedTomorrow = activitiesTomorrow
           .map((a) => ActivityDay(a, today.nextDay()))
           .toList();
       when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
@@ -842,7 +842,7 @@ void main() {
         dayEventsCubit.stream,
         emits(
           EventsState(
-            activities: expextedToday,
+            activities: expectedToday,
             timers: const [],
             day: today,
             occasion: Occasion.current,
@@ -857,7 +857,7 @@ void main() {
         dayEventsCubit.stream,
         emits(
           EventsState(
-            activities: expextedTomorrow,
+            activities: expectedTomorrow,
             timers: const [],
             day: tomorrow,
             occasion: Occasion.future,
@@ -992,7 +992,7 @@ void main() {
     });
 
     group('Recurring tests activity', () {
-      final firstDay = DateTime(2006, 06, 01); // 2006-06-01 was a thursday
+      final firstDay = DateTime(2006, 06, 01); // 2006-06-01 was a Thursday
       setUp(() {
         dayPickerBloc = DayPickerBloc(clockBloc: ClockBloc.fixed(firstDay));
         mockActivityRepository = MockActivityRepository();
@@ -1019,7 +1019,7 @@ void main() {
       test('Shows recurring weekends', () async {
         // Arrange
         final weekendActivity = [
-          FakeActivity.reocurrsWeekends(DateTime(2000, 01, 01))
+          FakeActivity.reoccursWeekends(DateTime(2000, 01, 01))
         ];
         when(() => mockActivityRepository.allBetween(any(), any()))
             .thenAnswer((_) => Future.value(weekendActivity));
@@ -1072,10 +1072,10 @@ void main() {
       test('Shows recurring christmas', () async {
         // Arrange
         final boxingDay = DateTime(2000, 12, 23);
-        final chrismasEve = DateTime(2000, 12, 24);
-        final chrismasDay = DateTime(2000, 12, 25);
+        final christmasEve = DateTime(2000, 12, 24);
+        final christmasDay = DateTime(2000, 12, 25);
         final christmas = [
-          FakeActivity.reocurrsOnDate(chrismasEve, DateTime(2000, 01, 01))
+          FakeActivity.reoccursOnDate(christmasEve, DateTime(2000, 01, 01))
         ];
         when(() => mockActivityRepository.allBetween(any(), any()))
             .thenAnswer((_) => Future.value(christmas));
@@ -1097,15 +1097,15 @@ void main() {
               ),
               EventsState(
                 activities:
-                    christmas.map((a) => ActivityDay(a, chrismasEve)).toList(),
+                    christmas.map((a) => ActivityDay(a, christmasEve)).toList(),
                 timers: const [],
-                day: chrismasEve,
+                day: christmasEve,
                 occasion: Occasion.past,
               ),
               EventsState(
                 activities: const [],
                 timers: const [],
-                day: chrismasDay,
+                day: christmasDay,
                 occasion: Occasion.past,
               ),
             ]));
@@ -1114,11 +1114,11 @@ void main() {
       test('Does not show recurring christmas after endTime', () async {
         // Arrange
         final boxingDay = DateTime(2022, 12, 23);
-        final chrismasEve = DateTime(2022, 12, 24);
-        final chrismasDay = DateTime(2022, 12, 25);
+        final christmasEve = DateTime(2022, 12, 24);
+        final christmasDay = DateTime(2022, 12, 25);
         final christmas = const Iterable<Activity>.empty().followedBy([
-          FakeActivity.reocurrsOnDate(
-              chrismasEve, DateTime(2012, 01, 01), DateTime(2021, 01, 01))
+          FakeActivity.reoccursOnDate(
+              christmasEve, DateTime(2012, 01, 01), DateTime(2021, 01, 01))
         ]);
         when(() => mockActivityRepository.allBetween(any(), any()))
             .thenAnswer((_) => Future.value(christmas));
@@ -1141,13 +1141,13 @@ void main() {
               EventsState(
                 activities: const [],
                 timers: const [],
-                day: chrismasEve,
+                day: christmasEve,
                 occasion: Occasion.future,
               ),
               EventsState(
                 activities: const [],
                 timers: const [],
-                day: chrismasDay,
+                day: christmasDay,
                 occasion: Occasion.future,
               ),
             ]));
@@ -1158,7 +1158,7 @@ void main() {
         final startTime = DateTime(2031, 12, 31);
         final endTime = DateTime(2032, 12, 31);
         final monthStartActivity = [
-          FakeActivity.reocurrsOnDay(1, startTime, endTime)
+          FakeActivity.reoccursOnDay(1, startTime, endTime)
         ];
         final allOtherDays = List.generate(
             300, (i) => startTime.add(Duration(days: i)).onlyDays());

@@ -19,7 +19,7 @@ void verifySyncGeneric(
   expect(d.data, matcher);
 }
 
-void verifyUnsyncGeneric(
+void verifyUnsyncedGeneric(
   WidgetTester tester,
   MockGenericDb genericDb, {
   required String key,

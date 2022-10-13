@@ -38,7 +38,7 @@ void main() {
   final finishActivityFinder = find.byType(NextWizardStepButton);
 
   final alarmButtonFinder = find.byKey(TestKey.editAlarm);
-  final alarmAtStartSwichFinder = find.byKey(TestKey.alarmAtStartSwitch);
+  final alarmAtStartSwitchFinder = find.byKey(TestKey.alarmAtStartSwitch);
 
   final okInkWellFinder = find.byKey(const ObjectKey(TestKey.okDialog));
   final okButtonFinder = find.byType(OkButton);
@@ -117,7 +117,7 @@ void main() {
 
     testWidgets('Full day activity page does not show edit alarm',
         (WidgetTester tester) async {
-      mockActivityDb.initWithActivity(FakeActivity.fullday(startTime));
+      mockActivityDb.initWithActivity(FakeActivity.fullDay(startTime));
       await navigateToFullDayActivityPage(tester);
       expect(alarmButtonFinder, findsNothing);
     });
@@ -237,7 +237,7 @@ void main() {
       await tester.tap(editActivityButtonFinder);
       await tester.pumpAndSettle();
 
-      // Assert -- edit activity title is same as aticity title
+      // Assert -- edit activity title is same as activity title
       expect(editActivityPageFinder, findsOneWidget);
       expect(find.text(title), findsOneWidget);
     });
@@ -254,7 +254,7 @@ void main() {
       // Assert -- original title
       expect(find.text(title), findsOneWidget);
 
-      // Act -- tap edit acvtivity button
+      // Act -- tap edit activity button
       await tester.tap(editActivityButtonFinder);
       await tester.pumpAndSettle();
 
@@ -321,7 +321,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       const day = 14;
-      mockActivityDb.initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
+      mockActivityDb.initWithActivity(FakeActivity.reoccursEveryDay(startTime));
 
       await navigateToActivityPage(tester);
 
@@ -349,7 +349,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       const day = 19;
-      mockActivityDb.initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
+      mockActivityDb.initWithActivity(FakeActivity.reoccursEveryDay(startTime));
       await navigateToActivityPage(tester);
 
       expect(find.textContaining('11 November 2111'), findsOneWidget);
@@ -399,7 +399,7 @@ void main() {
       );
       expect(find.byType(SideDotsLarge), findsNothing);
 
-      // Act --  edit acvtivity date to today and save
+      // Act --  edit activity date to today and save
       await tester.tap(editActivityButtonFinder);
       await tester.pumpAndSettle();
       await changeDate(tester, toDay);
@@ -579,7 +579,7 @@ void main() {
       await navigateToActivityPage(tester);
       await tester.tap(alarmButtonFinder);
       await tester.pumpAndSettle();
-      await tester.tap(alarmAtStartSwichFinder);
+      await tester.tap(alarmAtStartSwitchFinder);
       await tester.pumpAndSettle();
 
       // Assert -- ok button is enabled
@@ -596,7 +596,7 @@ void main() {
       // Act
       await tester.tap(alarmButtonFinder);
       await tester.pumpAndSettle();
-      await tester.tap(alarmAtStartSwichFinder);
+      await tester.tap(alarmAtStartSwitchFinder);
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
@@ -655,7 +655,8 @@ void main() {
     });
 
     testWidgets(
-        'When delete then confirm delete pressed, navigate back and do not show origial widget',
+        'When delete then confirm delete pressed, '
+        'navigate back and do not show original widget',
         (WidgetTester tester) async {
       // Arrange
       mockActivityDb.initWithActivity(FakeActivity.starts(startTime));
@@ -731,7 +732,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         mockActivityDb
-            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
+            .initWithActivity(FakeActivity.reoccursEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -749,7 +750,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         mockActivityDb
-            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
+            .initWithActivity(FakeActivity.reoccursEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -765,11 +766,11 @@ void main() {
       });
 
       testWidgets(
-          'When delete recurring activity then show three alternativs for deletion',
-          (WidgetTester tester) async {
+          'When delete recurring activity then show '
+          'three alternatives for deletion', (WidgetTester tester) async {
         // Arrange
         mockActivityDb
-            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
+            .initWithActivity(FakeActivity.reoccursEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -784,11 +785,11 @@ void main() {
         expect(thisDayAndForwardRadioFinder, findsOneWidget);
       });
 
-      testWidgets('When delete recurring the choosen alternativ is onlyThisDay',
+      testWidgets('When delete recurring the chosen alternative is onlyThisDay',
           (WidgetTester tester) async {
         // Arrange
         mockActivityDb
-            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
+            .initWithActivity(FakeActivity.reoccursEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -817,7 +818,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         mockActivityDb
-            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
+            .initWithActivity(FakeActivity.reoccursEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -844,7 +845,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         mockActivityDb
-            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
+            .initWithActivity(FakeActivity.reoccursEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -868,11 +869,12 @@ void main() {
       });
 
       testWidgets(
-          'When delete recurring and confirm Only this day, navigate back and do not show origial widget',
+          'When delete recurring and confirm Only this day, '
+          'navigate back and do not show original widget',
           (WidgetTester tester) async {
         // Arrange
         mockActivityDb
-            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
+            .initWithActivity(FakeActivity.reoccursEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -893,15 +895,16 @@ void main() {
       });
 
       final goToNextPageFinder = find.byIcon(AbiliaIcons.goToNextPage);
-      final goToPreviusPageFinder =
+      final goToPreviousPageFinder =
           find.byIcon(AbiliaIcons.returnToPreviousPage);
       testWidgets(
-          'When delete recurring and confirm Only this day, go to next day and previus day shows activity card',
+          'When delete recurring and confirm Only this day, '
+          'go to next day and previous day shows activity card',
           (WidgetTester tester) async {
         // Arrange
         const title = 'Unique title to search for';
         mockActivityDb.initWithActivity(
-            FakeActivity.reocurrsEveryDay(tenDaysAgo).copyWith(title: title));
+            FakeActivity.reoccursEveryDay(tenDaysAgo).copyWith(title: title));
         await navigateToActivityPage(tester);
 
         // Act
@@ -919,9 +922,9 @@ void main() {
         expect(find.text(title), findsOneWidget);
 
         // Act -- to to yesterday
-        await tester.tap(goToPreviusPageFinder);
+        await tester.tap(goToPreviousPageFinder);
         await tester.pumpAndSettle();
-        await tester.tap(goToPreviusPageFinder);
+        await tester.tap(goToPreviousPageFinder);
         await tester.pumpAndSettle();
 
         expect(activityTimepillarCardFinder, findsOneWidget);
@@ -929,12 +932,12 @@ void main() {
       });
 
       testWidgets(
-          'When delete recurring a confirm all days, go to previus day and next day shows no activity card',
+          'When delete recurring a confirm all days, go to previous day and next day shows no activity card',
           (WidgetTester tester) async {
         // Arrange
         const title = 'Unique title to search for';
         mockActivityDb.initWithActivity(
-            FakeActivity.reocurrsEveryDay(startTime).copyWith(title: title));
+            FakeActivity.reoccursEveryDay(startTime).copyWith(title: title));
         await navigateToActivityPage(tester);
 
         // Act
@@ -946,7 +949,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(okButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(goToPreviusPageFinder);
+        await tester.tap(goToPreviousPageFinder);
         await tester.pumpAndSettle();
 
         // Assert
@@ -964,12 +967,12 @@ void main() {
       });
 
       testWidgets(
-          'When delete recurring and confirming This day and forward, this day and next day does not shows activity card but previus day does',
+          'When delete recurring and confirming This day and forward, this day and next day does not shows activity card but previous day does',
           (WidgetTester tester) async {
         // Arrange
         const title = 'Unique title to search for';
         mockActivityDb.initWithActivity(
-            FakeActivity.reocurrsEveryDay(tenDaysAgo).copyWith(title: title));
+            FakeActivity.reoccursEveryDay(tenDaysAgo).copyWith(title: title));
         await navigateToActivityPage(tester);
 
         // Act
@@ -987,7 +990,7 @@ void main() {
         expect(find.text(title), findsNothing);
 
         // Act -- go to yesterday
-        await tester.tap(goToPreviusPageFinder);
+        await tester.tap(goToPreviousPageFinder);
         await tester.pumpAndSettle();
 
         // Assert
@@ -1011,13 +1014,13 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         mockActivityDb
-            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
+            .initWithActivity(FakeActivity.reoccursEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
         await tester.tap(alarmButtonFinder);
         await tester.pumpAndSettle();
-        await tester.tap(alarmAtStartSwichFinder);
+        await tester.tap(alarmAtStartSwitchFinder);
         await tester.pumpAndSettle();
         await tester.tap(okButtonFinder);
         await tester.pumpAndSettle();
@@ -1034,7 +1037,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         mockActivityDb
-            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
+            .initWithActivity(FakeActivity.reoccursEveryDay(startTime));
         await navigateToActivityPage(tester);
 
         // Act
@@ -1054,7 +1057,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         mockActivityDb
-            .initWithActivity(FakeActivity.reocurrsEveryDay(startTime));
+            .initWithActivity(FakeActivity.reoccursEveryDay(startTime));
         await navigateToActivityPage(tester);
         const newTitle = 'newTitle';
 
@@ -1072,7 +1075,7 @@ void main() {
       });
 
       testWidgets(
-          'Correct day in datepicker shows in edit activity when edit recurring activity',
+          'Correct day in DatePicker shows in edit activity when edit recurring activity',
           (WidgetTester tester) async {
         // Arrange
         final activity = Activity.createNew(
@@ -1340,9 +1343,9 @@ void main() {
 
     testWidgets('note', (WidgetTester tester) async {
       const noteText =
-          '''Ceasarsallad - Kyckling, bacon, sallad, gurka, tomat, rödlök, brödkrutonger, Grana Padano samt ceasardressing ((G), (L))
-Asien sweet and SourBowl – Sesam marinerad kycklingfile, plocksallad, picklade morötter, risnudlar, sojabönor toppas med rostade sesamfrön och koriander, chili och apelsindressing
-Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade morötter, risnudlar, sojabönor toppas med rostade sesamfrön och koriander, chili och apelsindressing
+          '''In accordance with the Christmas traditions of the Serbs, their festive meal has a copious and diverse selection of foods, although it is prepared according to the rules of fasting.
+As well as a round, unleavened loaf of bread and salt, which are necessary, this meal may comprise roast fish, cooked beans, sauerkraut, noodles with ground walnuts, honey, and wine.
+Families in some Slavic countries leave an empty place at the table for guests (alluding to Mary and Joseph looking for shelter in Bethlehem).
 ''';
       mockActivityDb.initWithActivity(Activity.createNew(
         title: 'title',

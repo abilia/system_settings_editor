@@ -86,7 +86,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     Emitter<ActivitiesState> emit,
   ) async {
     final series =
-        (await activityRepository.getBySerie(event.activity.seriesId)).toSet();
+        (await activityRepository.getBySeries(event.activity.seriesId)).toSet();
     final activity = event.activity;
     switch (event.applyTo) {
       case ApplyTo.allDays:
@@ -121,7 +121,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     Emitter<ActivitiesState> emit,
   ) async {
     final series =
-        (await activityRepository.getBySerie(event.activity.seriesId)).toSet();
+        (await activityRepository.getBySeries(event.activity.seriesId)).toSet();
     switch (event.applyTo) {
       case ApplyTo.thisDayAndForward:
         await _handleResult(

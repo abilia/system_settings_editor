@@ -114,7 +114,7 @@ void main() {
     );
 
     blocTest(
-      'Next minut alarm does nothing',
+      'Next minute alarm does nothing',
       setUp: () => when(() => mockActivityRepository.getAll())
           .thenAnswer((_) => Future.value([soonActivity])),
       build: () => AlarmCubit(
@@ -129,7 +129,7 @@ void main() {
     );
 
     blocTest(
-      'Next minut alarm alarm next minute',
+      'Next minute alarm alarm next minute',
       setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([soonActivity])),
       build: () => AlarmCubit(
@@ -210,7 +210,7 @@ void main() {
       expect: () => [StartAlarm(ActivityDay(inTwoMinActivity, day))],
     );
 
-    final recursThursday = FakeActivity.reocurrsTuedays(nextMinute);
+    final recursThursday = FakeActivity.reoccursTuesdays(nextMinute);
     blocTest(
       'Recurring weekly alarms shows',
       setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
@@ -228,7 +228,7 @@ void main() {
       expect: () => [StartAlarm(ActivityDay(recursThursday, day))],
     );
 
-    final recursTheThisDayOfMonth = FakeActivity.reocurrsOnDay(
+    final recursTheThisDayOfMonth = FakeActivity.reoccursOnDay(
         nextMinute.day,
         nextMinute.subtract(const Duration(days: 60)),
         nextMinute.add(const Duration(days: 60)));
@@ -250,7 +250,7 @@ void main() {
       expect: () => [StartAlarm(ActivityDay(recursTheThisDayOfMonth, day))],
     );
 
-    final recursTheThisDayOfYear = FakeActivity.reocurrsOnDate(nextMinute);
+    final recursTheThisDayOfYear = FakeActivity.reoccursOnDate(nextMinute);
     blocTest(
       'Recurring yearly alarms shows',
       setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))

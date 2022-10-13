@@ -73,7 +73,7 @@ void main() {
     await expect;
   });
 
-  test('Changing date changes date but not time in timeinterval', () async {
+  test('Changing date changes date but not time in time interval', () async {
     // Arrange
     final aDate = DateTime(2022, 02, 22, 22, 00);
 
@@ -85,8 +85,8 @@ void main() {
     );
     final activity = editActivityCubit.state.activity;
     final newDate = DateTime(2011, 11, 11, 11, 11);
-    final expetedNewDate = DateTime(2011, 11, 11, 11, 11);
-    final expectedTimeInterval = TimeInterval(startDate: expetedNewDate);
+    final expectedNewDate = DateTime(2011, 11, 11, 11, 11);
+    final expectedTimeInterval = TimeInterval(startDate: expectedNewDate);
 
     final expect = expectLater(
       editActivityCubit.stream,
@@ -283,7 +283,7 @@ void main() {
 
   test('Changing InfoItem', () async {
     // Arrange
-    const note = NoteInfoItem('anote');
+    const note = NoteInfoItem('a note');
     final withNote =
         Activity.createNew(title: 'null', startTime: aTime, infoItem: note);
     final withChecklist = withNote.copyWith(infoItem: Checklist());
@@ -341,7 +341,7 @@ void main() {
     await expect;
   });
 
-  test('Changing start date to after recuring end changes recuring end',
+  test('Changing start date to after recurring end changes recurring end',
       () async {
     // Arrange
     final editActivityCubit = EditActivityCubit.newActivity(

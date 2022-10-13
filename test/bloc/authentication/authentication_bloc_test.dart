@@ -113,7 +113,7 @@ void main() {
     );
 
     blocTest(
-      'CheckAuthentication event auth failed, no calendar fethed',
+      'CheckAuthentication event auth failed, no calendar fetched',
       setUp: () =>
           when(() => mockedUserRepository.isLoggedIn()).thenReturn(false),
       build: () => AuthenticationBloc(mockedUserRepository),
@@ -165,7 +165,7 @@ void main() {
     );
 
     blocTest(
-      'unauthed token gets deleted and returns state Unauthenticated',
+      'unauthenticated token gets deleted and returns state Unauthenticated',
       setUp: () => when(() => mockedUserRepository.me())
           .thenAnswer((_) => Future.error(UnauthorizedException())),
       build: () => AuthenticationBloc(mockedUserRepository, onLogout: () {}),

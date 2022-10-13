@@ -43,7 +43,7 @@ void main() {
   );
 
   blocTest<TemplateActivityWizardCubit, WizardState>(
-    'previus not possible',
+    'previous not possible',
     build: () => TemplateActivityWizardCubit(
       editActivityCubit: EditActivityCubit.newActivity(
         day: aDay,
@@ -95,7 +95,7 @@ void main() {
   );
 
   blocTest<TemplateActivityWizardCubit, WizardState>(
-    'next emit successfull save and adds to sortable bloc',
+    'next emit successful save and adds to sortable bloc',
     build: () => TemplateActivityWizardCubit(
       editActivityCubit: EditActivityCubit.newActivity(
         day: aDay,

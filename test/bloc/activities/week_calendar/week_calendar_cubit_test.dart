@@ -240,8 +240,8 @@ void main() {
     });
 
     test('SGC-864: Week calendar updates occasion', () async {
-      final initalMinActivity = Activity.createNew(
-            title: 'initalMinActivity',
+      final initialMinActivity = Activity.createNew(
+            title: 'initialMinActivity',
             startTime: initialMinutes,
           ),
           nextMinActivity = Activity.createNew(
@@ -250,7 +250,7 @@ void main() {
           );
       // Arrange
       when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
-          (_) => Future.value([initalMinActivity, nextMinActivity]));
+          (_) => Future.value([initialMinActivity, nextMinActivity]));
       // Act
       activitiesBloc.add(LoadActivities());
       // Assert
@@ -266,7 +266,7 @@ void main() {
               3: const [], // No activity this day since remove after is true
               4: [
                 ActivityOccasion(
-                  initalMinActivity,
+                  initialMinActivity,
                   initialMinutes.onlyDays(),
                   Occasion.current,
                 ),
@@ -299,7 +299,7 @@ void main() {
               3: const [], // No activity this day since remove after is true
               4: [
                 ActivityOccasion(
-                  initalMinActivity,
+                  initialMinActivity,
                   initialMinutes.onlyDays(),
                   Occasion.past,
                 ),
@@ -382,7 +382,7 @@ class _WeekCalendarLoadedMatcher extends Matcher {
   @override
   Description describe(Description description) => description.add(
       'WeekCalendarLoaded { currentWeekStart: ${value.currentWeekStart}, '
-      'events: ${value.currentWeekEvents}}, fullday: ${value.fullDayActivities}}');
+      'events: ${value.currentWeekEvents}}, full day: ${value.fullDayActivities}}');
 
   @override
   bool matches(object, Map matchState) {
