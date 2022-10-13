@@ -198,7 +198,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
               ),
               timepillarMeasures: widget.timepillarMeasures,
               child: RefreshIndicator(
-                onRefresh: refresh,
+                onRefresh: () => refresh(context),
                 notificationPredicate: (scrollNotification) =>
                     widget.pullToRefresh &&
                     defaultScrollNotificationPredicate(scrollNotification),
