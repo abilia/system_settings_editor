@@ -511,7 +511,7 @@ class _WeekActivityContent extends StatelessWidget {
       child: _WeekEventContent(
         occasion: activityOccasion,
         selected: selected && !fullDay,
-        fullDay: fullDay,
+        showColors: !fullDay,
         onClick: () {
           final authProviders = copiedAuthProviders(context);
           Navigator.push(
@@ -674,7 +674,7 @@ class _WeekEventContent extends StatelessWidget {
   final EventOccasion occasion;
   final Function()? onClick;
   final bool selected;
-  final bool fullDay;
+  final bool? showColors;
   final Widget child;
 
   const _WeekEventContent({
@@ -682,7 +682,7 @@ class _WeekEventContent extends StatelessWidget {
     required this.onClick,
     required this.selected,
     required this.child,
-    this.fullDay = false,
+    this.showColors,
     Key? key,
   }) : super(key: key);
 
@@ -692,12 +692,13 @@ class _WeekEventContent extends StatelessWidget {
     final borderRadius = selected
         ? wLayout.selectedDay.activityRadius
         : wLayout.notSelectedDay.activityRadius;
-    final showColors = context.select((MemoplannerSettingsBloc bloc) =>
-        bloc.state.calendar.categories.showColors);
+    final bool showColors = this.showColors ??
+        context.select((MemoplannerSettingsBloc bloc) =>
+            bloc.state.calendar.categories.showColors);
     final categoryBorder = getCategoryBorder(
       inactive: occasion.isPast,
       current: occasion.isCurrent,
-      showCategoryColor: showColors && !fullDay,
+      showCategoryColor: showColors,
       category: occasion.category,
       borderWidth: selected
           ? wLayout.selectedDay.activityBorderWidth
