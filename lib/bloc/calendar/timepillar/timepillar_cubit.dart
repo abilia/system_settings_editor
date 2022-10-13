@@ -69,7 +69,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
       dayPartCubit.state,
     );
     final activities = await activitiesBloc.activityRepository
-        .allBetween(interval.start, interval.end);
+        .allBetween(interval.start.onlyDays(), interval.end);
     previousState = state;
     emit(
       _generateState(
