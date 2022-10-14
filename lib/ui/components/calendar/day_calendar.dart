@@ -11,34 +11,21 @@ class DayCalendar extends StatelessWidget {
     return BlocProvider<ScrollPositionCubit>(
       create: (context) => ScrollPositionCubit(
         dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
-        clockBloc: context.read<ClockBloc>(),
-        timepillarMeasuresCubit: context.read<TimepillarMeasuresCubit>(),
       ),
-      child: Config.isMP
-          ? BlocListener<InactivityCubit, InactivityState>(
-              listenWhen: (previous, current) =>
-                  current is ReturnToTodayThresholdReached,
-              listener: (context, state) =>
-                  BlocProvider.of<ScrollPositionCubit>(context).goToNow(),
-              child: const CalendarScaffold())
-          : const CalendarScaffold(),
-    );
-  }
-}
+      child: Builder(
+        builder: (context) {
+          final displayAppbar = context.select((MemoplannerSettingsBloc bloc) =>
+              bloc.state.dayCalendar.appBar.displayDayCalendarAppBar);
 
-class CalendarScaffold extends StatelessWidget {
-  const CalendarScaffold({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final displayAppbar = context.select((MemoplannerSettingsBloc bloc) =>
-        bloc.state.dayCalendar.appBar.displayDayCalendarAppBar);
-
-    return Scaffold(
-      appBar: displayAppbar ? const DayCalendarAppBar() : null,
-      floatingActionButton: const FloatingActions(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      body: const Calendars(),
+          return Scaffold(
+            appBar: displayAppbar ? const DayCalendarAppBar() : null,
+            floatingActionButton: const FloatingActions(),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.startFloat,
+            body: const Calendars(),
+          );
+        },
+      ),
     );
   }
 }

@@ -119,10 +119,12 @@ void main() {
           child: Stack(
             children: <Widget>[
               Timeline(
-                now: initialTime ?? startTime,
+                top: currentDotMidPosition(
+                      (initialTime ?? startTime),
+                      measures,
+                    ) -
+                    layout.timepillar.timeLineHeight / 2,
                 width: 40,
-                offset: -layout.timepillar.topMargin,
-                measures: measures,
               ),
               TimepillarBoard(
                 TimepillarBoard.positionTimepillarCards(
