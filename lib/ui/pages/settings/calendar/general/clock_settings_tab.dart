@@ -2,7 +2,6 @@ import 'package:provider/provider.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class ClockSettingsTab extends StatelessWidget {
   const ClockSettingsTab({Key? key}) : super(key: key);
@@ -151,13 +150,13 @@ class PreviewTimePillar extends StatelessWidget {
                       ),
                       if (tpState.timeline)
                         Timeline(
-                          now: _time,
+                          top: currentDotMidPosition(
+                                _time,
+                                measures,
+                                topMargin: 0,
+                              ) -
+                              layout.timepillar.timeLineHeight / 2,
                           width: measures.timePillarTotalWidth * 3,
-                          measures: measures,
-                          offset: hoursToPixels(
-                            interval.start.hour,
-                            measures.dotDistance,
-                          ),
                         ),
                     ],
                   );

@@ -827,5 +827,59 @@ void main() {
 
       expect(checklistAfter.checklist.isSignedOff(q1, day), isTrue);
     });
+
+    testWidgets(
+        'BUG SGC-2033 - Checklist not responsive on reminder'
+        ' with "show ongoing activity" setting on',
+        (WidgetTester tester) async {
+      tester.binding.window.physicalSizeTestValue = const Size(800, 1280);
+      tester.binding.window.devicePixelRatioTestValue = 1;
+
+      // resets the screen to its orinal size after the test end
+      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+      addTearDown(tester.binding.window.clearDevicePixelRatioTestValue);
+
+      const q1 = Question(id: 1, name: '1one');
+      final checklist = Checklist(
+        questions: const [q1, Question(id: 2, name: '2one')],
+      );
+
+      final checkableWithChecklist = Activity.createNew(
+        title: 'Checklist',
+        startTime: startTime,
+        infoItem: checklist,
+        checkable: true,
+      );
+
+      final startAlarm = StartAlarm(
+        ActivityDay(checkableWithChecklist, day),
+        fullScreenActivity: true,
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: startAlarm,
+            alarmNavigator: alarmNavigator,
+            child: AlarmPage(alarm: startAlarm),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+      expect(find.byType(FullScreenActivityPage), findsOneWidget);
+
+      final checklistBefore = tester.widget<ChecklistView>(
+        find.byType(ChecklistView),
+      );
+      expect(checklistBefore.checklist.isSignedOff(q1, day), isFalse);
+
+      await tester.tap(find.text(q1.name));
+      await tester.pumpAndSettle();
+      final checklistAfter = tester.widget<ChecklistView>(
+        find.byType(ChecklistView),
+      );
+
+      expect(checklistAfter.checklist.isSignedOff(q1, day), isTrue);
+    }, skip: !Config.isMP);
   });
 }

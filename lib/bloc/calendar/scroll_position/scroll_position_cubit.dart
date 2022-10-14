@@ -1,172 +1,138 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
-import 'package:seagull/utils/all.dart';
 
 part 'scroll_position_state.dart';
 
 class ScrollPositionCubit extends Cubit<ScrollPositionState> {
-  final double nowMarginTop;
-  final double nowMarginBottom;
-
   final DayPickerBloc dayPickerBloc;
-  final ClockBloc clockBloc;
-  final TimepillarMeasuresCubit timepillarMeasuresCubit;
   late final StreamSubscription dayPickerBlocSubscription;
-  late final StreamSubscription clockBlocSubscription;
 
   ScrollPositionCubit({
     required this.dayPickerBloc,
-    required this.clockBloc,
-    required this.timepillarMeasuresCubit,
-    this.nowMarginTop = 8,
-    this.nowMarginBottom = 8,
   }) : super(dayPickerBloc.state.isToday ? Unready() : WrongDay()) {
     dayPickerBlocSubscription = dayPickerBloc.stream
-        .where((state) => !state.isToday)
-        .listen((_) => wrongDaySelected());
-    clockBlocSubscription =
-        clockBloc.stream.listen((now) => scrollPositionUpdated());
+        .where((day) => !day.isToday)
+        .listen((_) => emit(WrongDay()));
   }
 
-  Future<void> goToNow() async {
-    final s = state;
-    await _jumpToActivity(s);
-    if (s is OutOfView) {
-      emit(
-        _isActivityInView(
-          s.scrollController,
-          s.scrollControllerCreatedTime,
-        ),
+  Future<void> goToNow({
+    Duration duration = const Duration(milliseconds: 300),
+    Curve curve = Curves.easeInOut,
+  }) async {
+    final scrollState = state;
+
+    if (scrollState is WrongDay) {
+      dayPickerBloc.add(const CurrentDay());
+    }
+
+    if (scrollState is ScrollPositionReadyState) {
+      final sc = scrollState.scrollController;
+
+      final scrollTo = scrollState.nowOffset.clamp(
+        sc.position.minScrollExtent,
+        sc.position.maxScrollExtent,
       );
-    } else if (s is InView) {
-      emit(InView(s.scrollController));
-    } else {
-      emit(Unready());
+
+      if (scrollTo == scrollState.scrollController.offset) {
+        return;
+      }
+
+      await sc.animateTo(
+        scrollTo,
+        duration: duration,
+        curve: curve,
+      );
     }
   }
 
-  bool wrongDaySelected() {
-    if (!dayPickerBloc.state.isToday) {
-      emit(WrongDay());
-      return true;
+  void updateNowOffset({required double nowOffset}) {
+    final scrollState = state;
+    if (scrollState is ScrollPositionReadyState) {
+      updateState(
+        scrollController: scrollState.scrollController,
+        nowOffset: nowOffset,
+        inViewMargin: scrollState.inViewMargin,
+      );
     }
-    return false;
   }
 
-  void scrollViewRenderComplete(
-    ScrollController scrollController, {
-    DateTime? createdTime,
+  void updateState({
+    required ScrollController scrollController,
+    required double nowOffset,
+    required double inViewMargin,
   }) {
-    if (!wrongDaySelected()) {
-      emit(
-        _isActivityInView(
-          scrollController,
-          createdTime,
-        ),
-      );
-    }
+    emit(
+      _getState(
+        scrollController,
+        nowOffset,
+        inViewMargin,
+      ),
+    );
+  }
+
+  void reset() {
+    emit(Unready());
   }
 
   void scrollPositionUpdated() {
-    final s = state;
-    if (!wrongDaySelected() && s is ScrollPositionReadyState) {
+    final scrollState = state;
+
+    if (scrollState is ScrollPositionReadyState) {
       emit(
-        _isActivityInView(
-          s.scrollController,
-          s.scrollControllerCreatedTime,
+        _getState(
+          scrollState.scrollController,
+          scrollState.nowOffset,
+          scrollState.inViewMargin,
         ),
       );
     }
   }
 
-  ScrollPositionState _isActivityInView(ScrollController scrollController,
-      DateTime? scrollControllerCreatedTime) {
-    if (!scrollController.hasClients) {
+  ScrollPositionState _getState(
+    ScrollController sc,
+    double nowOffset,
+    double inViewMargin,
+  ) {
+    if (!dayPickerBloc.state.isToday) {
+      return WrongDay();
+    }
+
+    if (sc.positions.length != 1) {
       return Unready();
     }
-    final scrollPosition = scrollController.offset;
-    final maxScrollExtent = scrollController.position.maxScrollExtent;
-    final nowPosition = scrollController.initialScrollOffset +
-        timeFromCreation(scrollControllerCreatedTime);
 
-    if (_atBottomOfList(
-      scrollPosition: scrollPosition,
-      maxScrollExtent: maxScrollExtent,
-      nowPosition: nowPosition,
-    )) {
-      return InView(
-        scrollController,
-        scrollControllerCreatedTime,
-      );
-    } else if (_inView(
-      scrollPosition: scrollPosition,
-      nowPosition: nowPosition,
-    )) {
-      return InView(
-        scrollController,
-        scrollControllerCreatedTime,
-      );
-    } else {
-      return OutOfView(
-        scrollController,
-        scrollControllerCreatedTime,
-      );
-    }
-  }
+    final clampedNowOffset = nowOffset.clamp(
+      sc.position.minScrollExtent,
+      sc.position.maxScrollExtent,
+    );
 
-  bool _atBottomOfList({
-    required double scrollPosition,
-    required double maxScrollExtent,
-    required double nowPosition,
-  }) =>
-      scrollPosition >= maxScrollExtent && nowPosition > maxScrollExtent;
+    final inViewBottomOffset = clampedNowOffset + inViewMargin;
+    final inViewTopOffset = clampedNowOffset - inViewMargin;
+    final currentOffset = sc.offset;
 
-  bool _inView({
-    required double scrollPosition,
-    required double nowPosition,
-  }) =>
-      nowPosition - scrollPosition <= nowMarginBottom &&
-      scrollPosition - nowPosition <= nowMarginTop;
+    final isInView =
+        currentOffset <= inViewBottomOffset && currentOffset >= inViewTopOffset;
 
-  double timeFromCreation(DateTime? scrollControllerCreatedTime) {
-    if (scrollControllerCreatedTime != null) {
-      final now = clockBloc.state;
-      final diff = now.difference(scrollControllerCreatedTime);
-      final hours = diff.inHours;
-      final minutes = diff.inMinutes % Duration.minutesPerHour;
-
-      return timeToPixels(
-          hours, minutes, timepillarMeasuresCubit.state.dotDistance);
-    }
-    return 0.0;
-  }
-
-  Future _jumpToActivity(ScrollPositionState state) async {
-    if (state is OutOfView) {
-      final sc = state.scrollController;
-      final nowPos = sc.initialScrollOffset +
-          timeFromCreation(state.scrollControllerCreatedTime);
-
-      final offset = min(nowPos, sc.position.maxScrollExtent);
-      await sc.animateTo(
-        offset,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
-    } else if (state is WrongDay) {
-      dayPickerBloc.add(const CurrentDay());
-    }
+    return isInView
+        ? InView(
+            sc,
+            nowOffset,
+            inViewMargin,
+          )
+        : OutOfView(
+            sc,
+            nowOffset,
+            inViewMargin,
+          );
   }
 
   @override
   Future<void> close() async {
     await dayPickerBlocSubscription.cancel();
-    await clockBlocSubscription.cancel();
     return super.close();
   }
 }

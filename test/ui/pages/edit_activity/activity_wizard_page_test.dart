@@ -94,85 +94,99 @@ void main() {
     bool use24 = false,
     BasicActivityDataItem? basicActivityData,
   }) {
+    final navKey = GlobalKey<NavigatorState>();
+
     return MaterialApp(
       supportedLocales: Translator.supportedLocals,
+      navigatorKey: navKey,
       localizationsDelegates: const [Translator.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),
-      builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: use24),
-        child: FakeAuthenticatedBlocsProvider(
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider<ClockBloc>(
-                create: (context) => ClockBloc.fixed(startTime),
-              ),
-              BlocProvider<MemoplannerSettingsBloc>.value(
-                value: mockMemoplannerSettingsBloc,
-              ),
-              BlocProvider<ActivitiesBloc>(create: (_) => FakeActivitiesBloc()),
-              BlocProvider<EditActivityCubit>(
-                create: (context) => EditActivityCubit.newActivity(
-                  day: today,
-                  defaultsSettings: DefaultsAddActivitySettings(
-                      alarm: mockMemoplannerSettingsBloc
-                          .state.addActivity.defaults.alarm),
-                  basicActivityData: basicActivityData,
-                  calendarId: 'calendarId',
-                ),
-              ),
-              BlocProvider<WizardCubit>(
-                create: (context) => ActivityWizardCubit.newActivity(
-                  activitiesBloc: context.read<ActivitiesBloc>(),
-                  clockBloc: context.read<ClockBloc>(),
-                  editActivityCubit: context.read<EditActivityCubit>(),
-                  addActivitySettings:
-                      context.read<MemoplannerSettingsBloc>().state.addActivity,
-                  showCategories: context
-                      .read<MemoplannerSettingsBloc>()
-                      .state
-                      .calendar
-                      .categories
-                      .show,
-                ),
-              ),
-              BlocProvider<SortableBloc>.value(value: mockSortableBloc),
-              BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),
-              BlocProvider<DayPickerBloc>(
-                create: (context) => DayPickerBloc(
-                  clockBloc: context.read<ClockBloc>(),
-                ),
-              ),
-              BlocProvider<SpeechSettingsCubit>(
-                create: (context) => FakeSpeechSettingsCubit(),
-              ),
-              BlocProvider<PermissionCubit>(
-                create: (context) => PermissionCubit()..checkAll(),
-              ),
-              BlocProvider<WakeLockCubit>(
-                create: (context) => WakeLockCubit(
-                  screenTimeoutCallback: Future.value(30.minutes()),
-                  memoSettingsBloc: context.read<MemoplannerSettingsBloc>(),
-                  battery: FakeBattery(),
-                ),
-              ),
-              BlocProvider<TimerCubit>.value(value: mockTimerCubit),
-              BlocProvider<SpeechSettingsCubit>(
-                create: (context) => FakeSpeechSettingsCubit(),
-              ),
-              BlocProvider<VoicesCubit>(
-                create: (context) => FakeVoicesCubit(),
-              ),
-              BlocProvider<DayPartCubit>(
-                create: (context) => FakeDayPartCubit(),
-              ),
-            ],
-            child: child!,
+      builder: (context, child) {
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => navKey.currentState?.push(
+            MaterialPageRoute(builder: (context) => const ActivityWizardPage()),
           ),
-        ),
-      ),
-      home: const ActivityWizardPage(),
+        );
+
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: use24),
+          child: FakeAuthenticatedBlocsProvider(
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider<ClockBloc>(
+                  create: (context) => ClockBloc.fixed(startTime),
+                ),
+                BlocProvider<MemoplannerSettingsBloc>.value(
+                  value: mockMemoplannerSettingsBloc,
+                ),
+                BlocProvider<ActivitiesBloc>(
+                    create: (_) => FakeActivitiesBloc()),
+                BlocProvider<EditActivityCubit>(
+                  create: (context) => EditActivityCubit.newActivity(
+                    day: today,
+                    defaultsSettings: DefaultsAddActivitySettings(
+                        alarm: mockMemoplannerSettingsBloc
+                            .state.addActivity.defaults.alarm),
+                    basicActivityData: basicActivityData,
+                    calendarId: 'calendarId',
+                  ),
+                ),
+                BlocProvider<WizardCubit>(
+                  create: (context) => ActivityWizardCubit.newActivity(
+                    activitiesBloc: context.read<ActivitiesBloc>(),
+                    clockBloc: context.read<ClockBloc>(),
+                    editActivityCubit: context.read<EditActivityCubit>(),
+                    addActivitySettings: context
+                        .read<MemoplannerSettingsBloc>()
+                        .state
+                        .addActivity,
+                    showCategories: context
+                        .read<MemoplannerSettingsBloc>()
+                        .state
+                        .calendar
+                        .categories
+                        .show,
+                  ),
+                ),
+                BlocProvider<SortableBloc>.value(value: mockSortableBloc),
+                BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),
+                BlocProvider<DayPickerBloc>(
+                  create: (context) => DayPickerBloc(
+                    clockBloc: context.read<ClockBloc>(),
+                  ),
+                ),
+                BlocProvider<SpeechSettingsCubit>(
+                  create: (context) => FakeSpeechSettingsCubit(),
+                ),
+                BlocProvider<PermissionCubit>(
+                  create: (context) => PermissionCubit()..checkAll(),
+                ),
+                BlocProvider<WakeLockCubit>(
+                  create: (context) => WakeLockCubit(
+                    screenTimeoutCallback: Future.value(30.minutes()),
+                    memoSettingsBloc: context.read<MemoplannerSettingsBloc>(),
+                    battery: FakeBattery(),
+                  ),
+                ),
+                BlocProvider<TimerCubit>.value(value: mockTimerCubit),
+                BlocProvider<SpeechSettingsCubit>(
+                  create: (context) => FakeSpeechSettingsCubit(),
+                ),
+                BlocProvider<VoicesCubit>(
+                  create: (context) => FakeVoicesCubit(),
+                ),
+                BlocProvider<DayPartCubit>(
+                  create: (context) => FakeDayPartCubit(),
+                ),
+              ],
+              child: child!,
+            ),
+          ),
+        );
+      },
+      home: Container(color: Colors.blueGrey),
     );
   }
 
