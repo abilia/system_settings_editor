@@ -11,7 +11,7 @@
       "flutterMode": "debug",
       "args": [
         "--dart-define",
-        "release=alpha",
+        "release=dev",
         "--flavor",
         "mpgo",
       ],
@@ -23,7 +23,7 @@
       "flutterMode": "debug",
       "args": [
         "--dart-define",
-        "release=alpha",
+        "release=dev",
         "--dart-define",
         "flavor=mp",
         "--flavor",
@@ -36,6 +36,8 @@
       "type": "dart",
       "flutterMode": "profile",
       "args": [
+        "--dart-define",
+        "release=dev",
         "--flavor",
         "mpgo",
       ],
@@ -47,7 +49,7 @@
       "flutterMode": "profile",
       "args": [
         "--dart-define",
-        "release=alpha",
+        "release=dev",
         "--dart-define",
         "flavor=mp",
         "--flavor",

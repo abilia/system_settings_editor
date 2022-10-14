@@ -39,7 +39,7 @@ class MpGoMenuPage extends StatelessWidget {
             text: t.logout,
             navigateTo: const LogoutPage(),
           ),
-          if (Config.alpha) const FakeTicker(),
+          if (Config.dev) const FakeTicker(),
         ],
       ),
     );

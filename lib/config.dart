@@ -1,7 +1,6 @@
 class Config {
-  static const alpha = String.fromEnvironment('release') == 'alpha';
-  static const beta = alpha || String.fromEnvironment('release') == 'beta';
-  static const release = !beta;
+  static const dev = String.fromEnvironment('release') == 'dev';
+  static const release = !dev;
 
   static const isMP = String.fromEnvironment('flavor') == 'mp';
   static const isMPGO = !isMP;

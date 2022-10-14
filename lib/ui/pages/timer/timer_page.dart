@@ -166,11 +166,6 @@ class _TimerBottomBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            if (Config.beta)
-              if (timer.paused)
-                PlayTimerButton(timer: timer)
-              else
-                PauseTimerButton(timer: timer),
             IconActionButtonLight(
               onPressed: () async {
                 final t = Translator.of(context).translate;
@@ -200,63 +195,4 @@ class _TimerBottomBar extends StatelessWidget {
       ),
     );
   }
-}
-
-class PlayTimerButton extends StatelessWidget {
-  const PlayTimerButton({
-    required this.timer,
-    Key? key,
-  }) : super(key: key);
-
-  final AbiliaTimer timer;
-
-  @override
-  Widget build(BuildContext context) => IconActionButton(
-        style: actionButtonStyleLightSelected,
-        onPressed: () async {
-          final t = Translator.of(context).translate;
-          final timerCubit = context.read<TimerCubit>();
-          final confirmPause = await showViewDialog<bool>(
-            context: context,
-            builder: (context) => YesNoDialog(
-              headingIcon: AbiliaIcons.playSound,
-              heading: t.continue_,
-              text: t.timerResume,
-            ),
-          );
-          if (confirmPause == true) {
-            await timerCubit.startTimer(timer);
-          }
-        },
-        child: const Icon(AbiliaIcons.playSound),
-      );
-}
-
-class PauseTimerButton extends StatelessWidget {
-  const PauseTimerButton({
-    required this.timer,
-    Key? key,
-  }) : super(key: key);
-
-  final AbiliaTimer timer;
-
-  @override
-  Widget build(BuildContext context) => IconActionButtonLight(
-        onPressed: () async {
-          final t = Translator.of(context).translate;
-          final timerCubit = context.read<TimerCubit>();
-          final confirmPause = await showViewDialog<bool>(
-            context: context,
-            builder: (context) => YesNoDialog(
-              headingIcon: AbiliaIcons.pause,
-              heading: t.pause,
-              text: t.timerPause,
-            ),
-          );
-          if (confirmPause == true) {
-            await timerCubit.pauseTimer(timer);
-          }
-        },
-        child: const Icon(AbiliaIcons.pause),
-      );
 }

@@ -34,7 +34,7 @@ class SettingsPage extends StatelessWidget {
           text: t.system,
           navigateTo: const SystemSettingsPage(),
         ),
-        if (Config.alpha) const FakeTicker(),
+        if (Config.dev) const FakeTicker(),
       ],
     );
   }

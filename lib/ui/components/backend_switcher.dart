@@ -67,5 +67,5 @@ class Version extends StatelessWidget {
 
   static String versionText(PackageInfo packageInfo) =>
       '${packageInfo.version} (${packageInfo.buildNumber})'
-      '${Config.beta ? '-dev' : ''}';
+      '${Config.dev ? '-dev' : ''}';
 }
