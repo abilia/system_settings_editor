@@ -19,13 +19,13 @@ Ask a developer for the keys
 
 `$ flutter run --flavor mp --dart-define flavor=mp`
 
-## Running with beta or alpha
+## Running with dev
 
 Add
 
-`--dart-define release=alpha`
+`--dart-define release=dev`
 
-for building with alpha features such as fake time and to be able to skip initial startup guide for MEMOplanner
+for building with dev features such as fake time and to be able to skip initial startup guide for MEMOplanner
 
 ## Workflow
 

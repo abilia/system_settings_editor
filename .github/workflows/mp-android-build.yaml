@@ -55,7 +55,7 @@ jobs:
 
     - id: set_release_type
       run: |
-        type=$([[ $GITHUB_REF == "refs/heads/release" ]] && echo "release" || echo "alpha")
+        type=$([[ $GITHUB_REF == "refs/heads/release" ]] && echo "release" || echo "dev")
         echo "::set-output name=releasetype::$type"
 
     - run: |
