@@ -36,11 +36,11 @@ class StepByStepSettings extends Equatable {
     this.fullDay = true,
     this.checkable = true,
     this.availability = true,
-    this.removeAfter = false,
-    this.alarm = false,
-    this.checklist = false,
-    this.notes = false,
-    this.reminders = false,
+    this.removeAfter = true,
+    this.alarm = true,
+    this.checklist = true,
+    this.notes = true,
+    this.reminders = true,
   });
 
   StepByStepSettings copyWith({
@@ -89,7 +89,6 @@ class StepByStepSettings extends Equatable {
         ),
         fullDay: settings.getBool(
           fullDayKey,
-          defaultValue: false,
         ),
         checkable: settings.getBool(
           checkableKey,
@@ -99,23 +98,18 @@ class StepByStepSettings extends Equatable {
         ),
         removeAfter: settings.getBool(
           removeAfterKey,
-          defaultValue: false,
         ),
         alarm: settings.getBool(
           alarmKey,
-          defaultValue: false,
         ),
         checklist: settings.getBool(
           checklistKey,
-          defaultValue: false,
         ),
         notes: settings.getBool(
           notesKey,
-          defaultValue: false,
         ),
         reminders: settings.getBool(
           remindersKey,
-          defaultValue: false,
         ),
       );
 

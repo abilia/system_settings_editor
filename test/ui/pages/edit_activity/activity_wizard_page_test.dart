@@ -225,11 +225,27 @@ void main() {
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
+    expect(find.byType(RemoveAfterWiz), findsOneWidget);
+    await tester.tap(find.byType(NextButton));
+    await tester.pumpAndSettle();
+
     expect(find.byType(AvailableForWiz), findsOneWidget);
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
+    expect(find.byType(AlarmWiz), findsOneWidget);
+    await tester.tap(find.byType(NextButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(RemindersWiz), findsOneWidget);
+    await tester.tap(find.byType(NextButton));
+    await tester.pumpAndSettle();
+
     expect(find.byType(RecurringWiz), findsOneWidget);
+    await tester.tap(find.byType(NextButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ExtraFunctionWiz), findsOneWidget);
     await tester.tap(find.byType(SaveButton));
     await tester.pumpAndSettle();
 
@@ -924,6 +940,7 @@ void main() {
           removeAfter: false,
           alarm: false,
           notes: false,
+          checklist: false,
           reminders: false,
         ),
       ),
@@ -986,6 +1003,7 @@ void main() {
                 removeAfter: false,
                 alarm: false,
                 notes: false,
+                checklist: false,
                 reminders: false,
               ),
             ),
@@ -1070,6 +1088,7 @@ void main() {
               removeAfter: false,
               alarm: false,
               notes: false,
+              checklist: false,
               reminders: false,
             ),
           ),

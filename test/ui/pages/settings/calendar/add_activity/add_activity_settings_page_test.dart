@@ -183,6 +183,58 @@ void main() {
     });
 
     group('Add tab -', () {
+      testWidgets('Edit view default settings', (tester) async {
+        await tester.goToAddTab();
+        await tester.tap(find.text(translate.throughEditView));
+        await tester.pumpAndSettle();
+
+        final keys = [
+          TestKey.showTemplatesSwitch,
+          TestKey.addActivitySelectNameSwitch,
+          TestKey.addActivitySelectImageSwitch,
+          TestKey.addActivitySelectDateSwitch,
+          TestKey.addActivitySelectAllDaySwitch,
+          TestKey.addActivitySelectCheckableSwitch,
+          TestKey.addActivityDeleteAfterSwitch,
+          TestKey.addActivitySelectAvailableForSwitch,
+          TestKey.addActivitySelectAlarmSwitch,
+          TestKey.addActivitySelectReminderSwitch,
+          TestKey.addActivitySelectChecklistSwitch,
+          TestKey.addActivitySelectNoteSwitch
+        ];
+
+        for (Key key in keys) {
+          final switchField = tester.widget<SwitchField>(find.byKey(key));
+          expect(switchField.value, true);
+        }
+      });
+
+      testWidgets('Step by step default settings', (tester) async {
+        await tester.goToAddTab();
+        await tester.tap(find.text(translate.stepByStep));
+        await tester.pumpAndSettle();
+
+        final keys = [
+          TestKey.showTemplatesSwitch,
+          TestKey.addActivitySelectNameSwitch,
+          TestKey.addActivitySelectImageSwitch,
+          TestKey.addActivitySelectDateSwitch,
+          TestKey.addActivitySelectAllDaySwitch,
+          TestKey.addActivitySelectCheckableSwitch,
+          TestKey.addActivityDeleteAfterSwitch,
+          TestKey.addActivitySelectAvailableForSwitch,
+          TestKey.addActivitySelectAlarmSwitch,
+          TestKey.addActivitySelectReminderSwitch,
+          TestKey.addActivitySelectChecklistSwitch,
+          TestKey.addActivitySelectNoteSwitch
+        ];
+
+        for (Key key in keys) {
+          final switchField = tester.widget<SwitchField>(find.byKey(key));
+          expect(switchField.value, true);
+        }
+      });
+
       testWidgets('Select add type', (tester) async {
         await tester.goToAddTab();
         expect(find.byType(AddActivityAddSettingsTab), findsOneWidget);
@@ -363,7 +415,7 @@ void main() {
 
         testWidgets('deselect Select full day', (tester) async {
           await tester.verifyStepByStep(
-            find.text(translate.selectImage),
+            find.text(translate.selectAllDay),
             genericDb,
             key: StepByStepSettings.fullDayKey,
             matcher: isFalse,
@@ -393,7 +445,7 @@ void main() {
             find.text(translate.deleteAfter, skipOffstage: false),
             genericDb,
             key: StepByStepSettings.removeAfterKey,
-            matcher: isTrue,
+            matcher: isFalse,
           );
         });
 
@@ -402,7 +454,7 @@ void main() {
             find.text(translate.selectAlarm, skipOffstage: false),
             genericDb,
             key: StepByStepSettings.alarmKey,
-            matcher: isTrue,
+            matcher: isFalse,
           );
         });
 
@@ -411,7 +463,7 @@ void main() {
             find.text(translate.selectChecklist, skipOffstage: false),
             genericDb,
             key: StepByStepSettings.checklistKey,
-            matcher: isTrue,
+            matcher: isFalse,
           );
         });
 
@@ -420,7 +472,7 @@ void main() {
             find.text(translate.selectNote, skipOffstage: false),
             genericDb,
             key: StepByStepSettings.notesKey,
-            matcher: isTrue,
+            matcher: isFalse,
           );
         });
 
@@ -429,7 +481,7 @@ void main() {
             find.text(translate.selectReminder, skipOffstage: false),
             genericDb,
             key: StepByStepSettings.remindersKey,
-            matcher: isTrue,
+            matcher: isFalse,
           );
         });
       });

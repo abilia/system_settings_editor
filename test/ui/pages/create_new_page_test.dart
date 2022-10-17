@@ -231,6 +231,10 @@ void main() {
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
+        expect(find.byType(FullDayWiz), findsOneWidget);
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
         expect(find.byType(TimeWiz), findsOneWidget);
         await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
         await tester.tap(find.byType(NextButton));
@@ -246,11 +250,27 @@ void main() {
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
+        expect(find.byType(RemoveAfterWiz), findsOneWidget);
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
         expect(find.byType(AvailableForWiz), findsOneWidget);
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
+        expect(find.byType(AlarmWiz), findsOneWidget);
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(RemindersWiz), findsOneWidget);
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
         expect(find.byType(RecurringWiz), findsOneWidget); // Recurrance
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(ExtraFunctionWiz), findsOneWidget);
         await tester.tap(find.byType(SaveButton));
         await tester.pumpAndSettle();
 
@@ -324,6 +344,10 @@ void main() {
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
+        expect(find.byType(FullDayWiz), findsOneWidget);
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
         expect(find.byType(TimeWiz), findsOneWidget);
         await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
         await tester.tap(find.byType(NextButton));
@@ -349,6 +373,10 @@ void main() {
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
+        expect(find.byType(AlarmWiz), findsOneWidget);
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
         expect(find.byType(RemindersWiz), findsOneWidget);
         final fiveMinutesText = 5.minutes().toDurationString(translate);
         await tester.tap(find.text(fiveMinutesText));
@@ -357,6 +385,10 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(RecurringWiz), findsOneWidget);
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(ExtraFunctionWiz), findsOneWidget);
         await tester.tap(find.byType(SaveButton));
         await tester.pumpAndSettle();
 
