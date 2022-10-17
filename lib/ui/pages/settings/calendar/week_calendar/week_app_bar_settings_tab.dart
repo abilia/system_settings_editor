@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/settings/week_calendar_settings.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -9,42 +8,40 @@ class WeekAppBarSettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettings>(
-      builder: (context, state) => SettingsTab(
-        children: [
-          Tts(child: Text(t.topField)),
-          const WeekAppBarPreview(),
-          SwitchField(
-            value: state.showBrowseButtons,
-            onChanged: (v) => context
-                .read<WeekCalendarSettingsCubit>()
-                .changeWeekCalendarSettings(
-                    state.copyWith(showBrowseButtons: v)),
-            child: Text(t.showBrowseButtons),
-          ),
-          SwitchField(
-            value: state.showWeekNumber,
-            onChanged: (v) => context
-                .read<WeekCalendarSettingsCubit>()
-                .changeWeekCalendarSettings(state.copyWith(showWeekNumber: v)),
-            child: Text(t.showWeekNumber),
-          ),
-          SwitchField(
-            value: state.showYear,
-            onChanged: (v) => context
-                .read<WeekCalendarSettingsCubit>()
-                .changeWeekCalendarSettings(state.copyWith(showYear: v)),
-            child: Text(t.showYear),
-          ),
-          SwitchField(
-            value: state.showClock,
-            onChanged: (v) => context
-                .read<WeekCalendarSettingsCubit>()
-                .changeWeekCalendarSettings(state.copyWith(showClock: v)),
-            child: Text(t.showClock),
-          ),
-        ],
-      ),
+    final state = context.watch<WeekCalendarSettingsCubit>().state;
+    return SettingsTab(
+      children: [
+        Tts(child: Text(t.topField)),
+        const WeekAppBarPreview(),
+        SwitchField(
+          value: state.showBrowseButtons,
+          onChanged: (v) => context
+              .read<WeekCalendarSettingsCubit>()
+              .changeWeekCalendarSettings(state.copyWith(showBrowseButtons: v)),
+          child: Text(t.showBrowseButtons),
+        ),
+        SwitchField(
+          value: state.showWeekNumber,
+          onChanged: (v) => context
+              .read<WeekCalendarSettingsCubit>()
+              .changeWeekCalendarSettings(state.copyWith(showWeekNumber: v)),
+          child: Text(t.showWeekNumber),
+        ),
+        SwitchField(
+          value: state.showYear,
+          onChanged: (v) => context
+              .read<WeekCalendarSettingsCubit>()
+              .changeWeekCalendarSettings(state.copyWith(showYear: v)),
+          child: Text(t.showYear),
+        ),
+        SwitchField(
+          value: state.showClock,
+          onChanged: (v) => context
+              .read<WeekCalendarSettingsCubit>()
+              .changeWeekCalendarSettings(state.copyWith(showClock: v)),
+          child: Text(t.showClock),
+        ),
+      ],
     );
   }
 }
@@ -54,18 +51,17 @@ class WeekAppBarPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final weekCalendarSettings = context
-        .select((MemoplannerSettingsBloc bloc) => bloc.state.weekCalendar);
+    final state = context.watch<WeekCalendarSettingsCubit>().state;
     final currentTime = context.watch<ClockBloc>().state;
     return AppBarPreview(
-      showBrowseButtons: weekCalendarSettings.showBrowseButtons,
-      showClock: weekCalendarSettings.showClock,
+      showBrowseButtons: state.showBrowseButtons,
+      showClock: state.showClock,
       rows: AppBarTitleRows.week(
         translator: Translator.of(context).translate,
         selectedDay: currentTime.onlyDays(),
         selectedWeekStart: currentTime.firstInWeek(),
-        showWeekNumber: weekCalendarSettings.showWeekNumber,
-        showYear: weekCalendarSettings.showYear,
+        showWeekNumber: state.showWeekNumber,
+        showYear: state.showYear,
         langCode: Localizations.localeOf(context).toLanguageTag(),
       ),
     );
