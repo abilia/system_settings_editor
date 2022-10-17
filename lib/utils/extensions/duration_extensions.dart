@@ -8,7 +8,7 @@ extension IntToDuration on int {
   Duration milliseconds() => Duration(milliseconds: this);
 }
 
-const iOSPersistantNotificationMaxDuration = Duration(seconds: 30),
+const iOSPersistentNotificationMaxDuration = Duration(seconds: 30),
     iOSUnlockedPhoneNotificationMaxDuration = Duration(seconds: 5);
 
 extension DurationExtensions on Duration {
@@ -36,47 +36,47 @@ extension DurationExtensions on Duration {
     return '${_twoDigits(inMinutes)}:${_twoDigits(inSeconds.remainder(60))}';
   }
 
-  String toUntilString(Translated translater) {
+  String toUntilString(Translated translator) {
     final sb = StringBuffer();
     if (inHours > 0) {
-      sb.writeln('$inHours ${translater.h}');
+      sb.writeln('$inHours ${translator.h}');
     }
     final minutes = inMinutes % Duration.minutesPerHour;
     if (minutes > 0) {
-      sb.writeln('$minutes ${translater.min}');
+      sb.writeln('$minutes ${translator.min}');
     }
     return sb.toString();
   }
 
-  String toReminderHeading(Translated translater, bool before) {
+  String toReminderHeading(Translated translator, bool before) {
     final sb = StringBuffer();
 
     // https://en.wikipedia.org/wiki/Inessive_case
-    if (before && inDays >= 1 && translater.dayInessive.isNotEmpty) {
-      sb.write('$inDays ${translater.dayInessive} ');
+    if (before && inDays >= 1 && translator.dayInessive.isNotEmpty) {
+      sb.write('$inDays ${translator.dayInessive} ');
     } else {
-      if (inDays > 1) sb.write('$inDays ${translater.days} ');
-      if (inDays == 1) sb.write('$inDays ${translater.day} ');
+      if (inDays > 1) sb.write('$inDays ${translator.days} ');
+      if (inDays == 1) sb.write('$inDays ${translator.day} ');
     }
 
     final hours = inHours % Duration.hoursPerDay;
 
-    if (before && hours >= 1 && translater.hourInessive.isNotEmpty) {
-      sb.write('$hours ${translater.hourInessive} ');
+    if (before && hours >= 1 && translator.hourInessive.isNotEmpty) {
+      sb.write('$hours ${translator.hourInessive} ');
     } else {
-      if (hours > 1) sb.write('$hours ${translater.hours} ');
-      if (hours == 1) sb.write('$hours ${translater.hour} ');
+      if (hours > 1) sb.write('$hours ${translator.hours} ');
+      if (hours == 1) sb.write('$hours ${translator.hour} ');
     }
 
     final minutes = inMinutes % Duration.minutesPerHour;
-    if (before && minutes >= 1 && translater.minuteInessive.isNotEmpty) {
-      sb.write('$minutes ${translater.minuteInessive} ');
+    if (before && minutes >= 1 && translator.minuteInessive.isNotEmpty) {
+      sb.write('$minutes ${translator.minuteInessive} ');
     } else {
-      if (minutes > 1) sb.write('$minutes ${translater.minutes} ');
-      if (minutes == 1) sb.write('$minutes ${translater.minute} ');
+      if (minutes > 1) sb.write('$minutes ${translator.minutes} ');
+      if (minutes == 1) sb.write('$minutes ${translator.minute} ');
     }
 
-    final inOrAgo = before ? translater.inTime : translater.timeAgo;
+    final inOrAgo = before ? translator.inTime : translator.timeAgo;
     return inOrAgo(sb.toString().trim());
   }
 

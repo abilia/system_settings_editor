@@ -115,7 +115,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           PopScreensaverListener(),
           KeepScreenAwakeListener(),
         ] else if (!Platform.isIOS && widget.newlyLoggedIn)
-          FullscreenAlarmPremissionListener(),
+          FullscreenAlarmPermissionListener(),
       ],
       child: widget.child,
     );
@@ -123,8 +123,8 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
 
   bool _notificationsDenied(
           PermissionState previous, PermissionState current) =>
-      (current.status[Permission.notification]?.isDeniedOrPermenantlyDenied ??
+      (current.status[Permission.notification]?.isDeniedOrPermanentlyDenied ??
           false) &&
-      !(previous.status[Permission.notification]?.isDeniedOrPermenantlyDenied ??
+      !(previous.status[Permission.notification]?.isDeniedOrPermanentlyDenied ??
           false);
 }

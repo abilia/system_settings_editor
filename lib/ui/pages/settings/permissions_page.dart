@@ -92,7 +92,7 @@ class NotificationPermissionSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    final denied = status.isDeniedOrPermenantlyDenied;
+    final denied = status.isDeniedOrPermanentlyDenied;
     return Column(
       children: [
         Stack(
@@ -169,7 +169,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    final denied = status.isDeniedOrPermenantlyDenied;
+    final denied = status.isDeniedOrPermanentlyDenied;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -23,7 +23,7 @@ class MonthDisplaySettingsTab extends StatelessWidget {
           height: layout.formPadding.verticalItemDistance,
         ),
         RadioField(
-          key: TestKey.monthColorSwith,
+          key: TestKey.monthColorSwitch,
           value: WeekColor.captions.index,
           groupValue: settings.colorTypeIndex,
           onChanged: onWeekColorChanged,

@@ -77,9 +77,9 @@ abstract class DataRepository<M extends DataModel> extends Repository {
       if (dirtyData.isEmpty) return true;
       try {
         final res = await postData(dirtyData);
-        if (res.succeded.isNotEmpty) {
+        if (res.succeeded.isNotEmpty) {
           // Update revision and dirty for all successful saves
-          await handleSuccessfulSync(res.succeded, dirtyData);
+          await handleSuccessfulSync(res.succeeded, dirtyData);
         }
         if (res.failed.isNotEmpty) {
           // If we have failed a fetch from backend needs to be performed

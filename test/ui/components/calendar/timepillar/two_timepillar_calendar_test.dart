@@ -24,7 +24,7 @@ void main() {
   late ActivityDbInMemory mockActivityDb;
   final time = DateTime(2021, 09, 02, 12, 47);
   const leftTitle = 'LeftCategoryActivity',
-      rightTitle = 'RigthCategoryActivity';
+      rightTitle = 'RightCategoryActivity';
 
   GenericResponse genericResponse = () => [];
   TimerResponse timerResponse = () => [];

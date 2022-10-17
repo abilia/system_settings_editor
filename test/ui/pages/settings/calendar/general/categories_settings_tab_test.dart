@@ -239,7 +239,7 @@ void main() {
       await tester.goToGeneralCalendarSettingsPageCategoriesTab();
       expect(find.text(translate.right), findsNWidgets(2));
 
-      await tester.tap(find.byKey(TestKey.editRigthCategory));
+      await tester.tap(find.byKey(TestKey.editRightCategory));
       await tester.pumpAndSettle();
       await tester.enterText(find.byType(TextField), newRightName);
       await tester.pumpAndSettle();
@@ -277,7 +277,7 @@ void main() {
             ),
           ];
           await tester.goToGeneralCalendarSettingsPageCategoriesTab();
-          await tester.tap(find.byKey(TestKey.editRigthCategory));
+          await tester.tap(find.byKey(TestKey.editRightCategory));
           await tester.pumpAndSettle();
           await tester.tap(find.byType(SelectPictureWidget));
           await tester.pumpAndSettle();

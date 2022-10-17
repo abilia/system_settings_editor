@@ -25,7 +25,7 @@ class PermissionState extends Equatable {
   }
 
   bool get notificationDenied =>
-      status[Permission.notification]?.isDeniedOrPermenantlyDenied ?? false;
+      status[Permission.notification]?.isDeniedOrPermanentlyDenied ?? false;
 
   bool get fullscreenNotGranted =>
       PermissionCubit.allPermissions.contains(Permission.systemAlertWindow) &&

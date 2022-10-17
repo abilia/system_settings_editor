@@ -12,13 +12,13 @@ class DayPartCubit extends Cubit<DayPart> {
           clockBloc.state.dayPart(settingsBloc.state.calendar.dayParts),
         ) {
     _clockSubscription = clockBloc.stream.listen(_conditionChanged);
-    _daypartsSubscription = settingsBloc.stream
+    _dayPartsSubscription = settingsBloc.stream
         .map((state) => state.calendar.dayParts)
         .listen(_conditionChanged);
   }
   final ClockBloc clockBloc;
   final MemoplannerSettingsBloc settingsBloc;
-  late final StreamSubscription _clockSubscription, _daypartsSubscription;
+  late final StreamSubscription _clockSubscription, _dayPartsSubscription;
 
   void _conditionChanged([condition]) {
     final now = condition is DateTime ? condition : clockBloc.state;
@@ -31,7 +31,7 @@ class DayPartCubit extends Cubit<DayPart> {
   @override
   Future<void> close() async {
     await _clockSubscription.cancel();
-    await _daypartsSubscription.cancel();
+    await _dayPartsSubscription.cancel();
     await super.close();
   }
 }

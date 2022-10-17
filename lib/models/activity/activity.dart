@@ -265,10 +265,10 @@ class Activity extends DataModel {
     Recurs recurs,
     DateTime startTime,
     Duration duration,
-    bool fullday,
+    bool fullDay,
   ) {
     if (recurs.isRecurring) return recurs;
-    if (fullday) {
+    if (fullDay) {
       return recurs
           .changeEnd(startTime.onlyDays().nextDay().millisecondBefore());
     }

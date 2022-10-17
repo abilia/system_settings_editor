@@ -4,12 +4,12 @@ import 'package:equatable/equatable.dart';
 
 class DataUpdateResponse extends Equatable {
   final int previousRevision;
-  final UnmodifiableListView<DataRevisionUpdate> succeded, failed;
+  final UnmodifiableListView<DataRevisionUpdate> succeeded, failed;
 
   DataUpdateResponse.fromJson(Map<String, dynamic> json)
       : previousRevision = json['previousRevision'],
         failed = _parseDataRevisionUpdates(json['failedUpdates']),
-        succeded = _parseDataRevisionUpdates(json['dataRevisionUpdates']);
+        succeeded = _parseDataRevisionUpdates(json['dataRevisionUpdates']);
 
   static UnmodifiableListView<DataRevisionUpdate> _parseDataRevisionUpdates(
           List? jsonList) =>
@@ -19,10 +19,10 @@ class DataUpdateResponse extends Equatable {
           []);
   @override
   String toString() =>
-      'ActivityUpdateResponse { previousRevision: $previousRevision, succeded: $succeded, failed: $failed }';
+      'ActivityUpdateResponse { previousRevision: $previousRevision, succeeded: $succeeded, failed: $failed }';
 
   @override
-  List<Object> get props => [previousRevision, succeded, failed];
+  List<Object> get props => [previousRevision, succeeded, failed];
   @override
   bool get stringify => true;
 }

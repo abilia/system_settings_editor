@@ -185,7 +185,7 @@ void main() {
       await tester.tap(find.byType(SettingsButton));
       await tester.pumpAndSettle();
       inactivityCubit.emit(
-        const HomescreenFinalState(),
+        const HomeScreenFinalState(),
       );
       await tester.pumpAndSettle();
       expect(find.byType(DayCalendar), findsOneWidget);
@@ -355,7 +355,7 @@ void main() {
       expect(find.byType(WeekCalendar), findsOneWidget);
     });
 
-    testWidgets('alarms are Poped and canceled', (tester) async {
+    testWidgets('alarms are Popped and canceled', (tester) async {
       // Arrange
       final timer = AbiliaTimer.createNew(
           startTime: initialTime.subtract(30.seconds()), duration: 5.minutes());

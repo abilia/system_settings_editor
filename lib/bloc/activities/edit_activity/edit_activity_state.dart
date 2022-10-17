@@ -172,7 +172,7 @@ class StoredActivityState extends EditActivityState {
   const StoredActivityState._(
     Activity activity,
     TimeInterval timeInterval,
-    Activity originalgActivity,
+    Activity originalActivity,
     TimeInterval originalTimeInterval,
     MapView<Type, InfoItem> infoItems,
     this.day,
@@ -180,7 +180,7 @@ class StoredActivityState extends EditActivityState {
           activity,
           timeInterval,
           infoItems,
-          originalActivity: originalgActivity,
+          originalActivity: originalActivity,
           originalTimeInterval: originalTimeInterval,
         );
 

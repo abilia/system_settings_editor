@@ -22,7 +22,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
         children: <Widget>[
           for (int i = 0; i < RecurrentType.values.length; i++)
             RadioField<RecurrentType>(
-              groupValue: activity.recurs.recurrance,
+              groupValue: activity.recurs.recurrence,
               onChanged: (v) {
                 if (v != null) {
                   editActivityCubit.changeRecurrentType(v);

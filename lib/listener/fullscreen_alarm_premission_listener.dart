@@ -1,9 +1,9 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
-class FullscreenAlarmPremissionListener
+class FullscreenAlarmPermissionListener
     extends BlocListener<PermissionCubit, PermissionState> {
-  FullscreenAlarmPremissionListener({Key? key})
+  FullscreenAlarmPermissionListener({Key? key})
       : super(
           key: key,
           listenWhen: (previous, current) =>

@@ -91,9 +91,9 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
     }
 
     if (Platform.isIOS) {
-      return alarmSettings.duration < iOSPersistantNotificationMaxDuration
+      return alarmSettings.duration < iOSPersistentNotificationMaxDuration
           ? alarmSettings.duration
-          : iOSPersistantNotificationMaxDuration;
+          : iOSPersistentNotificationMaxDuration;
     }
 
     return alarmSettings.duration;

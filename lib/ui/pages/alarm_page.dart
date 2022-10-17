@@ -231,7 +231,7 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
               closeButton
             else ...[
               Expanded(child: closeButton),
-              SizedBox(width: layout.navigationBar.spaceBetweeen),
+              SizedBox(width: layout.navigationBar.spaceBetween),
               Expanded(
                 child: GreenButton(
                   key: TestKey.activityCheckButton,

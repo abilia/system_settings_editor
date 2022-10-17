@@ -88,8 +88,8 @@ extension AlarmsExtension on Iterable<Activity> {
               a.start.inInclusiveRange(startDate: start, endDate: end),
           endTimeTest: (a) =>
               a.start.isAtSameDay(start) && a.end.isAtSameMomentOrAfter(start),
-          reminderTest: (rs) =>
-              rs.notificationTime.isAtSameMomentOrAfter(start));
+          reminderTest: (reminder) =>
+              reminder.notificationTime.isAtSameMomentOrAfter(start));
 
   Iterable<ActivityAlarm> _alarmsFromDay(
     DateTime day, {
@@ -103,8 +103,8 @@ extension AlarmsExtension on Iterable<Activity> {
       day,
       startTimeTest: (a) => a.start.isAtSameDay(day),
       endTimeTest: (a) => a.start.isAtSameDay(day),
-      reminderTest: (rs) =>
-          rs.notificationTime.isAtSameMomentOrAfter(notBefore),
+      reminderTest: (reminder) =>
+          reminder.notificationTime.isAtSameMomentOrAfter(notBefore),
     );
     return [
       ...alarms,
