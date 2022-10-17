@@ -109,5 +109,17 @@ class TestKey {
       basicTimerLibraryFolder = Key('basicTimerLibraryFolder'),
       calendarBackgroundColor = Key('calendarBackground'),
       monthPreviewHeaderTitle = Key('monthPreviewHeaderTitle'),
-      whiteColumnDivider = Key('whiteColumnDivider');
+      whiteColumnDivider = Key('whiteColumnDivider'),
+      showTemplatesSwitch = Key('stepByStepShowTemplates'),
+      addActivitySelectNameSwitch = Key('addActivitySelectName'),
+      addActivitySelectImageSwitch = Key('addActivitySelectImage'),
+      addActivitySelectDateSwitch = Key('addActivitySelectDate'),
+      addActivitySelectAllDaySwitch = Key('addActivitySelectAllDay'),
+      addActivitySelectCheckableSwitch = Key('addActivitySelectCheckable'),
+      addActivityDeleteAfterSwitch = Key('addActivityDeleteAfter'),
+      addActivitySelectAvailableForSwitch = Key('addActivityAvailableFor'),
+      addActivitySelectAlarmSwitch = Key('addActivitySelectAlarm'),
+      addActivitySelectReminderSwitch = Key('addActivitySelectReminder'),
+      addActivitySelectChecklistSwitch = Key('addActivitySelectChecklist'),
+      addActivitySelectNoteSwitch = Key('addActivitySelectNote');
 }

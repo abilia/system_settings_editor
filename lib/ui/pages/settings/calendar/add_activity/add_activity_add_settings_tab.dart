@@ -55,6 +55,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
     return Column(
       children: [
         SwitchField(
+          key: TestKey.showTemplatesSwitch,
           leading: const Icon(AbiliaIcons.basicActivity),
           value: editActivitySettings.template,
           onChanged: (v) {
@@ -69,6 +70,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           child: Text(t.showTemplates),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectNameSwitch,
           leading: const Icon(AbiliaIcons.selectTextSize),
           value: editActivitySettings.title,
           onChanged: (v) {
@@ -83,6 +85,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           child: Text(t.selectName),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectImageSwitch,
           leading: const Icon(AbiliaIcons.myPhotos),
           value: editActivitySettings.image,
           onChanged: (v) {
@@ -97,6 +100,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           child: Text(t.selectImage),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectDateSwitch,
           leading: const Icon(AbiliaIcons.month),
           value: editActivitySettings.date,
           onChanged: (v) => context
@@ -105,6 +109,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           child: Text(t.selectDate),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectAllDaySwitch,
           leading: const Icon(AbiliaIcons.restore),
           value: editActivitySettings.fullDay,
           onChanged: (v) => context
@@ -113,6 +118,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           child: Text(t.selectAllDay),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectCheckableSwitch,
           leading: const Icon(AbiliaIcons.handiCheck),
           value: editActivitySettings.checkable,
           onChanged: (v) => context
@@ -121,6 +127,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           child: Text(t.selectCheckable),
         ),
         SwitchField(
+          key: TestKey.addActivityDeleteAfterSwitch,
           leading: const Icon(AbiliaIcons.deleteAllClear),
           value: editActivitySettings.removeAfter,
           onChanged: (v) => context
@@ -129,6 +136,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           child: Text(t.deleteAfter),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectAvailableForSwitch,
           leading: const Icon(AbiliaIcons.passwordProtection),
           value: editActivitySettings.availability,
           onChanged: (v) => context
@@ -137,6 +145,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           child: Text(t.selectAvailableFor),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectAlarmSwitch,
           leading: const Icon(AbiliaIcons.handiAlarm),
           value: editActivitySettings.alarm,
           onChanged: (v) => context
@@ -145,6 +154,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           child: Text(t.selectAlarm),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectReminderSwitch,
           leading: const Icon(AbiliaIcons.handiReminder),
           value: editActivitySettings.reminders,
           onChanged: (v) => context
@@ -153,6 +163,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           child: Text(t.selectReminder),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectChecklistSwitch,
           leading: const Icon(AbiliaIcons.radioCheckboxUnselected),
           value: editActivitySettings.checklist,
           onChanged: (v) => context
@@ -161,6 +172,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           child: Text(t.selectChecklist),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectNoteSwitch,
           leading: const Icon(AbiliaIcons.note),
           value: editActivitySettings.notes,
           onChanged: (v) => context
@@ -199,6 +211,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
     return Column(
       children: [
         SwitchField(
+          key: TestKey.showTemplatesSwitch,
           leading: const Icon(AbiliaIcons.basicActivity),
           value: settings.template,
           onChanged: (v) {
@@ -213,6 +226,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           child: Text(t.showTemplates),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectNameSwitch,
           leading: const Icon(AbiliaIcons.selectTextSize),
           value: settings.title,
           onChanged: (v) {
@@ -227,6 +241,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           child: Text(t.selectName),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectImageSwitch,
           leading: const Icon(AbiliaIcons.myPhotos),
           value: settings.image,
           onChanged: (v) {
@@ -241,6 +256,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           child: Text(t.selectImage),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectDateSwitch,
           leading: const Icon(AbiliaIcons.month),
           value: settings.date,
           onChanged: (v) => context
@@ -249,6 +265,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           child: Text(t.selectDate),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectAllDaySwitch,
           leading: const Icon(AbiliaIcons.restore),
           value: settings.fullDay,
           onChanged: (v) => context
@@ -257,6 +274,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           child: Text(t.selectAllDay),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectCheckableSwitch,
           leading: const Icon(AbiliaIcons.handiCheck),
           value: settings.checkable,
           onChanged: (v) => context
@@ -265,6 +283,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           child: Text(t.selectCheckable),
         ),
         SwitchField(
+          key: TestKey.addActivityDeleteAfterSwitch,
           leading: const Icon(AbiliaIcons.deleteAllClear),
           value: settings.removeAfter,
           onChanged: (v) => context
@@ -273,6 +292,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           child: Text(t.deleteAfter),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectAvailableForSwitch,
           leading: const Icon(AbiliaIcons.passwordProtection),
           value: settings.availability,
           onChanged: (v) => context
@@ -281,6 +301,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           child: Text(t.selectAvailableFor),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectAlarmSwitch,
           leading: const Icon(AbiliaIcons.handiAlarm),
           value: settings.alarm,
           onChanged: (v) => context
@@ -289,6 +310,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           child: Text(t.selectAlarm),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectReminderSwitch,
           leading: const Icon(AbiliaIcons.handiReminder),
           value: settings.reminders,
           onChanged: (v) => context
@@ -297,6 +319,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           child: Text(t.selectReminder),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectChecklistSwitch,
           leading: const Icon(AbiliaIcons.radioCheckboxUnselected),
           value: settings.checklist,
           onChanged: (v) => context
@@ -305,6 +328,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           child: Text(t.selectChecklist),
         ),
         SwitchField(
+          key: TestKey.addActivitySelectNoteSwitch,
           leading: const Icon(AbiliaIcons.note),
           value: settings.notes,
           onChanged: (v) => context

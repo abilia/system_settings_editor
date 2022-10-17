@@ -103,8 +103,12 @@ void main() {
             WizardStep.time,
             WizardStep.category,
             WizardStep.checkable,
+            WizardStep.deleteAfter,
             WizardStep.availableFor,
+            WizardStep.alarm,
+            WizardStep.reminder,
             WizardStep.recurring,
+            WizardStep.connectedFunction
           ],
         ),
       ),
@@ -1867,8 +1871,12 @@ void main() {
             WizardStep.time,
             WizardStep.category,
             WizardStep.checkable,
+            WizardStep.deleteAfter,
             WizardStep.availableFor,
+            WizardStep.alarm,
+            WizardStep.reminder,
             WizardStep.recurring,
+            WizardStep.connectedFunction
           ],
         ),
       );
