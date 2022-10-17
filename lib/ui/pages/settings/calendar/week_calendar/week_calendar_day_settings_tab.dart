@@ -11,7 +11,7 @@ class WeekSettingsTab extends StatelessWidget {
     final t = Translator.of(context).translate;
     return BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettings>(
         builder: (context, state) {
-      void onDisplaDaysChanged(WeekDisplayDays? w) => context
+      void onDisplayDaysChanged(WeekDisplayDays? w) => context
           .read<WeekCalendarSettingsCubit>()
           .changeWeekCalendarSettings(state.copyWith(weekDisplayDays: w));
       void onWeekColorChanged(WeekColor? w) => context
@@ -24,13 +24,13 @@ class WeekSettingsTab extends StatelessWidget {
           RadioField(
             value: WeekDisplayDays.everyDay,
             groupValue: state.weekDisplayDays,
-            onChanged: onDisplaDaysChanged,
+            onChanged: onDisplayDaysChanged,
             text: Text(t.everyDay),
           ),
           RadioField(
             value: WeekDisplayDays.weekdays,
             groupValue: state.weekDisplayDays,
-            onChanged: onDisplaDaysChanged,
+            onChanged: onDisplayDaysChanged,
             text: Text(t.weekdays),
           ),
           const Divider(),
@@ -58,6 +58,8 @@ class WeekCalendarDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final weekStart = context.read<ClockBloc>().state.firstInWeek();
+    final days = context.select((WeekCalendarSettingsCubit cubit) =>
+        cubit.state.weekDisplayDays.numberOfDays());
     return Container(
       height: layout.settings.weekCalendarHeight,
       decoration: BoxDecoration(
@@ -66,33 +68,29 @@ class WeekCalendarDisplay extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.all(layout.formPadding.verticalItemDistance),
-        child: BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettings>(
-            builder: (context, state) {
-          final days = state.weekDisplayDays.numberOfDays();
-          return Column(
-            children: [
-              Row(
-                children: List<DayHeading>.generate(days, (i) {
-                  final day = weekStart.addDays(i);
-                  return DayHeading(
-                    day: day,
-                    dayColor: DayColor.allDays,
-                  );
-                }),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: List<DayColumn>.generate(days, (i) {
-                  final day = weekStart.addDays(i);
-                  return DayColumn(
-                    day: day,
-                    dayColor: DayColor.allDays,
-                  );
-                }),
-              )
-            ],
-          );
-        }),
+        child: Column(
+          children: [
+            Row(
+              children: List<DayHeading>.generate(days, (i) {
+                final day = weekStart.addDays(i);
+                return DayHeading(
+                  day: day,
+                  dayColor: DayColor.allDays,
+                );
+              }),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: List<DayColumn>.generate(days, (i) {
+                final day = weekStart.addDays(i);
+                return DayColumn(
+                  day: day,
+                  dayColor: DayColor.allDays,
+                );
+              }),
+            )
+          ],
+        ),
       ),
     );
   }

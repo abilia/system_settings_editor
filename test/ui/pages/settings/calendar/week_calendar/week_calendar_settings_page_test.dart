@@ -5,6 +5,7 @@ import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 import '../../../../../fakes/all.dart';
 import '../../../../../mocks/mocks.dart';
@@ -43,17 +44,14 @@ void main() {
 
     tearDown(GetIt.I.reset);
 
-    testWidgets('Navigate to page', (tester) async {
-      await tester.goToWeekCalendarSettingsPage(pump: true);
-      expect(find.byType(WeekCalendarSettingsPage), findsOneWidget);
-      expect(find.byType(OkButton), findsOneWidget);
-      expect(find.byType(CancelButton), findsOneWidget);
-    });
-
     testWidgets('Hide browse buttons', (tester) async {
-      await tester.goToWeekCalendarSettingsPage(pump: true);
+      await tester.goToWeekCalendarSettingsPage();
+      expect(find.byType(LeftNavButton), findsOneWidget);
+      expect(find.byType(RightNavButton), findsOneWidget);
       await tester.tap(find.text(translate.showBrowseButtons));
       await tester.pumpAndSettle();
+      expect(find.byType(LeftNavButton), findsNothing);
+      expect(find.byType(RightNavButton), findsNothing);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
@@ -66,9 +64,13 @@ void main() {
     });
 
     testWidgets('Hide week number', (tester) async {
-      await tester.goToWeekCalendarSettingsPage(pump: true);
+      final weekText = '${translate.week} '
+          '${initialTime.firstInWeek().getWeekNumber()}';
+      await tester.goToWeekCalendarSettingsPage();
+      expect(find.text(weekText), findsOneWidget);
       await tester.tap(find.text(translate.showWeekNumber));
       await tester.pumpAndSettle();
+      expect(find.text(weekText), findsNothing);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
@@ -81,9 +83,11 @@ void main() {
     });
 
     testWidgets('Hide year', (tester) async {
-      await tester.goToWeekCalendarSettingsPage(pump: true);
+      await tester.goToWeekCalendarSettingsPage();
+      expect(find.text('${initialTime.year}'), findsOneWidget);
       await tester.tap(find.text(translate.showYear));
       await tester.pumpAndSettle();
+      expect(find.text('${initialTime.year}'), findsNothing);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
@@ -96,9 +100,11 @@ void main() {
     });
 
     testWidgets('Hide clock', (tester) async {
-      await tester.goToWeekCalendarSettingsPage(pump: true);
+      await tester.goToWeekCalendarSettingsPage();
+      expect(find.byType(AbiliaClock), findsOneWidget);
       await tester.tap(find.text(translate.showClock));
       await tester.pumpAndSettle();
+      expect(find.byType(AbiliaClock), findsNothing);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
@@ -111,11 +117,13 @@ void main() {
     });
 
     testWidgets('Select number of days', (tester) async {
-      await tester.goToWeekCalendarSettingsPage(pump: true);
+      await tester.goToWeekCalendarSettingsPage();
       await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
       await tester.pumpAndSettle();
+      expect(find.byType(DayHeading), findsNWidgets(7));
       await tester.tap(find.text(translate.weekdays));
       await tester.pumpAndSettle();
+      expect(find.byType(DayHeading), findsNWidgets(5));
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
@@ -128,7 +136,7 @@ void main() {
     });
 
     testWidgets('Select caption', (tester) async {
-      await tester.goToWeekCalendarSettingsPage(pump: true);
+      await tester.goToWeekCalendarSettingsPage();
       await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
       await tester.pumpAndSettle();
       await tester.dragUntilVisible(find.text(translate.captions),
@@ -150,8 +158,8 @@ void main() {
 }
 
 extension on WidgetTester {
-  Future<void> goToWeekCalendarSettingsPage({bool pump = false}) async {
-    if (pump) await pumpApp();
+  Future<void> goToWeekCalendarSettingsPage() async {
+    await pumpApp();
     await tap(find.byType(MenuButton));
     await pumpAndSettle();
     await tap(find.byType(SettingsButton));
