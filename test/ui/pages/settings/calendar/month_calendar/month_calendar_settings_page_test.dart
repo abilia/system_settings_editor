@@ -183,7 +183,7 @@ void main() {
     testWidgets('defaults', (tester) async {
       await tester.goToDisplayTab();
       final w = tester.widget<AbiliaRadio>(
-          find.byKey(const ObjectKey(TestKey.monthColorSwith)));
+          find.byKey(const ObjectKey(TestKey.monthColorSwitch)));
       expect(w.groupValue, WeekColor.columns.index);
       final dayContainer = tester.firstWidget<Container>(
           find.byKey(TestKey.monthDisplaySettingsDayView));
@@ -202,7 +202,7 @@ void main() {
       ];
       await tester.goToDisplayTab();
       final w = tester.widget<AbiliaRadio>(
-          find.byKey(const ObjectKey(TestKey.monthColorSwith)));
+          find.byKey(const ObjectKey(TestKey.monthColorSwitch)));
       expect(w.groupValue, WeekColor.captions.index);
       final dayContainer = tester.firstWidget<Container>(
           find.byKey(TestKey.monthDisplaySettingsDayView));

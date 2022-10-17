@@ -91,7 +91,7 @@ class InactivityCubit extends Cubit<InactivityState> {
     }
 
     if (!timeout.screensaver) {
-      return emit(const HomescreenFinalState());
+      return emit(const HomeScreenFinalState());
     }
 
     // from here screensaver is set
@@ -151,14 +151,14 @@ class ReturnToTodayFinalState extends InactivityState
   List<Object> get props => [];
 }
 
-class HomescreenFinalState extends ReturnToTodayFinalState
+class HomeScreenFinalState extends ReturnToTodayFinalState
     implements HomeScreenState {
-  const HomescreenFinalState();
+  const HomeScreenFinalState();
   @override
   List<Object> get props => [];
 }
 
-class ScreensaverState extends HomescreenFinalState implements HomeScreenState {
+class ScreensaverState extends HomeScreenFinalState implements HomeScreenState {
   const ScreensaverState();
   @override
   List<Object> get props => [];

@@ -48,11 +48,11 @@ class BadRequestError extends Equatable {
           ? CreateAccountFailure.termsOfUse
           : CreateAccountFailure.privacyPolicy;
     }
-    return _failureMaping[code] ?? CreateAccountFailure.unknown;
+    return _failureMapping[code] ?? CreateAccountFailure.unknown;
   }
 
   static const _whale0137 = 'WHALE-0137';
-  static const _failureMaping = {
+  static const _failureMapping = {
     // Client not allowed to create users
     'WHALE-0120': CreateAccountFailure.clientNotAllowed,
     // Username/email address already in use

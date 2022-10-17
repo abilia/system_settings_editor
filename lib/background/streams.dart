@@ -7,7 +7,7 @@ import 'package:seagull/models/all.dart';
 final _log = Logger('streams');
 
 // Stream is created so that app can respond to notification-selected events
-// since the plugin is initialised in the main function
+// since the plugin is initialized in the main function
 ReplaySubject<NotificationAlarm> get selectNotificationSubject =>
     _selectNotificationSubject;
 ReplaySubject<NotificationAlarm> _selectNotificationSubject =

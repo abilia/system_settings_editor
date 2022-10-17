@@ -11,8 +11,8 @@ class RecurringWiz extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return BlocBuilder<EditActivityCubit, EditActivityState>(
       buildWhen: (previous, current) =>
-          previous.activity.recurs.recurrance !=
-          current.activity.recurs.recurrance,
+          previous.activity.recurs.recurrence !=
+          current.activity.recurs.recurrence,
       builder: (context, state) {
         return WizardScaffold(
           title: translate.recurrence,
@@ -32,7 +32,7 @@ class RecurringWiz extends StatelessWidget {
                     padding: EdgeInsets.only(
                         bottom: layout.formPadding.verticalItemDistance),
                     child: RadioField<RecurrentType>(
-                      groupValue: state.activity.recurs.recurrance,
+                      groupValue: state.activity.recurs.recurrence,
                       onChanged: (v) => context
                           .read<EditActivityCubit>()
                           .changeRecurrentType(type),

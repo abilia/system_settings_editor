@@ -22,7 +22,7 @@ class AnalyticsService {
       'checkable': activity.checkable,
       'removeAfter': activity.removeAfter,
       'alarm': activity.alarm.intValue,
-      'recurring': activity.recurs.recurrance.toString(),
+      'recurring': activity.recurs.recurrence.toString(),
     };
     await analytics.logEvent(
       name: 'activity_created',

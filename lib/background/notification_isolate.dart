@@ -150,7 +150,7 @@ Future _scheduleAllAlarmNotifications(
   FileStorage fileStorage,
   DateTime Function() now,
 ) =>
-    // We need the lock because if two pushes comes simultaniusly
+    // We need the lock because if two pushes comes simultaneously
     // (that happens when file is uploaded on myAbilia)
     // there is a race condition when adding pictures to notifications.
     // The image being are moved into the attachment data store is gone for the next thread
@@ -204,7 +204,7 @@ Future<bool> _scheduleNotification(
           settings,
         );
 
-  final ios = Platform.isAndroid
+  final iOS = Platform.isAndroid
       ? null
       : await _iosNotificationDetails(
           notificationAlarm,
@@ -232,7 +232,7 @@ Future<bool> _scheduleNotification(
       title,
       subtitle,
       time,
-      NotificationDetails(android: and, iOS: ios),
+      NotificationDetails(android: and, iOS: iOS),
       payload: payload,
       androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation:
@@ -307,7 +307,9 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
         : null,
     timeoutAfter: settings.durationMs,
     startActivityClassName:
-        'com.abilia.memoplanner.AlarmActivity', // This is 'package.name.Activity', dont change to application flavor id
+        // This is 'package.name.Activity',
+        // don't change to application flavor id
+        'com.abilia.memoplanner.AlarmActivity',
     showNotification: Config.isMPGO,
     largeIcon: await _androidLargeIcon(
       notificationAlarm.event.image.id,
@@ -345,33 +347,33 @@ String? _subtitle(
   Locale givenLocale,
   bool alwaysUse24HourFormat,
 ) {
-  final tf =
+  final timeFormat =
       hourAndMinuteFromUse24(alwaysUse24HourFormat, givenLocale.languageCode);
-  final translater = Locales.language[givenLocale] ?? const EN();
+  final translator = Locales.language[givenLocale] ?? const EN();
   if (notificationAlarm is ActivityAlarm) {
-    return _activitySubtitle(notificationAlarm, tf, translater);
+    return _activitySubtitle(notificationAlarm, timeFormat, translator);
   }
   return null;
 }
 
 String _activitySubtitle(
   ActivityAlarm activeNotification,
-  TimeFormat tf,
-  Translated? translater,
+  TimeFormat timeFormat,
+  Translated? translator,
 ) {
   final ad = activeNotification.activityDay;
-  final endTime = ad.activity.hasEndTime ? ' - ${tf(ad.end)} ' : ' ';
+  final endTime = ad.activity.hasEndTime ? ' - ${timeFormat(ad.end)} ' : ' ';
   final extra =
-      translater != null ? _extra(activeNotification, translater) : '';
-  return tf(ad.start) + endTime + extra;
+      translator != null ? _extra(activeNotification, translator) : '';
+  return timeFormat(ad.start) + endTime + extra;
 }
 
-String _extra(ActivityAlarm notificationAlarm, Translated translater) {
-  if (notificationAlarm is StartAlarm) return translater.startsNow;
-  if (notificationAlarm is EndAlarm) return translater.endsNow;
+String _extra(ActivityAlarm notificationAlarm, Translated translator) {
+  if (notificationAlarm is StartAlarm) return translator.startsNow;
+  if (notificationAlarm is EndAlarm) return translator.endsNow;
   if (notificationAlarm is NewReminder) {
     return notificationAlarm.reminder
-        .toReminderHeading(translater, notificationAlarm is ReminderBefore);
+        .toReminderHeading(translator, notificationAlarm is ReminderBefore);
   }
   return '';
 }

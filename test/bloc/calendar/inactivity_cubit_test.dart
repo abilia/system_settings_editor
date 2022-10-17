@@ -119,7 +119,7 @@ void main() {
     },
     expect: () => [
       ReturnToTodayThresholdReached(initialTime),
-      const HomescreenFinalState(),
+      const HomeScreenFinalState(),
     ],
   );
 
@@ -149,7 +149,7 @@ void main() {
       tickerController.add(initialTime.add(6.minutes()));
     },
     expect: () => [
-      const HomescreenFinalState(),
+      const HomeScreenFinalState(),
     ],
   );
 
@@ -186,7 +186,7 @@ void main() {
   );
 
   blocTest<InactivityCubit, InactivityState>(
-    'SGC-1487 zero timout disables',
+    'SGC-1487 zero timeout disables',
     setUp: () {
       when(() => settingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(

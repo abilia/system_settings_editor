@@ -34,5 +34,6 @@ class WeekCalendarLoaded extends WeekCalendarState {
 
   @override
   String toString() =>
-      'WeekCalendarLoaded { currentWeekStart: $currentWeekStart, events: ${currentWeekEvents.length} fullday: ${fullDayActivities.length} }';
+      'WeekCalendarLoaded { currentWeekStart: $currentWeekStart, events: '
+      '${currentWeekEvents.length} full day: ${fullDayActivities.length} }';
 }

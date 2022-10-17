@@ -21,8 +21,8 @@ void main() {
     final asJson = json.decode(response);
     final data = DataUpdateResponse.fromJson(asJson);
     expect(data.previousRevision, 100);
-    expect(data.succeded.length, 1);
-    final dataRevisionUpdate = data.succeded.first;
+    expect(data.succeeded.length, 1);
+    final dataRevisionUpdate = data.succeeded.first;
     expect(dataRevisionUpdate.id, 'cc207923-2946-465d-be17-128fb19765cb');
     expect(dataRevisionUpdate.revision, 101);
 
@@ -44,8 +44,8 @@ void main() {
     final asJson = json.decode(response);
     final data = DataUpdateResponse.fromJson(asJson);
     expect(data.previousRevision, 100);
-    expect(data.succeded.length, 1);
-    final dataRevisionUpdate = data.succeded.first;
+    expect(data.succeeded.length, 1);
+    final dataRevisionUpdate = data.succeeded.first;
     expect(dataRevisionUpdate.id, 'cc207923-2946-465d-be17-128fb19765cb');
     expect(dataRevisionUpdate.revision, 101);
 
@@ -66,7 +66,7 @@ void main() {
     final asJson = json.decode(response);
     final data = DataUpdateResponse.fromJson(asJson);
     expect(data.previousRevision, 100);
-    expect(data.succeded.length, 0);
+    expect(data.succeeded.length, 0);
     expect(data.failed.length, 1);
   });
 }

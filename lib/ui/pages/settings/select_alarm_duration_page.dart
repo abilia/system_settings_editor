@@ -37,7 +37,7 @@ class _SelectAlarmDurationPageState extends State<SelectAlarmDurationPage> {
       CollapsableWidget(
         collapsed: Platform.isAndroid ||
             selectedAlarmDuration.duration() <=
-                iOSPersistantNotificationMaxDuration,
+                iOSPersistentNotificationMaxDuration,
         padding:
             EdgeInsets.only(bottom: layout.formPadding.verticalItemDistance),
         child: ErrorMessage(text: Text(t.iOSAlarmTimeWarning)),

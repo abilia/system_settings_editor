@@ -25,7 +25,7 @@ void main() {
   late ActivityDbInMemory mockActivityDb;
   final time = DateTime(2007, 08, 09, 13, 11);
   const leftTitle = 'LeftCategoryActivity',
-      rightTitle = 'RigthCategoryActivity';
+      rightTitle = 'RightCategoryActivity';
 
   final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
     data: MemoplannerSettingData.fromData(
@@ -38,7 +38,7 @@ void main() {
   TimerResponse timerResponse = () => [];
 
   final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
-  final previusDayButtonFinder = find.byIcon(AbiliaIcons.returnToPreviousPage);
+  final previousDayButtonFinder = find.byIcon(AbiliaIcons.returnToPreviousPage);
 
   setUp(() async {
     setupPermissions();
@@ -225,7 +225,7 @@ void main() {
     testWidgets('Yesterday shows only past dots', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      await tester.tap(previusDayButtonFinder);
+      await tester.tap(previousDayButtonFinder);
       await tester.pumpAndSettle();
 
       expect(find.byType(PastDots), findsWidgets);
@@ -325,7 +325,7 @@ void main() {
     testWidgets('Yesterday does not show timline', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      await tester.tap(previusDayButtonFinder);
+      await tester.tap(previousDayButtonFinder);
       await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsNothing);
     });
@@ -1326,7 +1326,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text(dayActivity), findsNothing);
 
-      await tester.tap(previusDayButtonFinder);
+      await tester.tap(previousDayButtonFinder);
       await tester.pumpAndSettle();
       expect(find.text(dayActivity), findsOneWidget);
     });

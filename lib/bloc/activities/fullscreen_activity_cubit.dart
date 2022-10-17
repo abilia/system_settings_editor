@@ -70,7 +70,7 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
         .where((a) => !a.fullDay)
         .expand((a) => a.dayActivitiesForDay(day))
         .map((ad) => ad.toOccasion(time))
-        .where((ao) => ao.isCurrent)
+        .where((activityOccasion) => activityOccasion.isCurrent)
         .toList()
       ..sort();
     final selected = ongoingActivities.firstWhereOrNull(

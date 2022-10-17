@@ -88,10 +88,10 @@ class Recurs extends Equatable {
   Recurs changeEnd(DateTime endTime) =>
       Recurs.raw(type, data, endTime.millisecondsSinceEpoch);
 
-  RecurrentType get recurrance => RecurrentType.values[type];
+  RecurrentType get recurrence => RecurrentType.values[type];
 
   bool recursOnDay(DateTime day) {
-    switch (recurrance) {
+    switch (recurrence) {
       case RecurrentType.weekly:
         return _recursOnWeeklyDay(day);
       case RecurrentType.monthly:
@@ -220,5 +220,5 @@ class Recurs extends Equatable {
 
   @override
   String toString() =>
-      '$recurrance; ends -> ${endTime == noEnd ? 'no end' : end}; ${_generateBitsSet(31, data)}';
+      '$recurrence; ends -> ${endTime == noEnd ? 'no end' : end}; ${_generateBitsSet(31, data)}';
 }

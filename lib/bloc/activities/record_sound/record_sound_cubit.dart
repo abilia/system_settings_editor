@@ -10,13 +10,13 @@ import 'package:seagull/models/all.dart';
 part 'record_sound_state.dart';
 
 class AudioTicker {
-  final int millisTickRate;
-  const AudioTicker(this.millisTickRate);
+  final int millisecondTickRate;
+  const AudioTicker(this.millisecondTickRate);
 
   Stream<int> tick({required int duration}) {
-    return Stream.periodic(
-            Duration(milliseconds: millisTickRate), (x) => x * millisTickRate)
-        .take((duration ~/ millisTickRate) + 1);
+    return Stream.periodic(Duration(milliseconds: millisecondTickRate),
+            (x) => x * millisecondTickRate)
+        .take((duration ~/ millisecondTickRate) + 1);
   }
 }
 
