@@ -256,9 +256,11 @@ class _Progress extends StatelessWidget {
                 disabledThumbColor: color,
                 disabledInactiveTrackColor: AbiliaColors.white120,
                 trackHeight: layout.recording.trackHeight,
-                thumbShape: RoundSliderThumbShape(
+                thumbShape: AbiliaThumbShape(
                   disabledThumbRadius: layout.recording.thumbRadius,
-                  elevation: 0,
+                  elevation: layout.slider.elevation,
+                  outerBorder: layout.slider.outerBorder,
+                  borderColor: Theme.of(context).scaffoldBackgroundColor,
                 ),
                 trackShape: _NotPaddedRoundedRectSliderTrackShape(),
               ),

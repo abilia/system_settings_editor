@@ -185,7 +185,7 @@ class AbiliaThumbShape extends SliderComponentShape {
     canvas.drawCircle(
       center,
       radius + outerBorder,
-      Paint()..color = AbiliaColors.white,
+      Paint()..color = borderColor,
     );
 
     final Path path = Path()
