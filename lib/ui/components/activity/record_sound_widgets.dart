@@ -258,7 +258,6 @@ class _Progress extends StatelessWidget {
                 trackHeight: layout.recording.trackHeight,
                 thumbShape: RoundSliderThumbShape(
                   disabledThumbRadius: layout.recording.thumbRadius,
-                  elevation: 1,
                 ),
                 trackShape: _NotPaddedRoundedRectSliderTrackShape(),
               ),
