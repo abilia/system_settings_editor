@@ -102,16 +102,19 @@ class _ScrollListenerState extends State<_ScrollListener> {
   Widget build(BuildContext context) {
     return NotificationListener<ScrollMetricsNotification>(
       onNotification: (scrollMetricNotification) {
-        final newMetrics = scrollMetricNotification.metrics;
-        final oldMetrics = (scrollMetrics ??= scrollMetricNotification.metrics);
+        final previous = scrollMetrics;
+        final current = scrollMetricNotification.metrics;
 
-        if (oldMetrics.viewportDimension != newMetrics.viewportDimension ||
-            oldMetrics.maxScrollExtent != newMetrics.maxScrollExtent ||
-            oldMetrics.minScrollExtent != newMetrics.minScrollExtent) {
+        if (previous != null &&
+            (previous.viewportDimension != current.viewportDimension ||
+                previous.maxScrollExtent != current.maxScrollExtent ||
+                previous.minScrollExtent != current.minScrollExtent)) {
           context.read<ScrollPositionCubit>().updateNowOffset(
               nowOffset: widget.getNowOffset(context.read<ClockBloc>().state));
           context.read<ScrollPositionCubit>().goToNow(duration: Duration.zero);
         }
+
+        scrollMetrics = current;
         return false;
       },
       child: NotificationListener<ScrollNotification>(
