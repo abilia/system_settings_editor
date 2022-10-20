@@ -44,7 +44,7 @@ class TimepillarCalendar extends StatelessWidget {
   }
 }
 
-class OneTimepillarCalendar extends StatelessWidget with CalendarStateMixin {
+class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
   final TimepillarState timepillarState;
   final TimepillarMeasures timepillarMeasures;
   final bool showCategories,

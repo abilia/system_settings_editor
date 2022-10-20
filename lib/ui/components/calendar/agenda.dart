@@ -3,7 +3,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class Agenda extends StatelessWidget with CalendarStateMixin {
+class Agenda extends StatelessWidget with CalendarWidgetMixin {
   final EventsState eventsState;
 
   const Agenda({
