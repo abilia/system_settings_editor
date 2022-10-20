@@ -11,6 +11,14 @@ class VolumeSettings {
     return await _channel.invokeMethod('getMediaVolume');
   }
 
+  static Future<int?> get alarmMaxVolume async {
+    return await _channel.invokeMethod('getAlarmMaxVolume');
+  }
+
+  static Future<int?> get mediaMaxVolume async {
+    return await _channel.invokeMethod('getMediaMaxVolume');
+  }
+
   static Future<void> setAlarmVolume(double volume) async {
     await _channel.invokeMethod('setAlarmVolume', {'volume': volume});
   }
