@@ -15,7 +15,6 @@ class AlarmSettings extends Equatable {
       checkableActivityAlarmKey = 'activity_alarm_with_confirm',
       reminderAlarmKey = 'activity_reminder_alarm',
       timerAlarmKey = 'activity_timer_alarm',
-      vibrateAtReminderKey = 'setting_vibrate_at_reminder',
       alarmDurationKey = 'alarm_duration',
       alarmsDisabledUntilKey = 'alarms_disabled_until',
       showAlarmOnOffSwitchKey = 'show_alarms_button',
@@ -27,7 +26,6 @@ class AlarmSettings extends Equatable {
     checkableActivityAlarmKey,
     reminderAlarmKey,
     timerAlarmKey,
-    vibrateAtReminderKey,
     alarmDurationKey,
     alarmsDisabledUntilKey,
     showAlarmOnOffSwitchKey,
@@ -35,9 +33,7 @@ class AlarmSettings extends Equatable {
   ];
 
   final int durationMs, disabledUntilEpoch;
-  final bool vibrateAtReminder,
-      showAlarmOnOffSwitch,
-      _showOngoingActivityInFullScreen;
+  final bool showAlarmOnOffSwitch, _showOngoingActivityInFullScreen;
 
   final String checkableActivity, nonCheckableActivity, reminder, timer;
 
@@ -56,7 +52,6 @@ class AlarmSettings extends Equatable {
 
   const AlarmSettings({
     this.durationMs = 30000,
-    this.vibrateAtReminder = true,
     this.checkableActivity = SoundExtension.defaultName,
     this.nonCheckableActivity = SoundExtension.defaultName,
     this.reminder = SoundExtension.defaultName,
@@ -71,7 +66,6 @@ class AlarmSettings extends Equatable {
     Sound? checkableSound,
     Sound? reminderSound,
     Sound? timerSound,
-    bool? vibrateAtReminder,
     AlarmDuration? alarmDuration,
     bool? showAlarmOnOffSwitch,
     bool? showOngoingActivityInFullScreen,
@@ -81,7 +75,6 @@ class AlarmSettings extends Equatable {
         nonCheckableActivity: nonCheckableSound?.name ?? nonCheckableActivity,
         checkableActivity: checkableSound?.name ?? checkableActivity,
         reminder: reminderSound?.name ?? reminder,
-        vibrateAtReminder: vibrateAtReminder ?? this.vibrateAtReminder,
         timer: timerSound?.name ?? timer,
         showAlarmOnOffSwitch: showAlarmOnOffSwitch ?? this.showAlarmOnOffSwitch,
         showOngoingActivityInFullScreen:
@@ -110,10 +103,6 @@ class AlarmSettings extends Equatable {
         timer: settings.parse(
           timerAlarmKey,
           Sound.Default.name,
-        ),
-        vibrateAtReminder: settings.getBool(
-          vibrateAtReminderKey,
-          defaultValue: true,
         ),
         disabledUntilEpoch: settings.parse(
           alarmsDisabledUntilKey,
@@ -147,10 +136,6 @@ class AlarmSettings extends Equatable {
           identifier: AlarmSettings.timerAlarmKey,
         ),
         MemoplannerSettingData.fromData(
-          data: vibrateAtReminder,
-          identifier: AlarmSettings.vibrateAtReminderKey,
-        ),
-        MemoplannerSettingData.fromData(
           data: alarmDuration.milliseconds(),
           identifier: AlarmSettings.alarmDurationKey,
         ),
@@ -167,7 +152,6 @@ class AlarmSettings extends Equatable {
   @override
   List<Object?> get props => [
         duration,
-        vibrateAtReminder,
         checkableActivity,
         nonCheckableActivity,
         reminder,

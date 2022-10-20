@@ -253,7 +253,7 @@ Future<IOSNotificationDetails> _iosNotificationDetails(
 ) async {
   final sound = notificationAlarm.sound(settings);
   final hasSound = notificationAlarm.hasSound(settings);
-  final hasVibration = notificationAlarm.vibrate(settings);
+  final hasVibration = notificationAlarm.hasVibration();
   final seconds = alarmDuration.inSeconds;
   final soundFile = !hasVibration && !hasSound
       ? null
@@ -284,9 +284,10 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
       : null;
   final sound = notificationAlarm.sound(settings);
   final hasSound = notificationAlarm.hasSound(settings);
-  final vibrate = notificationAlarm.vibrate(settings);
+  final hasVibration = notificationAlarm.hasVibration();
 
-  final notificationChannel = _notificationChannel(hasSound, vibrate, sound);
+  final notificationChannel =
+      _notificationChannel(hasSound, hasVibration, sound);
   const insistentFlag = 4;
 
   return AndroidNotificationDetails(
@@ -298,7 +299,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     sound: sound == Sound.NoSound || !hasSound
         ? null
         : RawResourceAndroidNotificationSound(sound.fileName()),
-    enableVibration: vibrate,
+    enableVibration: hasVibration,
     importance: Importance.max,
     priority: Priority.high,
     fullScreenIntent: true,
@@ -325,13 +326,13 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
 }
 
 NotificationChannel _notificationChannel(
-        bool hasSound, bool vibrate, Sound sound) =>
+        bool hasSound, bool hasVibration, Sound sound) =>
     hasSound
         ? NotificationChannel(
             'SoundVibration${sound.name}',
             'Sound and Vibration with sound ${sound.name}',
             'Activities with Alarm and Vibration or Only Alarm with sound ${sound.name}')
-        : vibrate
+        : hasVibration
             ? NotificationChannel(
                 'Vibration', 'Vibration', 'Activities with Only vibration ')
             : NotificationChannel(
@@ -428,3 +429,8 @@ Future<AndroidBitmap<Object>?> _androidLargeIcon(
   }
   return null;
 }
+
+@visibleForTesting
+NotificationChannel notificationChannelTest(
+        bool hasSound, bool hasVibration, Sound sound) =>
+    _notificationChannel(hasSound, hasVibration, sound);

@@ -78,6 +78,29 @@ void main() {
         .thenAnswer((_) => Future.value(true));
   });
 
+  group('Functions', () {
+    test('Notification channels', () async {
+      const sound = Sound.Default;
+      final notificationChannel1 = notificationChannelTest(true, true, sound);
+      final notificationChannel2 = notificationChannelTest(true, false, sound);
+      final notificationChannel3 = notificationChannelTest(false, true, sound);
+      final notificationChannel4 = notificationChannelTest(false, false, sound);
+      final channelIds = [
+        notificationChannel1.id,
+        notificationChannel2.id,
+        notificationChannel3.id,
+        notificationChannel4.id
+      ];
+
+      final uniqueChannelIds = <String>{};
+      for (final id in channelIds) {
+        uniqueChannelIds.add(id);
+      }
+      expect(uniqueChannelIds.length, channelIds.length - 1);
+      expect(notificationChannel1.id, notificationChannel2.id);
+    });
+  });
+
   group('only activities', () {
     test('isolate', () async {
       final serialized =

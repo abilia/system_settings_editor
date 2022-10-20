@@ -621,8 +621,6 @@ abstract class Translated {
 
   final String checkableActivities = 'Checkable activities';
 
-  final String vibrationOnReminder = 'Vibration on reminder';
-
   final String alarmTime = 'Alarm time';
 
   final String alert = 'Alert';
@@ -1847,9 +1845,6 @@ class SV extends Translated {
 
   @override
   final String checkableActivities = 'Kvitterbara aktiviteter';
-
-  @override
-  final String vibrationOnReminder = 'Vibration vid påminnelse';
 
   @override
   final String alarmTime = 'Larmtid';
@@ -3227,9 +3222,6 @@ class DA extends Translated {
 
   @override
   final String checkableActivities = 'Kvitterbare aktiviteter';
-
-  @override
-  final String vibrationOnReminder = 'Vibration ved påmindelse';
 
   @override
   final String alarmTime = 'Alarmtid';
@@ -4610,9 +4602,6 @@ class NL extends Translated {
 
   @override
   final String checkableActivities = 'Afvinkbare activiteiten';
-
-  @override
-  final String vibrationOnReminder = 'Trilfunctie bij herinnering';
 
   @override
   final String alarmTime = 'Alarmtijd';
@@ -5996,9 +5985,6 @@ class FI extends Translated {
 
   @override
   final String checkableActivities = 'Tarkistettavat aktiviteetit';
-
-  @override
-  final String vibrationOnReminder = 'Värinä muistutuksessa';
 
   @override
   final String alarmTime = 'Hälytysaika';
@@ -7386,9 +7372,6 @@ class DE extends Translated {
   final String checkableActivities = 'Kontrollierbare Aktivitäten';
 
   @override
-  final String vibrationOnReminder = 'Vibration bei Erinnerung';
-
-  @override
   final String alarmTime = 'Alarmzeit';
 
   @override
@@ -8768,9 +8751,6 @@ class NB extends Translated {
 
   @override
   final String checkableActivities = 'Kvitterbare aktiviteter';
-
-  @override
-  final String vibrationOnReminder = 'Vibrasjon ved påminnelse';
 
   @override
   final String alarmTime = 'Alarmtid';

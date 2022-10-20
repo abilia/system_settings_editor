@@ -10,7 +10,7 @@ abstract class NotificationAlarm extends Equatable {
   final bool fullScreenActivity;
   const NotificationAlarm(this.event, {this.fullScreenActivity = false});
   bool hasSound(AlarmSettings settings);
-  bool vibrate(AlarmSettings settings);
+  bool hasVibration();
   Sound sound(AlarmSettings settings);
   DateTime get notificationTime;
   String get stackId;
@@ -57,7 +57,7 @@ class TimerAlarm extends NotificationAlarm {
   Sound sound(AlarmSettings settings) => settings.timer.toSound();
 
   @override
-  bool vibrate(AlarmSettings settings) => true;
+  bool hasVibration() => true;
 
   @override
   Map<String, dynamic> toJson() => {
@@ -120,7 +120,7 @@ abstract class NewAlarm extends ActivityAlarm {
   bool hasSound(settings) => activity.alarm.sound;
 
   @override
-  bool vibrate(settings) => activity.alarm.vibrate;
+  bool hasVibration() => activity.alarm.vibrate;
 
   @override
   Sound sound(AlarmSettings settings) => activity.checkable
@@ -194,7 +194,7 @@ abstract class NewReminder extends ActivityAlarm {
       settings.reminder.toSound() != Sound.NoSound;
 
   @override
-  bool vibrate(AlarmSettings settings) => settings.vibrateAtReminder;
+  bool hasVibration() => activity.alarm.vibrate;
 
   @override
   Sound sound(AlarmSettings settings) => settings.reminder.toSound();

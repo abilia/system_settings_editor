@@ -63,7 +63,6 @@ class TestKey {
       checkableAlarmSelector = Key('checkableAlarmSelector'),
       reminderAlarmSelector = Key('reminderAlarmSelector'),
       alarmDurationSelector = Key('alarmDurationSelector'),
-      vibrateAtReminderSelector = Key('vibrateAtReminderSelector'),
       hiddenSettingsButtonLeft = Key('hiddenSettingsButtonLeft'),
       hiddenSettingsButtonRight = Key('hiddenSettingsButtonRight'),
       use12hSwitch = Key('use12hSwitch'),
