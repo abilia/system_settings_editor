@@ -2,23 +2,23 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/bloc/all.dart';
 
 typedef GetNowOffset = double Function(DateTime now);
+typedef ScrollListenerWidgetBuilder = Widget Function(
+  BuildContext context,
+  ScrollController controller,
+);
 
 class ScrollListener extends StatelessWidget {
   const ScrollListener({
-    required this.scrollController,
     required this.getNowOffset,
     required this.inViewMargin,
-    required this.child,
-    this.timepillarMeasures,
+    required this.builder,
     this.enabled = true,
     Key? key,
   }) : super(key: key);
 
-  final ScrollController scrollController;
+  final ScrollListenerWidgetBuilder builder;
   final GetNowOffset getNowOffset;
   final double inViewMargin;
-  final Widget child;
-  final TimepillarMeasures? timepillarMeasures;
   final bool enabled;
 
   @override
@@ -31,48 +31,58 @@ class ScrollListener extends StatelessWidget {
         listener: (context, state) {
           context.read<ScrollPositionCubit>().reset();
         },
-        child: child,
+        child: builder(
+          context,
+          ScrollController(),
+        ),
       );
     }
 
     return _ScrollListener(
-      scrollController: scrollController,
       getNowOffset: getNowOffset,
       inViewMargin: inViewMargin,
-      timepillarMeasures: timepillarMeasures,
-      child: child,
+      builder: builder,
     );
   }
 }
 
 class _ScrollListener extends StatefulWidget {
   const _ScrollListener({
-    required this.scrollController,
     required this.getNowOffset,
     required this.inViewMargin,
-    required this.child,
-    this.timepillarMeasures,
+    required this.builder,
     Key? key,
   }) : super(key: key);
 
-  final ScrollController scrollController;
   final GetNowOffset getNowOffset;
   final double inViewMargin;
-  final Widget child;
-  final TimepillarMeasures? timepillarMeasures;
+  final ScrollListenerWidgetBuilder builder;
 
   @override
   State<_ScrollListener> createState() => _ScrollListenerState();
 }
 
 class _ScrollListenerState extends State<_ScrollListener> {
+  late final ScrollController controller = ScrollController();
+  ScrollMetrics? scrollMetrics;
+
   @override
   void initState() {
     super.initState();
-    _updateScrollState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+
+      final nowOffset = widget.getNowOffset(context.read<ClockBloc>().state);
+      context.read<ScrollPositionCubit>().updateState(
+            scrollController: controller,
+            nowOffset: nowOffset,
+            inViewMargin: widget.inViewMargin,
+          );
+
       if (mounted && context.read<DayPickerBloc>().state.isToday) {
-        context.read<ScrollPositionCubit>().goToNow();
+        context.read<ScrollPositionCubit>().goToNow(duration: Duration.zero);
       }
     });
   }
@@ -80,48 +90,44 @@ class _ScrollListenerState extends State<_ScrollListener> {
   @override
   void didUpdateWidget(covariant _ScrollListener oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _updateScrollState();
-    if (oldWidget.timepillarMeasures != widget.timepillarMeasures) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          context.read<ScrollPositionCubit>().scrollPositionUpdated();
-          context.read<ScrollPositionCubit>().goToNow();
-        }
-      });
-    }
-  }
-
-  void _updateScrollState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) {
-        return;
-      }
-
-      final nowOffset = widget.getNowOffset(context.read<ClockBloc>().state);
-
-      context.read<ScrollPositionCubit>().updateState(
-            scrollController: widget.scrollController,
-            nowOffset: nowOffset,
-            inViewMargin: widget.inViewMargin,
-          );
-    });
+    final nowOffset = widget.getNowOffset(context.read<ClockBloc>().state);
+    context.read<ScrollPositionCubit>().updateState(
+          scrollController: controller,
+          nowOffset: nowOffset,
+          inViewMargin: widget.inViewMargin,
+        );
   }
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: (scrollNotification) {
-        if (scrollNotification.metrics.axis == Axis.vertical) {
-          context.read<ScrollPositionCubit>().scrollPositionUpdated();
+    return NotificationListener<ScrollMetricsNotification>(
+      onNotification: (scrollMetricNotification) {
+        final newMetrics = scrollMetricNotification.metrics;
+        final oldMetrics = (scrollMetrics ??= scrollMetricNotification.metrics);
+
+        if (oldMetrics.viewportDimension != newMetrics.viewportDimension ||
+            oldMetrics.maxScrollExtent != newMetrics.maxScrollExtent ||
+            oldMetrics.minScrollExtent != newMetrics.minScrollExtent) {
+          context.read<ScrollPositionCubit>().updateNowOffset(
+              nowOffset: widget.getNowOffset(context.read<ClockBloc>().state));
+          context.read<ScrollPositionCubit>().goToNow(duration: Duration.zero);
         }
         return false;
       },
-      child: !Config.isMP
-          ? widget.child
-          : _AutoScrollToNow(
-              getNowOffset: widget.getNowOffset,
-              child: widget.child,
-            ),
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (scrollNotification) {
+          if (scrollNotification.metrics.axis == Axis.vertical) {
+            context.read<ScrollPositionCubit>().scrollPositionUpdated();
+          }
+          return false;
+        },
+        child: !Config.isMP
+            ? widget.builder(context, controller)
+            : _AutoScrollToNow(
+                getNowOffset: widget.getNowOffset,
+                child: widget.builder(context, controller),
+              ),
+      ),
     );
   }
 }

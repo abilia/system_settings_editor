@@ -83,7 +83,6 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final verticalScrollController = ScrollController();
     final horizontalScrollController = SnapToCenterScrollController();
     return LayoutBuilder(
       builder: (context, boxConstraints) {
@@ -100,10 +99,6 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarStateMixin {
         final np = interval.intervalPart == IntervalPart.dayAndNight
             ? nightParts(dayParts, measures, topMargin)
             : <NightPart>[];
-
-        final now = context.read<ClockBloc>().state;
-        _scrollToInitialOffset(
-            context, verticalScrollController, nowOffset(now));
 
         return BlocBuilder<ClockBloc, DateTime>(
           builder: (context, now) {
@@ -160,145 +155,133 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarStateMixin {
                     bloc.state.calendar.timepillar);
             return ScrollListener(
               enabled: timepillarState.isToday && scrollToTimeOffset,
-              scrollController: verticalScrollController,
               getNowOffset: (now) => nowOffset(now),
               inViewMargin: timeToPixels(
                 0,
                 minutesPerDotDuration.inMinutes,
                 measures.dotDistance,
               ),
-              timepillarMeasures: timepillarMeasures,
-              child: RefreshIndicator(
-                onRefresh: () => refresh(context),
-                notificationPredicate: (scrollNotification) =>
-                    pullToRefresh &&
-                    defaultScrollNotificationPredicate(scrollNotification),
-                child: Container(
-                  key: TestKey.calendarBackgroundColor,
-                  color: interval.intervalPart == IntervalPart.night
-                      ? TimepillarCalendar.nightBackgroundColor
-                      : Theme.of(context).scaffoldBackgroundColor,
-                  child: ScrollArrows.all(
-                    upCollapseMargin: topMargin,
-                    downCollapseMargin: bottomMargin,
-                    horizontalController: horizontalScrollController,
-                    verticalController: verticalScrollController,
-                    child: SingleChildScrollView(
-                      controller: verticalScrollController,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: LimitedBox(
-                        maxHeight: height,
-                        child: Stack(
-                          children: <Widget>[
-                            ...np.map((p) {
-                              return Positioned(
-                                top: p.start,
-                                child: SizedBox(
-                                  width: boxConstraints.maxWidth,
-                                  height: p.length,
-                                  child: const DecoratedBox(
-                                    decoration: BoxDecoration(
-                                        color: TimepillarCalendar
-                                            .nightBackgroundColor),
+              builder: (_, verticalController) {
+                return RefreshIndicator(
+                  onRefresh: () => refresh(context),
+                  notificationPredicate: (scrollNotification) =>
+                      pullToRefresh &&
+                      defaultScrollNotificationPredicate(scrollNotification),
+                  child: Container(
+                    key: TestKey.calendarBackgroundColor,
+                    color: interval.intervalPart == IntervalPart.night
+                        ? TimepillarCalendar.nightBackgroundColor
+                        : Theme.of(context).scaffoldBackgroundColor,
+                    child: ScrollArrows.all(
+                      upCollapseMargin: topMargin,
+                      downCollapseMargin: bottomMargin,
+                      horizontalController: horizontalScrollController,
+                      verticalController: verticalController,
+                      child: SingleChildScrollView(
+                        controller: verticalController,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: LimitedBox(
+                          maxHeight: height,
+                          child: Stack(
+                            children: <Widget>[
+                              ...np.map((p) {
+                                return Positioned(
+                                  top: p.start,
+                                  child: SizedBox(
+                                    width: boxConstraints.maxWidth,
+                                    height: p.length,
+                                    child: const DecoratedBox(
+                                      decoration: BoxDecoration(
+                                          color: TimepillarCalendar
+                                              .nightBackgroundColor),
+                                    ),
+                                  ),
+                                );
+                              }),
+                              if (displayHourLines)
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    top: topMargin,
+                                  ),
+                                  child: HourLines(
+                                    numberOfLines: interval.lengthInHours + 1,
+                                    hourHeight: measures.hourHeight,
                                   ),
                                 ),
-                              );
-                            }),
-                            if (displayHourLines)
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  top: topMargin,
+                              if (showTimeLine)
+                                Builder(
+                                  builder: (context) {
+                                    if (now.inRangeWithInclusiveStart(
+                                        startDate: measures.interval.start,
+                                        endDate: measures.interval.end)) {
+                                      return Timeline(
+                                        top: currentDotMidPosition(
+                                              now,
+                                              measures,
+                                              topMargin: topMargin,
+                                            ) -
+                                            layout.timepillar.timeLineHeight /
+                                                2,
+                                        width: boxConstraints.maxWidth,
+                                      );
+                                    }
+                                    return const SizedBox.shrink();
+                                  },
                                 ),
-                                child: HourLines(
-                                  numberOfLines: interval.lengthInHours + 1,
-                                  hourHeight: measures.hourHeight,
-                                ),
-                              ),
-                            if (showTimeLine)
-                              Builder(
-                                builder: (context) {
-                                  if (now.inRangeWithInclusiveStart(
-                                      startDate: measures.interval.start,
-                                      endDate: measures.interval.end)) {
-                                    return Timeline(
-                                      top: currentDotMidPosition(
-                                            now,
-                                            measures,
-                                            topMargin: topMargin,
-                                          ) -
-                                          layout.timepillar.timeLineHeight / 2,
-                                      width: boxConstraints.maxWidth,
-                                    );
-                                  }
-                                  return const SizedBox.shrink();
-                                },
-                              ),
-                            CustomScrollView(
-                              anchor: horizontalAnchor,
-                              center: center,
-                              scrollDirection: Axis.horizontal,
-                              controller: horizontalScrollController,
-                              slivers: <Widget>[
-                                if (showCategories)
+                              CustomScrollView(
+                                anchor: horizontalAnchor,
+                                center: center,
+                                scrollDirection: Axis.horizontal,
+                                controller: horizontalScrollController,
+                                slivers: <Widget>[
+                                  if (showCategories)
+                                    SliverToBoxAdapter(
+                                      child: TimepillarBoard(
+                                        leftBoardData,
+                                        categoryMinWidth: categoryMinWidth,
+                                        timepillarWidth:
+                                            measures.cardTotalWidth,
+                                        textStyle: textStyle,
+                                      ),
+                                    ),
+                                  SliverTimePillar(
+                                    key: center,
+                                    child: TimePillar(
+                                      interval: interval,
+                                      dayOccasion: timepillarState.occasion,
+                                      use12h: timepillarSettings.use12h,
+                                      nightParts: np,
+                                      dayParts: dayParts,
+                                      columnOfDots:
+                                          timepillarSettings.columnOfDots,
+                                      topMargin: topMargin,
+                                      measures: measures,
+                                    ),
+                                  ),
                                   SliverToBoxAdapter(
                                     child: TimepillarBoard(
-                                      leftBoardData,
+                                      rightBoardData,
                                       categoryMinWidth: categoryMinWidth,
                                       timepillarWidth: measures.cardTotalWidth,
                                       textStyle: textStyle,
                                     ),
                                   ),
-                                SliverTimePillar(
-                                  key: center,
-                                  child: TimePillar(
-                                    interval: interval,
-                                    dayOccasion: timepillarState.occasion,
-                                    use12h: timepillarSettings.use12h,
-                                    nightParts: np,
-                                    dayParts: dayParts,
-                                    columnOfDots:
-                                        timepillarSettings.columnOfDots,
-                                    topMargin: topMargin,
-                                    measures: measures,
-                                  ),
-                                ),
-                                SliverToBoxAdapter(
-                                  child: TimepillarBoard(
-                                    rightBoardData,
-                                    categoryMinWidth: categoryMinWidth,
-                                    timepillarWidth: measures.cardTotalWidth,
-                                    textStyle: textStyle,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
+                );
+              },
             );
           },
         );
       },
     );
   }
-
-  void _scrollToInitialOffset(
-    BuildContext context,
-    ScrollController sc,
-    double nowOffset,
-  ) =>
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        final maxOffset = max(nowOffset, 0.0);
-        final maxScrollExtent = sc.position.maxScrollExtent;
-        final offset = min(maxOffset, maxScrollExtent);
-        if (sc.hasClients) {
-          sc.jumpTo(offset);
-        }
-      });
 
   List<NightPart> nightParts(
     DayParts dayParts,
