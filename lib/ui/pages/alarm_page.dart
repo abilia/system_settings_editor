@@ -37,7 +37,7 @@ class AlarmPage extends StatelessWidget {
             child: Scaffold(
               appBar: AbiliaAppBar(
                 title: Translator.of(context).translate.alarm,
-                iconData: AbiliaIcons.handiAlarmVibration,
+                iconData: alarm.activityDay.activity.alarm.iconData(),
                 height: layout.appBar.mediumHeight,
                 trailing: Padding(
                   padding: layout.alarmPage.clockPadding,
