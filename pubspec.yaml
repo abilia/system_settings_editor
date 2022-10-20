@@ -68,7 +68,7 @@ dependencies:
   system_settings_editor:
     git:
       url: https://github.com/abilia/system_settings_editor.git
-      ref: v1.3.5
+      ref: 2187dfcac01b5dc3876d8bc7507f6b7741cc1874
   timezone: ^0.8.0
   transparent_image: ^2.0.0
   uuid: ^3.0.5
