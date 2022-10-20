@@ -75,6 +75,45 @@ void main() {
       );
     });
 
+    testWidgets('When media volume is zero show no-volume icon',
+        (tester) async {
+      // Arrange
+      layout = const LayoutMedium();
+      AbiliaSlider alarmSlider() =>
+          tester.widget(find.byKey(TestKey.alarmVolumeSlider));
+      AbiliaSlider mediaSlider() =>
+          tester.widget(find.byKey(TestKey.mediaVolumeSlider));
+
+      // Act
+      await tester.goToQuickSettings();
+
+      // Assert
+      expect(alarmSlider().value, 0);
+      expect(mediaSlider().value, 0);
+      expect(find.byIcon(AbiliaIcons.volumeNormal), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.noVolume), findsOneWidget);
+
+      // Act - Change alarm volume
+      await tester.tapAt(tester.getCenter(find.byType(AlarmVolumeSlider)));
+      await tester.pump();
+
+      // Assert - Icons not changed
+      expect(alarmSlider().value, greaterThan(0));
+      expect(mediaSlider().value, 0);
+      expect(find.byIcon(AbiliaIcons.volumeNormal), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.noVolume), findsOneWidget);
+
+      // Act - Change media volume
+      await tester.tapAt(tester.getCenter(find.byType(MediaVolumeSlider)));
+      await tester.pump();
+
+      // Assert - Icon changed
+      expect(alarmSlider().value, greaterThan(0));
+      expect(mediaSlider().value, greaterThan(0));
+      expect(find.byIcon(AbiliaIcons.volumeNormal), findsNWidgets(2));
+      expect(find.byIcon(AbiliaIcons.noVolume), findsNothing);
+    });
+
     testWidgets('All fields are setup correctly large layout', (tester) async {
       layout = const LayoutLarge();
       await tester.goToQuickSettings();

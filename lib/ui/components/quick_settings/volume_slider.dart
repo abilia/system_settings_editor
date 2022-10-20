@@ -27,6 +27,7 @@ abstract class _VolumeSlider extends StatefulWidget {
 class _AlarmVolumeSliderState extends _VolumeSliderState {
   _AlarmVolumeSliderState()
       : super(
+          key: TestKey.alarmVolumeSlider,
           leading: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -65,7 +66,7 @@ class _AlarmVolumeSliderState extends _VolumeSliderState {
 }
 
 class _MediaVolumeSliderState extends _VolumeSliderState {
-  _MediaVolumeSliderState() : super();
+  _MediaVolumeSliderState() : super(key: TestKey.mediaVolumeSlider);
 
   @override
   Future<double?> getVolume() {
@@ -86,10 +87,11 @@ class _MediaVolumeSliderState extends _VolumeSliderState {
 abstract class _VolumeSliderState extends State<_VolumeSlider>
     with WidgetsBindingObserver {
   final _log = Logger((_VolumeSliderState).toString());
+  final Key key;
   final Widget? leading;
   double _volume = 1.0, _minVolume = 0;
 
-  _VolumeSliderState({this.leading});
+  _VolumeSliderState({required this.key, this.leading});
 
   Widget get volumeIcon {
     if (_volume <= _minVolume) {
@@ -137,6 +139,7 @@ abstract class _VolumeSliderState extends State<_VolumeSlider>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AbiliaSlider(
+          key: key,
           leading: leading ?? volumeIcon,
           value: _volume,
           min: _minVolume,
