@@ -75,7 +75,8 @@ void main() {
       );
     });
 
-    testWidgets('When media volume is zero show no-volume icon',
+    testWidgets(
+        'When media volume is zero show no-volume icon while the icon for alarm volume always remains the same',
         (tester) async {
       // Arrange
       layout = const LayoutMedium();
