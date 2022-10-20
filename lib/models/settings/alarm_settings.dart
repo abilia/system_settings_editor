@@ -41,10 +41,6 @@ class AlarmSettings extends Equatable {
 
   Sound get checkableAlarm => checkableActivity.toSound();
 
-  Sound get reminderAlarm => reminder.toSound();
-
-  Sound get timerAlarm => timer.toSound();
-
   Duration get duration => Duration(milliseconds: durationMs);
 
   DateTime get disabledUntilDate =>

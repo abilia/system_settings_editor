@@ -253,7 +253,7 @@ Future<IOSNotificationDetails> _iosNotificationDetails(
 ) async {
   final sound = notificationAlarm.sound(settings);
   final hasSound = notificationAlarm.hasSound(settings);
-  final hasVibration = notificationAlarm.hasVibration();
+  final hasVibration = notificationAlarm.hasVibration(settings);
   final seconds = alarmDuration.inSeconds;
   final soundFile = !hasVibration && !hasSound
       ? null
@@ -284,16 +284,15 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
       : null;
   final sound = notificationAlarm.sound(settings);
   final hasSound = notificationAlarm.hasSound(settings);
-  final hasVibration = notificationAlarm.hasVibration();
+  final hasVibration = notificationAlarm.hasVibration(settings);
 
-  final notificationChannel =
-      _notificationChannel(hasSound, hasVibration, sound);
+  final channel = notificationChannel(hasSound, hasVibration, sound);
   const insistentFlag = 4;
 
   return AndroidNotificationDetails(
-    notificationChannel.id,
-    notificationChannel.name,
-    channelDescription: notificationChannel.description,
+    channel.id,
+    channel.name,
+    channelDescription: channel.description,
     groupKey: groupKey,
     playSound: hasSound,
     sound: sound == Sound.NoSound || !hasSound
@@ -325,7 +324,8 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
   );
 }
 
-NotificationChannel _notificationChannel(
+@visibleForTesting
+NotificationChannel notificationChannel(
         bool hasSound, bool hasVibration, Sound sound) =>
     hasSound
         ? NotificationChannel(
@@ -334,7 +334,7 @@ NotificationChannel _notificationChannel(
             'Activities with Alarm and Vibration or Only Alarm with sound ${sound.name}')
         : hasVibration
             ? NotificationChannel(
-                'Vibration', 'Vibration', 'Activities with Only vibration ')
+                'Vibration', 'Vibration', 'Activities with Only vibration')
             : NotificationChannel(
                 'Silent', 'Silent', 'Activities with Silent Alarm');
 
@@ -429,8 +429,3 @@ Future<AndroidBitmap<Object>?> _androidLargeIcon(
   }
   return null;
 }
-
-@visibleForTesting
-NotificationChannel notificationChannelTest(
-        bool hasSound, bool hasVibration, Sound sound) =>
-    _notificationChannel(hasSound, hasVibration, sound);

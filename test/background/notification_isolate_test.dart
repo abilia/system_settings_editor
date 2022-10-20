@@ -81,23 +81,30 @@ void main() {
   group('Functions', () {
     test('Notification channels', () async {
       const sound = Sound.Default;
-      final notificationChannel1 = notificationChannelTest(true, true, sound);
-      final notificationChannel2 = notificationChannelTest(true, false, sound);
-      final notificationChannel3 = notificationChannelTest(false, true, sound);
-      final notificationChannel4 = notificationChannelTest(false, false, sound);
-      final channelIds = [
-        notificationChannel1.id,
-        notificationChannel2.id,
-        notificationChannel3.id,
-        notificationChannel4.id
-      ];
+      final notificationChannel1 = notificationChannel(true, true, sound);
+      final notificationChannel2 = notificationChannel(true, false, sound);
+      final notificationChannel3 = notificationChannel(false, true, sound);
+      final notificationChannel4 = notificationChannel(false, false, sound);
 
-      final uniqueChannelIds = <String>{};
-      for (final id in channelIds) {
-        uniqueChannelIds.add(id);
-      }
-      expect(uniqueChannelIds.length, channelIds.length - 1);
-      expect(notificationChannel1.id, notificationChannel2.id);
+      expect(notificationChannel1.id, 'SoundVibration${sound.name}');
+      expect(notificationChannel1.name,
+          'Sound and Vibration with sound ${sound.name}');
+      expect(notificationChannel1.description,
+          'Activities with Alarm and Vibration or Only Alarm with sound ${sound.name}');
+
+      expect(notificationChannel2.id, notificationChannel1.id);
+      expect(notificationChannel2.name, notificationChannel1.name);
+      expect(
+          notificationChannel2.description, notificationChannel1.description);
+
+      expect(notificationChannel3.id, 'Vibration');
+      expect(notificationChannel3.name, 'Vibration');
+      expect(
+          notificationChannel3.description, 'Activities with Only vibration');
+
+      expect(notificationChannel4.id, 'Silent');
+      expect(notificationChannel4.name, 'Silent');
+      expect(notificationChannel4.description, 'Activities with Silent Alarm');
     });
   });
 
