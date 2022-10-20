@@ -13,12 +13,14 @@ class ScrollListener extends StatelessWidget {
     required this.inViewMargin,
     required this.builder,
     this.enabled = true,
+    this.disabledInitOffset,
     Key? key,
   }) : super(key: key);
 
   final ScrollListenerWidgetBuilder builder;
   final GetNowOffset getNowOffset;
   final double inViewMargin;
+  final double? disabledInitOffset;
   final bool enabled;
 
   @override
@@ -33,7 +35,7 @@ class ScrollListener extends StatelessWidget {
         },
         child: builder(
           context,
-          ScrollController(),
+          ScrollController(initialScrollOffset: disabledInitOffset ?? 0),
         ),
       );
     }

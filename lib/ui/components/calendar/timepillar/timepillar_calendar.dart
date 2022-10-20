@@ -155,6 +155,8 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarStateMixin {
                     bloc.state.calendar.timepillar);
             return ScrollListener(
               enabled: timepillarState.isToday && scrollToTimeOffset,
+              disabledInitOffset:
+                  measures.hourHeight * dayParts.morning.inHours,
               getNowOffset: (now) => nowOffset(now),
               inViewMargin: timeToPixels(
                 0,
