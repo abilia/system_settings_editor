@@ -106,6 +106,208 @@ void main() {
     });
   });
 
+  group('Vibration', () {
+    final day = DateTime(2020, 05, 14);
+    final startActivity = Activity.createNew(
+      title: 'null',
+      startTime: DateTime(2020, 06, 01, 17, 57),
+      timezone: timeZone,
+    );
+    final timer = AbiliaTimer(
+      id: 'id',
+      startTime: day,
+      duration: Duration.zero,
+    );
+
+    test(
+        'nonCheckableActivity has vibration when AlarmType is vibration or soundAndVibration',
+        () {
+      // Arrange - Default sound with vibration
+      AlarmSettings alarmSettings =
+          AlarmSettings(nonCheckableActivity: Sound.Default.name);
+      Activity activity = startActivity.copyWith(alarmType: alarmVibration);
+      StartAlarm alarm = StartAlarm(ActivityDay(activity, day));
+      bool hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, true);
+
+      // Arrange - Default sound with sound and vibration
+      activity = startActivity.copyWith(alarmType: alarmSoundAndVibration);
+      alarm = StartAlarm(ActivityDay(activity, day));
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, true);
+
+      // Arrange - No sound with vibration
+      alarmSettings = AlarmSettings(nonCheckableActivity: Sound.NoSound.name);
+      activity = startActivity.copyWith(alarmType: alarmVibration);
+      alarm = StartAlarm(ActivityDay(activity, day));
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, true);
+
+      // Arrange - No sound with sound and vibration
+      activity = startActivity.copyWith(alarmType: alarmSoundAndVibration);
+      alarm = StartAlarm(ActivityDay(activity, day));
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, true);
+
+      // Arrange - Default sound with sound
+      alarmSettings = AlarmSettings(nonCheckableActivity: Sound.Default.name);
+      activity = startActivity.copyWith(alarmType: alarmSound);
+      alarm = StartAlarm(ActivityDay(activity, day));
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, false);
+
+      // Arrange - Default sound with no alarm
+      alarmSettings = AlarmSettings(nonCheckableActivity: Sound.Default.name);
+      activity = startActivity.copyWith(alarmType: noAlarm);
+      alarm = StartAlarm(ActivityDay(activity, day));
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, false);
+    });
+
+    test(
+        'checkableActivity has vibration when AlarmType is vibration or soundAndVibration',
+        () {
+      // Arrange - Default sound with vibration
+      AlarmSettings alarmSettings =
+          AlarmSettings(checkableActivity: Sound.Default.name);
+      Activity activity = startActivity.copyWith(alarmType: alarmVibration);
+      StartAlarm alarm = StartAlarm(ActivityDay(activity, day));
+      bool hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, true);
+
+      // Arrange - Default sound with sound and vibration
+      activity = startActivity.copyWith(alarmType: alarmSoundAndVibration);
+      alarm = StartAlarm(ActivityDay(activity, day));
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, true);
+
+      // Arrange - No sound with vibration
+      alarmSettings = AlarmSettings(checkableActivity: Sound.NoSound.name);
+      activity = startActivity.copyWith(alarmType: alarmVibration);
+      alarm = StartAlarm(ActivityDay(activity, day));
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, true);
+
+      // Arrange - No sound with sound and vibration
+      activity = startActivity.copyWith(alarmType: alarmSoundAndVibration);
+      alarm = StartAlarm(ActivityDay(activity, day));
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, true);
+
+      // Arrange - Default sound with sound
+      alarmSettings = AlarmSettings(checkableActivity: Sound.Default.name);
+      activity = startActivity.copyWith(alarmType: alarmSound);
+      alarm = StartAlarm(ActivityDay(activity, day));
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, false);
+
+      // Arrange - Default sound with no alarm
+      alarmSettings = AlarmSettings(checkableActivity: Sound.Default.name);
+      activity = startActivity.copyWith(alarmType: noAlarm);
+      alarm = StartAlarm(ActivityDay(activity, day));
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, false);
+    });
+
+    test('reminders has vibration when have a sound', () {
+      // Arrange - Default sound with vibration
+      AlarmSettings alarmSettings = AlarmSettings(reminder: Sound.Default.name);
+      Activity activity = startActivity.copyWith(alarmType: alarmVibration);
+      ReminderBefore alarm =
+          ReminderBefore(ActivityDay(activity, day), reminder: Duration.zero);
+      bool hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, true);
+
+      // Arrange - Default sound with sound and vibration
+      activity = startActivity.copyWith(alarmType: alarmSoundAndVibration);
+      alarm =
+          ReminderBefore(ActivityDay(activity, day), reminder: Duration.zero);
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, true);
+
+      // Arrange - No sound with vibration
+      alarmSettings = AlarmSettings(reminder: Sound.NoSound.name);
+      activity = startActivity.copyWith(alarmType: alarmVibration);
+      alarm =
+          ReminderBefore(ActivityDay(activity, day), reminder: Duration.zero);
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, false);
+
+      // Arrange - No sound with sound and vibration
+      activity = startActivity.copyWith(alarmType: alarmSoundAndVibration);
+      alarm =
+          ReminderBefore(ActivityDay(activity, day), reminder: Duration.zero);
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, false);
+
+      // Arrange - Default sound with sound
+      alarmSettings = AlarmSettings(reminder: Sound.Default.name);
+      activity = startActivity.copyWith(alarmType: alarmSound);
+      alarm =
+          ReminderBefore(ActivityDay(activity, day), reminder: Duration.zero);
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, true);
+
+      // Arrange - Default sound with no alarm
+      alarmSettings = AlarmSettings(reminder: Sound.Default.name);
+      activity = startActivity.copyWith(alarmType: noAlarm);
+      alarm =
+          ReminderBefore(ActivityDay(activity, day), reminder: Duration.zero);
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, true);
+
+      // Arrange - No sound with no alarm
+      alarmSettings = AlarmSettings(reminder: Sound.NoSound.name);
+      activity = startActivity.copyWith(alarmType: noAlarm);
+      alarm =
+          ReminderBefore(ActivityDay(activity, day), reminder: Duration.zero);
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, false);
+    });
+
+    test('timers has vibration when have a sound', () {
+      // Arrange - Default sound with vibration
+      AlarmSettings alarmSettings = AlarmSettings(timer: Sound.Default.name);
+      TimerAlarm alarm = TimerAlarm(timer);
+      bool hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, true);
+
+      // Arrange - Default sound with sound and vibration
+      alarm = TimerAlarm(timer);
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, true);
+
+      // Arrange - No sound with vibration
+      alarmSettings = AlarmSettings(timer: Sound.NoSound.name);
+      alarm = TimerAlarm(timer);
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, false);
+
+      // Arrange - No sound with sound and vibration
+      alarm = TimerAlarm(timer);
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, false);
+
+      // Arrange - Default sound with sound
+      alarmSettings = AlarmSettings(timer: Sound.Default.name);
+      alarm = TimerAlarm(timer);
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, true);
+
+      // Arrange - Default sound with no alarm
+      alarmSettings = AlarmSettings(timer: Sound.Default.name);
+      alarm = TimerAlarm(timer);
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, true);
+
+      // Arrange - No sound with no alarm
+      alarmSettings = AlarmSettings(timer: Sound.NoSound.name);
+      alarm = TimerAlarm(timer);
+      hasVibration = alarm.hasVibration(alarmSettings);
+      expect(hasVibration, false);
+    });
+  });
+
   test('null default sound does return default', () {
     final nonCheckableAlarm = StartAlarm(
       ActivityDay(
