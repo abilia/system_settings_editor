@@ -117,6 +117,21 @@ void main() {
       expect(find.byType(AlarmPage), findsOneWidget);
     });
 
+    testWidgets(
+        'Notifications does not get rescheduled when AlarmPage is shown',
+        (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Act
+      mockTicker.add(activityWithAlarmTime);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pumpAndSettle();
+      // Assert
+      expect(alarmScheduleCalls, 1); // Alarms only scheduled on app start
+    });
+
     testWidgets('SGC-1874 alarm with end time at midnight will show',
         (WidgetTester tester) async {
       // Arrange

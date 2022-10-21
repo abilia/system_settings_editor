@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
@@ -68,6 +70,8 @@ class _ActivityTopInfo extends StatelessWidget {
   final ActivityDay activityDay;
   final Widget? leading, trailing;
 
+  bool get _hasLeadingOrTrailing => leading != null || trailing != null;
+
   @override
   Widget build(BuildContext context) {
     final activity = activityDay.activity;
@@ -78,7 +82,8 @@ class _ActivityTopInfo extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              leading ?? SizedBox(width: layout.actionButton.size),
+              if (_hasLeadingOrTrailing)
+                leading ?? SizedBox(width: layout.actionButton.size),
               if (activity.fullDay || !activity.hasEndTime)
                 Expanded(
                   child: LayoutBuilder(builder: (context, constraints) {
@@ -152,7 +157,8 @@ class _ActivityTopInfo extends StatelessWidget {
                   }),
                 ),
               ],
-              trailing ?? SizedBox(width: layout.actionButton.size),
+              if (_hasLeadingOrTrailing)
+                trailing ?? SizedBox(width: layout.actionButton.size),
             ],
           ),
         );
@@ -186,7 +192,7 @@ class _TimeBox extends StatelessWidget {
             duration: ActivityInfo.animationDuration,
             padding: layout.activityPage.timeBoxPadding,
             constraints: BoxConstraints(
-              minWidth: layout.activityPage.timeBoxSize.width,
+              minWidth: min(maxWidth, layout.activityPage.timeBoxSize.width),
               maxWidth: maxWidth,
               minHeight: layout.activityPage.timeBoxSize.height,
               maxHeight: layout.activityPage.timeBoxSize.height,
