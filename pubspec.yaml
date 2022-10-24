@@ -36,7 +36,7 @@ dependencies:
   flutter_local_notifications:
     git:
       url: https://github.com/abilia/flutter_local_notifications.git
-      ref: flutter_local_notifications-v9.8.0+1-fork-2.6
+      ref: flutter_local_notifications-v12.0.2-fork-3.1
       path: flutter_local_notifications/
   flutter_localizations:
     sdk: flutter
@@ -69,7 +69,7 @@ dependencies:
     git:
       url: https://github.com/abilia/system_settings_editor.git
       ref: v1.3.5
-  timezone: ^0.8.0
+  timezone: ^0.9.0
   transparent_image: ^2.0.0
   uuid: ^3.0.5
   vector_math: ^2.1.2

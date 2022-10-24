@@ -591,25 +591,25 @@ packages:
     dependency: "direct main"
     description:
       path: flutter_local_notifications
-      ref: "flutter_local_notifications-v9.8.0+1-fork-2.6"
-      resolved-ref: "0c418c07871cb9379bbfcf4ee6628ef33e73c402"
+      ref: "flutter_local_notifications-v12.0.2-fork-3.1"
+      resolved-ref: "6cdad6d596e7130caebe089fe613e616ef8928f0"
       url: "https://github.com/abilia/flutter_local_notifications.git"
     source: git
-    version: "9.8.0+1"
+    version: "12.0.2"
   flutter_local_notifications_linux:
     dependency: transitive
     description:
       name: flutter_local_notifications_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.1"
+    version: "2.0.0"
   flutter_local_notifications_platform_interface:
     dependency: transitive
     description:
       name: flutter_local_notifications_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0"
+    version: "6.0.0"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -1327,7 +1327,7 @@ packages:
       name: timezone
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.0"
+    version: "0.9.0"
   timing:
     dependency: transitive
     description:

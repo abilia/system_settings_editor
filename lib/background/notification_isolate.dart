@@ -32,13 +32,14 @@ FlutterLocalNotificationsPlugin ensureNotificationPluginInitialized() {
   pluginInstance.initialize(
     const InitializationSettings(
       android: AndroidInitializationSettings('icon_notification'),
-      iOS: IOSInitializationSettings(
+      iOS: DarwinInitializationSettings(
         requestSoundPermission: false,
         requestBadgePermission: false,
         requestAlertPermission: false,
       ),
     ),
-    onSelectNotification: onNotification,
+    onDidReceiveNotificationResponse: onNotification,
+    onDidReceiveBackgroundNotificationResponse: onNotification,
   );
   _log.finer('notification plugin initialize');
   return notificationsPluginInstance = pluginInstance;
@@ -245,7 +246,7 @@ Future<bool> _scheduleNotification(
   }
 }
 
-Future<IOSNotificationDetails> _iosNotificationDetails(
+Future<DarwinNotificationDetails> _iosNotificationDetails(
   NotificationAlarm notificationAlarm,
   FileStorage fileStorage,
   Duration alarmDuration,
@@ -260,7 +261,7 @@ Future<IOSNotificationDetails> _iosNotificationDetails(
       : !hasSound || sound == Sound.NoSound
           ? 'silent.aiff'
           : '${sound.fileName()}${seconds >= 30 ? '_30' : seconds >= 15 ? '_15' : ''}.aiff';
-  return IOSNotificationDetails(
+  return DarwinNotificationDetails(
     presentAlert: true,
     presentBadge: true,
     presentSound: hasSound || hasVibration,
@@ -321,6 +322,9 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
       title,
       subtitle,
     ),
+    audioAttributesUsage: AudioAttributesUsage.alarm,
+    category: AndroidNotificationCategory.alarm,
+    channelAction: AndroidNotificationChannelAction.update,
   );
 }
 
@@ -378,16 +382,16 @@ String _extra(ActivityAlarm notificationAlarm, Translated translator) {
   return '';
 }
 
-Future<List<IOSNotificationAttachment>> _iOSNotificationAttachment(
+Future<List<DarwinNotificationAttachment>> _iOSNotificationAttachment(
   String fileId,
   FileStorage fileStorage,
 ) async {
-  final iOSAttachment = <IOSNotificationAttachment>[];
+  final iOSAttachment = <DarwinNotificationAttachment>[];
   if (fileId.isNotEmpty) {
     final thumbCopy = await fileStorage.copyImageThumbForNotification(fileId);
     if (thumbCopy != null) {
       iOSAttachment.add(
-        IOSNotificationAttachment(
+        DarwinNotificationAttachment(
           thumbCopy.path,
           identifier: fileId,
         ),
