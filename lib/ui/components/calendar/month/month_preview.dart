@@ -14,10 +14,6 @@ class MonthListPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scrollController = ScrollController(
-      initialScrollOffset:
-          -layout.monthCalendar.monthPreview.activityListTopPadding,
-    );
     return BlocBuilder<DayPickerBloc, DayPickerState>(
         builder: (context, dayPickerState) {
       return BlocBuilder<MonthCalendarCubit, MonthCalendarState>(
@@ -54,9 +50,11 @@ class MonthListPreview extends StatelessWidget {
                       ),
                     ),
                     Expanded(
-                      child: MonthPreview(
-                        scrollController: scrollController,
-                      ),
+                      child: Builder(builder: (context) {
+                        return MonthPreview(
+                          events: context.watch<DayEventsCubit>().state,
+                        );
+                      }),
                     ),
                   ],
                 ),
@@ -67,17 +65,42 @@ class MonthListPreview extends StatelessWidget {
   }
 }
 
-class MonthPreview extends StatelessWidget {
-  final ScrollController scrollController;
-
+class MonthPreview extends StatefulWidget {
   const MonthPreview({
-    required this.scrollController,
+    required this.events,
     Key? key,
   }) : super(key: key);
 
+  final EventsState events;
+
+  @override
+  State<MonthPreview> createState() => _MonthPreviewState();
+}
+
+class _MonthPreviewState extends State<MonthPreview> {
+  late final controller = ScrollController(
+    initialScrollOffset:
+        -layout.monthCalendar.monthPreview.activityListTopPadding,
+  );
+
+  @override
+  void didUpdateWidget(covariant MonthPreview oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      final jumpTo =
+          (-layout.monthCalendar.monthPreview.activityListTopPadding).clamp(
+        controller.position.minScrollExtent,
+        controller.position.maxScrollExtent,
+      );
+      controller.jumpTo(jumpTo);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    _scrollToInitialOffset(context);
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: layout.monthCalendar.monthPreview.monthPreviewBorderWidth,
@@ -86,29 +109,14 @@ class MonthPreview extends StatelessWidget {
       child: Container(
         decoration: const BoxDecoration(color: AbiliaColors.white),
         child: EventList(
-          scrollController: scrollController,
+          scrollController: controller,
           topPadding: layout.monthCalendar.monthPreview.activityListTopPadding,
           bottomPadding:
               layout.monthCalendar.monthPreview.activityListBottomPadding,
-          events: context.watch<DayEventsCubit>().state,
+          events: widget.events,
         ),
       ),
     );
-  }
-
-  void _scrollToInitialOffset(BuildContext context) {
-    final now = context.read<ClockBloc>().state;
-    final events = context.read<DayEventsCubit>().state;
-    final isToday = events.day.isAtSameDay(now);
-    final hasPastEvents = events.pastEvents(now).isNotEmpty;
-
-    if (isToday && scrollController.hasClients) {
-      if (!hasPastEvents) {
-        return scrollController
-            .jumpTo(-layout.monthCalendar.monthPreview.activityListTopPadding);
-      }
-      return scrollController.jumpTo(-layout.agenda.topPadding);
-    }
   }
 }
 
