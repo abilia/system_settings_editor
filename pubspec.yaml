@@ -53,6 +53,7 @@ dependencies:
   matrix4_transform: ^2.0.1
   meta: ^1.7.0
   mime: ^1.0.1
+  murmurhash: ^1.0.1
   package_info: ^2.0.2
   path: ^1.8.1
   path_provider: ^2.0.5

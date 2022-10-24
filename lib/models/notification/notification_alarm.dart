@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:murmurhash/murmurhash.dart';
 
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -34,6 +35,11 @@ abstract class NotificationAlarm extends Equatable {
       '$type {notificationTime: $notificationTime, ${event.id} -> $hashCode}';
   @override
   List<Object?> get props => [event.id, notificationTime];
+  @override
+  // ignore: hash_and_equals
+  int get hashCode =>
+      MurmurHash.v3('${event.id}-${notificationTime.microsecondsSinceEpoch}', 1)
+          .toSigned(32);
 }
 
 class TimerAlarm extends NotificationAlarm {
