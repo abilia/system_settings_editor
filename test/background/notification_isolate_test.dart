@@ -78,6 +78,36 @@ void main() {
         .thenAnswer((_) => Future.value(true));
   });
 
+  group('Functions', () {
+    test('Notification channels', () async {
+      const sound = Sound.Default;
+      final notificationChannel1 = notificationChannel(true, true, sound);
+      final notificationChannel2 = notificationChannel(true, false, sound);
+      final notificationChannel3 = notificationChannel(false, true, sound);
+      final notificationChannel4 = notificationChannel(false, false, sound);
+
+      expect(notificationChannel1.id, 'SoundVibration${sound.name}');
+      expect(notificationChannel1.name,
+          'Sound and Vibration with sound ${sound.name}');
+      expect(notificationChannel1.description,
+          'Activities with Alarm and Vibration or Only Alarm with sound ${sound.name}');
+
+      expect(notificationChannel2.id, notificationChannel1.id);
+      expect(notificationChannel2.name, notificationChannel1.name);
+      expect(
+          notificationChannel2.description, notificationChannel1.description);
+
+      expect(notificationChannel3.id, 'Vibration');
+      expect(notificationChannel3.name, 'Vibration');
+      expect(
+          notificationChannel3.description, 'Activities with Only vibration');
+
+      expect(notificationChannel4.id, 'Silent');
+      expect(notificationChannel4.name, 'Silent');
+      expect(notificationChannel4.description, 'Activities with Silent Alarm');
+    });
+  });
+
   group('only activities', () {
     test('isolate', () async {
       final serialized =

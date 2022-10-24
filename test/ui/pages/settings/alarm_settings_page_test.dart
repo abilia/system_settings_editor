@@ -173,20 +173,6 @@ void main() {
       );
     });
 
-    testWidgets('Select vibrate at reminder', (tester) async {
-      await tester.goToAlarmSettingsPage();
-      await tester.tap(find.byKey(TestKey.vibrateAtReminderSelector));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
-      verifyUnsyncedGeneric(
-        tester,
-        genericDb,
-        key: AlarmSettings.vibrateAtReminderKey,
-        matcher: false,
-      );
-    });
-
     testWidgets('Display switch for alarms', (tester) async {
       await tester.goToAlarmSettingsPage();
       await tester.scrollDown();
@@ -221,7 +207,13 @@ void main() {
         (tester) async {
       activities = [Activity.createNew(startTime: initialTime.add(1.hours()))];
       await tester.goToAlarmSettingsPage();
-      await tester.tap(find.byKey(TestKey.vibrateAtReminderSelector));
+      await tester.scrollDown();
+      await tester.tap(find.byKey(TestKey.alarmDurationSelector));
+      await tester.pumpAndSettle();
+      await tester
+          .tap(find.text(AlarmDuration.fiveMinutes.displayText(translate)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       final preCalls = alarmScheduleCalls;
       await tester.tap(find.byType(OkButton));
