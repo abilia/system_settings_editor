@@ -77,7 +77,6 @@ class _CalendarScrollListener extends StatefulWidget {
 
 class _CalendarScrollListenerState extends State<_CalendarScrollListener> {
   late final ScrollController controller = ScrollController();
-  ScrollMetrics? scrollMetrics;
 
   @override
   void initState() {
