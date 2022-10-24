@@ -153,7 +153,8 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
             final timepillarSettings = context.select(
                 (MemoplannerSettingsBloc bloc) =>
                     bloc.state.calendar.timepillar);
-            return ScrollListener(
+            return CalendarScrollListener(
+              timepillarMeasures: measures,
               enabled: timepillarState.isToday && scrollToTimeOffset,
               disabledInitOffset:
                   measures.hourHeight * dayParts.morning.inHours,

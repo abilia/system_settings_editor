@@ -7,11 +7,13 @@ typedef ScrollListenerWidgetBuilder = Widget Function(
   ScrollController controller,
 );
 
-class ScrollListener extends StatelessWidget {
-  const ScrollListener({
+class CalendarScrollListener extends StatelessWidget {
+  const CalendarScrollListener({
     required this.getNowOffset,
     required this.inViewMargin,
     required this.builder,
+    this.timepillarMeasures,
+    this.agendaEvents,
     this.enabled = true,
     this.disabledInitOffset,
     Key? key,
@@ -20,6 +22,8 @@ class ScrollListener extends StatelessWidget {
   final ScrollListenerWidgetBuilder builder;
   final GetNowOffset getNowOffset;
   final double inViewMargin;
+  final TimepillarMeasures? timepillarMeasures;
+  final int? agendaEvents;
   final double? disabledInitOffset;
   final bool enabled;
 
@@ -40,31 +44,38 @@ class ScrollListener extends StatelessWidget {
       );
     }
 
-    return _ScrollListener(
+    return _CalendarScrollListener(
       getNowOffset: getNowOffset,
       inViewMargin: inViewMargin,
+      timepillarMeasures: timepillarMeasures,
+      agendaEvents: agendaEvents,
       builder: builder,
     );
   }
 }
 
-class _ScrollListener extends StatefulWidget {
-  const _ScrollListener({
+class _CalendarScrollListener extends StatefulWidget {
+  const _CalendarScrollListener({
     required this.getNowOffset,
     required this.inViewMargin,
     required this.builder,
+    this.timepillarMeasures,
+    this.agendaEvents,
     Key? key,
   }) : super(key: key);
 
   final GetNowOffset getNowOffset;
   final double inViewMargin;
   final ScrollListenerWidgetBuilder builder;
+  final TimepillarMeasures? timepillarMeasures;
+  final int? agendaEvents;
 
   @override
-  State<_ScrollListener> createState() => _ScrollListenerState();
+  State<_CalendarScrollListener> createState() =>
+      _CalendarScrollListenerState();
 }
 
-class _ScrollListenerState extends State<_ScrollListener> {
+class _CalendarScrollListenerState extends State<_CalendarScrollListener> {
   late final ScrollController controller = ScrollController();
   ScrollMetrics? scrollMetrics;
 
@@ -75,14 +86,7 @@ class _ScrollListenerState extends State<_ScrollListener> {
       if (!mounted) {
         return;
       }
-
-      final nowOffset = widget.getNowOffset(context.read<ClockBloc>().state);
-      context.read<ScrollPositionCubit>().updateState(
-            scrollController: controller,
-            nowOffset: nowOffset,
-            inViewMargin: widget.inViewMargin,
-          );
-
+      _updateScrollState();
       if (mounted && context.read<DayPickerBloc>().state.isToday) {
         context.read<ScrollPositionCubit>().goToNow(duration: Duration.zero);
       }
@@ -90,8 +94,26 @@ class _ScrollListenerState extends State<_ScrollListener> {
   }
 
   @override
-  void didUpdateWidget(covariant _ScrollListener oldWidget) {
+  void didUpdateWidget(covariant _CalendarScrollListener oldWidget) {
     super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      _updateScrollState();
+
+      if (oldWidget.timepillarMeasures != widget.timepillarMeasures ||
+          oldWidget.agendaEvents != widget.agendaEvents) {
+        context.read<ScrollPositionCubit>()
+          ..updateNowOffset(
+            nowOffset: widget.getNowOffset(context.read<ClockBloc>().state),
+          )
+          ..goToNow(duration: Duration.zero);
+      }
+    });
+  }
+
+  void _updateScrollState() {
     final nowOffset = widget.getNowOffset(context.read<ClockBloc>().state);
     context.read<ScrollPositionCubit>().updateState(
           scrollController: controller,
@@ -102,37 +124,19 @@ class _ScrollListenerState extends State<_ScrollListener> {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollMetricsNotification>(
-      onNotification: (scrollMetricNotification) {
-        final previous = scrollMetrics;
-        final current = scrollMetricNotification.metrics;
-
-        if (previous != null &&
-            (previous.viewportDimension != current.viewportDimension ||
-                previous.maxScrollExtent != current.maxScrollExtent ||
-                previous.minScrollExtent != current.minScrollExtent)) {
-          context.read<ScrollPositionCubit>().updateNowOffset(
-              nowOffset: widget.getNowOffset(context.read<ClockBloc>().state));
-          context.read<ScrollPositionCubit>().goToNow(duration: Duration.zero);
+    return NotificationListener<ScrollNotification>(
+      onNotification: (scrollNotification) {
+        if (scrollNotification.metrics.axis == Axis.vertical) {
+          context.read<ScrollPositionCubit>().scrollPositionUpdated();
         }
-
-        scrollMetrics = current;
         return false;
       },
-      child: NotificationListener<ScrollNotification>(
-        onNotification: (scrollNotification) {
-          if (scrollNotification.metrics.axis == Axis.vertical) {
-            context.read<ScrollPositionCubit>().scrollPositionUpdated();
-          }
-          return false;
-        },
-        child: !Config.isMP
-            ? widget.builder(context, controller)
-            : _AutoScrollToNow(
-                getNowOffset: widget.getNowOffset,
-                child: widget.builder(context, controller),
-              ),
-      ),
+      child: !Config.isMP
+          ? widget.builder(context, controller)
+          : _AutoScrollToNow(
+              getNowOffset: widget.getNowOffset,
+              child: widget.builder(context, controller),
+            ),
     );
   }
 }

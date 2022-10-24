@@ -17,10 +17,12 @@ class Agenda extends StatelessWidget with CalendarWidgetMixin {
       onRefresh: () => refresh(context),
       child: Stack(
         children: <Widget>[
-          ScrollListener(
+          CalendarScrollListener(
             getNowOffset: (_) => -layout.agenda.topPadding,
             inViewMargin: layout.eventCard.height / 2,
             enabled: eventsState.isToday,
+            agendaEvents: eventsState.events.length +
+                eventsState.fullDayActivities.length,
             builder: (_, controller) {
               return AbiliaScrollBar(
                 controller: controller,
