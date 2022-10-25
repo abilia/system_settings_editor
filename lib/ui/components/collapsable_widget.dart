@@ -1,5 +1,4 @@
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class CollapsableWidget extends StatelessWidget {
   final Widget child;
