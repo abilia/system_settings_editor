@@ -65,20 +65,31 @@ class CalendarPage extends StatelessWidget {
   }
 }
 
-class EmptyCalendarPage extends StatelessWidget {
+class EmptyCalendarPage extends StatefulWidget {
   const EmptyCalendarPage({Key? key}) : super(key: key);
 
   @override
+  State<EmptyCalendarPage> createState() => _EmptyCalendarPageState();
+}
+
+class _EmptyCalendarPageState extends State<EmptyCalendarPage> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToStartView();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    _navigateToStartView(context);
     return const SizedBox.shrink();
   }
 
-  void _navigateToStartView(BuildContext context) {
-    final tabController = DefaultTabController.of(context);
-    final settings = context.read<MemoplannerSettingsBloc>().state;
-    final startViewIndex = settings.functions.startViewIndex;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+  void _navigateToStartView() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final tabController = DefaultTabController.of(context);
+      final settings = context.read<MemoplannerSettingsBloc>().state;
+      await Future.delayed(DayCalendar.calendarTransitionDuration);
+      final startViewIndex = settings.functions.startViewIndex;
       tabController?.index = startViewIndex;
     });
   }
