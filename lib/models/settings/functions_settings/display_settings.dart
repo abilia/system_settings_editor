@@ -19,10 +19,10 @@ class DisplaySettings extends Equatable {
   bool get onlyDayCalendar => !week && !month;
   bool get menu => menuValue && !allMenuItemsDisabled;
 
-  int get weekCalendarTabIndex => (week ? 1 : 0);
-  int get monthCalendarTabIndex => weekCalendarTabIndex + (month ? 1 : 0);
-  int get menuTabIndex => monthCalendarTabIndex + (menu ? 1 : 0);
-  int get photoAlbumTabIndex => menuTabIndex + 1;
+  int get weekCalendarTabIndex => 1;
+  int get monthCalendarTabIndex => 2;
+  int get menuTabIndex => 3;
+  int get photoAlbumTabIndex => 4;
   int get calendarCount =>
       (Config.isMP ? photoAlbumTabIndex : menuTabIndex) + 1;
 

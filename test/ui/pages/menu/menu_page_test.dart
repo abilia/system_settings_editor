@@ -16,6 +16,8 @@ import 'package:intl/intl.dart';
 
 void main() {
   late MockSortableDb mockSortableDb;
+  late MockGenericDb mockGenericDb;
+
   final myPhotosFolder = Sortable.createNew(
     data: const ImageArchiveData(myPhotos: true),
     isGroup: true,
@@ -27,6 +29,13 @@ void main() {
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
     mockSortableDb = MockSortableDb();
+    mockGenericDb = MockGenericDb();
+
+    when(() => mockGenericDb.getAllNonDeletedMaxRevision())
+        .thenAnswer((_) => Future.value([]));
+    when(() => mockGenericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => mockGenericDb.insertAndAddDirty(any()))
+        .thenAnswer((_) => Future.value(true));
 
     when(() => mockSortableDb.getAllNonDeleted()).thenAnswer(
       (invocation) => Future.value(
@@ -56,7 +65,7 @@ void main() {
       ..ticker = Ticker.fake(initialTime: time)
       ..client = Fakes.client()
       ..database = FakeDatabase()
-      ..genericDb = FakeGenericDb()
+      ..genericDb = mockGenericDb
       ..sortableDb = mockSortableDb
       ..battery = FakeBattery()
       ..deviceDb = FakeDeviceDb()
@@ -155,5 +164,78 @@ void main() {
     await tester.tap(find.byType(MenuButton));
     await tester.pumpAndSettle();
     expect(find.text(DateFormat.EEEE(locale).format(time)), findsOneWidget);
+  }, skip: !Config.isMP);
+
+  group('Settings', () {
+    final weekCalendarStartViewSettings =
+        Generic.createNew<MemoplannerSettingData>(
+      data: MemoplannerSettingData.fromData(
+        data: StartView.weekCalendar.index,
+        identifier: FunctionsSettings.functionMenuStartViewKey,
+      ),
+    );
+    final menuPageOffSetting = Generic.createNew<MemoplannerSettingData>(
+      data: MemoplannerSettingData.fromData(
+        data: false,
+        identifier: DisplaySettings.functionMenuDisplayMenuKey,
+      ),
+    );
+    final weekCalendarOffSetting = Generic.createNew<MemoplannerSettingData>(
+      data: MemoplannerSettingData.fromData(
+        data: false,
+        identifier: DisplaySettings.functionMenuDisplayWeekKey,
+      ),
+    );
+
+    testWidgets(
+        'Removing week calendar from settings will keep you on menu page',
+        (tester) async {
+      await tester.pumpApp();
+      await tester.tap(find.byType(MenuButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(SettingsButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision())
+          .thenAnswer((_) => Future.value([weekCalendarOffSetting]));
+
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(PreviousButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(MenuPage), findsOneWidget);
+    });
+
+    testWidgets(
+        'Removing menu from settings will navigate you to start view index',
+        (tester) async {
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision())
+          .thenAnswer((_) => Future.value([weekCalendarStartViewSettings]));
+      await tester.pumpApp();
+      await tester.tap(find.byType(MenuButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(SettingsButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.appMenu));
+      await tester.pumpAndSettle();
+
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer((_) =>
+          Future.value([weekCalendarStartViewSettings, menuPageOffSetting]));
+
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(YesButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(PreviousButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(MenuPage), findsNothing);
+      expect(find.byType(WeekCalendarTab), findsOneWidget);
+    });
   }, skip: !Config.isMP);
 }

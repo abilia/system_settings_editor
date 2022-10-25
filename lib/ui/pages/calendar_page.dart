@@ -39,14 +39,18 @@ class CalendarPage extends StatelessWidget {
                       ),
                     );
                   }
+                  const emptyPage = EmptyCalendarPage();
+                  const weekTab = WeekCalendarTab();
+                  const monthTab = MonthCalendarTab();
+                  const menuPage = MenuPage();
                   return ReturnToHomeScreenListener(
                     child: TabBarView(
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
                         const DayCalendar(),
-                        if (display.week) const WeekCalendarTab(),
-                        if (display.month) const MonthCalendarTab(),
-                        if (display.menu) const MenuPage(),
+                        if (display.week) weekTab else emptyPage,
+                        if (display.month) monthTab else emptyPage,
+                        if (display.menu) menuPage else emptyPage,
                         if (Config.isMP) const PhotoCalendarPage(),
                       ],
                     ),
@@ -58,5 +62,24 @@ class CalendarPage extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class EmptyCalendarPage extends StatelessWidget {
+  const EmptyCalendarPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    _navigateToStartView(context);
+    return const SizedBox.shrink();
+  }
+
+  void _navigateToStartView(BuildContext context) {
+    final tabController = DefaultTabController.of(context);
+    final settings = context.read<MemoplannerSettingsBloc>().state;
+    final startViewIndex = settings.functions.startViewIndex;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      tabController?.index = startViewIndex;
+    });
   }
 }

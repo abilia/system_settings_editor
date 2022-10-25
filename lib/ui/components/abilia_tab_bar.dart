@@ -57,10 +57,12 @@ class AbiliaTabs extends StatelessWidget {
     required this.tabs,
     this.collapsedCondition,
     this.onTabTap,
+    this.useOffset = true,
     Key? key,
   }) : super(key: key);
 
   final List<Widget> tabs;
+  final bool useOffset;
 
   final bool Function(int index)? collapsedCondition;
   final void Function(int index)? onTabTap;
@@ -76,13 +78,20 @@ class AbiliaTabs extends StatelessWidget {
     }
 
     var offset = 0;
+    int incrementOffset(int i) {
+      if (useOffset) {
+        return isCollapsed(i) ? offset++ : offset;
+      }
+      return 0;
+    }
+
     final tabController = DefaultTabController.of(context);
     final wrappedTabs = [
       if (tabController != null)
         for (var i = 0; i < tabs.length; i++)
           _Tab(
             index: i,
-            offset: isCollapsed(i) ? offset++ : offset,
+            offset: incrementOffset(i),
             first: i == nonCollapsedIndexes.reduce(min),
             last: i == nonCollapsedIndexes.reduce(max),
             collapsed: () => isCollapsed(i),
