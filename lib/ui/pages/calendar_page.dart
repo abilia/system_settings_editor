@@ -86,11 +86,13 @@ class _EmptyCalendarPageState extends State<EmptyCalendarPage> {
 
   void _navigateToStartView() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final tabController = DefaultTabController.of(context);
-      final settings = context.read<MemoplannerSettingsBloc>().state;
-      await Future.delayed(DayCalendar.calendarTransitionDuration);
-      final startViewIndex = settings.functions.startViewIndex;
-      tabController?.index = startViewIndex;
+      if (mounted) {
+        final tabController = DefaultTabController.of(context);
+        final settings = context.read<MemoplannerSettingsBloc>().state;
+        await Future.delayed(DayCalendar.calendarTransitionDuration);
+        final startViewIndex = settings.functions.startViewIndex;
+        tabController?.index = startViewIndex;
+      }
     });
   }
 }
