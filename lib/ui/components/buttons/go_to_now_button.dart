@@ -11,7 +11,7 @@ class GoToNowButton extends StatelessWidget {
         builder: (context, scrollState) => AnimatedSwitcher(
           switchInCurve: Curves.easeOut,
           switchOutCurve: Curves.easeOut,
-          duration: const Duration(milliseconds: 300),
+          duration: DayCalendar.transitionDuration,
           child: scrollState is WrongDay || scrollState is OutOfView
               ? Material(
                   color: Colors.transparent,

@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
+import 'package:seagull/ui/components/calendar/day_calendar.dart';
 
 part 'scroll_position_state.dart';
 
@@ -20,7 +21,7 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
   }
 
   Future<void> goToNow({
-    Duration duration = const Duration(milliseconds: 300),
+    Duration duration = DayCalendar.transitionDuration,
     Curve curve = Curves.easeInOut,
   }) async {
     final scrollState = state;

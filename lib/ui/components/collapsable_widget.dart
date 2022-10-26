@@ -1,5 +1,4 @@
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class CollapsableWidget extends StatelessWidget {
   final Widget child;
@@ -22,7 +21,7 @@ class CollapsableWidget extends StatelessWidget {
     final begin = collapsed ? 0.0 : 1.0;
     final verical = axis == Axis.vertical;
     return TweenAnimationBuilder(
-      duration: 300.milliseconds(),
+      duration: DayCalendar.transitionDuration,
       tween: Tween<double>(begin: begin, end: begin),
       builder: (context, double value, widget) => ClipRect(
         child: Align(
