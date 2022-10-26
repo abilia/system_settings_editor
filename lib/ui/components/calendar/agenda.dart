@@ -3,7 +3,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class Agenda extends StatelessWidget with CalendarStateMixin {
+class Agenda extends StatelessWidget with CalendarWidgetMixin {
   final EventsState eventsState;
 
   const Agenda({
@@ -13,38 +13,32 @@ class Agenda extends StatelessWidget with CalendarStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final scrollController = ScrollController(
-      initialScrollOffset: -layout.agenda.topPadding,
-    );
-    _scrollToInitialOffset(context, scrollController);
     return RefreshIndicator(
       onRefresh: () => refresh(context),
       child: Stack(
         children: <Widget>[
-          ScrollListener(
-            scrollController: scrollController,
+          CalendarScrollListener(
             getNowOffset: (_) => -layout.agenda.topPadding,
             inViewMargin: layout.eventCard.height / 2,
             enabled: eventsState.isToday,
-            child: AbiliaScrollBar(
-              controller: scrollController,
-              child: EventList(
-                scrollController: scrollController,
-                bottomPadding: layout.agenda.bottomPadding,
-                topPadding: layout.agenda.topPadding,
-                events: eventsState,
-              ),
-            ),
+            agendaEvents: eventsState.events.length +
+                eventsState.fullDayActivities.length,
+            builder: (_, controller) {
+              return AbiliaScrollBar(
+                controller: controller,
+                child: EventList(
+                  scrollController: controller,
+                  bottomPadding: layout.agenda.bottomPadding,
+                  topPadding: layout.agenda.topPadding,
+                  events: eventsState,
+                ),
+              );
+            },
           ),
         ],
       ),
     );
   }
-
-  void _scrollToInitialOffset(BuildContext context, ScrollController sc) =>
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        sc.jumpTo(-layout.agenda.topPadding);
-      });
 }
 
 class EventList extends StatelessWidget {

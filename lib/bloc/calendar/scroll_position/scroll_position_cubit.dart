@@ -41,6 +41,10 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
         return;
       }
 
+      if (duration == Duration.zero) {
+        return sc.jumpTo(scrollTo);
+      }
+
       await sc.animateTo(
         scrollTo,
         duration: duration,

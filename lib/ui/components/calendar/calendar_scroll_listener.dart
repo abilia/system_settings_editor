@@ -2,23 +2,29 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/bloc/all.dart';
 
 typedef GetNowOffset = double Function(DateTime now);
+typedef ScrollListenerWidgetBuilder = Widget Function(
+  BuildContext context,
+  ScrollController controller,
+);
 
-class ScrollListener extends StatelessWidget {
-  const ScrollListener({
-    required this.scrollController,
+class CalendarScrollListener extends StatelessWidget {
+  const CalendarScrollListener({
     required this.getNowOffset,
     required this.inViewMargin,
-    required this.child,
+    required this.builder,
     this.timepillarMeasures,
+    this.agendaEvents,
     this.enabled = true,
+    this.disabledInitOffset,
     Key? key,
   }) : super(key: key);
 
-  final ScrollController scrollController;
+  final ScrollListenerWidgetBuilder builder;
   final GetNowOffset getNowOffset;
   final double inViewMargin;
-  final Widget child;
   final TimepillarMeasures? timepillarMeasures;
+  final int? agendaEvents;
+  final double? disabledInitOffset;
   final bool enabled;
 
   @override
@@ -31,80 +37,88 @@ class ScrollListener extends StatelessWidget {
         listener: (context, state) {
           context.read<ScrollPositionCubit>().reset();
         },
-        child: child,
+        child: builder(
+          context,
+          ScrollController(initialScrollOffset: disabledInitOffset ?? 0),
+        ),
       );
     }
 
-    return _ScrollListener(
-      scrollController: scrollController,
+    return _CalendarScrollListener(
       getNowOffset: getNowOffset,
       inViewMargin: inViewMargin,
       timepillarMeasures: timepillarMeasures,
-      child: child,
+      agendaEvents: agendaEvents,
+      builder: builder,
     );
   }
 }
 
-class _ScrollListener extends StatefulWidget {
-  const _ScrollListener({
-    required this.scrollController,
+class _CalendarScrollListener extends StatefulWidget {
+  const _CalendarScrollListener({
     required this.getNowOffset,
     required this.inViewMargin,
-    required this.child,
+    required this.builder,
     this.timepillarMeasures,
+    this.agendaEvents,
     Key? key,
   }) : super(key: key);
 
-  final ScrollController scrollController;
   final GetNowOffset getNowOffset;
   final double inViewMargin;
-  final Widget child;
+  final ScrollListenerWidgetBuilder builder;
   final TimepillarMeasures? timepillarMeasures;
+  final int? agendaEvents;
 
   @override
-  State<_ScrollListener> createState() => _ScrollListenerState();
+  State<_CalendarScrollListener> createState() =>
+      _CalendarScrollListenerState();
 }
 
-class _ScrollListenerState extends State<_ScrollListener> {
+class _CalendarScrollListenerState extends State<_CalendarScrollListener> {
+  late final ScrollController controller = ScrollController();
+
   @override
   void initState() {
     super.initState();
-    _updateScrollState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && context.read<DayPickerBloc>().state.isToday) {
-        context.read<ScrollPositionCubit>().goToNow();
-      }
-    });
-  }
-
-  @override
-  void didUpdateWidget(covariant _ScrollListener oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _updateScrollState();
-    if (oldWidget.timepillarMeasures != widget.timepillarMeasures) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          context.read<ScrollPositionCubit>().scrollPositionUpdated();
-          context.read<ScrollPositionCubit>().goToNow();
-        }
-      });
-    }
-  }
-
-  void _updateScrollState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) {
         return;
       }
-
-      final nowOffset = widget.getNowOffset(context.read<ClockBloc>().state);
-
-      context.read<ScrollPositionCubit>().updateState(
-            scrollController: widget.scrollController,
-            nowOffset: nowOffset,
-            inViewMargin: widget.inViewMargin,
-          );
+      _updateScrollState();
+      if (mounted && context.read<DayPickerBloc>().state.isToday) {
+        context.read<ScrollPositionCubit>().goToNow(duration: Duration.zero);
+      }
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant _CalendarScrollListener oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      _updateScrollState();
+
+      if (oldWidget.timepillarMeasures != widget.timepillarMeasures ||
+          oldWidget.agendaEvents != widget.agendaEvents) {
+        context.read<ScrollPositionCubit>()
+          ..updateNowOffset(
+            nowOffset: widget.getNowOffset(context.read<ClockBloc>().state),
+          )
+          ..goToNow(duration: Duration.zero);
+      }
+    });
+  }
+
+  void _updateScrollState() {
+    final nowOffset = widget.getNowOffset(context.read<ClockBloc>().state);
+    context.read<ScrollPositionCubit>().updateState(
+          scrollController: controller,
+          nowOffset: nowOffset,
+          inViewMargin: widget.inViewMargin,
+        );
   }
 
   @override
@@ -117,10 +131,10 @@ class _ScrollListenerState extends State<_ScrollListener> {
         return false;
       },
       child: !Config.isMP
-          ? widget.child
+          ? widget.builder(context, controller)
           : _AutoScrollToNow(
               getNowOffset: widget.getNowOffset,
-              child: widget.child,
+              child: widget.builder(context, controller),
             ),
     );
   }
