@@ -1295,11 +1295,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v1.3.5"
-      resolved-ref: "46b48a130dca4e345a52c057f924431d94654947"
+      ref: "v1.3.6"
+      resolved-ref: "2187dfcac01b5dc3876d8bc7507f6b7741cc1874"
       url: "https://github.com/abilia/system_settings_editor.git"
     source: git
-    version: "1.3.5"
+    version: "1.3.6"
   term_glyph:
     dependency: transitive
     description:

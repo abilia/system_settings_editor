@@ -91,6 +91,8 @@ class TestKey {
       removeAfterRadio = Key('removeAfterRadio'),
       myPhotosButton = Key('myPhotosButton'),
       brightnessSlider = Key('brightnessSlider'),
+      alarmVolumeSlider = Key('alarmVolumeSlider'),
+      mediaVolumeSlider = Key('mediaVolumeSlider'),
       showAlarmOnOffSwitch = Key('showAlarmOnOffSwitch'),
       activityViewAlarmSwitch = Key('activityViewAlarmSwitch'),
       activityViewRemoveSwitch = Key('activityViewRemoveSwitch'),

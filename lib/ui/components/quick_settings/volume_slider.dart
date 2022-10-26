@@ -27,6 +27,7 @@ abstract class _VolumeSlider extends StatefulWidget {
 class _AlarmVolumeSliderState extends _VolumeSliderState {
   _AlarmVolumeSliderState()
       : super(
+          key: TestKey.alarmVolumeSlider,
           leading: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -49,18 +50,32 @@ class _AlarmVolumeSliderState extends _VolumeSliderState {
   }
 
   @override
+  Future<double> getMinVolume() async {
+    final maxVolumeIndex = await VolumeSettings.alarmMaxVolume;
+    if (maxVolumeIndex != null) {
+      final minVolume = 1 / maxVolumeIndex;
+      return minVolume;
+    }
+    return 0;
+  }
+
+  @override
   Future<void> setVolume(double volume) {
     return VolumeSettings.setAlarmVolume(volume);
   }
 }
 
 class _MediaVolumeSliderState extends _VolumeSliderState {
-  _MediaVolumeSliderState()
-      : super(leading: const Icon(AbiliaIcons.volumeNormal));
+  _MediaVolumeSliderState() : super(key: TestKey.mediaVolumeSlider);
 
   @override
   Future<double?> getVolume() {
     return VolumeSettings.mediaVolume;
+  }
+
+  @override
+  Future<double> getMinVolume() {
+    return Future.value(0);
   }
 
   @override
@@ -72,10 +87,18 @@ class _MediaVolumeSliderState extends _VolumeSliderState {
 abstract class _VolumeSliderState extends State<_VolumeSlider>
     with WidgetsBindingObserver {
   final _log = Logger((_VolumeSliderState).toString());
-  final Widget leading;
-  double _volume = 1.0;
+  final Key key;
+  final Widget? leading;
+  double _volume = 1.0, _minVolume = 0;
 
-  _VolumeSliderState({required this.leading});
+  _VolumeSliderState({required this.key, this.leading});
+
+  Widget get volumeIcon {
+    if (_volume <= _minVolume) {
+      return const Icon(AbiliaIcons.noVolume);
+    }
+    return const Icon(AbiliaIcons.volumeNormal);
+  }
 
   @override
   void initState() {
@@ -93,9 +116,11 @@ abstract class _VolumeSliderState extends State<_VolumeSlider>
 
   void _initVolume() async {
     try {
-      final b = await getVolume();
+      final volume = await getVolume();
+      final minVolume = await getMinVolume();
       setState(() {
-        _volume = b ?? 0;
+        _volume = volume ?? 0;
+        _minVolume = minVolume;
       });
     } on PlatformException catch (e) {
       _log.warning('Could not get volume', e);
@@ -103,6 +128,8 @@ abstract class _VolumeSliderState extends State<_VolumeSlider>
   }
 
   Future<double?> getVolume();
+
+  Future<double> getMinVolume();
 
   Future<void> setVolume(double volume);
 
@@ -112,8 +139,10 @@ abstract class _VolumeSliderState extends State<_VolumeSlider>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AbiliaSlider(
-          leading: leading,
+          key: key,
+          leading: leading ?? volumeIcon,
           value: _volume,
+          min: _minVolume,
           onChanged: (double b) async {
             await setVolume(b);
             setState(() {
