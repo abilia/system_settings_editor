@@ -5,11 +5,22 @@ on:
     branches:
       - master
       - release*
+    paths-ignore:
+      - '**/ios/**'
+      - '**/android/**'
+      - '**/*.md'
 
 jobs:
   analyze:
+    strategy:
+      matrix:
+        include:
+          - folder: memoplanner
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: ./${{ matrix.folder }}
     steps:
     - uses: actions/checkout@v2
     - run: |
@@ -35,6 +46,11 @@ jobs:
     strategy:
       matrix:
         flavor: ['mp', 'mpgo']
+        include:
+          - folder: memoplanner
+    defaults:
+      run:
+        working-directory: ./${{ matrix.folder }}
     steps:
     - uses: actions/checkout@v2
     - uses: subosito/flutter-action@v2.5.0
