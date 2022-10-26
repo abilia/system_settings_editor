@@ -21,7 +21,7 @@ class CollapsableWidget extends StatelessWidget {
     final begin = collapsed ? 0.0 : 1.0;
     final verical = axis == Axis.vertical;
     return TweenAnimationBuilder(
-      duration: DayCalendar.calendarTransitionDuration,
+      duration: DayCalendar.transitionDuration,
       tween: Tween<double>(begin: begin, end: begin),
       builder: (context, double value, widget) => ClipRect(
         child: Align(
