@@ -39,14 +39,18 @@ class CalendarPage extends StatelessWidget {
                       ),
                     );
                   }
+                  const emptyPage = EmptyCalendarPage();
+                  const weekTab = WeekCalendarTab();
+                  const monthTab = MonthCalendarTab();
+                  const menuPage = MenuPage();
                   return ReturnToHomeScreenListener(
                     child: TabBarView(
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
                         const DayCalendar(),
-                        if (display.week) const WeekCalendarTab(),
-                        if (display.month) const MonthCalendarTab(),
-                        if (display.menu) const MenuPage(),
+                        if (display.week) weekTab else emptyPage,
+                        if (display.month) monthTab else emptyPage,
+                        if (display.menu) menuPage else emptyPage,
                         if (Config.isMP) const PhotoCalendarPage(),
                       ],
                     ),
@@ -58,5 +62,37 @@ class CalendarPage extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class EmptyCalendarPage extends StatefulWidget {
+  const EmptyCalendarPage({Key? key}) : super(key: key);
+
+  @override
+  State<EmptyCalendarPage> createState() => _EmptyCalendarPageState();
+}
+
+class _EmptyCalendarPageState extends State<EmptyCalendarPage> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToStartView();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox.shrink();
+  }
+
+  void _navigateToStartView() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        final tabController = DefaultTabController.of(context);
+        final settings = context.read<MemoplannerSettingsBloc>().state;
+        await Future.delayed(DayCalendar.transitionDuration);
+        final startViewIndex = settings.functions.startViewIndex;
+        tabController?.index = startViewIndex;
+      }
+    });
   }
 }

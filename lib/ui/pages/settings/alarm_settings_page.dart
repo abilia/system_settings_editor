@@ -65,16 +65,6 @@ class AlarmSettingsPage extends StatelessWidget {
                           .changeAlarmSettings(
                               state.copyWith(reminderSound: sound)),
                     ).pad(defaultPadding),
-                    SwitchField(
-                      key: TestKey.vibrateAtReminderSelector,
-                      value: state.vibrateAtReminder,
-                      leading: const Icon(AbiliaIcons.handiVibration),
-                      onChanged: (v) => context
-                          .read<AlarmSettingsCubit>()
-                          .changeAlarmSettings(
-                              state.copyWith(vibrateAtReminder: v)),
-                      child: Text(t.vibrationOnReminder),
-                    ).pad(defaultPadding),
                     _AlarmSelector(
                       key: TestKey.timerAlarmSelector,
                       heading: t.timer,

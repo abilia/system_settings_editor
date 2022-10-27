@@ -4,6 +4,8 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class DayCalendar extends StatelessWidget {
+  static const transitionDuration = Duration(milliseconds: 300);
+
   const DayCalendar({Key? key}) : super(key: key);
 
   @override
@@ -164,7 +166,7 @@ class _GoToNowPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSize(
-      duration: const Duration(milliseconds: 300),
+      duration: DayCalendar.transitionDuration,
       child: Builder(builder: (context) {
         final showingNowButton = context.select((ScrollPositionCubit c) =>
             c.state is WrongDay || c.state is OutOfView);

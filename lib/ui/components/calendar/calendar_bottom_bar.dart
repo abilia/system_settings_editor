@@ -20,16 +20,14 @@ class CalendarBottomBar extends StatelessWidget {
             translate.day.capitalize(),
             AbiliaIcons.day,
           ),
-          if (display.week)
-            TabItem(
-              translate.week.capitalize(),
-              AbiliaIcons.week,
-            ),
-          if (display.month)
-            TabItem(
-              translate.month,
-              AbiliaIcons.month,
-            ),
+          TabItem(
+            translate.week.capitalize(),
+            AbiliaIcons.week,
+          ),
+          TabItem(
+            translate.month,
+            AbiliaIcons.month,
+          ),
         ];
 
         return BottomAppBar(
@@ -49,6 +47,17 @@ class CalendarBottomBar extends StatelessWidget {
                   if (!display.onlyDayCalendar)
                     AbiliaTabs(
                       tabs: tabItems,
+                      useOffset: false,
+                      collapsedCondition: (i) {
+                        switch (i) {
+                          case 1:
+                            return !display.week;
+                          case 2:
+                            return !display.month;
+                          default:
+                            return false;
+                        }
+                      },
                       onTabTap: (index) async {
                         context.read<DayPickerBloc>().add(const CurrentDay());
                         switch (index) {
@@ -82,7 +91,7 @@ class CalendarBottomBar extends StatelessWidget {
                       if (Config.isMPGO)
                         const MpGoMenuButton()
                       else if (display.menu)
-                        MenuButton(tabIndex: tabItems.length),
+                        const MenuButton(),
                     ],
                   ),
                 ],

@@ -36,6 +36,7 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
     if (status) {
       SystemSettingsEditor.setSoundEffectsEnabled(false);
       SystemSettingsEditor.setHapticFeedbackEnabled(false);
+      SystemSettingsEditor.setScreenOffTimeout(30.minutes());
     }
   }
 

@@ -254,7 +254,7 @@ Future<DarwinNotificationDetails> _iosNotificationDetails(
 ) async {
   final sound = notificationAlarm.sound(settings);
   final hasSound = notificationAlarm.hasSound(settings);
-  final hasVibration = notificationAlarm.vibrate(settings);
+  final hasVibration = notificationAlarm.hasVibration(settings);
   final seconds = alarmDuration.inSeconds;
   final soundFile = !hasVibration && !hasSound
       ? null
@@ -285,21 +285,21 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
       : null;
   final sound = notificationAlarm.sound(settings);
   final hasSound = notificationAlarm.hasSound(settings);
-  final vibrate = notificationAlarm.vibrate(settings);
+  final hasVibration = notificationAlarm.hasVibration(settings);
 
-  final notificationChannel = _notificationChannel(hasSound, vibrate, sound);
+  final channel = notificationChannel(hasSound, hasVibration, sound);
   const insistentFlag = 4;
 
   return AndroidNotificationDetails(
-    notificationChannel.id,
-    notificationChannel.name,
-    channelDescription: notificationChannel.description,
+    channel.id,
+    channel.name,
+    channelDescription: channel.description,
     groupKey: groupKey,
     playSound: hasSound,
     sound: sound == Sound.NoSound || !hasSound
         ? null
         : RawResourceAndroidNotificationSound(sound.fileName()),
-    enableVibration: vibrate,
+    enableVibration: hasVibration,
     importance: Importance.max,
     priority: Priority.high,
     fullScreenIntent: true,
@@ -328,16 +328,17 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
   );
 }
 
-NotificationChannel _notificationChannel(
-        bool hasSound, bool vibrate, Sound sound) =>
+@visibleForTesting
+NotificationChannel notificationChannel(
+        bool hasSound, bool hasVibration, Sound sound) =>
     hasSound
         ? NotificationChannel(
             'SoundVibration${sound.name}',
             'Sound and Vibration with sound ${sound.name}',
             'Activities with Alarm and Vibration or Only Alarm with sound ${sound.name}')
-        : vibrate
+        : hasVibration
             ? NotificationChannel(
-                'Vibration', 'Vibration', 'Activities with Only vibration ')
+                'Vibration', 'Vibration', 'Activities with Only vibration')
             : NotificationChannel(
                 'Silent', 'Silent', 'Activities with Silent Alarm');
 

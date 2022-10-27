@@ -44,7 +44,7 @@ class TimepillarCalendar extends StatelessWidget {
   }
 }
 
-class OneTimepillarCalendar extends StatefulWidget {
+class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
   final TimepillarState timepillarState;
   final TimepillarMeasures timepillarMeasures;
   final bool showCategories,
@@ -55,6 +55,7 @@ class OneTimepillarCalendar extends StatefulWidget {
       pullToRefresh;
   final DayParts dayParts;
   final double topMargin, bottomMargin;
+  final Key center = const Key('center');
 
   OneTimepillarCalendar({
     required this.timepillarState,
@@ -74,104 +75,73 @@ class OneTimepillarCalendar extends StatefulWidget {
         bottomMargin = bottomMargin ?? layout.timepillar.bottomMargin,
         super(key: key);
 
-  @override
-  State createState() => _OneTimepillarCalendarState();
-}
+  bool get showTimeLine => timepillarState.isToday && displayTimeline;
 
-class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
-    with CalendarStateMixin {
-  late final ScrollController verticalScrollController;
-  late final ScrollController horizontalScrollController;
-  final Key center = const Key('center');
+  TimepillarMeasures get measures => timepillarMeasures;
 
-  bool get showTimeLine =>
-      widget.timepillarState.isToday && widget.displayTimeline;
-
-  TimepillarMeasures get measures => widget.timepillarMeasures;
-
-  double get topMargin => widget.topMargin;
-
-  double get bottomMargin => widget.topMargin;
-
-  TimepillarInterval get interval => widget.timepillarMeasures.interval;
-
-  @override
-  void initState() {
-    super.initState();
-    verticalScrollController = widget.scrollToTimeOffset
-        ? _timeOffsetVerticalScroll()
-        : ScrollController();
-    horizontalScrollController = SnapToCenterScrollController();
-  }
-
-  ScrollController _timeOffsetVerticalScroll() {
-    final now = context.read<ClockBloc>().state;
-    final scrollOffset = widget.timepillarState.isToday
-        ? timeToPixels(now.hour, now.minute, measures.dotDistance) -
-            measures.hourHeight * 2 +
-            topMargin -
-            hoursToPixels(interval.start.hour, measures.dotDistance)
-        : measures.hourHeight * widget.dayParts.morning.inHours;
-    return ScrollController(initialScrollOffset: max(scrollOffset, 0));
-  }
+  TimepillarInterval get interval => timepillarMeasures.interval;
 
   @override
   Widget build(BuildContext context) {
-    final mediaData = MediaQuery.of(context);
-    final showCategoryColor = context.select((MemoplannerSettingsBloc bloc) =>
-        bloc.state.calendar.categories.showColors);
-    final textStyle = layout.timepillar.card.textStyle(measures.zoom);
-    final textScaleFactor = mediaData.textScaleFactor;
-    final events = widget.timepillarState.eventsForInterval(interval);
-    final np = interval.intervalPart == IntervalPart.dayAndNight
-        ? nightParts(widget.dayParts, measures, topMargin)
-        : <NightPart>[];
+    final horizontalScrollController = SnapToCenterScrollController();
+    return LayoutBuilder(
+      builder: (context, boxConstraints) {
+        double nowOffset(DateTime now) =>
+            currentDotMidPosition(now, measures, topMargin: topMargin) -
+            (boxConstraints.maxHeight / 4);
+        final mediaData = MediaQuery.of(context);
+        final showCategoryColor = context.select(
+            (MemoplannerSettingsBloc bloc) =>
+                bloc.state.calendar.categories.showColors);
+        final textStyle = layout.timepillar.card.textStyle(measures.zoom);
+        final textScaleFactor = mediaData.textScaleFactor;
+        final events = timepillarState.eventsForInterval(interval);
+        final np = interval.intervalPart == IntervalPart.dayAndNight
+            ? nightParts(dayParts, measures, topMargin)
+            : <NightPart>[];
 
-    return BlocBuilder<ClockBloc, DateTime>(
-      builder: (context, now) {
-        final leftBoardData = TimepillarBoard.positionTimepillarCards(
-          eventOccasions: widget.showCategories
-              ? events
-                  .where((ao) => ao.category != Category.right)
+        return BlocBuilder<ClockBloc, DateTime>(
+          builder: (context, now) {
+            final leftBoardData = TimepillarBoard.positionTimepillarCards(
+              eventOccasions: showCategories
+                  ? events
+                      .where((ao) => ao.category != Category.right)
+                      .map((e) => e.toOccasion(now))
+                      .toList()
+                  : <ActivityOccasion>[],
+              textStyle: textStyle,
+              textScaleFactor: textScaleFactor,
+              dayParts: dayParts,
+              timepillarSide: TimepillarSide.left,
+              measures: measures,
+              topMargin: topMargin,
+              bottomMargin: bottomMargin,
+              showCategoryColor: showCategoryColor,
+            );
+            final rightBoardData = TimepillarBoard.positionTimepillarCards(
+              eventOccasions: (showCategories
+                      ? events.where((ao) => ao.category == Category.right)
+                      : events)
                   .map((e) => e.toOccasion(now))
-                  .toList()
-              : <ActivityOccasion>[],
-          textStyle: textStyle,
-          textScaleFactor: textScaleFactor,
-          dayParts: widget.dayParts,
-          timepillarSide: TimepillarSide.left,
-          measures: measures,
-          topMargin: topMargin,
-          bottomMargin: bottomMargin,
-          showCategoryColor: showCategoryColor,
-        );
-        final rightBoardData = TimepillarBoard.positionTimepillarCards(
-          eventOccasions: (widget.showCategories
-                  ? events.where((ao) => ao.category == Category.right)
-                  : events)
-              .map((e) => e.toOccasion(now))
-              .toList(),
-          textStyle: textStyle,
-          textScaleFactor: textScaleFactor,
-          dayParts: widget.dayParts,
-          timepillarSide: TimepillarSide.right,
-          measures: measures,
-          topMargin: topMargin,
-          bottomMargin: bottomMargin,
-          showCategoryColor: showCategoryColor,
-        );
+                  .toList(),
+              textStyle: textStyle,
+              textScaleFactor: textScaleFactor,
+              dayParts: dayParts,
+              timepillarSide: TimepillarSide.right,
+              measures: measures,
+              topMargin: topMargin,
+              bottomMargin: bottomMargin,
+              showCategoryColor: showCategoryColor,
+            );
 
-        // Anchor is the starting point of the central sliver (timepillar).
-        // horizontalAnchor is where the left side of the timepillar needs to be
-        // in parts of the screen to make it centralized.
-        return LayoutBuilder(
-          builder: (context, boxConstraints) {
+            // Anchor is the starting point of the central sliver (timepillar).
+            // horizontalAnchor is where the left side of the timepillar needs to be
+            // in parts of the screen to make it centralized.
             final maxWidth = boxConstraints.maxWidth;
             final timePillarPercentOfTotalScreen =
                 (measures.timePillarTotalWidth) / maxWidth;
-            final horizontalAnchor = widget.showCategories
-                ? 0.5 - timePillarPercentOfTotalScreen / 2
-                : 0.0;
+            final horizontalAnchor =
+                showCategories ? 0.5 - timePillarPercentOfTotalScreen / 2 : 0.0;
             final categoryMinWidth =
                 (1 - timePillarPercentOfTotalScreen) * maxWidth / 2;
 
@@ -180,135 +150,135 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
             final calendarHeight =
                 max(tsHeight, max(leftBoardData.height, rightBoardData.height));
             final height = max(calendarHeight, boxConstraints.maxHeight);
-            final now = context.watch<ClockBloc>().state;
             final timepillarSettings = context.select(
                 (MemoplannerSettingsBloc bloc) =>
                     bloc.state.calendar.timepillar);
-            return ScrollListener(
-              enabled:
-                  widget.timepillarState.isToday && widget.scrollToTimeOffset,
-              scrollController: verticalScrollController,
-              getNowOffset: (now) =>
-                  currentDotMidPosition(now, measures, topMargin: topMargin) -
-                  (boxConstraints.maxHeight / 4),
+            return CalendarScrollListener(
+              timepillarMeasures: measures,
+              enabled: timepillarState.isToday && scrollToTimeOffset,
+              disabledInitOffset:
+                  measures.hourHeight * dayParts.morning.inHours,
+              getNowOffset: (now) => nowOffset(now),
               inViewMargin: timeToPixels(
                 0,
                 minutesPerDotDuration.inMinutes,
                 measures.dotDistance,
               ),
-              timepillarMeasures: widget.timepillarMeasures,
-              child: RefreshIndicator(
-                onRefresh: () => refresh(context),
-                notificationPredicate: (scrollNotification) =>
-                    widget.pullToRefresh &&
-                    defaultScrollNotificationPredicate(scrollNotification),
-                child: Container(
-                  key: TestKey.calendarBackgroundColor,
-                  color: interval.intervalPart == IntervalPart.night
-                      ? TimepillarCalendar.nightBackgroundColor
-                      : Theme.of(context).scaffoldBackgroundColor,
-                  child: ScrollArrows.all(
-                    upCollapseMargin: topMargin,
-                    downCollapseMargin: bottomMargin,
-                    horizontalController: horizontalScrollController,
-                    verticalController: verticalScrollController,
-                    child: SingleChildScrollView(
-                      controller: verticalScrollController,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: LimitedBox(
-                        maxHeight: height,
-                        child: Stack(
-                          children: <Widget>[
-                            ...np.map((p) {
-                              return Positioned(
-                                top: p.start,
-                                child: SizedBox(
-                                  width: boxConstraints.maxWidth,
-                                  height: p.length,
-                                  child: const DecoratedBox(
-                                    decoration: BoxDecoration(
-                                        color: TimepillarCalendar
-                                            .nightBackgroundColor),
+              builder: (_, verticalController) {
+                return RefreshIndicator(
+                  onRefresh: () => refresh(context),
+                  notificationPredicate: (scrollNotification) =>
+                      pullToRefresh &&
+                      defaultScrollNotificationPredicate(scrollNotification),
+                  child: Container(
+                    key: TestKey.calendarBackgroundColor,
+                    color: interval.intervalPart == IntervalPart.night
+                        ? TimepillarCalendar.nightBackgroundColor
+                        : Theme.of(context).scaffoldBackgroundColor,
+                    child: ScrollArrows.all(
+                      upCollapseMargin: topMargin,
+                      downCollapseMargin: bottomMargin,
+                      horizontalController: horizontalScrollController,
+                      verticalController: verticalController,
+                      child: SingleChildScrollView(
+                        controller: verticalController,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: LimitedBox(
+                          maxHeight: height,
+                          child: Stack(
+                            children: <Widget>[
+                              ...np.map((p) {
+                                return Positioned(
+                                  top: p.start,
+                                  child: SizedBox(
+                                    width: boxConstraints.maxWidth,
+                                    height: p.length,
+                                    child: const DecoratedBox(
+                                      decoration: BoxDecoration(
+                                          color: TimepillarCalendar
+                                              .nightBackgroundColor),
+                                    ),
+                                  ),
+                                );
+                              }),
+                              if (displayHourLines)
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    top: topMargin,
+                                  ),
+                                  child: HourLines(
+                                    numberOfLines: interval.lengthInHours + 1,
+                                    hourHeight: measures.hourHeight,
                                   ),
                                 ),
-                              );
-                            }),
-                            if (widget.displayHourLines)
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  top: topMargin,
+                              if (showTimeLine)
+                                Builder(
+                                  builder: (context) {
+                                    if (now.inRangeWithInclusiveStart(
+                                        startDate: measures.interval.start,
+                                        endDate: measures.interval.end)) {
+                                      return Timeline(
+                                        top: currentDotMidPosition(
+                                              now,
+                                              measures,
+                                              topMargin: topMargin,
+                                            ) -
+                                            layout.timepillar.timeLineHeight /
+                                                2,
+                                        width: boxConstraints.maxWidth,
+                                      );
+                                    }
+                                    return const SizedBox.shrink();
+                                  },
                                 ),
-                                child: HourLines(
-                                  numberOfLines: interval.lengthInHours + 1,
-                                  hourHeight: measures.hourHeight,
-                                ),
-                              ),
-                            if (showTimeLine)
-                              Builder(
-                                builder: (context) {
-                                  if (now.inRangeWithInclusiveStart(
-                                      startDate: measures.interval.start,
-                                      endDate: measures.interval.end)) {
-                                    return Timeline(
-                                      top: currentDotMidPosition(
-                                            now,
-                                            measures,
-                                            topMargin: topMargin,
-                                          ) -
-                                          layout.timepillar.timeLineHeight / 2,
-                                      width: boxConstraints.maxWidth,
-                                    );
-                                  }
-                                  return const SizedBox.shrink();
-                                },
-                              ),
-                            CustomScrollView(
-                              anchor: horizontalAnchor,
-                              center: center,
-                              scrollDirection: Axis.horizontal,
-                              controller: horizontalScrollController,
-                              slivers: <Widget>[
-                                if (widget.showCategories)
+                              CustomScrollView(
+                                anchor: horizontalAnchor,
+                                center: center,
+                                scrollDirection: Axis.horizontal,
+                                controller: horizontalScrollController,
+                                slivers: <Widget>[
+                                  if (showCategories)
+                                    SliverToBoxAdapter(
+                                      child: TimepillarBoard(
+                                        leftBoardData,
+                                        categoryMinWidth: categoryMinWidth,
+                                        timepillarWidth:
+                                            measures.cardTotalWidth,
+                                        textStyle: textStyle,
+                                      ),
+                                    ),
+                                  SliverTimePillar(
+                                    key: center,
+                                    child: TimePillar(
+                                      interval: interval,
+                                      dayOccasion: timepillarState.occasion,
+                                      use12h: timepillarSettings.use12h,
+                                      nightParts: np,
+                                      dayParts: dayParts,
+                                      columnOfDots:
+                                          timepillarSettings.columnOfDots,
+                                      topMargin: topMargin,
+                                      measures: measures,
+                                    ),
+                                  ),
                                   SliverToBoxAdapter(
                                     child: TimepillarBoard(
-                                      leftBoardData,
+                                      rightBoardData,
                                       categoryMinWidth: categoryMinWidth,
                                       timepillarWidth: measures.cardTotalWidth,
                                       textStyle: textStyle,
                                     ),
                                   ),
-                                SliverTimePillar(
-                                  key: center,
-                                  child: TimePillar(
-                                    interval: interval,
-                                    dayOccasion:
-                                        widget.timepillarState.occasion,
-                                    use12h: timepillarSettings.use12h,
-                                    nightParts: np,
-                                    dayParts: widget.dayParts,
-                                    columnOfDots:
-                                        timepillarSettings.columnOfDots,
-                                    topMargin: topMargin,
-                                    measures: measures,
-                                  ),
-                                ),
-                                SliverToBoxAdapter(
-                                  child: TimepillarBoard(
-                                    rightBoardData,
-                                    categoryMinWidth: categoryMinWidth,
-                                    timepillarWidth: measures.cardTotalWidth,
-                                    textStyle: textStyle,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
+                );
+              },
             );
           },
         );
