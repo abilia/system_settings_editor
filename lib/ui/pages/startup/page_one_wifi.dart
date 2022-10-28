@@ -60,7 +60,10 @@ class PageOneWifi extends StatelessWidget {
                                   curve: Curves.easeOutQuad,
                                 );
                               },
-                              child: Text(t.next),
+                              child: Text(
+                                t.next,
+                                key: TestKey.nextWelcomeGuide,
+                              ),
                             ),
                           ),
                         )

@@ -88,6 +88,7 @@ class PageTwoVoiceSupport extends StatelessWidget {
               SizedBox(
                 width: layout.startupPage.pageTwoButtonWidth,
                 child: IconAndTextButton(
+                  key: TestKey.finishWelcomeGuide,
                   onPressed: () {
                     context.read<StartupCubit>().startGuideDone();
                   },
