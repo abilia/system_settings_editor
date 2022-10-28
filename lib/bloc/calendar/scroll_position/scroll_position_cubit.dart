@@ -10,10 +10,12 @@ part 'scroll_position_state.dart';
 
 class ScrollPositionCubit extends Cubit<ScrollPositionState> {
   final DayPickerBloc dayPickerBloc;
+  final TimepillarCubit timepillarCubit;
   late final StreamSubscription dayPickerBlocSubscription;
 
   ScrollPositionCubit({
     required this.dayPickerBloc,
+    required this.timepillarCubit,
   }) : super(dayPickerBloc.state.isToday ? Unready() : WrongDay()) {
     dayPickerBlocSubscription = dayPickerBloc.stream
         .where((day) => !day.isToday)
@@ -23,11 +25,18 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
   Future<void> goToNow({
     Duration duration = DayCalendar.transitionDuration,
     Curve curve = Curves.easeInOut,
+    bool userInitiated = false,
   }) async {
     final scrollState = state;
 
     if (scrollState is WrongDay) {
       dayPickerBloc.add(const CurrentDay());
+    }
+
+    if (userInitiated) {
+      if (timepillarCubit.maybeGoToNightCalendar()) {
+        return;
+      }
     }
 
     if (scrollState is ScrollPositionReadyState) {

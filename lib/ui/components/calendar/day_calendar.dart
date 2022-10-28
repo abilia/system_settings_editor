@@ -13,6 +13,7 @@ class DayCalendar extends StatelessWidget {
     return BlocProvider<ScrollPositionCubit>(
       create: (context) => ScrollPositionCubit(
         dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
+        timepillarCubit: context.read<TimepillarCubit>(),
       ),
       child: Builder(
         builder: (context) {

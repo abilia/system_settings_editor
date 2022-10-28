@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 
+import '../../../mocks/mock_bloc.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
@@ -24,7 +25,8 @@ void main() {
     mockScrollController = MockScrollController();
     mockScrollPosition = MockScrollPosition();
 
-    scrollPositionCubit = ScrollPositionCubit(dayPickerBloc: dayPickerBloc);
+    scrollPositionCubit = ScrollPositionCubit(
+        dayPickerBloc: dayPickerBloc, timepillarCubit: MockTimepillarCubit());
     when(() => mockScrollController.position).thenReturn(mockScrollPosition);
     when(() => mockScrollController.positions).thenReturn([mockScrollPosition]);
     when(() => mockScrollController.hasClients).thenReturn(true);
