@@ -9255,7 +9255,7 @@ class NB extends Translated {
   final String downloadVoiceText = 'Last ned stemme for talestøtte';
 
   @override
-  final String finsish = 'Slutte';
+  final String finsish = 'Ferdig';
 
   @override
   final String notSelected = 'Ikke valgt';
