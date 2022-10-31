@@ -242,6 +242,32 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     }
   }
 
+  bool maybeGoToNightCalendar() {
+    if (_shouldGoToNightCalendar) {
+      _onTimepillarConditionsChanged(showNightCalendar: true);
+      return true;
+    }
+    return false;
+  }
+
+  bool get _shouldGoToNightCalendar {
+    final settings = memoSettingsBloc.state;
+    final viewOptions = settings.dayCalendar.viewOptions;
+    final isToday = dayPickerBloc.state.isToday;
+    final isList = viewOptions.calendarType == DayCalendarType.list;
+    final showingNightCalendar = state.showNightCalendar;
+    final isDayAndNight =
+        viewOptions.calendarType == DayCalendarType.oneTimepillar &&
+            viewOptions.intervalType == TimepillarIntervalType.dayAndNight;
+    final isNight = clockBloc.state.isNight(settings.calendar.dayParts);
+
+    return isToday &&
+        !isList &&
+        !isDayAndNight &&
+        isNight &&
+        !showingNightCalendar;
+  }
+
   bool _shouldStepDay({required bool forward}) {
     final settings = memoSettingsBloc.state;
     final viewOptions = settings.dayCalendar.viewOptions;
