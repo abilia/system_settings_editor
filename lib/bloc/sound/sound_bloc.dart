@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -14,11 +15,13 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/all.dart';
+import 'package:seagull/utils/all.dart';
 
+part 'sound_event.dart';
 part 'sound_state.dart';
 
-class SoundCubit extends Cubit<SoundState> {
-  final log = Logger((SoundCubit).toString());
+class SoundBloc extends Bloc<SoundEvent, SoundState> {
+  final log = Logger((SoundBloc).toString());
   static const tmpFileEnding = 'mp3';
 
   final FileStorage storage;
@@ -30,14 +33,45 @@ class SoundCubit extends Cubit<SoundState> {
   late StreamSubscription audioPositionChanged;
   late StreamSubscription onPlayerCompletion;
 
-  SoundCubit({
+  SoundBloc({
     required this.storage,
     required this.userFileCubit,
   }) : super(const NoSoundPlaying()) {
-    resetAudioPlayer();
+    on<PlaySound>(_onEvent, transformer: _throttle(250.milliseconds()));
+    on<StopSound>(_onEvent, transformer: _throttle(250.milliseconds()));
+    on<ResetPlayer>(_onEvent, transformer: droppable());
+    on<SoundCompleted>(_onEvent, transformer: droppable());
+    on<PositionChanged>(_onEvent, transformer: droppable());
+    add(const ResetPlayer());
   }
 
-  Future<void> play(AbiliaFile abiliaFile) async {
+  Future _onEvent(
+    SoundEvent event,
+    Emitter<SoundState> emit,
+  ) async {
+    if (event is PlaySound) {
+      await _playSound(event.abiliaFile, emit);
+    } else if (event is StopSound) {
+      await _stopSound(emit);
+    } else if (event is ResetPlayer) {
+      await _resetAudioPlayer();
+    } else if (event is SoundCompleted) {
+      emit(const NoSoundPlaying());
+    } else if (event is PositionChanged) {
+      emit(
+        SoundPlaying(
+          event.currentSound,
+          duration: event.duration,
+          position: event.position,
+        ),
+      );
+    }
+  }
+
+  Future<void> _playSound(
+    AbiliaFile abiliaFile,
+    Emitter<SoundState> emit,
+  ) async {
     log.fine('trying to play: $abiliaFile');
     final file = await resolveFile(abiliaFile);
     if (file != null) {
@@ -93,7 +127,7 @@ class SoundCubit extends Cubit<SoundState> {
     return file.copy(tmpPath);
   }
 
-  Future<void> stopSound() async {
+  Future<void> _stopSound(Emitter<SoundState> emit) async {
     await audioPlayer.stop();
     emit(const NoSoundPlaying());
   }
@@ -108,10 +142,10 @@ class SoundCubit extends Cubit<SoundState> {
   /// 2. Null source in WrappedPlayer when calling release() (Easiest?)
   /// 3. Don't try to set old source before new one in WrappedPlayer. (Maybe
   /// other implications).
-  Future<void> resetAudioPlayer() async {
+  Future<void> _resetAudioPlayer() async {
     audioPlayer = AudioPlayer();
     onPlayerCompletion = audioPlayer.onPlayerComplete.listen((_) {
-      emit(const NoSoundPlaying());
+      add(const SoundCompleted());
     });
     audioPositionChanged = audioPlayer.onPositionChanged
         .throttleTime(const Duration(milliseconds: 25))
@@ -123,11 +157,11 @@ class SoundCubit extends Cubit<SoundState> {
               ? (await audioPlayer.getDuration())?.inMilliseconds
               : s.duration;
           if (!isClosed) {
-            emit(
-              SoundPlaying(
+            add(
+              PositionChanged(
                 s.currentSound,
-                duration: duration ?? s.duration,
-                position: position,
+                duration ?? s.duration,
+                position,
               ),
             );
           }
@@ -144,3 +178,6 @@ class SoundCubit extends Cubit<SoundState> {
     await onPlayerCompletion.cancel();
   }
 }
+
+EventTransformer<Event> _throttle<Event>(Duration delay) =>
+    (events, mapper) => events.throttleTime(delay).asyncExpand(mapper);

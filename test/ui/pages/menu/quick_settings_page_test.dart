@@ -4,6 +4,7 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../test_helpers/app_pumper.dart';
@@ -96,7 +97,7 @@ void main() {
 
       // Act - Change alarm volume
       await tester.tapAt(tester.getCenter(find.byType(AlarmVolumeSlider)));
-      await tester.pump();
+      await tester.pumpAndSettle(250.milliseconds());
 
       // Assert - Icons not changed
       expect(alarmSlider().value, greaterThan(0));
@@ -106,7 +107,7 @@ void main() {
 
       // Act - Change media volume
       await tester.tapAt(tester.getCenter(find.byType(MediaVolumeSlider)));
-      await tester.pump();
+      await tester.pumpAndSettle(250.milliseconds());
 
       // Assert - Icon changed
       expect(alarmSlider().value, greaterThan(0));

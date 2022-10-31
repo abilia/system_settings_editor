@@ -44,7 +44,7 @@ class ActivityTopInfo extends StatelessWidget {
     final showStart = startSpeech.isNotEmpty && alarm is! ReminderUnchecked;
     if (showStart || endSpeech.isNotEmpty) {
       return BlocProvider(
-        create: (context) => SoundCubit(
+        create: (context) => SoundBloc(
           storage: GetIt.I<FileStorage>(),
           userFileCubit: context.read<UserFileCubit>(),
         ),
