@@ -1362,5 +1362,49 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('night'), findsNothing);
     });
+
+    testWidgets(
+        'SGC-2014 GoToNowButton should always go to the night calendar if it is night',
+        (WidgetTester tester) async {
+      mockTicker.add(DateTime(2022, 04, 26, 23, 30));
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(previousDayButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.flingFrom(
+          const Offset(200, 200), const Offset(200, 400), 200);
+      await tester.pumpAndSettle();
+
+      var tp = tester
+          .firstWidget<TimepillarCalendar>(find.byType(TimepillarCalendar));
+      expect(tp.timepillarState.showNightCalendar, false);
+
+      await tester.tap(find.byKey(TestKey.goToNowButton));
+      await tester.pumpAndSettle();
+
+      tp = tester
+          .firstWidget<TimepillarCalendar>(find.byType(TimepillarCalendar));
+      expect(tp.timepillarState.showNightCalendar, true);
+
+      mockTicker.add(DateTime(2022, 04, 27, 01, 30));
+      await tester.tap(nextDayButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(nextDayButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.flingFrom(
+          const Offset(400, 200), const Offset(400, 400), 200);
+      await tester.pumpAndSettle();
+
+      tp = tester
+          .firstWidget<TimepillarCalendar>(find.byType(TimepillarCalendar));
+      expect(tp.timepillarState.showNightCalendar, false);
+
+      await tester.tap(find.byKey(TestKey.goToNowButton));
+      await tester.pumpAndSettle();
+
+      tp = tester
+          .firstWidget<TimepillarCalendar>(find.byType(TimepillarCalendar));
+      expect(tp.timepillarState.showNightCalendar, true);
+    });
   });
 }

@@ -22,8 +22,12 @@ class GoToNowButton extends StatelessWidget {
                     key: TestKey.goToNowButton,
                     text: Translator.of(context).translate.now,
                     icon: AbiliaIcons.reset,
-                    onPressed: () =>
-                        context.read<ScrollPositionCubit>().goToNow(),
+                    onPressed: () {
+                      if (context
+                          .read<TimepillarCubit>()
+                          .maybeGoToNightCalendar()) return;
+                      context.read<ScrollPositionCubit>().goToNow();
+                    },
                     style: actionIconTextButtonStyleRed,
                     padding: EdgeInsets.zero,
                   ),
