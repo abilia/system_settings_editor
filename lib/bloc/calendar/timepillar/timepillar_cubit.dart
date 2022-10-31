@@ -242,7 +242,10 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     }
   }
 
-  bool maybeGoToNightCalendar() {
+  void goToNightCalendar() =>
+      _onTimepillarConditionsChanged(showNightCalendar: true);
+
+  bool get shouldGoToNightCalendar {
     final settings = memoSettingsBloc.state;
     final viewOptions = settings.dayCalendar.viewOptions;
     final isToday = dayPickerBloc.state.isToday;
@@ -253,16 +256,11 @@ class TimepillarCubit extends Cubit<TimepillarState> {
             viewOptions.intervalType == TimepillarIntervalType.dayAndNight;
     final isNight = clockBloc.state.isNight(settings.calendar.dayParts);
 
-    if (isToday &&
+    return isToday &&
         !isList &&
         !isDayAndNight &&
         isNight &&
-        !showingNightCalendar) {
-      _onTimepillarConditionsChanged(showNightCalendar: true);
-      return true;
-    }
-
-    return false;
+        !showingNightCalendar;
   }
 
   bool _shouldStepDay({required bool forward}) {
