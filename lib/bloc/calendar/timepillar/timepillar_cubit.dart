@@ -242,10 +242,15 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     }
   }
 
-  void goToNightCalendar() =>
+  bool maybeGoToNightCalendar() {
+    if (_shouldGoToNightCalendar) {
       _onTimepillarConditionsChanged(showNightCalendar: true);
+      return true;
+    }
+    return false;
+  }
 
-  bool get shouldGoToNightCalendar {
+  bool get _shouldGoToNightCalendar {
     final settings = memoSettingsBloc.state;
     final viewOptions = settings.dayCalendar.viewOptions;
     final isToday = dayPickerBloc.state.isToday;
