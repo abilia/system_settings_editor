@@ -157,7 +157,9 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
               timepillarMeasures: measures,
               enabled: timepillarState.isToday && scrollToTimeOffset,
               disabledInitOffset:
-                  measures.hourHeight * dayParts.morning.inHours,
+                  timepillarState.calendarType == DayCalendarType.oneTimepillar
+                      ? measures.hourHeight * dayParts.morning.inHours
+                      : 0,
               getNowOffset: (now) => nowOffset(now),
               inViewMargin: timeToPixels(
                 0,
