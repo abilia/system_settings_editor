@@ -73,6 +73,7 @@ void main() {
       localNotificationLog.clear();
       localNotificationChannel.setMockMethodCallHandler((methodCall) async {
         localNotificationLog.add(methodCall);
+        if (methodCall.method == 'initialize') return Future.value(true);
         if (methodCall.method == 'getActiveNotifications') {
           return activeNotifications
               .map((a) => {
@@ -141,10 +142,10 @@ void main() {
       'emits if active notification and alarm time goes out ',
       setUp: () => activeNotifications = [
         ActiveNotification(
-          startAlarm.hashCode,
-          'channelId',
-          'title',
-          'body',
+          id: startAlarm.hashCode,
+          groupKey: 'channelId',
+          title: 'title',
+          body: 'body',
         ),
       ],
       build: () => AlarmSpeechCubit(
@@ -170,10 +171,10 @@ void main() {
       'emits nothing if active notification',
       setUp: () => activeNotifications = [
         ActiveNotification(
-          startAlarm.hashCode,
-          'channelId',
-          'title',
-          'body',
+          id: startAlarm.hashCode,
+          groupKey: 'channelId',
+          title: 'title',
+          body: 'body',
         ),
       ],
       build: () => AlarmSpeechCubit(

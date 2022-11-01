@@ -15,6 +15,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/utils/all.dart';
 
+@pragma('vm:entry-point')
 Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final documentDirectory = await getApplicationDocumentsDirectory();

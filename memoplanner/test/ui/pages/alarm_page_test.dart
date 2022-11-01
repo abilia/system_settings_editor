@@ -142,6 +142,7 @@ void main() {
     localNotificationLog.clear();
     localNotificationChannel.setMockMethodCallHandler((methodCall) async {
       localNotificationLog.add(methodCall);
+      if (methodCall.method == 'initialize') return Future.value(true);
       if (methodCall.method == 'getActiveNotifications') {
         return null;
       }
@@ -351,7 +352,7 @@ void main() {
         expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.stop), findsNothing);
-        // wait untill alarm is over
+        // wait until alarm is over
         await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
         // should play alarm
         expect(find.byIcon(AbiliaIcons.playSound), findsNothing);

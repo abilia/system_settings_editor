@@ -74,22 +74,30 @@ Future<NotificationAlarm?> getOrAddPayloadToStream() async {
   final notificationAppLaunchDetails =
       await notificationPlugin.getNotificationAppLaunchDetails();
   try {
-    final payload = notificationAppLaunchDetails?.payload;
     if (notificationAppLaunchDetails?.didNotificationLaunchApp == true) {
-      _log.info('Notification Launched App with payload: $payload');
-      if (payload != null) {
+      final notificationResponse =
+          notificationAppLaunchDetails?.notificationResponse;
+      _log.info(
+        'Notification Launched App with notificationResponse: '
+        '$notificationResponse',
+      );
+      if (notificationResponse != null) {
         if (Platform.isAndroid) {
           _log.info('on android, parsing payload for fullscreen alarm');
-          return NotificationAlarm.decode(payload);
-        } else {
-          _log.info('on ios, adding payload to selectNotificationSubject');
-          onNotification(payload);
+          final payload = notificationResponse.payload;
+          if (payload != null) {
+            return NotificationAlarm.decode(payload);
+          }
         }
+        _log.info('on iOS, adding payload to selectNotificationSubject');
+        onNotification(notificationResponse);
       }
     }
   } catch (e) {
     _log.severe(
-        'Could not parse payload: ${notificationAppLaunchDetails?.payload}', e);
+        'Could not parse notificationResponse: '
+        '${notificationAppLaunchDetails?.notificationResponse}',
+        e);
   }
   return null;
 }
