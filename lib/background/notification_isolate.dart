@@ -39,7 +39,6 @@ FlutterLocalNotificationsPlugin ensureNotificationPluginInitialized() {
       ),
     ),
     onDidReceiveNotificationResponse: onNotification,
-    onDidReceiveBackgroundNotificationResponse: onNotification,
   );
   _log.finer('notification plugin initialize');
   return notificationsPluginInstance = pluginInstance;
