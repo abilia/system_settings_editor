@@ -31,7 +31,7 @@ class LinedBorder extends StatelessWidget {
                 ],
                 strokeWidth: layout.borders.thin,
                 borderType: BorderType.RRect,
-                color: AbiliaColors.brown20,
+                color: AbiliaColors.white140,
                 radius: radius,
                 padding: const EdgeInsets.all(0),
                 child: child,
