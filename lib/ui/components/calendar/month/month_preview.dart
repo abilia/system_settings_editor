@@ -113,6 +113,7 @@ class _MonthPreviewState extends State<MonthPreview> {
           bottomPadding:
               layout.monthCalendar.monthPreview.activityListBottomPadding,
           events: widget.events,
+          centerNoActivitiesText: true,
         ),
       ),
     );

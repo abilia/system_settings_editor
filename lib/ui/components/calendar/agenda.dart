@@ -49,12 +49,14 @@ class EventList extends StatelessWidget {
     required this.topPadding,
     required this.events,
     required this.scrollController,
+    this.centerNoActivitiesText = false,
     Key? key,
   }) : super(key: key);
 
   final ScrollController? scrollController;
   final double bottomPadding, topPadding;
   final EventsState events;
+  final bool centerNoActivitiesText;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +81,10 @@ class EventList extends StatelessWidget {
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
               if (events.events.isEmpty && events.fullDayActivities.isEmpty)
-                SliverNoActivities(key: center)
+                SliverNoActivities(
+                  key: center,
+                  center: centerNoActivitiesText,
+                )
               else ...[
                 SliverPadding(
                   padding: EdgeInsets.only(top: topPadding),
@@ -122,14 +127,18 @@ class EventList extends StatelessWidget {
 }
 
 class SliverNoActivities extends StatelessWidget {
-  const SliverNoActivities({Key? key}) : super(key: key);
+  const SliverNoActivities({required this.center, Key? key}) : super(key: key);
+  final bool center;
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: EdgeInsets.only(top: layout.agenda.sliverTopPadding),
-      sliver: SliverToBoxAdapter(
-        child: Center(
+    return SliverFillRemaining(
+      child: Align(
+        alignment: center ? Alignment.center : Alignment.topCenter,
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: center ? 0 : layout.agenda.sliverTopPadding,
+          ),
           child: Tts(
             child: Text(
               Translator.of(context).translate.noActivities,
