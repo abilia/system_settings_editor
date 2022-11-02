@@ -72,3 +72,7 @@ class FetchSessionsException implements Exception {
   FetchSessionsException(this.statusCode);
   final int statusCode;
 }
+
+class SyncFailedException implements Exception {
+  String errMsg() => 'Sync failed';
+}

@@ -17,6 +17,7 @@ void main() {
   late ActivitiesBloc activitiesBloc;
   late MockActivityRepository mockActivityRepository;
   late SyncBloc mockSyncBloc;
+  late SyncBloc syncBloc;
   late LicenseCubit mockLicenseCubit;
 
   setUpAll(registerFallbackValues);
@@ -32,6 +33,16 @@ void main() {
     when(() => mockLicenseCubit.stream).thenAnswer((_) => const Stream.empty());
     when(() => mockLicenseCubit.state).thenAnswer((_) => ValidLicense());
     when(() => mockLicenseCubit.validLicense).thenAnswer((_) => true);
+
+    syncBloc = SyncBloc(
+      pushCubit: FakePushCubit(),
+      licenseCubit: FakeLicenseCubit(),
+      activityRepository: FakeActivityRepository(),
+      userFileRepository: FakeUserFileRepository(),
+      sortableRepository: FakeSortableRepository(),
+      genericRepository: FakeGenericRepository(),
+      syncDelay: SyncDelays.zero,
+    );
 
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
@@ -136,6 +147,45 @@ void main() {
           verify(() => mockActivityRepository.save([deletedStoredActivity]));
           verify(() => mockSyncBloc.add(const ActivitySaved()));
         });
+
+    test(
+        'Nothing happens when OneWaySyncPerformed or SyncNotPerformed is emitted',
+        () async {
+      // Arrange
+      activitiesBloc = ActivitiesBloc(
+        activityRepository: mockActivityRepository,
+        syncBloc: syncBloc,
+      );
+
+      // Act
+      syncBloc.emit(OneWaySyncPerformed());
+      syncBloc.emit(SyncNotPerformed());
+
+      // Assert
+      await expectLater(
+        activitiesBloc.stream,
+        emitsInOrder([]),
+      );
+    });
+
+    test('Activities are loaded when TwoWaySyncPerformed is emitted', () async {
+      // Arrange
+      activitiesBloc = ActivitiesBloc(
+        activityRepository: mockActivityRepository,
+        syncBloc: syncBloc,
+      );
+
+      // Act
+      syncBloc.emit(TwoWaySyncPerformed());
+
+      // Assert
+      await expectLater(
+        activitiesBloc.stream,
+        emitsInOrder([
+          ActivitiesStateMatcher(ActivitiesLoaded()),
+        ]),
+      );
+    });
   });
 
   group('Delete recurring activity', () {

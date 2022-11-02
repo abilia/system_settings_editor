@@ -43,16 +43,18 @@ abstract class DataRepository<M extends DataModel> extends Repository {
   Future<void> fetchIntoDatabaseSynchronized() =>
       synchronized(fetchIntoDatabase);
 
-  Future<void> fetchIntoDatabase() async {
+  Future<bool> fetchIntoDatabase() async {
     log.fine('loading $path...');
     try {
       final revision = await db.getLastRevision();
       final fetchedData = await fetchData(revision);
       log.fine('${fetchedData.length} $path fetched');
       await db.insert(fetchedData);
+      return fetchedData.isNotEmpty;
     } catch (e) {
       log.severe('Error when syncing $path, offline?', e);
     }
+    return false;
   }
 
   @protected
@@ -72,9 +74,9 @@ abstract class DataRepository<M extends DataModel> extends Repository {
 
   Future<bool> synchronize() async {
     return synchronized(() async {
-      await fetchIntoDatabase();
+      final didFetchData = await fetchIntoDatabase();
       final dirtyData = await db.getAllDirty();
-      if (dirtyData.isEmpty) return true;
+      if (dirtyData.isEmpty) return didFetchData;
       try {
         final res = await postData(dirtyData);
         if (res.succeeded.isNotEmpty) {
@@ -93,9 +95,9 @@ abstract class DataRepository<M extends DataModel> extends Repository {
         );
       } catch (e) {
         log.warning('Failed to synchronize $path with backend', e);
-        return false;
+        throw SyncFailedException();
       }
-      return true;
+      return didFetchData;
     });
   }
 

@@ -48,30 +48,32 @@ class UserFileRepository extends DataRepository<UserFile> {
   @override
   Future<bool> synchronize() async {
     return synchronized(() async {
-      await fetchIntoDatabase();
+      final didFetchData = await fetchIntoDatabase();
       final dirtyFiles = await db.getAllDirty();
-      if (dirtyFiles.isEmpty) return true;
+      if (dirtyFiles.isEmpty) return didFetchData;
       for (var dirtyFile in dirtyFiles.map((dirty) => dirty.model)) {
         final file = fileStorage.getFile(dirtyFile.id);
         final postFileSuccess = await _postFileData(
           file,
           dirtyFile.sha1,
         );
-        if (!postFileSuccess) return false;
+        if (!postFileSuccess) {
+          throw SyncFailedException();
+        }
       }
 
       try {
         final lastRevision = await db.getLastRevision();
         final syncResponses = await _postUserFiles(dirtyFiles, lastRevision);
         await handleSuccessfulSync(syncResponses, dirtyFiles);
-        return true;
+        return didFetchData;
       } on WrongRevisionException catch (_) {
         log.info('Wrong revision when posting user files');
         await _handleFailedSync();
       } catch (e) {
         log.warning('Cannot post user files to backend', e);
       }
-      return false;
+      throw SyncFailedException();
     });
   }
 

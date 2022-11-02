@@ -20,8 +20,11 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     required this.activityRepository,
     required this.syncBloc,
   }) : super(ActivitiesNotLoaded()) {
-    _syncSubscription =
-        syncBloc.stream.listen((state) => add(LoadActivities()));
+    _syncSubscription = syncBloc.stream.listen(
+      (state) {
+        if (state is TwoWaySyncPerformed) add(LoadActivities());
+      },
+    );
     on<ActivitiesEvent>(_onEvent, transformer: sequential());
   }
 

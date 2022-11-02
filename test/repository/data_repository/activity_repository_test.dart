@@ -160,7 +160,7 @@ void main() {
         .thenAnswer((_) => Future.value(successActivity.copyWith(dirty: 5)));
 
     // Act
-    await activityRepo.synchronize();
+    await activityRepo.synchronize().catchError((_) => true);
 
     // Expect
     verify(() => mockClient.post(
@@ -221,7 +221,7 @@ void main() {
         )));
 
     // Act
-    await activityRepo.synchronize();
+    await activityRepo.synchronize().catchError((_) => true);
 
     // Expect/Verify
     verify(() => mockActivityDb

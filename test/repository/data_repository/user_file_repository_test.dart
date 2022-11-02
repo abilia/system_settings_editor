@@ -171,7 +171,7 @@ void main() {
     );
 
     // Act
-    await userFileRepository.synchronize();
+    await userFileRepository.synchronize().catchError((_) => true);
 
     // Verify
     verify(() => mockUserFileDb.insert([

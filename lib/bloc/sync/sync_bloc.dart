@@ -8,12 +8,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
 part 'sync_event.dart';
-
-class SyncState {}
-
-class SyncPerformed extends SyncState {}
-
-class SyncNotPerformed extends SyncState {}
+part 'sync_state.dart';
 
 class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final PushCubit pushCubit;
@@ -51,13 +46,17 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     SyncEvent event,
     Emitter emit,
   ) async {
-    if (!await _sync(event)) {
+    try {
+      final didFetchData = await _sync(event);
+      if (event is SyncAll) {
+        emit(didFetchData ? TwoWaySyncPerformed() : OneWaySyncPerformed());
+      }
+    } catch (error) {
       _log.info('could not sync $event, retries in ${syncDelay.retryDelay}');
       await Future.delayed(syncDelay.retryDelay);
       _log.info('retrying $event');
       add(event);
     }
-    if (event is SyncAll) emit(SyncPerformed());
   }
 
   Future<bool> _sync(SyncEvent event) async {
@@ -66,7 +65,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
         return _syncAll();
       case ActivitySaved:
         if (licenseCubit.validLicense) return activityRepository.synchronize();
-        return true;
+        return false;
       case FileSaved:
         return userFileRepository.synchronize();
       case SortableSaved:
@@ -84,7 +83,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       sortableRepository.synchronize(),
       genericRepository.synchronize(),
     ]);
-    return results.fold<bool>(true, (prev, next) => prev && next);
+    return results.fold<bool>(true, (prev, next) => prev || next);
   }
 
   @override
