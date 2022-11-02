@@ -83,7 +83,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       sortableRepository.synchronize(),
       genericRepository.synchronize(),
     ]);
-    return results.fold<bool>(true, (prev, next) => prev || next);
+    return results.fold<bool>(false, (prev, next) => prev || next);
   }
 
   @override

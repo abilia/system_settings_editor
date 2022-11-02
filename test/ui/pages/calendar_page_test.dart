@@ -230,6 +230,29 @@ void main() {
       expect(tester.getCenter(leftCategory), leftCategoryOffset);
     });
 
+    testWidgets(
+        'When viewing an activity and it is deleted from myAbilia Pops back to CalendarPage',
+        (WidgetTester tester) async {
+      // Arrange
+      final pushCubit = PushCubit();
+      final activity = FakeActivity.starts(initialTime);
+      mockActivityDb.initWithActivity(activity);
+      // Act
+      await tester.pumpWidget(App(pushCubit: pushCubit));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(ActivityTimepillarCard));
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(CalendarPage), findsNothing);
+      expect(find.byType(ActivityPage), findsOneWidget);
+      // Act
+      mockActivityDb.insertAndAddDirty([activity.copyWith(deleted: true)]);
+      pushCubit.fakePush();
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      // Assert
+      expect(find.byType(CalendarPage), findsOneWidget);
+    });
+
     group('Permissions', () {
       final translate = Locales.language.values.first;
 
