@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -39,11 +38,9 @@ class SoundBloc extends Bloc<SoundEvent, SoundState> {
     required this.storage,
     required this.userFileCubit,
   }) : super(const NoSoundPlaying()) {
-    on<PlaySound>(_onEvent, transformer: _throttle(spamProtectionDelay));
-    on<StopSound>(_onEvent, transformer: _throttle(spamProtectionDelay));
-    on<ResetPlayer>(_onEvent, transformer: droppable());
-    on<SoundCompleted>(_onEvent, transformer: droppable());
-    on<PositionChanged>(_onEvent, transformer: droppable());
+    on<SoundControlEvent>(_onEvent,
+        transformer: _throttle(spamProtectionDelay));
+    on<SoundCallbackEvent>(_onEvent, transformer: _throttle(Duration.zero));
     add(const ResetPlayer());
   }
 

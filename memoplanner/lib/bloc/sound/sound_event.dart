@@ -4,24 +4,32 @@ abstract class SoundEvent {
   const SoundEvent();
 }
 
-class PlaySound extends SoundEvent {
+abstract class SoundControlEvent extends SoundEvent {
+  const SoundControlEvent();
+}
+
+abstract class SoundCallbackEvent extends SoundEvent {
+  const SoundCallbackEvent();
+}
+
+class PlaySound extends SoundControlEvent {
   final AbiliaFile abiliaFile;
   const PlaySound(this.abiliaFile);
 }
 
-class StopSound extends SoundEvent {
+class StopSound extends SoundControlEvent {
   const StopSound();
 }
 
-class ResetPlayer extends SoundEvent {
+class ResetPlayer extends SoundControlEvent {
   const ResetPlayer();
 }
 
-class SoundCompleted extends SoundEvent {
+class SoundCompleted extends SoundCallbackEvent {
   const SoundCompleted();
 }
 
-class PositionChanged extends SoundEvent {
+class PositionChanged extends SoundCallbackEvent {
   final AbiliaFile currentSound;
   final int duration;
   final Duration position;
