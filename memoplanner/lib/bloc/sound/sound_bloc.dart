@@ -21,8 +21,10 @@ part 'sound_event.dart';
 part 'sound_state.dart';
 
 class SoundBloc extends Bloc<SoundEvent, SoundState> {
-  final log = Logger((SoundBloc).toString());
   static const tmpFileEnding = 'mp3';
+  static final spamProtectionDelay = 250.milliseconds();
+
+  final log = Logger((SoundBloc).toString());
 
   final FileStorage storage;
   final UserFileCubit userFileCubit;
@@ -37,8 +39,8 @@ class SoundBloc extends Bloc<SoundEvent, SoundState> {
     required this.storage,
     required this.userFileCubit,
   }) : super(const NoSoundPlaying()) {
-    on<PlaySound>(_onEvent, transformer: _throttle(250.milliseconds()));
-    on<StopSound>(_onEvent, transformer: _throttle(250.milliseconds()));
+    on<PlaySound>(_onEvent, transformer: _throttle(spamProtectionDelay));
+    on<StopSound>(_onEvent, transformer: _throttle(spamProtectionDelay));
     on<ResetPlayer>(_onEvent, transformer: droppable());
     on<SoundCompleted>(_onEvent, transformer: droppable());
     on<PositionChanged>(_onEvent, transformer: droppable());

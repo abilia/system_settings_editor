@@ -4,9 +4,9 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:seagull/bloc/sound/sound_bloc.dart';
 
 import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
 
 part 'alarm_sound_event.dart';
 
@@ -17,7 +17,8 @@ class AlarmSoundBloc extends Bloc<AlarmSoundEvent, Sound?> {
   AlarmSoundBloc()
       : audioPlayer = AudioPlayer(),
         super(null) {
-    on<AlarmSoundEvent>(_onEvent, transformer: _throttle(250.milliseconds()));
+    on<AlarmSoundEvent>(_onEvent,
+        transformer: _throttle(SoundBloc.spamProtectionDelay));
     onPlayerCompletion = audioPlayer.onPlayerComplete
         .listen((_) => add(const SoundAlarmCompleted()));
     audioPlayer.setAudioContext(

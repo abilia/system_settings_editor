@@ -110,7 +110,7 @@ void main() {
         'When PlaySound and StopSound is added with more than 250 ms of each other both event triggers',
         () async {
       soundBloc.add(PlaySound(dummyFile));
-      await Future.delayed(250.milliseconds());
+      await Future.delayed(SoundBloc.spamProtectionDelay);
       soundBloc.add(const StopSound());
       await Future.delayed(10.milliseconds());
       expect(soundBloc.state, const NoSoundPlaying());
