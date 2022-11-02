@@ -75,21 +75,39 @@ class _CalendarScrollListener extends StatefulWidget {
       _CalendarScrollListenerState();
 }
 
-class _CalendarScrollListenerState extends State<_CalendarScrollListener> {
+class _CalendarScrollListenerState extends State<_CalendarScrollListener>
+    with WidgetsBindingObserver {
   late final ScrollController controller = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) {
-        return;
-      }
+    WidgetsBinding.instance
+      ..addObserver(this)
+      ..addPostFrameCallback((_) {
+        if (!mounted) {
+          return;
+        }
+        _updateScrollState();
+        if (mounted && context.read<DayPickerBloc>().state.isToday) {
+          context.read<ScrollPositionCubit>().goToNow(duration: Duration.zero);
+        }
+      });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
       _updateScrollState();
-      if (mounted && context.read<DayPickerBloc>().state.isToday) {
-        context.read<ScrollPositionCubit>().goToNow(duration: Duration.zero);
-      }
-    });
+      context.read<ScrollPositionCubit>().goToNow();
+    }
   }
 
   @override

@@ -66,7 +66,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      context.read<ScrollPositionCubit>().goToNow();
+      context.read<DayPickerBloc>().add(const CurrentDay());
     }
   }
 
