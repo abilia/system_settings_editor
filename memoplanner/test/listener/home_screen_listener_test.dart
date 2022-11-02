@@ -362,7 +362,14 @@ void main() {
       when(() => mockAndroidFlutterLocalNotificationsPlugin
           .getActiveNotifications()).thenAnswer(
         (invocation) => Future.value(
-          [ActiveNotification(timer.hashCode, 'channelId', 'title', 'body')],
+          [
+            ActiveNotification(
+              id: timer.hashCode,
+              channelId: 'channelId',
+              title: 'title',
+              body: 'body',
+            )
+          ],
         ),
       );
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
@@ -13,7 +14,8 @@ ReplaySubject<NotificationAlarm> get selectNotificationSubject =>
 ReplaySubject<NotificationAlarm> _selectNotificationSubject =
     ReplaySubject<NotificationAlarm>();
 
-void onNotification(String? payload) async {
+void onNotification(NotificationResponse notificationResponse) {
+  final payload = notificationResponse.payload;
   if (payload != null) {
     _log.fine('notification payload: $payload');
     try {
@@ -22,6 +24,8 @@ void onNotification(String? payload) async {
       _log.severe('Failed to parse selected notification payload: $payload', e);
     }
   }
+  _log.warning('NotificationResponse does not contain payload: '
+      '$notificationResponse');
 }
 
 Future<void> clearNotificationSubject() async {
