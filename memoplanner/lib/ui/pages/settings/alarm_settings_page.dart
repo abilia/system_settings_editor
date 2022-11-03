@@ -19,8 +19,8 @@ class AlarmSettingsPage extends StatelessWidget {
         alarmSettings: settings.alarm,
         genericCubit: context.read<GenericCubit>(),
       ),
-      child: BlocProvider<AlarmSoundCubit>(
-        create: (_) => AlarmSoundCubit(),
+      child: BlocProvider<AlarmSoundBloc>(
+        create: (_) => AlarmSoundBloc(),
         child: BlocBuilder<AlarmSettingsCubit, AlarmSettings>(
           builder: (context, state) {
             return Scaffold(
@@ -155,8 +155,8 @@ class _AlarmSelector extends StatelessWidget {
                 onTap: () async {
                   final result = await Navigator.of(context).push<Sound>(
                     MaterialPageRoute(
-                      builder: (_) => BlocProvider<AlarmSoundCubit>.value(
-                        value: context.read<AlarmSoundCubit>(),
+                      builder: (_) => BlocProvider<AlarmSoundBloc>.value(
+                        value: context.read<AlarmSoundBloc>(),
                         child: SelectSoundPage(
                           sound: sound,
                           noSoundOption: noSoundOption,

@@ -110,7 +110,7 @@ void main() {
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
         touchStream: touchStream.stream,
-        soundCubit: SoundCubit(
+        soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileCubit: mockUserFileCubit,
         ),
@@ -126,7 +126,7 @@ void main() {
         alarm: startAlarmNoSound,
         alarmSettings: const AlarmSettings(),
         touchStream: touchStream.stream,
-        soundCubit: SoundCubit(
+        soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileCubit: mockUserFileCubit,
         ),
@@ -154,7 +154,7 @@ void main() {
         alarmSettings: const AlarmSettings(durationMs: 0),
         touchStream: touchStream.stream,
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
-        soundCubit: SoundCubit(
+        soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileCubit: mockUserFileCubit,
         ),
@@ -183,7 +183,7 @@ void main() {
         alarmSettings: const AlarmSettings(),
         touchStream: touchStream.stream,
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
-        soundCubit: SoundCubit(
+        soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileCubit: mockUserFileCubit,
         ),
@@ -199,7 +199,7 @@ void main() {
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(durationMs: 0),
         touchStream: touchStream.stream,
-        soundCubit: SoundCubit(
+        soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileCubit: mockUserFileCubit,
         ),
@@ -219,7 +219,7 @@ void main() {
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(durationMs: 0),
         touchStream: touchStream.stream,
-        soundCubit: SoundCubit(
+        soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileCubit: mockUserFileCubit,
         ),
@@ -239,7 +239,7 @@ void main() {
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
         touchStream: (touchStream..add(Touch.down)).stream,
-        soundCubit: SoundCubit(
+        soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileCubit: mockUserFileCubit,
         ),
@@ -259,7 +259,7 @@ void main() {
         alarmSettings: const AlarmSettings(),
         touchStream: touchStream.stream,
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
-        soundCubit: SoundCubit(
+        soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileCubit: mockUserFileCubit,
         ),
@@ -278,10 +278,10 @@ void main() {
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
         touchStream: touchStream.stream,
-        soundCubit: SoundCubit(
+        soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileCubit: mockUserFileCubit,
-        )..play(speechFile),
+        )..add(PlaySound(speechFile)),
       ),
       expect: () => [AlarmSpeechState.played],
     );

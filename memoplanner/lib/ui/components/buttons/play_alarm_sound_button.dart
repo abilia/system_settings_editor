@@ -11,18 +11,17 @@ class PlayAlarmSoundButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AlarmSoundCubit, Sound?>(
+    return BlocBuilder<AlarmSoundBloc, Sound?>(
       builder: (context, state) => IconActionButton(
         style: actionButtonStyleDark,
-        onPressed: sound == Sound.NoSound
-            ? null
-            : state == sound
-                ? () async {
-                    await context.read<AlarmSoundCubit>().stopSound();
-                  }
-                : () async {
-                    await context.read<AlarmSoundCubit>().playSound(sound);
-                  },
+        onPressed: () {
+          if (sound != Sound.NoSound) {
+            if (state == sound) {
+              return context.read<AlarmSoundBloc>().add(const StopSoundAlarm());
+            }
+            return context.read<AlarmSoundBloc>().add(PlaySoundAlarm(sound));
+          }
+        },
         child: Icon(
           state == sound ? AbiliaIcons.stop : AbiliaIcons.playSound,
         ),

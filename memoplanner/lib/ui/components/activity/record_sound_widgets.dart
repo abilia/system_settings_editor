@@ -21,8 +21,8 @@ class RecordSoundWidget extends StatelessWidget {
     return BlocBuilder<PermissionCubit, PermissionState>(
       builder: (context, permissionState) {
         final permission = permissionState.status[Permission.microphone];
-        return BlocProvider<SoundCubit>(
-          create: (context) => SoundCubit(
+        return BlocProvider<SoundBloc>(
+          create: (context) => SoundBloc(
             storage: GetIt.I<FileStorage>(),
             userFileCubit: context.read<UserFileCubit>(),
           ),
@@ -141,13 +141,13 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                     : () async {
                         final authProviders = copiedAuthProviders(context);
                         final navigator = Navigator.of(context);
-                        final soundCubit = context.read<SoundCubit>();
+                        final soundBloc = context.read<SoundBloc>();
                         final userFileCubit = context.read<UserFileCubit>();
                         final audio = recordedAudio;
                         final file = audio is UnstoredAbiliaFile
                             ? audio.file
                             : recordedAudio.isNotEmpty
-                                ? await soundCubit.resolveFile(recordedAudio)
+                                ? await soundBloc.resolveFile(recordedAudio)
                                 : null;
 
                         final result = await navigator.push<AbiliaFile>(
@@ -156,7 +156,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                               providers: authProviders,
                               child: MultiBlocProvider(
                                 providers: [
-                                  BlocProvider.value(value: soundCubit),
+                                  BlocProvider.value(value: soundBloc),
                                   BlocProvider(
                                     create: (_) => RecordSoundCubit(
                                       originalSoundFile: recordedAudio,
@@ -231,7 +231,7 @@ class _Progress extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: layout.recording.thumbRadius),
-      child: BlocBuilder<SoundCubit, SoundState>(
+      child: BlocBuilder<SoundBloc, SoundState>(
         buildWhen: (prev, curr) =>
             curr is SoundPlaying || prev.runtimeType != curr.runtimeType,
         builder: (context, soundState) =>
@@ -300,7 +300,7 @@ class _RecordActionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SoundCubit, SoundState>(
+    return BlocBuilder<SoundBloc, SoundState>(
       builder: (context, soundState) {
         return BlocBuilder<RecordSoundCubit, RecordSoundState>(
           builder: (context, recordState) {
@@ -310,7 +310,8 @@ class _RecordActionRow extends StatelessWidget {
                   if (soundState is SoundPlaying)
                     Expanded(
                       child: StopButton(
-                        onPressed: context.read<SoundCubit>().stopSound,
+                        onPressed: () =>
+                            context.read<SoundBloc>().add(const StopSound()),
                       ),
                     )
                   else ...[
@@ -348,7 +349,7 @@ class _TimeDisplay extends StatelessWidget {
       height: layout.timeInput.height,
       alignment: Alignment.center,
       decoration: disabledBoxDecoration,
-      child: BlocBuilder<SoundCubit, SoundState>(
+      child: BlocBuilder<SoundBloc, SoundState>(
         builder: (context, soundState) =>
             BlocBuilder<RecordSoundCubit, RecordSoundState>(
           builder: (context, recordState) => Text(
@@ -399,7 +400,7 @@ class DeleteButton extends StatelessWidget {
   Widget build(BuildContext context) => IconActionButtonDark(
         onPressed: () {
           context.read<RecordSoundCubit>().deleteRecording();
-          context.read<SoundCubit>().resetAudioPlayer();
+          context.read<SoundBloc>().add(const ResetPlayer());
         },
         child: const Icon(AbiliaIcons.deleteAllClear),
       );
@@ -436,7 +437,7 @@ class PlayRecordingButton extends StatelessWidget {
     return DarkGreyButton(
       text: Translator.of(context).translate.play,
       icon: AbiliaIcons.playSound,
-      onPressed: () => context.read<SoundCubit>().play(sound),
+      onPressed: () => context.read<SoundBloc>().add(PlaySound(sound)),
     );
   }
 }

@@ -67,8 +67,8 @@ void main() {
                   originalSoundFile: originalSoundFile,
                 ),
               ),
-              BlocProvider<SoundCubit>(
-                create: (context) => SoundCubit(
+              BlocProvider<SoundBloc>(
+                create: (context) => SoundBloc(
                   storage: FakeFileStorage(),
                   userFileCubit: context.read<UserFileCubit>(),
                 ),
@@ -160,10 +160,10 @@ void main() {
 
   group('display duration tests', () {
     late MockRecordSoundCubit mockRecordSoundCubit;
-    late MockSoundCubit mockSoundCubit;
+    late MockSoundBloc mockSoundBloc;
     setUp(() {
       mockRecordSoundCubit = MockRecordSoundCubit();
-      mockSoundCubit = MockSoundCubit();
+      mockSoundBloc = MockSoundBloc();
     });
 
     setUpAll(() {
@@ -198,8 +198,8 @@ void main() {
               BlocProvider<RecordSoundCubit>(
                 create: (context) => mockRecordSoundCubit,
               ),
-              BlocProvider<SoundCubit>(
-                create: (context) => mockSoundCubit,
+              BlocProvider<SoundBloc>(
+                create: (context) => mockSoundBloc,
               ),
             ], child: child!),
           ),
@@ -212,7 +212,7 @@ void main() {
       when(() => mockRecordSoundCubit.state).thenReturn(
         const EmptyRecordSoundState(),
       );
-      when(() => mockSoundCubit.state).thenReturn(
+      when(() => mockSoundBloc.state).thenReturn(
         const NoSoundPlaying(),
       );
       await tester.pumpWidget(
@@ -230,7 +230,7 @@ void main() {
       when(() => mockRecordSoundCubit.state).thenReturn(
         NewRecordedSoundState(_dummyFile, const Duration(seconds: 5)),
       );
-      when(() => mockSoundCubit.state).thenReturn(
+      when(() => mockSoundBloc.state).thenReturn(
         const NoSoundPlaying(),
       );
       await tester.pumpWidget(
@@ -248,7 +248,7 @@ void main() {
       when(() => mockRecordSoundCubit.state).thenReturn(
         const EmptyRecordSoundState(),
       );
-      when(() => mockSoundCubit.state).thenReturn(
+      when(() => mockSoundBloc.state).thenReturn(
         SoundPlaying(_dummyFile, position: const Duration(seconds: 1)),
       );
       await tester.pumpWidget(
@@ -266,7 +266,7 @@ void main() {
       when(() => mockRecordSoundCubit.state).thenReturn(
         const RecordingSoundState(Duration(seconds: 3)),
       );
-      when(() => mockSoundCubit.state).thenReturn(
+      when(() => mockSoundBloc.state).thenReturn(
         const NoSoundPlaying(),
       );
       await tester.pumpWidget(
@@ -284,7 +284,7 @@ void main() {
       when(() => mockRecordSoundCubit.state).thenReturn(
         const RecordingSoundState(Duration(seconds: 3)),
       );
-      when(() => mockSoundCubit.state).thenReturn(
+      when(() => mockSoundBloc.state).thenReturn(
         SoundPlaying(
           _dummyFile,
           position: const Duration(seconds: 1),
