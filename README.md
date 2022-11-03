@@ -1,6 +1,7 @@
 # The Seagull Project
 
 [:calendar: memoplanner](https://github.com/abilia/seagull/tree/master/memoplanner/)
+
 [:blue_book: handi](https://github.com/abilia/seagull/tree/master/handi/)
 
 ## Workflow
@@ -33,7 +34,7 @@ Squash commits for feature branches are permitted if there are trivial commits t
 
 - When a release period starts there should not be any stories in "Ready for test" or "Test".
 
-- All strings are translated, e.i. the file [translations.missing.tsv](https://github.com/abilia/seagull/blob/master/memoplanner/lib/i18n/translations.missing.tsv) should not exist.
+- All strings are translated, e.i. the files `translations.missing.tsv` [:calendar:](https://github.com/abilia/seagull/blob/master/memoplanner/lib/i18n/translations.missing.tsv) should not exist.
 
 ### Creating the release candidate
 
@@ -41,11 +42,17 @@ The **master** branch is then merged to the **release** branch.
 
 After first release candidate the version in the **master** branch should be increased to the next major or minor version.
 
+Each release candidate is released on Google Play on Closed testing - Alpha [:calendar:](https://play.google.com/console/u/0/developers/8640289046801512570/app/4973610386809775563/tracks/4698231159357572066)
+
 #### Fixes in release candidate
 
 If bugs are found in the release candidate that needs to be fixed, a release candidate branch is created starting with **release-rcX**, like **release-rc2**.
 
 When all fixes are added to the **release-rcX** branch, the branch is merge down to **release** where a new release candidate is created.
+
+#### After regression test
+
+When the release candidate is approved, the alpha version on Google Play should be promoted to Closed track - Beta track [:calendar:](https://play.google.com/console/u/0/developers/8640289046801512570/app/4973610386809775563/tracks/4699652622759840581)
 
 ### Releasing the app
 
