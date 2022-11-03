@@ -1,4 +1,4 @@
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 extension GenericMapExtensions on Map<String, Generic> {
   Map<String, MemoplannerSettingData> filterMemoplannerSettingsData() {

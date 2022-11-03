@@ -1,9 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:logging/src/logger.dart';
-import 'package:seagull/db/all.dart';
-import 'package:seagull/models/meta_models.dart';
-import 'package:seagull/models/activity/activity.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/models/meta_models.dart';
+import 'package:memoplanner/models/activity/activity.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class ActivityDbInMemory implements ActivityDb {
   final List<DbModel<Activity>> activities = [];

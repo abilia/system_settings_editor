@@ -1,5 +1,5 @@
-import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class ActivityOccasion extends ActivityDay implements EventOccasion {
   @override

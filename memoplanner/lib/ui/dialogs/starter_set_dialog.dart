@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class StarterSetDialog extends StatelessWidget {
   const StarterSetDialog({Key? key}) : super(key: key);

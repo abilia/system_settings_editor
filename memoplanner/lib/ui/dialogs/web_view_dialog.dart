@@ -1,6 +1,6 @@
 import 'package:webview_flutter/webview_flutter.dart';
 
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class WebViewDialog extends StatelessWidget {
   final String? url;

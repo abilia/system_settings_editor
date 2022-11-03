@@ -1,4 +1,4 @@
-part of 'sound_cubit.dart';
+part of 'sound_bloc.dart';
 
 abstract class SoundState extends Equatable {
   const SoundState();

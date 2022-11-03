@@ -1,9 +1,9 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:get_it/get_it.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/sound.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/sound.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class QuickSettingsPage extends StatelessWidget {
   const QuickSettingsPage({Key? key}) : super(key: key);
@@ -32,25 +32,23 @@ class QuickSettingsPage extends StatelessWidget {
               SizedBox(height: layout.formPadding.verticalItemDistance),
               const SoundEffectsSwitch(),
             ]),
-            BlocProvider<AlarmSoundCubit>(
-              create: (_) => AlarmSoundCubit(),
-              child: BlocBuilder<AlarmSoundCubit, Sound?>(
+            BlocProvider<AlarmSoundBloc>(
+              create: (_) => AlarmSoundBloc(),
+              child: BlocBuilder<AlarmSoundBloc, Sound?>(
                 builder: (context, state) => QuickSettingsGroup(children: [
                   SubHeading(t.volumeAlarm),
                   AlarmVolumeSlider(
                     onVolumeSet: () async {
-                      await context
-                          .read<AlarmSoundCubit>()
-                          .playSound(Sound.Default);
+                      final alarmBloc = context.read<AlarmSoundBloc>();
+                      alarmBloc.add(const PlaySoundAlarm(Sound.Default));
                     },
                   ),
                   SizedBox(height: layout.formPadding.groupBottomDistance),
                   SubHeading(t.volumeMedia),
                   MediaVolumeSlider(
                     onVolumeSet: () async {
-                      final cubit = context.read<AlarmSoundCubit>();
-                      await cubit.stopSound();
-                      await cubit.playSound(Sound.Harpe);
+                      final alarmBloc = context.read<AlarmSoundBloc>();
+                      alarmBloc.add(const RestartSoundAlarm(Sound.Harpe));
                     },
                   ),
                 ]),

@@ -1,5 +1,5 @@
 import 'package:http/http.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class UnauthorizedException implements Exception {
   String errMsg() => 'Not authorized';

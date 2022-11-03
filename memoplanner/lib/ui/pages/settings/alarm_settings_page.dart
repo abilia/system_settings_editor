@@ -1,6 +1,6 @@
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class AlarmSettingsPage extends StatelessWidget {
   const AlarmSettingsPage({Key? key}) : super(key: key);
@@ -19,8 +19,8 @@ class AlarmSettingsPage extends StatelessWidget {
         alarmSettings: settings.alarm,
         genericCubit: context.read<GenericCubit>(),
       ),
-      child: BlocProvider<AlarmSoundCubit>(
-        create: (_) => AlarmSoundCubit(),
+      child: BlocProvider<AlarmSoundBloc>(
+        create: (_) => AlarmSoundBloc(),
         child: BlocBuilder<AlarmSettingsCubit, AlarmSettings>(
           builder: (context, state) {
             return Scaffold(
@@ -155,8 +155,8 @@ class _AlarmSelector extends StatelessWidget {
                 onTap: () async {
                   final result = await Navigator.of(context).push<Sound>(
                     MaterialPageRoute(
-                      builder: (_) => BlocProvider<AlarmSoundCubit>.value(
-                        value: context.read<AlarmSoundCubit>(),
+                      builder: (_) => BlocProvider<AlarmSoundBloc>.value(
+                        value: context.read<AlarmSoundBloc>(),
                         child: SelectSoundPage(
                           sound: sound,
                           noSoundOption: noSoundOption,

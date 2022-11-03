@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:seagull/ui/themes/all.dart';
+import 'package:memoplanner/ui/themes/all.dart';
 
 final abiliaTextTheme = GoogleFonts.robotoTextTheme(
   TextTheme(

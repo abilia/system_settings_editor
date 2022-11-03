@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:logging/logging.dart';
-import 'package:seagull/models/image_thumb.dart';
+import 'package:memoplanner/models/image_thumb.dart';
 
 class FileStorage {
   final _log = Logger((FileStorage).toString());

@@ -1,7 +1,7 @@
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/listener/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/listener/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class CalendarPage extends StatelessWidget {
   const CalendarPage({Key? key}) : super(key: key);

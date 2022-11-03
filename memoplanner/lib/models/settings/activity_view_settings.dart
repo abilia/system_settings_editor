@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:seagull/models/generic/generic.dart';
-import 'package:seagull/models/settings/all.dart';
+import 'package:memoplanner/models/generic/generic.dart';
+import 'package:memoplanner/models/settings/all.dart';
 
 class ActivityViewSettings extends Equatable {
   final bool displayAlarmButton,

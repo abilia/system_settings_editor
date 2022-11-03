@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class DayTheme {
   final ThemeData theme;

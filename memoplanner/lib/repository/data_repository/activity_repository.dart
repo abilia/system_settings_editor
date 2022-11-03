@@ -1,9 +1,9 @@
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
-import 'package:seagull/db/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
 
 class ActivityRepository extends DataRepository<Activity> {
   ActivityRepository({

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/main.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/main.dart';
+import 'package:memoplanner/ui/all.dart';
 
 extension IncreaseSizeOnMp on WidgetTester {
   Future<void> pumpApp({bool use24 = false, PushCubit? pushCubit}) async {

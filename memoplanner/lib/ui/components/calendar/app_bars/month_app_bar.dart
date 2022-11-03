@@ -1,6 +1,6 @@
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class MonthAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MonthAppBar({Key? key}) : super(key: key);

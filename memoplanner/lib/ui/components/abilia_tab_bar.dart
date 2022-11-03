@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class TabItem extends StatelessWidget {
   final String text;

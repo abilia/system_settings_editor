@@ -1,10 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:http/http.dart';
-import 'package:seagull/db/all.dart';
-import 'package:seagull/logging.dart';
-import 'package:seagull/models/support_person.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/models/support_person.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class SupportPersonsRepository extends Repository {
   SupportPersonsRepository({

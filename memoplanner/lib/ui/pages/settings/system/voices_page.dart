@@ -1,6 +1,6 @@
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/settings/speech_support/voice_data.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/settings/speech_support/voice_data.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class VoicesPage extends StatefulWidget {
   const VoicesPage({Key? key}) : super(key: key);

@@ -1,11 +1,11 @@
 import 'package:get_it/get_it.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/db/all.dart';
-import 'package:seagull/logging.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/repository/end_point.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/repository/end_point.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class LogoutPage extends StatelessWidget {
   const LogoutPage({Key? key}) : super(key: key);

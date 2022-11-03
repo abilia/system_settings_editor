@@ -1,8 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class AppBarTitle extends StatelessWidget {
   const AppBarTitle({

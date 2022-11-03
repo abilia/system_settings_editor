@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class ActionButtonLayout {
   final double size, largeSize, radius, largeRadius, spacing, withTextIconSize;

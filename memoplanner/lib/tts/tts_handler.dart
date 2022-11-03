@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:acapela_tts/acapela_tts.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:seagull/config.dart';
-import 'package:seagull/db/voice_db.dart';
-import 'package:seagull/logging.dart';
+import 'package:memoplanner/config.dart';
+import 'package:memoplanner/db/voice_db.dart';
+import 'package:memoplanner/logging.dart';
 
 abstract class TtsInterface {
   static Future<TtsInterface> implementation({

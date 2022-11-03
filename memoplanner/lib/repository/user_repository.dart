@@ -3,13 +3,13 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
-import 'package:seagull/models/login_error.dart';
+import 'package:memoplanner/models/login_error.dart';
 
-import 'package:seagull/config.dart';
-import 'package:seagull/db/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/config.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class UserRepository extends Repository {
   static final _log = Logger((UserRepository).toString());

@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class TimepillarMeasuresCubit extends Cubit<TimepillarMeasures> {
   final TimepillarCubit? _timepillarCubit;

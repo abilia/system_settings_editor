@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/components/abilia_icons.dart';
-import 'package:seagull/ui/themes/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/ui/components/abilia_icons.dart';
+import 'package:memoplanner/ui/themes/all.dart';
 
 // Form paddings
 final dividerPadding = EdgeInsets.only(
@@ -16,7 +16,7 @@ final m1ItemPadding = EdgeInsets.fromLTRB(
 );
 
 final abiliaTheme = ThemeData(
-  scaffoldBackgroundColor: AbiliaColors.white110,
+  scaffoldBackgroundColor: AbiliaColors.brown0,
   colorScheme: const ColorScheme.light(
     primary: AbiliaColors.black,
     onSurface: AbiliaColors.black,
@@ -108,7 +108,7 @@ final Border transparentBlackBorder = Border.fromBorderSide(
 );
 
 final border = Border.fromBorderSide(
-  BorderSide(color: AbiliaColors.white140, width: layout.borders.thin),
+  BorderSide(color: AbiliaColors.brown20, width: layout.borders.thin),
 );
 
 final ligthShapeBorder = RoundedRectangleBorder(
@@ -126,7 +126,7 @@ final menuButtonBorder = darkShapeBorder.copyWith(
 );
 final inputBorder = OutlineInputBorder(
   borderSide:
-      BorderSide(color: AbiliaColors.white140, width: layout.borders.thin),
+      BorderSide(color: AbiliaColors.brown20, width: layout.borders.thin),
   borderRadius: borderRadius,
 );
 final redOutlineInputBorder = OutlineInputBorder(

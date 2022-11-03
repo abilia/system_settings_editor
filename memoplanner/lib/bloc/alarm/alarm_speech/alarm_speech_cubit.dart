@@ -4,11 +4,11 @@ import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/logging.dart';
-import 'package:seagull/background/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/background/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 enum AlarmSpeechState { unplayed, played }
 
@@ -17,7 +17,7 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
 
   final _log = Logger((AlarmSpeechCubit).toString());
   final NewAlarm alarm;
-  final SoundCubit soundCubit;
+  final SoundBloc soundBloc;
 
   late final StreamSubscription<ActivityAlarm?>? _notificationSubscription;
   late final StreamSubscription<Touch> _touchSubscription;
@@ -26,7 +26,7 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
 
   AlarmSpeechCubit({
     required this.alarm,
-    required this.soundCubit,
+    required this.soundBloc,
     required DateTime Function() now,
     required AlarmSettings alarmSettings,
     required Stream<Touch> touchStream,
@@ -48,7 +48,7 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
         .where((notificationAlarm) => notificationAlarm == alarm)
         .listen(_maybePlay);
 
-    _speechSubscription = soundCubit.stream
+    _speechSubscription = soundBloc.stream
         .whereType<SoundPlaying>()
         .take(1)
         .listen((_) => emit(AlarmSpeechState.played));
@@ -62,7 +62,7 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
       if (playNow) {
         _log.fine('playing AlarmSpeech');
         emit(AlarmSpeechState.played);
-        soundCubit.play(alarm.speech);
+        soundBloc.add(PlaySound(alarm.speech));
       } else {
         _log.finer('has ongoing notification, ignoring');
       }

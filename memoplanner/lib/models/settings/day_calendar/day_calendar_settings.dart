@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class DayCalendarSettings extends Equatable {
   final AppBarSettings appBar;

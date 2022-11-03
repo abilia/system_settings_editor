@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class InfoButton extends StatelessWidget {
   final VoidCallback? onTap;

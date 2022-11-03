@@ -1,6 +1,6 @@
 import 'package:battery_plus/battery_plus.dart';
 
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class BatteryLevel extends StatelessWidget {
   final Battery battery;

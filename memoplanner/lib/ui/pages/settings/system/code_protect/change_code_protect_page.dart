@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class ChangeCodeProtectPage extends StatefulWidget {
   const ChangeCodeProtectPage({Key? key}) : super(key: key);

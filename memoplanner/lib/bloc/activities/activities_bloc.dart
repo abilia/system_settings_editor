@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
 
 part 'activities_event.dart';
 

@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
 export 'package:mocktail/mocktail.dart';
 
 // Blocs
@@ -47,7 +47,8 @@ class MockTimerAlarmBloc extends MockBloc<TimerAlarmEvent, TimerAlarmState>
 class MockRecordSoundCubit extends MockCubit<RecordSoundState>
     implements RecordSoundCubit {}
 
-class MockSoundCubit extends MockCubit<SoundState> implements SoundCubit {}
+class MockSoundBloc extends MockBloc<SoundEvent, SoundState>
+    implements SoundBloc {}
 
 class MockLicenseCubit extends MockCubit<LicenseState> implements LicenseCubit {
 }

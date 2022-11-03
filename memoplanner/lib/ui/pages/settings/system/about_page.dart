@@ -4,10 +4,10 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:package_info/package_info.dart';
 
-import 'package:seagull/db/all.dart';
-import 'package:seagull/models/license.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/models/license.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({Key? key}) : super(key: key);

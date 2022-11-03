@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class VoiceData extends Equatable {
   final String name, lang, countryCode;

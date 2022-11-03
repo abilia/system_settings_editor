@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/getit.dart';
-import 'package:seagull/ui/components/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/getit.dart';
+import 'package:memoplanner/ui/components/all.dart';
 
 import '../../fakes/all.dart';
 

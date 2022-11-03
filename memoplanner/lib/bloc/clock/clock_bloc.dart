@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/logging.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class ClockBloc extends Cubit<DateTime> with Finest {
   StreamSubscription<DateTime>? _tickerSubscription;

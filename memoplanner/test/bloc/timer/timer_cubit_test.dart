@@ -1,9 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:seagull/repository/all.dart';
+import 'package:memoplanner/repository/all.dart';
 import 'package:test/test.dart';
 
-import 'package:seagull/bloc/timer/timer_cubit.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/bloc/timer/timer_cubit.dart';
+import 'package:memoplanner/models/all.dart';
 
 import '../../mocks/mocks.dart';
 

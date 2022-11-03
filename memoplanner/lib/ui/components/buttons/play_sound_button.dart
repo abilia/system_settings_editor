@@ -1,6 +1,6 @@
-import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
 
 class PlaySoundButton extends StatelessWidget {
   final AbiliaFile sound;
@@ -14,14 +14,14 @@ class PlaySoundButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      BlocSelector<SoundCubit, SoundState, bool>(
+      BlocSelector<SoundBloc, SoundState, bool>(
         selector: (state) =>
             state is SoundPlaying && state.currentSound == sound,
         builder: (context, isPlaying) => IconActionButton(
           style: buttonStyle ?? actionButtonStyleDark,
           onPressed: () => isPlaying
-              ? context.read<SoundCubit>().stopSound()
-              : context.read<SoundCubit>().play(sound),
+              ? context.read<SoundBloc>().add(const StopSound())
+              : context.read<SoundBloc>().add(PlaySound(sound)),
           child: Icon(
             isPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
           ),

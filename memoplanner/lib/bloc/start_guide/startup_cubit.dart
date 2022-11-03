@@ -1,7 +1,7 @@
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/config.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/config.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
 
 class StartupCubit extends Cubit<StartupState> {
   StartupCubit({

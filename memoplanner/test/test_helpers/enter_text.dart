@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 extension OurEnterText on WidgetTester {
   Future<void> ourEnterText(Finder finder, String text) async {

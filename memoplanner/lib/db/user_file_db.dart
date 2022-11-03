@@ -1,6 +1,6 @@
-import 'package:seagull/logging.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/db/all.dart';
+import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/db/all.dart';
 
 class UserFileDb extends DataDb<UserFile> {
   UserFileDb(Database database) : super(database);

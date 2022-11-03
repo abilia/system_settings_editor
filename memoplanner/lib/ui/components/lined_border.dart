@@ -1,6 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class LinedBorder extends StatelessWidget {
   final Widget child;
@@ -31,7 +31,7 @@ class LinedBorder extends StatelessWidget {
                 ],
                 strokeWidth: layout.borders.thin,
                 borderType: BorderType.RRect,
-                color: AbiliaColors.white140,
+                color: AbiliaColors.brown20,
                 radius: radius,
                 padding: const EdgeInsets.all(0),
                 child: child,

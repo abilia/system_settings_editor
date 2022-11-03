@@ -1,11 +1,11 @@
 import 'package:get_it/get_it.dart';
 
-import 'package:seagull/background/all.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/ticker.dart';
-import 'package:seagull/storage/all.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/background/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/ticker.dart';
+import 'package:memoplanner/storage/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class PlayAlarmSpeechButton extends StatelessWidget {
   final NewAlarm alarm;
@@ -15,7 +15,7 @@ class PlayAlarmSpeechButton extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (context) => SoundCubit(
+        create: (context) => SoundBloc(
           storage: GetIt.I<FileStorage>(),
           userFileCubit: context.read<UserFileCubit>(),
         ),
@@ -31,7 +31,7 @@ class PlayAlarmSpeechButton extends StatelessWidget {
                         alarm: alarm,
                         now: () => GetIt.I<Ticker>().time,
                         alarmSettings: settings.alarm,
-                        soundCubit: context.read<SoundCubit>(),
+                        soundBloc: context.read<SoundBloc>(),
                         touchStream: context.read<TouchDetectionCubit>().stream,
                         selectedNotificationStream:
                             Config.isMPGO ? selectNotificationSubject : null,

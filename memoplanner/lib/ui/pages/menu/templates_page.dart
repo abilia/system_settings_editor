@@ -1,9 +1,9 @@
 import 'package:get_it/get_it.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/ticker.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/ticker.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class TemplatesPage extends StatelessWidget {
   const TemplatesPage({Key? key}) : super(key: key);

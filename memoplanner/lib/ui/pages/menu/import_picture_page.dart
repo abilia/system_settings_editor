@@ -1,7 +1,7 @@
 import 'package:image_picker/image_picker.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class ImportPicturePage extends StatelessWidget {
   const ImportPicturePage({Key? key}) : super(key: key);

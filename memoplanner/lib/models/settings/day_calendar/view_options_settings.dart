@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class DayCalendarViewOptionsSettings extends Equatable {
   static const String viewOptionsTimeIntervalKey = 'view_options_time_interval',

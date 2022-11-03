@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;

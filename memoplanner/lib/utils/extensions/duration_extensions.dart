@@ -1,4 +1,4 @@
-import 'package:seagull/i18n/all.dart';
+import 'package:memoplanner/i18n/all.dart';
 
 extension IntToDuration on int {
   Duration days() => Duration(days: this);

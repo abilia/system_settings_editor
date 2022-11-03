@@ -1,5 +1,5 @@
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({

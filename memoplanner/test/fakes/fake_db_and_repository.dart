@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:seagull/db/all.dart';
-import 'package:seagull/tts/tts_handler.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:test/fake.dart';
 import 'fake_client.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/storage/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/storage/all.dart';
 
 class FakeUserRepository extends Fake implements UserRepository {
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/ui/components/abilia_icons.dart';
-import 'package:seagull/ui/components/buttons/icon_action_button.dart';
+import 'package:memoplanner/i18n/app_localizations.dart';
+import 'package:memoplanner/ui/components/abilia_icons.dart';
+import 'package:memoplanner/ui/components/buttons/icon_action_button.dart';
 
 class LeftNavButton extends StatelessWidget {
   const LeftNavButton({

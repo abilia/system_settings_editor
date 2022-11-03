@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:seagull/analytics/all.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/logging.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/analytics/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class MaterialAppWrapper extends StatelessWidget {
   final GlobalKey<NavigatorState>? navigatorKey;

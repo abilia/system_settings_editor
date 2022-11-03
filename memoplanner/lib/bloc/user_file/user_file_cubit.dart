@@ -8,11 +8,11 @@ import 'package:equatable/equatable.dart';
 import 'package:collection/collection.dart';
 import 'package:mime/mime.dart';
 
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/storage/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/storage/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 part 'user_file_state.dart';
 

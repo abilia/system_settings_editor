@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/models/settings/memoplanner_settings_enums.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/models/settings/memoplanner_settings_enums.dart';
+import 'package:memoplanner/ui/all.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

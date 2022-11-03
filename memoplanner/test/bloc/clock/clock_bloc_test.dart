@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 void main() {
   late ClockBloc clockBloc;

@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/rendering.dart';
-import 'package:seagull/ui/components/calendar/timepillar/overlay/all.dart';
+import 'package:memoplanner/ui/components/calendar/timepillar/overlay/all.dart';
 
 /// A sliver with a [RenderBox] as overlay and a [RenderSliver] as child.
 ///

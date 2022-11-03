@@ -1,5 +1,5 @@
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/android_intents.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/android_intents.dart';
 
 class StartupGuidePage extends StatelessWidget {
   const StartupGuidePage({Key? key}) : super(key: key);

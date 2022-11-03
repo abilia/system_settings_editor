@@ -1,5 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class AnalyticsService {
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;

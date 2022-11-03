@@ -1,5 +1,5 @@
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/i18n/all.dart';
 
 extension LoginFailureErrorMessage on LoginFailureCause {
   String heading(Translated translate) {

@@ -1,4 +1,4 @@
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 const prod = 'https://myabilia.com', prodName = 'PROD';
 

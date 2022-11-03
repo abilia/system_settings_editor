@@ -1,6 +1,6 @@
 import 'dart:math';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_styles.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/ui/components/timer/timer_wheel/timer_wheel_styles.dart';
 
 class TimerWheelConfiguration {
   static const startAngle = -pi / 2;

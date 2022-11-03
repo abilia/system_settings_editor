@@ -1,6 +1,6 @@
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class MonthAppBarSettingsTab extends StatelessWidget {
   const MonthAppBarSettingsTab({Key? key}) : super(key: key);

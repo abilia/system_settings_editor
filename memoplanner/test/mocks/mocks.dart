@@ -5,12 +5,12 @@ import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:record/record.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:seagull/bloc/all.dart';
+import 'package:memoplanner/bloc/all.dart';
 
-import 'package:seagull/db/all.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/storage/all.dart';
-import 'package:seagull/tts/tts_handler.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/storage/all.dart';
+import 'package:memoplanner/tts/tts_handler.dart';
 
 export 'package:mocktail/mocktail.dart';
 

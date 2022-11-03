@@ -4,10 +4,10 @@ import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/listener/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/listener/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 import '../mocks/mock_bloc.dart';
 import '../mocks/mocks.dart';

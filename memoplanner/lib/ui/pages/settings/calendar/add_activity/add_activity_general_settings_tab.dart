@@ -1,5 +1,5 @@
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class AddActivityGeneralSettingsTab extends StatelessWidget {
   const AddActivityGeneralSettingsTab({Key? key}) : super(key: key);

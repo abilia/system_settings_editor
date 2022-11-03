@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/logging.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 final _log = Logger((SelectPicturePage).toString());
 

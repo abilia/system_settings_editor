@@ -5,10 +5,10 @@ import 'package:collection/collection.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/db/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/utils/all.dart';
 import 'package:synchronized/extension.dart';
 
 typedef JsonToDataModel<M extends DataModel> = DbModel<M> Function(

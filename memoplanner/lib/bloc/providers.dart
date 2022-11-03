@@ -2,16 +2,16 @@ import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rxdart/transformers.dart';
-import 'package:seagull/background/all.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/config.dart';
-import 'package:seagull/db/all.dart';
-import 'package:seagull/logging.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/repository/session_repository.dart';
-import 'package:seagull/storage/all.dart';
-import 'package:seagull/tts/tts_handler.dart';
+import 'package:memoplanner/background/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/config.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/repository/session_repository.dart';
+import 'package:memoplanner/storage/all.dart';
+import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
 class AuthenticatedBlocsProvider extends StatelessWidget {

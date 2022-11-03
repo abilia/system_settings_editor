@@ -1,4 +1,4 @@
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 int alarmScheduleCalls = 0;
 AlarmScheduler get noAlarmScheduler {

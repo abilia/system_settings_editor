@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:get_it/get_it.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/storage/all.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/storage/all.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class ActivityTopInfo extends StatelessWidget {
   final ActivityDay activityDay;
@@ -44,7 +44,7 @@ class ActivityTopInfo extends StatelessWidget {
     final showStart = startSpeech.isNotEmpty && alarm is! ReminderUnchecked;
     if (showStart || endSpeech.isNotEmpty) {
       return BlocProvider(
-        create: (context) => SoundCubit(
+        create: (context) => SoundBloc(
           storage: GetIt.I<FileStorage>(),
           userFileCubit: context.read<UserFileCubit>(),
         ),

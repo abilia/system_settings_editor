@@ -1,6 +1,6 @@
-import 'package:seagull/db/all.dart';
-import 'package:seagull/getit.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/getit.dart';
+import 'package:memoplanner/ui/all.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart' as yt;
 
 class YoutubePlayer extends StatefulWidget {

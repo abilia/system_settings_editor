@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
-import 'package:seagull/logging.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/db/all.dart';
+import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/db/all.dart';
 
 class GenericDb extends DataDb<Generic> {
   GenericDb(Database database) : super(database);

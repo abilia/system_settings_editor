@@ -5,8 +5,8 @@ export 'dialogs/all.dart';
 export 'pages/all.dart';
 export 'material_app_wrapper.dart';
 
-export 'package:seagull/i18n/all.dart';
-export 'package:seagull/config.dart';
+export 'package:memoplanner/i18n/all.dart';
+export 'package:memoplanner/config.dart';
 
 export 'package:transparent_image/transparent_image.dart';
 export 'package:flutter/material.dart' hide CloseButton, BackButton;

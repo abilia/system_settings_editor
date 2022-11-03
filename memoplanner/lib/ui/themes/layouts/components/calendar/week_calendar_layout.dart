@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class WeekCalendarLayout {
   final WeekDayColumnLayout selectedDay, notSelectedDay;
