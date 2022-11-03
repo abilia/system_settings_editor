@@ -39,23 +39,35 @@ class SoundBloc extends Bloc<SoundEvent, SoundState> {
     required this.storage,
     required this.userFileCubit,
   }) : super(const NoSoundPlaying()) {
-    on<SoundControlEvent>(_onEvent,
-        transformer: _throttle(spamProtectionDelay));
-    on<SoundCallbackEvent>(_onEvent, transformer: sequential());
+    on<SoundControlEvent>(
+      _onEvent,
+      transformer: (events, mapper) => events
+          .throttleTime(spamProtectionDelay, trailing: true, leading: true)
+          .asyncExpand(mapper),
+    );
+    on<SoundCallbackEvent>(_onCallback, transformer: droppable());
     add(const ResetPlayer());
   }
 
   Future _onEvent(
-    SoundEvent event,
+    SoundControlEvent event,
     Emitter<SoundState> emit,
   ) async {
     if (event is PlaySound) {
       await _playSound(event.abiliaFile, emit);
     } else if (event is StopSound) {
-      await _stopSound(emit);
+      await audioPlayer.stop();
+      emit(const NoSoundPlaying());
     } else if (event is ResetPlayer) {
       await _resetAudioPlayer();
-    } else if (event is SoundCompleted) {
+    }
+  }
+
+  Future _onCallback(
+    SoundCallbackEvent event,
+    Emitter<SoundState> emit,
+  ) async {
+    if (event is SoundCompleted) {
       emit(const NoSoundPlaying());
     } else if (event is PositionChanged) {
       emit(
@@ -127,11 +139,6 @@ class SoundBloc extends Bloc<SoundEvent, SoundState> {
     return file.copy(tmpPath);
   }
 
-  Future<void> _stopSound(Emitter<SoundState> emit) async {
-    await audioPlayer.stop();
-    emit(const NoSoundPlaying());
-  }
-
   /// 220818 - audioPlayer v1.0.1
   /// Creating a new AudioPlayer is necessary because the current plugin tries
   /// to set the previous source before setting the newly supplied source and
@@ -178,6 +185,3 @@ class SoundBloc extends Bloc<SoundEvent, SoundState> {
     await onPlayerCompletion.cancel();
   }
 }
-
-EventTransformer<Event> _throttle<Event>(Duration delay) =>
-    (events, mapper) => events.throttleTime(delay).asyncExpand(mapper);
