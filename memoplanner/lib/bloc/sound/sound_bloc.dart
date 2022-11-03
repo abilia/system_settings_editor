@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -40,7 +41,7 @@ class SoundBloc extends Bloc<SoundEvent, SoundState> {
   }) : super(const NoSoundPlaying()) {
     on<SoundControlEvent>(_onEvent,
         transformer: _throttle(spamProtectionDelay));
-    on<SoundCallbackEvent>(_onEvent, transformer: _throttle(Duration.zero));
+    on<SoundCallbackEvent>(_onEvent, transformer: sequential());
     add(const ResetPlayer());
   }
 
