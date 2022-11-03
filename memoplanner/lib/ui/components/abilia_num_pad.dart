@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class AbiliaNumPad extends StatelessWidget {
   final VoidCallback delete;

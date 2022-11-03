@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
-import 'package:seagull/ui/themes/all.dart';
+import 'package:memoplanner/ui/themes/all.dart';
 
 import 'package:flutter/material.dart';
 

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:seagull/models/generic/generic.dart';
-import 'package:seagull/models/settings/memoplanner_settings.dart';
+import 'package:memoplanner/models/generic/generic.dart';
+import 'package:memoplanner/models/settings/memoplanner_settings.dart';
 
 class AppBarSettings extends Equatable {
   final bool showBrowseButtons, showWeekday, showDayPeriod, showDate, showClock;

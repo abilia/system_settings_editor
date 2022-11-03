@@ -1,5 +1,5 @@
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class RecurringWeeklyWiz extends StatelessWidget {
   const RecurringWeeklyWiz({Key? key}) : super(key: key);

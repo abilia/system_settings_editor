@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:seagull/i18n/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/ui/components/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 extension ActivityExtensions on Activity {
   String subtitle(BuildContext context, [bool tts = false]) {

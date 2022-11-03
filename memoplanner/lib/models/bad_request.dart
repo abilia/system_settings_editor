@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:seagull/bloc/all.dart';
+import 'package:memoplanner/bloc/all.dart';
 
 class BadRequest extends Equatable {
   final int status;

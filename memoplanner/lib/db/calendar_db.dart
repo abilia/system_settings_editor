@@ -1,5 +1,5 @@
-import 'package:seagull/db/database_repository.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/db/database_repository.dart';
+import 'package:memoplanner/models/all.dart';
 
 import 'package:sqflite/sqflite.dart';
 

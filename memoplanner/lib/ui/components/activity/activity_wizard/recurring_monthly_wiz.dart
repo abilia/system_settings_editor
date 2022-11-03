@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class RecurringMonthlyWiz extends StatelessWidget {
   const RecurringMonthlyWiz({Key? key}) : super(key: key);

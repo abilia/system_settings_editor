@@ -1,4 +1,4 @@
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 import 'package:collection/collection.dart';
 
 extension SortableExtension on Iterable<Sortable> {

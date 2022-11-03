@@ -1,9 +1,9 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:get_it/get_it.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/sound.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/sound.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class QuickSettingsPage extends StatelessWidget {
   const QuickSettingsPage({Key? key}) : super(key: key);

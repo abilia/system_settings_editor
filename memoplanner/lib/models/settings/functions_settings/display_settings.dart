@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:seagull/config.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/config.dart';
+import 'package:memoplanner/models/all.dart';
 
 class DisplaySettings extends Equatable {
   static const functionMenuDisplayWeekKey = 'function_menu_display_week',

@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/tts/tts_handler.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/tts/tts_handler.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class TtsPlayButton extends StatelessWidget {
   const TtsPlayButton({

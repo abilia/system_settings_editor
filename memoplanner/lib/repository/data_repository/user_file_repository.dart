@@ -6,11 +6,11 @@ import 'package:logging/logging.dart';
 import 'package:synchronized/extension.dart';
 import 'package:collection/collection.dart';
 
-import 'package:seagull/db/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/storage/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/storage/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class UserFileRepository extends DataRepository<UserFile> {
   final LoginDb loginDb;

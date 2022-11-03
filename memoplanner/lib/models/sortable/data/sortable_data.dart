@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:seagull/i18n/all.dart';
+import 'package:memoplanner/i18n/all.dart';
 
 abstract class SortableData extends Equatable {
   const SortableData();

@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 extension _ShapeDecorationExtension on ShapeDecoration {
   ShapeDecoration copyWith({Color? color, ShapeBorder? shape}) {

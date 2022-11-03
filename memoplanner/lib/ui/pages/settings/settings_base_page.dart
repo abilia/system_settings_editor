@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class SettingsBasePage extends StatelessWidget {
   final List<Widget> widgets;

@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/logging.dart';
-import 'package:seagull/ui/components/calendar/day_calendar.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/ui/components/calendar/day_calendar.dart';
 
 part 'scroll_position_state.dart';
 

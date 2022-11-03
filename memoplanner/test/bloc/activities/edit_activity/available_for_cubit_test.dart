@@ -1,9 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/bloc/activities/all.dart';
-import 'package:seagull/models/activity/activity.dart';
-import 'package:seagull/models/support_person.dart';
+import 'package:memoplanner/bloc/activities/all.dart';
+import 'package:memoplanner/models/activity/activity.dart';
+import 'package:memoplanner/models/support_person.dart';
 
 import '../../../mocks/mocks.dart';
 

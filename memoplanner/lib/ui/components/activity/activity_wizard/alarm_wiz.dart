@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/bloc/activities/edit_activity/edit_activity_cubit.dart';
-import 'package:seagull/models/activity/activity.dart';
-import 'package:seagull/models/alarm.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/bloc/activities/edit_activity/edit_activity_cubit.dart';
+import 'package:memoplanner/models/activity/activity.dart';
+import 'package:memoplanner/models/alarm.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class AlarmWiz extends StatelessWidget {
   const AlarmWiz({Key? key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class CreateAccountPage extends StatelessWidget {
   final UserRepository userRepository;

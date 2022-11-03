@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/getit.dart';
-import 'package:seagull/models/generic/generic.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/getit.dart';
+import 'package:memoplanner/models/generic/generic.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 import '../../../../fakes/all.dart';
 import '../../../../mocks/mocks.dart';

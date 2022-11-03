@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:seagull/main.dart' as app;
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/main.dart' as app;
+import 'package:memoplanner/ui/all.dart';
 
 void main() {
   const testId = String.fromEnvironment('testId');

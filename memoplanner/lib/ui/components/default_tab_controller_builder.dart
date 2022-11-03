@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class DefaultTabControllerBuilder extends StatefulWidget {
   final Widget Function(BuildContext context, TabController? tabController)

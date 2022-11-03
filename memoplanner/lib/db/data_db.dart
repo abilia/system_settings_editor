@@ -1,9 +1,9 @@
-import 'package:seagull/logging.dart';
+import 'package:memoplanner/logging.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:collection/collection.dart';
 
-import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 typedef DbMapTo<M extends DataModel> = DbModel<M> Function(
     Map<String, dynamic> map);

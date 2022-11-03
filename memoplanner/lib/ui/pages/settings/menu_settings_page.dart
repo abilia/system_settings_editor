@@ -1,7 +1,7 @@
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/settings/all.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/settings/all.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class MenuSettingsPage extends StatelessWidget {
   const MenuSettingsPage({Key? key}) : super(key: key);

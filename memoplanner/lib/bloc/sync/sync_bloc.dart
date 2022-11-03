@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:rxdart/rxdart.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/logging.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/logging.dart';
 
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
 
 part 'sync_event.dart';
 

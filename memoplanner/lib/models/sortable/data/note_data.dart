@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:seagull/models/sortable/all.dart';
+import 'package:memoplanner/models/sortable/all.dart';
 
 class NoteData extends SortableData {
   final String name, text, icon, fileId;

@@ -5,14 +5,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
-import 'package:seagull/background/all.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/getit.dart';
-import 'package:seagull/main.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/background/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/getit.dart';
+import 'package:memoplanner/main.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';

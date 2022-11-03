@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:meta/meta.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Handles storage of auth token and other login info used when accessing backend.

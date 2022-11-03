@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/bloc/activities/edit_activity/edit_activity_cubit.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/bloc/activities/edit_activity/edit_activity_cubit.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class RemindersWiz extends StatelessWidget {
   const RemindersWiz({Key? key}) : super(key: key);

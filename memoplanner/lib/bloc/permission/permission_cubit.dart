@@ -6,10 +6,10 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:seagull/config.dart';
+import 'package:memoplanner/config.dart';
 
-import 'package:seagull/logging.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/utils/all.dart';
 
 export 'package:permission_handler/permission_handler.dart';
 

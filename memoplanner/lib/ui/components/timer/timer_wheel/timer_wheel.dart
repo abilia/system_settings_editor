@@ -3,12 +3,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:seagull/bloc/settings/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/tts/tts_handler.dart';
-import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_config.dart';
-import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_painters.dart';
-import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_styles.dart';
+import 'package:memoplanner/bloc/settings/all.dart';
+import 'package:memoplanner/i18n/app_localizations.dart';
+import 'package:memoplanner/tts/tts_handler.dart';
+import 'package:memoplanner/ui/components/timer/timer_wheel/timer_wheel_config.dart';
+import 'package:memoplanner/ui/components/timer/timer_wheel/timer_wheel_painters.dart';
+import 'package:memoplanner/ui/components/timer/timer_wheel/timer_wheel_styles.dart';
 
 class TimerWheel extends StatefulWidget {
   const TimerWheel.interactive({

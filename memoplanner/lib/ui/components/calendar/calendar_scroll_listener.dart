@@ -1,5 +1,5 @@
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/bloc/all.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
 
 typedef GetNowOffset = double Function(DateTime now);
 typedef ScrollListenerWidgetBuilder = Widget Function(

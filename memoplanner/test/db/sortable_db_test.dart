@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/db/all.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 void main() {
   late Database db;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:seagull/ui/themes/colors.dart';
+import 'package:memoplanner/ui/themes/colors.dart';
 
 class MenuPageLayout {
   final double crossAxisSpacing, mainAxisSpacing;

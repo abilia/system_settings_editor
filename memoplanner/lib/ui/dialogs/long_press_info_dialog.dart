@@ -1,8 +1,8 @@
 import 'package:get_it/get_it.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class LongPressInfoDialog extends StatelessWidget {
   const LongPressInfoDialog({Key? key}) : super(key: key);

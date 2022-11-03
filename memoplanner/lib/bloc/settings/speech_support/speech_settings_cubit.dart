@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:seagull/config.dart';
-import 'package:seagull/db/all.dart';
-import 'package:seagull/tts/tts_handler.dart';
+import 'package:memoplanner/config.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/tts/tts_handler.dart';
 
 part 'speech_settings_state.dart';
 

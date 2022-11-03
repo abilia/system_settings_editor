@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class RadioField<T> extends StatelessWidget {
   final Widget? leading;

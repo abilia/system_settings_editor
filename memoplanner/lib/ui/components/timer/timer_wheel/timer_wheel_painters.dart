@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'package:matrix4_transform/matrix4_transform.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_styles.dart';
-import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_config.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/ui/components/timer/timer_wheel/timer_wheel_styles.dart';
+import 'package:memoplanner/ui/components/timer/timer_wheel/timer_wheel_config.dart';
 
 class TimerWheelBackgroundPainter extends CustomPainter {
   TimerWheelBackgroundPainter({

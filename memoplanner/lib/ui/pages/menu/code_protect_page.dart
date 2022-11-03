@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/settings/all.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/settings/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 Future<bool> codeProtectAccess(
   BuildContext context, {

@@ -1,9 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/models/activity/activity.dart';
-import 'package:seagull/models/support_person.dart';
-import 'package:seagull/repository/data_repository/support_persons_repository.dart';
+import 'package:memoplanner/models/activity/activity.dart';
+import 'package:memoplanner/models/support_person.dart';
+import 'package:memoplanner/repository/data_repository/support_persons_repository.dart';
 
 class AvailableForCubit extends Cubit<AvailableForState> {
   AvailableForCubit({

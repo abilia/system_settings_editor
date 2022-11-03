@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/widgets.dart';
-import 'package:seagull/db/all.dart';
-import 'package:seagull/i18n/translations.g.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/i18n/translations.g.dart';
 
 class LocaleCubit extends Cubit<Locale> {
   final SettingsDb settingsDb;

@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 mixin EditActivityTab {
   Widget errorBordered(Widget child, {required bool errorState}) {

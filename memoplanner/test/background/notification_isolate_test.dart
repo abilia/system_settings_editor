@@ -8,9 +8,9 @@ import 'package:uuid/uuid.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import 'package:seagull/background/all.dart';
-import 'package:seagull/utils/all.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/background/all.dart';
+import 'package:memoplanner/utils/all.dart';
+import 'package:memoplanner/models/all.dart';
 import '../mocks/mocks.dart';
 import '../test_helpers/register_fallback_values.dart';
 

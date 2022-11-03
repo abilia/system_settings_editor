@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class TimeoutSettings extends Equatable {
   static const timeoutOptions = [0, 10, 5, 1];

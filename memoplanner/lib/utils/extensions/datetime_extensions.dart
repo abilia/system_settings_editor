@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 final yMd = DateFormat('y-MM-dd').format;
 final hm = DateFormat.Hm().format;

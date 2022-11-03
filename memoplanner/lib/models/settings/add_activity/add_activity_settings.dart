@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class AddActivitySettings extends Equatable {
   static const addActivityTypeAdvancedKey = 'add_activity_type_advanced';

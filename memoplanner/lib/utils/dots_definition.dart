@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 const int dotsPerHour = 4,
     minutesPerDot = 60 ~/ dotsPerHour,

@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 extension PaddingExtension on Widget {
   Widget pad(EdgeInsets padding) {

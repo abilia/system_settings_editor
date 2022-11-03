@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserDb {

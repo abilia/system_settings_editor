@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 /// Called DataItem (list) in Figma
 class ListDataItem extends StatelessWidget {

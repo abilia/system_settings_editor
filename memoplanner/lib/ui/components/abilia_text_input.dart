@@ -1,7 +1,7 @@
 import 'dart:io' show Platform;
 import 'package:flutter/services.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class AbiliaTextInput extends StatelessWidget {
   final String initialValue, heading, inputHeading;

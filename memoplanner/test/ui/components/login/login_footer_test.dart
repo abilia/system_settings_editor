@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/db/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/db/all.dart';
 
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';

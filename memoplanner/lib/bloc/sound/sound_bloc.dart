@@ -11,11 +11,11 @@ import 'package:path/path.dart' as path;
 import 'package:mime/mime.dart' as mime;
 import 'package:path_provider/path_provider.dart';
 
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/logging.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/storage/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/storage/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 part 'sound_event.dart';
 part 'sound_state.dart';

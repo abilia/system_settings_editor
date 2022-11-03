@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:seagull/bloc/all.dart';
+import 'package:memoplanner/bloc/all.dart';
 
 mixin CalendarWidgetMixin<T extends StatelessWidget> {
   Future<void> refresh(BuildContext context) {

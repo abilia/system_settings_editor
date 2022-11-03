@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LicenseDb {

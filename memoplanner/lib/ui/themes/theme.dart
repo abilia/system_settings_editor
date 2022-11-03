@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/components/abilia_icons.dart';
-import 'package:seagull/ui/themes/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/ui/components/abilia_icons.dart';
+import 'package:memoplanner/ui/themes/all.dart';
 
 // Form paddings
 final dividerPadding = EdgeInsets.only(

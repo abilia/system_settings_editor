@@ -1,4 +1,4 @@
-import 'package:seagull/models/occasion/all.dart';
+import 'package:memoplanner/models/occasion/all.dart';
 
 enum Occasion { past, current, future }
 
