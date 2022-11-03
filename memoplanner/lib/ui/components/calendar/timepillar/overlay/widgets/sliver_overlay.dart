@@ -1,6 +1,6 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:seagull/ui/components/calendar/timepillar/overlay/all.dart';
+import 'package:memoplanner/ui/components/calendar/timepillar/overlay/all.dart';
 
 typedef SliverOverlayWidgetBuilder = Widget Function(
     BuildContext context, SliverOverlayState state);

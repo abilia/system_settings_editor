@@ -1,5 +1,5 @@
-import 'package:seagull/bloc/authentication/authentication_bloc.dart';
-import 'package:seagull/i18n/translations.g.dart';
+import 'package:memoplanner/bloc/authentication/authentication_bloc.dart';
+import 'package:memoplanner/i18n/translations.g.dart';
 
 extension LogoutMessage on LoggedOutReason {
   String header(Translated translate) {

@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class _TextAndIconActionButton extends StatelessWidget {
   const _TextAndIconActionButton(

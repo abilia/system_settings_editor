@@ -1,5 +1,5 @@
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class ProfilePicture extends StatelessWidget {
   final String baseUrl;

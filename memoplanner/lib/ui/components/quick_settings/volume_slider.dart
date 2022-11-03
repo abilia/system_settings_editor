@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
-import 'package:seagull/logging.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/ui/all.dart';
 import 'package:system_settings_editor/volume_settings.dart';
 
 class AlarmVolumeSlider extends _VolumeSlider {

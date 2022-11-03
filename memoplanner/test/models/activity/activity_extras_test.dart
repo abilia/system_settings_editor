@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 const jsonTestString1 =
     '''{"startTimeExtraAlarm":"/handi/user/voicenotes/voice_recording_30ee75a1-6c2f-4fcd-9f06-d2365e6012b0.wav","startTimeExtraAlarmFileId":"30ee75a1-6c2f-4fcd-9f06-d2365e6012b0","endTimeExtraAlarm":"higjhvvh","endTimeExtraAlarmFileId":"734871297863"}''';

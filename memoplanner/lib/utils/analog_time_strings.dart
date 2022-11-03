@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
-import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/i18n/translations_extensions.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/i18n/app_localizations.dart';
+import 'package:memoplanner/i18n/translations_extensions.dart';
+import 'package:memoplanner/models/all.dart';
 
 const String _clockNoMinutesTts = '%s';
 

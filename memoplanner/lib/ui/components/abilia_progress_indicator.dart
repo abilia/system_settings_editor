@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class AbiliaProgressIndicator extends StatelessWidget {
   const AbiliaProgressIndicator({Key? key}) : super(key: key);

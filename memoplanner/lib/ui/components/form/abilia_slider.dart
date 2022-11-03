@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 import 'dart:math' as math;
 
 class AbiliaSlider extends StatelessWidget {

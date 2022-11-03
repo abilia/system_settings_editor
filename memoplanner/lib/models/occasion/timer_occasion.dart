@@ -1,4 +1,4 @@
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class TimerOccasion extends EventOccasion {
   const TimerOccasion(this.timer, Occasion occasion) : super(occasion);

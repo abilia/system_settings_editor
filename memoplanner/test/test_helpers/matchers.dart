@@ -1,4 +1,4 @@
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 import 'package:test/test.dart';
 import 'package:collection/collection.dart';
 

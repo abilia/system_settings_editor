@@ -1,8 +1,8 @@
 import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/tts/tts_handler.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/tts/tts_handler.dart';
 
 class Tts extends StatelessWidget {
   final Text child;

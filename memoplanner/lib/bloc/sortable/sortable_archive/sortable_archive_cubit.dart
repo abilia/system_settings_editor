@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/all.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 part 'sortable_archive_state.dart';
 

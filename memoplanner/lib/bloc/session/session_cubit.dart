@@ -1,7 +1,7 @@
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/logging.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/session_repository.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/session_repository.dart';
 
 class SessionCubit extends Cubit<bool> {
   SessionCubit({required this.sessionRepository})

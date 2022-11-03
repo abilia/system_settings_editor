@@ -1,6 +1,6 @@
 @Timeout(Duration(seconds: 2))
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/repository/all.dart';
+import 'package:memoplanner/repository/all.dart';
 
 void main() {
   test('real ticker ticks min and sec then and save to time ', () async {

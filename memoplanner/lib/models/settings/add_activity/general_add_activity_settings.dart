@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class GeneralAddActivitySettings extends Equatable {
   static const allowPassedStartTimeKey = 'add_activity_time_before_current',

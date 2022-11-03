@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class DayCalendarViewOptionsDisplaySettings extends Equatable {
   static const String displayCalendarTypeKey = 'setting_view_options_time_view',

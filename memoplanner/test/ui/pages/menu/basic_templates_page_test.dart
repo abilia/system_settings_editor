@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/background/notification_isolate.dart';
-import 'package:seagull/db/sortable_db.dart';
-import 'package:seagull/getit.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/background/notification_isolate.dart';
+import 'package:memoplanner/db/sortable_db.dart';
+import 'package:memoplanner/getit.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/ui/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import '../../../fakes/all.dart';

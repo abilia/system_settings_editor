@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 void main() {
   test('TimerWheel creation. Will be past since secondsLeft is 0', () {

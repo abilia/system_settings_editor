@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:battery_plus/battery_plus.dart';
 import 'package:equatable/equatable.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/settings/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/settings/all.dart';
 
 class WakeLockCubit extends Cubit<WakeLockState> {
   late final StreamSubscription _batterySubscription;

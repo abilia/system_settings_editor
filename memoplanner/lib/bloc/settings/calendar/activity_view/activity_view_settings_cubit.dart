@@ -1,5 +1,5 @@
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class ActivityViewSettingsCubit extends Cubit<ActivityViewSettings> {
   final GenericCubit genericCubit;

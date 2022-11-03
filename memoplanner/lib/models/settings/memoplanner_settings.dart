@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class MemoplannerSettings extends Equatable {
   static const Set<String> noSyncSettings = {

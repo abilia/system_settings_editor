@@ -1,11 +1,11 @@
 import 'package:get_it/get_it.dart';
 
-import 'package:seagull/background/all.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/ticker.dart';
-import 'package:seagull/storage/all.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/background/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/ticker.dart';
+import 'package:memoplanner/storage/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class PlayAlarmSpeechButton extends StatelessWidget {
   final NewAlarm alarm;

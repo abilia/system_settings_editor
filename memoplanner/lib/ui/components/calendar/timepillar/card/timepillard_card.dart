@@ -1,4 +1,4 @@
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 abstract class TimepillarCard extends StatelessWidget {
   static const int maxTitleLines = 5;

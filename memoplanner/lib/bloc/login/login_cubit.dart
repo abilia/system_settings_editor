@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/config.dart';
-import 'package:seagull/logging.dart';
-import 'package:seagull/models/exceptions.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/config.dart';
+import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/models/exceptions.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 part 'login_state.dart';
 

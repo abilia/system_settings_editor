@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc_test/bloc_test.dart';
-import 'package:seagull/bloc/all.dart';
+import 'package:memoplanner/bloc/all.dart';
 
-import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
-import 'package:seagull/repository/ticker.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/utils/all.dart';
+import 'package:memoplanner/repository/ticker.dart';
 
 import 'package:test/scaffolding.dart';
 

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:seagull/i18n/all.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class ImageArchiveData extends SortableData {
   static const photoCalendarTag = 'photoCalendar';

@@ -1,5 +1,5 @@
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/repository/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/repository/all.dart';
 
 extension AlarmKeyExtension on RemoteMessage {
   String? get popAlarmKey {

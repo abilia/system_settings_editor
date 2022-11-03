@@ -1,4 +1,4 @@
-import 'package:seagull/logging.dart';
+import 'package:memoplanner/logging.dart';
 
 extension OnError on Logger {
   // ignore: prefer_void_to_null

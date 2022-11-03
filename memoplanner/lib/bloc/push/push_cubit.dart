@@ -1,8 +1,8 @@
 export 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/background/background.dart';
-import 'package:seagull/bloc/all.dart';
+import 'package:memoplanner/background/background.dart';
+import 'package:memoplanner/bloc/all.dart';
 
 class PushCubit extends Cubit<RemoteMessage> {
   static final _log = Logger((PushCubit).toString());

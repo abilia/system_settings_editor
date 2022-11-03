@@ -1,5 +1,5 @@
 import 'package:logging/logging.dart';
-import 'package:seagull/i18n/all.dart';
+import 'package:memoplanner/i18n/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsDb {

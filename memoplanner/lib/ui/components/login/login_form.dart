@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart';
 
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/repository/end_point.dart';
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/repository/end_point.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({

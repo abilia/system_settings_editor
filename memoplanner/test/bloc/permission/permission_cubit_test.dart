@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/bloc/permission/permission_cubit.dart';
+import 'package:memoplanner/bloc/permission/permission_cubit.dart';
 
 import '../../fakes/permission.dart';
 

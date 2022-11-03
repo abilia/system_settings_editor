@@ -3,9 +3,9 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/timezone.dart' as tz;
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/timezone.dart' as tz;
+import 'package:memoplanner/utils/all.dart';
 import 'package:uuid/uuid.dart';
 
 part 'activity_extras.dart';

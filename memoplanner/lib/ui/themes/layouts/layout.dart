@@ -1,6 +1,6 @@
 import 'dart:ui' as ui;
 
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 part 'layout_large.dart';
 

@@ -4,16 +4,16 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:seagull/firebase_options.dart';
+import 'package:memoplanner/firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:seagull/background/all.dart';
-import 'package:seagull/db/all.dart';
-import 'package:seagull/logging.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/storage/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/background/all.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/storage/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 @pragma('vm:entry-point')
 Future<void> myBackgroundMessageHandler(RemoteMessage message) async {

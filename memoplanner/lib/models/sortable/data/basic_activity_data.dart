@@ -2,8 +2,8 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 abstract class BasicActivityData extends SortableData {}
 

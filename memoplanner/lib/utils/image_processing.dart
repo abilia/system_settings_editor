@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:image/image.dart';
 // ignore: implementation_imports
 import 'package:image/src/exif_data.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 const imageQuality = 80;
 const imageMaxSize = 1500;

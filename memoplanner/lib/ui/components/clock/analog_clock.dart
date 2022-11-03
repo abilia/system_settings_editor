@@ -1,9 +1,9 @@
 library flutter_analog_clock;
 
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
-import 'package:seagull/ui/components/clock/clock_painter.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
+import 'package:memoplanner/ui/components/clock/clock_painter.dart';
 
 class AnalogClock extends StatelessWidget {
   const AnalogClock({

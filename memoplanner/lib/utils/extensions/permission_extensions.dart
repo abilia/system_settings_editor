@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/all.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/themes/all.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/ui/components/all.dart';
+import 'package:memoplanner/ui/themes/all.dart';
 
 extension PermissionExtension on Permission {
   String translate(Translated translate) {

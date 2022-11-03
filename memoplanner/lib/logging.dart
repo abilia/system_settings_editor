@@ -8,14 +8,14 @@ import 'package:flutter_archive/flutter_archive.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
-import 'package:seagull/analytics/analytics_service.dart';
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/config.dart';
-import 'package:seagull/db/all.dart';
+import 'package:memoplanner/analytics/analytics_service.dart';
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/config.dart';
+import 'package:memoplanner/db/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:intl/intl.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 export 'package:logging/logging.dart';
 

@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 ///
 /// Sort order algorithm copied from myAbilia frontend code with adjustments to dart.

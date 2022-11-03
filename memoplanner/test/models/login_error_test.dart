@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/models/login_error.dart';
+import 'package:memoplanner/models/login_error.dart';
 
 void main() {
   test('Parse correct body information', () {

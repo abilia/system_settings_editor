@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:seagull/models/support_person.dart';
+import 'package:memoplanner/models/support_person.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SupportPersonsDb {

@@ -1,5 +1,5 @@
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/bloc/all.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/bloc/all.dart';
 
 class CalendarGeneralSettingsPage extends StatelessWidget {
   const CalendarGeneralSettingsPage({Key? key}) : super(key: key);

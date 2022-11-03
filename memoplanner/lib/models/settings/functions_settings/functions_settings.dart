@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:seagull/config.dart';
-import 'package:seagull/models/all.dart';
+import 'package:memoplanner/config.dart';
+import 'package:memoplanner/models/all.dart';
 
 class FunctionsSettings extends Equatable {
   static const functionMenuStartViewKey = 'function_menu_start_view';

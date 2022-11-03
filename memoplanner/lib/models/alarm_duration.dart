@@ -1,5 +1,5 @@
-import 'package:seagull/i18n/all.dart';
-import 'package:seagull/utils/all.dart';
+import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 enum AlarmDuration {
   alert,

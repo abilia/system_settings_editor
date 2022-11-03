@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:seagull/i18n/all.dart';
+import 'package:memoplanner/i18n/all.dart';
 
 class Translator {
   static List<Locale> get supportedLocals => Locales.language.keys.toList();
