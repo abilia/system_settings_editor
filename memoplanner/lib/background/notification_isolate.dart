@@ -18,6 +18,8 @@ import 'package:memoplanner/utils/all.dart';
 
 final _log = Logger('NotificationIsolate');
 
+final showNotifications = Config.isMPGO;
+
 @visibleForTesting
 FlutterLocalNotificationsPlugin? notificationsPluginInstance;
 FlutterLocalNotificationsPlugin get notificationPlugin =>
@@ -49,6 +51,21 @@ Future cancelAllActiveNotifications() async {
           AndroidFlutterLocalNotificationsPlugin>()
       ?.getActiveNotifications();
   for (var notification in activeNotification ?? []) {
+    await notificationPlugin.cancel(notification.id);
+  }
+}
+
+// If showNotifications is false, notifications aren't triggered by NotificationManagerCompat as normal but by a custom BackgroundAlarm class.
+// Using cancel() for any scheduled notification will always cancel the current BackgroundAlarm while cancelAll() only cancels scheduled notification.
+//
+// If showNotifications is true, it's the other way around and cancelAll will also cancel the current notification.
+Future cancelAllPendingNotifications() async {
+  if (!showNotifications) {
+    return notificationPlugin.cancelAll();
+  }
+  final pendingNotification =
+      await notificationPlugin.pendingNotificationRequests();
+  for (var notification in pendingNotification) {
     await notificationPlugin.cancel(notification.id);
   }
 }
@@ -155,7 +172,7 @@ Future _scheduleAllAlarmNotifications(
     // The image being are moved into the attachment data store is gone for the next thread
     _lock.synchronized(
       () async {
-        await notificationPlugin.cancelAll();
+        await cancelAllPendingNotifications();
         final locale = Locale(language);
         await initializeDateFormatting(locale.languageCode);
         _log.fine('scheduling ${notifications.length} notifications...');
@@ -309,7 +326,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
         // This is 'package.name.Activity',
         // don't change to application flavor id
         'com.abilia.memoplanner.AlarmActivity',
-    showNotification: Config.isMPGO,
+    showNotification: showNotifications,
     largeIcon: await _androidLargeIcon(
       notificationAlarm.event.image.id,
       fileStorage,

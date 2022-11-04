@@ -69,6 +69,8 @@ void main() {
 
     when(() => mockedNotificationsPlugin.cancelAll())
         .thenAnswer((_) => Future.value());
+    when(() => mockedNotificationsPlugin.pendingNotificationRequests())
+        .thenAnswer((_) => Future.value([]));
     when(() => mockedFileStorage.copyImageThumbForNotification(fileId))
         .thenAnswer((_) => Future.value(File(fileId)));
     when(() => mockedFileStorage.getFile(fileId)).thenReturn(File(fileId));
@@ -77,6 +79,10 @@ void main() {
     when(() => mockedFileStorage.exists(any()))
         .thenAnswer((_) => Future.value(true));
   });
+
+  void verifyCancelAllPendingNotifications() => verify(() => !showNotifications
+      ? mockedNotificationsPlugin.cancelAll()
+      : mockedNotificationsPlugin.pendingNotificationRequests());
 
   group('Functions', () {
     test('Notification channels', () async {
@@ -130,7 +136,7 @@ void main() {
         fileStorage: mockedFileStorage,
         now: () => now,
       );
-      verify(() => mockedNotificationsPlugin.cancelAll());
+      verifyCancelAllPendingNotifications();
       verify(() => mockedNotificationsPlugin.zonedSchedule(
           any(), any(), any(), any(), any(),
           payload: any(named: 'payload'),
@@ -149,7 +155,7 @@ void main() {
         mockedFileStorage,
         now: () => now,
       );
-      verify(() => mockedNotificationsPlugin.cancelAll());
+      verifyCancelAllPendingNotifications();
       verify(() => mockedNotificationsPlugin.zonedSchedule(
           any(), any(), any(), any(), any(),
           payload: any(named: 'payload'),
@@ -170,7 +176,7 @@ void main() {
         mockedFileStorage,
         now: () => now,
       );
-      verify(() => mockedNotificationsPlugin.cancelAll());
+      verifyCancelAllPendingNotifications();
 
       verify(() => mockedNotificationsPlugin.zonedSchedule(
           any(), any(), any(), any(), any(),
@@ -190,7 +196,7 @@ void main() {
         mockedFileStorage,
         now: () => now,
       );
-      verify(() => mockedNotificationsPlugin.cancelAll());
+      verifyCancelAllPendingNotifications();
       verify(() => mockedFileStorage.copyImageThumbForNotification(fileId));
       verify(() => mockedFileStorage.getFile(fileId));
       verify(() => mockedFileStorage.getImageThumb(ImageThumb(id: fileId)));
@@ -262,7 +268,7 @@ void main() {
         fileStorage: mockedFileStorage,
         now: () => now,
       );
-      verify(() => mockedNotificationsPlugin.cancelAll());
+      verifyCancelAllPendingNotifications();
       verify(
         () => mockedNotificationsPlugin.zonedSchedule(
             timer1.hashCode, timer1.timer.title, any(), any(), any(),
@@ -283,7 +289,7 @@ void main() {
         fileStorage: mockedFileStorage,
         now: () => now,
       );
-      verify(() => mockedNotificationsPlugin.cancelAll());
+      verifyCancelAllPendingNotifications();
       verify(
         () => mockedNotificationsPlugin.zonedSchedule(
             any(), any(), any(), any(), any(),
@@ -304,7 +310,7 @@ void main() {
         mockedFileStorage,
         now: () => now,
       );
-      verify(() => mockedNotificationsPlugin.cancelAll());
+      verifyCancelAllPendingNotifications();
       verify(
         () => mockedNotificationsPlugin.zonedSchedule(
             timer1.hashCode, timer1.timer.title, any(), any(), any(),
@@ -325,7 +331,7 @@ void main() {
         mockedFileStorage,
         now: () => now,
       );
-      verify(() => mockedNotificationsPlugin.cancelAll());
+      verifyCancelAllPendingNotifications();
       verify(
         () => mockedNotificationsPlugin.zonedSchedule(
             any(), any(), any(), any(), any(),
@@ -354,7 +360,7 @@ void main() {
         mockedFileStorage,
         now: () => now,
       );
-      verify(() => mockedNotificationsPlugin.cancelAll());
+      verifyCancelAllPendingNotifications();
       verify(() => mockedFileStorage.copyImageThumbForNotification(fileId));
       verify(() => mockedFileStorage.getFile(fileId));
       verify(() => mockedFileStorage.getImageThumb(ImageThumb(id: fileId)));
@@ -402,7 +408,7 @@ void main() {
         mockedFileStorage,
         now: () => now,
       );
-      verify(() => mockedNotificationsPlugin.cancelAll());
+      verifyCancelAllPendingNotifications();
 
       verify(() => mockedNotificationsPlugin.zonedSchedule(
           any(), any(), any(), any(), any(),
@@ -424,7 +430,7 @@ void main() {
         fileStorage: mockedFileStorage,
         now: () => now,
       );
-      verify(() => mockedNotificationsPlugin.cancelAll());
+      verifyCancelAllPendingNotifications();
       verify(
         () => mockedNotificationsPlugin.zonedSchedule(
             any(), any(), any(), any(), any(),
@@ -444,7 +450,7 @@ void main() {
         mockedFileStorage,
         now: () => now,
       );
-      verify(() => mockedNotificationsPlugin.cancelAll());
+      verifyCancelAllPendingNotifications();
       verify(
         () => mockedNotificationsPlugin.zonedSchedule(
             any(), any(), any(), any(), any(),
