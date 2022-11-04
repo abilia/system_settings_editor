@@ -1,20 +1,7 @@
 targets:
   $default:
     builders:
-      seagull:translatorBuilder:
+      translation_generator|translationGeneratorBuilder:
+        enabled: True
         generate_for:
             - lib/i18n/translations.tsv
-      mockito|mockBuilder:
-        generate_for:
-            - test/mocks/*
-
-builders:
-  translatorBuilder:
-    import: 'src/code_generators.dart'
-    builder_factories: ['translationBuilder']
-    build_extensions: 
-      .tsv:
-        - .g.dart
-        - .missing.tsv
-    build_to: source
-    auto_apply: root_package
