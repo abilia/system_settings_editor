@@ -1,0 +1,10 @@
+name: seagull_lints
+publish_to: none
+
+environment:
+  sdk: '>=2.18.0 <3.0.0'
+  flutter: '>=2.0.0'
+
+dependencies:
+  flutter_lints: ^2.0.1
+  # Code is not allowed in this package. Do not add any dependencies or dev_dependencies.
