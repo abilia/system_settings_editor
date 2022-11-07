@@ -1,0 +1,7 @@
+builders:
+  translationGeneratorBuilder:
+    import: 'package:translation_generator/translation_generator.dart'
+    builder_factories: ['translationGeneratorBuilder']
+    auto_apply: dependents
+    build_extensions: {".tsv": [".g.dart", ".missing.tsv"]}
+    build_to: source
