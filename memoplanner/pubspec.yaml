@@ -89,6 +89,8 @@ dev_dependencies:
     sdk: flutter
   mocktail: ^0.3.0
   mocktail_image_network: ^0.3.1
+  seagull_lints:
+    path: ../packages/seagull_lints
   test: any
   translation_generator:
     path: ../packages/translation_generator

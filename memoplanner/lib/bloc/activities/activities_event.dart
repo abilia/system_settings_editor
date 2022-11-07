@@ -30,12 +30,6 @@ class UpdateActivity extends ManipulateActivitiesEvent {
   const UpdateActivity(this.activity);
 }
 
-class DeleteActivity extends ManipulateActivitiesEvent {
-  @override
-  final Activity activity;
-  const DeleteActivity(this.activity);
-}
-
 abstract class RecurringActivityEvent extends ManipulateActivitiesEvent {
   final ActivityDay activityDay;
   final ApplyTo applyTo;
