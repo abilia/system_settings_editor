@@ -18,7 +18,7 @@ import 'package:memoplanner/utils/all.dart';
 
 final _log = Logger('NotificationIsolate');
 
-final showNotifications = Config.isMPGO;
+const showNotifications = Config.isMPGO;
 
 @visibleForTesting
 FlutterLocalNotificationsPlugin? notificationsPluginInstance;
