@@ -127,7 +127,7 @@ void main() {
             ),
         act: (ActivitiesBloc bloc) => bloc
           ..add(LoadActivities())
-          ..add(DeleteActivity(storedActivity)),
+          ..add(UpdateActivity(storedActivity.copyWith(deleted: true))),
         expect: () => [
               ActivitiesStateMatcher(ActivitiesLoaded()),
               ActivitiesStateMatcher(ActivitiesLoaded()),

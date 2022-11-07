@@ -205,7 +205,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
           ),
         );
       } else {
-        activitiesBloc.add(DeleteActivity(activity));
+        activitiesBloc.add(UpdateActivity(activity.copyWith(deleted: true)));
       }
       await navigator.maybePop();
     }
