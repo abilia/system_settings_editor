@@ -23,7 +23,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
 
   late StreamSubscription _pushSubscription;
 
-  bool get hasSynced => state is SyncPerformed;
+  bool get isSynced => state is Synced;
 
   SyncBloc({
     required this.pushCubit,
@@ -33,13 +33,22 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     required this.sortableRepository,
     required this.genericRepository,
     required this.syncDelay,
-  }) : super(SyncNotPerformed()) {
-    _pushSubscription = pushCubit.stream.listen((v) => add(const SyncAll()));
+  }) : super(UnSynced()) {
+    _pushSubscription = pushCubit.stream.listen((message) {
+      final isFake = message.data == PushCubit.fakeMessage;
+      add(isFake ? const FakeSync() : const SyncAll());
+    });
     on<ActivitySaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<FileSaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<SortableSaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<GenericSaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<SyncAll>(_trySync, transformer: bufferTimer(syncDelay));
+    on<FakeSync>(_fakeSync, transformer: bufferTimer(syncDelay));
+  }
+
+  Future _fakeSync(SyncEvent event, Emitter emit) async {
+    await _sync(const SyncAll());
+    emit(Synced());
   }
 
   Future _trySync(
@@ -49,9 +58,12 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     try {
       final didFetchData = await _sync(event);
       if (event is SyncAll) {
-        emit(didFetchData ? TwoWaySyncPerformed() : OneWaySyncPerformed());
+        if (didFetchData || !isSynced) {
+          emit(Synced());
+        }
       }
     } catch (error) {
+      emit(UnSynced());
       _log.info('could not sync $event, retries in ${syncDelay.retryDelay}');
       await Future.delayed(syncDelay.retryDelay);
       _log.info('retrying $event');
@@ -83,7 +95,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       sortableRepository.synchronize(),
       genericRepository.synchronize(),
     ]);
-    return results.fold<bool>(false, (prev, next) => prev || next);
+    return results.any((synced) => synced);
   }
 
   @override

@@ -22,7 +22,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
   }) : super(ActivitiesNotLoaded()) {
     _syncSubscription = syncBloc.stream.listen(
       (state) {
-        if (state is TwoWaySyncPerformed) add(LoadActivities());
+        if (state is Synced) add(LoadActivities());
       },
     );
     on<ActivitiesEvent>(_onEvent, transformer: sequential());

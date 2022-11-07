@@ -27,7 +27,11 @@ class UserFileCubit extends Cubit<UserFileState> {
     required this.syncBloc,
     required this.fileStorage,
   }) : super(const UserFilesNotLoaded()) {
-    _syncSubscription = syncBloc.stream.listen(loadUserFiles);
+    _syncSubscription = syncBloc.stream.listen(
+      (state) {
+        if (state is Synced) loadUserFiles();
+      },
+    );
   }
 
   Future loadUserFiles([_]) async {

@@ -74,5 +74,8 @@ class FetchSessionsException implements Exception {
 }
 
 class SyncFailedException implements Exception {
-  String errMsg() => 'Sync failed';
+  SyncFailedException([this.e]);
+  final Exception? e;
+  @override
+  String toString() => 'Sync failed $e';
 }

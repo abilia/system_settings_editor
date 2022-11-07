@@ -95,7 +95,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
         );
       } catch (e) {
         log.warning('Failed to synchronize $path with backend', e);
-        throw SyncFailedException();
+        throw e;
       }
       return didFetchData;
     });

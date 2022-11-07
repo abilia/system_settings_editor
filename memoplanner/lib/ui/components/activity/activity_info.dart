@@ -174,7 +174,7 @@ mixin ActivityMixin {
     _log.fine('pop Alarm: $alarm');
     if (!await navigator.maybePop()) {
       _log.info('Could not pop (root?) will -> SystemNavigator.pop');
-      await activityRepository?.synchronize();
+      await activityRepository?.synchronize().catchError((_) => false);
       await SystemNavigator.pop();
     }
   }

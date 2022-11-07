@@ -148,9 +148,7 @@ void main() {
           verify(() => mockSyncBloc.add(const ActivitySaved()));
         });
 
-    test(
-        'Nothing happens when OneWaySyncPerformed or SyncNotPerformed is emitted',
-        () async {
+    test('Nothing happens when UnSynced is emitted', () async {
       // Arrange
       activitiesBloc = ActivitiesBloc(
         activityRepository: mockActivityRepository,
@@ -158,8 +156,7 @@ void main() {
       );
 
       // Act
-      syncBloc.emit(OneWaySyncPerformed());
-      syncBloc.emit(SyncNotPerformed());
+      syncBloc.emit(UnSynced());
 
       // Assert
       await expectLater(
@@ -168,7 +165,7 @@ void main() {
       );
     });
 
-    test('Activities are loaded when TwoWaySyncPerformed is emitted', () async {
+    test('Activities are loaded when Synced is emitted', () async {
       // Arrange
       activitiesBloc = ActivitiesBloc(
         activityRepository: mockActivityRepository,
@@ -176,7 +173,7 @@ void main() {
       );
 
       // Act
-      syncBloc.emit(TwoWaySyncPerformed());
+      syncBloc.emit(Synced());
 
       // Assert
       await expectLater(

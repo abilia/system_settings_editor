@@ -18,7 +18,11 @@ class GenericCubit extends Cubit<GenericState> {
     required this.genericRepository,
     required this.syncBloc,
   }) : super(GenericsNotLoaded()) {
-    syncSubscription = syncBloc.stream.listen((state) => loadGenerics());
+    syncSubscription = syncBloc.stream.listen(
+      (state) {
+        if (state is Synced) loadGenerics();
+      },
+    );
   }
 
   void genericUpdated(Iterable<GenericData> genericData) async {
@@ -50,7 +54,7 @@ class GenericCubit extends Cubit<GenericState> {
     try {
       final generics = await genericRepository.getAll();
       emit(
-        generics.isNotEmpty || syncBloc.hasSynced
+        generics.isNotEmpty || syncBloc.isSynced
             ? GenericsLoaded(generics: generics.toGenericKeyMap())
             : GenericsNotLoaded(),
       );
