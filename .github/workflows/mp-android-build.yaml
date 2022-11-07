@@ -1,4 +1,4 @@
-name: MemoPlanner Android Build
+name: MEMOPlanner Android Build
 
 on:
   push:
@@ -7,9 +7,9 @@ on:
       - release
       - test-*
     paths-ignore:
-      - 'ios/**'
-      - 'test*/**'
-      - '.*'
+      - 'memoplanner/ios/**'
+      - 'memoplanner/test*/**'
+      - '**/*.md'
 
 jobs:
   test:
@@ -18,11 +18,16 @@ jobs:
     strategy:
       matrix:
         flavor: ['mp', 'mpgo']
+        include:
+          - folder: memoplanner
+    defaults:
+      run:
+        working-directory: ./${{ matrix.folder }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: subosito/flutter-action@v2.5.0
       with:
-        flutter-version: '3.0.5'
+        flutter-version: '3.3.6'
         channel: 'stable'
 
     - run: |
@@ -37,36 +42,50 @@ jobs:
     strategy:
       matrix:
         flavor: ['mp', 'mpgo']
+        include:
+          - folder: memoplanner
+    defaults:
+      run:
+        working-directory: ./${{ matrix.folder }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: actions/setup-java@v2
       with:
         java-version: '11'
         distribution: 'temurin'
     - uses: subosito/flutter-action@v2.5.0
       with:
-        flutter-version: '3.0.5'
+        flutter-version: '3.3.6'
         channel: 'stable'
 
     - id: set_build_number
+      name: Set build number
       run: |
         version=$(( $GITHUB_RUN_NUMBER + 2000))
-        echo "::set-output name=buildnumber::$version"
+        echo "buildnumber=$version" >> $GITHUB_OUTPUT
 
     - id: set_release_type
+      name: Set release type
       run: |
         type=$([[ $GITHUB_REF == "refs/heads/release" ]] && echo "release" || echo "dev")
-        echo "::set-output name=releasetype::$type"
+        echo "releasetype=$type" >> $GITHUB_OUTPUT
 
-    - run: |
-        flutter build appbundle --flavor ${{ matrix.flavor }} --build-number=${{ steps.set_build_number.outputs.buildnumber }} --dart-define release=${{ steps.set_release_type.outputs.releasetype }} --dart-define flavor=${{ matrix.flavor }}
+    - name: Build artifact
+      run: |
+        flutter build appbundle \
+          --flavor ${{ matrix.flavor }} \
+          --build-number=${{ steps.set_build_number.outputs.buildnumber }} \
+          --dart-define release=${{ steps.set_release_type.outputs.releasetype }} \
+          --dart-define flavor=${{ matrix.flavor }}
+
       env:
         APPCENTER_KEYSTORE_PASSWORD: ${{ secrets.APPCENTER_KEYSTORE_PASSWORD }}
         APPCENTER_KEY_PASSWORD: ${{ secrets.APPCENTER_KEY_PASSWORD }}
-    - uses: actions/upload-artifact@v3
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
       with:
         name: app-${{ matrix.flavor }}-release
-        path: build/app/outputs/bundle/**/app-${{ matrix.flavor }}-release.aab
+        path: ${{ matrix.folder }}/build/app/outputs/bundle/**/app-${{ matrix.flavor }}-release.aab
         retention-days: 1
 
   upload:
@@ -80,11 +99,13 @@ jobs:
     steps:
 
       - id: set_package_name
+        name: Set package name
         run: |
           packageName=$( ${{ contains(matrix.flavor, 'go') }} && echo "com.abilia.memoplannergo" || echo "com.abilia.memoplanner" )
-          echo "::set-output name=packageName::$packageName"
+          echo "packageName=$packageName" >> $GITHUB_OUTPUT
       
       - id: decide_track
+        name: Decide Google play track
         run: |
           if [[ "${{ needs.build.outputs.releasetype }}" == "release" ]]
           then
@@ -98,12 +119,14 @@ jobs:
           else
             track="Development track"
           fi
-          echo "::set-output name=track::$track"
+          echo "track=$track" >> $GITHUB_OUTPUT
 
-      - uses: actions/download-artifact@v3
+      - name: Download artifact
+        uses: actions/download-artifact@v3
         with:
           name: app-${{ matrix.flavor }}-release
-      - uses: r0adkll/upload-google-play@v1
+      - name: Upload artifact to Google play
+        uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ env.SERVICE_ACCOUNT_JSON }}
           packageName: ${{ steps.set_package_name.outputs.packageName }}

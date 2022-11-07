@@ -1,31 +1,8 @@
-# MEMOplanner generation 4
+# The Seagull Project
 
-Code name seagull
+[:calendar: memoplanner](https://github.com/abilia/seagull/tree/master/memoplanner/)
 
-## Building for android
-
-The following environmental variables needs to be defined:
-
-- APPCENTER_KEYSTORE_PASSWORD
-- APPCENTER_KEY_PASSWORD
-
-Ask a developer for the keys
-
-## Running MEMOplanner Go
-
-`$ flutter run --flavor mpgo`
-
-## Running MEMOplanner
-
-`$ flutter run --flavor mp --dart-define flavor=mp`
-
-## Running with dev
-
-Add
-
-`--dart-define release=dev`
-
-for building with dev features such as fake time and to be able to skip initial startup guide for MEMOplanner
+[:blue_book: handi](https://github.com/abilia/seagull/tree/master/handi/)
 
 ## Workflow
 
@@ -57,7 +34,7 @@ Squash commits for feature branches are permitted if there are trivial commits t
 
 - When a release period starts there should not be any stories in "Ready for test" or "Test".
 
-- All strings are translated, e.i. the file [translations.missing.tsv](https://github.com/abilia/seagull/blob/master/lib/i18n/translations.missing.tsv) should not exist.
+- All strings are translated, e.i. the files `translations.missing.tsv` [:calendar:](https://github.com/abilia/seagull/blob/master/memoplanner/lib/i18n/translations.missing.tsv) should not exist.
 
 ### Creating the release candidate
 
@@ -65,11 +42,17 @@ The **master** branch is then merged to the **release** branch.
 
 After first release candidate the version in the **master** branch should be increased to the next major or minor version.
 
+Each release candidate is released on Google Play on Closed testing - Alpha [:calendar:](https://play.google.com/console/u/0/developers/8640289046801512570/app/4973610386809775563/tracks/4698231159357572066)
+
 #### Fixes in release candidate
 
 If bugs are found in the release candidate that needs to be fixed, a release candidate branch is created starting with **release-rcX**, like **release-rc2**.
 
 When all fixes are added to the **release-rcX** branch, the branch is merge down to **release** where a new release candidate is created.
+
+#### After regression test
+
+When the release candidate is approved, the alpha version on Google Play should be promoted to Closed track - Beta track [:calendar:](https://play.google.com/console/u/0/developers/8640289046801512570/app/4973610386809775563/tracks/4699652622759840581)
 
 ### Releasing the app
 
@@ -78,86 +61,6 @@ Once a release is created the last commit is tagged with the version number.
 ## Fixing a bug in release
 
 A fix in release is is the same as fixing a bug in release candidate, with the exception of that the patch version is increased. Only fixes in released version will increase the patch version.
-
-## Translations
-
-### How it works
-
-The translations are written in [lib/i18n/translations.tsv](https://github.com/abilia/seagull/blob/master/lib/i18n/translations.tsv) as tab separated values.
-
-The first column is the id and need to be unique, then each column [lib/i18n/translations.g.dart](https://github.com/abilia/seagull/blob/master/lib/i18n/translations.g.dart) is each language as define by the first line in that column (the first row).
-
-The translations are automatically generated as the file [lib/i18n/translations.g.dart](https://github.com/abilia/seagull/blob/master/lib/i18n/translations.g.dart) when running the command  
-
-`$ flutter packages pub run build_runner build --delete-conflicting-outputs`
-
-Missing translations will fallback to the english translation.
-
-All missing translations will be written to the file [lib/i18n/translation.missing.tsv](https://github.com/abilia/seagull/blob/master/lib/i18n/translations.missing.tsv)
-
-### Add new string
-
-To add new strings for translation:
-
-- add a unique id to a new row
-- separate with a tab
-- write the english translation
-- run `$ flutter packages pub run build_runner build --delete-conflicting-outputs`
-
-### Add new language
-
-To add a new language:
-
-- Add the language code to the header row
-- Add the supported language to [`ios/Runner/Info.plist`](https://github.com/abilia/seagull/blob/master/ios/Runner/Info.plist) - see <https://flutter.dev/docs/development/accessibility-and-localization/internationalization#localizing-for-ios-updating-the-ios-app-bundle>
-
-#### Special cases
-
-- If you want an empty string, put **&empty&** as placeholder
-- **\\** needs to be escaped with another **\\** as such: **\\\\**
-- The character **( )**(tab) is not supported
-- Comments line starts with **#**
-
-## Tests
-
-### Testing flavor specific code
-
-All tests are run as config MEMOplanner Go flavor as default.
-
-To run a tests as a MEMOplanner:
-`$ flutter test --dart-define flavor=mp`
-
-For adding flavor specific tests, add skip to test or group: `skip: !Config.isMP);` or `skip: !Config.isMPGO);`
-
-Example:
-
-```dart
-test('runs only on mpgo', () {
-  expect(Config.flavor, Flavor.mpgo);
-}, skip: !Config.isMPGO);
-
-group('group runs only on mp', () {
-  test('mp test', () {
-    expect(Config.flavor, Flavor.mp);
-  });
-}, skip: !Config.isMP);
-```
-
-### Test coverage
-
-For test coverage run
-
-`$ flutter test --coverage && genhtml coverage/lcov.info -o coverage/html`
-
-or
-
-`$ flutter test  --dart-define flavor=mp --coverage && genhtml coverage/lcov.info -o coverage/html`
-
-### Integration tests
-
-To run the tests:
-
-`$ flutter drive --driver=test_driver/integration_test.dart --target=integration_test/integration_tests.dart`
 
 ### Screenshots
 To take automatic screenshots a specific integration test is setup in the file integration_test/screenshots.dart

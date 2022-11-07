@@ -1,0 +1,37 @@
+import 'dart:async';
+
+import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/utils/all.dart';
+
+class DayPartCubit extends Cubit<DayPart> {
+  DayPartCubit(
+    this.settingsBloc,
+    this.clockBloc,
+  ) : super(
+          clockBloc.state.dayPart(settingsBloc.state.calendar.dayParts),
+        ) {
+    _clockSubscription = clockBloc.stream.listen(_conditionChanged);
+    _dayPartsSubscription = settingsBloc.stream
+        .map((state) => state.calendar.dayParts)
+        .listen(_conditionChanged);
+  }
+  final ClockBloc clockBloc;
+  final MemoplannerSettingsBloc settingsBloc;
+  late final StreamSubscription _clockSubscription, _dayPartsSubscription;
+
+  void _conditionChanged([condition]) {
+    final now = condition is DateTime ? condition : clockBloc.state;
+    final dayParts = condition is DayParts
+        ? condition
+        : settingsBloc.state.calendar.dayParts;
+    emit(now.dayPart(dayParts));
+  }
+
+  @override
+  Future<void> close() async {
+    await _clockSubscription.cancel();
+    await _dayPartsSubscription.cancel();
+    await super.close();
+  }
+}

@@ -5,13 +5,24 @@ on:
     branches:
       - master
       - release*
+    paths-ignore:
+      - '**/ios/**'
+      - '**/android/**'
+      - '**/*.md'
 
 jobs:
   analyze:
+    strategy:
+      matrix:
+        include:
+          - folder: memoplanner
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: ./${{ matrix.folder }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - run: |
         if (( $(tr -d -c '\t\n' < lib/i18n/translations.tsv | uniq -c | wc -l) > 1 )); then
           echo >&2 "translations.tsv is not uniformed in tabs"
@@ -19,7 +30,7 @@ jobs:
         fi
     - uses: subosito/flutter-action@v2.5.0
       with:
-        flutter-version: '3.0.5'
+        flutter-version: '3.3.6'
         channel: 'stable'
 
     - run: flutter pub get
@@ -35,11 +46,16 @@ jobs:
     strategy:
       matrix:
         flavor: ['mp', 'mpgo']
+        include:
+          - folder: memoplanner
+    defaults:
+      run:
+        working-directory: ./${{ matrix.folder }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: subosito/flutter-action@v2.5.0
       with:
-        flutter-version: '3.0.5'
+        flutter-version: '3.3.6'
         channel: 'stable'
 
     - run: |
