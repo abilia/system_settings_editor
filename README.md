@@ -61,9 +61,3 @@ Once a release is created the last commit is tagged with the version number.
 ## Fixing a bug in release
 
 A fix in release is is the same as fixing a bug in release candidate, with the exception of that the patch version is increased. Only fixes in released version will increase the patch version.
-
-### Screenshots
-To take automatic screenshots a specific integration test is setup in the file integration_test/screenshots.dart
-To run the screenshot integration test connect to a device and run the following command:
-
-`$ flutter drive --driver=test_driver/integration_test.dart --target=integration_test/screenshots.dart --flavor mp --dart-define="flavor=mp" --dart-define="release=dev"`
