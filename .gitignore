@@ -83,4 +83,4 @@
 **/node_modules/
 
 # Screenshots
-screenshots/
+**/screenshots/
