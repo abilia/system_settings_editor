@@ -105,5 +105,6 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
 }
 
 class UpdateActivityApplyToAllDaysError extends Error {
+  @override
   String toString() => 'Cannot apply a change to all days in a series';
 }
