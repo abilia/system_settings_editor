@@ -5,8 +5,8 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:seagull/main.dart' as app;
-import 'package:seagull/ui/all.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/main.dart' as app;
 
 void main() async {
   const userId = 'screenshot';
@@ -272,75 +272,6 @@ extension on WidgetTester {
     await pumpAndSettle();
   }
 
-  Future<void> editNote(String extraNote) async {
-    await tap(find.byType(ActivityCard));
-    await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.edit));
-    await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.attachment));
-    await pumpAndSettle();
-    await tap(find.byType(NoteBlock));
-    await pumpAndSettle();
-    await showKeyboard(find.byKey(TestKey.input));
-    await pumpAndSettle();
-    await enterText(find.byKey(TestKey.input), extraNote);
-    await pumpAndSettle();
-    await tap(find.byType(OkButton));
-    await pumpAndSettle();
-    await tap(find.byType(NextWizardStepButton));
-    await pumpAndSettle();
-    await tap(find.byKey(TestKey.activityBackButton));
-    await pumpAndSettle();
-  }
-
-  Future<void> createActivityWithNote(String note) async {
-    await tap(find.byType(AddButton));
-    await pumpAndSettle();
-
-    await tap(find.byType(NextButton));
-    await pumpAndSettle();
-
-    await tap(find.byType(NameInput));
-    await pumpAndSettle();
-
-    await showKeyboard(find.byKey(TestKey.input));
-    await pumpAndSettle();
-    await enterText(find.byKey(TestKey.input), 'Activity with note');
-    await tap(find.byType(OkButton));
-    await pumpAndSettle();
-
-    await tap(find.byType(TimeIntervalPicker));
-    await pumpAndSettle();
-
-    await tap(find.byKey(TestKey.startTimeInput));
-    await pumpAndSettle();
-    await showKeyboard(find.byKey(TestKey.startTimeInput));
-    await pumpAndSettle();
-    await enterText(find.byKey(TestKey.startTimeInput), '1000');
-    await tap(find.byType(OkButton));
-    await pumpAndSettle();
-
-    await tap(find.byIcon(AbiliaIcons.attachment));
-    await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.information));
-    await pumpAndSettle();
-    await tap(find.byKey(TestKey.infoItemNoteRadio));
-    await pumpAndSettle();
-    await tap(find.byType(OkButton));
-    await pumpAndSettle();
-    await tap(find.byType(NoteBlock));
-    await pumpAndSettle();
-
-    await showKeyboard(find.byKey(TestKey.input));
-    await pumpAndSettle();
-    await enterText(find.byKey(TestKey.input), note);
-    await pumpAndSettle();
-    await tap(find.byType(OkButton));
-    await pumpAndSettle();
-    await tap(find.byType(NextWizardStepButton));
-    await pumpAndSettle();
-  }
-
   Future<void> addText(String text, Type input) async {
     await tap(find.byType(input));
     await pumpAndSettle();
@@ -374,11 +305,6 @@ extension on WidgetTester {
     await pumpAndSettle();
 
     await tap(find.byType(LoginButton));
-    await pumpAndSettle();
-  }
-
-  Future<void> pressCancelButton() async {
-    await tap(find.byType(CancelButton));
     await pumpAndSettle();
   }
 }
