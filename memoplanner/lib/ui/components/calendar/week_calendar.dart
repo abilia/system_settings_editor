@@ -305,6 +305,7 @@ class _FullDayActivities extends StatelessWidget {
         activityOccasion: fullDayActivities.first,
         selected: selected,
         fullDay: true,
+        maxLines: 2,
       );
     }
     return const SizedBox.shrink();
@@ -447,6 +448,7 @@ class _WeekDayColumnItems extends StatelessWidget {
             child: _WeekActivityContent(
               activityOccasion: occasion,
               selected: selected,
+              maxLines: 3,
             ),
           );
   }
@@ -456,7 +458,6 @@ class _WeekDayColumnItems extends StatelessWidget {
         ? TimerCard(
             timerOccasion: occasion,
             day: day,
-            overflow: TextOverflow.clip,
           )
         : _WeekTimerContent(
             timerOccasion: occasion,
@@ -494,6 +495,7 @@ class _WeekActivityContent extends StatelessWidget {
   const _WeekActivityContent({
     required this.activityOccasion,
     required this.selected,
+    required this.maxLines,
     this.fullDay = false,
     Key? key,
   }) : super(key: key);
@@ -501,11 +503,13 @@ class _WeekActivityContent extends StatelessWidget {
   final ActivityOccasion activityOccasion;
   final double scaleFactor = 2 / 3;
   final bool selected, fullDay;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
     final wLayout = layout.weekCalendar;
     final inactive = activityOccasion.isPast || activityOccasion.isSignedOff;
+
     return Tts.fromSemantics(
       activityOccasion.activity.semanticsProperties(context),
       child: _WeekEventContent(
@@ -545,11 +549,11 @@ class _WeekActivityContent extends StatelessWidget {
               )
             else
               Center(
-                child: Text(
+                child: EllipsesText(
                   activityOccasion.activity.title,
-                  overflow: TextOverflow.clip,
                   style: Theme.of(context).textTheme.caption ?? caption,
                   textAlign: TextAlign.center,
+                  maxLines: maxLines,
                 ),
               ),
             if (activityOccasion.isPast)
@@ -583,7 +587,8 @@ class _WeekTimerContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final wLayout = layout.weekCalendar;
-    final textStyle = Theme.of(context).textTheme.caption ?? caption;
+    final textStyle = (Theme.of(context).textTheme.caption ?? caption)
+        .copyWith(overflow: TextOverflow.ellipsis);
 
     return Tts.fromSemantics(
       timerOccasion.timer.semanticsProperties(context),
@@ -653,8 +658,7 @@ class _WeekTimerContent extends StatelessWidget {
                 child: Text(
                   timerOccasion.timer.title,
                   style: textStyle,
-                  overflow: TextOverflow.clip,
-                  maxLines: 1,
+                  maxLines: 2,
                   textAlign: TextAlign.center,
                 ),
               )

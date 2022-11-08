@@ -40,5 +40,6 @@ export 'activity/youtube_player.dart';
 export 'default_tab_controller_builder.dart';
 export 'new_activity_widget.dart';
 export 'new_timer_widget.dart';
+export 'ellipses_text.dart';
 
 export 'package:flutter/semantics.dart';
