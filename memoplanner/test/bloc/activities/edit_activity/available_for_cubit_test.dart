@@ -48,7 +48,7 @@ void main() {
   });
 
   test(
-      'Change to selected support persons and select a person. Changing to  \'only me\' will remove selection',
+      "Change to selected support persons and select a person. Changing to  'only me' will remove selection",
       () async {
     final availableForCubit =
         AvailableForCubit(supportPersonsRepository: supportPersonsRepository);

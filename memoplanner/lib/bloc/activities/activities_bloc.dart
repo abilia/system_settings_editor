@@ -32,134 +32,71 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     Emitter<ActivitiesState> emit,
   ) async {
     if (event is LoadActivities) {
-      await _mapLoadActivitiesToState(event, emit);
-    } else if (event is ManipulateActivitiesEvent) {
-      if (event is AddActivity) {
-        await _mapAddActivityToState(event, emit);
-      } else if (event is UpdateActivity) {
-        await _mapUpdateActivityToState(event, emit);
-      } else if (event is DeleteActivity) {
-        await _mapDeleteActivityToState(event, emit);
-      } else if (event is UpdateRecurringActivity) {
-        await _mapUpdateRecurringToState(event, emit);
-      } else if (event is DeleteRecurringActivity) {
-        await _mapDeleteRecurringToState(event, emit);
-      }
-    }
-  }
-
-  Future _mapLoadActivitiesToState(
-    LoadActivities event,
-    Emitter<ActivitiesState> emit,
-  ) async {
-    try {
       emit(ActivitiesLoaded());
-    } catch (_) {
-      emit(ActivitiesLoadedFailed());
+    } else if (event is ManipulateActivitiesEvent) {
+      final savableActivities = await _manipulateActivity(event);
+      await activityRepository.save(savableActivities);
+      emit(ActivitiesLoaded());
+      syncBloc.add(const ActivitySaved());
     }
   }
 
-  Future _mapAddActivityToState(
-    AddActivity event,
-    Emitter<ActivitiesState> emit,
-  ) async {
-    await _saveActivities([event.activity]);
-    emit(ActivitiesLoaded());
+  FutureOr<Iterable<Activity>> _manipulateActivity(
+    ManipulateActivitiesEvent event,
+  ) {
+    if (event is UpdateRecurringActivity) {
+      return _mapUpdateRecurringToState(event);
+    } else if (event is DeleteRecurringActivity) {
+      return _mapDeleteRecurringToState(event);
+    }
+    return [event.activity];
   }
 
-  Future _mapDeleteActivityToState(
-    DeleteActivity event,
-    Emitter<ActivitiesState> emit,
-  ) async {
-    await _saveActivities([event.activity.copyWith(deleted: true)]);
-    emit(ActivitiesLoaded());
-  }
-
-  Future _mapUpdateActivityToState(
-    UpdateActivity event,
-    Emitter<ActivitiesState> emit,
-  ) async {
-    await _saveActivities([event.activity]);
-    emit(ActivitiesLoaded());
-  }
-
-  Future _mapDeleteRecurringToState(
+  Future<Iterable<Activity>> _mapDeleteRecurringToState(
     DeleteRecurringActivity event,
-    Emitter<ActivitiesState> emit,
   ) async {
     final series =
         (await activityRepository.getBySeries(event.activity.seriesId)).toSet();
     final activity = event.activity;
     switch (event.applyTo) {
       case ApplyTo.allDays:
-        await _saveActivities(series.map((a) => a.copyWith(deleted: true)));
-        emit(ActivitiesLoaded());
-        break;
+        return series.map((a) => a.copyWith(deleted: true));
       case ApplyTo.thisDayAndForward:
-        await _handleResult(
-          deleteThisDayAndForwardToState(
-            activities: series,
-            activity: activity,
-            day: event.day,
-          ),
-          emit,
-        );
-        break;
+        return deleteThisDayAndForwardToState(
+          activities: series,
+          activity: activity,
+          day: event.day,
+        ).save;
       case ApplyTo.onlyThisDay:
-        await _handleResult(
-          deleteOnlyThisDay(
-            activity: activity,
-            activities: series,
-            day: event.day,
-          ),
-          emit,
-        );
-        break;
+        return deleteOnlyThisDay(
+          activity: activity,
+          activities: series,
+          day: event.day,
+        ).save;
     }
   }
 
-  Future<void> _mapUpdateRecurringToState(
+  Future<Iterable<Activity>> _mapUpdateRecurringToState(
     UpdateRecurringActivity event,
-    Emitter<ActivitiesState> emit,
   ) async {
     final series =
         (await activityRepository.getBySeries(event.activity.seriesId)).toSet();
     switch (event.applyTo) {
       case ApplyTo.thisDayAndForward:
-        await _handleResult(
-          updateThisDayAndForward(
-            activity: event.activity,
-            activities: series,
-            day: event.day,
-          ),
-          emit,
-        );
-        break;
+        return updateThisDayAndForward(
+          activity: event.activity,
+          activities: series,
+          day: event.day,
+        ).save;
       case ApplyTo.onlyThisDay:
-        await _handleResult(
-          updateOnlyThisDay(
-            activities: series,
-            activity: event.activity,
-            day: event.day,
-          ),
-          emit,
-        );
-        break;
-      default:
+        return updateOnlyThisDay(
+          activities: series,
+          activity: event.activity,
+          day: event.day,
+        ).save;
+      case ApplyTo.allDays:
+        throw UpdateActivityApplyToAllDaysError();
     }
-  }
-
-  Future _handleResult(
-    ActivityMappingResult res,
-    Emitter<ActivitiesState> emit,
-  ) async {
-    await _saveActivities(res.save);
-    emit(ActivitiesLoaded());
-  }
-
-  Future<void> _saveActivities(Iterable<Activity> activities) async {
-    await activityRepository.save(activities);
-    syncBloc.add(const ActivitySaved());
   }
 
   @override
@@ -167,4 +104,9 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     await _syncSubscription.cancel();
     return super.close();
   }
+}
+
+class UpdateActivityApplyToAllDaysError extends Error {
+  @override
+  String toString() => 'Cannot apply a change to all days in a series';
 }

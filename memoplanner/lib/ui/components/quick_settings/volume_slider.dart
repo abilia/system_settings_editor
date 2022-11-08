@@ -114,7 +114,7 @@ abstract class _VolumeSliderState extends State<_VolumeSlider>
     }
   }
 
-  void _initVolume() async {
+  Future<void> _initVolume() async {
     try {
       final volume = await getVolume();
       final minVolume = await getMinVolume();

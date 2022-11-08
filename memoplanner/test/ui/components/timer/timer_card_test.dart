@@ -104,7 +104,7 @@ void main() {
     );
   });
 
-  testWidgets('timer card doesn\'t use opacity', (tester) async {
+  testWidgets('timer card does not use opacity', (tester) async {
     const timerTitle = 'timer title';
     final timerOccasion = TimerOccasion(
       AbiliaTimer.createNew(

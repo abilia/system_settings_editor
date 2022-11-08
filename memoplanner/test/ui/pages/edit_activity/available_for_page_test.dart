@@ -187,7 +187,7 @@ void main() {
     expect(find.byType(SupportPersonsWidget), findsOneWidget);
   });
 
-  testWidgets('Don\'t show support persons when tapping other radio buttons',
+  testWidgets('Do not show support persons when tapping other radio buttons',
       (WidgetTester tester) async {
     await tester.pumpWidget(createEditActivityPage());
     await tester.pumpAndSettle();

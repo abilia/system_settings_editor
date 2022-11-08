@@ -1,0 +1,10 @@
+name: translation_generator
+
+environment:
+  sdk: '>=2.18.2 <3.0.0'
+
+dev_dependencies:
+  build: any
+  built_collection: any
+  code_builder: any
+  dart_style: any

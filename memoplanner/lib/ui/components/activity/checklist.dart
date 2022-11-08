@@ -107,7 +107,7 @@ class EditQuestionView extends StatelessWidget {
     );
   }
 
-  void _editQuestion(
+  Future<void> _editQuestion(
     Question oldQuestion,
     BuildContext context,
   ) async {
@@ -257,7 +257,8 @@ class QuestionView extends StatelessWidget {
     );
   }
 
-  void _showImage(String fileId, String filePath, BuildContext context) async {
+  Future<void> _showImage(
+      String fileId, String filePath, BuildContext context) async {
     await showViewDialog<bool>(
       useSafeArea: false,
       context: context,

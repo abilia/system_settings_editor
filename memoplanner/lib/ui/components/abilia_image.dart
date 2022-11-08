@@ -170,7 +170,7 @@ class CheckedImageWithImagePopup extends StatelessWidget {
     );
   }
 
-  void _showImage(
+  Future<void> _showImage(
     String fileId,
     String filePath,
     BuildContext context,

@@ -122,5 +122,9 @@ class TestKey {
       addActivitySelectAlarmSwitch = Key('addActivitySelectAlarm'),
       addActivitySelectReminderSwitch = Key('addActivitySelectReminder'),
       addActivitySelectChecklistSwitch = Key('addActivitySelectChecklist'),
-      addActivitySelectNoteSwitch = Key('addActivitySelectNote');
+      addActivitySelectNoteSwitch = Key('addActivitySelectNote'),
+      skipProductionGuide = Key('skipProductionGuide'),
+      startWelcomGuide = Key('startWelcomGuide'),
+      nextWelcomeGuide = Key('nextWelcomeGuide'),
+      finishWelcomeGuide = Key('finishWelcomeGuide');
 }

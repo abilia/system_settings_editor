@@ -39,7 +39,10 @@ class WelcomePage extends StatelessWidget {
                 pageController.nextPage(
                     duration: 500.milliseconds(), curve: Curves.easeOutQuad);
               },
-              child: Text(t.start),
+              child: Text(
+                t.start,
+                key: TestKey.startWelcomGuide,
+              ),
             ),
           ),
         ],

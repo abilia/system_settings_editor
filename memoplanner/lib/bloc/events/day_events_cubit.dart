@@ -33,7 +33,7 @@ class DayEventsCubit extends Cubit<EventsState> {
     _updateState();
   }
 
-  void _updateState({
+  Future<void> _updateState({
     List<TimerOccasion>? timers,
     DateTime? day,
     Occasion? occasion,
