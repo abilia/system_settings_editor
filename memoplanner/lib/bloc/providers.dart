@@ -98,7 +98,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               create: (context) => ActivitiesBloc(
                 activityRepository: context.read<ActivityRepository>(),
                 syncBloc: context.read<SyncBloc>(),
-              )..add(LoadActivities()),
+              ),
             ),
             BlocProvider<TimerCubit>(
               create: (context) => TimerCubit(

@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
-import 'package:rxdart/rxdart.dart';
 
 part 'activities_event.dart';
 
@@ -21,9 +20,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
     required this.activityRepository,
     required this.syncBloc,
   }) : super(ActivitiesNotLoaded()) {
-    _syncSubscription = syncBloc.stream
-        .whereType<Synced>()
-        .listen((state) => add(LoadActivities()));
+    _syncSubscription =
+        syncBloc.stream.listen((state) => add(LoadActivities()));
     on<ActivitiesEvent>(_onEvent, transformer: sequential());
   }
 
