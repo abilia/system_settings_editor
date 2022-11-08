@@ -28,7 +28,3 @@ class SortableSaved extends SyncEvent {
 class GenericSaved extends SyncEvent {
   const GenericSaved([String? id]) : super(id);
 }
-
-class FakeSync extends SyncEvent {
-  const FakeSync();
-}

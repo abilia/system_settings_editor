@@ -6,6 +6,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'generic_state.dart';
 
@@ -18,11 +19,8 @@ class GenericCubit extends Cubit<GenericState> {
     required this.genericRepository,
     required this.syncBloc,
   }) : super(GenericsNotLoaded()) {
-    syncSubscription = syncBloc.stream.listen(
-      (state) {
-        if (state is Synced) loadGenerics();
-      },
-    );
+    syncSubscription =
+        syncBloc.stream.whereType<Synced>().listen((state) => loadGenerics());
   }
 
   void genericUpdated(Iterable<GenericData> genericData) async {

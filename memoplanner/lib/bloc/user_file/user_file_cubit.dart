@@ -13,6 +13,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'user_file_state.dart';
 
@@ -27,11 +28,8 @@ class UserFileCubit extends Cubit<UserFileState> {
     required this.syncBloc,
     required this.fileStorage,
   }) : super(const UserFilesNotLoaded()) {
-    _syncSubscription = syncBloc.stream.listen(
-      (state) {
-        if (state is Synced) loadUserFiles();
-      },
-    );
+    _syncSubscription =
+        syncBloc.stream.whereType<Synced>().listen((state) => loadUserFiles());
   }
 
   Future loadUserFiles([_]) async {

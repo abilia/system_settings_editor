@@ -67,13 +67,14 @@ class UserFileRepository extends DataRepository<UserFile> {
         final syncResponses = await _postUserFiles(dirtyFiles, lastRevision);
         await handleSuccessfulSync(syncResponses, dirtyFiles);
         return didFetchData;
-      } on WrongRevisionException catch (_) {
+      } on WrongRevisionException catch (e) {
         log.info('Wrong revision when posting user files');
         await _handleFailedSync();
-      } catch (e) {
+        throw SyncFailedException(e);
+      } on Exception catch (e) {
         log.warning('Cannot post user files to backend', e);
+        throw SyncFailedException(e);
       }
-      throw SyncFailedException();
     });
   }
 

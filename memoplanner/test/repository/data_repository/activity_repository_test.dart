@@ -43,6 +43,8 @@ void main() {
     when(() => mockBaseUrlDb.baseUrl).thenReturn(baseUrl);
     when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
+    when(() => mockActivityDb.insert(any()))
+        .thenAnswer((_) => Future.value(true));
     activities = dbActivities.map((a) => a.activity);
 
     activityRepo = ActivityRepository(
@@ -160,7 +162,7 @@ void main() {
         .thenAnswer((_) => Future.value(successActivity.copyWith(dirty: 5)));
 
     // Act
-    await activityRepo.synchronize().catchError((_) => true);
+    await activityRepo.synchronize();
 
     // Expect
     verify(() => mockClient.post(
@@ -221,7 +223,7 @@ void main() {
         )));
 
     // Act
-    await activityRepo.synchronize().catchError((_) => true);
+    await activityRepo.synchronize();
 
     // Expect/Verify
     verify(() => mockActivityDb

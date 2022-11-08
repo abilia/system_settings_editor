@@ -6,14 +6,13 @@ import 'package:memoplanner/bloc/all.dart';
 
 class PushCubit extends Cubit<RemoteMessage> {
   static final _log = Logger((PushCubit).toString());
-  static const Map<String, String> fakeMessage = {'fake': 'message'};
   PushCubit() : super(const RemoteMessage()) {
     _initFirebaseListener();
   }
 
   @visibleForTesting
   void fakePush({
-    Map<String, String> data = fakeMessage,
+    Map<String, String> data = const {},
   }) =>
       emit(RemoteMessage(data: data));
 
