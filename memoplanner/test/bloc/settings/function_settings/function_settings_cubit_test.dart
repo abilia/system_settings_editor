@@ -213,6 +213,8 @@ void main() {
 
   test('saving', () async {
     final genericCubit = MockGenericCubit();
+    when(() => genericCubit.genericUpdated(any())).thenAnswer(Future.value);
+
     final functionSettingsCubit = FunctionSettingsCubit(
       functionSettings: const FunctionsSettings(),
       genericCubit: genericCubit,

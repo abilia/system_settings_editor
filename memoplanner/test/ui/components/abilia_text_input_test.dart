@@ -243,7 +243,7 @@ void main() {
       );
 
       testWidgets(
-        'SGC-1871 don\'t speak every word when text to speech is false',
+        'SGC-1871 do not speak every word when text to speech is false',
         (WidgetTester tester) async {
           when(() => mockSpeechSettingsCubit.state).thenAnswer(
             (_) => const SpeechSettingsState(

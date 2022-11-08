@@ -14,7 +14,7 @@ class StartupCubit extends Cubit<StartupState> {
 
   final DeviceRepository deviceRepository;
 
-  void verifySerialId(String serialId, String licenseKey) async {
+  Future<void> verifySerialId(String serialId, String licenseKey) async {
     try {
       final clientId = await deviceRepository.getClientId();
       final verifiedOk = await deviceRepository.verifyDevice(
@@ -39,12 +39,12 @@ class StartupCubit extends Cubit<StartupState> {
     emit(WelcomeGuide());
   }
 
-  void startGuideDone() async {
+  Future<void> startGuideDone() async {
     await deviceRepository.setStartGuideCompleted();
     emit(StartupDone());
   }
 
-  void resetStartGuideDone() async {
+  Future<void> resetStartGuideDone() async {
     await deviceRepository.setStartGuideCompleted(false);
     emit(WelcomeGuide());
   }

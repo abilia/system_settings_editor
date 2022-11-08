@@ -38,7 +38,7 @@ class CreateAccountCubit extends Cubit<CreateAccountState> {
     emit(state.copyWith(privacyPolicy: accepted));
   }
 
-  void createAccountButtonPressed() async {
+  Future<void> createAccountButtonPressed() async {
     emit(state.loading());
     if (state.username.isEmpty) {
       emit(state.failed(CreateAccountFailure.noUsername));

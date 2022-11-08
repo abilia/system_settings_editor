@@ -15,7 +15,7 @@ class ActivityCubit extends Cubit<ActivityState> {
   late final StreamSubscription activitiesSubscription;
   final ActivitiesBloc activitiesBloc;
 
-  void _onNewState() async {
+  Future<void> _onNewState() async {
     final found =
         await activitiesBloc.activityRepository.getById(state.activityDay.id);
     if (found == null || found.deleted) {
@@ -24,7 +24,7 @@ class ActivityCubit extends Cubit<ActivityState> {
     _emitActivity(found);
   }
 
-  void onActivityUpdated(Activity activity) async {
+  void onActivityUpdated(Activity activity) {
     _emitActivity(activity);
     activitiesBloc.add(UpdateActivity(activity));
   }
