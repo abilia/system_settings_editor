@@ -24,13 +24,11 @@ class EllipsesText extends Text {
 
       final maxLines = constraints.maxHeight ~/ lineHeight;
 
-      return Tts(
-        child: Text(
-          data ?? '',
-          overflow: TextOverflow.ellipsis,
-          maxLines: maxLines.clamp(1, super.maxLines ?? 1),
-          style: style,
-        ),
+      return Text(
+        data ?? '',
+        overflow: TextOverflow.ellipsis,
+        maxLines: maxLines.clamp(1, super.maxLines ?? 1),
+        style: style,
       );
     });
   }
