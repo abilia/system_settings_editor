@@ -32,7 +32,11 @@ void main() {
 
   setUpAll(() {
     registerFallbackValues();
+  });
+
+  setUp(() {
     when(() => mockBaseUrlDb.baseUrl).thenReturn(baseUrl);
+    when(() => mockUserFileDb.insert(any())).thenAnswer((invocation) async {});
   });
 
   tearDown(() {
@@ -171,7 +175,7 @@ void main() {
     );
 
     // Act
-    await userFileRepository.synchronize().catchError((_) => true);
+    await userFileRepository.synchronize();
 
     // Verify
     verify(() => mockUserFileDb.insert([

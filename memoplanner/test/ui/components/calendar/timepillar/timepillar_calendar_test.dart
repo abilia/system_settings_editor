@@ -58,6 +58,9 @@ void main() {
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
     when(() => mockGenericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => mockGenericDb.getLastRevision())
+        .thenAnswer((_) => Future.value(11));
+    when(() => mockGenericDb.insert(any())).thenAnswer((_) => Future.value());
 
     final mockTimerDb = MockTimerDb();
     when(() => mockTimerDb.getAllTimers())
@@ -76,7 +79,7 @@ void main() {
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(
         activityResponse: activityResponse,
-        genericResponse: genericResponse,
+        genericResponse: () => genericResponse(),
       )
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()

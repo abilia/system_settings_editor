@@ -34,21 +34,13 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     required this.genericRepository,
     required this.syncDelay,
   }) : super(UnSynced()) {
-    _pushSubscription = pushCubit.stream.listen((message) {
-      final isFake = message.data == PushCubit.fakeMessage;
-      add(isFake ? const FakeSync() : const SyncAll());
-    });
+    _pushSubscription =
+        pushCubit.stream.listen((message) => add(const SyncAll()));
     on<ActivitySaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<FileSaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<SortableSaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<GenericSaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<SyncAll>(_trySync, transformer: bufferTimer(syncDelay));
-    on<FakeSync>(_fakeSync, transformer: bufferTimer(syncDelay));
-  }
-
-  Future _fakeSync(SyncEvent event, Emitter emit) async {
-    await _sync(const SyncAll());
-    emit(Synced());
   }
 
   Future _trySync(
