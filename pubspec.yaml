@@ -1,6 +1,6 @@
 name: seagull
 description: The seagull app.
-version: 4.1.0
+version: 4.1.1
 publish_to: none
 
 environment:
