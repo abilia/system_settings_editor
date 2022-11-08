@@ -81,3 +81,6 @@
 
 # Integration test node files
 **/node_modules/
+
+# Screenshots
+**/screenshots/
