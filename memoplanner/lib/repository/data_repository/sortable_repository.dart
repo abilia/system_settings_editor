@@ -16,14 +16,15 @@ class SortableRepository extends DataRepository<Sortable> {
     required int userId,
     required SortableDb sortableDb,
   }) : super(
-          client: client,
-          baseUrlDb: baseUrlDb,
-          path: 'sortableitems',
-          userId: userId,
-          db: sortableDb,
-          fromJsonToDataModel: DbSortable.fromJson,
-          log: Logger((SortableRepository).toString()),
-        );
+            client: client,
+            baseUrlDb: baseUrlDb,
+            path: 'sortableitems',
+            userId: userId,
+            db: sortableDb,
+            fromJsonToDataModel: DbSortable.fromJson,
+            log: Logger((SortableRepository).toString()),
+            filter: (sortable) =>
+                SortableType.supportedTypes.contains(sortable.model.type));
 
   Future<DbModel<Sortable<SortableData>>?> createMyPhotosFolder() =>
       _fetchFixedFolder(

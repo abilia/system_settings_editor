@@ -24,6 +24,7 @@ class GenericRepository extends DataRepository<Generic> {
           db: genericDb,
           fromJsonToDataModel: DbGeneric.fromJson,
           log: Logger((GenericRepository).toString()),
+          filter: (g) => g.model.type == GenericType.memoPlannerSettings,
         );
 
   @override
