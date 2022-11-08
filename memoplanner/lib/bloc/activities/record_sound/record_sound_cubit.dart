@@ -58,7 +58,7 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
     emit(const RecordingSoundState(Duration.zero));
   }
 
-  void _ticking(Duration duration) async {
+  Future<void> _ticking(Duration duration) async {
     if (duration >= maxRecordingTime) {
       emit(const RecordingSoundState(maxRecordingTime));
       await stopRecording();

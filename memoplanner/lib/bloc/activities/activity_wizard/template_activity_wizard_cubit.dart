@@ -29,7 +29,7 @@ class TemplateActivityWizardCubit extends WizardCubit {
   }
 
   @override
-  void removeCorrectedErrors() async {
+  void removeCorrectedErrors() {
     if (state.saveErrors.isNotEmpty &&
         editActivityCubit.state.hasTitleOrImage) {
       return emit(state.copyWith(saveErrors: {}));

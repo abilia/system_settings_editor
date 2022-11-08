@@ -6,7 +6,7 @@ class BaseUrlCubit extends Cubit<String> {
 
   final BaseUrlDb baseUrlDb;
 
-  void updateBaseUrl(String baseUrl) async {
+  Future<void> updateBaseUrl(String baseUrl) async {
     await baseUrlDb.setBaseUrl(baseUrl);
     emit(baseUrl);
   }

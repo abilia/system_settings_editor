@@ -21,7 +21,7 @@ class GenericCubit extends Cubit<GenericState> {
     syncSubscription = syncBloc.stream.listen((state) => loadGenerics());
   }
 
-  void genericUpdated(Iterable<GenericData> genericData) async {
+  Future<void> genericUpdated(Iterable<GenericData> genericData) async {
     final currentState = state;
     if (currentState is GenericsLoaded) {
       final toUpdate = {

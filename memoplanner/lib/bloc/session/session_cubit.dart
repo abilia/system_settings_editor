@@ -12,7 +12,7 @@ class SessionCubit extends Cubit<bool> {
   final SessionRepository sessionRepository;
   final _log = Logger((SessionCubit).toString());
 
-  void _initialize() async {
+  Future<void> _initialize() async {
     try {
       final sessions = await sessionRepository.fetchSessions();
       final hasMP4Session =

@@ -333,7 +333,7 @@ class BlocLoggingObserver extends BlocObserver {
   }
 
   @override
-  void onTransition(Bloc bloc, Transition transition) async {
+  void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
     if (analyticsLogging) logEventToAnalytics(transition);
     if (bloc is Silent) return;
@@ -353,7 +353,7 @@ class BlocLoggingObserver extends BlocObserver {
     _log(bloc, 'closed');
   }
 
-  void logEventToAnalytics(Transition transition) async {
+  Future<void> logEventToAnalytics(Transition transition) async {
     final event = transition.event;
     final nextState = transition.nextState;
     if (event is AddActivity) {

@@ -39,7 +39,7 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
   late final StreamSubscription _clockBlocSubscription;
   late final StreamSubscription _alarmCubitSubscription;
 
-  void _updateState() async {
+  Future<void> _updateState() async {
     final day = clockBloc.state.onlyDays();
     final activities = await activityRepository.allBetween(day, day.nextDay());
     emit(
