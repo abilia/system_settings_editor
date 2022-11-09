@@ -32,7 +32,7 @@ class _BrightnessSliderState extends State<BrightnessSlider>
     }
   }
 
-  void initBrightness() async {
+  Future<void> initBrightness() async {
     try {
       final b = await SystemSettingsEditor.brightness;
       setState(() {

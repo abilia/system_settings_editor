@@ -233,7 +233,7 @@ class AddNewQuestionButton extends StatelessWidget {
     );
   }
 
-  void _handleNewQuestion(BuildContext context) async {
+  Future<void> _handleNewQuestion(BuildContext context) async {
     final editChecklistCubit = context.read<EditChecklistCubit>();
     final result = await showAbiliaBottomSheet<ImageAndName>(
       context: context,

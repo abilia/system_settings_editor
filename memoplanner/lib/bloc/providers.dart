@@ -98,7 +98,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               create: (context) => ActivitiesBloc(
                 activityRepository: context.read<ActivityRepository>(),
                 syncBloc: context.read<SyncBloc>(),
-              )..add(LoadActivities()),
+              ),
             ),
             BlocProvider<TimerCubit>(
               create: (context) => TimerCubit(
@@ -220,7 +220,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             BlocProvider<NotificationBloc>(
               create: (context) => NotificationBloc(
                 memoplannerSettingBloc: context.read<MemoplannerSettingsBloc>(),
-                activitiesBloc: context.read<ActivitiesBloc>(),
                 activityRepository: context.read<ActivityRepository>(),
                 settingsDb: GetIt.I<SettingsDb>(),
                 timerDb: GetIt.I<TimerDb>(),

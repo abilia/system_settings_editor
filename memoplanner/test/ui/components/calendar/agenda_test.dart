@@ -91,6 +91,9 @@ void main() {
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
     when(() => mockGenericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => mockGenericDb.getLastRevision())
+        .thenAnswer((_) => Future.value(66));
+    when(() => mockGenericDb.insert(any())).thenAnswer((_) => Future.value());
 
     final mockTimerDb = MockTimerDb();
     when(() => mockTimerDb.getAllTimers())
@@ -108,6 +111,7 @@ void main() {
       ..client = Fakes.client(
         licenseResponse: () => licenseResponse,
         activityResponse: () => activityResponse,
+        genericResponse: () => genericResponse(),
       )
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()

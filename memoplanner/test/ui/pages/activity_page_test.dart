@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:memoplanner/background/all.dart';
-import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/main.dart';
 
@@ -175,28 +174,6 @@ void main() {
 
       await navigateToActivityPage(tester);
       expect(find.byType(YoutubePlayer), findsOneWidget);
-    });
-
-    testWidgets(
-        'When activity is deleted from myAbilia Pop back to CalendarPage',
-        (WidgetTester tester) async {
-      // Arrange
-      final pushCubit = PushCubit();
-      final activity = FakeActivity.starts(startTime);
-      mockActivityDb.initWithActivity(activity);
-
-      // Act
-      await tester.pumpWidget(App(pushCubit: pushCubit));
-      await tester.pumpAndSettle();
-      await tester.tap(activityTimepillarCardFinder);
-      await tester.pumpAndSettle();
-
-      mockActivityDb.insertAndAddDirty([activity.copyWith(deleted: true)]);
-      pushCubit.fakePush();
-      await tester.pumpAndSettle(const Duration(milliseconds: 500));
-
-      // Assert
-      expect(find.byType(CalendarPage), findsOneWidget);
     });
   });
 

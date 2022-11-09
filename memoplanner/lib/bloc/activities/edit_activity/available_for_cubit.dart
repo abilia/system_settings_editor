@@ -21,7 +21,7 @@ class AvailableForCubit extends Cubit<AvailableForState> {
     initialize();
   }
 
-  void initialize() async {
+  Future<void> initialize() async {
     emit(
       state.copyWith(
         allSupportPersons: await supportPersonsRepository.load(),

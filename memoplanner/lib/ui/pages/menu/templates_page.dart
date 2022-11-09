@@ -103,7 +103,7 @@ class TemplatesPage extends StatelessWidget {
     );
   }
 
-  void _onEditTemplateTimer(
+  Future<void> _onEditTemplateTimer(
     BuildContext context,
     Sortable<BasicTimerData> sortable,
     String title,

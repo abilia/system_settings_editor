@@ -102,7 +102,7 @@ class _CalendarScrollListenerState extends State<_CalendarScrollListener>
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
+  void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
       _updateScrollState();

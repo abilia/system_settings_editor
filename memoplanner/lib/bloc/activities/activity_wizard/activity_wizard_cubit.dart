@@ -154,7 +154,7 @@ class ActivityWizardCubit extends WizardCubit {
   }
 
   @override
-  void removeCorrectedErrors() async {
+  void removeCorrectedErrors() {
     if (state.saveErrors.isEmpty || !state.isLastStep) {
       return;
     }

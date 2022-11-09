@@ -33,9 +33,9 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
   }
 
   @override
-  void didChangeDependencies() async {
+  void didChangeDependencies() {
     super.didChangeDependencies();
-    await GetIt.I<SettingsDb>()
+    GetIt.I<SettingsDb>()
         .setAlwaysUse24HourFormat(MediaQuery.of(context).alwaysUse24HourFormat);
   }
 
@@ -46,7 +46,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
       GetIt.I<SettingsDb>().setAlwaysUse24HourFormat(
           MediaQuery.of(context).alwaysUse24HourFormat);
@@ -65,8 +65,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        BlocListener<ActivitiesBloc, ActivitiesState>(
-          listenWhen: (_, current) => current is ActivitiesLoaded,
+        BlocListener<ActivitiesBloc, ActivitiesChanged>(
           listener: (context, state) =>
               context.read<NotificationBloc>().add(NotificationEvent()),
         ),

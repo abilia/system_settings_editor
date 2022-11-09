@@ -148,7 +148,10 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                             onTap: () => context
                                 .read<StartupCubit>()
                                 .skipProductionGuide(),
-                            child: const Text('Skip production guide >'),
+                            child: const Text(
+                              'Skip production guide >',
+                              key: TestKey.skipProductionGuide,
+                            ),
                           ),
                         ],
                       ),

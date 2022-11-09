@@ -104,3 +104,11 @@ or
 To run the tests:
 
 `$ flutter drive --driver=test_driver/integration_test.dart --target=integration_test/integration_tests.dart`
+
+### Screenshots
+To take automatic screenshots a specific integration test is setup in the file integration_test/screenshots.dart.
+To run the screenshot integration test connect to a device and run the following command:
+
+`$ flutter drive --driver=test_driver/integration_test.dart --target=integration_test/screenshots.dart --flavor mp --dart-define="flavor=mp" --dart-define="release=dev" --profile`
+
+To be able run in profile mode and to get the most accurate screen dimensions, it's recommended to run the tests on a real device.

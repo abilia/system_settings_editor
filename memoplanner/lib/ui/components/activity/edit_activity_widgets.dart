@@ -136,7 +136,7 @@ class SelectPictureWidget extends StatelessWidget {
     );
   }
 
-  void imageClick(BuildContext context) async {
+  Future<void> imageClick(BuildContext context) async {
     final authProviders = copiedAuthProviders(context);
     final userFileCubit = context.read<UserFileCubit>();
     final sortableBloc = context.read<SortableBloc>();

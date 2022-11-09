@@ -126,13 +126,23 @@ void main() {
       betweenSync: betweenSync,
       retryDelay: retryDelay,
     );
-    late List<bool> failThenSucceed;
-    setUp(() => failThenSucceed = [false, true]);
+    late List<bool> responses;
+    setUp(() {
+      responses = [false, true];
+    });
+
+    Future<bool> failThenSucceed() {
+      if (responses.length >= 2) {
+        Future.value(responses.removeAt(0));
+        throw SyncFailedException();
+      }
+      return Future.value(responses.removeAt(0));
+    }
 
     blocTest<SyncBloc, dynamic>(
       'Failed ActivitySaved synchronize retrys to syncronize',
       setUp: () => when(() => activityRepository.synchronize())
-          .thenAnswer((_) => Future.value(failThenSucceed.removeAt(0))),
+          .thenAnswer((_) => failThenSucceed()),
       build: () => SyncBloc(
         pushCubit: FakePushCubit(),
         licenseCubit: FakeLicenseCubit(),
@@ -150,7 +160,7 @@ void main() {
     blocTest<SyncBloc, dynamic>(
       'Failed FileSaved synchronize retrys to syncronize',
       setUp: () => when(() => userFileRepository.synchronize())
-          .thenAnswer((_) => Future.value(failThenSucceed.removeAt(0))),
+          .thenAnswer((_) => failThenSucceed()),
       build: () => SyncBloc(
         pushCubit: FakePushCubit(),
         licenseCubit: FakeLicenseCubit(),
@@ -168,7 +178,7 @@ void main() {
     blocTest<SyncBloc, dynamic>(
       'Failed SortableSaved synchronize retrys to syncronize',
       setUp: () => when(() => sortableRepository.synchronize())
-          .thenAnswer((_) => Future.value(failThenSucceed.removeAt(0))),
+          .thenAnswer((_) => failThenSucceed()),
       build: () => SyncBloc(
         pushCubit: FakePushCubit(),
         licenseCubit: FakeLicenseCubit(),
@@ -186,7 +196,7 @@ void main() {
     blocTest<SyncBloc, dynamic>(
       'Failed GenericSaved synchronize retrys to syncronize',
       setUp: () => when(() => genericRepository.synchronize())
-          .thenAnswer((_) => Future.value(failThenSucceed.removeAt(0))),
+          .thenAnswer((_) => failThenSucceed()),
       build: () => SyncBloc(
         pushCubit: FakePushCubit(),
         licenseCubit: FakeLicenseCubit(),
@@ -278,7 +288,7 @@ void main() {
         'Failed syncs with other events in queue should dequeue other events before retrying (no starvation)',
         () async {
       when(() => activityRepository.synchronize())
-          .thenAnswer((_) => Future.value(false));
+          .thenThrow((_) => SyncFailedException());
       final syncBloc = SyncBloc(
           pushCubit: FakePushCubit(),
           licenseCubit: FakeLicenseCubit(),

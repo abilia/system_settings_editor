@@ -27,18 +27,8 @@ class CalendarPage extends StatelessWidget {
             child: Scaffold(
               bottomNavigationBar:
                   display.bottomBar ? const CalendarBottomBar() : null,
-              body: BlocSelector<ActivitiesBloc, ActivitiesState, bool>(
-                selector: (state) => state is ActivitiesNotLoaded,
-                builder: (context, activitiesNotLoaded) {
-                  if (activitiesNotLoaded) {
-                    return Center(
-                      child: SizedBox(
-                        width: layout.login.logoSize,
-                        height: layout.login.logoSize,
-                        child: const AbiliaProgressIndicator(),
-                      ),
-                    );
-                  }
+              body: Builder(
+                builder: (context) {
                   const emptyPage = EmptyCalendarPage();
                   const weekTab = WeekCalendarTab();
                   const monthTab = MonthCalendarTab();

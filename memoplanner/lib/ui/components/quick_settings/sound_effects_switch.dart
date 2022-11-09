@@ -40,7 +40,7 @@ class _SoundEffectSwitchState extends State<SoundEffectsSwitch> {
     );
   }
 
-  void initSetting() async {
+  Future<void> initSetting() async {
     try {
       final on = await SystemSettingsEditor.soundEffectsEnabled;
       setState(() {

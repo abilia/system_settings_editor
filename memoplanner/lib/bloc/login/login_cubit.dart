@@ -47,7 +47,7 @@ class LoginCubit extends Cubit<LoginState> {
     _login(confirmExpiredLicense: true);
   }
 
-  void _login({bool confirmExpiredLicense = false}) async {
+  Future<void> _login({bool confirmExpiredLicense = false}) async {
     emit(state.loading());
     if (!state.isUsernameValid) {
       emit(state.failure(cause: LoginFailureCause.noUsername));
