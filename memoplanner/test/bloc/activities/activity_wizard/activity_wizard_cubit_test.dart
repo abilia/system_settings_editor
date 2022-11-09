@@ -29,8 +29,7 @@ void main() {
 
   setUp(() {
     mockActivitiesBloc = MockActivitiesBloc();
-    when(() => mockActivitiesBloc.state)
-        .thenAnswer((_) => ActivitiesNotLoaded());
+    when(() => mockActivitiesBloc.state).thenAnswer((_) => ActivitiesChanged());
     mockActivityRepository = MockActivityRepository();
     when(() => mockActivityRepository.allBetween(any(), any()))
         .thenAnswer((_) => Future.value([]));

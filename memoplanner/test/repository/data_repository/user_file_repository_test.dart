@@ -32,7 +32,11 @@ void main() {
 
   setUpAll(() {
     registerFallbackValues();
+  });
+
+  setUp(() {
     when(() => mockBaseUrlDb.baseUrl).thenReturn(baseUrl);
+    when(() => mockUserFileDb.insert(any())).thenAnswer((invocation) async {});
   });
 
   tearDown(() {

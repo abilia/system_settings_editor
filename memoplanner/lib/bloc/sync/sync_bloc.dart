@@ -8,12 +8,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 
 part 'sync_event.dart';
-
-class SyncState {}
-
-class SyncPerformed extends SyncState {}
-
-class SyncNotPerformed extends SyncState {}
+part 'sync_state.dart';
 
 class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final PushCubit pushCubit;
@@ -28,7 +23,9 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
 
   late StreamSubscription _pushSubscription;
 
-  bool get hasSynced => state is SyncPerformed;
+  bool get isSynced => state is Synced;
+
+  bool get hasSynced => state is SyncDone;
 
   SyncBloc({
     required this.pushCubit,
@@ -38,8 +35,9 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     required this.sortableRepository,
     required this.genericRepository,
     required this.syncDelay,
-  }) : super(SyncNotPerformed()) {
-    _pushSubscription = pushCubit.stream.listen((v) => add(const SyncAll()));
+  }) : super(Syncing()) {
+    _pushSubscription =
+        pushCubit.stream.listen((message) => add(const SyncAll()));
     on<ActivitySaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<FileSaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<SortableSaved>(_trySync, transformer: bufferTimer(syncDelay));
@@ -51,13 +49,20 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     SyncEvent event,
     Emitter emit,
   ) async {
-    if (!await _sync(event)) {
+    try {
+      final didFetchData = await _sync(event);
+      if (event is SyncAll) {
+        if (didFetchData || !isSynced) {
+          emit(Synced());
+        }
+      }
+    } catch (error) {
+      emit(SyncedFailed());
       _log.info('could not sync $event, retries in ${syncDelay.retryDelay}');
       await Future.delayed(syncDelay.retryDelay);
       _log.info('retrying $event');
       add(event);
     }
-    if (event is SyncAll) emit(SyncPerformed());
   }
 
   Future<bool> _sync(SyncEvent event) async {
@@ -66,7 +71,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
         return _syncAll();
       case ActivitySaved:
         if (licenseCubit.validLicense) return activityRepository.synchronize();
-        return true;
+        return false;
       case FileSaved:
         return userFileRepository.synchronize();
       case SortableSaved:
@@ -84,7 +89,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       sortableRepository.synchronize(),
       genericRepository.synchronize(),
     ]);
-    return results.fold<bool>(true, (prev, next) => prev && next);
+    return results.any((synced) => synced);
   }
 
   @override

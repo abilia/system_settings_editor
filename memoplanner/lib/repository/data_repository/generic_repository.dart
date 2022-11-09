@@ -60,17 +60,18 @@ class GenericRepository extends DataRepository<Generic> {
   Future<Iterable<Generic>> getAll() => genericDb.getAllNonDeletedMaxRevision();
 
   @override
-  Future fetchIntoDatabase() async {
+  Future<bool> fetchIntoDatabase() async {
     log.fine('loading $path...');
     try {
       final revision = await db.getLastRevision();
       final fetchedData = await fetchData(revision);
       log.fine('${fetchedData.length} $path fetched');
 
-      if (fetchedData.isEmpty) return;
+      if (fetchedData.isEmpty) return false;
       if (revision < 1) {
         log.fine('$path revision is $revision, will sync all $path');
-        return db.insert(fetchedData);
+        await db.insert(fetchedData);
+        return fetchedData.isNotEmpty;
       }
 
       log.fine(
@@ -82,10 +83,12 @@ class GenericRepository extends DataRepository<Generic> {
         ),
       );
 
-      if (syncSettings.isEmpty) return;
-      return db.insert(syncSettings);
+      if (syncSettings.isEmpty) return false;
+      await db.insert(syncSettings);
+      return syncSettings.isNotEmpty;
     } catch (e) {
       log.severe('Error when syncing $path, offline?', e);
     }
+    return false;
   }
 }

@@ -43,6 +43,8 @@ void main() {
     when(() => mockBaseUrlDb.baseUrl).thenReturn(baseUrl);
     when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
+    when(() => mockActivityDb.insert(any()))
+        .thenAnswer((_) => Future.value(true));
     activities = dbActivities.map((a) => a.activity);
 
     activityRepo = ActivityRepository(
