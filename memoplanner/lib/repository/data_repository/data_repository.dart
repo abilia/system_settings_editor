@@ -49,6 +49,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
       final revision = await db.getLastRevision();
       final fetchedData = await fetchData(revision);
       log.fine('${fetchedData.length} $path fetched');
+      if (fetchedData.isEmpty) return false;
       await db.insert(fetchedData);
       return fetchedData.isNotEmpty;
     } catch (e) {
