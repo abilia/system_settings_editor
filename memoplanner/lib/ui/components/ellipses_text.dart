@@ -1,13 +1,20 @@
 import 'package:memoplanner/ui/all.dart';
 
-class EllipsesText extends Text {
+class EllipsesText extends StatelessWidget {
   const EllipsesText(
-    super.data, {
-    super.style,
+    this.data, {
+    this.tts = false,
+    this.style,
+    this.maxLines,
+    this.textAlign,
     super.key,
-    super.maxLines,
-    super.textAlign,
   });
+
+  final String data;
+  final TextStyle? style;
+  final int? maxLines;
+  final TextAlign? textAlign;
+  final bool tts;
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +29,17 @@ class EllipsesText extends Text {
       )..layout())
           .height;
 
-      final maxLines = constraints.maxHeight ~/ lineHeight;
+      final maxLinesFitting = constraints.maxHeight ~/ lineHeight;
 
-      return Text(
-        data ?? '',
+      final text = Text(
+        data,
         overflow: TextOverflow.ellipsis,
-        maxLines: maxLines.clamp(1, super.maxLines ?? 1),
+        maxLines: maxLinesFitting.clamp(1, maxLines ?? 1),
         style: style,
+        textAlign: textAlign,
       );
+
+      return tts ? Tts(child: text) : text;
     });
   }
 }

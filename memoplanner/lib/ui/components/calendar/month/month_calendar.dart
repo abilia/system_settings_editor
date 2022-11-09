@@ -548,13 +548,12 @@ class MonthActivityContent extends StatelessWidget {
               )
             : Padding(
                 padding: layout.monthCalendar.activityTextContentPadding,
-                child: Tts(
-                  child: EllipsesText(
-                    activityDay.activity.title,
-                    maxLines: 3,
-                    style: abiliaTextTheme.caption?.copyWith(
-                      fontSize: layout.monthCalendar.fullDayActivityFontSize,
-                    ),
+                child: EllipsesText(
+                  activityDay.activity.title,
+                  tts: true,
+                  maxLines: 3,
+                  style: abiliaTextTheme.caption?.copyWith(
+                    fontSize: layout.monthCalendar.fullDayActivityFontSize,
                   ),
                 ),
               ),
