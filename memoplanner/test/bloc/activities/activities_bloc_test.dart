@@ -52,18 +52,6 @@ void main() {
 
   group('ActivitiesBloc', () {
     blocTest(
-      'initial state is ActivitiesNotLoaded',
-      build: () => ActivitiesBloc(
-        activityRepository: mockActivityRepository,
-        syncBloc: mockSyncBloc,
-      ),
-      verify: (ActivitiesBloc bloc) => expect(
-        bloc.state,
-        ActivitiesStateMatcher(ActivitiesNotLoaded()),
-      ),
-    );
-
-    blocTest(
       'load activities do not call load activities on mockActivityRepository',
       build: () => ActivitiesBloc(
         activityRepository: mockActivityRepository,
@@ -83,7 +71,7 @@ void main() {
         syncBloc: mockSyncBloc,
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
-      expect: () => [ActivitiesStateMatcher(ActivitiesLoaded())],
+      expect: () => [isA<ActivitiesChanged>()],
     );
 
     final storedActivity = Activity.createNew(
@@ -105,8 +93,8 @@ void main() {
           ..add(LoadActivities())
           ..add(AddActivity(activity1)),
         expect: () => [
-              ActivitiesStateMatcher(ActivitiesLoaded()),
-              ActivitiesStateMatcher(ActivitiesLoaded()),
+              isA<ActivitiesChanged>(),
+              isA<ActivitiesChanged>(),
             ],
         verify: (bloc) {
           verify(() => mockActivityRepository.save([activity1]));
@@ -122,8 +110,8 @@ void main() {
           ..add(LoadActivities())
           ..add(UpdateActivity(updatedActivity1)),
         expect: () => [
-              ActivitiesStateMatcher(ActivitiesLoaded()),
-              ActivitiesStateMatcher(ActivitiesLoaded()),
+              isA<ActivitiesChanged>(),
+              isA<ActivitiesChanged>(),
             ],
         verify: (bloc) {
           verify(() => mockActivityRepository.save([updatedActivity1]));
@@ -140,8 +128,8 @@ void main() {
           ..add(LoadActivities())
           ..add(UpdateActivity(storedActivity.copyWith(deleted: true))),
         expect: () => [
-              ActivitiesStateMatcher(ActivitiesLoaded()),
-              ActivitiesStateMatcher(ActivitiesLoaded()),
+              isA<ActivitiesChanged>(),
+              isA<ActivitiesChanged>(),
             ],
         verify: (bloc) {
           verify(() => mockActivityRepository.save([deletedStoredActivity]));
@@ -156,7 +144,7 @@ void main() {
       );
 
       // Act
-      syncBloc.emit(UnSynced());
+      syncBloc.emit(SyncedFailed());
 
       // Assert
       await expectLater(
@@ -179,7 +167,7 @@ void main() {
       await expectLater(
         activitiesBloc.stream,
         emitsInOrder([
-          ActivitiesStateMatcher(ActivitiesLoaded()),
+          isA<ActivitiesChanged>(),
         ]),
       );
     });
@@ -206,8 +194,8 @@ void main() {
       await expectLater(
         activitiesBloc.stream,
         emitsInOrder([
-          ActivitiesStateMatcher(ActivitiesLoaded()),
-          ActivitiesStateMatcher(ActivitiesLoaded()),
+          isA<ActivitiesChanged>(),
+          isA<ActivitiesChanged>(),
         ]),
       );
       // Assert calls save with deleted recurring
@@ -247,8 +235,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -290,8 +278,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -336,8 +324,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -375,8 +363,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -408,8 +396,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -453,8 +441,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
         // Assert calls save with deleted recurring
@@ -494,8 +482,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
 
@@ -534,8 +522,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
 
@@ -597,8 +585,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
 
@@ -656,8 +644,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
 
@@ -708,8 +696,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
 
@@ -741,8 +729,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
 
@@ -784,8 +772,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
         verify(() => mockActivityRepository
@@ -826,8 +814,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
 
@@ -872,8 +860,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
 
@@ -980,8 +968,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
 
@@ -1049,8 +1037,8 @@ void main() {
         await expectLater(
           activitiesBloc.stream,
           emitsInOrder([
-            ActivitiesStateMatcher(ActivitiesLoaded()),
-            ActivitiesStateMatcher(ActivitiesLoaded()),
+            isA<ActivitiesChanged>(),
+            isA<ActivitiesChanged>(),
           ]),
         );
         verify(() => mockActivityRepository.save(any(
@@ -1063,18 +1051,4 @@ void main() {
   tearDown(() {
     activitiesBloc.close();
   });
-}
-
-class ActivitiesStateMatcher extends Matcher {
-  const ActivitiesStateMatcher(this.value);
-
-  final ActivitiesState value;
-
-  @override
-  Description describe(Description description) => description.add('<$value>');
-
-  @override
-  bool matches(object, Map matchState) {
-    return object.runtimeType == value.runtimeType;
-  }
 }

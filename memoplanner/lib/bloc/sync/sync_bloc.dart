@@ -23,7 +23,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
 
   late StreamSubscription _pushSubscription;
 
-  bool get isSynced => state is Synced;
+  bool get isSynced => state is SyncDone;
 
   SyncBloc({
     required this.pushCubit,
@@ -33,7 +33,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     required this.sortableRepository,
     required this.genericRepository,
     required this.syncDelay,
-  }) : super(UnSynced()) {
+  }) : super(Syncing()) {
     _pushSubscription =
         pushCubit.stream.listen((message) => add(const SyncAll()));
     on<ActivitySaved>(_trySync, transformer: bufferTimer(syncDelay));
@@ -55,7 +55,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
         }
       }
     } catch (error) {
-      emit(UnSynced());
+      emit(SyncedFailed());
       _log.info('could not sync $event, retries in ${syncDelay.retryDelay}');
       await Future.delayed(syncDelay.retryDelay);
       _log.info('retrying $event');

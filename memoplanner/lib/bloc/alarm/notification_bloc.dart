@@ -13,7 +13,6 @@ import 'package:memoplanner/utils/all.dart';
 class NotificationBloc extends Bloc<NotificationEvent, String> {
   NotificationBloc({
     required this.activityRepository,
-    required this.activitiesBloc,
     required this.timerDb,
     required this.settingsDb,
     required this.memoplannerSettingBloc,
@@ -24,7 +23,7 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
   }
 
   final ActivityRepository activityRepository;
-  final ActivitiesBloc activitiesBloc;
+
   final TimerDb timerDb;
   final SettingsDb settingsDb;
   final MemoplannerSettingsBloc memoplannerSettingBloc;
@@ -33,10 +32,8 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
     NotificationEvent event,
     Emitter emit,
   ) async {
-    final activitiesState = activitiesBloc.state;
     final settings = memoplannerSettingBloc.state;
-    if (settings is MemoplannerSettingsNotLoaded ||
-        activitiesState is! ActivitiesLoaded) return;
+    if (settings is MemoplannerSettingsNotLoaded) return;
 
     final now = DateTime.now();
     final timers = await timerDb.getRunningTimersFrom(now);

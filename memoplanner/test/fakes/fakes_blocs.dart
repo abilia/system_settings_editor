@@ -53,9 +53,9 @@ class FakeActivitiesBloc extends Fake implements ActivitiesBloc {
     this.activityRepository = activityRepository ?? FakeActivityRepository();
   }
   @override
-  Stream<ActivitiesState> get stream => const Stream.empty();
+  Stream<ActivitiesChanged> get stream => const Stream.empty();
   @override
-  ActivitiesState get state => ActivitiesNotLoaded();
+  ActivitiesChanged get state => ActivitiesChanged();
   @override
   void add(ActivitiesEvent event) {}
   @override
