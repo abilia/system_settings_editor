@@ -86,7 +86,7 @@ void main() {
     when(() => mockActivityRepository.allBetween(any(), any()))
         .thenAnswer((_) => Future.value(fakeActivities));
 
-    final expected = ActivitiesLoaded();
+    final expected = ActivitiesChanged();
 
     when(() => mockActivitiesBloc.activityRepository)
         .thenReturn(mockActivityRepository);

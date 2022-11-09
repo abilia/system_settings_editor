@@ -2,6 +2,10 @@ part of 'sync_bloc.dart';
 
 abstract class SyncState {}
 
-class Synced extends SyncState {}
+class Syncing extends SyncState {}
 
-class UnSynced extends SyncState {}
+abstract class SyncDone extends SyncState {}
+
+class Synced extends SyncDone {}
+
+class SyncedFailed extends SyncDone {}

@@ -8,9 +8,9 @@ import 'package:memoplanner/repository/all.dart';
 
 part 'activities_event.dart';
 
-part 'activities_state.dart';
+class ActivitiesChanged {}
 
-class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
+class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesChanged>
     with EditRecurringMixin {
   final ActivityRepository activityRepository;
   final SyncBloc syncBloc;
@@ -19,7 +19,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
   ActivitiesBloc({
     required this.activityRepository,
     required this.syncBloc,
-  }) : super(ActivitiesNotLoaded()) {
+  }) : super(ActivitiesChanged()) {
     _syncSubscription =
         syncBloc.stream.listen((state) => add(LoadActivities()));
     on<ActivitiesEvent>(_onEvent, transformer: sequential());
@@ -27,16 +27,14 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
 
   Future _onEvent(
     ActivitiesEvent event,
-    Emitter<ActivitiesState> emit,
+    Emitter<ActivitiesChanged> emit,
   ) async {
-    if (event is LoadActivities) {
-      emit(ActivitiesLoaded());
-    } else if (event is ManipulateActivitiesEvent) {
+    if (event is ManipulateActivitiesEvent) {
       final savableActivities = await _manipulateActivity(event);
       await activityRepository.save(savableActivities);
-      emit(ActivitiesLoaded());
       syncBloc.add(const ActivitySaved());
     }
+    emit(ActivitiesChanged());
   }
 
   FutureOr<Iterable<Activity>> _manipulateActivity(

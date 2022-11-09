@@ -66,7 +66,7 @@ void main() {
   final alarmNavigator = AlarmNavigator();
   late MockMemoplannerSettingBloc mockMPSettingsBloc;
   late StreamController<MemoplannerSettings> mockMPSettingsBlocStream;
-  late StreamController<ActivitiesState> mockActivitiesBlocStream;
+  late StreamController<ActivitiesChanged> mockActivitiesBlocStream;
   late MockUserFileCubit mockUserFileCubit;
   late MockActivitiesBloc mockActivitiesBloc;
   late MockActivityRepository mockActivityRepository;
@@ -167,12 +167,11 @@ void main() {
     final settingsStream = mockMPSettingsBlocStream.stream.asBroadcastStream();
     when(() => mockMPSettingsBloc.stream).thenAnswer((_) => settingsStream);
     mockActivitiesBloc = MockActivitiesBloc();
-    mockActivitiesBlocStream = StreamController<ActivitiesState>();
+    mockActivitiesBlocStream = StreamController<ActivitiesChanged>();
     final activitiesStream =
         mockActivitiesBlocStream.stream.asBroadcastStream();
     when(() => mockActivitiesBloc.stream).thenAnswer((_) => activitiesStream);
-    when(() => mockActivitiesBloc.state)
-        .thenAnswer((_) => ActivitiesNotLoaded());
+    when(() => mockActivitiesBloc.state).thenAnswer((_) => ActivitiesChanged());
     mockActivityRepository = MockActivityRepository();
     when(() => mockActivitiesBloc.activityRepository)
         .thenAnswer((_) => mockActivityRepository);
@@ -778,7 +777,7 @@ void main() {
         ),
       );
 
-      mockActivitiesBlocStream.add(ActivitiesLoaded());
+      mockActivitiesBlocStream.add(ActivitiesChanged());
       when(() => mockActivityRepository.getById(any()))
           .thenAnswer((_) => Future.value(checkedActivity));
 

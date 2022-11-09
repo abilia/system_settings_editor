@@ -13,8 +13,8 @@ import '../test_helpers/register_fallback_values.dart';
 
 void main() {
   late ActivitiesBloc activitiesBloc;
-  late StreamController<ActivitiesState> activitiesStreamController;
-  late Stream<ActivitiesState> activitiesStream;
+  late StreamController<ActivitiesChanged> activitiesStreamController;
+  late Stream<ActivitiesChanged> activitiesStream;
 
   late SortableBloc sortableBloc;
   late StreamController<SortableState> sortableStreamController;
@@ -33,8 +33,8 @@ void main() {
   setUpAll(registerFallbackValues);
   setUp(() async {
     activitiesBloc = MockActivitiesBloc();
-    when(() => activitiesBloc.state).thenReturn(ActivitiesNotLoaded());
-    activitiesStreamController = StreamController<ActivitiesState>();
+    when(() => activitiesBloc.state).thenReturn(ActivitiesChanged());
+    activitiesStreamController = StreamController<ActivitiesChanged>();
     activitiesStream = activitiesStreamController.stream.asBroadcastStream();
     when(() => activitiesBloc.stream)
         .thenAnswer((invocation) => activitiesStream);
@@ -118,7 +118,7 @@ void main() {
 
     // Act
     activitiesStreamController.add(
-      ActivitiesLoaded(),
+      ActivitiesChanged(),
     );
     await tester.pumpAndSettle();
 
@@ -129,7 +129,7 @@ void main() {
   testWidgets('when settings we schedule alarms', (tester) async {
     // Arrange
     when(() => activitiesBloc.state).thenReturn(
-      ActivitiesLoaded(),
+      ActivitiesChanged(),
     );
     await tester.pumpWidget(authListener());
     expect(alarmScheduleCalls, 0);
@@ -144,7 +144,7 @@ void main() {
 
   testWidgets('when timers update, we schedule alarms', (tester) async {
     // Arrange
-    when(() => activitiesBloc.state).thenReturn(ActivitiesLoaded());
+    when(() => activitiesBloc.state).thenReturn(ActivitiesChanged());
     when(() => memoplannerSettingBloc.state)
         .thenReturn(const MemoplannerSettingsFailed());
     await tester.pumpWidget(authListener());
