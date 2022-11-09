@@ -104,7 +104,7 @@ void main() {
         data: MemoplannerSettingData.fromData(data: false, identifier: 'id'),
       ).wrapWithDbModel(),
       Generic.createNew<RawGenericData>(
-        data: RawGenericData('data', 'identifier'),
+        data: const RawGenericData('data', 'identifier'),
       ).wrapWithDbModel(),
     ]);
     final postResponse = jsonEncode({
