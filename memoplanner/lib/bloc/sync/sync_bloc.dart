@@ -23,7 +23,9 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
 
   late StreamSubscription _pushSubscription;
 
-  bool get isSynced => state is SyncDone;
+  bool get isSynced => state is Synced;
+
+  bool get hasSynced => state is SyncDone;
 
   SyncBloc({
     required this.pushCubit,

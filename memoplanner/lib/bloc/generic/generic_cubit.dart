@@ -50,7 +50,7 @@ class GenericCubit extends Cubit<GenericState> {
     try {
       final generics = await genericRepository.getAll();
       emit(
-        generics.isNotEmpty || syncBloc.isSynced
+        generics.isNotEmpty || syncBloc.hasSynced
             ? GenericsLoaded(generics: generics.toGenericKeyMap())
             : GenericsNotLoaded(),
       );
