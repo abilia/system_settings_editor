@@ -9,6 +9,7 @@ import 'package:memoplanner/logging.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:memoplanner/repository/all.dart';
 
 enum AlarmSpeechState { unplayed, played }
 
@@ -23,6 +24,7 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
   late final StreamSubscription<Touch> _touchSubscription;
   late final StreamSubscription<SoundState> _speechSubscription;
   late final StreamSubscription _delayedSubscription;
+  late final StreamSubscription<RemoteMessage> _remoteMessageSubscription;
 
   AlarmSpeechCubit({
     required this.alarm,
@@ -30,6 +32,7 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
     required DateTime Function() now,
     required AlarmSettings alarmSettings,
     required Stream<Touch> touchStream,
+    required Stream<RemoteMessage> remoteMessageStream,
     Stream<NotificationAlarm>? selectedNotificationStream,
   }) : super(AlarmSpeechState.unplayed) {
     _log.fine('$alarm');
@@ -52,6 +55,13 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
         .whereType<SoundPlaying>()
         .take(1)
         .listen((_) => emit(AlarmSpeechState.played));
+
+    _remoteMessageSubscription = remoteMessageStream
+        .where((p) =>
+            (p.data.containsKey(RemoteAlarm.stopSoundKey) ||
+                p.data.containsKey(RemoteAlarm.popKey)) &&
+            p.stopAlarmSoundKey == alarm.hashCode)
+        .listen(_maybePlay);
   }
 
   Future<void> _maybePlay(parameter) async {
@@ -105,6 +115,7 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
     await _speechSubscription.cancel();
     await _delayedSubscription.cancel();
     await _touchSubscription.cancel();
+    await _remoteMessageSubscription.cancel();
     return super.close();
   }
 }

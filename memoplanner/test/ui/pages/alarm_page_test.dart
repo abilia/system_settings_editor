@@ -72,7 +72,8 @@ void main() {
   late MockActivityRepository mockActivityRepository;
   late MockBaseClient mockClient;
 
-  Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
+  Widget wrapWithMaterialApp(Widget widget, {PushCubit? pushCubit}) =>
+      MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: const [Translator.delegate],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
@@ -115,6 +116,10 @@ void main() {
               BlocProvider<LicenseCubit>(
                 create: (context) => FakeLicenseCubit(),
               ),
+              if (pushCubit != null)
+                BlocProvider<PushCubit>(
+                  create: (context) => pushCubit,
+                ),
             ],
             child: Builder(
               builder: (context) => Listener(
@@ -424,6 +429,51 @@ void main() {
         // Should play
         expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
         expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
+      });
+
+      group('Play speech after alarm ends from push', () {
+        Future<void> testIncomingPush(
+            WidgetTester tester, String pushKey) async {
+          final pushCubit = PushCubit();
+          await tester.pumpWidget(
+            wrapWithMaterialApp(
+              PopAwareAlarmPage(
+                alarm: startAlarm,
+                alarmNavigator: alarmNavigator,
+                child: AlarmPage(
+                  alarm: startAlarm,
+                ),
+              ),
+              pushCubit: pushCubit,
+            ),
+          );
+          await tester.pumpAndSettle();
+          expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
+          expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
+          expect(find.byIcon(AbiliaIcons.stop), findsNothing);
+
+          // fake incoming push
+          pushCubit.fakePush(
+            data: {
+              pushKey: '${startAlarm.hashCode}',
+            },
+          );
+
+          await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
+          // should play alarm
+          expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
+          expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
+        }
+
+        testWidgets('speech plays after alarm ends from stop sound push',
+            (WidgetTester tester) async {
+          await testIncomingPush(tester, RemoteAlarm.stopSoundKey);
+        });
+
+        testWidgets('speech plays after alarm ends from pop alarm push',
+            (WidgetTester tester) async {
+          await testIncomingPush(tester, RemoteAlarm.popKey);
+        });
       });
     });
   });
