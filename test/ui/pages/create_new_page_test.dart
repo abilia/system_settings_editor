@@ -68,6 +68,7 @@ void main() {
   ActivityResponse activityResponse = () => [];
   SortableResponse sortableResponse = () => [];
   GenericResponse genericResponse = () => [];
+  SessionsResponse sessionResponse = () => Fakes.fakeSession;
   final initialDay = DateTime(2020, 08, 05);
 
   setUpAll(() {
@@ -125,9 +126,10 @@ void main() {
       ..ticker = Ticker.fake(initialTime: initialDay)
       ..fireBasePushService = mockFirebasePushService
       ..client = Fakes.client(
-        activityResponse: activityResponse,
-        sortableResponse: sortableResponse,
-        genericResponse: genericResponse,
+        activityResponse: () => activityResponse(),
+        sortableResponse: () => sortableResponse(),
+        genericResponse: () => genericResponse(),
+        sessionsResponse: () => sessionResponse(),
       )
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
@@ -145,6 +147,7 @@ void main() {
     activityResponse = () => [];
     sortableResponse = () => [];
     genericResponse = () => [];
+    sessionResponse = () => Fakes.fakeSession;
     GetIt.I.reset();
   });
 
@@ -862,6 +865,37 @@ void main() {
           expect(find.byKey(TestKey.basicTimerChoice), findsOneWidget);
         },
       );
+
+      group('Timers mpgo mp4 session', () {
+        testWidgets(
+          'with mp4 session show timer on MPGO ',
+          (WidgetTester tester) async {
+            await tester.pumpWidget(App());
+            await tester.pumpAndSettle();
+            await tester.tap(addActivityButtonFinder);
+            await tester.pumpAndSettle();
+            expect(find.byKey(TestKey.newActivityChoice), findsOneWidget);
+            expect(find.byKey(TestKey.basicActivityChoice), findsOneWidget);
+            expect(find.byKey(TestKey.newTimerChoice), findsOneWidget);
+            expect(find.byKey(TestKey.basicTimerChoice), findsOneWidget);
+          },
+        );
+
+        testWidgets(
+          'without mp4 session dont show timer on mpgo ',
+          (WidgetTester tester) async {
+            sessionResponse = () => [];
+            await tester.pumpWidget(App());
+            await tester.pumpAndSettle();
+            await tester.tap(addActivityButtonFinder);
+            await tester.pumpAndSettle();
+            expect(find.byKey(TestKey.newActivityChoice), findsOneWidget);
+            expect(find.byKey(TestKey.basicActivityChoice), findsOneWidget);
+            expect(find.byKey(TestKey.newTimerChoice), findsNothing);
+            expect(find.byKey(TestKey.basicTimerChoice), findsNothing);
+          },
+        );
+      }, skip: !Config.isMPGO);
 
       testWidgets('from scratch, with automatically set name from typing',
           (WidgetTester tester) async {
