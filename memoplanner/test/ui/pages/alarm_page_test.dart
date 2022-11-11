@@ -116,10 +116,9 @@ void main() {
               BlocProvider<LicenseCubit>(
                 create: (context) => FakeLicenseCubit(),
               ),
-              if (pushCubit != null)
-                BlocProvider<PushCubit>(
-                  create: (context) => pushCubit,
-                ),
+              BlocProvider<PushCubit>(
+                create: (context) => pushCubit ?? FakePushCubit(),
+              ),
             ],
             child: Builder(
               builder: (context) => Listener(
