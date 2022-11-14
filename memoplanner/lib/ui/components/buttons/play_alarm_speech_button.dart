@@ -35,6 +35,7 @@ class PlayAlarmSpeechButton extends StatelessWidget {
                         touchStream: context.read<TouchDetectionCubit>().stream,
                         selectedNotificationStream:
                             Config.isMPGO ? selectNotificationSubject : null,
+                        remoteMessageStream: context.read<PushCubit>().stream,
                       ),
                       lazy: false,
                       child: const SizedBox.shrink(),
