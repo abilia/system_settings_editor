@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
@@ -55,10 +54,13 @@ Future cancelAllActiveNotifications() async {
   }
 }
 
-// If showNotifications is false, notifications aren't triggered by NotificationManagerCompat as normal but by a custom BackgroundAlarm class.
-// Using cancel() for any scheduled notification will always cancel the current BackgroundAlarm while cancelAll() only cancels scheduled notification.
+// If showNotifications is false, notifications aren't triggered by
+// NotificationManagerCompat as normal but by a custom BackgroundAlarm class.
+// Using cancel() for any scheduled notification will always cancel the current
+// BackgroundAlarm while cancelAll() only cancels scheduled notification.
 //
-// If showNotifications is true, it's the other way around and cancelAll will also cancel the current notification.
+// If showNotifications is true, it's the other way around and cancelAll will
+// also cancel the current notification.
 Future cancelAllPendingNotifications() async {
   if (!showNotifications) {
     return notificationPlugin.cancelAll();
@@ -175,6 +177,8 @@ Future _scheduleAllAlarmNotifications(
         await cancelAllPendingNotifications();
         final locale = Locale(language);
         await initializeDateFormatting(locale.languageCode);
+        final androidNotificationChannels =
+            await androidNotificationChannelIds();
         _log.fine('scheduling ${notifications.length} notifications...');
         final notificationTimes = <DateTime>{};
         var scheduled = 0;
@@ -186,7 +190,9 @@ Future _scheduleAllAlarmNotifications(
             settings,
             fileStorage,
             now,
-            // Adding a delay on simultaneous alarms to let the selectNotificationSubject handle them
+            androidNotificationChannels,
+            // Adding a delay on simultaneous alarms to let the
+            // selectNotificationSubject handle them
             notificationTimes.add(newNotification.notificationTime) ? 0 : 3,
           )) scheduled++;
         }
@@ -194,15 +200,26 @@ Future _scheduleAllAlarmNotifications(
       },
     );
 
+Future<Set<String>> androidNotificationChannelIds() async {
+  return (await notificationPlugin
+              .resolvePlatformSpecificImplementation<
+                  AndroidFlutterLocalNotificationsPlugin>()
+              ?.getNotificationChannels())
+          ?.map((e) => e.id)
+          .toSet() ??
+      {};
+}
+
 Future<bool> _scheduleNotification(
   NotificationAlarm notificationAlarm,
   Locale locale,
   bool alwaysUse24HourFormat,
   AlarmSettings settings,
   FileStorage fileStorage,
-  DateTime Function() now, [
-  int secondsOffset = 0,
-]) async {
+  DateTime Function() now,
+  Set<String> androidChannelIds,
+  int secondsOffset,
+) async {
   final title = notificationAlarm.event.title;
   final subtitle = _subtitle(
     notificationAlarm,
@@ -210,24 +227,25 @@ Future<bool> _scheduleNotification(
     alwaysUse24HourFormat,
   );
 
-  final and = Platform.isIOS
-      ? null
-      : await _androidNotificationDetails(
+  final and = defaultTargetPlatform == TargetPlatform.android
+      ? await _androidNotificationDetails(
           notificationAlarm,
           fileStorage,
           title,
           subtitle,
           settings,
-        );
+          androidChannelIds,
+        )
+      : null;
 
-  final iOS = Platform.isAndroid
-      ? null
-      : await _iosNotificationDetails(
+  final iOS = defaultTargetPlatform == TargetPlatform.iOS
+      ? await _iosNotificationDetails(
           notificationAlarm,
           fileStorage,
           settings.duration,
           settings,
-        );
+        )
+      : null;
 
   final hash = notificationAlarm.hashCode;
   final payload = notificationAlarm.encode();
@@ -275,7 +293,9 @@ Future<DarwinNotificationDetails> _iosNotificationDetails(
       ? null
       : !hasSound || sound == Sound.NoSound
           ? 'silent.aiff'
-          : '${sound.fileName()}${seconds >= 30 ? '_30' : seconds >= 15 ? '_15' : ''}.aiff';
+          : '${sound.fileName()}'
+              '${seconds >= 30 ? '_30' : seconds >= 15 ? '_15' : ''}'
+              '.aiff';
   return DarwinNotificationDetails(
     presentAlert: true,
     presentBadge: true,
@@ -294,6 +314,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
   String title,
   String? subtitle,
   AlarmSettings settings,
+  Set<String> channelIds,
 ) async {
   final groupKey = notificationAlarm is ActivityAlarm
       ? notificationAlarm.activity.seriesId
@@ -339,7 +360,9 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     ),
     audioAttributesUsage: AudioAttributesUsage.alarm,
     category: AndroidNotificationCategory.alarm,
-    channelAction: AndroidNotificationChannelAction.update,
+    channelAction: channelIds.contains(channel.id)
+        ? AndroidNotificationChannelAction.update
+        : AndroidNotificationChannelAction.createIfNotExists,
   );
 }
 
@@ -350,12 +373,20 @@ NotificationChannel notificationChannel(
         ? NotificationChannel(
             'SoundVibration${sound.name}',
             'Sound and Vibration with sound ${sound.name}',
-            'Activities with Alarm and Vibration or Only Alarm with sound ${sound.name}')
+            'Activities with Alarm and Vibration or Only Alarm with sound '
+                '${sound.name}',
+          )
         : hasVibration
             ? NotificationChannel(
-                'Vibration', 'Vibration', 'Activities with Only vibration')
+                'Vibration',
+                'Vibration',
+                'Activities with Only vibration',
+              )
             : NotificationChannel(
-                'Silent', 'Silent', 'Activities with Silent Alarm');
+                'Silent',
+                'Silent',
+                'Activities with Silent Alarm',
+              );
 
 class NotificationChannel {
   final String id, name, description;
