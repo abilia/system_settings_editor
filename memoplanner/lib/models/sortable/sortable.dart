@@ -12,6 +12,13 @@ class SortableType {
       basicTimer = 'basetimer',
       basicActivity = 'baseactivity',
       note = 'note';
+  static const supportedTypes = [
+    imageArchive,
+    checklist,
+    basicTimer,
+    basicActivity,
+    note
+  ];
 }
 
 class Sortable<T extends SortableData> extends DataModel {

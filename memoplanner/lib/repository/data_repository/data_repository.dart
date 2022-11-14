@@ -14,6 +14,8 @@ import 'package:synchronized/extension.dart';
 typedef JsonToDataModel<M extends DataModel> = DbModel<M> Function(
     Map<String, dynamic> json);
 
+bool _noFilter(_) => true;
+
 abstract class DataRepository<M extends DataModel> extends Repository {
   const DataRepository({
     required BaseClient client,
@@ -23,6 +25,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     required this.db,
     required this.fromJsonToDataModel,
     required this.log,
+    this.filter = _noFilter,
     this.postApiVersion = 1,
     String? postPath,
   })  : postPath = postPath ?? path,
@@ -34,6 +37,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
   final String path, postPath;
   final int postApiVersion;
   final JsonToDataModel<M> fromJsonToDataModel;
+  final bool Function(DbModel<M>) filter;
 
   /// returns true if any data need to be synced after saved
   Future<bool> save(Iterable<M> data) => db.insertAndAddDirty(data);
@@ -69,7 +73,8 @@ abstract class DataRepository<M extends DataModel> extends Repository {
           (j) => fromJsonToDataModel(j),
           onException: log.logAndReturnNull,
         )
-        .whereNotNull();
+        .whereNotNull()
+        .where(filter);
   }
 
   Future<bool> synchronize() async {

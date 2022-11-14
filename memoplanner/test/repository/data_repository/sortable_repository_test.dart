@@ -334,4 +334,39 @@ void main() {
     expect(capturedPost.pathSegments,
         contains('a767ebec-50db-4f5f-8acf-d653c59c1418'));
   });
+
+  test('No gewa templates are fetched', () async {
+    when(() => mockClient.get(any(), headers: any(named: 'headers')))
+        .thenAnswer(
+      (_) => Future.value(
+        Response(
+          '[{'
+          '"id":"1234567890","owner":1,"revision":1,"revisionTime":0,"deleted":false,'
+          '"type":"imagearchive",'
+          '"data":'
+          '"{'
+          '\\"name\\":\\"Folder\\",'
+          '\\"icon\\":\\"/images/an_image.jpg\\",'
+          '\\"fileId\\":\\"0bf2dd92-7eec-4d36-acc4-fa0c2cbb6de4\\",'
+          '}",'
+          '"group":true,"groupId":null,"sortOrder":"N","visible":true'
+          '},'
+          '{'
+          '"id":"99999999","owner":1,"revision":2,"revisionTime":0,"deleted":false,'
+          '"type":"gewaTemplate",'
+          '"data":'
+          '"{'
+          '\\"name\\":\\"gewatemplate\\",'
+          '}",'
+          '"group":false,"groupId":null,"sortOrder":"N","visible":true'
+          '}]',
+          200,
+        ),
+      ),
+    );
+    // ignore: invalid_use_of_protected_member
+    final sortables = await sortableRepository.fetchData(0);
+    expect(sortables.length, 1);
+    expect(sortables.first.model.type, SortableType.imageArchive);
+  });
 }

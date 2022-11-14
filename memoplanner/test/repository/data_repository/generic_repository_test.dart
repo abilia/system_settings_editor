@@ -97,6 +97,36 @@ void main() {
     ]);
   });
 
+  test('Only fetches memoplannerSettings', () async {
+    // Arrange
+    final getResponse = jsonEncode([
+      Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(data: false, identifier: 'id'),
+      ).wrapWithDbModel(),
+      Generic.createNew<RawGenericData>(
+        data: const RawGenericData('data', 'identifier'),
+      ).wrapWithDbModel(),
+    ]);
+    final postResponse = jsonEncode({
+      'previousRevision': 1,
+      'failedUpdates': [],
+      'dataRevisionUpdates': [],
+    });
+    when(() => mockClient.get(any(), headers: any(named: 'headers')))
+        .thenAnswer((_) => Future.value(Response(getResponse, 200)));
+    when(() => mockClient.post(
+          any(),
+          headers: any(named: 'headers'),
+          body: any(named: 'body'),
+        )).thenAnswer((_) => Future.value(Response(postResponse, 200)));
+
+    // Act
+    // ignore: invalid_use_of_protected_member
+    final fetched = await genericRepository.fetchData(0);
+
+    expect(fetched.length, 1);
+  });
+
   group('save', () {
     group('mp', () {
       test('saves all as dirty', () async {
