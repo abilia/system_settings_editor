@@ -161,7 +161,7 @@ class AcceptTermsSwitch extends StatelessWidget {
     required this.url,
     required this.value,
     required this.onChanged,
-    required this.errorState,
+    this.errorState = false,
     Key? key,
   }) : super(key: key);
 

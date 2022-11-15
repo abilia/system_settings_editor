@@ -73,6 +73,11 @@ class FetchSessionsException implements Exception {
   final int statusCode;
 }
 
+class FetchTermsOfUseException implements Exception {
+  FetchTermsOfUseException(this.statusCode);
+  final int statusCode;
+}
+
 class SyncFailedException implements Exception {
   SyncFailedException([this.e]);
   final Exception? e;

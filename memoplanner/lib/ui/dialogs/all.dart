@@ -8,3 +8,5 @@ export 'fullscreen_image_dialog.dart';
 export 'long_press_info_dialog.dart';
 export 'web_view_dialog.dart';
 export 'starter_set_dialog.dart';
+export 'terms_of_use_dialog.dart';
+export 'login_dialog.dart';

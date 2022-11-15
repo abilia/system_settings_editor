@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/listener/all.dart';
 import 'package:memoplanner/models/all.dart';
@@ -106,14 +104,18 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
             builder: (context) => const NotificationPermissionWarningDialog(),
           ),
         ),
-        if (widget.newlyLoggedIn) StarterSetListener(),
+        if (widget.newlyLoggedIn)
+          LoginDialogListener(
+            termsOfUseCubit: context.read<TermsOfUseCubit>(),
+            sortableBloc: context.read<SortableBloc>(),
+            permissionCubit: context.read<PermissionCubit>(),
+          ),
         if (Config.isMP) ...[
           CalendarInactivityListener(),
           ScreensaverListener(),
           PopScreensaverListener(),
           KeepScreenAwakeListener(),
-        ] else if (!Platform.isIOS && widget.newlyLoggedIn)
-          FullscreenAlarmPermissionListener(),
+        ],
       ],
       child: widget.child,
     );

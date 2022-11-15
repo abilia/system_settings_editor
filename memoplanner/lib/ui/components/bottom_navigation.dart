@@ -25,7 +25,7 @@ class BottomNavigation extends StatelessWidget {
             SizedBox(width: layout.formPadding.horizontalItemDistance),
             Expanded(child: forwardNavigationWidget),
           ] else
-            Center(child: backNavigationWidget),
+            Expanded(child: backNavigationWidget),
         ],
       ),
     );
