@@ -1,3 +1,4 @@
+import 'package:http/http.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/logging.dart';
 import 'package:memoplanner/models/all.dart';
@@ -10,14 +11,14 @@ class TermsOfUseCubit extends Cubit<TermsOfUseState> {
   final _log = Logger((TermsOfUseCubit).toString());
 
   TermsOfUseCubit({required this.termsOfUseRepository})
-      : super(TermsOfUseNotReady()) {
+      : super(TermsOfUseNotLoaded()) {
     _initialize();
   }
 
   Future<void> _initialize() async {
     try {
       final termsOfUse = await termsOfUseRepository.fetchTermsOfUse();
-      emit(TermsOfUseReady(termsOfUse));
+      emit(TermsOfUseLoaded(termsOfUse));
     } on FetchTermsOfUseException catch (e) {
       _log.warning(
           'Could not fetch terms of use from backend with status code ${e.statusCode}');
@@ -25,4 +26,7 @@ class TermsOfUseCubit extends Cubit<TermsOfUseState> {
       _log.warning('Could not fetch terms of use from backend $e');
     }
   }
+
+  Future<Response> postTermsOfUse(bool termsOfCondition, bool privacyPolicy) =>
+      termsOfUseRepository.postTermsOfUse(termsOfCondition, privacyPolicy);
 }

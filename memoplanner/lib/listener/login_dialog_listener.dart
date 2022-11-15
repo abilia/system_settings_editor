@@ -15,7 +15,7 @@ class LoginDialogListener
           listenWhen: (previous, current) =>
               previous is LoginDialogNotReady && current is LoginDialogReady,
           listener: (context, state) {
-            final termsOfUseReady = termsOfUseCubit.state is TermsOfUseReady;
+            final termsOfUseReady = termsOfUseCubit.state is TermsOfUseLoaded;
             final allAccepted = termsOfUseCubit.state.termsOfUse.allAccepted;
             final showTermsOfUseDialog = termsOfUseReady && !allAccepted;
 

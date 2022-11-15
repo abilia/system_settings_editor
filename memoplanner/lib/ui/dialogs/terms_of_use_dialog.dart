@@ -1,14 +1,6 @@
-import 'dart:convert';
-
-import 'package:get_it/get_it.dart';
+import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
-import 'package:memoplanner/utils/all.dart';
-import 'package:provider/provider.dart';
-
-import 'package:memoplanner/bloc/authentication/authentication_bloc.dart';
-import 'package:memoplanner/db/baseurl_db.dart';
-import 'package:memoplanner/repository/all.dart';
 
 class TermsOfUseDialog extends StatefulWidget {
   final TermsOfUse termsOfUse;
@@ -115,35 +107,8 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
   }
 
   Future<void> postAndClose() async {
-    try {
-      final success = await postTermsOfUse();
-      if (success) {
-        return widget.onNext();
-      }
-      //Todo: Indicate error
-    } catch (error) {
-      //Todo: Indicate error
-    }
-  }
-
-  Future<bool> postTermsOfUse() async {
-    final baseUrl = GetIt.I<BaseUrlDb>().baseUrl;
-    final client = GetIt.I<ListenableClient>();
-    final authenticatedState = context.read<AuthenticationBloc>().state;
-    if (authenticatedState is! Authenticated) {
-      throw UnauthorizedException();
-    }
-    final userId = authenticatedState.userId;
-
-    final response = await client.post(
-      '$baseUrl/api/v1//entity//$userId/acknowledgments'.toUri(),
-      headers: jsonHeader,
-      body: jsonEncode({
-        'termsOfCondition': _termsOfCondition,
-        'privacyPolicy': _privacyPolicy
-      }),
-    );
-    if (response.statusCode == 200) return true;
-    return false;
+    final termsOfUseCubit = context.read<TermsOfUseCubit>();
+    await termsOfUseCubit.postTermsOfUse(_termsOfCondition, _privacyPolicy);
+    return widget.onNext();
   }
 }

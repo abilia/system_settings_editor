@@ -82,7 +82,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               create: (context) => TermsOfUseRepository(
                 baseUrlDb: GetIt.I<BaseUrlDb>(),
                 client: GetIt.I<ListenableClient>(),
-                sessionsDb: GetIt.I<SessionsDb>(),
                 userId: authenticatedState.userId,
               ),
             ),

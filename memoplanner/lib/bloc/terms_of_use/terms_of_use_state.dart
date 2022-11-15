@@ -5,10 +5,10 @@ abstract class TermsOfUseState {
   const TermsOfUseState(this.termsOfUse);
 }
 
-class TermsOfUseReady extends TermsOfUseState {
-  const TermsOfUseReady(TermsOfUse termsOfUse) : super(termsOfUse);
+class TermsOfUseLoaded extends TermsOfUseState {
+  const TermsOfUseLoaded(TermsOfUse termsOfUse) : super(termsOfUse);
 }
 
-class TermsOfUseNotReady extends TermsOfUseState {
-  TermsOfUseNotReady() : super(TermsOfUse.notReady());
+class TermsOfUseNotLoaded extends TermsOfUseState {
+  TermsOfUseNotLoaded() : super(TermsOfUse.notReady());
 }

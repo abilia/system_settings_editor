@@ -20,6 +20,10 @@ void main() {
   late StreamController<SortableState> sortableStreamController;
   late Stream<SortableState> sortableStream;
 
+  late LoginDialogCubit loginDialogCubit;
+  late StreamController<LoginDialogState> loginDialogStreamController;
+  late Stream<LoginDialogState> loginDialogStream;
+
   late MemoplannerSettingsBloc memoplannerSettingBloc;
   late StreamController<MemoplannerSettings> settingsStreamController;
   late Stream<MemoplannerSettings> settingsStream;
@@ -46,6 +50,14 @@ void main() {
     when(() => sortableBloc.stream).thenAnswer((invocation) => sortableStream);
     when(() => sortableBloc.addStarter(any()))
         .thenAnswer((invocation) => Future.value(true));
+
+    loginDialogCubit = MockLoginDialogCubit();
+    when(() => loginDialogCubit.state)
+        .thenReturn(LoginDialogNotReady.initial());
+    loginDialogStreamController = StreamController<LoginDialogState>();
+    loginDialogStream = loginDialogStreamController.stream.asBroadcastStream();
+    when(() => loginDialogCubit.stream)
+        .thenAnswer((invocation) => loginDialogStream);
 
     memoplannerSettingBloc = MockMemoplannerSettingBloc();
     when(() => memoplannerSettingBloc.state)
@@ -75,6 +87,7 @@ void main() {
     GetIt.I.reset();
     activitiesStreamController.close();
     sortableStreamController.close();
+    loginDialogStreamController.close();
     settingsStreamController.close();
     timerStreamController.close();
   });
@@ -91,6 +104,7 @@ void main() {
                 providers: [
                   BlocProvider.value(value: activitiesBloc),
                   BlocProvider.value(value: sortableBloc),
+                  BlocProvider.value(value: loginDialogCubit),
                   BlocProvider.value(value: timerCubit),
                   BlocProvider.value(value: memoplannerSettingBloc),
                   BlocProvider.value(value: notificationBloc),
@@ -174,10 +188,13 @@ void main() {
 
       await tester.pumpAndSettle();
       // Act
-      sortableStreamController.add(const SortablesLoaded(sortables: []));
+      loginDialogStreamController.add(const LoginDialogReady());
+      when(() => sortableBloc.state)
+          .thenReturn(const SortablesLoaded(sortables: []));
       await tester.pumpAndSettle();
 
       // Assert
+      expect(find.byType(LoginDialog), findsOneWidget);
       expect(find.byType(StarterSetDialog), findsOneWidget);
       // Act press Yes
       await tester.tap(find.byType(YesButton));

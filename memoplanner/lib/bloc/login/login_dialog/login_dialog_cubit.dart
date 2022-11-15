@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/all.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'login_dialog_state.dart';
@@ -16,7 +15,7 @@ class LoginDialogCubit extends Cubit<LoginDialogState> {
     required PermissionCubit permissionCubit,
   }) : super(LoginDialogNotReady.initial()) {
     _termsOfUseSubscription = termsOfUseCubit.stream
-        .whereType<TermsOfUse>()
+        .whereType<TermsOfUseLoaded>()
         .listen((termsOfUseState) {
       final s = state;
       if (s is LoginDialogNotReady) {
@@ -34,10 +33,10 @@ class LoginDialogCubit extends Cubit<LoginDialogState> {
     });
   }
 
-  Future<void> checkIfReady() async {
+  void checkIfReady() {
     final s = state;
     if (s is LoginDialogNotReady && s.dialogsReady) {
-      emit(LoginDialogReady());
+      emit(const LoginDialogReady());
     }
   }
 

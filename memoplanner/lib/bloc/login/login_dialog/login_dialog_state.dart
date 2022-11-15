@@ -1,11 +1,11 @@
 part of 'login_dialog_cubit.dart';
 
 abstract class LoginDialogState {
-  LoginDialogState();
+  const LoginDialogState();
 }
 
 class LoginDialogReady extends LoginDialogState {
-  LoginDialogReady();
+  const LoginDialogReady();
 }
 
 class LoginDialogNotReady extends LoginDialogState {
@@ -14,12 +14,12 @@ class LoginDialogNotReady extends LoginDialogState {
 
   bool get dialogsReady => sortablesLoaded && termsOfUseLoaded;
 
-  LoginDialogNotReady({
+  const LoginDialogNotReady({
     required this.sortablesLoaded,
     required this.termsOfUseLoaded,
   });
 
-  factory LoginDialogNotReady.initial() => LoginDialogNotReady(
+  factory LoginDialogNotReady.initial() => const LoginDialogNotReady(
         sortablesLoaded: false,
         termsOfUseLoaded: false,
       );
