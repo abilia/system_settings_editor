@@ -7,7 +7,6 @@ class CreateNewPage extends StatelessWidget {
     this.showActivities = true,
     this.showTimers = true,
   })  : assert(showActivities || showTimers),
-        assert(!Config.isMPGO || (showActivities && showTimers)),
         super(key: key);
 
   final bool showActivities, showTimers;

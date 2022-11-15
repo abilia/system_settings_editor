@@ -85,7 +85,10 @@ class CalendarBottomBar extends StatelessWidget {
                   Row(
                     children: [
                       SizedBox(
-                        width: AddButton.width(display) -
+                        width: AddButton.width(
+                                displaySettings: display,
+                                hasMP4Session:
+                                    context.watch<SessionCubit>().state) -
                             (display.menu ? layout.actionButton.size : 0),
                       ),
                       if (Config.isMPGO)
