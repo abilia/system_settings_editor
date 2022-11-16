@@ -3,12 +3,12 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class TermsOfUseDialog extends StatefulWidget {
-  final TermsOfUse termsOfUse;
+  final TermsOfUseCubit termsOfUseCubit;
   final bool isMoreDialogs;
   final Function() onNext;
 
   const TermsOfUseDialog({
-    required this.termsOfUse,
+    required this.termsOfUseCubit,
     required this.isMoreDialogs,
     required this.onNext,
     Key? key,
@@ -22,10 +22,14 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
   late bool _termsOfCondition;
   late bool _privacyPolicy;
 
+  TermsOfUseCubit get termsOfUseCubit => widget.termsOfUseCubit;
+
+  TermsOfUse get termsOfUse => termsOfUseCubit.state.termsOfUse;
+
   @override
   void initState() {
-    _termsOfCondition = widget.termsOfUse.termsOfCondition;
-    _privacyPolicy = widget.termsOfUse.privacyPolicy;
+    _termsOfCondition = termsOfUse.termsOfCondition;
+    _privacyPolicy = termsOfUse.privacyPolicy;
     super.initState();
   }
 
@@ -107,7 +111,6 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
   }
 
   Future<void> postAndClose() async {
-    final termsOfUseCubit = context.read<TermsOfUseCubit>();
     await termsOfUseCubit.postTermsOfUse(_termsOfCondition, _privacyPolicy);
     return widget.onNext();
   }

@@ -502,6 +502,7 @@ void main() {
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
+        expect(find.byType(LoginDialog), findsOneWidget);
         expect(find.byType(FullscreenAlarmInfoDialog), findsOneWidget);
         expect(
           find.byType(RequestFullscreenNotificationButton),
@@ -537,6 +538,7 @@ void main() {
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
+        expect(find.byType(LoginDialog), findsOneWidget);
         expect(find.byType(StarterSetDialog), findsOneWidget);
       });
 

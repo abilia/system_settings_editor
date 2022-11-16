@@ -22,7 +22,7 @@ class TermsOfUseRepository extends Repository {
       );
       if (response.statusCode == 200) {
         final decoded = response.json();
-        return TermsOfUse.fromJson(decoded);
+        return TermsOfUse.fromMap(decoded);
       }
       throw FetchTermsOfUseException(response.statusCode);
     } catch (error) {

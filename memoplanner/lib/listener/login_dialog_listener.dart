@@ -23,7 +23,7 @@ class LoginDialogListener
             final showStarterSetDialog = sortableState is SortablesLoaded &&
                 sortableState.sortables.isEmpty;
 
-            final fullscreenAlarmEnabled = Config.isMPGO && Platform.isAndroid;
+            final fullscreenAlarmEnabled = Config.isMPGO && !Platform.isIOS;
             final permissionStatus = permissionCubit.state.status;
             final showFullscreenAlarmDialog = fullscreenAlarmEnabled &&
                 permissionStatus.containsKey(Permission.systemAlertWindow) &&
@@ -31,7 +31,7 @@ class LoginDialogListener
                     false);
 
             final loginDialog = LoginDialog(
-              termsOfUse: termsOfUseCubit.state.termsOfUse,
+              termsOfUseCubit: termsOfUseCubit,
               showTermsOfUseDialog: showTermsOfUseDialog,
               showStarterSetDialog: showStarterSetDialog,
               showFullscreenAlarmDialog: showFullscreenAlarmDialog,
