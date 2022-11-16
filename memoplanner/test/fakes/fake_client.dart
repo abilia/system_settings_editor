@@ -134,7 +134,7 @@ class Fakes {
           if (pathSegments.containsAll(['entity', 'acknowledgments'])) {
             response = Response(
                 json.encode((termsOfUseResponse?.call().toMap() ??
-                    TermsOfUse.ready().toMap())),
+                    TermsOfUse.accepted().toMap())),
                 200);
           }
 

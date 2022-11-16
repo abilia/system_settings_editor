@@ -7,10 +7,10 @@ class TermsOfUse {
   const TermsOfUse(
       {required this.termsOfCondition, required this.privacyPolicy});
 
-  factory TermsOfUse.notReady() =>
+  factory TermsOfUse.notAccepted() =>
       const TermsOfUse(termsOfCondition: false, privacyPolicy: false);
 
-  factory TermsOfUse.ready() =>
+  factory TermsOfUse.accepted() =>
       const TermsOfUse(termsOfCondition: true, privacyPolicy: true);
 
   factory TermsOfUse.fromMap(Map<String, dynamic> json) => TermsOfUse(

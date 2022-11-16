@@ -10,5 +10,5 @@ class TermsOfUseLoaded extends TermsOfUseState {
 }
 
 class TermsOfUseNotLoaded extends TermsOfUseState {
-  TermsOfUseNotLoaded() : super(TermsOfUse.notReady());
+  TermsOfUseNotLoaded() : super(TermsOfUse.notAccepted());
 }
