@@ -20,7 +20,7 @@ class TermsOfUseRepository extends Repository {
       final response = await client.get(
         '$baseUrl/api/v1//entity//$userId/acknowledgments'.toUri(),
       );
-      if (response.statusCode != 200) {
+      if (response.statusCode == 200) {
         final decoded = response.json();
         return TermsOfUse.fromMap(decoded);
       }

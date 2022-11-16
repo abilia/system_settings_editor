@@ -94,7 +94,8 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
             ),
           ],
         ),
-        backNavigationWidget: _navigationButton(translate.welcomeMemoplanner),
+        backNavigationWidget: _navigationButton(translate.openMemoplanner),
+        backNavigationExpanded: true,
       ),
     );
   }
@@ -103,11 +104,13 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
     final termsAccepted = _termsOfCondition && _privacyPolicy;
     final Function()? onPressed = termsAccepted ? postAndClose : null;
     if (widget.isMoreDialogs) {
-      return NextButton(onPressed: onPressed);
+      return NextButton(
+        onPressed: onPressed,
+      );
     }
     return GreenButton(
       text: welcomeText,
-      icon: AbiliaIcons.navigationNext,
+      icon: AbiliaIcons.checkButton,
       onPressed: onPressed,
     );
   }

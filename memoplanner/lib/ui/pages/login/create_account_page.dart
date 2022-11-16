@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
