@@ -40,7 +40,7 @@ class VoiceRepository {
     final url = Uri.https(
       baseUrl,
       pathSegments,
-      {'environment': baseUrlDb.environment},
+      {'environment': baseUrlDb.environmentOrTest},
     );
     try {
       final response = await client.get(url);

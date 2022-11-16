@@ -19,7 +19,7 @@ import 'package:memoplanner/utils/all.dart';
 
 export 'package:logging/logging.dart';
 
-enum LoggingType { file, print, analytic }
+enum LoggingType { file, print, crashReporting }
 
 class SeagullLogger {
   File? _logFile;
@@ -33,7 +33,8 @@ class SeagullLogger {
 
   late final bool fileLogging = loggingType.contains(LoggingType.file);
   late final bool printLogging = loggingType.contains(LoggingType.print);
-  late final bool analyticLogging = loggingType.contains(LoggingType.analytic);
+  late final bool crashReporting =
+      loggingType.contains(LoggingType.crashReporting);
 
   String get logFileName => '${Config.flavor.id}.log';
 
@@ -57,7 +58,7 @@ class SeagullLogger {
         LoggingType.print
       else ...{
         LoggingType.file,
-        LoggingType.analytic,
+        LoggingType.crashReporting,
       }
     },
     Level level = kDebugMode ? Level.ALL : Level.FINE,
@@ -66,7 +67,7 @@ class SeagullLogger {
       Logger.root.level = level;
       if (fileLogging) _initFileLogging();
       if (printLogging) _initPrintLogging();
-      if (analyticLogging) _initAnalyticsLogging();
+      if (crashReporting) _initCrashReporting();
     }
   }
 
@@ -143,7 +144,7 @@ class SeagullLogger {
     );
   }
 
-  void _initAnalyticsLogging() {
+  void _initCrashReporting() {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
     loggingSubscriptions.add(
       Logger.root.onRecord.listen(
@@ -285,9 +286,9 @@ mixin Warning implements Info {}
 mixin Shout implements Warning {}
 
 class BlocLoggingObserver extends BlocObserver {
-  BlocLoggingObserver({this.analyticsLogging = false});
+  BlocLoggingObserver(this.analytics);
 
-  final bool analyticsLogging;
+  final SeagullAnalytics analytics;
   final _loggers = <BlocBase, Logger>{};
 
   Logger _getLog(BlocBase bloc) =>
@@ -329,14 +330,15 @@ class BlocLoggingObserver extends BlocObserver {
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
     if (bloc is Silent) return;
+    onChangeAnalytics(bloc, change);
     _log(bloc, change);
   }
 
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
-    if (analyticsLogging) logEventToAnalytics(transition);
     if (bloc is Silent) return;
+    onTransitionAnalytics(transition);
     _log(bloc, transition);
   }
 
@@ -353,17 +355,27 @@ class BlocLoggingObserver extends BlocObserver {
     _log(bloc, 'closed');
   }
 
-  Future<void> logEventToAnalytics(Transition transition) async {
+  void onTransitionAnalytics(Transition transition) {
     final event = transition.event;
     final nextState = transition.nextState;
+    final currentState = transition.currentState;
     if (event is AddActivity) {
-      await AnalyticsService.sendActivityCreatedEvent(event.activity);
-    }
-    if (event is LoggedIn) {
-      await AnalyticsService.sendLoginEvent();
+      analytics.track(
+        'Activity created',
+        properties: event.activity.wrapWithDbModel().toJson(),
+      );
     }
     if (nextState is Authenticated) {
-      await AnalyticsService.setUserId(nextState.userId);
+      analytics.setUser(nextState.user);
+    }
+    if (currentState is Authenticated && nextState is Unauthenticated) {
+      analytics.reset();
+    }
+  }
+
+  void onChangeAnalytics(BlocBase bloc, Change change) {
+    if (bloc is BaseUrlCubit) {
+      analytics.setBackend('${change.nextState}');
     }
   }
 }

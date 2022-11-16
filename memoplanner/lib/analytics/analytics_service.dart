@@ -1,32 +1,57 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
+import 'dart:async';
+
+import 'package:memoplanner/ui/all.dart';
+import 'package:mixpanel_flutter/mixpanel_flutter.dart';
+
 import 'package:memoplanner/models/all.dart';
 
-class AnalyticsService {
-  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
+class SeagullAnalytics extends RouteObserver<PageRoute> {
+  final Mixpanel? mixpanel;
+  final Map<String, dynamic> superProperties;
+  SeagullAnalytics._(this.mixpanel, this.superProperties);
+  SeagullAnalytics.empty()
+      : mixpanel = null,
+        superProperties = {};
 
-  static Future<void> sendLoginEvent() async {
-    await analytics.logLogin();
-  }
-
-  static Future<void> setUserId(int id) async {
-    await analytics.setUserId(id: id.toString());
-  }
-
-  static Future<void> sendActivityCreatedEvent(Activity activity) async {
-    final params = <String, dynamic>{
-      'image': activity.hasImage,
-      'title': activity.hasTitle,
-      'fullDay': activity.fullDay,
-      'checkable': activity.checkable,
-      'removeAfter': activity.removeAfter,
-      'alarm': activity.alarm.intValue,
-      'recurring': activity.recurs.recurrence.toString(),
+  static Future<SeagullAnalytics> init(
+    String clientId,
+    String? environment,
+  ) async {
+    final superProperties = {
+      'flavor': Config.flavor.name,
+      'release': Config.release,
+      'clientId': clientId,
+      environmentKey: environment,
     };
-    await analytics.logEvent(
-      name: 'activity_created',
-      parameters: params,
+    final mixpanel = await Mixpanel.init(
+      '814838948a0be3497bcce0421334edb2',
+      trackAutomaticEvents: true,
+      superProperties: superProperties,
     );
+    return SeagullAnalytics._(mixpanel, superProperties);
+  }
+
+  void setUser(User user) {
+    mixpanel?.identify('${user.id}');
+    mixpanel?.registerSuperProperties(user.toJson());
+  }
+
+  void reset() {
+    mixpanel?.reset();
+    mixpanel?.registerSuperProperties(superProperties);
+  }
+
+  static const environmentKey = 'environment';
+  void setBackend(String environment) {
+    superProperties[environmentKey] = environment;
+    mixpanel?.registerSuperProperties({environmentKey: environment});
+  }
+
+  void track(String eventName, {Map<String, dynamic>? properties}) =>
+      mixpanel?.track(eventName, properties: properties);
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    super.didPush(route, previousRoute);
   }
 }

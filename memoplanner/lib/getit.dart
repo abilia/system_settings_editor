@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:memoplanner/analytics/all.dart';
 import 'package:package_info/package_info.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:memoplanner/db/all.dart';
@@ -122,6 +123,9 @@ class GetItInitializer {
   set supportPersonsDb(SupportPersonsDb supportPersonsDb) =>
       _supportPersonsDb = supportPersonsDb;
 
+  SeagullAnalytics? _analytics;
+  set analytics(SeagullAnalytics analytics) => _analytics = analytics;
+
   void init() {
     final loginDb = _loginDb ?? LoginDb(_sharedPreferences);
     final deviceDb = _deviceDb ?? DeviceDb(_sharedPreferences);
@@ -172,6 +176,8 @@ class GetItInitializer {
               documents: Directory.systemTemp,
               temp: Directory.systemTemp,
             ),
-      );
+      )
+      ..registerSingleton<SeagullAnalytics>(
+          _analytics ?? SeagullAnalytics.empty());
   }
 }
