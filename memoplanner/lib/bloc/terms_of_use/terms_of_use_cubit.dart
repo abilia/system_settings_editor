@@ -12,21 +12,24 @@ class TermsOfUseCubit extends Cubit<TermsOfUseState> {
 
   TermsOfUseCubit({required this.termsOfUseRepository})
       : super(TermsOfUseNotLoaded()) {
-    _initialize();
+    _loadTermsOfUse();
   }
 
-  Future<void> _initialize() async {
+  // If fetching terms of use fails and throws an exception,
+  // TermsOfUse.accepted will be emitted thus not triggering the TermsOfUseDialog on login.
+  Future<void> _loadTermsOfUse() async {
+    TermsOfUse termsOfUse = TermsOfUse.accepted();
     try {
-      final termsOfUse = await termsOfUseRepository.fetchTermsOfUse();
-      emit(TermsOfUseLoaded(termsOfUse));
+      termsOfUse = await termsOfUseRepository.fetchTermsOfUse();
     } on FetchTermsOfUseException catch (e) {
       _log.warning(
           'Could not fetch terms of use from backend with status code ${e.statusCode}');
     } catch (e) {
       _log.warning('Could not fetch terms of use from backend $e');
     }
+    emit(TermsOfUseLoaded(termsOfUse));
   }
 
-  Future<Response> postTermsOfUse(bool termsOfCondition, bool privacyPolicy) =>
-      termsOfUseRepository.postTermsOfUse(termsOfCondition, privacyPolicy);
+  Future<Response> postTermsOfUse(TermsOfUse termsOfUse) =>
+      termsOfUseRepository.postTermsOfUse(termsOfUse);
 }

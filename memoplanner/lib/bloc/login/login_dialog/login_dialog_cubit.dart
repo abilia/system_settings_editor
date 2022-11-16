@@ -16,24 +16,29 @@ class LoginDialogCubit extends Cubit<LoginDialogState> {
   }) : super(LoginDialogNotReady.initial()) {
     _termsOfUseSubscription = termsOfUseCubit.stream
         .whereType<TermsOfUseLoaded>()
-        .listen((termsOfUseState) {
-      final s = state;
-      if (s is LoginDialogNotReady) {
-        emit(s.copyWith(termsOfUseLoaded: true));
-      }
-      checkIfReady();
-    });
-    _sortableSubscription =
-        sortableBloc.stream.whereType<SortablesLoaded>().listen((event) {
-      final s = state;
-      if (s is LoginDialogNotReady) {
-        emit(s.copyWith(sortablesLoaded: true));
-      }
-      checkIfReady();
-    });
+        .listen((_) => _onTermsOfUseLoaded());
+    _sortableSubscription = sortableBloc.stream
+        .whereType<SortablesLoaded>()
+        .listen((_) => _onSortablesLoaded());
   }
 
-  void checkIfReady() {
+  void _onTermsOfUseLoaded() {
+    final s = state;
+    if (s is LoginDialogNotReady) {
+      emit(s.copyWith(termsOfUseLoaded: true));
+    }
+    _checkIfReady();
+  }
+
+  void _onSortablesLoaded() {
+    final s = state;
+    if (s is LoginDialogNotReady) {
+      emit(s.copyWith(sortablesLoaded: true));
+    }
+    _checkIfReady();
+  }
+
+  void _checkIfReady() {
     final s = state;
     if (s is LoginDialogNotReady && s.dialogsReady) {
       emit(const LoginDialogReady());

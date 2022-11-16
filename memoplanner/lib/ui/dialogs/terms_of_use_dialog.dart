@@ -24,10 +24,12 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
 
   TermsOfUseCubit get termsOfUseCubit => widget.termsOfUseCubit;
 
-  TermsOfUse get termsOfUse => termsOfUseCubit.state.termsOfUse;
+  TermsOfUse get _termsOfUse => TermsOfUse(
+      termsOfCondition: _termsOfCondition, privacyPolicy: _privacyPolicy);
 
   @override
   void initState() {
+    final termsOfUse = termsOfUseCubit.state.termsOfUse;
     _termsOfCondition = termsOfUse.termsOfCondition;
     _privacyPolicy = termsOfUse.privacyPolicy;
     super.initState();
@@ -92,12 +94,12 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
             ),
           ],
         ),
-        backNavigationWidget: _navigationWidget(),
+        backNavigationWidget: _navigationButton(),
       ),
     );
   }
 
-  Widget _navigationWidget() {
+  Widget _navigationButton() {
     final termsAccepted = _termsOfCondition && _privacyPolicy;
     final Function()? onPressed = termsAccepted ? postAndClose : null;
     if (widget.isMoreDialogs) {
@@ -111,7 +113,7 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
   }
 
   Future<void> postAndClose() async {
-    await termsOfUseCubit.postTermsOfUse(_termsOfCondition, _privacyPolicy);
+    await termsOfUseCubit.postTermsOfUse(_termsOfUse);
     return widget.onNext();
   }
 }

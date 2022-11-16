@@ -68,4 +68,10 @@ class _LoginDialogState extends State<LoginDialog>
     }
     _tabController.index++;
   }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 }

@@ -20,7 +20,7 @@ class TermsOfUseRepository extends Repository {
       final response = await client.get(
         '$baseUrl/api/v1//entity//$userId/acknowledgments'.toUri(),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode != 200) {
         final decoded = response.json();
         return TermsOfUse.fromMap(decoded);
       }
@@ -30,14 +30,13 @@ class TermsOfUseRepository extends Repository {
     }
   }
 
-  Future<Response> postTermsOfUse(
-      bool termsOfCondition, bool privacyPolicy) async {
+  Future<Response> postTermsOfUse(TermsOfUse termsOfUse) async {
     return client.post(
       '$baseUrl/api/v1//entity//$userId/acknowledgments'.toUri(),
       headers: jsonHeader,
       body: jsonEncode({
-        'termsOfCondition': termsOfCondition,
-        'privacyPolicy': privacyPolicy
+        'termsOfCondition': termsOfUse.termsOfCondition,
+        'privacyPolicy': termsOfUse.privacyPolicy
       }),
     );
   }
