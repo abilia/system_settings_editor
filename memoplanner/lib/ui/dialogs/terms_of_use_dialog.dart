@@ -57,14 +57,14 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
             SizedBox(height: layout.starterSetDialog.imageHeadingDistance),
             Tts(
               child: Text(
-                'Welcome to MEMOplanner 4',
+                translate.welcomeMemoplanner,
                 style: Theme.of(context).textTheme.headline6,
               ),
             ),
             SizedBox(height: layout.starterSetDialog.headingBodyDistance),
             Tts(
               child: Text(
-                'To use MEMOplanner 4, please read and agree to the terms of use and privacy policy',
+                translate.readAndAgree,
                 style: Theme.of(context).textTheme.bodyText2,
               ),
             ),
@@ -94,19 +94,19 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
             ),
           ],
         ),
-        backNavigationWidget: _navigationButton(),
+        backNavigationWidget: _navigationButton(translate.welcomeMemoplanner),
       ),
     );
   }
 
-  Widget _navigationButton() {
+  Widget _navigationButton(String welcomeText) {
     final termsAccepted = _termsOfCondition && _privacyPolicy;
     final Function()? onPressed = termsAccepted ? postAndClose : null;
     if (widget.isMoreDialogs) {
       return NextButton(onPressed: onPressed);
     }
     return GreenButton(
-      text: 'Open MEMOplanner 4',
+      text: welcomeText,
       icon: AbiliaIcons.navigationNext,
       onPressed: onPressed,
     );

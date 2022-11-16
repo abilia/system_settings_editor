@@ -938,6 +938,11 @@ abstract class Translated {
   final String doYouWantToImportADefaultSet =
       'Do you want to import a default set of data with activities, timers, checklists and image archive?';
 
+  final String welcomeMemoplanner = 'Welcome to MEMOplanner 4';
+
+  final String readAndAgree =
+      'To use MEMOplanner 4, please read and agree to the terms of use and privacy policy';
+
   final String welcome = 'Welcome!';
 
   final String welcomeText =
