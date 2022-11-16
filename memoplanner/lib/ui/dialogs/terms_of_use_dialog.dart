@@ -54,21 +54,21 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
                 'assets/graphics/${Config.flavor.id}/logo.png',
               ),
             ),
-            SizedBox(height: layout.starterSetDialog.imageHeadingDistance),
+            SizedBox(height: layout.termsOfUseDialog.imageHeadingDistance),
             Tts(
               child: Text(
                 translate.welcomeMemoplanner,
                 style: Theme.of(context).textTheme.headline6,
               ),
             ),
-            SizedBox(height: layout.starterSetDialog.headingBodyDistance),
+            SizedBox(height: layout.termsOfUseDialog.headingTextDistance),
             Tts(
               child: Text(
                 translate.readAndAgree,
                 style: Theme.of(context).textTheme.bodyText2,
               ),
             ),
-            SizedBox(height: layout.starterSetDialog.headingBodyDistance * 2),
+            SizedBox(height: layout.termsOfUseDialog.bodyTextDistance),
             AcceptTermsSwitch(
               key: TestKey.acceptTermsOfUse,
               linkText: translate.termsOfUse,
