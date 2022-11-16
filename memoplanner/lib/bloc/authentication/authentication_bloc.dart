@@ -81,7 +81,7 @@ class AuthenticationBloc
       final user = await userRepository.me();
       await userRepository.fetchAndSetCalendar(user.id);
       return Authenticated(
-        userId: user.id,
+        user: user,
         newlyLoggedIn: newlyLoggedIn,
       );
     } on UnauthorizedException {

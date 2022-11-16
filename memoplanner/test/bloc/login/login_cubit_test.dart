@@ -109,7 +109,7 @@ void main() {
       expect(
         authenticationBloc.state,
         const Authenticated(
-          userId: loggedInUserId,
+          user: User(id: loggedInUserId, type: 'type', name: 'name'),
           newlyLoggedIn: true,
         ),
       );
