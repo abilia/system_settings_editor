@@ -21,11 +21,13 @@ void main() {
     Iterable<Activity> activities = [];
     late MockGenericDb genericDb;
     late ActivityDbInMemory activityDb;
+    Iterable<Session> sessions;
 
     setUp(() async {
       setupPermissions();
       notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
       scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+      sessions = [];
 
       genericDb = MockGenericDb();
       when(() => genericDb.getAllNonDeletedMaxRevision())
@@ -43,7 +45,7 @@ void main() {
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..ticker = Ticker.fake(initialTime: initialTime)
-        ..client = Fakes.client()
+        ..client = Fakes.client(sessionsResponse: () => sessions)
         ..database = FakeDatabase()
         ..genericDb = genericDb
         ..activityDb = activityDb
@@ -243,6 +245,21 @@ void main() {
         expect(
             find.byKey(TestKey.showOngoingActivityInFullScreen), findsNothing);
       }
+    });
+
+    testWidgets('SGC-2158 - If session is MP4, show alarm settings for timers',
+        (tester) async {
+      sessions = [Session.mp4Session()];
+      await tester.goToAlarmSettingsPage();
+      expect(find.text('Timer'), findsOneWidget);
+    });
+
+    testWidgets(
+        'SGC-2158 - If session is MP3, show no alarm settings for timers',
+        (tester) async {
+      sessions = [Session.mp3Session()];
+      await tester.goToAlarmSettingsPage();
+      expect(find.text('Timer'), findsNothing);
     });
   });
 }

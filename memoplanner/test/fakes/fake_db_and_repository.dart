@@ -112,12 +112,9 @@ class FakeGenericDb extends Fake implements GenericDb {
   Future<int> getLastRevision() => Future.value(0);
 }
 
-class FakeSessionsDb extends Fake implements SessionsDb {
+class FakeSessionDb extends Fake implements SessionDb {
   @override
-  bool get hasMP4Session => false;
-
-  @override
-  Future<void> setHasMP4Session(bool session) async {}
+  Session get session => Session.mp4Session();
 }
 
 class FakeActivityDb extends Fake implements ActivityDb {

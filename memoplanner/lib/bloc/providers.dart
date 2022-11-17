@@ -74,7 +74,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             create: (context) => SessionRepository(
               baseUrlDb: GetIt.I<BaseUrlDb>(),
               client: GetIt.I<ListenableClient>(),
-              sessionsDb: GetIt.I<SessionsDb>(),
+              sessionsDb: GetIt.I<SessionDb>(),
             ),
           ),
         ],
@@ -379,7 +379,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
                 GetIt.I<SupportPersonsDb>().deleteAll(),
                 GetIt.I<LicenseDb>().delete(),
                 GetIt.I<SettingsDb>().restore(),
-                GetIt.I<SessionsDb>().setHasMP4Session(false),
+                GetIt.I<SessionDb>().clear(),
               ],
             ),
             client: GetIt.I<ListenableClient>(),

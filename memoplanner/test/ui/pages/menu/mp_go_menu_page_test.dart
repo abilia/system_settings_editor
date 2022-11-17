@@ -13,8 +13,6 @@ import '../../../test_helpers/app_pumper.dart';
 void main() {
   final time = DateTime(2022, 05, 10, 13, 37);
   Iterable<Session> sessions;
-  const mp4Session = Session(type: 'flutter', app: 'memoplanner');
-  const mp3Session = Session(type: 'android', app: 'memoplanner3');
   setUp(() async {
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
@@ -36,17 +34,15 @@ void main() {
   tearDown(GetIt.I.reset);
 
   group('Mp go menu page', () {
-    setUp(() {});
-
     testWidgets('Has menu icon when MP4 session is available', (tester) async {
-      sessions = [mp4Session];
+      sessions = [Session.mp4Session()];
       await tester.pumpApp();
       expect(find.byIcon(AbiliaIcons.menu), findsOneWidget);
     });
 
     testWidgets('Displays my photos pick field when MP4 session is available',
         (tester) async {
-      sessions = [mp4Session];
+      sessions = [Session.mp4Session()];
       await tester.pumpApp();
       await tester.tap(find.byType(MpGoMenuButton));
       await tester.pumpAndSettle();
@@ -55,13 +51,13 @@ void main() {
 
     testWidgets('Has settings icon when no MP4 session is available',
         (tester) async {
-      sessions = [mp3Session];
+      sessions = [Session.mp3Session()];
       await tester.pumpApp();
       expect(find.byIcon(AbiliaIcons.settings), findsOneWidget);
     });
 
     testWidgets('No my photos when only mp3 session', (tester) async {
-      sessions = [mp3Session];
+      sessions = [Session.mp3Session()];
       await tester.pumpApp();
       await tester.tap(find.byType(MpGoMenuButton));
       await tester.pumpAndSettle();

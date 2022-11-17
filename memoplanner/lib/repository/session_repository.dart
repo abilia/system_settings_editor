@@ -14,7 +14,7 @@ class SessionRepository extends Repository {
     required this.sessionsDb,
   }) : super(client, baseUrlDb);
 
-  final SessionsDb sessionsDb;
+  final SessionDb sessionsDb;
 
   Future<Iterable<Session>> fetchSessions() async {
     final url = '$baseUrl/api/v1/auth/client';
@@ -34,8 +34,7 @@ class SessionRepository extends Repository {
     throw FetchSessionsException(response.statusCode);
   }
 
-  Future<void> setHasMP4Session(bool hasMP4Session) =>
-      sessionsDb.setHasMP4Session(hasMP4Session);
+  Future<void> setSession(Session? session) => sessionsDb.setSession(session);
 
-  bool hasMP4Session() => sessionsDb.hasMP4Session;
+  Session get session => sessionsDb.session;
 }

@@ -1,4 +1,5 @@
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
@@ -7,14 +8,14 @@ class MpGoMenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocBuilder<SessionCubit, bool>(
-      builder: (context, hasMP4Session) => SettingsBasePage(
-        icon: hasMP4Session ? AbiliaIcons.menu : AbiliaIcons.settings,
-        title: hasMP4Session ? t.menu : t.settings,
+    return BlocBuilder<SessionCubit, Session>(
+      builder: (context, session) => SettingsBasePage(
+        icon: session.isMP4Session ? AbiliaIcons.menu : AbiliaIcons.settings,
+        title: session.isMP4Session ? t.menu : t.settings,
         bottomNavigationBar:
             const BottomNavigation(backNavigationWidget: CloseButton()),
         widgets: [
-          if (hasMP4Session) ...[
+          if (session.isMP4Session) ...[
             const MyPhotosPickField(),
             const SizedBox(height: 10),
             const Divider(),

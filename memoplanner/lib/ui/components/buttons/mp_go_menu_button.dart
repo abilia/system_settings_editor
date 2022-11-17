@@ -1,4 +1,5 @@
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/session.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
@@ -16,8 +17,8 @@ class MpGoMenuButton extends StatelessWidget {
         return Stack(
           clipBehavior: Clip.none,
           children: [
-            BlocBuilder<SessionCubit, bool>(
-              builder: (context, hasMP4Session) => IconActionButton(
+            BlocBuilder<SessionCubit, Session>(
+              builder: (context, session) => IconActionButton(
                 style: actionButtonStyleLight,
                 ttsData: t.menu,
                 onPressed: () {
@@ -32,8 +33,9 @@ class MpGoMenuButton extends StatelessWidget {
                     ),
                   );
                 },
-                child: Icon(
-                    hasMP4Session ? AbiliaIcons.menu : AbiliaIcons.settings),
+                child: Icon(session.isMP4Session
+                    ? AbiliaIcons.menu
+                    : AbiliaIcons.settings),
               ),
             ),
             if (importantPermissionMissing)

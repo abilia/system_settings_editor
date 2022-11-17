@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:memoplanner/background/all.dart';
-import 'package:memoplanner/db/all.dart';
 
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
@@ -15,17 +14,11 @@ import '../../../../test_helpers/app_pumper.dart';
 
 void main() {
   late MockSortableDb mockSortableDb;
-  late SessionsDb mockSessionDb;
   setUp(() async {
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
     mockSortableDb = MockSortableDb();
-    mockSessionDb = MockSessionDb();
-
-    when(() => mockSessionDb.setHasMP4Session(any()))
-        .thenAnswer((_) => Future.value());
-    when(() => mockSessionDb.hasMP4Session).thenReturn(true);
 
     final myPhotosFolder = Sortable.createNew(
       data: const ImageArchiveData(myPhotos: true),
@@ -79,7 +72,7 @@ void main() {
       ..sortableDb = mockSortableDb
       ..battery = FakeBattery()
       ..deviceDb = FakeDeviceDb()
-      ..sessionsDb = mockSessionDb
+      ..sessionDb = FakeSessionDb()
       ..init();
   });
 

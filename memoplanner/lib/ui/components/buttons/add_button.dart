@@ -24,9 +24,9 @@ class AddButton extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    final hasMP4Session = context.read<SessionCubit>().state;
+    final isMP4Session = context.read<SessionCubit>().state.isMP4Session;
     final configuration = context.select((MemoplannerSettingsBloc bloc) =>
-        _configuration(bloc.state.functions.display, hasMP4Session));
+        _configuration(bloc.state.functions.display, isMP4Session));
     switch (configuration) {
       case _AddButtonConfiguration.none:
         return SizedBox(width: layout.actionButton.size);
@@ -43,9 +43,9 @@ class AddButton extends StatelessWidget
 
   static double width({
     required DisplaySettings displaySettings,
-    required bool hasMP4Session,
+    required bool isMP4Session,
   }) {
-    switch (_configuration(displaySettings, hasMP4Session)) {
+    switch (_configuration(displaySettings, isMP4Session)) {
       case _AddButtonConfiguration.none:
       case _AddButtonConfiguration.mpGo:
       case _AddButtonConfiguration.onlyNewActivity:
@@ -58,10 +58,10 @@ class AddButton extends StatelessWidget
 
   static _AddButtonConfiguration _configuration(
     DisplaySettings settings,
-    bool hasMP4Session, // no timers for mp3 users
+    bool showTimers, // no timers for mp3 users
   ) {
     if (Config.isMPGO) {
-      final timer = hasMP4Session && settings.newTimer;
+      final timer = showTimers && settings.newTimer;
       return settings.newActivity || timer
           ? _AddButtonConfiguration.mpGo
           : _AddButtonConfiguration.none;
@@ -137,8 +137,10 @@ class _AddButtonMPGO extends StatelessWidget {
       onPressed: () => onAddButtonPressed(
         context,
         showActivities: true,
-        showTimers:
-            context.read<SessionCubit>().state, // no timers for mp3 users
+        showTimers: context
+            .read<SessionCubit>()
+            .state
+            .isMP4Session, // no timers for mp3 users
       ),
     );
   }

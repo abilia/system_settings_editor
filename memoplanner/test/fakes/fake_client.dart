@@ -150,7 +150,7 @@ class Fakes {
     FakeActivity.reoccursOnDate(DateTime(2000, 10, 06)),
   ];
 
-  static const fakeSession = [Session(app: 'memoplanner', type: 'flutter')];
+  static final fakeSession = [Session.mp4Session()];
 
   static final allSortables = <Sortable>[];
   static final allGenerics = <Generic>[];
