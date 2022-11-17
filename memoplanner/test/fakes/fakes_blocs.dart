@@ -192,7 +192,7 @@ class FakeSessionCubit extends Fake implements SessionCubit {
   Stream<Session> get stream => const Stream.empty();
 
   @override
-  Session get state => Session.empty();
+  Session get state => Session.mp4Session();
 
   @override
   Future<void> close() async {}
