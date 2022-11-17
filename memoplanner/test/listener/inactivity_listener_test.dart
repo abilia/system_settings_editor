@@ -22,9 +22,10 @@ void main() {
     registerFallbackValues();
   });
 
-  group('app', () {
+  group('inactivity', () {
     GenericResponse genericResponse = () => [];
     TimerResponse timerResponse = () => [];
+    ActivityResponse activityResponse = () => [];
 
     Generic activityTimeoutGeneric([int minutes = 1]) =>
         Generic.createNew<MemoplannerSettingData>(
@@ -74,11 +75,20 @@ void main() {
       when(() => mockTimerDb.getRunningTimersFrom(any()))
           .thenAnswer((_) => Future.value(timerResponse()));
 
+      final mockActivityDb = MockActivityDb();
+      when(() => mockActivityDb.getAllBetween(any(), any()))
+          .thenAnswer((_) => Future.value(activityResponse()));
+      when(() => mockActivityDb.getAllAfter(any()))
+          .thenAnswer((_) => Future.value([]));
+      when(() => mockActivityDb.getAllDirty())
+          .thenAnswer((_) => Future.value([]));
+
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..database = FakeDatabase()
         ..genericDb = mockGenericDb
         ..timerDb = mockTimerDb
+        ..activityDb = mockActivityDb
         ..client = Fakes.client()
         ..ticker = Ticker.fake(
           initialTime: initialTime,
@@ -401,6 +411,196 @@ void main() {
       // Assert -- woke up, no more screensaver
       expect(find.byType(ScreensaverPage), findsNothing);
       expect(find.byType(DayCalendar), findsOneWidget);
+    });
+
+    group('exception to time out', () {
+      setUp(() {
+        genericResponse = () => [
+              activityTimeoutGeneric(),
+            ];
+      });
+
+      Future goToNewActivity(WidgetTester tester) async {
+        await tester.pumpApp();
+        expect(find.byType(DayCalendar), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.addActivityButton));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.newActivityChoice));
+        await tester.pumpAndSettle();
+      }
+
+      group('create activity', () {
+        testWidgets('page', (tester) async {
+          // Act
+          await goToNewActivity(tester);
+          expect(find.byType(EditActivityPage), findsOneWidget);
+          clockStreamController.add(initialTime.add(2.minutes()));
+          await tester.pumpAndSettle();
+
+          // Assert
+          expect(find.byType(EditActivityPage), findsOneWidget);
+        });
+
+        testWidgets('add recording page', (tester) async {
+          // Act
+          await goToNewActivity(tester);
+          await tester.tap(
+            find.descendant(
+              of: find.byType(TabItem),
+              matching: find.byIcon(AbiliaIcons.attention),
+            ),
+          );
+          await tester.pumpAndSettle();
+
+          final center = tester.getCenter(find.byType(EditActivityPage));
+          await tester.dragFrom(center, const Offset(0.0, -100));
+          await tester.pump();
+          await tester.tap(find.byType(RecordSoundWidget).first);
+          await tester.pumpAndSettle();
+          expect(find.byType(RecordSoundPage), findsOneWidget);
+          clockStreamController.add(initialTime.add(2.minutes()));
+          await tester.pumpAndSettle();
+
+          // Assert
+          expect(find.byType(RecordSoundPage), findsOneWidget);
+        });
+
+        testWidgets('Create activity step by step', (tester) async {
+          // Arrange
+          genericResponse = () => [
+                activityTimeoutGeneric(),
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: AddActivitySettings.addActivityTypeAdvancedKey,
+                  ),
+                )
+              ];
+
+          // Act
+          await tester.pumpApp();
+          expect(find.byType(DayCalendar), findsOneWidget);
+          await tester.tap(find.byKey(TestKey.addActivityButton));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byKey(TestKey.newActivityChoice));
+          await tester.pumpAndSettle();
+          expect(find.byType(TitleWiz), findsOneWidget);
+          clockStreamController.add(initialTime.add(2.minutes()));
+          await tester.pumpAndSettle();
+
+          // Assert
+          expect(find.byType(TitleWiz), findsOneWidget);
+        });
+      });
+
+      testWidgets('Edit activity page', (tester) async {
+        const activityTitle = 'activity title';
+        activityResponse = () => [
+              Activity.createNew(
+                title: activityTitle,
+                startTime: initialTime.add(1.hours()),
+              )
+            ];
+        // Act
+        await tester.pumpApp();
+        await tester.tap(find.text(activityTitle));
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityPage), findsOneWidget);
+        await tester.tap(find.byType(EditActivityButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditActivityPage), findsOneWidget);
+        clockStreamController.add(initialTime.add(2.minutes()));
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(find.byType(EditActivityPage), findsOneWidget);
+      });
+
+      testWidgets('Select Alarm Page', (tester) async {
+        const activityTitle = 'activity title';
+        activityResponse = () => [
+              Activity.createNew(
+                title: activityTitle,
+                startTime: initialTime.add(1.hours()),
+              )
+            ];
+        // Act
+        await tester.pumpApp();
+        await tester.tap(find.text(activityTitle));
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityPage), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.editAlarm));
+        await tester.pumpAndSettle();
+        expect(find.byType(SelectAlarmPage), findsOneWidget);
+        clockStreamController.add(initialTime.add(2.minutes()));
+        await tester.pumpAndSettle();
+        // Assert
+        expect(find.byType(SelectAlarmPage), findsOneWidget);
+      });
+
+      testWidgets('Create timer page', (tester) async {
+        // Act
+        await tester.pumpApp();
+        expect(find.byType(DayCalendar), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.addTimerButton));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.newTimerChoice));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditTimerPage), findsOneWidget);
+        clockStreamController.add(initialTime.add(2.minutes()));
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(find.byType(EditTimerPage), findsOneWidget);
+      });
+
+      testWidgets('Create activity template', (tester) async {
+        genericResponse = () => [
+              activityTimeoutGeneric(),
+              startViewGeneric(StartView.menu),
+            ];
+
+        // Act
+        await tester.pumpApp();
+        expect(find.byType(MenuPage), findsOneWidget);
+        await tester.tap(find.byType(BasicTemplatesButton));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(AddTemplateButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditActivityPage), findsOneWidget);
+        clockStreamController.add(initialTime.add(2.minutes()));
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(find.byType(EditActivityPage), findsOneWidget);
+      });
+
+      testWidgets('Create timer template', (tester) async {
+        genericResponse = () => [
+              activityTimeoutGeneric(),
+              startViewGeneric(StartView.menu),
+            ];
+
+        // Act
+        await tester.pumpApp();
+        expect(find.byType(MenuPage), findsOneWidget);
+        await tester.tap(find.byType(BasicTemplatesButton));
+        await tester.pumpAndSettle();
+        await tester.tap(
+          find.descendant(
+              of: find.byType(TabItem),
+              matching: find.byIcon(AbiliaIcons.stopWatch)),
+        );
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(AddTemplateButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditBasicTimerPage), findsOneWidget);
+        clockStreamController.add(initialTime.add(2.minutes()));
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(find.byType(EditBasicTimerPage), findsOneWidget);
+      });
     });
   }, skip: !Config.isMP);
 }
