@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
@@ -23,7 +22,8 @@ class LoginDialogListener
             final showStarterSetDialog = sortableState is SortablesLoaded &&
                 sortableState.sortables.isEmpty;
 
-            final fullscreenAlarmEnabled = Config.isMPGO && !Platform.isIOS;
+            final isAndroid = defaultTargetPlatform == TargetPlatform.android;
+            final fullscreenAlarmEnabled = Config.isMPGO && isAndroid;
             final permissionStatus = permissionCubit.state.status;
             final showFullscreenAlarmDialog = fullscreenAlarmEnabled &&
                 permissionStatus.containsKey(Permission.systemAlertWindow) &&

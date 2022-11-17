@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -560,7 +561,7 @@ void main() {
 
     group('Permissions', () {
       testWidgets(
-          'When fullscreen notification is NOT granted, show FullscreenAlarmInfoDialog',
+          'When fullscreen notification is NOT granted on MPGO, show FullscreenAlarmInfoDialog',
           (WidgetTester tester) async {
         setupPermissions(
             {Permission.systemAlertWindow: PermissionStatus.denied});
@@ -580,6 +581,24 @@ void main() {
         await tester.tap(find.byType(RequestFullscreenNotificationButton));
         expect(requestedPermissions, contains(Permission.systemAlertWindow));
       }, skip: Config.isMP);
+
+      testWidgets(
+          'When fullscreen notification is NOT granted on iOS, show NO FullscreenAlarmInfoDialog',
+          (WidgetTester tester) async {
+        debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+        setupPermissions(
+            {Permission.systemAlertWindow: PermissionStatus.denied});
+        await tester.pumpApp();
+        await tester.pumpAndSettle();
+        await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+        await tester.pump();
+        await tester.tap(find.byType(LoginButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(LoginDialog), findsNothing);
+        expect(find.byType(FullscreenAlarmInfoDialog), findsNothing);
+        debugDefaultTargetPlatformOverride = null;
+      });
 
       testWidgets(
           'When fullscreen notification IS granted, show NO FullscreenAlarmInfoDialog',

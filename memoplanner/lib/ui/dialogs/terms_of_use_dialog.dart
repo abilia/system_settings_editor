@@ -49,6 +49,8 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
             FadeInImage(
               fadeInDuration: const Duration(milliseconds: 50),
               fadeInCurve: Curves.linear,
+              width: layout.termsOfUseDialog.imageSize,
+              height: layout.termsOfUseDialog.imageSize,
               placeholder: MemoryImage(kTransparentImage),
               image: AssetImage(
                 'assets/graphics/${Config.flavor.id}/logo.png',
