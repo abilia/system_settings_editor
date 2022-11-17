@@ -8,7 +8,7 @@ import 'package:meta/meta.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:memoplanner/config.dart';
 
-import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 export 'package:permission_handler/permission_handler.dart';

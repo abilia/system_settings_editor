@@ -1,5 +1,5 @@
 import 'package:memoplanner/config.dart';
-import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class VoiceDb {

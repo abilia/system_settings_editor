@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
-import 'package:memoplanner/analytics/analytics_service.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:memoplanner/background/all.dart';
@@ -12,7 +11,7 @@ import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/firebase_options.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/listener/all.dart';
-import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';

@@ -5,7 +5,7 @@ import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 
 import 'package:memoplanner/models/all.dart';
 
-class SeagullAnalytics extends RouteObserver<PageRoute> {
+class SeagullAnalytics {
   final Mixpanel? mixpanel;
   final Map<String, dynamic> superProperties;
   SeagullAnalytics._(this.mixpanel, this.superProperties);
@@ -33,7 +33,10 @@ class SeagullAnalytics extends RouteObserver<PageRoute> {
 
   void setUser(User user) {
     mixpanel?.identify('${user.id}');
-    mixpanel?.registerSuperProperties(user.toJson());
+    mixpanel?.registerSuperProperties({
+      'user_type': user.type,
+      'user_language': user.language,
+    });
   }
 
   void reset() {
@@ -50,8 +53,4 @@ class SeagullAnalytics extends RouteObserver<PageRoute> {
   void track(String eventName, {Map<String, dynamic>? properties}) =>
       mixpanel?.track(eventName, properties: properties);
 
-  @override
-  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    super.didPush(route, previousRoute);
-  }
 }

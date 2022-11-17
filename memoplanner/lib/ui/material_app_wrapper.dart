@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:memoplanner/analytics/all.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
-import 'package:memoplanner/logging.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class MaterialAppWrapper extends StatelessWidget {
@@ -28,8 +27,7 @@ class MaterialAppWrapper extends StatelessWidget {
         title: Config.flavor.name,
         theme: abiliaTheme,
         navigatorObservers: [
-          GetIt.I<SeagullAnalytics>(),
-          RouteLoggingObserver(),
+          RouteLoggingObserver(GetIt.I<SeagullAnalytics>()),
         ],
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: [
