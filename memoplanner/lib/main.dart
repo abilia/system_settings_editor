@@ -44,8 +44,8 @@ Future<void> initServices() async {
   _log.fine('Initializing services');
   final analytics = Config.release
       ? await SeagullAnalytics.init(
-          await DeviceDb(preferences).getClientId(),
-          BaseUrlDb(preferences).environment,
+          clientId: await DeviceDb(preferences).getClientId(),
+          environment: BaseUrlDb(preferences).environment,
         )
       : SeagullAnalytics.empty();
   Bloc.observer = BlocLoggingObserver(analytics);

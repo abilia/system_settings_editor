@@ -6,6 +6,9 @@ import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:memoplanner/models/all.dart';
 
 class SeagullAnalytics {
+  static const environmentKey = 'environment',
+      localeKey = 'locale',
+      languageKey = 'language';
   final Mixpanel? mixpanel;
   final Map<String, dynamic> superProperties;
   SeagullAnalytics._(this.mixpanel, this.superProperties);
@@ -13,10 +16,10 @@ class SeagullAnalytics {
       : mixpanel = null,
         superProperties = {};
 
-  static Future<SeagullAnalytics> init(
-    String clientId,
-    String? environment,
-  ) async {
+  static Future<SeagullAnalytics> init({
+    required String clientId,
+    required String environment,
+  }) async {
     final superProperties = {
       'flavor': Config.flavor.name,
       'release': Config.release,
@@ -44,13 +47,21 @@ class SeagullAnalytics {
     mixpanel?.registerSuperProperties(superProperties);
   }
 
-  static const environmentKey = 'environment';
   void setBackend(String environment) {
     superProperties[environmentKey] = environment;
     mixpanel?.registerSuperProperties({environmentKey: environment});
   }
 
+  void setLocale(Locale locale) {
+    final language = locale.languageCode;
+    superProperties[localeKey] = '$locale';
+    superProperties[languageKey] = language;
+    mixpanel?.registerSuperProperties({
+      localeKey: '$locale',
+      languageKey: language,
+    });
+  }
+
   void track(String eventName, {Map<String, dynamic>? properties}) =>
       mixpanel?.track(eventName, properties: properties);
-
 }

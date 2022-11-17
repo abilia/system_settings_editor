@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/repository/end_point.dart';
 
 class BlocLoggingObserver extends BlocObserver {
   BlocLoggingObserver(this.analytics);
@@ -109,8 +112,12 @@ class BlocLoggingObserver extends BlocObserver {
   }
 
   void onChangeAnalytics(BlocBase bloc, Change change) {
-    if (bloc is BaseUrlCubit) {
-      analytics.setBackend('${change.nextState}');
+    final nextState = change.nextState;
+    if (bloc is BaseUrlCubit && nextState is String) {
+      analytics.setBackend(backendName(nextState));
+    }
+    if (bloc is LocaleCubit && nextState is Locale) {
+      analytics.setLocale(nextState);
     }
   }
 }
