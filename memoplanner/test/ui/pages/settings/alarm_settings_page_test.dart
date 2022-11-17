@@ -27,7 +27,7 @@ void main() {
       setupPermissions();
       notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
       scheduleAlarmNotificationsIsolated = noAlarmScheduler;
-      sessions = [Session.mp4Session()];
+      sessions = Fakes.fakeSessions;
 
       genericDb = MockGenericDb();
       when(() => genericDb.getAllNonDeletedMaxRevision())

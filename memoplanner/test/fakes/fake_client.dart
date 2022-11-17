@@ -125,7 +125,8 @@ class Fakes {
           if (pathSegments.containsAll(['auth', 'client']) &&
               !pathSegments.contains('me')) {
             response = Response(
-                json.encode((sessionsResponse?.call() ?? fakeSession).toList()),
+                json.encode(
+                    (sessionsResponse?.call() ?? fakeSessions).toList()),
                 200);
           }
 
@@ -150,7 +151,7 @@ class Fakes {
     FakeActivity.reoccursOnDate(DateTime(2000, 10, 06)),
   ];
 
-  static final fakeSession = [Session.mp4Session()];
+  static final fakeSessions = [Session.mp4Session()];
 
   static final allSortables = <Sortable>[];
   static final allGenerics = <Generic>[];
