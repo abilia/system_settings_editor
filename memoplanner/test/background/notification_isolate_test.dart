@@ -84,8 +84,8 @@ void main() {
       ? mockedNotificationsPlugin.cancelAll()
       : mockedNotificationsPlugin.pendingNotificationRequests());
 
-  group('Functions', () {
-    test('Notification channels', () async {
+  group('Notification channels', () {
+    test('are unique', () async {
       const sound = Sound.Default;
       final notificationChannel1 = notificationChannel(true, true, sound);
       final notificationChannel2 = notificationChannel(true, false, sound);
@@ -93,24 +93,113 @@ void main() {
       final notificationChannel4 = notificationChannel(false, false, sound);
 
       expect(notificationChannel1.id, 'SoundVibration${sound.name}');
-      expect(notificationChannel1.name,
-          'Sound and Vibration with sound ${sound.name}');
-      expect(notificationChannel1.description,
-          'Activities with Alarm and Vibration or Only Alarm with sound ${sound.name}');
+      expect(
+        notificationChannel1.name,
+        'Sound and Vibration with sound ${sound.name}',
+      );
+      expect(
+        notificationChannel1.description,
+        'Activities with Alarm and Vibration or Only Alarm with sound ${sound.name}',
+      );
 
       expect(notificationChannel2.id, notificationChannel1.id);
       expect(notificationChannel2.name, notificationChannel1.name);
       expect(
-          notificationChannel2.description, notificationChannel1.description);
+        notificationChannel2.description,
+        notificationChannel1.description,
+      );
 
       expect(notificationChannel3.id, 'Vibration');
       expect(notificationChannel3.name, 'Vibration');
       expect(
-          notificationChannel3.description, 'Activities with Only vibration');
+        notificationChannel3.description,
+        'Activities with Only vibration',
+      );
 
       expect(notificationChannel4.id, 'Silent');
       expect(notificationChannel4.name, 'Silent');
       expect(notificationChannel4.description, 'Activities with Silent Alarm');
+    });
+
+    test('are updated if existing, created otherwise', () async {
+      // Arrange
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+      const soundVibrationDefault = 'SoundVibrationDefault';
+      final mockedAndroidFlutterLocalNotificationsPlugin =
+          MockAndroidFlutterLocalNotificationsPlugin();
+      when(() =>
+              mockedNotificationsPlugin.resolvePlatformSpecificImplementation<
+                  AndroidFlutterLocalNotificationsPlugin>())
+          .thenReturn(mockedAndroidFlutterLocalNotificationsPlugin);
+      when(() => mockedAndroidFlutterLocalNotificationsPlugin
+          .getNotificationChannels()).thenAnswer(
+        (invocation) => Future.value(
+          [
+            const AndroidNotificationChannel(
+              soundVibrationDefault,
+              'Sound and Vibration with sound Default',
+            ),
+          ],
+        ),
+      );
+
+      const timerSound = Sound.Hello;
+
+      // Act
+      await scheduleAlarmNotifications(
+        [Activity.createNew(startTime: now.add(30.minutes()))],
+        [
+          TimerAlarm(
+            AbiliaTimer.createNew(
+              startTime: now,
+              duration: 10.minutes(),
+            ),
+          )
+        ],
+        'en',
+        true,
+        const AlarmSettings().copyWith(timerSound: timerSound),
+        mockedFileStorage,
+        now: () => now,
+      );
+
+      // Assert
+      final captured = verify(
+        () => mockedNotificationsPlugin.zonedSchedule(
+          any(),
+          any(),
+          any(),
+          any(),
+          captureAny(),
+          payload: any(named: 'payload'),
+          androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.wallClockTime,
+        ),
+      ).captured;
+
+      final update = captured
+          .cast<NotificationDetails>()
+          .firstWhere(
+            (element) => element.android?.channelId == soundVibrationDefault,
+          )
+          .android;
+
+      expect(update?.channelAction, AndroidNotificationChannelAction.update);
+
+      final create = captured
+          .cast<NotificationDetails>()
+          .firstWhere(
+            (element) =>
+                element.android?.channelId ==
+                'SoundVibration${timerSound.name}',
+          )
+          .android;
+      expect(
+        create?.channelAction,
+        AndroidNotificationChannelAction.createIfNotExists,
+      );
     });
   });
 
@@ -186,7 +275,9 @@ void main() {
               UILocalNotificationDateInterpretation.wallClockTime)).called(5);
     });
 
-    test('scheduleAlarmNotifications with image', () async {
+    test('scheduleAlarmNotifications with image android', () async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
       await scheduleAlarmNotifications(
         allActivities.take(2),
         [],
@@ -197,7 +288,6 @@ void main() {
         now: () => now,
       );
       verifyCancelAllPendingNotifications();
-      verify(() => mockedFileStorage.copyImageThumbForNotification(fileId));
       verify(() => mockedFileStorage.getFile(fileId));
       verify(() => mockedFileStorage.getImageThumb(ImageThumb(id: fileId)));
 
@@ -210,11 +300,6 @@ void main() {
           .captured
           .single as NotificationDetails;
 
-      // iOS
-      expect(details.iOS?.attachments?.length, 1);
-      final attachment = details.iOS?.attachments?.first;
-      expect(attachment?.filePath, fileId);
-      expect(attachment?.identifier, fileId);
       // Android
       expect(details.android?.styleInformation,
           isInstanceOf<BigPictureStyleInformation>());
@@ -228,6 +313,37 @@ void main() {
       expect(largeIcon.data, fileId);
 
       expect(details.android?.fullScreenIntent, isTrue);
+    });
+
+    test('scheduleAlarmNotifications with image iOS', () async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+      await scheduleAlarmNotifications(
+        allActivities.take(2),
+        [],
+        'en',
+        true,
+        const AlarmSettings(),
+        mockedFileStorage,
+        now: () => now,
+      );
+      verifyCancelAllPendingNotifications();
+      verify(() => mockedFileStorage.copyImageThumbForNotification(fileId));
+
+      final details = verify(
+        () => mockedNotificationsPlugin.zonedSchedule(
+            any(), any(), any(), any(), captureAny(),
+            payload: any(named: 'payload'),
+            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.wallClockTime),
+      ).captured.single as NotificationDetails;
+
+      // iOS
+      expect(details.iOS?.attachments?.length, 1);
+      final attachment = details.iOS?.attachments?.first;
+      expect(attachment?.filePath, fileId);
+      expect(attachment?.identifier, fileId);
     });
   });
 
@@ -342,7 +458,57 @@ void main() {
       ).called(3);
     });
 
-    test('scheduleAlarmNotifications with image', () async {
+    test('scheduleAlarmNotifications with image android', () async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+      final timerWithImage = TimerAlarm(
+        AbiliaTimer(
+          id: 'id6',
+          fileId: fileId,
+          startTime: now,
+          duration: 14.minutes(),
+        ),
+      );
+      await scheduleAlarmNotifications(
+        [],
+        [timerWithImage],
+        'en',
+        true,
+        const AlarmSettings(),
+        mockedFileStorage,
+        now: () => now,
+      );
+      verifyCancelAllPendingNotifications();
+      verify(() => mockedFileStorage.getFile(fileId));
+      verify(() => mockedFileStorage.getImageThumb(ImageThumb(id: fileId)));
+
+      final details = verify(() => mockedNotificationsPlugin.zonedSchedule(
+              any(), any(), any(), any(), captureAny(),
+              payload: any(named: 'payload'),
+              androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+              uiLocalNotificationDateInterpretation:
+                  UILocalNotificationDateInterpretation.wallClockTime))
+          .captured
+          .single as NotificationDetails;
+
+      // Android
+      expect(details.android?.styleInformation,
+          isInstanceOf<BigPictureStyleInformation>());
+      final bpd =
+          (details.android?.styleInformation as BigPictureStyleInformation)
+              .bigPicture as FilePathAndroidBitmap;
+      expect(bpd.data, fileId);
+
+      expect(details.android?.largeIcon, isInstanceOf<FilePathAndroidBitmap>());
+      final largeIcon = details.android?.largeIcon as FilePathAndroidBitmap;
+      expect(largeIcon.data, fileId);
+
+      expect(details.android?.fullScreenIntent, isTrue);
+    });
+
+    test('scheduleAlarmNotifications with image iOS', () async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
       final timerWithImage = TimerAlarm(
         AbiliaTimer(
           id: 'id6',
@@ -362,8 +528,6 @@ void main() {
       );
       verifyCancelAllPendingNotifications();
       verify(() => mockedFileStorage.copyImageThumbForNotification(fileId));
-      verify(() => mockedFileStorage.getFile(fileId));
-      verify(() => mockedFileStorage.getImageThumb(ImageThumb(id: fileId)));
 
       final details = verify(() => mockedNotificationsPlugin.zonedSchedule(
               any(), any(), any(), any(), captureAny(),
@@ -379,19 +543,6 @@ void main() {
       final attachment = details.iOS?.attachments?.first;
       expect(attachment?.filePath, fileId);
       expect(attachment?.identifier, fileId);
-      // Android
-      expect(details.android?.styleInformation,
-          isInstanceOf<BigPictureStyleInformation>());
-      final bpd =
-          (details.android?.styleInformation as BigPictureStyleInformation)
-              .bigPicture as FilePathAndroidBitmap;
-      expect(bpd.data, fileId);
-
-      expect(details.android?.largeIcon, isInstanceOf<FilePathAndroidBitmap>());
-      final largeIcon = details.android?.largeIcon as FilePathAndroidBitmap;
-      expect(largeIcon.data, fileId);
-
-      expect(details.android?.fullScreenIntent, isTrue);
     });
 
     test(
