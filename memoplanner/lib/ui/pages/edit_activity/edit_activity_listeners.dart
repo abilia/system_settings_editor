@@ -66,7 +66,7 @@ class ErrorPopupListener extends StatelessWidget {
     if (errors.contains(SaveError.storedRecurring)) {
       if (state is StoredActivityState) {
         final applyTo = await Navigator.of(context).push<ApplyTo>(
-          MaterialPageRoute(
+          PersistentMaterialPageRoute(
             builder: (_) => SelectRecurrentTypePage(
               heading: translate.editRecurringActivity,
               headingIcon: AbiliaIcons.edit,

@@ -465,6 +465,130 @@ void main() {
           expect(find.byType(RecordSoundPage), findsOneWidget);
         });
 
+        testWidgets('alarm page', (tester) async {
+          // Act
+          await goToNewActivity(tester);
+          await tester.tap(
+            find.descendant(
+              of: find.byType(TabItem),
+              matching: find.byIcon(AbiliaIcons.attention),
+            ),
+          );
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(AlarmWidget));
+          await tester.pumpAndSettle();
+          expect(find.byType(SelectAlarmTypePage), findsOneWidget);
+          clockStreamController.add(initialTime.add(2.minutes()));
+          await tester.pumpAndSettle();
+          expect(find.byType(SelectAlarmTypePage), findsOneWidget);
+        });
+
+        testWidgets('Available For Page', (tester) async {
+          // Act
+          await goToNewActivity(tester);
+          final center = tester.getCenter(find.byType(EditActivityPage));
+          await tester.dragFrom(center, const Offset(0.0, -200));
+          await tester.pump();
+          await tester.tap(find.byType(AvailableForWidget));
+          await tester.pumpAndSettle();
+          expect(find.byType(AvailableForPage), findsOneWidget);
+          clockStreamController.add(initialTime.add(2.minutes()));
+          await tester.pumpAndSettle();
+          expect(find.byType(AvailableForPage), findsOneWidget);
+        });
+
+        testWidgets('note page', (tester) async {
+          // Act
+          await goToNewActivity(tester);
+          await tester.tap(
+            find.descendant(
+              of: find.byType(TabItem),
+              matching: find.byIcon(AbiliaIcons.attachment),
+            ),
+          );
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(ChangeInfoItemPicker));
+          await tester.pumpAndSettle();
+          clockStreamController.add(initialTime.add(2.minutes()));
+          await tester.pumpAndSettle();
+          expect(find.byType(SelectInfoTypePage), findsOneWidget);
+          await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(OkButton));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(EditNoteWidget));
+          await tester.pumpAndSettle();
+          expect(find.byType(EditNotePage), findsOneWidget);
+          clockStreamController.add(initialTime.add(5.minutes()));
+          await tester.pumpAndSettle();
+          expect(find.byType(EditNotePage), findsOneWidget);
+        });
+
+        testWidgets('Note Library Page', (tester) async {
+          // Act
+          await goToNewActivity(tester);
+          await tester.tap(
+            find.descendant(
+              of: find.byType(TabItem),
+              matching: find.byIcon(AbiliaIcons.attachment),
+            ),
+          );
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(ChangeInfoItemPicker));
+          await tester.pumpAndSettle();
+          clockStreamController.add(initialTime.add(2.minutes()));
+          await tester.pumpAndSettle();
+          expect(find.byType(SelectInfoTypePage), findsOneWidget);
+          await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(OkButton));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(LibraryButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(NoteLibraryPage), findsOneWidget);
+          clockStreamController.add(initialTime.add(5.minutes()));
+          await tester.pumpAndSettle();
+          expect(find.byType(NoteLibraryPage), findsOneWidget);
+        });
+
+        testWidgets('Select Picture - Image archive', (tester) async {
+          await goToNewActivity(tester);
+          await tester.tap(find.byType(SelectPictureWidget));
+          await tester.pumpAndSettle();
+          expect(find.byType(SelectPicturePage), findsOneWidget);
+          clockStreamController.add(initialTime.add(2.minutes()));
+          await tester.pumpAndSettle();
+          expect(find.byType(SelectPicturePage), findsOneWidget);
+          await tester.tap(find.byKey(TestKey.imageArchiveButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(ImageArchivePage), findsOneWidget);
+          clockStreamController.add(initialTime.add(5.minutes()));
+          await tester.pumpAndSettle();
+          expect(find.byType(ImageArchivePage), findsOneWidget);
+        });
+
+        testWidgets('Time Interval Picker', (tester) async {
+          // Act
+          await goToNewActivity(tester);
+          await tester.tap(find.byType(TimeIntervalPicker));
+          await tester.pumpAndSettle();
+          expect(find.byType(TimeInputPage), findsOneWidget);
+          clockStreamController.add(initialTime.add(5.minutes()));
+          await tester.pumpAndSettle();
+          expect(find.byType(TimeInputPage), findsOneWidget);
+        });
+
+        testWidgets('date picker', (tester) async {
+          // Act
+          await goToNewActivity(tester);
+          await tester.tap(find.byType(DatePicker));
+          await tester.pumpAndSettle();
+          expect(find.byType(DatePickerPage), findsOneWidget);
+          clockStreamController.add(initialTime.add(5.minutes()));
+          await tester.pumpAndSettle();
+          expect(find.byType(DatePickerPage), findsOneWidget);
+        });
+
         testWidgets('Create activity step by step', (tester) async {
           // Arrange
           genericResponse = () => [
@@ -549,9 +673,13 @@ void main() {
         expect(find.byType(EditTimerPage), findsOneWidget);
         clockStreamController.add(initialTime.add(2.minutes()));
         await tester.pumpAndSettle();
-
-        // Assert
         expect(find.byType(EditTimerPage), findsOneWidget);
+        await tester.tap(find.byIcon(AbiliaIcons.clock));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditTimerDurationPage), findsOneWidget);
+        clockStreamController.add(initialTime.add(5.minutes()));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditTimerDurationPage), findsOneWidget);
       });
 
       testWidgets('Create activity template', (tester) async {

@@ -102,7 +102,7 @@ class SelectPictureBody extends StatelessWidget {
                   final authProviders = copiedAuthProviders(context);
                   final selectedImage =
                       await Navigator.of(context).push<AbiliaFile>(
-                    MaterialPageRoute(
+                    PersistentMaterialPageRoute(
                       builder: (_) => MultiBlocProvider(
                         providers: authProviders,
                         child: ImageArchivePage(onCancel: onCancel),
@@ -130,7 +130,7 @@ class SelectPictureBody extends StatelessWidget {
                             final authProviders = copiedAuthProviders(context);
                             final selectedImage =
                                 await Navigator.of(context).push<AbiliaFile>(
-                              MaterialPageRoute(
+                              PersistentMaterialPageRoute(
                                 builder: (_) => MultiBlocProvider(
                                   providers: authProviders,
                                   child: ImageArchivePage(

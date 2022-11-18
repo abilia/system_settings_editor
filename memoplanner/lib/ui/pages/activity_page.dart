@@ -163,7 +163,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
     if (result != null) {
       if (activity.isNoneSingleInstanceRecurring) {
         final applyTo = await navigator.push<ApplyTo>(
-          MaterialPageRoute(
+          PersistentMaterialPageRoute(
             builder: (_) => SelectRecurrentTypePage(
               heading: Translator.of(context).translate.editRecurringActivity,
               headingIcon: AbiliaIcons.edit,

@@ -169,7 +169,7 @@ class _TimerInfoInput extends StatelessWidget {
                           final editTimerCubit = context.read<EditTimerCubit>();
                           final duration =
                               await Navigator.of(context).push<Duration>(
-                            MaterialPageRoute(
+                            PersistentMaterialPageRoute(
                               builder: (_) => MultiBlocProvider(
                                 providers: authProviders,
                                 child: EditTimerDurationPage(

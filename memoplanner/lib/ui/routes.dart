@@ -19,6 +19,9 @@ class PersistentMaterialPageRoute<T> extends MaterialPageRoute<T>
 
 class PersistentPageRouteBuilder<T> extends PageRouteBuilder<T>
     with PersistentPageRoute {
-  PersistentPageRouteBuilder(
-      {required super.pageBuilder, super.transitionsBuilder});
+  PersistentPageRouteBuilder({
+    required super.pageBuilder,
+    super.settings,
+    super.transitionsBuilder,
+  });
 }
