@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/config.dart';
 import 'package:memoplanner/logging.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
@@ -12,12 +14,30 @@ part 'login_dialog_state.dart';
 class LoginDialogCubit extends Cubit<LoginDialogState> {
   late final StreamSubscription _sortableSubscription;
   final TermsOfUseRepository termsOfUseRepository;
+  final SortableBloc sortableBloc;
+  final PermissionCubit permissionCubit;
   final _log = Logger((LoginDialogCubit).toString());
+
+  bool get showTermsOfUseDialog => !state.termsOfUse.allAccepted;
+
+  bool get showStarterSetDialog {
+    final sortableState = sortableBloc.state;
+    return sortableState is SortablesLoaded && sortableState.sortables.isEmpty;
+  }
+
+  bool get showFullscreenAlarmDialog {
+    final isAndroid = defaultTargetPlatform == TargetPlatform.android;
+    final fullscreenAlarmEnabled = Config.isMPGO && isAndroid;
+    final permissionStatus = permissionCubit.state.status;
+    return fullscreenAlarmEnabled &&
+        permissionStatus.containsKey(Permission.systemAlertWindow) &&
+        !(permissionStatus[Permission.systemAlertWindow]?.isGranted ?? false);
+  }
 
   LoginDialogCubit({
     required this.termsOfUseRepository,
-    required SortableBloc sortableBloc,
-    required PermissionCubit permissionCubit,
+    required this.sortableBloc,
+    required this.permissionCubit,
   }) : super(LoginDialogNotReady.initial()) {
     _sortableSubscription = sortableBloc.stream
         .whereType<SortablesLoaded>()

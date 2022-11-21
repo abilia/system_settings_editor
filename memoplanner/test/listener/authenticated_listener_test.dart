@@ -178,68 +178,36 @@ void main() {
     verify(() => notificationBloc.add(any()));
   });
 
-  group('Starter set', () {
-    testWidgets(
-        'Shows starter set dialog if newly logged in and user has no sortables, '
-        'call add when pressed Yes', (tester) async {
-      // Arrange
-      await tester.pumpWidget(authListener(
-          state: const Authenticated(userId: 7, newlyLoggedIn: true)));
+  testWidgets('Shows starter set dialog and call add when pressed Yes',
+      (tester) async {
+    // Arrange
+    when(() => loginDialogCubit.showTermsOfUseDialog).thenAnswer((_) => false);
+    when(() => loginDialogCubit.showStarterSetDialog).thenAnswer((_) => true);
+    when(() => loginDialogCubit.showFullscreenAlarmDialog)
+        .thenAnswer((_) => false);
 
-      await tester.pumpAndSettle();
-      // Act
-      loginDialogStreamController.add(LoginDialogReady(TermsOfUse.accepted()));
-      when(() => sortableBloc.state)
-          .thenReturn(const SortablesLoaded(sortables: []));
-      await tester.pumpAndSettle();
+    // Act - Start app
+    await tester.pumpWidget(authListener(
+        state: const Authenticated(userId: 7, newlyLoggedIn: true)));
+    await tester.pumpAndSettle();
 
-      // Assert
-      expect(find.byType(LoginDialog), findsOneWidget);
-      expect(find.byType(StarterSetDialog), findsOneWidget);
-      // Act press Yes
-      await tester.tap(find.byType(YesButton));
-      await tester.pumpAndSettle();
+    // Assert - No dialog
+    expect(find.byType(LoginDialog), findsNothing);
+    expect(find.byType(StarterSetDialog), findsNothing);
 
-      verify(() => sortableBloc.addStarter(any())).called(1);
-    });
+    // Act - Login dialog is ready
+    loginDialogStreamController.add(LoginDialogReady(TermsOfUse.accepted()));
+    await tester.pumpAndSettle();
 
-    testWidgets(
-        'DONT shows starter set dialog if NOT newly logged in and user has no sortables',
-        (tester) async {
-      // Arrange
-      await tester.pumpWidget(authListener(
-          state: const Authenticated(userId: 7, newlyLoggedIn: false)));
+    // Assert
+    expect(find.byType(LoginDialog), findsOneWidget);
+    expect(find.byType(StarterSetDialog), findsOneWidget);
 
-      await tester.pumpAndSettle();
-      // Act
-      sortableStreamController.add(const SortablesLoaded(sortables: []));
-      await tester.pumpAndSettle();
+    // Act - Press Yes
+    await tester.tap(find.byType(YesButton));
+    await tester.pumpAndSettle();
 
-      // Assert
-      expect(find.byType(StarterSetDialog), findsNothing);
-    });
-
-    testWidgets(
-        'DONT Shows starter set dialog if newly logged in BUT user HAS sortables',
-        (tester) async {
-      // Arrange
-      await tester.pumpWidget(
-        authListener(
-          state: const Authenticated(userId: 7, newlyLoggedIn: true),
-        ),
-      );
-
-      await tester.pumpAndSettle();
-      // Act
-      sortableStreamController.add(
-        SortablesLoaded(
-          sortables: [Sortable.createNew(data: const NoteData())],
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      // Assert
-      expect(find.byType(StarterSetDialog), findsNothing);
-    });
+    // Assert - addStarter is called
+    verify(() => sortableBloc.addStarter(any())).called(1);
   });
 }

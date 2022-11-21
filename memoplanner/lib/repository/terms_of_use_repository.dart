@@ -15,8 +15,7 @@ class TermsOfUseRepository extends Repository {
     required this.userId,
   }) : super(client, baseUrlDb);
 
-  Uri get endpoint =>
-      '$baseUrl/api/v1//entity//$userId/acknowledgments'.toUri();
+  Uri get endpoint => '$baseUrl/api/v1/entity/$userId/acknowledgments'.toUri();
 
   Future<TermsOfUse> fetchTermsOfUse() async {
     try {

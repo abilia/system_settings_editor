@@ -107,8 +107,6 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
         if (widget.newlyLoggedIn)
           LoginDialogListener(
             loginDialogCubit: context.read<LoginDialogCubit>(),
-            sortableBloc: context.read<SortableBloc>(),
-            permissionCubit: context.read<PermissionCubit>(),
           ),
         if (Config.isMP) ...[
           CalendarInactivityListener(),
