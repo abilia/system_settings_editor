@@ -49,6 +49,9 @@ class FullDayStack extends StatelessWidget {
   }
 }
 
+typedef FullDayActivitiesBuilder = List<ActivityOccasion> Function(
+    BuildContext context);
+
 class ClickableFullDayStack extends StatelessWidget {
   const ClickableFullDayStack({
     required this.fullDayActivitiesBuilder,
@@ -59,8 +62,7 @@ class ClickableFullDayStack extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final List<ActivityOccasion> Function(BuildContext context)
-      fullDayActivitiesBuilder;
+  final FullDayActivitiesBuilder fullDayActivitiesBuilder;
   final int numberOfActivities;
   final DateTime day;
   final double? width;
