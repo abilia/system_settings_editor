@@ -106,7 +106,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
         ),
         if (widget.newlyLoggedIn)
           LoginDialogListener(
-            termsOfUseCubit: context.read<TermsOfUseCubit>(),
+            loginDialogCubit: context.read<LoginDialogCubit>(),
             sortableBloc: context.read<SortableBloc>(),
             permissionCubit: context.read<PermissionCubit>(),
           ),

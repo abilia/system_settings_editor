@@ -5,7 +5,7 @@ import 'package:memoplanner/ui/all.dart';
 class LoginDialogListener
     extends BlocListener<LoginDialogCubit, LoginDialogState> {
   LoginDialogListener({
-    required TermsOfUseCubit termsOfUseCubit,
+    required LoginDialogCubit loginDialogCubit,
     required SortableBloc sortableBloc,
     required PermissionCubit permissionCubit,
     Key? key,
@@ -14,9 +14,7 @@ class LoginDialogListener
           listenWhen: (previous, current) =>
               previous is LoginDialogNotReady && current is LoginDialogReady,
           listener: (context, state) {
-            final termsOfUseReady = termsOfUseCubit.state is TermsOfUseLoaded;
-            final allAccepted = termsOfUseCubit.state.termsOfUse.allAccepted;
-            final showTermsOfUseDialog = termsOfUseReady && !allAccepted;
+            final showTermsOfUseDialog = !state.termsOfUse.allAccepted;
 
             final sortableState = sortableBloc.state;
             final showStarterSetDialog = sortableState is SortablesLoaded &&
@@ -31,7 +29,7 @@ class LoginDialogListener
                     false);
 
             final loginDialog = LoginDialog(
-              termsOfUseCubit: termsOfUseCubit,
+              loginDialogCubit: loginDialogCubit,
               showTermsOfUseDialog: showTermsOfUseDialog,
               showStarterSetDialog: showStarterSetDialog,
               showFullscreenAlarmDialog: showFullscreenAlarmDialog,

@@ -188,7 +188,7 @@ void main() {
 
       await tester.pumpAndSettle();
       // Act
-      loginDialogStreamController.add(const LoginDialogReady());
+      loginDialogStreamController.add(LoginDialogReady(TermsOfUse.accepted()));
       when(() => sortableBloc.state)
           .thenReturn(const SortablesLoaded(sortables: []));
       await tester.pumpAndSettle();

@@ -240,22 +240,14 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               ),
               lazy: false,
             ),
-            if (authenticatedState.newlyLoggedIn) ...[
-              BlocProvider<TermsOfUseCubit>(
-                create: (context) => TermsOfUseCubit(
-                  termsOfUseRepository: context.read<TermsOfUseRepository>(),
-                ),
-                lazy: false,
-              ),
+            if (authenticatedState.newlyLoggedIn)
               BlocProvider<LoginDialogCubit>(
                 create: (context) => LoginDialogCubit(
-                  termsOfUseCubit: context.read<TermsOfUseCubit>(),
+                  termsOfUseRepository: context.read<TermsOfUseRepository>(),
                   permissionCubit: context.read<PermissionCubit>(),
                   sortableBloc: context.read<SortableBloc>(),
                 ),
-                lazy: false,
               ),
-            ],
             if (Config.isMP) ...[
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(

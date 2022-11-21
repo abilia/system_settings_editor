@@ -2,7 +2,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class LoginDialog extends StatefulWidget {
-  final TermsOfUseCubit termsOfUseCubit;
+  final LoginDialogCubit loginDialogCubit;
   final bool showTermsOfUseDialog;
   final bool showStarterSetDialog;
   final bool showFullscreenAlarmDialog;
@@ -14,7 +14,7 @@ class LoginDialog extends StatefulWidget {
       ].fold(0, (i, showDialog) => showDialog ? ++i : i);
 
   const LoginDialog({
-    required this.termsOfUseCubit,
+    required this.loginDialogCubit,
     required this.showTermsOfUseDialog,
     required this.showStarterSetDialog,
     required this.showFullscreenAlarmDialog,
@@ -32,7 +32,7 @@ class _LoginDialogState extends State<LoginDialog>
   List<Widget> get _dialogs => [
         if (widget.showTermsOfUseDialog)
           TermsOfUseDialog(
-            termsOfUseCubit: widget.termsOfUseCubit,
+            loginDialogCubit: widget.loginDialogCubit,
             isMoreDialogs: _tabController.length > 1,
             onNext: onNext,
           ),

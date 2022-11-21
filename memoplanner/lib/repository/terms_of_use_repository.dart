@@ -15,11 +15,12 @@ class TermsOfUseRepository extends Repository {
     required this.userId,
   }) : super(client, baseUrlDb);
 
+  Uri get endpoint =>
+      '$baseUrl/api/v1//entity//$userId/acknowledgments'.toUri();
+
   Future<TermsOfUse> fetchTermsOfUse() async {
     try {
-      final response = await client.get(
-        '$baseUrl/api/v1//entity//$userId/acknowledgments'.toUri(),
-      );
+      final response = await client.get(endpoint);
       if (response.statusCode == 200) {
         final decoded = response.json();
         return TermsOfUse.fromMap(decoded);
@@ -32,7 +33,7 @@ class TermsOfUseRepository extends Repository {
 
   Future<Response> postTermsOfUse(TermsOfUse termsOfUse) async {
     return client.post(
-      '$baseUrl/api/v1//entity//$userId/acknowledgments'.toUri(),
+      endpoint,
       headers: jsonHeader,
       body: jsonEncode({
         'termsOfCondition': termsOfUse.termsOfCondition,
