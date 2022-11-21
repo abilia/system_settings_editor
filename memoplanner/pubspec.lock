@@ -14,7 +14,7 @@ packages:
       name: _flutterfire_internals
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.7"
+    version: "1.0.9"
   acapela_tts:
     dependency: "direct main"
     description:
@@ -247,14 +247,14 @@ packages:
       name: cloud_firestore_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.8.4"
+    version: "5.9.0"
   cloud_firestore_web:
     dependency: transitive
     description:
       name: cloud_firestore_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.4"
+    version: "3.1.0"
   code_builder:
     dependency: transitive
     description:
@@ -401,7 +401,7 @@ packages:
       name: firebase_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "2.3.0"
   firebase_core_platform_interface:
     dependency: transitive
     description:
@@ -422,35 +422,35 @@ packages:
       name: firebase_crashlytics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.4"
+    version: "3.0.6"
   firebase_crashlytics_platform_interface:
     dependency: transitive
     description:
       name: firebase_crashlytics_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.3.5"
+    version: "3.3.7"
   firebase_messaging:
     dependency: "direct main"
     description:
       name: firebase_messaging
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "14.0.4"
+    version: "14.1.1"
   firebase_messaging_platform_interface:
     dependency: transitive
     description:
       name: firebase_messaging_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.2.5"
+    version: "4.2.7"
   firebase_messaging_web:
     dependency: transitive
     description:
       name: firebase_messaging_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.2.5"
+    version: "3.2.7"
   fixnum:
     dependency: transitive
     description:
@@ -556,7 +556,7 @@ packages:
       name: flutter_tts
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.6.0"
+    version: "3.6.2"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -970,7 +970,7 @@ packages:
       name: pub_semver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.2"
+    version: "2.1.3"
   pubspec_parse:
     dependency: transitive
     description:
@@ -1026,7 +1026,7 @@ packages:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.27.5"
+    version: "0.27.7"
   seagull_lints:
     dependency: "direct dev"
     description:
@@ -1355,7 +1355,7 @@ packages:
       name: uuid
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.6"
+    version: "3.0.7"
   vector_math:
     dependency: "direct main"
     description:
