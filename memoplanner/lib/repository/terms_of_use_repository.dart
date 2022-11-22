@@ -7,15 +7,24 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class TermsOfUseRepository extends Repository {
+  final TermsOfUseDb termsOfUseDb;
   final int userId;
 
   TermsOfUseRepository({
     required BaseClient client,
     required BaseUrlDb baseUrlDb,
+    required this.termsOfUseDb,
     required this.userId,
   }) : super(client, baseUrlDb);
 
   Uri get endpoint => '$baseUrl/api/v1/entity/$userId/acknowledgments'.toUri();
+
+  Future<TermsOfUse> loadTermsOfUse() async {
+    if (termsOfUseDb.termsOfUseAccepted) {
+      return TermsOfUse.accepted();
+    }
+    return fetchTermsOfUse();
+  }
 
   Future<TermsOfUse> fetchTermsOfUse() async {
     try {
@@ -30,14 +39,29 @@ class TermsOfUseRepository extends Repository {
     }
   }
 
-  Future<Response> postTermsOfUse(TermsOfUse termsOfUse) async {
-    return client.post(
-      endpoint,
-      headers: jsonHeader,
-      body: jsonEncode({
-        'termsOfCondition': termsOfUse.termsOfCondition,
-        'privacyPolicy': termsOfUse.privacyPolicy
-      }),
-    );
+  Future<void> saveTermsOfUse(TermsOfUse termsOfUse) async {
+    final success = await postTermsOfUse(termsOfUse);
+    if (success) {
+      await termsOfUseDb.setTermsOfUseAccepted(termsOfUse.allAccepted);
+    }
+  }
+
+  Future<bool> postTermsOfUse(TermsOfUse termsOfUse) async {
+    try {
+      final response = await client.post(
+        endpoint,
+        headers: jsonHeader,
+        body: jsonEncode({
+          'termsOfCondition': termsOfUse.termsOfCondition,
+          'privacyPolicy': termsOfUse.privacyPolicy
+        }),
+      );
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
   }
 }

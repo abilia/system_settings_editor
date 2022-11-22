@@ -509,7 +509,7 @@ void main() {
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
-        expect(find.byType(LoginDialog), findsNothing);
+        expect(find.byType(AuthenticatedDialog), findsNothing);
         expect(find.byType(TermsOfUseDialog), findsNothing);
         // No other dialog is pending, expect no next button.
         expect(find.byType(NextButton), findsNothing);
@@ -525,7 +525,7 @@ void main() {
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
-        expect(find.byType(LoginDialog), findsOneWidget);
+        expect(find.byType(AuthenticatedDialog), findsOneWidget);
         expect(find.byType(TermsOfUseDialog), findsOneWidget);
       });
     });
@@ -542,7 +542,7 @@ void main() {
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
-        expect(find.byType(LoginDialog), findsOneWidget);
+        expect(find.byType(AuthenticatedDialog), findsOneWidget);
         expect(find.byType(StarterSetDialog), findsOneWidget);
       });
 
@@ -572,7 +572,7 @@ void main() {
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
-        expect(find.byType(LoginDialog), findsOneWidget);
+        expect(find.byType(AuthenticatedDialog), findsOneWidget);
         expect(find.byType(FullscreenAlarmInfoDialog), findsOneWidget);
         expect(
           find.byType(RequestFullscreenNotificationButton),
@@ -595,7 +595,7 @@ void main() {
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
-        expect(find.byType(LoginDialog), findsNothing);
+        expect(find.byType(AuthenticatedDialog), findsNothing);
         expect(find.byType(FullscreenAlarmInfoDialog), findsNothing);
         debugDefaultTargetPlatformOverride = null;
       });
@@ -636,7 +636,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert - Terms of use dialog shows
-        expect(find.byType(LoginDialog), findsOneWidget);
+        expect(find.byType(AuthenticatedDialog), findsOneWidget);
         expect(find.byType(TermsOfUseDialog), findsOneWidget);
 
         // Act - Accept terms of use
@@ -687,7 +687,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert - Terms of use dialog shows
-        expect(find.byType(LoginDialog), findsOneWidget);
+        expect(find.byType(AuthenticatedDialog), findsOneWidget);
         expect(find.byType(TermsOfUseDialog), findsOneWidget);
 
         // Act - Accept terms of use
@@ -734,7 +734,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert - Starter set dialog shows
-        expect(find.byType(LoginDialog), findsOneWidget);
+        expect(find.byType(AuthenticatedDialog), findsOneWidget);
         expect(find.byType(StarterSetDialog), findsOneWidget);
 
         // Act - Deny starter set
@@ -777,7 +777,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert - Starter set dialog shows
-        expect(find.byType(LoginDialog), findsOneWidget);
+        expect(find.byType(AuthenticatedDialog), findsOneWidget);
         expect(find.byType(StarterSetDialog), findsOneWidget);
 
         // Act - Deny starter set

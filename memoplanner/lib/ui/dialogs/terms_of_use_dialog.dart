@@ -3,7 +3,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class TermsOfUseDialog extends StatefulWidget {
-  final LoginDialogCubit loginDialogCubit;
+  final AuthenticatedDialogCubit loginDialogCubit;
   final bool isMoreDialogs;
   final Function() onNext;
 
@@ -22,7 +22,7 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
   late bool _termsOfCondition;
   late bool _privacyPolicy;
 
-  LoginDialogCubit get termsOfUseCubit => widget.loginDialogCubit;
+  AuthenticatedDialogCubit get termsOfUseCubit => widget.loginDialogCubit;
 
   TermsOfUse get _termsOfUse => TermsOfUse(
       termsOfCondition: _termsOfCondition, privacyPolicy: _privacyPolicy);
@@ -104,7 +104,7 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
 
   Widget _navigationButton(String welcomeText) {
     final termsAccepted = _termsOfCondition && _privacyPolicy;
-    final Function()? onPressed = termsAccepted ? postAndClose : null;
+    final Function()? onPressed = termsAccepted ? saveAndClose : null;
     if (widget.isMoreDialogs) {
       return NextButton(
         onPressed: onPressed,
@@ -117,8 +117,8 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
     );
   }
 
-  Future<void> postAndClose() async {
-    await termsOfUseCubit.postTermsOfUse(_termsOfUse);
+  Future<void> saveAndClose() async {
+    termsOfUseCubit.saveTermsOfUse(_termsOfUse);
     return widget.onNext();
   }
 }

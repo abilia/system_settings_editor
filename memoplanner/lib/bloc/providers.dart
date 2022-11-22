@@ -77,14 +77,14 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               sessionsDb: GetIt.I<SessionsDb>(),
             ),
           ),
-          if (authenticatedState.newlyLoggedIn)
-            RepositoryProvider<TermsOfUseRepository>(
-              create: (context) => TermsOfUseRepository(
-                baseUrlDb: GetIt.I<BaseUrlDb>(),
-                client: GetIt.I<ListenableClient>(),
-                userId: authenticatedState.userId,
-              ),
+          RepositoryProvider<TermsOfUseRepository>(
+            create: (context) => TermsOfUseRepository(
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              client: GetIt.I<ListenableClient>(),
+              termsOfUseDb: GetIt.I<TermsOfUseDb>(),
+              userId: authenticatedState.userId,
             ),
+          ),
         ],
         child: MultiBlocProvider(
           providers: [
@@ -240,14 +240,15 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               ),
               lazy: false,
             ),
-            if (authenticatedState.newlyLoggedIn)
-              BlocProvider<LoginDialogCubit>(
-                create: (context) => LoginDialogCubit(
-                  termsOfUseRepository: context.read<TermsOfUseRepository>(),
-                  permissionCubit: context.read<PermissionCubit>(),
-                  sortableBloc: context.read<SortableBloc>(),
-                ),
+            BlocProvider<AuthenticatedDialogCubit>(
+              create: (context) => AuthenticatedDialogCubit(
+                termsOfUseRepository: context.read<TermsOfUseRepository>(),
+                permissionCubit: context.read<PermissionCubit>(),
+                sortableBloc: context.read<SortableBloc>(),
+                newlyLoggedIn: authenticatedState.newlyLoggedIn,
               ),
+              lazy: false,
+            ),
             if (Config.isMP) ...[
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(
@@ -396,6 +397,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
                 GetIt.I<LicenseDb>().delete(),
                 GetIt.I<SettingsDb>().restore(),
                 GetIt.I<SessionsDb>().setHasMP4Session(false),
+                GetIt.I<TermsOfUseDb>().setTermsOfUseAccepted(false),
               ],
             ),
             client: GetIt.I<ListenableClient>(),

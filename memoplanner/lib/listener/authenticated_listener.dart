@@ -104,10 +104,9 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
             builder: (context) => const NotificationPermissionWarningDialog(),
           ),
         ),
-        if (widget.newlyLoggedIn)
-          LoginDialogListener(
-            loginDialogCubit: context.read<LoginDialogCubit>(),
-          ),
+        AuthenticatedDialogListener(
+          loginDialogCubit: context.read<AuthenticatedDialogCubit>(),
+        ),
         if (Config.isMP) ...[
           CalendarInactivityListener(),
           ScreensaverListener(),

@@ -1,39 +1,39 @@
-part of 'login_dialog_cubit.dart';
+part of 'authenticated_dialog_cubit.dart';
 
-abstract class LoginDialogState {
+abstract class AuthenticatedDialogState {
   final TermsOfUse termsOfUse;
 
-  const LoginDialogState(this.termsOfUse);
+  const AuthenticatedDialogState(this.termsOfUse);
 }
 
-class LoginDialogReady extends LoginDialogState {
-  const LoginDialogReady(TermsOfUse termsOfUse) : super(termsOfUse);
+class AuthenticatedDialogReady extends AuthenticatedDialogState {
+  const AuthenticatedDialogReady(TermsOfUse termsOfUse) : super(termsOfUse);
 }
 
-class LoginDialogNotReady extends LoginDialogState {
+class AuthenticatedDialogNotReady extends AuthenticatedDialogState {
   final bool sortablesLoaded;
   final bool termsOfUseLoaded;
 
   bool get dialogsReady => sortablesLoaded && termsOfUseLoaded;
 
-  const LoginDialogNotReady({
+  const AuthenticatedDialogNotReady({
     required TermsOfUse termsOfUse,
     required this.sortablesLoaded,
     required this.termsOfUseLoaded,
   }) : super(termsOfUse);
 
-  factory LoginDialogNotReady.initial() => LoginDialogNotReady(
+  factory AuthenticatedDialogNotReady.initial() => AuthenticatedDialogNotReady(
         sortablesLoaded: false,
         termsOfUseLoaded: false,
         termsOfUse: TermsOfUse.notAccepted(),
       );
 
-  LoginDialogNotReady copyWith({
+  AuthenticatedDialogNotReady copyWith({
     bool? sortablesLoaded,
     bool? termsOfUseLoaded,
     TermsOfUse? termsOfUse,
   }) =>
-      LoginDialogNotReady(
+      AuthenticatedDialogNotReady(
         sortablesLoaded: sortablesLoaded ?? this.sortablesLoaded,
         termsOfUseLoaded: termsOfUseLoaded ?? this.termsOfUseLoaded,
         termsOfUse: termsOfUse ?? this.termsOfUse,

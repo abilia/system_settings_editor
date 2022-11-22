@@ -20,9 +20,10 @@ void main() {
   late StreamController<SortableState> sortableStreamController;
   late Stream<SortableState> sortableStream;
 
-  late LoginDialogCubit loginDialogCubit;
-  late StreamController<LoginDialogState> loginDialogStreamController;
-  late Stream<LoginDialogState> loginDialogStream;
+  late AuthenticatedDialogCubit authenticatedDialogCubit;
+  late StreamController<AuthenticatedDialogState>
+      authenticatedDialogStreamController;
+  late Stream<AuthenticatedDialogState> authenticatedDialogStream;
 
   late MemoplannerSettingsBloc memoplannerSettingBloc;
   late StreamController<MemoplannerSettings> settingsStreamController;
@@ -51,13 +52,15 @@ void main() {
     when(() => sortableBloc.addStarter(any()))
         .thenAnswer((invocation) => Future.value(true));
 
-    loginDialogCubit = MockLoginDialogCubit();
-    when(() => loginDialogCubit.state)
-        .thenReturn(LoginDialogNotReady.initial());
-    loginDialogStreamController = StreamController<LoginDialogState>();
-    loginDialogStream = loginDialogStreamController.stream.asBroadcastStream();
-    when(() => loginDialogCubit.stream)
-        .thenAnswer((invocation) => loginDialogStream);
+    authenticatedDialogCubit = MockLoginDialogCubit();
+    when(() => authenticatedDialogCubit.state)
+        .thenReturn(AuthenticatedDialogNotReady.initial());
+    authenticatedDialogStreamController =
+        StreamController<AuthenticatedDialogState>();
+    authenticatedDialogStream =
+        authenticatedDialogStreamController.stream.asBroadcastStream();
+    when(() => authenticatedDialogCubit.stream)
+        .thenAnswer((invocation) => authenticatedDialogStream);
 
     memoplannerSettingBloc = MockMemoplannerSettingBloc();
     when(() => memoplannerSettingBloc.state)
@@ -87,7 +90,7 @@ void main() {
     GetIt.I.reset();
     activitiesStreamController.close();
     sortableStreamController.close();
-    loginDialogStreamController.close();
+    authenticatedDialogStreamController.close();
     settingsStreamController.close();
     timerStreamController.close();
   });
@@ -104,7 +107,7 @@ void main() {
                 providers: [
                   BlocProvider.value(value: activitiesBloc),
                   BlocProvider.value(value: sortableBloc),
-                  BlocProvider.value(value: loginDialogCubit),
+                  BlocProvider.value(value: authenticatedDialogCubit),
                   BlocProvider.value(value: timerCubit),
                   BlocProvider.value(value: memoplannerSettingBloc),
                   BlocProvider.value(value: notificationBloc),
@@ -181,9 +184,11 @@ void main() {
   testWidgets('Shows starter set dialog and call add when pressed Yes',
       (tester) async {
     // Arrange
-    when(() => loginDialogCubit.showTermsOfUseDialog).thenAnswer((_) => false);
-    when(() => loginDialogCubit.showStarterSetDialog).thenAnswer((_) => true);
-    when(() => loginDialogCubit.showFullscreenAlarmDialog)
+    when(() => authenticatedDialogCubit.showTermsOfUseDialog)
+        .thenAnswer((_) => false);
+    when(() => authenticatedDialogCubit.showStarterSetDialog)
+        .thenAnswer((_) => true);
+    when(() => authenticatedDialogCubit.showFullscreenAlarmDialog)
         .thenAnswer((_) => false);
 
     // Act - Start app
@@ -192,15 +197,16 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert - No dialog
-    expect(find.byType(LoginDialog), findsNothing);
+    expect(find.byType(AuthenticatedDialog), findsNothing);
     expect(find.byType(StarterSetDialog), findsNothing);
 
     // Act - Login dialog is ready
-    loginDialogStreamController.add(LoginDialogReady(TermsOfUse.accepted()));
+    authenticatedDialogStreamController
+        .add(AuthenticatedDialogReady(TermsOfUse.accepted()));
     await tester.pumpAndSettle();
 
     // Assert
-    expect(find.byType(LoginDialog), findsOneWidget);
+    expect(find.byType(AuthenticatedDialog), findsOneWidget);
     expect(find.byType(StarterSetDialog), findsOneWidget);
 
     // Act - Press Yes

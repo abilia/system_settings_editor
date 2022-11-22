@@ -1,8 +1,8 @@
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
-class LoginDialog extends StatefulWidget {
-  final LoginDialogCubit loginDialogCubit;
+class AuthenticatedDialog extends StatefulWidget {
+  final AuthenticatedDialogCubit loginDialogCubit;
   final bool showTermsOfUseDialog;
   final bool showStarterSetDialog;
   final bool showFullscreenAlarmDialog;
@@ -13,7 +13,7 @@ class LoginDialog extends StatefulWidget {
         showFullscreenAlarmDialog,
       ].fold(0, (i, showDialog) => showDialog ? ++i : i);
 
-  const LoginDialog({
+  const AuthenticatedDialog({
     required this.loginDialogCubit,
     required this.showTermsOfUseDialog,
     required this.showStarterSetDialog,
@@ -22,10 +22,10 @@ class LoginDialog extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<LoginDialog> createState() => _LoginDialogState();
+  State<AuthenticatedDialog> createState() => _AuthenticatedDialogState();
 }
 
-class _LoginDialogState extends State<LoginDialog>
+class _AuthenticatedDialogState extends State<AuthenticatedDialog>
     with TickerProviderStateMixin {
   late final TabController _tabController;
 

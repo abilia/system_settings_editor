@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/logging.dart';
@@ -9,36 +8,41 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:rxdart/rxdart.dart';
 
-part 'login_dialog_state.dart';
+part 'authenticated_dialog_state.dart';
 
-class LoginDialogCubit extends Cubit<LoginDialogState> {
+class AuthenticatedDialogCubit extends Cubit<AuthenticatedDialogState> {
   late final StreamSubscription _sortableSubscription;
   final TermsOfUseRepository termsOfUseRepository;
   final SortableBloc sortableBloc;
   final PermissionCubit permissionCubit;
-  final _log = Logger((LoginDialogCubit).toString());
+  final bool newlyLoggedIn;
+  final _log = Logger((AuthenticatedDialogCubit).toString());
 
   bool get showTermsOfUseDialog => !state.termsOfUse.allAccepted;
 
   bool get showStarterSetDialog {
     final sortableState = sortableBloc.state;
-    return sortableState is SortablesLoaded && sortableState.sortables.isEmpty;
+    final showStarterSet =
+        sortableState is SortablesLoaded && sortableState.sortables.isEmpty;
+    return showStarterSet && newlyLoggedIn;
   }
 
   bool get showFullscreenAlarmDialog {
     final isAndroid = defaultTargetPlatform == TargetPlatform.android;
     final fullscreenAlarmEnabled = Config.isMPGO && isAndroid;
     final permissionStatus = permissionCubit.state.status;
-    return fullscreenAlarmEnabled &&
+    final showFullscreenAlarm = fullscreenAlarmEnabled &&
         permissionStatus.containsKey(Permission.systemAlertWindow) &&
         !(permissionStatus[Permission.systemAlertWindow]?.isGranted ?? false);
+    return showFullscreenAlarm && newlyLoggedIn;
   }
 
-  LoginDialogCubit({
+  AuthenticatedDialogCubit({
     required this.termsOfUseRepository,
     required this.sortableBloc,
     required this.permissionCubit,
-  }) : super(LoginDialogNotReady.initial()) {
+    required this.newlyLoggedIn,
+  }) : super(AuthenticatedDialogNotReady.initial()) {
     _sortableSubscription = sortableBloc.stream
         .whereType<SortablesLoaded>()
         .listen((_) => _onSortablesLoaded());
@@ -46,11 +50,11 @@ class LoginDialogCubit extends Cubit<LoginDialogState> {
   }
 
 // If fetching terms of use fails and throws an exception,
-// TermsOfUse.accepted will be emitted thus not triggering the TermsOfUseDialog on login.
+// TermsOfUse.accepted will be emitted thus not triggering the TermsOfUseDialog.
   Future<void> _loadTermsOfUse() async {
     TermsOfUse termsOfUse = TermsOfUse.accepted();
     try {
-      termsOfUse = await termsOfUseRepository.fetchTermsOfUse();
+      termsOfUse = await termsOfUseRepository.loadTermsOfUse();
     } on FetchTermsOfUseException catch (e) {
       _log.warning(
           'Could not fetch terms of use from backend with status code ${e.statusCode}');
@@ -60,12 +64,12 @@ class LoginDialogCubit extends Cubit<LoginDialogState> {
     _onTermsOfUseLoaded(termsOfUse);
   }
 
-  Future<Response> postTermsOfUse(TermsOfUse termsOfUse) =>
-      termsOfUseRepository.postTermsOfUse(termsOfUse);
+  Future<void> saveTermsOfUse(TermsOfUse termsOfUse) =>
+      termsOfUseRepository.saveTermsOfUse(termsOfUse);
 
   void _onTermsOfUseLoaded(TermsOfUse termsOfUse) {
     final s = state;
-    if (s is LoginDialogNotReady) {
+    if (s is AuthenticatedDialogNotReady) {
       emit(s.copyWith(termsOfUse: termsOfUse, termsOfUseLoaded: true));
     }
     _checkIfReady();
@@ -73,7 +77,7 @@ class LoginDialogCubit extends Cubit<LoginDialogState> {
 
   void _onSortablesLoaded() {
     final s = state;
-    if (s is LoginDialogNotReady) {
+    if (s is AuthenticatedDialogNotReady) {
       emit(s.copyWith(sortablesLoaded: true));
     }
     _checkIfReady();
@@ -81,8 +85,8 @@ class LoginDialogCubit extends Cubit<LoginDialogState> {
 
   void _checkIfReady() {
     final s = state;
-    if (s is LoginDialogNotReady && s.dialogsReady) {
-      emit(LoginDialogReady(s.termsOfUse));
+    if (s is AuthenticatedDialogNotReady && s.dialogsReady) {
+      emit(AuthenticatedDialogReady(s.termsOfUse));
     }
   }
 
