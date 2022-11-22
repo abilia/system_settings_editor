@@ -6,13 +6,6 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-class AlarmRoute<T> extends MaterialPageRoute<T> {
-  AlarmRoute({
-    required WidgetBuilder builder,
-    bool fullscreenDialog = false,
-  }) : super(builder: builder, fullscreenDialog: fullscreenDialog);
-}
-
 class AlarmNavigator {
   static const _fullScreenActivityKey = 'fullScreenActivity',
       _screensaverKey = 'screensaver';

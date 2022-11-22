@@ -566,14 +566,9 @@ class MonthActivityContent extends StatelessWidget {
           final authProviders = copiedAuthProviders(context);
           await Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (_) => MultiBlocProvider(
-                providers: authProviders,
-                child: ActivityPage(
-                  activityDay: activityDay,
-                ),
-              ),
-              settings: RouteSettings(name: 'ActivityPage $activityDay'),
+            ActivityPage.route(
+              activityDay: activityDay,
+              authProviders: authProviders,
             ),
           );
         },

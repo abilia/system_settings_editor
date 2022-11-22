@@ -88,7 +88,7 @@ class ChangeInfoItemPicker extends StatelessWidget {
           onTap: () async {
             final editActivityCubit = context.read<EditActivityCubit>();
             final result = await Navigator.of(context).push<Type>(
-              MaterialPageRoute(
+              PersistentMaterialPageRoute(
                 builder: (context) => SelectInfoTypePage(
                   infoItemType: infoItem.runtimeType,
                   showChecklist: showChecklist,
@@ -137,7 +137,7 @@ class LibraryButton extends StatelessWidget {
           final authProviders = copiedAuthProviders(context);
           final editActivityCubit = context.read<EditActivityCubit>();
           final infoItem = await Navigator.of(context).push<InfoItem>(
-            MaterialPageRoute(
+            PersistentMaterialPageRoute(
               builder: (_) => MultiBlocProvider(
                 providers: authProviders,
                 child: isChecklist
@@ -282,7 +282,7 @@ class EditNoteWidget extends StatelessWidget {
     final authProviders = copiedAuthProviders(context);
     final editActivityCubit = context.read<EditActivityCubit>();
     final result = await Navigator.of(context).push<String>(
-      PageRouteBuilder(
+      PersistentPageRouteBuilder(
         pageBuilder: (_, __, ___) => MultiBlocProvider(
           providers: authProviders,
           child: EditNotePage(text: infoItem.text),
