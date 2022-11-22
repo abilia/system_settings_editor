@@ -42,7 +42,7 @@ void main() {
           child: AuthenticatedBlocsProvider(
             memoplannerSettingBloc: memoplannerSettingBloc,
             syncBloc: syncBloc,
-            authenticatedState: const Authenticated(userId: 1),
+            authenticatedState: const Authenticated(user: Fakes.user),
             child: MaterialApp(
               theme: abiliaTheme,
               supportedLocales: Translator.supportedLocals,

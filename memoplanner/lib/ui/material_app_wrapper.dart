@@ -1,19 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:memoplanner/analytics/all.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class MaterialAppWrapper extends StatelessWidget {
   final GlobalKey<NavigatorState>? navigatorKey;
-  final bool analytics;
   final Widget home;
 
   const MaterialAppWrapper({
     Key? key,
     this.navigatorKey,
-    this.analytics = false,
     this.home = const SplashPage(),
   }) : super(key: key);
 
@@ -29,8 +27,7 @@ class MaterialAppWrapper extends StatelessWidget {
         title: Config.flavor.name,
         theme: abiliaTheme,
         navigatorObservers: [
-          if (analytics) AnalyticsService.observer,
-          RouteLoggingObserver(),
+          RouteLoggingObserver(GetIt.I<SeagullAnalytics>()),
         ],
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: [

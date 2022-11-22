@@ -56,8 +56,8 @@ void main() {
         ),
       expect: () => [
         const Unauthenticated(),
-        Authenticated(
-          userId: Fakes.userId,
+        const Authenticated(
+          user: Fakes.user,
           newlyLoggedIn: true,
         ),
       ],
@@ -74,8 +74,8 @@ void main() {
         ..add(const LoggedOut()),
       expect: () => [
         const Unauthenticated(),
-        Authenticated(
-          userId: Fakes.userId,
+        const Authenticated(
+          user: Fakes.user,
           newlyLoggedIn: true,
         ),
         const Unauthenticated(),
