@@ -96,8 +96,8 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
             ),
           ],
         ),
-        backNavigationWidget: _navigationButton(translate.openMemoplanner),
-        backNavigationExpanded: true,
+        backNavigationWidget: const LogoutButton(),
+        forwardNavigationWidget: _navigationButton(translate.open),
       ),
     );
   }

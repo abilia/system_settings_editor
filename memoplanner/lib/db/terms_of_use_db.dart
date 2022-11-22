@@ -1,4 +1,3 @@
-import 'package:memoplanner/models/terms_of_use.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TermsOfUseDb {

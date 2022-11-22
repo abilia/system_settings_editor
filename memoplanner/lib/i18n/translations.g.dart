@@ -940,7 +940,7 @@ abstract class Translated {
 
   final String welcomeMemoplanner = 'Welcome to MEMOplanner 4';
 
-  final String openMemoplanner = 'Open MEMOplanner 4';
+  final String open = 'Open';
 
   final String readAndAgree =
       'To use MEMOplanner 4, please read and agree to the terms of use and privacy policy.';

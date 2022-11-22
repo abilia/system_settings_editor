@@ -7,14 +7,12 @@ class ViewDialog extends StatelessWidget {
   final Widget body;
   final EdgeInsets? bodyPadding;
   final bool expanded;
-  final bool backNavigationExpanded;
 
   const ViewDialog({
     required this.body,
     required this.backNavigationWidget,
     this.heading,
     this.expanded = false,
-    this.backNavigationExpanded = false,
     this.forwardNavigationWidget,
     this.bodyPadding,
     Key? key,
@@ -55,7 +53,6 @@ class ViewDialog extends StatelessWidget {
                   useVerticalSafeArea: false,
                   backNavigationWidget: backNavigationWidget,
                   forwardNavigationWidget: forwardNavigationWidget,
-                  backNavigationExpanded: backNavigationExpanded,
                 )
               ],
             ),

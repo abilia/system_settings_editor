@@ -528,6 +528,24 @@ void main() {
         expect(find.byType(AuthenticatedDialog), findsOneWidget);
         expect(find.byType(TermsOfUseDialog), findsOneWidget);
       });
+
+      testWidgets('When click on logout button, logout back to login page',
+          (WidgetTester tester) async {
+        termsOfUseResponse = () => TermsOfUse.notAccepted();
+        await tester.pumpApp();
+        await tester.pumpAndSettle();
+        await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+        await tester.pump();
+        await tester.tap(find.byType(LoginButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(AuthenticatedDialog), findsOneWidget);
+        expect(find.byType(TermsOfUseDialog), findsOneWidget);
+
+        await tester.tap(find.byType(LogoutButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(LoginPage), findsOneWidget);
+      });
     });
 
     group('Starter set', () {
