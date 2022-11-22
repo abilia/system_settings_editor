@@ -2462,7 +2462,7 @@ class DA extends Translated {
   final String browser = 'Browser';
 
   @override
-  final String backToLogin = 'Zurück zur Anmeldung';
+  final String backToLogin = 'Tilbage til login';
 
   @override
   final String noLicense =
@@ -3843,7 +3843,7 @@ class NL extends Translated {
   final String browser = 'Browser';
 
   @override
-  final String backToLogin = 'Zurück zur Anmeldung';
+  final String backToLogin = 'Terug naar Inloggen';
 
   @override
   final String noLicense = 'Dit account heeft geen geldige licentie.';

@@ -96,7 +96,7 @@ void main() {
   });
 
   Widget authListener({
-    Authenticated state = const Authenticated(userId: 5),
+    Authenticated state = const Authenticated(user: Fakes.user),
   }) =>
       MaterialApp(
         home: TopLevelProvider(
@@ -193,7 +193,7 @@ void main() {
 
     // Act - Start app
     await tester.pumpWidget(authListener(
-        state: const Authenticated(userId: 7, newlyLoggedIn: true)));
+        state: const Authenticated(user: Fakes.user, newlyLoggedIn: true)));
     await tester.pumpAndSettle();
 
     // Assert - No dialog

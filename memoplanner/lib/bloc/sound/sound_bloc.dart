@@ -12,7 +12,7 @@ import 'package:mime/mime.dart' as mime;
 import 'package:path_provider/path_provider.dart';
 
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/utils/all.dart';

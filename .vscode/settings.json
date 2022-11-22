@@ -23,5 +23,5 @@
     "spellright.ignoreRegExps": [
         "/\\b[a-zA-Z]{2,3}\\b/" // ignores 2 and 3 letter acronyms
     ],
-    "spellright.notificationClass": "warning"
+    "spellright.notificationClass": "hint"
 }

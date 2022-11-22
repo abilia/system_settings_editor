@@ -1,5 +1,5 @@
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/session_repository.dart';
 

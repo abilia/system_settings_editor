@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:memoplanner/i18n/app_localizations.dart';
-import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/ui/components/all.dart';
 import 'package:memoplanner/ui/widget_test_keys.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
