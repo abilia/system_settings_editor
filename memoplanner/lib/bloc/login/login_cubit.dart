@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
+import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/logging.dart';
 import 'package:memoplanner/models/exceptions.dart';
 import 'package:memoplanner/repository/all.dart';
@@ -49,6 +51,12 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> _login({bool confirmExpiredLicense = false}) async {
     emit(state.loading());
+    final empty = await DatabaseRepository.isEmpty(GetIt.I<Database>());
+    if (!empty) {
+      await DatabaseRepository.clearAll(GetIt.I<Database>());
+      emit(state.failure(cause: LoginFailureCause.notClean));
+      return;
+    }
     if (!state.isUsernameValid) {
       emit(state.failure(cause: LoginFailureCause.noUsername));
       return;

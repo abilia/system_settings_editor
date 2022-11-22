@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:collection/collection.dart';
 
 class DatabaseRepository {
   DatabaseRepository._();
@@ -11,6 +12,16 @@ class DatabaseRepository {
   static const genericTableName = 'generic';
   static const timerTableName = 'timer';
   static const calendarTableName = 'calendar';
+
+  static const allTables = [
+    activityTableName,
+    sortableTableName,
+    userFileTableName,
+    genericTableName,
+    timerTableName,
+    calendarTableName
+  ];
+
   @visibleForTesting
   static final initialScript = [
     '''
@@ -143,6 +154,14 @@ class DatabaseRepository {
       ..delete(genericTableName)
       ..delete(calendarTableName);
     return batch.commit();
+  }
+
+  static Future<bool> isEmpty(Database db) async {
+    final allCounts = await Future.wait<List<Map<String, Object?>>>(
+        allTables.map((table) => db.rawQuery('select count(*) from $table')));
+    final List<int> allInts =
+        allCounts.map(Sqflite.firstIntValue).whereNotNull().toList();
+    return allInts.sum == 0;
   }
 
   @visibleForTesting
