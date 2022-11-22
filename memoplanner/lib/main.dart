@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
@@ -42,7 +43,7 @@ Future<void> initServices() async {
     preferences: preferences,
   );
   _log.fine('Initializing services');
-  final analytics = Config.release
+  final analytics = kReleaseMode
       ? await SeagullAnalytics.init(
           clientId: await DeviceDb(preferences).getClientId(),
           environment: BaseUrlDb(preferences).environment,
