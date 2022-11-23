@@ -26,7 +26,7 @@ class DiscardWarningDialog extends StatelessWidget {
         text: 'Keep editing',
         icon: AbiliaIcons.closeProgram,
         onPressed: () async => await Navigator.of(context).maybePop(false),
-        style: actionButtonStyleNoneTransparantDark,
+        style: iconTextButtonStyleGrey,
       ),
       forwardNavigationWidget: IconAndTextButton(
         text: 'Discard',
