@@ -13,6 +13,7 @@ class RecordSoundPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final initialState = context.read<RecordSoundCubit>().state;
     return Scaffold(
       appBar: AbiliaAppBar(
         title: title,
@@ -20,7 +21,11 @@ class RecordSoundPage extends StatelessWidget {
       ),
       body: const RecordingWidget(),
       bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: const CancelButton(),
+        backNavigationWidget: PopOrDiscardButton(
+          type: ButtonType.cancel,
+          discardDialogCondition: (context) =>
+              initialState != context.read<RecordSoundCubit>().state,
+        ),
         forwardNavigationWidget: OkButton(
           onPressed: () {
             final recordState = context.read<RecordSoundCubit>().state;

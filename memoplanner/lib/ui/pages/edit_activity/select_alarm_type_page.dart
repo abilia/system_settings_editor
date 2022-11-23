@@ -8,12 +8,14 @@ class _SelectAlarmTypePage extends StatelessWidget {
   final ValueChanged<AlarmType?> onChanged;
   final List<Widget> trailing;
   final GestureTapCallback? onOk;
+  final bool showDiscardDialog;
 
   const _SelectAlarmTypePage({
     required this.alarm,
     required this.onChanged,
     this.trailing = const <Widget>[],
     this.onOk,
+    this.showDiscardDialog = false,
     Key? key,
   }) : super(key: key);
 
@@ -28,7 +30,10 @@ class _SelectAlarmTypePage extends StatelessWidget {
       body: SelectAlarmTypeBody(
           alarm: alarm, trailing: trailing, onChanged: onChanged),
       bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: const CancelButton(),
+        backNavigationWidget: PopOrDiscardButton(
+          type: ButtonType.cancel,
+          discardDialogCondition: (_) => showDiscardDialog && onOk != null,
+        ),
         forwardNavigationWidget: OkButton(
           onPressed: onOk,
         ),
@@ -153,6 +158,7 @@ class _SelectAlarmPageState extends State<SelectAlarmPage> {
   Widget build(BuildContext context) {
     return _SelectAlarmTypePage(
       alarm: activity.alarm.typeSeagull,
+      showDiscardDialog: true,
       onOk: activity != widget.activity
           ? () => Navigator.of(context).maybePop(activity)
           : null,

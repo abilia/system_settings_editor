@@ -6,7 +6,7 @@ abstract class RecordSoundState extends Equatable {
   const RecordSoundState(this.duration);
 
   @override
-  List<Object?> get props => [duration];
+  List<Object?> get props => [];
 }
 
 class EmptyRecordSoundState extends RecordSoundState {
@@ -18,7 +18,7 @@ abstract class RecordedSoundState extends RecordSoundState {
   const RecordedSoundState(this.recordedFile, duration) : super(duration);
 
   @override
-  List<Object?> get props => [recordedFile, duration];
+  List<Object?> get props => [recordedFile];
 }
 
 class UnchangedRecordingSoundState extends RecordedSoundState {
@@ -32,7 +32,7 @@ class RecordingSoundState extends RecordSoundState {
       RecordSoundCubit.maxRecordingTime.inMilliseconds;
   const RecordingSoundState(duration) : super(duration);
   @override
-  List<Object?> get props => [progress, duration];
+  List<Object?> get props => [progress];
 }
 
 class NewRecordedSoundState extends RecordedSoundState {
