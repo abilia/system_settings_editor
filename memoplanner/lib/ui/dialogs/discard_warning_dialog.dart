@@ -8,20 +8,20 @@ class DiscardWarningDialog extends StatelessWidget {
     return ViewDialog(
       body: Column(
         children: [
-          const Icon(
+           Icon(
             AbiliaIcons.gewaRadioError,
             color: AbiliaColors.red,
-            size: 144,
+            size: layout.icon.huge,
           ),
           Tts(
             child: Text(
-              'Are you sure you want to discard your changes',
+              'Are you sure you want to discard your changes?',
               style: headline6,
             ),
           ),
         ],
       ),
-      bottomNavigationColor: AbiliaColors.white110,
+      bottomNavigationColor: ViewDialog.light,
       backNavigationWidget: IconAndTextButton(
         text: 'Keep editing',
         icon: AbiliaIcons.closeProgram,

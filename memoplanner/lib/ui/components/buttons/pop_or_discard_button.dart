@@ -6,12 +6,12 @@ enum ButtonType {
 }
 
 class PopOrDiscardButton extends StatefulWidget {
-  final bool Function(BuildContext context) unchangedCondition;
   final ButtonType type;
+  final bool Function(BuildContext context) discardDialogCondition;
 
   const PopOrDiscardButton({
-    required this.unchangedCondition,
     required this.type,
+    required this.discardDialogCondition,
     Key? key,
   }) : super(key: key);
 
@@ -24,18 +24,18 @@ class _PopOrDiscardButtonState extends State<PopOrDiscardButton> {
   Widget build(BuildContext context) {
     switch (widget.type) {
       case ButtonType.previous:
-        return PreviousButton(onPressed: () => _popOrDiscard());
+        return PreviousButton(onPressed: () => _showDialogOrPop());
       case ButtonType.cancel:
-        return CancelButton(onPressed: () => _popOrDiscard());
+        return CancelButton(onPressed: () => _showDialogOrPop());
     }
   }
 
-  Future _popOrDiscard() async {
-    final unchanged = widget.unchangedCondition(context);
-    if (unchanged) {
-      return Navigator.of(context).maybePop();
+  Future _showDialogOrPop() async {
+    final showDiscardDialog = widget.discardDialogCondition(context);
+    if (showDiscardDialog) {
+      return _showDiscardWarningDialog();
     }
-    _showDiscardWarningDialog();
+    Navigator.of(context).maybePop();
   }
 
   Future<void> _showDiscardWarningDialog() async {

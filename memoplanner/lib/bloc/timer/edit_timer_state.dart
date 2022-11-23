@@ -18,8 +18,6 @@ class TimerData extends Equatable {
     String? name,
     bool? autoSetNameToDuration,
     AbiliaFile? image,
-    int? step,
-    DateTime? startTime,
   }) {
     return TimerData(
       duration: duration ?? this.duration,
@@ -35,10 +33,10 @@ class TimerData extends Equatable {
 }
 
 class EditTimerState extends Equatable {
-  late final TimerData originalTimerData;
+  late final TimerData _originalTimerData;
   final TimerData timerData;
 
-  bool get unchanged => timerData == originalTimerData;
+  bool get unchanged => timerData == _originalTimerData;
 
   Duration get duration => timerData.duration;
 
@@ -52,14 +50,11 @@ class EditTimerState extends Equatable {
     required this.timerData,
     TimerData? originalTimerData,
   }) {
-    this.originalTimerData = originalTimerData ?? timerData;
+    _originalTimerData = originalTimerData ?? timerData;
   }
 
-  factory EditTimerState.initial() {
-    return EditTimerState(
-      timerData: const TimerData(),
-    );
-  }
+  factory EditTimerState.initial() =>
+      EditTimerState(timerData: const TimerData());
 
   factory EditTimerState.withBasicTimer(BasicTimerDataItem basicTimer) {
     return EditTimerState(
@@ -74,9 +69,20 @@ class EditTimerState extends Equatable {
     );
   }
 
-  EditTimerState copyWith(TimerData timerData) => EditTimerState(
-        originalTimerData: originalTimerData,
-        timerData: timerData,
+  EditTimerState copyWith({
+    Duration? duration,
+    String? name,
+    bool? autoSetNameToDuration,
+    AbiliaFile? image,
+  }) =>
+      EditTimerState(
+        originalTimerData: _originalTimerData,
+        timerData: timerData.copyWith(
+          duration: duration,
+          name: name,
+          autoSetNameToDuration: autoSetNameToDuration,
+          image: image,
+        ),
       );
 
   @override

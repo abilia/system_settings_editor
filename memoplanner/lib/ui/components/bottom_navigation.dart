@@ -9,7 +9,7 @@ class BottomNavigation extends StatelessWidget {
   const BottomNavigation({
     required this.backNavigationWidget,
     this.forwardNavigationWidget,
-    this.color = AbiliaColors.black80,
+    this.color = ViewDialog.dark,
     this.useVerticalSafeArea = true,
     Key? key,
   }) : super(key: key);

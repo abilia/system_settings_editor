@@ -15,9 +15,9 @@ class EditTimerPage extends StatelessWidget {
       icon: AbiliaIcons.stopWatch,
       bottomNavigation: BottomNavigation(
         backNavigationWidget: PopOrDiscardButton(
-          unchangedCondition: (context) =>
-              context.read<EditTimerCubit>().state.unchanged,
           type: ButtonType.previous,
+          discardDialogCondition: (context) =>
+              !context.read<EditTimerCubit>().state.unchanged,
         ),
         forwardNavigationWidget:
             BlocSelector<EditTimerCubit, EditTimerState, Duration>(
@@ -55,9 +55,9 @@ class EditBasicTimerPage extends StatelessWidget {
       icon: AbiliaIcons.basicTimers,
       bottomNavigation: BottomNavigation(
         backNavigationWidget: PopOrDiscardButton(
-          unchangedCondition: (context) =>
-              context.read<EditTimerCubit>().state.unchanged,
           type: ButtonType.cancel,
+          discardDialogCondition: (context) =>
+              !context.read<EditTimerCubit>().state.unchanged,
         ),
         forwardNavigationWidget:
             BlocSelector<EditTimerCubit, EditTimerState, Duration>(
