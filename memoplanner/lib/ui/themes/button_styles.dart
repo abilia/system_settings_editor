@@ -110,6 +110,11 @@ final iconTextButtonStyleLight = iconTextButtonStyle.copyWith(
   shape: MaterialStateProperty.all(ligthShapeBorder),
 );
 
+final iconTextButtonStyleGrey = iconTextButtonStyle.copyWith(
+  backgroundColor: buttonBackgroundLight,
+  shape: MaterialStateProperty.all(ligthShapeBorder),
+);
+
 final iconTextButtonStyleGreen = iconTextButtonStyle.copyWith(
   backgroundColor: buttonBackgroundGreen,
   shape: noBorder,

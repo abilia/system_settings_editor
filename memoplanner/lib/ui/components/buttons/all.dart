@@ -15,3 +15,4 @@ export 'play_alarm_speech_button.dart';
 export 'tab_controlled_button.dart';
 export 'nav_buttons.dart';
 export 'mp_go_menu_button.dart';
+export 'pop_or_discard_button.dart';

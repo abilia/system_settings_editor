@@ -39,22 +39,27 @@ class EditTimerCubit extends Cubit<EditTimerState> {
 
   void updateDuration(Duration duration) => emit(
         state.copyWith(
-          duration: duration,
-          name: state.autoSetNameToDuration
-              ? duration.toDurationString(translate, shortMin: false)
-              : null,
+          state.timerData.copyWith(
+            duration: duration,
+            name: state.autoSetNameToDuration
+                ? duration.toDurationString(translate, shortMin: false)
+                : null,
+          ),
         ),
       );
 
   void updateName(String text) => emit(
         state.copyWith(
-          name: text.trim(),
-          autoSetNameToDuration: false,
+          state.timerData.copyWith(
+            name: text.trim(),
+            autoSetNameToDuration: false,
+          ),
         ),
       );
 
   void loadBasicTimer(BasicTimerDataItem basicTimer) =>
       emit(EditTimerState.withBasicTimer(basicTimer));
 
-  void updateImage(AbiliaFile file) => emit(state.copyWith(image: file));
+  void updateImage(AbiliaFile file) =>
+      emit(state.copyWith(state.timerData.copyWith(image: file)));
 }

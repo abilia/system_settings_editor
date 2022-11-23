@@ -3,6 +3,7 @@ import 'package:memoplanner/ui/all.dart';
 class ViewDialog extends StatelessWidget {
   final Widget backNavigationWidget;
   final Widget? forwardNavigationWidget;
+  final Color bottomNavigationColor;
   final Widget? heading;
   final Widget body;
   final EdgeInsets? bodyPadding;
@@ -11,6 +12,7 @@ class ViewDialog extends StatelessWidget {
   const ViewDialog({
     required this.body,
     required this.backNavigationWidget,
+    this.bottomNavigationColor = AbiliaColors.black80,
     this.heading,
     this.expanded = false,
     this.forwardNavigationWidget,
@@ -51,6 +53,7 @@ class ViewDialog extends StatelessWidget {
                 if (expanded) Flexible(child: bodyContainer) else bodyContainer,
                 BottomNavigation(
                   useVerticalSafeArea: false,
+                  color: bottomNavigationColor,
                   backNavigationWidget: backNavigationWidget,
                   forwardNavigationWidget: forwardNavigationWidget,
                 )
