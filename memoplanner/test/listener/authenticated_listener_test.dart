@@ -80,7 +80,7 @@ void main() {
   });
 
   Widget authListener({
-    Authenticated state = const Authenticated(userId: 5),
+    Authenticated state = const Authenticated(user: Fakes.user),
   }) =>
       MaterialApp(
         home: TopLevelProvider(
@@ -170,7 +170,7 @@ void main() {
         'call add when pressed Yes', (tester) async {
       // Arrange
       await tester.pumpWidget(authListener(
-          state: const Authenticated(userId: 7, newlyLoggedIn: true)));
+          state: const Authenticated(user: Fakes.user, newlyLoggedIn: true)));
 
       await tester.pumpAndSettle();
       // Act
@@ -191,7 +191,7 @@ void main() {
         (tester) async {
       // Arrange
       await tester.pumpWidget(authListener(
-          state: const Authenticated(userId: 7, newlyLoggedIn: false)));
+          state: const Authenticated(user: Fakes.user, newlyLoggedIn: false)));
 
       await tester.pumpAndSettle();
       // Act
@@ -208,7 +208,7 @@ void main() {
       // Arrange
       await tester.pumpWidget(
         authListener(
-          state: const Authenticated(userId: 7, newlyLoggedIn: true),
+          state: const Authenticated(user: Fakes.user, newlyLoggedIn: true),
         ),
       );
 

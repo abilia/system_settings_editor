@@ -79,7 +79,7 @@ class TemplatesPage extends StatelessWidget {
     if (sortable is! Sortable<BasicActivityDataItem>) return;
     final authProviders = copiedAuthProviders(context);
     Navigator.of(context).push(
-      MaterialPageRoute(
+      PersistentMaterialPageRoute(
         builder: (_) => MultiBlocProvider(
           providers: [
             ...authProviders,
@@ -112,7 +112,7 @@ class TemplatesPage extends StatelessWidget {
     final sortableBloc = context.read<SortableBloc>();
 
     final timer = await Navigator.of(context).push(
-      MaterialPageRoute(
+      PersistentMaterialPageRoute(
         builder: (_) => MultiBlocProvider(
           providers: [
             ...authProviders,
@@ -299,7 +299,7 @@ class AddTemplateButton extends StatelessWidget {
         context.read<SortableArchiveCubit<BasicActivityData>>().state;
 
     Navigator.of(context).push(
-      MaterialPageRoute(
+      PersistentMaterialPageRoute(
         builder: (_) => MultiBlocProvider(
           providers: [
             ...authProviders,

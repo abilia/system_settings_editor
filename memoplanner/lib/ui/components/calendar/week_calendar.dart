@@ -520,14 +520,9 @@ class _WeekActivityContent extends StatelessWidget {
           final authProviders = copiedAuthProviders(context);
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (_) => MultiBlocProvider(
-                providers: authProviders,
-                child: ActivityPage(activityDay: activityOccasion),
-              ),
-              settings: RouteSettings(
-                name: 'ActivityPage $activityOccasion',
-              ),
+            ActivityPage.route(
+              activityDay: activityOccasion,
+              authProviders: authProviders,
             ),
           );
         },

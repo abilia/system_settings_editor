@@ -106,7 +106,7 @@ mixin ActivityNavigation {
     if (activityCreated == true) navigator.maybePop();
   }
 
-  Route<T> _createRoute<T>(Widget page) => PageRouteBuilder<T>(
+  Route<T> _createRoute<T>(Widget page) => PersistentPageRouteBuilder<T>(
         pageBuilder: (context, animation, secondaryAnimation) => page,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             SlideTransition(

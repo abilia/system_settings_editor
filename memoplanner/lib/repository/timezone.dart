@@ -1,5 +1,5 @@
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
-import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:timezone/data/latest.dart';
 import 'package:timezone/timezone.dart';
 

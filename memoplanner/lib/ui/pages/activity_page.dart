@@ -4,6 +4,20 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class ActivityPage extends StatelessWidget {
+  static PageRoute route({
+    required ActivityDay activityDay,
+    required List<BlocProvider> authProviders,
+  }) =>
+      MaterialPageRoute(
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
+          child: ActivityPage(activityDay: activityDay),
+        ),
+        settings: RouteSettings(
+          name: 'ActivityPage/${activityDay.id}/${activityDay.day}',
+        ),
+      );
+
   final ActivityDay activityDay;
   final Widget? previewImage;
 
@@ -134,7 +148,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
     final navigator = Navigator.of(context);
     final activitiesBloc = context.read<ActivitiesBloc>();
     final result = await Navigator.of(context).push<Activity>(
-      MaterialPageRoute(
+      PersistentMaterialPageRoute(
         builder: (_) => MultiBlocProvider(
           providers: authProviders,
           child: BlocProvider<EditActivityCubit>(
@@ -149,7 +163,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
     if (result != null) {
       if (activity.isNoneSingleInstanceRecurring) {
         final applyTo = await navigator.push<ApplyTo>(
-          MaterialPageRoute(
+          PersistentMaterialPageRoute(
             builder: (_) => SelectRecurrentTypePage(
               heading: Translator.of(context).translate.editRecurringActivity,
               headingIcon: AbiliaIcons.edit,
@@ -227,7 +241,7 @@ class EditActivityButton extends StatelessWidget {
         onPressed: () {
           final authProviders = copiedAuthProviders(context);
           Navigator.of(context).push(
-            MaterialPageRoute(
+            PersistentMaterialPageRoute(
               builder: (_) => MultiBlocProvider(
                 providers: [
                   ...authProviders,

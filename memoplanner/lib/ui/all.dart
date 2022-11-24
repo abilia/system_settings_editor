@@ -4,6 +4,7 @@ export 'widget_test_keys.dart';
 export 'dialogs/all.dart';
 export 'pages/all.dart';
 export 'material_app_wrapper.dart';
+export 'routes.dart';
 
 export 'package:memoplanner/i18n/all.dart';
 export 'package:memoplanner/config.dart';

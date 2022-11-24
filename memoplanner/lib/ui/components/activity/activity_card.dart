@@ -1,4 +1,3 @@
-import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -65,15 +64,9 @@ class ActivityCard extends StatelessWidget {
                             final authProviders = copiedAuthProviders(context);
                             await Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                builder: (_) => MultiBlocProvider(
-                                  providers: authProviders,
-                                  child: ActivityPage(
-                                    activityDay: activityOccasion,
-                                  ),
-                                ),
-                                settings: RouteSettings(
-                                    name: 'ActivityPage $activityOccasion'),
+                              ActivityPage.route(
+                                activityDay: activityOccasion,
+                                authProviders: authProviders,
                               ),
                             );
                           },

@@ -69,6 +69,6 @@ class TemplatesLayoutLarge extends TemplatesLayoutMedium {
   const TemplatesLayoutLarge()
       : super(
           s4: const EdgeInsets.symmetric(horizontal: 160),
-          s5: const EdgeInsets.symmetric(horizontal: 16, vertical: 72),
+          s5: const EdgeInsets.symmetric(horizontal: 160, vertical: 392),
         );
 }
