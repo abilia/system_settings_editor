@@ -77,8 +77,8 @@ void main() {
               BlocProvider<DayPartCubit>(
                 create: (context) => FakeDayPartCubit(),
               ),
-              BlocProvider<SessionCubit>(
-                create: (context) => FakeSessionCubit(),
+              BlocProvider<SessionsCubit>(
+                create: (context) => FakeSessionsCubit(),
               )
             ],
             child: child!,
