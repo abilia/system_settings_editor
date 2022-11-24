@@ -6,8 +6,6 @@ class Session extends Equatable {
 
   const Session({required this.type, required this.app});
 
-  factory Session.empty() => const Session(type: '', app: '');
-
   @visibleForTesting
   factory Session.mp3Session() =>
       const Session(type: 'android', app: 'memoplanner3');
@@ -15,8 +13,6 @@ class Session extends Equatable {
   @visibleForTesting
   factory Session.mp4Session() =>
       const Session(type: 'flutter', app: 'memoplanner');
-
-  bool get isMP4Session => type == 'flutter' && app == 'memoplanner';
 
   static Session fromJson(Map<String, dynamic> json) =>
       Session(type: json['type'], app: json['app']);

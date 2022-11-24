@@ -14,7 +14,7 @@ class AlarmSettingsPage extends StatelessWidget {
     final dividerPadding = layout.alarmSettingsPage.dividerPadding;
     final scrollController = ScrollController();
     final settings = context.read<MemoplannerSettingsBloc>().state;
-    final isMP4Session = context.read<SessionCubit>().state.isMP4Session;
+    final hasMP4Session = context.read<SessionsCubit>().state.hasMP4Session;
     return BlocProvider<AlarmSettingsCubit>(
       create: (context) => AlarmSettingsCubit(
         alarmSettings: settings.alarm,
@@ -66,7 +66,7 @@ class AlarmSettingsPage extends StatelessWidget {
                           .changeAlarmSettings(
                               state.copyWith(reminderSound: sound)),
                     ).pad(defaultPadding),
-                    if (isMP4Session)
+                    if (hasMP4Session)
                       _AlarmSelector(
                         key: TestKey.timerAlarmSelector,
                         heading: t.timer,

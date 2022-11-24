@@ -6,15 +6,15 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-class SessionRepository extends Repository {
-  final _log = Logger((SessionRepository).toString());
-  SessionRepository({
+class SessionsRepository extends Repository {
+  final _log = Logger((SessionsRepository).toString());
+  SessionsRepository({
     required BaseClient client,
     required BaseUrlDb baseUrlDb,
     required this.sessionsDb,
   }) : super(client, baseUrlDb);
 
-  final SessionDb sessionsDb;
+  final SessionsDb sessionsDb;
 
   Future<Iterable<Session>> fetchSessions() async {
     final url = '$baseUrl/api/v1/auth/client';
@@ -34,7 +34,8 @@ class SessionRepository extends Repository {
     throw FetchSessionsException(response.statusCode);
   }
 
-  Future<void> setSession(Session? session) => sessionsDb.setSession(session);
+  Future<void> setHasMP4Session(bool hasMP4Session) =>
+      sessionsDb.setHasMP4Session(hasMP4Session);
 
-  Session get session => sessionsDb.session;
+  bool hasMP4Session() => sessionsDb.hasMP4Session;
 }

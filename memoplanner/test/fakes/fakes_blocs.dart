@@ -187,12 +187,12 @@ class FakeVoicesCubit extends Fake implements VoicesCubit {
   Future<void> close() async {}
 }
 
-class FakeSessionCubit extends Fake implements SessionCubit {
+class FakeSessionsCubit extends Fake implements SessionsCubit {
   @override
-  Stream<Session> get stream => const Stream.empty();
+  Stream<SessionsState> get stream => const Stream.empty();
 
   @override
-  Session get state => Session.mp4Session();
+  SessionsState get state => const SessionsState(false);
 
   @override
   Future<void> close() async {}

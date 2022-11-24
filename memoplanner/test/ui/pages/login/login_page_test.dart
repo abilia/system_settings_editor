@@ -65,7 +65,7 @@ void main() {
       ..userFileDb = FakeUserFileDb()
       ..database = FakeDatabase()
       ..genericDb = FakeGenericDb()
-      ..sessionDb = FakeSessionDb()
+      ..sessionsDb = FakeSessionsDb()
       ..sortableDb = sortableDb
       ..battery = FakeBattery()
       ..deviceDb = FakeDeviceDb()
