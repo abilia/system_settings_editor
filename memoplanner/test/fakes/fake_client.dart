@@ -20,7 +20,8 @@ typedef SessionsResponse = Iterable<Session> Function();
 class Fakes {
   Fakes._();
 
-  static int get userId => 1234;
+  static const int userId = 1234;
+  static const user = User(id: userId, type: type, name: name);
   static const String token = 'token',
       name = 'Test case user',
       username = 'username',

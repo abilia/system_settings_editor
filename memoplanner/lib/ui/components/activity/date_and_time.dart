@@ -126,7 +126,7 @@ class DatePicker extends StatelessWidget {
             ? null
             : () async {
                 final newDate = await Navigator.of(context).push<DateTime>(
-                  MaterialPageRoute(
+                  PersistentMaterialPageRoute(
                     builder: (_) => MultiBlocProvider(
                       providers: [
                         BlocProvider(
@@ -200,7 +200,7 @@ class TimeIntervalPicker extends StatelessWidget {
               final editActivityCubit = context.read<EditActivityCubit>();
               final newTimeInterval =
                   await Navigator.of(context).push<TimeInput>(
-                MaterialPageRoute(
+                PersistentMaterialPageRoute(
                   builder: (_) => MultiBlocProvider(
                     providers: authProviders,
                     child: TimeInputPage(

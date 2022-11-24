@@ -1,15 +1,15 @@
 import 'package:memoplanner/models/all.dart';
 
-const prod = 'https://myabilia.com', prodName = 'PROD';
+const prod = 'https://myabilia.com', prodName = 'PROD', testName = 'TEST';
 
 const backendEnvironments = {
   prod: prodName,
   'https://whale.abilia-gbg.se': 'STAGING',
-  'https://t1.abilia-gbg.se': 'TEST',
+  'https://t1.abilia-gbg.se': testName,
 };
 
-String backendName(String endpoint) =>
-    backendEnvironments[endpoint] ?? endpoint;
+String backendName(String endpoint, [String fallback = 'LOCAL']) =>
+    backendEnvironments[endpoint] ?? fallback;
 
 String fileIdUrl(String baseUrl, int userId, String imageFileId) =>
     '$baseUrl/api/v1/data/$userId/storage/file/id/$imageFileId';

@@ -1,17 +1,10 @@
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/listener/all.dart';
-import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
-
-class AlarmRoute<T> extends MaterialPageRoute<T> {
-  AlarmRoute({
-    required WidgetBuilder builder,
-    bool fullscreenDialog = false,
-  }) : super(builder: builder, fullscreenDialog: fullscreenDialog);
-}
 
 class AlarmNavigator {
   static const _fullScreenActivityKey = 'fullScreenActivity',

@@ -151,7 +151,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                                 : null;
 
                         final result = await navigator.push<AbiliaFile>(
-                          MaterialPageRoute(
+                          PersistentMaterialPageRoute(
                             builder: (_) => MultiBlocProvider(
                               providers: authProviders,
                               child: MultiBlocProvider(

@@ -75,7 +75,7 @@ void main() {
           child: AuthenticationBlocProvider(
             child: AuthenticatedBlocsProvider(
               memoplannerSettingBloc: mockSettingBloc,
-              authenticatedState: const Authenticated(userId: 1),
+              authenticatedState: const Authenticated(user: Fakes.user),
               child: BlocProvider<InactivityCubit>(
                 create: (context) => inactivityCubit,
                 child: MaterialApp(

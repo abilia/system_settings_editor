@@ -6,7 +6,7 @@ import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/repository/session_repository.dart';
