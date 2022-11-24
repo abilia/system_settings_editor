@@ -86,12 +86,11 @@ class EditTimerState extends Equatable {
       );
 
   @override
-  List<Object?> get props => [timerData];
+  List<Object?> get props => [_originalTimerData, timerData];
 }
 
 class SavedTimerState extends EditTimerState {
   final AbiliaTimer savedTimer;
-
   SavedTimerState(EditTimerState state, this.savedTimer)
       : super(
           timerData: TimerData(

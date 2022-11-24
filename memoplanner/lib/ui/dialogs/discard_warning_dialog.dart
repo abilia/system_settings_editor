@@ -8,7 +8,7 @@ class DiscardWarningDialog extends StatelessWidget {
     return ViewDialog(
       body: Column(
         children: [
-           Icon(
+          Icon(
             AbiliaIcons.gewaRadioError,
             color: AbiliaColors.red,
             size: layout.icon.huge,
@@ -25,13 +25,13 @@ class DiscardWarningDialog extends StatelessWidget {
       backNavigationWidget: IconAndTextButton(
         text: 'Keep editing',
         icon: AbiliaIcons.closeProgram,
-        onPressed: () async => await Navigator.of(context).maybePop(false),
+        onPressed: () => Navigator.of(context).maybePop(false),
         style: iconTextButtonStyleGrey,
       ),
       forwardNavigationWidget: IconAndTextButton(
         text: 'Discard',
         icon: AbiliaIcons.deleteAllClear,
-        onPressed: () async => await Navigator.of(context).maybePop(true),
+        onPressed: () => Navigator.of(context).maybePop(true),
         style: iconTextButtonStyleRed,
       ),
     );
