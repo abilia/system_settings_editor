@@ -41,6 +41,8 @@ class MockLicenseDb extends Mock implements LicenseDb {}
 
 class MockDatabase extends Mock implements Database {}
 
+class MockBatch extends Mock implements Batch {}
+
 class MockSettingsDb extends Mock implements SettingsDb {}
 
 class MockSessionDb extends Mock implements SessionsDb {}

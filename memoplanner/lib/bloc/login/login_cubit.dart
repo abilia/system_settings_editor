@@ -41,7 +41,7 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith());
   }
 
-  void loginButtonPressed() {
+  Future<void> loginButtonPressed() async {
     _login();
   }
 

@@ -1,8 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
+import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
 
+import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
@@ -14,8 +17,10 @@ void main() {
     late MockUserRepository mockUserRepository;
 
     const pushToken = 'pushToken';
+    final mockDb = MockDatabase();
 
-    setUp(() {
+    setUp(() async {
+      TestWidgetsFlutterBinding.ensureInitialized();
       registerFallbackValues();
       final mockFirebasePushService = MockFirebasePushService();
       mockUserRepository = MockUserRepository();
@@ -26,6 +31,10 @@ void main() {
           .thenAnswer((_) => Future.value());
       when(() => mockUserRepository.baseUrl).thenReturn('url');
 
+      when(() => mockDb.rawQuery(any())).thenAnswer((_) => Future.value([
+            {'count(*)': 0}
+          ]));
+
       authenticationBloc = AuthenticationBloc(mockUserRepository);
       loginCubit = LoginCubit(
         authenticationBloc: authenticationBloc,
@@ -33,6 +42,11 @@ void main() {
         clockBloc: ClockBloc.fixed(time),
         userRepository: mockUserRepository,
       );
+
+      GetItInitializer()
+        ..sharedPreferences = await FakeSharedPreferences.getInstance()
+        ..database = mockDb
+        ..init();
     });
 
     test('initial state is LoginInitial', () {
@@ -130,8 +144,8 @@ void main() {
         ]),
       );
 
-      loginCubit.loginButtonPressed();
-      loginCubit.loginButtonPressed();
+      await loginCubit.loginButtonPressed();
+      await loginCubit.loginButtonPressed();
 
       await expected;
     });
@@ -156,15 +170,36 @@ void main() {
       );
 
       loginCubit.usernameChanged(username);
-      loginCubit.loginButtonPressed();
-      loginCubit.loginButtonPressed();
+      await loginCubit.loginButtonPressed();
+      await loginCubit.loginButtonPressed();
 
       await expected;
+    });
+
+    test('Not empty database gives', () async {
+      when(() => mockDb.rawQuery(any())).thenAnswer((_) => Future.value([
+            {'count(*)': 1}
+          ]));
+      final batch = MockBatch();
+      when(() => batch.commit()).thenAnswer((_) => Future.value([]));
+      when(() => mockDb.batch()).thenReturn(batch);
+
+      await loginCubit.loginButtonPressed();
+
+      await expectLater(
+        loginCubit.stream,
+        emitsInOrder([
+          const LoginState(username: '', password: '')
+              .loading()
+              .failure(cause: LoginFailureCause.notEmptyDatabase),
+        ]),
+      );
     });
 
     tearDown(() {
       loginCubit.close();
       authenticationBloc.close();
+      GetIt.I.reset();
     });
   });
 
@@ -175,7 +210,8 @@ void main() {
 
     setUpAll(registerFallbackValues);
 
-    setUp(() {
+    setUp(() async {
+      TestWidgetsFlutterBinding.ensureInitialized();
       mockedUserRepository = MockUserRepository();
       when(() => mockedUserRepository.persistLoginInfo(any()))
           .thenAnswer((_) => Future.value());
@@ -200,6 +236,19 @@ void main() {
                     endTime: time.add(const Duration(hours: 24)),
                     product: memoplannerLicenseName)
               ]));
+
+      final mockDb = MockDatabase();
+      when(() => mockDb.rawQuery(any())).thenAnswer((_) => Future.value([
+            {'count(*)': 0}
+          ]));
+      GetItInitializer()
+        ..sharedPreferences = await FakeSharedPreferences.getInstance()
+        ..database = mockDb
+        ..init();
+    });
+
+    tearDown(() {
+      GetIt.I.reset();
     });
 
     test('LoginButtonPressed event loggs in and saves token', () async {
@@ -221,7 +270,7 @@ void main() {
       // Act
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
-      loginCubit.loginButtonPressed();
+      await loginCubit.loginButtonPressed();
       // Assert
       await untilCalled(() => mockedUserRepository.authenticate(
             username: any(named: 'username'),
@@ -248,7 +297,8 @@ void main() {
     const loggedInUserId = 1;
     const username = 'username', password = 'my long password';
 
-    setUp(() {
+    setUp(() async {
+      TestWidgetsFlutterBinding.ensureInitialized();
       registerFallbackValues();
       final mockFirebasePushService = MockFirebasePushService();
       mockUserRepository = MockUserRepository();
@@ -293,6 +343,19 @@ void main() {
         endTime: time.add(const Duration(hours: -24)),
         product: memoplannerLicenseName,
       );
+
+      final mockDb = MockDatabase();
+      when(() => mockDb.rawQuery(any())).thenAnswer((_) => Future.value([
+            {'count(*)': 0}
+          ]));
+      GetItInitializer()
+        ..sharedPreferences = await FakeSharedPreferences.getInstance()
+        ..database = mockDb
+        ..init();
+    });
+
+    tearDown(() {
+      GetIt.I.reset();
     });
 
     test('Login fails when no license', () async {
@@ -317,7 +380,7 @@ void main() {
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
 
-      loginCubit.loginButtonPressed();
+      await loginCubit.loginButtonPressed();
 
       // Assert
       await expected;
