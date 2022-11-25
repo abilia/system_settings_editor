@@ -25,7 +25,7 @@ class FakeAuthenticationBloc extends Fake implements AuthenticationBloc {
   @override
   Stream<AuthenticationState> get stream => const Stream.empty();
   @override
-  AuthenticationState get state => const Authenticated(userId: 1);
+  AuthenticationState get state => const Authenticated(user: Fakes.user);
   @override
   Future<void> close() async {}
 }
@@ -187,12 +187,12 @@ class FakeVoicesCubit extends Fake implements VoicesCubit {
   Future<void> close() async {}
 }
 
-class FakeSessionCubit extends Fake implements SessionCubit {
+class FakeSessionsCubit extends Fake implements SessionsCubit {
   @override
-  Stream<bool> get stream => const Stream.empty();
+  Stream<SessionsState> get stream => const Stream.empty();
 
   @override
-  bool get state => false;
+  SessionsState get state => const SessionsState(false);
 
   @override
   Future<void> close() async {}

@@ -3,13 +3,11 @@ import 'dart:io';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
-import 'package:memoplanner/analytics/analytics_service.dart';
-import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,7 +17,7 @@ import 'package:memoplanner/utils/all.dart';
 
 export 'package:logging/logging.dart';
 
-enum LoggingType { file, print, analytic }
+enum LoggingType { file, print, crashReporting }
 
 class SeagullLogger {
   File? _logFile;
@@ -33,7 +31,8 @@ class SeagullLogger {
 
   late final bool fileLogging = loggingType.contains(LoggingType.file);
   late final bool printLogging = loggingType.contains(LoggingType.print);
-  late final bool analyticLogging = loggingType.contains(LoggingType.analytic);
+  late final bool crashReporting =
+      loggingType.contains(LoggingType.crashReporting);
 
   String get logFileName => '${Config.flavor.id}.log';
 
@@ -57,7 +56,7 @@ class SeagullLogger {
         LoggingType.print
       else ...{
         LoggingType.file,
-        LoggingType.analytic,
+        LoggingType.crashReporting,
       }
     },
     Level level = kDebugMode ? Level.ALL : Level.FINE,
@@ -66,7 +65,7 @@ class SeagullLogger {
       Logger.root.level = level;
       if (fileLogging) _initFileLogging();
       if (printLogging) _initPrintLogging();
-      if (analyticLogging) _initAnalyticsLogging();
+      if (crashReporting) _initCrashReporting();
     }
   }
 
@@ -143,7 +142,7 @@ class SeagullLogger {
     );
   }
 
-  void _initAnalyticsLogging() {
+  void _initCrashReporting() {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
     loggingSubscriptions.add(
       Logger.root.onRecord.listen(
@@ -273,128 +272,5 @@ class SeagullLogger {
       _postLog.severe('Could not save log file.', e);
     }
     return false;
-  }
-}
-
-mixin Silent {}
-mixin Finest {}
-mixin Finer implements Finest {}
-mixin Fine implements Finer {}
-mixin Info implements Fine {}
-mixin Warning implements Info {}
-mixin Shout implements Warning {}
-
-class BlocLoggingObserver extends BlocObserver {
-  BlocLoggingObserver({this.analyticsLogging = false});
-
-  final bool analyticsLogging;
-  final _loggers = <BlocBase, Logger>{};
-
-  Logger _getLog(BlocBase bloc) =>
-      _loggers[bloc] ??= Logger(bloc.runtimeType.toString());
-
-  void _log(BlocBase bloc, Object? message) {
-    if (bloc is Silent) return;
-    final log = _getLog(bloc);
-    if (bloc is Shout) {
-      log.shout(message);
-    } else if (bloc is Warning) {
-      log.warning(message);
-    } else if (bloc is Info) {
-      log.info(message);
-    } else if (bloc is Fine) {
-      log.fine(message);
-    } else if (bloc is Finest) {
-      log.finest(message);
-    } else {
-      log.finer(message);
-    }
-  }
-
-  @override
-  void onCreate(BlocBase bloc) {
-    super.onCreate(bloc);
-    if (bloc is Silent) return;
-    _log(bloc, 'created ${bloc.state}');
-  }
-
-  @override
-  void onEvent(Bloc bloc, Object? event) {
-    super.onEvent(bloc, event);
-    if (event is Silent || bloc is Silent) return;
-    _log(bloc, 'event $event');
-  }
-
-  @override
-  void onChange(BlocBase bloc, Change change) {
-    super.onChange(bloc, change);
-    if (bloc is Silent) return;
-    _log(bloc, change);
-  }
-
-  @override
-  void onTransition(Bloc bloc, Transition transition) {
-    super.onTransition(bloc, transition);
-    if (analyticsLogging) logEventToAnalytics(transition);
-    if (bloc is Silent) return;
-    _log(bloc, transition);
-  }
-
-  @override
-  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
-    super.onError(bloc, error, stackTrace);
-    _getLog(bloc).severe(error, stackTrace);
-  }
-
-  @override
-  void onClose(BlocBase bloc) {
-    super.onClose(bloc);
-    if (bloc is Silent) return;
-    _log(bloc, 'closed');
-  }
-
-  Future<void> logEventToAnalytics(Transition transition) async {
-    final event = transition.event;
-    final nextState = transition.nextState;
-    if (event is AddActivity) {
-      await AnalyticsService.sendActivityCreatedEvent(event.activity);
-    }
-    if (event is LoggedIn) {
-      await AnalyticsService.sendLoginEvent();
-    }
-    if (nextState is Authenticated) {
-      await AnalyticsService.setUserId(nextState.userId);
-    }
-  }
-}
-
-class RouteLoggingObserver extends RouteObserver<PageRoute<dynamic>> {
-  final _log = Logger('RouteLogger');
-
-  @override
-  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    super.didPush(route, previousRoute);
-    if (route is PageRoute) {
-      _log.fine('didPush $route');
-      _log.finest('didPush previousRoute $previousRoute');
-    }
-  }
-
-  @override
-  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
-    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-    if (newRoute is PageRoute) {
-      _log.fine('didReplace $newRoute');
-      _log.finest('didReplace oldRoute $oldRoute');
-    }
-  }
-
-  @override
-  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    super.didPop(route, previousRoute);
-    if (previousRoute is PageRoute && route is PageRoute) {
-      _log.fine('didPop $route');
-      _log.finest('didPop previousRoute $previousRoute');
-    }
   }
 }

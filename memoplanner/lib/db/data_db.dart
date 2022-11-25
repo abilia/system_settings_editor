@@ -1,4 +1,4 @@
-import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:collection/collection.dart';
 

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
@@ -11,7 +12,7 @@ import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/firebase_options.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/listener/all.dart';
-import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
@@ -26,7 +27,7 @@ void main() async {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   }
   final payload = await getOrAddPayloadToStream();
-  runApp(App(payload: payload, analytics: Config.release));
+  runApp(App(payload: payload));
 }
 
 Future<void> initServices() async {
@@ -37,19 +38,21 @@ Future<void> initServices() async {
   FirebaseMessaging.instance.isAutoInitEnabled;
   final documentDirectory = await getApplicationDocumentsDirectory();
   final preferences = await SharedPreferences.getInstance();
-  Bloc.observer = BlocLoggingObserver(analyticsLogging: Config.release);
   final seagullLogger = SeagullLogger(
     documentsDirectory: documentDirectory.path,
     preferences: preferences,
   );
   _log.fine('Initializing services');
+  final analytics = kReleaseMode
+      ? await SeagullAnalytics.init(
+          clientId: await DeviceDb(preferences).getClientId(),
+          environment: BaseUrlDb(preferences).environment,
+        )
+      : SeagullAnalytics.empty();
+  Bloc.observer = BlocLoggingObserver(analytics);
   await configureLocalTimeZone(log: _log);
   final voiceDb = VoiceDb(preferences);
-  final baseUrlDb = BaseUrlDb(preferences);
-  await baseUrlDb.initialize();
-
   final applicationSupportDirectory = await getApplicationSupportDirectory();
-
   GetItInitializer()
     ..directories = Directories(
       applicationSupport: applicationSupportDirectory,
@@ -57,7 +60,6 @@ Future<void> initServices() async {
       temp: await getTemporaryDirectory(),
     )
     ..sharedPreferences = preferences
-    ..baseUrlDb = baseUrlDb
     ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
     ..voiceDb = voiceDb
@@ -67,6 +69,7 @@ Future<void> initServices() async {
     )
     ..packageInfo = await PackageInfo.fromPlatform()
     ..syncDelay = const SyncDelays()
+    ..analytics = analytics
     ..init();
 }
 
@@ -106,13 +109,11 @@ class App extends StatelessWidget {
   final PushCubit? pushCubit;
   final NotificationAlarm? payload;
   final _navigatorKey = GlobalKey<NavigatorState>();
-  final bool analytics;
 
   App({
     Key? key,
     this.payload,
     this.pushCubit,
-    this.analytics = false,
   }) : super(key: key);
 
   @override
@@ -127,7 +128,6 @@ class App extends StatelessWidget {
                         payload: payload,
                         child: MaterialAppWrapper(
                           navigatorKey: _navigatorKey,
-                          analytics: analytics,
                         ),
                       ),
                     )
