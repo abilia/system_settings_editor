@@ -141,7 +141,7 @@ class SelectPictureWidget extends StatelessWidget {
     final userFileCubit = context.read<UserFileCubit>();
     final sortableBloc = context.read<SortableBloc>();
     final newSelectedImage = await Navigator.of(context).push<AbiliaFile>(
-      MaterialPageRoute(
+      PersistentMaterialPageRoute(
         builder: (_) => MultiBlocProvider(
           providers: authProviders,
           child: SelectPicturePage(
@@ -390,7 +390,7 @@ class AlarmWidget extends StatelessWidget {
                   final authProviders = copiedAuthProviders(context);
                   final editActivityCubit = context.read<EditActivityCubit>();
                   final result = await Navigator.of(context).push<AlarmType>(
-                    MaterialPageRoute(
+                    PersistentMaterialPageRoute(
                       builder: (_) => MultiBlocProvider(
                         providers: authProviders,
                         child: SelectAlarmTypePage(
@@ -549,7 +549,7 @@ class AvailableForWidget extends StatelessWidget {
     int userId,
   ) =>
       Navigator.of(context).push<AvailableForState>(
-        MaterialPageRoute(
+        PersistentMaterialPageRoute(
           builder: (context) => BlocProvider<AvailableForCubit>(
             create: (context) => AvailableForCubit(
               supportPersonsRepository: SupportPersonsRepository(

@@ -15,17 +15,17 @@ import '../../../../test_helpers/app_pumper.dart';
 
 void main() {
   late MockSortableDb mockSortableDb;
-  late SessionsDb mockSessionDb;
+  late SessionsDb mockSessionsDb;
   setUp(() async {
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
     mockSortableDb = MockSortableDb();
-    mockSessionDb = MockSessionDb();
+    mockSessionsDb = MockSessionsDb();
 
-    when(() => mockSessionDb.setHasMP4Session(any()))
+    when(() => mockSessionsDb.setHasMP4Session(any()))
         .thenAnswer((_) => Future.value());
-    when(() => mockSessionDb.hasMP4Session).thenReturn(true);
+    when(() => mockSessionsDb.hasMP4Session).thenReturn(true);
 
     final myPhotosFolder = Sortable.createNew(
       data: const ImageArchiveData(myPhotos: true),
@@ -79,7 +79,7 @@ void main() {
       ..sortableDb = mockSortableDb
       ..battery = FakeBattery()
       ..deviceDb = FakeDeviceDb()
-      ..sessionsDb = mockSessionDb
+      ..sessionsDb = mockSessionsDb
       ..init();
   });
 

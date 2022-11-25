@@ -38,7 +38,7 @@ unknownError	Unknown error	Okänt fel	Ukendt fejl	Onbekende fout	Tuntematon virh
 accountCreatedHeading	Account created	Konto skapat	Konto oprettet	Account gecreëerd	Tili luotu puolivälissä	Konto erstellt	Konto opprettet
 accountCreatedBody	Your account has been created.\nYou can login using your username and password	Ditt konto har skapats.\nDu kan logga in med ditt användarnamn och lösenord	Din konto er oprettet.\nDu kan logge ind med dit brugernavn og din adgangskode	Uw account is gecreëerd.\nU kunt inloggen met uw gebruikersnaam en wachtwoord	Tili on luotu.\nVoit kirjautua sisään käyttämällä käyttäjätunnustasi ja salasanaasi	Ihr Konto wurde erstellt.\nSie können sich mit Ihrem Benutzernamen und Passwort anmelden	Kontoen din er opprettet.\nDu kan logge inn ved å bruke ditt brukernavn og passord
 browser	Browser	Webbläsare	Browser	Browser	Selain	Browser	Nettleser
-backToLogin	Back to Login	Tillbaka till login	Zurück zur Anmeldung	Zurück zur Anmeldung	Takaisin sisäänkirjautumiseen	Zurück zur Anmeldung	Tilbake til innlogging
+backToLogin	Back to Login	Tillbaka till login	Tilbage til login	Terug naar Inloggen	Takaisin sisäänkirjautumiseen	Zurück zur Anmeldung	Tilbake til innlogging
 							
 ### License							
 noLicense	This account has no valid license.	Det här kontot saknar giltig licens. Du kan därför inte logga in.	Problemer med at logge ind!\nDu har ikke en gyldig licens.	Dit account heeft geen geldige licentie.	Tällä tilillä ei ole kelvollista lisenssiä.	Für dieses Konto gibt es keine gültige Lizenz.	Problemer med å logge inn!\nDu har ikke en gyldig lisens.

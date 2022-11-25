@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:package_info/package_info.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/logging.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/storage/file_storage.dart';
@@ -125,6 +125,9 @@ class GetItInitializer {
   LastSyncDb? _lastSyncDb;
   set lastSyncDb(LastSyncDb lastSyncDb) => _lastSyncDb = lastSyncDb;
 
+  SeagullAnalytics? _analytics;
+  set analytics(SeagullAnalytics analytics) => _analytics = analytics;
+
   void init() {
     final loginDb = _loginDb ?? LoginDb(_sharedPreferences);
     final deviceDb = _deviceDb ?? DeviceDb(_sharedPreferences);
@@ -177,6 +180,8 @@ class GetItInitializer {
             ),
       )
       ..registerSingleton<LastSyncDb>(
-          _lastSyncDb ?? LastSyncDb(_sharedPreferences));
+          _lastSyncDb ?? LastSyncDb(_sharedPreferences))
+      ..registerSingleton<SeagullAnalytics>(
+          _analytics ?? SeagullAnalytics.empty());
   }
 }

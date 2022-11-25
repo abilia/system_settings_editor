@@ -6,10 +6,10 @@ import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/repository/session_repository.dart';
+import 'package:memoplanner/repository/sessions_repository.dart';
 import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
@@ -70,8 +70,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               userId: authenticatedState.userId,
             ),
           ),
-          RepositoryProvider<SessionRepository>(
-            create: (context) => SessionRepository(
+          RepositoryProvider<SessionsRepository>(
+            create: (context) => SessionsRepository(
               baseUrlDb: GetIt.I<BaseUrlDb>(),
               client: GetIt.I<ListenableClient>(),
               sessionsDb: GetIt.I<SessionsDb>(),
@@ -228,9 +228,9 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 syncDelays: GetIt.I<SyncDelays>(),
               ),
             ),
-            BlocProvider<SessionCubit>(
-              create: (context) => SessionCubit(
-                sessionRepository: context.read<SessionRepository>(),
+            BlocProvider<SessionsCubit>(
+              create: (context) => SessionsCubit(
+                sessionsRepository: context.read<SessionsRepository>(),
               ),
               lazy: false,
             ),

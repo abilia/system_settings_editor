@@ -7,7 +7,7 @@ import 'package:flutter_archive/flutter_archive.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as p;
 import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/logging.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -40,7 +40,7 @@ class VoiceRepository {
     final url = Uri.https(
       baseUrl,
       pathSegments,
-      {'environment': baseUrlDb.environment},
+      {'environment': baseUrlDb.environmentOrTest},
     );
     try {
       final response = await client.get(url);
