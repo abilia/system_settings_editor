@@ -46,7 +46,8 @@ licenseExpired	License is expired	Licensen har gått ut	Licensen er udløbet	Lic
 licenseExpiredMessage	Your license has expired and MEMOplanner will no longer synchronize with myAbilia	Licensen har gått ut och MEMOplanner kommer inte längre att synkronisera med myAbilia	Licensen er udløbet, og MEMOplanner vil ikke længere synkronisere med myAbilia	Uw licentie is verlopen en MEMOplanner zal niet langer synchroniseren met myAbilia	Lisenssisi on vanhentunut, eikä MEMOplanner enää synkronoidu myAbilian kanssa	Ihre Lizenz ist abgelaufen und MEMOplanner kann nicht mehr mit myAbilia synchronisiert werden	Lisensen har utløpt og Memoplanner vil ikke lenger kunne synkronisere med myAbilia
 toLogin	to Log in	till Logga in	til Log ind	naar Inloggen	kirjautumissivulle	zur Anmelden	til Logg inn
 licenseExpiredLogOutWarning	License is expired, all data will be lost if you log out
-### Logout
+							
+### Logout							
 allDataSaved	All data saved!						
 goOnlineBeforeLogout	Go online before you log out!						
 doNotLoseYourContent	Don't lose your content!						
