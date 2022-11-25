@@ -416,7 +416,7 @@ void main() {
         }
 
         testWidgets(
-            'Making a change and popping back triggers discard warning dialog',
+            'Making a change and clicking previous triggers discard warning dialog',
             (WidgetTester tester) async {
           await navigateToEditActivityPage(tester);
           expect(find.byType(EditActivityPage), findsOneWidget);
@@ -459,7 +459,7 @@ void main() {
         });
 
         testWidgets(
-            'Making no change and popping back do not trigger discard warning dialog',
+            'Making no change and clicking previous do not trigger discard warning dialog',
             (WidgetTester tester) async {
           await navigateToEditActivityPage(tester);
           expect(find.byType(EditActivityPage), findsOneWidget);
@@ -1268,7 +1268,7 @@ void main() {
         }
 
         testWidgets(
-            'Making a change and popping back triggers discard warning dialog',
+            'Making a change and clicking previous triggers discard warning dialog',
             (WidgetTester tester) async {
           await navigateToEditTimerPage(tester);
 
@@ -1285,7 +1285,7 @@ void main() {
         });
 
         testWidgets(
-            'Making no change and popping back do not trigger discard warning dialog',
+            'Making no change and clicking previous do not trigger discard warning dialog',
             (WidgetTester tester) async {
           await navigateToEditTimerPage(tester);
           expect(find.byType(EditTimerPage), findsOneWidget);

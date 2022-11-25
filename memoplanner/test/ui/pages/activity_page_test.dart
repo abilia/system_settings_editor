@@ -581,6 +581,26 @@ void main() {
       // Assert
       expect(find.byType(SelectRecurrentTypePage), findsNothing);
     });
+
+    testWidgets(
+        'Changing alarm and clicking cancel triggers discard warning dialog',
+        (WidgetTester tester) async {
+      // Arrange
+      mockActivityDb.initWithActivity(
+          FakeActivity.starts(startTime).copyWith(alarmType: noAlarm));
+
+      // Act
+      await navigateToActivityPage(tester);
+      await tester.tap(alarmButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(vibrationRadioButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(cancelButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byType(DiscardWarningDialog), findsOneWidget);
+    });
   });
 
   group('Delete activity', () {

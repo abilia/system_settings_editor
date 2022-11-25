@@ -3,7 +3,6 @@ import 'package:memoplanner/ui/all.dart';
 
 class WizardBottomNavigation extends StatelessWidget {
   final bool useVerticalSafeArea;
-
   const WizardBottomNavigation({
     Key? key,
     this.useVerticalSafeArea = true,
