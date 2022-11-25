@@ -14,28 +14,29 @@ class RecordSoundPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final initialState = context.read<RecordSoundCubit>().state;
-    return Scaffold(
-      appBar: AbiliaAppBar(
-        title: title,
-        iconData: AbiliaIcons.dictaphone,
-      ),
-      body: const RecordingWidget(),
-      bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: PopOrDiscardButton(
-          type: ButtonType.cancel,
-          discardDialogCondition: (context) =>
-              initialState != context.read<RecordSoundCubit>().state,
+    return PopAwareDiscardPage(
+      discardDialogCondition: (context) =>
+          initialState != context.read<RecordSoundCubit>().state,
+      child: Scaffold(
+        appBar: AbiliaAppBar(
+          title: title,
+          iconData: AbiliaIcons.dictaphone,
         ),
-        forwardNavigationWidget: OkButton(
-          onPressed: () {
-            final recordState = context.read<RecordSoundCubit>().state;
-            if (recordState is NewRecordedSoundState) {
-              return Navigator.of(context).pop(recordState.unstoredAbiliaFile);
-            } else if (recordState is EmptyRecordSoundState) {
-              return Navigator.of(context).pop(AbiliaFile.empty);
-            }
-            return Navigator.of(context).pop();
-          },
+        body: const RecordingWidget(),
+        bottomNavigationBar: BottomNavigation(
+          backNavigationWidget: const CancelButton(),
+          forwardNavigationWidget: OkButton(
+            onPressed: () {
+              final recordState = context.read<RecordSoundCubit>().state;
+              if (recordState is NewRecordedSoundState) {
+                return Navigator.of(context)
+                    .pop(recordState.unstoredAbiliaFile);
+              } else if (recordState is EmptyRecordSoundState) {
+                return Navigator.of(context).pop(AbiliaFile.empty);
+              }
+              return Navigator.of(context).pop();
+            },
+          ),
         ),
       ),
     );

@@ -8,34 +8,34 @@ class _SelectAlarmTypePage extends StatelessWidget {
   final ValueChanged<AlarmType?> onChanged;
   final List<Widget> trailing;
   final GestureTapCallback? onOk;
-  final bool showDiscardDialog;
+  final bool Function() discardDialogCondition;
 
   const _SelectAlarmTypePage({
     required this.alarm,
     required this.onChanged,
+    required this.discardDialogCondition,
     this.trailing = const <Widget>[],
     this.onOk,
-    this.showDiscardDialog = false,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return Scaffold(
-      appBar: AbiliaAppBar(
-        title: translate.selectAlarmType,
-        iconData: AbiliaIcons.handiAlarmVibration,
-      ),
-      body: SelectAlarmTypeBody(
-          alarm: alarm, trailing: trailing, onChanged: onChanged),
-      bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: PopOrDiscardButton(
-          type: ButtonType.cancel,
-          discardDialogCondition: (_) => showDiscardDialog && onOk != null,
+    return PopAwareDiscardPage(
+      discardDialogCondition: (_) => discardDialogCondition(),
+      child: Scaffold(
+        appBar: AbiliaAppBar(
+          title: translate.selectAlarmType,
+          iconData: AbiliaIcons.handiAlarmVibration,
         ),
-        forwardNavigationWidget: OkButton(
-          onPressed: onOk,
+        body: SelectAlarmTypeBody(
+            alarm: alarm, trailing: trailing, onChanged: onChanged),
+        bottomNavigationBar: BottomNavigation(
+          backNavigationWidget: const CancelButton(),
+          forwardNavigationWidget: OkButton(
+            onPressed: onOk,
+          ),
         ),
       ),
     );
@@ -125,6 +125,7 @@ class _SelectAlarmTypePageState extends State<SelectAlarmTypePage> {
   @override
   Widget build(BuildContext context) => _SelectAlarmTypePage(
       alarm: newAlarm,
+      discardDialogCondition: () => false,
       onOk: newAlarm != widget.alarm
           ? () => Navigator.of(context).maybePop(newAlarm)
           : null,
@@ -146,49 +147,55 @@ class SelectAlarmPage extends StatefulWidget {
 }
 
 class _SelectAlarmPageState extends State<SelectAlarmPage> {
-  late Activity activity;
+  late Activity _activity, _originalActivity;
 
   @override
   void initState() {
     super.initState();
-    activity = widget.activity;
+    _activity = widget.activity;
+    _originalActivity = _activity;
   }
+
+  bool get unchanged => _originalActivity == _activity;
 
   @override
   Widget build(BuildContext context) {
     return _SelectAlarmTypePage(
-      alarm: activity.alarm.typeSeagull,
-      showDiscardDialog: true,
-      onOk: activity != widget.activity
-          ? () => Navigator.of(context).maybePop(activity)
-          : null,
+      alarm: _activity.alarm.typeSeagull,
+      discardDialogCondition: () => _originalActivity != _activity,
+      onOk: !unchanged ? _onOk : null,
       onChanged: _changeType,
       trailing: [
         const SizedBox(),
         const Divider(),
         SizedBox(height: layout.formPadding.verticalItemDistance),
         AlarmOnlyAtStartSwitch(
-          alarm: activity.alarm,
+          alarm: _activity.alarm,
           onChanged: _changeStartTime,
         ),
         SizedBox(height: layout.formPadding.verticalItemDistance),
         const Divider(),
         SizedBox(height: layout.formPadding.groupTopDistance),
-        RecordSoundWidget(activity: activity, soundChanged: _changeRecording),
+        RecordSoundWidget(activity: _activity, soundChanged: _changeRecording),
       ],
     );
   }
 
+  void _onOk() {
+    _originalActivity = _activity;
+    Navigator.of(context).maybePop(_activity);
+  }
+
   void _changeType(AlarmType? type) => setState(() {
-        activity =
-            activity.copyWith(alarm: activity.alarm.copyWith(type: type));
+        _activity =
+            _activity.copyWith(alarm: _activity.alarm.copyWith(type: type));
       });
 
   void _changeStartTime(bool onStart) => setState(() {
-        activity = activity.copyWith(
-            alarm: activity.alarm.copyWith(onlyStart: onStart));
+        _activity = _activity.copyWith(
+            alarm: _activity.alarm.copyWith(onlyStart: onStart));
       });
 
   void _changeRecording(Activity newActivity) =>
-      setState(() => activity = activity.copyActivity(newActivity));
+      setState(() => _activity = _activity.copyActivity(newActivity));
 }

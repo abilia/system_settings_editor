@@ -263,7 +263,7 @@ void main() {
     final expect2 = expectLater(
       editActivityCubit.stream,
       emits(
-        StoredActivityState(
+        SavedActivityState(
           expectedActivity,
           expectedTimeInterval,
           aDay,

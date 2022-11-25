@@ -25,6 +25,9 @@ class TemplateActivityWizardCubit extends WizardCubit {
     final sortable = original.copyWith(data: item);
     sortableBloc.add(SortableUpdated(sortable));
 
+    if (state.isLastStep) {
+      editActivityCubit.activitySaved(activity);
+    }
     emit(state.saveSuccess());
   }
 

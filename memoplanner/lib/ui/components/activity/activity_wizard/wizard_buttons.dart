@@ -3,6 +3,7 @@ import 'package:memoplanner/ui/all.dart';
 
 class WizardBottomNavigation extends StatelessWidget {
   final bool useVerticalSafeArea;
+
   const WizardBottomNavigation({
     Key? key,
     this.useVerticalSafeArea = true,
@@ -27,11 +28,9 @@ class PreviousWizardStepButton extends StatelessWidget {
       final isStored = editActivityState is StoredActivityState;
       final isTemplate = wizardCubit is TemplateActivityWizardCubit;
 
-      return PopOrDiscardButton(
-        type: isStored || isTemplate ? ButtonType.cancel : ButtonType.previous,
-        discardDialogCondition: (context) =>
-            !context.read<EditActivityCubit>().state.unchanged,
-      );
+      return isStored || isTemplate
+          ? const CancelButton()
+          : const PreviousButton();
     }
     return PreviousButton(onPressed: context.read<WizardCubit>().previous);
   }

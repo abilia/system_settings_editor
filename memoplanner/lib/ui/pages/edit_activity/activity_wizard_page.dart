@@ -7,18 +7,23 @@ class ActivityWizardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageController = PageController(initialPage: 0);
-    return PopOnSaveListener(
-      child: ErrorPopupListener(
-        child: BlocListener<WizardCubit, WizardState>(
-          listenWhen: (previous, current) =>
-              current.currentStep != previous.currentStep,
-          listener: (context, state) => pageController.animateToPage(state.step,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeOutQuad),
-          child: PageView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: pageController,
-            itemBuilder: (context, _) => getPage(context),
+    return PopAwareDiscardPage(
+      discardDialogCondition: (context) =>
+          !context.read<EditActivityCubit>().state.unchanged,
+      child: PopOnSaveListener(
+        child: ErrorPopupListener(
+          child: BlocListener<WizardCubit, WizardState>(
+            listenWhen: (previous, current) =>
+                current.currentStep != previous.currentStep,
+            listener: (context, state) => pageController.animateToPage(
+                state.step,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeOutQuad),
+            child: PageView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: pageController,
+              itemBuilder: (context, _) => getPage(context),
+            ),
           ),
         ),
       ),

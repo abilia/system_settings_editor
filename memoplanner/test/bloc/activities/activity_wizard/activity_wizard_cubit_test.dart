@@ -388,7 +388,7 @@ void main() {
     final expected2 = expectLater(
       editActivityCubit.stream,
       emits(
-        StoredActivityState(
+        SavedActivityState(
           expectedFinalActivity,
           expectedTimeInterval2,
           expectedFinalStartTime.onlyDays(),
@@ -470,7 +470,7 @@ void main() {
       final expected2 = expectLater(
         editActivityCubit.stream,
         emits(
-          StoredActivityState(
+          SavedActivityState(
               expectedNewActivity, expectedNewTimeInterval, aDay),
         ),
       );
@@ -547,7 +547,7 @@ void main() {
     final expected2 = expectLater(
       editActivityCubit.stream,
       emits(
-        StoredActivityState(expectedNewActivity, expectedNewTimeInterval, aDay),
+        SavedActivityState(expectedNewActivity, expectedNewTimeInterval, aDay),
       ),
     );
 
@@ -615,7 +615,7 @@ void main() {
     await expected1;
     final expected2 = expectLater(
       editActivityCubit.stream,
-      emits(StoredActivityState(
+      emits(SavedActivityState(
           expectedNewActivity, expectedNewTimeInterval, aDay)),
     );
 
@@ -925,7 +925,7 @@ void main() {
         final expected2 = expectLater(
           editActivityCubit.stream,
           emits(
-            StoredActivityState(
+            SavedActivityState(
               expectedActivity,
               timeInterval,
               aDay,
@@ -1019,7 +1019,7 @@ void main() {
         final expected2 = expectLater(
           editActivityCubit.stream,
           emits(
-            StoredActivityState(
+            SavedActivityState(
               expectedActivity,
               timeInterval,
               saveTime,
@@ -1125,7 +1125,7 @@ void main() {
         final expected2 = expectLater(
             editActivityCubit.stream,
             emits(
-              StoredActivityState(
+              SavedActivityState(
                 expectedActivity,
                 recursTimeInterval,
                 aDay,
@@ -1207,7 +1207,7 @@ void main() {
 
         final expected2 = expectLater(
             editActivityCubit.stream,
-            emits(StoredActivityState(
+            emits(SavedActivityState(
               expectedActivityToSave,
               expectedTimeInterval,
               aDay,
@@ -1301,7 +1301,7 @@ void main() {
         final expected2 = expectLater(
           editActivityCubit.stream,
           emits(
-            StoredActivityState(
+            SavedActivityState(
               expectedActivity,
               timeInterval,
               aDay,
@@ -1385,7 +1385,7 @@ void main() {
         final expected2 = expectLater(
           editActivityCubit.stream,
           emits(
-            StoredActivityState(
+            SavedActivityState(
               expectedActivity,
               timeInterval,
               aDay,
@@ -1468,7 +1468,7 @@ void main() {
 
         expect(
           editActivityCubit.state,
-          StoredActivityState(
+          SavedActivityState(
             expectedActivity,
             timeInterval,
             aDay,
@@ -1524,7 +1524,7 @@ void main() {
         await expected1;
         final expected2 = expectLater(
             editActivityCubit.stream,
-            emits(StoredActivityState(
+            emits(SavedActivityState(
               expectedActivity,
               timeInterval,
               aDay,
@@ -1602,7 +1602,7 @@ void main() {
         final expected2 = expectLater(
           editActivityCubit.stream,
           emits(
-            StoredActivityState(
+            SavedActivityState(
               expectedActivity,
               secondTimeInterval,
               aDay,
@@ -1668,7 +1668,7 @@ void main() {
 
         expect(
           editActivityCubit.state,
-          StoredActivityState(
+          SavedActivityState(
             expectedActivity,
             timeInterval,
             aDay,
