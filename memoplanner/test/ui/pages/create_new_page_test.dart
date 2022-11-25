@@ -68,7 +68,7 @@ void main() {
   ActivityResponse activityResponse = () => [];
   SortableResponse sortableResponse = () => [];
   GenericResponse genericResponse = () => [];
-  SessionsResponse sessionResponse = () => Fakes.fakeSession;
+  SessionsResponse sessionResponse = () => Fakes.fakeSessions;
   final initialDay = DateTime(2020, 08, 05);
 
   setUpAll(() {
@@ -147,7 +147,7 @@ void main() {
     activityResponse = () => [];
     sortableResponse = () => [];
     genericResponse = () => [];
-    sessionResponse = () => Fakes.fakeSession;
+    sessionResponse = () => Fakes.fakeSessions;
     GetIt.I.reset();
   });
 
