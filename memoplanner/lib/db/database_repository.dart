@@ -157,8 +157,8 @@ class DatabaseRepository {
   }
 
   static Future<bool> isEmpty(Database db) async {
-    final allTableSelectCount = await Future.wait(
-        tablesWithUserData.map((table) => db.rawQuery('select count(*) from $table')));
+    final allTableSelectCount = await Future.wait(tablesWithUserData
+        .map((table) => db.rawQuery('select count(*) from $table')));
     final allTableRows =
         allTableSelectCount.map(Sqflite.firstIntValue).whereNotNull().toList();
     return allTableRows.sum == 0;
