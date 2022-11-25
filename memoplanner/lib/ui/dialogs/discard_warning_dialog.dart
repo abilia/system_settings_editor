@@ -5,6 +5,7 @@ class DiscardWarningDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
     return ViewDialog(
       body: Column(
         children: [
@@ -15,7 +16,7 @@ class DiscardWarningDialog extends StatelessWidget {
           ),
           Tts(
             child: Text(
-              'Are you sure you want to discard your changes?',
+              translate.confirmDiscard,
               style: headline6,
             ),
           ),
@@ -23,13 +24,13 @@ class DiscardWarningDialog extends StatelessWidget {
       ),
       bottomNavigationColor: ViewDialog.light,
       backNavigationWidget: IconAndTextButton(
-        text: 'Keep editing',
+        text: translate.keepEditing,
         icon: AbiliaIcons.closeProgram,
         onPressed: () => Navigator.of(context).maybePop(false),
         style: iconTextButtonStyleGrey,
       ),
       forwardNavigationWidget: IconAndTextButton(
-        text: 'Discard',
+        text: translate.discard,
         icon: AbiliaIcons.deleteAllClear,
         onPressed: () => Navigator.of(context).maybePop(true),
         style: iconTextButtonStyleRed,
