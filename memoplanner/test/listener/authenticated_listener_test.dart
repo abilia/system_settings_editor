@@ -52,9 +52,9 @@ void main() {
     when(() => sortableBloc.addStarter(any()))
         .thenAnswer((invocation) => Future.value(true));
 
-    authenticatedDialogCubit = MockLoginDialogCubit();
+    authenticatedDialogCubit = MockAuthenticatedDialogCubit();
     when(() => authenticatedDialogCubit.state)
-        .thenReturn(AuthenticatedDialogNotReady.initial());
+        .thenReturn(const AuthenticatedDialogState());
     authenticatedDialogStreamController =
         StreamController<AuthenticatedDialogState>();
     authenticatedDialogStream =
@@ -184,12 +184,8 @@ void main() {
   testWidgets('Shows starter set dialog and call add when pressed Yes',
       (tester) async {
     // Arrange
-    when(() => authenticatedDialogCubit.showTermsOfUseDialog)
-        .thenAnswer((_) => false);
-    when(() => authenticatedDialogCubit.showStarterSetDialog)
-        .thenAnswer((_) => true);
-    when(() => authenticatedDialogCubit.showFullscreenAlarmDialog)
-        .thenAnswer((_) => false);
+    when(() => authenticatedDialogCubit.state)
+        .thenAnswer((_) => const AuthenticatedDialogState());
 
     // Act - Start app
     await tester.pumpWidget(authListener(
@@ -201,8 +197,14 @@ void main() {
     expect(find.byType(StarterSetDialog), findsNothing);
 
     // Act - Login dialog is ready
-    authenticatedDialogStreamController
-        .add(AuthenticatedDialogReady(TermsOfUse.accepted()));
+    authenticatedDialogStreamController.add(
+      const AuthenticatedDialogState(
+        termsOfUseLoaded: true,
+        starterSet: true,
+        starterSetLoaded: true,
+        fullscreenAlarmLoaded: true,
+      ),
+    );
     await tester.pumpAndSettle();
 
     // Assert

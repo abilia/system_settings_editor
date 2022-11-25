@@ -9,16 +9,9 @@ class TermsOfUse {
     required this.privacyPolicy,
   });
 
-  factory TermsOfUse.notAccepted() =>
-      const TermsOfUse(termsOfCondition: false, privacyPolicy: false);
-
-  factory TermsOfUse.accepted() =>
-      const TermsOfUse(termsOfCondition: true, privacyPolicy: true);
-
-  factory TermsOfUse.copy(TermsOfUse termsOfUse) => TermsOfUse(
-        termsOfCondition: termsOfUse.termsOfCondition,
-        privacyPolicy: termsOfUse.privacyPolicy,
-      );
+  TermsOfUse.accepted()
+      : termsOfCondition = true,
+        privacyPolicy = true;
 
   factory TermsOfUse.fromMap(Map<String, dynamic> json) => TermsOfUse(
         termsOfCondition: json['termsOfCondition'],

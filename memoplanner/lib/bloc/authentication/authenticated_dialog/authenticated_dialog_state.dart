@@ -1,41 +1,50 @@
 part of 'authenticated_dialog_cubit.dart';
 
-abstract class AuthenticatedDialogState {
-  final TermsOfUse termsOfUse;
+class AuthenticatedDialogState extends Equatable {
+  final bool termsOfUse,
+      termsOfUseLoaded,
+      starterSet,
+      starterSetLoaded,
+      fullscreenAlarm,
+      fullscreenAlarmLoaded;
 
-  const AuthenticatedDialogState(this.termsOfUse);
-}
+  bool get dialogsReady =>
+      termsOfUseLoaded && starterSetLoaded && fullscreenAlarmLoaded;
 
-class AuthenticatedDialogReady extends AuthenticatedDialogState {
-  const AuthenticatedDialogReady(TermsOfUse termsOfUse) : super(termsOfUse);
-}
+  bool get anyDialog => termsOfUse || starterSet || fullscreenAlarm;
 
-class AuthenticatedDialogNotReady extends AuthenticatedDialogState {
-  final bool sortablesLoaded;
-  final bool termsOfUseLoaded;
+  bool get showDialog => dialogsReady && anyDialog;
 
-  bool get dialogsReady => sortablesLoaded && termsOfUseLoaded;
+  const AuthenticatedDialogState({
+    this.termsOfUse = false,
+    this.termsOfUseLoaded = false,
+    this.starterSet = false,
+    this.starterSetLoaded = false,
+    this.fullscreenAlarm = false,
+    this.fullscreenAlarmLoaded = false,
+  });
 
-  const AuthenticatedDialogNotReady({
-    required TermsOfUse termsOfUse,
-    required this.sortablesLoaded,
-    required this.termsOfUseLoaded,
-  }) : super(termsOfUse);
-
-  factory AuthenticatedDialogNotReady.initial() => AuthenticatedDialogNotReady(
-        sortablesLoaded: false,
-        termsOfUseLoaded: false,
-        termsOfUse: TermsOfUse.notAccepted(),
-      );
-
-  AuthenticatedDialogNotReady copyWith({
-    bool? sortablesLoaded,
-    bool? termsOfUseLoaded,
-    TermsOfUse? termsOfUse,
+  AuthenticatedDialogState copyWith({
+    bool? termsOfUse,
+    bool? starterSet,
+    bool? fullscreenAlarm,
   }) =>
-      AuthenticatedDialogNotReady(
-        sortablesLoaded: sortablesLoaded ?? this.sortablesLoaded,
-        termsOfUseLoaded: termsOfUseLoaded ?? this.termsOfUseLoaded,
+      AuthenticatedDialogState(
         termsOfUse: termsOfUse ?? this.termsOfUse,
+        termsOfUseLoaded: termsOfUseLoaded || termsOfUse != null,
+        starterSet: starterSet ?? this.starterSet,
+        starterSetLoaded: starterSetLoaded || starterSet != null,
+        fullscreenAlarm: fullscreenAlarm ?? this.fullscreenAlarm,
+        fullscreenAlarmLoaded: fullscreenAlarmLoaded || fullscreenAlarm != null,
       );
+
+  @override
+  List<Object?> get props => [
+        termsOfUse,
+        termsOfUseLoaded,
+        starterSet,
+        starterSetLoaded,
+        fullscreenAlarm,
+        fullscreenAlarmLoaded,
+      ];
 }

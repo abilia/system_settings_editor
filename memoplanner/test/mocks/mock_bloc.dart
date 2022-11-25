@@ -20,7 +20,7 @@ class MockGenericCubit extends MockCubit<GenericState> implements GenericCubit {
 class MockSortableBloc extends MockBloc<SortableEvent, SortableState>
     implements SortableBloc {}
 
-class MockLoginDialogCubit extends MockCubit<AuthenticatedDialogState>
+class MockAuthenticatedDialogCubit extends MockCubit<AuthenticatedDialogState>
     implements AuthenticatedDialogCubit {}
 
 class MockMemoplannerSettingBloc

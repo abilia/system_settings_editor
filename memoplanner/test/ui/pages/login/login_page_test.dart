@@ -517,7 +517,8 @@ void main() {
 
       testWidgets('When terms of use is not accepted, show terms of use dialog',
           (WidgetTester tester) async {
-        termsOfUseResponse = () => TermsOfUse.notAccepted();
+        termsOfUseResponse = () =>
+            const TermsOfUse(termsOfCondition: false, privacyPolicy: false);
         await tester.pumpApp();
         await tester.pumpAndSettle();
         await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
@@ -531,7 +532,8 @@ void main() {
 
       testWidgets('When click on logout button, logout back to login page',
           (WidgetTester tester) async {
-        termsOfUseResponse = () => TermsOfUse.notAccepted();
+        termsOfUseResponse = () =>
+            const TermsOfUse(termsOfCondition: false, privacyPolicy: false);
         await tester.pumpApp();
         await tester.pumpAndSettle();
         await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
@@ -577,68 +579,71 @@ void main() {
       });
     });
 
-    group('Permissions', () {
-      testWidgets(
-          'When fullscreen notification is NOT granted on MPGO, show FullscreenAlarmInfoDialog',
-          (WidgetTester tester) async {
-        setupPermissions(
-            {Permission.systemAlertWindow: PermissionStatus.denied});
-        await tester.pumpApp();
-        await tester.pumpAndSettle();
-        await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
-        await tester.pump();
-        await tester.tap(find.byType(LoginButton));
-        await tester.pumpAndSettle();
-        expect(find.byType(AuthenticatedDialog), findsOneWidget);
-        expect(find.byType(FullscreenAlarmInfoDialog), findsOneWidget);
-        expect(
-          find.byType(RequestFullscreenNotificationButton),
-          findsOneWidget,
-        );
-        await tester.tap(find.byType(RequestFullscreenNotificationButton));
-        expect(requestedPermissions, contains(Permission.systemAlertWindow));
+    group('All dialogs', () {
+      group('Permissions', () {
+        testWidgets(
+            'When fullscreen notification is NOT granted on MPGO, show FullscreenAlarmInfoDialog',
+            (WidgetTester tester) async {
+          debugDefaultTargetPlatformOverride = TargetPlatform.android;
+          setupPermissions(
+              {Permission.systemAlertWindow: PermissionStatus.denied});
+          await tester.pumpApp();
+          await tester.pumpAndSettle();
+          await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+          await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+          await tester.pump();
+          await tester.tap(find.byType(LoginButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(AuthenticatedDialog), findsOneWidget);
+          expect(find.byType(FullscreenAlarmInfoDialog), findsOneWidget);
+          expect(
+            find.byType(RequestFullscreenNotificationButton),
+            findsOneWidget,
+          );
+          await tester.tap(find.byType(RequestFullscreenNotificationButton));
+          expect(requestedPermissions, contains(Permission.systemAlertWindow));
+          debugDefaultTargetPlatformOverride = null;
+        });
+
+        testWidgets(
+            'When fullscreen notification is NOT granted on iOS, show NO FullscreenAlarmInfoDialog',
+            (WidgetTester tester) async {
+          debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+          await tester.pumpApp();
+          await tester.pumpAndSettle();
+          await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+          await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+          await tester.pump();
+          await tester.tap(find.byType(LoginButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(AuthenticatedDialog), findsNothing);
+          expect(find.byType(FullscreenAlarmInfoDialog), findsNothing);
+          debugDefaultTargetPlatformOverride = null;
+        });
+
+        testWidgets(
+            'When fullscreen notification IS granted, show NO FullscreenAlarmInfoDialog',
+            (WidgetTester tester) async {
+          debugDefaultTargetPlatformOverride = TargetPlatform.android;
+          await tester.pumpApp();
+          await tester.pumpAndSettle();
+          await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+          await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+          await tester.pump();
+          await tester.tap(find.byType(LoginButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(FullscreenAlarmInfoDialog), findsNothing);
+          debugDefaultTargetPlatformOverride = null;
+        });
       }, skip: Config.isMP);
 
-      testWidgets(
-          'When fullscreen notification is NOT granted on iOS, show NO FullscreenAlarmInfoDialog',
-          (WidgetTester tester) async {
-        debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-        setupPermissions(
-            {Permission.systemAlertWindow: PermissionStatus.denied});
-        await tester.pumpApp();
-        await tester.pumpAndSettle();
-        await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
-        await tester.pump();
-        await tester.tap(find.byType(LoginButton));
-        await tester.pumpAndSettle();
-        expect(find.byType(AuthenticatedDialog), findsNothing);
-        expect(find.byType(FullscreenAlarmInfoDialog), findsNothing);
-        debugDefaultTargetPlatformOverride = null;
-      });
-
-      testWidgets(
-          'When fullscreen notification IS granted, show NO FullscreenAlarmInfoDialog',
-          (WidgetTester tester) async {
-        await tester.pumpApp();
-        await tester.pumpAndSettle();
-        await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
-        await tester.pump();
-        await tester.tap(find.byType(LoginButton));
-        await tester.pumpAndSettle();
-        expect(find.byType(FullscreenAlarmInfoDialog), findsNothing);
-      });
-    });
-
-    group('All dialogs', () {
       testWidgets(
           'When terms of use is not accepted, sortables is empty '
           'and fullscreen notification is not granted, show all dialogs',
           (WidgetTester tester) async {
         // Arrange
-        termsOfUseResponse = () => TermsOfUse.notAccepted();
+        termsOfUseResponse = () =>
+            const TermsOfUse(termsOfCondition: false, privacyPolicy: false);
         when(() => sortableDb.getAllNonDeleted())
             .thenAnswer((_) => Future.value([]));
         setupPermissions(
@@ -672,11 +677,9 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert - Fullscreen alarm dialog shows on MPGO
-        expect(find.byType(FullscreenAlarmInfoDialog),
-            Config.isMPGO ? findsOneWidget : findsNothing);
-
         // Act - Close dialog if MPGO
         if (Config.isMPGO) {
+          expect(find.byType(FullscreenAlarmInfoDialog), findsOneWidget);
           await tester.tap(find.byType(CancelButton));
           await tester.pumpAndSettle();
         }
@@ -691,7 +694,8 @@ void main() {
           'show terms of use dialog and full screen alarm dialog',
           (WidgetTester tester) async {
         // Arrange
-        termsOfUseResponse = () => TermsOfUse.notAccepted();
+        termsOfUseResponse = () =>
+            const TermsOfUse(termsOfCondition: false, privacyPolicy: false);
         setupPermissions(
             {Permission.systemAlertWindow: PermissionStatus.denied});
 
