@@ -51,11 +51,12 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> _login({bool confirmExpiredLicense = false}) async {
     emit(state.loading());
-    final empty = await DatabaseRepository.isEmpty(GetIt.I<Database>());
-    if (!empty) {
+    if (!await DatabaseRepository.isEmpty(GetIt.I<Database>())) {
       await DatabaseRepository.clearAll(GetIt.I<Database>());
-      emit(state.failure(cause: LoginFailureCause.notClean));
-      return;
+      if (!await DatabaseRepository.isEmpty(GetIt.I<Database>())) {
+        emit(state.failure(cause: LoginFailureCause.notEmptyDatabase));
+        return;
+      }
     }
     if (!state.isUsernameValid) {
       emit(state.failure(cause: LoginFailureCause.noUsername));

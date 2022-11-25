@@ -27,8 +27,8 @@ extension LoginFailureErrorMessage on LoginFailureCause {
         return translate.enterPassword;
       case LoginFailureCause.unsupportedUserType:
         return translate.userTypeNotSupported;
-      case LoginFailureCause.notClean:
-        return 'Not clean';
+      case LoginFailureCause.notEmptyDatabase:
+        return translate.unknownError;
       default:
         return '';
     }

@@ -13,7 +13,7 @@ class DatabaseRepository {
   static const timerTableName = 'timer';
   static const calendarTableName = 'calendar';
 
-  static const allTables = [
+  static const tablesWithUserData = [
     activityTableName,
     sortableTableName,
     userFileTableName,
@@ -157,11 +157,11 @@ class DatabaseRepository {
   }
 
   static Future<bool> isEmpty(Database db) async {
-    final allCounts = await Future.wait<List<Map<String, Object?>>>(
-        allTables.map((table) => db.rawQuery('select count(*) from $table')));
-    final List<int> allInts =
-        allCounts.map(Sqflite.firstIntValue).whereNotNull().toList();
-    return allInts.sum == 0;
+    final allTableSelectCount = await Future.wait(
+        tablesWithUserData.map((table) => db.rawQuery('select count(*) from $table')));
+    final allTableRows =
+        allTableSelectCount.map(Sqflite.firstIntValue).whereNotNull().toList();
+    return allTableRows.sum == 0;
   }
 
   @visibleForTesting
