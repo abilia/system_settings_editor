@@ -176,7 +176,7 @@ void main() {
       await expected;
     });
 
-    test('Not empty database gives', () async {
+    test('Not empty database gives login failure', () async {
       when(() => mockDb.rawQuery(any())).thenAnswer((_) => Future.value([
             {'count(*)': 1}
           ]));
