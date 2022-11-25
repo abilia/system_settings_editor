@@ -183,7 +183,7 @@ void main() {
       when(() => batch.commit()).thenAnswer((_) => Future.value([]));
       when(() => mockDb.batch()).thenReturn(batch);
 
-      await loginCubit.loginButtonPressed();
+      loginCubit.loginButtonPressed();
 
       await expectLater(
         loginCubit.stream,
@@ -269,7 +269,7 @@ void main() {
       // Act
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
-      await loginCubit.loginButtonPressed();
+      loginCubit.loginButtonPressed();
       // Assert
       await untilCalled(() => mockedUserRepository.authenticate(
             username: any(named: 'username'),
@@ -379,7 +379,7 @@ void main() {
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
 
-      await loginCubit.loginButtonPressed();
+      loginCubit.loginButtonPressed();
 
       // Assert
       await expected;

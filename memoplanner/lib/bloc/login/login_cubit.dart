@@ -41,31 +41,28 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith());
   }
 
-  Future<void> loginButtonPressed() async {
-    _login();
+  Future<void> loginButtonPressed() {
+    return _login();
   }
 
-  void confirmLicenseExpiredWarning() {
-    _login(confirmExpiredLicense: true);
+  Future<void> confirmLicenseExpiredWarning() {
+    return _login(confirmExpiredLicense: true);
   }
 
   Future<void> _login({bool confirmExpiredLicense = false}) async {
     emit(state.loading());
-    if (!await DatabaseRepository.isEmpty(GetIt.I<Database>())) {
-      await DatabaseRepository.clearAll(GetIt.I<Database>());
-      if (!await DatabaseRepository.isEmpty(GetIt.I<Database>())) {
-        emit(state.failure(cause: LoginFailureCause.notEmptyDatabase));
-        return;
-      }
+    final preLoginFailureCause = await _getPreLoginFailureCause();
+    if (preLoginFailureCause != null) {
+      return emit(state.failure(cause: preLoginFailureCause));
     }
-    if (!state.isUsernameValid) {
-      emit(state.failure(cause: LoginFailureCause.noUsername));
-      return;
+    try {
+      await _authenticate(confirmExpiredLicense);
+    } catch (error) {
+      emit(state.failure(cause: _getAuthenticationFailureCause(error)));
     }
-    if (!state.isPasswordValid) {
-      emit(state.failure(cause: LoginFailureCause.noPassword));
-      return;
-    }
+  }
+
+  Future<void> _authenticate(bool confirmExpiredLicense) async {
     try {
       final pushToken = await pushService.initPushToken();
       if (pushToken == null) throw 'push token null';
@@ -77,25 +74,55 @@ class LoginCubit extends Cubit<LoginState> {
       );
       userRepository.persistLoginInfo(loginInfo);
       final licenses = await userRepository.getLicensesFromApi();
-      if (licenses.anyValidLicense(clockBloc.state)) {
-        _loginSuccess();
-      } else if (Config.isMP && licenses.anyMemoplannerLicense()) {
-        if (confirmExpiredLicense) {
-          _loginSuccess();
-        } else {
-          emit(state.failure(cause: LoginFailureCause.licenseExpired));
-        }
-      } else {
-        emit(state.failure(cause: LoginFailureCause.noLicense));
+      final hasValidLicense = licenses.anyValidLicense(clockBloc.state);
+      final hasMemoplannerLicense = licenses.anyMemoplannerLicense();
+      final isMPAndConfirmedExpiredLicense =
+          Config.isMP && hasMemoplannerLicense && confirmExpiredLicense;
+
+      if (hasValidLicense || isMPAndConfirmedExpiredLicense) {
+        return _loginSuccess();
       }
-    } on UnauthorizedException {
-      emit(state.failure(cause: LoginFailureCause.credentials));
-    } on WrongUserTypeException {
-      emit(state.failure(cause: LoginFailureCause.unsupportedUserType));
+      final licenceFailureCause =
+          _getLicenceFailureCause(hasMemoplannerLicense);
+      emit(state.failure(cause: licenceFailureCause));
     } catch (error) {
-      _log.severe('could not login: $error');
-      emit(state.failure(cause: LoginFailureCause.noConnection));
+      rethrow;
     }
+  }
+
+  Future<LoginFailureCause?> _getPreLoginFailureCause() async {
+    if (!state.isUsernameValid) {
+      return LoginFailureCause.noUsername;
+    }
+    if (!state.isPasswordValid) {
+      return LoginFailureCause.noPassword;
+    }
+    if (!await DatabaseRepository.isEmpty(GetIt.I<Database>())) {
+      await DatabaseRepository.clearAll(GetIt.I<Database>());
+      if (!await DatabaseRepository.isEmpty(GetIt.I<Database>())) {
+        return LoginFailureCause.notEmptyDatabase;
+      }
+    }
+    return null;
+  }
+
+  LoginFailureCause _getAuthenticationFailureCause(Object error) {
+    switch (error.runtimeType) {
+      case UnauthorizedException:
+        return LoginFailureCause.credentials;
+      case WrongUserTypeException:
+        return LoginFailureCause.unsupportedUserType;
+      default:
+        _log.severe('could not login: $error');
+        return LoginFailureCause.noConnection;
+    }
+  }
+
+  LoginFailureCause _getLicenceFailureCause(bool hasMemoplannerLicense) {
+    if (Config.isMP && hasMemoplannerLicense) {
+      return LoginFailureCause.licenseExpired;
+    }
+    return LoginFailureCause.noLicense;
   }
 
   void _loginSuccess() {
