@@ -1,10 +1,10 @@
 import 'package:memoplanner/ui/all.dart';
 
-class PopAwareDiscardPage extends StatelessWidget {
+class PopAwareDiscardListener extends StatelessWidget {
   final Widget child;
   final bool Function(BuildContext context) discardDialogCondition;
 
-  const PopAwareDiscardPage({
+  const PopAwareDiscardListener({
     required this.child,
     required this.discardDialogCondition,
     Key? key,

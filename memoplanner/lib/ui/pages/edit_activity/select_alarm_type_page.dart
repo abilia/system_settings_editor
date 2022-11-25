@@ -22,7 +22,7 @@ class _SelectAlarmTypePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return PopAwareDiscardPage(
+    return PopAwareDiscardListener(
       discardDialogCondition: (_) => discardDialogCondition(),
       child: Scaffold(
         appBar: AbiliaAppBar(

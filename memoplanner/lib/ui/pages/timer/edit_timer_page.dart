@@ -10,7 +10,7 @@ class EditTimerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
 
-    return PopAwareDiscardPage(
+    return PopAwareDiscardListener(
       discardDialogCondition: (context) =>
           !context.read<EditTimerCubit>().state.unchanged,
       child: _EditTimerPage(
@@ -50,7 +50,7 @@ class EditBasicTimerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
 
-    return PopAwareDiscardPage(
+    return PopAwareDiscardListener(
       discardDialogCondition: (context) =>
           !context.read<EditTimerCubit>().state.unchanged,
       child: _EditTimerPage(

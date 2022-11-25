@@ -422,7 +422,7 @@ void main() {
           expect(find.byType(EditActivityPage), findsOneWidget);
           await tester.tap(find.byKey(TestKey.fullDaySwitch));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(PopAwareDiscardPage));
+          await tester.tap(find.byType(PreviousButton));
           await tester.pumpAndSettle();
           expect(find.byType(EditActivityPage), findsOneWidget);
           expect(find.byType(DiscardWarningDialog), findsOneWidget);
@@ -434,7 +434,7 @@ void main() {
           expect(find.byType(EditActivityPage), findsOneWidget);
           await tester.tap(find.byKey(TestKey.fullDaySwitch));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(PopAwareDiscardPage));
+          await tester.tap(find.byType(PreviousButton));
           await tester.pumpAndSettle();
           expect(find.byType(DiscardWarningDialog), findsOneWidget);
           await tester.tap(find.text('Discard'));
@@ -449,7 +449,7 @@ void main() {
           expect(find.byType(EditActivityPage), findsOneWidget);
           await tester.tap(find.byKey(TestKey.fullDaySwitch));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(PopAwareDiscardPage));
+          await tester.tap(find.byType(PreviousButton));
           await tester.pumpAndSettle();
           expect(find.byType(DiscardWarningDialog), findsOneWidget);
           await tester.tap(find.text('Keep editing'));
@@ -463,7 +463,7 @@ void main() {
             (WidgetTester tester) async {
           await navigateToEditActivityPage(tester);
           expect(find.byType(EditActivityPage), findsOneWidget);
-          await tester.tap(find.byType(PopAwareDiscardPage));
+          await tester.tap(find.byType(PreviousButton));
           await tester.pumpAndSettle();
           expect(find.byType(EditActivityPage), findsNothing);
           expect(find.byType(DiscardWarningDialog), findsNothing);
@@ -1278,7 +1278,7 @@ void main() {
           await tester.pumpAndSettle();
           expect(find.text('00:45:00'), findsOneWidget);
 
-          await tester.tap(find.byType(PopAwareDiscardPage));
+          await tester.tap(find.byType(PreviousButton));
           await tester.pumpAndSettle();
           expect(find.byType(EditTimerPage), findsOneWidget);
           expect(find.byType(DiscardWarningDialog), findsOneWidget);
@@ -1289,7 +1289,7 @@ void main() {
             (WidgetTester tester) async {
           await navigateToEditTimerPage(tester);
           expect(find.byType(EditTimerPage), findsOneWidget);
-          await tester.tap(find.byType(PopAwareDiscardPage));
+          await tester.tap(find.byType(PreviousButton));
           await tester.pumpAndSettle();
           expect(find.byType(EditTimerPage), findsNothing);
           expect(find.byType(DiscardWarningDialog), findsNothing);
