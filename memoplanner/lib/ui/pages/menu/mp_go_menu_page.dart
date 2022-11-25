@@ -7,14 +7,16 @@ class MpGoMenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocBuilder<SessionCubit, bool>(
-      builder: (context, hasMP4Session) => SettingsBasePage(
-        icon: hasMP4Session ? AbiliaIcons.menu : AbiliaIcons.settings,
-        title: hasMP4Session ? t.menu : t.settings,
+    return BlocBuilder<SessionsCubit, SessionsState>(
+      builder: (context, sessionsState) => SettingsBasePage(
+        icon: sessionsState.hasMP4Session
+            ? AbiliaIcons.menu
+            : AbiliaIcons.settings,
+        title: sessionsState.hasMP4Session ? t.menu : t.settings,
         bottomNavigationBar:
             const BottomNavigation(backNavigationWidget: CloseButton()),
         widgets: [
-          if (hasMP4Session) ...[
+          if (sessionsState.hasMP4Session) ...[
             const MyPhotosPickField(),
             const SizedBox(height: 10),
             const Divider(),
