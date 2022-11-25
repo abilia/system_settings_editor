@@ -544,7 +544,6 @@ void main() {
                   find.byKey(const ObjectKey(TestKey.alarmAtStartSwitch)))
               .onChanged,
           isNull);
-      expect(tester.widget<OkButton>(okButtonFinder).onPressed, isNull);
     });
 
     testWidgets('Alarm on start time changes', (WidgetTester tester) async {
