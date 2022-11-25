@@ -47,24 +47,24 @@ licenseExpiredMessage	Your license has expired and MEMOplanner will no longer sy
 toLogin	to Log in	till Logga in	til Log ind	naar Inloggen	kirjautumissivulle	zur Anmelden	til Logg inn
 licenseExpiredLogOutWarning	License is expired, all data will be lost if you log out
 ### Logout
-allDataSaved	All data saved!
-goOnlineBeforeLogout	Go online before you log out!
-doNotLoseYourContent	Don't lose your content!
-syncing	Syncing...
-canLogOutSafely	Now you can log out safely
-lastSyncWas	Last sync was
-oneDayAgo	day ago
-manyDaysAgo	days ago
-connectToWifiToLogOut	Connect to Wi-Fi to log out safely
-connectToInternetToLogOut	Connect to internet to log out safely
-ifYouLogoutYouWillLose	If you log out now you will lose:
-activityTemplateSingular	activity template
-activityTemplatePlural	activity templates
-timerTemplateSingular	timer template
-timerTemplatePlural	timer templates
-photoSingular	photo
-photoPlural	photos
-settingsData	Settings data
+allDataSaved	All data saved!						
+goOnlineBeforeLogout	Go online before you log out!						
+doNotLoseYourContent	Don't lose your content!						
+syncing	Syncing...						
+canLogOutSafely	Now you can log out safely						
+lastSyncWas	Last sync was						
+oneDayAgo	day ago						
+manyDaysAgo	days ago						
+connectToWifiToLogOut	Connect to Wi-Fi to log out safely						
+connectToInternetToLogOut	Connect to internet to log out safely						
+ifYouLogoutYouWillLose	If you log out now you will lose:						
+activityTemplateSingular	activity template						
+activityTemplatePlural	activity templates						
+timerTemplateSingular	timer template						
+timerTemplatePlural	timer templates						
+photoSingular	photo						
+photoPlural	photos						
+settingsData	Settings data						
 							
 ### Time related							
 fullDay	All day	Heldag	Hele dagen	Hele dag	Koko päivä	Ganztägig	Hele dagen
