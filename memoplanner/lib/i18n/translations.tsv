@@ -45,7 +45,26 @@ noLicense	This account has no valid license.	Det här kontot saknar giltig licen
 licenseExpired	License is expired	Licensen har gått ut	Licensen er udløbet	Licentie verlopen	Lisenssi on vanhentunut	Lizenz abgelaufen	Lisensen har utløpt
 licenseExpiredMessage	Your license has expired and MEMOplanner will no longer synchronize with myAbilia	Licensen har gått ut och MEMOplanner kommer inte längre att synkronisera med myAbilia	Licensen er udløbet, og MEMOplanner vil ikke længere synkronisere med myAbilia	Uw licentie is verlopen en MEMOplanner zal niet langer synchroniseren met myAbilia	Lisenssisi on vanhentunut, eikä MEMOplanner enää synkronoidu myAbilian kanssa	Ihre Lizenz ist abgelaufen und MEMOplanner kann nicht mehr mit myAbilia synchronisiert werden	Lisensen har utløpt og Memoplanner vil ikke lenger kunne synkronisere med myAbilia
 toLogin	to Log in	till Logga in	til Log ind	naar Inloggen	kirjautumissivulle	zur Anmelden	til Logg inn
-licenseExpiredLogOutWarning	License is expired, all data will be lost if you log out						
+licenseExpiredLogOutWarning	License is expired, all data will be lost if you log out
+### Logout
+allDataSaved	All data saved!
+goOnlineBeforeLogout	Go online before you log out!
+doNotLoseYourContent	Don't lose your content!
+syncing	Syncing...
+canLogOutSafely	Now you can log out safely
+lastSyncWas	Last sync was
+oneDayAgo	day ago
+manyDaysAgo	days ago
+connectToWifiToLogOut	Connect to Wi-Fi to log out safely
+connectToInternetToLogOut	Connect to internet to log out safely
+ifYouLogoutYouWillLose	If you log out now you will lose:
+activityTemplateSingular	activity template
+activityTemplatePlural	activity templates
+timerTemplateSingular	timer template
+timerTemplatePlural	timer templates
+photoSingular	photo
+photoPlural	photos
+settingsData	Settings data
 							
 ### Time related							
 fullDay	All day	Heldag	Hele dagen	Hele dag	Koko päivä	Ganztägig	Hele dagen
@@ -103,6 +122,7 @@ continue_	Continue	Fortsätt	Fortsæt	Doorgaan	Jatka	Fortsetzen	Fortsette
 							
 ### Activity related							
 activity	Activity	Aktivitet	Aktivitet	Activiteit	Aktiviteetti	Aktivität	Aktivitet
+activities	Activities	Aktiviteter	Aktiviteter	Activiteiten	Aktiviteetit	Aktivitäten	Aktiviteter
 reminders	Reminders	Påminnelser	Påmindelser	Herinneringen	Muistutukset	Erinnerungen	Påminnelser
 reminder	Reminder	Påminnelse	Påmindelse	Herinnering	Muistutus	Erinnerung	Påminnelse
 alarm	Alarm	Larm	Alarm	Alarm	Hälytys	Alarm	Alarm
@@ -127,7 +147,6 @@ timeAgoPre	&empty&	för	for	&empty&	&empty&	vor	for
 timeAgoPost	ago	sen	siden	geleden	sitten	&empty&	siden
 checklistDoneInfo	All checklist tasks in your activity are completed. Do you want to complete the activity?	Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?	Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?	Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?	Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?	Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?	Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?
 templates	Templates	Mallar	Skabeloner	Sjablonen	Mallit	Vorlagen	Maler
-activities	Activities	Aktiviteter	Aktiviteter	Activiteiten	Aktiviteetit	Aktivitäten	Aktiviteter
 timeTo	to	till	til	tot	-	bis	til
 							
 ### Timer related							

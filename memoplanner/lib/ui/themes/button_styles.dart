@@ -33,6 +33,18 @@ final buttonBackgroundDarkGrey = MaterialStateProperty.resolveWith<Color>(
   },
 );
 
+final buttonBackgroundGrey = MaterialStateProperty.resolveWith<Color>(
+  (Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled)) {
+      return AbiliaColors.white120;
+    }
+    if (states.contains(MaterialState.pressed)) {
+      return AbiliaColors.white135;
+    }
+    return AbiliaColors.white120;
+  },
+);
+
 final buttonBackgroundRed = MaterialStateProperty.resolveWith<Color>(
   (Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
@@ -108,6 +120,22 @@ final iconTextButtonStyle = baseButtonStyle.copyWith(
 final iconTextButtonStyleLight = iconTextButtonStyle.copyWith(
   backgroundColor: buttonBackgroundLight,
   shape: MaterialStateProperty.all(ligthShapeBorder),
+);
+
+final iconTextButtonStyleGray = iconTextButtonStyle.copyWith(
+  foregroundColor: MaterialStateProperty.resolveWith<Color>(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return AbiliaColors.white140;
+      }
+      if (states.contains(MaterialState.pressed)) {
+        return AbiliaColors.black;
+      }
+      return AbiliaColors.black;
+    },
+  ),
+  backgroundColor: buttonBackgroundGrey,
+  shape: noBorder,
 );
 
 final iconTextButtonStyleGreen = iconTextButtonStyle.copyWith(
@@ -580,4 +608,15 @@ class _ShapeBorders {
     required this.pressedOrDisabled,
     required this.def,
   });
+}
+
+extension IconTextButtonWithoutMinWidth on ButtonStyle {
+  ButtonStyle get withoutMinWidth => copyWith(
+        minimumSize: MaterialStateProperty.all(
+          Size(
+              0,
+              minimumSize?.resolve(MaterialState.values.toSet())?.height ??
+                  layout.iconTextButton.minimumSize.height),
+        ),
+      );
 }

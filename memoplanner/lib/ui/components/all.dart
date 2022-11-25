@@ -41,5 +41,6 @@ export 'default_tab_controller_builder.dart';
 export 'new_activity_widget.dart';
 export 'new_timer_widget.dart';
 export 'ellipses_text.dart';
+export 'info_row.dart';
 
 export 'package:flutter/semantics.dart';

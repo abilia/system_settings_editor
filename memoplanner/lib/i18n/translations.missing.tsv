@@ -1,2 +1,20 @@
 _id_	en	sv	da	nl	fi	de	nb
-licenseExpiredLogOutWarning	License is expired, all data will be lost if you log out						
+licenseExpiredLogOutWarning	License is expired, all data will be lost if you log out
+allDataSaved	All data saved!
+goOnlineBeforeLogout	Go online before you log out!
+doNotLoseYourContent	Don't lose your content!
+syncing	Syncing...
+canLogOutSafely	Now you can log out safely
+lastSyncWas	Last sync was
+oneDayAgo	day ago
+manyDaysAgo	days ago
+connectToWifiToLogOut	Connect to Wi-Fi to log out safely
+connectToInternetToLogOut	Connect to internet to log out safely
+ifYouLogoutYouWillLose	If you log out now you will lose:
+activityTemplateSingular	activity template
+activityTemplatePlural	activity templates
+timerTemplateSingular	timer template
+timerTemplatePlural	timer templates
+photoSingular	photo
+photoPlural	photos
+settingsData	Settings data

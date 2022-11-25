@@ -41,6 +41,8 @@ void main() {
       userFileRepository: FakeUserFileRepository(),
       sortableRepository: FakeSortableRepository(),
       genericRepository: FakeGenericRepository(),
+      lastSyncDb: FakeLastSyncDb(),
+      clockBloc: ClockBloc.fixed(DateTime(2000)),
       syncDelay: SyncDelays.zero,
     );
 

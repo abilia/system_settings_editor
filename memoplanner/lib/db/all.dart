@@ -16,3 +16,4 @@ export 'calendar_db.dart';
 export 'voice_db.dart';
 export 'support_persons_db.dart';
 export 'sessions_db.dart';
+export 'last_sync_db.dart';

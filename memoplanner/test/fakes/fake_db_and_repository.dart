@@ -255,3 +255,15 @@ class FakeTtsHandler extends Fake implements TtsInterface {
   @override
   Future<List<Object?>> get availableVoices => Future.value(List.empty());
 }
+
+class FakeLastSyncDb extends Fake implements LastSyncDb {
+  int? fakeLastSync;
+
+  @override
+  Future<void> setSyncTime(DateTime syncTime) async {
+    fakeLastSync = syncTime.millisecondsSinceEpoch;
+  }
+
+  @override
+  int? getLastSyncTime() => fakeLastSync;
+}

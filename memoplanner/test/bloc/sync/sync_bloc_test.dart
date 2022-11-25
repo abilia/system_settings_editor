@@ -15,12 +15,14 @@ void main() {
   late UserFileRepository userFileRepository;
   late SortableRepository sortableRepository;
   late GenericRepository genericRepository;
+  late MockLastSyncDb lastSyncDb;
 
   setUp(() {
     activityRepository = MockActivityRepository();
     userFileRepository = MockUserFileRepository();
     sortableRepository = MockSortableRepository();
     genericRepository = MockGenericRepository();
+    lastSyncDb = MockLastSyncDb();
   });
 
   group('happy caseas', () {
@@ -44,6 +46,8 @@ void main() {
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
+        lastSyncDb: lastSyncDb,
+        clockBloc: ClockBloc.fixed(DateTime(2000)),
         syncDelay: SyncDelays.zero,
       ),
       act: (SyncBloc syncBloc) => syncBloc.add(const ActivitySaved()),
@@ -59,6 +63,8 @@ void main() {
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
+        lastSyncDb: lastSyncDb,
+        clockBloc: ClockBloc.fixed(DateTime(2000)),
         syncDelay: SyncDelays.zero,
       ),
       act: (SyncBloc syncBloc) => syncBloc.add(const FileSaved()),
@@ -75,6 +81,8 @@ void main() {
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         syncDelay: SyncDelays.zero,
+        lastSyncDb: lastSyncDb,
+        clockBloc: ClockBloc.fixed(DateTime(2000)),
       ),
       act: (SyncBloc syncBloc) => syncBloc.add(const SortableSaved()),
       verify: (bloc) => verify(() => sortableRepository.synchronize()),
@@ -89,6 +97,8 @@ void main() {
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
+        lastSyncDb: lastSyncDb,
+        clockBloc: ClockBloc.fixed(DateTime(2000)),
         syncDelay: SyncDelays.zero,
       ),
       act: (SyncBloc syncBloc) => syncBloc.add(const GenericSaved()),
@@ -104,6 +114,8 @@ void main() {
               userFileRepository: userFileRepository,
               sortableRepository: sortableRepository,
               genericRepository: genericRepository,
+              lastSyncDb: lastSyncDb,
+              clockBloc: ClockBloc.fixed(DateTime(2000)),
               syncDelay: SyncDelays.zero,
             ),
         act: (SyncBloc syncBloc) => syncBloc
@@ -116,6 +128,24 @@ void main() {
           verify(() => userFileRepository.synchronize());
           verify(() => sortableRepository.synchronize());
           verify(() => genericRepository.synchronize());
+        });
+
+    blocTest('last sync time is saved on sync',
+        wait: 1.milliseconds(),
+        build: () => SyncBloc(
+              pushCubit: FakePushCubit(),
+              licenseCubit: FakeLicenseCubit(),
+              activityRepository: activityRepository,
+              userFileRepository: userFileRepository,
+              sortableRepository: sortableRepository,
+              genericRepository: genericRepository,
+              lastSyncDb: lastSyncDb,
+              clockBloc: ClockBloc.fixed(DateTime(2000)),
+              syncDelay: SyncDelays.zero,
+            ),
+        act: (SyncBloc syncBloc) => syncBloc..add(const SyncAll()),
+        verify: (bloc) {
+          verify(() => lastSyncDb.setSyncTime(DateTime(2000)));
         });
   });
 
@@ -150,6 +180,8 @@ void main() {
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
+        lastSyncDb: FakeLastSyncDb(),
+        clockBloc: ClockBloc.fixed(DateTime(2000)),
         syncDelay: syncDelays,
       ),
       act: (bloc) => bloc.add(const ActivitySaved()),
@@ -168,6 +200,8 @@ void main() {
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
+        lastSyncDb: FakeLastSyncDb(),
+        clockBloc: ClockBloc.fixed(DateTime(2000)),
         syncDelay: syncDelays,
       ),
       act: (bloc) => bloc.add(const FileSaved()),
@@ -186,6 +220,8 @@ void main() {
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
+        lastSyncDb: FakeLastSyncDb(),
+        clockBloc: ClockBloc.fixed(DateTime(2000)),
         syncDelay: syncDelays,
       ),
       act: (bloc) => bloc.add(const SortableSaved()),
@@ -204,6 +240,8 @@ void main() {
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
+        lastSyncDb: FakeLastSyncDb(),
+        clockBloc: ClockBloc.fixed(DateTime(2000)),
         syncDelay: syncDelays,
       ),
       act: (bloc) => bloc.add(const GenericSaved()),
@@ -234,6 +272,8 @@ void main() {
           userFileRepository: userFileRepository,
           sortableRepository: sortableRepository,
           genericRepository: genericRepository,
+          lastSyncDb: FakeLastSyncDb(),
+          clockBloc: ClockBloc.fixed(DateTime(2000)),
           syncDelay: SyncDelays(
             betweenSync: stallTime,
             retryDelay: stallTime,
@@ -256,6 +296,8 @@ void main() {
           userFileRepository: userFileRepository,
           sortableRepository: sortableRepository,
           genericRepository: genericRepository,
+          lastSyncDb: FakeLastSyncDb(),
+          clockBloc: ClockBloc.fixed(DateTime(2000)),
           syncDelay: SyncDelays(
             betweenSync: stallTime,
             retryDelay: stallTime,
@@ -296,6 +338,8 @@ void main() {
           userFileRepository: userFileRepository,
           sortableRepository: sortableRepository,
           genericRepository: genericRepository,
+          lastSyncDb: FakeLastSyncDb(),
+          clockBloc: ClockBloc.fixed(DateTime(2000)),
           syncDelay: SyncDelays(
             betweenSync: stallTime,
             retryDelay: stallTime,

@@ -122,6 +122,9 @@ class GetItInitializer {
   set supportPersonsDb(SupportPersonsDb supportPersonsDb) =>
       _supportPersonsDb = supportPersonsDb;
 
+  LastSyncDb? _lastSyncDb;
+  set lastSyncDb(LastSyncDb lastSyncDb) => _lastSyncDb = lastSyncDb;
+
   void init() {
     final loginDb = _loginDb ?? LoginDb(_sharedPreferences);
     final deviceDb = _deviceDb ?? DeviceDb(_sharedPreferences);
@@ -172,6 +175,8 @@ class GetItInitializer {
               documents: Directory.systemTemp,
               temp: Directory.systemTemp,
             ),
-      );
+      )
+      ..registerSingleton<LastSyncDb>(
+          _lastSyncDb ?? LastSyncDb(_sharedPreferences));
   }
 }

@@ -187,3 +187,13 @@ extension IntDateTimeExtensions on int {
   DateTime fromMillisecondsSinceEpoch({bool isUtc = false}) =>
       DateTime.fromMillisecondsSinceEpoch(this, isUtc: isUtc);
 }
+
+extension IntDateTimeExtension on int? {
+  DateTime? fromMillisecondsSinceEpoch({bool isUtc = false}) {
+    final value = this;
+    if (value != null) {
+      return value.fromMillisecondsSinceEpoch(isUtc: isUtc);
+    }
+    return null;
+  }
+}
