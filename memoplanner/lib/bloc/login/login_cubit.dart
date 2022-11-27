@@ -41,7 +41,7 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith());
   }
 
-  Future<void> onLogin({licenseExpiredConfirmed = false}) {
+  Future<void> login({licenseExpiredConfirmed = false}) {
     return _login(licenseExpiredConfirmed);
   }
 

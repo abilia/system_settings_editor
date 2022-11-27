@@ -114,7 +114,7 @@ void main() {
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
 
-      loginCubit.onLogin();
+      loginCubit.login();
 
       // Assert
       await expected;
@@ -143,8 +143,8 @@ void main() {
         ]),
       );
 
-      await loginCubit.onLogin();
-      await loginCubit.onLogin();
+      await loginCubit.login();
+      await loginCubit.login();
 
       await expected;
     });
@@ -169,8 +169,8 @@ void main() {
       );
 
       loginCubit.usernameChanged(username);
-      await loginCubit.onLogin();
-      await loginCubit.onLogin();
+      await loginCubit.login();
+      await loginCubit.login();
 
       await expected;
     });
@@ -185,7 +185,7 @@ void main() {
 
       loginCubit.usernameChanged('username');
       loginCubit.passwordChanged('password');
-      loginCubit.onLogin();
+      loginCubit.login();
 
       await expectLater(
         loginCubit.stream,
@@ -271,7 +271,7 @@ void main() {
       // Act
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
-      loginCubit.onLogin();
+      loginCubit.login();
       // Assert
       await untilCalled(() => mockedUserRepository.authenticate(
             username: any(named: 'username'),
@@ -381,7 +381,7 @@ void main() {
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
 
-      loginCubit.onLogin();
+      loginCubit.login();
 
       // Assert
       await expected;
@@ -408,7 +408,7 @@ void main() {
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
 
-      loginCubit.onLogin();
+      loginCubit.login();
 
       // Assert
       await expected;
@@ -433,7 +433,7 @@ void main() {
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
 
-      loginCubit.onLogin(licenseExpiredConfirmed: true);
+      loginCubit.login(licenseExpiredConfirmed: true);
 
       // Assert
       await expected;

@@ -61,7 +61,7 @@ class LoginPage extends StatelessWidget {
                 ),
               );
               if (licenseExpiredConfirmed) {
-                loginCubit.onLogin(licenseExpiredConfirmed: true);
+                loginCubit.login(licenseExpiredConfirmed: true);
               }
             } else {
               await showViewDialog(
