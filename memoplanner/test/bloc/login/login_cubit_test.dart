@@ -114,7 +114,7 @@ void main() {
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
 
-      loginCubit.loginButtonPressed();
+      loginCubit.onLogin();
 
       // Assert
       await expected;
@@ -143,8 +143,8 @@ void main() {
         ]),
       );
 
-      await loginCubit.loginButtonPressed();
-      await loginCubit.loginButtonPressed();
+      await loginCubit.onLogin();
+      await loginCubit.onLogin();
 
       await expected;
     });
@@ -169,8 +169,8 @@ void main() {
       );
 
       loginCubit.usernameChanged(username);
-      await loginCubit.loginButtonPressed();
-      await loginCubit.loginButtonPressed();
+      await loginCubit.onLogin();
+      await loginCubit.onLogin();
 
       await expected;
     });
@@ -183,12 +183,14 @@ void main() {
       when(() => batch.commit()).thenAnswer((_) => Future.value([]));
       when(() => mockDb.batch()).thenReturn(batch);
 
-      loginCubit.loginButtonPressed();
+      loginCubit.usernameChanged('username');
+      loginCubit.passwordChanged('password');
+      loginCubit.onLogin();
 
       await expectLater(
         loginCubit.stream,
         emitsInOrder([
-          const LoginState(username: '', password: '')
+          const LoginState(username: 'username', password: 'password')
               .loading()
               .failure(cause: LoginFailureCause.notEmptyDatabase),
         ]),
@@ -269,7 +271,7 @@ void main() {
       // Act
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
-      loginCubit.loginButtonPressed();
+      loginCubit.onLogin();
       // Assert
       await untilCalled(() => mockedUserRepository.authenticate(
             username: any(named: 'username'),
@@ -379,7 +381,7 @@ void main() {
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
 
-      loginCubit.loginButtonPressed();
+      loginCubit.onLogin();
 
       // Assert
       await expected;
@@ -406,7 +408,7 @@ void main() {
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
 
-      loginCubit.loginButtonPressed();
+      loginCubit.onLogin();
 
       // Assert
       await expected;
@@ -431,8 +433,7 @@ void main() {
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
 
-      loginCubit.loginButtonPressed();
-      loginCubit.confirmLicenseExpiredWarning();
+      loginCubit.onLogin(licenseExpiredConfirmed: true);
 
       // Assert
       await expected;

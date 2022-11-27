@@ -41,28 +41,20 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith());
   }
 
-  Future<void> loginButtonPressed() {
-    return _login();
+  Future<void> onLogin({licenseExpiredConfirmed = false}) {
+    return _login(licenseExpiredConfirmed);
   }
 
-  Future<void> confirmLicenseExpiredWarning() {
-    return _login(confirmExpiredLicense: true);
-  }
-
-  Future<void> _login({bool confirmExpiredLicense = false}) async {
+  Future<void> _login(bool licenseExpiredConfirmed) async {
     emit(state.loading());
     final preLoginFailureCause = await _getPreLoginFailureCause();
     if (preLoginFailureCause != null) {
       return emit(state.failure(cause: preLoginFailureCause));
     }
-    try {
-      await _authenticate(confirmExpiredLicense);
-    } catch (error) {
-      emit(state.failure(cause: _getAuthenticationFailureCause(error)));
-    }
+    await _authenticate(licenseExpiredConfirmed);
   }
 
-  Future<void> _authenticate(bool confirmExpiredLicense) async {
+  Future<void> _authenticate(bool licenseExpiredConfirmed) async {
     try {
       final pushToken = await pushService.initPushToken();
       if (pushToken == null) throw 'push token null';
@@ -73,20 +65,10 @@ class LoginCubit extends Cubit<LoginState> {
         time: clockBloc.state,
       );
       userRepository.persistLoginInfo(loginInfo);
-      final licenses = await userRepository.getLicensesFromApi();
-      final hasValidLicense = licenses.anyValidLicense(clockBloc.state);
-      final hasMemoplannerLicense = licenses.anyMemoplannerLicense();
-      final isMPAndConfirmedExpiredLicense =
-          Config.isMP && hasMemoplannerLicense && confirmExpiredLicense;
-
-      if (hasValidLicense || isMPAndConfirmedExpiredLicense) {
-        return _loginSuccess();
-      }
-      final licenceFailureCause =
-          _getLicenceFailureCause(hasMemoplannerLicense);
-      emit(state.failure(cause: licenceFailureCause));
+      _checkValidLicense(licenseExpiredConfirmed);
     } catch (error) {
-      rethrow;
+      final authenticationFailureCause = _getAuthenticationFailureCause(error);
+      emit(state.failure(cause: authenticationFailureCause));
     }
   }
 
@@ -116,6 +98,20 @@ class LoginCubit extends Cubit<LoginState> {
         _log.severe('could not login: $error');
         return LoginFailureCause.noConnection;
     }
+  }
+
+  Future<void> _checkValidLicense(bool licenseExpiredConfirmed) async {
+    final licenses = await userRepository.getLicensesFromApi();
+    final hasValidLicense = licenses.anyValidLicense(clockBloc.state);
+    final hasMemoplannerLicense = licenses.anyMemoplannerLicense();
+    final hasMPLicenseAndLicenseExpiredConfirmed =
+        Config.isMP && hasMemoplannerLicense && licenseExpiredConfirmed;
+
+    if (hasValidLicense || hasMPLicenseAndLicenseExpiredConfirmed) {
+      return _loginSuccess();
+    }
+    final licenceFailureCause = _getLicenceFailureCause(hasMemoplannerLicense);
+    emit(state.failure(cause: licenceFailureCause));
   }
 
   LoginFailureCause _getLicenceFailureCause(bool hasMemoplannerLicense) {
