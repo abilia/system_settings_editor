@@ -15,6 +15,7 @@ class StartupCubit extends Cubit<StartupState> {
   final DeviceRepository deviceRepository;
 
   Future<void> verifySerialId(String serialId, String licenseKey) async {
+    emit(Verifying());
     try {
       final clientId = await deviceRepository.getClientId();
       final verifiedOk = await deviceRepository.verifyDevice(
@@ -57,6 +58,8 @@ class StartupDone extends StartupState {}
 class WelcomeGuide extends StartupState {}
 
 class ProductionGuide extends StartupState {}
+
+class Verifying extends StartupState {}
 
 class VerifySerialIdFailed extends StartupState {
   final String message;

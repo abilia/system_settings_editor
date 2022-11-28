@@ -1240,6 +1240,45 @@ void main() {
     expect(find.text(activities[1].title), findsOneWidget);
   });
 
+  testWidgets(
+      'SGC-2148 deleting a fullday recurring activity from week calendar updates full day list page',
+      (WidgetTester tester) async {
+    // Arrange
+    final activities = [
+      FakeActivity.fullDay(initialTime.addDays(1), 'one', Recurs.everyDay),
+      FakeActivity.fullDay(initialTime.addDays(1), 'two', Recurs.everyDay),
+    ];
+    mockActivityDb.initWithActivities(activities);
+
+    // Act - Go to FullDayListPage
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.week));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(FullDayStack).first);
+    await tester.pumpAndSettle();
+
+    // Assert - Both activities are shown
+    expect(find.byType(FullDayListPage), findsOneWidget);
+    expect(find.text(activities[0].title), findsOneWidget);
+    expect(find.text(activities[1].title), findsOneWidget);
+
+    // Act - Delete one of the activities
+    await tester.tap(find.text(activities[1].title));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.deleteAllClear));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(YesButton));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(OkButton));
+    await tester.pumpAndSettle();
+
+    // Assert - One activity is shown
+    expect(find.byType(FullDayListPage), findsOneWidget);
+    expect(find.text(activities[0].title), findsOneWidget);
+    expect(find.text(activities[1].title), findsNothing);
+  });
+
   group('disable alarm button', () {
     late MemoplannerSettingsBloc memoplannerSettingBlocMock;
 

@@ -78,12 +78,18 @@ class FakeActivity {
           recurs: recurs,
           alarmType: alarmSilent);
 
-  static Activity fullDay(DateTime when, [String title = 'full day']) =>
+  static Activity fullDay(
+    DateTime when, [
+    String title = 'full day',
+    Recurs recurs = Recurs.not,
+  ]) =>
       Activity.createNew(
-          title: title,
-          startTime: when.onlyDays(),
-          duration: 1.days() - 1.milliseconds(),
-          fullDay: true,
-          reminderBefore: const [60 * 60 * 1000],
-          alarmType: noAlarm);
+        title: title,
+        startTime: when.onlyDays(),
+        duration: 1.days() - 1.milliseconds(),
+        fullDay: true,
+        reminderBefore: const [60 * 60 * 1000],
+        alarmType: noAlarm,
+        recurs: recurs,
+      );
 }
