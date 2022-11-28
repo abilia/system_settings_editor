@@ -183,12 +183,14 @@ void main() {
       when(() => batch.commit()).thenAnswer((_) => Future.value([]));
       when(() => mockDb.batch()).thenReturn(batch);
 
-      await loginCubit.loginButtonPressed();
+      loginCubit.usernameChanged('username');
+      loginCubit.passwordChanged('password');
+      loginCubit.loginButtonPressed();
 
       await expectLater(
         loginCubit.stream,
         emitsInOrder([
-          const LoginState(username: '', password: '')
+          const LoginState(username: 'username', password: 'password')
               .loading()
               .failure(cause: LoginFailureCause.notEmptyDatabase),
         ]),
@@ -269,7 +271,7 @@ void main() {
       // Act
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
-      await loginCubit.loginButtonPressed();
+      loginCubit.loginButtonPressed();
       // Assert
       await untilCalled(() => mockedUserRepository.authenticate(
             username: any(named: 'username'),
@@ -379,7 +381,7 @@ void main() {
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
 
-      await loginCubit.loginButtonPressed();
+      loginCubit.loginButtonPressed();
 
       // Assert
       await expected;
@@ -432,7 +434,7 @@ void main() {
       loginCubit.passwordChanged(password);
 
       loginCubit.loginButtonPressed();
-      loginCubit.confirmLicenseExpiredWarning();
+      loginCubit.licenseExpiredWarningConfirmed();
 
       // Assert
       await expected;
