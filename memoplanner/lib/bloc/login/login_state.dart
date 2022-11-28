@@ -57,6 +57,7 @@ enum LoginFailureCause {
   licenseExpired,
   noLicense,
   unsupportedUserType,
+  notEmptyDatabase,
 }
 
 class LoginSucceeded extends LoginState {
