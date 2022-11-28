@@ -114,7 +114,7 @@ void main() {
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
 
-      loginCubit.login();
+      loginCubit.loginButtonPressed();
 
       // Assert
       await expected;
@@ -143,8 +143,8 @@ void main() {
         ]),
       );
 
-      await loginCubit.login();
-      await loginCubit.login();
+      await loginCubit.loginButtonPressed();
+      await loginCubit.loginButtonPressed();
 
       await expected;
     });
@@ -169,8 +169,8 @@ void main() {
       );
 
       loginCubit.usernameChanged(username);
-      await loginCubit.login();
-      await loginCubit.login();
+      await loginCubit.loginButtonPressed();
+      await loginCubit.loginButtonPressed();
 
       await expected;
     });
@@ -185,7 +185,7 @@ void main() {
 
       loginCubit.usernameChanged('username');
       loginCubit.passwordChanged('password');
-      loginCubit.login();
+      loginCubit.loginButtonPressed();
 
       await expectLater(
         loginCubit.stream,
@@ -271,7 +271,7 @@ void main() {
       // Act
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
-      loginCubit.login();
+      loginCubit.loginButtonPressed();
       // Assert
       await untilCalled(() => mockedUserRepository.authenticate(
             username: any(named: 'username'),
@@ -381,7 +381,7 @@ void main() {
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
 
-      loginCubit.login();
+      loginCubit.loginButtonPressed();
 
       // Assert
       await expected;
@@ -408,7 +408,7 @@ void main() {
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
 
-      loginCubit.login();
+      loginCubit.loginButtonPressed();
 
       // Assert
       await expected;
@@ -433,7 +433,8 @@ void main() {
       loginCubit.usernameChanged(username);
       loginCubit.passwordChanged(password);
 
-      loginCubit.login(licenseExpiredConfirmed: true);
+      loginCubit.loginButtonPressed();
+      loginCubit.licenseExpiredWarningConfirmed();
 
       // Assert
       await expected;

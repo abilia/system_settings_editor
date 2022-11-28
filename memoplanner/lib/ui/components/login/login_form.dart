@@ -122,7 +122,7 @@ class LoginButton extends StatelessWidget {
               style: textButtonStyleGreen,
               onPressed: state is! LoginLoading
                   ? () {
-                      BlocProvider.of<LoginCubit>(context).login();
+                      BlocProvider.of<LoginCubit>(context).loginButtonPressed();
                       FocusScope.of(context).requestFocus(FocusNode());
                     }
                   : null,

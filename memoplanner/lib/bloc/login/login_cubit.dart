@@ -41,11 +41,15 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith());
   }
 
-  Future<void> login({licenseExpiredConfirmed = false}) {
-    return _login(licenseExpiredConfirmed);
+  Future<void> loginButtonPressed() {
+    return _login();
   }
 
-  Future<void> _login(bool licenseExpiredConfirmed) async {
+  void licenseExpiredWarningConfirmed() {
+    _login(licenseExpiredConfirmed: true);
+  }
+
+  Future<void> _login({bool licenseExpiredConfirmed = false}) async {
     emit(state.loading());
     final preLoginFailureCause = await _getPreLoginFailureCause();
     if (preLoginFailureCause != null) {
@@ -73,17 +77,17 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<LoginFailureCause?> _getPreLoginFailureCause() async {
-    if (!state.isUsernameValid) {
-      return LoginFailureCause.noUsername;
-    }
-    if (!state.isPasswordValid) {
-      return LoginFailureCause.noPassword;
-    }
     if (!await DatabaseRepository.isEmpty(GetIt.I<Database>())) {
       await DatabaseRepository.clearAll(GetIt.I<Database>());
       if (!await DatabaseRepository.isEmpty(GetIt.I<Database>())) {
         return LoginFailureCause.notEmptyDatabase;
       }
+    }
+    if (!state.isUsernameValid) {
+      return LoginFailureCause.noUsername;
+    }
+    if (!state.isPasswordValid) {
+      return LoginFailureCause.noPassword;
     }
     return null;
   }
