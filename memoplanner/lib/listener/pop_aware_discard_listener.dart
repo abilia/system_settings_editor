@@ -2,11 +2,11 @@ import 'package:memoplanner/ui/all.dart';
 
 class PopAwareDiscardListener extends StatelessWidget {
   final Widget child;
-  final bool Function(BuildContext context) discardDialogCondition;
+  final bool Function(BuildContext context) showDiscardDialogCondition;
 
   const PopAwareDiscardListener({
     required this.child,
-    required this.discardDialogCondition,
+    required this.showDiscardDialogCondition,
     Key? key,
   }) : super(key: key);
 
@@ -19,7 +19,7 @@ class PopAwareDiscardListener extends StatelessWidget {
   }
 
   Future<bool> _discardChanges(BuildContext context) async {
-    final showDiscardDialog = discardDialogCondition(context);
+    final showDiscardDialog = showDiscardDialogCondition(context);
     if (showDiscardDialog) {
       return _showDiscardWarningDialog(context);
     }

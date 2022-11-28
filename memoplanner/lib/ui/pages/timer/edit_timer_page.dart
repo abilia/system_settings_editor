@@ -12,7 +12,7 @@ class EditTimerPage extends StatelessWidget {
     final t = Translator.of(context).translate;
 
     return PopAwareDiscardListener(
-      discardDialogCondition: (context) =>
+      showDiscardDialogCondition: (context) =>
           !context.read<EditTimerCubit>().state.unchanged,
       child: _EditTimerPage(
         title: t.newTimer,
@@ -52,7 +52,7 @@ class EditBasicTimerPage extends StatelessWidget {
     final t = Translator.of(context).translate;
 
     return PopAwareDiscardListener(
-      discardDialogCondition: (context) =>
+      showDiscardDialogCondition: (context) =>
           !context.read<EditTimerCubit>().state.unchanged,
       child: _EditTimerPage(
         title: title,

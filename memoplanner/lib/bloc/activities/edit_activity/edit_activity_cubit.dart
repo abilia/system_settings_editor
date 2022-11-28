@@ -89,7 +89,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
   void activitySaved(Activity activitySaved) {
     final state = this.state;
     emit(
-      SavedActivityState(
+      StoredActivityState(
         activitySaved,
         state.timeInterval,
         state is StoredActivityState

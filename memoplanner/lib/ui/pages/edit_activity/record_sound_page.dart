@@ -16,7 +16,7 @@ class RecordSoundPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final initialState = context.read<RecordSoundCubit>().state;
     return PopAwareDiscardListener(
-      discardDialogCondition: (context) =>
+      showDiscardDialogCondition: (context) =>
           initialState != context.read<RecordSoundCubit>().state,
       child: Scaffold(
         appBar: AbiliaAppBar(
