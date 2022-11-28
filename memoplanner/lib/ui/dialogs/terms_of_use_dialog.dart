@@ -1,5 +1,4 @@
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class TermsOfUseDialog extends StatefulWidget {
@@ -19,21 +18,10 @@ class TermsOfUseDialog extends StatefulWidget {
 }
 
 class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
-  late bool _termsOfCondition;
-  late bool _privacyPolicy;
+  late bool _termsOfCondition = false;
+  late bool _privacyPolicy = false;
 
   AuthenticatedDialogCubit get termsOfUseCubit => widget.loginDialogCubit;
-
-  TermsOfUse get _termsOfUse => TermsOfUse(
-      termsOfCondition: _termsOfCondition, privacyPolicy: _privacyPolicy);
-
-  @override
-  void initState() {
-    final termsOfUse = termsOfUseCubit.state.termsOfUse;
-    _termsOfCondition = termsOfUse.termsOfCondition;
-    _privacyPolicy = termsOfUse.privacyPolicy;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +106,7 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
   }
 
   Future<void> saveAndClose() async {
-    termsOfUseCubit.saveTermsOfUse(_termsOfUse);
+    termsOfUseCubit.acceptTermsOfUse();
     return widget.onNext();
   }
 }

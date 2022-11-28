@@ -8,25 +8,16 @@ class AuthenticatedDialogListener
     Key? key,
   }) : super(
           key: key,
-          listenWhen: (previous, current) =>
-              previous is AuthenticatedDialogNotReady &&
-              current is AuthenticatedDialogReady,
-          listener: (context, _) {
-            final authenticatedDialog = AuthenticatedDialog(
+          listenWhen: (previous, current) => current.showDialog,
+          listener: (context, state) => showViewDialog<bool>(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => AuthenticatedDialog(
               loginDialogCubit: loginDialogCubit,
-              showTermsOfUseDialog: loginDialogCubit.showTermsOfUseDialog,
-              showStarterSetDialog: loginDialogCubit.showStarterSetDialog,
-              showFullscreenAlarmDialog:
-                  loginDialogCubit.showFullscreenAlarmDialog,
-            );
-
-            if (authenticatedDialog.numberOfDialogs > 0) {
-              showViewDialog<bool>(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) => authenticatedDialog,
-              );
-            }
-          },
+              showFullscreenAlarmDialog: state.fullscreenAlarm,
+              showStarterSetDialog: state.starterSet,
+              showTermsOfUseDialog: state.termsOfUse,
+            ),
+          ),
         );
 }

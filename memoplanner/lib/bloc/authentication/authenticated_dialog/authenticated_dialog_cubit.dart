@@ -1,98 +1,71 @@
 import 'dart:async';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
-import 'package:memoplanner/logging/all.dart';
-import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'authenticated_dialog_state.dart';
 
 class AuthenticatedDialogCubit extends Cubit<AuthenticatedDialogState> {
-  late final StreamSubscription _sortableSubscription;
+  StreamSubscription? _sortableSubscription, _permissionSubscription;
   final TermsOfUseRepository termsOfUseRepository;
-  final SortableBloc sortableBloc;
-  final PermissionCubit permissionCubit;
-  final bool newlyLoggedIn;
-  final _log = Logger((AuthenticatedDialogCubit).toString());
-
-  bool get showTermsOfUseDialog => !state.termsOfUse.allAccepted;
-
-  bool get showStarterSetDialog {
-    final sortableState = sortableBloc.state;
-    final showStarterSet =
-        sortableState is SortablesLoaded && sortableState.sortables.isEmpty;
-    return showStarterSet && newlyLoggedIn;
-  }
-
-  bool get showFullscreenAlarmDialog {
-    final isAndroid = defaultTargetPlatform == TargetPlatform.android;
-    final fullscreenAlarmEnabled = Config.isMPGO && isAndroid;
-    final permissionStatus = permissionCubit.state.status;
-    final showFullscreenAlarm = fullscreenAlarmEnabled &&
-        permissionStatus.containsKey(Permission.systemAlertWindow) &&
-        !(permissionStatus[Permission.systemAlertWindow]?.isGranted ?? false);
-    return showFullscreenAlarm && newlyLoggedIn;
-  }
 
   AuthenticatedDialogCubit({
     required this.termsOfUseRepository,
-    required this.sortableBloc,
-    required this.permissionCubit,
-    required this.newlyLoggedIn,
-  }) : super(AuthenticatedDialogNotReady.initial()) {
-    _sortableSubscription = sortableBloc.stream
-        .whereType<SortablesLoaded>()
-        .listen((_) => _onSortablesLoaded());
+    required SortableBloc sortableBloc,
+    required PermissionCubit permissionCubit,
+    required bool newlyLoggedIn,
+  }) : super(AuthenticatedDialogState(
+          starterSetLoaded: !newlyLoggedIn,
+          fullscreenAlarmLoaded: !newlyLoggedIn ||
+              !Config.isMPGO ||
+              defaultTargetPlatform != TargetPlatform.android,
+        )) {
+    if (!state.starterSetLoaded) {
+      _sortableSubscription = sortableBloc.stream
+          .whereType<SortablesLoaded>()
+          .take(1)
+          .listen(_onSortableLoaded);
+    }
+    if (!state.fullscreenAlarmLoaded) {
+      _permissionSubscription =
+          permissionCubit.stream.take(1).listen(_onPermissionChanged);
+    }
     _loadTermsOfUse();
   }
 
-// If fetching terms of use fails and throws an exception,
-// TermsOfUse.accepted will be emitted thus not triggering the TermsOfUseDialog.
   Future<void> _loadTermsOfUse() async {
-    TermsOfUse termsOfUse = TermsOfUse.accepted();
-    try {
-      termsOfUse = await termsOfUseRepository.loadTermsOfUse();
-    } on FetchTermsOfUseException catch (e) {
-      _log.warning(
-          'Could not fetch terms of use from backend with status code ${e.statusCode}');
-    } catch (e) {
-      _log.warning('Could not fetch terms of use from backend $e');
-    }
-    _onTermsOfUseLoaded(termsOfUse);
+    final termsAccepted = await termsOfUseRepository.isTermsOfUseAccepted();
+    emit(state.copyWith(termsOfUse: !termsAccepted));
   }
 
-  Future<void> saveTermsOfUse(TermsOfUse termsOfUse) =>
-      termsOfUseRepository.saveTermsOfUse(termsOfUse);
-
-  void _onTermsOfUseLoaded(TermsOfUse termsOfUse) {
-    final s = state;
-    if (s is AuthenticatedDialogNotReady) {
-      emit(s.copyWith(termsOfUse: termsOfUse, termsOfUseLoaded: true));
-    }
-    _checkIfReady();
+  void _onPermissionChanged(PermissionState permissionState) {
+    emit(
+      state.copyWith(
+        fullscreenAlarm:
+            permissionState.status[Permission.systemAlertWindow]?.isGranted !=
+                true,
+      ),
+    );
   }
 
-  void _onSortablesLoaded() {
-    final s = state;
-    if (s is AuthenticatedDialogNotReady) {
-      emit(s.copyWith(sortablesLoaded: true));
-    }
-    _checkIfReady();
+  void _onSortableLoaded(SortablesLoaded sortableState) {
+    emit(
+      state.copyWith(
+        starterSet: sortableState.sortables.isEmpty,
+      ),
+    );
   }
 
-  void _checkIfReady() {
-    final s = state;
-    if (s is AuthenticatedDialogNotReady && s.dialogsReady) {
-      emit(AuthenticatedDialogReady(s.termsOfUse));
-    }
-  }
+  Future<void> acceptTermsOfUse() => termsOfUseRepository.acceptTermsOfUse();
 
   @override
   Future<void> close() {
-    _sortableSubscription.cancel();
+    _sortableSubscription?.cancel();
+    _permissionSubscription?.cancel();
     return super.close();
   }
 }
