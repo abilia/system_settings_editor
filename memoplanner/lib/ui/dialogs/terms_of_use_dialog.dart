@@ -18,8 +18,8 @@ class TermsOfUseDialog extends StatefulWidget {
 }
 
 class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
-  late bool _termsOfCondition = false;
-  late bool _privacyPolicy = false;
+  bool _termsOfCondition = false;
+  bool _privacyPolicy = false;
 
   AuthenticatedDialogCubit get termsOfUseCubit => widget.loginDialogCubit;
 

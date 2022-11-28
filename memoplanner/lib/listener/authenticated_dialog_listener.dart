@@ -4,7 +4,7 @@ import 'package:memoplanner/ui/all.dart';
 class AuthenticatedDialogListener
     extends BlocListener<AuthenticatedDialogCubit, AuthenticatedDialogState> {
   AuthenticatedDialogListener({
-    required AuthenticatedDialogCubit loginDialogCubit,
+    required AuthenticatedDialogCubit authenticatedDialogCubit,
     Key? key,
   }) : super(
           key: key,
@@ -13,10 +13,7 @@ class AuthenticatedDialogListener
             context: context,
             barrierDismissible: false,
             builder: (context) => AuthenticatedDialog(
-              loginDialogCubit: loginDialogCubit,
-              showFullscreenAlarmDialog: state.fullscreenAlarm,
-              showStarterSetDialog: state.starterSet,
-              showTermsOfUseDialog: state.termsOfUse,
+              authenticatedDialogCubit: authenticatedDialogCubit,
             ),
           ),
         );

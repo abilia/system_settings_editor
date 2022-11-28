@@ -11,9 +11,13 @@ class AuthenticatedDialogState extends Equatable {
   bool get dialogsReady =>
       termsOfUseLoaded && starterSetLoaded && fullscreenAlarmLoaded;
 
-  bool get anyDialog => termsOfUse || starterSet || fullscreenAlarm;
+  bool get showDialog => dialogsReady && numberOfDialogs > 0;
 
-  bool get showDialog => dialogsReady && anyDialog;
+  int get numberOfDialogs => [
+        termsOfUse,
+        starterSet,
+        fullscreenAlarm,
+      ].fold(0, (i, showDialog) => showDialog ? ++i : i);
 
   const AuthenticatedDialogState({
     this.termsOfUse = false,

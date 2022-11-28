@@ -247,7 +247,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 sortableBloc: context.read<SortableBloc>(),
                 newlyLoggedIn: authenticatedState.newlyLoggedIn,
               ),
-              lazy: false,
             ),
             if (Config.isMP) ...[
               BlocProvider<WakeLockCubit>(

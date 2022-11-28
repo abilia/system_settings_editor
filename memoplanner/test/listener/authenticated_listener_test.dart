@@ -197,14 +197,15 @@ void main() {
     expect(find.byType(StarterSetDialog), findsNothing);
 
     // Act - Login dialog is ready
-    authenticatedDialogStreamController.add(
-      const AuthenticatedDialogState(
-        termsOfUseLoaded: true,
-        starterSet: true,
-        starterSetLoaded: true,
-        fullscreenAlarmLoaded: true,
-      ),
+    const starterSetState = AuthenticatedDialogState(
+      termsOfUseLoaded: true,
+      starterSet: true,
+      starterSetLoaded: true,
+      fullscreenAlarmLoaded: true,
     );
+    authenticatedDialogStreamController.add(starterSetState);
+    when(() => authenticatedDialogCubit.state)
+        .thenAnswer((_) => starterSetState);
     await tester.pumpAndSettle();
 
     // Assert

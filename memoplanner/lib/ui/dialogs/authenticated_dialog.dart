@@ -1,77 +1,73 @@
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
-class AuthenticatedDialog extends StatefulWidget {
-  final AuthenticatedDialogCubit loginDialogCubit;
-  final bool showTermsOfUseDialog;
-  final bool showStarterSetDialog;
-  final bool showFullscreenAlarmDialog;
-
-  int get numberOfDialogs => [
-        showTermsOfUseDialog,
-        showStarterSetDialog,
-        showFullscreenAlarmDialog,
-      ].fold(0, (i, showDialog) => showDialog ? ++i : i);
+class AuthenticatedDialog extends StatelessWidget {
+  final AuthenticatedDialogCubit authenticatedDialogCubit;
 
   const AuthenticatedDialog({
-    required this.loginDialogCubit,
-    required this.showTermsOfUseDialog,
-    required this.showStarterSetDialog,
-    required this.showFullscreenAlarmDialog,
+    required this.authenticatedDialogCubit,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<AuthenticatedDialog> createState() => _AuthenticatedDialogState();
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: authenticatedDialogCubit.state.numberOfDialogs,
+      child: Builder(
+        builder: (context) {
+          return _AuthenticatedDialog(
+            authenticatedDialogCubit: authenticatedDialogCubit,
+            tabController: DefaultTabController.of(context),
+          );
+        },
+      ),
+    );
+  }
 }
 
-class _AuthenticatedDialogState extends State<AuthenticatedDialog>
-    with TickerProviderStateMixin {
-  late final TabController _tabController;
+class _AuthenticatedDialog extends StatelessWidget {
+  final AuthenticatedDialogCubit authenticatedDialogCubit;
+  final TabController? tabController;
 
-  List<Widget> get _dialogs => [
-        if (widget.showTermsOfUseDialog)
-          TermsOfUseDialog(
-            loginDialogCubit: widget.loginDialogCubit,
-            isMoreDialogs: _tabController.length > 1,
-            onNext: onNext,
-          ),
-        if (widget.showStarterSetDialog)
-          StarterSetDialog(
-            onNext: onNext,
-          ),
-        if (widget.showFullscreenAlarmDialog)
-          FullscreenAlarmInfoDialog(
-            showRedirect: true,
-            onNext: onNext,
-          ),
-      ];
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: widget.numberOfDialogs, vsync: this);
-  }
+  const _AuthenticatedDialog({
+    required this.authenticatedDialogCubit,
+    required this.tabController,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final loginDialogState = authenticatedDialogCubit.state;
+
     return TabBarView(
       physics: const NeverScrollableScrollPhysics(),
-      controller: _tabController,
-      children: _dialogs,
+      controller: tabController,
+      children: [
+        if (loginDialogState.termsOfUse)
+          TermsOfUseDialog(
+            loginDialogCubit: authenticatedDialogCubit,
+            isMoreDialogs: loginDialogState.numberOfDialogs > 1,
+            onNext: () => onNext(context),
+          ),
+        if (loginDialogState.starterSet)
+          StarterSetDialog(
+            onNext: () => onNext(context),
+          ),
+        if (loginDialogState.fullscreenAlarm)
+          FullscreenAlarmInfoDialog(
+            showRedirect: true,
+            onNext: () => onNext(context),
+          ),
+      ],
     );
   }
 
-  void onNext() {
-    if (_tabController.index == _tabController.length - 1) {
+  void onNext(BuildContext context) {
+    final currentIndex = tabController?.index;
+    final lastIndex = authenticatedDialogCubit.state.numberOfDialogs - 1;
+    if (currentIndex == lastIndex) {
       return Navigator.of(context).pop();
     }
-    _tabController.index++;
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
+    tabController?.index++;
   }
 }

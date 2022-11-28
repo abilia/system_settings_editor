@@ -105,7 +105,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           ),
         ),
         AuthenticatedDialogListener(
-          loginDialogCubit: context.read<AuthenticatedDialogCubit>(),
+          authenticatedDialogCubit: context.read<AuthenticatedDialogCubit>(),
         ),
         if (Config.isMP) ...[
           CalendarInactivityListener(),

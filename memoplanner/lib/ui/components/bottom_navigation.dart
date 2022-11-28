@@ -4,13 +4,11 @@ class BottomNavigation extends StatelessWidget {
   final Widget backNavigationWidget;
   final Widget? forwardNavigationWidget;
   final bool useVerticalSafeArea;
-  final bool backNavigationExpanded;
 
   const BottomNavigation({
     required this.backNavigationWidget,
     this.forwardNavigationWidget,
     this.useVerticalSafeArea = true,
-    this.backNavigationExpanded = true,
     Key? key,
   }) : super(key: key);
 
@@ -26,12 +24,8 @@ class BottomNavigation extends StatelessWidget {
             Expanded(child: backNavigationWidget),
             SizedBox(width: layout.formPadding.horizontalItemDistance),
             Expanded(child: forwardNavigationWidget),
-          ] else ...[
-            if (backNavigationExpanded)
-              Expanded(child: backNavigationWidget)
-            else
-              Center(child: backNavigationWidget)
-          ],
+          ] else
+            Center(child: backNavigationWidget),
         ],
       ),
     );
