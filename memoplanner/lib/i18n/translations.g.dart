@@ -2956,7 +2956,7 @@ class DA extends Translated {
 
   @override
   final String alertAlarmsDisabled =
-      'Alle alarmer vill være deaktivert til midnatt på denne enheten';
+      'Alle alarmer deaktiveres indtil midnat på denne enhed';
 
   @override
   final String disableAlarms = 'Deaktiver alarmer';
@@ -8486,7 +8486,7 @@ class NB extends Translated {
 
   @override
   final String alertAlarmsDisabled =
-      'Alle alarmer deaktiveres indtil midat på denne enhed';
+      'Alle alarmer vil være deaktivert til midnatt på denne enheten';
 
   @override
   final String disableAlarms = 'Deaktiver alarmer';

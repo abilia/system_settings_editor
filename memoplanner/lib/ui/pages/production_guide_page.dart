@@ -57,89 +57,87 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
             future: SystemSettingsEditor.canWriteSettings,
             builder: (context, writeSettingsSnapshot) {
               final canWriteSettings = writeSettingsSnapshot.data ?? false;
-              return Column(
-                children: [
-                  GestureDetector(
-                    onLongPress: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => const BackendSwitcherDialog(),
-                      );
-                    },
-                    child: MEMOplannerLogo(height: layout.login.logoHeight),
-                  ),
-                  SizedBox(height: layout.formPadding.groupHorizontalDistance),
-                  Text(
-                    'Welcome to the production guide!',
-                    style: abiliaTextTheme.headline6,
-                  ),
-                  const SizedBox(height: 50),
-                  InputField(
-                    heading: 'Serial number',
-                    textController: serialIdController,
-                  ),
-                  SizedBox(
-                    height: layout.formPadding.smallVerticalItemDistance,
-                  ),
-                  Row(children: [
-                    const IconAndTextButtonDark(
-                      icon: AbiliaIcons.inputSettings,
-                      text: 'Fetch from settings',
-                      onPressed: AndroidIntents.openDeviceInfoSettings,
+              return BlocBuilder<StartupCubit, StartupState>(
+                builder: (context, startupState) => Column(
+                  children: [
+                    GestureDetector(
+                      onLongPress: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const BackendSwitcherDialog(),
+                        );
+                      },
+                      child: MEMOplannerLogo(height: layout.login.logoHeight),
                     ),
                     SizedBox(
-                      width: layout.formPadding.horizontalItemDistance,
-                    ),
-                    IconAndTextButtonDark(
-                        icon: AbiliaIcons.past,
-                        text: 'Paste from clipboard',
-                        onPressed: () => Clipboard.getData(Clipboard.kTextPlain)
-                            .then((value) =>
-                                serialIdController.text = value?.text ?? '')),
-                  ]),
-                  const SizedBox(height: 50),
-                  InputField(
-                    heading: 'License key',
-                    textController: licenseNumberConroller,
-                    subHeading:
-                        'Enter license key to be connected to this device',
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'[\d -]')),
-                    ],
-                  ),
-                  SizedBox(height: layout.formPadding.largeGroupDistance),
-                  if (!canWriteSettings) ...[
-                    SwitchField(
-                      value: canWriteSettings,
-                      child: const Text('Write system settings permission'),
-                      onChanged: (_) async {
-                        await AndroidIntents
-                            .openWriteSettingsPermissionSettings();
-                      },
+                        height: layout.formPadding.groupHorizontalDistance),
+                    Text(
+                      'Welcome to the production guide!',
+                      style: abiliaTextTheme.headline6,
                     ),
                     const SizedBox(height: 50),
-                  ],
-                  TextButton(
-                    onPressed: canWriteSettings
-                        ? () => context.read<StartupCubit>().verifySerialId(
-                              serialIdController.text,
-                              licenseNumberConroller.text,
-                            )
-                        : null,
-                    style: textButtonStyleGreen,
-                    child: const Text('Verify'),
-                  ),
-                  BlocBuilder<StartupCubit, StartupState>(
-                    builder: (context, productionGuideState) =>
-                        productionGuideState is VerifySerialIdFailed
-                            ? Text(productionGuideState.message)
-                            : const Text(''),
-                  ),
-                  const Spacer(),
-                  if (!Config.release)
-                    BlocBuilder<BaseUrlCubit, String>(
-                      builder: (context, baseUrl) => Row(
+                    InputField(
+                      heading: 'Serial number',
+                      textController: serialIdController,
+                    ),
+                    SizedBox(
+                      height: layout.formPadding.smallVerticalItemDistance,
+                    ),
+                    Row(children: [
+                      const IconAndTextButtonDark(
+                        icon: AbiliaIcons.inputSettings,
+                        text: 'Fetch from settings',
+                        onPressed: AndroidIntents.openDeviceInfoSettings,
+                      ),
+                      SizedBox(
+                        width: layout.formPadding.horizontalItemDistance,
+                      ),
+                      IconAndTextButtonDark(
+                          icon: AbiliaIcons.past,
+                          text: 'Paste from clipboard',
+                          onPressed: () =>
+                              Clipboard.getData(Clipboard.kTextPlain).then(
+                                  (value) => serialIdController.text =
+                                      value?.text ?? '')),
+                    ]),
+                    const SizedBox(height: 50),
+                    InputField(
+                      heading: 'License key',
+                      textController: licenseNumberConroller,
+                      subHeading:
+                          'Enter license key to be connected to this device',
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[\d -]')),
+                      ],
+                    ),
+                    SizedBox(height: layout.formPadding.largeGroupDistance),
+                    if (!canWriteSettings) ...[
+                      SwitchField(
+                        value: canWriteSettings,
+                        child: const Text('Write system settings permission'),
+                        onChanged: (_) async {
+                          await AndroidIntents
+                              .openWriteSettingsPermissionSettings();
+                        },
+                      ),
+                      const SizedBox(height: 50),
+                    ],
+                    TextButton(
+                      onPressed: canWriteSettings && startupState is! Verifying
+                          ? () => context.read<StartupCubit>().verifySerialId(
+                                serialIdController.text,
+                                licenseNumberConroller.text,
+                              )
+                          : null,
+                      style: textButtonStyleGreen,
+                      child: const Text('Verify'),
+                    ),
+                    if (startupState is VerifySerialIdFailed)
+                      Text(startupState.message),
+                    const Spacer(),
+                    if (!Config.release)
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
@@ -155,8 +153,8 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                           ),
                         ],
                       ),
-                    ),
-                ],
+                  ],
+                ),
               );
             },
           ),

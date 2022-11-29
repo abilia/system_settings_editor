@@ -367,13 +367,13 @@ class CategoryRadioField extends StatelessWidget {
 }
 
 class AlarmWidget extends StatelessWidget {
-  final Activity activity;
-
-  const AlarmWidget(this.activity, {Key? key}) : super(key: key);
+  const AlarmWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
+    final editActivityCubit = context.watch<EditActivityCubit>();
+    final activity = editActivityCubit.state.activity;
     final alarm = activity.alarm;
     final generalSettings = context.select(
         (MemoplannerSettingsBloc bloc) => bloc.state.addActivity.general);
@@ -387,40 +387,31 @@ class AlarmWidget extends StatelessWidget {
           text: Text(alarm.text(translator)),
           onTap: generalSettings.abilityToSelectAlarm
               ? () async {
-                  final authProviders = copiedAuthProviders(context);
-                  final editActivityCubit = context.read<EditActivityCubit>();
-                  final result = await Navigator.of(context).push<AlarmType>(
+                  final authProviders = [
+                    BlocProvider.value(value: editActivityCubit),
+                    ...copiedAuthProviders(context)
+                  ];
+                  final result = await Navigator.of(context).push<bool>(
                     PersistentMaterialPageRoute(
                       builder: (_) => MultiBlocProvider(
                         providers: authProviders,
                         child: SelectAlarmTypePage(
-                          alarm: alarm.typeSeagull,
+                          onOk: () => Navigator.of(context).maybePop(true),
                         ),
                       ),
                       settings:
                           const RouteSettings(name: 'SelectAlarmTypePage'),
                     ),
                   );
-                  if (result != null) {
-                    editActivityCubit.replaceActivity(
-                      activity.copyWith(
-                        alarm: activity.alarm.copyWith(type: result),
-                      ),
-                    );
+                  if (result != true) {
+                    editActivityCubit.replaceActivity(activity);
                   }
                 }
               : null,
         ),
         if (generalSettings.showAlarmOnlyAtStart) ...[
           SizedBox(height: layout.formPadding.verticalItemDistance),
-          AlarmOnlyAtStartSwitch(
-            alarm: alarm,
-            onChanged: (v) => context.read<EditActivityCubit>().replaceActivity(
-                  activity.copyWith(
-                    alarm: alarm.copyWith(onlyStart: v),
-                  ),
-                ),
-          ),
+          const AlarmOnlyAtStartSwitch(),
         ],
       ],
     );
@@ -429,25 +420,31 @@ class AlarmWidget extends StatelessWidget {
 
 class AlarmOnlyAtStartSwitch extends StatelessWidget {
   const AlarmOnlyAtStartSwitch({
-    required this.alarm,
-    required this.onChanged,
     Key? key,
   }) : super(key: key);
 
-  final Alarm alarm;
-  final ValueChanged<bool> onChanged;
-
   @override
-  Widget build(BuildContext context) => SwitchField(
-        key: TestKey.alarmAtStartSwitch,
-        leading: Icon(
-          AbiliaIcons.handiAlarm,
-          size: layout.icon.small,
-        ),
-        value: alarm.onlyStart,
-        onChanged: alarm.shouldAlarm ? onChanged : null,
-        child: Text(Translator.of(context).translate.alarmOnlyAtStartTime),
-      );
+  Widget build(BuildContext context) {
+    final alarm =
+        context.select((EditActivityCubit cubit) => cubit.state.activity.alarm);
+    return SwitchField(
+      key: TestKey.alarmAtStartSwitch,
+      leading: Icon(
+        AbiliaIcons.handiAlarm,
+        size: layout.icon.small,
+      ),
+      value: alarm.onlyStart,
+      onChanged: alarm.shouldAlarm
+          ? (alarmOnlyOnStart) {
+              final cubit = context.read<EditActivityCubit>();
+              final activity = cubit.state.activity;
+              cubit.replaceActivity(activity.copyWith(
+                  alarm: alarm.copyWith(onlyStart: alarmOnlyOnStart)));
+            }
+          : null,
+      child: Text(Translator.of(context).translate.alarmOnlyAtStartTime),
+    );
+  }
 }
 
 class CheckableAndDeleteAfterWidget extends StatelessWidget {

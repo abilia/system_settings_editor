@@ -218,7 +218,7 @@ vibrationIfAvailable	Vibration (if available)	Vibration (om tillgängligt)	Vibra
 noAlarm	No alarm	Inget larm	Ingen alarm	Geen alarm	Ei hälytystä	Kein Alarm	Ingen alarm
 silentAlarm	Silent alarm	Tyst larm	Stille alarm	Stil alarm	Äänetön hälytys	Stiller Alarm	Stille alarm
 alarmOnlyAtStartTime	Alarm only at Start time	Larm endast vid starttid	Kun alarm ved starttidspunkt	Alarm alleen op begintijd	Vain hälytys alkamisaikaan	Alarm nur zur Startzeit	Alarm kun på starttid
-alertAlarmsDisabled	All alarms will be disabled until midnight on this device	Alla larm kommer att inaktiveras fram till midnatt på den här enheten	Alle alarmer vill være deaktivert til midnatt på denne enheten	Alle alarmen worden tot middernacht uitgeschakeld op dit toestel	Kaikki tämän laitteen hälytykset poistetaan käytöstä keskiyöhön asti	Alle Alarme auf diesem Gerät werden bis Mitternacht deaktiviert	Alle alarmer deaktiveres indtil midat på denne enhed
+alertAlarmsDisabled	All alarms will be disabled until midnight on this device	Alla larm kommer att inaktiveras fram till midnatt på den här enheten	Alle alarmer deaktiveres indtil midnat på denne enhed	Alle alarmen worden tot middernacht uitgeschakeld op dit toestel	Kaikki tämän laitteen hälytykset poistetaan käytöstä keskiyöhön asti	Alle Alarme auf diesem Gerät werden bis Mitternacht deaktiviert	Alle alarmer vil være deaktivert til midnatt på denne enheten
 disableAlarms	Disable alarms	Inaktivera larm	Deaktiver alarmer	Alarmen uitschakelen	Poista hälytykset käytöstä	Alarme deaktivieren	Deaktiver alarmer
 							
 ### Select picture							
