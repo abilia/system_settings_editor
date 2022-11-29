@@ -113,4 +113,10 @@ class ActivityDbInMemory implements ActivityDb {
   Future<Iterable<Activity>> getBySeries(String seriesId) async {
     return activities.map((e) => e.model).where((e) => e.seriesId == seriesId);
   }
+
+  @override
+  Future<int> countAllDirty() async => (await getAllDirty()).length;
+
+  @override
+  String get countAllDirtySql => throw UnimplementedError();
 }

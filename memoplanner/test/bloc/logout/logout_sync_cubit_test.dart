@@ -71,14 +71,18 @@ void main() {
     connectivityStream.close();
   });
 
-  group('No dirty items', () {
-    setUp(() {
-      when(() => activityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-      when(() => userFileDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-      when(() => sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-      when(() => genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    });
+  setUp(() {
+    when(() => activityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => userFileDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => activityDb.countAllDirty()).thenAnswer((_) => Future.value(0));
+    when(() => userFileDb.countAllDirty()).thenAnswer((_) => Future.value(0));
+    when(() => sortableDb.countAllDirty()).thenAnswer((_) => Future.value(0));
+    when(() => genericDb.countAllDirty()).thenAnswer((_) => Future.value(0));
+  });
 
+  group('No dirty items', () {
     test('initial state is first warning and sync failed', () {
       final logoutSyncCubit = LogoutSyncCubit(
         syncBloc: syncBloc,
@@ -184,17 +188,8 @@ void main() {
   });
 
   group('Dirty items', () {
-    setUp(() {
-      when(() => activityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-      when(() => userFileDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-      when(() => sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-      when(() => genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    });
-
     test('correct number of dirty activities', () async {
-      final activity = FakeActivity.starts(DateTime(1999)).wrapWithDbModel();
-      when(() => activityDb.getAllDirty())
-          .thenAnswer((_) => Future.value([activity, activity, activity]));
+      when(() => activityDb.countAllDirty()).thenAnswer((_) => Future.value(3));
 
       final logoutSyncCubit = LogoutSyncCubit(
         syncBloc: syncBloc,
@@ -218,7 +213,6 @@ void main() {
               data: BasicActivityDataItem.createNew(title: 'dirty'))
           .wrapWithDbModel() as DbModel<Sortable<SortableData>>;
 
-      FakeActivity.starts(DateTime(1999)).wrapWithDbModel();
       when(() => sortableDb.getAllDirty()).thenAnswer((_) => Future.value(
           [basicActivity, basicActivity, basicActivity, basicActivity]));
 
@@ -244,7 +238,6 @@ void main() {
           Sortable.createNew(data: BasicTimerDataItem.createNew())
               .wrapWithDbModel() as DbModel<Sortable<SortableData>>;
 
-      FakeActivity.starts(DateTime(1999)).wrapWithDbModel();
       when(() => sortableDb.getAllDirty()).thenAnswer((_) => Future.value(
           [basicTimer, basicTimer, basicTimer, basicTimer, basicTimer]));
 
@@ -276,7 +269,6 @@ void main() {
               fileLoaded: true)
           .wrapWithDbModel();
 
-      FakeActivity.starts(DateTime(1999)).wrapWithDbModel();
       when(() => userFileDb.getAllDirty()).thenAnswer(
           (_) => Future.value([photo, photo, photo, photo, photo, photo]));
 
@@ -298,14 +290,7 @@ void main() {
     });
 
     test('correct value for settingsData', () async {
-      final dirtySetting = Generic.createNew(
-              data: MemoplannerSettingData.fromData(
-                  data: 'data', identifier: 'id'))
-          .wrapWithDbModel() as DbModel<Generic<GenericData>>;
-
-      FakeActivity.starts(DateTime(1999)).wrapWithDbModel();
-      when(() => genericDb.getAllDirty())
-          .thenAnswer((_) => Future.value([dirtySetting]));
+      when(() => genericDb.countAllDirty()).thenAnswer((_) => Future.value(1));
 
       final logoutSyncCubit = LogoutSyncCubit(
         syncBloc: syncBloc,

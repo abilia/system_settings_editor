@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:collection/collection.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -37,31 +38,24 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> {
   }
 
   Future<void> _fetchDirtyItems() async {
-    int dirtyActivityTemplates = 0;
-    int dirtyTimerTemplates = 0;
-    int dirtyPhotos = 0;
+    final dirtyActivities =
+        await syncBloc.activityRepository.db.countAllDirty();
 
-    final int dirtyActivities =
-        (await syncBloc.activityRepository.db.getAllDirty()).length;
+    final dirtySortables = groupBy(
+      await syncBloc.sortableRepository.db.getAllDirty(),
+      (sortable) => sortable.model.type,
+    );
+    final dirtyActivityTemplates =
+        dirtySortables[SortableType.basicActivity]?.length ?? 0;
+    final dirtyTimerTemplates =
+        dirtySortables[SortableType.basicTimer]?.length ?? 0;
 
-    final dirtySortables = await syncBloc.sortableRepository.db.getAllDirty();
-    for (var sortable in dirtySortables) {
-      if (sortable.model.data is BasicActivityData) {
-        dirtyActivityTemplates++;
-      } else if (sortable.model.data is BasicTimerData) {
-        dirtyTimerTemplates++;
-      }
-    }
-
-    final dirtyUserFiles = await syncBloc.userFileRepository.db.getAllDirty();
-    for (var userFile in dirtyUserFiles) {
-      if (userFile.model.isImage) {
-        dirtyPhotos++;
-      }
-    }
+    final dirtyPhotos = (await syncBloc.userFileRepository.db.getAllDirty())
+        .where((userFile) => userFile.model.isImage)
+        .length;
 
     final settingsDataDirty =
-        (await syncBloc.genericRepository.db.getAllDirty()).isNotEmpty;
+        await syncBloc.genericRepository.db.countAllDirty() > 0;
 
     final dirtyItems = DirtyItems(
       activities: dirtyActivities,

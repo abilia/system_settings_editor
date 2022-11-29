@@ -1,5 +1,5 @@
 import 'package:memoplanner/logging/all.dart';
-import 'package:sqflite/sqlite_api.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:collection/collection.dart';
 
 import 'package:memoplanner/models/all.dart';
@@ -17,6 +17,8 @@ abstract class DataDb<M extends DataModel> {
   DataDb(this.db);
 
   String get getAllDirtySql => 'SELECT * FROM $tableName WHERE dirty > 0';
+  String get countAllDirtySql =>
+      'SELECT COUNT(*) FROM $tableName WHERE dirty > 0';
   String get getByIdSql => 'SELECT * FROM $tableName WHERE id == ?';
   String get getAllNonDeletedSql =>
       'SELECT * FROM $tableName WHERE deleted == 0';
@@ -47,6 +49,9 @@ abstract class DataDb<M extends DataModel> {
     final result = await db.rawQuery(getAllDirtySql);
     return rowsToDbModels(result);
   }
+
+  Future<int> countAllDirty() async =>
+      Sqflite.firstIntValue(await db.rawQuery(countAllDirtySql)) ?? 0;
 
   Future<DbModel<M>?> getById(String id) async {
     final result = await db.rawQuery(getByIdSql, [id]);
