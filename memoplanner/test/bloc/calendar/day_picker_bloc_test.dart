@@ -36,6 +36,7 @@ void main() {
       emits(DayPickerState.forTest(
         theDayAfter,
         Occasion.future,
+        lastEvent: NextDay(),
       )),
     );
   });
@@ -47,6 +48,7 @@ void main() {
       emits(DayPickerState.forTest(
         thedayBefore,
         Occasion.past,
+        lastEvent: PreviousDay(),
       )),
     );
   });
@@ -60,10 +62,12 @@ void main() {
         DayPickerState.forTest(
           theDayAfter,
           Occasion.future,
+          lastEvent: NextDay(),
         ),
         DayPickerState.forTest(
           theDay,
           Occasion.current,
+          lastEvent: PreviousDay(),
         )
       ]),
     );
@@ -79,14 +83,17 @@ void main() {
         DayPickerState.forTest(
           theDayAfter,
           Occasion.future,
+          lastEvent: NextDay(),
         ),
         DayPickerState.forTest(
           theDayAfterTomorrow,
           Occasion.future,
+          lastEvent: NextDay(),
         ),
         DayPickerState.forTest(
           theDay,
           Occasion.current,
+          lastEvent: const CurrentDay(),
         ),
       ]),
     );
@@ -112,10 +119,12 @@ void main() {
         DayPickerState.forTest(
           dayLightSavingTime,
           Occasion.future,
+          lastEvent: NextDay(),
         ),
         DayPickerState.forTest(
           daysAfterDST,
           Occasion.future,
+          lastEvent: NextDay(),
         )
       ]),
     );
@@ -140,10 +149,12 @@ void main() {
         DayPickerState.forTest(
           daysAfterDST,
           Occasion.past,
+          lastEvent: PreviousDay(),
         ),
         DayPickerState.forTest(
           dayLightSavingTime,
           Occasion.past,
+          lastEvent: PreviousDay(),
         )
       ]),
     );
@@ -169,10 +180,12 @@ void main() {
         DayPickerState.forTest(
           dayLightSavingTime,
           Occasion.future,
+          lastEvent: NextDay(),
         ),
         DayPickerState.forTest(
           daysAfterDST,
           Occasion.future,
+          lastEvent: NextDay(),
         ),
       ]),
     );
@@ -197,10 +210,12 @@ void main() {
         DayPickerState.forTest(
           daysAfterDST,
           Occasion.past,
+          lastEvent: PreviousDay(),
         ),
         DayPickerState.forTest(
           dayLightSavingTime,
           Occasion.past,
+          lastEvent: PreviousDay(),
         ),
       ]),
     );
@@ -219,10 +234,12 @@ void main() {
         DayPickerState.forTest(
           theDayAfter,
           Occasion.future,
+          lastEvent: NextDay(),
         ),
         DayPickerState.forTest(
           theDay,
           Occasion.current,
+          lastEvent: const CurrentDay(),
         ),
       ]),
     );
@@ -291,6 +308,7 @@ void main() {
         DayPickerState.forTest(
           theDayAfter,
           Occasion.current,
+          lastEvent: TimeChanged(theDayAfter),
         ),
       ]),
     );

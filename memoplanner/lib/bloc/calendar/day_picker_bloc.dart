@@ -72,8 +72,8 @@ class DayPickerState extends Equatable {
 
   @override
   String toString() =>
-      'DayPickerState { day: ${yMd(day)}, index: $index, occasion: $occasion }';
+      'DayPickerState { day: ${yMd(day)}, index: $index, occasion: $occasion, lastEvent: $lastEvent }';
 
   @override
-  List<Object> get props => [day, occasion];
+  List<Object> get props => [day, occasion, lastEvent];
 }

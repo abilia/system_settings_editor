@@ -1409,5 +1409,46 @@ void main() {
           .firstWidget<TimepillarCalendar>(find.byType(TimepillarCalendar));
       expect(tp.timepillarState.showNightCalendar, true);
     });
+
+    testWidgets(
+        'SGC-2160 - Navigate to previous then to week and back to current day will show night',
+        (WidgetTester tester) async {
+      const dayActivity = 'dayActivity';
+      const nightActivity = 'nightActivity';
+      mockActivityDb.initWithActivities([
+        Activity.createNew(
+          startTime: DateTime(2022, 04, 26, 13, 00),
+          title: dayActivity,
+        ),
+        Activity.createNew(
+          startTime: DateTime(2022, 04, 27, 03, 00),
+          title: nightActivity,
+        ),
+      ]);
+      final currentTime = DateTime(2022, 04, 26, 23, 30);
+      mockTicker.add(currentTime);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.text(dayActivity), findsNothing);
+      expect(find.text(nightActivity), findsOneWidget);
+
+      await tester.tap(previousDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(find.text(dayActivity), findsOneWidget);
+      expect(find.text(nightActivity), findsNothing);
+
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(WeekCalendar), findsOneWidget);
+      final currentDayHeading =
+          '${currentTime.day}\n${const Translator(Locale('en')).translate.shortWeekday(currentTime.weekday)}';
+      await tester.tap(find.textContaining(currentDayHeading));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(OneTimepillarCalendar), findsOneWidget);
+      expect(find.text(dayActivity), findsNothing);
+      expect(find.text(nightActivity), findsOneWidget);
+    });
   });
 }
