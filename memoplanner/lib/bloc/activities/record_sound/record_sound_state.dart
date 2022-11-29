@@ -18,7 +18,7 @@ abstract class RecordedSoundState extends RecordSoundState {
   const RecordedSoundState(this.recordedFile, duration) : super(duration);
 
   @override
-  List<Object?> get props => [recordedFile];
+  List<Object?> get props => [recordedFile, duration];
 }
 
 class UnchangedRecordingSoundState extends RecordedSoundState {

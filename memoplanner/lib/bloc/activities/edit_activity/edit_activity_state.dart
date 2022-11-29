@@ -202,7 +202,3 @@ class StoredActivityState extends EditActivityState {
         day,
       );
 }
-
-class SavedActivityState extends StoredActivityState {
-  const SavedActivityState(super.activity, super.timeInterval, super.day);
-}

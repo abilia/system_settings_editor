@@ -9,7 +9,7 @@ class ActivityWizardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final pageController = PageController(initialPage: 0);
     return PopAwareDiscardListener(
-      discardDialogCondition: (context) =>
+      showDiscardDialogCondition: (context) =>
           !context.read<EditActivityCubit>().state.unchanged,
       child: PopOnSaveListener(
         child: ErrorPopupListener(

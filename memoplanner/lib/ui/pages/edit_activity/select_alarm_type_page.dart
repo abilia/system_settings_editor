@@ -9,12 +9,12 @@ class _SelectAlarmTypePage extends StatelessWidget {
   final ValueChanged<AlarmType?> onChanged;
   final List<Widget> trailing;
   final GestureTapCallback? onOk;
-  final bool Function() discardDialogCondition;
+  final bool Function() showDiscardDialogCondition;
 
   const _SelectAlarmTypePage({
     required this.alarm,
     required this.onChanged,
-    required this.discardDialogCondition,
+    required this.showDiscardDialogCondition,
     this.trailing = const <Widget>[],
     this.onOk,
     Key? key,
@@ -24,7 +24,7 @@ class _SelectAlarmTypePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return PopAwareDiscardListener(
-      discardDialogCondition: (_) => discardDialogCondition(),
+      showDiscardDialogCondition: (_) => showDiscardDialogCondition(),
       child: Scaffold(
         appBar: AbiliaAppBar(
           title: translate.selectAlarmType,
@@ -126,9 +126,9 @@ class _SelectAlarmTypePageState extends State<SelectAlarmTypePage> {
   @override
   Widget build(BuildContext context) => _SelectAlarmTypePage(
       alarm: newAlarm,
-      discardDialogCondition: () => false,
+      showDiscardDialogCondition: () => widget.alarm != newAlarm,
       onOk: newAlarm != widget.alarm
-          ? () => Navigator.of(context).maybePop(newAlarm)
+          ? () => Navigator.of(context).pop(newAlarm)
           : null,
       onChanged: (v) {
         if (v != null) setState(() => newAlarm = v);
@@ -148,23 +148,22 @@ class SelectAlarmPage extends StatefulWidget {
 }
 
 class _SelectAlarmPageState extends State<SelectAlarmPage> {
-  late Activity _activity, _originalActivity;
+  late Activity _activity;
 
   @override
   void initState() {
     super.initState();
     _activity = widget.activity;
-    _originalActivity = _activity;
   }
 
-  bool get unchanged => _originalActivity == _activity;
+  bool get _dirty => widget.activity != _activity;
 
   @override
   Widget build(BuildContext context) {
     return _SelectAlarmTypePage(
       alarm: _activity.alarm.typeSeagull,
-      discardDialogCondition: () => _originalActivity != _activity,
-      onOk: !unchanged ? _onOk : null,
+      showDiscardDialogCondition: () => _dirty,
+      onOk: _dirty ? () => Navigator.of(context).pop(_activity) : null,
       onChanged: _changeType,
       trailing: [
         const SizedBox(),
@@ -180,11 +179,6 @@ class _SelectAlarmPageState extends State<SelectAlarmPage> {
         RecordSoundWidget(activity: _activity, soundChanged: _changeRecording),
       ],
     );
-  }
-
-  void _onOk() {
-    _originalActivity = _activity;
-    Navigator.of(context).maybePop(_activity);
   }
 
   void _changeType(AlarmType? type) => setState(() {
