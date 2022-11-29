@@ -65,17 +65,6 @@ abstract class Translated {
   final String createAccountSubheading =
       'You need a myAbilia account to use MEMOplanner';
 
-  final String acceptTerms = 'I have read and agree to';
-
-  final String termsOfUse = 'terms of use';
-
-  final String termsOfUseUrl = 'intl/terms-of-use';
-
-  final String privacyPolicy = 'privacy policy';
-
-  final String privacyPolicyUrl =
-      'intl/policy-for-the-processing-of-personal-data';
-
   final String usernameHint = 'Username (phone number or email)';
 
   final String passwordHint = 'Password (minimum 12 characters)';
@@ -938,12 +927,25 @@ abstract class Translated {
   final String doYouWantToImportADefaultSet =
       'Do you want to import a default set of data with activities, timers, checklists and image archive?';
 
-  final String welcomeMemoplanner = 'Welcome to MEMOplanner 4';
+  final String welcomeTo = 'Welcome to';
 
   final String open = 'Open';
 
-  final String readAndAgree =
-      'To use MEMOplanner 4, please read and agree to the terms of use and privacy policy.';
+  final String readAndAgree1 = 'To use';
+
+  final String readAndAgree2 =
+      ', please read and agree to the terms of use and privacy policy.';
+
+  final String acceptTerms = 'I have read and agree to the';
+
+  final String termsOfUse = 'terms of use';
+
+  final String termsOfUseUrl = 'intl/terms-of-use';
+
+  final String privacyPolicy = 'privacy policy';
+
+  final String privacyPolicyUrl =
+      'intl/policy-for-the-processing-of-personal-data';
 
   final String welcome = 'Welcome!';
 
@@ -1028,21 +1030,6 @@ class SV extends Translated {
   @override
   final String createAccountSubheading =
       'Du behöver ett myAbilia-konto för att kunna använda MEMOplanner';
-
-  @override
-  final String acceptTerms = 'Jag har läst och godkänner';
-
-  @override
-  final String termsOfUse = 'användarvillkor';
-
-  @override
-  final String termsOfUseUrl = 'sv/anvandarvillkor';
-
-  @override
-  final String privacyPolicy = 'personuppgiftspolicy';
-
-  @override
-  final String privacyPolicyUrl = 'sv/personuppgiftspolicy';
 
   @override
   final String usernameHint = 'Användarnamn (telefonnummer eller e-post)';
@@ -2319,6 +2306,21 @@ class SV extends Translated {
       'Vill du importera startuppsättning av aktiviteter, timers, checklistor och bildarkiv?';
 
   @override
+  final String acceptTerms = 'Jag har läst och godkänner';
+
+  @override
+  final String termsOfUse = 'användarvillkor';
+
+  @override
+  final String termsOfUseUrl = 'sv/anvandarvillkor';
+
+  @override
+  final String privacyPolicy = 'personuppgiftspolicy';
+
+  @override
+  final String privacyPolicyUrl = 'sv/personuppgiftspolicy';
+
+  @override
   final String welcome = 'Välkommen!';
 
   @override
@@ -2403,22 +2405,6 @@ class DA extends Translated {
   @override
   final String createAccountSubheading =
       'Du har brug for en myAbilia-konto for at bruge MEMOplanner';
-
-  @override
-  final String acceptTerms = 'Jeg har læst og accepterer';
-
-  @override
-  final String termsOfUse = 'brugervillkår';
-
-  @override
-  final String termsOfUseUrl = 'intl/terms-of-use';
-
-  @override
-  final String privacyPolicy = 'persondatapolitik';
-
-  @override
-  final String privacyPolicyUrl =
-      'intl/policy-for-the-processing-of-personal-data';
 
   @override
   final String usernameHint = 'Brugernavn (telefon eller en e-mail)';
@@ -3698,6 +3684,22 @@ class DA extends Translated {
       'Ønsker du at importere startopsætning med aktiviteter, timer, tjeklister og billedarkiv?';
 
   @override
+  final String acceptTerms = 'Jeg har læst og accepterer';
+
+  @override
+  final String termsOfUse = 'brugervillkår';
+
+  @override
+  final String termsOfUseUrl = 'intl/terms-of-use';
+
+  @override
+  final String privacyPolicy = 'persondatapolitik';
+
+  @override
+  final String privacyPolicyUrl =
+      'intl/policy-for-the-processing-of-personal-data';
+
+  @override
   final String welcome = 'Velkommen!';
 
   @override
@@ -3783,22 +3785,6 @@ class NL extends Translated {
   @override
   final String createAccountSubheading =
       'U heeft een myAbilia-account nodig om MEMOplanner te gebruiken';
-
-  @override
-  final String acceptTerms = 'Ik heb gelezen en akkoord gegaan';
-
-  @override
-  final String termsOfUse = 'gebruiksvoorwaarden';
-
-  @override
-  final String termsOfUseUrl = 'intl/terms-of-use';
-
-  @override
-  final String privacyPolicy = 'privacybeleid';
-
-  @override
-  final String privacyPolicyUrl =
-      'intl/policy-for-the-processing-of-personal-data';
 
   @override
   final String usernameHint = 'Gebruikersnaam (telefoon of een e-mail)';
@@ -5082,6 +5068,22 @@ class NL extends Translated {
       'Wilt u een standaard dataset importeren met activiteiten, timers, checklists en afbeeldingenarchief?';
 
   @override
+  final String acceptTerms = 'Ik heb gelezen en akkoord gegaan';
+
+  @override
+  final String termsOfUse = 'gebruiksvoorwaarden';
+
+  @override
+  final String termsOfUseUrl = 'intl/terms-of-use';
+
+  @override
+  final String privacyPolicy = 'privacybeleid';
+
+  @override
+  final String privacyPolicyUrl =
+      'intl/policy-for-the-processing-of-personal-data';
+
+  @override
   final String welcome = 'Welkom!';
 
   @override
@@ -5167,22 +5169,6 @@ class FI extends Translated {
   @override
   final String createAccountSubheading =
       'Tarvitset myAbilia-tilin käyttääksesi MEMOplanneria';
-
-  @override
-  final String acceptTerms = 'Olen lukenut ja sopineet';
-
-  @override
-  final String termsOfUse = 'käyttöehdot';
-
-  @override
-  final String termsOfUseUrl = 'intl/terms-of-use';
-
-  @override
-  final String privacyPolicy = 'tietosuojakäytäntö';
-
-  @override
-  final String privacyPolicyUrl =
-      'intl/policy-for-the-processing-of-personal-data';
 
   @override
   final String usernameHint = 'Käyttäjätunnus (puhelin tai sähköpostiosoite)';
@@ -6460,6 +6446,22 @@ class FI extends Translated {
       'Haluatko tuoda oletustiedot aktiviteettien, ajastimien, tarkistusluettelojen ja kuva-arkiston mukana?';
 
   @override
+  final String acceptTerms = 'Olen lukenut ja sopineet';
+
+  @override
+  final String termsOfUse = 'käyttöehdot';
+
+  @override
+  final String termsOfUseUrl = 'intl/terms-of-use';
+
+  @override
+  final String privacyPolicy = 'tietosuojakäytäntö';
+
+  @override
+  final String privacyPolicyUrl =
+      'intl/policy-for-the-processing-of-personal-data';
+
+  @override
   final String welcome = 'Tervetuloa!';
 
   @override
@@ -6546,22 +6548,6 @@ class DE extends Translated {
   @override
   final String createAccountSubheading =
       'Sie benötigen ein myAbilia-Konto, um MEMOplanner verwenden zu können';
-
-  @override
-  final String acceptTerms = 'Ich habe gelesen und bin damit einverstanden';
-
-  @override
-  final String termsOfUse = 'nutzungsbedingungen';
-
-  @override
-  final String termsOfUseUrl = 'intl/terms-of-use';
-
-  @override
-  final String privacyPolicy = 'datenschutzbestimmungen';
-
-  @override
-  final String privacyPolicyUrl =
-      'intl/policy-for-the-processing-of-personal-data';
 
   @override
   final String usernameHint = 'Benutzername (telefon oder E-Mail)';
@@ -7848,6 +7834,22 @@ class DE extends Translated {
       'Möchten Sie einen Standard-Datenbestand mit aktivitäten, Timern, Checklisten und Bildarchiv importieren?';
 
   @override
+  final String acceptTerms = 'Ich habe gelesen und bin damit einverstanden';
+
+  @override
+  final String termsOfUse = 'nutzungsbedingungen';
+
+  @override
+  final String termsOfUseUrl = 'intl/terms-of-use';
+
+  @override
+  final String privacyPolicy = 'datenschutzbestimmungen';
+
+  @override
+  final String privacyPolicyUrl =
+      'intl/policy-for-the-processing-of-personal-data';
+
+  @override
   final String welcome = 'Willkommen!';
 
   @override
@@ -7934,21 +7936,6 @@ class NB extends Translated {
   @override
   final String createAccountSubheading =
       'Du trenger en myAbilia-konto for å bruke MEMOplanner';
-
-  @override
-  final String acceptTerms = 'Jeg har lest og godtar';
-
-  @override
-  final String termsOfUse = 'brukervillkår';
-
-  @override
-  final String termsOfUseUrl = 'nb/brukervilkar';
-
-  @override
-  final String privacyPolicy = 'personvernerklæring';
-
-  @override
-  final String privacyPolicyUrl = 'nb/personvernerklaering';
 
   @override
   final String usernameHint = 'Brukernavn (telefon eller en e-post)';
@@ -9224,6 +9211,21 @@ class NB extends Translated {
   @override
   final String doYouWantToImportADefaultSet =
       'Ønsker du å importere startoppsett av aktiviteter, timere, sjekklister og bildearkiv?';
+
+  @override
+  final String acceptTerms = 'Jeg har lest og godtar';
+
+  @override
+  final String termsOfUse = 'brukervillkår';
+
+  @override
+  final String termsOfUseUrl = 'nb/brukervilkar';
+
+  @override
+  final String privacyPolicy = 'personvernerklæring';
+
+  @override
+  final String privacyPolicyUrl = 'nb/personvernerklaering';
 
   @override
   final String welcome = 'Velkommen!';
