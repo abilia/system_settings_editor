@@ -14,10 +14,15 @@ class RecordSoundPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final initialState = context.read<RecordSoundCubit>().state;
+    final initialRecording =
+        context.read<RecordSoundCubit>().state.recordedFile;
     return PopAwareDiscardListener(
-      showDiscardDialogCondition: (context) =>
-          initialState != context.read<RecordSoundCubit>().state,
+      showDiscardDialogCondition: (context) {
+        final recordSoundState = context.read<RecordSoundCubit>().state;
+        final fileChanged = initialRecording != recordSoundState.recordedFile;
+        final isRecording = recordSoundState is RecordingSoundState;
+        return fileChanged || isRecording;
+      },
       child: Scaffold(
         appBar: AbiliaAppBar(
           title: title,

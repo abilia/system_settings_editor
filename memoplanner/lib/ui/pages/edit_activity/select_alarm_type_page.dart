@@ -126,7 +126,7 @@ class _SelectAlarmTypePageState extends State<SelectAlarmTypePage> {
   @override
   Widget build(BuildContext context) => _SelectAlarmTypePage(
       alarm: newAlarm,
-      showDiscardDialogCondition: () => widget.alarm != newAlarm,
+      showDiscardDialogCondition: () => false,
       onOk: newAlarm != widget.alarm
           ? () => Navigator.of(context).pop(newAlarm)
           : null,
