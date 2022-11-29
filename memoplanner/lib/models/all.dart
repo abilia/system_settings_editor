@@ -29,5 +29,6 @@ export 'abilia_timer.dart';
 export 'calendar.dart';
 export 'support_person.dart';
 export 'session.dart';
+export 'terms_of_use.dart';
 
 typedef ActionIntentStream = Stream<String>;
