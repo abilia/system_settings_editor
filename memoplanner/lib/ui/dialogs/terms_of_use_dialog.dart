@@ -47,14 +47,16 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
             SizedBox(height: layout.termsOfUseDialog.imageHeadingDistance),
             Tts(
               child: Text(
-                translate.welcomeMemoplanner,
+                '${translate.welcomeTo} ${Config.flavor.name}',
                 style: Theme.of(context).textTheme.headline6,
               ),
             ),
             SizedBox(height: layout.termsOfUseDialog.headingTextDistance),
             Tts(
               child: Text(
-                translate.readAndAgree,
+                '${translate.readAndAgree1} '
+                '${Config.flavor.name}'
+                '${translate.readAndAgree2}',
                 style: Theme.of(context).textTheme.bodyText2,
               ),
             ),
