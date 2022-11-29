@@ -24,7 +24,6 @@ class TemplateActivityWizardCubit extends WizardCubit {
     final item = BasicActivityDataItem.fromActivity(activity);
     final sortable = original.copyWith(data: item);
     sortableBloc.add(SortableUpdated(sortable));
-
     emit(state.saveSuccess());
   }
 

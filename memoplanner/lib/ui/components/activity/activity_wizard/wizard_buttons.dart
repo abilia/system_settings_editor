@@ -20,18 +20,19 @@ class PreviousWizardStepButton extends StatelessWidget {
   const PreviousWizardStepButton({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      context.read<WizardCubit>().state.isFirstStep
-          ? context.read<EditActivityCubit>().state is StoredActivityState ||
-                  context.read<WizardCubit>() is TemplateActivityWizardCubit
-              ? const CancelButton()
-              : PreviousButton(
-                  onPressed: () {
-                    Navigator.of(context).maybePop();
-                    context.read<WizardCubit>().previous();
-                  },
-                )
-          : PreviousButton(onPressed: context.read<WizardCubit>().previous);
+  Widget build(BuildContext context) {
+    final wizardCubit = context.read<WizardCubit>();
+    if (wizardCubit.state.isFirstStep) {
+      final editActivityState = context.read<EditActivityCubit>().state;
+      final isStored = editActivityState is StoredActivityState;
+      final isTemplate = wizardCubit is TemplateActivityWizardCubit;
+
+      return isStored || isTemplate
+          ? const CancelButton()
+          : const PreviousButton();
+    }
+    return PreviousButton(onPressed: context.read<WizardCubit>().previous);
+  }
 }
 
 class NextWizardStepButton extends StatelessWidget {

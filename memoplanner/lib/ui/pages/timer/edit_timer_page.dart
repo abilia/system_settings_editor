@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/listener/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
@@ -10,23 +11,27 @@ class EditTimerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
 
-    return _EditTimerPage(
-      title: t.newTimer,
-      icon: AbiliaIcons.stopWatch,
-      bottomNavigation: BottomNavigation(
-        backNavigationWidget: const PreviousButton(),
-        forwardNavigationWidget:
-            BlocSelector<EditTimerCubit, EditTimerState, Duration>(
-          selector: (state) => state.duration,
-          builder: (context, duration) => StartButton(
-            onPressed: duration.inMinutes > 0
-                ? context.read<EditTimerCubit>().start
-                : () => showViewDialog(
-                      context: context,
-                      builder: (context) => ErrorDialog(
-                        text: t.timerInvalidDuration,
+    return PopAwareDiscardListener(
+      showDiscardDialogCondition: (context) =>
+          !context.read<EditTimerCubit>().state.unchanged,
+      child: _EditTimerPage(
+        title: t.newTimer,
+        icon: AbiliaIcons.stopWatch,
+        bottomNavigation: BottomNavigation(
+          backNavigationWidget: const PreviousButton(),
+          forwardNavigationWidget:
+              BlocSelector<EditTimerCubit, EditTimerState, Duration>(
+            selector: (state) => state.duration,
+            builder: (context, duration) => StartButton(
+              onPressed: duration.inMinutes > 0
+                  ? context.read<EditTimerCubit>().start
+                  : () => showViewDialog(
+                        context: context,
+                        builder: (context) => ErrorDialog(
+                          text: t.timerInvalidDuration,
+                        ),
                       ),
-                    ),
+            ),
           ),
         ),
       ),
@@ -46,23 +51,27 @@ class EditBasicTimerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
 
-    return _EditTimerPage(
-      title: title,
-      icon: AbiliaIcons.basicTimers,
-      bottomNavigation: BottomNavigation(
-        backNavigationWidget: const CancelButton(),
-        forwardNavigationWidget:
-            BlocSelector<EditTimerCubit, EditTimerState, Duration>(
-          selector: (state) => state.duration,
-          builder: (context, duration) => SaveButton(
-            onPressed: duration.inMinutes > 0
-                ? () => context.read<EditTimerCubit>().save()
-                : () => showViewDialog(
-                      context: context,
-                      builder: (context) => ErrorDialog(
-                        text: t.timerInvalidDuration,
+    return PopAwareDiscardListener(
+      showDiscardDialogCondition: (context) =>
+          !context.read<EditTimerCubit>().state.unchanged,
+      child: _EditTimerPage(
+        title: title,
+        icon: AbiliaIcons.basicTimers,
+        bottomNavigation: BottomNavigation(
+          backNavigationWidget: const CancelButton(),
+          forwardNavigationWidget:
+              BlocSelector<EditTimerCubit, EditTimerState, Duration>(
+            selector: (state) => state.duration,
+            builder: (context, duration) => SaveButton(
+              onPressed: duration.inMinutes > 0
+                  ? () => context.read<EditTimerCubit>().save()
+                  : () => showViewDialog(
+                        context: context,
+                        builder: (context) => ErrorDialog(
+                          text: t.timerInvalidDuration,
+                        ),
                       ),
-                    ),
+            ),
           ),
         ),
       ),

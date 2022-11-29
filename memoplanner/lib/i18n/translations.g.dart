@@ -961,6 +961,13 @@ abstract class Translated {
   final String finsish = 'Finish';
 
   final String notSelected = 'Not selected';
+
+  final String confirmDiscard =
+      'Are you sure you want to discard your changes?';
+
+  final String keepEditing = 'Keep editing';
+
+  final String discard = 'Discard';
 }
 
 class EN extends Translated {

@@ -1,4 +1,5 @@
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/listener/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -98,19 +99,23 @@ class SelectAlarmPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SelectAlarmTypePage(
-      onOk: () => Navigator.of(context)
-          .pop(context.read<EditActivityCubit>().state.activity),
-      trailing: [
-        const SizedBox(),
-        const Divider(),
-        SizedBox(height: layout.formPadding.verticalItemDistance),
-        const AlarmOnlyAtStartSwitch(),
-        SizedBox(height: layout.formPadding.verticalItemDistance),
-        const Divider(),
-        SizedBox(height: layout.formPadding.groupTopDistance),
-        const RecordSoundWidget(),
-      ],
+    return PopAwareDiscardListener(
+      showDiscardDialogCondition: (context) =>
+          !context.read<EditActivityCubit>().state.unchanged,
+      child: SelectAlarmTypePage(
+        onOk: () => Navigator.of(context)
+            .pop(context.read<EditActivityCubit>().state.activity),
+        trailing: [
+          const SizedBox(),
+          const Divider(),
+          SizedBox(height: layout.formPadding.verticalItemDistance),
+          const AlarmOnlyAtStartSwitch(),
+          SizedBox(height: layout.formPadding.verticalItemDistance),
+          const Divider(),
+          SizedBox(height: layout.formPadding.groupTopDistance),
+          const RecordSoundWidget(),
+        ],
+      ),
     );
   }
 }

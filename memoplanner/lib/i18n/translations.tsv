@@ -505,3 +505,8 @@ step	Step	Steg	Trin	Stap	Vaihe	Schritt	Trinn
 downloadVoiceText	Download voice for speech support	Ladda ner röst för talstöd	Download stemme til stemmerapport	Dowload stem voor spraakondersteuning	Lataa ääni puhetukea varten	Stimme für Sprachunterstützung herunterladen	Last ned stemme for talestøtte
 finsish	Finish	Slutför	Afslut	Voltooien	Lopeta	Abschließen	Ferdig
 notSelected	Not selected	Inte valt	Ikke valgt	Niet geselecteerd	Ei valittu	Nicht ausgewählt	Ikke valgt
+							
+### Discard							
+confirmDiscard	Are you sure you want to discard your changes?						
+keepEditing	Keep editing						
+discard	Discard						
