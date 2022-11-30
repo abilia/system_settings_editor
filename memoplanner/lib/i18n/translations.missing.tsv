@@ -20,3 +20,11 @@ timerTemplatePlural	timer templates
 photoSingular	photo						
 photoPlural	photos						
 settingsData	Settings data						
+licenseExpiredLogOutWarning	License is expired, all data will be lost if you log out						
+welcomeTo	Welcome to						
+open	Open						
+readAndAgree1	To use						
+readAndAgree2	, please read and agree to the terms of use and privacy policy.						
+confirmDiscard	Are you sure you want to discard your changes?						
+keepEditing	Keep editing						
+discard	Discard						

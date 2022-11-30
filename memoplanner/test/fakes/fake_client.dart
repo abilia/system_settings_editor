@@ -16,6 +16,7 @@ typedef GenericResponse = Iterable<Generic> Function();
 typedef TimerResponse = Iterable<AbiliaTimer> Function();
 typedef VoicesResponse = Iterable<Map<String, dynamic>> Function();
 typedef SessionsResponse = Iterable<Session> Function();
+typedef TermsOfUseResponse = TermsOfUse Function();
 
 class Fakes {
   Fakes._();
@@ -36,6 +37,7 @@ class Fakes {
     VoicesResponse? voicesResponse,
     Response Function()? licenseResponse,
     SessionsResponse? sessionsResponse,
+    TermsOfUseResponse? termsOfUseResponse,
   }) =>
       ListenableMockClient(
         (r) {
@@ -128,6 +130,13 @@ class Fakes {
             response = Response(
                 json.encode(
                     (sessionsResponse?.call() ?? fakeSessions).toList()),
+                200);
+          }
+
+          if (pathSegments.containsAll(['entity', 'acknowledgments'])) {
+            response = Response(
+                json.encode((termsOfUseResponse?.call().toMap() ??
+                    TermsOfUse.accepted().toMap())),
                 200);
           }
 

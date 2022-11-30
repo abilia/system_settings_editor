@@ -3,11 +3,13 @@ import 'package:memoplanner/ui/all.dart';
 class BottomNavigation extends StatelessWidget {
   final Widget backNavigationWidget;
   final Widget? forwardNavigationWidget;
+  final Color color;
   final bool useVerticalSafeArea;
 
   const BottomNavigation({
     required this.backNavigationWidget,
     this.forwardNavigationWidget,
+    this.color = ViewDialog.dark,
     this.useVerticalSafeArea = true,
     Key? key,
   }) : super(key: key);
@@ -15,8 +17,9 @@ class BottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final forwardNavigationWidget = this.forwardNavigationWidget;
-    return _BottomNavigation(
+    return _BottomNavigationContainer(
       useVerticalSafeArea: useVerticalSafeArea,
+      color: color,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -32,20 +35,22 @@ class BottomNavigation extends StatelessWidget {
   }
 }
 
-class _BottomNavigation extends StatelessWidget {
+class _BottomNavigationContainer extends StatelessWidget {
+  final Widget child;
+  final Color color;
   final bool useVerticalSafeArea;
-  const _BottomNavigation({
+
+  const _BottomNavigationContainer({
     required this.child,
+    required this.color,
     this.useVerticalSafeArea = true,
     Key? key,
   }) : super(key: key);
 
-  final Widget child;
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AbiliaColors.black80,
+      color: color,
       child: SafeArea(
         top: useVerticalSafeArea,
         bottom: useVerticalSafeArea,

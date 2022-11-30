@@ -242,6 +242,7 @@ class LayoutMedium extends Layout {
           selector: const SelectorLayoutMedium(),
           startupPage: const StartupPageLayoutMedium(),
           starterSetDialog: const StarterSetDialogLayoutMedium(),
+          termsOfUseDialog: const TermsOfUseDialogLayoutMedium(),
           progressIndicator: const ProgressIndicatorLayoutMedium(),
           supportPerson: const SupportPersonLayoutMedium(),
           about: const AboutLayoutMedium(),

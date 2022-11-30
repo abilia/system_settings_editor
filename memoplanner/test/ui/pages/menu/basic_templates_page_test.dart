@@ -302,6 +302,50 @@ void main() {
         expect(dataItem.basicTimerTitle, newTitle);
         expect(dataItem.duration, const Duration(minutes: 19).inMilliseconds);
       });
+
+      testWidgets(
+          'Edit an activity and clicking cancel triggers discard warning dialog',
+          (tester) async {
+        await tester.goToTemplates();
+        await tester.tap(find.text(activityNameOne));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.edit));
+        await tester.pumpAndSettle();
+
+        // Change title
+        const newTitle = 'newActivtyTitle';
+        await tester.ourEnterText(
+          find.byKey(TestKey.editTitleTextFormField),
+          newTitle,
+        );
+
+        await tester.tap(find.byType(CancelButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(DiscardWarningDialog), findsOneWidget);
+      });
+
+      testWidgets(
+          'Edit a timer and clicking cancel triggers discard warning dialog',
+          (tester) async {
+        await tester.goToTemplates();
+        await tester.tap(find.byIcon(AbiliaIcons.stopWatch));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text(timerTitle));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.edit));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditBasicTimerPage), findsOneWidget);
+
+        // Change title
+        await tester.ourEnterText(
+          find.byType(AbiliaTextInput),
+          'new title',
+        );
+
+        await tester.tap(find.byType(CancelButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(DiscardWarningDialog), findsOneWidget);
+      });
     });
 
     group('Create Basic templates', () {
@@ -374,6 +418,41 @@ void main() {
         final dataItem = sortable.data as BasicTimerDataItem;
         expect(dataItem.basicTimerTitle, enteredTitle);
         expect(dataItem.duration, duration);
+      });
+
+      testWidgets(
+          'Create an activity and clicking cancel triggers discard warning dialog',
+          (tester) async {
+        const title = 'a brand new title';
+        await tester.goToTemplates();
+        await tester.tap(find.byType(AddTemplateButton));
+        await tester.pumpAndSettle();
+        await tester.ourEnterText(
+          find.byKey(TestKey.editTitleTextFormField),
+          title,
+        );
+        await tester.tap(find.byType(CancelButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(DiscardWarningDialog), findsOneWidget);
+      });
+
+      testWidgets(
+          'Create a timer and clicking cancel triggers discard warning dialog',
+          (tester) async {
+        await tester.goToTemplates();
+        await tester.tap(find.byIcon(AbiliaIcons.stopWatch));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byType(AddTemplateButton));
+        await tester.pumpAndSettle();
+        await tester.ourEnterText(
+          find.byType(AbiliaTextInput),
+          'a basic timer',
+        );
+
+        await tester.tap(find.byType(CancelButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(DiscardWarningDialog), findsOneWidget);
       });
     });
   }, skip: !Config.isMP);

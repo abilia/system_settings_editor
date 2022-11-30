@@ -20,11 +20,6 @@ createAccountHint	Don’t have a myAbilia account yet?	Har du inte ett myAbilia 
 createAccount	Create Account	Skapa konto	Opret konto	Maak account	Luo tili	Benutzerkonto erstellen	Opprett konto
 createAccountHeading	Create your account in myAbilia	Skapa ditt konto i myAbilia	Opret din konto i myAbilia	Creëer uw account in myAbilia	Luo tili myAbiliassa	Erstellen Sie Ihr Konto in myAbilia	Opprett kontoen din i myAbilia
 createAccountSubheading	You need a myAbilia account to use MEMOplanner	Du behöver ett myAbilia-konto för att kunna använda MEMOplanner	Du har brug for en myAbilia-konto for at bruge MEMOplanner	U heeft een myAbilia-account nodig om MEMOplanner te gebruiken	Tarvitset myAbilia-tilin käyttääksesi MEMOplanneria	Sie benötigen ein myAbilia-Konto, um MEMOplanner verwenden zu können	Du trenger en myAbilia-konto for å bruke MEMOplanner
-acceptTerms	I have read and agree to	Jag har läst och godkänner	Jeg har læst og accepterer	Ik heb gelezen en akkoord gegaan	Olen lukenut ja sopineet	Ich habe gelesen und bin damit einverstanden	Jeg har lest og godtar
-termsOfUse	terms of use	användarvillkor	brugervillkår	gebruiksvoorwaarden	käyttöehdot	nutzungsbedingungen	brukervillkår
-termsOfUseUrl	intl/terms-of-use	sv/anvandarvillkor	intl/terms-of-use	intl/terms-of-use	intl/terms-of-use	intl/terms-of-use	nb/brukervilkar
-privacyPolicy	privacy policy	personuppgiftspolicy	persondatapolitik	privacybeleid	tietosuojakäytäntö	datenschutzbestimmungen	personvernerklæring
-privacyPolicyUrl	intl/policy-for-the-processing-of-personal-data	sv/personuppgiftspolicy	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	nb/personvernerklaering
 usernameHint	Username (phone number or email)	Användarnamn (telefonnummer eller e-post)	Brugernavn (telefon eller en e-mail)	Gebruikersnaam (telefoon of een e-mail)	Käyttäjätunnus (puhelin tai sähköpostiosoite)	Benutzername (telefon oder E-Mail)	Brukernavn (telefon eller en e-post)
 passwordHint	Password (minimum 12 characters)	Lösenord (minst 12 tecken)	Adgangskode (mindst 12 tegn)	Wachtwoord (minimaal 12 tekens)	Salasanassa (vähintään 12 merkkiä)	Passwort (mindestens 12 Zeichen)	Passord (minimum 12 tegn)
 confirmPassword	Confirm password	Bekräfta lösenordet	Bekræft adgangskoden	Wachtwoord bevestigen	Vahvista salasana	Passwort bestätigen	Bekreft passordet
@@ -240,7 +235,7 @@ vibrationIfAvailable	Vibration (if available)	Vibration (om tillgängligt)	Vibra
 noAlarm	No alarm	Inget larm	Ingen alarm	Geen alarm	Ei hälytystä	Kein Alarm	Ingen alarm
 silentAlarm	Silent alarm	Tyst larm	Stille alarm	Stil alarm	Äänetön hälytys	Stiller Alarm	Stille alarm
 alarmOnlyAtStartTime	Alarm only at Start time	Larm endast vid starttid	Kun alarm ved starttidspunkt	Alarm alleen op begintijd	Vain hälytys alkamisaikaan	Alarm nur zur Startzeit	Alarm kun på starttid
-alertAlarmsDisabled	All alarms will be disabled until midnight on this device	Alla larm kommer att inaktiveras fram till midnatt på den här enheten	Alle alarmer vill være deaktivert til midnatt på denne enheten	Alle alarmen worden tot middernacht uitgeschakeld op dit toestel	Kaikki tämän laitteen hälytykset poistetaan käytöstä keskiyöhön asti	Alle Alarme auf diesem Gerät werden bis Mitternacht deaktiviert	Alle alarmer deaktiveres indtil midat på denne enhed
+alertAlarmsDisabled	All alarms will be disabled until midnight on this device	Alla larm kommer att inaktiveras fram till midnatt på den här enheten	Alle alarmer deaktiveres indtil midnat på denne enhed	Alle alarmen worden tot middernacht uitgeschakeld op dit toestel	Kaikki tämän laitteen hälytykset poistetaan käytöstä keskiyöhön asti	Alle Alarme auf diesem Gerät werden bis Mitternacht deaktiviert	Alle alarmer vil være deaktivert til midnatt på denne enheten
 disableAlarms	Disable alarms	Inaktivera larm	Deaktiver alarmer	Alarmen uitschakelen	Poista hälytykset käytöstä	Alarme deaktivieren	Deaktiver alarmer
 							
 ### Select picture							
@@ -513,6 +508,17 @@ doYouWantToDeleteThisPhoto	Are you sure you want to delete this photo?	Är du s�
 installStarterSet	Install starter set?	Installera startuppsättning?	Vil du installere startersættet?	Standaard dataset installeren?	Aseta aloitussarja	Einstiegspaket installieren?	Installere startoppsett?
 doYouWantToImportADefaultSet	Do you want to import a default set of data with activities, timers, checklists and image archive?	Vill du importera startuppsättning av aktiviteter, timers, checklistor och bildarkiv?	Ønsker du at importere startopsætning med aktiviteter, timer, tjeklister og billedarkiv?	Wilt u een standaard dataset importeren met activiteiten, timers, checklists en afbeeldingenarchief?	Haluatko tuoda oletustiedot aktiviteettien, ajastimien, tarkistusluettelojen ja kuva-arkiston mukana?	Möchten Sie einen Standard-Datenbestand mit aktivitäten, Timern, Checklisten und Bildarchiv importieren?	Ønsker du å importere startoppsett av aktiviteter, timere, sjekklister og bildearkiv?
 							
+### Terms of use							
+welcomeTo	Welcome to						
+open	Open						
+readAndAgree1	To use						
+readAndAgree2	, please read and agree to the terms of use and privacy policy.						
+acceptTerms	I have read and agree to the	Jag har läst och godkänner	Jeg har læst og accepterer	Ik heb gelezen en akkoord gegaan	Olen lukenut ja sopineet	Ich habe gelesen und bin damit einverstanden	Jeg har lest og godtar
+termsOfUse	terms of use	användarvillkor	brugervillkår	gebruiksvoorwaarden	käyttöehdot	nutzungsbedingungen	brukervillkår
+termsOfUseUrl	intl/terms-of-use	sv/anvandarvillkor	intl/terms-of-use	intl/terms-of-use	intl/terms-of-use	intl/terms-of-use	nb/brukervilkar
+privacyPolicy	privacy policy	personuppgiftspolicy	persondatapolitik	privacybeleid	tietosuojakäytäntö	datenschutzbestimmungen	personvernerklæring
+privacyPolicyUrl	intl/policy-for-the-processing-of-personal-data	sv/personuppgiftspolicy	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	nb/personvernerklaering
+							
 ### Start guide							
 welcome	Welcome!	Välkommen!	Velkommen!	Welkom!	Tervetuloa!	Willkommen!	Velkommen!
 welcomeText	This guide will help you get started with MEMOplanner.	Den här guiden hjälper dig att komma igång med MEMOplanner.	Denne guide vil hjælpe dig med at komme i gang med MEMOplanner.	Deze gids helpt u om aan de slag te gaan met MEMOplanner.	Tämä opas auttaa aloittamaan Memoplannerin käytön.	Dieser Assistent hilft Ihnen bei den ersten Schritten mit MEMOplanner.	Denne guiden vil hjelpe deg å komme i gang med MEMOplanner.
@@ -521,3 +527,8 @@ step	Step	Steg	Trin	Stap	Vaihe	Schritt	Trinn
 downloadVoiceText	Download voice for speech support	Ladda ner röst för talstöd	Download stemme til stemmerapport	Dowload stem voor spraakondersteuning	Lataa ääni puhetukea varten	Stimme für Sprachunterstützung herunterladen	Last ned stemme for talestøtte
 finsish	Finish	Slutför	Afslut	Voltooien	Lopeta	Abschließen	Ferdig
 notSelected	Not selected	Inte valt	Ikke valgt	Niet geselecteerd	Ei valittu	Nicht ausgewählt	Ikke valgt
+							
+### Discard							
+confirmDiscard	Are you sure you want to discard your changes?						
+keepEditing	Keep editing						
+discard	Discard						

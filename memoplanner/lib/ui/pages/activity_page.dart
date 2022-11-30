@@ -153,7 +153,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
           providers: authProviders,
           child: BlocProvider<EditActivityCubit>(
             create: (_) => EditActivityCubit.edit(activityDay),
-            child: SelectAlarmPage(activity: activity),
+            child: const SelectAlarmPage(),
           ),
         ),
         settings: const RouteSettings(name: 'SelectAlarmPage'),

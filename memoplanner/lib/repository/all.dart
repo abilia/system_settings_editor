@@ -11,3 +11,4 @@ export 'device_repository.dart';
 export 'json_response.dart';
 export 'directories.dart';
 export 'remote_alarm.dart';
+export 'terms_of_use_repository.dart';

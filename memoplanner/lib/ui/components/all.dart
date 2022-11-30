@@ -42,5 +42,5 @@ export 'new_activity_widget.dart';
 export 'new_timer_widget.dart';
 export 'ellipses_text.dart';
 export 'info_row.dart';
-
+export 'accept_terms_switch.dart';
 export 'package:flutter/semantics.dart';

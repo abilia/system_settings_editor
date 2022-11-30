@@ -544,7 +544,6 @@ void main() {
                   find.byKey(const ObjectKey(TestKey.alarmAtStartSwitch)))
               .onChanged,
           isNull);
-      expect(tester.widget<OkButton>(okButtonFinder).onPressed, isNull);
     });
 
     testWidgets('Alarm on start time changes', (WidgetTester tester) async {
@@ -580,6 +579,26 @@ void main() {
 
       // Assert
       expect(find.byType(SelectRecurrentTypePage), findsNothing);
+    });
+
+    testWidgets(
+        'Changing alarm and clicking cancel triggers discard warning dialog',
+        (WidgetTester tester) async {
+      // Arrange
+      mockActivityDb.initWithActivity(
+          FakeActivity.starts(startTime).copyWith(alarmType: noAlarm));
+
+      // Act
+      await navigateToActivityPage(tester);
+      await tester.tap(alarmButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(vibrationRadioButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(cancelButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byType(DiscardWarningDialog), findsOneWidget);
     });
   });
 

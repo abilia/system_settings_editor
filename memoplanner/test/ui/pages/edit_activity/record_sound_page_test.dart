@@ -156,6 +156,27 @@ void main() {
       verify(() => mockRecorder.stop());
       expect(find.byType(PlayRecordingButton), findsOneWidget);
     });
+
+    testWidgets(
+        'Recording a sound and clicking cancel triggers discard warning dialog',
+        (WidgetTester tester) async {
+      setupPermissions({
+        Permission.microphone: PermissionStatus.granted,
+      });
+      await tester.pumpWidget(
+        wrapWithMaterialApp(const RecordSoundPage(title: '')),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(RecordAudioButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(StopButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(CancelButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(DiscardWarningDialog), findsOneWidget);
+    });
   });
 
   group('display duration tests', () {

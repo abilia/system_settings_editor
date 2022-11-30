@@ -46,3 +46,4 @@ export 'timer_card_layout.dart';
 export 'text_input_page_layout.dart';
 export 'image_archive_layout.dart';
 export 'info_row.dart';
+export 'terms_of_use_dialog_layout.dart';

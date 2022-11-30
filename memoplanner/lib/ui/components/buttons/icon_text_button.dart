@@ -240,27 +240,33 @@ class CloseButton extends StatelessWidget {
 }
 
 class YesButton extends StatelessWidget {
-  const YesButton({Key? key}) : super(key: key);
+  final Function()? onPressed;
+  const YesButton({this.onPressed, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GreenButton(
       text: Translator.of(context).translate.yes,
       icon: AbiliaIcons.ok,
-      onPressed: () => Navigator.of(context).maybePop(true),
+      onPressed: () => onPressed != null
+          ? onPressed?.call()
+          : Navigator.of(context).maybePop(true),
     );
   }
 }
 
 class NoButton extends StatelessWidget {
-  const NoButton({Key? key}) : super(key: key);
+  final Function()? onPressed;
+  const NoButton({this.onPressed, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return LightButton(
       text: Translator.of(context).translate.no,
       icon: AbiliaIcons.closeProgram,
-      onPressed: () => Navigator.of(context).maybePop(false),
+      onPressed: () => onPressed != null
+          ? onPressed?.call()
+          : Navigator.of(context).maybePop(false),
     );
   }
 }

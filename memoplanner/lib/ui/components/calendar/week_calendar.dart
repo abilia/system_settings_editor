@@ -44,32 +44,18 @@ class WeekCalendar extends StatelessWidget {
       child: PageView.builder(
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, item) => Builder(
+        itemBuilder: (context, index) => Builder(
           builder: (context) {
-            final weekCalendarCubit = context.watch<WeekCalendarCubit>();
+            final currentWeek = context.watch<WeekCalendarCubit>().state;
             final weekDisplayDays = context.select(
                 (MemoplannerSettingsBloc bloc) =>
                     bloc.state.weekCalendar.weekDisplayDays);
             final numberOfDays = weekDisplayDays.numberOfDays();
 
-            final currentWeek = weekCalendarCubit.state;
-            if (item == currentWeek.index) {
-              return WeekCalendarPage(
-                numberOfDays: numberOfDays,
-                weekStart: currentWeek.currentWeekStart,
-                weekDisplayDays: weekDisplayDays,
-                currentWeekEvents: currentWeek.currentWeekEvents,
-                fullDayActivities: currentWeek.fullDayActivities,
-              );
-            }
-
-            final previousWeek = weekCalendarCubit.previousState;
             return WeekCalendarPage(
               numberOfDays: numberOfDays,
-              weekStart: previousWeek.currentWeekStart,
               weekDisplayDays: weekDisplayDays,
-              currentWeekEvents: previousWeek.currentWeekEvents,
-              fullDayActivities: previousWeek.fullDayActivities,
+              isCurrentState: index == currentWeek.index,
             );
           },
         ),
@@ -81,21 +67,28 @@ class WeekCalendar extends StatelessWidget {
 class WeekCalendarPage extends StatelessWidget {
   const WeekCalendarPage({
     required this.numberOfDays,
-    required this.weekStart,
     required this.weekDisplayDays,
-    required this.currentWeekEvents,
-    required this.fullDayActivities,
+    required this.isCurrentState,
     Key? key,
   }) : super(key: key);
 
   final int numberOfDays;
-  final DateTime weekStart;
   final WeekDisplayDays weekDisplayDays;
-  final Map<int, List<EventOccasion>> currentWeekEvents;
-  final Map<int, List<ActivityOccasion>> fullDayActivities;
+  final bool isCurrentState;
+
+  WeekCalendarState getWeekCalendarState(BuildContext context) {
+    final weekCalendarCubit = context.watch<WeekCalendarCubit>();
+    return isCurrentState
+        ? weekCalendarCubit.state
+        : weekCalendarCubit.previousState;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final weekCalendarState = getWeekCalendarState(context);
+    final weekStart = weekCalendarState.currentWeekStart;
+    final currentWeekEvents = weekCalendarState.currentWeekEvents;
+
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -111,8 +104,12 @@ class WeekCalendarPage extends StatelessWidget {
                     weekStart.addDays(i),
                   ),
                 ),
-                fullDayActivities:
-                    fullDayActivities[weekStart.addDays(i).weekday - 1] ?? [],
+                fullDayActivitiesBuilder: (context) {
+                  final weekCalendarState = getWeekCalendarState(context);
+                  final fullDayActivities = weekCalendarState.fullDayActivities;
+                  final index = weekStart.addDays(i).weekday - 1;
+                  return fullDayActivities[index] ?? [];
+                },
               ),
             ),
           ),
@@ -143,14 +140,14 @@ class WeekCalendarHeadingContent extends StatelessWidget {
     required this.day,
     required this.weekDisplayDays,
     required this.selected,
-    required this.fullDayActivities,
+    required this.fullDayActivitiesBuilder,
     Key? key,
   }) : super(key: key);
 
   final DateTime day;
   final WeekDisplayDays weekDisplayDays;
   final bool selected;
-  final List<ActivityOccasion> fullDayActivities;
+  final FullDayActivitiesBuilder fullDayActivitiesBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +230,7 @@ class WeekCalendarHeadingContent extends StatelessWidget {
                   child: _FullDayActivities(
                     day: day,
                     selected: selected,
-                    fullDayActivities: fullDayActivities,
+                    fullDayActivitiesBuilder: fullDayActivitiesBuilder,
                   ),
                 ),
               ),
@@ -282,20 +279,21 @@ class _WeekBodyContentWrapper extends StatelessWidget {
 class _FullDayActivities extends StatelessWidget {
   final DateTime day;
   final bool selected;
-  final List<ActivityOccasion> fullDayActivities;
+  final FullDayActivitiesBuilder fullDayActivitiesBuilder;
 
   const _FullDayActivities({
     required this.day,
     required this.selected,
-    required this.fullDayActivities,
+    required this.fullDayActivitiesBuilder,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final fullDayActivities = fullDayActivitiesBuilder(context);
     if (fullDayActivities.length > 1) {
       return ClickableFullDayStack(
-        fullDayActivitiesBuilder: (context) => fullDayActivities,
+        fullDayActivitiesBuilder: fullDayActivitiesBuilder,
         numberOfActivities: fullDayActivities.length,
         day: day,
       );

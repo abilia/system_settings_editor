@@ -17,7 +17,7 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
     final activity = context.watch<EditActivityCubit>().state.activity;
 
     final listItems = [
-      if (showAlarm) AlarmWidget(activity),
+      if (showAlarm) const AlarmWidget(),
       if (showReminders)
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,7 +32,7 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
             ),
           ],
         ),
-      if (showSpeech) RecordSoundWidget(activity: activity),
+      if (showSpeech) const RecordSoundWidget(),
     ].map((e) => e.pad(layout.templates.m1.withoutBottom)).toList();
 
     return ScrollArrows.vertical(

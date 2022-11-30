@@ -5,20 +5,24 @@ import 'package:memoplanner/ui/all.dart';
 
 class FullscreenAlarmInfoDialog extends StatelessWidget {
   final bool showRedirect;
+  final Function()? onNext;
 
   const FullscreenAlarmInfoDialog({
-    Key? key,
+    this.onNext,
     this.showRedirect = false,
+    Key? key,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return ViewDialog(
       bodyPadding: layout.templates.m4,
       expanded: true,
-      backNavigationWidget: const CancelButton(),
-      forwardNavigationWidget:
-          showRedirect ? const RequestFullscreenNotificationButton() : null,
+      backNavigationWidget: CancelButton(onPressed: onNext),
+      forwardNavigationWidget: showRedirect
+          ? RequestFullscreenNotificationButton(onPressed: onNext)
+          : null,
       body: Column(
         children: [
           const Spacer(flex: 64),
@@ -117,7 +121,13 @@ class ActivityAlarmPreview extends StatelessWidget {
 }
 
 class RequestFullscreenNotificationButton extends StatelessWidget {
-  const RequestFullscreenNotificationButton({Key? key}) : super(key: key);
+  final Function()? onPressed;
+
+  const RequestFullscreenNotificationButton({
+    required this.onPressed,
+    Key? key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) => GreenButton(
         icon: AbiliaIcons.ok,
@@ -126,7 +136,9 @@ class RequestFullscreenNotificationButton extends StatelessWidget {
           context
               .read<PermissionCubit>()
               .requestPermissions([Permission.systemAlertWindow]);
-          await Navigator.of(context).maybePop();
+          onPressed != null
+              ? onPressed?.call()
+              : await Navigator.of(context).maybePop();
         },
       );
 }
