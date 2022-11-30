@@ -4,11 +4,14 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/utils/myabilia_connection.dart';
 
 class LogoutSyncCubit extends Cubit<LogoutSyncState> {
   LogoutSyncCubit({
     required this.syncBloc,
+    required this.licenseCubit,
     required Stream<ConnectivityResult> connectivity,
+    required this.myAbiliaConnection,
   }) : super(LogoutSyncState(
           warningSyncState: _getLogoutSync(syncBloc.state),
           warningStep: WarningStep.firstWarning,
@@ -23,18 +26,41 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> {
     _connectivitySubscription = connectivity.listen((cr) {
       if (cr != ConnectivityResult.none &&
           state.warningSyncState != WarningSyncState.syncing) {
-        emit(state.copyWith(warningSyncState: WarningSyncState.syncing));
-        syncBloc.add(const SyncAll());
+        _checkConnectivity();
       }
     });
   }
 
+  static const _retryCheckConnectivityDelay = Duration(seconds: 5);
   final SyncBloc syncBloc;
+  final LicenseCubit licenseCubit;
+  final MyAbiliaConnection myAbiliaConnection;
   late final StreamSubscription _syncSubscription;
   late final StreamSubscription _connectivitySubscription;
 
   void setWarningStep(WarningStep warningStep) {
     emit(state.copyWith(warningStep: warningStep));
+  }
+
+  Future<void> _checkConnectivity() async {
+    final isOnline = await myAbiliaConnection.hasConnection();
+    if (isClosed) {
+      return;
+    }
+    if (isOnline) {
+      emit(state.copyWith(
+        warningSyncState: WarningSyncState.syncing,
+        isOnline: isOnline,
+      ));
+      syncBloc.add(const SyncAll());
+      if (!licenseCubit.validLicense) {
+        licenseCubit.reloadLicenses();
+      }
+    } else {
+      emit(state.copyWith(isOnline: isOnline));
+      await Future.delayed(_retryCheckConnectivityDelay);
+      _checkConnectivity();
+    }
   }
 
   Future<void> _fetchDirtyItems() async {
@@ -82,10 +108,12 @@ class LogoutSyncState extends Equatable {
   final DirtyItems? dirtyItems;
   final WarningSyncState warningSyncState;
   final WarningStep warningStep;
+  final bool? isOnline;
 
   const LogoutSyncState({
     required this.warningSyncState,
     required this.warningStep,
+    this.isOnline,
     this.dirtyItems,
   });
 
@@ -94,17 +122,20 @@ class LogoutSyncState extends Equatable {
         dirtyItems,
         warningSyncState,
         warningStep,
+        isOnline,
       ];
 
   LogoutSyncState copyWith({
     WarningSyncState? warningSyncState,
     WarningStep? warningStep,
     DirtyItems? dirtyItems,
+    bool? isOnline,
   }) =>
       LogoutSyncState(
         warningSyncState: warningSyncState ?? this.warningSyncState,
         warningStep: warningStep ?? this.warningStep,
         dirtyItems: dirtyItems ?? this.dirtyItems,
+        isOnline: isOnline ?? this.isOnline,
       );
 }
 
@@ -159,5 +190,6 @@ enum WarningSyncState {
 
 enum WarningStep {
   firstWarning,
-  secondWarning;
+  secondWarning,
+  licenseExpiredWarning;
 }

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/utils/all.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/logging/all.dart';
@@ -41,9 +40,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     required this.syncDelay,
     required this.lastSyncDb,
     required this.clockBloc,
-  }) : super(Syncing(
-          lastSynced: lastSyncDb.getLastSyncTime().fromMillisecondsSinceEpoch(),
-        )) {
+  }) : super(Syncing(lastSynced: lastSyncDb.getLastSyncTime())) {
     _pushSubscription =
         pushCubit.stream.listen((message) => add(const SyncAll()));
     on<ActivitySaved>(_trySync, transformer: bufferTimer(syncDelay));

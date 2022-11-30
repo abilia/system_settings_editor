@@ -5,7 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/utils/all.dart';
 import '../../fakes/all.dart';
+import '../../mocks/mock_bloc.dart';
 import '../../mocks/mocks.dart';
 
 void main() {
@@ -19,6 +21,8 @@ void main() {
   late MockGenericDb genericDb;
   late MockLastSyncDb lastSyncDb;
   late SyncBloc syncBloc;
+  late LicenseCubit licenseCubit;
+  late MyAbiliaConnection myAbiliaConnection;
   late StreamController<ConnectivityResult> connectivityStream;
 
   const noDirtyItems = DirtyItems(
@@ -39,6 +43,8 @@ void main() {
     sortableDb = MockSortableDb();
     userFileDb = MockUserFileDb();
     genericDb = MockGenericDb();
+    licenseCubit = MockLicenseCubit();
+    myAbiliaConnection = MockMyAbiliaConnection();
     syncBloc = SyncBloc(
       pushCubit: FakePushCubit(),
       licenseCubit: FakeLicenseCubit(),
@@ -65,26 +71,31 @@ void main() {
     when(() => userFileRepository.db).thenReturn(userFileDb);
     when(() => sortableRepository.db).thenReturn(sortableDb);
     when(() => genericRepository.db).thenReturn(genericDb);
+
+    when(() => activityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => userFileDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+
+    when(() => activityDb.countAllDirty()).thenAnswer((_) => Future.value(0));
+    when(() => userFileDb.countAllDirty()).thenAnswer((_) => Future.value(0));
+    when(() => sortableDb.countAllDirty()).thenAnswer((_) => Future.value(0));
+    when(() => genericDb.countAllDirty()).thenAnswer((_) => Future.value(0));
+
+    when(() => licenseCubit.validLicense).thenReturn(true);
+    when(() => myAbiliaConnection.hasConnection())
+        .thenAnswer((_) => Future.value(false));
   });
 
   tearDown(() {
     connectivityStream.close();
   });
 
-  setUp(() {
-    when(() => activityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(() => userFileDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(() => sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(() => genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(() => activityDb.countAllDirty()).thenAnswer((_) => Future.value(0));
-    when(() => userFileDb.countAllDirty()).thenAnswer((_) => Future.value(0));
-    when(() => sortableDb.countAllDirty()).thenAnswer((_) => Future.value(0));
-    when(() => genericDb.countAllDirty()).thenAnswer((_) => Future.value(0));
-  });
-
   group('No dirty items', () {
     test('initial state is first warning and sync failed', () {
       final logoutSyncCubit = LogoutSyncCubit(
+        myAbiliaConnection: myAbiliaConnection,
+        licenseCubit: licenseCubit,
         syncBloc: syncBloc,
         connectivity: connectivityStream.stream,
       );
@@ -101,6 +112,8 @@ void main() {
     blocTest(
       'can change to second warning step',
       build: () => LogoutSyncCubit(
+        myAbiliaConnection: myAbiliaConnection,
+        licenseCubit: licenseCubit,
         syncBloc: syncBloc,
         connectivity: connectivityStream.stream,
       ),
@@ -119,11 +132,17 @@ void main() {
       ],
     );
 
-    test('when Connectivity changes to anything other than none, emits syncing',
+    test(
+        'when Connectivity changes to anything other than none, emits syncing if has myAbilia connection',
         () async {
+      when(() => myAbiliaConnection.hasConnection())
+          .thenAnswer((_) => Future.value(true));
+
       Future<void> testConnectivityChange(ConnectivityResult cr) async {
         final crStream = StreamController<ConnectivityResult>();
         final logoutSyncCubit = LogoutSyncCubit(
+          myAbiliaConnection: myAbiliaConnection,
+          licenseCubit: licenseCubit,
           syncBloc: syncBloc,
           connectivity: crStream.stream,
         );
@@ -137,11 +156,13 @@ void main() {
               const LogoutSyncState(
                 warningSyncState: WarningSyncState.syncing,
                 warningStep: WarningStep.firstWarning,
+                isOnline: true,
               ),
               const LogoutSyncState(
                 dirtyItems: noDirtyItems,
                 warningSyncState: WarningSyncState.syncing,
                 warningStep: WarningStep.firstWarning,
+                isOnline: true,
               ),
             ],
           ),
@@ -157,8 +178,62 @@ void main() {
       }
     });
 
+    test(
+        'when Connectivity changes to anything other than none, does not emit syncing if do not have myAbilia connection',
+        () async {
+      when(() => myAbiliaConnection.hasConnection())
+          .thenAnswer((_) => Future.value(false));
+
+      Future<void> testConnectivityChange(
+        ConnectivityResult cr,
+        LogoutSyncCubit cubit,
+        StreamController<ConnectivityResult> streamController,
+      ) async {
+        streamController.add(cr);
+
+        expectLater(
+          cubit.stream,
+          neverEmits(
+            [
+              const LogoutSyncState(
+                warningSyncState: WarningSyncState.syncing,
+                warningStep: WarningStep.firstWarning,
+                isOnline: false,
+              ),
+              const LogoutSyncState(
+                dirtyItems: noDirtyItems,
+                warningSyncState: WarningSyncState.syncing,
+                warningStep: WarningStep.firstWarning,
+                isOnline: false,
+              ),
+            ],
+          ),
+        );
+
+        streamController.close();
+      }
+
+      for (var cr in ConnectivityResult.values) {
+        if (cr != ConnectivityResult.none) {
+          final crStream = StreamController<ConnectivityResult>();
+
+          final logoutSyncCubit = LogoutSyncCubit(
+            myAbiliaConnection: myAbiliaConnection,
+            licenseCubit: licenseCubit,
+            syncBloc: syncBloc,
+            connectivity: crStream.stream,
+          );
+
+          logoutSyncCubit.close();
+          await testConnectivityChange(cr, logoutSyncCubit, crStream);
+        }
+      }
+    });
+
     test('Connectivity changes to none does not emit syncing', () async {
       final logoutSyncCubit = LogoutSyncCubit(
+        myAbiliaConnection: myAbiliaConnection,
+        licenseCubit: licenseCubit,
         syncBloc: syncBloc,
         connectivity: connectivityStream.stream,
       );
@@ -192,6 +267,8 @@ void main() {
       when(() => activityDb.countAllDirty()).thenAnswer((_) => Future.value(3));
 
       final logoutSyncCubit = LogoutSyncCubit(
+        myAbiliaConnection: myAbiliaConnection,
+        licenseCubit: licenseCubit,
         syncBloc: syncBloc,
         connectivity: connectivityStream.stream,
       );
@@ -217,6 +294,8 @@ void main() {
           [basicActivity, basicActivity, basicActivity, basicActivity]));
 
       final logoutSyncCubit = LogoutSyncCubit(
+        myAbiliaConnection: myAbiliaConnection,
+        licenseCubit: licenseCubit,
         syncBloc: syncBloc,
         connectivity: connectivityStream.stream,
       );
@@ -242,6 +321,8 @@ void main() {
           [basicTimer, basicTimer, basicTimer, basicTimer, basicTimer]));
 
       final logoutSyncCubit = LogoutSyncCubit(
+        myAbiliaConnection: myAbiliaConnection,
+        licenseCubit: licenseCubit,
         syncBloc: syncBloc,
         connectivity: connectivityStream.stream,
       );
@@ -273,6 +354,8 @@ void main() {
           (_) => Future.value([photo, photo, photo, photo, photo, photo]));
 
       final logoutSyncCubit = LogoutSyncCubit(
+        myAbiliaConnection: myAbiliaConnection,
+        licenseCubit: licenseCubit,
         syncBloc: syncBloc,
         connectivity: connectivityStream.stream,
       );
@@ -293,6 +376,8 @@ void main() {
       when(() => genericDb.countAllDirty()).thenAnswer((_) => Future.value(1));
 
       final logoutSyncCubit = LogoutSyncCubit(
+        myAbiliaConnection: myAbiliaConnection,
+        licenseCubit: licenseCubit,
         syncBloc: syncBloc,
         connectivity: connectivityStream.stream,
       );
@@ -307,6 +392,70 @@ void main() {
           ),
         ),
       );
+    });
+  });
+
+  group('License validation', () {
+    test('Calls reloadLicenses when coming online and having invalid license',
+        () async {
+      when(() => myAbiliaConnection.hasConnection())
+          .thenAnswer((_) => Future.value(true));
+      when(() => licenseCubit.validLicense).thenReturn(false);
+      when(() => licenseCubit.reloadLicenses()).thenAnswer((_) async {});
+
+      final _ = LogoutSyncCubit(
+        myAbiliaConnection: myAbiliaConnection,
+        licenseCubit: licenseCubit,
+        syncBloc: syncBloc,
+        connectivity: connectivityStream.stream,
+      );
+
+      connectivityStream.add(ConnectivityResult.wifi);
+
+      await untilCalled(() => licenseCubit.reloadLicenses());
+    });
+
+    test(
+        'Does not call reloadLicenses when coming online and having valid license',
+        () async {
+      when(() => myAbiliaConnection.hasConnection())
+          .thenAnswer((_) => Future.value(true));
+      when(() => licenseCubit.validLicense).thenReturn(true);
+      when(() => licenseCubit.reloadLicenses()).thenAnswer((_) async {});
+
+      final logoutSyncCubit = LogoutSyncCubit(
+        myAbiliaConnection: myAbiliaConnection,
+        licenseCubit: licenseCubit,
+        syncBloc: syncBloc,
+        connectivity: connectivityStream.stream,
+      );
+
+      connectivityStream.add(ConnectivityResult.wifi);
+
+      final expect = expectLater(
+        logoutSyncCubit.stream,
+        emitsAnyOf(
+          const [
+            LogoutSyncState(
+              warningSyncState: WarningSyncState.syncing,
+              warningStep: WarningStep.firstWarning,
+              dirtyItems: null,
+              isOnline: true,
+            ),
+            LogoutSyncState(
+              warningSyncState: WarningSyncState.syncing,
+              warningStep: WarningStep.firstWarning,
+              dirtyItems: noDirtyItems,
+              isOnline: true,
+            ),
+          ],
+        ),
+      );
+
+      await expect;
+      logoutSyncCubit.close();
+
+      verifyNever(() => licenseCubit.reloadLicenses());
     });
   });
 }

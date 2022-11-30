@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
+import 'package:memoplanner/utils/all.dart';
 import 'package:test/fake.dart';
 import 'fake_client.dart';
 import 'package:memoplanner/models/all.dart';
@@ -265,5 +266,5 @@ class FakeLastSyncDb extends Fake implements LastSyncDb {
   }
 
   @override
-  int? getLastSyncTime() => fakeLastSync;
+  DateTime? getLastSyncTime() => fakeLastSync.fromMillisecondsSinceEpoch();
 }

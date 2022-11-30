@@ -1,3 +1,4 @@
+import 'package:memoplanner/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LastSyncDb {
@@ -9,7 +10,8 @@ class LastSyncDb {
   Future<void> setSyncTime(DateTime syncTime) =>
       prefs.setInt(_lastSyncKey, syncTime.millisecondsSinceEpoch);
 
-  int? getLastSyncTime() => prefs.getInt(_lastSyncKey);
+  DateTime? getLastSyncTime() =>
+      prefs.getInt(_lastSyncKey).fromMillisecondsSinceEpoch();
 
   Future<void> delete() => prefs.remove(_lastSyncKey);
 }

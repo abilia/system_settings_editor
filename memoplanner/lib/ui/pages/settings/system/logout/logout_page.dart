@@ -40,30 +40,15 @@ class LogoutPage extends StatelessWidget {
   Future<void> _logOutPressed(BuildContext context) async {
     Future<void> onLogoutPressed(BuildContext context) async {
       final authContext = BlocProvider.of<AuthenticationBloc>(context);
-      if (BlocProvider.of<LicenseCubit>(context).state is ValidLicense) {
+      if (context.read<LicenseCubit>().state is ValidLicense) {
         authContext.add(const LoggedOut());
       }
     }
 
-    final validLicence =
-        BlocProvider.of<LicenseCubit>(context).state is ValidLicense;
-    final isSynced = context.read<SyncBloc>().isSynced;
-
-    if (!validLicence) {
-      final authContext = BlocProvider.of<AuthenticationBloc>(context);
-      final confirmWarningDialog = await showViewDialog(
-        context: context,
-        builder: (context) => ConfirmWarningDialog(
-          text: Translator.of(context).translate.licenseExpiredLogOutWarning,
-        ),
-      );
-      if (confirmWarningDialog) {
-        authContext.add(const LoggedOut());
-      }
-    } else if (isSynced) {
+    if (context.read<SyncBloc>().isSynced) {
       onLogoutPressed(context);
     } else {
-      await showAbiliaBottomSheet<bool>(
+      await showAbiliaBottomSheet(
         context: context,
         providers: copiedAuthProviders(context),
         child: Padding(

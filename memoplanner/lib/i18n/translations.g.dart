@@ -116,8 +116,13 @@ abstract class Translated {
 
   final String toLogin = 'to Log in';
 
-  final String licenseExpiredLogOutWarning =
-      'License is expired, all data will be lost if you log out';
+  final String memoplannerLicenseExpired = 'MEMOplanner license expired';
+
+  final String needLicenseToSaveData =
+      'You need an active license to save your data to myAbilia.';
+
+  final String contactProviderToExtendLicense =
+      'Contact your MEMOplanner provider in order to extend your license.';
 
   final String allDataSaved = 'All data saved!';
 

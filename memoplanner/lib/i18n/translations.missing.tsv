@@ -1,5 +1,7 @@
 _id_	en	sv	da	nl	fi	de	nb
-licenseExpiredLogOutWarning	License is expired, all data will be lost if you log out						
+memoplannerLicenseExpired	MEMOplanner license expired
+needLicenseToSaveData	You need an active license to save your data to myAbilia.
+contactProviderToExtendLicense	Contact your MEMOplanner provider in order to extend your license.
 allDataSaved	All data saved!						
 goOnlineBeforeLogout	Go online before you log out!						
 doNotLoseYourContent	Don't lose your content!						

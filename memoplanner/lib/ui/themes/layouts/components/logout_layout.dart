@@ -15,7 +15,7 @@ class LogoutLayout {
       infoItemHorizontalSpacing;
   final EdgeInsets modalBottomRowPadding,
       infoItemsCollectionPadding,
-      noInternetGOPadding;
+      infoPadding;
 
   const LogoutLayout({
     this.profilePictureSize = 84,
@@ -32,7 +32,7 @@ class LogoutLayout {
     this.infoItemHorizontalSpacing = 0,
     this.modalBottomRowPadding = const EdgeInsets.all(12),
     this.infoItemsCollectionPadding = const EdgeInsets.only(top: 8),
-    this.noInternetGOPadding = const EdgeInsets.all(16),
+    this.infoPadding = const EdgeInsets.all(16),
   });
 }
 
