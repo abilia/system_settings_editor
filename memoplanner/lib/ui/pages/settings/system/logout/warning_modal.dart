@@ -75,8 +75,9 @@ _WarningVariants _getWarningVariant({
   }
 }
 
-class _WarningModal extends StatelessWidget {
-  const _WarningModal({
+@visibleForTesting
+class WarningModal extends StatelessWidget {
+  const WarningModal({
     required this.onLogoutPressed,
     Key? key,
   }) : super(key: key);
@@ -84,50 +85,38 @@ class _WarningModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<LogoutSyncCubit>(
-      create: (context) => LogoutSyncCubit(
-        syncBloc: context.read<SyncBloc>(),
-        licenseCubit: context.read<LicenseCubit>(),
-        connectivity: Connectivity().onConnectivityChanged,
-        myAbiliaConnection: MyAbiliaConnection(),
-      ),
-      child: Builder(
-        builder: (context) {
-          final state = context.watch<LogoutSyncCubit>().state;
-          final validLicense =
-              context.watch<LicenseCubit>().state is ValidLicense;
+    final state = context.watch<LogoutSyncCubit>().state;
+    final validLicense = context.watch<LicenseCubit>().state is ValidLicense;
 
-          final warningVariant = _getWarningVariant(
-            online: state.isOnline ?? false,
-            validLicense: validLicense,
-            step: state.warningStep,
-            syncState: state.warningSyncState,
-          );
+    final warningVariant = _getWarningVariant(
+      online: state.isOnline ?? false,
+      validLicense: validLicense,
+      step: state.warningStep,
+      syncState: state.warningSyncState,
+    );
 
-          return _LogoutModal(
-            icon: _icon(warningVariant),
-            title: _title(
-              context,
-              warningVariant,
-            ),
-            label: _label(
-              context,
-              warningVariant,
-              context.read<SyncBloc>().state.lastSynced,
-            ),
-            onLogoutPressed: _onLogoutPressed(
-              context,
-              warningVariant,
-            ),
-            body: _Body(
-              dirtyItems: state.dirtyItems,
-              variant: warningVariant,
-            ),
-            bodyWithoutBottomPadding:
-                layout.go && warningVariant.step != WarningStep.firstWarning,
-          );
-        },
+    return _LogoutModal(
+      key: TestKey.logoutModal,
+      icon: _icon(warningVariant),
+      title: _title(
+        context,
+        warningVariant,
       ),
+      label: _label(
+        context,
+        warningVariant,
+        context.read<SyncBloc>().state.lastSynced,
+      ),
+      onLogoutPressed: _onLogoutPressed(
+        context,
+        warningVariant,
+      ),
+      body: _Body(
+        dirtyItems: state.dirtyItems,
+        variant: warningVariant,
+      ),
+      bodyWithoutBottomPadding:
+          layout.go && warningVariant.step != WarningStep.firstWarning,
     );
   }
 
@@ -172,6 +161,7 @@ class _WarningModal extends StatelessWidget {
             width: sideLength,
             height: sideLength,
             child: AbiliaProgressIndicator(
+              key: TestKey.logoutModalProgressIndicator,
               strokeWidth: layout.logout.modalProgressIndicatorStrokeWidth,
             ),
           ),
@@ -181,6 +171,7 @@ class _WarningModal extends StatelessWidget {
       case _WarningVariants.secondWarningSuccess:
         return Icon(
           AbiliaIcons.ok,
+          key: TestKey.logoutModalOkIcon,
           color: AbiliaColors.green,
           size: layout.logout.modalIconSize,
         );
@@ -309,13 +300,15 @@ class _Body extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (!layout.go) ...[
-              Tts(
-                child: Text(
-                  t.connectToWifiToLogOut,
-                  style: labelStyle,
+            if (variant == _WarningVariants.secondWarningOffline && layout.go ||
+                !layout.go) ...[
+              if (!layout.go)
+                Tts(
+                  child: Text(
+                    t.connectToWifiToLogOut,
+                    style: labelStyle,
+                  ),
                 ),
-              ),
               const _InternetConnection(),
               SizedBox(
                 height: layout.logout.modalBodyTopSpacing,
@@ -324,9 +317,11 @@ class _Body extends StatelessWidget {
             if (dirty == null)
               const AbiliaProgressIndicator()
             else
-              _DirtyItems(
-                dirtyItems: dirty,
-                variant: variant,
+              Flexible(
+                child: _DirtyItems(
+                  dirtyItems: dirty,
+                  variant: variant,
+                ),
               ),
           ],
         );
@@ -356,9 +351,11 @@ class _Body extends StatelessWidget {
             if (dirty == null)
               const AbiliaProgressIndicator()
             else
-              _DirtyItems(
-                dirtyItems: dirty,
-                variant: variant,
+              Flexible(
+                child: _DirtyItems(
+                  dirtyItems: dirty,
+                  variant: variant,
+                ),
               ),
           ],
         );
@@ -370,7 +367,7 @@ class _DirtyItems extends StatefulWidget {
   const _DirtyItems({
     required this.dirtyItems,
     required this.variant,
-    Key? key,
+    Key? key = TestKey.dirtyItems,
   }) : super(key: key);
 
   final DirtyItems dirtyItems;
@@ -469,7 +466,8 @@ class _DirtyItemsState extends State<_DirtyItems> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.variant.step != WarningStep.firstWarning)
+        if (widget.variant.step != WarningStep.firstWarning &&
+            widget.variant.syncState != WarningSyncState.syncedSuccess)
           Tts(
             child: Text(
               t.ifYouLogoutYouWillLose,
@@ -524,7 +522,8 @@ class _LogoutModal extends StatelessWidget {
     required this.onLogoutPressed,
     this.label,
     this.bodyWithoutBottomPadding = false,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final Widget icon;
   final Widget? body;

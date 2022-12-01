@@ -54,8 +54,16 @@ class LogoutPage extends StatelessWidget {
         child: Padding(
           padding: layout.templates.s5,
           child: Center(
-            child: _WarningModal(
-              onLogoutPressed: onLogoutPressed,
+            child: BlocProvider<LogoutSyncCubit>(
+              create: (context) => LogoutSyncCubit(
+                syncBloc: context.read<SyncBloc>(),
+                licenseCubit: context.read<LicenseCubit>(),
+                connectivity: Connectivity().onConnectivityChanged,
+                myAbiliaConnection: MyAbiliaConnection(),
+              ),
+              child: WarningModal(
+                onLogoutPressed: onLogoutPressed,
+              ),
             ),
           ),
         ),
