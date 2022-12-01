@@ -971,7 +971,7 @@ abstract class Translated {
 
   final String welcomeTo = 'Welcome to';
 
-  final String open = 'Open';
+  final String getStarted = 'Get started';
 
   final String readAndAgree1 = 'To use';
 

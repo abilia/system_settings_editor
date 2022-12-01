@@ -186,10 +186,9 @@ class WeekCalendarHeadingContent extends StatelessWidget {
       flex: _dayColumnFlex(weekDisplayDays, selected),
       child: GestureDetector(
         onTap: () {
+          BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day));
           if (selected) {
             DefaultTabController.of(context)?.animateTo(0);
-          } else {
-            BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day));
           }
         },
         child: _WeekBorderedColumn(

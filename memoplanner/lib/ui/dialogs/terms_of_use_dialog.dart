@@ -90,7 +90,7 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
           onPressed: () =>
               context.read<AuthenticationBloc>().add(const LoggedOut()),
         ),
-        forwardNavigationWidget: _navigationButton(translate.open),
+        forwardNavigationWidget: _navigationButton(translate.getStarted),
       ),
     );
   }
