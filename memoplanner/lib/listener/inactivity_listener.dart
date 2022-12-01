@@ -30,9 +30,7 @@ class ScreensaverListener
             // Need to pop to root here and not in [ReturnToHomeScreenListener]
             // since otherwise we might push the screensaver page before we pop
             // to root
-            Navigator.of(context).popUntil(
-              (route) => route.isFirst || route is PersistentPageRoute,
-            );
+            Navigator.of(context).popUntilRootOrPersistentPage();
             if (state is! ScreensaverState) return;
             final authProviders = copiedAuthProviders(context);
             final screensaverRoute = MaterialPageRoute(
