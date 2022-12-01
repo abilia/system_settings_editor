@@ -87,7 +87,7 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
           ],
         ),
         backNavigationWidget: const LogoutButton(),
-        forwardNavigationWidget: _navigationButton(translate.open),
+        forwardNavigationWidget: _navigationButton(translate.getStarted),
       ),
     );
   }
