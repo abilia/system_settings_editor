@@ -48,7 +48,7 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
   }
 }
 
-class DayPickerState extends Equatable {
+class DayPickerState {
   final DateTime day;
   final int index;
   final Occasion occasion;
@@ -72,8 +72,5 @@ class DayPickerState extends Equatable {
 
   @override
   String toString() =>
-      'DayPickerState { day: ${yMd(day)}, index: $index, occasion: $occasion }';
-
-  @override
-  List<Object> get props => [day, occasion];
+      'DayPickerState { day: ${yMd(day)}, index: $index, occasion: $occasion, lastEvent: $lastEvent }';
 }
