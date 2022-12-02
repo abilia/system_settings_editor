@@ -18,10 +18,37 @@ abstract class ManipulateActivitiesEvent extends ActivitiesEvent {
   List<Object> get props => [activity];
 }
 
-class AddActivity extends ManipulateActivitiesEvent {
+class AddActivity extends ManipulateActivitiesEvent implements AnalyticEvent {
   @override
   final Activity activity;
   const AddActivity(this.activity);
+
+  @override
+  String get eventName => 'Activity created';
+
+  @override
+  Map<String, dynamic>? get properties => {
+        'title': activity.hasTitle,
+        'image': activity.hasImage,
+        'startTime': activity.startTime.toIso8601String(),
+        'noneRecurringEnd': activity.noneRecurringEnd.toIso8601String(),
+        'duration': '${activity.duration}',
+        'timezone': activity.timezone,
+        'fullDay': activity.fullDay,
+        'category': activity.category,
+        'checkable': activity.checkable,
+        'availableFor': activity.availableFor.name,
+        'secretExemptions': activity.secretExemptions.length,
+        'alarmType': activity.alarm.type.name,
+        'onlyStart': activity.alarm.onlyStart,
+        'reminders': activity.reminders.map((d) => '$d').toList(),
+        'removeAfter': activity.removeAfter,
+        'speechAtStartTime': activity.extras.startTimeExtraAlarm.isNotEmpty,
+        'speechAtEndTime': activity.extras.endTimeExtraAlarm.isNotEmpty,
+        'recurring': activity.recurs.recurrence.name,
+        'recurringHasNoEnd': activity.recurs.hasNoEnd,
+        'infoItem': activity.infoItem.typeId,
+      };
 }
 
 class UpdateActivity extends ManipulateActivitiesEvent {
