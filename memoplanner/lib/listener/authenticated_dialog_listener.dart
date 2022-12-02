@@ -9,7 +9,7 @@ class AuthenticatedDialogListener
   }) : super(
           key: key,
           listenWhen: (previous, current) => current.showDialog,
-          listener: (context, state) => showViewDialog<bool>(
+          listener: (context, state) => showPersistentDialog<bool>(
             context: context,
             barrierDismissible: false,
             builder: (context) => AuthenticatedDialog(
