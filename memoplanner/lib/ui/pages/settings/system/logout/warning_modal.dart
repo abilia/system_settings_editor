@@ -49,29 +49,31 @@ _WarningVariants _getWarningVariant({
   if (online && !validLicense) {
     return _WarningVariants.licenceExpiredWarning;
   }
-
-  if (step == WarningStep.firstWarning) {
-    switch (syncState) {
-      case WarningSyncState.syncing:
-        return _WarningVariants.firstWarningSyncing;
-      case WarningSyncState.syncedSuccess:
-        return _WarningVariants.firstWarningSuccess;
-      case WarningSyncState.syncFailed:
-        return _WarningVariants.firstWarningOffline;
-    }
-  }
-
-  if (step == WarningStep.secondWarning && validLicense) {
-    switch (syncState) {
-      case WarningSyncState.syncing:
-        return _WarningVariants.secondWarningSyncing;
-      case WarningSyncState.syncedSuccess:
-        return _WarningVariants.secondWarningSuccess;
-      case WarningSyncState.syncFailed:
-        return _WarningVariants.secondWarningOffline;
-    }
-  } else {
-    return _WarningVariants.licenceExpiredWarning;
+  switch (step) {
+    case WarningStep.firstWarning:
+      switch (syncState) {
+        case WarningSyncState.syncing:
+          return _WarningVariants.firstWarningSyncing;
+        case WarningSyncState.syncedSuccess:
+          return _WarningVariants.firstWarningSuccess;
+        case WarningSyncState.syncFailed:
+          return _WarningVariants.firstWarningOffline;
+      }
+    case WarningStep.secondWarning:
+    case WarningStep.licenseExpiredWarning:
+      if (!validLicense &&
+          syncState != WarningSyncState.syncedSuccess &&
+          step == WarningStep.licenseExpiredWarning) {
+        return _WarningVariants.licenceExpiredWarning;
+      }
+      switch (syncState) {
+        case WarningSyncState.syncing:
+          return _WarningVariants.secondWarningSyncing;
+        case WarningSyncState.syncedSuccess:
+          return _WarningVariants.secondWarningSuccess;
+        case WarningSyncState.syncFailed:
+          return _WarningVariants.secondWarningOffline;
+      }
   }
 }
 
@@ -86,7 +88,7 @@ class WarningModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<LogoutSyncCubit>().state;
-    final validLicense = context.watch<LicenseCubit>().state is ValidLicense;
+    final validLicense = context.select((LicenseCubit c) => c.validLicense);
 
     final warningVariant = _getWarningVariant(
       online: state.isOnline ?? false,
@@ -126,13 +128,16 @@ class WarningModal extends StatelessWidget {
   ) {
     switch (variant) {
       case _WarningVariants.firstWarningOffline:
-        return (_) {
+        return (context) {
           context
               .read<LogoutSyncCubit>()
               .setWarningStep(WarningStep.secondWarning);
         };
       case _WarningVariants.secondWarningOffline:
-        return (_) {
+        if (context.read<LicenseCubit>().validLicense) {
+          return onLogoutPressed;
+        }
+        return (context) {
           context
               .read<LogoutSyncCubit>()
               .setWarningStep(WarningStep.licenseExpiredWarning);
@@ -210,16 +215,12 @@ class WarningModal extends StatelessWidget {
         if (lastSync == null) {
           return null;
         }
-        final daysAgo = context
-            .read<ClockBloc>()
-            .state
-            .onlyDays()
-            .difference(lastSync.onlyDays())
-            .inDays;
+        final daysAgo = context.read<ClockBloc>().state.difference(lastSync);
+        final locale = Localizations.localeOf(context);
 
-        final daysAgoString = daysAgo == 1 ? t.oneDayAgo : t.manyDaysAgo;
-        final dateString = DateFormat('d/M/y').format(lastSync.onlyDays());
-        return '${t.lastSyncWas} $dateString ($daysAgo $daysAgoString).';
+        final dateString =
+            DateFormat.yMd(locale.languageCode).format(lastSync.onlyDays());
+        return '${t.lastSyncWas} $dateString (${daysAgo.comparedToNowString(t, false, daysOnly: true)}).';
       case _WarningVariants.licenceExpiredWarning:
         return t.needLicenseToSaveData;
     }

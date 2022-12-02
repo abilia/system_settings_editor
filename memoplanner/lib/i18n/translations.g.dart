@@ -125,10 +125,6 @@ abstract class Translated {
 
   final String lastSyncWas = 'Last sync was';
 
-  final String oneDayAgo = 'day ago';
-
-  final String manyDaysAgo = 'days ago';
-
   final String connectToWifiToLogOut = 'Connect to Wi-Fi to log out safely';
 
   final String connectToInternetToLogOut =

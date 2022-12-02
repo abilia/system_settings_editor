@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
@@ -33,6 +34,7 @@ void main() {
   });
 
   setUp(() async {
+    await initializeDateFormatting();
     mockLogoutSyncCubit = MockLogoutSyncCubit();
     mockLastSyncDb = MockLastSyncDb();
     mockLicenseCubit = MockLicenseCubit();
@@ -151,13 +153,12 @@ void main() {
 
   group('Warning modal variations', () {
     void verifyLastSyncText() {
-      final daysAgo = now.difference(mockLastSyncDb.getLastSyncTime()!).inDays;
-      final daysAgoString =
-          daysAgo == 1 ? translate.oneDayAgo : translate.manyDaysAgo;
-      final dateString = DateFormat('d/M/y')
-          .format(mockLastSyncDb.getLastSyncTime()!.onlyDays());
+      final daysAgo = now.difference(mockLastSyncDb.getLastSyncTime()!);
+      final dateString =
+          DateFormat.yMd(Translator.supportedLocals.first.languageCode)
+              .format(mockLastSyncDb.getLastSyncTime()!.onlyDays());
       final lastSyncString =
-          '${translate.lastSyncWas} $dateString ($daysAgo $daysAgoString).';
+          '${translate.lastSyncWas} $dateString (${daysAgo.comparedToNowString(translate, false, daysOnly: true)}).';
       expect(
         find.text(lastSyncString),
         findsOneWidget,
@@ -348,6 +349,7 @@ void main() {
           dirtyItems: dirtyItems,
         ),
       );
+      when(() => mockLicenseCubit.validLicense).thenReturn(false);
 
       // Act
       await tester.pumpWidgetWithMPSize(createWarningModal());
