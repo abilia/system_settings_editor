@@ -93,7 +93,7 @@ void main() {
         ],
         child: child!,
       ),
-      home: WarningModal(onLogoutPressed: (_) {}),
+      home: const WarningModal(),
     );
   }
 

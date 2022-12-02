@@ -97,6 +97,7 @@ void main() {
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
         syncBloc: syncBloc,
+        syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
       );
 
@@ -115,6 +116,7 @@ void main() {
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
         syncBloc: syncBloc,
+        syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
       ),
       act: (LogoutSyncCubit cubit) =>
@@ -144,6 +146,7 @@ void main() {
           myAbiliaConnection: myAbiliaConnection,
           licenseCubit: licenseCubit,
           syncBloc: syncBloc,
+          syncDelay: SyncDelays.zero,
           connectivity: crStream.stream,
         );
 
@@ -221,6 +224,7 @@ void main() {
             myAbiliaConnection: myAbiliaConnection,
             licenseCubit: licenseCubit,
             syncBloc: syncBloc,
+            syncDelay: SyncDelays.zero,
             connectivity: crStream.stream,
           );
 
@@ -235,6 +239,7 @@ void main() {
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
         syncBloc: syncBloc,
+        syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
       );
 
@@ -270,6 +275,7 @@ void main() {
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
         syncBloc: syncBloc,
+        syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
       );
 
@@ -297,6 +303,7 @@ void main() {
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
         syncBloc: syncBloc,
+        syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
       );
 
@@ -324,6 +331,7 @@ void main() {
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
         syncBloc: syncBloc,
+        syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
       );
 
@@ -357,6 +365,7 @@ void main() {
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
         syncBloc: syncBloc,
+        syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
       );
 
@@ -379,6 +388,7 @@ void main() {
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
         syncBloc: syncBloc,
+        syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
       );
 
@@ -407,6 +417,7 @@ void main() {
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
         syncBloc: syncBloc,
+        syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
       );
 
@@ -427,6 +438,7 @@ void main() {
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
         syncBloc: syncBloc,
+        syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
       );
 
