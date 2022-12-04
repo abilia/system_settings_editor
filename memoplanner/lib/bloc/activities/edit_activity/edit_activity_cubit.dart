@@ -103,10 +103,16 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     TimeOfDay? startTime,
     TimeOfDay? endTime,
   }) {
-    final timeInterval = state.timeInterval
-        .copyWith(startTime: startTime, endTime: endTime ?? startTime);
     emit(
-      state.copyWith(state.activity, timeInterval: timeInterval),
+      state.copyWith(
+        state.activity,
+        timeInterval: TimeInterval(
+          startTime: startTime,
+          endTime: endTime,
+          startDate: state.timeInterval.startDate,
+          endDate: state.timeInterval.endDate,
+        ),
+      ),
     );
   }
 

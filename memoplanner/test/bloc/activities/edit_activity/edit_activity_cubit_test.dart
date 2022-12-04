@@ -118,12 +118,12 @@ void main() {
     final newActivity = activity.copyWith(title: 'newTile');
     final expectedTimeInterval1 = TimeInterval(
       startTime: newTime,
-      endTime: newTime,
+      endTime: null,
       startDate: aDate,
     );
     final expectedTimeInterval2 = TimeInterval(
       startTime: newTime,
-      endTime: newTime,
+      endTime: null,
       startDate: newDate,
     );
 
