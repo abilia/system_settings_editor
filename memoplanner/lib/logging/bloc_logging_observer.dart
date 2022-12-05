@@ -4,6 +4,11 @@ import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/repository/end_point.dart';
 
+abstract class AnalyticEvent {
+  String get eventName;
+  Map<String, dynamic>? get properties;
+}
+
 class BlocLoggingObserver extends BlocObserver {
   BlocLoggingObserver(this.analytics);
 
@@ -78,31 +83,8 @@ class BlocLoggingObserver extends BlocObserver {
     final event = transition.event;
     final nextState = transition.nextState;
     final currentState = transition.currentState;
-    if (event is AddActivity) {
-      final activity = event.activity;
-      analytics.track(
-        'Activity created',
-        properties: {
-          'title': activity.hasTitle,
-          'image': activity.hasImage,
-          'duration': '${activity.duration}',
-          'timezone': activity.timezone,
-          'fullDay': activity.fullDay,
-          'category': activity.category,
-          'checkable': activity.checkable,
-          'availableFor': activity.availableFor.name,
-          'secretExemptions': activity.secretExemptions.length,
-          'alarmType': activity.alarm.type.name,
-          'onlyStart': activity.alarm.onlyStart,
-          'reminders': activity.reminders.map((d) => '$d').toList(),
-          'removeAfter': activity.removeAfter,
-          'speechAtStartTime': activity.extras.startTimeExtraAlarm.isNotEmpty,
-          'speechAtEndTime': activity.extras.endTimeExtraAlarm.isNotEmpty,
-          'recurring': activity.recurs.recurrence.name,
-          'recurringHasNoEnd': activity.recurs.hasNoEnd,
-          'infoItem': activity.infoItem.typeId,
-        },
-      );
+    if (event is AnalyticEvent) {
+      analytics.track(event.eventName, properties: event.properties);
     }
     if (nextState is Authenticated) {
       analytics.setUser(nextState.user);
