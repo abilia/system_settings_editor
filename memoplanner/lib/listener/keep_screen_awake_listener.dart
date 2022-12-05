@@ -16,7 +16,7 @@ class KeepScreenAwakeListener
                 state.screenTimeout,
               );
             }
-            if (state.onNow || Config.isMPLarge) {
+            if (state.onNow) {
               await Wakelock.enable();
             } else {
               await Wakelock.disable();
