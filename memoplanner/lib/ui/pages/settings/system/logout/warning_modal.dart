@@ -7,7 +7,7 @@ enum _WarningVariants {
   secondWarningOffline,
   secondWarningSyncing,
   secondWarningSuccess,
-  licenceExpiredWarning;
+  licenseExpiredWarning;
 
   WarningStep get step {
     switch (this) {
@@ -19,7 +19,7 @@ enum _WarningVariants {
       case _WarningVariants.secondWarningSyncing:
       case _WarningVariants.secondWarningSuccess:
         return WarningStep.secondWarning;
-      case _WarningVariants.licenceExpiredWarning:
+      case _WarningVariants.licenseExpiredWarning:
         return WarningStep.licenseExpiredWarning;
     }
   }
@@ -28,7 +28,7 @@ enum _WarningVariants {
     switch (this) {
       case _WarningVariants.firstWarningOffline:
       case _WarningVariants.secondWarningOffline:
-      case _WarningVariants.licenceExpiredWarning:
+      case _WarningVariants.licenseExpiredWarning:
         return WarningSyncState.syncFailed;
       case _WarningVariants.firstWarningSyncing:
       case _WarningVariants.secondWarningSyncing:
@@ -47,7 +47,7 @@ _WarningVariants _getWarningVariant({
   required WarningSyncState syncState,
 }) {
   if (online && !validLicense) {
-    return _WarningVariants.licenceExpiredWarning;
+    return _WarningVariants.licenseExpiredWarning;
   }
   switch (step) {
     case WarningStep.firstWarning:
@@ -64,7 +64,7 @@ _WarningVariants _getWarningVariant({
       if (!validLicense &&
           syncState != WarningSyncState.syncedSuccess &&
           step == WarningStep.licenseExpiredWarning) {
-        return _WarningVariants.licenceExpiredWarning;
+        return _WarningVariants.licenseExpiredWarning;
       }
       switch (syncState) {
         case WarningSyncState.syncing:
@@ -79,11 +79,7 @@ _WarningVariants _getWarningVariant({
 
 @visibleForTesting
 class WarningModal extends StatelessWidget {
-  const WarningModal({
-    required this.onLogoutPressed,
-    Key? key,
-  }) : super(key: key);
-  final Function(BuildContext context) onLogoutPressed;
+  const WarningModal({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -109,10 +105,7 @@ class WarningModal extends StatelessWidget {
         warningVariant,
         context.read<SyncBloc>().state.lastSynced,
       ),
-      onLogoutPressed: _onLogoutPressed(
-        context,
-        warningVariant,
-      ),
+      onLogoutPressed: _onLogoutPressed(warningVariant),
       body: _Body(
         dirtyItems: state.dirtyItems,
         variant: warningVariant,
@@ -122,10 +115,7 @@ class WarningModal extends StatelessWidget {
     );
   }
 
-  Function(BuildContext context)? _onLogoutPressed(
-    BuildContext context,
-    _WarningVariants variant,
-  ) {
+  Function(BuildContext context)? _onLogoutPressed(_WarningVariants variant) {
     switch (variant) {
       case _WarningVariants.firstWarningOffline:
         return (context) {
@@ -134,21 +124,19 @@ class WarningModal extends StatelessWidget {
               .setWarningStep(WarningStep.secondWarning);
         };
       case _WarningVariants.secondWarningOffline:
-        if (context.read<LicenseCubit>().validLicense) {
-          return onLogoutPressed;
-        }
-        return (context) {
-          context
-              .read<LogoutSyncCubit>()
-              .setWarningStep(WarningStep.licenseExpiredWarning);
-        };
+        return (context) => context.read<LicenseCubit>().validLicense
+            ? context.read<AuthenticationBloc>().add(const LoggedOut())
+            : context
+                .read<LogoutSyncCubit>()
+                .setWarningStep(WarningStep.licenseExpiredWarning);
       case _WarningVariants.firstWarningSyncing:
       case _WarningVariants.secondWarningSyncing:
         return null;
       case _WarningVariants.firstWarningSuccess:
       case _WarningVariants.secondWarningSuccess:
-      case _WarningVariants.licenceExpiredWarning:
-        return onLogoutPressed;
+      case _WarningVariants.licenseExpiredWarning:
+        return (context) =>
+            context.read<AuthenticationBloc>().add(const LoggedOut());
     }
   }
 
@@ -187,7 +175,7 @@ class WarningModal extends StatelessWidget {
           size: layout.logout.modalIconSize,
         );
       case _WarningVariants.secondWarningOffline:
-      case _WarningVariants.licenceExpiredWarning:
+      case _WarningVariants.licenseExpiredWarning:
         return Icon(
           AbiliaIcons.irError,
           color: AbiliaColors.red,
@@ -221,7 +209,7 @@ class WarningModal extends StatelessWidget {
         final dateString =
             DateFormat.yMd(locale.languageCode).format(lastSync.onlyDays());
         return '${t.lastSyncWas} $dateString (${daysAgo.comparedToNowString(t, false, daysOnly: true)}).';
-      case _WarningVariants.licenceExpiredWarning:
+      case _WarningVariants.licenseExpiredWarning:
         return t.needLicenseToSaveData;
     }
   }
@@ -241,7 +229,7 @@ class WarningModal extends StatelessWidget {
       case _WarningVariants.secondWarningOffline:
       case _WarningVariants.secondWarningSyncing:
         return t.doNotLoseYourContent;
-      case _WarningVariants.licenceExpiredWarning:
+      case _WarningVariants.licenseExpiredWarning:
         return t.memoplannerLicenseExpired;
     }
   }
@@ -335,7 +323,7 @@ class _Body extends StatelessWidget {
                 variant: variant,
               );
 
-      case _WarningVariants.licenceExpiredWarning:
+      case _WarningVariants.licenseExpiredWarning:
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [

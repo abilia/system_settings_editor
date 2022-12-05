@@ -9,6 +9,7 @@ import 'package:memoplanner/utils/myabilia_connection.dart';
 class LogoutSyncCubit extends Cubit<LogoutSyncState> {
   LogoutSyncCubit({
     required this.syncBloc,
+    required this.syncDelay,
     required this.licenseCubit,
     required Stream<ConnectivityResult> connectivity,
     required this.myAbiliaConnection,
@@ -17,21 +18,19 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> {
           warningStep: WarningStep.firstWarning,
         )) {
     _fetchDirtyItems();
-    _syncSubscription = syncBloc.stream.listen((syncState) {
-      if (syncState is! Syncing) {
-        emit(state.copyWith(warningSyncState: _getLogoutSync(syncState)));
-      }
+    _syncSubscription =
+        syncBloc.stream.where((state) => state is! Syncing).listen((syncState) {
+      emit(state.copyWith(warningSyncState: _getLogoutSync(syncState)));
       _fetchDirtyItems();
     });
-    _connectivitySubscription = connectivity.listen((cr) {
-      if (cr != ConnectivityResult.none &&
-          state.warningSyncState != WarningSyncState.syncing) {
-        _checkConnectivity();
-      }
-    });
+    _connectivitySubscription = connectivity
+        .where((cr) =>
+            cr != ConnectivityResult.none &&
+            state.warningSyncState != WarningSyncState.syncing)
+        .listen((cr) => _checkConnectivity());
   }
 
-  static const _retryCheckConnectivityDelay = Duration(seconds: 5);
+  final SyncDelays syncDelay;
   final SyncBloc syncBloc;
   final LicenseCubit licenseCubit;
   final MyAbiliaConnection myAbiliaConnection;
@@ -58,7 +57,7 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> {
       }
     } else {
       emit(state.copyWith(isOnline: isOnline));
-      await Future.delayed(_retryCheckConnectivityDelay);
+      await Future.delayed(syncDelay.betweenSync);
       _checkConnectivity();
     }
   }
