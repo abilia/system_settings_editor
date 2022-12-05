@@ -40,9 +40,7 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
       day: day,
       calendarDayColor: isNight ? DayColor.noColors : calendarSettings.dayColor,
       rows: AppBarTitleRows.day(
-        displayWeekDay: appBarSettings.showDayPeriod,
-        displayPartOfDay: appBarSettings.showWeekday,
-        displayDate: appBarSettings.showDate,
+        settings: appBarSettings,
         currentTime: currentMinute,
         day: day,
         dayParts: calendarSettings.dayParts,

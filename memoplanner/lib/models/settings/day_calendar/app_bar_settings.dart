@@ -3,11 +3,11 @@ import 'package:memoplanner/models/generic/generic.dart';
 import 'package:memoplanner/models/settings/memoplanner_settings.dart';
 
 class AppBarSettings extends Equatable {
-  final bool showBrowseButtons, showWeekday, showDayPeriod, showDate, showClock;
+  final bool showBrowseButtons, showWeekDay, showDayPeriod, showDate, showClock;
 
   const AppBarSettings({
     this.showBrowseButtons = true,
-    this.showWeekday = true,
+    this.showWeekDay = true,
     this.showDayPeriod = true,
     this.showDate = true,
     this.showClock = true,
@@ -21,7 +21,7 @@ class AppBarSettings extends Equatable {
       activityDisplayClockKey = 'day_caption_show_clock';
 
   bool get displayDayCalendarAppBar =>
-      showWeekday ||
+      showWeekDay ||
       showDayPeriod ||
       showDate ||
       showClock ||
@@ -33,7 +33,7 @@ class AppBarSettings extends Equatable {
       showBrowseButtons: settings.getBool(
         dayCaptionShowDayButtonsKey,
       ),
-      showWeekday: settings.getBool(
+      showWeekDay: settings.getBool(
         activityDisplayWeekDayKey,
       ),
       showDayPeriod: settings.getBool(
@@ -50,14 +50,14 @@ class AppBarSettings extends Equatable {
 
   AppBarSettings copyWith({
     bool? showBrowseButtons,
-    bool? showWeekday,
+    bool? showWeekDay,
     bool? showDayPeriod,
     bool? showDate,
     bool? showClock,
   }) =>
       AppBarSettings(
         showBrowseButtons: showBrowseButtons ?? this.showBrowseButtons,
-        showWeekday: showWeekday ?? this.showWeekday,
+        showWeekDay: showWeekDay ?? this.showWeekDay,
         showDayPeriod: showDayPeriod ?? this.showDayPeriod,
         showDate: showDate ?? this.showDate,
         showClock: showClock ?? this.showClock,
@@ -69,7 +69,7 @@ class AppBarSettings extends Equatable {
           identifier: dayCaptionShowDayButtonsKey,
         ),
         MemoplannerSettingData.fromData(
-          data: showWeekday,
+          data: showWeekDay,
           identifier: activityDisplayWeekDayKey,
         ),
         MemoplannerSettingData.fromData(
@@ -89,7 +89,7 @@ class AppBarSettings extends Equatable {
   @override
   List<Object> get props => [
         showBrowseButtons,
-        showWeekday,
+        showWeekDay,
         showDayPeriod,
         showDate,
         showClock,

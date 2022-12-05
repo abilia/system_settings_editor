@@ -51,17 +51,17 @@ class WeekAppBarPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<WeekCalendarSettingsCubit>().state;
+    final weekCalendarSettings =
+        context.watch<WeekCalendarSettingsCubit>().state;
     final currentTime = context.watch<ClockBloc>().state;
     return AppBarPreview(
-      showBrowseButtons: state.showBrowseButtons,
-      showClock: state.showClock,
+      showBrowseButtons: weekCalendarSettings.showBrowseButtons,
+      showClock: weekCalendarSettings.showClock,
       rows: AppBarTitleRows.week(
         translator: Translator.of(context).translate,
         selectedDay: currentTime.onlyDays(),
         selectedWeekStart: currentTime.firstInWeek(),
-        showWeekNumber: state.showWeekNumber,
-        showYear: state.showYear,
+        settings: weekCalendarSettings,
         langCode: Localizations.localeOf(context).toLanguageTag(),
       ),
     );

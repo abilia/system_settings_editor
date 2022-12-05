@@ -20,9 +20,7 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
         day: time,
         calendarDayColor: calendarSettings.dayColor,
         rows: AppBarTitleRows.day(
-          displayWeekDay: appBarSettings.showDayPeriod,
-          displayPartOfDay: appBarSettings.showWeekday,
-          displayDate: appBarSettings.showDate,
+          settings: appBarSettings,
           currentTime: time,
           day: time,
           dayPart: context.read<DayPartCubit>().state,

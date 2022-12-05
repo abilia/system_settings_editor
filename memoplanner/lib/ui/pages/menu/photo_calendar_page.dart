@@ -169,9 +169,7 @@ class PhotoCalendarAppBar extends StatelessWidget
       day: time.onlyDays(),
       calendarDayColor: settings.calendar.dayColor,
       rows: AppBarTitleRows.day(
-        displayWeekDay: appBarSettings.showDayPeriod,
-        displayPartOfDay: appBarSettings.showWeekday,
-        displayDate: appBarSettings.showDate,
+        settings: appBarSettings,
         currentTime: time,
         day: time.onlyDays(),
         dayPart: context.read<DayPartCubit>().state,

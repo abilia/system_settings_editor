@@ -61,9 +61,7 @@ class _ScreensaverAppBar extends StatelessWidget {
             .apply(color: AbiliaColors.white),
         rows: AppBarTitleRows.day(
           compactDay: true,
-          displayWeekDay: appBarSettings.showDayPeriod,
-          displayPartOfDay: appBarSettings.showWeekday,
-          displayDate: appBarSettings.showDate,
+          settings: appBarSettings,
           currentTime: time,
           day: time.onlyDays(),
           dayPart: context.read<DayPartCubit>().state,

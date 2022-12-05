@@ -24,9 +24,9 @@ class DayAppBarSettingsTab extends StatelessWidget {
               child: Text(t.showBrowseButtons),
             ),
             SwitchField(
-              value: appBar.showWeekday,
+              value: appBar.showWeekDay,
               onChanged: (v) => dayCalendar.changeSettings(
-                  settings.copyWith(appBar: appBar.copyWith(showWeekday: v))),
+                  settings.copyWith(appBar: appBar.copyWith(showWeekDay: v))),
               child: Text(t.showWeekday),
             ),
             SwitchField(
@@ -68,9 +68,7 @@ class DayAppBarPreview extends StatelessWidget {
       showBrowseButtons: appBarSettings.showBrowseButtons,
       showClock: appBarSettings.showClock,
       rows: AppBarTitleRows.day(
-        displayWeekDay: appBarSettings.showWeekday,
-        displayPartOfDay: appBarSettings.showDayPeriod,
-        displayDate: appBarSettings.showDate,
+        settings: appBarSettings,
         currentTime: currentTime,
         day: currentTime.onlyDays(),
         dayParts: dayParts,
