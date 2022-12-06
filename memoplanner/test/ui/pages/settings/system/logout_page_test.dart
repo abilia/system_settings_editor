@@ -40,12 +40,10 @@ void main() {
     mockLicenseCubit = MockLicenseCubit();
     mockSyncBloc = MockSyncBloc();
 
-    when(() => mockLogoutSyncCubit.state).thenAnswer(
-      (_) => const LogoutSyncState(
-        warningSyncState: WarningSyncState.syncFailed,
-        warningStep: WarningStep.firstWarning,
-      ),
-    );
+    when(() => mockLogoutSyncCubit.state)
+        .thenAnswer((_) => const LogoutSyncState(
+              logoutWarning: LogoutWarning.firstWarningSyncFailed,
+            ));
     when(() => mockLicenseCubit.validLicense).thenReturn(true);
     when(() => mockLicenseCubit.state).thenReturn(ValidLicense());
     when(() => mockLastSyncDb.getLastSyncTime())
@@ -135,7 +133,7 @@ void main() {
     when(() => mockAuthenticationBloc.add(const LoggedOut()))
         .thenAnswer((_) {});
     when(() => mockSyncBloc.state).thenReturn(Synced());
-    when(() => mockSyncBloc.isSynced).thenReturn(true);
+    when(() => mockSyncBloc.hasDirty()).thenAnswer((_) => Future.value(false));
 
     // Act
     await tester.pumpWidgetWithMPSize(
@@ -176,7 +174,7 @@ void main() {
       );
     }
 
-    testWidgets('first warning & offline', (WidgetTester tester) async {
+    testWidgets('first warning & sync failed', (WidgetTester tester) async {
       // Act
       await tester.pumpWidgetWithMPSize(createWarningModal());
       await tester.pumpAndSettle();
@@ -205,8 +203,7 @@ void main() {
       // Arrange
       when(() => mockLogoutSyncCubit.state).thenAnswer(
         (_) => const LogoutSyncState(
-          warningSyncState: WarningSyncState.syncing,
-          warningStep: WarningStep.firstWarning,
+          logoutWarning: LogoutWarning.firstWarningSyncing,
         ),
       );
 
@@ -232,9 +229,7 @@ void main() {
       // Arrange
       when(() => mockLogoutSyncCubit.state).thenAnswer(
         (_) => const LogoutSyncState(
-          warningSyncState: WarningSyncState.syncedSuccess,
-          warningStep: WarningStep.firstWarning,
-        ),
+            logoutWarning: LogoutWarning.firstWarningSuccess),
       );
 
       // Act
@@ -252,12 +247,11 @@ void main() {
       verifyLogoutButton(true);
     });
 
-    testWidgets('second warning & offline', (WidgetTester tester) async {
+    testWidgets('second warning & sync failed', (WidgetTester tester) async {
       // Arrange
       when(() => mockLogoutSyncCubit.state).thenAnswer(
         (_) => const LogoutSyncState(
-          warningSyncState: WarningSyncState.syncFailed,
-          warningStep: WarningStep.secondWarning,
+          logoutWarning: LogoutWarning.secondWarningSyncFailed,
           dirtyItems: dirtyItems,
         ),
       );
@@ -286,8 +280,7 @@ void main() {
       // Arrange
       when(() => mockLogoutSyncCubit.state).thenAnswer(
         (_) => const LogoutSyncState(
-          warningSyncState: WarningSyncState.syncing,
-          warningStep: WarningStep.secondWarning,
+          logoutWarning: LogoutWarning.secondWarningSyncing,
           dirtyItems: dirtyItems,
         ),
       );
@@ -318,8 +311,7 @@ void main() {
       // Arrange
       when(() => mockLogoutSyncCubit.state).thenAnswer(
         (_) => const LogoutSyncState(
-          warningSyncState: WarningSyncState.syncedSuccess,
-          warningStep: WarningStep.secondWarning,
+          logoutWarning: LogoutWarning.secondWarningSuccess,
           dirtyItems: dirtyItems,
         ),
       );
@@ -344,8 +336,7 @@ void main() {
       // Arrange
       when(() => mockLogoutSyncCubit.state).thenAnswer(
         (_) => const LogoutSyncState(
-          warningSyncState: WarningSyncState.syncFailed,
-          warningStep: WarningStep.licenseExpiredWarning,
+          logoutWarning: LogoutWarning.licenseExpiredWarning,
           dirtyItems: dirtyItems,
         ),
       );

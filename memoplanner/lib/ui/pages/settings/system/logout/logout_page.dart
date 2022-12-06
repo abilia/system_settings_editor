@@ -37,19 +37,24 @@ class LogoutPage extends StatelessWidget {
     );
   }
 
-  void _logOutPressed(BuildContext context) {
-    if (context.read<SyncBloc>().isSynced) {
-      context.read<AuthenticationBloc>().add(const LoggedOut());
+  Future<void> _logOutPressed(BuildContext context) async {
+    final authProviders = copiedAuthProviders(context);
+    final authBloc = context.read<AuthenticationBloc>();
+    final hasDirty = await context.read<SyncBloc>().hasDirty();
+
+    if (!hasDirty) {
+      authBloc.add(const LoggedOut());
     } else {
       showAbiliaBottomSheet(
         context: context,
-        providers: copiedAuthProviders(context),
+        providers: authProviders,
         child: Padding(
           padding: layout.templates.s5,
           child: Center(
             child: BlocProvider<LogoutSyncCubit>(
               create: (context) => LogoutSyncCubit(
                 syncBloc: context.read<SyncBloc>(),
+                authenticationBloc: context.read<AuthenticationBloc>(),
                 syncDelay: GetIt.I<SyncDelays>(),
                 licenseCubit: context.read<LicenseCubit>(),
                 connectivity: Connectivity().onConnectivityChanged,

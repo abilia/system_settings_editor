@@ -1,82 +1,5 @@
 part of 'logout_page.dart';
 
-enum _WarningVariants {
-  firstWarningOffline,
-  firstWarningSyncing,
-  firstWarningSuccess,
-  secondWarningOffline,
-  secondWarningSyncing,
-  secondWarningSuccess,
-  licenseExpiredWarning;
-
-  WarningStep get step {
-    switch (this) {
-      case _WarningVariants.firstWarningOffline:
-      case _WarningVariants.firstWarningSyncing:
-      case _WarningVariants.firstWarningSuccess:
-        return WarningStep.firstWarning;
-      case _WarningVariants.secondWarningOffline:
-      case _WarningVariants.secondWarningSyncing:
-      case _WarningVariants.secondWarningSuccess:
-        return WarningStep.secondWarning;
-      case _WarningVariants.licenseExpiredWarning:
-        return WarningStep.licenseExpiredWarning;
-    }
-  }
-
-  WarningSyncState get syncState {
-    switch (this) {
-      case _WarningVariants.firstWarningOffline:
-      case _WarningVariants.secondWarningOffline:
-      case _WarningVariants.licenseExpiredWarning:
-        return WarningSyncState.syncFailed;
-      case _WarningVariants.firstWarningSyncing:
-      case _WarningVariants.secondWarningSyncing:
-        return WarningSyncState.syncing;
-      case _WarningVariants.firstWarningSuccess:
-      case _WarningVariants.secondWarningSuccess:
-        return WarningSyncState.syncedSuccess;
-    }
-  }
-}
-
-_WarningVariants _getWarningVariant({
-  required bool online,
-  required bool validLicense,
-  required WarningStep step,
-  required WarningSyncState syncState,
-}) {
-  if (online && !validLicense) {
-    return _WarningVariants.licenseExpiredWarning;
-  }
-  switch (step) {
-    case WarningStep.firstWarning:
-      switch (syncState) {
-        case WarningSyncState.syncing:
-          return _WarningVariants.firstWarningSyncing;
-        case WarningSyncState.syncedSuccess:
-          return _WarningVariants.firstWarningSuccess;
-        case WarningSyncState.syncFailed:
-          return _WarningVariants.firstWarningOffline;
-      }
-    case WarningStep.secondWarning:
-    case WarningStep.licenseExpiredWarning:
-      if (!validLicense &&
-          syncState != WarningSyncState.syncedSuccess &&
-          step == WarningStep.licenseExpiredWarning) {
-        return _WarningVariants.licenseExpiredWarning;
-      }
-      switch (syncState) {
-        case WarningSyncState.syncing:
-          return _WarningVariants.secondWarningSyncing;
-        case WarningSyncState.syncedSuccess:
-          return _WarningVariants.secondWarningSuccess;
-        case WarningSyncState.syncFailed:
-          return _WarningVariants.secondWarningOffline;
-      }
-  }
-}
-
 @visibleForTesting
 class WarningModal extends StatelessWidget {
   const WarningModal({Key? key}) : super(key: key);
@@ -84,66 +7,36 @@ class WarningModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<LogoutSyncCubit>().state;
-    final validLicense = context.select((LicenseCubit c) => c.validLicense);
-
-    final warningVariant = _getWarningVariant(
-      online: state.isOnline ?? false,
-      validLicense: validLicense,
-      step: state.warningStep,
-      syncState: state.warningSyncState,
-    );
+    final warning = state.logoutWarning;
 
     return _LogoutModal(
       key: TestKey.logoutModal,
-      icon: _icon(warningVariant),
+      icon: _icon(warning),
       title: _title(
         context,
-        warningVariant,
+        warning,
       ),
       label: _label(
         context,
-        warningVariant,
+        warning,
         context.read<SyncBloc>().state.lastSynced,
       ),
-      onLogoutPressed: _onLogoutPressed(warningVariant),
+      onLogoutPressed: warning.sync == WarningSyncState.syncing
+          ? null
+          : (c) => c.read<LogoutSyncCubit>().next(),
       body: _Body(
         dirtyItems: state.dirtyItems,
-        variant: warningVariant,
+        warning: warning,
       ),
       bodyWithoutBottomPadding:
-          layout.go && warningVariant.step != WarningStep.firstWarning,
+          layout.go && warning.step != WarningStep.firstWarning,
     );
   }
 
-  Function(BuildContext context)? _onLogoutPressed(_WarningVariants variant) {
-    switch (variant) {
-      case _WarningVariants.firstWarningOffline:
-        return (context) {
-          context
-              .read<LogoutSyncCubit>()
-              .setWarningStep(WarningStep.secondWarning);
-        };
-      case _WarningVariants.secondWarningOffline:
-        return (context) => context.read<LicenseCubit>().validLicense
-            ? context.read<AuthenticationBloc>().add(const LoggedOut())
-            : context
-                .read<LogoutSyncCubit>()
-                .setWarningStep(WarningStep.licenseExpiredWarning);
-      case _WarningVariants.firstWarningSyncing:
-      case _WarningVariants.secondWarningSyncing:
-        return null;
-      case _WarningVariants.firstWarningSuccess:
-      case _WarningVariants.secondWarningSuccess:
-      case _WarningVariants.licenseExpiredWarning:
-        return (context) =>
-            context.read<AuthenticationBloc>().add(const LoggedOut());
-    }
-  }
-
-  Widget _icon(_WarningVariants variant) {
-    switch (variant) {
-      case _WarningVariants.firstWarningSyncing:
-      case _WarningVariants.secondWarningSyncing:
+  Widget _icon(LogoutWarning warning) {
+    switch (warning) {
+      case LogoutWarning.firstWarningSyncing:
+      case LogoutWarning.secondWarningSyncing:
         final sideLength = layout.logout.modalIconSize -
             layout.logout.modalProgressIndicatorStrokeWidth;
         return Padding(
@@ -160,22 +53,22 @@ class WarningModal extends StatelessWidget {
           ),
         );
 
-      case _WarningVariants.firstWarningSuccess:
-      case _WarningVariants.secondWarningSuccess:
+      case LogoutWarning.firstWarningSuccess:
+      case LogoutWarning.secondWarningSuccess:
         return Icon(
           AbiliaIcons.ok,
           key: TestKey.logoutModalOkIcon,
           color: AbiliaColors.green,
           size: layout.logout.modalIconSize,
         );
-      case _WarningVariants.firstWarningOffline:
+      case LogoutWarning.firstWarningSyncFailed:
         return Icon(
           AbiliaIcons.noWifi,
           color: AbiliaColors.red,
           size: layout.logout.modalIconSize,
         );
-      case _WarningVariants.secondWarningOffline:
-      case _WarningVariants.licenseExpiredWarning:
+      case LogoutWarning.secondWarningSyncFailed:
+      case LogoutWarning.licenseExpiredWarning:
         return Icon(
           AbiliaIcons.irError,
           color: AbiliaColors.red,
@@ -186,20 +79,20 @@ class WarningModal extends StatelessWidget {
 
   String? _label(
     BuildContext context,
-    _WarningVariants variant,
+    LogoutWarning warning,
     DateTime? lastSync,
   ) {
     final t = Translator.of(context).translate;
 
-    switch (variant) {
-      case _WarningVariants.firstWarningSyncing:
-      case _WarningVariants.secondWarningSyncing:
+    switch (warning) {
+      case LogoutWarning.firstWarningSyncing:
+      case LogoutWarning.secondWarningSyncing:
         return t.syncing;
-      case _WarningVariants.firstWarningSuccess:
-      case _WarningVariants.secondWarningSuccess:
+      case LogoutWarning.firstWarningSuccess:
+      case LogoutWarning.secondWarningSuccess:
         return t.canLogOutSafely;
-      case _WarningVariants.firstWarningOffline:
-      case _WarningVariants.secondWarningOffline:
+      case LogoutWarning.firstWarningSyncFailed:
+      case LogoutWarning.secondWarningSyncFailed:
         if (lastSync == null) {
           return null;
         }
@@ -209,27 +102,27 @@ class WarningModal extends StatelessWidget {
         final dateString =
             DateFormat.yMd(locale.languageCode).format(lastSync.onlyDays());
         return '${t.lastSyncWas} $dateString (${daysAgo.comparedToNowString(t, false, daysOnly: true)}).';
-      case _WarningVariants.licenseExpiredWarning:
+      case LogoutWarning.licenseExpiredWarning:
         return t.needLicenseToSaveData;
     }
   }
 
   String _title(
     BuildContext context,
-    _WarningVariants variant,
+    LogoutWarning warning,
   ) {
     final t = Translator.of(context).translate;
-    switch (variant) {
-      case _WarningVariants.firstWarningSuccess:
-      case _WarningVariants.secondWarningSuccess:
+    switch (warning) {
+      case LogoutWarning.firstWarningSuccess:
+      case LogoutWarning.secondWarningSuccess:
         return t.allDataSaved;
-      case _WarningVariants.firstWarningOffline:
-      case _WarningVariants.firstWarningSyncing:
+      case LogoutWarning.firstWarningSyncFailed:
+      case LogoutWarning.firstWarningSyncing:
         return t.goOnlineBeforeLogout;
-      case _WarningVariants.secondWarningOffline:
-      case _WarningVariants.secondWarningSyncing:
+      case LogoutWarning.secondWarningSyncFailed:
+      case LogoutWarning.secondWarningSyncing:
         return t.doNotLoseYourContent;
-      case _WarningVariants.licenseExpiredWarning:
+      case LogoutWarning.licenseExpiredWarning:
         return t.memoplannerLicenseExpired;
     }
   }
@@ -255,13 +148,13 @@ class _InternetConnection extends StatelessWidget {
 
 class _Body extends StatelessWidget {
   const _Body({
-    required this.variant,
+    required this.warning,
     required this.dirtyItems,
     Key? key,
   }) : super(key: key);
 
   final DirtyItems? dirtyItems;
-  final _WarningVariants variant;
+  final LogoutWarning warning;
 
   @override
   Widget build(BuildContext context) {
@@ -272,24 +165,24 @@ class _Body extends StatelessWidget {
         .bodyText2
         ?.copyWith(color: AbiliaColors.black75);
 
-    switch (variant) {
-      case _WarningVariants.firstWarningSuccess:
+    switch (warning) {
+      case LogoutWarning.firstWarningSuccess:
         return const SizedBox.shrink();
 
-      case _WarningVariants.firstWarningOffline:
+      case LogoutWarning.firstWarningSyncFailed:
         return const _InternetConnection();
-      case _WarningVariants.firstWarningSyncing:
+      case LogoutWarning.firstWarningSyncing:
         return layout.go
             ? const SizedBox.shrink()
             : const _InternetConnection();
 
-      case _WarningVariants.secondWarningOffline:
-      case _WarningVariants.secondWarningSyncing:
+      case LogoutWarning.secondWarningSyncFailed:
+      case LogoutWarning.secondWarningSyncing:
         return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (variant == _WarningVariants.secondWarningOffline && layout.go ||
+            if (warning == LogoutWarning.secondWarningSyncFailed && layout.go ||
                 !layout.go) ...[
               if (!layout.go)
                 Tts(
@@ -309,21 +202,21 @@ class _Body extends StatelessWidget {
               Flexible(
                 child: _DirtyItems(
                   dirtyItems: dirty,
-                  variant: variant,
+                  warning: warning,
                 ),
               ),
           ],
         );
 
-      case _WarningVariants.secondWarningSuccess:
+      case LogoutWarning.secondWarningSuccess:
         return dirty == null
             ? const AbiliaProgressIndicator()
             : _DirtyItems(
                 dirtyItems: dirty,
-                variant: variant,
+                warning: warning,
               );
 
-      case _WarningVariants.licenseExpiredWarning:
+      case LogoutWarning.licenseExpiredWarning:
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -343,7 +236,7 @@ class _Body extends StatelessWidget {
               Flexible(
                 child: _DirtyItems(
                   dirtyItems: dirty,
-                  variant: variant,
+                  warning: warning,
                 ),
               ),
           ],
@@ -355,12 +248,12 @@ class _Body extends StatelessWidget {
 class _DirtyItems extends StatefulWidget {
   const _DirtyItems({
     required this.dirtyItems,
-    required this.variant,
+    required this.warning,
     Key? key = TestKey.dirtyItems,
   }) : super(key: key);
 
   final DirtyItems dirtyItems;
-  final _WarningVariants variant;
+  final LogoutWarning warning;
 
   @override
   State<_DirtyItems> createState() => _DirtyItemsState();
@@ -385,9 +278,9 @@ class _DirtyItemsState extends State<_DirtyItems> {
         ?.copyWith(color: AbiliaColors.black75);
 
     late final InfoRowState defaultInfoRowState;
-    if (widget.variant.syncState == WarningSyncState.syncFailed) {
+    if (widget.warning.sync == WarningSyncState.syncFailed) {
       defaultInfoRowState = InfoRowState.critical;
-    } else if (widget.variant.syncState == WarningSyncState.syncing) {
+    } else if (widget.warning.sync == WarningSyncState.syncing) {
       defaultInfoRowState = InfoRowState.criticalLoading;
     } else {
       defaultInfoRowState = InfoRowState.verified;
@@ -455,8 +348,8 @@ class _DirtyItemsState extends State<_DirtyItems> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.variant.step != WarningStep.firstWarning &&
-            widget.variant.syncState != WarningSyncState.syncedSuccess)
+        if (widget.warning.step != WarningStep.firstWarning &&
+            widget.warning.sync != WarningSyncState.syncedSuccess)
           Tts(
             child: Text(
               t.ifYouLogoutYouWillLose,

@@ -50,6 +50,14 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     on<SyncAll>(_trySync, transformer: bufferTimer(syncDelay));
   }
 
+  Future<bool> hasDirty() async {
+    return await activityRepository.db.countAllDirty() +
+            await userFileRepository.db.countAllDirty() +
+            await sortableRepository.db.countAllDirty() +
+            await genericRepository.db.countAllDirty() >
+        0;
+  }
+
   Future _trySync(
     SyncEvent event,
     Emitter emit,
