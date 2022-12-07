@@ -17,7 +17,7 @@ class RecurringWeekState extends Equatable {
   RecurringWeekState.initial(
     EditActivityState editActivityState,
   )   : weekdays =
-            UnmodifiableSetView(editActivityState.activity.recurs.weekDays),
+            UnmodifiableSetView(editActivityState.activity.recurs.weekdays),
         everyOtherWeek = editActivityState.activity.recurs.everyOtherWeek,
         startDate = editActivityState.timeInterval.startDate,
         endDate = editActivityState.activity.recurs.end;

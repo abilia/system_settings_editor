@@ -71,7 +71,7 @@ class AppBarTitleRows {
     bool compactDay = false,
     bool currentNight = false,
   }) {
-    final weekDayString = settings.showWeekDay
+    final weekdayString = settings.showWeekday
         ? currentNight
             ? nightDay(currentTime, dayParts, langCode)
             : DateFormat.EEEE(langCode).format(day)
@@ -88,7 +88,7 @@ class AppBarTitleRows {
     final date = settings.showDate ? longDate(langCode).format(day) : '';
     final dateShort = settings.showDate ? shortDate(langCode).format(day) : '';
     return AppBarTitleRows._(
-      weekDayString + (compactDay ? ', $dayPartString' : ''),
+      weekdayString + (compactDay ? ', $dayPartString' : ''),
       compactDay ? '' : dayPartString,
       date,
       dateShort,
@@ -146,11 +146,11 @@ class AppBarTitleRows {
     required String langCode,
     required Translated translator,
   }) {
-    final displayWeekDay = selectedDay.isSameWeekAndYear(selectedWeekStart);
+    final displayWeekday = selectedDay.isSameWeekAndYear(selectedWeekStart);
     final day =
-        displayWeekDay ? DateFormat.EEEE(langCode).format(selectedDay) : '';
+        displayWeekday ? DateFormat.EEEE(langCode).format(selectedDay) : '';
     final weekTranslation =
-        displayWeekDay ? translator.week : translator.week.capitalize();
+        displayWeekday ? translator.week : translator.week.capitalize();
     final week = settings.showWeekNumber
         ? '$weekTranslation ${selectedWeekStart.getWeekNumber()}'
         : '';

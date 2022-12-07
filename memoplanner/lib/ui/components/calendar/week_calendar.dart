@@ -118,9 +118,9 @@ class WeekCalendarPage extends StatelessWidget {
           child: IntrinsicHeight(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: List<_WeekDayColumn>.generate(
+              children: List<_WeekdayColumn>.generate(
                 numberOfDays,
-                (i) => _WeekDayColumn(
+                (i) => _WeekdayColumn(
                   day: weekStart.addDays(i),
                   weekDisplayDays: weekDisplayDays,
                   occasions:
@@ -160,7 +160,7 @@ class WeekCalendarHeadingContent extends StatelessWidget {
       languageCode: Localizations.localeOf(context).languageCode,
       weekday: day.weekday,
     );
-    final weekDayFormat = DateFormat(
+    final weekdayFormat = DateFormat(
         'MMMMEEEEd', Localizations.localeOf(context).toLanguageTag());
     final borderColor = occasion.isCurrent
         ? AbiliaColors.red
@@ -204,7 +204,7 @@ class WeekCalendarHeadingContent extends StatelessWidget {
             children: [
               Expanded(
                 child: Tts.data(
-                  data: weekDayFormat.format(day),
+                  data: weekdayFormat.format(day),
                   child: BlocBuilder<ClockBloc, DateTime>(
                     buildWhen: (previous, current) =>
                         !previous.isAtSameDay(current),
@@ -309,12 +309,12 @@ class _FullDayActivities extends StatelessWidget {
   }
 }
 
-class _WeekDayColumn extends StatelessWidget {
+class _WeekdayColumn extends StatelessWidget {
   final DateTime day;
   final WeekDisplayDays weekDisplayDays;
   final List<EventOccasion> occasions;
 
-  const _WeekDayColumn({
+  const _WeekdayColumn({
     required this.day,
     required this.weekDisplayDays,
     required this.occasions,
@@ -383,7 +383,7 @@ class _WeekDayColumn extends StatelessWidget {
               selected: selected,
               child: Padding(
                 padding: innerDayPadding,
-                child: _WeekDayColumnItems(
+                child: _WeekdayColumnItems(
                   day: day,
                   selected: selected,
                   showCategories: calendarSettings.categories.show,
@@ -399,12 +399,12 @@ class _WeekDayColumn extends StatelessWidget {
   }
 }
 
-class _WeekDayColumnItems extends StatelessWidget {
+class _WeekdayColumnItems extends StatelessWidget {
   final DateTime day;
   final bool selected, showCategories, showCategoryColor;
   final List<EventOccasion> occasions;
 
-  const _WeekDayColumnItems({
+  const _WeekdayColumnItems({
     required this.day,
     required this.selected,
     required this.showCategories,

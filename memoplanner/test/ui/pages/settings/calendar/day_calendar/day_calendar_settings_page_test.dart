@@ -75,7 +75,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: AppBarSettings.activityDisplayWeekDayKey,
+          key: AppBarSettings.activityDisplayWeekdayKey,
           matcher: isFalse,
         );
       });
@@ -141,7 +141,7 @@ void main() {
           Generic.createNew<MemoplannerSettingData>(
             data: MemoplannerSettingData.fromData(
               data: false,
-              identifier: AppBarSettings.activityDisplayWeekDayKey,
+              identifier: AppBarSettings.activityDisplayWeekdayKey,
             ),
           ),
           Generic.createNew<MemoplannerSettingData>(
