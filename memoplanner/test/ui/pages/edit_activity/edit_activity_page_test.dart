@@ -2048,7 +2048,7 @@ text''';
       ) as RadioField<RecurrentType>;
       expect(radioWidget.groupValue, RecurrentType.weekly);
 
-      expect(find.byType(WeekDays), findsOneWidget);
+      expect(find.byType(Weekdays), findsOneWidget);
       expect(find.byType(EndDateWidget), findsOneWidget);
     });
 
@@ -3692,15 +3692,15 @@ text''';
       // Act -- Deselect all days
       final allSelectedDaysWidgets = tester.widgetList(
         find.descendant(
-          of: find.byType(WeekDays),
+          of: find.byType(Weekdays),
           matching: find.byWidgetPredicate(
             (w) => w is SelectableField && w.selected,
           ),
         ),
       );
 
-      for (var weekDay in allSelectedDaysWidgets) {
-        await tester.tap(find.byWidget(weekDay));
+      for (var weekday in allSelectedDaysWidgets) {
+        await tester.tap(find.byWidget(weekday));
         await tester.pumpAndSettle();
       }
 
@@ -3714,7 +3714,7 @@ text''';
       await tester.tap(
         find
             .descendant(
-              of: find.byType(WeekDays),
+              of: find.byType(Weekdays),
               matching: find.byWidgetPredicate((w) => w is SelectableField),
             )
             .first,

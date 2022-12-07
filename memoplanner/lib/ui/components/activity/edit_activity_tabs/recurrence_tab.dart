@@ -96,7 +96,7 @@ class Weekly extends StatelessWidget with EditActivityTab {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           errorBordered(
-            const WeekDays(),
+            const Weekdays(),
             errorState: errorState,
           ),
           const EveryOtherWeekSwitch().pad(

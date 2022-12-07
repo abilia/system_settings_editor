@@ -116,7 +116,7 @@ void main() {
   testWidgets('No weekday when setting is false', (WidgetTester tester) async {
     expectSettings(const MemoplannerSettings(
         dayCalendar:
-            DayCalendarSettings(appBar: AppBarSettings(showWeekDay: false))));
+            DayCalendarSettings(appBar: AppBarSettings(showWeekday: false))));
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));
     await tester.pumpAndSettle();
@@ -147,7 +147,7 @@ void main() {
       dayCalendar: DayCalendarSettings(
         appBar: AppBarSettings(
           showDate: false,
-          showWeekDay: false,
+          showWeekday: false,
           showDayPeriod: true,
         ),
       ),
@@ -165,7 +165,7 @@ void main() {
       dayCalendar: DayCalendarSettings(
         appBar: AppBarSettings(
           showDate: true,
-          showWeekDay: false,
+          showWeekday: false,
           showDayPeriod: false,
         ),
       ),
@@ -183,7 +183,7 @@ void main() {
       dayCalendar: DayCalendarSettings(
         appBar: AppBarSettings(
           showDate: false,
-          showWeekDay: false,
+          showWeekday: false,
           showDayPeriod: false,
         ),
       ),

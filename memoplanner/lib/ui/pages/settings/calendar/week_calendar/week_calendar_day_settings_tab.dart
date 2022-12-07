@@ -115,7 +115,7 @@ class DayHeading extends StatelessWidget {
     );
     return Flexible(
       child: Padding(
-        padding: layout.settings.weekDaysPadding,
+        padding: layout.settings.weekdaysPadding,
         child: Container(
           decoration: BoxDecoration(
             color: dayTheme.borderColor,
@@ -163,7 +163,7 @@ class DayColumn extends StatelessWidget {
     );
     return Flexible(
       child: Padding(
-        padding: layout.settings.weekDaysPadding,
+        padding: layout.settings.weekdaysPadding,
         child: BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettings>(
           builder: (context, state) => Container(
             decoration: BoxDecoration(
@@ -178,7 +178,7 @@ class DayColumn extends StatelessWidget {
             ),
             child: Container(
               width: double.infinity,
-              height: layout.settings.weekDayHeight,
+              height: layout.settings.weekdayHeight,
               margin: EdgeInsetsDirectional.only(
                   start: borderSize, end: borderSize, bottom: borderSize),
               decoration: BoxDecoration(

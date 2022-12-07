@@ -9,10 +9,10 @@ class SettingsLayout {
       monthPreviewHeaderHeight,
       weekCalendarHeight,
       weekCalendarHeadingHeight,
-      weekDayHeight,
+      weekdayHeight,
       permissionsDotPosition;
 
-  final EdgeInsets monthDaysPadding, weekDaysPadding, textToSpeechPadding;
+  final EdgeInsets monthDaysPadding, weekdaysPadding, textToSpeechPadding;
 
   const SettingsLayout({
     this.clockHeight = 90,
@@ -23,10 +23,10 @@ class SettingsLayout {
     this.monthPreviewHeaderHeight = 32,
     this.weekCalendarHeight = 148,
     this.weekCalendarHeadingHeight = 44,
-    this.weekDayHeight = 86,
+    this.weekdayHeight = 86,
     this.permissionsDotPosition = 8,
     this.monthDaysPadding = const EdgeInsets.only(left: 4.0, right: 4),
-    this.weekDaysPadding = const EdgeInsets.symmetric(horizontal: 2.0),
+    this.weekdaysPadding = const EdgeInsets.symmetric(horizontal: 2.0),
     this.textToSpeechPadding = const EdgeInsets.only(left: 8, right: 4),
   });
 }
@@ -42,10 +42,10 @@ class SettingsLayoutMedium extends SettingsLayout {
           monthPreviewHeaderHeight: 48,
           weekCalendarHeight: 222,
           weekCalendarHeadingHeight: 66,
-          weekDayHeight: 129,
+          weekdayHeight: 129,
           permissionsDotPosition: 12,
           monthDaysPadding: const EdgeInsets.only(left: 6, right: 6),
-          weekDaysPadding: const EdgeInsets.symmetric(horizontal: 3),
+          weekdaysPadding: const EdgeInsets.symmetric(horizontal: 3),
           textToSpeechPadding: const EdgeInsets.only(left: 12, right: 6),
         );
 }

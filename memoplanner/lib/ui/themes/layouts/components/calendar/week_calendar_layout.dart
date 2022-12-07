@@ -1,7 +1,7 @@
 import 'package:memoplanner/ui/all.dart';
 
 class WeekCalendarLayout {
-  final WeekDayColumnLayout selectedDay, notSelectedDay;
+  final WeekdayColumnLayout selectedDay, notSelectedDay;
 
   final TimerCardLayout timerCard;
 
@@ -27,12 +27,12 @@ class WeekCalendarLayout {
       imagePadding: EdgeInsets.fromLTRB(2, 4, 2, 2),
       textPadding: EdgeInsets.fromLTRB(2, 4, 2, 2),
     ),
-    this.selectedDay = const WeekDayColumnLayout(
+    this.selectedDay = const WeekdayColumnLayout(
       everyDayFlex: 82,
       weekdaysFlex: 116,
       dayColumnBorderWidth: 2,
     ),
-    this.notSelectedDay = const WeekDayColumnLayout(
+    this.notSelectedDay = const WeekdayColumnLayout(
       everyDayFlex: 48,
       weekdaysFlex: 64,
       dayColumnBorderWidth: 1,
@@ -50,8 +50,8 @@ class WeekCalendarLayoutMedium extends WeekCalendarLayout {
                 imagePadding: EdgeInsets.only(top: 8),
                 textPadding: EdgeInsets.all(4),
               ),
-          selectedDay: const _WeekDayColumnLayoutSelectedMedium(),
-          notSelectedDay: const _WeekDayColumnLayoutNotSelectedMedium(),
+          selectedDay: const _WeekdayColumnLayoutSelectedMedium(),
+          notSelectedDay: const _WeekdayColumnLayoutNotSelectedMedium(),
           dayDistance: 3,
           headerHeight: 132,
           activityDistance: 4,
@@ -75,7 +75,7 @@ class WeekCalendarLayoutLarge extends WeekCalendarLayoutMedium {
         );
 }
 
-class WeekDayColumnLayout {
+class WeekdayColumnLayout {
   final int everyDayFlex, weekdaysFlex;
 
   final double activityBorderWidth,
@@ -86,7 +86,7 @@ class WeekDayColumnLayout {
 
   final EdgeInsets innerDayPadding;
 
-  const WeekDayColumnLayout({
+  const WeekdayColumnLayout({
     required this.everyDayFlex,
     required this.weekdaysFlex,
     required this.dayColumnBorderWidth,
@@ -100,8 +100,8 @@ class WeekDayColumnLayout {
   });
 }
 
-class _WeekDayColumnLayoutSelectedMedium extends WeekDayColumnLayout {
-  const _WeekDayColumnLayoutSelectedMedium()
+class _WeekdayColumnLayoutSelectedMedium extends WeekdayColumnLayout {
+  const _WeekdayColumnLayoutSelectedMedium()
       : super(
           everyDayFlex: 318,
           weekdaysFlex: 318,
@@ -116,8 +116,8 @@ class _WeekDayColumnLayoutSelectedMedium extends WeekDayColumnLayout {
         );
 }
 
-class _WeekDayColumnLayoutNotSelectedMedium extends WeekDayColumnLayout {
-  const _WeekDayColumnLayoutNotSelectedMedium()
+class _WeekdayColumnLayoutNotSelectedMedium extends WeekdayColumnLayout {
+  const _WeekdayColumnLayoutNotSelectedMedium()
       : super(
           everyDayFlex: 79,
           weekdaysFlex: 119,
