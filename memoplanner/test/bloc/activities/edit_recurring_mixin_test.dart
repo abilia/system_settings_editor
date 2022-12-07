@@ -87,12 +87,12 @@ void main() {
         // Arrange
         final recurringActivity = FakeActivity.reoccursFridays(anyTime);
         final inAWeek = anyTime.copyWith(day: anyTime.day + 7);
-        final inAWeekDays = inAWeek.onlyDays();
+        final inAWeekdays = inAWeek.onlyDays();
 
         final activitySet = {recurringActivity};
 
         final expectedRecurring1 = recurringActivity
-            .copyWithRecurringEnd(inAWeekDays.millisecondBefore());
+            .copyWithRecurringEnd(inAWeekdays.millisecondBefore());
         final expectedRecurring2 = recurringActivity.copyWith(
           newId: true,
           startTime: inAWeek.nextDay(),

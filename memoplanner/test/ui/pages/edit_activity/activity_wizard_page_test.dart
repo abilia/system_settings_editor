@@ -1032,7 +1032,7 @@ void main() {
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(RecurringWeeklyWiz), findsOneWidget);
-      expect(find.byType(WeekDays), findsOneWidget);
+      expect(find.byType(Weekdays), findsOneWidget);
       expect(find.byType(SelectAllWeekdaysButton), findsOneWidget);
       expect(find.byType(EveryOtherWeekSwitch), findsOneWidget);
       expect(find.byType(EndDateWizWidget), findsOneWidget);

@@ -180,9 +180,9 @@ class Recurs extends Equatable {
   static int dayOfYearData(DateTime date) => (date.month - 1) * 100 + date.day;
 
   @visibleForTesting
-  static int onDaysOfWeek(Iterable<int> weekDays) => biWeekly(
-        evens: weekDays,
-        odds: weekDays,
+  static int onDaysOfWeek(Iterable<int> weekdays) => biWeekly(
+        evens: weekdays,
+        odds: weekdays,
       );
 
   @visibleForTesting
@@ -196,7 +196,7 @@ class Recurs extends Equatable {
 
   static int _toBitMask(int bit) => 1 << (bit - 1);
 
-  Set<int> get weekDays => weekly
+  Set<int> get weekdays => weekly
       ? _generateBitsSet(
           DateTime.daysPerWeek, _onlyOddWeeks ? _oddWeekBits : data)
       : {};

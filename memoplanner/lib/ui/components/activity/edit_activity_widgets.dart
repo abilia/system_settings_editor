@@ -643,8 +643,8 @@ class EndDateWizWidget extends StatelessWidget {
   }
 }
 
-class WeekDays extends StatelessWidget {
-  const WeekDays({
+class Weekdays extends StatelessWidget {
+  const Weekdays({
     Key? key,
   }) : super(key: key);
 

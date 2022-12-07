@@ -16,7 +16,7 @@ class AppBarSettings extends Equatable {
   static const String dayCaptionShowDayButtonsKey =
           'day_caption_show_day_buttons',
       activityDisplayDayPeriodKey = 'day_caption_show_period',
-      activityDisplayWeekDayKey = 'day_caption_show_weekday',
+      activityDisplayWeekdayKey = 'day_caption_show_weekday',
       activityDisplayDateKey = 'day_caption_show_date',
       activityDisplayClockKey = 'day_caption_show_clock';
 
@@ -34,7 +34,7 @@ class AppBarSettings extends Equatable {
         dayCaptionShowDayButtonsKey,
       ),
       showWeekday: settings.getBool(
-        activityDisplayWeekDayKey,
+        activityDisplayWeekdayKey,
       ),
       showDayPeriod: settings.getBool(
         activityDisplayDayPeriodKey,
@@ -70,7 +70,7 @@ class AppBarSettings extends Equatable {
         ),
         MemoplannerSettingData.fromData(
           data: showWeekday,
-          identifier: activityDisplayWeekDayKey,
+          identifier: activityDisplayWeekdayKey,
         ),
         MemoplannerSettingData.fromData(
           data: showDayPeriod,

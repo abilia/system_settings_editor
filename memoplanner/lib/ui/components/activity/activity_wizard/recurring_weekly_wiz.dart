@@ -17,7 +17,7 @@ class RecurringWeeklyWiz extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: layout.formPadding.groupTopDistance),
-            const WeekDays().pad(layout.templates.m1.onlyHorizontal),
+            const Weekdays().pad(layout.templates.m1.onlyHorizontal),
             SizedBox(height: layout.formPadding.groupTopDistance),
             const SelectAllWeekdaysButton(),
             SizedBox(height: layout.formPadding.groupTopDistance),

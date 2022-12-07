@@ -68,9 +68,7 @@ class DayAppBarPreview extends StatelessWidget {
       showBrowseButtons: appBarSettings.showBrowseButtons,
       showClock: appBarSettings.showClock,
       rows: AppBarTitleRows.day(
-        displayWeekDay: appBarSettings.showWeekday,
-        displayPartOfDay: appBarSettings.showDayPeriod,
-        displayDate: appBarSettings.showDate,
+        settings: appBarSettings,
         currentTime: currentTime,
         day: currentTime.onlyDays(),
         dayParts: dayParts,
