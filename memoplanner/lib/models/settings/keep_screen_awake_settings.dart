@@ -33,8 +33,7 @@ class KeepScreenAwakeSettings extends Equatable {
       Map<String, MemoplannerSettingData> settings) {
     final savedKeepOnWhileCharging =
         settings.parse(keepScreenOnWhileChargingKey, false);
-    final savedKeepOnAlways =
-        settings.parse(keepScreenOnWhileChargingKey, false);
+    final savedKeepOnAlways = settings.parse(keepScreenOnAlwaysKey, false);
     return KeepScreenAwakeSettings(
       keepScreenOnWhileCharging: Config.isMPLarge || savedKeepOnWhileCharging,
       keepScreenOnAlways: Config.isMPLarge || savedKeepOnAlways,
