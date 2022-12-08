@@ -72,7 +72,7 @@ class DeviceRepository extends Repository {
           badRequest: BadRequest.fromJson(responseJson),
         );
       default:
-        throw Exception('Unknown error when verifying device id');
+        throw Exception('Unknown error when parsing license response');
     }
   }
 

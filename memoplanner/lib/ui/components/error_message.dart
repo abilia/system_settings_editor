@@ -25,11 +25,13 @@ class ErrorMessage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
-              padding: layout.message.textPadding,
-              child: DefaultTextStyle(
-                style: Theme.of(context).textTheme.bodyText2 ?? bodyText2,
-                child: text,
+            Flexible(
+              child: Padding(
+                padding: layout.message.textPadding,
+                child: DefaultTextStyle(
+                  style: Theme.of(context).textTheme.bodyText2 ?? bodyText2,
+                  child: text,
+                ),
               ),
             ),
             if (trailing != null)
