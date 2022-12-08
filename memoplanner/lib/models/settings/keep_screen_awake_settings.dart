@@ -20,10 +20,10 @@ class KeepScreenAwakeSettings extends Equatable {
   bool get keepScreenOnAlways => Config.isMPLarge || _keepScreenOnAlways;
 
   const KeepScreenAwakeSettings({
-    bool? keepScreenOnWhileCharging,
-    bool? keepScreenOnAlways,
-  })  : _keepScreenOnWhileCharging = keepScreenOnWhileCharging ?? false,
-        _keepScreenOnAlways = keepScreenOnAlways ?? false;
+    bool keepScreenOnWhileCharging = false,
+    bool keepScreenOnAlways = false,
+  })  : _keepScreenOnWhileCharging = keepScreenOnWhileCharging,
+        _keepScreenOnAlways = keepScreenOnAlways;
 
   KeepScreenAwakeSettings copyWith({
     bool? keepScreenOnWhileCharging,
