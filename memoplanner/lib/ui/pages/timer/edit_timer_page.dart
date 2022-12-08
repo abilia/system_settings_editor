@@ -156,26 +156,34 @@ class _TimerWheelState extends State<_TimerWheel>
   Widget build(BuildContext context) {
     final duration = context.select((EditTimerCubit c) => c.state.duration);
 
-    return ValueListenableBuilder(
-      valueListenable: CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeInOut,
-      ),
-      builder: (_, value, __) {
-        return TimerWheel.interactive(
-          lengthInSeconds: animate ? (value * 180).toInt() : duration.inSeconds,
-          onMinutesSelectedChanged: (minutesSelected) {
-            setState(() {
-              _animationController.stop();
-              animate = false;
-            });
-            HapticFeedback.selectionClick();
-            context.read<EditTimerCubit>().updateDuration(
-                  Duration(minutes: minutesSelected),
-                );
-          },
-        ).pad(layout.editTimer.wheelPadding);
+    return BlocListener<EditTimerCubit, EditTimerState>(
+      listenWhen: (previous, current) => previous.duration != current.duration,
+      listener: (_, state) {
+        _animationController.stop();
+        animate = false;
       },
+      child: ValueListenableBuilder(
+        valueListenable: CurvedAnimation(
+          parent: _animationController,
+          curve: Curves.easeInOut,
+        ),
+        builder: (_, value, __) {
+          return TimerWheel.interactive(
+            lengthInSeconds:
+                animate ? (value * 180).toInt() : duration.inSeconds,
+            onMinutesSelectedChanged: (minutesSelected) {
+              setState(() {
+                _animationController.stop();
+                animate = false;
+              });
+              HapticFeedback.selectionClick();
+              context.read<EditTimerCubit>().updateDuration(
+                    Duration(minutes: minutesSelected),
+                  );
+            },
+          ).pad(layout.editTimer.wheelPadding);
+        },
+      ),
     );
   }
 }
