@@ -100,27 +100,82 @@ class _EditTimerPage extends StatelessWidget {
           padding: layout.templates.m3,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const _TimerInfoInput(),
+            children: const [
+              _TimerInfoInput(),
               Expanded(
-                child: BlocSelector<EditTimerCubit, EditTimerState, Duration>(
-                  selector: (state) => state.duration,
-                  builder: (context, duration) => TimerWheel.interactive(
-                    lengthInSeconds: duration.inSeconds,
-                    onMinutesSelectedChanged: (minutesSelected) {
-                      HapticFeedback.selectionClick();
-                      context.read<EditTimerCubit>().updateDuration(
-                            Duration(minutes: minutesSelected),
-                          );
-                    },
-                  ).pad(layout.editTimer.wheelPadding),
-                ),
+                child: _TimerWheel(),
               ),
             ],
           ),
         ),
         bottomNavigationBar: bottomNavigation,
       ),
+    );
+  }
+}
+
+class _TimerWheel extends StatefulWidget {
+  const _TimerWheel({Key? key}) : super(key: key);
+
+  @override
+  State<_TimerWheel> createState() => _TimerWheelState();
+}
+
+class _TimerWheelState extends State<_TimerWheel>
+    with TickerProviderStateMixin {
+  bool animate = true;
+
+  late final AnimationController _animationController = AnimationController(
+    duration: const Duration(milliseconds: 1800),
+    reverseDuration: const Duration(milliseconds: 1200),
+    vsync: this,
+    animationBehavior: AnimationBehavior.preserve,
+  )
+    ..forward()
+    ..addStatusListener((status) async {
+      if (!animate) {
+        _animationController.stop();
+      }
+      if (status == AnimationStatus.dismissed) {
+        await Future.delayed(const Duration(milliseconds: 2000));
+        _animationController.forward();
+      }
+      if (status == AnimationStatus.completed) {
+        await Future.delayed(const Duration(milliseconds: 400));
+        _animationController.reverse();
+      }
+    });
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final duration = context.select((EditTimerCubit c) => c.state.duration);
+
+    return ValueListenableBuilder(
+      valueListenable: CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+      builder: (_, value, __) {
+        return TimerWheel.interactive(
+          lengthInSeconds: animate ? (value * 180).toInt() : duration.inSeconds,
+          onMinutesSelectedChanged: (minutesSelected) {
+            setState(() {
+              _animationController.stop();
+              animate = false;
+            });
+            HapticFeedback.selectionClick();
+            context.read<EditTimerCubit>().updateDuration(
+                  Duration(minutes: minutesSelected),
+                );
+          },
+        ).pad(layout.editTimer.wheelPadding);
+      },
     );
   }
 }
