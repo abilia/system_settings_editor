@@ -1,3 +1,5 @@
+import 'package:memoplanner/ui/themes/layouts/layout.dart';
+
 class Config {
   static const dev = String.fromEnvironment('release') == 'dev';
   static const release = !dev;
@@ -5,6 +7,8 @@ class Config {
   static const isMP = String.fromEnvironment('flavor') == 'mp';
   static const isMPGO = !isMP;
   static const flavor = isMP ? Flavor.mp : Flavor.mpgo;
+
+  static final isMPLarge = isMP && layout.large;
 }
 
 class Flavor {
