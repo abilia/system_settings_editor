@@ -1,27 +1,17 @@
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
-class ConfirmFactoryResetDialog extends StatefulWidget {
-  const ConfirmFactoryResetDialog({Key? key}) : super(key: key);
+class ConfirmFactoryResetDialog extends StatelessWidget {
+  final ResetDeviceCubit resetDeviceCubit;
 
-  @override
-  State<ConfirmFactoryResetDialog> createState() =>
-      _ConfirmFactoryResetDialogState();
-}
-
-class _ConfirmFactoryResetDialogState extends State<ConfirmFactoryResetDialog> {
-  static const String _factoryResetCode = 'FactoryresetMP4';
-  String _input = '';
-
-  bool get _correctInputOrEmpty => _correctInput || _input.isEmpty;
-
-  bool get _correctInput => _input == _factoryResetCode;
+  const ConfirmFactoryResetDialog({required this.resetDeviceCubit, super.key});
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     final dialogLayout = layout.resetDeviceDialog;
-    final isResetting = context.watch<FactoryResetCubit>().isResetting;
+    final factoryResetState = resetDeviceCubit.state;
+    final isResetting = resetDeviceCubit.isResetting;
     return WillPopScope(
       onWillPop: () async => !isResetting,
       child: ViewDialog(
@@ -58,12 +48,12 @@ class _ConfirmFactoryResetDialogState extends State<ConfirmFactoryResetDialog> {
             ),
             SizedBox(height: dialogLayout.titleToImageDistance),
             AbiliaTextInput(
-              initialValue: _input,
+              initialValue: factoryResetState.input,
               icon: AbiliaIcons.contact,
               heading: translate.factoryResetCode,
-              inputHeading: translate.factoryReset,
+              inputHeading: translate.factoryResetCode,
               autoCorrect: false,
-              errorState: !_correctInputOrEmpty,
+              errorState: !factoryResetState.correctInputOrEmpty,
               wrapWithAuthProviders: false,
               onChanged: !isResetting ? _onNewInput : null,
             ),
@@ -71,7 +61,7 @@ class _ConfirmFactoryResetDialogState extends State<ConfirmFactoryResetDialog> {
               width: double.infinity,
               child: Tts(
                 child: Text(
-                  _errorText,
+                  _errorText(context),
                   textAlign: TextAlign.left,
                   style: Theme.of(context)
                       .textTheme
@@ -91,30 +81,30 @@ class _ConfirmFactoryResetDialogState extends State<ConfirmFactoryResetDialog> {
         forwardNavigationWidget: RedButton(
           text: translate.factoryReset,
           icon: AbiliaIcons.reset,
-          onPressed: _correctInput && !isResetting ? _factoryResetDevice : null,
+          onPressed: factoryResetState.correctInput && !isResetting
+              ? () => _factoryResetDevice(context)
+              : null,
         ),
       ),
     );
   }
 
-  String get _errorText {
+  String _errorText(BuildContext context) {
     final translate = Translator.of(context).translate;
-    final factoryResetCubit = context.read<FactoryResetCubit>();
-    if (!_correctInputOrEmpty) {
+    final factoryResetState = context.read<ResetDeviceCubit>().state;
+    if (!factoryResetState.correctInputOrEmpty) {
       return translate.wrongResetCode;
     }
-    if (factoryResetCubit.state is FactoryResetFailed) {
+    if (factoryResetState is FactoryResetFailed) {
       return translate.factoryResetFailed;
     }
     return '';
   }
 
   void _onNewInput(String input) {
-    setState(() {
-      _input = input;
-    });
+    resetDeviceCubit.setInput(input);
   }
 
-  void _factoryResetDevice() =>
-      context.read<FactoryResetCubit>().factoryResetDevice();
+  void _factoryResetDevice(BuildContext context) =>
+      context.read<ResetDeviceCubit>().factoryResetDevice();
 }

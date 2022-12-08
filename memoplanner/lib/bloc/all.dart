@@ -31,4 +31,4 @@ export 'alarm/notification_bloc.dart';
 export 'locale/locale_cubit.dart';
 export 'calendar/day_part_cubit.dart';
 export 'session/sessions_cubit.dart';
-export 'factory_reset/factory_reset_cubit.dart';
+export 'reset_device/reset_device_cubit.dart';

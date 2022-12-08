@@ -16,7 +16,7 @@ void main() {
   late final SpeechSettingsCubit speechSettingsCubit;
   late final StartupCubit startupCubit;
   late final BaseUrlCubit baseUrlCubit;
-  late final FactoryResetCubit factoryResetCubit;
+  late final ResetDeviceCubit resetDeviceCubit;
   late final VoiceRepository voiceRepository;
   late final DeviceRepository deviceRepository;
   late final FactoryResetRepository mockFactoryResetRepository;
@@ -67,7 +67,7 @@ void main() {
     baseUrlCubit = BaseUrlCubit(baseUrlDb: baseUrlDb);
 
     mockFactoryResetRepository = MockFactoryResetRepository();
-    factoryResetCubit = FactoryResetCubit(
+    resetDeviceCubit = ResetDeviceCubit(
       factoryResetRepository: mockFactoryResetRepository,
     );
   });
@@ -85,7 +85,7 @@ void main() {
             BlocProvider.value(value: voicesCubit),
             BlocProvider.value(value: startupCubit),
             BlocProvider.value(value: baseUrlCubit),
-            BlocProvider.value(value: factoryResetCubit),
+            BlocProvider.value(value: resetDeviceCubit),
             BlocProvider.value(value: FakeSpeechSettingsCubit()),
           ],
           child: const AbiliaLogoWithReset(),

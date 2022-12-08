@@ -369,8 +369,8 @@ class TopLevelProvider extends StatelessWidget {
               )..initialize(),
               lazy: false,
             ),
-            BlocProvider<FactoryResetCubit>(
-              create: (context) => FactoryResetCubit(
+            BlocProvider<ResetDeviceCubit>(
+              create: (context) => ResetDeviceCubit(
                 factoryResetRepository: context.read<FactoryResetRepository>(),
               ),
             ),

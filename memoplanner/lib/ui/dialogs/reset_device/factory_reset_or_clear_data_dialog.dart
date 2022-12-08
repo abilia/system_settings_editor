@@ -2,27 +2,17 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-enum ResetType {
-  factoryReset,
-  clearData,
-}
-
-class FactoryResetOrClearDataDialog extends StatefulWidget {
+class FactoryResetOrClearDataDialog extends StatelessWidget {
   final PageController pageController;
+  final ResetDeviceCubit resetDeviceCubit;
 
   const FactoryResetOrClearDataDialog({
     required this.pageController,
+    required this.resetDeviceCubit,
     Key? key,
   }) : super(key: key);
 
-  @override
-  State<FactoryResetOrClearDataDialog> createState() =>
-      _FactoryResetOrClearDataDialogState();
-}
-
-class _FactoryResetOrClearDataDialogState
-    extends State<FactoryResetOrClearDataDialog> {
-  ResetType? _resetType;
+  ResetType? get _resetType => resetDeviceCubit.state.resetType;
 
   @override
   Widget build(BuildContext context) {
@@ -90,36 +80,35 @@ class _FactoryResetOrClearDataDialogState
       forwardNavigationWidget: RedButton(
         text: translate.yes,
         icon: AbiliaIcons.checkButton,
-        onPressed: _resetType != null ? _onNext : null,
+        onPressed: _resetType != null ? () => _onNext(context) : null,
       ),
     );
   }
 
   void _onResetTypeChanged(ResetType? resetType) {
-    setState(() {
-      _resetType = resetType;
-    });
+    resetDeviceCubit.setResetType(resetType);
   }
 
-  void _onNext() {
+  void _onNext(BuildContext context) {
     if (_resetType == ResetType.factoryReset) {
       return _nextPage();
     } else if (_resetType == ResetType.clearData) {
-      _clearMemoplannerData();
+      _clearMemoplannerData(context);
     }
   }
 
   void _nextPage() {
-    widget.pageController.nextPage(
+    pageController.nextPage(
       duration: 500.milliseconds(),
       curve: Curves.easeOutQuad,
     );
   }
 
-  void _clearMemoplannerData() {
+  void _clearMemoplannerData(BuildContext context) {
     context.read<VoicesCubit>().resetSpeechSettings();
     context.read<StartupCubit>().resetStartGuideDone();
     context.read<BaseUrlCubit>().clearBaseUrl();
+    resetDeviceCubit.reset();
     Navigator.of(context).pop();
   }
 }
