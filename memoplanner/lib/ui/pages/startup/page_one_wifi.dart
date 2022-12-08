@@ -73,6 +73,7 @@ class PageOneWifi extends StatelessWidget {
                 child: Tts.data(
                   data: t.next,
                   child: TextButton(
+                    key: TestKey.nextWelcomeGuide,
                     style: textButtonStyleGreen,
                     onPressed: () {
                       pageController.nextPage(
@@ -82,7 +83,6 @@ class PageOneWifi extends StatelessWidget {
                     },
                     child: Text(
                       t.next,
-                      key: TestKey.nextWelcomeGuide,
                     ),
                   ),
                 ),

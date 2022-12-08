@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:battery_plus/battery_plus.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/logging/all.dart';
@@ -128,6 +129,13 @@ class GetItInitializer {
   SeagullAnalytics? _analytics;
   set analytics(SeagullAnalytics analytics) => _analytics = analytics;
 
+  Connectivity? _connectivity;
+  set connectivity(Connectivity connectivity) => _connectivity = connectivity;
+
+  ConnectivityCheck? _connectivityCheck;
+  set connectivityCheck(ConnectivityCheck connectivityCheck) =>
+      _connectivityCheck = connectivityCheck;
+
   void init() {
     final loginDb = _loginDb ?? LoginDb(_sharedPreferences);
     final deviceDb = _deviceDb ?? DeviceDb(_sharedPreferences);
@@ -182,6 +190,12 @@ class GetItInitializer {
             ),
       )
       ..registerSingleton<SeagullAnalytics>(
-          _analytics ?? SeagullAnalytics.empty());
+          _analytics ?? SeagullAnalytics.empty())
+      ..registerSingleton<Connectivity>(
+        _connectivity ?? Connectivity(),
+      )
+      ..registerSingleton<ConnectivityCheck>(
+        _connectivityCheck ?? hasConnection,
+      );
   }
 }

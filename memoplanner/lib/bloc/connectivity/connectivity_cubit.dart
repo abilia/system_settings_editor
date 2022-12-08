@@ -1,29 +1,16 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 export 'package:connectivity_plus/connectivity_plus.dart';
-
-typedef ConnectivityCheck = Future<bool> Function(String endpoint);
-
-Future<bool> hasConnection(String baseUrl) async {
-  try {
-    final result = await InternetAddress.lookup(
-      baseUrl.replaceFirst(RegExp(r'^https?://'), ''),
-    );
-    return result.any((element) => element.rawAddress.isNotEmpty);
-  } catch (_) {
-    return false;
-  }
-}
 
 class ConnectivityCubit extends Cubit<ConnectivityState> {
   ConnectivityCubit({
     required this.connectivity,
     required this.baseUrlDb,
-    this.connectivityCheck = hasConnection,
+    required this.connectivityCheck,
   }) : super(const ConnectivityState.none()) {
     _onChangeSubscription =
         connectivity.onConnectivityChanged.listen(_onConnectivityChanged);
