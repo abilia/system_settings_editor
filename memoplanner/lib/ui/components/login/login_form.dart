@@ -1,7 +1,6 @@
 import 'package:flutter/services.dart';
 
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/repository/end_point.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class LoginForm extends StatelessWidget {
@@ -30,7 +29,9 @@ class LoginForm extends StatelessWidget {
                   ErrorMessage(text: Text(message)),
                   SizedBox(height: layout.templates.m5.top)
                 ],
-                const MEMOplannerLogoWithLoginProgress(),
+                MEMOplannerLogoHiddenBackendSwitch(
+                  loading: state is LoginLoading,
+                ),
                 SizedBox(height: layout.formPadding.groupBottomDistance),
                 Tts(
                   child: Text(
@@ -113,24 +114,21 @@ class LoginButton extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return Tts.data(
       data: translate.login,
-      child: BlocBuilder<BaseUrlCubit, String>(builder: (context, baseUrl) {
-        final end = baseUrl == prod ? '' : ' (${backendName(baseUrl)})';
-        return BlocBuilder<LoginCubit, LoginState>(
-          builder: (context, state) => ConstrainedBox(
-            constraints: const BoxConstraints(minWidth: double.infinity),
-            child: TextButton(
-              style: textButtonStyleGreen,
-              onPressed: state is! LoginLoading
-                  ? () {
-                      BlocProvider.of<LoginCubit>(context).loginButtonPressed();
-                      FocusScope.of(context).requestFocus(FocusNode());
-                    }
-                  : null,
-              child: Text('${translate.login}$end'),
-            ),
+      child: BlocBuilder<LoginCubit, LoginState>(
+        builder: (context, state) => ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: double.infinity),
+          child: TextButton(
+            style: textButtonStyleGreen,
+            onPressed: state is! LoginLoading
+                ? () {
+                    BlocProvider.of<LoginCubit>(context).loginButtonPressed();
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  }
+                : null,
+            child: Text(translate.login),
           ),
-        );
-      }),
+        ),
+      ),
     );
   }
 }

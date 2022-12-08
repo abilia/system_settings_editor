@@ -1,5 +1,4 @@
 import 'package:memoplanner/ui/all.dart';
-import 'package:memoplanner/utils/all.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({
@@ -18,7 +17,7 @@ class WelcomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          MEMOplannerLogo(
+          MEMOplannerLogoHiddenBackendSwitch(
             height: layout.startupPage.welcomeLogoHeight,
           ),
           SizedBox(height: layout.startupPage.welcomeLogoDistance),
@@ -37,11 +36,13 @@ class WelcomePage extends StatelessWidget {
               style: startPageButton,
               onPressed: () {
                 pageController.nextPage(
-                    duration: 500.milliseconds(), curve: Curves.easeOutQuad);
+                  duration: StartupGuidePage.pageDuration,
+                  curve: StartupGuidePage.curve,
+                );
               },
               child: Text(
                 t.start,
-                key: TestKey.startWelcomGuide,
+                key: TestKey.startWelcomeGuide,
               ),
             ),
           ),

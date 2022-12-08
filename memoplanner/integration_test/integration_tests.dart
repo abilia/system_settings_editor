@@ -68,7 +68,7 @@ void main() {
 extension on WidgetTester {
   Future<void> selectBackend(String env) async {
     await pumpAndSettle();
-    await longPress(find.byType(MEMOplannerLogoWithLoginProgress));
+    await longPress(find.byType(MEMOplannerLogoHiddenBackendSwitch));
     await pumpAndSettle();
     await tap(find.text(env));
     await pumpAndSettle();

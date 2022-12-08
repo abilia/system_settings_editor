@@ -353,6 +353,13 @@ class TopLevelProvider extends StatelessWidget {
               acapelaTts: GetIt.I<TtsInterface>(),
             ),
           ),
+          BlocProvider<ConnectivityCubit>(
+            create: (context) => ConnectivityCubit(
+              connectivity: Connectivity(),
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+            ),
+            lazy: false,
+          ),
           if (Config.isMP)
             BlocProvider<VoicesCubit>(
               create: (context) => VoicesCubit(

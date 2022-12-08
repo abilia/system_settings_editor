@@ -1,5 +1,13 @@
 _id_	en	sv	da	nl	fi	de	nb
+setupYourInternetConnection	Setup your internet connection						
+wifiNoInternet	Your current Wi-Fi has failed to connect to the internet, try another network or contact your internet provider for help						
+connectInternetToContinue	Connect the internet to continue						
+enterYourLicense	Enter your license key						
+enterYourLicenseHint	License key should contain 12 digits						
+licenseErrorAlreadyInUse	This license is already in use on MEMOplanner with serial number						
+licenseErrorNotFound	We didn't find a valid license\nPlease re-check the license key and try again						
 licenseExpiredLogOutWarning	License is expired, all data will be lost if you log out						
+connectedNoInternet	Connected, no internet						
 welcomeTo	Welcome to						
 getStarted	Get started						
 readAndAgree1	To use						

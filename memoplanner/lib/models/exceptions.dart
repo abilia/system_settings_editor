@@ -38,6 +38,38 @@ class CreateAccountException implements Exception {
   CreateAccountException({required this.badRequest});
 }
 
+enum ConnectingLicenseFailedReason {
+  licenseNotFound,
+  licenseAlreadyConnected,
+  noDevice,
+  noConnection,
+  unknown;
+
+  bool get noLicense => this == licenseNotFound;
+  bool get noInternet => this == noConnection;
+}
+
+class ConnectedLicenseException implements Exception {
+  final BadRequest badRequest;
+  ConnectingLicenseFailedReason get reason {
+    if (badRequest.errors.map((e) => e.code).any(
+          (code) => code == 'WHALE-0801',
+        )) return ConnectingLicenseFailedReason.licenseNotFound;
+    if (badRequest.errors.map((e) => e.code).any(
+          (code) => code == 'WHALE-6012',
+        )) return ConnectingLicenseFailedReason.noDevice;
+    if (badRequest.errors.map((e) => e.code).any(
+          (code) => code == 'WHALE-6015',
+        )) return ConnectingLicenseFailedReason.licenseAlreadyConnected;
+    return ConnectingLicenseFailedReason.unknown;
+  }
+
+  ConnectedLicenseException({required this.badRequest});
+
+  @override
+  String toString() => 'VerifyDeviceException $badRequest';
+}
+
 class VerifyDeviceException implements Exception {
   final BadRequest badRequest;
 

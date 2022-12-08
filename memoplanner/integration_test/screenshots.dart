@@ -47,10 +47,10 @@ void main() async {
       await tester.pumpAndSettle();
       print('Its a productionguidepage');
     }
-    await tester.pumpUntilFound(find.byKey(TestKey.startWelcomGuide));
-    final welcomePage = tester.any(find.byKey(TestKey.startWelcomGuide));
+    await tester.pumpUntilFound(find.byKey(TestKey.startWelcomeGuide));
+    final welcomePage = tester.any(find.byKey(TestKey.startWelcomeGuide));
     if (welcomePage) {
-      await tester.tap(find.byKey(TestKey.startWelcomGuide));
+      await tester.tap(find.byKey(TestKey.startWelcomeGuide));
       await tester.pumpAndSettle();
       print('In welcome');
     }
@@ -69,10 +69,10 @@ void main() async {
       await tester.tap(find.byKey(TestKey.skipProductionGuide));
       await tester.pumpAndSettle();
     }
-    await tester.pumpUntilFound(find.byKey(TestKey.startWelcomGuide));
-    final welcomePage = tester.any(find.byKey(TestKey.startWelcomGuide));
+    await tester.pumpUntilFound(find.byKey(TestKey.startWelcomeGuide));
+    final welcomePage = tester.any(find.byKey(TestKey.startWelcomeGuide));
     if (welcomePage) {
-      await tester.tap(find.byKey(TestKey.startWelcomGuide));
+      await tester.tap(find.byKey(TestKey.startWelcomeGuide));
       await tester.pumpAndSettle();
     }
     final next = tester.any(find.byKey(TestKey.nextWelcomeGuide));
@@ -222,10 +222,10 @@ extension on WidgetTester {
       await pumpAndSettle();
       print('Its a productionguidepage');
     }
-    await pumpUntilFound(find.byKey(TestKey.startWelcomGuide));
-    final welcomePage = any(find.byKey(TestKey.startWelcomGuide));
+    await pumpUntilFound(find.byKey(TestKey.startWelcomeGuide));
+    final welcomePage = any(find.byKey(TestKey.startWelcomeGuide));
     if (welcomePage) {
-      await tap(find.byKey(TestKey.startWelcomGuide));
+      await tap(find.byKey(TestKey.startWelcomeGuide));
       await pumpAndSettle();
       print('In welcome');
     }
@@ -264,7 +264,7 @@ extension on WidgetTester {
 
   Future<void> selectBackend(String env) async {
     await pumpAndSettle();
-    await longPress(find.byType(MEMOplannerLogoWithLoginProgress));
+    await longPress(find.byType(MEMOplannerLogoHiddenBackendSwitch));
     await pumpAndSettle();
     await tap(find.text(env));
     await pumpAndSettle();

@@ -1,4 +1,19 @@
 _id_	en	sv	da	nl	fi	de	nb
+### Start guide							
+welcome	Welcome!	Välkommen!	Velkommen!	Welkom!	Tervetuloa!	Willkommen!	Velkommen!
+welcomeText	This guide will help you get started with MEMOplanner.	Den här guiden hjälper dig att komma igång med MEMOplanner.	Denne guide vil hjælpe dig med at komme i gang med MEMOplanner.	Deze gids helpt u om aan de slag te gaan met MEMOplanner.	Tämä opas auttaa aloittamaan Memoplannerin käytön.	Dieser Assistent hilft Ihnen bei den ersten Schritten mit MEMOplanner.	Denne guiden vil hjelpe deg å komme i gang med MEMOplanner.
+step	Step	Steg	Trin	Stap	Vaihe	Schritt	Trinn
+finish	Finish	Slutför	Afslut	Voltooien	Lopeta	Abschließen	Ferdig
+setupYourInternetConnection	Setup your internet connection						
+wifiNoInternet	Your current Wi-Fi has failed to connect to the internet, try another network or contact your internet provider for help						
+connectInternetToContinue	Connect the internet to continue						
+notSelected	Not selected	Inte valt	Ikke valgt	Niet geselecteerd	Ei valittu	Nicht ausgewählt	Ikke valgt
+enterYourLicense	Enter your license key						
+enterYourLicenseHint	License key should contain 12 digits						
+licenseErrorAlreadyInUse	This license is already in use on MEMOplanner with serial number						
+licenseErrorNotFound	We didn't find a valid license\nPlease re-check the license key and try again						
+downloadVoiceText	Download voice for speech support	Ladda ner röst för talstöd	Download stemme til stemmerapport	Dowload stem voor spraakondersteuning	Lataa ääni puhetukea varten	Stimme für Sprachunterstützung herunterladen	Last ned stemme for talestøtte
+							
 ### Login page							
 username	Username	Användarnamn	Brugernavn	Gebruikersnaam	Käyttäjätunnus	Benutzername	Brukernavn
 password	Password	Lösenord	Adgangskode	Wachtwoord	Salasana	Passwort	Passord
@@ -270,6 +285,7 @@ volumeMedia	Volume for media	Volym för media	Volumen for media	Volume voor medi
 wifi	Wi-Fi	Wi-Fi	Wi-Fi	Wifi	Wi-Fi	WLAN	Wi-Fi
 notConnected	Not connected	Ej ansluten	Ikke tilsluttet	Niet verbonden	Ei yhteyttä	Nicht verbunden	Ikke tilkoblet
 connected	Connected	Ansluten	Tilsluttet	Verbonden	Yhdistetty	Verbunden	Tilkoblet
+connectedNoInternet	Connected, no internet						
 screenTimeout	Screen timeout	Skärmens tidsgräns	Skærmens tidsgrænse	Timeout scherm	Näytön pimennys	Bildschirm Zeitüberschreitung	Skjermens tidsgrense
 alwaysOn	Always on	Alltid på	Altid på	Altijd aan	Aina käytössä	Immer ein	Alltid på
 keepScreenAwakeWhileCharging	Keep screen awake when charging	Håll skärmen tänd vid laddning	Lad skærmen være tændt under opladning	Houd scherm wakker tijdens opladen	Pidä näyttö päällä latauksen aikana	Bildschirm während Aufladen aktiv lassen	Hold skjermen på ved lading
@@ -496,15 +512,6 @@ termsOfUse	terms of use	användarvillkor	brugervillkår	gebruiksvoorwaarden	käy
 termsOfUseUrl	intl/terms-of-use	sv/anvandarvillkor	intl/terms-of-use	intl/terms-of-use	intl/terms-of-use	intl/terms-of-use	nb/brukervilkar
 privacyPolicy	privacy policy	personuppgiftspolicy	persondatapolitik	privacybeleid	tietosuojakäytäntö	datenschutzbestimmungen	personvernerklæring
 privacyPolicyUrl	intl/policy-for-the-processing-of-personal-data	sv/personuppgiftspolicy	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	nb/personvernerklaering
-							
-### Start guide							
-welcome	Welcome!	Välkommen!	Velkommen!	Welkom!	Tervetuloa!	Willkommen!	Velkommen!
-welcomeText	This guide will help you get started with MEMOplanner.	Den här guiden hjälper dig att komma igång med MEMOplanner.	Denne guide vil hjælpe dig med at komme i gang med MEMOplanner.	Deze gids helpt u om aan de slag te gaan met MEMOplanner.	Tämä opas auttaa aloittamaan Memoplannerin käytön.	Dieser Assistent hilft Ihnen bei den ersten Schritten mit MEMOplanner.	Denne guiden vil hjelpe deg å komme i gang med MEMOplanner.
-checkInternetConnection	Check your Internet connection	Kontrollera din internetanslutning	Kontroller din internetforbindelse	Controleer uw internetverbinding	Tarkista Internet-yhteys	Überprüfen Sie Ihre Internetverbindung	Sjekk din Internettforbindelse
-step	Step	Steg	Trin	Stap	Vaihe	Schritt	Trinn
-downloadVoiceText	Download voice for speech support	Ladda ner röst för talstöd	Download stemme til stemmerapport	Dowload stem voor spraakondersteuning	Lataa ääni puhetukea varten	Stimme für Sprachunterstützung herunterladen	Last ned stemme for talestøtte
-finsish	Finish	Slutför	Afslut	Voltooien	Lopeta	Abschließen	Ferdig
-notSelected	Not selected	Inte valt	Ikke valgt	Niet geselecteerd	Ei valittu	Nicht ausgewählt	Ikke valgt
 							
 ### Discard							
 confirmDiscard	Are you sure you want to discard your changes?						
