@@ -12,12 +12,18 @@ class KeepScreenAwakeSettings extends Equatable {
     keepScreenOnAlwaysKey,
   ];
 
-  final bool keepScreenOnWhileCharging, keepScreenOnAlways;
+  final bool _keepScreenOnWhileCharging, _keepScreenOnAlways;
+
+  bool get keepScreenOnWhileCharging =>
+      Config.isMPLarge || _keepScreenOnWhileCharging;
+
+  bool get keepScreenOnAlways => Config.isMPLarge || _keepScreenOnAlways;
 
   const KeepScreenAwakeSettings({
-    this.keepScreenOnWhileCharging = false,
-    this.keepScreenOnAlways = false,
-  });
+    bool? keepScreenOnWhileCharging,
+    bool? keepScreenOnAlways,
+  })  : _keepScreenOnWhileCharging = keepScreenOnWhileCharging ?? false,
+        _keepScreenOnAlways = keepScreenOnAlways ?? false;
 
   KeepScreenAwakeSettings copyWith({
     bool? keepScreenOnWhileCharging,
@@ -52,5 +58,5 @@ class KeepScreenAwakeSettings extends Equatable {
       ];
 
   @override
-  List<Object?> get props => [keepScreenOnWhileCharging, keepScreenOnAlways];
+  List<Object?> get props => [_keepScreenOnWhileCharging, _keepScreenOnAlways];
 }
