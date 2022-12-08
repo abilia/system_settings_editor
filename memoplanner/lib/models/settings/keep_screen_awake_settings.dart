@@ -58,5 +58,5 @@ class KeepScreenAwakeSettings extends Equatable {
       ];
 
   @override
-  List<Object?> get props => [_keepScreenOnWhileCharging, _keepScreenOnAlways];
+  List<Object?> get props => [keepScreenOnWhileCharging, keepScreenOnAlways];
 }
