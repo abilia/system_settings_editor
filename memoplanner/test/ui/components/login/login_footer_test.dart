@@ -1,16 +1,30 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/repository/all.dart';
 
 import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
+import '../../../test_helpers/enter_text.dart';
 
 void main() {
-  testWidgets('hidden reset button', (tester) async {
-    // Arrange
-    final voiceDb = MockVoiceDb();
+  final translate = Locales.language.values.first;
+  late final VoicesCubit voicesCubit;
+  late final SpeechSettingsCubit speechSettingsCubit;
+  late final StartupCubit startupCubit;
+  late final BaseUrlCubit baseUrlCubit;
+  late final FactoryResetCubit factoryResetCubit;
+  late final VoiceRepository voiceRepository;
+  late final DeviceRepository deviceRepository;
+  late final FactoryResetRepository mockFactoryResetRepository;
+  late final BaseUrlDb baseUrlDb;
+  late final VoiceDb voiceDb;
+
+  setUpAll(() {
+    voiceDb = MockVoiceDb();
     when(() => voiceDb.textToSpeech).thenReturn(true);
     when(() => voiceDb.voice).thenReturn('test voice');
     when(() => voiceDb.speakEveryWord).thenReturn(true);
@@ -19,59 +33,176 @@ void main() {
     when(() => voiceDb.setTextToSpeech(any())).thenAnswer((_) async {});
     when(() => voiceDb.setSpeakEveryWord(any())).thenAnswer((_) async {});
     when(() => voiceDb.setSpeechRate(any())).thenAnswer((_) async {});
-    final speechSettingsCubit = SpeechSettingsCubit(
+    speechSettingsCubit = SpeechSettingsCubit(
       voiceDb: voiceDb,
       acapelaTts: FakeTtsHandler(),
     );
 
-    final voiceRepository = MockVoiceRepository();
+    voiceRepository = MockVoiceRepository();
     when(() => voiceRepository.deleteAllVoices()).thenAnswer((_) async {});
     when(() => voiceRepository.readAvailableVoices())
         .thenAnswer((_) async => []);
     when(() => voiceRepository.readDownloadedVoices())
         .thenAnswer((_) async => []);
 
-    final voicesCubit = VoicesCubit(
+    voicesCubit = VoicesCubit(
       languageCode: 'en',
       speechSettingsCubit: speechSettingsCubit,
       voiceRepository: voiceRepository,
       localeStream: const Stream.empty(),
     );
 
-    final deviceRepository = MockDeviceRepository();
+    deviceRepository = MockDeviceRepository();
     when(() => deviceRepository.setStartGuideCompleted(any()))
         .thenAnswer((_) async {});
     when(() => deviceRepository.serialId).thenReturn('expected');
     when(() => deviceRepository.isStartGuideCompleted).thenReturn(true);
 
-    final startupCubit = StartupCubit(deviceRepository: deviceRepository);
+    startupCubit = StartupCubit(deviceRepository: deviceRepository);
 
+    baseUrlDb = MockBaseUrlDb();
+    when(() => baseUrlDb.baseUrl).thenAnswer((_) => 'url');
+    when(() => baseUrlDb.clearBaseUrl()).thenAnswer((_) async => true);
+
+    baseUrlCubit = BaseUrlCubit(baseUrlDb: baseUrlDb);
+
+    mockFactoryResetRepository = MockFactoryResetRepository();
+    factoryResetCubit = FactoryResetCubit(
+      factoryResetRepository: mockFactoryResetRepository,
+    );
+  });
+
+  final redButtonFinder = find.byType(RedButton);
+  final cancelButtonFinder = find.byType(GreyButton);
+
+  Future<void> pumpAbiliaLogoWithReset(WidgetTester tester) async {
+    await tester.binding.setSurfaceSize(const Size(1000, 1000));
     await tester.pumpWidget(
       MaterialApp(
         home: MultiBlocProvider(
           providers: [
-            BlocProvider<SpeechSettingsCubit>.value(value: speechSettingsCubit),
+            BlocProvider.value(value: speechSettingsCubit),
             BlocProvider.value(value: voicesCubit),
             BlocProvider.value(value: startupCubit),
+            BlocProvider.value(value: baseUrlCubit),
+            BlocProvider.value(value: factoryResetCubit),
+            BlocProvider.value(value: FakeSpeechSettingsCubit()),
           ],
           child: const AbiliaLogoWithReset(),
         ),
       ),
     );
+  }
 
-    // Act
-    await tester.pumpAndSettle();
+  Future<void> goToConfirmFactoryReset(WidgetTester tester) async {
     await tester.longPress(find.byType(AbiliaLogoWithReset));
     await tester.pumpAndSettle();
-    await tester.tap(find.byType(YesButton));
+    await tester.tap(find.text(translate.factoryReset));
     await tester.pumpAndSettle();
+    await tester.tap(find.byType(RedButton));
+    await tester.pumpAndSettle();
+  }
 
-    // Assert
-    verify(() => voiceRepository.deleteAllVoices()).called(1);
-    verify(() => voiceDb.setVoice('')).called(1);
-    verify(() => voiceDb.setSpeakEveryWord(false)).called(1);
-    verify(() => voiceDb.setSpeechRate(VoiceDb.defaultSpeechRate)).called(1);
-    verify(() => voiceDb.setTextToSpeech(false)).called(1);
-    verify(() => deviceRepository.setStartGuideCompleted(false)).called(1);
+  group('Hidden reset button', () {
+    testWidgets('Clear memoplanner data', (tester) async {
+      // Arrange
+      await pumpAbiliaLogoWithReset(tester);
+
+      // Act
+      await tester.pumpAndSettle();
+      await tester.longPress(find.byType(AbiliaLogoWithReset));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(translate.clearData));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(RedButton));
+      await tester.pumpAndSettle();
+
+      // Assert
+      verify(() => voiceRepository.deleteAllVoices()).called(1);
+      verify(() => voiceDb.setVoice('')).called(1);
+      verify(() => voiceDb.setSpeakEveryWord(false)).called(1);
+      verify(() => voiceDb.setSpeechRate(VoiceDb.defaultSpeechRate)).called(1);
+      verify(() => voiceDb.setTextToSpeech(false)).called(1);
+      verify(() => deviceRepository.setStartGuideCompleted(false)).called(1);
+      verify(() => baseUrlDb.clearBaseUrl()).called(1);
+    });
+
+    group('Factory reset', () {
+      testWidgets('Enter wrong code and click cancel', (tester) async {
+        // Arrange
+        await pumpAbiliaLogoWithReset(tester);
+
+        // Act
+        await goToConfirmFactoryReset(tester);
+
+        // Assert
+        expect(find.byType(ConfirmFactoryResetDialog), findsOneWidget);
+        expect(tester.widget<RedButton>(redButtonFinder).onPressed == null,
+            isTrue);
+
+        // Act
+        await tester.ourEnterText(
+          find.byType(AbiliaTextInput),
+          'FactoryresetMP3',
+        );
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(tester.widget<RedButton>(redButtonFinder).onPressed == null,
+            isTrue);
+        expect(find.text(translate.wrongResetCode), findsOneWidget);
+
+        // Act
+        await tester.tap(cancelButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(find.byType(ConfirmFactoryResetDialog), findsNothing);
+      });
+
+      testWidgets('Enter correct code but myAbilia is down', (tester) async {
+        // Arrange
+        when(() => mockFactoryResetRepository.factoryResetDevice())
+            .thenAnswer((_) => Future.value(false));
+        await pumpAbiliaLogoWithReset(tester);
+
+        // Act
+        await goToConfirmFactoryReset(tester);
+        await tester.ourEnterText(
+          find.byType(AbiliaTextInput),
+          'FactoryresetMP4',
+        );
+        await tester.pumpAndSettle();
+        await tester.tap(redButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(find.text(translate.factoryResetFailed), findsOneWidget);
+      });
+
+      testWidgets('Enter correct code', (tester) async {
+        // Arrange
+        when(() => mockFactoryResetRepository.factoryResetDevice())
+            .thenAnswer((_) => Future.value(true));
+        await pumpAbiliaLogoWithReset(tester);
+
+        // Act
+        await goToConfirmFactoryReset(tester);
+        await tester.ourEnterText(
+          find.byType(AbiliaTextInput),
+          'FactoryresetMP4',
+        );
+        await tester.pumpAndSettle();
+        await tester.tap(redButtonFinder);
+        await tester.pump(1.minutes());
+
+        // Assert
+        expect(find.byType(AbiliaProgressIndicator), findsOneWidget);
+        expect(tester.widget<RedButton>(redButtonFinder).onPressed == null,
+            isTrue);
+        expect(tester.widget<GreyButton>(cancelButtonFinder).onPressed == null,
+            isTrue);
+      });
+    });
   }, skip: !Config.isMP);
 }

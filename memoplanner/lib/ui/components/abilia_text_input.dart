@@ -50,7 +50,7 @@ class AbiliaTextInput extends StatelessWidget {
                       context: context,
                       providers: wrapWithAuthProviders
                           ? copiedAuthProviders(context)
-                          : null,
+                          : copiedTopLevelProviders(context),
                       child: DefaultTextInput(
                         inputHeading: inputHeading,
                         icon: icon,

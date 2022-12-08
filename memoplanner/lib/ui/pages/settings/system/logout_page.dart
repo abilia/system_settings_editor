@@ -94,7 +94,7 @@ class LogoutButton extends StatelessWidget {
   const LogoutButton({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => IconAndTextButton(
+  Widget build(BuildContext context) => RedButton(
         text: Translator.of(context).translate.logout,
         icon: AbiliaIcons.powerOffOn,
         onPressed: () async {
@@ -115,6 +115,5 @@ class LogoutButton extends StatelessWidget {
             }
           }
         },
-        style: iconTextButtonStyleRed,
       );
 }

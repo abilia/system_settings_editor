@@ -34,7 +34,17 @@ List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
       ],
     ].whereNotNull().toList();
 
-final _copyBlocLog = Logger('CopiedAuthProvider');
+List<BlocProvider> copiedTopLevelProviders(BuildContext blocContext) => [
+      _tryGetBloc<SpeechSettingsCubit>(blocContext),
+      _tryGetBloc<StartupCubit>(blocContext),
+      _tryGetBloc<BaseUrlCubit>(blocContext),
+      if (Config.isMP) ...[
+        _tryGetBloc<VoicesCubit>(blocContext),
+        _tryGetBloc<FactoryResetCubit>(blocContext),
+      ],
+    ].whereNotNull().toList();
+
+final _copyBlocLog = Logger('CopiedProvider');
 
 BlocProvider? _tryGetBloc<B extends BlocBase>(BuildContext context) {
   try {

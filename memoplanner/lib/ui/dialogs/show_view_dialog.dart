@@ -17,7 +17,7 @@ Future<T?> showViewDialog<T>({
 }) {
   final authProviders = wrapWithAuthProviders
       ? copiedAuthProviders(context)
-      : [BlocProvider.value(value: context.read<SpeechSettingsCubit>())];
+      : copiedTopLevelProviders(context);
   return showDialog<T>(
     context: context,
     builder: (_) => MultiBlocProvider(
@@ -37,7 +37,6 @@ Future<T?> showViewDialog<T>({
 Future<T?> showPersistentDialog<T>({
   required BuildContext context,
   required WidgetBuilder builder,
-  bool barrierDismissible = true,
   Color barrierColor = AbiliaColors.transparentBlack90,
   String? barrierLabel,
   bool useSafeArea = true,
@@ -55,7 +54,7 @@ Future<T?> showPersistentDialog<T>({
   );
   final authProviders = wrapWithAuthProviders
       ? copiedAuthProviders(context)
-      : [BlocProvider.value(value: context.read<SpeechSettingsCubit>())];
+      : copiedTopLevelProviders(context);
   return Navigator.of(context, rootNavigator: useRootNavigator)
       .push<T>(PersistentDialogRoute<T>(
     context: context,
@@ -64,7 +63,7 @@ Future<T?> showPersistentDialog<T>({
       child: Builder(builder: builder),
     ),
     barrierColor: barrierColor,
-    barrierDismissible: barrierDismissible,
+    barrierDismissible: false,
     barrierLabel: barrierLabel,
     useSafeArea: useSafeArea,
     settings: routeSettings,

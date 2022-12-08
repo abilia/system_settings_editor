@@ -72,26 +72,13 @@ class AbiliaLogoWithReset extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-    final voicesCubit = context.read<VoicesCubit>();
-    final startupCubit = context.read<StartupCubit>();
     return GestureDetector(
       child: const AbiliaLogo(),
-      onLongPress: () async {
-        final reset = await showViewDialog<bool>(
-          context: context,
-          wrapWithAuthProviders: false,
-          builder: (context) => YesNoDialog(
-            heading: translate.resetDeviceHeading,
-            headingIcon: AbiliaIcons.reset,
-            text: translate.resetDeviceBody,
-          ),
-        );
-        if (reset == true) {
-          voicesCubit.resetSpeechSettings();
-          startupCubit.resetStartGuideDone();
-        }
-      },
+      onLongPress: () => showPersistentDialog(
+        context: context,
+        wrapWithAuthProviders: false,
+        builder: (context) => const ResetDeviceDialog(),
+      ),
     );
   }
 }

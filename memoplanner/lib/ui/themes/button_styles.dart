@@ -21,6 +21,15 @@ final foregroundLight = MaterialStateProperty.resolveWith<Color>(
   },
 );
 
+final foregroundDark = MaterialStateProperty.resolveWith<Color>(
+  (Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled)) {
+      return AbiliaColors.white140;
+    }
+    return AbiliaColors.black;
+  },
+);
+
 final buttonBackgroundLightGrey = MaterialStateProperty.resolveWith<Color>(
   (Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
@@ -134,7 +143,7 @@ final iconTextButtonStyleRed = iconTextButtonStyle.copyWith(
 
 final iconTextButtonStyleGrey = iconTextButtonStyle.copyWith(
   backgroundColor: buttonBackgroundLightGrey,
-  foregroundColor: MaterialStateProperty.all(AbiliaColors.black),
+  foregroundColor: foregroundDark,
   shape: noBorder,
 );
 

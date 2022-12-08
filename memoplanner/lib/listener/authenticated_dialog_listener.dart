@@ -11,7 +11,6 @@ class AuthenticatedDialogListener
           listenWhen: (previous, current) => current.showDialog,
           listener: (context, state) => showPersistentDialog<bool>(
             context: context,
-            barrierDismissible: false,
             builder: (context) => AuthenticatedDialog(
               authenticatedDialogCubit: authenticatedDialogCubit,
             ),

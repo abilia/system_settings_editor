@@ -7,7 +7,10 @@ class BaseUrlDb {
 
   const BaseUrlDb(this.prefs);
 
-  Future setBaseUrl(String baseUrl) => prefs.setString(_baseUrlRecord, baseUrl);
+  Future<void> setBaseUrl(String baseUrl) =>
+      prefs.setString(_baseUrlRecord, baseUrl);
+
+  Future<void> clearBaseUrl() => prefs.remove(_baseUrlRecord);
 
   String get baseUrl => prefs.getString(_baseUrlRecord) ?? prod;
   String get environment => backendName(baseUrl);
