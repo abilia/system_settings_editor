@@ -40,7 +40,6 @@ List<BlocProvider> copiedTopLevelProviders(BuildContext blocContext) => [
       _tryGetBloc<BaseUrlCubit>(blocContext),
       if (Config.isMP) ...[
         _tryGetBloc<VoicesCubit>(blocContext),
-        _tryGetBloc<ResetDeviceCubit>(blocContext),
       ],
     ].whereNotNull().toList();
 

@@ -321,12 +321,6 @@ class TopLevelProvider extends StatelessWidget {
               ttsHandler: GetIt.I<TtsInterface>(),
             ),
           ),
-          RepositoryProvider<FactoryResetRepository>(
-            create: (context) => FactoryResetRepository(
-              baseUrlDb: GetIt.I<BaseUrlDb>(),
-              client: GetIt.I<ListenableClient>(),
-            ),
-          ),
         ],
       ],
       child: MultiBlocProvider(
@@ -359,7 +353,7 @@ class TopLevelProvider extends StatelessWidget {
               acapelaTts: GetIt.I<TtsInterface>(),
             ),
           ),
-          if (Config.isMP) ...[
+          if (Config.isMP)
             BlocProvider<VoicesCubit>(
               create: (context) => VoicesCubit(
                 languageCode: GetIt.I<SettingsDb>().language,
@@ -369,12 +363,6 @@ class TopLevelProvider extends StatelessWidget {
               )..initialize(),
               lazy: false,
             ),
-            BlocProvider<ResetDeviceCubit>(
-              create: (context) => ResetDeviceCubit(
-                factoryResetRepository: context.read<FactoryResetRepository>(),
-              ),
-            ),
-          ],
         ],
         child: child,
       ),

@@ -28,10 +28,6 @@ class ResetDeviceCubit extends Cubit<ResetDeviceState> {
   void setResetType(ResetType? resetType) {
     emit(ResetDeviceState(input: state.input, resetType: resetType));
   }
-
-  void reset() {
-    emit(const ResetDeviceState(input: '', resetType: null));
-  }
 }
 
 enum ResetType {
