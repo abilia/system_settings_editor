@@ -12,6 +12,7 @@ class ConfirmFactoryResetDialog extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final dialogLayout = layout.resetDeviceDialog;
     final isResetting = resetDeviceCubit.isResetting;
+    final errorMessage = _errorMessage(context, isConnected);
     return WillPopScope(
       onWillPop: () async => !isResetting,
       child: ViewDialog(
@@ -46,9 +47,9 @@ class ConfirmFactoryResetDialog extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyText2,
               ),
             ),
-            if (!isConnected) ...[
-              SizedBox(height: dialogLayout.bodyToTextDistance),
-              const NoInternetErrorMessage(),
+            if (errorMessage != null) ...[
+              SizedBox(height: dialogLayout.textToTextDistance),
+              errorMessage,
             ],
             SizedBox(height: dialogLayout.verticalPadding),
           ],
@@ -65,6 +66,16 @@ class ConfirmFactoryResetDialog extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget? _errorMessage(BuildContext context, bool isConnected) {
+    if (!isConnected) return const NoInternetErrorMessage();
+    if (resetDeviceCubit.state is FactoryResetFailed) {
+      return ErrorMessage(
+        text: Text(Translator.of(context).translate.factoryResetFailed),
+      );
+    }
+    return null;
   }
 
   void _factoryResetDevice() => resetDeviceCubit.factoryResetDevice();

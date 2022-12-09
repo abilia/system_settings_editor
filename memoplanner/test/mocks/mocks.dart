@@ -27,9 +27,6 @@ class MockGenericRepository extends Mock implements GenericRepository {}
 class MockSupportPersonsRepository extends Mock
     implements SupportPersonsRepository {}
 
-class MockFactoryResetRepository extends Mock
-    implements FactoryResetRepository {}
-
 // Db
 class MockActivityDb extends Mock implements ActivityDb {}
 

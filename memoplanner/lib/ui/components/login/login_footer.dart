@@ -5,6 +5,7 @@ import 'package:memoplanner/utils/all.dart';
 
 class MEMOplannerLoginFooter extends StatelessWidget {
   const MEMOplannerLoginFooter({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,10 +25,12 @@ class MEMOplannerLoginFooter extends StatelessWidget {
               .pad(layout.login.createAccountPadding),
         ),
         Row(
-          children: const [
-            AbiliaLogoWithReset(),
-            Spacer(),
-            IconActionButtonDark(
+          children: [
+            AbiliaLogoWithReset(
+              deviceRepository: context.read<DeviceRepository>(),
+            ),
+            const Spacer(),
+            const IconActionButtonDark(
               onPressed: AndroidIntents.openSettings,
               child: Icon(AbiliaIcons.settings),
             ),
@@ -68,7 +71,12 @@ class GoToCreateAccountButton extends StatelessWidget {
 }
 
 class AbiliaLogoWithReset extends StatelessWidget {
-  const AbiliaLogoWithReset({Key? key}) : super(key: key);
+  final DeviceRepository deviceRepository;
+
+  const AbiliaLogoWithReset({
+    required this.deviceRepository,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +85,9 @@ class AbiliaLogoWithReset extends StatelessWidget {
       onLongPress: () => showPersistentDialog(
         context: context,
         wrapWithAuthProviders: false,
-        builder: (context) => const ResetDeviceDialog(),
+        builder: (context) => ResetDeviceDialog(
+          deviceRepository: deviceRepository,
+        ),
       ),
     );
   }

@@ -9,7 +9,6 @@ import 'package:memoplanner/utils/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
-import '../../../test_helpers/enter_text.dart';
 
 void main() {
   final translate = Locales.language.values.first;
@@ -22,7 +21,8 @@ void main() {
   late final BaseUrlDb baseUrlDb;
   late final VoiceDb voiceDb;
   final mockConnectivity = MockConnectivity();
-  Future<bool> connectivityCheck(_) async => true;
+  ConnectivityCheck connectivityCheck = (_) async => true;
+  bool Function() factoryResetResponse = () => true;
 
   setUpAll(() async {
     voiceDb = MockVoiceDb();
@@ -71,12 +71,21 @@ void main() {
         .thenAnswer((_) => Stream.value(ConnectivityResult.none));
     when(() => mockConnectivity.checkConnectivity())
         .thenAnswer((_) => Future.value(ConnectivityResult.none));
+  });
 
+  setUp(() async {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..database = FakeDatabase()
-      ..client = Fakes.client()
+      ..client = Fakes.client(
+        factoryResetResponse: () => factoryResetResponse(),
+      )
       ..init();
+  });
+
+  tearDown(() {
+    factoryResetResponse = () => true;
+    GetIt.I.reset();
   });
 
   final redButtonFinder = find.byType(RedButton);
@@ -86,22 +95,27 @@ void main() {
     await tester.binding.setSurfaceSize(const Size(1000, 1000));
     await tester.pumpWidget(
       MaterialApp(
-        home: MultiBlocProvider(
-          providers: [
-            BlocProvider.value(value: speechSettingsCubit),
-            BlocProvider.value(value: voicesCubit),
-            BlocProvider.value(value: startupCubit),
-            BlocProvider.value(value: baseUrlCubit),
-            BlocProvider.value(value: FakeSpeechSettingsCubit()),
-            BlocProvider.value(
-              value: ConnectivityCubit(
-                connectivity: mockConnectivity,
-                baseUrlDb: FakeBaseUrlDb(),
-                connectivityCheck: connectivityCheck,
+        home: RepositoryProvider<DeviceRepository>(
+          create: (context) => deviceRepository,
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: speechSettingsCubit),
+              BlocProvider.value(value: voicesCubit),
+              BlocProvider.value(value: startupCubit),
+              BlocProvider.value(value: baseUrlCubit),
+              BlocProvider.value(value: FakeSpeechSettingsCubit()),
+              BlocProvider.value(
+                value: ConnectivityCubit(
+                  connectivity: mockConnectivity,
+                  baseUrlDb: FakeBaseUrlDb(),
+                  connectivityCheck: connectivityCheck,
+                ),
               ),
+            ],
+            child: AbiliaLogoWithReset(
+              deviceRepository: deviceRepository,
             ),
-          ],
-          child: const AbiliaLogoWithReset(),
+          ),
         ),
       ),
     );
@@ -116,7 +130,7 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  group('Hidden reset button', () {
+  group('Clear data', () {
     testWidgets('Clear memoplanner data', (tester) async {
       // Arrange
       await pumpAbiliaLogoWithReset(tester);
@@ -139,28 +153,55 @@ void main() {
       verify(() => deviceRepository.setStartGuideCompleted(false)).called(1);
       verify(() => baseUrlDb.clearBaseUrl()).called(1);
     });
+  }, skip: !Config.isMP);
 
-    group('Factory reset', () {
-      testWidgets('Go to factory reset and click cancel', (tester) async {
-        // Arrange
-        await pumpAbiliaLogoWithReset(tester);
+  group('Factory reset', () {
+    testWidgets('Factory reset device success', (tester) async {
+      // Arrange
+      factoryResetResponse = () => true;
+      await pumpAbiliaLogoWithReset(tester);
+      await goToConfirmFactoryReset(tester);
 
-        // Act
-        await goToConfirmFactoryReset(tester);
+      // Act
+      await tester.tap(redButtonFinder);
+      await tester.pump(1.minutes());
 
-        // Assert
-        expect(find.byType(ConfirmFactoryResetDialog), findsOneWidget);
-        expect(tester.widget<RedButton>(redButtonFinder).onPressed == null,
-            isFalse);
+      // Assert
+      expect(find.byType(AbiliaProgressIndicator), findsOneWidget);
+      expect(
+          tester.widget<RedButton>(redButtonFinder).onPressed == null, isTrue);
+      expect(tester.widget<GreyButton>(cancelButtonFinder).onPressed == null,
+          isTrue);
+    });
 
-        // Act
-        await tester.tap(cancelButtonFinder);
-        await tester.pumpAndSettle();
+    testWidgets('Factory reset device unexpected error', (tester) async {
+      // Arrange
+      factoryResetResponse = () => false;
+      await pumpAbiliaLogoWithReset(tester);
+      await goToConfirmFactoryReset(tester);
 
-        // Assert
-        expect(find.byType(ConfirmFactoryResetDialog), findsNothing);
-      });
+      // Act
+      await tester.tap(redButtonFinder);
+      await tester.pumpAndSettle();
 
+      // Assert
+      expect(find.text(translate.factoryResetFailed), findsOneWidget);
+    });
+
+    testWidgets('Factory reset device no internet', (tester) async {
+      // Arrange
+      connectivityCheck = (_) async => false;
+      await pumpAbiliaLogoWithReset(tester);
+      await goToConfirmFactoryReset(tester);
+
+      // Act
+      await tester.tap(redButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text(translate.connectInternetToContinue), findsOneWidget);
+      expect(
+          tester.widget<RedButton>(redButtonFinder).onPressed == null, isTrue);
     });
   }, skip: !Config.isMP);
 }

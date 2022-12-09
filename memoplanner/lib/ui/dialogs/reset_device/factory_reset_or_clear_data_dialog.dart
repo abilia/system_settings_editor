@@ -62,7 +62,7 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
             ),
           ),
           if (_isFactoryReset && !isConnected) ...[
-            SizedBox(height: layout.resetDeviceDialog.titleToImageDistance / 2),
+            SizedBox(height: layout.resetDeviceDialog.textToTextDistance),
             const NoInternetErrorMessage(),
           ],
           SizedBox(height: layout.resetDeviceDialog.titleToImageDistance),
