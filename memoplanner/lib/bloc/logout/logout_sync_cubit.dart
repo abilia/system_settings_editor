@@ -61,99 +61,99 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
   late final log = Logger((LogoutSyncCubit).toString());
 
   void next() {
-    if (state.logoutWarning.sync == WarningSyncState.syncing) {
-      return;
-    }
-
-    if (state.logoutWarning.sync == WarningSyncState.syncedSuccess) {
-      return authenticationBloc.add(const LoggedOut());
-    }
-
-    switch (state.logoutWarning.step) {
-      case WarningStep.firstWarning:
-        return _setLogoutWarning(step: WarningStep.secondWarning);
-      case WarningStep.secondWarning:
-        if (state.isOnline == true) {
-          return _setLogoutWarning(step: WarningStep.licenseExpiredWarning);
-        } else {
-          return authenticationBloc.add(const LoggedOut());
-        }
-      case WarningStep.licenseExpiredWarning:
+    switch (state.logoutWarning.sync) {
+      case WarningSyncState.syncing:
+        return;
+      case WarningSyncState.syncedSuccess:
         return authenticationBloc.add(const LoggedOut());
+      case WarningSyncState.syncFailed:
+        switch (state.logoutWarning.step) {
+          case WarningStep.firstWarning:
+            return _setLogoutWarning(step: WarningStep.secondWarning);
+          case WarningStep.secondWarning:
+            if (state.isOnline) {
+              return _setLogoutWarning(step: WarningStep.licenseExpiredWarning);
+            }
+            return authenticationBloc.add(const LoggedOut());
+          case WarningStep.licenseExpiredWarning:
+            return authenticationBloc.add(const LoggedOut());
+        }
     }
   }
 
   void _setLogoutWarning({
-    bool? isOnline,
     WarningStep? step,
     WarningSyncState? sync,
   }) {
-    final validLicense = licenseCubit.validLicense;
-    final online = isOnline ?? state.isOnline;
-    final warningStep = step ?? state.logoutWarning.step;
-    final warningSyncState = sync ?? state.logoutWarning.sync;
+    final logoutWarning = _getWarning(
+      warningStep: step ?? state.logoutWarning.step,
+      warningSyncState: sync ?? state.logoutWarning.sync,
+    );
+    emit(state.copyWith(logoutWarning: logoutWarning));
+  }
 
-    LogoutWarning getWarning() {
-      if (online == true && !validLicense) {
-        return LogoutWarning.licenseExpiredWarning;
-      }
-      switch (warningStep) {
-        case WarningStep.firstWarning:
-          switch (warningSyncState) {
-            case WarningSyncState.syncing:
-              return LogoutWarning.firstWarningSyncing;
-            case WarningSyncState.syncedSuccess:
-              return LogoutWarning.firstWarningSuccess;
-            case WarningSyncState.syncFailed:
-              return LogoutWarning.firstWarningSyncFailed;
-          }
-        case WarningStep.secondWarning:
-        case WarningStep.licenseExpiredWarning:
-          if (!validLicense &&
-              warningSyncState != WarningSyncState.syncedSuccess &&
-              step == WarningStep.licenseExpiredWarning) {
-            return LogoutWarning.licenseExpiredWarning;
-          }
-          switch (warningSyncState) {
-            case WarningSyncState.syncing:
-              return LogoutWarning.secondWarningSyncing;
-            case WarningSyncState.syncedSuccess:
-              return LogoutWarning.secondWarningSuccess;
-            case WarningSyncState.syncFailed:
-              return LogoutWarning.secondWarningSyncFailed;
-          }
-      }
+  LogoutWarning _getWarning({
+    required WarningStep warningStep,
+    required WarningSyncState warningSyncState,
+  }) {
+    final validLicense = licenseCubit.validLicense;
+    if (state.isOnline && !validLicense) {
+      return LogoutWarning.licenseExpiredWarning;
     }
 
-    emit(state.copyWith(logoutWarning: getWarning(), isOnline: online));
+    switch (warningStep) {
+      case WarningStep.firstWarning:
+        switch (warningSyncState) {
+          case WarningSyncState.syncing:
+            return LogoutWarning.firstWarningSyncing;
+          case WarningSyncState.syncedSuccess:
+            return LogoutWarning.firstWarningSuccess;
+          case WarningSyncState.syncFailed:
+            return LogoutWarning.firstWarningSyncFailed;
+        }
+      case WarningStep.secondWarning:
+      case WarningStep.licenseExpiredWarning:
+        if (!validLicense &&
+            warningSyncState != WarningSyncState.syncedSuccess &&
+            warningStep == WarningStep.licenseExpiredWarning) {
+          return LogoutWarning.licenseExpiredWarning;
+        }
+        switch (warningSyncState) {
+          case WarningSyncState.syncing:
+            return LogoutWarning.secondWarningSyncing;
+          case WarningSyncState.syncedSuccess:
+            return LogoutWarning.secondWarningSuccess;
+          case WarningSyncState.syncFailed:
+            return LogoutWarning.secondWarningSyncFailed;
+        }
+    }
   }
 
   Future<void> _checkConnectivity() async {
     final isOnline = await myAbiliaConnection.hasConnection();
-    final isSynced = state.logoutWarning.sync == WarningSyncState.syncedSuccess;
-    if (isClosed) {
-      return;
-    }
-    if (isOnline) {
-      _setLogoutWarning(
-        isOnline: isOnline,
-        sync: isSynced ? null : WarningSyncState.syncing,
-      );
-      if (!isSynced) {
-        log.finest(
-            'Is online, adding ${(SyncAll).toString()} event to ${(SyncBloc).toString()}.');
-        syncBloc.add(const SyncAll());
-      }
-      if (!licenseCubit.validLicense) {
-        log.finest('Is online, no valid license. Reloading licenses.');
-        licenseCubit.reloadLicenses();
-      }
-    } else {
+    if (isClosed) return;
+    emit(state.copyWith(isOnline: isOnline));
+    if (!isOnline) {
       log.finest(
-          'No connection to myAbilia, retrying in ${syncDelay.betweenSync.inSeconds} seconds.');
-      emit(state.copyWith(isOnline: isOnline));
-      await Future.delayed(syncDelay.betweenSync);
-      _checkConnectivity();
+        'No connection to myAbilia, retrying in '
+        '${syncDelay.betweenSync.inSeconds} seconds.',
+      );
+      return await Future.delayed(syncDelay.betweenSync, _checkConnectivity);
+    }
+
+    final isSynced = state.logoutWarning.sync == WarningSyncState.syncedSuccess;
+
+    _setLogoutWarning(sync: isSynced ? null : WarningSyncState.syncing);
+
+    if (!isSynced) {
+      log.finest(
+          'Is online, adding ${(SyncAll).toString()} event to ${(SyncBloc).toString()}.');
+      syncBloc.add(const SyncAll());
+    }
+
+    if (!licenseCubit.validLicense) {
+      log.finest('Is online, no valid license. Reloading licenses.');
+      licenseCubit.reloadLicenses();
     }
   }
 

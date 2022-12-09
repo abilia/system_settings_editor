@@ -3,11 +3,11 @@ part of 'logout_sync_cubit.dart';
 class LogoutSyncState extends Equatable {
   final LogoutWarning logoutWarning;
   final DirtyItems? dirtyItems;
-  final bool? isOnline;
+  final bool isOnline;
 
   const LogoutSyncState({
     required this.logoutWarning,
-    this.isOnline,
+    this.isOnline = false,
     this.dirtyItems,
   });
 

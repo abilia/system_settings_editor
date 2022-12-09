@@ -129,12 +129,7 @@ void main() {
         ),
         const LogoutSyncState(
           logoutWarning: LogoutWarning.secondWarningSyncFailed,
-          isOnline: false,
-        ),
-        const LogoutSyncState(
-          logoutWarning: LogoutWarning.secondWarningSyncFailed,
           dirtyItems: noDirtyItems,
-          isOnline: false,
         ),
       ],
     );
@@ -161,6 +156,10 @@ void main() {
       expect: () => [
         const LogoutSyncState(
           logoutWarning: LogoutWarning.secondWarningSyncFailed,
+        ),
+        const LogoutSyncState(
+          logoutWarning: LogoutWarning.secondWarningSyncFailed,
+          isOnline: true,
         ),
         const LogoutSyncState(
           logoutWarning: LogoutWarning.licenseExpiredWarning,
@@ -197,20 +196,13 @@ void main() {
 
         crStream.add(cr);
 
-        expectLater(
+        await expectLater(
           logoutSyncCubit.stream,
-          emitsAnyOf(
-            [
-              const LogoutSyncState(
-                logoutWarning: LogoutWarning.firstWarningSyncing,
-                isOnline: true,
-              ),
-              const LogoutSyncState(
-                dirtyItems: noDirtyItems,
-                logoutWarning: LogoutWarning.firstWarningSyncing,
-                isOnline: true,
-              ),
-            ],
+          emitsThrough(
+            predicate<LogoutSyncState>(
+              (state) =>
+                  state.logoutWarning == LogoutWarning.firstWarningSyncing,
+            ),
           ),
         );
 
@@ -321,17 +313,13 @@ void main() {
 
       await expectLater(
         logoutSyncCubit.stream,
-        emitsInAnyOrder([
+        emits(
           LogoutSyncState(
             logoutWarning: LogoutWarning.firstWarningSyncFailed,
             dirtyItems: noDirtyItems.copyWith(activities: 3),
             isOnline: false,
           ),
-          const LogoutSyncState(
-            logoutWarning: LogoutWarning.firstWarningSyncFailed,
-            isOnline: false,
-          ),
-        ]),
+        ),
       );
     });
 
@@ -354,17 +342,13 @@ void main() {
 
       await expectLater(
         logoutSyncCubit.stream,
-        emitsInAnyOrder([
+        emits(
           LogoutSyncState(
             logoutWarning: LogoutWarning.firstWarningSyncFailed,
             dirtyItems: noDirtyItems.copyWith(activityTemplates: 4),
             isOnline: false,
           ),
-          const LogoutSyncState(
-            logoutWarning: LogoutWarning.firstWarningSyncFailed,
-            isOnline: false,
-          ),
-        ]),
+        ),
       );
     });
 
@@ -387,17 +371,13 @@ void main() {
 
       expectLater(
         logoutSyncCubit.stream,
-        emitsInAnyOrder([
+        emits(
           LogoutSyncState(
             logoutWarning: LogoutWarning.firstWarningSyncFailed,
             dirtyItems: noDirtyItems.copyWith(timerTemplate: 5),
             isOnline: false,
           ),
-          const LogoutSyncState(
-            logoutWarning: LogoutWarning.firstWarningSyncFailed,
-            isOnline: false,
-          ),
-        ]),
+        ),
       );
     });
 
@@ -426,17 +406,12 @@ void main() {
 
       expectLater(
         logoutSyncCubit.stream,
-        emitsInAnyOrder([
+        emits(
           LogoutSyncState(
             logoutWarning: LogoutWarning.firstWarningSyncFailed,
             dirtyItems: noDirtyItems.copyWith(photos: 6),
-            isOnline: false,
           ),
-          const LogoutSyncState(
-            logoutWarning: LogoutWarning.firstWarningSyncFailed,
-            isOnline: false,
-          ),
-        ]),
+        ),
       );
     });
 
@@ -454,18 +429,12 @@ void main() {
 
       expectLater(
         logoutSyncCubit.stream,
-        emitsInAnyOrder(
-          [
-            LogoutSyncState(
-              logoutWarning: LogoutWarning.firstWarningSyncFailed,
-              dirtyItems: noDirtyItems.copyWith(settingsData: true),
-              isOnline: false,
-            ),
-            const LogoutSyncState(
-              logoutWarning: LogoutWarning.firstWarningSyncFailed,
-              isOnline: false,
-            ),
-          ],
+        emits(
+          LogoutSyncState(
+            logoutWarning: LogoutWarning.firstWarningSyncFailed,
+            dirtyItems: noDirtyItems.copyWith(settingsData: true),
+            isOnline: false,
+          ),
         ),
       );
     });
@@ -512,25 +481,15 @@ void main() {
 
       connectivityStream.add(ConnectivityResult.wifi);
 
-      final expect = expectLater(
+      await expectLater(
         logoutSyncCubit.stream,
-        emitsAnyOf(
-          const [
-            LogoutSyncState(
-              logoutWarning: LogoutWarning.firstWarningSyncing,
-              dirtyItems: null,
-              isOnline: true,
-            ),
-            LogoutSyncState(
-              logoutWarning: LogoutWarning.firstWarningSyncing,
-              dirtyItems: noDirtyItems,
-              isOnline: true,
-            ),
-          ],
+        emitsThrough(
+          predicate<LogoutSyncState>(
+            (state) => state.logoutWarning == LogoutWarning.firstWarningSyncing,
+          ),
         ),
       );
 
-      await expect;
       logoutSyncCubit.close();
 
       verifyNever(() => licenseCubit.reloadLicenses());
