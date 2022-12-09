@@ -1,20 +1,20 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/db/baseurl_db.dart';
+import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/repository/http_client.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class MyAbiliaConnection {
   Future<bool> hasConnection() async {
-    bool isOnline = false;
+    final client = GetIt.I<ListenableClient>();
+    final url = '${GetIt.I<BaseUrlDb>().baseUrl}/open/v1/monitor/basic';
+
     try {
-      final baseUrl = GetIt.I<BaseUrlDb>().baseUrl;
-      final result = await InternetAddress.lookup(
-        baseUrl.replaceFirst('https://', ''),
-      );
-      isOnline = result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-    } on SocketException catch (_) {
-      isOnline = false;
+      final response = await client.get(url.toUri());
+      return response.body == 'ok';
+    } catch (_) {
+      return false;
     }
-    return isOnline;
   }
 }
