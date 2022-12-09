@@ -4,9 +4,14 @@ import 'package:memoplanner/main.dart';
 import 'package:memoplanner/ui/all.dart';
 
 extension IncreaseSizeOnMp on WidgetTester {
-  Future<void> pumpApp({bool use24 = false, PushCubit? pushCubit}) async {
+  Future<void> pumpApp({
+    bool use24 = false,
+    bool tickerMode = true,
+    PushCubit? pushCubit,
+  }) async {
     _increaseSizeOnMp(use24: use24);
-    await pumpWidget(App(pushCubit: pushCubit));
+    await pumpWidget(
+        TickerMode(enabled: tickerMode, child: App(pushCubit: pushCubit)));
     await pumpAndSettle();
   }
 
