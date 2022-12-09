@@ -55,3 +55,10 @@ class MockSoundBloc extends MockBloc<SoundEvent, SoundState>
 
 class MockLicenseCubit extends MockCubit<LicenseState> implements LicenseCubit {
 }
+
+class MockLogoutSyncCubit extends MockCubit<LogoutSyncState>
+    implements LogoutSyncCubit {}
+
+class MockAuthenticationBloc
+    extends MockBloc<AuthenticationEvent, AuthenticationState>
+    implements AuthenticationBloc {}

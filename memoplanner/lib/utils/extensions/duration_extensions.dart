@@ -48,32 +48,42 @@ extension DurationExtensions on Duration {
     return sb.toString();
   }
 
-  String toReminderHeading(Translated translator, bool before) {
+  String comparedToNowString(
+    Translated translator,
+    bool before, {
+    bool daysOnly = false,
+  }) {
     final sb = StringBuffer();
 
     // https://en.wikipedia.org/wiki/Inessive_case
-    if (before && inDays >= 1 && translator.dayInessive.isNotEmpty) {
+    if (before &&
+        (inDays >= 1 || daysOnly) &&
+        translator.dayInessive.isNotEmpty) {
       sb.write('$inDays ${translator.dayInessive} ');
     } else {
-      if (inDays > 1) sb.write('$inDays ${translator.days} ');
+      if (inDays > 1 || (daysOnly && inDays == 0)) {
+        sb.write('$inDays ${translator.days} ');
+      }
       if (inDays == 1) sb.write('$inDays ${translator.day} ');
     }
 
-    final hours = inHours % Duration.hoursPerDay;
+    if (!daysOnly) {
+      final hours = inHours % Duration.hoursPerDay;
 
-    if (before && hours >= 1 && translator.hourInessive.isNotEmpty) {
-      sb.write('$hours ${translator.hourInessive} ');
-    } else {
-      if (hours > 1) sb.write('$hours ${translator.hours} ');
-      if (hours == 1) sb.write('$hours ${translator.hour} ');
-    }
+      if (before && hours >= 1 && translator.hourInessive.isNotEmpty) {
+        sb.write('$hours ${translator.hourInessive} ');
+      } else {
+        if (hours > 1) sb.write('$hours ${translator.hours} ');
+        if (hours == 1) sb.write('$hours ${translator.hour} ');
+      }
 
-    final minutes = inMinutes % Duration.minutesPerHour;
-    if (before && minutes >= 1 && translator.minuteInessive.isNotEmpty) {
-      sb.write('$minutes ${translator.minuteInessive} ');
-    } else {
-      if (minutes > 1) sb.write('$minutes ${translator.minutes} ');
-      if (minutes == 1) sb.write('$minutes ${translator.minute} ');
+      final minutes = inMinutes % Duration.minutesPerHour;
+      if (before && minutes >= 1 && translator.minuteInessive.isNotEmpty) {
+        sb.write('$minutes ${translator.minuteInessive} ');
+      } else {
+        if (minutes > 1) sb.write('$minutes ${translator.minutes} ');
+        if (minutes == 1) sb.write('$minutes ${translator.minute} ');
+      }
     }
 
     final inOrAgo = before ? translator.inTime : translator.timeAgo;

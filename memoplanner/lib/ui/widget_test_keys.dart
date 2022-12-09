@@ -126,5 +126,9 @@ class TestKey {
       skipProductionGuide = Key('skipProductionGuide'),
       startWelcomeGuide = Key('startWelcomeGuide'),
       nextWelcomeGuide = Key('nextWelcomeGuide'),
-      finishWelcomeGuide = Key('finishWelcomeGuide');
+      finishWelcomeGuide = Key('finishWelcomeGuide'),
+      logoutModal = Key('logoutModal'),
+      logoutModalProgressIndicator = Key('logoutModalProgressIndicator'),
+      logoutModalOkIcon = Key('logoutModalOkIcon'),
+      dirtyItems = Key('dirtyItems');
 }

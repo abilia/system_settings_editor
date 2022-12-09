@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:memoplanner/db/all.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/logging/all.dart';
@@ -18,6 +19,8 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final UserFileRepository userFileRepository;
   final SortableRepository sortableRepository;
   final GenericRepository genericRepository;
+  final LastSyncDb lastSyncDb;
+  final ClockBloc clockBloc;
   final SyncDelays syncDelay;
   final _log = Logger('SyncBloc');
 
@@ -35,7 +38,9 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     required this.sortableRepository,
     required this.genericRepository,
     required this.syncDelay,
-  }) : super(Syncing()) {
+    required this.lastSyncDb,
+    required this.clockBloc,
+  }) : super(Syncing(lastSynced: lastSyncDb.getLastSyncTime())) {
     _pushSubscription =
         pushCubit.stream.listen((message) => add(const SyncAll()));
     on<ActivitySaved>(_trySync, transformer: bufferTimer(syncDelay));
@@ -43,6 +48,13 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     on<SortableSaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<GenericSaved>(_trySync, transformer: bufferTimer(syncDelay));
     on<SyncAll>(_trySync, transformer: bufferTimer(syncDelay));
+  }
+
+  Future<bool> hasDirty() async {
+    return await activityRepository.db.countAllDirty() > 0 ||
+        await userFileRepository.db.countAllDirty() > 0 ||
+        await sortableRepository.db.countAllDirty() > 0 ||
+        await genericRepository.db.countAllDirty() > 0;
   }
 
   Future _trySync(
@@ -53,11 +65,13 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       final didFetchData = await _sync(event);
       if (event is SyncAll) {
         if (didFetchData || !isSynced) {
-          emit(Synced());
+          final now = clockBloc.state;
+          lastSyncDb.setSyncTime(now);
+          emit(Synced(lastSynced: now));
         }
       }
     } catch (error) {
-      emit(SyncedFailed());
+      emit(SyncedFailed(lastSynced: state.lastSynced));
       _log.info('could not sync $event, retries in ${syncDelay.retryDelay}');
       await Future.delayed(syncDelay.retryDelay);
       _log.info('retrying $event');

@@ -18,6 +18,8 @@ class FakeSyncBloc extends Fake implements SyncBloc {
   @override
   void add(SyncEvent event) {}
   @override
+  Future<bool> hasDirty() => Future.value(false);
+  @override
   Future<void> close() async {}
 }
 

@@ -208,11 +208,7 @@ class LayoutMedium extends Layout {
             activityHeight: 1200,
             activityWidth: 675,
           ),
-          logout: const LogoutLayout(
-            profilePictureSize: 126,
-            profileDistance: 35,
-            topDistance: 94,
-          ),
+          logout: const LogoutLayoutMedium(),
           settings: const SettingsLayoutMedium(),
           permissionsPage: const PermissionsPageLayout(
             deniedDotPosition: -15,
@@ -245,5 +241,6 @@ class LayoutMedium extends Layout {
           progressIndicator: const ProgressIndicatorLayoutMedium(),
           supportPerson: const SupportPersonLayoutMedium(),
           about: const AboutLayoutMedium(),
+          infoRow: const InfoRowLayoutMedium(),
         );
 }

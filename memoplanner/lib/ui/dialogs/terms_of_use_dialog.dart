@@ -86,7 +86,10 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
             ),
           ],
         ),
-        backNavigationWidget: const LogoutButton(),
+        backNavigationWidget: LogoutButton(
+          onPressed: () =>
+              context.read<AuthenticationBloc>().add(const LoggedOut()),
+        ),
         forwardNavigationWidget: _navigationButton(translate.getStarted),
       ),
     );
