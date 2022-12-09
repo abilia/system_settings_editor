@@ -51,11 +51,10 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }
 
   Future<bool> hasDirty() async {
-    return await activityRepository.db.countAllDirty() +
-            await userFileRepository.db.countAllDirty() +
-            await sortableRepository.db.countAllDirty() +
-            await genericRepository.db.countAllDirty() >
-        0;
+    return await activityRepository.db.countAllDirty() > 0 ||
+        await userFileRepository.db.countAllDirty() > 0 ||
+        await sortableRepository.db.countAllDirty() > 0 ||
+        await genericRepository.db.countAllDirty() > 0;
   }
 
   Future _trySync(
