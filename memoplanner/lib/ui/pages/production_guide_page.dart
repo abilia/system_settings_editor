@@ -14,7 +14,7 @@ class ProductionGuidePage extends StatefulWidget {
 class _ProductionGuidePageState extends State<ProductionGuidePage>
     with WidgetsBindingObserver {
   final serialIdController = TextEditingController();
-  final licenseNumberConroller = TextEditingController();
+  final licenseNumberController = TextEditingController();
 
   @override
   void initState() {
@@ -60,14 +60,8 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
               return BlocBuilder<StartupCubit, StartupState>(
                 builder: (context, startupState) => Column(
                   children: [
-                    GestureDetector(
-                      onLongPress: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => const BackendSwitcherDialog(),
-                        );
-                      },
-                      child: MEMOplannerLogo(height: layout.login.logoHeight),
+                    MEMOplannerLogoHiddenBackendSwitch(
+                      loading: startupState is Verifying,
                     ),
                     SizedBox(
                         height: layout.formPadding.groupHorizontalDistance),
@@ -76,9 +70,18 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                       style: abiliaTextTheme.headline6,
                     ),
                     const SizedBox(height: 50),
-                    InputField(
-                      heading: 'Serial number',
-                      textController: serialIdController,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SubHeading('Serial number'),
+                        TextField(
+                          controller: serialIdController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: layout.formPadding.smallVerticalItemDistance,
@@ -101,14 +104,21 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                                       value?.text ?? '')),
                     ]),
                     const SizedBox(height: 50),
-                    InputField(
-                      heading: 'License key',
-                      textController: licenseNumberConroller,
-                      subHeading:
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SubHeading('License key'),
+                        TextField(
+                            controller: licenseNumberController,
+                            decoration: licenseInputDecoration(context),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              LicenseNumberFormatter(),
+                            ]),
+                        const SubHeading(
                           'Enter license key to be connected to this device',
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'[\d -]')),
+                        ),
                       ],
                     ),
                     SizedBox(height: layout.formPadding.largeGroupDistance),
@@ -127,7 +137,7 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                       onPressed: canWriteSettings && startupState is! Verifying
                           ? () => context.read<StartupCubit>().verifySerialId(
                                 serialIdController.text,
-                                licenseNumberConroller.text,
+                                licenseNumberController.text,
                               )
                           : null,
                       style: textButtonStyleGreen,
@@ -164,40 +174,9 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
   }
 }
 
-class InputField extends StatelessWidget {
-  const InputField({
-    required this.heading,
-    required this.textController,
-    this.subHeading,
-    this.keyboardType,
-    this.inputFormatters,
-    Key? key,
-  }) : super(key: key);
-
-  final String heading;
-  final TextEditingController textController;
-  final String? subHeading;
-  final TextInputType? keyboardType;
-  final List<TextInputFormatter>? inputFormatters;
-
-  @override
-  Widget build(BuildContext context) {
-    final sub = subHeading;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SubHeading(heading),
-        TextField(
-          controller: textController,
-          inputFormatters: inputFormatters,
-          keyboardType: keyboardType,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
+InputDecoration licenseInputDecoration(BuildContext context) => InputDecoration(
+      hintText: '0000 0000 0000',
+      hintStyle: DefaultTextStyle.of(context).style.copyWith(
+            color: AbiliaColors.white140,
           ),
-        ),
-        if (sub != null) SubHeading(sub),
-      ],
     );
-  }
-}

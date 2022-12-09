@@ -1,15 +1,25 @@
 import 'dart:async';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 
 void main() {
   final mockConnectivity = MockConnectivity();
+  ConnectivityCheck connectivityCheck = (_) async => true;
+
+  setUp(() {
+    connectivityCheck = (_) async => true;
+    when(() => mockConnectivity.onConnectivityChanged)
+        .thenAnswer((_) => Stream.value(ConnectivityResult.none));
+    when(() => mockConnectivity.checkConnectivity())
+        .thenAnswer((_) => Future.value(ConnectivityResult.none));
+  });
+
   final translate = Locales.language.values.first;
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
@@ -28,32 +38,47 @@ void main() {
           BlocProvider<SpeechSettingsCubit>(
             create: (context) => FakeSpeechSettingsCubit(),
           ),
+          BlocProvider<ConnectivityCubit>(
+            create: (context) => ConnectivityCubit(
+              connectivity: mockConnectivity,
+              baseUrlDb: FakeBaseUrlDb(),
+              connectivityCheck: connectivityCheck,
+            ),
+          ),
         ], child: widget),
       );
 
   testWidgets('Not connected shows no wifi icon', (WidgetTester tester) async {
-    when(() => mockConnectivity.onConnectivityChanged)
-        .thenAnswer((_) => Stream.value(ConnectivityResult.none));
-    when(() => mockConnectivity.checkConnectivity())
-        .thenAnswer((_) => Future.value(ConnectivityResult.none));
-    await tester.pumpWidget(wrapWithMaterialApp(WiFiPickField(
-      connectivity: mockConnectivity,
-    )));
+    connectivityCheck = (_) async => false;
+    await tester.pumpWidget(wrapWithMaterialApp(const WiFiPickField()));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.noWifi), findsOneWidget);
     expect(find.text(translate.notConnected), findsOneWidget);
   });
 
-  testWidgets('Connected shows wifi icon', (WidgetTester tester) async {
-    when(() => mockConnectivity.onConnectivityChanged)
-        .thenAnswer((_) => Stream.value(ConnectivityResult.wifi));
-    when(() => mockConnectivity.checkConnectivity())
-        .thenAnswer((_) => Future.value(ConnectivityResult.wifi));
-    await tester.pumpWidget(wrapWithMaterialApp(WiFiPickField(
-      connectivity: mockConnectivity,
-    )));
-    await tester.pumpAndSettle();
-    expect(find.byIcon(AbiliaIcons.wifi), findsOneWidget);
-    expect(find.text(translate.connected), findsOneWidget);
+  group('Connected to wifi', () {
+    setUp(() {
+      when(() => mockConnectivity.onConnectivityChanged)
+          .thenAnswer((_) => Stream.value(ConnectivityResult.wifi));
+      when(() => mockConnectivity.checkConnectivity())
+          .thenAnswer((_) => Future.value(ConnectivityResult.wifi));
+    });
+
+    testWidgets('shows wifi icon and connected internet',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(wrapWithMaterialApp(const WiFiPickField()));
+      await tester.pumpAndSettle();
+      expect(find.byIcon(AbiliaIcons.wifi), findsOneWidget);
+      expect(find.text(translate.connected), findsOneWidget);
+    });
+
+    testWidgets('no internet, shows icon and not connected text',
+        (WidgetTester tester) async {
+      connectivityCheck = (_) async => false;
+      await tester.pumpWidget(wrapWithMaterialApp(const WiFiPickField()));
+      await tester.pumpAndSettle();
+      expect(find.byIcon(AbiliaIcons.wifi), findsOneWidget);
+      expect(find.text(translate.connectedNoInternet), findsOneWidget);
+    });
   });
 }

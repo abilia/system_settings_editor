@@ -1,14 +1,15 @@
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
-import 'package:memoplanner/utils/all.dart';
 
 class PageTwoVoiceSupport extends StatelessWidget {
   const PageTwoVoiceSupport({
     required this.pageController,
+    required this.pages,
     Key? key,
   }) : super(key: key);
 
   final PageController pageController;
+  final int pages;
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +20,11 @@ class PageTwoVoiceSupport extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          MEMOplannerLogo(height: layout.login.logoHeight),
+          const MEMOplannerLogoHiddenBackendSwitch(),
           SizedBox(height: layout.startupPage.logoDistance),
           Tts(
             child: Text(
-              '${t.step} 2/2',
+              '${t.step} $pages/$pages',
               style: abiliaTextTheme.bodyText2
                   ?.copyWith(color: AbiliaColors.black75),
             ),
@@ -72,11 +73,10 @@ class PageTwoVoiceSupport extends StatelessWidget {
               SizedBox(
                 width: layout.startupPage.pageTwoButtonWidth,
                 child: IconAndTextButton(
-                  onPressed: () {
-                    pageController.previousPage(
-                        duration: 500.milliseconds(),
-                        curve: Curves.easeOutQuad);
-                  },
+                  onPressed: () => pageController.previousPage(
+                    duration: StartupGuidePage.pageDuration,
+                    curve: StartupGuidePage.curve,
+                  ),
                   text: t.back,
                   style: textButtonStyleDarkGrey,
                   icon: AbiliaIcons.navigationPrevious,
@@ -92,7 +92,7 @@ class PageTwoVoiceSupport extends StatelessWidget {
                   onPressed: () {
                     context.read<StartupCubit>().startGuideDone();
                   },
-                  text: t.finsish,
+                  text: t.finish,
                   icon: AbiliaIcons.ok,
                   style: textButtonStyleGreen,
                 ),

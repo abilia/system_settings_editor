@@ -16,15 +16,17 @@ class DeviceRepository extends Repository {
 
   final DeviceDb deviceDb;
 
+  static const _headers = {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    'api-key': 'huyf72P00mf8Hy53k',
+  };
+
   Future<bool> verifyDevice(
       String serialId, String clientId, String licenseKey) async {
     final url = '$baseUrl/open/v1/enrollment/verify-device/$serialId';
     final response = await client.post(
       url.toUri(),
-      headers: {
-        HttpHeaders.contentTypeHeader: 'application/json',
-        'api-key': 'huyf72P00mf8Hy53k',
-      },
+      headers: _headers,
       body: json.encode({
         'clientId': clientId,
         'licenseKey': licenseKey,
@@ -40,6 +42,37 @@ class DeviceRepository extends Repository {
           badRequest: BadRequest.fromJson(response.json()));
     } else {
       throw Exception('Unknown error when verifying device id');
+    }
+  }
+
+  Uri get licenseUrl => '$baseUrl/open/v1/device/$serialId/license'.toUri();
+  Future<LicenseResponse> checkLicense() async {
+    final response = await client.get(licenseUrl);
+    return _parseLicenseResponse(response);
+  }
+
+  Future<LicenseResponse> connectWithLicense(String licenseKey) async {
+    final response = await client.post(
+      licenseUrl,
+      headers: _headers,
+      body: json.encode({'licenseNumber': licenseKey}),
+    );
+    return _parseLicenseResponse(response);
+  }
+
+  LicenseResponse _parseLicenseResponse(Response response) {
+    final responseJson = response.json();
+    switch (response.statusCode) {
+      case 200:
+        return LicenseResponse.fromJson(responseJson);
+      case 400:
+      case 404:
+      case 409:
+        throw ConnectedLicenseException(
+          badRequest: BadRequest.fromJson(responseJson),
+        );
+      default:
+        throw Exception('Unknown error when parsing license response');
     }
   }
 
