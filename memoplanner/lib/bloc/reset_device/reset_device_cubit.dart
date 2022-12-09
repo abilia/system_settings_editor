@@ -11,13 +11,10 @@ class ResetDeviceCubit extends Cubit<ResetDeviceState> {
   bool get isResetting => state is FactoryResetInProgress;
 
   Future<void> factoryResetDevice() async {
-    emit(FactoryResetInProgress(
-      input: state.input,
-      resetType: state.resetType,
-    ));
-    final result = await factoryResetRepository.factoryResetDevice();
-    if (!result) {
-      emit(FactoryResetFailed(input: state.input, resetType: state.resetType));
+    emit(FactoryResetInProgress(state));
+    final success = await factoryResetRepository.factoryResetDevice();
+    if (!success) {
+      emit(FactoryResetFailed(state));
     }
   }
 
@@ -54,15 +51,11 @@ class ResetDeviceState extends Equatable {
 }
 
 class FactoryResetInProgress extends ResetDeviceState {
-  const FactoryResetInProgress({
-    required String input,
-    required ResetType? resetType,
-  }) : super(input: input, resetType: resetType);
+  FactoryResetInProgress(ResetDeviceState previousState)
+      : super(input: previousState.input, resetType: previousState.resetType);
 }
 
 class FactoryResetFailed extends ResetDeviceState {
-  const FactoryResetFailed({
-    required String input,
-    required ResetType? resetType,
-  }) : super(input: input, resetType: resetType);
+  FactoryResetFailed(ResetDeviceState previousState)
+      : super(input: previousState.input, resetType: previousState.resetType);
 }
