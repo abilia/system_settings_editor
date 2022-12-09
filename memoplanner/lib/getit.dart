@@ -125,6 +125,9 @@ class GetItInitializer {
   set supportPersonsDb(SupportPersonsDb supportPersonsDb) =>
       _supportPersonsDb = supportPersonsDb;
 
+  LastSyncDb? _lastSyncDb;
+  set lastSyncDb(LastSyncDb lastSyncDb) => _lastSyncDb = lastSyncDb;
+
   SeagullAnalytics? _analytics;
   set analytics(SeagullAnalytics analytics) => _analytics = analytics;
 
@@ -181,6 +184,8 @@ class GetItInitializer {
               temp: Directory.systemTemp,
             ),
       )
+      ..registerSingleton<LastSyncDb>(
+          _lastSyncDb ?? LastSyncDb(_sharedPreferences))
       ..registerSingleton<SeagullAnalytics>(
           _analytics ?? SeagullAnalytics.empty());
   }

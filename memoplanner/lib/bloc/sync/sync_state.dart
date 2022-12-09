@@ -1,11 +1,22 @@
 part of 'sync_bloc.dart';
 
-abstract class SyncState {}
+abstract class SyncState {
+  final DateTime? lastSynced;
+  SyncState({this.lastSynced});
+}
 
-class Syncing extends SyncState {}
+class Syncing extends SyncState {
+  Syncing({super.lastSynced});
+}
 
-abstract class SyncDone extends SyncState {}
+abstract class SyncDone extends SyncState {
+  SyncDone({super.lastSynced});
+}
 
-class Synced extends SyncDone {}
+class Synced extends SyncDone {
+  Synced({super.lastSynced});
+}
 
-class SyncedFailed extends SyncDone {}
+class SyncedFailed extends SyncDone {
+  SyncedFailed({super.lastSynced});
+}

@@ -2,6 +2,7 @@ import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
+import 'package:memoplanner/utils/all.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:record/record.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -34,6 +35,8 @@ class MockActivityDb extends Mock implements ActivityDb {}
 class MockUserFileDb extends Mock implements UserFileDb {}
 
 class MockUserDb extends Mock implements UserDb {}
+
+class MockLastSyncDb extends Mock implements LastSyncDb {}
 
 class MockLoginDb extends Mock implements LoginDb {}
 
@@ -95,6 +98,8 @@ class Notification {
 }
 
 class MockConnectivity extends Mock implements Connectivity {}
+
+class MockMyAbiliaConnection extends Mock implements MyAbiliaConnection {}
 
 class MockBattery extends Mock implements Battery {}
 

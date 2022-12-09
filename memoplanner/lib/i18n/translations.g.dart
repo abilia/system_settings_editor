@@ -105,8 +105,46 @@ abstract class Translated {
 
   final String toLogin = 'to Log in';
 
-  final String licenseExpiredLogOutWarning =
-      'License is expired, all data will be lost if you log out';
+  final String memoplannerLicenseExpired = 'MEMOplanner license expired';
+
+  final String needLicenseToSaveData =
+      'You need an active license to save your data to myAbilia.';
+
+  final String contactProviderToExtendLicense =
+      'Contact your MEMOplanner provider in order to extend your license.';
+
+  final String allDataSaved = 'All data saved!';
+
+  final String goOnlineBeforeLogout = 'Go online before you log out!';
+
+  final String doNotLoseYourContent = "Don't lose your content!";
+
+  final String syncing = 'Syncing...';
+
+  final String canLogOutSafely = 'Now you can log out safely';
+
+  final String lastSyncWas = 'Last sync was';
+
+  final String connectToWifiToLogOut = 'Connect to Wi-Fi to log out safely';
+
+  final String connectToInternetToLogOut =
+      'Connect to internet to log out safely';
+
+  final String ifYouLogoutYouWillLose = 'If you log out now you will lose:';
+
+  final String activityTemplateSingular = 'activity template';
+
+  final String activityTemplatePlural = 'activity templates';
+
+  final String timerTemplateSingular = 'timer template';
+
+  final String timerTemplatePlural = 'timer templates';
+
+  final String photoSingular = 'photo';
+
+  final String photoPlural = 'photos';
+
+  final String settingsData = 'Settings data';
 
   final String fullDay = 'All day';
 
@@ -212,6 +250,8 @@ abstract class Translated {
 
   final String activity = 'Activity';
 
+  final String activities = 'Activities';
+
   final String reminders = 'Reminders';
 
   final String reminder = 'Reminder';
@@ -260,8 +300,6 @@ abstract class Translated {
       'All checklist tasks in your activity are completed. Do you want to complete the activity?';
 
   final String templates = 'Templates';
-
-  final String activities = 'Activities';
 
   final String timeTo = 'to';
 
@@ -1253,6 +1291,9 @@ class SV extends Translated {
   final String activity = 'Aktivitet';
 
   @override
+  final String activities = 'Aktiviteter';
+
+  @override
   final String reminders = 'Påminnelser';
 
   @override
@@ -1326,9 +1367,6 @@ class SV extends Translated {
 
   @override
   final String templates = 'Mallar';
-
-  @override
-  final String activities = 'Aktiviteter';
 
   @override
   final String timeTo = 'till';
@@ -2628,6 +2666,9 @@ class DA extends Translated {
   final String activity = 'Aktivitet';
 
   @override
+  final String activities = 'Aktiviteter';
+
+  @override
   final String reminders = 'Påmindelser';
 
   @override
@@ -2701,9 +2742,6 @@ class DA extends Translated {
 
   @override
   final String templates = 'Skabeloner';
-
-  @override
-  final String activities = 'Aktiviteter';
 
   @override
   final String timeTo = 'til';
@@ -4008,6 +4046,9 @@ class NL extends Translated {
   final String activity = 'Activiteit';
 
   @override
+  final String activities = 'Activiteiten';
+
+  @override
   final String reminders = 'Herinneringen';
 
   @override
@@ -4079,9 +4120,6 @@ class NL extends Translated {
 
   @override
   final String templates = 'Sjablonen';
-
-  @override
-  final String activities = 'Activiteiten';
 
   @override
   final String timeTo = 'tot';
@@ -5391,6 +5429,9 @@ class FI extends Translated {
   final String activity = 'Aktiviteetti';
 
   @override
+  final String activities = 'Aktiviteetit';
+
+  @override
   final String reminders = 'Muistutukset';
 
   @override
@@ -5463,9 +5504,6 @@ class FI extends Translated {
 
   @override
   final String templates = 'Mallit';
-
-  @override
-  final String activities = 'Aktiviteetit';
 
   @override
   final String timeTo = '-';
@@ -6773,6 +6811,9 @@ class DE extends Translated {
   final String activity = 'Aktivität';
 
   @override
+  final String activities = 'Aktivitäten';
+
+  @override
   final String reminders = 'Erinnerungen';
 
   @override
@@ -6845,9 +6886,6 @@ class DE extends Translated {
 
   @override
   final String templates = 'Vorlagen';
-
-  @override
-  final String activities = 'Aktivitäten';
 
   @override
   final String timeTo = 'bis';
@@ -8159,6 +8197,9 @@ class NB extends Translated {
   final String activity = 'Aktivitet';
 
   @override
+  final String activities = 'Aktiviteter';
+
+  @override
   final String reminders = 'Påminnelser';
 
   @override
@@ -8232,9 +8273,6 @@ class NB extends Translated {
 
   @override
   final String templates = 'Maler';
-
-  @override
-  final String activities = 'Aktiviteter';
 
   @override
   final String timeTo = 'til';

@@ -1,4 +1,4 @@
-export 'logout_page.dart';
+export 'logout/logout_page.dart';
 export 'system_settings_page.dart';
 export 'about_page.dart';
 export 'code_protect/code_protect_settings_page.dart';

@@ -56,6 +56,7 @@ void main() {
     when(() => sortableDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
     when(() => sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => sortableDb.countAllDirty()).thenAnswer((_) => Future.value(0));
 
     GetItInitializer()
       ..sharedPreferences =

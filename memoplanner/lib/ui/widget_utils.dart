@@ -30,3 +30,17 @@ extension TtsExtension on Text {
     );
   }
 }
+
+extension ColumnSpacing on Column {
+  Column spacing(double spacing) {
+    final List<Widget> newChildren = [];
+
+    for (int i = 0; i < children.length; i++) {
+      newChildren
+        ..add(children[i])
+        ..add(SizedBox(height: spacing));
+    }
+
+    return Column(key: key, children: newChildren);
+  }
+}

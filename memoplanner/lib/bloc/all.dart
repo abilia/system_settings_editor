@@ -30,4 +30,5 @@ export 'android/action_intent_cubit.dart';
 export 'alarm/notification_bloc.dart';
 export 'locale/locale_cubit.dart';
 export 'calendar/day_part_cubit.dart';
+export 'logout/logout_sync_cubit.dart';
 export 'session/sessions_cubit.dart';

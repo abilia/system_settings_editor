@@ -103,6 +103,27 @@ class DarkGreyButton extends StatelessWidget {
       );
 }
 
+class GreyButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+  final String text;
+  final IconData icon;
+
+  const GreyButton({
+    required this.text,
+    required this.icon,
+    this.onPressed,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => IconAndTextButton(
+        text: text,
+        icon: icon,
+        onPressed: onPressed,
+        style: iconTextButtonStyleGray,
+      );
+}
+
 class GreenButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final String text;
@@ -199,15 +220,21 @@ class CancelButton extends StatelessWidget {
 }
 
 class CloseButton extends StatelessWidget {
-  const CloseButton({Key? key, this.onPressed}) : super(key: key);
+  const CloseButton({
+    Key? key,
+    this.onPressed,
+    this.style,
+  }) : super(key: key);
   final VoidCallback? onPressed;
+  final ButtonStyle? style;
 
   @override
   Widget build(BuildContext context) {
-    return LightButton(
+    return IconAndTextButton(
       icon: AbiliaIcons.closeProgram,
       text: Translator.of(context).translate.close,
       onPressed: onPressed ?? Navigator.of(context).maybePop,
+      style: style ?? iconTextButtonStyleLight,
     );
   }
 }
