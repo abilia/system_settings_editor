@@ -1,7 +1,9 @@
+import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class StarterSetDialog extends StatelessWidget {
-  const StarterSetDialog({Key? key}) : super(key: key);
+  final Function() onNext;
+  const StarterSetDialog({required this.onNext, Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
@@ -35,8 +37,16 @@ class StarterSetDialog extends StatelessWidget {
           ),
         ],
       ),
-      backNavigationWidget: const NoButton(),
-      forwardNavigationWidget: const YesButton(),
+      backNavigationWidget: NoButton(
+        onPressed: onNext,
+      ),
+      forwardNavigationWidget: YesButton(
+        onPressed: () {
+          final language = Translator.of(context).locale.languageCode;
+          context.read<SortableBloc>().addStarter(language);
+          onNext();
+        },
+      ),
     );
   }
 }

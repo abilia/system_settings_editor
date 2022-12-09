@@ -59,6 +59,8 @@ void main() {
         .thenAnswer((_) => Future.value(response));
     when(() => mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value([]));
+    when(() => mockActivityDb.countAllDirty())
+        .thenAnswer((_) => Future.value(0));
     when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
     when(() => mockActivityDb.getAllAfter(any()))
@@ -74,6 +76,8 @@ void main() {
         .thenAnswer((realInvocation) => Future.value([]));
     when(() => mockGenericDb.getAllDirty())
         .thenAnswer((realInvocation) => Future.value([]));
+    when(() => mockGenericDb.countAllDirty())
+        .thenAnswer((_) => Future.value(0));
 
     getItInitializer
       ..sharedPreferences = await FakeSharedPreferences.getInstance()

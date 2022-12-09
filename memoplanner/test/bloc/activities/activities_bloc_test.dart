@@ -41,6 +41,8 @@ void main() {
       userFileRepository: FakeUserFileRepository(),
       sortableRepository: FakeSortableRepository(),
       genericRepository: FakeGenericRepository(),
+      lastSyncDb: FakeLastSyncDb(),
+      clockBloc: ClockBloc.fixed(DateTime(2000)),
       syncDelay: SyncDelays.zero,
     );
 
@@ -293,7 +295,7 @@ void main() {
         // Arrange
         final recurringActivity = FakeActivity.reoccursFridays(anyTime);
         final inAWeek = anyTime.copyWith(day: anyTime.day + 7);
-        final inAWeekDays = inAWeek.onlyDays();
+        final inAWeekdays = inAWeek.onlyDays();
 
         final activityList = [recurringActivity];
 
@@ -302,7 +304,7 @@ void main() {
             .thenAnswer((_) => Future.value(activityList));
 
         final expectedRecurring1 = recurringActivity
-            .copyWithRecurringEnd(inAWeekDays.millisecondBefore());
+            .copyWithRecurringEnd(inAWeekdays.millisecondBefore());
         final expectedRecurring2 = recurringActivity.copyWith(
           newId: true,
           startTime: inAWeek.nextDay(),

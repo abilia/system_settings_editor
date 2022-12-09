@@ -77,7 +77,7 @@ class ReminderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     final text = reminder.reminder
-        .toReminderHeading(translate, reminder is ReminderBefore);
+        .comparedToNowString(translate, reminder is ReminderBefore);
     return Theme(
       data: abiliaWhiteTheme,
       child: BlocProvider<ActivityCubit>(

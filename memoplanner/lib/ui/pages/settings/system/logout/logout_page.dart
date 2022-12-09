@@ -1,4 +1,6 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/logging/all.dart';
@@ -6,6 +8,9 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/repository/end_point.dart';
 import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
+
+part 'warning_modal.dart';
 
 class LogoutPage extends StatelessWidget {
   const LogoutPage({Key? key}) : super(key: key);
@@ -23,11 +28,44 @@ class LogoutPage extends StatelessWidget {
           EdgeInsets.only(top: layout.logout.topDistance),
         ),
       ),
-      bottomNavigationBar: const BottomNavigation(
-        backNavigationWidget: CancelButton(),
-        forwardNavigationWidget: LogoutButton(),
+      bottomNavigationBar: BottomNavigation(
+        backNavigationWidget: const CancelButton(),
+        forwardNavigationWidget: LogoutButton(
+          onPressed: () => _logOutPressed(context),
+        ),
       ),
     );
+  }
+
+  Future<void> _logOutPressed(BuildContext context) async {
+    final authProviders = copiedAuthProviders(context);
+    final authBloc = context.read<AuthenticationBloc>();
+    final hasDirty = await context.read<SyncBloc>().hasDirty();
+
+    if (!hasDirty) {
+      authBloc.add(const LoggedOut());
+    } else {
+      showAbiliaBottomSheet(
+        context: context,
+        providers: authProviders,
+        child: Padding(
+          padding: layout.templates.s5,
+          child: Center(
+            child: BlocProvider<LogoutSyncCubit>(
+              create: (context) => LogoutSyncCubit(
+                syncBloc: context.read<SyncBloc>(),
+                authenticationBloc: context.read<AuthenticationBloc>(),
+                syncDelay: GetIt.I<SyncDelays>(),
+                licenseCubit: context.read<LicenseCubit>(),
+                connectivity: Connectivity().onConnectivityChanged,
+                myAbiliaConnection: MyAbiliaConnection(),
+              ),
+              child: const WarningModal(),
+            ),
+          ),
+        ),
+      );
+    }
   }
 }
 
@@ -91,30 +129,19 @@ class _ProfilePictureNameAndEmailState
 }
 
 class LogoutButton extends StatelessWidget {
-  const LogoutButton({Key? key}) : super(key: key);
+  const LogoutButton({
+    required this.onPressed,
+    this.style,
+    super.key,
+  });
+  final ButtonStyle? style;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) => IconAndTextButton(
         text: Translator.of(context).translate.logout,
         icon: AbiliaIcons.powerOffOn,
-        onPressed: () async {
-          final authContext = BlocProvider.of<AuthenticationBloc>(context);
-          if (BlocProvider.of<LicenseCubit>(context).state is ValidLicense) {
-            authContext.add(const LoggedOut());
-          } else {
-            final confirmWarningDialog = await showViewDialog(
-              context: context,
-              builder: (context) => ConfirmWarningDialog(
-                text: Translator.of(context)
-                    .translate
-                    .licenseExpiredLogOutWarning,
-              ),
-            );
-            if (confirmWarningDialog) {
-              authContext.add(const LoggedOut());
-            }
-          }
-        },
-        style: iconTextButtonStyleRed,
+        onPressed: onPressed,
+        style: style ?? iconTextButtonStyleRed,
       );
 }

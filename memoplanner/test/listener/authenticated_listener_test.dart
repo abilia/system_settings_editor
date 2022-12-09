@@ -20,6 +20,11 @@ void main() {
   late StreamController<SortableState> sortableStreamController;
   late Stream<SortableState> sortableStream;
 
+  late AuthenticatedDialogCubit authenticatedDialogCubit;
+  late StreamController<AuthenticatedDialogState>
+      authenticatedDialogStreamController;
+  late Stream<AuthenticatedDialogState> authenticatedDialogStream;
+
   late MemoplannerSettingsBloc memoplannerSettingBloc;
   late StreamController<MemoplannerSettings> settingsStreamController;
   late Stream<MemoplannerSettings> settingsStream;
@@ -46,6 +51,16 @@ void main() {
     when(() => sortableBloc.stream).thenAnswer((invocation) => sortableStream);
     when(() => sortableBloc.addStarter(any()))
         .thenAnswer((invocation) => Future.value(true));
+
+    authenticatedDialogCubit = MockAuthenticatedDialogCubit();
+    when(() => authenticatedDialogCubit.state)
+        .thenReturn(const AuthenticatedDialogState());
+    authenticatedDialogStreamController =
+        StreamController<AuthenticatedDialogState>();
+    authenticatedDialogStream =
+        authenticatedDialogStreamController.stream.asBroadcastStream();
+    when(() => authenticatedDialogCubit.stream)
+        .thenAnswer((invocation) => authenticatedDialogStream);
 
     memoplannerSettingBloc = MockMemoplannerSettingBloc();
     when(() => memoplannerSettingBloc.state)
@@ -75,6 +90,7 @@ void main() {
     GetIt.I.reset();
     activitiesStreamController.close();
     sortableStreamController.close();
+    authenticatedDialogStreamController.close();
     settingsStreamController.close();
     timerStreamController.close();
   });
@@ -91,6 +107,7 @@ void main() {
                 providers: [
                   BlocProvider.value(value: activitiesBloc),
                   BlocProvider.value(value: sortableBloc),
+                  BlocProvider.value(value: authenticatedDialogCubit),
                   BlocProvider.value(value: timerCubit),
                   BlocProvider.value(value: memoplannerSettingBloc),
                   BlocProvider.value(value: notificationBloc),
@@ -164,65 +181,42 @@ void main() {
     verify(() => notificationBloc.add(any()));
   });
 
-  group('Starter set', () {
-    testWidgets(
-        'Shows starter set dialog if newly logged in and user has no sortables, '
-        'call add when pressed Yes', (tester) async {
-      // Arrange
-      await tester.pumpWidget(authListener(
-          state: const Authenticated(user: Fakes.user, newlyLoggedIn: true)));
+  testWidgets('Shows starter set dialog and call add when pressed Yes',
+      (tester) async {
+    // Arrange
+    when(() => authenticatedDialogCubit.state)
+        .thenAnswer((_) => const AuthenticatedDialogState());
 
-      await tester.pumpAndSettle();
-      // Act
-      sortableStreamController.add(const SortablesLoaded(sortables: []));
-      await tester.pumpAndSettle();
+    // Act - Start app
+    await tester.pumpWidget(authListener(
+        state: const Authenticated(user: Fakes.user, newlyLoggedIn: true)));
+    await tester.pumpAndSettle();
 
-      // Assert
-      expect(find.byType(StarterSetDialog), findsOneWidget);
-      // Act press Yes
-      await tester.tap(find.byType(YesButton));
-      await tester.pumpAndSettle();
+    // Assert - No dialog
+    expect(find.byType(AuthenticatedDialog), findsNothing);
+    expect(find.byType(StarterSetDialog), findsNothing);
 
-      verify(() => sortableBloc.addStarter(any())).called(1);
-    });
+    // Act - Login dialog is ready
+    const starterSetState = AuthenticatedDialogState(
+      termsOfUseLoaded: true,
+      starterSet: true,
+      starterSetLoaded: true,
+      fullscreenAlarmLoaded: true,
+    );
+    authenticatedDialogStreamController.add(starterSetState);
+    when(() => authenticatedDialogCubit.state)
+        .thenAnswer((_) => starterSetState);
+    await tester.pumpAndSettle();
 
-    testWidgets(
-        'DONT shows starter set dialog if NOT newly logged in and user has no sortables',
-        (tester) async {
-      // Arrange
-      await tester.pumpWidget(authListener(
-          state: const Authenticated(user: Fakes.user, newlyLoggedIn: false)));
+    // Assert
+    expect(find.byType(AuthenticatedDialog), findsOneWidget);
+    expect(find.byType(StarterSetDialog), findsOneWidget);
 
-      await tester.pumpAndSettle();
-      // Act
-      sortableStreamController.add(const SortablesLoaded(sortables: []));
-      await tester.pumpAndSettle();
+    // Act - Press Yes
+    await tester.tap(find.byType(YesButton));
+    await tester.pumpAndSettle();
 
-      // Assert
-      expect(find.byType(StarterSetDialog), findsNothing);
-    });
-
-    testWidgets(
-        'DONT Shows starter set dialog if newly logged in BUT user HAS sortables',
-        (tester) async {
-      // Arrange
-      await tester.pumpWidget(
-        authListener(
-          state: const Authenticated(user: Fakes.user, newlyLoggedIn: true),
-        ),
-      );
-
-      await tester.pumpAndSettle();
-      // Act
-      sortableStreamController.add(
-        SortablesLoaded(
-          sortables: [Sortable.createNew(data: const NoteData())],
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      // Assert
-      expect(find.byType(StarterSetDialog), findsNothing);
-    });
+    // Assert - addStarter is called
+    verify(() => sortableBloc.addStarter(any())).called(1);
   });
 }

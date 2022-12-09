@@ -91,12 +91,14 @@ class Layout {
   final SpeechSupportPageLayout speechSupportPage;
   final StartupPageLayout startupPage;
   final StarterSetDialogLayout starterSetDialog;
+  final TermsOfUseDialogLayout termsOfUseDialog;
   final PhotoCalendarLayoutMedium photoCalendarLayout;
   final SupportPersonLayout supportPerson;
   final CodeProtectLayoutMedium codeProtect;
   final SelectorLayout selector;
   final ProgressIndicatorLayout progressIndicator;
   final AboutLayout about;
+  final InfoRowLayout infoRow;
 
   const Layout({
     this.radius = 12,
@@ -170,12 +172,14 @@ class Layout {
     this.speechSupportPage = const SpeechSupportPageLayout(),
     this.startupPage = const StartupPageLayout(),
     this.starterSetDialog = const StarterSetDialogLayout(),
+    this.termsOfUseDialog = const TermsOfUseDialogLayout(),
     this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
     this.supportPerson = const SupportPersonLayout(),
     this.codeProtect = const CodeProtectLayoutMedium(),
     this.selector = const SelectorLayout(),
     this.progressIndicator = const ProgressIndicatorLayout(),
     this.about = const AboutLayout(),
+    this.infoRow = const InfoRowLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;

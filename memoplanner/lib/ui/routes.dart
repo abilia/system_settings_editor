@@ -1,8 +1,8 @@
 import 'package:memoplanner/ui/all.dart';
 
-mixin PersistentPageRoute<T> on PageRoute<T> {}
+mixin PersistentRoute {}
 
-class AlarmRoute<T> extends MaterialPageRoute<T> with PersistentPageRoute<T> {
+class AlarmRoute<T> extends MaterialPageRoute<T> with PersistentRoute {
   AlarmRoute({
     required WidgetBuilder builder,
     bool fullscreenDialog = false,
@@ -10,7 +10,7 @@ class AlarmRoute<T> extends MaterialPageRoute<T> with PersistentPageRoute<T> {
 }
 
 class PersistentMaterialPageRoute<T> extends MaterialPageRoute<T>
-    with PersistentPageRoute {
+    with PersistentRoute {
   PersistentMaterialPageRoute({
     required super.builder,
     super.settings,
@@ -18,10 +18,24 @@ class PersistentMaterialPageRoute<T> extends MaterialPageRoute<T>
 }
 
 class PersistentPageRouteBuilder<T> extends PageRouteBuilder<T>
-    with PersistentPageRoute {
+    with PersistentRoute {
   PersistentPageRouteBuilder({
     required super.pageBuilder,
     super.settings,
     super.transitionsBuilder,
+  });
+}
+
+class PersistentDialogRoute<T> extends DialogRoute<T> with PersistentRoute {
+  PersistentDialogRoute({
+    required super.context,
+    required super.builder,
+    super.themes,
+    super.barrierColor = Colors.black54,
+    super.barrierDismissible,
+    super.barrierLabel,
+    super.useSafeArea = true,
+    super.settings,
+    super.anchorPoint,
   });
 }

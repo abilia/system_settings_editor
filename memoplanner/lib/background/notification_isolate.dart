@@ -424,7 +424,7 @@ String _extra(ActivityAlarm notificationAlarm, Translated translator) {
   if (notificationAlarm is EndAlarm) return translator.endsNow;
   if (notificationAlarm is NewReminder) {
     return notificationAlarm.reminder
-        .toReminderHeading(translator, notificationAlarm is ReminderBefore);
+        .comparedToNowString(translator, notificationAlarm is ReminderBefore);
   }
   return '';
 }

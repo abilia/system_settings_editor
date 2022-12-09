@@ -21,6 +21,18 @@ final foregroundLight = MaterialStateProperty.resolveWith<Color>(
   },
 );
 
+final buttonBackgroundLightGrey = MaterialStateProperty.resolveWith<Color>(
+  (Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled)) {
+      return AbiliaColors.white120;
+    }
+    if (states.contains(MaterialState.pressed)) {
+      return AbiliaColors.white135;
+    }
+    return AbiliaColors.white120;
+  },
+);
+
 final buttonBackgroundDarkGrey = MaterialStateProperty.resolveWith<Color>(
   (Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
@@ -30,6 +42,18 @@ final buttonBackgroundDarkGrey = MaterialStateProperty.resolveWith<Color>(
       return AbiliaColors.black90;
     }
     return AbiliaColors.black80;
+  },
+);
+
+final buttonBackgroundGrey = MaterialStateProperty.resolveWith<Color>(
+  (Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled)) {
+      return AbiliaColors.white120;
+    }
+    if (states.contains(MaterialState.pressed)) {
+      return AbiliaColors.white135;
+    }
+    return AbiliaColors.white120;
   },
 );
 
@@ -110,6 +134,22 @@ final iconTextButtonStyleLight = iconTextButtonStyle.copyWith(
   shape: MaterialStateProperty.all(ligthShapeBorder),
 );
 
+final iconTextButtonStyleGray = iconTextButtonStyle.copyWith(
+  foregroundColor: MaterialStateProperty.resolveWith<Color>(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return AbiliaColors.white140;
+      }
+      if (states.contains(MaterialState.pressed)) {
+        return AbiliaColors.black;
+      }
+      return AbiliaColors.black;
+    },
+  ),
+  backgroundColor: buttonBackgroundGrey,
+  shape: noBorder,
+);
+
 final iconTextButtonStyleGreen = iconTextButtonStyle.copyWith(
   backgroundColor: buttonBackgroundGreen,
   shape: noBorder,
@@ -117,6 +157,12 @@ final iconTextButtonStyleGreen = iconTextButtonStyle.copyWith(
 
 final iconTextButtonStyleRed = iconTextButtonStyle.copyWith(
   backgroundColor: buttonBackgroundRed,
+  shape: noBorder,
+);
+
+final iconTextButtonStyleGrey = iconTextButtonStyle.copyWith(
+  backgroundColor: buttonBackgroundLightGrey,
+  foregroundColor: MaterialStateProperty.all(AbiliaColors.black),
   shape: noBorder,
 );
 
@@ -580,4 +626,15 @@ class _ShapeBorders {
     required this.pressedOrDisabled,
     required this.def,
   });
+}
+
+extension IconTextButtonWithoutMinWidth on ButtonStyle {
+  ButtonStyle get withoutMinWidth => copyWith(
+        minimumSize: MaterialStateProperty.all(
+          Size(
+              0,
+              minimumSize?.resolve(MaterialState.values.toSet())?.height ??
+                  layout.iconTextButton.minimumSize.height),
+        ),
+      );
 }

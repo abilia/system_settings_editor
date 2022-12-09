@@ -1,6 +1,7 @@
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'activities/all.dart';
 export 'authentication/authentication_bloc.dart';
+export 'authentication/authenticated_dialog/authenticated_dialog_cubit.dart';
 export 'login/all.dart';
 export 'calendar/all.dart';
 export 'clock/clock_bloc.dart';
@@ -29,4 +30,5 @@ export 'android/action_intent_cubit.dart';
 export 'alarm/notification_bloc.dart';
 export 'locale/locale_cubit.dart';
 export 'calendar/day_part_cubit.dart';
+export 'logout/logout_sync_cubit.dart';
 export 'session/sessions_cubit.dart';

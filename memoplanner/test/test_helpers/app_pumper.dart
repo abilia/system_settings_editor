@@ -4,11 +4,18 @@ import 'package:memoplanner/main.dart';
 import 'package:memoplanner/ui/all.dart';
 
 extension IncreaseSizeOnMp on WidgetTester {
-  Future<void> pumpApp({
-    bool use24 = false,
-    bool tickerMode = true,
-    PushCubit? pushCubit,
-  }) async {
+  Future<void> pumpApp({bool use24 = false, PushCubit? pushCubit}) async {
+    _increaseSizeOnMp(use24: use24);
+    await pumpWidget(App(pushCubit: pushCubit));
+    await pumpAndSettle();
+  }
+
+  Future<void> pumpWidgetWithMPSize(Widget widget, {bool use24 = false}) async {
+    _increaseSizeOnMp(use24: use24);
+    await pumpWidget(widget);
+  }
+
+  void _increaseSizeOnMp({bool use24 = false}) {
     if (Config.isMP) {
       binding.window.physicalSizeTestValue = const Size(800, 1280);
       binding.window.devicePixelRatioTestValue = 1;
@@ -21,8 +28,5 @@ extension IncreaseSizeOnMp on WidgetTester {
       binding.platformDispatcher.alwaysUse24HourFormatTestValue = use24;
       addTearDown(binding.platformDispatcher.clearAlwaysUse24HourTestValue);
     }
-    await pumpWidget(
-        TickerMode(enabled: tickerMode, child: App(pushCubit: pushCubit)));
-    await pumpAndSettle();
   }
 }

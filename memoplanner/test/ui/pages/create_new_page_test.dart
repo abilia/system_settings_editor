@@ -406,6 +406,70 @@ void main() {
         expect(savedActivity.reminders.first, 5.minutes());
       });
 
+      group('Discard warning dialog activities', () {
+        Future<void> navigateToEditActivityPage(WidgetTester tester) async {
+          await tester.pumpApp();
+          await tester.tap(addActivityButtonFinder);
+          await tester.pumpAndSettle();
+          await tester.tap(find.byKey(TestKey.newActivityChoice));
+          await tester.pumpAndSettle();
+        }
+
+        testWidgets(
+            'Making a change and clicking previous triggers discard warning dialog',
+            (WidgetTester tester) async {
+          await navigateToEditActivityPage(tester);
+          expect(find.byType(EditActivityPage), findsOneWidget);
+          await tester.tap(find.byKey(TestKey.fullDaySwitch));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(PreviousButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(EditActivityPage), findsOneWidget);
+          expect(find.byType(DiscardWarningDialog), findsOneWidget);
+        });
+
+        testWidgets('Accept discard changes pops back',
+            (WidgetTester tester) async {
+          await navigateToEditActivityPage(tester);
+          expect(find.byType(EditActivityPage), findsOneWidget);
+          await tester.tap(find.byKey(TestKey.fullDaySwitch));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(PreviousButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(DiscardWarningDialog), findsOneWidget);
+          await tester.tap(find.text('Discard'));
+          await tester.pumpAndSettle();
+          expect(find.byType(DiscardWarningDialog), findsNothing);
+          expect(find.byType(EditActivityPage), findsNothing);
+        });
+
+        testWidgets('Keep editing keeps user on the edit activity page',
+            (WidgetTester tester) async {
+          await navigateToEditActivityPage(tester);
+          expect(find.byType(EditActivityPage), findsOneWidget);
+          await tester.tap(find.byKey(TestKey.fullDaySwitch));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(PreviousButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(DiscardWarningDialog), findsOneWidget);
+          await tester.tap(find.text('Keep editing'));
+          await tester.pumpAndSettle();
+          expect(find.byType(DiscardWarningDialog), findsNothing);
+          expect(find.byType(EditActivityPage), findsOneWidget);
+        });
+
+        testWidgets(
+            'Making no change and clicking previous do not trigger discard warning dialog',
+            (WidgetTester tester) async {
+          await navigateToEditActivityPage(tester);
+          expect(find.byType(EditActivityPage), findsOneWidget);
+          await tester.tap(find.byType(PreviousButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(EditActivityPage), findsNothing);
+          expect(find.byType(DiscardWarningDialog), findsNothing);
+        });
+      });
+
       group('basic activity', () {
         testWidgets('No option for basic activity when step-by-step',
             (WidgetTester tester) async {
@@ -1191,6 +1255,45 @@ void main() {
 
         // Assert - Back at calendar page
         expect(find.byType(CalendarPage), findsOneWidget);
+      });
+
+      group('Discard warning dialog timers', () {
+        Future<void> navigateToEditTimerPage(WidgetTester tester) async {
+          await tester.pumpWidget(App());
+          await tester.pumpAndSettle();
+          await tester.tap(addTimerButtonFinder);
+          await tester.pumpAndSettle();
+          await tester.tap(find.byKey(TestKey.newTimerChoice));
+          await tester.pumpAndSettle();
+        }
+
+        testWidgets(
+            'Making a change and clicking previous triggers discard warning dialog',
+            (WidgetTester tester) async {
+          await navigateToEditTimerPage(tester);
+
+          final timerWheel = find.byType(TimerWheel);
+          final offset = Offset(tester.getSize(timerWheel).height / 3, 5);
+          await tester.tapAt(tester.getCenter(timerWheel) + offset);
+          await tester.pumpAndSettle();
+          expect(find.text('00:45:00'), findsOneWidget);
+
+          await tester.tap(find.byType(PreviousButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(EditTimerPage), findsOneWidget);
+          expect(find.byType(DiscardWarningDialog), findsOneWidget);
+        });
+
+        testWidgets(
+            'Making no change and clicking previous do not trigger discard warning dialog',
+            (WidgetTester tester) async {
+          await navigateToEditTimerPage(tester);
+          expect(find.byType(EditTimerPage), findsOneWidget);
+          await tester.tap(find.byType(PreviousButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(EditTimerPage), findsNothing);
+          expect(find.byType(DiscardWarningDialog), findsNothing);
+        });
       });
     });
 

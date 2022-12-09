@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:memoplanner/config.dart';
 import 'package:memoplanner/models/generic/generic.dart';
 import 'package:memoplanner/models/settings/memoplanner_settings.dart';
 
@@ -11,12 +12,18 @@ class KeepScreenAwakeSettings extends Equatable {
     keepScreenOnAlwaysKey,
   ];
 
-  final bool keepScreenOnWhileCharging, keepScreenOnAlways;
+  final bool _keepScreenOnWhileCharging, _keepScreenOnAlways;
+
+  bool get keepScreenOnWhileCharging =>
+      Config.isMPLarge || _keepScreenOnWhileCharging;
+
+  bool get keepScreenOnAlways => Config.isMPLarge || _keepScreenOnAlways;
 
   const KeepScreenAwakeSettings({
-    this.keepScreenOnWhileCharging = false,
-    this.keepScreenOnAlways = false,
-  });
+    bool keepScreenOnWhileCharging = false,
+    bool keepScreenOnAlways = false,
+  })  : _keepScreenOnWhileCharging = keepScreenOnWhileCharging,
+        _keepScreenOnAlways = keepScreenOnAlways;
 
   KeepScreenAwakeSettings copyWith({
     bool? keepScreenOnWhileCharging,
@@ -29,17 +36,15 @@ class KeepScreenAwakeSettings extends Equatable {
       );
 
   factory KeepScreenAwakeSettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
-      KeepScreenAwakeSettings(
-        keepScreenOnWhileCharging: settings.parse(
-          keepScreenOnWhileChargingKey,
-          false,
-        ),
-        keepScreenOnAlways: settings.parse(
-          keepScreenOnAlwaysKey,
-          false,
-        ),
-      );
+      Map<String, MemoplannerSettingData> settings) {
+    final savedKeepOnWhileCharging =
+        settings.parse(keepScreenOnWhileChargingKey, false);
+    final savedKeepOnAlways = settings.parse(keepScreenOnAlwaysKey, false);
+    return KeepScreenAwakeSettings(
+      keepScreenOnWhileCharging: Config.isMPLarge || savedKeepOnWhileCharging,
+      keepScreenOnAlways: Config.isMPLarge || savedKeepOnAlways,
+    );
+  }
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
         MemoplannerSettingData.fromData(

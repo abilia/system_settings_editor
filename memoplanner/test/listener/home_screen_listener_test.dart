@@ -355,7 +355,7 @@ void main() {
       expect(find.byType(WeekCalendar), findsOneWidget);
     });
 
-    testWidgets('alarms are Popped and canceled', (tester) async {
+    testWidgets('alarms are not closed but canceled', (tester) async {
       // Arrange
       final timer = AbiliaTimer.createNew(
           startTime: initialTime.subtract(30.seconds()), duration: 5.minutes());
@@ -388,7 +388,8 @@ void main() {
       intentStreamController.add(AndroidIntentAction.homeButton);
       await tester.pumpAndSettle();
 
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendar), findsNothing);
+      expect(find.byType(TimerAlarmPage), findsOneWidget);
 
       verify(() => mockFlutterLocalNotificationsPlugin.cancel(timer.hashCode))
           .called(1);

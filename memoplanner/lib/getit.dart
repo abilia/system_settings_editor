@@ -74,6 +74,9 @@ class GetItInitializer {
   SessionsDb? _sessionsDb;
   set sessionsDb(SessionsDb sessionsDb) => _sessionsDb = sessionsDb;
 
+  TermsOfUseDb? _termsOfUseDb;
+  set termsOfUseDb(TermsOfUseDb termsOfUseDb) => _termsOfUseDb = termsOfUseDb;
+
   CalendarDb? _calendarDb;
   set calendarDb(CalendarDb calendarDb) => _calendarDb = calendarDb;
 
@@ -122,6 +125,9 @@ class GetItInitializer {
   set supportPersonsDb(SupportPersonsDb supportPersonsDb) =>
       _supportPersonsDb = supportPersonsDb;
 
+  LastSyncDb? _lastSyncDb;
+  set lastSyncDb(LastSyncDb lastSyncDb) => _lastSyncDb = lastSyncDb;
+
   SeagullAnalytics? _analytics;
   set analytics(SeagullAnalytics analytics) => _analytics = analytics;
 
@@ -156,6 +162,8 @@ class GetItInitializer {
           _settingsDb ?? SettingsDb(_sharedPreferences))
       ..registerSingleton<SessionsDb>(
           _sessionsDb ?? SessionsDb(_sharedPreferences))
+      ..registerSingleton<TermsOfUseDb>(
+          _termsOfUseDb ?? TermsOfUseDb(_sharedPreferences))
       ..registerSingleton<CalendarDb>(_calendarDb ?? CalendarDb(_database))
       ..registerSingleton<FileStorage>(
           _fileStorage ?? FileStorage(_directories?.documents.path))
@@ -176,6 +184,8 @@ class GetItInitializer {
               temp: Directory.systemTemp,
             ),
       )
+      ..registerSingleton<LastSyncDb>(
+          _lastSyncDb ?? LastSyncDb(_sharedPreferences))
       ..registerSingleton<SeagullAnalytics>(
           _analytics ?? SeagullAnalytics.empty());
   }

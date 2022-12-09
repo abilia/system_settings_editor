@@ -103,6 +103,27 @@ class DarkGreyButton extends StatelessWidget {
       );
 }
 
+class GreyButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+  final String text;
+  final IconData icon;
+
+  const GreyButton({
+    required this.text,
+    required this.icon,
+    this.onPressed,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => IconAndTextButton(
+        text: text,
+        icon: icon,
+        onPressed: onPressed,
+        style: iconTextButtonStyleGray,
+      );
+}
+
 class GreenButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final String text;
@@ -199,41 +220,53 @@ class CancelButton extends StatelessWidget {
 }
 
 class CloseButton extends StatelessWidget {
-  const CloseButton({Key? key, this.onPressed}) : super(key: key);
+  const CloseButton({
+    Key? key,
+    this.onPressed,
+    this.style,
+  }) : super(key: key);
   final VoidCallback? onPressed;
+  final ButtonStyle? style;
 
   @override
   Widget build(BuildContext context) {
-    return LightButton(
+    return IconAndTextButton(
       icon: AbiliaIcons.closeProgram,
       text: Translator.of(context).translate.close,
       onPressed: onPressed ?? Navigator.of(context).maybePop,
+      style: style ?? iconTextButtonStyleLight,
     );
   }
 }
 
 class YesButton extends StatelessWidget {
-  const YesButton({Key? key}) : super(key: key);
+  final Function()? onPressed;
+  const YesButton({this.onPressed, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GreenButton(
       text: Translator.of(context).translate.yes,
       icon: AbiliaIcons.ok,
-      onPressed: () => Navigator.of(context).maybePop(true),
+      onPressed: () => onPressed != null
+          ? onPressed?.call()
+          : Navigator.of(context).maybePop(true),
     );
   }
 }
 
 class NoButton extends StatelessWidget {
-  const NoButton({Key? key}) : super(key: key);
+  final Function()? onPressed;
+  const NoButton({this.onPressed, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return LightButton(
       text: Translator.of(context).translate.no,
       icon: AbiliaIcons.closeProgram,
-      onPressed: () => Navigator.of(context).maybePop(false),
+      onPressed: () => onPressed != null
+          ? onPressed?.call()
+          : Navigator.of(context).maybePop(false),
     );
   }
 }

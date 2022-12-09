@@ -96,6 +96,4 @@ class AlarmNavigator {
     log.info('removedFromRoutes: $stackId');
     return _routesOnStack.remove(stackId);
   }
-
-  void clearAlarmStack() => _routesOnStack.clear();
 }

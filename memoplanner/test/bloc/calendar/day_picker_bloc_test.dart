@@ -22,21 +22,25 @@ void main() {
 
   test('initial state', () {
     expect(
-        dayPickerBloc.state,
-        DayPickerState.forTest(
-          theDay,
-          Occasion.current,
-        ));
+      dayPickerBloc.state,
+      DayPickerState.forTest(
+        theDay,
+        Occasion.current,
+      ).withMatcher(),
+    );
   });
 
   test('Next day should yeild next day', () async {
     dayPickerBloc.add(NextDay());
     await expectLater(
       dayPickerBloc.stream,
-      emits(DayPickerState.forTest(
-        theDayAfter,
-        Occasion.future,
-      )),
+      emits(
+        DayPickerState.forTest(
+          theDayAfter,
+          Occasion.future,
+          lastEvent: NextDay(),
+        ).withMatcher(),
+      ),
     );
   });
 
@@ -44,10 +48,13 @@ void main() {
     dayPickerBloc.add(PreviousDay());
     await expectLater(
       dayPickerBloc.stream,
-      emits(DayPickerState.forTest(
-        thedayBefore,
-        Occasion.past,
-      )),
+      emits(
+        DayPickerState.forTest(
+          thedayBefore,
+          Occasion.past,
+          lastEvent: PreviousDay(),
+        ).withMatcher(),
+      ),
     );
   });
 
@@ -60,11 +67,13 @@ void main() {
         DayPickerState.forTest(
           theDayAfter,
           Occasion.future,
-        ),
+          lastEvent: NextDay(),
+        ).withMatcher(),
         DayPickerState.forTest(
           theDay,
           Occasion.current,
-        )
+          lastEvent: PreviousDay(),
+        ).withMatcher(),
       ]),
     );
   });
@@ -79,15 +88,18 @@ void main() {
         DayPickerState.forTest(
           theDayAfter,
           Occasion.future,
-        ),
+          lastEvent: NextDay(),
+        ).withMatcher(),
         DayPickerState.forTest(
           theDayAfterTomorrow,
           Occasion.future,
-        ),
+          lastEvent: NextDay(),
+        ).withMatcher(),
         DayPickerState.forTest(
           theDay,
           Occasion.current,
-        ),
+          lastEvent: const CurrentDay(),
+        ).withMatcher(),
       ]),
     );
   });
@@ -112,11 +124,13 @@ void main() {
         DayPickerState.forTest(
           dayLightSavingTime,
           Occasion.future,
-        ),
+          lastEvent: NextDay(),
+        ).withMatcher(),
         DayPickerState.forTest(
           daysAfterDST,
           Occasion.future,
-        )
+          lastEvent: NextDay(),
+        ).withMatcher()
       ]),
     );
   });
@@ -140,11 +154,13 @@ void main() {
         DayPickerState.forTest(
           daysAfterDST,
           Occasion.past,
-        ),
+          lastEvent: PreviousDay(),
+        ).withMatcher(),
         DayPickerState.forTest(
           dayLightSavingTime,
           Occasion.past,
-        )
+          lastEvent: PreviousDay(),
+        ).withMatcher(),
       ]),
     );
   });
@@ -169,11 +185,13 @@ void main() {
         DayPickerState.forTest(
           dayLightSavingTime,
           Occasion.future,
-        ),
+          lastEvent: NextDay(),
+        ).withMatcher(),
         DayPickerState.forTest(
           daysAfterDST,
           Occasion.future,
-        ),
+          lastEvent: NextDay(),
+        ).withMatcher(),
       ]),
     );
   });
@@ -197,11 +215,13 @@ void main() {
         DayPickerState.forTest(
           daysAfterDST,
           Occasion.past,
-        ),
+          lastEvent: PreviousDay(),
+        ).withMatcher(),
         DayPickerState.forTest(
           dayLightSavingTime,
           Occasion.past,
-        ),
+          lastEvent: PreviousDay(),
+        ).withMatcher(),
       ]),
     );
   });
@@ -219,11 +239,13 @@ void main() {
         DayPickerState.forTest(
           theDayAfter,
           Occasion.future,
-        ),
+          lastEvent: NextDay(),
+        ).withMatcher(),
         DayPickerState.forTest(
           theDay,
           Occasion.current,
-        ),
+          lastEvent: const CurrentDay(),
+        ).withMatcher(),
       ]),
     );
   });
@@ -240,7 +262,7 @@ void main() {
         DayPickerState.forTest(
           theDayAfter,
           Occasion.current,
-        ),
+        ).withMatcher(),
       ),
     );
     await dayPickerBloc.close();
@@ -258,7 +280,7 @@ void main() {
         DayPickerState.forTest(
           theDayAfterTomorrow,
           Occasion.current,
-        ),
+        ).withMatcher(),
       ),
     );
   });
@@ -273,9 +295,11 @@ void main() {
     await expectLater(
       dayPickerBloc.stream,
       emits(
-        DayPickerState.forTest(
-          theDayAfter,
-          Occasion.current,
+        DayPickerStateMatcher(
+          DayPickerState.forTest(
+            theDayAfter,
+            Occasion.current,
+          ),
         ),
       ),
     );
@@ -291,7 +315,8 @@ void main() {
         DayPickerState.forTest(
           theDayAfter,
           Occasion.current,
-        ),
+          lastEvent: TimeChanged(theDayAfter),
+        ).withMatcher(),
       ]),
     );
   });
@@ -300,4 +325,25 @@ void main() {
     dayPickerBloc.close();
     clockStream.close();
   });
+}
+
+extension DayPickerStateMatcherWrapper on DayPickerState {
+  DayPickerStateMatcher withMatcher() => DayPickerStateMatcher(this);
+}
+
+class DayPickerStateMatcher extends Matcher {
+  const DayPickerStateMatcher(this.value);
+
+  final DayPickerState value;
+
+  @override
+  Description describe(Description description) => description.add('');
+
+  @override
+  bool matches(object, Map matchState) {
+    return object is DayPickerState &&
+        value.day == object.day &&
+        value.occasion == object.occasion &&
+        value.lastEvent == object.lastEvent;
+  }
 }

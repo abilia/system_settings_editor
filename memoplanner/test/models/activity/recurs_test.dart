@@ -648,36 +648,36 @@ void main() {
       });
     });
 
-    group('weekDays', () {
+    group('weekdays', () {
       test('wrong type year return empty list', () {
         // arrange
         final yearly = Recurs.yearly(DateTime(1111, 11, 11, 11, 11));
         // assert
-        expect(yearly.weekDays, []);
+        expect(yearly.weekdays, []);
       });
       test('wrong type monthly return empty list', () {
         // arrange
         final monthly = Recurs.monthly(Recurs.allDaysOfWeek);
         // assert
-        expect(monthly.weekDays, []);
+        expect(monthly.weekdays, []);
       });
       test('wrong type none return empty list', () {
         // assert
-        expect(Recurs.not.weekDays, []);
+        expect(Recurs.not.weekdays, []);
       });
 
       test('on monday', () {
         // arrange
         final monthDays = Recurs.weeklyOnDay(DateTime.monday);
         // assert
-        expect(monthDays.weekDays, [DateTime.monday]);
+        expect(monthDays.weekdays, [DateTime.monday]);
       });
 
       test('on tuesday', () {
         // arrange
         final monthDays = Recurs.weeklyOnDay(DateTime.tuesday);
         // assert
-        expect(monthDays.weekDays, [DateTime.tuesday]);
+        expect(monthDays.weekdays, [DateTime.tuesday]);
       });
 
       test('on day monday and tuesday', () {
@@ -686,7 +686,7 @@ void main() {
         final monthDays = Recurs.weeklyOnDays(days);
 
         // assert
-        expect(monthDays.weekDays, days);
+        expect(monthDays.weekdays, days);
       });
 
       test('on day all weekdays', () {
@@ -702,7 +702,7 @@ void main() {
         ];
         final monthDays = Recurs.weeklyOnDays(days);
         // assert
-        expect(monthDays.weekDays, days);
+        expect(monthDays.weekdays, days);
       });
 
       test('on all days dateTime', () {
@@ -712,7 +712,7 @@ void main() {
             .toList();
         final monthDays = Recurs.weeklyOnDays(days);
         // assert
-        expect(monthDays.weekDays, unorderedEquals(days));
+        expect(monthDays.weekdays, unorderedEquals(days));
       });
     });
   });
