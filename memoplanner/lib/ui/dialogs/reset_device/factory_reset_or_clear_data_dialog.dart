@@ -14,9 +14,15 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
 
   ResetType? get _resetType => resetDeviceCubit.state.resetType;
 
+  bool get _isClearData => _resetType == ResetType.clearData;
+
+  bool get _isFactoryReset => _resetType == ResetType.factoryReset;
+
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
+    final isConnected = context.watch<ConnectivityCubit>().state.isConnected;
+    final onNextClickable = _isClearData || _isFactoryReset && isConnected;
     return ViewDialog(
       bottomNavigationColor: ViewDialog.light,
       bodyPadding: layout.templates.m4,
@@ -55,6 +61,10 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyText2,
             ),
           ),
+          if (_isFactoryReset && !isConnected) ...[
+            SizedBox(height: layout.resetDeviceDialog.titleToImageDistance / 2),
+            const NoInternetErrorMessage(),
+          ],
           SizedBox(height: layout.resetDeviceDialog.titleToImageDistance),
           RadioField(
             leading: const Icon(AbiliaIcons.delete),
@@ -80,7 +90,7 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
       forwardNavigationWidget: RedButton(
         text: translate.yes,
         icon: AbiliaIcons.checkButton,
-        onPressed: _resetType != null ? () => _onNext(context) : null,
+        onPressed: onNextClickable ? () => _onNext(context) : null,
       ),
     );
   }

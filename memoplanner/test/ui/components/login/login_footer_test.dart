@@ -5,6 +5,7 @@ import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/repository/all.dart';
 
 import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
@@ -20,6 +21,8 @@ void main() {
   late final DeviceRepository deviceRepository;
   late final BaseUrlDb baseUrlDb;
   late final VoiceDb voiceDb;
+  final mockConnectivity = MockConnectivity();
+  Future<bool> connectivityCheck(_) async => true;
 
   setUpAll(() async {
     voiceDb = MockVoiceDb();
@@ -64,6 +67,11 @@ void main() {
 
     baseUrlCubit = BaseUrlCubit(baseUrlDb: baseUrlDb);
 
+    when(() => mockConnectivity.onConnectivityChanged)
+        .thenAnswer((_) => Stream.value(ConnectivityResult.none));
+    when(() => mockConnectivity.checkConnectivity())
+        .thenAnswer((_) => Future.value(ConnectivityResult.none));
+
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..database = FakeDatabase()
@@ -85,6 +93,13 @@ void main() {
             BlocProvider.value(value: startupCubit),
             BlocProvider.value(value: baseUrlCubit),
             BlocProvider.value(value: FakeSpeechSettingsCubit()),
+            BlocProvider.value(
+              value: ConnectivityCubit(
+                connectivity: mockConnectivity,
+                baseUrlDb: FakeBaseUrlDb(),
+                connectivityCheck: connectivityCheck,
+              ),
+            ),
           ],
           child: const AbiliaLogoWithReset(),
         ),
@@ -126,7 +141,7 @@ void main() {
     });
 
     group('Factory reset', () {
-      testWidgets('Enter wrong code and click cancel', (tester) async {
+      testWidgets('Go to factory reset and click cancel', (tester) async {
         // Arrange
         await pumpAbiliaLogoWithReset(tester);
 
@@ -136,19 +151,7 @@ void main() {
         // Assert
         expect(find.byType(ConfirmFactoryResetDialog), findsOneWidget);
         expect(tester.widget<RedButton>(redButtonFinder).onPressed == null,
-            isTrue);
-
-        // Act
-        await tester.ourEnterText(
-          find.byType(AbiliaTextInput),
-          'FactoryresetMP3',
-        );
-        await tester.pumpAndSettle();
-
-        // Assert
-        expect(tester.widget<RedButton>(redButtonFinder).onPressed == null,
-            isTrue);
-        expect(find.text(translate.wrongResetCode), findsOneWidget);
+            isFalse);
 
         // Act
         await tester.tap(cancelButtonFinder);
@@ -158,45 +161,6 @@ void main() {
         expect(find.byType(ConfirmFactoryResetDialog), findsNothing);
       });
 
-      testWidgets('Enter correct code but myAbilia is down', (tester) async {
-        // Arrange
-        await pumpAbiliaLogoWithReset(tester);
-
-        // Act
-        await goToConfirmFactoryReset(tester);
-        await tester.ourEnterText(
-          find.byType(AbiliaTextInput),
-          'FactoryresetMP4',
-        );
-        await tester.pumpAndSettle();
-        await tester.tap(redButtonFinder);
-        await tester.pumpAndSettle();
-
-        // Assert
-        expect(find.text(translate.factoryResetFailed), findsOneWidget);
-      });
-
-      // testWidgets('Enter correct code', (tester) async {
-      //   // Arrange
-      //   await pumpAbiliaLogoWithReset(tester);
-      //
-      //   // Act
-      //   await goToConfirmFactoryReset(tester);
-      //   await tester.ourEnterText(
-      //     find.byType(AbiliaTextInput),
-      //     'FactoryresetMP4',
-      //   );
-      //   await tester.pumpAndSettle();
-      //   await tester.tap(redButtonFinder);
-      //   await tester.pump(1.minutes());
-      //
-      //   // Assert
-      //   expect(find.byType(AbiliaProgressIndicator), findsOneWidget);
-      //   expect(tester.widget<RedButton>(redButtonFinder).onPressed == null,
-      //       isTrue);
-      //   expect(tester.widget<GreyButton>(cancelButtonFinder).onPressed == null,
-      //       isTrue);
-      // });
     });
   }, skip: !Config.isMP);
 }

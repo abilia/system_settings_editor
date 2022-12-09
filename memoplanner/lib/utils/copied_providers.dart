@@ -38,6 +38,7 @@ List<BlocProvider> copiedTopLevelProviders(BuildContext blocContext) => [
       _tryGetBloc<SpeechSettingsCubit>(blocContext),
       _tryGetBloc<StartupCubit>(blocContext),
       _tryGetBloc<BaseUrlCubit>(blocContext),
+      _tryGetBloc<ConnectivityCubit>(blocContext),
       if (Config.isMP) ...[
         _tryGetBloc<VoicesCubit>(blocContext),
       ],

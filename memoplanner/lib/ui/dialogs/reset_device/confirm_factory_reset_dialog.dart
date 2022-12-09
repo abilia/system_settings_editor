@@ -8,9 +8,9 @@ class ConfirmFactoryResetDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isConnected = context.watch<ConnectivityCubit>().state.isConnected;
     final translate = Translator.of(context).translate;
     final dialogLayout = layout.resetDeviceDialog;
-    final factoryResetState = resetDeviceCubit.state;
     final isResetting = resetDeviceCubit.isResetting;
     return WillPopScope(
       onWillPop: () async => !isResetting,
@@ -46,30 +46,10 @@ class ConfirmFactoryResetDialog extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyText2,
               ),
             ),
-            SizedBox(height: dialogLayout.titleToImageDistance),
-            AbiliaTextInput(
-              initialValue: factoryResetState.input,
-              icon: AbiliaIcons.contact,
-              heading: translate.factoryResetCode,
-              inputHeading: translate.factoryResetCode,
-              autoCorrect: false,
-              errorState: !factoryResetState.correctInputOrEmpty,
-              wrapWithAuthProviders: false,
-              onChanged: !isResetting ? _onNewInput : null,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: Tts(
-                child: Text(
-                  _errorText(context),
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.copyWith(color: AbiliaColors.red),
-                ),
-              ),
-            ),
+            if (!isConnected) ...[
+              SizedBox(height: dialogLayout.bodyToTextDistance),
+              const NoInternetErrorMessage(),
+            ],
             SizedBox(height: dialogLayout.verticalPadding),
           ],
         ),
@@ -81,30 +61,11 @@ class ConfirmFactoryResetDialog extends StatelessWidget {
         forwardNavigationWidget: RedButton(
           text: translate.factoryReset,
           icon: AbiliaIcons.reset,
-          onPressed: factoryResetState.correctInput && !isResetting
-              ? () => _factoryResetDevice(context)
-              : null,
+          onPressed: !isResetting && isConnected ? _factoryResetDevice : null,
         ),
       ),
     );
   }
 
-  String _errorText(BuildContext context) {
-    final translate = Translator.of(context).translate;
-    final factoryResetState = context.read<ResetDeviceCubit>().state;
-    if (!factoryResetState.correctInputOrEmpty) {
-      return translate.wrongResetCode;
-    }
-    if (factoryResetState is FactoryResetFailed) {
-      return translate.factoryResetFailed;
-    }
-    return '';
-  }
-
-  void _onNewInput(String input) {
-    resetDeviceCubit.setInput(input);
-  }
-
-  void _factoryResetDevice(BuildContext context) =>
-      context.read<ResetDeviceCubit>().factoryResetDevice();
+  void _factoryResetDevice() => resetDeviceCubit.factoryResetDevice();
 }

@@ -6,24 +6,20 @@ class ResetDeviceCubit extends Cubit<ResetDeviceState> {
   final FactoryResetRepository factoryResetRepository;
 
   ResetDeviceCubit({required this.factoryResetRepository})
-      : super(const ResetDeviceState(input: '', resetType: null));
+      : super(const ResetDeviceState(resetType: null));
 
   bool get isResetting => state is FactoryResetInProgress;
 
   Future<void> factoryResetDevice() async {
-    emit(FactoryResetInProgress(state));
+    emit(const FactoryResetInProgress());
     final success = await factoryResetRepository.factoryResetDevice();
     if (!success) {
-      emit(FactoryResetFailed(state));
+      emit(const FactoryResetFailed());
     }
   }
 
-  void setInput(String input) {
-    emit(ResetDeviceState(input: input, resetType: state.resetType));
-  }
-
   void setResetType(ResetType? resetType) {
-    emit(ResetDeviceState(input: state.input, resetType: resetType));
+    emit(ResetDeviceState(resetType: resetType));
   }
 }
 
@@ -33,29 +29,20 @@ enum ResetType {
 }
 
 class ResetDeviceState extends Equatable {
-  static const String _factoryResetCode = 'FactoryresetMP4';
-  final String input;
   final ResetType? resetType;
 
-  bool get correctInputOrEmpty => correctInput || input.isEmpty;
-
-  bool get correctInput => input == _factoryResetCode;
-
   const ResetDeviceState({
-    required this.input,
     required this.resetType,
   });
 
   @override
-  List<Object?> get props => [input, resetType];
+  List<Object?> get props => [resetType];
 }
 
 class FactoryResetInProgress extends ResetDeviceState {
-  FactoryResetInProgress(ResetDeviceState previousState)
-      : super(input: previousState.input, resetType: previousState.resetType);
+  const FactoryResetInProgress() : super(resetType: ResetType.factoryReset);
 }
 
 class FactoryResetFailed extends ResetDeviceState {
-  FactoryResetFailed(ResetDeviceState previousState)
-      : super(input: previousState.input, resetType: previousState.resetType);
+  const FactoryResetFailed() : super(resetType: ResetType.factoryReset);
 }
