@@ -115,24 +115,32 @@ class ScrollArrows extends StatelessWidget {
               else
                 child,
             if (upArrow)
-              _ArrowUp(
-                controller: verticalController,
-                collapseMargin: upCollapseMargin,
+              Positioned.fill(
+                child: _ArrowUp(
+                  controller: verticalController,
+                  collapseMargin: upCollapseMargin,
+                ),
               ),
             if (downArrow)
-              _ArrowDown(
-                controller: verticalController,
-                collapseMargin: downCollapseMargin,
+              Positioned.fill(
+                child: _ArrowDown(
+                  controller: verticalController,
+                  collapseMargin: downCollapseMargin,
+                ),
               ),
             if (leftArrow)
-              _ArrowLeft(
-                controller: horizontalController,
-                collapseMargin: leftCollapseMargin,
+              Positioned.fill(
+                child: _ArrowLeft(
+                  controller: horizontalController,
+                  collapseMargin: leftCollapseMargin,
+                ),
               ),
             if (rightArrow)
-              _ArrowRight(
-                controller: horizontalController,
-                collapseMargin: rightCollapseMargin,
+              Positioned.fill(
+                child: _ArrowRight(
+                  controller: horizontalController,
+                  collapseMargin: rightCollapseMargin,
+                ),
               ),
           ],
         );

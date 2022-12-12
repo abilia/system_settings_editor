@@ -1407,6 +1407,8 @@ void main() {
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
+        lastSyncDb: FakeLastSyncDb(),
+        clockBloc: ClockBloc.fixed(DateTime(2000)),
         syncDelay: SyncDelays.zero,
       );
 
@@ -1432,6 +1434,8 @@ void main() {
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
+        lastSyncDb: FakeLastSyncDb(),
+        clockBloc: ClockBloc.fixed(DateTime(2000)),
         syncDelay: SyncDelays.zero,
       );
       genericResponse = () => [

@@ -10,7 +10,7 @@ class ConnectivityCubit extends Cubit<ConnectivityState> {
   ConnectivityCubit({
     required this.connectivity,
     required this.baseUrlDb,
-    required this.connectivityCheck,
+    required this.myAbiliaConnection,
   }) : super(const ConnectivityState.none()) {
     _onChangeSubscription =
         connectivity.onConnectivityChanged.listen(_onConnectivityChanged);
@@ -18,7 +18,7 @@ class ConnectivityCubit extends Cubit<ConnectivityState> {
   }
   final BaseUrlDb baseUrlDb;
   final Connectivity connectivity;
-  final ConnectivityCheck connectivityCheck;
+  final MyAbiliaConnection myAbiliaConnection;
 
   late final StreamSubscription _onChangeSubscription;
 
@@ -27,7 +27,7 @@ class ConnectivityCubit extends Cubit<ConnectivityState> {
 
   Future _onConnectivityChanged(ConnectivityResult result) async {
     emit(ConnectivityState(result, state.isConnected));
-    final connected = await connectivityCheck(baseUrlDb.baseUrl);
+    final connected = await myAbiliaConnection.hasConnection();
     if (isClosed) return;
     emit(ConnectivityState(result, connected));
   }

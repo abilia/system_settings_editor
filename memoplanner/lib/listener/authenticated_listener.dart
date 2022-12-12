@@ -80,7 +80,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
               context.read<NotificationBloc>().add(NotificationEvent()),
         ),
         BlocListener<LicenseCubit, LicenseState>(
-          listener: (context, state) async {
+          listener: (context, state) {
             if (Config.isMP && state is NoValidLicense) {
               showViewDialog(
                 context: context,

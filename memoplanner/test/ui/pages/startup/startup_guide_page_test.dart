@@ -11,7 +11,7 @@ import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
 
 void main() {
-  group('Startup', () {
+  group('Startup,', () {
     late MockConnectivity mockConnectivity;
     late DeviceDb deviceDb;
     Response connectLicenseResponse = Fakes.connectLicenseSuccessResponses;
@@ -35,7 +35,7 @@ void main() {
           connectLicenseResponse: () => connectLicenseResponse,
         )
         ..connectivity = mockConnectivity
-        ..connectivityCheck = ((_) async => true)
+        ..myAbiliaConnection = FakeMyAbiliaConnection()
         ..init();
     });
 
@@ -56,7 +56,7 @@ void main() {
       });
     });
 
-    group('Start up guide', () {
+    group('Start up guide,', () {
       setUp(() {
         when(() => deviceDb.serialId).thenReturn('serialId');
       });
@@ -97,10 +97,12 @@ void main() {
         });
       });
 
-      group('no connected license', () {
+      group('connected license', () {
         setUp(() {
-          connectLicenseResponse =
-              Response('{"serialNumber" : "serialNumber"}', 200);
+          connectLicenseResponse = Response(
+            '{"serialNumber" : "serialNumber"}',
+            200,
+          );
         });
 
         testWidgets(
@@ -114,8 +116,11 @@ void main() {
           expect(find.byType(PageTwoConnectedLicense), findsOneWidget);
         });
 
-        testWidgets('license not found, then found and success',
-            (WidgetTester tester) async {
+        Future<void> testBackendResponse(
+          Response response,
+          String errorText,
+          WidgetTester tester,
+        ) async {
           await tester.pumpApp();
           await tester.tap(find.byKey(TestKey.startWelcomeGuide));
           await tester.pumpAndSettle();
@@ -129,25 +134,12 @@ void main() {
             isNull,
           );
           // Respond with no license found
-          connectLicenseResponse = Response(
-            '''{
-              "status" : 400,
-              "message" : "No license with key 555555555555 found in database.",
-              "errorId" : 67,
-              "errors" : [
-                {
-                  "code": "WHALE-0801",
-                  "message": "Provided license key does not exist"
-                }
-              ]
-            }''',
-            400,
-          );
+          connectLicenseResponse = response;
 
           await tester.enterText(find.byType(TextField), '111122223333');
           await tester.pumpAndSettle();
           // Error message
-          expect(find.text(const EN().licenseErrorNotFound), findsOneWidget);
+          expect(find.text(errorText), findsOneWidget);
           // Not able to press button
           expect(
             tester
@@ -166,7 +158,7 @@ void main() {
                 .onPressed,
             isNull,
           );
-          expect(find.text(const EN().licenseErrorNotFound), findsNothing);
+          expect(find.text(errorText), findsNothing);
           await tester.enterText(find.byType(TextField), '444455556666');
           await tester.pumpAndSettle();
 
@@ -174,7 +166,73 @@ void main() {
           await tester.tap(find.byKey(TestKey.nextWelcomeGuide));
           await tester.pumpAndSettle();
           expect(find.byType(PageTwoVoiceSupport), findsOneWidget);
-        });
+        }
+
+        testWidgets(
+          'license not found, then found and success',
+          (WidgetTester tester) async => testBackendResponse(
+            Response(
+              '''{
+              "status" : 400,
+              "message" : "No license with key 111122223333 found in database.",
+              "errorId" : 67,
+              "errors" : [
+                {
+                  "code": "WHALE-0801",
+                  "message": "Provided license key does not exist"
+                }
+              ]
+            }''',
+              400,
+            ),
+            const EN().licenseErrorNotFound,
+            tester,
+          ),
+        );
+
+        testWidgets(
+          'license already connected, then found and success',
+          (WidgetTester tester) async => testBackendResponse(
+            Response(
+              r'''{
+                  "status":409,
+                  "message":"License already connected",
+                  "errorId":2,
+                  "errors":[
+                    {
+                      "code":"WHALE-6017",
+                      "message":"Cant register license, the license is already in use"
+                    }
+                  ]
+                }''',
+              400,
+            ),
+            const EN().licenseErrorAlreadyInUse,
+            tester,
+          ),
+        );
+        testWidgets(
+          'wrong license, then found and success',
+          (WidgetTester tester) async => testBackendResponse(
+            Response(
+              '''{
+                  "status":400,
+                  "message":"Only memoplanner licenses can be connected to a memoplanner",
+                  "errorId":3,
+                  "errors":
+                  [
+                    {
+                      "code":"WHALE-0863",
+                      "message":"License is not valid for the given product"
+                    }
+                  ]
+              }''',
+              400,
+            ),
+            const EN().licenseErrorNotFound,
+            tester,
+          ),
+        );
       });
     });
   }, skip: !Config.isMP);

@@ -21,7 +21,7 @@ void main() {
   late final BaseUrlDb baseUrlDb;
   late final VoiceDb voiceDb;
   final mockConnectivity = MockConnectivity();
-  ConnectivityCheck connectivityCheck = (_) async => true;
+  late MockMyAbiliaConnection mockMyAbiliaConnection;
   bool Function() factoryResetResponse = () => true;
 
   setUpAll(() async {
@@ -71,6 +71,10 @@ void main() {
         .thenAnswer((_) => Stream.value(ConnectivityResult.none));
     when(() => mockConnectivity.checkConnectivity())
         .thenAnswer((_) => Future.value(ConnectivityResult.none));
+
+    mockMyAbiliaConnection = MockMyAbiliaConnection();
+    when(() => mockMyAbiliaConnection.hasConnection())
+        .thenAnswer((invocation) async => true);
   });
 
   setUp(() async {
@@ -108,7 +112,7 @@ void main() {
                 value: ConnectivityCubit(
                   connectivity: mockConnectivity,
                   baseUrlDb: FakeBaseUrlDb(),
-                  connectivityCheck: connectivityCheck,
+                  myAbiliaConnection: mockMyAbiliaConnection,
                 ),
               ),
             ],
@@ -193,7 +197,8 @@ void main() {
         'Factory reset device no internet disables factory reset button',
         (tester) async {
       // Arrange
-      connectivityCheck = (_) async => false;
+      when(() => mockMyAbiliaConnection.hasConnection())
+          .thenAnswer((invocation) async => false);
       await pumpAbiliaLogoWithReset(tester);
       await goToConfirmFactoryReset(tester);
 

@@ -99,6 +99,7 @@ class Layout {
   final SelectorLayout selector;
   final ProgressIndicatorLayout progressIndicator;
   final AboutLayout about;
+  final InfoRowLayout infoRow;
 
   const Layout({
     this.radius = 12,
@@ -180,6 +181,7 @@ class Layout {
     this.selector = const SelectorLayout(),
     this.progressIndicator = const ProgressIndicatorLayout(),
     this.about = const AboutLayout(),
+    this.infoRow = const InfoRowLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
