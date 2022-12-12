@@ -6,7 +6,7 @@ step	Step	Steg	Trin	Stap	Vaihe	Schritt	Trinn
 finish	Finish	Slutför	Afslut	Voltooien	Lopeta	Abschließen	Ferdig
 setupYourInternetConnection	Setup your internet connection						
 wifiNoInternet	Your current Wi-Fi has failed to connect to the internet, try another network or contact your internet provider for help						
-connectInternetToContinue	Connect the internet to continue						
+connectInternetToContinue	Connect to the internet to continue						
 notSelected	Not selected	Inte valt	Ikke valgt	Niet geselecteerd	Ei valittu	Nicht ausgewählt	Ikke valgt
 enterYourLicense	Enter your license key						
 enterYourLicenseHint	License key should contain 12 digits						
