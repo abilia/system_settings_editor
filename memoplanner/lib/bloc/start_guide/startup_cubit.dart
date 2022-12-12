@@ -32,8 +32,12 @@ class StartupCubit extends Cubit<StartupState> {
         emit(VerifySerialIdFailed('Serial id $serialId not found in myAbilia'));
       }
     } on VerifyDeviceException catch (e) {
-      emit(VerifySerialIdFailed(
-          'Error when trying to verify serial id $serialId. ${e.badRequest.message}'));
+      emit(
+        VerifySerialIdFailed(
+          'Error when trying to verify serial id '
+          '$serialId. ${e.badRequest.message}',
+        ),
+      );
     } catch (e) {
       emit(VerifySerialIdFailed('Error when trying to verify serial id'));
     }

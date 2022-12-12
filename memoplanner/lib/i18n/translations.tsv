@@ -10,8 +10,8 @@ connectInternetToContinue	Connect the internet to continue
 notSelected	Not selected	Inte valt	Ikke valgt	Niet geselecteerd	Ei valittu	Nicht ausgewählt	Ikke valgt
 enterYourLicense	Enter your license key						
 enterYourLicenseHint	License key should contain 12 digits						
-licenseErrorAlreadyInUse	This license is already in use on MEMOplanner with serial number						
-licenseErrorNotFound	We didn't find a valid license\nPlease re-check the license key and try again						
+licenseErrorAlreadyInUse	License is already in use						
+licenseErrorNotFound	We didn't find a valid license.\nPlease check the license key and try again						
 downloadVoiceText	Download voice for speech support	Ladda ner röst för talstöd	Download stemme til stemmerapport	Dowload stem voor spraakondersteuning	Lataa ääni puhetukea varten	Stimme für Sprachunterstützung herunterladen	Last ned stemme for talestøtte
 							
 ### Login page							

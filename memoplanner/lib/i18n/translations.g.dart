@@ -44,11 +44,10 @@ abstract class Translated {
 
   final String enterYourLicenseHint = 'License key should contain 12 digits';
 
-  final String licenseErrorAlreadyInUse =
-      'This license is already in use on MEMOplanner with serial number';
+  final String licenseErrorAlreadyInUse = 'License is already in use';
 
   final String licenseErrorNotFound =
-      "We didn't find a valid license\nPlease re-check the license key and try again";
+      "We didn't find a valid license.\nPlease check the license key and try again";
 
   final String downloadVoiceText = 'Download voice for speech support';
 

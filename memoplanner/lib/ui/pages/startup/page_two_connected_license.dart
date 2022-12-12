@@ -121,9 +121,16 @@ class _PageTwoConnectedLicenseState extends State<PageTwoConnectedLicense> {
                     )
                   else if (state is! ConnectingLicenseFailed)
                     Text(t.enterYourLicenseHint)
-                  else if (state.reason.noLicense)
+                  else if (state.reason.notFoundOrWrongLicense)
                     Text(
                       t.licenseErrorNotFound,
+                      style: DefaultTextStyle.of(context).style.copyWith(
+                            color: AbiliaColors.red,
+                          ),
+                    )
+                  else if (state.reason.alreadyInuUse)
+                    Text(
+                      t.licenseErrorAlreadyInUse,
                       style: DefaultTextStyle.of(context).style.copyWith(
                             color: AbiliaColors.red,
                           ),

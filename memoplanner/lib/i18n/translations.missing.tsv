@@ -4,8 +4,8 @@ wifiNoInternet	Your current Wi-Fi has failed to connect to the internet, try ano
 connectInternetToContinue	Connect the internet to continue						
 enterYourLicense	Enter your license key						
 enterYourLicenseHint	License key should contain 12 digits						
-licenseErrorAlreadyInUse	This license is already in use on MEMOplanner with serial number						
-licenseErrorNotFound	We didn't find a valid license\nPlease re-check the license key and try again						
+licenseErrorAlreadyInUse	License is already in use						
+licenseErrorNotFound	We didn't find a valid license.\nPlease check the license key and try again						
 memoplannerLicenseExpired	MEMOplanner license expired						
 needLicenseToSaveData	You need an active license to save your data to myAbilia.						
 contactProviderToExtendLicense	Contact your MEMOplanner provider in order to extend your license.						

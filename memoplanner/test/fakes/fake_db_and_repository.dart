@@ -290,3 +290,8 @@ class FakeLastSyncDb extends Fake implements LastSyncDb {
   @override
   DateTime? getLastSyncTime() => fakeLastSync.fromMillisecondsSinceEpoch();
 }
+
+class FakeMyAbiliaConnection extends Fake implements MyAbiliaConnection {
+  @override
+  Future<bool> hasConnection() async => true;
+}

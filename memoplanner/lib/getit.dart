@@ -135,22 +135,24 @@ class GetItInitializer {
   Connectivity? _connectivity;
   set connectivity(Connectivity connectivity) => _connectivity = connectivity;
 
-  ConnectivityCheck? _connectivityCheck;
-  set connectivityCheck(ConnectivityCheck connectivityCheck) =>
-      _connectivityCheck = connectivityCheck;
+  MyAbiliaConnection? _myAbiliaConnection;
+  set myAbiliaConnection(MyAbiliaConnection myAbiliaConnection) =>
+      _myAbiliaConnection = myAbiliaConnection;
 
   void init() {
     final loginDb = _loginDb ?? LoginDb(_sharedPreferences);
     final deviceDb = _deviceDb ?? DeviceDb(_sharedPreferences);
+    final baseUrlDb = _baseUrlDb ?? BaseUrlDb(_sharedPreferences);
+    final client = _listenableClient ??
+        ClientWithDefaultHeaders(
+          _packageInfo.version,
+          loginDb: loginDb,
+          deviceDb: deviceDb,
+        );
     GetIt.I
       ..registerSingleton<LoginDb>(loginDb)
       ..registerSingleton<DeviceDb>(deviceDb)
-      ..registerSingleton<ListenableClient>(_listenableClient ??
-          ClientWithDefaultHeaders(
-            _packageInfo.version,
-            loginDb: loginDb,
-            deviceDb: deviceDb,
-          ))
+      ..registerSingleton<ListenableClient>(client)
       ..registerSingleton<LicenseDb>(
           _licenseDb ?? LicenseDb(_sharedPreferences))
       ..registerSingleton<FirebasePushService>(_firebasePushService)
@@ -159,8 +161,7 @@ class GetItInitializer {
       ..registerSingleton<UserDb>(_userDb ?? UserDb(_sharedPreferences))
       ..registerSingleton<Database>(_database)
       ..registerSingleton<SeagullLogger>(_seagullLogger)
-      ..registerSingleton<BaseUrlDb>(
-          _baseUrlDb ?? BaseUrlDb(_sharedPreferences))
+      ..registerSingleton<BaseUrlDb>(baseUrlDb)
       ..registerSingleton<Ticker>(_ticker)
       ..registerSingleton<AlarmNavigator>(_alarmNavigator)
       ..registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database))
@@ -199,8 +200,12 @@ class GetItInitializer {
       ..registerSingleton<Connectivity>(
         _connectivity ?? Connectivity(),
       )
-      ..registerSingleton<ConnectivityCheck>(
-        _connectivityCheck ?? hasConnection,
+      ..registerSingleton<MyAbiliaConnection>(
+        _myAbiliaConnection ??
+            MyAbiliaConnection(
+              baseUrlDb: baseUrlDb,
+              client: client,
+            ),
       );
   }
 }

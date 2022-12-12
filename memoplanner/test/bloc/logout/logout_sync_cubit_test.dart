@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:bloc_test/bloc_test.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';

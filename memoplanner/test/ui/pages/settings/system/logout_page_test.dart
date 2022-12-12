@@ -88,6 +88,9 @@ void main() {
           BlocProvider<SpeechSettingsCubit>(
             create: (context) => FakeSpeechSettingsCubit(),
           ),
+          BlocProvider<ConnectivityCubit>(
+            create: (context) => FakeConnectivityCubit(),
+          ),
         ],
         child: child!,
       ),

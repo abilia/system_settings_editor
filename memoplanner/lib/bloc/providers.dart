@@ -360,7 +360,7 @@ class TopLevelProvider extends StatelessWidget {
             create: (context) => ConnectivityCubit(
               connectivity: GetIt.I<Connectivity>(),
               baseUrlDb: GetIt.I<BaseUrlDb>(),
-              connectivityCheck: GetIt.I<ConnectivityCheck>(),
+              myAbiliaConnection: GetIt.I<MyAbiliaConnection>(),
             ),
             lazy: false,
           ),
