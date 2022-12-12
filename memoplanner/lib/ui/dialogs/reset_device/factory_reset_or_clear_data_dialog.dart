@@ -82,7 +82,7 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
           SizedBox(height: layout.resetDeviceDialog.verticalPadding),
         ],
       ),
-      backNavigationWidget: GreyButton(
+      backNavigationWidget: LightGreyButton(
         text: translate.cancel,
         icon: AbiliaIcons.closeProgram,
         onPressed: Navigator.of(context).maybePop,

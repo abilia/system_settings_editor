@@ -23,7 +23,7 @@ class DiscardWarningDialog extends StatelessWidget {
         ],
       ),
       bottomNavigationColor: ViewDialog.light,
-      backNavigationWidget: GreyButton(
+      backNavigationWidget: LightGreyButton(
         text: translate.keepEditing,
         icon: AbiliaIcons.closeProgram,
         onPressed: () => Navigator.of(context).maybePop(false),

@@ -54,7 +54,7 @@ class ConfirmFactoryResetDialog extends StatelessWidget {
             SizedBox(height: dialogLayout.verticalPadding),
           ],
         ),
-        backNavigationWidget: GreyButton(
+        backNavigationWidget: LightGreyButton(
           text: translate.cancel,
           icon: AbiliaIcons.closeProgram,
           onPressed: !isResetting ? Navigator.of(context).maybePop : null,

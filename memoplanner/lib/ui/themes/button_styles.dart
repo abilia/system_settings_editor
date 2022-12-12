@@ -141,7 +141,7 @@ final iconTextButtonStyleRed = iconTextButtonStyle.copyWith(
   shape: noBorder,
 );
 
-final iconTextButtonStyleGrey = iconTextButtonStyle.copyWith(
+final iconTextButtonStyleLightGrey = iconTextButtonStyle.copyWith(
   backgroundColor: buttonBackgroundLightGrey,
   foregroundColor: foregroundDark,
   shape: noBorder,

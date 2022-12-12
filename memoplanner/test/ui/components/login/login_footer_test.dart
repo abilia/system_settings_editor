@@ -93,7 +93,7 @@ void main() {
   });
 
   final redButtonFinder = find.byType(RedButton);
-  final cancelButtonFinder = find.byType(GreyButton);
+  final cancelButtonFinder = find.byType(LightGreyButton);
 
   Future<void> pumpAbiliaLogoWithReset(WidgetTester tester) async {
     await tester.binding.setSurfaceSize(const Size(1000, 1000));
@@ -174,7 +174,8 @@ void main() {
       expect(find.byType(AbiliaProgressIndicator), findsOneWidget);
       expect(
           tester.widget<RedButton>(redButtonFinder).onPressed == null, isTrue);
-      expect(tester.widget<GreyButton>(cancelButtonFinder).onPressed == null,
+      expect(
+          tester.widget<LightGreyButton>(cancelButtonFinder).onPressed == null,
           isTrue);
     });
 
