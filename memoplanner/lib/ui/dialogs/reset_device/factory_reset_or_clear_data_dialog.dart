@@ -54,6 +54,7 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
             text: Text(translate.factoryReset),
             onChanged: _onResetTypeChanged,
           ),
+          SizedBox(height: layout.resetDeviceDialog.descriptionPadding),
           Tts(
             child: Text(
               translate.factoryResetDescription,
@@ -73,6 +74,7 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
             text: Text(translate.clearData),
             onChanged: _onResetTypeChanged,
           ),
+          SizedBox(height: layout.resetDeviceDialog.descriptionPadding),
           Tts(
             child: Text(
               translate.clearDataDescription,

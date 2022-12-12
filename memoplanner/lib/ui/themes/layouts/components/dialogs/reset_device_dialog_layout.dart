@@ -3,7 +3,8 @@ class ResetDeviceDialogLayout {
   final double verticalPadding,
       titleToImageDistance,
       bodyToTextDistance,
-      textToTextDistance;
+      textToTextDistance,
+      descriptionPadding;
 
   const ResetDeviceDialogLayout({
     this.imageSize = 144,
@@ -11,5 +12,6 @@ class ResetDeviceDialogLayout {
     this.titleToImageDistance = 32,
     this.bodyToTextDistance = 56,
     this.textToTextDistance = 16,
+    this.descriptionPadding = 8,
   });
 }
