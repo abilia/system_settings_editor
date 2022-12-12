@@ -8,17 +8,17 @@ import 'package:memoplanner/utils/all.dart';
 
 class FactoryResetRepository extends Repository {
   final Logger _log = Logger((FactoryResetRepository).toString());
-  final String serialId;
   final DeviceDb deviceDb;
 
   FactoryResetRepository({
-    required this.serialId,
     required this.deviceDb,
     required BaseClient client,
     required BaseUrlDb baseUrlDb,
   }) : super(client, baseUrlDb);
 
-  Uri get endpoint => '$baseUrl/open/v1/device/$serialId/reset'.toUri();
+  String get _serialId => deviceDb.serialId;
+
+  Uri get endpoint => '$baseUrl/open/v1/device/$_serialId/reset'.toUri();
 
   Future<bool> factoryResetDevice() async {
     final clientId = await deviceDb.getClientId();
@@ -34,11 +34,11 @@ class FactoryResetRepository extends Repository {
         return true;
       }
       _log.warning(
-        'Could not factory reset $serialId with status code '
+        'Could not factory reset $_serialId with status code '
         '${response.statusCode}: ${response.body}',
       );
     } catch (e) {
-      _log.warning('Could not factory reset $serialId from backend $e');
+      _log.warning('Could not factory reset $_serialId from backend $e');
     }
     return false;
   }
