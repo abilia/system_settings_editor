@@ -985,8 +985,6 @@ abstract class Translated {
 
   final String factoryReset = 'Factory reset';
 
-  final String factoryResetCode = 'Factory reset code';
-
   final String factoryResetDescription =
       'Factory reset and reinstall MEMOplanner software (instructions required).';
 
@@ -998,8 +996,6 @@ abstract class Translated {
 
   final String confirmFactoryResetDescription =
       'After factory reset is finished you will need to reinstall MEMOplanner software. Follow the reconditioning instructions to do that.';
-
-  final String wrongResetCode = 'Please re-check the code and try again';
 
   final String factoryResetFailed =
       'Factory reset failed, please try again later';

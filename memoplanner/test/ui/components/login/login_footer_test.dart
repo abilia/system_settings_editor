@@ -156,7 +156,7 @@ void main() {
   }, skip: !Config.isMP);
 
   group('Factory reset', () {
-    testWidgets('Factory reset device success', (tester) async {
+    testWidgets('Factory reset device success shows spinner', (tester) async {
       // Arrange
       factoryResetResponse = () => true;
       await pumpAbiliaLogoWithReset(tester);
@@ -164,7 +164,7 @@ void main() {
 
       // Act
       await tester.tap(redButtonFinder);
-      await tester.pump(1.minutes());
+      await tester.pump(5.minutes());
 
       // Assert
       expect(find.byType(AbiliaProgressIndicator), findsOneWidget);
@@ -174,7 +174,8 @@ void main() {
           isTrue);
     });
 
-    testWidgets('Factory reset device unexpected error', (tester) async {
+    testWidgets('Factory reset device unexpected error shows error text',
+        (tester) async {
       // Arrange
       factoryResetResponse = () => false;
       await pumpAbiliaLogoWithReset(tester);
@@ -188,7 +189,9 @@ void main() {
       expect(find.text(translate.factoryResetFailed), findsOneWidget);
     });
 
-    testWidgets('Factory reset device no internet', (tester) async {
+    testWidgets(
+        'Factory reset device no internet disables factory reset button',
+        (tester) async {
       // Arrange
       connectivityCheck = (_) async => false;
       await pumpAbiliaLogoWithReset(tester);

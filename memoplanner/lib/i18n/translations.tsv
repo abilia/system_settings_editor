@@ -519,11 +519,9 @@ discard	Discard
 ### Reset Device							
 resetDeviceQuestion	Do you want to reset the device?						
 factoryReset	Factory reset						
-factoryResetCode	Factory reset code						
 factoryResetDescription	Factory reset and reinstall MEMOplanner software (instructions required).						
 clearData	Clear MEMOplanner data						
 clearDataDescription	Clear app data and go to startup guide.						
 confirmFactoryReset	Do you want to start factory reset?						
 confirmFactoryResetDescription	After factory reset is finished you will need to reinstall MEMOplanner software. Follow the reconditioning instructions to do that.						
-wrongResetCode	Please re-check the code and try again						
 factoryResetFailed	Factory reset failed, please try again later						

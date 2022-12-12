@@ -103,4 +103,7 @@ class MockVoiceRepository extends Mock implements VoiceRepository {}
 
 class MockDeviceRepository extends Mock implements DeviceRepository {}
 
+class MockFactoryResetRepository extends Mock
+    implements FactoryResetRepository {}
+
 class MockTtsHandler extends Mock implements TtsInterface {}
