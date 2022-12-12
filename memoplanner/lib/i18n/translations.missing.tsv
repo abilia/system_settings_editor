@@ -4,7 +4,6 @@ wifiNoInternet	Your current Wi-Fi has failed to connect to the internet, try ano
 connectInternetToContinue	Connect the internet to continue						
 enterYourLicense	Enter your license key						
 enterYourLicenseHint	License key should contain 12 digits						
-licenseErrorAlreadyInUse	License is already in use						
 licenseErrorNotFound	We didn't find a valid license.\nPlease check the license key and try again						
 memoplannerLicenseExpired	MEMOplanner license expired						
 needLicenseToSaveData	You need an active license to save your data to myAbilia.						

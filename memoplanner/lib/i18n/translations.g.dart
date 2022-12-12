@@ -1048,6 +1048,9 @@ class SV extends Translated {
   final String notSelected = 'Inte valt';
 
   @override
+  final String licenseErrorAlreadyInUse = 'Licensen används redan';
+
+  @override
   final String downloadVoiceText = 'Ladda ner röst för talstöd';
 
   @override
@@ -2419,6 +2422,9 @@ class DA extends Translated {
 
   @override
   final String notSelected = 'Ikke valgt';
+
+  @override
+  final String licenseErrorAlreadyInUse = 'Licensen er allerede i brug';
 
   @override
   final String downloadVoiceText = 'Download stemme til stemmerapport';
@@ -3795,6 +3801,9 @@ class NL extends Translated {
 
   @override
   final String notSelected = 'Niet geselecteerd';
+
+  @override
+  final String licenseErrorAlreadyInUse = 'Licentie is al in gebruik';
 
   @override
   final String downloadVoiceText = 'Dowload stem voor spraakondersteuning';
@@ -5178,6 +5187,9 @@ class FI extends Translated {
   final String notSelected = 'Ei valittu';
 
   @override
+  final String licenseErrorAlreadyInUse = 'Lisenssi on jo käytössä';
+
+  @override
   final String downloadVoiceText = 'Lataa ääni puhetukea varten';
 
   @override
@@ -6551,6 +6563,9 @@ class DE extends Translated {
 
   @override
   final String notSelected = 'Nicht ausgewählt';
+
+  @override
+  final String licenseErrorAlreadyInUse = 'Die Lizenz wird bereits verwendet';
 
   @override
   final String downloadVoiceText =
@@ -7937,6 +7952,9 @@ class NB extends Translated {
 
   @override
   final String notSelected = 'Ikke valgt';
+
+  @override
+  final String licenseErrorAlreadyInUse = 'Lisensen er allerede i bruk';
 
   @override
   final String downloadVoiceText = 'Last ned stemme for talestøtte';
