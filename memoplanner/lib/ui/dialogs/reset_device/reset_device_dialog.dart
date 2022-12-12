@@ -18,6 +18,7 @@ class ResetDeviceDialog extends StatelessWidget {
       create: (context) => ResetDeviceCubit(
         factoryResetRepository: FactoryResetRepository(
           deviceRepository: deviceRepository,
+          deviceDb: GetIt.I<DeviceDb>(),
           baseUrlDb: GetIt.I<BaseUrlDb>(),
           client: GetIt.I<ListenableClient>(),
         ),
