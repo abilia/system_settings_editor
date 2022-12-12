@@ -56,7 +56,7 @@ void main() {
     deviceRepository = MockDeviceRepository();
     when(() => deviceRepository.setStartGuideCompleted(any()))
         .thenAnswer((_) async {});
-    when(() => deviceRepository.serialId).thenReturn('expected');
+    when(() => deviceRepository.serialId).thenReturn('id');
     when(() => deviceRepository.isStartGuideCompleted).thenReturn(true);
 
     startupCubit = StartupCubit(deviceRepository: deviceRepository);
@@ -99,27 +99,22 @@ void main() {
     await tester.binding.setSurfaceSize(const Size(1000, 1000));
     await tester.pumpWidget(
       MaterialApp(
-        home: RepositoryProvider<DeviceRepository>(
-          create: (context) => deviceRepository,
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: speechSettingsCubit),
-              BlocProvider.value(value: voicesCubit),
-              BlocProvider.value(value: startupCubit),
-              BlocProvider.value(value: baseUrlCubit),
-              BlocProvider.value(value: FakeSpeechSettingsCubit()),
-              BlocProvider.value(
-                value: ConnectivityCubit(
-                  connectivity: mockConnectivity,
-                  baseUrlDb: FakeBaseUrlDb(),
-                  myAbiliaConnection: mockMyAbiliaConnection,
-                ),
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: speechSettingsCubit),
+            BlocProvider.value(value: voicesCubit),
+            BlocProvider.value(value: startupCubit),
+            BlocProvider.value(value: baseUrlCubit),
+            BlocProvider.value(value: FakeSpeechSettingsCubit()),
+            BlocProvider.value(
+              value: ConnectivityCubit(
+                connectivity: mockConnectivity,
+                baseUrlDb: FakeBaseUrlDb(),
+                myAbiliaConnection: mockMyAbiliaConnection,
               ),
-            ],
-            child: AbiliaLogoWithReset(
-              deviceRepository: deviceRepository,
             ),
-          ),
+          ],
+          child: const AbiliaLogoWithReset(),
         ),
       ),
     );

@@ -5,10 +5,7 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class ResetDeviceDialog extends StatelessWidget {
-  final DeviceRepository deviceRepository;
-
   const ResetDeviceDialog({
-    required this.deviceRepository,
     Key? key,
   }) : super(key: key);
 
@@ -17,7 +14,7 @@ class ResetDeviceDialog extends StatelessWidget {
     return BlocProvider<ResetDeviceCubit>(
       create: (context) => ResetDeviceCubit(
         factoryResetRepository: FactoryResetRepository(
-          deviceRepository: deviceRepository,
+          serialId: context.read<StartupCubit>().deviceRepository.serialId,
           deviceDb: GetIt.I<DeviceDb>(),
           baseUrlDb: GetIt.I<BaseUrlDb>(),
           client: GetIt.I<ListenableClient>(),

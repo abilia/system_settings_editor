@@ -25,12 +25,10 @@ class MEMOplannerLoginFooter extends StatelessWidget {
               .pad(layout.login.createAccountPadding),
         ),
         Row(
-          children: [
-            AbiliaLogoWithReset(
-              deviceRepository: context.read<DeviceRepository>(),
-            ),
-            const Spacer(),
-            const IconActionButtonDark(
+          children: const [
+            AbiliaLogoWithReset(),
+            Spacer(),
+            IconActionButtonDark(
               onPressed: AndroidIntents.openSettings,
               child: Icon(AbiliaIcons.settings),
             ),
@@ -71,10 +69,7 @@ class GoToCreateAccountButton extends StatelessWidget {
 }
 
 class AbiliaLogoWithReset extends StatelessWidget {
-  final DeviceRepository deviceRepository;
-
   const AbiliaLogoWithReset({
-    required this.deviceRepository,
     Key? key,
   }) : super(key: key);
 
@@ -85,9 +80,7 @@ class AbiliaLogoWithReset extends StatelessWidget {
       onLongPress: () => showPersistentDialog(
         context: context,
         wrapWithAuthProviders: false,
-        builder: (context) => ResetDeviceDialog(
-          deviceRepository: deviceRepository,
-        ),
+        builder: (context) => const ResetDeviceDialog(),
       ),
     );
   }
