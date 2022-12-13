@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:battery_plus/battery_plus.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/logging/all.dart';
@@ -131,18 +132,27 @@ class GetItInitializer {
   SeagullAnalytics? _analytics;
   set analytics(SeagullAnalytics analytics) => _analytics = analytics;
 
+  Connectivity? _connectivity;
+  set connectivity(Connectivity connectivity) => _connectivity = connectivity;
+
+  MyAbiliaConnection? _myAbiliaConnection;
+  set myAbiliaConnection(MyAbiliaConnection myAbiliaConnection) =>
+      _myAbiliaConnection = myAbiliaConnection;
+
   void init() {
     final loginDb = _loginDb ?? LoginDb(_sharedPreferences);
     final deviceDb = _deviceDb ?? DeviceDb(_sharedPreferences);
+    final baseUrlDb = _baseUrlDb ?? BaseUrlDb(_sharedPreferences);
+    final client = _listenableClient ??
+        ClientWithDefaultHeaders(
+          _packageInfo.version,
+          loginDb: loginDb,
+          deviceDb: deviceDb,
+        );
     GetIt.I
       ..registerSingleton<LoginDb>(loginDb)
       ..registerSingleton<DeviceDb>(deviceDb)
-      ..registerSingleton<ListenableClient>(_listenableClient ??
-          ClientWithDefaultHeaders(
-            _packageInfo.version,
-            loginDb: loginDb,
-            deviceDb: deviceDb,
-          ))
+      ..registerSingleton<ListenableClient>(client)
       ..registerSingleton<LicenseDb>(
           _licenseDb ?? LicenseDb(_sharedPreferences))
       ..registerSingleton<FirebasePushService>(_firebasePushService)
@@ -151,8 +161,7 @@ class GetItInitializer {
       ..registerSingleton<UserDb>(_userDb ?? UserDb(_sharedPreferences))
       ..registerSingleton<Database>(_database)
       ..registerSingleton<SeagullLogger>(_seagullLogger)
-      ..registerSingleton<BaseUrlDb>(
-          _baseUrlDb ?? BaseUrlDb(_sharedPreferences))
+      ..registerSingleton<BaseUrlDb>(baseUrlDb)
       ..registerSingleton<Ticker>(_ticker)
       ..registerSingleton<AlarmNavigator>(_alarmNavigator)
       ..registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database))
@@ -187,6 +196,16 @@ class GetItInitializer {
       ..registerSingleton<LastSyncDb>(
           _lastSyncDb ?? LastSyncDb(_sharedPreferences))
       ..registerSingleton<SeagullAnalytics>(
-          _analytics ?? SeagullAnalytics.empty());
+          _analytics ?? SeagullAnalytics.empty())
+      ..registerSingleton<Connectivity>(
+        _connectivity ?? Connectivity(),
+      )
+      ..registerSingleton<MyAbiliaConnection>(
+        _myAbiliaConnection ??
+            MyAbiliaConnection(
+              baseUrlDb: baseUrlDb,
+              client: client,
+            ),
+      );
   }
 }

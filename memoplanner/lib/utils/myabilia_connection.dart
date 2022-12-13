@@ -1,18 +1,21 @@
 import 'dart:async';
-import 'package:get_it/get_it.dart';
+
+import 'package:http/http.dart';
 import 'package:memoplanner/db/baseurl_db.dart';
-import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/repository/http_client.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class MyAbiliaConnection {
+  MyAbiliaConnection({
+    required this.baseUrlDb,
+    required this.client,
+  });
+  final BaseUrlDb baseUrlDb;
+  final Client client;
   Future<bool> hasConnection() async {
-    final client = GetIt.I<ListenableClient>();
-    final url = '${GetIt.I<BaseUrlDb>().baseUrl}/open/v1/monitor/basic';
-
+    final url = '${baseUrlDb.baseUrl}/open/v1/monitor/basic'.toUri();
     try {
-      final response = await client.get(url.toUri());
-      return response.body == 'ok';
+      final response = await client.head(url);
+      return response.statusCode == 200;
     } catch (_) {
       return false;
     }

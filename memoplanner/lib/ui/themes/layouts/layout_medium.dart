@@ -172,12 +172,7 @@ class LayoutMedium extends Layout {
             fullDayPadding: EdgeInsets.all(18),
             fullDayButtonPadding: EdgeInsets.fromLTRB(15, 6, 6, 6),
           ),
-          message: const MessageLayout(
-            padding: EdgeInsets.symmetric(
-              horizontal: 24,
-              vertical: 30,
-            ),
-          ),
+          message: const MessageLayoutMedium(),
           slider: const SliderLayout(
             defaultHeight: 84,
             leftPadding: 18,

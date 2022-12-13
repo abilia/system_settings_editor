@@ -22,6 +22,36 @@ class Locales {
 abstract class Translated {
   const Translated();
 
+  final String welcome = 'Welcome!';
+
+  final String welcomeText =
+      'This guide will help you get started with MEMOplanner.';
+
+  final String step = 'Step';
+
+  final String finish = 'Finish';
+
+  final String setupYourInternetConnection = 'Setup your internet connection';
+
+  final String wifiNoInternet =
+      'Your current Wi-Fi has failed to connect to the internet, try another network or contact your internet provider for help';
+
+  final String connectInternetToContinue =
+      'Connect to the internet to continue';
+
+  final String notSelected = 'Not selected';
+
+  final String enterYourLicense = 'Enter your license key';
+
+  final String enterYourLicenseHint = 'License key should contain 12 digits';
+
+  final String licenseErrorAlreadyInUse = 'License is already in use';
+
+  final String licenseErrorNotFound =
+      "We didn't find a valid license.\nPlease check the license key and try again";
+
+  final String downloadVoiceText = 'Download voice for speech support';
+
   final String username = 'Username';
 
   final String password = 'Password';
@@ -563,6 +593,8 @@ abstract class Translated {
 
   final String connected = 'Connected';
 
+  final String connectedNoInternet = 'Connected, no internet';
+
   final String screenTimeout = 'Screen timeout';
 
   final String alwaysOn = 'Always on';
@@ -985,21 +1017,6 @@ abstract class Translated {
   final String privacyPolicyUrl =
       'intl/policy-for-the-processing-of-personal-data';
 
-  final String welcome = 'Welcome!';
-
-  final String welcomeText =
-      'This guide will help you get started with MEMOplanner.';
-
-  final String checkInternetConnection = 'Check your Internet connection';
-
-  final String step = 'Step';
-
-  final String downloadVoiceText = 'Download voice for speech support';
-
-  final String finsish = 'Finish';
-
-  final String notSelected = 'Not selected';
-
   final String confirmDiscard =
       'Are you sure you want to discard your changes?';
 
@@ -1014,6 +1031,28 @@ class EN extends Translated {
 
 class SV extends Translated {
   const SV();
+
+  @override
+  final String welcome = 'Välkommen!';
+
+  @override
+  final String welcomeText =
+      'Den här guiden hjälper dig att komma igång med MEMOplanner.';
+
+  @override
+  final String step = 'Steg';
+
+  @override
+  final String finish = 'Slutför';
+
+  @override
+  final String notSelected = 'Inte valt';
+
+  @override
+  final String licenseErrorAlreadyInUse = 'Licensen används redan';
+
+  @override
+  final String downloadVoiceText = 'Ladda ner röst för talstöd';
 
   @override
   final String username = 'Användarnamn';
@@ -2364,32 +2403,32 @@ class SV extends Translated {
 
   @override
   final String privacyPolicyUrl = 'sv/personuppgiftspolicy';
-
-  @override
-  final String welcome = 'Välkommen!';
-
-  @override
-  final String welcomeText =
-      'Den här guiden hjälper dig att komma igång med MEMOplanner.';
-
-  @override
-  final String checkInternetConnection = 'Kontrollera din internetanslutning';
-
-  @override
-  final String step = 'Steg';
-
-  @override
-  final String downloadVoiceText = 'Ladda ner röst för talstöd';
-
-  @override
-  final String finsish = 'Slutför';
-
-  @override
-  final String notSelected = 'Inte valt';
 }
 
 class DA extends Translated {
   const DA();
+
+  @override
+  final String welcome = 'Velkommen!';
+
+  @override
+  final String welcomeText =
+      'Denne guide vil hjælpe dig med at komme i gang med MEMOplanner.';
+
+  @override
+  final String step = 'Trin';
+
+  @override
+  final String finish = 'Afslut';
+
+  @override
+  final String notSelected = 'Ikke valgt';
+
+  @override
+  final String licenseErrorAlreadyInUse = 'Licensen er allerede i brug';
+
+  @override
+  final String downloadVoiceText = 'Download stemme til stemmerapport';
 
   @override
   final String username = 'Brugernavn';
@@ -3743,32 +3782,32 @@ class DA extends Translated {
   @override
   final String privacyPolicyUrl =
       'intl/policy-for-the-processing-of-personal-data';
-
-  @override
-  final String welcome = 'Velkommen!';
-
-  @override
-  final String welcomeText =
-      'Denne guide vil hjælpe dig med at komme i gang med MEMOplanner.';
-
-  @override
-  final String checkInternetConnection = 'Kontroller din internetforbindelse';
-
-  @override
-  final String step = 'Trin';
-
-  @override
-  final String downloadVoiceText = 'Download stemme til stemmerapport';
-
-  @override
-  final String finsish = 'Afslut';
-
-  @override
-  final String notSelected = 'Ikke valgt';
 }
 
 class NL extends Translated {
   const NL();
+
+  @override
+  final String welcome = 'Welkom!';
+
+  @override
+  final String welcomeText =
+      'Deze gids helpt u om aan de slag te gaan met MEMOplanner.';
+
+  @override
+  final String step = 'Stap';
+
+  @override
+  final String finish = 'Voltooien';
+
+  @override
+  final String notSelected = 'Niet geselecteerd';
+
+  @override
+  final String licenseErrorAlreadyInUse = 'Licentie is al in gebruik';
+
+  @override
+  final String downloadVoiceText = 'Dowload stem voor spraakondersteuning';
 
   @override
   final String username = 'Gebruikersnaam';
@@ -5127,32 +5166,32 @@ class NL extends Translated {
   @override
   final String privacyPolicyUrl =
       'intl/policy-for-the-processing-of-personal-data';
-
-  @override
-  final String welcome = 'Welkom!';
-
-  @override
-  final String welcomeText =
-      'Deze gids helpt u om aan de slag te gaan met MEMOplanner.';
-
-  @override
-  final String checkInternetConnection = 'Controleer uw internetverbinding';
-
-  @override
-  final String step = 'Stap';
-
-  @override
-  final String downloadVoiceText = 'Dowload stem voor spraakondersteuning';
-
-  @override
-  final String finsish = 'Voltooien';
-
-  @override
-  final String notSelected = 'Niet geselecteerd';
 }
 
 class FI extends Translated {
   const FI();
+
+  @override
+  final String welcome = 'Tervetuloa!';
+
+  @override
+  final String welcomeText =
+      'Tämä opas auttaa aloittamaan Memoplannerin käytön.';
+
+  @override
+  final String step = 'Vaihe';
+
+  @override
+  final String finish = 'Lopeta';
+
+  @override
+  final String notSelected = 'Ei valittu';
+
+  @override
+  final String licenseErrorAlreadyInUse = 'Lisenssi on jo käytössä';
+
+  @override
+  final String downloadVoiceText = 'Lataa ääni puhetukea varten';
 
   @override
   final String username = 'Käyttäjätunnus';
@@ -6505,32 +6544,33 @@ class FI extends Translated {
   @override
   final String privacyPolicyUrl =
       'intl/policy-for-the-processing-of-personal-data';
-
-  @override
-  final String welcome = 'Tervetuloa!';
-
-  @override
-  final String welcomeText =
-      'Tämä opas auttaa aloittamaan Memoplannerin käytön.';
-
-  @override
-  final String checkInternetConnection = 'Tarkista Internet-yhteys';
-
-  @override
-  final String step = 'Vaihe';
-
-  @override
-  final String downloadVoiceText = 'Lataa ääni puhetukea varten';
-
-  @override
-  final String finsish = 'Lopeta';
-
-  @override
-  final String notSelected = 'Ei valittu';
 }
 
 class DE extends Translated {
   const DE();
+
+  @override
+  final String welcome = 'Willkommen!';
+
+  @override
+  final String welcomeText =
+      'Dieser Assistent hilft Ihnen bei den ersten Schritten mit MEMOplanner.';
+
+  @override
+  final String step = 'Schritt';
+
+  @override
+  final String finish = 'Abschließen';
+
+  @override
+  final String notSelected = 'Nicht ausgewählt';
+
+  @override
+  final String licenseErrorAlreadyInUse = 'Die Lizenz wird bereits verwendet';
+
+  @override
+  final String downloadVoiceText =
+      'Stimme für Sprachunterstützung herunterladen';
 
   @override
   final String username = 'Benutzername';
@@ -7893,34 +7933,32 @@ class DE extends Translated {
   @override
   final String privacyPolicyUrl =
       'intl/policy-for-the-processing-of-personal-data';
-
-  @override
-  final String welcome = 'Willkommen!';
-
-  @override
-  final String welcomeText =
-      'Dieser Assistent hilft Ihnen bei den ersten Schritten mit MEMOplanner.';
-
-  @override
-  final String checkInternetConnection =
-      'Überprüfen Sie Ihre Internetverbindung';
-
-  @override
-  final String step = 'Schritt';
-
-  @override
-  final String downloadVoiceText =
-      'Stimme für Sprachunterstützung herunterladen';
-
-  @override
-  final String finsish = 'Abschließen';
-
-  @override
-  final String notSelected = 'Nicht ausgewählt';
 }
 
 class NB extends Translated {
   const NB();
+
+  @override
+  final String welcome = 'Velkommen!';
+
+  @override
+  final String welcomeText =
+      'Denne guiden vil hjelpe deg å komme i gang med MEMOplanner.';
+
+  @override
+  final String step = 'Trinn';
+
+  @override
+  final String finish = 'Ferdig';
+
+  @override
+  final String notSelected = 'Ikke valgt';
+
+  @override
+  final String licenseErrorAlreadyInUse = 'Lisensen er allerede i bruk';
+
+  @override
+  final String downloadVoiceText = 'Last ned stemme for talestøtte';
 
   @override
   final String username = 'Brukernavn';
@@ -9271,26 +9309,4 @@ class NB extends Translated {
 
   @override
   final String privacyPolicyUrl = 'nb/personvernerklaering';
-
-  @override
-  final String welcome = 'Velkommen!';
-
-  @override
-  final String welcomeText =
-      'Denne guiden vil hjelpe deg å komme i gang med MEMOplanner.';
-
-  @override
-  final String checkInternetConnection = 'Sjekk din Internettforbindelse';
-
-  @override
-  final String step = 'Trinn';
-
-  @override
-  final String downloadVoiceText = 'Last ned stemme for talestøtte';
-
-  @override
-  final String finsish = 'Ferdig';
-
-  @override
-  final String notSelected = 'Ikke valgt';
 }

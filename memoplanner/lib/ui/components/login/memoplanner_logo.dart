@@ -1,30 +1,40 @@
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
-class MEMOplannerLogoWithLoginProgress extends StatelessWidget {
-  const MEMOplannerLogoWithLoginProgress({Key? key}) : super(key: key);
+class MEMOplannerLogoHiddenBackendSwitch extends StatelessWidget {
+  const MEMOplannerLogoHiddenBackendSwitch({
+    Key? key,
+    this.loading = false,
+    this.height,
+  }) : super(key: key);
+  final bool loading;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) => SizedBox(
-        width: layout.login.logoSize,
-        height: layout.login.logoSize,
-        child: state is LoginLoading
-            ? const AbiliaProgressIndicator()
-            : GestureDetector(
-                onLongPress: () {
-                  context.read<LoginCubit>().clearFailure();
-                  showDialog(
-                    context: context,
-                    builder: (context) => const BackendSwitcherDialog(),
-                  );
-                },
-                child: MEMOplannerLogo(
-                  height: layout.login.logoHeight,
-                ),
-              ),
-      ),
+    final height = this.height ?? layout.login.logoHeight;
+    final backend =
+        context.select((BaseUrlCubit cubit) => backendName(cubit.state));
+    final widget = loading
+        ? SizedBox(
+            height: height,
+            width: height,
+            child: const AbiliaProgressIndicator(),
+          )
+        : GestureDetector(
+            onLongPress: () => showDialog(
+              context: context,
+              builder: (context) => const BackendSwitcherDialog(),
+            ),
+            child: MEMOplannerLogo(height: height),
+          );
+    if (backend == prodName) return widget;
+
+    return Banner(
+      message: backend,
+      location: BannerLocation.topStart,
+      child: widget,
     );
   }
 }

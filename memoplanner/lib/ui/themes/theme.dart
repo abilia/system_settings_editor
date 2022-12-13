@@ -133,6 +133,10 @@ final redOutlineInputBorder = OutlineInputBorder(
   borderSide: BorderSide(color: AbiliaColors.red, width: layout.borders.thin),
   borderRadius: borderRadius,
 );
+final greenOutlineInputBorder = OutlineInputBorder(
+  borderSide: BorderSide(color: AbiliaColors.green, width: layout.borders.thin),
+  borderRadius: borderRadius,
+);
 final transparentOutlineInputBorder = OutlineInputBorder(
   borderSide: BorderSide(color: Colors.transparent, width: layout.borders.thin),
   borderRadius: borderRadius,

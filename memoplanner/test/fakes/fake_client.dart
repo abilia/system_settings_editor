@@ -38,11 +38,12 @@ class Fakes {
     Response Function()? licenseResponse,
     SessionsResponse? sessionsResponse,
     TermsOfUseResponse? termsOfUseResponse,
+    Response Function()? connectLicenseResponse,
   }) =>
       ListenableMockClient(
-        (r) {
+        (r) async {
           final pathSegments = r.url.pathSegments.toSet();
-          Response? response;
+
           if (pathSegments.containsAll(['auth', 'client', 'me'])) {
             final authHeaders = r.headers[HttpHeaders.authorizationHeader];
             final incorrect =
@@ -50,76 +51,73 @@ class Fakes {
             final supportUserHeader =
                 'Basic ${base64Encode(utf8.encode('$supportUserName:$incorrectPassword'))}';
             if (authHeaders == incorrect) {
-              response = Response(
+              return Response(
                   '{"timestamp":"${DateTime.now()}","status":401,"error":"Unauthorized","message":"Unable to authorize","path":"//api/v1/auth/client/me"}',
                   401);
             } else if (authHeaders == supportUserHeader) {
-              response = unsupportedUserTypeResponse;
-            } else {
-              response = clientMeSuccessResponse;
+              return unsupportedUserTypeResponse;
             }
+            return clientMeSuccessResponse;
           }
           if (pathSegments.containsAll(['entity', 'me'])) {
-            response = entityMeSuccessResponse;
+            return entityMeSuccessResponse;
           }
           if (pathSegments.containsAll(['data', 'activities'])) {
-            response = Response(
+            return Response(
                 json.encode((activityResponse?.call() ?? allActivities)
                     .map((a) => a.wrapWithDbModel())
                     .toList()),
                 200);
           }
           if (pathSegments.containsAll(['data', 'sortable items'])) {
-            response = Response(
+            return Response(
                 json.encode((sortableResponse?.call() ?? allSortables)
                     .map((a) => a.wrapWithDbModel())
                     .toList()),
                 200);
           }
           if (pathSegments.containsAll(['data', 'generics'])) {
-            response = Response(
+            return Response(
                 json.encode((genericResponse?.call() ?? allGenerics)
                     .map((a) => a.wrapWithDbModel())
                     .toList()),
                 200);
           }
           if (pathSegments.containsAll(['license', 'portal', 'me'])) {
-            response = licenseResponse?.call() ??
+            return licenseResponse?.call() ??
                 licenseResponseExpires(DateTime.now().add(10.days()));
           }
           if (pathSegments.contains('calendar')) {
-            response = calendarSuccessResponse;
+            return calendarSuccessResponse;
           }
           if (pathSegments.containsAll({'entity', 'user'})) {
             final uName = json.decode(r.body)['usernameOrEmail'];
             if (uName == 'taken') {
-              response = Response(
+              return Response(
                 '{"status":400,"message":"That entity already have login information. Perhaps you wanted to update the entities login information. Auth: com.abilia.models.auth.AuthUsername@5e694644[entityId=493,username=sad,passwordHash=com.abilia.models.auth.PasswordHash@4838f869]","errorId":739,"errors":[{"code":"WHALE-0130","message":"Error creating user. Username/email address already in use"}]}',
                 400,
               );
-            } else {
-              response = Response(
-                '{"id":492,"type":"user","name":"$uName","email":"me@mail.se","image":null,"language":"en","shortname":null,"useShortname":false}',
-                200,
-              );
             }
+            return Response(
+              '{"id":492,"type":"user","name":"$uName","email":"me@mail.se","image":null,"language":"en","shortname":null,"useShortname":false}',
+              200,
+            );
           }
           if (pathSegments.containsAll(['token', 'renew'])) {
             if (r.body.contains('"renewToken":"renewToken"')) {
-              response = Response('''{
+              return Response('''{
                             "token" : "$token",
                             "endDate" : 1231244,
                             "renewToken" : "renewToken"
                           }''', 200);
-            } else {
-              response = Response(json.encode(List.empty()), 401);
             }
+            return Response(json.encode(List.empty()), 401);
           }
 
           if (pathSegments.containsAll(VoiceRepository.pathSegments
               .split('/')
               .where((s) => s.isNotEmpty))) {
-            response = Response(
+            return Response(
               json.encode((voicesResponse?.call() ?? []).toList()),
               200,
             );
@@ -127,21 +125,25 @@ class Fakes {
 
           if (pathSegments.containsAll(['auth', 'client']) &&
               !pathSegments.contains('me')) {
-            response = Response(
+            return Response(
                 json.encode(
                     (sessionsResponse?.call() ?? fakeSessions).toList()),
                 200);
           }
 
           if (pathSegments.containsAll(['entity', 'acknowledgments'])) {
-            response = Response(
+            return Response(
                 json.encode((termsOfUseResponse?.call().toMap() ??
                     TermsOfUse.accepted().toMap())),
                 200);
           }
 
-          return Future.value(
-              response ?? Response(json.encode(List.empty()), 200));
+          if (pathSegments.containsAll({'open', 'v1', 'device', 'license'})) {
+            return connectLicenseResponse?.call() ??
+                connectLicenseSuccessResponses;
+          }
+
+          return Response(json.encode(List.empty()), 200);
         },
       );
 
@@ -165,6 +167,13 @@ class Fakes {
 
   static final allSortables = <Sortable>[];
   static final allGenerics = <Generic>[];
+
+  static final Response connectLicenseSuccessResponses = Response('''
+    {
+      "serialNumber" : "serialNumber",
+      "product" : "$memoplannerLicenseName",
+      "endTime" : 0
+    }''', 200);
 
   static final Response clientMeSuccessResponse = Response('''
     {

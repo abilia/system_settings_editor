@@ -45,6 +45,18 @@ class FakeLoginDb extends Fake implements LoginDb {
 
 class FakeUserDb extends Fake implements UserDb {}
 
+class FakeBaseUrlDb extends Fake implements BaseUrlDb {
+  @override
+  Future setBaseUrl(String baseUrl) async {}
+
+  @override
+  String get baseUrl => 'http://fake.url';
+  @override
+  String get environment => 'FAKE';
+  @override
+  String get environmentOrTest => 'FAKE';
+}
+
 class FakeLicenseDb extends Fake implements LicenseDb {
   @override
   Future persistLicenses(List<License> licenses) => Future.value();
@@ -277,4 +289,9 @@ class FakeLastSyncDb extends Fake implements LastSyncDb {
 
   @override
   DateTime? getLastSyncTime() => fakeLastSync.fromMillisecondsSinceEpoch();
+}
+
+class FakeMyAbiliaConnection extends Fake implements MyAbiliaConnection {
+  @override
+  Future<bool> hasConnection() async => true;
 }

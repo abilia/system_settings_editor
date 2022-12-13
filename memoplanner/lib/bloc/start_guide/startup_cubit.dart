@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/models/all.dart';
@@ -6,13 +8,23 @@ import 'package:memoplanner/repository/all.dart';
 class StartupCubit extends Cubit<StartupState> {
   StartupCubit({
     required this.deviceRepository,
+    required Stream<ConnectivityState> connectivityChanged,
   }) : super(Config.isMP && deviceRepository.serialId.isEmpty
             ? ProductionGuide()
             : Config.isMP && !deviceRepository.isStartGuideCompleted
-                ? WelcomeGuide()
-                : StartupDone());
+                ? LoadingLicense()
+                : StartupDone()) {
+    _connectivitySubscription = connectivityChanged
+        .where(
+          (connectedState) =>
+              connectedState.isConnected && state is LoadingLicenseFailed,
+        )
+        .listen(checkConnectedLicense);
+    if (state is LoadingLicense) checkConnectedLicense();
+  }
 
   final DeviceRepository deviceRepository;
+  late final StreamSubscription _connectivitySubscription;
 
   Future<void> verifySerialId(String serialId, String licenseKey) async {
     emit(Verifying());
@@ -21,23 +33,55 @@ class StartupCubit extends Cubit<StartupState> {
       final verifiedOk = await deviceRepository.verifyDevice(
         serialId,
         clientId,
-        licenseKey.replaceAll(RegExp('-| '), ''),
+        licenseKey.replaceAll(RegExp(r'\D'), ''),
       );
       if (verifiedOk) {
         await deviceRepository.setSerialId(serialId);
-        emit(WelcomeGuide());
+        await checkConnectedLicense();
       } else {
         emit(VerifySerialIdFailed('Serial id $serialId not found in myAbilia'));
       }
     } on VerifyDeviceException catch (e) {
-      emit(VerifySerialIdFailed(
-          'Error when trying to verify serial id $serialId. ${e.badRequest.message}'));
+      emit(
+        VerifySerialIdFailed(
+          'Error when trying to verify serial id '
+          '$serialId. ${e.badRequest.message}',
+        ),
+      );
+    } catch (e) {
+      emit(VerifySerialIdFailed('Error when trying to verify serial id'));
     }
   }
 
-  void skipProductionGuide() {
+  Future<void> checkConnectedLicense([_]) async {
+    try {
+      emit(LoadingLicense());
+      final connectedLicense = await deviceRepository.checkLicense();
+      if (isClosed) return;
+      final product = connectedLicense.product;
+      if (product == null) return emit(NoConnectedLicense('Product is null'));
+      if (product != memoplannerLicenseName) {
+        return emit(NoConnectedLicense('Wrong product name: $product'));
+      }
+
+      return emit(
+        LicenseConnected(
+          serialNumber: connectedLicense.serialNumber,
+          product: product,
+          endTime: connectedLicense.endTime ??
+              DateTime.fromMillisecondsSinceEpoch(0),
+        ),
+      );
+    } on VerifyDeviceException catch (e) {
+      emit(LoadingLicenseFailed(e.badRequest.message));
+    } catch (e) {
+      emit(LoadingLicenseFailed(e));
+    }
+  }
+
+  Future<void> skipProductionGuide() async {
     deviceRepository.setSerialId('debugSerialId');
-    emit(WelcomeGuide());
+    await startGuideDone();
   }
 
   Future<void> startGuideDone() async {
@@ -47,15 +91,19 @@ class StartupCubit extends Cubit<StartupState> {
 
   Future<void> resetStartGuideDone() async {
     await deviceRepository.setStartGuideCompleted(false);
-    emit(WelcomeGuide());
+    await checkConnectedLicense();
+  }
+
+  @override
+  Future<void> close() async {
+    await _connectivitySubscription.cancel();
+    return super.close();
   }
 }
 
 abstract class StartupState {}
 
 class StartupDone extends StartupState {}
-
-class WelcomeGuide extends StartupState {}
 
 class ProductionGuide extends StartupState {}
 
@@ -65,4 +113,40 @@ class VerifySerialIdFailed extends StartupState {
   final String message;
 
   VerifySerialIdFailed(this.message);
+}
+
+abstract class WelcomeGuide extends StartupState {}
+
+class LoadingLicense extends WelcomeGuide {}
+
+class LoadingLicenseFailed extends WelcomeGuide {
+  final Object? exception;
+  LoadingLicenseFailed([this.exception]);
+
+  @override
+  String toString() => 'LoadingLicenseFailed $exception';
+}
+
+abstract class LicenseLoaded extends WelcomeGuide {}
+
+class NoConnectedLicense extends LicenseLoaded {
+  final String reason;
+
+  NoConnectedLicense(this.reason);
+  @override
+  String toString() => 'NoConnectedLicense $reason';
+}
+
+class LicenseConnected extends LicenseLoaded {
+  final String serialNumber, product;
+  final DateTime endTime;
+  bool get hasEndTime => endTime != DateTime.fromMillisecondsSinceEpoch(0);
+
+  LicenseConnected({
+    required this.serialNumber,
+    required this.product,
+    required this.endTime,
+  });
+  @override
+  String toString() => 'LicenseConnected [$serialNumber, $product, $endTime]';
 }

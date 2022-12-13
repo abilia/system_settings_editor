@@ -1,4 +1,3 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -6,7 +5,6 @@ import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/repository/end_point.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
@@ -58,7 +56,10 @@ class LogoutPage extends StatelessWidget {
                 syncDelay: GetIt.I<SyncDelays>(),
                 licenseCubit: context.read<LicenseCubit>(),
                 connectivity: Connectivity().onConnectivityChanged,
-                myAbiliaConnection: MyAbiliaConnection(),
+                myAbiliaConnection: MyAbiliaConnection(
+                  baseUrlDb: GetIt.I<BaseUrlDb>(),
+                  client: GetIt.I<ListenableClient>(),
+                ),
               ),
               child: const WarningModal(),
             ),

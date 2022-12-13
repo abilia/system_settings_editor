@@ -1,4 +1,10 @@
 _id_	en	sv	da	nl	fi	de	nb
+setupYourInternetConnection	Setup your internet connection						
+wifiNoInternet	Your current Wi-Fi has failed to connect to the internet, try another network or contact your internet provider for help						
+connectInternetToContinue	Connect to the internet to continue						
+enterYourLicense	Enter your license key						
+enterYourLicenseHint	License key should contain 12 digits						
+licenseErrorNotFound	We didn't find a valid license.\nPlease check the license key and try again						
 memoplannerLicenseExpired	MEMOplanner license expired						
 needLicenseToSaveData	You need an active license to save your data to myAbilia.						
 contactProviderToExtendLicense	Contact your MEMOplanner provider in order to extend your license.						
@@ -18,6 +24,7 @@ timerTemplatePlural	timer templates
 photoSingular	photo						
 photoPlural	photos						
 settingsData	Settings data						
+connectedNoInternet	Connected, no internet						
 welcomeTo	Welcome to						
 getStarted	Get started						
 readAndAgree1	To use						

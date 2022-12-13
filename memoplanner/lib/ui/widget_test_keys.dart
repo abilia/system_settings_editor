@@ -124,7 +124,7 @@ class TestKey {
       addActivitySelectChecklistSwitch = Key('addActivitySelectChecklist'),
       addActivitySelectNoteSwitch = Key('addActivitySelectNote'),
       skipProductionGuide = Key('skipProductionGuide'),
-      startWelcomGuide = Key('startWelcomGuide'),
+      startWelcomeGuide = Key('startWelcomeGuide'),
       nextWelcomeGuide = Key('nextWelcomeGuide'),
       finishWelcomeGuide = Key('finishWelcomeGuide'),
       logoutModal = Key('logoutModal'),

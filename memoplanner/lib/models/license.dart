@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:memoplanner/utils/all.dart';
 
 const memoplannerLicenseName = 'memoplanner';
+const licenseLength = 12;
 
 class License extends Equatable {
   final int id;
@@ -43,4 +44,17 @@ class License extends Equatable {
 
   @override
   bool get stringify => true;
+}
+
+class LicenseResponse {
+  final String serialNumber;
+  final String? product;
+  final DateTime? endTime;
+
+  LicenseResponse.fromJson(Map<String, dynamic> json)
+      : serialNumber = json['serialNumber'],
+        product = json['product'],
+        endTime = json['endTime'] is int
+            ? DateTime.fromMillisecondsSinceEpoch(json['endTime'])
+            : null;
 }
