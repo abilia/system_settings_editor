@@ -119,7 +119,6 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
   void _clearMemoplannerData(BuildContext context) {
     context.read<VoicesCubit>().resetSpeechSettings();
     context.read<StartupCubit>().resetStartGuideDone();
-    context.read<BaseUrlCubit>().clearBaseUrl();
     Navigator.of(context).pop();
   }
 }

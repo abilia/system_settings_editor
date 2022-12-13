@@ -10,9 +10,4 @@ class BaseUrlCubit extends Cubit<String> {
     await baseUrlDb.setBaseUrl(baseUrl);
     emit(baseUrl);
   }
-
-  Future<void> clearBaseUrl() async {
-    await baseUrlDb.clearBaseUrl();
-    emit(baseUrlDb.baseUrl);
-  }
 }

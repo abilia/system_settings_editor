@@ -7,6 +7,7 @@ import 'package:memoplanner/config.dart';
 /// Always use [copiedAuthProviders] outside the builder callback
 /// Otherwise hot reload might throw exception
 List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
+      ...copiedTopLevelProviders(blocContext),
       _tryGetBloc<SyncBloc>(blocContext),
       _tryGetBloc<ActivitiesBloc>(blocContext),
       _tryGetBloc<UserFileCubit>(blocContext),
@@ -37,7 +38,6 @@ List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
 List<BlocProvider> copiedTopLevelProviders(BuildContext blocContext) => [
       _tryGetBloc<SpeechSettingsCubit>(blocContext),
       _tryGetBloc<StartupCubit>(blocContext),
-      _tryGetBloc<BaseUrlCubit>(blocContext),
       _tryGetBloc<ConnectivityCubit>(blocContext),
       if (Config.isMP) ...[
         _tryGetBloc<VoicesCubit>(blocContext),

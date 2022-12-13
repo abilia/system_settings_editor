@@ -15,10 +15,8 @@ void main() {
   late final VoicesCubit voicesCubit;
   late final SpeechSettingsCubit speechSettingsCubit;
   late final StartupCubit startupCubit;
-  late final BaseUrlCubit baseUrlCubit;
   late final VoiceRepository voiceRepository;
   late final DeviceRepository deviceRepository;
-  late final BaseUrlDb baseUrlDb;
   late final VoiceDb voiceDb;
   final mockConnectivity = MockConnectivity();
   late MockMyAbiliaConnection mockMyAbiliaConnection;
@@ -61,12 +59,6 @@ void main() {
 
     startupCubit = StartupCubit(deviceRepository: deviceRepository);
 
-    baseUrlDb = MockBaseUrlDb();
-    when(() => baseUrlDb.baseUrl).thenAnswer((_) => 'url');
-    when(() => baseUrlDb.clearBaseUrl()).thenAnswer((_) async => true);
-
-    baseUrlCubit = BaseUrlCubit(baseUrlDb: baseUrlDb);
-
     when(() => mockConnectivity.onConnectivityChanged)
         .thenAnswer((_) => Stream.value(ConnectivityResult.none));
     when(() => mockConnectivity.checkConnectivity())
@@ -104,7 +96,6 @@ void main() {
             BlocProvider.value(value: speechSettingsCubit),
             BlocProvider.value(value: voicesCubit),
             BlocProvider.value(value: startupCubit),
-            BlocProvider.value(value: baseUrlCubit),
             BlocProvider.value(value: FakeSpeechSettingsCubit()),
             BlocProvider.value(
               value: ConnectivityCubit(
@@ -150,7 +141,6 @@ void main() {
       verify(() => voiceDb.setSpeechRate(VoiceDb.defaultSpeechRate)).called(1);
       verify(() => voiceDb.setTextToSpeech(false)).called(1);
       verify(() => deviceRepository.setStartGuideCompleted(false)).called(1);
-      verify(() => baseUrlDb.clearBaseUrl()).called(1);
     });
   }, skip: !Config.isMP);
 
