@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/models/all.dart';
@@ -6,15 +8,23 @@ import 'package:memoplanner/repository/all.dart';
 class StartupCubit extends Cubit<StartupState> {
   StartupCubit({
     required this.deviceRepository,
+    required Stream<ConnectivityState> connectivityChanged,
   }) : super(Config.isMP && deviceRepository.serialId.isEmpty
             ? ProductionGuide()
             : Config.isMP && !deviceRepository.isStartGuideCompleted
                 ? LoadingLicense()
                 : StartupDone()) {
+    _connectivitySubscription = connectivityChanged
+        .where(
+          (connectedState) =>
+              connectedState.isConnected && state is LoadingLicenseFailed,
+        )
+        .listen(checkConnectedLicense);
     if (state is LoadingLicense) checkConnectedLicense();
   }
 
   final DeviceRepository deviceRepository;
+  late final StreamSubscription _connectivitySubscription;
 
   Future<void> verifySerialId(String serialId, String licenseKey) async {
     emit(Verifying());
@@ -43,7 +53,7 @@ class StartupCubit extends Cubit<StartupState> {
     }
   }
 
-  Future<void> checkConnectedLicense() async {
+  Future<void> checkConnectedLicense([_]) async {
     try {
       emit(LoadingLicense());
       final connectedLicense = await deviceRepository.checkLicense();
@@ -82,6 +92,12 @@ class StartupCubit extends Cubit<StartupState> {
   Future<void> resetStartGuideDone() async {
     await deviceRepository.setStartGuideCompleted(false);
     await checkConnectedLicense();
+  }
+
+  @override
+  Future<void> close() async {
+    await _connectivitySubscription.cancel();
+    return super.close();
   }
 }
 

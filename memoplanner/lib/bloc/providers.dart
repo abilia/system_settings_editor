@@ -334,9 +334,18 @@ class TopLevelProvider extends StatelessWidget {
           BlocProvider<ClockBloc>(
             create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),
           ),
+          BlocProvider<ConnectivityCubit>(
+            create: (context) => ConnectivityCubit(
+              connectivity: GetIt.I<Connectivity>(),
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              myAbiliaConnection: GetIt.I<MyAbiliaConnection>(),
+            ),
+            lazy: false,
+          ),
           BlocProvider(
             create: (context) => StartupCubit(
               deviceRepository: context.read<DeviceRepository>(),
+              connectivityChanged: context.read<ConnectivityCubit>().stream,
             ),
           ),
           BlocProvider(
@@ -355,14 +364,6 @@ class TopLevelProvider extends StatelessWidget {
               voiceDb: GetIt.I<VoiceDb>(),
               acapelaTts: GetIt.I<TtsInterface>(),
             ),
-          ),
-          BlocProvider<ConnectivityCubit>(
-            create: (context) => ConnectivityCubit(
-              connectivity: GetIt.I<Connectivity>(),
-              baseUrlDb: GetIt.I<BaseUrlDb>(),
-              myAbiliaConnection: GetIt.I<MyAbiliaConnection>(),
-            ),
-            lazy: false,
           ),
           if (Config.isMP)
             BlocProvider<VoicesCubit>(

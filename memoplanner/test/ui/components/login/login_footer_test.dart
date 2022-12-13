@@ -44,7 +44,10 @@ void main() {
     when(() => deviceRepository.serialId).thenReturn('expected');
     when(() => deviceRepository.isStartGuideCompleted).thenReturn(true);
 
-    final startupCubit = StartupCubit(deviceRepository: deviceRepository);
+    final startupCubit = StartupCubit(
+      deviceRepository: deviceRepository,
+      connectivityChanged: const Stream.empty(),
+    );
 
     await tester.pumpWidget(
       MaterialApp(
