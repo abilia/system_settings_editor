@@ -39,6 +39,7 @@ class Fakes {
     SessionsResponse? sessionsResponse,
     TermsOfUseResponse? termsOfUseResponse,
     Response Function()? connectLicenseResponse,
+    bool Function()? factoryResetResponse,
   }) =>
       ListenableMockClient(
         (r) async {
@@ -143,6 +144,12 @@ class Fakes {
                 connectLicenseSuccessResponses;
           }
 
+          if (pathSegments.containsAll({'open', 'v1', 'device', 'reset'})) {
+            return factoryResetResponse?.call() == true
+                ? factoryResetSuccess
+                : factoryResetFail;
+          }
+
           return Response(json.encode(List.empty()), 200);
         },
       );
@@ -167,6 +174,14 @@ class Fakes {
 
   static final allSortables = <Sortable>[];
   static final allGenerics = <Generic>[];
+
+  static final Response factoryResetSuccess = Response('''
+    {
+    }''', 200);
+
+  static final Response factoryResetFail = Response('''
+    {
+    }''', 404);
 
   static final Response connectLicenseSuccessResponses = Response('''
     {

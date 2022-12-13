@@ -92,6 +92,7 @@ class Layout {
   final StartupPageLayout startupPage;
   final StarterSetDialogLayout starterSetDialog;
   final TermsOfUseDialogLayout termsOfUseDialog;
+  final ResetDeviceDialogLayout resetDeviceDialog;
   final PhotoCalendarLayoutMedium photoCalendarLayout;
   final SupportPersonLayout supportPerson;
   final CodeProtectLayoutMedium codeProtect;
@@ -173,6 +174,7 @@ class Layout {
     this.startupPage = const StartupPageLayout(),
     this.starterSetDialog = const StarterSetDialogLayout(),
     this.termsOfUseDialog = const TermsOfUseDialogLayout(),
+    this.resetDeviceDialog = const ResetDeviceDialogLayout(),
     this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
     this.supportPerson = const SupportPersonLayout(),
     this.codeProtect = const CodeProtectLayoutMedium(),

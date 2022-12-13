@@ -373,11 +373,10 @@ class RecordAudioButton extends StatelessWidget {
   const RecordAudioButton({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => IconAndTextButton(
+  Widget build(BuildContext context) => RedButton(
         text: Translator.of(context).translate.record,
         icon: AbiliaIcons.dictaphone,
         onPressed: context.read<RecordSoundCubit>().startRecording,
-        style: iconTextButtonStyleRed,
       );
 }
 

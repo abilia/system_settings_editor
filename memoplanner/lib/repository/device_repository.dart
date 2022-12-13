@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:memoplanner/db/all.dart';
@@ -16,17 +15,12 @@ class DeviceRepository extends Repository {
 
   final DeviceDb deviceDb;
 
-  static const _headers = {
-    HttpHeaders.contentTypeHeader: 'application/json',
-    'api-key': 'huyf72P00mf8Hy53k',
-  };
-
   Future<bool> verifyDevice(
       String serialId, String clientId, String licenseKey) async {
     final url = '$baseUrl/open/v1/device/$serialId/verify';
     final response = await client.post(
       url.toUri(),
-      headers: _headers,
+      headers: jsonHeaderWithKey,
       body: json.encode({
         'clientId': clientId,
         'licenseKey': licenseKey,
@@ -54,7 +48,7 @@ class DeviceRepository extends Repository {
   Future<LicenseResponse> connectWithLicense(String licenseKey) async {
     final response = await client.post(
       licenseUrl,
-      headers: _headers,
+      headers: jsonHeaderWithKey,
       body: json.encode({'licenseNumber': licenseKey}),
     );
     return _parseLicenseResponse(response);

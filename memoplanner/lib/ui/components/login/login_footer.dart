@@ -5,6 +5,7 @@ import 'package:memoplanner/utils/all.dart';
 
 class MEMOplannerLoginFooter extends StatelessWidget {
   const MEMOplannerLoginFooter({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -68,30 +69,19 @@ class GoToCreateAccountButton extends StatelessWidget {
 }
 
 class AbiliaLogoWithReset extends StatelessWidget {
-  const AbiliaLogoWithReset({Key? key}) : super(key: key);
+  const AbiliaLogoWithReset({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-    final voicesCubit = context.read<VoicesCubit>();
-    final startupCubit = context.read<StartupCubit>();
     return GestureDetector(
       child: const AbiliaLogo(),
-      onLongPress: () async {
-        final reset = await showViewDialog<bool>(
-          context: context,
-          wrapWithAuthProviders: false,
-          builder: (context) => YesNoDialog(
-            heading: translate.resetDeviceHeading,
-            headingIcon: AbiliaIcons.reset,
-            text: translate.resetDeviceBody,
-          ),
-        );
-        if (reset == true) {
-          voicesCubit.resetSpeechSettings();
-          startupCubit.resetStartGuideDone();
-        }
-      },
+      onLongPress: () => showViewDialog(
+        context: context,
+        wrapWithAuthProviders: false,
+        builder: (context) => const ResetDeviceDialog(),
+      ),
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:memoplanner/config.dart';
 /// Always use [copiedAuthProviders] outside the builder callback
 /// Otherwise hot reload might throw exception
 List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
+      ...copiedTopLevelProviders(blocContext),
       _tryGetBloc<SyncBloc>(blocContext),
       _tryGetBloc<ActivitiesBloc>(blocContext),
       _tryGetBloc<UserFileCubit>(blocContext),
@@ -25,7 +26,6 @@ List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
       _tryGetBloc<TimerCubit>(blocContext),
       _tryGetBloc<NotificationBloc>(blocContext),
       _tryGetBloc<TimerAlarmBloc>(blocContext),
-      _tryGetBloc<SpeechSettingsCubit>(blocContext),
       _tryGetBloc<WeekCalendarCubit>(blocContext),
       _tryGetBloc<SessionsCubit>(blocContext),
       if (Config.isMP) ...[
@@ -34,7 +34,16 @@ List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
       ],
     ].whereNotNull().toList();
 
-final _copyBlocLog = Logger('CopiedAuthProvider');
+List<BlocProvider> copiedTopLevelProviders(BuildContext blocContext) => [
+      _tryGetBloc<SpeechSettingsCubit>(blocContext),
+      _tryGetBloc<StartupCubit>(blocContext),
+      _tryGetBloc<ConnectivityCubit>(blocContext),
+      if (Config.isMP) ...[
+        _tryGetBloc<VoicesCubit>(blocContext),
+      ],
+    ].whereNotNull().toList();
+
+final _copyBlocLog = Logger('CopiedProvider');
 
 BlocProvider? _tryGetBloc<B extends BlocBase>(BuildContext context) {
   try {

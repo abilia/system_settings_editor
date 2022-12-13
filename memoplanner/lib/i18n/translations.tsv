@@ -27,8 +27,6 @@ enterUsername	Enter username	Ange ditt användarnamn	Angiv dit brugernavn	Gebrui
 enterPassword	Enter password	Ange ditt lösenord	Angiv din adgangskode	Wachtwoord invoeren	Anna salasana	Passwort eingeben	Angi ditt passord
 userTypeNotSupported	Users of type Support person or Admin can't log in to MEMOPlanner. Please use myAbilia.	Användare av typen Supportperson eller Admin kan inte logga in i MEMOPlanner. Var vänlig använd myAbilia.	Supportere eller Admin-brugere kan ikke logge ind på MEMOplanner. Brug venligst myAbilia.	Gebruikers van het type Ondersteuningspersoon of Beheerder kunnen niet inloggen op MEMOPlanner. Gebruik myAbilia.	Users of type Support person or Admin can't log in to MEMOPlanner. Please use myAbilia.	Benutzer vom Typ Supportperson oder Admin können sich nicht bei MEMOPlanner anmelden. Bitte verwenden Sie myAbilia.	Brukere av typen Støtteperson eller Admin kan ikke logge inn på MEMOplanner. Vennligst bruk myAbilia.
 loggedOutMessage	You have been logged out. Please log in again.	Du har blivit utloggad. Vänligen logga in igen.	Du er blevet logget ud. Log ind igen.	U bent uitgelogd. Log alstublieft opnieuw in.	Olet kirjautunut ulos. Kirjaudu sisään uudelleen.	Sie wurden abgemeldet. Bitte melden Sie sich erneut an.	Du har blitt logget ut. Logg på igjen.
-resetDeviceHeading	Reset device	Återställ enheten	Nulstil enheden	Reset het apparaat	Nollaa laite	Rückstelleinrichtung	Tilbakestill enheten
-resetDeviceBody	Do you really want to reset the device? You will be redirected to the first page of the initial startup guide.	Vill du verkligen återställa enheten? Efter det kommer första sidan i konfigurationsguiden att visas.	Er du sikker på, at du vil nulstille din enhed? Derefter vises den første side i konfigurationsguiden.	Wil je het apparaat echt resetten? U wordt doorgestuurd naar de eerste pagina van de initiële opstartgids.	Haluatko todella nollata laitteen? Sinut ohjataan ensimmäisen aloitusoppaan ensimmäiselle sivulle.	Möchten Sie das Gerät wirklich zurücksetzen? Sie werden auf die erste Seite der Erstinbetriebnahmeanleitung weitergeleitet.	Er du sikker på at du vil tilbakestille enheten? Etter det vil den første siden av konfigurasjonsveiledningen vises.
 							
 ### Create Account							
 createAccountHint	Don’t have a myAbilia account yet?	Har du inte ett myAbilia konto än?	Har du ikke en myAbilia-konto endnu?	Heeft u nog geen myAbilia-account?	Eikö sinulla ole vielä myAbilia-tiliä?	Sie haben noch kein myAbilia-Konto?	Har du ikke en myAbilia-konto ennå?
@@ -537,3 +535,13 @@ privacyPolicyUrl	intl/policy-for-the-processing-of-personal-data	sv/personuppgif
 confirmDiscard	Are you sure you want to discard your changes?						
 keepEditing	Keep editing						
 discard	Discard						
+							
+### Reset Device							
+resetDeviceQuestion	Do you want to reset the device?						
+factoryReset	Factory reset						
+factoryResetDescription	Factory reset and reinstall MEMOplanner software (instructions required).						
+clearData	Clear MEMOplanner data						
+clearDataDescription	Clear app data and go to startup guide.						
+confirmFactoryReset	Do you want to start factory reset?						
+confirmFactoryResetDescription	After factory reset is finished you will need to reinstall MEMOplanner software. Follow the reconditioning instructions to do that.						
+factoryResetFailed	Factory reset failed, please try again later						

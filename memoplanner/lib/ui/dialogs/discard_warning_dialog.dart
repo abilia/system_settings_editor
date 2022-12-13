@@ -23,17 +23,15 @@ class DiscardWarningDialog extends StatelessWidget {
         ],
       ),
       bottomNavigationColor: ViewDialog.light,
-      backNavigationWidget: IconAndTextButton(
+      backNavigationWidget: LightGreyButton(
         text: translate.keepEditing,
         icon: AbiliaIcons.closeProgram,
         onPressed: () => Navigator.of(context).maybePop(false),
-        style: iconTextButtonStyleGrey,
       ),
-      forwardNavigationWidget: IconAndTextButton(
+      forwardNavigationWidget: RedButton(
         text: translate.discard,
         icon: AbiliaIcons.deleteAllClear,
         onPressed: () => Navigator.of(context).maybePop(true),
-        style: iconTextButtonStyleRed,
       ),
     );
   }

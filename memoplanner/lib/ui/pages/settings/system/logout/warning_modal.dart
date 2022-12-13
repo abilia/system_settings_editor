@@ -474,7 +474,7 @@ class _LogoutModal extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CloseButton(
-                      style: iconTextButtonStyleGray.withoutMinWidth,
+                      style: iconTextButtonStyleLightGrey.withoutMinWidth,
                     ),
                   ),
                   SizedBox(width: layout.logout.modalBottomRowSpacing),

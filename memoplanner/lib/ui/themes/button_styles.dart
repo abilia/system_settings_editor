@@ -21,6 +21,15 @@ final foregroundLight = MaterialStateProperty.resolveWith<Color>(
   },
 );
 
+final foregroundDark = MaterialStateProperty.resolveWith<Color>(
+  (Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled)) {
+      return AbiliaColors.white140;
+    }
+    return AbiliaColors.black;
+  },
+);
+
 final buttonBackgroundLightGrey = MaterialStateProperty.resolveWith<Color>(
   (Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
@@ -42,18 +51,6 @@ final buttonBackgroundDarkGrey = MaterialStateProperty.resolveWith<Color>(
       return AbiliaColors.black90;
     }
     return AbiliaColors.black80;
-  },
-);
-
-final buttonBackgroundGrey = MaterialStateProperty.resolveWith<Color>(
-  (Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return AbiliaColors.white120;
-    }
-    if (states.contains(MaterialState.pressed)) {
-      return AbiliaColors.white135;
-    }
-    return AbiliaColors.white120;
   },
 );
 
@@ -134,22 +131,6 @@ final iconTextButtonStyleLight = iconTextButtonStyle.copyWith(
   shape: MaterialStateProperty.all(ligthShapeBorder),
 );
 
-final iconTextButtonStyleGray = iconTextButtonStyle.copyWith(
-  foregroundColor: MaterialStateProperty.resolveWith<Color>(
-    (Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return AbiliaColors.white140;
-      }
-      if (states.contains(MaterialState.pressed)) {
-        return AbiliaColors.black;
-      }
-      return AbiliaColors.black;
-    },
-  ),
-  backgroundColor: buttonBackgroundGrey,
-  shape: noBorder,
-);
-
 final iconTextButtonStyleGreen = iconTextButtonStyle.copyWith(
   backgroundColor: buttonBackgroundGreen,
   shape: noBorder,
@@ -160,9 +141,9 @@ final iconTextButtonStyleRed = iconTextButtonStyle.copyWith(
   shape: noBorder,
 );
 
-final iconTextButtonStyleGrey = iconTextButtonStyle.copyWith(
+final iconTextButtonStyleLightGrey = iconTextButtonStyle.copyWith(
   backgroundColor: buttonBackgroundLightGrey,
-  foregroundColor: MaterialStateProperty.all(AbiliaColors.black),
+  foregroundColor: foregroundDark,
   shape: noBorder,
 );
 

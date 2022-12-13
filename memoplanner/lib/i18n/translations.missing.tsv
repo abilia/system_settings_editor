@@ -32,3 +32,11 @@ readAndAgree2	, please read and agree to the terms of use and privacy policy.
 confirmDiscard	Are you sure you want to discard your changes?						
 keepEditing	Keep editing						
 discard	Discard						
+resetDeviceQuestion	Do you want to reset the device?						
+factoryReset	Factory reset						
+factoryResetDescription	Factory reset and reinstall MEMOplanner software (instructions required).						
+clearData	Clear MEMOplanner data						
+clearDataDescription	Clear app data and go to startup guide.						
+confirmFactoryReset	Do you want to start factory reset?						
+confirmFactoryResetDescription	After factory reset is finished you will need to reinstall MEMOplanner software. Follow the reconditioning instructions to do that.						
+factoryResetFailed	Factory reset failed, please try again later						

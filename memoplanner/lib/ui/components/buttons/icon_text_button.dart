@@ -103,12 +103,12 @@ class DarkGreyButton extends StatelessWidget {
       );
 }
 
-class GreyButton extends StatelessWidget {
+class LightGreyButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final String text;
   final IconData icon;
 
-  const GreyButton({
+  const LightGreyButton({
     required this.text,
     required this.icon,
     this.onPressed,
@@ -120,7 +120,28 @@ class GreyButton extends StatelessWidget {
         text: text,
         icon: icon,
         onPressed: onPressed,
-        style: iconTextButtonStyleGray,
+        style: iconTextButtonStyleLightGrey,
+      );
+}
+
+class RedButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+  final String text;
+  final IconData icon;
+
+  const RedButton({
+    required this.text,
+    required this.icon,
+    this.onPressed,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => IconAndTextButton(
+        text: text,
+        icon: icon,
+        onPressed: onPressed,
+        style: iconTextButtonStyleRed,
       );
 }
 
