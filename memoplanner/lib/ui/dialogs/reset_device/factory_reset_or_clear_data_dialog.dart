@@ -4,25 +4,21 @@ import 'package:memoplanner/utils/all.dart';
 
 class FactoryResetOrClearDataDialog extends StatelessWidget {
   final PageController pageController;
-  final ResetDeviceCubit resetDeviceCubit;
 
   const FactoryResetOrClearDataDialog({
     required this.pageController,
-    required this.resetDeviceCubit,
     Key? key,
   }) : super(key: key);
 
-  ResetType? get _resetType => resetDeviceCubit.state.resetType;
-
-  bool get _isClearData => _resetType == ResetType.clearData;
-
-  bool get _isFactoryReset => _resetType == ResetType.factoryReset;
-
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<ResetDeviceCubit>().state;
+
     final translate = Translator.of(context).translate;
     final isConnected = context.watch<ConnectivityCubit>().state.isConnected;
-    final onNextClickable = _isClearData || _isFactoryReset && isConnected;
+    final isClearData = state.resetType == ResetType.clearData;
+    final isFactoryReset = state.resetType == ResetType.factoryReset;
+    final onNextClickable = isClearData || isFactoryReset && isConnected;
     return ViewDialog(
       bottomNavigationColor: ViewDialog.light,
       bodyPadding: layout.templates.m4,
@@ -50,9 +46,9 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
           RadioField(
             leading: const Icon(AbiliaIcons.irError),
             value: ResetType.factoryReset,
-            groupValue: _resetType,
+            groupValue: state.resetType,
             text: Text(translate.factoryReset),
-            onChanged: _onResetTypeChanged,
+            onChanged: (type) => _onResetTypeChanged(context, type),
           ),
           SizedBox(height: layout.resetDeviceDialog.descriptionPadding),
           Tts(
@@ -62,7 +58,7 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyText2,
             ),
           ),
-          if (_isFactoryReset && !isConnected) ...[
+          if (isFactoryReset && !isConnected) ...[
             SizedBox(height: layout.resetDeviceDialog.textToTextDistance),
             const NoInternetErrorMessage(),
           ],
@@ -70,9 +66,9 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
           RadioField(
             leading: const Icon(AbiliaIcons.delete),
             value: ResetType.clearData,
-            groupValue: _resetType,
+            groupValue: state.resetType,
             text: Text(translate.clearData),
-            onChanged: _onResetTypeChanged,
+            onChanged: (type) => _onResetTypeChanged(context, type),
           ),
           SizedBox(height: layout.resetDeviceDialog.descriptionPadding),
           Tts(
@@ -92,19 +88,22 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
       forwardNavigationWidget: RedButton(
         text: translate.yes,
         icon: AbiliaIcons.checkButton,
-        onPressed: onNextClickable ? () => _onNext(context) : null,
+        onPressed:
+            onNextClickable ? () => _onNext(context, state.resetType) : null,
       ),
     );
   }
 
-  void _onResetTypeChanged(ResetType? resetType) {
-    resetDeviceCubit.setResetType(resetType);
-  }
+  void _onResetTypeChanged(
+    BuildContext context,
+    ResetType? resetType,
+  ) =>
+      context.read<ResetDeviceCubit>().setResetType(resetType);
 
-  void _onNext(BuildContext context) {
-    if (_resetType == ResetType.factoryReset) {
+  void _onNext(BuildContext context, ResetType? resetType) {
+    if (resetType == ResetType.factoryReset) {
       return _nextPage();
-    } else if (_resetType == ResetType.clearData) {
+    } else if (resetType == ResetType.clearData) {
       _clearMemoplannerData(context);
     }
   }

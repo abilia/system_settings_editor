@@ -32,18 +32,14 @@ class _ResetDeviceDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageController = PageController();
-    final resetDeviceCubit = context.watch<ResetDeviceCubit>();
     return PageView(
       controller: pageController,
       physics: const NeverScrollableScrollPhysics(),
       children: [
         FactoryResetOrClearDataDialog(
           pageController: pageController,
-          resetDeviceCubit: resetDeviceCubit,
         ),
-        ConfirmFactoryResetDialog(
-          resetDeviceCubit: resetDeviceCubit,
-        ),
+        const ConfirmFactoryResetDialog(),
       ],
     );
   }
