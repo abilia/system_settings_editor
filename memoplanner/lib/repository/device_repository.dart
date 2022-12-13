@@ -17,7 +17,7 @@ class DeviceRepository extends Repository {
 
   Future<bool> verifyDevice(
       String serialId, String clientId, String licenseKey) async {
-    final url = '$baseUrl/open/v1/enrollment/verify-device/$serialId';
+    final url = '$baseUrl/open/v1/device/$serialId/verify';
     final response = await client.post(
       url.toUri(),
       headers: jsonHeaderWithKey,

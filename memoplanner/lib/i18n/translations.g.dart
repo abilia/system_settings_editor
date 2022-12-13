@@ -36,7 +36,8 @@ abstract class Translated {
   final String wifiNoInternet =
       'Your current Wi-Fi has failed to connect to the internet, try another network or contact your internet provider for help';
 
-  final String connectInternetToContinue = 'Connect the internet to continue';
+  final String connectInternetToContinue =
+      'Connect to the internet to continue';
 
   final String notSelected = 'Not selected';
 

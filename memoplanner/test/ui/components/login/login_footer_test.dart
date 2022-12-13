@@ -57,7 +57,10 @@ void main() {
     when(() => deviceRepository.serialId).thenReturn('id');
     when(() => deviceRepository.isStartGuideCompleted).thenReturn(true);
 
-    startupCubit = StartupCubit(deviceRepository: deviceRepository);
+    startupCubit = StartupCubit(
+      deviceRepository: deviceRepository,
+      connectivityChanged: const Stream.empty(),
+    );
 
     when(() => mockConnectivity.onConnectivityChanged)
         .thenAnswer((_) => Stream.value(ConnectivityResult.none));
