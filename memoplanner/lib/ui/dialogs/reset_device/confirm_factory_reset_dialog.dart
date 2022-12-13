@@ -2,17 +2,20 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class ConfirmFactoryResetDialog extends StatelessWidget {
-  final ResetDeviceCubit resetDeviceCubit;
-
-  const ConfirmFactoryResetDialog({required this.resetDeviceCubit, super.key});
+  const ConfirmFactoryResetDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
     final isConnected = context.watch<ConnectivityCubit>().state.isConnected;
     final translate = Translator.of(context).translate;
     final dialogLayout = layout.resetDeviceDialog;
+    final resetDeviceCubit = context.watch<ResetDeviceCubit>();
     final isResetting = resetDeviceCubit.isResetting;
-    final errorMessage = _errorMessage(context, isConnected);
+    final errorMessage = _errorMessage(
+      context,
+      isConnected,
+      resetDeviceCubit.state,
+    );
     return WillPopScope(
       onWillPop: () async => !isResetting,
       child: ViewDialog(
@@ -62,21 +65,22 @@ class ConfirmFactoryResetDialog extends StatelessWidget {
         forwardNavigationWidget: RedButton(
           text: translate.factoryReset,
           icon: AbiliaIcons.reset,
-          onPressed: !isResetting && isConnected ? _factoryResetDevice : null,
+          onPressed: !isResetting && isConnected
+              ? resetDeviceCubit.factoryResetDevice
+              : null,
         ),
       ),
     );
   }
 
-  Widget? _errorMessage(BuildContext context, bool isConnected) {
+  Widget? _errorMessage(
+      BuildContext context, bool isConnected, ResetDeviceState state) {
     if (!isConnected) return const NoInternetErrorMessage();
-    if (resetDeviceCubit.state is FactoryResetFailed) {
+    if (state is FactoryResetFailed) {
       return ErrorMessage(
         text: Text(Translator.of(context).translate.factoryResetFailed),
       );
     }
     return null;
   }
-
-  void _factoryResetDevice() => resetDeviceCubit.factoryResetDevice();
 }
