@@ -14,6 +14,7 @@ class PageOneWifi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final startUpState = context.watch<StartupCubit>().state;
+    final connectivityState = context.watch<ConnectivityCubit>().state;
     final t = Translator.of(context).translate;
     return Padding(
       padding: layout.templates.m7,
@@ -46,7 +47,7 @@ class PageOneWifi extends StatelessWidget {
             child: const WiFiPickField(),
           ),
           if (startUpState is LoadingLicenseFailed &&
-              context.read<ConnectivityCubit>().state.isConnected) ...[
+              connectivityState.isConnected) ...[
             SizedBox(height: layout.formPadding.smallVerticalItemDistance),
             GestureDetector(
               onTap: context.read<StartupCubit>().checkConnectedLicense,
@@ -61,7 +62,7 @@ class PageOneWifi extends StatelessWidget {
             )
           ],
           SizedBox(height: layout.startupPage.textPickDistance),
-          if (startUpState is LicenseLoaded)
+          if (startUpState is LicenseLoaded && connectivityState.isConnected)
             SizedBox(
               width: layout.startupPage.contentWidth,
               child: Tts.data(
