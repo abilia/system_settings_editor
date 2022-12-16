@@ -21,9 +21,7 @@ class WarningModal extends StatelessWidget {
         warning,
         context.read<SyncBloc>().state.lastSynced,
       ),
-      onLogoutPressed: warning.sync == WarningSyncState.syncing
-          ? null
-          : (c) => c.read<LogoutSyncCubit>().next(),
+      onLogoutPressed: (c) => c.read<LogoutSyncCubit>().next(),
       body: _Body(
         dirtyItems: state.dirtyItems,
         warning: warning,

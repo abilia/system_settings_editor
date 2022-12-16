@@ -166,12 +166,10 @@ void main() {
       );
     }
 
-    void verifyLogoutButton(bool enabled) {
+    void verifyLogoutButtonEnabled() {
       expect(
         find.byWidgetPredicate(
-          (widget) =>
-              widget is LogoutButton &&
-              (enabled ? widget.onPressed != null : widget.onPressed == null),
+          (widget) => widget is LogoutButton && (widget.onPressed != null),
         ),
         findsOneWidget,
       );
@@ -199,7 +197,7 @@ void main() {
         expect(find.byType(WiFiPickField), findsOneWidget);
       }
       expect(find.byKey(TestKey.dirtyItems), findsNothing);
-      verifyLogoutButton(true);
+      verifyLogoutButtonEnabled();
     });
 
     testWidgets('first warning & syncing', (WidgetTester tester) async {
@@ -225,7 +223,7 @@ void main() {
         expect(find.byType(WiFiPickField), findsOneWidget);
       }
       expect(find.byKey(TestKey.dirtyItems), findsNothing);
-      verifyLogoutButton(false);
+      verifyLogoutButtonEnabled();
     });
 
     testWidgets('first warning & success', (WidgetTester tester) async {
@@ -247,7 +245,7 @@ void main() {
       expect(find.text(translate.connectToInternetToLogOut), findsNothing);
       expect(find.byType(WiFiPickField), findsNothing);
       expect(find.byKey(TestKey.dirtyItems), findsNothing);
-      verifyLogoutButton(true);
+      verifyLogoutButtonEnabled();
     });
 
     testWidgets('second warning & sync failed', (WidgetTester tester) async {
@@ -276,7 +274,7 @@ void main() {
       }
       expect(find.text(translate.ifYouLogoutYouWillLose), findsOneWidget);
       expect(find.byKey(TestKey.dirtyItems), findsOneWidget);
-      verifyLogoutButton(true);
+      verifyLogoutButtonEnabled();
     });
 
     testWidgets('second warning & syncing', (WidgetTester tester) async {
@@ -307,7 +305,7 @@ void main() {
       }
       expect(find.text(translate.ifYouLogoutYouWillLose), findsOneWidget);
       expect(find.byKey(TestKey.dirtyItems), findsOneWidget);
-      verifyLogoutButton(false);
+      verifyLogoutButtonEnabled();
     });
 
     testWidgets('second warning & success', (WidgetTester tester) async {
@@ -332,7 +330,7 @@ void main() {
       expect(find.byType(WiFiPickField), findsNothing);
       expect(find.text(translate.ifYouLogoutYouWillLose), findsNothing);
       expect(find.byKey(TestKey.dirtyItems), findsOneWidget);
-      verifyLogoutButton(true);
+      verifyLogoutButtonEnabled();
     });
 
     testWidgets('licence has expired', (WidgetTester tester) async {
@@ -360,7 +358,7 @@ void main() {
       expect(find.byType(WiFiPickField), findsNothing);
       expect(find.text(translate.ifYouLogoutYouWillLose), findsOneWidget);
       expect(find.byKey(TestKey.dirtyItems), findsOneWidget);
-      verifyLogoutButton(true);
+      verifyLogoutButtonEnabled();
     });
   });
 }

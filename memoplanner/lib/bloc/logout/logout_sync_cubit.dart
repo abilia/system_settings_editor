@@ -61,16 +61,15 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
 
   void next() {
     switch (state.logoutWarning.sync) {
-      case WarningSyncState.syncing:
-        return;
       case WarningSyncState.syncedSuccess:
         return authenticationBloc.add(const LoggedOut());
+      case WarningSyncState.syncing:
       case WarningSyncState.syncFailed:
         switch (state.logoutWarning.step) {
           case WarningStep.firstWarning:
             return _setLogoutWarning(step: WarningStep.secondWarning);
           case WarningStep.secondWarning:
-            if (state.isOnline) {
+            if (state.isOnline && !licenseCubit.validLicense) {
               return _setLogoutWarning(step: WarningStep.licenseExpiredWarning);
             }
             return authenticationBloc.add(const LoggedOut());
