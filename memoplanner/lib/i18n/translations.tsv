@@ -4,14 +4,14 @@ welcome	Welcome!	Välkommen!	Velkommen!	Welkom!	Tervetuloa!	Willkommen!	Velkomme
 welcomeText	This guide will help you get started with MEMOplanner.	Den här guiden hjälper dig att komma igång med MEMOplanner.	Denne guide vil hjælpe dig med at komme i gang med MEMOplanner.	Deze gids helpt u om aan de slag te gaan met MEMOplanner.	Tämä opas auttaa aloittamaan Memoplannerin käytön.	Dieser Assistent hilft Ihnen bei den ersten Schritten mit MEMOplanner.	Denne guiden vil hjelpe deg å komme i gang med MEMOplanner.
 step	Step	Steg	Trin	Stap	Vaihe	Schritt	Trinn
 finish	Finish	Slutför	Afslut	Voltooien	Lopeta	Abschließen	Ferdig
-setupYourInternetConnection	Setup your internet connection						
-wifiNoInternet	Your current Wi-Fi has failed to connect to the internet, try another network or contact your internet provider for help						
-connectInternetToContinue	Connect to the internet to continue						
+setupYourInternetConnection	Setup your internet connection	Konfigurera din internetanslutning	Opsætning af din internetforbindelse	Uw internetverbinding opzetten	Luo internet-yhteys	Richten Sie Ihre Internetverbindung ein	Sett opp din nettforbindelse
+wifiNoInternet	Your current Wi-Fi has failed to connect to the internet, try another network or contact your internet provider for help.	Ditt Wi-Fi har inte kunnat ansluta till internet. Försök med ett annat nätverk eller kontakta din internetleverantör för att få hjälp.	Din nuværende Wi-Fi-forbindelse har ikke kunnet oprette forbindelse til internettet, prøv et andet netværk eller kontakt din internetudbyder for at få hjælp.	Uw huidige Wi-Fi heeft geen verbinding kunnen maken met internet. Probeer een ander netwerk of neem contact op met uw internetprovider voor hulp.	Käyttämäsi Wi-Fi-yhteys ei pysty yhdistä internetiin, kokeile toista verkkoa tai ota yhteyttä internet-palvelun tarjoajaan.	Über Ihr aktuelles WLAN kann keine Verbindung zum Internet hergestellt werden. Versuchen Sie es mit einem anderen Netzwerk oder wenden Sie sich an Ihren Internetanbieter, um Hilfe zu erhalten.	Ditt nåværende Wi-Fi har mislyktes i å koble til nettet, prøv et annet nettverk eller kontakt nettleverandøren din for å få hjelp.
+connectInternetToContinue	Connect to the internet to continue	Anslut till internet för att fortsätta	Opret forbindelse til internettet for at fortsætte	Maak verbinding met internet om verder te gaan	Yhdistä internetiin jatkaaksesi	Stellen Sie eine Verbindung zum Internet her, um fortzufahren	Koble til nettet og fortsett
 notSelected	Not selected	Inte valt	Ikke valgt	Niet geselecteerd	Ei valittu	Nicht ausgewählt	Ikke valgt
-enterYourLicense	Enter your license key						
-enterYourLicenseHint	License key should contain 12 digits						
+enterYourLicense	Enter your license key	Ange din licensnyckel	Indtast din licensnøgle	Uw licentiesleutel invoeren	Syötä lisenssin avain	Geben Sie Ihren Lizenzschlüssel ein	Tast inn din lisensnøkkel
+enterYourLicenseHint	License key should contain 12 digits	Licensnyckeln bör innehålla 12 siffror	Licensnøglen skal indeholde 12 cifre	De licentiesleutel moet 12 cijfers bevatten	Lisenssin avaimessa pitää olla 12 numeroa	Der Lizenzschlüssel besteht aus 12 Ziffern	Lisensnøkkelen skal inneholde 12 tall
 licenseErrorAlreadyInUse	License is already in use	Licensen används redan	Licensen er allerede i brug	Licentie is al in gebruik	Lisenssi on jo käytössä	Die Lizenz wird bereits verwendet	Lisensen er allerede i bruk
-licenseErrorNotFound	We didn't find a valid license.\nPlease check the license key and try again						
+licenseErrorNotFound	We didn't find a valid license.\nPlease check the license key and try again	Vi hittade ingen giltig licens.\nKontrollera licensnyckeln och försök igen	Vi fandt ikke en gyldig licens.\nKontroller venligst licensnøglen og prøv igen	We hebben geen geldige licentie gevonden.\nControleer de licentiesleutel en probeer het opnieuw	Emme löytäneet voimassa olevaa lisenssiä.\nTarkista lisenssin avain ja yritä uudelleen	Wir konnten keine gültige Lizenz finden.\nBitte überprüfen Sie den Lizenzschlüssel und versuchen Sie es erneut.	Vi fant ikke en gyldig lisens.\nVennligst sjekk lisensnøkkelen og prøv på nytt
 downloadVoiceText	Download voice for speech support	Ladda ner röst för talstöd	Download stemme til stemmerapport	Dowload stem voor spraakondersteuning	Lataa ääni puhetukea varten	Stimme für Sprachunterstützung herunterladen	Last ned stemme for talestøtte
 							
 ### Login page							
@@ -53,27 +53,27 @@ noLicense	This account has no valid license.	Det här kontot saknar giltig licen
 licenseExpired	License is expired	Licensen har gått ut	Licensen er udløbet	Licentie verlopen	Lisenssi on vanhentunut	Lizenz abgelaufen	Lisensen har utløpt
 licenseExpiredMessage	Your license has expired and MEMOplanner will no longer synchronize with myAbilia	Licensen har gått ut och MEMOplanner kommer inte längre att synkronisera med myAbilia	Licensen er udløbet, og MEMOplanner vil ikke længere synkronisere med myAbilia	Uw licentie is verlopen en MEMOplanner zal niet langer synchroniseren met myAbilia	Lisenssisi on vanhentunut, eikä MEMOplanner enää synkronoidu myAbilian kanssa	Ihre Lizenz ist abgelaufen und MEMOplanner kann nicht mehr mit myAbilia synchronisiert werden	Lisensen har utløpt og Memoplanner vil ikke lenger kunne synkronisere med myAbilia
 toLogin	to Log in	till Logga in	til Log ind	naar Inloggen	kirjautumissivulle	zur Anmelden	til Logg inn
-memoplannerLicenseExpired	MEMOplanner license expired						
-needLicenseToSaveData	You need an active license to save your data to myAbilia.						
-contactProviderToExtendLicense	Contact your MEMOplanner provider in order to extend your license.						
+memoplannerLicenseExpired	MEMOplanner license expired	Licensen för MEMOplanner har gått ut	MEMOplanner-licensen er udløbet	MEMOplanner-licentie is verlopen	MEMOplanner-lisenssi on vanhentunut	Die MEMOplanner-Lizenz ist abgelaufen	MEMOplanner lisens har utgått
+needLicenseToSaveData	You need an active license to save your data to myAbilia.	Du behöver en aktiv licens för att kunna spara dina data hos myAbilia.	Du skal have en aktiv licens for at gemme dine data i myAbilia.	U hebt een actieve licentie nodig om uw gegevens op te slaan in myAbilia.	Sinun pitää aktivoida lisenssi tietojen myAbiliaan tallentamiseen.	Um Ihre Daten in myAbilia zu speichern, benötigen Sie eine aktive Lizenz.	Du trenger en aktiv lisens for å lagre dataen din til myAbilia.
+contactProviderToExtendLicense	Contact your MEMOplanner provider in order to extend your license.	Kontakta din MEMOplanner-leverantör för att förnya din licens.	Kontakt din MEMOplanner-leverandør for at forlænge din licens.	Neem contact op met uw MEMOplanner-provider om uw licentie te verlengen.	Ota lisenssin jatkamiseen yhteyttä MEMOplannerin jälleenmyyjään.	Kontaktieren Sie Ihren MEMOplanner-Anbieter und verlängern Sie Ihre Lizenz.	Kontakt din MEMOplanner leverandør for å fornye din lisens.
 							
 ### Logout							
-allDataSaved	All data saved!						
-goOnlineBeforeLogout	Go online before you log out!						
-doNotLoseYourContent	Don't lose your content!						
-syncing	Syncing...						
-canLogOutSafely	Now you can log out safely						
-lastSyncWas	Last sync was						
-connectToWifiToLogOut	Connect to Wi-Fi to log out safely						
-connectToInternetToLogOut	Connect to internet to log out safely						
-ifYouLogoutYouWillLose	If you log out now you will lose:						
-activityTemplateSingular	activity template						
-activityTemplatePlural	activity templates						
-timerTemplateSingular	timer template						
-timerTemplatePlural	timer templates						
-photoSingular	photo						
-photoPlural	photos						
-settingsData	Settings data						
+allDataSaved	All data saved!	Alla data sparades!	Alle data er gemt!	Alle gegevens zijn opgeslagen!	Kaikki tiedot on tallennettu!	Alle Daten gesichert!	All data lagret!
+goOnlineBeforeLogout	Go online before you log out!	Kom online innan du loggar ut!	Gå online, før du logger ud!	Ga online voordat u uitlogt!	Ennen ulos kirjautumista kytkeydy internetiin!	Gehen Sie online, bevor Sie sich abmelden!	Kom deg online før du logger ut!
+doNotLoseYourContent	Don't lose your content!	Förlora inte ditt innehåll!	Mist ikke dit indhold!	Verlies uw content niet!	Älä hukkaa sisältöäsi!	Verlieren Sie Ihre Inhalte nicht!	Ikke mist innholdet ditt!
+syncing	Syncing...	Synkar...	Synkroniserer...	Aan het synchroniseren...	Synkronoin...	Synchronisiere...	Synkroniserer...
+canLogOutSafely	Now you can log out safely	Nu kan du logga ut tryggt	Du kan nu sikkert logge ud	U kunt nu veilig uitloggen	Nyt voit kirjautua turvallisesti ulos	Sie können sich nun sicher abmelden.	Nå kan du logge deg ut trygt
+lastSyncWas	Last sync was	Senaste synkningen skedde	Sidste synkronisering var	De laatste synchronisatie vond plaats op	Viimeinen synkronointi oli	Letzte Synchronisierung:	Siste synkronisering var
+connectToWifiToLogOut	Connect to Wi-Fi to log out safely	Anslut till Wi-Fi för att logga ut tryggt	Opret forbindelse til Wi-Fi for at logge sikkert ud	Maak verbinding met Wi-Fi om veilig uit te loggen	Kytke Wi-Fi turvallisesti ulos kirjautumiseen	Verbinden Sie sich mit dem WLAN, um sich sicher abzumelden	Koble til WI-Fi for å trygt logge ut
+connectToInternetToLogOut	Connect to internet to log out safely	Anslut till internet för att logga ut tryggt	Opret forbindelse til internettet for at logge sikkert ud	Maak verbinding met internet om veilig uit te loggen	Kytkeydy internetiin turvallisesti ulos kirjautumiseen	Verbinden Sie sich mit dem Internet, um sich sicher abzumelden	Koble til internett og logg deg trygt ut
+ifYouLogoutYouWillLose	If you log out now you will lose:	Om du loggar ut nu går följande förlorat:	Hvis du logger ud nu, taber du:	Als u nu uitlogt, gaat het volgende verloren:	Jos kirjaudut ulos nyt, menetät:	Wenn Sie sich jetzt abmelden, verlieren Folgendes:	Hvis du logger ut nå vil du miste følgende:
+activityTemplateSingular	activity template	aktivitetsmall	aktivitetsskabelon	activiteitensjabloon	aktiviteetti malli	Aktivitätsvorlage	aktivitetsmal
+activityTemplatePlural	activity templates	aktivitetsmallar	aktivitetsskabeloner	activiteitensjablonen	aktiviteetti mallit	Aktivitätsvorlagen	aktivitetsmaler
+timerTemplateSingular	timer template	timermall	timerskabelon	timersjabloon	ajastin malli	Timer-Vorlage	tidtakermal
+timerTemplatePlural	timer templates	timermallar	timerskabeloner	timersjablonen	ajastin mallit	Timer-Vorlagen	tidtakermaler
+photoSingular	photo	foto	foto	foto	kuva	Foto	bilde
+photoPlural	photos	foton 	fotos 	foto's 	kuvaa 	Fotos 	bilder
+settingsData	Settings data	Inställningsdata	Indstillingsdata	Instellingsgegevens	Asetusten tiedot	Einstellungsdaten	Instillingsdata
 							
 ### Time related							
 fullDay	All day	Heldag	Hele dagen	Hele dag	Koko päivä	Ganztägig	Hele dagen
@@ -303,7 +303,7 @@ volumeMedia	Volume for media	Volym för media	Volumen for media	Volume voor medi
 wifi	Wi-Fi	Wi-Fi	Wi-Fi	Wifi	Wi-Fi	WLAN	Wi-Fi
 notConnected	Not connected	Ej ansluten	Ikke tilsluttet	Niet verbonden	Ei yhteyttä	Nicht verbunden	Ikke tilkoblet
 connected	Connected	Ansluten	Tilsluttet	Verbonden	Yhdistetty	Verbunden	Tilkoblet
-connectedNoInternet	Connected, no internet						
+connectedNoInternet	Connected, no internet	Ansluten, inget internet	Tilsluttet, intet internet	Verbonden, geen internet	Yhdistetty, ei internetiä	Verbunden, aber kein Internet	Tilkoblet, uten internett
 screenTimeout	Screen timeout	Skärmens tidsgräns	Skærmens tidsgrænse	Timeout scherm	Näytön pimennys	Bildschirm Zeitüberschreitung	Skjermens tidsgrense
 alwaysOn	Always on	Alltid på	Altid på	Altijd aan	Aina käytössä	Immer ein	Alltid på
 keepScreenAwakeWhileCharging	Keep screen awake when charging	Håll skärmen tänd vid laddning	Lad skærmen være tændt under opladning	Houd scherm wakker tijdens opladen	Pidä näyttö päällä latauksen aikana	Bildschirm während Aufladen aktiv lassen	Hold skjermen på ved lading
@@ -521,10 +521,10 @@ installStarterSet	Install starter set?	Installera startuppsättning?	Vil du inst
 doYouWantToImportADefaultSet	Do you want to import a default set of data with activities, timers, checklists and image archive?	Vill du importera startuppsättning av aktiviteter, timers, checklistor och bildarkiv?	Ønsker du at importere startopsætning med aktiviteter, timer, tjeklister og billedarkiv?	Wilt u een standaard dataset importeren met activiteiten, timers, checklists en afbeeldingenarchief?	Haluatko tuoda oletustiedot aktiviteettien, ajastimien, tarkistusluettelojen ja kuva-arkiston mukana?	Möchten Sie einen Standard-Datenbestand mit aktivitäten, Timern, Checklisten und Bildarchiv importieren?	Ønsker du å importere startoppsett av aktiviteter, timere, sjekklister og bildearkiv?
 							
 ### Terms of use							
-welcomeTo	Welcome to						
-getStarted	Get started						
-readAndAgree1	To use						
-readAndAgree2	, please read and agree to the terms of use and privacy policy.						
+welcomeTo	Welcome to	Välkommen till	Velkommen til	Welkom bij	Tervetuloa	Willkommen beim	Velkommen til
+getStarted	Get started	Kom igång	Kom godt i gang	Aan de slag	Aloita	Erste Schritte	Begynn.
+readAndAgree1	To use	För att använda	Hvis du vil bruge	Om	Lue ja hyväksy	Zur Nutzung des 	For å bruke
+readAndAgree2	, please read and agree to the terms of use and privacy policy.	, läs och godkänn användarvillkoren och personuppgiftspolicyn.	, skal du læse og acceptere brugsbetingelserne og privatlivspolitikken.	te gebruiken, moet u eerst de gebruiksvoorwaarden en het privacybeleid lezen en hiermee akkoord gaan.	käyttämiseen käyttöehdot ja tietosuojakäytäntö.	s lesen Sie bitte die Nutzungsbedingungen und die Datenschutzrichtlinie und stimmen Sie ihnen zu.	, vennligst les og godta vilkårene for bruk og personvernerklæringen.
 acceptTerms	I have read and agree to the	Jag har läst och godkänner	Jeg har læst og accepterer	Ik heb gelezen en akkoord gegaan	Olen lukenut ja sopineet	Ich habe gelesen und bin damit einverstanden	Jeg har lest og godtar
 termsOfUse	terms of use	användarvillkor	brugervillkår	gebruiksvoorwaarden	käyttöehdot	nutzungsbedingungen	brukervillkår
 termsOfUseUrl	intl/terms-of-use	sv/anvandarvillkor	intl/terms-of-use	intl/terms-of-use	intl/terms-of-use	intl/terms-of-use	nb/brukervilkar
@@ -532,16 +532,16 @@ privacyPolicy	privacy policy	personuppgiftspolicy	persondatapolitik	privacybelei
 privacyPolicyUrl	intl/policy-for-the-processing-of-personal-data	sv/personuppgiftspolicy	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	nb/personvernerklaering
 							
 ### Discard							
-confirmDiscard	Are you sure you want to discard your changes?						
-keepEditing	Keep editing						
-discard	Discard						
+confirmDiscard	Are you sure you want to discard your changes?	Är du säker på att du vill radera ändringarna?	Er du sikker på, at du vil slette dine ændringer?	Weet u zeker dat u uw wijzigingen wilt verwijderen?	Oletko varma, että haluat hylätä tekemäsi muutokset?	Sind Sie sicher, dass Sie Ihre Änderungen verwerfen möchten?	Er du sikker på at du vil forkaste endringene?
+keepEditing	Keep editing	Fortsätt redigera	Fortsæt redigeringen	Doorgaan met bewerken	Jatka muokkaamista	Bearbeitung fortsetzen	Fortsett å rediger
+discard	Discard	Radera	Slet	Verwijderen	Hylkää	Verwerfen	Forkast
 							
 ### Reset Device							
-resetDeviceQuestion	Do you want to reset the device?						
-factoryReset	Factory reset						
-factoryResetDescription	Factory reset and reinstall MEMOplanner software (instructions required).						
-clearData	Clear MEMOplanner data						
-clearDataDescription	Clear app data and go to startup guide.						
-confirmFactoryReset	Do you want to start factory reset?						
-confirmFactoryResetDescription	After factory reset is finished you will need to reinstall MEMOplanner software. Follow the reconditioning instructions to do that.						
-factoryResetFailed	Factory reset failed, please try again later						
+resetDeviceQuestion	Do you want to reset the device?	Vill du återställa enheten?	Ønsker du at nulstille enheden?	Wilt u het apparaat opnieuw instellen?	Haluatko nollata laitteen?	Möchten Sie das Gerät zurücksetzen?	Vil du nullstille enheten?
+factoryReset	Factory reset	Återställ fabriksinställningarna	Fabriksnulstilling	Terugzetten naar fabrieksinstellingen	Tehdasasetusten palautus	Rücksetzen auf Werkseinstellungen	Tilbakestilling
+factoryResetDescription	Factory reset and reinstall MEMOplanner software (instructions required).	Återställ fabriksinställningarna och installera om MEMOplanner-programvaran (instruktioner krävs).	Nulstil fabriksindstillingerne, og geninstaller MEMOplanner-softwaren (vejledning påkrævet).	Zet de fabrieksinstellingen terug en installeer de MEMOplanner-software opnieuw (instructies vereist).	Tehdasasetusten palautus ja MEMOplanner ohjelmiston uudelleen asetus  (vaatii ohjauksen).	Rücksetzen auf Werkseinstellungen und MEMOplanner-Software neu installieren (Anweisungen erforderlich).	Tilbakestill og reinstaller MEMOplanner programvaren (instruksjoner er påkrevd)
+clearData	Clear MEMOplanner data	Rensa MEMOplanner-data	Slet MEMOplanner-data	MEMOplanner-gegevens wissen	Poista MEMOplannerin tiedot	MEMOplanner-Daten löschen	Slette MEMOplanner data
+clearDataDescription	Clear app data and go to startup guide.	Rensa appens data och gå till startguiden.	Slet app-data, og gå til opstartsvejledningen.	Wis de app-gegevens en ga naar de opstartgids.	Puhdista sovelluksen tiedot ja siirry käynnistysohjaukseen.	App-Daten löschen und zur Startanleitung gehen.	Slette app data og start guiden.
+confirmFactoryReset	Do you want to start factory reset?	Vill du påbörja återställningen av fabriksinställningarna?	Ønsker du at starte fabriksnulstilling?	Wilt u beginnen met het herstellen van de fabrieksinstellingen?	Haluatko aloittaa tehdasasetusten palautuksen?	Möchten Sie auf Werkseinstellungen zurücksetzen?	Vil du gjenopprette fabrikkinstillinger?
+confirmFactoryResetDescription	After factory reset is finished you will need to reinstall MEMOplanner software. Follow the reconditioning instructions to do that.	När fabriksinställningarna har återställts behöver du installera om MEMOplanner-programvaran. Följ instruktionerna om rekonditionering för att göra detta.	Når fabriksnulstillingen er færdig, skal du geninstallere MEMOplanner-softwaren. Følg anvisningerne til rekonditionering for at gøre det.	Nadat de fabrieksinstellingen zijn hersteld, moet u de MEMOplanner-software opnieuw installeren. Volg hiervoor de revisie-instructies.	Kun tehdasasetusten palautus on päättynyt, MEMOplanner-ohjelmisto pitää asentaa uudelleen. Noudata sen toteuttamiseen korjausohjeita.	Nachdem das Rücksetzen auf Werkseinstellungen erfolgt ist, müssen Sie die MEMOplanner-Software neu installieren. Befolgen Sie dazu die Wiederherstellungsanweisungen.	Etter at tilbakestillingen er fullført må du reinstallere MEOMplanner programvaren. Følg instruksjonene for å gjøre det.
+factoryResetFailed	Factory reset failed, please try again later	Kunde inte återställa fabriksinställningarna, försök igen senare.	Fabriksnulstillingen mislykkedes, prøv venligst senere.	Terugzetten naar de fabrieksinstellingen is mislukt, probeer het later opnieuw.	Tehdasasetusten palautus epäonnistui, yritä myöhemmin uudelleen.	Das Rücksetzen auf Werkseinstellungen ist fehlgeschlagen, bitte versuchen Sie es später.	Tilbakestilling mislyktes, prøv på nytt senere.
