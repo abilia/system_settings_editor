@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:memoplanner/background/all.dart';
+import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/main.dart';
 
@@ -51,11 +53,14 @@ void main() {
   final yesButtonFinder = find.byType(YesButton);
   final noButtonFinder = find.byType(NoButton);
 
+  ActivityResponse activityResponse = () => [];
+
   final activityInfoSideDotsFinder = find.byType(ActivityInfoSideDots);
 
   setUp(() async {
     setupPermissions();
     setupFakeTts();
+    tz.initializeTimeZones();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
@@ -71,7 +76,7 @@ void main() {
       ..ticker = Ticker.fake(initialTime: startTime)
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(
-        activityResponse: () => [],
+        activityResponse: () => activityResponse(),
         licenseResponse: () =>
             Fakes.licenseResponseExpires(startTime.add(5.days())),
       )
@@ -87,6 +92,7 @@ void main() {
 
   tearDown(() {
     GetIt.I.reset();
+    activityResponse = () => [];
   });
 
   Future<void> navigateToActivityPage(WidgetTester tester) async {
@@ -174,6 +180,88 @@ void main() {
 
       await navigateToActivityPage(tester);
       expect(find.byType(YoutubePlayer), findsOneWidget);
+    });
+
+    testWidgets(
+        'When edit an activity and it is deleted from myabilia, pop back to CalendarPage',
+        (WidgetTester tester) async {
+      // Arrange
+      final pushCubit = PushCubit();
+      final activity = FakeActivity.starts(startTime);
+      mockActivityDb.initWithActivity(activity);
+
+      // Act - Open edit activity
+      await tester.pumpWidget(App(pushCubit: pushCubit));
+      await tester.pumpAndSettle();
+      await tester.tap(activityTimepillarCardFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(EditActivityButton));
+      await tester.pumpAndSettle();
+
+      // Act - Add deleted to activity and make a fake push.
+      // Activity response is not empty so SyncBloc will emit a new state.
+      mockActivityDb.insertAndAddDirty([activity.copyWith(deleted: true)]);
+      activityResponse = () => [Activity.createNew(startTime: startTime)];
+      pushCubit.fakePush();
+      await tester.pumpAndSettle();
+
+      // Assert - Back at calendar page
+      expect(find.byType(CalendarPage), findsOneWidget);
+    });
+
+    testWidgets(
+        'When edit a recurring fullday activity from FullDayActivityList '
+        'and it is deleted from myabilia, pop back to closest ActivityRootPage',
+        (WidgetTester tester) async {
+      // Arrange
+      final pushCubit = PushCubit();
+      final activities = [
+        FakeActivity.fullDay(startTime, 'one', Recurs.everyDay),
+        FakeActivity.fullDay(startTime, 'two', Recurs.everyDay),
+      ];
+      mockActivityDb.initWithActivities(activities);
+
+      // Act - Open full day list page
+      await tester.pumpWidget(App(pushCubit: pushCubit));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(FullDayStack).first);
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byType(FullDayListPage), findsOneWidget);
+
+      // Act - Open first activity and edit it
+      await tester.tap(find.text(activities[0].title));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(EditActivityButton));
+      await tester.pumpAndSettle();
+
+      // Act - Remove first activity and make a fake push.
+      mockActivityDb.initWithActivity(activities[1]);
+      activityResponse = () => [Activity.createNew(startTime: startTime)];
+      pushCubit.fakePush();
+      await tester.pumpAndSettle();
+
+      // Assert - Back at full day list page
+      expect(find.byType(FullDayListPage), findsOneWidget);
+
+      // Act - Open second activity and edit it
+      await tester.tap(find.text(activities[1].title));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(EditActivityButton));
+      await tester.pumpAndSettle();
+
+      // Act - Remove second activity and make a fake push.
+      mockActivityDb.clear();
+      activityResponse = () => [Activity.createNew(startTime: startTime)];
+      pushCubit.fakePush();
+      await tester.pumpAndSettle();
+
+      // Assert - Back at calendar page
+      expect(find.byType(FullDayListPage), findsNothing);
+      expect(find.byType(CalendarPage), findsOneWidget);
     });
   });
 
