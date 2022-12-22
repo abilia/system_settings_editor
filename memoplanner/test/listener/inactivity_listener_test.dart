@@ -710,7 +710,7 @@ void main() {
             ];
 
         // Act
-        await tester.pumpApp(tickerMode: false);
+        await tester.pumpApp();
         expect(find.byType(MenuPage), findsOneWidget);
         await tester.tap(find.byType(BasicTemplatesButton));
         await tester.pumpAndSettle();

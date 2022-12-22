@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/listener/all.dart';
@@ -132,11 +134,15 @@ class _TimerWheel extends StatefulWidget {
 
 class _TimerWheelState extends State<_TimerWheel>
     with TickerProviderStateMixin {
-  bool animate = true;
+  late bool animate =
+      context.read<EditTimerCubit>().state.duration == Duration.zero;
+
+  Timer? forward;
+  Timer? reverse;
 
   late final AnimationController _animationController = AnimationController(
-    duration: const Duration(milliseconds: 1800),
-    reverseDuration: const Duration(milliseconds: 1200),
+    duration: const Duration(milliseconds: 800),
+    reverseDuration: const Duration(milliseconds: 400),
     vsync: this,
     animationBehavior: AnimationBehavior.preserve,
   )
@@ -146,18 +152,22 @@ class _TimerWheelState extends State<_TimerWheel>
         _animationController.stop();
       }
       if (status == AnimationStatus.dismissed) {
-        await Future.delayed(const Duration(milliseconds: 2000));
-        _animationController.forward();
+        forward = Timer(const Duration(milliseconds: 800), () {
+          if (mounted) _animationController.forward();
+        });
       }
       if (status == AnimationStatus.completed) {
-        await Future.delayed(const Duration(milliseconds: 400));
-        _animationController.reverse();
+        forward = Timer(const Duration(milliseconds: 400), () {
+          if (mounted) _animationController.reverse();
+        });
       }
     });
 
   @override
   void dispose() {
     _animationController.dispose();
+    forward?.cancel();
+    reverse?.cancel();
     super.dispose();
   }
 
@@ -174,12 +184,12 @@ class _TimerWheelState extends State<_TimerWheel>
       child: ValueListenableBuilder(
         valueListenable: CurvedAnimation(
           parent: _animationController,
-          curve: Curves.easeInOut,
+          curve: Curves.easeInOutCubic,
         ),
         builder: (_, value, __) {
           return TimerWheel.interactive(
             lengthInSeconds:
-                animate ? (value * 180).toInt() : duration.inSeconds,
+                animate ? (value * 120).toInt() : duration.inSeconds,
             onMinutesSelectedChanged: (minutesSelected) {
               setState(() {
                 _animationController.stop();
