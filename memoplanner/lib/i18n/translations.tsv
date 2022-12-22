@@ -4,14 +4,14 @@ welcome	Welcome!	Välkommen!	Velkommen!	Welkom!	Tervetuloa!	Willkommen!	Velkomme
 welcomeText	This guide will help you get started with MEMOplanner.	Den här guiden hjälper dig att komma igång med MEMOplanner.	Denne guide vil hjælpe dig med at komme i gang med MEMOplanner.	Deze gids helpt u om aan de slag te gaan met MEMOplanner.	Tämä opas auttaa aloittamaan Memoplannerin käytön.	Dieser Assistent hilft Ihnen bei den ersten Schritten mit MEMOplanner.	Denne guiden vil hjelpe deg å komme i gang med MEMOplanner.
 step	Step	Steg	Trin	Stap	Vaihe	Schritt	Trinn
 finish	Finish	Slutför	Afslut	Voltooien	Lopeta	Abschließen	Ferdig
-setupYourInternetConnection	Setup your internet connection						
-wifiNoInternet	Your current Wi-Fi has failed to connect to the internet, try another network or contact your internet provider for help						
-connectInternetToContinue	Connect to the internet to continue						
+setupYourInternetConnection	Setup your internet connection	Konfigurera din internetanslutning	Opsætning af din internetforbindelse	Uw internetverbinding opzetten	Luo internet-yhteys	Richten Sie Ihre Internetverbindung ein	Sett opp din nettforbindelse
+wifiNoInternet	Your current Wi-Fi has failed to connect to the internet, try another network or contact your internet provider for help.	Ditt Wi-Fi har inte kunnat ansluta till internet. Försök med ett annat nätverk eller kontakta din internetleverantör för att få hjälp.	Din nuværende Wi-Fi-forbindelse har ikke kunnet oprette forbindelse til internettet, prøv et andet netværk eller kontakt din internetudbyder for at få hjælp.	Uw huidige Wi-Fi heeft geen verbinding kunnen maken met internet. Probeer een ander netwerk of neem contact op met uw internetprovider voor hulp.	Käyttämäsi Wi-Fi-yhteys ei pysty yhdistä internetiin, kokeile toista verkkoa tai ota yhteyttä internet-palvelun tarjoajaan.	Über Ihr aktuelles WLAN kann keine Verbindung zum Internet hergestellt werden. Versuchen Sie es mit einem anderen Netzwerk oder wenden Sie sich an Ihren Internetanbieter, um Hilfe zu erhalten.	Ditt nåværende Wi-Fi har mislyktes i å koble til nettet, prøv et annet nettverk eller kontakt nettleverandøren din for å få hjelp.
+connectInternetToContinue	Connect to the internet to continue	Anslut till internet för att fortsätta	Opret forbindelse til internettet for at fortsætte	Maak verbinding met internet om verder te gaan	Yhdistä internetiin jatkaaksesi	Stellen Sie eine Verbindung zum Internet her, um fortzufahren	Koble til nettet og fortsett
 notSelected	Not selected	Inte valt	Ikke valgt	Niet geselecteerd	Ei valittu	Nicht ausgewählt	Ikke valgt
-enterYourLicense	Enter your license key						
-enterYourLicenseHint	License key should contain 12 digits						
+enterYourLicense	Enter your license key	Ange din licensnyckel	Indtast din licensnøgle	Uw licentiesleutel invoeren	Syötä lisenssin avain	Geben Sie Ihren Lizenzschlüssel ein	Tast inn din lisensnøkkel
+enterYourLicenseHint	License key should contain 12 digits	Licensnyckeln bör innehålla 12 siffror	Licensnøglen skal indeholde 12 cifre	De licentiesleutel moet 12 cijfers bevatten	Lisenssin avaimessa pitää olla 12 numeroa	Der Lizenzschlüssel besteht aus 12 Ziffern	Lisensnøkkelen skal inneholde 12 tall
 licenseErrorAlreadyInUse	License is already in use	Licensen används redan	Licensen er allerede i brug	Licentie is al in gebruik	Lisenssi on jo käytössä	Die Lizenz wird bereits verwendet	Lisensen er allerede i bruk
-licenseErrorNotFound	We didn't find a valid license.\nPlease check the license key and try again						
+licenseErrorNotFound	We didn't find a valid license.\nPlease check the license key and try again	Vi hittade ingen giltig licens.\nKontrollera licensnyckeln och försök igen	Vi fandt ikke en gyldig licens.\nKontroller venligst licensnøglen og prøv igen	We hebben geen geldige licentie gevonden.\nControleer de licentiesleutel en probeer het opnieuw	Emme löytäneet voimassa olevaa lisenssiä.\nTarkista lisenssin avain ja yritä uudelleen	Wir konnten keine gültige Lizenz finden.\nBitte überprüfen Sie den Lizenzschlüssel und versuchen Sie es erneut.	Vi fant ikke en gyldig lisens.\nVennligst sjekk lisensnøkkelen og prøv på nytt
 downloadVoiceText	Download voice for speech support	Ladda ner röst för talstöd	Download stemme til stemmerapport	Dowload stem voor spraakondersteuning	Lataa ääni puhetukea varten	Stimme für Sprachunterstützung herunterladen	Last ned stemme for talestøtte
 							
 ### Login page							
@@ -25,15 +25,15 @@ wrongCredentials	Username or password doesn't match.\nVerify your credentials an
 noConnection	No contact with myAbilia. Check your Internet connection.	Ingen kontakt med myAbilia. Kontrollera din internetanslutning.	Enheden er ikke tilsluttet myAbilia. Kontroller din internetforbindelse.	Het apparaat is niet aangesloten op het myAbilia. Controleer uw internetverbinding.	Laitetta ei ole yhdistetty myAbilia. Tarkista Internet-yhteys.	Das Gerät ist nicht mit dem myAbilia verbunden. Überprüfen Sie Ihre Internetverbindung.	Enheten er ikke koblet til myAbilia. Sjekk din Internettforbindelse.
 enterUsername	Enter username	Ange ditt användarnamn	Angiv dit brugernavn	Gebruikersnaam invoeren	Anna käyttäjätunnus	Benutzername eingeben	Angi ditt brukernavn
 enterPassword	Enter password	Ange ditt lösenord	Angiv din adgangskode	Wachtwoord invoeren	Anna salasana	Passwort eingeben	Angi ditt passord
-userTypeNotSupported	Users of type Support person or Admin can't log in to MEMOPlanner. Please use myAbilia.	Användare av typen Supportperson eller Admin kan inte logga in i MEMOPlanner. Var vänlig använd myAbilia.	Supportere eller Admin-brugere kan ikke logge ind på MEMOplanner. Brug venligst myAbilia.	Gebruikers van het type Ondersteuningspersoon of Beheerder kunnen niet inloggen op MEMOPlanner. Gebruik myAbilia.	Users of type Support person or Admin can't log in to MEMOPlanner. Please use myAbilia.	Benutzer vom Typ Supportperson oder Admin können sich nicht bei MEMOPlanner anmelden. Bitte verwenden Sie myAbilia.	Brukere av typen Støtteperson eller Admin kan ikke logge inn på MEMOplanner. Vennligst bruk myAbilia.
+userTypeNotSupported	Users of type Support person or Admin can't log in to MEMOplanner. Please use myAbilia.	Användare av typen Supportperson eller Admin kan inte logga in i MEMOplanner. Var vänlig använd myAbilia.	Supportere eller Admin-brugere kan ikke logge ind på MEMOplanner. Brug venligst myAbilia.	Gebruikers van het type Ondersteuningspersoon of Beheerder kunnen niet inloggen op MEMOplanner. Gebruikt u alstublieft myAbilia.	Käyttäjät, joiden tyyppi on tukihenkilö tai ylläpitäjä, eivät voi kirjautua MEMOplanneriin. Käytä myAbiliaa.	Benutzer vom Typ Supportperson oder Admin können sich nicht bei MEMOplanner anmelden. Bitte verwenden Sie myAbilia.	Brukere av typen Støtteperson eller Admin kan ikke logge inn på MEMOplanner. Vennligst bruk myAbilia.
 loggedOutMessage	You have been logged out. Please log in again.	Du har blivit utloggad. Vänligen logga in igen.	Du er blevet logget ud. Log ind igen.	U bent uitgelogd. Log alstublieft opnieuw in.	Olet kirjautunut ulos. Kirjaudu sisään uudelleen.	Sie wurden abgemeldet. Bitte melden Sie sich erneut an.	Du har blitt logget ut. Logg på igjen.
 							
 ### Create Account							
-createAccountHint	Don’t have a myAbilia account yet?	Har du inte ett myAbilia konto än?	Har du ikke en myAbilia-konto endnu?	Heeft u nog geen myAbilia-account?	Eikö sinulla ole vielä myAbilia-tiliä?	Sie haben noch kein myAbilia-Konto?	Har du ikke en myAbilia-konto ennå?
+createAccountHint	Don’t have a myAbilia account yet?	Har du inte ett myAbilia konto ännu?	Har du ikke en myAbilia-konto endnu?	Heeft u nog geen myAbilia-account?	Eikö sinulla ole vielä myAbilia-tiliä?	Sie haben noch kein myAbilia-Konto?	Har du ikke en myAbilia-konto ennå?
 createAccount	Create Account	Skapa konto	Opret konto	Maak account	Luo tili	Benutzerkonto erstellen	Opprett konto
 createAccountHeading	Create your account in myAbilia	Skapa ditt konto i myAbilia	Opret din konto i myAbilia	Creëer uw account in myAbilia	Luo tili myAbiliassa	Erstellen Sie Ihr Konto in myAbilia	Opprett kontoen din i myAbilia
 createAccountSubheading	You need a myAbilia account to use MEMOplanner	Du behöver ett myAbilia-konto för att kunna använda MEMOplanner	Du har brug for en myAbilia-konto for at bruge MEMOplanner	U heeft een myAbilia-account nodig om MEMOplanner te gebruiken	Tarvitset myAbilia-tilin käyttääksesi MEMOplanneria	Sie benötigen ein myAbilia-Konto, um MEMOplanner verwenden zu können	Du trenger en myAbilia-konto for å bruke MEMOplanner
-usernameHint	Username (phone number or email)	Användarnamn (telefonnummer eller e-post)	Brugernavn (telefon eller en e-mail)	Gebruikersnaam (telefoon of een e-mail)	Käyttäjätunnus (puhelin tai sähköpostiosoite)	Benutzername (telefon oder E-Mail)	Brukernavn (telefon eller en e-post)
+usernameHint	Username (phone number or email)	Användarnamn (telefonnummer eller e-post)	Brugernavn (telefon eller en e-mail)	Gebruikersnaam (telefoon of e-mail)	Käyttäjätunnus (puhelin tai sähköpostiosoite)	Benutzername (Telefon oder E-Mail)	Brukernavn (telefon eller en e-post)
 passwordHint	Password (minimum 12 characters)	Lösenord (minst 12 tecken)	Adgangskode (mindst 12 tegn)	Wachtwoord (minimaal 12 tekens)	Salasanassa (vähintään 12 merkkiä)	Passwort (mindestens 12 Zeichen)	Passord (minimum 12 tegn)
 confirmPassword	Confirm password	Bekräfta lösenordet	Bekræft adgangskoden	Wachtwoord bevestigen	Vahvista salasana	Passwort bestätigen	Bekreft passordet
 usernameToShort	Username or email is invalid, must contain at least three characters	Användarnamn eller e-postadress är ogiltig, måste innehålla minst tre tecken	Brugernavn eller e-mail er ugyldig, skal indeholde mindst tre tegn	Gebruikersnaam of e-mail is ongeldig, moet ten minste drie tekens bevatten	Käyttäjätunnus tai sähköpostiosoite on virheellinen, niissä on oltava vähintään kolme merkkiä	Benutzername oder E-Mail ungültig - Mindestlänge drei Zeichen	Brukernavn eller e-postadresse er ugyldig, må inneholde minst tre tegn
@@ -41,7 +41,7 @@ passwordToShort	The password must consist of at least 12 characters	Lösenordet 
 passwordMismatch	Both passwords must be the same	Lösenorden måste vara likadana	Begge adgangskoder skal være de samme	Beide wachtwoorden moeten hetzelfde zijn	Molempien salasanojen on oltava samat	Beide Passwörter müssen identisch sein	Begge passordene må være de samme
 confirmTermsOfUse	Confirm terms of use	Bekräfta användarvillkor	Bekræft brugervilkår	Bevestig de gebruiksvoorwaarden	Vahvista käyttöehdot	Bestätigen Sie die Nutzungsbedingungen	Bekreft brukervilkår
 confirmPrivacyPolicy	Confirm privacy policy	Bekräfta personuppgiftspolicy	Bekræft persondatapolitik	Bevestig privacybeleid	Vahvista tietosuojakäytäntö	Bestätigen Sie die Datenschutzbestimmungen	Bekreft personvernerklæring
-usernameTaken	Username/email address is already in use	Användarnamn/e-postadress används redan	Brugernavn/e-mail-adresse er allerede i brug	Gebruikersnaam/e-mailadres is reeds in gebruik	Käyttäjätunnus/sähköpostiosoite on jo käytössä	Benutzername/E-Mail-Adresse bereit in Gebrauch.	Brukernavn/e-postadresse er allerede i bruk
+usernameTaken	Username/email address is already in use	Användarnamn/e-postadress används redan	Brugernavn/e-mail-adresse er allerede i brug	Gebruikersnaam/e-mailadres is al in gebruik	Käyttäjätunnus/sähköpostiosoite on jo käytössä	Benutzername/E-Mail-Adresse bereit in Gebrauch.	Brukernavn/e-postadresse er allerede i bruk
 unknownError	Unknown error	Okänt fel	Ukendt fejl	Onbekende fout	Tuntematon virhe	Unbekannter Fehler	Ukjent feil
 accountCreatedHeading	Account created	Konto skapat	Konto oprettet	Account gecreëerd	Tili luotu puolivälissä	Konto erstellt	Konto opprettet
 accountCreatedBody	Your account has been created.\nYou can login using your username and password	Ditt konto har skapats.\nDu kan logga in med ditt användarnamn och lösenord	Din konto er oprettet.\nDu kan logge ind med dit brugernavn og din adgangskode	Uw account is gecreëerd.\nU kunt inloggen met uw gebruikersnaam en wachtwoord	Tili on luotu.\nVoit kirjautua sisään käyttämällä käyttäjätunnustasi ja salasanaasi	Ihr Konto wurde erstellt.\nSie können sich mit Ihrem Benutzernamen und Passwort anmelden	Kontoen din er opprettet.\nDu kan logge inn ved å bruke ditt brukernavn og passord
@@ -51,29 +51,29 @@ backToLogin	Back to Login	Tillbaka till login	Tilbage til login	Terug naar Inlog
 ### License							
 noLicense	This account has no valid license.	Det här kontot saknar giltig licens. Du kan därför inte logga in.	Problemer med at logge ind!\nDu har ikke en gyldig licens.	Dit account heeft geen geldige licentie.	Tällä tilillä ei ole kelvollista lisenssiä.	Für dieses Konto gibt es keine gültige Lizenz.	Problemer med å logge inn!\nDu har ikke en gyldig lisens.
 licenseExpired	License is expired	Licensen har gått ut	Licensen er udløbet	Licentie verlopen	Lisenssi on vanhentunut	Lizenz abgelaufen	Lisensen har utløpt
-licenseExpiredMessage	Your license has expired and MEMOplanner will no longer synchronize with myAbilia	Licensen har gått ut och MEMOplanner kommer inte längre att synkronisera med myAbilia	Licensen er udløbet, og MEMOplanner vil ikke længere synkronisere med myAbilia	Uw licentie is verlopen en MEMOplanner zal niet langer synchroniseren met myAbilia	Lisenssisi on vanhentunut, eikä MEMOplanner enää synkronoidu myAbilian kanssa	Ihre Lizenz ist abgelaufen und MEMOplanner kann nicht mehr mit myAbilia synchronisiert werden	Lisensen har utløpt og Memoplanner vil ikke lenger kunne synkronisere med myAbilia
+licenseExpiredMessage	Your license has expired and MEMOplanner will no longer synchronize with myAbilia	Licensen har gått ut och MEMOplanner kommer inte längre att synkronisera med myAbilia	Licensen er udløbet, og MEMOplanner vil ikke længere synkronisere med myAbilia	Uw licentie is verlopen en MEMOplanner zal niet langer synchroniseren met myAbilia	Lisenssisi on vanhentunut, eikä MEMOplanner enää synkronoidu myAbilian kanssa	Ihre Lizenz ist abgelaufen und MEMOplanner kann nicht mehr mit myAbilia synchronisiert werden	Lisensen har utløpt og MEMOplanner vil ikke lenger kunne  synkronisere med myAbilia
 toLogin	to Log in	till Logga in	til Log ind	naar Inloggen	kirjautumissivulle	zur Anmelden	til Logg inn
-memoplannerLicenseExpired	MEMOplanner license expired						
-needLicenseToSaveData	You need an active license to save your data to myAbilia.						
-contactProviderToExtendLicense	Contact your MEMOplanner provider in order to extend your license.						
+memoplannerLicenseExpired	MEMOplanner license expired	Licensen för MEMOplanner har gått ut	MEMOplanner-licensen er udløbet	MEMOplanner-licentie is verlopen	MEMOplanner-lisenssi on vanhentunut	Die MEMOplanner-Lizenz ist abgelaufen	MEMOplanner lisens har utgått
+needLicenseToSaveData	You need an active license to save your data to myAbilia.	Du behöver en aktiv licens för att kunna spara dina data hos myAbilia.	Du skal have en aktiv licens for at gemme dine data i myAbilia.	U hebt een actieve licentie nodig om uw gegevens op te slaan in myAbilia.	Sinun pitää aktivoida lisenssi tietojen myAbiliaan tallentamiseen.	Um Ihre Daten in myAbilia zu speichern, benötigen Sie eine aktive Lizenz.	Du trenger en aktiv lisens for å lagre dataen din til myAbilia.
+contactProviderToExtendLicense	Contact your MEMOplanner provider in order to extend your license.	Kontakta din MEMOplanner-leverantör för att förnya din licens.	Kontakt din MEMOplanner-leverandør for at forlænge din licens.	Neem contact op met uw MEMOplanner-provider om uw licentie te verlengen.	Ota lisenssin jatkamiseen yhteyttä MEMOplannerin jälleenmyyjään.	Kontaktieren Sie Ihren MEMOplanner-Anbieter und verlängern Sie Ihre Lizenz.	Kontakt din MEMOplanner leverandør for å fornye din lisens.
 							
 ### Logout							
-allDataSaved	All data saved!						
-goOnlineBeforeLogout	Go online before you log out!						
-doNotLoseYourContent	Don't lose your content!						
-syncing	Syncing...						
-canLogOutSafely	Now you can log out safely						
-lastSyncWas	Last sync was						
-connectToWifiToLogOut	Connect to Wi-Fi to log out safely						
-connectToInternetToLogOut	Connect to internet to log out safely						
-ifYouLogoutYouWillLose	If you log out now you will lose:						
-activityTemplateSingular	activity template						
-activityTemplatePlural	activity templates						
-timerTemplateSingular	timer template						
-timerTemplatePlural	timer templates						
-photoSingular	photo						
-photoPlural	photos						
-settingsData	Settings data						
+allDataSaved	All data saved!	Alla data sparades!	Alle data er gemt!	Alle gegevens zijn opgeslagen!	Kaikki tiedot on tallennettu!	Alle Daten gesichert!	All data lagret!
+goOnlineBeforeLogout	Go online before you log out!	Kom online innan du loggar ut!	Gå online, før du logger ud!	Ga online voordat u uitlogt!	Ennen ulos kirjautumista kytkeydy internetiin!	Gehen Sie online, bevor Sie sich abmelden!	Kom deg online før du logger ut!
+doNotLoseYourContent	Don't lose your content!	Förlora inte ditt innehåll!	Mist ikke dit indhold!	Verlies uw content niet!	Älä hukkaa sisältöäsi!	Verlieren Sie Ihre Inhalte nicht!	Ikke mist innholdet ditt!
+syncing	Syncing...	Synkar...	Synkroniserer...	Aan het synchroniseren...	Synkronoin...	Synchronisiere...	Synkroniserer...
+canLogOutSafely	Now you can log out safely	Nu kan du logga ut tryggt	Du kan nu sikkert logge ud	U kunt nu veilig uitloggen	Nyt voit kirjautua turvallisesti ulos	Sie können sich nun sicher abmelden.	Nå kan du logge deg ut trygt
+lastSyncWas	Last sync was	Senaste synkningen skedde	Sidste synkronisering var	De laatste synchronisatie vond plaats op	Viimeinen synkronointi oli	Letzte Synchronisierung:	Siste synkronisering var
+connectToWifiToLogOut	Connect to Wi-Fi to log out safely	Anslut till Wi-Fi för att logga ut tryggt	Opret forbindelse til Wi-Fi for at logge sikkert ud	Maak verbinding met Wi-Fi om veilig uit te loggen	Kytke Wi-Fi turvallisesti ulos kirjautumiseen	Verbinden Sie sich mit dem WLAN, um sich sicher abzumelden	Koble til WI-Fi for å trygt logge ut
+connectToInternetToLogOut	Connect to internet to log out safely	Anslut till internet för att logga ut tryggt	Opret forbindelse til internettet for at logge sikkert ud	Maak verbinding met internet om veilig uit te loggen	Kytkeydy internetiin turvallisesti ulos kirjautumiseen	Verbinden Sie sich mit dem Internet, um sich sicher abzumelden	Koble til internett og logg deg trygt ut
+ifYouLogoutYouWillLose	If you log out now you will lose:	Om du loggar ut nu går följande förlorat:	Hvis du logger ud nu, taber du:	Als u nu uitlogt, gaat het volgende verloren:	Jos kirjaudut ulos nyt, menetät:	Wenn Sie sich jetzt abmelden, verlieren Folgendes:	Hvis du logger ut nå vil du miste følgende:
+activityTemplateSingular	activity template	aktivitetsmall	aktivitetsskabelon	activiteitensjabloon	aktiviteetti malli	Aktivitätsvorlage	aktivitetsmal
+activityTemplatePlural	activity templates	aktivitetsmallar	aktivitetsskabeloner	activiteitensjablonen	aktiviteetti mallit	Aktivitätsvorlagen	aktivitetsmaler
+timerTemplateSingular	timer template	timermall	timerskabelon	timersjabloon	ajastin malli	Timer-Vorlage	tidtakermal
+timerTemplatePlural	timer templates	timermallar	timerskabeloner	timersjablonen	ajastin mallit	Timer-Vorlagen	tidtakermaler
+photoSingular	photo	foto	foto	foto	kuva	Foto	bilde
+photoPlural	photos	foton 	fotos 	foto's 	kuvaa 	Fotos 	bilder
+settingsData	Settings data	Inställningsdata	Indstillingsdata	Instellingsgegevens	Asetusten tiedot	Einstellungsdaten	Instillingsdata
 							
 ### Time related							
 fullDay	All day	Heldag	Hele dagen	Hele dag	Koko päivä	Ganztägig	Hele dagen
@@ -121,7 +121,7 @@ timeForeNoonTts	%s in the mid-morning	%s på förmiddagen	%s om formiddagen	%s h
 timeAfternoonTts	%s in the afternoon	%s på eftermiddagen	%s om eftermiddagen	%s 's middags	%s iltapäivällä	%s nachmittags	%s på ettermiddagen
 timeEveningTts	%s in the evening	%s på kvällen	%s om aftenen	%s 's avonds	%s illalla	%s nachmittags	%s på kvelden
 timeNightTts	%s at night	%s på natten	%s om natten	%s 's nachts	%s yöllä	%s abends	%s på natten
-timerInvalidDuration	Duration can not be zero.	Tidslängden kan inte vara noll.	Varigheden kan ikke være nul.	De duur kan niet nul zijn.	Kesto ei voi olla nolla.	Dauer kann nicht Null sein	Varigheten kan ikke være null.
+timerInvalidDuration	Duration cannot be zero.	Tidslängden kan inte vara noll.	Varigheden kan ikke være nul.	De duur kan niet nul zijn.	Kesto ei voi olla nolla.	Dauer kann nicht Null sein	Varigheten kan ikke være null.
 timerDelete	Do you want to delete the timer?	Vill du radera timern?	Ønsker du at slette timeren?	Wilt u de timer verwijderen?	Haluatko poistaa ajastimen?	Möchten Sie den Timer löschen?	Vil du slette timeren?
 timerPause	Do you want to pause the timer?	Vill du pausa timern?	Ønsker du at sætte timeren på pause?	Wilt u de timer pauzeren?	Haluatko keskeyttää ajastimen?	Möchten Sie den Timer pausieren?	Vil du sette timeren på pause?
 timerResume	Do you want to continue the timer?	Vill du fortsätta timern?	Ønsker du at fortsætte timeren?	Wilt u doorgaan met de timer?	Haluatko jatkaa ajastimen käyttöä?	Möchten Sie den Timer fortsetzen?	Vil du fortsette timeren?
@@ -135,8 +135,8 @@ activities	Activities	Aktiviteter	Aktiviteter	Activiteiten	Aktiviteetit	Aktivit�
 reminders	Reminders	Påminnelser	Påmindelser	Herinneringen	Muistutukset	Erinnerungen	Påminnelser
 reminder	Reminder	Påminnelse	Påmindelse	Herinnering	Muistutus	Erinnerung	Påminnelse
 alarm	Alarm	Larm	Alarm	Alarm	Hälytys	Alarm	Alarm
-endsNow	Ends now	Slutar nu	Ënder nå	Eindigt nu	Päättyy nyt	Endet jetzt	Slutter nå
-startsNow	Starts now	Börjar nu	Starter nå	Begint nu	Alkaa nyt	Beginnt jetzt	Starter nå
+endsNow	Ends now	Slutar nu	Slutter nu	Eindigt nu	Päättyy nyt	Endet jetzt	Slutter nå
+startsNow	Starts now	Börjar nu	Starter nu	Begint nu	Alkaa nyt	Beginnt jetzt	Starter nå
 noActivities	No activities today	Inga aktiviteter idag	Ingen aktiviteter i dag	Geen activiteiten vandaag	Ei toimintaa tänään	Keine Aktivitäten heute	Ingen aktiviteter i dag
 left	Left	Vänster	Venstre	Links	Vasen	Links	Venstre
 right	Right	Höger	Højre	Rechts	Oikea	Rechts	Høyre
@@ -150,26 +150,26 @@ allDays	All days	Alla dagar	Alle dage	Alle dagen	Kaikki päivät	Alle Tage	Alle 
 allDay	All day	Heldag	Hele dagen	Hele dag	Koko päivä	Ganztägig	Hele dagen
 thisDayAndForward	This day and forward	Denna dag och framåt	Denne dag og frem	Deze dag en verder	Tästä päivästä lähtien	Von diesem Tag an	Denne dagen og fremover
 completed	Completed?	Klar?	Færdig?	Afgerond?	Valmis?	Bist Du fertig?	Ferdig?
-unCheckActivityQuestion	Do you want to uncheck the activity?	Vill du ångra kvitteringen av aktiviteten?	Vil du fjerne markeringen af aktiviteten?	Wilt u de activiteit uitvinken?	Haluatko poistaa valinnan aktiviteetista?	Möchten Sie die Auswahl rückgängig machen?	Vil du fjerne merket for aktiviteten?
+unCheckActivityQuestion	Do you want to uncheck the activity?	Vill du ångra kvitteringen av aktiviteten?	Vil du fjerne markeringen af aktiviteten?	Wilt u het afvinken van de activiteit ongedaan maken?	Haluatko poistaa valinnan aktiviteetista?	Möchten Sie die Auswahl rückgängig machen?	Vil du fjerne merket for aktiviteten?
 inTimePre	in	om	om	in	&empty&	in	om
 timeAgoPre	&empty&	för	for	&empty&	&empty&	vor	for
 timeAgoPost	ago	sen	siden	geleden	sitten	&empty&	siden
-checklistDoneInfo	All checklist tasks in your activity are completed. Do you want to complete the activity?	Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?	Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?	Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?	Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?	Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?	Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?
+checklistDoneInfo	All checklist tasks in your activity are completed. Do you want to complete the activity?	Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?	Alle opgaver er løst. Vil du markere aktiviteten klar?	Alle checklisttaken zijn voltooid. Wilt u de activiteit afsluiten?	Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?	Alle Checklistenaufgaben sind abgeschlossen. Möchten Sie die Aktivität abschließen?	Alle oppgavene er utført. Vil du merke aktiviteten som ferdig?
 templates	Templates	Mallar	Skabeloner	Sjablonen	Mallit	Vorlagen	Maler
 timeTo	to	till	til	tot	-	bis	til
 							
 ### Timer related							
 addTimer	Add Timer	Lägga in timer	Tilføj timer	Timer toevoegen	Lisää ajastin	Timer hinzufügen	Legg inn timer
 start	Start	Starta	Start	Begin	Alkaa	Anfang	Start
-newTimer	New timer	Ny timer	Ny timer	Nieuwe timer	Uusi ajastin	Neue timer	Ny timere
+newTimer	New timer	Ny timer	Ny timer	Nieuwe timer	Uusi ajastin	Neuer timer	Ny timer
 selectDuration	Select duration	Välj tidslängd	Angiv varighed	Duur selecteren	Valitse kesto	Dauer auswählen	Angi varighet
-startTimer	Start timer	Starta timer	Start timeren	Start timer	Käynnistysajastin	Timer starten	Start timer
-enterNameForTimer	Enter name for timer	Ange namn för timer	Indtast navn på timer	Voer naam in voor timer	Lisää nimi ajastimeen	Namen für den Timer angeben	Angi navn på timer
-selectTemplateTimer	Select timer	Välj timer	Vælg timer	Timers selecteren	Valitse ajastin	Timer auswählen	Velg timere
-timer	Timer	Timer	Timer	Tijdopnemer	Ajastin	Timer	Timer
+startTimer	Start timer	Starta timer	Start timeren	Timer starten	Käynnistysajastin	Timer starten	Start timer
+enterNameForTimer	Enter name for timer	Ange namn för timer	Indtast navn på timer	Naam voor timer invoeren	Lisää nimi ajastimeen	Namen für den Timer angeben	Angi navn på timer
+selectTemplateTimer	Select timer	Välj timer	Vælg timer	Timers selecteren	Valitse ajastin	Timer auswählen	Velg timer
+timer	Timer	Timer	Timer	Timer	Ajastin	Timer	Timer
 timeIsUp	Time is up	Tiden är slut	Tiden er gået	De tijd is om	Aika loppui	Die Zeit ist abgelaufen	Tiden er slutt
 timers	Timers	Timers	Timere	Timers	Ajastimet	Timer	Timere
-editTimer	Edit timer	Ändra timer	Rediger timer	Timer bewerken	Muokkaa ajastin	Timer bearbeiten	Endre timere
+editTimer	Edit timer	Ändra timer	Rediger timer	Timer bewerken	Muokkaa ajastin	Timer bearbeiten	Endre timer
 newTimerTemplate	New timer template	Ny timermall	Ny timerskabelon	Nieuw timersjabloon	Uusi ajastinmallipohja	Neue Timervorlage	Ny timer mal
 editTimerTemplate	Edit timer template	Ändra timermall	Rediger timerskabelon	Timersjabloon bewerken	Muokkaa ajastinmallipohjaa	Timervorlage bearbeiten	Rediger timer mal
 							
@@ -178,7 +178,7 @@ menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
 cancel	Cancel	Avbryt	Annuller	Annuleren	Peruuta	Abbrechen	Avbryt
 yes	Yes	Ja	Ja	Ja	Joo	Ja	Ja
 no	No	Nej	Nej	Nee	Ei	Nein	Nei
-close	Close	Stäng	Tæt	Dichtbij	Kiinni	Schließen	Lukk
+close	Close	Stäng	Luk	Dichtbij	Kiinni	Schließen	Lukk
 back	Previous	Tillbaka	Tilbage	Terug	Takaisin	Zurück	Tilbake
 next	Next	Nästa	Næste	Volgende	Seuraava	Nächster	Neste
 ok	OK	OK	OK	OK	OK	OK	OK
@@ -186,21 +186,21 @@ record	Record	Spela in	Indspil	Opnemen	Nauhoita	Aufnahme	Spill inn
 newText	New	Ny	Ny	Nieuw	Uusi	Neu	Ny
 							
 ### Edit activity							
-fromTemplate	From template	Från mall	Fra skabelon	Uit sjabloon	Mallit	Von vorlage	Fra malen
-newActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuw activiteit	Uusi aktiviteettia	Neu Aktivität	Ny aktivitet
+fromTemplate	From template	Från mall	Fra skabelon	Uit sjabloon	Mallit	Von Vorlage	Fra malen
+newActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuw activiteit	Uusi aktiviteettia	Neue Aktivität	Ny aktivitet
 editActivity	Edit activity	Ändra aktivitet	Rediger aktivitet	Activiteit bewerken	Muokkaa aktiviteettia	Aktivität bearbeiten	Endre aktivitet
-newActivityTemplate	New activity template	Ny aktivitetsmall	Ny aktivitetsskabelon	Nieuw activiteitsjabloon	Uusi toimintomallipohja	Neue Aktivitätsvorlage	Ny aktivitet mal
-editActivityTemplate	Edit activity template	Ändra aktivitetsmall	Rediger aktivitetsskabelon	Activiteitsjabloon bewerken	Muokkaa toimintomallipohjaa	Aktivitätsvorlage bearbeiten	Rediger aktivitet mal
+newActivityTemplate	New activity template	Ny aktivitetsmall	Ny aktivitetsskabelon	Nieuw activiteitsjabloon	Uusi toimintomallipohja	Neue Aktivitätsvorlage	Ny aktivitetsmal
+editActivityTemplate	Edit activity template	Ändra aktivitetsmall	Rediger aktivitetsskabelon	Activiteitsjabloon bewerken	Muokkaa toimintomallipohjaa	Aktivitätsvorlage bearbeiten	Rediger aktivitetsmal
 category	Category	Kategori	Kategori	Categorie	Kategoria	Kategorie	Kategori
 checkable	Checkable	Kvitterbar	Kvitterbar	Afvinkbaar	Tarkistettava	Kontrollabfrage	Kvitterbar
 notCheckable	Not checkable	Inte kvitterbar	Ikke kvitterbar	Niet afvinkbaar	Ei-tarkistettava	Nicht kontrollabfrage	Ikke kvitterbar
-deleteAfter	Delete at the end of the day	Radera vid slutet av dagen	Fjern i slutningen af dagen	Aan het einde van de dag verwijderen	Poista päivän päätteeksi	am Endes des Tages löschen	Fjern på slutten av dagen
+deleteAfter	Delete at the end of the day	Radera vid slutet av dagen	Fjern i slutningen af dagen	Aan het einde van de dag verwijderen	Poista päivän päätteeksi	am Ende des Tages löschen	Fjern på slutten av dagen
 dontDeleteAfter	Don't remove at the end of the day	Ta inte bort vid slutet av dagen	Fjern ikke ved slutningen af ​​dagen	Niet verwijderen aan het einde van de dag	Älä poista päivän päätteeksi	Nicht am Ende des Tages entfernen	Ikke fjern på slutten av dagen
 name	Name	Namn	Navn	Naam	Nimi	Name	Navn
 picture	Image	Bild	Billede	Afbeelding	Kuva	Bild	Bilde
 date	Date	Datum	Dato	Datum	Päivämäärä	Datum	Dato
 startTime	Start time	Starttid	Starttid	Starttijd	Aloitusaika	Startzeit	Starttid
-endTime	End time	Sluttid	Sluttid	Eindtijd	Päättymisaika	Endezeit	Sluttid
+endTime	End time	Sluttid	Sluttid	Eindtijd	Päättymisaika	Endzeit	Sluttid
 emptyFolder	The folder is empty	Mappen är tom	Mappen er tom	De map is leeg	Kansio on tyhjä	Der Ordner leer ist	Mappen er tom
 noTemplates	You have no templates	Du har inga mallar	Du har ingen skabeloner	Je hebt geen sjablonen	Sinulla ei ole mallit	Sie haben keine vorlagen	Du har ingen maler
 noChecklists	You have no checklists	Du har inga checklistor	Du har ingen tjeklister	Je hebt geen checklists	Sinulla ei ole tarkistuslistoja	Sie haben keine Checklisten	Du har ingen sjekklister
@@ -215,21 +215,21 @@ speechOnStart	Speech at Start time	Tal vid starttid	Tale ved starttid	Spraak op 
 speechOnEnd	Speech at End time	Tal vid sluttid	Tale ved sluttid	Spraak op eindtijd	Puhe päättymisaikaan	Ansage zum Endzeitpunkt	Tale ved sluttid
 duration	Duration	Tidslängd	Tidslængde	Duur	Kesto	Dauer	Varighet
 stop	Stop	Stopp	Stop	Stoppen	Pysäytä	Stopp	Stopp
-play	Play	Lyssna	Afspel	Afspelen	Toista	Wiedergabe	Spill av
+play	Play	Lyssna	Spil	Afspelen	Toista	Wiedergabe	Spill av
 enterNameForActivity	Enter name for activity	Skriv in namn för aktivitet	Indtast navn på aktiviteten	Voer naam voor activiteit in	Anna aktiviteetille nimi	Name für Aktivität eingeben	Skriv inn navnet på aktiviteten
 							
 ### Errors & warnings							
 error	Error	Fel	Fejl	Fout	Virhe	Error	Feil
 warning	Warning	Varning	Advarsel	Waarschuwing	Varoitus	Warnung	Advarsel
-missingTitleOrImageAndStartTime	Your activity should contain an image or name and start time.	Aktiviteten måste ha ett namn eller en bild och en starttid.	Aktiviteten skal have et navn eller et billede og et starttidspunkt.	Je activiteit moet een afbeelding of naam en starttijd bevatten.	Toimintasi tulisi sisältää kuva tai nimi ja aloitusaika.	Ihre Aktivität sollte ein Bild oder einen Namen und eine Startzeit enthalten.	Aktiviteten må ha et navn ellet et bilde og en starttid.
+missingTitleOrImageAndStartTime	Your activity should contain an image or name and start time.	Aktiviteten måste ha ett namn eller en bild och en starttid.	Aktiviteten skal have et navn eller et billede og et starttidspunkt.	De activiteit moet een afbeelding of naam en starttijd bevatten.	Toimintasi tulisi sisältää kuva tai nimi ja aloitusaika.	Ihre Aktivität sollte ein Bild oder einen Namen und eine Startzeit enthalten.	Aktiviteten må ha et navn eller et bilde og en starttid.
 missingTitleOrImage	An activity needs an image or a name.	En aktivitet måste ha antingen en bild eller ett namn.	En aktivitet skal have enten et billede eller et navn.	Deze activiteit heeft een afbeelding of een naam nodig.	Tämä aktiviteetti tarvitsee kuvan tai nimen.	Diese Aktivität braucht ein Bild oder einen Namen.	En aktivitet må ha enten et bilde eller et navn.
 missingStartTime	You must enter a start time.	Du måste ange en starttid.	Du skal angive en starttid.	U moet een starttijd instellen.	Anna aloitusaika.	Sie müssen eine Startzeit eingeben:	En aktivitet må ha en starttid.
-startTimeBeforeNowError	You have selected a start time which has already passed. This is not allowed.	Du har valt en starttid som är före aktuell tid. Det är inte tillåtet.	Starttiden er allerede passeret. Det er ikke tilladt.	U heeft een starttijd geselecteerd die al voorbij is. Dit is niet toegestaan.	Valitsit aloitusajan, joka on jo mennyt. Tätä ei sallita.	Die gewählte Startzeit liegt in der Vergangenheit. Dies ist nicht zulässig.	Starttiden er allerede passert. Det er ikke tillatt.
-startTimeBeforeNowWarning	You have selected a start time which has already passed. Press OK to continue.	Du har valt en starttid som är före aktuell tid. Tryck ok om du vill fortsätta.	Starttiden er allerede passeret. Tryk på OK for at fortsætte.	U heeft een starttijd geselecteerd die al voorbij is. Druk op OK om door te gaan.	Valitsit aloitusajan, joka on jo mennyt. Jatka painamalla OK.	Die gewählte Startzeit liegt in der Vergangenheit. Drücken Sie auf OK, um fortzufahren.	Starttiden er allerede passert. Trykk på OK for å fortsette.
-conflictWarning	There are activities conflicting with this activity. Press OK to continue.	Det finns aktiviteter som krockar med din aktivitet. Tryck ok om du vill fortsätta.	Der er aktiviteter, der falder sammen med denne aktivitet. Tryk på OK for at fortsætte.	Er zijn activiteiten die conflicteren met deze activiteit. Druk op OK om door te gaan.	On olemassa aktiviteetteja, jotka ovat ristiriidassa tämän aktiviteetin kanssa. Jatka painamalla OK.	Mit dieser Aktivität stehen andere Aktivitäten im Konflikt. Drücken Sie auf OK, um fortzufahren.	Der er aktiviteter som kolliderer med denne aktivitet. Trykk på OK for å fortsette.
+startTimeBeforeNowError	You have selected a start time which has already passed. This is not allowed.	Du har valt en starttid som är före aktuell tid. Det är inte tillåtet.	Starttiden er allerede passeret. Det er ikke tilladt.	U heeft een starttijd geselecteerd die al voorbij is. Dit is niet toegestaan.	Valitsit aloitusajan, joka on jo mennyt. Tätä ei sallita.	Die gewählte Startzeit liegt in der Vergangenheit. Dies ist nicht zulässig.	Starttiden har allerede passert. Det er ikke tillatt.
+startTimeBeforeNowWarning	You have selected a start time which has already passed. Press OK to continue.	Du har valt en starttid som är före aktuell tid. Tryck ok om du vill fortsätta.	Starttiden er allerede passeret. Tryk på OK for at fortsætte.	U heeft een starttijd geselecteerd die al voorbij is. Druk op OK om door te gaan.	Valitsit aloitusajan, joka on jo mennyt. Jatka painamalla OK.	Die gewählte Startzeit liegt in der Vergangenheit. Drücken Sie auf OK, um fortzufahren.	Starttiden har allerede passert. Trykk på OK for å fortsette.
+conflictWarning	There are activities conflicting with this activity. Press OK to continue.	Det finns aktiviteter som krockar med din aktivitet. Tryck ok om du vill fortsätta.	Der er aktiviteter, der falder sammen med denne aktivitet. Tryk på OK for at fortsætte.	Er zijn activiteiten die conflicteren met deze activiteit. Druk op OK om door te gaan.	On olemassa aktiviteetteja, jotka ovat ristiriidassa tämän aktiviteetin kanssa. Jatka painamalla OK.	Mit dieser Aktivität stehen andere Aktivitäten im Konflikt. Drücken Sie auf OK, um fortzufahren.	Det er aktiviteter som kolliderer med denne aktivitet. Trykk på OK for å fortsette.
 noTemplateActivityError1	There are no templates and you have not selected name or image in adding an activity step-by-step.	Det finns inga mallar och du har inte valt namn och bild i lägga in stegvis.	Der er ingen skabeloner, og du har ikke valgt navn og billede i sekvensmodus.	Er zijn geen sjablonen en u heeft geen naam of afbeelding geselecteerd in het stap voor stap toevoegen van een activiteit.	Mallit ei ole, etkä ole valinnut nimeä tai kuvaa lisätessäsi aktiviteettia vaiheittain.	Es gibt keine vorlagen und Sie haben beim schrittweisen Hinzufügen einer Aktivität keinen Namen oder kein Bild ausgewählt.	Det er ingen maler, og du har ikke valgt navn og bilde i sekvensmodus.
-noTemplateActivityError2	To fix this, either create templates or select either name or image for step-by-step.	För att åtgärda, skapa mallar eller aktivera antingen namn eller bild i lägga in stegvis.	For at fikse det skal der oprettes skabeloner eller aktiveres enten navn eller billede i sekvensmodus.	Om dit op te lossen creëert u sjablonen of selecteer een naam of afbeelding voor stap voor stap.	Korjaa tämä joko luomalla mallit tai valitsemalla joko nimi tai kuva vaiheittaisten ohjeiden mukaisesti.	Um dies zu beheben, erstellen Sie entweder vorlagen oder wählen einen Namen oder ein Bild für die schrittweise Prozedur aus.	For å fikse, opprette noen maler eller aktivere enten navn eller bilde i sekvensmodus.
-missingRequiredActivitySetting	You need either “Show templates”, “Select name” or “Select image” selected.	Du behöver ha antingen “Visa mallar”, “Välj namn”, eller “Välj bild” vald.	Du skal have enten “Vis skabeloner”, “Vælg navn”, eller “Vælg billede” valgt.	U moet ofwel “Toon sjablonen”, “Naam selecteren” of “Afbeelding selecteren” selecteren.	Sinun on valittava joko “Näytä mallit”, “Valitse nimi” tai “Valitse kuva”.	Sie müssen entweder “Vorlagen anzeigen”, “Namen auswählen” oder “Bild auswählen” auswählen.	Du må ha enten “Vis maler”, “Velg navn”, eller “Velg bilde” valgt.
+noTemplateActivityError2	To fix this, either create templates or select either name or image for step-by-step.	För att åtgärda, skapa mallar eller aktivera antingen namn eller bild i lägga in stegvis.	For at fikse det skal der oprettes skabeloner eller aktiveres enten navn eller billede i sekvensmodus.	Om dit op te lossen creëert u sjablonen of selecteert u een naam of afbeelding in stap voor stap.	Korjaa tämä joko luomalla mallit tai valitsemalla joko nimi tai kuva vaiheittaisten ohjeiden mukaisesti.	Um dies zu beheben, erstellen Sie entweder vorlagen oder wählen einen Namen oder ein Bild für die schrittweise Prozedur aus.	For å fikse, opprette noen maler eller aktivere enten navn eller bilde i sekvensmodus.
+missingRequiredActivitySetting	You need either “Show templates”, “Select name” or “Select image” selected.	Du behöver ha antingen “Visa mallar”, “Välj namn”, eller “Välj bild” vald.	Du skal have enten “Vis skabeloner”, “Vælg navn”, eller “Vælg billede” valgt.	U moet ofwel “Toon sjablonen”, “Naam selecteren” of “Afbeelding selecteren” selecteren.	Sinun on valittava joko “Näytä mallit”, “Valitse nimi” tai “Valitse kuva”.	Sie müssen entweder “Vorlagen anzeigen”, “Namen auswählen” oder “Bild auswählen” auswählen.	Du må ha enten “Vis maler”, “Velg navn” eller “Velg bilde” valgt.
 							
 ### Privacy							
 availableFor	Available for	Tillgänglig för	Fås til	Beschikbaar voor	Käytettävissä	Verfügbar für	Tilgjengelig for
@@ -268,9 +268,9 @@ noEndDate	No end date	Inget slutdatum	Ingen slutdato	Geen einddatum	Ei päättym
 endDate	End date	Slutdatum	Slutdato	Einddatum	Päättymispäivä	Enddatum	Sluttdato
 everyOtherWeek	Every other week	Varannan vecka	Hver anden uge	Om de week	Kahden viikon välein	Vierzehntägig	Annenhver uke
 recurringDataEmptyErrorMessage	Select at least one day.	Välj minst en dag.	Vælg mindst en dag	Selecteer ten minste één dag.	Valitse vähintään yksi päivä.	Mindestens einen Tag auswählen.	Velg minst en dag.
-endDateNotSpecifiedErrorMessage	You must enter an end date.	Du måste ange ett slutdatum.	Du skal angive en slutdato.	U moet een einddatum instellen.	Syötä päättymispäivä.	Sie müssen ein Enddatum eingeben.	Du må oppgi en sluttdato
-selectAll	Select all	Markera alla	Markere alle	Alles selecteren	Valitse kaikki	Alles auswählen	Markere alle
-deselectAll	Deselect all	Avmarkera alla	Fravælg alle	Alles deselecteren	Poista kaikki valinnat	Auswahl aufheben	Avmarkere alle
+endDateNotSpecifiedErrorMessage	You must enter an end date.	Du måste ange ett slutdatum.	Du skal angive en slutdato.	U moet een einddatum instellen.	Syötä päättymispäivä.	Sie müssen ein Enddatum eingeben.	Du må oppgi en sluttdato.
+selectAll	Select all	Markera alla	Markere alle	Alles selecteren	Valitse kaikki	Alles auswählen	Velg alle
+deselectAll	Deselect all	Avmarkera alla	Fravælg alle	Alles deselecteren	Poista kaikki valinnat	Auswahl aufheben	Fjern alle valg
 mo	Mon	mån	man	Ma	Ma	Mo	man
 tu	Tue	tis	tir	Di	Ti	Di	tir
 we	Wed	ons	ons	Wo	Ke	Mi	ons
@@ -300,21 +300,21 @@ battery	Battery	Batteri	Batteri	Batterij	Akku	Akkus	Batteri
 clickSound	Click Sound	Klickljud	Kliklyd	Klikgeluid	Kosketusääni	Klang anklicken	Lyd ved valg
 volumeAlarm	Volume for alarm	Volym för alarm	Volumen for alarm	Volume voor alarm	Hälytyksen äänenvoimakkuus	Lautstärke für Alarm	Volum for alarm
 volumeMedia	Volume for media	Volym för media	Volumen for media	Volume voor media	Median äänenvoimakkuus	Lautstärke für Medien	Volum for media
-wifi	Wi-Fi	Wi-Fi	Wi-Fi	Wifi	Wi-Fi	WLAN	Wi-Fi
+wifi	Wi-Fi	Wi-Fi	Wi-Fi	Wi-Fi	Wi-Fi	WLAN	Wi-Fi
 notConnected	Not connected	Ej ansluten	Ikke tilsluttet	Niet verbonden	Ei yhteyttä	Nicht verbunden	Ikke tilkoblet
 connected	Connected	Ansluten	Tilsluttet	Verbonden	Yhdistetty	Verbunden	Tilkoblet
-connectedNoInternet	Connected, no internet						
-screenTimeout	Screen timeout	Skärmens tidsgräns	Skærmens tidsgrænse	Timeout scherm	Näytön pimennys	Bildschirm Zeitüberschreitung	Skjermens tidsgrense
+connectedNoInternet	Connected, no internet	Ansluten, inget internet	Tilsluttet, intet internet	Verbonden, geen internet	Yhdistetty, ei internetiä	Verbunden, aber kein Internet	Tilkoblet, uten internett
+screenTimeout	Screen timeout	Skärmens tidsgräns	Skærmens tidsgrænse	Scherm time-out	Näytön pimennys	Bildschirm Zeitüberschreitung	Skjermens tidsgrense
 alwaysOn	Always on	Alltid på	Altid på	Altijd aan	Aina käytössä	Immer ein	Alltid på
 keepScreenAwakeWhileCharging	Keep screen awake when charging	Håll skärmen tänd vid laddning	Lad skærmen være tændt under opladning	Houd scherm wakker tijdens opladen	Pidä näyttö päällä latauksen aikana	Bildschirm während Aufladen aktiv lassen	Hold skjermen på ved lading
 							
 ### Settings							
 settings	Settings	Inställningar	Indstillinger	Instellingen	Asetukset	Einstellungen	Innstillinger
 calendarView	Day Calendar	Dagkalender	Dagkalender	Dagkalender	Päiväkalenteri	Tageskalender	Dagkalender
-oneTimePillarView	1 timepillar	1 tidpelare	1 tidslinje	1 tijdlijn	1 aikajana	1 Zeitstrahl	1 tidslinje
-twoTimePillarsView	2 timepillars	2 tidspelare	2 tidslinjer	2 tijdlijnen	2 aikajanaa	2 Zeitstrahlen	2 tidslinjer
+oneTimePillarView	1 time pillar	1 tidpelare	1 tidsøjle	1 tijdzuil	1 aikasarake	1 Zeitsäule	1 tidsøyle
+twoTimePillarsView	2 time pillars	2 tidpelare	2 tidsøjler	2 tijdzuilen	2 aikasarakkeet	2 Zeitsäulen	2 tidsøyler
 listView	List	Lista	Liste	Lijst	Luettelo	Liste	Liste
-timepillarSettings	Timepillar settings	Inställningar för tidpelare	Tidslinjeindstillinger	Tijdlijn instellingen	Aikajanan asetukset	Zeitstrahl einstellungen	Innstillinger for tidslinje
+timepillarSettings	Time pillar settings	Inställningar för tidpelare	Indstillinger for tidsøjle	Tijdzuil instellingen	Aikasarakkeen asetukset	Zeitsäule einstellungen	Innstillinger for tidsøyle
 activityDuration	Activity duration	Visa tid som	Vis tiden som	Laat de tijd zien als	Näytä aika muodossa	Zeit anzeigen als	Vise tiden som
 dots	Dots	Prickar	Prikker	Stippen	Pisteet	Punkte	Prikker
 edge	Edge	Flärp	Flik	Rand	Reuna	Kante	Flik
@@ -323,7 +323,7 @@ monthCalendarPreview	Detailed	Detaljerad	Detaljeret	Gedetailleerd	Yksityiskohtai
 textToSpeech	Speech support	Talstöd	Talestøtte	Spraakondersteuning	Puhetuki	Sprachausgabe	Talesyntese
 longpressToSpeak	Tap and hold for speech support	Tryck och håll ned för talstöd	Tryk og hold nede for talestøtte	Tik en houd vast voor spraakondersteuning	Napauta ja pidä painettuna puhetukea varten	Tippen und halten Sie für die Sprachunterstützung	Trykk og hold for talestøtte
 longPressInfoText	Tap and hold about 1½ seconds on any function to get it read to by speech synthesis	Tryck länge på någon text för att få den uppläst	Tryk og hold ca. 1½ sekund på enhver funktion for at få den læst til ved talesyntese	Tik en houd ongeveer 1½ seconde vast op een functie om deze te laten voorlezen door spraaksynthese	Napauta ja pidä painettuna noin 1,5 sekuntia mitä tahansa toimintoa saadaksesi sen lukemaan puheen synteesin avulla	Tippen und halten Sie etwa 1½ Sekunden lang auf eine Funktion, um sie durch Sprachsynthese lesen zu lassen	Trykk og hold i ca. 1½ sekund på en funksjon for å få den lest opp ved talesyntese
-display	Display	Visa	Vise	Tonen	Näytä	Anzeige	Vise
+display	Display	Visa	Vise	Tonen	Näyttö	Anzeige	Vise
 viewMode	View mode	Visningsläge	Visningstilstand	Weergavemodus	Katselutila	Ansichtsmodus	Visningsmodus
 dayInterval	Day interval	Intervall	Interval	Interval	Aikaväli	Intervall	Intervall
 interval	Interval	Intervall	Interval	Interval	Aikaväli	Intervall	Intervall
@@ -366,27 +366,27 @@ columns	Columns	Kolumner	Kolonner	Kolommen	Sarakkeet	Spalten	Kolonner
 headings	Headings	Rubriker	Titler	Kopteksten	Otsikot	Überschriften	Titler
 allowPassedStartTime	Allow passed start time	Lägga in på passerad tid	Indsæt på passeret starttid	Verlopen Starttijd toestaan	Salli mennyt aloitusaika	Startzeit in der Vergangenheit erlauben	Legg inn på passert tid
 addRecurringActivity	Add recurring activity	Lägga in återkommande aktivitet	>Indsæt gentagende aktivitet	Terugkerende activiteit toevoegen	Lisää toistuva aktiviteetti	Wiederkehrende Aktivität hinzufügen	Legg inn gjentakende aktivitet
-showEndTime	Show end time	Visa sluttid	Vis sluttid	Eindtijd tonen	Näytä päättymisaika	Endezeit anzeigen	Vis sluttid
+showEndTime	Show end time	Visa sluttid	Vis sluttid	Eindtijd tonen	Näytä päättymisaika	Endzeit anzeigen	Vis sluttid
 showAlarm	Show alarm	Visa larm	Vis alarm	Alarmen weergeven	Näytä hälytykset	Alarme anzeigen	Vis alarm
 showVibrationAlarm	Show vibration	Visa vibration	Vis vibration	Trilfunctie tonen	Näytä värinä	Vibration anzeigen	Vis vibrasjon
 showSilentAlarm	Show silent alarm	Visa tyst larm	Vis stille alarm	Stille alarmen weergeven	Näytä hiljaiset hälytykset	Stille Alarme anzeigen	Vis stille alarm
 showNoAlarm	Show no alarm	Visa inget larm	Vis ingen alarm	Geen alarmen weergeven	Älä näytä hälytystä	Kein Alarm anzeigen	Vis ingen alarm
 showAlarmOnlyAtStartTime	Show alarm only at start time	Larm endast vid starttid	Vis kun alarm ved starttidspunkt	Alarm alleen bij starttijd weergeven	Näytä hälytys vain alkamishetkellä	Alarm nur zur Startzeit anzeigen	Vis alarm kun på start tid
-showSpeechAtAlarm	Show speech at alarm	Välj tal vid larm	Vælge tale ved alarm	Kies spraak bij alarm	Näytä puhe hälytyksessä	Ansage zum Alarm auswählen	Vis tale ved alarm
+showSpeechAtAlarm	Show speech at alarm	Välj tal vid larm	Vælge tale ved alarm	Spraak bij alarm kiezen	Näytä puhe hälytyksessä	Ansage zum Alarm auswählen	Vis tale ved alarm
 showReminders	Show reminders	Påminnelser	Vis påmindelser	Herinneringen weergeven	Näytä muistutukset	Erinnerungen anzeigen	Vis påminnelser
-showSelectEndDate	Show select end date	Ange slutdatum	Vis vælg slutdato	Selecteer einddatum weergeven	Näytä valitse päättymispäivä	Enddatum auswählen anzeigen	Vis velg slutt dato
+showSelectEndDate	Show select end date	Ange slutdatum	Vis vælg slutdato	Einddatum weergeven selecteren	Näytä valitse päättymispäivä	Enddatum auswählen anzeigen	Vis velg sluttdato
 recurring	Recurring	Upprepning	Gentagende	Terugkerend	Toistuva	Wiederkehrend	Gjentakende
-throughEditView	Through Edit View	Via Ändravyn	Via Redigersiden	Door bewerkweergave	Muokkausnäkymässä	Durch Bearbeitungsanzeige	Via endrevindu
+throughEditView	Through Edit View	Via Ändravyn	Via Redigersiden	Door bewerkweergave	Kautta Muokkaa Väkymää	Durch Bearbeitungsanzeige	Via endrevindu
 androidSettings	Android Settings	Android-inställningar	Android-indstillinger	Android-instellingen	Android-asetukset	Android-Einstellungen	Android-innstillinger
 stepByStep	Step-by-step	Stegvis	Trinvist	Stap voor stap	Vaihe vaiheelta	Schritt für Schritt	Via sekvens
-showTemplates	Show templates	Visa mallar	Vis skabeloner	Toon sjablonen	Näytä mallit	Vorlagen anzeigen	Vis maler
+showTemplates	Show templates	Visa mallar	Vis skabeloner	Sjablonen tonen	Näytä mallit	Vorlagen anzeigen	Vis maler
 selectName	Select name	Välj namn	Vælg navn	Naam selecteren	Valitse nimi	Name auswählen	Velg navn
 selectDate	Select date	Välj datum	Vælg dato	Datum selecteren	Valitse päivämäärä	Datum auswählen	Velg dato
 selectType	Select type	Välj typ	Vælg type	Type selecteren	Valitse tyyppi	Typ auswählen	Velg type
 selectAllDay	Select all day	Välj heldag	Vælg hele dagen	Hele dag selecteren	Valitse koko päivä	Ganztägig auswählen	Velg hele dagen
 selectCategory	Select category	Kategori	Vælg kategori	Categorie selecteren	Valitse luokka	Kategorie auswählen	Velg kategori
 selectCheckable	Select checkable	Välj kvitterbar	Vælg kvittering	Afvinkbaarheid selecteren	Valitse tarkistettava	Kontrollierbar auswählen	Velg kvittering
-selectAvailableFor	Select available for	Välj tillgänglig för	Vælg tilgængelig for	Selecteer beschikbaar voor	Valitse käytettävissä	Wählen Sie verfügbar für	Velg tilgjengelig for
+selectAvailableFor	Select available for	Välj tillgänglig för	Vælg tilgængelig for	Beschikbaar voor selecteren	Valitse käytettävissä	Wählen Sie verfügbar für	Velg tilgjengelig for
 selectAlarm	Select alarm	Välj larm	Vælg alarm	Alarm selecteren	Valitse hälytys	Alarm auswählen	Velg alarm
 iOSAlarmTimeWarning	On an iPhone, alarm sounds can only be played for maximum 30 seconds	På en iPhone kan alarmljud bara spelas upp i maximalt 30 sekunder	På en iPhone kan alarmlyde kun afspilles i maksimalt 30 sekunder	Op een iPhone kunnen alarmgeluiden maximaal 30 seconden worden afgespeeld	IPhonessa hälytysääniä voidaan toistaa enintään 30 sekunnin ajan	Auf einem iPhone können Alarmtöne nur maximal 30 Sekunden lang abgespielt werden	På en iPhone kan alarmlyder bare spilles av i maksimalt 30 sekunder
 selectChecklist	Select checklist	Välj checklista	Vælg tjekliste	Checklist selecteren	Valitse tarkistusluettelo	Checkliste auswählen	Velg sjekkliste
@@ -395,19 +395,19 @@ selectReminder	Select reminder	Välj påminnelser	Vælg påmindelse	Herinnering 
 add	Add	Lägg in	Indsæt	Toevoegen	Lisää	Hinzufügen	Legg inn
 defaults	Defaults	Förval	Forvalg	Voorselectie	Esivalinta	Vorauswahl	Forvalg
 onlyAppliesToGo	Only applies to MEMOplanner Go	Gäller endast MEMOplanner Go	Kun relevant for MEMOplanner Go	Geldt alleen voor MEMOplanner Go	Koskee vain MEMOplanner Gota	Gilt nur für MEMOplanner Go	Gjelder kun MEMOplanner Go
-showOngoingActivityInFullScreen	Show ongoing activity in full screen	Visa pågående aktivitet i helskärm	Vis nuværende aktivitet i fuld skærm	Lopende activiteit in volledig scherm tonen	Näytä käynnissä oleva aktiviteetti koko näytössä	Laufende Aktivität im Vollbild zeigen	Vis gjeldende aktivitet i full skjerm
+showOngoingActivityInFullScreen	Show ongoing activity in full screen	Visa pågående aktivitet i helskärm	Vis nuværende aktivitet i fuld skærm	Lopende activiteit in volledig scherm tonen	Näytä käynnissä oleva aktiviteetti koko näytössä	Laufende Aktivität im Vollbild zeigen	Vis gjeldende aktivitet i fullskjerm
 							
 ## Functions Settings							
 toolbar	Toolbar	Knapprad	Værktøjslinje	Werkbalk	Työkalurivi	Symbolleiste	Knapperad
 toolbarSettingsHint	Functions displayed in bottom of page	Funktioner som visas längst ner på sidan	Visninger vises i værktøjslinjen	Weergaven weergegeven in de werkbalk	Näkymät näkyvät työkalupalkissa	In der Symbolleiste angezeigte Ansichten	Visninger som vises på verktøylinjen
-homeScreen	Home screen	Startsida	Startside	Thuisscherm	Aloitusnäyttö	Startbildschirm	Startside
+homeScreen	Home screen	Startsida	Startside	Startscherm	Aloitusnäyttö	Startbildschirm	Startside
 homeScreenSettingsHint	View displayed when the home button is pressed	Visad vy vid tryck på hemknappen	Side der bliver vist ved tryk på hjemknappen	Weergave getoond als de homeknop wordt ingedrukt	Näkymä näytetään, kun aloitussivun painiketta painetaan	Wird nach Drücken der Schaltfläche Home angezeigt	Vindu som vil bli vist ved trykk på hjemknappen
 timeout	Timeout	Timeout	Timeout	Time-out	Aikakatkaisu	Zeitüberschreitung	Timeout
-timeoutSettingsHint	Returns to the home screen after a period of inactivity	Återgång till startsidan efter en tids inaktivitet	Gå tilbage til startsiden, efter en periode med inaktivitet	Gaat terug naar het thuisscherm na een periode van inactiviteit	Palaa aloitusnäyttöön käyttämättömyysjakson jälkeen	Rückkehr zum Startbildschirm nach einer Zeit der Inaktivität	Återgång till startsidan efter en tids inaktivitet
+timeoutSettingsHint	Returns to the home screen after a period of inactivity	Återgång till startsidan efter en tids inaktivitet	Gå tilbage til startsiden, efter en periode med inaktivitet	Gaat terug naar het startscherm na een periode van inactiviteit	Palaa aloitusnäyttöön käyttämättömyysjakson jälkeen	Rückkehr zum Startbildschirm nach einer Zeit der Inaktivität	Tilbake til startsiden etter en tids inaktivitet
 noTimeout	No timeout	Ingen timeout	Ingen timeout	Geen time-out	Ei aikakatkaisua	Keine Zeitüberschreitung	Ingen timeout
 activateScreensaver	Activate Screensaver	Aktivera skärmsläckare	Aktivér pauseskærm	Screensaver activeren	Aktivoi näytönsäästäjä	Bildschirmschoner aktivieren	Aktiver skjermsparer
 onlyActivateScreensaverDuringNight	Only activate screensaver during night	Aktivera skärmsläckare endast på natten	Aktiver kun pauseskærm om natten	Screensaver alleen 's nachts activeren	Ota näytönsäästäjä käyttöön vain öisin	Bildschirmschoner nur nachts aktivieren	Bare aktiver skjermsparer om natten
-menuRemovalWarning	Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking directly under the category symbols in the day calendar; left – right – left. This works even if they are hidden.	Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka direkt under kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.	Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke direkte nedenfor kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.	Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door direct hieronder de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.	Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää klikkaamalla alla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.	Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie unter Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.	Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke rett nedenfor kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.
+menuRemovalWarning	Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking directly under the category symbols in the day calendar; left – right – left. This works even if they are hidden.	Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka direkt under kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.	Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke direkte nedenfor kategorisymbolerne i dagkalenderen; venstre – højre – venstre. Tryk på det tilsvarende område af det, der mangler.	Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door direct hieronder de categoriesymbolen in de dagkalender te klikken; links – rechts – links. Dit werkt zelfs als ze verborgen zijn.	Haluatko varmasti poistaa asetukset valikosta?  Jos haluat, asetuksia on silti mahdollista käyttää klikkaamalla alla kategoriasymboleja päiväkalenterissa: vasen – oikea – vasen. Tämä toimii, vaikka ne olisi piilotettu.	Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie unter Kategoriesymbole im Tageskalender anklicken; links – rechts – links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.	Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke rett nedenfor kategorisymbolene i dagkalenderen; venstre – høyre – venstre. Dette fungerer selv om de er skjulte. av den savnede.
 menuItemsDisabled	all menu items are disabled	alla menyalternativ är inaktiverade	alle menupunkter er inaktiveret	alle menu-items zijn gedeactiveerd	kaikki valikkokohteet ovat pois käytöstä	alle Menüpunkte sind deaktiviert	alle menyvalg er deaktivert
 							
 ## Month Calendar							
@@ -424,7 +424,7 @@ showClock	Show clock	Visa klocka	Vis ur	Toon klok	Näytä kello	Uhr anzeigen	Vis
 delete	Delete	Radera	Slet	Verwijderen	Poista	Löschen	Slett
 edit	Edit	Ändra	Ændre	Bewerken	Muokkaa	Bearbeiten	Endre
 showQuarterHourWatchBar	Show Quarter Hour Watch bar	Visa kvartur	Vis kvartur	Kwartierkijkbalk tonen	Näytä aikapylväsnäkymä	Viertelstunden-Balken anzeigen	Vis kvarterur
-timeOnQuarterHourBar	Time on Quarter Hour bar	Tid på kvartur	Tid på kvartur	Tijd op kwartierbalk	Aika varttikellon palkissa	Zeit auf Viertelstunden-Balken	Tid på kvarterur
+timeOnQuarterHourBar	Time on Quarter Hour bar	Tid på kvartur	Tid på kvartur	Tijd op kwartierkijkbalk	Aika varttikellon palkissa	Zeit auf Viertelstunden-Balken	Tid på kvarterur
 							
 ## Calendar General Settings							
 clock	Clock	Klocka	Ur	Klok	Kello	Uhr	Klokke
@@ -435,15 +435,15 @@ timeline	Timeline	Tidslinje	Tidslinje	Tijdlijn	Aikajana	Zeitstrahl	Tidslinje
 earyMorning	early morning	morgon	morgen	ochtend	aamu	frühmorgens	morgen
 twelveHourFormat	12 hours format	12 timmar format	12 timers format	12 uur formaat	12 tunnin muoto	12 Stunden Format	12 timers format
 oneDot	One dot	En punkt	Et punkt	Eén punt	Yksi piste	Ein Punkt	Et punkt
-columnOfDots	Column of dots	Pelare av punkter	Søjle af punkter	Kolommen van punten	Pistepylväs	Spalte aus Punkten	Pillar av punkter
-lineAcrossCurrentTime	Line across current time	Linje på aktuell tid	Linje viser aktuel tid	Lijn door huidige tijd	Viiva nykyisen ajan kohdalla	Linie über aktueller Zeit	Linje viser aktuell tid
+columnOfDots	Column of dots	Pelare av punkter	Søjle af punkter	Kolom van punten	Pistepylväs	Spalte aus Punkten	Kolonne med punkter
+lineAcrossCurrentTime	Line across current time	Linje på aktuell tid	Linje viser aktuel tid	Lijn voor huidige tijd	Viiva nykyisen ajan kohdalla	Linie über aktueller Zeit	Linje viser aktuell tid
 linesForEachHour	Lines for each hour	Linjer för varje timme	Linjer for hver time	Lijnen voor elk uur	Viivat jokaiselle tunnille	Linien für jede Stunde	Linjer for hver time
 saturdayAndSunday	Saturday and Sunday	Lördag och söndag	Lørdag og søndag	Zaterdag en zondag	Lauantai ja sunnuntai	Samstag und Sonntag	Lørdag og søndag
 dayColours	Day colours	Dagfärger	Dagfarver	Dagkleuren	Päivien värit	Tagesfarben	Dagfarger
 noDayColours	No day colours	Inga dagfärger	Ingen dagsfarver	Geen dagkleuren	Ei päivien värejä	Keine Tagesfarben	Ingen dagfarger
 showCagetories	Show categories	Visa kategorier	Vis kategorier	Categorieën tonen	Näyte kategoriat	Kategorien zeigen	Vis kategorier
 showColours	Show colours	Visa färger	Vis farver	Kleuren tonen	Näytä värit	Farben zeigen	Vis farger
-editCategory	Edit category	Redigera kategori	Rediger kategori	Bewerk categorie	Muokkaa kategoriaa	Kategorie bearbeiten	Rediger kategori
+editCategory	Edit category	Redigera kategori	Rediger kategori	Categorie bewerken	Muokkaa kategoriaa	Kategorie bearbeiten	Rediger kategori
 							
 ### Speech support settings							
 speakEveryWord	Read out word when space bar is pressed	Uppläsning av ord vid tryck på mellanslag	Oplæs ord ved mellemrum	Woord voorlezen als er op de spatiebalk wordt gedrukt	Lue sana ääneen, kun välilyöntipainiketta painetaan	Bei gedrückter Leertaste Wort vorlesen	Opplesning av ord ved mellomrom
@@ -455,15 +455,15 @@ testOfSpeechRate	Test of speech rate	Test av talhastighet	Test af talehastighed	
 voices	Voices	Röster	Stemmer	Stemmen	Äänet	Stimmen	Stemmer
 							
 ### Code protect							
-codeProtect	Code protect	Kodskydd	Kodebeskyttelse	Codebescherming	Suojakoodi	Schutz durch Code	Kodebeskyttelse
+codeProtect	Code protect	Kodskydd	Kodebeskyttelse	Bescherming door code	Suojakoodi	Schutz durch Code	Kodebeskyttelse
 code	Code	Kod	Kode	Code	Koodi	Code	Kode
-codeProtectSettings	Code protect settings	Kodskydda Inställningar	Kodebeskyt indstillinger	Codebeschermingsinstellingen	Suojaa asetukset koodilla	Einstellungen mit Code schützen	Kodebeskytt Innstillinger
+codeProtectSettings	Code protect settings	Kodskydda Inställningar	Kodebeskyt indstillinger	Instellingen met code beschermen	Suojaa asetukset koodilla	Einstellungen mit Code schützen	Kodebeskytt Innstillinger
 codeProtectThisView	Code protect this view	Kodskydda denna vy	Kodebeskytte denne visning.	Deze weergave met code beschermen	Suojaa tämä näkymä koodilla	Diese Anzeige durch Code schützen	Kodebeskytte denne visning.
-codeProtectAndroidSettings	Code protect Android Settings	Kodskydda Android-inställningar	Kodebeskyt Android-indstillinger	Codebeschermingsinstellingen Android	Suojaa Android-asetukset koodilla	Android-Einstellungen mit Code schützen	Kodebeskytt Android-innstillinger
-enterCode	Enter code	Ange kod	Indtast kode	Voer code in	Syötä koodi	Code eingeben	Angi kode
+codeProtectAndroidSettings	Code protect Android Settings	Kodskydda Android-inställningar	Kodebeskyt Android-indstillinger	Android-instellingen met code beschermen	Suojaa Android-asetukset koodilla	Android-Einstellungen mit Code schützen	Kodebeskytt Android-innstillinger
+enterCode	Enter code	Ange kod	Indtast kode	Code invoeren	Syötä koodi	Code eingeben	Angi kode
 enterYourCodeToAccess	Enter your code to access	Ange din kod för att komma åt	Indtast din kode for at få adgang	Voer uw code in om toegang te krijgen naar	Syötä koodi päästäksesi sisään	Geben Sie Ihren Code ein, um darauf zuzugreifen	Angi din kode for å få tilgang
-enterNewCode	Enter new code	Ange ny kod	Angiv nyt kodeord	Voer nieuwe code in	Anna uusi koodi	Neuen Code eingeben	Angi ny kode
-confirmCode	Confirm code	Bekräfta kod	Bekræft kodeord	Bevestig code	Vahvista koodi	Code bestätigen	Bekreft kode
+enterNewCode	Enter new code	Ange ny kod	Angiv nyt kodeord	Nieuwe code invoeren	Anna uusi koodi	Neuen Code eingeben	Angi ny kode
+confirmCode	Confirm code	Bekräfta kod	Bekræft kodeord	Code bevestigen	Vahvista koodi	Code bestätigen	Bekreft kode
 incorrectCode	Incorrect code	Felaktig kod	Forkert kodeord	Onjuiste code	Virheellinen koodi	Falscher Code	Feil kode
 							
 ### Permissions							
@@ -472,59 +472,59 @@ notifications	Notifications	Notiser	Notifikationer	Meldingen	Ilmoitukset	Benachr
 accessToPhotos	Access to Photos	Tillgång till bilder	Adgang til fotos	Toegang tot foto's	Pääsy valokuviin	Zugang zu Fotos	Tilgang til bilder
 accessToCamera	Access to Camera	Tillgång till kameran	Adgang til kamera	Toegang tot camera	Kameran käyttöoikeus	Zugang zur Kamera	Tilgang til kamera
 allowNotifications	Allow notifications	Tillåt notiser	Tillad notifikationer	Meldingen toestaan	Salli ilmoitukset	Benachrichtigungen zulassen	Tillat notifikasjoner
-allowNotificationsDescription1	Allow notifications to be able to get alarms and reminders from activities. You can do that from the	Tillåt notiser för att få larm och påminnelser från aktiviteter. Du kan göra det ifrån	Tillad notifikationer for at kunne modtage alarmer og påmindelser fra aktiviteter. Du kan gøre det fra	Sta meldingen toe om alarmen en herinneringen van activiteiten te kunnen ontvangen. U kunt dat doen vanaf de	Salli ilmoitusten saada hälytyksiä ja muistutuksia toiminnasta. Voit tehdä sen	Ermöglichen Sie Benachrichtigungen, Alarme und Erinnerungen von Aktivitäten zu erhalten. Sie können das von der tun	Tillat notifikasjoner for å få alarm og påminnelser fra aktiviteter. Du kan gjøre det fra
+allowNotificationsDescription1	Allow notifications to be able to get alarms and reminders from activities. You can do that from the	Tillåt notiser för att få larm och påminnelser från aktiviteter. Du kan göra det ifrån	Tillad notifikationer for at kunne modtage alarmer og påmindelser fra aktiviteter. Du kan gøre det fra	Sta meldingen toe om alarmen en herinneringen van activiteiten te kunnen ontvangen. U kunt dat doen vanaf de	Salli ilmoitusten saada hälytyksiä ja muistutuksia toiminnasta. Voit tehdä sen	Benachrichtigungen zulassen, um Alarme und Erinnerungen von Aktivitäten zu erhalten. Sie können das von der tun	Tillat notifikasjoner for å få alarm og påminnelser fra aktiviteter. Du kan gjøre det fra
 settingsLink	settings	inställningar	indstillinger	instellingen	asetukset	die Einstellungen	innstillinger
-turnOffNotifications	Turn off notifications?	Stäng av notiser?	Slå notifikationer fra	Zet de meldingen uit?	Laita ilmoitukset pois päältä?	Benachrichtigungen abschalten?	Slå av notifikasjoner?
-turnOffNotificationsBody	You will no longer be able to get alarms and reminders from activities.	Du kommer inte längre kunna få alarm och notiser för aktiviteter.	Du kan ikke længere modtage alarmer og notifikationer fra aktiviteter.	U kunt geen alarmen en herinneringen meer ontvangen van activiteiten.	Et voi enää saada hälytyksiä ja muistutuksia toiminnasta.	Sie können keine Alarme und Erinnerungen mehr an Aktivitäten erhalten.	Du vil ikke lengre få alarm og notifikasjoner fra aktiviteter
+turnOffNotifications	Turn off notifications?	Stäng av notiser?	Slå notifikationer fra	Meldingen uitzetten?	Laita ilmoitukset pois päältä?	Benachrichtigungen abschalten?	Slå av notifikasjoner?
+turnOffNotificationsBody	You will no longer be able to get alarms and reminders from activities.	Du kommer inte längre kunna få alarm och påminnselser för aktiviteter.	Du kan ikke længere modtage alarmer og påmindelser fra aktiviteter.	U kunt geen alarmen en herinneringen meer ontvangen van activiteiten.	Et voi enää saada hälytyksiä ja muistutuksia toiminnasta.	Sie können keine Alarme und Erinnerungen mehr an Aktivitäten erhalten.	Du vil ikke lengre få alarm og påminnelser fra aktiviteter
 notificationsWarningHintText	Allow notifications to be able to get alarms and reminders from activities.	Tillåt notiser för att få larm och påminnelser för aktiviteter.	Tillad notifikationer for at kunne modtage alarmer og påmindelser for aktiviteter.	Sta meldingen toe om alarmen en herinneringen van activiteiten te kunnen ontvangen.	Salli ilmoitusten saada hälytyksiä ja muistutuksia toiminnasta.	Ermöglichen Sie Benachrichtigungen, Alarme und Erinnerungen von Aktivitäten zu erhalten.	Tillat notifikasjoner for å få alarm og påminnelser for aktiviteter
-notificationsWarningText	Allow notifications from the settings to be able to receive alarms and reminders.	Tillåt notiser från inställningar för att få larm och påminnelser.	Tillad notifikationer fra indstillingerne for at kunne modtage alarmer og påmindelser.	Sta meldingen van de instellingen toe om alarmen en herinneringen te kunnen ontvangen.	Salli asetusten ilmoitusten vastaanottaa hälytyksiä ja muistutuksia.	Sta meldingen van de instellingen toe om alarmen en herinneringen te kunnen ontvangen.	Tillat notifikasjoner fra innstillinger for å få alarm og påminnelser
+notificationsWarningText	Allow notifications from the settings to be able to receive alarms and reminders.	Tillåt notiser från inställningar för att få larm och påminnelser.	Tillad notifikationer fra indstillingerne for at kunne modtage alarmer og påmindelser.	Sta meldingen van de instellingen toe om alarmen en herinneringen te kunnen ontvangen.	Salli asetusten ilmoitusten vastaanottaa hälytyksiä ja muistutuksia.	Benachrichtigungen aus den Einstellungen zulassen, um Alarme und Erinnerungen erhalten zu können.	Tillat notifikasjoner fra innstillinger for å få alarm og påminnelser
 fullScreenAlarm	Full screen alarm	Helskärmslarm	Alarm i fuld skærm	Alarm op volledig scherm	Koko näytön hälytys	Vollbildalarm	Alarm i fullskjerm
-redirectToAndroidSettings	You will be redirect to the Android settings.	Du kommer att omdirigeras till Android-inställningarna.	Du omdirigeres til Android-indstillingerne.	U wordt doorgestuurd naar de Android-instellingen.	Sinut ohjataan Android-asetuksiin.	Sie werden zu den Android-Einstellungen weitergeleitet.	Du vil bli omdirrigert til Android-innstillinger
+redirectToAndroidSettings	You will be redirect to the Android settings.	Du kommer att omdirigeras till Android-inställningarna.	Du omdirigeres til Android-indstillingerne.	U wordt doorgestuurd naar de Android-instellingen.	Sinut ohjataan Android-asetuksiin.	Sie werden zu den Android-Einstellungen weitergeleitet.	Du vil bli ledet til Android-innstillinger.
 fullScreenAlarmInfo	Allow this permission to be able to get full screen alarm of activities	Tillåt denna behörighet för att kunna få helskärmslarm om aktiviteter	Accepter denne tilladelse for at kunne få alarm i fuld skærm til aktiviteter	Sta deze toestemming toe om een alarm op volledig scherm van activiteiten te krijgen	Anna tämän oikeuden saada koko näytön hälytys toiminnoista	Ermöglichen Sie dieser Berechtigung, einen Vollbildalarm für Aktivitäten zu erhalten	Godta denne tillatelsen for å få alarm i fullskjerm for aktiviteter
 allow	Allow	Tillåt	Tillad	Toestaan	Sallia	ermöglichen	Tillat
-previewActivityTitle	Erik's birthday party	Eriks födelsedagskalas	Eriks fødselsdagsfest	Erik's verjaardagsfeestje	Erikin syntymäpäiväjuhlat	Eriks Geburtstagsfeier	Eiriks bursdagsselskap
+previewActivityTitle	Erik's birthday party	Eriks födelsedagskalas	Eriks fødselsdagsfest	Eriks verjaardagsfeestje	Erikin syntymäpäiväjuhlat	Eriks Geburtstagsfeier	Eiriks bursdagsselskap
 allowAccessPhotosBody	Allow access to photos to be able to use photos from the device.	Tillåt behörighet till bilder för att ha möjlighet att använda bilder från enheten.	Tillad adgang til fotos for at kunne bruge fotos fra enheden.	Sta toegang tot foto's toe om foto's van het apparaat te kunnen gebruiken.	Salli valokuvien käyttö, jotta voit käyttää valokuvia laitteesta.	Ermöglichen Sie den Zugriff auf Fotos, um Fotos vom Gerät verwenden zu können.	Tillat tilgang til bilder for å ha mulighet til å bruke bilder fra enheten
 allowAccessCameraBody	Allow access to camera to be able to take a photo from the device.	Tillåt behörighet till kameran för att ha möjlighet att ta bilder från enheten.	Tillad adgang til kameraet for at kunne tage et billede fra enheden.	Sta toegang tot de camera toe om een foto te kunnen maken vanaf het apparaat.	Salli kameran käyttö, jotta voit ottaa valokuvan laitteesta.	Ermöglichen Sie den Zugriff auf die Kamera, um ein Foto vom Gerät aufnehmen zu können.	Tillat tilgang til kamera for å ha mulighet til å ta bilder fra enheten
-allowAccessBody2	You can always do that later from the	Du kan alltid göra det senare från	Du kan altid gøre det senere fra	U kunt dat later altijd doen vanuit het	Voit aina tehdä sen myöhemmin	Das können Sie später immer noch von der	Du kan alltids gjøre det senere fra
+allowAccessBody2	You can always do that later from the	Du kan alltid göra det senare från	Du kan altid gøre det senere fra	U kunt dat later altijd doen vanuit de	Voit aina tehdä sen myöhemmin	Dies kann jederzeit später erfolgen von der	Du kan alltids gjøre det senere fra
 accessToMicrophone	Access to Microphone	Tillgång till mikrofon	Adgang til mikrofon	Toegang tot microfoon	Pääsy mikrofoniin	Zugang zum Mikrofon	Tilgang til mikrofon
 allowAccessMicrophoneBody	Allow access to microphone to be able to record speech from the device	Tillåt åtkomst till mikrofon för att kunna spela in tal från enheten	Tillad adgang til mikrofon for at kunne optage tale fra enheden	Toegang tot microfoon toestaan om spraak van het apparaat op te nemen	Salli mikrofonin käyttö, jotta voit tallentaa puhetta laitteelta	Erlauben Sie den Zugriff auf das Mikrofon, um Sprache vom Gerät aufzeichnen zu können	Tillat tilgang til mikrofon for å kunne ta opp tale fra enheten
 							
 ### About							
 about	About	Information	Information	Informatie	Tiedot	Information	Informasjon
 aboutMemoplanner	About	Information	Om	Over	Lisätietoja	Über	Om
-licenseNumber	License number	Licensnyckel	Licensnummer	Licentienummer	Lisenssinumero	Lizenznummer	Lisens nummer
-licenseValidDate	License valid date	Licensens slutdatum	Licens gyldighedsdato	Geldigheidsdatum licentie	Lisenssin viimeinen voimassaolopäivä	Gültigkeitsdatum Lizenz	Lisens gyldig dato
+licenseNumber	License number	Licensnyckel	Licensnummer	Licentienummer	Lisenssinumero	Lizenznummer	Lisensnummer
+licenseValidDate	License valid date	Licensens slutdatum	Licens gyldighedsdato	Geldigheidsdatum licentie	Lisenssin viimeinen voimassaolopäivä	Gültigkeitsdatum Lizenz	Lisensens sluttdato
 loggedInUser	Logged in user account	Inloggat användarkonto	Logget ind brugerkonto	Ingelogd gebruikersaccount	Kirjautunut käyttäjätili	Angemeldetes Benutzerkonto	Innlogget brukerkonto
 aboutDevice	About the device	Om enheten	Om enheden	Over het apparaat	Tietoja laitteesta	Über das Gerät	Om enheten
 deviceName	Device name	Enhetens namn	Enhedsnavn	Apparaatnaam	Laitteen nimi	Gerätename	Enhetsnavn
 serialNumber	Serial number	Serienummer	Serienummer	Serienummer	Sarjanumero	Seriennummer	Serienummer
 version	Version	Version	Version	Versie	Versio	Version	Versjon
-androidVersion	Android version	Android-version	Android-version	Android-versie	Android-versio	Android-Version	Android versjon
-iosVersion	iOS version	iOS-version	iOS-version	iOS-versie	iOS-versio	iOS-Version	iOS versjon
+androidVersion	Android version	Android-version	Android-version	Android-versie	Android-versio	Android-Version	Android-versjon
+iosVersion	iOS version	iOS-version	iOS-version	iOS-versie	iOS-versio	iOS-Version	iOS-versjon
 producer	Producer	Producent	Producent	Producent	Valmistaja	Hersteller	Produsent
-searchForUpdate	Search for update	Sök uppdatering	Søg opdatering	Zoeken naar update	Etsi päivitystä	Nach neuerer Version suchen	Søk oppdatering
+searchForUpdate	Search for update	Sök uppdatering	Søg opdatering	Naar update zoeken	Etsi päivitystä	Nach neuerer Version suchen	Søk oppdatering
 							
 ### Menu page							
 camera	Camera	Kamera	Kamera	Camera	Kamera	Kamera	Kamera
 photoCalendar	Photo calendar	Fotokalender	Billedekalender	Fotokalender	Kuvakalenteri	Fotokalender	Bildekalender
 countdown	Countdown	Nedräkning	Nedtælling	Timers	Ajastin	Countdown	Nedtelling
-quickSettingsMenu	Quick settings	Snabb-\ninställningar	Hurtig-\nindstillinger	Snelle\ninstellingen	Pika-\nasetukset	Schnell-\neinstellungen	Hurtig-\ninnstillinger
+quickSettingsMenu	Quick settings	Snabb-\ninställningar	Hurtig-\nindstillinger	Snel-\ninstellingen	Pika-\nasetukset	Schnell-\neinstellungen	Hurtig-\ninnstillinger
 ### Photo calendar							
 allPhotos	All photos	Alla foton	Alle fotos	Alle foto's	Kaikki kuvat	Alle Fotos	Alle foto
-addToPhotoCalendarQuestion	Do you want to add this photo to Photo-calendar?	Vill du lägga in detta foto i fotokalendern?	Ønsker du at tilføje dette foto til din fotokalender?	Wilt u deze foto toevoegen aan de fotokalender?	Haluatko lisätä tämän kuvan valokuvakalenteriin?	Möchten Sie dieses Foto dem Fotokalender hinzufügen?	Vil du legge inn dette foto i fotokalenderen?
-removeFromPhotoCalendarQuestion	Do you want to remove this photo from Photo-calendar?	Vill du ta bort detta foto från fotokalendern?	Ønsker du at fjerne dette foto fra din fotokalender?	Wilt u deze foto uit de fotokalender verwijderen?	Haluatko poistaa tämän kuvan valokuvakalenterista?	Möchten Sie dieses Foto aus dem Fotokalender entfernen?	Vil du slette dette foto fra fotokalenderen?
+addToPhotoCalendarQuestion	Do you want to add this photo to Photo-calendar?	Vill du lägga in detta foto i fotokalendern?	Ønsker du at tilføje dette foto til din fotokalender?	Wilt u deze foto toevoegen aan de fotokalender?	Haluatko lisätä tämän kuvan valokuvakalenteriin?	Möchten Sie dieses Foto dem Fotokalender hinzufügen?	Vil du legge inn dette bildet i bildekalenderen?
+removeFromPhotoCalendarQuestion	Do you want to remove this photo from Photo-calendar?	Vill du ta bort detta foto från fotokalendern?	Ønsker du at fjerne dette foto fra din fotokalender?	Wilt u deze foto uit de fotokalender verwijderen?	Haluatko poistaa tämän kuvan valokuvakalenterista?	Möchten Sie dieses Foto aus dem Fotokalender entfernen?	Vil du slette dette bildet fra bildekalenderen?
 remove	Remove	Ta bort	Slet	Verwijderen	Poista	Löschen	Fjern
-doYouWantToDeleteThisPhoto	Are you sure you want to delete this photo?	Är du säker på att du vill radera detta foto?	Er du sikker på, du ønsker at slette dette foto?	Weet u zeker dat u deze foto wilt verwijderen?	Haluatko varmasti poistaa tämän kuvan?	Sind Sie sicher, dass Sie dieses Foto löschen möchten?	Er du sikker på at du vil slette dette foto?
+doYouWantToDeleteThisPhoto	Are you sure you want to delete this photo?	Är du säker på att du vill radera detta foto?	Er du sikker på, du ønsker at slette dette foto?	Weet u zeker dat u deze foto wilt verwijderen?	Haluatko varmasti poistaa tämän kuvan?	Sind Sie sicher, dass Sie dieses Foto löschen möchten?	Er du sikker på at du vil slette dette bildet?
 							
 ### Starter set							
 installStarterSet	Install starter set?	Installera startuppsättning?	Vil du installere startersættet?	Standaard dataset installeren?	Aseta aloitussarja	Einstiegspaket installieren?	Installere startoppsett?
 doYouWantToImportADefaultSet	Do you want to import a default set of data with activities, timers, checklists and image archive?	Vill du importera startuppsättning av aktiviteter, timers, checklistor och bildarkiv?	Ønsker du at importere startopsætning med aktiviteter, timer, tjeklister og billedarkiv?	Wilt u een standaard dataset importeren met activiteiten, timers, checklists en afbeeldingenarchief?	Haluatko tuoda oletustiedot aktiviteettien, ajastimien, tarkistusluettelojen ja kuva-arkiston mukana?	Möchten Sie einen Standard-Datenbestand mit aktivitäten, Timern, Checklisten und Bildarchiv importieren?	Ønsker du å importere startoppsett av aktiviteter, timere, sjekklister og bildearkiv?
 							
 ### Terms of use							
-welcomeTo	Welcome to						
-getStarted	Get started						
-readAndAgree1	To use						
-readAndAgree2	, please read and agree to the terms of use and privacy policy.						
+welcomeTo	Welcome to	Välkommen till	Velkommen til	Welkom bij	Tervetuloa	Willkommen beim	Velkommen til
+getStarted	Get started	Kom igång	Kom godt i gang	Aan de slag	Aloita	Erste Schritte	Begynn
+readAndAgree1	To use	För att använda	Hvis du vil bruge	Om	Lue ja hyväksy	Zur Nutzung des 	For å bruke
+readAndAgree2	, please read and agree to the terms of use and privacy policy.	, läs och godkänn användarvillkoren och personuppgiftspolicyn.	, skal du læse og acceptere brugsbetingelserne og privatlivspolitikken.	te gebruiken, moet u eerst de gebruiksvoorwaarden en het privacybeleid lezen en hiermee akkoord gaan.	käyttämiseen käyttöehdot ja tietosuojakäytäntö.	s lesen Sie bitte die Nutzungsbedingungen und die Datenschutzrichtlinie und stimmen Sie ihnen zu.	, vennligst les og godta vilkårene for bruk og personvernerklæringen.
 acceptTerms	I have read and agree to the	Jag har läst och godkänner	Jeg har læst og accepterer	Ik heb gelezen en akkoord gegaan	Olen lukenut ja sopineet	Ich habe gelesen und bin damit einverstanden	Jeg har lest og godtar
 termsOfUse	terms of use	användarvillkor	brugervillkår	gebruiksvoorwaarden	käyttöehdot	nutzungsbedingungen	brukervillkår
 termsOfUseUrl	intl/terms-of-use	sv/anvandarvillkor	intl/terms-of-use	intl/terms-of-use	intl/terms-of-use	intl/terms-of-use	nb/brukervilkar
@@ -532,16 +532,16 @@ privacyPolicy	privacy policy	personuppgiftspolicy	persondatapolitik	privacybelei
 privacyPolicyUrl	intl/policy-for-the-processing-of-personal-data	sv/personuppgiftspolicy	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	nb/personvernerklaering
 							
 ### Discard							
-confirmDiscard	Are you sure you want to discard your changes?						
-keepEditing	Keep editing						
-discard	Discard						
+confirmDiscard	Are you sure you want to discard your changes?	Är du säker på att du vill radera ändringarna?	Er du sikker på, at du vil slette dine ændringer?	Weet u zeker dat u uw wijzigingen wilt verwijderen?	Oletko varma, että haluat hylätä tekemäsi muutokset?	Sind Sie sicher, dass Sie Ihre Änderungen verwerfen möchten?	Er du sikker på at du vil forkaste endringene?
+keepEditing	Keep editing	Fortsätt redigera	Fortsæt redigeringen	Doorgaan met bewerken	Jatka muokkaamista	Bearbeitung fortsetzen	Fortsett å rediger
+discard	Discard	Radera	Slet	Verwijderen	Hylkää	Verwerfen	Forkast
 							
 ### Reset Device							
-resetDeviceQuestion	Do you want to reset the device?						
-factoryReset	Factory reset						
-factoryResetDescription	Factory reset and reinstall MEMOplanner software (instructions required).						
-clearData	Clear MEMOplanner data						
-clearDataDescription	Clear app data and go to startup guide.						
-confirmFactoryReset	Do you want to start factory reset?						
-confirmFactoryResetDescription	After factory reset is finished you will need to reinstall MEMOplanner software. Follow the reconditioning instructions to do that.						
-factoryResetFailed	Factory reset failed, please try again later						
+resetDeviceQuestion	Do you want to reset the device?	Vill du återställa enheten?	Ønsker du at nulstille enheden?	Wilt u het apparaat opnieuw instellen?	Haluatko nollata laitteen?	Möchten Sie das Gerät zurücksetzen?	Vil du nullstille enheten?
+factoryReset	Factory reset	Återställ fabriksinställningarna	Fabriksnulstilling	Terugzetten naar fabrieksinstellingen	Tehdasasetusten palautus	Rücksetzen auf Werkseinstellungen	Tilbakestilling
+factoryResetDescription	Factory reset and reinstall MEMOplanner software (instructions required).	Återställ fabriksinställningarna och installera om MEMOplanner-programvaran (instruktioner krävs).	Nulstil fabriksindstillingerne, og geninstaller MEMOplanner-softwaren (vejledning påkrævet).	Zet de fabrieksinstellingen terug en installeer de MEMOplanner-software opnieuw (instructies vereist).	Tehdasasetusten palautus ja MEMOplanner ohjelmiston uudelleen asetus  (vaatii ohjauksen).	Rücksetzen auf Werkseinstellungen und MEMOplanner-Software neu installieren (Anweisungen erforderlich).	Tilbakestill og reinstaller MEMOplanner programvaren (instruksjoner er påkrevd).
+clearData	Clear MEMOplanner data	Rensa MEMOplanner-data	Slet MEMOplanner-data	MEMOplanner-gegevens wissen	Poista MEMOplannerin tiedot	MEMOplanner-Daten löschen	Slette MEMOplanner data
+clearDataDescription	Clear app data and go to startup guide.	Rensa appens data och gå till startguiden.	Slet app-data, og gå til opstartsvejledningen.	Wis de app-gegevens en ga naar de opstartgids.	Puhdista sovelluksen tiedot ja siirry käynnistysohjaukseen.	App-Daten löschen und zur Startanleitung gehen.	Slette app data og start guiden.
+confirmFactoryReset	Do you want to start factory reset?	Vill du påbörja återställningen av fabriksinställningarna?	Ønsker du at starte fabriksnulstilling?	Wilt u beginnen met het herstellen van de fabrieksinstellingen?	Haluatko aloittaa tehdasasetusten palautuksen?	Möchten Sie auf Werkseinstellungen zurücksetzen?	Vil du gjenopprette fabrikkinstillinger?
+confirmFactoryResetDescription	After factory reset is finished you will need to reinstall MEMOplanner software. Follow the reconditioning instructions to do that.	När fabriksinställningarna har återställts behöver du installera om MEMOplanner-programvaran. Följ instruktionerna om rekonditionering för att göra detta.	Når fabriksnulstillingen er færdig, skal du geninstallere MEMOplanner-softwaren. Følg anvisningerne til rekonditionering for at gøre det.	Nadat de fabrieksinstellingen zijn hersteld, moet u de MEMOplanner-software opnieuw installeren. Volg hiervoor de revisie-instructies.	Kun tehdasasetusten palautus on päättynyt, MEMOplanner-ohjelmisto pitää asentaa uudelleen. Noudata sen toteuttamiseen korjausohjeita.	Nachdem das Rücksetzen auf Werkseinstellungen erfolgt ist, müssen Sie die MEMOplanner-Software neu installieren. Befolgen Sie dazu die Wiederherstellungsanweisungen.	Etter at tilbakestillingen er fullført må du reinstallere MEOMplanner programvaren. Følg instruksjonene for å gjøre det.
+factoryResetFailed	Factory reset failed, please try again later.	Kunde inte återställa fabriksinställningarna, försök igen senare.	Fabriksnulstillingen mislykkedes, prøv venligst senere.	Terugzetten naar de fabrieksinstellingen is mislukt, probeer het later opnieuw.	Tehdasasetusten palautus epäonnistui, yritä myöhemmin uudelleen.	Das Rücksetzen auf Werkseinstellungen ist fehlgeschlagen, bitte versuchen Sie es später.	Tilbakestilling mislyktes, prøv på nytt senere.

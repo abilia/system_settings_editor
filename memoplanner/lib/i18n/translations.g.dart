@@ -34,7 +34,7 @@ abstract class Translated {
   final String setupYourInternetConnection = 'Setup your internet connection';
 
   final String wifiNoInternet =
-      'Your current Wi-Fi has failed to connect to the internet, try another network or contact your internet provider for help';
+      'Your current Wi-Fi has failed to connect to the internet, try another network or contact your internet provider for help.';
 
   final String connectInternetToContinue =
       'Connect to the internet to continue';
@@ -76,7 +76,7 @@ abstract class Translated {
   final String enterPassword = 'Enter password';
 
   final String userTypeNotSupported =
-      "Users of type Support person or Admin can't log in to MEMOPlanner. Please use myAbilia.";
+      "Users of type Support person or Admin can't log in to MEMOplanner. Please use myAbilia.";
 
   final String loggedOutMessage =
       'You have been logged out. Please log in again.';
@@ -259,7 +259,7 @@ abstract class Translated {
 
   final String timeNightTts = '%s at night';
 
-  final String timerInvalidDuration = 'Duration can not be zero.';
+  final String timerInvalidDuration = 'Duration cannot be zero.';
 
   final String timerDelete = 'Do you want to delete the timer?';
 
@@ -600,13 +600,13 @@ abstract class Translated {
 
   final String calendarView = 'Day Calendar';
 
-  final String oneTimePillarView = '1 timepillar';
+  final String oneTimePillarView = '1 time pillar';
 
-  final String twoTimePillarsView = '2 timepillars';
+  final String twoTimePillarsView = '2 time pillars';
 
   final String listView = 'List';
 
-  final String timepillarSettings = 'Timepillar settings';
+  final String timepillarSettings = 'Time pillar settings';
 
   final String activityDuration = 'Activity duration';
 
@@ -1036,7 +1036,7 @@ abstract class Translated {
       'After factory reset is finished you will need to reinstall MEMOplanner software. Follow the reconditioning instructions to do that.';
 
   final String factoryResetFailed =
-      'Factory reset failed, please try again later';
+      'Factory reset failed, please try again later.';
 }
 
 class EN extends Translated {
@@ -1060,10 +1060,32 @@ class SV extends Translated {
   final String finish = 'Slutför';
 
   @override
+  final String setupYourInternetConnection =
+      'Konfigurera din internetanslutning';
+
+  @override
+  final String wifiNoInternet =
+      'Ditt Wi-Fi har inte kunnat ansluta till internet. Försök med ett annat nätverk eller kontakta din internetleverantör för att få hjälp.';
+
+  @override
+  final String connectInternetToContinue =
+      'Anslut till internet för att fortsätta';
+
+  @override
   final String notSelected = 'Inte valt';
 
   @override
+  final String enterYourLicense = 'Ange din licensnyckel';
+
+  @override
+  final String enterYourLicenseHint = 'Licensnyckeln bör innehålla 12 siffror';
+
+  @override
   final String licenseErrorAlreadyInUse = 'Licensen används redan';
+
+  @override
+  final String licenseErrorNotFound =
+      'Vi hittade ingen giltig licens.\nKontrollera licensnyckeln och försök igen';
 
   @override
   final String downloadVoiceText = 'Ladda ner röst för talstöd';
@@ -1103,14 +1125,14 @@ class SV extends Translated {
 
   @override
   final String userTypeNotSupported =
-      'Användare av typen Supportperson eller Admin kan inte logga in i MEMOPlanner. Var vänlig använd myAbilia.';
+      'Användare av typen Supportperson eller Admin kan inte logga in i MEMOplanner. Var vänlig använd myAbilia.';
 
   @override
   final String loggedOutMessage =
       'Du har blivit utloggad. Vänligen logga in igen.';
 
   @override
-  final String createAccountHint = 'Har du inte ett myAbilia konto än?';
+  final String createAccountHint = 'Har du inte ett myAbilia konto ännu?';
 
   @override
   final String createAccount = 'Skapa konto';
@@ -1179,6 +1201,69 @@ class SV extends Translated {
 
   @override
   final String toLogin = 'till Logga in';
+
+  @override
+  final String memoplannerLicenseExpired =
+      'Licensen för MEMOplanner har gått ut';
+
+  @override
+  final String needLicenseToSaveData =
+      'Du behöver en aktiv licens för att kunna spara dina data hos myAbilia.';
+
+  @override
+  final String contactProviderToExtendLicense =
+      'Kontakta din MEMOplanner-leverantör för att förnya din licens.';
+
+  @override
+  final String allDataSaved = 'Alla data sparades!';
+
+  @override
+  final String goOnlineBeforeLogout = 'Kom online innan du loggar ut!';
+
+  @override
+  final String doNotLoseYourContent = 'Förlora inte ditt innehåll!';
+
+  @override
+  final String syncing = 'Synkar...';
+
+  @override
+  final String canLogOutSafely = 'Nu kan du logga ut tryggt';
+
+  @override
+  final String lastSyncWas = 'Senaste synkningen skedde';
+
+  @override
+  final String connectToWifiToLogOut =
+      'Anslut till Wi-Fi för att logga ut tryggt';
+
+  @override
+  final String connectToInternetToLogOut =
+      'Anslut till internet för att logga ut tryggt';
+
+  @override
+  final String ifYouLogoutYouWillLose =
+      'Om du loggar ut nu går följande förlorat:';
+
+  @override
+  final String activityTemplateSingular = 'aktivitetsmall';
+
+  @override
+  final String activityTemplatePlural = 'aktivitetsmallar';
+
+  @override
+  final String timerTemplateSingular = 'timermall';
+
+  @override
+  final String timerTemplatePlural = 'timermallar';
+
+  @override
+  final String photoSingular = 'foto';
+
+  @override
+  final String photoPlural = 'foton ';
+
+  @override
+  final String settingsData = 'Inställningsdata';
 
   @override
   final String fullDay = 'Heldag';
@@ -1805,6 +1890,9 @@ class SV extends Translated {
   final String connected = 'Ansluten';
 
   @override
+  final String connectedNoInternet = 'Ansluten, inget internet';
+
+  @override
   final String screenTimeout = 'Skärmens tidsgräns';
 
   @override
@@ -1823,7 +1911,7 @@ class SV extends Translated {
   final String oneTimePillarView = '1 tidpelare';
 
   @override
-  final String twoTimePillarsView = '2 tidspelare';
+  final String twoTimePillarsView = '2 tidpelare';
 
   @override
   final String listView = 'Lista';
@@ -2275,7 +2363,7 @@ class SV extends Translated {
 
   @override
   final String turnOffNotificationsBody =
-      'Du kommer inte längre kunna få alarm och notiser för aktiviteter.';
+      'Du kommer inte längre kunna få alarm och påminnselser för aktiviteter.';
 
   @override
   final String notificationsWarningHintText =
@@ -2397,6 +2485,19 @@ class SV extends Translated {
       'Vill du importera startuppsättning av aktiviteter, timers, checklistor och bildarkiv?';
 
   @override
+  final String welcomeTo = 'Välkommen till';
+
+  @override
+  final String getStarted = 'Kom igång';
+
+  @override
+  final String readAndAgree1 = 'För att använda';
+
+  @override
+  final String readAndAgree2 =
+      ', läs och godkänn användarvillkoren och personuppgiftspolicyn.';
+
+  @override
   final String acceptTerms = 'Jag har läst och godkänner';
 
   @override
@@ -2410,6 +2511,45 @@ class SV extends Translated {
 
   @override
   final String privacyPolicyUrl = 'sv/personuppgiftspolicy';
+
+  @override
+  final String confirmDiscard =
+      'Är du säker på att du vill radera ändringarna?';
+
+  @override
+  final String keepEditing = 'Fortsätt redigera';
+
+  @override
+  final String discard = 'Radera';
+
+  @override
+  final String resetDeviceQuestion = 'Vill du återställa enheten?';
+
+  @override
+  final String factoryReset = 'Återställ fabriksinställningarna';
+
+  @override
+  final String factoryResetDescription =
+      'Återställ fabriksinställningarna och installera om MEMOplanner-programvaran (instruktioner krävs).';
+
+  @override
+  final String clearData = 'Rensa MEMOplanner-data';
+
+  @override
+  final String clearDataDescription =
+      'Rensa appens data och gå till startguiden.';
+
+  @override
+  final String confirmFactoryReset =
+      'Vill du påbörja återställningen av fabriksinställningarna?';
+
+  @override
+  final String confirmFactoryResetDescription =
+      'När fabriksinställningarna har återställts behöver du installera om MEMOplanner-programvaran. Följ instruktionerna om rekonditionering för att göra detta.';
+
+  @override
+  final String factoryResetFailed =
+      'Kunde inte återställa fabriksinställningarna, försök igen senare.';
 }
 
 class DA extends Translated {
@@ -2429,10 +2569,32 @@ class DA extends Translated {
   final String finish = 'Afslut';
 
   @override
+  final String setupYourInternetConnection =
+      'Opsætning af din internetforbindelse';
+
+  @override
+  final String wifiNoInternet =
+      'Din nuværende Wi-Fi-forbindelse har ikke kunnet oprette forbindelse til internettet, prøv et andet netværk eller kontakt din internetudbyder for at få hjælp.';
+
+  @override
+  final String connectInternetToContinue =
+      'Opret forbindelse til internettet for at fortsætte';
+
+  @override
   final String notSelected = 'Ikke valgt';
 
   @override
+  final String enterYourLicense = 'Indtast din licensnøgle';
+
+  @override
+  final String enterYourLicenseHint = 'Licensnøglen skal indeholde 12 cifre';
+
+  @override
   final String licenseErrorAlreadyInUse = 'Licensen er allerede i brug';
+
+  @override
+  final String licenseErrorNotFound =
+      'Vi fandt ikke en gyldig licens.\nKontroller venligst licensnøglen og prøv igen';
 
   @override
   final String downloadVoiceText = 'Download stemme til stemmerapport';
@@ -2547,6 +2709,67 @@ class DA extends Translated {
 
   @override
   final String toLogin = 'til Log ind';
+
+  @override
+  final String memoplannerLicenseExpired = 'MEMOplanner-licensen er udløbet';
+
+  @override
+  final String needLicenseToSaveData =
+      'Du skal have en aktiv licens for at gemme dine data i myAbilia.';
+
+  @override
+  final String contactProviderToExtendLicense =
+      'Kontakt din MEMOplanner-leverandør for at forlænge din licens.';
+
+  @override
+  final String allDataSaved = 'Alle data er gemt!';
+
+  @override
+  final String goOnlineBeforeLogout = 'Gå online, før du logger ud!';
+
+  @override
+  final String doNotLoseYourContent = 'Mist ikke dit indhold!';
+
+  @override
+  final String syncing = 'Synkroniserer...';
+
+  @override
+  final String canLogOutSafely = 'Du kan nu sikkert logge ud';
+
+  @override
+  final String lastSyncWas = 'Sidste synkronisering var';
+
+  @override
+  final String connectToWifiToLogOut =
+      'Opret forbindelse til Wi-Fi for at logge sikkert ud';
+
+  @override
+  final String connectToInternetToLogOut =
+      'Opret forbindelse til internettet for at logge sikkert ud';
+
+  @override
+  final String ifYouLogoutYouWillLose = 'Hvis du logger ud nu, taber du:';
+
+  @override
+  final String activityTemplateSingular = 'aktivitetsskabelon';
+
+  @override
+  final String activityTemplatePlural = 'aktivitetsskabeloner';
+
+  @override
+  final String timerTemplateSingular = 'timerskabelon';
+
+  @override
+  final String timerTemplatePlural = 'timerskabeloner';
+
+  @override
+  final String photoSingular = 'foto';
+
+  @override
+  final String photoPlural = 'fotos ';
+
+  @override
+  final String settingsData = 'Indstillingsdata';
 
   @override
   final String fullDay = 'Hele dagen';
@@ -2717,10 +2940,10 @@ class DA extends Translated {
   final String alarm = 'Alarm';
 
   @override
-  final String endsNow = 'Ënder nå';
+  final String endsNow = 'Slutter nu';
 
   @override
-  final String startsNow = 'Starter nå';
+  final String startsNow = 'Starter nu';
 
   @override
   final String noActivities = 'Ingen aktiviteter i dag';
@@ -2777,7 +3000,7 @@ class DA extends Translated {
 
   @override
   final String checklistDoneInfo =
-      'Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?';
+      'Alle opgaver er løst. Vil du markere aktiviteten klar?';
 
   @override
   final String templates = 'Skabeloner';
@@ -2837,7 +3060,7 @@ class DA extends Translated {
   final String no = 'Nej';
 
   @override
-  final String close = 'Tæt';
+  final String close = 'Luk';
 
   @override
   final String back = 'Tilbage';
@@ -2942,7 +3165,7 @@ class DA extends Translated {
   final String stop = 'Stop';
 
   @override
-  final String play = 'Afspel';
+  final String play = 'Spil';
 
   @override
   final String enterNameForActivity = 'Indtast navn på aktiviteten';
@@ -3173,6 +3396,9 @@ class DA extends Translated {
   final String connected = 'Tilsluttet';
 
   @override
+  final String connectedNoInternet = 'Tilsluttet, intet internet';
+
+  @override
   final String screenTimeout = 'Skærmens tidsgrænse';
 
   @override
@@ -3189,16 +3415,16 @@ class DA extends Translated {
   final String calendarView = 'Dagkalender';
 
   @override
-  final String oneTimePillarView = '1 tidslinje';
+  final String oneTimePillarView = '1 tidsøjle';
 
   @override
-  final String twoTimePillarsView = '2 tidslinjer';
+  final String twoTimePillarsView = '2 tidsøjler';
 
   @override
   final String listView = 'Liste';
 
   @override
-  final String timepillarSettings = 'Tidslinjeindstillinger';
+  final String timepillarSettings = 'Indstillinger for tidsøjle';
 
   @override
   final String activityDuration = 'Vis tiden som';
@@ -3478,7 +3704,7 @@ class DA extends Translated {
 
   @override
   final String menuRemovalWarning =
-      'Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke direkte nedenfor kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.';
+      'Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke direkte nedenfor kategorisymbolerne i dagkalenderen; venstre – højre – venstre. Tryk på det tilsvarende område af det, der mangler.';
 
   @override
   final String menuItemsDisabled = 'alle menupunkter er inaktiveret';
@@ -3646,7 +3872,7 @@ class DA extends Translated {
 
   @override
   final String turnOffNotificationsBody =
-      'Du kan ikke længere modtage alarmer og notifikationer fra aktiviteter.';
+      'Du kan ikke længere modtage alarmer og påmindelser fra aktiviteter.';
 
   @override
   final String notificationsWarningHintText =
@@ -3768,6 +3994,19 @@ class DA extends Translated {
       'Ønsker du at importere startopsætning med aktiviteter, timer, tjeklister og billedarkiv?';
 
   @override
+  final String welcomeTo = 'Velkommen til';
+
+  @override
+  final String getStarted = 'Kom godt i gang';
+
+  @override
+  final String readAndAgree1 = 'Hvis du vil bruge';
+
+  @override
+  final String readAndAgree2 =
+      ', skal du læse og acceptere brugsbetingelserne og privatlivspolitikken.';
+
+  @override
   final String acceptTerms = 'Jeg har læst og accepterer';
 
   @override
@@ -3782,6 +4021,44 @@ class DA extends Translated {
   @override
   final String privacyPolicyUrl =
       'intl/policy-for-the-processing-of-personal-data';
+
+  @override
+  final String confirmDiscard =
+      'Er du sikker på, at du vil slette dine ændringer?';
+
+  @override
+  final String keepEditing = 'Fortsæt redigeringen';
+
+  @override
+  final String discard = 'Slet';
+
+  @override
+  final String resetDeviceQuestion = 'Ønsker du at nulstille enheden?';
+
+  @override
+  final String factoryReset = 'Fabriksnulstilling';
+
+  @override
+  final String factoryResetDescription =
+      'Nulstil fabriksindstillingerne, og geninstaller MEMOplanner-softwaren (vejledning påkrævet).';
+
+  @override
+  final String clearData = 'Slet MEMOplanner-data';
+
+  @override
+  final String clearDataDescription =
+      'Slet app-data, og gå til opstartsvejledningen.';
+
+  @override
+  final String confirmFactoryReset = 'Ønsker du at starte fabriksnulstilling?';
+
+  @override
+  final String confirmFactoryResetDescription =
+      'Når fabriksnulstillingen er færdig, skal du geninstallere MEMOplanner-softwaren. Følg anvisningerne til rekonditionering for at gøre det.';
+
+  @override
+  final String factoryResetFailed =
+      'Fabriksnulstillingen mislykkedes, prøv venligst senere.';
 }
 
 class NL extends Translated {
@@ -3801,10 +4078,32 @@ class NL extends Translated {
   final String finish = 'Voltooien';
 
   @override
+  final String setupYourInternetConnection = 'Uw internetverbinding opzetten';
+
+  @override
+  final String wifiNoInternet =
+      'Uw huidige Wi-Fi heeft geen verbinding kunnen maken met internet. Probeer een ander netwerk of neem contact op met uw internetprovider voor hulp.';
+
+  @override
+  final String connectInternetToContinue =
+      'Maak verbinding met internet om verder te gaan';
+
+  @override
   final String notSelected = 'Niet geselecteerd';
 
   @override
+  final String enterYourLicense = 'Uw licentiesleutel invoeren';
+
+  @override
+  final String enterYourLicenseHint =
+      'De licentiesleutel moet 12 cijfers bevatten';
+
+  @override
   final String licenseErrorAlreadyInUse = 'Licentie is al in gebruik';
+
+  @override
+  final String licenseErrorNotFound =
+      'We hebben geen geldige licentie gevonden.\nControleer de licentiesleutel en probeer het opnieuw';
 
   @override
   final String downloadVoiceText = 'Dowload stem voor spraakondersteuning';
@@ -3844,7 +4143,7 @@ class NL extends Translated {
 
   @override
   final String userTypeNotSupported =
-      'Gebruikers van het type Ondersteuningspersoon of Beheerder kunnen niet inloggen op MEMOPlanner. Gebruik myAbilia.';
+      'Gebruikers van het type Ondersteuningspersoon of Beheerder kunnen niet inloggen op MEMOplanner. Gebruikt u alstublieft myAbilia.';
 
   @override
   final String loggedOutMessage =
@@ -3864,7 +4163,7 @@ class NL extends Translated {
       'U heeft een myAbilia-account nodig om MEMOplanner te gebruiken';
 
   @override
-  final String usernameHint = 'Gebruikersnaam (telefoon of een e-mail)';
+  final String usernameHint = 'Gebruikersnaam (telefoon of e-mail)';
 
   @override
   final String passwordHint = 'Wachtwoord (minimaal 12 tekens)';
@@ -3890,7 +4189,7 @@ class NL extends Translated {
   final String confirmPrivacyPolicy = 'Bevestig privacybeleid';
 
   @override
-  final String usernameTaken = 'Gebruikersnaam/e-mailadres is reeds in gebruik';
+  final String usernameTaken = 'Gebruikersnaam/e-mailadres is al in gebruik';
 
   @override
   final String unknownError = 'Onbekende fout';
@@ -3920,6 +4219,68 @@ class NL extends Translated {
 
   @override
   final String toLogin = 'naar Inloggen';
+
+  @override
+  final String memoplannerLicenseExpired = 'MEMOplanner-licentie is verlopen';
+
+  @override
+  final String needLicenseToSaveData =
+      'U hebt een actieve licentie nodig om uw gegevens op te slaan in myAbilia.';
+
+  @override
+  final String contactProviderToExtendLicense =
+      'Neem contact op met uw MEMOplanner-provider om uw licentie te verlengen.';
+
+  @override
+  final String allDataSaved = 'Alle gegevens zijn opgeslagen!';
+
+  @override
+  final String goOnlineBeforeLogout = 'Ga online voordat u uitlogt!';
+
+  @override
+  final String doNotLoseYourContent = 'Verlies uw content niet!';
+
+  @override
+  final String syncing = 'Aan het synchroniseren...';
+
+  @override
+  final String canLogOutSafely = 'U kunt nu veilig uitloggen';
+
+  @override
+  final String lastSyncWas = 'De laatste synchronisatie vond plaats op';
+
+  @override
+  final String connectToWifiToLogOut =
+      'Maak verbinding met Wi-Fi om veilig uit te loggen';
+
+  @override
+  final String connectToInternetToLogOut =
+      'Maak verbinding met internet om veilig uit te loggen';
+
+  @override
+  final String ifYouLogoutYouWillLose =
+      'Als u nu uitlogt, gaat het volgende verloren:';
+
+  @override
+  final String activityTemplateSingular = 'activiteitensjabloon';
+
+  @override
+  final String activityTemplatePlural = 'activiteitensjablonen';
+
+  @override
+  final String timerTemplateSingular = 'timersjabloon';
+
+  @override
+  final String timerTemplatePlural = 'timersjablonen';
+
+  @override
+  final String photoSingular = 'foto';
+
+  @override
+  final String photoPlural = "foto's ";
+
+  @override
+  final String settingsData = 'Instellingsgegevens';
 
   @override
   final String fullDay = 'Hele dag';
@@ -4135,7 +4496,8 @@ class NL extends Translated {
   final String completed = 'Afgerond?';
 
   @override
-  final String unCheckActivityQuestion = 'Wilt u de activiteit uitvinken?';
+  final String unCheckActivityQuestion =
+      'Wilt u het afvinken van de activiteit ongedaan maken?';
 
   @override
   final String inTimePre = 'in';
@@ -4148,7 +4510,7 @@ class NL extends Translated {
 
   @override
   final String checklistDoneInfo =
-      'Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?';
+      'Alle checklisttaken zijn voltooid. Wilt u de activiteit afsluiten?';
 
   @override
   final String templates = 'Sjablonen';
@@ -4169,16 +4531,16 @@ class NL extends Translated {
   final String selectDuration = 'Duur selecteren';
 
   @override
-  final String startTimer = 'Start timer';
+  final String startTimer = 'Timer starten';
 
   @override
-  final String enterNameForTimer = 'Voer naam in voor timer';
+  final String enterNameForTimer = 'Naam voor timer invoeren';
 
   @override
   final String selectTemplateTimer = 'Timers selecteren';
 
   @override
-  final String timer = 'Tijdopnemer';
+  final String timer = 'Timer';
 
   @override
   final String timeIsUp = 'De tijd is om';
@@ -4327,7 +4689,7 @@ class NL extends Translated {
 
   @override
   final String missingTitleOrImageAndStartTime =
-      'Je activiteit moet een afbeelding of naam en starttijd bevatten.';
+      'De activiteit moet een afbeelding of naam en starttijd bevatten.';
 
   @override
   final String missingTitleOrImage =
@@ -4354,7 +4716,7 @@ class NL extends Translated {
 
   @override
   final String noTemplateActivityError2 =
-      'Om dit op te lossen creëert u sjablonen of selecteer een naam of afbeelding voor stap voor stap.';
+      'Om dit op te lossen creëert u sjablonen of selecteert u een naam of afbeelding in stap voor stap.';
 
   @override
   final String missingRequiredActivitySetting =
@@ -4537,7 +4899,7 @@ class NL extends Translated {
   final String volumeMedia = 'Volume voor media';
 
   @override
-  final String wifi = 'Wifi';
+  final String wifi = 'Wi-Fi';
 
   @override
   final String notConnected = 'Niet verbonden';
@@ -4546,7 +4908,10 @@ class NL extends Translated {
   final String connected = 'Verbonden';
 
   @override
-  final String screenTimeout = 'Timeout scherm';
+  final String connectedNoInternet = 'Verbonden, geen internet';
+
+  @override
+  final String screenTimeout = 'Scherm time-out';
 
   @override
   final String alwaysOn = 'Altijd aan';
@@ -4562,16 +4927,16 @@ class NL extends Translated {
   final String calendarView = 'Dagkalender';
 
   @override
-  final String oneTimePillarView = '1 tijdlijn';
+  final String oneTimePillarView = '1 tijdzuil';
 
   @override
-  final String twoTimePillarsView = '2 tijdlijnen';
+  final String twoTimePillarsView = '2 tijdzuilen';
 
   @override
   final String listView = 'Lijst';
 
   @override
-  final String timepillarSettings = 'Tijdlijn instellingen';
+  final String timepillarSettings = 'Tijdzuil instellingen';
 
   @override
   final String activityDuration = 'Laat de tijd zien als';
@@ -4747,13 +5112,13 @@ class NL extends Translated {
       'Alarm alleen bij starttijd weergeven';
 
   @override
-  final String showSpeechAtAlarm = 'Kies spraak bij alarm';
+  final String showSpeechAtAlarm = 'Spraak bij alarm kiezen';
 
   @override
   final String showReminders = 'Herinneringen weergeven';
 
   @override
-  final String showSelectEndDate = 'Selecteer einddatum weergeven';
+  final String showSelectEndDate = 'Einddatum weergeven selecteren';
 
   @override
   final String recurring = 'Terugkerend';
@@ -4768,7 +5133,7 @@ class NL extends Translated {
   final String stepByStep = 'Stap voor stap';
 
   @override
-  final String showTemplates = 'Toon sjablonen';
+  final String showTemplates = 'Sjablonen tonen';
 
   @override
   final String selectName = 'Naam selecteren';
@@ -4789,7 +5154,7 @@ class NL extends Translated {
   final String selectCheckable = 'Afvinkbaarheid selecteren';
 
   @override
-  final String selectAvailableFor = 'Selecteer beschikbaar voor';
+  final String selectAvailableFor = 'Beschikbaar voor selecteren';
 
   @override
   final String selectAlarm = 'Alarm selecteren';
@@ -4827,7 +5192,7 @@ class NL extends Translated {
   final String toolbarSettingsHint = 'Weergaven weergegeven in de werkbalk';
 
   @override
-  final String homeScreen = 'Thuisscherm';
+  final String homeScreen = 'Startscherm';
 
   @override
   final String homeScreenSettingsHint =
@@ -4838,7 +5203,7 @@ class NL extends Translated {
 
   @override
   final String timeoutSettingsHint =
-      'Gaat terug naar het thuisscherm na een periode van inactiviteit';
+      'Gaat terug naar het startscherm na een periode van inactiviteit';
 
   @override
   final String noTimeout = 'Geen time-out';
@@ -4852,7 +5217,7 @@ class NL extends Translated {
 
   @override
   final String menuRemovalWarning =
-      'Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door direct hieronder de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.';
+      'Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door direct hieronder de categoriesymbolen in de dagkalender te klikken; links – rechts – links. Dit werkt zelfs als ze verborgen zijn.';
 
   @override
   final String menuItemsDisabled = 'alle menu-items zijn gedeactiveerd';
@@ -4889,7 +5254,7 @@ class NL extends Translated {
   final String showQuarterHourWatchBar = 'Kwartierkijkbalk tonen';
 
   @override
-  final String timeOnQuarterHourBar = 'Tijd op kwartierbalk';
+  final String timeOnQuarterHourBar = 'Tijd op kwartierkijkbalk';
 
   @override
   final String clock = 'Klok';
@@ -4916,10 +5281,10 @@ class NL extends Translated {
   final String oneDot = 'Eén punt';
 
   @override
-  final String columnOfDots = 'Kolommen van punten';
+  final String columnOfDots = 'Kolom van punten';
 
   @override
-  final String lineAcrossCurrentTime = 'Lijn door huidige tijd';
+  final String lineAcrossCurrentTime = 'Lijn voor huidige tijd';
 
   @override
   final String linesForEachHour = 'Lijnen voor elk uur';
@@ -4940,7 +5305,7 @@ class NL extends Translated {
   final String showColours = 'Kleuren tonen';
 
   @override
-  final String editCategory = 'Bewerk categorie';
+  final String editCategory = 'Categorie bewerken';
 
   @override
   final String speakEveryWord =
@@ -4965,33 +5330,33 @@ class NL extends Translated {
   final String voices = 'Stemmen';
 
   @override
-  final String codeProtect = 'Codebescherming';
+  final String codeProtect = 'Bescherming door code';
 
   @override
   final String code = 'Code';
 
   @override
-  final String codeProtectSettings = 'Codebeschermingsinstellingen';
+  final String codeProtectSettings = 'Instellingen met code beschermen';
 
   @override
   final String codeProtectThisView = 'Deze weergave met code beschermen';
 
   @override
   final String codeProtectAndroidSettings =
-      'Codebeschermingsinstellingen Android';
+      'Android-instellingen met code beschermen';
 
   @override
-  final String enterCode = 'Voer code in';
+  final String enterCode = 'Code invoeren';
 
   @override
   final String enterYourCodeToAccess =
       'Voer uw code in om toegang te krijgen naar';
 
   @override
-  final String enterNewCode = 'Voer nieuwe code in';
+  final String enterNewCode = 'Nieuwe code invoeren';
 
   @override
-  final String confirmCode = 'Bevestig code';
+  final String confirmCode = 'Code bevestigen';
 
   @override
   final String incorrectCode = 'Onjuiste code';
@@ -5019,7 +5384,7 @@ class NL extends Translated {
   final String settingsLink = 'instellingen';
 
   @override
-  final String turnOffNotifications = 'Zet de meldingen uit?';
+  final String turnOffNotifications = 'Meldingen uitzetten?';
 
   @override
   final String turnOffNotificationsBody =
@@ -5048,7 +5413,7 @@ class NL extends Translated {
   final String allow = 'Toestaan';
 
   @override
-  final String previewActivityTitle = "Erik's verjaardagsfeestje";
+  final String previewActivityTitle = 'Eriks verjaardagsfeestje';
 
   @override
   final String allowAccessPhotosBody =
@@ -5059,7 +5424,7 @@ class NL extends Translated {
       'Sta toegang tot de camera toe om een foto te kunnen maken vanaf het apparaat.';
 
   @override
-  final String allowAccessBody2 = 'U kunt dat later altijd doen vanuit het';
+  final String allowAccessBody2 = 'U kunt dat later altijd doen vanuit de';
 
   @override
   final String accessToMicrophone = 'Toegang tot microfoon';
@@ -5105,7 +5470,7 @@ class NL extends Translated {
   final String producer = 'Producent';
 
   @override
-  final String searchForUpdate = 'Zoeken naar update';
+  final String searchForUpdate = 'Naar update zoeken';
 
   @override
   final String camera = 'Camera';
@@ -5117,7 +5482,7 @@ class NL extends Translated {
   final String countdown = 'Timers';
 
   @override
-  final String quickSettingsMenu = 'Snelle\ninstellingen';
+  final String quickSettingsMenu = 'Snel-\ninstellingen';
 
   @override
   final String allPhotos = "Alle foto's";
@@ -5145,6 +5510,19 @@ class NL extends Translated {
       'Wilt u een standaard dataset importeren met activiteiten, timers, checklists en afbeeldingenarchief?';
 
   @override
+  final String welcomeTo = 'Welkom bij';
+
+  @override
+  final String getStarted = 'Aan de slag';
+
+  @override
+  final String readAndAgree1 = 'Om';
+
+  @override
+  final String readAndAgree2 =
+      'te gebruiken, moet u eerst de gebruiksvoorwaarden en het privacybeleid lezen en hiermee akkoord gaan.';
+
+  @override
   final String acceptTerms = 'Ik heb gelezen en akkoord gegaan';
 
   @override
@@ -5159,6 +5537,45 @@ class NL extends Translated {
   @override
   final String privacyPolicyUrl =
       'intl/policy-for-the-processing-of-personal-data';
+
+  @override
+  final String confirmDiscard =
+      'Weet u zeker dat u uw wijzigingen wilt verwijderen?';
+
+  @override
+  final String keepEditing = 'Doorgaan met bewerken';
+
+  @override
+  final String discard = 'Verwijderen';
+
+  @override
+  final String resetDeviceQuestion = 'Wilt u het apparaat opnieuw instellen?';
+
+  @override
+  final String factoryReset = 'Terugzetten naar fabrieksinstellingen';
+
+  @override
+  final String factoryResetDescription =
+      'Zet de fabrieksinstellingen terug en installeer de MEMOplanner-software opnieuw (instructies vereist).';
+
+  @override
+  final String clearData = 'MEMOplanner-gegevens wissen';
+
+  @override
+  final String clearDataDescription =
+      'Wis de app-gegevens en ga naar de opstartgids.';
+
+  @override
+  final String confirmFactoryReset =
+      'Wilt u beginnen met het herstellen van de fabrieksinstellingen?';
+
+  @override
+  final String confirmFactoryResetDescription =
+      'Nadat de fabrieksinstellingen zijn hersteld, moet u de MEMOplanner-software opnieuw installeren. Volg hiervoor de revisie-instructies.';
+
+  @override
+  final String factoryResetFailed =
+      'Terugzetten naar de fabrieksinstellingen is mislukt, probeer het later opnieuw.';
 }
 
 class FI extends Translated {
@@ -5178,10 +5595,31 @@ class FI extends Translated {
   final String finish = 'Lopeta';
 
   @override
+  final String setupYourInternetConnection = 'Luo internet-yhteys';
+
+  @override
+  final String wifiNoInternet =
+      'Käyttämäsi Wi-Fi-yhteys ei pysty yhdistä internetiin, kokeile toista verkkoa tai ota yhteyttä internet-palvelun tarjoajaan.';
+
+  @override
+  final String connectInternetToContinue = 'Yhdistä internetiin jatkaaksesi';
+
+  @override
   final String notSelected = 'Ei valittu';
 
   @override
+  final String enterYourLicense = 'Syötä lisenssin avain';
+
+  @override
+  final String enterYourLicenseHint =
+      'Lisenssin avaimessa pitää olla 12 numeroa';
+
+  @override
   final String licenseErrorAlreadyInUse = 'Lisenssi on jo käytössä';
+
+  @override
+  final String licenseErrorNotFound =
+      'Emme löytäneet voimassa olevaa lisenssiä.\nTarkista lisenssin avain ja yritä uudelleen';
 
   @override
   final String downloadVoiceText = 'Lataa ääni puhetukea varten';
@@ -5221,7 +5659,7 @@ class FI extends Translated {
 
   @override
   final String userTypeNotSupported =
-      "Users of type Support person or Admin can't log in to MEMOPlanner. Please use myAbilia.";
+      'Käyttäjät, joiden tyyppi on tukihenkilö tai ylläpitäjä, eivät voi kirjautua MEMOplanneriin. Käytä myAbiliaa.';
 
   @override
   final String loggedOutMessage =
@@ -5296,6 +5734,69 @@ class FI extends Translated {
 
   @override
   final String toLogin = 'kirjautumissivulle';
+
+  @override
+  final String memoplannerLicenseExpired =
+      'MEMOplanner-lisenssi on vanhentunut';
+
+  @override
+  final String needLicenseToSaveData =
+      'Sinun pitää aktivoida lisenssi tietojen myAbiliaan tallentamiseen.';
+
+  @override
+  final String contactProviderToExtendLicense =
+      'Ota lisenssin jatkamiseen yhteyttä MEMOplannerin jälleenmyyjään.';
+
+  @override
+  final String allDataSaved = 'Kaikki tiedot on tallennettu!';
+
+  @override
+  final String goOnlineBeforeLogout =
+      'Ennen ulos kirjautumista kytkeydy internetiin!';
+
+  @override
+  final String doNotLoseYourContent = 'Älä hukkaa sisältöäsi!';
+
+  @override
+  final String syncing = 'Synkronoin...';
+
+  @override
+  final String canLogOutSafely = 'Nyt voit kirjautua turvallisesti ulos';
+
+  @override
+  final String lastSyncWas = 'Viimeinen synkronointi oli';
+
+  @override
+  final String connectToWifiToLogOut =
+      'Kytke Wi-Fi turvallisesti ulos kirjautumiseen';
+
+  @override
+  final String connectToInternetToLogOut =
+      'Kytkeydy internetiin turvallisesti ulos kirjautumiseen';
+
+  @override
+  final String ifYouLogoutYouWillLose = 'Jos kirjaudut ulos nyt, menetät:';
+
+  @override
+  final String activityTemplateSingular = 'aktiviteetti malli';
+
+  @override
+  final String activityTemplatePlural = 'aktiviteetti mallit';
+
+  @override
+  final String timerTemplateSingular = 'ajastin malli';
+
+  @override
+  final String timerTemplatePlural = 'ajastin mallit';
+
+  @override
+  final String photoSingular = 'kuva';
+
+  @override
+  final String photoPlural = 'kuvaa ';
+
+  @override
+  final String settingsData = 'Asetusten tiedot';
 
   @override
   final String fullDay = 'Koko päivä';
@@ -5922,6 +6423,9 @@ class FI extends Translated {
   final String connected = 'Yhdistetty';
 
   @override
+  final String connectedNoInternet = 'Yhdistetty, ei internetiä';
+
+  @override
   final String screenTimeout = 'Näytön pimennys';
 
   @override
@@ -5938,16 +6442,16 @@ class FI extends Translated {
   final String calendarView = 'Päiväkalenteri';
 
   @override
-  final String oneTimePillarView = '1 aikajana';
+  final String oneTimePillarView = '1 aikasarake';
 
   @override
-  final String twoTimePillarsView = '2 aikajanaa';
+  final String twoTimePillarsView = '2 aikasarakkeet';
 
   @override
   final String listView = 'Luettelo';
 
   @override
-  final String timepillarSettings = 'Aikajanan asetukset';
+  final String timepillarSettings = 'Aikasarakkeen asetukset';
 
   @override
   final String activityDuration = 'Näytä aika muodossa';
@@ -5975,7 +6479,7 @@ class FI extends Translated {
       'Napauta ja pidä painettuna noin 1,5 sekuntia mitä tahansa toimintoa saadaksesi sen lukemaan puheen synteesin avulla';
 
   @override
-  final String display = 'Näytä';
+  final String display = 'Näyttö';
 
   @override
   final String viewMode = 'Katselutila';
@@ -6134,7 +6638,7 @@ class FI extends Translated {
   final String recurring = 'Toistuva';
 
   @override
-  final String throughEditView = 'Muokkausnäkymässä';
+  final String throughEditView = 'Kautta Muokkaa Väkymää';
 
   @override
   final String androidSettings = 'Android-asetukset';
@@ -6227,7 +6731,7 @@ class FI extends Translated {
 
   @override
   final String menuRemovalWarning =
-      'Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää klikkaamalla alla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.';
+      'Haluatko varmasti poistaa asetukset valikosta?  Jos haluat, asetuksia on silti mahdollista käyttää klikkaamalla alla kategoriasymboleja päiväkalenterissa: vasen – oikea – vasen. Tämä toimii, vaikka ne olisi piilotettu.';
 
   @override
   final String menuItemsDisabled = 'kaikki valikkokohteet ovat pois käytöstä';
@@ -6516,6 +7020,19 @@ class FI extends Translated {
       'Haluatko tuoda oletustiedot aktiviteettien, ajastimien, tarkistusluettelojen ja kuva-arkiston mukana?';
 
   @override
+  final String welcomeTo = 'Tervetuloa';
+
+  @override
+  final String getStarted = 'Aloita';
+
+  @override
+  final String readAndAgree1 = 'Lue ja hyväksy';
+
+  @override
+  final String readAndAgree2 =
+      'käyttämiseen käyttöehdot ja tietosuojakäytäntö.';
+
+  @override
   final String acceptTerms = 'Olen lukenut ja sopineet';
 
   @override
@@ -6530,6 +7047,45 @@ class FI extends Translated {
   @override
   final String privacyPolicyUrl =
       'intl/policy-for-the-processing-of-personal-data';
+
+  @override
+  final String confirmDiscard =
+      'Oletko varma, että haluat hylätä tekemäsi muutokset?';
+
+  @override
+  final String keepEditing = 'Jatka muokkaamista';
+
+  @override
+  final String discard = 'Hylkää';
+
+  @override
+  final String resetDeviceQuestion = 'Haluatko nollata laitteen?';
+
+  @override
+  final String factoryReset = 'Tehdasasetusten palautus';
+
+  @override
+  final String factoryResetDescription =
+      'Tehdasasetusten palautus ja MEMOplanner ohjelmiston uudelleen asetus  (vaatii ohjauksen).';
+
+  @override
+  final String clearData = 'Poista MEMOplannerin tiedot';
+
+  @override
+  final String clearDataDescription =
+      'Puhdista sovelluksen tiedot ja siirry käynnistysohjaukseen.';
+
+  @override
+  final String confirmFactoryReset =
+      'Haluatko aloittaa tehdasasetusten palautuksen?';
+
+  @override
+  final String confirmFactoryResetDescription =
+      'Kun tehdasasetusten palautus on päättynyt, MEMOplanner-ohjelmisto pitää asentaa uudelleen. Noudata sen toteuttamiseen korjausohjeita.';
+
+  @override
+  final String factoryResetFailed =
+      'Tehdasasetusten palautus epäonnistui, yritä myöhemmin uudelleen.';
 }
 
 class DE extends Translated {
@@ -6549,10 +7105,33 @@ class DE extends Translated {
   final String finish = 'Abschließen';
 
   @override
+  final String setupYourInternetConnection =
+      'Richten Sie Ihre Internetverbindung ein';
+
+  @override
+  final String wifiNoInternet =
+      'Über Ihr aktuelles WLAN kann keine Verbindung zum Internet hergestellt werden. Versuchen Sie es mit einem anderen Netzwerk oder wenden Sie sich an Ihren Internetanbieter, um Hilfe zu erhalten.';
+
+  @override
+  final String connectInternetToContinue =
+      'Stellen Sie eine Verbindung zum Internet her, um fortzufahren';
+
+  @override
   final String notSelected = 'Nicht ausgewählt';
 
   @override
+  final String enterYourLicense = 'Geben Sie Ihren Lizenzschlüssel ein';
+
+  @override
+  final String enterYourLicenseHint =
+      'Der Lizenzschlüssel besteht aus 12 Ziffern';
+
+  @override
   final String licenseErrorAlreadyInUse = 'Die Lizenz wird bereits verwendet';
+
+  @override
+  final String licenseErrorNotFound =
+      'Wir konnten keine gültige Lizenz finden.\nBitte überprüfen Sie den Lizenzschlüssel und versuchen Sie es erneut.';
 
   @override
   final String downloadVoiceText =
@@ -6594,7 +7173,7 @@ class DE extends Translated {
 
   @override
   final String userTypeNotSupported =
-      'Benutzer vom Typ Supportperson oder Admin können sich nicht bei MEMOPlanner anmelden. Bitte verwenden Sie myAbilia.';
+      'Benutzer vom Typ Supportperson oder Admin können sich nicht bei MEMOplanner anmelden. Bitte verwenden Sie myAbilia.';
 
   @override
   final String loggedOutMessage =
@@ -6614,7 +7193,7 @@ class DE extends Translated {
       'Sie benötigen ein myAbilia-Konto, um MEMOplanner verwenden zu können';
 
   @override
-  final String usernameHint = 'Benutzername (telefon oder E-Mail)';
+  final String usernameHint = 'Benutzername (Telefon oder E-Mail)';
 
   @override
   final String passwordHint = 'Passwort (mindestens 12 Zeichen)';
@@ -6672,6 +7251,70 @@ class DE extends Translated {
 
   @override
   final String toLogin = 'zur Anmelden';
+
+  @override
+  final String memoplannerLicenseExpired =
+      'Die MEMOplanner-Lizenz ist abgelaufen';
+
+  @override
+  final String needLicenseToSaveData =
+      'Um Ihre Daten in myAbilia zu speichern, benötigen Sie eine aktive Lizenz.';
+
+  @override
+  final String contactProviderToExtendLicense =
+      'Kontaktieren Sie Ihren MEMOplanner-Anbieter und verlängern Sie Ihre Lizenz.';
+
+  @override
+  final String allDataSaved = 'Alle Daten gesichert!';
+
+  @override
+  final String goOnlineBeforeLogout =
+      'Gehen Sie online, bevor Sie sich abmelden!';
+
+  @override
+  final String doNotLoseYourContent = 'Verlieren Sie Ihre Inhalte nicht!';
+
+  @override
+  final String syncing = 'Synchronisiere...';
+
+  @override
+  final String canLogOutSafely = 'Sie können sich nun sicher abmelden.';
+
+  @override
+  final String lastSyncWas = 'Letzte Synchronisierung:';
+
+  @override
+  final String connectToWifiToLogOut =
+      'Verbinden Sie sich mit dem WLAN, um sich sicher abzumelden';
+
+  @override
+  final String connectToInternetToLogOut =
+      'Verbinden Sie sich mit dem Internet, um sich sicher abzumelden';
+
+  @override
+  final String ifYouLogoutYouWillLose =
+      'Wenn Sie sich jetzt abmelden, verlieren Folgendes:';
+
+  @override
+  final String activityTemplateSingular = 'Aktivitätsvorlage';
+
+  @override
+  final String activityTemplatePlural = 'Aktivitätsvorlagen';
+
+  @override
+  final String timerTemplateSingular = 'Timer-Vorlage';
+
+  @override
+  final String timerTemplatePlural = 'Timer-Vorlagen';
+
+  @override
+  final String photoSingular = 'Foto';
+
+  @override
+  final String photoPlural = 'Fotos ';
+
+  @override
+  final String settingsData = 'Einstellungsdaten';
 
   @override
   final String fullDay = 'Ganztägig';
@@ -6901,7 +7544,7 @@ class DE extends Translated {
 
   @override
   final String checklistDoneInfo =
-      'Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?';
+      'Alle Checklistenaufgaben sind abgeschlossen. Möchten Sie die Aktivität abschließen?';
 
   @override
   final String templates = 'Vorlagen';
@@ -6916,7 +7559,7 @@ class DE extends Translated {
   final String start = 'Anfang';
 
   @override
-  final String newTimer = 'Neue timer';
+  final String newTimer = 'Neuer timer';
 
   @override
   final String selectDuration = 'Dauer auswählen';
@@ -6979,10 +7622,10 @@ class DE extends Translated {
   final String newText = 'Neu';
 
   @override
-  final String fromTemplate = 'Von vorlage';
+  final String fromTemplate = 'Von Vorlage';
 
   @override
-  final String newActivity = 'Neu Aktivität';
+  final String newActivity = 'Neue Aktivität';
 
   @override
   final String editActivity = 'Aktivität bearbeiten';
@@ -7003,7 +7646,7 @@ class DE extends Translated {
   final String notCheckable = 'Nicht kontrollabfrage';
 
   @override
-  final String deleteAfter = 'am Endes des Tages löschen';
+  final String deleteAfter = 'am Ende des Tages löschen';
 
   @override
   final String dontDeleteAfter = 'Nicht am Ende des Tages entfernen';
@@ -7021,7 +7664,7 @@ class DE extends Translated {
   final String startTime = 'Startzeit';
 
   @override
-  final String endTime = 'Endezeit';
+  final String endTime = 'Endzeit';
 
   @override
   final String emptyFolder = 'Der Ordner leer ist';
@@ -7300,6 +7943,9 @@ class DE extends Translated {
   final String connected = 'Verbunden';
 
   @override
+  final String connectedNoInternet = 'Verbunden, aber kein Internet';
+
+  @override
   final String screenTimeout = 'Bildschirm Zeitüberschreitung';
 
   @override
@@ -7316,16 +7962,16 @@ class DE extends Translated {
   final String calendarView = 'Tageskalender';
 
   @override
-  final String oneTimePillarView = '1 Zeitstrahl';
+  final String oneTimePillarView = '1 Zeitsäule';
 
   @override
-  final String twoTimePillarsView = '2 Zeitstrahlen';
+  final String twoTimePillarsView = '2 Zeitsäulen';
 
   @override
   final String listView = 'Liste';
 
   @override
-  final String timepillarSettings = 'Zeitstrahl einstellungen';
+  final String timepillarSettings = 'Zeitsäule einstellungen';
 
   @override
   final String activityDuration = 'Zeit anzeigen als';
@@ -7483,7 +8129,7 @@ class DE extends Translated {
   final String addRecurringActivity = 'Wiederkehrende Aktivität hinzufügen';
 
   @override
-  final String showEndTime = 'Endezeit anzeigen';
+  final String showEndTime = 'Endzeit anzeigen';
 
   @override
   final String showAlarm = 'Alarme anzeigen';
@@ -7606,7 +8252,7 @@ class DE extends Translated {
 
   @override
   final String menuRemovalWarning =
-      'Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie unter Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.';
+      'Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie unter Kategoriesymbole im Tageskalender anklicken; links – rechts – links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.';
 
   @override
   final String menuItemsDisabled = 'alle Menüpunkte sind deaktiviert';
@@ -7766,7 +8412,7 @@ class DE extends Translated {
 
   @override
   final String allowNotificationsDescription1 =
-      'Ermöglichen Sie Benachrichtigungen, Alarme und Erinnerungen von Aktivitäten zu erhalten. Sie können das von der tun';
+      'Benachrichtigungen zulassen, um Alarme und Erinnerungen von Aktivitäten zu erhalten. Sie können das von der tun';
 
   @override
   final String settingsLink = 'die Einstellungen';
@@ -7784,7 +8430,7 @@ class DE extends Translated {
 
   @override
   final String notificationsWarningText =
-      'Sta meldingen van de instellingen toe om alarmen en herinneringen te kunnen ontvangen.';
+      'Benachrichtigungen aus den Einstellungen zulassen, um Alarme und Erinnerungen erhalten zu können.';
 
   @override
   final String fullScreenAlarm = 'Vollbildalarm';
@@ -7812,7 +8458,7 @@ class DE extends Translated {
       'Ermöglichen Sie den Zugriff auf die Kamera, um ein Foto vom Gerät aufnehmen zu können.';
 
   @override
-  final String allowAccessBody2 = 'Das können Sie später immer noch von der';
+  final String allowAccessBody2 = 'Dies kann jederzeit später erfolgen von der';
 
   @override
   final String accessToMicrophone = 'Zugang zum Mikrofon';
@@ -7898,6 +8544,19 @@ class DE extends Translated {
       'Möchten Sie einen Standard-Datenbestand mit aktivitäten, Timern, Checklisten und Bildarchiv importieren?';
 
   @override
+  final String welcomeTo = 'Willkommen beim';
+
+  @override
+  final String getStarted = 'Erste Schritte';
+
+  @override
+  final String readAndAgree1 = 'Zur Nutzung des ';
+
+  @override
+  final String readAndAgree2 =
+      's lesen Sie bitte die Nutzungsbedingungen und die Datenschutzrichtlinie und stimmen Sie ihnen zu.';
+
+  @override
   final String acceptTerms = 'Ich habe gelesen und bin damit einverstanden';
 
   @override
@@ -7912,6 +8571,45 @@ class DE extends Translated {
   @override
   final String privacyPolicyUrl =
       'intl/policy-for-the-processing-of-personal-data';
+
+  @override
+  final String confirmDiscard =
+      'Sind Sie sicher, dass Sie Ihre Änderungen verwerfen möchten?';
+
+  @override
+  final String keepEditing = 'Bearbeitung fortsetzen';
+
+  @override
+  final String discard = 'Verwerfen';
+
+  @override
+  final String resetDeviceQuestion = 'Möchten Sie das Gerät zurücksetzen?';
+
+  @override
+  final String factoryReset = 'Rücksetzen auf Werkseinstellungen';
+
+  @override
+  final String factoryResetDescription =
+      'Rücksetzen auf Werkseinstellungen und MEMOplanner-Software neu installieren (Anweisungen erforderlich).';
+
+  @override
+  final String clearData = 'MEMOplanner-Daten löschen';
+
+  @override
+  final String clearDataDescription =
+      'App-Daten löschen und zur Startanleitung gehen.';
+
+  @override
+  final String confirmFactoryReset =
+      'Möchten Sie auf Werkseinstellungen zurücksetzen?';
+
+  @override
+  final String confirmFactoryResetDescription =
+      'Nachdem das Rücksetzen auf Werkseinstellungen erfolgt ist, müssen Sie die MEMOplanner-Software neu installieren. Befolgen Sie dazu die Wiederherstellungsanweisungen.';
+
+  @override
+  final String factoryResetFailed =
+      'Das Rücksetzen auf Werkseinstellungen ist fehlgeschlagen, bitte versuchen Sie es später.';
 }
 
 class NB extends Translated {
@@ -7931,10 +8629,30 @@ class NB extends Translated {
   final String finish = 'Ferdig';
 
   @override
+  final String setupYourInternetConnection = 'Sett opp din nettforbindelse';
+
+  @override
+  final String wifiNoInternet =
+      'Ditt nåværende Wi-Fi har mislyktes i å koble til nettet, prøv et annet nettverk eller kontakt nettleverandøren din for å få hjelp.';
+
+  @override
+  final String connectInternetToContinue = 'Koble til nettet og fortsett';
+
+  @override
   final String notSelected = 'Ikke valgt';
 
   @override
+  final String enterYourLicense = 'Tast inn din lisensnøkkel';
+
+  @override
+  final String enterYourLicenseHint = 'Lisensnøkkelen skal inneholde 12 tall';
+
+  @override
   final String licenseErrorAlreadyInUse = 'Lisensen er allerede i bruk';
+
+  @override
+  final String licenseErrorNotFound =
+      'Vi fant ikke en gyldig lisens.\nVennligst sjekk lisensnøkkelen og prøv på nytt';
 
   @override
   final String downloadVoiceText = 'Last ned stemme for talestøtte';
@@ -8045,10 +8763,71 @@ class NB extends Translated {
 
   @override
   final String licenseExpiredMessage =
-      'Lisensen har utløpt og Memoplanner vil ikke lenger kunne synkronisere med myAbilia';
+      'Lisensen har utløpt og MEMOplanner vil ikke lenger kunne  synkronisere med myAbilia';
 
   @override
   final String toLogin = 'til Logg inn';
+
+  @override
+  final String memoplannerLicenseExpired = 'MEMOplanner lisens har utgått';
+
+  @override
+  final String needLicenseToSaveData =
+      'Du trenger en aktiv lisens for å lagre dataen din til myAbilia.';
+
+  @override
+  final String contactProviderToExtendLicense =
+      'Kontakt din MEMOplanner leverandør for å fornye din lisens.';
+
+  @override
+  final String allDataSaved = 'All data lagret!';
+
+  @override
+  final String goOnlineBeforeLogout = 'Kom deg online før du logger ut!';
+
+  @override
+  final String doNotLoseYourContent = 'Ikke mist innholdet ditt!';
+
+  @override
+  final String syncing = 'Synkroniserer...';
+
+  @override
+  final String canLogOutSafely = 'Nå kan du logge deg ut trygt';
+
+  @override
+  final String lastSyncWas = 'Siste synkronisering var';
+
+  @override
+  final String connectToWifiToLogOut = 'Koble til WI-Fi for å trygt logge ut';
+
+  @override
+  final String connectToInternetToLogOut =
+      'Koble til internett og logg deg trygt ut';
+
+  @override
+  final String ifYouLogoutYouWillLose =
+      'Hvis du logger ut nå vil du miste følgende:';
+
+  @override
+  final String activityTemplateSingular = 'aktivitetsmal';
+
+  @override
+  final String activityTemplatePlural = 'aktivitetsmaler';
+
+  @override
+  final String timerTemplateSingular = 'tidtakermal';
+
+  @override
+  final String timerTemplatePlural = 'tidtakermaler';
+
+  @override
+  final String photoSingular = 'bilde';
+
+  @override
+  final String photoPlural = 'bilder';
+
+  @override
+  final String settingsData = 'Instillingsdata';
 
   @override
   final String fullDay = 'Hele dagen';
@@ -8279,7 +9058,7 @@ class NB extends Translated {
 
   @override
   final String checklistDoneInfo =
-      'Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?';
+      'Alle oppgavene er utført. Vil du merke aktiviteten som ferdig?';
 
   @override
   final String templates = 'Maler';
@@ -8294,7 +9073,7 @@ class NB extends Translated {
   final String start = 'Start';
 
   @override
-  final String newTimer = 'Ny timere';
+  final String newTimer = 'Ny timer';
 
   @override
   final String selectDuration = 'Angi varighet';
@@ -8306,7 +9085,7 @@ class NB extends Translated {
   final String enterNameForTimer = 'Angi navn på timer';
 
   @override
-  final String selectTemplateTimer = 'Velg timere';
+  final String selectTemplateTimer = 'Velg timer';
 
   @override
   final String timer = 'Timer';
@@ -8318,7 +9097,7 @@ class NB extends Translated {
   final String timers = 'Timere';
 
   @override
-  final String editTimer = 'Endre timere';
+  final String editTimer = 'Endre timer';
 
   @override
   final String newTimerTemplate = 'Ny timer mal';
@@ -8366,10 +9145,10 @@ class NB extends Translated {
   final String editActivity = 'Endre aktivitet';
 
   @override
-  final String newActivityTemplate = 'Ny aktivitet mal';
+  final String newActivityTemplate = 'Ny aktivitetsmal';
 
   @override
-  final String editActivityTemplate = 'Rediger aktivitet mal';
+  final String editActivityTemplate = 'Rediger aktivitetsmal';
 
   @override
   final String category = 'Kategori';
@@ -8457,7 +9236,7 @@ class NB extends Translated {
 
   @override
   final String missingTitleOrImageAndStartTime =
-      'Aktiviteten må ha et navn ellet et bilde og en starttid.';
+      'Aktiviteten må ha et navn eller et bilde og en starttid.';
 
   @override
   final String missingTitleOrImage =
@@ -8468,15 +9247,15 @@ class NB extends Translated {
 
   @override
   final String startTimeBeforeNowError =
-      'Starttiden er allerede passert. Det er ikke tillatt.';
+      'Starttiden har allerede passert. Det er ikke tillatt.';
 
   @override
   final String startTimeBeforeNowWarning =
-      'Starttiden er allerede passert. Trykk på OK for å fortsette.';
+      'Starttiden har allerede passert. Trykk på OK for å fortsette.';
 
   @override
   final String conflictWarning =
-      'Der er aktiviteter som kolliderer med denne aktivitet. Trykk på OK for å fortsette.';
+      'Det er aktiviteter som kolliderer med denne aktivitet. Trykk på OK for å fortsette.';
 
   @override
   final String noTemplateActivityError1 =
@@ -8488,7 +9267,7 @@ class NB extends Translated {
 
   @override
   final String missingRequiredActivitySetting =
-      'Du må ha enten “Vis maler”, “Velg navn”, eller “Velg bilde” valgt.';
+      'Du må ha enten “Vis maler”, “Velg navn” eller “Velg bilde” valgt.';
 
   @override
   final String availableFor = 'Tilgjengelig for';
@@ -8582,13 +9361,13 @@ class NB extends Translated {
   final String recurringDataEmptyErrorMessage = 'Velg minst en dag.';
 
   @override
-  final String endDateNotSpecifiedErrorMessage = 'Du må oppgi en sluttdato';
+  final String endDateNotSpecifiedErrorMessage = 'Du må oppgi en sluttdato.';
 
   @override
-  final String selectAll = 'Markere alle';
+  final String selectAll = 'Velg alle';
 
   @override
-  final String deselectAll = 'Avmarkere alle';
+  final String deselectAll = 'Fjern alle valg';
 
   @override
   final String mo = 'man';
@@ -8675,6 +9454,9 @@ class NB extends Translated {
   final String connected = 'Tilkoblet';
 
   @override
+  final String connectedNoInternet = 'Tilkoblet, uten internett';
+
+  @override
   final String screenTimeout = 'Skjermens tidsgrense';
 
   @override
@@ -8690,16 +9472,16 @@ class NB extends Translated {
   final String calendarView = 'Dagkalender';
 
   @override
-  final String oneTimePillarView = '1 tidslinje';
+  final String oneTimePillarView = '1 tidsøyle';
 
   @override
-  final String twoTimePillarsView = '2 tidslinjer';
+  final String twoTimePillarsView = '2 tidsøyler';
 
   @override
   final String listView = 'Liste';
 
   @override
-  final String timepillarSettings = 'Innstillinger for tidslinje';
+  final String timepillarSettings = 'Innstillinger for tidsøyle';
 
   @override
   final String activityDuration = 'Vise tiden som';
@@ -8880,7 +9662,7 @@ class NB extends Translated {
   final String showReminders = 'Vis påminnelser';
 
   @override
-  final String showSelectEndDate = 'Vis velg slutt dato';
+  final String showSelectEndDate = 'Vis velg sluttdato';
 
   @override
   final String recurring = 'Gjentakende';
@@ -8945,7 +9727,7 @@ class NB extends Translated {
 
   @override
   final String showOngoingActivityInFullScreen =
-      'Vis gjeldende aktivitet i full skjerm';
+      'Vis gjeldende aktivitet i fullskjerm';
 
   @override
   final String toolbar = 'Knapperad';
@@ -8965,7 +9747,7 @@ class NB extends Translated {
 
   @override
   final String timeoutSettingsHint =
-      'Återgång till startsidan efter en tids inaktivitet';
+      'Tilbake til startsiden etter en tids inaktivitet';
 
   @override
   final String noTimeout = 'Ingen timeout';
@@ -8979,7 +9761,7 @@ class NB extends Translated {
 
   @override
   final String menuRemovalWarning =
-      'Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke rett nedenfor kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.';
+      'Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke rett nedenfor kategorisymbolene i dagkalenderen; venstre – høyre – venstre. Dette fungerer selv om de er skjulte. av den savnede.';
 
   @override
   final String menuItemsDisabled = 'alle menyvalg er deaktivert';
@@ -9042,7 +9824,7 @@ class NB extends Translated {
   final String oneDot = 'Et punkt';
 
   @override
-  final String columnOfDots = 'Pillar av punkter';
+  final String columnOfDots = 'Kolonne med punkter';
 
   @override
   final String lineAcrossCurrentTime = 'Linje viser aktuell tid';
@@ -9146,7 +9928,7 @@ class NB extends Translated {
 
   @override
   final String turnOffNotificationsBody =
-      'Du vil ikke lengre få alarm og notifikasjoner fra aktiviteter';
+      'Du vil ikke lengre få alarm og påminnelser fra aktiviteter';
 
   @override
   final String notificationsWarningHintText =
@@ -9161,7 +9943,7 @@ class NB extends Translated {
 
   @override
   final String redirectToAndroidSettings =
-      'Du vil bli omdirrigert til Android-innstillinger';
+      'Du vil bli ledet til Android-innstillinger.';
 
   @override
   final String fullScreenAlarmInfo =
@@ -9198,10 +9980,10 @@ class NB extends Translated {
   final String aboutMemoplanner = 'Om';
 
   @override
-  final String licenseNumber = 'Lisens nummer';
+  final String licenseNumber = 'Lisensnummer';
 
   @override
-  final String licenseValidDate = 'Lisens gyldig dato';
+  final String licenseValidDate = 'Lisensens sluttdato';
 
   @override
   final String loggedInUser = 'Innlogget brukerkonto';
@@ -9219,10 +10001,10 @@ class NB extends Translated {
   final String version = 'Versjon';
 
   @override
-  final String androidVersion = 'Android versjon';
+  final String androidVersion = 'Android-versjon';
 
   @override
-  final String iosVersion = 'iOS versjon';
+  final String iosVersion = 'iOS-versjon';
 
   @override
   final String producer = 'Produsent';
@@ -9247,18 +10029,18 @@ class NB extends Translated {
 
   @override
   final String addToPhotoCalendarQuestion =
-      'Vil du legge inn dette foto i fotokalenderen?';
+      'Vil du legge inn dette bildet i bildekalenderen?';
 
   @override
   final String removeFromPhotoCalendarQuestion =
-      'Vil du slette dette foto fra fotokalenderen?';
+      'Vil du slette dette bildet fra bildekalenderen?';
 
   @override
   final String remove = 'Fjern';
 
   @override
   final String doYouWantToDeleteThisPhoto =
-      'Er du sikker på at du vil slette dette foto?';
+      'Er du sikker på at du vil slette dette bildet?';
 
   @override
   final String installStarterSet = 'Installere startoppsett?';
@@ -9266,6 +10048,19 @@ class NB extends Translated {
   @override
   final String doYouWantToImportADefaultSet =
       'Ønsker du å importere startoppsett av aktiviteter, timere, sjekklister og bildearkiv?';
+
+  @override
+  final String welcomeTo = 'Velkommen til';
+
+  @override
+  final String getStarted = 'Begynn';
+
+  @override
+  final String readAndAgree1 = 'For å bruke';
+
+  @override
+  final String readAndAgree2 =
+      ', vennligst les og godta vilkårene for bruk og personvernerklæringen.';
 
   @override
   final String acceptTerms = 'Jeg har lest og godtar';
@@ -9281,4 +10076,41 @@ class NB extends Translated {
 
   @override
   final String privacyPolicyUrl = 'nb/personvernerklaering';
+
+  @override
+  final String confirmDiscard =
+      'Er du sikker på at du vil forkaste endringene?';
+
+  @override
+  final String keepEditing = 'Fortsett å rediger';
+
+  @override
+  final String discard = 'Forkast';
+
+  @override
+  final String resetDeviceQuestion = 'Vil du nullstille enheten?';
+
+  @override
+  final String factoryReset = 'Tilbakestilling';
+
+  @override
+  final String factoryResetDescription =
+      'Tilbakestill og reinstaller MEMOplanner programvaren (instruksjoner er påkrevd).';
+
+  @override
+  final String clearData = 'Slette MEMOplanner data';
+
+  @override
+  final String clearDataDescription = 'Slette app data og start guiden.';
+
+  @override
+  final String confirmFactoryReset = 'Vil du gjenopprette fabrikkinstillinger?';
+
+  @override
+  final String confirmFactoryResetDescription =
+      'Etter at tilbakestillingen er fullført må du reinstallere MEOMplanner programvaren. Følg instruksjonene for å gjøre det.';
+
+  @override
+  final String factoryResetFailed =
+      'Tilbakestilling mislyktes, prøv på nytt senere.';
 }
