@@ -1,11 +1,10 @@
 name: MEMOPlanner Android Build
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
-      - release
-      - test-*
     paths-ignore:
       - 'memoplanner/ios/**'
       - 'memoplanner/test*/**'
