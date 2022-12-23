@@ -1260,7 +1260,7 @@ class SV extends Translated {
   final String photoSingular = 'foto';
 
   @override
-  final String photoPlural = 'foton ';
+  final String photoPlural = 'foton';
 
   @override
   final String settingsData = 'Inställningsdata';
@@ -2766,7 +2766,7 @@ class DA extends Translated {
   final String photoSingular = 'foto';
 
   @override
-  final String photoPlural = 'fotos ';
+  final String photoPlural = 'fotos';
 
   @override
   final String settingsData = 'Indstillingsdata';
@@ -4277,7 +4277,7 @@ class NL extends Translated {
   final String photoSingular = 'foto';
 
   @override
-  final String photoPlural = "foto's ";
+  final String photoPlural = "foto's";
 
   @override
   final String settingsData = 'Instellingsgegevens';
@@ -5793,7 +5793,7 @@ class FI extends Translated {
   final String photoSingular = 'kuva';
 
   @override
-  final String photoPlural = 'kuvaa ';
+  final String photoPlural = 'kuvaa';
 
   @override
   final String settingsData = 'Asetusten tiedot';
@@ -7311,7 +7311,7 @@ class DE extends Translated {
   final String photoSingular = 'Foto';
 
   @override
-  final String photoPlural = 'Fotos ';
+  final String photoPlural = 'Fotos';
 
   @override
   final String settingsData = 'Einstellungsdaten';
@@ -8550,7 +8550,7 @@ class DE extends Translated {
   final String getStarted = 'Erste Schritte';
 
   @override
-  final String readAndAgree1 = 'Zur Nutzung des ';
+  final String readAndAgree1 = 'Zur Nutzung des';
 
   @override
   final String readAndAgree2 =
@@ -9653,7 +9653,7 @@ class NB extends Translated {
   final String showNoAlarm = 'Vis ingen alarm';
 
   @override
-  final String showAlarmOnlyAtStartTime = 'Vis alarm kun på start tid';
+  final String showAlarmOnlyAtStartTime = 'Vis alarm kun på starttid';
 
   @override
   final String showSpeechAtAlarm = 'Vis tale ved alarm';

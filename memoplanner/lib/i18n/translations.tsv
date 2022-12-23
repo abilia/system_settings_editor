@@ -72,7 +72,7 @@ activityTemplatePlural	activity templates	aktivitetsmallar	aktivitetsskabeloner	
 timerTemplateSingular	timer template	timermall	timerskabelon	timersjabloon	ajastin malli	Timer-Vorlage	tidtakermal
 timerTemplatePlural	timer templates	timermallar	timerskabeloner	timersjablonen	ajastin mallit	Timer-Vorlagen	tidtakermaler
 photoSingular	photo	foto	foto	foto	kuva	Foto	bilde
-photoPlural	photos	foton 	fotos 	foto's 	kuvaa 	Fotos 	bilder
+photoPlural	photos	foton	fotos	foto's	kuvaa	Fotos	bilder
 settingsData	Settings data	Inställningsdata	Indstillingsdata	Instellingsgegevens	Asetusten tiedot	Einstellungsdaten	Instillingsdata
 							
 ### Time related							
@@ -371,7 +371,7 @@ showAlarm	Show alarm	Visa larm	Vis alarm	Alarmen weergeven	Näytä hälytykset	A
 showVibrationAlarm	Show vibration	Visa vibration	Vis vibration	Trilfunctie tonen	Näytä värinä	Vibration anzeigen	Vis vibrasjon
 showSilentAlarm	Show silent alarm	Visa tyst larm	Vis stille alarm	Stille alarmen weergeven	Näytä hiljaiset hälytykset	Stille Alarme anzeigen	Vis stille alarm
 showNoAlarm	Show no alarm	Visa inget larm	Vis ingen alarm	Geen alarmen weergeven	Älä näytä hälytystä	Kein Alarm anzeigen	Vis ingen alarm
-showAlarmOnlyAtStartTime	Show alarm only at start time	Larm endast vid starttid	Vis kun alarm ved starttidspunkt	Alarm alleen bij starttijd weergeven	Näytä hälytys vain alkamishetkellä	Alarm nur zur Startzeit anzeigen	Vis alarm kun på start tid
+showAlarmOnlyAtStartTime	Show alarm only at start time	Larm endast vid starttid	Vis kun alarm ved starttidspunkt	Alarm alleen bij starttijd weergeven	Näytä hälytys vain alkamishetkellä	Alarm nur zur Startzeit anzeigen	Vis alarm kun på starttid
 showSpeechAtAlarm	Show speech at alarm	Välj tal vid larm	Vælge tale ved alarm	Spraak bij alarm kiezen	Näytä puhe hälytyksessä	Ansage zum Alarm auswählen	Vis tale ved alarm
 showReminders	Show reminders	Påminnelser	Vis påmindelser	Herinneringen weergeven	Näytä muistutukset	Erinnerungen anzeigen	Vis påminnelser
 showSelectEndDate	Show select end date	Ange slutdatum	Vis vælg slutdato	Einddatum weergeven selecteren	Näytä valitse päättymispäivä	Enddatum auswählen anzeigen	Vis velg sluttdato
@@ -523,7 +523,7 @@ doYouWantToImportADefaultSet	Do you want to import a default set of data with ac
 ### Terms of use							
 welcomeTo	Welcome to	Välkommen till	Velkommen til	Welkom bij	Tervetuloa	Willkommen beim	Velkommen til
 getStarted	Get started	Kom igång	Kom godt i gang	Aan de slag	Aloita	Erste Schritte	Begynn
-readAndAgree1	To use	För att använda	Hvis du vil bruge	Om	Lue ja hyväksy	Zur Nutzung des 	For å bruke
+readAndAgree1	To use	För att använda	Hvis du vil bruge	Om	Lue ja hyväksy	Zur Nutzung des	For å bruke
 readAndAgree2	, please read and agree to the terms of use and privacy policy.	, läs och godkänn användarvillkoren och personuppgiftspolicyn.	, skal du læse og acceptere brugsbetingelserne og privatlivspolitikken.	te gebruiken, moet u eerst de gebruiksvoorwaarden en het privacybeleid lezen en hiermee akkoord gaan.	käyttämiseen käyttöehdot ja tietosuojakäytäntö.	s lesen Sie bitte die Nutzungsbedingungen und die Datenschutzrichtlinie und stimmen Sie ihnen zu.	, vennligst les og godta vilkårene for bruk og personvernerklæringen.
 acceptTerms	I have read and agree to the	Jag har läst och godkänner	Jeg har læst og accepterer	Ik heb gelezen en akkoord gegaan	Olen lukenut ja sopineet	Ich habe gelesen und bin damit einverstanden	Jeg har lest og godtar
 termsOfUse	terms of use	användarvillkor	brugervillkår	gebruiksvoorwaarden	käyttöehdot	nutzungsbedingungen	brukervillkår
