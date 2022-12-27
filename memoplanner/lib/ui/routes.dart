@@ -1,6 +1,7 @@
 import 'package:memoplanner/ui/all.dart';
 
 mixin PersistentRoute {}
+mixin ActivityRootRoute {}
 
 class AlarmRoute<T> extends MaterialPageRoute<T> with PersistentRoute {
   AlarmRoute({
@@ -23,6 +24,14 @@ class PersistentPageRouteBuilder<T> extends PageRouteBuilder<T>
     required super.pageBuilder,
     super.settings,
     super.transitionsBuilder,
+  });
+}
+
+class ActivityRootPageRouteBuilder<T> extends PageRouteBuilder<T>
+    with ActivityRootRoute {
+  ActivityRootPageRouteBuilder({
+    required super.pageBuilder,
+    super.settings,
   });
 }
 

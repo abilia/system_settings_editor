@@ -179,6 +179,8 @@ void main() {
     mockActivityRepository = MockActivityRepository();
     when(() => mockActivitiesBloc.activityRepository)
         .thenAnswer((_) => mockActivityRepository);
+    when(() => mockActivityRepository.allBetween(any(), any()))
+        .thenAnswer((_) => Future.value([]));
 
     mockClient = MockBaseClient();
     when(() => mockClient.post(any(),
@@ -829,6 +831,8 @@ void main() {
       mockActivitiesBlocStream.add(ActivitiesChanged());
       when(() => mockActivityRepository.getById(any()))
           .thenAnswer((_) => Future.value(checkedActivity));
+      when(() => mockActivityRepository.allBetween(any(), any()))
+          .thenAnswer((_) => Future.value([checkedActivity]));
 
       await tester.pumpAndSettle();
 

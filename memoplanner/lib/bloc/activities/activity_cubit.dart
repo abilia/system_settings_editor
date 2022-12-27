@@ -16,13 +16,26 @@ class ActivityCubit extends Cubit<ActivityState> {
   final ActivitiesBloc activitiesBloc;
 
   Future<void> _onNewState() async {
-    if (isClosed) return;
-    final found =
-        await activitiesBloc.activityRepository.getById(state.activityDay.id);
-    if (found == null || found.deleted) {
+    final activityRepository = activitiesBloc.activityRepository;
+    final found = await activityRepository.getById(state.activityDay.id);
+    final isDeleted = await _checkIfDeleted();
+    if (isClosed) {
+      return;
+    }
+    if (isDeleted || found == null) {
       return emit(ActivityDeleted(state.activityDay));
     }
     _emitActivity(found);
+  }
+
+  Future<bool> _checkIfDeleted() async {
+    final activityDay = state.activityDay;
+    final activities = await activitiesBloc.activityRepository.allBetween(
+      activityDay.day.onlyDays(),
+      activityDay.day.nextDay(),
+    );
+    final isDeleted = !activities.any((a) => a.id == activityDay.activity.id);
+    return isDeleted;
   }
 
   void onActivityUpdated(Activity activity) {
