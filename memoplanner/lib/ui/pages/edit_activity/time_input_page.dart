@@ -136,7 +136,7 @@ class _TimeInputContentState extends State<TimeInputContent> {
 
     startTimeController = TextEditingController(text: startTime)
       ..addListener(() {
-        if (valid(startTimeController)) {
+        if (valid(startTimeController) || startTimeController.text.isEmpty) {
           _onNewValidTime();
         }
       });
