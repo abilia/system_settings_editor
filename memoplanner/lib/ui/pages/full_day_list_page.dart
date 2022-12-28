@@ -14,6 +14,7 @@ class FullDayListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (fullDayActivities.isEmpty) Navigator.of(context).maybePop();
     final dayColor = context
         .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayColor);
     return Theme(

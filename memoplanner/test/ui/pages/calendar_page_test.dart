@@ -231,7 +231,7 @@ void main() {
     });
 
     testWidgets(
-        'When viewing an activity and it is deleted from myAbilia Pops back to CalendarPage',
+        'When viewing an activity and it is deleted from myAbilia, pop back to CalendarPage',
         (WidgetTester tester) async {
       // Arrange
       final pushCubit = PushCubit();
@@ -248,7 +248,7 @@ void main() {
       // Act
       mockActivityDb.insertAndAddDirty([activity.copyWith(deleted: true)]);
       pushCubit.fakePush();
-      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      await tester.pumpAndSettle();
       // Assert
       expect(find.byType(CalendarPage), findsOneWidget);
     });
@@ -1241,7 +1241,7 @@ void main() {
   });
 
   testWidgets(
-      'SGC-2148 deleting a fullday recurring activity from week calendar updates full day list page',
+      'SGC-2148 deleting a recurring fullday activity from week calendar updates full day list page',
       (WidgetTester tester) async {
     // Arrange
     final activities = [
@@ -1271,6 +1271,57 @@ void main() {
     await tester.tap(find.byType(YesButton));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(OkButton));
+    await tester.pumpAndSettle();
+
+    // Assert - One activity is shown
+    expect(find.byType(FullDayListPage), findsOneWidget);
+    expect(find.text(activities[0].title), findsOneWidget);
+    expect(find.text(activities[1].title), findsNothing);
+
+    // Act - Delete the second activity
+    await tester.tap(find.text(activities[0].title));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.deleteAllClear));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(YesButton));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(OkButton));
+    await tester.pumpAndSettle();
+
+    // Assert - CalendarPage is shown
+    expect(find.byType(FullDayListPage), findsNothing);
+    expect(find.byType(CalendarPage), findsOneWidget);
+  });
+
+  testWidgets(
+      'SGC-2185 deleting a normal fullday activity from FullDayActivityList does not pop back to CalendarPage',
+      (WidgetTester tester) async {
+    // Arrange
+    final activities = [
+      FakeActivity.fullDay(initialTime.addDays(1), 'one'),
+      FakeActivity.fullDay(initialTime.addDays(1), 'two'),
+    ];
+    mockActivityDb.initWithActivities(activities);
+
+    // Act - Go to FullDayListPage
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.week));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(FullDayStack).first);
+    await tester.pumpAndSettle();
+
+    // Assert - Both activities are shown
+    expect(find.byType(FullDayListPage), findsOneWidget);
+    expect(find.text(activities[0].title), findsOneWidget);
+    expect(find.text(activities[1].title), findsOneWidget);
+
+    // Act - Delete one of the activities
+    await tester.tap(find.text(activities[1].title));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.deleteAllClear));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(YesButton));
     await tester.pumpAndSettle();
 
     // Assert - One activity is shown

@@ -198,7 +198,7 @@ void main() {
     );
     final newTimeInterval = TimeInterval(
       startTime: newStartTime,
-      endTime: newStartTime,
+      endTime: null,
       startDate: aTime,
     );
 
@@ -347,12 +347,12 @@ void main() {
     final newActivity = activity.copyWith(title: 'newTile');
     final expectedTimeInterval1 = TimeInterval(
       startTime: newTime,
-      endTime: newTime,
+      endTime: null,
       startDate: aDate,
     );
     final expectedTimeInterval2 = TimeInterval(
       startTime: newTime,
-      endTime: newTime,
+      endTime: null,
       startDate: newDate,
     );
     final expectedFinalStartTime = DateTime(
@@ -462,7 +462,9 @@ void main() {
         ),
       );
       // Act
-      editActivityCubit.changeTimeInterval(endTime: newEndTime);
+      editActivityCubit.changeTimeInterval(
+          startTime: editActivityCubit.state.timeInterval.startTime,
+          endTime: newEndTime);
 
       // Assert
       await expected1;
@@ -539,7 +541,9 @@ void main() {
     );
 
     // Act
-    editActivityCubit.changeTimeInterval(endTime: newEndTime);
+    editActivityCubit.changeTimeInterval(
+        startTime: editActivityCubit.state.timeInterval.startTime,
+        endTime: newEndTime);
 
     // Assert
     await expected1;
@@ -561,9 +565,7 @@ void main() {
     await expected2;
   });
 
-  test(
-      'set empty end time sets duration to 0 and end time to same as start time',
-      () async {
+  test('set empty end time sets duration to 0 and end time to null', () async {
     // Arrange
     final aDate = DateTime(2001, 01, 01, 01, 01);
     final aDay = DateTime(2001, 01, 01);
@@ -583,7 +585,7 @@ void main() {
     final expectedNewActivity = activity.copyWith(duration: Duration.zero);
     final expectedNewTimeInterval = TimeInterval(
       startTime: TimeOfDay.fromDateTime(activity.startTime),
-      endTime: TimeOfDay.fromDateTime(activity.startTime),
+      endTime: null,
       startDate: aDate,
     );
 
@@ -761,7 +763,7 @@ void main() {
     final time = TimeOfDay.fromDateTime(aTime);
     final expectedTimeInterval = TimeInterval(
       startTime: time,
-      endTime: time,
+      endTime: null,
       startDate: aDay,
     );
 
@@ -900,7 +902,7 @@ void main() {
         final time = TimeOfDay.fromDateTime(aTime);
         final timeInterval = TimeInterval(
           startTime: time,
-          endTime: time,
+          endTime: null,
           startDate: aDay,
         );
         final expectedActivity = activity.copyWith(startTime: aTime);
@@ -1079,7 +1081,7 @@ void main() {
         final time = TimeOfDay.fromDateTime(aTime);
         final timeInterval = TimeInterval(
           startTime: time,
-          endTime: time,
+          endTime: null,
           startDate: aDay,
         );
         final recursTimeInterval = timeInterval.copyWith(
@@ -1276,7 +1278,7 @@ void main() {
         final time = TimeOfDay.fromDateTime(aTime);
         final timeInterval = TimeInterval(
           startTime: time,
-          endTime: time,
+          endTime: null,
           startDate: aDay,
         );
         final expectedActivity = activity.copyWith(startTime: aTime);
@@ -1362,7 +1364,7 @@ void main() {
         final time = TimeOfDay.fromDateTime(aTime);
         final timeInterval = TimeInterval(
           startTime: time,
-          endTime: time,
+          endTime: null,
           startDate: aDay,
         );
         final expectedActivity = activity.copyWith(startTime: aTime);
@@ -1568,7 +1570,7 @@ void main() {
         final time = TimeOfDay.fromDateTime(aTime);
         final firstTimeInterval = TimeInterval(
           startTime: time,
-          endTime: time,
+          endTime: null,
           startDate: aDay,
           endDate: null,
         );

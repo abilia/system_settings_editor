@@ -229,6 +229,30 @@ void main() {
       expect(find.text(newActivityTitle), findsOneWidget);
     });
 
+    testWidgets(
+        'SGC-2200 - When editing an activity from a template, open TimeIntervalPicker '
+        'but not edit the start time will not trigger DiscardWarningDialog',
+        (WidgetTester tester) async {
+      // Arrange
+      final activity = Activity.createNew(
+        startTime: startTime,
+      );
+      await tester.pumpWidget(createEditActivityPage(givenActivity: activity));
+      await tester.pumpAndSettle();
+
+      // Act - Open TimeIntervalPicker and clock ok without edit
+      await tester.scrollDown(dy: -100);
+      await tester.tap(timeFieldFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(okButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(CancelButton));
+      await tester.pumpAndSettle();
+
+      // Assert - No DiscardWarningDialog shows
+      expect(find.byType(DiscardWarningDialog), findsNothing);
+    });
+
     group('picture dialog', () {
       setUp(() {
         when(() => mockSortableBloc.state).thenReturn(
