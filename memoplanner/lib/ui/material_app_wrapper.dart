@@ -5,6 +5,8 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/ui/all.dart';
 
+final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
+
 class MaterialAppWrapper extends StatelessWidget {
   final GlobalKey<NavigatorState>? navigatorKey;
   final Widget home;
@@ -28,6 +30,7 @@ class MaterialAppWrapper extends StatelessWidget {
         theme: abiliaTheme,
         navigatorObservers: [
           RouteLoggingObserver(GetIt.I<SeagullAnalytics>()),
+          routeObserver,
         ],
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: [
