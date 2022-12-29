@@ -114,7 +114,7 @@ class _EditTimerPage extends StatelessWidget {
             children: const [
               _TimerInfoInput(),
               Expanded(
-                child: _TimerWheel(),
+                child: EditTimerWheel(),
               ),
             ],
           ),
@@ -125,14 +125,16 @@ class _EditTimerPage extends StatelessWidget {
   }
 }
 
-class _TimerWheel extends StatefulWidget {
-  const _TimerWheel({Key? key}) : super(key: key);
+@visibleForTesting
+class EditTimerWheel extends StatefulWidget {
+  const EditTimerWheel({Key? key}) : super(key: key);
 
   @override
-  State<_TimerWheel> createState() => _TimerWheelState();
+  State<EditTimerWheel> createState() => EditTimerWheelState();
 }
 
-class _TimerWheelState extends State<_TimerWheel>
+@visibleForTesting
+class EditTimerWheelState extends State<EditTimerWheel>
     with TickerProviderStateMixin {
   late bool animate =
       context.read<EditTimerCubit>().state.duration == Duration.zero;
