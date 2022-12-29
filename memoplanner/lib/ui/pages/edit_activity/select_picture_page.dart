@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:path/path.dart' as p;
 
 final _log = Logger((SelectPicturePage).toString());
 
@@ -231,14 +233,26 @@ class ImageSourceWidget extends StatelessWidget {
     );
   }
 
-  Future _getExternalFile(BuildContext context) async {
+  Future<void> _getExternalFile(BuildContext context) async {
     try {
+      final now = context.read<ClockBloc>().state;
+      final name = DateFormat('MM-dd-yyyy').format(now);
       final image = await _picker.pickImage(source: imageSource);
       if (image != null) {
-        imageCallback.call(UnstoredAbiliaFile.newFile(File(image.path)));
+        final file = _getFileWithName(image.path, '$name.jpg');
+        imageCallback.call(UnstoredAbiliaFile.newFile(file));
       }
     } on PlatformException catch (e) {
       _log.warning(e);
     }
   }
+}
+
+File _getFileWithName(String path, String name) {
+  final file = File(path);
+  final directory = p.dirname(path);
+  final newPath = p.join(directory, name);
+  file.copySync(newPath);
+  file.deleteSync();
+  return File(newPath);
 }
