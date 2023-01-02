@@ -1083,13 +1083,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.newTimerChoice));
         await tester.pumpAndSettle();
-        expect(find.text('00:00:00'), findsOneWidget);
+        expect(find.text('00:00'), findsOneWidget);
 
         final timerWheel = find.byType(TimerWheel);
         final offset = Offset(tester.getSize(timerWheel).height / 3, 5);
         await tester.tapAt(tester.getCenter(timerWheel) + offset);
         await tester.pumpAndSettle();
-        expect(find.text('00:45:00'), findsOneWidget);
+        expect(find.text('00:45'), findsOneWidget);
       });
 
       testWidgets('from scratch, with custom name',
@@ -1276,7 +1276,7 @@ void main() {
           final offset = Offset(tester.getSize(timerWheel).height / 3, 5);
           await tester.tapAt(tester.getCenter(timerWheel) + offset);
           await tester.pumpAndSettle();
-          expect(find.text('00:45:00'), findsOneWidget);
+          expect(find.text('00:45'), findsOneWidget);
 
           await tester.tap(find.byType(PreviousButton));
           await tester.pumpAndSettle();

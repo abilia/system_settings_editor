@@ -88,7 +88,7 @@ class FullDayActivitiesButton extends StatelessWidget {
           final authProviders = copiedAuthProviders(context);
 
           Navigator.of(context).push(
-            PageRouteBuilder(
+            ActivityRootPageRouteBuilder(
               pageBuilder: (_, animation, secondaryAnimation) =>
                   MultiBlocProvider(
                 providers: authProviders,
