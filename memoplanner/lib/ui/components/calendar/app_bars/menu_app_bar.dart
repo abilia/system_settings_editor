@@ -15,22 +15,19 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
         (MemoplannerSettingsBloc bloc) => bloc.state.dayCalendar.appBar);
     final time = context.watch<ClockBloc>().state;
 
-    if (appBarSettings.displayDayCalendarAppBar) {
-      return CalendarAppBar(
+    return CalendarAppBar(
+      day: time,
+      calendarDayColor: calendarSettings.dayColor,
+      rows: AppBarTitleRows.day(
+        settings: appBarSettings,
+        currentTime: time,
         day: time,
-        calendarDayColor: calendarSettings.dayColor,
-        rows: AppBarTitleRows.day(
-          settings: appBarSettings,
-          currentTime: time,
-          day: time,
-          dayPart: context.read<DayPartCubit>().state,
-          dayParts: calendarSettings.dayParts,
-          langCode: Localizations.localeOf(context).toLanguageTag(),
-          translator: Translator.of(context).translate,
-        ),
-        showClock: appBarSettings.showClock,
-      );
-    }
-    return const SizedBox.shrink();
+        dayPart: context.read<DayPartCubit>().state,
+        dayParts: calendarSettings.dayParts,
+        langCode: Localizations.localeOf(context).toLanguageTag(),
+        translator: Translator.of(context).translate,
+      ),
+      showClock: appBarSettings.showClock,
+    );
   }
 }
