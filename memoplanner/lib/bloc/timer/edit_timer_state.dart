@@ -40,6 +40,12 @@ class EditTimerState extends Equatable {
 
   Duration get duration => timerData.duration;
 
+  String get durationText {
+    final text = timerData.duration.toString();
+    final index = text.lastIndexOf(':');
+    return text.substring(0, index).padLeft(5, '0');
+  }
+
   String get name => timerData.name;
 
   bool get autoSetNameToDuration => timerData.autoSetNameToDuration;
