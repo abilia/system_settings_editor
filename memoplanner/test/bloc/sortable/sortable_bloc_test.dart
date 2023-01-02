@@ -74,11 +74,10 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     const imageId = 'id1';
     const imageName = 'nameOfImage';
-    const imagePath = 'path/to/image/$imageName.jpg';
 
     // Act
     sortableBloc.add(const LoadSortables());
-    sortableBloc.add(const ImageArchiveImageAdded('id1', imagePath));
+    sortableBloc.add(const ImageArchiveImageAdded('id1', imageName));
 
     // Assert
     await expectLater(
