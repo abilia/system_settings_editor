@@ -84,7 +84,6 @@ class CameraButton extends StatelessWidget {
                 sortableBloc.add(
                   PhotoAdded(
                     selectedImage.id,
-                    selectedImage.file.path,
                     name,
                     myPhotoFolderId,
                   ),
