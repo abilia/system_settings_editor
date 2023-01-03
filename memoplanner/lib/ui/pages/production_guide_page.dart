@@ -51,122 +51,125 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
     return MaterialApp(
       theme: abiliaTheme,
       home: Scaffold(
-        body: Padding(
-          padding: layout.templates.m5,
-          child: FutureBuilder<bool>(
-            future: SystemSettingsEditor.canWriteSettings,
-            builder: (context, writeSettingsSnapshot) {
-              final canWriteSettings = writeSettingsSnapshot.data ?? false;
-              return BlocBuilder<StartupCubit, StartupState>(
-                builder: (context, startupState) => Column(
-                  children: [
-                    MEMOplannerLogoHiddenBackendSwitch(
-                      loading: startupState is Verifying,
-                    ),
-                    SizedBox(
-                        height: layout.formPadding.groupHorizontalDistance),
-                    Text(
-                      'Welcome to the production guide!',
-                      style: abiliaTextTheme.headline6,
-                    ),
-                    const SizedBox(height: 50),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SubHeading('Serial number'),
-                        TextField(
-                          controller: serialIdController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: layout.formPadding.smallVerticalItemDistance,
-                    ),
-                    Row(children: [
-                      const IconAndTextButtonDark(
-                        icon: AbiliaIcons.inputSettings,
-                        text: 'Fetch from settings',
-                        onPressed: AndroidIntents.openDeviceInfoSettings,
+        body: SafeArea(
+          child: Padding(
+            padding: layout.templates.m5,
+            child: FutureBuilder<bool>(
+              future: SystemSettingsEditor.canWriteSettings,
+              builder: (context, writeSettingsSnapshot) {
+                final canWriteSettings = writeSettingsSnapshot.data ?? false;
+                return BlocBuilder<StartupCubit, StartupState>(
+                  builder: (context, startupState) => Column(
+                    children: [
+                      MEMOplannerLogoHiddenBackendSwitch(
+                        loading: startupState is Verifying,
                       ),
                       SizedBox(
-                        width: layout.formPadding.horizontalItemDistance,
-                      ),
-                      IconAndTextButtonDark(
-                          icon: AbiliaIcons.past,
-                          text: 'Paste from clipboard',
-                          onPressed: () =>
-                              Clipboard.getData(Clipboard.kTextPlain).then(
-                                  (value) => serialIdController.text =
-                                      value?.text ?? '')),
-                    ]),
-                    const SizedBox(height: 50),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SubHeading('License key'),
-                        TextField(
-                            controller: licenseNumberController,
-                            decoration: licenseInputDecoration(context),
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              LicenseNumberFormatter(),
-                            ]),
-                        const SubHeading(
-                          'Enter license key to be connected to this device',
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: layout.formPadding.largeGroupDistance),
-                    if (!canWriteSettings) ...[
-                      SwitchField(
-                        value: canWriteSettings,
-                        child: const Text('Write system settings permission'),
-                        onChanged: (_) async {
-                          await AndroidIntents
-                              .openWriteSettingsPermissionSettings();
-                        },
+                          height: layout.formPadding.groupHorizontalDistance),
+                      Text(
+                        'Welcome to the production guide!',
+                        style: abiliaTextTheme.headline6,
                       ),
                       const SizedBox(height: 50),
-                    ],
-                    TextButton(
-                      onPressed: canWriteSettings && startupState is! Verifying
-                          ? () => context.read<StartupCubit>().verifySerialId(
-                                serialIdController.text,
-                                licenseNumberController.text,
-                              )
-                          : null,
-                      style: textButtonStyleGreen,
-                      child: const Text('Verify'),
-                    ),
-                    if (startupState is VerifySerialIdFailed)
-                      Text(startupState.message),
-                    const Spacer(),
-                    if (!Config.release)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const AbiliaLogo(),
-                          InkWell(
-                            onTap: () => context
-                                .read<StartupCubit>()
-                                .skipProductionGuide(),
-                            child: const Text(
-                              'Skip production guide >',
-                              key: TestKey.skipProductionGuide,
+                          const SubHeading('Serial number'),
+                          TextField(
+                            controller: serialIdController,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
                             ),
                           ),
                         ],
                       ),
-                  ],
-                ),
-              );
-            },
+                      SizedBox(
+                        height: layout.formPadding.smallVerticalItemDistance,
+                      ),
+                      Row(children: [
+                        const IconAndTextButtonDark(
+                          icon: AbiliaIcons.inputSettings,
+                          text: 'Fetch from settings',
+                          onPressed: AndroidIntents.openDeviceInfoSettings,
+                        ),
+                        SizedBox(
+                          width: layout.formPadding.horizontalItemDistance,
+                        ),
+                        IconAndTextButtonDark(
+                            icon: AbiliaIcons.past,
+                            text: 'Paste from clipboard',
+                            onPressed: () =>
+                                Clipboard.getData(Clipboard.kTextPlain).then(
+                                    (value) => serialIdController.text =
+                                        value?.text ?? '')),
+                      ]),
+                      const SizedBox(height: 50),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SubHeading('License key'),
+                          TextField(
+                              controller: licenseNumberController,
+                              decoration: licenseInputDecoration(context),
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                LicenseNumberFormatter(),
+                              ]),
+                          const SubHeading(
+                            'Enter license key to be connected to this device',
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: layout.formPadding.largeGroupDistance),
+                      if (!canWriteSettings) ...[
+                        SwitchField(
+                          value: canWriteSettings,
+                          child: const Text('Write system settings permission'),
+                          onChanged: (_) async {
+                            await AndroidIntents
+                                .openWriteSettingsPermissionSettings();
+                          },
+                        ),
+                        const SizedBox(height: 50),
+                      ],
+                      TextButton(
+                        onPressed: canWriteSettings &&
+                                startupState is! Verifying
+                            ? () => context.read<StartupCubit>().verifySerialId(
+                                  serialIdController.text,
+                                  licenseNumberController.text,
+                                )
+                            : null,
+                        style: textButtonStyleGreen,
+                        child: const Text('Verify'),
+                      ),
+                      if (startupState is VerifySerialIdFailed)
+                        Text(startupState.message),
+                      const Spacer(),
+                      if (!Config.release)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            const AbiliaLogo(),
+                            InkWell(
+                              onTap: () => context
+                                  .read<StartupCubit>()
+                                  .skipProductionGuide(),
+                              child: const Text(
+                                'Skip production guide >',
+                                key: TestKey.skipProductionGuide,
+                              ),
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),
