@@ -16,21 +16,20 @@ class LoadSortables extends SortableEvent {
 }
 
 class ImageArchiveImageAdded extends SortableEvent {
-  final String imageId, imagePath;
+  final String imageId, name;
 
-  const ImageArchiveImageAdded(this.imageId, this.imagePath);
+  const ImageArchiveImageAdded(this.imageId, this.name);
 
   @override
-  List<Object> get props => [imageId, imagePath];
+  List<Object> get props => [imageId, name];
 }
 
 class PhotoAdded extends SortableEvent {
-  final String imageId, imagePath, name, folderId;
+  final String imageId, name, folderId;
   final Set<String> tags;
 
   const PhotoAdded(
     this.imageId,
-    this.imagePath,
     this.name,
     this.folderId, {
     this.tags = const {},
@@ -39,7 +38,6 @@ class PhotoAdded extends SortableEvent {
   @override
   List<Object> get props => [
         imageId,
-        imagePath,
         name,
         folderId,
       ];

@@ -231,7 +231,7 @@ class ImageSourceWidget extends StatelessWidget {
     );
   }
 
-  Future _getExternalFile(BuildContext context) async {
+  Future<void> _getExternalFile(BuildContext context) async {
     try {
       final image = await _picker.pickImage(source: imageSource);
       if (image != null) {
