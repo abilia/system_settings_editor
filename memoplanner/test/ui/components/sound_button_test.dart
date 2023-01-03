@@ -6,6 +6,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 import '../../mocks/mock_bloc.dart';
+import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   final soundBloc = MockSoundBloc();
@@ -17,6 +18,7 @@ void main() {
   );
 
   setUp(() {
+    registerFallbackValues();
     when(() => soundBloc.state).thenReturn(
       SoundPlaying(soundFile),
     );
@@ -24,14 +26,23 @@ void main() {
 
   Future<void> pumpSoundButton(WidgetTester tester) async {
     await tester.pumpWidget(
-      MaterialApp(
-        navigatorObservers: [routeObserver],
-        navigatorKey: navKey,
-        home: BlocProvider<SoundBloc>(
-          create: (context) => soundBloc,
-          child: PlaySoundButton(
-            sound: soundFile,
-          ),
+      BlocProvider(
+        create: (context) => NavigationCubit(),
+        child: Builder(
+          builder: (context) {
+            return MaterialApp(
+              navigatorObservers: [
+                NavigationObserver(context.read<NavigationCubit>())
+              ],
+              navigatorKey: navKey,
+              home: BlocProvider<SoundBloc>(
+                create: (context) => soundBloc,
+                child: PlaySoundButton(
+                  sound: soundFile,
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -52,6 +63,8 @@ void main() {
     navKey.currentState?.push(
       MaterialPageRoute(builder: (context) => Container()),
     );
+
+    await untilCalled(() => soundBloc.add(any()));
 
     // Expect - StopSound is called
     verify(() => soundBloc.add(const StopSound())).called(1);
