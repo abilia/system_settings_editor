@@ -7,7 +7,7 @@ class ImageArchiveLayout {
       aspectRatio;
 
   const ImageArchiveLayout({
-    this.imageWidth = 84,
+    this.imageWidth = 86,
     this.imageHeight = 86,
     this.imagePadding = 4,
     this.fullscreenImagePadding = 12,
