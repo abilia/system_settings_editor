@@ -53,6 +53,7 @@ void main() {
           (WidgetTester tester) async {
         await tester.pumpApp();
         expect(find.byType(ProductionGuidePage), findsOneWidget);
+        expect(find.byType(SafeArea), findsOneWidget);
       });
     });
 
@@ -68,6 +69,7 @@ void main() {
         await tester.tap(find.byKey(TestKey.startWelcomeGuide));
         await tester.pumpAndSettle();
         expect(find.byType(PageOneWifi), findsOneWidget);
+        expect(find.byType(SafeArea), findsOneWidget);
       });
 
       testWidgets(
