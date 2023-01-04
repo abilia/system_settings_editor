@@ -1,5 +1,6 @@
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class AuthenticatedDialog extends StatelessWidget {
   final AuthenticatedDialogCubit authenticatedDialogCubit;
@@ -11,63 +12,45 @@ class AuthenticatedDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: authenticatedDialogCubit.state.numberOfDialogs,
-      child: Builder(
-        builder: (context) {
-          return _AuthenticatedDialog(
-            authenticatedDialogCubit: authenticatedDialogCubit,
-            tabController: DefaultTabController.of(context),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class _AuthenticatedDialog extends StatelessWidget {
-  final AuthenticatedDialogCubit authenticatedDialogCubit;
-  final TabController? tabController;
-
-  const _AuthenticatedDialog({
-    required this.authenticatedDialogCubit,
-    required this.tabController,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
     final loginDialogState = authenticatedDialogCubit.state;
+    final pageController = PageController();
 
-    return TabBarView(
+    return PageView(
+      controller: pageController,
       physics: const NeverScrollableScrollPhysics(),
-      controller: tabController,
       children: [
         if (loginDialogState.termsOfUse)
           TermsOfUseDialog(
             loginDialogCubit: authenticatedDialogCubit,
             isMoreDialogs: loginDialogState.numberOfDialogs > 1,
-            onNext: () => onNext(context),
+            onNext: () => _onNext(context, pageController),
           ),
         if (loginDialogState.starterSet)
           StarterSetDialog(
-            onNext: () => onNext(context),
+            onNext: () => _onNext(context, pageController),
           ),
         if (loginDialogState.fullscreenAlarm)
           FullscreenAlarmInfoDialog(
             showRedirect: true,
-            onNext: () => onNext(context),
+            onNext: () => _onNext(context, pageController),
           ),
       ],
     );
   }
 
-  void onNext(BuildContext context) {
-    final currentIndex = tabController?.index;
+  void _onNext(BuildContext context, PageController pageController) {
+    final currentIndex = pageController.page?.toInt();
     final lastIndex = authenticatedDialogCubit.state.numberOfDialogs - 1;
     if (currentIndex == lastIndex) {
       return Navigator.of(context).pop();
     }
-    tabController?.index++;
+    _nextPage(pageController);
+  }
+
+  void _nextPage(PageController pageController) {
+    pageController.nextPage(
+      duration: 500.milliseconds(),
+      curve: Curves.easeOutQuad,
+    );
   }
 }
