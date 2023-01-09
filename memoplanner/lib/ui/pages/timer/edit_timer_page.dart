@@ -139,37 +139,41 @@ class EditTimerWheelState extends State<EditTimerWheel>
   late bool animate =
       context.read<EditTimerCubit>().state.duration == Duration.zero;
 
-  Timer? forward;
-  Timer? reverse;
+  Timer? animationTimer;
 
   late final AnimationController _animationController = AnimationController(
-    duration: const Duration(milliseconds: 800),
-    reverseDuration: const Duration(milliseconds: 400),
+    duration: const Duration(milliseconds: 1000),
+    reverseDuration: const Duration(milliseconds: 600),
     vsync: this,
     animationBehavior: AnimationBehavior.preserve,
-  )
-    ..forward()
-    ..addStatusListener((status) async {
+  )..addStatusListener((status) async {
       if (!animate) {
         _animationController.stop();
       }
       if (status == AnimationStatus.dismissed) {
-        forward = Timer(const Duration(milliseconds: 800), () {
+        animationTimer = Timer(const Duration(milliseconds: 2500), () {
           if (mounted) _animationController.forward();
         });
       }
       if (status == AnimationStatus.completed) {
-        forward = Timer(const Duration(milliseconds: 400), () {
+        animationTimer = Timer(const Duration(milliseconds: 400), () {
           if (mounted) _animationController.reverse();
         });
       }
     });
 
   @override
+  void initState() {
+    super.initState();
+    animationTimer = Timer(const Duration(milliseconds: 1000), () {
+      if (mounted) _animationController.forward();
+    });
+  }
+
+  @override
   void dispose() {
     _animationController.dispose();
-    forward?.cancel();
-    reverse?.cancel();
+    animationTimer?.cancel();
     super.dispose();
   }
 
