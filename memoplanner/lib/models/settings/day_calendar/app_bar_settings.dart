@@ -21,11 +21,7 @@ class AppBarSettings extends Equatable {
       activityDisplayClockKey = 'day_caption_show_clock';
 
   bool get displayDayCalendarAppBar =>
-      showWeekday ||
-      showDayPeriod ||
-      showDate ||
-      showClock ||
-      showBrowseButtons;
+      showWeekday || showDayPeriod || showDate || showClock;
 
   factory AppBarSettings.fromSettingsMap(
       Map<String, MemoplannerSettingData> settings) {

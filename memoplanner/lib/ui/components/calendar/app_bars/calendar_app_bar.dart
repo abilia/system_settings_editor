@@ -1,3 +1,4 @@
+import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
@@ -39,6 +40,15 @@ class CalendarAppBar extends StatelessWidget {
     final clockToTheRight = rightAction == null && showClock;
     final clockSpaceEmpty = (clockReplacement == null && !showClock) ||
         (clockReplacement == null && clockToTheRight);
+    final appBarSettings = context.select(
+        (MemoplannerSettingsBloc bloc) => bloc.state.dayCalendar.appBar);
+    final hasActions = leftAction != null || rightAction != null;
+    final showAppBar = appBarSettings.displayDayCalendarAppBar || hasActions;
+
+    if (!showAppBar) {
+      return const SizedBox.shrink();
+    }
+
     return AnimatedTheme(
       key: TestKey.animatedTheme,
       data: theme.theme,

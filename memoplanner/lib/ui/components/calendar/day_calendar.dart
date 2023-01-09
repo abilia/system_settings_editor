@@ -16,15 +16,12 @@ class DayCalendar extends StatelessWidget {
       ),
       child: Builder(
         builder: (context) {
-          final displayAppbar = context.select((MemoplannerSettingsBloc bloc) =>
-              bloc.state.dayCalendar.appBar.displayDayCalendarAppBar);
-
-          return Scaffold(
-            appBar: displayAppbar ? const DayCalendarAppBar() : null,
-            floatingActionButton: const FloatingActions(),
+          return const Scaffold(
+            appBar: DayCalendarAppBar(),
+            floatingActionButton: FloatingActions(),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.startFloat,
-            body: const Calendars(),
+            body: Calendars(),
           );
         },
       ),

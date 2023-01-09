@@ -166,7 +166,7 @@ void main() {
         await tester.pumpApp();
         await tester.tap(find.byType(MenuButton));
         await tester.pumpAndSettle();
-        expect(find.byType(CalendarAppBar), findsNothing);
+        expect(find.byType(AppBar), findsNothing);
       });
     });
 
