@@ -31,6 +31,9 @@ void main() {
     setupPermissions();
   });
 
+  bool isOkButtonActive(WidgetTester tester) =>
+      tester.widget<OkButton>(find.byType(OkButton)).onPressed != null;
+
   group('RecordSoundPage test', () {
     Widget wrapWithMaterialApp(
       Widget widget, {
@@ -81,7 +84,9 @@ void main() {
     testWidgets('record page smoke test no previous file',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        wrapWithMaterialApp(const RecordSoundPage(title: '')),
+        wrapWithMaterialApp(
+          const RecordSoundPage(title: '', initialRecording: AbiliaFile.empty),
+        ),
       );
       await tester.pumpAndSettle();
       expect(find.byType(RecordSoundPage), findsOneWidget);
@@ -90,13 +95,14 @@ void main() {
       expect(find.byType(PlayRecordingButton), findsNothing);
       expect(find.byType(DeleteButton), findsNothing);
       expect(find.byType(StopButton), findsNothing);
+      expect(isOkButtonActive(tester), isFalse);
     });
 
     testWidgets('record page smoke test existing previous file',
         (WidgetTester tester) async {
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          const RecordSoundPage(title: ''),
+          RecordSoundPage(title: '', initialRecording: _dummyFile),
           originalSoundFile: _dummyFile,
         ),
       );
@@ -107,13 +113,14 @@ void main() {
 
       expect(find.byType(RecordAudioButton), findsNothing);
       expect(find.byType(StopButton), findsNothing);
+      expect(isOkButtonActive(tester), isFalse);
     });
 
     testWidgets('delete file. check that correct state is shown afterwards.',
         (WidgetTester tester) async {
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          const RecordSoundPage(title: ''),
+          RecordSoundPage(title: '', initialRecording: _dummyFile),
           originalSoundFile: _dummyFile,
         ),
       );
@@ -124,6 +131,7 @@ void main() {
 
       expect(find.byType(RecordAudioButton), findsNothing);
       expect(find.byType(StopButton), findsNothing);
+      expect(isOkButtonActive(tester), isFalse);
 
       await tester.tap(find.byIcon(AbiliaIcons.deleteAllClear));
       await tester.pumpAndSettle();
@@ -133,6 +141,7 @@ void main() {
       expect(find.byType(DeleteButton), findsNothing);
       expect(find.byType(StopButton), findsNothing);
       expect(find.byType(PlayRecordingButton), findsNothing);
+      expect(isOkButtonActive(tester), isTrue);
     });
 
     testWidgets('test record. stop recording and check state',
@@ -141,20 +150,25 @@ void main() {
         Permission.microphone: PermissionStatus.granted,
       });
       await tester.pumpWidget(
-        wrapWithMaterialApp(const RecordSoundPage(title: '')),
+        wrapWithMaterialApp(
+          const RecordSoundPage(title: '', initialRecording: AbiliaFile.empty),
+        ),
       );
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(RecordAudioButton));
       await tester.pumpAndSettle();
+      expect(isOkButtonActive(tester), isFalse);
       verify(() => mockRecorder.start());
 
       expect(find.byType(StopButton), findsOneWidget);
+      expect(isOkButtonActive(tester), isFalse);
       await tester.tap(find.byType(StopButton));
       await tester.pumpAndSettle();
 
       verify(() => mockRecorder.stop());
       expect(find.byType(PlayRecordingButton), findsOneWidget);
+      expect(isOkButtonActive(tester), isTrue);
     });
 
     testWidgets(
@@ -164,7 +178,9 @@ void main() {
         Permission.microphone: PermissionStatus.granted,
       });
       await tester.pumpWidget(
-        wrapWithMaterialApp(const RecordSoundPage(title: '')),
+        wrapWithMaterialApp(
+          const RecordSoundPage(title: '', initialRecording: AbiliaFile.empty),
+        ),
       );
       await tester.pumpAndSettle();
 
@@ -238,7 +254,7 @@ void main() {
       );
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          const RecordSoundPage(title: ''),
+          const RecordSoundPage(title: '', initialRecording: AbiliaFile.empty),
         ),
       );
       await tester.pumpAndSettle();
@@ -256,7 +272,7 @@ void main() {
       );
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          const RecordSoundPage(title: ''),
+          const RecordSoundPage(title: '', initialRecording: AbiliaFile.empty),
         ),
       );
       await tester.pumpAndSettle();
@@ -274,7 +290,7 @@ void main() {
       );
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          const RecordSoundPage(title: ''),
+          const RecordSoundPage(title: '', initialRecording: AbiliaFile.empty),
         ),
       );
       await tester.pumpAndSettle();
@@ -292,7 +308,7 @@ void main() {
       );
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          const RecordSoundPage(title: ''),
+          const RecordSoundPage(title: '', initialRecording: AbiliaFile.empty),
         ),
       );
       await tester.pumpAndSettle();
@@ -313,7 +329,7 @@ void main() {
       );
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          const RecordSoundPage(title: ''),
+          const RecordSoundPage(title: '', initialRecording: AbiliaFile.empty),
         ),
       );
       await tester.pumpAndSettle();
