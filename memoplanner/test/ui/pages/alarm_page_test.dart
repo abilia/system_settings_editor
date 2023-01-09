@@ -119,6 +119,9 @@ void main() {
               BlocProvider<PushCubit>(
                 create: (context) => pushCubit ?? FakePushCubit(),
               ),
+              BlocProvider<NavigationCubit>(
+                create: (_) => NavigationCubit(),
+              ),
             ],
             child: Builder(
               builder: (context) => Listener(

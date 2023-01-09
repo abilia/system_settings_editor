@@ -6,23 +6,22 @@ import 'package:memoplanner/ui/all.dart';
 
 class RecordSoundPage extends StatelessWidget {
   final String title;
+  final AbiliaFile initialRecording;
 
   const RecordSoundPage({
     required this.title,
+    required this.initialRecording,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final initialRecording =
-        context.read<RecordSoundCubit>().state.recordedFile;
+    final recordSoundCubit = context.watch<RecordSoundCubit>();
+    final recordingChanged =
+        initialRecording != recordSoundCubit.state.recordedFile;
+    final isRecording = recordSoundCubit.state is RecordingSoundState;
     return PopAwareDiscardListener(
-      showDiscardDialogCondition: (context) {
-        final recordSoundState = context.read<RecordSoundCubit>().state;
-        final fileChanged = initialRecording != recordSoundState.recordedFile;
-        final isRecording = recordSoundState is RecordingSoundState;
-        return fileChanged || isRecording;
-      },
+      showDiscardDialogCondition: (_) => recordingChanged || isRecording,
       child: Scaffold(
         appBar: AbiliaAppBar(
           title: title,
@@ -32,19 +31,22 @@ class RecordSoundPage extends StatelessWidget {
         bottomNavigationBar: BottomNavigation(
           backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: OkButton(
-            onPressed: () {
-              final recordState = context.read<RecordSoundCubit>().state;
-              if (recordState is NewRecordedSoundState) {
-                return Navigator.of(context)
-                    .pop(recordState.unstoredAbiliaFile);
-              } else if (recordState is EmptyRecordSoundState) {
-                return Navigator.of(context).pop(AbiliaFile.empty);
-              }
-              return Navigator.of(context).pop();
-            },
+            onPressed: recordingChanged && !isRecording
+                ? () => _onSave(context)
+                : null,
           ),
         ),
       ),
     );
+  }
+
+  void _onSave(BuildContext context) {
+    final recordState = context.read<RecordSoundCubit>().state;
+    if (recordState is NewRecordedSoundState) {
+      return Navigator.of(context).pop(recordState.unstoredAbiliaFile);
+    } else if (recordState is EmptyRecordSoundState) {
+      return Navigator.of(context).pop(AbiliaFile.empty);
+    }
+    return Navigator.of(context).pop();
   }
 }

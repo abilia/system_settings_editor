@@ -223,7 +223,6 @@ class _AddPhotoButton extends StatelessWidget {
     sortableBloc.add(
       PhotoAdded(
         selectedImage.id,
-        selectedImage.file.path,
         name,
         includeInPhotoCalendar ? myPhotoFolderId : currentFolderId,
         tags: {if (includeInPhotoCalendar) ImageArchiveData.photoCalendarTag},

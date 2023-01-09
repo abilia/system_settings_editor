@@ -16,32 +16,39 @@ class MaterialAppWrapper extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
-        navigatorKey: navigatorKey,
-        builder: (context, child) => child != null
-            ? MediaQuery(
-                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                child: child,
-              )
-            : const SplashPage(),
-        title: Config.flavor.name,
-        theme: abiliaTheme,
-        navigatorObservers: [
-          RouteLoggingObserver(GetIt.I<SeagullAnalytics>()),
-        ],
-        supportedLocales: Translator.supportedLocals,
-        localizationsDelegates: [
-          Translator.delegate,
-          LocaleCubit.delegate(context.read<LocaleCubit>()),
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          DefaultCupertinoLocalizations.delegate,
-        ],
-        localeResolutionCallback: (locale, supportedLocales) => supportedLocales
-            .firstWhere((l) => l.languageCode == locale?.languageCode,
-                // English should be the first one and also the default.
-                orElse: () => supportedLocales.first),
-        home: home,
+  Widget build(BuildContext context) => BlocProvider(
+        create: (context) => NavigationCubit(),
+        child: Builder(builder: (context) {
+          return MaterialApp(
+            navigatorKey: navigatorKey,
+            builder: (context, child) => child != null
+                ? MediaQuery(
+                    data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                    child: child,
+                  )
+                : const SplashPage(),
+            title: Config.flavor.name,
+            theme: abiliaTheme,
+            navigatorObservers: [
+              RouteLoggingObserver(GetIt.I<SeagullAnalytics>()),
+              NavigationObserver(context.read<NavigationCubit>()),
+            ],
+            supportedLocales: Translator.supportedLocals,
+            localizationsDelegates: [
+              Translator.delegate,
+              LocaleCubit.delegate(context.read<LocaleCubit>()),
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              DefaultCupertinoLocalizations.delegate,
+            ],
+            localeResolutionCallback: (locale, supportedLocales) =>
+                supportedLocales.firstWhere(
+                    (l) => l.languageCode == locale?.languageCode,
+                    // English should be the first one and also the default.
+                    orElse: () => supportedLocales.first),
+            home: home,
+          );
+        }),
       );
 }

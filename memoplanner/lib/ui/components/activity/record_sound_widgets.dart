@@ -151,7 +151,10 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                                child: RecordSoundPage(title: label),
+                                child: RecordSoundPage(
+                                  initialRecording: recordedAudio,
+                                  title: label,
+                                ),
                               ),
                             ),
                             settings:

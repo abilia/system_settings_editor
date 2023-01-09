@@ -81,11 +81,13 @@ class ArchiveImage extends StatelessWidget {
               ),
               SizedBox(height: layout.imageArchive.imageNameBottomPadding),
             ],
-            FadeInAbiliaImage(
-              height: layout.imageArchive.imageHeight,
-              width: layout.imageArchive.imageWidth,
-              imageFileId: imageId,
-              imageFilePath: iconPath,
+            Flexible(
+              child: FadeInAbiliaImage(
+                height: layout.imageArchive.imageHeight,
+                width: layout.imageArchive.imageWidth,
+                imageFileId: imageId,
+                imageFilePath: iconPath,
+              ),
             ),
           ],
         ),

@@ -31,7 +31,13 @@ class IconAndTextButton extends StatelessWidget {
             children: [
               Icon(icon, size: layout.icon.button),
               SizedBox(width: layout.iconTextButton.iconTextSpacing),
-              Text(text),
+              Flexible(
+                child: Text(
+                  text,
+                  softWrap: true,
+                  maxLines: 2,
+                ),
+              ),
             ],
           ),
         ),

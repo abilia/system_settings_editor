@@ -25,8 +25,7 @@ class ViewDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bodyContainer = Container(
-      color: ViewDialog.light,
+    final bodyContainer = Padding(
       padding: bodyPadding ?? layout.templates.l2,
       child: Center(
         child: DefaultTextStyle(
@@ -43,24 +42,30 @@ class ViewDialog extends StatelessWidget {
           padding: layout.templates.s5,
           child: ClipRRect(
             borderRadius: borderRadius,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (heading != null)
-                  Container(
-                    height: layout.appBar.smallHeight,
-                    color: ViewDialog.dark,
-                    child: Center(child: heading),
-                  ),
-                if (expanded) Flexible(child: bodyContainer) else bodyContainer,
-                BottomNavigation(
-                  useVerticalSafeArea: false,
-                  color: bottomNavigationColor,
-                  backNavigationWidget: backNavigationWidget,
-                  forwardNavigationWidget: forwardNavigationWidget,
-                )
-              ],
+            child: Container(
+              color: ViewDialog.light,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (heading != null)
+                    Container(
+                      height: layout.appBar.smallHeight,
+                      color: ViewDialog.dark,
+                      child: Center(child: heading),
+                    ),
+                  if (expanded)
+                    Flexible(child: bodyContainer)
+                  else
+                    bodyContainer,
+                  BottomNavigation(
+                    useVerticalSafeArea: false,
+                    color: bottomNavigationColor,
+                    backNavigationWidget: backNavigationWidget,
+                    forwardNavigationWidget: forwardNavigationWidget,
+                  )
+                ],
+              ),
             ),
           ),
         ),
