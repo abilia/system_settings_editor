@@ -105,6 +105,7 @@ class EventList extends StatelessWidget {
                   notPastEvents,
                   events.day,
                   isNight: todayNight,
+                  lastMargin: layout.eventCard.marginSmall,
                   key: center,
                 ),
               ],

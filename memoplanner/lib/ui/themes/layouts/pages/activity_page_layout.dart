@@ -55,7 +55,7 @@ class ActivityPageLayout {
     this.horizontalInfoPadding = const EdgeInsets.symmetric(horizontal: 12),
     this.checkButtonPadding = const EdgeInsets.only(bottom: 16),
     this.checkButtonContentPadding = const EdgeInsets.fromLTRB(10, 10, 20, 10),
-    this.checklistPadding = const EdgeInsets.fromLTRB(18, 12, 12, 0),
+    this.checklistPadding = const EdgeInsets.fromLTRB(18, 12, 12, 12),
     this.youtubePlayerPadding = const EdgeInsets.all(12),
     this.checkButtonHeight = 48,
     this.dividerHeight = 1,
@@ -91,7 +91,7 @@ class ActivityPageLayoutMedium extends ActivityPageLayout {
               const EdgeInsets.only(top: 24, bottom: 14),
           horizontalInfoPadding: const EdgeInsets.symmetric(horizontal: 16),
           checkButtonPadding: const EdgeInsets.only(bottom: 24),
-          checklistPadding: const EdgeInsets.fromLTRB(27, 15, 28, 0),
+          checklistPadding: const EdgeInsets.fromLTRB(27, 15, 28, 15),
           youtubePlayerPadding: const EdgeInsets.all(16),
           checkButtonHeight: 72,
           checkButtonContentPadding:
