@@ -7,14 +7,14 @@ import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';
 
 void main() {
-  final now = DateTime(2023, 01, 02, 11, 24);
+  final now = DateTime(2023, 01, 02, 08, 00);
   final memoplannerSettingBloc = MockMemoplannerSettingBloc();
-  final clockBloc = FakeClockBloc();
+  final clockBloc = ClockBloc.fixed(now);
   final dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
 
   final providers = [
     BlocProvider<ClockBloc>(
-      create: (context) => FakeClockBloc(),
+      create: (context) => clockBloc,
     ),
     BlocProvider<MemoplannerSettingsBloc>(
       create: (context) => memoplannerSettingBloc,

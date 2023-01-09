@@ -221,14 +221,3 @@ class FakeConnectivityCubit extends Fake implements ConnectivityCubit {
   @override
   Future<void> close() async {}
 }
-
-class FakeClockBloc extends Fake implements ClockBloc {
-  @override
-  DateTime get state => DateTime(2023, 01, 02, 08, 00);
-
-  @override
-  Stream<DateTime> get stream => const Stream.empty();
-
-  @override
-  Future<void> close() async {}
-}
