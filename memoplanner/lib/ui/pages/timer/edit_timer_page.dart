@@ -136,14 +136,18 @@ class EditTimerWheel extends StatefulWidget {
 @visibleForTesting
 class EditTimerWheelState extends State<EditTimerWheel>
     with TickerProviderStateMixin {
+  static const _initialDelay = Duration(milliseconds: 1000);
+  static const _forwardDuration = Duration(milliseconds: 1000);
+  static const _reverseDuration = Duration(milliseconds: 600);
+  static const _delayBetweenAnimations = Duration(milliseconds: 2500);
+  static const _midAnimationDelay = Duration(milliseconds: 400);
   late bool animate =
       context.read<EditTimerCubit>().state.duration == Duration.zero;
-
   Timer? animationTimer;
 
   late final AnimationController _animationController = AnimationController(
-    duration: const Duration(milliseconds: 1000),
-    reverseDuration: const Duration(milliseconds: 600),
+    duration: _forwardDuration,
+    reverseDuration: _reverseDuration,
     vsync: this,
     animationBehavior: AnimationBehavior.preserve,
   )..addStatusListener((status) async {
@@ -151,12 +155,12 @@ class EditTimerWheelState extends State<EditTimerWheel>
         _animationController.stop();
       }
       if (status == AnimationStatus.dismissed) {
-        animationTimer = Timer(const Duration(milliseconds: 2500), () {
+        animationTimer = Timer(_delayBetweenAnimations, () {
           if (mounted) _animationController.forward();
         });
       }
       if (status == AnimationStatus.completed) {
-        animationTimer = Timer(const Duration(milliseconds: 400), () {
+        animationTimer = Timer(_midAnimationDelay, () {
           if (mounted) _animationController.reverse();
         });
       }
@@ -165,7 +169,7 @@ class EditTimerWheelState extends State<EditTimerWheel>
   @override
   void initState() {
     super.initState();
-    animationTimer = Timer(const Duration(milliseconds: 1000), () {
+    animationTimer = Timer(_initialDelay, () {
       if (mounted) _animationController.forward();
     });
   }
