@@ -127,7 +127,7 @@ class _TimerWheelState extends State<TimerWheel> {
             builder: (context, textToSpeech) => GestureDetector(
               onPanDown: (details) => _onPanDown(details, config),
               onPanUpdate: (details) => _onPanUpdate(details, config),
-              onTapUp: (details) => _onTapUp(details, config),
+              onTapDown: (details) => _onTapDown(details, config),
               onLongPressStart: (details) =>
                   textToSpeech ? _playTtsOnNumbers(details, config) : () {},
               child: timerWheel,
@@ -210,7 +210,7 @@ class _TimerWheelState extends State<TimerWheel> {
     }
   }
 
-  void _onTapUp(TapUpDetails details, TimerWheelConfiguration config) {
+  void _onTapDown(TapDownDetails details, TimerWheelConfiguration config) {
     if (minutesSelectedOnTapDown ==
         _minutesFromPoint(details.localPosition, config)) {
       final desiredMinutesLeft =

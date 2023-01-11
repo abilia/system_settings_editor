@@ -62,3 +62,6 @@ class MockLogoutSyncCubit extends MockCubit<LogoutSyncState>
 class MockAuthenticationBloc
     extends MockBloc<AuthenticationEvent, AuthenticationState>
     implements AuthenticationBloc {}
+
+class MockEditTimerCubit extends MockCubit<EditTimerState>
+    implements EditTimerCubit {}
