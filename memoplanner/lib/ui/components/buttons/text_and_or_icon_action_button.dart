@@ -55,7 +55,7 @@ class TextAndOrIconActionButtonLight extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Tts.data(
         data: ttsData ?? text,
-        child: layout.go
+        child: layout.small
             ? IconActionButton(
                 onPressed: onPressed,
                 style: selected
@@ -89,7 +89,7 @@ class TextAndOrIconActionButtonBlack extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Tts.data(
         data: text,
-        child: layout.go
+        child: layout.small
             ? IconActionButton(
                 onPressed: onPressed,
                 style: actionButtonStyleBlack,

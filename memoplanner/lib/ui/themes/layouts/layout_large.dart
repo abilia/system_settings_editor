@@ -1,7 +1,7 @@
 part of 'layout.dart';
 
-class LayoutLarge extends LayoutMedium {
-  const LayoutLarge()
+class LargeLayout extends MediumLayout {
+  const LargeLayout()
       : super(
           appBar: const AppBarLayoutLarge(),
           actionButton: const ActionButtonLayoutLarge(),

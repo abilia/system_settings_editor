@@ -1,4 +1,4 @@
-import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:memoplanner/ui/all.dart';
 
@@ -6,24 +6,32 @@ part 'layout_large.dart';
 
 part 'layout_medium.dart';
 
-final ui.Size screenSize = ui.window.physicalSize / ui.window.devicePixelRatio;
+bool get isLargeScreen => _screenSize.shortestSide > 1000;
 
-Layout _layout = screenSize.longestSide > 1500
-    ? const LayoutLarge()
-    : screenSize.longestSide > 1000
-        ? const LayoutMedium()
-        : const _GoLayout();
-
-class _GoLayout extends Layout {
-  const _GoLayout() : super();
-}
+bool get isMediumScreen => _screenSize.shortestSide > 600;
 
 Layout get layout => _layout;
 
-@visibleForTesting
-set layout(Layout layout) => _layout = layout;
+Size _screenSize = window.physicalSize / window.devicePixelRatio;
+Layout _layout = _getLayout();
 
-class Layout {
+@visibleForTesting
+set screenSize(Size screenSize) {
+  _screenSize = screenSize;
+  _layout = _getLayout();
+}
+
+Layout _getLayout() => isLargeScreen
+    ? const LargeLayout()
+    : isMediumScreen
+        ? const MediumLayout()
+        : const SmallLayout();
+
+class SmallLayout extends Layout {
+  const SmallLayout() : super();
+}
+
+abstract class Layout {
   final double radius;
   final AppBarLayout appBar;
   final ActionButtonLayout actionButton;
@@ -184,7 +192,9 @@ class Layout {
     this.infoRow = const InfoRowLayout(),
   });
 
-  bool get go => runtimeType == _GoLayout;
-  bool get medium => runtimeType == LayoutMedium;
-  bool get large => runtimeType == LayoutLarge;
+  bool get small => runtimeType == SmallLayout;
+
+  bool get medium => runtimeType == MediumLayout;
+
+  bool get large => runtimeType == LargeLayout;
 }

@@ -434,7 +434,7 @@ class _WeekdayColumnItems extends StatelessWidget {
   }
 
   Widget _activityWidget(ActivityOccasion occasion) {
-    return selected && !layout.go
+    return selected && !layout.small
         ? ActivityCard(
             activityOccasion: occasion,
             showCategoryColor: showCategoryColor,
@@ -451,7 +451,7 @@ class _WeekdayColumnItems extends StatelessWidget {
   }
 
   Widget _timerWidget(TimerOccasion occasion) {
-    return selected && !layout.go
+    return selected && !layout.small
         ? TimerCard(
             timerOccasion: occasion,
             day: day,
@@ -476,7 +476,7 @@ class _WeekdayColumnItems extends StatelessWidget {
       );
     }
     return EdgeInsets.only(
-      top: !layout.go && selected && newCategory ? spacing * 2 : spacing,
+      top: !layout.small && selected && newCategory ? spacing * 2 : spacing,
       bottom: spacing,
       right: selected && category == Category.left
           ? layout.weekCalendar.categoryInset
