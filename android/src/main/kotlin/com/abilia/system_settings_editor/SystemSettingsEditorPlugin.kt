@@ -45,6 +45,7 @@ class SystemSettingsEditorPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
       "getMediaVolume" -> result.success(volumeSettingsHandler.getMediaVolume())
       "getMediaMaxVolume" -> result.success(volumeSettingsHandler.getMediaMaxVolume())
       "getScreenOffTimeout" -> result.success(systemSettingsHandler.getScreenOffTimeout())
+      "getHasBattery" -> result.success(systemSettingsHandler.getHasBattery())
       "setAlarmVolume" -> volumeSettingsHandler.setAlarmVolumeHandler(call, result)
       "setMediaVolume" -> volumeSettingsHandler.setMediaVolumeHandler(call, result)
       else ->

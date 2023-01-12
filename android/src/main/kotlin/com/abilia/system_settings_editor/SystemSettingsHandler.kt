@@ -3,7 +3,10 @@ package com.abilia.system_settings_editor
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.Resources
+import android.os.BatteryManager
 import android.provider.Settings
 import android.util.Log
 import android.view.WindowManager
@@ -145,5 +148,16 @@ class SystemSettingsHandler(private val context: Context) {
       Log.e("Error", "Cannot access SCREEN_OFF_TIMEOUT settings")
       return 0
     }
+  }
+
+  internal fun getHasBattery(): Boolean? {
+    val batteryLevelFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+    val intent: Intent? = context.registerReceiver(null, batteryLevelFilter)
+    return intent?.let { getBatteryInfo(it) }
+  }
+
+  private fun getBatteryInfo(intent: Intent): Boolean? {
+    val present = intent.extras?.getBoolean(BatteryManager.EXTRA_PRESENT);
+    return present
   }
 }

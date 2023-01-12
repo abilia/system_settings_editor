@@ -27,8 +27,8 @@ class SystemSettingsEditor {
   }
 
   static Future<void> setHapticFeedbackEnabled(bool on) async {
-    await _channel
-        .invokeMethod('setHapticFeedbackEnabled', {'hapticFeedbackEnabled': on});
+    await _channel.invokeMethod(
+        'setHapticFeedbackEnabled', {'hapticFeedbackEnabled': on});
   }
 
   static Future<Duration?> get screenOffTimeout async {
@@ -39,5 +39,9 @@ class SystemSettingsEditor {
   static Future<void> setScreenOffTimeout(Duration timout) async {
     await _channel.invokeMethod(
         'setScreenOffTimeout', {'timeout': timout.inMilliseconds});
+  }
+
+  static Future<bool?> get hasBattery async {
+    return await _channel.invokeMethod('getHasBattery');
   }
 }
