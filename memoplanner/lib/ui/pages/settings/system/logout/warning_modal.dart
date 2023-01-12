@@ -27,7 +27,7 @@ class WarningModal extends StatelessWidget {
         warning: warning,
       ),
       bodyWithoutBottomPadding:
-          layout.small && warning.step != WarningStep.firstWarning,
+          layout.go && warning.step != WarningStep.firstWarning,
     );
   }
 
@@ -132,7 +132,7 @@ class _InternetConnection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return layout.small
+    return layout.go
         ? InfoRow(
             state: InfoRowState.normal,
             icon: AbiliaIcons.noWifi,
@@ -170,7 +170,7 @@ class _Body extends StatelessWidget {
       case LogoutWarning.firstWarningSyncFailed:
         return const _InternetConnection();
       case LogoutWarning.firstWarningSyncing:
-        return layout.small
+        return layout.go
             ? const SizedBox.shrink()
             : const _InternetConnection();
 
@@ -180,10 +180,9 @@ class _Body extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (warning == LogoutWarning.secondWarningSyncFailed &&
-                    layout.small ||
-                !layout.small) ...[
-              if (!layout.small)
+            if (warning == LogoutWarning.secondWarningSyncFailed && layout.go ||
+                !layout.go) ...[
+              if (!layout.go)
                 Tts(
                   child: Text(
                     t.connectToWifiToLogOut,
@@ -355,7 +354,7 @@ class _DirtyItemsState extends State<_DirtyItems> {
               style: labelStyle,
             ),
           ),
-        if (layout.small || infoItems.length == 1)
+        if (layout.go || infoItems.length == 1)
           Flexible(
             child: ScrollArrows.vertical(
               controller: scrollController,

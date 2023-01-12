@@ -2,30 +2,30 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/ui/all.dart';
 
 void main() {
-  group('Small layout', () {
+  group('Go layout', () {
     testWidgets('Normal size screen', (WidgetTester tester) async {
       screenSize = const Size(400, 600);
-      expect(layout.small, isTrue);
+      expect(layout.go, isTrue);
     });
 
     testWidgets('Square screen', (WidgetTester tester) async {
       screenSize = const Size(400, 400);
-      expect(layout.small, isTrue);
+      expect(layout.go, isTrue);
     });
 
     testWidgets('Tiny screen', (WidgetTester tester) async {
       screenSize = const Size(1, 1);
-      expect(layout.small, isTrue);
+      expect(layout.go, isTrue);
     });
 
     testWidgets('Long screen', (WidgetTester tester) async {
       screenSize = const Size(200, 10000);
-      expect(layout.small, isTrue);
+      expect(layout.go, isTrue);
     });
 
     testWidgets('Wide screen', (WidgetTester tester) async {
       screenSize = const Size(10000, 200);
-      expect(layout.small, isTrue);
+      expect(layout.go, isTrue);
     });
   });
 

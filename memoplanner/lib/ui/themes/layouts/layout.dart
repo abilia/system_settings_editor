@@ -25,10 +25,10 @@ Layout _getLayout() => isLargeScreen
     ? const LargeLayout()
     : isMediumScreen
         ? const MediumLayout()
-        : const SmallLayout();
+        : const GoLayout();
 
-class SmallLayout extends Layout {
-  const SmallLayout() : super();
+class GoLayout extends Layout {
+  const GoLayout() : super();
 }
 
 abstract class Layout {
@@ -192,9 +192,7 @@ abstract class Layout {
     this.infoRow = const InfoRowLayout(),
   });
 
-  bool get small => runtimeType == SmallLayout;
-
+  bool get go => runtimeType == GoLayout;
   bool get medium => runtimeType == MediumLayout;
-
   bool get large => runtimeType == LargeLayout;
 }
