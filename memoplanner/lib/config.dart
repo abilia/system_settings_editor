@@ -1,4 +1,4 @@
-import 'package:memoplanner/ui/themes/layouts/layout.dart';
+import 'package:system_settings_editor/system_settings_editor.dart';
 
 class Config {
   static const dev = String.fromEnvironment('release') == 'dev';
@@ -8,12 +8,24 @@ class Config {
   static const isMPGO = !isMP;
   static const flavor = isMP ? Flavor.mp : Flavor.mpgo;
 
-  static final isMPLarge = isMP && layout.large;
+  static late final bool isMPLarge;
+
+  static Future<void> init() => _setIsMPLarge();
+
+  static Future<void> _setIsMPLarge() async {
+    if (isMP && await SystemSettingsEditor.hasBattery == false) {
+      isMPLarge = true;
+    } else {
+      isMPLarge = false;
+    }
+  }
 }
 
 class Flavor {
   final String name, id;
+
   const Flavor._(this.name, this.id);
+
   static const mpgo = Flavor._('MEMOplanner Go', 'memoplannergo');
   static const mp = Flavor._('MEMOplanner', 'memoplanner');
 }

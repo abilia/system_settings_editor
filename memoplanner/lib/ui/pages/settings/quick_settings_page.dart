@@ -21,7 +21,7 @@ class QuickSettingsPage extends StatelessWidget {
         child: ListView(
           controller: scrollController,
           children: <Widget>[
-            if (!layout.large)
+            if (!Config.isMPLarge)
               Padding(
                 padding: layout.templates.m1
                     .copyWith(bottom: layout.formPadding.groupBottomDistance),
@@ -57,7 +57,7 @@ class QuickSettingsPage extends StatelessWidget {
             const QuickSettingsGroup(children: [
               BrightnessSlider(),
             ]),
-            if (!layout.large)
+            if (!Config.isMPLarge)
               QuickSettingsGroup(children: [
                 SubHeading(t.screenTimeout),
                 const ScreenTimeoutPickField(),
