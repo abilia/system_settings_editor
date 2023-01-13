@@ -8,17 +8,7 @@ class Config {
   static const isMPGO = !isMP;
   static const flavor = isMP ? Flavor.mp : Flavor.mpgo;
 
-  static late final bool isMPLarge;
-
-  static Future<void> init() => _setIsMPLarge();
-
-  static Future<void> _setIsMPLarge() async {
-    if (isMP && await SystemSettingsEditor.hasBattery == false) {
-      isMPLarge = true;
-    } else {
-      isMPLarge = false;
-    }
-  }
+  static bool get isMPLarge => isMP && Device.isLarge;
 }
 
 class Flavor {
@@ -28,4 +18,18 @@ class Flavor {
 
   static const mpgo = Flavor._('MEMOplanner Go', 'memoplannergo');
   static const mp = Flavor._('MEMOplanner', 'memoplanner');
+}
+
+class Device {
+  static late final bool isLarge;
+
+  static Future<void> init() => _setIsLarge();
+
+  static Future<void> _setIsLarge() async {
+    if (Config.isMP && await SystemSettingsEditor.hasBattery == false) {
+      isLarge = true;
+    } else {
+      isLarge = false;
+    }
+  }
 }

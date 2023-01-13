@@ -33,7 +33,7 @@ void main() async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await Config.init();
+  await Device.init();
   // DO NOT REMOVE. The isAutoInitEnabled call is needed to make push work
   // https://github.com/firebase/flutterfire/issues/6011
   FirebaseMessaging.instance.isAutoInitEnabled;
