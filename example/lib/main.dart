@@ -27,6 +27,7 @@ class _MyAppState extends State<MyApp> {
   double? _mediaVolume;
   Duration? _timeout;
   double? _sliderTimeout;
+  bool? _hasBattery;
 
   static const _maxTimeOutSec = 600;
 
@@ -39,6 +40,7 @@ class _MyAppState extends State<MyApp> {
     getAlarmVolume();
     getMediaVolume();
     getScreenOffTimeout();
+    getHasBattery();
   }
 
   Future<void> getCanWriteSettings() async {
@@ -134,6 +136,21 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<void> getHasBattery() async {
+    bool? hasBattery;
+    try {
+      hasBattery = await SystemSettingsEditor.hasBattery;
+    } on PlatformException {
+      hasBattery = null;
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _hasBattery = hasBattery;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final brightness = _brightness;
@@ -148,6 +165,15 @@ class _MyAppState extends State<MyApp> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                _hasBattery == false
+                    ? 'No battery detected'
+                    : 'Battery detected',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
             ElevatedButton(
               onPressed: getCanWriteSettings,
               child: Text(
