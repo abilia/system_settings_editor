@@ -40,7 +40,7 @@ void main() {
     tz.initializeTimeZones();
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
 
     genericDb = MockGenericDb();
     when(() => genericDb.getAllNonDeletedMaxRevision())

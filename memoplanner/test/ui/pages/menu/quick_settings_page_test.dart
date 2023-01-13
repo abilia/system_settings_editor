@@ -30,7 +30,7 @@ void main() {
     });
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()

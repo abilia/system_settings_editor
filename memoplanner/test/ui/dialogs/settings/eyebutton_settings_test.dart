@@ -24,7 +24,7 @@ void main() {
     final initTime = DateTime(2020, 07, 23, 11, 29);
 
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
 
     final mockActivityDb = ActivityDbInMemory();
     mockActivityDb.initWithActivity(

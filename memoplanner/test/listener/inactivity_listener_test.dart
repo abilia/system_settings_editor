@@ -61,7 +61,7 @@ void main() {
       when(() => mockFlutterLocalNotificationsPlugin.cancel(any()))
           .thenAnswer((_) => Future.value());
       notificationsPluginInstance = mockFlutterLocalNotificationsPlugin;
-      scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+      scheduleNotificationsIsolated = noAlarmScheduler;
       clockStreamController = StreamController<DateTime>();
       final mockGenericDb = MockGenericDb();
       when(() => mockGenericDb.getAllNonDeletedMaxRevision())

@@ -175,7 +175,7 @@ class GetItInitializer {
           _termsOfUseDb ?? TermsOfUseDb(_sharedPreferences))
       ..registerSingleton<CalendarDb>(_calendarDb ?? CalendarDb(_database))
       ..registerSingleton<FileStorage>(
-          _fileStorage ?? FileStorage(_directories?.documents.path))
+          _fileStorage ?? FileStorage.inDirectory(_directories?.documents.path))
       ..registerSingleton<MultipartRequestBuilder>(_multipartRequestBuilder)
       ..registerSingleton<SyncDelays>(_syncDelay)
       ..registerSingleton<PackageInfo>(_packageInfo)

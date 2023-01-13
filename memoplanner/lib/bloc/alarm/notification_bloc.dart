@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:get_it/get_it.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
@@ -9,6 +8,9 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:rxdart/rxdart.dart';
+
+class NotificationEvent {}
 
 class NotificationBloc extends Bloc<NotificationEvent, String> {
   NotificationBloc({
@@ -18,8 +20,10 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
     required this.memoplannerSettingBloc,
     required SyncDelays syncDelays,
   }) : super('init') {
-    on<NotificationEvent>(_scheduleNotifications,
-        transformer: _throttle(syncDelays.betweenSync));
+    on<NotificationEvent>(
+      (event, emit) => _scheduleNotifications(),
+      transformer: _throttle(syncDelays.scheduleNotificationsDelay),
+    );
   }
 
   final ActivityRepository activityRepository;
@@ -28,10 +32,7 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
   final SettingsDb settingsDb;
   final MemoplannerSettingsBloc memoplannerSettingBloc;
 
-  Future _scheduleNotifications(
-    NotificationEvent event,
-    Emitter emit,
-  ) async {
+  Future<void> _scheduleNotifications() async {
     final settings = memoplannerSettingBloc.state;
     if (settings is MemoplannerSettingsNotLoaded) return;
 
@@ -40,20 +41,20 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
     final activities = await activityRepository.allAfter(
       now.subtract(maxReminder), // subtracting to get all reminders
     );
-    await scheduleAlarmNotificationsIsolated(
-      activities: activities,
-      timers: timers.toAlarm(),
-      language: settingsDb.language,
-      alwaysUse24HourFormat: settingsDb.alwaysUse24HourFormat,
-      settings: settings.alarm,
-      fileStorage: GetIt.I<FileStorage>(),
+    await scheduleNotificationsIsolated(
+      NotificationsSchedulerData(
+        activities: activities,
+        timers: timers.toAlarm(),
+        language: settingsDb.language,
+        alwaysUse24HourFormat: settingsDb.alwaysUse24HourFormat,
+        settings: settings.alarm,
+        fileStorage: GetIt.I<FileStorage>(),
+      ),
     );
   }
+
+  EventTransformer<Event> _throttle<Event>(Duration delay) =>
+      (events, mapper) => events
+          .throttleTime(delay, trailing: true, leading: true)
+          .asyncExpand(mapper);
 }
-
-class NotificationEvent {}
-
-EventTransformer<Event> _throttle<Event>(Duration delay) =>
-    (events, mapper) => events
-        .throttleTime(delay, trailing: true, leading: false)
-        .asyncExpand(mapper);

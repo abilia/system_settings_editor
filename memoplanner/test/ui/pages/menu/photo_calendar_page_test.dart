@@ -27,7 +27,7 @@ void main() {
       setUp(() async {
         setupPermissions();
         notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-        scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+        scheduleNotificationsIsolated = noAlarmScheduler;
         final mockSortableDb = MockSortableDb();
 
         final myPhotosFolder = Sortable.createNew(

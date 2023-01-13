@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memoplanner/background/notification_isolate.dart';
+import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/db/sortable_db.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
@@ -13,7 +13,7 @@ import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
-  scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+  scheduleNotificationsIsolated = noAlarmScheduler;
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
