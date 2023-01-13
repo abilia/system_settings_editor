@@ -140,7 +140,6 @@ class SelectPictureWidget extends StatelessWidget {
     final authProviders = copiedAuthProviders(context);
     final userFileCubit = context.read<UserFileCubit>();
     final sortableBloc = context.read<SortableBloc>();
-    final language = Localizations.localeOf(context).toLanguageTag();
     final now = context.read<ClockBloc>().state;
     final newSelectedImage = await Navigator.of(context).push<AbiliaFile>(
       PersistentMaterialPageRoute(
@@ -155,7 +154,7 @@ class SelectPictureWidget extends StatelessWidget {
     );
 
     if (newSelectedImage != null) {
-      final name = DateFormat.yMd(language).format(now);
+      final name = getImageNameFromDate(now);
       if (newSelectedImage is UnstoredAbiliaFile) {
         userFileCubit.fileAdded(
           newSelectedImage,
