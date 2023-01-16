@@ -95,10 +95,9 @@ class WarningModal extends StatelessWidget {
           return null;
         }
         final daysAgo = context.read<ClockBloc>().state.difference(lastSync);
-        final locale = Localizations.localeOf(context);
 
         final dateString =
-            DateFormat.yMd(locale.languageCode).format(lastSync.onlyDays());
+            DateFormat.yMd(Platform.localeName).format(lastSync.onlyDays());
         return '${t.lastSyncWas} $dateString (${daysAgo.comparedToNowString(t, false, daysOnly: true)}).';
       case LogoutWarning.licenseExpiredWarning:
         return t.needLicenseToSaveData;

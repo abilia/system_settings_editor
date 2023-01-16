@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
@@ -147,9 +147,7 @@ class _AddPhotoButton extends StatelessWidget {
                 onPressed: () async {
                   final userFileCubit = context.read<UserFileCubit>();
                   final sortableBloc = context.read<SortableBloc>();
-                  final name = DateFormat.yMd(
-                    Localizations.localeOf(context).toLanguageTag(),
-                  ).format(time);
+                  final name = DateFormat.yMd(Platform.localeName).format(time);
                   final currentFolderId = context
                       .read<SortableArchiveCubit<ImageArchiveData>>()
                       .state
