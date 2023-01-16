@@ -1,6 +1,7 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/device.dart';
 import 'package:memoplanner/models/sound.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -21,7 +22,7 @@ class QuickSettingsPage extends StatelessWidget {
         child: ListView(
           controller: scrollController,
           children: <Widget>[
-            if (!Config.isMPLarge)
+            if (!Device.isLarge)
               Padding(
                 padding: layout.templates.m1
                     .copyWith(bottom: layout.formPadding.groupBottomDistance),
@@ -57,7 +58,7 @@ class QuickSettingsPage extends StatelessWidget {
             const QuickSettingsGroup(children: [
               BrightnessSlider(),
             ]),
-            if (!Config.isMPLarge)
+            if (!Device.isLarge)
               QuickSettingsGroup(children: [
                 SubHeading(t.screenTimeout),
                 const ScreenTimeoutPickField(),

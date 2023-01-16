@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/device.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -59,8 +60,7 @@ void main() {
   }, skip: !Config.isMPGO);
 
   group('MP', () {
-    testWidgets('All fields are setup correctly medium layout', (tester) async {
-      layout = const LayoutMedium();
+    testWidgets('All fields are setup correctly medium device', (tester) async {
       await tester.goToQuickSettings();
       expect(find.byType(QuickSettingsPage), findsOneWidget);
       expect(find.byType(BatteryLevel), findsOneWidget);
@@ -80,7 +80,6 @@ void main() {
         'When media volume is zero show no-volume icon while the icon for alarm volume always remains the same',
         (tester) async {
       // Arrange
-      layout = const LayoutMedium();
       AbiliaSlider alarmSlider() =>
           tester.widget(find.byKey(TestKey.alarmVolumeSlider));
       AbiliaSlider mediaSlider() =>
@@ -116,8 +115,8 @@ void main() {
       expect(find.byIcon(AbiliaIcons.noVolume), findsNothing);
     });
 
-    testWidgets('All fields are setup correctly large layout', (tester) async {
-      layout = const LayoutLarge();
+    testWidgets('All fields are setup correctly large device', (tester) async {
+      Device.isLarge = true;
       await tester.goToQuickSettings();
       expect(find.byType(QuickSettingsPage), findsOneWidget);
       expect(find.byType(WiFiPickField), findsOneWidget);
