@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/device.dart';
+import 'package:memoplanner/models/device.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -116,7 +116,20 @@ void main() {
     });
 
     testWidgets('All fields are setup correctly large device', (tester) async {
-      Device.isMPLarge = true;
+      await GetIt.I.reset();
+
+      GetItInitializer()
+        ..sharedPreferences = await FakeSharedPreferences.getInstance()
+        ..ticker = Ticker.fake(initialTime: DateTime(2021, 04, 17, 09, 20))
+        ..client = Fakes.client()
+        ..database = FakeDatabase()
+        ..genericDb = FakeGenericDb()
+        ..sortableDb = FakeSortableDb()
+        ..battery = FakeBattery()
+        ..deviceDb = FakeDeviceDb()
+        ..device = const Device(hasBattery: false)
+        ..init();
+
       await tester.goToQuickSettings();
       expect(find.byType(QuickSettingsPage), findsOneWidget);
       expect(find.byType(WiFiPickField), findsOneWidget);

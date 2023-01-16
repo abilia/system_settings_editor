@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/config.dart';
-import 'package:memoplanner/device.dart';
+import 'package:memoplanner/models/device.dart';
 
 void main() {
   const MethodChannel systemSettingsChannel =
@@ -15,24 +15,20 @@ void main() {
         (MethodCall methodCall) async => hasBatteryResponse());
   });
 
-  tearDown(() {
-    Device.isMPLarge = false;
-  });
-
   group('MPGO', () {
     group('Android', () {
       test('Device with battery', () async {
         debugDefaultTargetPlatformOverride = TargetPlatform.android;
         hasBatteryResponse = () => true;
-        await Device.init();
-        expect(Device.isMPLarge, isFalse);
+        final device = await Device.init();
+        expect(device.hasBattery, isTrue);
       });
 
       test('Device with no battery', () async {
         debugDefaultTargetPlatformOverride = TargetPlatform.android;
         hasBatteryResponse = () => false;
-        await Device.init();
-        expect(Device.isMPLarge, isFalse);
+        final device = await Device.init();
+        expect(device.hasBattery, isFalse);
       });
     });
 
@@ -40,15 +36,15 @@ void main() {
       test('Device with battery', () async {
         debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
         hasBatteryResponse = () => true;
-        await Device.init();
-        expect(Device.isMPLarge, isFalse);
+        final device = await Device.init();
+        expect(device.hasBattery, isFalse);
       });
 
       test('Device with no battery', () async {
         debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
         hasBatteryResponse = () => false;
-        await Device.init();
-        expect(Device.isMPLarge, isFalse);
+        final device = await Device.init();
+        expect(device.hasBattery, isFalse);
       });
     });
   }, skip: Config.isMP);
@@ -58,31 +54,15 @@ void main() {
       test('Device with battery', () async {
         debugDefaultTargetPlatformOverride = TargetPlatform.android;
         hasBatteryResponse = () => true;
-        await Device.init();
-        expect(Device.isMPLarge, isFalse);
+        final device = await Device.init();
+        expect(device.hasBattery, isTrue);
       });
 
       test('Device with no battery', () async {
         debugDefaultTargetPlatformOverride = TargetPlatform.android;
         hasBatteryResponse = () => false;
-        await Device.init();
-        expect(Device.isMPLarge, isTrue);
-      });
-    });
-
-    group('IOS', () {
-      test('Device with battery', () async {
-        debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-        hasBatteryResponse = () => true;
-        await Device.init();
-        expect(Device.isMPLarge, isFalse);
-      });
-
-      test('Device with no battery', () async {
-        debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-        hasBatteryResponse = () => false;
-        await Device.init();
-        expect(Device.isMPLarge, isFalse);
+        final device = await Device.init();
+        expect(device.hasBattery, isFalse);
       });
     });
   }, skip: Config.isMPGO);
