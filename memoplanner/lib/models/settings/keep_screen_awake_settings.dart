@@ -15,9 +15,9 @@ class KeepScreenAwakeSettings extends Equatable {
   final bool _keepScreenOnWhileCharging, _keepScreenOnAlways;
 
   bool get keepScreenOnWhileCharging =>
-      Device.isLarge || _keepScreenOnWhileCharging;
+      Device.isMPLarge || _keepScreenOnWhileCharging;
 
-  bool get keepScreenOnAlways => Device.isLarge || _keepScreenOnAlways;
+  bool get keepScreenOnAlways => Device.isMPLarge || _keepScreenOnAlways;
 
   const KeepScreenAwakeSettings({
     bool keepScreenOnWhileCharging = false,
@@ -41,8 +41,8 @@ class KeepScreenAwakeSettings extends Equatable {
         settings.parse(keepScreenOnWhileChargingKey, false);
     final savedKeepOnAlways = settings.parse(keepScreenOnAlwaysKey, false);
     return KeepScreenAwakeSettings(
-      keepScreenOnWhileCharging: Device.isLarge || savedKeepOnWhileCharging,
-      keepScreenOnAlways: Device.isLarge || savedKeepOnAlways,
+      keepScreenOnWhileCharging: Device.isMPLarge || savedKeepOnWhileCharging,
+      keepScreenOnAlways: Device.isMPLarge || savedKeepOnAlways,
     );
   }
 

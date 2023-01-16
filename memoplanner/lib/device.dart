@@ -6,17 +6,17 @@ import 'package:system_settings_editor/system_settings_editor.dart';
 import 'package:memoplanner/config.dart';
 
 class Device {
-  static bool _isLarge = false;
+  static bool _isMPLarge = false;
 
-  static bool get isLarge => _isLarge;
+  static bool get isMPLarge => _isMPLarge;
 
   static Future<void> init() async {
     if (Config.isMP && Platform.isAndroid) {
       final hasBattery = await SystemSettingsEditor.hasBattery;
-      isLarge = hasBattery == false;
+      isMPLarge = hasBattery == false;
     }
   }
 
   @visibleForTesting
-  static set isLarge(bool isLarge) => _isLarge = isLarge;
+  static set isMPLarge(bool isMPLarge) => _isMPLarge = isMPLarge;
 }

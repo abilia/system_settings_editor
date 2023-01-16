@@ -116,7 +116,7 @@ void main() {
     });
 
     testWidgets('All fields are setup correctly large device', (tester) async {
-      Device.isLarge = true;
+      Device.isMPLarge = true;
       await tester.goToQuickSettings();
       expect(find.byType(QuickSettingsPage), findsOneWidget);
       expect(find.byType(WiFiPickField), findsOneWidget);
