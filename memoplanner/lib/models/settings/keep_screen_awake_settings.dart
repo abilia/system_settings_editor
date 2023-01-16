@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:memoplanner/device.dart';
 import 'package:memoplanner/models/generic/generic.dart';
 import 'package:memoplanner/models/settings/memoplanner_settings.dart';
 
@@ -14,10 +13,9 @@ class KeepScreenAwakeSettings extends Equatable {
 
   final bool _keepScreenOnWhileCharging, _keepScreenOnAlways;
 
-  bool get keepScreenOnWhileCharging =>
-      Device.isMPLarge || _keepScreenOnWhileCharging;
+  bool get keepScreenOnWhileCharging => _keepScreenOnWhileCharging;
 
-  bool get keepScreenOnAlways => Device.isMPLarge || _keepScreenOnAlways;
+  bool get keepScreenOnAlways => _keepScreenOnAlways;
 
   const KeepScreenAwakeSettings({
     bool keepScreenOnWhileCharging = false,
@@ -41,8 +39,8 @@ class KeepScreenAwakeSettings extends Equatable {
         settings.parse(keepScreenOnWhileChargingKey, false);
     final savedKeepOnAlways = settings.parse(keepScreenOnAlwaysKey, false);
     return KeepScreenAwakeSettings(
-      keepScreenOnWhileCharging: Device.isMPLarge || savedKeepOnWhileCharging,
-      keepScreenOnAlways: Device.isMPLarge || savedKeepOnAlways,
+      keepScreenOnWhileCharging: savedKeepOnWhileCharging,
+      keepScreenOnAlways: savedKeepOnAlways,
     );
   }
 

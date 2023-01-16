@@ -139,6 +139,9 @@ class GetItInitializer {
   set myAbiliaConnection(MyAbiliaConnection myAbiliaConnection) =>
       _myAbiliaConnection = myAbiliaConnection;
 
+  Device? _device;
+  set device(Device device) => _device = device;
+
   void init() {
     final loginDb = _loginDb ?? LoginDb(_sharedPreferences);
     final deviceDb = _deviceDb ?? DeviceDb(_sharedPreferences);
@@ -199,6 +202,9 @@ class GetItInitializer {
           _analytics ?? SeagullAnalytics.empty())
       ..registerSingleton<Connectivity>(
         _connectivity ?? Connectivity(),
+      )
+      ..registerSingleton<Device>(
+        _device ?? const Device(),
       )
       ..registerSingleton<MyAbiliaConnection>(
         _myAbiliaConnection ??

@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:memoplanner/device.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:memoplanner/background/all.dart';
@@ -34,7 +33,6 @@ void main() async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await Device.init();
   // DO NOT REMOVE. The isAutoInitEnabled call is needed to make push work
   // https://github.com/firebase/flutterfire/issues/6011
   FirebaseMessaging.instance.isAutoInitEnabled;
@@ -72,6 +70,7 @@ Future<void> initServices() async {
     ..packageInfo = await PackageInfo.fromPlatform()
     ..syncDelay = const SyncDelays()
     ..analytics = analytics
+    ..device = await Device.init()
     ..init();
 }
 

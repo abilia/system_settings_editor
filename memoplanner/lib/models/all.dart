@@ -30,5 +30,6 @@ export 'calendar.dart';
 export 'support_person.dart';
 export 'session.dart';
 export 'terms_of_use.dart';
+export 'device.dart';
 
 typedef ActionIntentStream = Stream<String>;
