@@ -60,7 +60,7 @@ void main() {
 
   group('MP', () {
     testWidgets('All fields are setup correctly medium layout', (tester) async {
-      layout = const LayoutMedium();
+      screenSize = const Size(800, 1200);
       await tester.goToQuickSettings();
       expect(find.byType(QuickSettingsPage), findsOneWidget);
       expect(find.byType(BatteryLevel), findsOneWidget);
@@ -80,7 +80,7 @@ void main() {
         'When media volume is zero show no-volume icon while the icon for alarm volume always remains the same',
         (tester) async {
       // Arrange
-      layout = const LayoutMedium();
+      screenSize = const Size(800, 1200);
       AbiliaSlider alarmSlider() =>
           tester.widget(find.byKey(TestKey.alarmVolumeSlider));
       AbiliaSlider mediaSlider() =>
@@ -117,7 +117,7 @@ void main() {
     });
 
     testWidgets('All fields are setup correctly large layout', (tester) async {
-      layout = const LayoutLarge();
+      screenSize = const Size(1200, 1600);
       await tester.goToQuickSettings();
       expect(find.byType(QuickSettingsPage), findsOneWidget);
       expect(find.byType(WiFiPickField), findsOneWidget);

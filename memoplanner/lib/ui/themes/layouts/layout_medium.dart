@@ -1,7 +1,7 @@
 part of 'layout.dart';
 
-class LayoutMedium extends Layout {
-  const LayoutMedium({
+class MediumLayout extends Layout {
+  const MediumLayout({
     AppBarLayout? appBar,
     ActionButtonLayout? actionButton,
     TemplatesLayout? templates,
