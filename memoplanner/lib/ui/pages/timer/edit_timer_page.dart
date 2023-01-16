@@ -208,6 +208,7 @@ class EditTimerWheelState extends State<EditTimerWheel>
               HapticFeedback.selectionClick();
               context.read<EditTimerCubit>().updateDuration(
                     Duration(minutes: minutesSelected),
+                    TimerSetType.wheel,
                   );
             },
           ).pad(layout.editTimer.wheelPadding);
@@ -271,7 +272,10 @@ class _TimerInfoInput extends StatelessWidget {
                             ),
                           );
                           if (duration != null) {
-                            editTimerCubit.updateDuration(duration);
+                            editTimerCubit.updateDuration(
+                              duration,
+                              TimerSetType.inputField,
+                            );
                           }
                         },
                         leading: const Icon(AbiliaIcons.clock),

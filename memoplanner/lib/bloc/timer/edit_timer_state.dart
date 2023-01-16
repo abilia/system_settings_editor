@@ -32,9 +32,34 @@ class TimerData extends Equatable {
   List<Object?> get props => [duration, name, autoSetNameToDuration, image];
 }
 
+class EditTimerMetaData {
+  final bool titleChanged, fromTemplate;
+  final TimerSetType timerSetType;
+
+  EditTimerMetaData({
+    required this.fromTemplate,
+    this.titleChanged = false,
+    this.timerSetType = TimerSetType.unchanged,
+  });
+
+  EditTimerMetaData copyWith({
+    bool? titleChanged,
+    TimerSetType? timerSetType,
+  }) {
+    return EditTimerMetaData(
+      titleChanged: titleChanged ?? this.titleChanged,
+      timerSetType: timerSetType ?? this.timerSetType,
+      fromTemplate: fromTemplate,
+    );
+  }
+}
+
+enum TimerSetType { wheel, inputField, unchanged }
+
 class EditTimerState extends Equatable {
   late final TimerData _originalTimerData;
   final TimerData timerData;
+  final EditTimerMetaData metaData;
 
   bool get unchanged => timerData == _originalTimerData;
 
@@ -52,24 +77,29 @@ class EditTimerState extends Equatable {
 
   AbiliaFile get image => timerData.image;
 
-  EditTimerState({
+  EditTimerState._({
     required this.timerData,
+    required this.metaData,
     TimerData? originalTimerData,
   }) {
     _originalTimerData = originalTimerData ?? timerData;
   }
 
-  factory EditTimerState.initial() =>
-      EditTimerState(timerData: const TimerData());
+  factory EditTimerState.initial() => EditTimerState._(
+        timerData: const TimerData(),
+        metaData: EditTimerMetaData(fromTemplate: false),
+      );
 
-  factory EditTimerState.withBasicTimer(BasicTimerDataItem basicTimer) {
-    return EditTimerState(
+  factory EditTimerState.fromTemplate(BasicTimerDataItem timerTemplate) {
+    return EditTimerState._(
+      metaData: EditTimerMetaData(fromTemplate: true),
       timerData: TimerData(
-        duration: basicTimer.duration.milliseconds(),
-        name: basicTimer.basicTimerTitle,
-        autoSetNameToDuration: basicTimer.duration == 0,
-        image: basicTimer.hasImage()
-            ? AbiliaFile.from(id: basicTimer.fileId, path: basicTimer.icon)
+        duration: timerTemplate.duration.milliseconds(),
+        name: timerTemplate.basicTimerTitle,
+        autoSetNameToDuration: timerTemplate.duration == 0,
+        image: timerTemplate.hasImage()
+            ? AbiliaFile.from(
+                id: timerTemplate.fileId, path: timerTemplate.icon)
             : AbiliaFile.empty,
       ),
     );
@@ -80,8 +110,10 @@ class EditTimerState extends Equatable {
     String? name,
     bool? autoSetNameToDuration,
     AbiliaFile? image,
+    EditTimerMetaData? metaData,
   }) =>
-      EditTimerState(
+      EditTimerState._(
+        metaData: metaData ?? this.metaData,
         originalTimerData: _originalTimerData,
         timerData: timerData.copyWith(
           duration: duration,
@@ -98,7 +130,8 @@ class EditTimerState extends Equatable {
 class SavedTimerState extends EditTimerState {
   final AbiliaTimer savedTimer;
   SavedTimerState(EditTimerState state, this.savedTimer)
-      : super(
+      : super._(
+          metaData: state.metaData,
           timerData: TimerData(
             duration: state.duration,
             name: state.name,

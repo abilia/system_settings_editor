@@ -3,6 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -31,6 +32,7 @@ void main() {
       final timerCubit = TimerCubit(
         ticker: Ticker.fake(initialTime: initialMinutes),
         timerDb: timerDb,
+        seagullAnalytics: SeagullAnalytics.empty(),
       );
       timerAlarmBloc = TimerAlarmBloc(
         ticker: Ticker.fake(initialTime: initialMinutes),
@@ -326,6 +328,7 @@ void main() {
       final timerCubit = TimerCubit(
         timerDb: MockTimerDb(),
         ticker: ticker,
+        seagullAnalytics: SeagullAnalytics.empty(),
       );
       final timerAlarmBloc = TimerAlarmBloc(
         timerCubit: timerCubit,
