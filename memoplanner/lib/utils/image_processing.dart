@@ -1,12 +1,9 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:image/image.dart';
 // ignore: implementation_imports
 import 'package:image/src/exif_data.dart';
-import 'package:intl/intl.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:meta/meta.dart';
 
 const imageQuality = 80;
 const imageMaxSize = 1500;
@@ -109,14 +106,4 @@ Future<ImageResponse> adjustRotationAndCreateThumbs(
     originalImage: original,
     thumb: thumb,
   );
-}
-
-String getImageNameFromDate(DateTime time) {
-  final locale = Platform.localeName;
-  return getImageName(locale, time);
-}
-
-@visibleForTesting
-String getImageName(String locale, DateTime time) {
-  return DateFormat.yMd(locale).format(time);
 }

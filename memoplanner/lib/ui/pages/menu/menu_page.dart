@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -69,7 +70,7 @@ class CameraButton extends StatelessWidget {
               final userFileCubit = context.read<UserFileCubit>();
               final sortableBloc = context.read<SortableBloc>();
               final now = context.read<ClockBloc>().state;
-              final name = getImageNameFromDate(now);
+              final name = DateFormat.yMd(Platform.localeName).format(now);
               final image =
                   await ImagePicker().pickImage(source: ImageSource.camera);
               if (image != null) {

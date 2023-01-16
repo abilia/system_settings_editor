@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -154,7 +156,7 @@ class SelectPictureWidget extends StatelessWidget {
     );
 
     if (newSelectedImage != null) {
-      final name = getImageNameFromDate(now);
+      final name = DateFormat.yMd(Platform.localeName).format(now);
       if (newSelectedImage is UnstoredAbiliaFile) {
         userFileCubit.fileAdded(
           newSelectedImage,

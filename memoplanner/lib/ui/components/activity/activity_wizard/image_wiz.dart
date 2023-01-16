@@ -1,7 +1,9 @@
+import 'dart:io';
+
+import 'package:intl/intl.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/abilia_file.dart';
 import 'package:memoplanner/ui/all.dart';
-import 'package:memoplanner/utils/image_processing.dart';
 
 class ImageWiz extends StatelessWidget {
   const ImageWiz({Key? key}) : super(key: key);
@@ -28,7 +30,7 @@ class ImageWizSelectPictureWidget extends StatelessWidget {
         imageCallback: (newImage) {
           if (newImage is UnstoredAbiliaFile) {
             final now = context.read<ClockBloc>().state;
-            final name = getImageNameFromDate(now);
+            final name = DateFormat.yMd(Platform.localeName).format(now);
             BlocProvider.of<UserFileCubit>(context).fileAdded(
               newImage,
               image: true,
