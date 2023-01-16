@@ -39,6 +39,7 @@ class TimerCubit extends Cubit<TimerState> {
   Future<void> deleteTimer(AbiliaTimer timer) async {
     final result = await timerDb.delete(timer);
     if (result > 0) {
+      seagullAnalytics.track('Timer deleted');
       emit(TimerState(timers: List.of(state.timers)..remove(timer)));
     }
   }
