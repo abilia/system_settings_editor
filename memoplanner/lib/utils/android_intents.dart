@@ -1,3 +1,4 @@
+import 'package:android_intent_plus/flag.dart';
 import 'package:get_it/get_it.dart';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:package_info/package_info.dart';
@@ -14,24 +15,29 @@ class AndroidIntentAction {
 class AndroidIntents {
   static Future<void> openSettings() => const AndroidIntent(
         action: AndroidIntentAction.settings,
+        flags: [Flag.FLAG_ACTIVITY_NEW_TASK, Flag.FLAG_ACTIVITY_CLEAR_TASK],
       ).launch();
 
   static Future<void> openSystemAlertSetting() => AndroidIntent(
         action: AndroidIntentAction.manageOverlay,
+        flags: [Flag.FLAG_ACTIVITY_NEW_TASK, Flag.FLAG_ACTIVITY_CLEAR_TASK],
         data: Uri(scheme: 'package', path: GetIt.I<PackageInfo>().packageName)
             .toString(),
       ).launch();
 
   static Future<void> openWifiSettings() => const AndroidIntent(
         action: AndroidIntentAction.wifi,
+        flags: [Flag.FLAG_ACTIVITY_NEW_TASK, Flag.FLAG_ACTIVITY_CLEAR_TASK],
       ).launch();
 
   static Future<void> openDeviceInfoSettings() => const AndroidIntent(
         action: AndroidIntentAction.deviceInfo,
+        flags: [Flag.FLAG_ACTIVITY_NEW_TASK, Flag.FLAG_ACTIVITY_CLEAR_TASK],
       ).launch();
 
   static Future<void> openWriteSettingsPermissionSettings() => AndroidIntent(
         action: AndroidIntentAction.writeSettings,
+        flags: [Flag.FLAG_ACTIVITY_NEW_TASK, Flag.FLAG_ACTIVITY_CLEAR_TASK],
         data: Uri.encodeFull(
           'package:${GetIt.I<PackageInfo>().packageName}',
         ),
