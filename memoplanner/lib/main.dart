@@ -70,6 +70,7 @@ Future<void> initServices() async {
     ..packageInfo = await PackageInfo.fromPlatform()
     ..syncDelay = const SyncDelays()
     ..analytics = analytics
+    ..device = await Device.init()
     ..init();
 }
 
