@@ -80,9 +80,12 @@ class TimerWheel extends StatefulWidget {
 }
 
 class _TimerWheelState extends State<TimerWheel> {
+  static const _margin = 2;
+  final int _upperLimit = Duration.secondsPerMinute - _margin;
+  final int _intervalLength = 5;
+
   int? minutesSelectedOnTapDown;
   bool sliderTemporaryLocked = false;
-  final int _intervalLength = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -144,9 +147,9 @@ class _TimerWheelState extends State<TimerWheel> {
   ) {
     if (_pointIsOnNumberWheel(details.localPosition, config)) {
       final minutes = _minutesFromPoint(details.localPosition, config);
-      // rounding by 58 to skip '60' minutes
+      // rounding by _upperLimit to skip '60' minutes
       final fiveMinInterval =
-          ((minutes % 58) / _intervalLength).round() * _intervalLength;
+          ((minutes % _upperLimit) / _intervalLength).round() * _intervalLength;
       final minute = minutes % _intervalLength;
       if (minute == 0 || minute == _intervalLength - 1) {
         GetIt.I<TtsInterface>().speak(
@@ -211,10 +214,11 @@ class _TimerWheelState extends State<TimerWheel> {
   }
 
   void _onTapDown(TapDownDetails details, TimerWheelConfiguration config) {
-    if (minutesSelectedOnTapDown ==
-        _minutesFromPoint(details.localPosition, config)) {
+    final selectedMinutes = _minutesFromPoint(details.localPosition, config);
+    if (minutesSelectedOnTapDown == selectedMinutes &&
+        !_minutesWithinSliderThumb(selectedMinutes)) {
       final desiredMinutesLeft =
-          (_minutesFromPoint(details.localPosition, config) / 5).ceil() * 5;
+          (selectedMinutes / _intervalLength).ceil() * _intervalLength;
       assert(
         desiredMinutesLeft >= 0 &&
             desiredMinutesLeft <= Duration.minutesPerHour,
@@ -246,6 +250,13 @@ class _TimerWheelState extends State<TimerWheel> {
         distanceFromCenter >= config.outerCircleDiameter / 2;
   }
 
+  bool _minutesWithinSliderThumb(int minutes) {
+    final currentMinutes = widget.activeSeconds ~/ Duration.secondsPerMinute;
+    final minutesWithUpperLimit = minutes % _upperLimit;
+    final diff = (currentMinutes - minutesWithUpperLimit).abs();
+    return diff <= _margin;
+  }
+
   // Returns a value in range: [0..60]
   int _minutesFromPoint(Offset point, TimerWheelConfiguration config) {
     final deltaX = point.dx - config.centerPoint.dx;
@@ -263,6 +274,6 @@ class _TimerWheelState extends State<TimerWheel> {
       'Given value is out of range [0..1]',
     );
     percentage.clamp(0, 1);
-    return (percentage * Duration.minutesPerHour).floor();
+    return (percentage * Duration.minutesPerHour).round();
   }
 }

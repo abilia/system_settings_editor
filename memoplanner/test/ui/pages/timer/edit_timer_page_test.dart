@@ -129,5 +129,48 @@ void main() {
       // Assert
       expectAnimation(tester, animating: false);
     });
+
+    testWidgets(
+        'SGC-2284 - Clicking on the slider thumb does not move the timer',
+        (WidgetTester tester) async {
+      // Arrange
+      final wheelFinder = find.byType(TimerWheel);
+      final wheelSize = tester.getSize(wheelFinder);
+      final wheelCenter = tester.getCenter(wheelFinder);
+
+      // Act
+      await tester.pumpWidget(wrapWithMaterialApp());
+      await tester.pumpAndSettle();
+
+      // Assert - Timer start at 00:00
+      expect(find.text('00:00'), findsOneWidget);
+
+      // Act - Tap on 59 minutes
+      await tester.tapAt(
+        wheelCenter.translate(10, -(wheelSize.height * 0.3)),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert - Timer is still at 00:00
+      expect(find.text('00:00'), findsOneWidget);
+
+      // Act - Tap on 30 minutes
+      await tester.tapAt(
+        wheelCenter.translate(0, wheelSize.height * 0.3),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert - Timer is now at 00:30
+      expect(find.text('00:30'), findsOneWidget);
+
+      // Act - Tap on 59 minutes again
+      await tester.tapAt(
+        wheelCenter.translate(10, -(wheelSize.height * 0.3)),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert - Timer is now at 01:00
+      expect(find.text('01:00'), findsOneWidget);
+    });
   });
 }
