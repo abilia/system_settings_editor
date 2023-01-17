@@ -7,7 +7,8 @@ class SettingsDb {
   static const String _languageRecord = 'language',
       _alwaysUse24Record = 'ALWAYS_USE_24',
       _categoryLeftExpanded = 'CATEGORY_LEFT_EXPANDED',
-      _categoryRightExpanded = 'CATEGORY_RIGHT_EXPANDED';
+      _categoryRightExpanded = 'CATEGORY_RIGHT_EXPANDED',
+      _keepScreenOnWhileChargingKey = 'keep_screen_on_while_charging';
 
   final SharedPreferences preferences;
 
@@ -40,6 +41,18 @@ class SettingsDb {
 
   bool get leftCategoryExpanded => _tryGetBool(_categoryLeftExpanded, true);
 
+  @Deprecated('To be Remove on in 4.3')
+  bool get keepScreenOnWhileChargingSet =>
+      preferences.getBool(_keepScreenOnWhileChargingKey) != null;
+
+  bool get keepScreenOnWhileCharging =>
+      _tryGetBool(_keepScreenOnWhileChargingKey, false);
+  Future setKeepScreenOnWhileCharging(bool keepScreenOnWhileCharging) =>
+      preferences.setBool(
+        _keepScreenOnWhileChargingKey,
+        keepScreenOnWhileCharging,
+      );
+
   bool _tryGetBool(String key, bool fallback) {
     try {
       return preferences.getBool(key) ?? fallback;
@@ -52,5 +65,6 @@ class SettingsDb {
   Future<void> restore() async {
     await setLeftCategoryExpanded(true);
     await setRightCategoryExpanded(true);
+    await setKeepScreenOnWhileCharging(false);
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
@@ -10,9 +9,7 @@ import '../../../mocks/mock_bloc.dart';
 void main() {
   late MockWakeLockCubit mockWakeLockCubit;
   const translate = EN();
-  const baseState = WakeLockState(
-    keepScreenAwakeSettings: KeepScreenAwakeSettings(),
-  );
+  const baseState = WakeLockState(hasBattery: true);
 
   setUp(() {
     mockWakeLockCubit = MockWakeLockCubit();
@@ -66,9 +63,7 @@ void main() {
   testWidgets('Timeout disabled', (WidgetTester tester) async {
     when(() => mockWakeLockCubit.state).thenReturn(
       baseState.copyWith(
-        keepScreenAwakeSettings: const KeepScreenAwakeSettings(
-          keepScreenOnAlways: true,
-        ),
+        screenTimeout: maxScreenTimeoutDuration,
       ),
     );
     await tester

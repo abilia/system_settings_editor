@@ -13,7 +13,6 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/repository/sessions_repository.dart';
 import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
-import 'package:system_settings_editor/system_settings_editor.dart';
 
 class AuthenticatedBlocsProvider extends StatelessWidget {
   final Authenticated authenticatedState;
@@ -254,9 +253,11 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             if (Config.isMP) ...[
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(
-                  screenTimeoutCallback: SystemSettingsEditor.screenOffTimeout,
                   battery: GetIt.I<Battery>(),
-                  memoSettingsBloc: context.read<MemoplannerSettingsBloc>(),
+                  settingsDb: GetIt.I<SettingsDb>(),
+                  hasBattery: GetIt.I<Device>().hasBattery,
+                  settingsStream:
+                      context.read<MemoplannerSettingsBloc>().stream,
                 ),
               ),
               BlocProvider<InactivityCubit>(

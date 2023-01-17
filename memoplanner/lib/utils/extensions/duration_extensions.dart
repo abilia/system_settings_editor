@@ -11,6 +11,8 @@ extension IntToDuration on int {
 const iOSPersistentNotificationMaxDuration = Duration(seconds: 30),
     iOSUnlockedPhoneNotificationMaxDuration = Duration(seconds: 5);
 
+const Duration maxScreenTimeoutDuration = Duration(milliseconds: 2147483647);
+
 extension DurationExtensions on Duration {
   String toDurationString(Translated translator, {bool shortMin = true}) {
     if (inDays > 1) return '$inDays ${translator.days}';

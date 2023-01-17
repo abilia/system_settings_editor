@@ -65,10 +65,10 @@ void main() {
               ),
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(
-                  screenTimeoutCallback:
-                      Future.value(const Duration(minutes: 30)),
-                  memoSettingsBloc: context.read<MemoplannerSettingsBloc>(),
+                  settingsDb: FakeSettingsDb(),
+                  settingsStream: const Stream.empty(),
                   battery: FakeBattery(),
+                  hasBattery: true,
                 ),
               ),
               BlocProvider<TimerCubit>(

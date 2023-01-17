@@ -133,6 +133,9 @@ void main() {
     when(() => mockSettingsDb.setAlwaysUse24HourFormat(any()))
         .thenAnswer((_) => Future.value());
     when(() => mockSettingsDb.alwaysUse24HourFormat).thenReturn(true);
+    when(() => mockSettingsDb.keepScreenOnWhileCharging).thenReturn(false);
+    // ignore: deprecated_member_use_from_same_package
+    when(() => mockSettingsDb.keepScreenOnWhileChargingSet).thenReturn(true);
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
