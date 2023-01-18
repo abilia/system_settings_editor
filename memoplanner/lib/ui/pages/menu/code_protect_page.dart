@@ -17,6 +17,7 @@ Future<bool> codeProtectAccess(
             MaterialPageRoute<bool>(
               builder: (context) =>
                   CodeProtectPage(code: codeProtectSettings.code, name: name),
+              settings: (CodeProtectPage).routeSetting(),
             ),
           ) ??
           false);
@@ -79,6 +80,8 @@ class _CodeProtectPageState extends State<CodeProtectPage> {
       builder: (context) => ErrorDialog(
         text: Translator.of(context).translate.incorrectCode,
       ),
+      routeSettings:
+          (ErrorDialog).routeSetting(properties: {'reason': 'Incorrect code'}),
     );
     controller.clear();
   }

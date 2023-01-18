@@ -65,6 +65,9 @@ class CameraButton extends StatelessWidget {
                 builder: (context) => const PermissionInfoDialog(
                   permission: Permission.camera,
                 ),
+                routeSettings: (PermissionInfoDialog).routeSetting(
+                  properties: {'permission': Permission.camera.toString()},
+                ),
               );
             } else {
               final userFileCubit = context.read<UserFileCubit>();
@@ -118,6 +121,7 @@ class MyPhotosButton extends StatelessWidget {
                       providers: authProviders,
                       child: MyPhotosPage(myPhotoFolderId: myPhotoFolderId),
                     ),
+                    settings: (MyPhotosPage).routeSetting(),
                   ),
                 );
               }
@@ -163,6 +167,7 @@ class QuickSettingsButton extends StatelessWidget {
               providers: authProviders,
               child: const QuickSettingsPage(),
             ),
+            settings: (QuickSettingsPage).routeSetting(),
           ),
         );
       },
@@ -202,7 +207,7 @@ class SettingsButton extends StatelessWidget {
                         providers: authProviders,
                         child: const SettingsPage(),
                       ),
-                      settings: const RouteSettings(name: 'SettingsPage'),
+                      settings: (SettingsPage).routeSetting(),
                     ),
                   );
                 }
@@ -301,6 +306,7 @@ class BasicTemplatesButton extends StatelessWidget {
                 child: const TemplatesPage(),
               ),
             ),
+            settings: (TemplatesPage).routeSetting(),
           ),
         );
       },

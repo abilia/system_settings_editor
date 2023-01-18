@@ -600,6 +600,7 @@ class _WeekTimerContent extends StatelessWidget {
                   day: day,
                 ),
               ),
+              settings: (TimerPage).routeSetting(),
             ),
           );
         },

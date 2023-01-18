@@ -1,8 +1,8 @@
 part of 'logout_page.dart';
 
 @visibleForTesting
-class WarningModal extends StatelessWidget {
-  const WarningModal({Key? key}) : super(key: key);
+class LogoutWarningModal extends StatelessWidget {
+  const LogoutWarningModal({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

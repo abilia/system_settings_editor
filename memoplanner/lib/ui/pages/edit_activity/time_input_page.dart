@@ -61,14 +61,25 @@ class TimeInputPage extends StatelessWidget {
       return true;
     } else {
       await showViewDialog(
-        context: context,
-        builder: (context) => ErrorDialog(
-          text: Translator.of(context).translate.missingStartTime,
-        ),
-      );
+          context: context,
+          builder: (context) => const MissingStartTimeErrorDialog(),
+          routeSettings: (MissingStartTimeErrorDialog).routeSetting());
       timeInputKey.currentState?.updateStartTimeInput(savedStartTimeInput);
       return false;
     }
+  }
+}
+
+class MissingStartTimeErrorDialog extends StatelessWidget {
+  const MissingStartTimeErrorDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ErrorDialog(
+      text: Translator.of(context).translate.missingStartTime,
+    );
   }
 }
 

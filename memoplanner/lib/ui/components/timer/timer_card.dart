@@ -57,6 +57,7 @@ class TimerCard extends StatelessWidget {
                               day: day,
                             ),
                           ),
+                          settings: (TimerPage).routeSetting(),
                         ),
                       );
                     },

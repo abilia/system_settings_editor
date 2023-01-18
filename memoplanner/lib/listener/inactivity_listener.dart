@@ -38,7 +38,7 @@ class ScreensaverListener
                 providers: authProviders,
                 child: const ScreensaverPage(),
               ),
-              settings: const RouteSettings(name: 'ScreensaverPage'),
+              settings: (ScreensaverPage).routeSetting(),
             );
             GetIt.I<AlarmNavigator>().addScreensaver(screensaverRoute);
             Navigator.of(context).push(screensaverRoute);

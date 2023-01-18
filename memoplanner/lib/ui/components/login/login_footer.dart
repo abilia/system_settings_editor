@@ -56,6 +56,7 @@ class GoToCreateAccountButton extends StatelessWidget {
               builder: (context) => CreateAccountPage(
                 userRepository: context.read<UserRepository>(),
               ),
+              settings: (CreateAccountPage).routeSetting(),
             ),
           );
           if (username != null) {
@@ -81,6 +82,7 @@ class AbiliaLogoWithReset extends StatelessWidget {
         context: context,
         wrapWithAuthProviders: false,
         builder: (context) => const ResetDeviceDialog(),
+        routeSettings: (ResetDeviceDialog).routeSetting(),
       ),
     );
   }

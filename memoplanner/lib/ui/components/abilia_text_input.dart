@@ -63,6 +63,7 @@ class AbiliaTextInput extends StatelessWidget {
                         autocorrect: autoCorrect,
                         inputValid: inputValid ?? (s) => true,
                       ),
+                      routeSettings: (DefaultTextInput).routeSetting(),
                     );
 
                     if (newText != null) {

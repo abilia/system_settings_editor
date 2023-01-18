@@ -82,24 +82,34 @@ class _AboutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
     return InfoButton(
-      onTap: () {
-        showViewDialog(
-            context: context,
-            builder: (_) {
-              return ViewDialog(
-                heading: AppBarHeading(
-                  text: translate.about,
-                  iconData: AbiliaIcons.information,
-                ),
-                backNavigationWidget: const CloseButton(),
-                body: const AboutContent(updateButton: false),
-                bodyPadding: EdgeInsets.zero,
-                expanded: true,
-              );
-            });
-      },
+      onTap: () => showViewDialog(
+        context: context,
+        builder: (_) => const AboutDialog(),
+        routeSettings: (AboutDialog).routeSetting(),
+      ),
     ).pad(layout.menuPage.aboutButtonPadding);
+  }
+}
+
+class AboutDialog extends StatelessWidget {
+  const AboutDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+
+    return ViewDialog(
+      heading: AppBarHeading(
+        text: translate.about,
+        iconData: AbiliaIcons.information,
+      ),
+      backNavigationWidget: const CloseButton(),
+      body: const AboutContent(updateButton: false),
+      bodyPadding: EdgeInsets.zero,
+      expanded: true,
+    );
   }
 }

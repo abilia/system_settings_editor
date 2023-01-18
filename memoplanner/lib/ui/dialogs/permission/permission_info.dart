@@ -119,7 +119,7 @@ TextSpan buildSettingsLinkTextSpan(BuildContext context) => TextSpan(
                     providers: authProviders,
                     child: const PermissionsPage(),
                   ),
-                  settings: const RouteSettings(name: 'PermissionPage'),
+                  settings: (PermissionsPage).routeSetting(),
                 ),
               );
             },

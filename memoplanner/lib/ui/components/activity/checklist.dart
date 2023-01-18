@@ -118,6 +118,7 @@ class EditQuestionView extends StatelessWidget {
       child: EditQuestionBottomSheet(
         question: oldQuestion,
       ),
+      routeSettings: (EditQuestionBottomSheet).routeSetting(),
     );
     if (result != null) {
       editChecklistCubit.edit(result);
@@ -268,6 +269,7 @@ class QuestionView extends StatelessWidget {
           filePath: filePath,
         );
       },
+      routeSettings: (FullscreenImageDialog).routeSetting(),
     );
   }
 }

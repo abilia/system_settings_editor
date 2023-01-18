@@ -23,6 +23,7 @@ class TextToSpeechSwitch extends StatelessWidget {
               useSafeArea: false,
               context: context,
               builder: (context) => const LongPressInfoDialog(),
+              routeSettings: (LongPressInfoDialog).routeSetting(),
             ),
           ),
         ),

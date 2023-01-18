@@ -18,7 +18,7 @@ abstract class ManipulateActivitiesEvent extends ActivitiesEvent {
   List<Object> get props => [activity];
 }
 
-class AddActivity extends ManipulateActivitiesEvent implements AnalyticEvent {
+class AddActivity extends ManipulateActivitiesEvent implements Analyticable {
   @override
   final Activity activity;
   const AddActivity(this.activity);

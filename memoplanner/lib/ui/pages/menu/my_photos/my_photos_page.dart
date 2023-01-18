@@ -157,10 +157,17 @@ class _AddPhotoButton extends StatelessWidget {
                             .status[Permission.camera]?.isPermanentlyDenied ==
                         true) {
                       await showViewDialog(
-                          useSafeArea: false,
-                          context: context,
-                          builder: (context) => const PermissionInfoDialog(
-                              permission: Permission.camera));
+                        useSafeArea: false,
+                        context: context,
+                        builder: (context) => const PermissionInfoDialog(
+                          permission: Permission.camera,
+                        ),
+                        routeSettings: (PermissionInfoDialog).routeSetting(
+                          properties: {
+                            'permission': Permission.camera.toString(),
+                          },
+                        ),
+                      );
                     } else {
                       final image = await ImagePicker()
                           .pickImage(source: ImageSource.camera);
@@ -186,6 +193,7 @@ class _AddPhotoButton extends StatelessWidget {
                           providers: authProviders,
                           child: const ImportPicturePage(),
                         ),
+                        settings: (ImportPicturePage).routeSetting(),
                       ),
                     );
                     if (selectedImage != null) {
@@ -248,10 +256,9 @@ class ThumbnailPhoto extends StatelessWidget {
           MaterialPageRoute(
             builder: (_) => MultiBlocProvider(
               providers: authProviders,
-              child: PhotoPage(
-                sortable: sortable,
-              ),
+              child: PhotoPage(sortable: sortable),
             ),
+            settings: (PhotoPage).routeSetting(),
           ),
         );
       },

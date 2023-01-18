@@ -10,7 +10,8 @@ export 'package:memoplanner/i18n/all.dart';
 export 'package:memoplanner/config.dart';
 
 export 'package:transparent_image/transparent_image.dart';
-export 'package:flutter/material.dart' hide CloseButton, BackButton;
+export 'package:flutter/material.dart'
+    hide CloseButton, BackButton, AboutDialog;
 
 export 'widget_utils.dart';
 

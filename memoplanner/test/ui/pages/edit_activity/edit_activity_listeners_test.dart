@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -60,6 +60,11 @@ void main() {
     );
     when(() => mockMemoplannerSettingsBloc.stream)
         .thenAnswer((_) => const Stream.empty());
+    GetItInitializer()
+      ..fileStorage = FakeFileStorage()
+      ..database = FakeDatabase()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
+      ..init();
   });
 
   tearDown(GetIt.I.reset);

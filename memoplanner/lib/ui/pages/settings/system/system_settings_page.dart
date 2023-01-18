@@ -31,8 +31,7 @@ class SystemSettingsPage extends StatelessWidget {
                     providers: authProviders,
                     child: const CodeProtectSettingsPage(),
                   ),
-                  settings:
-                      const RouteSettings(name: 'CodeProtectSettingsPage'),
+                  settings: (CodeProtectSettingsPage).routeSetting(),
                 ),
               );
             }
@@ -52,7 +51,7 @@ class SystemSettingsPage extends StatelessWidget {
                       context.read<SpeechSettingsCubit>().state.speechRate,
                 ),
               ),
-              settings: const RouteSettings(name: 'SpeechSupportSettingsPage'),
+              settings: (SpeechSupportSettingsPage).routeSetting(),
             ),
           ),
         ),

@@ -13,9 +13,7 @@ class ActivityPage extends StatelessWidget {
           providers: authProviders,
           child: ActivityPage(activityDay: activityDay),
         ),
-        settings: RouteSettings(
-          name: 'ActivityPage/${activityDay.id}/${activityDay.day}',
-        ),
+        settings: (ActivityPage).routeSetting(),
       );
 
   final ActivityDay activityDay;
@@ -156,7 +154,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
             child: const SelectAlarmPage(),
           ),
         ),
-        settings: const RouteSettings(name: 'SelectAlarmPage'),
+        settings: (SelectAlarmPage).routeSetting(),
       ),
     );
 
@@ -164,6 +162,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
       if (activity.isNoneSingleInstanceRecurring) {
         final applyTo = await navigator.push<ApplyTo>(
           PersistentMaterialPageRoute(
+            settings: (SelectRecurrentTypePage).routeSetting(),
             builder: (_) => SelectRecurrentTypePage(
               heading: Translator.of(context).translate.editRecurringActivity,
               headingIcon: AbiliaIcons.edit,
@@ -193,13 +192,9 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
     final activitiesBloc = context.read<ActivitiesBloc>();
     final navigator = Navigator.of(context);
     final shouldDelete = await showViewDialog<bool>(
-      context: context,
-      builder: (_) => YesNoDialog(
-        heading: Translator.of(context).translate.delete,
-        headingIcon: AbiliaIcons.deleteAllClear,
-        text: Translator.of(context).translate.deleteActivityQuestion,
-      ),
-    );
+        context: context,
+        builder: (_) => const DeleteActivityDialog(),
+        routeSettings: (DeleteActivityDialog).routeSetting());
     if (shouldDelete == true) {
       if (activity.isNoneSingleInstanceRecurring) {
         final applyTo = await navigator.push<ApplyTo>(
@@ -209,6 +204,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
               allDaysVisible: true,
               headingIcon: AbiliaIcons.deleteAllClear,
             ),
+            settings: (SelectRecurrentTypePage).routeSetting(),
           ),
         );
         if (applyTo == null) return;
@@ -223,6 +219,21 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
       }
       await navigator.maybePop();
     }
+  }
+}
+
+class DeleteActivityDialog extends StatelessWidget {
+  const DeleteActivityDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return YesNoDialog(
+      heading: Translator.of(context).translate.delete,
+      headingIcon: AbiliaIcons.deleteAllClear,
+      text: Translator.of(context).translate.deleteActivityQuestion,
+    );
   }
 }
 
@@ -264,7 +275,7 @@ class EditActivityButton extends StatelessWidget {
                 ],
                 child: const ActivityWizardPage(),
               ),
-              settings: RouteSettings(name: '$ActivityWizardPage $activityDay'),
+              settings: (ActivityWizardPage).routeSetting(),
             ),
           );
         },

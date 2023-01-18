@@ -39,8 +39,7 @@ class _HiddenSettingState extends State<HiddenSetting> {
                     providers: authProviders,
                     child: const SettingsPage(),
                   ),
-                  settings:
-                      const RouteSettings(name: 'SettingsPage from hidden'),
+                  settings: (SettingsPage).routeSetting(),
                 ));
               }
             }

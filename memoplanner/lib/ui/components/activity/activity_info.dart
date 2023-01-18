@@ -128,6 +128,7 @@ mixin ActivityMixin {
         activityDay: activityDay,
         message: message,
       ),
+      routeSettings: (CheckActivityConfirmDialog).routeSetting(),
     );
     if (check == true) {
       activitiesBloc.add(

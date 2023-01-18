@@ -28,15 +28,8 @@ class CreateAccountPage extends StatelessWidget {
               await showViewDialog(
                 context: context,
                 wrapWithAuthProviders: false,
-                builder: (context) => ViewDialog(
-                  heading: AppBarHeading(
-                    text: t.accountCreatedHeading,
-                    iconData: AbiliaIcons.ok,
-                  ),
-                  body: Tts(child: Text(t.accountCreatedBody)),
-                  backNavigationWidget:
-                      OkButton(onPressed: Navigator.of(context).maybePop),
-                ),
+                builder: (context) => const AccountCreatedDialog(),
+                routeSettings: (AccountCreatedDialog).routeSetting(),
               );
               navigator.pop(state.username);
             },
@@ -52,6 +45,9 @@ class CreateAccountPage extends StatelessWidget {
                     text: state.errorMessage(t),
                     backNavigationWidget:
                         OkButton(onPressed: Navigator.of(context).maybePop),
+                  ),
+                  routeSettings: (ErrorDialog).routeSetting(
+                    properties: {'reason': state.failure.name},
                   ),
                 );
               }
@@ -143,6 +139,25 @@ class CreateAccountPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class AccountCreatedDialog extends StatelessWidget {
+  const AccountCreatedDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translator.of(context).translate;
+    return ViewDialog(
+      heading: AppBarHeading(
+        text: t.accountCreatedHeading,
+        iconData: AbiliaIcons.ok,
+      ),
+      body: Tts(child: Text(t.accountCreatedBody)),
+      backNavigationWidget: OkButton(onPressed: Navigator.of(context).maybePop),
     );
   }
 }

@@ -151,6 +151,7 @@ class DatePicker extends StatelessWidget {
                         notBefore: notBefore,
                       ),
                     ),
+                    settings: (DatePickerPage).routeSetting(),
                   ),
                 );
                 if (newDate != null) {
@@ -211,7 +212,7 @@ class TimeIntervalPicker extends StatelessWidget {
                               : timeInterval.endTime),
                     ),
                   ),
-                  settings: const RouteSettings(name: 'TimeInputPage'),
+                  settings: (TimeInputPage).routeSetting(),
                 ),
               );
 

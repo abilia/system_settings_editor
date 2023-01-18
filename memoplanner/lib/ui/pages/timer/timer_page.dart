@@ -168,16 +168,12 @@ class _TimerBottomBar extends StatelessWidget {
           children: <Widget>[
             IconActionButtonLight(
               onPressed: () async {
-                final t = Translator.of(context).translate;
                 final timerCubit = context.read<TimerCubit>();
                 final navigator = Navigator.of(context);
                 final confirmDeletion = await showViewDialog(
                   context: context,
-                  builder: (context) => YesNoDialog(
-                    headingIcon: AbiliaIcons.deleteAllClear,
-                    heading: t.delete,
-                    text: t.timerDelete,
-                  ),
+                  builder: (context) => const DeleteTimerDialog(),
+                  routeSettings: (DeleteTimerDialog).routeSetting(),
                 );
                 if (confirmDeletion) {
                   await timerCubit.deleteTimer(timer);
@@ -193,6 +189,22 @@ class _TimerBottomBar extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class DeleteTimerDialog extends StatelessWidget {
+  const DeleteTimerDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translator.of(context).translate;
+    return YesNoDialog(
+      headingIcon: AbiliaIcons.deleteAllClear,
+      heading: t.delete,
+      text: t.timerDelete,
     );
   }
 }

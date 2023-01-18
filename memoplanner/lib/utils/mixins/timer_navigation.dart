@@ -29,6 +29,7 @@ mixin TimerNavigation {
           ],
           child: const BasicTimerPickerPage(),
         ),
+        settings: (BasicTimerPickerPage).routeSetting(),
       ),
     );
     if (timerStarted != null) {
@@ -45,8 +46,9 @@ mixin TimerNavigation {
       [BasicTimerDataItem? basicTimer]) async {
     final navigator = Navigator.of(buildContext);
     final timerStarted = await Navigator.of(buildContext).push(
-      _createRoute<AbiliaTimer>(
-        MultiBlocProvider(
+      createSlideRoute<AbiliaTimer>(
+        settings: (EditTimerPage).routeSetting(),
+        page: MultiBlocProvider(
           providers: authProviders,
           child: BlocProvider(
             create: (context) => EditTimerCubit(
@@ -84,20 +86,8 @@ mixin TimerNavigation {
             day: timer.startTime.onlyDays(),
           ),
         ),
+        settings: (TimerPage).routeSetting(),
       ),
     );
   }
-
-  Route<T> _createRoute<T>(Widget page) => PersistentPageRouteBuilder<T>(
-        pageBuilder: (context, animation, secondaryAnimation) => page,
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            SlideTransition(
-          position: animation.drive(
-            Tween(begin: const Offset(1.0, 0.0), end: Offset.zero).chain(
-              CurveTween(curve: Curves.ease),
-            ),
-          ),
-          child: child,
-        ),
-      );
 }

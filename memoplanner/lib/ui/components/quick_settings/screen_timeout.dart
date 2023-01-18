@@ -24,13 +24,14 @@ class ScreenTimeoutPickField extends StatelessWidget {
             MaterialPageRoute(
               builder: (_) => MultiBlocProvider(
                 providers: authProviders,
-                child: ScreenTimeOutSelector(
+                child: ScreenTimeOutSelectorPage(
                   timeout:
                       wakeLockState.keepScreenAwakeSettings.keepScreenOnAlways
                           ? Duration.zero
                           : wakeLockState.screenTimeout,
                 ),
               ),
+              settings: (ScreenTimeOutSelectorPage).routeSetting(),
             ),
           );
           if (timeout != null) {
@@ -50,21 +51,21 @@ class ScreenTimeoutPickField extends StatelessWidget {
   }
 }
 
-class ScreenTimeOutSelector extends StatefulWidget {
+class ScreenTimeOutSelectorPage extends StatefulWidget {
   final Duration timeout;
 
-  const ScreenTimeOutSelector({
+  const ScreenTimeOutSelectorPage({
     required this.timeout,
     Key? key,
   }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return ScreenTimeOutSelectorState();
+    return ScreenTimeOutSelectorPageState();
   }
 }
 
-class ScreenTimeOutSelectorState extends State<ScreenTimeOutSelector> {
+class ScreenTimeOutSelectorPageState extends State<ScreenTimeOutSelectorPage> {
   late Duration _timeout;
 
   @override

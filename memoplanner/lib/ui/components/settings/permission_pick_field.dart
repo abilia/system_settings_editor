@@ -22,7 +22,7 @@ class PermissionPickField extends StatelessWidget {
                     providers: authProviders,
                     child: const PermissionsPage(),
                   ),
-                  settings: const RouteSettings(name: 'PermissionPage'),
+                  settings: (PermissionsPage).routeSetting(),
                 ),
               );
             },

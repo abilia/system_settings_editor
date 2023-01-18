@@ -1,20 +1,37 @@
 import 'package:memoplanner/ui/all.dart';
 
+extension TypeRoute on Type {
+  AnalyticRouteSettings routeSetting({Map<String, dynamic>? properties}) =>
+      AnalyticRouteSettings(
+        analyticName: toString(),
+        properties: properties,
+      );
+}
+
+class AnalyticRouteSettings extends RouteSettings {
+  final Map<String, dynamic>? properties;
+  final String analyticName;
+
+  const AnalyticRouteSettings({required this.analyticName, this.properties})
+      : super(name: analyticName);
+}
+
 mixin PersistentRoute {}
 mixin ActivityRootRoute {}
 
 class AlarmRoute<T> extends MaterialPageRoute<T> with PersistentRoute {
   AlarmRoute({
-    required WidgetBuilder builder,
-    bool fullscreenDialog = false,
-  }) : super(builder: builder, fullscreenDialog: fullscreenDialog);
+    required super.builder,
+    required super.settings,
+    super.fullscreenDialog,
+  });
 }
 
 class PersistentMaterialPageRoute<T> extends MaterialPageRoute<T>
     with PersistentRoute {
   PersistentMaterialPageRoute({
     required super.builder,
-    super.settings,
+    required super.settings,
   });
 }
 
@@ -22,7 +39,7 @@ class PersistentPageRouteBuilder<T> extends PageRouteBuilder<T>
     with PersistentRoute {
   PersistentPageRouteBuilder({
     required super.pageBuilder,
-    super.settings,
+    required super.settings,
     super.transitionsBuilder,
   });
 }
@@ -31,7 +48,7 @@ class ActivityRootPageRouteBuilder<T> extends PageRouteBuilder<T>
     with ActivityRootRoute {
   ActivityRootPageRouteBuilder({
     required super.pageBuilder,
-    super.settings,
+    required super.settings,
   });
 }
 
@@ -39,12 +56,12 @@ class PersistentDialogRoute<T> extends DialogRoute<T> with PersistentRoute {
   PersistentDialogRoute({
     required super.context,
     required super.builder,
+    required super.settings,
     super.themes,
     super.barrierColor = Colors.black54,
     super.barrierDismissible,
     super.barrierLabel,
     super.useSafeArea = true,
-    super.settings,
     super.anchorPoint,
   });
 }

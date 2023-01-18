@@ -103,6 +103,8 @@ class SelectPictureBody extends StatelessWidget {
                   final selectedImage =
                       await Navigator.of(context).push<AbiliaFile>(
                     PersistentMaterialPageRoute(
+                      settings:
+                          RouteSettings(name: (ImageArchivePage).toString()),
                       builder: (_) => MultiBlocProvider(
                         providers: authProviders,
                         child: ImageArchivePage(onCancel: onCancel),
@@ -131,6 +133,7 @@ class SelectPictureBody extends StatelessWidget {
                             final selectedImage =
                                 await Navigator.of(context).push<AbiliaFile>(
                               PersistentMaterialPageRoute(
+                                settings: (ImageArchivePage).routeSetting(),
                                 builder: (_) => MultiBlocProvider(
                                   providers: authProviders,
                                   child: ImageArchivePage(
@@ -217,12 +220,14 @@ class ImageSourceWidget extends StatelessWidget {
                 child: InfoButton(
                   key: Key('$imageSource$permission'),
                   onTap: () => showViewDialog(
-                    useSafeArea: false,
-                    context: context,
-                    builder: (context) => PermissionInfoDialog(
-                      permission: permission,
-                    ),
-                  ),
+                      useSafeArea: false,
+                      context: context,
+                      builder: (context) => PermissionInfoDialog(
+                            permission: permission,
+                          ),
+                      routeSettings: (PermissionInfoDialog).routeSetting(
+                        properties: {'permission': permission.toString()},
+                      )),
                 ),
               )
           ],

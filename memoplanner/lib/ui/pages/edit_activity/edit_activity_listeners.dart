@@ -32,25 +32,27 @@ class ErrorPopupListener extends StatelessWidget {
     BuildContext context,
   ) async {
     final translate = Translator.of(context).translate;
-    void showError(String msg) => showViewDialog(
-          context: context,
-          builder: (context) => ErrorDialog(text: msg),
-        );
+    void showError(String msg, Set<SaveError> saveErrors) => showViewDialog(
+        context: context,
+        builder: (context) => ErrorDialog(text: msg),
+        routeSettings: (ErrorDialog).routeSetting(properties: {
+          'save errors': saveErrors.map((e) => e.name).toList(),
+        }));
 
     if (errors.containsAll({SaveError.noTitleOrImage, SaveError.noStartTime})) {
-      return showError(translate.missingTitleOrImageAndStartTime);
+      return showError(translate.missingTitleOrImageAndStartTime, errors);
     } else if (errors.contains(SaveError.noTitleOrImage)) {
-      return showError(translate.missingTitleOrImage);
+      return showError(translate.missingTitleOrImage, errors);
     } else if (errors.contains(SaveError.noStartTime)) {
-      return showError(translate.missingStartTime);
+      return showError(translate.missingStartTime, errors);
     } else if (errors.contains(SaveError.startTimeBeforeNow)) {
-      return showError(translate.startTimeBeforeNowError);
+      return showError(translate.startTimeBeforeNowError, errors);
     } else if (errors.contains(SaveError.noRecurringDays)) {
-      return showError(translate.recurringDataEmptyErrorMessage);
+      return showError(translate.recurringDataEmptyErrorMessage, errors);
     } else if (errors.contains(SaveError.endDateBeforeStart)) {
-      return showError(translate.endBeforeStartError);
+      return showError(translate.endBeforeStartError, errors);
     } else if (errors.contains(SaveError.noRecurringEndDate)) {
-      return showError(translate.endDateNotSpecifiedErrorMessage);
+      return showError(translate.endDateNotSpecifiedErrorMessage, errors);
     }
   }
 
@@ -72,6 +74,7 @@ class ErrorPopupListener extends StatelessWidget {
               headingIcon: AbiliaIcons.edit,
               thisDayAndForwardVisible: state.unchangedDate,
             ),
+            settings: (SelectRecurrentTypePage).routeSetting(),
           ),
         );
         if (applyTo == null) return;
@@ -85,9 +88,9 @@ class ErrorPopupListener extends StatelessWidget {
       if (errors.contains(SaveError.unconfirmedStartTimeBeforeNow)) {
         final confirmStartTimeBeforeNow = await showViewDialog(
           context: context,
-          builder: (context) => ConfirmWarningDialog(
-            text: translate.startTimeBeforeNowWarning,
-          ),
+          builder: (context) => const ConfirmStartTimeBeforeNowWarningDialog(),
+          routeSettings:
+              (ConfirmStartTimeBeforeNowWarningDialog).routeSetting(),
         );
         if (confirmStartTimeBeforeNow != true) return;
       }
@@ -95,9 +98,8 @@ class ErrorPopupListener extends StatelessWidget {
       if (errors.contains(SaveError.unconfirmedActivityConflict)) {
         final confirmConflict = await showViewDialog(
           context: context,
-          builder: (context) => ConfirmWarningDialog(
-            text: translate.conflictWarning,
-          ),
+          builder: (context) => const ConfirmConflictWarningDialog(),
+          routeSettings: (ConfirmConflictWarningDialog).routeSetting(),
         );
         if (confirmConflict != true) return;
       }
@@ -107,6 +109,28 @@ class ErrorPopupListener extends StatelessWidget {
       saveRecurring: saveEvent,
     );
   }
+}
+
+class ConfirmConflictWarningDialog extends StatelessWidget {
+  const ConfirmConflictWarningDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => ConfirmWarningDialog(
+        text: Translator.of(context).translate.conflictWarning,
+      );
+}
+
+class ConfirmStartTimeBeforeNowWarningDialog extends StatelessWidget {
+  const ConfirmStartTimeBeforeNowWarningDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => ConfirmWarningDialog(
+        text: Translator.of(context).translate.startTimeBeforeNowWarning,
+      );
 }
 
 class PopOnSaveListener extends StatelessWidget {

@@ -4,7 +4,7 @@ import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/repository/end_point.dart';
 
-abstract class AnalyticEvent {
+abstract class Analyticable {
   String get eventName;
   Map<String, dynamic>? get properties;
 }
@@ -83,7 +83,7 @@ class BlocLoggingObserver extends BlocObserver {
     final event = transition.event;
     final nextState = transition.nextState;
     final currentState = transition.currentState;
-    if (event is AnalyticEvent) {
+    if (event is Analyticable) {
       analytics.track(event.eventName, properties: event.properties);
     }
     if (nextState is Authenticated) {

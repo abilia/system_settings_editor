@@ -113,6 +113,8 @@ class NotificationPermissionSwitch extends StatelessWidget {
                         const NotificationPermissionOffWarningDialog(
                       onOk: openAppSettings,
                     ),
+                    routeSettings:
+                        (NotificationPermissionOffWarningDialog).routeSetting(),
                   );
                 } else {
                   context
@@ -193,6 +195,9 @@ class FullscreenPermissionSwitch extends StatelessWidget {
                               const NotificationPermissionOffWarningDialog(
                             onOk: AndroidIntents.openSystemAlertSetting,
                           ),
+                          routeSettings:
+                              (NotificationPermissionOffWarningDialog)
+                                  .routeSetting(),
                         );
                       } else {
                         context
@@ -231,6 +236,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
                 onTap: () => showViewDialog(
                   context: context,
                   builder: (context) => const FullscreenAlarmInfoDialog(),
+                  routeSettings: (FullscreenAlarmInfoDialog).routeSetting(),
                 ),
               ),
             ),

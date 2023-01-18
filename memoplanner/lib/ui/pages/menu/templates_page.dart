@@ -80,6 +80,7 @@ class TemplatesPage extends StatelessWidget {
     final authProviders = copiedAuthProviders(context);
     Navigator.of(context).push(
       PersistentMaterialPageRoute(
+        settings: (ActivityWizardPage).routeSetting(),
         builder: (_) => MultiBlocProvider(
           providers: [
             ...authProviders,
@@ -113,6 +114,7 @@ class TemplatesPage extends StatelessWidget {
 
     final timer = await Navigator.of(context).push(
       PersistentMaterialPageRoute(
+        settings: (EditBasicTimerPage).routeSetting(),
         builder: (_) => MultiBlocProvider(
           providers: [
             ...authProviders,
@@ -300,6 +302,7 @@ class AddTemplateButton extends StatelessWidget {
 
     Navigator.of(context).push(
       PersistentMaterialPageRoute(
+        settings: (ActivityWizardPage).routeSetting(),
         builder: (_) => MultiBlocProvider(
           providers: [
             ...authProviders,

@@ -118,6 +118,12 @@ class AddButton extends StatelessWidget
               showTimers: showTimers,
             ),
           ),
+          settings: (CreateNewPage).routeSetting(
+            properties: {
+              'Show Activities': showActivities,
+              'Show Timers': showTimers,
+            },
+          ),
         ),
       );
 }

@@ -72,6 +72,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                                     await Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (_) => const VoicesPage(),
+                                    settings: (VoicesPage).routeSetting(),
                                   ),
                                 ),
                               ),

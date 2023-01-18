@@ -152,11 +152,23 @@ class _TimerInputContentState extends State<_TimerInputContent> {
     } else {
       await showViewDialog(
         context: context,
-        builder: (context) => ErrorDialog(
-          text: Translator.of(context).translate.timerInvalidDuration,
-        ),
+        builder: (context) => const InvalidTimerDurationDialog(),
+        routeSettings: (InvalidTimerDurationDialog).routeSetting(),
       );
     }
+  }
+}
+
+class InvalidTimerDurationDialog extends StatelessWidget {
+  const InvalidTimerDurationDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ErrorDialog(
+      text: Translator.of(context).translate.timerInvalidDuration,
+    );
   }
 }
 

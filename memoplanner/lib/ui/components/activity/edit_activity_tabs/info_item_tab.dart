@@ -89,6 +89,7 @@ class ChangeInfoItemPicker extends StatelessWidget {
             final editActivityCubit = context.read<EditActivityCubit>();
             final result = await Navigator.of(context).push<Type>(
               PersistentMaterialPageRoute(
+                settings: (SelectInfoTypePage).routeSetting(),
                 builder: (context) => SelectInfoTypePage(
                   infoItemType: infoItem.runtimeType,
                   showChecklist: showChecklist,
@@ -138,6 +139,8 @@ class LibraryButton extends StatelessWidget {
           final editActivityCubit = context.read<EditActivityCubit>();
           final infoItem = await Navigator.of(context).push<InfoItem>(
             PersistentMaterialPageRoute(
+              settings: (isChecklist ? ChecklistLibraryPage : NoteLibraryPage)
+                  .routeSetting(),
               builder: (_) => MultiBlocProvider(
                 providers: authProviders,
                 child: isChecklist
@@ -239,6 +242,7 @@ class AddNewQuestionButton extends StatelessWidget {
       context: context,
       providers: copiedAuthProviders(context),
       child: const EditQuestionBottomSheet(),
+      routeSettings: (EditQuestionBottomSheet).routeSetting(),
     );
 
     if (result != null && result.isNotEmpty) {
@@ -287,7 +291,7 @@ class EditNoteWidget extends StatelessWidget {
           providers: authProviders,
           child: EditNotePage(text: infoItem.text),
         ),
-        settings: const RouteSettings(name: 'EditNotePage'),
+        settings: (EditNotePage).routeSetting(),
         transitionsBuilder: (_, animation, __, child) => FadeTransition(
           opacity: CurvedAnimation(
             parent: animation,

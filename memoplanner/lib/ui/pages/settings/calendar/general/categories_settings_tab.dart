@@ -104,6 +104,7 @@ class _CategoryPickField extends StatelessWidget {
             imageAndName: imageAndName,
             hintText: defaultName,
           ),
+          routeSettings: (EditCategoryBottomSheet).routeSetting(),
         );
         if (result != null) {
           generalCalendarSettingsCubit.changeCategorySettings(onResult(result));
