@@ -134,13 +134,12 @@ void main() {
         'SGC-2284 - Clicking on the slider thumb does not move the timer',
         (WidgetTester tester) async {
       // Arrange
+      await tester.pumpWidget(wrapWithMaterialApp());
+      await tester.pumpAndSettle();
+
       final wheelFinder = find.byType(TimerWheel);
       final wheelSize = tester.getSize(wheelFinder);
       final wheelCenter = tester.getCenter(wheelFinder);
-
-      // Act
-      await tester.pumpWidget(wrapWithMaterialApp());
-      await tester.pumpAndSettle();
 
       // Assert - Timer start at 00:00
       expect(find.text('00:00'), findsOneWidget);
