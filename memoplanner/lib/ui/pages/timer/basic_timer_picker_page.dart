@@ -33,7 +33,7 @@ class BasicTimerPickerPage extends StatelessWidget {
                     onPressed: () {
                       if (sortableData is BasicTimerDataItem) {
                         context.read<EditTimerCubit>()
-                          ..loadBasicTimer(sortableData)
+                          ..loadTimerTemplate(sortableData)
                           ..start();
                       }
                     },

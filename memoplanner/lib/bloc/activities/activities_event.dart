@@ -32,7 +32,7 @@ class AddActivity extends ManipulateActivitiesEvent implements AnalyticEvent {
         'image': activity.hasImage,
         'startTime': activity.startTime.toIso8601String(),
         'noneRecurringEnd': activity.noneRecurringEnd.toIso8601String(),
-        'duration': '${activity.duration}',
+        'duration': activity.duration.inMinutes,
         'timezone': activity.timezone,
         'fullDay': activity.fullDay,
         'category': activity.category,

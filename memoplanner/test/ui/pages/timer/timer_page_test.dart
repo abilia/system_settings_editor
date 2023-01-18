@@ -5,6 +5,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/ticker.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -74,6 +75,7 @@ void main() {
     timerCubit = TimerCubit(
       timerDb: mockTimerDb,
       ticker: Ticker.fake(initialTime: startTime),
+      seagullAnalytics: SeagullAnalytics.empty(),
     );
     GetItInitializer()
       ..ticker = Ticker.fake(initialTime: startTime)

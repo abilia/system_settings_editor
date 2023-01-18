@@ -1,5 +1,6 @@
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/abilia_timer.dart';
 import 'package:memoplanner/models/sortable/data/basic_timer_data.dart';
 import 'package:memoplanner/repository/all.dart';
@@ -20,6 +21,7 @@ void main() {
       timerCubit: TimerCubit(
         timerDb: MockTimerDb(),
         ticker: ticker,
+        seagullAnalytics: SeagullAnalytics.empty(),
       ),
     );
 
@@ -45,10 +47,11 @@ void main() {
       timerCubit: TimerCubit(
         timerDb: MockTimerDb(),
         ticker: ticker,
+        seagullAnalytics: SeagullAnalytics.empty(),
       ),
     );
 
-    expect(editTimerCubit.state, EditTimerState.withBasicTimer(basicTimer));
+    expect(editTimerCubit.state, EditTimerState.fromTemplate(basicTimer));
   });
 
   test('durationText shows correct text', () async {
@@ -58,32 +61,37 @@ void main() {
       timerCubit: TimerCubit(
         timerDb: MockTimerDb(),
         ticker: ticker,
+        seagullAnalytics: SeagullAnalytics.empty(),
       ),
     );
 
-    editTimerCubit.updateDuration(5.minutes());
+    editTimerCubit.updateDuration(5.minutes(), TimerSetType.inputField);
     expect(editTimerCubit.state.durationText, '00:05');
 
-    editTimerCubit.updateDuration(10.minutes());
+    editTimerCubit.updateDuration(10.minutes(), TimerSetType.inputField);
     expect(editTimerCubit.state.durationText, '00:10');
 
-    editTimerCubit.updateDuration(10.hours());
+    editTimerCubit.updateDuration(10.hours(), TimerSetType.inputField);
     expect(editTimerCubit.state.durationText, '10:00');
 
-    editTimerCubit.updateDuration(1.seconds());
+    editTimerCubit.updateDuration(1.seconds(), TimerSetType.inputField);
     expect(editTimerCubit.state.durationText, '00:00');
 
-    editTimerCubit.updateDuration(2.hours() + 1.minutes());
+    editTimerCubit.updateDuration(
+        2.hours() + 1.minutes(), TimerSetType.inputField);
     expect(editTimerCubit.state.durationText, '02:01');
 
-    editTimerCubit.updateDuration(45.hours() + 45.minutes());
+    editTimerCubit.updateDuration(
+        45.hours() + 45.minutes(), TimerSetType.inputField);
     expect(editTimerCubit.state.durationText, '45:45');
 
-    editTimerCubit.updateDuration(99.hours() + 5.minutes());
+    editTimerCubit.updateDuration(
+        99.hours() + 5.minutes(), TimerSetType.inputField);
     expect(editTimerCubit.state.durationText, '99:05');
 
     editTimerCubit.updateDuration(
-        1000.hours() + 26.minutes() + 27.seconds() + 556.milliseconds());
+        1000.hours() + 26.minutes() + 27.seconds() + 556.milliseconds(),
+        TimerSetType.inputField);
     expect(editTimerCubit.state.durationText, '1000:26');
 
     const days = 564345;
@@ -103,7 +111,7 @@ void main() {
         (days * 24 + hours + (totalMinutes - remainingMinutes) / 60).toInt();
     final remainingMinutesString = remainingMinutes.toString().padLeft(2, '0');
 
-    editTimerCubit.updateDuration(totalDuration);
+    editTimerCubit.updateDuration(totalDuration, TimerSetType.inputField);
     expect(editTimerCubit.state.durationText,
         '$totalHours:$remainingMinutesString');
   });
@@ -115,22 +123,24 @@ void main() {
       timerCubit: TimerCubit(
         timerDb: MockTimerDb(),
         ticker: ticker,
+        seagullAnalytics: SeagullAnalytics.empty(),
       ),
     );
 
-    editTimerCubit.updateDuration(10.minutes());
+    editTimerCubit.updateDuration(10.minutes(), TimerSetType.inputField);
     expect(editTimerCubit.state.name, '10 minutes');
 
-    editTimerCubit.updateDuration(10.hours());
+    editTimerCubit.updateDuration(10.hours(), TimerSetType.inputField);
     expect(editTimerCubit.state.name, '10 hours');
 
-    editTimerCubit.updateDuration(11.hours() + 11.minutes());
+    editTimerCubit.updateDuration(
+        11.hours() + 11.minutes(), TimerSetType.inputField);
     expect(editTimerCubit.state.name, '11 hours');
 
     editTimerCubit.updateName('title');
     expect(editTimerCubit.state.name, 'title');
 
-    editTimerCubit.updateDuration(5.minutes());
+    editTimerCubit.updateDuration(5.minutes(), TimerSetType.inputField);
     expect(editTimerCubit.state.name, 'title');
   });
 }
