@@ -13,7 +13,6 @@ FlutterIsolate? alarmSchedulerIsolate;
 NotificationsScheduler scheduleNotificationsIsolated =
     (NotificationsSchedulerData schedulerData) async {
   final sendPortCompleter = Completer<SendPort>();
-  final isolateCompleter = Completer();
   final ReceivePort receivePort = ReceivePort();
   final log = Logger('NotificationsIsolate');
 
@@ -26,13 +25,10 @@ NotificationsScheduler scheduleNotificationsIsolated =
     } else if (message is Map<String, dynamic>) {
       return log.log(_level(message['level']), message['message']);
     }
-    return isolateCompleter.complete();
   });
 
   final sendPort = await sendPortCompleter.future;
   sendPort.send(schedulerData.toMap());
-
-  await isolateCompleter.future;
 };
 
 Future<FlutterIsolate?> _scheduleNotificationsIsolated(
@@ -62,7 +58,6 @@ void _scheduleNotifications(SendPort sendPort) {
           },
         ),
       );
-      sendPort.send(true);
     }
   });
 }

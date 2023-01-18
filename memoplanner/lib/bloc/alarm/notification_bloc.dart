@@ -22,7 +22,7 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
   }) : super('init') {
     on<NotificationEvent>(
       (event, emit) => _scheduleNotifications(),
-      transformer: _throttle(syncDelays.scheduleNotificationsDelay),
+      transformer: _debounceTime(syncDelays.scheduleNotificationsDelay),
     );
   }
 
@@ -41,7 +41,7 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
     final activities = await activityRepository.allAfter(
       now.subtract(maxReminder), // subtracting to get all reminders
     );
-    await scheduleNotificationsIsolated(
+    return scheduleNotificationsIsolated(
       NotificationsSchedulerData(
         activities: activities,
         timers: timers.toAlarm(),
@@ -53,8 +53,6 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
     );
   }
 
-  EventTransformer<Event> _throttle<Event>(Duration delay) =>
-      (events, mapper) => events
-          .throttleTime(delay, trailing: true, leading: true)
-          .asyncExpand(mapper);
+  EventTransformer<Event> _debounceTime<Event>(Duration time) =>
+      (events, mapper) => events.debounceTime(time).asyncExpand(mapper);
 }

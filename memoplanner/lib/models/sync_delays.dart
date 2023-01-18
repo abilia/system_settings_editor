@@ -6,7 +6,7 @@ class SyncDelays {
   const SyncDelays({
     this.betweenSync = const Duration(seconds: 3),
     this.retryDelay = const Duration(minutes: 1),
-    this.scheduleNotificationsDelay = const Duration(seconds: 3),
+    this.scheduleNotificationsDelay = const Duration(seconds: 2),
   });
 
   static const SyncDelays zero = SyncDelays(

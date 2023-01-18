@@ -270,6 +270,7 @@ void main() {
           dateTime: now,
         ),
       );
+      await Future.delayed(1.seconds());
       verifyCancelAllPendingNotifications();
       verify(() => mockedNotificationsPlugin.zonedSchedule(
           any(), any(), any(), any(), any(),
@@ -417,6 +418,7 @@ void main() {
           dateTime: now,
         ),
       );
+      await Future.delayed(10.milliseconds());
       verifyCancelAllPendingNotifications();
       verify(
         () => mockedNotificationsPlugin.zonedSchedule(
@@ -440,6 +442,7 @@ void main() {
           dateTime: now,
         ),
       );
+      await Future.delayed(10.milliseconds());
       verifyCancelAllPendingNotifications();
       verify(
         () => mockedNotificationsPlugin.zonedSchedule(
@@ -633,6 +636,7 @@ void main() {
           dateTime: now,
         ),
       );
+      await Future.delayed(10.milliseconds());
       verifyCancelAllPendingNotifications();
       verify(
         () => mockedNotificationsPlugin.zonedSchedule(
