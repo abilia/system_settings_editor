@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:equatable/equatable.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -25,8 +26,6 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final _log = Logger('SyncBloc');
 
   late StreamSubscription _pushSubscription;
-
-  bool get isSynced => state is Synced;
 
   bool get hasSynced => state is SyncDone;
 
@@ -62,18 +61,19 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     Emitter emit,
   ) async {
     try {
+      emit(Syncing(lastSynced: state.lastSynced));
       final didFetchData = await _sync(event);
-      if (event is SyncAll) {
-        if (didFetchData || !isSynced) {
-          final now = clockBloc.state;
-          lastSyncDb.setSyncTime(now);
-          emit(Synced(lastSynced: now));
-        }
+      var lastSynced = state.lastSynced;
+      if (licenseCubit.validLicense) {
+        lastSynced = clockBloc.state;
+        lastSyncDb.setSyncTime(lastSynced);
       }
+      emit(Synced(lastSynced: lastSynced, didFetchData: didFetchData));
     } catch (error) {
       emit(SyncedFailed(lastSynced: state.lastSynced));
       _log.info('could not sync $event, retries in ${syncDelay.retryDelay}');
       await Future.delayed(syncDelay.retryDelay);
+      if (isClosed) return;
       _log.info('retrying $event');
       add(event);
     }

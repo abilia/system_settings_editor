@@ -146,7 +146,7 @@ void main() {
       );
 
       // Act
-      syncBloc.emit(SyncedFailed());
+      syncBloc.emit(const SyncedFailed());
 
       // Assert
       await expectLater(
@@ -155,7 +155,9 @@ void main() {
       );
     });
 
-    test('Activities are loaded when Synced is emitted', () async {
+    test(
+        'Activities are loaded when Synced is emitted with didFetchData = true',
+        () async {
       // Arrange
       activitiesBloc = ActivitiesBloc(
         activityRepository: mockActivityRepository,
@@ -163,7 +165,7 @@ void main() {
       );
 
       // Act
-      syncBloc.emit(Synced());
+      syncBloc.emit(const Synced(didFetchData: true));
 
       // Assert
       await expectLater(
@@ -173,6 +175,19 @@ void main() {
         ]),
       );
     });
+
+    blocTest(
+      'Activities are not loaded when Synced is emitted with didFetchData = false',
+      build: () {
+        activitiesBloc = ActivitiesBloc(
+          activityRepository: mockActivityRepository,
+          syncBloc: syncBloc,
+        );
+        syncBloc.emit(const Synced(didFetchData: false));
+        return activitiesBloc;
+      },
+      expect: () => [], // no event emitted
+    );
   });
 
   group('Delete recurring activity', () {

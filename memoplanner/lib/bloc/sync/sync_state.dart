@@ -1,22 +1,27 @@
 part of 'sync_bloc.dart';
 
-abstract class SyncState {
+abstract class SyncState extends Equatable {
   final DateTime? lastSynced;
-  SyncState({this.lastSynced});
+  const SyncState({this.lastSynced});
+  @override
+  List<Object?> get props => [lastSynced];
 }
 
 class Syncing extends SyncState {
-  Syncing({super.lastSynced});
+  const Syncing({super.lastSynced});
 }
 
 abstract class SyncDone extends SyncState {
-  SyncDone({super.lastSynced});
+  const SyncDone({super.lastSynced});
 }
 
 class Synced extends SyncDone {
-  Synced({super.lastSynced});
+  final bool didFetchData;
+  const Synced({required this.didFetchData, super.lastSynced});
+  @override
+  List<Object?> get props => [lastSynced, didFetchData];
 }
 
 class SyncedFailed extends SyncDone {
-  SyncedFailed({super.lastSynced});
+  const SyncedFailed({super.lastSynced});
 }

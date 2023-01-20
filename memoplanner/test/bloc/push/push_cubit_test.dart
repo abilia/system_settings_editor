@@ -37,6 +37,7 @@ void main() {
             activityResponse: () => serverActivityAnswers.removeAt(0))
         ..fireBasePushService = MockFirebasePushService()
         ..userFileDb = FakeUserFileDb()
+        ..sortableDb = FakeSortableDb()
         ..ticker = Ticker.fake(initialTime: time)
         ..database = FakeDatabase()
         ..deviceDb = FakeDeviceDb()

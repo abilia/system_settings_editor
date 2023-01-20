@@ -52,6 +52,7 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
+      ..sortableDb = FakeSortableDb()
       ..ticker = Ticker.fake(initialTime: initTime)
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(activityResponse: () => [])

@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:memoplanner/logging/all.dart';
 
 export 'package:connectivity_plus/connectivity_plus.dart';
 
@@ -16,24 +17,46 @@ class ConnectivityCubit extends Cubit<ConnectivityState> {
         connectivity.onConnectivityChanged.listen(_onConnectivityChanged);
     checkConnectivity();
   }
+  static const _retryDelay = Duration(seconds: 3);
+  static const _retryAttempts = 20;
+  Timer? _retryTimer;
+
   final BaseUrlDb baseUrlDb;
   final Connectivity connectivity;
   final MyAbiliaConnection myAbiliaConnection;
-
   late final StreamSubscription _onChangeSubscription;
+  late final log = Logger((ConnectivityCubit).toString());
 
   Future<void> checkConnectivity() async =>
       _onConnectivityChanged(await connectivity.checkConnectivity());
 
-  Future _onConnectivityChanged(ConnectivityResult result) async {
-    emit(ConnectivityState(result, state.isConnected));
+  Future _onConnectivityChanged(
+    ConnectivityResult? result, {
+    int retry = 0,
+  }) async {
+    final connectivityResult = result ?? state.connectivityResult;
+    emit(ConnectivityState(connectivityResult, state.isConnected));
     final connected = await myAbiliaConnection.hasConnection();
     if (isClosed) return;
-    emit(ConnectivityState(result, connected));
+    if (!connected &&
+        retry < _retryAttempts &&
+        connectivityResult != ConnectivityResult.none) {
+      log.info(
+        'No connection to myAbilia, retrying in ${_retryDelay.inSeconds} seconds. Attempt: $retry',
+      );
+      _retryTimer?.cancel();
+      _retryTimer = Timer(
+        _retryDelay,
+        () => _onConnectivityChanged(null, retry: retry + 1),
+      );
+      return;
+    }
+    emit(ConnectivityState(connectivityResult, connected));
   }
 
   @override
   Future<void> close() async {
+    _retryTimer?.cancel();
     await _onChangeSubscription.cancel();
     return super.close();
   }

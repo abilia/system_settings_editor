@@ -61,12 +61,9 @@ void main() {
 
   late ActivityDbInMemory mockActivityDb;
   late MockGenericDb mockGenericDb;
-  late MockSortableDb mockSortableDb;
   late MockTimerDb mockTimerDb;
   late MockSettingsDb mockSettingsDb;
   TimerResponse timerResponse = () => [];
-
-  SortableResponse sortableResponse = () => [];
   GenericResponse genericResponse = () => [];
   final initialTime = DateTime(2020, 08, 05, 14, 10, 00);
 
@@ -100,19 +97,6 @@ void main() {
     when(() => mockGenericDb.getLastRevision())
         .thenAnswer((_) => Future.value(100));
 
-    mockSortableDb = MockSortableDb();
-    when(() => mockSortableDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(sortableResponse()));
-    when(() => mockSortableDb.getById(any()))
-        .thenAnswer((_) => Future.value(null));
-    when(() => mockSortableDb.insert(any())).thenAnswer((_) async {});
-    when(() => mockSortableDb.insertAndAddDirty(any()))
-        .thenAnswer((_) => Future.value(true));
-    when(() => mockSortableDb.getAllDirty())
-        .thenAnswer((_) => Future.value([]));
-    when(() => mockSortableDb.getLastRevision())
-        .thenAnswer((_) => Future.value(100));
-
     mockTimerDb = MockTimerDb();
     when(() => mockTimerDb.getAllTimers())
         .thenAnswer((_) => Future.value(timerResponse()));
@@ -139,15 +123,12 @@ void main() {
       ..activityDb = mockActivityDb
       ..ticker = Ticker.fake(initialTime: initialTime)
       ..fireBasePushService = mockFirebasePushService
-      ..client = Fakes.client(
-        sortableResponse: sortableResponse,
-        genericResponse: genericResponse,
-      )
+      ..client = Fakes.client(genericResponse: genericResponse)
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
       ..settingsDb = mockSettingsDb
       ..genericDb = mockGenericDb
-      ..sortableDb = mockSortableDb
+      ..sortableDb = FakeSortableDb()
       ..database = FakeDatabase()
       ..battery = FakeBattery()
       ..timerDb = mockTimerDb
@@ -156,7 +137,6 @@ void main() {
   });
 
   tearDown(() {
-    sortableResponse = () => [];
     genericResponse = () => [];
     GetIt.I.reset();
   });

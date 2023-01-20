@@ -78,39 +78,27 @@ enum LogoutWarning {
 
   WarningStep get step {
     switch (this) {
-      case LogoutWarning.firstWarningSyncFailed:
-      case LogoutWarning.firstWarningSyncing:
-      case LogoutWarning.firstWarningSuccess:
+      case firstWarningSyncFailed:
+      case firstWarningSyncing:
+      case firstWarningSuccess:
         return WarningStep.firstWarning;
-      case LogoutWarning.secondWarningSyncFailed:
-      case LogoutWarning.secondWarningSyncing:
-      case LogoutWarning.secondWarningSuccess:
+      case secondWarningSyncFailed:
+      case secondWarningSyncing:
+      case secondWarningSuccess:
         return WarningStep.secondWarning;
-      case LogoutWarning.licenseExpiredWarning:
+      case licenseExpiredWarning:
         return WarningStep.licenseExpiredWarning;
     }
   }
 
-  WarningSyncState get sync {
-    switch (this) {
-      case LogoutWarning.firstWarningSyncFailed:
-      case LogoutWarning.secondWarningSyncFailed:
-      case LogoutWarning.licenseExpiredWarning:
-        return WarningSyncState.syncFailed;
-      case LogoutWarning.firstWarningSyncing:
-      case LogoutWarning.secondWarningSyncing:
-        return WarningSyncState.syncing;
-      case LogoutWarning.firstWarningSuccess:
-      case LogoutWarning.secondWarningSuccess:
-        return WarningSyncState.syncedSuccess;
-    }
-  }
-}
-
-enum WarningSyncState {
-  syncing,
-  syncedSuccess,
-  syncFailed;
+  bool get syncing =>
+      this == firstWarningSyncing || this == secondWarningSyncing;
+  bool get syncedSuccess =>
+      this == firstWarningSuccess || this == secondWarningSuccess;
+  bool get syncedFailed =>
+      this == firstWarningSyncFailed ||
+      this == secondWarningSyncFailed ||
+      this == licenseExpiredWarning;
 }
 
 enum WarningStep {

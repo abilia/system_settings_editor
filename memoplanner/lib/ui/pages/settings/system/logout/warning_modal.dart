@@ -276,9 +276,9 @@ class _DirtyItemsState extends State<_DirtyItems> {
         ?.copyWith(color: AbiliaColors.black75);
 
     late final InfoRowState defaultInfoRowState;
-    if (widget.warning.sync == WarningSyncState.syncFailed) {
+    if (widget.warning.syncedFailed) {
       defaultInfoRowState = InfoRowState.critical;
-    } else if (widget.warning.sync == WarningSyncState.syncing) {
+    } else if (widget.warning.syncing) {
       defaultInfoRowState = InfoRowState.criticalLoading;
     } else {
       defaultInfoRowState = InfoRowState.verified;
@@ -347,7 +347,7 @@ class _DirtyItemsState extends State<_DirtyItems> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.warning.step != WarningStep.firstWarning &&
-            widget.warning.sync != WarningSyncState.syncedSuccess)
+            !widget.warning.syncedSuccess)
           Tts(
             child: Text(
               t.ifYouLogoutYouWillLose,

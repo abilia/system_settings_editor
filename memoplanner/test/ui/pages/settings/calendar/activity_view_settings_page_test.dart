@@ -42,6 +42,7 @@ void main() {
         genericResponse: () => generics,
         activityResponse: () => [],
       )
+      ..sortableDb = FakeSortableDb()
       ..database = FakeDatabase()
       ..genericDb = genericDb
       ..activityDb = activityDb

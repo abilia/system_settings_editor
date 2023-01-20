@@ -21,8 +21,9 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesChanged>
     required this.activityRepository,
     required this.syncBloc,
   }) : super(ActivitiesChanged()) {
-    _syncSubscription =
-        syncBloc.stream.listen((state) => add(LoadActivities()));
+    _syncSubscription = syncBloc.stream
+        .where((state) => state is Synced && state.didFetchData)
+        .listen((_) => add(LoadActivities()));
     on<ActivitiesEvent>(_onEvent, transformer: sequential());
   }
 

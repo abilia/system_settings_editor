@@ -55,6 +55,7 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = sharedPreferences
       ..activityDb = mockActivityDb
+      ..sortableDb = FakeSortableDb()
       ..timerDb = mockTimerDb
       ..client = Fakes.client()
       ..database = FakeDatabase()
@@ -71,7 +72,7 @@ void main() {
     GetIt.I.reset();
   });
 
-  testWidgets('Can navigate to week calendar', (WidgetTester tester) async {
+  testWidgets('Can navigate to month calendar', (WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.month));

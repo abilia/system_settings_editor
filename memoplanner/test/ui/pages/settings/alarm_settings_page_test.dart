@@ -47,6 +47,7 @@ void main() {
         ..ticker = Ticker.fake(initialTime: initialTime)
         ..client = Fakes.client(sessionsResponse: () => sessions)
         ..database = FakeDatabase()
+        ..sortableDb = FakeSortableDb()
         ..genericDb = genericDb
         ..activityDb = activityDb
         ..battery = FakeBattery()

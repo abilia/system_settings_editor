@@ -8,6 +8,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
+import '../test_helpers/default_sortables.dart';
 import 'all.dart';
 
 typedef ActivityResponse = Iterable<Activity> Function();
@@ -40,6 +41,7 @@ class Fakes {
     TermsOfUseResponse? termsOfUseResponse,
     Response Function()? connectLicenseResponse,
     bool Function()? factoryResetResponse,
+    //bool hasDefaultSortables = true,
   }) =>
       ListenableMockClient(
         (r) async {
@@ -70,13 +72,21 @@ class Fakes {
                     .toList()),
                 200);
           }
-          if (pathSegments.containsAll(['data', 'sortable items'])) {
-            return Response(
-                json.encode((sortableResponse?.call() ?? allSortables)
-                    .map((a) => a.wrapWithDbModel())
-                    .toList()),
-                200);
-          }
+          // if (pathSegments.containsAll(['data', 'sortableitems'])) {
+          //   late final Iterable<Sortable<SortableData>> response;
+          //   if (sortableResponse != null) {
+          //     response = [
+          //       ...sortableResponse.call(),
+          //       if (hasDefaultSortables) ...defaultSortables
+          //     ];
+          //   } else {
+          //     response = hasDefaultSortables ? defaultSortables : allSortables;
+          //   }
+          //   return Response(
+          //     json.encode(response.map((a) => a.wrapWithDbModel()).toList()),
+          //     200,
+          //   );
+          // }
           if (pathSegments.containsAll(['data', 'generics'])) {
             return Response(
                 json.encode((genericResponse?.call() ?? allGenerics)

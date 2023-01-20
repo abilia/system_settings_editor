@@ -135,7 +135,8 @@ void main() {
     final mockAuthenticationBloc = MockAuthenticationBloc();
     when(() => mockAuthenticationBloc.add(const LoggedOut()))
         .thenAnswer((_) {});
-    when(() => mockSyncBloc.state).thenReturn(Synced());
+    when(() => mockSyncBloc.state)
+        .thenReturn(const Synced(didFetchData: false));
     when(() => mockSyncBloc.hasDirty()).thenAnswer((_) => Future.value(false));
 
     // Act

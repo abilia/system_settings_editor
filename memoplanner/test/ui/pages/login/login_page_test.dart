@@ -12,6 +12,7 @@ import 'package:memoplanner/utils/all.dart';
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
+import '../../../test_helpers/default_sortables.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/tts.dart';
 
@@ -43,16 +44,8 @@ void main() {
     licensExpireTime = time.add(10.days());
 
     sortableDb = MockSortableDb();
-    when(() => sortableDb.getAllNonDeleted()).thenAnswer((_) => Future.value([
-          Sortable.createNew(
-            data: const ImageArchiveData(myPhotos: true),
-            fixed: true,
-          ),
-          Sortable.createNew(
-            data: const ImageArchiveData(upload: true),
-            fixed: true,
-          ),
-        ]));
+    when(() => sortableDb.getAllNonDeleted())
+        .thenAnswer((_) => Future.value(defaultSortables));
     when(() => sortableDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
     when(() => sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
@@ -554,6 +547,11 @@ void main() {
     group('Starter set', () {
       testWidgets('When no sortables, show StarterSetDialog',
           (WidgetTester tester) async {
+        when(() => sortableDb.insertAndAddDirty(any())).thenAnswer((_) {
+          when(() => sortableDb.getAllNonDeleted())
+              .thenAnswer((_) => Future.value(defaultSortables));
+          return Future.value(true);
+        });
         when(() => sortableDb.getAllNonDeleted())
             .thenAnswer((_) => Future.value([]));
         await tester.pumpApp();
@@ -647,6 +645,11 @@ void main() {
             const TermsOfUse(termsOfCondition: false, privacyPolicy: false);
         when(() => sortableDb.getAllNonDeleted())
             .thenAnswer((_) => Future.value([]));
+        when(() => sortableDb.insertAndAddDirty(any())).thenAnswer((_) {
+          when(() => sortableDb.getAllNonDeleted())
+              .thenAnswer((_) => Future.value(defaultSortables));
+          return Future.value(true);
+        });
         setupPermissions(
             {Permission.systemAlertWindow: PermissionStatus.denied});
 
@@ -744,6 +747,11 @@ void main() {
         termsOfUseResponse = () => TermsOfUse.accepted();
         when(() => sortableDb.getAllNonDeleted())
             .thenAnswer((_) => Future.value([]));
+        when(() => sortableDb.insertAndAddDirty(any())).thenAnswer((_) {
+          when(() => sortableDb.getAllNonDeleted())
+              .thenAnswer((_) => Future.value(defaultSortables));
+          return Future.value(true);
+        });
         setupPermissions(
             {Permission.systemAlertWindow: PermissionStatus.denied});
 
@@ -787,6 +795,11 @@ void main() {
         termsOfUseResponse = () => TermsOfUse.accepted();
         when(() => sortableDb.getAllNonDeleted())
             .thenAnswer((_) => Future.value([]));
+        when(() => sortableDb.insertAndAddDirty(any())).thenAnswer((_) {
+          when(() => sortableDb.getAllNonDeleted())
+              .thenAnswer((_) => Future.value(defaultSortables));
+          return Future.value(true);
+        });
         setupPermissions(
             {Permission.systemAlertWindow: PermissionStatus.granted});
 

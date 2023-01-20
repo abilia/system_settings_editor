@@ -35,6 +35,7 @@ void main() {
       )
       ..client = Fakes.client(genericResponse: genericResponse)
       ..database = FakeDatabase()
+      ..sortableDb = FakeSortableDb()
       ..genericDb = genericDb
       ..battery = FakeBattery()
       ..deviceDb = FakeDeviceDb()

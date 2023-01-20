@@ -106,6 +106,7 @@ void main() {
       ..activityDb = activityDbInMemory
       ..genericDb = mockGenericDb
       ..timerDb = mockTimerDb
+      ..sortableDb = FakeSortableDb()
       ..ticker = Ticker.fake(initialTime: now, stream: timeTicker.stream)
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(
