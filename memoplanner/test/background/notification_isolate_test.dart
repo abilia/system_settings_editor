@@ -623,7 +623,7 @@ void main() {
     });
   });
 
-  group('activities and  timers', () {
+  group('activities and timers', () {
     test('scheduleNotificationsIsolated', () async {
       await scheduleNotificationsIsolated(
         NotificationsSchedulerData(
@@ -636,7 +636,7 @@ void main() {
           dateTime: now,
         ),
       );
-      await Future.delayed(10.milliseconds());
+      await Future.delayed(300.milliseconds());
       verifyCancelAllPendingNotifications();
       verify(
         () => mockedNotificationsPlugin.zonedSchedule(
