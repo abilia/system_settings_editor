@@ -1,5 +1,4 @@
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
@@ -18,32 +17,18 @@ class ScreenTimeoutPickField extends StatelessWidget {
               : wakeLockState.screenTimeout.toDurationString(t),
         ),
         onTap: () async {
-          final genericCubit = context.read<GenericCubit>();
           final wakeLockCubit = context.read<WakeLockCubit>();
           final timeout = await Navigator.of(context).push<Duration>(
             MaterialPageRoute(
               builder: (_) => MultiBlocProvider(
                 providers: authProviders,
                 child: ScreenTimeOutSelector(
-                  timeout:
-                      wakeLockState.keepScreenAwakeSettings.keepScreenOnAlways
-                          ? Duration.zero
-                          : wakeLockState.screenTimeout,
+                  timeout: wakeLockState.screenTimeout,
                 ),
               ),
             ),
           );
-          if (timeout != null) {
-            genericCubit.genericUpdated(
-              [
-                MemoplannerSettingData.fromData(
-                  data: timeout == Duration.zero,
-                  identifier: KeepScreenAwakeSettings.keepScreenOnAlwaysKey,
-                ),
-              ],
-            );
-            wakeLockCubit.setScreenTimeout(timeout);
-          }
+          wakeLockCubit.setScreenTimeout(timeout);
         },
       ),
     );
@@ -91,17 +76,19 @@ class ScreenTimeOutSelectorState extends State<ScreenTimeOutSelector> {
               child: ListView(
                 padding: layout.templates.m1,
                 children: [
-                  ...([1, 30, 0].map((d) => d.minutes()).toSet()..add(_timeout))
-                      .map(
+                  ...{
+                    const Duration(minutes: 1),
+                    const Duration(minutes: 30),
+                    maxScreenTimeoutDuration,
+                    _timeout,
+                  }.map(
                     (d) => Padding(
                       padding: EdgeInsets.only(
                         bottom: layout.formPadding.verticalItemDistance,
                       ),
                       child: RadioField<Duration>(
                         text: Text(
-                          d.inMilliseconds == 0
-                              ? t.alwaysOn
-                              : d.toDurationString(t),
+                          d.inDays > 1 ? t.alwaysOn : d.toDurationString(t),
                         ),
                         onChanged: (v) {
                           if (v != null) setState(() => _timeout = v);
@@ -132,20 +119,12 @@ class KeepOnWhileChargingSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final keepScreenOnWhileCharging = context.select(
-        (MemoplannerSettingsBloc bloc) =>
-            bloc.state.keepScreenAwake.keepScreenOnWhileCharging);
+    final keepScreenOnWhileCharging = context
+        .select((WakeLockCubit cubit) => cubit.state.keepScreenOnWhileCharging);
     return SwitchField(
       value: keepScreenOnWhileCharging,
       onChanged: (switchOn) {
-        context.read<GenericCubit>().genericUpdated(
-          [
-            MemoplannerSettingData.fromData(
-              data: switchOn,
-              identifier: KeepScreenAwakeSettings.keepScreenOnWhileChargingKey,
-            ),
-          ],
-        );
+        context.read<WakeLockCubit>().setKeepScreenOnWhileCharging(switchOn);
       },
       child:
           Text(Translator.of(context).translate.keepScreenAwakeWhileCharging),

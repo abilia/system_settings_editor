@@ -1,15 +1,22 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/models/all.dart';
 
 class MemoplannerSettings extends Equatable {
   static const Set<String> noSyncSettings = {
     ...AlarmSettings.keys,
-    ...KeepScreenAwakeSettings.keys,
     ...DayCalendarViewOptionsSettings.keys,
   };
 
   final AlarmSettings alarm;
   final CodeProtectSettings codeProtect;
+  // TODO Remove in 4.3
+  @Deprecated(
+    'To be Remove on in 4.3, '
+    'use SettingsDb.keepScreenOnWhileCharging '
+    'and SystemSettingsEditor.screenOffTimeout',
+  )
   final KeepScreenAwakeSettings keepScreenAwake;
   final MenuSettings menu;
   final FunctionsSettings functions;
@@ -62,7 +69,6 @@ class MemoplannerSettings extends Equatable {
         alarm,
         codeProtect,
         menu,
-        keepScreenAwake,
         functions,
         calendar,
         addActivity,
