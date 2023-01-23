@@ -80,9 +80,11 @@ class TimerWheel extends StatefulWidget {
 }
 
 class _TimerWheelState extends State<TimerWheel> {
+  static const int _intervalLength = 5;
+
+  // _margin and _upperLimit are the values used to skip past '60' minutes and round to 0 minutes.
   static const _margin = 2;
-  final int _upperLimit = Duration.secondsPerMinute - _margin;
-  final int _intervalLength = 5;
+  static const int _upperLimit = Duration.secondsPerMinute - _margin;
 
   int? minutesSelectedOnTapDown;
   bool sliderTemporaryLocked = false;
@@ -147,7 +149,6 @@ class _TimerWheelState extends State<TimerWheel> {
   ) {
     if (_pointIsOnNumberWheel(details.localPosition, config)) {
       final minutes = _minutesFromPoint(details.localPosition, config);
-      // rounding by _upperLimit to skip '60' minutes
       final fiveMinInterval =
           ((minutes % _upperLimit) / _intervalLength).round() * _intervalLength;
       final minute = minutes % _intervalLength;
@@ -175,7 +176,7 @@ class _TimerWheelState extends State<TimerWheel> {
 
   void _onPanUpdate(DragUpdateDetails details, TimerWheelConfiguration config) {
     void maybeLockSlider() {
-      const controlMargin = 5;
+      const controlMargin = _intervalLength;
 
       final activeMinutes = widget.activeSeconds / Duration.secondsPerMinute;
 
