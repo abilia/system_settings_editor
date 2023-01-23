@@ -29,7 +29,7 @@ class WakeLockCubit extends Cubit<WakeLockState> {
           setKeepScreenOnWhileCharging(
             state.keepScreenAwake.keepScreenOnWhileCharging,
           );
-          if (state.keepScreenAwake.keepScreenOnAlways == true) {
+          if (state.keepScreenAwake.keepScreenOnAlways) {
             setScreenTimeout(maxScreenTimeoutDuration);
           }
         },
