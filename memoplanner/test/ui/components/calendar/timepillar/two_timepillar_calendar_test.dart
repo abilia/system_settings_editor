@@ -49,7 +49,7 @@ void main() {
 
   setUp(() async {
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
 
     mockTicker = StreamController<DateTime>();
     mockActivityDb = ActivityDbInMemory();

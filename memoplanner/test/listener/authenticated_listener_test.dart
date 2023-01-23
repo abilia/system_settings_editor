@@ -149,7 +149,7 @@ void main() {
       ActivitiesChanged(),
     );
     await tester.pumpWidget(authListener());
-    expect(alarmScheduleCalls, 0);
+    expect(scheduleNotificationsCalls, 0);
     // Act
     settingsStreamController
         .add(MemoplannerSettingsLoaded(const MemoplannerSettings()));

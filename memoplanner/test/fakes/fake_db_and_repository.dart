@@ -210,6 +210,9 @@ class FakeActivityRepository extends Fake implements ActivityRepository {
 class FakeFileStorage extends Fake implements FileStorage {
   @override
   File getFile(String id) => FakeFile('$id.mp3');
+
+  @override
+  String get dir => '';
 }
 
 class FakeFile extends Fake implements File {

@@ -72,7 +72,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValues();
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
   });
 
   setUp(() async {
@@ -80,7 +80,7 @@ void main() {
     setupFakeTts();
     tz.initializeTimeZones();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
 
     final mockFirebasePushService = MockFirebasePushService();
     when(() => mockFirebasePushService.initPushToken())

@@ -70,7 +70,10 @@ class MockScrollPosition extends Mock implements ScrollPosition {}
 class MockBaseClient extends Mock implements BaseClient, ListenableClient {}
 
 // Storage
-class MockFileStorage extends Mock implements FileStorage {}
+class MockFileStorage extends Mock implements FileStorage {
+  @override
+  String get dir => '';
+}
 
 // Plugin
 class MockRecord extends Mock implements Record {}

@@ -1,16 +1,22 @@
 import 'dart:io';
 
+import 'package:equatable/equatable.dart';
 import 'package:logging/logging.dart';
 import 'package:memoplanner/models/image_thumb.dart';
 
-class FileStorage {
+class FileStorage extends Equatable {
   final _log = Logger((FileStorage).toString());
 
   final String _dir;
 
+  String get dir => _dir;
+
   static const folder = 'seagull';
 
-  FileStorage(String? storageDirectory) : _dir = '$storageDirectory/$folder/';
+  FileStorage(String directory) : _dir = directory;
+
+  factory FileStorage.inDirectory(String? storageDirectory) =>
+      FileStorage('$storageDirectory/$folder/');
 
   Future<void> storeFile(List<int> fileBytes, String fileName) async {
     final file = await File('$_dir$fileName').create(recursive: true);
@@ -66,4 +72,7 @@ class FileStorage {
 
     return thumb.copy('$_dir$id$fileEnding');
   }
+
+  @override
+  List<Object?> get props => [_dir];
 }

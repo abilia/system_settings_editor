@@ -77,7 +77,7 @@ void main() {
     await initializeDateFormatting();
     setupFakeTts();
     registerFallbackValues();
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
     GetItInitializer()
       ..fileStorage = FakeFileStorage()
       ..database = FakeDatabase()

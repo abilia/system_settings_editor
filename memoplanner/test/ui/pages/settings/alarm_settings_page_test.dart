@@ -26,7 +26,7 @@ void main() {
     setUp(() async {
       setupPermissions();
       notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-      scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+      scheduleNotificationsIsolated = noAlarmScheduler;
       sessions = Fakes.fakeSessions;
 
       genericDb = MockGenericDb();
@@ -217,19 +217,19 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      final preCalls = alarmScheduleCalls;
+      final preCalls = scheduleNotificationsCalls;
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      expect(alarmScheduleCalls, greaterThanOrEqualTo(preCalls + 1));
+      expect(scheduleNotificationsCalls, greaterThanOrEqualTo(preCalls + 1));
     });
 
     testWidgets('No changes to alarm triggers no alarm scheduling',
         (tester) async {
       await tester.goToAlarmSettingsPage();
-      final preCalls = alarmScheduleCalls;
+      final preCalls = scheduleNotificationsCalls;
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      expect(alarmScheduleCalls, preCalls);
+      expect(scheduleNotificationsCalls, preCalls);
     });
 
     testWidgets(
