@@ -82,7 +82,8 @@ class TimerWheel extends StatefulWidget {
 class _TimerWheelState extends State<TimerWheel> {
   static const int _intervalLength = 5;
 
-  // _margin and _upperLimit are the values used to skip past '60' minutes and round to 0 minutes.
+  // _margin is used to to avoid clicking close to the slider thumb.
+  // _upperLimit is used to to avoid clicking on 60 minutes and round the value to 0 minutes.
   static const _margin = 2;
   static const int _upperLimit = Duration.secondsPerMinute - _margin;
 
