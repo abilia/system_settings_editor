@@ -22,12 +22,16 @@ class NotificationsSchedulerData extends Equatable {
   });
 
   Map<String, dynamic> toMap() {
-    final activitiesList =
-        activities.map((e) => e.wrapWithDbModel().toJson()).toList();
-    final timersList = timers.map((e) => e.toJson()).toList();
+    final activitiesMap = {
+      for (int i = 0; i < activities.length; i++)
+        i: activities.elementAt(i).wrapWithDbModel().toJson()
+    };
+    final timersMap = {
+      for (int i = 0; i < timers.length; i++) i: timers.elementAt(i).toJson()
+    };
     return {
-      'activities': activitiesList,
-      'timers': timersList,
+      'activities': activitiesMap,
+      'timers': timersMap,
       'language': language,
       'alwaysUse24HourFormat': alwaysUse24HourFormat,
       'settings': settings.toMap(),
@@ -37,10 +41,12 @@ class NotificationsSchedulerData extends Equatable {
   }
 
   factory NotificationsSchedulerData.fromMap(Map<String, dynamic> data) {
-    final activities = (data['activities'] as List)
+    final activities = (data['activities'] as Map)
+        .values
         .map((e) => DbActivity.fromJson(e).activity)
         .toList();
-    final timers = (data['timers'] as List)
+    final timers = (data['timers'] as Map)
+        .values
         .map((e) => NotificationAlarm.fromJson(e) as TimerAlarm)
         .toList();
     final dateTime = data['dateTime'] != null
