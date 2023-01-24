@@ -28,6 +28,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _readScreenTimeOut();
   }
 
   @override
@@ -51,11 +52,15 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
       context
         ..read<ClockBloc>().setTime(DateTime.now())
         ..read<PermissionCubit>().checkAll();
-      if (Config.isMP) {
-        context
-            .read<WakeLockCubit>()
-            .setScreenTimeout(await SystemSettingsEditor.screenOffTimeout);
-      }
+      _readScreenTimeOut();
+    }
+  }
+
+  Future _readScreenTimeOut() async {
+    if (Config.isMP) {
+      context
+          .read<WakeLockCubit>()
+          .setScreenTimeout(await SystemSettingsEditor.screenOffTimeout);
     }
   }
 

@@ -1,12 +1,12 @@
+import 'dart:async';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logging/logging.dart';
 import 'package:memoplanner/config.dart';
-import 'package:synchronized/synchronized.dart';
 
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/repository/all.dart';
@@ -15,7 +15,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-final _log = Logger('NotificationIsolate');
+final _log = Logger('Notifications');
 
 const showNotifications = Config.isMPGO;
 
@@ -42,6 +42,13 @@ FlutterLocalNotificationsPlugin ensureNotificationPluginInitialized() {
   );
   _log.finer('notification plugin initialize');
   return notificationsPluginInstance = pluginInstance;
+}
+
+Future cancelNotifications(Iterable<ActivityAlarm> notificationAlarms) async {
+  for (final notification in notificationAlarms) {
+    _log.fine('canceling ${notification.hashCode} $notification');
+    await notificationPlugin.cancel(notification.hashCode);
+  }
 }
 
 Future cancelAllActiveNotifications() async {
@@ -72,143 +79,82 @@ Future cancelAllPendingNotifications() async {
   }
 }
 
-Future scheduleAlarmNotifications(
-  Iterable<Activity> activities,
-  Iterable<TimerAlarm> timers,
-  String language,
-  bool alwaysUse24HourFormat,
-  AlarmSettings settings,
-  FileStorage fileStorage, {
-  DateTime Function()? now,
-}) async {
-  now ??= () => DateTime.now();
-  final from = settings.disabledUntilDate.isAfter(now())
-      ? settings.disabledUntilDate
+Future scheduleNotifications(
+  NotificationsSchedulerData schedulerData,
+  Logging log,
+) async {
+  final dateTime = schedulerData.dateTime;
+  final hasDateTime = dateTime != null;
+  final DateTime Function() now = hasDateTime ? () => dateTime : DateTime.now;
+  final from = schedulerData.settings.disabledUntilDate.isAfter(now())
+      ? schedulerData.settings.disabledUntilDate
       : now().nextMinute();
-  final activityNotifications = activities.alarmsFrom(
+  final activityNotifications = schedulerData.activities.alarmsFrom(
     from,
-    take: max(maxNotifications - timers.length, 0),
+    take: max(maxNotifications - schedulerData.timers.length, 0),
   );
-  return _scheduleAllAlarmNotifications(
+  return _scheduleAllNotifications(
     [
-      ...timers,
+      ...schedulerData.timers,
       ...activityNotifications,
     ],
-    language,
-    alwaysUse24HourFormat,
-    settings,
-    fileStorage,
+    schedulerData.language,
+    schedulerData.alwaysUse24HourFormat,
+    schedulerData.settings,
+    schedulerData.fileStorage,
     now,
+    log,
   );
 }
 
-Future cancelNotifications(Iterable<ActivityAlarm> notificationAlarms) async {
-  for (final notification in notificationAlarms) {
-    _log.fine('canceling ${notification.hashCode} $notification');
-    await notificationPlugin.cancel(notification.hashCode);
-  }
-}
-
-AlarmScheduler scheduleAlarmNotificationsIsolated = ({
-  required Iterable<Activity> activities,
-  required Iterable<TimerAlarm> timers,
-  required String language,
-  required bool alwaysUse24HourFormat,
-  required AlarmSettings settings,
-  required FileStorage fileStorage,
-  DateTime Function()? now,
-}) async {
-  now ??= () => DateTime.now();
-  final from = settings.disabledUntilDate.isAfter(now())
-      ? settings.disabledUntilDate
-      : now().nextMinute();
-  final serialized =
-      activities.map((e) => e.wrapWithDbModel().toJson()).toList();
-  final shouldBeScheduledNotificationsSerialized = await compute(
-    alarmsFromIsolate,
-    [
-      serialized,
-      from,
-      maxNotifications - timers.length,
-    ],
-  );
-  final activityNotifications =
-      shouldBeScheduledNotificationsSerialized.map(NotificationAlarm.fromJson);
-  return _scheduleAllAlarmNotifications(
-    [
-      ...timers,
-      ...activityNotifications,
-    ],
-    language,
-    alwaysUse24HourFormat,
-    settings,
-    fileStorage,
-    now,
-  );
-};
-
-@visibleForTesting
-List<Map<String, dynamic>> alarmsFromIsolate(List<dynamic> args) {
-  final List serialized = args[0];
-  final allActivities =
-      serialized.map<Activity>((e) => DbActivity.fromJson(e).activity).toList();
-  final now = args[1] as DateTime;
-  final take = args[2] as int;
-  final notificationAlarms = allActivities.alarmsFrom(now, take: take);
-  return notificationAlarms.map((e) => e.toJson()).toList();
-}
-
-final _lock = Lock();
-
-Future _scheduleAllAlarmNotifications(
+Future _scheduleAllNotifications(
   Iterable<NotificationAlarm> notifications,
   String language,
   bool alwaysUse24HourFormat,
   AlarmSettings settings,
   FileStorage fileStorage,
   DateTime Function() now,
-) =>
-    // We need the lock because if two pushes comes simultaneously
-    // (that happens when file is uploaded on myAbilia)
-    // there is a race condition when adding pictures to notifications.
-    // The image being are moved into the attachment data store is gone for the next thread
-    _lock.synchronized(
-      () async {
-        await cancelAllPendingNotifications();
-        final locale = Locale(language);
-        await initializeDateFormatting(locale.languageCode);
-        final androidNotificationChannels =
-            await androidNotificationChannelIds();
-        _log.fine('scheduling ${notifications.length} notifications...');
-        final notificationTimes = <DateTime>{};
-        var scheduled = 0;
-        for (final newNotification in notifications) {
-          if (await _scheduleNotification(
-            newNotification,
-            locale,
-            alwaysUse24HourFormat,
-            settings,
-            fileStorage,
-            now,
-            androidNotificationChannels,
-            // Adding a delay on simultaneous alarms to let the
-            // selectNotificationSubject handle them
-            notificationTimes.add(newNotification.notificationTime) ? 0 : 3,
-          )) scheduled++;
-        }
-        _log.info('$scheduled notifications scheduled');
-      },
-    );
-
-Future<Set<String>> androidNotificationChannelIds() async {
-  return (await notificationPlugin
-              .resolvePlatformSpecificImplementation<
-                  AndroidFlutterLocalNotificationsPlugin>()
-              ?.getNotificationChannels())
-          ?.map((e) => e.id)
-          .toSet() ??
-      {};
+  Logging log,
+) async {
+  await cancelAllPendingNotifications();
+  final locale = Locale(language);
+  await initializeDateFormatting(locale.languageCode);
+  final androidNotificationChannels = await _androidNotificationChannelIds();
+  log(
+    Level.FINE,
+    'scheduling ${notifications.length} notifications...',
+  );
+  final notificationTimes = <DateTime>{};
+  var scheduled = 0;
+  for (final newNotification in notifications) {
+    if (await _scheduleNotification(
+      newNotification,
+      locale,
+      alwaysUse24HourFormat,
+      settings,
+      fileStorage,
+      now,
+      androidNotificationChannels,
+      // Adding a delay on simultaneous alarms to let the
+      // selectNotificationSubject handle them
+      notificationTimes.add(newNotification.notificationTime) ? 0 : 3,
+      log,
+    )) scheduled++;
+  }
+  log(
+    Level.INFO,
+    '$scheduled notifications scheduled',
+  );
 }
+
+Future<Set<String>> _androidNotificationChannelIds() async =>
+    (await notificationPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()
+            ?.getNotificationChannels())
+        ?.map((e) => e.id)
+        .toSet() ??
+    {};
 
 Future<bool> _scheduleNotification(
   NotificationAlarm notificationAlarm,
@@ -219,6 +165,7 @@ Future<bool> _scheduleNotification(
   DateTime Function() now,
   Set<String> androidChannelIds,
   int secondsOffset,
+  Logging log,
 ) async {
   final title = notificationAlarm.event.title;
   final subtitle = _subtitle(
@@ -257,7 +204,8 @@ Future<bool> _scheduleNotification(
   if (notificationTime.isBefore(now())) return false;
   final time = TZDateTime.from(notificationTime, tz);
   try {
-    _log.finest(
+    log(
+      Level.FINEST,
       'scheduling ($hash): $title - $subtitle at '
       '$time ${notificationAlarm.event.hasImage ? ' with image' : ''}',
     );
@@ -274,7 +222,10 @@ Future<bool> _scheduleNotification(
     );
     return true;
   } catch (e) {
-    _log.warning('could not schedule $payload', e);
+    log(
+      Level.WARNING,
+      'could not schedule $payload',
+    );
     return false;
   }
 }

@@ -26,7 +26,7 @@ void main() {
   setUp(() async {
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
     generics = [timepillarGeneric];
 
     genericDb = MockGenericDb();

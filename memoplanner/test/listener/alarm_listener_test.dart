@@ -46,7 +46,7 @@ void main() {
     tz.setLocalLocation(tz.UTC);
     setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
 
     mockTicker = StreamController<DateTime>();
 
@@ -133,7 +133,8 @@ void main() {
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
       await tester.pumpAndSettle();
       // Assert
-      expect(alarmScheduleCalls, 1); // Alarms only scheduled on app start
+      expect(
+          scheduleNotificationsCalls, 1); // Alarms only scheduled on app start
     });
 
     testWidgets('SGC-1874 alarm with end time at midnight will show',
@@ -322,7 +323,7 @@ void main() {
       await tester.pumpWidget(App(payload: payload));
       await tester.pumpAndSettle();
       // Assert
-      expect(alarmScheduleCalls, 0);
+      expect(scheduleNotificationsCalls, 0);
     });
 
     testWidgets('SGC-843 Alarm page Close button cancels alarm',

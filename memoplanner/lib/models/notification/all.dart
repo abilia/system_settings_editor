@@ -1,15 +1,14 @@
 export 'notification_alarm.dart';
+export 'notifications_scheduler_data.dart';
 export 'converter.dart';
 
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/storage/file_storage.dart';
+import 'dart:async';
 
-typedef AlarmScheduler = Future Function({
-  required Iterable<Activity> activities,
-  required Iterable<TimerAlarm> timers,
-  required String language,
-  required bool alwaysUse24HourFormat,
-  required AlarmSettings settings,
-  required FileStorage fileStorage,
-  DateTime Function()? now,
-});
+import 'package:logging/logging.dart';
+import 'package:memoplanner/models/all.dart';
+
+typedef Logging = void Function(Level logLevel, Object? message,
+    [Object? error, StackTrace? stackTrace, Zone? zone]);
+
+typedef NotificationsScheduler = Future Function(
+    NotificationsSchedulerData schedulerData);
