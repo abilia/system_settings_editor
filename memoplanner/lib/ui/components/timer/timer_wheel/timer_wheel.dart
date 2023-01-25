@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -81,19 +83,21 @@ class TimerWheel extends StatefulWidget {
 
 class _TimerWheelState extends State<TimerWheel> {
   static const int _intervalLength = 5;
-
   // _margin is used to to avoid clicking close to the slider thumb.
   // _upperLimit is used to to avoid clicking on 60 minutes and round the value to 0 minutes.
   static const _margin = 2;
   static const int _upperLimit = Duration.secondsPerMinute - _margin;
 
-  int? minutesSelectedOnTapDown;
-  bool sliderTemporaryLocked = false;
+  bool _sliderTemporaryLocked = false;
+  late bool _textToSpeech;
+  Offset? _longPressUpdatePosition;
+  Timer? _longPressTimer;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
+        _textToSpeech = context.watch<SpeechSettingsCubit>().state.textToSpeech;
         final config = TimerWheelConfiguration(
           canvasSize: constraints.biggest,
           style: widget.style,
@@ -128,28 +132,34 @@ class _TimerWheelState extends State<TimerWheel> {
         if (widget.style != TimerWheelStyle.interactive) {
           return timerWheel;
         } else {
-          return BlocSelector<SpeechSettingsCubit, SpeechSettingsState, bool>(
-            selector: (state) => state.textToSpeech,
-            builder: (context, textToSpeech) => GestureDetector(
-              onPanDown: (details) => _onPanDown(details, config),
-              onPanUpdate: (details) => _onPanUpdate(details, config),
-              onTapDown: (details) => _onTapDown(details, config),
-              onLongPressStart: (details) =>
-                  textToSpeech ? _playTtsOnNumbers(details, config) : () {},
-              child: timerWheel,
-            ),
+          return GestureDetector(
+            onPanDown: (details) => _onPanDown(details.localPosition, config),
+            onPanUpdate: (details) =>
+                _onPanUpdate(details.localPosition, config),
+            onPanCancel: _cancelLongPressTimer,
+            onPanEnd: (_) => _cancelLongPressTimer(),
+            child: timerWheel,
           );
         }
       },
     );
   }
 
-  void _playTtsOnNumbers(
-    LongPressStartDetails details,
+  void _startLongPressTtsTimer(
+    Offset downPosition,
     TimerWheelConfiguration config,
   ) {
-    if (_pointIsOnNumberWheel(details.localPosition, config)) {
-      final minutes = _minutesFromPoint(details.localPosition, config);
+    if (!_textToSpeech || !_pointIsOnNumberWheel(downPosition, config)) return;
+
+    _cancelLongPressTimer();
+    _longPressTimer = Timer(kLongPressTimeout, () {
+      final lastPosition = _longPressUpdatePosition;
+      if (lastPosition != null) {
+        final distance = (downPosition - lastPosition).distance;
+        if (distance > kTouchSlop) return;
+      }
+
+      final minutes = _minutesFromPoint(downPosition, config);
       final fiveMinInterval =
           ((minutes % _upperLimit) / _intervalLength).round() * _intervalLength;
       final minute = minutes % _intervalLength;
@@ -158,7 +168,7 @@ class _TimerWheelState extends State<TimerWheel> {
           '$fiveMinInterval ${Translator.of(context).translate.minutes}',
         );
       }
-    }
+    });
   }
 
   void _updateMinutesSelected(int minutes) {
@@ -167,15 +177,33 @@ class _TimerWheelState extends State<TimerWheel> {
     }
   }
 
-  void _onPanDown(DragDownDetails details, TimerWheelConfiguration config) {
-    sliderTemporaryLocked = false;
-    if (_pointIsOnWheel(details.localPosition, config)) {
-      minutesSelectedOnTapDown =
-          _minutesFromPoint(details.localPosition, config);
-    }
+  void _cancelLongPressTimer() {
+    _longPressUpdatePosition = null;
+    _longPressTimer?.cancel();
   }
 
-  void _onPanUpdate(DragUpdateDetails details, TimerWheelConfiguration config) {
+  void _onPanDown(Offset downPosition, TimerWheelConfiguration config) {
+    _startLongPressTtsTimer(downPosition, config);
+    if (!_pointIsOnWheel(downPosition, config)) return;
+
+    _sliderTemporaryLocked = false;
+    final selectedMinute = _minutesFromPoint(downPosition, config);
+
+    if (_minutesWithinSliderThumb(selectedMinute)) return;
+
+    final desiredMinutesLeft =
+        (selectedMinute / _intervalLength).ceil() * _intervalLength;
+    assert(
+      desiredMinutesLeft >= 0 && desiredMinutesLeft <= Duration.minutesPerHour,
+      'Tried setting timer wheel to invalid time',
+    );
+    desiredMinutesLeft.clamp(0, Duration.minutesPerHour);
+    _updateMinutesSelected(desiredMinutesLeft);
+  }
+
+  void _onPanUpdate(Offset updatePosition, TimerWheelConfiguration config) {
+    _longPressUpdatePosition = updatePosition;
+
     void maybeLockSlider() {
       const controlMargin = _intervalLength;
 
@@ -183,13 +211,13 @@ class _TimerWheelState extends State<TimerWheel> {
 
       final isCrossingZeroForwards =
           activeMinutes > Duration.minutesPerHour - controlMargin &&
-              _minutesFromPoint(details.localPosition, config) < controlMargin;
+              _minutesFromPoint(updatePosition, config) < controlMargin;
       final isCrossingZeroBackwards = activeMinutes < controlMargin &&
-          _minutesFromPoint(details.localPosition, config) >
+          _minutesFromPoint(updatePosition, config) >
               Duration.minutesPerHour - controlMargin;
 
       if (isCrossingZeroForwards || isCrossingZeroBackwards) {
-        sliderTemporaryLocked = true;
+        _sliderTemporaryLocked = true;
         _updateMinutesSelected(
           isCrossingZeroBackwards ? 0 : Duration.minutesPerHour,
         );
@@ -197,39 +225,21 @@ class _TimerWheelState extends State<TimerWheel> {
       }
 
       if (activeMinutes >= Duration.minutesPerHour - controlMargin &&
-              _minutesFromPoint(details.localPosition, config) >=
+              _minutesFromPoint(updatePosition, config) >=
                   Duration.minutesPerHour - controlMargin ||
           activeMinutes <= controlMargin &&
-              _minutesFromPoint(details.localPosition, config) <=
-                  controlMargin) {
-        sliderTemporaryLocked = false;
+              _minutesFromPoint(updatePosition, config) <= controlMargin) {
+        _sliderTemporaryLocked = false;
       }
     }
 
-    if (_pointIsOnWheel(details.localPosition, config)) {
+    if (_pointIsOnWheel(updatePosition, config)) {
       maybeLockSlider();
-      if (!sliderTemporaryLocked) {
-        final activeMinutes = _minutesFromPoint(details.localPosition, config);
+      if (!_sliderTemporaryLocked) {
+        final activeMinutes = _minutesFromPoint(updatePosition, config);
         _updateMinutesSelected(activeMinutes);
       }
     }
-  }
-
-  void _onTapDown(TapDownDetails details, TimerWheelConfiguration config) {
-    final selectedMinutes = _minutesFromPoint(details.localPosition, config);
-    if (minutesSelectedOnTapDown == selectedMinutes &&
-        !_minutesWithinSliderThumb(selectedMinutes)) {
-      final desiredMinutesLeft =
-          (selectedMinutes / _intervalLength).ceil() * _intervalLength;
-      assert(
-        desiredMinutesLeft >= 0 &&
-            desiredMinutesLeft <= Duration.minutesPerHour,
-        'Tried setting timer wheel to invalid time',
-      );
-      desiredMinutesLeft.clamp(0, Duration.minutesPerHour);
-      _updateMinutesSelected(desiredMinutesLeft);
-    }
-    minutesSelectedOnTapDown = null;
   }
 
   bool _pointIsOnWheel(Offset point, TimerWheelConfiguration config) {
