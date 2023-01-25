@@ -94,6 +94,12 @@ class _TimerWheelState extends State<TimerWheel> {
   Timer? _longPressTimer;
 
   @override
+  void dispose() {
+    _longPressTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
