@@ -61,9 +61,10 @@ class TimeInputPage extends StatelessWidget {
       return true;
     } else {
       await showViewDialog(
-          context: context,
-          builder: (context) => const MissingStartTimeErrorDialog(),
-          routeSettings: (MissingStartTimeErrorDialog).routeSetting());
+        context: context,
+        builder: (context) => const MissingStartTimeErrorDialog(),
+        routeSettings: (MissingStartTimeErrorDialog).routeSetting(),
+      );
       timeInputKey.currentState?.updateStartTimeInput(savedStartTimeInput);
       return false;
     }

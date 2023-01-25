@@ -1,18 +1,18 @@
 import 'package:memoplanner/ui/all.dart';
 
 extension TypeRoute on Type {
-  AnalyticRouteSettings routeSetting({Map<String, dynamic>? properties}) =>
-      AnalyticRouteSettings(
+  TrackableRouteSettings routeSetting({Map<String, dynamic>? properties}) =>
+      TrackableRouteSettings(
         analyticName: toString(),
         properties: properties,
       );
 }
 
-class AnalyticRouteSettings extends RouteSettings {
+class TrackableRouteSettings extends RouteSettings {
   final Map<String, dynamic>? properties;
   final String analyticName;
 
-  const AnalyticRouteSettings({required this.analyticName, this.properties})
+  const TrackableRouteSettings({required this.analyticName, this.properties})
       : super(name: analyticName);
 }
 

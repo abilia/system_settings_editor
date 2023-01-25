@@ -77,16 +77,17 @@ class RecordSoundWidget extends StatelessWidget {
                 ),
                 child: InfoButton(
                   onTap: () => showViewDialog(
-                      useSafeArea: false,
-                      context: context,
-                      builder: (context) => const PermissionInfoDialog(
-                            permission: Permission.microphone,
-                          ),
-                      routeSettings: (PermissionInfoDialog).routeSetting(
-                        properties: {
-                          'permission': Permission.microphone.toString(),
-                        },
-                      )),
+                    useSafeArea: false,
+                    context: context,
+                    builder: (context) => const PermissionInfoDialog(
+                      permission: Permission.microphone,
+                    ),
+                    routeSettings: (PermissionInfoDialog).routeSetting(
+                      properties: {
+                        'permission': Permission.microphone.toString(),
+                      },
+                    ),
+                  ),
                 ),
               ),
           ],

@@ -207,7 +207,11 @@ class SettingsButton extends StatelessWidget {
                         providers: authProviders,
                         child: const SettingsPage(),
                       ),
-                      settings: (SettingsPage).routeSetting(),
+                      settings: (SettingsPage).routeSetting(
+                        properties: {
+                          'fromHidden': false,
+                        },
+                      ),
                     ),
                   );
                 }

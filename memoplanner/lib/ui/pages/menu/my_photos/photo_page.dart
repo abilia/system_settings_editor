@@ -198,9 +198,10 @@ Future _deletePhoto(
   final sortableBloc = context.read<SortableBloc>();
   final navigator = Navigator.of(context);
   final result = await showViewDialog<bool>(
-      context: context,
-      builder: (_) => const DeletePhotoDialog(),
-      routeSettings: (DeletePhotoDialog).routeSetting());
+    context: context,
+    builder: (_) => const DeletePhotoDialog(),
+    routeSettings: (DeletePhotoDialog).routeSetting(),
+  );
 
   if (result == true) {
     sortableBloc.add(SortableUpdated(sortable.copyWith(deleted: true)));

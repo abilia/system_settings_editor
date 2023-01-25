@@ -34,13 +34,19 @@ class _HiddenSettingState extends State<HiddenSetting> {
                 name: Translator.of(context).translate.settings,
               );
               if (accessGranted) {
-                navigator.push(MaterialPageRoute(
-                  builder: (_) => MultiBlocProvider(
-                    providers: authProviders,
-                    child: const SettingsPage(),
+                navigator.push(
+                  MaterialPageRoute(
+                    builder: (_) => MultiBlocProvider(
+                      providers: authProviders,
+                      child: const SettingsPage(),
+                    ),
+                    settings: (SettingsPage).routeSetting(
+                      properties: {
+                        'fromHidden': true,
+                      },
+                    ),
                   ),
-                  settings: (SettingsPage).routeSetting(),
-                ));
+                );
               }
             }
           },

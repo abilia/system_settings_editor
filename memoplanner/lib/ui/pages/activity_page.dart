@@ -192,9 +192,10 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
     final activitiesBloc = context.read<ActivitiesBloc>();
     final navigator = Navigator.of(context);
     final shouldDelete = await showViewDialog<bool>(
-        context: context,
-        builder: (_) => const DeleteActivityDialog(),
-        routeSettings: (DeleteActivityDialog).routeSetting());
+      context: context,
+      builder: (_) => const DeleteActivityDialog(),
+      routeSettings: (DeleteActivityDialog).routeSetting(),
+    );
     if (shouldDelete == true) {
       if (activity.isNoneSingleInstanceRecurring) {
         final applyTo = await navigator.push<ApplyTo>(

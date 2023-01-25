@@ -1,17 +1,17 @@
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
-class RouteLoggingObserver extends RouteObserver<PageRoute<dynamic>> {
+class AnalyticNavigationObserver extends RouteObserver<PageRoute<dynamic>> {
   final SeagullAnalytics analytics;
   final _log = Logger('RouteLogger');
 
-  RouteLoggingObserver(this.analytics);
+  AnalyticNavigationObserver(this.analytics);
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPush(route, previousRoute);
     final settings = route.settings;
-    if (settings is AnalyticRouteSettings) {
+    if (settings is TrackableRouteSettings) {
       analytics.track(settings.analyticName, properties: settings.properties);
     }
     _log.fine('didPush $route');

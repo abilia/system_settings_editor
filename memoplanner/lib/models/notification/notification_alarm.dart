@@ -7,7 +7,7 @@ import 'package:murmurhash/murmurhash.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-abstract class NotificationAlarm extends Equatable implements Analyticable {
+abstract class NotificationAlarm extends Equatable implements Trackable {
   final Event event;
   final bool fullScreenActivity;
   const NotificationAlarm(this.event, {this.fullScreenActivity = false});

@@ -46,28 +46,29 @@ class LogoutPage extends StatelessWidget {
       authBloc.add(const LoggedOut());
     } else {
       showAbiliaBottomSheet(
-          context: context,
-          providers: authProviders,
-          child: Padding(
-            padding: layout.templates.s5,
-            child: Center(
-              child: BlocProvider<LogoutSyncCubit>(
-                create: (context) => LogoutSyncCubit(
-                  syncBloc: context.read<SyncBloc>(),
-                  authenticationBloc: context.read<AuthenticationBloc>(),
-                  syncDelay: GetIt.I<SyncDelays>(),
-                  licenseCubit: context.read<LicenseCubit>(),
-                  connectivity: Connectivity().onConnectivityChanged,
-                  myAbiliaConnection: MyAbiliaConnection(
-                    baseUrlDb: GetIt.I<BaseUrlDb>(),
-                    client: GetIt.I<ListenableClient>(),
-                  ),
+        context: context,
+        providers: authProviders,
+        child: Padding(
+          padding: layout.templates.s5,
+          child: Center(
+            child: BlocProvider<LogoutSyncCubit>(
+              create: (context) => LogoutSyncCubit(
+                syncBloc: context.read<SyncBloc>(),
+                authenticationBloc: context.read<AuthenticationBloc>(),
+                syncDelay: GetIt.I<SyncDelays>(),
+                licenseCubit: context.read<LicenseCubit>(),
+                connectivity: Connectivity().onConnectivityChanged,
+                myAbiliaConnection: MyAbiliaConnection(
+                  baseUrlDb: GetIt.I<BaseUrlDb>(),
+                  client: GetIt.I<ListenableClient>(),
                 ),
-                child: const LogoutWarningModal(),
               ),
+              child: const LogoutWarningModal(),
             ),
           ),
-          routeSettings: (LogoutWarningModal).routeSetting());
+        ),
+        routeSettings: (LogoutWarningModal).routeSetting(),
+      );
     }
   }
 }

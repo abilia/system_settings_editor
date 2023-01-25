@@ -104,10 +104,10 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
         BlocListener<PermissionCubit, PermissionState>(
           listenWhen: _notificationsDenied,
           listener: (context, state) => showViewDialog(
-              context: context,
-              builder: (context) => const NotificationPermissionWarningDialog(),
-              routeSettings:
-                  (NotificationPermissionWarningDialog).routeSetting()),
+            context: context,
+            builder: (context) => const NotificationPermissionWarningDialog(),
+            routeSettings: (NotificationPermissionWarningDialog).routeSetting(),
+          ),
         ),
         AuthenticatedDialogListener(
           authenticatedDialogCubit: context.read<AuthenticatedDialogCubit>(),
