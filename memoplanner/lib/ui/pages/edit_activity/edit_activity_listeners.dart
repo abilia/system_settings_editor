@@ -83,6 +83,7 @@ class ErrorPopupListener extends StatelessWidget {
       SaveError.unconfirmedActivityConflict
     }.contains)) {
       if (errors.contains(SaveError.unconfirmedStartTimeBeforeNow)) {
+        // ignore: use_build_context_synchronously
         final confirmStartTimeBeforeNow = await showViewDialog(
           context: context,
           builder: (context) => ConfirmWarningDialog(
@@ -93,6 +94,7 @@ class ErrorPopupListener extends StatelessWidget {
       }
 
       if (errors.contains(SaveError.unconfirmedActivityConflict)) {
+        // ignore: use_build_context_synchronously
         final confirmConflict = await showViewDialog(
           context: context,
           builder: (context) => ConfirmWarningDialog(
@@ -156,11 +158,11 @@ class ScrollToErrorPageListener extends StatelessWidget {
   }
 
   Future _scrollToTab(BuildContext context, int tabIndex) async {
-    final tabController = DefaultTabController.of(context);
+    final tabController = DefaultTabController.maybeOf(context);
     if (tabController != null && tabController.index != tabIndex) {
       tabController.animateTo(tabIndex);
     } else {
-      final sc = PrimaryScrollController.of(context);
+      final sc = PrimaryScrollController.maybeOf(context);
       if (sc != null && sc.hasClients) {
         await sc.animateTo(0.0,
             duration: kTabScrollDuration, curve: Curves.ease);

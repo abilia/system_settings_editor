@@ -80,7 +80,7 @@ class _EditImageAndNameState extends State<EditImageAndName> {
                                     InputDecoration(hintText: widget.hintText),
                                 textCapitalization:
                                     TextCapitalization.sentences,
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.bodyLarge,
                                 autofocus: true,
                                 onEditingComplete:
                                     Navigator.of(context).maybePop,

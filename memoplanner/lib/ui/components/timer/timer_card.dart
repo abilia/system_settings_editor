@@ -87,7 +87,7 @@ class TimerCard extends StatelessWidget {
                                     timerOccasion.timer.title,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .subtitle1
+                                        .titleMedium
                                         ?.copyWith(height: 1),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,

@@ -20,7 +20,7 @@ class AppBarHeading extends StatelessWidget {
       child: IconTheme(
         data: theme.iconTheme.copyWith(color: AbiliaColors.white),
         child: DefaultTextStyle(
-          style: (theme.textTheme.headline6 ?? headline6)
+          style: (theme.textTheme.titleLarge ?? titleLarge)
               .copyWith(color: AbiliaColors.white),
           child: Row(
             children: [
@@ -41,7 +41,7 @@ class AppBarHeading extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(label, style: theme.textTheme.button),
+                            Text(label, style: theme.textTheme.labelLarge),
                             Text(
                               text,
                               maxLines: 1,

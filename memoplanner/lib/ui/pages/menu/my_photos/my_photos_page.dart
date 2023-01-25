@@ -133,7 +133,7 @@ class _AddPhotoButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabController = DefaultTabController.of(context)!;
+    final tabController = DefaultTabController.of(context);
     return BlocBuilder<PermissionCubit, PermissionState>(
       builder: (context, permissionState) => BlocBuilder<ClockBloc, DateTime>(
         builder: (context, time) => AnimatedBuilder(
@@ -275,7 +275,7 @@ class ThumbnailPhoto extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context)
                           .textTheme
-                          .caption
+                          .bodySmall
                           ?.copyWith(height: 1),
                     ),
                   ),

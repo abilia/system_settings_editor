@@ -36,7 +36,7 @@ class RemoveButton extends StatelessWidget {
               SizedBox(width: layout.formPadding.horizontalItemDistance),
               if (t != null)
                 Text(t,
-                    style: abiliaTextTheme.bodyText1
+                    style: abiliaTextTheme.bodyLarge
                         ?.copyWith(color: AbiliaColors.white)),
             ],
           ),

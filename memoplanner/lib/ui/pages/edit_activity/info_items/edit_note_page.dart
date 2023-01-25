@@ -77,7 +77,7 @@ class _EditNotePageState extends State<EditNotePage> {
                       _textEditingController.text.calculateTextRenderSize(
                     constraints: constraints,
                     textStyle:
-                        Theme.of(context).textTheme.bodyText1 ?? bodyText1,
+                        Theme.of(context).textTheme.bodyLarge ?? bodyLarge,
                     padding: EditNotePage.padding,
                     textScaleFactor: MediaQuery.of(context).textScaleFactor,
                   );
@@ -97,7 +97,7 @@ class _EditNotePageState extends State<EditNotePage> {
                             ),
                             child: TextField(
                               key: TestKey.input,
-                              style: abiliaTextTheme.bodyText1,
+                              style: abiliaTextTheme.bodyLarge,
                               controller: _textEditingController,
                               textCapitalization: TextCapitalization.sentences,
                               autofocus: true,

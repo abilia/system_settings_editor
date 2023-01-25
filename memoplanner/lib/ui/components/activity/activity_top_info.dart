@@ -135,7 +135,7 @@ class _ActivityTopInfo extends StatelessWidget {
                     width: layout.activityPage.dashWidth,
                     child: Text(
                       '-',
-                      style: Theme.of(context).textTheme.headline5,
+                      style: Theme.of(context).textTheme.headlineSmall,
                       overflow: TextOverflow.visible,
                     ),
                   ),

@@ -72,8 +72,8 @@ class SwitchField extends StatelessWidget {
                       Expanded(
                         child: DefaultTextStyle(
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyText1 ??
-                              bodyText1,
+                          style: Theme.of(context).textTheme.bodyLarge ??
+                              bodyLarge,
                           child: child,
                         ),
                       ),

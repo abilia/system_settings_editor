@@ -242,7 +242,7 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                                 characters.take(intAnimation.value).string,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .subtitle1
+                                    .titleMedium
                                     ?.copyWith(color: AbiliaColors.white),
                                 softWrap: false,
                                 overflow: TextOverflow.fade,

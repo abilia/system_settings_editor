@@ -25,14 +25,14 @@ class StarterSetDialog extends StatelessWidget {
           Tts(
             child: Text(
               translate.installStarterSet,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           SizedBox(height: layout.starterSetDialog.headingBodyDistance),
           Tts(
             child: Text(
               translate.doYouWantToImportADefaultSet,
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         ],

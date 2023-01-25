@@ -29,7 +29,7 @@ class ViewDialog extends StatelessWidget {
       padding: bodyPadding ?? layout.templates.l2,
       child: Center(
         child: DefaultTextStyle(
-          style: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
+          style: Theme.of(context).textTheme.bodyLarge ?? bodyLarge,
           textAlign: TextAlign.center,
           child: body,
         ),

@@ -33,7 +33,7 @@ class NotificationPermissionOffWarningDialog extends StatelessWidget {
             translate.turnOffNotificationsBody,
             style: Theme.of(context)
                 .textTheme
-                .bodyText2
+                .bodyMedium
                 ?.copyWith(color: AbiliaColors.black75),
             textAlign: TextAlign.center,
           ),
@@ -81,7 +81,7 @@ class _WarningContent extends StatelessWidget {
           Tts(
             child: Text(
               heading,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           SizedBox(height: layout.formPadding.verticalItemDistance),
@@ -96,9 +96,9 @@ class NotificationBodyTextWarning extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final b1 = Theme.of(context)
+    final bodyMedium = Theme.of(context)
         .textTheme
-        .bodyText2
+        .bodyMedium
         ?.copyWith(color: AbiliaColors.black75);
     final translate = Translator.of(context).translate;
     return Tts.fromSemantics(
@@ -109,11 +109,11 @@ class NotificationBodyTextWarning extends StatelessWidget {
       child: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
-          style: b1,
+          style: bodyMedium,
           children: [
             TextSpan(
               text: '${translate.allowNotificationsDescription1} ',
-              style: b1,
+              style: bodyMedium,
             ),
             buildSettingsLinkTextSpan(context),
           ],

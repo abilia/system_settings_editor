@@ -51,7 +51,8 @@ class LibraryNote extends StatelessWidget {
                 textRenderingSize: content
                     .calculateTextRenderSize(
                       constraints: constraints,
-                      textStyle: Theme.of(context).textTheme.caption ?? caption,
+                      textStyle:
+                          Theme.of(context).textTheme.bodySmall ?? bodySmall,
                     )
                     .copyWith(numberOfLines: 5),
               ),
@@ -59,7 +60,7 @@ class LibraryNote extends StatelessWidget {
                 content,
                 maxLines: 7,
                 overflow: TextOverflow.fade,
-                style: abiliaTextTheme.caption,
+                style: abiliaTextTheme.bodySmall,
               ),
             ],
           ),

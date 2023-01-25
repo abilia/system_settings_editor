@@ -71,7 +71,7 @@ class ScreenTimeOutSelectorState extends State<ScreenTimeOutSelector> {
         children: [
           Expanded(
             child: DefaultTextStyle(
-              style: (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
+              style: (Theme.of(context).textTheme.bodyMedium ?? bodyMedium)
                   .copyWith(color: AbiliaColors.black75),
               child: ListView(
                 padding: layout.templates.m1,

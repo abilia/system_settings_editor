@@ -13,7 +13,7 @@ class DigitalClock extends StatelessWidget {
         child: Text(
           hourAndMinuteFormat(context)(time),
           textAlign: TextAlign.center,
-          style: style ?? Theme.of(context).textTheme.caption,
+          style: style ?? Theme.of(context).textTheme.bodySmall,
         ),
       ),
     );

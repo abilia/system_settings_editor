@@ -30,7 +30,7 @@ class InfoRow extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(
           width: layout.infoRow.borderWidth,
-          strokeAlign: StrokeAlign.inside,
+          strokeAlign: BorderSide.strokeAlignInside,
           color: state == InfoRowState.critical ||
                   state == InfoRowState.criticalLoading
               ? AbiliaColors.red
@@ -58,7 +58,7 @@ class InfoRow extends StatelessWidget {
                 title,
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText2
+                    .bodyMedium
                     ?.copyWith(color: textColor),
               ),
             ).pad(layout.infoRow.titlePadding),

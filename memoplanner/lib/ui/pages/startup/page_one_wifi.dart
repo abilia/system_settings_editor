@@ -29,7 +29,7 @@ class PageOneWifi extends StatelessWidget {
           Tts(
             child: Text(
               '${t.step} 1/$pages',
-              style: abiliaTextTheme.bodyText2
+              style: abiliaTextTheme.bodyMedium
                   ?.copyWith(color: AbiliaColors.black75),
             ),
           ),
@@ -37,7 +37,7 @@ class PageOneWifi extends StatelessWidget {
           Tts(
             child: Text(
               t.setupYourInternetConnection,
-              style: abiliaTextTheme.headline6
+              style: abiliaTextTheme.titleLarge
                   ?.copyWith(color: AbiliaColors.black75),
             ),
           ),
@@ -55,7 +55,7 @@ class PageOneWifi extends StatelessWidget {
                 width: layout.startupPage.contentWidth,
                 child: Text(
                   t.wifiNoInternet,
-                  style: abiliaTextTheme.bodyText2
+                  style: abiliaTextTheme.bodyMedium
                       ?.copyWith(color: AbiliaColors.red),
                 ),
               ),

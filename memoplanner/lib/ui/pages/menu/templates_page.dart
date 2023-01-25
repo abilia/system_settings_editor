@@ -16,7 +16,7 @@ class TemplatesPage extends StatelessWidget {
       child: Builder(
         builder: (context) {
           final tabController = DefaultTabController.of(context);
-          tabController?.addListener(() => _onTabChanged(context));
+          tabController.addListener(() => _onTabChanged(context));
           return Scaffold(
             appBar: AbiliaAppBar(
               iconData: AbiliaIcons.favoritesShow,
@@ -266,7 +266,6 @@ class AddTemplateButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tabController = DefaultTabController.of(context);
-    if (tabController == null) return const SizedBox.shrink();
     return AnimatedBuilder(
       animation: tabController,
       builder: (context, _) {

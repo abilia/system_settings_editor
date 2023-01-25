@@ -26,7 +26,7 @@ class _NoteBlockState extends State<NoteBlock> {
   void initState() {
     super.initState();
     controller = widget.scrollController ?? ScrollController();
-    textStyle = widget.textStyle ?? bodyText1;
+    textStyle = widget.textStyle ?? bodyLarge;
   }
 
   @override

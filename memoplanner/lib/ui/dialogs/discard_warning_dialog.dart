@@ -17,7 +17,7 @@ class DiscardWarningDialog extends StatelessWidget {
           Tts(
             child: Text(
               translate.confirmDiscard,
-              style: headline6,
+              style: titleLarge,
             ),
           ),
         ],

@@ -33,7 +33,7 @@ class Selector<T> extends StatelessWidget {
             child: Tts(
               child: Text(
                 heading,
-                style: (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
+                style: (Theme.of(context).textTheme.bodyMedium ?? bodyMedium)
                     .copyWith(
                   color: AbiliaColors.black75,
                 ),
@@ -99,7 +99,7 @@ class _SelectButton<T> extends StatelessWidget {
           borderRadius: borderRadius,
           isSelected: value == groupValue,
         ).copyWith(
-          textStyle: MaterialStateProperty.all(abiliaTextTheme.subtitle2),
+          textStyle: MaterialStateProperty.all(abiliaTextTheme.titleSmall),
           padding: MaterialStateProperty.all(
               EdgeInsets.only(bottom: layout.formPadding.verticalItemDistance)),
         ),

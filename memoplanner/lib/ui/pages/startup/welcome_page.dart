@@ -22,11 +22,11 @@ class WelcomePage extends StatelessWidget {
           ),
           SizedBox(height: layout.startupPage.welcomeLogoDistance),
           Text(t.welcome,
-              style: abiliaTextTheme.headline4
+              style: abiliaTextTheme.headlineMedium
                   ?.copyWith(color: AbiliaColors.black75)),
           SizedBox(height: layout.formPadding.largeHorizontalItemDistance),
           Text(t.welcomeText,
-              style: abiliaTextTheme.bodyText2
+              style: abiliaTextTheme.bodyMedium
                   ?.copyWith(color: AbiliaColors.black75)),
           SizedBox(height: layout.startupPage.startButtonDistance),
           SizedBox(

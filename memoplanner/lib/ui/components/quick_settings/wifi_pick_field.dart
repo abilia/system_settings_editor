@@ -13,7 +13,7 @@ class WiFiPickField extends StatelessWidget {
     final connectedState = context.watch<ConnectivityCubit>().state;
     final wifi = connectedState.connectivityResult == ConnectivityResult.wifi;
     final internet = connectedState.isConnected;
-    final style = Theme.of(context).textTheme.bodyText2 ?? bodyText2;
+    final style = Theme.of(context).textTheme.bodyMedium ?? bodyMedium;
     return PickField(
       leading: Icon(wifi ? AbiliaIcons.wifi : AbiliaIcons.noWifi),
       text: Text(t.wifi),
