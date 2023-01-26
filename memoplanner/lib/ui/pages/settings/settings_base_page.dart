@@ -56,7 +56,7 @@ class SettingsTab extends StatelessWidget {
     final padding = dividerPadding ?? layout.formPadding.groupBottomDistance;
     final scrollController = ScrollController();
     return DefaultTextStyle(
-      style: (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
+      style: (Theme.of(context).textTheme.bodyMedium ?? bodyMedium)
           .copyWith(color: AbiliaColors.black75),
       child: ScrollArrows.vertical(
         controller: scrollController,

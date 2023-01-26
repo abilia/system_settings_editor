@@ -81,7 +81,7 @@ class _EmptyCalendarPageState extends State<EmptyCalendarPage> {
         final settings = context.read<MemoplannerSettingsBloc>().state;
         await Future.delayed(DayCalendar.transitionDuration);
         final startViewIndex = settings.functions.startViewIndex;
-        tabController?.index = startViewIndex;
+        tabController.index = startViewIndex;
       }
     });
   }

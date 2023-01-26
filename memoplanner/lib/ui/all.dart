@@ -11,7 +11,7 @@ export 'package:memoplanner/config.dart';
 
 export 'package:transparent_image/transparent_image.dart';
 export 'package:flutter/material.dart'
-    hide CloseButton, BackButton, AboutDialog;
+    hide CloseButton, BackButton, AboutDialog, MenuItemButton;
 
 export 'widget_utils.dart';
 

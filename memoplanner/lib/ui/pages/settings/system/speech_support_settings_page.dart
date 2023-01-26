@@ -16,7 +16,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
     final t = Translator.of(context).translate;
     final textStyle = Theme.of(context)
         .textTheme
-        .bodyText2
+        .bodyMedium
         ?.copyWith(color: AbiliaColors.black75);
     return WillPopScope(
       onWillPop: () async {

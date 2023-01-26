@@ -23,7 +23,7 @@ class TimeInputPage extends StatelessWidget {
           child: AbiliaClock(
             style: Theme.of(context)
                 .textTheme
-                .caption
+                .bodySmall
                 ?.copyWith(color: AbiliaColors.white),
           ),
         ),
@@ -230,7 +230,7 @@ class _TimeInputContentState extends State<TimeInputContent> {
                 selectionColor: AbiliaColors.white,
               ),
               textTheme: theme.textTheme
-                  .copyWith(subtitle1: abiliaTextTheme.headline4)),
+                  .copyWith(titleMedium: abiliaTextTheme.headlineMedium)),
           child: Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -265,7 +265,7 @@ class _TimeInputContentState extends State<TimeInputContent> {
                               ),
                               child: Text(
                                 '—',
-                                style: abiliaTextTheme.headline5,
+                                style: abiliaTextTheme.headlineSmall,
                               ),
                             ),
                           ),
@@ -634,7 +634,7 @@ class _AmPmButton extends StatelessWidget {
             layout.timeInput.amPmWidth,
             layout.timeInput.amPmHeight,
           )),
-          textStyle: MaterialStateProperty.all(abiliaTextTheme.subtitle1),
+          textStyle: MaterialStateProperty.all(abiliaTextTheme.titleMedium),
         ),
         child: Text(text),
       ),

@@ -79,7 +79,7 @@ class AbiliaTextInput extends StatelessWidget {
                   maxLines: maxLines,
                   minLines: 1,
                   readOnly: true,
-                  style: theme.textTheme.bodyText1,
+                  style: theme.textTheme.bodyLarge,
                   autovalidateMode: AutovalidateMode.always,
                   validator: (_) => errorState ? '' : null,
                   decoration: onChanged == null
@@ -192,7 +192,7 @@ class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {
                           keyboardType: widget.keyboardType,
                           inputFormatters: widget.inputFormatters,
                           textCapitalization: widget.textCapitalization,
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.bodyLarge,
                           autofocus: true,
                           focusNode: focusNode,
                           onEditingComplete:

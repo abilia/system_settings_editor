@@ -14,8 +14,8 @@ class MockSyncBloc extends MockBloc<SyncEvent, SyncState> implements SyncBloc {}
 
 class MockPushCubit extends MockCubit<RemoteMessage> implements PushCubit {}
 
-class MockGenericCubit extends MockCubit<GenericState> implements GenericCubit {
-}
+class MockGenericCubit extends MockCubit<GenericState>
+    implements GenericCubit {}
 
 class MockSortableBloc extends MockBloc<SortableEvent, SortableState>
     implements SortableBloc {}
@@ -53,8 +53,8 @@ class MockRecordSoundCubit extends MockCubit<RecordSoundState>
 class MockSoundBloc extends MockBloc<SoundEvent, SoundState>
     implements SoundBloc {}
 
-class MockLicenseCubit extends MockCubit<LicenseState> implements LicenseCubit {
-}
+class MockLicenseCubit extends MockCubit<LicenseState>
+    implements LicenseCubit {}
 
 class MockLogoutSyncCubit extends MockCubit<LogoutSyncState>
     implements LogoutSyncCubit {}

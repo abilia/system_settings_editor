@@ -226,7 +226,7 @@ class AddNewQuestionButton extends StatelessWidget {
             ),
             Text(
               translate.addNew,
-              style: Theme.of(context).textTheme.bodyText1?.copyWith(
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: AbiliaColors.white,
                   ),
             ),
@@ -270,7 +270,7 @@ class EditNoteWidget extends StatelessWidget {
               textWidget: infoItem.text.isEmpty
                   ? Text(
                       Translator.of(context).translate.typeSomething,
-                      style: abiliaTextTheme.bodyText1
+                      style: abiliaTextTheme.bodyLarge
                           ?.copyWith(color: const Color(0xff747474)),
                     )
                   : Text(infoItem.text),

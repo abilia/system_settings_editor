@@ -6,7 +6,7 @@ class FloatingActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabController = DefaultTabController.of(context);
+    final tabController = DefaultTabController.maybeOf(context);
     final settings = context.watch<MemoplannerSettingsBloc>().state;
     return BlocBuilder<PermissionCubit, PermissionState>(
       buildWhen: (old, fresh) =>

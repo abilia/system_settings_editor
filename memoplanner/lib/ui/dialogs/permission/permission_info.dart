@@ -33,7 +33,7 @@ class PermissionInfoDialog extends StatelessWidget {
             Tts(
               child: Text(
                 permission.translate(translate),
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             SizedBox(height: layout.formPadding.verticalItemDistance),
@@ -74,9 +74,9 @@ class PermissionInfoBodyText extends StatelessWidget {
   final String allowAccessBodyText;
   @override
   Widget build(BuildContext context) {
-    final bodyText2 = Theme.of(context)
+    final bodyMedium = Theme.of(context)
         .textTheme
-        .bodyText2
+        .bodyMedium
         ?.copyWith(color: AbiliaColors.black75);
     final translate = Translator.of(context).translate;
     return Padding(
@@ -89,7 +89,7 @@ class PermissionInfoBodyText extends StatelessWidget {
         child: RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            style: bodyText2,
+            style: bodyMedium,
             children: [
               TextSpan(text: '$allowAccessBodyText '),
               TextSpan(text: '${translate.allowAccessBody2} '),

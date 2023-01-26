@@ -351,7 +351,7 @@ class _TimeDisplay extends StatelessWidget {
             _formatTime(
               _resolveDuration(recordState, soundState),
             ),
-            style: Theme.of(context).textTheme.headline4,
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
         ),
       ),

@@ -89,7 +89,7 @@ final largeBorderRadius =
 final baseButtonStyle = ButtonStyle(
   foregroundColor: MaterialStateProperty.all(AbiliaColors.white),
   textStyle: MaterialStateProperty.all(
-    abiliaTextTheme.subtitle1?.copyWith(height: 1),
+    abiliaTextTheme.titleMedium?.copyWith(height: 1),
   ),
   minimumSize: MaterialStateProperty.all(
       Size.fromHeight(layout.button.baseButtonMinHeight)),
@@ -155,7 +155,7 @@ final iconTextButtonStyleNext = iconTextButtonStyleGreen.copyWith(
 final actionIconTextButtonStyleRed = ButtonStyle(
   foregroundColor: MaterialStateProperty.all(AbiliaColors.white),
   textStyle:
-      MaterialStateProperty.all(abiliaTextTheme.bodyText1?.copyWith(height: 1)),
+      MaterialStateProperty.all(abiliaTextTheme.bodyLarge?.copyWith(height: 1)),
   minimumSize: MaterialStateProperty.all(layout.button.redButtonMinSize),
   padding: MaterialStateProperty.all(
     layout.button.actionButtonIconTextPadding,
@@ -177,7 +177,7 @@ final actionIconTextButtonStyleRed = ButtonStyle(
 
 final _actionButtonStyle = ButtonStyle(
   textStyle:
-      MaterialStateProperty.all(abiliaTextTheme.caption?.copyWith(height: 1)),
+      MaterialStateProperty.all(abiliaTextTheme.bodySmall?.copyWith(height: 1)),
   minimumSize: MaterialStateProperty.all(
       Size(layout.actionButton.size, layout.actionButton.size)),
   padding: MaterialStateProperty.all(layout.actionButton.padding),
@@ -386,7 +386,7 @@ final actionButtonStyleLightSelected = _actionButtonStyle.copyWith(
 
 final _textActionButtonStyle = ButtonStyle(
   textStyle:
-      MaterialStateProperty.all(abiliaTextTheme.caption?.copyWith(height: 1)),
+      MaterialStateProperty.all(abiliaTextTheme.bodySmall?.copyWith(height: 1)),
   maximumSize: MaterialStateProperty.all(
       Size(layout.actionButton.size, layout.actionButton.size)),
   padding: MaterialStateProperty.all(layout.actionButton.withTextPadding),
@@ -492,7 +492,7 @@ final ButtonStyle blackMenuButtonStyle = _MenuButtonDef(
 ).toStyle();
 
 final ButtonStyle keyboardButtonStyle = ButtonStyle(
-  textStyle: MaterialStateProperty.all(abiliaTextTheme.headline6),
+  textStyle: MaterialStateProperty.all(abiliaTextTheme.titleLarge),
   fixedSize: MaterialStateProperty.all(Size(
       layout.timeInput.keyboardButtonWidth,
       layout.timeInput.keyboardButtonHeight)),

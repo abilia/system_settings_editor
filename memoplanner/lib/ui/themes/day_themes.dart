@@ -155,7 +155,7 @@ ThemeData _lightAppBarTheme = abiliaTheme.copyWith(
   ),
   textTheme: abiliaTextTheme
       .copyWith(
-        headline6: layout.appBar.textStyle,
+        titleLarge: layout.appBar.textStyle,
       )
       .apply(
         displayColor: AbiliaColors.white,
@@ -171,7 +171,7 @@ ThemeData _darkAppBarTheme = abiliaTheme.copyWith(
   ),
   textTheme: abiliaTextTheme
       .copyWith(
-        headline6: layout.appBar.textStyle,
+        titleLarge: layout.appBar.textStyle,
       )
       .apply(
         displayColor: AbiliaColors.black,

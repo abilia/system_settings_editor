@@ -252,7 +252,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
           Tts(
             child: Text(
               translate.redirectToAndroidSettings,
-              style: Theme.of(context).textTheme.caption?.copyWith(
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AbiliaColors.black75,
                   ),
             ),

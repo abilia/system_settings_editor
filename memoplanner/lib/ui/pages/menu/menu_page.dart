@@ -144,7 +144,7 @@ class PhotoCalendarButton extends StatelessWidget {
         final settings = context.read<MemoplannerSettingsBloc>().state;
         final photoAlbumTabIndex =
             settings.functions.display.photoAlbumTabIndex;
-        DefaultTabController.of(context)?.index = photoAlbumTabIndex;
+        DefaultTabController.of(context).index = photoAlbumTabIndex;
       },
       style: blueMenuButtonStyle,
       text: Translator.of(context).translate.photoCalendar,

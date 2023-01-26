@@ -661,7 +661,7 @@ class Weekdays extends StatelessWidget {
     final weekdays =
         context.select((RecurringWeekCubit bloc) => bloc.state.weekdays);
     return DefaultTextStyle(
-      style: (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
+      style: (Theme.of(context).textTheme.bodyLarge ?? bodyLarge)
           .copyWith(height: 1.5),
       child: Padding(
         padding: EdgeInsets.only(top: layout.selectableField.position.abs()),
@@ -720,7 +720,7 @@ class MonthDays extends StatelessWidget {
                     '$d',
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText1
+                        .bodyLarge
                         ?.copyWith(height: 1.5),
                   ),
                   selected: selectedMonthDays.contains(d),

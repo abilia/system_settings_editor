@@ -68,7 +68,7 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                           height: layout.formPadding.groupHorizontalDistance),
                       Text(
                         'Welcome to the production guide!',
-                        style: abiliaTextTheme.headline6,
+                        style: abiliaTextTheme.titleLarge,
                       ),
                       const SizedBox(height: 50),
                       Column(

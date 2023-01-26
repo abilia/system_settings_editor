@@ -143,7 +143,7 @@ class SupportPersonsWidget extends StatelessWidget {
               Tts(
                 child: Text(
                   Translator.of(context).translate.supportPersons,
-                  style: bodyText2.copyWith(color: AbiliaColors.black75),
+                  style: bodyMedium.copyWith(color: AbiliaColors.black75),
                 ),
               ).pad(
                 layout.templates.m1.copyWith(bottom: 0),

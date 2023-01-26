@@ -14,7 +14,7 @@ class MEMOplannerLoginFooter extends StatelessWidget {
           child: Text(
             Translator.of(context).translate.createAccountHint,
             style:
-                (Theme.of(context).textTheme.bodyText1 ?? bodyText1).copyWith(
+                (Theme.of(context).textTheme.bodyLarge ?? bodyLarge).copyWith(
               color: AbiliaColors.black75,
             ),
           ),

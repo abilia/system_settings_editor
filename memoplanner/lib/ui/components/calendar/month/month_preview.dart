@@ -29,7 +29,7 @@ class MonthListPreview extends StatelessWidget {
                 padding: layout.monthCalendar.monthPreview.noSelectedDayPadding,
                 child: Text(
                   Translator.of(context).translate.selectADayToViewDetails,
-                  style: abiliaTextTheme.bodyText1,
+                  style: abiliaTextTheme.bodyLarge,
                 ),
               );
             } else {
@@ -141,7 +141,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
     return Tts.data(
       data: dateText,
       child: GestureDetector(
-        onTap: () => DefaultTabController.of(context)?.animateTo(0),
+        onTap: () => DefaultTabController.of(context).animateTo(0),
         child: Container(
           padding: previewLayout.headingPadding,
           height: previewLayout.headingHeight,
@@ -207,7 +207,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
                     child: Center(
                       child: Text(
                         dateText,
-                        style: Theme.of(context).textTheme.subtitle1,
+                        style: Theme.of(context).textTheme.titleMedium,
                         key: TestKey.monthPreviewHeaderTitle,
                       ),
                     ),

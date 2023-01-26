@@ -22,7 +22,7 @@ class _DefaultTabControllerBuilderState
     super.didChangeDependencies();
     tabController?.removeListener(_tabControllerListener);
     tabController = DefaultTabController.of(context)
-      ?..addListener(_tabControllerListener);
+      ..addListener(_tabControllerListener);
   }
 
   @override

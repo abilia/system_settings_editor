@@ -29,7 +29,7 @@ class ErrorMessage extends StatelessWidget {
               child: Padding(
                 padding: layout.message.textPadding,
                 child: DefaultTextStyle(
-                  style: Theme.of(context).textTheme.bodyText2 ?? bodyText2,
+                  style: Theme.of(context).textTheme.bodyMedium ?? bodyMedium,
                   child: text,
                 ),
               ),

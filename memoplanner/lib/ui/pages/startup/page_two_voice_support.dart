@@ -25,7 +25,7 @@ class PageTwoVoiceSupport extends StatelessWidget {
           Tts(
             child: Text(
               '${t.step} $pages/$pages',
-              style: abiliaTextTheme.bodyText2
+              style: abiliaTextTheme.bodyMedium
                   ?.copyWith(color: AbiliaColors.black75),
             ),
           ),
@@ -33,7 +33,7 @@ class PageTwoVoiceSupport extends StatelessWidget {
           Tts(
             child: Text(
               t.downloadVoiceText,
-              style: abiliaTextTheme.headline6
+              style: abiliaTextTheme.titleLarge
                   ?.copyWith(color: AbiliaColors.black75),
             ),
           ),
@@ -52,7 +52,7 @@ class PageTwoVoiceSupport extends StatelessWidget {
                 text: Text(t.textToSpeech),
                 trailingText: Text(
                   trailingText,
-                  style: (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
+                  style: (Theme.of(context).textTheme.bodyMedium ?? bodyMedium)
                       .copyWith(
                     color:
                         voice.isEmpty ? AbiliaColors.red : AbiliaColors.green,

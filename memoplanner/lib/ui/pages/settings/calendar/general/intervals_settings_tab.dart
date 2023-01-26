@@ -69,7 +69,7 @@ class IntervalStepper extends StatelessWidget {
                             .inMilliseconds
                             .fromMillisecondsSinceEpoch(isUtc: true),
                       ),
-                      style: abiliaTextTheme.headline5,
+                      style: abiliaTextTheme.headlineSmall,
                     ),
                   ),
                   IconActionButtonDark(

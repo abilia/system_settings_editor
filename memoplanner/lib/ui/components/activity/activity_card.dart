@@ -100,7 +100,7 @@ class ActivityCard extends StatelessWidget {
                                         activity.title,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .subtitle1
+                                            .titleMedium
                                             ?.copyWith(height: 1),
                                         overflow: TextOverflow.ellipsis,
                                       ),
