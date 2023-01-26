@@ -44,7 +44,7 @@ class LogoutPage extends StatelessWidget {
 
     if (!hasDirty) {
       authBloc.add(const LoggedOut());
-    } else {
+    } else if (context.mounted) {
       showAbiliaBottomSheet(
         context: context,
         providers: authProviders,
@@ -110,7 +110,7 @@ class _ProfilePictureNameAndEmailState
           Tts(
             child: Text(
               user.name,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           SizedBox(height: layout.formPadding.verticalItemDistance),
@@ -120,7 +120,7 @@ class _ProfilePictureNameAndEmailState
                 user.username,
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText1
+                    .bodyLarge
                     ?.copyWith(color: AbiliaColors.black75),
               ),
             ),

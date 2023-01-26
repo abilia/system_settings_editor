@@ -62,16 +62,16 @@ class ListDataItem extends StatelessWidget {
                       if (hasText)
                         DefaultTextStyle(
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyText1 ??
-                              bodyText1,
+                          style: Theme.of(context).textTheme.bodyLarge ??
+                              bodyLarge,
                           child: text,
                         ),
                       if (secondaryText != null)
                         DefaultTextStyle(
                           overflow: TextOverflow.ellipsis,
-                          style:
-                              (Theme.of(context).textTheme.caption ?? caption)
-                                  .copyWith(
+                          style: (Theme.of(context).textTheme.bodySmall ??
+                                  bodySmall)
+                              .copyWith(
                             color: AbiliaColors.black60,
                             height: layout.listDataItem.secondaryTextHeight,
                           ),

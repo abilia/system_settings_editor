@@ -299,7 +299,7 @@ class EmptyLibraryMessage extends StatelessWidget {
                 : Translator.of(context).translate.emptyFolder,
             style: Theme.of(context)
                 .textTheme
-                .bodyText1
+                .bodyLarge
                 ?.copyWith(color: AbiliaColors.black75),
           ),
         ),
@@ -330,7 +330,7 @@ class LibraryFolder extends StatelessWidget {
           children: <Widget>[
             Text(
               title,
-              style: abiliaTextTheme.caption?.copyWith(height: 1),
+              style: abiliaTextTheme.bodySmall?.copyWith(height: 1),
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: layout.libraryPage.textImageDistance),

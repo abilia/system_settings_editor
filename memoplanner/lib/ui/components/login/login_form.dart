@@ -39,7 +39,7 @@ class LoginForm extends StatelessWidget {
                         ? translate.loginHintMPGO
                         : translate.loginHintMP,
                     textAlign: TextAlign.center,
-                    style: (theme.textTheme.bodyText1 ?? bodyText1)
+                    style: (theme.textTheme.bodyLarge ?? bodyLarge)
                         .copyWith(color: AbiliaColors.black75),
                   ),
                 ),

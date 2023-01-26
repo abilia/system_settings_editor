@@ -38,7 +38,7 @@ class ActivityPageLayout {
         ),
       );
 
-  TextStyle headline6_3() => GoogleFonts.roboto(textStyle: headline6);
+  TextStyle headline6_3() => GoogleFonts.roboto(textStyle: titleLarge);
 
   const ActivityPageLayout({
     this.topInfoHeight = 126,

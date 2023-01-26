@@ -73,15 +73,15 @@ class PickField extends StatelessWidget {
                       DefaultTextStyle(
                         overflow: TextOverflow.ellipsis,
                         style:
-                            Theme.of(context).textTheme.bodyText1 ?? bodyText1,
+                            Theme.of(context).textTheme.bodyLarge ?? bodyLarge,
                         child: text,
                       ),
                       if (secondaryText != null)
                         DefaultTextStyle(
                           overflow: TextOverflow.ellipsis,
-                          style:
-                              (Theme.of(context).textTheme.caption ?? caption)
-                                  .copyWith(color: AbiliaColors.black60),
+                          style: (Theme.of(context).textTheme.bodySmall ??
+                                  bodySmall)
+                              .copyWith(color: AbiliaColors.black60),
                           child: secondaryText,
                         ),
                     ],
@@ -95,7 +95,7 @@ class PickField extends StatelessWidget {
                     child: DefaultTextStyle(
                       overflow: TextOverflow.ellipsis,
                       style:
-                          (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
+                          (Theme.of(context).textTheme.bodyMedium ?? bodyMedium)
                               .copyWith(color: AbiliaColors.white140),
                       child: trailingText,
                     ),

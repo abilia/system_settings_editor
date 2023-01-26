@@ -147,7 +147,7 @@ class QuestionView extends StatelessWidget {
     final textTheme = theme.textTheme;
     final selectedTheme = theme.copyWith(
       textTheme: textTheme.copyWith(
-        bodyText1: textTheme.bodyText1?.copyWith(
+        bodyLarge: textTheme.bodyLarge?.copyWith(
           color: AbiliaColors.white140,
           decoration: TextDecoration.lineThrough,
         ),

@@ -87,18 +87,17 @@ class AbiliaTabs extends StatelessWidget {
 
     final tabController = DefaultTabController.of(context);
     final wrappedTabs = [
-      if (tabController != null)
-        for (var i = 0; i < tabs.length; i++)
-          _Tab(
-            index: i,
-            offset: incrementOffset(i),
-            first: i == nonCollapsedIndexes.reduce(min),
-            last: i == nonCollapsedIndexes.reduce(max),
-            collapsed: () => isCollapsed(i),
-            controller: tabController,
-            onTabTap: onTabTap,
-            child: tabs[i],
-          )
+      for (var i = 0; i < tabs.length; i++)
+        _Tab(
+          index: i,
+          offset: incrementOffset(i),
+          first: i == nonCollapsedIndexes.reduce(min),
+          last: i == nonCollapsedIndexes.reduce(max),
+          collapsed: () => isCollapsed(i),
+          controller: tabController,
+          onTabTap: onTabTap,
+          child: tabs[i],
+        )
     ];
 
     return Material(
@@ -178,8 +177,8 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final iconTheme = IconTheme.of(context);
-    final textStyle =
-        (Theme.of(context).textTheme.caption ?? caption).copyWith(height: 1);
+    final textStyle = (Theme.of(context).textTheme.bodySmall ?? bodySmall)
+        .copyWith(height: 1);
     final controllerAnimation = widget.controller.animation;
     if (controllerAnimation == null) throw 'TabController missing animation';
     return _AnimatedTab(

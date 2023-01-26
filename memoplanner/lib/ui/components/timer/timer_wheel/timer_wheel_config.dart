@@ -132,13 +132,13 @@ class TimerWheelConfiguration {
     ..color = AbiliaColors.white140
     ..strokeCap = StrokeCap.round;
 
-  late final numberTextStyle = bodyText1.copyWith(
+  late final numberTextStyle = bodyLarge.copyWith(
     height: 1,
     leadingDistribution: TextLeadingDistribution.even,
     fontSize: 16.0 * scaleFactor,
   );
 
-  late final timeLeftTextStyle = headline6.copyWith(
+  late final timeLeftTextStyle = titleLarge.copyWith(
     height: 1,
     leadingDistribution: TextLeadingDistribution.even,
     fontSize: 20.0 * scaleFactor,

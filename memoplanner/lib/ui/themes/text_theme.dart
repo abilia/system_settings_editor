@@ -4,104 +4,104 @@ import 'package:memoplanner/ui/themes/all.dart';
 
 final abiliaTextTheme = GoogleFonts.robotoTextTheme(
   TextTheme(
-    headline1: headline1,
-    headline2: headline2,
-    headline3: headline3,
-    headline4: headline4,
-    headline5: headline5,
-    headline6: headline6,
-    subtitle1: subtitle1,
-    subtitle2: subtitle2,
-    bodyText1: bodyText1,
-    bodyText2: bodyText2,
-    caption: caption,
-    button: button,
-    overline: overline,
+    displayLarge: displayLarge,
+    displayMedium: displayMedium,
+    displaySmall: displaySmall,
+    headlineMedium: headlineMedium,
+    headlineSmall: headlineSmall,
+    titleLarge: titleLarge,
+    titleMedium: titleMedium,
+    titleSmall: titleSmall,
+    bodyLarge: bodyLarge,
+    bodyMedium: bodyMedium,
+    bodySmall: bodySmall,
+    labelLarge: labelLarge,
+    labelSmall: labelSmall,
   ),
 );
 
-final headline1 = TextStyle(
+final displayLarge = TextStyle(
       color: AbiliaColors.black,
-      fontSize: layout.fontSize.headline1,
+      fontSize: layout.fontSize.displayLarge,
       fontWeight: light,
       leadingDistribution: TextLeadingDistribution.even,
     ),
-    headline2 = TextStyle(
+    displayMedium = TextStyle(
       color: AbiliaColors.black,
-      fontSize: layout.fontSize.headline2,
+      fontSize: layout.fontSize.displayMedium,
       fontWeight: light,
       height: 72.0 / 60.0,
       leadingDistribution: TextLeadingDistribution.even,
     ),
-    headline3 = TextStyle(
+    displaySmall = TextStyle(
       color: AbiliaColors.black,
-      fontSize: layout.fontSize.headline3,
+      fontSize: layout.fontSize.displaySmall,
       fontWeight: regular,
       height: 56.0 / 48.0,
       leadingDistribution: TextLeadingDistribution.even,
     ),
-    headline4 = TextStyle(
+    headlineMedium = TextStyle(
       color: AbiliaColors.black,
-      fontSize: layout.fontSize.headline4,
+      fontSize: layout.fontSize.headlineMedium,
       fontWeight: regular,
       leadingDistribution: TextLeadingDistribution.even,
     ),
-    headline5 = TextStyle(
+    headlineSmall = TextStyle(
       color: AbiliaColors.black,
-      fontSize: layout.fontSize.headline5,
+      fontSize: layout.fontSize.headlineSmall,
       fontWeight: regular,
       leadingDistribution: TextLeadingDistribution.even,
     ),
-    headline6 = TextStyle(
+    titleLarge = TextStyle(
       color: AbiliaColors.black,
-      fontSize: layout.fontSize.headline6,
+      fontSize: layout.fontSize.titleLarge,
       fontWeight: medium,
       leadingDistribution: TextLeadingDistribution.even,
     ),
-    subtitle1 = TextStyle(
+    titleMedium = TextStyle(
       color: AbiliaColors.black,
-      fontSize: layout.fontSize.subtitle1,
+      fontSize: layout.fontSize.titleMedium,
       fontWeight: medium,
       height: 24.0 / 16.0,
       leadingDistribution: TextLeadingDistribution.even,
     ),
-    subtitle2 = TextStyle(
+    titleSmall = TextStyle(
       color: AbiliaColors.black,
-      fontSize: layout.fontSize.subtitle2,
+      fontSize: layout.fontSize.titleSmall,
       fontWeight: medium,
       height: 24.0 / 14.0,
       leadingDistribution: TextLeadingDistribution.even,
     ),
-    bodyText1 = TextStyle(
+    bodyLarge = TextStyle(
       color: AbiliaColors.black,
-      fontSize: layout.fontSize.bodyText1,
+      fontSize: layout.fontSize.bodyLarge,
       fontWeight: regular,
       height: 28.0 / 16.0,
       leadingDistribution: TextLeadingDistribution.even,
     ),
-    bodyText2 = TextStyle(
+    bodyMedium = TextStyle(
       color: AbiliaColors.black,
-      fontSize: layout.fontSize.bodyText2,
+      fontSize: layout.fontSize.bodyMedium,
       fontWeight: regular,
       height: 20.0 / 14.0,
       leadingDistribution: TextLeadingDistribution.even,
     ),
-    caption = TextStyle(
+    bodySmall = TextStyle(
       color: AbiliaColors.black,
-      fontSize: layout.fontSize.caption,
+      fontSize: layout.fontSize.bodySmall,
       fontWeight: regular,
       height: 16.0 / 12.0,
       leadingDistribution: TextLeadingDistribution.even,
     ),
-    button = TextStyle(
+    labelLarge = TextStyle(
       color: AbiliaColors.white,
-      fontSize: layout.fontSize.button,
+      fontSize: layout.fontSize.labelLarge,
       fontWeight: regular,
       height: 1,
       leadingDistribution: TextLeadingDistribution.even,
     ),
-    overline = TextStyle(
-      fontSize: layout.fontSize.overline,
+    labelSmall = TextStyle(
+      fontSize: layout.fontSize.labelSmall,
       fontWeight: medium,
       height: 16.0 / 10.0,
       leadingDistribution: TextLeadingDistribution.even,

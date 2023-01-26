@@ -70,14 +70,14 @@ class CreateAccountPage extends StatelessWidget {
                   Tts(
                     child: Text(
                       t.createAccountHeading,
-                      style: textTheme.headline6,
+                      style: textTheme.titleLarge,
                     ),
                   ),
                   SizedBox(height: layout.formPadding.verticalItemDistance),
                   Tts(
                     child: Text(
                       t.createAccountSubheading,
-                      style: textTheme.bodyText2,
+                      style: textTheme.bodyMedium,
                     ),
                   ),
                   SizedBox(height: layout.formPadding.largeGroupDistance),

@@ -36,7 +36,7 @@ class ProfilePicture extends StatelessWidget {
                 Center(
                   child: Text(
                     initial,
-                    style: headline6.copyWith(color: AbiliaColors.white),
+                    style: titleLarge.copyWith(color: AbiliaColors.white),
                   ),
                 )
               else

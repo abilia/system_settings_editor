@@ -191,9 +191,9 @@ class MonthHeading extends StatelessWidget {
           final dayTheme = dayThemes[weekday];
           final textTheme = dayTheme.theme.textTheme;
           return DefaultTextStyle(
-            style: (textTheme.button ?? button).copyWith(
+            style: (textTheme.labelLarge ?? labelLarge).copyWith(
               color: dayTheme.isColor
-                  ? textTheme.subtitle2?.color
+                  ? textTheme.titleSmall?.color
                   : AbiliaColors.black,
             ),
             child: Expanded(
@@ -231,7 +231,7 @@ class MonthDayView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final headingTextStyleCorrectColor =
-        (dayTheme.theme.textTheme.subtitle2 ?? subtitle2).copyWith(
+        (dayTheme.theme.textTheme.titleSmall ?? titleSmall).copyWith(
       color: monthDay.isPast ? AbiliaColors.black : null,
       height: 1,
       fontSize: layout.monthCalendar.dayHeadingFontSize,
@@ -245,7 +245,7 @@ class MonthDayView extends StatelessWidget {
         onTap: () {
           final currentDay = context.read<DayPickerBloc>().state.day;
           currentDay.isAtSameDay(monthDay.day)
-              ? DefaultTabController.of(context)?.animateTo(0)
+              ? DefaultTabController.of(context).animateTo(0)
               : BlocProvider.of<DayPickerBloc>(context)
                   .add(GoTo(day: monthDay.day));
         },
@@ -391,7 +391,7 @@ class MonthDayViewCompact extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = dayTheme.theme.textTheme.subtitle1 ?? subtitle1;
+    final textStyle = dayTheme.theme.textTheme.bodyMedium ?? titleMedium;
     return Tts.data(
       data:
           DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
@@ -400,7 +400,7 @@ class MonthDayViewCompact extends StatelessWidget {
         onTap: () {
           final currentDay = context.read<DayPickerBloc>().state.day;
           currentDay.isAtSameDay(monthDay.day)
-              ? DefaultTabController.of(context)?.animateTo(0)
+              ? DefaultTabController.of(context).animateTo(0)
               : BlocProvider.of<DayPickerBloc>(context)
                   .add(GoTo(day: monthDay.day));
         },
@@ -552,7 +552,7 @@ class MonthActivityContent extends StatelessWidget {
                   activityDay.activity.title,
                   tts: true,
                   maxLines: 3,
-                  style: abiliaTextTheme.caption?.copyWith(
+                  style: abiliaTextTheme.bodyMedium?.copyWith(
                     fontSize: layout.monthCalendar.fullDayActivityFontSize,
                   ),
                 ),
