@@ -139,7 +139,7 @@ class _TimerWheelState extends State<TimerWheel> {
           return timerWheel;
         } else {
           return GestureDetector(
-            onPanDown: (details) => _onPanDown(details.localPosition, config),
+            onTapDown: (details) => _onTapDown(details.localPosition, config),
             onPanUpdate: (details) =>
                 _onPanUpdate(details.localPosition, config),
             onPanCancel: _cancelLongPressTimer,
@@ -188,7 +188,7 @@ class _TimerWheelState extends State<TimerWheel> {
     _longPressTimer?.cancel();
   }
 
-  void _onPanDown(Offset downPosition, TimerWheelConfiguration config) {
+  void _onTapDown(Offset downPosition, TimerWheelConfiguration config) {
     _startLongPressTtsTimer(downPosition, config);
     if (!_pointIsOnWheel(downPosition, config)) return;
 
