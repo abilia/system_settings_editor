@@ -10,6 +10,7 @@ class ErrorPopupListener extends StatelessWidget {
     required this.child,
     Key? key,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<WizardCubit, WizardState>(
@@ -82,8 +83,8 @@ class ErrorPopupListener extends StatelessWidget {
       SaveError.unconfirmedStartTimeBeforeNow,
       SaveError.unconfirmedActivityConflict
     }.contains)) {
-      if (errors.contains(SaveError.unconfirmedStartTimeBeforeNow)) {
-        // ignore: use_build_context_synchronously
+      if (errors.contains(SaveError.unconfirmedStartTimeBeforeNow) &&
+          context.mounted) {
         final confirmStartTimeBeforeNow = await showViewDialog(
           context: context,
           builder: (context) => ConfirmWarningDialog(
@@ -93,8 +94,8 @@ class ErrorPopupListener extends StatelessWidget {
         if (confirmStartTimeBeforeNow != true) return;
       }
 
-      if (errors.contains(SaveError.unconfirmedActivityConflict)) {
-        // ignore: use_build_context_synchronously
+      if (errors.contains(SaveError.unconfirmedActivityConflict) &&
+          context.mounted) {
         final confirmConflict = await showViewDialog(
           context: context,
           builder: (context) => ConfirmWarningDialog(

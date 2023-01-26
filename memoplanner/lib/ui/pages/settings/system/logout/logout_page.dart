@@ -44,8 +44,7 @@ class LogoutPage extends StatelessWidget {
 
     if (!hasDirty) {
       authBloc.add(const LoggedOut());
-    } else {
-      // ignore: use_build_context_synchronously
+    } else if (context.mounted) {
       showAbiliaBottomSheet(
         context: context,
         providers: authProviders,
