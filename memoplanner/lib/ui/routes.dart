@@ -1,19 +1,20 @@
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 extension TypeRoute on Type {
   TrackableRouteSettings routeSetting({Map<String, dynamic>? properties}) =>
       TrackableRouteSettings(
-        analyticName: toString(),
+        name: toString(),
         properties: properties,
       );
 }
 
-class TrackableRouteSettings extends RouteSettings {
+class TrackableRouteSettings extends RouteSettings implements Trackable {
+  @override
+  String get eventName => 'Nav $name';
+  @override
   final Map<String, dynamic>? properties;
-  final String analyticName;
-
-  const TrackableRouteSettings({required this.analyticName, this.properties})
-      : super(name: analyticName);
+  const TrackableRouteSettings({required super.name, this.properties});
 }
 
 mixin PersistentRoute {}

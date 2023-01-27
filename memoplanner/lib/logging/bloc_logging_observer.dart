@@ -5,8 +5,9 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/repository/end_point.dart';
 
 abstract class Trackable {
-  String get eventName;
-  Map<String, dynamic>? get properties;
+  final String eventName;
+  final Map<String, dynamic>? properties;
+  const Trackable(this.eventName, this.properties);
 }
 
 class BlocLoggingObserver extends BlocObserver {

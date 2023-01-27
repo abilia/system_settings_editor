@@ -12,7 +12,7 @@ class AnalyticNavigationObserver extends RouteObserver<PageRoute<dynamic>> {
     super.didPush(route, previousRoute);
     final settings = route.settings;
     if (settings is TrackableRouteSettings) {
-      analytics.track(settings.analyticName, properties: settings.properties);
+      analytics.track(settings.eventName, properties: settings.properties);
     }
     _log.fine('didPush $route');
     _log.finest('didPush previousRoute $previousRoute');
