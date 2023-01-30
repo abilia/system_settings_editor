@@ -57,7 +57,7 @@ class _ScreensaverAppBar extends StatelessWidget {
     return Padding(
       padding: layout.screensaver.titleBarPadding,
       child: AppBarTitle(
-        style: (Theme.of(context).textTheme.headline4 ?? headline4)
+        style: (Theme.of(context).textTheme.headlineMedium ?? headlineMedium)
             .apply(color: AbiliaColors.white),
         rows: AppBarTitleRows.day(
           compactDay: true,

@@ -139,6 +139,9 @@ class GetItInitializer {
   set myAbiliaConnection(MyAbiliaConnection myAbiliaConnection) =>
       _myAbiliaConnection = myAbiliaConnection;
 
+  Device? _device;
+  set device(Device device) => _device = device;
+
   void init() {
     final loginDb = _loginDb ?? LoginDb(_sharedPreferences);
     final deviceDb = _deviceDb ?? DeviceDb(_sharedPreferences);
@@ -175,7 +178,7 @@ class GetItInitializer {
           _termsOfUseDb ?? TermsOfUseDb(_sharedPreferences))
       ..registerSingleton<CalendarDb>(_calendarDb ?? CalendarDb(_database))
       ..registerSingleton<FileStorage>(
-          _fileStorage ?? FileStorage(_directories?.documents.path))
+          _fileStorage ?? FileStorage.inDirectory(_directories?.documents.path))
       ..registerSingleton<MultipartRequestBuilder>(_multipartRequestBuilder)
       ..registerSingleton<SyncDelays>(_syncDelay)
       ..registerSingleton<PackageInfo>(_packageInfo)
@@ -199,6 +202,9 @@ class GetItInitializer {
           _analytics ?? SeagullAnalytics.empty())
       ..registerSingleton<Connectivity>(
         _connectivity ?? Connectivity(),
+      )
+      ..registerSingleton<Device>(
+        _device ?? const Device(),
       )
       ..registerSingleton<MyAbiliaConnection>(
         _myAbiliaConnection ??

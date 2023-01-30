@@ -53,7 +53,7 @@ class MyPhotosPickField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = (Theme.of(context).textTheme.bodyText1 ?? bodyText1);
+    final textStyle = (Theme.of(context).textTheme.bodyLarge ?? bodyLarge);
     final text = Translator.of(context).translate.myPhotos;
     return BlocSelector<SortableBloc, SortableState, String?>(
       selector: (state) => state is SortablesLoaded

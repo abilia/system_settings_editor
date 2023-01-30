@@ -95,10 +95,9 @@ class WarningModal extends StatelessWidget {
           return null;
         }
         final daysAgo = context.read<ClockBloc>().state.difference(lastSync);
-        final locale = Localizations.localeOf(context);
 
         final dateString =
-            DateFormat.yMd(locale.languageCode).format(lastSync.onlyDays());
+            DateFormat.yMd(Platform.localeName).format(lastSync.onlyDays());
         return '${t.lastSyncWas} $dateString (${daysAgo.comparedToNowString(t, false, daysOnly: true)}).';
       case LogoutWarning.licenseExpiredWarning:
         return t.needLicenseToSaveData;
@@ -160,7 +159,7 @@ class _Body extends StatelessWidget {
     final t = Translator.of(context).translate;
     final labelStyle = Theme.of(context)
         .textTheme
-        .bodyText2
+        .bodyMedium
         ?.copyWith(color: AbiliaColors.black75);
 
     switch (warning) {
@@ -272,7 +271,7 @@ class _DirtyItemsState extends State<_DirtyItems> {
     final t = Translator.of(context).translate;
     final labelStyle = Theme.of(context)
         .textTheme
-        .bodyText2
+        .bodyMedium
         ?.copyWith(color: AbiliaColors.black75);
 
     late final InfoRowState defaultInfoRowState;
@@ -444,7 +443,7 @@ class _LogoutModal extends StatelessWidget {
                       Tts(
                         child: Text(
                           title,
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
                       SizedBox(
@@ -454,10 +453,12 @@ class _LogoutModal extends StatelessWidget {
                         Tts(
                           child: Text(
                             labelString,
-                            style:
-                                Theme.of(context).textTheme.subtitle2?.copyWith(
-                                      color: AbiliaColors.black75,
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall
+                                ?.copyWith(
+                                  color: AbiliaColors.black75,
+                                ),
                           ),
                         ),
                       SizedBox(

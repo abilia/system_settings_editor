@@ -62,7 +62,7 @@ void main() {
     setupFakeTts();
     tz.initializeTimeZones();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
 
     mockActivityDb = ActivityDbInMemory();
     mockGenericDb = MockGenericDb();

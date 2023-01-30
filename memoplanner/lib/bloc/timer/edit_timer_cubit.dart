@@ -19,11 +19,14 @@ class EditTimerCubit extends Cubit<EditTimerState> {
     BasicTimerDataItem? basicTimer,
   }) : super(basicTimer == null
             ? EditTimerState.initial()
-            : EditTimerState.withBasicTimer(basicTimer));
+            : EditTimerState.fromTemplate(basicTimer));
 
   void start() {
     final timer = save();
-    timerCubit.addTimer(timer);
+    timerCubit.addTimer(
+      timer,
+      state.metaData,
+    );
   }
 
   AbiliaTimer save() {
@@ -37,8 +40,9 @@ class EditTimerCubit extends Cubit<EditTimerState> {
     return timer;
   }
 
-  void updateDuration(Duration duration) => emit(
+  void updateDuration(Duration duration, TimerSetType timerSetType) => emit(
         state.copyWith(
+          metaData: state.metaData.copyWith(timerSetType: timerSetType),
           duration: duration,
           name: state.autoSetNameToDuration
               ? duration.toDurationString(translate, shortMin: false)
@@ -48,13 +52,14 @@ class EditTimerCubit extends Cubit<EditTimerState> {
 
   void updateName(String text) => emit(
         state.copyWith(
+          metaData: state.metaData.copyWith(titleChanged: true),
           name: text.trim(),
           autoSetNameToDuration: false,
         ),
       );
 
-  void loadBasicTimer(BasicTimerDataItem basicTimer) =>
-      emit(EditTimerState.withBasicTimer(basicTimer));
+  void loadTimerTemplate(BasicTimerDataItem basicTimer) =>
+      emit(EditTimerState.fromTemplate(basicTimer));
 
   void updateImage(AbiliaFile file) => emit(state.copyWith(image: file));
 }

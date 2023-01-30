@@ -41,7 +41,7 @@ class AboutContent extends StatelessWidget {
     return ScrollArrows.vertical(
       controller: scrollController,
       child: DefaultTextStyle(
-        style: textTheme.bodyText1 ?? bodyText1,
+        style: textTheme.bodyLarge ?? bodyLarge,
         child: ListView(
           controller: scrollController,
           children: [
@@ -79,7 +79,7 @@ class AboutMemoplannerColumn extends StatelessWidget {
       children: [
         Text(
           '${translate.aboutMemoplanner} ${Config.flavor.name}',
-          style: textTheme.headline6,
+          style: textTheme.titleLarge,
         ).withTts().pad(layout.templates.m1.withoutBottom),
         SizedBox(height: layout.formPadding.groupBottomDistance),
         DoubleText(
@@ -158,7 +158,7 @@ class AboutDeviceColumn extends StatelessWidget {
           children: [
             Text(
               translate.aboutDevice,
-              style: textTheme.headline6,
+              style: textTheme.titleLarge,
             ).withTts().pad(layout.templates.m1.withoutBottom),
             SizedBox(height: layout.formPadding.groupBottomDistance),
             if (Config.isMP)
@@ -198,11 +198,11 @@ class ProducerColumn extends StatelessWidget {
       children: [
         Text(
           translate.producer,
-          style: textTheme.headline6,
+          style: textTheme.titleLarge,
         ).withTts().pad(layout.templates.m1.withoutBottom),
         Text(
           'Abilia AB',
-          style: textTheme.subtitle1,
+          style: textTheme.titleMedium,
         ).withTts().pad(layout.templates.s2.withoutBottom),
         const Text('Råsundavägen 6, 169 67 Solna, Sweden')
             .withTts()
@@ -260,7 +260,7 @@ class DoubleText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final defaultTextStyle = textTheme.bodyText1 ?? bodyText1;
+    final defaultTextStyle = textTheme.bodyLarge ?? bodyLarge;
     final textStyle = bold
         ? defaultTextStyle.copyWith(fontWeight: FontWeight.bold)
         : defaultTextStyle.copyWith(color: AbiliaColors.black75);

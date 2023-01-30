@@ -65,7 +65,7 @@ class PasswordInput extends StatelessWidget {
                             readOnly: true,
                             obscureText: state.hide,
                             validator: (_) => errorState ? '' : null,
-                            style: theme.textTheme.bodyText1,
+                            style: theme.textTheme.bodyLarge,
                             autovalidateMode: AutovalidateMode.always,
                             decoration:
                                 errorState ? inputErrorDecoration : null,
@@ -161,7 +161,7 @@ class _PasswordInputBottomSheetState
                                 context.read<PasswordCubit>().changePassword(s),
                             obscureText: state.hide,
                             keyboardType: TextInputType.visiblePassword,
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.bodyLarge,
                             autofocus: true,
                             focusNode: focusNode,
                             onEditingComplete: () async {

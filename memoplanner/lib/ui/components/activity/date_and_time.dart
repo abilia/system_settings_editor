@@ -305,7 +305,7 @@ class Reminders extends StatelessWidget {
                 r.toDurationString(translator),
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText1
+                    .bodyLarge
                     ?.copyWith(height: 1.5),
               ),
               selected: activity.reminders.contains(r),

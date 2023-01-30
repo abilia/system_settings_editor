@@ -170,7 +170,7 @@ class WeekCalendarHeadingContent extends StatelessWidget {
     final borderWidth = selected || occasion.isCurrent
         ? wLayout.selectedDay.dayColumnBorderWidth
         : wLayout.notSelectedDay.dayColumnBorderWidth;
-    final textStyle = (dayTheme.theme.textTheme.bodyText1 ?? bodyText1)
+    final textStyle = (dayTheme.theme.textTheme.bodyLarge ?? bodyLarge)
         .copyWith(height: 18 / 16);
     final innerRadius = Radius.circular(wLayout.columnRadius.x - borderWidth);
     final fullDayPadding =
@@ -188,7 +188,7 @@ class WeekCalendarHeadingContent extends StatelessWidget {
         onTap: () {
           BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day));
           if (selected) {
-            DefaultTabController.of(context)?.animateTo(0);
+            DefaultTabController.of(context).animateTo(0);
           }
         },
         child: _WeekBorderedColumn(
@@ -369,7 +369,7 @@ class _WeekdayColumn extends StatelessWidget {
           flex: _dayColumnFlex(weekDisplayDays, selected),
           child: GestureDetector(
             onTap: () {
-              DefaultTabController.of(context)?.animateTo(0);
+              DefaultTabController.of(context).animateTo(0);
               BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day));
             },
             child: _WeekBorderedColumn(
@@ -543,7 +543,7 @@ class _WeekActivityContent extends StatelessWidget {
               Center(
                 child: EllipsesText(
                   activityOccasion.activity.title,
-                  style: Theme.of(context).textTheme.caption ?? caption,
+                  style: Theme.of(context).textTheme.bodySmall ?? bodySmall,
                   textAlign: TextAlign.center,
                   maxLines: maxLines,
                 ),
@@ -579,7 +579,7 @@ class _WeekTimerContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final wLayout = layout.weekCalendar;
-    final textStyle = (Theme.of(context).textTheme.caption ?? caption)
+    final textStyle = (Theme.of(context).textTheme.bodySmall ?? bodySmall)
         .copyWith(overflow: TextOverflow.ellipsis);
 
     return Tts.fromSemantics(

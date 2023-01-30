@@ -1,3 +1,4 @@
 export 'background.dart';
-export 'notification_isolate.dart';
+export 'notifications.dart';
 export 'streams.dart';
+export 'isolates/notifications_isolate.dart';

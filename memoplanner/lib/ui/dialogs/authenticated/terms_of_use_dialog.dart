@@ -48,7 +48,7 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
             Tts(
               child: Text(
                 '${translate.welcomeTo} ${Config.flavor.name}',
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             SizedBox(height: layout.termsOfUseDialog.headingTextDistance),
@@ -57,7 +57,7 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
                 '${translate.readAndAgree1} '
                 '${Config.flavor.name}'
                 '${translate.readAndAgree2}',
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
             SizedBox(height: layout.termsOfUseDialog.bodyTextDistance),

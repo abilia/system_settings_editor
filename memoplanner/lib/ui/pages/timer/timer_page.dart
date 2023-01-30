@@ -79,7 +79,7 @@ class TimerPage extends StatelessWidget {
                                             .timerPaused,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline4
+                                            .headlineMedium
                                             ?.copyWith(
                                               color: AbiliaColors.red,
                                             ),
@@ -136,7 +136,7 @@ class TimerTopInfo extends StatelessWidget {
                 child: Tts(
                   child: Text(
                     timer.title,
-                    style: themeData.textTheme.headline5,
+                    style: themeData.textTheme.headlineSmall,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
                     textAlign: TextAlign.center,

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/listener/all.dart';
@@ -109,26 +111,108 @@ class _EditTimerPage extends StatelessWidget {
           padding: layout.templates.m3,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const _TimerInfoInput(),
+            children: const [
+              _TimerInfoInput(),
               Expanded(
-                child: BlocSelector<EditTimerCubit, EditTimerState, Duration>(
-                  selector: (state) => state.duration,
-                  builder: (context, duration) => TimerWheel.interactive(
-                    lengthInSeconds: duration.inSeconds,
-                    onMinutesSelectedChanged: (minutesSelected) {
-                      HapticFeedback.selectionClick();
-                      context.read<EditTimerCubit>().updateDuration(
-                            Duration(minutes: minutesSelected),
-                          );
-                    },
-                  ).pad(layout.editTimer.wheelPadding),
-                ),
+                child: EditTimerWheel(),
               ),
             ],
           ),
         ),
         bottomNavigationBar: bottomNavigation,
+      ),
+    );
+  }
+}
+
+@visibleForTesting
+class EditTimerWheel extends StatefulWidget {
+  const EditTimerWheel({Key? key}) : super(key: key);
+
+  @override
+  State<EditTimerWheel> createState() => EditTimerWheelState();
+}
+
+@visibleForTesting
+class EditTimerWheelState extends State<EditTimerWheel>
+    with TickerProviderStateMixin {
+  static const _initialDelay = Duration(milliseconds: 1000);
+  static const _forwardDuration = Duration(milliseconds: 1000);
+  static const _reverseDuration = Duration(milliseconds: 600);
+  static const _delayBetweenAnimations = Duration(milliseconds: 2500);
+  static const _midAnimationDelay = Duration(milliseconds: 400);
+  late bool animate =
+      context.read<EditTimerCubit>().state.duration == Duration.zero;
+  Timer? animationTimer;
+
+  late final AnimationController _animationController = AnimationController(
+    duration: _forwardDuration,
+    reverseDuration: _reverseDuration,
+    vsync: this,
+    animationBehavior: AnimationBehavior.preserve,
+  )..addStatusListener((status) async {
+      if (!animate) {
+        _animationController.stop();
+      }
+      if (status == AnimationStatus.dismissed) {
+        animationTimer = Timer(_delayBetweenAnimations, () {
+          if (mounted) _animationController.forward();
+        });
+      }
+      if (status == AnimationStatus.completed) {
+        animationTimer = Timer(_midAnimationDelay, () {
+          if (mounted) _animationController.reverse();
+        });
+      }
+    });
+
+  @override
+  void initState() {
+    super.initState();
+    animationTimer = Timer(_initialDelay, () {
+      if (mounted) _animationController.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    animationTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final duration = context.select((EditTimerCubit c) => c.state.duration);
+
+    return BlocListener<EditTimerCubit, EditTimerState>(
+      listenWhen: (previous, current) => previous.duration != current.duration,
+      listener: (_, state) {
+        _animationController.stop();
+        animate = false;
+      },
+      child: ValueListenableBuilder(
+        valueListenable: CurvedAnimation(
+          parent: _animationController,
+          curve: Curves.easeInOutCubic,
+        ),
+        builder: (_, value, __) {
+          return TimerWheel.interactive(
+            lengthInSeconds:
+                animate ? (value * 120).toInt() : duration.inSeconds,
+            onMinutesSelectedChanged: (minutesSelected) {
+              setState(() {
+                _animationController.stop();
+                animate = false;
+              });
+              HapticFeedback.selectionClick();
+              context.read<EditTimerCubit>().updateDuration(
+                    Duration(minutes: minutesSelected),
+                    TimerSetType.wheel,
+                  );
+            },
+          ).pad(layout.editTimer.wheelPadding);
+        },
       ),
     );
   }
@@ -188,7 +272,10 @@ class _TimerInfoInput extends StatelessWidget {
                             ),
                           );
                           if (duration != null) {
-                            editTimerCubit.updateDuration(duration);
+                            editTimerCubit.updateDuration(
+                              duration,
+                              TimerSetType.inputField,
+                            );
                           }
                         },
                         leading: const Icon(AbiliaIcons.clock),

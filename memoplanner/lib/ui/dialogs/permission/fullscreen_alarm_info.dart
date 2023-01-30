@@ -31,14 +31,14 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
           Tts(
             child: Text(
               translate.fullScreenAlarm,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           SizedBox(height: layout.formPadding.verticalItemDistance),
           Tts(
             child: Text(
               translate.fullScreenAlarmInfo,
-              style: Theme.of(context).textTheme.bodyText2?.copyWith(
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AbiliaColors.black75,
                   ),
               textAlign: TextAlign.center,
@@ -49,7 +49,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
             Tts(
               child: Text(
                 translate.redirectToAndroidSettings,
-                style: Theme.of(context).textTheme.caption?.copyWith(
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AbiliaColors.black75,
                     ),
                 textAlign: TextAlign.center,

@@ -21,7 +21,7 @@ void main() {
   setUp(() async {
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
 
     genericDb = MockGenericDb();
     when(() => genericDb.getAllNonDeletedMaxRevision())

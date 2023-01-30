@@ -46,9 +46,10 @@ void main() {
             ),
             BlocProvider<WakeLockCubit>(
               create: (context) => WakeLockCubit(
-                screenTimeoutCallback: Future.value(30.minutes()),
-                memoSettingsBloc: context.read<MemoplannerSettingsBloc>(),
+                settingsDb: FakeSettingsDb(),
+                settingsStream: const Stream.empty(),
                 battery: FakeBattery(),
+                hasBattery: true,
               ),
             ),
             BlocProvider<TimerCubit>(
@@ -77,7 +78,7 @@ void main() {
     await initializeDateFormatting();
     setupFakeTts();
     registerFallbackValues();
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
     GetItInitializer()
       ..fileStorage = FakeFileStorage()
       ..database = FakeDatabase()

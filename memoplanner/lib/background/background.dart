@@ -73,7 +73,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     final activities =
         await activityRepository.allAfter(now.subtract(maxReminder));
 
-    final fileStorage = FileStorage(documentDirectory.path);
+    final fileStorage = FileStorage.inDirectory(documentDirectory.path);
 
     final userFileRepository = UserFileRepository(
       baseUrlDb: baseUrlDb,
@@ -107,13 +107,16 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     final timers = await TimerDb(database).getRunningTimersFrom(now);
     log.fine('active timers: ${timers.length}');
 
-    await scheduleAlarmNotifications(
-      activities,
-      timers.toAlarm(),
-      settingsDb.language,
-      settingsDb.alwaysUse24HourFormat,
-      settings.alarm,
-      fileStorage,
+    await scheduleNotifications(
+      NotificationsSchedulerData(
+        activities: activities,
+        timers: timers.toAlarm(),
+        language: settingsDb.language,
+        alwaysUse24HourFormat: settingsDb.alwaysUse24HourFormat,
+        settings: settings.alarm,
+        fileStorage: fileStorage,
+      ),
+      log.log,
     );
   } catch (e) {
     log.severe('Exception when running background handler', e);

@@ -42,7 +42,7 @@ class AlarmPage extends StatelessWidget {
                 trailing: Padding(
                   padding: layout.alarmPage.clockPadding,
                   child: AbiliaClock(
-                    style: Theme.of(context).textTheme.caption?.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AbiliaColors.white,
                         ),
                   ),
@@ -96,7 +96,7 @@ class ReminderPage extends StatelessWidget {
               trailing: Padding(
                 padding: layout.alarmPage.clockPadding,
                 child: AbiliaClock(
-                  style: Theme.of(context).textTheme.caption?.copyWith(
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AbiliaColors.white,
                       ),
                 ),
@@ -114,7 +114,7 @@ class ReminderPage extends StatelessWidget {
                           text,
                           style: Theme.of(context)
                               .textTheme
-                              .headline4
+                              .headlineMedium
                               ?.copyWith(color: AbiliaColors.red),
                         ),
                       ),
@@ -309,7 +309,7 @@ class TimerAlarmPage extends StatelessWidget with ActivityMixin {
                                         .timerPaused,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .headline4
+                                        .headlineMedium
                                         ?.copyWith(
                                           color: AbiliaColors.red,
                                         ),

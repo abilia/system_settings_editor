@@ -74,7 +74,7 @@ class _FullScreenActivityTabBar extends StatelessWidget with ActivityMixin {
     final ScrollController scrollController = ScrollController();
     return DefaultTextStyle(
       overflow: TextOverflow.fade,
-      style: (Theme.of(context).textTheme.caption ?? caption),
+      style: (Theme.of(context).textTheme.bodySmall ?? bodySmall),
       textAlign: TextAlign.center,
       child: Container(
         height: layout.ongoingFullscreen.height,

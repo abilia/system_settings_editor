@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memoplanner/background/notification_isolate.dart';
+import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/db/sortable_db.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
@@ -13,7 +13,7 @@ import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
-  scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+  scheduleNotificationsIsolated = noAlarmScheduler;
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -379,6 +379,7 @@ void main() {
       });
 
       testWidgets('Can create basic timer', (tester) async {
+        const jankDuration = Duration(seconds: 1);
         const enteredTitle = 'a basic timer';
         final duration = const Duration(minutes: 5).inMilliseconds;
         await tester.goToTemplates();
@@ -386,35 +387,33 @@ void main() {
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(AddTemplateButton));
-        await tester.pumpAndSettle();
+        await tester.pumpTwice();
         expect(find.byType(EditBasicTimerPage), findsOneWidget);
         expect(find.byType(SaveButton), findsOneWidget);
         expect(find.byType(CancelButton), findsOneWidget);
         expect(find.byType(PreviousButton), findsNothing);
 
-        await tester.ourEnterText(
-          find.byType(AbiliaTextInput),
-          enteredTitle,
-        );
-        await tester.pumpAndSettle();
-
+        await tester.tap(find.byType(AbiliaTextInput), warnIfMissed: false);
+        await tester.pump();
+        await tester.enterText(find.byKey(TestKey.input), enteredTitle);
+        await tester.pumpTwice(duration: jankDuration);
+        await tester.tap(find.byKey(TestKey.inputOk));
+        await tester.pump();
         await tester.tap(find.byIcon(AbiliaIcons.clock));
-        await tester.pumpAndSettle();
+        await tester.pumpTwice();
         await tester.tap(find.text('5'));
-        await tester.pumpAndSettle();
+        await tester.pumpTwice(duration: jankDuration);
         await tester.tap(find.byType(OkButton));
-        await tester.pumpAndSettle();
-
+        await tester.pumpTwice(duration: jankDuration);
         await tester.tap(find.byType(SaveButton));
-        await tester.pumpAndSettle();
+        await tester.pumpTwice(duration: jankDuration);
+
         expect(find.byType(EditTimerPage), findsNothing);
         final captured =
             verify(() => mockSortableDb.insertAndAddDirty(captureAny()))
                 .captured
                 .last;
-
         final sortable = (captured as List).single as Sortable<SortableData>;
-
         final dataItem = sortable.data as BasicTimerDataItem;
         expect(dataItem.basicTimerTitle, enteredTitle);
         expect(dataItem.duration, duration);
@@ -439,19 +438,20 @@ void main() {
       testWidgets(
           'Create a timer and clicking cancel triggers discard warning dialog',
           (tester) async {
+        const jankDuration = Duration(seconds: 1);
         await tester.goToTemplates();
         await tester.tap(find.byIcon(AbiliaIcons.stopWatch));
         await tester.pumpAndSettle();
-
         await tester.tap(find.byType(AddTemplateButton));
-        await tester.pumpAndSettle();
-        await tester.ourEnterText(
-          find.byType(AbiliaTextInput),
-          'a basic timer',
-        );
-
+        await tester.pumpTwice();
+        await tester.tap(find.byType(AbiliaTextInput), warnIfMissed: false);
+        await tester.pump();
+        await tester.enterText(find.byKey(TestKey.input), 'a basic timer');
+        await tester.pumpTwice(duration: jankDuration);
+        await tester.tap(find.byKey(TestKey.inputOk));
+        await tester.pumpTwice(duration: jankDuration);
         await tester.tap(find.byType(CancelButton));
-        await tester.pumpAndSettle();
+        await tester.pump();
         expect(find.byType(DiscardWarningDialog), findsOneWidget);
       });
     });
@@ -459,6 +459,11 @@ void main() {
 }
 
 extension on WidgetTester {
+  Future<void> pumpTwice({Duration duration = Duration.zero}) async {
+    await pump();
+    await pump(duration);
+  }
+
   Future<void> goToTemplates() async {
     await pumpApp();
     await tap(find.byType(MenuButton));

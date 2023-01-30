@@ -29,7 +29,7 @@ void main() {
 
   setUpAll(() {
     if (Config.isMP) {
-      layout = const LayoutMedium();
+      screenSize = const Size(800, 1200);
     }
   });
 

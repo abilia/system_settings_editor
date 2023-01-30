@@ -38,7 +38,7 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
             child: Tts(
               child: Text(
                 translate.resetDeviceQuestion,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),
@@ -55,7 +55,7 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
             child: Text(
               translate.factoryResetDescription,
               textAlign: TextAlign.start,
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
           if (isFactoryReset && !isConnected) ...[
@@ -74,7 +74,7 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
           Tts(
             child: Text(
               translate.clearDataDescription,
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
           SizedBox(height: layout.resetDeviceDialog.verticalPadding),

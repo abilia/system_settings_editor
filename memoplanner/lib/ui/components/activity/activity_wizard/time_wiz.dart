@@ -19,7 +19,7 @@ class TimeWiz extends StatelessWidget {
           child: AbiliaClock(
             style: Theme.of(context)
                 .textTheme
-                .caption
+                .bodySmall
                 ?.copyWith(color: AbiliaColors.white),
           ),
         ),

@@ -42,7 +42,12 @@ final abiliaTheme = ThemeData(
   cupertinoOverrideTheme: const CupertinoThemeData(
     primaryColor: AbiliaColors.black,
   ),
-  toggleableActiveColor: AbiliaColors.green,
+  switchTheme: SwitchThemeData(
+    thumbColor: toggleableActiveColor,
+    trackColor: toggleableActiveColor,
+  ),
+  radioTheme: RadioThemeData(fillColor: toggleableActiveColor),
+  checkboxTheme: CheckboxThemeData(fillColor: toggleableActiveColor),
   dividerTheme: DividerThemeData(
     color: AbiliaColors.white120,
     endIndent: layout.templates.m1.right,
@@ -298,3 +303,14 @@ final lightIconThemeData = IconThemeData(
   size: layout.icon.button,
   color: AbiliaColors.white,
 );
+
+final toggleableActiveColor =
+    MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+  if (states.contains(MaterialState.disabled)) {
+    return null;
+  }
+  if (states.contains(MaterialState.selected)) {
+    return AbiliaColors.green;
+  }
+  return null;
+});

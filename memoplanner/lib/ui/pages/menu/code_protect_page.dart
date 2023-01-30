@@ -117,7 +117,7 @@ class PinCodeWidget extends StatelessWidget {
                 textAlign: TextAlign.center,
                 keyboardType: TextInputType.number,
                 enableInteractiveSelection: false,
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headlineMedium,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderRadius: borderRadius,
@@ -139,7 +139,7 @@ class PinCodeWidget extends StatelessWidget {
             message,
             style: Theme.of(context)
                 .textTheme
-                .bodyText1
+                .bodyLarge
                 ?.copyWith(color: AbiliaColors.black60),
           )
         ],

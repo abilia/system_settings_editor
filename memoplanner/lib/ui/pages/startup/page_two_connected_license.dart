@@ -64,7 +64,7 @@ class _PageTwoConnectedLicenseState extends State<PageTwoConnectedLicense> {
             Tts(
               child: Text(
                 '${t.step} 2/3',
-                style: abiliaTextTheme.bodyText2
+                style: abiliaTextTheme.bodyMedium
                     ?.copyWith(color: AbiliaColors.black75),
               ),
             ),
@@ -72,7 +72,7 @@ class _PageTwoConnectedLicenseState extends State<PageTwoConnectedLicense> {
             Tts(
               child: Text(
                 t.enterYourLicense,
-                style: abiliaTextTheme.headline6
+                style: abiliaTextTheme.titleLarge
                     ?.copyWith(color: AbiliaColors.black75),
               ),
             ),

@@ -114,6 +114,30 @@ class AlarmSettings extends Equatable {
         ),
       );
 
+  factory AlarmSettings.fromMap(Map<String, dynamic> data) {
+    return AlarmSettings(
+      durationMs: data[alarmDurationKey],
+      checkableActivity: data[checkableActivityAlarmKey],
+      nonCheckableActivity: data[nonCheckableActivityAlarmKey],
+      reminder: data[reminderAlarmKey],
+      timer: data[timerAlarmKey],
+      disabledUntilEpoch: data[alarmsDisabledUntilKey],
+      showAlarmOnOffSwitch: data[showAlarmOnOffSwitchKey],
+      showOngoingActivityInFullScreen: data[showOngoingActivityInFullScreenKey],
+    );
+  }
+
+  Map<String, dynamic> toMap() => {
+        alarmDurationKey: durationMs,
+        checkableActivityAlarmKey: checkableActivity,
+        nonCheckableActivityAlarmKey: nonCheckableActivity,
+        reminderAlarmKey: reminder,
+        timerAlarmKey: timer,
+        alarmsDisabledUntilKey: disabledUntilEpoch,
+        showAlarmOnOffSwitchKey: showAlarmOnOffSwitch,
+        showOngoingActivityInFullScreenKey: showOngoingActivityInFullScreen,
+      };
+
   List<MemoplannerSettingData> get memoplannerSettingData => [
         MemoplannerSettingData.fromData(
           data: nonCheckableSound.name,

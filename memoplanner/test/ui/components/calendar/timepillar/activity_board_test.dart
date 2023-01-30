@@ -129,7 +129,7 @@ void main() {
               TimepillarBoard(
                 TimepillarBoard.positionTimepillarCards(
                   eventOccasions: activityOccasions,
-                  textStyle: caption,
+                  textStyle: bodySmall,
                   textScaleFactor: 1.0,
                   dayParts: const DayParts(),
                   timepillarSide: TimepillarSide.right,
@@ -141,7 +141,7 @@ void main() {
                 ),
                 categoryMinWidth: 400,
                 timepillarWidth: measures.cardTotalWidth,
-                textStyle: caption,
+                textStyle: bodySmall,
               ),
             ],
           ),
@@ -485,7 +485,7 @@ void main() {
       );
       final boardData = TimepillarBoard.positionTimepillarCards(
         eventOccasions: activities,
-        textStyle: caption,
+        textStyle: bodySmall,
         textScaleFactor: 1.0,
         dayParts: const DayParts(),
         timepillarSide: TimepillarSide.right,

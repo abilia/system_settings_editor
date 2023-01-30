@@ -74,7 +74,7 @@ void main() {
     setupPermissions();
     setupFakeTts();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
     timeTicker = StreamController<DateTime>();
     activityDbInMemory = ActivityDbInMemory();
 

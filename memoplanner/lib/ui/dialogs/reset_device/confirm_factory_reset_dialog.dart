@@ -40,14 +40,14 @@ class ConfirmFactoryResetDialog extends StatelessWidget {
             Tts(
               child: Text(
                 translate.confirmFactoryReset,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             SizedBox(height: dialogLayout.textToTextDistance),
             Tts(
               child: Text(
                 translate.confirmFactoryResetDescription,
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
             if (errorMessage != null) ...[

@@ -29,7 +29,7 @@ class PhotoCalendarPage extends StatelessWidget {
       child: WillPopScope(
         onWillPop: () async {
           final index = displaySettings.menu ? displaySettings.menuTabIndex : 0;
-          DefaultTabController.of(context)?.index = index;
+          DefaultTabController.of(context).index = index;
           return false;
         },
         child: Scaffold(
@@ -76,7 +76,7 @@ class PhotoCalendarPage extends StatelessWidget {
                                     StartView.photoAlbum
                                 ? 0
                                 : functionsSettings.startViewIndex;
-                            DefaultTabController.of(context)?.index = index;
+                            DefaultTabController.of(context).index = index;
                           },
                           child: Icon(functionsSettings.startView.icon),
                         ),
@@ -165,7 +165,7 @@ class PhotoCalendarAppBar extends StatelessWidget
     final appBarSettings = settings.dayCalendar.appBar;
     final time = context.watch<ClockBloc>().state;
     return CalendarAppBar(
-      textStyle: Theme.of(context).textTheme.headline4,
+      textStyle: Theme.of(context).textTheme.headlineMedium,
       day: time.onlyDays(),
       calendarDayColor: settings.calendar.dayColor,
       rows: AppBarTitleRows.day(

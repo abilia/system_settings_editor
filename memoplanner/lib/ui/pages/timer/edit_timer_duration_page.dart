@@ -64,7 +64,7 @@ class _TimerInputContentState extends State<_TimerInputContent> {
                 selectionColor: Colors.transparent,
               ),
               textTheme: theme.textTheme
-                  .copyWith(subtitle1: abiliaTextTheme.headline4)),
+                  .copyWith(titleMedium: abiliaTextTheme.headlineMedium)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -80,7 +80,7 @@ class _TimerInputContentState extends State<_TimerInputContent> {
               Padding(
                 padding: EdgeInsets.all(layout.editTimer.inputTimePadding),
                 child: DefaultTextStyle(
-                  style: theme.textTheme.headline5 ?? headline5,
+                  style: theme.textTheme.headlineSmall ?? headlineSmall,
                   child: const Text(':'),
                 ),
               ),

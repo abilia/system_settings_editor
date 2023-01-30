@@ -69,7 +69,7 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
                             child: TextField(
                               controller: controller,
                               textCapitalization: TextCapitalization.sentences,
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.bodyLarge,
                               autofocus: true,
                               focusNode: focusNode,
                               onChanged: (s) => context

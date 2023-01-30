@@ -69,9 +69,8 @@ class CameraButton extends StatelessWidget {
             } else {
               final userFileCubit = context.read<UserFileCubit>();
               final sortableBloc = context.read<SortableBloc>();
-              final name = DateFormat.yMd(
-                Localizations.localeOf(context).toLanguageTag(),
-              ).format(context.read<ClockBloc>().state);
+              final now = context.read<ClockBloc>().state;
+              final name = DateFormat.yMd(Platform.localeName).format(now);
               final image =
                   await ImagePicker().pickImage(source: ImageSource.camera);
               if (image != null) {
@@ -141,7 +140,7 @@ class PhotoCalendarButton extends StatelessWidget {
         final settings = context.read<MemoplannerSettingsBloc>().state;
         final photoAlbumTabIndex =
             settings.functions.display.photoAlbumTabIndex;
-        DefaultTabController.of(context)?.index = photoAlbumTabIndex;
+        DefaultTabController.of(context).index = photoAlbumTabIndex;
       },
       style: blueMenuButtonStyle,
       text: Translator.of(context).translate.photoCalendar,

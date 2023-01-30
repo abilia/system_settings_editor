@@ -28,7 +28,7 @@ void main() {
     registerFallbackValues();
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
   });
 
   setUp(() {

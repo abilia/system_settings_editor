@@ -69,7 +69,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValues();
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
   });
 
   setUp(() async {
@@ -77,7 +77,7 @@ void main() {
     setupFakeTts();
     tz.initializeTimeZones();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
 
     final mockFirebasePushService = MockFirebasePushService();
     when(() => mockFirebasePushService.initPushToken())
@@ -117,6 +117,9 @@ void main() {
     when(() => mockSettingsDb.setAlwaysUse24HourFormat(any()))
         .thenAnswer((_) => Future.value());
     when(() => mockSettingsDb.alwaysUse24HourFormat).thenReturn(true);
+    when(() => mockSettingsDb.keepScreenOnWhileCharging).thenReturn(false);
+    // ignore: deprecated_member_use_from_same_package
+    when(() => mockSettingsDb.keepScreenOnWhileChargingSet).thenReturn(true);
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()

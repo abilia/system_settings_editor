@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -140,7 +142,6 @@ class SelectPictureWidget extends StatelessWidget {
     final authProviders = copiedAuthProviders(context);
     final userFileCubit = context.read<UserFileCubit>();
     final sortableBloc = context.read<SortableBloc>();
-    final language = Localizations.localeOf(context).toLanguageTag();
     final now = context.read<ClockBloc>().state;
     final newSelectedImage = await Navigator.of(context).push<AbiliaFile>(
       PersistentMaterialPageRoute(
@@ -155,7 +156,7 @@ class SelectPictureWidget extends StatelessWidget {
     );
 
     if (newSelectedImage != null) {
-      final name = DateFormat.yMd(language).format(now);
+      final name = DateFormat.yMd(Platform.localeName).format(now);
       if (newSelectedImage is UnstoredAbiliaFile) {
         userFileCubit.fileAdded(
           newSelectedImage,
@@ -659,7 +660,7 @@ class Weekdays extends StatelessWidget {
     final weekdays =
         context.select((RecurringWeekCubit bloc) => bloc.state.weekdays);
     return DefaultTextStyle(
-      style: (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
+      style: (Theme.of(context).textTheme.bodyLarge ?? bodyLarge)
           .copyWith(height: 1.5),
       child: Padding(
         padding: EdgeInsets.only(top: layout.selectableField.position.abs()),
@@ -718,7 +719,7 @@ class MonthDays extends StatelessWidget {
                     '$d',
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText1
+                        .bodyLarge
                         ?.copyWith(height: 1.5),
                   ),
                   selected: selectedMonthDays.contains(d),

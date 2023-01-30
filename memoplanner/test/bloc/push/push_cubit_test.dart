@@ -21,7 +21,7 @@ void main() {
       tz.initializeTimeZones();
       setupPermissions();
       notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-      scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+      scheduleNotificationsIsolated = noAlarmScheduler;
 
       final time = DateTime(2020, 06, 05, 13, 23);
 

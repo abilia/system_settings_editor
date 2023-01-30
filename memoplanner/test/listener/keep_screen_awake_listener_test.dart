@@ -5,11 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/listener/all.dart';
-import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/main.dart';
 import 'package:memoplanner/ui/all.dart';
 
-import '../mocks/mock_bloc.dart';
+import '../fakes/all.dart';
 import '../mocks/mocks.dart';
 import '../test_helpers/register_fallback_values.dart';
 
@@ -19,7 +20,6 @@ void main() {
   late WakeLockCubit wakeLockCubit;
   late Battery mockBattery;
   late StreamController<BatteryState> batteryStreamController;
-  late MemoplannerSettingsBloc mockMemoplannerSettingBloc;
 
   const setScreenOffTimeout = 'setScreenOffTimeout',
       getScreenOffTimeout = 'getScreenOffTimeout',
@@ -61,16 +61,12 @@ void main() {
     batteryStreamController = StreamController<BatteryState>();
     when(() => mockBattery.onBatteryStateChanged)
         .thenAnswer((_) => batteryStreamController.stream);
-    mockMemoplannerSettingBloc = MockMemoplannerSettingBloc();
-    when(() => mockMemoplannerSettingBloc.state)
-        .thenReturn(const MemoplannerSettingsNotLoaded());
 
     wakeLockCubit = WakeLockCubit(
       battery: mockBattery,
-      memoSettingsBloc: mockMemoplannerSettingBloc,
-      screenTimeoutCallback: Future.value(
-        const Duration(milliseconds: systemTimeOutMs),
-      ),
+      settingsStream: const Stream.empty(),
+      settingsDb: FakeSettingsDb(),
+      hasBattery: true,
     );
   });
 
@@ -114,5 +110,36 @@ void main() {
     expect(systemSettingsChannelCallCounter[setScreenOffTimeout], 1);
     expect(systemSettingsChannelCallArguments[setScreenOffTimeout]['timeout'],
         newTimeout.inMilliseconds);
+  });
+
+  group('Full App', () {
+    setUp(() async {
+      setupPermissions();
+      setUpMockSystemSettingsChannel(
+        screenOffTimeout: const Duration(minutes: 30).inMilliseconds,
+      );
+
+      GetItInitializer()
+        ..sharedPreferences = await FakeSharedPreferences.getInstance()
+        ..database = FakeDatabase()
+        ..deviceDb = FakeDeviceDb()
+        ..client = Fakes.client()
+        ..init();
+    });
+
+    testWidgets(
+      'Finds KeepScreenAwakeListener in tree and getScreenOffTimeout gets called',
+      (tester) async {
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(KeepScreenAwakeListener), findsOneWidget);
+
+        expect(
+          systemSettingsChannelCallCounter[getScreenOffTimeout],
+          greaterThanOrEqualTo(1),
+        );
+      },
+      skip: !Config.isMP,
+    );
   });
 }

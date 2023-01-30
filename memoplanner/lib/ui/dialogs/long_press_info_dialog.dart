@@ -31,15 +31,15 @@ class LongPressInfoDialog extends StatelessWidget {
             child: Text(
               translate.longpressToSpeak,
               textAlign: TextAlign.center,
-              style: abiliaTextTheme.headline6,
+              style: abiliaTextTheme.titleLarge,
             ),
           ),
           Tts(
             child: Text(
               translate.longPressInfoText,
               textAlign: TextAlign.center,
-              style:
-                  (Theme.of(context).textTheme.bodyText2 ?? bodyText2).copyWith(
+              style: (Theme.of(context).textTheme.bodyMedium ?? bodyMedium)
+                  .copyWith(
                 color: AbiliaColors.black75,
               ),
             ),

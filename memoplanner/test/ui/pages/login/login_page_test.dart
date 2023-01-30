@@ -26,7 +26,7 @@ void main() {
   TermsOfUseResponse termsOfUseResponse = () => TermsOfUse.accepted();
 
   setUpAll(() {
-    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    scheduleNotificationsIsolated = noAlarmScheduler;
     licensExpireTime = time.add(10.days());
     client = Fakes.client(
       activityResponse: () => [],

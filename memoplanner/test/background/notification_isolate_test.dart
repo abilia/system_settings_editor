@@ -1,8 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:logging/logging.dart';
+import 'package:memoplanner/storage/file_storage.dart';
 
 import 'package:uuid/uuid.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -15,10 +18,12 @@ import '../mocks/mocks.dart';
 import '../test_helpers/register_fallback_values.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   final now = DateTime(2020, 05, 14, 18, 53);
   final mockedFileStorage = MockFileStorage();
   late MockFlutterLocalNotificationsPlugin mockedNotificationsPlugin;
   final fileId = const Uuid().v4();
+  final testLogger = Logger('Test log');
   final allActivities = [
     Activity.createNew(
       title: 'passed',
@@ -58,10 +63,41 @@ void main() {
           ends: now.add(5.days())),
     ),
   ];
+  final timer1 = TimerAlarm(
+        AbiliaTimer(
+          id: 'ids',
+          title: 'title',
+          startTime: now,
+          duration: 22.minutes(),
+        ),
+      ),
+      timer2 = TimerAlarm(
+        AbiliaTimer(
+          id: 'ids2',
+          title: 'title2',
+          startTime: now.subtract(23.hours()),
+          duration: 24.hours(),
+        ),
+      ),
+      timer3 = TimerAlarm(
+        AbiliaTimer(
+          id: 'ids3',
+          title: 'title3',
+          startTime: now.subtract(21.minutes()).subtract(55.seconds()),
+          duration: 22.minutes(),
+        ),
+      );
+  final allTimers = [timer1, timer2, timer3];
 
   setUpAll(registerFallbackValues);
 
   setUp(() {
+    const MethodChannel('flutter_native_timezone')
+        .setMockMethodCallHandler((MethodCall methodCall) async {
+      if (methodCall.method == 'getLocalTimezone') {
+        return '';
+      }
+    });
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.UTC);
     notificationsPluginInstance =
@@ -147,21 +183,24 @@ void main() {
       const timerSound = Sound.Hello;
 
       // Act
-      await scheduleAlarmNotifications(
-        [Activity.createNew(startTime: now.add(30.minutes()))],
-        [
-          TimerAlarm(
-            AbiliaTimer.createNew(
-              startTime: now,
-              duration: 10.minutes(),
-            ),
-          )
-        ],
-        'en',
-        true,
-        const AlarmSettings().copyWith(timerSound: timerSound),
-        mockedFileStorage,
-        now: () => now,
+      await scheduleNotifications(
+        NotificationsSchedulerData(
+          activities: [Activity.createNew(startTime: now.add(30.minutes()))],
+          timers: [
+            TimerAlarm(
+              AbiliaTimer.createNew(
+                startTime: now,
+                duration: 10.minutes(),
+              ),
+            )
+          ],
+          language: 'en',
+          alwaysUse24HourFormat: true,
+          settings: const AlarmSettings().copyWith(timerSound: timerSound),
+          fileStorage: mockedFileStorage,
+          dateTime: now,
+        ),
+        testLogger.log,
       );
 
       // Assert
@@ -201,69 +240,82 @@ void main() {
         AndroidNotificationChannelAction.createIfNotExists,
       );
     });
-  });
 
-  group('only activities', () {
-    test('isolate', () async {
-      final serialized =
-          allActivities.map((e) => e.wrapWithDbModel().toJson()).toList();
-      final shouldBeScheduledNotificationsSerialized =
-          await compute(alarmsFromIsolate, [serialized, now, 50]);
-      final shouldBeScheduledNotifications =
-          shouldBeScheduledNotificationsSerialized
-              .map((e) => ActivityAlarm.fromJson(e));
-      expect(shouldBeScheduledNotifications, hasLength(11));
-    });
-
-    test('scheduleAlarmNotificationsIsolated', () async {
-      await scheduleAlarmNotificationsIsolated(
+    test('Serializing AlarmSchedulerData back and forth keeps all the data',
+        () async {
+      final schedulerData = NotificationsSchedulerData(
         activities: allActivities,
-        timers: [],
+        timers: allTimers,
         language: 'en',
         alwaysUse24HourFormat: true,
         settings: const AlarmSettings(),
-        fileStorage: mockedFileStorage,
-        now: () => now,
+        fileStorage: FileStorage('jollo'),
+        dateTime: now,
       );
-      verifyCancelAllPendingNotifications();
-      verify(() => mockedNotificationsPlugin.zonedSchedule(
-          any(), any(), any(), any(), any(),
-          payload: any(named: 'payload'),
-          androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
-          uiLocalNotificationDateInterpretation:
-              UILocalNotificationDateInterpretation.wallClockTime)).called(11);
+      final serialized = schedulerData.toMap();
+      expect(schedulerData, NotificationsSchedulerData.fromMap(serialized));
     });
+  });
 
-    test('scheduleAlarmNotifications', () async {
-      await scheduleAlarmNotifications(
-        allActivities,
-        [],
-        'en',
-        true,
-        const AlarmSettings(),
-        mockedFileStorage,
-        now: () => now,
-      );
-      verifyCancelAllPendingNotifications();
-      verify(() => mockedNotificationsPlugin.zonedSchedule(
-          any(), any(), any(), any(), any(),
-          payload: any(named: 'payload'),
-          androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
-          uiLocalNotificationDateInterpretation:
-              UILocalNotificationDateInterpretation.wallClockTime)).called(11);
-    });
-
-    test('scheduleAlarmNotifications disabled until tomorrow', () async {
-      await scheduleAlarmNotifications(
-        allActivities,
-        [],
-        'en',
-        true,
-        AlarmSettings(
-          disabledUntilEpoch: now.onlyDays().nextDay().millisecondsSinceEpoch,
+  group('only activities', () {
+    test('scheduleNotificationsIsolated', () async {
+      await scheduleNotificationsIsolated(
+        NotificationsSchedulerData(
+          activities: allActivities,
+          timers: const [],
+          language: 'en',
+          alwaysUse24HourFormat: true,
+          settings: const AlarmSettings(),
+          fileStorage: mockedFileStorage,
+          dateTime: now,
         ),
-        mockedFileStorage,
-        now: () => now,
+      );
+      await Future.delayed(1.seconds());
+      verifyCancelAllPendingNotifications();
+      verify(() => mockedNotificationsPlugin.zonedSchedule(
+          any(), any(), any(), any(), any(),
+          payload: any(named: 'payload'),
+          androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.wallClockTime)).called(11);
+    });
+
+    test('scheduleNotifications', () async {
+      await scheduleNotifications(
+        NotificationsSchedulerData(
+          activities: allActivities,
+          timers: const [],
+          language: 'en',
+          alwaysUse24HourFormat: true,
+          settings: const AlarmSettings(),
+          fileStorage: mockedFileStorage,
+          dateTime: now,
+        ),
+        testLogger.log,
+      );
+      verifyCancelAllPendingNotifications();
+      verify(() => mockedNotificationsPlugin.zonedSchedule(
+          any(), any(), any(), any(), any(),
+          payload: any(named: 'payload'),
+          androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.wallClockTime)).called(11);
+    });
+
+    test('scheduleNotifications disabled until tomorrow', () async {
+      await scheduleNotifications(
+        NotificationsSchedulerData(
+          activities: allActivities,
+          timers: const [],
+          language: 'en',
+          alwaysUse24HourFormat: true,
+          settings: AlarmSettings(
+            disabledUntilEpoch: now.onlyDays().nextDay().millisecondsSinceEpoch,
+          ),
+          fileStorage: mockedFileStorage,
+          dateTime: now,
+        ),
+        testLogger.log,
       );
       verifyCancelAllPendingNotifications();
 
@@ -275,17 +327,20 @@ void main() {
               UILocalNotificationDateInterpretation.wallClockTime)).called(5);
     });
 
-    test('scheduleAlarmNotifications with image android', () async {
+    test('scheduleNotifications with image android', () async {
       debugDefaultTargetPlatformOverride = TargetPlatform.android;
       addTearDown(() => debugDefaultTargetPlatformOverride = null);
-      await scheduleAlarmNotifications(
-        allActivities.take(2),
-        [],
-        'en',
-        true,
-        const AlarmSettings(),
-        mockedFileStorage,
-        now: () => now,
+      await scheduleNotifications(
+        NotificationsSchedulerData(
+          activities: allActivities.take(2),
+          timers: const [],
+          language: 'en',
+          alwaysUse24HourFormat: true,
+          settings: const AlarmSettings(),
+          fileStorage: mockedFileStorage,
+          dateTime: now,
+        ),
+        testLogger.log,
       );
       verifyCancelAllPendingNotifications();
       verify(() => mockedFileStorage.getFile(fileId));
@@ -315,17 +370,20 @@ void main() {
       expect(details.android?.fullScreenIntent, isTrue);
     });
 
-    test('scheduleAlarmNotifications with image iOS', () async {
+    test('scheduleNotifications with image iOS', () async {
       debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
       addTearDown(() => debugDefaultTargetPlatformOverride = null);
-      await scheduleAlarmNotifications(
-        allActivities.take(2),
-        [],
-        'en',
-        true,
-        const AlarmSettings(),
-        mockedFileStorage,
-        now: () => now,
+      await scheduleNotifications(
+        NotificationsSchedulerData(
+          activities: allActivities.take(2),
+          timers: const [],
+          language: 'en',
+          alwaysUse24HourFormat: true,
+          settings: const AlarmSettings(),
+          fileStorage: mockedFileStorage,
+          dateTime: now,
+        ),
+        testLogger.log,
       );
       verifyCancelAllPendingNotifications();
       verify(() => mockedFileStorage.copyImageThumbForNotification(fileId));
@@ -347,42 +405,67 @@ void main() {
     });
   });
 
-  final timer1 = TimerAlarm(
-        AbiliaTimer(
-          id: 'ids',
-          title: 'title',
-          startTime: now,
-          duration: 22.minutes(),
-        ),
-      ),
-      timer2 = TimerAlarm(
-        AbiliaTimer(
-          id: 'ids2',
-          title: 'title2',
-          startTime: now.subtract(23.hours()),
-          duration: 24.hours(),
-        ),
-      ),
-      timer3 = TimerAlarm(
-        AbiliaTimer(
-          id: 'ids3',
-          title: 'title3',
-          startTime: now.subtract(21.minutes()).subtract(55.seconds()),
-          duration: 22.minutes(),
-        ),
-      );
-
-  final allTimers = [timer1, timer2, timer3];
   group('only timers', () {
-    test('scheduleAlarmNotificationsIsolated one timer', () async {
-      await scheduleAlarmNotificationsIsolated(
-        activities: [],
-        timers: [timer1],
-        language: 'en',
-        alwaysUse24HourFormat: true,
-        settings: const AlarmSettings(),
-        fileStorage: mockedFileStorage,
-        now: () => now,
+    test('scheduleNotificationsIsolated one timer', () async {
+      await scheduleNotificationsIsolated(
+        NotificationsSchedulerData(
+          activities: const [],
+          timers: [timer1],
+          language: 'en',
+          alwaysUse24HourFormat: true,
+          settings: const AlarmSettings(),
+          fileStorage: mockedFileStorage,
+          dateTime: now,
+        ),
+      );
+      await Future.delayed(10.milliseconds());
+      verifyCancelAllPendingNotifications();
+      verify(
+        () => mockedNotificationsPlugin.zonedSchedule(
+            timer1.hashCode, timer1.timer.title, any(), any(), any(),
+            payload: timer1.encode(),
+            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.wallClockTime),
+      ).called(1);
+    });
+
+    test('scheduleNotificationsIsolated 3 timers', () async {
+      await scheduleNotificationsIsolated(
+        NotificationsSchedulerData(
+          activities: const [],
+          timers: allTimers,
+          language: 'en',
+          alwaysUse24HourFormat: true,
+          settings: const AlarmSettings(),
+          fileStorage: mockedFileStorage,
+          dateTime: now,
+        ),
+      );
+      await Future.delayed(10.milliseconds());
+      verifyCancelAllPendingNotifications();
+      verify(
+        () => mockedNotificationsPlugin.zonedSchedule(
+            any(), any(), any(), any(), any(),
+            payload: any(named: 'payload'),
+            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.wallClockTime),
+      ).called(3);
+    });
+
+    test('scheduleNotifications one timer', () async {
+      await scheduleNotifications(
+        NotificationsSchedulerData(
+          activities: const [],
+          timers: [timer1],
+          language: 'en',
+          alwaysUse24HourFormat: true,
+          settings: const AlarmSettings(),
+          fileStorage: mockedFileStorage,
+          dateTime: now,
+        ),
+        testLogger.log,
       );
       verifyCancelAllPendingNotifications();
       verify(
@@ -395,15 +478,18 @@ void main() {
       ).called(1);
     });
 
-    test('scheduleAlarmNotificationsIsolated 3 timers', () async {
-      await scheduleAlarmNotificationsIsolated(
-        activities: [],
-        timers: allTimers,
-        language: 'en',
-        alwaysUse24HourFormat: true,
-        settings: const AlarmSettings(),
-        fileStorage: mockedFileStorage,
-        now: () => now,
+    test('scheduleNotifications 3 timers', () async {
+      await scheduleNotifications(
+        NotificationsSchedulerData(
+          activities: const [],
+          timers: allTimers,
+          language: 'en',
+          alwaysUse24HourFormat: true,
+          settings: const AlarmSettings(),
+          fileStorage: mockedFileStorage,
+          dateTime: now,
+        ),
+        testLogger.log,
       );
       verifyCancelAllPendingNotifications();
       verify(
@@ -416,49 +502,7 @@ void main() {
       ).called(3);
     });
 
-    test('scheduleAlarmNotifications one timer', () async {
-      await scheduleAlarmNotifications(
-        [],
-        [timer1],
-        'en',
-        true,
-        const AlarmSettings(),
-        mockedFileStorage,
-        now: () => now,
-      );
-      verifyCancelAllPendingNotifications();
-      verify(
-        () => mockedNotificationsPlugin.zonedSchedule(
-            timer1.hashCode, timer1.timer.title, any(), any(), any(),
-            payload: timer1.encode(),
-            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
-            uiLocalNotificationDateInterpretation:
-                UILocalNotificationDateInterpretation.wallClockTime),
-      ).called(1);
-    });
-
-    test('scheduleAlarmNotifications 3 timers', () async {
-      await scheduleAlarmNotifications(
-        [],
-        allTimers,
-        'en',
-        true,
-        const AlarmSettings(),
-        mockedFileStorage,
-        now: () => now,
-      );
-      verifyCancelAllPendingNotifications();
-      verify(
-        () => mockedNotificationsPlugin.zonedSchedule(
-            any(), any(), any(), any(), any(),
-            payload: any(named: 'payload'),
-            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
-            uiLocalNotificationDateInterpretation:
-                UILocalNotificationDateInterpretation.wallClockTime),
-      ).called(3);
-    });
-
-    test('scheduleAlarmNotifications with image android', () async {
+    test('scheduleNotifications with image android', () async {
       debugDefaultTargetPlatformOverride = TargetPlatform.android;
       addTearDown(() => debugDefaultTargetPlatformOverride = null);
       final timerWithImage = TimerAlarm(
@@ -469,14 +513,17 @@ void main() {
           duration: 14.minutes(),
         ),
       );
-      await scheduleAlarmNotifications(
-        [],
-        [timerWithImage],
-        'en',
-        true,
-        const AlarmSettings(),
-        mockedFileStorage,
-        now: () => now,
+      await scheduleNotifications(
+        NotificationsSchedulerData(
+          activities: const [],
+          timers: [timerWithImage],
+          language: 'en',
+          alwaysUse24HourFormat: true,
+          settings: const AlarmSettings(),
+          fileStorage: mockedFileStorage,
+          dateTime: now,
+        ),
+        testLogger.log,
       );
       verifyCancelAllPendingNotifications();
       verify(() => mockedFileStorage.getFile(fileId));
@@ -506,7 +553,7 @@ void main() {
       expect(details.android?.fullScreenIntent, isTrue);
     });
 
-    test('scheduleAlarmNotifications with image iOS', () async {
+    test('scheduleNotifications with image iOS', () async {
       debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
       addTearDown(() => debugDefaultTargetPlatformOverride = null);
       final timerWithImage = TimerAlarm(
@@ -517,14 +564,17 @@ void main() {
           duration: 14.minutes(),
         ),
       );
-      await scheduleAlarmNotifications(
-        [],
-        [timerWithImage],
-        'en',
-        true,
-        const AlarmSettings(),
-        mockedFileStorage,
-        now: () => now,
+      await scheduleNotifications(
+        NotificationsSchedulerData(
+          activities: const [],
+          timers: [timerWithImage],
+          language: 'en',
+          alwaysUse24HourFormat: true,
+          settings: const AlarmSettings(),
+          fileStorage: mockedFileStorage,
+          dateTime: now,
+        ),
+        testLogger.log,
       );
       verifyCancelAllPendingNotifications();
       verify(() => mockedFileStorage.copyImageThumbForNotification(fileId));
@@ -546,18 +596,21 @@ void main() {
     });
 
     test(
-        'scheduleAlarmNotifications disabled until tomorrow does not consider timers',
+        'scheduleNotifications disabled until tomorrow does not consider timers',
         () async {
-      await scheduleAlarmNotifications(
-        [],
-        allTimers,
-        'en',
-        true,
-        AlarmSettings(
-          disabledUntilEpoch: now.onlyDays().nextDay().millisecondsSinceEpoch,
+      await scheduleNotifications(
+        NotificationsSchedulerData(
+          activities: const [],
+          timers: allTimers,
+          language: 'en',
+          alwaysUse24HourFormat: true,
+          settings: AlarmSettings(
+            disabledUntilEpoch: now.onlyDays().nextDay().millisecondsSinceEpoch,
+          ),
+          fileStorage: mockedFileStorage,
+          dateTime: now,
         ),
-        mockedFileStorage,
-        now: () => now,
+        testLogger.log,
       );
       verifyCancelAllPendingNotifications();
 
@@ -570,17 +623,20 @@ void main() {
     });
   });
 
-  group('activities and  timers', () {
-    test('scheduleAlarmNotificationsIsolated', () async {
-      await scheduleAlarmNotificationsIsolated(
-        activities: allActivities,
-        timers: allTimers,
-        language: 'en',
-        alwaysUse24HourFormat: true,
-        settings: const AlarmSettings(),
-        fileStorage: mockedFileStorage,
-        now: () => now,
+  group('activities and timers', () {
+    test('scheduleNotificationsIsolated', () async {
+      await scheduleNotificationsIsolated(
+        NotificationsSchedulerData(
+          activities: allActivities,
+          timers: allTimers,
+          language: 'en',
+          alwaysUse24HourFormat: true,
+          settings: const AlarmSettings(),
+          fileStorage: mockedFileStorage,
+          dateTime: now,
+        ),
       );
+      await Future.delayed(300.milliseconds());
       verifyCancelAllPendingNotifications();
       verify(
         () => mockedNotificationsPlugin.zonedSchedule(
@@ -591,15 +647,18 @@ void main() {
                 UILocalNotificationDateInterpretation.wallClockTime),
       ).called(11 + 3);
     });
-    test('scheduleAlarmNotifications 3 timers', () async {
-      await scheduleAlarmNotifications(
-        allActivities,
-        allTimers,
-        'en',
-        true,
-        const AlarmSettings(),
-        mockedFileStorage,
-        now: () => now,
+    test('scheduleNotifications 3 timers', () async {
+      await scheduleNotifications(
+        NotificationsSchedulerData(
+          activities: allActivities,
+          timers: allTimers,
+          language: 'en',
+          alwaysUse24HourFormat: true,
+          settings: const AlarmSettings(),
+          fileStorage: mockedFileStorage,
+          dateTime: now,
+        ),
+        testLogger.log,
       );
       verifyCancelAllPendingNotifications();
       verify(

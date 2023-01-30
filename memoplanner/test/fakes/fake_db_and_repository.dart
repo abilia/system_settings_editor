@@ -28,6 +28,13 @@ class FakeSettingsDb extends Fake implements SettingsDb {
   Future setRightCategoryExpanded(bool expanded) async {}
 
   @override
+  bool get keepScreenOnWhileCharging => false;
+  @override
+  Future setKeepScreenOnWhileCharging(bool keepScreenOnWhileCharging) async {}
+  @override
+  bool get keepScreenOnWhileChargingSet => false;
+
+  @override
   String language = 'en';
 
   @override
@@ -203,6 +210,9 @@ class FakeActivityRepository extends Fake implements ActivityRepository {
 class FakeFileStorage extends Fake implements FileStorage {
   @override
   File getFile(String id) => FakeFile('$id.mp3');
+
+  @override
+  String get dir => '';
 }
 
 class FakeFile extends Fake implements File {
