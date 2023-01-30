@@ -12,13 +12,15 @@ class ConnectivityCubit extends Cubit<ConnectivityState> {
     required this.connectivity,
     required this.baseUrlDb,
     required this.myAbiliaConnection,
+    this.retryDelay = const Duration(seconds: 3),
+    this.retryAttempts = 20,
   }) : super(const ConnectivityState.none()) {
     _onChangeSubscription =
         connectivity.onConnectivityChanged.listen(_onConnectivityChanged);
     checkConnectivity();
   }
-  static const _retryDelay = Duration(seconds: 3);
-  static const _retryAttempts = 20;
+  final Duration retryDelay;
+  final int retryAttempts;
   Timer? _retryTimer;
 
   final BaseUrlDb baseUrlDb;
@@ -38,20 +40,19 @@ class ConnectivityCubit extends Cubit<ConnectivityState> {
     emit(ConnectivityState(connectivityResult, state.isConnected));
     final connected = await myAbiliaConnection.hasConnection();
     if (isClosed) return;
+    emit(ConnectivityState(connectivityResult, connected));
     if (!connected &&
-        retry < _retryAttempts &&
+        retry < retryAttempts &&
         connectivityResult != ConnectivityResult.none) {
       log.info(
-        'No connection to myAbilia, retrying in ${_retryDelay.inSeconds} seconds. Attempt: $retry',
+        'No connection to myAbilia, retrying in ${retryDelay.inSeconds} seconds. Attempt: $retry',
       );
       _retryTimer?.cancel();
       _retryTimer = Timer(
-        _retryDelay,
+        retryDelay,
         () => _onConnectivityChanged(null, retry: retry + 1),
       );
-      return;
     }
-    emit(ConnectivityState(connectivityResult, connected));
   }
 
   @override

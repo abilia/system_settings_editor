@@ -21,7 +21,7 @@ void main() {
   final initialTime = DateTime(2021, 04, 26, 13, 37);
 
   Iterable<Generic> generics = [];
-  Iterable<Sortable> sortable = [...defaultSortables];
+  Iterable<Sortable> sortable = defaultSortables;
   late MockGenericDb genericDb;
   late MockSortableDb sortableDb;
 
@@ -74,7 +74,7 @@ void main() {
 
   tearDown(() {
     generics = [];
-    sortable = [...defaultSortables];
+    sortable = defaultSortables;
     GetIt.I.reset();
   });
 
