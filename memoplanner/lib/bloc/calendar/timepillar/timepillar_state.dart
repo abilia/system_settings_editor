@@ -115,7 +115,7 @@ class TimepillarRatios {
     required double nightPillarHeight,
   }) {
     final heights = nightPillarHeight + dayPillarHeight;
-    var nightPillarRatio = nightPillarHeight ~/ heights * 100;
+    var nightPillarRatio = (nightPillarHeight / heights * 100).toInt();
 
     if (nightPillarRatio < minRatio) {
       nightPillarRatio = minRatio;
