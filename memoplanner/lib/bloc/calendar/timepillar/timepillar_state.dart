@@ -97,3 +97,35 @@ class TimepillarMeasures extends Equatable {
   @override
   List<Object> get props => [interval, zoom];
 }
+
+class TimepillarRatios {
+  static const maxRatio = 50;
+  static const minRatio = 37;
+
+  final int dayTimepillarRatio;
+  final int nightTimepillarRatio;
+
+  TimepillarRatios._({
+    required this.dayTimepillarRatio,
+    required this.nightTimepillarRatio,
+  });
+
+  factory TimepillarRatios({
+    required double dayPillarHeight,
+    required double nightPillarHeight,
+  }) {
+    final heights = nightPillarHeight + dayPillarHeight;
+    var nightPillarRatio = nightPillarHeight ~/ heights * 100;
+
+    if (nightPillarRatio < minRatio) {
+      nightPillarRatio = minRatio;
+    } else if (nightPillarRatio > maxRatio) {
+      nightPillarRatio = maxRatio;
+    }
+
+    return TimepillarRatios._(
+      nightTimepillarRatio: nightPillarRatio,
+      dayTimepillarRatio: 100 - nightPillarRatio,
+    );
+  }
+}
