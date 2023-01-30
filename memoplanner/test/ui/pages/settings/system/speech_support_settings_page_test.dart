@@ -65,6 +65,7 @@ void main() {
         )
         ..database = FakeDatabase()
         ..genericDb = genericDb
+        ..sortableDb = FakeSortableDb()
         ..battery = FakeBattery()
         ..settingsDb = FakeSettingsDb()
         ..ttsHandler = ttsHandler

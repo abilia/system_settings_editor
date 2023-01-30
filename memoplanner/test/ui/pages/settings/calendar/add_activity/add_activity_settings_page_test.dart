@@ -35,6 +35,7 @@ void main() {
         ..client = Fakes.client(genericResponse: () => generics)
         ..database = FakeDatabase()
         ..genericDb = genericDb
+        ..sortableDb = FakeSortableDb()
         ..battery = FakeBattery()
         ..deviceDb = FakeDeviceDb()
         ..init();

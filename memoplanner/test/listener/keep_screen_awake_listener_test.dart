@@ -123,6 +123,7 @@ void main() {
         ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..database = FakeDatabase()
         ..deviceDb = FakeDeviceDb()
+        ..sortableDb = FakeSortableDb()
         ..client = Fakes.client()
         ..init();
     });

@@ -19,6 +19,7 @@ import '../../mocks/mock_bloc.dart';
 import '../../mocks/mocks.dart';
 
 import '../../test_helpers/app_pumper.dart';
+import '../../test_helpers/default_sortables.dart';
 import '../../test_helpers/register_fallback_values.dart';
 import '../../test_helpers/tts.dart';
 import '../../test_helpers/enter_text.dart';
@@ -66,7 +67,7 @@ void main() {
   late MockTimerDb mockTimerDb;
 
   ActivityResponse activityResponse = () => [];
-  SortableResponse sortableResponse = () => [];
+  SortableResponse sortableResponse = () => defaultSortables;
   GenericResponse genericResponse = () => [];
   SessionsResponse sessionResponse = () => Fakes.fakeSessions;
   final initialDay = DateTime(2020, 08, 05);
@@ -145,7 +146,7 @@ void main() {
 
   tearDown(() {
     activityResponse = () => [];
-    sortableResponse = () => [];
+    sortableResponse = () => defaultSortables;
     genericResponse = () => [];
     sessionResponse = () => Fakes.fakeSessions;
     GetIt.I.reset();

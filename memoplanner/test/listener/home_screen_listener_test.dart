@@ -64,6 +64,7 @@ void main() {
         ..battery = FakeBattery()
         ..database = FakeDatabase()
         ..deviceDb = FakeDeviceDb()
+        ..sortableDb = FakeSortableDb()
         ..init();
     });
 
@@ -284,6 +285,7 @@ void main() {
         ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..database = FakeDatabase()
         ..genericDb = mockGenericDb
+        ..sortableDb = FakeSortableDb()
         ..timerDb = mockTimerDb
         ..client = Fakes.client()
         ..ticker = Ticker.fake(

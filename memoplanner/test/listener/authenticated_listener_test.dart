@@ -81,6 +81,7 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..database = FakeDatabase()
+      ..sortableDb = FakeSortableDb()
       ..client = Fakes.client()
       ..battery = FakeBattery()
       ..init();
