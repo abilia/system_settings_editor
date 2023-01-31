@@ -28,7 +28,8 @@ class FullScreenActivityPage extends StatelessWidget {
           startingActivity: alarm.activityDay,
         ),
         child: BlocListener<FullScreenActivityCubit, FullScreenActivityState>(
-          listenWhen: (previous, current) => current.eventsList.isEmpty,
+          listenWhen: (previous, current) =>
+              current.eventsList.isEmpty && current.isReady,
           listener: (context, s) =>
               GetIt.I<AlarmNavigator>().popFullscreenRoute(),
           child: BlocSelector<FullScreenActivityCubit, FullScreenActivityState,
