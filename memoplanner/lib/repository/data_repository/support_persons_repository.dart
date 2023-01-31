@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:http/http.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/support_person.dart';
@@ -8,11 +7,11 @@ import 'package:memoplanner/utils/all.dart';
 
 class SupportPersonsRepository extends Repository {
   SupportPersonsRepository({
-    required BaseClient client,
-    required BaseUrlDb baseUrlDb,
+    required super.client,
+    required super.baseUrlDb,
     required this.userId,
     required this.db,
-  }) : super(client, baseUrlDb);
+  });
 
   final int userId;
   final Logger log = Logger((SupportPersonsRepository).toString());

@@ -4,7 +4,10 @@ import 'package:memoplanner/db/all.dart';
 abstract class Repository {
   final BaseUrlDb baseUrlDb;
   final BaseClient client;
-  const Repository(this.client, this.baseUrlDb);
+  const Repository({
+    required this.client,
+    required this.baseUrlDb,
+  });
 
   String get baseUrl => baseUrlDb.baseUrl;
 

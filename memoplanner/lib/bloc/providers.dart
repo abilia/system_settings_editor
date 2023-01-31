@@ -85,6 +85,13 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               userId: authenticatedState.userId,
             ),
           ),
+          RepositoryProvider<FeatureToggleRepository>(
+            create: (_) => FeatureToggleRepository(
+              client: GetIt.I<ListenableClient>(),
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              userId: authenticatedState.userId,
+            ),
+          )
         ],
         child: MultiBlocProvider(
           providers: [
@@ -122,6 +129,13 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 ticker: GetIt.I<Ticker>(),
                 timerCubit: context.read<TimerCubit>(),
               ),
+            ),
+            BlocProvider<FeatureToggleCubit>(
+              lazy: false,
+              create: (context) => FeatureToggleCubit(
+                featureToggleRepository:
+                    context.read<FeatureToggleRepository>(),
+              )..updateTogglesFromBackend(),
             ),
             BlocProvider<WeekCalendarCubit>(
               create: (context) => WeekCalendarCubit(

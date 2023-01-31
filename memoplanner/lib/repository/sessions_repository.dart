@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:http/http.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
@@ -9,10 +8,10 @@ import 'package:memoplanner/utils/all.dart';
 class SessionsRepository extends Repository {
   final _log = Logger((SessionsRepository).toString());
   SessionsRepository({
-    required BaseClient client,
-    required BaseUrlDb baseUrlDb,
+    required super.client,
+    required super.baseUrlDb,
     required this.sessionsDb,
-  }) : super(client, baseUrlDb);
+  });
 
   final SessionsDb sessionsDb;
 

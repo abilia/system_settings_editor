@@ -34,7 +34,14 @@ class SettingsPage extends StatelessWidget {
           text: t.system,
           navigateTo: const SystemSettingsPage(),
         ),
-        if (Config.dev) const FakeTicker(),
+        if (Config.dev) ...[
+          const FakeTicker(),
+          const MenuItemPickField(
+            icon: AbiliaIcons.commands,
+            text: 'Feature toggles',
+            navigateTo: FeatureTogglesPage(),
+          ),
+        ],
       ],
     );
   }
