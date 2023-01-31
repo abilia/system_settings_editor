@@ -223,9 +223,8 @@ void main() {
 
         // Act
         final res = editRecurringMixin.updateOnlyThisDay(
-          activity: updated,
+          activityDay: ActivityDay(updated, anyDay),
           activities: {recurring},
-          day: anyDay,
         );
 
         // Assert
@@ -252,9 +251,8 @@ void main() {
 
         // Act
         final res = editRecurringMixin.updateOnlyThisDay(
-          activity: updated,
+          activityDay: ActivityDay(updated, anyDay),
           activities: {recurring},
-          day: anyDay,
         );
 
         // Assert
@@ -290,7 +288,9 @@ void main() {
 
         // Act
         final res = editRecurringMixin.updateOnlyThisDay(
-            activity: updated, activities: {recurring}, day: lastDay);
+          activityDay: ActivityDay(updated, lastDay),
+          activities: {recurring},
+        );
 
         // Assert
         final expected = MatchActivitiesWithoutId(
@@ -325,7 +325,9 @@ void main() {
 
         // Act
         final res = editRecurringMixin.updateOnlyThisDay(
-            activity: updated, activities: {recurring}, day: aDay);
+          activityDay: ActivityDay(updated, aDay),
+          activities: {recurring},
+        );
 
         // Assert
         final expected = MatchActivitiesWithoutId(
@@ -365,12 +367,49 @@ void main() {
             [preModDaySeries, expectedUpdatedActivity, postModDaySeries]);
 
         final res = editRecurringMixin.updateOnlyThisDay(
-          activity: fullDay,
+          activityDay: ActivityDay(fullDay, aDay),
           activities: {recurring},
-          day: aDay,
         );
 
         // Assert
+        expect(res.state, expected);
+        expect(res.state, expected);
+      });
+
+      test(
+          'SGC-2304 - If startTimeFromActivityDay is true, the updated activity will be on the same day as the activity day',
+          () async {
+        // Arrange
+        final aDay = anyDay.add(5.days()).onlyDays();
+        final recurring = FakeActivity.reoccursEveryDay(anyTime);
+
+        final updated = recurring.copyWith(title: 'new title');
+
+        final expectedUpdatedActivity = updated.copyWith(
+          newId: true,
+          recurs: Recurs.not,
+          startTime: aDay.copyWith(
+              hour: recurring.startTime.hour,
+              minute: recurring.startTime.minute),
+        );
+        final preModDaySeries =
+            recurring.copyWithRecurringEnd(aDay.millisecondBefore());
+        final postModDaySeries = recurring.copyWith(
+            newId: true,
+            startTime: aDay.nextDay().copyWith(
+                hour: recurring.startTime.hour,
+                minute: recurring.startTime.minute));
+
+        // Act
+        final res = editRecurringMixin.updateOnlyThisDay(
+          activityDay: ActivityDay(updated, aDay),
+          activities: {recurring},
+          startTimeFromActivityDay: true,
+        );
+
+        // Assert
+        final expected = MatchActivitiesWithoutId(
+            [preModDaySeries, expectedUpdatedActivity, postModDaySeries]);
         expect(res.state, expected);
         expect(res.state, expected);
       });
@@ -770,9 +809,8 @@ void main() {
 
       // Act
       final res1 = editRecurringMixin.updateOnlyThisDay(
-        activity: aUpdated,
+        activityDay: ActivityDay(aUpdated, a.startTime.onlyDays()),
         activities: {a},
-        day: a.startTime.onlyDays(),
       );
 
       // Assert

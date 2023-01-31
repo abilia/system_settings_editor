@@ -69,8 +69,13 @@ abstract class RecurringActivityEvent extends ManipulateActivitiesEvent {
 }
 
 class UpdateRecurringActivity extends RecurringActivityEvent {
-  const UpdateRecurringActivity(ActivityDay activityDay, ApplyTo applyTo)
-      : assert(applyTo != ApplyTo.allDays),
+  final bool startTimeFromActivityDay;
+
+  const UpdateRecurringActivity(
+    ActivityDay activityDay,
+    ApplyTo applyTo, {
+    this.startTimeFromActivityDay = false,
+  })  : assert(applyTo != ApplyTo.allDays),
         super(activityDay, applyTo);
 }
 

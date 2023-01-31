@@ -178,6 +178,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
               activityDay.day,
             ),
             applyTo,
+            startTimeFromActivityDay: true,
           ),
         );
       } else {

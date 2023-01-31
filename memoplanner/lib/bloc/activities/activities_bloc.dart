@@ -89,8 +89,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesChanged>
       case ApplyTo.onlyThisDay:
         return updateOnlyThisDay(
           activities: series,
-          activity: event.activity,
-          day: event.day,
+          activityDay: event.activityDay,
+          startTimeFromActivityDay: event.startTimeFromActivityDay,
         ).save;
       case ApplyTo.allDays:
         throw UpdateActivityApplyToAllDaysError();
