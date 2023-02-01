@@ -25,7 +25,7 @@ void main() {
     lastSyncDb = MockLastSyncDb();
   });
 
-  group('happy caseas', () {
+  group('happy cases', () {
     setUp(() {
       when(() => activityRepository.synchronize())
           .thenAnswer((_) => Future.value(true));

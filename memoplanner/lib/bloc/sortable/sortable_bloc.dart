@@ -25,7 +25,8 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     required this.sortableRepository,
     required this.syncBloc,
   }) : super(SortablesNotLoaded()) {
-    syncSubscription = syncBloc.stream.listen((_) {
+    syncSubscription =
+        syncBloc.stream.where((event) => event is SyncDone).listen((_) {
       final state = this.state;
       add(
         LoadSortables(

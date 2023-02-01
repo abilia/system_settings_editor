@@ -89,6 +89,7 @@ void main() {
         ..genericDb = mockGenericDb
         ..timerDb = mockTimerDb
         ..activityDb = mockActivityDb
+        ..sortableDb = FakeSortableDb()
         ..client = Fakes.client()
         ..ticker = Ticker.fake(
           initialTime: initialTime,

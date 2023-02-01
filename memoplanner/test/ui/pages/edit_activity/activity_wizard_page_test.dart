@@ -17,6 +17,7 @@ import '../../../mocks/mocks.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
+import '../../../test_helpers/default_sortables.dart';
 
 void main() {
   final startTime = DateTime(2021, 09, 22, 12, 46);
@@ -39,12 +40,7 @@ void main() {
     when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
     when(() => mockSortableBloc.state).thenReturn(
       SortablesLoaded(
-        sortables: [
-          Sortable.createNew(
-              data: const ImageArchiveData(upload: true), fixed: true),
-          Sortable.createNew(
-              data: const ImageArchiveData(myPhotos: true), fixed: true),
-        ],
+        sortables: defaultSortables,
       ),
     );
     mockUserFileCubit = MockUserFileCubit();

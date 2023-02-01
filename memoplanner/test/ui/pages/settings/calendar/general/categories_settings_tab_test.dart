@@ -12,6 +12,7 @@ import 'package:memoplanner/ui/all.dart';
 import '../../../../../fakes/all.dart';
 import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
+import '../../../../../test_helpers/default_sortables.dart';
 import '../../../../../test_helpers/register_fallback_values.dart';
 import '../../../../../test_helpers/verify_generic.dart';
 
@@ -20,7 +21,7 @@ void main() {
   final initialTime = DateTime(2021, 04, 26, 13, 37);
 
   Iterable<Generic> generics = [];
-  Iterable<Sortable> sortable = [];
+  Iterable<Sortable> sortable = defaultSortables;
   late MockGenericDb genericDb;
   late MockSortableDb sortableDb;
 
@@ -73,7 +74,7 @@ void main() {
 
   tearDown(() {
     generics = [];
-    sortable = [];
+    sortable = defaultSortables;
     GetIt.I.reset();
   });
 

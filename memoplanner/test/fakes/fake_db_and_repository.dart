@@ -4,6 +4,7 @@ import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:test/fake.dart';
+import '../test_helpers/default_sortables.dart';
 import 'fake_client.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
@@ -97,16 +98,8 @@ class FakeUserFileDb extends Fake implements UserFileDb {
 
 class FakeSortableDb extends Fake implements SortableDb {
   @override
-  Future<Iterable<Sortable<SortableData>>> getAllNonDeleted() => Future.value([
-        Sortable.createNew(
-          data: const ImageArchiveData(myPhotos: true),
-          fixed: true,
-        ),
-        Sortable.createNew(
-          data: const ImageArchiveData(upload: true),
-          fixed: true,
-        ),
-      ]);
+  Future<Iterable<Sortable<SortableData>>> getAllNonDeleted() =>
+      Future.value(defaultSortables);
 
   @override
   Future<bool> insertAndAddDirty(Iterable<Sortable> data) => Future.value(true);
