@@ -31,6 +31,7 @@ class PopAwareDiscardListener extends StatelessWidget {
       context: context,
       barrierDismissible: true,
       builder: (context) => const DiscardWarningDialog(),
+      routeSettings: (DiscardWarningDialog).routeSetting(),
     );
     return discardChanges ?? false;
   }

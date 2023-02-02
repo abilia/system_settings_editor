@@ -48,10 +48,8 @@ class FunctionSettingsPage extends StatelessWidget {
                   if (displayMenuChangedToDisabled) {
                     final answer = await showViewDialog<bool>(
                       context: context,
-                      builder: (context) => YesNoDialog(
-                        heading: t.functions,
-                        text: t.menuRemovalWarning,
-                      ),
+                      builder: (context) => const MenuRemovalWarningDialog(),
+                      routeSettings: (MenuRemovalWarningDialog).routeSetting(),
                     );
                     if (answer != true) return;
                   }
@@ -63,6 +61,21 @@ class FunctionSettingsPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class MenuRemovalWarningDialog extends StatelessWidget {
+  const MenuRemovalWarningDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translator.of(context).translate;
+    return YesNoDialog(
+      heading: t.menu,
+      text: t.menuRemovalWarning,
     );
   }
 }

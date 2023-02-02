@@ -35,10 +35,8 @@ class MenuSettingsPage extends StatelessWidget {
                     if (showSettingsChangeToDisable) {
                       final answer = await showViewDialog<bool>(
                         context: context,
-                        builder: (context) => YesNoDialog(
-                          heading: t.menu,
-                          text: t.menuRemovalWarning,
-                        ),
+                        builder: (context) => const MenuRemovalWarningDialog(),
+                        routeSettings: (MenuSettingsPage).routeSetting(),
                       );
                       if (answer != true) return;
                     }

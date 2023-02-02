@@ -80,6 +80,7 @@ class MyPhotosPickField extends StatelessWidget {
                             child:
                                 MyPhotosPage(myPhotoFolderId: myPhotoFolderId),
                           ),
+                          settings: (MyPhotosPage).routeSetting(),
                         ),
                       );
                     }

@@ -184,6 +184,7 @@ class CheckedImageWithImagePopup extends StatelessWidget {
           filePath: filePath,
         );
       },
+      routeSettings: (FullscreenImageDialog).routeSetting(),
     );
   }
 }
