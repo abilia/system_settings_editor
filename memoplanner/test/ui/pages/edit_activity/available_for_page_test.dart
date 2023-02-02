@@ -159,12 +159,19 @@ void main() {
             ],
             child: RepositoryProvider<SupportPersonsRepository>(
               create: (context) => supportUserRepo,
-              child: BlocProvider<AvailableForCubit>(
-                create: (context) => AvailableForCubit(
+              child: BlocProvider<SupportPersonsCubit>(
+                create: (context) => SupportPersonsCubit(
                   supportPersonsRepository:
                       context.read<SupportPersonsRepository>(),
-                )..setAvailableFor(activity.availableFor),
-                child: child!,
+                ),
+                child: BlocProvider<AvailableForCubit>(
+                  create: (context) => AvailableForCubit(
+                    supportPersonsCubit: context.read<SupportPersonsCubit>(),
+                    availableFor: AvailableForType.allSupportPersons,
+                    selectedSupportPersons: {},
+                  )..setAvailableFor(activity.availableFor),
+                  child: child!,
+                ),
               ),
             ),
           ),

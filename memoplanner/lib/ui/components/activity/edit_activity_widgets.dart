@@ -1,12 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
@@ -551,19 +548,16 @@ class AvailableForWidget extends StatelessWidget {
   ) =>
       Navigator.of(context).push<AvailableForState>(
         PersistentMaterialPageRoute(
-          builder: (context) => BlocProvider<AvailableForCubit>(
-            create: (context) => AvailableForCubit(
-              supportPersonsRepository: SupportPersonsRepository(
-                baseUrlDb: GetIt.I<BaseUrlDb>(),
-                client: GetIt.I<ListenableClient>(),
-                db: GetIt.I<SupportPersonsDb>(),
-                userId: userId,
+          builder: (context) {
+            return BlocProvider<AvailableForCubit>(
+              create: (context) => AvailableForCubit(
+                supportPersonsCubit: context.read<SupportPersonsCubit>(),
+                availableFor: activity.availableFor,
+                selectedSupportPersons: activity.secretExemptions,
               ),
-              availableFor: activity.availableFor,
-              selectedSupportPersons: activity.secretExemptions,
-            ),
-            child: const AvailableForPage(),
-          ),
+              child: const AvailableForPage(),
+            );
+          },
         ),
       );
 }

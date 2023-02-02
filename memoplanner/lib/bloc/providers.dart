@@ -251,6 +251,16 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 newlyLoggedIn: authenticatedState.newlyLoggedIn,
               ),
             ),
+            BlocProvider<SupportPersonsCubit>(
+              create: (context) => SupportPersonsCubit(
+                supportPersonsRepository: SupportPersonsRepository(
+                  baseUrlDb: GetIt.I<BaseUrlDb>(),
+                  client: GetIt.I<ListenableClient>(),
+                  db: GetIt.I<SupportPersonsDb>(),
+                  userId: authenticatedState.userId,
+                ),
+              )..load(),
+            ),
             if (Config.isMP) ...[
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(

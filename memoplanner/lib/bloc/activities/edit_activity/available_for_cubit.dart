@@ -1,35 +1,36 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/activity/activity.dart';
 import 'package:memoplanner/models/support_person.dart';
-import 'package:memoplanner/repository/data_repository/support_persons_repository.dart';
 
 class AvailableForCubit extends Cubit<AvailableForState> {
+  final SupportPersonsCubit supportPersonsCubit;
+
   AvailableForCubit({
-    required this.supportPersonsRepository,
-    AvailableForType? availableFor,
-    Set<int>? selectedSupportPersons,
+    required this.supportPersonsCubit,
+    required AvailableForType availableFor,
+    required Set<int> selectedSupportPersons,
   }) : super(
           AvailableForState(
-            availableFor: availableFor ?? AvailableForType.allSupportPersons,
-            selectedSupportPersons:
-                UnmodifiableSetView(selectedSupportPersons ?? const <int>{}),
-            allSupportPersons: const UnmodifiableSetView.empty(),
+            availableFor: availableFor,
+            selectedSupportPersons: UnmodifiableSetView(selectedSupportPersons),
+            allSupportPersons: UnmodifiableSetView(
+              supportPersonsCubit.state.supportPersons,
+            ),
           ),
         ) {
     initialize();
   }
 
   Future<void> initialize() async {
+    await supportPersonsCubit.load();
     emit(
       state.copyWith(
-        allSupportPersons: await supportPersonsRepository.load(),
+        allSupportPersons: supportPersonsCubit.state.supportPersons,
       ),
     );
   }
-
-  final SupportPersonsRepository supportPersonsRepository;
 
   void setAvailableFor(AvailableForType availableFor) => emit(
         state.copyWith(

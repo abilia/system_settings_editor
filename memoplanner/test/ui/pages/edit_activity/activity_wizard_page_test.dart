@@ -119,6 +119,8 @@ void main() {
                 ),
                 BlocProvider<ActivitiesBloc>(
                     create: (_) => FakeActivitiesBloc()),
+                BlocProvider<SupportPersonsCubit>(
+                    create: (_) => FakeSupportPersonsCubit()),
                 BlocProvider<EditActivityCubit>(
                   create: (context) => EditActivityCubit.newActivity(
                     day: today,

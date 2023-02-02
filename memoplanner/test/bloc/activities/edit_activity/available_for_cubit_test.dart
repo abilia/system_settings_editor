@@ -1,9 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memoplanner/bloc/activities/all.dart';
+import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/activity/activity.dart';
 import 'package:memoplanner/models/support_person.dart';
+import 'package:memoplanner/repository/data_repository/support_persons_repository.dart';
 
 import '../../../mocks/mocks.dart';
 
@@ -11,7 +12,8 @@ void main() {
   const testSupportPerson = SupportPerson(id: 0, name: 'Test', image: '');
   const testSupportPerson2 = SupportPerson(id: 1, name: 'Test 2', image: '');
 
-  late MockSupportPersonsRepository supportPersonsRepository;
+  late SupportPersonsRepository supportPersonsRepository;
+  late SupportPersonsCubit supportPersonsCubit;
 
   const emptyState = AvailableForState(
     availableFor: AvailableForType.allSupportPersons,
@@ -31,16 +33,24 @@ void main() {
     supportPersonsRepository = MockSupportPersonsRepository();
     when(() => supportPersonsRepository.load()).thenAnswer(
         (_) => Future.value({testSupportPerson, testSupportPerson2}));
+    supportPersonsCubit =
+        SupportPersonsCubit(supportPersonsRepository: supportPersonsRepository);
   });
 
   blocTest('Initial states, emits dbState',
-      build: () =>
-          AvailableForCubit(supportPersonsRepository: supportPersonsRepository),
+      build: () => AvailableForCubit(
+            supportPersonsCubit: supportPersonsCubit,
+            availableFor: AvailableForType.allSupportPersons,
+            selectedSupportPersons: {},
+          ),
       expect: () => [dbState]);
 
   test('Change to private', () async {
-    final availableForCubit =
-        AvailableForCubit(supportPersonsRepository: supportPersonsRepository);
+    final availableForCubit = AvailableForCubit(
+      supportPersonsCubit: supportPersonsCubit,
+      availableFor: AvailableForType.allSupportPersons,
+      selectedSupportPersons: {},
+    );
     await expectLater(availableForCubit.state, emptyState);
     availableForCubit.setAvailableFor(AvailableForType.onlyMe);
     await expectLater(availableForCubit.state,
@@ -50,8 +60,11 @@ void main() {
   test(
       "Change to selected support persons and select a person. Changing to  'only me' will remove selection",
       () async {
-    final availableForCubit =
-        AvailableForCubit(supportPersonsRepository: supportPersonsRepository);
+    final availableForCubit = AvailableForCubit(
+      supportPersonsCubit: supportPersonsCubit,
+      availableFor: AvailableForType.allSupportPersons,
+      selectedSupportPersons: {},
+    );
     await expectLater(availableForCubit.state, emptyState);
     availableForCubit.setAvailableFor(AvailableForType.selectedSupportPersons);
     await expectLater(
