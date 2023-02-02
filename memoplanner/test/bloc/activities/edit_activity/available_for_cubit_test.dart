@@ -15,13 +15,7 @@ void main() {
   late SupportPersonsRepository supportPersonsRepository;
   late SupportPersonsCubit supportPersonsCubit;
 
-  const emptyState = AvailableForState(
-    availableFor: AvailableForType.allSupportPersons,
-    selectedSupportPersons: UnmodifiableSetView.empty(),
-    allSupportPersons: UnmodifiableSetView.empty(),
-  );
-
-  final dbState = AvailableForState(
+  final initialState = AvailableForState(
     availableFor: AvailableForType.allSupportPersons,
     selectedSupportPersons: const UnmodifiableSetView.empty(),
     allSupportPersons: UnmodifiableSetView(
@@ -37,13 +31,13 @@ void main() {
         SupportPersonsCubit(supportPersonsRepository: supportPersonsRepository);
   });
 
-  blocTest('Initial states, emits dbState',
+  blocTest('Initial states, emits initialState',
       build: () => AvailableForCubit(
             supportPersonsCubit: supportPersonsCubit,
             availableFor: AvailableForType.allSupportPersons,
             selectedSupportPersons: {},
           ),
-      expect: () => [dbState]);
+      expect: () => [initialState]);
 
   test('Change to private', () async {
     final availableForCubit = AvailableForCubit(
@@ -51,10 +45,10 @@ void main() {
       availableFor: AvailableForType.allSupportPersons,
       selectedSupportPersons: {},
     );
-    await expectLater(availableForCubit.state, emptyState);
+    await expectLater(availableForCubit.state, initialState);
     availableForCubit.setAvailableFor(AvailableForType.onlyMe);
     await expectLater(availableForCubit.state,
-        dbState.copyWith(availableFor: AvailableForType.onlyMe));
+        initialState.copyWith(availableFor: AvailableForType.onlyMe));
   });
 
   test(
@@ -65,21 +59,21 @@ void main() {
       availableFor: AvailableForType.allSupportPersons,
       selectedSupportPersons: {},
     );
-    await expectLater(availableForCubit.state, emptyState);
+    await expectLater(availableForCubit.state, initialState);
     availableForCubit.setAvailableFor(AvailableForType.selectedSupportPersons);
     await expectLater(
         availableForCubit.state,
-        dbState.copyWith(
+        initialState.copyWith(
             availableFor: AvailableForType.selectedSupportPersons));
     availableForCubit.toggleSupportPerson(testSupportPerson2.id);
     await expectLater(
         availableForCubit.state,
-        dbState.copyWith(
+        initialState.copyWith(
             availableFor: AvailableForType.selectedSupportPersons,
             selectedSupportPersons: <int>{testSupportPerson2.id}));
 
     availableForCubit.setAvailableFor(AvailableForType.onlyMe);
     await expectLater(availableForCubit.state,
-        dbState.copyWith(availableFor: AvailableForType.onlyMe));
+        initialState.copyWith(availableFor: AvailableForType.onlyMe));
   });
 }
