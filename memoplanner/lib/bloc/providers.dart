@@ -259,7 +259,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   db: GetIt.I<SupportPersonsDb>(),
                   userId: authenticatedState.userId,
                 ),
-              )..load(),
+              ),
             ),
             if (Config.isMP) ...[
               BlocProvider<WakeLockCubit>(
