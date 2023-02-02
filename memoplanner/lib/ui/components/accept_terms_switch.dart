@@ -42,6 +42,9 @@ class AcceptTermsSwitch extends StatelessWidget {
                       context: context,
                       builder: (_) => WebViewDialog(url: '$abiliaUrl$url'),
                       wrapWithAuthProviders: false,
+                      routeSettings: (WebViewDialog).routeSetting(properties: {
+                        'url': '$abiliaUrl$url',
+                      }),
                     ),
             ),
           ],

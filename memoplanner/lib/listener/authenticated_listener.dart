@@ -89,9 +89,8 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
             if (Config.isMP && state is NoValidLicense) {
               showViewDialog(
                 context: context,
-                builder: (context) => WarningDialog(
-                  text: Translator.of(context).translate.licenseExpiredMessage,
-                ),
+                builder: (context) => const LicenseExpiredWarningDialog(),
+                routeSettings: (LicenseExpiredWarningDialog).routeSetting(),
               );
             } else if (state is! ValidLicense) {
               BlocProvider.of<AuthenticationBloc>(context).add(
@@ -107,6 +106,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           listener: (context, state) => showViewDialog(
             context: context,
             builder: (context) => const NotificationPermissionWarningDialog(),
+            routeSettings: (NotificationPermissionWarningDialog).routeSetting(),
           ),
         ),
         AuthenticatedDialogListener(
@@ -129,4 +129,17 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           false) &&
       !(previous.status[Permission.notification]?.isDeniedOrPermanentlyDenied ??
           false);
+}
+
+class LicenseExpiredWarningDialog extends StatelessWidget {
+  const LicenseExpiredWarningDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return WarningDialog(
+      text: Translator.of(context).translate.licenseExpiredMessage,
+    );
+  }
 }

@@ -26,7 +26,7 @@ class MenuItemPickField extends StatelessWidget {
             providers: authProviders,
             child: navigateTo,
           ),
-          settings: RouteSettings(name: text),
+          settings: navigateTo.runtimeType.routeSetting(),
         ),
       ),
     );

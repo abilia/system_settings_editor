@@ -52,6 +52,7 @@ class TopLevelListener extends StatelessWidget {
                             ),
                           ),
                         ),
+                        settings: (CalendarPage).routeSetting(),
                       ),
                       (_) => false,
                     );
@@ -66,9 +67,12 @@ class TopLevelListener extends StatelessWidget {
                 } else if (state is Unauthenticated) {
                   await navigator.pushAndRemoveUntil<void>(
                     MaterialPageRoute<void>(
-                      builder: (_) {
-                        return LoginPage(unauthenticatedState: state);
-                      },
+                      builder: (_) => LoginPage(unauthenticatedState: state),
+                      settings: (LoginPage).routeSetting(
+                        properties: {
+                          'logout reason': state.loggedOutReason.name,
+                        },
+                      ),
                     ),
                     (_) => false,
                   );

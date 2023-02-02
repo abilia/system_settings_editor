@@ -149,6 +149,7 @@ class SelectPictureWidget extends StatelessWidget {
             label: label,
           ),
         ),
+        settings: (SelectPicturePage).routeSetting(),
       ),
     );
 
@@ -400,8 +401,7 @@ class AlarmWidget extends StatelessWidget {
                           onOk: () => Navigator.of(context).maybePop(true),
                         ),
                       ),
-                      settings:
-                          const RouteSettings(name: 'SelectAlarmTypePage'),
+                      settings: (SelectAlarmTypePage).routeSetting(),
                     ),
                   );
                   if (result != true) {
@@ -548,16 +548,15 @@ class AvailableForWidget extends StatelessWidget {
   ) =>
       Navigator.of(context).push<AvailableForState>(
         PersistentMaterialPageRoute(
-          builder: (context) {
-            return BlocProvider<AvailableForCubit>(
-              create: (context) => AvailableForCubit(
-                supportPersonsCubit: context.read<SupportPersonsCubit>(),
-                availableFor: activity.availableFor,
-                selectedSupportPersons: activity.secretExemptions,
-              ),
-              child: const AvailableForPage(),
-            );
-          },
+          settings: (AvailableForPage).routeSetting(),
+          builder: (context) => BlocProvider<AvailableForCubit>(
+            create: (context) => AvailableForCubit(
+              supportPersonsCubit: context.read<SupportPersonsCubit>(),
+              availableFor: activity.availableFor,
+              selectedSupportPersons: activity.secretExemptions,
+            ),
+            child: const AvailableForPage(),
+          ),
         ),
       );
 }

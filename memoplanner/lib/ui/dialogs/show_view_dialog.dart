@@ -6,12 +6,12 @@ import 'package:memoplanner/utils/all.dart';
 Future<T?> showViewDialog<T>({
   required BuildContext context,
   required WidgetBuilder builder,
+  required RouteSettings routeSettings,
   bool barrierDismissible = true,
   Color barrierColor = AbiliaColors.transparentBlack90,
   String? barrierLabel,
   bool useSafeArea = true,
   bool useRootNavigator = true,
-  RouteSettings? routeSettings,
   Offset? anchorPoint,
   bool wrapWithAuthProviders = true,
 }) {
@@ -37,11 +37,11 @@ Future<T?> showViewDialog<T>({
 Future<T?> showPersistentDialog<T>({
   required BuildContext context,
   required WidgetBuilder builder,
+  required RouteSettings routeSettings,
   Color barrierColor = AbiliaColors.transparentBlack90,
   String? barrierLabel,
   bool useSafeArea = true,
   bool useRootNavigator = true,
-  RouteSettings? routeSettings,
   Offset? anchorPoint,
   bool wrapWithAuthProviders = true,
 }) {
