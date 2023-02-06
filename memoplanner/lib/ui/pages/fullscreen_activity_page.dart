@@ -1,4 +1,4 @@
-import 'package:get_it/get_it.dart';
+import 'package:memoplanner/listener/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:vector_math/vector_math_64.dart' hide Colors;
 
@@ -27,11 +27,7 @@ class FullScreenActivityPage extends StatelessWidget {
           alarmCubit: context.read<AlarmCubit>(),
           startingActivity: alarm.activityDay,
         ),
-        child: BlocListener<FullScreenActivityCubit, FullScreenActivityState>(
-          listenWhen: (previous, current) =>
-              current.eventsList.isEmpty && current.isReady,
-          listener: (context, s) =>
-              GetIt.I<AlarmNavigator>().popFullscreenRoute(),
+        child: FullscreenActivityListener(
           child: BlocSelector<FullScreenActivityCubit, FullScreenActivityState,
               ActivityDay>(
             selector: (state) => state.selected,
@@ -84,7 +80,7 @@ class _FullScreenActivityTabBar extends StatelessWidget with ActivityMixin {
           controller: scrollController,
           child: BlocSelector<FullScreenActivityCubit, FullScreenActivityState,
               List<ActivityOccasion>>(
-            selector: (state) => state.eventsList,
+            selector: (state) => state.eventsList ?? [],
             builder: (context, eventsList) => ListView.builder(
               controller: scrollController,
               scrollDirection: Axis.horizontal,
