@@ -10,26 +10,16 @@ import 'package:memoplanner/utils/all.dart';
 abstract class NotificationAlarm extends Equatable implements Trackable {
   final Event event;
   final bool fullScreenActivity;
-
   const NotificationAlarm(this.event, {this.fullScreenActivity = false});
-
   bool hasSound(AlarmSettings settings);
-
   bool hasVibration(AlarmSettings settings);
-
   Sound sound(AlarmSettings settings);
-
   DateTime get notificationTime;
-
   String get stackId;
-
   String get type;
-
   String encode() => json.encode(toJson());
-
   factory NotificationAlarm.decode(String data) =>
       NotificationAlarm.fromJson(json.decode(data));
-
   factory NotificationAlarm.fromJson(Map<String, dynamic> json) {
     switch (json['type']) {
       case 'timer':
@@ -39,18 +29,13 @@ abstract class NotificationAlarm extends Equatable implements Trackable {
         return ActivityAlarm.fromJson(json);
     }
   }
-
   Map<String, dynamic> toJson();
-
   NotificationAlarm setFullScreenActivity(bool fullScreenActivity) => this;
-
   @override
   String toString() =>
       '$type {notificationTime: $notificationTime, ${event.id} -> $hashCode}';
-
   @override
   List<Object?> get props => [event.id, notificationTime];
-
   @override
   // ignore: hash_and_equals
   int get hashCode =>
@@ -70,7 +55,6 @@ abstract class NotificationAlarm extends Equatable implements Trackable {
 
 class TimerAlarm extends NotificationAlarm {
   final AbiliaTimer timer;
-
   const TimerAlarm(this.timer) : super(timer);
 
   @override
@@ -102,9 +86,7 @@ class TimerAlarm extends NotificationAlarm {
 
 abstract class ActivityAlarm extends NotificationAlarm {
   final ActivityDay activityDay;
-
   DateTime get day => activityDay.day;
-
   Activity get activity => activityDay.activity;
 
   @override
@@ -124,7 +106,6 @@ abstract class ActivityAlarm extends NotificationAlarm {
         if (this is NewReminder)
           'reminder': (this as NewReminder).reminder.inMilliseconds,
       };
-
   factory ActivityAlarm.fromJson(Map<String, dynamic> json) {
     final activity = DbActivity.fromJson(json['activity']).activity;
     final day = DateTime.fromMillisecondsSinceEpoch(json['day']);
@@ -224,7 +205,6 @@ class EndAlarm extends NewAlarm {
 
 abstract class NewReminder extends ActivityAlarm {
   final Duration reminder;
-
   const NewReminder(ActivityDay activityDay, this.reminder)
       : super(activityDay);
 
@@ -246,7 +226,6 @@ abstract class NewReminder extends ActivityAlarm {
 class ReminderBefore extends NewReminder {
   const ReminderBefore(ActivityDay activityDay, {required Duration reminder})
       : super(activityDay, reminder);
-
   @override
   DateTime get notificationTime => activityDay.start.subtract(reminder);
 
@@ -262,7 +241,6 @@ class ReminderBefore extends NewReminder {
 class ReminderUnchecked extends NewReminder {
   const ReminderUnchecked(ActivityDay activityDay, {required Duration reminder})
       : super(activityDay, reminder);
-
   @override
   DateTime get notificationTime => activityDay.end.add(reminder);
 
