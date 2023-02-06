@@ -545,20 +545,25 @@ class AvailableForWidget extends StatelessWidget {
   Future<AvailableForState?> navigateToAvailableForPage(
     BuildContext context,
     int userId,
-  ) =>
-      Navigator.of(context).push<AvailableForState>(
-        PersistentMaterialPageRoute(
-          settings: (AvailableForPage).routeSetting(),
-          builder: (context) => BlocProvider<AvailableForCubit>(
-            create: (context) => AvailableForCubit(
-              supportPersonsCubit: context.read<SupportPersonsCubit>(),
-              availableFor: activity.availableFor,
-              selectedSupportPersons: activity.secretExemptions,
-            ),
+  ) {
+    final supportPersonsCubit = context.read<SupportPersonsCubit>();
+    return Navigator.of(context).push<AvailableForState>(
+      PersistentMaterialPageRoute(
+        settings: (AvailableForPage).routeSetting(),
+        builder: (context) => BlocProvider<AvailableForCubit>(
+          create: (context) => AvailableForCubit(
+            supportPersonsCubit: supportPersonsCubit,
+            availableFor: activity.availableFor,
+            selectedSupportPersons: activity.secretExemptions,
+          ),
+          child: BlocProvider<SupportPersonsCubit>.value(
+            value: supportPersonsCubit,
             child: const AvailableForPage(),
           ),
         ),
-      );
+      ),
+    );
+  }
 }
 
 class EndDateWidget extends StatelessWidget {
