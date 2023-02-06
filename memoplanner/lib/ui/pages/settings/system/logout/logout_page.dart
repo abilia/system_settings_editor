@@ -63,10 +63,11 @@ class LogoutPage extends StatelessWidget {
                   client: GetIt.I<ListenableClient>(),
                 ),
               ),
-              child: const WarningModal(),
+              child: const LogoutWarningModal(),
             ),
           ),
         ),
+        routeSettings: (LogoutWarningModal).routeSetting(),
       );
     }
   }

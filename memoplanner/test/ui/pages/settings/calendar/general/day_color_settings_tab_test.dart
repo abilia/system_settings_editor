@@ -35,6 +35,7 @@ void main() {
       ..ticker = Ticker.fake(initialTime: initialTime)
       ..client = Fakes.client(genericResponse: () => generics)
       ..database = FakeDatabase()
+      ..sortableDb = FakeSortableDb()
       ..genericDb = genericDb
       ..battery = FakeBattery()
       ..deviceDb = FakeDeviceDb()

@@ -70,13 +70,6 @@ class Fakes {
                     .toList()),
                 200);
           }
-          if (pathSegments.containsAll(['data', 'sortable items'])) {
-            return Response(
-                json.encode((sortableResponse?.call() ?? allSortables)
-                    .map((a) => a.wrapWithDbModel())
-                    .toList()),
-                200);
-          }
           if (pathSegments.containsAll(['data', 'generics'])) {
             return Response(
                 json.encode((genericResponse?.call() ?? allGenerics)

@@ -22,6 +22,7 @@ class AlarmNavigator {
         authenticatedState: authenticatedState,
         child: AlarmListener(child: _alarmPage(alarm)),
       ),
+      settings: alarm.runtimeType.routeSetting(),
     );
     _routesOnStack[alarm.stackId] = route;
     return route;
@@ -58,6 +59,7 @@ class AlarmNavigator {
         ),
       ),
       fullscreenDialog: true,
+      settings: alarm.runtimeType.routeSetting(properties: alarm.properties),
     );
     final routeOnStack = _routesOnStack[alarm.stackId];
     final navigator = Navigator.of(context);

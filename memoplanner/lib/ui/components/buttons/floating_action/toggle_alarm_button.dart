@@ -60,6 +60,9 @@ class ToggleAlarmButtonInactive extends StatelessWidget {
           builder: (context) => WarningDialog(
             text: Translator.of(context).translate.alertAlarmsDisabled,
           ),
+          routeSettings: (WarningDialog).routeSetting(
+            properties: {'reason': 'Alarms disabled until midnight'},
+          ),
         );
         context.read<GenericCubit>().genericUpdated(
           [

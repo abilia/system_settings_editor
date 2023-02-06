@@ -46,6 +46,7 @@ void main() {
   });
 
   setUp(() async {
+    setupFakeTts();
     mockSortableBloc = MockSortableBloc();
     when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
     mockUserFileCubit = MockUserFileCubit();
@@ -68,6 +69,11 @@ void main() {
     supportUserRepo = MockSupportPersonsRepository();
     when(() => supportUserRepo.load())
         .thenAnswer((_) => Future.value(const {}));
+    GetItInitializer()
+      ..fileStorage = FakeFileStorage()
+      ..database = FakeDatabase()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
+      ..init();
   });
 
   tearDown(GetIt.I.reset);
@@ -568,13 +574,6 @@ void main() {
     });
 
     group('Available for dialog', () {
-      setUp(() async {
-        GetItInitializer()
-          ..sharedPreferences = await FakeSharedPreferences.getInstance()
-          ..database = FakeDatabase()
-          ..baseUrlDb = MockBaseUrlDb()
-          ..init();
-      });
       testWidgets('Available for dialog', (WidgetTester tester) async {
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
@@ -746,15 +745,6 @@ void main() {
     });
 
     group('note', () {
-      setUp(() async {
-        setupFakeTts();
-        GetItInitializer()
-          ..fileStorage = FakeFileStorage()
-          ..sharedPreferences = await FakeSharedPreferences.getInstance()
-          ..database = FakeDatabase()
-          ..init();
-      });
-
       Future goToNote(WidgetTester tester) async {
         await tester.goToInfoItemTab();
 
@@ -966,14 +956,6 @@ Internal improvements to tests and examples.''';
     });
 
     group('checklist', () {
-      setUp(() async {
-        setupFakeTts();
-        GetItInitializer()
-          ..fileStorage = FakeFileStorage()
-          ..sharedPreferences = await FakeSharedPreferences.getInstance()
-          ..database = FakeDatabase()
-          ..init();
-      });
       final questions = {
         0: 'Question 0',
         1: 'Question 1',
@@ -3136,13 +3118,10 @@ text''';
   });
 
   group('tts', () {
-    setUp(() async {
+    setUp(() {
       setupFakeTts();
-      GetItInitializer()
-        ..database = FakeDatabase()
-        ..sharedPreferences = await FakeSharedPreferences.getInstance()
-        ..init();
     });
+
     testWidgets('title', (WidgetTester tester) async {
       const name = 'new name of a activity';
       await tester.pumpWidget(createEditActivityPage());

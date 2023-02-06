@@ -72,7 +72,7 @@ void main() {
     await GetIt.I.reset();
   });
 
-  Widget createWarningModal() {
+  Widget createLogoutWarningModal() {
     return MaterialApp(
       supportedLocales: Translator.supportedLocals,
       localizationsDelegates: const [Translator.delegate],
@@ -94,7 +94,7 @@ void main() {
         ],
         child: child!,
       ),
-      home: const WarningModal(),
+      home: const LogoutWarningModal(),
     );
   }
 
@@ -135,7 +135,8 @@ void main() {
     final mockAuthenticationBloc = MockAuthenticationBloc();
     when(() => mockAuthenticationBloc.add(const LoggedOut()))
         .thenAnswer((_) {});
-    when(() => mockSyncBloc.state).thenReturn(Synced());
+    when(() => mockSyncBloc.state)
+        .thenReturn(const Synced(didFetchData: false));
     when(() => mockSyncBloc.hasDirty()).thenAnswer((_) => Future.value(false));
 
     // Act
@@ -149,7 +150,7 @@ void main() {
     await tester.tap(find.byType(LogoutButton));
     await tester.pumpAndSettle();
     // Assert
-    expect(find.byType(WarningModal), findsNothing);
+    expect(find.byType(LogoutWarningModal), findsNothing);
   });
 
   group('Warning modal variations', () {
@@ -177,11 +178,11 @@ void main() {
 
     testWidgets('first warning & sync failed', (WidgetTester tester) async {
       // Act
-      await tester.pumpWidgetWithMPSize(createWarningModal());
+      await tester.pumpWidgetWithMPSize(createLogoutWarningModal());
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(WarningModal), findsOneWidget);
+      expect(find.byType(LogoutWarningModal), findsOneWidget);
       expect(find.text(translate.goOnlineBeforeLogout), findsOneWidget);
       verifyLastSyncText();
       expect(
@@ -209,11 +210,11 @@ void main() {
       );
 
       // Act
-      await tester.pumpWidgetWithMPSize(createWarningModal());
+      await tester.pumpWidgetWithMPSize(createLogoutWarningModal());
       await tester.pump(const Duration(milliseconds: 1));
 
       // Assert
-      expect(find.byType(WarningModal), findsOneWidget);
+      expect(find.byType(LogoutWarningModal), findsOneWidget);
       expect(find.text(translate.goOnlineBeforeLogout), findsOneWidget);
       expect(find.text(translate.syncing), findsOneWidget);
       expect(find.byType(AbiliaProgressIndicator), findsOneWidget);
@@ -234,11 +235,11 @@ void main() {
       );
 
       // Act
-      await tester.pumpWidgetWithMPSize(createWarningModal());
+      await tester.pumpWidgetWithMPSize(createLogoutWarningModal());
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(WarningModal), findsOneWidget);
+      expect(find.byType(LogoutWarningModal), findsOneWidget);
       expect(find.text(translate.allDataSaved), findsOneWidget);
       expect(find.text(translate.canLogOutSafely), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.ok), findsOneWidget);
@@ -258,11 +259,11 @@ void main() {
       );
 
       // Act
-      await tester.pumpWidgetWithMPSize(createWarningModal());
+      await tester.pumpWidgetWithMPSize(createLogoutWarningModal());
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(WarningModal), findsOneWidget);
+      expect(find.byType(LogoutWarningModal), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.irError), findsOneWidget);
       expect(find.text(translate.doNotLoseYourContent), findsOneWidget);
       verifyLastSyncText();
@@ -287,11 +288,11 @@ void main() {
       );
 
       // Act
-      await tester.pumpWidgetWithMPSize(createWarningModal());
+      await tester.pumpWidgetWithMPSize(createLogoutWarningModal());
       await tester.pump(const Duration(milliseconds: 1));
 
       // Assert
-      expect(find.byType(WarningModal), findsOneWidget);
+      expect(find.byType(LogoutWarningModal), findsOneWidget);
       expect(
         find.byKey(TestKey.logoutModalProgressIndicator),
         findsOneWidget,
@@ -318,11 +319,11 @@ void main() {
       );
 
       // Act
-      await tester.pumpWidgetWithMPSize(createWarningModal());
+      await tester.pumpWidgetWithMPSize(createLogoutWarningModal());
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(WarningModal), findsOneWidget);
+      expect(find.byType(LogoutWarningModal), findsOneWidget);
       expect(find.byKey(TestKey.logoutModalOkIcon), findsOneWidget);
       expect(find.text(translate.allDataSaved), findsOneWidget);
       expect(find.text(translate.canLogOutSafely), findsOneWidget);
@@ -344,11 +345,11 @@ void main() {
       when(() => mockLicenseCubit.validLicense).thenReturn(false);
 
       // Act
-      await tester.pumpWidgetWithMPSize(createWarningModal());
+      await tester.pumpWidgetWithMPSize(createLogoutWarningModal());
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(WarningModal), findsOneWidget);
+      expect(find.byType(LogoutWarningModal), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.irError), findsOneWidget);
       expect(find.text(translate.memoplannerLicenseExpired), findsOneWidget);
       expect(find.text(translate.needLicenseToSaveData), findsOneWidget);

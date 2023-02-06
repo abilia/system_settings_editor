@@ -29,9 +29,10 @@ class EditTimerPage extends StatelessWidget {
                   ? context.read<EditTimerCubit>().start
                   : () => showViewDialog(
                         context: context,
-                        builder: (context) => ErrorDialog(
-                          text: t.timerInvalidDuration,
-                        ),
+                        builder: (context) =>
+                            const InvalidTimerDurationDialog(),
+                        routeSettings:
+                            (InvalidTimerDurationDialog).routeSetting(),
                       ),
             ),
           ),
@@ -51,8 +52,6 @@ class EditBasicTimerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
-
     return PopAwareDiscardListener(
       showDiscardDialogCondition: (context) =>
           !context.read<EditTimerCubit>().state.unchanged,
@@ -69,9 +68,10 @@ class EditBasicTimerPage extends StatelessWidget {
                   ? () => context.read<EditTimerCubit>().save()
                   : () => showViewDialog(
                         context: context,
-                        builder: (context) => ErrorDialog(
-                          text: t.timerInvalidDuration,
-                        ),
+                        builder: (context) =>
+                            const InvalidTimerDurationDialog(),
+                        routeSettings:
+                            (InvalidTimerDurationDialog).routeSetting(),
                       ),
             ),
           ),
@@ -263,6 +263,7 @@ class _TimerInfoInput extends StatelessWidget {
                           final duration =
                               await Navigator.of(context).push<Duration>(
                             PersistentMaterialPageRoute(
+                              settings: (EditTimerDurationPage).routeSetting(),
                               builder: (_) => MultiBlocProvider(
                                 providers: authProviders,
                                 child: EditTimerDurationPage(
