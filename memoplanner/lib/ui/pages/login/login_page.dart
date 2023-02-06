@@ -27,6 +27,8 @@ class LoginPage extends StatelessWidget {
             message: reason.message(translate),
           ),
           wrapWithAuthProviders: false,
+          routeSettings: (LicenseErrorDialog)
+              .routeSetting(properties: {'reason': reason.name}),
         ),
       );
     }
@@ -51,6 +53,9 @@ class LoginPage extends StatelessWidget {
                   message: cause.message(translate),
                 ),
                 wrapWithAuthProviders: false,
+                routeSettings: (LicenseErrorDialog).routeSetting(
+                  properties: {'reason': cause.name},
+                ),
               );
             } else if (state.showLicenseExpiredWarning) {
               final loginCubit = context.read<LoginCubit>();
@@ -58,6 +63,9 @@ class LoginPage extends StatelessWidget {
                 context: context,
                 builder: (context) => ConfirmWarningDialog(
                   text: Translator.of(context).translate.licenseExpiredMessage,
+                ),
+                routeSettings: (ConfirmWarningDialog).routeSetting(
+                  properties: {'reason': 'License Expired'},
                 ),
               );
               if (licenseExpiredConfirmed) {
@@ -70,6 +78,8 @@ class LoginPage extends StatelessWidget {
                   text: cause.message(translate),
                 ),
                 wrapWithAuthProviders: false,
+                routeSettings: (ErrorDialog)
+                    .routeSetting(properties: {'reason': cause.name}),
               );
             }
           }

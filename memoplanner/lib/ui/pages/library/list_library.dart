@@ -93,21 +93,49 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
     BuildContext context,
     Sortable sortable,
   ) async {
-    final translate = Translator.of(context).translate;
     final sortableArchiveCubit = context.read<SortableArchiveCubit<T>>();
+
     final result = await showViewDialog<bool>(
       context: context,
-      builder: (_) => YesNoDialog(
-        heading: translate.delete,
-        headingIcon: AbiliaIcons.deleteAllClear,
-        text: sortable.data is BasicTimerData
-            ? translate.timerDelete
-            : translate.deleteActivityQuestion,
-      ),
+      builder: (_) => sortable.data is BasicTimerData
+          ? const ConfirmDeleteTimerTemplateDialog()
+          : const ConfirmDeleteActivityTemplateDialog(),
+      routeSettings: (sortable.data is BasicTimerData
+              ? ConfirmDeleteTimerTemplateDialog
+              : ConfirmDeleteActivityTemplateDialog)
+          .routeSetting(),
     );
 
     if (result == true) {
       sortableArchiveCubit.delete();
     }
   }
+}
+
+class ConfirmDeleteTimerTemplateDialog extends StatelessWidget {
+  const ConfirmDeleteTimerTemplateDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) =>
+      ConfirmDeleteDialog(text: Translator.of(context).translate.timerDelete);
+}
+
+class ConfirmDeleteActivityTemplateDialog extends StatelessWidget {
+  const ConfirmDeleteActivityTemplateDialog({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) => ConfirmDeleteDialog(
+      text: Translator.of(context).translate.deleteActivityQuestion);
+}
+
+class ConfirmDeleteDialog extends StatelessWidget {
+  const ConfirmDeleteDialog({required this.text, Key? key}) : super(key: key);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => YesNoDialog(
+        heading: Translator.of(context).translate.delete,
+        headingIcon: AbiliaIcons.deleteAllClear,
+        text: text,
+      );
 }

@@ -45,6 +45,7 @@ class TimerTimepillardCard extends TimepillarCard {
                     day: day,
                   ),
                 ),
+                settings: (TimerPage).routeSetting(),
               ),
             );
           },

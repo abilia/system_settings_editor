@@ -48,22 +48,4 @@ class TimerCubit extends Cubit<TimerState> {
     final timers = await timerDb.getAllTimers();
     emit(TimerState(timers: timers));
   }
-
-  Future<void> pauseTimer(AbiliaTimer timer) =>
-      _update(timer.pause(ticker.time));
-
-  Future<void> startTimer(AbiliaTimer timer) =>
-      _update(timer.resume(ticker.time));
-
-  Future<void> _update(AbiliaTimer timer) async {
-    if (await timerDb.update(timer) > 0) {
-      emit(
-        TimerState(
-          timers: List.of(state.timers)
-            ..removeWhere((t) => t.id == timer.id)
-            ..add(timer),
-        ),
-      );
-    }
-  }
 }

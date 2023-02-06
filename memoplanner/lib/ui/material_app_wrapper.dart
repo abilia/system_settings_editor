@@ -30,7 +30,7 @@ class MaterialAppWrapper extends StatelessWidget {
             title: Config.flavor.name,
             theme: abiliaTheme,
             navigatorObservers: [
-              RouteLoggingObserver(GetIt.I<SeagullAnalytics>()),
+              AnalyticNavigationObserver(GetIt.I<SeagullAnalytics>()),
               NavigationObserver(context.read<NavigationCubit>()),
             ],
             supportedLocales: Translator.supportedLocals,

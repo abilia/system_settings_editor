@@ -14,6 +14,7 @@ class AuthenticatedDialogListener
             builder: (context) => AuthenticatedDialog(
               authenticatedDialogCubit: authenticatedDialogCubit,
             ),
+            routeSettings: (AuthenticatedDialog).routeSetting(),
           ),
         );
 }

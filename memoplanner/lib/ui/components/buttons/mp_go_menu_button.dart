@@ -28,7 +28,7 @@ class MpGoMenuButton extends StatelessWidget {
                         providers: authProviders,
                         child: const MpGoMenuPage(),
                       ),
-                      settings: const RouteSettings(name: 'MpGoMenuPage'),
+                      settings: (MpGoMenuPage).routeSetting(),
                     ),
                   );
                 },
