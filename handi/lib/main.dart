@@ -2,25 +2,20 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(
-    HandiCal(),
+    const HandiApp(),
   );
 }
 
-class HandiCal extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: HandiScreen(),
-    );
-  }
-}
+class HandiApp extends StatelessWidget {
+  const HandiApp({super.key});
 
-class HandiScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text("Handi!"),
+    return const MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Text('Handi!'),
+        ),
       ),
     );
   }
