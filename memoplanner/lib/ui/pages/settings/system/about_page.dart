@@ -73,7 +73,7 @@ class AboutMemoplannerColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     final textTheme = Theme.of(context).textTheme;
-    final license = GetIt.I<LicenseDb>().getMemoplannerLicense();
+    final license = GetIt.I<DeviceDb>().getDeviceLicense();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

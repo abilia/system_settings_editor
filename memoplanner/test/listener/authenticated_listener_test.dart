@@ -84,6 +84,7 @@ void main() {
       ..sortableDb = FakeSortableDb()
       ..client = Fakes.client()
       ..battery = FakeBattery()
+      ..deviceDb = FakeDeviceDb()
       ..init();
   });
 

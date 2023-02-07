@@ -42,11 +42,12 @@ class Fakes {
     bool Function()? factoryResetResponse,
   }) =>
       ListenableMockClient(
-        (r) async {
-          final pathSegments = r.url.pathSegments.toSet();
+        (request) async {
+          final pathSegments = request.url.pathSegments.toSet();
 
           if (pathSegments.containsAll(['auth', 'client', 'me'])) {
-            final authHeaders = r.headers[HttpHeaders.authorizationHeader];
+            final authHeaders =
+                request.headers[HttpHeaders.authorizationHeader];
             final incorrect =
                 'Basic ${base64Encode(utf8.encode('$username:$incorrectPassword'))}';
             final supportUserHeader =
@@ -85,7 +86,7 @@ class Fakes {
             return calendarSuccessResponse;
           }
           if (pathSegments.containsAll({'entity', 'user'})) {
-            final uName = json.decode(r.body)['usernameOrEmail'];
+            final uName = json.decode(request.body)['usernameOrEmail'];
             if (uName == 'taken') {
               return Response(
                 '{"status":400,"message":"That entity already have login information. Perhaps you wanted to update the entities login information. Auth: com.abilia.models.auth.AuthUsername@5e694644[entityId=493,username=sad,passwordHash=com.abilia.models.auth.PasswordHash@4838f869]","errorId":739,"errors":[{"code":"WHALE-0130","message":"Error creating user. Username/email address already in use"}]}',
@@ -98,7 +99,7 @@ class Fakes {
             );
           }
           if (pathSegments.containsAll(['token', 'renew'])) {
-            if (r.body.contains('"renewToken":"renewToken"')) {
+            if (request.body.contains('"renewToken":"renewToken"')) {
               return Response('''{
                             "token" : "$token",
                             "endDate" : 1231244,
@@ -130,6 +131,11 @@ class Fakes {
                 json.encode((termsOfUseResponse?.call().toMap() ??
                     TermsOfUse.accepted().toMap())),
                 200);
+          }
+
+          if (RegExp('open/v1/device/.+/license/.+')
+              .hasMatch(request.url.path)) {
+            return deviceLicenseResponse;
           }
 
           if (pathSegments.containsAll({'open', 'v1', 'device', 'license'})) {
@@ -179,6 +185,14 @@ class Fakes {
   static final Response connectLicenseSuccessResponses = Response('''
     {
       "serialNumber" : "serialNumber",
+      "product" : "$memoplannerLicenseName",
+      "endTime" : 0
+    }''', 200);
+
+  static final Response deviceLicenseResponse = Response('''
+    {
+      "id" : 123,
+      "licenseKey" : "1111-1111-1111",
       "product" : "$memoplannerLicenseName",
       "endTime" : 0
     }''', 200);

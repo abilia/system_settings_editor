@@ -260,6 +260,14 @@ class FakeDeviceDb extends Fake implements DeviceDb {
 
   @override
   bool get startGuideCompleted => true;
+
+  @override
+  Future<void> setDeviceLicense(License license) async {}
+
+  @override
+  License? getDeviceLicense() {
+    return null;
+  }
 }
 
 class FakeTtsHandler extends Fake implements TtsInterface {

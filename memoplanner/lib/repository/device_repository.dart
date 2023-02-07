@@ -54,6 +54,17 @@ class DeviceRepository extends Repository {
     return _parseLicenseResponse(response);
   }
 
+  Future<void> fetchDeviceLicense() async {
+    final clientId = await getClientId();
+    final deviceLicenseUrl =
+        '$baseUrl/open/v1/device/$serialId/license/$clientId'.toUri();
+    final response = await client.get(deviceLicenseUrl);
+    if (response.statusCode == 200) {
+      final license = License.fromJson(response.json());
+      deviceDb.setDeviceLicense(license);
+    }
+  }
+
   LicenseResponse _parseLicenseResponse(Response response) {
     final responseJson = response.json();
     switch (response.statusCode) {

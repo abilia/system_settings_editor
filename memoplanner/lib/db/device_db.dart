@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:memoplanner/models/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -5,6 +8,7 @@ class DeviceDb {
   static const String _serialIdRecord = 'serialIdRecord';
   static const String _clientIdRecord = 'clientIdRecord';
   static const String _startGuideCompletedRecord = 'startGuideCompletedRecord';
+  static const String _deviceLicenseRecord = 'deviceLicenseRecord';
   final SharedPreferences prefs;
 
   const DeviceDb(this.prefs);
@@ -26,5 +30,19 @@ class DeviceDb {
     final newClientId = const Uuid().v4();
     await prefs.setString(_clientIdRecord, newClientId);
     return newClientId;
+  }
+
+  Future<void> setDeviceLicense(License license) =>
+      prefs.setString(_deviceLicenseRecord, json.encode(license));
+
+  Future<void> clearDeviceLicense() =>
+      prefs.setString(_deviceLicenseRecord, '');
+
+  License? getDeviceLicense() {
+    final licenseJson = prefs.getString(_deviceLicenseRecord);
+    if (licenseJson == null || licenseJson.isEmpty) {
+      return null;
+    }
+    return License.fromJson(json.decode(licenseJson));
   }
 }
