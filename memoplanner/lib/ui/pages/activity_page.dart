@@ -170,14 +170,19 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
           ),
         );
         if (applyTo == null) return;
+        final withNewStart = result.copyWith(
+          startTime: activityDay.day.copyWith(
+            hour: activity.startTime.hour,
+            minute: activity.startTime.minute,
+          ),
+        );
         activitiesBloc.add(
           UpdateRecurringActivity(
             ActivityDay(
-              result,
+              withNewStart,
               activityDay.day,
             ),
             applyTo,
-            startTimeFromActivityDay: true,
           ),
         );
       } else {

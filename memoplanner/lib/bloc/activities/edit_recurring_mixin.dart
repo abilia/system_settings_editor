@@ -111,18 +111,11 @@ mixin EditRecurringMixin {
   }
 
   ActivityMappingResult updateOnlyThisDay({
-    required ActivityDay activityDay,
+    required Activity activity,
     required Set<Activity> activities,
-    bool startTimeFromActivityDay = false,
+    required DateTime day,
   }) {
-    final activity = activityDay.activity;
-    final day = activityDay.day;
-    final startTime = startTimeFromActivityDay
-        ? day.copyWith(
-            hour: activity.startTime.hour, minute: activity.startTime.minute)
-        : activity.startTime;
-    final onlyDayActivity =
-        activity.copyWith(recurs: Recurs.not, startTime: startTime);
+    final onlyDayActivity = activity.copyWith(recurs: Recurs.not);
     final oldActivity = activities.firstWhere((a) => a.id == activity.id);
 
     final atFirstDay = oldActivity.startTime.isAtSameDay(day);
