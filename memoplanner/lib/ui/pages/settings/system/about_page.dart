@@ -89,7 +89,7 @@ class AboutMemoplannerColumn extends StatelessWidget {
         ),
         DoubleText(
           translate.licenseNumber,
-          license != null ? _licenseKey(license) : '',
+          license?.formattedKey ?? '',
         ),
         DoubleText(
           translate.licenseValidDate,
@@ -100,11 +100,7 @@ class AboutMemoplannerColumn extends StatelessWidget {
     );
   }
 
-  String _licenseKey(License license) {
-    return license.key;
-  }
-
-  String _licenseValidDate(License license) {
+  String _licenseValidDate(DeviceLicense license) {
     final dateString = license.endTime.toString();
     return dateString.substring(0, dateString.indexOf(' '));
   }

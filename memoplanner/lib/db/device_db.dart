@@ -32,17 +32,17 @@ class DeviceDb {
     return newClientId;
   }
 
-  Future<void> setDeviceLicense(License license) =>
+  Future<void> setDeviceLicense(DeviceLicense license) =>
       prefs.setString(_deviceLicenseRecord, json.encode(license));
 
   Future<void> clearDeviceLicense() =>
       prefs.setString(_deviceLicenseRecord, '');
 
-  License? getDeviceLicense() {
+  DeviceLicense? getDeviceLicense() {
     final licenseJson = prefs.getString(_deviceLicenseRecord);
     if (licenseJson == null || licenseJson.isEmpty) {
       return null;
     }
-    return License.fromJson(json.decode(licenseJson));
+    return DeviceLicense.fromJson(json.decode(licenseJson));
   }
 }

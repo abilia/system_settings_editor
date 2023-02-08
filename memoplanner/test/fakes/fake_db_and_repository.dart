@@ -262,10 +262,10 @@ class FakeDeviceDb extends Fake implements DeviceDb {
   bool get startGuideCompleted => true;
 
   @override
-  Future<void> setDeviceLicense(License license) async {}
+  Future<void> setDeviceLicense(DeviceLicense license) async {}
 
   @override
-  License? getDeviceLicense() {
+  DeviceLicense? getDeviceLicense() {
     return null;
   }
 }

@@ -133,14 +133,9 @@ class Fakes {
                 200);
           }
 
-          if (RegExp('open/v1/device/.+/license/.+')
-              .hasMatch(request.url.path)) {
-            return deviceLicenseResponse;
-          }
-
           if (pathSegments.containsAll({'open', 'v1', 'device', 'license'})) {
             return connectLicenseResponse?.call() ??
-                connectLicenseSuccessResponses;
+                deviceLicenseSuccessResponse;
           }
 
           if (pathSegments.containsAll({'open', 'v1', 'device', 'reset'})) {
@@ -182,19 +177,12 @@ class Fakes {
     {
     }''', 404);
 
-  static final Response connectLicenseSuccessResponses = Response('''
+  static final Response deviceLicenseSuccessResponse = Response('''
     {
       "serialNumber" : "serialNumber",
       "product" : "$memoplannerLicenseName",
-      "endTime" : 0
-    }''', 200);
-
-  static final Response deviceLicenseResponse = Response('''
-    {
-      "id" : 123,
-      "licenseKey" : "1111-1111-1111",
-      "product" : "$memoplannerLicenseName",
-      "endTime" : 0
+      "endTime" : 0,
+      "licenseKey" : "1111-1111-1111"
     }''', 200);
 
   static final Response clientMeSuccessResponse = Response('''
