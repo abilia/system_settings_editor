@@ -44,7 +44,6 @@ class TimepillarBoard extends StatelessWidget {
     required double topMargin,
     required double bottomMargin,
     required bool showCategoryColor,
-    required bool timepillarRedesignToggle,
   }) {
     final maxCardHeight = measures.cardPadding.vertical +
         measures.cardMinImageHeight +
@@ -71,7 +70,6 @@ class TimepillarBoard extends StatelessWidget {
               dayParts: dayParts,
               timepillarSide: timepillarSide,
               showCategoryColor: showCategoryColor,
-              timepillarRedesignToggle: timepillarRedesignToggle,
             )
           : eventOccasion is TimerOccasion
               ? _timerCard(
@@ -81,7 +79,6 @@ class TimepillarBoard extends StatelessWidget {
                   maxEndPos: maxEndPos,
                   textStyle: textStyle,
                   textScaleFactor: textScaleFactor,
-                  timepillarRedesignToggle: timepillarRedesignToggle,
                 )
               : null;
       assert(card != null);
@@ -122,7 +119,6 @@ BoardCardGenerator _activityCard({
   required DayParts dayParts,
   required TimepillarSide timepillarSide,
   required bool showCategoryColor,
-  required bool timepillarRedesignToggle,
 }) {
   final decoration = getCategoryBoxDecoration(
     current: activityOccasion.occasion.isCurrent,
@@ -158,7 +154,6 @@ BoardCardGenerator _activityCard({
     contentHeight: contentHeight,
     maxEndPos: maxEndPos,
     hasSideDots: true,
-    timepillarRedesignToggle: timepillarRedesignToggle,
   );
 
   return BoardCardGenerator(
@@ -183,7 +178,6 @@ BoardCardGenerator _timerCard({
   required double maxEndPos,
   required TextStyle textStyle,
   required double textScaleFactor,
-  required bool timepillarRedesignToggle,
 }) {
   final contentHeight = timerOccasion.hasImage
       ? measures.cardMinImageHeight
@@ -208,7 +202,6 @@ BoardCardGenerator _timerCard({
     contentHeight: totalContentHeight,
     maxEndPos: maxEndPos,
     hasSideDots: false,
-    timepillarRedesignToggle: timepillarRedesignToggle,
   );
 
   return BoardCardGenerator(
@@ -234,7 +227,6 @@ class CardPosition {
     required double contentHeight,
     required double maxEndPos,
     required bool hasSideDots,
-    required bool timepillarRedesignToggle,
   }) {
     final interval = measures.interval;
     final minuteStartPosition =
@@ -257,8 +249,7 @@ class CardPosition {
         : 0;
     final dotHeight = dots * measures.dotDistance;
     final renderedHeight = max(contentHeight, measures.activityCardMinHeight);
-    var height = max(
-        dotHeight, timepillarRedesignToggle ? contentHeight : renderedHeight);
+    var height = max(dotHeight, renderedHeight);
     if (topOffset + height > maxEndPos) {
       height = maxEndPos - topOffset;
     }

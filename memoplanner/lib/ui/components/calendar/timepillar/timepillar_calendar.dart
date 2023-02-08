@@ -102,10 +102,6 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
 
         return BlocBuilder<ClockBloc, DateTime>(
           builder: (context, now) {
-            final timepillarRedesignToggle = context
-                .watch<FeatureToggleCubit>()
-                .state
-                .isToggleEnabled(FeatureToggle.TIMEPILLAR_REDESIGN);
             final leftBoardData = TimepillarBoard.positionTimepillarCards(
               eventOccasions: showCategories
                   ? events
@@ -121,7 +117,6 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
               topMargin: topMargin,
               bottomMargin: bottomMargin,
               showCategoryColor: showCategoryColor,
-              timepillarRedesignToggle: timepillarRedesignToggle,
             );
             final rightBoardData = TimepillarBoard.positionTimepillarCards(
               eventOccasions: (showCategories
@@ -137,7 +132,6 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
               topMargin: topMargin,
               bottomMargin: bottomMargin,
               showCategoryColor: showCategoryColor,
-              timepillarRedesignToggle: timepillarRedesignToggle,
             );
 
             // Anchor is the starting point of the central sliver (timepillar).

@@ -138,7 +138,6 @@ void main() {
                   bottomMargin: layout.timepillar.bottomMargin,
                   showCategoryColor: mockMemoplannerSettingsBloc
                       .state.calendar.categories.showColors,
-                  timepillarRedesignToggle: false,
                 ),
                 categoryMinWidth: 400,
                 timepillarWidth: measures.cardTotalWidth,
@@ -495,7 +494,6 @@ void main() {
         bottomMargin: layout.timepillar.bottomMargin,
         showCategoryColor:
             mockMemoplannerSettingsBloc.state.calendar.categories.showColors,
-        timepillarRedesignToggle: false,
       );
       final uniques =
           boardData.cards.map((f) => {f.cardPosition.top, f.column});

@@ -34,6 +34,4 @@ class FeatureToggleState {
 }
 
 // A representation of all available feature toggles
-enum FeatureToggle {
-  TIMEPILLAR_REDESIGN,
-}
+enum FeatureToggle { PLACEHOLDER }
