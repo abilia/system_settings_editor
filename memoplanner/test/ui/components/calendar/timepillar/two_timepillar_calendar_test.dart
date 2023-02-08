@@ -917,4 +917,66 @@ void main() {
       expect(find.text(dayActivityTitle), findsOneWidget);
     });
   });
+
+  group('Timepillar widths', () {
+    testWidgets(
+        'When night is longer than day, timepillars have the same width',
+        (WidgetTester tester) async {
+      genericResponse = () => [
+            twoTimepillarGeneric,
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: 10 * Duration.millisecondsPerHour,
+                identifier: DayParts.morningIntervalStartKey,
+              ),
+            ),
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: 19 * Duration.millisecondsPerHour,
+                identifier: DayParts.nightIntervalStartKey,
+              ),
+            ),
+          ];
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      final oneTimepillars = find.ancestor(
+          of: find.byType(OneTimepillarCalendar),
+          matching: find.byType(Flexible));
+      expect(oneTimepillars, findsNWidgets(2));
+      final dayOnetimepillarWidth = tester.getSize(oneTimepillars.first).width;
+      final nightOnetimepillarWidth = tester.getSize(oneTimepillars.last).width;
+      expect(dayOnetimepillarWidth, nightOnetimepillarWidth);
+    });
+
+    testWidgets(
+        'When day is longer than night, day timepillar is wider than night timepillar',
+        (WidgetTester tester) async {
+      genericResponse = () => [
+            twoTimepillarGeneric,
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: 5 * Duration.millisecondsPerHour,
+                identifier: DayParts.morningIntervalStartKey,
+              ),
+            ),
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: 22 * Duration.millisecondsPerHour,
+                identifier: DayParts.nightIntervalStartKey,
+              ),
+            ),
+          ];
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      final oneTimepillars = find.ancestor(
+          of: find.byType(OneTimepillarCalendar),
+          matching: find.byType(Flexible));
+      expect(oneTimepillars, findsNWidgets(2));
+      final dayOnetimepillarWidth = tester.getSize(oneTimepillars.first).width;
+      final nightOnetimepillarWidth = tester.getSize(oneTimepillars.last).width;
+      expect(dayOnetimepillarWidth, greaterThan(nightOnetimepillarWidth));
+    });
+  });
 }
