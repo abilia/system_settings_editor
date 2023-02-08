@@ -1,5 +1,3 @@
-// ignore_for_file: constant_identifier_names
-
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/repository/all.dart';
 
