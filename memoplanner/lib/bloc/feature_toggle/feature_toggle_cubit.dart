@@ -34,4 +34,4 @@ class FeatureToggleState {
 }
 
 // A representation of all available feature toggles
-enum FeatureToggle { PLACEHOLDER }
+enum FeatureToggle { fakeTime }

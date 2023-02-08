@@ -73,13 +73,16 @@ void main() {
                 ),
               ),
               BlocProvider<TimerCubit>(
-                create: (context) => MockTimerCubit(),
+                create: (_) => MockTimerCubit(),
               ),
               BlocProvider<DayPartCubit>(
-                create: (context) => FakeDayPartCubit(),
+                create: (_) => FakeDayPartCubit(),
               ),
               BlocProvider<SessionsCubit>(
-                create: (context) => FakeSessionsCubit(),
+                create: (_) => FakeSessionsCubit(),
+              ),
+              BlocProvider<FeatureToggleCubit>(
+                create: (_) => FakeFeatureToggleCubit(),
               )
             ],
             child: child!,
