@@ -52,6 +52,8 @@ class PasswordInput extends StatelessWidget {
                               inputHeading: subheading,
                             ),
                           ),
+                          routeSettings:
+                              (PasswordInputBottomSheet).routeSetting(),
                         );
                         if (newPassword != null) {
                           onPasswordChange(newPassword);

@@ -24,6 +24,7 @@ mixin ActivityNavigation {
             child: const BasicActivityPickerPage(),
           ),
         ),
+        settings: (BasicActivityPickerPage).routeSetting(),
       ),
     );
     if (basicActivityData is BasicActivityDataItem) {
@@ -60,8 +61,9 @@ mixin ActivityNavigation {
   }) async {
     final calendarId = await GetIt.I<CalendarDb>().getCalendarId() ?? '';
     final activityCreated = await navigator.push<bool>(
-      _createRoute<bool>(
-        MultiBlocProvider(
+      createSlideRoute<bool>(
+        settings: (ActivityWizardPage).routeSetting(),
+        page: MultiBlocProvider(
           providers: [
             ...authProviders,
             BlocProvider<EditActivityCubit>(
@@ -105,17 +107,22 @@ mixin ActivityNavigation {
     );
     if (activityCreated == true) navigator.maybePop();
   }
-
-  Route<T> _createRoute<T>(Widget page) => PersistentPageRouteBuilder<T>(
-        pageBuilder: (context, animation, secondaryAnimation) => page,
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            SlideTransition(
-          position: animation.drive(
-            Tween(begin: const Offset(1.0, 0.0), end: Offset.zero).chain(
-              CurveTween(curve: Curves.ease),
-            ),
-          ),
-          child: child,
-        ),
-      );
 }
+
+Route<T> createSlideRoute<T>({
+  required RouteSettings settings,
+  required Widget page,
+}) =>
+    PersistentPageRouteBuilder<T>(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+          SlideTransition(
+        position: animation.drive(
+          Tween(begin: const Offset(1.0, 0.0), end: Offset.zero).chain(
+            CurveTween(curve: Curves.ease),
+          ),
+        ),
+        child: child,
+      ),
+      settings: settings,
+    );

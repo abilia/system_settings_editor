@@ -7,10 +7,15 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class AlarmNavigator {
-  static const _fullScreenActivityKey = 'fullScreenActivity',
+  static const fullScreenActivityKey = 'fullScreenActivity',
       _screensaverKey = 'screensaver';
   final _routesOnStack = <String, MaterialPageRoute>{};
   static final log = Logger((AlarmNavigator).toString());
+
+  @visibleForTesting
+  void addRouteOnStack(MaterialPageRoute route) {
+    _routesOnStack[fullScreenActivityKey] = route;
+  }
 
   Route getFullscreenAlarmRoute({
     required NotificationAlarm alarm,
@@ -22,12 +27,13 @@ class AlarmNavigator {
         authenticatedState: authenticatedState,
         child: AlarmListener(child: _alarmPage(alarm)),
       ),
+      settings: alarm.runtimeType.routeSetting(),
     );
     _routesOnStack[alarm.stackId] = route;
     return route;
   }
 
-  void popFullscreenRoute() => _popRoute(_fullScreenActivityKey);
+  void popFullscreenRoute() => _popRoute(fullScreenActivityKey);
   void popScreensaverRoute() => _popRoute(_screensaverKey);
 
   void _popRoute(String key) {
@@ -58,6 +64,7 @@ class AlarmNavigator {
         ),
       ),
       fullscreenDialog: true,
+      settings: alarm.runtimeType.routeSetting(properties: alarm.properties),
     );
     final routeOnStack = _routesOnStack[alarm.stackId];
     final navigator = Navigator.of(context);

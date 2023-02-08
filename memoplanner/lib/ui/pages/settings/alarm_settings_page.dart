@@ -169,6 +169,7 @@ class _AlarmSelector extends StatelessWidget {
                               : null,
                         ),
                       ),
+                      settings: (SelectSoundPage).routeSetting(),
                     ),
                   );
                   if (result != null && result != sound) {
@@ -215,6 +216,7 @@ class _AlarmDurationSelector extends StatelessWidget {
                     appBarTitle: t.alarmTime,
                     appBarLabel: Config.isMP ? t.alarmSettings : null,
                   ),
+                  settings: (SelectAlarmDurationPage).routeSetting(),
                 ),
               );
               if (result != null && result != duration) {

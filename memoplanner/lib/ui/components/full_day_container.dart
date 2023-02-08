@@ -107,7 +107,7 @@ class FullDayActivitiesButton extends StatelessWidget {
                   ),
                 ),
               ),
-              settings: RouteSettings(name: 'FullDayListPage $day'),
+              settings: (FullDayListPage).routeSetting(),
             ),
           );
         },

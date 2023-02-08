@@ -31,8 +31,7 @@ class CodeProtectSettingsPage extends StatelessWidget {
                     final newCode = await Navigator.of(context).push<String>(
                       MaterialPageRoute(
                         builder: (_) => const ChangeCodeProtectPage(),
-                        settings:
-                            const RouteSettings(name: 'ChangeCodeProtectPage'),
+                        settings: (ChangeCodeProtectPage).routeSetting(),
                       ),
                     );
                     if (newCode != null) {

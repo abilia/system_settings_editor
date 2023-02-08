@@ -82,6 +82,11 @@ class RecordSoundWidget extends StatelessWidget {
                     builder: (context) => const PermissionInfoDialog(
                       permission: Permission.microphone,
                     ),
+                    routeSettings: (PermissionInfoDialog).routeSetting(
+                      properties: {
+                        'permission': Permission.microphone.toString(),
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -157,8 +162,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            settings:
-                                const RouteSettings(name: 'SelectSpeechPage'),
+                            settings: (RecordSoundPage).routeSetting(),
                           ),
                         );
                         soundBloc.add(const StopSound());
