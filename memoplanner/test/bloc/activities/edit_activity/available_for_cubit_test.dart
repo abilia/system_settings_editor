@@ -1,4 +1,3 @@
-import 'package:bloc_test/bloc_test.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -23,7 +22,13 @@ void main() {
     ),
   );
 
-  setUp(() {
+  final emptyState = AvailableForState(
+    availableFor: AvailableForType.allSupportPersons,
+    selectedSupportPersons: const UnmodifiableSetView.empty(),
+    allSupportPersons: UnmodifiableSetView({}),
+  );
+
+  setUp(() async {
     supportPersonsRepository = MockSupportPersonsRepository();
     when(() => supportPersonsRepository.load()).thenAnswer(
         (_) => Future.value({testSupportPerson, testSupportPerson2}));
@@ -31,20 +36,25 @@ void main() {
         SupportPersonsCubit(supportPersonsRepository: supportPersonsRepository);
   });
 
-  blocTest('Initial states, emits initialState',
-      build: () => AvailableForCubit(
-            supportPersonsCubit: supportPersonsCubit,
-            availableFor: AvailableForType.allSupportPersons,
-            selectedSupportPersons: {},
-          ),
-      expect: () => [initialState]);
+  test('Initial state before and after setting support persons stream',
+      () async {
+    final availableForCubit = AvailableForCubit(
+      supportPersonsCubit: supportPersonsCubit,
+      availableFor: AvailableForType.allSupportPersons,
+      selectedSupportPersons: {},
+    );
+    expect(availableForCubit.state, emptyState);
+    availableForCubit.setSupportPersonsStream();
+    expect(await availableForCubit.stream.first, initialState);
+  });
 
   test('Change to private', () async {
     final availableForCubit = AvailableForCubit(
       supportPersonsCubit: supportPersonsCubit,
       availableFor: AvailableForType.allSupportPersons,
       selectedSupportPersons: {},
-    );
+    )..setSupportPersonsStream();
+    expect(await availableForCubit.stream.first, initialState);
     await expectLater(availableForCubit.state, initialState);
     availableForCubit.setAvailableFor(AvailableForType.onlyMe);
     await expectLater(availableForCubit.state,
@@ -58,8 +68,8 @@ void main() {
       supportPersonsCubit: supportPersonsCubit,
       availableFor: AvailableForType.allSupportPersons,
       selectedSupportPersons: {},
-    );
-    await expectLater(availableForCubit.state, initialState);
+    )..setSupportPersonsStream();
+    expect(await availableForCubit.stream.first, initialState);
     availableForCubit.setAvailableFor(AvailableForType.selectedSupportPersons);
     await expectLater(
         availableForCubit.state,

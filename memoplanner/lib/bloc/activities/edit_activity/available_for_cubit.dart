@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -6,6 +8,7 @@ import 'package:memoplanner/models/support_person.dart';
 
 class AvailableForCubit extends Cubit<AvailableForState> {
   final SupportPersonsCubit supportPersonsCubit;
+  StreamSubscription? _supportPersonsSubscription;
 
   AvailableForCubit({
     required this.supportPersonsCubit,
@@ -19,17 +22,23 @@ class AvailableForCubit extends Cubit<AvailableForState> {
               supportPersonsCubit.state.supportPersons,
             ),
           ),
-        ) {
-    initialize();
-  }
+        );
 
-  Future<void> initialize() async {
-    await supportPersonsCubit.load();
-    emit(
-      state.copyWith(
-        allSupportPersons: supportPersonsCubit.state.supportPersons,
+  void setSupportPersonsStream() {
+    _supportPersonsSubscription = supportPersonsCubit.stream.listen(
+      (supportPersonsState) => emit(
+        state.copyWith(
+          allSupportPersons: supportPersonsState.supportPersons,
+        ),
       ),
     );
+    supportPersonsCubit.loadSupportPersons();
+  }
+
+  @override
+  Future<void> close() {
+    _supportPersonsSubscription?.cancel();
+    return super.close();
   }
 
   void setAvailableFor(AvailableForType availableFor) => emit(

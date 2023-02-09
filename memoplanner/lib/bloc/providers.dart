@@ -85,6 +85,14 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               userId: authenticatedState.userId,
             ),
           ),
+          RepositoryProvider<SupportPersonsRepository>(
+            create: (context) => SupportPersonsRepository(
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              client: GetIt.I<ListenableClient>(),
+              db: GetIt.I<SupportPersonsDb>(),
+              userId: authenticatedState.userId,
+            ),
+          ),
         ],
         child: MultiBlocProvider(
           providers: [
@@ -253,13 +261,9 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             ),
             BlocProvider<SupportPersonsCubit>(
               create: (context) => SupportPersonsCubit(
-                supportPersonsRepository: SupportPersonsRepository(
-                  baseUrlDb: GetIt.I<BaseUrlDb>(),
-                  client: GetIt.I<ListenableClient>(),
-                  db: GetIt.I<SupportPersonsDb>(),
-                  userId: authenticatedState.userId,
-                ),
-              ),
+                supportPersonsRepository:
+                    context.read<SupportPersonsRepository>(),
+              )..loadSupportPersons(),
             ),
             if (Config.isMP) ...[
               BlocProvider<WakeLockCubit>(

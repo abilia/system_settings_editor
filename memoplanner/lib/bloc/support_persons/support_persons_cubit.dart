@@ -8,11 +8,9 @@ class SupportPersonsCubit extends Cubit<SupportPersonsState> {
   final SupportPersonsRepository supportPersonsRepository;
 
   SupportPersonsCubit({required this.supportPersonsRepository})
-      : super(const SupportPersonsState(UnmodifiableSetView.empty())) {
-    load();
-  }
+      : super(const SupportPersonsState(UnmodifiableSetView.empty()));
 
-  Future<void> load() async {
+  Future<void> loadSupportPersons() async {
     final supportPersons = await supportPersonsRepository.load();
     emit(SupportPersonsState(UnmodifiableSetView(supportPersons)));
   }

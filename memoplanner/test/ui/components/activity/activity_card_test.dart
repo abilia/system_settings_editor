@@ -79,7 +79,7 @@ void main() {
                         create: (context) => SupportPersonsCubit(
                           supportPersonsRepository:
                               context.read<SupportPersonsRepository>(),
-                        ),
+                        )..loadSupportPersons(),
                       ),
                     ],
                     child: Material(
