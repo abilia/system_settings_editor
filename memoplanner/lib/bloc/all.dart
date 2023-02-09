@@ -36,3 +36,4 @@ export 'session/sessions_cubit.dart';
 export 'connectivity/connectivity_cubit.dart';
 export 'reset_device/reset_device_cubit.dart';
 export 'navigation/navigation_cubit.dart';
+export 'feature_toggle/feature_toggle_cubit.dart';

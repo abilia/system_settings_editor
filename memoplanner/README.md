@@ -112,3 +112,6 @@ To run the screenshot integration test connect to a device and run the following
 `$ flutter drive --driver=test_driver/integration_test.dart --target=integration_test/screenshots.dart --flavor mp --dart-define="flavor=mp" --dart-define="release=dev" --profile`
 
 To be able run in profile mode and to get the most accurate screen dimensions, it's recommended to run the tests on a real device.
+
+### Feature toggles
+When developing a new feature that is not ready for production but wanted to be integrated with the rest of the code, or when something should be tested by a selected number of people, a feature toggle could be used. Feature toggles can be handled locally by just adding a toggle to the enum FeatureToggle. The feature toggle page is available for non release builds. Feature toggles can also be added for a specific user in the backend. That has to be done manually in the database or by superadmin post requests.

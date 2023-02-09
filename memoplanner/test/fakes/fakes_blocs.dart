@@ -221,3 +221,14 @@ class FakeConnectivityCubit extends Fake implements ConnectivityCubit {
   @override
   Future<void> close() async {}
 }
+
+class FakeFeatureToggleCubit extends Fake implements FeatureToggleCubit {
+  @override
+  FeatureToggleState get state => FeatureToggleState({});
+
+  @override
+  Stream<FeatureToggleState> get stream => const Stream.empty();
+
+  @override
+  Future<void> close() async {}
+}

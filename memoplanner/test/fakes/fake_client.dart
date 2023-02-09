@@ -143,6 +143,13 @@ class Fakes {
                 : factoryResetFail;
           }
 
+          if (pathSegments.containsAll({'entity', 'features'})) {
+            return Response(
+              json.encode({'features': []}),
+              200,
+            );
+          }
+
           return Response(json.encode(List.empty()), 200);
         },
       );

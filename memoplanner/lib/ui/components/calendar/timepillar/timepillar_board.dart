@@ -154,7 +154,6 @@ BoardCardGenerator _activityCard({
     contentHeight: contentHeight,
     maxEndPos: maxEndPos,
     hasSideDots: true,
-    minHeight: measures.activityCardMinHeight,
   );
 
   return BoardCardGenerator(
@@ -203,7 +202,6 @@ BoardCardGenerator _timerCard({
     contentHeight: totalContentHeight,
     maxEndPos: maxEndPos,
     hasSideDots: false,
-    minHeight: measures.timerMinHeight,
   );
 
   return BoardCardGenerator(
@@ -228,7 +226,6 @@ class CardPosition {
     required double topMargin,
     required double contentHeight,
     required double maxEndPos,
-    required double minHeight,
     required bool hasSideDots,
   }) {
     final interval = measures.interval;
@@ -251,7 +248,7 @@ class CardPosition {
         ? endTime.difference(startTime).inDots(minutesPerDot, roundingMinute)
         : 0;
     final dotHeight = dots * measures.dotDistance;
-    final renderedHeight = max(contentHeight, minHeight);
+    final renderedHeight = max(contentHeight, measures.activityCardMinHeight);
     var height = max(dotHeight, renderedHeight);
     if (topOffset + height > maxEndPos) {
       height = maxEndPos - topOffset;
