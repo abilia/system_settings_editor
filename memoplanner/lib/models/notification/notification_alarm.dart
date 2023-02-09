@@ -90,7 +90,8 @@ abstract class ActivityAlarm extends NotificationAlarm {
   Activity get activity => activityDay.activity;
 
   @override
-  String get stackId => fullScreenActivity ? 'fullScreenActivity' : activity.id;
+  String get stackId =>
+      fullScreenActivity ? AlarmNavigator.fullScreenActivityKey : activity.id;
 
   const ActivityAlarm(
     this.activityDay, {

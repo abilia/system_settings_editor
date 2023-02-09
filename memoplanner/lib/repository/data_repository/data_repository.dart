@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:collection/collection.dart';
-import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:memoplanner/db/all.dart';
@@ -18,8 +17,8 @@ bool _noFilter(_) => true;
 
 abstract class DataRepository<M extends DataModel> extends Repository {
   const DataRepository({
-    required BaseClient client,
-    required BaseUrlDb baseUrlDb,
+    required super.client,
+    required super.baseUrlDb,
     required this.path,
     required this.userId,
     required this.db,
@@ -28,8 +27,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     this.filter = _noFilter,
     this.postApiVersion = 1,
     String? postPath,
-  })  : postPath = postPath ?? path,
-        super(client, baseUrlDb);
+  }) : postPath = postPath ?? path;
 
   final DataDb<M> db;
   final int userId;

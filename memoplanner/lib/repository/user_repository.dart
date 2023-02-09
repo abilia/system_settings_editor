@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:memoplanner/models/login_error.dart';
 
@@ -21,15 +20,15 @@ class UserRepository extends Repository {
   final int postApiVersion;
 
   const UserRepository({
-    required BaseUrlDb baseUrlDb,
-    required BaseClient client,
+    required super.baseUrlDb,
+    required super.client,
     required this.loginDb,
     required this.userDb,
     required this.licenseDb,
     required this.deviceDb,
     required this.calendarDb,
     this.postApiVersion = 1,
-  }) : super(client, baseUrlDb);
+  });
 
   Future<LoginInfo> authenticate({
     required String username,

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:http/http.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/repository/all.dart';
@@ -12,9 +11,9 @@ class FactoryResetRepository extends Repository {
 
   FactoryResetRepository({
     required this.deviceDb,
-    required BaseClient client,
-    required BaseUrlDb baseUrlDb,
-  }) : super(client, baseUrlDb);
+    required super.client,
+    required super.baseUrlDb,
+  });
 
   String get _serialId => deviceDb.serialId;
 

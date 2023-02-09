@@ -46,12 +46,14 @@ class TwoTimepillarCalendar extends StatelessWidget {
             final nightTimepillarHeight =
                 nightTimepillarMeasures.timePillarHeight +
                     layout.timepillar.twoTimePillar.verticalMargin * 2;
+            final timepillarRatio = dayTimepillarMeasures
+                .twoTimpillarRatio(nightTimepillarMeasures.timePillarHeight);
             return Stack(
               children: [
                 Row(
                   children: [
                     Flexible(
-                      flex: 232,
+                      flex: timepillarRatio,
                       child: BlocProvider<TimepillarMeasuresCubit>(
                         create: (_) => TimepillarMeasuresCubit.fixed(
                             state: dayTimepillarMeasures),
@@ -72,7 +74,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
                       ),
                     ),
                     Flexible(
-                      flex: 135,
+                      flex: 100 - timepillarRatio,
                       child: Container(
                         clipBehavior: Clip.hardEdge,
                         height: nightTimepillarHeight,

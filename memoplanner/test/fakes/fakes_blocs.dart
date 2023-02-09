@@ -229,10 +229,21 @@ class FakeSupportPersonsCubit extends Fake implements SupportPersonsCubit {
 
   @override
   SupportPersonsState get state =>
-      const SupportPersonsState(UnmodifiableSetView.empty());
+      const SupportPersonsState(UnmodifiableSetView<SupportPerson>.empty());
 
   @override
   Future<void> loadSupportPersons() async => Future.value();
+
+  @override
+  Future<void> close() async {}
+}
+
+class FakeFeatureToggleCubit extends Fake implements FeatureToggleCubit {
+  @override
+  FeatureToggleState get state => FeatureToggleState({});
+
+  @override
+  Stream<FeatureToggleState> get stream => const Stream.empty();
 
   @override
   Future<void> close() async {}
