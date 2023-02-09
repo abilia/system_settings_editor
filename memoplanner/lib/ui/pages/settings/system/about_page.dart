@@ -87,14 +87,16 @@ class AboutMemoplannerColumn extends StatelessWidget {
           Version.versionText(GetIt.I<PackageInfo>()),
           bold: true,
         ),
-        DoubleText(
-          translate.licenseNumber,
-          license?.formattedKey ?? '',
-        ),
-        DoubleText(
-          translate.licenseValidDate,
-          license != null ? _licenseValidDate(license) : '',
-        ),
+        if (Config.isMP) ...[
+          DoubleText(
+            translate.licenseNumber,
+            license?.formattedKey ?? '',
+          ),
+          DoubleText(
+            translate.licenseValidDate,
+            license != null ? _licenseValidDate(license) : '',
+          ),
+        ],
         SizedBox(height: layout.formPadding.groupBottomDistance),
       ],
     );
