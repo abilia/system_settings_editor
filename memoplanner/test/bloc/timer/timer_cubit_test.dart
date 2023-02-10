@@ -1,10 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:test/test.dart';
 
 import 'package:memoplanner/models/all.dart';
+import 'package:seagull_analytics/seagull_analytics.dart';
 
 import '../../mocks/mocks.dart';
 
@@ -37,7 +37,7 @@ void main() {
     build: () => TimerCubit(
       timerDb: mockTimerDb,
       ticker: Ticker.fake(initialTime: now),
-      seagullAnalytics: SeagullAnalytics.empty(),
+      analytics: FakeSeagullAnalytics(),
     ),
     act: (timerBloc) => timerBloc.loadTimers(),
     expect: () => [defaultState],
@@ -48,7 +48,7 @@ void main() {
     build: () => TimerCubit(
       timerDb: mockTimerDb,
       ticker: Ticker.fake(initialTime: now),
-      seagullAnalytics: SeagullAnalytics.empty(),
+      analytics: FakeSeagullAnalytics(),
     ),
     act: (timerBloc) => timerBloc
       ..loadTimers()
@@ -67,7 +67,7 @@ void main() {
     build: () => TimerCubit(
       timerDb: mockTimerDb,
       ticker: Ticker.fake(initialTime: now),
-      seagullAnalytics: SeagullAnalytics.empty(),
+      analytics: FakeSeagullAnalytics(),
     ),
     act: (timerBloc) => timerBloc
       ..loadTimers()

@@ -30,6 +30,11 @@ void registerFallbackValues() {
       duration: Duration.zero,
     ),
   );
+  registerFallbackValue(
+    EditTimerMetaData(
+      fromTemplate: false,
+    ),
+  );
   registerFallbackValue(const LoadSortables());
   registerFallbackValue(Request('GET', ''.toUri()));
   registerFallbackValue(NotificationEvent());

@@ -1,10 +1,10 @@
 import 'dart:async';
+import 'dart:ui';
 
-import 'package:memoplanner/logging/all.dart';
-import 'package:memoplanner/ui/all.dart';
+import 'package:logging/logging.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 
-import 'package:memoplanner/models/all.dart';
+export 'all.dart';
 
 final _log = Logger('SeagullAnalytics');
 
@@ -14,39 +14,29 @@ class SeagullAnalytics {
       languageKey = 'language';
   final Mixpanel? mixpanel;
   final Map<String, dynamic> superProperties;
-  SeagullAnalytics._(this.mixpanel, this.superProperties);
-  SeagullAnalytics.empty()
-      : mixpanel = null,
-        superProperties = {};
 
-  static Future<SeagullAnalytics> init({
-    required String clientId,
-    required String environment,
-  }) async {
-    final superProperties = {
-      'flavor': Config.flavor.name,
-      'release': Config.release,
-      'clientId': clientId,
-      environmentKey: environment,
-    };
+  const SeagullAnalytics(this.mixpanel, this.superProperties);
+
+  static Future<SeagullAnalytics> init(
+    Map<String, dynamic> superProperties,
+  ) async {
     final mixpanel = await Mixpanel.init(
       '814838948a0be3497bcce0421334edb2',
       trackAutomaticEvents: true,
       superProperties: superProperties,
     );
-    _log.fine('initiliased with superProperties: $superProperties');
-    return SeagullAnalytics._(mixpanel, superProperties);
+    _log.fine('initialized with superProperties: $superProperties');
+    return SeagullAnalytics(mixpanel, superProperties);
   }
 
-  void setUser(User user) {
-    mixpanel?.identify('${user.id}');
-    final superPros = {
-      'user_type': user.type,
-      'user_language': user.language,
-    };
-    mixpanel?.registerSuperProperties(superPros);
-    _log.fine('user superProperties: $superPros');
-    _log.fine('user set: ${user.id}');
+  void identify({
+    required String identifier,
+    required Map<String, dynamic> superProperties,
+  }) {
+    mixpanel?.identify(identifier);
+    mixpanel?.registerSuperProperties(superProperties);
+    _log.fine('user superProperties: $superProperties');
+    _log.fine('user set: $identifier');
   }
 
   void reset() {
@@ -73,9 +63,28 @@ class SeagullAnalytics {
     _log.fine('locale set $superProp');
   }
 
-  void track(String eventName, {Map<String, dynamic>? properties}) {
+  void trackNavigation({
+    required String page,
+    required NavigationAction action,
+    required Map<String, dynamic> properties,
+  }) {
+    properties['page'] = page;
+    properties['action'] = action.name;
+    trackEvent('Navigation', properties: properties);
+  }
+
+  void trackEvent(
+    String eventName, {
+    required Map<String, dynamic> properties,
+  }) {
     _log.finer('tracking $eventName');
-    if (properties != null) _log.finer('$eventName props: $properties');
+    _log.finer('$eventName props: $properties');
     mixpanel?.track(eventName, properties: properties);
   }
+}
+
+enum NavigationAction {
+  opened,
+  closed,
+  viewed,
 }

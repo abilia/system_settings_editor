@@ -12,17 +12,17 @@ import '../../../mocks/mocks.dart';
 
 void main() {
   final translate = Locales.language.values.first;
-  late final VoicesCubit voicesCubit;
-  late final SpeechSettingsCubit speechSettingsCubit;
-  late final StartupCubit startupCubit;
-  late final VoiceRepository voiceRepository;
-  late final DeviceRepository deviceRepository;
-  late final VoiceDb voiceDb;
+  late VoicesCubit voicesCubit;
+  late SpeechSettingsCubit speechSettingsCubit;
+  late StartupCubit startupCubit;
+  late VoiceRepository voiceRepository;
+  late DeviceRepository deviceRepository;
+  late VoiceDb voiceDb;
   final mockConnectivity = MockConnectivity();
   late MockMyAbiliaConnection mockMyAbiliaConnection;
   bool Function() factoryResetResponse = () => true;
 
-  setUpAll(() async {
+  setUp(() async {
     voiceDb = MockVoiceDb();
     when(() => voiceDb.textToSpeech).thenReturn(true);
     when(() => voiceDb.voice).thenReturn('test voice');
@@ -70,9 +70,7 @@ void main() {
     mockMyAbiliaConnection = MockMyAbiliaConnection();
     when(() => mockMyAbiliaConnection.hasConnection())
         .thenAnswer((invocation) async => true);
-  });
 
-  setUp(() async {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..database = FakeDatabase()
@@ -200,5 +198,19 @@ void main() {
       expect(
           tester.widget<RedButton>(redButtonFinder).onPressed == null, isTrue);
     });
+  }, skip: !Config.isMP);
+
+  testWidgets('Analytics are triggered', (tester) async {
+    // Arrange
+    await pumpAbiliaLogoWithReset(tester);
+    await goToConfirmFactoryReset(tester);
+
+    final analytics = GetIt.I<SeagullAnalytics>() as FakeSeagullAnalytics;
+    expect(analytics.events, [
+      const AnalyticsEvent('Navigation',
+          {'page': 'FactoryResetOrClearDataDialog', 'action': 'viewed'}),
+      const AnalyticsEvent('Navigation',
+          {'page': 'ConfirmFactoryResetDialog', 'action': 'viewed'})
+    ]);
   }, skip: !Config.isMP);
 }

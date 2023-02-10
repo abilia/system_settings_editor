@@ -22,18 +22,27 @@ class AlarmNavigator {
     required Authenticated authenticatedState,
   }) {
     log.fine('pushFullscreenAlarm: $alarm');
+    final alarmPage = _alarmPage(alarm);
     final route = AlarmRoute(
       builder: (_) => AuthenticatedBlocsProvider(
         authenticatedState: authenticatedState,
-        child: AlarmListener(child: _alarmPage(alarm)),
+        child: AlarmListener(
+          child: PopAwareAlarmPage(
+            alarm: alarm,
+            alarmNavigator: this,
+            child: alarmPage,
+          ),
+        ),
       ),
-      settings: alarm.runtimeType.routeSetting(),
+      settings: alarmPage.runtimeType
+          .routeSetting(properties: _alarmProperties(alarm)),
     );
     _routesOnStack[alarm.stackId] = route;
     return route;
   }
 
   void popFullscreenRoute() => _popRoute(fullScreenActivityKey);
+
   void popScreensaverRoute() => _popRoute(_screensaverKey);
 
   void _popRoute(String key) {
@@ -55,16 +64,22 @@ class AlarmNavigator {
     final authProviders = copiedAuthProviders(context);
     final activityRepository = context.read<ActivityRepository>();
     log.fine('pushAlarm: $alarm');
+    final alarmPage = _alarmPage(alarm);
     final route = AlarmRoute(
       builder: (_) => RepositoryProvider.value(
         value: activityRepository,
         child: MultiBlocProvider(
           providers: authProviders,
-          child: _alarmPage(alarm),
+          child: PopAwareAlarmPage(
+            alarm: alarm,
+            alarmNavigator: this,
+            child: alarmPage,
+          ),
         ),
       ),
       fullscreenDialog: true,
-      settings: alarm.runtimeType.routeSetting(properties: alarm.properties),
+      settings: alarmPage.runtimeType
+          .routeSetting(properties: _alarmProperties(alarm)),
     );
     final routeOnStack = _routesOnStack[alarm.stackId];
     final navigator = Navigator.of(context);
@@ -87,17 +102,19 @@ class AlarmNavigator {
     return navigator.push(route);
   }
 
-  Widget _alarmPage(NotificationAlarm alarm) => PopAwareAlarmPage(
-        alarm: alarm,
-        alarmNavigator: this,
-        child: (alarm is NewAlarm)
-            ? AlarmPage(alarm: alarm)
-            : (alarm is NewReminder)
-                ? ReminderPage(reminder: alarm)
-                : (alarm is TimerAlarm)
-                    ? TimerAlarmPage(timerAlarm: alarm)
-                    : throw UnsupportedError('$alarm not supported'),
-      );
+  Map<String, dynamic> _alarmProperties(NotificationAlarm alarm) {
+    final properties = alarm.properties;
+    properties['type'] = alarm.runtimeType.toString();
+    return properties;
+  }
+
+  Widget _alarmPage(NotificationAlarm alarm) => (alarm is NewAlarm)
+      ? AlarmPage(alarm: alarm)
+      : (alarm is NewReminder)
+          ? ReminderPage(reminder: alarm)
+          : (alarm is TimerAlarm)
+              ? TimerAlarmPage(timerAlarm: alarm)
+              : throw UnsupportedError('$alarm not supported');
 
   MaterialPageRoute? removedFromRoutes(String stackId) {
     log.info('removedFromRoutes: $stackId');

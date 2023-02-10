@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/listener/all.dart';
 import 'package:memoplanner/models/all.dart';
@@ -34,10 +35,10 @@ class CalendarPage extends StatelessWidget {
                   const monthTab = MonthCalendarTab();
                   const menuPage = MenuPage();
                   return ReturnToHomeScreenListener(
-                    child: TabBarView(
-                      physics: const NeverScrollableScrollPhysics(),
+                    child: TrackableTabBarView(
+                      analytics: GetIt.I<SeagullAnalytics>(),
                       children: [
-                        const DayCalendar(),
+                        const DayCalendarTab(),
                         if (display.week) weekTab else emptyPage,
                         if (display.month) monthTab else emptyPage,
                         if (display.menu) menuPage else emptyPage,
@@ -79,7 +80,7 @@ class _EmptyCalendarPageState extends State<EmptyCalendarPage> {
       if (mounted) {
         final tabController = DefaultTabController.of(context);
         final settings = context.read<MemoplannerSettingsBloc>().state;
-        await Future.delayed(DayCalendar.transitionDuration);
+        await Future.delayed(DayCalendarTab.transitionDuration);
         final startViewIndex = settings.functions.startViewIndex;
         tabController.index = startViewIndex;
       }

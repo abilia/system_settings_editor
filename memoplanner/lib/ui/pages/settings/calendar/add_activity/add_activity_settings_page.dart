@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
@@ -32,11 +33,14 @@ class AddActivitySettingsPage extends StatelessWidget {
               ],
             ),
           ),
-          body: const TabBarView(children: [
-            AddActivityAddSettingsTab(),
-            AddActivityGeneralSettingsTab(),
-            AddActivityDefaultSettingsTab(),
-          ]),
+          body: TrackableTabBarView(
+            analytics: GetIt.I<SeagullAnalytics>(),
+            children: const [
+              AddActivityAddSettingsTab(),
+              AddActivityGeneralSettingsTab(),
+              AddActivityDefaultSettingsTab(),
+            ],
+          ),
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: Builder(

@@ -32,9 +32,9 @@ class _ResetDeviceDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageController = PageController();
-    return PageView(
+    return TrackablePageView(
       controller: pageController,
-      physics: const NeverScrollableScrollPhysics(),
+      analytics: GetIt.I<SeagullAnalytics>(),
       children: [
         FactoryResetOrClearDataDialog(
           pageController: pageController,

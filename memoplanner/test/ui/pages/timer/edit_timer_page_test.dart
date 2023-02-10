@@ -1,32 +1,24 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/ticker.dart';
 import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/mock_bloc.dart';
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/enter_text.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
+  late EditTimerCubit editTimerCubit;
+  late TimerCubit timerCubit;
+  late Ticker fakeTicker;
+
   Widget wrapWithMaterialApp({
-    Duration initialDuration = Duration.zero,
     bool editTemplateTimer = false,
   }) {
-    final fakeTicker = Ticker.fake(initialTime: DateTime(2022));
-    final editTimerCubit = EditTimerCubit(
-      timerCubit: MockTimerCubit(),
-      translate: Locales.language.values.first,
-      ticker: fakeTicker,
-      basicTimer: BasicTimerDataItem.fromTimer(
-        AbiliaTimer(
-          id: 'id',
-          startTime: DateTime(2022),
-          duration: initialDuration,
-        ),
-      ),
-    );
-
     return MaterialApp(
       supportedLocales: Translator.supportedLocals,
       localizationsDelegates: const [Translator.delegate],
@@ -51,6 +43,39 @@ void main() {
     );
   }
 
+  setUp(() async {
+    registerFallbackValues();
+    fakeTicker = Ticker.fake(initialTime: DateTime(2022));
+    final timerDb = MockTimerDb();
+    when(() => timerDb.insert(any())).thenAnswer((_) => Future.value(0));
+    final analytics = FakeSeagullAnalytics();
+    timerCubit = TimerCubit(
+      timerDb: timerDb,
+      ticker: fakeTicker,
+      analytics: analytics,
+    );
+    editTimerCubit = EditTimerCubit(
+      timerCubit: timerCubit,
+      translate: Locales.language.values.first,
+      ticker: fakeTicker,
+      basicTimer: BasicTimerDataItem.fromTimer(
+        AbiliaTimer(
+          id: 'id',
+          startTime: DateTime(2022),
+          duration: Duration.zero,
+        ),
+      ),
+    );
+    GetItInitializer()
+      ..database = FakeDatabase()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
+      ..client = Fakes.client()
+      ..analytics = analytics
+      ..init();
+  });
+
+  tearDown(() => GetIt.instance.reset());
+
   group('Timer wheel animation', () {
     void expectAnimation(WidgetTester tester, {required bool animating}) {
       final editTimerWheelState =
@@ -61,8 +86,7 @@ void main() {
     testWidgets('Timer wheel animates when creating new timer',
         (WidgetTester tester) async {
       // Act
-      await tester
-          .pumpWidget(wrapWithMaterialApp(initialDuration: const Duration()));
+      await tester.pumpWidget(wrapWithMaterialApp());
       await tester.pumpAndSettle();
 
       // Assert
@@ -72,8 +96,7 @@ void main() {
     testWidgets('Timer wheel stops animating when entering time',
         (WidgetTester tester) async {
       // Act
-      await tester
-          .pumpWidget(wrapWithMaterialApp(initialDuration: const Duration()));
+      await tester.pumpWidget(wrapWithMaterialApp());
       await tester.pumpAndSettle();
 
       // Assert
@@ -94,8 +117,7 @@ void main() {
     testWidgets('Timer wheel stops animating when tapping it',
         (WidgetTester tester) async {
       // Act
-      await tester
-          .pumpWidget(wrapWithMaterialApp(initialDuration: const Duration()));
+      await tester.pumpWidget(wrapWithMaterialApp());
       await tester.pumpAndSettle();
 
       // Assert
@@ -118,9 +140,20 @@ void main() {
     testWidgets('Timer wheel does not animates when editing timer',
         (WidgetTester tester) async {
       // Act
+      editTimerCubit = EditTimerCubit(
+        timerCubit: timerCubit,
+        translate: Locales.language.values.first,
+        ticker: fakeTicker,
+        basicTimer: BasicTimerDataItem.fromTimer(
+          AbiliaTimer(
+            id: 'id',
+            startTime: DateTime(2022),
+            duration: 1.seconds(),
+          ),
+        ),
+      );
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          initialDuration: const Duration(seconds: 1),
           editTemplateTimer: true,
         ),
       );
@@ -171,5 +204,34 @@ void main() {
       // Assert - Timer is now at 01:00
       expect(find.text('01:00'), findsOneWidget);
     });
+  });
+
+  testWidgets('Add timer triggers analytics event',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(wrapWithMaterialApp());
+    await tester.pumpAndSettle();
+
+    // Act
+    await tester.tap(find.byType(PickField));
+    await tester.pumpAndSettle();
+    await tester.enterTime(find.byKey(TestKey.minutes), '45');
+    await tester.tap(find.byType(OkButton));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(StartButton));
+    await tester.pumpAndSettle();
+
+    final analytics = GetIt.I<SeagullAnalytics>() as FakeSeagullAnalytics;
+    expect(analytics.events, [
+      AnalyticsEvent(
+        'Timer started',
+        {
+          'fromTemplate': true,
+          'duration': 45,
+          'image': false,
+          'titleChanged': false,
+          'timerSetType': TimerSetType.inputField.name,
+        },
+      ),
+    ]);
   });
 }

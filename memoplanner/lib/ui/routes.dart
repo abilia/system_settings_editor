@@ -1,21 +1,6 @@
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
-extension TypeRoute on Type {
-  TrackableRouteSettings routeSetting({Map<String, dynamic>? properties}) =>
-      TrackableRouteSettings(
-        name: toString(),
-        properties: properties,
-      );
-}
-
-class TrackableRouteSettings extends RouteSettings implements Trackable {
-  @override
-  String get eventName => 'Nav $name';
-  @override
-  final Map<String, dynamic>? properties;
-  const TrackableRouteSettings({required super.name, this.properties});
-}
+export 'package:seagull_analytics/seagull_analytics.dart';
 
 mixin PersistentRoute {}
 mixin ActivityRootRoute {}

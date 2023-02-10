@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/ui/all.dart';

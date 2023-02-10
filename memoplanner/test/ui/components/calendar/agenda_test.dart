@@ -1243,6 +1243,63 @@ void main() {
     });
   });
 
+  testWidgets('Analytics are correct', (WidgetTester tester) async {
+    final time = DateTime(2020, 06, 04, 10, 00);
+    GetIt.I<Ticker>().setFakeTime(time, setTicker: false);
+    final analytics = GetIt.I<SeagullAnalytics>() as FakeSeagullAnalytics;
+    activityDbInMemory.initWithActivities([
+      Activity.createNew(
+        title: 'test',
+        startTime: time.subtract(10.days()),
+        duration: 30.minutes(),
+        recurs: Recurs.everyDay,
+      ),
+    ]);
+
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+
+    final expectedEvents = [];
+    expectedEvents.add(const AnalyticsEvent(
+        'Navigation', {'page': 'CalendarPage', 'action': 'opened'}));
+    expectedEvents.add(const AnalyticsEvent(
+        'Navigation', {'page': 'DayCalendarTab', 'action': 'viewed'}));
+
+    expect(analytics.events, expectedEvents);
+
+    await tester.tap(find.byType(ActivityCard));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
+    await tester.pumpAndSettle();
+
+    expectedEvents.add(
+      const AnalyticsEvent(
+        'Navigation',
+        {'page': 'ActivityPage', 'action': 'opened'},
+      ),
+    );
+    expectedEvents.add(
+      const AnalyticsEvent(
+        'Navigation',
+        {'page': 'ActivityPage', 'action': 'closed'},
+      ),
+    );
+
+    expect(analytics.events, expectedEvents);
+
+    await tester.tap(find.byIcon(AbiliaIcons.month));
+    await tester.pumpAndSettle();
+
+    expectedEvents.add(
+      const AnalyticsEvent(
+        'Navigation',
+        {'page': 'MonthCalendarTab', 'action': 'viewed'},
+      ),
+    );
+
+    expect(analytics.events, expectedEvents);
+  });
+
   testWidgets('Opacity for nighttime activities', (WidgetTester tester) async {
     final nightTime = DateTime(2020, 06, 04, 01, 24);
     GetIt.I<Ticker>().setFakeTime(nightTime, setTicker: false);

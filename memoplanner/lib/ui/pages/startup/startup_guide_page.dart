@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -23,9 +24,9 @@ class StartupGuidePage extends StatelessWidget {
               selector: (state) => state is NoConnectedLicense,
               builder: (context, showLicensePage) {
                 final pages = showLicensePage ? 3 : 2;
-                return PageView(
-                  physics: const NeverScrollableScrollPhysics(),
+                return TrackablePageView(
                   controller: pageController,
+                  analytics: GetIt.I<SeagullAnalytics>(),
                   children: [
                     WelcomePage(pageController: pageController),
                     PageOneWifi(

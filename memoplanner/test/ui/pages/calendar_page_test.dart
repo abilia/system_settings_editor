@@ -1455,7 +1455,7 @@ void main() {
 
       syncBloc.add(const SyncAll());
       await tester.pumpAndSettle();
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
     });
 
     testWidgets(
@@ -1487,7 +1487,7 @@ void main() {
       ));
       await tester.pumpAndSettle();
       expect(find.byType(AbiliaProgressIndicator), findsNothing);
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
     });
   });
 }

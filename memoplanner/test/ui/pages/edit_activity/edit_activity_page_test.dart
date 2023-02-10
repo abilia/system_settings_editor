@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
+import 'package:memoplanner/logging/observers/bloc_logging_observer.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -74,6 +75,7 @@ void main() {
       ..database = FakeDatabase()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..init();
+    Bloc.observer = BlocLoggingObserver(GetIt.I<SeagullAnalytics>());
   });
 
   tearDown(GetIt.I.reset);
@@ -87,6 +89,9 @@ void main() {
   }) {
     final activity = givenActivity ?? startActivity;
     return MaterialApp(
+      navigatorObservers: [
+        AnalyticNavigationObserver(GetIt.I<SeagullAnalytics>()),
+      ],
       supportedLocales: Translator.supportedLocals,
       localizationsDelegates: const [Translator.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
@@ -103,7 +108,11 @@ void main() {
               BlocProvider<MemoplannerSettingsBloc>.value(
                 value: mockMemoplannerSettingsBloc,
               ),
-              BlocProvider<ActivitiesBloc>(create: (_) => FakeActivitiesBloc()),
+              BlocProvider<ActivitiesBloc>(
+                  create: (_) => ActivitiesBloc(
+                        activityRepository: FakeActivityRepository(),
+                        syncBloc: FakeSyncBloc(),
+                      )),
               BlocProvider<EditActivityCubit>(
                 create: (context) => newActivity
                     ? EditActivityCubit.newActivity(
@@ -3894,6 +3903,82 @@ text''';
       // Assert -- Error marker is not shown after entering a start time
       expect(timeIntervalIsErrorDecorated(), false);
     });
+  });
+
+  testWidgets('Create an activity creates the correct analytics',
+      (WidgetTester tester) async {
+    // Arrange
+    await tester.pumpWidget(createEditActivityPage(
+      newActivity: true,
+    ));
+    await tester.pumpAndSettle();
+
+    await tester.goToAlarmTab();
+
+    await tester.goToRecurrenceTab();
+
+    await tester.goToInfoItemTab();
+
+    await tester.goToMainTab();
+
+    await tester.tap(find.byType(SaveButton));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(PreviousButton).last);
+    await tester.pumpAndSettle();
+
+    await tester.ourEnterText(
+        find.byKey(TestKey.editTitleTextFormField), 'newActivityTitle');
+    await tester.scrollDown(dy: -100);
+
+    await tester.tap(timeFieldFinder);
+    await tester.pumpAndSettle();
+    await tester.enterTime(startTimeInputFinder, '0330');
+    await tester.pumpAndSettle();
+    await tester.tap(okButtonFinder);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(SaveButton));
+    await tester.pumpAndSettle();
+
+    final expectedActivity = Activity.createNew(
+        startTime: startTime, title: 'newActivityTitle', timezone: 'UTC');
+    final expectedProperties = AddActivity(expectedActivity).properties;
+
+    final analytics = GetIt.I<SeagullAnalytics>() as FakeSeagullAnalytics;
+    expect(analytics.events, [
+      const AnalyticsEvent(
+          'Navigation', {'page': 'EditActivityPage', 'action': 'viewed'}),
+      const AnalyticsEvent(
+          'Navigation', {'page': 'MainTab', 'action': 'viewed'}),
+      const AnalyticsEvent(
+          'Navigation', {'page': 'AlarmAndReminderTab', 'action': 'viewed'}),
+      const AnalyticsEvent(
+          'Navigation', {'page': 'RecurrenceTab', 'action': 'viewed'}),
+      const AnalyticsEvent(
+          'Navigation', {'page': 'InfoItemTab', 'action': 'viewed'}),
+      const AnalyticsEvent(
+          'Navigation', {'page': 'MainTab', 'action': 'viewed'}),
+      const AnalyticsEvent('Navigation', {
+        'save errors': ['noTitleOrImage', 'noStartTime'],
+        'page': 'ErrorDialog',
+        'action': 'opened',
+      }),
+      const AnalyticsEvent('Navigation', {
+        'save errors': ['noTitleOrImage', 'noStartTime'],
+        'page': 'ErrorDialog',
+        'action': 'closed',
+      }),
+      const AnalyticsEvent(
+          'Navigation', {'page': 'DefaultTextInput', 'action': 'opened'}),
+      const AnalyticsEvent(
+          'Navigation', {'page': 'DefaultTextInput', 'action': 'closed'}),
+      const AnalyticsEvent(
+          'Navigation', {'page': 'TimeInputPage', 'action': 'opened'}),
+      const AnalyticsEvent(
+          'Navigation', {'page': 'TimeInputPage', 'action': 'closed'}),
+      AnalyticsEvent('Activity created', expectedProperties),
+    ]);
   });
 }
 

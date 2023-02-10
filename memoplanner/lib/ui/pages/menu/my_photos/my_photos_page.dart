@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -45,7 +46,8 @@ class MyPhotosPage extends StatelessWidget {
               ],
             ),
           ),
-          body: TabBarView(
+          body: TrackableTabBarView(
+            analytics: GetIt.I<SeagullAnalytics>(),
             children: [
               _AllPhotosTab(
                 key: TestKey.allPhotosTab,

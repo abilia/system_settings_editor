@@ -203,6 +203,9 @@ class FakeActivityRepository extends Fake implements ActivityRepository {
   Future<bool> synchronize() => Future.value(true);
 
   @override
+  Future<bool> save(Iterable<Activity> data) => Future.value(true);
+
+  @override
   Future<Iterable<Activity>> allBetween(DateTime start, DateTime end) =>
       Future.value([]);
 }

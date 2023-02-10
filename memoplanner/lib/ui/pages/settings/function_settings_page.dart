@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -29,11 +30,16 @@ class FunctionSettingsPage extends StatelessWidget {
               ],
             ),
           ),
-          body: const TabBarView(children: [
-            ToolbarSettingsTab(),
-            HomeScreenSettingsTab(),
-            TimeoutSettingsTab(),
-          ]),
+          body: Builder(builder: (context) {
+            return TrackableTabBarView(
+              analytics: GetIt.I<SeagullAnalytics>(),
+              children: const [
+                ToolbarSettingsTab(),
+                HomeScreenSettingsTab(),
+                TimeoutSettingsTab(),
+              ],
+            );
+          }),
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: Builder(
