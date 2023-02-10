@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:memoplanner/ui/routes.dart';
 import 'package:murmurhash/murmurhash.dart';
 
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_analytics/seagull_analytics.dart';
 
 abstract class NotificationAlarm extends Equatable implements Trackable {
   final Event event;

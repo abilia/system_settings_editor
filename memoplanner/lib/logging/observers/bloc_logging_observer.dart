@@ -84,13 +84,12 @@ class BlocLoggingObserver extends BlocObserver {
     }
     if (nextState is Authenticated) {
       final user = nextState.user;
-      final superProperties = {
-        'user_type': user.type,
-        'user_language': user.language,
-      };
-      analytics.identify(
+      analytics.identifyAndRegisterSuperProperties(
         identifier: user.id.toString(),
-        superProperties: superProperties,
+        superProperties: {
+          'user_type': user.type,
+          'user_language': user.language,
+        },
       );
     }
     if (currentState is Authenticated && nextState is Unauthenticated) {

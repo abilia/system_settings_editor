@@ -1,7 +1,5 @@
 import 'package:memoplanner/ui/all.dart';
 
-export 'package:seagull_analytics/seagull_analytics.dart';
-
 mixin PersistentRoute {}
 mixin ActivityRootRoute {}
 

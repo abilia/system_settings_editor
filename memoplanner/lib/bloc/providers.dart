@@ -13,7 +13,7 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/repository/sessions_repository.dart';
 import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
-import 'package:memoplanner/ui/routes.dart';
+import 'package:seagull_analytics/seagull_analytics.dart';
 
 class AuthenticatedBlocsProvider extends StatelessWidget {
   final Authenticated authenticatedState;

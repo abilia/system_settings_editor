@@ -4,7 +4,11 @@ import 'dart:ui';
 import 'package:logging/logging.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 
-export 'all.dart';
+export 'widgets/trackable_page_view.dart';
+export 'widgets/trackable_tab_bar_view.dart';
+export 'trackable.dart';
+export 'fake_seagull_analytics.dart';
+export 'navigation_observer.dart';
 
 final _log = Logger('SeagullAnalytics');
 
@@ -29,7 +33,7 @@ class SeagullAnalytics {
     return SeagullAnalytics(mixpanel, superProperties);
   }
 
-  void identify({
+  void identifyAndRegisterSuperProperties({
     required String identifier,
     required Map<String, dynamic> superProperties,
   }) {

@@ -42,7 +42,6 @@ class AlarmNavigator {
   }
 
   void popFullscreenRoute() => _popRoute(fullScreenActivityKey);
-
   void popScreensaverRoute() => _popRoute(_screensaverKey);
 
   void _popRoute(String key) {
@@ -104,7 +103,7 @@ class AlarmNavigator {
 
   Map<String, dynamic> _alarmProperties(NotificationAlarm alarm) {
     final properties = alarm.properties;
-    properties['type'] = alarm.runtimeType.toString();
+    properties['alarm_type'] = alarm.runtimeType.toString();
     return properties;
   }
 
