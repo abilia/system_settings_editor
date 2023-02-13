@@ -1926,7 +1926,7 @@ class SV extends Translated {
   final String dots = 'Prickar';
 
   @override
-  final String edge = 'Flärp';
+  final String edge = 'Flik';
 
   @override
   final String monthCalendarGrid = 'Enkel';
