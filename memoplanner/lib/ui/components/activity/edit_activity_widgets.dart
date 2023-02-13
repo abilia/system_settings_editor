@@ -1,12 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
@@ -548,25 +545,22 @@ class AvailableForWidget extends StatelessWidget {
   Future<AvailableForState?> navigateToAvailableForPage(
     BuildContext context,
     int userId,
-  ) =>
-      Navigator.of(context).push<AvailableForState>(
-        PersistentMaterialPageRoute(
-          settings: (AvailableForPage).routeSetting(),
-          builder: (context) => BlocProvider<AvailableForCubit>(
-            create: (context) => AvailableForCubit(
-              supportPersonsRepository: SupportPersonsRepository(
-                baseUrlDb: GetIt.I<BaseUrlDb>(),
-                client: GetIt.I<ListenableClient>(),
-                db: GetIt.I<SupportPersonsDb>(),
-                userId: userId,
-              ),
-              availableFor: activity.availableFor,
-              selectedSupportPersons: activity.secretExemptions,
-            ),
-            child: const AvailableForPage(),
+  ) {
+    final supportPersonsCubit = context.read<SupportPersonsCubit>();
+    return Navigator.of(context).push<AvailableForState>(
+      PersistentMaterialPageRoute(
+        settings: (AvailableForPage).routeSetting(),
+        builder: (context) => BlocProvider<AvailableForCubit>(
+          create: (context) => AvailableForCubit(
+            supportPersonsCubit: supportPersonsCubit..loadSupportPersons(),
+            availableFor: activity.availableFor,
+            selectedSupportPersons: activity.secretExemptions,
           ),
+          child: const AvailableForPage(),
         ),
-      );
+      ),
+    );
+  }
 }
 
 class EndDateWidget extends StatelessWidget {

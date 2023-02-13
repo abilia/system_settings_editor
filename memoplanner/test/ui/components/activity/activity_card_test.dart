@@ -14,15 +14,25 @@ import 'package:memoplanner/ui/components/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
   final startTime = DateTime(2011, 11, 11, 11, 11);
   final day = DateTime(2011, 11, 11);
   late MockDayEventsCubit dayEventsCubitMock;
+  late SupportPersonsRepository supportPersonsRepository;
+
+  const supportPerson = SupportPerson(id: 0, name: 'Test', image: '');
 
   bool applyCrossOver() =>
       (find.byType(CrossOver).evaluate().first.widget as CrossOver).applyCross;
+
+  setUp(() {
+    supportPersonsRepository = MockSupportPersonsRepository();
+    when(() => supportPersonsRepository.load())
+        .thenAnswer((_) => Future.value({}));
+  });
 
   Future pumpActivityCard(
     WidgetTester tester,
@@ -40,36 +50,45 @@ void main() {
                       orElse: () => supportedLocales.first),
               home: RepositoryProvider<UserRepository>(
                 create: (context) => FakeUserRepository(),
-                child: MultiBlocProvider(
-                  providers: [
-                    BlocProvider<AuthenticationBloc>(
-                        create: (context) => FakeAuthenticationBloc()),
-                    BlocProvider<UserFileCubit>(
-                      create: (context) => UserFileCubit(
-                        fileStorage: FakeFileStorage(),
-                        syncBloc: FakeSyncBloc(),
-                        userFileRepository: FakeUserFileRepository(),
+                child: RepositoryProvider<SupportPersonsRepository>(
+                  create: (context) => supportPersonsRepository,
+                  child: MultiBlocProvider(
+                    providers: [
+                      BlocProvider<AuthenticationBloc>(
+                          create: (context) => FakeAuthenticationBloc()),
+                      BlocProvider<UserFileCubit>(
+                        create: (context) => UserFileCubit(
+                          fileStorage: FakeFileStorage(),
+                          syncBloc: FakeSyncBloc(),
+                          userFileRepository: FakeUserFileRepository(),
+                        ),
                       ),
-                    ),
-                    BlocProvider<ClockBloc>(
-                      create: (context) => ClockBloc.fixed(startTime),
-                    ),
-                    BlocProvider<DayEventsCubit>(
-                      create: (context) => dayEventsCubitMock,
-                    ),
-                    BlocProvider<MemoplannerSettingsBloc>(
-                      create: (context) => FakeMemoplannerSettingsBloc(),
-                    ),
-                    BlocProvider<SpeechSettingsCubit>(
-                      create: (context) => FakeSpeechSettingsCubit(),
-                    ),
-                  ],
-                  child: Material(
-                    child: ActivityCard(
-                      activityOccasion: ActivityOccasion(
-                        activity,
-                        activity.startTime.onlyDays(),
-                        occasion ?? Occasion.current,
+                      BlocProvider<ClockBloc>(
+                        create: (context) => ClockBloc.fixed(startTime),
+                      ),
+                      BlocProvider<DayEventsCubit>(
+                        create: (context) => dayEventsCubitMock,
+                      ),
+                      BlocProvider<MemoplannerSettingsBloc>(
+                        create: (context) => FakeMemoplannerSettingsBloc(),
+                      ),
+                      BlocProvider<SpeechSettingsCubit>(
+                        create: (context) => FakeSpeechSettingsCubit(),
+                      ),
+                      BlocProvider<SupportPersonsCubit>(
+                        create: (context) => SupportPersonsCubit(
+                          supportPersonsRepository:
+                              context.read<SupportPersonsRepository>(),
+                        )..loadSupportPersons(),
+                      ),
+                    ],
+                    child: Material(
+                      child: ActivityCard(
+                        activityOccasion: ActivityOccasion(
+                          activity,
+                          activity.startTime.onlyDays(),
+                          occasion ?? Occasion.current,
+                        ),
                       ),
                     ),
                   ),
@@ -157,86 +176,6 @@ void main() {
     });
   });
 
-  testWidgets('icon for checkable activity', (WidgetTester tester) async {
-    await pumpActivityCard(
-        tester,
-        Activity.createNew(
-            title: 'title', startTime: startTime, checkable: true));
-
-    // Assert title no image
-    expect(find.byIcon(AbiliaIcons.handiCheck), findsOneWidget);
-  });
-  testWidgets('icon for alarm and vibration ', (WidgetTester tester) async {
-    await pumpActivityCard(
-      tester,
-      Activity.createNew(
-        title: 'title',
-        startTime: startTime,
-        alarmType: alarmSoundAndVibration,
-      ),
-    );
-    expect(find.byIcon(AbiliaIcons.handiAlarmVibration), findsOneWidget);
-  });
-
-  testWidgets('icon for vibration ', (WidgetTester tester) async {
-    await pumpActivityCard(
-      tester,
-      Activity.createNew(
-        title: 'title',
-        startTime: startTime,
-        alarmType: alarmVibration,
-      ),
-    );
-    expect(find.byIcon(AbiliaIcons.handiVibration), findsOneWidget);
-  });
-
-  testWidgets('icon for no alarm nor vibration ', (WidgetTester tester) async {
-    await pumpActivityCard(
-        tester,
-        Activity.createNew(
-          title: 'title',
-          startTime: startTime,
-          alarmType: noAlarm,
-        ));
-    expect(find.byIcon(AbiliaIcons.handiNoAlarmVibration), findsOneWidget);
-  });
-
-  testWidgets('icon for reminder ', (WidgetTester tester) async {
-    await pumpActivityCard(
-      tester,
-      Activity.createNew(
-        title: 'title',
-        startTime: startTime,
-        reminderBefore: const [124],
-      ),
-    );
-    expect(find.byIcon(AbiliaIcons.handiReminder), findsOneWidget);
-  });
-
-  testWidgets('icon for info item ', (WidgetTester tester) async {
-    await pumpActivityCard(
-      tester,
-      Activity.createNew(
-        title: 'title',
-        startTime: startTime,
-        infoItem: const NoteInfoItem('text'),
-      ),
-    );
-    expect(find.byIcon(AbiliaIcons.handiInfo), findsOneWidget);
-  });
-
-  testWidgets('icon for private activity ', (WidgetTester tester) async {
-    await pumpActivityCard(
-      tester,
-      Activity.createNew(
-        title: 'title',
-        startTime: startTime,
-        secret: true,
-      ),
-    );
-    expect(find.byIcon(AbiliaIcons.lock), findsOneWidget);
-  });
-
   testWidgets('current activity is not crossed over',
       (WidgetTester tester) async {
     await pumpActivityCard(
@@ -306,6 +245,138 @@ void main() {
       await pumpActivityCard(tester, activity, Occasion.past);
       await tester.verifyTts(find.byType(ActivityCard),
           contains: activity.title);
+    });
+  });
+
+  group('Icons', () {
+    testWidgets('icon for checkable activity', (WidgetTester tester) async {
+      await pumpActivityCard(
+          tester,
+          Activity.createNew(
+              title: 'title', startTime: startTime, checkable: true));
+
+      // Assert title no image
+      expect(find.byIcon(AbiliaIcons.handiCheck), findsOneWidget);
+    });
+    testWidgets('icon for alarm and vibration ', (WidgetTester tester) async {
+      await pumpActivityCard(
+        tester,
+        Activity.createNew(
+          title: 'title',
+          startTime: startTime,
+          alarmType: alarmSoundAndVibration,
+        ),
+      );
+      expect(find.byIcon(AbiliaIcons.handiAlarmVibration), findsOneWidget);
+    });
+
+    testWidgets('icon for vibration ', (WidgetTester tester) async {
+      await pumpActivityCard(
+        tester,
+        Activity.createNew(
+          title: 'title',
+          startTime: startTime,
+          alarmType: alarmVibration,
+        ),
+      );
+      expect(find.byIcon(AbiliaIcons.handiVibration), findsOneWidget);
+    });
+
+    testWidgets('icon for no alarm nor vibration ',
+        (WidgetTester tester) async {
+      await pumpActivityCard(
+          tester,
+          Activity.createNew(
+            title: 'title',
+            startTime: startTime,
+            alarmType: noAlarm,
+          ));
+      expect(find.byIcon(AbiliaIcons.handiNoAlarmVibration), findsOneWidget);
+    });
+
+    testWidgets('icon for reminder ', (WidgetTester tester) async {
+      await pumpActivityCard(
+        tester,
+        Activity.createNew(
+          title: 'title',
+          startTime: startTime,
+          reminderBefore: const [124],
+        ),
+      );
+      expect(find.byIcon(AbiliaIcons.handiReminder), findsOneWidget);
+    });
+
+    testWidgets('icon for info item ', (WidgetTester tester) async {
+      await pumpActivityCard(
+        tester,
+        Activity.createNew(
+          title: 'title',
+          startTime: startTime,
+          infoItem: const NoteInfoItem('text'),
+        ),
+      );
+      expect(find.byIcon(AbiliaIcons.handiInfo), findsOneWidget);
+    });
+    group('Available for', () {
+      testWidgets('Only me', (WidgetTester tester) async {
+        when(() => supportPersonsRepository.load())
+            .thenAnswer((_) => Future.value({supportPerson}));
+        await pumpActivityCard(
+          tester,
+          Activity.createNew(
+            title: 'title',
+            startTime: startTime,
+            secret: true,
+          ),
+        );
+        expect(find.byType(AvailableForIcon), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.lock), findsOneWidget);
+      });
+
+      testWidgets('All my support persons', (WidgetTester tester) async {
+        when(() => supportPersonsRepository.load())
+            .thenAnswer((_) => Future.value({supportPerson}));
+        await pumpActivityCard(
+          tester,
+          Activity.createNew(
+            title: 'title',
+            startTime: startTime,
+            secret: false,
+          ),
+        );
+        expect(find.byType(AvailableForIcon), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.unlock), findsOneWidget);
+      });
+
+      testWidgets('Selected support persons', (WidgetTester tester) async {
+        when(() => supportPersonsRepository.load())
+            .thenAnswer((_) => Future.value({supportPerson}));
+        await pumpActivityCard(
+          tester,
+          Activity.createNew(
+            title: 'title',
+            startTime: startTime,
+            secret: true,
+            secretExemptions: const {0},
+          ),
+        );
+        expect(find.byType(AvailableForIcon), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.selectedSupport), findsOneWidget);
+      });
+
+      testWidgets(
+          'No available for icon is shown if user has no support persons',
+          (WidgetTester tester) async {
+        await pumpActivityCard(
+          tester,
+          Activity.createNew(
+            title: 'title',
+            startTime: startTime,
+            secret: true,
+          ),
+        );
+        expect(find.byType(AvailableForIcon), findsNothing);
+      });
     });
   });
 }

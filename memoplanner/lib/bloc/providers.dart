@@ -85,6 +85,14 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               userId: authenticatedState.userId,
             ),
           ),
+          RepositoryProvider<SupportPersonsRepository>(
+            create: (context) => SupportPersonsRepository(
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              client: GetIt.I<ListenableClient>(),
+              db: GetIt.I<SupportPersonsDb>(),
+              userId: authenticatedState.userId,
+            ),
+          ),
           RepositoryProvider<FeatureToggleRepository>(
             create: (_) => FeatureToggleRepository(
               client: GetIt.I<ListenableClient>(),
@@ -136,6 +144,12 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 featureToggleRepository:
                     context.read<FeatureToggleRepository>(),
               )..updateTogglesFromBackend(),
+            ),
+            BlocProvider<SupportPersonsCubit>(
+              create: (context) => SupportPersonsCubit(
+                supportPersonsRepository:
+                    context.read<SupportPersonsRepository>(),
+              )..loadSupportPersons(),
             ),
             BlocProvider<WeekCalendarCubit>(
               create: (context) => WeekCalendarCubit(
