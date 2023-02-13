@@ -1402,6 +1402,8 @@ text''';
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
+      await tester.tap(find.text(translate.noEndDate));
+      await tester.pumpAndSettle();
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
@@ -1418,7 +1420,9 @@ text''';
       await tester.goToRecurrenceTab();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-      await tester.scrollDown(dy: -250);
+      await tester.scrollDown(dy: -1000);
+      await tester.tap(find.text(translate.noEndDate));
+      await tester.pumpAndSettle();
       expect(
           find.descendant(of: find.byType(DatePicker), matching: find.text('')),
           findsOneWidget);
@@ -1449,6 +1453,9 @@ text''';
       await tester.pumpAndSettle();
       await tester.goToRecurrenceTab();
       await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.text(translate.noEndDate));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
       await tester.tap(find.byType(DatePicker));
@@ -2061,7 +2068,8 @@ text''';
       expect(find.byType(EndDateWidget), findsOneWidget);
     });
 
-    testWidgets('end date shows', (WidgetTester tester) async {
+    testWidgets('end date shows when clicking on No end date',
+        (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(createEditActivityPage(
         newActivity: true,
@@ -2078,8 +2086,13 @@ text''';
 
       // Assert -- date picker visible
       expect(find.byType(EndDateWidget), findsOneWidget);
+      expect(find.byType(DatePicker), findsNothing);
+      expect(find.text(translate.noEndDate), findsOneWidget);
+
+      await tester.tap(find.text(translate.noEndDate));
+      await tester.pumpAndSettle();
+
       expect(find.byType(DatePicker), findsOneWidget);
-      expect(find.text(translate.endDate), findsOneWidget);
     });
 
     testWidgets('end date defaults to no end', (WidgetTester tester) async {
@@ -2100,14 +2113,14 @@ text''';
       // Assert -- end date defaults to unspecified
       expect(
           find.descendant(of: find.byType(DatePicker), matching: find.text('')),
-          findsOneWidget);
+          findsNothing);
       final noEndDateSwitchValue = (find
               .byKey(TestKey.noEndDateSwitch)
               .evaluate()
               .first
               .widget as SwitchField)
           .value;
-      expect(noEndDateSwitchValue, false);
+      expect(noEndDateSwitchValue, isTrue);
     });
 
     testWidgets('end date disabled if edit recurring (Bug SGC-354)',
@@ -2279,7 +2292,8 @@ text''';
       // Act -- Change to weekly
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.text(translate.noEndDate));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(SaveButton));
@@ -2291,6 +2305,7 @@ text''';
       await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
 
+      await tester.scrollDown(dy: 250);
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
@@ -2343,7 +2358,8 @@ text''';
       // Act -- Change to weekly
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.text(translate.noEndDate));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(SaveButton));
@@ -2355,6 +2371,7 @@ text''';
       await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
 
+      await tester.scrollDown(dy: 250);
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
       await tester.tap(find.text(translate.yearly));
@@ -2384,6 +2401,8 @@ text''';
       await tester.pumpAndSettle();
 
       await tester.scrollDown(dy: -250);
+      await tester.tap(find.text(translate.noEndDate));
+      await tester.pumpAndSettle();
 
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
@@ -2436,6 +2455,9 @@ text''';
 
       await tester.pumpAndSettle();
 
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.text(translate.noEndDate));
+      await tester.pumpAndSettle();
       expect(find.byType(DatePicker), findsOneWidget);
 
       await tester.tap(find.byType(SaveButton));
@@ -2471,6 +2493,8 @@ text''';
 
       // Act -- Change end date
       await tester.scrollDown(dy: -250);
+      await tester.tap(find.text(translate.noEndDate));
+      await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.calendar));
       await tester.pumpAndSettle();
       await tester.tap(find.text('20'));
@@ -2484,13 +2508,10 @@ text''';
     testWidgets(
         'SGC-1926 - Changing from yearly to weekly or monthly changes end date to No End',
         (WidgetTester tester) async {
-      bool endDateNotSet() {
-        final noEndDateSwitch = tester
-            .firstWidget(find.byKey(TestKey.noEndDateSwitch)) as SwitchField;
-        final datePicker =
-            tester.firstWidget(find.byType(DatePicker)) as DatePicker;
-        return !noEndDateSwitch.value && datePicker.emptyText;
-      }
+      bool endDateSwitchOn() =>
+          (tester.firstWidget(find.byKey(TestKey.noEndDateSwitch))
+                  as SwitchField)
+              .value;
 
       // Arrange
       await tester.pumpWidget(createEditActivityPage(
@@ -2512,7 +2533,8 @@ text''';
       await tester.pumpAndSettle();
 
       // Assert -- End date is not set
-      expect(endDateNotSet(), true);
+      expect(endDateSwitchOn(), true);
+      expect(find.byType(DatePicker), findsNothing);
 
       // Act -- Change to Yearly
       await tester.tap(find.text(RecurrentType.yearly.text(translate)));
@@ -2523,7 +2545,8 @@ text''';
       await tester.pumpAndSettle();
 
       // Assert -- End date is not set
-      expect(endDateNotSet(), true);
+      expect(endDateSwitchOn(), true);
+      expect(find.byType(DatePicker), findsNothing);
     });
   });
 
@@ -3462,9 +3485,6 @@ text''';
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -350);
 
-      await tester.tap(find.byKey(TestKey.noEndDateSwitch));
-      await tester.pumpAndSettle();
-
       await tester.verifyTts(find.byType(EndDateWidget),
           exact: translate.noEndDate);
     });
@@ -3812,6 +3832,8 @@ text''';
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
+      await tester.tap(find.text(translate.noEndDate));
+      await tester.pumpAndSettle();
 
       // Assert -- Error marker is not shown before trying to save
       expect(endDateIsErrorDecorated(), false);

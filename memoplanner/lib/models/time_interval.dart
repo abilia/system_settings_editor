@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class TimeInterval extends Equatable {
@@ -22,16 +23,27 @@ class TimeInterval extends Equatable {
 
   DateTime get starts => startDate.withTime(startTime);
 
-  const TimeInterval({
+  TimeInterval({
+    required this.startDate,
+    this.startTime,
+    this.endTime,
+    DateTime? endDate,
+  }) : endDate = endDate ?? Recurs.noEndDate;
+
+  const TimeInterval._({
     required this.startDate,
     this.startTime,
     this.endTime,
     this.endDate,
   });
 
-  TimeInterval.fromDateTime(this.startDate, DateTime? endTime, this.endDate)
-      : startTime = TimeOfDay.fromDateTime(startDate),
-        endTime = endTime != null ? TimeOfDay.fromDateTime(endTime) : null;
+  TimeInterval.fromDateTime(
+    this.startDate,
+    DateTime? endTime,
+    DateTime? endDate,
+  )   : startTime = TimeOfDay.fromDateTime(startDate),
+        endTime = endTime != null ? TimeOfDay.fromDateTime(endTime) : null,
+        endDate = endDate ?? Recurs.noEndDate;
 
   TimeInterval copyWith({
     TimeOfDay? startTime,
@@ -39,7 +51,7 @@ class TimeInterval extends Equatable {
     DateTime? startDate,
     DateTime? endDate,
   }) =>
-      TimeInterval(
+      TimeInterval._(
         startTime: startTime ?? this.startTime,
         endTime: endTime ?? this.endTime,
         startDate: startDate ?? this.startDate,
@@ -47,11 +59,12 @@ class TimeInterval extends Equatable {
       );
 
   /// Convenience method to be able to set endDate to null
-  TimeInterval changeEndDate(DateTime? endDate) => TimeInterval(
-      startTime: startTime,
-      endTime: endTime,
-      startDate: startDate,
-      endDate: endDate);
+  TimeInterval changeEndDate(DateTime? endDate) => TimeInterval._(
+        startTime: startTime,
+        endTime: endTime,
+        startDate: startDate,
+        endDate: endDate,
+      );
 
   @override
   List<Object?> get props =>

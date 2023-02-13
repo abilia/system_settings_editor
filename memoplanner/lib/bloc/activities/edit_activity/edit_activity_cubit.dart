@@ -147,7 +147,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
         ),
       );
     } else if (state.activity.isRecurring &&
-        !state.hasEndDate &&
+        state.hasEndDate &&
         state.activity.recurs.end.isDayBefore(date)) {
       emit(
         state.copyWith(
@@ -199,9 +199,6 @@ class EditActivityCubit extends Cubit<EditActivityState> {
       return;
     }
 
-    final setEndDateToDefault = !state.storedRecurring &&
-        previousType.defaultEndDate != newType.defaultEndDate;
-
     final newRecurs = _newRecurs(newType, state.timeInterval.startDate);
 
     DateTime? getEndDate() {
@@ -210,9 +207,6 @@ class EditActivityCubit extends Cubit<EditActivityState> {
       }
       if (state.storedRecurring) {
         return state.originalTimeInterval.endDate;
-      }
-      if (setEndDateToDefault) {
-        return newType.defaultEndDate;
       }
       return state.timeInterval.endDate;
     }
