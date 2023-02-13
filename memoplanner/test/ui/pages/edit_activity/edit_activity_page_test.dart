@@ -114,6 +114,8 @@ void main() {
                   syncBloc: FakeSyncBloc(),
                 ),
               ),
+              BlocProvider<SupportPersonsCubit>(
+                  create: (_) => FakeSupportPersonsCubit()),
               BlocProvider<EditActivityCubit>(
                 create: (context) => newActivity
                     ? EditActivityCubit.newActivity(

@@ -1,3 +1,4 @@
+import 'package:collection/src/unmodifiable_wrappers.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
@@ -217,6 +218,21 @@ class FakeConnectivityCubit extends Fake implements ConnectivityCubit {
 
   @override
   ConnectivityState get state => const ConnectivityState.none();
+
+  @override
+  Future<void> close() async {}
+}
+
+class FakeSupportPersonsCubit extends Fake implements SupportPersonsCubit {
+  @override
+  Stream<SupportPersonsState> get stream => const Stream.empty();
+
+  @override
+  SupportPersonsState get state =>
+      const SupportPersonsState(UnmodifiableSetView<SupportPerson>.empty());
+
+  @override
+  Future<void> loadSupportPersons() async => Future.value();
 
   @override
   Future<void> close() async {}
