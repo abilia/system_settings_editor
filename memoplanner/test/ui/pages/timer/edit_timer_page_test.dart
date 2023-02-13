@@ -206,7 +206,7 @@ void main() {
     });
   });
 
-  testWidgets('Add timer triggers analytics event',
+  testWidgets('Analytics are correct when creating a new timer',
       (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp());
     await tester.pumpAndSettle();

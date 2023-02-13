@@ -105,13 +105,16 @@ Future<SeagullAnalytics> _initAnalytics(SharedPreferences preferences) async {
   if (kReleaseMode) {
     final clientId = await DeviceDb(preferences).getClientId();
     final environment = BaseUrlDb(preferences).environment;
-    final superProperties = {
-      'flavor': Config.flavor.name,
-      'release': Config.release,
-      'clientId': clientId,
-      SeagullAnalytics.environmentKey: environment,
-    };
-    return await SeagullAnalytics.init(superProperties);
+
+    return await SeagullAnalytics.init(
+      '814838948a0be3497bcce0421334edb2',
+      superProperties: {
+        'flavor': Config.flavor.name,
+        'release': Config.release,
+        'clientId': clientId,
+        SeagullAnalytics.environmentKey: environment,
+      },
+    );
   }
   return FakeSeagullAnalytics();
 }

@@ -109,10 +109,11 @@ void main() {
                 value: mockMemoplannerSettingsBloc,
               ),
               BlocProvider<ActivitiesBloc>(
-                  create: (_) => ActivitiesBloc(
-                        activityRepository: FakeActivityRepository(),
-                        syncBloc: FakeSyncBloc(),
-                      )),
+                create: (_) => ActivitiesBloc(
+                  activityRepository: FakeActivityRepository(),
+                  syncBloc: FakeSyncBloc(),
+                ),
+              ),
               BlocProvider<EditActivityCubit>(
                 create: (context) => newActivity
                     ? EditActivityCubit.newActivity(
@@ -3905,7 +3906,7 @@ text''';
     });
   });
 
-  testWidgets('Create an activity creates the correct analytics',
+  testWidgets('Analytics are correct when creating a new activity',
       (WidgetTester tester) async {
     // Arrange
     await tester.pumpWidget(createEditActivityPage(
@@ -3948,35 +3949,61 @@ text''';
     final analytics = GetIt.I<SeagullAnalytics>() as FakeSeagullAnalytics;
     expect(analytics.events, [
       const AnalyticsEvent(
-          'Navigation', {'page': 'EditActivityPage', 'action': 'viewed'}),
+        'Navigation',
+        {'page': 'EditActivityPage', 'action': 'viewed'},
+      ),
       const AnalyticsEvent(
-          'Navigation', {'page': 'MainTab', 'action': 'viewed'}),
+        'Navigation',
+        {'page': 'MainTab', 'action': 'viewed'},
+      ),
       const AnalyticsEvent(
-          'Navigation', {'page': 'AlarmAndReminderTab', 'action': 'viewed'}),
+        'Navigation',
+        {'page': 'AlarmAndReminderTab', 'action': 'viewed'},
+      ),
       const AnalyticsEvent(
-          'Navigation', {'page': 'RecurrenceTab', 'action': 'viewed'}),
+        'Navigation',
+        {'page': 'RecurrenceTab', 'action': 'viewed'},
+      ),
       const AnalyticsEvent(
-          'Navigation', {'page': 'InfoItemTab', 'action': 'viewed'}),
+        'Navigation',
+        {'page': 'InfoItemTab', 'action': 'viewed'},
+      ),
       const AnalyticsEvent(
-          'Navigation', {'page': 'MainTab', 'action': 'viewed'}),
-      const AnalyticsEvent('Navigation', {
-        'save errors': ['noTitleOrImage', 'noStartTime'],
-        'page': 'ErrorDialog',
-        'action': 'opened',
-      }),
-      const AnalyticsEvent('Navigation', {
-        'save errors': ['noTitleOrImage', 'noStartTime'],
-        'page': 'ErrorDialog',
-        'action': 'closed',
-      }),
+        'Navigation',
+        {'page': 'MainTab', 'action': 'viewed'},
+      ),
       const AnalyticsEvent(
-          'Navigation', {'page': 'DefaultTextInput', 'action': 'opened'}),
+        'Navigation',
+        {
+          'save errors': ['noTitleOrImage', 'noStartTime'],
+          'page': 'ErrorDialog',
+          'action': 'opened',
+        },
+      ),
       const AnalyticsEvent(
-          'Navigation', {'page': 'DefaultTextInput', 'action': 'closed'}),
+        'Navigation',
+        {
+          'save errors': ['noTitleOrImage', 'noStartTime'],
+          'page': 'ErrorDialog',
+          'action': 'closed',
+        },
+      ),
       const AnalyticsEvent(
-          'Navigation', {'page': 'TimeInputPage', 'action': 'opened'}),
+        'Navigation',
+        {'page': 'DefaultTextInput', 'action': 'opened'},
+      ),
       const AnalyticsEvent(
-          'Navigation', {'page': 'TimeInputPage', 'action': 'closed'}),
+        'Navigation',
+        {'page': 'DefaultTextInput', 'action': 'closed'},
+      ),
+      const AnalyticsEvent(
+        'Navigation',
+        {'page': 'TimeInputPage', 'action': 'opened'},
+      ),
+      const AnalyticsEvent(
+        'Navigation',
+        {'page': 'TimeInputPage', 'action': 'closed'},
+      ),
       AnalyticsEvent('Activity created', expectedProperties),
     ]);
   });

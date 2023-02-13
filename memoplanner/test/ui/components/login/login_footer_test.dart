@@ -200,17 +200,21 @@ void main() {
     });
   }, skip: !Config.isMP);
 
-  testWidgets('Analytics are triggered', (tester) async {
+  testWidgets('Analytics are correct', (tester) async {
     // Arrange
     await pumpAbiliaLogoWithReset(tester);
     await goToConfirmFactoryReset(tester);
 
     final analytics = GetIt.I<SeagullAnalytics>() as FakeSeagullAnalytics;
     expect(analytics.events, [
-      const AnalyticsEvent('Navigation',
-          {'page': 'FactoryResetOrClearDataDialog', 'action': 'viewed'}),
-      const AnalyticsEvent('Navigation',
-          {'page': 'ConfirmFactoryResetDialog', 'action': 'viewed'})
+      const AnalyticsEvent(
+        'Navigation',
+        {'page': 'FactoryResetOrClearDataDialog', 'action': 'viewed'},
+      ),
+      const AnalyticsEvent(
+        'Navigation',
+        {'page': 'ConfirmFactoryResetDialog', 'action': 'viewed'},
+      )
     ]);
   }, skip: !Config.isMP);
 }

@@ -58,7 +58,7 @@ void main() {
   }
 
   group('DayCalendarAppBar', () {
-    testWidgets('All settings on shwos all widgets',
+    testWidgets('All settings on shwos all components',
         (WidgetTester tester) async {
       when(() => memoplannerSettingBloc.state).thenAnswer(
         (_) => const MemoplannerSettings(
@@ -85,7 +85,7 @@ void main() {
       expect(find.byType(RightNavButton), findsOneWidget);
     });
 
-    testWidgets('Some settings on shows AppBar with some widgets',
+    testWidgets('Some settings on shows AppBar with some components',
         (WidgetTester tester) async {
       when(() => memoplannerSettingBloc.state).thenAnswer(
         (_) => const MemoplannerSettings(

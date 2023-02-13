@@ -19,13 +19,14 @@ class FakeSeagullAnalytics extends SeagullAnalytics {
 
   FakeSeagullAnalytics()
       : events = [],
-        super(null, const {});
+        super(null, {});
 
   @override
   void trackEvent(
     String eventName, {
     required Map<String, dynamic> properties,
   }) {
+    if (events.length > 100) events.removeAt(0);
     final event = AnalyticsEvent(eventName, {...properties});
     events.add(event);
   }

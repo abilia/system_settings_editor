@@ -22,10 +22,11 @@ class SeagullAnalytics {
   const SeagullAnalytics(this.mixpanel, this.superProperties);
 
   static Future<SeagullAnalytics> init(
-    Map<String, dynamic> superProperties,
-  ) async {
+    String token, {
+    required Map<String, dynamic> superProperties,
+  }) async {
     final mixpanel = await Mixpanel.init(
-      '814838948a0be3497bcce0421334edb2',
+      token,
       trackAutomaticEvents: true,
       superProperties: superProperties,
     );

@@ -172,7 +172,7 @@ void main() {
     expect(navObserver.routesPoped, hasLength(2));
   });
 
-  testWidgets('Delete timer triggers analytics event',
+  testWidgets('Analytics are correct when deleting a timer',
       (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(timer: defaultTimer));
     await tester.pumpAndSettle();

@@ -1246,7 +1246,6 @@ void main() {
   testWidgets('Analytics are correct', (WidgetTester tester) async {
     final time = DateTime(2020, 06, 04, 10, 00);
     GetIt.I<Ticker>().setFakeTime(time, setTicker: false);
-    final analytics = GetIt.I<SeagullAnalytics>() as FakeSeagullAnalytics;
     activityDbInMemory.initWithActivities([
       Activity.createNew(
         title: 'test',
@@ -1267,6 +1266,7 @@ void main() {
     await tester.tap(find.byIcon(AbiliaIcons.month));
     await tester.pumpAndSettle();
 
+    final analytics = GetIt.I<SeagullAnalytics>() as FakeSeagullAnalytics;
     expect(analytics.events, [
       const AnalyticsEvent(
         'Navigation',
