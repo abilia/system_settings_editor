@@ -552,10 +552,10 @@ class AvailableForWidget extends StatelessWidget {
         settings: (AvailableForPage).routeSetting(),
         builder: (context) => BlocProvider<AvailableForCubit>(
           create: (context) => AvailableForCubit(
-            supportPersonsCubit: supportPersonsCubit,
+            supportPersonsCubit: supportPersonsCubit..loadSupportPersons(),
             availableFor: activity.availableFor,
             selectedSupportPersons: activity.secretExemptions,
-          )..setSupportPersonsStream(),
+          ),
           child: const AvailableForPage(),
         ),
       ),

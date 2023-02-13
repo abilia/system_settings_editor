@@ -9,6 +9,7 @@ class AvailableForWiz extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final activity = context.select((EditActivityCubit c) => c.state.activity);
     final authenticatedState = context.read<AuthenticationBloc>().state;
+    final supportPersonsCubit = context.read<SupportPersonsCubit>();
     if (authenticatedState is! Authenticated) {
       return const SizedBox.shrink();
     }
@@ -17,10 +18,10 @@ class AvailableForWiz extends StatelessWidget {
       title: translate.availableFor,
       body: BlocProvider<AvailableForCubit>(
         create: (context) => AvailableForCubit(
-          supportPersonsCubit: context.read<SupportPersonsCubit>(),
+          supportPersonsCubit: supportPersonsCubit..loadSupportPersons(),
           availableFor: activity.availableFor,
           selectedSupportPersons: activity.secretExemptions,
-        )..setSupportPersonsStream(),
+        ),
         child: AvailableForPageBody(
           onAvailableForChanged: (availableFor) =>
               context.read<EditActivityCubit>().setAvailableFor(availableFor),

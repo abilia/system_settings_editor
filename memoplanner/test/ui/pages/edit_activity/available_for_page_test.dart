@@ -163,15 +163,13 @@ void main() {
                 create: (context) => SupportPersonsCubit(
                   supportPersonsRepository:
                       context.read<SupportPersonsRepository>(),
-                ),
+                )..loadSupportPersons(),
                 child: BlocProvider<AvailableForCubit>(
                   create: (context) => AvailableForCubit(
                     supportPersonsCubit: context.read<SupportPersonsCubit>(),
                     availableFor: AvailableForType.allSupportPersons,
                     selectedSupportPersons: {},
-                  )
-                    ..setAvailableFor(activity.availableFor)
-                    ..setSupportPersonsStream(),
+                  )..setAvailableFor(activity.availableFor),
                   child: child!,
                 ),
               ),

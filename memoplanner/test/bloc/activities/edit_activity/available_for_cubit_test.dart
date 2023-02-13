@@ -36,15 +36,14 @@ void main() {
         SupportPersonsCubit(supportPersonsRepository: supportPersonsRepository);
   });
 
-  test('Initial state before and after setting support persons stream',
-      () async {
+  test('Initial state before and after loading support persons', () async {
     final availableForCubit = AvailableForCubit(
       supportPersonsCubit: supportPersonsCubit,
       availableFor: AvailableForType.allSupportPersons,
       selectedSupportPersons: {},
     );
     expect(availableForCubit.state, emptyState);
-    availableForCubit.setSupportPersonsStream();
+    supportPersonsCubit.loadSupportPersons();
     expect(await availableForCubit.stream.first, initialState);
   });
 
@@ -53,7 +52,8 @@ void main() {
       supportPersonsCubit: supportPersonsCubit,
       availableFor: AvailableForType.allSupportPersons,
       selectedSupportPersons: {},
-    )..setSupportPersonsStream();
+    );
+    supportPersonsCubit.loadSupportPersons();
     expect(await availableForCubit.stream.first, initialState);
     await expectLater(availableForCubit.state, initialState);
     availableForCubit.setAvailableFor(AvailableForType.onlyMe);
@@ -68,7 +68,8 @@ void main() {
       supportPersonsCubit: supportPersonsCubit,
       availableFor: AvailableForType.allSupportPersons,
       selectedSupportPersons: {},
-    )..setSupportPersonsStream();
+    );
+    supportPersonsCubit.loadSupportPersons();
     expect(await availableForCubit.stream.first, initialState);
     availableForCubit.setAvailableFor(AvailableForType.selectedSupportPersons);
     await expectLater(
