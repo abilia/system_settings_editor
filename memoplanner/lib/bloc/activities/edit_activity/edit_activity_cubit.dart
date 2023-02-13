@@ -154,7 +154,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
           state.activity.copyWith(
             recurs: state.activity.recurs.changeEnd(date),
           ),
-          timeInterval: newTimeInterval,
+          timeInterval: newTimeInterval.changeEndDate(date),
         ),
       );
     } else {
@@ -265,8 +265,8 @@ class EditActivityCubit extends Cubit<EditActivityState> {
       state.copyWith(
         state.activity.copyWith(recurs: recurs),
         timeInterval: timeInterval ??
-            state.timeInterval.copyWith(
-              endDate: DateTime.fromMillisecondsSinceEpoch(recurs.endTime),
+            state.timeInterval.changeEndDate(
+              DateTime.fromMillisecondsSinceEpoch(recurs.endTime),
             ),
       ),
     );

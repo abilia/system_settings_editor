@@ -49,13 +49,12 @@ class TimeInterval extends Equatable {
     TimeOfDay? startTime,
     TimeOfDay? endTime,
     DateTime? startDate,
-    DateTime? endDate,
   }) =>
       TimeInterval._(
         startTime: startTime ?? this.startTime,
         endTime: endTime ?? this.endTime,
         startDate: startDate ?? this.startDate,
-        endDate: endDate ?? this.endDate,
+        endDate: endDate,
       );
 
   /// Convenience method to be able to set endDate to null

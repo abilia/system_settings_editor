@@ -1085,9 +1085,7 @@ void main() {
           endTime: null,
           startDate: aDay,
         );
-        final recursTimeInterval = timeInterval.copyWith(
-          endDate: Recurs.noEndDate,
-        );
+        final recursTimeInterval = timeInterval.changeEndDate(Recurs.noEndDate);
 
         final expectedActivity = activity3.copyWith(startTime: aTime);
 
@@ -1571,10 +1569,8 @@ void main() {
           startDate: aDay,
           endDate: null,
         );
-        final secondTimeInterval = firstTimeInterval.copyWith(
-          endDate: Recurs.noEndDate,
-        );
-
+        final secondTimeInterval =
+            firstTimeInterval.changeEndDate(Recurs.noEndDate);
         editActivityCubit.changeTimeInterval(startTime: time);
         final expectedActivity = activity.copyWith(startTime: aTime);
         final expected1 = expectLater(

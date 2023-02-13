@@ -372,14 +372,19 @@ void main() {
             timeInterval,
           ),
           UnstoredActivityState(
+            recurringActivity,
+            timeInterval.changeEndDate(recurringActivity.recurs.end),
+          ),
+          UnstoredActivityState(
             expectedActivity,
-            expectedInterval,
+            expectedInterval.changeEndDate(expectedActivity.recurs.end),
           ),
         ],
       ),
     );
 
     editActivityCubit.replaceActivity(recurringActivity);
+    editActivityCubit.changeRecurrentEndDate(recurringActivity.recurs.end);
     editActivityCubit.changeStartDate(in60Days);
 
     await expect;
@@ -436,8 +441,7 @@ void main() {
     final activity = editActivityCubit.state.activity;
 
     final expectedTimeInterval1 = editActivityCubit.state.timeInterval;
-    final expectedTimeInterval2 =
-        expectedTimeInterval1.copyWith(endDate: endDate);
+    final expectedTimeInterval2 = expectedTimeInterval1.changeEndDate(endDate);
     final monthly = Recurs.monthly(aDay.day);
     final expectedActivity1 = activity.copyWith(recurs: monthly);
     final expectedActivity2 = activity.copyWith(
