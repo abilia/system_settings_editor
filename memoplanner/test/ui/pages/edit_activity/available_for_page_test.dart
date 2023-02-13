@@ -169,7 +169,9 @@ void main() {
                     supportPersonsCubit: context.read<SupportPersonsCubit>(),
                     availableFor: AvailableForType.allSupportPersons,
                     selectedSupportPersons: {},
-                  )..setAvailableFor(activity.availableFor),
+                  )
+                    ..setAvailableFor(activity.availableFor)
+                    ..setSupportPersonsStream(),
                   child: child!,
                 ),
               ),

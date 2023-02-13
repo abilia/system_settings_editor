@@ -555,11 +555,8 @@ class AvailableForWidget extends StatelessWidget {
             supportPersonsCubit: supportPersonsCubit,
             availableFor: activity.availableFor,
             selectedSupportPersons: activity.secretExemptions,
-          ),
-          child: BlocProvider<SupportPersonsCubit>.value(
-            value: supportPersonsCubit,
-            child: const AvailableForPage(),
-          ),
+          )..setSupportPersonsStream(),
+          child: const AvailableForPage(),
         ),
       ),
     );

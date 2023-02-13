@@ -85,6 +85,21 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               userId: authenticatedState.userId,
             ),
           ),
+          RepositoryProvider<SupportPersonsRepository>(
+            create: (context) => SupportPersonsRepository(
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              client: GetIt.I<ListenableClient>(),
+              db: GetIt.I<SupportPersonsDb>(),
+              userId: authenticatedState.userId,
+            ),
+          ),
+          RepositoryProvider<FeatureToggleRepository>(
+            create: (_) => FeatureToggleRepository(
+              client: GetIt.I<ListenableClient>(),
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              userId: authenticatedState.userId,
+            ),
+          )
         ],
         child: MultiBlocProvider(
           providers: [
@@ -122,6 +137,19 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 ticker: GetIt.I<Ticker>(),
                 timerCubit: context.read<TimerCubit>(),
               ),
+            ),
+            BlocProvider<FeatureToggleCubit>(
+              lazy: false,
+              create: (context) => FeatureToggleCubit(
+                featureToggleRepository:
+                    context.read<FeatureToggleRepository>(),
+              )..updateTogglesFromBackend(),
+            ),
+            BlocProvider<SupportPersonsCubit>(
+              create: (context) => SupportPersonsCubit(
+                supportPersonsRepository:
+                    context.read<SupportPersonsRepository>(),
+              )..loadSupportPersons(),
             ),
             BlocProvider<WeekCalendarCubit>(
               create: (context) => WeekCalendarCubit(
@@ -249,16 +277,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 permissionCubit: context.read<PermissionCubit>(),
                 sortableBloc: context.read<SortableBloc>(),
                 newlyLoggedIn: authenticatedState.newlyLoggedIn,
-              ),
-            ),
-            BlocProvider<SupportPersonsCubit>(
-              create: (context) => SupportPersonsCubit(
-                supportPersonsRepository: SupportPersonsRepository(
-                  baseUrlDb: GetIt.I<BaseUrlDb>(),
-                  client: GetIt.I<ListenableClient>(),
-                  db: GetIt.I<SupportPersonsDb>(),
-                  userId: authenticatedState.userId,
-                ),
               ),
             ),
             if (Config.isMP) ...[

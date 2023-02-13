@@ -1,3 +1,4 @@
+import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -5,6 +6,10 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
+    final fakeTime = context
+        .watch<FeatureToggleCubit>()
+        .state
+        .isToggleEnabled(FeatureToggle.fakeTime);
     return SettingsBasePage(
       icon: AbiliaIcons.settings,
       title: t.settings,
@@ -34,7 +39,13 @@ class SettingsPage extends StatelessWidget {
           text: t.system,
           navigateTo: const SystemSettingsPage(),
         ),
-        if (Config.dev) const FakeTicker(),
+        if (fakeTime) const FakeTicker(),
+        if (Config.dev)
+          const MenuItemPickField(
+            icon: AbiliaIcons.commands,
+            text: 'Feature toggles',
+            navigateTo: FeatureTogglesPage(),
+          ),
       ],
     );
   }

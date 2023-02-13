@@ -20,7 +20,7 @@ class AvailableForWiz extends StatelessWidget {
           supportPersonsCubit: context.read<SupportPersonsCubit>(),
           availableFor: activity.availableFor,
           selectedSupportPersons: activity.secretExemptions,
-        ),
+        )..setSupportPersonsStream(),
         child: AvailableForPageBody(
           onAvailableForChanged: (availableFor) =>
               context.read<EditActivityCubit>().setAvailableFor(availableFor),

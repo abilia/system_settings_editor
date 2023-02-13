@@ -8,10 +8,10 @@ import 'package:memoplanner/utils/all.dart';
 
 class DeviceRepository extends Repository {
   DeviceRepository({
-    required BaseClient client,
-    required BaseUrlDb baseUrlDb,
+    required super.client,
+    required super.baseUrlDb,
     required this.deviceDb,
-  }) : super(client, baseUrlDb);
+  });
 
   final DeviceDb deviceDb;
 

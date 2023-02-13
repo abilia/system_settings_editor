@@ -13,3 +13,4 @@ export 'directories.dart';
 export 'remote_alarm.dart';
 export 'terms_of_use_repository.dart';
 export 'factory_reset_repository.dart';
+export 'feature_toggle_repository.dart';

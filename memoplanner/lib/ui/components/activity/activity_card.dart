@@ -179,7 +179,9 @@ class CardIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: layout.eventCard.cardIconPadding,
-      child: Icon(icon, size: layout.eventCard.iconSize),
+      child: SizedBox(
+          height: layout.eventCard.iconContainerSize,
+          child: Icon(icon, size: layout.eventCard.iconSize)),
     );
   }
 }
@@ -203,9 +205,9 @@ class AvailableForIcon extends StatelessWidget {
       child: AnimatedContainer(
         duration: ActivityCard.duration,
         width: availableFor == AvailableForType.onlyMe
-            ? layout.eventCard.privateIconSize
+            ? layout.eventCard.iconContainerSize
             : layout.eventCard.iconSize,
-        height: layout.eventCard.privateIconSize,
+        height: layout.eventCard.iconContainerSize,
         decoration: BoxDecoration(
           color: decorationColor,
           borderRadius: borderRadius,
