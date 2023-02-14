@@ -64,13 +64,13 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesChanged>
           activities: series,
           activity: activity,
           day: event.day,
-        ).save;
+        );
       case ApplyTo.onlyThisDay:
         return deleteOnlyThisDay(
           activity: activity,
           activities: series,
           day: event.day,
-        ).save;
+        );
     }
   }
 
@@ -85,13 +85,13 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesChanged>
           activity: event.activity,
           activities: series,
           day: event.day,
-        ).save;
+        );
       case ApplyTo.onlyThisDay:
         return updateOnlyThisDay(
           activities: series,
           activity: event.activity,
           day: event.day,
-        ).save;
+        );
       case ApplyTo.allDays:
         throw UpdateActivityApplyToAllDaysError();
     }

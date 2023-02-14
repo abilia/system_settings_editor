@@ -1,13 +1,8 @@
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-class ActivityMappingResult {
-  ActivityMappingResult(this.save, this.state);
-  final Iterable<Activity> save, state;
-}
-
 mixin EditRecurringMixin {
-  ActivityMappingResult deleteThisDayAndForwardToState({
+  Iterable<Activity> deleteThisDayAndForwardToState({
     required Activity activity,
     required Set<Activity> activities,
     required DateTime day,
@@ -26,14 +21,10 @@ mixin EditRecurringMixin {
     final newEndTime = startBeforeEndsNotBefore
         .map((a) => a.copyWithRecurringEnd(day.millisecondBefore()));
 
-    final shouldSave = deleted.followedBy(newEndTime);
-    final allShouldChanged = startsOnOrAfter.union(startBeforeEndsNotBefore);
-    final newActivityState =
-        activities.difference(allShouldChanged).followedBy(newEndTime);
-    return ActivityMappingResult(shouldSave, newActivityState);
+    return deleted.followedBy(newEndTime);
   }
 
-  ActivityMappingResult deleteOnlyThisDay({
+  Iterable<Activity> deleteOnlyThisDay({
     required Activity activity,
     required Set<Activity> activities,
     required DateTime day,
@@ -41,17 +32,16 @@ mixin EditRecurringMixin {
     final isFirstDay = activity.startTime.isAtSameDay(day);
     final isLastDay = activity.recurs.end.isAtSameDay(day);
     if (isFirstDay && isLastDay && activities.remove(activity)) {
-      final save = [activity.copyWith(deleted: true)];
-      return ActivityMappingResult(save, activities);
+      return [activity.copyWith(deleted: true)];
     } else if (isFirstDay) {
       final newActivityStartTime = activity.copyWith(
           startTime: day.nextDay().copyWith(
               hour: activity.startTime.hour,
               minute: activity.startTime.minute));
-      return _updateActivityToResult(newActivityStartTime, activities);
+      return [newActivityStartTime];
     } else if (isLastDay) {
       final newEndTime = activity.copyWithRecurringEnd(day.millisecondBefore());
-      return _updateActivityToResult(newEndTime, activities);
+      return [newEndTime];
     } else {
       final newEndTime = activity.copyWithRecurringEnd(day.millisecondBefore());
       final newActivityStartTime = activity.copyWith(
@@ -59,12 +49,11 @@ mixin EditRecurringMixin {
           startTime: day.nextDay().copyWith(
               hour: activity.startTime.hour,
               minute: activity.startTime.minute));
-      return _updateActivityToResult(newEndTime, activities,
-          andAdd: [newActivityStartTime]);
+      return [newEndTime, newActivityStartTime];
     }
   }
 
-  ActivityMappingResult updateThisDayAndForward({
+  Iterable<Activity> updateThisDayAndForward({
     required Activity activity,
     required Set<Activity> activities,
     required DateTime day,
@@ -101,16 +90,10 @@ mixin EditRecurringMixin {
         .map((a) => a.copyActivity(activity))
         .toSet();
 
-    final allNewEdited = activityBeforeSplit.union(editedAccordingToActivity);
-    final oldUnedited = overlappingInSeries.union(startDayIsOnOrAfter);
-
-    return ActivityMappingResult(
-      allNewEdited,
-      activities.difference(oldUnedited).union(allNewEdited),
-    );
+    return activityBeforeSplit.union(editedAccordingToActivity);
   }
 
-  ActivityMappingResult updateOnlyThisDay({
+  Iterable<Activity> updateOnlyThisDay({
     required Activity activity,
     required Set<Activity> activities,
     required DateTime day,
@@ -146,17 +129,6 @@ mixin EditRecurringMixin {
       ],
     ];
 
-    return _updateActivityToResult(onlyDayActivity, activities,
-        andAdd: newActivities);
-  }
-
-  ActivityMappingResult _updateActivityToResult(
-      Activity activity, Iterable<Activity> activities,
-      {Iterable<Activity> andAdd = const []}) {
-    final save = [activity, ...andAdd];
-    final updatedActivities = activities.map<Activity>((a) {
-      return a.id == activity.id ? activity : a;
-    }).toList(growable: false);
-    return ActivityMappingResult(save, [...updatedActivities, ...andAdd]);
+    return [onlyDayActivity, ...newActivities];
   }
 }
