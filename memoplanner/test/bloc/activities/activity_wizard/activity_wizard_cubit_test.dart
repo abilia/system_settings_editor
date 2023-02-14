@@ -781,6 +781,7 @@ void main() {
         ]));
     editActivityCubit.changeTimeInterval(startTime: time);
     editActivityCubit.replaceActivity(activity);
+    editActivityCubit.changeRecurrentEndDate(null);
 
     // Assert
     await expected1;
@@ -1084,9 +1085,8 @@ void main() {
           endTime: null,
           startDate: aDay,
         );
-        final recursTimeInterval = timeInterval.copyWith(
-          endDate: Recurs.noEndDate,
-        );
+        final recursTimeInterval =
+            timeInterval.copyWithEndDate(Recurs.noEndDate);
 
         final expectedActivity = activity3.copyWith(startTime: aTime);
 
@@ -1109,17 +1109,13 @@ void main() {
                 activity3,
                 timeInterval,
               ),
-              UnstoredActivityState(
-                activity3,
-                recursTimeInterval,
-              ),
             ]));
 
+        editActivityCubit.changeRecurrentEndDate(null);
         editActivityCubit.changeTimeInterval(startTime: time);
         editActivityCubit.replaceActivity(activity1);
         editActivityCubit.changeRecurrentType(RecurrentType.weekly);
         editActivityCubit.changeWeeklyRecurring(Recurs.everyDay);
-        editActivityCubit.changeRecurrentEndDate(Recurs.noEndDate);
 
         // Assert
         await expected1;
@@ -1574,10 +1570,8 @@ void main() {
           startDate: aDay,
           endDate: null,
         );
-        final secondTimeInterval = firstTimeInterval.copyWith(
-          endDate: Recurs.noEndDate,
-        );
-
+        final secondTimeInterval =
+            firstTimeInterval.copyWithEndDate(Recurs.noEndDate);
         editActivityCubit.changeTimeInterval(startTime: time);
         final expectedActivity = activity.copyWith(startTime: aTime);
         final expected1 = expectLater(
@@ -1588,16 +1582,11 @@ void main() {
                 activity,
                 firstTimeInterval,
               ),
-              UnstoredActivityState(
-                activity,
-                secondTimeInterval,
-              ),
             ],
           ),
         );
 
         editActivityCubit.replaceActivity(activity);
-        editActivityCubit.changeRecurrentEndDate(Recurs.noEndDate);
 
         // Assert
         await expected1;
@@ -1698,9 +1687,9 @@ void main() {
       startDate: aDay,
       startTime: TimeOfDay.fromDateTime(aTime),
     );
-    final expectedTimeInterval2 = expectedTimeInterval1.copyWith(
-      endDate: Recurs.noEndDate,
-    );
+    final expectedTimeInterval2 = expectedTimeInterval1.copyWithEndDate(null);
+    final expectedTimeInterval3 =
+        expectedTimeInterval1.copyWithEndDate(Recurs.noEndDate);
     final recurringActivity1 = activity.copyWith(
       recurs: Recurs.weeklyOnDay(aDay.weekday),
     );
@@ -1721,11 +1710,17 @@ void main() {
           expectedTimeInterval2,
           aDay,
         ),
+        StoredActivityState(
+          recurringActivity2,
+          expectedTimeInterval3,
+          aDay,
+        ),
       ]),
     );
 
     // Act
     editActivityCubit.changeRecurrentType(RecurrentType.weekly);
+    editActivityCubit.changeRecurrentEndDate(null);
     editActivityCubit.changeRecurrentEndDate(Recurs.noEndDate);
     // Assert
     await expected1;
@@ -2182,12 +2177,17 @@ void main() {
 
       editActivityCubit
           .replaceActivity(activity.copyWith(recurs: Recurs.monthly(aDay.day)));
+      editActivityCubit.changeRecurrentEndDate(DateTime(2023));
       editActivityCubit.replaceActivity(
           activity.copyWith(recurs: Recurs.weeklyOnDay(aDay.weekday)));
       editActivityCubit.replaceActivity(activity.copyWith(recurs: Recurs.not));
       await expectLater(
         wizCubit.stream,
         emitsInOrder([
+          WizardState(0, [
+            ...List.from(allWizStep)
+              ..insert(allWizStep.length - 1, WizardStep.recursMonthly)
+          ]),
           WizardState(0, [
             ...List.from(allWizStep)
               ..insert(allWizStep.length - 1, WizardStep.endDate)
@@ -2244,6 +2244,7 @@ void main() {
 
       editActivityCubit.changeRecurrentType(RecurrentType.weekly);
       editActivityCubit.changeWeeklyRecurring(Recurs.weeklyOnDays(const []));
+      editActivityCubit.changeRecurrentEndDate(DateTime(2023));
 
       await expectLater(
         wizCubit.stream,
@@ -2254,6 +2255,15 @@ void main() {
               WizardStep.time,
               WizardStep.category,
               WizardStep.recurring,
+            ],
+          ),
+          WizardState(
+            0,
+            const [
+              WizardStep.time,
+              WizardStep.category,
+              WizardStep.recurring,
+              WizardStep.recursWeekly,
             ],
           ),
           WizardState(

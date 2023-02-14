@@ -493,6 +493,11 @@ void main() {
     await tester.tap(find.byIcon(AbiliaIcons.week));
     await tester.pumpAndSettle();
 
+    // Act -- turn off no end date
+    await tester.scrollDown(dy: -250);
+    await tester.tap(find.text(translate.noEndDate));
+    await tester.pumpAndSettle();
+
     // Act -- go to main tab
     await tester.goToTab(AbiliaIcons.myPhotos);
     await tester.pumpAndSettle();
