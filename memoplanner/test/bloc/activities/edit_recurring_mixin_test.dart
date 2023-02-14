@@ -36,18 +36,12 @@ void main() {
         final expectedRecurring =
             recurringActivity.copyWith(startTime: anyTime.nextDay());
 
-        final expectedNewState = [
-          anActivity,
-          expectedRecurring,
-          recurringActivity2
-        ];
         // Act
         final result = editRecurringMixin.deleteOnlyThisDay(
             activity: recurringActivity, activities: activityList, day: anyDay);
 
         // Assert
-        expect(result.save, [expectedRecurring]);
-        expect(result.state, expectedNewState);
+        expect(result, [expectedRecurring]);
       });
 
       test('for last day edits end time', () async {
@@ -69,18 +63,12 @@ void main() {
         final expectedRecurring =
             recurringActivity.copyWithRecurringEnd(in6Days.millisecondBefore());
 
-        final newActivities = [
-          anActivity,
-          expectedRecurring,
-          recurringActivity2
-        ];
         // Act
         final res = editRecurringMixin.deleteOnlyThisDay(
             activity: recurringActivity, activities: activitySet, day: in6Days);
 
         // Assert
-        expect(res.save, [expectedRecurring]);
-        expect(res.state, newActivities);
+        expect(res, [expectedRecurring]);
       });
 
       test('for a mid day splits the activity up', () async {
@@ -111,8 +99,7 @@ void main() {
         );
 
         // Assert
-        expect(res.state, MatchActivitiesWithoutId(expectedActivityList));
-        expect(res.save, MatchActivitiesWithoutId(expectedActivityList));
+        expect(res, MatchActivitiesWithoutId(expectedActivityList));
       });
     });
 
@@ -140,10 +127,9 @@ void main() {
 
         // Assert
         expect(
-            res.save,
+            res,
             [recurringActivity, recurringActivity2]
                 .map((a) => a.copyWith(deleted: true)));
-        expect(res.state, [anActivity]);
       });
 
       test('for a day modifies end time on activity', () async {
@@ -163,8 +149,7 @@ void main() {
         );
 
         // Assert
-        expect(res.state, [recurringActivityWithEndTime]);
-        expect(res.save, [recurringActivityWithEndTime]);
+        expect(res, [recurringActivityWithEndTime]);
       });
 
       test('for a day modifies end time on activity and deletes future series',
@@ -196,8 +181,7 @@ void main() {
         );
 
         // Assert
-        expect(res.state, [recurringActivity1AfterDelete]);
-        expect(res.save, [
+        expect(res, [
           recurringActivity2.copyWith(deleted: true),
           recurringActivity1AfterDelete,
         ]);
@@ -229,8 +213,7 @@ void main() {
         );
 
         // Assert
-        expect(res.state, [expected]);
-        expect(res.save, [expected]);
+        expect(res, [expected]);
       });
 
       test('on first day split activity in two and updates the activity',
@@ -259,11 +242,7 @@ void main() {
 
         // Assert
         expect(
-            res.state,
-            MatchActivitiesWithoutId(
-                [expectedUpdatedActivity, updatedOldActivity]));
-        expect(
-            res.save,
+            res,
             MatchActivitiesWithoutId(
                 [expectedUpdatedActivity, updatedOldActivity]));
       });
@@ -296,8 +275,7 @@ void main() {
         final expected = MatchActivitiesWithoutId(
             [expectedUpdatedOldActivity, expectedUpdatedActivity]);
 
-        expect(res.state, expected);
-        expect(res.save, expected);
+        expect(res, expected);
       });
 
       test('on a day split activity in three and updates the activity',
@@ -330,8 +308,7 @@ void main() {
         // Assert
         final expected = MatchActivitiesWithoutId(
             [preModDaySeries, expectedUpdatedActivity, postModDaySeries]);
-        expect(res.state, expected);
-        expect(res.state, expected);
+        expect(res, expected);
       });
 
       test('full day split', () async {
@@ -371,8 +348,7 @@ void main() {
         );
 
         // Assert
-        expect(res.state, expected);
-        expect(res.state, expected);
+        expect(res, expected);
       });
     });
     group('This day and forward', () {
@@ -390,8 +366,7 @@ void main() {
         );
 
         // Assert
-        expect(res.state, [updatedRecurringActivity]);
-        expect(res.save, [updatedRecurringActivity]);
+        expect(res, [updatedRecurringActivity]);
       });
 
       test('on second day splits the activity ', () async {
@@ -418,8 +393,7 @@ void main() {
 
         final matcher = MatchActivitiesWithoutId(expected);
         // Assert
-        expect(res.state, matcher);
-        expect(res.save, matcher);
+        expect(res, matcher);
       });
 
       test('change on occurrence backwards ', () async {
@@ -445,8 +419,7 @@ void main() {
         final matcher = MatchActivitiesWithoutId(expectedList);
 
         // Assert
-        expect(res.state, matcher);
-        expect(res.save, matcher);
+        expect(res, matcher);
       });
 
       test('change on occurrence forward ', () async {
@@ -475,8 +448,7 @@ void main() {
         final matcher = MatchActivitiesWithoutId(expectedList);
 
         // Assert
-        expect(res.state, matcher);
-        expect(res.save, matcher);
+        expect(res, matcher);
       });
 
       test('change on occurrence past endTime ', () async {
@@ -496,11 +468,8 @@ void main() {
           activities: {recurringActivity},
           day: anyDay,
         );
-        final matcher = [recurringActivity];
-
         // Assert
-        expect(res.state, matcher);
-        expect(res.save, []);
+        expect(res, []);
       });
 
       test('changes all future activities in series ', () async {
@@ -609,8 +578,7 @@ void main() {
         final matcher = MatchActivitiesWithoutId(expectedList);
 
         // Assert
-        expect(res.state, matcher);
-        expect(res.save, matcher);
+        expect(res, matcher);
       });
 
       test("don't edited activity before", () async {
@@ -662,15 +630,7 @@ void main() {
 
         // Assert
         expect(
-            res.state,
-            MatchActivitiesWithoutId([
-              a1,
-              a2Part1,
-              updatedA2,
-              expectedA3,
-            ]));
-        expect(
-            res.save,
+            res,
             MatchActivitiesWithoutId([
               a2Part1,
               updatedA2,
@@ -705,9 +665,8 @@ void main() {
         );
 
         // Assert
-        expect(res.state.expand((e) => e.dayActivitiesForDay(dayToMove)), []);
         expect(
-            res.state
+            res
                 .expand((e) => e.dayActivitiesForDay(newStartTime.onlyDays()))
                 .length,
             1);
@@ -740,9 +699,9 @@ void main() {
         );
 
         // Assert
-        expect(res.state.expand((e) => e.dayActivitiesForDay(dayToMove)), []);
+        expect(res.expand((e) => e.dayActivitiesForDay(dayToMove)), []);
         expect(
-            res.state
+            res
                 .expand((e) => e.dayActivitiesForDay(newStartTime.onlyDays()))
                 .length,
             1);
@@ -777,16 +736,7 @@ void main() {
 
       // Assert
       expect(
-        res1.state,
-        MatchActivitiesWithoutId(
-          [
-            expectedUpdate1,
-            expectedUpdate2,
-          ],
-        ),
-      );
-      expect(
-        res1.save,
+        res1,
         MatchActivitiesWithoutId(
           [
             expectedUpdate1,
@@ -796,7 +746,7 @@ void main() {
       );
 
       // Arrange
-      final recurringA = res1.state.firstWhere((a) => a.isRecurring);
+      final recurringA = res1.firstWhere((a) => a.isRecurring);
 
       expect(recurringA, MatchActivityWithoutId(expectedUpdate2));
 
@@ -804,22 +754,13 @@ void main() {
 
       final res2 = editRecurringMixin.updateThisDayAndForward(
         activity: recurringAUpdated2,
-        activities: res1.state.toSet(),
+        activities: res1.toSet(),
         day: anyDay,
       );
 
       // Assert
       expect(
-        res2.state,
-        MatchActivitiesWithoutId(
-          [
-            expectedUpdate1,
-            recurringAUpdated2,
-          ],
-        ),
-      );
-      expect(
-        res2.save,
+        res2,
         MatchActivitiesWithoutId(
           [
             recurringAUpdated2,
@@ -854,16 +795,7 @@ void main() {
 
       // Assert
       expect(
-        res2.state,
-        MatchActivitiesWithoutId(
-          [
-            onlyThis,
-            recurringUpdated,
-          ],
-        ),
-      );
-      expect(
-        res2.save,
+        res2,
         MatchActivitiesWithoutId(
           [
             recurringUpdated,
