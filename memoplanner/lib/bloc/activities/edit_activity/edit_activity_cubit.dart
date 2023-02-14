@@ -102,19 +102,20 @@ class EditActivityCubit extends Cubit<EditActivityState> {
   void changeTimeInterval({
     TimeOfDay? startTime,
     TimeOfDay? endTime,
-  }) {
-    emit(
-      state.copyWith(
-        state.activity,
-        timeInterval: TimeInterval(
+  }) =>
+      _changeTimeInterval(
+        TimeInterval(
           startTime: startTime,
           endTime: endTime,
           startDate: state.timeInterval.startDate,
           endDate: state.timeInterval.endDate,
         ),
-      ),
-    );
-  }
+      );
+
+  void _changeTimeInterval(TimeInterval timeInterval, [Activity? activity]) =>
+      emit(
+        state.copyWith(activity ?? state.activity, timeInterval: timeInterval),
+      );
 
   void imageSelected(AbiliaFile event) {
     emit(
@@ -140,31 +141,26 @@ class EditActivityCubit extends Cubit<EditActivityState> {
   void changeStartDate(DateTime date) {
     final newTimeInterval = state.timeInterval.copyWith(startDate: date);
     if (state.activity.recurs.yearly) {
-      emit(
-        state.copyWith(
-          state.activity.copyWith(recurs: Recurs.yearly(date)),
-          timeInterval: newTimeInterval,
-        ),
-      );
-    } else if (state.activity.isRecurring &&
-        state.hasEndDate &&
-        state.activity.recurs.end.isDayBefore(date)) {
-      emit(
-        state.copyWith(
-          state.activity.copyWith(
-            recurs: state.activity.recurs.changeEnd(date),
-          ),
-          timeInterval: newTimeInterval.changeEndDate(date),
-        ),
-      );
-    } else {
-      emit(
-        state.copyWith(
-          state.activity,
-          timeInterval: newTimeInterval,
+      return _changeTimeInterval(
+        newTimeInterval,
+        state.activity.copyWith(
+          recurs: Recurs.yearly(date),
         ),
       );
     }
+    final isDateBeforeRecurringEndTime = state.activity.isRecurring &&
+        state.hasEndDate &&
+        state.activity.recurs.end.isDayBefore(date);
+    if (isDateBeforeRecurringEndTime) {
+      return emit(
+        state.copyWith(
+          state.activity
+              .copyWith(recurs: state.activity.recurs.changeEnd(date)),
+          timeInterval: newTimeInterval.copyWithEndDate(date),
+        ),
+      );
+    }
+    _changeTimeInterval(newTimeInterval);
   }
 
   void changeInfoItemType(Type newInfoType) {
@@ -213,7 +209,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
 
     _changeRecurrence(
       newRecurs,
-      timeInterval: state.timeInterval.changeEndDate(getEndDate()),
+      timeInterval: state.timeInterval.copyWithEndDate(getEndDate()),
     );
   }
 
@@ -225,7 +221,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
       return;
     }
 
-    final newTimeInterval = state.timeInterval.changeEndDate(newEndDate);
+    final newTimeInterval = state.timeInterval.copyWithEndDate(newEndDate);
     final newRecurs = state.activity.recurs.changeEnd(
       newEndDate ?? Recurs.noEndDate,
     );
@@ -265,7 +261,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
       state.copyWith(
         state.activity.copyWith(recurs: recurs),
         timeInterval: timeInterval ??
-            state.timeInterval.changeEndDate(
+            state.timeInterval.copyWithEndDate(
               DateTime.fromMillisecondsSinceEpoch(recurs.endTime),
             ),
       ),

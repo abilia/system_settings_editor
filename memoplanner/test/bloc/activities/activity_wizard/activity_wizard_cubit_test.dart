@@ -1085,7 +1085,8 @@ void main() {
           endTime: null,
           startDate: aDay,
         );
-        final recursTimeInterval = timeInterval.changeEndDate(Recurs.noEndDate);
+        final recursTimeInterval =
+            timeInterval.copyWithEndDate(Recurs.noEndDate);
 
         final expectedActivity = activity3.copyWith(startTime: aTime);
 
@@ -1570,7 +1571,7 @@ void main() {
           endDate: null,
         );
         final secondTimeInterval =
-            firstTimeInterval.changeEndDate(Recurs.noEndDate);
+            firstTimeInterval.copyWithEndDate(Recurs.noEndDate);
         editActivityCubit.changeTimeInterval(startTime: time);
         final expectedActivity = activity.copyWith(startTime: aTime);
         final expected1 = expectLater(
@@ -1686,9 +1687,9 @@ void main() {
       startDate: aDay,
       startTime: TimeOfDay.fromDateTime(aTime),
     );
-    final expectedTimeInterval2 = expectedTimeInterval1.changeEndDate(null);
+    final expectedTimeInterval2 = expectedTimeInterval1.copyWithEndDate(null);
     final expectedTimeInterval3 =
-        expectedTimeInterval1.changeEndDate(Recurs.noEndDate);
+        expectedTimeInterval1.copyWithEndDate(Recurs.noEndDate);
     final recurringActivity1 = activity.copyWith(
       recurs: Recurs.weeklyOnDay(aDay.weekday),
     );

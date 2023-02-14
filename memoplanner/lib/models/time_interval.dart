@@ -58,7 +58,7 @@ class TimeInterval extends Equatable {
       );
 
   /// Convenience method to be able to set endDate to null
-  TimeInterval changeEndDate(DateTime? endDate) => TimeInterval._(
+  TimeInterval copyWithEndDate(DateTime? endDate) => TimeInterval._(
         startTime: startTime,
         endTime: endTime,
         startDate: startDate,
