@@ -103,6 +103,8 @@ void main() {
               BlocProvider<MemoplannerSettingsBloc>.value(
                 value: mockMemoplannerSettingsBloc,
               ),
+              BlocProvider<SupportPersonsCubit>(
+                  create: (_) => FakeSupportPersonsCubit()),
               BlocProvider<ActivitiesBloc>(create: (_) => FakeActivitiesBloc()),
               BlocProvider<EditActivityCubit>(
                 create: (context) => newActivity

@@ -1,35 +1,41 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/activity/activity.dart';
 import 'package:memoplanner/models/support_person.dart';
-import 'package:memoplanner/repository/data_repository/support_persons_repository.dart';
 
 class AvailableForCubit extends Cubit<AvailableForState> {
+  late StreamSubscription _supportPersonsSubscription;
+
   AvailableForCubit({
-    required this.supportPersonsRepository,
-    AvailableForType? availableFor,
-    Set<int>? selectedSupportPersons,
+    required SupportPersonsCubit supportPersonsCubit,
+    required AvailableForType availableFor,
+    required Set<int> selectedSupportPersons,
   }) : super(
           AvailableForState(
-            availableFor: availableFor ?? AvailableForType.allSupportPersons,
-            selectedSupportPersons:
-                UnmodifiableSetView(selectedSupportPersons ?? const <int>{}),
-            allSupportPersons: const UnmodifiableSetView.empty(),
+            availableFor: availableFor,
+            selectedSupportPersons: UnmodifiableSetView(selectedSupportPersons),
+            allSupportPersons: UnmodifiableSetView(
+              supportPersonsCubit.state.supportPersons,
+            ),
           ),
         ) {
-    initialize();
-  }
-
-  Future<void> initialize() async {
-    emit(
-      state.copyWith(
-        allSupportPersons: await supportPersonsRepository.load(),
+    _supportPersonsSubscription = supportPersonsCubit.stream.listen(
+      (supportPersonsState) => emit(
+        state.copyWith(
+          allSupportPersons: supportPersonsState.supportPersons,
+        ),
       ),
     );
   }
 
-  final SupportPersonsRepository supportPersonsRepository;
+  @override
+  Future<void> close() {
+    _supportPersonsSubscription.cancel();
+    return super.close();
+  }
 
   void setAvailableFor(AvailableForType availableFor) => emit(
         state.copyWith(
