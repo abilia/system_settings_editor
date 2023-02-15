@@ -40,12 +40,12 @@ class DeviceRepository extends Repository {
   }
 
   Uri get licenseUrl => '$baseUrl/open/v1/device/$serialId/license'.toUri();
-  Future<LicenseResponse> checkLicense() async {
+  Future<DeviceLicense> checkLicense() async {
     final response = await client.get(licenseUrl);
     return _parseLicenseResponse(response);
   }
 
-  Future<LicenseResponse> connectWithLicense(String licenseKey) async {
+  Future<DeviceLicense> connectWithLicense(String licenseKey) async {
     final response = await client.post(
       licenseUrl,
       headers: jsonHeaderWithKey,
@@ -54,11 +54,22 @@ class DeviceRepository extends Repository {
     return _parseLicenseResponse(response);
   }
 
-  LicenseResponse _parseLicenseResponse(Response response) {
+  Future<void> fetchDeviceLicense() async {
+    final clientId = await getClientId();
+    final deviceLicenseUrl =
+        '$baseUrl/open/v1/device/$serialId/license?clientId=$clientId'.toUri();
+    final response = await client.get(deviceLicenseUrl);
+    if (response.statusCode == 200) {
+      final license = DeviceLicense.fromJson(response.json());
+      deviceDb.setDeviceLicense(license);
+    }
+  }
+
+  DeviceLicense _parseLicenseResponse(Response response) {
     final responseJson = response.json();
     switch (response.statusCode) {
       case 200:
-        return LicenseResponse.fromJson(responseJson);
+        return DeviceLicense.fromJson(responseJson);
       case 400:
       case 404:
       case 409:

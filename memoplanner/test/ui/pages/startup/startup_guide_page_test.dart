@@ -14,7 +14,7 @@ void main() {
   group('Startup,', () {
     late MockConnectivity mockConnectivity;
     late DeviceDb deviceDb;
-    Response connectLicenseResponse = Fakes.connectLicenseSuccessResponses;
+    Response connectLicenseResponse = Fakes.deviceLicenseSuccessResponse;
 
     setUp(() async {
       deviceDb = MockDeviceDb();
@@ -150,7 +150,7 @@ void main() {
             isNull,
           );
           // Success response
-          connectLicenseResponse = Fakes.connectLicenseSuccessResponses;
+          connectLicenseResponse = Fakes.deviceLicenseSuccessResponse;
           // remove field
           await tester.enterText(find.byType(TextField), '');
           await tester.pumpAndSettle();
