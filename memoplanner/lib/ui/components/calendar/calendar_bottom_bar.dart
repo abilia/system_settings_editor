@@ -35,71 +35,69 @@ class CalendarBottomBar extends StatelessWidget {
             duration: const Duration(milliseconds: 250),
             child: Container(
               height: height,
-              padding: EdgeInsets.only(
-                left: layout.toolbar.horizontalPadding,
-                right: layout.toolbar.horizontalPadding,
-                bottom: layout.toolbar.bottomPadding,
+              padding: EdgeInsets.symmetric(
+                horizontal: layout.toolbar.horizontalPadding,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Stack(
                 children: <Widget>[
-                  const AddButton(),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: AddButton(),
+                  ),
                   if (!display.onlyDayCalendar)
-                    AbiliaTabs(
-                      tabs: tabItems,
-                      useOffset: false,
-                      collapsedCondition: (i) {
-                        switch (i) {
-                          case 1:
-                            return !display.week;
-                          case 2:
-                            return !display.month;
-                          default:
-                            return false;
-                        }
-                      },
-                      onTabTap: (index) async {
-                        context.read<DayPickerBloc>().add(const CurrentDay());
-                        switch (index) {
-                          case 0:
-                            return;
-                          case 1:
-                            if (display.week) {
-                              return context
-                                  .read<WeekCalendarCubit>()
-                                  .goToCurrentWeek();
-                            }
-                            break;
-                        }
-                        return context
-                            .read<MonthCalendarCubit>()
-                            .goToCurrentMonth();
-                      },
+                    Align(
+                      alignment: Alignment.center,
+                      child: AbiliaTabs(
+                        tabs: tabItems,
+                        useOffset: false,
+                        collapsedCondition: (i) {
+                          switch (i) {
+                            case 1:
+                              return !display.week;
+                            case 2:
+                              return !display.month;
+                            default:
+                              return false;
+                          }
+                        },
+                        onTabTap: (index) async {
+                          context.read<DayPickerBloc>().add(const CurrentDay());
+                          switch (index) {
+                            case 0:
+                              return;
+                            case 1:
+                              if (display.week) {
+                                return context
+                                    .read<WeekCalendarCubit>()
+                                    .goToCurrentWeek();
+                              }
+                              break;
+                          }
+                          return context
+                              .read<MonthCalendarCubit>()
+                              .goToCurrentMonth();
+                        },
+                      ),
                     )
                   else
-                    TabControlledButton(
-                      translate.day.capitalize(),
-                      AbiliaIcons.day,
-                      tabIndex: 0,
-                    ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: AddButton.width(
-                              displaySettings: display,
-                              hasMP4Session: context
-                                  .watch<SessionsCubit>()
-                                  .state
-                                  .hasMP4Session,
-                            ) -
-                            (display.menu ? layout.actionButton.size : 0),
+                    Align(
+                      alignment: Alignment.center,
+                      child: TabControlledButton(
+                        translate.day.capitalize(),
+                        AbiliaIcons.day,
+                        tabIndex: 0,
                       ),
-                      if (Config.isMPGO)
-                        const MpGoMenuButton()
-                      else if (display.menu)
-                        const MenuButton(),
-                    ],
-                  ),
+                    ),
+                  if (Config.isMPGO)
+                    const Align(
+                      alignment: Alignment.centerRight,
+                      child: MpGoMenuButton(),
+                    )
+                  else if (display.menu)
+                    const Align(
+                      alignment: Alignment.centerRight,
+                      child: MenuButton(),
+                    ),
                 ],
               ),
             ),
