@@ -385,7 +385,7 @@ void main() {
       expect(find.byIcon(AbiliaIcons.attention), findsOneWidget);
       await tester.goToAlarmTab();
       // Assert -- alarm tab contains reminders
-      expect(find.byIcon(AbiliaIcons.handiReminder), findsOneWidget);
+      expect(find.text(translate.reminders), findsOneWidget);
       await tester.goToMainTab();
       await tester.scrollDown(dy: -150);
 
@@ -599,7 +599,6 @@ void main() {
       // Arrange
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
-      final reminderSwitchFinder = find.byIcon(AbiliaIcons.handiReminder);
       final reminder15MinFinder =
           find.text(15.minutes().toDurationString(translate));
       final reminderDayFinder = find.text(1.days().toDurationString(translate));
@@ -611,44 +610,13 @@ void main() {
       // Act -- Go to alarm tab
       await tester.goToAlarmTab();
 
-      // Assert -- reminder switch is visible but reminders field is collapsed
-      expect(reminderSwitchFinder, findsOneWidget);
-      expect(remindersAll, findsNothing);
-      expect(reminderField, findsNothing);
-
-      // Act -- tap reminder switch
-      await tester.tap(reminderSwitchFinder);
-      await tester.pumpAndSettle();
-      // Assert -- 15 min reminder is selected, all reminders shows
+      // Assert -- all reminders shows
       expect(reminderField, findsOneWidget);
       expect(remindersAll, findsNWidgets(6));
-      expect(reminder15MinFinder, findsOneWidget);
-      expect(remindersAllSelected, findsOneWidget);
-
-      // Act -- tap on day reminder
-      await tester.scrollDown(dy: -100);
-      await tester.tap(reminderDayFinder);
-      await tester.pumpAndSettle();
-      // Assert -- 15 min and 1 day reminder is selected, all reminders shows
-      expect(reminderField, findsOneWidget);
-      expect(remindersAll, findsNWidgets(6));
-      expect(reminder15MinFinder, findsOneWidget);
-      expect(reminderDayFinder, findsOneWidget);
-      expect(remindersAllSelected, findsNWidgets(2));
-
-      // Act -- tap reminder switch
-      await tester.tap(reminderSwitchFinder);
-      await tester.pumpAndSettle();
-      // Assert -- no reminders shows, is collapsed
-      expect(reminderField, findsNothing);
-      expect(remindersAll, findsNothing);
-      expect(reminder15MinFinder, findsNothing);
-      expect(reminderDayFinder, findsNothing);
       expect(remindersAllSelected, findsNothing);
 
-      // Act -- tap reminder switch then day reminder
-      await tester.tap(reminderSwitchFinder);
-      await tester.pumpAndSettle();
+      // Act -- tap 15 min and day reminder
+      await tester.tap(reminder15MinFinder);
       await tester.tap(reminderDayFinder);
       await tester.pumpAndSettle();
       // Assert -- 15 min and 1 day reminder is selected, all reminders shows
@@ -662,11 +630,10 @@ void main() {
       await tester.tap(reminder15MinFinder);
       await tester.tap(reminderDayFinder);
       await tester.pumpAndSettle();
+
       // Assert -- no reminders shows, is collapsed
-      expect(reminderField, findsNothing);
-      expect(remindersAll, findsNothing);
-      expect(reminder15MinFinder, findsNothing);
-      expect(reminderDayFinder, findsNothing);
+      expect(reminderField, findsOneWidget);
+      expect(remindersAll, findsNWidgets(6));
       expect(remindersAllSelected, findsNothing);
     });
   });
@@ -3420,12 +3387,6 @@ text''';
       );
       await tester.pumpAndSettle();
       await tester.goToAlarmTab();
-
-      await tester.verifyTts(find.byIcon(AbiliaIcons.handiReminder),
-          exact: translate.reminders);
-
-      await tester.tap(find.byIcon(AbiliaIcons.handiReminder));
-      await tester.pumpAndSettle();
 
       final reminders = [
         5.minutes(),
