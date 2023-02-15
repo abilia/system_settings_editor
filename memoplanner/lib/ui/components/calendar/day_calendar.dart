@@ -134,8 +134,6 @@ class CategoriesAndHiddenSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settingsInaccessible = context.select(
-        (MemoplannerSettingsBloc bloc) => bloc.state.settingsInaccessible);
     final showCategories = context.select(
         (MemoplannerSettingsBloc bloc) => bloc.state.calendar.categories.show);
 
@@ -151,7 +149,7 @@ class CategoriesAndHiddenSettings extends StatelessWidget {
               Expanded(child: RightCategory()),
             ],
           ),
-        if (settingsInaccessible) const HiddenSetting(),
+        const HiddenSetting(),
       ],
     );
   }
