@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
+import 'package:memoplanner/logging/observers/bloc_logging_observer.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -72,8 +73,11 @@ void main() {
     GetItInitializer()
       ..fileStorage = FakeFileStorage()
       ..database = FakeDatabase()
+      ..analytics = MockSeagullAnalytics()
+      ..client = Fakes.client()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..init();
+    Bloc.observer = BlocLoggingObserver(GetIt.I<SeagullAnalytics>());
   });
 
   tearDown(GetIt.I.reset);
@@ -87,6 +91,9 @@ void main() {
   }) {
     final activity = givenActivity ?? startActivity;
     return MaterialApp(
+      navigatorObservers: [
+        AnalyticNavigationObserver(GetIt.I<SeagullAnalytics>()),
+      ],
       supportedLocales: Translator.supportedLocals,
       localizationsDelegates: const [Translator.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
@@ -103,9 +110,14 @@ void main() {
               BlocProvider<MemoplannerSettingsBloc>.value(
                 value: mockMemoplannerSettingsBloc,
               ),
+              BlocProvider<ActivitiesBloc>(
+                create: (_) => ActivitiesBloc(
+                  activityRepository: FakeActivityRepository(),
+                  syncBloc: FakeSyncBloc(),
+                ),
+              ),
               BlocProvider<SupportPersonsCubit>(
                   create: (_) => FakeSupportPersonsCubit()),
-              BlocProvider<ActivitiesBloc>(create: (_) => FakeActivitiesBloc()),
               BlocProvider<EditActivityCubit>(
                 create: (context) => newActivity
                     ? EditActivityCubit.newActivity(
@@ -3918,6 +3930,115 @@ text''';
       // Assert -- Error marker is not shown after entering a start time
       expect(timeIntervalIsErrorDecorated(), false);
     });
+  });
+
+  testWidgets('Analytics are correct when creating a new activity',
+      (WidgetTester tester) async {
+    // Arrange
+    await tester.pumpWidget(createEditActivityPage(
+      newActivity: true,
+    ));
+    await tester.pumpAndSettle();
+
+    await tester.goToAlarmTab();
+
+    await tester.goToRecurrenceTab();
+
+    await tester.goToInfoItemTab();
+
+    await tester.goToMainTab();
+
+    await tester.tap(find.byType(SaveButton));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(PreviousButton).last);
+    await tester.pumpAndSettle();
+
+    await tester.ourEnterText(
+        find.byKey(TestKey.editTitleTextFormField), 'newActivityTitle');
+    await tester.scrollDown(dy: -100);
+
+    await tester.tap(timeFieldFinder);
+    await tester.pumpAndSettle();
+    await tester.enterTime(startTimeInputFinder, '0330');
+    await tester.pumpAndSettle();
+    await tester.tap(okButtonFinder);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(SaveButton));
+    await tester.pumpAndSettle();
+
+    final expectedActivity = Activity.createNew(
+        startTime: startTime, title: 'newActivityTitle', timezone: 'UTC');
+    final expectedProperties = AddActivity(expectedActivity).properties;
+
+    final mockAnalytics = GetIt.I<SeagullAnalytics>() as MockSeagullAnalytics;
+    verifyInOrder([
+      () => mockAnalytics.trackNavigation(
+            page: (EditActivityPage).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (MainTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (AlarmAndReminderTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (RecurrenceTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (InfoItemTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (MainTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (ErrorDialog).toString(),
+            action: NavigationAction.opened,
+            properties: {
+              'save errors': [
+                SaveError.noTitleOrImage.name,
+                SaveError.noStartTime.name,
+              ],
+            },
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (ErrorDialog).toString(),
+            action: NavigationAction.closed,
+            properties: {
+              'save errors': [
+                SaveError.noTitleOrImage.name,
+                SaveError.noStartTime.name,
+              ],
+            },
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (DefaultTextInput).toString(),
+            action: NavigationAction.opened,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (DefaultTextInput).toString(),
+            action: NavigationAction.closed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (TimeInputPage).toString(),
+            action: NavigationAction.opened,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (TimeInputPage).toString(),
+            action: NavigationAction.closed,
+          ),
+      () => mockAnalytics.trackEvent(
+            'Activity created',
+            properties: expectedProperties,
+          ),
+    ]);
   });
 }
 

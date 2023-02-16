@@ -5,7 +5,6 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/ticker.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -27,7 +26,6 @@ void main() {
       title: 'test timer 2',
       duration: const Duration(minutes: 5),
       startTime: startTime.subtract(const Duration(minutes: 10)));
-  final pausedTimer = defaultTimer.pause(startTime);
   late MemoplannerSettingsBloc mockMemoplannerSettingsBloc;
   late MockUserFileCubit mockUserFileCubit;
   late MockTimerDb mockTimerDb;
@@ -72,16 +70,18 @@ void main() {
       ],
       queue: [defaultTimer.toOccasion(startTime)],
     ));
+    final analytics = MockSeagullAnalytics();
     timerCubit = TimerCubit(
       timerDb: mockTimerDb,
       ticker: Ticker.fake(initialTime: startTime),
-      seagullAnalytics: SeagullAnalytics.empty(),
+      analytics: analytics,
     );
     GetItInitializer()
       ..ticker = Ticker.fake(initialTime: startTime)
       ..sharedPreferences =
           await FakeSharedPreferences.getInstance(loggedIn: false)
       ..database = FakeDatabase()
+      ..analytics = analytics
       ..init();
   });
 
@@ -172,49 +172,17 @@ void main() {
     expect(navObserver.routesPoped, hasLength(2));
   });
 
-  testWidgets('Pausing timer, TimerCubit emits "paused" timer ',
+  testWidgets('Analytics are correct when deleting a timer',
       (WidgetTester tester) async {
-    final expect = expectLater(
-      timerCubit.stream,
-      emits(TimerState(timers: [pausedTimer])),
-    );
     await tester.pumpWidget(wrapWithMaterialApp(timer: defaultTimer));
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.pause));
+    await tester.tap(find.byIcon(AbiliaIcons.deleteAllClear));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(YesButton));
     await tester.pumpAndSettle();
-    await expect;
-  }, skip: Config.release);
 
-  testWidgets('Pausing timer, cancel pause', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(timer: defaultTimer));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.pause));
-    await tester.pumpAndSettle();
-    await tester.tapAt(Offset.zero);
-    await tester.pumpAndSettle();
-    expect(find.byType(TimerTickerBuilder), findsOneWidget);
-  }, skip: Config.release);
+    final analytics = GetIt.I<SeagullAnalytics>() as MockSeagullAnalytics;
 
-  testWidgets('Resuming timer, TimerCubit emits "default"(non-paused) timer',
-      (WidgetTester tester) async {
-    when(() => mockTimerAlarmBloc.state).thenReturn(TimerAlarmState(
-      timers: [
-        pausedTimer.toOccasion(startTime),
-      ],
-      queue: [pausedTimer.toOccasion(startTime)],
-    ));
-    final expect = expectLater(
-      timerCubit.stream,
-      emits(TimerState(timers: [defaultTimer])),
-    );
-    await tester.pumpWidget(wrapWithMaterialApp(timer: pausedTimer));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.playSound));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byType(YesButton));
-    await tester.pumpAndSettle();
-    await expect;
-  }, skip: Config.release);
+    verify(() => analytics.trackEvent('Timer deleted'));
+  });
 }

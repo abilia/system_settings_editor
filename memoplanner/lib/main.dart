@@ -44,10 +44,7 @@ Future<void> initServices() async {
   );
   _log.fine('Initializing services');
   final analytics = kReleaseMode
-      ? await SeagullAnalytics.init(
-          clientId: await DeviceDb(preferences).getClientId(),
-          environment: BaseUrlDb(preferences).environment,
-        )
+      ? await _initAnalytics(preferences)
       : SeagullAnalytics.empty();
   Bloc.observer = BlocLoggingObserver(analytics);
   await configureLocalTimeZone(log: _log);
@@ -105,6 +102,17 @@ Future<NotificationAlarm?> getOrAddPayloadToStream() async {
   }
   return null;
 }
+
+Future<SeagullAnalytics> _initAnalytics(SharedPreferences preferences) async =>
+    SeagullAnalytics.init(
+      '814838948a0be3497bcce0421334edb2',
+      superProperties: {
+        'flavor': Config.flavor.name,
+        'release': Config.release,
+        'clientId': await DeviceDb(preferences).getClientId(),
+        SeagullAnalytics.environmentKey: BaseUrlDb(preferences).environment,
+      },
+    );
 
 class App extends StatelessWidget {
   final PushCubit? pushCubit;

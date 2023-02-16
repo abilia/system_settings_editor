@@ -28,8 +28,8 @@ class TemplatesPage extends StatelessWidget {
                 ],
               ),
             ),
-            body: TabBarView(
-              controller: tabController,
+            body: TrackableTabBarView(
+              analytics: GetIt.I<SeagullAnalytics>(),
               children: [
                 ListLibrary<BasicActivityData>(
                   emptyLibraryMessage: translate.noTemplates,

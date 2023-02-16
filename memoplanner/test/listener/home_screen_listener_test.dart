@@ -189,7 +189,7 @@ void main() {
         const HomeScreenFinalState(),
       );
       await tester.pumpAndSettle();
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
     });
 
     group('Calendar inactivity', () {
@@ -198,7 +198,7 @@ void main() {
           'When timeout is reached, day calendar switches to current day',
           (tester) async {
         await tester
-            .pumpWidget(wrapWithMaterialApp(child: const DayCalendar()));
+            .pumpWidget(wrapWithMaterialApp(child: const DayCalendarTab()));
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
         await tester.pumpAndSettle();
@@ -208,7 +208,7 @@ void main() {
           ReturnToTodayThresholdReached(initialTime),
         );
         await tester.pumpAndSettle();
-        expect(find.byType(DayCalendar), findsOneWidget);
+        expect(find.byType(DayCalendarTab), findsOneWidget);
         expect(find.text(DateFormat.EEEE(local).format(initialTime)),
             findsOneWidget);
       });
@@ -222,7 +222,7 @@ void main() {
           ReturnToTodayThresholdReached(initialTime),
         );
         await tester.pumpAndSettle();
-        expect(find.byType(DayCalendar), findsNothing);
+        expect(find.byType(DayCalendarTab), findsNothing);
       });
     });
   }, skip: !Config.isMP);
@@ -379,7 +379,7 @@ void main() {
 
       // Act
       await tester.pumpApp();
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
       clockStreamController.add(initialTime.add(5.minutes()));
       await tester.pumpAndSettle();
 
@@ -390,7 +390,7 @@ void main() {
       intentStreamController.add(AndroidIntentAction.homeButton);
       await tester.pumpAndSettle();
 
-      expect(find.byType(DayCalendar), findsNothing);
+      expect(find.byType(DayCalendarTab), findsNothing);
       expect(find.byType(TimerAlarmPage), findsOneWidget);
 
       verify(() => mockFlutterLocalNotificationsPlugin.cancel(timer.hashCode))

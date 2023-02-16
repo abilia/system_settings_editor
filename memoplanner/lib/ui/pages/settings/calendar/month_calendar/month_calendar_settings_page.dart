@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
@@ -27,10 +28,13 @@ class MonthCalendarSettingsPage extends StatelessWidget {
               ],
             ),
           ),
-          body: const TabBarView(children: [
-            MonthAppBarSettingsTab(),
-            MonthDisplaySettingsTab(),
-          ]),
+          body: TrackableTabBarView(
+            analytics: GetIt.I<SeagullAnalytics>(),
+            children: const [
+              MonthAppBarSettingsTab(),
+              MonthDisplaySettingsTab(),
+            ],
+          ),
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: Builder(

@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
@@ -86,7 +87,10 @@ class EditActivityPage extends StatelessWidget {
                     )
                   : null,
             ),
-            body: TabBarView(children: tabWidgets),
+            body: TrackableTabBarView(
+              analytics: GetIt.I<SeagullAnalytics>(),
+              children: tabWidgets,
+            ),
             bottomNavigationBar: const WizardBottomNavigation(),
           ),
         ),

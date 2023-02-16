@@ -127,7 +127,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(DayCalendar), findsNothing);
+      expect(find.byType(DayCalendarTab), findsNothing);
       expect(find.byType(MenuPage), findsOneWidget);
     });
 
@@ -146,12 +146,12 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.day));
       await tester.pumpAndSettle();
       expect(find.byType(MenuPage), findsNothing);
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
       clockStreamController.add(initialTime.add(1.minutes()));
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(DayCalendar), findsNothing);
+      expect(find.byType(DayCalendarTab), findsNothing);
       expect(find.byType(ScreensaverPage), findsOneWidget);
 
       // Act
@@ -200,12 +200,12 @@ void main() {
 
       // Act -- tick 5 min
       await tester.pumpApp();
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
       clockStreamController.add(initialTime.add(5.minutes()));
       await tester.pumpAndSettle();
 
       // Assert -- still at day calendar
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
 
       // Act -- touch at 5 min, tick 5 min
       await tester.tapAt(Offset.zero);
@@ -214,12 +214,12 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert -- still at day calendar
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
 
       // Act -- tick 5 min since touch
       clockStreamController.add(initialTime.add(15.minutes()));
       await tester.pumpAndSettle();
-      expect(find.byType(DayCalendar), findsNothing);
+      expect(find.byType(DayCalendarTab), findsNothing);
       expect(find.byType(ScreensaverPage), findsOneWidget);
     });
 
@@ -237,7 +237,7 @@ void main() {
 
       // Act -- Tick 5 min
       await tester.pumpApp();
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
       clockStreamController.add(initialTime.add(5.minutes()));
       await tester.pumpAndSettle();
 
@@ -274,7 +274,7 @@ void main() {
 
       // Act -- tick 5 min, alarm fires
       await tester.pumpApp();
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
       clockStreamController.add(activityTime);
       selectNotificationSubject.add(startAlarm);
       await tester.pumpAndSettle();
@@ -312,13 +312,13 @@ void main() {
 
       // Act -- tick 1 min
       await tester.pumpApp();
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
       clockStreamController.add(initialTime.add(1.minutes()));
       await tester.pumpAndSettle();
 
       // Assert -- ScreensaverPage
       expect(find.byType(ScreensaverPage), findsOneWidget);
-      expect(find.byType(DayCalendar), findsNothing);
+      expect(find.byType(DayCalendarTab), findsNothing);
 
       // Act -- tick 4 min
       clockStreamController.add(initialTime.add(5.minutes()));
@@ -333,7 +333,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert -- no screensaver,
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
       expect(find.byType(TimerAlarmPage), findsNothing);
       expect(find.byType(ScreensaverPage), findsNothing);
 
@@ -363,18 +363,18 @@ void main() {
           ];
 
       await tester.pumpApp();
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
       // Act -- go to menu page
       await tester.tap(find.byType(MenuButton));
       await tester.pumpAndSettle();
-      expect(find.byType(DayCalendar), findsNothing);
+      expect(find.byType(DayCalendarTab), findsNothing);
 
       // Act -- tick 1 min
       clockStreamController.add(initialTime.add(1.minutes()));
       await tester.pumpAndSettle();
       // Assert -- no screensaver page but returned to DayCalendar
       expect(find.byType(ScreensaverPage), findsNothing);
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
 
       // Act -- Tick until one minute before night
       clockStreamController.add(
@@ -391,7 +391,7 @@ void main() {
 
       // Assert -- now shows screensaver
       expect(find.byType(ScreensaverPage), findsOneWidget);
-      expect(find.byType(DayCalendar), findsNothing);
+      expect(find.byType(DayCalendarTab), findsNothing);
 
       // Act -- one hour into night
       clockStreamController.add(
@@ -401,7 +401,7 @@ void main() {
 
       // Assert -- still screensaver
       expect(find.byType(ScreensaverPage), findsOneWidget);
-      expect(find.byType(DayCalendar), findsNothing);
+      expect(find.byType(DayCalendarTab), findsNothing);
 
       // Act -- Tick until to morning
       clockStreamController.add(
@@ -411,7 +411,7 @@ void main() {
 
       // Assert -- woke up, no more screensaver
       expect(find.byType(ScreensaverPage), findsNothing);
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
     });
 
     group('exception to time out', () {
@@ -423,7 +423,7 @@ void main() {
 
       Future goToNewActivity(WidgetTester tester) async {
         await tester.pumpApp();
-        expect(find.byType(DayCalendar), findsOneWidget);
+        expect(find.byType(DayCalendarTab), findsOneWidget);
         await tester.tap(find.byKey(TestKey.addActivityButton));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.newActivityChoice));
@@ -604,7 +604,7 @@ void main() {
 
           // Act
           await tester.pumpApp();
-          expect(find.byType(DayCalendar), findsOneWidget);
+          expect(find.byType(DayCalendarTab), findsOneWidget);
           await tester.tap(find.byKey(TestKey.addActivityButton));
           await tester.pumpAndSettle();
           await tester.tap(find.byKey(TestKey.newActivityChoice));
@@ -666,7 +666,7 @@ void main() {
       testWidgets('Create timer page', (tester) async {
         // Act
         await tester.pumpApp();
-        expect(find.byType(DayCalendar), findsOneWidget);
+        expect(find.byType(DayCalendarTab), findsOneWidget);
         await tester.tap(find.byKey(TestKey.addTimerButton));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.newTimerChoice));

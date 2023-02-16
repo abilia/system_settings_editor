@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:murmurhash/murmurhash.dart';
 
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_analytics/seagull_analytics.dart';
 
 abstract class NotificationAlarm extends Equatable implements Trackable {
   final Event event;
@@ -43,10 +43,7 @@ abstract class NotificationAlarm extends Equatable implements Trackable {
           .toSigned(32);
 
   @override
-  String get eventName => runtimeType.toString();
-
-  @override
-  Map<String, dynamic>? get properties => {
+  Map<String, dynamic> get properties => {
         'type': type,
         'notificationTime': notificationTime,
         'fullScreenActivity': fullScreenActivity

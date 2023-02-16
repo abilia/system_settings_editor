@@ -21,7 +21,7 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
   }
 
   Future<void> goToNow({
-    Duration duration = DayCalendar.transitionDuration,
+    Duration duration = DayCalendarTab.transitionDuration,
     Curve curve = Curves.easeInOut,
   }) async {
     final scrollState = state;

@@ -3,12 +3,7 @@ import 'dart:ui';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/repository/end_point.dart';
-
-abstract class Trackable {
-  final String eventName;
-  final Map<String, dynamic>? properties;
-  const Trackable(this.eventName, this.properties);
-}
+import 'package:seagull_analytics/seagull_analytics.dart';
 
 class BlocLoggingObserver extends BlocObserver {
   BlocLoggingObserver(this.analytics);
@@ -84,11 +79,18 @@ class BlocLoggingObserver extends BlocObserver {
     final event = transition.event;
     final nextState = transition.nextState;
     final currentState = transition.currentState;
-    if (event is Trackable) {
-      analytics.track(event.eventName, properties: event.properties);
+    if (event is TrackableEvent) {
+      analytics.trackEvent(event.eventName, properties: event.properties);
     }
     if (nextState is Authenticated) {
-      analytics.setUser(nextState.user);
+      final user = nextState.user;
+      analytics.identifyAndRegisterSuperProperties(
+        identifier: user.id.toString(),
+        superProperties: {
+          'user_type': user.type,
+          'user_language': user.language,
+        },
+      );
     }
     if (currentState is Authenticated && nextState is Unauthenticated) {
       analytics.reset();

@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
@@ -28,11 +29,14 @@ class DayCalendarSettingsPage extends StatelessWidget {
               ],
             ),
           ),
-          body: const TabBarView(children: [
-            DayAppBarSettingsTab(),
-            DayViewSettingsTab(),
-            EyeButtonSettingsTab(),
-          ]),
+          body: TrackableTabBarView(
+            analytics: GetIt.I<SeagullAnalytics>(),
+            children: const [
+              DayAppBarSettingsTab(),
+              DayViewSettingsTab(),
+              EyeButtonSettingsTab(),
+            ],
+          ),
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: Builder(

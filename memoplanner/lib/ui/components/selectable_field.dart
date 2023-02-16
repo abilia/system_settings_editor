@@ -104,7 +104,7 @@ class SelectableField extends StatelessWidget {
                     width: layout.selectableField.size,
                     height: layout.selectableField.size,
                     child: AnimatedSwitcher(
-                      duration: DayCalendar.transitionDuration,
+                      duration: DayCalendarTab.transitionDuration,
                       transitionBuilder: (child, animation) =>
                           child is Container
                               ? child

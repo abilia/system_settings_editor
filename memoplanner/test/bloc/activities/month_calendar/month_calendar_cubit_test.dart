@@ -5,11 +5,11 @@ import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/logging/analytics_service.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
+import '../../../fakes/fake_seagull_analytics.dart';
 import '../../../fakes/fakes_blocs.dart';
 import '../../../mocks/mocks.dart';
 
@@ -1162,7 +1162,7 @@ void main() {
       final timerCubit = TimerCubit(
         timerDb: MockTimerDb(),
         ticker: ticker,
-        seagullAnalytics: SeagullAnalytics.empty(),
+        analytics: FakeSeagullAnalytics(),
       );
       final timerAlarmBloc = TimerAlarmBloc(
         timerCubit: timerCubit,

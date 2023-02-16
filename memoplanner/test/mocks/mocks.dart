@@ -11,6 +11,7 @@ import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
+import 'package:seagull_analytics/seagull_analytics.dart';
 
 export 'package:mocktail/mocktail.dart';
 
@@ -115,3 +116,5 @@ class MockFactoryResetRepository extends Mock
     implements FactoryResetRepository {}
 
 class MockTtsHandler extends Mock implements TtsInterface {}
+
+class MockSeagullAnalytics extends Mock implements SeagullAnalytics {}

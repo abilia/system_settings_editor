@@ -3,10 +3,10 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-class DayCalendar extends StatelessWidget {
+class DayCalendarTab extends StatelessWidget {
   static const transitionDuration = Duration(milliseconds: 300);
 
-  const DayCalendar({Key? key}) : super(key: key);
+  const DayCalendarTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +163,7 @@ class _GoToNowPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSize(
-      duration: DayCalendar.transitionDuration,
+      duration: DayCalendarTab.transitionDuration,
       child: Builder(builder: (context) {
         final showingNowButton = context.select((ScrollPositionCubit c) =>
             c.state is WrongDay || c.state is OutOfView);

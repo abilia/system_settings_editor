@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 import '../../fakes/all.dart';
+import '../../fakes/fake_seagull_analytics.dart';
 import '../../mocks/mocks.dart';
 
 void main() {
@@ -36,7 +36,7 @@ void main() {
         timerCubit: TimerCubit(
           timerDb: MockTimerDb(),
           ticker: ticker,
-          seagullAnalytics: SeagullAnalytics.empty(),
+          analytics: FakeSeagullAnalytics(),
         ),
         ticker: ticker,
       ),
@@ -793,7 +793,7 @@ void main() {
           timerCubit: TimerCubit(
             timerDb: MockTimerDb(),
             ticker: ticker,
-            seagullAnalytics: SeagullAnalytics.empty(),
+            analytics: FakeSeagullAnalytics(),
           ),
           ticker: ticker,
         ),
@@ -1013,7 +1013,7 @@ void main() {
             timerCubit: TimerCubit(
               timerDb: MockTimerDb(),
               ticker: ticker,
-              seagullAnalytics: SeagullAnalytics.empty(),
+              analytics: FakeSeagullAnalytics(),
             ),
             ticker: ticker,
           ),

@@ -18,7 +18,7 @@ abstract class ManipulateActivitiesEvent extends ActivitiesEvent {
   List<Object> get props => [activity];
 }
 
-class AddActivity extends ManipulateActivitiesEvent implements Trackable {
+class AddActivity extends ManipulateActivitiesEvent implements TrackableEvent {
   @override
   final Activity activity;
   const AddActivity(this.activity);
@@ -27,7 +27,7 @@ class AddActivity extends ManipulateActivitiesEvent implements Trackable {
   String get eventName => 'Activity created';
 
   @override
-  Map<String, dynamic>? get properties => {
+  Map<String, dynamic> get properties => {
         'title': activity.hasTitle,
         'image': activity.hasImage,
         'startTime': activity.startTime.toIso8601String(),

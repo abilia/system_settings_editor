@@ -119,6 +119,7 @@ void main() {
       ..database = FakeDatabase()
       ..battery = FakeBattery()
       ..deviceDb = FakeDeviceDb()
+      ..analytics = MockSeagullAnalytics()
       ..init();
   });
 
@@ -1241,6 +1242,55 @@ void main() {
       expect(find.byIcon(const Alarm(type: AlarmType.noAlarm).iconData()),
           findsNothing);
     });
+  });
+
+  testWidgets('Analytics are correct', (WidgetTester tester) async {
+    final time = DateTime(2020, 06, 04, 10, 00);
+    GetIt.I<Ticker>().setFakeTime(time, setTicker: false);
+    activityDbInMemory.initWithActivities([
+      Activity.createNew(
+        title: 'test',
+        startTime: time.subtract(10.days()),
+        duration: 30.minutes(),
+        recurs: Recurs.everyDay,
+      ),
+    ]);
+
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(ActivityCard));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(AbiliaIcons.month));
+    await tester.pumpAndSettle();
+
+    final analytics = GetIt.I<SeagullAnalytics>() as MockSeagullAnalytics;
+
+    verifyInOrder([
+      () => analytics.trackNavigation(
+            page: (CalendarPage).toString(),
+            action: NavigationAction.opened,
+          ),
+      () => analytics.trackNavigation(
+            page: (DayCalendarTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => analytics.trackNavigation(
+            page: (ActivityPage).toString(),
+            action: NavigationAction.opened,
+          ),
+      () => analytics.trackNavigation(
+            page: (ActivityPage).toString(),
+            action: NavigationAction.closed,
+          ),
+      () => analytics.trackNavigation(
+            page: (MonthCalendarTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+    ]);
   });
 
   testWidgets('Opacity for nighttime activities', (WidgetTester tester) async {

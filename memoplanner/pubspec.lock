@@ -839,7 +839,7 @@ packages:
     source: hosted
     version: "1.0.4"
   mixpanel_flutter:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: mixpanel_flutter
       sha256: a9b7082304fd832a2e1ac8954ddaaf457dc43a55a3c18d62d6ff312226ece042
@@ -1150,6 +1150,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
+  seagull_analytics:
+    dependency: "direct main"
+    description:
+      path: "../packages/seagull_analytics"
+      relative: true
+    source: path
+    version: "0.0.0"
   seagull_lints:
     dependency: "direct dev"
     description:

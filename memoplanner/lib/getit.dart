@@ -13,6 +13,7 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/storage/file_storage.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_analytics/seagull_analytics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 export 'package:get_it/get_it.dart';

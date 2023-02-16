@@ -1,7 +1,6 @@
+import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/listener/all.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class ActivityWizardPage extends StatelessWidget {
@@ -22,15 +21,11 @@ class ActivityWizardPage extends StatelessWidget {
                 state.step,
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.easeOutQuad),
-            child: PageView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: pageController,
-                itemBuilder: (context, _) {
-                  final page = getPage(context);
-                  GetIt.I<SeagullAnalytics>()
-                      .track(page.runtimeType.toString());
-                  return page;
-                }),
+            child: TrackablePageView(
+              analytics: GetIt.I<SeagullAnalytics>(),
+              controller: pageController,
+              getPage: getPage,
+            ),
           ),
         ),
       ),
