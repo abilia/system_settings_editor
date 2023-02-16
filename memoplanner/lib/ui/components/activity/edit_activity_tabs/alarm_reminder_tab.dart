@@ -23,13 +23,7 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SubHeading(Translator.of(context).translate.reminders),
-            ReminderSwitch(activity: activity),
-            CollapsableWidget(
-              padding:
-                  EdgeInsets.only(top: layout.formPadding.verticalItemDistance),
-              collapsed: activity.fullDay || activity.reminderBefore.isEmpty,
-              child: Reminders(activity: activity),
-            ),
+            Reminders(activity: activity),
           ],
         ),
       if (showSpeech) const RecordSoundWidget(),
