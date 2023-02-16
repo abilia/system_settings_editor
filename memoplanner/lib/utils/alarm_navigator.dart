@@ -103,7 +103,7 @@ class AlarmNavigator {
 
   Map<String, dynamic> _alarmProperties(NotificationAlarm alarm) {
     final properties = alarm.properties;
-    properties['alarm_type'] = alarm.runtimeType.toString();
+    properties['Alarm Type'] = alarm.runtimeType.toString();
     return properties;
   }
 
