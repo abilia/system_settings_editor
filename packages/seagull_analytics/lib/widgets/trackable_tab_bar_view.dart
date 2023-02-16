@@ -70,7 +70,6 @@ class _TrackableTabBarViewState extends State<_TrackableTabBarView> {
     widget.analytics.trackNavigation(
       page: tab.runtimeType.toString(),
       action: NavigationAction.viewed,
-      properties: {},
     );
   }
 

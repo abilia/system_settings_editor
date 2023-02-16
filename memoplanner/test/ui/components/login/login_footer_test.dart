@@ -74,6 +74,7 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..database = FakeDatabase()
+      ..analytics = MockSeagullAnalytics()
       ..client = Fakes.client(
         factoryResetResponse: () => factoryResetResponse(),
       )
@@ -205,16 +206,16 @@ void main() {
     await pumpAbiliaLogoWithReset(tester);
     await goToConfirmFactoryReset(tester);
 
-    final analytics = GetIt.I<SeagullAnalytics>() as FakeSeagullAnalytics;
-    expect(analytics.events, [
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'FactoryResetOrClearDataDialog', 'action': 'viewed'},
-      ),
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'ConfirmFactoryResetDialog', 'action': 'viewed'},
-      )
+    final analytics = GetIt.I<SeagullAnalytics>() as MockSeagullAnalytics;
+    verifyInOrder([
+      () => analytics.trackNavigation(
+            page: (FactoryResetOrClearDataDialog).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => analytics.trackNavigation(
+            page: (ConfirmFactoryResetDialog).toString(),
+            action: NavigationAction.viewed,
+          )
     ]);
   }, skip: !Config.isMP);
 }

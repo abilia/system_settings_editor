@@ -4,8 +4,8 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:test/test.dart';
 
 import 'package:memoplanner/models/all.dart';
-import 'package:seagull_analytics/seagull_analytics.dart';
 
+import '../../fakes/fake_seagull_analytics.dart';
 import '../../mocks/mocks.dart';
 
 void main() {

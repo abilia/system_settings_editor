@@ -200,7 +200,7 @@ class GetItInitializer {
       ..registerSingleton<LastSyncDb>(
           _lastSyncDb ?? LastSyncDb(_sharedPreferences))
       ..registerSingleton<SeagullAnalytics>(
-          _analytics ?? FakeSeagullAnalytics())
+          _analytics ?? SeagullAnalytics.empty())
       ..registerSingleton<Connectivity>(
         _connectivity ?? Connectivity(),
       )

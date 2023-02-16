@@ -70,7 +70,7 @@ void main() {
       ],
       queue: [defaultTimer.toOccasion(startTime)],
     ));
-    final analytics = FakeSeagullAnalytics();
+    final analytics = MockSeagullAnalytics();
     timerCubit = TimerCubit(
       timerDb: mockTimerDb,
       ticker: Ticker.fake(initialTime: startTime),
@@ -181,12 +181,8 @@ void main() {
     await tester.tap(find.byType(YesButton));
     await tester.pumpAndSettle();
 
-    final analytics = GetIt.I<SeagullAnalytics>() as FakeSeagullAnalytics;
-    expect(analytics.events, [
-      const AnalyticsEvent(
-        'Timer deleted',
-        {},
-      ),
-    ]);
+    final analytics = GetIt.I<SeagullAnalytics>() as MockSeagullAnalytics;
+
+    verify(() => analytics.trackEvent('Timer deleted'));
   });
 }

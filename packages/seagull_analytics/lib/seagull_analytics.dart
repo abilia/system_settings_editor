@@ -7,7 +7,6 @@ import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 export 'widgets/trackable_page_view.dart';
 export 'widgets/trackable_tab_bar_view.dart';
 export 'trackable.dart';
-export 'fake_seagull_analytics.dart';
 export 'navigation_observer.dart';
 
 final _log = Logger('SeagullAnalytics');
@@ -20,6 +19,9 @@ class SeagullAnalytics {
   final Map<String, dynamic> superProperties;
 
   const SeagullAnalytics(this.mixpanel, this.superProperties);
+  SeagullAnalytics.empty()
+      : mixpanel = null,
+        superProperties = {};
 
   static Future<SeagullAnalytics> init(
     String token, {
@@ -71,8 +73,9 @@ class SeagullAnalytics {
   void trackNavigation({
     required String page,
     required NavigationAction action,
-    required Map<String, dynamic> properties,
+    Map<String, dynamic>? properties,
   }) {
+    properties ??= {};
     properties['page'] = page;
     properties['action'] = action.name;
     trackEvent('Navigation', properties: properties);
@@ -80,7 +83,7 @@ class SeagullAnalytics {
 
   void trackEvent(
     String eventName, {
-    required Map<String, dynamic> properties,
+    Map<String, dynamic>? properties,
   }) {
     _log.finer('tracking $eventName');
     _log.finer('$eventName props: $properties');
