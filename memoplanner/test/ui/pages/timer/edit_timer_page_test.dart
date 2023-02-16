@@ -223,13 +223,13 @@ void main() {
     final analytics = GetIt.I<SeagullAnalytics>() as MockSeagullAnalytics;
     verify(
       () => analytics.trackEvent(
-        'Timer started',
+        AnalyticsEvents.timerStarted,
         properties: {
-          'fromTemplate': true,
-          'duration': 45,
-          'image': false,
-          'titleChanged': false,
-          'timerSetType': TimerSetType.inputField.name,
+          'From Template': true,
+          'Duration': 45,
+          'Image': false,
+          'Title Changed': false,
+          'Set Type': TimerSetType.inputField.name,
         },
       ),
     );

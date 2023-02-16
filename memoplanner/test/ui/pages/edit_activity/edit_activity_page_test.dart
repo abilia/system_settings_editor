@@ -4035,7 +4035,7 @@ text''';
             action: NavigationAction.closed,
           ),
       () => mockAnalytics.trackEvent(
-            'Activity created',
+            AnalyticsEvents.activityCreated,
             properties: expectedProperties,
           ),
     ]);

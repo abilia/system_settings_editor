@@ -4,17 +4,17 @@ import 'dart:ui';
 import 'package:logging/logging.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 
+import 'analytics_events.dart';
+
 export 'widgets/trackable_page_view.dart';
 export 'widgets/trackable_tab_bar_view.dart';
-export 'trackable.dart';
 export 'navigation_observer.dart';
+export 'trackable.dart';
+export 'analytics_events.dart';
 
 final _log = Logger('SeagullAnalytics');
 
 class SeagullAnalytics {
-  static const environmentKey = 'environment',
-      localeKey = 'locale',
-      languageKey = 'language';
   final Mixpanel? mixpanel;
   final Map<String, dynamic> superProperties;
 
@@ -53,18 +53,20 @@ class SeagullAnalytics {
   }
 
   void setBackend(String environment) {
-    superProperties[environmentKey] = environment;
-    mixpanel?.registerSuperProperties({environmentKey: environment});
+    superProperties[AnalyticsProperties.environment] = environment;
+    mixpanel?.registerSuperProperties(
+      {AnalyticsProperties.environment: environment},
+    );
     _log.fine('set backend $environment');
   }
 
   void setLocale(Locale locale) {
     final language = locale.languageCode;
-    superProperties[localeKey] = '$locale';
-    superProperties[languageKey] = language;
+    superProperties[AnalyticsProperties.locale] = '$locale';
+    superProperties[AnalyticsProperties.language] = language;
     final superProp = {
-      localeKey: '$locale',
-      languageKey: language,
+      AnalyticsProperties.locale: '$locale',
+      AnalyticsProperties.language: language,
     };
     mixpanel?.registerSuperProperties(superProp);
     _log.fine('locale set $superProp');
@@ -76,9 +78,9 @@ class SeagullAnalytics {
     Map<String, dynamic>? properties,
   }) {
     properties ??= {};
-    properties['page'] = page;
-    properties['action'] = action.name;
-    trackEvent('Navigation', properties: properties);
+    properties[AnalyticsProperties.page] = page;
+    properties[AnalyticsProperties.action] = action.name;
+    trackEvent(AnalyticsEvents.navigation, properties: properties);
   }
 
   void trackEvent(

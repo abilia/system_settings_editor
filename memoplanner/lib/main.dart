@@ -107,10 +107,10 @@ Future<SeagullAnalytics> _initAnalytics(SharedPreferences preferences) async =>
     SeagullAnalytics.init(
       '814838948a0be3497bcce0421334edb2',
       superProperties: {
-        'flavor': Config.flavor.name,
-        'release': Config.release,
-        'clientId': await DeviceDb(preferences).getClientId(),
-        SeagullAnalytics.environmentKey: BaseUrlDb(preferences).environment,
+        AnalyticsProperties.flavor: Config.flavor.name,
+        AnalyticsProperties.release: Config.release,
+        AnalyticsProperties.clientId: await DeviceDb(preferences).getClientId(),
+        AnalyticsProperties.environment: BaseUrlDb(preferences).environment,
       },
     );
 

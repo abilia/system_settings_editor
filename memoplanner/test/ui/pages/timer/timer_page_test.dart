@@ -183,6 +183,6 @@ void main() {
 
     final analytics = GetIt.I<SeagullAnalytics>() as MockSeagullAnalytics;
 
-    verify(() => analytics.trackEvent('Timer deleted'));
+    verify(() => analytics.trackEvent(AnalyticsEvents.timerDeleted));
   });
 }
