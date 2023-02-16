@@ -46,13 +46,10 @@ class DeviceLicense {
   final DateTime? endTime;
   final String? licenseKey;
 
-  String get formattedKey {
-    final value = RegExp(r'.{4}')
-        .allMatches(licenseKey ?? '')
-        .map((m) => m.group(0))
-        .join('-');
-    return value;
-  }
+  String get formattedKey => RegExp(r'.{4}')
+      .allMatches(licenseKey ?? '')
+      .map((m) => m.group(0))
+      .join('-');
 
   DeviceLicense.fromJson(Map<String, dynamic> json)
       : serialNumber = json['serialNumber'],

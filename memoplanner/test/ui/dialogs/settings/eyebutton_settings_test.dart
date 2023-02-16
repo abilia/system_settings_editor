@@ -69,7 +69,7 @@ void main() {
 
   testWidgets('Timepillar shows first edge, then dots when settings changes',
       (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
 
     // Assert - At timepillar and edge shows
@@ -153,7 +153,7 @@ void main() {
 
 extension on WidgetTester {
   Future<void> goToEyeButtonSettings({bool pumpApp = true}) async {
-    if (pumpApp) await pumpWidget(App());
+    if (pumpApp) await pumpWidget(const App());
     await pumpAndSettle();
     await tap(find.byType(EyeButtonDay));
     await pumpAndSettle();

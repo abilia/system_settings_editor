@@ -111,7 +111,7 @@ void main() {
   group('alarms and reminder test', () {
     testWidgets('Alarms shows', (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
       mockTicker.add(activityWithAlarmTime);
@@ -125,7 +125,7 @@ void main() {
         'Notifications does not get rescheduled when AlarmPage is shown',
         (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
       mockTicker.add(activityWithAlarmTime);
@@ -150,7 +150,7 @@ void main() {
       when(() => mockActivityDb.getAllBetween(any(), any()))
           .thenAnswer((_) => Future.value([activity]));
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
       mockTicker.add(startTime.add(1.hours()));
@@ -178,7 +178,7 @@ void main() {
         ),
       );
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
       mockTicker.add(activityWithAlarmTime);
@@ -199,7 +199,7 @@ void main() {
                   reminderBefore: [reminder.inMilliseconds],
                 )
               ]));
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
       mockTicker.add(activityWithAlarmTime);
@@ -223,7 +223,7 @@ void main() {
                   checkable: true,
                 )
               ]));
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
       mockTicker.add(activityWithAlarmTime);
@@ -251,7 +251,7 @@ void main() {
           ],
         ),
       );
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
       mockTicker.add(activityWithAlarmTime);
@@ -276,7 +276,7 @@ void main() {
                   checkable: true,
                 )
               ]));
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
       mockTicker.add(activityWithAlarmTime);
@@ -292,7 +292,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       mockTicker.add(twoHoursAfter);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(find.byType(PopAwareAlarmPage), findsNothing);
@@ -310,7 +310,7 @@ void main() {
       // Act
       mockTicker.add(twoHoursAfter);
       selectNotificationSubject.add(payload);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       // Assert
@@ -405,7 +405,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       mockTicker.add(twoHoursAfter);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       selectNotificationSubject.add(payload);
       await tester.pumpAndSettle();
 
@@ -429,7 +429,7 @@ void main() {
 
     testWidgets('Popup Alarms can be signed off', (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       // Act -- alarm time happend
@@ -458,7 +458,7 @@ void main() {
       final reminderUnchecked = uncheckedReminders(
         ActivityDay(activity, activityWithAlarmday),
       );
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       mockTicker.add(activityWithAlarmTime);
       await tester.pumpAndSettle();
@@ -503,7 +503,7 @@ void main() {
       );
 
       selectNotificationSubject.add(checkableActivityPayload);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       // Act -- alarm time happend
@@ -554,7 +554,7 @@ void main() {
       // Arrange
       when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value([activity1]));
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       final alarmScreenFinder = find.byType(PopAwareAlarmPage);
 
@@ -582,7 +582,7 @@ void main() {
       // Arrange
       when(() => mockActivityDb.getAllBetween(any(), any()))
           .thenAnswer((_) => Future.value([activity1]));
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       final alarmScreenFinder = find.byType(PopAwareAlarmPage);
 
@@ -609,7 +609,7 @@ void main() {
       // Arrange
       when(() => mockActivityDb.getAllBetween(any(), any()))
           .thenAnswer((_) => Future.value([activity1, activity2]));
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       final alarmScreenFinder = find.byType(PopAwareAlarmPage);
 
@@ -762,7 +762,7 @@ void main() {
       when(() => mockActivityDb.getAllBetween(any(), any()))
           .thenAnswer((_) => Future.value(activities));
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       // Act - time goes for two hours
@@ -998,7 +998,7 @@ void main() {
           ),
         );
 
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
 
         mockTicker.add(activity1StartTime);
@@ -1055,7 +1055,7 @@ void main() {
           ),
         );
 
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
 
         mockTicker.add(activity1StartTime);
@@ -1083,7 +1083,7 @@ void main() {
         when(() => mockTimerDb.getRunningTimersFrom(any()))
             .thenAnswer((_) => Future.value([t]));
 
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         selectNotificationSubject.add(TimerAlarm(t));
         await tester.pumpAndSettle();

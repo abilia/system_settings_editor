@@ -155,7 +155,7 @@ void main() {
   group('create new page', () {
     group('activities', () {
       testWidgets('New activity', (WidgetTester tester) async {
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         await tester.tap(addActivityButtonFinder);
         await tester.pumpAndSettle();
@@ -168,7 +168,7 @@ void main() {
       testWidgets(
         'Only show activity related options on MP',
         (WidgetTester tester) async {
-          await tester.pumpWidget(App());
+          await tester.pumpWidget(const App());
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
           await tester.pumpAndSettle();
@@ -191,7 +191,7 @@ void main() {
           );
           genericResponse = () => [settings];
 
-          await tester.pumpWidget(App());
+          await tester.pumpWidget(const App());
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
           await tester.pumpAndSettle();
@@ -488,7 +488,7 @@ void main() {
                   ),
                 ),
               ];
-          await tester.pumpWidget(App());
+          await tester.pumpWidget(const App());
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
           await tester.pumpAndSettle();
@@ -507,7 +507,7 @@ void main() {
                   ),
                 ),
               ];
-          await tester.pumpWidget(App());
+          await tester.pumpWidget(const App());
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
           await tester.pumpAndSettle();
@@ -528,7 +528,7 @@ void main() {
                 ),
               ];
           // Act - Go to add activity page
-          await tester.pumpWidget(App());
+          await tester.pumpWidget(const App());
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
           await tester.pumpAndSettle();
@@ -566,7 +566,7 @@ void main() {
                   ),
                 ),
               ];
-          await tester.pumpWidget(App());
+          await tester.pumpWidget(const App());
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
           await tester.pumpAndSettle();
@@ -579,7 +579,7 @@ void main() {
 
         testWidgets('Empty message when no basic activities',
             (WidgetTester tester) async {
-          await tester.pumpWidget(App());
+          await tester.pumpWidget(const App());
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
           await tester.pumpAndSettle();
@@ -619,7 +619,7 @@ void main() {
 
           sortableResponse = () => [basicActivity];
 
-          await tester.pumpWidget(App());
+          await tester.pumpWidget(const App());
           await tester.pumpAndSettle();
           await tester.tap(addActivityButtonFinder);
           await tester.pumpAndSettle();
@@ -908,7 +908,7 @@ void main() {
             ),
           ];
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(aFinder);
       await tester.pumpAndSettle();
@@ -929,7 +929,7 @@ void main() {
       testWidgets(
         'Only show timer related options on MP',
         (WidgetTester tester) async {
-          await tester.pumpWidget(App());
+          await tester.pumpWidget(const App());
           await tester.pumpAndSettle();
           await tester.tap(addTimerButtonFinder);
           await tester.pumpAndSettle();
@@ -952,7 +952,7 @@ void main() {
           );
           genericResponse = () => [settings];
 
-          await tester.pumpWidget(App());
+          await tester.pumpWidget(const App());
           await tester.pumpAndSettle();
           await tester.tap(addTimerButtonFinder);
           await tester.pumpAndSettle();
@@ -967,7 +967,7 @@ void main() {
         testWidgets(
           'with mp4 session show timer on MPGO ',
           (WidgetTester tester) async {
-            await tester.pumpWidget(App());
+            await tester.pumpWidget(const App());
             await tester.pumpAndSettle();
             await tester.tap(addActivityButtonFinder);
             await tester.pumpAndSettle();
@@ -982,7 +982,7 @@ void main() {
           'without mp4 session dont show timer on mpgo ',
           (WidgetTester tester) async {
             sessionResponse = () => [];
-            await tester.pumpWidget(App());
+            await tester.pumpWidget(const App());
             await tester.pumpAndSettle();
             await tester.tap(addActivityButtonFinder);
             await tester.pumpAndSettle();
@@ -996,7 +996,7 @@ void main() {
 
       testWidgets('from scratch, with automatically set name from typing',
           (WidgetTester tester) async {
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         await tester.tap(addTimerButtonFinder);
         await tester.pumpAndSettle();
@@ -1040,7 +1040,7 @@ void main() {
 
       testWidgets('from scratch, with automatically set name from timer wheel',
           (WidgetTester tester) async {
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         await tester.tap(addTimerButtonFinder);
         await tester.pumpAndSettle();
@@ -1078,7 +1078,7 @@ void main() {
 
       testWidgets('duration text updates when timer wheel is tapped',
           (WidgetTester tester) async {
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         await tester.tap(addTimerButtonFinder);
         await tester.pumpAndSettle();
@@ -1098,7 +1098,7 @@ void main() {
         NameInput timerNameWidget() =>
             tester.firstWidget(find.byKey(TestKey.timerNameText)) as NameInput;
 
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         await tester.tap(addTimerButtonFinder);
         await tester.pumpAndSettle();
@@ -1260,7 +1260,7 @@ void main() {
 
       group('Discard warning dialog timers', () {
         Future<void> navigateToEditTimerPage(WidgetTester tester) async {
-          await tester.pumpWidget(App());
+          await tester.pumpWidget(const App());
           await tester.pumpAndSettle();
           await tester.tap(addTimerButtonFinder);
           await tester.pumpAndSettle();
@@ -1315,7 +1315,7 @@ void main() {
                 ),
               ),
             ];
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         await tester.tap(addActivityButtonFinder);
         await tester.pumpAndSettle();
@@ -1347,7 +1347,7 @@ void main() {
                 ),
               ),
             ];
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         await tester.tap(addActivityButtonFinder);
         await tester.pumpAndSettle();

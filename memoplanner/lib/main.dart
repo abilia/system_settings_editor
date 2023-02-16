@@ -117,9 +117,8 @@ Future<SeagullAnalytics> _initAnalytics(SharedPreferences preferences) async =>
 class App extends StatelessWidget {
   final PushCubit? pushCubit;
   final NotificationAlarm? payload;
-  final _navigatorKey = GlobalKey<NavigatorState>();
 
-  App({
+  const App({
     Key? key,
     this.payload,
     this.pushCubit,
@@ -128,21 +127,36 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) => TopLevelProvider(
         pushCubit: pushCubit,
-        child: BlocBuilder<StartupCubit, StartupState>(
-          builder: (context, productionGuideState) =>
-              productionGuideState is StartupDone
-                  ? AuthenticationBlocProvider(
-                      child: TopLevelListener(
-                        navigatorKey: _navigatorKey,
-                        payload: payload,
-                        child: MaterialAppWrapper(
-                          navigatorKey: _navigatorKey,
-                        ),
-                      ),
-                    )
-                  : productionGuideState is WelcomeGuide
-                      ? const StartupGuidePage()
-                      : const ProductionGuidePage(),
-        ),
+        child: Config.isMPGO
+            ? AppEntry(payload: payload)
+            : BlocBuilder<StartupCubit, StartupState>(
+                builder: (context, productionGuideState) {
+                  if (productionGuideState is StartupDone) {
+                    return AppEntry(payload: payload);
+                  }
+                  if (productionGuideState is WelcomeGuide) {
+                    return const StartupGuidePage();
+                  }
+                  return const ProductionGuidePage();
+                },
+              ),
       );
+}
+
+class AppEntry extends StatelessWidget {
+  AppEntry({required this.payload, super.key});
+  final _navigatorKey = GlobalKey<NavigatorState>();
+  final NotificationAlarm? payload;
+  @override
+  Widget build(BuildContext context) {
+    return AuthenticationBlocProvider(
+      child: TopLevelListener(
+        navigatorKey: _navigatorKey,
+        payload: payload,
+        child: MaterialAppWrapper(
+          navigatorKey: _navigatorKey,
+        ),
+      ),
+    );
+  }
 }

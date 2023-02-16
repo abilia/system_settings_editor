@@ -131,7 +131,7 @@ void main() {
     testWidgets(
       'Finds KeepScreenAwakeListener in tree and getScreenOffTimeout gets called',
       (tester) async {
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(KeepScreenAwakeListener), findsOneWidget);
 

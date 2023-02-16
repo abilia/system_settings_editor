@@ -73,7 +73,7 @@ void main() {
   });
 
   testWidgets('Can navigate to month calendar', (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.month));
     await tester.pumpAndSettle();
@@ -83,7 +83,7 @@ void main() {
 
   testWidgets('Tapping Month in TabBar returns to this month',
       (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.month));
     await tester.pumpAndSettle();
@@ -100,7 +100,7 @@ void main() {
 
   group('app bar', () {
     testWidgets('MonthAppBar', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -108,7 +108,7 @@ void main() {
     });
 
     testWidgets('next month', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -120,7 +120,7 @@ void main() {
     });
 
     testWidgets('previous month', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -131,7 +131,7 @@ void main() {
     });
 
     testWidgets('Go to this month', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -146,7 +146,7 @@ void main() {
 
   group('Calendar body', () {
     testWidgets('day tts', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -177,7 +177,7 @@ void main() {
 
       testWidgets('shows fullday', (WidgetTester tester) async {
         // Act
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.month));
         await tester.pumpAndSettle();
@@ -202,7 +202,7 @@ void main() {
         expect(activitiesThisMonth, isNot(recursOnMonthDaySet.length));
 
         // Act
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.month));
         await tester.pumpAndSettle();
@@ -216,7 +216,7 @@ void main() {
       testWidgets('shows only non-fullday activities as dot on MP',
           (WidgetTester tester) async {
         // Act
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.month));
         await tester.pumpAndSettle();
@@ -246,7 +246,7 @@ void main() {
         (WidgetTester tester) async {
       final translate = Locales.language.values.first;
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -277,7 +277,7 @@ void main() {
     testWidgets(
         'tapping header area in preview header goes back to that day calendar',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -294,7 +294,7 @@ void main() {
     testWidgets(
         'tapping specific day from month view on second time goes back to that day calendar',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -309,7 +309,7 @@ void main() {
     });
 
     testWidgets('Shows activity in the preview', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -341,7 +341,7 @@ void main() {
           ],
         ),
       );
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -356,7 +356,7 @@ void main() {
     });
 
     testWidgets('Can navigate to month calendar', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -371,7 +371,7 @@ void main() {
       ];
       mockActivityDb.initWithActivities(activities);
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -399,7 +399,7 @@ void main() {
       ];
       mockActivityDb.initWithActivities(activities);
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -428,7 +428,7 @@ void main() {
       ];
       mockActivityDb.initWithActivities(activities);
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -464,7 +464,7 @@ void main() {
       ];
       mockActivityDb.initWithActivities(activities);
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -494,7 +494,7 @@ void main() {
         checkable: true,
         signedOffDates: [time].map(whaleDateFormat),
       ));
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -518,7 +518,7 @@ void main() {
     testWidgets(
         'SGC-1062 Split month view: List not updated when editing activity',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -543,7 +543,7 @@ void main() {
 
     testWidgets('Preview header is one line. Sep 30 is long.',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
@@ -573,7 +573,7 @@ void main() {
   testWidgets(
       'Header contains current day when current month is shown. When going to next or previous month, day should not be displayed.',
       (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.month));
     await tester.pumpAndSettle();
@@ -588,7 +588,7 @@ void main() {
     timerResponse = () => [
           AbiliaTimer(id: 'id', startTime: initialDay, duration: 20.minutes()),
         ];
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.month));
     await tester.pumpAndSettle();

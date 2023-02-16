@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -14,6 +15,7 @@ class DeviceRepository extends Repository {
   });
 
   final DeviceDb deviceDb;
+  final log = Logger((DeviceRepository).toString());
 
   Future<bool> verifyDevice(
       String serialId, String clientId, String licenseKey) async {
@@ -58,10 +60,11 @@ class DeviceRepository extends Repository {
     final clientId = await getClientId();
     final deviceLicenseUrl =
         '$baseUrl/open/v1/device/$serialId/license?clientId=$clientId'.toUri();
-    final response = await client.get(deviceLicenseUrl);
-    if (response.statusCode == 200) {
-      final license = DeviceLicense.fromJson(response.json());
-      deviceDb.setDeviceLicense(license);
+    try {
+      final response = await client.get(deviceLicenseUrl);
+      deviceDb.setDeviceLicense(_parseLicenseResponse(response));
+    } catch (e) {
+      log.warning(e);
     }
   }
 

@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:package_info/package_info.dart';
+import 'package:intl/intl.dart';
 
 import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/models/license.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
@@ -74,6 +74,7 @@ class AboutMemoplannerColumn extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final textTheme = Theme.of(context).textTheme;
     final license = GetIt.I<DeviceDb>().getDeviceLicense();
+    final licenseEnd = license?.endTime;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -87,24 +88,19 @@ class AboutMemoplannerColumn extends StatelessWidget {
           Version.versionText(GetIt.I<PackageInfo>()),
           bold: true,
         ),
-        if (Config.isMP) ...[
+        if (license != null && license.formattedKey.isNotEmpty)
           DoubleText(
             translate.licenseNumber,
-            license?.formattedKey ?? '',
+            license.formattedKey,
           ),
+        if (licenseEnd != null)
           DoubleText(
             translate.licenseValidDate,
-            license != null ? _licenseValidDate(license) : '',
+            DateFormat.yMd(Platform.localeName).format(licenseEnd),
           ),
-        ],
         SizedBox(height: layout.formPadding.groupBottomDistance),
       ],
     );
-  }
-
-  String _licenseValidDate(DeviceLicense license) {
-    final dateString = license.endTime.toString();
-    return dateString.substring(0, dateString.indexOf(' '));
   }
 }
 

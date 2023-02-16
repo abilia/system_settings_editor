@@ -96,14 +96,14 @@ void main() {
   });
 
   Future<void> navigateToActivityPage(WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     await tester.tap(activityTimepillarCardFinder);
     await tester.pumpAndSettle();
   }
 
   Future<void> navigateToFullDayActivityPage(WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     await tester.tap(activityCardFinder);
     await tester.pumpAndSettle();
@@ -443,7 +443,7 @@ void main() {
       ));
 
       // Act -- go back one day and open activity
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       await tester.pumpAndSettle();
