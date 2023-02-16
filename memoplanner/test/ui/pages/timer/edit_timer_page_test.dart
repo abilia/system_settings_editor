@@ -48,7 +48,7 @@ void main() {
     fakeTicker = Ticker.fake(initialTime: DateTime(2022));
     final timerDb = MockTimerDb();
     when(() => timerDb.insert(any())).thenAnswer((_) => Future.value(0));
-    final analytics = FakeSeagullAnalytics();
+    final analytics = MockSeagullAnalytics();
     timerCubit = TimerCubit(
       timerDb: timerDb,
       ticker: fakeTicker,
@@ -220,11 +220,11 @@ void main() {
     await tester.tap(find.byType(StartButton));
     await tester.pumpAndSettle();
 
-    final analytics = GetIt.I<SeagullAnalytics>() as FakeSeagullAnalytics;
-    expect(analytics.events, [
-      AnalyticsEvent(
+    final analytics = GetIt.I<SeagullAnalytics>() as MockSeagullAnalytics;
+    verify(
+      () => analytics.trackEvent(
         'Timer started',
-        {
+        properties: {
           'fromTemplate': true,
           'duration': 45,
           'image': false,
@@ -232,6 +232,6 @@ void main() {
           'timerSetType': TimerSetType.inputField.name,
         },
       ),
-    ]);
+    );
   });
 }

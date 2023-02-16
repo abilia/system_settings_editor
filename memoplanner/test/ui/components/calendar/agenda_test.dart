@@ -119,6 +119,7 @@ void main() {
       ..database = FakeDatabase()
       ..battery = FakeBattery()
       ..deviceDb = FakeDeviceDb()
+      ..analytics = MockSeagullAnalytics()
       ..init();
   });
 
@@ -1266,28 +1267,29 @@ void main() {
     await tester.tap(find.byIcon(AbiliaIcons.month));
     await tester.pumpAndSettle();
 
-    final analytics = GetIt.I<SeagullAnalytics>() as FakeSeagullAnalytics;
-    expect(analytics.events, [
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'CalendarPage', 'action': 'opened'},
-      ),
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'DayCalendarTab', 'action': 'viewed'},
-      ),
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'ActivityPage', 'action': 'opened'},
-      ),
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'ActivityPage', 'action': 'closed'},
-      ),
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'MonthCalendarTab', 'action': 'viewed'},
-      ),
+    final analytics = GetIt.I<SeagullAnalytics>() as MockSeagullAnalytics;
+
+    verifyInOrder([
+      () => analytics.trackNavigation(
+            page: (CalendarPage).toString(),
+            action: NavigationAction.opened,
+          ),
+      () => analytics.trackNavigation(
+            page: (DayCalendarTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => analytics.trackNavigation(
+            page: (ActivityPage).toString(),
+            action: NavigationAction.opened,
+          ),
+      () => analytics.trackNavigation(
+            page: (ActivityPage).toString(),
+            action: NavigationAction.closed,
+          ),
+      () => analytics.trackNavigation(
+            page: (MonthCalendarTab).toString(),
+            action: NavigationAction.viewed,
+          ),
     ]);
   });
 

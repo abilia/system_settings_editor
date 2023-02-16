@@ -33,7 +33,6 @@ class TrackablePageView extends StatelessWidget {
     analytics.trackNavigation(
       page: page.runtimeType.toString(),
       action: NavigationAction.viewed,
-      properties: {},
     );
   }
 }

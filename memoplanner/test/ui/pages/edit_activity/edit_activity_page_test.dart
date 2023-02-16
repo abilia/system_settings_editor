@@ -73,6 +73,8 @@ void main() {
     GetItInitializer()
       ..fileStorage = FakeFileStorage()
       ..database = FakeDatabase()
+      ..analytics = MockSeagullAnalytics()
+      ..client = Fakes.client()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..init();
     Bloc.observer = BlocLoggingObserver(GetIt.I<SeagullAnalytics>());
@@ -3948,65 +3950,72 @@ text''';
         startTime: startTime, title: 'newActivityTitle', timezone: 'UTC');
     final expectedProperties = AddActivity(expectedActivity).properties;
 
-    final analytics = GetIt.I<SeagullAnalytics>() as FakeSeagullAnalytics;
-    expect(analytics.events, [
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'EditActivityPage', 'action': 'viewed'},
-      ),
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'MainTab', 'action': 'viewed'},
-      ),
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'AlarmAndReminderTab', 'action': 'viewed'},
-      ),
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'RecurrenceTab', 'action': 'viewed'},
-      ),
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'InfoItemTab', 'action': 'viewed'},
-      ),
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'MainTab', 'action': 'viewed'},
-      ),
-      const AnalyticsEvent(
-        'Navigation',
-        {
-          'save errors': ['noTitleOrImage', 'noStartTime'],
-          'page': 'ErrorDialog',
-          'action': 'opened',
-        },
-      ),
-      const AnalyticsEvent(
-        'Navigation',
-        {
-          'save errors': ['noTitleOrImage', 'noStartTime'],
-          'page': 'ErrorDialog',
-          'action': 'closed',
-        },
-      ),
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'DefaultTextInput', 'action': 'opened'},
-      ),
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'DefaultTextInput', 'action': 'closed'},
-      ),
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'TimeInputPage', 'action': 'opened'},
-      ),
-      const AnalyticsEvent(
-        'Navigation',
-        {'page': 'TimeInputPage', 'action': 'closed'},
-      ),
-      AnalyticsEvent('Activity created', expectedProperties),
+    final mockAnalytics = GetIt.I<SeagullAnalytics>() as MockSeagullAnalytics;
+    verifyInOrder([
+      () => mockAnalytics.trackNavigation(
+            page: (EditActivityPage).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (MainTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (AlarmAndReminderTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (RecurrenceTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (InfoItemTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (MainTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (ErrorDialog).toString(),
+            action: NavigationAction.opened,
+            properties: {
+              'save errors': [
+                SaveError.noTitleOrImage.name,
+                SaveError.noStartTime.name,
+              ],
+            },
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (ErrorDialog).toString(),
+            action: NavigationAction.closed,
+            properties: {
+              'save errors': [
+                SaveError.noTitleOrImage.name,
+                SaveError.noStartTime.name,
+              ],
+            },
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (DefaultTextInput).toString(),
+            action: NavigationAction.opened,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (DefaultTextInput).toString(),
+            action: NavigationAction.closed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (TimeInputPage).toString(),
+            action: NavigationAction.opened,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (TimeInputPage).toString(),
+            action: NavigationAction.closed,
+          ),
+      () => mockAnalytics.trackEvent(
+            'Activity created',
+            properties: expectedProperties,
+          ),
     ]);
   });
 }
