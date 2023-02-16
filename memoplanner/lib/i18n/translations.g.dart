@@ -81,6 +81,11 @@ abstract class Translated {
   final String loggedOutMessage =
       'You have been logged out. Please log in again.';
 
+  final String unauthorizedHeader = 'You’ve been logged out';
+
+  final String unauthorizedMessage =
+      'This is most likely due to a password change, please try logging in again.';
+
   final String createAccountHint = 'Don’t have a myAbilia account yet?';
 
   final String createAccount = 'Create Account';
