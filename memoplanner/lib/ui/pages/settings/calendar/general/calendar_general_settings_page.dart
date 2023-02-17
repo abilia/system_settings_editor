@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 
@@ -28,12 +29,15 @@ class CalendarGeneralSettingsPage extends StatelessWidget {
               ],
             ),
           ),
-          body: const TabBarView(children: [
-            ClockSettingsTab(),
-            IntervalsSettingsTab(),
-            DayColorsSettingsTab(),
-            CategoriesSettingsTab(),
-          ]),
+          body: TrackableTabBarView(
+            analytics: GetIt.I<SeagullAnalytics>(),
+            children: const [
+              ClockSettingsTab(),
+              IntervalsSettingsTab(),
+              DayColorsSettingsTab(),
+              CategoriesSettingsTab(),
+            ],
+          ),
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: Builder(

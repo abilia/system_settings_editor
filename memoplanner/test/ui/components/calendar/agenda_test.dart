@@ -119,6 +119,7 @@ void main() {
       ..database = FakeDatabase()
       ..battery = FakeBattery()
       ..deviceDb = FakeDeviceDb()
+      ..analytics = MockSeagullAnalytics()
       ..init();
   });
 
@@ -1156,6 +1157,140 @@ void main() {
         expect(find.byType(TimerCard), findsNothing);
       });
     });
+  });
+
+  group('Recurring', () {
+    testWidgets(
+        'SGC-2304 - Changing alarm on a recurring activity'
+        'and choosing only this day will not change the day of the activity',
+        (WidgetTester tester) async {
+      final time = DateTime(2020, 06, 04, 10, 00);
+      GetIt.I<Ticker>().setFakeTime(time, setTicker: false);
+      activityDbInMemory.initWithActivities([
+        Activity.createNew(
+          title: 'test',
+          startTime: time.subtract(10.days()),
+          duration: 30.minutes(),
+          recurs: Recurs.everyDay,
+        ),
+      ]);
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ActivityCard), findsOneWidget);
+
+      await tester.tap(find.byType(ActivityCard));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.editAlarm));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(translate.noAlarm));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(translate.onlyThisDay));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ActivityCard), findsOneWidget);
+    });
+
+    testWidgets(
+        'SGC-2304 - Changing alarm on a recurring activity and choosing this day and forward'
+        'will not change the alarm of activities before the chosen activity',
+        (WidgetTester tester) async {
+      final time = DateTime(2020, 06, 04, 10, 00);
+      GetIt.I<Ticker>().setFakeTime(time, setTicker: false);
+      activityDbInMemory.initWithActivities([
+        Activity.createNew(
+          title: 'test',
+          startTime: time.subtract(10.days()),
+          duration: 30.minutes(),
+          recurs: Recurs.everyDay,
+        ),
+      ]);
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ActivityCard), findsOneWidget);
+
+      await tester.tap(find.byType(ActivityCard));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.editAlarm));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(translate.noAlarm));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(translate.thisDayAndForward));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(ActivityCard));
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(const Alarm(type: AlarmType.noAlarm).iconData()),
+          findsNothing);
+    });
+  });
+
+  testWidgets('Analytics are correct', (WidgetTester tester) async {
+    final time = DateTime(2020, 06, 04, 10, 00);
+    GetIt.I<Ticker>().setFakeTime(time, setTicker: false);
+    activityDbInMemory.initWithActivities([
+      Activity.createNew(
+        title: 'test',
+        startTime: time.subtract(10.days()),
+        duration: 30.minutes(),
+        recurs: Recurs.everyDay,
+      ),
+    ]);
+
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(ActivityCard));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(AbiliaIcons.month));
+    await tester.pumpAndSettle();
+
+    final analytics = GetIt.I<SeagullAnalytics>() as MockSeagullAnalytics;
+
+    verifyInOrder([
+      () => analytics.trackNavigation(
+            page: (CalendarPage).toString(),
+            action: NavigationAction.opened,
+          ),
+      () => analytics.trackNavigation(
+            page: (DayCalendarTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => analytics.trackNavigation(
+            page: (ActivityPage).toString(),
+            action: NavigationAction.opened,
+          ),
+      () => analytics.trackNavigation(
+            page: (ActivityPage).toString(),
+            action: NavigationAction.closed,
+          ),
+      () => analytics.trackNavigation(
+            page: (MonthCalendarTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+    ]);
   });
 
   testWidgets('Opacity for nighttime activities', (WidgetTester tester) async {

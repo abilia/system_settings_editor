@@ -16,3 +16,5 @@ export 'package:flutter/material.dart'
 export 'widget_utils.dart';
 
 export 'navigation_observer.dart';
+
+export 'package:seagull_analytics/seagull_analytics.dart';

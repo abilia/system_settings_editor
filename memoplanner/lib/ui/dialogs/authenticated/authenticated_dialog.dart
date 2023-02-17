@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -15,9 +16,9 @@ class AuthenticatedDialog extends StatelessWidget {
     final loginDialogState = authenticatedDialogCubit.state;
     final pageController = PageController();
 
-    return PageView(
+    return TrackablePageView(
       controller: pageController,
-      physics: const NeverScrollableScrollPhysics(),
+      analytics: GetIt.I<SeagullAnalytics>(),
       children: [
         if (loginDialogState.termsOfUse)
           TermsOfUseDialog(

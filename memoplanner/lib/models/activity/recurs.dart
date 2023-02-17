@@ -2,19 +2,6 @@ part of 'activity.dart';
 
 enum RecurrentType { none, weekly, monthly, yearly }
 
-extension DefaultEndDate on RecurrentType {
-  DateTime? get defaultEndDate {
-    switch (this) {
-      case RecurrentType.weekly:
-      case RecurrentType.monthly:
-        return null;
-      case RecurrentType.none:
-      case RecurrentType.yearly:
-        return Recurs.noEndDate;
-    }
-  }
-}
-
 enum ApplyTo { onlyThisDay, allDays, thisDayAndForward }
 
 @immutable

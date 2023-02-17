@@ -79,7 +79,6 @@ class ActivityTimepillarCard extends TimepillarCard {
               },
               child: Container(
                 constraints: BoxConstraints(
-                  minHeight: measures.activityCardMinHeight,
                   maxHeight: cardPosition.height,
                 ),
                 margin: right

@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/listener/all.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
@@ -29,6 +30,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _readScreenTimeOut();
+    _fetchDeviceLicense();
   }
 
   @override
@@ -53,14 +55,21 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
         ..read<ClockBloc>().setTime(DateTime.now())
         ..read<PermissionCubit>().checkAll();
       _readScreenTimeOut();
+      _fetchDeviceLicense();
     }
   }
 
-  Future _readScreenTimeOut() async {
+  Future<void> _readScreenTimeOut() async {
     if (Config.isMP) {
       context
           .read<WakeLockCubit>()
           .setScreenTimeout(await SystemSettingsEditor.screenOffTimeout);
+    }
+  }
+
+  void _fetchDeviceLicense() {
+    if (Config.isMP) {
+      context.read<DeviceRepository>().fetchDeviceLicense();
     }
   }
 

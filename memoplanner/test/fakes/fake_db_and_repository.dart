@@ -203,6 +203,9 @@ class FakeActivityRepository extends Fake implements ActivityRepository {
   Future<bool> synchronize() => Future.value(true);
 
   @override
+  Future<bool> save(Iterable<Activity> data) => Future.value(true);
+
+  @override
   Future<Iterable<Activity>> allBetween(DateTime start, DateTime end) =>
       Future.value([]);
 }
@@ -260,6 +263,14 @@ class FakeDeviceDb extends Fake implements DeviceDb {
 
   @override
   bool get startGuideCompleted => true;
+
+  @override
+  Future<void> setDeviceLicense(DeviceLicense license) async {}
+
+  @override
+  DeviceLicense? getDeviceLicense() {
+    return null;
+  }
 }
 
 class FakeTtsHandler extends Fake implements TtsInterface {

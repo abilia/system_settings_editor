@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
+import 'package:seagull_analytics/seagull_analytics.dart';
 
 part 'activities_event.dart';
 
@@ -64,13 +64,13 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesChanged>
           activities: series,
           activity: activity,
           day: event.day,
-        ).save;
+        );
       case ApplyTo.onlyThisDay:
         return deleteOnlyThisDay(
           activity: activity,
           activities: series,
           day: event.day,
-        ).save;
+        );
     }
   }
 
@@ -85,13 +85,13 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesChanged>
           activity: event.activity,
           activities: series,
           day: event.day,
-        ).save;
+        );
       case ApplyTo.onlyThisDay:
         return updateOnlyThisDay(
           activities: series,
           activity: event.activity,
           day: event.day,
-        ).save;
+        );
       case ApplyTo.allDays:
         throw UpdateActivityApplyToAllDaysError();
     }

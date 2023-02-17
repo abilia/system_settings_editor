@@ -286,7 +286,7 @@ void main() {
       await tester.tap(find.byType(MonthDayPreviewHeading));
       await tester.pumpAndSettle();
       expect(find.byType(DayAppBar), findsOneWidget);
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
       expect(find.text('Sunday'), findsOneWidget);
       expect(find.text('30 August 2020'), findsOneWidget);
     });
@@ -303,7 +303,7 @@ void main() {
       await tester.tap(find.text('30'));
       await tester.pumpAndSettle();
       expect(find.byType(DayAppBar), findsOneWidget);
-      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(DayCalendarTab), findsOneWidget);
       expect(find.text('Sunday'), findsOneWidget);
       expect(find.text('30 August 2020'), findsOneWidget);
     });

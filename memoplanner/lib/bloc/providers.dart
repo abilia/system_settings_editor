@@ -13,6 +13,7 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/repository/sessions_repository.dart';
 import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
+import 'package:seagull_analytics/seagull_analytics.dart';
 
 class AuthenticatedBlocsProvider extends StatelessWidget {
   final Authenticated authenticatedState;
@@ -85,6 +86,21 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               userId: authenticatedState.userId,
             ),
           ),
+          RepositoryProvider<SupportPersonsRepository>(
+            create: (context) => SupportPersonsRepository(
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              client: GetIt.I<ListenableClient>(),
+              db: GetIt.I<SupportPersonsDb>(),
+              userId: authenticatedState.userId,
+            ),
+          ),
+          RepositoryProvider<FeatureToggleRepository>(
+            create: (_) => FeatureToggleRepository(
+              client: GetIt.I<ListenableClient>(),
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              userId: authenticatedState.userId,
+            ),
+          )
         ],
         child: MultiBlocProvider(
           providers: [
@@ -114,7 +130,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               create: (context) => TimerCubit(
                 timerDb: GetIt.I<TimerDb>(),
                 ticker: GetIt.I<Ticker>(),
-                seagullAnalytics: GetIt.I<SeagullAnalytics>(),
+                analytics: GetIt.I<SeagullAnalytics>(),
               )..loadTimers(),
             ),
             BlocProvider(
@@ -122,6 +138,19 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 ticker: GetIt.I<Ticker>(),
                 timerCubit: context.read<TimerCubit>(),
               ),
+            ),
+            BlocProvider<FeatureToggleCubit>(
+              lazy: false,
+              create: (context) => FeatureToggleCubit(
+                featureToggleRepository:
+                    context.read<FeatureToggleRepository>(),
+              )..updateTogglesFromBackend(),
+            ),
+            BlocProvider<SupportPersonsCubit>(
+              create: (context) => SupportPersonsCubit(
+                supportPersonsRepository:
+                    context.read<SupportPersonsRepository>(),
+              )..loadSupportPersons(),
             ),
             BlocProvider<WeekCalendarCubit>(
               create: (context) => WeekCalendarCubit(
@@ -412,6 +441,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
                 GetIt.I<SessionsDb>().setHasMP4Session(false),
                 GetIt.I<LastSyncDb>().delete(),
                 GetIt.I<TermsOfUseDb>().setTermsOfUseAccepted(false),
+                GetIt.I<DeviceDb>().clearDeviceLicense(),
               ],
             ),
             client: GetIt.I<ListenableClient>(),

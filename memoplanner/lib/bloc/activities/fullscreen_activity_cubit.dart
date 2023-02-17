@@ -17,7 +17,6 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
     required ActivityDay startingActivity,
   }) : super(
           FullScreenActivityState(
-            eventsList: const [],
             selected: startingActivity,
           ),
         ) {
@@ -42,6 +41,7 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
   Future<void> _updateState() async {
     final day = clockBloc.state.onlyDays();
     final activities = await activityRepository.allBetween(day, day.nextDay());
+    if (isClosed) return;
     emit(
       _stateFrom(
         activities,
@@ -80,7 +80,7 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
         selectedActivity;
     return FullScreenActivityState(
       selected: selected,
-      eventsList: ongoingActivities,
+      eventsList: UnmodifiableListView(ongoingActivities),
     );
   }
 
@@ -95,12 +95,12 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
 
 class FullScreenActivityState extends Equatable {
   final ActivityDay selected;
-  final UnmodifiableListView<ActivityOccasion> eventsList;
+  final UnmodifiableListView<ActivityOccasion>? eventsList;
 
-  FullScreenActivityState({
+  const FullScreenActivityState({
     required this.selected,
-    required List<ActivityOccasion> eventsList,
-  }) : eventsList = UnmodifiableListView(eventsList);
+    this.eventsList,
+  });
 
   @override
   List<Object?> get props => [selected, eventsList];

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:http/http.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
@@ -13,11 +12,11 @@ class TermsOfUseRepository extends Repository {
   final Logger _log = Logger((TermsOfUseRepository).toString());
 
   TermsOfUseRepository({
-    required BaseClient client,
-    required BaseUrlDb baseUrlDb,
+    required super.client,
+    required super.baseUrlDb,
     required this.termsOfUseDb,
     required this.userId,
-  }) : super(client, baseUrlDb);
+  });
 
   Uri get endpoint => '$baseUrl/api/v1/entity/$userId/acknowledgments'.toUri();
 

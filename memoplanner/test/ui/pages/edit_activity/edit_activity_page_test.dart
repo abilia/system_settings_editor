@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
+import 'package:memoplanner/logging/observers/bloc_logging_observer.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -72,8 +73,11 @@ void main() {
     GetItInitializer()
       ..fileStorage = FakeFileStorage()
       ..database = FakeDatabase()
+      ..analytics = MockSeagullAnalytics()
+      ..client = Fakes.client()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..init();
+    Bloc.observer = BlocLoggingObserver(GetIt.I<SeagullAnalytics>());
   });
 
   tearDown(GetIt.I.reset);
@@ -87,6 +91,9 @@ void main() {
   }) {
     final activity = givenActivity ?? startActivity;
     return MaterialApp(
+      navigatorObservers: [
+        AnalyticNavigationObserver(GetIt.I<SeagullAnalytics>()),
+      ],
       supportedLocales: Translator.supportedLocals,
       localizationsDelegates: const [Translator.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
@@ -103,7 +110,14 @@ void main() {
               BlocProvider<MemoplannerSettingsBloc>.value(
                 value: mockMemoplannerSettingsBloc,
               ),
-              BlocProvider<ActivitiesBloc>(create: (_) => FakeActivitiesBloc()),
+              BlocProvider<ActivitiesBloc>(
+                create: (_) => ActivitiesBloc(
+                  activityRepository: FakeActivityRepository(),
+                  syncBloc: FakeSyncBloc(),
+                ),
+              ),
+              BlocProvider<SupportPersonsCubit>(
+                  create: (_) => FakeSupportPersonsCubit()),
               BlocProvider<EditActivityCubit>(
                 create: (context) => newActivity
                     ? EditActivityCubit.newActivity(
@@ -383,7 +397,7 @@ void main() {
       expect(find.byIcon(AbiliaIcons.attention), findsOneWidget);
       await tester.goToAlarmTab();
       // Assert -- alarm tab contains reminders
-      expect(find.byIcon(AbiliaIcons.handiReminder), findsOneWidget);
+      expect(find.text(translate.reminders), findsOneWidget);
       await tester.goToMainTab();
       await tester.scrollDown(dy: -150);
 
@@ -597,7 +611,6 @@ void main() {
       // Arrange
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
-      final reminderSwitchFinder = find.byIcon(AbiliaIcons.handiReminder);
       final reminder15MinFinder =
           find.text(15.minutes().toDurationString(translate));
       final reminderDayFinder = find.text(1.days().toDurationString(translate));
@@ -609,44 +622,13 @@ void main() {
       // Act -- Go to alarm tab
       await tester.goToAlarmTab();
 
-      // Assert -- reminder switch is visible but reminders field is collapsed
-      expect(reminderSwitchFinder, findsOneWidget);
-      expect(remindersAll, findsNothing);
-      expect(reminderField, findsNothing);
-
-      // Act -- tap reminder switch
-      await tester.tap(reminderSwitchFinder);
-      await tester.pumpAndSettle();
-      // Assert -- 15 min reminder is selected, all reminders shows
+      // Assert -- all reminders shows
       expect(reminderField, findsOneWidget);
       expect(remindersAll, findsNWidgets(6));
-      expect(reminder15MinFinder, findsOneWidget);
-      expect(remindersAllSelected, findsOneWidget);
-
-      // Act -- tap on day reminder
-      await tester.scrollDown(dy: -100);
-      await tester.tap(reminderDayFinder);
-      await tester.pumpAndSettle();
-      // Assert -- 15 min and 1 day reminder is selected, all reminders shows
-      expect(reminderField, findsOneWidget);
-      expect(remindersAll, findsNWidgets(6));
-      expect(reminder15MinFinder, findsOneWidget);
-      expect(reminderDayFinder, findsOneWidget);
-      expect(remindersAllSelected, findsNWidgets(2));
-
-      // Act -- tap reminder switch
-      await tester.tap(reminderSwitchFinder);
-      await tester.pumpAndSettle();
-      // Assert -- no reminders shows, is collapsed
-      expect(reminderField, findsNothing);
-      expect(remindersAll, findsNothing);
-      expect(reminder15MinFinder, findsNothing);
-      expect(reminderDayFinder, findsNothing);
       expect(remindersAllSelected, findsNothing);
 
-      // Act -- tap reminder switch then day reminder
-      await tester.tap(reminderSwitchFinder);
-      await tester.pumpAndSettle();
+      // Act -- tap 15 min and day reminder
+      await tester.tap(reminder15MinFinder);
       await tester.tap(reminderDayFinder);
       await tester.pumpAndSettle();
       // Assert -- 15 min and 1 day reminder is selected, all reminders shows
@@ -660,11 +642,10 @@ void main() {
       await tester.tap(reminder15MinFinder);
       await tester.tap(reminderDayFinder);
       await tester.pumpAndSettle();
+
       // Assert -- no reminders shows, is collapsed
-      expect(reminderField, findsNothing);
-      expect(remindersAll, findsNothing);
-      expect(reminder15MinFinder, findsNothing);
-      expect(reminderDayFinder, findsNothing);
+      expect(reminderField, findsOneWidget);
+      expect(remindersAll, findsNWidgets(6));
       expect(remindersAllSelected, findsNothing);
     });
   });
@@ -1400,6 +1381,8 @@ text''';
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
+      await tester.tap(find.text(translate.noEndDate));
+      await tester.pumpAndSettle();
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
@@ -1416,7 +1399,9 @@ text''';
       await tester.goToRecurrenceTab();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-      await tester.scrollDown(dy: -250);
+      await tester.scrollDown(dy: -1000);
+      await tester.tap(find.text(translate.noEndDate));
+      await tester.pumpAndSettle();
       expect(
           find.descendant(of: find.byType(DatePicker), matching: find.text('')),
           findsOneWidget);
@@ -1447,6 +1432,9 @@ text''';
       await tester.pumpAndSettle();
       await tester.goToRecurrenceTab();
       await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.text(translate.noEndDate));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
       await tester.tap(find.byType(DatePicker));
@@ -2059,7 +2047,8 @@ text''';
       expect(find.byType(EndDateWidget), findsOneWidget);
     });
 
-    testWidgets('end date shows', (WidgetTester tester) async {
+    testWidgets('end date shows when clicking on No end date',
+        (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(createEditActivityPage(
         newActivity: true,
@@ -2076,8 +2065,13 @@ text''';
 
       // Assert -- date picker visible
       expect(find.byType(EndDateWidget), findsOneWidget);
+      expect(find.byType(DatePicker), findsNothing);
+      expect(find.text(translate.noEndDate), findsOneWidget);
+
+      await tester.tap(find.text(translate.noEndDate));
+      await tester.pumpAndSettle();
+
       expect(find.byType(DatePicker), findsOneWidget);
-      expect(find.text(translate.endDate), findsOneWidget);
     });
 
     testWidgets('end date defaults to no end', (WidgetTester tester) async {
@@ -2098,14 +2092,14 @@ text''';
       // Assert -- end date defaults to unspecified
       expect(
           find.descendant(of: find.byType(DatePicker), matching: find.text('')),
-          findsOneWidget);
+          findsNothing);
       final noEndDateSwitchValue = (find
               .byKey(TestKey.noEndDateSwitch)
               .evaluate()
               .first
               .widget as SwitchField)
           .value;
-      expect(noEndDateSwitchValue, false);
+      expect(noEndDateSwitchValue, isTrue);
     });
 
     testWidgets('end date disabled if edit recurring (Bug SGC-354)',
@@ -2277,7 +2271,8 @@ text''';
       // Act -- Change to weekly
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.text(translate.noEndDate));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(SaveButton));
@@ -2289,6 +2284,7 @@ text''';
       await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
 
+      await tester.scrollDown(dy: 250);
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
@@ -2341,7 +2337,8 @@ text''';
       // Act -- Change to weekly
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.text(translate.noEndDate));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(SaveButton));
@@ -2353,6 +2350,7 @@ text''';
       await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
 
+      await tester.scrollDown(dy: 250);
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
       await tester.tap(find.text(translate.yearly));
@@ -2382,6 +2380,8 @@ text''';
       await tester.pumpAndSettle();
 
       await tester.scrollDown(dy: -250);
+      await tester.tap(find.text(translate.noEndDate));
+      await tester.pumpAndSettle();
 
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
@@ -2434,6 +2434,9 @@ text''';
 
       await tester.pumpAndSettle();
 
+      await tester.scrollDown(dy: -250);
+      await tester.tap(find.text(translate.noEndDate));
+      await tester.pumpAndSettle();
       expect(find.byType(DatePicker), findsOneWidget);
 
       await tester.tap(find.byType(SaveButton));
@@ -2469,6 +2472,8 @@ text''';
 
       // Act -- Change end date
       await tester.scrollDown(dy: -250);
+      await tester.tap(find.text(translate.noEndDate));
+      await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.calendar));
       await tester.pumpAndSettle();
       await tester.tap(find.text('20'));
@@ -2482,13 +2487,10 @@ text''';
     testWidgets(
         'SGC-1926 - Changing from yearly to weekly or monthly changes end date to No End',
         (WidgetTester tester) async {
-      bool endDateNotSet() {
-        final noEndDateSwitch = tester
-            .firstWidget(find.byKey(TestKey.noEndDateSwitch)) as SwitchField;
-        final datePicker =
-            tester.firstWidget(find.byType(DatePicker)) as DatePicker;
-        return !noEndDateSwitch.value && datePicker.emptyText;
-      }
+      bool endDateSwitchOn() =>
+          (tester.firstWidget(find.byKey(TestKey.noEndDateSwitch))
+                  as SwitchField)
+              .value;
 
       // Arrange
       await tester.pumpWidget(createEditActivityPage(
@@ -2510,7 +2512,8 @@ text''';
       await tester.pumpAndSettle();
 
       // Assert -- End date is not set
-      expect(endDateNotSet(), true);
+      expect(endDateSwitchOn(), true);
+      expect(find.byType(DatePicker), findsNothing);
 
       // Act -- Change to Yearly
       await tester.tap(find.text(RecurrentType.yearly.text(translate)));
@@ -2521,7 +2524,8 @@ text''';
       await tester.pumpAndSettle();
 
       // Assert -- End date is not set
-      expect(endDateNotSet(), true);
+      expect(endDateSwitchOn(), true);
+      expect(find.byType(DatePicker), findsNothing);
     });
   });
 
@@ -3396,12 +3400,6 @@ text''';
       await tester.pumpAndSettle();
       await tester.goToAlarmTab();
 
-      await tester.verifyTts(find.byIcon(AbiliaIcons.handiReminder),
-          exact: translate.reminders);
-
-      await tester.tap(find.byIcon(AbiliaIcons.handiReminder));
-      await tester.pumpAndSettle();
-
       final reminders = [
         5.minutes(),
         15.minutes(),
@@ -3459,9 +3457,6 @@ text''';
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -350);
-
-      await tester.tap(find.byKey(TestKey.noEndDateSwitch));
-      await tester.pumpAndSettle();
 
       await tester.verifyTts(find.byType(EndDateWidget),
           exact: translate.noEndDate);
@@ -3810,6 +3805,8 @@ text''';
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
+      await tester.tap(find.text(translate.noEndDate));
+      await tester.pumpAndSettle();
 
       // Assert -- Error marker is not shown before trying to save
       expect(endDateIsErrorDecorated(), false);
@@ -3894,6 +3891,115 @@ text''';
       // Assert -- Error marker is not shown after entering a start time
       expect(timeIntervalIsErrorDecorated(), false);
     });
+  });
+
+  testWidgets('Analytics are correct when creating a new activity',
+      (WidgetTester tester) async {
+    // Arrange
+    await tester.pumpWidget(createEditActivityPage(
+      newActivity: true,
+    ));
+    await tester.pumpAndSettle();
+
+    await tester.goToAlarmTab();
+
+    await tester.goToRecurrenceTab();
+
+    await tester.goToInfoItemTab();
+
+    await tester.goToMainTab();
+
+    await tester.tap(find.byType(SaveButton));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(PreviousButton).last);
+    await tester.pumpAndSettle();
+
+    await tester.ourEnterText(
+        find.byKey(TestKey.editTitleTextFormField), 'newActivityTitle');
+    await tester.scrollDown(dy: -100);
+
+    await tester.tap(timeFieldFinder);
+    await tester.pumpAndSettle();
+    await tester.enterTime(startTimeInputFinder, '0330');
+    await tester.pumpAndSettle();
+    await tester.tap(okButtonFinder);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(SaveButton));
+    await tester.pumpAndSettle();
+
+    final expectedActivity = Activity.createNew(
+        startTime: startTime, title: 'newActivityTitle', timezone: 'UTC');
+    final expectedProperties = AddActivity(expectedActivity).properties;
+
+    final mockAnalytics = GetIt.I<SeagullAnalytics>() as MockSeagullAnalytics;
+    verifyInOrder([
+      () => mockAnalytics.trackNavigation(
+            page: (EditActivityPage).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (MainTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (AlarmAndReminderTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (RecurrenceTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (InfoItemTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (MainTab).toString(),
+            action: NavigationAction.viewed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (ErrorDialog).toString(),
+            action: NavigationAction.opened,
+            properties: {
+              'save errors': [
+                SaveError.noTitleOrImage.name,
+                SaveError.noStartTime.name,
+              ],
+            },
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (ErrorDialog).toString(),
+            action: NavigationAction.closed,
+            properties: {
+              'save errors': [
+                SaveError.noTitleOrImage.name,
+                SaveError.noStartTime.name,
+              ],
+            },
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (DefaultTextInput).toString(),
+            action: NavigationAction.opened,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (DefaultTextInput).toString(),
+            action: NavigationAction.closed,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (TimeInputPage).toString(),
+            action: NavigationAction.opened,
+          ),
+      () => mockAnalytics.trackNavigation(
+            page: (TimeInputPage).toString(),
+            action: NavigationAction.closed,
+          ),
+      () => mockAnalytics.trackEvent(
+            AnalyticsEvents.activityCreated,
+            properties: expectedProperties,
+          ),
+    ]);
   });
 }
 

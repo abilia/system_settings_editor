@@ -27,6 +27,8 @@ enterUsername	Enter username	Ange ditt användarnamn	Angiv dit brugernavn	Gebrui
 enterPassword	Enter password	Ange ditt lösenord	Angiv din adgangskode	Wachtwoord invoeren	Anna salasana	Passwort eingeben	Angi ditt passord
 userTypeNotSupported	Users of type Support person or Admin can't log in to MEMOplanner. Please use myAbilia.	Användare av typen Supportperson eller Admin kan inte logga in i MEMOplanner. Var vänlig använd myAbilia.	Supportere eller Admin-brugere kan ikke logge ind på MEMOplanner. Brug venligst myAbilia.	Gebruikers van het type Ondersteuningspersoon of Beheerder kunnen niet inloggen op MEMOplanner. Gebruikt u alstublieft myAbilia.	Käyttäjät, joiden tyyppi on tukihenkilö tai ylläpitäjä, eivät voi kirjautua MEMOplanneriin. Käytä myAbiliaa.	Benutzer vom Typ Supportperson oder Admin können sich nicht bei MEMOplanner anmelden. Bitte verwenden Sie myAbilia.	Brukere av typen Støtteperson eller Admin kan ikke logge inn på MEMOplanner. Vennligst bruk myAbilia.
 loggedOutMessage	You have been logged out. Please log in again.	Du har blivit utloggad. Vänligen logga in igen.	Du er blevet logget ud. Log ind igen.	U bent uitgelogd. Log alstublieft opnieuw in.	Olet kirjautunut ulos. Kirjaudu sisään uudelleen.	Sie wurden abgemeldet. Bitte melden Sie sich erneut an.	Du har blitt logget ut. Logg på igjen.
+unauthorizedHeader	You’ve been logged out						
+unauthorizedMessage	This is most likely due to a password change, please try logging in again.						
 							
 ### Create Account							
 createAccountHint	Don’t have a myAbilia account yet?	Har du inte ett myAbilia konto ännu?	Har du ikke en myAbilia-konto endnu?	Heeft u nog geen myAbilia-account?	Eikö sinulla ole vielä myAbilia-tiliä?	Sie haben noch kein myAbilia-Konto?	Har du ikke en myAbilia-konto ennå?
@@ -317,7 +319,7 @@ listView	List	Lista	Liste	Lijst	Luettelo	Liste	Liste
 timepillarSettings	Time pillar settings	Inställningar för tidpelare	Indstillinger for tidsøjle	Tijdzuil instellingen	Aikasarakkeen asetukset	Zeitsäule einstellungen	Innstillinger for tidsøyle
 activityDuration	Activity duration	Visa tid som	Vis tiden som	Laat de tijd zien als	Näytä aika muodossa	Zeit anzeigen als	Vise tiden som
 dots	Dots	Prickar	Prikker	Stippen	Pisteet	Punkte	Prikker
-edge	Edge	Flärp	Flik	Rand	Reuna	Kante	Flik
+edge	Edge	Flik	Flik	Rand	Reuna	Kante	Flik
 monthCalendarGrid	Simple	Enkel	Enkel	Eenvoudig	Helppo	Einfach	Enkel
 monthCalendarPreview	Detailed	Detaljerad	Detaljeret	Gedetailleerd	Yksityiskohtainen	Ausführlich	Detaljert
 textToSpeech	Speech support	Talstöd	Talestøtte	Spraakondersteuning	Puhetuki	Sprachausgabe	Talesyntese

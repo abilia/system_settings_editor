@@ -4,6 +4,7 @@ import 'package:memoplanner/db/sortable_db.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import '../../../fakes/all.dart';
@@ -20,6 +21,7 @@ void main() {
   const String activityNameOne = 'Basic Activity 1';
   const String activityNameTwo = 'Basic Activity 2';
   const String timerTitle = 'Basic Timer';
+  final translate = Locales.language.values.first;
 
   late List<Sortable> initialSortables;
   late SortableDb mockSortableDb;
@@ -213,7 +215,7 @@ void main() {
         expect(find.byType(RecordSoundWidget), findsNothing);
 
         // add reminder
-        await tester.tap(find.byType(ReminderSwitch));
+        await tester.tap(find.text((15.minutes().toDurationString(translate))));
         await tester.pumpAndSettle();
 
         // add info item note

@@ -119,6 +119,8 @@ void main() {
                 ),
                 BlocProvider<ActivitiesBloc>(
                     create: (_) => FakeActivitiesBloc()),
+                BlocProvider<SupportPersonsCubit>(
+                    create: (_) => FakeSupportPersonsCubit()),
                 BlocProvider<EditActivityCubit>(
                   create: (context) => EditActivityCubit.newActivity(
                     day: today,
@@ -1036,6 +1038,8 @@ void main() {
 
       await tester.tap(find.text(translate.shortWeekday(today.weekday)));
       await tester.pumpAndSettle();
+      await tester.tap(find.text(translate.noEndDate));
+      await tester.pumpAndSettle();
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(ErrorDialog), findsOneWidget);
@@ -1118,6 +1122,8 @@ void main() {
 
       await tester.tap(find.text('${today.day}'));
       await tester.pumpAndSettle();
+      await tester.tap(find.text(translate.noEndDate));
+      await tester.pumpAndSettle();
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(ErrorDialog), findsOneWidget);
@@ -1147,7 +1153,7 @@ void main() {
       expect(find.byType(ErrorDialog), findsNothing);
     });
 
-    testWidgets('No end date defaults to deselected',
+    testWidgets('No end date defaults to selected',
         (WidgetTester tester) async {
       // Arrange
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
@@ -1198,7 +1204,7 @@ void main() {
               .first
               .widget as SwitchField)
           .value;
-      expect(noEndDateSwitchValue, false);
+      expect(noEndDateSwitchValue, true);
     });
   });
 

@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
@@ -26,10 +27,13 @@ class WeekCalendarSettingsPage extends StatelessWidget {
               ],
             ),
           ),
-          body: const TabBarView(children: [
-            WeekAppBarSettingsTab(),
-            WeekSettingsTab(),
-          ]),
+          body: TrackableTabBarView(
+            analytics: GetIt.I<SeagullAnalytics>(),
+            children: const [
+              WeekAppBarSettingsTab(),
+              WeekSettingsTab(),
+            ],
+          ),
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: Builder(

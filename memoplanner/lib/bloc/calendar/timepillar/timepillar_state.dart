@@ -94,6 +94,15 @@ class TimepillarMeasures extends Equatable {
     return hoursToPixels(interval.start.hour, dotDistance);
   }
 
+  static const maxTwoTimepillarRatio = 50;
+  static const minTwoTimepillarRatio = 37;
+
+  int twoTimpillarRatio(double nightPillarHeight) =>
+      100 -
+      (nightPillarHeight / (nightPillarHeight + timePillarHeight) * 100)
+          .clamp(minTwoTimepillarRatio, maxTwoTimepillarRatio)
+          .toInt();
+
   @override
   List<Object> get props => [interval, zoom];
 }

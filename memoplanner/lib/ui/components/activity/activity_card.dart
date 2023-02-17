@@ -1,3 +1,4 @@
+import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -26,6 +27,8 @@ class ActivityCard extends StatelessWidget {
     final past = activityOccasion.isPast && !preview;
     final inactive = past || signedOff;
     final hasSideContent = activity.hasImage || signedOff || past;
+    final showAvailableForIcon = context.select(
+        (SupportPersonsCubit cubit) => cubit.state.supportPersons.isNotEmpty);
     final bodyText4 = layout.eventCard.bodyText4.copyWith(
       color: inactive ? AbiliaColors.white140 : null,
       height: 1,
@@ -125,7 +128,11 @@ class ActivityCard extends StatelessWidget {
                             bottom: 0,
                             child: Padding(
                               padding: layout.eventCard.statusesPadding,
-                              child: buildInfoIcons(activity, inactive),
+                              child: _buildInfoIcons(
+                                activity,
+                                inactive,
+                                showAvailableForIcon,
+                              ),
                             ),
                           ),
                       ],
@@ -140,7 +147,12 @@ class ActivityCard extends StatelessWidget {
     );
   }
 
-  Widget buildInfoIcons(Activity activity, bool inactive) => Row(
+  Widget _buildInfoIcons(
+    Activity activity,
+    bool inactive,
+    bool showAvailableForIcon,
+  ) =>
+      Row(
         children: [
           ...[
             if (activity.checkable) AbiliaIcons.handiCheck,
@@ -149,7 +161,8 @@ class ActivityCard extends StatelessWidget {
               AbiliaIcons.handiReminder,
             if (activity.hasAttachment) AbiliaIcons.handiInfo,
           ].map((icon) => CardIcon(icon)),
-          AvailableForIcon(activity.availableFor, inactive),
+          if (showAvailableForIcon)
+            AvailableForIcon(activity.availableFor, inactive),
         ],
       );
 }
@@ -166,7 +179,9 @@ class CardIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: layout.eventCard.cardIconPadding,
-      child: Icon(icon, size: layout.eventCard.iconSize),
+      child: SizedBox(
+          height: layout.eventCard.iconContainerSize,
+          child: Icon(icon, size: layout.eventCard.iconSize)),
     );
   }
 }
@@ -190,9 +205,9 @@ class AvailableForIcon extends StatelessWidget {
       child: AnimatedContainer(
         duration: ActivityCard.duration,
         width: availableFor == AvailableForType.onlyMe
-            ? layout.eventCard.privateIconSize
+            ? layout.eventCard.iconContainerSize
             : layout.eventCard.iconSize,
-        height: layout.eventCard.privateIconSize,
+        height: layout.eventCard.iconContainerSize,
         decoration: BoxDecoration(
           color: decorationColor,
           borderRadius: borderRadius,

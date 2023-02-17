@@ -17,12 +17,6 @@ class License extends Equatable {
     required this.endTime,
   }) : _key = key;
 
-  String get key {
-    final value =
-        RegExp(r'.{4}').allMatches(_key).map((m) => m.group(0)).join('-');
-    return value;
-  }
-
   factory License.fromJson(Map<String, dynamic> json) {
     return License(
       id: json['id'],
@@ -46,15 +40,32 @@ class License extends Equatable {
   bool get stringify => true;
 }
 
-class LicenseResponse {
+class DeviceLicense {
   final String serialNumber;
   final String? product;
   final DateTime? endTime;
+  final String? licenseKey;
 
-  LicenseResponse.fromJson(Map<String, dynamic> json)
+  String get formattedKey {
+    final value = RegExp(r'.{4}')
+        .allMatches(licenseKey ?? '')
+        .map((m) => m.group(0))
+        .join('-');
+    return value;
+  }
+
+  DeviceLicense.fromJson(Map<String, dynamic> json)
       : serialNumber = json['serialNumber'],
         product = json['product'],
         endTime = json['endTime'] is int
             ? DateTime.fromMillisecondsSinceEpoch(json['endTime'])
-            : null;
+            : null,
+        licenseKey = json['licenseKey'];
+
+  Map<String, dynamic> toJson() => {
+        'serialNumber': serialNumber,
+        'licenseKey': licenseKey,
+        'product': product?.nullOnEmpty(),
+        'endTime': endTime?.millisecondsSinceEpoch,
+      };
 }

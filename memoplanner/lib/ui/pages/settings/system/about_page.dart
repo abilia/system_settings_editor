@@ -73,7 +73,7 @@ class AboutMemoplannerColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     final textTheme = Theme.of(context).textTheme;
-    final license = GetIt.I<LicenseDb>().getMemoplannerLicense();
+    final license = GetIt.I<DeviceDb>().getDeviceLicense();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -87,24 +87,22 @@ class AboutMemoplannerColumn extends StatelessWidget {
           Version.versionText(GetIt.I<PackageInfo>()),
           bold: true,
         ),
-        DoubleText(
-          translate.licenseNumber,
-          license != null ? _licenseKey(license) : '',
-        ),
-        DoubleText(
-          translate.licenseValidDate,
-          license != null ? _licenseValidDate(license) : '',
-        ),
+        if (Config.isMP) ...[
+          DoubleText(
+            translate.licenseNumber,
+            license?.formattedKey ?? '',
+          ),
+          DoubleText(
+            translate.licenseValidDate,
+            license != null ? _licenseValidDate(license) : '',
+          ),
+        ],
         SizedBox(height: layout.formPadding.groupBottomDistance),
       ],
     );
   }
 
-  String _licenseKey(License license) {
-    return license.key;
-  }
-
-  String _licenseValidDate(License license) {
+  String _licenseValidDate(DeviceLicense license) {
     final dateString = license.endTime.toString();
     return dateString.substring(0, dateString.indexOf(' '));
   }
