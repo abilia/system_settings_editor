@@ -5,6 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Handi",
+      "cwd": "handi",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+    },
+    {
       "name": "MEMOplanner Go",
       "cwd": "memoplanner",
       "request": "launch",
