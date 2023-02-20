@@ -4,8 +4,8 @@
 
 The following environmental variables needs to be defined:
 
-- APPCENTER_KEYSTORE_PASSWORD
-- APPCENTER_KEY_PASSWORD
+- KEYSTORE_PASSWORD
+- KEY_PASSWORD
 
 Ask a developer for the keys
 
@@ -23,7 +23,7 @@ Add
 
 `--dart-define release=dev`
 
-for building with dev features such as fake time and to be able to skip initial startup guide for MEMOplanner
+for building with dev features such as feature toggles and to be able to skip initial startup guide for MEMOplanner
 
 ## Translations
 
@@ -106,6 +106,7 @@ To run the tests:
 `$ flutter drive --driver=test_driver/integration_test.dart --target=integration_test/integration_tests.dart`
 
 ### Screenshots
+
 To take automatic screenshots a specific integration test is setup in the file integration_test/screenshots.dart.
 To run the screenshot integration test connect to a device and run the following command:
 
@@ -114,4 +115,5 @@ To run the screenshot integration test connect to a device and run the following
 To be able run in profile mode and to get the most accurate screen dimensions, it's recommended to run the tests on a real device.
 
 ### Feature toggles
+
 When developing a new feature that is not ready for production but wanted to be integrated with the rest of the code, or when something should be tested by a selected number of people, a feature toggle could be used. Feature toggles can be handled locally by just adding a toggle to the enum FeatureToggle. The feature toggle page is available for non release builds. Feature toggles can also be added for a specific user in the backend. That has to be done manually in the database or by superadmin post requests.

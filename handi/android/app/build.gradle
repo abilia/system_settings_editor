@@ -24,8 +24,6 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion flutter.compileSdkVersion
@@ -45,9 +43,8 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.abilia"
-        // Certificate issue causing need to bump minSdkVersion: https://github.com/dart-lang/http/issues/627
-        minSdkVersion 26
+        applicationId "com.abilia.handi"
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -67,21 +64,6 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile(
-                    'proguard-android-optimize.txt'),
-                    'proguard-rules.pro'
-        }
-    }
-
-    flavorDimensions "flavors"
-    productFlavors {
-        mpgo {
-            dimension "flavors"
-            applicationIdSuffix ".memoplannergo"
-        }
-        mp {
-            dimension "flavors"
-            applicationIdSuffix ".memoplanner"
         }
     }
 }
