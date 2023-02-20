@@ -28,11 +28,8 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    // change to
-    // compileSdkVersion flutter.compileSdkVersion
-    // when flutter change to >= 33 in
-    // https://github.com/flutter/flutter/blob/master/packages/flutter_tools/gradle/flutter.gradle#L33
-    compileSdkVersion 33
+    compileSdkVersion flutter.compileSdkVersion
+    ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -51,21 +48,17 @@ android {
         applicationId "com.abilia"
         // Certificate issue causing need to bump minSdkVersion: https://github.com/dart-lang/http/issues/627
         minSdkVersion 26
-        // change to
-        // targetSdkVersion flutter.targetSdkVersion
-        // when flutter change to >= 33 in
-        // https://github.com/flutter/flutter/blob/master/packages/flutter_tools/gradle/flutter.gradle#L39
-        targetSdkVersion 33
+        targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
 
     signingConfigs {
         release {
-            storeFile rootProject.file("app/upload-keystore.jks")
-            storePassword System.getenv("APPCENTER_KEYSTORE_PASSWORD")
+            storeFile rootProject.file("../../upload-keystore.jks")
+            storePassword System.getenv("KEYSTORE_PASSWORD")
             keyAlias "upload"
-            keyPassword System.getenv("APPCENTER_KEY_PASSWORD")
+            keyPassword System.getenv("KEY_PASSWORD")
         }
     }
 
