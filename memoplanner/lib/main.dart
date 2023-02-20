@@ -143,9 +143,10 @@ class App extends StatelessWidget {
       );
 }
 
+final _navigatorKey = GlobalKey<NavigatorState>();
+
 class AppEntry extends StatelessWidget {
-  AppEntry({required this.payload, super.key});
-  final _navigatorKey = GlobalKey<NavigatorState>();
+  const AppEntry({required this.payload, super.key});
   final NotificationAlarm? payload;
   @override
   Widget build(BuildContext context) {

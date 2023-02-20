@@ -38,9 +38,9 @@ List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
 
 List<BlocProvider> copiedTopLevelProviders(BuildContext blocContext) => [
       _tryGetBloc<SpeechSettingsCubit>(blocContext),
-      _tryGetBloc<StartupCubit>(blocContext),
       _tryGetBloc<ConnectivityCubit>(blocContext),
       if (Config.isMP) ...[
+        _tryGetBloc<StartupCubit>(blocContext),
         _tryGetBloc<VoicesCubit>(blocContext),
       ],
     ].whereNotNull().toList();
