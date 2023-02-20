@@ -22,7 +22,7 @@ class AlarmSoundBloc extends Bloc<AlarmSoundEvent, Sound?> {
     onPlayerCompletion = audioPlayer.onPlayerComplete
         .listen((_) => add(const SoundAlarmCompleted()));
     audioPlayer.setAudioContext(
-      AudioContext(
+      const AudioContext(
         android: AudioContextAndroid(
           isSpeakerphoneOn: false,
           stayAwake: false,
@@ -31,9 +31,10 @@ class AlarmSoundBloc extends Bloc<AlarmSoundEvent, Sound?> {
           audioFocus: AndroidAudioFocus.gainTransient,
         ),
         iOS: AudioContextIOS(
-          defaultToSpeaker: true,
           category: AVAudioSessionCategory.multiRoute,
-          options: [],
+          options: [
+            AVAudioSessionOptions.defaultToSpeaker,
+          ],
         ),
       ),
     );

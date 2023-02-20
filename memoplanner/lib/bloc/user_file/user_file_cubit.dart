@@ -82,7 +82,7 @@ class UserFileCubit extends Cubit<UserFileState> {
   Future<List<int>> _adjustImageAndStoreThumb(
       UnstoredAbiliaFile unstoredAbiliaFile) async {
     final originalBytes = await unstoredAbiliaFile.file.readAsBytes();
-    final imageResult = await compute<List<int>, ImageResponse>(
+    final imageResult = await compute<Uint8List, ImageResponse>(
       adjustRotationAndCreateThumbs,
       originalBytes,
     );

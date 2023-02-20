@@ -1,8 +1,7 @@
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:image/image.dart';
-// ignore: implementation_imports
-import 'package:image/src/exif_data.dart';
 import 'package:memoplanner/models/all.dart';
 
 const imageQuality = 80;
@@ -30,25 +29,6 @@ class ImageRequest {
   });
 }
 
-Future<List<int>> adjustImageSizeAndRotation(List<int> originalData) async {
-  final adjustedOrientation = await adjustRotationToExif(originalData);
-
-  int? width, height;
-  if (adjustedOrientation.height > adjustedOrientation.width) {
-    height = min(imageMaxSize, adjustedOrientation.height);
-  } else {
-    width = min(imageMaxSize, adjustedOrientation.width);
-  }
-
-  final resizedOriginal = copyResize(
-    adjustedOrientation,
-    height: height,
-    width: width,
-  );
-
-  return encodeJpg(resizedOriginal, quality: imageQuality);
-}
-
 Future<Image> resizeImg(Image image, int size) async {
   int? width, height;
   if (image.height > image.width) {
@@ -64,35 +44,38 @@ Future<Image> resizeImg(Image image, int size) async {
   );
 }
 
-Future<Image> adjustRotationToExif(List<int> imageBytes) async {
+const _orientationTag = 0x0112;
+Future<Image> adjustRotationToExif(Uint8List imageBytes) async {
   final image = decodeImage(imageBytes);
   if (image == null) throw 'could not decode image bytes $imageBytes';
   final bakedImage = Image.from(image);
   final exif = bakedImage.exif;
 
   bakedImage.exif = ExifData();
-  if (!exif.hasOrientation) return bakedImage;
-  switch (exif.orientation) {
+  final hasOrientation = exif.hasTag(_orientationTag);
+  if (!hasOrientation) return bakedImage;
+  final orientation = exif.getTag(_orientationTag)?.toInt();
+  switch (orientation) {
     case 2:
       return flipHorizontal(bakedImage);
     case 3:
-      return flip(bakedImage, Flip.both);
+      return flip(bakedImage, direction: FlipDirection.both);
     case 4:
-      return flipHorizontal(copyRotate(bakedImage, 180));
+      return flipHorizontal(copyRotate(bakedImage, angle: 180));
     case 5:
-      return flipHorizontal(copyRotate(bakedImage, 90));
+      return flipHorizontal(copyRotate(bakedImage, angle: 90));
     case 6:
-      return copyRotate(bakedImage, 90);
+      return copyRotate(bakedImage, angle: 90);
     case 7:
-      return flipHorizontal(copyRotate(bakedImage, -90));
+      return flipHorizontal(copyRotate(bakedImage, angle: -90));
     case 8:
-      return copyRotate(bakedImage, -90);
+      return copyRotate(bakedImage, angle: -90);
   }
   return bakedImage;
 }
 
 Future<ImageResponse> adjustRotationAndCreateThumbs(
-    List<int> originalBytes) async {
+    Uint8List originalBytes) async {
   final adjustedImage = await adjustRotationToExif(originalBytes);
   final original = encodeJpg(adjustedImage, quality: imageQuality);
 
