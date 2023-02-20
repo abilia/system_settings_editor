@@ -146,7 +146,7 @@ void main() {
 
   group('calendar page', () {
     testWidgets('navigation', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day,
@@ -167,7 +167,7 @@ void main() {
 
     testWidgets('Tapping Day in TabBar returns to this week',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(nextDayButtonFinder);
       await tester.tap(nextDayButtonFinder);
@@ -184,7 +184,7 @@ void main() {
     testWidgets(
         "SGC-1757 category buttons doesn't change position "
         'when changing day interval', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(EyeButtonDay));
@@ -245,7 +245,7 @@ void main() {
       testWidgets('Notification permission is requested at start up',
           (WidgetTester tester) async {
         setupPermissions();
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(requestedPermissions, {Permission.notification});
       });
@@ -256,7 +256,7 @@ void main() {
           Permission.notification: PermissionStatus.denied,
           Permission.systemAlertWindow: PermissionStatus.granted,
         });
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(
             find.byType(NotificationPermissionWarningDialog), findsOneWidget);
@@ -271,7 +271,7 @@ void main() {
           Permission.notification: PermissionStatus.granted,
           Permission.systemAlertWindow: PermissionStatus.granted,
         });
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(NotificationPermissionWarningDialog), findsNothing);
         expect(find.byType(OrangeDot), findsNothing);
@@ -284,14 +284,14 @@ void main() {
           Permission.notification: PermissionStatus.granted,
           Permission.systemAlertWindow: PermissionStatus.denied,
         });
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(OrangeDot), findsOneWidget);
       }, skip: Config.isMP);
 
       testWidgets('Denied notifications tts', (WidgetTester tester) async {
         setupPermissions({Permission.notification: PermissionStatus.denied});
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         await tester.verifyTts(find.text(translate.allowNotifications),
             exact: translate.allowNotifications);
@@ -307,7 +307,7 @@ void main() {
       testWidgets('Denied notifications link to permission settings',
           (WidgetTester tester) async {
         setupPermissions({Permission.notification: PermissionStatus.denied});
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.tapTextSpan(translate.settingsLink), findsOneWidget);
         await tester.pumpAndSettle();
@@ -326,7 +326,7 @@ void main() {
 
     testWidgets('SGC-1707 no settings shows timepillar',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(TimepillarCalendar), findsOneWidget);
       expect(find.byType(Agenda), findsNothing);
@@ -337,7 +337,7 @@ void main() {
         (WidgetTester tester) async {
       genericResponse = () => [timepillarGeneric];
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(Agenda), findsNothing);
       expect(find.byType(TimepillarCalendar), findsOneWidget);
@@ -345,7 +345,7 @@ void main() {
 
     testWidgets('when calendar is changed, settings is saved unsynced',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byType(EyeButtonDay));
       await tester.pumpAndSettle();
@@ -364,7 +364,7 @@ void main() {
 
     group('start calendar', () {
       testWidgets('default', (WidgetTester tester) async {
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(OneTimepillarCalendar), findsOneWidget);
       });
@@ -378,7 +378,7 @@ void main() {
                 ),
               ),
             ];
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(Agenda), findsNothing);
         expect(find.byType(WeekCalendar), findsOneWidget);
@@ -393,7 +393,7 @@ void main() {
                 ),
               ),
             ];
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(Agenda), findsNothing);
         expect(find.byType(MonthCalendar), findsOneWidget);
@@ -408,7 +408,7 @@ void main() {
                 ),
               ),
             ];
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(Config.isMP ? PhotoCalendarPage : CalendarPage),
             findsOneWidget);
@@ -776,7 +776,7 @@ void main() {
     });
 
     testWidgets('Show full days activity', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(day1Finder, findsOneWidget);
       expect(day2Finder, findsOneWidget);
@@ -787,7 +787,7 @@ void main() {
 
     testWidgets('Show all full days activity list',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(showAllFullDayButtonFinder);
       await tester.pumpAndSettle();
@@ -799,7 +799,7 @@ void main() {
 
     testWidgets('Show info on full days activity from activity list',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(showAllFullDayButtonFinder);
       await tester.pumpAndSettle();
@@ -814,7 +814,7 @@ void main() {
 
     testWidgets('Can show edit from full day list',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(showAllFullDayButtonFinder);
       await tester.pumpAndSettle();
@@ -829,7 +829,7 @@ void main() {
 
     testWidgets('Can edit from full day list', (WidgetTester tester) async {
       const newTitle = 'A brand new title!';
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(showAllFullDayButtonFinder);
       await tester.pumpAndSettle();
@@ -847,7 +847,7 @@ void main() {
     testWidgets('Can edit from full day list shows on full day list',
         (WidgetTester tester) async {
       const newTitle = 'A brand new title!';
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(showAllFullDayButtonFinder);
       await tester.pumpAndSettle();
@@ -870,7 +870,7 @@ void main() {
 
     testWidgets('Can edit picture from full day list',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(showAllFullDayButtonFinder);
       await tester.pumpAndSettle();
@@ -885,7 +885,7 @@ void main() {
 
     testWidgets('Can show image archive from full day list',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(showAllFullDayButtonFinder);
       await tester.pumpAndSettle();
@@ -916,7 +916,7 @@ void main() {
       mockActivityDb.initWithActivities(activities);
     });
     testWidgets('Can navigate to week calendar', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
@@ -925,7 +925,7 @@ void main() {
 
     testWidgets('Activities are shown in week calendar',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
@@ -941,7 +941,7 @@ void main() {
 
     testWidgets('Tapping Week in TabBar returns to this week',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
@@ -959,7 +959,7 @@ void main() {
 
     testWidgets('SGC-1869 - Week calendar shows correct year',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
@@ -984,7 +984,7 @@ void main() {
 
     testWidgets('Tapping week in TabBar, current day is selected',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(nextDayButtonFinder);
       await tester.tap(nextDayButtonFinder);
@@ -1006,7 +1006,7 @@ void main() {
         (WidgetTester tester) async {
       final dayString =
           '${friday.day}\n${translate.shortWeekday(friday.weekday)}';
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       expect(find.byType(OneTimepillarCalendar), findsOneWidget);
@@ -1035,7 +1035,7 @@ void main() {
             AbiliaTimer(
                 id: 'id', startTime: initialTime, duration: 20.minutes()),
           ];
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
@@ -1045,7 +1045,7 @@ void main() {
 
     testWidgets('Clicking activity in week calendar navigates to activity view',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(OneTimepillarCalendar), findsOneWidget);
 
@@ -1065,7 +1065,7 @@ void main() {
 
     testWidgets('BUG SGC-833 expanded day updates in when returning to week',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
@@ -1140,7 +1140,7 @@ void main() {
             .copyWith(startTime: initialTime.add(const Duration(hours: 12))),
       ];
       mockActivityDb.initWithActivities(activities);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
@@ -1154,7 +1154,7 @@ void main() {
       final dayString =
           '${mondayPreviousWeek.day}\n${translate.shortWeekday(mondayPreviousWeek.weekday)}';
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
@@ -1183,7 +1183,7 @@ void main() {
         final dayString =
             '${sundayPreviousWeek.day}\n${translate.shortWeekday(sundayPreviousWeek.weekday)}';
 
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.week));
         await tester.pumpAndSettle();
@@ -1212,7 +1212,7 @@ void main() {
       FakeActivity.fullDay(initialTime.addDays(1), 'two'),
     ];
     mockActivityDb.initWithActivities(activities);
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.week));
     await tester.pumpAndSettle();
@@ -1234,7 +1234,7 @@ void main() {
     mockActivityDb.initWithActivities(activities);
 
     // Act - Go to FullDayListPage
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.week));
     await tester.pumpAndSettle();
@@ -1287,7 +1287,7 @@ void main() {
     mockActivityDb.initWithActivities(activities);
 
     // Act - Go to FullDayListPage
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.week));
     await tester.pumpAndSettle();

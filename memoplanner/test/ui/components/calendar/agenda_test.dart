@@ -133,13 +133,13 @@ void main() {
   });
 
   testWidgets('Application starts', (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(find.byType(CalendarPage), findsOneWidget);
   });
 
   testWidgets('Should show up empty', (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(find.byType(ActivityCard), findsNothing);
   });
@@ -148,7 +148,7 @@ void main() {
     activityDbInMemory
         .initWithActivity(FakeActivity.starts(now.add(1.hours())));
 
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(find.byType(ActivityCard), findsOneWidget);
   });
@@ -157,7 +157,7 @@ void main() {
       (WidgetTester tester) async {
     activityResponse = [FakeActivity.starts(now.add(1.hours()))];
 
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(find.byType(ActivityCard), findsOneWidget);
   });
@@ -167,14 +167,14 @@ void main() {
     licenseResponse = Fakes.licenseResponseExpires(now.subtract(5.days()));
     activityResponse = [FakeActivity.starts(now.add(1.hours()))];
 
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(find.byType(ActivityCard), findsNothing);
   });
 
   testWidgets('Empty agenda should not show Go to now-button',
       (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(find.byKey(TestKey.goToNowButton), findsNothing);
   });
@@ -183,7 +183,7 @@ void main() {
       (WidgetTester tester) async {
     activityDbInMemory.initWithActivity(FakeActivity.starts(now));
 
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(find.byKey(TestKey.goToNowButton), findsNothing);
   });
@@ -191,7 +191,7 @@ void main() {
   testWidgets('Agenda background is dark during night interval',
       (WidgetTester tester) async {
     timeTicker.add(now.add(const Duration(hours: 16)));
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     final background = tester
         .firstWidget(find.byKey(TestKey.calendarBackgroundColor)) as Container;
@@ -211,7 +211,7 @@ void main() {
       Activity.createNew(title: key, startTime: now),
     ]);
 
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(find.byKey(TestKey.goToNowButton), findsNothing);
     expect(find.text(key), findsOneWidget);
@@ -224,7 +224,7 @@ void main() {
     final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
     activityDbInMemory.initWithActivities([]);
 
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(appBarCrossOver(), false);
     await tester.tap(nextDayButtonFinder);
@@ -238,7 +238,7 @@ void main() {
 
   testWidgets('full day shows', (WidgetTester tester) async {
     activityDbInMemory.initWithActivity(firstFullDay);
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(find.text(firstFullDayTitle), findsOneWidget);
   });
@@ -272,7 +272,7 @@ void main() {
       ),
     ]);
 
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
 
     expect(find.text(pastTitle), findsNothing);
@@ -293,7 +293,7 @@ void main() {
   testWidgets('two full day shows, but no show all full days button',
       (WidgetTester tester) async {
     activityDbInMemory.initWithActivities([firstFullDay, secondFullDay]);
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
 
     expect(find.text(firstFullDayTitle), findsOneWidget);
@@ -306,7 +306,7 @@ void main() {
       (WidgetTester tester) async {
     activityDbInMemory
         .initWithActivities([firstFullDay, secondFullDay, thirdFullDay]);
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     final t1AgendaPos = tester.getCenter(find.text(firstFullDayTitle));
     final t2AgendaPos = tester.getCenter(find.text(secondFullDayTitle));
@@ -326,7 +326,7 @@ void main() {
       (WidgetTester tester) async {
     activityDbInMemory
         .initWithActivities([firstFullDay, secondFullDay, thirdFullDay]);
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
 
     expect(find.text(firstFullDayTitle), findsOneWidget);
@@ -343,7 +343,7 @@ void main() {
       thirdFullDay,
       forthFullDay,
     ]);
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
 
     expect(find.text(firstFullDayTitle), findsOneWidget);
@@ -368,7 +368,7 @@ void main() {
       (WidgetTester tester) async {
     activityDbInMemory.initWithActivities([firstFullDay]);
 
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     await tester.tap(find.text(firstFullDayTitle));
     await tester.pumpAndSettle();
@@ -386,7 +386,7 @@ void main() {
       forthFullDay,
     ]);
 
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     await tester.tap(find.byType(FullDayActivitiesButton));
     await tester.pumpAndSettle();
@@ -412,7 +412,7 @@ void main() {
       ),
     ]);
 
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(find.byType(ActivityCard), findsNothing);
 
@@ -444,7 +444,7 @@ void main() {
       ),
     ]);
 
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
 
     final leftFinder = find.text(leftTitle),
@@ -470,7 +470,7 @@ void main() {
           category: Category.right,
         )
       ]);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       final padding = tester
@@ -497,7 +497,7 @@ void main() {
           category: Category.left,
         )
       ]);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       final padding = tester
@@ -525,7 +525,7 @@ void main() {
       ),
     ]);
 
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(find.byType(ActivityCard), findsOneWidget);
     expect(activityCardCrossOver(), true);
@@ -543,7 +543,7 @@ void main() {
         signedOffDates: [now].map(whaleDateFormat),
       )
     ]);
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
 
     // Assert
@@ -557,7 +557,7 @@ void main() {
       duration: 1.hours(),
     );
     activityDbInMemory.initWithActivities([activity, firstFullDay]);
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
 
     await tester.verifyTts(find.text(activity.title), contains: activity.title);
@@ -575,7 +575,7 @@ void main() {
 
   testWidgets('tts no activities', (WidgetTester tester) async {
     activityDbInMemory.initWithActivities([]);
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
 
     await tester.verifyTts(find.text(translate.noActivities),
@@ -593,21 +593,21 @@ void main() {
         find.byIcon(AbiliaIcons.returnToPreviousPage);
 
     testWidgets('Exists', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(CategoryLeft), findsOneWidget);
       expect(find.byType(CategoryRight), findsOneWidget);
     });
 
     testWidgets('Starts expanded', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(leftFinder, findsOneWidget);
       expect(rightFinder, findsOneWidget);
     });
 
     testWidgets('Tap right', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(rightFinder);
       await tester.pumpAndSettle();
@@ -616,7 +616,7 @@ void main() {
     });
 
     testWidgets('Tap left', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(leftFinder);
       await tester.pumpAndSettle();
@@ -625,7 +625,7 @@ void main() {
     });
 
     testWidgets('tts', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.verifyTts(leftFinder, exact: translated.left);
       await tester.verifyTts(rightFinder, exact: translated.right);
@@ -645,7 +645,7 @@ void main() {
     });
 
     testWidgets('Tap left, change day', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(leftFinder);
       await tester.tap(previousDayButtonFinder);
@@ -655,7 +655,7 @@ void main() {
     });
 
     testWidgets('Tap right, change day', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(rightFinder);
       await tester.tap(nextDayButtonFinder);
@@ -683,7 +683,7 @@ void main() {
             )
           ];
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       expect(find.text(leftCategoryName), findsOneWidget);
@@ -703,7 +703,7 @@ void main() {
             ),
           ];
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       expect(find.byType(CategoryLeft), findsNothing);
@@ -779,7 +779,7 @@ void main() {
 
     testWidgets('memoplanner settings - show colors true',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       final rightBoxDecoration = tester
@@ -813,7 +813,7 @@ void main() {
             ),
           ];
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       expect(find.byType(CategoryImage), findsNothing);
@@ -836,7 +836,7 @@ void main() {
             ),
           ];
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       expect(find.byType(CategoryImage), findsOneWidget);
@@ -892,7 +892,7 @@ void main() {
         );
       }
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       expectCorrectColor(a1.title, leftCategoryActiveColor);
@@ -968,7 +968,7 @@ void main() {
         );
       }
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       expectCorrectColor(a1.title, noCategoryColor);
@@ -986,7 +986,7 @@ void main() {
         );
         timerResponse = () => [timer];
 
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(TimerCard), findsOneWidget);
         expect(find.text(timer.title), findsOneWidget);
@@ -1000,7 +1000,7 @@ void main() {
         );
         timerResponse = () => [timer];
 
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(TimerCard), findsOneWidget);
         expect(find.text(timer.title), findsOneWidget);
@@ -1020,7 +1020,7 @@ void main() {
             );
         timerResponse = () => [timerPast, timerOngoing];
 
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(TimerCard), findsNWidgets(2));
 
@@ -1050,7 +1050,7 @@ void main() {
         );
         timerResponse = () => [timer];
 
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(TimerCard), findsOneWidget);
         expect(find.text(timer.title), findsOneWidget);
@@ -1078,7 +1078,7 @@ void main() {
         );
         timerResponse = () => [timer];
 
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
 
         expect(
@@ -1115,7 +1115,7 @@ void main() {
         );
         timerResponse = () => [timer];
 
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
 
         for (var i = 1; i <= duration.inSeconds; i++) {
@@ -1141,7 +1141,7 @@ void main() {
 
         find.byIcon(AbiliaIcons.returnToPreviousPage);
 
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
 
         expect(find.byType(TimerCard), findsOneWidget);
@@ -1175,7 +1175,7 @@ void main() {
         ),
       ]);
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       expect(find.byType(ActivityCard), findsOneWidget);
@@ -1213,7 +1213,7 @@ void main() {
         ),
       ]);
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       expect(find.byType(ActivityCard), findsOneWidget);
@@ -1256,7 +1256,7 @@ void main() {
       ),
     ]);
 
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
 
     await tester.tap(find.byType(ActivityCard));
@@ -1304,7 +1304,7 @@ void main() {
       ),
     ]);
 
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
 
     final finder = find.byType(Opacity).first;

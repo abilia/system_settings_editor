@@ -94,14 +94,14 @@ void main() {
   });
 
   testWidgets('Shows', (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(find.byType(TwoTimepillarCalendar), findsOneWidget);
   });
 
   testWidgets('Go to now button shows for next day but not when going back',
       (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(find.byKey(TestKey.goToNowButton), findsNothing);
     await tester.tap(nextDayButtonFinder);
@@ -114,13 +114,13 @@ void main() {
 
   group('timepillar', () {
     testWidgets('timepillar shows', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(SliverTimePillar), findsNWidgets(2));
     });
 
     testWidgets('tts', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       final hour = DateFormat('h').format(time);
       await tester.verifyTts(find.text(hour).at(0), contains: hour);
@@ -131,7 +131,7 @@ void main() {
         tester.binding.platformDispatcher.clearAlwaysUse24HourTestValue,
       );
       tester.binding.platformDispatcher.alwaysUse24HourFormatTestValue = true;
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       final hour = DateFormat('H').format(time);
       await tester.verifyTts(find.text(hour), contains: hour);
@@ -140,7 +140,7 @@ void main() {
 
   group('timepillar dots', () {
     testWidgets('Current and future dots shows', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(PastDots), findsNothing);
       expect(find.byType(AnimatedDot), findsWidgets);
@@ -149,7 +149,7 @@ void main() {
     });
 
     testWidgets('Yesterday shows only past dots', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(previusDayButtonFinder);
       await tester.pumpAndSettle();
@@ -160,7 +160,7 @@ void main() {
     });
 
     testWidgets('Tomorrow shows only future dots', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(nextDayButtonFinder);
       await tester.pumpAndSettle();
@@ -171,7 +171,7 @@ void main() {
     });
 
     testWidgets('Only one current dot', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(
           tester
@@ -181,7 +181,7 @@ void main() {
     });
 
     testWidgets('Alwasy only one current dots', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       for (var i = 0; i < 20; i++) {
         mockTicker.add(time.add(i.minutes()));
@@ -197,7 +197,7 @@ void main() {
 
   group('Timeline', () {
     testWidgets('Exists', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsWidgets);
     });
@@ -212,7 +212,7 @@ void main() {
               ),
             ),
           ];
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsNothing);
     });
@@ -242,7 +242,7 @@ void main() {
     });
 
     testWidgets('Tomorrow does not show timeline', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(nextDayButtonFinder);
       await tester.pumpAndSettle();
@@ -250,7 +250,7 @@ void main() {
     });
 
     testWidgets('Yesterday does not show timline', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(previusDayButtonFinder);
       await tester.pumpAndSettle();
@@ -259,7 +259,7 @@ void main() {
 
     testWidgets('timeline is at same y pos as current-time-dot',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       final currentDot = tester
           .widgetList<AnimatedDot>(find.byType(AnimatedDot))
@@ -275,7 +275,7 @@ void main() {
     });
 
     testWidgets('hourTimeline hidden by default', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsNothing);
     });
@@ -291,7 +291,7 @@ void main() {
               ),
             ),
           ];
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsNWidgets(2));
     });
@@ -322,7 +322,7 @@ void main() {
         rightFinder = find.byType(CategoryRight);
 
     testWidgets('Categories Exists', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(leftFinder, findsOneWidget);
       expect(rightFinder, findsOneWidget);
@@ -339,7 +339,7 @@ void main() {
               ),
             ),
           ];
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(CategoryLeft), findsNothing);
       expect(find.byType(CategoryRight), findsNothing);
@@ -421,7 +421,7 @@ void main() {
             );
         mockActivityDb.initWithActivities([a1, a2, a3, a4]);
 
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
 
         expectCorrectColor(tester, a1.title, leftCategoryActiveColor);
@@ -466,7 +466,7 @@ void main() {
               ),
             ];
 
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
 
         expectCorrectColor(tester, a1.title, noCategoryColor);
@@ -495,7 +495,7 @@ void main() {
 
     testWidgets('Shows timers title', (WidgetTester tester) async {
       // Act
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(find.byType(TimerTimepillardCard), findsOneWidget);
@@ -508,7 +508,7 @@ void main() {
 
       await mockNetworkImages(() async {
         // Act
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         // Assert
         expect(find.byType(TimerTimepillardCard), findsOneWidget);
@@ -522,7 +522,7 @@ void main() {
       timerResponse = () => [t1, t2];
       await mockNetworkImages(() async {
         // Act
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         // Assert
         await tester.verifyTts(find.text(t1.title), contains: t1.title);
@@ -541,7 +541,7 @@ void main() {
       timerResponse = () => [nightTimer];
 
       // Act
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(find.byType(TimerTimepillardCard), findsOneWidget);
@@ -558,7 +558,7 @@ void main() {
       timerResponse = () => [nightTimer];
 
       // Act
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(find.byType(TimerTimepillardCard), findsOneWidget);
@@ -575,7 +575,7 @@ void main() {
       timerResponse = () => [nightTimer];
 
       // Act
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(find.byType(TimerTimepillardCard), findsOneWidget);
@@ -609,7 +609,7 @@ void main() {
 
     testWidgets('Shows activity', (WidgetTester tester) async {
       // Act
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(leftActivityFinder, findsOneWidget);
@@ -638,7 +638,7 @@ void main() {
         ),
       ]);
       // Act
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(leftActivityFinder, findsNWidgets(2));
@@ -648,7 +648,7 @@ void main() {
 
     testWidgets('tts', (WidgetTester tester) async {
       // Act
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       await tester.verifyTts(leftActivityFinder, contains: leftTitle);
@@ -658,7 +658,7 @@ void main() {
     testWidgets('tapping activity shows activity info',
         (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
       await tester.tap(leftActivityFinder);
@@ -672,7 +672,7 @@ void main() {
     testWidgets('changing activity shows in timepillar card',
         (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
       await tester.tap(rightActivityFinder);
@@ -699,7 +699,7 @@ void main() {
                       DayCalendarViewOptionsSettings.viewOptionsDotsKey),
             ),
           ];
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
       await tester.pumpAndSettle();
@@ -712,7 +712,7 @@ void main() {
       // Arrange
       mockActivityDb.initWithActivities(
           [Activity.createNew(title: 'title', startTime: time)]);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
       await tester.pumpAndSettle();
@@ -726,7 +726,7 @@ void main() {
         Activity.createNew(
             title: 'title', startTime: time.subtract(10.minutes()))
       ]);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
       await tester.pumpAndSettle();
@@ -744,7 +744,7 @@ void main() {
           duration: 8.hours(),
         )
       ]);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
       await tester.pumpAndSettle();
@@ -762,7 +762,7 @@ void main() {
             checkable: true,
             signedOffDates: [time].map(whaleDateFormat))
       ]);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(applyCrossOver(), true);
@@ -778,7 +778,7 @@ void main() {
           recurs: Recurs.everyDay,
         ),
       ]);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(find.text('title'), findsOneWidget);
@@ -795,7 +795,7 @@ void main() {
               ends: time.onlyDays()),
         ),
       ]);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(find.text('title'), findsOneWidget);
@@ -806,7 +806,7 @@ void main() {
     testWidgets('Only one timepillar at night', (WidgetTester tester) async {
       final night = DateTime(2022, 04, 26, 23, 30);
       mockTicker.add(night);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(TwoTimepillarCalendar), findsNothing);
       expect(find.byType(OneTimepillarCalendar), findsOneWidget);
@@ -815,7 +815,7 @@ void main() {
     testWidgets('Moving from day to night', (WidgetTester tester) async {
       final night = DateTime(2022, 04, 26, 22, 59);
       mockTicker.add(night);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(TwoTimepillarCalendar), findsOneWidget);
       mockTicker.add(night.add(1.minutes()));
@@ -829,7 +829,7 @@ void main() {
         (WidgetTester tester) async {
       final night = DateTime(2022, 04, 26, 23, 30);
       mockTicker.add(night);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(nextDayButtonFinder);
       await tester.pumpAndSettle();
@@ -851,7 +851,7 @@ void main() {
         )
       ]);
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.text(dayActivityTitle), findsNothing);
 
@@ -880,7 +880,7 @@ void main() {
         )
       ]);
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.text(previousDayTitle), findsNothing);
       expect(find.byType(TwoTimepillarCalendar), findsNothing);
@@ -906,7 +906,7 @@ void main() {
         )
       ]);
 
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.text(dayActivityTitle), findsNothing);
       expect(find.byType(TwoTimepillarCalendar), findsNothing);
@@ -937,7 +937,7 @@ void main() {
               ),
             ),
           ];
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       final oneTimepillars = find.ancestor(
@@ -967,7 +967,7 @@ void main() {
               ),
             ),
           ];
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       final oneTimepillars = find.ancestor(

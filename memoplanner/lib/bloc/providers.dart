@@ -337,14 +337,14 @@ class TopLevelProvider extends StatelessWidget {
             calendarDb: GetIt.I<CalendarDb>(),
           ),
         ),
-        RepositoryProvider<DeviceRepository>(
-          create: (context) => DeviceRepository(
-            baseUrlDb: GetIt.I<BaseUrlDb>(),
-            client: GetIt.I<ListenableClient>(),
-            deviceDb: GetIt.I<DeviceDb>(),
-          ),
-        ),
         if (Config.isMP) ...[
+          RepositoryProvider<DeviceRepository>(
+            create: (context) => DeviceRepository(
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              client: GetIt.I<ListenableClient>(),
+              deviceDb: GetIt.I<DeviceDb>(),
+            )..fetchDeviceLicense(),
+          ),
           RepositoryProvider<VoiceRepository>(
             create: (context) => VoiceRepository(
               client: GetIt.I<ListenableClient>(),
@@ -374,12 +374,6 @@ class TopLevelProvider extends StatelessWidget {
             lazy: false,
           ),
           BlocProvider(
-            create: (context) => StartupCubit(
-              deviceRepository: context.read<DeviceRepository>(),
-              connectivityChanged: context.read<ConnectivityCubit>().stream,
-            ),
-          ),
-          BlocProvider(
             create: (context) => BaseUrlCubit(
               baseUrlDb: GetIt.I<BaseUrlDb>(),
             ),
@@ -396,7 +390,13 @@ class TopLevelProvider extends StatelessWidget {
               acapelaTts: GetIt.I<TtsInterface>(),
             ),
           ),
-          if (Config.isMP)
+          if (Config.isMP) ...[
+            BlocProvider(
+              create: (context) => StartupCubit(
+                deviceRepository: context.read<DeviceRepository>(),
+                connectivityChanged: context.read<ConnectivityCubit>().stream,
+              ),
+            ),
             BlocProvider<VoicesCubit>(
               create: (context) => VoicesCubit(
                 languageCode: GetIt.I<SettingsDb>().language,
@@ -406,6 +406,7 @@ class TopLevelProvider extends StatelessWidget {
               )..initialize(),
               lazy: false,
             ),
+          ],
         ],
         child: child,
       ),

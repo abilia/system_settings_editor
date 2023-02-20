@@ -98,7 +98,7 @@ void main() {
   });
 
   testWidgets('Shows when selected', (WidgetTester tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(find.byType(TimepillarCalendar), findsOneWidget);
   });
@@ -111,7 +111,7 @@ void main() {
       fullDay: true,
     );
     mockActivityDb.initWithActivity(activity);
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(find.byType(FullDayContainer), findsOneWidget);
     await tester.verifyTts(find.text(activity.title), contains: activity.title);
@@ -119,7 +119,7 @@ void main() {
 
   group('timepillar', () {
     testWidgets('timepillar shows', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(SliverTimePillar), findsOneWidget);
     });
@@ -136,7 +136,7 @@ void main() {
         tester.binding.platformDispatcher.clearAlwaysUse24HourTestValue,
       );
       tester.binding.platformDispatcher.alwaysUse24HourFormatTestValue = true;
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       final hour = DateFormat('H').format(time);
       await tester.verifyTts(find.text(hour), contains: hour);
@@ -144,7 +144,7 @@ void main() {
 
     testWidgets('Shows timepillar when scrolled in x',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       await tester.flingFrom(const Offset(200, 200), const Offset(200, 0), 200);
@@ -153,7 +153,7 @@ void main() {
     });
     testWidgets('Shows timepillar when scrolled in y',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
@@ -163,7 +163,7 @@ void main() {
 
     testWidgets('Shows go to now button when scrolling',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
       await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
@@ -175,7 +175,7 @@ void main() {
         (WidgetTester tester) async {
       final screenWidth = tester.binding.window.physicalSize.width /
           tester.binding.window.devicePixelRatio;
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
       await tester.pumpAndSettle();
@@ -189,7 +189,7 @@ void main() {
 
     testWidgets('SGC-967 go to now button works more than once',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
       await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
@@ -211,7 +211,7 @@ void main() {
         startTime: time,
         fullDay: true,
       ));
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsNothing);
     });
@@ -219,14 +219,14 @@ void main() {
 
   group('timepillar dots', () {
     testWidgets('Current dots shows', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(PastDots), findsNothing);
       expect(find.byType(AnimatedDot), findsWidgets);
       expect(find.byType(FutureDots), findsNothing);
     });
     testWidgets('Yesterday shows only past dots', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(previousDayButtonFinder);
       await tester.pumpAndSettle();
@@ -236,7 +236,7 @@ void main() {
       expect(find.byType(FutureDots), findsNothing);
     });
     testWidgets('Tomorrow shows only future dots', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(nextDayButtonFinder);
       await tester.pumpAndSettle();
@@ -247,7 +247,7 @@ void main() {
     });
 
     testWidgets('Only one current dot', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(
           tester
@@ -257,7 +257,7 @@ void main() {
     });
 
     testWidgets('Alwasy only one current dots', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       for (var i = 0; i < 20; i++) {
         mockTicker.add(time.add(i.minutes()));
@@ -273,7 +273,7 @@ void main() {
 
   group('Timeline', () {
     testWidgets('Exists', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsWidgets);
     });
@@ -288,7 +288,7 @@ void main() {
               ),
             ),
           ];
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsNothing);
     });
@@ -318,7 +318,7 @@ void main() {
     });
 
     testWidgets('Tomorrow does not show timeline', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(nextDayButtonFinder);
       await tester.pumpAndSettle();
@@ -326,7 +326,7 @@ void main() {
     });
 
     testWidgets('Yesterday does not show timline', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(previousDayButtonFinder);
       await tester.pumpAndSettle();
@@ -335,7 +335,7 @@ void main() {
 
     testWidgets('timeline is at same y pos as current-time-dot',
         (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       final currentDot = tester
           .widgetList<AnimatedDot>(find.byType(AnimatedDot))
@@ -351,7 +351,7 @@ void main() {
     });
 
     testWidgets('hourTimeline hidden by default', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsNothing);
     });
@@ -367,7 +367,7 @@ void main() {
               ),
             ),
           ];
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsOneWidget);
     });
@@ -429,7 +429,7 @@ void main() {
         final testTime = time.copyWith(hour: 14, minute: 0);
 
         // Act
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         mockTicker.add(testTime);
         await tester.pumpAndSettle();
@@ -453,7 +453,7 @@ void main() {
         rightFinder = find.byType(CategoryRight);
 
     testWidgets('Categories Exists', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(leftFinder, findsOneWidget);
       expect(rightFinder, findsOneWidget);
@@ -470,7 +470,7 @@ void main() {
               ),
             ),
           ];
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(CategoryLeft), findsNothing);
       expect(find.byType(CategoryRight), findsNothing);
@@ -543,7 +543,7 @@ void main() {
           );
         }
 
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
 
         expectCorrectColor(a1.title, leftCategoryActiveColor);
@@ -600,7 +600,7 @@ void main() {
           );
         }
 
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
 
         expectCorrectColor(a1.title, noCategoryColor);
@@ -638,7 +638,7 @@ void main() {
 
     testWidgets('Shows activity', (WidgetTester tester) async {
       // Act
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(leftActivityFinder, findsOneWidget);
@@ -660,7 +660,7 @@ void main() {
           ];
 
       // Act
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(leftActivityFinder, findsOneWidget);
@@ -670,7 +670,7 @@ void main() {
 
     testWidgets('tts', (WidgetTester tester) async {
       // Act
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       await tester.verifyTts(leftActivityFinder, contains: leftTitle);
@@ -680,7 +680,7 @@ void main() {
     testWidgets('Activities is right or left of timeline',
         (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
       // Act
@@ -696,7 +696,7 @@ void main() {
     testWidgets('tapping activity shows activity info',
         (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
       await tester.tap(leftActivityFinder);
@@ -710,7 +710,7 @@ void main() {
     testWidgets('changing activity shows in timepillar card',
         (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
       await tester.tap(rightActivityFinder);
@@ -737,7 +737,7 @@ void main() {
                       DayCalendarViewOptionsSettings.viewOptionsDotsKey),
             ),
           ];
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(find.byType(SideTime), findsNWidgets(2));
@@ -748,7 +748,7 @@ void main() {
       // Arrange
       mockActivityDb.initWithActivities(
           [Activity.createNew(title: 'title', startTime: time)]);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(applyCrossOver(), false);
@@ -760,7 +760,7 @@ void main() {
         Activity.createNew(
             title: 'title', startTime: time.subtract(10.minutes()))
       ]);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(applyCrossOver(), true);
@@ -776,7 +776,7 @@ void main() {
           duration: 8.hours(),
         )
       ]);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(applyCrossOver(), true);
@@ -792,7 +792,7 @@ void main() {
           duration: 1.hours(),
         )
       ]);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(applyCrossOver(), true);
@@ -809,7 +809,7 @@ void main() {
           startTime: time.subtract(2.hours()),
         )
       ]);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(applyCrossOver(), true);
@@ -825,7 +825,7 @@ void main() {
             checkable: true,
             signedOffDates: [time].map(whaleDateFormat))
       ]);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
       expect(applyCrossOver(), true);
@@ -858,7 +858,7 @@ void main() {
       testWidgets('Shows timers right of timeline',
           (WidgetTester tester) async {
         // Act
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         final timelineXPostion =
             tester.getCenter(find.byType(Timeline).first).dx;
@@ -871,7 +871,7 @@ void main() {
 
       testWidgets('tts', (WidgetTester tester) async {
         // Act
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         // Assert
         await tester.verifyTts(timerFinder(t1), contains: t1.title);
@@ -880,7 +880,7 @@ void main() {
       testWidgets('tapping timer shows timer info',
           (WidgetTester tester) async {
         // Arrange
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         // Act
         await tester.tap(timerFinder(t1));
@@ -894,7 +894,7 @@ void main() {
       testWidgets('deleting timer does not shows in timepillar ',
           (WidgetTester tester) async {
         // Arrange
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         // Act
         await tester.tap(timerFinder(t1));
@@ -914,7 +914,7 @@ void main() {
         await mockNetworkImages(() async {
           // Arrange
           timerResponse = () => [currentTimerWithImage];
-          await tester.pumpWidget(App());
+          await tester.pumpWidget(const App());
           await tester.pumpAndSettle();
           // Assert
           expect(find.byType(EventImage), findsWidgets);
@@ -927,7 +927,7 @@ void main() {
         await mockNetworkImages(() async {
           // Arrange
           timerResponse = () => [pastTimerWithImage];
-          await tester.pumpWidget(App());
+          await tester.pumpWidget(const App());
           await tester.pumpAndSettle();
           // Assert
           expect(find.byType(EventImage), findsWidgets);
@@ -946,7 +946,7 @@ void main() {
           duration: 2.hours(),
         );
         timerResponse = () => [pastTimerLongTitle];
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         // Assert
 
@@ -978,7 +978,7 @@ void main() {
             startTime: time.copyWith(hour: 8, minute: 0),
           )
         ]);
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(ActivityTimepillarCard), findsNothing);
       });
@@ -991,7 +991,7 @@ void main() {
             startTime: time,
           )
         ]);
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(ActivityTimepillarCard), findsOneWidget);
       });
@@ -1009,7 +1009,7 @@ void main() {
 
         mockTicker.add(
             activityTime); // Shows night interval. Activity should be visible here.
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(ActivityTimepillarCard), findsOneWidget);
 
@@ -1036,7 +1036,7 @@ void main() {
         ]);
 
         mockTicker.add(DateTime(2020, 12, 01, 01, 01));
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(ActivityTimepillarCard), findsNothing);
 
@@ -1073,7 +1073,7 @@ void main() {
         ]);
 
         mockTicker.add(startTime);
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(ActivityTimepillarCard), findsNWidgets(1));
 
@@ -1104,7 +1104,7 @@ void main() {
             ];
 
         mockTicker.add(DateTime(2020, 12, 01, 01, 01));
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(ActivityTimepillarCard), findsOneWidget);
       });
@@ -1133,7 +1133,7 @@ void main() {
             ];
 
         mockTicker.add(DateTime(2020, 12, 01, 01, 00));
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(ActivityTimepillarCard), findsNothing);
 
@@ -1157,7 +1157,7 @@ void main() {
                 duration: 10.minutes(),
               )
             ];
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(TimerTimepillardCard), findsNothing);
       });
@@ -1171,7 +1171,7 @@ void main() {
                 duration: 10.minutes(),
               )
             ];
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(TimerTimepillardCard), findsOneWidget);
       });
@@ -1188,7 +1188,7 @@ void main() {
 
         // Shows night interval. Activity should be visible here.
         mockTicker.add(timerTime);
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(TimerTimepillardCard), findsOneWidget);
 
@@ -1230,7 +1230,7 @@ void main() {
             ];
 
         mockTicker.add(DateTime(2020, 12, 01, 01, 01));
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(TimerTimepillardCard), findsOneWidget);
       });
@@ -1259,7 +1259,7 @@ void main() {
             ];
 
         mockTicker.add(DateTime(2020, 12, 01, 01, 00));
-        await tester.pumpWidget(App());
+        await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(TimerTimepillardCard), findsNothing);
 
@@ -1285,7 +1285,7 @@ void main() {
         )
       ]);
       mockTicker.add(DateTime(2022, 04, 26, 23, 30));
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.text(nightActivityTitle), findsOneWidget);
     });
@@ -1305,7 +1305,7 @@ void main() {
         )
       ]);
       mockTicker.add(DateTime(2022, 04, 26, 23, 30));
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.text(nightActivityTitle), findsOneWidget);
       expect(find.text(eveningTitle), findsNothing);
@@ -1325,7 +1325,7 @@ void main() {
         ),
       ]);
       mockTicker.add(DateTime(2022, 04, 26, 23, 30));
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.text(dayActivity), findsNothing);
 
@@ -1336,7 +1336,7 @@ void main() {
 
     testWidgets('Night view: background is dark', (WidgetTester tester) async {
       mockTicker.add(DateTime(2022, 04, 27, 00, 30));
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       final background =
           tester.firstWidget(find.byKey(TestKey.calendarBackgroundColor))
@@ -1347,7 +1347,7 @@ void main() {
     testWidgets('SGC-1632 Night view: Header should be dark',
         (WidgetTester tester) async {
       mockTicker.add(DateTime(2022, 04, 27, 00, 30));
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       final appBar =
           tester.firstWidget(find.byType(CalendarAppBar)) as CalendarAppBar;
@@ -1358,7 +1358,7 @@ void main() {
         'SGC-1633 Night view: Wrong day in header when navigating to rest of day',
         (WidgetTester tester) async {
       mockTicker.add(DateTime(2022, 04, 27, 00, 30));
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.text('night'), findsOneWidget);
       await tester.tap(nextDayButtonFinder);
@@ -1370,7 +1370,7 @@ void main() {
         'SGC-2014 GoToNowButton should always go to the night calendar if it is night',
         (WidgetTester tester) async {
       mockTicker.add(DateTime(2022, 04, 26, 23, 30));
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(previousDayButtonFinder);
       await tester.pumpAndSettle();
@@ -1427,7 +1427,7 @@ void main() {
       ]);
       final currentTime = DateTime(2022, 04, 26, 23, 30);
       mockTicker.add(currentTime);
-      await tester.pumpWidget(App());
+      await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.text(dayActivity), findsNothing);
       expect(find.text(nightActivity), findsOneWidget);

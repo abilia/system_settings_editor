@@ -19,6 +19,8 @@ void main() {
     setUp(() async {
       deviceDb = MockDeviceDb();
       when(() => deviceDb.startGuideCompleted).thenReturn(false);
+      when(() => deviceDb.getClientId())
+          .thenAnswer((invocation) async => 'clientUUID');
 
       mockConnectivity = MockConnectivity();
       when(() => mockConnectivity.onConnectivityChanged)
