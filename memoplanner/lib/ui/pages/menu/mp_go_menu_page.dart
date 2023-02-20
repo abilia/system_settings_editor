@@ -41,7 +41,12 @@ class MpGoMenuPage extends StatelessWidget {
             text: t.logout,
             navigateTo: const LogoutPage(),
           ),
-          if (Config.dev) const FakeTicker(),
+          if (Config.dev)
+            const MenuItemPickField(
+              icon: AbiliaIcons.commands,
+              text: 'Feature toggles',
+              navigateTo: FeatureTogglesPage(),
+            ),
         ],
       ),
     );

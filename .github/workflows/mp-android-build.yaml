@@ -78,8 +78,8 @@ jobs:
           --dart-define flavor=${{ matrix.flavor }}
 
       env:
-        APPCENTER_KEYSTORE_PASSWORD: ${{ secrets.APPCENTER_KEYSTORE_PASSWORD }}
-        APPCENTER_KEY_PASSWORD: ${{ secrets.APPCENTER_KEY_PASSWORD }}
+        KEYSTORE_PASSWORD: ${{ secrets.APPCENTER_KEYSTORE_PASSWORD }}
+        KEY_PASSWORD: ${{ secrets.APPCENTER_KEY_PASSWORD }}
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
