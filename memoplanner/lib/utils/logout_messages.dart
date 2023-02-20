@@ -6,6 +6,8 @@ extension LogoutMessage on LoggedOutReason {
     switch (this) {
       case LoggedOutReason.licenseExpired:
         return translate.licenseExpired;
+      case LoggedOutReason.unauthorized:
+        return translate.unauthorizedHeader;
       default:
         return translate.error;
     }
@@ -17,6 +19,8 @@ extension LogoutMessage on LoggedOutReason {
         return translate.licenseExpiredMessage;
       case LoggedOutReason.noLicense:
         return translate.noLicense;
+      case LoggedOutReason.unauthorized:
+        return translate.unauthorizedMessage;
       default:
         return '';
     }

@@ -27,19 +27,19 @@ class TimerCubit extends Cubit<TimerState> {
   ) async {
     await timerDb.insert(timer);
     emit(TimerState(timers: [...state.timers, timer]));
-    analytics.trackEvent('Timer started', properties: {
-      'fromTemplate': metaData.fromTemplate,
-      'duration': timer.duration.inMinutes,
-      'image': timer.hasImage,
-      'titleChanged': metaData.titleChanged,
-      'timerSetType': metaData.timerSetType.name,
+    analytics.trackEvent(AnalyticsEvents.timerStarted, properties: {
+      'From Template': metaData.fromTemplate,
+      'Duration': timer.duration.inMinutes,
+      'Image': timer.hasImage,
+      'Title Changed': metaData.titleChanged,
+      'Set Type': metaData.timerSetType.name,
     });
   }
 
   Future<void> deleteTimer(AbiliaTimer timer) async {
     final result = await timerDb.delete(timer);
     if (result > 0) {
-      analytics.trackEvent('Timer deleted');
+      analytics.trackEvent(AnalyticsEvents.timerDeleted);
       emit(TimerState(timers: List.of(state.timers)..remove(timer)));
     }
   }
