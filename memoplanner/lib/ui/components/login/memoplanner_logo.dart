@@ -29,7 +29,7 @@ class MEMOplannerLogoHiddenBackendSwitch extends StatelessWidget {
             ),
             child: MEMOplannerLogo(height: height),
           );
-    if (backend == prodName) return widget;
+    if (backend == prodName || loading) return widget;
 
     return Banner(
       message: backend,
