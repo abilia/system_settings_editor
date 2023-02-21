@@ -58,12 +58,12 @@ If any problems are found in the release candidate that need to be fixed, they a
 
 #### After regression test
 
-When the release candidate is approved, promote the **Beta** track on Google Play to the latest release candidate. [:calendar:](https://play.google.com/console/u/0/developers/8640289046801512570/app/4973610386809775563/tracks/4699652622759840581)
+When the release candidate is approved, promote the latest release candidate in **Alpha** track to the **Beta** track on Google Play. [:calendar:](https://play.google.com/console/u/0/developers/8640289046801512570/app/4973610386809775563/tracks/4699652622759840581)
 If iOS is affected, also upload the release candidate to App Store for review.
 
 ### Releasing the app
 
-- Release each release candidate on Google Play to the **Production** track.
+- Release the approved release candidate on Google Play to the **Production** track by promoting the release candidate in the **Beta** track.
 - If iOS is affected, release the candidate on App Store.
 - If there are any stories tagged with **Policy change**, update the production policy using [AMAPI](https://github.com/abilia/amapi).
 
@@ -73,4 +73,4 @@ Once a release is created the last commit is tagged with the version number.
 
 ## Fixing a bug in release
 
-A fix in release is is the same as fixing a bug in release candidate, with the exception of that the patch version is increased. Only fixes in released version will increase the patch version.
+A fix in release is the same as fixing a bug in a release candidate, with the exception of that the patch version is increased. Only fixes in released version will increase the patch version.
