@@ -50,7 +50,7 @@ The **master** branch is merged to the **release** branch.
 
 Then a manual build is triggered from [GitHub actions](https://github.com/abilia/seagull/actions/workflows/mp-android-build.yaml).
 
-Each release candidate is released on Google Play on for closed testing on **Alpha** track [:calendar:](https://play.google.com/console/u/0/developers/8640289046801512570/app/4973610386809775563/tracks/4698231159357572066)
+Each release candidate is released on Google Play for closed testing on **Alpha** track [:calendar:](https://play.google.com/console/u/0/developers/8640289046801512570/app/4973610386809775563/tracks/4698231159357572066)
 
 #### Fixes in release candidate
 
