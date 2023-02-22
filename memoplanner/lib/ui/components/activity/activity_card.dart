@@ -35,7 +35,7 @@ class ActivityCard extends StatelessWidget {
     );
     final themeData = abiliaTheme.copyWith(
       iconTheme: abiliaTheme.iconTheme.copyWith(
-        color: inactive ? AbiliaColors.white140 : null,
+        color: inactive ? AbiliaColors.white140 : AbiliaColors.black75,
       ),
     );
 
