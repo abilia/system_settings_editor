@@ -1,10 +1,9 @@
 class ToolbarLayout {
-  final double height, horizontalPadding, bottomPadding;
+  final double height, horizontalPadding;
 
   const ToolbarLayout({
     this.height = 64,
     this.horizontalPadding = 16,
-    this.bottomPadding = 0,
   });
 }
 

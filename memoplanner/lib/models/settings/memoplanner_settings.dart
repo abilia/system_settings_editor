@@ -28,9 +28,6 @@ class MemoplannerSettings extends Equatable {
   final DayCalendarSettings dayCalendar;
   final PhotoMenuSettings photoMenu;
 
-  bool get settingsInaccessible =>
-      !functions.display.menu || !menu.showSettings;
-
   const MemoplannerSettings({
     this.alarm = const AlarmSettings(),
     this.codeProtect = const CodeProtectSettings(),

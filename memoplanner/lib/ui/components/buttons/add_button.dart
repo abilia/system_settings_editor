@@ -10,12 +10,12 @@ typedef OnAddButtonPressed = Future Function(
   bool showTimers,
 });
 
-enum _AddButtonConfiguration {
+enum _ButtonType {
   none,
-  mpGo,
-  onlyNewActivity,
-  onlyNewTimer,
-  newActivityAndNewTimer,
+  mpgo,
+  activity,
+  timer,
+  activityAndTimer,
 }
 
 class AddButton extends StatelessWidget
@@ -25,54 +25,40 @@ class AddButton extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     final hasMP4Session = context.read<SessionsCubit>().state.hasMP4Session;
-    final configuration = context.select((MemoplannerSettingsBloc bloc) =>
-        _configuration(bloc.state.functions.display, hasMP4Session));
-    switch (configuration) {
-      case _AddButtonConfiguration.none:
+    final buttonType = context.select((MemoplannerSettingsBloc bloc) =>
+        _buttonType(bloc.state.functions.display, hasMP4Session));
+    switch (buttonType) {
+      case _ButtonType.none:
         return SizedBox(width: layout.actionButton.size);
-      case _AddButtonConfiguration.mpGo:
+      case _ButtonType.mpgo:
         return _AddButtonMPGO(_onAddButtonPressed);
-      case _AddButtonConfiguration.onlyNewActivity:
+      case _ButtonType.activity:
         return _AddActivityButton(_onAddButtonPressed);
-      case _AddButtonConfiguration.onlyNewTimer:
+      case _ButtonType.timer:
         return _AddTimerButton(_onAddButtonPressed);
-      case _AddButtonConfiguration.newActivityAndNewTimer:
+      case _ButtonType.activityAndTimer:
         return _AddActivityOrTimerButtons(_onAddButtonPressed);
     }
   }
 
-  static double width({
-    required DisplaySettings displaySettings,
-    required bool hasMP4Session,
-  }) {
-    switch (_configuration(displaySettings, hasMP4Session)) {
-      case _AddButtonConfiguration.none:
-      case _AddButtonConfiguration.mpGo:
-      case _AddButtonConfiguration.onlyNewActivity:
-      case _AddButtonConfiguration.onlyNewTimer:
-        return layout.actionButton.size;
-      case _AddButtonConfiguration.newActivityAndNewTimer:
-        return _AddActivityOrTimerButtons.width;
-    }
-  }
-
-  static _AddButtonConfiguration _configuration(
+  static _ButtonType _buttonType(
     DisplaySettings settings,
-    bool showTimers, // no timers for mp3 users
+    bool hasMP4Session, // no timers for mp3 users
   ) {
+    final newTimer = settings.newTimer;
+    final newActivity = settings.newActivity;
     if (Config.isMPGO) {
-      final timer = showTimers && settings.newTimer;
-      return settings.newActivity || timer
-          ? _AddButtonConfiguration.mpGo
-          : _AddButtonConfiguration.none;
+      final displayNewTimer = hasMP4Session && newTimer;
+      final useGoButton = newActivity || displayNewTimer;
+      return useGoButton ? _ButtonType.mpgo : _ButtonType.none;
     }
-    return settings.newActivity && settings.newTimer
-        ? _AddButtonConfiguration.newActivityAndNewTimer
-        : settings.newActivity
-            ? _AddButtonConfiguration.onlyNewActivity
-            : settings.newTimer
-                ? _AddButtonConfiguration.onlyNewTimer
-                : _AddButtonConfiguration.none;
+    return newActivity && newTimer
+        ? _ButtonType.activityAndTimer
+        : newActivity
+            ? _ButtonType.activity
+            : newTimer
+                ? _ButtonType.timer
+                : _ButtonType.none;
   }
 
   Future _onAddButtonPressed(
@@ -201,8 +187,6 @@ class _AddActivityOrTimerButtons extends StatelessWidget {
   const _AddActivityOrTimerButtons(this.onAddButtonPressed, {Key? key})
       : super(key: key);
 
-  static final width = layout.actionButton.size * 2 + layout.tabBar.item.border;
-
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
@@ -215,6 +199,7 @@ class _AddActivityOrTimerButtons extends StatelessWidget {
         ),
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           _AddTab(
             key: TestKey.addActivityButton,
