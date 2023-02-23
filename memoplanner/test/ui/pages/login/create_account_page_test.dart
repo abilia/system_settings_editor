@@ -11,6 +11,9 @@ import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/tap_link.dart';
 
 void main() {
+  setUpAll(() {
+    WebViewPlatform.instance = FakeWebViewPlatform();
+  });
   group(
     'create account',
     () {
@@ -152,7 +155,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.byType(WebViewDialog), findsOneWidget);
         final openedUrl =
-            tester.widget<WebView>(find.byType(WebView)).initialUrl;
+            tester.widget<WebViewDialog>(find.byType(WebViewDialog)).url;
         expect(
             openedUrl, AcceptTermsSwitch.abiliaUrl + translate.termsOfUseUrl);
       });
@@ -165,7 +168,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.byType(WebViewDialog), findsOneWidget);
         final openedUrl =
-            tester.widget<WebView>(find.byType(WebView)).initialUrl;
+            tester.widget<WebViewDialog>(find.byType(WebViewDialog)).url;
         expect(openedUrl,
             AcceptTermsSwitch.abiliaUrl + translate.privacyPolicyUrl);
       });

@@ -9,3 +9,4 @@ export 'fake_battery.dart';
 export 'fake_client.dart';
 export 'fake_activities.dart';
 export 'fake_user_files.dart';
+export 'fake_webview.dart';

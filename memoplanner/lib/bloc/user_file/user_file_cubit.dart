@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-import 'package:crypto/crypto.dart';
-
-import 'package:equatable/equatable.dart';
 import 'package:collection/collection.dart';
+import 'package:crypto/crypto.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mime/mime.dart';
-
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
@@ -82,7 +80,7 @@ class UserFileCubit extends Cubit<UserFileState> {
   Future<List<int>> _adjustImageAndStoreThumb(
       UnstoredAbiliaFile unstoredAbiliaFile) async {
     final originalBytes = await unstoredAbiliaFile.file.readAsBytes();
-    final imageResult = await compute<List<int>, ImageResponse>(
+    final imageResult = await compute<Uint8List, ImageResponse>(
       adjustRotationAndCreateThumbs,
       originalBytes,
     );

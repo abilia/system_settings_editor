@@ -80,7 +80,8 @@ void main() {
     // Arrange
     final file = MemoryFileSystem().file(filePath);
     await file.writeAsBytes(fileContent);
-    final processedFile1 = await adjustImageSizeAndRotation(fileContent);
+    final processedFiles = await adjustRotationAndCreateThumbs(fileContent);
+    final processedFile1 = processedFiles.originalImage;
 
     final addedFile = UserFile(
       id: fileId,
@@ -147,7 +148,8 @@ void main() {
     // Arrange
     final file = MemoryFileSystem().file(filePath);
     await file.writeAsBytes(fileContent);
-    final processedFile1 = await adjustImageSizeAndRotation(fileContent);
+    final processedFiles = await adjustRotationAndCreateThumbs(fileContent);
+    final processedFile1 = processedFiles.originalImage;
 
     when(() => mockUserFileRepository.getAllLoadedFiles())
         .thenAnswer((_) => Future.value([]));
@@ -209,7 +211,8 @@ void main() {
     const filePath1 = 'test';
     final file = MemoryFileSystem().file(filePath1);
     await file.writeAsBytes(fileContent);
-    final processedFile1 = await adjustImageSizeAndRotation(fileContent);
+    final processedFiles = await adjustRotationAndCreateThumbs(fileContent);
+    final processedFile1 = processedFiles.originalImage;
 
     const fileId2 = 'fileId1';
     const filePath2 = 'test.dart';

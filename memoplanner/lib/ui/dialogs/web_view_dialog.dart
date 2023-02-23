@@ -3,9 +3,12 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class WebViewDialog extends StatelessWidget {
-  final String? url;
+  final String url;
 
-  const WebViewDialog({Key? key, this.url}) : super(key: key);
+  const WebViewDialog({
+    required this.url,
+    Key? key,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ViewDialog(
@@ -13,7 +16,9 @@ class WebViewDialog extends StatelessWidget {
         text: Translator.of(context).translate.browser,
         iconData: AbiliaIcons.selectLanguage,
       ),
-      body: WebView(initialUrl: url),
+      body: WebViewWidget(
+        controller: WebViewController()..loadRequest(Uri.parse(url)),
+      ),
       expanded: true,
       bodyPadding: EdgeInsets.zero,
       backNavigationWidget: OkButton(onPressed: Navigator.of(context).maybePop),

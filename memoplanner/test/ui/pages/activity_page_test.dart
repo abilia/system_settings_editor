@@ -12,6 +12,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
@@ -56,6 +57,9 @@ void main() {
   ActivityResponse activityResponse = () => [];
 
   final activityInfoSideDotsFinder = find.byType(ActivityInfoSideDots);
+  setUpAll(() {
+    WebViewPlatform.instance = FakeWebViewPlatform();
+  });
 
   setUp(() async {
     setupPermissions();
