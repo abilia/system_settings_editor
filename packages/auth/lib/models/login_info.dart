@@ -1,8 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:utils/utils.dart';
 
-@immutable
 class LoginInfo extends Equatable {
   final String token;
   final int endDate;
