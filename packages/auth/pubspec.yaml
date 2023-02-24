@@ -4,9 +4,12 @@ environment:
   sdk: '>=2.19.2 <3.0.0'
 
 dependencies:
+  database:
+    path: ../database
   equatable: ^2.0.3
   repo_base:
     path: ../repo_base
+  sqflite: ^2.2.0
   utils:
     path: ../utils
 
