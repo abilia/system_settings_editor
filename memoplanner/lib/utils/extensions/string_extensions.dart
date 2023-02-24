@@ -48,9 +48,6 @@ extension Replace on String {
       isNotEmpty ? '${this[0].toUpperCase()}${substring(1)}' : this;
 }
 
-extension NullOnEmpty on String {
-  String? nullOnEmpty() => isNotEmpty ? this : null;
-}
 
 class TextRenderingSize {
   final TextPainter textPainter;
