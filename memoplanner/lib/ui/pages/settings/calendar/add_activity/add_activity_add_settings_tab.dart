@@ -52,6 +52,9 @@ class _EditActivitySettingsWidget extends StatelessWidget {
     final t = Translator.of(context).translate;
     final editActivitySettings = context
         .select((AddActivitySettingsCubit cubit) => cubit.state.editActivity);
+    final showAvailableFor = context
+        .select((SupportPersonsCubit cubit) => cubit.state.showAvailableFor);
+
     return Column(
       children: [
         SwitchField(
@@ -135,15 +138,16 @@ class _EditActivitySettingsWidget extends StatelessWidget {
               .editSettings(editActivitySettings.copyWith(removeAfter: v)),
           child: Text(t.deleteAfter),
         ),
-        SwitchField(
-          key: TestKey.addActivitySelectAvailableForSwitch,
-          leading: const Icon(AbiliaIcons.passwordProtection),
-          value: editActivitySettings.availability,
-          onChanged: (v) => context
-              .read<AddActivitySettingsCubit>()
-              .editSettings(editActivitySettings.copyWith(availability: v)),
-          child: Text(t.selectAvailableFor),
-        ),
+        if (showAvailableFor)
+          SwitchField(
+            key: TestKey.addActivitySelectAvailableForSwitch,
+            leading: const Icon(AbiliaIcons.passwordProtection),
+            value: editActivitySettings.availability,
+            onChanged: (v) => context
+                .read<AddActivitySettingsCubit>()
+                .editSettings(editActivitySettings.copyWith(availability: v)),
+            child: Text(t.selectAvailableFor),
+          ),
         SwitchField(
           key: TestKey.addActivitySelectAlarmSwitch,
           leading: const Icon(AbiliaIcons.handiAlarm),
@@ -207,6 +211,8 @@ class _StepByStepSettingsWidget extends StatelessWidget {
     final t = Translator.of(context).translate;
     final settings = context
         .select((AddActivitySettingsCubit cubit) => cubit.state.stepByStep);
+    final showAvailableFor = context
+        .select((SupportPersonsCubit cubit) => cubit.state.showAvailableFor);
 
     return Column(
       children: [
@@ -291,15 +297,16 @@ class _StepByStepSettingsWidget extends StatelessWidget {
               .stepByStepSetting(settings.copyWith(selectDeleteAfter: v)),
           child: Text(t.deleteAfter),
         ),
-        SwitchField(
-          key: TestKey.addActivitySelectAvailableForSwitch,
-          leading: const Icon(AbiliaIcons.passwordProtection),
-          value: settings.availability,
-          onChanged: (v) => context
-              .read<AddActivitySettingsCubit>()
-              .stepByStepSetting(settings.copyWith(selectAvailableFor: v)),
-          child: Text(t.selectAvailableFor),
-        ),
+        if (showAvailableFor)
+          SwitchField(
+            key: TestKey.addActivitySelectAvailableForSwitch,
+            leading: const Icon(AbiliaIcons.passwordProtection),
+            value: settings.availability,
+            onChanged: (v) => context
+                .read<AddActivitySettingsCubit>()
+                .stepByStepSetting(settings.copyWith(selectAvailableFor: v)),
+            child: Text(t.selectAvailableFor),
+          ),
         SwitchField(
           key: TestKey.addActivitySelectAlarmSwitch,
           leading: const Icon(AbiliaIcons.handiAlarm),

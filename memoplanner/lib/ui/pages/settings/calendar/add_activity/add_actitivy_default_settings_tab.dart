@@ -10,6 +10,8 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
     final t = Translator.of(context).translate;
     final defaultsSettings = context
         .select((AddActivitySettingsCubit cubit) => cubit.state.defaults);
+    final showAvailableFor = context
+        .select((SupportPersonsCubit cubit) => cubit.state.showAvailableFor);
 
     return SettingsTab(
       children: [
@@ -30,32 +32,34 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
                   defaultsSettings.copyWith(removeAtEndOfDay: v)),
           child: Text(t.deleteAfter),
         ),
-        const Divider(),
-        Tts(child: Text(t.availableFor)),
-        RadioField(
-          value: AvailableForType.onlyMe,
-          groupValue: defaultsSettings.availableForType,
-          onChanged: (AvailableForType? type) => context
-              .read<AddActivitySettingsCubit>()
-              .addDefaultsSettings(
-                  defaultsSettings.copyWith(availableForType: type)),
-          text: Text(t.onlyMe),
-          leading: const Icon(
-            AbiliaIcons.lock,
+        if (showAvailableFor) ...[
+          const Divider(),
+          Tts(child: Text(t.availableFor)),
+          RadioField(
+            value: AvailableForType.onlyMe,
+            groupValue: defaultsSettings.availableForType,
+            onChanged: (AvailableForType? type) => context
+                .read<AddActivitySettingsCubit>()
+                .addDefaultsSettings(
+                    defaultsSettings.copyWith(availableForType: type)),
+            text: Text(t.onlyMe),
+            leading: const Icon(
+              AbiliaIcons.lock,
+            ),
           ),
-        ),
-        RadioField(
-          value: AvailableForType.allSupportPersons,
-          groupValue: defaultsSettings.availableForType,
-          onChanged: (AvailableForType? type) => context
-              .read<AddActivitySettingsCubit>()
-              .addDefaultsSettings(
-                  defaultsSettings.copyWith(availableForType: type)),
-          text: Text(t.allSupportPersons),
-          leading: const Icon(
-            AbiliaIcons.unlock,
+          RadioField(
+            value: AvailableForType.allSupportPersons,
+            groupValue: defaultsSettings.availableForType,
+            onChanged: (AvailableForType? type) => context
+                .read<AddActivitySettingsCubit>()
+                .addDefaultsSettings(
+                    defaultsSettings.copyWith(availableForType: type)),
+            text: Text(t.allSupportPersons),
+            leading: const Icon(
+              AbiliaIcons.unlock,
+            ),
           ),
-        ),
+        ],
         const Divider(),
         Tts(child: Text(t.alarm)),
         RadioField(

@@ -1,18 +1,17 @@
 import 'dart:async';
 
+import 'package:collection/src/unmodifiable_wrappers.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/logging/observers/bloc_logging_observer.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/utils/all.dart';
 import 'package:memoplanner/ui/all.dart';
-
+import 'package:memoplanner/utils/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
@@ -39,6 +38,7 @@ void main() {
   late MockTimerCubit mockTimerCubit;
   late MemoplannerSettingsBloc mockMemoplannerSettingsBloc;
   late MockSupportPersonsRepository supportUserRepo;
+  late MockSupportPersonsCubit supportPersonsCubit;
 
   setUpAll(() async {
     registerFallbackValues();
@@ -49,6 +49,26 @@ void main() {
   setUp(() async {
     setupFakeTts();
     mockSortableBloc = MockSortableBloc();
+    supportPersonsCubit = MockSupportPersonsCubit();
+    when(() => supportPersonsCubit.stream)
+        .thenAnswer((_) => const Stream.empty());
+    when(() => supportPersonsCubit.state).thenAnswer(
+      (_) => SupportPersonsState(
+        UnmodifiableSetView(
+          {
+            const SupportPerson(
+              id: 1,
+              name: 'name',
+              image: 'image',
+            ),
+          },
+        ),
+      ),
+    );
+
+    when(() => supportPersonsCubit.loadSupportPersons())
+        .thenAnswer((_) => Future.value());
+
     when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
     mockUserFileCubit = MockUserFileCubit();
     when(() => mockUserFileCubit.stream)
@@ -117,7 +137,7 @@ void main() {
                 ),
               ),
               BlocProvider<SupportPersonsCubit>(
-                  create: (_) => FakeSupportPersonsCubit()),
+                  create: (_) => supportPersonsCubit),
               BlocProvider<EditActivityCubit>(
                 create: (context) => newActivity
                     ? EditActivityCubit.newActivity(
@@ -238,6 +258,17 @@ void main() {
       expect(find.byType(AvailableForWidget), findsNothing);
       await tester.scrollDown();
       expect(find.byType(AvailableForWidget), findsOneWidget);
+    });
+
+    testWidgets('When no support persons do not show available for widget',
+        (WidgetTester tester) async {
+      when(() => supportPersonsCubit.state)
+          .thenAnswer((_) => SupportPersonsState(UnmodifiableSetView({})));
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      expect(find.byType(AvailableForWidget), findsNothing);
+      await tester.scrollDown();
+      expect(find.byType(AvailableForWidget), findsNothing);
     });
 
     testWidgets('Can enter text', (WidgetTester tester) async {

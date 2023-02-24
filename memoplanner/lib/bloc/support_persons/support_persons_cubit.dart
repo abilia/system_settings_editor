@@ -21,6 +21,8 @@ class SupportPersonsState extends Equatable {
 
   final UnmodifiableSetView<SupportPerson> supportPersons;
 
+  bool get showAvailableFor => supportPersons.isNotEmpty;
+
   @override
   List<Object?> get props => [supportPersons];
 }

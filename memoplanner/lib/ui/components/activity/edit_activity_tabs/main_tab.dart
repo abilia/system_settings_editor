@@ -15,6 +15,8 @@ class MainTab extends StatelessWidget with EditActivityTab {
             (cubit) => cubit.state.addActivity.editActivity);
     final showCategories = context.select<MemoplannerSettingsBloc, bool>(
         (cubit) => cubit.state.calendar.categories.show);
+    final showAvailableFor = context
+        .select((SupportPersonsCubit cubit) => cubit.state.showAvailableFor);
 
     return ScrollArrows.vertical(
       controller: scrollController,
@@ -43,7 +45,7 @@ class MainTab extends StatelessWidget with EditActivityTab {
             CheckableAndDeleteAfterWidget(activity)
                 .pad(layout.templates.m1.withoutBottom),
           ],
-          if (editActivitySettings.availability) ...[
+          if (editActivitySettings.availability && showAvailableFor) ...[
             const Divider().pad(dividerPadding),
             AvailableForWidget(activity).pad(layout.templates.m1.withoutBottom),
           ],

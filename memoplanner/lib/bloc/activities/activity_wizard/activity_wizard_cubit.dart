@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:meta/meta.dart';
-
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:meta/meta.dart';
 
 class ActivityWizardCubit extends WizardCubit {
   final ActivitiesBloc activitiesBloc;
@@ -21,6 +20,7 @@ class ActivityWizardCubit extends WizardCubit {
     required EditActivityCubit editActivityCubit,
     required ClockBloc clockBloc,
     required AddActivitySettings addActivitySettings,
+    bool showAvailableFor = true,
     bool showCategories = true,
   }) {
     if (addActivitySettings.mode == AddActivityMode.editView) {
@@ -39,6 +39,7 @@ class ActivityWizardCubit extends WizardCubit {
       stepByStep: addActivitySettings.stepByStep,
       addRecurringActivity: addActivitySettings.general.addRecurringActivity,
       showCategories: showCategories,
+      showAvailableFor: showAvailableFor,
     );
   }
 
@@ -57,25 +58,26 @@ class ActivityWizardCubit extends WizardCubit {
     required StepByStepSettings stepByStep,
     required bool addRecurringActivity,
     required bool showCategories,
+    required bool showAvailableFor,
   }) : super(
           WizardState(
             0,
             _generateWizardSteps(
-              stepByStep: stepByStep,
-              addRecurringActivity: addRecurringActivity,
-              showCategories: showCategories,
-              editState: editActivityCubit.state,
-            ),
+                stepByStep: stepByStep,
+                addRecurringActivity: addRecurringActivity,
+                showCategories: showCategories,
+                editState: editActivityCubit.state,
+                showAvailableFor: showAvailableFor),
           ),
         ) {
     _editActivityCubitSubscription = editActivityCubit.stream.listen(
       (event) {
         final newSteps = _generateWizardSteps(
-          stepByStep: stepByStep,
-          addRecurringActivity: addRecurringActivity,
-          showCategories: showCategories,
-          editState: event,
-        );
+            stepByStep: stepByStep,
+            addRecurringActivity: addRecurringActivity,
+            showCategories: showCategories,
+            editState: event,
+            showAvailableFor: showAvailableFor);
         if (newSteps != state.steps) {
           emit(state.copyWith(newSteps: newSteps, saveErrors: {}));
         }
@@ -88,6 +90,7 @@ class ActivityWizardCubit extends WizardCubit {
     required bool addRecurringActivity,
     required bool showCategories,
     required EditActivityState editState,
+    required bool showAvailableFor,
   }) =>
       [
         if (stepByStep.title) WizardStep.title,
@@ -98,7 +101,8 @@ class ActivityWizardCubit extends WizardCubit {
         if (!editState.activity.fullDay && showCategories) WizardStep.category,
         if (stepByStep.checkable) WizardStep.checkable,
         if (stepByStep.removeAfter) WizardStep.deleteAfter,
-        if (stepByStep.availability) WizardStep.availableFor,
+        if (stepByStep.availability && showAvailableFor)
+          WizardStep.availableFor,
         if (!editState.activity.fullDay && stepByStep.alarm) WizardStep.alarm,
         if (stepByStep.reminders && !editState.activity.fullDay)
           WizardStep.reminder,

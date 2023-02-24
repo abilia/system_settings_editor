@@ -12,6 +12,7 @@ mixin ActivityNavigation {
   ) async {
     final navigator = Navigator.of(context);
     final day = context.read<DayPickerBloc>().state.day;
+    final supportPersonsCubit = context.read<SupportPersonsCubit>();
     final basicActivityData =
         await Navigator.of(context).push<BasicActivityData>(
       MaterialPageRoute(
@@ -28,6 +29,7 @@ mixin ActivityNavigation {
       ),
     );
     if (basicActivityData is BasicActivityDataItem) {
+      supportPersonsCubit.loadSupportPersons();
       _navigateToActivityWizard(
         authProviders: authProviders,
         navigator: navigator,
@@ -44,6 +46,7 @@ mixin ActivityNavigation {
   ) {
     final settings = context.read<MemoplannerSettingsBloc>().state;
     final defaultsSettings = settings.addActivity.defaults;
+    context.read<SupportPersonsCubit>().loadSupportPersons();
     return _navigateToActivityWizard(
       authProviders: authProviders,
       navigator: Navigator.of(context),
@@ -90,6 +93,10 @@ mixin ActivityNavigation {
                     : ActivityWizardCubit.newStepByStep(
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
+                        showAvailableFor: context
+                            .read<SupportPersonsCubit>()
+                            .state
+                            .showAvailableFor,
                         clockBloc: context.read<ClockBloc>(),
                         allowPassedStartTime:
                             addActivitySettings.general.allowPassedStartTime,
