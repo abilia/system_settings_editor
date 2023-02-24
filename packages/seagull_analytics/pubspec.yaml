@@ -8,7 +8,6 @@ dependencies:
   equatable: ^2.0.3
   flutter:
     sdk: flutter
-  flutter_lints: ^2.0.1
   logging: ^1.1.0
   mixpanel_flutter: ^2.0.0
   seagull_lints:
