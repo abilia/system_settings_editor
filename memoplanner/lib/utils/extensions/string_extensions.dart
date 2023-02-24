@@ -36,12 +36,6 @@ extension SizeOfText on String {
   }
 }
 
-extension UriExtension on String {
-  Uri toUri() {
-    return Uri.parse(this);
-  }
-}
-
 extension Replace on String {
   String get singleLine => replaceAll('-\n', '');
   String capitalize() =>

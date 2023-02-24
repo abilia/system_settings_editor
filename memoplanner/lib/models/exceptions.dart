@@ -1,10 +1,6 @@
 import 'package:http/http.dart';
 import 'package:memoplanner/models/all.dart';
 
-class UnauthorizedException implements Exception {
-  String errMsg() => 'Not authorized';
-}
-
 class UnavailableException implements Exception {
   final List<int> statusCodes;
 
@@ -16,14 +12,6 @@ class UnavailableException implements Exception {
 
 class WrongRevisionException implements Exception {
   String errMsg() => 'Unavailable';
-}
-
-class NoLicenseException implements Exception {
-  String errMsg() => 'No valid license';
-}
-
-class WrongUserTypeException implements Exception {
-  String errMsg() => 'Only type User is supported';
 }
 
 class BadRequestException implements Exception {
