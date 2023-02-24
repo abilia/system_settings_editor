@@ -1,12 +1,13 @@
 import 'dart:async';
 
+import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/logging/all.dart';
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
+import 'package:logging/logging.dart';
+import 'package:auth/models/all.dart';
+import 'package:repo_base/listenable_client.dart';
+import 'package:auth/repository/user_repository.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';

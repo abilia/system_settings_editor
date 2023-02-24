@@ -5,11 +5,10 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
-import 'package:memoplanner/config.dart';
-import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:auth/db/all.dart';
+import 'package:auth/models/all.dart';
+import 'package:repo_base/repo_base.dart';
+import 'package:utils/utils.dart';
 import 'package:synchronized/extension.dart';
 
 class ClientWithDefaultHeaders extends ListenableClient {
@@ -21,12 +20,14 @@ class ClientWithDefaultHeaders extends ListenableClient {
   final _log = Logger((ClientWithDefaultHeaders).toString());
 
   ClientWithDefaultHeaders(
-    String version, {
+     {
     required this.loginDb,
     required this.deviceDb,
+    required String version,
+    required String name,
     Client? client,
     String model = 'seagull',
-  })  : userAgent = '${Config.flavor.name} v$version $model',
+  })  : userAgent = '$name v$version $model',
         _inner = client ?? Client();
 
   @override
@@ -153,10 +154,4 @@ class ClientWithDefaultHeaders extends ListenableClient {
   void close() {
     _stateController.close();
   }
-}
-
-enum HttpMessage { unauthorized }
-
-abstract class ListenableClient extends BaseClient {
-  Stream<HttpMessage> get messageStream;
 }

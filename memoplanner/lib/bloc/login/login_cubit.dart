@@ -1,10 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
+
+import 'package:auth/models/exceptions.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/logging/all.dart';
-import 'package:auth/models/exceptions.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
 

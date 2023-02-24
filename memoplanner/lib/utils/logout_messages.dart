@@ -1,4 +1,4 @@
-import 'package:memoplanner/bloc/authentication/authentication_bloc.dart';
+import 'package:auth/bloc/authentication_bloc.dart';
 import 'package:memoplanner/i18n/translations.g.dart';
 
 extension LogoutMessage on LoggedOutReason {

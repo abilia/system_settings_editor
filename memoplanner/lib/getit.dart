@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:auth/http_client.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:memoplanner/config.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:rxdart/rxdart.dart';
@@ -149,9 +151,10 @@ class GetItInitializer {
     final baseUrlDb = _baseUrlDb ?? BaseUrlDb(_sharedPreferences);
     final client = _listenableClient ??
         ClientWithDefaultHeaders(
-          _packageInfo.version,
           loginDb: loginDb,
           deviceDb: deviceDb,
+          version: _packageInfo.version,
+          name: Config.flavor.name,
         );
     GetIt.I
       ..registerSingleton<LoginDb>(loginDb)

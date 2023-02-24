@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auth/http_client.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:memoplanner/models/all.dart';
@@ -13,8 +14,13 @@ void main() {
   final deviceDb = MockDeviceDb();
   final loginDb = MockLoginDb();
   final innerClient = MockBaseClient();
-  final client = ClientWithDefaultHeaders('version',
-      deviceDb: deviceDb, loginDb: loginDb, client: innerClient);
+  final client = ClientWithDefaultHeaders(
+    deviceDb: deviceDb,
+    loginDb: loginDb,
+    client: innerClient,
+    version: 'version',
+    name: 'name',
+  );
 
   setUp(() {
     registerFallbackValues();

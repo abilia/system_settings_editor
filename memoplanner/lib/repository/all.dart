@@ -3,7 +3,6 @@ export 'package:auth/repository/user_repository.dart';
 export 'ticker.dart';
 export 'push.dart';
 export 'multipart_request.dart';
-export 'http_client.dart';
 export 'timezone.dart';
 export 'data_repository/all.dart';
 export 'device_repository.dart';

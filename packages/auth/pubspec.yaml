@@ -5,14 +5,18 @@ environment:
   flutter: '>=2.0.0'
 
 dependencies:
+  bloc: ^8.1.1
+  bloc_concurrency: ^0.2.0
   database:
     path: ../database
   equatable: ^2.0.3
+  http: ^0.13.5
   logging: ^1.1.0
   repo_base:
     path: ../repo_base
   shared_preferences: ^2.0.8
   sqflite: ^2.2.0
+  synchronized: ^3.0.0
   utils:
     path: ../utils
   uuid: ^3.0.5
@@ -20,7 +24,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  http: ^0.13.5
   mocktail: ^0.3.0
   seagull_lints:
     path: ../seagull_lints

@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:auth/http_client.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:memoplanner/config.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:memoplanner/firebase_options.dart';
@@ -56,9 +58,10 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
 
     final deviceDb = DeviceDb(preferences);
     final client = ClientWithDefaultHeaders(
-      version,
       loginDb: loginDb,
       deviceDb: deviceDb,
+      version: version,
+      name: Config.flavor.name,
     );
     final database = await DatabaseRepository.createSqfliteDb();
     final baseUrlDb = BaseUrlDb(preferences);
