@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:memoplanner/models/all.dart';
+import 'package:auth/models/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LicenseDb {
