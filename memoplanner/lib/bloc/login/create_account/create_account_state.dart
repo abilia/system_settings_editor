@@ -129,20 +129,3 @@ class CreateAccountFailed extends CreateAccountState {
 class AccountCreated extends CreateAccountState {
   const AccountCreated(String username) : super(username: username);
 }
-
-enum CreateAccountFailure {
-  noUsername,
-  usernameToShort,
-  usernameInvalid,
-  usernameTaken,
-  noPassword,
-  passwordToShort,
-  noConfirmPassword,
-  passwordMismatch,
-  termsOfUse,
-  privacyPolicy,
-  clientNotAllowed,
-  invalidLanguage,
-  noConnection,
-  unknown,
-}

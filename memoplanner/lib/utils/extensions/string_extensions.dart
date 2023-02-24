@@ -42,7 +42,6 @@ extension Replace on String {
       isNotEmpty ? '${this[0].toUpperCase()}${substring(1)}' : this;
 }
 
-
 class TextRenderingSize {
   final TextPainter textPainter;
   final int numberOfLines;

@@ -3,11 +3,10 @@ import 'dart:io';
 
 import 'package:logging/logging.dart';
 
-import 'package:memoplanner/config.dart';
-import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:auth/db/all.dart';
+import 'package:auth/models/all.dart';
+import 'package:repo_base/repo_base.dart';
+import 'package:utils/utils.dart';
 
 class UserRepository extends Repository {
   static final _log = Logger((UserRepository).toString());
@@ -17,6 +16,7 @@ class UserRepository extends Repository {
   final CalendarDb calendarDb;
   final DeviceDb deviceDb;
   final int postApiVersion;
+  final String app, name;
 
   const UserRepository({
     required super.baseUrlDb,
@@ -26,6 +26,8 @@ class UserRepository extends Repository {
     required this.licenseDb,
     required this.deviceDb,
     required this.calendarDb,
+    required this.app,
+    required this.name,
     this.postApiVersion = 1,
   });
 
@@ -47,8 +49,8 @@ class UserRepository extends Repository {
         {
           'clientId': clientId,
           'type': 'flutter',
-          'app': Config.flavor.id,
-          'name': Config.flavor.id,
+          'app': app,
+          'name': name,
           'address': pushToken,
         },
       ),

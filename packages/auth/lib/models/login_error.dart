@@ -31,5 +31,3 @@ class LoginError extends Equatable {
   @override
   List<Object?> get props => [status, message, errorId, errors];
 }
-
-

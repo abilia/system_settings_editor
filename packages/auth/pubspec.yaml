@@ -7,6 +7,7 @@ dependencies:
   database:
     path: ../database
   equatable: ^2.0.3
+  logging: ^1.1.0
   repo_base:
     path: ../repo_base
   shared_preferences: ^2.0.8
@@ -16,6 +17,8 @@ dependencies:
   uuid: ^3.0.5
 
 dev_dependencies:
+  http: ^0.13.5
+  mocktail: ^0.3.0
   seagull_lints:
     path: ../seagull_lints
   test: ^1.21.0

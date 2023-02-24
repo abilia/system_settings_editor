@@ -1,34 +1,51 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:auth/db/all.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:repo_base/repo_base.dart';
+import 'package:test/test.dart';
 import 'package:http/http.dart';
 
-import '../fakes/fake_client.dart';
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:auth/models/all.dart';
+import 'package:auth/repository/user_repository.dart';
+import 'package:utils/utils.dart';
 
-import '../fakes/fake_db_and_repository.dart';
-import '../mocks/mocks.dart';
+class MockBaseUrlDb extends Mock implements BaseUrlDb {}
+
+class MockBaseClient extends Mock implements BaseClient {}
+
+class MockUserDb extends Mock implements UserDb {}
+
+class MockLoginDb extends Mock implements LoginDb {}
+
+class FakeCalendarDb extends Fake implements CalendarDb {}
+
+class FakeLicenseDb extends Fake implements LicenseDb {}
+
+class FakeDeviceDb extends Fake implements DeviceDb {}
+
+class FakeBaseUrlDb extends Fake implements BaseUrlDb {
+  @override
+  String get baseUrl => url;
+}
+
+const url = 'oneUrl';
+const token = 'Fakes.token';
 
 void main() {
-  const url = 'oneUrl';
-  final mockBaseUrlDb = MockBaseUrlDb();
   final mockClient = MockBaseClient();
   final mockUserDb = MockUserDb();
   final mockLoginDb = MockLoginDb();
-  final mockCalendarDb = MockCalendarDb();
+
   final userRepo = UserRepository(
-    baseUrlDb: mockBaseUrlDb,
+    baseUrlDb: FakeBaseUrlDb(),
     client: mockClient,
     loginDb: mockLoginDb,
     userDb: mockUserDb,
     licenseDb: FakeLicenseDb(),
-    deviceDb: MockDeviceDb(),
-    calendarDb: mockCalendarDb,
+    deviceDb: FakeDeviceDb(),
+    calendarDb: FakeCalendarDb(),
+    app: 'app',
+    name: 'name',
   );
-
-  setUp(() {
-    when(() => mockBaseUrlDb.baseUrl).thenReturn(url);
-  });
 
   test('if response 401, getUserFromApi throws UnauthorizedException',
       () async {
@@ -39,7 +56,7 @@ void main() {
     try {
       await userRepo.getUserFromApi();
     } catch (e) {
-      expect(e, isInstanceOf<UnauthorizedException>());
+      expect(e, isA<UnauthorizedException>());
       return;
     }
     fail('did not throw');
@@ -48,13 +65,13 @@ void main() {
   test('if response 401, me throws UnauthorizedException', () async {
     // Arrange
     when(() => mockClient.get('$url/api/v1/entity/me'.toUri(),
-            headers: authHeader(Fakes.token)))
+            headers: authHeader(token)))
         .thenAnswer((_) => Future.value(Response('body', 401)));
     // Assert
     try {
       await userRepo.me();
     } catch (e) {
-      expect(e, isInstanceOf<UnauthorizedException>());
+      expect(e, isA<UnauthorizedException>());
       return;
     }
     fail('did not throw');
@@ -76,7 +93,7 @@ void main() {
   test('if no user in database, me throws UnauthorizedException', () async {
     // Arrange
     when(() => mockClient.get('$url/api/v1/entity/me'.toUri(),
-            headers: authHeader(Fakes.token)))
+            headers: authHeader(token)))
         .thenAnswer((_) => Future.value(Response('body', 400)));
 
     when(() => mockUserDb.getUser()).thenReturn(null);
@@ -84,7 +101,7 @@ void main() {
     try {
       await userRepo.me();
     } catch (e) {
-      expect(e, isInstanceOf<UnauthorizedException>());
+      expect(e, isA<UnauthorizedException>());
       return;
     }
     fail('did not throw');
@@ -92,7 +109,6 @@ void main() {
 
   test('logout deletes token', () async {
     // Arrange
-    const token = Fakes.token;
     when(() => mockLoginDb.deleteToken()).thenAnswer((_) async {});
     when(() => mockLoginDb.deleteLoginInfo()).thenAnswer((_) async {});
     when(() => mockUserDb.deleteUser()).thenAnswer((_) async {});

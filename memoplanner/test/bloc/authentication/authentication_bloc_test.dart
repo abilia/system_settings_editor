@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/user_repository.dart';
+import 'package:auth/repository/user_repository.dart';
 
 import '../../mocks/mocks.dart';
 import '../../fakes/all.dart';
@@ -26,6 +26,8 @@ void main() {
         baseUrlDb: BaseUrlDb(prefs),
         deviceDb: DeviceDb(prefs),
         calendarDb: CalendarDb(db),
+        app: 'app',
+        name: 'name',
       );
     });
 

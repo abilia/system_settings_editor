@@ -46,5 +46,4 @@ extension DateTimeExtensionsModels on DateTime {
     final afterMidnight = difference(onlyDays());
     return afterMidnight >= dayParts.night;
   }
-
 }

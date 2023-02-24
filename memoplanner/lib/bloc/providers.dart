@@ -335,6 +335,8 @@ class TopLevelProvider extends StatelessWidget {
             licenseDb: GetIt.I<LicenseDb>(),
             deviceDb: GetIt.I<DeviceDb>(),
             calendarDb: GetIt.I<CalendarDb>(),
+            app: Config.flavor.id,
+            name: Config.flavor.id,
           ),
         ),
         if (Config.isMP) ...[
