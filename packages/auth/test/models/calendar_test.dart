@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
-import 'package:memoplanner/models/calendar.dart';
+import 'package:auth/models/calendar.dart';
 
 void main() {
   test('from json to dbMap and back', () {

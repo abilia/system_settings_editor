@@ -24,7 +24,6 @@ export 'image_and_name.dart';
 export 'bad_request.dart';
 export 'sync_delays.dart';
 export 'abilia_timer.dart';
-export 'calendar.dart';
 export 'support_person.dart';
 export 'session.dart';
 export 'terms_of_use.dart';
