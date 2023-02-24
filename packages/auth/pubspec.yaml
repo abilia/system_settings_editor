@@ -1,0 +1,9 @@
+name: auth
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+
+dev_dependencies:
+  seagull_lints:
+    path: ../seagull_lints
+  test: ^1.21.0
