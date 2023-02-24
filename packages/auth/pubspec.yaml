@@ -3,6 +3,11 @@ name: auth
 environment:
   sdk: '>=2.19.2 <3.0.0'
 
+dependencies:
+  equatable: ^2.0.3
+  utils:
+    path: ../utils
+
 dev_dependencies:
   seagull_lints:
     path: ../seagull_lints

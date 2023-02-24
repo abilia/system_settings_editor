@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:utils/utils.dart';
 
 const memoplannerLicenseName = 'memoplanner';
 const licenseLength = 12;
