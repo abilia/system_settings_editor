@@ -9,9 +9,11 @@ dependencies:
   equatable: ^2.0.3
   repo_base:
     path: ../repo_base
+  shared_preferences: ^2.0.8
   sqflite: ^2.2.0
   utils:
     path: ../utils
+  uuid: ^3.0.5
 
 dev_dependencies:
   seagull_lints:
