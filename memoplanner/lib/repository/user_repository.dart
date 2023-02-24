@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:logging/logging.dart';
-import 'package:memoplanner/models/login_error.dart';
 
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';
@@ -62,7 +61,7 @@ class UserRepository extends Repository {
       case 403:
         final errorMessage = LoginError.fromJson(response.json());
         if (errorMessage.errors.isNotEmpty &&
-            errorMessage.errors.first.code == Error.unsupportedUserType) {
+            errorMessage.errors.first.code == WhaleError.unsupportedUserType) {
           throw WrongUserTypeException();
         }
         continue defaultException;

@@ -1,12 +1,11 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+import 'package:repo_base/models/whale_error.dart';
 
-@immutable
 class LoginError extends Equatable {
   final int status;
   final String message;
   final int errorId;
-  final Iterable<Error> errors;
+  final Iterable<WhaleError> errors;
   const LoginError._({
     required this.status,
     required this.message,
@@ -20,12 +19,12 @@ class LoginError extends Equatable {
       message: json['message'] ?? '',
       errorId: json['errorId'] ?? -1,
       errors: json['errors'] != null
-          ? List<Error>.from(
+          ? List<WhaleError>.from(
               json['errors'].map(
-                (x) => Error.fromJson(x),
+                (x) => WhaleError.fromJson(x),
               ),
             )
-          : List<Error>.empty(),
+          : List<WhaleError>.empty(),
     );
   }
 
@@ -33,20 +32,4 @@ class LoginError extends Equatable {
   List<Object?> get props => [status, message, errorId, errors];
 }
 
-class Error extends Equatable {
-  static const String unsupportedUserType = 'WHALE-0156';
 
-  final String code;
-  final String message;
-  const Error._({required this.code, required this.message});
-
-  factory Error.fromJson(Map<String, dynamic> json) {
-    return Error._(
-      code: json['code'],
-      message: json['message'],
-    );
-  }
-
-  @override
-  List<Object?> get props => [code, message];
-}

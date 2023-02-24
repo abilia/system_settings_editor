@@ -5,6 +5,8 @@ environment:
 
 dependencies:
   equatable: ^2.0.3
+  repo_base:
+    path: ../repo_base
   utils:
     path: ../utils
 

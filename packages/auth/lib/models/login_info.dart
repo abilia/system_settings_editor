@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:utils/utils.dart';
 
 class LoginInfo extends Equatable {
@@ -7,7 +6,6 @@ class LoginInfo extends Equatable {
   final int endDate;
   final String renewToken;
 
-  @visibleForTesting
   const LoginInfo({
     required this.token,
     required this.endDate,
