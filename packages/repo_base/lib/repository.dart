@@ -1,5 +1,5 @@
 import 'package:http/http.dart';
-import 'package:memoplanner/db/all.dart';
+import 'package:repo_base/baseurl_db.dart';
 
 abstract class Repository {
   final BaseUrlDb baseUrlDb;

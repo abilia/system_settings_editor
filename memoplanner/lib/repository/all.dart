@@ -1,8 +1,7 @@
 export 'user_repository.dart';
 export 'ticker.dart';
-export 'package:repo_base/end_point.dart';
+export 'package:repo_base/repo_base.dart';
 export 'push.dart';
-export 'repository.dart';
 export 'multipart_request.dart';
 export 'http_client.dart';
 export 'timezone.dart';
