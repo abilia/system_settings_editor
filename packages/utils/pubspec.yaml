@@ -1,11 +1,7 @@
-name: repo_base
+name: utils
 
 environment:
   sdk: '>=2.19.2 <3.0.0'
-
-dependencies:
-  http: ^0.13.5
-  shared_preferences: ^2.0.8
 
 dev_dependencies:
   seagull_lints:

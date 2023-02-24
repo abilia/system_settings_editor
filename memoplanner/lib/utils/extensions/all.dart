@@ -1,3 +1,4 @@
+export 'package:utils/utils.dart';
 export 'datetime_extensions.dart';
 export 'activities_alarms_extensions.dart';
 export 'duration_extensions.dart';
