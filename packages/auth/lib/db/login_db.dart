@@ -1,14 +1,13 @@
 import 'dart:convert';
 
-import 'package:meta/meta.dart';
-import 'package:memoplanner/models/all.dart';
+
+import 'package:auth/models/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Handles storage of auth token and other login info used when accessing backend.
 // NOTE: there was a problem when accessing secure storage when app in background.
 // Therefore shared preferences is used instead.
 class LoginDb {
-  @visibleForTesting
   static const String tokenKey = 'tokenKey';
   static const String loginInfoKey = 'loginInfoKey';
   final SharedPreferences prefs;

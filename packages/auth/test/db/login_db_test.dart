@@ -1,6 +1,6 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/models/all.dart';
+import 'package:test/test.dart';
+import 'package:auth/db/login_db.dart';
+import 'package:auth/models/login_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {

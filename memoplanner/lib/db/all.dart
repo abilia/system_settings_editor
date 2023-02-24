@@ -3,7 +3,6 @@ export 'package:repo_base/baseurl_db.dart';
 export 'package:database/database_repository.dart';
 export 'package:auth/db/all.dart';
 export 'activity_db.dart';
-export 'login_db.dart';
 export 'user_db.dart';
 export 'sortable_db.dart';
 export 'data_db.dart';
