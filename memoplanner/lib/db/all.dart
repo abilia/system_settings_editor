@@ -1,7 +1,7 @@
 export 'package:sqflite/sqlite_api.dart';
 export 'activity_db.dart';
 export 'package:repo_base/baseurl_db.dart';
-export 'database_repository.dart';
+export 'package:database/database_repository.dart';
 export 'login_db.dart';
 export 'user_db.dart';
 export 'sortable_db.dart';

@@ -20,6 +20,8 @@ dependencies:
   collection: ^1.17.0
   connectivity_plus: ^3.0.2
   crypto: ^3.0.1
+  database:
+    path: ../packages/database
   device_info_plus: ^8.0.0
   devicelocale: ^0.6.0
   dotted_border: ^2.0.0

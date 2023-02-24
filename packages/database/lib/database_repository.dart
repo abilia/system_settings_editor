@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -22,7 +22,6 @@ class DatabaseRepository {
     calendarTableName
   ];
 
-  @visibleForTesting
   static final initialScript = [
     '''
       create table $activityTableName (
@@ -112,7 +111,6 @@ class DatabaseRepository {
         )
   ''';
 
-  @visibleForTesting
   static final migrations = <String>[
     'alter table $activityTableName add column extras text',
     'alter table $sortableTableName add column fixed int',
@@ -132,7 +130,6 @@ class DatabaseRepository {
     );
   }
 
-  @visibleForTesting
   static Future<Database> createInMemoryFfiDb() async {
     sqfliteFfiInit();
     return await databaseFactoryFfi.openDatabase(
@@ -164,7 +161,6 @@ class DatabaseRepository {
     return allTableRows.sum == 0;
   }
 
-  @visibleForTesting
   static Future<void> executeInitialization(Database db, int version) async {
     for (final script in initialScript) {
       await db.execute(script);
@@ -174,13 +170,11 @@ class DatabaseRepository {
     }
   }
 
-  @visibleForTesting
   static Future<void> executeMigration(
       Database db, int oldVersion, int newVersion) async {
     await internalMigration(db, oldVersion, newVersion, migrations);
   }
 
-  @visibleForTesting
   static Future<void> internalMigration(Database db, int oldVersion,
       int newVersion, List<String> migrationScripts) async {
     migrationScripts
