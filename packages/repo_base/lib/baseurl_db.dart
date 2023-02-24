@@ -1,4 +1,4 @@
-import 'package:memoplanner/repository/end_point.dart';
+import 'package:repo_base/end_point.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BaseUrlDb {

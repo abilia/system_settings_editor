@@ -1,4 +1,3 @@
-import 'package:memoplanner/env/env.dart';
 import 'package:memoplanner/models/all.dart';
 
 const prod = 'https://myabilia.com', prodName = 'PROD', testName = 'TEST';
@@ -63,7 +62,7 @@ Map<String, String> authHeader(String? token) =>
 
 const Map<String, String> jsonHeader = {'Content-Type': 'application/json'};
 
-final Map<String, String> jsonHeaderWithKey = {
+const Map<String, String> jsonHeaderWithKey = {
   'Content-Type': 'application/json',
-  'api-key': Env.abiliaOpenAPIKey,
+  'api-key': 'huyf72P00mf8Hy53k',
 };
