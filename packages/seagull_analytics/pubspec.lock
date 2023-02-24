@@ -91,6 +91,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  seagull_lints:
+    dependency: "direct main"
+    description:
+      path: "../seagull_lints"
+      relative: true
+    source: path
+    version: "0.0.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -105,5 +112,5 @@ packages:
     source: hosted
     version: "2.1.4"
 sdks:
-  dart: ">=2.18.0 <3.0.0"
+  dart: ">=2.19.2 <3.0.0"
   flutter: ">=2.0.0"
