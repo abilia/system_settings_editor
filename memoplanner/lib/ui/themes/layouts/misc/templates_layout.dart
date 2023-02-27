@@ -29,7 +29,7 @@ class TemplatesLayout {
     this.m3 = const EdgeInsets.fromLTRB(12, 24, 12, 12),
     this.m4 = const EdgeInsets.symmetric(horizontal: 24),
     this.m5 = const EdgeInsets.fromLTRB(12, 48, 12, 12),
-    this.m6 = const EdgeInsets.fromLTRB(12, 32, 12, 12),
+    this.m6 = const EdgeInsets.all(12),
     this.m7 = const EdgeInsets.fromLTRB(12, 160, 12, 12),
     this.l1 = const EdgeInsets.fromLTRB(12, 96, 12, 64),
     this.l2 = const EdgeInsets.symmetric(horizontal: 24, vertical: 64),
