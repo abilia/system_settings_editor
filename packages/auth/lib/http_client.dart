@@ -19,8 +19,7 @@ class ClientWithDefaultHeaders extends ListenableClient {
   final _stateController = StreamController<HttpMessage>.broadcast();
   final _log = Logger((ClientWithDefaultHeaders).toString());
 
-  ClientWithDefaultHeaders(
-     {
+  ClientWithDefaultHeaders({
     required this.loginDb,
     required this.deviceDb,
     required String version,

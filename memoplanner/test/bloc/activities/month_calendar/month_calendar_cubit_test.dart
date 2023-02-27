@@ -8,6 +8,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_clock/ticker.dart';
 
 import '../../../fakes/fake_seagull_analytics.dart';
 import '../../../fakes/fakes_blocs.dart';

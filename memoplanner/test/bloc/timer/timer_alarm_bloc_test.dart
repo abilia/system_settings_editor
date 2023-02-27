@@ -5,7 +5,7 @@ import 'package:memoplanner/bloc/all.dart';
 
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
-import 'package:memoplanner/repository/ticker.dart';
+import 'package:seagull_clock/ticker.dart';
 
 import 'package:test/scaffolding.dart';
 

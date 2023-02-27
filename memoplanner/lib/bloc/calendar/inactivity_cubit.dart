@@ -5,7 +5,7 @@ import 'package:rxdart/rxdart.dart';
 
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
+import 'package:seagull_clock/ticker.dart';
 
 const _timeToReturnToToday = Duration(minutes: 5);
 

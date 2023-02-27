@@ -2,7 +2,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/i18n/all.dart';
 import 'package:memoplanner/models/abilia_timer.dart';
 import 'package:memoplanner/models/sortable/data/basic_timer_data.dart';
-import 'package:memoplanner/repository/all.dart';
+import 'package:seagull_clock/ticker.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:test/test.dart';
 

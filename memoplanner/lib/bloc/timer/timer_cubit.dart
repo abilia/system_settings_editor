@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
+import 'package:seagull_clock/ticker.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
 
 part 'timer_state.dart';

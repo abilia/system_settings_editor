@@ -1186,6 +1186,13 @@ packages:
       relative: true
     source: path
     version: "0.0.0"
+  seagull_clock:
+    dependency: "direct main"
+    description:
+      path: "../packages/seagull_clock"
+      relative: true
+    source: path
+    version: "0.0.0"
   seagull_lints:
     dependency: "direct dev"
     description:

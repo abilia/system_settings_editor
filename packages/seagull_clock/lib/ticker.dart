@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:meta/meta.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:utils/utils.dart';
 
 class Ticker {
   final _streamController = StreamController<DateTime>();

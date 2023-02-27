@@ -71,6 +71,8 @@ dependencies:
   rxdart: ^0.27.1
   seagull_analytics:
     path: ../packages/seagull_analytics
+  seagull_clock:
+    path: ../packages/seagull_clock
   shared_preferences: ^2.0.8
   sqflite: ^2.2.0
   sqflite_common_ffi: ^2.2.0

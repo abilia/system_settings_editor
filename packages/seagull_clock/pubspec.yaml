@@ -1,0 +1,14 @@
+name: seagull_clock
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+
+dependencies:
+  meta: ^1.7.0
+  utils:
+    path: ../utils
+
+dev_dependencies:
+  seagull_lints:
+    path: ../seagull_lints
+  test: any
