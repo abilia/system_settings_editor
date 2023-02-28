@@ -1,6 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:seagull_clock/ticker.dart';
 import 'package:test/test.dart';
 
 import 'package:memoplanner/models/all.dart';

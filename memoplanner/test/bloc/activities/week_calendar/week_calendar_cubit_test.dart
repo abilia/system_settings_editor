@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:seagull_clock/ticker.dart';
 import 'package:memoplanner/utils/all.dart';
 
 import '../../../fakes/all.dart';
@@ -35,7 +34,7 @@ void main() {
         analytics: FakeSeagullAnalytics(),
       );
       timerAlarmBloc = TimerAlarmBloc(
-        ticker: Ticker.fake(initialTime: initialMinutes),
+        ticker: Ticker.fake( initialTime: initialMinutes),
         timerCubit: timerCubit,
       );
       activitiesBloc = ActivitiesBloc(
@@ -324,7 +323,7 @@ void main() {
       // Arrange
       when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value(const Iterable.empty()));
-      final ticker = Ticker.fake(initialTime: initialMinutes);
+      final ticker = Ticker.fake( initialTime: initialMinutes);
       final timerCubit = TimerCubit(
         timerDb: MockTimerDb(),
         ticker: ticker,

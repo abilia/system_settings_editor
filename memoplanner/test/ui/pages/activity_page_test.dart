@@ -9,7 +9,6 @@ import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/main.dart';
 
 import 'package:memoplanner/models/all.dart';
-import 'package:seagull_clock/ticker.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:webview_flutter/webview_flutter.dart';

@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:memoplanner/logging/all.dart';
-import 'package:seagull_clock/ticker.dart';
-import 'package:memoplanner/utils/all.dart';
 
-class ClockBloc extends Cubit<DateTime> with Silent {
+import 'package:bloc/bloc.dart';
+import 'package:seagull_clock/ticker.dart';
+import 'package:utils/utils.dart';
+
+class ClockBloc extends Cubit<DateTime> {
   StreamSubscription<DateTime>? _tickerSubscription;
   Stream<DateTime> minuteStream;
 

@@ -5,7 +5,6 @@ import 'package:memoplanner/bloc/all.dart';
 
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
-import 'package:seagull_clock/ticker.dart';
 
 import 'package:test/scaffolding.dart';
 
@@ -86,8 +85,8 @@ void main() {
   blocTest<TimerAlarmBloc, TimerAlarmState>(
     'Timer current then time goes goes to past',
     build: () => TimerAlarmBloc(
-      ticker: Ticker.fake(
-        initialTime: initialTime,
+      ticker: Ticker.fake(initialTime: 
+        initialTime,
         stream: streamController.stream,
       ),
       timerCubit: mockTimerCubit,
@@ -123,8 +122,8 @@ void main() {
       );
     },
     build: () => TimerAlarmBloc(
-      ticker: Ticker.fake(
-        initialTime: initialTime,
+      ticker: Ticker.fake(initialTime: 
+        initialTime,
         stream: streamController.stream,
       ),
       timerCubit: mockTimerCubit,
@@ -189,8 +188,8 @@ void main() {
       );
     },
     build: () => TimerAlarmBloc(
-      ticker: Ticker.fake(
-        initialTime: initialTime,
+      ticker: Ticker.fake(initialTime: 
+        initialTime,
         stream: streamController.stream,
       ),
       timerCubit: mockTimerCubit,
@@ -230,8 +229,8 @@ void main() {
       );
     },
     build: () => TimerAlarmBloc(
-      ticker: Ticker.fake(
-        initialTime: initialTime,
+      ticker: Ticker.fake(initialTime: 
+        initialTime,
         stream: streamController.stream,
       ),
       timerCubit: mockTimerCubit,

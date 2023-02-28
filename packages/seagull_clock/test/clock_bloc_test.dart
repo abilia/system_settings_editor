@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter_test/flutter_test.dart';
-import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:test/test.dart';
+import 'package:seagull_clock/clock_bloc.dart';
 
 void main() {
   late ClockBloc clockBloc;
@@ -27,7 +26,8 @@ void main() {
   });
 
   test('ticks returns ticks', () {
-    final ticks = List.generate(100, (m) => DateTime(2000).add(m.minutes()));
+    final ticks =
+        List.generate(100, (m) => DateTime(2000).add(Duration(minutes: m)));
     for (final tick in ticks) {
       mockedTicker.add(tick);
     }
