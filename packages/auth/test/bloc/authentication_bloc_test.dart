@@ -1,39 +1,54 @@
+import 'package:auth/bloc/authentication_bloc.dart';
+import 'package:auth/db/all.dart';
+import 'package:auth/models/all.dart';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:calendar_repository/calendar_db.dart';
+import 'package:calendar_repository/calendar_repository.dart';
+import 'package:database/database_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/models/all.dart';
 import 'package:auth/repository/user_repository.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:repo_base/repo_base.dart';
 
-import '../../mocks/mocks.dart';
-import '../../fakes/all.dart';
-import '../../test_helpers/register_fallback_values.dart';
+import '../fakes_and_mocks.dart';
 
 void main() {
-  setUpAll(registerFallbackValues);
+  setUpAll(() {
+    registerFallbackValue(
+        const LoginInfo(token: '', endDate: 1, renewToken: ''));
+  });
 
   group('AuthenticationBloc event order', () {
     late UserRepository userRepository;
+    late CalendarRepository calendarRepository;
     setUp(() async {
       final prefs = await FakeSharedPreferences.getInstance(loggedIn: false);
       final db = await DatabaseRepository.createInMemoryFfiDb();
       userRepository = UserRepository(
-        client: Fakes.client(),
+        client: FakeListenableClient.client(),
         loginDb: LoginDb(prefs),
         userDb: UserDb(prefs),
         licenseDb: LicenseDb(prefs),
         baseUrlDb: BaseUrlDb(prefs),
         deviceDb: DeviceDb(prefs),
-        calendarDb: CalendarDb(db),
         app: 'app',
         name: 'name',
+      );
+      calendarRepository = CalendarRepository(
+        baseUrlDb: BaseUrlDb(prefs),
+        client: FakeListenableClient.client(),
+        calendarDb: CalendarDb(db),
       );
     });
 
     blocTest(
       'initial state is AuthenticationUninitialized',
-      build: () => AuthenticationBloc(userRepository, onLogout: () {}),
+      build: () => AuthenticationBloc(
+        userRepository: userRepository,
+        calendarRepository: calendarRepository,
+        onLogout: () {},
+      ),
       verify: (AuthenticationBloc bloc) => expect(
         bloc.state,
         const AuthenticationLoading(),
@@ -42,7 +57,11 @@ void main() {
 
     blocTest(
       'state change to Unauthenticated when app starts',
-      build: () => AuthenticationBloc(userRepository, onLogout: () {}),
+      build: () => AuthenticationBloc(
+        userRepository: userRepository,
+        calendarRepository: calendarRepository,
+        onLogout: () {},
+      ),
       act: (AuthenticationBloc bloc) => bloc.add(CheckAuthentication()),
       expect: () => [const Unauthenticated()],
     );
@@ -50,7 +69,11 @@ void main() {
     blocTest(
       'state change to AuthenticationAuthenticated when token provided',
       // Act
-      build: () => AuthenticationBloc(userRepository, onLogout: () {}),
+      build: () => AuthenticationBloc(
+        userRepository: userRepository,
+        calendarRepository: calendarRepository,
+        onLogout: () {},
+      ),
       act: (AuthenticationBloc bloc) => bloc
         ..add(CheckAuthentication())
         ..add(
@@ -59,7 +82,7 @@ void main() {
       expect: () => [
         const Unauthenticated(),
         const Authenticated(
-          user: Fakes.user,
+          user: FakeListenableClient.user,
           newlyLoggedIn: true,
         ),
       ],
@@ -67,7 +90,11 @@ void main() {
 
     blocTest(
       'state change back to Unauthenticated when logging out',
-      build: () => AuthenticationBloc(userRepository, onLogout: () {}),
+      build: () => AuthenticationBloc(
+        userRepository: userRepository,
+        calendarRepository: calendarRepository,
+        onLogout: () {},
+      ),
       act: (AuthenticationBloc bloc) => bloc
         ..add(CheckAuthentication())
         ..add(
@@ -77,7 +104,7 @@ void main() {
       expect: () => [
         const Unauthenticated(),
         const Authenticated(
-          user: Fakes.user,
+          user: FakeListenableClient.user,
           newlyLoggedIn: true,
         ),
         const Unauthenticated(),
@@ -88,6 +115,7 @@ void main() {
   group('AuthenticationBloc token side effect', () {
     late MockUserRepository mockedUserRepository;
     late MockNotification notificationMock;
+    late MockCalendarRepository mockCalendarRepository;
 
     setUp(() async {
       notificationMock = MockNotification();
@@ -101,16 +129,21 @@ void main() {
       when(() => mockedUserRepository.me()).thenAnswer(
           (_) => Future.value(const User(id: 0, type: '', name: '')));
       when(() => mockedUserRepository.isLoggedIn()).thenReturn(true);
-      when(() => mockedUserRepository.fetchAndSetCalendar(any()))
+
+      mockCalendarRepository = MockCalendarRepository();
+      when(() => mockCalendarRepository.fetchAndSetCalendar(any()))
           .thenAnswer((_) => Future.value());
     });
 
     blocTest(
       'CheckAuthentication event fetches calendar',
-      build: () => AuthenticationBloc(mockedUserRepository),
+      build: () => AuthenticationBloc(
+        userRepository: mockedUserRepository,
+        calendarRepository: mockCalendarRepository,
+      ),
       act: (AuthenticationBloc bloc) => bloc..add(CheckAuthentication()),
       verify: (bloc) => verify(
-        () => mockedUserRepository.fetchAndSetCalendar(0),
+        () => mockCalendarRepository.fetchAndSetCalendar(0),
       ).called(1),
     );
 
@@ -118,29 +151,35 @@ void main() {
       'CheckAuthentication event auth failed, no calendar fetched',
       setUp: () =>
           when(() => mockedUserRepository.isLoggedIn()).thenReturn(false),
-      build: () => AuthenticationBloc(mockedUserRepository),
+      build: () => AuthenticationBloc(
+        userRepository: mockedUserRepository,
+        calendarRepository: mockCalendarRepository,
+      ),
       act: (AuthenticationBloc bloc) => bloc..add(CheckAuthentication()),
       verify: (bloc) => verifyNever(
-        () => mockedUserRepository.fetchAndSetCalendar(any()),
+        () => mockCalendarRepository.fetchAndSetCalendar(any()),
       ),
     );
 
     blocTest(
       'loggedIn event fetches calendar',
-      build: () => AuthenticationBloc(mockedUserRepository),
+      build: () => AuthenticationBloc(
+          userRepository: mockedUserRepository,
+          calendarRepository: mockCalendarRepository),
       act: (AuthenticationBloc bloc) => bloc
         ..add(
           const LoggedIn(),
         ),
       verify: (bloc) => verify(
-        () => mockedUserRepository.fetchAndSetCalendar(0),
+        () => mockCalendarRepository.fetchAndSetCalendar(0),
       ).called(1),
     );
 
     blocTest(
       'loggedOut calls deletes token',
       build: () => AuthenticationBloc(
-        mockedUserRepository,
+        userRepository: mockedUserRepository,
+        calendarRepository: mockCalendarRepository,
         onLogout: () {
           notificationMock.mockCancelAll();
         },
@@ -154,7 +193,8 @@ void main() {
     blocTest(
       'logged out cancel all Notification Function is called',
       build: () => AuthenticationBloc(
-        mockedUserRepository,
+        userRepository: mockedUserRepository,
+        calendarRepository: mockCalendarRepository,
         onLogout: () {
           notificationMock.mockCancelAll();
         },
@@ -170,7 +210,11 @@ void main() {
       'unauthenticated token gets deleted and returns state Unauthenticated',
       setUp: () => when(() => mockedUserRepository.me())
           .thenAnswer((_) => Future.error(UnauthorizedException())),
-      build: () => AuthenticationBloc(mockedUserRepository, onLogout: () {}),
+      build: () => AuthenticationBloc(
+        userRepository: mockedUserRepository,
+        calendarRepository: mockCalendarRepository,
+        onLogout: () {},
+      ),
       act: (AuthenticationBloc bloc) => bloc.add(CheckAuthentication()),
       expect: () => [const Unauthenticated()],
       verify: (bloc) => verify(
@@ -182,8 +226,11 @@ void main() {
       'logged out cancel all on logout and repo in order',
       setUp: () => when(() => mockedUserRepository.me())
           .thenAnswer((_) => Future.error(UnauthorizedException())),
-      build: () => AuthenticationBloc(mockedUserRepository,
-          onLogout: notificationMock.mockCancelAll),
+      build: () => AuthenticationBloc(
+        userRepository: mockedUserRepository,
+        calendarRepository: mockCalendarRepository,
+        onLogout: notificationMock.mockCancelAll,
+      ),
       act: (AuthenticationBloc bloc) => bloc
         ..add(CheckAuthentication())
         ..add(const LoggedOut()),

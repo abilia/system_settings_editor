@@ -19,6 +19,8 @@ dependencies:
   auto_size_text: ^3.0.0
   battery_plus: ^3.0.2
   bloc_concurrency: ^0.2.0
+  calendar_repository:
+    path: ../packages/calendar_repository
   collection: ^1.17.0
   connectivity_plus: ^3.0.2
   crypto: ^3.0.1

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:calendar_repository/calendar_repository.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:logging/logging.dart';
@@ -16,10 +17,13 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final FutureOr<void> Function()? onLogout;
   final UserRepository userRepository;
+  final CalendarRepository calendarRepository;
   late final StreamSubscription? _clientSubscription;
 
   AuthenticationBloc(
-    this.userRepository, {
+    {
+    required this.userRepository,
+    required this.calendarRepository,
     this.onLogout,
     ListenableClient? client,
   }) : super(const AuthenticationLoading()) {
@@ -80,7 +84,7 @@ class AuthenticationBloc
   }) async {
     try {
       final user = await userRepository.me();
-      await userRepository.fetchAndSetCalendar(user.id);
+      await calendarRepository.fetchAndSetCalendar(user.id);
       return Authenticated(
         user: user,
         newlyLoggedIn: newlyLoggedIn,

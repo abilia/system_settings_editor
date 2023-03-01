@@ -13,7 +13,6 @@ class UserRepository extends Repository {
   final LoginDb loginDb;
   final UserDb userDb;
   final LicenseDb licenseDb;
-  final CalendarDb calendarDb;
   final DeviceDb deviceDb;
   final int postApiVersion;
   final String app, name;
@@ -25,7 +24,6 @@ class UserRepository extends Repository {
     required this.userDb,
     required this.licenseDb,
     required this.deviceDb,
-    required this.calendarDb,
     required this.app,
     required this.name,
     this.postApiVersion = 1,
@@ -131,20 +129,6 @@ class UserRepository extends Repository {
     }
   }
 
-  Future<void> fetchAndSetCalendar(int userId) async {
-    try {
-      if (await calendarDb.getCalendarId() == null) {
-        final response = await client.post(
-          '$baseUrl/api/v1/calendar/$userId?type=${CalendarDb.memoType}'
-              .toUri(),
-        );
-        final calendarType = Calendar.fromJson(response.json());
-        await calendarDb.insert(calendarType);
-      }
-    } catch (e, s) {
-      _log.severe('could not fetch calendarId', e, s);
-    }
-  }
 
   Future<void> logout() async {
     _log.fine('unregister Client');

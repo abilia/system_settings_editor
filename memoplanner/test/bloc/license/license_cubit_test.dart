@@ -5,7 +5,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-import '../../fakes/fakes_blocs.dart';
+import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
 
 void main() {
@@ -20,7 +20,10 @@ void main() {
       userRepository: userRepository,
       clockBloc: ClockBloc.fixed(time),
       pushCubit: FakePushCubit(),
-      authenticationBloc: AuthenticationBloc(userRepository),
+      authenticationBloc: AuthenticationBloc(
+        userRepository: userRepository,
+        calendarRepository: FakesCalendarRepository(),
+      ),
     );
   });
 

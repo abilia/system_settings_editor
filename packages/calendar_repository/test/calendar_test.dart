@@ -1,8 +1,7 @@
 import 'dart:convert';
 
+import 'package:calendar_repository/calendar.dart';
 import 'package:test/test.dart';
-
-import 'package:auth/models/calendar.dart';
 
 void main() {
   test('from json to dbMap and back', () {

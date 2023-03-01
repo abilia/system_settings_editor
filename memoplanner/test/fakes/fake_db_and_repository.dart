@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:calendar_repository/calendar_db.dart';
+import 'package:calendar_repository/calendar_repository.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -309,3 +311,5 @@ class FakeMyAbiliaConnection extends Fake implements MyAbiliaConnection {
   @override
   Future<bool> hasConnection() async => true;
 }
+
+class FakesCalendarRepository extends Fake implements CalendarRepository {}

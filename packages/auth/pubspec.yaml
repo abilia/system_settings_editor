@@ -7,6 +7,8 @@ environment:
 dependencies:
   bloc: ^8.1.1
   bloc_concurrency: ^0.2.0
+  calendar_repository:
+    path: ../calendar_repository
   database:
     path: ../database
   equatable: ^2.0.3
@@ -22,6 +24,7 @@ dependencies:
   uuid: ^3.0.5
 
 dev_dependencies:
+  bloc_test: ^9.0.3
   flutter_test:
     sdk: flutter
   mocktail: ^0.3.0

@@ -1,0 +1,19 @@
+name: calendar_repository
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+
+dependencies:
+  database:
+    path: ../database
+  logging: ^1.1.0
+  repo_base:
+    path: ../repo_base
+  sqflite: ^2.2.0
+  utils:
+    path: ../utils
+
+dev_dependencies:
+  seagull_lints:
+    path: ../seagull_lints
+  test: any

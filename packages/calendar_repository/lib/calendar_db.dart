@@ -1,5 +1,5 @@
-import 'package:auth/models/calendar.dart';
 import 'package:database/database_repository.dart';
+import 'package:calendar_repository/calendar.dart';
 
 import 'package:sqflite/sqflite.dart';
 
