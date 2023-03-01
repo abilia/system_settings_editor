@@ -129,7 +129,6 @@ class UserRepository extends Repository {
     }
   }
 
-
   Future<void> logout() async {
     _log.fine('unregister Client');
     await _unregisterClient();

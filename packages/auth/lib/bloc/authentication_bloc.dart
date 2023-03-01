@@ -20,8 +20,7 @@ class AuthenticationBloc
   final CalendarRepository calendarRepository;
   late final StreamSubscription? _clientSubscription;
 
-  AuthenticationBloc(
-    {
+  AuthenticationBloc({
     required this.userRepository,
     required this.calendarRepository,
     this.onLogout,

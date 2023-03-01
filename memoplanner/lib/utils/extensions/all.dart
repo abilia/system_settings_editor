@@ -3,7 +3,6 @@ export 'datetime_extensions.dart';
 export 'activities_alarms_extensions.dart';
 export 'duration_extensions.dart';
 export 'signed_off_dates_extensions.dart';
-export 'licenses_extensions.dart';
 export 'recurring_extensions.dart';
 export 'permission_extensions.dart';
 export 'iterable_extensions.dart';

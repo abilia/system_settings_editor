@@ -1,13 +1,12 @@
+import 'package:auth/auth.dart';
+import 'package:auth/repository/user_repository.dart';
+import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:get_it/get_it.dart';
 
-import 'package:auth/models/exceptions.dart';
-import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/config.dart';
-import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/logging/all.dart';
-import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:logging/logging.dart';
+import 'package:repository_base/db.dart';
+import 'package:seagull_clock/clock_bloc.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 part 'login_state.dart';
 
@@ -17,14 +16,18 @@ class LoginCubit extends Cubit<LoginState> {
     required this.pushService,
     required this.clockBloc,
     required this.userRepository,
+    required this.database,
+    required this.allowExiredLicense,
   }) : super(LoginState.initial());
 
   static final _log = Logger((LoginCubit).toString());
 
+  final Database database;
   final AuthenticationBloc authenticationBloc;
   final FirebasePushService pushService;
   final ClockBloc clockBloc;
   final UserRepository userRepository;
+  final bool allowExiredLicense;
 
   void usernameChanged(String username) {
     emit(state.copyWith(
@@ -78,9 +81,9 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<LoginFailureCause?> _getPreLoginFailureCause() async {
-    if (!await DatabaseRepository.isEmpty(GetIt.I<Database>())) {
-      await DatabaseRepository.clearAll(GetIt.I<Database>());
-      if (!await DatabaseRepository.isEmpty(GetIt.I<Database>())) {
+    if (!await DatabaseRepository.isEmpty(database)) {
+      await DatabaseRepository.clearAll(database);
+      if (!await DatabaseRepository.isEmpty(database)) {
         return LoginFailureCause.notEmptyDatabase;
       }
     }
@@ -109,10 +112,10 @@ class LoginCubit extends Cubit<LoginState> {
     final licenses = await userRepository.getLicensesFromApi();
     final hasValidLicense = licenses.anyValidLicense(clockBloc.state);
     final hasMemoplannerLicense = licenses.anyMemoplannerLicense();
-    final hasMPLicenseAndLicenseExpiredConfirmed =
-        Config.isMP && hasMemoplannerLicense && licenseExpiredConfirmed;
+    final hasLicenseAndLicenseExpiredConfirmed =
+        allowExiredLicense && hasMemoplannerLicense && licenseExpiredConfirmed;
 
-    if (hasValidLicense || hasMPLicenseAndLicenseExpiredConfirmed) {
+    if (hasValidLicense || hasLicenseAndLicenseExpiredConfirmed) {
       return _loginSuccess();
     }
     final licenceFailureCause = _getLicenceFailureCause(hasMemoplannerLicense);
@@ -120,7 +123,7 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   LoginFailureCause _getLicenceFailureCause(bool hasMemoplannerLicense) {
-    if (Config.isMP && hasMemoplannerLicense) {
+    if (allowExiredLicense && hasMemoplannerLicense) {
       return LoginFailureCause.licenseExpired;
     }
     return LoginFailureCause.noLicense;

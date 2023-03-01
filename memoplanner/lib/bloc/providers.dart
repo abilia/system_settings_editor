@@ -1,3 +1,4 @@
+import 'package:auth/auth.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:calendar_repository/calendar_db.dart';
 import 'package:calendar_repository/calendar_repository.dart';
@@ -370,7 +371,9 @@ class TopLevelProvider extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider<PushCubit>(
-            create: (context) => pushCubit ?? PushCubit(),
+            create: (context) =>
+                pushCubit ??
+                PushCubit(backgroundMessageHandler: myBackgroundMessageHandler),
           ),
           BlocProvider<ClockBloc>(
             create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),

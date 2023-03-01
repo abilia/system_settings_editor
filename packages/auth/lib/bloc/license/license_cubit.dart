@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:auth/bloc/all.dart';
+import 'package:auth/licenses_extensions.dart';
+import 'package:auth/repository/user_repository.dart';
+import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_clock/clock_bloc.dart';
 
 part 'license_state.dart';
 

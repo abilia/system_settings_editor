@@ -1,12 +1,9 @@
+import 'package:auth/auth.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/config.dart';
-import 'package:memoplanner/getit.dart';
-import 'package:memoplanner/models/all.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:seagull_clock/clock_bloc.dart';
 
-import '../../fakes/all.dart';
-import '../../mocks/mocks.dart';
-import '../../test_helpers/register_fallback_values.dart';
+import '../fakes_and_mocks.dart';
 
 void main() {
   final time = DateTime(2033, 12, 11, 11);
@@ -18,10 +15,12 @@ void main() {
 
     const pushToken = 'pushToken';
     final mockDb = MockDatabase();
+    setUpAll(() {
+      registerFallbackValue(
+          const LoginInfo(token: '', endDate: 1, renewToken: ''));
+    });
 
     setUp(() async {
-      TestWidgetsFlutterBinding.ensureInitialized();
-      registerFallbackValues();
       final mockFirebasePushService = MockFirebasePushService();
       mockUserRepository = MockUserRepository();
       when(() => mockFirebasePushService.initPushToken())
@@ -45,12 +44,9 @@ void main() {
         pushService: mockFirebasePushService,
         clockBloc: ClockBloc.fixed(time),
         userRepository: mockUserRepository,
+        database: mockDb,
+        allowExiredLicense: false,
       );
-
-      GetItInitializer()
-        ..sharedPreferences = await FakeSharedPreferences.getInstance()
-        ..database = mockDb
-        ..init();
     });
 
     test('initial state is LoginInitial', () {
@@ -205,7 +201,6 @@ void main() {
     tearDown(() {
       loginCubit.close();
       authenticationBloc.close();
-      GetIt.I.reset();
     });
   });
 
@@ -213,8 +208,6 @@ void main() {
     late LoginCubit loginCubit;
     late MockUserRepository mockedUserRepository;
     late MockFirebasePushService mockFirebasePushService;
-
-    setUpAll(registerFallbackValues);
 
     setUp(() async {
       TestWidgetsFlutterBinding.ensureInitialized();
@@ -226,11 +219,17 @@ void main() {
         calendarRepository: FakesCalendarRepository(),
       )..add(CheckAuthentication());
       mockFirebasePushService = MockFirebasePushService();
+      final mockDb = MockDatabase();
+      when(() => mockDb.rawQuery(any())).thenAnswer((_) => Future.value([
+            {'count(*)': 0}
+          ]));
       loginCubit = LoginCubit(
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
         clockBloc: ClockBloc.fixed(time),
         userRepository: mockedUserRepository,
+        database: mockDb,
+        allowExiredLicense: false,
       );
       when(() => mockedUserRepository.baseUrl).thenReturn('url');
       when(() => mockedUserRepository.isLoggedIn()).thenReturn(false);
@@ -244,20 +243,9 @@ void main() {
                     endTime: time.add(const Duration(hours: 24)),
                     product: memoplannerLicenseName)
               ]));
-
-      final mockDb = MockDatabase();
-      when(() => mockDb.rawQuery(any())).thenAnswer((_) => Future.value([
-            {'count(*)': 0}
-          ]));
-      GetItInitializer()
-        ..sharedPreferences = await FakeSharedPreferences.getInstance()
-        ..database = mockDb
-        ..init();
     });
 
-    tearDown(() {
-      GetIt.I.reset();
-    });
+    tearDown(() {});
 
     test('LoginButtonPressed event loggs in and saves token', () async {
       // Arrange
@@ -308,7 +296,6 @@ void main() {
 
     setUp(() async {
       TestWidgetsFlutterBinding.ensureInitialized();
-      registerFallbackValues();
       final mockFirebasePushService = MockFirebasePushService();
       mockUserRepository = MockUserRepository();
       mockCalendarRepository = MockCalendarRepository();
@@ -343,11 +330,17 @@ void main() {
         userRepository: mockUserRepository,
         calendarRepository: mockCalendarRepository,
       );
+      final mockDb = MockDatabase();
+      when(() => mockDb.rawQuery(any())).thenAnswer((_) => Future.value([
+            {'count(*)': 0}
+          ]));
       loginCubit = LoginCubit(
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
         clockBloc: ClockBloc.fixed(time),
         userRepository: mockUserRepository,
+        database: mockDb,
+        allowExiredLicense: false,
       );
 
       expiredLicense = License(
@@ -356,19 +349,6 @@ void main() {
         endTime: time.add(const Duration(hours: -24)),
         product: memoplannerLicenseName,
       );
-
-      final mockDb = MockDatabase();
-      when(() => mockDb.rawQuery(any())).thenAnswer((_) => Future.value([
-            {'count(*)': 0}
-          ]));
-      GetItInitializer()
-        ..sharedPreferences = await FakeSharedPreferences.getInstance()
-        ..database = mockDb
-        ..init();
-    });
-
-    tearDown(() {
-      GetIt.I.reset();
     });
 
     test('Login fails when no license', () async {
@@ -399,8 +379,25 @@ void main() {
       await expected;
     });
 
-    test('Login failure when expired license on MpGO', () async {
+    test('Login failure when expired license and not allowed', () async {
       // Arrange
+
+      final mockDb = MockDatabase();
+      when(() => mockDb.rawQuery(any())).thenAnswer((_) => Future.value([
+            {'count(*)': 0}
+          ]));
+      final mockFirebasePushService = MockFirebasePushService();
+      when(() => mockFirebasePushService.initPushToken())
+          .thenAnswer((_) => Future.value(pushToken));
+
+      loginCubit = LoginCubit(
+        authenticationBloc: authenticationBloc,
+        pushService: mockFirebasePushService,
+        clockBloc: ClockBloc.fixed(time),
+        userRepository: mockUserRepository,
+        database: mockDb,
+        allowExiredLicense: false,
+      );
 
       when(() => mockUserRepository.getLicensesFromApi()).thenAnswer(
         (_) => Future.value([
@@ -424,10 +421,28 @@ void main() {
 
       // Assert
       await expected;
-    }, skip: Config.isMP);
+    });
 
-    test('Login succeeds when expired license on MP', () async {
+    test('Login succeeds when expired license and expired licensed allowed',
+        () async {
       // Arrange
+
+      final mockDb = MockDatabase();
+      when(() => mockDb.rawQuery(any())).thenAnswer((_) => Future.value([
+            {'count(*)': 0}
+          ]));
+      final mockFirebasePushService = MockFirebasePushService();
+      when(() => mockFirebasePushService.initPushToken())
+          .thenAnswer((_) => Future.value(pushToken));
+
+      loginCubit = LoginCubit(
+        authenticationBloc: authenticationBloc,
+        pushService: mockFirebasePushService,
+        clockBloc: ClockBloc.fixed(time),
+        userRepository: mockUserRepository,
+        database: mockDb,
+        allowExiredLicense: true,
+      );
 
       when(() => mockUserRepository.getLicensesFromApi()).thenAnswer(
         (_) => Future.value([
@@ -450,6 +465,6 @@ void main() {
 
       // Assert
       await expected;
-    }, skip: Config.isMPGO);
+    });
   });
 }

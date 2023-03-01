@@ -1,3 +1,4 @@
+import 'package:auth/auth.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:calendar_repository/calendar_db.dart';
 import 'package:calendar_repository/calendar_repository.dart';
@@ -47,8 +48,6 @@ class MockLoginDb extends Mock implements LoginDb {}
 class MockLicenseDb extends Mock implements LicenseDb {}
 
 class MockDatabase extends Mock implements Database {}
-
-class MockBatch extends Mock implements Batch {}
 
 class MockSettingsDb extends Mock implements SettingsDb {}
 

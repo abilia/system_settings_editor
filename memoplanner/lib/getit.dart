@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:auth/http_client.dart';
+import 'package:auth/auth.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:calendar_repository/calendar_db.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';

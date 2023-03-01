@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:auth/http_client.dart';
+import 'package:auth/licenses_extensions.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:memoplanner/config.dart';

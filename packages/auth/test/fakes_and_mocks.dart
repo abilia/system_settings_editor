@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:auth/db/all.dart';
-import 'package:auth/models/all.dart';
+import 'package:auth/auth.dart';
 import 'package:auth/repository/user_repository.dart';
 import 'package:calendar_repository/calendar_repository.dart';
 import 'package:http/http.dart';
@@ -10,6 +9,7 @@ import 'package:http/testing.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 class FakeSharedPreferences {
   static Future<SharedPreferences> getInstance({bool loggedIn = true}) {
@@ -20,6 +20,13 @@ class FakeSharedPreferences {
   }
 }
 
+class FakePushCubit extends Fake implements PushCubit {
+  @override
+  Stream<RemoteMessage> get stream => const Stream.empty();
+  @override
+  Future<void> close() async {}
+}
+
 class MockBaseUrlDb extends Mock implements BaseUrlDb {}
 
 class MockBaseClient extends Mock implements BaseClient {}
@@ -28,11 +35,19 @@ class MockUserDb extends Mock implements UserDb {}
 
 class MockLoginDb extends Mock implements LoginDb {}
 
+class MockDatabase extends Mock implements Database {}
+
+class MockBatch extends Mock implements Batch {}
+
 class MockUserRepository extends Mock implements UserRepository {}
 
 class MockCalendarRepository extends Mock implements CalendarRepository {}
 
 class MockNotification extends Mock implements Notification {}
+
+class FakesCalendarRepository extends Fake implements CalendarRepository {}
+
+class MockFirebasePushService extends Mock implements FirebasePushService {}
 
 class Notification {
   void mockCancelAll() {}
@@ -72,8 +87,7 @@ class FakeListenableClient {
             return Response(
                 json.encode({
                   'me': user.toJson(),
-                }
-                ),
+                }),
                 200);
           }
           if (pathSegments.contains('calendar')) {

@@ -1,4 +1,4 @@
-import 'package:memoplanner/models/all.dart';
+import 'package:auth/models/license.dart';
 
 extension LicensesExtension on Iterable<License> {
   bool anyValidLicense(DateTime now) {

@@ -34,7 +34,7 @@ void main() {
         analytics: FakeSeagullAnalytics(),
       );
       timerAlarmBloc = TimerAlarmBloc(
-        ticker: Ticker.fake( initialTime: initialMinutes),
+        ticker: Ticker.fake(initialTime: initialMinutes),
         timerCubit: timerCubit,
       );
       activitiesBloc = ActivitiesBloc(
@@ -323,7 +323,7 @@ void main() {
       // Arrange
       when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value(const Iterable.empty()));
-      final ticker = Ticker.fake( initialTime: initialMinutes);
+      final ticker = Ticker.fake(initialTime: initialMinutes);
       final timerCubit = TimerCubit(
         timerDb: MockTimerDb(),
         ticker: ticker,

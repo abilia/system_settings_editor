@@ -85,8 +85,8 @@ void main() {
   blocTest<TimerAlarmBloc, TimerAlarmState>(
     'Timer current then time goes goes to past',
     build: () => TimerAlarmBloc(
-      ticker: Ticker.fake(initialTime: 
-        initialTime,
+      ticker: Ticker.fake(
+        initialTime: initialTime,
         stream: streamController.stream,
       ),
       timerCubit: mockTimerCubit,
@@ -122,8 +122,8 @@ void main() {
       );
     },
     build: () => TimerAlarmBloc(
-      ticker: Ticker.fake(initialTime: 
-        initialTime,
+      ticker: Ticker.fake(
+        initialTime: initialTime,
         stream: streamController.stream,
       ),
       timerCubit: mockTimerCubit,
@@ -188,8 +188,8 @@ void main() {
       );
     },
     build: () => TimerAlarmBloc(
-      ticker: Ticker.fake(initialTime: 
-        initialTime,
+      ticker: Ticker.fake(
+        initialTime: initialTime,
         stream: streamController.stream,
       ),
       timerCubit: mockTimerCubit,
@@ -229,8 +229,8 @@ void main() {
       );
     },
     build: () => TimerAlarmBloc(
-      ticker: Ticker.fake(initialTime: 
-        initialTime,
+      ticker: Ticker.fake(
+        initialTime: initialTime,
         stream: streamController.stream,
       ),
       timerCubit: mockTimerCubit,

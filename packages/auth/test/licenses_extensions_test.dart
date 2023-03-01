@@ -1,6 +1,7 @@
+import 'package:auth/licenses_extensions.dart';
+import 'package:auth/models/license.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:utils/utils.dart';
 
 void main() {
   final now = DateTime(2010, 1, 1, 12, 00);
