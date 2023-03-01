@@ -1,7 +1,7 @@
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'activities/all.dart';
 export 'package:auth/bloc/authentication_bloc.dart';
-export 'authentication/authenticated_dialog/authenticated_dialog_cubit.dart';
+export 'authenticated_dialog/authenticated_dialog_cubit.dart';
 export 'login/all.dart';
 export 'calendar/all.dart';
 export 'package:seagull_clock/clock_bloc.dart';
