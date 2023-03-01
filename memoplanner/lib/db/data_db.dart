@@ -86,16 +86,34 @@ abstract class DataDb<M extends DataModel> {
       final revision = existingDirtyAndRevision.isEmpty
           ? 0
           : existingDirtyAndRevision.first['revision'];
-      return await db.insert(
-          tableName,
-          model
-              .wrapWithDbModel(dirty: dirty + 1, revision: revision)
-              .toMapForDb(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
+
+      // deleted activities with revision 0 are synced to myAbilia as not deleted
+      if (model is Activity) {
+        if (model.deleted && revision == 0 && dirty > 0) {
+          return _delete(model);
+        }
+      }
+      return _insert(model, dirty + 1, revision);
     });
     final res = await Future.wait(insertResult);
     return res.isNotEmpty;
   }
+
+  Future<int> _insert(M model, int dirty, int revision) {
+    final dbModel = model.wrapWithDbModel(dirty: dirty, revision: revision);
+    final data = dbModel.toMapForDb();
+    return db.insert(
+      tableName,
+      data,
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<int> _delete(M model) => db.delete(
+        tableName,
+        where: 'id = ?',
+        whereArgs: [model.id],
+      );
 
   Iterable<DbModel<M>> rowsToDbModels(List<Map<String, Object?>> rows) => rows
       .exceptionSafeMap(convertToDataModel, onException: log.logAndReturnNull)
