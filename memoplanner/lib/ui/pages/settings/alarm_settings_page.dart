@@ -149,7 +149,6 @@ class _AlarmSelector extends StatelessWidget {
       children: <Widget>[
         SubHeading(heading),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Expanded(
               child: PickField(
