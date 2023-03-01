@@ -14,7 +14,7 @@ void main() {
               key: 'licenseKey',
               endTime: now.add(24.hours()),
               product: memoplannerLicenseName)
-        ].anyValidLicense(now),
+        ].anyValidLicense(now, LicenseType.memoplanner),
         true);
   });
 
@@ -26,7 +26,7 @@ void main() {
               key: 'licenseKey',
               endTime: now.subtract(24.hours()),
               product: memoplannerLicenseName)
-        ].anyValidLicense(now),
+        ].anyValidLicense(now, LicenseType.memoplanner),
         false);
   });
 
@@ -45,7 +45,7 @@ void main() {
             endTime: now.add(24.hours()),
             product: 'other-product',
           ),
-        ].anyValidLicense(now),
+        ].anyValidLicense(now, LicenseType.memoplanner),
         false);
   });
 
@@ -64,7 +64,7 @@ void main() {
             endTime: now.subtract(24.hours()),
             product: 'other-product',
           ),
-        ].anyValidLicense(now),
+        ].anyValidLicense(now, LicenseType.memoplanner),
         true);
   });
 }

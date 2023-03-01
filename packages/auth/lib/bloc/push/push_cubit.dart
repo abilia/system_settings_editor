@@ -8,13 +8,12 @@ class PushCubit extends Cubit<RemoteMessage> {
   static final _log = Logger((PushCubit).toString());
   PushCubit({BackgroundMessageHandler? backgroundMessageHandler})
       : super(const RemoteMessage()) {
-
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       emit(message);
       _log.fine('onMessage push: ${message.toMap()}');
     });
     if (backgroundMessageHandler != null) {
-    FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
+      FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
     }
   }
   @visibleForTesting

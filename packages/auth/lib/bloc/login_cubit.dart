@@ -18,6 +18,7 @@ class LoginCubit extends Cubit<LoginState> {
     required this.userRepository,
     required this.database,
     required this.allowExiredLicense,
+    required this.licenseType,
   }) : super(LoginState.initial());
 
   static final _log = Logger((LoginCubit).toString());
@@ -28,6 +29,7 @@ class LoginCubit extends Cubit<LoginState> {
   final ClockBloc clockBloc;
   final UserRepository userRepository;
   final bool allowExiredLicense;
+  final LicenseType licenseType;
 
   void usernameChanged(String username) {
     emit(state.copyWith(
@@ -110,8 +112,9 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> _checkValidLicense(bool licenseExpiredConfirmed) async {
     final licenses = await userRepository.getLicensesFromApi();
-    final hasValidLicense = licenses.anyValidLicense(clockBloc.state);
-    final hasMemoplannerLicense = licenses.anyMemoplannerLicense();
+    final hasValidLicense =
+        licenses.anyValidLicense(clockBloc.state, licenseType);
+    final hasMemoplannerLicense = licenses.anyMemoplannerLicense(licenseType);
     final hasLicenseAndLicenseExpiredConfirmed =
         allowExiredLicense && hasMemoplannerLicense && licenseExpiredConfirmed;
 

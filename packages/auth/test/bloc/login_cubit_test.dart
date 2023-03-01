@@ -46,6 +46,7 @@ void main() {
         userRepository: mockUserRepository,
         database: mockDb,
         allowExiredLicense: false,
+        licenseType: LicenseType.memoplanner,
       );
     });
 
@@ -230,6 +231,7 @@ void main() {
         userRepository: mockedUserRepository,
         database: mockDb,
         allowExiredLicense: false,
+        licenseType: LicenseType.memoplanner,
       );
       when(() => mockedUserRepository.baseUrl).thenReturn('url');
       when(() => mockedUserRepository.isLoggedIn()).thenReturn(false);
@@ -341,6 +343,7 @@ void main() {
         userRepository: mockUserRepository,
         database: mockDb,
         allowExiredLicense: false,
+        licenseType: LicenseType.memoplanner,
       );
 
       expiredLicense = License(
@@ -397,6 +400,7 @@ void main() {
         userRepository: mockUserRepository,
         database: mockDb,
         allowExiredLicense: false,
+        licenseType: LicenseType.memoplanner,
       );
 
       when(() => mockUserRepository.getLicensesFromApi()).thenAnswer(
@@ -442,6 +446,7 @@ void main() {
         userRepository: mockUserRepository,
         database: mockDb,
         allowExiredLicense: true,
+        licenseType: LicenseType.memoplanner,
       );
 
       when(() => mockUserRepository.getLicensesFromApi()).thenAnswer(

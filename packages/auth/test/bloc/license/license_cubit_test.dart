@@ -25,6 +25,7 @@ void main() {
         userRepository: userRepository,
         calendarRepository: FakesCalendarRepository(),
       ),
+      licenseType: LicenseType.memoplanner,
     );
   });
 

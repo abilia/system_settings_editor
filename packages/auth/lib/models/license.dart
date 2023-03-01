@@ -1,8 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:utils/utils.dart';
 
-const memoplannerLicenseName = 'memoplanner';
+const memoplannerLicenseName = 'memoplanner', handiLicenseName = 'handi';
 const licenseLength = 12;
+
+enum LicenseType {
+  memoplanner(name: memoplannerLicenseName),
+  handi(name: handiLicenseName);
+
+  const LicenseType({required this.name});
+  final String name;
+}
 
 class License extends Equatable {
   final int id;

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:auth/bloc/all.dart';
 import 'package:auth/licenses_extensions.dart';
+import 'package:auth/models/license.dart';
 import 'package:auth/repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -12,11 +13,13 @@ part 'license_state.dart';
 
 class LicenseCubit extends Cubit<LicenseState> {
   final ClockBloc clockBloc;
+  final LicenseType licenseType;
   late final StreamSubscription pushSubscription;
   late final StreamSubscription authSubscription;
   LicenseCubit({
     required this.userRepository,
     required this.clockBloc,
+    required this.licenseType,
     required PushCubit pushCubit,
     required AuthenticationBloc authenticationBloc,
   }) : super(LicensesNotLoaded()) {
@@ -34,9 +37,9 @@ class LicenseCubit extends Cubit<LicenseState> {
 
   Future<void> reloadLicenses() async {
     final licenses = await userRepository.getLicenses();
-    if (licenses.anyValidLicense(clockBloc.state)) {
+    if (licenses.anyValidLicense(clockBloc.state, licenseType)) {
       emit(ValidLicense());
-    } else if (licenses.anyMemoplannerLicense()) {
+    } else if (licenses.anyMemoplannerLicense(licenseType)) {
       emit(NoValidLicense());
     } else {
       emit(NoLicense());
