@@ -8,12 +8,12 @@ dependencies:
   bloc: ^8.1.1
   bloc_concurrency: ^0.2.0
   calendar_repository:
-    path: ../calendar_repository
+    path: ../repository/calendar_repository
   equatable: ^2.0.3
   http: ^0.13.5
   logging: ^1.1.0
   repository_base:
-    path: ../repository_base
+    path: ../repository/repository_base
   shared_preferences: ^2.0.8
   sqflite: ^2.2.0
   synchronized: ^3.0.0

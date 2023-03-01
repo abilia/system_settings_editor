@@ -20,7 +20,7 @@ dependencies:
   battery_plus: ^3.0.2
   bloc_concurrency: ^0.2.0
   calendar_repository:
-    path: ../packages/calendar_repository
+    path: ../packages/repository/calendar_repository
   collection: ^1.17.0
   connectivity_plus: ^3.0.2
   crypto: ^3.0.1
@@ -67,7 +67,7 @@ dependencies:
   provider: ^6.0.4
   record: ^4.4.3
   repository_base: 
-    path: ../packages/repository_base
+    path: ../packages/repository/repository_base
   rxdart: ^0.27.1
   seagull_analytics:
     path: ../packages/seagull_analytics

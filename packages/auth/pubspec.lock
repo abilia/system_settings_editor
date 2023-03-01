@@ -68,7 +68,7 @@ packages:
   calendar_repository:
     dependency: "direct main"
     description:
-      path: "../calendar_repository"
+      path: "../repository/calendar_repository"
       relative: true
     source: path
     version: "0.0.0"
@@ -386,7 +386,7 @@ packages:
   repository_base:
     dependency: "direct main"
     description:
-      path: "../repository_base"
+      path: "../repository/repository_base"
       relative: true
     source: path
     version: "0.0.0"

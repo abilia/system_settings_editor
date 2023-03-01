@@ -9,9 +9,9 @@ dependencies:
     path: ../repository_base
   sqflite: ^2.2.0
   utils:
-    path: ../utils
+    path: ../../utils
 
 dev_dependencies:
   seagull_lints:
-    path: ../seagull_lints
+    path: ../../seagull_lints
   test: any

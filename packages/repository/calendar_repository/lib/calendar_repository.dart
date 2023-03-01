@@ -10,7 +10,7 @@ class CalendarRepository extends Repository {
   final CalendarDb calendarDb;
   final int postApiVersion;
 
-  const CalendarRepository({
+  const CalendarRepository({    
     required super.baseUrlDb,
     required super.client,
     required this.calendarDb,
