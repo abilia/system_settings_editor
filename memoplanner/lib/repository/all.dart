@@ -1,5 +1,6 @@
 export 'package:repo_base/repo_base.dart';
 export 'package:auth/repository/user_repository.dart';
+export 'package:repo_base/database_repository.dart';
 export 'push.dart';
 export 'multipart_request.dart';
 export 'timezone.dart';

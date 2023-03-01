@@ -1,4 +1,4 @@
-import 'package:database/database_repository.dart';
+import 'package:repo_base/database_repository.dart';
 import 'package:calendar_repository/calendar.dart';
 
 import 'package:sqflite/sqflite.dart';

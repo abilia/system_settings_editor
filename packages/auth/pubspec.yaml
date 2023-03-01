@@ -9,8 +9,6 @@ dependencies:
   bloc_concurrency: ^0.2.0
   calendar_repository:
     path: ../calendar_repository
-  database:
-    path: ../database
   equatable: ^2.0.3
   http: ^0.13.5
   logging: ^1.1.0

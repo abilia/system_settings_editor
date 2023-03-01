@@ -4,11 +4,11 @@ import 'package:auth/models/all.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:calendar_repository/calendar_db.dart';
 import 'package:calendar_repository/calendar_repository.dart';
-import 'package:database/database_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:auth/repository/user_repository.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:repo_base/database_repository.dart';
 import 'package:repo_base/repo_base.dart';
 
 import '../fakes_and_mocks.dart';
