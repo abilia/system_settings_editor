@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:repo_base/end_point.dart';
+import 'package:repository_base/end_point.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
 
 class BlocLoggingObserver extends BlocObserver {

@@ -8,8 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:auth/repository/user_repository.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:repo_base/database_repository.dart';
-import 'package:repo_base/repo_base.dart';
+import 'package:repository_base/repository_base.dart';
 
 import '../fakes_and_mocks.dart';
 

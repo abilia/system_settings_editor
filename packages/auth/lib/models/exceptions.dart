@@ -1,4 +1,4 @@
-import 'package:repo_base/models/whale_error.dart';
+import 'package:repository_base/models/whale_error.dart';
 
 class UnauthorizedException implements Exception {
   String errMsg() => 'Not authorized';

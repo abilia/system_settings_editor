@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:repo_base/models/whale_error.dart';
+import 'package:repository_base/models/whale_error.dart';
 
 class LoginError extends Equatable {
   final int status;

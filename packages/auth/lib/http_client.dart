@@ -7,7 +7,7 @@ import 'package:logging/logging.dart';
 
 import 'package:auth/db/all.dart';
 import 'package:auth/models/all.dart';
-import 'package:repo_base/repo_base.dart';
+import 'package:repository_base/repository_base.dart';
 import 'package:utils/utils.dart';
 import 'package:synchronized/extension.dart';
 

@@ -352,13 +352,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.4"
-  database:
-    dependency: "direct main"
-    description:
-      path: "../packages/database"
-      relative: true
-    source: path
-    version: "0.0.0"
   dbus:
     dependency: transitive
     description:
@@ -1171,10 +1164,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.1"
-  repo_base:
+  repository_base:
     dependency: "direct main"
     description:
-      path: "../packages/repo_base"
+      path: "../packages/repository_base"
       relative: true
     source: path
     version: "0.0.0"

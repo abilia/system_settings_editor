@@ -8,7 +8,7 @@ import 'package:calendar_repository/calendar_repository.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:repo_base/repo_base.dart';
+import 'package:repository_base/repository_base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FakeSharedPreferences {

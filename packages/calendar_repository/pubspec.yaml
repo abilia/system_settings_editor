@@ -5,8 +5,8 @@ environment:
 
 dependencies:
   logging: ^1.1.0
-  repo_base:
-    path: ../repo_base
+  repository_base:
+    path: ../repository_base
   sqflite: ^2.2.0
   utils:
     path: ../utils

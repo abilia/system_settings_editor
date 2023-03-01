@@ -1,4 +1,4 @@
-name: repo_base
+name: repository_base
 
 environment:
   sdk: '>=2.19.2 <3.0.0'

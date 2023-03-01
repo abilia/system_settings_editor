@@ -12,8 +12,8 @@ dependencies:
   equatable: ^2.0.3
   http: ^0.13.5
   logging: ^1.1.0
-  repo_base:
-    path: ../repo_base
+  repository_base:
+    path: ../repository_base
   shared_preferences: ^2.0.8
   sqflite: ^2.2.0
   synchronized: ^3.0.0

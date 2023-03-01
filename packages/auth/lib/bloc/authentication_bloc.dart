@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 
 import 'package:logging/logging.dart';
 import 'package:auth/models/all.dart';
-import 'package:repo_base/listenable_client.dart';
+import 'package:repository_base/listenable_client.dart';
 import 'package:auth/repository/user_repository.dart';
 
 part 'authentication_event.dart';

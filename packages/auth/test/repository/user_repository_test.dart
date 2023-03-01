@@ -1,6 +1,6 @@
 
 import 'package:mocktail/mocktail.dart';
-import 'package:repo_base/repo_base.dart';
+import 'package:repository_base/repository_base.dart';
 import 'package:test/test.dart';
 import 'package:http/http.dart';
 
