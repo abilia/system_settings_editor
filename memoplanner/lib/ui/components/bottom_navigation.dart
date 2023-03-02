@@ -57,7 +57,7 @@ class _BottomNavigationContainer extends StatelessWidget {
         child: SizedBox(
           height: layout.navigationBar.height,
           child: Padding(
-            padding: layout.templates.bottomNavigation,
+            padding: layout.navigationBar.padding,
             child: child,
           ),
         ),
