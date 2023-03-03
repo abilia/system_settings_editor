@@ -73,6 +73,7 @@ jobs:
           flutter-version: '3.7.5'
           channel: 'stable'
 
-      - run: flutter packages pub run build_runner build
+      - run: flutter pub get
+      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
       - run: |
           flutter test --reporter expanded --dart-define flavor=${{ matrix.flavor }} --flavor ${{ matrix.flavor }}
