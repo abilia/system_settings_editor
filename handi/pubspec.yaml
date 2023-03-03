@@ -11,6 +11,9 @@ dependencies:
     path: ../packages/auth
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.0.1
+  seagull_analytics:
+    path: ../packages/seagull_analytics
 
 dev_dependencies:
   flutter_launcher_icons: ^0.11.0
