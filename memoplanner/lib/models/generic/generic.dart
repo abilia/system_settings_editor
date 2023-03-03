@@ -14,16 +14,15 @@ class GenericType {
 
 class Generic<T extends GenericData> extends DataModel {
   final String? type;
-  final bool deleted;
 
   final T data;
 
   const Generic._({
-    required String id,
+    required super.id,
+    required super.deleted,
     required this.type,
     required this.data,
-    required this.deleted,
-  }) : super(id);
+  });
 
   static Generic<T> createNew<T extends GenericData>({
     required T data,

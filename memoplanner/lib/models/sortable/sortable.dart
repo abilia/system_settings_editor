@@ -23,21 +23,21 @@ class SortableType {
 
 class Sortable<T extends SortableData> extends DataModel {
   final String type, groupId, sortOrder;
-  final bool deleted, isGroup, visible, fixed;
+  final bool isGroup, visible, fixed;
 
   final T data;
 
   const Sortable._({
-    required String id,
+    required super.id,
+    required super.deleted,
     required this.type,
     required this.data,
     required this.groupId,
     required this.sortOrder,
-    required this.deleted,
     required this.isGroup,
     required this.visible,
     required this.fixed,
-  }) : super(id);
+  });
 
   static Sortable<T> createNew<T extends SortableData>({
     required T data,
