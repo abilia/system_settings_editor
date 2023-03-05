@@ -25,6 +25,7 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
   late TimepillarZoom timepillarZoom;
   late TimepillarIntervalType dayInterval;
   late DayCalendarType calendarType;
+  final _controller = ScrollController();
 
   @override
   void initState() {
@@ -48,8 +49,10 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
         text: t.display,
         iconData: AbiliaIcons.show,
       ),
-      body: AbiliaScrollBar(
+      body: ScrollArrows.vertical(
+        controller: _controller,
         child: ListView(
+          controller: _controller,
           children: [
             SizedBox(
               height: layout.templates.m1.top,
