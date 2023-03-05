@@ -2,8 +2,9 @@ import 'package:equatable/equatable.dart';
 
 abstract class DataModel extends Equatable {
   final String id;
+  final bool deleted;
 
-  const DataModel(this.id);
+  const DataModel({required this.id, required this.deleted});
   DbModel wrapWithDbModel({int revision = 0, int dirty = 0});
 }
 
