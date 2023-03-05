@@ -1,23 +1,21 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/utils/all.dart';
 import 'package:memoplanner/ui/all.dart';
-
+import 'package:memoplanner/utils/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:intl/date_symbol_data_local.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
 import '../../../mocks/mocks.dart';
+import '../../../test_helpers/default_sortables.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
-import '../../../test_helpers/default_sortables.dart';
 
 void main() {
   final startTime = DateTime(2021, 09, 22, 12, 46);
@@ -133,6 +131,8 @@ void main() {
                 ),
                 BlocProvider<WizardCubit>(
                   create: (context) => ActivityWizardCubit.newActivity(
+                    supportPersonsCubit:
+                        FakeSupportPersonsCubit.withSupportPerson(),
                     activitiesBloc: context.read<ActivitiesBloc>(),
                     clockBloc: context.read<ClockBloc>(),
                     editActivityCubit: context.read<EditActivityCubit>(),

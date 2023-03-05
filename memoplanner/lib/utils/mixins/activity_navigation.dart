@@ -12,7 +12,6 @@ mixin ActivityNavigation {
   ) async {
     final navigator = Navigator.of(context);
     final day = context.read<DayPickerBloc>().state.day;
-    final supportPersonsCubit = context.read<SupportPersonsCubit>();
     final basicActivityData =
         await Navigator.of(context).push<BasicActivityData>(
       MaterialPageRoute(
@@ -29,7 +28,6 @@ mixin ActivityNavigation {
       ),
     );
     if (basicActivityData is BasicActivityDataItem) {
-      supportPersonsCubit.loadSupportPersons();
       _navigateToActivityWizard(
         authProviders: authProviders,
         navigator: navigator,
@@ -46,7 +44,6 @@ mixin ActivityNavigation {
   ) {
     final settings = context.read<MemoplannerSettingsBloc>().state;
     final defaultsSettings = settings.addActivity.defaults;
-    context.read<SupportPersonsCubit>().loadSupportPersons();
     return _navigateToActivityWizard(
       authProviders: authProviders,
       navigator: Navigator.of(context),
@@ -82,6 +79,8 @@ mixin ActivityNavigation {
                 final settings = context.read<MemoplannerSettingsBloc>().state;
                 final addActivitySettings = settings.addActivity;
                 final showCategories = settings.calendar.categories.show;
+                final supportPersonsCubit = context.read<SupportPersonsCubit>()
+                  ..loadSupportPersons();
                 return addActivitySettings.mode == AddActivityMode.editView
                     ? ActivityWizardCubit.newAdvanced(
                         activitiesBloc: context.read<ActivitiesBloc>(),
@@ -93,10 +92,7 @@ mixin ActivityNavigation {
                     : ActivityWizardCubit.newStepByStep(
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
-                        showAvailableFor: context
-                            .read<SupportPersonsCubit>()
-                            .state
-                            .showAvailableFor,
+                        supportPersonsCubit: supportPersonsCubit,
                         clockBloc: context.read<ClockBloc>(),
                         allowPassedStartTime:
                             addActivitySettings.general.allowPassedStartTime,

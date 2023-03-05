@@ -137,7 +137,8 @@ void main() {
                 ),
               ),
               BlocProvider<SupportPersonsCubit>(
-                  create: (_) => supportPersonsCubit),
+                create: (_) => supportPersonsCubit,
+              ),
               BlocProvider<EditActivityCubit>(
                 create: (context) => newActivity
                     ? EditActivityCubit.newActivity(
@@ -163,6 +164,7 @@ void main() {
                       )
                     : newActivity
                         ? ActivityWizardCubit.newActivity(
+                            supportPersonsCubit: FakeSupportPersonsCubit(),
                             activitiesBloc: context.read<ActivitiesBloc>(),
                             clockBloc: context.read<ClockBloc>(),
                             editActivityCubit:
