@@ -54,7 +54,7 @@ class Activity extends DataModel {
   final DateTime startTime;
   final Duration duration;
   final int category, alarmType;
-  final bool deleted, fullDay, checkable, removeAfter, secret;
+  final bool fullDay, checkable, removeAfter, secret;
   final UnmodifiableListView<int> reminderBefore;
   final UnmodifiableListView<String> signedOffDates;
   final String infoItemString;
@@ -70,13 +70,13 @@ class Activity extends DataModel {
   late final InfoItem infoItem = InfoItem.fromBase64(infoItemString);
 
   Activity._({
-    required String id,
+    required super.id,
+    required super.deleted,
     required this.seriesId,
     required this.title,
     required this.startTime,
     required this.duration,
     required this.category,
-    required this.deleted,
     required this.checkable,
     required this.removeAfter,
     required this.secret,
@@ -93,8 +93,7 @@ class Activity extends DataModel {
     required this.calendarId,
     required this.secretExemptions,
   })  : assert(alarmType >= 0),
-        assert(category >= 0),
-        super(id);
+        assert(category >= 0);
 
   factory Activity({
     required DateTime startTime,
