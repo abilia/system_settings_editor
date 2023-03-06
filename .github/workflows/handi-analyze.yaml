@@ -1,4 +1,4 @@
-name: Handi Analyze
+name: Handi
 
 on:
   pull_request:
@@ -7,21 +7,19 @@ on:
       - release*
     paths-ignore:
       - 'memoplanner/**'
+      - 'packages/**'
       - '**/ios/**'
       - '**/android/**'
       - '**/*.md'
 
 jobs:
   analyze:
-    strategy:
-      matrix:
-        include:
-          - folder: handi
+    name: Analyze
     runs-on: ubuntu-latest
     timeout-minutes: 30
     defaults:
       run:
-        working-directory: ./${{ matrix.folder }}
+        working-directory: ./handi
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2.5.0
@@ -34,16 +32,13 @@ jobs:
       - run: flutter format --set-exit-if-changed .
 
   test:
+    name: Test
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: analyze
-    strategy:
-      matrix:
-        include:
-          - folder: handi
     defaults:
       run:
-        working-directory: ./${{ matrix.folder }}
+        working-directory: ./handi
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2.5.0

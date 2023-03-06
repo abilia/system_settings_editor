@@ -9,18 +9,16 @@ on:
       - 'memoplanner/**'
       - 'handi/ios/**'
       - 'handi/test*/**'
+      - 'packages/**'
       - '**/*.md'
 jobs:
   test:
+    name: Test
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    strategy:
-      matrix:
-        include:
-          - folder: handi
     defaults:
       run:
-        working-directory: ./${{ matrix.folder }}
+        working-directory: ./handi
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2.5.0
@@ -32,16 +30,13 @@ jobs:
           flutter test --reporter expanded
 
   build:
+    name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: test
-    strategy:
-      matrix:
-        include:
-          - folder: handi
     defaults:
       run:
-        working-directory: ./${{ matrix.folder }}
+        working-directory: ./handi
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v2
@@ -71,10 +66,11 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: app-release
-          path: ${{ matrix.folder }}/build/app/outputs/bundle/release/app-release.aab
+          path: handi/build/app/outputs/bundle/release/app-release.aab
           retention-days: 1
 
   upload:
+    name: Upload to Google play
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: build

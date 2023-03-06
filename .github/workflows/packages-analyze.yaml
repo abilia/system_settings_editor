@@ -1,0 +1,78 @@
+name: Packages
+
+on:
+  pull_request:
+    branches:
+      - master
+      - release*
+    paths-ignore:
+      - 'memoplanner/**'
+      - 'handi/**'
+      - '**/*.md'
+
+jobs:
+  collect_analyze:
+    name: Collect Analyze Directories
+    runs-on: ubuntu-latest
+    outputs:
+      dirs: ${{ steps.dirs.outputs.dirs }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: dirs
+        run: echo "dirs=$(ls -d packages/*/ | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+
+
+  collect_test:
+    name: Collect Test Directories
+    runs-on: ubuntu-latest
+    outputs:
+      dirs: ${{ steps.dirs.outputs.dirs }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: dirs
+        run: echo "dirs=$(ls -d packages/*/test | sed 's%^\([^/]*\/[^/]*\)\/.*$%\1%' | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+
+  analyze:
+    name: Analyze
+    needs: collect_analyze
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        dir: ${{ fromJson(needs.collect_analyze.outputs.dirs) }}
+    defaults:
+      run:
+        working-directory: ./${{ matrix.dir }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2.5.0
+        with:
+          flutter-version: '3.7.5'
+          channel: 'stable'
+
+      - run: echo ${{ matrix.dir }}
+      - run: flutter pub get
+      - run: flutter analyze .
+      - run: flutter format --set-exit-if-changed .
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [ analyze, collect_test ]
+    strategy:
+      matrix:
+        dir: ${{ fromJson(needs.collect_test.outputs.dirs) }}
+    defaults:
+      run:
+        working-directory: ./${{ matrix.dir }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2.5.0
+        with:
+          flutter-version: '3.7.5'
+          channel: 'stable'
+
+      - run: echo ${{ matrix.dir }}
+      - run: |
+          flutter test --reporter expanded

@@ -9,6 +9,7 @@ on:
       - 'handi/**'
       - 'memoplanner/ios/**'
       - 'memoplanner/test*/**'
+      - 'packages/**'
       - '**/*.md'
 
 jobs:
@@ -18,11 +19,9 @@ jobs:
     strategy:
       matrix:
         flavor: ['mp', 'mpgo']
-        include:
-          - folder: memoplanner
     defaults:
       run:
-        working-directory: ./${{ matrix.folder }}
+        working-directory: ./memoplanner
     steps:
     - uses: actions/checkout@v3
     - uses: subosito/flutter-action@v2.5.0
@@ -42,11 +41,9 @@ jobs:
     strategy:
       matrix:
         flavor: ['mp', 'mpgo']
-        include:
-          - folder: memoplanner
     defaults:
       run:
-        working-directory: ./${{ matrix.folder }}
+        working-directory: ./memoplanner
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-java@v2
@@ -85,7 +82,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: app-${{ matrix.flavor }}-release
-        path: ${{ matrix.folder }}/build/app/outputs/bundle/**/app-${{ matrix.flavor }}-release.aab
+        path: memoplanner/build/app/outputs/bundle/**/app-${{ matrix.flavor }}-release.aab
         retention-days: 1
 
   upload:

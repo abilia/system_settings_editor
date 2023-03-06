@@ -1,4 +1,4 @@
-name: MEMOPlanner Analyze
+name: MEMOPlanner
 
 on:
   pull_request:
@@ -7,21 +7,19 @@ on:
       - release*
     paths-ignore:
       - 'handi/**'
+      - 'packages/**'
       - '**/ios/**'
       - '**/android/**'
       - '**/*.md'
 
 jobs:
   analyze:
-    strategy:
-      matrix:
-        include:
-          - folder: memoplanner
+    name: Analyze
     runs-on: ubuntu-latest
     timeout-minutes: 30
     defaults:
       run:
-        working-directory: ./${{ matrix.folder }}
+        working-directory: ./memoplanner
     steps:
     - uses: actions/checkout@v3
     - run: |
@@ -41,17 +39,16 @@ jobs:
     - run: git diff --exit-code
 
   test:
+    name: Test
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: analyze
     strategy:
       matrix:
         flavor: ['mp', 'mpgo']
-        include:
-          - folder: memoplanner
     defaults:
       run:
-        working-directory: ./${{ matrix.folder }}
+        working-directory: ./memoplanner
     steps:
     - uses: actions/checkout@v3
     - uses: subosito/flutter-action@v2.5.0
