@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: dirs
-        run: echo "dirs=$(ls -d packages/*/ | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+        run: echo "dirs=$(ls -d packages/**/pubspec.y* | sed 's![^/]*$!!' | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
 
 
   collect_test:
@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: dirs
-        run: echo "dirs=$(ls -d packages/*/test | sed 's%^\([^/]*\/[^/]*\)\/.*$%\1%' | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+        run: echo "dirs=$(ls -d packages/**/test | sed 's![^/]*$!!' | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
 
   analyze:
     name: Analyze
