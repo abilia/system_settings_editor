@@ -1,16 +1,15 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart';
-import 'package:memoplanner/utils/all.dart';
-import 'package:mocktail/mocktail.dart';
-import 'package:record/record.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:http/http.dart';
 import 'package:memoplanner/bloc/all.dart';
-
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
+import 'package:memoplanner/utils/all.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:record/record.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
 
 export 'package:mocktail/mocktail.dart';
@@ -59,6 +58,8 @@ class MockCalendarDb extends Mock implements CalendarDb {}
 class MockGenericDb extends Mock implements GenericDb {}
 
 class MockSortableDb extends Mock implements SortableDb {}
+
+class MockSupportPersonsDb extends Mock implements SupportPersonsDb {}
 
 class MockTimerDb extends Mock implements TimerDb {}
 

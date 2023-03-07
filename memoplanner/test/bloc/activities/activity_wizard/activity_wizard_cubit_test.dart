@@ -1,12 +1,11 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:timezone/data/latest.dart' as tz;
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
@@ -59,6 +58,7 @@ void main() {
       editActivityCubit: FakeEditActivityCubit(),
       clockBloc: clockBloc,
       addActivitySettings: const AddActivitySettings(),
+      supportPersonsCubit: FakeSupportPersonsCubit(),
     );
 
     expect(
@@ -77,6 +77,7 @@ void main() {
   test('Initial new with wizard steps', () {
     // Arrange
     final activityWizardCubit = ActivityWizardCubit.newActivity(
+      supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: EditActivityCubit.newActivity(
         day: aDay,
@@ -180,6 +181,7 @@ void main() {
       calendarId: calendarId,
     );
     final activityWizardCubit = ActivityWizardCubit.newActivity(
+      supportPersonsCubit: FakeSupportPersonsCubit(),
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
@@ -332,6 +334,7 @@ void main() {
     );
 
     final wizCubit = ActivityWizardCubit.newActivity(
+      supportPersonsCubit: FakeSupportPersonsCubit(),
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
@@ -746,6 +749,7 @@ void main() {
     );
 
     final wizCubit = ActivityWizardCubit.newActivity(
+      supportPersonsCubit: FakeSupportPersonsCubit(),
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
@@ -815,6 +819,7 @@ void main() {
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
+          supportPersonsCubit: FakeSupportPersonsCubit(),
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.days())),
@@ -888,6 +893,7 @@ void main() {
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
+          supportPersonsCubit: FakeSupportPersonsCubit(),
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
@@ -977,6 +983,7 @@ void main() {
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
+          supportPersonsCubit: FakeSupportPersonsCubit(),
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(time),
@@ -1064,6 +1071,7 @@ void main() {
           calendarId: calendarId,
         );
         final wizCubit = ActivityWizardCubit.newActivity(
+          supportPersonsCubit: FakeSupportPersonsCubit(),
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: clockBloc,
@@ -1260,6 +1268,7 @@ void main() {
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
+          supportPersonsCubit: FakeSupportPersonsCubit(),
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
@@ -1346,6 +1355,7 @@ void main() {
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
+          supportPersonsCubit: FakeSupportPersonsCubit(),
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
@@ -1488,6 +1498,7 @@ void main() {
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
+          supportPersonsCubit: FakeSupportPersonsCubit(),
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime),
@@ -1549,6 +1560,7 @@ void main() {
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
+          supportPersonsCubit: FakeSupportPersonsCubit(),
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
@@ -1848,6 +1860,7 @@ void main() {
       );
 
       final wizCubit = ActivityWizardCubit.newActivity(
+        supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
@@ -1888,6 +1901,7 @@ void main() {
       );
 
       final wizCubit = ActivityWizardCubit.newActivity(
+        supportPersonsCubit: FakeSupportPersonsCubit(),
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
@@ -1935,6 +1949,7 @@ void main() {
       );
 
       final wizCubit = ActivityWizardCubit.newActivity(
+        supportPersonsCubit: FakeSupportPersonsCubit(),
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
@@ -1950,6 +1965,57 @@ void main() {
             title: true,
             fullDay: false,
             availability: false,
+            checkable: false,
+            removeAfter: false,
+            alarm: false,
+            checklist: false,
+            notes: false,
+            reminders: false,
+          ),
+        ),
+      );
+
+      expect(
+        wizCubit.state,
+        WizardState(
+          0,
+          const [
+            WizardStep.title,
+            WizardStep.time,
+            WizardStep.category,
+          ],
+        ),
+      );
+    });
+
+    test(
+        'When availability option is true but has no support persons, do not show availability wiz',
+        () async {
+      // Arrange
+      final editActivityCubit = EditActivityCubit.newActivity(
+        day: aDay,
+        defaultsSettings:
+            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
+        calendarId: calendarId,
+      );
+
+      final wizCubit = ActivityWizardCubit.newActivity(
+        supportPersonsCubit: FakeSupportPersonsCubit(),
+        activitiesBloc: FakeActivitiesBloc(),
+        editActivityCubit: editActivityCubit,
+        clockBloc: clockBloc,
+        addActivitySettings: const AddActivitySettings(
+          mode: AddActivityMode.stepByStep,
+          general: GeneralAddActivitySettings(
+            addRecurringActivity: false,
+          ),
+          stepByStep: StepByStepSettings(
+            template: false,
+            date: false,
+            image: false,
+            title: true,
+            fullDay: false,
+            availability: true,
             checkable: false,
             removeAfter: false,
             alarm: false,
@@ -2020,6 +2086,7 @@ void main() {
       );
 
       final wizCubit = ActivityWizardCubit.newActivity(
+        supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
@@ -2046,6 +2113,7 @@ void main() {
       final activity = editActivityCubit.state.activity;
 
       final wizCubit = ActivityWizardCubit.newActivity(
+        supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
@@ -2125,6 +2193,7 @@ void main() {
       final activity = editActivityCubit.state.activity;
 
       final wizCubit = ActivityWizardCubit.newActivity(
+        supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
@@ -2169,6 +2238,7 @@ void main() {
       final activity = editActivityCubit.state.activity;
 
       final wizCubit = ActivityWizardCubit.newActivity(
+        supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
@@ -2214,6 +2284,7 @@ void main() {
       final activity = editActivityCubit.state.activity;
 
       final wizCubit = ActivityWizardCubit.newActivity(
+        supportPersonsCubit: FakeSupportPersonsCubit(),
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
@@ -2314,6 +2385,7 @@ void main() {
       final activity = editActivityCubit.state.activity;
 
       final wizCubit = ActivityWizardCubit.newActivity(
+        supportPersonsCubit: FakeSupportPersonsCubit(),
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
