@@ -18,7 +18,7 @@ void main() {
     final fromDb = db.getLicenses();
     expect(fromDb, [license]);
 
-    await db.delete();
+    await db.prefs.clear();
     final deleted = db.getLicenses();
     expect(deleted, []);
   });

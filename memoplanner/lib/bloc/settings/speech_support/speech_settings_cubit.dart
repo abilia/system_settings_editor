@@ -24,6 +24,17 @@ class SpeechSettingsCubit extends Cubit<SpeechSettingsState> {
           ),
         );
 
+  void reload() {
+    emit(
+      SpeechSettingsState(
+        textToSpeech: voiceDb.textToSpeech,
+        speechRate: voiceDb.speechRate,
+        speakEveryWord: voiceDb.speakEveryWord,
+        voice: voiceDb.voice,
+      ),
+    );
+  }
+
   Future<void> setTextToSpeech(bool textToSpeech) async {
     emit(state.copyWith(textToSpeech: textToSpeech));
     await voiceDb.setTextToSpeech(textToSpeech);

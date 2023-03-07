@@ -9,6 +9,14 @@ class DeviceDb {
   static const String _clientIdRecord = 'clientIdRecord';
   static const String _startGuideCompletedRecord = 'startGuideCompletedRecord';
   static const String _deviceLicenseRecord = 'deviceLicenseRecord';
+
+  static const Set<String> records = {
+    _serialIdRecord,
+    _clientIdRecord,
+    _startGuideCompletedRecord,
+    _deviceLicenseRecord,
+  };
+
   final SharedPreferences prefs;
 
   const DeviceDb(this.prefs);
@@ -34,9 +42,6 @@ class DeviceDb {
 
   Future<void> setDeviceLicense(DeviceLicense license) =>
       prefs.setString(_deviceLicenseRecord, json.encode(license));
-
-  Future<void> clearDeviceLicense() =>
-      prefs.setString(_deviceLicenseRecord, '');
 
   DeviceLicense? getDeviceLicense() {
     final licenseJson = prefs.getString(_deviceLicenseRecord);

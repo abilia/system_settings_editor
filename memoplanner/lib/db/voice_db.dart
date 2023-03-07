@@ -10,6 +10,11 @@ class VoiceDb {
       textToSpeechRecord = 'TEXT_TO_SPEECH',
       _voice = 'VOICE';
 
+  static const Set<String> storeOnLogoutRecords = {
+    textToSpeechRecord,
+    _voice,
+  };
+
   final SharedPreferences preferences;
 
   const VoiceDb(this.preferences);
