@@ -1,11 +1,13 @@
-import 'package:auth/bloc/all.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:handi/ui/pages/logged_in_page.dart';
-import 'package:handi/ui/pages/login_page.dart';
-import 'package:seagull_analytics/seagull_analytics.dart';
+import 'package:handi/authentication_listener.dart';
+import 'package:handi/getitinitialize.dart';
+import 'package:handi/providers.dart';
 
-void main() {
+const appName = 'handi';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await GetItInitializer().init();
   runApp(
     const HandiApp(),
   );
@@ -18,43 +20,15 @@ class HandiApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthenticationBloc, AuthenticationState>(
-      listenWhen: (previous, current) =>
-          previous.runtimeType != current.runtimeType ||
-          previous.forcedNewState != current.forcedNewState,
-      listener: (context, state) async {
-        final navigator = _navigatorKey.currentState;
-        if (navigator == null) {
-          context.read<AuthenticationBloc>().add(NotReady());
-          return;
-        }
-        if (state is Authenticated) {
-          await navigator.pushAndRemoveUntil<void>(
-            MaterialPageRoute<void>(
-              builder: (_) => const LoggedInPage(),
-              settings: (LoggedInPage).routeSetting(),
-            ),
-            (_) => false,
-          );
-        } else if (state is Unauthenticated) {
-          await navigator.pushAndRemoveUntil<void>(
-            MaterialPageRoute<void>(
-              builder: (_) => const LoginPage(),
-              settings: (LoginPage).routeSetting(
-                properties: {
-                  'logout reason': state.loggedOutReason.name,
-                },
-              ),
-            ),
-            (_) => false,
-          );
-        }
-      },
-      child: MaterialApp(
+    return Providers(
+      child: AuthenticationListener(
         navigatorKey: _navigatorKey,
-        home: const Scaffold(
-          body: Center(
-            child: Text('Handi!'),
+        child: MaterialApp(
+          navigatorKey: _navigatorKey,
+          home: Scaffold(
+            body: Center(
+              child: Text('${appName.toUpperCase()}!'),
+            ),
           ),
         ),
       ),

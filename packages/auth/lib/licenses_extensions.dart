@@ -6,7 +6,7 @@ extension LicensesExtension on Iterable<License> {
         (l) => l.product.contains(license.name) && l.endTime.isAfter(now));
   }
 
-  bool anyMemoplannerLicense(LicenseType license) {
+  bool anyLicense(LicenseType license) {
     return any((l) => l.product.contains(license.name));
   }
 }

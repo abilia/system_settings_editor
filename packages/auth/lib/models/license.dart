@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:utils/utils.dart';
 
-const memoplannerLicenseName = 'memoplanner', handiLicenseName = 'handi';
+const memoplannerLicenseName = 'memoplanner',
+    handiLicenseName = 'handicalendar';
 const licenseLength = 12;
 
 enum LicenseType {

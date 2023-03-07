@@ -49,7 +49,8 @@ class UserRepository extends Repository {
           'type': 'flutter',
           'app': app,
           'name': name,
-          'address': pushToken,
+          // TODO Remove this check once we added firebase push to handi
+          if (pushToken.isNotEmpty) 'address': pushToken,
         },
       ),
     );

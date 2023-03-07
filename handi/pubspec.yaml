@@ -9,18 +9,30 @@ environment:
 dependencies:
   auth:
     path: ../packages/auth
+  calendar_repository:
+    path: ../packages/repository/calendar_repository
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
+  get_it: ^7.2.0
+  package_info_plus: ^3.0.3
+  repository_base:
+    path: ../packages/repository/repository_base
   seagull_analytics:
     path: ../packages/seagull_analytics
+  seagull_clock: 
+    path: ../packages/seagull_clock
+  shared_preferences: ^2.0.8
+  sqflite: ^2.2.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.11.0
   flutter_test:
     sdk: flutter
+  http: ^0.13.5
   seagull_lints:
     path: ../packages/seagull_lints
+
 
 flutter_icons:
   android: true

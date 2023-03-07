@@ -114,19 +114,19 @@ class LoginCubit extends Cubit<LoginState> {
     final licenses = await userRepository.getLicensesFromApi();
     final hasValidLicense =
         licenses.anyValidLicense(clockBloc.state, licenseType);
-    final hasMemoplannerLicense = licenses.anyMemoplannerLicense(licenseType);
+    final hasLicense = licenses.anyLicense(licenseType);
     final hasLicenseAndLicenseExpiredConfirmed =
-        allowExiredLicense && hasMemoplannerLicense && licenseExpiredConfirmed;
+        allowExiredLicense && hasLicense && licenseExpiredConfirmed;
 
     if (hasValidLicense || hasLicenseAndLicenseExpiredConfirmed) {
       return _loginSuccess();
     }
-    final licenceFailureCause = _getLicenceFailureCause(hasMemoplannerLicense);
+    final licenceFailureCause = _getLicenceFailureCause(hasLicense);
     emit(state.failure(cause: licenceFailureCause));
   }
 
-  LoginFailureCause _getLicenceFailureCause(bool hasMemoplannerLicense) {
-    if (allowExiredLicense && hasMemoplannerLicense) {
+  LoginFailureCause _getLicenceFailureCause(bool hasLicense) {
+    if (allowExiredLicense && hasLicense) {
       return LoginFailureCause.licenseExpired;
     }
     return LoginFailureCause.noLicense;
