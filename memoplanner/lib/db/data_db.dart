@@ -75,24 +75,36 @@ abstract class DataDb<M extends DataModel> {
 
   /// Returns true if any dirty data added to the database and needs sync
   Future<bool> insertAndAddDirty(Iterable<M> data) async {
-    final insertResult = data.map((model) async {
-      final List<Map> existingDirtyAndRevision = await db.query(tableName,
-          columns: ['dirty', 'revision'],
-          where: 'id = ?',
-          whereArgs: [model.id]);
-      final dirty = existingDirtyAndRevision.isEmpty
-          ? 0
-          : existingDirtyAndRevision.first['dirty'];
-      final revision = existingDirtyAndRevision.isEmpty
-          ? 0
-          : existingDirtyAndRevision.first['revision'];
-      return await db.insert(
+    final insertResult = data.map(
+      (model) async {
+        final List<Map> existingDirtyAndRevision = await db.query(tableName,
+            columns: ['dirty', 'revision'],
+            where: 'id = ?',
+            whereArgs: [model.id]);
+        final dirty = existingDirtyAndRevision.isEmpty
+            ? 0
+            : existingDirtyAndRevision.first['dirty'];
+        final revision = existingDirtyAndRevision.isEmpty
+            ? 0
+            : existingDirtyAndRevision.first['revision'];
+
+        // No need to store deleted unsynced data
+        if (model.deleted && revision == 0 && dirty > 0) {
+          return db.delete(
+            tableName,
+            where: 'id = ?',
+            whereArgs: [model.id],
+          );
+        }
+        return await db.insert(
           tableName,
           model
               .wrapWithDbModel(dirty: dirty + 1, revision: revision)
               .toMapForDb(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
-    });
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      },
+    );
     final res = await Future.wait(insertResult);
     return res.isNotEmpty;
   }

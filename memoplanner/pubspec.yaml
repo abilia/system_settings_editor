@@ -24,6 +24,7 @@ dependencies:
   devicelocale: ^0.6.0
   dotted_border: ^2.0.0
   dotted_line: ^3.1.0
+  envied: ^0.3.0
   equatable: ^2.0.3
   firebase_core: ^2.1.1
   firebase_crashlytics: ^3.0.4
@@ -83,6 +84,7 @@ dependencies:
 dev_dependencies:
   bloc_test: ^9.0.3
   build_runner: ^2.3.0
+  envied_generator: ^0.3.0
   file: ^6.1.0
   flutter_test:
     sdk: flutter

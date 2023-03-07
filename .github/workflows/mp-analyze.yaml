@@ -21,22 +21,29 @@ jobs:
       run:
         working-directory: ./memoplanner
     steps:
-    - uses: actions/checkout@v3
-    - run: |
-        if (( $(tr -d -c '\t\n' < lib/i18n/translations.tsv | uniq -c | wc -l) > 1 )); then
-          echo >&2 "translations.tsv is not uniformed in tabs"
-          exit 1
-        fi
-    - uses: subosito/flutter-action@v2.5.0
-      with:
-        flutter-version: '3.7.5'
-        channel: 'stable'
+      - uses: actions/checkout@v3
+      - uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_ABILIA_OPEN_API_KEY: ${{ secrets.DEVICE_API_KEY }}
+          directory: memoplanner/lib/env/
+          file_name: .env.key
+          fail_on_empty: true
 
-    - run: flutter pub get
-    - run: flutter analyze .
-    - run: flutter format --set-exit-if-changed .
-    - run: flutter packages pub run build_runner build --delete-conflicting-outputs
-    - run: git diff --exit-code
+      - run: |
+          if (( $(tr -d -c '\t\n' < lib/i18n/translations.tsv | uniq -c | wc -l) > 1 )); then
+            echo >&2 "translations.tsv is not uniformed in tabs"
+            exit 1
+          fi
+      - uses: subosito/flutter-action@v2.5.0
+        with:
+          flutter-version: '3.7.5'
+          channel: 'stable'
+
+      - run: flutter pub get
+      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      - run: git diff --exit-code
+      - run: flutter analyze .
+      - run: flutter format --set-exit-if-changed .
 
   test:
     name: Test
@@ -45,16 +52,24 @@ jobs:
     needs: analyze
     strategy:
       matrix:
-        flavor: ['mp', 'mpgo']
+        flavor: [ 'mp', 'mpgo' ]
     defaults:
       run:
         working-directory: ./memoplanner
     steps:
-    - uses: actions/checkout@v3
-    - uses: subosito/flutter-action@v2.5.0
-      with:
-        flutter-version: '3.7.5'
-        channel: 'stable'
+      - uses: actions/checkout@v3
+      - uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_ABILIA_OPEN_API_KEY: ${{ secrets.DEVICE_API_KEY }}
+          directory: memoplanner/lib/env/
+          file_name: .env.key
+          fail_on_empty: true
+      - uses: subosito/flutter-action@v2.5.0
+        with:
+          flutter-version: '3.7.5'
+          channel: 'stable'
 
-    - run: |
-        flutter test --reporter expanded --dart-define flavor=${{ matrix.flavor }} --flavor ${{ matrix.flavor }}
+          - run: flutter pub get
+          - run: flutter packages pub run build_runner build --delete-conflicting-outputs
+          - run: |
+              flutter test --reporter expanded --dart-define flavor=${{ matrix.flavor }} --flavor ${{ matrix.flavor }}

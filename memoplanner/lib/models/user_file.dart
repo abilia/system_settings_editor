@@ -6,18 +6,18 @@ class UserFile extends DataModel {
   final String sha1, md5, path;
   final String? contentType;
   final int fileSize;
-  final bool deleted, fileLoaded;
+  final bool fileLoaded;
 
   const UserFile({
-    required String id,
+    required super.id,
+    required super.deleted,
     required this.sha1,
     required this.md5,
     required this.path,
     required this.fileSize,
-    required this.deleted,
     required this.fileLoaded,
     this.contentType,
-  }) : super(id);
+  });
 
   UserFile setLoaded() => UserFile(
         id: id,

@@ -1,5 +1,13 @@
 # MEMOplanner generation 4
 
+## Getting started
+
+To get started, first set up the environment keys:
+
+1. Get the `.env.key` file from either Lastpass or from a developer.
+2. Put the file in the `lib/env` folder.
+3. Run `$ flutter pub run build_runner build` to generate the keys.
+
 ## Building for android
 
 The following environmental variables needs to be defined:
