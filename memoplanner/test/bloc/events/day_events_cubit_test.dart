@@ -1,11 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 import '../../fakes/all.dart';
-import '../../fakes/fake_seagull_analytics.dart';
 import '../../mocks/mocks.dart';
 
 void main() {

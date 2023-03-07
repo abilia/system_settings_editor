@@ -5,7 +5,7 @@ import 'package:memoplanner/models/sortable/data/basic_timer_data.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:test/test.dart';
 
-import '../../../fakes/fake_seagull_analytics.dart';
+import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 
 void main() {
