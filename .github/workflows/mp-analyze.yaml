@@ -25,7 +25,7 @@ jobs:
       - uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_ABILIA_OPEN_API_KEY: ${{ secrets.DEVICE_API_KEY }}
-          directory: memoplanner/lib/env/
+          directory: ./memoplanner/lib/env/
           file_name: .env.key
           fail_on_empty: true
 
@@ -61,7 +61,7 @@ jobs:
       - uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_ABILIA_OPEN_API_KEY: ${{ secrets.DEVICE_API_KEY }}
-          directory: memoplanner/lib/env/
+          directory: ./memoplanner/lib/env/
           file_name: .env.key
           fail_on_empty: true
       - uses: subosito/flutter-action@v2.5.0
@@ -69,7 +69,7 @@ jobs:
           flutter-version: '3.7.5'
           channel: 'stable'
 
-          - run: flutter pub get
-          - run: flutter packages pub run build_runner build --delete-conflicting-outputs
-          - run: |
-              flutter test --reporter expanded --dart-define flavor=${{ matrix.flavor }} --flavor ${{ matrix.flavor }}
+      - run: flutter pub get
+      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      - run: |
+          flutter test --reporter expanded --dart-define flavor=${{ matrix.flavor }} --flavor ${{ matrix.flavor }}
