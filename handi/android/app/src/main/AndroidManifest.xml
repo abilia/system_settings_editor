@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.abilia.handi">
+    package="com.abilia.handicalendar6">
    <application
         android:label="Handi6"
         android:name="${applicationName}"
