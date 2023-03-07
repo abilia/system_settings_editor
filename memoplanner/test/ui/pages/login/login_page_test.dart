@@ -471,6 +471,7 @@ void main() {
 
   testWidgets('Redirect to login when unauthorized',
       (WidgetTester tester) async {
+    tester.setScreenSize(const Size(500, 800));
     await tester.pumpApp();
     await tester.pumpAndSettle();
     await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
@@ -641,6 +642,7 @@ void main() {
           'and fullscreen notification is not granted, show all dialogs',
           (WidgetTester tester) async {
         // Arrange
+        tester.setScreenSize(const Size(500, 800));
         termsOfUseResponse = () =>
             const TermsOfUse(termsOfCondition: false, privacyPolicy: false);
         when(() => sortableDb.getAllNonDeleted())
@@ -744,6 +746,7 @@ void main() {
           'show starter set dialog and full screen alarm dialog',
           (WidgetTester tester) async {
         // Arrange
+        tester.setScreenSize(const Size(500, 800));
         termsOfUseResponse = () => TermsOfUse.accepted();
         when(() => sortableDb.getAllNonDeleted())
             .thenAnswer((_) => Future.value([]));
@@ -792,6 +795,7 @@ void main() {
           'show starter terms of use dialog and set dialog',
           (WidgetTester tester) async {
         // Arrange
+        tester.setScreenSize(const Size(500, 800));
         termsOfUseResponse = () => TermsOfUse.accepted();
         when(() => sortableDb.getAllNonDeleted())
             .thenAnswer((_) => Future.value([]));
