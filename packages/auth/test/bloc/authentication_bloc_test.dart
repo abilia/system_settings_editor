@@ -1,6 +1,4 @@
-import 'package:auth/bloc/authentication_bloc.dart';
-import 'package:auth/db/all.dart';
-import 'package:auth/models/all.dart';
+import 'package:auth/auth.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:calendar_repository/calendar_db.dart';
 import 'package:calendar_repository/calendar_repository.dart';
@@ -9,8 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:auth/repository/user_repository.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:repository_base/repository_base.dart';
-
-import '../fakes_and_mocks.dart';
 
 void main() {
   setUpAll(() {

@@ -6,13 +6,39 @@ import 'package:auth/repository/user_repository.dart';
 import 'package:calendar_repository/calendar_repository.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
+import 'package:meta/meta.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sqflite/sqlite_api.dart';
 
+class FakesCalendarRepository extends Fake implements CalendarRepository {}
+
+@visibleForTesting
+class FakeDeviceDb extends Fake implements DeviceDb {
+  @override
+  Future<String> getClientId() async {
+    return 'clientId';
+  }
+
+  @override
+  String get serialId => 'serialId';
+
+  @override
+  bool get startGuideCompleted => true;
+
+  @override
+  Future<void> setDeviceLicense(DeviceLicense license) async {}
+
+  @override
+  DeviceLicense? getDeviceLicense() {
+    return null;
+  }
+}
+
+@visibleForTesting
 class FakeSharedPreferences {
   static Future<SharedPreferences> getInstance({bool loggedIn = true}) {
+    // ignore: invalid_use_of_visible_for_testing_member
     SharedPreferences.setMockInitialValues({
       if (loggedIn) LoginDb.tokenKey: 'Fakes.token',
     });
@@ -20,49 +46,64 @@ class FakeSharedPreferences {
   }
 }
 
+@visibleForTesting
+class FakeUserRepository extends Fake implements UserRepository {
+  @override
+  String get baseUrl => 'fake.url';
+
+  @override
+  Future<void> persistLoginInfo(LoginInfo token) => Future.value();
+}
+
+@visibleForTesting
+class FakeLoginDb extends Fake implements LoginDb {
+  static const String token = 'token';
+
+  @override
+  String? getToken() => token;
+}
+
+@visibleForTesting
 class FakePushCubit extends Fake implements PushCubit {
   @override
   Stream<RemoteMessage> get stream => const Stream.empty();
+
   @override
   Future<void> close() async {}
 }
 
-class MockBaseUrlDb extends Mock implements BaseUrlDb {}
-
-class MockBaseClient extends Mock implements BaseClient {}
-
-class MockUserDb extends Mock implements UserDb {}
-
-class MockLoginDb extends Mock implements LoginDb {}
-
-class MockDatabase extends Mock implements Database {}
-
-class MockBatch extends Mock implements Batch {}
-
-class MockUserRepository extends Mock implements UserRepository {}
-
-class MockCalendarRepository extends Mock implements CalendarRepository {}
-
-class MockNotification extends Mock implements Notification {}
-
-class FakesCalendarRepository extends Fake implements CalendarRepository {}
-
-class MockFirebasePushService extends Mock implements FirebasePushService {}
-
-class Notification {
-  void mockCancelAll() {}
-}
-
-class FakeLicenseDb extends Fake implements LicenseDb {}
-
-class FakeDeviceDb extends Fake implements DeviceDb {}
-
-class FakeBaseUrlDb extends Fake implements BaseUrlDb {
-  static const url = 'oneUrl';
+@visibleForTesting
+class FakeLicenseDb extends Fake implements LicenseDb {
   @override
-  String get baseUrl => url;
+  Future persistLicenses(List<License> licenses) => Future.value();
+
+  @override
+  List<License> getLicenses() => [
+        License(
+          id: 123,
+          key: 'licenseKey',
+          product: memoplannerLicenseName,
+          endTime: DateTime(3333),
+        ),
+      ];
 }
 
+@visibleForTesting
+class FakeBaseUrlDb extends Fake implements BaseUrlDb {
+  @override
+  Future setBaseUrl(String baseUrl) async {}
+
+  @override
+  String get baseUrl => 'http://fake.url';
+
+  @override
+  String get environment => 'FAKE';
+
+  @override
+  String get environmentOrTest => 'FAKE';
+}
+
+@visibleForTesting
 class FakeListenableClient {
   static const int userId = 1234;
   static const user = User(id: userId, type: type, name: name, language: 'sv');
@@ -105,6 +146,7 @@ class FakeListenableClient {
       );
 }
 
+@visibleForTesting
 class ListenableMockClient extends MockClient implements ListenableClient {
   ListenableMockClient(MockClientHandler handler) : super(handler);
   final _stateController = StreamController<HttpMessage>.broadcast();

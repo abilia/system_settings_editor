@@ -7,6 +7,8 @@ dependencies:
   collection: ^1.17.0
   equatable: ^2.0.3
   http: ^0.13.5
+  meta: ^1.7.0
+  mocktail: ^0.3.0
   path: ^1.8.1
   shared_preferences: ^2.0.8
   sqflite: ^2.2.0
@@ -15,6 +17,5 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mocktail: ^0.3.0
   seagull_lints:
     path: ../../seagull_lints

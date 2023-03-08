@@ -1,10 +1,7 @@
-import 'dart:async';
-
+import 'package:auth/fake/all.dart';
 import 'package:auth/models/license.dart';
 import 'package:auth/models/user.dart';
 import 'package:http/http.dart';
-import 'package:http/testing.dart';
-import 'package:repository_base/listenable_client.dart';
 
 const int userId = 1234;
 const user = User(id: userId, type: type, name: name);
@@ -51,20 +48,3 @@ ListenableMockClient fakeClient = ListenableMockClient((request) async {
   }
   return Response('', 404);
 });
-
-class ListenableMockClient extends MockClient implements ListenableClient {
-  ListenableMockClient(MockClientHandler handler) : super(handler);
-  final _stateController = StreamController<HttpMessage>.broadcast();
-
-  @override
-  Stream<HttpMessage> get messageStream => _stateController.stream;
-
-  @override
-  void close() {
-    _stateController.close();
-  }
-
-  void fakeUnauthorized() {
-    _stateController.add(HttpMessage.unauthorized);
-  }
-}

@@ -1,10 +1,10 @@
 export '../../../packages/seagull_analytics/test/fake_seagull_analytics.dart';
+export 'package:auth/fake/all.dart';
+export 'package:repository_base/fake/all.dart';
 export 'alarm_scheduler.dart';
 export 'fake_activities.dart';
 export 'fake_authenticated_blocs_provider.dart';
-export 'fake_db.dart';
 export 'fake_db_and_repository.dart';
-export 'fake_shared_preferences.dart';
 export 'fakes_blocs.dart';
 export 'permission.dart';
 export 'flutter_local_notifications_plugin.dart';

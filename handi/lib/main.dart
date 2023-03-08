@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:handi/authentication_listener.dart';
-import 'package:handi/getitinitialize.dart';
+import 'package:handi/getit_initializer.dart';
+import 'package:handi/listeners/top_level_listener.dart';
 import 'package:handi/providers.dart';
 
 const appName = 'handi';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await GetItInitializer().init();
+  await initGetIt();
   runApp(
     const HandiApp(),
   );
@@ -21,7 +21,7 @@ class HandiApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Providers(
-      child: AuthenticationListener(
+      child: TopLevelListener(
         navigatorKey: _navigatorKey,
         child: MaterialApp(
           navigatorKey: _navigatorKey,

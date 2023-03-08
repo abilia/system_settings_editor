@@ -7,8 +7,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:seagull_clock/clock_bloc.dart';
 import 'package:utils/utils.dart';
 
-import '../../fakes_and_mocks.dart';
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late LicenseCubit licenseCubit;

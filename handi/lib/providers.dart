@@ -5,7 +5,6 @@ import 'package:calendar_repository/calendar_repository.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:handi/bloc/base_url_cubit.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:seagull_clock/clock_bloc.dart';
 import 'package:seagull_clock/ticker.dart';
