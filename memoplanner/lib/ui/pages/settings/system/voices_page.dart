@@ -119,7 +119,7 @@ class _VoiceRow extends StatelessWidget {
                     }
                   : null,
               value: voice.name,
-              text: Text('${voice.name}: ${voice.file.size} MB'),
+              text: Text('${voice.name}: ${voice.file.sizeInMB} MB'),
             ),
           ),
         ),
