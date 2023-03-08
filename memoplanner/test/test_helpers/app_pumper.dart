@@ -17,16 +17,18 @@ extension IncreaseSizeOnMp on WidgetTester {
 
   void _increaseSizeOnMp({bool use24 = false}) {
     if (Config.isMP) {
-      binding.window.physicalSizeTestValue = const Size(800, 1280);
-      binding.window.devicePixelRatioTestValue = 1;
-
-      // resets the screen to its orinal size after the test end
-      addTearDown(binding.window.clearPhysicalSizeTestValue);
-      addTearDown(binding.window.clearDevicePixelRatioTestValue);
+      setScreenSize(const Size(800, 1280));
     }
     if (use24) {
       binding.platformDispatcher.alwaysUse24HourFormatTestValue = use24;
       addTearDown(binding.platformDispatcher.clearAlwaysUse24HourTestValue);
     }
+  }
+
+  void setScreenSize(Size size) {
+    binding.window.physicalSizeTestValue = size;
+    binding.window.devicePixelRatioTestValue = 1;
+    addTearDown(binding.window.clearPhysicalSizeTestValue);
+    addTearDown(binding.window.clearDevicePixelRatioTestValue);
   }
 }
