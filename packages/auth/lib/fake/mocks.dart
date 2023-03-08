@@ -1,7 +1,6 @@
 import 'package:auth/auth.dart';
 import 'package:auth/repository/user_repository.dart';
 import 'package:bloc_test/bloc_test.dart';
-import 'package:calendar_repository/calendar_repository.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'package:mocktail/mocktail.dart';
@@ -28,9 +27,6 @@ class MockBatch extends Mock implements Batch {}
 
 @visibleForTesting
 class MockUserRepository extends Mock implements UserRepository {}
-
-@visibleForTesting
-class MockCalendarRepository extends Mock implements CalendarRepository {}
 
 @visibleForTesting
 class MockNotification extends Mock implements Notification {}

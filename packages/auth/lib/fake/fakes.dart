@@ -3,15 +3,12 @@ import 'dart:convert';
 
 import 'package:auth/auth.dart';
 import 'package:auth/repository/user_repository.dart';
-import 'package:calendar_repository/calendar_repository.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
 import 'package:meta/meta.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-class FakesCalendarRepository extends Fake implements CalendarRepository {}
 
 @visibleForTesting
 class FakeDeviceDb extends Fake implements DeviceDb {

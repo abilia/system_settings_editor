@@ -13,7 +13,6 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
-import '../../../mocks/mocks.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
