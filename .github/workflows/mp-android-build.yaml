@@ -83,6 +83,9 @@ jobs:
           type=$([[ $GITHUB_REF == "refs/heads/release" ]] && echo "release" || echo "dev")
           echo "releasetype=$type" >> $GITHUB_OUTPUT
 
+      - run: flutter pub get
+      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
+
       - name: Build artifact
         run: |
           flutter build appbundle \
