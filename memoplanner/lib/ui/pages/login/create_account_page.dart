@@ -3,12 +3,15 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class CreateAccountPage extends StatelessWidget {
+  static const maxUsernameLength = 20;
+
   final UserRepository userRepository;
 
   const CreateAccountPage({
     required this.userRepository,
     Key? key,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context);
@@ -80,7 +83,8 @@ class CreateAccountPage extends StatelessWidget {
                   UsernameInput(
                     initialValue: state.username,
                     errorState: state.usernameFailure,
-                    inputValid: (s) => s.isNotEmpty,
+                    inputValid: (s) =>
+                        s.isNotEmpty && s.length <= maxUsernameLength,
                     onChanged: (newUsername) => context
                         .read<CreateAccountCubit>()
                         .usernameEmailChanged(newUsername),
