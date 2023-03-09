@@ -1,7 +1,8 @@
-import 'package:auth/fake/all.dart';
 import 'package:auth/models/license.dart';
 import 'package:auth/models/user.dart';
 import 'package:http/http.dart';
+
+import 'all.dart';
 
 const int userId = 1234;
 const user = User(id: userId, type: type, name: name);

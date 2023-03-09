@@ -26,10 +26,12 @@ dependencies:
   sqflite: ^2.2.0
 
 dev_dependencies:
+  bloc_test: ^9.0.3
   flutter_launcher_icons: ^0.11.0
   flutter_test:
     sdk: flutter
   http: ^0.13.5
+  mocktail: ^0.3.0
   seagull_lints:
     path: ../packages/seagull_lints
 

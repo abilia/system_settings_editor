@@ -1,8 +1,6 @@
-import 'package:meta/meta.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-@visibleForTesting
 class FakeDatabase extends Fake implements Database {
   @override
   Future<List<Map<String, Object?>>> rawQuery(String sql,
@@ -30,7 +28,6 @@ class FakeDatabase extends Fake implements Database {
       Future.value(values.length);
 }
 
-@visibleForTesting
 class FakeBatch extends Fake implements Batch {
   @override
   Future<List<Object?>> commit(

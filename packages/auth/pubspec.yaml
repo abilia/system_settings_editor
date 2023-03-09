@@ -6,7 +6,6 @@ environment:
 
 dependencies:
   bloc_concurrency: ^0.2.0
-  bloc_test: ^9.0.3
   calendar_repository:
     path: ../repository/calendar_repository
   collection: ^1.17.0
@@ -18,7 +17,6 @@ dependencies:
   http: ^0.13.5
   logging: ^1.1.0
   meta: ^1.7.0
-  mocktail: ^0.3.0
   repository_base:
     path: ../repository/repository_base
   seagull_clock:
@@ -31,8 +29,10 @@ dependencies:
   uuid: ^3.0.5
 
 dev_dependencies:
+  bloc_test: ^9.0.3
   flutter_test:
     sdk: flutter
+  mocktail: ^0.3.0
   seagull_lints:
     path: ../seagull_lints
   test: any

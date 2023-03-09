@@ -21,7 +21,7 @@ void main() {
     expect(ticker.time, isNot(initial));
   });
 
-  test('fake timer ticks and sets time', () async {
+  test('fakes timer ticks and sets time', () async {
     final initTime = DateTime(2022, 01, 20, 11, 03);
     final newTime = DateTime(2022, 01, 25, 20, 33);
 

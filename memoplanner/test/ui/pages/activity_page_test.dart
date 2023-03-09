@@ -1,25 +1,22 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:timezone/data/latest.dart' as tz;
-
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/main.dart';
-
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:timezone/data/latest.dart' as tz;
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../fakes/activity_db_in_memory.dart';
 import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
-
 import '../../test_helpers/enter_text.dart';
 import '../../test_helpers/tts.dart';
 import '../../test_helpers/verify_generic.dart';
-import '../../fakes/activity_db_in_memory.dart';
 
 void main() {
   late ActivityDbInMemory mockActivityDb;
@@ -201,7 +198,7 @@ void main() {
       await tester.tap(find.byType(EditActivityButton));
       await tester.pumpAndSettle();
 
-      // Act - Add deleted to activity and make a fake push.
+      // Act - Add deleted to activity and make a fakes push.
       // Activity response is not empty so SyncBloc will emit a new state.
       mockActivityDb.insertAndAddDirty([activity.copyWith(deleted: true)]);
       activityResponse = () => [Activity.createNew(startTime: startTime)];
@@ -241,7 +238,7 @@ void main() {
       await tester.tap(find.byType(EditActivityButton));
       await tester.pumpAndSettle();
 
-      // Act - Remove first activity and make a fake push.
+      // Act - Remove first activity and make a fakes push.
       mockActivityDb.initWithActivity(activities[1]);
       activityResponse = () => [Activity.createNew(startTime: startTime)];
       pushCubit.fakePush();
@@ -256,7 +253,7 @@ void main() {
       await tester.tap(find.byType(EditActivityButton));
       await tester.pumpAndSettle();
 
-      // Act - Remove second activity and make a fake push.
+      // Act - Remove second activity and make a fakes push.
       mockActivityDb.clear();
       activityResponse = () => [Activity.createNew(startTime: startTime)];
       pushCubit.fakePush();
