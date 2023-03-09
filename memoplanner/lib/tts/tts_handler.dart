@@ -72,7 +72,6 @@ class FlutterTtsHandler extends FlutterTts implements TtsInterface {
     final tts = FlutterTtsHandler();
 
     if (Platform.isIOS) {
-      await tts.setSharedInstance(true);
       await tts
           .setIosAudioCategory(IosTextToSpeechAudioCategory.playAndRecord, [
         IosTextToSpeechAudioCategoryOptions.allowBluetooth,
