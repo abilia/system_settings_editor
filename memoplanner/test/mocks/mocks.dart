@@ -1,5 +1,5 @@
 import 'package:battery_plus/battery_plus.dart';
-import 'package:calendar_repository/calendar_db.dart';
+import 'package:calendar/all.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:memoplanner/utils/all.dart';

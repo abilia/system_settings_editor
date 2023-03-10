@@ -1,4 +1,4 @@
-import 'package:calendar_repository/calendar_repository.dart';
+import 'package:calendar/all.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockCalendarRepository extends Mock implements CalendarRepository {}

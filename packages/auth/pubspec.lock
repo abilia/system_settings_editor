@@ -73,10 +73,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
-  calendar_repository:
+  calendar:
     dependency: "direct main"
     description:
-      path: "../repository/calendar_repository"
+      path: "../calendar"
       relative: true
     source: path
     version: "0.0.0"

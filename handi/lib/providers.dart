@@ -1,7 +1,6 @@
 import 'package:auth/auth.dart';
 import 'package:auth/repository/user_repository.dart';
-import 'package:calendar_repository/calendar_db.dart';
-import 'package:calendar_repository/calendar_repository.dart';
+import 'package:calendar/all.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -54,7 +53,6 @@ class Providers extends StatelessWidget {
                 app: appName,
                 name: appName,
               ),
-              calendarRepository: context.read<CalendarRepository>(),
             )..add(CheckAuthentication()),
           ),
           BlocProvider<ClockBloc>(

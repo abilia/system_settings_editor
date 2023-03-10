@@ -1,4 +1,4 @@
-import 'package:calendar_repository/calendar_db.dart';
+import 'package:calendar/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';

@@ -1,13 +1,13 @@
 name: auth
 
 environment:
-  sdk: '>=2.19.2 <3.0.0'
-  flutter: '>=2.0.0'
+  sdk: ">=2.19.2 <3.0.0"
+  flutter: ">=2.0.0"
 
 dependencies:
   bloc_concurrency: ^0.2.0
-  calendar_repository:
-    path: ../repository/calendar_repository
+  calendar:
+    path: ../calendar
   collection: ^1.17.0
   equatable: ^2.0.3
   firebase_messaging: ^14.0.4

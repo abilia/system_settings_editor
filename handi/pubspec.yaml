@@ -1,16 +1,16 @@
 name: handi
 description: Flutter app for Handi
 version: 6.0.0
-publish_to: 'none'
+publish_to: "none"
 
 environment:
-  sdk: '>=2.19.2 <3.0.0'
+  sdk: ">=2.19.2 <3.0.0"
 
 dependencies:
   auth:
     path: ../packages/auth
-  calendar_repository:
-    path: ../packages/repository/calendar_repository
+  calendar:
+    path: ../packages/calendar
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
@@ -20,7 +20,7 @@ dependencies:
     path: ../packages/repository/repository_base
   seagull_analytics:
     path: ../packages/seagull_analytics
-  seagull_clock: 
+  seagull_clock:
     path: ../packages/seagull_clock
   shared_preferences: ^2.0.8
   sqflite: ^2.2.0
@@ -35,11 +35,10 @@ dev_dependencies:
   seagull_lints:
     path: ../packages/seagull_lints
 
-
 flutter_icons:
   android: true
   ios: true
-  image_path: 'assets/handi_logo.png'
+  image_path: "assets/handi_logo.png"
 
 flutter:
   uses-material-design: true

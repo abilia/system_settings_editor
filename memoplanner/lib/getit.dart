@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:auth/auth.dart';
 import 'package:battery_plus/battery_plus.dart';
-import 'package:calendar_repository/calendar_db.dart';
+import 'package:calendar/all.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';

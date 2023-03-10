@@ -1,7 +1,6 @@
 import 'package:auth/auth.dart';
 import 'package:battery_plus/battery_plus.dart';
-import 'package:calendar_repository/calendar_db.dart';
-import 'package:calendar_repository/calendar_repository.dart';
+import 'package:calendar/all.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -442,7 +441,6 @@ class AuthenticationBlocProvider extends StatelessWidget {
         BlocProvider<AuthenticationBloc>(
           create: (context) => AuthenticationBloc(
             userRepository: context.read<UserRepository>(),
-            calendarRepository: context.read<CalendarRepository>(),
             onLogout: () => Future.wait<void>(
               [
                 DatabaseRepository.clearAll(GetIt.I<Database>()),
