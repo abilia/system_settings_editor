@@ -172,6 +172,23 @@ void main() {
         expect(openedUrl,
             AcceptTermsSwitch.abiliaUrl + translate.privacyPolicyUrl);
       });
+
+      testWidgets('SGC-2018 - Cannot input username more than max characters',
+          (tester) async {
+        final tooLongUserName = 'a' * (CreateAccountPage.maxUsernameLength + 1);
+        await tester.pumpApp();
+        await tester.tap(find.byType(GoToCreateAccountButton));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(UsernameInput), warnIfMissed: false);
+        await tester.pumpAndSettle();
+        await tester.enterText(find.byKey(TestKey.input), tooLongUserName);
+        await tester.pumpAndSettle();
+        await tester.pumpAndSettle();
+        expect(
+            tester.widget<OkButton>(find.byKey(TestKey.inputOk)).onPressed ==
+                null,
+            isTrue);
+      });
     },
     skip: !Config.isMP,
   );

@@ -6,6 +6,7 @@ import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/exceptions.dart';
 import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/ui/pages/login/create_account_page.dart';
 import 'package:memoplanner/utils/all.dart';
 
 part 'login_state.dart';
@@ -130,10 +131,8 @@ class LoginCubit extends Cubit<LoginState> {
     emit(const LoginSucceeded());
   }
 
-  static const minUsernameLength = 3;
-
   static bool usernameValid(String username) =>
-      username.length >= minUsernameLength;
+      username.length >= CreateAccountPage.minUsernameLength;
 
   static bool passwordValid(String password) => password.isNotEmpty;
 }
