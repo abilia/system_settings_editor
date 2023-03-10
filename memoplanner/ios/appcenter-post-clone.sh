@@ -1,20 +1,32 @@
 #!/usr/bin/env bash
-#Place this script in project/ios/
 
-# fail if any command fails
+# Set environment variable for API key
+ABILIA_OPEN_API_KEY=${{ secrets.DEVICE_API_KEY }}
+
+# Fail if any command fails
 set -e
-# debug log
+# Debug log
 set -x
 
+# Navigate to project root
 cd ..
-git clone --depth 1 --branch 3.7.5 https://github.com/flutter/flutter.git
+
+# Install Flutter
+FLUTTER_VERSION=3.7.5
+git clone --depth 1 --branch $FLUTTER_VERSION https://github.com/flutter/flutter.git
 export PATH=`pwd`/flutter/bin:$PATH
+echo "Installed Flutter version $FLUTTER_VERSION to `pwd`/flutter"
 
+# Install CocoaPods
 pod setup
+
+# Create .env file
+touch ./lib/env/.env.key
+echo "ABILIA_OPEN_API_KEY=$ABILIA_OPEN_API_KEY" > ./lib/env/.env.key
+
+# Run Flutter commands
 flutter doctor
-
-echo "Installed flutter to `pwd`/flutter"
-
+flutter pub get
+flutter pub run build_runner build --delete-conflicting-outputs
 flutter test
-
-flutter build ios --release --no-codesign --build-number=$APPCENTER_BUILD_ID --dart-define=release=$release
+flutter build ios --release --no-codesign --build-number=$APPCENTER_BUILD_ID

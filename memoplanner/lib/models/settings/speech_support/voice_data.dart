@@ -30,19 +30,20 @@ class VoiceData extends Equatable {
 class VoiceFile extends Equatable {
   final String md5;
   final Uri downloadUrl;
-  final int size, sizeB;
+  final int size;
+
+  int get sizeInMB => (size / 1000000).round();
 
   VoiceFile({
     required String downloadUrl,
     required this.md5,
-    required this.sizeB,
-  })  : downloadUrl = downloadUrl.toUri(),
-        size = (sizeB / 1000000).round();
+    required this.size,
+  }) : downloadUrl = downloadUrl.toUri();
 
   factory VoiceFile.fromJson(Map<String, dynamic> json) => VoiceFile(
         downloadUrl: json['downloadUrl'],
         md5: json['md5'],
-        sizeB: json['size'],
+        size: json['size'],
       );
 
   @override

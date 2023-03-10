@@ -27,8 +27,8 @@ class ActivityCard extends StatelessWidget {
     final past = activityOccasion.isPast && !preview;
     final inactive = past || signedOff;
     final hasSideContent = activity.hasImage || signedOff || past;
-    final showAvailableForIcon = context.select(
-        (SupportPersonsCubit cubit) => cubit.state.supportPersons.isNotEmpty);
+    final showAvailableForIcon = context
+        .select((SupportPersonsCubit cubit) => cubit.state.showAvailableFor);
     final bodyText4 = layout.eventCard.bodyText4.copyWith(
       color: inactive ? AbiliaColors.white140 : null,
       height: 1,

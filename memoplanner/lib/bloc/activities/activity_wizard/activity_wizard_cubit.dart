@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:meta/meta.dart';
-
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:meta/meta.dart';
 
 class ActivityWizardCubit extends WizardCubit {
   final ActivitiesBloc activitiesBloc;
@@ -14,6 +13,7 @@ class ActivityWizardCubit extends WizardCubit {
   final bool allowPassedStartTime;
 
   StreamSubscription<EditActivityState>? _editActivityCubitSubscription;
+  StreamSubscription<SupportPersonsState>? _supportPersonCubitSubscription;
 
   @visibleForTesting
   factory ActivityWizardCubit.newActivity({
@@ -21,6 +21,7 @@ class ActivityWizardCubit extends WizardCubit {
     required EditActivityCubit editActivityCubit,
     required ClockBloc clockBloc,
     required AddActivitySettings addActivitySettings,
+    required SupportPersonsCubit supportPersonsCubit,
     bool showCategories = true,
   }) {
     if (addActivitySettings.mode == AddActivityMode.editView) {
@@ -39,6 +40,7 @@ class ActivityWizardCubit extends WizardCubit {
       stepByStep: addActivitySettings.stepByStep,
       addRecurringActivity: addActivitySettings.general.addRecurringActivity,
       showCategories: showCategories,
+      supportPersonsCubit: supportPersonsCubit,
     );
   }
 
@@ -57,6 +59,7 @@ class ActivityWizardCubit extends WizardCubit {
     required StepByStepSettings stepByStep,
     required bool addRecurringActivity,
     required bool showCategories,
+    required SupportPersonsCubit supportPersonsCubit,
   }) : super(
           WizardState(
             0,
@@ -65,9 +68,24 @@ class ActivityWizardCubit extends WizardCubit {
               addRecurringActivity: addRecurringActivity,
               showCategories: showCategories,
               editState: editActivityCubit.state,
+              showAvailableFor: supportPersonsCubit.state.showAvailableFor,
             ),
           ),
         ) {
+    _supportPersonCubitSubscription = supportPersonsCubit.stream.listen(
+      (event) {
+        final newSteps = _generateWizardSteps(
+          stepByStep: stepByStep,
+          addRecurringActivity: addRecurringActivity,
+          showCategories: showCategories,
+          editState: editActivityCubit.state,
+          showAvailableFor: supportPersonsCubit.state.showAvailableFor,
+        );
+        if (newSteps != state.steps) {
+          emit(state.copyWith(newSteps: newSteps, saveErrors: {}));
+        }
+      },
+    );
     _editActivityCubitSubscription = editActivityCubit.stream.listen(
       (event) {
         final newSteps = _generateWizardSteps(
@@ -75,6 +93,7 @@ class ActivityWizardCubit extends WizardCubit {
           addRecurringActivity: addRecurringActivity,
           showCategories: showCategories,
           editState: event,
+          showAvailableFor: supportPersonsCubit.state.showAvailableFor,
         );
         if (newSteps != state.steps) {
           emit(state.copyWith(newSteps: newSteps, saveErrors: {}));
@@ -88,6 +107,7 @@ class ActivityWizardCubit extends WizardCubit {
     required bool addRecurringActivity,
     required bool showCategories,
     required EditActivityState editState,
+    required bool showAvailableFor,
   }) =>
       [
         if (stepByStep.title) WizardStep.title,
@@ -98,7 +118,8 @@ class ActivityWizardCubit extends WizardCubit {
         if (!editState.activity.fullDay && showCategories) WizardStep.category,
         if (stepByStep.checkable) WizardStep.checkable,
         if (stepByStep.removeAfter) WizardStep.deleteAfter,
-        if (stepByStep.availability) WizardStep.availableFor,
+        if (stepByStep.availability && showAvailableFor)
+          WizardStep.availableFor,
         if (!editState.activity.fullDay && stepByStep.alarm) WizardStep.alarm,
         if (stepByStep.reminders && !editState.activity.fullDay)
           WizardStep.reminder,
@@ -220,6 +241,7 @@ class ActivityWizardCubit extends WizardCubit {
   @override
   Future<void> close() async {
     await _editActivityCubitSubscription?.cancel();
+    await _supportPersonCubitSubscription?.cancel();
     return super.close();
   }
 }

@@ -1,7 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
-import 'package:test/fake.dart';
 
 class FakeSeagullAnalytics extends Fake implements SeagullAnalytics {
   @override
