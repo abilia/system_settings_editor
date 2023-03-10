@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -33,22 +34,21 @@ void main() async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // DO NOT REMOVE. The isAutoInitEnabled call is needed to make push work
-  // https://github.com/firebase/flutterfire/issues/6011
-  FirebaseMessaging.instance.isAutoInitEnabled;
-  final documentDirectory = await getApplicationDocumentsDirectory();
   final preferences = await SharedPreferences.getInstance();
+  final supportId = await DeviceDb(preferences).getSupportId();
+  await FirebaseCrashlytics.instance.setUserIdentifier(supportId);
+  final documentDirectory = await getApplicationDocumentsDirectory();
   final seagullLogger = SeagullLogger(
     documentsDirectory: documentDirectory.path,
+    supportId: supportId,
     preferences: preferences,
   );
   _log.fine('Initializing services');
   final analytics = kReleaseMode
-      ? await _initAnalytics(preferences)
+      ? await _initAnalytics(supportId, BaseUrlDb(preferences).environment)
       : SeagullAnalytics.empty();
   Bloc.observer = BlocLoggingObserver(analytics);
   await configureLocalTimeZone(log: _log);
-  final voiceDb = VoiceDb(preferences);
   final applicationSupportDirectory = await getApplicationSupportDirectory();
   GetItInitializer()
     ..directories = Directories(
@@ -59,9 +59,8 @@ Future<void> initServices() async {
     ..sharedPreferences = preferences
     ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
-    ..voiceDb = voiceDb
     ..ttsHandler = await TtsInterface.implementation(
-      voiceDb: voiceDb,
+      voiceDb: VoiceDb(preferences),
       voicesPath: applicationSupportDirectory.path,
     )
     ..packageInfo = await PackageInfo.fromPlatform()
@@ -103,14 +102,14 @@ Future<NotificationAlarm?> getOrAddPayloadToStream() async {
   return null;
 }
 
-Future<SeagullAnalytics> _initAnalytics(SharedPreferences preferences) async =>
+Future<SeagullAnalytics> _initAnalytics(String supportId, String environment) =>
     SeagullAnalytics.init(
-      '814838948a0be3497bcce0421334edb2',
+      token: '814838948a0be3497bcce0421334edb2',
+      identifier: supportId,
       superProperties: {
         AnalyticsProperties.flavor: Config.flavor.name,
         AnalyticsProperties.release: Config.release,
-        AnalyticsProperties.clientId: await DeviceDb(preferences).getClientId(),
-        AnalyticsProperties.environment: BaseUrlDb(preferences).environment,
+        AnalyticsProperties.environment: environment,
       },
     );
 
