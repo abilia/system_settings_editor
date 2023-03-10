@@ -35,6 +35,8 @@ class FakeSharedPreferences {
     // ignore: invalid_use_of_visible_for_testing_member
     SharedPreferences.setMockInitialValues({
       if (loggedIn) LoginDb.tokenKey: 'Fakes.token',
+      // ToDo: use VoiceDb.textToSpeechRecord when tts is a separate package
+      'TEXT_TO_SPEECH': true,
     });
     return SharedPreferences.getInstance();
   }
