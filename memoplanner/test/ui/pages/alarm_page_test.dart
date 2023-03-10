@@ -455,7 +455,7 @@ void main() {
           expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
           expect(find.byIcon(AbiliaIcons.stop), findsNothing);
 
-          // fakes incoming push
+          // fake incoming push
           pushCubit.fakePush(
             data: {
               pushKey: '${startAlarm.hashCode}',

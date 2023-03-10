@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - release*
+      - SGC-2282-Auth-package-handi-login
     paths-ignore:
       - 'memoplanner/**'
       - 'handi/**'

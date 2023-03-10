@@ -42,7 +42,7 @@ class FakeSharedPreferences {
 
 class FakeUserRepository extends Fake implements UserRepository {
   @override
-  String get baseUrl => 'fakes.url';
+  String get baseUrl => 'fake.url';
 
   @override
   Future<void> persistLoginInfo(LoginInfo token) => Future.value();
@@ -83,7 +83,7 @@ class FakeBaseUrlDb extends Fake implements BaseUrlDb {
   Future setBaseUrl(String baseUrl) async {}
 
   @override
-  String get baseUrl => 'http://fakes.url';
+  String get baseUrl => 'http://fake.url';
 
   @override
   String get environment => 'FAKE';
