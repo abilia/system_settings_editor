@@ -7,17 +7,9 @@ import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:test/fake.dart';
 import '../test_helpers/default_sortables.dart';
-import 'fake_client.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/storage/all.dart';
-
-class FakeUserRepository extends Fake implements UserRepository {
-  @override
-  String get baseUrl => 'fake.url';
-  @override
-  Future<void> persistLoginInfo(LoginInfo token) => Future.value();
-}
 
 class FakeSettingsDb extends Fake implements SettingsDb {
   @override
@@ -48,38 +40,7 @@ class FakeSettingsDb extends Fake implements SettingsDb {
   bool get alwaysUse24HourFormat => true;
 }
 
-class FakeLoginDb extends Fake implements LoginDb {
-  @override
-  String? getToken() => Fakes.token;
-}
-
 class FakeUserDb extends Fake implements UserDb {}
-
-class FakeBaseUrlDb extends Fake implements BaseUrlDb {
-  @override
-  Future setBaseUrl(String baseUrl) async {}
-
-  @override
-  String get baseUrl => 'http://fake.url';
-  @override
-  String get environment => 'FAKE';
-  @override
-  String get environmentOrTest => 'FAKE';
-}
-
-class FakeLicenseDb extends Fake implements LicenseDb {
-  @override
-  Future persistLicenses(List<License> licenses) => Future.value();
-  @override
-  List<License> getLicenses() => [
-        License(
-          id: 123,
-          key: 'licenseKey',
-          product: memoplannerLicenseName,
-          endTime: DateTime(3333),
-        ),
-      ];
-}
 
 class FakeCalendarDb extends Fake implements CalendarDb {}
 
@@ -216,27 +177,6 @@ class FakeVoiceDb extends Fake implements VoiceDb {
 
   @override
   double get speechRate => 100;
-}
-
-class FakeDeviceDb extends Fake implements DeviceDb {
-  @override
-  Future<String> getClientId() async {
-    return 'clientId';
-  }
-
-  @override
-  String get serialId => 'serialId';
-
-  @override
-  bool get startGuideCompleted => true;
-
-  @override
-  Future<void> setDeviceLicense(DeviceLicense license) async {}
-
-  @override
-  DeviceLicense? getDeviceLicense() {
-    return null;
-  }
 }
 
 class FakeTtsHandler extends Fake implements TtsInterface {

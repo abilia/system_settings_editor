@@ -14,6 +14,7 @@ jobs:
   collect_analyze:
     name: Collect Analyze Directories
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       dirs: ${{ steps.dirs.outputs.dirs }}
     steps:
@@ -25,6 +26,7 @@ jobs:
   collect_test:
     name: Collect Test Directories
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       dirs: ${{ steps.dirs.outputs.dirs }}
     steps:

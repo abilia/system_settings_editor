@@ -1,13 +1,12 @@
 import 'package:auth/auth.dart';
-
 import 'package:auth/repository/user_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-
 import 'package:seagull_clock/clock_bloc.dart';
 import 'package:utils/utils.dart';
 
-import '../../fakes_and_mocks.dart';
+import '../../../../repository/calendar_repository/test/fakes.dart';
+import '../../fakes/all.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

@@ -1,5 +1,5 @@
-import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/db/all.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:repository_base/repository_base.dart';
 
 class BaseUrlCubit extends Cubit<String> {
   BaseUrlCubit({required this.baseUrlDb}) : super(baseUrlDb.baseUrl);

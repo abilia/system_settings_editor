@@ -25,7 +25,6 @@ export 'events/day_events_cubit.dart';
 export 'timer/all.dart';
 export 'start_guide/startup_cubit.dart';
 export 'start_guide/connect_license_bloc.dart';
-export 'sync/base_url_cubit.dart';
 export 'android/action_intent_cubit.dart';
 export 'alarm/notification_bloc.dart';
 export 'locale/locale_cubit.dart';

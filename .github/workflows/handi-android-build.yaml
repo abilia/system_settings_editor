@@ -9,7 +9,6 @@ on:
       - 'memoplanner/**'
       - 'handi/ios/**'
       - 'handi/test*/**'
-      - 'packages/**'
       - '**/*.md'
 jobs:
   test:

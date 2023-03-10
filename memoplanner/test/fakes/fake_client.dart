@@ -1,9 +1,7 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
-import 'package:http/testing.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -23,8 +21,7 @@ class Fakes {
 
   static const int userId = 1234;
   static const user = User(id: userId, type: type, name: name);
-  static const String token = 'token',
-      name = 'Test case user',
+  static const String name = 'Test case user',
       username = 'username',
       type = 'test case',
       incorrectPassword = 'wrong wrong wrong',
@@ -101,7 +98,7 @@ class Fakes {
           if (pathSegments.containsAll(['token', 'renew'])) {
             if (request.body.contains('"renewToken":"renewToken"')) {
               return Response('''{
-                            "token" : "$token",
+                            "token" : "${FakeLoginDb.token}",
                             "endDate" : 1231244,
                             "renewToken" : "renewToken"
                           }''', 200);
@@ -194,7 +191,7 @@ class Fakes {
 
   static final Response clientMeSuccessResponse = Response('''
     {
-      "token" : "$token",
+      "token" : "${FakeLoginDb.token}",
       "endDate" : 1231244,
       "renewToken" : ""
     }''', 200);
@@ -232,21 +229,4 @@ class Fakes {
   static Response unsupportedUserTypeResponse = Response('''
   {"status":403,"message":"Clients can only be registered with entities of type 'user'","errorId":217,"errors":[{"code":"WHALE-0156","message":"Clients can only be registered with entities of type 'user'"}]}''',
       403);
-}
-
-class ListenableMockClient extends MockClient implements ListenableClient {
-  ListenableMockClient(MockClientHandler handler) : super(handler);
-  final _stateController = StreamController<HttpMessage>.broadcast();
-
-  @override
-  Stream<HttpMessage> get messageStream => _stateController.stream;
-
-  @override
-  void close() {
-    _stateController.close();
-  }
-
-  void fakeUnauthorized() {
-    _stateController.add(HttpMessage.unauthorized);
-  }
 }

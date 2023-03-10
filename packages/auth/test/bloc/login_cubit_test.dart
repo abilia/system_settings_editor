@@ -3,7 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:seagull_clock/clock_bloc.dart';
 
-import '../fakes_and_mocks.dart';
+import '../../../repository/calendar_repository/test/fakes.dart';
+import '../fakes/all.dart';
 
 void main() {
   final time = DateTime(2033, 12, 11, 11);

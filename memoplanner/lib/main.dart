@@ -151,7 +151,7 @@ class AppEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthenticationBlocProvider(
-      child: TopLevelListener(
+      child: TopLevelListeners(
         navigatorKey: _navigatorKey,
         payload: payload,
         child: MaterialAppWrapper(

@@ -1,7 +1,5 @@
-import 'package:auth/auth.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:calendar_repository/calendar_db.dart';
-import 'package:calendar_repository/calendar_repository.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -21,10 +19,6 @@ export 'package:mocktail/mocktail.dart';
 // Repository
 class MockActivityRepository extends Mock implements ActivityRepository {}
 
-class MockUserRepository extends Mock implements UserRepository {}
-
-class MockCalendarRepository extends Mock implements CalendarRepository {}
-
 class MockUserFileRepository extends Mock implements UserFileRepository {}
 
 class MockSortableRepository extends Mock implements SortableRepository {}
@@ -39,21 +33,13 @@ class MockActivityDb extends Mock implements ActivityDb {}
 
 class MockUserFileDb extends Mock implements UserFileDb {}
 
-class MockUserDb extends Mock implements UserDb {}
-
 class MockLastSyncDb extends Mock implements LastSyncDb {}
-
-class MockLoginDb extends Mock implements LoginDb {}
-
-class MockLicenseDb extends Mock implements LicenseDb {}
 
 class MockDatabase extends Mock implements Database {}
 
 class MockSettingsDb extends Mock implements SettingsDb {}
 
 class MockSessionsDb extends Mock implements SessionsDb {}
-
-class MockBaseUrlDb extends Mock implements BaseUrlDb {}
 
 class MockDeviceDb extends Mock implements DeviceDb {}
 
@@ -71,8 +57,6 @@ class MockScrollController extends Mock implements ScrollController {}
 
 class MockScrollPosition extends Mock implements ScrollPosition {}
 
-class MockBaseClient extends Mock implements BaseClient, ListenableClient {}
-
 // Storage
 class MockFileStorage extends Mock implements FileStorage {
   @override
@@ -81,8 +65,6 @@ class MockFileStorage extends Mock implements FileStorage {
 
 // Plugin
 class MockRecord extends Mock implements Record {}
-
-class MockFirebasePushService extends Mock implements FirebasePushService {}
 
 class MockFlutterLocalNotificationsPlugin extends Mock
     implements FlutterLocalNotificationsPlugin {}
