@@ -467,6 +467,5 @@ class AuthenticationBlocProvider extends StatelessWidget {
     for (final key in keys) {
       await prefs.remove(key);
     }
-    speechSettingsCubit.reload();
   }
 }

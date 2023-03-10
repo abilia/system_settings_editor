@@ -39,62 +39,69 @@ class LoginPage extends StatelessWidget {
         clockBloc: BlocProvider.of<ClockBloc>(context),
         userRepository: context.read<UserRepository>(),
       ),
-      child: BlocListener<LoginCubit, LoginState>(
-        listenWhen: (_, state) => state is LoginFailure,
-        listener: (context, state) async {
-          if (state is LoginFailure) {
-            final cause = state.cause;
-            if (state.noValidLicense) {
-              context.read<LoginCubit>().clearFailure();
-              await showViewDialog(
-                context: context,
-                builder: (_) => LicenseErrorDialog(
-                  heading: cause.heading(translate),
-                  message: cause.message(translate),
-                ),
-                wrapWithAuthProviders: false,
-                routeSettings: (LicenseErrorDialog).routeSetting(
-                  properties: {'reason': cause.name},
-                ),
-              );
-            } else if (state.showLicenseExpiredWarning) {
-              final loginCubit = context.read<LoginCubit>();
-              final licenseExpiredConfirmed = await showViewDialog(
-                context: context,
-                builder: (context) => ConfirmWarningDialog(
-                  text: Translator.of(context).translate.licenseExpiredMessage,
-                ),
-                routeSettings: (ConfirmWarningDialog).routeSetting(
-                  properties: {'reason': 'License Expired'},
-                ),
-              );
-              if (licenseExpiredConfirmed) {
-                loginCubit.licenseExpiredWarningConfirmed();
+      child: BlocListener<NavigationCubit, NavigationState>(
+        listenWhen: (_, state) =>
+            state.currentRouteName == (LoginPage).routeSetting().name,
+        listener: (context, state) =>
+            context.read<SpeechSettingsCubit>().reload(),
+        child: BlocListener<LoginCubit, LoginState>(
+          listenWhen: (_, state) => state is LoginFailure,
+          listener: (context, state) async {
+            if (state is LoginFailure) {
+              final cause = state.cause;
+              if (state.noValidLicense) {
+                context.read<LoginCubit>().clearFailure();
+                await showViewDialog(
+                  context: context,
+                  builder: (_) => LicenseErrorDialog(
+                    heading: cause.heading(translate),
+                    message: cause.message(translate),
+                  ),
+                  wrapWithAuthProviders: false,
+                  routeSettings: (LicenseErrorDialog).routeSetting(
+                    properties: {'reason': cause.name},
+                  ),
+                );
+              } else if (state.showLicenseExpiredWarning) {
+                final loginCubit = context.read<LoginCubit>();
+                final licenseExpiredConfirmed = await showViewDialog(
+                  context: context,
+                  builder: (context) => ConfirmWarningDialog(
+                    text:
+                        Translator.of(context).translate.licenseExpiredMessage,
+                  ),
+                  routeSettings: (ConfirmWarningDialog).routeSetting(
+                    properties: {'reason': 'License Expired'},
+                  ),
+                );
+                if (licenseExpiredConfirmed) {
+                  loginCubit.licenseExpiredWarningConfirmed();
+                }
+              } else {
+                await showViewDialog(
+                  context: context,
+                  builder: (_) => ErrorDialog(
+                    text: cause.message(translate),
+                  ),
+                  wrapWithAuthProviders: false,
+                  routeSettings: (ErrorDialog)
+                      .routeSetting(properties: {'reason': cause.name}),
+                );
               }
-            } else {
-              await showViewDialog(
-                context: context,
-                builder: (_) => ErrorDialog(
-                  text: cause.message(translate),
-                ),
-                wrapWithAuthProviders: false,
-                routeSettings: (ErrorDialog)
-                    .routeSetting(properties: {'reason': cause.name}),
-              );
             }
-          }
-        },
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.dark,
-          child: Scaffold(
-            body: SafeArea(
-              child: LoginForm(
-                  message: unauthenticatedState.loggedOutReason ==
-                          LoggedOutReason.unauthorized
-                      ? translate.loggedOutMessage
-                      : ''),
+          },
+          child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.dark,
+            child: Scaffold(
+              body: SafeArea(
+                child: LoginForm(
+                    message: unauthenticatedState.loggedOutReason ==
+                            LoggedOutReason.unauthorized
+                        ? translate.loggedOutMessage
+                        : ''),
+              ),
+              resizeToAvoidBottomInset: false,
             ),
-            resizeToAvoidBottomInset: false,
           ),
         ),
       ),
