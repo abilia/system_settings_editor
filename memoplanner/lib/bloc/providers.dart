@@ -185,6 +185,12 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 syncBloc: context.read<SyncBloc>(),
               )..loadGenerics(),
             ),
+            BlocProvider<CalendarCubit>(
+              create: (context) => CalendarCubit(
+                calendarRepository: context.read<CalendarRepository>(),
+                userRepository: context.read<UserRepository>(),
+              )..loadCalendarId(),
+            ),
             BlocProvider<MemoplannerSettingsBloc>(
               create: (context) =>
                   memoplannerSettingBloc ??

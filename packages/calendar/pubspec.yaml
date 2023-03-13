@@ -5,8 +5,11 @@ environment:
 
 dependencies:
   logging: ^1.1.0
+  flutter_bloc: ^8.1.2
   repository_base:
     path: ../repository/repository_base
+  auth:
+    path: ../auth
   sqflite: ^2.2.0
   utils:
     path: ../utils
@@ -16,3 +19,4 @@ dev_dependencies:
   seagull_lints:
     path: ../seagull_lints
   test: any
+  bloc_test: ^9.1.1

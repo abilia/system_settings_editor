@@ -1,6 +1,5 @@
 import 'package:calendar/all.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
@@ -12,6 +11,7 @@ mixin ActivityNavigation {
   ) async {
     final navigator = Navigator.of(context);
     final day = context.read<DayPickerBloc>().state.day;
+    final calendarId = context.read<CalendarCubit>().state;
     final basicActivityData =
         await Navigator.of(context).push<BasicActivityData>(
       MaterialPageRoute(
@@ -33,6 +33,7 @@ mixin ActivityNavigation {
         navigator: navigator,
         defaultsSettings: defaultsSettings,
         day: day,
+        calendarId: calendarId ?? '',
         basicActivity: basicActivityData,
       );
     }
@@ -43,11 +44,13 @@ mixin ActivityNavigation {
     List<BlocProvider> authProviders,
   ) {
     final settings = context.read<MemoplannerSettingsBloc>().state;
+    final calendarId = context.read<CalendarCubit>().state;
     final defaultsSettings = settings.addActivity.defaults;
     return _navigateToActivityWizard(
       authProviders: authProviders,
       navigator: Navigator.of(context),
       defaultsSettings: defaultsSettings,
+      calendarId: calendarId ?? '',
       day: context.read<DayPickerBloc>().state.day,
     );
   }
@@ -57,9 +60,9 @@ mixin ActivityNavigation {
     required DateTime day,
     required DefaultsAddActivitySettings defaultsSettings,
     required List<BlocProvider> authProviders,
+    required String calendarId,
     BasicActivityDataItem? basicActivity,
   }) async {
-    final calendarId = await GetIt.I<CalendarDb>().getCalendarId() ?? '';
     final activityCreated = await navigator.push<bool>(
       createSlideRoute<bool>(
         settings: (ActivityWizardPage).routeSetting(),

@@ -17,18 +17,19 @@ class CalendarRepository extends Repository {
     this.postApiVersion = 1,
   });
 
-  Future<void> fetchAndSetCalendar(int userId) async {
+  Future<String?> fetchAndSetCalendar(int userId) async {
     try {
       if (await calendarDb.getCalendarId() == null) {
         final response = await client.post(
           '$baseUrl/api/v$postApiVersion/calendar/$userId?type=${CalendarDb.memoType}'
               .toUri(),
         );
-        final calendarType = Calendar.fromJson(response.json());
-        await calendarDb.insert(calendarType);
+        final calendar = Calendar.fromJson(response.json());
+        await calendarDb.insert(calendar);
       }
     } catch (e, s) {
       _log.severe('could not fetch calendarId', e, s);
     }
+    return calendarDb.getCalendarId();
   }
 }
