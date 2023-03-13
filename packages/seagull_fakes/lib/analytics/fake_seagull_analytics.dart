@@ -1,5 +1,7 @@
-import 'package:memoplanner/ui/all.dart';
+import 'dart:ui';
+
 import 'package:mocktail/mocktail.dart';
+import 'package:seagull_analytics/seagull_analytics.dart';
 
 class FakeSeagullAnalytics extends Fake implements SeagullAnalytics {
   @override
