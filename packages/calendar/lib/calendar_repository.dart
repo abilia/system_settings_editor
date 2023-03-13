@@ -1,8 +1,7 @@
+import 'package:calendar/all.dart';
 import 'package:logging/logging.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:utils/utils.dart';
-
-import 'all.dart';
 
 class CalendarRepository extends Repository {
   static final _log = Logger((CalendarRepository).toString());
