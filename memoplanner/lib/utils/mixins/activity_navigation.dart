@@ -82,6 +82,8 @@ mixin ActivityNavigation {
                 final settings = context.read<MemoplannerSettingsBloc>().state;
                 final addActivitySettings = settings.addActivity;
                 final showCategories = settings.calendar.categories.show;
+                final supportPersonsCubit = context.read<SupportPersonsCubit>()
+                  ..loadSupportPersons();
                 return addActivitySettings.mode == AddActivityMode.editView
                     ? ActivityWizardCubit.newAdvanced(
                         activitiesBloc: context.read<ActivitiesBloc>(),
@@ -93,6 +95,7 @@ mixin ActivityNavigation {
                     : ActivityWizardCubit.newStepByStep(
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
+                        supportPersonsCubit: supportPersonsCubit,
                         clockBloc: context.read<ClockBloc>(),
                         allowPassedStartTime:
                             addActivitySettings.general.allowPassedStartTime,

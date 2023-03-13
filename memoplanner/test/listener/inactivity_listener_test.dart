@@ -1,14 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:timezone/data/latest.dart' as tz;
-
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:seagull_clock/ticker.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 import '../fakes/all.dart';
 import '../mocks/mocks.dart';
@@ -52,6 +51,7 @@ void main() {
     final initialTime = DateTime(2022, 03, 14, 13, 27);
 
     late StreamController<DateTime> clockStreamController;
+    late MockSupportPersonsDb mockSupportPersonsDb;
     late MockFlutterLocalNotificationsPlugin
         mockFlutterLocalNotificationsPlugin;
 
@@ -83,6 +83,17 @@ void main() {
       when(() => mockActivityDb.getAllDirty())
           .thenAnswer((_) => Future.value([]));
 
+      mockSupportPersonsDb = MockSupportPersonsDb();
+      when(() => mockSupportPersonsDb.getAll()).thenAnswer(
+        (_) => {
+          const SupportPerson(
+            id: 1,
+            name: 'name',
+            image: 'image',
+          )
+        },
+      );
+
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..database = FakeDatabase()
@@ -97,6 +108,7 @@ void main() {
         )
         ..battery = FakeBattery()
         ..deviceDb = FakeDeviceDb()
+        ..supportPersonsDb = mockSupportPersonsDb
         ..init();
     });
 

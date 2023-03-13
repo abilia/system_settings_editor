@@ -1,10 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:timezone/data/latest.dart' as tz;
-
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
@@ -12,17 +9,17 @@ import 'package:memoplanner/main.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
+import '../../fakes/activity_db_in_memory.dart';
 import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';
 import '../../mocks/mocks.dart';
-
 import '../../test_helpers/app_pumper.dart';
 import '../../test_helpers/default_sortables.dart';
+import '../../test_helpers/enter_text.dart';
 import '../../test_helpers/register_fallback_values.dart';
 import '../../test_helpers/tts.dart';
-import '../../test_helpers/enter_text.dart';
-import '../../fakes/activity_db_in_memory.dart';
 
 void main() {
   final editActivityButtonFinder = find.byIcon(AbiliaIcons.edit);
@@ -64,6 +61,7 @@ void main() {
   late MockGenericDb mockGenericDb;
   late MockSortableDb mockSortableDb;
   late MockTimerDb mockTimerDb;
+  late MockSupportPersonsDb mockSupportPersonsDb;
 
   ActivityResponse activityResponse = () => [];
   SortableResponse sortableResponse = () => defaultSortables;
@@ -86,6 +84,17 @@ void main() {
     final mockFirebasePushService = MockFirebasePushService();
     when(() => mockFirebasePushService.initPushToken())
         .thenAnswer((_) => Future.value('fakeToken'));
+
+    mockSupportPersonsDb = MockSupportPersonsDb();
+    when(() => mockSupportPersonsDb.getAll()).thenAnswer(
+      (_) => {
+        const SupportPerson(
+          id: 1,
+          name: 'name',
+          image: 'image',
+        )
+      },
+    );
 
     mockActivityDb = ActivityDbInMemory();
 
@@ -140,6 +149,7 @@ void main() {
       ..battery = FakeBattery()
       ..timerDb = mockTimerDb
       ..deviceDb = FakeDeviceDb()
+      ..supportPersonsDb = mockSupportPersonsDb
       ..init();
   });
 

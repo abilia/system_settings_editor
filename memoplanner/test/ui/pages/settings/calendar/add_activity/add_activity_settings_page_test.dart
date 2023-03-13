@@ -16,11 +16,23 @@ void main() {
     final initialTime = DateTime(2021, 04, 17, 09, 20);
     Iterable<Generic> generics = [];
     late MockGenericDb genericDb;
+    late MockSupportPersonsDb mockSupportPersonsDb;
 
     setUp(() async {
       setupPermissions();
       notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
       scheduleNotificationsIsolated = noAlarmScheduler;
+
+      mockSupportPersonsDb = MockSupportPersonsDb();
+      when(() => mockSupportPersonsDb.getAll()).thenAnswer(
+        (_) => {
+          const SupportPerson(
+            id: 1,
+            name: 'name',
+            image: 'image',
+          )
+        },
+      );
 
       genericDb = MockGenericDb();
       when(() => genericDb.getAllNonDeletedMaxRevision())
@@ -38,6 +50,7 @@ void main() {
         ..sortableDb = FakeSortableDb()
         ..battery = FakeBattery()
         ..deviceDb = FakeDeviceDb()
+        ..supportPersonsDb = mockSupportPersonsDb
         ..init();
     });
 
@@ -362,6 +375,16 @@ void main() {
             matcher: isFalse,
           );
         });
+
+        testWidgets('When no support persons do not show available for switch',
+            (tester) async {
+          when(() => mockSupportPersonsDb.getAll()).thenAnswer((_) => {});
+          await tester.goToAddTab();
+          await tester.tap(find.text(translate.stepByStep));
+          await tester.pumpAndSettle();
+
+          expect(find.text(translate.selectAvailableFor), findsNothing);
+        });
       });
 
       group('Step-by-step -', () {
@@ -569,6 +592,15 @@ void main() {
           key: DefaultsAddActivitySettings.defaultAvailableForTypeKey,
           matcher: AvailableForType.onlyMe.index,
         );
+      });
+
+      testWidgets(
+          'When no support persons do not show default available for option',
+          (tester) async {
+        when(() => mockSupportPersonsDb.getAll()).thenAnswer((_) => {});
+        await tester.goToDefaultsTab();
+        expect(find.byType(AddActivityDefaultSettingsTab), findsOneWidget);
+        expect(find.text(translate.availableFor), findsNothing);
       });
 
       testWidgets('Available for - select all my support persons',

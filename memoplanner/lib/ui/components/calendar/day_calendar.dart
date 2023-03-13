@@ -10,18 +10,41 @@ class DayCalendarTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final day = context.select((DayPickerBloc bloc) => bloc.state.day);
+    final calendarSettings =
+        context.select((MemoplannerSettingsBloc bloc) => bloc.state.calendar);
+    final isTimepillar = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state.dayCalendar.viewOptions.calendarType !=
+        DayCalendarType.list);
+    final currentMinute = context.watch<ClockBloc>().state;
+    final dayPart = context.read<DayPartCubit>().state;
+    final showNightCalendar = context.select<TimepillarCubit, bool>(
+        (cubit) => cubit.state.showNightCalendar);
+    final isNight = (!isTimepillar || showNightCalendar) &&
+        currentMinute.isAtSameDay(day) &&
+        dayPart.isNight;
+
+    final dayTheme = weekdayTheme(
+      dayColor: isNight ? DayColor.noColors : calendarSettings.dayColor,
+      languageCode: Localizations.localeOf(context).languageCode,
+      weekday: day.weekday,
+    );
     return BlocProvider<ScrollPositionCubit>(
       create: (context) => ScrollPositionCubit(
         dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
       ),
       child: Builder(
         builder: (context) {
-          return const Scaffold(
-            appBar: DayCalendarAppBar(),
-            floatingActionButton: FloatingActions(),
+          return Scaffold(
+            backgroundColor: dayTheme.theme.appBarTheme.backgroundColor,
+            appBar: const DayCalendarAppBar(),
+            floatingActionButton: const FloatingActions(),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.startFloat,
-            body: Calendars(),
+            body: Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: const Calendars(),
+            ),
           );
         },
       ),

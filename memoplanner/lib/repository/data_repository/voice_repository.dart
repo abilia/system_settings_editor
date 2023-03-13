@@ -3,14 +3,15 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:http/http.dart';
-import 'package:path/path.dart' as p;
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:path/path.dart' as p;
 
 class VoiceRepository {
   VoiceRepository({
@@ -96,12 +97,14 @@ class VoiceRepository {
   }
 
   void _verifyDownload(VoiceFile voiceFile, Uint8List downloadedBytes) {
-    if (downloadedBytes.length != voiceFile.sizeB) {
+    final expectedHash = voiceFile.md5;
+    final downloadedHash = md5.convert(downloadedBytes).toString();
+    if (expectedHash != downloadedHash) {
       throw VoiceFileDownloadException(
         voiceFile,
-        'voice file size mismatch: '
-        '(downloaded ${downloadedBytes.length} bytes '
-        '- expected ${voiceFile.sizeB} bytes)',
+        'voice file hash mismatch: '
+        '(downloaded file with hash $downloadedHash'
+        '- expected $expectedHash)',
       );
     }
   }
