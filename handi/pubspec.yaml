@@ -1,10 +1,10 @@
 name: handi
 description: Flutter app for Handi
 version: 6.0.0
-publish_to: "none"
+publish_to: 'none'
 
 environment:
-  sdk: ">=2.19.2 <3.0.0"
+  sdk: '>=2.19.2 <3.0.0'
 
 dependencies:
   auth:
@@ -38,7 +38,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/handi_logo.png"
+  image_path: 'assets/handi_logo.png'
 
 flutter:
   uses-material-design: true

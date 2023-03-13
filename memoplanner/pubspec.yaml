@@ -4,8 +4,8 @@ version: 4.2.0
 publish_to: none
 
 environment:
-  sdk: ">=2.19.2 <3.0.0"
-  flutter: ">=2.0.0"
+  sdk: '>=2.19.2 <3.0.0'
+  flutter: '>=2.0.0'
 
 dependencies:
   acapela_tts:
@@ -111,7 +111,7 @@ dev_dependencies:
 flutter_icons:
   android: false
   ios: true
-  image_path: "assets/MEMOplannerGO_logo.png"
+  image_path: 'assets/MEMOplannerGO_logo.png'
 
 flutter:
   uses-material-design: true
