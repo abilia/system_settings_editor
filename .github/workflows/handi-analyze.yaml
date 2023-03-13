@@ -47,4 +47,4 @@ jobs:
           channel: 'stable'
 
       - run: |
-          flutter test --reporter expanded
+          flutter test --reporter github

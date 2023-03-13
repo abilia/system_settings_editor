@@ -38,7 +38,7 @@ jobs:
       - run: flutter pub get
       - run: flutter packages pub run build_runner build --delete-conflicting-outputs
       - run: |
-          flutter test --reporter expanded --dart-define flavor=${{ matrix.flavor }} --flavor ${{ matrix.flavor }}
+          flutter test --reporter github --dart-define flavor=${{ matrix.flavor }} --flavor ${{ matrix.flavor }}
 
   build:
     name: Build
