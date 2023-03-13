@@ -5,7 +5,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:seagull_clock/clock_bloc.dart';
 import 'package:utils/utils.dart';
 
-import '../../../../repository/calendar_repository/test/fakes.dart';
 import '../../fakes/all.dart';
 
 void main() {
@@ -22,7 +21,6 @@ void main() {
       pushCubit: FakePushCubit(),
       authenticationBloc: AuthenticationBloc(
         userRepository: userRepository,
-        calendarRepository: FakesCalendarRepository(),
       ),
       licenseType: LicenseType.memoplanner,
     );

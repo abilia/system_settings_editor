@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:seagull_clock/clock_bloc.dart';
 
-import '../../../repository/calendar_repository/test/fakes.dart';
 import '../fakes/all.dart';
 
 void main() {
@@ -12,7 +11,6 @@ void main() {
     late LoginCubit loginCubit;
     late AuthenticationBloc authenticationBloc;
     late MockUserRepository mockUserRepository;
-    late MockCalendarRepository mockCalendarRepository;
 
     const pushToken = 'pushToken';
     final mockDb = MockDatabase();
@@ -35,10 +33,8 @@ void main() {
             {'count(*)': 0}
           ]));
 
-      mockCalendarRepository = MockCalendarRepository();
       authenticationBloc = AuthenticationBloc(
         userRepository: mockUserRepository,
-        calendarRepository: mockCalendarRepository,
       );
       loginCubit = LoginCubit(
         authenticationBloc: authenticationBloc,
@@ -86,8 +82,6 @@ void main() {
           ),
         ]),
       );
-      when(() => mockCalendarRepository.fetchAndSetCalendar(any()))
-          .thenAnswer((_) => Future.value());
 
       when(() => mockUserRepository.isLoggedIn()).thenReturn(false);
 
@@ -218,7 +212,6 @@ void main() {
           .thenAnswer((_) => Future.value());
       final authenticationBloc = AuthenticationBloc(
         userRepository: mockedUserRepository,
-        calendarRepository: FakesCalendarRepository(),
       )..add(CheckAuthentication());
       mockFirebasePushService = MockFirebasePushService();
       final mockDb = MockDatabase();
@@ -286,7 +279,6 @@ void main() {
     late LoginCubit loginCubit;
     late AuthenticationBloc authenticationBloc;
     late MockUserRepository mockUserRepository;
-    late MockCalendarRepository mockCalendarRepository;
 
     late License expiredLicense;
 
@@ -301,7 +293,6 @@ void main() {
       TestWidgetsFlutterBinding.ensureInitialized();
       final mockFirebasePushService = MockFirebasePushService();
       mockUserRepository = MockUserRepository();
-      mockCalendarRepository = MockCalendarRepository();
       when(() => mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value(pushToken));
 
@@ -324,14 +315,10 @@ void main() {
             ),
           ));
 
-      when(() => mockCalendarRepository.fetchAndSetCalendar(any()))
-          .thenAnswer((_) => Future.value());
-
       when(() => mockUserRepository.isLoggedIn()).thenReturn(false);
 
       authenticationBloc = AuthenticationBloc(
         userRepository: mockUserRepository,
-        calendarRepository: mockCalendarRepository,
       );
       final mockDb = MockDatabase();
       when(() => mockDb.rawQuery(any())).thenAnswer((_) => Future.value([

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:calendar_repository/calendar.dart';
+import 'package:calendar/all.dart';
 import 'package:test/test.dart';
 
 void main() {

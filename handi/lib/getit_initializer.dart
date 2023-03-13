@@ -1,5 +1,5 @@
 import 'package:auth/auth.dart';
-import 'package:calendar_repository/calendar_db.dart';
+import 'package:calendar/all.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:package_info_plus/package_info_plus.dart';
