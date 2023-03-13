@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: dirs
-        run: echo "dirs=$(ls -d packages/**/pubspec.y* | sed 's![^/]*$!!' | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+        run: echo "dirs=$(find packages -name 'pubspec.y*' | sed 's![^/]*$!!' | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
 
 
   collect_test:
@@ -32,7 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: dirs
-        run: echo "dirs=$(ls -d packages/**/test | sed 's![^/]*$!!' | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+        run: echo "dirs=$(find packages -name 'test' -type d | sed 's![^/]*$!!' | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
 
   analyze:
     name: Analyze
@@ -55,7 +55,7 @@ jobs:
       - run: echo ${{ matrix.dir }}
       - run: flutter pub get
       - run: flutter analyze .
-      - run: flutter format --set-exit-if-changed .
+      - run: dart format --set-exit-if-changed .
 
   test:
     name: Test
