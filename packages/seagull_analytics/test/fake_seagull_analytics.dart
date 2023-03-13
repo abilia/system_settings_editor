@@ -5,11 +5,6 @@ import 'package:seagull_analytics/seagull_analytics.dart';
 
 class FakeSeagullAnalytics extends Fake implements SeagullAnalytics {
   @override
-  void identifyAndRegisterSuperProperties(
-      {required String identifier,
-      required Map<String, dynamic> superProperties}) {}
-
-  @override
   void reset() {}
 
   @override

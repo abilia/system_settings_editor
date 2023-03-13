@@ -498,6 +498,7 @@ licenseNumber	License number	Licensnyckel	Licensnummer	Licentienummer	Lisenssinu
 licenseValidDate	License valid date	Licensens slutdatum	Licens gyldighedsdato	Geldigheidsdatum licentie	Lisenssin viimeinen voimassaolopäivä	Gültigkeitsdatum Lizenz	Lisensens sluttdato
 loggedInUser	Logged in user account	Inloggat användarkonto	Logget ind brugerkonto	Ingelogd gebruikersaccount	Kirjautunut käyttäjätili	Angemeldetes Benutzerkonto	Innlogget brukerkonto
 aboutDevice	About the device	Om enheten	Om enheden	Over het apparaat	Tietoja laitteesta	Über das Gerät	Om enheten
+supportId	Support id	Support id					
 deviceName	Device name	Enhetens namn	Enhedsnavn	Apparaatnaam	Laitteen nimi	Gerätename	Enhetsnavn
 serialNumber	Serial number	Serienummer	Serienummer	Serienummer	Sarjanumero	Seriennummer	Serienummer
 version	Version	Version	Version	Versie	Versio	Version	Versjon
