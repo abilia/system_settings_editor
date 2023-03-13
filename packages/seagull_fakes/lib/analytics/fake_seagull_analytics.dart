@@ -1,7 +1,5 @@
-import 'dart:ui';
-
-import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull_analytics/seagull_analytics.dart';
+import 'package:memoplanner/ui/all.dart';
+import 'package:mocktail/mocktail.dart';
 
 class FakeSeagullAnalytics extends Fake implements SeagullAnalytics {
   @override

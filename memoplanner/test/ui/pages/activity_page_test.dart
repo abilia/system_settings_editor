@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:seagull_fakes/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:memoplanner/background/all.dart';

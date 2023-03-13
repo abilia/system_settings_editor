@@ -4,8 +4,8 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:repository_base/repository_base.dart';
+import 'package:seagull_fakes/all.dart';
 
-import '../fakes/all.dart';
 
 void main() {
   setUpAll(() {

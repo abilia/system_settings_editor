@@ -1,0 +1,28 @@
+name: seagull_fakes
+
+environment:
+  sdk: '>=2.19.4 <3.0.0'
+  flutter: '>=1.17.0'
+
+dependencies:
+  auth:
+    path: ../auth
+  bloc_test: ^9.1.1
+  calendar:
+    path: ../calendar
+  flutter:
+    sdk: flutter
+  http: ^0.13.5
+  memoplanner:
+    path: ../../memoplanner
+  mocktail: ^0.3.0
+  repository_base:
+    path: ../repository/repository_base
+  shared_preferences: ^2.0.18
+  sqflite: ^2.2.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  seagull_lints:
+    path: ../seagull_lints

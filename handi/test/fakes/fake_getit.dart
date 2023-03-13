@@ -1,7 +1,7 @@
 import 'package:handi/getit_initializer.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:seagull_fakes/all.dart';
 
-import 'all.dart';
 import 'fake_client.dart';
 
 Future<void> initGetItFakes() async => initGetItWith(

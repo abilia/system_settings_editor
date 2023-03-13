@@ -8,6 +8,7 @@ import 'package:seagull_clock/ticker.dart';
 import 'package:memoplanner/ui/all.dart';
 
 import 'package:intl/intl.dart';
+import 'package:seagull_fakes/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';

@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:intl/intl.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
+import 'package:seagull_fakes/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:memoplanner/background/all.dart';

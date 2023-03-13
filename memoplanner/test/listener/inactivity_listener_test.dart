@@ -7,6 +7,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:seagull_clock/ticker.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_fakes/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import '../fakes/all.dart';
