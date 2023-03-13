@@ -7,7 +7,7 @@ import 'package:uuid/uuid.dart';
 class DeviceDb {
   static const String _serialIdRecord = 'serialIdRecord',
       _clientIdRecord = 'clientIdRecord',
-      _supportIdRecord = 'clientIdRecord',
+      _supportIdRecord = 'supportIdRecord',
       _startGuideCompletedRecord = 'startGuideCompletedRecord',
       _deviceLicenseRecord = 'deviceLicenseRecord';
   final SharedPreferences prefs;
@@ -33,7 +33,7 @@ class DeviceDb {
     final id = prefs.getString(record);
     if (id != null) return id;
     final newId = const Uuid().v4();
-    await prefs.setString(_clientIdRecord, newId);
+    await prefs.setString(record, newId);
     return newId;
   }
 
