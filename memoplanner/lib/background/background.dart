@@ -21,9 +21,11 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
   final documentDirectory = await getApplicationDocumentsDirectory();
   final preferences = await SharedPreferences.getInstance();
 
+  final deviceDb = DeviceDb(preferences);
   final logger = SeagullLogger(
     documentsDirectory: documentDirectory.path,
     preferences: preferences,
+    supportId: await deviceDb.getSupportId(),
   );
   final log = Logger('BackgroundMessageHandler');
 
@@ -54,7 +56,6 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       return;
     }
 
-    final deviceDb = DeviceDb(preferences);
     final client = ClientWithDefaultHeaders(
       version,
       loginDb: loginDb,
