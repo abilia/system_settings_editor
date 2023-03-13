@@ -64,6 +64,7 @@ void main() {
         ..database = FakeDatabase()
         ..deviceDb = FakeDeviceDb()
         ..sortableDb = FakeSortableDb()
+        ..userDb = FakeUserDb()
         ..init();
     });
 

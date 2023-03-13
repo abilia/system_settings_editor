@@ -11,6 +11,8 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/storage/all.dart';
 
+import 'fake_client.dart';
+
 class FakeSettingsDb extends Fake implements SettingsDb {
   @override
   bool get leftCategoryExpanded => true;
@@ -40,7 +42,16 @@ class FakeSettingsDb extends Fake implements SettingsDb {
   bool get alwaysUse24HourFormat => true;
 }
 
-class FakeUserDb extends Fake implements UserDb {}
+class FakeUserDb extends Fake implements UserDb {
+  @override
+  Future insertUser(User user) async {}
+
+  @override
+  User? getUser() => Fakes.user;
+
+  @override
+  Future deleteUser() async {}
+}
 
 class FakeCalendarDb extends Fake implements CalendarDb {}
 
