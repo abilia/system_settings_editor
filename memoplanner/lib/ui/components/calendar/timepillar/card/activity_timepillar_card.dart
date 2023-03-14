@@ -43,7 +43,7 @@ class ActivityTimepillarCard extends TimepillarCard {
       left: right ? column * measures.cardTotalWidth : null,
       top: cardPosition.top,
       child: Tts.fromSemantics(
-        activity.semanticsProperties(context),
+        activityOccasion.semanticsProperties(context),
         child: Stack(
           textDirection: right ? TextDirection.ltr : TextDirection.rtl,
           children: <Widget>[

@@ -508,7 +508,7 @@ class _WeekActivityContent extends StatelessWidget {
     final inactive = activityOccasion.isPast || activityOccasion.isSignedOff;
 
     return Tts.fromSemantics(
-      activityOccasion.activity.semanticsProperties(context),
+      activityOccasion.semanticsProperties(context),
       child: _WeekEventContent(
         occasion: activityOccasion,
         selected: selected && !fullDay,

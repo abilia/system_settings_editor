@@ -316,7 +316,11 @@ abstract class Translated {
 
   final String thisDayAndForward = 'This day and forward';
 
-  final String completed = 'Completed?';
+  final String notCompleted = 'Not completed';
+
+  final String completed = 'Completed';
+
+  final String completedQuestion = 'Completed?';
 
   final String unCheckActivityQuestion = 'Do you want to uncheck the activity?';
 
@@ -1484,7 +1488,7 @@ class SV extends Translated {
   final String thisDayAndForward = 'Denna dag och framåt';
 
   @override
-  final String completed = 'Klar?';
+  final String completedQuestion = 'Klar?';
 
   @override
   final String unCheckActivityQuestion =
@@ -2993,7 +2997,7 @@ class DA extends Translated {
   final String thisDayAndForward = 'Denne dag og frem';
 
   @override
-  final String completed = 'Færdig?';
+  final String completedQuestion = 'Færdig?';
 
   @override
   final String unCheckActivityQuestion =
@@ -4503,7 +4507,7 @@ class NL extends Translated {
   final String thisDayAndForward = 'Deze dag en verder';
 
   @override
-  final String completed = 'Afgerond?';
+  final String completedQuestion = 'Afgerond?';
 
   @override
   final String unCheckActivityQuestion =
@@ -6019,7 +6023,7 @@ class FI extends Translated {
   final String thisDayAndForward = 'Tästä päivästä lähtien';
 
   @override
-  final String completed = 'Valmis?';
+  final String completedQuestion = 'Valmis?';
 
   @override
   final String unCheckActivityQuestion =
@@ -7537,7 +7541,7 @@ class DE extends Translated {
   final String thisDayAndForward = 'Von diesem Tag an';
 
   @override
-  final String completed = 'Bist Du fertig?';
+  final String completedQuestion = 'Bist Du fertig?';
 
   @override
   final String unCheckActivityQuestion =
@@ -9051,7 +9055,7 @@ class NB extends Translated {
   final String thisDayAndForward = 'Denne dagen og fremover';
 
   @override
-  final String completed = 'Ferdig?';
+  final String completedQuestion = 'Ferdig?';
 
   @override
   final String unCheckActivityQuestion =

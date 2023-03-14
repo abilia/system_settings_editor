@@ -20,7 +20,9 @@ class CheckActivityConfirmDialog extends StatelessWidget {
       headingIcon:
           signedOff ? AbiliaIcons.handiUncheck : AbiliaIcons.handiCheck,
       text: message ??
-          (signedOff ? translate.unCheckActivityQuestion : translate.completed),
+          (signedOff
+              ? translate.unCheckActivityQuestion
+              : translate.completedQuestion),
     );
   }
 }

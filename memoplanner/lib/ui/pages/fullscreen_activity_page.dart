@@ -135,7 +135,7 @@ class FullScreenActivityTabItem extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 1,
         child: Tts.fromSemantics(
-          activityOccasion.activity.semanticsProperties(context),
+          activityOccasion.semanticsProperties(context),
           child: GestureDetector(
             onTap: () => context
                 .read<FullScreenActivityCubit>()
