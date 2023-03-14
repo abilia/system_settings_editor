@@ -5,34 +5,34 @@ environment:
   flutter: '>=2.0.0'
 
 dependencies:
-  bloc_concurrency: ^0.2.0
+  bloc_concurrency: any
   calendar:
     path: ../calendar
-  collection: ^1.17.0
-  equatable: ^2.0.3
-  firebase_messaging: ^14.0.4
+  collection: any
+  equatable: any
+  firebase_messaging: any
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.0.1
-  http: ^0.13.5
-  logging: ^1.1.0
-  meta: ^1.7.0
+  flutter_bloc: any
+  http: any
+  logging: any
+  meta: any
   repository_base:
     path: ../repository/repository_base
   seagull_clock:
     path: ../seagull_clock
-  shared_preferences: ^2.0.8
-  sqflite: ^2.2.0
-  synchronized: ^3.0.0
+  shared_preferences: any
+  sqflite: any
+  synchronized: any
   utils:
     path: ../utils
-  uuid: ^3.0.5
+  uuid: any
 
 dev_dependencies:
-  bloc_test: ^9.0.3
+  bloc_test: any
   flutter_test:
     sdk: flutter
-  mocktail: ^0.3.0
+  mocktail: any
   seagull_lints:
     path: ../seagull_lints
   test: any

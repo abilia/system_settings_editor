@@ -75,7 +75,6 @@ dependencies:
     path: ../packages/seagull_clock
   shared_preferences: ^2.0.8
   sqflite: ^2.2.0
-  sqflite_common_ffi: ^2.2.0
   synchronized: ^3.0.0
   system_settings_editor:
     git:

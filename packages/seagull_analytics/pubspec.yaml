@@ -5,12 +5,12 @@ environment:
   flutter: '>=2.0.0'
 
 dependencies:
-  equatable: ^2.0.3
+  equatable: any
   flutter:
     sdk: flutter
   flutter_test:
     sdk: flutter
-  logging: ^1.1.0
+  logging: any
   mixpanel_flutter: ^2.0.0
   seagull_lints:
     path: ../seagull_lints
