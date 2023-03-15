@@ -45,7 +45,7 @@ class ActivityCard extends StatelessWidget {
       child: Builder(
         builder: (context) {
           return Tts.fromSemantics(
-            activity.semanticsProperties(context),
+            activityOccasion.semanticsProperties(context),
             child: Opacity(
               opacity: useOpacity ? (signedOff || past ? 0.3 : 0.4) : 1,
               child: AnimatedContainer(
@@ -112,7 +112,7 @@ class ActivityCard extends StatelessWidget {
                                               .eventCard.titleSubtitleSpacing),
                                     ],
                                     Text(
-                                      activity.subtitle(context),
+                                      activityOccasion.subtitle(context),
                                       style: bodyText4,
                                       overflow: TextOverflow.ellipsis,
                                     ),

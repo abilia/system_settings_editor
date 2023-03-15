@@ -4,26 +4,32 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/components/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-extension ActivityExtensions on Activity {
+extension ActivityExtensions on ActivityOccasion {
   String subtitle(BuildContext context, [bool tts = false]) {
     final t = Translator.of(context).translate;
-    if (fullDay) return t.fullDay;
+    if (activity.fullDay) return t.fullDay;
     final timeFormat = hourAndMinuteFormat(context);
     final timeBinding = tts ? t.timeTo : '-';
-    if (hasEndTime) {
-      return '${timeFormat(startTime)} $timeBinding ${timeFormat(noneRecurringEnd)}';
+    if (activity.hasEndTime) {
+      return '${timeFormat(activity.startTime)} $timeBinding ${timeFormat(activity.noneRecurringEnd)}';
     }
-    return timeFormat(startTime);
+    return timeFormat(activity.startTime);
   }
 
-  SemanticsProperties semanticsProperties(BuildContext context) =>
-      SemanticsProperties(
-        button: true,
-        image: hasImage,
-        label: !hasTitle
-            ? subtitle(context, true)
-            : '$title, ${subtitle(context, true)}',
-      );
+  SemanticsProperties semanticsProperties(BuildContext context) {
+    final t = Translator.of(context).translate;
+    final label = [
+      if (activity.hasTitle) activity.title,
+      subtitle(context, true),
+      if (activity.checkable)
+        if (isSignedOff) t.completed else t.notCompleted
+    ].join(', ');
+    return SemanticsProperties(
+      button: true,
+      image: hasImage,
+      label: label,
+    );
+  }
 }
 
 extension TimerExtensions on AbiliaTimer {
