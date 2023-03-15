@@ -1,13 +1,5 @@
 import 'package:memoplanner/i18n/all.dart';
 
-extension IntToDuration on int {
-  Duration days() => Duration(days: this);
-  Duration hours() => Duration(hours: this);
-  Duration minutes() => Duration(minutes: this);
-  Duration seconds() => Duration(seconds: this);
-  Duration milliseconds() => Duration(milliseconds: this);
-}
-
 const iOSPersistentNotificationMaxDuration = Duration(seconds: 30),
     iOSUnlockedPhoneNotificationMaxDuration = Duration(seconds: 5);
 

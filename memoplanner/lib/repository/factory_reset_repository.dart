@@ -24,7 +24,7 @@ class FactoryResetRepository extends Repository {
     try {
       final response = await client.post(
         endpoint,
-        headers: jsonHeaderWithKey,
+        headers: DeviceRepository.jsonHeaderWithKey,
         body: jsonEncode({
           'clientId': clientId,
         }),

@@ -1,0 +1,24 @@
+name: calendar
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+
+dependencies:
+  auth:
+    path: ../auth
+  flutter_bloc: any
+  logging: any
+  repository_base:
+    path: ../repository/repository_base
+  sqflite: any
+  utils:
+    path: ../utils
+
+dev_dependencies:
+  bloc_test: any
+  mocktail: any
+  seagull_fakes:
+    path: ../seagull_fakes
+  seagull_lints:
+    path: ../seagull_lints
+  test: any

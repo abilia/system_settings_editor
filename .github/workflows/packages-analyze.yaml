@@ -14,23 +14,25 @@ jobs:
   collect_analyze:
     name: Collect Analyze Directories
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       dirs: ${{ steps.dirs.outputs.dirs }}
     steps:
       - uses: actions/checkout@v3
       - id: dirs
-        run: echo "dirs=$(ls -d packages/*/ | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+        run: echo "dirs=$(find packages -name 'pubspec.y*' | sed 's![^/]*$!!' | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
 
 
   collect_test:
     name: Collect Test Directories
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       dirs: ${{ steps.dirs.outputs.dirs }}
     steps:
       - uses: actions/checkout@v3
       - id: dirs
-        run: echo "dirs=$(ls -d packages/*/test | sed 's%^\([^/]*\/[^/]*\)\/.*$%\1%' | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+        run: echo "dirs=$(find packages -name 'test' -type d | sed 's![^/]*$!!' | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
 
   analyze:
     name: Analyze
@@ -53,7 +55,7 @@ jobs:
       - run: echo ${{ matrix.dir }}
       - run: flutter pub get
       - run: flutter analyze .
-      - run: flutter format --set-exit-if-changed .
+      - run: dart format --set-exit-if-changed .
 
   test:
     name: Test
@@ -75,4 +77,4 @@ jobs:
 
       - run: echo ${{ matrix.dir }}
       - run: |
-          flutter test --reporter expanded
+          flutter test --reporter github

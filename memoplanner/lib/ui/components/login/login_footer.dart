@@ -1,3 +1,4 @@
+import 'package:auth/repository/user_repository.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';

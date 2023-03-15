@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/repository/all.dart';
+import 'package:seagull_fakes/all.dart';
 
-import 'fake_db_and_repository.dart';
-import 'fakes_blocs.dart';
+import 'all.dart';
 
 class FakeAuthenticatedBlocsProvider extends StatelessWidget {
   final Widget child;

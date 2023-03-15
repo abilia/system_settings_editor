@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:logging/logging.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 
-import 'analytics_events.dart';
+import 'package:seagull_analytics/analytics_events.dart';
 
 export 'widgets/trackable_page_view.dart';
 export 'widgets/trackable_tab_bar_view.dart';

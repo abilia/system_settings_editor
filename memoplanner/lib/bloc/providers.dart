@@ -1,4 +1,6 @@
+import 'package:auth/auth.dart';
 import 'package:battery_plus/battery_plus.dart';
+import 'package:calendar/all.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -183,6 +185,12 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 syncBloc: context.read<SyncBloc>(),
               )..loadGenerics(),
             ),
+            BlocProvider<CalendarCubit>(
+              create: (context) => CalendarCubit(
+                calendarRepository: context.read<CalendarRepository>(),
+                userRepository: context.read<UserRepository>(),
+              )..loadCalendarId(),
+            ),
             BlocProvider<MemoplannerSettingsBloc>(
               create: (context) =>
                   memoplannerSettingBloc ??
@@ -334,6 +342,14 @@ class TopLevelProvider extends StatelessWidget {
             userDb: GetIt.I<UserDb>(),
             licenseDb: GetIt.I<LicenseDb>(),
             deviceDb: GetIt.I<DeviceDb>(),
+            app: Config.flavor.id,
+            name: Config.flavor.id,
+          ),
+        ),
+        RepositoryProvider<CalendarRepository>(
+          create: (context) => CalendarRepository(
+            baseUrlDb: GetIt.I<BaseUrlDb>(),
+            client: GetIt.I<ListenableClient>(),
             calendarDb: GetIt.I<CalendarDb>(),
           ),
         ),
@@ -360,7 +376,9 @@ class TopLevelProvider extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider<PushCubit>(
-            create: (context) => pushCubit ?? PushCubit(),
+            create: (context) =>
+                pushCubit ??
+                PushCubit(backgroundMessageHandler: myBackgroundMessageHandler),
           ),
           BlocProvider<ClockBloc>(
             create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),
@@ -428,7 +446,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
       providers: [
         BlocProvider<AuthenticationBloc>(
           create: (context) => AuthenticationBloc(
-            context.read<UserRepository>(),
+            userRepository: context.read<UserRepository>(),
             onLogout: () => Future.wait<void>(
               [
                 DatabaseRepository.clearAll(GetIt.I<Database>()),
@@ -454,6 +472,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
             pushCubit: context.read<PushCubit>(),
             userRepository: context.read<UserRepository>(),
             authenticationBloc: context.read<AuthenticationBloc>(),
+            licenseType: LicenseType.memoplanner,
           )..reloadLicenses(),
         ),
       ],

@@ -6,13 +6,6 @@ import 'package:mocktail/mocktail.dart';
 
 import 'all.dart';
 
-class FakePushCubit extends Fake implements PushCubit {
-  @override
-  Stream<RemoteMessage> get stream => const Stream.empty();
-  @override
-  Future<void> close() async {}
-}
-
 class FakeSyncBloc extends Fake implements SyncBloc {
   @override
   Stream<Synced> get stream => const Stream.empty();

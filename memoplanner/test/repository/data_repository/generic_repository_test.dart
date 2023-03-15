@@ -5,11 +5,12 @@ import 'package:http/http.dart';
 
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';
-import '../../fakes/fake_client.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
+import 'package:seagull_fakes/all.dart';
 
 import '../../mocks/mocks.dart';
+import '../../fakes/all.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
 void main() {

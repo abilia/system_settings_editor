@@ -1,3 +1,4 @@
+import 'package:calendar/all.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:collection/collection.dart';
@@ -13,6 +14,7 @@ List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
       _tryGetBloc<UserFileCubit>(blocContext),
       _tryGetBloc<SortableBloc>(blocContext),
       _tryGetBloc<GenericCubit>(blocContext),
+      _tryGetBloc<CalendarCubit>(blocContext),
       _tryGetBloc<MemoplannerSettingsBloc>(blocContext),
       _tryGetBloc<DayPickerBloc>(blocContext),
       _tryGetBloc<DayEventsCubit>(blocContext),

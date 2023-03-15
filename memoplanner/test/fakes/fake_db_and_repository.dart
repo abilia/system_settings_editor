@@ -1,21 +1,17 @@
 import 'dart:io';
 
+import 'package:auth/auth.dart';
+import 'package:calendar/all.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:test/fake.dart';
 import '../test_helpers/default_sortables.dart';
-import 'fake_client.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/storage/all.dart';
 
-class FakeUserRepository extends Fake implements UserRepository {
-  @override
-  String get baseUrl => 'fake.url';
-  @override
-  Future<void> persistLoginInfo(LoginInfo token) => Future.value();
-}
+import 'fake_client.dart';
 
 class FakeSettingsDb extends Fake implements SettingsDb {
   @override
@@ -46,37 +42,15 @@ class FakeSettingsDb extends Fake implements SettingsDb {
   bool get alwaysUse24HourFormat => true;
 }
 
-class FakeLoginDb extends Fake implements LoginDb {
+class FakeUserDb extends Fake implements UserDb {
   @override
-  String? getToken() => Fakes.token;
-}
-
-class FakeUserDb extends Fake implements UserDb {}
-
-class FakeBaseUrlDb extends Fake implements BaseUrlDb {
-  @override
-  Future setBaseUrl(String baseUrl) async {}
+  Future insertUser(User user) async {}
 
   @override
-  String get baseUrl => 'http://fake.url';
-  @override
-  String get environment => 'FAKE';
-  @override
-  String get environmentOrTest => 'FAKE';
-}
+  User? getUser() => Fakes.user;
 
-class FakeLicenseDb extends Fake implements LicenseDb {
   @override
-  Future persistLicenses(List<License> licenses) => Future.value();
-  @override
-  List<License> getLicenses() => [
-        License(
-          id: 123,
-          key: 'licenseKey',
-          product: memoplannerLicenseName,
-          endTime: DateTime(3333),
-        ),
-      ];
+  Future deleteUser() async {}
 }
 
 class FakeCalendarDb extends Fake implements CalendarDb {}
@@ -157,42 +131,6 @@ class FakeActivityDb extends Fake implements ActivityDb {
   Future<int> countAllDirty() => Future.value(0);
 }
 
-class FakeDatabase extends Fake implements Database {
-  @override
-  Future<List<Map<String, Object?>>> rawQuery(String sql,
-          [List<Object?>? arguments]) =>
-      Future.value([]);
-  @override
-  Batch batch() => FakeBatch();
-
-  @override
-  Future<List<Map<String, Object?>>> query(String table,
-          {bool? distinct,
-          List<String>? columns,
-          String? where,
-          List<Object?>? whereArgs,
-          String? groupBy,
-          String? having,
-          String? orderBy,
-          int? limit,
-          int? offset}) =>
-      Future.value([]);
-
-  @override
-  Future<int> insert(String table, Map<String, Object?> values,
-          {String? nullColumnHack, ConflictAlgorithm? conflictAlgorithm}) =>
-      Future.value(values.length);
-}
-
-class FakeBatch extends Fake implements Batch {
-  @override
-  Future<List<Object?>> commit(
-          {bool? exclusive, bool? noResult, bool? continueOnError}) =>
-      Future.value([]);
-  @override
-  void delete(String table, {String? where, List<Object?>? whereArgs}) {}
-}
-
 class FakeGenericRepository extends Fake implements GenericRepository {
   @override
   Future<bool> synchronize() => Future.value(true);
@@ -250,30 +188,6 @@ class FakeVoiceDb extends Fake implements VoiceDb {
 
   @override
   double get speechRate => 100;
-}
-
-class FakeDeviceDb extends Fake implements DeviceDb {
-  @override
-  Future<String> getClientId() async {
-    return 'clientId';
-  }
-
-  @override
-  String get serialId => 'serialId';
-
-  @override
-  bool get startGuideCompleted => true;
-
-  @override
-  Future<void> setDeviceLicense(DeviceLicense license) async {}
-
-  @override
-  DeviceLicense? getDeviceLicense() {
-    return null;
-  }
-
-  @override
-  Future<String> getSupportId() async => '2c4f3842-c17c-11ed-afa1-0242ac120002';
 }
 
 class FakeTtsHandler extends Fake implements TtsInterface {
