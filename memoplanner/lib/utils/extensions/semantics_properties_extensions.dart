@@ -18,15 +18,12 @@ extension ActivityExtensions on ActivityOccasion {
 
   SemanticsProperties semanticsProperties(BuildContext context) {
     final t = Translator.of(context).translate;
-    final title = activity.hasTitle ? activity.title : '';
-    final subtitles = subtitle(context, true);
-    final completed = activity.checkable
-        ? isSignedOff
-            ? t.completed
-            : t.notCompleted
-        : '';
-    final labels = [title, subtitles, completed];
-    final label = labels.where((l) => l.isNotEmpty).join(', ');
+    final label = [
+      if (activity.hasTitle) activity.title,
+      subtitle(context, true),
+      if (activity.checkable)
+        if (isSignedOff) t.completed else t.notCompleted
+    ].join(', ');
     return SemanticsProperties(
       button: true,
       image: hasImage,
