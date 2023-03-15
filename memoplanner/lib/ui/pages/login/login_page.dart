@@ -1,9 +1,11 @@
+import 'package:auth/auth.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:sqflite/sqflite.dart';
 
 class LoginPage extends StatelessWidget {
   final Unauthenticated unauthenticatedState;
@@ -38,13 +40,16 @@ class LoginPage extends StatelessWidget {
         pushService: GetIt.I<FirebasePushService>(),
         clockBloc: BlocProvider.of<ClockBloc>(context),
         userRepository: context.read<UserRepository>(),
+        database: GetIt.I<Database>(),
+        allowExiredLicense: Config.isMP,
+        licenseType: LicenseType.memoplanner,
       ),
       child: BlocListener<LoginCubit, LoginState>(
         listenWhen: (_, state) => state is LoginFailure,
         listener: (context, state) async {
           if (state is LoginFailure) {
             final cause = state.cause;
-            if (state.noValidLicense) {
+            if (state.noLicense || state.licenseExpired && Config.isMPGO) {
               context.read<LoginCubit>().clearFailure();
               await showViewDialog(
                 context: context,
@@ -57,7 +62,7 @@ class LoginPage extends StatelessWidget {
                   properties: {'reason': cause.name},
                 ),
               );
-            } else if (state.showLicenseExpiredWarning) {
+            } else if (state.licenseExpired && Config.isMP) {
               final loginCubit = context.read<LoginCubit>();
               final licenseExpiredConfirmed = await showViewDialog(
                 context: context,

@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:auth/http_client.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_fakes/all.dart';
 
 import '../mocks/mocks.dart';
 import '../test_helpers/register_fallback_values.dart';
@@ -13,8 +15,13 @@ void main() {
   final deviceDb = MockDeviceDb();
   final loginDb = MockLoginDb();
   final innerClient = MockBaseClient();
-  final client = ClientWithDefaultHeaders('version',
-      deviceDb: deviceDb, loginDb: loginDb, client: innerClient);
+  final client = ClientWithDefaultHeaders(
+    deviceDb: deviceDb,
+    loginDb: loginDb,
+    client: innerClient,
+    version: 'version',
+    name: 'name',
+  );
 
   setUp(() {
     registerFallbackValues();

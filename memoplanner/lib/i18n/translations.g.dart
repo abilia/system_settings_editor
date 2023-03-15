@@ -957,6 +957,8 @@ abstract class Translated {
 
   final String aboutDevice = 'About the device';
 
+  final String supportId = 'Support id';
+
   final String deviceName = 'Device name';
 
   final String serialNumber = 'Serial number';
@@ -2430,6 +2432,9 @@ class SV extends Translated {
 
   @override
   final String aboutDevice = 'Om enheten';
+
+  @override
+  final String supportId = 'Support id';
 
   @override
   final String deviceName = 'Enhetens namn';

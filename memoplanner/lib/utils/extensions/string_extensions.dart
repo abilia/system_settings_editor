@@ -36,20 +36,10 @@ extension SizeOfText on String {
   }
 }
 
-extension UriExtension on String {
-  Uri toUri() {
-    return Uri.parse(this);
-  }
-}
-
 extension Replace on String {
   String get singleLine => replaceAll('-\n', '');
   String capitalize() =>
       isNotEmpty ? '${this[0].toUpperCase()}${substring(1)}' : this;
-}
-
-extension NullOnEmpty on String {
-  String? nullOnEmpty() => isNotEmpty ? this : null;
 }
 
 class TextRenderingSize {

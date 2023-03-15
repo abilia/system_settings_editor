@@ -338,7 +338,7 @@ void main() {
     blocTest(
       'SGC-1710 Nothing when disable until is set',
       setUp: () {
-        when(() => mockActivityRepository.getAll())
+        when(() => mockActivityRepository.allBetween(any(), any()))
             .thenAnswer((_) => Future.value([soonActivity]));
         when(() => mockGenericRepository.getAll()).thenAnswer(
           (invocation) => Future.value(
@@ -362,6 +362,7 @@ void main() {
       ),
       act: (cubit) async {
         await genericCubit.loadGenerics();
+        await memoplannerSettingBloc.stream.any((s) => true);
         await tick();
       },
       expect: () => [],

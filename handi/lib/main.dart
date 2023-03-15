@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:handi/getit_initializer.dart';
+import 'package:handi/listeners/top_level_listener.dart';
+import 'package:handi/providers.dart';
 
-void main() {
+const appName = 'handi';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initGetIt();
   runApp(
     const HandiApp(),
   );
 }
+
+final _navigatorKey = GlobalKey<NavigatorState>();
 
 class HandiApp extends StatelessWidget {
   const HandiApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Handi!'),
+    return Providers(
+      child: TopLevelListener(
+        navigatorKey: _navigatorKey,
+        child: MaterialApp(
+          navigatorKey: _navigatorKey,
+          home: Scaffold(
+            body: Center(
+              child: Text('${appName.toUpperCase()}!'),
+            ),
+          ),
         ),
       ),
     );

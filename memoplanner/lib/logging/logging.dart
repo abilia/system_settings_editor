@@ -28,6 +28,7 @@ class SeagullLogger {
   final _log = Logger((SeagullLogger).toString());
   final String documentsDirectory;
   final SharedPreferences? preferences;
+  final String supportId;
 
   late final bool fileLogging = loggingType.contains(LoggingType.file);
   late final bool printLogging = loggingType.contains(LoggingType.print);
@@ -39,17 +40,20 @@ class SeagullLogger {
   factory SeagullLogger.test() => SeagullLogger(
         loggingType: const {LoggingType.print},
         documentsDirectory: '',
+        supportId: '',
         level: Level.ALL,
       );
 
   factory SeagullLogger.nothing() => SeagullLogger(
         loggingType: const {},
         documentsDirectory: '',
+        supportId: '',
         level: Level.OFF,
       );
 
   SeagullLogger({
     required this.documentsDirectory,
+    required this.supportId,
     this.preferences,
     this.loggingType = const {
       if (kDebugMode)
@@ -241,7 +245,6 @@ class SeagullLogger {
     try {
       final prefs = preferences;
       if (prefs != null) {
-        final user = UserDb(prefs).getUser();
         final bytes = await file.readAsBytes();
         final baseUrl = BaseUrlDb(prefs).baseUrl;
 
@@ -254,7 +257,7 @@ class SeagullLogger {
                 'test.log', // Weird but backend doesn't accept request without filename.
           ))
           ..fields.addAll({
-            'owner': user == null ? 'NO_USER' : user.id.toString(),
+            'owner': supportId,
             'app': Config.flavor.id,
             'fileType': 'zip',
             'secret': 'Mkediq9Jjdn23jKfnKpqmfhkfjMfj',

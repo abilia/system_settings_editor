@@ -1,15 +1,20 @@
 name: seagull_analytics
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: '>=2.19.2 <3.0.0'
   flutter: '>=2.0.0'
 
 dependencies:
+  equatable: any
   flutter:
     sdk: flutter
+  logging: any
+  mixpanel_flutter: ^2.0.0
+  seagull_lints:
+    path: ../seagull_lints
+
+dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
-  logging: ^1.1.0
-  mixpanel_flutter: ^2.0.0
-  equatable: ^2.0.3
+  seagull_fakes:
+    path: ../seagull_fakes

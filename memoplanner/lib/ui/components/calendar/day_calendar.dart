@@ -41,10 +41,7 @@ class DayCalendarTab extends StatelessWidget {
             floatingActionButton: const FloatingActions(),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.startFloat,
-            body: Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              child: const Calendars(),
-            ),
+            body: const Calendars(),
           );
         },
       ),
@@ -249,36 +246,42 @@ class CachedTimepillar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Builder(builder: (contxt) {
-          final dayEventsCubit = context.watch<DayEventsCubit>();
-          final inPageTransition = index != dayEventsCubit.state.day.dayIndex;
-          final eventsState = inPageTransition
-              ? dayEventsCubit.previousState
-              : dayEventsCubit.state;
-          if (eventsState.fullDayActivities.isEmpty) {
-            return const SizedBox.shrink();
-          }
-          return FullDayContainer(
-            fullDayActivities: eventsState.fullDayActivities,
-            day: eventsState.day,
-          );
-        }),
+        Builder(
+          builder: (context) {
+            final dayEventsCubit = context.watch<DayEventsCubit>();
+            final inPageTransition = index != dayEventsCubit.state.day.dayIndex;
+            final eventsState = inPageTransition
+                ? dayEventsCubit.previousState
+                : dayEventsCubit.state;
+            if (eventsState.fullDayActivities.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            return FullDayContainer(
+              fullDayActivities: eventsState.fullDayActivities,
+              day: eventsState.day,
+            );
+          },
+        ),
         Builder(
           builder: (context) {
             final measuresCubit = context.watch<TimepillarMeasuresCubit>();
             final timepillarCubit = context.watch<TimepillarCubit>();
             final inPageTransition =
                 index != timepillarCubit.state.day.dayIndex;
+            final timepillarState = inPageTransition
+                ? timepillarCubit.previousState
+                : timepillarCubit.state;
+            final timepillarMeasures = inPageTransition
+                ? measuresCubit.previousState
+                : measuresCubit.state;
             return Expanded(
-              child: inPageTransition
-                  ? TimepillarCalendar(
-                      timepillarState: timepillarCubit.previousState,
-                      timepillarMeasures: measuresCubit.previousState,
-                    )
-                  : TimepillarCalendar(
-                      timepillarState: timepillarCubit.state,
-                      timepillarMeasures: measuresCubit.state,
-                    ),
+              child: Container(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                child: TimepillarCalendar(
+                  timepillarState: timepillarState,
+                  timepillarMeasures: timepillarMeasures,
+                ),
+              ),
             );
           },
         ),

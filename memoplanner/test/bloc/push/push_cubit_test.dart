@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:seagull_fakes/all.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -7,13 +8,11 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/main.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:memoplanner/ui/components/all.dart';
 
 import '../../fakes/activity_db_in_memory.dart';
 import '../../fakes/all.dart';
-import '../../mocks/mocks.dart';
 
 void main() {
   group('Push integration test', () {
