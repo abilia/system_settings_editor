@@ -17,64 +17,37 @@ class MaterialAppWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocProvider(
         create: (context) => NavigationCubit(),
-        child: Builder(
-          builder: (context) {
-            return _NavigationListener(
-              child: MaterialApp(
-                navigatorKey: navigatorKey,
-                builder: (context, child) => child != null
-                    ? MediaQuery(
-                        data: MediaQuery.of(context)
-                            .copyWith(textScaleFactor: 1.0),
-                        child: child,
-                      )
-                    : const SplashPage(),
-                title: Config.flavor.name,
-                theme: abiliaTheme,
-                navigatorObservers: [
-                  AnalyticNavigationObserver(GetIt.I<SeagullAnalytics>()),
-                  NavigationObserver(context.read<NavigationCubit>()),
-                ],
-                supportedLocales: Translator.supportedLocals,
-                localizationsDelegates: [
-                  Translator.delegate,
-                  LocaleCubit.delegate(context.read<LocaleCubit>()),
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                  DefaultCupertinoLocalizations.delegate,
-                ],
-                localeResolutionCallback: (locale, supportedLocales) =>
-                    supportedLocales.firstWhere(
-                        (l) => l.languageCode == locale?.languageCode,
-                        // English should be the first one and also the default.
-                        orElse: () => supportedLocales.first),
-                home: home,
-              ),
-            );
-          },
-        ),
+        child: Builder(builder: (context) {
+          return MaterialApp(
+            navigatorKey: navigatorKey,
+            builder: (context, child) => child != null
+                ? MediaQuery(
+                    data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                    child: child,
+                  )
+                : const SplashPage(),
+            title: Config.flavor.name,
+            theme: abiliaTheme,
+            navigatorObservers: [
+              AnalyticNavigationObserver(GetIt.I<SeagullAnalytics>()),
+              NavigationObserver(context.read<NavigationCubit>()),
+            ],
+            supportedLocales: Translator.supportedLocals,
+            localizationsDelegates: [
+              Translator.delegate,
+              LocaleCubit.delegate(context.read<LocaleCubit>()),
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              DefaultCupertinoLocalizations.delegate,
+            ],
+            localeResolutionCallback: (locale, supportedLocales) =>
+                supportedLocales.firstWhere(
+                    (l) => l.languageCode == locale?.languageCode,
+                    // English should be the first one and also the default.
+                    orElse: () => supportedLocales.first),
+            home: home,
+          );
+        }),
       );
-}
-
-class _NavigationListener extends StatelessWidget {
-  final Widget child;
-
-  const _NavigationListener({required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocListener<NavigationCubit, NavigationState>(
-      listenWhen: (previous, current) =>
-          previous.currentRouteName != current.currentRouteName,
-      listener: (context, state) {
-        final currentRoute = state.currentRouteName;
-        final loginPageRoute = (LoginPage).routeSetting().name;
-        if (currentRoute == loginPageRoute) {
-          context.read<SpeechSettingsCubit>().reload();
-        }
-      },
-      child: child,
-    );
-  }
 }

@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
-
-import 'fake_seagull_analytics.dart';
+import 'package:seagull_fakes/all.dart';
 
 void main() {
   testWidgets(

@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memoplanner/bloc/activities/fullscreen_activity_cubit.dart';
-import 'package:memoplanner/bloc/clock/clock_bloc.dart';
+import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 
 import '../../fakes/all.dart';

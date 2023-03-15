@@ -1,3 +1,4 @@
+import 'package:auth/models/exceptions.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';

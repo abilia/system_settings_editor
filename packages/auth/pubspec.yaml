@@ -1,0 +1,40 @@
+name: auth
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+  flutter: '>=2.0.0'
+
+dependencies:
+  bloc_concurrency: any
+  calendar:
+    path: ../calendar
+  collection: any
+  equatable: any
+  firebase_messaging: any
+  flutter:
+    sdk: flutter
+  flutter_bloc: any
+  http: any
+  logging: any
+  meta: any
+  repository_base:
+    path: ../repository/repository_base
+  seagull_clock:
+    path: ../seagull_clock
+  shared_preferences: any
+  sqflite: any
+  synchronized: any
+  utils:
+    path: ../utils
+  uuid: any
+
+dev_dependencies:
+  bloc_test: any
+  flutter_test:
+    sdk: flutter
+  mocktail: any
+  seagull_fakes:
+    path: ../seagull_fakes
+  seagull_lints:
+    path: ../seagull_lints
+  test: any

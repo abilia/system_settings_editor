@@ -15,8 +15,8 @@ class TrackableTabBarView extends StatelessWidget {
   Widget build(BuildContext context) {
     return _TrackableTabBarView(
       controller: DefaultTabController.of(context),
-      children: children,
       analytics: analytics,
+      children: children,
     );
   }
 }

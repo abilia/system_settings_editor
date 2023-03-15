@@ -29,7 +29,7 @@ jobs:
 
       - run: flutter pub get
       - run: flutter analyze .
-      - run: flutter format --set-exit-if-changed .
+      - run: dart format --set-exit-if-changed .
 
   test:
     name: Test
@@ -47,4 +47,4 @@ jobs:
           channel: 'stable'
 
       - run: |
-          flutter test --reporter expanded
+          flutter test --reporter github

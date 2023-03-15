@@ -9,18 +9,18 @@ class NavigationObserver extends RouteObserver<PageRoute<dynamic>> {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPush(route, previousRoute);
-    navigationCubit.push(route.settings.name);
+    navigationCubit.push();
   }
 
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-    navigationCubit.replace(newRoute?.settings.name);
+    navigationCubit.replace();
   }
 
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPop(route, previousRoute);
-    navigationCubit.pop(route.settings.name);
+    navigationCubit.pop();
   }
 }

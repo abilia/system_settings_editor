@@ -1,9 +1,11 @@
+import 'package:auth/auth.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:sqflite/sqflite.dart';
 
 class LoginPage extends StatelessWidget {
   final Unauthenticated unauthenticatedState;
@@ -38,70 +40,66 @@ class LoginPage extends StatelessWidget {
         pushService: GetIt.I<FirebasePushService>(),
         clockBloc: BlocProvider.of<ClockBloc>(context),
         userRepository: context.read<UserRepository>(),
+        database: GetIt.I<Database>(),
+        allowExiredLicense: Config.isMP,
+        licenseType: LicenseType.memoplanner,
       ),
-      child: BlocListener<NavigationCubit, NavigationState>(
-        listenWhen: (_, state) =>
-            state.currentRouteName == (LoginPage).routeSetting().name,
-        listener: (context, state) =>
-            context.read<SpeechSettingsCubit>().reload(),
-        child: BlocListener<LoginCubit, LoginState>(
-          listenWhen: (_, state) => state is LoginFailure,
-          listener: (context, state) async {
-            if (state is LoginFailure) {
-              final cause = state.cause;
-              if (state.noValidLicense) {
-                context.read<LoginCubit>().clearFailure();
-                await showViewDialog(
-                  context: context,
-                  builder: (_) => LicenseErrorDialog(
-                    heading: cause.heading(translate),
-                    message: cause.message(translate),
-                  ),
-                  wrapWithAuthProviders: false,
-                  routeSettings: (LicenseErrorDialog).routeSetting(
-                    properties: {'reason': cause.name},
-                  ),
-                );
-              } else if (state.showLicenseExpiredWarning) {
-                final loginCubit = context.read<LoginCubit>();
-                final licenseExpiredConfirmed = await showViewDialog(
-                  context: context,
-                  builder: (context) => ConfirmWarningDialog(
-                    text:
-                        Translator.of(context).translate.licenseExpiredMessage,
-                  ),
-                  routeSettings: (ConfirmWarningDialog).routeSetting(
-                    properties: {'reason': 'License Expired'},
-                  ),
-                );
-                if (licenseExpiredConfirmed) {
-                  loginCubit.licenseExpiredWarningConfirmed();
-                }
-              } else {
-                await showViewDialog(
-                  context: context,
-                  builder: (_) => ErrorDialog(
-                    text: cause.message(translate),
-                  ),
-                  wrapWithAuthProviders: false,
-                  routeSettings: (ErrorDialog)
-                      .routeSetting(properties: {'reason': cause.name}),
-                );
+      child: BlocListener<LoginCubit, LoginState>(
+        listenWhen: (_, state) => state is LoginFailure,
+        listener: (context, state) async {
+          if (state is LoginFailure) {
+            final cause = state.cause;
+            if (state.noLicense || state.licenseExpired && Config.isMPGO) {
+              context.read<LoginCubit>().clearFailure();
+              await showViewDialog(
+                context: context,
+                builder: (_) => LicenseErrorDialog(
+                  heading: cause.heading(translate),
+                  message: cause.message(translate),
+                ),
+                wrapWithAuthProviders: false,
+                routeSettings: (LicenseErrorDialog).routeSetting(
+                  properties: {'reason': cause.name},
+                ),
+              );
+            } else if (state.licenseExpired && Config.isMP) {
+              final loginCubit = context.read<LoginCubit>();
+              final licenseExpiredConfirmed = await showViewDialog(
+                context: context,
+                builder: (context) => ConfirmWarningDialog(
+                  text: Translator.of(context).translate.licenseExpiredMessage,
+                ),
+                routeSettings: (ConfirmWarningDialog).routeSetting(
+                  properties: {'reason': 'License Expired'},
+                ),
+              );
+              if (licenseExpiredConfirmed) {
+                loginCubit.licenseExpiredWarningConfirmed();
               }
+            } else {
+              await showViewDialog(
+                context: context,
+                builder: (_) => ErrorDialog(
+                  text: cause.message(translate),
+                ),
+                wrapWithAuthProviders: false,
+                routeSettings: (ErrorDialog)
+                    .routeSetting(properties: {'reason': cause.name}),
+              );
             }
-          },
-          child: AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle.dark,
-            child: Scaffold(
-              body: SafeArea(
-                child: LoginForm(
-                    message: unauthenticatedState.loggedOutReason ==
-                            LoggedOutReason.unauthorized
-                        ? translate.loggedOutMessage
-                        : ''),
-              ),
-              resizeToAvoidBottomInset: false,
+          }
+        },
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.dark,
+          child: Scaffold(
+            body: SafeArea(
+              child: LoginForm(
+                  message: unauthenticatedState.loggedOutReason ==
+                          LoggedOutReason.unauthorized
+                      ? translate.loggedOutMessage
+                      : ''),
             ),
+            resizeToAvoidBottomInset: false,
           ),
         ),
       ),

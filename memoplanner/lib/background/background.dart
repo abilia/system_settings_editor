@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:auth/http_client.dart';
+import 'package:auth/licenses_extensions.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:memoplanner/config.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:memoplanner/firebase_options.dart';
@@ -21,9 +24,11 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
   final documentDirectory = await getApplicationDocumentsDirectory();
   final preferences = await SharedPreferences.getInstance();
 
+  final deviceDb = DeviceDb(preferences);
   final logger = SeagullLogger(
     documentsDirectory: documentDirectory.path,
     preferences: preferences,
+    supportId: await deviceDb.getSupportId(),
   );
   final log = Logger('BackgroundMessageHandler');
 
@@ -38,7 +43,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
 
     final now = DateTime.now();
     final licenses = LicenseDb(preferences).getLicenses();
-    if (!licenses.anyValidLicense(now)) {
+    if (!licenses.anyValidLicense(now, LicenseType.memoplanner)) {
       log.warning('no valid license, among $licenses, will ignore push');
       return;
     }
@@ -54,11 +59,11 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       return;
     }
 
-    final deviceDb = DeviceDb(preferences);
     final client = ClientWithDefaultHeaders(
-      version,
       loginDb: loginDb,
       deviceDb: deviceDb,
+      version: version,
+      name: Config.flavor.name,
     );
     final database = await DatabaseRepository.createSqfliteDb();
     final baseUrlDb = BaseUrlDb(preferences);

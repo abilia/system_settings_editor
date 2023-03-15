@@ -9,6 +9,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_fakes/all.dart';
 
 import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';
@@ -17,8 +18,6 @@ import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   late StreamController<DateTime> mockTicker;
-  late MockActivityDb mockActivityDb;
-  late MockGenericDb mockGenericDb;
   late MockMemoplannerSettingBloc mockMemoplannerSettingBloc;
   late MockActivityRepository mockActivityRepository;
   late MockActivitiesBloc mockActivitiesBloc;
@@ -67,16 +66,6 @@ void main() {
     when(() => mockMemoplannerSettingBloc.state).thenReturn(
         MemoplannerSettingsLoaded(const MemoplannerSettings(
             alarm: AlarmSettings(showOngoingActivityInFullScreen: true))));
-    mockActivityDb = MockActivityDb();
-    when(() => mockActivityDb.getAllDirty())
-        .thenAnswer((_) => Future.value(<DbActivity>[]));
-    when(() => mockActivityDb.insertAndAddDirty(any()))
-        .thenAnswer((_) => Future.value(true));
-    when(() => mockActivityDb.getAllNonDeleted())
-        .thenAnswer((_) => Future.value(fakeActivities));
-    mockGenericDb = MockGenericDb();
-    when(() => mockGenericDb.getAllNonDeletedMaxRevision())
-        .thenAnswer((_) => Future.value([]));
 
     mockActivitiesBloc = MockActivitiesBloc();
     clockBloc = ClockBloc.fixed(initialMinutes);
@@ -95,12 +84,12 @@ void main() {
         .thenAnswer((_) => Stream.fromIterable([expected]));
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
-      ..activityDb = mockActivityDb
+      ..activityDb = FakeActivityDb()
       ..ticker = Ticker.fake(
         stream: mockTicker.stream,
         initialTime: initialMinutes,
       )
-      ..genericDb = mockGenericDb
+      ..genericDb = FakeGenericDb()
       ..database = FakeDatabase()
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(

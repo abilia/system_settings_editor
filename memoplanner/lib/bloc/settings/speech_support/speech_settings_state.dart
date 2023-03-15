@@ -8,6 +8,12 @@ class SpeechSettingsState extends Equatable {
 
   bool get speakEveryWord => textToSpeech && _speakEveryWord;
 
+  SpeechSettingsState.fromDb(VoiceDb voiceDb)
+      : textToSpeech = voiceDb.textToSpeech,
+        _speakEveryWord = voiceDb.speakEveryWord,
+        voice = voiceDb.voice,
+        speechRate = voiceDb.speechRate;
+
   const SpeechSettingsState({
     required this.textToSpeech,
     bool speakEveryWord = false,

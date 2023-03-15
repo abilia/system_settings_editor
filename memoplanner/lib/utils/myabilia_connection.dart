@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:http/http.dart';
-import 'package:memoplanner/db/baseurl_db.dart';
+import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class MyAbiliaConnection {

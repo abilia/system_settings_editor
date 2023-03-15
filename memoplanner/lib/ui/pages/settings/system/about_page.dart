@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -170,6 +171,13 @@ class AboutDeviceColumn extends StatelessWidget {
                 DoubleText(
                     translate.iosVersion, deviceInfo.systemVersion ?? ''),
             ],
+            FutureBuilder(
+              future: GetIt.I<DeviceDb>().getSupportId(),
+              builder: (context, snapshot) => DoubleText(
+                translate.supportId,
+                snapshot.data?.split('-').firstOrNull ?? '',
+              ),
+            ),
             SizedBox(height: layout.formPadding.groupBottomDistance),
           ],
         );
