@@ -4,7 +4,6 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class CreateAccountPage extends StatelessWidget {
-  static const minUsernameLength = 3;
   static const maxUsernameLength = 20;
 
   final UserRepository userRepository;
@@ -13,7 +12,6 @@ class CreateAccountPage extends StatelessWidget {
     required this.userRepository,
     Key? key,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context);
