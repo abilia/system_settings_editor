@@ -58,7 +58,8 @@ class TopLevelListeners extends StatelessWidget {
                       (_) => false);
                 }
               },
-              onUnauthenticated: (navigator, state) async {
+              onUnauthenticated: (context, navigator, state) async {
+                context.read<SpeechSettingsCubit>().reload();
                 await navigator.pushAndRemoveUntil<void>(
                   MaterialPageRoute<void>(
                     builder: (_) => LoginPage(unauthenticatedState: state),

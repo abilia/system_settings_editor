@@ -7,6 +7,7 @@ typedef OnAuthenticated = void Function(
   Authenticated state,
 );
 typedef OnUnauthenticated = void Function(
+  BuildContext context,
   NavigatorState navigator,
   Unauthenticated state,
 );
@@ -37,7 +38,7 @@ class AuthenticationListener
             if (state is Authenticated) {
               onAuthenticated(navigator, state);
             } else if (state is Unauthenticated) {
-              onUnauthenticated(navigator, state);
+              onUnauthenticated(context, navigator, state);
             }
           },
         );

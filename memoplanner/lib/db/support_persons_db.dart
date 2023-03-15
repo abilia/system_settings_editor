@@ -21,6 +21,4 @@ class SupportPersonsDb {
         ? const {}
         : userString.map((e) => SupportPerson.fromJson(json.decode(e))).toSet();
   }
-
-  Future deleteAll() => prefs.remove(_supportUsersRecord);
 }
