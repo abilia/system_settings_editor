@@ -28,6 +28,9 @@ class FakeDeviceDb extends Fake implements DeviceDb {
   DeviceLicense? getDeviceLicense() {
     return null;
   }
+
+  @override
+  Future<String> getSupportId() async => '2c4f3842-c17c-11ed-afa1-0242ac120002';
 }
 
 class FakeSharedPreferences {
