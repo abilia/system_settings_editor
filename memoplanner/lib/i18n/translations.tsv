@@ -151,8 +151,8 @@ onlyThisDay	Only this day	Endast denna dag	Kun denne dag	Alleen deze dag	Vain t�
 allDays	All days	Alla dagar	Alle dage	Alle dagen	Kaikki päivät	Alle Tage	Alle dager
 allDay	All day	Heldag	Hele dagen	Hele dag	Koko päivä	Ganztägig	Hele dagen
 thisDayAndForward	This day and forward	Denna dag och framåt	Denne dag og frem	Deze dag en verder	Tästä päivästä lähtien	Von diesem Tag an	Denne dagen og fremover
-notCompleted	Not completed						
-completed	Completed						
+notCompleted	not completed	inte klart	ikke færdig	niet voltooid	kesken	nicht abgeschlossen	ikke ferdig
+completed	completed	klart	færdig	voltooid	valmis	abgeschlossen	ferdig
 completedQuestion	Completed?	Klar?	Færdig?	Afgerond?	Valmis?	Bist Du fertig?	Ferdig?
 unCheckActivityQuestion	Do you want to uncheck the activity?	Vill du ångra kvitteringen av aktiviteten?	Vil du fjerne markeringen af aktiviteten?	Wilt u het afvinken van de activiteit ongedaan maken?	Haluatko poistaa valinnan aktiviteetista?	Möchten Sie die Auswahl rückgängig machen?	Vil du fjerne merket for aktiviteten?
 inTimePre	in	om	om	in	&empty&	in	om
