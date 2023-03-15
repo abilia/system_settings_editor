@@ -6,7 +6,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:seagull_fakes/all.dart';
 
-
 void main() {
   setUpAll(() {
     registerFallbackValue(

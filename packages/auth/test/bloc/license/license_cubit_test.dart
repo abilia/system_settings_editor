@@ -6,7 +6,6 @@ import 'package:seagull_clock/clock_bloc.dart';
 import 'package:seagull_fakes/all.dart';
 import 'package:utils/utils.dart';
 
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late LicenseCubit licenseCubit;

@@ -5,7 +5,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:seagull_fakes/all.dart';
 import 'package:test/test.dart';
 
-
 void main() {
   late MockUserRepository mockUserRepository;
   late MockCalendarRepository mockCalendarRepository;
