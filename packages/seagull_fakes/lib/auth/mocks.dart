@@ -4,7 +4,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:repository_base/repository_base.dart';
-import 'package:sqflite/sqlite_api.dart';
+import 'package:sqflite/sqflite.dart';
 
 class MockBaseUrlDb extends Mock implements BaseUrlDb {}
 

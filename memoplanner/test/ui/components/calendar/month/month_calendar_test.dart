@@ -7,6 +7,7 @@ import 'package:seagull_clock/ticker.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_fakes/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../fakes/activity_db_in_memory.dart';

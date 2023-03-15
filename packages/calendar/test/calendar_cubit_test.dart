@@ -2,10 +2,9 @@ import 'package:auth/models/all.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:calendar/all.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:seagull_fakes/all.dart';
 import 'package:test/test.dart';
 
-import 'external_mocks.dart';
-import 'fakes.dart';
 
 void main() {
   late MockUserRepository mockUserRepository;

@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 
 import 'package:memoplanner/ui/all.dart';
+import 'package:seagull_fakes/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';

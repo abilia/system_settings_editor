@@ -3,9 +3,9 @@ import 'package:auth/repository/user_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:seagull_clock/clock_bloc.dart';
+import 'package:seagull_fakes/all.dart';
 import 'package:utils/utils.dart';
 
-import '../../fakes/all.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

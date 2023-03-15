@@ -16,5 +16,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail: any
+  seagull_fakes:
+    path: ../../seagull_fakes
   seagull_lints:
     path: ../../seagull_lints

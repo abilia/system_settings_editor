@@ -6,6 +6,7 @@ import 'package:memoplanner/models/generic/generic.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:seagull_clock/ticker.dart';
+import 'package:seagull_fakes/all.dart';
 
 import '../../../../fakes/all.dart';
 import '../../../../mocks/mocks.dart';

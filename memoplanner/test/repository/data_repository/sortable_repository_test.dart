@@ -6,10 +6,10 @@ import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_fakes/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../mocks/mocks.dart';
-import '../../fakes/all.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
 void main() {

@@ -5,6 +5,7 @@ import 'package:memoplanner/models/abilia_timer.dart';
 import 'package:memoplanner/models/occasion/event_occasion.dart';
 import 'package:memoplanner/models/occasion/timer_occasion.dart';
 import 'package:memoplanner/ui/all.dart';
+import 'package:seagull_fakes/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';

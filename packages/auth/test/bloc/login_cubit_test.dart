@@ -1,9 +1,9 @@
 import 'package:auth/auth.dart';
+import 'package:auth/repository/user_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:seagull_clock/clock_bloc.dart';
-
-import '../fakes/all.dart';
+import 'package:seagull_fakes/all.dart';
 
 void main() {
   final time = DateTime(2033, 12, 11, 11);
@@ -202,7 +202,7 @@ void main() {
 
   group('LoginCubit side effect', () {
     late LoginCubit loginCubit;
-    late MockUserRepository mockedUserRepository;
+    late UserRepository mockedUserRepository;
     late MockFirebasePushService mockFirebasePushService;
 
     setUp(() async {
