@@ -105,8 +105,41 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
             physics: const NeverScrollableScrollPhysics(),
             controller: pageController,
             itemBuilder: (context, index) {
-              if (isAgenda) return CachedAgenda(index: index);
-              return CachedTimepillar(index: index);
+              final dayEventsCubit = context.watch<DayEventsCubit>();
+              final inPageTransition =
+                  index != dayEventsCubit.state.day.dayIndex;
+              final eventsState = inPageTransition
+                  ? dayEventsCubit.previousState
+                  : dayEventsCubit.state;
+              return Column(
+                children: [
+                  Builder(
+                    builder: (context) {
+                      if (eventsState.fullDayActivities.isEmpty) {
+                        return const SizedBox.shrink();
+                      }
+                      return FullDayContainer(
+                        fullDayActivities: eventsState.fullDayActivities,
+                        day: eventsState.day,
+                      );
+                    },
+                  ),
+                  Builder(
+                    builder: (context) {
+                      return Expanded(
+                        child: Container(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          child: isAgenda
+                              ? Agenda(eventsState: eventsState)
+                              : CachedTimepillar(
+                                  inPageTransition: inPageTransition,
+                                ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              );
             },
           ),
           Column(
@@ -209,38 +242,13 @@ class _GoToNowPlaceholder extends StatelessWidget {
   }
 }
 
-class CachedAgenda extends StatelessWidget {
-  const CachedAgenda({
-    required this.index,
-    Key? key,
-  }) : super(key: key);
-  final int index;
-
-  @override
-  Widget build(BuildContext context) {
-    final dayEventsCubit = context.watch<DayEventsCubit>();
-    final inPageTransition = index != dayEventsCubit.state.day.dayIndex;
-    final eventsState =
-        inPageTransition ? dayEventsCubit.previousState : dayEventsCubit.state;
-    return Column(
-      children: <Widget>[
-        if (eventsState.fullDayActivities.isNotEmpty)
-          FullDayContainer(
-            fullDayActivities: eventsState.fullDayActivities,
-            day: eventsState.day,
-          ),
-        Expanded(child: Agenda(eventsState: eventsState))
-      ],
-    );
-  }
-}
-
 class CachedTimepillar extends StatelessWidget {
+  final bool inPageTransition;
+
   const CachedTimepillar({
-    required this.index,
-    Key? key,
-  }) : super(key: key);
-  final int index;
+    required this.inPageTransition,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -248,26 +256,8 @@ class CachedTimepillar extends StatelessWidget {
       children: [
         Builder(
           builder: (context) {
-            final dayEventsCubit = context.watch<DayEventsCubit>();
-            final inPageTransition = index != dayEventsCubit.state.day.dayIndex;
-            final eventsState = inPageTransition
-                ? dayEventsCubit.previousState
-                : dayEventsCubit.state;
-            if (eventsState.fullDayActivities.isEmpty) {
-              return const SizedBox.shrink();
-            }
-            return FullDayContainer(
-              fullDayActivities: eventsState.fullDayActivities,
-              day: eventsState.day,
-            );
-          },
-        ),
-        Builder(
-          builder: (context) {
             final measuresCubit = context.watch<TimepillarMeasuresCubit>();
             final timepillarCubit = context.watch<TimepillarCubit>();
-            final inPageTransition =
-                index != timepillarCubit.state.day.dayIndex;
             final timepillarState = inPageTransition
                 ? timepillarCubit.previousState
                 : timepillarCubit.state;
@@ -275,12 +265,9 @@ class CachedTimepillar extends StatelessWidget {
                 ? measuresCubit.previousState
                 : measuresCubit.state;
             return Expanded(
-              child: Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: TimepillarCalendar(
-                  timepillarState: timepillarState,
-                  timepillarMeasures: timepillarMeasures,
-                ),
+              child: TimepillarCalendar(
+                timepillarState: timepillarState,
+                timepillarMeasures: timepillarMeasures,
               ),
             );
           },
