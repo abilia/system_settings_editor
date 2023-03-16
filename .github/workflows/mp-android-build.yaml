@@ -47,7 +47,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: test
+    needs: [test, analyze_and_test_packages]
     outputs:
       releasetype: ${{ steps.set_release_type.outputs.releasetype }}
     strategy:

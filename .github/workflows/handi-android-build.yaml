@@ -35,7 +35,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: test
+    needs: [test, analyze_and_test_packages]
     defaults:
       run:
         working-directory: ./handi
