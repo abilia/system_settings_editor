@@ -6,6 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
+import 'package:memoplanner/i18n/translations.g.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/components/all.dart';
 import 'package:memoplanner/ui/themes/all.dart';
@@ -21,6 +22,9 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   const title = 'title';
   final startTime = DateTime(1987, 05, 22, 04, 04);
+  final duration = 30.minutes();
+  final endTime = startTime.add(duration);
+  final translate = Locales.language.values.first;
 
   late MockMemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
@@ -246,26 +250,79 @@ void main() {
     expect(calculatedTextSize == textWidgetSize, true);
   });
 
-  testWidgets('tts', (WidgetTester tester) async {
-    final duration = 30.minutes();
-    final endTime = startTime.add(duration);
-    await initializeDateFormatting();
-    final dateFormat = hourAndMinuteFromUse24(false, 'en');
-    await tester.pumpWidget(
-      wrap(
-        ActivityOccasion(
-          Activity.createNew(
-            title: title,
-            startTime: startTime,
-            duration: duration,
+  group('tts', () {
+    testWidgets('normal activity', (WidgetTester tester) async {
+      await initializeDateFormatting();
+      final dateFormat = hourAndMinuteFromUse24(false, 'en');
+      await tester.pumpWidget(
+        wrap(
+          ActivityOccasion(
+            Activity.createNew(
+              title: title,
+              startTime: startTime,
+              duration: duration,
+            ),
+            startTime.onlyDays(),
+            Occasion.current,
           ),
-          startTime.onlyDays(),
-          Occasion.current,
         ),
-      ),
-    );
-    await tester.verifyTts(find.text(title),
-        exact: '$title, ${dateFormat(startTime)} to ${dateFormat(endTime)}');
+      );
+      await tester.verifyTts(
+        find.text(title),
+        exact: '$title, ${dateFormat(startTime)} to ${dateFormat(endTime)}',
+      );
+    });
+
+    testWidgets('activity with checkable true and signed off false',
+        (WidgetTester tester) async {
+      await initializeDateFormatting();
+      final dateFormat = hourAndMinuteFromUse24(false, 'en');
+      await tester.pumpWidget(
+        wrap(
+          ActivityOccasion(
+            Activity.createNew(
+              title: title,
+              startTime: startTime,
+              duration: duration,
+              checkable: true,
+            ),
+            startTime.onlyDays(),
+            Occasion.current,
+          ),
+        ),
+      );
+      await tester.verifyTts(
+        find.text(title),
+        exact:
+            '$title, ${dateFormat(startTime)} to ${dateFormat(endTime)}, ${translate.notCompleted}',
+      );
+    });
+
+    testWidgets('activity with checkable true and signed off true',
+        (WidgetTester tester) async {
+      await initializeDateFormatting();
+      final dateFormat = hourAndMinuteFromUse24(false, 'en');
+      await tester.pumpWidget(
+        wrap(
+          ActivityOccasion(
+            Activity.createNew(
+              title: title,
+              startTime: startTime,
+              duration: duration,
+              checkable: true,
+              signedOffDates: [startTime].map(whaleDateFormat),
+            ),
+            startTime.onlyDays(),
+            Occasion.current,
+          ),
+        ),
+      );
+      await tester.verifyTts(
+        find.text(title),
+        exact:
+            '$title, ${dateFormat(startTime)} to ${dateFormat(endTime)}, ${translate.completed}',
+      );
+    });
   });
 
   group('position', () {

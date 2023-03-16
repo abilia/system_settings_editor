@@ -12,6 +12,4 @@ class LastSyncDb {
 
   DateTime? getLastSyncTime() =>
       prefs.getInt(_lastSyncKey).fromMillisecondsSinceEpoch();
-
-  Future<void> delete() => prefs.remove(_lastSyncKey);
 }

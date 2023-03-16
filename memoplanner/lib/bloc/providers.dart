@@ -16,6 +16,7 @@ import 'package:memoplanner/repository/sessions_repository.dart';
 import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticatedBlocsProvider extends StatelessWidget {
   final Authenticated authenticatedState;
@@ -454,13 +455,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
                 clearNotificationSubject(),
                 notificationPlugin.cancelAll(),
                 GetIt.I<FileStorage>().deleteUserFolder(),
-                GetIt.I<SupportPersonsDb>().deleteAll(),
-                GetIt.I<LicenseDb>().delete(),
-                GetIt.I<SettingsDb>().restore(),
-                GetIt.I<SessionsDb>().setHasMP4Session(false),
-                GetIt.I<LastSyncDb>().delete(),
-                GetIt.I<TermsOfUseDb>().setTermsOfUseAccepted(false),
-                GetIt.I<DeviceDb>().clearDeviceLicense(),
+                _clearSettings(context.read<SpeechSettingsCubit>()),
               ],
             ),
             client: GetIt.I<ListenableClient>(),
@@ -478,5 +473,18 @@ class AuthenticationBlocProvider extends StatelessWidget {
       ],
       child: child,
     );
+  }
+
+  Future<void> _clearSettings(SpeechSettingsCubit speechSettingsCubit) async {
+    const deviceRecords = DeviceDb.records;
+    const voiceRecords = VoiceDb.storeOnLogoutRecords;
+    const baseUrlRecord = BaseUrlDb.baseUrlRecord;
+    const records = {...deviceRecords, ...voiceRecords, baseUrlRecord};
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final keys = prefs.getKeys().where((key) => !records.contains(key));
+    for (final key in keys) {
+      await prefs.remove(key);
+    }
   }
 }

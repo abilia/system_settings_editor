@@ -23,6 +23,4 @@ class LicenseDb {
       return [];
     }
   }
-
-  Future delete() => prefs.remove(_licenseKey);
 }
