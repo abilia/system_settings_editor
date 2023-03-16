@@ -11,6 +11,9 @@ on:
       - 'handi/test*/**'
       - '**/*.md'
 jobs:
+  analyze_and_test_packages:
+    uses: ./.github/workflows/packages-analyze.yaml
+
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -76,7 +79,6 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
@@ -85,9 +87,9 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ env.SERVICE_ACCOUNT_JSON }}
-          packageName: "com.abilia.handicalendar6"
+          packageName: 'com.abilia.handicalendar6'
           releaseFiles: ./app-release.aab
-          track: "internal"
+          track: 'internal'
           status: completed
         env:
           SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}

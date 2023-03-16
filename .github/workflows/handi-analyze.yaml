@@ -1,4 +1,4 @@
-name: Handi
+name: Handi Analyze and Test
 
 on:
   pull_request:

@@ -12,13 +12,16 @@ on:
       - '**/*.md'
 
 jobs:
+  analyze_and_test_packages:
+    uses: ./.github/workflows/packages-analyze.yaml
+
   test:
     name: Test
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:
       matrix:
-        flavor: [ 'mp', 'mpgo' ]
+        flavor: ['mp', 'mpgo']
     defaults:
       run:
         working-directory: ./memoplanner
@@ -49,7 +52,7 @@ jobs:
       releasetype: ${{ steps.set_release_type.outputs.releasetype }}
     strategy:
       matrix:
-        flavor: [ 'mp', 'mpgo' ]
+        flavor: ['mp', 'mpgo']
     defaults:
       run:
         working-directory: ./memoplanner
@@ -111,9 +114,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        flavor: [ 'mp', 'mpgo' ]
+        flavor: ['mp', 'mpgo']
     steps:
-
       - id: set_package_name
         name: Set package name
         run: |
