@@ -84,7 +84,8 @@ class CreateAccountPage extends StatelessWidget {
                     initialValue: state.username,
                     errorState: state.usernameFailure,
                     inputValid: (s) =>
-                        s.isNotEmpty && s.length <= maxUsernameLength,
+                        s.length >= LoginCubit.minUsernameLength &&
+                        s.length <= maxUsernameLength,
                     onChanged: (newUsername) => context
                         .read<CreateAccountCubit>()
                         .usernameEmailChanged(newUsername),
@@ -232,8 +233,6 @@ extension CreateAccountErrorMessage on CreateAccountFailed {
     switch (failure) {
       case CreateAccountFailure.noUsername:
         return translate.enterUsername;
-      case CreateAccountFailure.usernameToShort:
-        return translate.usernameToShort;
       case CreateAccountFailure.noPassword:
         return translate.enterPassword;
       case CreateAccountFailure.passwordToShort:

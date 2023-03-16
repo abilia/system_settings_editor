@@ -101,9 +101,6 @@ abstract class Translated {
 
   final String confirmPassword = 'Confirm password';
 
-  final String usernameToShort =
-      'Username or email is invalid, must contain at least three characters';
-
   final String passwordToShort =
       'The password must consist of at least 12 characters';
 
@@ -1163,10 +1160,6 @@ class SV extends Translated {
 
   @override
   final String confirmPassword = 'Bekräfta lösenordet';
-
-  @override
-  final String usernameToShort =
-      'Användarnamn eller e-postadress är ogiltig, måste innehålla minst tre tecken';
 
   @override
   final String passwordToShort = 'Lösenordet måste bestå av minst 12 tecken';
@@ -2682,10 +2675,6 @@ class DA extends Translated {
   final String confirmPassword = 'Bekræft adgangskoden';
 
   @override
-  final String usernameToShort =
-      'Brugernavn eller e-mail er ugyldig, skal indeholde mindst tre tegn';
-
-  @override
   final String passwordToShort = 'Adgangskoden skal bestå af mindst 12 tegn';
 
   @override
@@ -4196,10 +4185,6 @@ class NL extends Translated {
 
   @override
   final String confirmPassword = 'Wachtwoord bevestigen';
-
-  @override
-  final String usernameToShort =
-      'Gebruikersnaam of e-mail is ongeldig, moet ten minste drie tekens bevatten';
 
   @override
   final String passwordToShort =
@@ -5720,10 +5705,6 @@ class FI extends Translated {
   final String confirmPassword = 'Vahvista salasana';
 
   @override
-  final String usernameToShort =
-      'Käyttäjätunnus tai sähköpostiosoite on virheellinen, niissä on oltava vähintään kolme merkkiä';
-
-  @override
   final String passwordToShort = 'Salasanassa on oltava vähintään 12 merkkiä';
 
   @override
@@ -7238,10 +7219,6 @@ class DE extends Translated {
 
   @override
   final String confirmPassword = 'Passwort bestätigen';
-
-  @override
-  final String usernameToShort =
-      'Benutzername oder E-Mail ungültig - Mindestlänge drei Zeichen';
 
   @override
   final String passwordToShort =
@@ -8762,10 +8739,6 @@ class NB extends Translated {
 
   @override
   final String confirmPassword = 'Bekreft passordet';
-
-  @override
-  final String usernameToShort =
-      'Brukernavn eller e-postadresse er ugyldig, må inneholde minst tre tegn';
 
   @override
   final String passwordToShort = 'Passordet må bestå av minst 12 tegn';

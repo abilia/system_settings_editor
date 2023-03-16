@@ -14,7 +14,6 @@ class WrongUserTypeException implements Exception {
 
 enum CreateAccountFailure {
   noUsername,
-  usernameToShort,
   usernameInvalid,
   usernameTaken,
   noPassword,
@@ -97,8 +96,6 @@ extension CreateAccountBadRequestErrorExtension on BadRequestError {
     'WHALE-0131': CreateAccountFailure.noPassword,
     // The password must consist of at least 8 characters
     'WHALE-0133': CreateAccountFailure.passwordToShort,
-    // Username must only contain letters, numbers, dash or underscore and be between 3 and 15 characters long
-    'WHALE-0134': CreateAccountFailure.usernameToShort,
     // Username/email address is invalid
     'WHALE-0135': CreateAccountFailure.usernameInvalid,
     // Language must be valid
