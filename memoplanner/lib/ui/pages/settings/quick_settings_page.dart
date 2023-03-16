@@ -65,7 +65,11 @@ class QuickSettingsPage extends StatelessWidget {
                 const ScreenTimeoutPickField(),
                 SizedBox(height: layout.formPadding.verticalItemDistance),
                 const KeepOnWhileChargingSwitch(),
-              ]),
+                ],
+              ),
+            SizedBox(
+                height: layout.templates.m1.bottom -
+                    layout.formPadding.groupBottomDistance)
           ],
         ),
       ),
