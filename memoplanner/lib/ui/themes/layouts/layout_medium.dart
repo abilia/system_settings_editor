@@ -148,11 +148,7 @@ class MediumLayout extends Layout {
             removeButtonPadding: EdgeInsets.fromLTRB(9, 12, 9, 12),
           ),
           timeInput: const TimeInputLayoutMedium(),
-          recording: const RecordingLayout(
-            trackHeight: 6,
-            thumbRadius: 18,
-            padding: EdgeInsets.symmetric(horizontal: 48),
-          ),
+          recording: const RecordingLayoutMedium(),
           arrows: const ArrowsLayout(
             collapseMargin: 3,
             radius: 150,
