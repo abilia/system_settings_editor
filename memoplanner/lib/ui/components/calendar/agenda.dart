@@ -18,7 +18,7 @@ class Agenda extends StatelessWidget with CalendarWidgetMixin {
       child: Stack(
         children: <Widget>[
           CalendarScrollListener(
-            getNowOffset: (_) => -layout.agenda.topPadding,
+            getNowOffset: (_) => -layout.templates.l3.top,
             inViewMargin: layout.eventCard.height / 2,
             enabled: eventsState.isToday,
             agendaEvents: eventsState.events.length +
@@ -28,8 +28,8 @@ class Agenda extends StatelessWidget with CalendarWidgetMixin {
                 controller: controller,
                 child: EventList(
                   scrollController: controller,
-                  bottomPadding: layout.agenda.bottomPadding,
-                  topPadding: layout.agenda.topPadding,
+                  topPadding: layout.templates.l3.top,
+                  bottomPadding: layout.templates.l3.bottom,
                   events: eventsState,
                 ),
               );
@@ -138,7 +138,7 @@ class SliverNoActivities extends StatelessWidget {
         alignment: center ? Alignment.center : Alignment.topCenter,
         child: Padding(
           padding: EdgeInsets.only(
-            top: center ? 0 : layout.agenda.sliverTopPadding,
+            top: center ? 0 : layout.templates.l3.top,
           ),
           child: Tts(
             child: Text(

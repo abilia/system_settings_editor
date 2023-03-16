@@ -9,8 +9,6 @@ class TimepillarLayout {
       hourIntervalPadding,
       hourTextPadding,
       hourLineWidth,
-      topMargin,
-      bottomMargin,
       timeLineHeight,
       flarpRadius;
 
@@ -26,8 +24,6 @@ class TimepillarLayout {
     this.hourIntervalPadding = 1,
     this.hourTextPadding = 3,
     this.hourLineWidth = 1,
-    this.topMargin = 96,
-    this.bottomMargin = 64,
     this.timeLineHeight = 2,
     this.flarpRadius = 8,
     this.dot = const TimepillarDotLayout(),
