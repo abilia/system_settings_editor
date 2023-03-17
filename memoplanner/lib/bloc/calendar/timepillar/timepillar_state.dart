@@ -167,10 +167,15 @@ class TimepillarMeasures extends Equatable {
         : hasContent
             ? smallCardImageSize
             : 0;
+    final verticalImagePadding = hasImage
+        ? imagePadding.vertical
+        : hasContent
+            ? smallImagePadding.vertical
+            : 0;
     final verticalPadding = hasTitle && hasContent
-        ? textPadding.vertical / 2 + imagePadding.vertical
+        ? textPadding.vertical / 2 + verticalImagePadding
         : hasImage
-            ? imagePadding.vertical
+            ? verticalImagePadding
             : textPadding.vertical;
     return textHeight + imageHeight + verticalPadding;
   }
