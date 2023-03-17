@@ -1,4 +1,4 @@
-import 'package:memoplanner/logging/all.dart';
+import 'package:logging/logging.dart';
 
 extension OnError on Logger {
   // ignore: prefer_void_to_null
