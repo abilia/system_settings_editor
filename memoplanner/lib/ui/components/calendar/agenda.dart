@@ -13,12 +13,17 @@ class Agenda extends StatelessWidget with CalendarWidgetMixin {
 
   @override
   Widget build(BuildContext context) {
+    final padding = context.select(
+      (MemoplannerSettingsBloc bloc) => bloc.state.calendar.categories.show
+          ? layout.templates.l3
+          : layout.templates.s2,
+    );
     return RefreshIndicator(
       onRefresh: () => refresh(context),
       child: Stack(
         children: <Widget>[
           CalendarScrollListener(
-            getNowOffset: (_) => -layout.templates.l3.top,
+            getNowOffset: (_) => -padding.top,
             inViewMargin: layout.eventCard.height / 2,
             enabled: eventsState.isToday,
             agendaEvents: eventsState.events.length +
@@ -28,8 +33,8 @@ class Agenda extends StatelessWidget with CalendarWidgetMixin {
                 controller: controller,
                 child: EventList(
                   scrollController: controller,
-                  topPadding: layout.templates.l3.top,
-                  bottomPadding: layout.templates.l3.bottom,
+                  topPadding: padding.top,
+                  bottomPadding: padding.bottom,
                   events: eventsState,
                 ),
               );

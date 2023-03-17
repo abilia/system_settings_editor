@@ -1,4 +1,3 @@
-
 class RecordingLayout {
   final double trackHeight, thumbRadius;
 
