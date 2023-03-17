@@ -9,6 +9,7 @@ class ActivityTimepillarCard extends TimepillarCard {
   final TimepillarSide timepillarSide;
   final TimepillarMeasures measures;
   final BoxDecoration decoration;
+  final int titleLines;
 
   const ActivityTimepillarCard({
     required this.activityOccasion,
@@ -18,6 +19,7 @@ class ActivityTimepillarCard extends TimepillarCard {
     required this.timepillarSide,
     required this.measures,
     required this.decoration,
+    required this.titleLines,
     Key? key,
   }) : super(column, cardPosition, key: key);
 
@@ -26,8 +28,7 @@ class ActivityTimepillarCard extends TimepillarCard {
     final activity = activityOccasion.activity;
     final hasImage = activity.hasImage,
         hasTitle = activity.hasTitle,
-        signedOff = activityOccasion.isSignedOff,
-        past = activityOccasion.isPast;
+        hasContent = activityOccasion.hasTimepillarContent;
     final endTime = activityOccasion.end;
     final startTime = activityOccasion.start;
     final dotHeight = cardPosition.dots * measures.dotDistance;
@@ -37,6 +38,10 @@ class ActivityTimepillarCard extends TimepillarCard {
         bloc.state.dayCalendar.viewOptions.dots);
     final showCategoryColor = context.select((MemoplannerSettingsBloc bloc) =>
         bloc.state.calendar.categories.showColors);
+    final borderWidth = (decoration.padding?.vertical ?? 0) / 2;
+    final imagePadding = measures.imagePadding.vertical / 2;
+    final smallImagePadding = measures.smallImagePadding.vertical / 2;
+    final textPadding = measures.textPadding.vertical / 2;
 
     return Positioned(
       right: right ? null : column * measures.cardTotalWidth,
@@ -90,27 +95,24 @@ class ActivityTimepillarCard extends TimepillarCard {
                       ),
                 width: measures.cardWidth,
                 decoration: decoration,
-                child: Padding(
-                  padding: measures.cardPadding,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      if (hasTitle) Text(activity.title),
-                      if (hasImage || signedOff || past)
-                        Expanded(
-                          child: Padding(
-                            padding:
-                                EdgeInsets.only(top: measures.cardPadding.top),
-                            child: EventImage.fromEventOccasion(
-                              fit: BoxFit.scaleDown,
-                              eventOccasion: activityOccasion,
-                              crossPadding: measures.cardPadding,
-                              checkPadding: measures.cardPadding * 2,
-                            ),
-                          ),
-                        )
-                    ],
-                  ),
+                child: Column(
+                  children: <Widget>[
+                    if (hasTitle)
+                      ..._title(
+                        title: activity.title,
+                        textPadding: textPadding,
+                        borderWidth: borderWidth,
+                        hasContent: hasContent,
+                      ),
+                    if (hasContent)
+                      ..._content(
+                        imagePadding: imagePadding,
+                        smallImagePadding: smallImagePadding,
+                        borderWidth: borderWidth,
+                        hasTitle: hasTitle,
+                        hasImage: hasImage,
+                      ),
+                  ],
                 ),
               ),
             ),
@@ -118,6 +120,60 @@ class ActivityTimepillarCard extends TimepillarCard {
         ),
       ),
     );
+  }
+
+  List<Widget> _title({
+    required String title,
+    required double textPadding,
+    required double borderWidth,
+    required bool hasContent,
+  }) {
+    return [
+      SizedBox(height: textPadding - borderWidth),
+      SizedBox(
+        width: measures.cardTextWidth,
+        child: Text(title, maxLines: titleLines),
+      ),
+      if (!hasContent) SizedBox(height: textPadding - borderWidth),
+    ];
+  }
+
+  List<Widget> _content({
+    required double imagePadding,
+    required double smallImagePadding,
+    required double borderWidth,
+    required bool hasTitle,
+    required bool hasImage,
+  }) {
+    final imageSize =
+        hasImage ? measures.cardImageSize : measures.smallCardImageSize;
+    final crossPadding = hasImage ? measures.imagePadding * 2 : EdgeInsets.zero;
+    final checkPadding =
+        hasImage ? measures.imagePadding * 2.5 : EdgeInsets.zero;
+    final padding = hasImage ? imagePadding : smallImagePadding;
+    final checkMark = CheckMark(
+      size: hasImage ? CheckMarkSize.small : CheckMarkSize.mini,
+      fit: BoxFit.scaleDown,
+    );
+    return [
+      SizedBox(height: padding - (!hasTitle ? borderWidth : 0)),
+      Expanded(
+        child: Center(
+          child: SizedBox(
+            height: imageSize,
+            width: imageSize,
+            child: EventImage.fromEventOccasion(
+              eventOccasion: activityOccasion,
+              crossPadding: crossPadding,
+              checkPadding: checkPadding,
+              checkMark: checkMark,
+              radius: layout.timepillar.card.imageCornerRadius,
+            ),
+          ),
+        ),
+      ),
+      SizedBox(height: padding - borderWidth),
+    ];
   }
 }
 

@@ -7,6 +7,8 @@ class ActivityOccasion extends ActivityDay implements EventOccasion {
   @override
   bool get isCurrent => occasion.isCurrent && !activity.fullDay;
 
+  bool get hasTimepillarContent => activity.hasImage || isSignedOff || isPast;
+
   @override
   final Occasion occasion;
   const ActivityOccasion(

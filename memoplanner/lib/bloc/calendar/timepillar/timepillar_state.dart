@@ -42,13 +42,21 @@ class TimepillarMeasures extends Equatable {
   TimepillarMeasures(this.interval, this.zoom);
 
   // TimepillarCard
-  late final double cardMinImageHeight = _layout.card.imageMinHeight * zoom;
-  late final EdgeInsets cardPadding = _layout.card.padding * zoom;
-  late final double cardWidth = _layout.card.width * zoom;
+  late final double cardImageSize = _layout.card.imageSize * zoom;
+  late final double smallCardImageSize = _layout.card.smallImageSize * zoom;
+  late final EdgeInsets imagePadding = _layout.card.imagePadding * zoom;
+  late final EdgeInsets smallImagePadding =
+      _layout.card.smallImagePadding * zoom;
+  late final EdgeInsets textPadding = _layout.card.textPadding * zoom;
+  late final double _cardWidth =
+      _layout.card.imageSize + _layout.card.imagePadding.horizontal;
+  late final double cardWidth = _cardWidth * zoom;
   late final double cardDistance = _layout.card.distance * zoom;
   late final double cardTotalWidth =
-      (_layout.dot.size + _layout.card.width + _layout.card.distance) * zoom;
-  late final double cardTextWidth = cardWidth - cardPadding.vertical;
+      (_layout.dot.size + _cardWidth + _layout.card.distance) * zoom;
+  late final double cardTextWidth = cardWidth - textPadding.horizontal;
+
+  BorderRadius get borderRadius => _layout.card.borderRadius;
 
   // ActivityTimepillarCard
   late final double activityCardMinHeight =
@@ -56,9 +64,7 @@ class TimepillarMeasures extends Equatable {
 
   // TimerTimepillarCard
   late final Size timerWheelSize = _layout.card.timer.largeWheelSize * zoom;
-  late final double timerMinHeight = _layout.card.timer.minHeight * zoom;
-  late final EdgeInsets timerWheelPadding =
-      _layout.card.timer.wheelPadding * zoom;
+  late final EdgeInsets timerWheelPadding = _layout.card.timerPadding * zoom;
 
   // Dots
   late final double dotSize = _layout.dot.size * zoom;
@@ -102,6 +108,72 @@ class TimepillarMeasures extends Equatable {
       (nightPillarHeight / (nightPillarHeight + timePillarHeight) * 100)
           .clamp(minTwoTimepillarRatio, maxTwoTimepillarRatio)
           .toInt();
+
+  double getContentHeight({
+    required EventOccasion occasion,
+    required double textScaleFactor,
+    required TextStyle textStyle,
+    required BoxDecoration decoration,
+  }) {
+    if (occasion is ActivityOccasion) {
+      return _getContentHeight(
+        hasTitle: occasion.activity.hasTitle,
+        hasImage: occasion.activity.hasImage,
+        hasContent: occasion.hasTimepillarContent,
+        textStyle: textStyle,
+        textScaleFactor: textScaleFactor,
+        title: occasion.activity.title,
+      );
+    } else if (occasion is TimerOccasion) {
+      final hasTitle = !occasion.timer.hasImage;
+      final title = occasion.timer.hasTitle
+          ? occasion.timer.title
+          : occasion.timer.duration.toHMSorMS();
+      final contentHeight = _getContentHeight(
+        hasTitle: hasTitle,
+        hasImage: occasion.timer.hasImage,
+        textStyle: textStyle,
+        textScaleFactor: textScaleFactor,
+        title: title,
+      );
+      return contentHeight +
+          timerWheelPadding.vertical / 2 +
+          timerWheelSize.height;
+    }
+    return 0;
+  }
+
+  double _getContentHeight({
+    required bool hasTitle,
+    required bool hasImage,
+    required TextStyle textStyle,
+    required double textScaleFactor,
+    required String title,
+    bool hasContent = false,
+  }) {
+    assert(hasTitle && title.isNotEmpty || !hasTitle);
+    final textHeight = hasTitle
+        ? title
+            .textPainter(
+              textStyle,
+              cardTextWidth,
+              TimepillarCard.defaultTitleLines,
+              scaleFactor: textScaleFactor,
+            )
+            .height
+        : 0.0;
+    final imageHeight = hasImage
+        ? cardImageSize
+        : hasContent
+            ? smallCardImageSize
+            : 0;
+    final verticalPadding = hasTitle && hasContent
+        ? textPadding.vertical / 2 + imagePadding.vertical
+        : hasImage
+            ? imagePadding.vertical
+            : textPadding.vertical;
+    return textHeight + imageHeight + verticalPadding;
+  }
 
   @override
   List<Object> get props => [interval, zoom];
