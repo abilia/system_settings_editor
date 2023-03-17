@@ -11,28 +11,17 @@ on:
       - 'handi/test*/**'
       - '**/*.md'
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    defaults:
-      run:
-        working-directory: ./handi
-    steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2.5.0
-        with:
-          flutter-version: '3.7.5'
-          channel: 'stable'
+  analyze_and_test_packages:
+    uses: ./.github/workflows/packages-analyze.yaml
 
-      - run: |
-          flutter test --reporter github
+  analyze_and_test_handi:
+    uses: ./.github/workflows/handi-analyze.yaml
 
   build:
     name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: test
+    needs: [analyze_and_test_handi, analyze_and_test_packages]
     defaults:
       run:
         working-directory: ./handi
@@ -76,7 +65,6 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
@@ -85,9 +73,9 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ env.SERVICE_ACCOUNT_JSON }}
-          packageName: "com.abilia.handicalendar6"
+          packageName: 'com.abilia.handicalendar6'
           releaseFiles: ./app-release.aab
-          track: "internal"
+          track: 'internal'
           status: completed
         env:
           SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}

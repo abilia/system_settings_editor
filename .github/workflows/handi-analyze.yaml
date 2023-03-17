@@ -1,6 +1,7 @@
-name: Handi
+name: Handi Analyze and Test
 
 on:
+  workflow_call:
   pull_request:
     branches:
       - master

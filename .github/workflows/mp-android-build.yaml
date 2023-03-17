@@ -12,44 +12,22 @@ on:
       - '**/*.md'
 
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    strategy:
-      matrix:
-        flavor: [ 'mp', 'mpgo' ]
-    defaults:
-      run:
-        working-directory: ./memoplanner
-    steps:
-      - uses: actions/checkout@v3
-      - uses: SpicyPizza/create-envfile@v1.3
-        with:
-          envkey_ABILIA_OPEN_API_KEY: ${{ secrets.DEVICE_API_KEY }}
-          directory: ./memoplanner/lib/env/
-          file_name: .env.key
-          fail_on_empty: true
-      - uses: subosito/flutter-action@v2.5.0
-        with:
-          flutter-version: '3.7.5'
-          channel: 'stable'
+  analyze_and_test_packages:
+    uses: ./.github/workflows/packages-analyze.yaml
 
-      - run: flutter pub get
-      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
-      - run: |
-          flutter test --reporter github --dart-define flavor=${{ matrix.flavor }} --flavor ${{ matrix.flavor }}
+  analyze_and_test_memoplanner:
+    uses: ./.github/workflows/mp-analyze.yaml
 
   build:
     name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: test
+    needs: [analyze_and_test_memoplanner, analyze_and_test_packages]
     outputs:
       releasetype: ${{ steps.set_release_type.outputs.releasetype }}
     strategy:
       matrix:
-        flavor: [ 'mp', 'mpgo' ]
+        flavor: ['mp', 'mpgo']
     defaults:
       run:
         working-directory: ./memoplanner
@@ -111,9 +89,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        flavor: [ 'mp', 'mpgo' ]
+        flavor: ['mp', 'mpgo']
     steps:
-
       - id: set_package_name
         name: Set package name
         run: |
