@@ -17,6 +17,7 @@ jobs:
 
   analyze_and_test_memoplanner:
     uses: ./.github/workflows/mp-analyze.yaml
+    secrets: inherit
 
   build:
     name: Build
