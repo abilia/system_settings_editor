@@ -1,6 +1,6 @@
 name: handi
 description: Flutter app for Handi
-version: 6.0.0+1
+version: 6.0.0
 publish_to: 'none'
 
 environment:
