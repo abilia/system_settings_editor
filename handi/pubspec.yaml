@@ -38,9 +38,9 @@ dev_dependencies:
     path: ../packages/seagull_lints
 
 flutter_icons:
-  android: true
+  android: false
   ios: true
-  image_path: 'assets/handi_logo.png'
+  image_path: 'assets/handi_logo_ios.png'
 
 flutter:
   uses-material-design: true
