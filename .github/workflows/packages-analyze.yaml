@@ -23,7 +23,6 @@ jobs:
       - id: dirs
         run: echo "dirs=$(find packages -name 'pubspec.y*' | sed 's![^/]*$!!' | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
 
-
   collect_test:
     name: Collect Test Directories
     runs-on: ubuntu-latest
@@ -62,7 +61,7 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: [ analyze, collect_test ]
+    needs: [analyze, collect_test]
     strategy:
       matrix:
         dir: ${{ fromJson(needs.collect_test.outputs.dirs) }}

@@ -14,28 +14,14 @@ jobs:
   analyze_and_test_packages:
     uses: ./.github/workflows/packages-analyze.yaml
 
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    defaults:
-      run:
-        working-directory: ./handi
-    steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2.5.0
-        with:
-          flutter-version: '3.7.5'
-          channel: 'stable'
-
-      - run: |
-          flutter test --reporter github
+  analyze_and_test_handi:
+    uses: ./.github/workflows/handi-analyze.yaml
 
   build:
     name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: [test, analyze_and_test_packages]
+    needs: [analyze_and_test_handi, analyze_and_test_packages]
     defaults:
       run:
         working-directory: ./handi
