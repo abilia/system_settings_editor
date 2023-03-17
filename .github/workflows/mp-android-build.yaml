@@ -8,8 +8,9 @@ on:
     paths-ignore:
       - 'handi/**'
       - 'memoplanner/ios/**'
-      - 'memoplanner/test*/**'
+      - '**/test*/**'
       - '**/*.md'
+      - '**/*.yaml'
 
 jobs:
   analyze_and_test_packages:
