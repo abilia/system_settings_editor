@@ -22,6 +22,7 @@ class MonthCalendarLayout {
       dayContainerPadding,
       crossOverPadding,
       hasActivitiesDotPadding,
+      hasActivitiesDotPaddingCompact,
       activityTextContentPadding;
 
   final MonthPreviewLayout monthPreview;
@@ -48,6 +49,7 @@ class MonthCalendarLayout {
         const EdgeInsets.only(left: 5, top: 3, right: 5, bottom: 5),
     this.crossOverPadding = const EdgeInsets.all(3),
     this.hasActivitiesDotPadding = const EdgeInsets.all(0),
+    this.hasActivitiesDotPaddingCompact = const EdgeInsets.all(0),
     this.activityTextContentPadding = const EdgeInsets.all(3),
     this.monthPreview = const MonthPreviewLayout(),
   });
@@ -77,7 +79,9 @@ class MonthCalendarLayoutMedium extends MonthCalendarLayout {
             dayHeaderPadding: const EdgeInsets.only(left: 6, right: 6, top: 6),
             dayContainerPadding:
                 const EdgeInsets.only(left: 6, right: 6, top: 4, bottom: 6),
-            hasActivitiesDotPadding: const EdgeInsets.only(right: 6, top: 6),
+            hasActivitiesDotPadding: const EdgeInsets.only(top: 2),
+            hasActivitiesDotPaddingCompact:
+                const EdgeInsets.only(right: 6, top: 8),
             activityTextContentPadding: const EdgeInsets.all(4),
             monthPreview:
                 monthPreviewLayout ?? const MonthPreviewLayoutMedium());

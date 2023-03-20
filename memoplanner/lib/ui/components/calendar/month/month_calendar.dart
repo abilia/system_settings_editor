@@ -308,12 +308,16 @@ class MonthDayView extends StatelessWidget {
                           Text('${monthDay.day.day}'),
                           const Spacer(),
                           if (monthDay.hasEvent)
-                            ColorDot(
-                              radius:
-                                  layout.monthCalendar.hasActivitiesDotRadius,
-                              color: monthDay.isPast
-                                  ? AbiliaColors.black
-                                  : dayTheme.theme.colorScheme.onSurface,
+                            Padding(
+                              padding:
+                                  layout.monthCalendar.hasActivitiesDotPadding,
+                              child: ColorDot(
+                                radius:
+                                    layout.monthCalendar.hasActivitiesDotRadius,
+                                color: monthDay.isPast
+                                    ? AbiliaColors.black
+                                    : dayTheme.theme.colorScheme.onSurface,
+                              ),
                             ),
                         ],
                       ),
@@ -455,7 +459,8 @@ class MonthDayViewCompact extends StatelessWidget {
                       Align(
                         alignment: Alignment.topRight,
                         child: Padding(
-                          padding: layout.monthCalendar.hasActivitiesDotPadding,
+                          padding: layout
+                              .monthCalendar.hasActivitiesDotPaddingCompact,
                           child: ColorDot(
                             radius: layout.monthCalendar.hasActivitiesDotRadius,
                             color: AbiliaColors.black,
