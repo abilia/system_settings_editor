@@ -10,6 +10,7 @@ on:
       - 'memoplanner/**'
       - 'handi/**'
       - '**/*.md'
+      - '**/*.yaml'
 
 jobs:
   collect_analyze:
