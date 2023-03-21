@@ -3,6 +3,9 @@ name: utils
 environment:
   sdk: '>=2.19.2 <3.0.0'
 
+dependencies:
+  logging: any
+
 dev_dependencies:
   seagull_lints:
     path: ../seagull_lints

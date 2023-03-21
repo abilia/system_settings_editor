@@ -80,9 +80,7 @@ void main() {
           await tester.pumpAndSettle();
         }
 
-        const tooShortUsername = 'ab',
-            username = 'abc',
-            takenUsername = 'taken';
+        const username = 'abc', takenUsername = 'taken';
         final tooShortPassword =
                 'p' * (CreateAccountCubit.minPasswordCreateLength - 1),
             password = 'p' * CreateAccountCubit.minPasswordCreateLength;
@@ -92,10 +90,6 @@ void main() {
         await tester.pumpAndSettle();
 
         await expectErrorDialog(tester, translate.enterUsername);
-
-        await tester.ourEnterText(find.byType(UsernameInput), tooShortUsername);
-
-        await expectErrorDialog(tester, translate.usernameToShort);
 
         await tester.ourEnterText(find.byType(UsernameInput), takenUsername);
 
@@ -171,6 +165,35 @@ void main() {
             tester.widget<WebViewDialog>(find.byType(WebViewDialog)).url;
         expect(openedUrl,
             AcceptTermsSwitch.abiliaUrl + translate.privacyPolicyUrl);
+      });
+
+      bool isOkButtonEnabled(WidgetTester tester) {
+        return tester.widget<OkButton>(find.byKey(TestKey.inputOk)).onPressed !=
+            null;
+      }
+
+      testWidgets(
+          'SGC-2018 - Must input a username within allowed character range',
+          (tester) async {
+        final tooShortUserName = 'a' * (LoginCubit.minUsernameLength - 1);
+        final tooLongUserName = 'a' * (CreateAccountPage.maxUsernameLength + 1);
+        final userNameWithinRange = 'a' * 10;
+        await tester.pumpApp();
+        await tester.tap(find.byType(GoToCreateAccountButton));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(UsernameInput), warnIfMissed: false);
+        await tester.pumpAndSettle();
+        await tester.enterText(find.byKey(TestKey.input), tooShortUserName);
+        await tester.pumpAndSettle();
+        expect(isOkButtonEnabled(tester), isFalse);
+
+        await tester.enterText(find.byKey(TestKey.input), tooLongUserName);
+        await tester.pumpAndSettle();
+        expect(isOkButtonEnabled(tester), isFalse);
+
+        await tester.enterText(find.byKey(TestKey.input), userNameWithinRange);
+        await tester.pumpAndSettle();
+        expect(isOkButtonEnabled(tester), isTrue);
       });
     },
     skip: !Config.isMP,

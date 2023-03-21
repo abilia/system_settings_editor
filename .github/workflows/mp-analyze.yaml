@@ -8,10 +8,10 @@ on:
       - release*
     paths-ignore:
       - 'handi/**'
-      - 'packages/**'
       - '**/ios/**'
       - '**/android/**'
       - '**/*.md'
+      - '**/*.yaml'
 
 jobs:
   analyze:

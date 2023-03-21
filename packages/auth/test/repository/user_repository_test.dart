@@ -1,4 +1,4 @@
-import 'package:auth/models/all.dart';
+import 'package:auth/auth.dart';
 import 'package:auth/repository/user_repository.dart';
 import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
@@ -88,6 +88,71 @@ void main() {
       return;
     }
     fail('did not throw');
+  });
+
+  test('SGC-2338, ignore range error on cary license with int max time',
+      () async {
+    // Arrange
+    when(
+      () => mockClient.get(
+        '${fakeBaseUrlDb.baseUrl}/api/v1/license/portal/me'.toUri(),
+      ),
+    ).thenAnswer(
+      (_) => Future.value(
+        Response(
+          '['
+          '{'
+          '"id":541,'
+          '"licenseDataId":16,'
+          '"licenseKey":"732647443797",'
+          '"attachedTo":406,'
+          '"demo":false,'
+          '"endTime":185544263136042591,'
+          '"initialDuration":2147483647,'
+          '"maxUsers":1,'
+          '"customer":"Internal Upgrade Customer",'
+          '"hansaSerial":null,'
+          '"product":"carybase"'
+          '},'
+          '{'
+          '"id":629,'
+          '"licenseDataId":2,'
+          '"licenseKey":"407180680519",'
+          '"attachedTo":406,'
+          '"demo":true,'
+          '"endTime":1684140798013,'
+          '"initialDuration":60,'
+          '"maxUsers":1,'
+          '"customer":"Demo",'
+          '"hansaSerial":null,'
+          '"product":"handicalendar"'
+          '},'
+          '{'
+          '"id":262,'
+          '"licenseDataId":1,'
+          '"licenseKey":"629963408391",'
+          '"attachedTo":406,'
+          '"demo":false,'
+          '"endTime":1810551943986,'
+          '"initialDuration":1825,'
+          '"maxUsers":1,'
+          '"customer":"ida",'
+          '"hansaSerial":"",'
+          '"product":"memoplanner"'
+          '}'
+          ']',
+          200,
+        ),
+      ),
+    );
+    // Act
+    final license = await userRepo.getLicensesFromApi();
+    expect(license,
+        predicate<List<License>>((l) => l.anyLicense(LicenseType.memoplanner)));
+    expect(license,
+        predicate<List<License>>((l) => l.anyLicense(LicenseType.handi)));
+
+    // Assert
   });
 
   test('logout deletes token', () async {

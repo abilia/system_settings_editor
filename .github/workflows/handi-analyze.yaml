@@ -8,10 +8,10 @@ on:
       - release*
     paths-ignore:
       - 'memoplanner/**'
-      - 'packages/**'
       - '**/ios/**'
       - '**/android/**'
       - '**/*.md'
+      - '**/*.yaml'
 
 jobs:
   analyze:

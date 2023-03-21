@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 
 import 'package:auth/db/all.dart';
@@ -122,7 +123,13 @@ class UserRepository extends Repository {
       '$baseUrl/api/v$postApiVersion/license/portal/me'.toUri(),
     );
     if (response.statusCode == 200) {
-      return (response.json() as List).map((l) => License.fromJson(l)).toList();
+      return (response.json() as List)
+          .exceptionSafeMap(
+            (l) => License.fromJson(l),
+            onException: _log.logAndReturnNull,
+          )
+          .whereNotNull()
+          .toList();
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();
     } else {

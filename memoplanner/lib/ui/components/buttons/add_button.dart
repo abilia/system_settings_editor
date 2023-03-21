@@ -121,11 +121,10 @@ class _AddButtonMPGO extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextAndOrIconActionButtonLight(
-      Translator.of(context).translate.activity,
-      AbiliaIcons.plus,
+    return IconActionButton(
       key: TestKey.addActivityButton,
-      ttsData: Translator.of(context).translate.addActivity,
+      style: actionButtonStyleLight,
+      ttsData: Translator.of(context).translate.add,
       onPressed: () => onAddButtonPressed(
         context,
         showActivities: true,
@@ -134,6 +133,7 @@ class _AddButtonMPGO extends StatelessWidget {
             .state
             .hasMP4Session, // no timers for mp3 users
       ),
+      child: const Icon(AbiliaIcons.plus),
     );
   }
 }
