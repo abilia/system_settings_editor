@@ -115,43 +115,40 @@ class TimepillarMeasures extends Equatable {
     required TextStyle textStyle,
     required BoxDecoration decoration,
   }) {
-    if (occasion is ActivityOccasion) {
-      return _getContentHeight(
-        hasTitle: occasion.activity.hasTitle,
-        hasImage: occasion.activity.hasImage,
-        hasContent: occasion.hasTimepillarContent,
-        textStyle: textStyle,
-        textScaleFactor: textScaleFactor,
-        title: occasion.activity.title,
-      );
-    } else if (occasion is TimerOccasion) {
-      final hasTitle = !occasion.timer.hasImage;
-      final title = occasion.timer.hasTitle
-          ? occasion.timer.title
-          : occasion.timer.duration.toHMSorMS();
-      final contentHeight = _getContentHeight(
-        hasTitle: hasTitle,
-        hasImage: occasion.timer.hasImage,
-        textStyle: textStyle,
-        textScaleFactor: textScaleFactor,
-        title: title,
-      );
+    final title = _getTitle(occasion);
+    final hasContent =
+        occasion is ActivityOccasion && occasion.hasTimepillarContent;
+    final contentHeight = _getContentHeight(
+      hasImage: occasion.hasImage,
+      hasContent: hasContent,
+      textStyle: textStyle,
+      textScaleFactor: textScaleFactor,
+      title: title,
+    );
+    if (occasion is TimerOccasion) {
       return contentHeight +
           timerWheelPadding.vertical / 2 +
           timerWheelSize.height;
     }
-    return 0;
+    return contentHeight;
+  }
+
+  String _getTitle(EventOccasion event) {
+    if (event is TimerOccasion) {
+      if (event.timer.hasImage) return '';
+      if (!event.timer.hasTitle) return event.timer.duration.toHMSorMS();
+    }
+    return event.title;
   }
 
   double _getContentHeight({
-    required bool hasTitle,
     required bool hasImage,
     required TextStyle textStyle,
     required double textScaleFactor,
     required String title,
-    bool hasContent = false,
+    required bool hasContent,
   }) {
-    assert(hasTitle && title.isNotEmpty || !hasTitle);
+    final hasTitle = title.isNotEmpty;
     final textHeight = hasTitle
         ? title
             .textPainter(
