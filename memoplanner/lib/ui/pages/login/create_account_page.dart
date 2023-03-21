@@ -4,6 +4,8 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class CreateAccountPage extends StatelessWidget {
+  static const maxUsernameLength = 20;
+
   final UserRepository userRepository;
 
   const CreateAccountPage({
@@ -81,7 +83,9 @@ class CreateAccountPage extends StatelessWidget {
                   UsernameInput(
                     initialValue: state.username,
                     errorState: state.usernameFailure,
-                    inputValid: (s) => s.isNotEmpty,
+                    inputValid: (s) =>
+                        s.length >= LoginCubit.minUsernameLength &&
+                        s.length <= maxUsernameLength,
                     onChanged: (newUsername) => context
                         .read<CreateAccountCubit>()
                         .usernameEmailChanged(newUsername),
@@ -229,8 +233,6 @@ extension CreateAccountErrorMessage on CreateAccountFailed {
     switch (failure) {
       case CreateAccountFailure.noUsername:
         return translate.enterUsername;
-      case CreateAccountFailure.usernameToShort:
-        return translate.usernameToShort;
       case CreateAccountFailure.noPassword:
         return translate.enterPassword;
       case CreateAccountFailure.passwordToShort:
