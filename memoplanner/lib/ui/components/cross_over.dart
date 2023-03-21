@@ -8,7 +8,6 @@ class CrossOver extends StatelessWidget {
     this.fallbackWidth,
     this.fallbackHeight,
     this.padding,
-    this.strokeWidth,
     this.child,
   }) : super(key: key);
 
@@ -16,7 +15,6 @@ class CrossOver extends StatelessWidget {
   final bool applyCross;
   final double? fallbackWidth, fallbackHeight;
   final EdgeInsets? padding;
-  final double? strokeWidth;
   final Widget? child;
 
   @override
@@ -31,7 +29,6 @@ class CrossOver extends StatelessWidget {
         foregroundPainter: applyCross
             ? _CrossOverPainter(
                 color: style.color,
-                strokeWidth: strokeWidth,
                 padding: padding,
               )
             : null,
@@ -44,12 +41,10 @@ class CrossOver extends StatelessWidget {
 class _CrossOverPainter extends CustomPainter {
   const _CrossOverPainter({
     required this.color,
-    required this.strokeWidth,
     padding,
   }) : padding = padding ?? EdgeInsets.zero;
 
   final Color color;
-  final double? strokeWidth;
   final EdgeInsets padding;
 
   @override
@@ -62,7 +57,7 @@ class _CrossOverPainter extends CustomPainter {
     final paint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth ?? layout.crossOver.strokeWidth
+      ..strokeWidth = layout.crossOver.strokeWidth
       ..strokeCap = StrokeCap.round;
     final offset = Offset(padding.left, padding.top);
     final rect = offset & rectSize;

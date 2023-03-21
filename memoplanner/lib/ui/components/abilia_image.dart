@@ -17,7 +17,6 @@ class EventImage extends StatelessWidget {
   final EdgeInsets? crossPadding;
   final EdgeInsets? checkPadding;
   final BorderRadius? radius;
-  final double? strokeWidth;
   final CheckMark? checkMark;
 
   static const duration = Duration(milliseconds: 400);
@@ -31,7 +30,6 @@ class EventImage extends StatelessWidget {
     this.checkPadding,
     this.checkMark,
     this.radius,
-    this.strokeWidth,
     Key? key,
   }) : super(key: key);
 
@@ -43,7 +41,6 @@ class EventImage extends StatelessWidget {
     EdgeInsets? crossPadding,
     EdgeInsets? checkPadding,
     CheckMark? checkMark,
-    double? strokeWidth,
     BorderRadius? radius,
   }) =>
       EventImage(
@@ -55,7 +52,6 @@ class EventImage extends StatelessWidget {
         crossPadding: crossPadding,
         checkPadding: checkPadding,
         checkMark: checkMark,
-        strokeWidth: strokeWidth,
         radius: radius,
       );
 
@@ -91,7 +87,6 @@ class EventImage extends StatelessWidget {
           if (past)
             CrossOver(
               style: CrossOverStyle.darkSecondary,
-              strokeWidth: strokeWidth,
               padding:
                   crossPadding ?? layout.eventImageLayout.fallbackCrossPadding,
             ),

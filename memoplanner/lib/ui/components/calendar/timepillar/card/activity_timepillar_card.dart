@@ -154,7 +154,6 @@ class ActivityTimepillarCard extends TimepillarCard {
         ? measures.imagePadding * 2.5
         : measures.smallImagePadding * 0.25;
     final padding = hasImage ? imagePadding : smallImagePadding;
-    final strokeWidth = hasImage ? 2.0 : 3.0;
     final checkMark = CheckMark(
       size: hasImage ? CheckMarkSize.small : CheckMarkSize.mini,
       fit: BoxFit.scaleDown,
@@ -171,7 +170,6 @@ class ActivityTimepillarCard extends TimepillarCard {
               crossPadding: crossPadding,
               checkPadding: checkPadding,
               checkMark: checkMark,
-              strokeWidth: strokeWidth,
               radius: layout.timepillar.card.imageCornerRadius,
             ),
           ),
