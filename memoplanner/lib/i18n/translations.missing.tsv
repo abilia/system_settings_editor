@@ -1,4 +1,6 @@
 _id_	en	sv	da	nl	fi	de	nb
 unauthorizedHeader	You’ve been logged out						
 unauthorizedMessage	This is most likely due to a password change, please try logging in again.						
+search	Search						
+searchImage	Search Image						
 supportId	Support id	Support id					

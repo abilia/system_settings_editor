@@ -130,6 +130,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
     final heading = sortableArchiveState.isAtRootAndNoSelection
         ? rootHeading
         : sortableArchiveState.title(Translator.of(context).translate,
@@ -170,11 +171,11 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                             abiliaTextTheme.bodyLarge,
                           ),
                         ),
-                    text: "Search",
+                    text: translate.search,
                     icon: AbiliaIcons.find,
-                    onPressed: () =>
-                        BlocProvider.of<SortableArchiveCubit<T>>(context)
-                            .setShowSearch(true),
+                    onPressed: () => context
+                        .read<SortableArchiveCubit>()
+                        .setShowSearch(true),
                   ),
               ],
             ),
@@ -187,10 +188,9 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 
   Future back(BuildContext context, SortableArchiveState<T> state) async {
     if (state.isSelected) {
-      BlocProvider.of<SortableArchiveCubit<T>>(context)
-          .folderChanged(state.currentFolderId);
+      context.read<SortableArchiveCubit>().folderChanged(state.currentFolderId);
     } else if (!state.isAtRoot) {
-      BlocProvider.of<SortableArchiveCubit<T>>(context).navigateUp();
+      context.read<SortableArchiveCubit>().navigateUp();
     } else {
       await Navigator.of(context).maybePop();
     }
