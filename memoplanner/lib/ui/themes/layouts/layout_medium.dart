@@ -20,6 +20,7 @@ class MediumLayout extends Layout {
     AlarmPageLayout? alarmPage,
     AboutLayout? about,
     WeekCalendarLayout? weekCalendar,
+    LibraryPageLayout? libraryPage,
   }) : super(
           radius: 18,
           appBar: appBar ?? const AppBarLayoutMedium(),
@@ -46,7 +47,7 @@ class MediumLayout extends Layout {
             textFieldActionButtonSpacing: 18,
           ),
           imageArchive: const ImageArchiveLayoutMedium(),
-          libraryPage: const LibraryPageLayoutMedium(),
+          libraryPage: libraryPage ?? const LibraryPageLayoutMedium(),
           ongoingFullscreen: const OngoingTabLayout(
             height: 96,
             padding: EdgeInsets.symmetric(horizontal: 9),

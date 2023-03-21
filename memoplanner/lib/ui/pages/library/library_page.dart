@@ -173,9 +173,9 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                         ),
                     text: translate.search,
                     icon: AbiliaIcons.find,
-                    onPressed: () => context
-                        .read<SortableArchiveCubit>()
-                        .setShowSearch(true),
+                    onPressed: () =>
+                        BlocProvider.of<SortableArchiveCubit<T>>(context)
+                            .setShowSearch(true),
                   ),
               ],
             ),
@@ -188,9 +188,10 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 
   Future back(BuildContext context, SortableArchiveState<T> state) async {
     if (state.isSelected) {
-      context.read<SortableArchiveCubit>().folderChanged(state.currentFolderId);
+      BlocProvider.of<SortableArchiveCubit<T>>(context)
+          .folderChanged(state.currentFolderId);
     } else if (!state.isAtRoot) {
-      context.read<SortableArchiveCubit>().navigateUp();
+      BlocProvider.of<SortableArchiveCubit<T>>(context).navigateUp();
     } else {
       await Navigator.of(context).maybePop();
     }
@@ -443,7 +444,6 @@ class LibraryFolder extends StatelessWidget {
               style: abiliaTextTheme.bodySmall?.copyWith(height: 1),
               overflow: TextOverflow.ellipsis,
             ),
-            SizedBox(height: layout.libraryPage.textImageDistance),
             Stack(
               children: [
                 Icon(

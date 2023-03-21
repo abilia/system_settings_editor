@@ -9,7 +9,6 @@ import 'package:seagull_fakes/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
-import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/navigation_observer.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';

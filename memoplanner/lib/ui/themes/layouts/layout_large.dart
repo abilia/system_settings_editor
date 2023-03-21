@@ -25,5 +25,6 @@ class LargeLayout extends MediumLayout {
           borders: const BorderLayoutLarge(),
           alarmPage: const AlarmPageLayoutLarge(),
           weekCalendar: const WeekCalendarLayoutLarge(),
+          libraryPage: const LibraryPageLayoutLarge(),
         );
 }

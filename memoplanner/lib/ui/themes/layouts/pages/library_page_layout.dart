@@ -33,7 +33,7 @@ class LibraryPageLayout {
     this.backButtonIconSize = 32,
     this.folderImagePadding = const EdgeInsets.fromLTRB(10, 28, 10, 16),
     this.notePadding = const EdgeInsets.fromLTRB(5, 9, 5, 6),
-    this.contentPadding = const EdgeInsets.all(4),
+    this.contentPadding = const EdgeInsets.only(top: 4),
     this.folderIconSize = 86,
     this.headerFontSize = 20,
     this.childAspectRatio = 1,
@@ -55,11 +55,12 @@ class LibraryPageLayout {
 }
 
 class LibraryPageLayoutMedium extends LibraryPageLayout {
-  const LibraryPageLayoutMedium()
-      : super(
+  const LibraryPageLayoutMedium({
+    int? crossAxisCount,
+  }) : super(
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
-          crossAxisCount: 4,
+          crossAxisCount: crossAxisCount ?? 4,
           headerPadding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
           searchPadding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
           searchButtonSize: const Size(166, 80),
@@ -67,7 +68,7 @@ class LibraryPageLayoutMedium extends LibraryPageLayout {
           backButtonIconSize: 56,
           folderImagePadding: const EdgeInsets.fromLTRB(15, 42, 15, 24),
           notePadding: const EdgeInsets.fromLTRB(7.5, 13.5, 7.5, 9),
-          contentPadding: const EdgeInsets.all(6),
+          contentPadding: const EdgeInsets.only(top: 6),
           folderIconSize: 128,
           headerFontSize: 32,
           childAspectRatio: 183 / 188,
@@ -76,5 +77,12 @@ class LibraryPageLayoutMedium extends LibraryPageLayout {
           textImageDistance: 3,
           emptyMessageTopPadding: 90,
           folderImageRadius: 6,
+        );
+}
+
+class LibraryPageLayoutLarge extends LibraryPageLayoutMedium {
+  const LibraryPageLayoutLarge()
+      : super(
+          crossAxisCount: 6,
         );
 }

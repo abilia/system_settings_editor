@@ -52,7 +52,13 @@ class SortableArchiveCubit<T extends SortableData>
 
   void navigateUp() {
     final currentFolder = state.allById[state.currentFolderId];
-    emit(state.copyWith(currentFolderId: currentFolder?.groupId ?? ''));
+    emit(
+      SortableArchiveState<T>(
+        state.sortableArchive,
+        currentFolderId: currentFolder?.groupId ?? '',
+        initialFolderId: state.initialFolderId,
+      ),
+    );
   }
 
   void sortableSelected(Sortable<T>? selected) {
@@ -69,8 +75,19 @@ class SortableArchiveCubit<T extends SortableData>
     );
   }
 
-  void folderChanged(String folderId) =>
-      emit(state.copyWith(currentFolderId: folderId));
+  void folderChanged(String folderId) {
+    emit(
+      SortableArchiveState<T>(
+        state.sortableArchive,
+        currentFolderId: folderId,
+        initialFolderId: state.initialFolderId,
+        showSearch: state.showSearch,
+        searchValue: state.searchValue,
+        showFolders: state.showFolders,
+        visibilityFilter: state.visibilityFilter,
+      ),
+    );
+  }
 
   void setShowSearch(bool showSearch) =>
       emit(state.copyWith(searchValue: '', showSearch: showSearch));
