@@ -9,6 +9,7 @@ import 'package:seagull_fakes/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/navigation_observer.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
@@ -342,6 +343,50 @@ void main() {
       await tester.tap(find.byType(LibraryFolder));
       await tester.pumpAndSettle();
       expect(find.text(translate.imageArchive), findsNothing);
+    });
+  });
+
+  testWidgets('Search image archive', (WidgetTester tester) async {
+    await mockNetworkImages(() async {
+      when(() => mockSortableBloc.state).thenAnswer((_) =>
+          SortablesLoaded(sortables: [folder, folderInsideFolder, image]));
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          ImageArchivePage(
+            initialFolder: folder.id,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(ImageArchivePage), findsOneWidget);
+      expect(find.byType(TextField), findsNothing);
+
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.find));
+      await tester.pumpAndSettle();
+      expect(find.byType(TextField), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.find), findsOneWidget);
+
+      // Search for folder name
+      await tester.enterText(find.byType(TextField), folder.data.name);
+      await tester.pumpAndSettle();
+      expect(find.text(translate.noImages), findsOneWidget);
+
+      // Search for nonsense
+      await tester.enterText(find.byType(TextField), 'fa4t4t');
+      await tester.pumpAndSettle();
+      expect(find.text(translate.noImages), findsOneWidget);
+
+      // Search for image name
+      await tester.enterText(find.byType(TextField), image.data.name);
+      await tester.pumpAndSettle();
+      expect(find.text(image.data.name), findsNWidgets(2));
+
+      // Press cancel returns to image archive
+      await tester.tap(find.byType(CancelButton));
+      await tester.pumpAndSettle();
+      expect(find.text(translate.imageArchive), findsOneWidget);
+      expect(find.byType(ImageArchivePage), findsOneWidget);
     });
   });
 }

@@ -609,7 +609,15 @@ class _ShapeBorders {
   });
 }
 
-extension IconTextButtonWithoutMinWidth on ButtonStyle {
+extension ButtonStyleSize on ButtonStyle {
+  ButtonStyle withSize(Size size, {double? iconSize}) => copyWith(
+        minimumSize: MaterialStateProperty.all(size),
+        maximumSize: MaterialStateProperty.all(size),
+        iconSize: iconSize != null
+            ? MaterialStateProperty.all(iconSize)
+            : this.iconSize,
+      );
+
   ButtonStyle get withoutMinWidth => copyWith(
         minimumSize: MaterialStateProperty.all(
           Size(
