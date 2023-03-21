@@ -57,7 +57,6 @@ class GenericRepository extends DataRepository<Generic> {
     return false;
   }
 
-  @override
   Future<Iterable<Generic>> getAll() => genericDb.getAllNonDeletedMaxRevision();
 
   @override

@@ -35,7 +35,7 @@ void main() {
   final cancelButtonFinder = find.byType(CancelButton);
 
   late MockSortableBloc mockSortableBloc;
-  late MockUserFileCubit mockUserFileCubit;
+  late MockUserFileBloc mockUserFileBloc;
   late MockTimerCubit mockTimerCubit;
   late MemoplannerSettingsBloc mockMemoplannerSettingsBloc;
   late MockSupportPersonsRepository supportUserRepo;
@@ -71,9 +71,8 @@ void main() {
         .thenAnswer((_) => Future.value());
 
     when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
-    mockUserFileCubit = MockUserFileCubit();
-    when(() => mockUserFileCubit.stream)
-        .thenAnswer((_) => const Stream.empty());
+    mockUserFileBloc = MockUserFileBloc();
+    when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
     mockTimerCubit = MockTimerCubit();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
@@ -189,7 +188,7 @@ void main() {
                           ),
               ),
               BlocProvider<SortableBloc>.value(value: mockSortableBloc),
-              BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),
+              BlocProvider<UserFileBloc>.value(value: mockUserFileBloc),
               BlocProvider<DayPickerBloc>(
                 create: (context) => DayPickerBloc(
                   clockBloc: context.read<ClockBloc>(),
@@ -1015,7 +1014,7 @@ Internal improvements to tests and examples.''';
       });
 
       testWidgets('Checklist with images shows', (WidgetTester tester) async {
-        when(() => mockUserFileCubit.state)
+        when(() => mockUserFileBloc.state)
             .thenReturn(const UserFilesNotLoaded());
         await tester.pumpWidget(
           createEditActivityPage(
@@ -1257,7 +1256,7 @@ text''';
       });
 
       testWidgets('checklist library shows', (WidgetTester tester) async {
-        when(() => mockUserFileCubit.state)
+        when(() => mockUserFileBloc.state)
             .thenReturn(const UserFilesNotLoaded());
         const title1 = 'listTitle1';
         when(() => mockSortableBloc.state).thenReturn(
@@ -1303,7 +1302,7 @@ text''';
 
       testWidgets('checklist from library is selectable',
           (WidgetTester tester) async {
-        when(() => mockUserFileCubit.state)
+        when(() => mockUserFileBloc.state)
             .thenReturn(const UserFilesNotLoaded());
         const title1 = 'listTitle1';
         const checklistTitle1 = 'checklistTitle1',
@@ -3566,7 +3565,7 @@ text''';
 
       testWidgets('checklist', (WidgetTester tester) async {
         // Arrange
-        when(() => mockUserFileCubit.state)
+        when(() => mockUserFileBloc.state)
             .thenReturn(const UserFilesNotLoaded());
         const title1 = 'listTitle1';
         const item1Name = 'Item 1 name';

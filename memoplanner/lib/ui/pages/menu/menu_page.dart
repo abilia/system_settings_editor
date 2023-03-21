@@ -70,7 +70,7 @@ class CameraButton extends StatelessWidget {
                 ),
               );
             } else {
-              final userFileCubit = context.read<UserFileCubit>();
+              final userFileBloc = context.read<UserFileBloc>();
               final sortableBloc = context.read<SortableBloc>();
               final now = context.read<ClockBloc>().state;
               final name = DateFormat.yMd(Platform.localeName).format(now);
@@ -79,9 +79,11 @@ class CameraButton extends StatelessWidget {
               if (image != null) {
                 final selectedImage =
                     UnstoredAbiliaFile.newFile(File(image.path));
-                userFileCubit.fileAdded(
-                  selectedImage,
-                  image: true,
+                userFileBloc.add(
+                  FileAdded(
+                    selectedImage,
+                    isImage: true,
+                  ),
                 );
                 sortableBloc.add(
                   PhotoAdded(

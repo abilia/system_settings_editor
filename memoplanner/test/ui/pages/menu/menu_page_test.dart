@@ -141,8 +141,8 @@ void main() {
       expect(lastCaptured.data.fileId, isNotEmpty);
       expect(lastCaptured.data.name, '5/10/2022');
 
-      // Should probaly also check that the image is saved in UserFileCubit but
-      // then we would probably need to mock the whole Cubit
+      // Should probaly also check that the image is saved in UserFileBloc but
+      // then we would probably need to mock the whole Bloc
     });
   }, skip: !Config.isMP);
 

@@ -46,7 +46,7 @@ class ActivityTopInfo extends StatelessWidget {
       return BlocProvider(
         create: (context) => SoundBloc(
           storage: GetIt.I<FileStorage>(),
-          userFileCubit: context.read<UserFileCubit>(),
+          userFileBloc: context.read<UserFileBloc>(),
         ),
         child: _ActivityTopInfo(
           activityDay,
