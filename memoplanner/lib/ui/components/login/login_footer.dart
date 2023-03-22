@@ -29,6 +29,7 @@ class MEMOplannerLoginFooter extends StatelessWidget {
           children: const [
             AbiliaLogoWithReset(),
             Spacer(),
+            AboutButton(),
             IconActionButtonDark(
               onPressed: AndroidIntents.openSettings,
               child: Icon(AbiliaIcons.settings),

@@ -37,7 +37,7 @@ class FloatingActions extends StatelessWidget {
               const Spacer(),
             if (tabController != null &&
                 tabController.index == settings.functions.display.menuTabIndex)
-              const _AboutButton(),
+              const AboutButton(),
           ],
         );
       },
@@ -73,43 +73,6 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
               child: const EyeButtonDay(),
             ),
       ],
-    );
-  }
-}
-
-class _AboutButton extends StatelessWidget {
-  const _AboutButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InfoButton(
-      onTap: () => showViewDialog(
-        context: context,
-        builder: (_) => const AboutDialog(),
-        routeSettings: (AboutDialog).routeSetting(),
-      ),
-    ).pad(layout.menuPage.aboutButtonPadding);
-  }
-}
-
-class AboutDialog extends StatelessWidget {
-  const AboutDialog({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-
-    return ViewDialog(
-      heading: AppBarHeading(
-        text: translate.about,
-        iconData: AbiliaIcons.information,
-      ),
-      backNavigationWidget: const CloseButton(),
-      body: const AboutContent(updateButton: false),
-      bodyPadding: EdgeInsets.zero,
-      expanded: true,
     );
   }
 }

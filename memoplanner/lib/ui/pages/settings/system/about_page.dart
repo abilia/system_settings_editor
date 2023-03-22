@@ -30,6 +30,28 @@ class AboutPage extends StatelessWidget {
   }
 }
 
+class AboutDialog extends StatelessWidget {
+  const AboutDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+
+    return ViewDialog(
+      heading: AppBarHeading(
+        text: translate.about,
+        iconData: AbiliaIcons.information,
+      ),
+      backNavigationWidget: const CloseButton(),
+      body: const AboutContent(updateButton: false),
+      bodyPadding: EdgeInsets.zero,
+      expanded: true,
+    );
+  }
+}
+
 class AboutContent extends StatelessWidget {
   final bool updateButton;
 
@@ -115,8 +137,11 @@ class LoggedInAccountColumn extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: layout.formPadding.groupTopDistance),
-        DoubleText(translate.loggedInUser, _username(GetIt.I<UserDb>()),
-            vertical: true),
+        DoubleText(
+          translate.loggedInUser,
+          _username(GetIt.I<UserDb>()),
+          vertical: true,
+        ),
         SizedBox(height: layout.formPadding.groupBottomDistance),
       ],
     );
@@ -272,8 +297,10 @@ class DoubleText extends StatelessWidget {
     return _rowOrColumn(
       [
         Text('$text1:').withTts(),
-        SizedBox(width: spacing),
-        Text(text2, style: textStyle).withTts(),
+        if (text2.isNotEmpty) ...[
+          SizedBox(height: spacing, width: spacing),
+          Text(text2, style: textStyle).withTts(),
+        ],
       ],
     ).pad(
       layout.templates.m1.onlyHorizontal.copyWith(
@@ -285,7 +312,9 @@ class DoubleText extends StatelessWidget {
   Widget _rowOrColumn(List<Widget> children) {
     return vertical
         ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start, children: children)
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
+          )
         : Row(children: children);
   }
 }
