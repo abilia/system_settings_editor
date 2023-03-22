@@ -150,10 +150,10 @@ void main() {
     });
 
     group('select ', () {
-      blocTest<SortableArchiveCubit<BasicActivityData>,
-          SortableArchiveState<BasicActivityData>>(
+      blocTest<SortableArchiveCubit<BasicActivityDataItem>,
+          SortableArchiveState<BasicActivityDataItem>>(
         'first',
-        build: () => SortableArchiveCubit<BasicActivityData>(
+        build: () => SortableArchiveCubit<BasicActivityDataItem>(
             sortableBloc: mockSortableBloc),
         act: (c) => c.sortableSelected(first),
         expect: () => [
@@ -168,10 +168,10 @@ void main() {
         ],
       );
 
-      blocTest<SortableArchiveCubit<BasicActivityData>,
-          SortableArchiveState<BasicActivityData>>(
+      blocTest<SortableArchiveCubit<BasicActivityDataItem>,
+          SortableArchiveState<BasicActivityDataItem>>(
         'second, then first',
-        build: () => SortableArchiveCubit<BasicActivityData>(
+        build: () => SortableArchiveCubit<BasicActivityDataItem>(
             sortableBloc: mockSortableBloc),
         act: (c) {
           c.sortableSelected(second);
