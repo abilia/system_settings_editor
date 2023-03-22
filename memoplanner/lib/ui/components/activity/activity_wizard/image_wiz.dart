@@ -31,9 +31,8 @@ class ImageWizSelectPictureWidget extends StatelessWidget {
           if (newImage is UnstoredAbiliaFile) {
             final now = context.read<ClockBloc>().state;
             final name = DateFormat.yMd(Platform.localeName).format(now);
-            BlocProvider.of<UserFileCubit>(context).fileAdded(
-              newImage,
-              image: true,
+            BlocProvider.of<UserFileBloc>(context).add(
+              FileAdded(newImage, isImage: true),
             );
             BlocProvider.of<SortableBloc>(context).add(
               ImageArchiveImageAdded(

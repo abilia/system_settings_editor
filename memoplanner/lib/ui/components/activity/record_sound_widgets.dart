@@ -31,7 +31,7 @@ class RecordSoundWidget extends StatelessWidget {
                   BlocProvider<SoundBloc>(
                     create: (context) => SoundBloc(
                       storage: GetIt.I<FileStorage>(),
-                      userFileCubit: context.read<UserFileCubit>(),
+                      userFileBloc: context.read<UserFileBloc>(),
                     ),
                     child: SelectOrPlaySoundWidget(
                       label: translator.speechOnStart,
@@ -51,7 +51,7 @@ class RecordSoundWidget extends StatelessWidget {
                   BlocProvider<SoundBloc>(
                     create: (context) => SoundBloc(
                       storage: GetIt.I<FileStorage>(),
-                      userFileCubit: context.read<UserFileCubit>(),
+                      userFileBloc: context.read<UserFileBloc>(),
                     ),
                     child: SelectOrPlaySoundWidget(
                       label: translator.speechOnEnd,
@@ -134,7 +134,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                         final authProviders = copiedAuthProviders(context);
                         final navigator = Navigator.of(context);
                         final soundBloc = context.read<SoundBloc>();
-                        final userFileCubit = context.read<UserFileCubit>();
+                        final userFileBloc = context.read<UserFileBloc>();
                         final audio = recordedAudio;
                         final file = audio is UnstoredAbiliaFile
                             ? audio.file
@@ -167,7 +167,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                         );
                         soundBloc.add(const StopSound());
                         if (result is UnstoredAbiliaFile) {
-                          userFileCubit.fileAdded(result);
+                          userFileBloc.add(FileAdded(result));
                         }
                         if (result != null) {
                           onResult.call(result);
@@ -176,7 +176,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
           ),
         ),
         if (recordedAudio.isNotEmpty)
-          BlocBuilder<UserFileCubit, UserFileState>(
+          BlocBuilder<UserFileBloc, UserFileState>(
             builder: (context, state) {
               return Padding(
                 padding: EdgeInsets.only(
@@ -196,7 +196,7 @@ class RecordingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: layout.recording.padding,
+      padding: layout.templates.l5,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

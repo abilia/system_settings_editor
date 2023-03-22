@@ -261,7 +261,7 @@ void main() {
         expect(
             find.byType(NotificationPermissionWarningDialog), findsOneWidget);
         await tester.tap(find.byType(CloseButton));
-        expect(find.byType(OrangeDot), findsOneWidget);
+        expect(find.byType(OrangePermissioinDot), findsOneWidget);
         expect(find.byType(ErrorMessage), findsOneWidget);
       }, skip: Config.isMP);
 
@@ -274,7 +274,7 @@ void main() {
         await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(find.byType(NotificationPermissionWarningDialog), findsNothing);
-        expect(find.byType(OrangeDot), findsNothing);
+        expect(find.byType(OrangePermissioinDot), findsNothing);
         expect(find.byType(ErrorMessage), findsNothing);
       });
 
@@ -286,7 +286,7 @@ void main() {
         });
         await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
-        expect(find.byType(OrangeDot), findsOneWidget);
+        expect(find.byType(OrangePermissioinDot), findsOneWidget);
       }, skip: Config.isMP);
 
       testWidgets('Denied notifications tts', (WidgetTester tester) async {

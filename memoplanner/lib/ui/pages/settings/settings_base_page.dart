@@ -63,7 +63,8 @@ class SettingsTab extends StatelessWidget {
         child: ListView(
           controller: scrollController,
           padding: EdgeInsets.only(
-            top: layout.templates.m1.top,
+            top: layout.templates.m1.top -
+                layout.formPadding.verticalItemDistance,
             bottom: layout.templates.m1.bottom,
           ),
           children: [

@@ -27,7 +27,7 @@ void main() {
       duration: const Duration(minutes: 5),
       startTime: startTime.subtract(const Duration(minutes: 10)));
   late MemoplannerSettingsBloc mockMemoplannerSettingsBloc;
-  late MockUserFileCubit mockUserFileCubit;
+  late MockUserFileBloc mockUserFileBloc;
   late MockTimerDb mockTimerDb;
   late MockTimerAlarmBloc mockTimerAlarmBloc;
   late NavObserver navObserver;
@@ -54,9 +54,8 @@ void main() {
     );
     when(() => mockMemoplannerSettingsBloc.stream)
         .thenAnswer((_) => const Stream.empty());
-    mockUserFileCubit = MockUserFileCubit();
-    when(() => mockUserFileCubit.stream)
-        .thenAnswer((_) => const Stream.empty());
+    mockUserFileBloc = MockUserFileBloc();
+    when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
     mockTimerDb = MockTimerDb();
     when(() => mockTimerDb.getAllTimers())
         .thenAnswer((_) => Future(() => [defaultTimer]));
@@ -107,7 +106,7 @@ void main() {
             BlocProvider<MemoplannerSettingsBloc>.value(
               value: mockMemoplannerSettingsBloc,
             ),
-            BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),
+            BlocProvider<UserFileBloc>.value(value: mockUserFileBloc),
             BlocProvider<TimerAlarmBloc>.value(value: mockTimerAlarmBloc),
             BlocProvider<TimepillarCubit>(
               create: (context) => FakeTimepillarCubit(),

@@ -35,7 +35,7 @@ class EventCardLayout {
     this.categorySideOffset = 43,
     this.iconSize = 18,
     this.titleImagePadding = 10,
-    this.borderWidth = 1.5,
+    this.borderWidth = 2,
     this.currentBorderWidth = 3,
     this.timerWheelSize = 44,
     this.crossPadding = const EdgeInsets.all(4),
@@ -68,6 +68,8 @@ class EventCardLayoutMedium extends EventCardLayout {
     double? timerWheelSize,
     double? bodyText4Height,
     double? bodyText4Size,
+    double? borderWidth,
+    double? currentBorderWidth,
   }) : super(
           height: height ?? 104,
           marginSmall: 8,
@@ -79,8 +81,8 @@ class EventCardLayoutMedium extends EventCardLayout {
           timerWheelPadding: const EdgeInsets.only(right: 10),
           iconSize: 24.0,
           titleImagePadding: 12,
-          borderWidth: 4,
-          currentBorderWidth: 6,
+          borderWidth: borderWidth ?? 2,
+          currentBorderWidth: currentBorderWidth ?? 4,
           imagePadding: const EdgeInsets.fromLTRB(4, 4, 0, 4),
           crossPadding: const EdgeInsets.all(8),
           titlePadding: const EdgeInsets.only(left: 12, right: 12),
@@ -101,5 +103,7 @@ class EventCardLayoutLarge extends EventCardLayoutMedium {
           timerWheelSize: 84,
           bodyText4Height: 40,
           bodyText4Size: 28,
+          borderWidth: 4,
+          currentBorderWidth: 6,
         );
 }

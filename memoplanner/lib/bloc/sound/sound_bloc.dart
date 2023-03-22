@@ -27,7 +27,7 @@ class SoundBloc extends Bloc<SoundEvent, SoundState> {
   final log = Logger((SoundBloc).toString());
 
   final FileStorage storage;
-  final UserFileCubit userFileCubit;
+  final UserFileBloc userFileBloc;
 
   final Map<AbiliaFile, File> _fileMap = {};
 
@@ -37,7 +37,7 @@ class SoundBloc extends Bloc<SoundEvent, SoundState> {
 
   SoundBloc({
     required this.storage,
-    required this.userFileCubit,
+    required this.userFileBloc,
   }) : super(const NoSoundPlaying()) {
     on<SoundControlEvent>(
       _onEvent,
@@ -102,12 +102,11 @@ class SoundBloc extends Bloc<SoundEvent, SoundState> {
     if (abiliaFile is UnstoredAbiliaFile) {
       return _fileMap[abiliaFile] = abiliaFile.file;
     }
-    if (userFileCubit.state is! UserFilesLoaded) {
+    if (userFileBloc.state is! UserFilesLoaded) {
       log.fine('waiting for user files loaded');
-      await userFileCubit.stream
-          .firstWhere((state) => state is UserFilesLoaded);
+      await userFileBloc.stream.firstWhere((state) => state is UserFilesLoaded);
     }
-    final userFile = userFileCubit.state.getUserFileOrNull(abiliaFile);
+    final userFile = userFileBloc.state.getUserFileOrNull(abiliaFile);
     if (userFile != null) {
       final f = await _resoveFromUserFile(userFile);
       return f != null ? _fileMap[abiliaFile] = f : null;
@@ -116,7 +115,7 @@ class SoundBloc extends Bloc<SoundEvent, SoundState> {
   }
 
   Future<File?> _resoveFromUserFile(UserFile userFile) async {
-    final file = userFileCubit.state.getFileOrTempFile(userFile, storage);
+    final file = userFileBloc.state.getFileOrTempFile(userFile, storage);
 
     if (file == null || !await file.exists()) return null;
 

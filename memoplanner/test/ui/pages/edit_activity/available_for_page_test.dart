@@ -23,7 +23,7 @@ void main() {
   );
 
   late MockSortableBloc mockSortableBloc;
-  late MockUserFileCubit mockUserFileCubit;
+  late MockUserFileBloc mockUserFileBloc;
   late MockTimerCubit mockTimerCubit;
   late MemoplannerSettingsBloc mockMemoplannerSettingsBloc;
   late FakeAuthenticationBloc fakeAuthenticationBloc;
@@ -39,9 +39,8 @@ void main() {
   setUp(() async {
     mockSortableBloc = MockSortableBloc();
     when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
-    mockUserFileCubit = MockUserFileCubit();
-    when(() => mockUserFileCubit.stream)
-        .thenAnswer((_) => const Stream.empty());
+    mockUserFileBloc = MockUserFileBloc();
+    when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
     mockTimerCubit = MockTimerCubit();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
@@ -135,7 +134,7 @@ void main() {
                       ),
               ),
               BlocProvider<SortableBloc>.value(value: mockSortableBloc),
-              BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),
+              BlocProvider<UserFileBloc>.value(value: mockUserFileBloc),
               BlocProvider<DayPickerBloc>(
                 create: (context) => DayPickerBloc(
                   clockBloc: context.read<ClockBloc>(),

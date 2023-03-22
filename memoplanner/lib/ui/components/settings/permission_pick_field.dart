@@ -31,7 +31,7 @@ class PermissionPickField extends StatelessWidget {
             Positioned(
               top: layout.settings.permissionsDotPosition,
               right: layout.settings.permissionsDotPosition,
-              child: const OrangeDot(),
+              child: const OrangePermissioinDot(),
             ),
         ],
       ),

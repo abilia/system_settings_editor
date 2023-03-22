@@ -40,8 +40,6 @@ abstract class DataRepository<M extends DataModel> extends Repository {
   /// returns true if any data need to be synced after saved
   Future<bool> save(Iterable<M> data) => db.insertAndAddDirty(data);
 
-  Future<Iterable<M>> getAll();
-
   Future<void> fetchIntoDatabaseSynchronized() =>
       synchronized(fetchIntoDatabase);
 

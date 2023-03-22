@@ -13,7 +13,7 @@ import '../../mocks/mocks.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
-  late UserFileCubit userFileCubit;
+  late UserFileBloc userFileBloc;
   late MockUserFileRepository mockUserFileRepository;
 
   const userFile = UserFile(
@@ -48,7 +48,7 @@ void main() {
         .thenAnswer((_) => Future.value());
     when(() => mockedFileStorage.storeImageThumb(any(), any()))
         .thenAnswer((_) => Future.value());
-    userFileCubit = UserFileCubit(
+    userFileBloc = UserFileBloc(
       userFileRepository: mockUserFileRepository,
       fileStorage: mockedFileStorage,
       syncBloc: FakeSyncBloc(),
@@ -56,7 +56,7 @@ void main() {
   });
 
   test('Initial state is UserFilesNotLoaded', () {
-    expect(userFileCubit.state, const UserFilesNotLoaded());
+    expect(userFileBloc.state, const UserFilesNotLoaded());
   });
 
   test('User files loaded after successful loading of user files', () async {
@@ -65,17 +65,69 @@ void main() {
         .thenAnswer((_) => Future.value([userFile]));
 
     // Act
-    userFileCubit.loadUserFiles();
+    userFileBloc.add(LoadUserFiles());
 
     // Assert
     await expectLater(
-      userFileCubit.stream,
+      userFileBloc.stream,
       emits(const UserFilesLoaded([userFile])),
     );
   });
 
+  test('SGC-2342 LoadUserFiles only runs once (droppable)', () async {
+    const userFile2 = UserFile(
+      id: '1',
+      sha1: '2',
+      md5: '3',
+      path: '4',
+      contentType: '5',
+      fileSize: 1,
+      deleted: false,
+      fileLoaded: true,
+    );
+
+    when(() => mockUserFileRepository.allDownloaded())
+        .thenAnswer((_) => Future.value(false));
+
+    var dlCall = 0;
+    when(() => mockUserFileRepository.getAllLoadedFiles())
+        .thenAnswer((_) => Future.value([]));
+    when(() => mockUserFileRepository.downloadUserFiles(
+        limit: any(named: 'limit'))).thenAnswer((_) {
+      switch (dlCall++) {
+        case 0:
+          return Future.value([userFile]);
+        case 1:
+          return Future.value([userFile2]);
+        default:
+          return Future.value(<UserFile>[]);
+      }
+    });
+
+    final expectedStream = expectLater(
+        userFileBloc.stream,
+        emitsInOrder([
+          const UserFilesLoaded([userFile]),
+          const UserFilesLoaded([userFile, userFile2]),
+        ]));
+
+    // Act -- Load files
+    userFileBloc.add(LoadUserFiles());
+    userFileBloc.add(LoadUserFiles());
+    userFileBloc.add(LoadUserFiles());
+    userFileBloc.add(LoadUserFiles());
+    userFileBloc.add(LoadUserFiles());
+
+    // Assert --that added file is prioritized
+    await expectedStream;
+
+    expect(dlCall, 3);
+    verify(() => mockUserFileRepository.downloadUserFiles(
+        limit: any(named: 'limit'))).called(3);
+  });
+
   test(
-      'SGC-583 LoadUserFiles repeatedly calls download and store untill no more files do download, but does not starve an image add call event',
+      'SGC-583 LoadUserFiles repeatedly calls download and store until no more files do download, but does not starve an image add call event',
       () async {
     // Arrange
     final file = MemoryFileSystem().file(filePath);
@@ -106,6 +158,8 @@ void main() {
     );
 
     var dlCall = 0;
+    when(() => mockUserFileRepository.allDownloaded())
+        .thenAnswer((_) => Future.value(false));
     when(() => mockUserFileRepository.getAllLoadedFiles())
         .thenAnswer((_) => Future.value([]));
     when(() => mockUserFileRepository.downloadUserFiles(
@@ -121,22 +175,21 @@ void main() {
     });
 
     final expectedStream = expectLater(
-        userFileCubit.stream,
+        userFileBloc.stream,
         emitsInOrder([
           UserFilesNotLoaded({fileId: file}),
-          UserFilesLoaded(const [], {fileId: file}),
           UserFilesLoaded(const [userFile], {fileId: file}),
           UserFilesLoaded(const [userFile, userFile2], {fileId: file}),
           UserFilesLoaded([userFile, userFile2, addedFile]),
         ]));
 
     // Act -- Loadfiles
-    userFileCubit.loadUserFiles();
+    userFileBloc.add(LoadUserFiles());
     // Act -- while downloading files, user adds file
-    userFileCubit.fileAdded(
+    userFileBloc.add(FileAdded(
       UnstoredAbiliaFile.forTest(fileId, filePath, file),
-      image: true,
-    );
+      isImage: true,
+    ));
 
     // Assert --that added file is prioritized
     await expectedStream;
@@ -153,6 +206,8 @@ void main() {
 
     when(() => mockUserFileRepository.getAllLoadedFiles())
         .thenAnswer((_) => Future.value([]));
+    when(() => mockUserFileRepository.allDownloaded())
+        .thenAnswer((_) => Future.value(true));
 
     final expectedFile = UserFile(
       id: fileId,
@@ -166,7 +221,7 @@ void main() {
       fileLoaded: true,
     );
     final expectedStream = expectLater(
-      userFileCubit.stream,
+      userFileBloc.stream,
       emitsInOrder([
         UserFilesNotLoaded({fileId: file}),
         UserFilesLoaded(const [], {fileId: file}),
@@ -175,11 +230,11 @@ void main() {
     );
 
     // Act
-    userFileCubit.loadUserFiles();
-    userFileCubit.fileAdded(
+    userFileBloc.add(LoadUserFiles());
+    userFileBloc.add(FileAdded(
       UnstoredAbiliaFile.forTest(fileId, filePath, file),
-      image: true,
-    );
+      isImage: true,
+    ));
 
     // Assert
     await expectedStream;
@@ -192,15 +247,15 @@ void main() {
     await file.writeAsBytes(fileContent);
 
     final expectedStream = expectLater(
-      userFileCubit.stream,
+      userFileBloc.stream,
       emits(UserFilesNotLoaded({fileId: file})),
     );
 
     // Act
-    userFileCubit.fileAdded(
+    userFileBloc.add(FileAdded(
       UnstoredAbiliaFile.forTest(fileId, filePath, file),
-      image: true,
-    );
+      isImage: true,
+    ));
 
     // Assert
     await expectedStream;
@@ -221,6 +276,8 @@ void main() {
 
     when(() => mockUserFileRepository.getAllLoadedFiles())
         .thenAnswer((_) => Future.value([]));
+    when(() => mockUserFileRepository.allDownloaded())
+        .thenAnswer((_) => Future.value(true));
 
     final expectedFile1 = UserFile(
       id: fileId,
@@ -245,26 +302,26 @@ void main() {
     );
 
     final expectedStream = expectLater(
-      userFileCubit.stream,
+      userFileBloc.stream,
       emitsInOrder([
         UserFilesNotLoaded({fileId: file}),
-        UserFilesNotLoaded({fileId: file, fileId2: file2}),
-        UserFilesLoaded(const [], {fileId: file, fileId2: file2}),
-        isA<UserFilesLoaded>(),
-        _StoredFileMatcher([expectedFile1, expectedFile2]),
+        UserFilesLoaded(const [], {fileId: file}),
+        UserFilesLoaded([expectedFile1]),
+        UserFilesLoaded([expectedFile1], {fileId2: file2}),
+        UserFilesLoaded([expectedFile1, expectedFile2]),
       ]),
     );
 
     // Act
-    userFileCubit.loadUserFiles();
-    userFileCubit.fileAdded(
+    userFileBloc.add(LoadUserFiles());
+    userFileBloc.add(FileAdded(
       UnstoredAbiliaFile.forTest(fileId, filePath1, file),
-      image: true,
-    );
-    userFileCubit.fileAdded(
+      isImage: true,
+    ));
+    userFileBloc.add(FileAdded(
       UnstoredAbiliaFile.forTest(fileId2, filePath2, file2),
-      image: true,
-    );
+      isImage: true,
+    ));
 
     // Assert
     await expectedStream;
@@ -282,7 +339,7 @@ void main() {
     await file2.writeAsBytes(fileContent);
 
     final expectStream = expectLater(
-      userFileCubit.stream,
+      userFileBloc.stream,
       emitsInOrder([
         UserFilesNotLoaded({fileId: file}),
         UserFilesNotLoaded({fileId: file, fileId2: file2}),
@@ -290,31 +347,16 @@ void main() {
     );
 
     // Act
-    userFileCubit.fileAdded(
+    userFileBloc.add(FileAdded(
       UnstoredAbiliaFile.forTest(fileId, filePath1, file),
-      image: true,
-    );
-    userFileCubit.fileAdded(
+      isImage: true,
+    ));
+    userFileBloc.add(FileAdded(
       UnstoredAbiliaFile.forTest(fileId2, filePath2, file2),
-      image: true,
-    );
+      isImage: true,
+    ));
 
     // Assert
     await expectStream;
   });
-}
-
-class _StoredFileMatcher extends Matcher {
-  final List<UserFile> files;
-
-  _StoredFileMatcher(this.files);
-
-  @override
-  Description describe(Description description) =>
-      unorderedEquals(files).describe(description);
-
-  @override
-  bool matches(item, Map matchState) =>
-      (item is UserFilesLoaded) &&
-      unorderedEquals(files).matches(item.userFiles, matchState);
 }

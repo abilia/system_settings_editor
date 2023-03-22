@@ -55,20 +55,7 @@ void main() {
 
   group('ActivitiesBloc', () {
     blocTest(
-      'load activities do not call load activities on mockActivityRepository',
-      build: () => ActivitiesBloc(
-        activityRepository: mockActivityRepository,
-        syncBloc: mockSyncBloc,
-      ),
-      act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
-      verify: (ActivitiesBloc bloc) =>
-          verifyNever(() => mockActivityRepository.getAll()),
-    );
-
-    blocTest(
       'LoadActivities event returns ActivitiesLoaded state',
-      setUp: () => when(() => mockActivityRepository.getAll())
-          .thenAnswer((_) => Future.value(<Activity>[])),
       build: () => ActivitiesBloc(
         activityRepository: mockActivityRepository,
         syncBloc: mockSyncBloc,

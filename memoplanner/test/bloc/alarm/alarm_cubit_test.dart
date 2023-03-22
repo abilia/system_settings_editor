@@ -115,8 +115,6 @@ void main() {
 
     blocTest(
       'Next minute alarm does nothing',
-      setUp: () => when(() => mockActivityRepository.getAll())
-          .thenAnswer((_) => Future.value([soonActivity])),
       build: () => AlarmCubit(
         clockBloc: clockBloc,
         activityRepository: mockActivityRepository,

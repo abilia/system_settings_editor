@@ -8,9 +8,10 @@ class AlarmSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    final defaultPadding = layout.alarmSettingsPage.defaultPadding;
-    final topPadding = layout.alarmSettingsPage.topPadding;
-    final bottomPadding = layout.alarmSettingsPage.bottomPadding;
+    final defaultPadding = m1ItemPadding;
+    final bottomPadding = layout.templates.m1.copyWith(
+      top: layout.formPadding.verticalItemDistance,
+    );
     final dividerPadding = layout.alarmSettingsPage.dividerPadding;
     final scrollController = ScrollController();
     final settings = context.read<MemoplannerSettingsBloc>().state;
@@ -44,7 +45,7 @@ class AlarmSettingsPage extends StatelessWidget {
                           .read<AlarmSettingsCubit>()
                           .changeAlarmSettings(
                               state.copyWith(nonCheckableSound: sound)),
-                    ).pad(topPadding),
+                    ).pad(defaultPadding),
                     _AlarmSelector(
                       key: TestKey.checkableAlarmSelector,
                       heading: t.checkableActivities,

@@ -1,4 +1,4 @@
-part of 'user_file_cubit.dart';
+part of 'user_file_bloc.dart';
 
 abstract class UserFileState extends Equatable {
   const UserFileState(this.userFiles, this._tempFiles);

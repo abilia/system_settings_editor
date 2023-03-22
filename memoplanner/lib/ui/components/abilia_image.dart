@@ -17,6 +17,7 @@ class EventImage extends StatelessWidget {
   final EdgeInsets? crossPadding;
   final EdgeInsets? checkPadding;
   final BorderRadius? radius;
+  final CheckMark? checkMark;
 
   static const duration = Duration(milliseconds: 400);
 
@@ -27,6 +28,7 @@ class EventImage extends StatelessWidget {
     this.fit = BoxFit.cover,
     this.crossPadding,
     this.checkPadding,
+    this.checkMark,
     this.radius,
     Key? key,
   }) : super(key: key);
@@ -36,29 +38,22 @@ class EventImage extends StatelessWidget {
     Key? key,
     ImageSize imageSize = ImageSize.thumb,
     BoxFit fit = BoxFit.cover,
-    bool preview = false,
     EdgeInsets? crossPadding,
     EdgeInsets? checkPadding,
+    CheckMark? checkMark,
     BorderRadius? radius,
   }) =>
-      preview
-          ? FadeInCalendarImage(
-              key: key,
-              imageFile: eventOccasion.image,
-              imageSize: imageSize,
-              fit: fit,
-              radius: radius,
-            )
-          : EventImage(
-              key: key,
-              event: eventOccasion,
-              past: eventOccasion.isPast,
-              imageSize: imageSize,
-              fit: fit,
-              crossPadding: crossPadding,
-              checkPadding: checkPadding,
-              radius: radius,
-            );
+      EventImage(
+        key: key,
+        event: eventOccasion,
+        past: eventOccasion.isPast,
+        imageSize: imageSize,
+        fit: fit,
+        crossPadding: crossPadding,
+        checkPadding: checkPadding,
+        checkMark: checkMark,
+        radius: radius,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -99,9 +94,10 @@ class EventImage extends StatelessWidget {
             Padding(
               padding:
                   checkPadding ?? layout.eventImageLayout.fallbackCheckPadding,
-              child: CheckMark(
-                fit: fit,
-              ),
+              child: checkMark ??
+                  CheckMark(
+                    fit: fit,
+                  ),
             ),
         ],
       );
@@ -113,7 +109,7 @@ class EventImage extends StatelessWidget {
     AbiliaFile imageFile, [
     ImageSize imageSize = ImageSize.thumb,
   ]) {
-    final userFileState = context.watch<UserFileCubit>().state;
+    final userFileState = context.watch<UserFileBloc>().state;
     final file = userFileState.getLoadedByIdOrPath(
       imageFile.id,
       imageFile.path,
@@ -206,7 +202,7 @@ class PhotoCalendarImage extends StatelessWidget {
     final errorImage = errorContent ?? Image.memory(kTransparentImage);
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
-      return BlocBuilder<UserFileCubit, UserFileState>(
+      return BlocBuilder<UserFileBloc, UserFileState>(
           builder: (context, userFileState) {
         final file = userFileState.getLoadedByIdOrPath(
           fileId,
@@ -260,7 +256,7 @@ class FullScreenImage extends StatelessWidget {
       onTap: onTap,
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
-        return BlocBuilder<UserFileCubit, UserFileState>(
+        return BlocBuilder<UserFileBloc, UserFileState>(
             builder: (context, userFileState) {
           final file = userFileState.getLoadedByIdOrPath(
             fileId,
@@ -322,7 +318,7 @@ class FadeInCalendarImage extends StatelessWidget {
       return emptyImage;
     }
 
-    return BlocBuilder<UserFileCubit, UserFileState>(
+    return BlocBuilder<UserFileBloc, UserFileState>(
         builder: (context, userFileState) {
       final file = userFileState.getLoadedByIdOrPath(
         imageFile.id,
@@ -379,7 +375,7 @@ class FadeInAbiliaImage extends StatelessWidget {
       return emptyImage;
     }
 
-    return BlocBuilder<UserFileCubit, UserFileState>(
+    return BlocBuilder<UserFileBloc, UserFileState>(
         builder: (context, userFileState) {
       final file = userFileState.getLoadedByIdOrPath(
         imageFileId,

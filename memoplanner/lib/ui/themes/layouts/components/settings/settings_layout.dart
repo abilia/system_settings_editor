@@ -10,7 +10,8 @@ class SettingsLayout {
       weekCalendarHeight,
       weekCalendarHeadingHeight,
       weekdayHeight,
-      permissionsDotPosition;
+      permissionsDotPosition,
+      permissionsDotRadius;
 
   final EdgeInsets monthDaysPadding, weekdaysPadding, textToSpeechPadding;
 
@@ -25,6 +26,7 @@ class SettingsLayout {
     this.weekCalendarHeadingHeight = 44,
     this.weekdayHeight = 86,
     this.permissionsDotPosition = 8,
+    this.permissionsDotRadius = 6,
     this.monthDaysPadding = const EdgeInsets.only(left: 4.0, right: 4),
     this.weekdaysPadding = const EdgeInsets.symmetric(horizontal: 2.0),
     this.textToSpeechPadding = const EdgeInsets.only(left: 8, right: 4),
