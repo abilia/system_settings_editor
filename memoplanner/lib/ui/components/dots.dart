@@ -437,13 +437,13 @@ class MiniDot extends StatelessWidget {
       decoration: visible ? futureDotShape : _transparentDotShape);
 }
 
-class OrangeDot extends StatelessWidget {
-  const OrangeDot({Key? key}) : super(key: key);
+class OrangePermissioinDot extends StatelessWidget {
+  const OrangePermissioinDot({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ColorDot(
-      radius: layout.menuPage.buttons.orangeDotRadius,
+      radius: layout.settings.permissionsDotRadius,
       color: AbiliaColors.orange40,
     );
   }

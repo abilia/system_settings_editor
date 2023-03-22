@@ -1,4 +1,3 @@
-import 'package:auth/bloc/login/login_cubit.dart';
 import 'package:auth/models/exceptions.dart';
 import 'package:auth/repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,8 +42,6 @@ class CreateAccountCubit extends Cubit<CreateAccountState> {
     emit(state.loading());
     if (state.username.isEmpty) {
       emit(state.failed(CreateAccountFailure.noUsername));
-    } else if (!LoginCubit.usernameValid(state.username)) {
-      emit(state.failed(CreateAccountFailure.usernameToShort));
     } else if (state.firstPassword.isEmpty) {
       emit(state.failed(CreateAccountFailure.noPassword));
     } else if (!CreateAccountCubit.passwordValid(state.firstPassword)) {

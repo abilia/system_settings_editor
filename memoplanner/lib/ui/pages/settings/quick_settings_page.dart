@@ -60,12 +60,17 @@ class QuickSettingsPage extends StatelessWidget {
               BrightnessSlider(),
             ]),
             if (hasBattery)
-              QuickSettingsGroup(children: [
-                SubHeading(t.screenTimeout),
-                const ScreenTimeoutPickField(),
-                SizedBox(height: layout.formPadding.verticalItemDistance),
-                const KeepOnWhileChargingSwitch(),
-              ]),
+              QuickSettingsGroup(
+                children: [
+                  SubHeading(t.screenTimeout),
+                  const ScreenTimeoutPickField(),
+                  SizedBox(height: layout.formPadding.verticalItemDistance),
+                  const KeepOnWhileChargingSwitch(),
+                ],
+              ),
+            SizedBox(
+                height: layout.templates.m1.bottom -
+                    layout.formPadding.groupBottomDistance)
           ],
         ),
       ),

@@ -127,6 +127,7 @@ void main() {
                 top: currentDotMidPosition(
                       (initialTime ?? startTime),
                       measures,
+                      topMargin: layout.templates.l1.top,
                     ) -
                     layout.timepillar.timeLineHeight / 2,
                 width: 40,
@@ -139,8 +140,8 @@ void main() {
                   dayParts: const DayParts(),
                   timepillarSide: TimepillarSide.right,
                   measures: measures,
-                  topMargin: layout.timepillar.topMargin,
-                  bottomMargin: layout.timepillar.bottomMargin,
+                  topMargin: layout.templates.l1.top,
+                  bottomMargin: layout.templates.l1.bottom,
                   showCategoryColor: mockMemoplannerSettingsBloc
                       .state.calendar.categories.showColors,
                 ),
@@ -548,8 +549,8 @@ void main() {
         dayParts: const DayParts(),
         timepillarSide: TimepillarSide.right,
         measures: TimepillarMeasures(interval, 1),
-        topMargin: layout.timepillar.topMargin,
-        bottomMargin: layout.timepillar.bottomMargin,
+        topMargin: layout.templates.l1.top,
+        bottomMargin: layout.templates.l1.bottom,
         showCategoryColor:
             mockMemoplannerSettingsBloc.state.calendar.categories.showColors,
       );

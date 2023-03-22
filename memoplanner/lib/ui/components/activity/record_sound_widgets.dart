@@ -196,7 +196,7 @@ class RecordingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: layout.recording.padding,
+      padding: layout.templates.l5,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

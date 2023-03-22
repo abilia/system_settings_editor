@@ -71,8 +71,8 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
     bool? showCategoryLabels,
     Key? key,
   })  : showCategoryLabels = showCategoryLabels ?? showCategories,
-        topMargin = topMargin ?? layout.timepillar.topMargin,
-        bottomMargin = bottomMargin ?? layout.timepillar.bottomMargin,
+        topMargin = topMargin ?? layout.templates.l1.top,
+        bottomMargin = bottomMargin ?? layout.templates.l1.bottom,
         super(key: key);
 
   bool get showTimeLine => timepillarState.isToday && displayTimeline;
@@ -343,14 +343,14 @@ class NightPart {
 double currentDotMidPosition(
   DateTime now,
   TimepillarMeasures measures, {
-  double? topMargin,
+  required double topMargin,
 }) {
   return timeToMidDotPixelDistance(
         now: now,
         dotDistance: measures.dotDistance,
         dotSize: measures.dotSize,
       ) +
-      (topMargin ?? layout.timepillar.topMargin) -
+      topMargin -
       measures.topOffset(now) +
       measures.topPadding;
 }

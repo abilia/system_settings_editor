@@ -99,7 +99,6 @@ class CreateAccountFailed extends CreateAccountState {
 
   @override
   bool get usernameFailure =>
-      failure == CreateAccountFailure.usernameToShort ||
       failure == CreateAccountFailure.noUsername ||
       failure == CreateAccountFailure.usernameTaken;
 
