@@ -44,10 +44,6 @@ class TimepillarMeasures extends Equatable {
   // TimepillarCard
   late final double cardImageSize = _layout.card.imageSize * zoom;
   late final double smallCardImageSize = _layout.card.smallImageSize * zoom;
-  late final EdgeInsets imagePadding = _layout.card.imagePadding * zoom;
-  late final EdgeInsets smallImagePadding =
-      _layout.card.smallImagePadding * zoom;
-  late final EdgeInsets textPadding = _layout.card.textPadding * zoom;
   late final double _cardWidth =
       _layout.card.imageSize + _layout.card.imagePadding.horizontal;
   late final double cardWidth = _cardWidth * zoom;
@@ -55,6 +51,16 @@ class TimepillarMeasures extends Equatable {
   late final double cardTotalWidth =
       (_layout.dot.size + _cardWidth + _layout.card.distance) * zoom;
   late final double cardTextWidth = cardWidth - textPadding.horizontal;
+
+  // Padding
+  late final EdgeInsets imagePadding = _layout.card.imagePadding * zoom;
+  late final EdgeInsets smallImagePadding =
+      _layout.card.smallImagePadding * zoom;
+  late final EdgeInsets textPadding = _layout.card.textPadding * zoom;
+  late final EdgeInsets crossPadding = _layout.card.crossPadding * zoom;
+  late final EdgeInsets checkPadding = _layout.card.checkPadding * zoom;
+  late final EdgeInsets smallCrossPadding =
+      _layout.card.smallCrossPadding * zoom;
 
   BorderRadius get borderRadius => _layout.card.borderRadius;
 

@@ -43,6 +43,18 @@ class ActivityTimepillarCard extends TimepillarCard {
     final smallImagePadding = measures.smallImagePadding.vertical / 2;
     final textPadding = measures.textPadding.vertical / 2;
 
+    final imageSize =
+        hasImage ? measures.cardImageSize : measures.smallCardImageSize;
+    final crossPadding =
+        hasImage ? measures.crossPadding : measures.smallCrossPadding;
+    final checkPadding =
+        hasImage ? measures.checkPadding : measures.smallCrossPadding;
+    final contentPadding = hasImage ? imagePadding : smallImagePadding;
+    final checkMark = CheckMark(
+      size: hasImage ? CheckMarkSize.small : CheckMarkSize.mini,
+      fit: BoxFit.scaleDown,
+    );
+
     return Positioned(
       right: right ? null : column * measures.cardTotalWidth,
       left: right ? column * measures.cardTotalWidth : null,
@@ -97,21 +109,36 @@ class ActivityTimepillarCard extends TimepillarCard {
                 decoration: decoration,
                 child: Column(
                   children: <Widget>[
-                    if (hasTitle)
-                      ..._title(
-                        title: activity.title,
-                        textPadding: textPadding,
-                        borderWidth: borderWidth,
-                        hasContent: hasContent,
+                    if (hasTitle) ...[
+                      SizedBox(height: textPadding - borderWidth),
+                      SizedBox(
+                        width: measures.cardTextWidth,
+                        child: Text(activity.title, maxLines: titleLines),
                       ),
-                    if (hasContent)
-                      ..._content(
-                        imagePadding: imagePadding,
-                        smallImagePadding: smallImagePadding,
-                        borderWidth: borderWidth,
-                        hasTitle: hasTitle,
-                        hasImage: hasImage,
+                      if (!hasContent)
+                        SizedBox(height: textPadding - borderWidth),
+                    ],
+                    if (hasContent) ...[
+                      SizedBox(
+                          height:
+                              contentPadding - (!hasTitle ? borderWidth : 0)),
+                      Expanded(
+                        child: Center(
+                          child: SizedBox(
+                            height: imageSize,
+                            width: imageSize,
+                            child: EventImage.fromEventOccasion(
+                              eventOccasion: activityOccasion,
+                              crossPadding: crossPadding,
+                              checkPadding: checkPadding,
+                              checkMark: checkMark,
+                              radius: layout.timepillar.card.imageCornerRadius,
+                            ),
+                          ),
+                        ),
                       ),
+                      SizedBox(height: contentPadding - borderWidth),
+                    ],
                   ],
                 ),
               ),
@@ -120,63 +147,6 @@ class ActivityTimepillarCard extends TimepillarCard {
         ),
       ),
     );
-  }
-
-  List<Widget> _title({
-    required String title,
-    required double textPadding,
-    required double borderWidth,
-    required bool hasContent,
-  }) {
-    return [
-      SizedBox(height: textPadding - borderWidth),
-      SizedBox(
-        width: measures.cardTextWidth,
-        child: Text(title, maxLines: titleLines),
-      ),
-      if (!hasContent) SizedBox(height: textPadding - borderWidth),
-    ];
-  }
-
-  List<Widget> _content({
-    required double imagePadding,
-    required double smallImagePadding,
-    required double borderWidth,
-    required bool hasTitle,
-    required bool hasImage,
-  }) {
-    final imageSize =
-        hasImage ? measures.cardImageSize : measures.smallCardImageSize;
-    final crossPadding = hasImage
-        ? measures.imagePadding * 2
-        : measures.smallImagePadding * 0.25;
-    final checkPadding = hasImage
-        ? measures.imagePadding * 2.5
-        : measures.smallImagePadding * 0.25;
-    final padding = hasImage ? imagePadding : smallImagePadding;
-    final checkMark = CheckMark(
-      size: hasImage ? CheckMarkSize.small : CheckMarkSize.mini,
-      fit: BoxFit.scaleDown,
-    );
-    return [
-      SizedBox(height: padding - (!hasTitle ? borderWidth : 0)),
-      Expanded(
-        child: Center(
-          child: SizedBox(
-            height: imageSize,
-            width: imageSize,
-            child: EventImage.fromEventOccasion(
-              eventOccasion: activityOccasion,
-              crossPadding: crossPadding,
-              checkPadding: checkPadding,
-              checkMark: checkMark,
-              radius: layout.timepillar.card.imageCornerRadius,
-            ),
-          ),
-        ),
-      ),
-      SizedBox(height: padding - borderWidth),
-    ];
   }
 }
 

@@ -78,6 +78,9 @@ class TimepillarLayoutMedium extends TimepillarLayout {
                 timerPadding: EdgeInsets.all(12),
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 imageCornerRadius: BorderRadius.all(Radius.circular(16)),
+                crossPadding: EdgeInsets.all(16),
+                checkPadding: EdgeInsets.all(20),
+                smallCrossPadding: EdgeInsets.all(4),
                 distance: 8,
                 fontSize: 20,
                 fontHeight: 24 / 20.0,
@@ -114,6 +117,9 @@ class TimepillarLayoutLarge extends TimepillarLayoutMedium {
             timerPadding: EdgeInsets.all(16),
             borderRadius: BorderRadius.all(Radius.circular(24)),
             imageCornerRadius: BorderRadius.all(Radius.circular(20)),
+            crossPadding: EdgeInsets.all(16),
+            checkPadding: EdgeInsets.all(20),
+            smallCrossPadding: EdgeInsets.all(4),
             distance: 8,
             fontSize: 28,
             fontHeight: 40 / 28.0,
@@ -139,6 +145,7 @@ class TimepillarCardLayout {
   final EdgeInsets imagePadding, smallImagePadding;
   final EdgeInsets textPadding;
   final EdgeInsets timerPadding;
+  final EdgeInsets crossPadding, checkPadding, smallCrossPadding;
 
   const TimepillarCardLayout({
     this.timer = const TimerCardLayout(),
@@ -149,6 +156,9 @@ class TimepillarCardLayout {
     this.timerPadding = const EdgeInsets.all(8),
     this.borderRadius = const BorderRadius.all(Radius.circular(12)),
     this.imageCornerRadius = const BorderRadius.all(Radius.circular(10)),
+    this.crossPadding = const EdgeInsets.all(8),
+    this.checkPadding = const EdgeInsets.all(10),
+    this.smallCrossPadding = const EdgeInsets.all(2),
     this.distance = 12,
     this.imageSize = 64,
     this.smallImageSize = 14,
