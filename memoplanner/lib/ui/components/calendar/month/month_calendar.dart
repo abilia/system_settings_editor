@@ -458,9 +458,13 @@ class MonthDayViewCompact extends StatelessWidget {
                     if (monthDay.hasEvent || monthDay.fullDayActivityCount > 0)
                       Align(
                         alignment: Alignment.topRight,
-                        child: ColorDot(
-                          radius: layout.monthCalendar.hasActivitiesDotRadius,
-                          color: AbiliaColors.black,
+                        child: Padding(
+                          padding: layout
+                              .monthCalendar.hasActivitiesDotPaddingCompact,
+                          child: ColorDot(
+                            radius: layout.monthCalendar.hasActivitiesDotRadius,
+                            color: AbiliaColors.black,
+                          ),
                         ),
                       ),
                     if (monthDay.isPast)
