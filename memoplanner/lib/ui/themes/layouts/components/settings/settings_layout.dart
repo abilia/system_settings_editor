@@ -13,7 +13,7 @@ class SettingsLayout {
       permissionsDotPosition,
       permissionsDotRadius;
 
-  final EdgeInsets monthDaysPadding, weekdaysPadding, textToSpeechPadding;
+  final EdgeInsets monthDaysPadding, weekdaysPadding;
 
   const SettingsLayout({
     this.clockHeight = 90,
@@ -29,7 +29,6 @@ class SettingsLayout {
     this.permissionsDotRadius = 6,
     this.monthDaysPadding = const EdgeInsets.only(left: 4.0, right: 4),
     this.weekdaysPadding = const EdgeInsets.symmetric(horizontal: 2.0),
-    this.textToSpeechPadding = const EdgeInsets.only(left: 8, right: 4),
   });
 }
 
@@ -48,6 +47,5 @@ class SettingsLayoutMedium extends SettingsLayout {
           permissionsDotPosition: 12,
           monthDaysPadding: const EdgeInsets.only(left: 6, right: 6),
           weekdaysPadding: const EdgeInsets.symmetric(horizontal: 3),
-          textToSpeechPadding: const EdgeInsets.only(left: 12, right: 6),
         );
 }
