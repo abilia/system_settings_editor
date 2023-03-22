@@ -109,7 +109,7 @@ class EventImage extends StatelessWidget {
     AbiliaFile imageFile, [
     ImageSize imageSize = ImageSize.thumb,
   ]) {
-    final userFileState = context.watch<UserFileCubit>().state;
+    final userFileState = context.watch<UserFileBloc>().state;
     final file = userFileState.getLoadedByIdOrPath(
       imageFile.id,
       imageFile.path,
@@ -202,7 +202,7 @@ class PhotoCalendarImage extends StatelessWidget {
     final errorImage = errorContent ?? Image.memory(kTransparentImage);
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
-      return BlocBuilder<UserFileCubit, UserFileState>(
+      return BlocBuilder<UserFileBloc, UserFileState>(
           builder: (context, userFileState) {
         final file = userFileState.getLoadedByIdOrPath(
           fileId,
@@ -256,7 +256,7 @@ class FullScreenImage extends StatelessWidget {
       onTap: onTap,
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
-        return BlocBuilder<UserFileCubit, UserFileState>(
+        return BlocBuilder<UserFileBloc, UserFileState>(
             builder: (context, userFileState) {
           final file = userFileState.getLoadedByIdOrPath(
             fileId,
@@ -318,7 +318,7 @@ class FadeInCalendarImage extends StatelessWidget {
       return emptyImage;
     }
 
-    return BlocBuilder<UserFileCubit, UserFileState>(
+    return BlocBuilder<UserFileBloc, UserFileState>(
         builder: (context, userFileState) {
       final file = userFileState.getLoadedByIdOrPath(
         imageFile.id,
@@ -375,7 +375,7 @@ class FadeInAbiliaImage extends StatelessWidget {
       return emptyImage;
     }
 
-    return BlocBuilder<UserFileCubit, UserFileState>(
+    return BlocBuilder<UserFileBloc, UserFileState>(
         builder: (context, userFileState) {
       final file = userFileState.getLoadedByIdOrPath(
         imageFileId,

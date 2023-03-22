@@ -29,8 +29,8 @@ void main() {
       FakeAuthenticatedBlocsProvider(
         child: MultiBlocProvider(
           providers: [
-            BlocProvider<UserFileCubit>(
-              create: (context) => UserFileCubit(
+            BlocProvider<UserFileBloc>(
+              create: (context) => UserFileBloc(
                 fileStorage: FakeFileStorage(),
                 syncBloc: FakeSyncBloc(),
                 userFileRepository: FakeUserFileRepository(),

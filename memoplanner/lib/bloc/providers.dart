@@ -163,12 +163,12 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 clockBloc: context.read<ClockBloc>(),
               ),
             ),
-            BlocProvider<UserFileCubit>(
-              create: (context) => UserFileCubit(
+            BlocProvider<UserFileBloc>(
+              create: (context) => UserFileBloc(
                 userFileRepository: context.read<UserFileRepository>(),
                 syncBloc: context.read<SyncBloc>(),
                 fileStorage: GetIt.I<FileStorage>(),
-              )..loadUserFiles(),
+              )..add(LoadUserFiles()),
               lazy: false,
             ),
             BlocProvider<SortableBloc>(

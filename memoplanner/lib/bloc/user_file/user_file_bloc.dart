@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
 import 'package:equatable/equatable.dart';
@@ -14,46 +15,62 @@ import 'package:memoplanner/utils/all.dart';
 
 part 'user_file_state.dart';
 
-class UserFileCubit extends Cubit<UserFileState> {
+class UserFileEvent {}
+
+class FileAdded extends UserFileEvent {
+  final UnstoredAbiliaFile unstoredFile;
+  final bool isImage;
+  FileAdded(this.unstoredFile, {this.isImage = false});
+}
+
+class LoadUserFiles extends UserFileEvent {}
+
+class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   final UserFileRepository userFileRepository;
   final SyncBloc syncBloc;
   final FileStorage fileStorage;
   late final StreamSubscription _syncSubscription;
 
-  UserFileCubit({
+  UserFileBloc({
     required this.userFileRepository,
     required this.syncBloc,
     required this.fileStorage,
   }) : super(const UserFilesNotLoaded()) {
-    _syncSubscription = syncBloc.stream.listen(loadUserFiles);
+    _syncSubscription = syncBloc.stream.listen((_) => add(LoadUserFiles()));
+    on<FileAdded>(_fileAdded, transformer: sequential());
+    on<LoadUserFiles>(_loadUserFiles, transformer: droppable());
   }
 
-  Future loadUserFiles([_]) async {
+  Future _loadUserFiles(_, Emitter emit) async {
     await userFileRepository.fetchIntoDatabaseSynchronized();
     final storedFiles = await userFileRepository.getAllLoadedFiles();
     if (isClosed) return;
-    emit(UserFilesLoaded(storedFiles, state._tempFiles));
-    _downloadUserFiles();
+    if (storedFiles.isNotEmpty || await userFileRepository.allDownloaded()) {
+      emit(UserFilesLoaded(storedFiles, state._tempFiles));
+    }
+    await _downloadUserFiles(emit);
   }
 
-  Future _downloadUserFiles() async {
+  Future _downloadUserFiles(Emitter emit) async {
     final downloadedUserFiles =
         await userFileRepository.downloadUserFiles(limit: 10);
-    if (downloadedUserFiles.isNotEmpty && !isClosed) {
+    if (isClosed) return;
+    if (downloadedUserFiles.isNotEmpty) {
       emit(
         UserFilesLoaded(
           [...state.userFiles, ...downloadedUserFiles],
           state._tempFiles,
         ),
       );
-      _downloadUserFiles();
+      await _downloadUserFiles(emit);
     }
   }
 
-  Future fileAdded(
-    UnstoredAbiliaFile unstoredFile, {
-    bool image = false,
-  }) async {
+  Future _fileAdded(
+    FileAdded event,
+    Emitter emit,
+  ) async {
+    final unstoredFile = event.unstoredFile;
     emit(
       state.addTempFile(
         unstoredFile.id,
@@ -61,7 +78,7 @@ class UserFileCubit extends Cubit<UserFileState> {
       ),
     );
 
-    final fileBytes = image
+    final fileBytes = event.isImage
         ? await _adjustImageAndStoreThumb(unstoredFile)
         : await unstoredFile.file.readAsBytes();
 
@@ -74,6 +91,7 @@ class UserFileCubit extends Cubit<UserFileState> {
 
     await userFileRepository.save([userFile]);
     syncBloc.add(const FileSaved());
+    if (isClosed) return;
     emit(state.add(userFile));
   }
 

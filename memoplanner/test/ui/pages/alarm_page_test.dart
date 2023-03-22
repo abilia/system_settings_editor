@@ -68,7 +68,7 @@ void main() {
   late MockMemoplannerSettingBloc mockMPSettingsBloc;
   late StreamController<MemoplannerSettings> mockMPSettingsBlocStream;
   late StreamController<ActivitiesChanged> mockActivitiesBlocStream;
-  late MockUserFileCubit mockUserFileCubit;
+  late MockUserFileBloc mockUserFileBloc;
   late MockActivitiesBloc mockActivitiesBloc;
   late MockActivityRepository mockActivityRepository;
   late MockBaseClient mockClient;
@@ -96,8 +96,8 @@ void main() {
               BlocProvider<MemoplannerSettingsBloc>(
                 create: (context) => mockMPSettingsBloc,
               ),
-              BlocProvider<UserFileCubit>(
-                create: (context) => mockUserFileCubit,
+              BlocProvider<UserFileBloc>(
+                create: (context) => mockUserFileBloc,
               ),
               BlocProvider<TouchDetectionCubit>(
                 create: (context) => TouchDetectionCubit(),
@@ -163,10 +163,9 @@ void main() {
       }
     });
 
-    mockUserFileCubit = MockUserFileCubit();
-    when(() => mockUserFileCubit.stream)
-        .thenAnswer((_) => const Stream.empty());
-    when(() => mockUserFileCubit.state)
+    mockUserFileBloc = MockUserFileBloc();
+    when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
+    when(() => mockUserFileBloc.state)
         .thenReturn(const UserFilesLoaded([userFile]));
     mockMPSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMPSettingsBloc.state).thenReturn(MemoplannerSettingsLoaded(

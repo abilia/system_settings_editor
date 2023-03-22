@@ -10,7 +10,7 @@ export 'alarm/alarm_cubit.dart';
 export 'alarm/alarm_speech/alarm_speech_cubit.dart';
 export 'sortable/sortable_bloc.dart';
 export 'sortable/sortable_archive/sortable_archive_cubit.dart';
-export 'user_file/user_file_cubit.dart';
+export 'user_file/user_file_bloc.dart';
 export 'sync/sync_bloc.dart';
 export 'providers.dart';
 export 'settings/all.dart';

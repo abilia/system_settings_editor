@@ -106,7 +106,7 @@ class FakeTimepillarMeasuresCubit extends Fake
   Future<void> close() async {}
 }
 
-class FakeUserFileCubit extends Fake implements UserFileCubit {
+class FakeUserFileBloc extends Fake implements UserFileBloc {
   @override
   Stream<UserFileState> get stream => const Stream.empty();
 
