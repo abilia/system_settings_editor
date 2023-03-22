@@ -237,9 +237,8 @@ void main() {
     final calculatedTextSize = title
         .textPainter(
           textStyle,
-          activityCardWidget.measures.cardTextWidth -
-              (activityCardWidget.decoration.padding?.horizontal ?? 0),
-          TimepillarCard.maxTitleLines,
+          activityCardWidget.measures.cardTextWidth,
+          TimepillarCard.defaultTitleLines,
           scaleFactor: textScaleFactor,
         )
         .size;
@@ -445,7 +444,7 @@ void main() {
       final activityB = ActivityOccasion(
         Activity.createNew(
           title: 'b',
-          startTime: time.add(1.hours()),
+          startTime: time.add(5.minutes()),
         ),
         time.onlyDays(),
         Occasion.current,
@@ -480,7 +479,7 @@ void main() {
       final activityB = ActivityOccasion(
         Activity.createNew(
           title: 'b',
-          startTime: time.add(1.hours() + 45.minutes()),
+          startTime: time.add(1.hours()),
         ),
         time.onlyDays(),
         Occasion.current,

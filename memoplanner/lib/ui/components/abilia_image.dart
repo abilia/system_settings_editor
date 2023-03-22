@@ -17,6 +17,7 @@ class EventImage extends StatelessWidget {
   final EdgeInsets? crossPadding;
   final EdgeInsets? checkPadding;
   final BorderRadius? radius;
+  final CheckMark? checkMark;
 
   static const duration = Duration(milliseconds: 400);
 
@@ -27,6 +28,7 @@ class EventImage extends StatelessWidget {
     this.fit = BoxFit.cover,
     this.crossPadding,
     this.checkPadding,
+    this.checkMark,
     this.radius,
     Key? key,
   }) : super(key: key);
@@ -36,29 +38,22 @@ class EventImage extends StatelessWidget {
     Key? key,
     ImageSize imageSize = ImageSize.thumb,
     BoxFit fit = BoxFit.cover,
-    bool preview = false,
     EdgeInsets? crossPadding,
     EdgeInsets? checkPadding,
+    CheckMark? checkMark,
     BorderRadius? radius,
   }) =>
-      preview
-          ? FadeInCalendarImage(
-              key: key,
-              imageFile: eventOccasion.image,
-              imageSize: imageSize,
-              fit: fit,
-              radius: radius,
-            )
-          : EventImage(
-              key: key,
-              event: eventOccasion,
-              past: eventOccasion.isPast,
-              imageSize: imageSize,
-              fit: fit,
-              crossPadding: crossPadding,
-              checkPadding: checkPadding,
-              radius: radius,
-            );
+      EventImage(
+        key: key,
+        event: eventOccasion,
+        past: eventOccasion.isPast,
+        imageSize: imageSize,
+        fit: fit,
+        crossPadding: crossPadding,
+        checkPadding: checkPadding,
+        checkMark: checkMark,
+        radius: radius,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -99,9 +94,10 @@ class EventImage extends StatelessWidget {
             Padding(
               padding:
                   checkPadding ?? layout.eventImageLayout.fallbackCheckPadding,
-              child: CheckMark(
-                fit: fit,
-              ),
+              child: checkMark ??
+                  CheckMark(
+                    fit: fit,
+                  ),
             ),
         ],
       );

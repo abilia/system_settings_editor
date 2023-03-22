@@ -219,10 +219,11 @@ BoxDecoration getCategoryBoxDecoration({
   required bool showCategoryColor,
   required int category,
   double zoom = 1.0,
+  BorderRadius? radius,
 }) =>
     BoxDecoration(
       color: inactive ? AbiliaColors.white110 : AbiliaColors.white,
-      borderRadius: borderRadius,
+      borderRadius: radius ?? borderRadius,
       border: getCategoryBorder(
         inactive: inactive,
         current: current,
