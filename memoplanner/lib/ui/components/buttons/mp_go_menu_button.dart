@@ -41,7 +41,7 @@ class MpGoMenuButton extends StatelessWidget {
               Positioned(
                 top: layout.menuButton.dotPosition,
                 right: layout.menuButton.dotPosition,
-                child: const OrangeDot(),
+                child: const OrangePermissioinDot(),
               ),
           ],
         );
