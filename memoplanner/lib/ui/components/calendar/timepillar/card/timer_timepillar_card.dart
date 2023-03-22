@@ -61,18 +61,34 @@ class TimerTimepillardCard extends TimepillarCard {
                   size: measures.timerWheelSize,
                   child: TimerCardWheel(timerOccasion),
                 ),
-                if (timer.hasImage)
-                  ..._image(
-                    imagePadding: imagePadding,
-                    borderWidth: borderWidth,
-                  )
-                else if (timer.hasTitle)
-                  ..._title(
-                    title: timer.title,
-                    textPadding: textPadding,
-                    borderWidth: borderWidth,
-                  )
-                else if (!timer.hasTitle && !timer.hasImage) ...[
+                if (timer.hasImage) ...[
+                  SizedBox(height: imagePadding),
+                  Expanded(
+                    child: Center(
+                      child: SizedBox(
+                        height: measures.cardImageSize,
+                        width: measures.cardImageSize,
+                        child: EventImage.fromEventOccasion(
+                          eventOccasion: timerOccasion,
+                          crossPadding: measures.crossPadding,
+                          checkPadding: measures.checkPadding,
+                          radius: layout.timepillar.card.imageCornerRadius,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: imagePadding - borderWidth),
+                ] else if (timer.hasTitle) ...[
+                  SizedBox(height: textPadding),
+                  SizedBox(
+                    width: measures.cardTextWidth,
+                    child: Text(
+                      timer.title,
+                      maxLines: TimepillarCard.defaultTitleLines,
+                    ),
+                  ),
+                  SizedBox(height: textPadding - borderWidth),
+                ] else if (!timer.hasTitle && !timer.hasImage) ...[
                   SizedBox(height: textPadding),
                   if (timerOccasion.isOngoing)
                     TimerTickerBuilder(
@@ -89,47 +105,5 @@ class TimerTimepillardCard extends TimepillarCard {
         ),
       ),
     );
-  }
-
-  List<Widget> _title({
-    required String title,
-    required double textPadding,
-    required double borderWidth,
-  }) {
-    return [
-      SizedBox(height: textPadding),
-      SizedBox(
-        width: measures.cardTextWidth,
-        child: Text(
-          title,
-          maxLines: TimepillarCard.defaultTitleLines,
-        ),
-      ),
-      SizedBox(height: textPadding - borderWidth),
-    ];
-  }
-
-  List<Widget> _image({
-    required double imagePadding,
-    required double borderWidth,
-  }) {
-    return [
-      SizedBox(height: imagePadding),
-      Expanded(
-        child: Center(
-          child: SizedBox(
-            height: measures.cardImageSize,
-            width: measures.cardImageSize,
-            child: EventImage.fromEventOccasion(
-              eventOccasion: timerOccasion,
-              crossPadding: measures.imagePadding * 1.5,
-              checkPadding: measures.imagePadding * 2,
-              radius: layout.timepillar.card.imageCornerRadius,
-            ),
-          ),
-        ),
-      ),
-      SizedBox(height: imagePadding - borderWidth),
-    ];
   }
 }
