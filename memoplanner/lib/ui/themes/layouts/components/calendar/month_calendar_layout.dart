@@ -79,9 +79,9 @@ class MonthCalendarLayoutMedium extends MonthCalendarLayout {
             dayHeaderPadding: const EdgeInsets.only(left: 6, right: 6, top: 6),
             dayContainerPadding:
                 const EdgeInsets.only(left: 6, right: 6, top: 4, bottom: 6),
-            hasActivitiesDotPadding: const EdgeInsets.only(top: 2),
+            hasActivitiesDotPadding: const EdgeInsets.only(right: 2, top: 2),
             hasActivitiesDotPaddingCompact:
-                const EdgeInsets.only(right: 6, top: 8),
+                const EdgeInsets.only(right: 8, top: 8),
             activityTextContentPadding: const EdgeInsets.all(4),
             monthPreview:
                 monthPreviewLayout ?? const MonthPreviewLayoutMedium());
