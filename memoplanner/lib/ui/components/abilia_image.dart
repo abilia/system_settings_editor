@@ -51,6 +51,7 @@ class EventImage extends StatelessWidget {
               borderRadius: radius ?? borderRadius,
               child: Stack(
                 alignment: Alignment.center,
+                fit: StackFit.expand,
                 children: [
                   AnimatedOpacity(
                     duration: duration,
