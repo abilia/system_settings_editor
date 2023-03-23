@@ -135,15 +135,18 @@ void main() {
               TimepillarBoard(
                 TimepillarBoard.positionTimepillarCards(
                   eventOccasions: activityOccasions,
-                  textStyle: bodySmall,
-                  textScaleFactor: 1.0,
-                  dayParts: const DayParts(),
+                  args: TimepillarBoardDataArguments(
+                    textStyle: bodySmall,
+                    textScaleFactor: 1.0,
+                    dayParts: const DayParts(),
+                    measures: measures,
+                    topMargin: layout.templates.l1.top,
+                    bottomMargin: layout.templates.l1.bottom,
+                    showCategoryColor: mockMemoplannerSettingsBloc
+                        .state.calendar.categories.showColors,
+                    nightMode: false,
+                  ),
                   timepillarSide: TimepillarSide.right,
-                  measures: measures,
-                  topMargin: layout.templates.l1.top,
-                  bottomMargin: layout.templates.l1.bottom,
-                  showCategoryColor: mockMemoplannerSettingsBloc
-                      .state.calendar.categories.showColors,
                 ),
                 categoryMinWidth: 400,
                 timepillarWidth: measures.cardTotalWidth,
@@ -543,15 +546,18 @@ void main() {
       );
       final boardData = TimepillarBoard.positionTimepillarCards(
         eventOccasions: activities,
-        textStyle: bodySmall,
-        textScaleFactor: 1.0,
-        dayParts: const DayParts(),
+        args: TimepillarBoardDataArguments(
+          textStyle: bodySmall,
+          textScaleFactor: 1.0,
+          dayParts: const DayParts(),
+          measures: TimepillarMeasures(interval, 1),
+          topMargin: layout.templates.l1.top,
+          bottomMargin: layout.templates.l1.bottom,
+          showCategoryColor:
+              mockMemoplannerSettingsBloc.state.calendar.categories.showColors,
+          nightMode: false,
+        ),
         timepillarSide: TimepillarSide.right,
-        measures: TimepillarMeasures(interval, 1),
-        topMargin: layout.templates.l1.top,
-        bottomMargin: layout.templates.l1.bottom,
-        showCategoryColor:
-            mockMemoplannerSettingsBloc.state.calendar.categories.showColors,
       );
       final uniques =
           boardData.cards.map((f) => {f.cardPosition.top, f.column});

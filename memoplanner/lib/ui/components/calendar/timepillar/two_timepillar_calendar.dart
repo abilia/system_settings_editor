@@ -47,7 +47,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
                 nightTimepillarMeasures.timePillarHeight +
                     layout.timepillar.twoTimePillar.verticalMargin * 2;
             final timepillarRatio = dayTimepillarMeasures
-                .twoTimpillarRatio(nightTimepillarMeasures.timePillarHeight);
+                .twoTimepillarRatio(nightTimepillarMeasures.timePillarHeight);
             return Stack(
               children: [
                 Row(

@@ -109,7 +109,7 @@ class TimepillarMeasures extends Equatable {
   static const maxTwoTimepillarRatio = 50;
   static const minTwoTimepillarRatio = 37;
 
-  int twoTimpillarRatio(double nightPillarHeight) =>
+  int twoTimepillarRatio(double nightPillarHeight) =>
       100 -
       (nightPillarHeight / (nightPillarHeight + timePillarHeight) * 100)
           .clamp(minTwoTimepillarRatio, maxTwoTimepillarRatio)

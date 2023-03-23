@@ -25,6 +25,14 @@ class TimepillarCalendar extends StatelessWidget {
         context.select((MemoplannerSettingsBloc bloc) => bloc.state.calendar);
 
     if (timepillarState.calendarType == DayCalendarType.oneTimepillar) {
+      final dayPartNight =
+          context.select((DayPartCubit cubit) => cubit.state.isNight);
+      final showNightCalendar = context
+          .select((TimepillarCubit cubit) => cubit.state.showNightCalendar);
+      final day = context.read<DayPickerBloc>().state.day;
+      final isToday =
+          context.select((ClockBloc clock) => clock.state.isAtSameDay(day));
+      final nightMode = showNightCalendar && isToday && dayPartNight;
       return OneTimepillarCalendar(
         timepillarState: timepillarState,
         timepillarMeasures: timepillarMeasures,
@@ -32,6 +40,7 @@ class TimepillarCalendar extends StatelessWidget {
         displayTimeline: calendarSettings.timepillar.timeline,
         showCategories: calendarSettings.categories.show,
         displayHourLines: calendarSettings.timepillar.hourLines,
+        nightMode: nightMode,
       );
     }
     return TwoTimepillarCalendar(
@@ -52,7 +61,8 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
       displayTimeline,
       showCategoryLabels,
       scrollToTimeOffset,
-      pullToRefresh;
+      pullToRefresh,
+      nightMode;
   final DayParts dayParts;
   final double topMargin, bottomMargin;
   final Key center = const Key('center');
@@ -66,6 +76,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
     required this.timepillarMeasures,
     this.scrollToTimeOffset = true,
     this.pullToRefresh = true,
+    this.nightMode = false,
     double? topMargin,
     double? bottomMargin,
     bool? showCategoryLabels,
@@ -89,16 +100,25 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
         double nowOffset(DateTime now) =>
             currentDotMidPosition(now, measures, topMargin: topMargin) -
             (boxConstraints.maxHeight / 4);
-        final mediaData = MediaQuery.of(context);
-        final showCategoryColor = context.select(
-            (MemoplannerSettingsBloc bloc) =>
-                bloc.state.calendar.categories.showColors);
-        final textStyle = layout.timepillar.card.textStyle(measures.zoom);
-        final textScaleFactor = mediaData.textScaleFactor;
         final events = timepillarState.eventsForInterval(interval);
         final np = interval.intervalPart == IntervalPart.dayAndNight
             ? nightParts(dayParts, measures, topMargin)
             : <NightPart>[];
+
+        final timepillarArguments = TimepillarBoardDataArguments(
+          textStyle: layout.timepillar.card.textStyle(
+            zoom: measures.zoom,
+            nightMode: nightMode,
+          ),
+          textScaleFactor: MediaQuery.of(context).textScaleFactor,
+          dayParts: dayParts,
+          measures: measures,
+          topMargin: topMargin,
+          bottomMargin: bottomMargin,
+          showCategoryColor: context.select((MemoplannerSettingsBloc bloc) =>
+              bloc.state.calendar.categories.showColors),
+          nightMode: nightMode,
+        );
 
         return BlocBuilder<ClockBloc, DateTime>(
           builder: (context, now) {
@@ -109,14 +129,8 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                       .map((e) => e.toOccasion(now))
                       .toList()
                   : <ActivityOccasion>[],
-              textStyle: textStyle,
-              textScaleFactor: textScaleFactor,
-              dayParts: dayParts,
+              args: timepillarArguments,
               timepillarSide: TimepillarSide.left,
-              measures: measures,
-              topMargin: topMargin,
-              bottomMargin: bottomMargin,
-              showCategoryColor: showCategoryColor,
             );
             final rightBoardData = TimepillarBoard.positionTimepillarCards(
               eventOccasions: (showCategories
@@ -124,14 +138,8 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                       : events)
                   .map((e) => e.toOccasion(now))
                   .toList(),
-              textStyle: textStyle,
-              textScaleFactor: textScaleFactor,
-              dayParts: dayParts,
+              args: timepillarArguments,
               timepillarSide: TimepillarSide.right,
-              measures: measures,
-              topMargin: topMargin,
-              bottomMargin: bottomMargin,
-              showCategoryColor: showCategoryColor,
             );
 
             // Anchor is the starting point of the central sliver (timepillar).
@@ -246,7 +254,8 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                                         categoryMinWidth: categoryMinWidth,
                                         timepillarWidth:
                                             measures.cardTotalWidth,
-                                        textStyle: textStyle,
+                                        textStyle:
+                                            timepillarArguments.textStyle,
                                       ),
                                     ),
                                   SliverTimePillar(
@@ -268,7 +277,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                                       rightBoardData,
                                       categoryMinWidth: categoryMinWidth,
                                       timepillarWidth: measures.cardTotalWidth,
-                                      textStyle: textStyle,
+                                      textStyle: timepillarArguments.textStyle,
                                     ),
                                   ),
                                 ],
