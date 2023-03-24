@@ -40,18 +40,20 @@ class EventImage extends StatelessWidget {
     final signedOff = event is ActivityDay && event.isSignedOff;
     final inactive = past || signedOff;
     return LayoutBuilder(builder: (context, constraints) {
+      final stackFit =
+          constraints.hasBoundedHeight && constraints.hasBoundedWidth
+              ? StackFit.expand
+              : StackFit.loose;
       return Stack(
         alignment: Alignment.center,
-        fit: constraints.hasBoundedHeight && constraints.hasBoundedWidth
-            ? StackFit.expand
-            : StackFit.loose,
+        fit: stackFit,
         children: [
           if (event.hasImage)
             ClipRRect(
               borderRadius: radius ?? borderRadius,
               child: Stack(
                 alignment: Alignment.center,
-                fit: StackFit.expand,
+                fit: stackFit,
                 children: [
                   AnimatedOpacity(
                     duration: duration,

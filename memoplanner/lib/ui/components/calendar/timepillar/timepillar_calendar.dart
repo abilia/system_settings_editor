@@ -26,13 +26,16 @@ class TimepillarCalendar extends StatelessWidget {
 
     if (timepillarState.calendarType == DayCalendarType.oneTimepillar) {
       final dayPartNight =
-          context.select((DayPartCubit cubit) => cubit.state.isNight);
-      final showNightCalendar = context
-          .select((TimepillarCubit cubit) => cubit.state.showNightCalendar);
-      final day = context.read<DayPickerBloc>().state.day;
+          context.select((DayPartCubit dayPart) => dayPart.state.isNight);
       final isToday =
-          context.select((ClockBloc clock) => clock.state.isAtSameDay(day));
-      final nightMode = showNightCalendar && isToday && dayPartNight;
+          context.select((DayPickerBloc picker) => picker.state.isToday);
+      final notDayAndNightTimepillar = context.select(
+        (MemoplannerSettingsBloc settings) =>
+            settings.state.dayCalendar.viewOptions.intervalType !=
+            TimepillarIntervalType.dayAndNight,
+      );
+      final nightMode = isToday && dayPartNight && notDayAndNightTimepillar;
+
       return OneTimepillarCalendar(
         timepillarState: timepillarState,
         timepillarMeasures: timepillarMeasures,
