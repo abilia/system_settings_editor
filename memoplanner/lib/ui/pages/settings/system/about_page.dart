@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auth/models/user.dart';
 import 'package:collection/collection.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get_it/get_it.dart';
@@ -61,6 +62,7 @@ class AboutContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
     final textTheme = Theme.of(context).textTheme;
+    final user = GetIt.I<UserDb>().getUser();
     return ScrollArrows.vertical(
       controller: scrollController,
       child: DefaultTextStyle(
@@ -70,8 +72,10 @@ class AboutContent extends StatelessWidget {
           children: [
             const AboutMemoplannerColumn(),
             const Divider(),
-            const LoggedInAccountColumn(),
-            const Divider(),
+            if (user != null) ...[
+              LoggedInAccountColumn(user: user),
+              const Divider(),
+            ],
             const AboutDeviceColumn(),
             const Divider(),
             const ProducerColumn(),
@@ -128,7 +132,11 @@ class AboutMemoplannerColumn extends StatelessWidget {
 }
 
 class LoggedInAccountColumn extends StatelessWidget {
-  const LoggedInAccountColumn({Key? key}) : super(key: key);
+  final User user;
+  const LoggedInAccountColumn({
+    required this.user,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -139,15 +147,13 @@ class LoggedInAccountColumn extends StatelessWidget {
         SizedBox(height: layout.formPadding.groupTopDistance),
         DoubleText(
           translate.loggedInUser,
-          _username(GetIt.I<UserDb>()),
+          user.username,
           vertical: true,
         ),
         SizedBox(height: layout.formPadding.groupBottomDistance),
       ],
     );
   }
-
-  String _username(UserDb userDb) => userDb.getUser()?.username ?? '';
 }
 
 class AboutDeviceColumn extends StatelessWidget {
