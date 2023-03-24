@@ -505,7 +505,6 @@ class _WeekActivityContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final wLayout = layout.weekCalendar;
-    final inactive = activityOccasion.isPast || activityOccasion.isSignedOff;
 
     return Tts.fromSemantics(
       activityOccasion.semanticsProperties(context),
@@ -523,44 +522,35 @@ class _WeekActivityContent extends StatelessWidget {
             ),
           );
         },
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            if (activityOccasion.activity.hasImage)
-              AnimatedOpacity(
-                duration: const Duration(milliseconds: 400),
-                opacity: inactive ? 0.5 : 1.0,
-                child: FadeInAbiliaImage(
-                  fit: selected || !fullDay ? BoxFit.scaleDown : BoxFit.cover,
-                  imageFileId: activityOccasion.activity.fileId,
-                  imageFilePath: activityOccasion.activity.icon,
-                  height: double.infinity,
-                  width: double.infinity,
-                  borderRadius: BorderRadius.zero,
-                ),
+        child: activityOccasion.activity.hasImage
+            ? EventImage(
+                event: activityOccasion,
+                radius: BorderRadius.zero,
               )
-            else
-              Center(
-                child: EllipsesText(
-                  activityOccasion.activity.title,
-                  style: Theme.of(context).textTheme.bodySmall ?? bodySmall,
-                  textAlign: TextAlign.center,
-                  maxLines: maxLines,
-                ),
+            : Stack(
+                alignment: Alignment.center,
+                children: [
+                  Center(
+                    child: EllipsesText(
+                      activityOccasion.activity.title,
+                      style: Theme.of(context).textTheme.bodySmall ?? bodySmall,
+                      textAlign: TextAlign.center,
+                      maxLines: maxLines,
+                    ),
+                  ),
+                  if (activityOccasion.isPast)
+                    CrossOver(
+                      style: CrossOverStyle.darkSecondary,
+                      padding: wLayout.crossOverActivityPadding,
+                    ),
+                  if (activityOccasion.isSignedOff)
+                    FractionallySizedBox(
+                      widthFactor: scaleFactor,
+                      heightFactor: scaleFactor,
+                      child: const CheckMark(),
+                    ),
+                ],
               ),
-            if (activityOccasion.isPast)
-              CrossOver(
-                style: CrossOverStyle.darkSecondary,
-                padding: wLayout.crossOverActivityPadding,
-              ),
-            if (activityOccasion.isSignedOff)
-              FractionallySizedBox(
-                widthFactor: scaleFactor,
-                heightFactor: scaleFactor,
-                child: const CheckMark(),
-              ),
-          ],
-        ),
       ),
     );
   }
