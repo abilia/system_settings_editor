@@ -144,11 +144,8 @@ BoardCardGenerator _activityCard({
     hasSideDots: true,
     occasion: activityOccasion,
     decoration: decoration,
+    nowOffset: nowOffset,
   );
-
-  double offset =
-      (nowOffset - cardPosition.top).abs() - args.measures.dotDistance / 2;
-  offset = max(0, offset);
 
   return BoardCardGenerator(
     top: cardPosition.top,
@@ -160,7 +157,6 @@ BoardCardGenerator _activityCard({
       timepillarSide: timepillarSide,
       args: args,
       decoration: decoration,
-      offset: offset,
     ),
   );
 }
@@ -203,13 +199,14 @@ BoardCardGenerator _timerCard({
 }
 
 class CardPosition {
-  final double top, height, contentHeight;
+  final double top, height, contentHeight, contentOffset;
   final int dots, titleLines;
 
   const CardPosition({
     required this.top,
     required this.height,
     required this.contentHeight,
+    required this.contentOffset,
     required this.dots,
     required this.titleLines,
   });
@@ -221,6 +218,7 @@ class CardPosition {
     required bool hasSideDots,
     required EventOccasion occasion,
     required BoxDecoration decoration,
+    double nowOffset = 0,
   }) {
     final measures = args.measures;
     final topMargin = args.topMargin;
@@ -262,10 +260,16 @@ class CardPosition {
       height = maxEndPos - topOffset;
     }
     final top = topOffset + topMargin + measures.topPadding;
+
+    double contentOffset =
+        (nowOffset - top).abs() - args.measures.dotDistance / 2;
+    contentOffset = max(0, contentOffset);
+
     return CardPosition(
       top: top,
       height: height,
       contentHeight: contentHeight,
+      contentOffset: contentOffset,
       dots: dots,
       titleLines: titleLines,
     );

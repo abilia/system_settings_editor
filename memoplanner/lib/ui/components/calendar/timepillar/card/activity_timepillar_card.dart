@@ -7,7 +7,6 @@ class ActivityTimepillarCard extends TimepillarCard {
   final ActivityOccasion activityOccasion;
   final TimepillarSide timepillarSide;
   final BoxDecoration decoration;
-  final double offset;
 
   final TimepillarBoardDataArguments args;
   TimepillarMeasures get measures => args.measures;
@@ -18,7 +17,6 @@ class ActivityTimepillarCard extends TimepillarCard {
     required int column,
     required this.timepillarSide,
     required this.decoration,
-    required this.offset,
     required this.args,
     Key? key,
   }) : super(column, cardPosition, key: key);
@@ -55,7 +53,8 @@ class ActivityTimepillarCard extends TimepillarCard {
       fit: BoxFit.scaleDown,
     );
     final offsetIsMax =
-        offset + cardPosition.contentHeight > cardPosition.height;
+        cardPosition.contentOffset + cardPosition.contentHeight >
+            cardPosition.height;
 
     return Positioned(
       right: right ? null : column * measures.cardTotalWidth,
@@ -117,7 +116,7 @@ class ActivityTimepillarCard extends TimepillarCard {
                       : MainAxisAlignment.start,
                   children: <Widget>[
                     if (activityOccasion.isCurrent && !offsetIsMax)
-                      SizedBox(height: offset),
+                      SizedBox(height: cardPosition.contentOffset),
                     if (hasTitle) ...[
                       SizedBox(height: textPadding - borderWidth),
                       SizedBox(
