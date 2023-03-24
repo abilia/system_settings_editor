@@ -1033,7 +1033,7 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
-        expect(find.byType(TimerTimepillardCard), findsOneWidget);
+        expect(find.byType(TimerTimepillarCard), findsOneWidget);
         expect(find.text('20 minutes'), findsOneWidget);
 
         final captured =
@@ -1071,7 +1071,7 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
-        expect(find.byType(TimerTimepillardCard), findsOneWidget);
+        expect(find.byType(TimerTimepillarCard), findsOneWidget);
         expect(find.text('45 minutes'), findsOneWidget);
 
         final captured =
@@ -1156,7 +1156,7 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
-        expect(find.byType(TimerTimepillardCard), findsOneWidget);
+        expect(find.byType(TimerTimepillarCard), findsOneWidget);
         expect(find.byType(TimerTopInfo), findsNothing);
 
         final captured =

@@ -11,7 +11,7 @@ import 'package:memoplanner/ui/themes/all.dart' as theme;
 
 class EventImage extends StatelessWidget {
   final Event event;
-  final bool past;
+  final bool nightMode;
   final ImageSize imageSize;
   final BoxFit fit;
   final EdgeInsets? crossPadding;
@@ -23,7 +23,7 @@ class EventImage extends StatelessWidget {
 
   const EventImage({
     required this.event,
-    this.past = false,
+    this.nightMode = false,
     this.imageSize = ImageSize.thumb,
     this.fit = BoxFit.cover,
     this.crossPadding,
@@ -33,60 +33,51 @@ class EventImage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  static Widget fromEventOccasion({
-    required EventOccasion eventOccasion,
-    Key? key,
-    ImageSize imageSize = ImageSize.thumb,
-    BoxFit fit = BoxFit.cover,
-    EdgeInsets? crossPadding,
-    EdgeInsets? checkPadding,
-    CheckMark? checkMark,
-    BorderRadius? radius,
-  }) =>
-      EventImage(
-        key: key,
-        event: eventOccasion,
-        past: eventOccasion.isPast,
-        imageSize: imageSize,
-        fit: fit,
-        crossPadding: crossPadding,
-        checkPadding: checkPadding,
-        checkMark: checkMark,
-        radius: radius,
-      );
-
   @override
   Widget build(BuildContext context) {
     final event = this.event;
+    final past = event is EventOccasion && event.isPast;
     final signedOff = event is ActivityDay && event.isSignedOff;
     final inactive = past || signedOff;
     return LayoutBuilder(builder: (context, constraints) {
+      final stackFit =
+          constraints.hasBoundedHeight && constraints.hasBoundedWidth
+              ? StackFit.expand
+              : StackFit.loose;
       return Stack(
         alignment: Alignment.center,
-        fit: constraints.hasBoundedHeight && constraints.hasBoundedWidth
-            ? StackFit.expand
-            : StackFit.loose,
+        fit: stackFit,
         children: [
           if (event.hasImage)
-            AnimatedOpacity(
-              duration: duration,
-              opacity: inactive ? 0.5 : 1.0,
-              child: ClipRRect(
-                borderRadius: radius ?? borderRadius,
-                child: FadeInImage(
-                  fit: fit,
-                  image: getImage(
-                    context,
-                    event.image,
-                    imageSize,
-                  ).image,
-                  placeholder: MemoryImage(kTransparentImage),
-                ),
+            ClipRRect(
+              borderRadius: radius ?? borderRadius,
+              child: Stack(
+                alignment: Alignment.center,
+                fit: stackFit,
+                children: [
+                  AnimatedOpacity(
+                    duration: duration,
+                    opacity: inactive ? 0.5 : 1.0,
+                    child: FadeInImage(
+                      fit: fit,
+                      image: getImage(
+                        context,
+                        event.image,
+                        imageSize,
+                      ).image,
+                      placeholder: MemoryImage(kTransparentImage),
+                    ),
+                  ),
+                  if (nightMode)
+                    Container(color: AbiliaColors.transparentBlack40),
+                ],
               ),
             ),
           if (past)
             CrossOver(
-              style: CrossOverStyle.darkSecondary,
+              style: nightMode
+                  ? CrossOverStyle.lightSecondary
+                  : CrossOverStyle.darkSecondary,
               padding:
                   crossPadding ?? layout.eventImageLayout.fallbackCrossPadding,
             ),
@@ -94,10 +85,7 @@ class EventImage extends StatelessWidget {
             Padding(
               padding:
                   checkPadding ?? layout.eventImageLayout.fallbackCheckPadding,
-              child: checkMark ??
-                  CheckMark(
-                    fit: fit,
-                  ),
+              child: checkMark ?? CheckMark(fit: fit),
             ),
         ],
       );

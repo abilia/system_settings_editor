@@ -218,65 +218,83 @@ BoxDecoration getCategoryBoxDecoration({
   required bool current,
   required bool showCategoryColor,
   required int category,
+  bool nightMode = false,
   double zoom = 1.0,
   BorderRadius? radius,
 }) =>
     BoxDecoration(
-      color: inactive ? AbiliaColors.white110 : AbiliaColors.white,
+      color: _backgroundColor(inactive, nightMode),
       borderRadius: radius ?? borderRadius,
       border: getCategoryBorder(
         inactive: inactive,
         current: current,
+        nightMode: nightMode,
         showCategoryColor: showCategoryColor,
         category: category,
         zoom: zoom,
       ),
     );
 
+Color _backgroundColor(
+  bool inactive,
+  bool isNight,
+) {
+  if (isNight) {
+    if (inactive) return AbiliaColors.black90;
+    return AbiliaColors.black;
+  }
+  if (inactive) return AbiliaColors.white110;
+  return AbiliaColors.white;
+}
+
 Border getCategoryBorder({
   required bool inactive,
   required bool current,
   required bool showCategoryColor,
   required int category,
+  bool nightMode = false,
   double? borderWidth,
   double? currentBorderWidth,
   double zoom = 1.0,
-}) =>
-    current
-        ? Border.fromBorderSide(
-            BorderSide(
-              color: AbiliaColors.red,
-              width:
-                  (currentBorderWidth ?? layout.eventCard.currentBorderWidth) *
-                      zoom,
-            ),
-          )
-        : Border.fromBorderSide(
-            BorderSide(
-              color: categoryColor(
-                category: category,
-                inactive: inactive,
-                showCategoryColor: showCategoryColor,
-              ),
-              width: (borderWidth ?? layout.eventCard.borderWidth) * zoom,
-            ),
-          );
+}) {
+  final color = categoryColor(
+    category: category,
+    inactive: inactive,
+    nightMode: nightMode,
+    showCategoryColor: showCategoryColor,
+    current: current,
+  );
+  final width = current
+      ? (currentBorderWidth ?? layout.eventCard.currentBorderWidth)
+      : (borderWidth ?? layout.eventCard.borderWidth);
 
-const rightCategoryActiveColor = AbiliaColors.green,
-    rightCategoryInactiveColor = AbiliaColors.green40,
-    leftCategoryActiveColor = AbiliaColors.black60,
-    noCategoryColor = AbiliaColors.white140;
+  return Border.fromBorderSide(BorderSide(color: color, width: width * zoom));
+}
 
 Color categoryColor({
   required int category,
   bool inactive = false,
+  bool nightMode = false,
   bool showCategoryColor = true,
+  bool current = false,
 }) {
-  if (!showCategoryColor) return noCategoryColor;
-  if (category == Category.right) {
-    return inactive ? rightCategoryInactiveColor : rightCategoryActiveColor;
+  if (current) {
+    if (nightMode) return AbiliaColors.red120;
+    return AbiliaColors.red;
   }
-  return inactive ? noCategoryColor : leftCategoryActiveColor;
+  if (!showCategoryColor) {
+    if (nightMode) return AbiliaColors.black75;
+    return AbiliaColors.white140;
+  }
+  if (category == Category.right) {
+    if (nightMode && inactive) return AbiliaColors.green180;
+    if (inactive) return AbiliaColors.green40;
+    if (nightMode) return AbiliaColors.green120;
+    return AbiliaColors.green;
+  }
+  if (nightMode && inactive) return AbiliaColors.black75;
+  if (inactive) return AbiliaColors.white140;
+  return AbiliaColors.black60;
 }
 
 final inputErrorDecoration = InputDecoration(

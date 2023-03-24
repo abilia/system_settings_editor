@@ -374,6 +374,11 @@ void main() {
       expect(rightFinder, findsNothing);
     });
     group('category colors', () {
+      const rightCategoryActiveColor = AbiliaColors.green,
+          rightCategoryInactiveColor = AbiliaColors.green40,
+          leftCategoryActiveColor = AbiliaColors.black60,
+          noCategoryColor = AbiliaColors.white140;
+
       void expectCorrectColor(
         WidgetTester tester,
         String title,
@@ -478,7 +483,7 @@ void main() {
   });
 
   group('Timers', () {
-    find.byType(TimerTimepillardCard);
+    find.byType(TimerTimepillarCard);
 
     final t1 = AbiliaTimer.createNew(
           title: '22 minutes',
@@ -498,7 +503,7 @@ void main() {
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(TimerTimepillardCard), findsOneWidget);
+      expect(find.byType(TimerTimepillarCard), findsOneWidget);
       expect(find.text(t1.title), findsOneWidget);
     });
 
@@ -511,7 +516,7 @@ void main() {
         await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         // Assert
-        expect(find.byType(TimerTimepillardCard), findsOneWidget);
+        expect(find.byType(TimerTimepillarCard), findsOneWidget);
         expect(find.text(t2.title), findsNothing);
         expect(find.byType(EventImage), findsOneWidget);
       });
@@ -544,7 +549,7 @@ void main() {
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(TimerTimepillardCard), findsOneWidget);
+      expect(find.byType(TimerTimepillarCard), findsOneWidget);
       expect(find.text(nightTimer.title), findsOneWidget);
     });
 
@@ -561,7 +566,7 @@ void main() {
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(TimerTimepillardCard), findsOneWidget);
+      expect(find.byType(TimerTimepillarCard), findsOneWidget);
       expect(find.text(nightTimer.title), findsOneWidget);
     });
 
@@ -578,7 +583,7 @@ void main() {
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(TimerTimepillardCard), findsOneWidget);
+      expect(find.byType(TimerTimepillarCard), findsOneWidget);
       expect(find.text(nightTimer.title), findsOneWidget);
     });
   });

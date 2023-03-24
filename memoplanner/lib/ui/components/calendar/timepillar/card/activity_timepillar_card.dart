@@ -5,21 +5,21 @@ import 'package:memoplanner/utils/all.dart';
 
 class ActivityTimepillarCard extends TimepillarCard {
   final ActivityOccasion activityOccasion;
-  final DayParts dayParts;
   final TimepillarSide timepillarSide;
-  final TimepillarMeasures measures;
   final BoxDecoration decoration;
   final int titleLines;
+
+  final TimepillarBoardDataArguments args;
+  TimepillarMeasures get measures => args.measures;
 
   const ActivityTimepillarCard({
     required this.activityOccasion,
     required CardPosition cardPosition,
     required int column,
-    required this.dayParts,
     required this.timepillarSide,
-    required this.measures,
     required this.decoration,
     required this.titleLines,
+    required this.args,
     Key? key,
   }) : super(column, cardPosition, key: key);
 
@@ -73,7 +73,7 @@ class ActivityTimepillarCard extends TimepillarCard {
                     ? timepillarInterval.end
                     : endTime,
                 dots: cardPosition.dots,
-                dayParts: dayParts,
+                dayParts: args.dayParts,
               )
             else
               SideTime(
@@ -82,6 +82,7 @@ class ActivityTimepillarCard extends TimepillarCard {
                 width: measures.cardWidth,
                 category: activity.category,
                 showCategoryColor: showCategoryColor,
+                nightMode: args.nightMode,
               ),
             GestureDetector(
               onTap: () {
@@ -120,19 +121,20 @@ class ActivityTimepillarCard extends TimepillarCard {
                     ],
                     if (hasContent) ...[
                       SizedBox(
-                          height:
-                              contentPadding - (!hasTitle ? borderWidth : 0)),
+                        height: contentPadding - (!hasTitle ? borderWidth : 0),
+                      ),
                       Expanded(
                         child: Center(
                           child: SizedBox(
                             height: imageSize,
                             width: imageSize,
-                            child: EventImage.fromEventOccasion(
-                              eventOccasion: activityOccasion,
+                            child: EventImage(
+                              event: activityOccasion,
                               crossPadding: crossPadding,
                               checkPadding: checkPadding,
                               checkMark: checkMark,
                               radius: layout.timepillar.card.imageCornerRadius,
+                              nightMode: args.nightMode,
                             ),
                           ),
                         ),
@@ -156,6 +158,7 @@ class SideTime extends StatelessWidget {
   final double width;
   final int category;
   final bool showCategoryColor;
+  final bool nightMode;
 
   const SideTime({
     required this.occasion,
@@ -163,6 +166,7 @@ class SideTime extends StatelessWidget {
     required this.width,
     required this.category,
     required this.showCategoryColor,
+    required this.nightMode,
     Key? key,
   }) : super(key: key);
 
@@ -173,25 +177,18 @@ class SideTime extends StatelessWidget {
       height: height,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: colorFromOccasion(occasion),
+          color: categoryColor(
+            category: category,
+            inactive: occasion.isPast,
+            showCategoryColor: showCategoryColor,
+            nightMode: nightMode,
+            current: occasion.isCurrent,
+          ),
           borderRadius: BorderRadius.all(
             Radius.circular(layout.timepillar.flarpRadius),
           ),
         ),
       ),
     );
-  }
-
-  Color colorFromOccasion(Occasion occasion) {
-    switch (occasion) {
-      case Occasion.current:
-        return AbiliaColors.red;
-      default:
-        return categoryColor(
-          category: category,
-          inactive: occasion.isPast,
-          showCategoryColor: showCategoryColor,
-        );
-    }
   }
 }

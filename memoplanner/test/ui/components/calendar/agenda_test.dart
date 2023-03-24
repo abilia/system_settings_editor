@@ -592,6 +592,11 @@ void main() {
   });
 
   group('Categories', () {
+    const rightCategoryActiveColor = AbiliaColors.green,
+        rightCategoryInactiveColor = AbiliaColors.green40,
+        leftCategoryActiveColor = AbiliaColors.black60,
+        noCategoryColor = AbiliaColors.white140;
+
     final translated = Locales.language.values.first;
     final right = translated.right;
     final left = translated.left;

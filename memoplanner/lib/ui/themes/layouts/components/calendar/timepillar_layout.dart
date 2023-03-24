@@ -166,11 +166,12 @@ class TimepillarCardLayout {
     this.fontHeight = 16 / 12.0,
   });
 
-  TextStyle textStyle(double zoom) => GoogleFonts.roboto(
+  TextStyle textStyle({required double zoom, required bool nightMode}) =>
+      GoogleFonts.roboto(
         textStyle: TextStyle(
           fontSize: fontSize * zoom,
           height: fontHeight,
-          color: AbiliaColors.black,
+          color: nightMode ? AbiliaColors.white : AbiliaColors.black,
           fontWeight: FontWeight.w400,
           overflow: TextOverflow.ellipsis,
           leadingDistribution: TextLeadingDistribution.even,

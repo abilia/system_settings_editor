@@ -71,6 +71,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     final activities = await activitiesBloc.activityRepository
         .allBetween(interval.start.onlyDays(), interval.end);
     previousState = state;
+    if (isClosed) return;
     emit(
       _generateState(
         clockBloc.state,

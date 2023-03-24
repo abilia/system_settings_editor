@@ -3,17 +3,19 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-class TimerTimepillardCard extends TimepillarCard {
+class TimerTimepillarCard extends TimepillarCard {
   final TimerOccasion timerOccasion;
   final TimepillarMeasures measures;
   final BoxDecoration decoration;
+  final bool nightMode;
 
-  const TimerTimepillardCard({
+  const TimerTimepillarCard({
     required this.measures,
     required int column,
     required this.timerOccasion,
     required CardPosition cardPosition,
     required this.decoration,
+    required this.nightMode,
     Key? key,
   }) : super(column, cardPosition, key: key);
 
@@ -68,11 +70,12 @@ class TimerTimepillardCard extends TimepillarCard {
                       child: SizedBox(
                         height: measures.cardImageSize,
                         width: measures.cardImageSize,
-                        child: EventImage.fromEventOccasion(
-                          eventOccasion: timerOccasion,
+                        child: EventImage(
+                          event: timerOccasion,
                           crossPadding: measures.crossPadding,
                           checkPadding: measures.checkPadding,
                           radius: layout.timepillar.card.imageCornerRadius,
+                          nightMode: nightMode,
                         ),
                       ),
                     ),
