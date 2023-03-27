@@ -87,7 +87,6 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                 : SortableLibrary<T>(
                     libraryItemGenerator,
                     emptyLibraryMessage,
-                    showSearch: showSearch,
                     selectableItems: selectableItems,
                     crossAxisCount: gridCrossAxisCount,
                     childAspectRatio: gridChildAspectRatio,
@@ -270,7 +269,6 @@ class SortableLibrary<T extends SortableData> extends StatefulWidget {
   final LibraryItemGenerator<T> libraryItemGenerator;
   final String emptyLibraryMessage;
   final bool selectableItems;
-  final bool showSearch;
   final int? crossAxisCount;
   final double? childAspectRatio;
 
@@ -278,7 +276,6 @@ class SortableLibrary<T extends SortableData> extends StatefulWidget {
     this.libraryItemGenerator,
     this.emptyLibraryMessage, {
     this.selectableItems = true,
-    this.showSearch = false,
     this.crossAxisCount,
     this.childAspectRatio,
     Key? key,
@@ -303,11 +300,11 @@ class _SortableLibraryState<T extends SortableData>
     final translate = Translator.of(context).translate;
     return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
-        final content = widget.showSearch
+        final content = archiveState.showSearch
             ? archiveState.allFilteredAndSorted(translate)
             : archiveState.currentFolderSorted;
         if (content.isEmpty &&
-            (widget.showSearch && archiveState.searchValue.isNotEmpty)) {
+            (archiveState.showSearch && archiveState.searchValue.isNotEmpty)) {
           return EmptyLibraryMessage(
             emptyLibraryMessage: widget.emptyLibraryMessage,
             rootFolder: archiveState.isAtRoot,

@@ -19,30 +19,39 @@ class SortableArchiveCubit<T extends SortableData>
     String initialFolderId = '',
     bool Function(Sortable<T>)? visibilityFilter,
     bool showFolders = true,
-  }) : super(SortableArchiveState.fromSortables(
-          sortables: sortableBloc.state is SortablesLoaded
-              ? (sortableBloc.state as SortablesLoaded).sortables
-              : <Sortable<SortableData>>[],
-          initialFolderId: initialFolderId,
-          currentFolderId: initialFolderId,
-          visibilityFilter: visibilityFilter,
-          showFolders: showFolders,
-          showSearch: false,
-        )) {
+  }) : super(
+          SortableArchiveState.fromSortables(
+            sortables: sortableBloc.state is SortablesLoaded
+                ? (sortableBloc.state as SortablesLoaded).sortables
+                : <Sortable<SortableData>>[],
+            initialFolderId: initialFolderId,
+            currentFolderId: initialFolderId,
+            visibilityFilter: visibilityFilter,
+            showFolders: showFolders,
+            showSearch: false,
+            selected: null,
+          ),
+        ) {
     _sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
-        sortablesUpdated(sortableState.sortables);
+        sortablesUpdated(
+          sortableState.sortables,
+          visibilityFilter: visibilityFilter,
+        );
       }
     });
   }
 
-  void sortablesUpdated(Iterable<Sortable> sortables) {
+  void sortablesUpdated(
+    Iterable<Sortable> sortables, {
+    bool Function(Sortable<T>)? visibilityFilter,
+  }) {
     emit(
       SortableArchiveState.fromSortables(
         sortables: sortables,
         initialFolderId: state.initialFolderId,
         currentFolderId: state.currentFolderId,
-        visibilityFilter: state.visibilityFilter,
+        visibilityFilter: visibilityFilter,
         selected: state.selected,
         showFolders: state.showFolders,
         showSearch: state.showSearch,
@@ -84,7 +93,6 @@ class SortableArchiveCubit<T extends SortableData>
         showSearch: state.showSearch,
         searchValue: state.searchValue,
         showFolders: state.showFolders,
-        visibilityFilter: state.visibilityFilter,
       ),
     );
   }

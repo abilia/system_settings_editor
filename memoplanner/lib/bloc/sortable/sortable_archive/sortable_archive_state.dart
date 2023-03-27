@@ -8,7 +8,6 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
   final String searchValue;
   final bool showSearch;
   final bool showFolders;
-  final bool Function(Sortable<T>)? visibilityFilter;
 
   const SortableArchiveState(
     this.sortableArchive, {
@@ -18,7 +17,6 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
     this.searchValue = '',
     this.showSearch = false,
     this.showFolders = true,
-    this.visibilityFilter,
   });
 
   factory SortableArchiveState.fromSortables({
@@ -27,8 +25,8 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
     required String currentFolderId,
     required bool showFolders,
     required bool showSearch,
+    required Sortable<T>? selected,
     bool Function(Sortable<T>)? visibilityFilter,
-    Sortable<T>? selected,
   }) {
     final sortableArchive = sortables
         .whereType<Sortable<T>>()
@@ -42,7 +40,6 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
       initialFolderId: initialFolderId,
       showSearch: showSearch,
       showFolders: showFolders,
-      visibilityFilter: visibilityFilter,
     );
   }
 
@@ -58,7 +55,6 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
         searchValue: searchValue ?? this.searchValue,
         showSearch: showSearch ?? this.showSearch,
         showFolders: showFolders,
-        visibilityFilter: visibilityFilter,
       );
 
   bool get isSelected => selected != null;
@@ -106,7 +102,6 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
         searchValue,
         showSearch,
         showFolders,
-        visibilityFilter,
       ];
 
   @override
