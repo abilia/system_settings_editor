@@ -125,7 +125,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
 
         return BlocBuilder<ClockBloc, DateTime>(
           builder: (context, now) {
-            final nowOffset =
+            final timelineOffset =
                 currentDotMidPosition(now, measures, topMargin: topMargin) -
                     (layout.timepillar.timeLineHeight / 2);
             final leftBoardData = TimepillarBoard.positionTimepillarCards(
@@ -137,7 +137,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                   : <ActivityOccasion>[],
               args: timepillarArguments,
               timepillarSide: TimepillarSide.left,
-              nowOffset: nowOffset,
+              timelineOffset: timelineOffset,
             );
             final rightBoardData = TimepillarBoard.positionTimepillarCards(
               eventOccasions: (showCategories
@@ -147,7 +147,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                   .toList(),
               args: timepillarArguments,
               timepillarSide: TimepillarSide.right,
-              nowOffset: nowOffset,
+              timelineOffset: timelineOffset,
             );
 
             // Anchor is the starting point of the central sliver (timepillar).
@@ -236,7 +236,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                                         startDate: measures.interval.start,
                                         endDate: measures.interval.end)) {
                                       return Timeline(
-                                        top: nowOffset,
+                                        top: timelineOffset,
                                         width: boxConstraints.maxWidth,
                                       );
                                     }

@@ -59,7 +59,7 @@ class TimepillarBoard extends StatelessWidget {
     required List<EventOccasion> eventOccasions,
     required TimepillarBoardDataArguments args,
     required TimepillarSide timepillarSide,
-    required double nowOffset,
+    required double timelineOffset,
   }) {
     final measures = args.measures;
     final maxCardHeight = measures.imagePadding.vertical +
@@ -84,7 +84,7 @@ class TimepillarBoard extends StatelessWidget {
               args: args,
               maxEndPos: maxEndPos,
               timepillarSide: timepillarSide,
-              nowOffset: nowOffset,
+              timelineOffset: timelineOffset,
             )
           : eventOccasion is TimerOccasion
               ? _timerCard(
@@ -126,7 +126,7 @@ BoardCardGenerator _activityCard({
   required TimepillarBoardDataArguments args,
   required double maxEndPos,
   required TimepillarSide timepillarSide,
-  required double nowOffset,
+  required double timelineOffset,
 }) {
   final decoration = getCategoryBoxDecoration(
     current: activityOccasion.occasion.isCurrent,
@@ -144,7 +144,7 @@ BoardCardGenerator _activityCard({
     hasSideDots: true,
     occasion: activityOccasion,
     decoration: decoration,
-    nowOffset: nowOffset,
+    timelineOffset: timelineOffset,
   );
 
   return BoardCardGenerator(
@@ -183,6 +183,7 @@ BoardCardGenerator _timerCard({
     hasSideDots: false,
     occasion: timerOccasion,
     decoration: decoration,
+    timelineOffset: 0,
   );
 
   return BoardCardGenerator(
@@ -218,7 +219,7 @@ class CardPosition {
     required bool hasSideDots,
     required EventOccasion occasion,
     required BoxDecoration decoration,
-    double nowOffset = 0,
+    required timelineOffset,
   }) {
     final measures = args.measures;
     final topMargin = args.topMargin;
@@ -238,12 +239,12 @@ class CardPosition {
             measures.topOffset(minuteStartPosition);
 
     final endTime = endsAfterInterval ? interval.end : eventOccasion.end;
-    final dots = hasSideDots
-        ? endTime.difference(startTime).inDots(minutesPerDot, roundingMinute)
-        : 0;
+    final duration = endTime.difference(startTime);
+    final dots =
+        hasSideDots ? duration.inDots(minutesPerDot, roundingMinute) : 0;
     final dotHeight = dots * measures.dotDistance;
 
-    final titleLines = dots > 4
+    final titleLines = duration.inMinutes >= 60
         ? TimepillarCard.maxTitleLines
         : TimepillarCard.defaultTitleLines;
 
@@ -262,7 +263,7 @@ class CardPosition {
     final top = topOffset + topMargin + measures.topPadding;
 
     double contentOffset =
-        (nowOffset - top).abs() - args.measures.dotDistance / 2;
+        (timelineOffset - top).abs() - args.measures.dotDistance / 2;
     contentOffset = max(0, contentOffset);
 
     return CardPosition(
