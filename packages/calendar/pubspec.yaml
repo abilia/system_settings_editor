@@ -2,6 +2,7 @@ name: calendar
 
 environment:
   sdk: '>=2.19.2 <3.0.0'
+  flutter: '>=2.0.0'
 
 dependencies:
   auth:
@@ -16,6 +17,8 @@ dependencies:
 
 dev_dependencies:
   bloc_test: any
+  flutter_test:
+    sdk: flutter
   mocktail: any
   seagull_fakes:
     path: ../seagull_fakes
