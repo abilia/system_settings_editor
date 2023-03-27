@@ -1,6 +1,7 @@
 name: Packages Analyze and Test
 
 on:
+  workflow_dispatch:
   workflow_call:
   pull_request:
     branches:
@@ -78,4 +79,10 @@ jobs:
 
       - run: echo ${{ matrix.dir }}
       - run: |
-          flutter test --reporter github
+          if grep -q flutter_test: pubspec.yaml
+          then
+            flutter test --reporter github
+          else
+            dart test --reporter github
+          fi
+

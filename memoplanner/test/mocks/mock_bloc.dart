@@ -36,8 +36,8 @@ class MockNotificationBloc extends MockCubit<String>
 class MockTimepillarMeasuresCubit extends MockCubit<TimepillarMeasures>
     implements TimepillarMeasuresCubit {}
 
-class MockUserFileCubit extends MockCubit<UserFileState>
-    implements UserFileCubit {}
+class MockUserFileBloc extends MockBloc<UserFileEvent, UserFileState>
+    implements UserFileBloc {}
 
 class MockWakeLockCubit extends MockCubit<WakeLockState>
     implements WakeLockCubit {}

@@ -3,29 +3,29 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-class TimerTimepillardCard extends TimepillarCard {
+class TimerTimepillarCard extends TimepillarCard {
   final TimerOccasion timerOccasion;
   final TimepillarMeasures measures;
-  const TimerTimepillardCard({
+  final BoxDecoration decoration;
+  final bool nightMode;
+
+  const TimerTimepillarCard({
     required this.measures,
     required int column,
     required this.timerOccasion,
     required CardPosition cardPosition,
+    required this.decoration,
+    required this.nightMode,
     Key? key,
   }) : super(column, cardPosition, key: key);
 
   @override
   Widget build(BuildContext context) {
     final timer = timerOccasion.timer;
-    final decoration = getCategoryBoxDecoration(
-      current: timerOccasion.isOngoing,
-      inactive: timerOccasion.isPast,
-      showCategoryColor: false,
-      category: timerOccasion.category,
-      zoom: measures.zoom,
-    );
-    final padding = measures.cardPadding
-        .subtract(decoration.border?.dimensions ?? EdgeInsets.zero);
+    final borderWidth = (decoration.padding?.vertical ?? 0) / 2;
+    final imagePadding = measures.imagePadding.vertical / 2;
+    final textPadding = measures.textPadding.vertical / 2;
+    final timerWheelPadding = measures.timerWheelPadding.vertical / 2;
     return Positioned(
       left: column * measures.cardTotalWidth,
       top: cardPosition.top,
@@ -53,37 +53,55 @@ class TimerTimepillardCard extends TimepillarCard {
             decoration: decoration,
             height: cardPosition.height,
             width: measures.cardWidth,
-            padding: padding,
             margin: EdgeInsets.only(
                 left: measures.dotSize + measures.hourIntervalPadding),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Padding(
-                  padding: measures.timerWheelPadding,
-                  child: SizedBox.fromSize(
-                    size: measures.timerWheelSize,
-                    child: TimerCardWheel(timerOccasion),
-                  ),
+                SizedBox(height: timerWheelPadding - borderWidth),
+                SizedBox.fromSize(
+                  size: measures.timerWheelSize,
+                  child: TimerCardWheel(timerOccasion),
                 ),
-                if (timer.hasImage)
-                  SizedBox(
-                    height: measures.cardMinImageHeight,
-                    child: EventImage.fromEventOccasion(
-                      eventOccasion: timerOccasion,
-                      crossPadding: measures.cardPadding,
-                      checkPadding: measures.cardPadding * 2,
+                if (timer.hasImage) ...[
+                  SizedBox(height: imagePadding),
+                  Expanded(
+                    child: Center(
+                      child: SizedBox(
+                        height: measures.cardImageSize,
+                        width: measures.cardImageSize,
+                        child: EventImage(
+                          event: timerOccasion,
+                          crossPadding: measures.crossPadding,
+                          checkPadding: measures.checkPadding,
+                          radius: layout.timepillar.card.imageCornerRadius,
+                          nightMode: nightMode,
+                        ),
+                      ),
                     ),
-                  )
-                else if (timer.hasTitle)
-                  Text(timer.title)
-                else if (!timer.hasTitle && !timer.hasImage)
-                  timerOccasion.isOngoing
-                      ? TimerTickerBuilder(
-                          timerOccasion.timer,
-                          builder: (context, left) => Text(left.toHMSorMS()),
-                        )
-                      : Text(timerOccasion.timer.pausedAt.toHMSorMS()),
+                  ),
+                  SizedBox(height: imagePadding - borderWidth),
+                ] else if (timer.hasTitle) ...[
+                  SizedBox(height: textPadding),
+                  SizedBox(
+                    width: measures.cardTextWidth,
+                    child: Text(
+                      timer.title,
+                      maxLines: TimepillarCard.defaultTitleLines,
+                    ),
+                  ),
+                  SizedBox(height: textPadding - borderWidth),
+                ] else if (!timer.hasTitle && !timer.hasImage) ...[
+                  SizedBox(height: textPadding),
+                  if (timerOccasion.isOngoing)
+                    TimerTickerBuilder(
+                      timerOccasion.timer,
+                      builder: (context, left) => Text(left.toHMSorMS()),
+                    )
+                  else
+                    Text(timerOccasion.timer.pausedAt.toHMSorMS()),
+                  SizedBox(height: textPadding - borderWidth),
+                ],
               ],
             ),
           ),

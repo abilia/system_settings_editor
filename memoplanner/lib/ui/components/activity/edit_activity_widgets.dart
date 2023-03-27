@@ -137,7 +137,7 @@ class SelectPictureWidget extends StatelessWidget {
 
   Future<void> imageClick(BuildContext context) async {
     final authProviders = copiedAuthProviders(context);
-    final userFileCubit = context.read<UserFileCubit>();
+    final userFileBloc = context.read<UserFileBloc>();
     final sortableBloc = context.read<SortableBloc>();
     final now = context.read<ClockBloc>().state;
     final newSelectedImage = await Navigator.of(context).push<AbiliaFile>(
@@ -156,9 +156,11 @@ class SelectPictureWidget extends StatelessWidget {
     if (newSelectedImage != null) {
       final name = DateFormat.yMd(Platform.localeName).format(now);
       if (newSelectedImage is UnstoredAbiliaFile) {
-        userFileCubit.fileAdded(
-          newSelectedImage,
-          image: true,
+        userFileBloc.add(
+          FileAdded(
+            newSelectedImage,
+            isImage: true,
+          ),
         );
         sortableBloc.add(
           ImageArchiveImageAdded(

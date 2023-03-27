@@ -127,6 +127,7 @@ void main() {
                 top: currentDotMidPosition(
                       (initialTime ?? startTime),
                       measures,
+                      topMargin: layout.templates.l1.top,
                     ) -
                     layout.timepillar.timeLineHeight / 2,
                 width: 40,
@@ -134,15 +135,18 @@ void main() {
               TimepillarBoard(
                 TimepillarBoard.positionTimepillarCards(
                   eventOccasions: activityOccasions,
-                  textStyle: bodySmall,
-                  textScaleFactor: 1.0,
-                  dayParts: const DayParts(),
+                  args: TimepillarBoardDataArguments(
+                    textStyle: bodySmall,
+                    textScaleFactor: 1.0,
+                    dayParts: const DayParts(),
+                    measures: measures,
+                    topMargin: layout.templates.l1.top,
+                    bottomMargin: layout.templates.l1.bottom,
+                    showCategoryColor: mockMemoplannerSettingsBloc
+                        .state.calendar.categories.showColors,
+                    nightMode: false,
+                  ),
                   timepillarSide: TimepillarSide.right,
-                  measures: measures,
-                  topMargin: layout.timepillar.topMargin,
-                  bottomMargin: layout.timepillar.bottomMargin,
-                  showCategoryColor: mockMemoplannerSettingsBloc
-                      .state.calendar.categories.showColors,
                 ),
                 categoryMinWidth: 400,
                 timepillarWidth: measures.cardTotalWidth,
@@ -236,9 +240,8 @@ void main() {
     final calculatedTextSize = title
         .textPainter(
           textStyle,
-          activityCardWidget.measures.cardTextWidth -
-              (activityCardWidget.decoration.padding?.horizontal ?? 0),
-          TimepillarCard.maxTitleLines,
+          activityCardWidget.measures.cardTextWidth,
+          TimepillarCard.defaultTitleLines,
           scaleFactor: textScaleFactor,
         )
         .size;
@@ -444,7 +447,7 @@ void main() {
       final activityB = ActivityOccasion(
         Activity.createNew(
           title: 'b',
-          startTime: time.add(1.hours()),
+          startTime: time.add(5.minutes()),
         ),
         time.onlyDays(),
         Occasion.current,
@@ -479,7 +482,7 @@ void main() {
       final activityB = ActivityOccasion(
         Activity.createNew(
           title: 'b',
-          startTime: time.add(1.hours() + 45.minutes()),
+          startTime: time.add(1.hours()),
         ),
         time.onlyDays(),
         Occasion.current,
@@ -543,15 +546,18 @@ void main() {
       );
       final boardData = TimepillarBoard.positionTimepillarCards(
         eventOccasions: activities,
-        textStyle: bodySmall,
-        textScaleFactor: 1.0,
-        dayParts: const DayParts(),
+        args: TimepillarBoardDataArguments(
+          textStyle: bodySmall,
+          textScaleFactor: 1.0,
+          dayParts: const DayParts(),
+          measures: TimepillarMeasures(interval, 1),
+          topMargin: layout.templates.l1.top,
+          bottomMargin: layout.templates.l1.bottom,
+          showCategoryColor:
+              mockMemoplannerSettingsBloc.state.calendar.categories.showColors,
+          nightMode: false,
+        ),
         timepillarSide: TimepillarSide.right,
-        measures: TimepillarMeasures(interval, 1),
-        topMargin: layout.timepillar.topMargin,
-        bottomMargin: layout.timepillar.bottomMargin,
-        showCategoryColor:
-            mockMemoplannerSettingsBloc.state.calendar.categories.showColors,
       );
       final uniques =
           boardData.cards.map((f) => {f.cardPosition.top, f.column});

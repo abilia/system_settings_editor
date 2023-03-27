@@ -32,6 +32,7 @@ class GoLayout extends Layout {
 }
 
 abstract class Layout {
+  final TemplatesLayout templates;
   final double radius;
   final AppBarLayout appBar;
   final ActionButtonLayout actionButton;
@@ -68,7 +69,6 @@ abstract class Layout {
   final PickFieldLayout pickField;
   final EventImageLayout eventImageLayout;
   final ListFolderLayout listFolder;
-  final TemplatesLayout templates;
   final BorderLayout borders;
   final LinedBorderLayout linedBorder;
   final SelectableFieldLayout selectableField;
@@ -79,7 +79,6 @@ abstract class Layout {
   final RecordingLayout recording;
   final ArrowsLayout arrows;
   final MenuButtonLayout menuButton;
-  final AgendaLayout agenda;
   final CommonCalendarLayout commonCalendar;
   final MessageLayout message;
   final FloatingActionButtonLayout fab;
@@ -110,6 +109,7 @@ abstract class Layout {
   final InfoRowLayout infoRow;
 
   const Layout({
+    this.templates = const TemplatesLayout(),
     this.radius = 12,
     this.appBar = const AppBarLayout(),
     this.actionButton = const ActionButtonLayout(),
@@ -150,7 +150,6 @@ abstract class Layout {
     this.pickField = const PickFieldLayout(),
     this.eventImageLayout = const EventImageLayout(),
     this.listFolder = const ListFolderLayout(),
-    this.templates = const TemplatesLayout(),
     this.borders = const BorderLayout(),
     this.linedBorder = const LinedBorderLayout(),
     this.selectableField = const SelectableFieldLayout(),
@@ -161,7 +160,6 @@ abstract class Layout {
     this.recording = const RecordingLayout(),
     this.arrows = const ArrowsLayout(),
     this.menuButton = const MenuButtonLayout(),
-    this.agenda = const AgendaLayout(),
     this.commonCalendar = const CommonCalendarLayout(),
     this.message = const MessageLayout(),
     this.fab = const FloatingActionButtonLayout(),

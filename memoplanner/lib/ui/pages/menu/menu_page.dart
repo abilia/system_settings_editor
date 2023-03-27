@@ -23,8 +23,8 @@ class MenuPage extends StatelessWidget {
         child: Align(
           alignment: Alignment.topCenter,
           child: Wrap(
-            spacing: layout.menuPage.crossAxisSpacing,
-            runSpacing: layout.menuPage.mainAxisSpacing,
+            spacing: layout.menuPage.buttons.spacing,
+            runSpacing: layout.menuPage.buttons.spacing,
             children: [
               if (menuSettings.showCamera) const CameraButton(),
               if (menuSettings.showPhotos) const MyPhotosButton(),
@@ -70,7 +70,7 @@ class CameraButton extends StatelessWidget {
                 ),
               );
             } else {
-              final userFileCubit = context.read<UserFileCubit>();
+              final userFileBloc = context.read<UserFileBloc>();
               final sortableBloc = context.read<SortableBloc>();
               final now = context.read<ClockBloc>().state;
               final name = DateFormat.yMd(Platform.localeName).format(now);
@@ -79,9 +79,11 @@ class CameraButton extends StatelessWidget {
               if (image != null) {
                 final selectedImage =
                     UnstoredAbiliaFile.newFile(File(image.path));
-                userFileCubit.fileAdded(
-                  selectedImage,
-                  image: true,
+                userFileBloc.add(
+                  FileAdded(
+                    selectedImage,
+                    isImage: true,
+                  ),
                 );
                 sortableBloc.add(
                   PhotoAdded(
@@ -182,50 +184,39 @@ class SettingsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<PermissionCubit, PermissionState, bool>(
-      selector: (state) => state.importantPermissionMissing,
-      builder: (context, importantPermissionMissing) {
-        final name = Translator.of(context).translate.settings;
-        return Stack(
-          children: [
-            MenuItemButton(
-              style: blackMenuButtonStyle,
-              text: name,
-              icon: AbiliaIcons.settings,
-              onPressed: () async {
-                final navigator = Navigator.of(context);
-                final authProviders = copiedAuthProviders(context);
-                final accessGranted = await codeProtectAccess(
-                  context,
-                  restricted: (codeSettings) => codeSettings.protectSettings,
-                  name: name,
-                );
-                if (accessGranted) {
-                  navigator.push(
-                    MaterialPageRoute(
-                      builder: (_) => MultiBlocProvider(
-                        providers: authProviders,
-                        child: const SettingsPage(),
-                      ),
-                      settings: (SettingsPage).routeSetting(
-                        properties: {
-                          'fromHidden': false,
-                        },
-                      ),
-                    ),
-                  );
-                }
-              },
-            ),
-            if (importantPermissionMissing)
-              Positioned(
-                top: layout.menuPage.buttons.orangeDotInset,
-                right: layout.menuPage.buttons.orangeDotInset,
-                child: const OrangeDot(),
-              ),
-          ],
-        );
-      },
+    final name = Translator.of(context).translate.settings;
+    return Stack(
+      children: [
+        MenuItemButton(
+          style: blackMenuButtonStyle,
+          text: name,
+          icon: AbiliaIcons.settings,
+          onPressed: () async {
+            final navigator = Navigator.of(context);
+            final authProviders = copiedAuthProviders(context);
+            final accessGranted = await codeProtectAccess(
+              context,
+              restricted: (codeSettings) => codeSettings.protectSettings,
+              name: name,
+            );
+            if (accessGranted) {
+              navigator.push(
+                MaterialPageRoute(
+                  builder: (_) => MultiBlocProvider(
+                    providers: authProviders,
+                    child: const SettingsPage(),
+                  ),
+                  settings: (SettingsPage).routeSetting(
+                    properties: {
+                      'fromHidden': false,
+                    },
+                  ),
+                ),
+              );
+            }
+          },
+        ),
+      ],
     );
   }
 }

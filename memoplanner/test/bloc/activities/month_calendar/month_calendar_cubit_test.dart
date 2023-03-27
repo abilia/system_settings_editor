@@ -40,8 +40,6 @@ void main() {
 
   group('Calendar days are correct', () {
     setUp(() {
-      when(() => mockActivityRepository.getAll())
-          .thenAnswer((_) => Future.value(const Iterable.empty()));
       when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value(const Iterable.empty()));
     });

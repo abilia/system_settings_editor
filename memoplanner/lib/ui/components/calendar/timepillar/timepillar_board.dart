@@ -7,6 +7,28 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
+class TimepillarBoardDataArguments {
+  final TextStyle textStyle;
+  final double textScaleFactor;
+  final DayParts dayParts;
+  final TimepillarMeasures measures;
+  final double topMargin;
+  final double bottomMargin;
+  final bool showCategoryColor;
+  final bool nightMode;
+
+  const TimepillarBoardDataArguments({
+    required this.textStyle,
+    required this.textScaleFactor,
+    required this.dayParts,
+    required this.measures,
+    required this.topMargin,
+    required this.bottomMargin,
+    required this.showCategoryColor,
+    required this.nightMode,
+  });
+}
+
 class TimepillarBoard extends StatelessWidget {
   const TimepillarBoard(
     this.boardData, {
@@ -26,7 +48,6 @@ class TimepillarBoard extends StatelessWidget {
       style: textStyle,
       overflow: TextOverflow.visible,
       textAlign: TextAlign.center,
-      maxLines: TimepillarCard.maxTitleLines,
       child: SizedBox(
         width: max(categoryMinWidth, boardData.columns * timepillarWidth),
         child: Stack(children: boardData.cards),
@@ -36,22 +57,19 @@ class TimepillarBoard extends StatelessWidget {
 
   static TimePillarBoardData positionTimepillarCards({
     required List<EventOccasion> eventOccasions,
-    required TextStyle textStyle,
-    required double textScaleFactor,
-    required DayParts dayParts,
+    required TimepillarBoardDataArguments args,
     required TimepillarSide timepillarSide,
-    required TimepillarMeasures measures,
-    required double topMargin,
-    required double bottomMargin,
-    required bool showCategoryColor,
   }) {
-    final maxCardHeight = measures.cardPadding.vertical +
-        measures.cardMinImageHeight +
-        measures.cardPadding.top +
-        textStyle.fontSize! * textStyle.height! * TimepillarCard.maxTitleLines;
-    final maxEndPos = topMargin +
+    final measures = args.measures;
+    final maxCardHeight = measures.imagePadding.vertical +
+        measures.cardImageSize +
+        measures.textPadding.top +
+        args.textStyle.fontSize! *
+            args.textStyle.height! *
+            TimepillarCard.defaultTitleLines;
+    final maxEndPos = args.topMargin +
         measures.timePillarHeight +
-        bottomMargin +
+        args.bottomMargin +
         measures.dotDistance +
         maxCardHeight;
 
@@ -62,23 +80,15 @@ class TimepillarBoard extends StatelessWidget {
       final card = eventOccasion is ActivityOccasion
           ? _activityCard(
               activityOccasion: eventOccasion,
-              measures: measures,
-              textScaleFactor: textScaleFactor,
+              args: args,
               maxEndPos: maxEndPos,
-              textStyle: textStyle,
-              topMargin: topMargin,
-              dayParts: dayParts,
               timepillarSide: timepillarSide,
-              showCategoryColor: showCategoryColor,
             )
           : eventOccasion is TimerOccasion
               ? _timerCard(
                   timerOccasion: eventOccasion,
-                  measures: measures,
-                  topMargin: topMargin,
+                  args: args,
                   maxEndPos: maxEndPos,
-                  textStyle: textStyle,
-                  textScaleFactor: textScaleFactor,
                 )
               : null;
       assert(card != null);
@@ -111,50 +121,36 @@ class BoardCardGenerator {
 
 BoardCardGenerator _activityCard({
   required ActivityOccasion activityOccasion,
-  required TimepillarMeasures measures,
-  required double textScaleFactor,
+  required TimepillarBoardDataArguments args,
   required double maxEndPos,
-  required TextStyle textStyle,
-  required double topMargin,
-  required DayParts dayParts,
   required TimepillarSide timepillarSide,
-  required bool showCategoryColor,
 }) {
   final decoration = getCategoryBoxDecoration(
     current: activityOccasion.occasion.isCurrent,
     inactive: activityOccasion.isPast || activityOccasion.isSignedOff,
-    showCategoryColor: showCategoryColor,
+    showCategoryColor: args.showCategoryColor,
+    nightMode: args.nightMode,
     category: activityOccasion.activity.category,
-    zoom: measures.zoom,
+    zoom: args.measures.zoom,
+    radius: args.measures.borderRadius,
   );
-
-  final a = activityOccasion.activity;
-  final textHeight = a.hasTitle
-      ? a.title
-          .textPainter(
-            textStyle,
-            measures.cardTextWidth - (decoration.padding?.horizontal ?? 0),
-            TimepillarCard.maxTitleLines,
-            scaleFactor: textScaleFactor,
-          )
-          .height
-      : 0.0;
-  final imageHeight =
-      a.hasImage || activityOccasion.isSignedOff || activityOccasion.isPast
-          ? measures.cardMinImageHeight + measures.cardPadding.top
-          : 0.0;
-  final contentHeight = measures.cardPadding.vertical +
-      textHeight +
-      imageHeight +
-      (decoration.padding?.vertical ?? 0);
+  final contentHeight = args.measures.getContentHeight(
+    occasion: activityOccasion,
+    decoration: decoration,
+    textScaleFactor: args.textScaleFactor,
+    textStyle: args.textStyle,
+  );
   final cardPosition = CardPosition.calculate(
     eventOccasion: activityOccasion,
-    measures: measures,
-    topMargin: topMargin,
+    measures: args.measures,
+    topMargin: args.topMargin,
     contentHeight: contentHeight,
     maxEndPos: maxEndPos,
     hasSideDots: true,
   );
+  final titleLines = cardPosition.height > contentHeight
+      ? TimepillarCard.maxTitleLines
+      : TimepillarCard.defaultTitleLines;
 
   return BoardCardGenerator(
     top: cardPosition.top,
@@ -163,54 +159,53 @@ BoardCardGenerator _activityCard({
       activityOccasion: activityOccasion,
       cardPosition: cardPosition,
       column: col,
-      dayParts: dayParts,
       timepillarSide: timepillarSide,
-      measures: measures,
+      args: args,
       decoration: decoration,
+      titleLines: titleLines,
     ),
   );
 }
 
 BoardCardGenerator _timerCard({
   required TimerOccasion timerOccasion,
-  required TimepillarMeasures measures,
-  required double topMargin,
+  required TimepillarBoardDataArguments args,
   required double maxEndPos,
-  required TextStyle textStyle,
-  required double textScaleFactor,
 }) {
-  final contentHeight = timerOccasion.hasImage
-      ? measures.cardMinImageHeight
-      : timerOccasion.timer.title
-          .textPainter(
-            textStyle,
-            measures.cardTextWidth,
-            TimepillarCard.maxTitleLines,
-            scaleFactor: textScaleFactor,
-          )
-          .height;
-
-  final totalContentHeight = measures.cardPadding.vertical +
-      measures.timerWheelPadding.vertical +
-      measures.timerWheelSize.height +
-      contentHeight;
+  final decoration = getCategoryBoxDecoration(
+    current: timerOccasion.isOngoing,
+    inactive: timerOccasion.isPast,
+    showCategoryColor: false,
+    nightMode: args.nightMode,
+    category: timerOccasion.category,
+    zoom: args.measures.zoom,
+    radius: args.measures.borderRadius,
+  );
+  final contentHeight = args.measures.getContentHeight(
+    occasion: timerOccasion,
+    decoration: decoration,
+    textScaleFactor: args.textScaleFactor,
+    textStyle: args.textStyle,
+  );
 
   final cardPos = CardPosition.calculate(
     eventOccasion: timerOccasion,
-    measures: measures,
-    topMargin: topMargin,
-    contentHeight: totalContentHeight,
+    measures: args.measures,
+    topMargin: args.topMargin,
+    contentHeight: contentHeight,
     maxEndPos: maxEndPos,
     hasSideDots: false,
   );
 
   return BoardCardGenerator(
     top: cardPos.top,
-    builder: (int col) => TimerTimepillardCard(
+    builder: (int col) => TimerTimepillarCard(
       timerOccasion: timerOccasion,
-      measures: measures,
+      measures: args.measures,
       column: col,
       cardPosition: cardPos,
+      decoration: decoration,
+      nightMode: args.nightMode,
     ),
   );
 }
@@ -248,8 +243,7 @@ class CardPosition {
         ? endTime.difference(startTime).inDots(minutesPerDot, roundingMinute)
         : 0;
     final dotHeight = dots * measures.dotDistance;
-    final renderedHeight = max(contentHeight, measures.activityCardMinHeight);
-    var height = max(dotHeight, renderedHeight);
+    var height = max(dotHeight, contentHeight);
     if (topOffset + height > maxEndPos) {
       height = maxEndPos - topOffset;
     }

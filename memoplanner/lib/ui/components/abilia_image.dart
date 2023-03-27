@@ -11,87 +11,73 @@ import 'package:memoplanner/ui/themes/all.dart' as theme;
 
 class EventImage extends StatelessWidget {
   final Event event;
-  final bool past;
+  final bool nightMode;
   final ImageSize imageSize;
   final BoxFit fit;
   final EdgeInsets? crossPadding;
   final EdgeInsets? checkPadding;
   final BorderRadius? radius;
+  final CheckMark? checkMark;
 
   static const duration = Duration(milliseconds: 400);
 
   const EventImage({
     required this.event,
-    this.past = false,
+    this.nightMode = false,
     this.imageSize = ImageSize.thumb,
     this.fit = BoxFit.cover,
     this.crossPadding,
     this.checkPadding,
+    this.checkMark,
     this.radius,
     Key? key,
   }) : super(key: key);
 
-  static Widget fromEventOccasion({
-    required EventOccasion eventOccasion,
-    Key? key,
-    ImageSize imageSize = ImageSize.thumb,
-    BoxFit fit = BoxFit.cover,
-    bool preview = false,
-    EdgeInsets? crossPadding,
-    EdgeInsets? checkPadding,
-    BorderRadius? radius,
-  }) =>
-      preview
-          ? FadeInCalendarImage(
-              key: key,
-              imageFile: eventOccasion.image,
-              imageSize: imageSize,
-              fit: fit,
-              radius: radius,
-            )
-          : EventImage(
-              key: key,
-              event: eventOccasion,
-              past: eventOccasion.isPast,
-              imageSize: imageSize,
-              fit: fit,
-              crossPadding: crossPadding,
-              checkPadding: checkPadding,
-              radius: radius,
-            );
-
   @override
   Widget build(BuildContext context) {
     final event = this.event;
+    final past = event is EventOccasion && event.isPast;
     final signedOff = event is ActivityDay && event.isSignedOff;
     final inactive = past || signedOff;
     return LayoutBuilder(builder: (context, constraints) {
+      final stackFit =
+          constraints.hasBoundedHeight && constraints.hasBoundedWidth
+              ? StackFit.expand
+              : StackFit.loose;
       return Stack(
         alignment: Alignment.center,
-        fit: constraints.hasBoundedHeight && constraints.hasBoundedWidth
-            ? StackFit.expand
-            : StackFit.loose,
+        fit: stackFit,
         children: [
           if (event.hasImage)
-            AnimatedOpacity(
-              duration: duration,
-              opacity: inactive ? 0.5 : 1.0,
-              child: ClipRRect(
-                borderRadius: radius ?? borderRadius,
-                child: FadeInImage(
-                  fit: fit,
-                  image: getImage(
-                    context,
-                    event.image,
-                    imageSize,
-                  ).image,
-                  placeholder: MemoryImage(kTransparentImage),
-                ),
+            ClipRRect(
+              borderRadius: radius ?? borderRadius,
+              child: Stack(
+                alignment: Alignment.center,
+                fit: stackFit,
+                children: [
+                  AnimatedOpacity(
+                    duration: duration,
+                    opacity: inactive ? 0.5 : 1.0,
+                    child: FadeInImage(
+                      fit: fit,
+                      image: getImage(
+                        context,
+                        event.image,
+                        imageSize,
+                      ).image,
+                      placeholder: MemoryImage(kTransparentImage),
+                    ),
+                  ),
+                  if (nightMode)
+                    Container(color: AbiliaColors.transparentBlack40),
+                ],
               ),
             ),
           if (past)
             CrossOver(
-              style: CrossOverStyle.darkSecondary,
+              style: nightMode
+                  ? CrossOverStyle.lightSecondary
+                  : CrossOverStyle.darkSecondary,
               padding:
                   crossPadding ?? layout.eventImageLayout.fallbackCrossPadding,
             ),
@@ -99,9 +85,7 @@ class EventImage extends StatelessWidget {
             Padding(
               padding:
                   checkPadding ?? layout.eventImageLayout.fallbackCheckPadding,
-              child: CheckMark(
-                fit: fit,
-              ),
+              child: checkMark ?? CheckMark(fit: fit),
             ),
         ],
       );
@@ -113,7 +97,7 @@ class EventImage extends StatelessWidget {
     AbiliaFile imageFile, [
     ImageSize imageSize = ImageSize.thumb,
   ]) {
-    final userFileState = context.watch<UserFileCubit>().state;
+    final userFileState = context.watch<UserFileBloc>().state;
     final file = userFileState.getLoadedByIdOrPath(
       imageFile.id,
       imageFile.path,
@@ -206,7 +190,7 @@ class PhotoCalendarImage extends StatelessWidget {
     final errorImage = errorContent ?? Image.memory(kTransparentImage);
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
-      return BlocBuilder<UserFileCubit, UserFileState>(
+      return BlocBuilder<UserFileBloc, UserFileState>(
           builder: (context, userFileState) {
         final file = userFileState.getLoadedByIdOrPath(
           fileId,
@@ -260,7 +244,7 @@ class FullScreenImage extends StatelessWidget {
       onTap: onTap,
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
-        return BlocBuilder<UserFileCubit, UserFileState>(
+        return BlocBuilder<UserFileBloc, UserFileState>(
             builder: (context, userFileState) {
           final file = userFileState.getLoadedByIdOrPath(
             fileId,
@@ -322,7 +306,7 @@ class FadeInCalendarImage extends StatelessWidget {
       return emptyImage;
     }
 
-    return BlocBuilder<UserFileCubit, UserFileState>(
+    return BlocBuilder<UserFileBloc, UserFileState>(
         builder: (context, userFileState) {
       final file = userFileState.getLoadedByIdOrPath(
         imageFile.id,
@@ -379,7 +363,7 @@ class FadeInAbiliaImage extends StatelessWidget {
       return emptyImage;
     }
 
-    return BlocBuilder<UserFileCubit, UserFileState>(
+    return BlocBuilder<UserFileBloc, UserFileState>(
         builder: (context, userFileState) {
       final file = userFileState.getLoadedByIdOrPath(
         imageFileId,

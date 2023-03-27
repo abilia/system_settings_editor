@@ -147,7 +147,7 @@ class _AddPhotoButton extends StatelessWidget {
                 Translator.of(context).translate.newText,
                 AbiliaIcons.plus,
                 onPressed: () async {
-                  final userFileCubit = context.read<UserFileCubit>();
+                  final userFileBloc = context.read<UserFileBloc>();
                   final sortableBloc = context.read<SortableBloc>();
                   final name = DateFormat.yMd(Platform.localeName).format(time);
                   final currentFolderId = context
@@ -177,7 +177,7 @@ class _AddPhotoButton extends StatelessWidget {
                         final selectedImage =
                             UnstoredAbiliaFile.newFile(File(image.path));
                         _addImage(
-                          userFileCubit: userFileCubit,
+                          userFileBloc: userFileBloc,
                           sortableBloc: sortableBloc,
                           selectedImage: selectedImage,
                           name: name,
@@ -200,7 +200,7 @@ class _AddPhotoButton extends StatelessWidget {
                     );
                     if (selectedImage != null) {
                       _addImage(
-                        userFileCubit: userFileCubit,
+                        userFileBloc: userFileBloc,
                         selectedImage: selectedImage,
                         currentFolderId: currentFolderId,
                         name: name,
@@ -217,16 +217,18 @@ class _AddPhotoButton extends StatelessWidget {
   }
 
   void _addImage({
-    required UserFileCubit userFileCubit,
+    required UserFileBloc userFileBloc,
     required SortableBloc sortableBloc,
     required UnstoredAbiliaFile selectedImage,
     required String name,
     required String currentFolderId,
     required bool includeInPhotoCalendar,
   }) {
-    userFileCubit.fileAdded(
-      selectedImage,
-      image: true,
+    userFileBloc.add(
+      FileAdded(
+        selectedImage,
+        isImage: true,
+      ),
     );
     sortableBloc.add(
       PhotoAdded(

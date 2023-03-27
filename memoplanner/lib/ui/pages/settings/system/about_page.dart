@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auth/models/user.dart';
 import 'package:collection/collection.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get_it/get_it.dart';
@@ -30,6 +31,28 @@ class AboutPage extends StatelessWidget {
   }
 }
 
+class AboutDialog extends StatelessWidget {
+  const AboutDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+
+    return ViewDialog(
+      heading: AppBarHeading(
+        text: translate.about,
+        iconData: AbiliaIcons.information,
+      ),
+      backNavigationWidget: const CloseButton(),
+      body: const AboutContent(updateButton: false),
+      bodyPadding: EdgeInsets.zero,
+      expanded: true,
+    );
+  }
+}
+
 class AboutContent extends StatelessWidget {
   final bool updateButton;
 
@@ -39,6 +62,7 @@ class AboutContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
     final textTheme = Theme.of(context).textTheme;
+    final user = GetIt.I<UserDb>().getUser();
     return ScrollArrows.vertical(
       controller: scrollController,
       child: DefaultTextStyle(
@@ -48,8 +72,10 @@ class AboutContent extends StatelessWidget {
           children: [
             const AboutMemoplannerColumn(),
             const Divider(),
-            const LoggedInAccountColumn(),
-            const Divider(),
+            if (user != null) ...[
+              LoggedInAccountColumn(user: user),
+              const Divider(),
+            ],
             const AboutDeviceColumn(),
             const Divider(),
             const ProducerColumn(),
@@ -106,7 +132,11 @@ class AboutMemoplannerColumn extends StatelessWidget {
 }
 
 class LoggedInAccountColumn extends StatelessWidget {
-  const LoggedInAccountColumn({Key? key}) : super(key: key);
+  final User user;
+  const LoggedInAccountColumn({
+    required this.user,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -115,14 +145,15 @@ class LoggedInAccountColumn extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: layout.formPadding.groupTopDistance),
-        DoubleText(translate.loggedInUser, _username(GetIt.I<UserDb>()),
-            vertical: true),
+        DoubleText(
+          translate.loggedInUser,
+          user.username,
+          vertical: true,
+        ),
         SizedBox(height: layout.formPadding.groupBottomDistance),
       ],
     );
   }
-
-  String _username(UserDb userDb) => userDb.getUser()?.username ?? '';
 }
 
 class AboutDeviceColumn extends StatelessWidget {
@@ -272,8 +303,10 @@ class DoubleText extends StatelessWidget {
     return _rowOrColumn(
       [
         Text('$text1:').withTts(),
-        SizedBox(width: spacing),
-        Text(text2, style: textStyle).withTts(),
+        if (text2.isNotEmpty) ...[
+          SizedBox(height: spacing, width: spacing),
+          Text(text2, style: textStyle).withTts(),
+        ],
       ],
     ).pad(
       layout.templates.m1.onlyHorizontal.copyWith(
@@ -285,7 +318,9 @@ class DoubleText extends StatelessWidget {
   Widget _rowOrColumn(List<Widget> children) {
     return vertical
         ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start, children: children)
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
+          )
         : Row(children: children);
   }
 }

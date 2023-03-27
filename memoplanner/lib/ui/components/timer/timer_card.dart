@@ -40,6 +40,7 @@ class TimerCard extends StatelessWidget {
                   inactive: isPast,
                   category: timerOccasion.category,
                   showCategoryColor: false,
+                  nightMode: false,
                 ),
                 child: Material(
                   type: MaterialType.transparency,
@@ -67,9 +68,8 @@ class TimerCard extends StatelessWidget {
                             padding: layout.eventCard.imagePadding,
                             child: SizedBox(
                               width: layout.eventCard.imageSize,
-                              child: EventImage.fromEventOccasion(
-                                eventOccasion: timerOccasion,
-                                fit: BoxFit.cover,
+                              child: EventImage(
+                                event: timerOccasion,
                                 crossPadding: layout.eventCard.crossPadding,
                                 radius: layout.eventCard.imageRadius,
                               ),

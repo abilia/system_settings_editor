@@ -115,7 +115,7 @@ void main() {
       await tester.pumpWidget(wrapWithMaterialApp(const MpGoMenuPage()));
       await tester.pumpAndSettle();
 
-      expect(find.byType(OrangeDot), findsOneWidget);
+      expect(find.byType(OrangePermissioinDot), findsOneWidget);
     });
 
     testWidgets('Permission button denied systemAlertWindow orange dot',
@@ -127,7 +127,7 @@ void main() {
       await tester.pumpWidget(wrapWithMaterialApp(const MpGoMenuPage()));
       await tester.pumpAndSettle();
 
-      expect(find.byType(OrangeDot), findsOneWidget);
+      expect(find.byType(OrangePermissioinDot), findsOneWidget);
     });
 
     testWidgets('Can go to permission page', (WidgetTester tester) async {

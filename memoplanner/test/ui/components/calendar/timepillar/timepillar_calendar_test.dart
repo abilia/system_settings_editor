@@ -505,108 +505,195 @@ void main() {
       expect(rightFinder, findsNothing);
     });
     group('category colors', () {
-      testWidgets('correct color', (WidgetTester tester) async {
-        final soon = time.add(30.minutes());
-        final just = time.subtract(30.minutes());
+      void expectCorrectColor(
+          WidgetTester tester, String title, Color expectedColor) {
+        final boxDecoration = tester
+            .widget<Container>(find.descendant(
+                of: find.widgetWithText(ActivityTimepillarCard, title),
+                matching: find.byType(Container)))
+            .decoration as BoxDecoration;
+        expect(
+          boxDecoration.border?.bottom.color,
+          expectedColor,
+        );
+      }
 
-        final a1 = Activity.createNew(
-              startTime: soon,
-              title: 'left soon',
-              category: Category.left,
-            ),
-            a2 = Activity.createNew(
-              startTime: soon,
-              title: 'right soon',
-              category: Category.right,
-            ),
-            a3 = Activity.createNew(
-              startTime: just,
-              title: 'left just',
-              category: Category.left,
-            ),
-            a4 = Activity.createNew(
-              startTime: just,
-              title: 'right just',
-              category: Category.right,
-            );
-        mockActivityDb.initWithActivities([a1, a2, a3, a4]);
+      group('day', () {
+        const rightCategoryActiveColor = AbiliaColors.green,
+            rightCategoryInactiveColor = AbiliaColors.green40,
+            leftCategoryActiveColor = AbiliaColors.black60,
+            noCategoryColor = AbiliaColors.white140;
+        testWidgets('correct color', (WidgetTester tester) async {
+          final soon = time.add(30.minutes());
+          final just = time.subtract(30.minutes());
 
-        void expectCorrectColor(String title, Color expectedColor) {
-          final boxDecoration = tester
-              .widget<Container>(find.descendant(
-                  of: find.widgetWithText(ActivityTimepillarCard, title),
-                  matching: find.byType(Container)))
-              .decoration as BoxDecoration;
-          expect(
-            boxDecoration.border?.bottom.color,
-            expectedColor,
-          );
-        }
-
-        await tester.pumpWidget(const App());
-        await tester.pumpAndSettle();
-
-        expectCorrectColor(a1.title, leftCategoryActiveColor);
-        expectCorrectColor(a2.title, rightCategoryActiveColor);
-        expectCorrectColor(a3.title, noCategoryColor);
-        expectCorrectColor(a4.title, rightCategoryInactiveColor);
-      });
-
-      testWidgets('correct no color', (WidgetTester tester) async {
-        final soon = time.add(30.minutes());
-        final just = time.subtract(30.minutes());
-
-        final a1 = Activity.createNew(
-              startTime: soon,
-              title: 'left soon',
-              category: Category.left,
-            ),
-            a2 = Activity.createNew(
-              startTime: soon,
-              title: 'right soon',
-              category: Category.right,
-            ),
-            a3 = Activity.createNew(
-              startTime: just,
-              title: 'left just',
-              category: Category.left,
-            ),
-            a4 = Activity.createNew(
-              startTime: just,
-              title: 'right just',
-              category: Category.right,
-            );
-        mockActivityDb.initWithActivities([a1, a2, a3, a4]);
-        genericResponse = () => [
-              timepillarGeneric,
-              Generic.createNew<MemoplannerSettingData>(
-                data: MemoplannerSettingData.fromData(
-                  data: false,
-                  identifier:
-                      CategoriesSettings.calendarActivityTypeShowColorKey,
-                ),
+          final a1 = Activity.createNew(
+                startTime: soon,
+                title: 'left soon',
+                category: Category.left,
               ),
-            ];
+              a2 = Activity.createNew(
+                startTime: soon,
+                title: 'right soon',
+                category: Category.right,
+              ),
+              a3 = Activity.createNew(
+                startTime: just,
+                title: 'left just',
+                category: Category.left,
+              ),
+              a4 = Activity.createNew(
+                startTime: just,
+                title: 'right just',
+                category: Category.right,
+              );
+          mockActivityDb.initWithActivities([a1, a2, a3, a4]);
 
-        void expectCorrectColor(String title, Color expectedColor) {
-          final boxDecoration = tester
-              .widget<Container>(find.descendant(
-                  of: find.widgetWithText(ActivityTimepillarCard, title),
-                  matching: find.byType(Container)))
-              .decoration as BoxDecoration;
-          expect(
-            boxDecoration.border?.bottom.color,
-            expectedColor,
-          );
-        }
+          await tester.pumpWidget(const App());
+          await tester.pumpAndSettle();
 
-        await tester.pumpWidget(const App());
-        await tester.pumpAndSettle();
+          expectCorrectColor(tester, a1.title, leftCategoryActiveColor);
+          expectCorrectColor(tester, a2.title, rightCategoryActiveColor);
+          expectCorrectColor(tester, a3.title, noCategoryColor);
+          expectCorrectColor(tester, a4.title, rightCategoryInactiveColor);
+        });
 
-        expectCorrectColor(a1.title, noCategoryColor);
-        expectCorrectColor(a2.title, noCategoryColor);
-        expectCorrectColor(a3.title, noCategoryColor);
-        expectCorrectColor(a4.title, noCategoryColor);
+        testWidgets('correct no color', (WidgetTester tester) async {
+          final soon = time.add(30.minutes());
+          final just = time.subtract(30.minutes());
+
+          final a1 = Activity.createNew(
+                startTime: soon,
+                title: 'left soon',
+                category: Category.left,
+              ),
+              a2 = Activity.createNew(
+                startTime: soon,
+                title: 'right soon',
+                category: Category.right,
+              ),
+              a3 = Activity.createNew(
+                startTime: just,
+                title: 'left just',
+                category: Category.left,
+              ),
+              a4 = Activity.createNew(
+                startTime: just,
+                title: 'right just',
+                category: Category.right,
+              );
+          mockActivityDb.initWithActivities([a1, a2, a3, a4]);
+          genericResponse = () => [
+                timepillarGeneric,
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier:
+                        CategoriesSettings.calendarActivityTypeShowColorKey,
+                  ),
+                ),
+              ];
+
+          await tester.pumpWidget(const App());
+          await tester.pumpAndSettle();
+
+          expectCorrectColor(tester, a1.title, noCategoryColor);
+          expectCorrectColor(tester, a2.title, noCategoryColor);
+          expectCorrectColor(tester, a3.title, noCategoryColor);
+          expectCorrectColor(tester, a4.title, noCategoryColor);
+        });
+      });
+      group('night', () {
+        final nightTime = time.copyWith(hour: 03);
+        const rightCategoryActiveNightColor = AbiliaColors.green120,
+            rightCategoryInactiveNightColor = AbiliaColors.green180,
+            leftCategoryActiveNightColor = AbiliaColors.black60,
+            leftCategoryInactiveNightColor = AbiliaColors.black75,
+            noCategoryNightColor = AbiliaColors.black75;
+
+        testWidgets('correct night color', (WidgetTester tester) async {
+          // Arrange
+          mockTicker.add(nightTime);
+          final soon = nightTime.add(30.minutes());
+          final just = nightTime.subtract(30.minutes());
+
+          final a1 = Activity.createNew(
+                startTime: soon,
+                title: 'left soon',
+                category: Category.left,
+              ),
+              a2 = Activity.createNew(
+                startTime: soon,
+                title: 'right soon',
+                category: Category.right,
+              ),
+              a3 = Activity.createNew(
+                startTime: just,
+                title: 'left just',
+                category: Category.left,
+              ),
+              a4 = Activity.createNew(
+                startTime: just,
+                title: 'right just',
+                category: Category.right,
+              );
+          mockActivityDb.initWithActivities([a1, a2, a3, a4]);
+
+          await tester.pumpWidget(const App());
+          await tester.pumpAndSettle();
+
+          expectCorrectColor(tester, a1.title, leftCategoryActiveNightColor);
+          expectCorrectColor(tester, a2.title, rightCategoryActiveNightColor);
+          expectCorrectColor(tester, a3.title, leftCategoryInactiveNightColor);
+          expectCorrectColor(tester, a4.title, rightCategoryInactiveNightColor);
+        });
+
+        testWidgets('correct no color', (WidgetTester tester) async {
+          // Arrange
+          mockTicker.add(nightTime);
+          final soon = nightTime.add(30.minutes());
+          final just = nightTime.subtract(30.minutes());
+
+          final a1 = Activity.createNew(
+                startTime: soon,
+                title: 'left soon',
+                category: Category.left,
+              ),
+              a2 = Activity.createNew(
+                startTime: soon,
+                title: 'right soon',
+                category: Category.right,
+              ),
+              a3 = Activity.createNew(
+                startTime: just,
+                title: 'left just',
+                category: Category.left,
+              ),
+              a4 = Activity.createNew(
+                startTime: just,
+                title: 'right just',
+                category: Category.right,
+              );
+          mockActivityDb.initWithActivities([a1, a2, a3, a4]);
+          genericResponse = () => [
+                timepillarGeneric,
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier:
+                        CategoriesSettings.calendarActivityTypeShowColorKey,
+                  ),
+                ),
+              ];
+
+          await tester.pumpWidget(const App());
+          await tester.pumpAndSettle();
+
+          expectCorrectColor(tester, a1.title, noCategoryNightColor);
+          expectCorrectColor(tester, a2.title, noCategoryNightColor);
+          expectCorrectColor(tester, a3.title, noCategoryNightColor);
+          expectCorrectColor(tester, a4.title, noCategoryNightColor);
+        });
       });
     });
   });
@@ -832,8 +919,7 @@ void main() {
     });
 
     group('Timers', () {
-      Finder timerFinder(AbiliaTimer timer) =>
-          find.byType(TimerTimepillardCard);
+      Finder timerFinder(AbiliaTimer timer) => find.byType(TimerTimepillarCard);
 
       final t1 = AbiliaTimer.createNew(
             title: '22 minutes',
@@ -1159,7 +1245,7 @@ void main() {
             ];
         await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
-        expect(find.byType(TimerTimepillardCard), findsNothing);
+        expect(find.byType(TimerTimepillarCard), findsNothing);
       });
 
       testWidgets('Timer inside interval is visible',
@@ -1173,7 +1259,7 @@ void main() {
             ];
         await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
-        expect(find.byType(TimerTimepillardCard), findsOneWidget);
+        expect(find.byType(TimerTimepillarCard), findsOneWidget);
       });
 
       testWidgets('timer spanning two intervals', (WidgetTester tester) async {
@@ -1190,7 +1276,7 @@ void main() {
         mockTicker.add(timerTime);
         await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
-        expect(find.byType(TimerTimepillardCard), findsOneWidget);
+        expect(find.byType(TimerTimepillarCard), findsOneWidget);
 
         // Morning starts at 6. Activity should be visible here.
         mockTicker.add(DateTime(2020, 12, 01, 08, 01));
@@ -1199,12 +1285,12 @@ void main() {
         expect(find.byType(TimerAlarmPage), findsOneWidget);
         await tester.tap(find.byType(CloseButton));
         await tester.pumpAndSettle();
-        expect(find.byType(TimerTimepillardCard), findsOneWidget);
+        expect(find.byType(TimerTimepillarCard), findsOneWidget);
 
         // Forenoon interval starts at 10. Acitivity should not be visible here
         mockTicker.add(DateTime(2020, 12, 01, 10, 00));
         await tester.pumpAndSettle();
-        expect(find.byType(TimerTimepillardCard), findsNothing);
+        expect(find.byType(TimerTimepillarCard), findsNothing);
       });
 
       testWidgets('Timer is shown when interval is whole day',
@@ -1232,7 +1318,7 @@ void main() {
         mockTicker.add(DateTime(2020, 12, 01, 01, 01));
         await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
-        expect(find.byType(TimerTimepillardCard), findsOneWidget);
+        expect(find.byType(TimerTimepillarCard), findsOneWidget);
       });
 
       testWidgets(
@@ -1261,15 +1347,15 @@ void main() {
         mockTicker.add(DateTime(2020, 12, 01, 01, 00));
         await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
-        expect(find.byType(TimerTimepillardCard), findsNothing);
+        expect(find.byType(TimerTimepillarCard), findsNothing);
 
         mockTicker.add(DateTime(2020, 12, 01, 07, 01));
         await tester.pumpAndSettle();
-        expect(find.byType(TimerTimepillardCard), findsOneWidget);
+        expect(find.byType(TimerTimepillarCard), findsOneWidget);
 
         mockTicker.add(DateTime(2020, 12, 01, 23, 30));
         await tester.pumpAndSettle();
-        expect(find.byType(TimerTimepillardCard), findsNothing);
+        expect(find.byType(TimerTimepillarCard), findsNothing);
       });
     });
   });

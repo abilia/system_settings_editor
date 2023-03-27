@@ -9,8 +9,6 @@ class TimepillarLayout {
       hourIntervalPadding,
       hourTextPadding,
       hourLineWidth,
-      topMargin,
-      bottomMargin,
       timeLineHeight,
       flarpRadius;
 
@@ -26,8 +24,6 @@ class TimepillarLayout {
     this.hourIntervalPadding = 1,
     this.hourTextPadding = 3,
     this.hourLineWidth = 1,
-    this.topMargin = 96,
-    this.bottomMargin = 64,
     this.timeLineHeight = 2,
     this.flarpRadius = 8,
     this.dot = const TimepillarDotLayout(),
@@ -73,10 +69,18 @@ class TimepillarLayoutMedium extends TimepillarLayout {
               ),
           card: card ??
               const TimepillarCardLayout(
-                width: 120,
                 activityMinHeight: 140,
-                imageMinHeight: 96,
-                padding: EdgeInsets.all(8),
+                imageSize: 104,
+                smallImageSize: 24,
+                imagePadding: EdgeInsets.all(8),
+                smallImagePadding: EdgeInsets.all(8),
+                textPadding: EdgeInsets.all(12),
+                timerPadding: EdgeInsets.all(12),
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                imageCornerRadius: BorderRadius.all(Radius.circular(16)),
+                crossPadding: EdgeInsets.all(16),
+                checkPadding: EdgeInsets.all(20),
+                smallCrossPadding: EdgeInsets.all(4),
                 distance: 8,
                 fontSize: 20,
                 fontHeight: 24 / 20.0,
@@ -104,10 +108,18 @@ class TimepillarLayoutLarge extends TimepillarLayoutMedium {
             padding: 6,
           ),
           card: const TimepillarCardLayout(
-            width: 164,
             activityMinHeight: 192,
-            imageMinHeight: 128,
-            padding: EdgeInsets.all(8),
+            imageSize: 148,
+            smallImageSize: 32,
+            imagePadding: EdgeInsets.all(8),
+            smallImagePadding: EdgeInsets.all(8),
+            textPadding: EdgeInsets.all(12),
+            timerPadding: EdgeInsets.all(16),
+            borderRadius: BorderRadius.all(Radius.circular(24)),
+            imageCornerRadius: BorderRadius.all(Radius.circular(20)),
+            crossPadding: EdgeInsets.all(16),
+            checkPadding: EdgeInsets.all(20),
+            smallCrossPadding: EdgeInsets.all(4),
             distance: 8,
             fontSize: 28,
             fontHeight: 40 / 28.0,
@@ -126,26 +138,40 @@ class TimepillarDotLayout {
 
 class TimepillarCardLayout {
   final TimerCardLayout timer;
-  final double distance, width, activityMinHeight, imageMinHeight;
+  final double distance, activityMinHeight, imageSize, smallImageSize;
   final double fontSize, fontHeight;
-  final EdgeInsets padding;
+  final BorderRadius borderRadius;
+  final BorderRadius imageCornerRadius;
+  final EdgeInsets imagePadding, smallImagePadding;
+  final EdgeInsets textPadding;
+  final EdgeInsets timerPadding;
+  final EdgeInsets crossPadding, checkPadding, smallCrossPadding;
 
   const TimepillarCardLayout({
     this.timer = const TimerCardLayout(),
-    this.width = 72,
     this.activityMinHeight = 84,
-    this.padding = const EdgeInsets.all(4),
+    this.imagePadding = const EdgeInsets.all(4),
+    this.smallImagePadding = const EdgeInsets.all(5),
+    this.textPadding = const EdgeInsets.all(6),
+    this.timerPadding = const EdgeInsets.all(8),
+    this.borderRadius = const BorderRadius.all(Radius.circular(12)),
+    this.imageCornerRadius = const BorderRadius.all(Radius.circular(10)),
+    this.crossPadding = const EdgeInsets.all(8),
+    this.checkPadding = const EdgeInsets.all(10),
+    this.smallCrossPadding = const EdgeInsets.all(2),
     this.distance = 12,
-    this.imageMinHeight = 56,
+    this.imageSize = 64,
+    this.smallImageSize = 14,
     this.fontSize = 12,
     this.fontHeight = 16 / 12.0,
   });
 
-  TextStyle textStyle(double zoom) => GoogleFonts.roboto(
+  TextStyle textStyle({required double zoom, required bool nightMode}) =>
+      GoogleFonts.roboto(
         textStyle: TextStyle(
           fontSize: fontSize * zoom,
           height: fontHeight,
-          color: AbiliaColors.black,
+          color: nightMode ? AbiliaColors.white : AbiliaColors.black,
           fontWeight: FontWeight.w400,
           overflow: TextOverflow.ellipsis,
           leadingDistribution: TextLeadingDistribution.even,

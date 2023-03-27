@@ -40,12 +40,6 @@ class UserFileRepository extends DataRepository<UserFile> {
       userFileDb.getAllLoadedFiles();
 
   @override
-  Future<Iterable<UserFile>> getAll() async {
-    await downloadUserFiles();
-    return userFileDb.getAllLoadedFiles();
-  }
-
-  @override
   Future<bool> synchronize() async {
     return synchronized(() async {
       final didFetchData = await fetchIntoDatabase();
@@ -145,6 +139,9 @@ class UserFileRepository extends DataRepository<UserFile> {
       return false;
     }
   }
+
+  Future<bool> allDownloaded() async =>
+      (await userFileDb.getMissingFiles(limit: 1)).isEmpty;
 
   Future<Iterable<UserFile>> downloadUserFiles({int? limit}) async {
     final missingFiles = await userFileDb.getMissingFiles(limit: limit);

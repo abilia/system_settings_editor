@@ -2,9 +2,9 @@ part of 'layout.dart';
 
 class MediumLayout extends Layout {
   const MediumLayout({
+    TemplatesLayout? templates,
     AppBarLayout? appBar,
     ActionButtonLayout? actionButton,
-    TemplatesLayout? templates,
     ClockLayout? clockLayout,
     PhotoCalendarLayoutMedium? photoCalendarLayout,
     TimepillarLayout? timepillar,
@@ -22,6 +22,7 @@ class MediumLayout extends Layout {
     WeekCalendarLayout? weekCalendar,
     LibraryPageLayout? libraryPage,
   }) : super(
+          templates: templates ?? const TemplatesLayoutMedium(),
           radius: 18,
           appBar: appBar ?? const AppBarLayoutMedium(),
           actionButton: actionButton ?? const ActionButtonLayoutMedium(),
@@ -124,7 +125,6 @@ class MediumLayout extends Layout {
             imagePadding: EdgeInsets.fromLTRB(8, 25, 8, 15),
             margin: EdgeInsets.only(left: 4, right: 8),
           ),
-          templates: templates ?? const TemplatesLayoutMedium(),
           borders: borders ?? const BorderLayoutMedium(),
           linedBorder: const LinedBorderLayout(dashSize: 6),
           selectableField: const SelectableFieldLayout(
@@ -149,11 +149,7 @@ class MediumLayout extends Layout {
             removeButtonPadding: EdgeInsets.fromLTRB(9, 12, 9, 12),
           ),
           timeInput: const TimeInputLayoutMedium(),
-          recording: const RecordingLayout(
-            trackHeight: 6,
-            thumbRadius: 18,
-            padding: EdgeInsets.symmetric(horizontal: 48),
-          ),
+          recording: const RecordingLayoutMedium(),
           arrows: const ArrowsLayout(
             collapseMargin: 3,
             radius: 150,
@@ -161,11 +157,6 @@ class MediumLayout extends Layout {
           ),
           menuButton: const MenuButtonLayout(
             dotPosition: -4.5,
-          ),
-          agenda: const AgendaLayout(
-            topPadding: 90,
-            bottomPadding: 187.5,
-            sliverTopPadding: 144,
           ),
           commonCalendar: const CommonCalendarLayout(
             fullDayStackDistance: 6,
@@ -234,7 +225,7 @@ class MediumLayout extends Layout {
             bigDotPadding: 9,
           ),
           fab: const FloatingActionButtonLayout(padding: EdgeInsets.all(24)),
-          crossOver: const CrossOverLayout(strokeWidth: 3),
+          crossOver: const CrossOverLayoutMedium(),
           selector: const SelectorLayoutMedium(),
           startupPage: const StartupPageLayoutMedium(),
           starterSetDialog: const StarterSetDialogLayoutMedium(),

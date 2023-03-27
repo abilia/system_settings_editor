@@ -487,10 +487,36 @@ void main() {
     expect(find.text(translate.loggedOutMessage), findsOneWidget);
   });
 
-  testWidgets('hidden resets device button ', (WidgetTester tester) async {
-    await tester.pumpApp();
-    expect(find.byType(AbiliaLogoWithReset), findsOneWidget);
-  }, skip: !Config.isMP);
+  group('Login footer', () {
+    testWidgets('Login footer only on MP', (WidgetTester tester) async {
+      await tester.pumpApp();
+      expect(find.byType(MEMOplannerLoginFooter),
+          Config.isMP ? findsOneWidget : findsNothing);
+    });
+
+    testWidgets('Login footer buttons', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: BlocProvider<SpeechSettingsCubit>(
+            create: (_) => FakeSpeechSettingsCubit(),
+            child: Builder(
+              builder: (context) {
+                return const MEMOplannerLoginFooter();
+              },
+            ),
+          ),
+        ),
+      );
+      expect(find.byType(AbiliaLogoWithReset), findsOneWidget);
+      expect(find.byType(AboutButton), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.settings), findsOneWidget);
+
+      await tester.tap(find.byType(AboutButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AboutDialog), findsOneWidget);
+    });
+  });
 
   group('on login popups', () {
     group('Terms of use', () {

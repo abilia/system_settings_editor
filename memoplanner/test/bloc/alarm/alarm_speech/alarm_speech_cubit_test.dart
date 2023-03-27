@@ -62,7 +62,7 @@ void main() {
     final List<MethodCall> localNotificationLog = <MethodCall>[];
     final List<MethodCall> audioLog = <MethodCall>[];
     List<ActiveNotification> activeNotifications = [];
-    late MockUserFileCubit mockUserFileCubit;
+    late MockUserFileBloc mockUserFileBloc;
     late StreamController<Touch> touchStream;
 
     setUpAll(() {
@@ -93,8 +93,8 @@ void main() {
           return Future.value(1);
         }
       });
-      mockUserFileCubit = MockUserFileCubit();
-      when(() => mockUserFileCubit.state)
+      mockUserFileBloc = MockUserFileBloc();
+      when(() => mockUserFileBloc.state)
           .thenReturn(const UserFilesLoaded([userFile]));
     });
 
@@ -113,7 +113,7 @@ void main() {
         touchStream: touchStream.stream,
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
-          userFileCubit: mockUserFileCubit,
+          userFileBloc: mockUserFileBloc,
         ),
         remoteMessageStream: FakePushCubit().stream,
       ),
@@ -130,7 +130,7 @@ void main() {
         touchStream: touchStream.stream,
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
-          userFileCubit: mockUserFileCubit,
+          userFileBloc: mockUserFileBloc,
         ),
         remoteMessageStream: FakePushCubit().stream,
       ),
@@ -159,7 +159,7 @@ void main() {
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
-          userFileCubit: mockUserFileCubit,
+          userFileBloc: mockUserFileBloc,
         ),
         remoteMessageStream: FakePushCubit().stream,
       ),
@@ -189,7 +189,7 @@ void main() {
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
-          userFileCubit: mockUserFileCubit,
+          userFileBloc: mockUserFileBloc,
         ),
         remoteMessageStream: FakePushCubit().stream,
       ),
@@ -206,7 +206,7 @@ void main() {
         touchStream: touchStream.stream,
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
-          userFileCubit: mockUserFileCubit,
+          userFileBloc: mockUserFileBloc,
         ),
         remoteMessageStream: FakePushCubit().stream,
       ),
@@ -227,7 +227,7 @@ void main() {
         touchStream: touchStream.stream,
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
-          userFileCubit: mockUserFileCubit,
+          userFileBloc: mockUserFileBloc,
         ),
         remoteMessageStream: FakePushCubit().stream,
       ),
@@ -248,7 +248,7 @@ void main() {
         touchStream: (touchStream..add(Touch.down)).stream,
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
-          userFileCubit: mockUserFileCubit,
+          userFileBloc: mockUserFileBloc,
         ),
         remoteMessageStream: FakePushCubit().stream,
       ),
@@ -269,7 +269,7 @@ void main() {
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
-          userFileCubit: mockUserFileCubit,
+          userFileBloc: mockUserFileBloc,
         ),
         remoteMessageStream: FakePushCubit().stream,
       ),
@@ -289,7 +289,7 @@ void main() {
         touchStream: touchStream.stream,
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
-          userFileCubit: mockUserFileCubit,
+          userFileBloc: mockUserFileBloc,
         )..add(PlaySound(speechFile)),
         remoteMessageStream: FakePushCubit().stream,
       ),
