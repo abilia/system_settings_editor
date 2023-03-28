@@ -52,9 +52,6 @@ class ActivityTimepillarCard extends TimepillarCard {
       size: hasImage ? CheckMarkSize.small : CheckMarkSize.mini,
       fit: BoxFit.scaleDown,
     );
-    final offsetIsMax =
-        cardPosition.contentOffset + cardPosition.contentHeight >
-            cardPosition.height;
 
     return Positioned(
       right: right ? null : column * measures.cardTotalWidth,
@@ -110,12 +107,11 @@ class ActivityTimepillarCard extends TimepillarCard {
                 width: measures.cardWidth,
                 decoration: decoration,
                 child: Column(
-                  mainAxisAlignment: activityOccasion.isPast ||
-                          (activityOccasion.isCurrent && offsetIsMax)
+                  mainAxisAlignment: activityOccasion.isPast
                       ? MainAxisAlignment.end
                       : MainAxisAlignment.start,
                   children: <Widget>[
-                    if (activityOccasion.isCurrent && !offsetIsMax)
+                    if (activityOccasion.isCurrent)
                       SizedBox(height: cardPosition.contentOffset),
                     if (hasTitle) ...[
                       SizedBox(height: textPadding - borderWidth),
