@@ -38,6 +38,7 @@ void main() {
     when(() => mockDeviceDb.getDeviceLicense()).thenReturn(activatedLicense);
     when(() => mockDeviceDb.getSupportId())
         .thenAnswer((_) => Future.value(const Uuid().v4()));
+    when(() => mockDeviceDb.serialId).thenAnswer((_) => const Uuid().v4());
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..database = FakeDatabase()
@@ -79,6 +80,10 @@ void main() {
     expect(find.byType(LoggedInAccountColumn), findsOneWidget);
     expect(find.byType(AboutDeviceColumn), findsOneWidget);
     expect(find.byType(ProducerColumn), findsOneWidget);
+
+    final center = tester.getCenter(find.byType(AboutPage));
+    await tester.dragFrom(center, const Offset(0.0, -200));
+    await tester.pumpAndSettle();
     expect(find.byType(SearchForUpdateButton),
         Config.isMP ? findsOneWidget : findsNothing);
   });
