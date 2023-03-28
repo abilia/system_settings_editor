@@ -63,6 +63,7 @@ class StartupCubit extends Cubit<StartupState> {
       if (product != memoplannerLicenseName) {
         return emit(NoConnectedLicense('Wrong product name: $product'));
       }
+      await deviceRepository.fetchDeviceLicense();
 
       return emit(
         LicenseConnected(

@@ -47,7 +47,8 @@ class DeviceRepository extends Repository {
     }
   }
 
-  Uri get licenseUrl => '$baseUrl/open/v1/device/$serialId/license'.toUri();
+  String get licenseEndpoint => '$baseUrl/open/v1/device/$serialId/license';
+  Uri get licenseUrl => licenseEndpoint.toUri();
 
   Future<DeviceLicense> checkLicense() async {
     final response = await client.get(licenseUrl);
@@ -65,8 +66,7 @@ class DeviceRepository extends Repository {
 
   Future<void> fetchDeviceLicense() async {
     final clientId = await getClientId();
-    final deviceLicenseUrl =
-        '$baseUrl/open/v1/device/$serialId/license?clientId=$clientId'.toUri();
+    final deviceLicenseUrl = '$licenseEndpoint?clientId=$clientId'.toUri();
     try {
       final response = await client.get(deviceLicenseUrl);
       deviceDb.setDeviceLicense(_parseLicenseResponse(response));

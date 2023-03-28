@@ -102,6 +102,10 @@ class AboutMemoplannerColumn extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final license = GetIt.I<DeviceDb>().getDeviceLicense();
     final licenseEnd = license?.endTime;
+    final licenseEndString =
+        licenseEnd != null && licenseEnd.millisecondsSinceEpoch > 0
+            ? DateFormat.yMd(Platform.localeName).format(licenseEnd)
+            : '';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -120,10 +124,10 @@ class AboutMemoplannerColumn extends StatelessWidget {
             translate.licenseNumber,
             license.formattedKey,
           ),
-        if (licenseEnd != null)
+        if (licenseEndString.isNotEmpty)
           DoubleText(
             translate.licenseValidDate,
-            DateFormat.yMd(Platform.localeName).format(licenseEnd),
+            licenseEndString,
           ),
         SizedBox(height: layout.formPadding.groupBottomDistance),
       ],
