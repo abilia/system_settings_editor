@@ -32,4 +32,18 @@ class FeatureToggleState {
 }
 
 // A representation of all available feature toggles
-enum FeatureToggle { fakeTime }
+enum FeatureToggle {
+  fakeTime,
+  videoInActivity,
+}
+
+extension FeatureToggleExtension on FeatureToggle {
+  String get name {
+    switch (this) {
+      case FeatureToggle.fakeTime:
+        return 'Fake time';
+      case FeatureToggle.videoInActivity:
+        return 'Video in activity';
+    }
+  }
+}

@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:video_compress/video_compress.dart';
 
 class InfoItemTab extends StatelessWidget with EditActivityTab {
   final bool showNote, showChecklist;
@@ -32,6 +36,8 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
                 const EditChecklistWidget()
               else if (infoItem is NoteInfoItem)
                 EditNoteWidget(infoItem: infoItem)
+              else if (infoItem is VideoInfoItem)
+                AddVideoWidget(infoItem: infoItem),
             ],
           ),
         ),
@@ -50,6 +56,7 @@ class PickInfoItem extends StatelessWidget {
 
   bool get isChecklist => infoItem is Checklist;
   bool get isNote => infoItem is NoteInfoItem;
+  bool get isVideo => infoItem is VideoInfoItem;
 
   @override
   Widget build(BuildContext context) => Row(
@@ -64,6 +71,9 @@ class PickInfoItem extends StatelessWidget {
             LibraryButton(
               infoItem: infoItem,
             ).pad(layout.templates.s3)
+          ] else if (isVideo) ...[
+            SizedBox(width: layout.formPadding.horizontalItemDistance),
+            const AddVideoButton().pad(layout.templates.s3)
           ],
         ],
       );
@@ -86,14 +96,18 @@ class ChangeInfoItemPicker extends StatelessWidget {
           leading: _icon(infoItem),
           text: Text(_text(Translator.of(context).translate, infoItem)),
           onTap: () async {
+            final featureToggleCubit = context.read<FeatureToggleCubit>();
             final editActivityCubit = context.read<EditActivityCubit>();
             final result = await Navigator.of(context).push<Type>(
               PersistentMaterialPageRoute(
                 settings: (SelectInfoTypePage).routeSetting(),
-                builder: (context) => SelectInfoTypePage(
-                  infoItemType: infoItem.runtimeType,
-                  showChecklist: showChecklist,
-                  showNote: showNote,
+                builder: (context) => BlocProvider<FeatureToggleCubit>.value(
+                  value: featureToggleCubit,
+                  child: SelectInfoTypePage(
+                    infoItemType: infoItem.runtimeType,
+                    showChecklist: showChecklist,
+                    showNote: showNote,
+                  ),
                 ),
               ),
             );
@@ -109,6 +123,8 @@ class ChangeInfoItemPicker extends StatelessWidget {
       return t.addChecklist;
     } else if (infoItem is NoteInfoItem) {
       return t.addNote;
+    } else if (infoItem is VideoInfoItem) {
+      return 'Add video';
     }
     return t.infoTypeNone;
   }
@@ -118,6 +134,8 @@ class ChangeInfoItemPicker extends StatelessWidget {
       return const Icon(AbiliaIcons.ok);
     } else if (infoItem is NoteInfoItem) {
       return const Icon(AbiliaIcons.edit);
+    } else if (infoItem is VideoInfoItem) {
+      return const Icon(AbiliaIcons.videoCall);
     }
     return const Icon(AbiliaIcons.information);
   }
@@ -161,6 +179,83 @@ class LibraryButton extends StatelessWidget {
           color: AbiliaColors.black,
         ),
       );
+}
+
+class AddVideoButton extends StatelessWidget {
+  const AddVideoButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) =>
+      BlocBuilder<PermissionCubit, PermissionState>(
+        builder: (context, permissionState) => IconActionButtonDark(
+          onPressed: () => _recordNewVideo(context, permissionState),
+          child: Icon(
+            AbiliaIcons.videoCall,
+            size: layout.icon.normal,
+            color: AbiliaColors.black,
+          ),
+        ),
+      );
+
+  Future<void> _recordNewVideo(
+    BuildContext context,
+    PermissionState permissionState,
+  ) async {
+    if (permissionState.status[Permission.camera]?.isPermanentlyDenied ==
+        true) {
+      return;
+    }
+    try {
+      final video = await ImagePicker().pickVideo(source: ImageSource.camera);
+      if (video != null && context.mounted) {
+        return _addVideo(context, video.path);
+      }
+    } on Exception catch (e) {
+      debugPrint('Error adding video: $e');
+    }
+  }
+
+  Future<void> _addVideo(
+    BuildContext context,
+    String path,
+  ) async {
+    final userFileBloc = context.read<UserFileBloc>();
+    final editActivityCubit = context.read<EditActivityCubit>();
+    File? file = File(path);
+    double sizeInMB = file.lengthSync() / 1024 / 1024;
+    debugPrint('Original size of video: $sizeInMB MB');
+
+    if (sizeInMB > 10) {
+      final mediaInfo = await VideoCompress.compressVideo(
+        path,
+        quality: VideoQuality.LowQuality,
+        deleteOrigin: true,
+      );
+      file = mediaInfo?.file;
+    }
+
+    if (file != null) {
+      sizeInMB = file.lengthSync() / 1024 / 1024;
+      debugPrint('Final size of video: $sizeInMB MB');
+
+      if (sizeInMB < 10) {
+        final abiliaFile = UnstoredAbiliaFile.newFile(file);
+        userFileBloc.add(
+          FileAdded(
+            abiliaFile,
+            isImage: false,
+          ),
+        );
+        editActivityCubit.replaceActivity(
+          editActivityCubit.state.activity.copyWith(
+            infoItem: VideoInfoItem(abiliaFile.id),
+          ),
+        );
+      }
+    }
+  }
 }
 
 class EditChecklistWidget extends StatelessWidget {
@@ -309,4 +404,27 @@ class EditNoteWidget extends StatelessWidget {
       );
     }
   }
+}
+
+class AddVideoWidget extends StatelessWidget {
+  final VideoInfoItem infoItem;
+
+  const AddVideoWidget({
+    required this.infoItem,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) => Expanded(
+        child: Padding(
+          padding: layout.activityPage.youtubePlayerPadding,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: VideoPlayer(
+              isEditActvity: true,
+              fileId: infoItem.videoId,
+            ),
+          ),
+        ),
+      );
 }

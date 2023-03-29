@@ -86,6 +86,8 @@ dependencies:
     path: ../packages/utils
   uuid: ^3.0.5
   vector_math: ^2.1.2
+  video_compress: ^3.1.2
+  video_player: ^2.6.0
   wakelock: ^0.6.1
   webview_flutter: ^4.0.4
   youtube_player_iframe: ^4.0.4

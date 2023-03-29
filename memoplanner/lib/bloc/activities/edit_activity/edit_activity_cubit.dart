@@ -291,6 +291,8 @@ class EditActivityCubit extends Cubit<EditActivityState> {
         return const NoteInfoItem();
       case Checklist:
         return Checklist();
+      case VideoInfoItem:
+        return const VideoInfoItem();
       default:
         return InfoItem.none;
     }

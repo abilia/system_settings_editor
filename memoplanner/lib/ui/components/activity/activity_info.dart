@@ -296,6 +296,16 @@ class Attachment extends StatelessWidget with ActivityMixin {
           ),
         ),
       );
+    } else if (item is VideoInfoItem) {
+      return Padding(
+        padding: layout.activityPage.youtubePlayerPadding,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: VideoPlayer(
+            fileId: item.videoId,
+          ),
+        ),
+      );
     }
     return Container();
   }
