@@ -219,7 +219,7 @@ class CardPosition {
     required bool hasSideDots,
     required EventOccasion occasion,
     required BoxDecoration decoration,
-    required timelineOffset,
+    required double timelineOffset,
   }) {
     final measures = args.measures;
     final topMargin = args.topMargin;
@@ -262,9 +262,8 @@ class CardPosition {
     }
     final top = topOffset + topMargin + measures.topPadding;
 
-    double contentOffset =
-        (timelineOffset - top).abs() - args.measures.dotDistance / 2;
-    contentOffset = max(0, contentOffset);
+    final contentOffset = (timelineOffset - top - args.measures.dotDistance / 2)
+        .clamp(0.0, height - contentHeight);
 
     return CardPosition(
       top: top,
