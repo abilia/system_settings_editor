@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/i18n/translations.g.dart';
 import 'package:memoplanner/models/all.dart';
 
 import '../../../mocks/mock_bloc.dart';
@@ -23,7 +24,7 @@ void main() {
         SortableArchiveCubit<RawSortableData>(sortableBloc: mockSortableBloc),
     verify: (SortableArchiveCubit bloc) => expect(
       bloc.state,
-      const SortableArchiveState<RawSortableData>({}, {}),
+      const SortableArchiveState<RawSortableData>([]),
     ),
   );
 
@@ -36,8 +37,7 @@ void main() {
     verify: (SortableArchiveCubit bloc) => expect(
       bloc.state,
       const SortableArchiveState<RawSortableData>(
-        {},
-        {},
+        [],
         initialFolderId: 'someFolderId',
         currentFolderId: 'someFolderId',
       ),
@@ -150,49 +150,130 @@ void main() {
     });
 
     group('select ', () {
-      blocTest<SortableArchiveCubit<BasicActivityData>,
-          SortableArchiveState<BasicActivityData>>(
+      blocTest<SortableArchiveCubit<BasicActivityDataItem>,
+          SortableArchiveState<BasicActivityDataItem>>(
         'first',
-        build: () => SortableArchiveCubit<BasicActivityData>(
+        build: () => SortableArchiveCubit<BasicActivityDataItem>(
             sortableBloc: mockSortableBloc),
         act: (c) => c.sortableSelected(first),
         expect: () => [
-          SortableArchiveCubit.stateFromSortables<BasicActivityData>(
+          SortableArchiveState.fromSortables(
             sortables: basicActivitySortables,
             initialFolderId: '',
             currentFolderId: '',
-            showFolder: true,
+            showFolders: true,
             selected: first,
+            showSearch: false,
           )
         ],
       );
 
-      blocTest<SortableArchiveCubit<BasicActivityData>,
-          SortableArchiveState<BasicActivityData>>(
+      blocTest<SortableArchiveCubit<BasicActivityDataItem>,
+          SortableArchiveState<BasicActivityDataItem>>(
         'second, then first',
-        build: () => SortableArchiveCubit<BasicActivityData>(
+        build: () => SortableArchiveCubit<BasicActivityDataItem>(
             sortableBloc: mockSortableBloc),
         act: (c) {
           c.sortableSelected(second);
           c.sortableSelected(first);
         },
         expect: () => [
-          SortableArchiveCubit.stateFromSortables<BasicActivityData>(
+          SortableArchiveState.fromSortables(
             sortables: basicActivitySortables,
             initialFolderId: '',
             currentFolderId: '',
-            showFolder: true,
+            showFolders: true,
             selected: second,
+            showSearch: false,
           ),
-          SortableArchiveCubit.stateFromSortables<BasicActivityData>(
+          SortableArchiveState.fromSortables(
             sortables: basicActivitySortables,
             initialFolderId: '',
             currentFolderId: '',
-            showFolder: true,
+            showFolders: true,
             selected: first,
+            showSearch: false,
           )
         ],
       );
     });
+  });
+
+  group('Image archive search', () {
+    final translate = Locales.language.values.first;
+    late SortableArchiveCubit<ImageArchiveData> sortableArchiveCubit;
+    final first = Sortable.createNew<ImageArchiveData>(
+          data: const ImageArchiveData(name: 'first'),
+          sortOrder: 'a',
+        ),
+        second = Sortable.createNew<ImageArchiveData>(
+          data: const ImageArchiveData(name: 'second'),
+          sortOrder: 'a',
+        ),
+        third = Sortable.createNew<ImageArchiveData>(
+          data: const ImageArchiveData(name: 'third'),
+          sortOrder: 'a',
+        );
+    final List<Sortable> basicActivitySortables = [first, second, third];
+
+    setUp(() {
+      sortableArchiveCubit = SortableArchiveCubit<ImageArchiveData>(
+        sortableBloc: mockSortableBloc,
+      );
+    });
+
+    blocTest<SortableArchiveCubit<ImageArchiveData>,
+        SortableArchiveState<ImageArchiveData>>(
+      'Search full word',
+      build: () => sortableArchiveCubit,
+      act: (cubit) {
+        cubit.sortablesUpdated(basicActivitySortables);
+        cubit.searchValueChanged('first');
+      },
+      verify: (_) {
+        expect(sortableArchiveCubit.state.allFilteredAndSorted(translate),
+            [first]);
+      },
+    );
+
+    blocTest<SortableArchiveCubit<ImageArchiveData>,
+        SortableArchiveState<ImageArchiveData>>(
+      'Search single letter',
+      build: () => sortableArchiveCubit,
+      act: (cubit) {
+        cubit.sortablesUpdated(basicActivitySortables);
+        cubit.searchValueChanged('i');
+      },
+      verify: (_) {
+        expect(sortableArchiveCubit.state.allFilteredAndSorted(translate),
+            [first, third]);
+      },
+    );
+
+    blocTest<SortableArchiveCubit<ImageArchiveData>,
+        SortableArchiveState<ImageArchiveData>>(
+      'Search nothing',
+      build: () => sortableArchiveCubit,
+      act: (cubit) {
+        cubit.sortablesUpdated(basicActivitySortables);
+        cubit.searchValueChanged('');
+      },
+      verify: (_) {
+        expect(sortableArchiveCubit.state.allFilteredAndSorted(translate), []);
+      },
+    );
+
+    blocTest<SortableArchiveCubit<ImageArchiveData>,
+        SortableArchiveState<ImageArchiveData>>(
+      'Search nonsense',
+      build: () => sortableArchiveCubit,
+      act: (cubit) {
+        cubit.sortablesUpdated(basicActivitySortables);
+        cubit.searchValueChanged('T43Q87Y87yh78yh6');
+      },
+      verify: (_) {
+        expect(sortableArchiveCubit.state.allFilteredAndSorted(translate), []);
+      },
+    );
   });
 }

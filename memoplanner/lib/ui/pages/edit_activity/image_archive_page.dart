@@ -23,25 +23,34 @@ class ImageArchivePage extends StatelessWidget {
         initialFolderId: initialFolder,
         visibilityFilter: (imageArchive) => !imageArchive.data.myPhotos,
       ),
-      child: LibraryPage<ImageArchiveData>.selectable(
-        appBar: AbiliaAppBar(
-          iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
-          title: translate.selectImage,
-        ),
-        gridChildAspectRatio: layout.imageArchive.aspectRatio,
-        rootHeading: header ?? translate.imageArchive,
-        libraryItemGenerator: (imageArchive) =>
-            ArchiveImage(sortable: imageArchive),
-        selectedItemGenerator: (imageArchive) =>
-            FullScreenArchiveImage(selected: imageArchive.data),
-        emptyLibraryMessage: translate.noImages,
-        onCancel: onCancel,
-        onOk: (selected) => Navigator.of(context).pop<AbiliaFile>(
-          AbiliaFile.from(
-            id: selected.data.fileId,
-            path: selected.data.file,
-          ),
-        ),
+      child: Builder(
+        builder: (context) {
+          final showSearch = context.select(
+              (SortableArchiveCubit<ImageArchiveData> cubit) =>
+                  cubit.state.showSearch);
+          return LibraryPage<ImageArchiveData>.selectable(
+            appBar: AbiliaAppBar(
+              iconData: showSearch
+                  ? AbiliaIcons.find
+                  : AbiliaIcons.pastPictureFromWindowsClipboard,
+              title: showSearch ? translate.searchImage : translate.selectImage,
+            ),
+            gridChildAspectRatio: layout.imageArchive.aspectRatio,
+            rootHeading: header ?? translate.imageArchive,
+            libraryItemGenerator: (imageArchive) =>
+                ArchiveImage(sortable: imageArchive),
+            selectedItemGenerator: (imageArchive) =>
+                FullScreenArchiveImage(selected: imageArchive.data),
+            emptyLibraryMessage: translate.noImages,
+            onCancel: onCancel,
+            onOk: (selected) => Navigator.of(context).pop<AbiliaFile>(
+              AbiliaFile.from(
+                id: selected.data.fileId,
+                path: selected.data.file,
+              ),
+            ),
+          );
+        },
       ),
     );
   }

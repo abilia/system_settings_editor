@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
@@ -16,14 +15,14 @@ void main() {
 
   test('Initial state is an empty ImageArchiveState', () {
     expect(imageArchiveBloc.state,
-        const SortableArchiveState<ImageArchiveData>({}, {}));
+        const SortableArchiveState<ImageArchiveData>([]));
   });
 
   test('FolderChanged will set the folder in the state', () async {
     const folderId = '123';
     final expect = expectLater(
       imageArchiveBloc.stream,
-      emits(const SortableArchiveState<ImageArchiveData>({}, {},
+      emits(const SortableArchiveState<ImageArchiveData>([],
           currentFolderId: folderId)),
     );
     imageArchiveBloc.folderChanged(folderId);
@@ -38,7 +37,7 @@ void main() {
         Sortable.createNew(data: ChecklistData(Checklist()));
     final expect = expectLater(
       imageArchiveBloc.stream,
-      emits(stateFromSortables([imageArchiveSortable])),
+      emits(SortableArchiveState<ImageArchiveData>([imageArchiveSortable])),
     );
     imageArchiveBloc
         .sortablesUpdated([imageArchiveSortable, checklistSortable]);
@@ -59,14 +58,15 @@ void main() {
     final expect = expectLater(
       imageArchiveBloc.stream,
       emitsInOrder([
-        stateFromSortables([imageArchiveFolder1, imageArchiveFolder2]),
-        stateFromSortables(
+        SortableArchiveState<ImageArchiveData>(
+            [imageArchiveFolder1, imageArchiveFolder2]),
+        SortableArchiveState<ImageArchiveData>(
           [imageArchiveFolder1, imageArchiveFolder2],
-          folderId: imageArchiveFolder2.id,
+          currentFolderId: imageArchiveFolder2.id,
         ),
-        stateFromSortables(
+        SortableArchiveState<ImageArchiveData>(
           [imageArchiveFolder1, imageArchiveFolder2],
-          folderId: imageArchiveFolder1.id,
+          currentFolderId: imageArchiveFolder1.id,
         ),
       ]),
     );
@@ -76,15 +76,4 @@ void main() {
     imageArchiveBloc.navigateUp();
     await expect;
   });
-}
-
-SortableArchiveState stateFromSortables(
-  List<Sortable<ImageArchiveData>> sortables, {
-  String folderId = '',
-}) {
-  final allByFolder =
-      groupBy<Sortable<ImageArchiveData>, String>(sortables, (s) => s.groupId);
-  final allById = {for (var s in sortables) s.id: s};
-  return SortableArchiveState<ImageArchiveData>(allByFolder, allById,
-      currentFolderId: folderId);
 }

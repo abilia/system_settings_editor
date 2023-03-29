@@ -260,6 +260,8 @@ devicesLocalImages	Device’s local images	Enhetens bilder	Enhedens billeder	Afb
 myPhotos	My photos	Mina foton	Mine fotos	Mijn foto's	Omat valokuvat	Meine Fotos	Mine foto
 mobilePictures	Mobile pictures	Mobilbilder	Telefonbilleder	Telefoonafbeeldingen	Matkapuhelimen kuvat	Mobilgerät Bilder	Mobilbilder
 takeNewPhoto	Take new photo	Ta ny bild	Tag et nyt billede	Nieuwe foto nemen	Ota uusi kuva	Neues Foto machen	Ta nytt bilde
+search	Search						
+searchImage	Search Image						
 							
 ### Recurrence							
 recurrence	Recurrence	Upprepning	Gentagelse	Terugkerend	Toistuminen	Intervall	Gjentakelse

@@ -514,6 +514,10 @@ abstract class Translated {
 
   final String takeNewPhoto = 'Take new photo';
 
+  final String search = 'Search';
+
+  final String searchImage = 'Search Image';
+
   final String recurrence = 'Recurrence';
 
   final String once = 'Once';

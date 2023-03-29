@@ -59,44 +59,57 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
-      builder: (context, state) {
-        final selected = selectableItems ? state.selected : null;
-        final selectedGenerator = selectedItemGenerator;
-        return Scaffold(
-          appBar: appBar,
-          body: Column(
-            children: [
-              if (!state.isAtRootAndNoSelection || rootHeading != null)
-                LibraryHeading<T>(
-                  sortableArchiveState: state,
-                  rootHeading: rootHeading ?? '',
-                ),
-              Expanded(
-                child: selected != null && selectedGenerator != null
-                    ? selectedGenerator(selected)
-                    : SortableLibrary<T>(
-                        libraryItemGenerator,
-                        emptyLibraryMessage,
-                        selectableItems: selectableItems,
-                        crossAxisCount: gridCrossAxisCount,
-                        childAspectRatio: gridChildAspectRatio,
-                      ),
-              ),
-            ],
+    final sortableArchiveCubit = context.watch<SortableArchiveCubit<T>>();
+    final sortableState = sortableArchiveCubit.state;
+    final selected = selectableItems ? sortableState.selected : null;
+    final selectedGenerator = selectedItemGenerator;
+    final showSearch = sortableState.showSearch;
+    return Scaffold(
+      appBar: appBar,
+      body: Column(
+        children: [
+          if (selected != null)
+            LibraryHeading<T>(
+              sortableArchiveState: sortableState,
+              rootHeading: rootHeading ?? '',
+            )
+          else if (showSearch)
+            const _SearchHeading()
+          else if (!sortableState.isAtRootAndNoSelection || rootHeading != null)
+            LibraryHeading<T>(
+              sortableArchiveState: sortableState,
+              rootHeading: rootHeading ?? '',
+              showSearchButton: true,
+            ),
+          Expanded(
+            child: selected != null && selectedGenerator != null
+                ? selectedGenerator(selected)
+                : SortableLibrary<T>(
+                    libraryItemGenerator,
+                    emptyLibraryMessage,
+                    selectableItems: selectableItems,
+                    crossAxisCount: gridCrossAxisCount,
+                    childAspectRatio: gridChildAspectRatio,
+                  ),
           ),
-          bottomNavigationBar: showBottomNavigationBar
-              ? BottomNavigation(
-                  backNavigationWidget: CancelButton(onPressed: onCancel),
-                  forwardNavigationWidget: selected != null
-                      ? OkButton(
-                          onPressed: () => onOk?.call(selected),
-                        )
-                      : null,
-                )
-              : null,
-        );
-      },
+        ],
+      ),
+      bottomNavigationBar: showBottomNavigationBar
+          ? Padding(
+              padding: MediaQuery.of(context).viewInsets,
+              child: BottomNavigation(
+                backNavigationWidget: CancelButton(
+                    onPressed: showSearch
+                        ? () => sortableArchiveCubit.setShowSearch(false)
+                        : onCancel),
+                forwardNavigationWidget: selected != null
+                    ? OkButton(
+                        onPressed: () => onOk?.call(selected),
+                      )
+                    : null,
+              ),
+            )
+          : null,
     );
   }
 }
@@ -106,14 +119,17 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
     required this.sortableArchiveState,
     required this.rootHeading,
     this.showOnlyFolders = false,
+    this.showSearchButton = false,
     Key? key,
   }) : super(key: key);
   final SortableArchiveState<T> sortableArchiveState;
   final String rootHeading;
   final bool showOnlyFolders;
+  final bool showSearchButton;
 
   @override
   Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
     final heading = sortableArchiveState.isAtRootAndNoSelection
         ? rootHeading
         : sortableArchiveState.title(Translator.of(context).translate,
@@ -126,7 +142,11 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
             padding: layout.libraryPage.headerPadding,
             child: Row(
               children: [
-                IconActionButtonDark(
+                IconActionButton(
+                  style: actionButtonStyleDark.withSize(
+                    layout.libraryPage.backButtonSize,
+                    iconSize: layout.libraryPage.backButtonIconSize,
+                  ),
                   onPressed: () => back(context, sortableArchiveState),
                   child: const Icon(AbiliaIcons.navigationPrevious),
                 ),
@@ -134,11 +154,28 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                 Expanded(
                   child: Text(
                     heading,
-                    style: layout.libraryPage.headerStyle(),
+                    style: layout.libraryPage.headerStyle,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
                 ),
+                if (showSearchButton)
+                  IconAndTextButton(
+                    style: iconTextButtonStyleLightGrey
+                        .withSize(
+                          layout.libraryPage.searchButtonSize,
+                        )
+                        .copyWith(
+                          textStyle: MaterialStateProperty.all(
+                            abiliaTextTheme.bodyLarge,
+                          ),
+                        ),
+                    text: translate.search,
+                    icon: AbiliaIcons.find,
+                    onPressed: () =>
+                        BlocProvider.of<SortableArchiveCubit<T>>(context)
+                            .setShowSearch(true),
+                  ),
               ],
             ),
           ),
@@ -157,6 +194,74 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
     } else {
       await Navigator.of(context).maybePop();
     }
+  }
+}
+
+class _SearchHeading extends StatefulWidget {
+  const _SearchHeading({Key? key}) : super(key: key);
+
+  @override
+  State<_SearchHeading> createState() => _SearchHeadingState();
+}
+
+class _SearchHeadingState extends State<_SearchHeading> {
+  final _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.text = context
+        .read<SortableArchiveCubit<ImageArchiveData>>()
+        .state
+        .searchValue;
+    _controller.addListener(() {
+      context
+          .read<SortableArchiveCubit<ImageArchiveData>>()
+          .searchValueChanged(_controller.text);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SortableArchiveCubit<ImageArchiveData>,
+        SortableArchiveState<ImageArchiveData>>(
+      builder: (BuildContext context, state) {
+        return Column(
+          children: [
+            Padding(
+              padding: layout.libraryPage.searchPadding,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      child: TextField(
+                        controller: _controller,
+                        autofocus: true,
+                      ),
+                    ),
+                  ),
+                  TtsPlayButton(
+                    controller: _controller,
+                    padding: EdgeInsets.only(
+                      left: layout
+                          .defaultTextInputPage.textFieldActionButtonSpacing,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (_controller.text.isNotEmpty) const Divider(),
+          ],
+        );
+      },
+    );
   }
 }
 
@@ -192,11 +297,14 @@ class _SortableLibraryState<T extends SortableData>
 
   @override
   Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
     return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
-        final content = archiveState.currentFolderSorted;
-
-        if (content.isEmpty) {
+        final content = archiveState.showSearch
+            ? archiveState.allFilteredAndSorted(translate)
+            : archiveState.currentFolderSorted;
+        if (content.isEmpty &&
+            (archiveState.showSearch && archiveState.searchValue.isNotEmpty)) {
           return EmptyLibraryMessage(
             emptyLibraryMessage: widget.emptyLibraryMessage,
             rootFolder: archiveState.isAtRoot,
@@ -333,7 +441,6 @@ class LibraryFolder extends StatelessWidget {
               style: abiliaTextTheme.bodySmall?.copyWith(height: 1),
               overflow: TextOverflow.ellipsis,
             ),
-            SizedBox(height: layout.libraryPage.textImageDistance),
             Stack(
               children: [
                 Icon(

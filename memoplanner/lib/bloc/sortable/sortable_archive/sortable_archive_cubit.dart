@@ -13,36 +13,48 @@ class SortableArchiveCubit<T extends SortableData>
     extends Cubit<SortableArchiveState<T>> {
   late final StreamSubscription _sortableSubscription;
   final SortableBloc sortableBloc;
-  final bool Function(Sortable<T>)? visibilityFilter;
-  final bool showFolders;
 
   SortableArchiveCubit({
     required this.sortableBloc,
     String initialFolderId = '',
-    this.visibilityFilter,
-    this.showFolders = true,
-  }) : super(_initialState<T>(
-          sortableBloc.state,
-          initialFolderId,
-          visibilityFilter,
-          showFolders,
-        )) {
+    bool Function(Sortable<T>)? visibilityFilter,
+    bool showFolders = true,
+  }) : super(
+          SortableArchiveState.fromSortables(
+            sortables: sortableBloc.state is SortablesLoaded
+                ? (sortableBloc.state as SortablesLoaded).sortables
+                : <Sortable<SortableData>>[],
+            initialFolderId: initialFolderId,
+            currentFolderId: initialFolderId,
+            visibilityFilter: visibilityFilter,
+            showFolders: showFolders,
+            showSearch: false,
+            selected: null,
+          ),
+        ) {
     _sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
-        sortablesUpdated(sortableState.sortables);
+        sortablesUpdated(
+          sortableState.sortables,
+          visibilityFilter: visibilityFilter,
+        );
       }
     });
   }
 
-  void sortablesUpdated(Iterable<Sortable> sortables) {
+  void sortablesUpdated(
+    Iterable<Sortable> sortables, {
+    bool Function(Sortable<T>)? visibilityFilter,
+  }) {
     emit(
-      stateFromSortables<T>(
+      SortableArchiveState.fromSortables(
         sortables: sortables,
         initialFolderId: state.initialFolderId,
         currentFolderId: state.currentFolderId,
         visibilityFilter: visibilityFilter,
         selected: state.selected,
-        showFolder: showFolders,
+        showFolders: state.showFolders,
+        showSearch: state.showSearch,
       ),
     );
   }
@@ -51,8 +63,7 @@ class SortableArchiveCubit<T extends SortableData>
     final currentFolder = state.allById[state.currentFolderId];
     emit(
       SortableArchiveState<T>(
-        state.allByFolder,
-        state.allById,
+        state.sortableArchive,
         currentFolderId: currentFolder?.groupId ?? '',
         initialFolderId: state.initialFolderId,
       ),
@@ -62,11 +73,13 @@ class SortableArchiveCubit<T extends SortableData>
   void sortableSelected(Sortable<T>? selected) {
     emit(
       SortableArchiveState<T>(
-        state.allByFolder,
-        state.allById,
+        state.sortableArchive,
         currentFolderId: state.currentFolderId,
         selected: selected,
         initialFolderId: state.initialFolderId,
+        searchValue: state.searchValue,
+        showSearch: state.showSearch,
+        showFolders: state.showFolders,
       ),
     );
   }
@@ -74,13 +87,21 @@ class SortableArchiveCubit<T extends SortableData>
   void folderChanged(String folderId) {
     emit(
       SortableArchiveState<T>(
-        state.allByFolder,
-        state.allById,
+        state.sortableArchive,
         currentFolderId: folderId,
         initialFolderId: state.initialFolderId,
+        showSearch: state.showSearch,
+        searchValue: state.searchValue,
+        showFolders: state.showFolders,
       ),
     );
   }
+
+  void setShowSearch(bool showSearch) =>
+      emit(state.copyWith(searchValue: '', showSearch: showSearch));
+
+  void searchValueChanged(String searchValue) =>
+      emit(state.copyWith(searchValue: searchValue));
 
   void reorder(SortableReorderDirection direction) {
     final selectedId = state.selected?.id;
@@ -117,46 +138,5 @@ class SortableArchiveCubit<T extends SortableData>
   Future<void> close() async {
     await _sortableSubscription.cancel();
     return super.close();
-  }
-
-  static SortableArchiveState<T> _initialState<T extends SortableData>(
-    SortableState sortableState,
-    String initialFolderId,
-    bool Function(Sortable<T>)? visibilityFilter,
-    bool showFolder,
-  ) =>
-      stateFromSortables(
-        sortables: sortableState is SortablesLoaded
-            ? sortableState.sortables
-            : <Sortable<SortableData>>[],
-        initialFolderId: initialFolderId,
-        currentFolderId: initialFolderId,
-        visibilityFilter: visibilityFilter,
-        showFolder: showFolder,
-      );
-
-  static SortableArchiveState<T> stateFromSortables<T extends SortableData>({
-    required Iterable<Sortable> sortables,
-    required String initialFolderId,
-    required String currentFolderId,
-    required bool showFolder,
-    bool Function(Sortable<T>)? visibilityFilter,
-    Sortable<T>? selected,
-  }) {
-    final sortableArchive = sortables
-        .whereType<Sortable<T>>()
-        .where((s) => showFolder || !s.isGroup)
-        .where(visibilityFilter ?? (_) => true);
-    final allByFolder = showFolder
-        ? groupBy<Sortable<T>, String>(sortableArchive, (s) => s.groupId)
-        : {initialFolderId: sortableArchive.toList()};
-    final allById = {for (var s in sortableArchive) s.id: s};
-    return SortableArchiveState<T>(
-      allByFolder,
-      allById,
-      currentFolderId: currentFolderId,
-      selected: selected,
-      initialFolderId: initialFolderId,
-    );
   }
 }
