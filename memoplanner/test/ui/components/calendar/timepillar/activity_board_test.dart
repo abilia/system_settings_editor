@@ -147,6 +147,7 @@ void main() {
                     nightMode: false,
                   ),
                   timepillarSide: TimepillarSide.right,
+                  timelineOffset: 0,
                 ),
                 categoryMinWidth: 400,
                 timepillarWidth: measures.cardTotalWidth,
@@ -558,6 +559,7 @@ void main() {
           nightMode: false,
         ),
         timepillarSide: TimepillarSide.right,
+        timelineOffset: 0,
       );
       final uniques =
           boardData.cards.map((f) => {f.cardPosition.top, f.column});

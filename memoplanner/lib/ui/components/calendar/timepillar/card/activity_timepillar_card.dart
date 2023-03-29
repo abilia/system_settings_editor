@@ -7,7 +7,6 @@ class ActivityTimepillarCard extends TimepillarCard {
   final ActivityOccasion activityOccasion;
   final TimepillarSide timepillarSide;
   final BoxDecoration decoration;
-  final int titleLines;
 
   final TimepillarBoardDataArguments args;
   TimepillarMeasures get measures => args.measures;
@@ -18,7 +17,6 @@ class ActivityTimepillarCard extends TimepillarCard {
     required int column,
     required this.timepillarSide,
     required this.decoration,
-    required this.titleLines,
     required this.args,
     Key? key,
   }) : super(column, cardPosition, key: key);
@@ -109,12 +107,20 @@ class ActivityTimepillarCard extends TimepillarCard {
                 width: measures.cardWidth,
                 decoration: decoration,
                 child: Column(
+                  mainAxisAlignment: activityOccasion.isPast
+                      ? MainAxisAlignment.end
+                      : MainAxisAlignment.start,
                   children: <Widget>[
+                    if (activityOccasion.isCurrent)
+                      SizedBox(height: cardPosition.contentOffset),
                     if (hasTitle) ...[
                       SizedBox(height: textPadding - borderWidth),
                       SizedBox(
                         width: measures.cardTextWidth,
-                        child: Text(activity.title, maxLines: titleLines),
+                        child: Text(
+                          activity.title,
+                          maxLines: cardPosition.titleLines,
+                        ),
                       ),
                       if (!hasContent)
                         SizedBox(height: textPadding - borderWidth),
@@ -123,20 +129,16 @@ class ActivityTimepillarCard extends TimepillarCard {
                       SizedBox(
                         height: contentPadding - (!hasTitle ? borderWidth : 0),
                       ),
-                      Expanded(
-                        child: Center(
-                          child: SizedBox(
-                            height: imageSize,
-                            width: imageSize,
-                            child: EventImage(
-                              event: activityOccasion,
-                              crossPadding: crossPadding,
-                              checkPadding: checkPadding,
-                              checkMark: checkMark,
-                              radius: layout.timepillar.card.imageCornerRadius,
-                              nightMode: args.nightMode,
-                            ),
-                          ),
+                      SizedBox(
+                        height: imageSize,
+                        width: imageSize,
+                        child: EventImage(
+                          event: activityOccasion,
+                          crossPadding: crossPadding,
+                          checkPadding: checkPadding,
+                          checkMark: checkMark,
+                          radius: layout.timepillar.card.imageCornerRadius,
+                          nightMode: args.nightMode,
                         ),
                       ),
                       SizedBox(height: contentPadding - borderWidth),

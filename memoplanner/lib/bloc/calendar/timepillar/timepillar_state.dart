@@ -120,6 +120,7 @@ class TimepillarMeasures extends Equatable {
     required double textScaleFactor,
     required TextStyle textStyle,
     required BoxDecoration decoration,
+    required int titleLines,
   }) {
     final title = _getTitle(occasion);
     final hasContent =
@@ -130,6 +131,7 @@ class TimepillarMeasures extends Equatable {
       textStyle: textStyle,
       textScaleFactor: textScaleFactor,
       title: title,
+      titleLines: titleLines,
     );
     if (occasion is TimerOccasion) {
       return contentHeight +
@@ -153,6 +155,7 @@ class TimepillarMeasures extends Equatable {
     required double textScaleFactor,
     required String title,
     required bool hasContent,
+    required int titleLines,
   }) {
     final hasTitle = title.isNotEmpty;
     final textHeight = hasTitle
@@ -160,7 +163,7 @@ class TimepillarMeasures extends Equatable {
             .textPainter(
               textStyle,
               cardTextWidth,
-              TimepillarCard.defaultTitleLines,
+              titleLines,
               scaleFactor: textScaleFactor,
             )
             .height

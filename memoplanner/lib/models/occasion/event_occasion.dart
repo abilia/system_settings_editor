@@ -7,11 +7,13 @@ abstract class EventOccasion extends Event implements Comparable {
   final Occasion occasion;
   bool get isPast => occasion.isPast;
   bool get isCurrent => occasion.isCurrent;
+  bool get isFuture => occasion.isFuture;
 }
 
 extension OccasionExtension on Occasion {
   bool get isCurrent => this == Occasion.current;
   bool get isPast => this == Occasion.past;
+  bool get isFuture => this == Occasion.future;
 }
 
 extension Comparer on EventOccasion {
