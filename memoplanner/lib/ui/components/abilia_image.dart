@@ -12,6 +12,7 @@ import 'package:memoplanner/ui/themes/all.dart' as theme;
 class EventImage extends StatelessWidget {
   final Event event;
   final bool nightMode;
+  final bool showPast;
   final ImageSize imageSize;
   final BoxFit fit;
   final EdgeInsets? crossPadding;
@@ -24,6 +25,7 @@ class EventImage extends StatelessWidget {
   const EventImage({
     required this.event,
     this.nightMode = false,
+    this.showPast = true,
     this.imageSize = ImageSize.thumb,
     this.fit = BoxFit.cover,
     this.crossPadding,
@@ -36,7 +38,7 @@ class EventImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final event = this.event;
-    final past = event is EventOccasion && event.isPast;
+    final past = event is EventOccasion && event.isPast && showPast;
     final signedOff = event is ActivityDay && event.isSignedOff;
     final inactive = past || signedOff;
     return LayoutBuilder(builder: (context, constraints) {
@@ -150,6 +152,7 @@ class CheckedImageWithImagePopup extends StatelessWidget {
         imageSize: ImageSize.original,
         fit: BoxFit.contain,
         checkPadding: checkPadding,
+        showPast: false,
       ),
     );
   }

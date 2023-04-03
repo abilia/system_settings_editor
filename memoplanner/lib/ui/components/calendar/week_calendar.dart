@@ -526,6 +526,7 @@ class _WeekActivityContent extends StatelessWidget {
             ? EventImage(
                 event: activityOccasion,
                 radius: BorderRadius.zero,
+                fit: selected && fullDay ? BoxFit.scaleDown : BoxFit.cover,
               )
             : Stack(
                 alignment: Alignment.center,
