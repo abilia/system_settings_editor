@@ -100,7 +100,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
     final horizontalScrollController = SnapToCenterScrollController();
     return LayoutBuilder(
       builder: (context, boxConstraints) {
-        double nowOffset(DateTime now) =>
+        double getNowOffset(DateTime now) =>
             currentDotMidPosition(now, measures, topMargin: topMargin) -
             (boxConstraints.maxHeight / 4);
         final events = timepillarState.eventsForInterval(interval);
@@ -125,6 +125,9 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
 
         return BlocBuilder<ClockBloc, DateTime>(
           builder: (context, now) {
+            final timelineOffset =
+                currentDotMidPosition(now, measures, topMargin: topMargin) -
+                    (layout.timepillar.timeLineHeight / 2);
             final leftBoardData = TimepillarBoard.positionTimepillarCards(
               eventOccasions: showCategories
                   ? events
@@ -134,6 +137,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                   : <ActivityOccasion>[],
               args: timepillarArguments,
               timepillarSide: TimepillarSide.left,
+              timelineOffset: timelineOffset,
             );
             final rightBoardData = TimepillarBoard.positionTimepillarCards(
               eventOccasions: (showCategories
@@ -143,6 +147,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                   .toList(),
               args: timepillarArguments,
               timepillarSide: TimepillarSide.right,
+              timelineOffset: timelineOffset,
             );
 
             // Anchor is the starting point of the central sliver (timepillar).
@@ -171,7 +176,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                   timepillarState.calendarType == DayCalendarType.oneTimepillar
                       ? measures.hourHeight * dayParts.morning.inHours
                       : 0,
-              getNowOffset: (now) => nowOffset(now),
+              getNowOffset: getNowOffset,
               inViewMargin: timeToPixels(
                 0,
                 minutesPerDotDuration.inMinutes,
@@ -231,13 +236,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                                         startDate: measures.interval.start,
                                         endDate: measures.interval.end)) {
                                       return Timeline(
-                                        top: currentDotMidPosition(
-                                              now,
-                                              measures,
-                                              topMargin: topMargin,
-                                            ) -
-                                            layout.timepillar.timeLineHeight /
-                                                2,
+                                        top: timelineOffset,
                                         width: boxConstraints.maxWidth,
                                       );
                                     }

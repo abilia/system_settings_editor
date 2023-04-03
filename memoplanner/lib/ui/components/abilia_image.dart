@@ -74,15 +74,12 @@ class EventImage extends StatelessWidget {
               ),
             ),
           if (past)
-            AspectRatio(
-              aspectRatio: 1,
-              child: CrossOver(
-                style: nightMode
-                    ? CrossOverStyle.lightSecondary
-                    : CrossOverStyle.darkSecondary,
-                padding: crossPadding ??
-                    layout.eventImageLayout.fallbackCrossPadding,
-              ),
+            CrossOver(
+              style: nightMode
+                  ? CrossOverStyle.lightSecondary
+                  : CrossOverStyle.darkSecondary,
+              padding:
+                  crossPadding ?? layout.eventImageLayout.fallbackCrossPadding,
             ),
           if (signedOff)
             Padding(

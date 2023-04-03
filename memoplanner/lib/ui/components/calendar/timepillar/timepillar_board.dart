@@ -59,6 +59,7 @@ class TimepillarBoard extends StatelessWidget {
     required List<EventOccasion> eventOccasions,
     required TimepillarBoardDataArguments args,
     required TimepillarSide timepillarSide,
+    required double timelineOffset,
   }) {
     final measures = args.measures;
     final maxCardHeight = measures.imagePadding.vertical +
@@ -66,7 +67,7 @@ class TimepillarBoard extends StatelessWidget {
         measures.textPadding.top +
         args.textStyle.fontSize! *
             args.textStyle.height! *
-            TimepillarCard.defaultTitleLines;
+            TimepillarCard.maxTitleLines;
     final maxEndPos = args.topMargin +
         measures.timePillarHeight +
         args.bottomMargin +
@@ -83,6 +84,7 @@ class TimepillarBoard extends StatelessWidget {
               args: args,
               maxEndPos: maxEndPos,
               timepillarSide: timepillarSide,
+              timelineOffset: timelineOffset,
             )
           : eventOccasion is TimerOccasion
               ? _timerCard(
@@ -124,6 +126,7 @@ BoardCardGenerator _activityCard({
   required TimepillarBoardDataArguments args,
   required double maxEndPos,
   required TimepillarSide timepillarSide,
+  required double timelineOffset,
 }) {
   final decoration = getCategoryBoxDecoration(
     current: activityOccasion.occasion.isCurrent,
@@ -134,23 +137,15 @@ BoardCardGenerator _activityCard({
     zoom: args.measures.zoom,
     radius: args.measures.borderRadius,
   );
-  final contentHeight = args.measures.getContentHeight(
-    occasion: activityOccasion,
-    decoration: decoration,
-    textScaleFactor: args.textScaleFactor,
-    textStyle: args.textStyle,
-  );
   final cardPosition = CardPosition.calculate(
     eventOccasion: activityOccasion,
-    measures: args.measures,
-    topMargin: args.topMargin,
-    contentHeight: contentHeight,
+    args: args,
     maxEndPos: maxEndPos,
     hasSideDots: true,
+    occasion: activityOccasion,
+    decoration: decoration,
+    timelineOffset: timelineOffset,
   );
-  final titleLines = cardPosition.height > contentHeight
-      ? TimepillarCard.maxTitleLines
-      : TimepillarCard.defaultTitleLines;
 
   return BoardCardGenerator(
     top: cardPosition.top,
@@ -162,7 +157,6 @@ BoardCardGenerator _activityCard({
       timepillarSide: timepillarSide,
       args: args,
       decoration: decoration,
-      titleLines: titleLines,
     ),
   );
 }
@@ -181,20 +175,15 @@ BoardCardGenerator _timerCard({
     zoom: args.measures.zoom,
     radius: args.measures.borderRadius,
   );
-  final contentHeight = args.measures.getContentHeight(
-    occasion: timerOccasion,
-    decoration: decoration,
-    textScaleFactor: args.textScaleFactor,
-    textStyle: args.textStyle,
-  );
 
   final cardPos = CardPosition.calculate(
     eventOccasion: timerOccasion,
-    measures: args.measures,
-    topMargin: args.topMargin,
-    contentHeight: contentHeight,
+    args: args,
     maxEndPos: maxEndPos,
     hasSideDots: false,
+    occasion: timerOccasion,
+    decoration: decoration,
+    timelineOffset: 0,
   );
 
   return BoardCardGenerator(
@@ -211,18 +200,29 @@ BoardCardGenerator _timerCard({
 }
 
 class CardPosition {
-  final double top, height;
-  final int dots;
-  const CardPosition(this.top, this.height, this.dots);
+  final double top, height, contentHeight, contentOffset;
+  final int dots, titleLines;
+
+  const CardPosition({
+    required this.top,
+    required this.height,
+    required this.contentHeight,
+    required this.contentOffset,
+    required this.dots,
+    required this.titleLines,
+  });
 
   factory CardPosition.calculate({
     required EventOccasion eventOccasion,
-    required TimepillarMeasures measures,
-    required double topMargin,
-    required double contentHeight,
+    required TimepillarBoardDataArguments args,
     required double maxEndPos,
     required bool hasSideDots,
+    required EventOccasion occasion,
+    required BoxDecoration decoration,
+    required double timelineOffset,
   }) {
+    final measures = args.measures;
+    final topMargin = args.topMargin;
     final interval = measures.interval;
     final minuteStartPosition =
         eventOccasion.start.roundToMinute(minutesPerDot, roundingMinute);
@@ -239,16 +239,40 @@ class CardPosition {
             measures.topOffset(minuteStartPosition);
 
     final endTime = endsAfterInterval ? interval.end : eventOccasion.end;
-    final dots = hasSideDots
-        ? endTime.difference(startTime).inDots(minutesPerDot, roundingMinute)
-        : 0;
+    final duration = endTime.difference(startTime);
+    final dots =
+        hasSideDots ? duration.inDots(minutesPerDot, roundingMinute) : 0;
     final dotHeight = dots * measures.dotDistance;
+
+    final titleLines = duration.inMinutes >= 60
+        ? TimepillarCard.maxTitleLines
+        : TimepillarCard.defaultTitleLines;
+
+    final contentHeight = args.measures.getContentHeight(
+      occasion: occasion,
+      decoration: decoration,
+      textScaleFactor: args.textScaleFactor,
+      textStyle: args.textStyle,
+      titleLines: titleLines,
+    );
+
     var height = max(dotHeight, contentHeight);
     if (topOffset + height > maxEndPos) {
       height = maxEndPos - topOffset;
     }
     final top = topOffset + topMargin + measures.topPadding;
-    return CardPosition(top, height, dots);
+
+    final contentOffset = (timelineOffset - top - args.measures.dotDistance / 2)
+        .clamp(0.0, height - contentHeight);
+
+    return CardPosition(
+      top: top,
+      height: height,
+      contentHeight: contentHeight,
+      contentOffset: contentOffset,
+      dots: dots,
+      titleLines: titleLines,
+    );
   }
 }
 
