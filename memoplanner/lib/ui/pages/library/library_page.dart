@@ -435,6 +435,7 @@ class LibraryFolder extends StatelessWidget {
       child: Padding(
         padding: layout.libraryPage.contentPadding,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
               title,
