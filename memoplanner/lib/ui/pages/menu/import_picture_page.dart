@@ -18,10 +18,9 @@ class ImportPicturePage extends StatelessWidget {
         imageCallback: (selectedImage) async {
           await Navigator.of(context).maybePop(selectedImage);
         },
-        onCancel: () => {
-          Navigator.of(context)
-            ..pop()
-            ..maybePop()
+        onCancel: () async {
+          Navigator.of(context).pop();
+          await Navigator.of(context).maybePop();
         },
       ),
       bottomNavigationBar: const BottomNavigation(

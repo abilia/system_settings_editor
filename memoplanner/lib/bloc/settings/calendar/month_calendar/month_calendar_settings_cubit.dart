@@ -11,5 +11,6 @@ class MonthCalendarSettingsCubit extends Cubit<MonthCalendarSettings> {
 
   void changeMonthCalendarSettings(MonthCalendarSettings settings) =>
       emit(settings);
-  void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
+  Future<void> save() =>
+      genericCubit.genericUpdated(state.memoplannerSettingData);
 }

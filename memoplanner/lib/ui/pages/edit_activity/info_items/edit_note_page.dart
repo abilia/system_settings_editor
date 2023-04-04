@@ -61,7 +61,7 @@ class _EditNotePageState extends State<EditNotePage> {
           backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: OkButton(
             onPressed: _textEditingController.text.isNotEmpty
-                ? () =>
+                ? () async =>
                     Navigator.of(context).maybePop(_textEditingController.text)
                 : null,
           ),

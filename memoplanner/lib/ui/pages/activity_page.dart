@@ -107,7 +107,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                 t.alarm,
                 activity.alarm.iconData(),
                 key: TestKey.editAlarm,
-                onPressed: () => _alarmButtonPressed(
+                onPressed: () async => _alarmButtonPressed(
                   context,
                   activityDay,
                 ),
@@ -116,7 +116,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
               TextAndOrIconActionButtonLight(
                 t.delete,
                 AbiliaIcons.deleteAllClear,
-                onPressed: () => _deleteButtonPressed(
+                onPressed: () async => _deleteButtonPressed(
                   context,
                   activity,
                 ),
@@ -126,7 +126,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
               Translator.of(context).translate.close,
               AbiliaIcons.navigationPrevious,
               key: TestKey.activityBackButton,
-              onPressed: () => Navigator.of(context).maybePop(),
+              onPressed: () async => Navigator.of(context).maybePop(),
             ),
           ]
               .map((b) => [const Spacer(), b, const Spacer()])
@@ -256,9 +256,9 @@ class EditActivityButton extends StatelessWidget {
   Widget build(BuildContext context) => TextAndOrIconActionButtonLight(
         Translator.of(context).translate.edit,
         AbiliaIcons.edit,
-        onPressed: () {
+        onPressed: () async {
           final authProviders = copiedAuthProviders(context);
-          Navigator.of(context).push(
+          await Navigator.of(context).push(
             PersistentMaterialPageRoute(
               builder: (_) => MultiBlocProvider(
                 providers: [

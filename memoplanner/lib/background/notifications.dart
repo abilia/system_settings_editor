@@ -29,16 +29,18 @@ FlutterLocalNotificationsPlugin ensureNotificationPluginInitialized() {
   if (pluginInstance != null) return pluginInstance;
   _log.finer('initialize notification plugin... ');
   pluginInstance = FlutterLocalNotificationsPlugin();
-  pluginInstance.initialize(
-    const InitializationSettings(
-      android: AndroidInitializationSettings('icon_notification'),
-      iOS: DarwinInitializationSettings(
-        requestSoundPermission: false,
-        requestBadgePermission: false,
-        requestAlertPermission: false,
+  unawaited(
+    pluginInstance.initialize(
+      const InitializationSettings(
+        android: AndroidInitializationSettings('icon_notification'),
+        iOS: DarwinInitializationSettings(
+          requestSoundPermission: false,
+          requestBadgePermission: false,
+          requestAlertPermission: false,
+        ),
       ),
+      onDidReceiveNotificationResponse: onNotification,
     ),
-    onDidReceiveNotificationResponse: onNotification,
   );
   _log.finer('notification plugin initialize');
   return notificationsPluginInstance = pluginInstance;

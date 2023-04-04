@@ -1,3 +1,5 @@
+// ignore_for_file: discarded_futures
+
 import 'package:auth/auth.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:calendar/all.dart';
@@ -448,7 +450,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
         BlocProvider<AuthenticationBloc>(
           create: (context) => AuthenticationBloc(
             userRepository: context.read<UserRepository>(),
-            onLogout: () => Future.wait<void>(
+            onLogout: () async => Future.wait<void>(
               [
                 DatabaseRepository.clearAll(GetIt.I<Database>()),
                 GetIt.I<SeagullLogger>().sendLogsToBackend(),

@@ -28,7 +28,7 @@ mixin ActivityNavigation {
       ),
     );
     if (basicActivityData is BasicActivityDataItem) {
-      _navigateToActivityWizard(
+      await _navigateToActivityWizard(
         authProviders: authProviders,
         navigator: navigator,
         defaultsSettings: defaultsSettings,
@@ -111,7 +111,7 @@ mixin ActivityNavigation {
         ),
       ),
     );
-    if (activityCreated == true) navigator.maybePop();
+    if (activityCreated == true) await navigator.maybePop();
   }
 }
 

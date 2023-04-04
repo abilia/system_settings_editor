@@ -29,6 +29,7 @@ class AvailableForCubit extends Cubit<AvailableForState> {
         ),
       ),
     );
+    unawaited(supportPersonsCubit.loadSupportPersons());
   }
 
   @override

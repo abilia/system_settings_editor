@@ -41,9 +41,9 @@ class DayCalendarSettingsPage extends StatelessWidget {
             backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: Builder(
               builder: (context) => OkButton(
-                onPressed: () {
-                  context.read<DayCalendarSettingsCubit>().save();
+                onPressed: () async {
                   Navigator.of(context).pop();
+                  await context.read<DayCalendarSettingsCubit>().save();
                 },
               ),
             ),

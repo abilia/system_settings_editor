@@ -50,5 +50,5 @@ class PermissionCubit extends Cubit<PermissionState> with Info {
     },
   );
 
-  void checkAll() => checkStatusForPermissions(allPermissions);
+  Future<void> checkAll() => checkStatusForPermissions(allPermissions);
 }

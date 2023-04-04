@@ -20,5 +20,6 @@ class AddActivitySettingsCubit extends Cubit<AddActivitySettings> {
       change(state.copyWith(stepByStep: settings));
   void editSettings(EditActivitySettings settings) =>
       change(state.copyWith(editActivity: settings));
-  void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
+  Future<void> save() =>
+      genericCubit.genericUpdated(state.memoplannerSettingData);
 }

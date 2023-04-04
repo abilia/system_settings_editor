@@ -21,15 +21,15 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
           ),
         ) {
     _activityBlocSubscription = activitiesBloc.stream.listen(
-      (_) => _updateState(),
+      (_) async => _updateState(),
     );
     _clockBlocSubscription = clockBloc.stream.listen(
-      (_) => _updateState(),
+      (_) async => _updateState(),
     );
     _alarmCubitSubscription = alarmCubit.stream
         .whereType<NewAlarm>()
         .listen((alarm) => setCurrentActivity(alarm.activityDay));
-    _updateState();
+    unawaited(_updateState());
   }
 
   final ActivityRepository activityRepository;

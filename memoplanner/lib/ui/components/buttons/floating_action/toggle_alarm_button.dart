@@ -30,7 +30,7 @@ class ToggleAlarmButtonActive extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconActionButton(
       style: actionButtonStyleRed,
-      onPressed: () => context.read<GenericCubit>().genericUpdated(
+      onPressed: () async => context.read<GenericCubit>().genericUpdated(
         [
           MemoplannerSettingData.fromData(
             data: 0,
@@ -54,25 +54,27 @@ class ToggleAlarmButtonInactive extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconActionButtonBlack(
-      onPressed: () {
-        showViewDialog(
-          context: context,
-          builder: (context) => WarningDialog(
-            text: Translator.of(context).translate.alertAlarmsDisabled,
-          ),
-          routeSettings: (WarningDialog).routeSetting(
-            properties: {'reason': 'Alarms disabled until midnight'},
-          ),
-        );
-        context.read<GenericCubit>().genericUpdated(
-          [
-            MemoplannerSettingData.fromData(
-              data: now.onlyDays().nextDay().millisecondsSinceEpoch,
-              identifier: AlarmSettings.alarmsDisabledUntilKey,
+      onPressed: () async => Future.wait(
+        [
+          showViewDialog(
+            context: context,
+            builder: (context) => WarningDialog(
+              text: Translator.of(context).translate.alertAlarmsDisabled,
             ),
-          ],
-        );
-      },
+            routeSettings: (WarningDialog).routeSetting(
+              properties: {'reason': 'Alarms disabled until midnight'},
+            ),
+          ),
+          context.read<GenericCubit>().genericUpdated(
+            [
+              MemoplannerSettingData.fromData(
+                data: now.onlyDays().nextDay().millisecondsSinceEpoch,
+                identifier: AlarmSettings.alarmsDisabledUntilKey,
+              ),
+            ],
+          ),
+        ],
+      ),
       ttsData: Translator.of(context).translate.disableAlarms,
       child: const Icon(AbiliaIcons.handiAlarmVibration),
     );

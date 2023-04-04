@@ -8,5 +8,6 @@ class MenuSettingsCubit extends Cubit<MenuSettings> {
     this.genericCubit,
   ) : super(initial);
   void change(MenuSettings settings) => emit(settings);
-  void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
+  Future<void> save() =>
+      genericCubit.genericUpdated(state.memoplannerSettingData);
 }

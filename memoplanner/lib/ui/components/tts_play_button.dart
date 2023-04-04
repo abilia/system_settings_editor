@@ -71,7 +71,7 @@ class _TtsPlayButtonState extends State<_TtsPlayButton> {
             child: IconActionButton(
               key: TestKey.ttsPlayButton,
               style: widget.buttonStyle ?? actionButtonStyleDark,
-              onPressed: () => ttsIsPlaying ? _stop() : _play(),
+              onPressed: () async => ttsIsPlaying ? _stop() : _play(),
               child: Icon(
                 ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
               ),

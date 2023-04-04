@@ -73,7 +73,7 @@ class _SkipStartupGuide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => context.read<StartupCubit>().startGuideDone(),
+      onTap: () async => context.read<StartupCubit>().startGuideDone(),
       child: const Text('Skip startup guide >'),
     );
   }

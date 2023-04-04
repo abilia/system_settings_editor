@@ -34,10 +34,9 @@ class SelectPicturePage extends StatelessWidget {
           await Navigator.of(context).maybePop(selectedImage);
         },
         selectedImage: selectedImage,
-        onCancel: () => {
-          Navigator.of(context)
-            ..pop()
-            ..maybePop()
+        onCancel: () async {
+          Navigator.of(context).pop();
+          await Navigator.of(context).maybePop();
         },
       ),
       bottomNavigationBar: const BottomNavigation(
@@ -219,7 +218,7 @@ class ImageSourceWidget extends StatelessWidget {
                 ),
                 child: InfoButton(
                   key: Key('$imageSource$permission'),
-                  onTap: () => showViewDialog(
+                  onTap: () async => showViewDialog(
                     useSafeArea: false,
                     context: context,
                     builder: (context) => PermissionInfoDialog(

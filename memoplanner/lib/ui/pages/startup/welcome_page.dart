@@ -34,12 +34,10 @@ class WelcomePage extends StatelessWidget {
             width: layout.startupPage.welcomeButtonWidth,
             child: TextButton(
               style: startPageButton,
-              onPressed: () {
-                pageController.nextPage(
-                  duration: StartupGuidePage.pageDuration,
-                  curve: StartupGuidePage.curve,
-                );
-              },
+              onPressed: () async => pageController.nextPage(
+                duration: StartupGuidePage.pageDuration,
+                curve: StartupGuidePage.curve,
+              ),
               child: Text(
                 t.start,
                 key: TestKey.startWelcomeGuide,

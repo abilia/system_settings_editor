@@ -45,7 +45,7 @@ class MemoplannerSettingsBloc
       await _mapMemoplannerSettingsFailed(emit);
     }
     if (event is SettingsUpdateEvent) {
-      genericCubit?.genericUpdated([event.settingData]);
+      await genericCubit?.genericUpdated([event.settingData]);
     }
   }
 

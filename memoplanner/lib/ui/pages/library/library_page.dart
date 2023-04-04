@@ -147,7 +147,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                     layout.libraryPage.backButtonSize,
                     iconSize: layout.libraryPage.backButtonIconSize,
                   ),
-                  onPressed: () => back(context, sortableArchiveState),
+                  onPressed: () async => back(context, sortableArchiveState),
                   child: const Icon(AbiliaIcons.navigationPrevious),
                 ),
                 SizedBox(width: layout.formPadding.largeHorizontalItemDistance),

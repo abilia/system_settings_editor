@@ -84,10 +84,10 @@ class FullDayActivitiesButton extends StatelessWidget {
     return Padding(
       padding: layout.commonCalendar.fullDayButtonPadding,
       child: IconActionButton(
-        onPressed: () {
+        onPressed: () async {
           final authProviders = copiedAuthProviders(context);
 
-          Navigator.of(context).push(
+          await Navigator.of(context).push(
             ActivityRootPageRouteBuilder(
               pageBuilder: (_, animation, secondaryAnimation) =>
                   MultiBlocProvider(

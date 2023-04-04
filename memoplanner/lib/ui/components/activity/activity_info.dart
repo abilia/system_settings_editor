@@ -105,7 +105,7 @@ class ActivityInfo extends StatelessWidget with ActivityMixin {
           Padding(
             padding: layout.activityPage.checkButtonPadding,
             child: CheckButton(
-              onPressed: () => checkConfirmation(context, activityDay),
+              onPressed: () async => checkConfirmation(context, activityDay),
             ),
           ),
       ],

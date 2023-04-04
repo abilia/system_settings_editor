@@ -213,7 +213,7 @@ class AddNewQuestionButton extends StatelessWidget {
         focusElevation: 0,
         highlightElevation: 0,
         hoverElevation: 0,
-        onPressed: () => _handleNewQuestion(context),
+        onPressed: () async => _handleNewQuestion(context),
         child: Row(
           children: [
             Padding(
@@ -262,7 +262,7 @@ class EditNoteWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Expanded(
         child: GestureDetector(
-          onTap: () => editText(context, infoItem),
+          onTap: () async => editText(context, infoItem),
           child: Container(
             decoration: whiteBoxDecoration,
             child: NoteBlock(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/background/all.dart';
@@ -42,7 +44,7 @@ class AlarmListener extends StatelessWidget {
             final hash = state.stopAlarmSoundKey;
             if (hash != null) {
               _log.info('canceling alarm with id: $hash');
-              notificationPlugin.cancel(hash);
+              unawaited(notificationPlugin.cancel(hash));
             }
             final stackId = state.popAlarmKey;
             if (stackId != null) {

@@ -71,7 +71,7 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
                               onTapEdit: onTapEdit != null
                                   ? () => onTapEdit(context, sortable)
                                   : null,
-                              onTapDelete: () =>
+                              onTapDelete: () async =>
                                   _onDeleteItem(context, sortable),
                               onTapReorder: (direction) => context
                                   .read<SortableArchiveCubit<T>>()

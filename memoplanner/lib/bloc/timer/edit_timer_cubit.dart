@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -20,9 +22,9 @@ class EditTimerCubit extends Cubit<EditTimerState> {
             ? EditTimerState.initial()
             : EditTimerState.fromTemplate(basicTimer));
 
-  void start() {
+  Future<void> start() {
     final timer = save();
-    timerCubit.addTimer(
+    return timerCubit.addTimer(
       timer,
       state.metaData,
     );

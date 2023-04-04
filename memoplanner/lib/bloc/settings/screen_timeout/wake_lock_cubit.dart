@@ -25,8 +25,8 @@ class WakeLockCubit extends Cubit<WakeLockState> {
     // TODO Remove in 4.3
     if (!settingsDb.keepScreenOnWhileChargingSet) {
       settingsStream.whereType<MemoplannerSettingsLoaded>().take(1).listen(
-        (state) {
-          setKeepScreenOnWhileCharging(
+        (state) async {
+          await setKeepScreenOnWhileCharging(
             state.keepScreenAwake.keepScreenOnWhileCharging,
           );
           if (state.keepScreenAwake.keepScreenOnAlways) {

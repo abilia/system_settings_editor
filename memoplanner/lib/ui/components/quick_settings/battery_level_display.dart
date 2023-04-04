@@ -12,6 +12,7 @@ class BatteryLevel extends StatelessWidget {
     return StreamBuilder(
       stream: battery.onBatteryStateChanged,
       builder: (context, _) => FutureBuilder<List<dynamic>>(
+        // ignore: discarded_futures
         future: Future.wait([battery.batteryLevel, battery.batteryState]),
         builder: (context, snapshot) {
           final batteryLevel = snapshot.data?[0] ?? 0;

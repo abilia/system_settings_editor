@@ -56,9 +56,7 @@ class _CodeProtectPageState extends State<CodeProtectPage> {
             PinCodeWidget(
               controller: controller,
               fieldMessage: '${translate.enterYourCodeToAccess} ${widget.name}',
-              onEditingComplete: () {
-                _verifyCode();
-              },
+              onEditingComplete: () async => _verifyCode(),
             ),
             SizedBox(height: layout.formPadding.groupBottomDistance),
           ],

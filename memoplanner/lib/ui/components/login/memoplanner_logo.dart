@@ -23,7 +23,7 @@ class MEMOplannerLogoHiddenBackendSwitch extends StatelessWidget {
             child: const AbiliaProgressIndicator(),
           )
         : GestureDetector(
-            onLongPress: () => showDialog(
+            onLongPress: () async => showDialog(
               context: context,
               builder: (context) => const BackendSwitcherDialog(),
             ),

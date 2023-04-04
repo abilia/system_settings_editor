@@ -76,7 +76,7 @@ class PageTwoVoiceSupport extends StatelessWidget {
               SizedBox(
                 width: layout.startupPage.pageTwoButtonWidth,
                 child: IconAndTextButton(
-                  onPressed: () => pageController.previousPage(
+                  onPressed: () async => pageController.previousPage(
                     duration: StartupGuidePage.pageDuration,
                     curve: StartupGuidePage.curve,
                   ),
@@ -92,9 +92,8 @@ class PageTwoVoiceSupport extends StatelessWidget {
                 width: layout.startupPage.pageTwoButtonWidth,
                 child: IconAndTextButton(
                   key: TestKey.finishWelcomeGuide,
-                  onPressed: () {
-                    context.read<StartupCubit>().startGuideDone();
-                  },
+                  onPressed: () async =>
+                      context.read<StartupCubit>().startGuideDone(),
                   text: t.finish,
                   icon: AbiliaIcons.ok,
                   style: textButtonStyleGreen,

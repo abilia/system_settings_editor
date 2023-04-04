@@ -17,6 +17,7 @@ class WebViewDialog extends StatelessWidget {
         iconData: AbiliaIcons.selectLanguage,
       ),
       body: WebViewWidget(
+        // ignore: discarded_futures
         controller: WebViewController()..loadRequest(Uri.parse(url)),
       ),
       expanded: true,

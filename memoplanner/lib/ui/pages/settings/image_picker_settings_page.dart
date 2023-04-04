@@ -33,8 +33,9 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
         backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: Builder(
           builder: (context) => OkButton(
-            onPressed: () {
-              context.read<GenericCubit>().genericUpdated(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await context.read<GenericCubit>().genericUpdated(
                 [
                   MemoplannerSettingData.fromData(
                     data: _displayMyPhotos,
@@ -50,7 +51,6 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
                   ),
                 ],
               );
-              Navigator.of(context).pop();
             },
           ),
         ),

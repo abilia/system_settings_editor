@@ -21,7 +21,7 @@ class AvailableForPage extends StatelessWidget {
         forwardNavigationWidget:
             BlocBuilder<AvailableForCubit, AvailableForState>(
           builder: (context, state) => OkButton(
-            onPressed: () => Navigator.of(context).maybePop(state),
+            onPressed: () async => Navigator.of(context).maybePop(state),
           ),
         ),
       ),

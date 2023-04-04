@@ -33,14 +33,16 @@ class ErrorPopupListener extends StatelessWidget {
     BuildContext context,
   ) async {
     final translate = Translator.of(context).translate;
-    void showError(String msg, Set<SaveError> saveErrors) => showViewDialog(
-        context: context,
-        builder: (context) => ErrorDialog(text: msg),
-        routeSettings: (ErrorDialog).routeSetting(properties: {
-          'save errors': saveErrors.map((e) => e.name).toList(),
-        }));
+    Future<void> showError(String msg, Set<SaveError> saveErrors) async =>
+        showViewDialog(
+            context: context,
+            builder: (context) => ErrorDialog(text: msg),
+            routeSettings: (ErrorDialog).routeSetting(properties: {
+              'save errors': saveErrors.map((e) => e.name).toList(),
+            }));
 
-    if (errors.containsAll({SaveError.noTitleOrImage, SaveError.noStartTime})) {
+    if (errors.containsAll(
+        <SaveError>{SaveError.noTitleOrImage, SaveError.noStartTime})) {
       return showError(translate.missingTitleOrImageAndStartTime, errors);
     } else if (errors.contains(SaveError.noTitleOrImage)) {
       return showError(translate.missingTitleOrImage, errors);

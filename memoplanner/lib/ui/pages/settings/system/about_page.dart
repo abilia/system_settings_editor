@@ -180,6 +180,7 @@ class AboutDeviceColumn extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final textTheme = Theme.of(context).textTheme;
     return FutureBuilder(
+      // ignore: discarded_futures
       future: deviceInfo(),
       builder: (context, snapshot) {
         final deviceInfo = snapshot.data;
@@ -207,6 +208,7 @@ class AboutDeviceColumn extends StatelessWidget {
                     translate.iosVersion, deviceInfo.systemVersion ?? ''),
             ],
             FutureBuilder(
+              // ignore: discarded_futures
               future: GetIt.I<DeviceDb>().getSupportId(),
               builder: (context, snapshot) => DoubleText(
                 translate.supportId,

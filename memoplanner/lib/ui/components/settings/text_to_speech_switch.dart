@@ -19,7 +19,7 @@ class TextToSpeechSwitch extends StatelessWidget {
           ),
           SizedBox(width: layout.formPadding.horizontalItemDistance),
           InfoButton(
-            onTap: () => showViewDialog(
+            onTap: () async => showViewDialog(
               useSafeArea: false,
               context: context,
               builder: (context) => const LongPressInfoDialog(),

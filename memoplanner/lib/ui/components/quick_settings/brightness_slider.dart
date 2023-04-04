@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:memoplanner/i18n/app_localizations.dart';
@@ -22,13 +24,13 @@ class _BrightnessSliderState extends State<BrightnessSlider>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    initBrightness();
+    unawaited(initBrightness());
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      initBrightness();
+      unawaited(initBrightness());
     }
   }
 
@@ -55,9 +57,9 @@ class _BrightnessSliderState extends State<BrightnessSlider>
             leading: const Icon(AbiliaIcons.brightnessNormal),
             value: _brightness,
             onChanged: (double b) {
-              setState(() {
+              setState(() async {
                 _brightness = b;
-                SystemSettingsEditor.setBrightness(b);
+                await SystemSettingsEditor.setBrightness(b);
               });
             }),
       ],

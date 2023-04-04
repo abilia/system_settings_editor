@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -104,13 +106,13 @@ abstract class _VolumeSliderState extends State<_VolumeSlider>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _initVolume();
+    unawaited(_initVolume());
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      _initVolume();
+      unawaited(_initVolume());
     }
   }
 

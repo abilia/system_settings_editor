@@ -41,9 +41,9 @@ class StarterSetDialog extends StatelessWidget {
         onPressed: onNext,
       ),
       forwardNavigationWidget: YesButton(
-        onPressed: () {
+        onPressed: () async {
           final language = Translator.of(context).locale.languageCode;
-          context.read<SortableBloc>().addStarter(language);
+          await context.read<SortableBloc>().addStarter(language);
           onNext();
         },
       ),

@@ -46,7 +46,7 @@ class SoundBloc extends Bloc<SoundEvent, SoundState> {
           .asyncExpand(mapper),
     );
     on<SoundCallbackEvent>(_onCallback, transformer: droppable());
-    _resetAudioPlayer();
+    unawaited(_resetAudioPlayer());
   }
 
   Future _onEvent(

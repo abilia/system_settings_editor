@@ -32,10 +32,10 @@ class TimerTimepillarCard extends TimepillarCard {
       child: Tts.fromSemantics(
         timer.semanticsProperties(context),
         child: GestureDetector(
-          onTap: () {
+          onTap: () async {
             final authProviders = copiedAuthProviders(context);
             final day = context.read<DayPickerBloc>().state.day;
-            Navigator.push(
+            await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => MultiBlocProvider(

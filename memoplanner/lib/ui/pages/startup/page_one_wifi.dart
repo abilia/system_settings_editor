@@ -70,12 +70,10 @@ class PageOneWifi extends StatelessWidget {
                 child: TextButton(
                   key: TestKey.nextWelcomeGuide,
                   style: textButtonStyleGreen,
-                  onPressed: () {
-                    pageController.nextPage(
-                      duration: StartupGuidePage.pageDuration,
-                      curve: StartupGuidePage.curve,
-                    );
-                  },
+                  onPressed: () async => pageController.nextPage(
+                    duration: StartupGuidePage.pageDuration,
+                    curve: StartupGuidePage.curve,
+                  ),
                   child: Text(
                     t.next,
                   ),

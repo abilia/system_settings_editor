@@ -15,16 +15,18 @@ class PermissionPickField extends StatelessWidget {
             text: Text(Translator.of(context).translate.permissions),
             onTap: () async {
               final authProviders = copiedAuthProviders(context);
-              context.read<PermissionCubit>().checkAll();
-              await Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => MultiBlocProvider(
-                    providers: authProviders,
-                    child: const PermissionsPage(),
+              await Future.wait([
+                context.read<PermissionCubit>().checkAll(),
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => MultiBlocProvider(
+                      providers: authProviders,
+                      child: const PermissionsPage(),
+                    ),
+                    settings: (PermissionsPage).routeSetting(),
                   ),
-                  settings: (PermissionsPage).routeSetting(),
                 ),
-              );
+              ]);
             },
           ),
           if (state.importantPermissionMissing)

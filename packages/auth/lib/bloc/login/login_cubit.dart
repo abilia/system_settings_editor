@@ -51,9 +51,8 @@ class LoginCubit extends Cubit<LoginState> {
     return _login();
   }
 
-  void licenseExpiredWarningConfirmed() {
-    _login(licenseExpiredConfirmed: true);
-  }
+  Future<void> licenseExpiredWarningConfirmed() =>
+      _login(licenseExpiredConfirmed: true);
 
   Future<void> _login({bool licenseExpiredConfirmed = false}) async {
     emit(state.loading());
@@ -74,8 +73,8 @@ class LoginCubit extends Cubit<LoginState> {
         pushToken: pushToken,
         time: clockBloc.state,
       );
-      userRepository.persistLoginInfo(loginInfo);
-      _checkValidLicense(licenseExpiredConfirmed);
+      await userRepository.persistLoginInfo(loginInfo);
+      await _checkValidLicense(licenseExpiredConfirmed);
     } catch (error) {
       final authenticationFailureCause = _getAuthenticationFailureCause(error);
       emit(state.failure(cause: authenticationFailureCause));

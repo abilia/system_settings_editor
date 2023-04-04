@@ -39,7 +39,7 @@ class LicenseErrorDialog extends StatelessWidget {
       backNavigationWidget: LightButton(
         text: Translator.of(context).translate.toLogin,
         icon: AbiliaIcons.openDoor,
-        onPressed: () => Navigator.of(context).maybePop(false),
+        onPressed: () async => Navigator.of(context).maybePop(false),
       ),
     );
   }

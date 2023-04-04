@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/logging/all.dart';
@@ -9,7 +11,7 @@ part 'sessions_state.dart';
 class SessionsCubit extends Cubit<SessionsState> {
   SessionsCubit({required this.sessionsRepository})
       : super(SessionsState(sessionsRepository.hasMP4Session())) {
-    _initialize();
+    unawaited(_initialize());
   }
 
   final SessionsRepository sessionsRepository;

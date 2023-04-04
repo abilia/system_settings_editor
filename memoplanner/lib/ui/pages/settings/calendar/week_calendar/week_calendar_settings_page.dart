@@ -38,9 +38,9 @@ class WeekCalendarSettingsPage extends StatelessWidget {
             backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: Builder(
               builder: (context) => OkButton(
-                onPressed: () {
-                  context.read<WeekCalendarSettingsCubit>().save();
+                onPressed: () async {
                   Navigator.of(context).pop();
+                  await context.read<WeekCalendarSettingsCubit>().save();
                 },
               ),
             ),

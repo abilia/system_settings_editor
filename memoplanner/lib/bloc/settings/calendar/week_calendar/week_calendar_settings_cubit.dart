@@ -11,5 +11,6 @@ class WeekCalendarSettingsCubit extends Cubit<WeekCalendarSettings> {
 
   void changeWeekCalendarSettings(WeekCalendarSettings weekCalendarSettings) =>
       emit(weekCalendarSettings);
-  void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
+  Future<void> save() =>
+      genericCubit.genericUpdated(state.memoplannerSettingData);
 }

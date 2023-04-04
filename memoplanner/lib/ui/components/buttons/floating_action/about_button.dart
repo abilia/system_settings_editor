@@ -6,7 +6,7 @@ class AboutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InfoButton(
-      onTap: () => showViewDialog(
+      onTap: () async => showViewDialog(
         context: context,
         wrapWithAuthProviders: false,
         builder: (_) => const AboutDialog(),

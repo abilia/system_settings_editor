@@ -14,13 +14,13 @@ class NewTimerWidget extends StatelessWidget with TimerNavigation {
           key: TestKey.newTimerChoice,
           leading: const Icon(AbiliaIcons.stopWatch),
           text: Text(t.newTimer),
-          onTap: () => navigateToEditTimerPage(context, authProviders),
+          onTap: () async => navigateToEditTimerPage(context, authProviders),
         ).pad(layout.templates.m1.withoutBottom),
         PickField(
           key: TestKey.basicTimerChoice,
           leading: const Icon(AbiliaIcons.basicTimers),
           text: Text(t.fromTemplate),
-          onTap: () => navigateToBasicTimerPage(context, authProviders),
+          onTap: () async => navigateToBasicTimerPage(context, authProviders),
         ).pad(m1ItemPadding),
       ],
     );

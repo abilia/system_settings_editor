@@ -96,7 +96,7 @@ class EditQuestionView extends StatelessWidget {
                 child: SortableToolbar(
                   disableUp: state.disableUp,
                   disableDown: state.disableDown,
-                  onTapEdit: () => _editQuestion(question, context),
+                  onTapEdit: () async => _editQuestion(question, context),
                   onTapDelete: context.read<EditChecklistCubit>().delete,
                   onTapReorder: context.read<EditChecklistCubit>().reorder,
                 ),
@@ -185,7 +185,7 @@ class QuestionView extends StatelessWidget {
                     if (question.hasImage)
                       InkWell(
                         borderRadius: borderRadius,
-                        onTap: () => _showImage(
+                        onTap: () async => _showImage(
                           question.fileId,
                           question.image,
                           context,

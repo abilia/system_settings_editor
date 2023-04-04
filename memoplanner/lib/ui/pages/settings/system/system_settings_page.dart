@@ -25,7 +25,7 @@ class SystemSettingsPage extends StatelessWidget {
               name: t.codeProtect,
             );
             if (accessGranted) {
-              navigator.push(
+              await navigator.push(
                 MaterialPageRoute(
                   builder: (_) => MultiBlocProvider(
                     providers: authProviders,
@@ -40,7 +40,7 @@ class SystemSettingsPage extends StatelessWidget {
         PickField(
           leading: const Icon(AbiliaIcons.speakText),
           text: Text(t.textToSpeech),
-          onTap: () => Navigator.of(context).push(
+          onTap: () async => Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) => MultiBlocProvider(
                 providers: copiedAuthProviders(context),
@@ -65,7 +65,7 @@ class SystemSettingsPage extends StatelessWidget {
               name: t.androidSettings,
             );
             if (accessGranted) {
-              AndroidIntents.openSettings();
+              await AndroidIntents.openSettings();
             }
           },
         ),

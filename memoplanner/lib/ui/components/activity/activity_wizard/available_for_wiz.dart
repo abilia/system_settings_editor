@@ -18,7 +18,7 @@ class AvailableForWiz extends StatelessWidget {
       title: translate.availableFor,
       body: BlocProvider<AvailableForCubit>(
         create: (context) => AvailableForCubit(
-          supportPersonsCubit: supportPersonsCubit..loadSupportPersons(),
+          supportPersonsCubit: supportPersonsCubit,
           availableFor: activity.availableFor,
           selectedSupportPersons: activity.secretExemptions,
         ),
