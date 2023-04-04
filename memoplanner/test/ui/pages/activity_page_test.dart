@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:seagull_fakes/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -524,6 +525,31 @@ void main() {
       expect(vibrateAlarmIconFinder, findsOneWidget);
     });
 
+    testWidgets(
+        'Past activity with image does not show crossover over the image',
+        (WidgetTester tester) async {
+      await mockNetworkImages(() async {
+        // Arrange
+        mockActivityDb.initWithActivity(
+          Activity.createNew(
+            startTime: startTime.subtract(1.hours()),
+            fileId: 'fileId',
+          ),
+        );
+        // Act
+        await navigateToActivityPage(tester);
+
+        // Assert - CrossOver only over AppBar and start time
+        expect(find.byType(CrossOver), findsNWidgets(2));
+        expect(
+          find.descendant(
+            of: find.byType(EventImage),
+            matching: find.byType(CrossOver),
+          ),
+          findsNothing,
+        );
+      });
+    });
     testWidgets('Alarm button shows correct icon sound and vibration',
         (WidgetTester tester) async {
       // Arrange
