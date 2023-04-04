@@ -50,11 +50,10 @@ class MenuPageLayoutLarge extends MenuPageLayoutMedium {
 }
 
 class MenuButtonsLayout {
-  final double size, spacing, iconSize, borderRadius;
+  final double spacing, iconSize, borderRadius;
   final EdgeInsets padding;
 
   const MenuButtonsLayout({
-    this.size = 112,
     this.spacing = 7,
     this.iconSize = 48,
     this.borderRadius = 12,
@@ -70,18 +69,16 @@ class MenuButtonLayoutMedium extends MenuButtonsLayout {
     double? borderRadius,
     EdgeInsets? padding,
   }) : super(
-          size: size ?? 235,
           spacing: spacing ?? 24,
           iconSize: iconSize ?? 96,
           borderRadius: borderRadius ?? 20,
-          padding: padding ?? const EdgeInsets.fromLTRB(4, 16, 4, 46),
+          padding: padding ?? const EdgeInsets.fromLTRB(4, 16, 4, 48),
         );
 }
 
 class MenuButtonLayoutLarge extends MenuButtonLayoutMedium {
   const MenuButtonLayoutLarge()
       : super(
-          size: 306,
           spacing: 40,
           iconSize: 128,
           padding: const EdgeInsets.fromLTRB(8, 24, 8, 58),
