@@ -574,19 +574,19 @@ packages:
     dependency: "direct main"
     description:
       path: flutter_local_notifications
-      ref: "flutter_local_notifications-v12.0.2-fork-3.1"
-      resolved-ref: "6cdad6d596e7130caebe089fe613e616ef8928f0"
+      ref: "flutter_local_notifications-v13.0.0-fork-3.2"
+      resolved-ref: a762289bebe5eae1437685ce7692443846e79c4f
       url: "https://github.com/abilia/flutter_local_notifications.git"
     source: git
-    version: "12.0.2"
+    version: "13.0.0"
   flutter_local_notifications_linux:
     dependency: transitive
     description:
       name: flutter_local_notifications_linux
-      sha256: "3c6d6db334f609a92be0c0915f40871ec56f5d2adf01e77ae364162c587c0ca8"
+      sha256: ccb08b93703aeedb58856e5637450bf3ffec899adb66dc325630b68994734b89
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0"
+    version: "3.0.0+1"
   flutter_local_notifications_platform_interface:
     dependency: transitive
     description:
