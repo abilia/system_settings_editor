@@ -104,7 +104,9 @@ Future<NotificationAlarm?> getOrAddPayloadToStream() async {
 
 Future<SeagullAnalytics> _initAnalytics(String supportId, String environment) =>
     SeagullAnalytics.init(
-      token: '814838948a0be3497bcce0421334edb2',
+      project: Config.release && environment == prod
+          ? MixpanelProject.memoProd
+          : MixpanelProject.sandbox,
       identifier: supportId,
       superProperties: {
         AnalyticsProperties.flavor: Config.flavor.name,

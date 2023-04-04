@@ -15,42 +15,70 @@ export 'analytics_events.dart';
 final _log = Logger('SeagullAnalytics');
 
 class SeagullAnalytics {
-  final Mixpanel? mixpanel;
+  Mixpanel? _mixpanel;
   final Map<String, dynamic> superProperties;
+  final String identifier;
 
-  const SeagullAnalytics(this.mixpanel, this.superProperties);
+  SeagullAnalytics(this._mixpanel, this.superProperties, this.identifier);
   SeagullAnalytics.empty()
-      : mixpanel = null,
-        superProperties = {};
+      : _mixpanel = null,
+        superProperties = {},
+        identifier = '';
 
   static Future<SeagullAnalytics> init({
-    required String token,
+    required MixpanelProject project,
     required String identifier,
     required Map<String, dynamic> superProperties,
   }) async {
-    final mixpanel = await Mixpanel.init(
-      token,
-      trackAutomaticEvents: true,
+    final mixpanel = await _init(
+      project: project,
+      identifier: identifier,
       superProperties: superProperties,
     );
-    mixpanel.identify(identifier);
     _log.fine(
       'initialized with identifier: $identifier '
       'and superProperties: $superProperties',
     );
-    return SeagullAnalytics(mixpanel, superProperties);
+    return SeagullAnalytics(mixpanel, superProperties, identifier);
+  }
+
+  static Future<Mixpanel> _init({
+    required MixpanelProject project,
+    required String identifier,
+    required Map<String, dynamic> superProperties,
+  }) async {
+    _log.fine(
+      'init mixpanel project ${project.name}, '
+      'identifier: $identifier, '
+      'and super properties: $superProperties',
+    );
+    final mixpanel = await Mixpanel.init(
+      project.token,
+      trackAutomaticEvents: true,
+      superProperties: superProperties,
+    );
+    mixpanel.identify(identifier);
+    return mixpanel;
+  }
+
+  Future<void> changeMixpanelProject(MixpanelProject project) async {
+    _mixpanel = await _init(
+      project: project,
+      identifier: identifier,
+      superProperties: superProperties,
+    );
   }
 
   void reset() {
-    mixpanel?.reset();
-    mixpanel?.registerSuperProperties(superProperties);
+    _mixpanel?.reset();
+    _mixpanel?.registerSuperProperties(superProperties);
     _log.info('reset');
   }
 
   void setBackend(String environment) {
     setSuperProperties(
       {AnalyticsProperties.environment: environment},
-      presistOnLogout: true,
+      persistOnLogout: true,
     );
     _log.fine('set backend $environment');
   }
@@ -61,18 +89,18 @@ class SeagullAnalytics {
       AnalyticsProperties.locale: '$locale',
       AnalyticsProperties.language: language,
     };
-    setSuperProperties(superProp, presistOnLogout: true);
+    setSuperProperties(superProp, persistOnLogout: true);
     _log.fine('locale set $superProp');
   }
 
   void setSuperProperties(
     Map<String, String> properties, {
-    bool presistOnLogout = false,
+    bool persistOnLogout = false,
   }) {
-    if (presistOnLogout) {
+    if (persistOnLogout) {
       superProperties.addAll(properties);
     }
-    mixpanel?.registerSuperProperties(properties);
+    _mixpanel?.registerSuperProperties(properties);
   }
 
   void trackNavigation({
@@ -92,8 +120,16 @@ class SeagullAnalytics {
   }) {
     _log.finer('tracking $eventName');
     _log.finer('$eventName props: $properties');
-    mixpanel?.track(eventName, properties: properties);
+    _mixpanel?.track(eventName, properties: properties);
   }
+}
+
+enum MixpanelProject {
+  sandbox(token: 'ec055a51cad7dbc9fa91ff5ac90cd09f'),
+  memoProd(token: '814838948a0be3497bcce0421334edb2');
+
+  const MixpanelProject({required this.token});
+  final String token;
 }
 
 enum NavigationAction {
