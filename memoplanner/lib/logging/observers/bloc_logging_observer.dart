@@ -1,9 +1,7 @@
-import 'dart:ui';
-
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/ui/all.dart';
 import 'package:repository_base/end_point.dart';
-import 'package:seagull_analytics/seagull_analytics.dart';
 
 class BlocLoggingObserver extends BlocObserver {
   BlocLoggingObserver(this.analytics);
@@ -47,10 +45,10 @@ class BlocLoggingObserver extends BlocObserver {
   }
 
   @override
-  void onChange(BlocBase bloc, Change change) {
+  Future<void> onChange(BlocBase bloc, Change change) async {
     super.onChange(bloc, change);
     if (bloc is Silent) return;
-    onChangeAnalytics(bloc, change);
+    await onChangeAnalytics(bloc, change);
     _log(bloc, change);
   }
 
@@ -86,8 +84,8 @@ class BlocLoggingObserver extends BlocObserver {
       final user = nextState.user;
       analytics.setSuperProperties(
         {
-          'user_type': user.type,
-          'user_language': user.language,
+          AnalyticsProperties.userType: user.type,
+          AnalyticsProperties.userLang: user.language,
         },
       );
     }
@@ -96,13 +94,24 @@ class BlocLoggingObserver extends BlocObserver {
     }
   }
 
-  void onChangeAnalytics(BlocBase bloc, Change change) {
-    final nextState = change.nextState;
-    if (bloc is BaseUrlCubit && nextState is String) {
-      analytics.setBackend(backendName(nextState));
+  Future<void> onChangeAnalytics(BlocBase bloc, Change change) async {
+    if (bloc is LocaleCubit && change is Change<Locale>) {
+      analytics.setLocale(change.nextState);
     }
-    if (bloc is LocaleCubit && nextState is Locale) {
-      analytics.setLocale(nextState);
+    if (bloc is BaseUrlCubit && change is Change<String>) {
+      await _backendChanged(change);
+    }
+  }
+
+  Future<void> _backendChanged(Change<String> change) async {
+    analytics.setBackend(backendName(change.nextState));
+    if (!Config.release) return;
+    if (change.nextState == prod) {
+      // Changed from sandbox to prod
+      await analytics.changeMixpanelProject(MixpanelProject.memoProd);
+    } else if (change.currentState == prod) {
+      // Changed from prod to sandbox
+      await analytics.changeMixpanelProject(MixpanelProject.sandbox);
     }
   }
 }

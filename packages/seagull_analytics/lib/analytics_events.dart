@@ -13,6 +13,8 @@ class AnalyticsProperties {
   static const environment = 'environment';
   static const locale = 'locale';
   static const language = 'language';
+  static const userType = 'user_type';
+  static const userLang = 'user_language';
 
   // navigation
   static const page = 'Page';
