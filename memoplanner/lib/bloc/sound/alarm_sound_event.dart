@@ -4,20 +4,23 @@ abstract class AlarmSoundEvent {
   const AlarmSoundEvent();
 }
 
-class PlaySoundAlarm extends AlarmSoundEvent {
+abstract class PlayAlarmSoundEvent extends AlarmSoundEvent {
   final Sound sound;
-  const PlaySoundAlarm(this.sound);
+  const PlayAlarmSoundEvent(this.sound);
 }
 
-class StopSoundAlarm extends AlarmSoundEvent {
-  const StopSoundAlarm();
+class PlayAlarmSound extends PlayAlarmSoundEvent {
+  const PlayAlarmSound(super.sound);
 }
 
-class RestartSoundAlarm extends AlarmSoundEvent {
-  final Sound sound;
-  const RestartSoundAlarm(this.sound);
+class PlayAlarmSoundAsMedia extends PlayAlarmSoundEvent {
+  const PlayAlarmSoundAsMedia(super.sound);
 }
 
-class SoundAlarmCompleted extends AlarmSoundEvent {
-  const SoundAlarmCompleted();
+class StopAlarmSound extends AlarmSoundEvent {
+  const StopAlarmSound();
+}
+
+class AlarmSoundCompleted extends AlarmSoundEvent {
+  const AlarmSoundCompleted();
 }

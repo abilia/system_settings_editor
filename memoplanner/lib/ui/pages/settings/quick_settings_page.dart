@@ -42,7 +42,7 @@ class QuickSettingsPage extends StatelessWidget {
                   AlarmVolumeSlider(
                     onVolumeSet: () async {
                       final alarmBloc = context.read<AlarmSoundBloc>();
-                      alarmBloc.add(const PlaySoundAlarm(Sound.Default));
+                      alarmBloc.add(const PlayAlarmSound(Sound.Default));
                     },
                   ),
                   SizedBox(height: layout.formPadding.groupBottomDistance),
@@ -50,7 +50,7 @@ class QuickSettingsPage extends StatelessWidget {
                   MediaVolumeSlider(
                     onVolumeSet: () async {
                       final alarmBloc = context.read<AlarmSoundBloc>();
-                      alarmBloc.add(const RestartSoundAlarm(Sound.Harpe));
+                      alarmBloc.add(const PlayAlarmSoundAsMedia(Sound.Harpe));
                     },
                   ),
                 ]),

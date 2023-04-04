@@ -20,48 +20,56 @@ class AlarmSoundBloc extends Bloc<AlarmSoundEvent, Sound?> {
     on<AlarmSoundEvent>(_onEvent,
         transformer: _throttle(SoundBloc.spamProtectionDelay));
     onPlayerCompletion = audioPlayer.onPlayerComplete
-        .listen((_) => add(const SoundAlarmCompleted()));
-    audioPlayer.setAudioContext(
-      const AudioContext(
+        .listen((_) => add(const AlarmSoundCompleted()));
+  }
+
+  AudioContext _getAudioContext([bool asAlarm = true]) => AudioContext(
         android: AudioContextAndroid(
           isSpeakerphoneOn: false,
           stayAwake: false,
           contentType: AndroidContentType.sonification,
-          usageType: AndroidUsageType.alarm,
+          usageType: asAlarm ? AndroidUsageType.alarm : AndroidUsageType.media,
           audioFocus: AndroidAudioFocus.gainTransient,
         ),
-        iOS: AudioContextIOS(
+        iOS: const AudioContextIOS(
           category: AVAudioSessionCategory.multiRoute,
           options: [
             AVAudioSessionOptions.defaultToSpeaker,
           ],
         ),
-      ),
-    );
-  }
+      );
 
   Future _onEvent(
     AlarmSoundEvent event,
     Emitter<Sound?> emit,
   ) async {
-    if (event is PlaySoundAlarm) {
-      await _playSound(event.sound, emit);
-    } else if (event is StopSoundAlarm) {
+    if (event is PlayAlarmSound) {
+      await _playSound(event, emit);
+    } else if (event is StopAlarmSound) {
       await _stopSound(emit);
-    } else if (event is RestartSoundAlarm) {
+    } else if (event is PlayAlarmSoundAsMedia) {
       await _stopSound(emit);
-      await _playSound(event.sound, emit);
-    } else if (event is SoundAlarmCompleted) {
+      await _playSound(event, emit);
+    } else if (event is AlarmSoundCompleted) {
       emit(null);
     }
   }
 
-  Future<void> _playSound(Sound sound, Emitter<Sound?> emit) async {
+  Future<void> _playSound(
+    PlayAlarmSoundEvent event,
+    Emitter<Sound?> emit,
+  ) async {
+    final sound = event.sound;
+    final asAlarm = event is! PlayAlarmSoundAsMedia;
+    final audioPlayer = this.audioPlayer;
     if (sound == Sound.Default) {
-      await FlutterRingtonePlayer.playNotification(asAlarm: true);
+      await FlutterRingtonePlayer.playNotification(asAlarm: asAlarm);
       await _stopSound(emit);
     } else {
-      await audioPlayer.play(AssetSource('sounds/${sound.fileName()}.mp3'));
+      await audioPlayer.play(
+        AssetSource('sounds/${sound.fileName()}.mp3'),
+        ctx: _getAudioContext(asAlarm),
+      );
       emit(sound);
     }
   }

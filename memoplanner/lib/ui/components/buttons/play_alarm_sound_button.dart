@@ -17,9 +17,9 @@ class PlayAlarmSoundButton extends StatelessWidget {
         onPressed: () {
           if (sound != Sound.NoSound) {
             if (state == sound) {
-              return context.read<AlarmSoundBloc>().add(const StopSoundAlarm());
+              return context.read<AlarmSoundBloc>().add(const StopAlarmSound());
             }
-            return context.read<AlarmSoundBloc>().add(PlaySoundAlarm(sound));
+            return context.read<AlarmSoundBloc>().add(PlayAlarmSound(sound));
           }
         },
         child: Icon(
