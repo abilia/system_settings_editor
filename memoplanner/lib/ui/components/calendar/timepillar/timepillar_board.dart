@@ -142,7 +142,6 @@ BoardCardGenerator _activityCard({
     args: args,
     maxEndPos: maxEndPos,
     hasSideDots: true,
-    occasion: activityOccasion,
     decoration: decoration,
     timelineOffset: timelineOffset,
   );
@@ -181,7 +180,6 @@ BoardCardGenerator _timerCard({
     args: args,
     maxEndPos: maxEndPos,
     hasSideDots: false,
-    occasion: timerOccasion,
     decoration: decoration,
     timelineOffset: 0,
   );
@@ -217,7 +215,6 @@ class CardPosition {
     required TimepillarBoardDataArguments args,
     required double maxEndPos,
     required bool hasSideDots,
-    required EventOccasion occasion,
     required BoxDecoration decoration,
     required double timelineOffset,
   }) {
@@ -232,10 +229,14 @@ class CardPosition {
     final endsAfterInterval = minuteEndPosition.isAfter(interval.end);
     final startTime =
         startsBeforeInterval ? interval.start : eventOccasion.start;
+    final hour = minuteStartPosition.hour == 0 &&
+            eventOccasion.start.hour != 0 &&
+            interval.intervalPart != IntervalPart.night
+        ? 24
+        : minuteStartPosition.hour;
     final topOffset = startsBeforeInterval
         ? 0.0
-        : timeToPixels(minuteStartPosition.hour, minuteStartPosition.minute,
-                measures.dotDistance) -
+        : timeToPixels(hour, minuteStartPosition.minute, measures.dotDistance) -
             measures.topOffset(minuteStartPosition);
 
     final endTime = endsAfterInterval ? interval.end : eventOccasion.end;
@@ -249,7 +250,7 @@ class CardPosition {
         : TimepillarCard.defaultTitleLines;
 
     final contentHeight = args.measures.getContentHeight(
-      occasion: occasion,
+      occasion: eventOccasion,
       decoration: decoration,
       textScaleFactor: args.textScaleFactor,
       textStyle: args.textStyle,
@@ -263,7 +264,7 @@ class CardPosition {
     final top = topOffset + topMargin + measures.topPadding;
 
     final contentOffset = (timelineOffset - top - args.measures.dotDistance / 2)
-        .clamp(0.0, height - contentHeight);
+        .clamp(0.0, max(height - contentHeight, 0).toDouble());
 
     return CardPosition(
       top: top,
