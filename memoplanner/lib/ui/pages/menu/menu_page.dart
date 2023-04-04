@@ -22,9 +22,11 @@ class MenuPage extends StatelessWidget {
         padding: layout.templates.m2,
         child: Align(
           alignment: Alignment.topCenter,
-          child: Wrap(
-            spacing: layout.menuPage.buttons.spacing,
-            runSpacing: layout.menuPage.buttons.spacing,
+          child: GridView.count(
+            primary: false,
+            crossAxisSpacing: layout.menuPage.buttons.spacing,
+            mainAxisSpacing: layout.menuPage.buttons.spacing,
+            crossAxisCount: 3,
             children: [
               if (menuSettings.showCamera) const CameraButton(),
               if (menuSettings.showPhotos) const MyPhotosButton(),
@@ -185,38 +187,34 @@ class SettingsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final name = Translator.of(context).translate.settings;
-    return Stack(
-      children: [
-        MenuItemButton(
-          style: blackMenuButtonStyle,
-          text: name,
-          icon: AbiliaIcons.settings,
-          onPressed: () async {
-            final navigator = Navigator.of(context);
-            final authProviders = copiedAuthProviders(context);
-            final accessGranted = await codeProtectAccess(
-              context,
-              restricted: (codeSettings) => codeSettings.protectSettings,
-              name: name,
-            );
-            if (accessGranted) {
-              navigator.push(
-                MaterialPageRoute(
-                  builder: (_) => MultiBlocProvider(
-                    providers: authProviders,
-                    child: const SettingsPage(),
-                  ),
-                  settings: (SettingsPage).routeSetting(
-                    properties: {
-                      'fromHidden': false,
-                    },
-                  ),
-                ),
-              );
-            }
-          },
-        ),
-      ],
+    return MenuItemButton(
+      style: blackMenuButtonStyle,
+      text: name,
+      icon: AbiliaIcons.settings,
+      onPressed: () async {
+        final navigator = Navigator.of(context);
+        final authProviders = copiedAuthProviders(context);
+        final accessGranted = await codeProtectAccess(
+          context,
+          restricted: (codeSettings) => codeSettings.protectSettings,
+          name: name,
+        );
+        if (accessGranted) {
+          navigator.push(
+            MaterialPageRoute(
+              builder: (_) => MultiBlocProvider(
+                providers: authProviders,
+                child: const SettingsPage(),
+              ),
+              settings: (SettingsPage).routeSetting(
+                properties: {
+                  'fromHidden': false,
+                },
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }
@@ -239,29 +237,25 @@ class MenuItemButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tts.data(
       data: text.singleLine,
-      child: SizedBox(
-        width: layout.menuPage.buttons.size,
-        height: layout.menuPage.buttons.size,
-        child: TextButton(
-          style: style,
-          onPressed: onPressed,
-          child: Padding(
-            padding: layout.menuPage.buttons.padding,
-            child: Column(
-              children: [
-                Text(
-                  text,
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const Spacer(),
-                Icon(
-                  icon,
-                  size: layout.menuPage.buttons.iconSize,
-                ),
-              ],
-            ),
+      child: TextButton(
+        style: style,
+        onPressed: onPressed,
+        child: Padding(
+          padding: layout.menuPage.buttons.padding,
+          child: Column(
+            children: [
+              Text(
+                text,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const Spacer(),
+              Icon(
+                icon,
+                size: layout.menuPage.buttons.iconSize,
+              ),
+            ],
           ),
         ),
       ),
