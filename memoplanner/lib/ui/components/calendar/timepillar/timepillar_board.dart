@@ -137,7 +137,7 @@ BoardCardGenerator _activityCard({
     zoom: args.measures.zoom,
     radius: args.measures.borderRadius,
   );
-  final title = activityOccasion.activity.title;
+
   final cardPosition = CardPosition.calculate(
     eventOccasion: activityOccasion,
     args: args,
