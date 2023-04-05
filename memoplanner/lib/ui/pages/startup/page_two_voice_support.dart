@@ -58,13 +58,17 @@ class PageTwoVoiceSupport extends StatelessWidget {
                         voice.isEmpty ? AbiliaColors.red : AbiliaColors.green,
                   ),
                 ),
-                onTap: () async => await Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) =>
-                        const VoicesPage()..loadAvailableVoices(context),
-                    settings: (VoicesPage).routeSetting(),
-                  ),
-                ),
+                onTap: () async {
+                  await context.read<VoicesCubit>().loadAvailableVoices();
+                  if (context.mounted) {
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const VoicesPage(),
+                        settings: (VoicesPage).routeSetting(),
+                      ),
+                    );
+                  }
+                },
               );
             }),
           ),

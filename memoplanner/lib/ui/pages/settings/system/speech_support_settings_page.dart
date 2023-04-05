@@ -70,14 +70,19 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                                         ? t.installing
                                         : t.noVoicesInstalled
                                     : state.voice),
-                                onTap: () async =>
+                                onTap: () async {
+                                  await context
+                                      .read<VoicesCubit>()
+                                      .loadAvailableVoices();
+                                  if (context.mounted) {
                                     await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (_) => const VoicesPage()
-                                      ..loadAvailableVoices(context),
-                                    settings: (VoicesPage).routeSetting(),
-                                  ),
-                                ),
+                                      MaterialPageRoute(
+                                        builder: (_) => const VoicesPage(),
+                                        settings: (VoicesPage).routeSetting(),
+                                      ),
+                                    );
+                                  }
+                                },
                               ),
                             ),
                           ),

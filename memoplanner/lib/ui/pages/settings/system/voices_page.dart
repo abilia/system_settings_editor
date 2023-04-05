@@ -1,14 +1,9 @@
-import 'dart:async';
-
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/settings/speech_support/voice_data.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class VoicesPage extends StatelessWidget {
   const VoicesPage({Key? key}) : super(key: key);
-
-  Future<void> loadAvailableVoices(BuildContext context) async =>
-      context.read<VoicesCubit>().loadAvailableVoices();
 
   @override
   Widget build(BuildContext context) {

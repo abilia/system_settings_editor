@@ -13,6 +13,7 @@ import 'package:memoplanner/utils/all.dart';
 
 class AuthenticatedListener extends StatefulWidget {
   final bool newlyLoggedIn;
+
   const AuthenticatedListener({
     required this.child,
     required this.newlyLoggedIn,
@@ -27,6 +28,12 @@ class AuthenticatedListener extends StatefulWidget {
 
 class _AuthenticatedListenerState extends State<AuthenticatedListener>
     with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
   @override
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
