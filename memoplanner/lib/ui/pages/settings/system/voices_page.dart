@@ -4,19 +4,11 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/settings/speech_support/voice_data.dart';
 import 'package:memoplanner/ui/all.dart';
 
-class VoicesPage extends StatefulWidget {
+class VoicesPage extends StatelessWidget {
   const VoicesPage({Key? key}) : super(key: key);
 
-  @override
-  State<VoicesPage> createState() => _VoicesPageState();
-}
-
-class _VoicesPageState extends State<VoicesPage> {
-  @override
-  void initState() {
-    super.initState();
-    unawaited(context.read<VoicesCubit>().readAvailableVoices());
-  }
+  Future<void> loadAvailableVoices(BuildContext context) async =>
+      context.read<VoicesCubit>().loadAvailableVoices();
 
   @override
   Widget build(BuildContext context) {

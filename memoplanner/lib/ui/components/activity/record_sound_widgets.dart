@@ -152,8 +152,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                                   BlocProvider(
                                     create: (_) => RecordSoundCubit(
                                       originalSoundFile: recordedAudio,
-                                      file: file,
-                                    ),
+                                    )..setFile(file),
                                   ),
                                 ],
                                 child: RecordSoundPage(

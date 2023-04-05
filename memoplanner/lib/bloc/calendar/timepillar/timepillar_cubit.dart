@@ -20,6 +20,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
   final TimerAlarmBloc timerAlarmBloc;
   final DayPartCubit dayPartCubit;
   late StreamSubscription _streamSubscription;
+
   // Makes animated page transitions possible in DayCalendar
   late TimepillarState previousState = state;
 
@@ -52,13 +53,10 @@ class TimepillarCubit extends Cubit<TimepillarState> {
             state.showNightCalendar,
       ),
     );
-
-    unawaited(
-      _onTimepillarConditionsChanged(
-        showNightCalendar: state.showNightCalendar,
-      ),
-    );
   }
+
+  Future<void> initialize() => _onTimepillarConditionsChanged(
+      showNightCalendar: state.showNightCalendar);
 
   Future<void> _onTimepillarConditionsChanged(
       {required bool showNightCalendar}) async {

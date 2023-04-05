@@ -23,6 +23,7 @@ class MediaVolumeSlider extends _VolumeSlider {
 
 abstract class _VolumeSlider extends StatefulWidget {
   final VoidCallback? onVolumeSet;
+
   const _VolumeSlider({Key? key, this.onVolumeSet}) : super(key: key);
 }
 
@@ -106,13 +107,15 @@ abstract class _VolumeSliderState extends State<_VolumeSlider>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    unawaited(_initVolume());
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _initVolume();
+    });
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
-      unawaited(_initVolume());
+      await _initVolume();
     }
   }
 

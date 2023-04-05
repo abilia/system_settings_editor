@@ -44,7 +44,7 @@ class VoicesCubit extends Cubit<VoicesState> {
     await _setNewOrUnsetVoice();
   }
 
-  Future<void> readAvailableVoices() async {
+  Future<void> loadAvailableVoices() async {
     if (state is VoicesLoading) return;
     final newAvailible = await voiceRepository.readAvailableVoices();
     if (newAvailible.isEmpty) return;

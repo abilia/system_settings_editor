@@ -60,7 +60,8 @@ class PageTwoVoiceSupport extends StatelessWidget {
                 ),
                 onTap: () async => await Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => const VoicesPage(),
+                    builder: (_) =>
+                        const VoicesPage()..loadAvailableVoices(context),
                     settings: (VoicesPage).routeSetting(),
                   ),
                 ),

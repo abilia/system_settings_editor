@@ -21,7 +21,9 @@ class _SoundEffectSwitchState extends State<SoundEffectsSwitch> {
   @override
   void initState() {
     super.initState();
-    unawaited(initSetting());
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _initSettings();
+    });
   }
 
   @override
@@ -42,7 +44,7 @@ class _SoundEffectSwitchState extends State<SoundEffectsSwitch> {
     );
   }
 
-  Future<void> initSetting() async {
+  Future<void> _initSettings() async {
     try {
       final on = await SystemSettingsEditor.soundEffectsEnabled;
       setState(() {

@@ -24,13 +24,15 @@ class _BrightnessSliderState extends State<BrightnessSlider>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    unawaited(initBrightness());
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await initBrightness();
+    });
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
-      unawaited(initBrightness());
+      await initBrightness();
     }
   }
 
@@ -56,11 +58,11 @@ class _BrightnessSliderState extends State<BrightnessSlider>
             key: TestKey.brightnessSlider,
             leading: const Icon(AbiliaIcons.brightnessNormal),
             value: _brightness,
-            onChanged: (double b) {
-              setState(() async {
+            onChanged: (double b) async {
+              setState(() {
                 _brightness = b;
-                await SystemSettingsEditor.setBrightness(b);
               });
+              await SystemSettingsEditor.setBrightness(b);
             }),
       ],
     );

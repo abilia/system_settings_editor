@@ -220,7 +220,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 dayPickerBloc: context.read<DayPickerBloc>(),
                 timerAlarmBloc: context.read<TimerAlarmBloc>(),
-              ),
+              )..initialize(),
             ),
             BlocProvider<AlarmCubit>(
               create: (context) => AlarmCubit(
@@ -259,7 +259,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 timerAlarmBloc: context.read<TimerAlarmBloc>(),
                 dayPartCubit: context.read<DayPartCubit>(),
-              ),
+              )..initialize(),
             ),
             BlocProvider<TimepillarMeasuresCubit>(
               create: (context) => TimepillarMeasuresCubit(
@@ -280,7 +280,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             BlocProvider<SessionsCubit>(
               create: (context) => SessionsCubit(
                 sessionsRepository: context.read<SessionsRepository>(),
-              ),
+              )..initialize(),
               lazy: false,
             ),
             BlocProvider<AuthenticatedDialogCubit>(
@@ -289,7 +289,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 permissionCubit: context.read<PermissionCubit>(),
                 sortableBloc: context.read<SortableBloc>(),
                 newlyLoggedIn: authenticatedState.newlyLoggedIn,
-              ),
+              )..loadTermsOfUse(),
             ),
             if (Config.isMP) ...[
               BlocProvider<WakeLockCubit>(
@@ -391,7 +391,7 @@ class TopLevelProvider extends StatelessWidget {
               connectivity: GetIt.I<Connectivity>(),
               baseUrlDb: GetIt.I<BaseUrlDb>(),
               myAbiliaConnection: GetIt.I<MyAbiliaConnection>(),
-            ),
+            )..checkConnectivity(),
             lazy: false,
           ),
           BlocProvider(

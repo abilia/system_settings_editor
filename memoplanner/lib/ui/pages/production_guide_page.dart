@@ -25,10 +25,10 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeDependencies();
     if (state == AppLifecycleState.resumed) {
-      unawaited(_checkWriteSettingsPermission());
+      await _checkWriteSettingsPermission();
       setState(() {});
     }
   }
