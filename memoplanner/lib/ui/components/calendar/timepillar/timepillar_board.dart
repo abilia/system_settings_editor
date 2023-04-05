@@ -137,6 +137,7 @@ BoardCardGenerator _activityCard({
     zoom: args.measures.zoom,
     radius: args.measures.borderRadius,
   );
+  final title = activityOccasion.activity.title;
   final cardPosition = CardPosition.calculate(
     eventOccasion: activityOccasion,
     args: args,
@@ -229,15 +230,15 @@ class CardPosition {
     final endsAfterInterval = minuteEndPosition.isAfter(interval.end);
     final startTime =
         startsBeforeInterval ? interval.start : eventOccasion.start;
-    final hour = minuteStartPosition.hour == 0 &&
-            eventOccasion.start.hour != 0 &&
-            interval.intervalPart != IntervalPart.night
-        ? 24
-        : minuteStartPosition.hour;
+
+    final hourDistance = minuteStartPosition
+        .onlyHours()
+        .difference(interval.start.onlyHours())
+        .inHours;
     final topOffset = startsBeforeInterval
         ? 0.0
-        : timeToPixels(hour, minuteStartPosition.minute, measures.dotDistance) -
-            measures.topOffset(minuteStartPosition);
+        : timeToPixels(
+            hourDistance, minuteStartPosition.minute, measures.dotDistance);
 
     final endTime = endsAfterInterval ? interval.end : eventOccasion.end;
     final duration = endTime.difference(startTime);
