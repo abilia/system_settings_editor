@@ -568,70 +568,88 @@ void main() {
     });
 
     group('Interval position', () {
-      final atMidnight = DateTime(2020, 04, 24);
-      final beforeMidnight = DateTime(2020, 04, 23, 23, 55);
+      final firstMidnight = DateTime(2020, 04, 23);
+      final secondMidnight = DateTime(2020, 04, 24);
+      final beforeSecondMidnight = DateTime(2020, 04, 23, 23, 55);
       final nightInterval = TimepillarInterval(
-        start: atMidnight.subtract(2.days()),
-        end: atMidnight.add(1.days()),
+        start: firstMidnight.subtract(2.days()),
+        end: firstMidnight.add(1.days()),
         intervalPart: IntervalPart.night,
       );
-      final atMidnightActivity = ActivityOccasion(
+      final dayInterval = TimepillarInterval(
+        start: firstMidnight.subtract(2.days()),
+        end: firstMidnight.add(1.days()),
+        intervalPart: IntervalPart.day,
+      );
+      final firstMidnightActivity = ActivityOccasion(
         Activity.createNew(
           title: 'activity',
-          startTime: atMidnight,
+          startTime: firstMidnight,
         ),
-        atMidnight.onlyDays(),
+        firstMidnight.onlyDays(),
         Occasion.current,
       );
-      final beforeMidnightActivity = ActivityOccasion(
+      final secondMidnightActivity = ActivityOccasion(
         Activity.createNew(
           title: 'activity',
-          startTime: beforeMidnight,
+          startTime: secondMidnight,
         ),
-        beforeMidnight.onlyDays(),
+        secondMidnight.onlyDays(),
+        Occasion.current,
+      );
+      final beforeSecondMidnightActivity = ActivityOccasion(
+        Activity.createNew(
+          title: 'activity',
+          startTime: beforeSecondMidnight,
+        ),
+        beforeSecondMidnight.onlyDays(),
         Occasion.current,
       );
 
-      test(
-          'Activities right before midnight have the same top offset than activities on midnight',
-          () async {
-        final atMidnightCardPosition = CardPosition.calculate(
-          eventOccasion: atMidnightActivity,
-          args: TimepillarBoardDataArguments(
-            textStyle: bodySmall,
-            textScaleFactor: 1.0,
-            dayParts: const DayParts(),
-            measures: TimepillarMeasures(nightInterval, 1),
-            topMargin: layout.templates.l1.top,
-            bottomMargin: layout.templates.l1.bottom,
-            showCategoryColor: mockMemoplannerSettingsBloc
-                .state.calendar.categories.showColors,
-            nightMode: false,
-          ),
-          timelineOffset: 0,
-          maxEndPos: 1000,
-          hasSideDots: false,
-          decoration: const BoxDecoration(),
-        );
-        final beforeMidnightCardPosition = CardPosition.calculate(
-          eventOccasion: beforeMidnightActivity,
-          args: TimepillarBoardDataArguments(
-            textStyle: bodySmall,
-            textScaleFactor: 1.0,
-            dayParts: const DayParts(),
-            measures: TimepillarMeasures(nightInterval, 1),
-            topMargin: layout.templates.l1.top,
-            bottomMargin: layout.templates.l1.bottom,
-            showCategoryColor: mockMemoplannerSettingsBloc
-                .state.calendar.categories.showColors,
-            nightMode: false,
-          ),
-          timelineOffset: 0,
-          maxEndPos: 1000,
-          hasSideDots: false,
-          decoration: const BoxDecoration(),
-        );
-        expect(beforeMidnightCardPosition.top, atMidnightCardPosition.top);
+      CardPosition cardPosition(
+        EventOccasion eventOccasion,
+        TimepillarInterval interval,
+      ) =>
+          CardPosition.calculate(
+            eventOccasion: eventOccasion,
+            args: TimepillarBoardDataArguments(
+              textStyle: bodySmall,
+              textScaleFactor: 1.0,
+              dayParts: const DayParts(),
+              measures: TimepillarMeasures(interval, 1),
+              topMargin: layout.templates.l1.top,
+              bottomMargin: layout.templates.l1.bottom,
+              showCategoryColor: mockMemoplannerSettingsBloc
+                  .state.calendar.categories.showColors,
+              nightMode: false,
+            ),
+            timelineOffset: 0,
+            maxEndPos: 1000,
+            hasSideDots: false,
+            decoration: const BoxDecoration(),
+          );
+
+      test('Day interval', () async {
+        final firstMidnightCardPosition =
+            cardPosition(firstMidnightActivity, dayInterval);
+        final secondMidnightCardPosition =
+            cardPosition(firstMidnightActivity, dayInterval);
+        final beforeMidnightCardPosition =
+            cardPosition(beforeSecondMidnightActivity, dayInterval);
+
+        expect(beforeMidnightCardPosition.top,
+            greaterThan(firstMidnightCardPosition.top));
+        expect(beforeMidnightCardPosition.top,
+            greaterThan(secondMidnightCardPosition.top));
+      });
+
+      test('Night interval', () async {
+        final secondMidnightCardPosition =
+            cardPosition(secondMidnightActivity, nightInterval);
+        final beforeMidnightCardPosition =
+            cardPosition(beforeSecondMidnightActivity, nightInterval);
+
+        expect(secondMidnightCardPosition.top, beforeMidnightCardPosition.top);
       });
     });
   });
