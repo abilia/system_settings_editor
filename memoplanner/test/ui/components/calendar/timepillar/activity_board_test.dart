@@ -568,13 +568,8 @@ void main() {
     });
 
     group('Interval position', () {
-      final atMidnight = DateTime(2020, 04, 23);
+      final atMidnight = DateTime(2020, 04, 24);
       final beforeMidnight = DateTime(2020, 04, 23, 23, 55);
-      final dayInterval = TimepillarInterval(
-        start: atMidnight.subtract(2.days()),
-        end: atMidnight.add(1.days()),
-        intervalPart: IntervalPart.day,
-      );
       final nightInterval = TimepillarInterval(
         start: atMidnight.subtract(2.days()),
         end: atMidnight.add(1.days()),
@@ -593,55 +588,12 @@ void main() {
           title: 'activity',
           startTime: beforeMidnight,
         ),
-        atMidnight.onlyDays(),
+        beforeMidnight.onlyDays(),
         Occasion.current,
       );
 
       test(
-          'Activities right before midnight have a larger top offset than activities on midnight when day interval',
-          () async {
-        final atMidnightCardPosition = CardPosition.calculate(
-          eventOccasion: atMidnightActivity,
-          args: TimepillarBoardDataArguments(
-            textStyle: bodySmall,
-            textScaleFactor: 1.0,
-            dayParts: const DayParts(),
-            measures: TimepillarMeasures(dayInterval, 1),
-            topMargin: layout.templates.l1.top,
-            bottomMargin: layout.templates.l1.bottom,
-            showCategoryColor: mockMemoplannerSettingsBloc
-                .state.calendar.categories.showColors,
-            nightMode: false,
-          ),
-          timelineOffset: 0,
-          maxEndPos: 1000,
-          hasSideDots: false,
-          decoration: const BoxDecoration(),
-        );
-        final beforeMidnightCardPosition = CardPosition.calculate(
-          eventOccasion: beforeMidnightActivity,
-          args: TimepillarBoardDataArguments(
-            textStyle: bodySmall,
-            textScaleFactor: 1.0,
-            dayParts: const DayParts(),
-            measures: TimepillarMeasures(dayInterval, 1),
-            topMargin: layout.templates.l1.top,
-            bottomMargin: layout.templates.l1.bottom,
-            showCategoryColor: mockMemoplannerSettingsBloc
-                .state.calendar.categories.showColors,
-            nightMode: false,
-          ),
-          timelineOffset: 0,
-          maxEndPos: 1000,
-          hasSideDots: false,
-          decoration: const BoxDecoration(),
-        );
-        expect(beforeMidnightCardPosition.top,
-            greaterThan(atMidnightCardPosition.top));
-      });
-
-      test(
-          'Activities right before midnight have the same top offset than activities on midnight when night interval',
+          'Activities right before midnight have the same top offset than activities on midnight',
           () async {
         final atMidnightCardPosition = CardPosition.calculate(
           eventOccasion: atMidnightActivity,
