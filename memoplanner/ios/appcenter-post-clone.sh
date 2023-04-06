@@ -29,4 +29,4 @@ flutter doctor
 flutter pub get
 flutter pub run build_runner build --delete-conflicting-outputs
 flutter test
-flutter build ios --release --no-codesign --build-number=$APPCENTER_BUILD_ID
+flutter build ios --release --no-codesign --build-number=$APPCENTER_BUILD_ID --dart-define=release=$release
