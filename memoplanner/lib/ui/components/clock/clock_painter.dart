@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
-import 'package:memoplanner/ui/themes/all.dart';
 
 import 'package:flutter/material.dart';
+import 'package:memoplanner/ui/themes/all.dart';
 
 // A modified copy of: https://github.com/conghaonet/flutter_analog_clock
 class ClockPainter extends CustomPainter {
@@ -70,14 +70,14 @@ class ClockPainter extends CustomPainter {
     final hourHandWidth = layout.clock.hourHandWidth;
     final minuteHandWidth = layout.clock.minuteHandWidth;
 
-    canvas.translate(size.width / 2, size.height / 2);
-
-    canvas.drawCircle(
-        const Offset(0, 0),
-        radius,
-        Paint()
-          ..style = PaintingStyle.fill
-          ..color = dialPlateColor);
+    canvas
+      ..translate(size.width / 2, size.height / 2)
+      ..drawCircle(
+          const Offset(0, 0),
+          radius,
+          Paint()
+            ..style = PaintingStyle.fill
+            ..color = dialPlateColor);
 
     if (showBorder && borderWidth > 0) {
       final borderPaint = Paint()
@@ -134,11 +134,12 @@ class ClockPainter extends CustomPainter {
         color: numberColor,
       );
       final hourText = hourNumbers[intHour - 1];
-      _hourTextPainter.text = TextSpan(
-        text: hourText,
-        style: style,
-      );
-      _hourTextPainter.layout();
+      _hourTextPainter
+        ..text = TextSpan(
+          text: hourText,
+          style: style,
+        )
+        ..layout();
       if (_hourTextPainter.height > maxTextHeight) {
         maxTextHeight = _hourTextPainter.height;
       }

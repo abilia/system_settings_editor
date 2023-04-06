@@ -1,11 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/getit.dart';
-
 import 'package:memoplanner/models/all.dart';
-import 'package:seagull_clock/ticker.dart';
 import 'package:memoplanner/ui/all.dart';
+import 'package:seagull_clock/ticker.dart';
 import 'package:seagull_fakes/all.dart';
 
 import '../../../../../fakes/all.dart';
@@ -189,7 +187,7 @@ void main() {
       expect(w.groupValue, WeekColor.columns.index);
       final dayContainer = tester.firstWidget<Container>(
           find.byKey(TestKey.monthDisplaySettingsDayView));
-      expect((dayContainer.decoration as BoxDecoration).color,
+      expect((dayContainer.decoration as BoxDecoration?)?.color,
           isNot(AbiliaColors.white110));
     });
 
@@ -208,15 +206,15 @@ void main() {
       expect(w.groupValue, WeekColor.captions.index);
       final dayContainer = tester.firstWidget<Container>(
           find.byKey(TestKey.monthDisplaySettingsDayView));
-      expect(
-          (dayContainer.decoration as BoxDecoration).color, AbiliaColors.white);
+      expect((dayContainer.decoration as BoxDecoration?)?.color,
+          AbiliaColors.white);
     });
 
     testWidgets('color saved', (tester) async {
       await tester.goToDisplayTab();
       final dayContainer1 = tester.firstWidget<Container>(
           find.byKey(TestKey.monthDisplaySettingsDayView));
-      expect((dayContainer1.decoration as BoxDecoration).color,
+      expect((dayContainer1.decoration as BoxDecoration?)?.color,
           isNot(AbiliaColors.white110));
 
       await tester.tap(find.text(translate.captions));
@@ -224,7 +222,7 @@ void main() {
       final dayContainer2 = tester.firstWidget<Container>(
           find.byKey(TestKey.monthDisplaySettingsDayView));
 
-      expect((dayContainer2.decoration as BoxDecoration).color,
+      expect((dayContainer2.decoration as BoxDecoration?)?.color,
           AbiliaColors.white);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -251,7 +249,7 @@ void main() {
           ),
         );
 
-        expect((dayContainer.decoration as BoxDecoration).color,
+        expect((dayContainer.decoration as BoxDecoration?)?.color,
             isNot(AbiliaColors.white110));
       },
       skip: Config.isMPGO,
@@ -272,7 +270,7 @@ void main() {
         final dayContainer = tester.firstWidget<Container>(
           find.byKey(TestKey.monthCalendarDayBackgroundColor),
         );
-        expect((dayContainer.decoration as BoxDecoration).color,
+        expect((dayContainer.decoration as BoxDecoration?)?.color,
             AbiliaColors.white110);
       },
       skip: Config.isMPGO,

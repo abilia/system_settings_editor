@@ -19,9 +19,10 @@ class MemoplannerSettingsBloc
       : super(genericCubit?.state is GenericsLoaded
             ? MemoplannerSettingsLoaded(
                 MemoplannerSettings.fromSettingsMap(
-                  (genericCubit?.state as GenericsLoaded)
-                      .generics
-                      .filterMemoplannerSettingsData(),
+                  (genericCubit?.state as GenericsLoaded?)
+                          ?.generics
+                          .filterMemoplannerSettingsData() ??
+                      <String, MemoplannerSettingData>{},
                 ),
               )
             : const MemoplannerSettingsNotLoaded()) {

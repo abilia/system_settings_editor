@@ -4,12 +4,11 @@ import 'package:calendar/all.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:handi/main.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:seagull_clock/clock_bloc.dart';
 import 'package:seagull_clock/ticker.dart';
 import 'package:sqflite/sqlite_api.dart';
-
-import 'package:handi/main.dart';
 
 class Providers extends StatelessWidget {
   final Widget child;

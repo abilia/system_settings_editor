@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
@@ -15,8 +14,8 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../fakes/all.dart';
 import '../mocks/mocks.dart';
-import '../test_helpers/enter_text.dart';
 import '../test_helpers/app_pumper.dart';
+import '../test_helpers/enter_text.dart';
 
 void main() {
   late StreamController<DateTime> mockTicker;
@@ -588,8 +587,9 @@ void main() {
       final alarmScreenFinder = find.byType(PopAwareAlarmPage);
 
       // Act - time goes which should display alarm
-      mockTicker.add(activity1StartTime);
-      mockTicker.add(activity1StartTime.add(const Duration(minutes: 2)));
+      mockTicker
+        ..add(activity1StartTime)
+        ..add(activity1StartTime.add(const Duration(minutes: 2)));
       await tester.pumpAndSettle();
 
       // Act - the user taps notification of start time alarm
@@ -615,10 +615,11 @@ void main() {
       final alarmScreenFinder = find.byType(PopAwareAlarmPage);
 
       // Act - time goes which should display alarms (start and end time)
-      mockTicker.add(activity1StartTime);
-      mockTicker.add(activity1StartTime.add(const Duration(minutes: 1)));
-      mockTicker.add(activity1StartTime.add(const Duration(minutes: 2)));
-      mockTicker.add(activity1StartTime.add(const Duration(minutes: 3)));
+      mockTicker
+        ..add(activity1StartTime)
+        ..add(activity1StartTime.add(const Duration(minutes: 1)))
+        ..add(activity1StartTime.add(const Duration(minutes: 2)))
+        ..add(activity1StartTime.add(const Duration(minutes: 3)));
       await tester.pumpAndSettle();
 
       // Act - the user taps notification of start time alarm
@@ -932,9 +933,10 @@ void main() {
         );
 
         // Arrange
-        selectNotificationSubject.add(alarm2);
-        selectNotificationSubject.add(alarm3);
-        selectNotificationSubject.add(alarm4);
+        selectNotificationSubject
+          ..add(alarm2)
+          ..add(alarm3)
+          ..add(alarm4);
 
         await tester.pumpWidget(
           App(

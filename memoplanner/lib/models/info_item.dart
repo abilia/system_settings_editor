@@ -1,10 +1,11 @@
 import 'dart:convert';
+
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:logging/logging.dart';
 import 'package:intl/intl.dart';
-import 'package:meta/meta.dart';
+import 'package:logging/logging.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:meta/meta.dart';
 
 abstract class InfoItem extends Equatable {
   const InfoItem();

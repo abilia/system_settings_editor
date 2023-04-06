@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:rxdart/rxdart.dart';
 
 final _log = Logger('streams');
 

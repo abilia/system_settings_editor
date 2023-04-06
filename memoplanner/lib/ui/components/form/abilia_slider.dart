@@ -1,5 +1,6 @@
-import 'package:memoplanner/ui/all.dart';
 import 'dart:math' as math;
+
+import 'package:memoplanner/ui/all.dart';
 
 class AbiliaSlider extends StatelessWidget {
   final ValueChanged<double>? onChanged;
@@ -194,12 +195,12 @@ class AbiliaThumbShape extends SliderComponentShape {
               center: center, width: 2 * radius, height: 2 * radius),
           0,
           math.pi * 2);
-    canvas.drawShadow(path, Colors.black, evaluatedElevation, true);
-
-    canvas.drawCircle(
-      center,
-      radius,
-      Paint()..color = color,
-    );
+    canvas
+      ..drawShadow(path, Colors.black, evaluatedElevation, true)
+      ..drawCircle(
+        center,
+        radius,
+        Paint()..color = color,
+      );
   }
 }

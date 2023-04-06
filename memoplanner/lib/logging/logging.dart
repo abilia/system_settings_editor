@@ -3,17 +3,15 @@ import 'dart:io';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
-
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
-
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
-import 'package:intl/intl.dart';
-import 'package:memoplanner/utils/all.dart';
 
 export 'package:logging/logging.dart';
 
@@ -174,8 +172,7 @@ class SeagullLogger {
     loggingSubscriptions.add(
       Logger.root.onRecord.listen(
         (record) async {
-          final stringBuffer = StringBuffer();
-          stringBuffer.writeln(format(record));
+          final stringBuffer = StringBuffer()..writeln(format(record));
           if (record.error != null) {
             stringBuffer.writeln(record.error);
           }

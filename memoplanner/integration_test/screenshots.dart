@@ -5,8 +5,8 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/main.dart' as app;
+import 'package:memoplanner/ui/all.dart';
 
 void main() async {
   const userId = 'screenshot';

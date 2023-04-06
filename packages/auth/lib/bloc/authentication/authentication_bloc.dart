@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:auth/models/all.dart';
+import 'package:auth/repository/user_repository.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
-import 'package:auth/models/all.dart';
 import 'package:repository_base/listenable_client.dart';
-import 'package:auth/repository/user_repository.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';

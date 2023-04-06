@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/storage/all.dart';
 
 class NotificationsSchedulerData extends Equatable {
   final Iterable<Activity> activities;

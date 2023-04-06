@@ -59,8 +59,9 @@ void main() {
   });
 
   test('NextDay then PreviusDay should yeild same day', () async {
-    dayPickerBloc.add(NextDay());
-    dayPickerBloc.add(PreviousDay());
+    dayPickerBloc
+      ..add(NextDay())
+      ..add(PreviousDay());
     await expectLater(
       dayPickerBloc.stream,
       emitsInOrder([
@@ -79,9 +80,10 @@ void main() {
   });
 
   test('Current day returns to start day', () async {
-    dayPickerBloc.add(NextDay());
-    dayPickerBloc.add(NextDay());
-    dayPickerBloc.add(const CurrentDay());
+    dayPickerBloc
+      ..add(NextDay())
+      ..add(NextDay())
+      ..add(const CurrentDay());
     await expectLater(
       dayPickerBloc.stream,
       emitsInOrder([
@@ -111,11 +113,11 @@ void main() {
     final daysAfterDST = DateTime(2020, 03, 30);
 
     clockBloc = ClockBloc.fixed(daybeforeDST);
-    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
 
     // Act
-    dayPickerBloc.add(NextDay());
-    dayPickerBloc.add(NextDay());
+    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc)
+      ..add(NextDay())
+      ..add(NextDay());
 
     // Assert
     await expectLater(
@@ -141,11 +143,11 @@ void main() {
     final daysAfterDST = DateTime(2020, 03, 30);
     final twoDaysAfterDST = DateTime(2020, 03, 31);
     clockBloc = ClockBloc.fixed(twoDaysAfterDST);
-    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
 
     // Act
-    dayPickerBloc.add(PreviousDay());
-    dayPickerBloc.add(PreviousDay());
+    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc)
+      ..add(PreviousDay())
+      ..add(PreviousDay());
 
     // Assert
     await expectLater(
@@ -172,11 +174,11 @@ void main() {
     final daysAfterDST = DateTime(2020, 10, 26);
 
     clockBloc = ClockBloc.fixed(daybeforeDST);
-    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
 
     // Act
-    dayPickerBloc.add(NextDay());
-    dayPickerBloc.add(NextDay());
+    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc)
+      ..add(NextDay())
+      ..add(NextDay());
 
     // Assert
     await expectLater(
@@ -202,11 +204,11 @@ void main() {
     final daysAfterDST = DateTime(2020, 10, 26);
     final twoDaysAfterDST = DateTime(2020, 10, 27);
     clockBloc = ClockBloc.fixed(twoDaysAfterDST);
-    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
 
     // Act
-    dayPickerBloc.add(PreviousDay());
-    dayPickerBloc.add(PreviousDay());
+    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc)
+      ..add(PreviousDay())
+      ..add(PreviousDay());
 
     // Assert
     await expectLater(
@@ -231,8 +233,9 @@ void main() {
       clockStream.add(theDay.add(Duration(minutes: i)));
     }
     await Future.delayed(const Duration(milliseconds: 100));
-    dayPickerBloc.add(NextDay());
-    dayPickerBloc.add(const CurrentDay());
+    dayPickerBloc
+      ..add(NextDay())
+      ..add(const CurrentDay());
     expect(
       dayPickerBloc.stream,
       emitsInOrder([

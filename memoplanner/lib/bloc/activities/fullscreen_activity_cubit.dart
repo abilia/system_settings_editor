@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'package:rxdart/rxdart.dart';
-import 'package:equatable/equatable.dart';
-import 'package:collection/collection.dart';
 
+import 'package:collection/collection.dart';
+import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:rxdart/rxdart.dart';
 
 class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
   FullScreenActivityCubit({

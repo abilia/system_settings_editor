@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 typedef GetNowOffset = double Function(DateTime now);
 typedef ScrollListenerWidgetBuilder = Widget Function(
@@ -125,10 +125,10 @@ class _CalendarScrollListenerState extends State<_CalendarScrollListener>
 
       if (oldWidget.timepillarMeasures != widget.timepillarMeasures ||
           oldWidget.agendaEvents != widget.agendaEvents) {
-        final scrollPositionCubit = context.read<ScrollPositionCubit>();
-        scrollPositionCubit.updateNowOffset(
-          nowOffset: widget.getNowOffset(context.read<ClockBloc>().state),
-        );
+        final scrollPositionCubit = context.read<ScrollPositionCubit>()
+          ..updateNowOffset(
+            nowOffset: widget.getNowOffset(context.read<ClockBloc>().state),
+          );
         await scrollPositionCubit.goToNow(duration: Duration.zero);
       }
     });

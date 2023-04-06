@@ -1,27 +1,24 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail_image_network/mocktail_image_network.dart';
-import 'package:seagull_fakes/all.dart';
-import 'package:timezone/data/latest.dart' as tz;
-
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/main.dart';
-
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
+import 'package:seagull_fakes/all.dart';
+import 'package:timezone/data/latest.dart' as tz;
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../fakes/activity_db_in_memory.dart';
 import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
-
 import '../../test_helpers/enter_text.dart';
 import '../../test_helpers/tts.dart';
 import '../../test_helpers/verify_generic.dart';
-import '../../fakes/activity_db_in_memory.dart';
 
 void main() {
   late ActivityDbInMemory mockActivityDb;

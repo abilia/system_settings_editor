@@ -30,9 +30,9 @@ class _EditNotePageState extends State<EditNotePage> {
 
   @override
   void dispose() {
-    _textEditingController.removeListener(_textEditingListner);
-
-    _textEditingController.dispose();
+    _textEditingController
+      ..removeListener(_textEditingListner)
+      ..dispose();
     _scrollController.dispose();
     super.dispose();
   }

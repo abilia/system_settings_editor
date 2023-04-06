@@ -14,8 +14,8 @@ class TemplatesPage extends StatelessWidget {
       length: 2,
       child: Builder(
         builder: (context) {
-          final tabController = DefaultTabController.of(context);
-          tabController.addListener(() => _onTabChanged(context));
+          DefaultTabController.of(context)
+              .addListener(() => _onTabChanged(context));
           return Scaffold(
             appBar: AbiliaAppBar(
               iconData: AbiliaIcons.favoritesShow,

@@ -1,11 +1,10 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/utils/all.dart';
 import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class TimepillarBoardDataArguments {
   final TextStyle textStyle;

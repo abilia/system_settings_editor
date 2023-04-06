@@ -137,10 +137,10 @@ void main() {
       ),
     );
     // Act
-    editActivityCubit.changeTimeInterval(
-        startTime: const TimeOfDay(hour: 1, minute: 1));
-    editActivityCubit.changeStartDate(newDate);
-    editActivityCubit.replaceActivity(newActivity);
+    editActivityCubit
+      ..changeTimeInterval(startTime: const TimeOfDay(hour: 1, minute: 1))
+      ..changeStartDate(newDate)
+      ..replaceActivity(newActivity);
 
     // Assert
     await expected;
@@ -185,10 +185,11 @@ void main() {
     );
 
     // Act
-    editActivityCubit.addOrRemoveReminder(min15Reminder);
-    editActivityCubit.addOrRemoveReminder(hour1Reminder);
-    editActivityCubit.addOrRemoveReminder(hour1Reminder);
-    editActivityCubit.addOrRemoveReminder(min15Reminder);
+    editActivityCubit
+      ..addOrRemoveReminder(min15Reminder)
+      ..addOrRemoveReminder(hour1Reminder)
+      ..addOrRemoveReminder(hour1Reminder)
+      ..addOrRemoveReminder(min15Reminder);
 
     // Assert
     await expected;
@@ -249,12 +250,12 @@ void main() {
     );
 
     // Act
-    editActivityCubit.changeTimeInterval(
-        endTime: const TimeOfDay(hour: 10, minute: 0));
-    editActivityCubit.changeTimeInterval(
-        startTime: const TimeOfDay(hour: 12, minute: 0),
-        endTime: const TimeOfDay(hour: 10, minute: 0));
-    editActivityCubit.replaceActivity(activityWithTitle);
+    editActivityCubit
+      ..changeTimeInterval(endTime: const TimeOfDay(hour: 10, minute: 0))
+      ..changeTimeInterval(
+          startTime: const TimeOfDay(hour: 12, minute: 0),
+          endTime: const TimeOfDay(hour: 10, minute: 0))
+      ..replaceActivity(activityWithTitle);
 
     // Assert
     await expect1;
@@ -333,9 +334,10 @@ void main() {
     );
 
     // Act
-    editActivityCubit.changeInfoItemType(Checklist);
-    editActivityCubit.changeInfoItemType(NoteInfoItem);
-    editActivityCubit.changeInfoItemType(NoInfoItem);
+    editActivityCubit
+      ..changeInfoItemType(Checklist)
+      ..changeInfoItemType(NoteInfoItem)
+      ..changeInfoItemType(NoInfoItem);
 
     // Assert
     await expect;
@@ -383,9 +385,10 @@ void main() {
       ),
     );
 
-    editActivityCubit.replaceActivity(recurringActivity);
-    editActivityCubit.changeRecurrentEndDate(recurringActivity.recurs.end);
-    editActivityCubit.changeStartDate(in60Days);
+    editActivityCubit
+      ..replaceActivity(recurringActivity)
+      ..changeRecurrentEndDate(recurringActivity.recurs.end)
+      ..changeStartDate(in60Days);
 
     await expect;
   });
@@ -463,8 +466,9 @@ void main() {
       ]),
     );
 
-    editActivityCubit.changeRecurrentType(RecurrentType.monthly);
-    editActivityCubit.changeRecurrentEndDate(endDate);
+    editActivityCubit
+      ..changeRecurrentType(RecurrentType.monthly)
+      ..changeRecurrentEndDate(endDate);
     await expect;
   });
 
@@ -513,9 +517,10 @@ void main() {
       ),
     );
 
-    editActivityCubit.changeRecurrentType(RecurrentType.weekly);
-    editActivityCubit.changeWeeklyRecurring(weekly);
-    editActivityCubit.changeRecurrentType(RecurrentType.monthly);
+    editActivityCubit
+      ..changeRecurrentType(RecurrentType.weekly)
+      ..changeWeeklyRecurring(weekly)
+      ..changeRecurrentType(RecurrentType.monthly);
 
     await expect;
   });

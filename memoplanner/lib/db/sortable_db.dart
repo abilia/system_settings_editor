@@ -1,6 +1,6 @@
+import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/db/all.dart';
 
 class SortableDb extends DataDb<Sortable> {
   SortableDb(Database database) : super(database);

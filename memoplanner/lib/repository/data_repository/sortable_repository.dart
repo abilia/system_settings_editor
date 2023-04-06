@@ -46,8 +46,9 @@ class SortableRepository extends DataRepository<Sortable> {
       if (response.statusCode == 200) {
         return fromJsonToDataModel(response.json());
       }
-      log.warning('Could not fetch $folder ${response.statusCode}');
-      log.warning(response.body);
+      log
+        ..warning('Could not fetch $folder ${response.statusCode}')
+        ..warning(response.body);
     } catch (e) {
       log.warning('Could not parse fixed folder $folder', e);
     }

@@ -71,9 +71,9 @@ void main() {
       ]),
     );
     imageArchiveBloc
-        .sortablesUpdated([imageArchiveFolder1, imageArchiveFolder2]);
-    imageArchiveBloc.folderChanged(imageArchiveFolder2.id);
-    imageArchiveBloc.navigateUp();
+      ..sortablesUpdated([imageArchiveFolder1, imageArchiveFolder2])
+      ..folderChanged(imageArchiveFolder2.id)
+      ..navigateUp();
     await expect;
   });
 }

@@ -1,7 +1,7 @@
-import 'package:provider/provider.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
+import 'package:provider/provider.dart';
 
 class ClockSettingsTab extends StatelessWidget {
   const ClockSettingsTab({Key? key}) : super(key: key);

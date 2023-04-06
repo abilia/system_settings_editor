@@ -100,8 +100,9 @@ void main() {
     test(
         'When PlaySound and StopSound is added within 250 ms of each other only the first event triggers',
         () async {
-      soundBloc.add(PlaySound(dummyFile));
-      soundBloc.add(const StopSound());
+      soundBloc
+        ..add(PlaySound(dummyFile))
+        ..add(const StopSound());
       await Future.delayed(10.milliseconds());
       expect(soundBloc.state, SoundPlaying(dummyFile));
     });

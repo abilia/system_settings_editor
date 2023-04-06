@@ -224,9 +224,10 @@ void main() {
       );
 
       // Act
-      dayPickerBloc.add(NextDay());
-      dayPickerBloc.add(PreviousDay());
-      dayPickerBloc.add(PreviousDay());
+      dayPickerBloc
+        ..add(NextDay())
+        ..add(PreviousDay())
+        ..add(PreviousDay());
 
       // Assert
       await expectLater(
@@ -476,11 +477,12 @@ void main() {
           ),
         ),
       );
-      dayPickerBloc.add(PreviousDay());
-      dayPickerBloc.add(GoTo(day: friday));
-      dayPickerBloc.add(NextDay());
-      dayPickerBloc.add(NextDay());
-      dayPickerBloc.add(NextDay());
+      dayPickerBloc
+        ..add(PreviousDay())
+        ..add(GoTo(day: friday))
+        ..add(NextDay())
+        ..add(NextDay())
+        ..add(NextDay());
 
       // Assert
       await expectLater(
@@ -598,9 +600,10 @@ void main() {
           ),
         ),
       );
-      dayPickerBloc.add(PreviousDay());
-      dayPickerBloc.add(NextDay());
-      dayPickerBloc.add(NextDay());
+      dayPickerBloc
+        ..add(PreviousDay())
+        ..add(NextDay())
+        ..add(NextDay());
 
       // Assert
       await expectLater(
@@ -924,9 +927,10 @@ void main() {
               ]));
 
       // Act
-      dayPickerBloc.add(NextDay());
-      dayPickerBloc.add(PreviousDay());
-      dayPickerBloc.add(PreviousDay());
+      dayPickerBloc
+        ..add(NextDay())
+        ..add(PreviousDay())
+        ..add(PreviousDay());
 
       // Assert
       await expectLater(
@@ -1028,10 +1032,11 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
 
-        dayPickerBloc.add(NextDay());
-        dayPickerBloc.add(NextDay());
-        dayPickerBloc.add(NextDay());
-        dayPickerBloc.add(NextDay());
+        dayPickerBloc
+          ..add(NextDay())
+          ..add(NextDay())
+          ..add(NextDay())
+          ..add(NextDay());
         // Assert
         await expectLater(
             dayEventsCubit.stream,
@@ -1084,9 +1089,10 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
 
-        dayPickerBloc.add(GoTo(day: boxingDay));
-        dayPickerBloc.add(NextDay());
-        dayPickerBloc.add(NextDay());
+        dayPickerBloc
+          ..add(GoTo(day: boxingDay))
+          ..add(NextDay())
+          ..add(NextDay());
         // Assert
         await expectLater(
             dayEventsCubit.stream,
@@ -1127,9 +1133,10 @@ void main() {
         // Act
         activitiesBloc.add(LoadActivities());
 
-        dayPickerBloc.add(GoTo(day: boxingDay));
-        dayPickerBloc.add(NextDay());
-        dayPickerBloc.add(NextDay());
+        dayPickerBloc
+          ..add(GoTo(day: boxingDay))
+          ..add(NextDay())
+          ..add(NextDay());
         // Assert
         await expectLater(
             dayEventsCubit.stream,
@@ -1236,9 +1243,10 @@ void main() {
             (_) => Future.value([preSplitRecurring, splitRecurring]));
 
         // Act
-        dayPickerBloc.add(GoTo(day: dayBeforeSplit));
-        dayPickerBloc.add(NextDay());
-        dayPickerBloc.add(NextDay());
+        dayPickerBloc
+          ..add(GoTo(day: dayBeforeSplit))
+          ..add(NextDay())
+          ..add(NextDay());
 
         // Assert
         await expectLater(

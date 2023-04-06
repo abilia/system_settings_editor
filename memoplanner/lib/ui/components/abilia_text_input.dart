@@ -141,8 +141,9 @@ class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {
 
   @override
   void dispose() {
-    _controller.removeListener(onTextValueChanged);
-    _controller.dispose();
+    _controller
+      ..removeListener(onTextValueChanged)
+      ..dispose();
     super.dispose();
   }
 

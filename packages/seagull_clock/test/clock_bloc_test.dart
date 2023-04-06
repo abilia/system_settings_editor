@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:test/test.dart';
 import 'package:seagull_clock/clock_bloc.dart';
+import 'package:test/test.dart';
 
 void main() {
   late ClockBloc clockBloc;

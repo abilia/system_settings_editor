@@ -1,9 +1,8 @@
-import 'package:memoplanner/logging/all.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:collection/collection.dart';
-
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:sqflite/sqflite.dart';
 
 typedef DbMapTo<M extends DataModel> = DbModel<M> Function(
     Map<String, dynamic> map);

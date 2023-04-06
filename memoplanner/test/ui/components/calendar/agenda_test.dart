@@ -806,18 +806,18 @@ void main() {
                   of: find.byType(CategoryRight),
                   matching: find.byType(CategoryImage)),
               matching: find.byType(Container)))
-          .decoration as BoxDecoration;
+          .decoration as BoxDecoration?;
 
-      expect(rightBoxDecoration.color, rightCategoryActiveColor);
+      expect(rightBoxDecoration?.color, rightCategoryActiveColor);
       final leftBoxDecoration = tester
           .widget<Container>(find.descendant(
               of: find.descendant(
                   of: find.byType(CategoryLeft),
                   matching: find.byType(CategoryImage)),
               matching: find.byType(Container)))
-          .decoration as BoxDecoration;
+          .decoration as BoxDecoration?;
 
-      expect(leftBoxDecoration.color, leftCategoryActiveColor);
+      expect(leftBoxDecoration?.color, leftCategoryActiveColor);
     });
 
     testWidgets('memoplanner settings - show colors false',
@@ -905,9 +905,9 @@ void main() {
                         find.byType(AnimatedContainer, skipOffstage: false),
                     skipOffstage: false)
                 .first)
-            .decoration as BoxDecoration;
+            .decoration as BoxDecoration?;
         expect(
-          boxDecoration.border?.bottom.color,
+          boxDecoration?.border?.bottom.color,
           expectedColor,
         );
       }
@@ -976,9 +976,9 @@ void main() {
                         find.byType(AnimatedContainer, skipOffstage: false),
                     skipOffstage: false)
                 .first)
-            .decoration as BoxDecoration;
+            .decoration as BoxDecoration?;
         expect(
-          boxDecoration.border?.bottom.color,
+          boxDecoration?.border?.bottom.color,
           expectedColor,
         );
       }

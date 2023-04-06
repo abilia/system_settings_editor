@@ -1,14 +1,14 @@
 // ignore_for_file: deprecated_member_use_from_same_package
 
 import 'dart:async';
-import 'package:memoplanner/models/settings/all.dart';
-import 'package:rxdart/rxdart.dart';
 
 import 'package:battery_plus/battery_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/models/settings/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:rxdart/rxdart.dart';
 
 class WakeLockCubit extends Cubit<WakeLockState> {
   late final StreamSubscription _batterySubscription;

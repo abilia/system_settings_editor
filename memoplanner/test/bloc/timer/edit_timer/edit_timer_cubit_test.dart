@@ -62,9 +62,7 @@ void main() {
         ticker: ticker,
         analytics: FakeSeagullAnalytics(),
       ),
-    );
-
-    editTimerCubit.updateDuration(5.minutes(), TimerSetType.inputField);
+    )..updateDuration(5.minutes(), TimerSetType.inputField);
     expect(editTimerCubit.state.durationText, '00:05');
 
     editTimerCubit.updateDuration(10.minutes(), TimerSetType.inputField);
@@ -124,9 +122,7 @@ void main() {
         ticker: ticker,
         analytics: FakeSeagullAnalytics(),
       ),
-    );
-
-    editTimerCubit.updateDuration(10.minutes(), TimerSetType.inputField);
+    )..updateDuration(10.minutes(), TimerSetType.inputField);
     expect(editTimerCubit.state.name, '10 minutes');
 
     editTimerCubit.updateDuration(10.hours(), TimerSetType.inputField);

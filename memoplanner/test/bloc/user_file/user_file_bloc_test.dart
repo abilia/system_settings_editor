@@ -1,9 +1,8 @@
 import 'dart:convert';
 
-import 'package:file/memory.dart';
 import 'package:crypto/crypto.dart';
+import 'package:file/memory.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -112,11 +111,12 @@ void main() {
         ]));
 
     // Act -- Load files
-    userFileBloc.add(LoadUserFiles());
-    userFileBloc.add(LoadUserFiles());
-    userFileBloc.add(LoadUserFiles());
-    userFileBloc.add(LoadUserFiles());
-    userFileBloc.add(LoadUserFiles());
+    userFileBloc
+      ..add(LoadUserFiles())
+      ..add(LoadUserFiles())
+      ..add(LoadUserFiles())
+      ..add(LoadUserFiles())
+      ..add(LoadUserFiles());
 
     // Assert --that added file is prioritized
     await expectedStream;
@@ -184,12 +184,13 @@ void main() {
         ]));
 
     // Act -- Loadfiles
-    userFileBloc.add(LoadUserFiles());
-    // Act -- while downloading files, user adds file
-    userFileBloc.add(FileAdded(
-      UnstoredAbiliaFile.forTest(fileId, filePath, file),
-      isImage: true,
-    ));
+    userFileBloc
+      ..add(LoadUserFiles())
+      // Act -- while downloading files, user adds file
+      ..add(FileAdded(
+        UnstoredAbiliaFile.forTest(fileId, filePath, file),
+        isImage: true,
+      ));
 
     // Assert --that added file is prioritized
     await expectedStream;
@@ -230,11 +231,12 @@ void main() {
     );
 
     // Act
-    userFileBloc.add(LoadUserFiles());
-    userFileBloc.add(FileAdded(
-      UnstoredAbiliaFile.forTest(fileId, filePath, file),
-      isImage: true,
-    ));
+    userFileBloc
+      ..add(LoadUserFiles())
+      ..add(FileAdded(
+        UnstoredAbiliaFile.forTest(fileId, filePath, file),
+        isImage: true,
+      ));
 
     // Assert
     await expectedStream;
@@ -313,15 +315,16 @@ void main() {
     );
 
     // Act
-    userFileBloc.add(LoadUserFiles());
-    userFileBloc.add(FileAdded(
-      UnstoredAbiliaFile.forTest(fileId, filePath1, file),
-      isImage: true,
-    ));
-    userFileBloc.add(FileAdded(
-      UnstoredAbiliaFile.forTest(fileId2, filePath2, file2),
-      isImage: true,
-    ));
+    userFileBloc
+      ..add(LoadUserFiles())
+      ..add(FileAdded(
+        UnstoredAbiliaFile.forTest(fileId, filePath1, file),
+        isImage: true,
+      ))
+      ..add(FileAdded(
+        UnstoredAbiliaFile.forTest(fileId2, filePath2, file2),
+        isImage: true,
+      ));
 
     // Assert
     await expectedStream;
@@ -347,14 +350,15 @@ void main() {
     );
 
     // Act
-    userFileBloc.add(FileAdded(
-      UnstoredAbiliaFile.forTest(fileId, filePath1, file),
-      isImage: true,
-    ));
-    userFileBloc.add(FileAdded(
-      UnstoredAbiliaFile.forTest(fileId2, filePath2, file2),
-      isImage: true,
-    ));
+    userFileBloc
+      ..add(FileAdded(
+        UnstoredAbiliaFile.forTest(fileId, filePath1, file),
+        isImage: true,
+      ))
+      ..add(FileAdded(
+        UnstoredAbiliaFile.forTest(fileId2, filePath2, file2),
+        isImage: true,
+      ));
 
     // Assert
     await expectStream;

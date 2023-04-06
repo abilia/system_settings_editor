@@ -1,6 +1,6 @@
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class Agenda extends StatelessWidget with CalendarWidgetMixin {
   final EventsState eventsState;

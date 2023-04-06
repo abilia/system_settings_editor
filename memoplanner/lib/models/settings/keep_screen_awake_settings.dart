@@ -16,12 +16,20 @@ class KeepScreenAwakeSettings extends Equatable {
 
   bool get keepScreenOnAlways => _keepScreenOnAlways;
 
+  @Deprecated(
+    'To be Remove on in 4.3, '
+    'use SettingsDb.keepScreenOnWhileCharging instead',
+  )
   const KeepScreenAwakeSettings({
     bool keepScreenOnWhileCharging = false,
     bool keepScreenOnAlways = false,
   })  : _keepScreenOnWhileCharging = keepScreenOnWhileCharging,
         _keepScreenOnAlways = keepScreenOnAlways;
 
+  @Deprecated(
+    'To be Remove on in 4.3, '
+    'use SettingsDb.keepScreenOnWhileCharging instead',
+  )
   factory KeepScreenAwakeSettings.fromSettingsMap(
       Map<String, MemoplannerSettingData> settings) {
     final savedKeepOnWhileCharging =

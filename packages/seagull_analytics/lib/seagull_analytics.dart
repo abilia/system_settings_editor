@@ -3,14 +3,13 @@ import 'dart:ui';
 
 import 'package:logging/logging.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
-
 import 'package:seagull_analytics/analytics_events.dart';
 
-export 'widgets/trackable_page_view.dart';
-export 'widgets/trackable_tab_bar_view.dart';
+export 'analytics_events.dart';
 export 'navigation_observer.dart';
 export 'trackable.dart';
-export 'analytics_events.dart';
+export 'widgets/trackable_page_view.dart';
+export 'widgets/trackable_tab_bar_view.dart';
 
 final _log = Logger('SeagullAnalytics');
 
@@ -118,8 +117,9 @@ class SeagullAnalytics {
     String eventName, {
     Map<String, dynamic>? properties,
   }) {
-    _log.finer('tracking $eventName');
-    _log.finer('$eventName props: $properties');
+    _log
+      ..finer('tracking $eventName')
+      ..finer('$eventName props: $properties');
     _mixpanel?.track(eventName, properties: properties);
   }
 }

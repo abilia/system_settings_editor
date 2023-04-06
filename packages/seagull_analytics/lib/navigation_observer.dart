@@ -12,23 +12,26 @@ class AnalyticNavigationObserver extends RouteObserver<PageRoute> {
   void didPush(Route route, Route? previousRoute) {
     super.didPush(route, previousRoute);
     _trackRoute(route, NavigationAction.opened);
-    _log.fine('didPush $route');
-    _log.finest('didPush previousRoute $previousRoute');
+    _log
+      ..fine('didPush $route')
+      ..finest('didPush previousRoute $previousRoute');
   }
 
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-    _log.fine('didReplace $newRoute');
-    _log.finest('didReplace oldRoute $oldRoute');
+    _log
+      ..fine('didReplace $newRoute')
+      ..finest('didReplace oldRoute $oldRoute');
   }
 
   @override
   void didPop(Route route, Route? previousRoute) {
     super.didPop(route, previousRoute);
     _trackRoute(route, NavigationAction.closed);
-    _log.fine('didPop $route');
-    _log.finest('didPop previousRoute $previousRoute');
+    _log
+      ..fine('didPop $route')
+      ..finest('didPop previousRoute $previousRoute');
   }
 
   void _trackRoute(Route route, NavigationAction navigationAction) {

@@ -83,20 +83,14 @@ class FlutterTtsHandler extends FlutterTts implements TtsInterface {
 
     await tts.awaitSpeakCompletion(true);
 
-    tts.setStartHandler(() {
-      _log.finest('start');
-    });
-    tts.setCompletionHandler(() {
-      _log.finest('complete');
-    });
-    tts.setProgressHandler(
-        (String text, int startOffset, int endOffset, String word) {
-      _log.finest(text);
-      _log.finest('^'.padLeft(startOffset) + word);
-    });
-    tts.setErrorHandler((msg) {
-      _log.warning('error: $msg');
-    });
+    tts
+      ..setStartHandler(() => _log.finest('start'))
+      ..setCompletionHandler(() => _log.finest('complete'))
+      ..setProgressHandler(
+          (String text, int startOffset, int endOffset, String word) => _log
+            ..finest(text)
+            ..finest('^'.padLeft(startOffset) + word))
+      ..setErrorHandler((msg) => _log.warning('error: $msg'));
 
     return tts;
   }

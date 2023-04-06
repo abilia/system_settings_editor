@@ -113,8 +113,9 @@ class VoiceRepository {
     try {
       await _voiceDirectory(voice).delete(recursive: true);
     } on Exception catch (e) {
-      _log.warning('Failed to deleted voice: ${voice.name}', e);
-      _log.info('Will try legacy delete');
+      _log
+        ..warning('Failed to deleted voice: ${voice.name}', e)
+        ..info('Will try legacy delete');
       return _legacyDelete(voice);
     }
     _log.fine('Deleted voice; ${voice.name}');

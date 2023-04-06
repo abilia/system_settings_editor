@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:meta/meta.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:meta/meta.dart';
 
 abstract class BasicTimerData extends SortableData {}
 

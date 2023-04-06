@@ -1,7 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:collection/collection.dart';
 
 class DatabaseRepository {
   DatabaseRepository._();

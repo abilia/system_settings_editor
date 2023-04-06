@@ -331,8 +331,10 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
 
   @override
   void applyPaintTransform(RenderObject child, Matrix4 transform) {
-    final childParentData = child.parentData as SliverPhysicalParentData;
-    childParentData.applyPaintTransform(transform);
+    final childParentData = child.parentData;
+    if (childParentData is SliverPhysicalParentData) {
+      childParentData.applyPaintTransform(transform);
+    }
   }
 
   @override
