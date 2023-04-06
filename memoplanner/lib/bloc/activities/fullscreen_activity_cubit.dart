@@ -29,7 +29,6 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
     _alarmCubitSubscription = alarmCubit.stream
         .whereType<NewAlarm>()
         .listen((alarm) => setCurrentActivity(alarm.activityDay));
-    unawaited(_updateState());
   }
 
   final ActivityRepository activityRepository;
@@ -37,6 +36,8 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
   late final StreamSubscription _activityBlocSubscription;
   late final StreamSubscription _clockBlocSubscription;
   late final StreamSubscription _alarmCubitSubscription;
+
+  void loadActivities() => unawaited(_updateState());
 
   Future<void> _updateState() async {
     final day = clockBloc.state.onlyDays();

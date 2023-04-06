@@ -13,6 +13,7 @@ import 'package:memoplanner/utils/all.dart';
 
 class AuthenticatedListener extends StatefulWidget {
   final bool newlyLoggedIn;
+
   const AuthenticatedListener({
     required this.child,
     required this.newlyLoggedIn,
@@ -31,15 +32,15 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    unawaited(_readScreenTimeOut());
-    unawaited(_fetchDeviceLicense());
   }
 
   @override
-  void didChangeDependencies() {
+  Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
-    unawaited(GetIt.I<SettingsDb>().setAlwaysUse24HourFormat(
-        MediaQuery.of(context).alwaysUse24HourFormat));
+    await GetIt.I<SettingsDb>()
+        .setAlwaysUse24HourFormat(MediaQuery.of(context).alwaysUse24HourFormat);
+    await _readScreenTimeOut();
+    await _fetchDeviceLicense();
   }
 
   @override
@@ -97,14 +98,12 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
               context.read<NotificationBloc>().add(NotificationEvent()),
         ),
         BlocListener<LicenseCubit, LicenseState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (Config.isMP && state is NoValidLicense) {
-              unawaited(
-                showViewDialog(
-                  context: context,
-                  builder: (context) => const LicenseExpiredWarningDialog(),
-                  routeSettings: (LicenseExpiredWarningDialog).routeSetting(),
-                ),
+              await showViewDialog(
+                context: context,
+                builder: (context) => const LicenseExpiredWarningDialog(),
+                routeSettings: (LicenseExpiredWarningDialog).routeSetting(),
               );
             } else if (state is! ValidLicense) {
               BlocProvider.of<AuthenticationBloc>(context).add(

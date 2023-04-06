@@ -17,7 +17,6 @@ class ConnectivityCubit extends Cubit<ConnectivityState> {
   }) : super(const ConnectivityState.none()) {
     _onChangeSubscription =
         connectivity.onConnectivityChanged.listen(_onConnectivityChanged);
-    unawaited(checkConnectivity());
   }
   final Duration retryDelay;
   final int retryAttempts;

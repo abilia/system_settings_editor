@@ -86,15 +86,15 @@ class _CalendarScrollListenerState extends State<_CalendarScrollListener>
     super.initState();
     WidgetsBinding.instance
       ..addObserver(this)
-      ..addPostFrameCallback((_) {
+      ..addPostFrameCallback((_) async {
         if (!mounted) {
           return;
         }
         _updateScrollState();
         if (mounted && context.read<DayPickerBloc>().state.isToday) {
-          unawaited(context
+          await context
               .read<ScrollPositionCubit>()
-              .goToNow(duration: Duration.zero));
+              .goToNow(duration: Duration.zero);
         }
       });
   }
@@ -106,18 +106,18 @@ class _CalendarScrollListenerState extends State<_CalendarScrollListener>
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
       _updateScrollState();
-      unawaited(context.read<ScrollPositionCubit>().goToNow());
+      await context.read<ScrollPositionCubit>().goToNow();
     }
   }
 
   @override
   void didUpdateWidget(covariant _CalendarScrollListener oldWidget) {
     super.didUpdateWidget(oldWidget);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) {
         return;
       }
@@ -129,7 +129,7 @@ class _CalendarScrollListenerState extends State<_CalendarScrollListener>
         scrollPositionCubit.updateNowOffset(
           nowOffset: widget.getNowOffset(context.read<ClockBloc>().state),
         );
-        unawaited(scrollPositionCubit.goToNow(duration: Duration.zero));
+        await scrollPositionCubit.goToNow(duration: Duration.zero);
       }
     });
   }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +12,9 @@ class SupportPersonsCubit extends Cubit<SupportPersonsState> {
   SupportPersonsCubit({required this.supportPersonsRepository})
       : super(const SupportPersonsState(UnmodifiableSetView.empty()));
 
-  Future<void> loadSupportPersons() async {
+  void loadSupportPersons() => unawaited(_loadSupportPersons());
+
+  Future<void> _loadSupportPersons() async {
     final supportPersons = await supportPersonsRepository.load();
     emit(SupportPersonsState(UnmodifiableSetView(supportPersons)));
   }

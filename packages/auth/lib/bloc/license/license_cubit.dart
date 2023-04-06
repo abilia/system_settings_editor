@@ -27,7 +27,7 @@ class LicenseCubit extends Cubit<LicenseState> {
         pushCubit.stream.listen((state) async => reloadLicenses());
     authSubscription = authenticationBloc.stream.listen((state) async {
       if (state is Authenticated) {
-        unawaited(reloadLicenses());
+        await reloadLicenses();
       }
     });
   }

@@ -30,8 +30,9 @@ class DayEventsCubit extends Cubit<EventsState> {
         _updateState(day: state.day, occasion: state.occasion)));
     _timerSubscription = timerAlarmBloc.stream
         .listen((state) async => _updateState(timers: state.timers));
-    unawaited(_updateState());
   }
+
+  Future<void> initialize() => _updateState();
 
   Future<void> _updateState({
     List<TimerOccasion>? timers,
