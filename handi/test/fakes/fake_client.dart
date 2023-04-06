@@ -14,7 +14,7 @@ const String token = 'token',
 
 ListenableMockClient fakeClient = ListenableMockClient((request) async {
   final pathSegments = request.url.pathSegments.toSet();
-  if (pathSegments.containsAll(['auth', 'client', 'me'])) {
+  if (pathSegments.containsAll(<String>{'auth', 'client', 'me'})) {
     return Response('''
     {
       "token" : "$token",
@@ -22,7 +22,7 @@ ListenableMockClient fakeClient = ListenableMockClient((request) async {
       "renewToken" : ""
     }''', 200);
   }
-  if (pathSegments.containsAll(['license', 'portal', 'me'])) {
+  if (pathSegments.containsAll(<String>{'license', 'portal', 'me'})) {
     return Response('''
     [
       {
@@ -33,7 +33,7 @@ ListenableMockClient fakeClient = ListenableMockClient((request) async {
     ]
   ''', 200);
   }
-  if (pathSegments.containsAll(['entity', 'me'])) {
+  if (pathSegments.containsAll(<String>{'entity', 'me'})) {
     return Response('''
     {
       "me" : {

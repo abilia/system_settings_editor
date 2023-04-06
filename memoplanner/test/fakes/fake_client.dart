@@ -43,7 +43,7 @@ class Fakes {
         (request) async {
           final pathSegments = request.url.pathSegments.toSet();
 
-          if (pathSegments.containsAll(['auth', 'client', 'me'])) {
+          if (pathSegments.containsAll(<String>{'auth', 'client', 'me'})) {
             final authHeaders =
                 request.headers[HttpHeaders.authorizationHeader];
             final incorrect =
@@ -59,31 +59,31 @@ class Fakes {
             }
             return clientMeSuccessResponse;
           }
-          if (pathSegments.containsAll(['entity', 'me'])) {
+          if (pathSegments.containsAll(<String>{'entity', 'me'})) {
             return entityMeSuccessResponse;
           }
-          if (pathSegments.containsAll(['data', 'activities'])) {
+          if (pathSegments.containsAll(<String>{'data', 'activities'})) {
             return Response(
                 json.encode((activityResponse?.call() ?? allActivities)
                     .map((a) => a.wrapWithDbModel())
                     .toList()),
                 200);
           }
-          if (pathSegments.containsAll(['data', 'generics'])) {
+          if (pathSegments.containsAll(<String>{'data', 'generics'})) {
             return Response(
                 json.encode((genericResponse?.call() ?? allGenerics)
                     .map((a) => a.wrapWithDbModel())
                     .toList()),
                 200);
           }
-          if (pathSegments.containsAll(['license', 'portal', 'me'])) {
+          if (pathSegments.containsAll(<String>{'license', 'portal', 'me'})) {
             return licenseResponse?.call() ??
                 licenseResponseExpires(DateTime.now().add(10.days()));
           }
           if (pathSegments.contains('calendar')) {
             return calendarSuccessResponse;
           }
-          if (pathSegments.containsAll({'entity', 'user'})) {
+          if (pathSegments.containsAll(<String>{'entity', 'user'})) {
             final uName = json.decode(request.body)['usernameOrEmail'];
             if (uName == 'taken') {
               return Response(
@@ -96,7 +96,7 @@ class Fakes {
               200,
             );
           }
-          if (pathSegments.containsAll(['token', 'renew'])) {
+          if (pathSegments.containsAll(<String>{'token', 'renew'})) {
             if (request.body.contains('"renewToken":"renewToken"')) {
               return Response('''{
                             "token" : "${FakeLoginDb.token}",
@@ -116,7 +116,7 @@ class Fakes {
             );
           }
 
-          if (pathSegments.containsAll(['auth', 'client']) &&
+          if (pathSegments.containsAll(<String>{'auth', 'client'}) &&
               !pathSegments.contains('me')) {
             return Response(
                 json.encode(
@@ -124,25 +124,27 @@ class Fakes {
                 200);
           }
 
-          if (pathSegments.containsAll(['entity', 'acknowledgments'])) {
+          if (pathSegments.containsAll(<String>{'entity', 'acknowledgments'})) {
             return Response(
                 json.encode((termsOfUseResponse?.call().toMap() ??
                     TermsOfUse.accepted().toMap())),
                 200);
           }
 
-          if (pathSegments.containsAll({'open', 'v1', 'device', 'license'})) {
+          if (pathSegments
+              .containsAll(<String>{'open', 'v1', 'device', 'license'})) {
             return connectLicenseResponse?.call() ??
                 deviceLicenseSuccessResponse;
           }
 
-          if (pathSegments.containsAll({'open', 'v1', 'device', 'reset'})) {
+          if (pathSegments
+              .containsAll(<String>{'open', 'v1', 'device', 'reset'})) {
             return factoryResetResponse?.call() == true
                 ? factoryResetSuccess
                 : factoryResetFail;
           }
 
-          if (pathSegments.containsAll({'entity', 'features'})) {
+          if (pathSegments.containsAll(<String>{'entity', 'features'})) {
             return Response(
               json.encode({'features': []}),
               200,
