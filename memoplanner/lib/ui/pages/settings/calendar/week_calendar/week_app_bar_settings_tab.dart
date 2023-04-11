@@ -28,11 +28,11 @@ class WeekAppBarSettingsTab extends StatelessWidget {
           child: Text(t.showWeekNumber),
         ),
         SwitchField(
-          value: state.showYear,
+          value: state.showYearAndMonth,
           onChanged: (v) => context
               .read<WeekCalendarSettingsCubit>()
-              .changeWeekCalendarSettings(state.copyWith(showYear: v)),
-          child: Text(t.showYear),
+              .changeWeekCalendarSettings(state.copyWith(showYearAndMonth: v)),
+          child: Text(t.showMonthAndYear),
         ),
         SwitchField(
           value: state.showClock,

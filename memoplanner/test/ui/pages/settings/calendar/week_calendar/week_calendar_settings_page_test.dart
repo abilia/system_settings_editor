@@ -84,10 +84,10 @@ void main() {
       );
     });
 
-    testWidgets('Hide year', (tester) async {
+    testWidgets('Hide year and month', (tester) async {
       await tester.goToWeekCalendarSettingsPage();
-      expect(find.text('${initialTime.year}'), findsOneWidget);
-      await tester.tap(find.text(translate.showYear));
+      expect(find.text('April ${initialTime.year}'), findsOneWidget);
+      await tester.tap(find.text(translate.showMonthAndYear));
       await tester.pumpAndSettle();
       expect(find.text('${initialTime.year}'), findsNothing);
       await tester.tap(find.byType(OkButton));
@@ -96,7 +96,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: WeekCalendarSettings.showYearKey,
+        key: WeekCalendarSettings.showYearAndMonthKey,
         matcher: isFalse,
       );
     });
