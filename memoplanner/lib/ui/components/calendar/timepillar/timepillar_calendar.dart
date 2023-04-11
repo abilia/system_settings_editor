@@ -8,8 +8,6 @@ import 'package:memoplanner/utils/all.dart';
 const transitionDuration = Duration(seconds: 1);
 
 class TimepillarCalendar extends StatelessWidget {
-  static const nightBackgroundColor = AbiliaColors.black;
-
   const TimepillarCalendar({
     required this.timepillarState,
     required this.timepillarMeasures,
@@ -25,16 +23,13 @@ class TimepillarCalendar extends StatelessWidget {
         context.select((MemoplannerSettingsBloc bloc) => bloc.state.calendar);
 
     if (timepillarState.calendarType == DayCalendarType.oneTimepillar) {
-      final dayPartNight =
-          context.select((DayPartCubit dayPart) => dayPart.state.isNight);
-      final isToday =
-          context.select((DayPickerBloc picker) => picker.state.isToday);
+      final isNight = context.watch<NightMode>().state;
       final notDayAndNightTimepillar = context.select(
         (MemoplannerSettingsBloc settings) =>
             settings.state.dayCalendar.viewOptions.intervalType !=
             TimepillarIntervalType.dayAndNight,
       );
-      final nightMode = isToday && dayPartNight && notDayAndNightTimepillar;
+      final nightMode = isNight && notDayAndNightTimepillar;
 
       return OneTimepillarCalendar(
         timepillarState: timepillarState,
@@ -191,7 +186,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                   child: Container(
                     key: TestKey.calendarBackgroundColor,
                     color: interval.intervalPart == IntervalPart.night
-                        ? TimepillarCalendar.nightBackgroundColor
+                        ? nightBackgroundColor
                         : Theme.of(context).scaffoldBackgroundColor,
                     child: ScrollArrows.all(
                       upCollapseMargin: topMargin,
@@ -213,8 +208,8 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                                     height: p.length,
                                     child: const DecoratedBox(
                                       decoration: BoxDecoration(
-                                          color: TimepillarCalendar
-                                              .nightBackgroundColor),
+                                        color: nightBackgroundColor,
+                                      ),
                                     ),
                                   ),
                                 );

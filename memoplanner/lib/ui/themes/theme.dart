@@ -15,6 +15,7 @@ final m1ItemPadding = EdgeInsets.fromLTRB(
   0,
 );
 
+const nightBackgroundColor = AbiliaColors.black;
 final abiliaTheme = ThemeData(
   scaffoldBackgroundColor: AbiliaColors.white110,
   colorScheme: const ColorScheme.light(
