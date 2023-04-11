@@ -21,6 +21,4 @@ class TimerOccasion extends EventOccasion {
   AbiliaFile get image => timer.image;
   @override
   List<Object?> get props => [timer, occasion];
-  @override
-  int compareTo(other) => compare(other);
 }

@@ -24,9 +24,6 @@ class ActivityOccasion extends ActivityDay implements EventOccasion {
 
   @override
   String toString() => 'ActivityOccasion { ${super.toString()} $occasion }';
-
-  @override
-  int compareTo(other) => compare(other);
 }
 
 class ActivityDay extends Event {

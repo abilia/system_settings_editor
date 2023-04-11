@@ -74,7 +74,10 @@ class TimepillarBoard extends StatelessWidget {
         measures.dotDistance +
         maxCardHeight;
 
-    eventOccasions.sort();
+    // Cast event occasions to events to avoid sorting with occasions.
+    eventOccasions.sort((Event a, Event b) {
+      return a.compareTo(b);
+    });
     final scheduled = <List<TimepillarCard>>[];
     ActivityLoop:
     for (final eventOccasion in eventOccasions) {
