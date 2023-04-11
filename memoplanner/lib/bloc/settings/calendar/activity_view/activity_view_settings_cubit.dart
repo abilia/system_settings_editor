@@ -10,5 +10,6 @@ class ActivityViewSettingsCubit extends Cubit<ActivityViewSettings> {
   }) : super(activityViewSettings);
 
   void changeSettings(ActivityViewSettings settings) => emit(settings);
-  void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
+  Future<void> save() =>
+      genericCubit.genericUpdated(state.memoplannerSettingData);
 }

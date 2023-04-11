@@ -105,7 +105,7 @@ void main() {
                 connectivity: mockConnectivity,
                 baseUrlDb: FakeBaseUrlDb(),
                 myAbiliaConnection: mockMyAbiliaConnection,
-              ),
+              )..checkConnectivity(),
             ),
           ],
           child: const AbiliaLogoWithReset(),

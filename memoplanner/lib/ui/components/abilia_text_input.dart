@@ -230,9 +230,8 @@ class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {
     ).pad(EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom));
   }
 
-  void _returnNewText() {
-    Navigator.of(context).maybePop(_controller.text);
-  }
+  Future<void> _returnNewText() =>
+      Navigator.of(context).maybePop(_controller.text);
 }
 
 abstract class StateWithFocusOnResume<T extends StatefulWidget> extends State<T>

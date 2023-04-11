@@ -275,7 +275,7 @@ class YesButton extends StatelessWidget {
     return GreenButton(
       text: Translator.of(context).translate.yes,
       icon: AbiliaIcons.ok,
-      onPressed: () => onPressed != null
+      onPressed: () async => onPressed != null
           ? onPressed?.call()
           : Navigator.of(context).maybePop(true),
     );
@@ -291,7 +291,7 @@ class NoButton extends StatelessWidget {
     return LightButton(
       text: Translator.of(context).translate.no,
       icon: AbiliaIcons.closeProgram,
-      onPressed: () => onPressed != null
+      onPressed: () async => onPressed != null
           ? onPressed?.call()
           : Navigator.of(context).maybePop(false),
     );

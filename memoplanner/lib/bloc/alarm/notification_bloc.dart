@@ -21,7 +21,7 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
     required SyncDelays syncDelays,
   }) : super('init') {
     on<NotificationEvent>(
-      (event, emit) => _scheduleNotifications(),
+      (event, emit) async => _scheduleNotifications(),
       transformer: _debounceTime(syncDelays.scheduleNotificationsDelay),
     );
   }

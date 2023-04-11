@@ -48,7 +48,7 @@ class LongPressInfoDialog extends StatelessWidget {
         ],
       ),
       backNavigationWidget: CloseButton(
-        onPressed: () => Navigator.of(context).maybePop(false),
+        onPressed: () async => Navigator.of(context).maybePop(false),
       ),
     );
   }

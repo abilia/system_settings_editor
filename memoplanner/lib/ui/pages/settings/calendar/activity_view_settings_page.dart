@@ -84,9 +84,9 @@ class ActivityViewSettingsPage extends StatelessWidget {
             backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: Builder(
               builder: (context) => OkButton(
-                onPressed: () {
-                  context.read<ActivityViewSettingsCubit>().save();
+                onPressed: () async {
                   Navigator.of(context).pop();
+                  await context.read<ActivityViewSettingsCubit>().save();
                 },
               ),
             ),

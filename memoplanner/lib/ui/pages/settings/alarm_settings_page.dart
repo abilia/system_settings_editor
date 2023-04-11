@@ -113,9 +113,9 @@ class AlarmSettingsPage extends StatelessWidget {
               bottomNavigationBar: BottomNavigation(
                 backNavigationWidget: const CancelButton(),
                 forwardNavigationWidget: OkButton(
-                  onPressed: () {
-                    context.read<AlarmSettingsCubit>().save();
+                  onPressed: () async {
                     Navigator.of(context).pop();
+                    await context.read<AlarmSettingsCubit>().save();
                   },
                 ),
               ),

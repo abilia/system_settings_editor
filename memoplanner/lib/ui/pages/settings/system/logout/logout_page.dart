@@ -31,7 +31,7 @@ class LogoutPage extends StatelessWidget {
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: LogoutButton(
-          onPressed: () => _logOutPressed(context),
+          onPressed: () async => _logOutPressed(context),
         ),
       ),
     );
@@ -45,7 +45,7 @@ class LogoutPage extends StatelessWidget {
     if (!hasDirty) {
       authBloc.add(const LoggedOut());
     } else if (context.mounted) {
-      showAbiliaBottomSheet(
+      await showAbiliaBottomSheet(
         context: context,
         providers: authProviders,
         child: Padding(
@@ -100,7 +100,8 @@ class _ProfilePictureNameAndEmailState
       children: <Widget>[
         if (user != null) ...[
           GestureDetector(
-            onLongPress: () => GetIt.I<SeagullLogger>().sendLogsToBackend(),
+            onLongPress: () async =>
+                GetIt.I<SeagullLogger>().sendLogsToBackend(),
             onDoubleTap: () => setState(() => showVersion = !showVersion),
             child: ProfilePicture(
               baseUrl,

@@ -20,9 +20,9 @@ class MpGoMenuButton extends StatelessWidget {
               builder: (context, sessionsState) => IconActionButton(
                 style: actionButtonStyleLight,
                 ttsData: t.menu,
-                onPressed: () {
+                onPressed: () async {
                   final authProviders = copiedAuthProviders(context);
-                  Navigator.of(context).push(
+                  await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => MultiBlocProvider(
                         providers: authProviders,

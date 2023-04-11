@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -19,7 +21,9 @@ class _SoundEffectSwitchState extends State<SoundEffectsSwitch> {
   @override
   void initState() {
     super.initState();
-    initSetting();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _initSettings();
+    });
   }
 
   @override
@@ -31,16 +35,16 @@ class _SoundEffectSwitchState extends State<SoundEffectsSwitch> {
       ),
       value: _on,
       onChanged: (switchOn) {
-        setState(() {
+        setState(() async {
           _on = switchOn;
-          SystemSettingsEditor.setSoundEffectsEnabled(switchOn);
+          await SystemSettingsEditor.setSoundEffectsEnabled(switchOn);
         });
       },
       child: Text(Translator.of(context).translate.clickSound),
     );
   }
 
-  Future<void> initSetting() async {
+  Future<void> _initSettings() async {
     try {
       final on = await SystemSettingsEditor.soundEffectsEnabled;
       setState(() {

@@ -17,7 +17,7 @@ class PermissionInfoDialog extends StatelessWidget {
     return BlocListener<PermissionCubit, PermissionState>(
       listenWhen: (previous, current) =>
           current.status[permission]?.isGranted ?? true,
-      listener: (context, state) => Navigator.of(context).maybePop(),
+      listener: (context, state) async => Navigator.of(context).maybePop(),
       child: ViewDialog(
         expanded: true,
         bodyPadding: EdgeInsets.zero,
@@ -110,10 +110,10 @@ TextSpan buildSettingsLinkTextSpan(BuildContext context) => TextSpan(
               .style
               .copyWith(decoration: TextDecoration.underline),
           recognizer: TapGestureRecognizer()
-            ..onTap = () {
+            ..onTap = () async {
               final authProviders = copiedAuthProviders(context);
               Navigator.of(context).pop();
-              Navigator.of(context).push(
+              await Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => MultiBlocProvider(
                     providers: authProviders,

@@ -48,7 +48,7 @@ class _ChangeCodeProtectPageState extends State<ChangeCodeProtectPage> {
     );
   }
 
-  void onPressed() {
+  Future<void> onPressed() async {
     final textEditValue = controller.text;
     if (int.tryParse(textEditValue) != null) {
       if (firstCode == null) {
@@ -61,7 +61,7 @@ class _ChangeCodeProtectPageState extends State<ChangeCodeProtectPage> {
       }
     }
     final t = Translator.of(context).translate;
-    showDialog(
+    await showDialog(
       context: context,
       builder: (context) => ErrorDialog(
           text: firstCode == null ? t.enterNewCode : t.incorrectCode),

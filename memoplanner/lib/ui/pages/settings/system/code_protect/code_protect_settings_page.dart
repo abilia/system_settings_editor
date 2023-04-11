@@ -70,9 +70,9 @@ class CodeProtectSettingsPage extends StatelessWidget {
               backNavigationWidget: const CancelButton(),
               forwardNavigationWidget: Builder(
                 builder: (context) => OkButton(
-                  onPressed: () {
-                    context.read<CodeProtectCubit>().save();
+                  onPressed: () async {
                     Navigator.of(context).pop();
+                    await context.read<CodeProtectCubit>().save();
                   },
                 ),
               ),

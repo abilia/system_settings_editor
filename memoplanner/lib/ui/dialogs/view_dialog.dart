@@ -136,7 +136,7 @@ class ConfirmWarningDialog extends StatelessWidget {
       ),
       body: Tts(child: Text(text)),
       forwardNavigationWidget: OkButton(
-        onPressed: () => Navigator.of(context).maybePop(true),
+        onPressed: () async => Navigator.of(context).maybePop(true),
       ),
       backNavigationWidget: const PreviousButton(),
     );

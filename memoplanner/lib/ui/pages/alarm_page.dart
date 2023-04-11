@@ -167,16 +167,16 @@ class _PopAwareAlarmPageState extends State<PopAwareAlarmPage> {
           AlarmNavigator.log.fine('onWillPop ${widget.alarm}');
           widget.alarmNavigator.removedFromRoutes(widget.alarm.stackId);
           if (!isCanceled) {
-            notificationPlugin.cancel(widget.alarm.hashCode);
+            await notificationPlugin.cancel(widget.alarm.hashCode);
           }
-          remoteAlarm.stop(widget.alarm, pop: true);
+          await remoteAlarm.stop(widget.alarm, pop: true);
           return true;
         },
         child: BlocListener<TouchDetectionCubit, Touch>(
           listenWhen: (previous, current) => !isCanceled,
           listener: (context, state) async {
-            notificationPlugin.cancel(widget.alarm.hashCode);
-            remoteAlarm.stop(widget.alarm);
+            await notificationPlugin.cancel(widget.alarm.hashCode);
+            await remoteAlarm.stop(widget.alarm);
             isCanceled = true;
           },
           child: widget.child,
@@ -210,7 +210,7 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
   @override
   Widget build(BuildContext context) {
     final closeButton = CloseButton(
-      onPressed: () => popAlarm(
+      onPressed: () async => popAlarm(
         activityRepository: context.read<LicenseCubit>().validLicense
             ? context.read<ActivityRepository>()
             : null,
@@ -236,7 +236,7 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
                   key: TestKey.activityCheckButton,
                   text: Translator.of(context).translate.check,
                   icon: AbiliaIcons.handiCheck,
-                  onPressed: () => checkConfirmationAndRemoveAlarm(
+                  onPressed: () async => checkConfirmationAndRemoveAlarm(
                     context,
                     alarm.activityDay,
                     alarm: alarm,
@@ -326,7 +326,7 @@ class TimerAlarmPage extends StatelessWidget with ActivityMixin {
         ),
         bottomNavigationBar: BottomNavigation(
           backNavigationWidget: CloseButton(
-            onPressed: () => popAlarm(
+            onPressed: () async => popAlarm(
               navigator: Navigator.of(context),
               alarm: timerAlarm,
             ),

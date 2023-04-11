@@ -30,11 +30,12 @@ class BasicTimerPickerPage extends StatelessWidget {
                   sortable,
                   onTap,
                   _StartBasicTimerButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (sortableData is BasicTimerDataItem) {
-                        context.read<EditTimerCubit>()
-                          ..loadTimerTemplate(sortableData)
-                          ..start();
+                        context
+                            .read<EditTimerCubit>()
+                            .loadTimerTemplate(sortableData);
+                        await context.read<EditTimerCubit>().start();
                       }
                     },
                   ).pad(layout.button.startBasicTimerPadding),

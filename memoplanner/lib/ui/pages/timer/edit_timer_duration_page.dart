@@ -119,7 +119,7 @@ class _TimerInputContentState extends State<_TimerInputContent> {
         BottomNavigation(
           backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: OkButton(
-            onPressed: () => onSave(
+            onPressed: () async => onSave(
               context,
               Duration(
                   hours: int.tryParse(hourController.text) ?? 0,

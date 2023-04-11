@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -23,10 +25,10 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeDependencies();
     if (state == AppLifecycleState.resumed) {
-      _checkWriteSettingsPermission();
+      await _checkWriteSettingsPermission();
       setState(() {});
     }
   }
@@ -34,9 +36,9 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
   Future<void> _checkWriteSettingsPermission() async {
     final status = await SystemSettingsEditor.canWriteSettings;
     if (status) {
-      SystemSettingsEditor.setSoundEffectsEnabled(false);
-      SystemSettingsEditor.setHapticFeedbackEnabled(false);
-      SystemSettingsEditor.setScreenOffTimeout(30.minutes());
+      await SystemSettingsEditor.setSoundEffectsEnabled(false);
+      await SystemSettingsEditor.setHapticFeedbackEnabled(false);
+      await SystemSettingsEditor.setScreenOffTimeout(30.minutes());
     }
   }
 
@@ -99,7 +101,7 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                         IconAndTextButtonDark(
                             icon: AbiliaIcons.past,
                             text: 'Paste from clipboard',
-                            onPressed: () =>
+                            onPressed: () async =>
                                 Clipboard.getData(Clipboard.kTextPlain).then(
                                     (value) => serialIdController.text =
                                         value?.text ?? '')),
@@ -135,13 +137,14 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                         const SizedBox(height: 50),
                       ],
                       TextButton(
-                        onPressed: canWriteSettings &&
-                                startupState is! Verifying
-                            ? () => context.read<StartupCubit>().verifySerialId(
-                                  serialIdController.text,
-                                  licenseNumberController.text,
-                                )
-                            : null,
+                        onPressed:
+                            canWriteSettings && startupState is! Verifying
+                                ? () async =>
+                                    context.read<StartupCubit>().verifySerialId(
+                                          serialIdController.text,
+                                          licenseNumberController.text,
+                                        )
+                                : null,
                         style: textButtonStyleGreen,
                         child: const Text('Verify'),
                       ),
@@ -155,7 +158,7 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                           children: [
                             const AbiliaLogo(),
                             InkWell(
-                              onTap: () => context
+                              onTap: () async => context
                                   .read<StartupCubit>()
                                   .skipProductionGuide(),
                               child: const Text(

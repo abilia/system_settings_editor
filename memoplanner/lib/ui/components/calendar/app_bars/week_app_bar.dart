@@ -33,21 +33,21 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       leftAction: weekCalendarSettings.showBrowseButtons
           ? LeftNavButton(
-              onPressed: () =>
+              onPressed: () async =>
                   BlocProvider.of<WeekCalendarCubit>(context).previousWeek(),
             )
           : null,
       clockReplacement: !currentWeekStart.isSameWeekAndYear(time)
           ? GoToCurrentActionButton(
-              onPressed: () {
+              onPressed: () async {
                 context.read<DayPickerBloc>().add(const CurrentDay());
-                context.read<WeekCalendarCubit>().goToCurrentWeek();
+                await context.read<WeekCalendarCubit>().goToCurrentWeek();
               },
             )
           : null,
       rightAction: weekCalendarSettings.showBrowseButtons
           ? RightNavButton(
-              onPressed: () =>
+              onPressed: () async =>
                   BlocProvider.of<WeekCalendarCubit>(context).nextWeek(),
             )
           : null,

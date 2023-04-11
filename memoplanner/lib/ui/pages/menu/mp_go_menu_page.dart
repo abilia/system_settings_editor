@@ -76,9 +76,9 @@ class MyPhotosPickField extends StatelessWidget {
             SemanticsProperties(label: text, button: true),
             child: InkWell(
               onTap: myPhotoFolderId != null
-                  ? () {
+                  ? () async {
                       final authProviders = copiedAuthProviders(context);
-                      Navigator.of(context).push(
+                      await Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (_) => MultiBlocProvider(
                             providers: authProviders,

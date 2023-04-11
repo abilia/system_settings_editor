@@ -14,5 +14,6 @@ class FunctionSettingsCubit extends Cubit<FunctionsSettings> {
       emit(state.copyWith(display: newState));
   void changeTimeoutSettings(TimeoutSettings newState) =>
       emit(state.copyWith(timeout: newState));
-  void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
+  Future<void> save() =>
+      genericCubit.genericUpdated(state.memoplannerSettingData);
 }

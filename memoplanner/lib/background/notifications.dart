@@ -21,15 +21,18 @@ const showNotifications = Config.isMPGO;
 
 @visibleForTesting
 FlutterLocalNotificationsPlugin? notificationsPluginInstance;
-FlutterLocalNotificationsPlugin get notificationPlugin =>
-    ensureNotificationPluginInitialized();
 
-FlutterLocalNotificationsPlugin ensureNotificationPluginInitialized() {
-  var pluginInstance = notificationsPluginInstance;
-  if (pluginInstance != null) return pluginInstance;
+FlutterLocalNotificationsPlugin get notificationPlugin {
+  if (notificationsPluginInstance != null) return notificationsPluginInstance!;
+  unawaited(ensureNotificationPluginInitialized());
+  return FlutterLocalNotificationsPlugin();
+}
+
+Future<void> ensureNotificationPluginInitialized() async {
+  if (notificationsPluginInstance != null) return;
   _log.finer('initialize notification plugin... ');
-  pluginInstance = FlutterLocalNotificationsPlugin();
-  pluginInstance.initialize(
+  final pluginInstance = FlutterLocalNotificationsPlugin();
+  await pluginInstance.initialize(
     const InitializationSettings(
       android: AndroidInitializationSettings('icon_notification'),
       iOS: DarwinInitializationSettings(
@@ -40,8 +43,8 @@ FlutterLocalNotificationsPlugin ensureNotificationPluginInitialized() {
     ),
     onDidReceiveNotificationResponse: onNotification,
   );
-  _log.finer('notification plugin initialize');
-  return notificationsPluginInstance = pluginInstance;
+  notificationsPluginInstance = pluginInstance;
+  _log.finer('notification plugin initialized');
 }
 
 Future cancelNotifications(Iterable<ActivityAlarm> notificationAlarms) async {
@@ -341,6 +344,7 @@ NotificationChannel notificationChannel(
 
 class NotificationChannel {
   final String id, name, description;
+
   NotificationChannel(this.id, this.name, this.description);
 }
 

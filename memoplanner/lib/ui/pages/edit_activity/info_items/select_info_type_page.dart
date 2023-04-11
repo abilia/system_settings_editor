@@ -1,3 +1,4 @@
+import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
@@ -28,6 +29,10 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
+    final videoFeatureToggle = context
+        .read<FeatureToggleCubit>()
+        .state
+        .isToggleEnabled(FeatureToggle.videoInActivity);
     return Scaffold(
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.addAttachment,
@@ -61,7 +66,7 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
               ),
               SizedBox(height: layout.formPadding.verticalItemDistance),
             ],
-            if (widget.showNote)
+            if (widget.showNote) ...[
               RadioField(
                 key: TestKey.infoItemNoteRadio,
                 groupValue: infoItemType,
@@ -70,13 +75,23 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
                 leading: const Icon(AbiliaIcons.edit),
                 text: Text(translate.addNote),
               ),
+              SizedBox(height: layout.formPadding.verticalItemDistance),
+            ],
+            if (videoFeatureToggle)
+              RadioField(
+                groupValue: infoItemType,
+                onChanged: setSelectedType,
+                value: VideoInfoItem,
+                leading: const Icon(AbiliaIcons.videoCall),
+                text: const Text('Add video'),
+              ),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: OkButton(
-          onPressed: () => Navigator.of(context).maybePop(infoItemType),
+          onPressed: () async => Navigator.of(context).maybePop(infoItemType),
         ),
       ),
     );

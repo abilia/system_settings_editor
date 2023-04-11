@@ -10,5 +10,6 @@ class DayCalendarSettingsCubit extends Cubit<DayCalendarSettings> {
   }) : super(dayCalendarSettings);
 
   void changeSettings(DayCalendarSettings settings) => emit(settings);
-  void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
+  Future<void> save() =>
+      genericCubit.genericUpdated(state.memoplannerSettingData);
 }

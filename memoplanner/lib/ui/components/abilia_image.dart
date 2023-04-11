@@ -140,7 +140,7 @@ class CheckedImageWithImagePopup extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       key: TestKey.viewImage,
-      onTap: () => activityDay.activity.hasImage
+      onTap: () async => activityDay.activity.hasImage
           ? _showImage(
               activityDay.activity.fileId,
               activityDay.activity.icon,

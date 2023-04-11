@@ -19,7 +19,8 @@ class GeneralCalendarSettingsCubit extends Cubit<GeneralCalendarSettings> {
   void changeCategorySettings(CategoriesSettings newState) =>
       changeSettings(state.copyWith(categories: newState));
 
-  void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
+  Future<void> save() =>
+      genericCubit.genericUpdated(state.memoplannerSettingData);
 
   void increment(DayPart part) => _setDayPartValue(
         part,

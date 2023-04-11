@@ -69,7 +69,7 @@ class DeviceRepository extends Repository {
     final deviceLicenseUrl = '$licenseEndpoint?clientId=$clientId'.toUri();
     try {
       final response = await client.get(deviceLicenseUrl);
-      deviceDb.setDeviceLicense(_parseLicenseResponse(response));
+      await deviceDb.setDeviceLicense(_parseLicenseResponse(response));
     } catch (e) {
       log.warning(e);
     }

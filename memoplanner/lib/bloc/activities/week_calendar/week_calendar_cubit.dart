@@ -24,15 +24,12 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
     required this.timerAlarmBloc,
     required this.clockBloc,
   }) : super(WeekCalendarInitial(clockBloc.state.firstInWeek())) {
-    _activitiesSubscription = activitiesBloc.stream.listen((_) {
-      _mapToState(state.currentWeekStart, clockBloc.state);
-    });
-    _timersSubscription = timerAlarmBloc.stream.listen((_) {
-      _mapToState(state.currentWeekStart, clockBloc.state);
-    });
-    _clockSubscription = clockBloc.stream.listen((_) {
-      _mapToState(state.currentWeekStart, clockBloc.state);
-    });
+    _activitiesSubscription = activitiesBloc.stream.listen(
+        (_) async => _mapToState(state.currentWeekStart, clockBloc.state));
+    _timersSubscription = timerAlarmBloc.stream.listen(
+        (_) async => _mapToState(state.currentWeekStart, clockBloc.state));
+    _clockSubscription = clockBloc.stream.listen(
+        (_) async => _mapToState(state.currentWeekStart, clockBloc.state));
   }
 
   Future<void> nextWeek() {

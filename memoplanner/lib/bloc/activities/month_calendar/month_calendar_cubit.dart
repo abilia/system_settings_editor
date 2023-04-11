@@ -49,9 +49,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         .listen(_updateMonth);
   }
 
-  void initialize() {
-    _updateMonth();
-  }
+  Future<void> initialize() => _updateMonth();
 
   Future<void> goToNextMonth() async {
     _maybeGoToCurrentDay(state.firstDay.nextMonth());

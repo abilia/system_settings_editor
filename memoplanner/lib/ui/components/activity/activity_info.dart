@@ -105,7 +105,7 @@ class ActivityInfo extends StatelessWidget with ActivityMixin {
           Padding(
             padding: layout.activityPage.checkButtonPadding,
             child: CheckButton(
-              onPressed: () => checkConfirmation(context, activityDay),
+              onPressed: () async => checkConfirmation(context, activityDay),
             ),
           ),
       ],
@@ -293,6 +293,16 @@ class Attachment extends StatelessWidget with ActivityMixin {
           borderRadius: BorderRadius.circular(20),
           child: YoutubePlayer(
             url: item.url,
+          ),
+        ),
+      );
+    } else if (item is VideoInfoItem) {
+      return Padding(
+        padding: layout.activityPage.youtubePlayerPadding,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: VideoPlayer(
+            fileId: item.fileId,
           ),
         ),
       );

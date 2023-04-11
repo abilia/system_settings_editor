@@ -22,7 +22,7 @@ class LoginPage extends StatelessWidget {
     if (reason != LoggedOutReason.logOut) {
       Future.delayed(
         Duration.zero,
-        () => showViewDialog(
+        () async => showViewDialog(
           context: context,
           builder: (_) => LicenseErrorDialog(
             heading: reason.header(translate),
@@ -74,7 +74,7 @@ class LoginPage extends StatelessWidget {
                 ),
               );
               if (licenseExpiredConfirmed) {
-                loginCubit.licenseExpiredWarningConfirmed();
+                await loginCubit.licenseExpiredWarningConfirmed();
               }
             } else {
               await showViewDialog(

@@ -85,7 +85,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
         DayCalendarType.list);
     return BlocListener<DayPickerBloc, DayPickerState>(
       listenWhen: (previous, current) => previous.index != current.index,
-      listener: (context, state) => pageController.animateToPage(
+      listener: (context, state) async => pageController.animateToPage(
         state.index,
         duration: animationDuration,
         curve: animationCurve,

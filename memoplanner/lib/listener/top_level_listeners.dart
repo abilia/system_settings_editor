@@ -25,7 +25,7 @@ class TopLevelListeners extends StatelessWidget {
         child: MultiBlocListener(
           listeners: [
             BlocListener<ClockBloc, DateTime>(
-              listener: (context, state) =>
+              listener: (context, state) async =>
                   GetIt.I<SeagullLogger>().maybeUploadLogs(),
             ),
             AuthenticationListener(

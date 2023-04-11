@@ -81,9 +81,6 @@ void main() {
               BlocProvider<SessionsCubit>(
                 create: (_) => FakeSessionsCubit(),
               ),
-              BlocProvider<FeatureToggleCubit>(
-                create: (_) => FakeFeatureToggleCubit(),
-              )
             ],
             child: child!,
           ),

@@ -25,13 +25,14 @@ class DayEventsCubit extends Cubit<EventsState> {
           ),
         ) {
     _activitiesSubscription =
-        activitiesBloc.stream.listen((state) => _updateState());
-    _dayPickerSubscription = dayPickerBloc.stream.listen(
-        ((state) => _updateState(day: state.day, occasion: state.occasion)));
+        activitiesBloc.stream.listen((state) async => _updateState());
+    _dayPickerSubscription = dayPickerBloc.stream.listen(((state) async =>
+        _updateState(day: state.day, occasion: state.occasion)));
     _timerSubscription = timerAlarmBloc.stream
-        .listen((state) => _updateState(timers: state.timers));
-    _updateState();
+        .listen((state) async => _updateState(timers: state.timers));
   }
+
+  Future<void> initialize() => _updateState();
 
   Future<void> _updateState({
     List<TimerOccasion>? timers,

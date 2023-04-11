@@ -38,7 +38,7 @@ class AcceptTermsSwitch extends StatelessWidget {
                     decoration: TextDecoration.underline,
                   ),
               recognizer: TapGestureRecognizer()
-                ..onTap = () => showViewDialog(
+                ..onTap = () async => showViewDialog(
                       context: context,
                       builder: (_) => WebViewDialog(url: '$abiliaUrl$url'),
                       wrapWithAuthProviders: false,

@@ -80,7 +80,7 @@ class AbiliaLogoWithReset extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: const AbiliaLogo(),
-      onLongPress: () => showViewDialog(
+      onLongPress: () async => showViewDialog(
         context: context,
         wrapWithAuthProviders: false,
         builder: (context) => const ResetDeviceDialog(),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 
@@ -84,13 +86,15 @@ class _CalendarScrollListenerState extends State<_CalendarScrollListener>
     super.initState();
     WidgetsBinding.instance
       ..addObserver(this)
-      ..addPostFrameCallback((_) {
+      ..addPostFrameCallback((_) async {
         if (!mounted) {
           return;
         }
         _updateScrollState();
         if (mounted && context.read<DayPickerBloc>().state.isToday) {
-          context.read<ScrollPositionCubit>().goToNow(duration: Duration.zero);
+          await context
+              .read<ScrollPositionCubit>()
+              .goToNow(duration: Duration.zero);
         }
       });
   }
@@ -102,18 +106,18 @@ class _CalendarScrollListenerState extends State<_CalendarScrollListener>
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
       _updateScrollState();
-      context.read<ScrollPositionCubit>().goToNow();
+      await context.read<ScrollPositionCubit>().goToNow();
     }
   }
 
   @override
   void didUpdateWidget(covariant _CalendarScrollListener oldWidget) {
     super.didUpdateWidget(oldWidget);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) {
         return;
       }
@@ -121,11 +125,11 @@ class _CalendarScrollListenerState extends State<_CalendarScrollListener>
 
       if (oldWidget.timepillarMeasures != widget.timepillarMeasures ||
           oldWidget.agendaEvents != widget.agendaEvents) {
-        context.read<ScrollPositionCubit>()
-          ..updateNowOffset(
-            nowOffset: widget.getNowOffset(context.read<ClockBloc>().state),
-          )
-          ..goToNow(duration: Duration.zero);
+        final scrollPositionCubit = context.read<ScrollPositionCubit>();
+        scrollPositionCubit.updateNowOffset(
+          nowOffset: widget.getNowOffset(context.read<ClockBloc>().state),
+        );
+        await scrollPositionCubit.goToNow(duration: Duration.zero);
       }
     });
   }
@@ -168,8 +172,8 @@ class _AutoScrollToNow extends StatelessWidget {
   final Widget child;
   final GetNowOffset getNowOffset;
 
-  void _scrollToNow(BuildContext context) {
-    context.read<ScrollPositionCubit>().goToNow(
+  Future<void> _scrollToNow(BuildContext context) async {
+    await context.read<ScrollPositionCubit>().goToNow(
           duration: transitionDuration,
           curve: Curves.linear,
         );
@@ -181,9 +185,9 @@ class _AutoScrollToNow extends StatelessWidget {
       listenWhen: (previous, current) {
         return previous is! ReturnToTodayState && current is ReturnToTodayState;
       },
-      listener: (context, _) => _scrollToNow(context),
+      listener: (context, _) async => _scrollToNow(context),
       child: BlocListener<ClockBloc, DateTime>(
-        listener: (context, now) {
+        listener: (context, now) async {
           final scrollState = context.read<ScrollPositionCubit>().state;
           if (scrollState is! ScrollPositionReadyState) {
             return;
@@ -199,7 +203,7 @@ class _AutoScrollToNow extends StatelessWidget {
           final scrollToNow = isToday && inactivityState is! SomethingHappened;
 
           if (scrollToNow) {
-            _scrollToNow(context);
+            await _scrollToNow(context);
           }
         },
         child: child,

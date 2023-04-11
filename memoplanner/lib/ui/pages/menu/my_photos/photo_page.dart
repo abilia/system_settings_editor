@@ -70,8 +70,8 @@ class PhotoPage extends StatelessWidget {
                     isInPhotoCalendar
                         ? AbiliaIcons.noPhotoCalendar
                         : AbiliaIcons.photoCalendar,
-                    onPressed: () {
-                      _addOrRemovePhotoFromPhotoCalendar(
+                    onPressed: () async {
+                      await _addOrRemovePhotoFromPhotoCalendar(
                         context,
                         remove: isInPhotoCalendar,
                         sortable: updatedSortable,
@@ -82,7 +82,7 @@ class PhotoPage extends StatelessWidget {
                     TextAndOrIconActionButtonLight(
                       translate.delete,
                       AbiliaIcons.deleteAllClear,
-                      onPressed: () => _deletePhoto(context, sortable),
+                      onPressed: () async => _deletePhoto(context, sortable),
                     ),
                   TextAndOrIconActionButtonLight(
                     translate.close,
@@ -185,7 +185,7 @@ class _AddOrRemoveFromPhotoCalendarDialog extends StatelessWidget {
       forwardNavigationWidget: GreenButton(
         text: buttonText,
         icon: AbiliaIcons.ok,
-        onPressed: () => Navigator.of(context).maybePop(true),
+        onPressed: () async => Navigator.of(context).maybePop(true),
       ),
     );
   }

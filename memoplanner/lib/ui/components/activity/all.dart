@@ -10,3 +10,5 @@ export 'sortable_toolbar.dart';
 export 'edit_activity_tabs/all.dart';
 export 'record_sound_widgets.dart';
 export 'activity_wizard/all.dart';
+export 'youtube_player.dart';
+export 'video_player.dart';

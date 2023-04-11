@@ -192,13 +192,13 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
     );
     return SafeArea(
       child: GestureDetector(
-        onTap: () {
+        onTap: () async {
+          await context.read<CalendarViewCubit>().toggle(widget.category);
           if (value == widget.expanded) {
-            controller.forward();
+            await controller.forward();
           } else {
-            controller.reverse();
+            await controller.reverse();
           }
-          context.read<CalendarViewCubit>().toggle(widget.category);
         },
         child: Align(
           alignment: alignment,

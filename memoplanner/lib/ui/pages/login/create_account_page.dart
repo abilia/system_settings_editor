@@ -218,7 +218,7 @@ class CreateAccountButton extends StatelessWidget {
           icon: AbiliaIcons.ok,
           text: Translator.of(context).translate.createAccount,
           onPressed: state is! CreateAccountLoading
-              ? () => context
+              ? () async => context
                   .read<CreateAccountCubit>()
                   .createAccountButtonPressed()
               : null,

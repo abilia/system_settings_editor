@@ -100,11 +100,10 @@ class MonthContent extends StatelessWidget {
     final pageController = PageController(
         initialPage: context.read<MonthCalendarCubit>().state.index);
     return BlocListener<MonthCalendarCubit, MonthCalendarState>(
-      listener: (context, state) {
-        pageController.animateToPage(state.index,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeOutQuad);
-      },
+      listener: (context, state) async => pageController.animateToPage(
+          state.index,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeOutQuad),
       child: PageView.builder(
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,

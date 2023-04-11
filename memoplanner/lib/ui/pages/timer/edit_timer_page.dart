@@ -27,7 +27,7 @@ class EditTimerPage extends StatelessWidget {
             builder: (context, duration) => StartButton(
               onPressed: duration.inMinutes > 0
                   ? context.read<EditTimerCubit>().start
-                  : () => showViewDialog(
+                  : () async => showViewDialog(
                         context: context,
                         builder: (context) =>
                             const InvalidTimerDurationDialog(),
@@ -66,7 +66,7 @@ class EditBasicTimerPage extends StatelessWidget {
             builder: (context, duration) => SaveButton(
               onPressed: duration.inMinutes > 0
                   ? () => context.read<EditTimerCubit>().save()
-                  : () => showViewDialog(
+                  : () async => showViewDialog(
                         context: context,
                         builder: (context) =>
                             const InvalidTimerDurationDialog(),
@@ -200,16 +200,16 @@ class EditTimerWheelState extends State<EditTimerWheel>
           return TimerWheel.interactive(
             lengthInSeconds:
                 animate ? (value * 120).toInt() : duration.inSeconds,
-            onMinutesSelectedChanged: (minutesSelected) {
+            onMinutesSelectedChanged: (minutesSelected) async {
               setState(() {
                 _animationController.stop();
                 animate = false;
               });
-              HapticFeedback.selectionClick();
               context.read<EditTimerCubit>().updateDuration(
                     Duration(minutes: minutesSelected),
                     TimerSetType.wheel,
                   );
+              await HapticFeedback.selectionClick();
             },
           ).pad(layout.editTimer.wheelPadding);
         },

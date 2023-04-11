@@ -9,9 +9,9 @@ class LocaleCubit extends Cubit<Locale> {
     this.settingsDb,
   ) : super(Locale(settingsDb.language));
 
-  void _changeLocale(Locale locale) {
+  Future<void> _changeLocale(Locale locale) async {
     emit(locale);
-    settingsDb.setLanguage(locale.languageCode);
+    await settingsDb.setLanguage(locale.languageCode);
   }
 
   static LocalizationsDelegate<LocaleCubit> delegate(LocaleCubit cubit) =>
@@ -26,7 +26,10 @@ class _LocaleCubitsDelegate extends LocalizationsDelegate<LocaleCubit> {
   bool isSupported(Locale locale) => Locales.language.containsKey(locale);
 
   @override
-  Future<LocaleCubit> load(Locale locale) async => cubit.._changeLocale(locale);
+  Future<LocaleCubit> load(Locale locale) async {
+    await cubit._changeLocale(locale);
+    return cubit;
+  }
 
   @override
   bool shouldReload(_LocaleCubitsDelegate old) => false;

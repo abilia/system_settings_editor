@@ -58,12 +58,17 @@ class PageTwoVoiceSupport extends StatelessWidget {
                         voice.isEmpty ? AbiliaColors.red : AbiliaColors.green,
                   ),
                 ),
-                onTap: () async => await Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const VoicesPage(),
-                    settings: (VoicesPage).routeSetting(),
-                  ),
-                ),
+                onTap: () async {
+                  await context.read<VoicesCubit>().loadAvailableVoices();
+                  if (context.mounted) {
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const VoicesPage(),
+                        settings: (VoicesPage).routeSetting(),
+                      ),
+                    );
+                  }
+                },
               );
             }),
           ),
@@ -76,7 +81,7 @@ class PageTwoVoiceSupport extends StatelessWidget {
               SizedBox(
                 width: layout.startupPage.pageTwoButtonWidth,
                 child: IconAndTextButton(
-                  onPressed: () => pageController.previousPage(
+                  onPressed: () async => pageController.previousPage(
                     duration: StartupGuidePage.pageDuration,
                     curve: StartupGuidePage.curve,
                   ),
@@ -92,9 +97,8 @@ class PageTwoVoiceSupport extends StatelessWidget {
                 width: layout.startupPage.pageTwoButtonWidth,
                 child: IconAndTextButton(
                   key: TestKey.finishWelcomeGuide,
-                  onPressed: () {
-                    context.read<StartupCubit>().startGuideDone();
-                  },
+                  onPressed: () async =>
+                      context.read<StartupCubit>().startGuideDone(),
                   text: t.finish,
                   icon: AbiliaIcons.ok,
                   style: textButtonStyleGreen,

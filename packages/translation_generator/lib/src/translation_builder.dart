@@ -21,10 +21,12 @@ class TranslationBuilder extends Builder {
   Map<String, List<String>> get buildExtensions => {
         '.tsv': [dartExtension, missingExtension]
       };
+
   @override
   FutureOr<void> build(BuildStep buildStep) async {
     final content = await buildStep.readAsString(buildStep.inputId);
-    final translations = _parseTranslationsAndWriteMissing(content, buildStep);
+    final translations =
+        await _parseTranslationsAndWriteMissing(content, buildStep);
     final languages = translations.keys;
     final buffer = StringBuffer();
     final emitter = DartEmitter();
@@ -92,10 +94,10 @@ class TranslationBuilder extends Builder {
           translation.contains("'") ? '''"$translation"''' : "'$translation'")
       : null;
 
-  Map<String, Map<String, String>> _parseTranslationsAndWriteMissing(
+  Future<Map<String, Map<String, String>>> _parseTranslationsAndWriteMissing(
     String content,
     BuildStep buildStep,
-  ) {
+  ) async {
     final missing = <String>{};
     final lines = const LineSplitter().convert(content);
     final lineSplitted = lines
@@ -134,7 +136,7 @@ class TranslationBuilder extends Builder {
 
     if (missing.isNotEmpty) {
       final missingId = buildStep.inputId.changeExtension(missingExtension);
-      buildStep.writeAsString(
+      await buildStep.writeAsString(
           missingId, [lines.first, ...missing, ''].join('\n'));
     }
 

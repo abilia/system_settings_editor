@@ -18,21 +18,21 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
   }) : super(const LogoutSyncState(
           logoutWarning: LogoutWarning.firstWarningSyncFailed,
         )) {
-    _setLogoutWarning();
-    _fetchDirtyItems();
-    _checkConnectivity();
+    unawaited(_setLogoutWarning());
+    unawaited(_fetchDirtyItems());
+    unawaited(_checkConnectivity());
 
     _syncSubscription = syncBloc.stream.listen((_) async {
-      _setLogoutWarning();
-      _fetchDirtyItems();
+      await _setLogoutWarning();
+      await _fetchDirtyItems();
     });
 
     _connectivitySubscription =
-        connectivity.listen((cr) => _checkConnectivity());
+        connectivity.listen((cr) async => _checkConnectivity());
 
-    _licenseSubscription = licenseCubit.stream.listen((_) {
-      _setLogoutWarning();
-      _checkConnectivity();
+    _licenseSubscription = licenseCubit.stream.listen((_) async {
+      await _setLogoutWarning();
+      await _checkConnectivity();
     });
   }
 
@@ -125,12 +125,12 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
       log.warning(
           'Is online, adding ${(SyncAll).toString()} event to ${(SyncBloc).toString()}.');
       syncBloc.add(const SyncAll());
-      _setLogoutWarning(forceSyncing: true);
+      await _setLogoutWarning(forceSyncing: true);
     }
 
     if (!licenseCubit.validLicense) {
       log.warning('Is online, no valid license. Reloading licenses.');
-      licenseCubit.reloadLicenses();
+      await licenseCubit.reloadLicenses();
     }
   }
 

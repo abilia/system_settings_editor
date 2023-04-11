@@ -71,9 +71,9 @@ class ClickableFullDayStack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         final authProviders = copiedAuthProviders(context);
-        Navigator.of(context).push(
+        await Navigator.of(context).push(
           ActivityRootPageRouteBuilder(
             pageBuilder: (_, animation, secondaryAnimation) =>
                 MultiBlocProvider(

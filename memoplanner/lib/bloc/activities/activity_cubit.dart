@@ -10,7 +10,8 @@ class ActivityCubit extends Cubit<ActivityState> {
     required ActivityDay activityDay,
     required this.activitiesBloc,
   }) : super(ActivityLoaded(activityDay)) {
-    activitiesSubscription = activitiesBloc.stream.listen((_) => _onNewState());
+    activitiesSubscription =
+        activitiesBloc.stream.listen((_) async => _onNewState());
   }
   late final StreamSubscription activitiesSubscription;
   final ActivitiesBloc activitiesBloc;

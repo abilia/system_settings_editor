@@ -88,8 +88,9 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
       forwardNavigationWidget: RedButton(
         text: translate.yes,
         icon: AbiliaIcons.checkButton,
-        onPressed:
-            onNextClickable ? () => _onNext(context, state.resetType) : null,
+        onPressed: onNextClickable
+            ? () async => _onNext(context, state.resetType)
+            : null,
       ),
     );
   }
@@ -100,24 +101,24 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
   ) =>
       context.read<ResetDeviceCubit>().setResetType(resetType);
 
-  void _onNext(BuildContext context, ResetType? resetType) {
+  Future<void> _onNext(BuildContext context, ResetType? resetType) async {
     if (resetType == ResetType.factoryReset) {
       return _nextPage();
     } else if (resetType == ResetType.clearData) {
-      _clearMemoplannerData(context);
+      return _clearMemoplannerData(context);
     }
   }
 
-  void _nextPage() {
-    pageController.nextPage(
-      duration: 500.milliseconds(),
-      curve: Curves.easeOutQuad,
-    );
-  }
+  Future<void> _nextPage() => pageController.nextPage(
+        duration: 500.milliseconds(),
+        curve: Curves.easeOutQuad,
+      );
 
-  void _clearMemoplannerData(BuildContext context) {
-    context.read<VoicesCubit>().resetSpeechSettings();
-    context.read<StartupCubit>().resetStartGuideDone();
+  Future<void> _clearMemoplannerData(BuildContext context) async {
     Navigator.of(context).pop();
+    await Future.wait([
+      context.read<StartupCubit>().resetStartGuideDone(),
+      context.read<VoicesCubit>().resetSpeechSettings(),
+    ]);
   }
 }

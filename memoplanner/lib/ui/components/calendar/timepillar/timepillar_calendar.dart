@@ -179,7 +179,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
               ),
               builder: (_, verticalController) {
                 return RefreshIndicator(
-                  onRefresh: () => refresh(context),
+                  onRefresh: () async => refresh(context),
                   notificationPredicate: (scrollNotification) =>
                       pullToRefresh &&
                       defaultScrollNotificationPredicate(scrollNotification),
