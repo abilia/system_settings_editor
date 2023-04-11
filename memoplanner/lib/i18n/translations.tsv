@@ -327,7 +327,7 @@ monthCalendarGrid	Simple	Enkel	Enkel	Eenvoudig	Helppo	Einfach	Enkel
 monthCalendarPreview	Detailed	Detaljerad	Detaljeret	Gedetailleerd	Yksityiskohtainen	Ausführlich	Detaljert
 textToSpeech	Speech support	Talstöd	Talestøtte	Spraakondersteuning	Puhetuki	Sprachausgabe	Talesyntese
 longpressToSpeak	Tap and hold for speech support	Tryck och håll ned för talstöd	Tryk og hold nede for talestøtte	Tik en houd vast voor spraakondersteuning	Napauta ja pidä painettuna puhetukea varten	Tippen und halten Sie für die Sprachunterstützung	Trykk og hold for talestøtte
-longPressInfoText	Tap and hold about 1 second on any function to get it read to by speech synthesis	Tryck länge på någon text för att få den uppläst					
+longPressInfoText	Tap and hold about 1 second on any function to get it read to by speech synthesis	Tryck länge på någon text för att få den uppläst	Tryk og hold ca. 1 sekund på enhver funktion for at få den læst til ved talesyntese	Tik en houd ongeveer 1 seconde vast op een functie om deze te laten voorlezen door spraaksynthese	Napauta ja pidä painettuna noin 1 sekunti mitä tahansa toimintoa saadaksesi sen lukemaan puheen synteesin avulla	Tippen und halten Sie etwa 1 Sekunde lang auf eine Funktion, um sie durch Sprachsynthese lesen zu lassen	Trykk og hold i ca. 1 sekund på en funksjon for å få den lest opp ved talesyntese
 display	Display	Visa	Vise	Tonen	Näyttö	Anzeige	Vise
 viewMode	View mode	Visningsläge	Visningstilstand	Weergavemodus	Katselutila	Ansichtsmodus	Visningsmodus
 dayInterval	Day interval	Intervall	Interval	Interval	Aikaväli	Intervall	Intervall

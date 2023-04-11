@@ -3467,6 +3467,10 @@ class DA extends Translated {
   final String longpressToSpeak = 'Tryk og hold nede for talestøtte';
 
   @override
+  final String longPressInfoText =
+      'Tryk og hold ca. 1 sekund på enhver funktion for at få den læst til ved talesyntese';
+
+  @override
   final String display = 'Vise';
 
   @override
@@ -4975,6 +4979,10 @@ class NL extends Translated {
 
   @override
   final String longpressToSpeak = 'Tik en houd vast voor spraakondersteuning';
+
+  @override
+  final String longPressInfoText =
+      'Tik en houd ongeveer 1 seconde vast op een functie om deze te laten voorlezen door spraaksynthese';
 
   @override
   final String display = 'Tonen';
@@ -6488,6 +6496,10 @@ class FI extends Translated {
 
   @override
   final String longpressToSpeak = 'Napauta ja pidä painettuna puhetukea varten';
+
+  @override
+  final String longPressInfoText =
+      'Napauta ja pidä painettuna noin 1 sekunti mitä tahansa toimintoa saadaksesi sen lukemaan puheen synteesin avulla';
 
   @override
   final String display = 'Näyttö';
@@ -8009,6 +8021,10 @@ class DE extends Translated {
       'Tippen und halten Sie für die Sprachunterstützung';
 
   @override
+  final String longPressInfoText =
+      'Tippen und halten Sie etwa 1 Sekunde lang auf eine Funktion, um sie durch Sprachsynthese lesen zu lassen';
+
+  @override
   final String display = 'Anzeige';
 
   @override
@@ -9514,6 +9530,10 @@ class NB extends Translated {
 
   @override
   final String longpressToSpeak = 'Trykk og hold for talestøtte';
+
+  @override
+  final String longPressInfoText =
+      'Trykk og hold i ca. 1 sekund på en funksjon for å få den lest opp ved talesyntese';
 
   @override
   final String display = 'Vise';
