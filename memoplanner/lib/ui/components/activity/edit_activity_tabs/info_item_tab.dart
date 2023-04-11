@@ -208,12 +208,15 @@ class AddVideoButton extends StatelessWidget {
       return;
     }
     try {
-      final video = await ImagePicker().pickVideo(source: ImageSource.camera);
+      final video = await ImagePicker().pickVideo(
+        source: ImageSource.camera,
+        maxDuration: 5.minutes(),
+      );
       if (video != null && context.mounted) {
         return _addVideo(context, video.path);
       }
-    } on Exception catch (e) {
-      debugPrint('Error adding video: $e');
+    } catch (e) {
+      return;
     }
   }
 
@@ -225,7 +228,6 @@ class AddVideoButton extends StatelessWidget {
     final editActivityCubit = context.read<EditActivityCubit>();
     File? file = File(path);
     double sizeInMB = file.lengthSync() / 1024 / 1024;
-    debugPrint('Original size of video: $sizeInMB MB');
 
     if (sizeInMB > 10) {
       final mediaInfo = await VideoCompress.compressVideo(
@@ -238,8 +240,6 @@ class AddVideoButton extends StatelessWidget {
 
     if (file != null) {
       sizeInMB = file.lengthSync() / 1024 / 1024;
-      debugPrint('Final size of video: $sizeInMB MB');
-
       if (sizeInMB < 10) {
         final abiliaFile = UnstoredAbiliaFile.newFile(file);
         userFileBloc.add(
@@ -422,7 +422,7 @@ class AddVideoWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: VideoPlayer(
               isEditActvity: true,
-              fileId: infoItem.videoId,
+              fileId: infoItem.fileId,
             ),
           ),
         ),

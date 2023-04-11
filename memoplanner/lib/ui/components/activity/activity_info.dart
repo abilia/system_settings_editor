@@ -302,7 +302,7 @@ class Attachment extends StatelessWidget with ActivityMixin {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: VideoPlayer(
-            fileId: item.videoId,
+            fileId: item.fileId,
           ),
         ),
       );

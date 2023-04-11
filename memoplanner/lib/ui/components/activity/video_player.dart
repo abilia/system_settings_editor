@@ -24,16 +24,26 @@ class VideoPlayer extends StatefulWidget {
 class _VideoPlayerState extends State<VideoPlayer> {
   player.VideoPlayerController? _controller;
 
-  File _getVideoFile(String id) => GetIt.I.get<FileStorage>().getFile(id);
+  Future<File?> _getVideoFile(String id) async {
+    final file = GetIt.I.get<FileStorage>().getFile(id);
+    final isDirectory = await file.stat().then((fileStat) {
+      return fileStat.type == FileSystemEntityType.directory;
+    }).catchError((error) {
+      return false;
+    });
+    return isDirectory ? null : file;
+  }
 
   @override
   void initState() {
     super.initState();
-    refreshController(_getVideoFile(widget.fileId));
+    refreshController(widget.fileId);
   }
 
-  void refreshController(File file) {
+  Future<void> refreshController(String fileId) async {
     _controller?.dispose();
+    final file = await _getVideoFile(fileId);
+    if (file == null) return;
     _controller = player.VideoPlayerController.file(file)
       ..initialize().then((_) {
         setState(() {});
@@ -69,7 +79,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
                 previous.activity.infoItem != current.activity.infoItem &&
                 current.activity.infoItem is VideoInfoItem,
             listener: (context, state) => refreshController(
-              _getVideoFile((state.activity.infoItem as VideoInfoItem).videoId),
+              (state.activity.infoItem as VideoInfoItem).fileId,
             ),
             child: child,
           )
@@ -78,11 +88,9 @@ class _VideoPlayerState extends State<VideoPlayer> {
                 current is ActivityLoaded &&
                 current.activityDay.activity.infoItem is VideoInfoItem,
             listener: (context, state) => refreshController(
-              _getVideoFile(
-                ((state as ActivityLoaded).activityDay.activity.infoItem
-                        as VideoInfoItem)
-                    .videoId,
-              ),
+              ((state as ActivityLoaded).activityDay.activity.infoItem
+                      as VideoInfoItem)
+                  .fileId,
             ),
             child: child,
           );

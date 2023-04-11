@@ -47,7 +47,7 @@ abstract class InfoItem extends Equatable {
         case UrlInfoItem.typeName:
           return UrlInfoItem(data['url']);
         case VideoInfoItem.typeName:
-          return VideoInfoItem(data['videoId']);
+          return VideoInfoItem(data['fileId']);
         default:
           _log.warning('unknown info item type', type);
       }
@@ -127,19 +127,19 @@ class UrlInfoItem extends InfoItem {
 
 class VideoInfoItem extends InfoItem {
   static const typeName = 'video';
-  final String videoId;
-  const VideoInfoItem([this.videoId = '']);
+  final String fileId;
+  const VideoInfoItem([this.fileId = '']);
 
   @override
-  List<Object> get props => [videoId];
+  List<Object> get props => [fileId];
 
   @override
-  Map<String, dynamic> toJson() => {'videoId': videoId};
+  Map<String, dynamic> toJson() => {'fileId': fileId};
 
   @override
   String get typeId => typeName;
   @override
-  bool get isEmpty => videoId.isEmpty;
+  bool get isEmpty => fileId.isEmpty;
 }
 
 class Checklist extends InfoItem {
