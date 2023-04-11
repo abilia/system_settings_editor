@@ -117,6 +117,9 @@ void main() {
             BlocProvider<DayPartCubit>(
               create: (context) => FakeDayPartCubit(),
             ),
+            BlocProvider<NightMode>(
+              create: (context) => FakeNightMode(),
+            ),
           ], child: child!),
       home: TimerPage(
         timerOccasion: TimerOccasion(timer, Occasion.current),

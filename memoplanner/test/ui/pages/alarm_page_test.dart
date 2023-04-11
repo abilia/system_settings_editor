@@ -123,6 +123,9 @@ void main() {
               BlocProvider<NavigationCubit>(
                 create: (_) => NavigationCubit(),
               ),
+              BlocProvider<NightMode>(
+                create: (context) => FakeNightMode(),
+              ),
             ],
             child: Builder(
               builder: (context) => Listener(

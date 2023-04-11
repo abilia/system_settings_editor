@@ -266,6 +266,14 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                     context.read<MemoplannerSettingsBloc>(),
               ),
             ),
+            BlocProvider<NightMode>(
+              create: (context) => NightMode(
+                dayPart: context.read<DayPartCubit>(),
+                settings: context.read<MemoplannerSettingsBloc>(),
+                picker: context.read<DayPickerBloc>(),
+                timepillarCubit: context.read<TimepillarCubit>(),
+              ),
+            ),
             BlocProvider<NotificationBloc>(
               create: (context) => NotificationBloc(
                 memoplannerSettingBloc: context.read<MemoplannerSettingsBloc>(),

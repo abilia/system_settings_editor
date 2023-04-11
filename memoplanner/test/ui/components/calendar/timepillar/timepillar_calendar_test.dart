@@ -1427,7 +1427,7 @@ void main() {
       final background =
           tester.firstWidget(find.byKey(TestKey.calendarBackgroundColor))
               as Container;
-      expect(background.color, TimepillarCalendar.nightBackgroundColor);
+      expect(background.color, nightBackgroundColor);
     });
 
     testWidgets('SGC-1632 Night view: Header should be dark',

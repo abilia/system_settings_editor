@@ -1,7 +1,6 @@
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/utils/all.dart';
 
 class Agenda extends StatelessWidget with CalendarWidgetMixin {
   final EventsState eventsState;
@@ -72,14 +71,13 @@ class EventList extends StatelessWidget {
       child: Builder(builder: (context) {
         final now = context.watch<ClockBloc>().state;
 
-        final todayNight = events.day.isAtSameDay(now) &&
-            context.read<DayPartCubit>().state.isNight;
+        final todayNight = context.watch<NightMode>().state;
         final pastEvents = events.pastEvents(now);
         final notPastEvents = events.notPastEvents(now);
         final isTodayAndNoPast = events.isToday && pastEvents.isEmpty;
         return Container(
           key: TestKey.calendarBackgroundColor,
-          color: todayNight ? TimepillarCalendar.nightBackgroundColor : null,
+          color: todayNight ? nightBackgroundColor : null,
           child: CustomScrollView(
             center: events.isToday ? center : null,
             controller: scrollController,

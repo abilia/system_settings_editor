@@ -46,6 +46,9 @@ void main() {
           BlocProvider<SpeechSettingsCubit>(
             create: (context) => FakeSpeechSettingsCubit(),
           ),
+          BlocProvider<NightMode>(
+            create: (context) => FakeNightMode(),
+          ),
         ], child: widget),
       );
 

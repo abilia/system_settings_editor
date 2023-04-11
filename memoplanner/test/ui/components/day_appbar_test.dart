@@ -31,6 +31,9 @@ void main() {
     BlocProvider<DayPickerBloc>(
       create: (context) => dayPickerBloc,
     ),
+    BlocProvider<NightMode>(
+      create: (context) => FakeNightMode(),
+    ),
   ];
 
   Future<void> pumpDayCalendarAppBar(WidgetTester tester) async {
@@ -58,7 +61,7 @@ void main() {
   }
 
   group('DayCalendarAppBar', () {
-    testWidgets('All settings on shwos all components',
+    testWidgets('All settings on shows all components',
         (WidgetTester tester) async {
       when(() => memoplannerSettingBloc.state).thenAnswer(
         (_) => const MemoplannerSettings(

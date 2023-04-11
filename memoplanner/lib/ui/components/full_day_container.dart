@@ -17,15 +17,7 @@ class FullDayContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final dayColor = context
         .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayColor);
-    final dayCalendarType = context.select((MemoplannerSettingsBloc bloc) =>
-        bloc.state.dayCalendar.viewOptions.calendarType);
-    final currentHour =
-        context.select((ClockBloc bloc) => bloc.state.onlyHours());
-    final timePillarState = context.watch<TimepillarCubit>().state;
-    final isTimepillar = dayCalendarType != DayCalendarType.list;
-    final nightMode = (!isTimepillar || timePillarState.showNightCalendar) &&
-        currentHour.isAtSameDay(day) &&
-        context.read<DayPartCubit>().state.isNight;
+    final nightMode = context.watch<NightMode>().state;
 
     return Theme(
       data: weekdayTheme(
@@ -50,7 +42,10 @@ class FullDayContainer extends StatelessWidget {
                             padding: EdgeInsets.only(
                               right: layout.eventCard.marginSmall,
                             ),
-                            child: ActivityCard(activityOccasion: fd),
+                            child: ActivityCard(
+                              activityOccasion: fd,
+                              useOpacity: nightMode,
+                            ),
                           ),
                         ),
                       ),

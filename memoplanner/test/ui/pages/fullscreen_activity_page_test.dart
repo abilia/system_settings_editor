@@ -146,6 +146,9 @@ void main() {
               BlocProvider<DayPartCubit>(
                 create: (context) => FakeDayPartCubit(),
               ),
+              BlocProvider<NightMode>(
+                create: (context) => FakeNightMode(),
+              ),
             ],
             child: MaterialApp(
               supportedLocales: Translator.supportedLocals,
