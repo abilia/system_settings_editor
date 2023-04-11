@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:get_it/get_it.dart';
@@ -9,11 +10,11 @@ import 'package:video_player/video_player.dart' as player;
 
 class VideoPlayer extends StatefulWidget {
   final String fileId;
-  final bool isEditActvity;
+  final bool isEditActivity;
 
   const VideoPlayer({
     required this.fileId,
-    this.isEditActvity = false,
+    this.isEditActivity = false,
     super.key,
   });
 
@@ -37,26 +38,28 @@ class _VideoPlayerState extends State<VideoPlayer> {
   @override
   void initState() {
     super.initState();
-    refreshController(widget.fileId);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async => refreshController(widget.fileId),
+    );
   }
 
   Future<void> refreshController(String fileId) async {
-    _controller?.dispose();
+    await _controller?.dispose();
     final file = await _getVideoFile(fileId);
     if (file == null) return;
-    _controller = player.VideoPlayerController.file(file)
-      ..initialize().then((_) {
-        setState(() {});
-      });
-    if (widget.isEditActvity) {
-      _controller?.setLooping(true);
-      _controller?.play();
+    _controller = player.VideoPlayerController.file(file);
+    await _controller?.initialize().then((_) {
+      setState(() {});
+    });
+    if (widget.isEditActivity) {
+      await _controller?.setLooping(true);
+      await _controller?.play();
     }
   }
 
   @override
-  void dispose() {
-    _controller?.dispose();
+  Future<void> dispose() async {
+    await _controller?.dispose();
     super.dispose();
   }
 
@@ -73,12 +76,12 @@ class _VideoPlayerState extends State<VideoPlayer> {
             : Container(),
       ),
     );
-    return widget.isEditActvity
+    return widget.isEditActivity
         ? BlocListener<EditActivityCubit, EditActivityState>(
             listenWhen: (previous, current) =>
                 previous.activity.infoItem != current.activity.infoItem &&
                 current.activity.infoItem is VideoInfoItem,
-            listener: (context, state) => refreshController(
+            listener: (context, state) async => refreshController(
               (state.activity.infoItem as VideoInfoItem).fileId,
             ),
             child: child,
@@ -87,7 +90,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
             listenWhen: (previous, current) =>
                 current is ActivityLoaded &&
                 current.activityDay.activity.infoItem is VideoInfoItem,
-            listener: (context, state) => refreshController(
+            listener: (context, state) async => refreshController(
               ((state as ActivityLoaded).activityDay.activity.infoItem
                       as VideoInfoItem)
                   .fileId,
@@ -96,13 +99,10 @@ class _VideoPlayerState extends State<VideoPlayer> {
           );
   }
 
-  void _playOrPause() {
-    final controller = _controller;
-    if (controller == null) return;
-    if (controller.value.isPlaying) {
-      controller.pause();
-    } else {
-      controller.play();
+  Future<void> _playOrPause() async {
+    if (_controller?.value.isPlaying == true) {
+      return _controller?.pause();
     }
+    return _controller?.play();
   }
 }

@@ -190,7 +190,7 @@ class AddVideoButton extends StatelessWidget {
   Widget build(BuildContext context) =>
       BlocBuilder<PermissionCubit, PermissionState>(
         builder: (context, permissionState) => IconActionButtonDark(
-          onPressed: () => _recordNewVideo(context, permissionState),
+          onPressed: () async => _recordNewVideo(context, permissionState),
           child: Icon(
             AbiliaIcons.videoCall,
             size: layout.icon.normal,
@@ -421,7 +421,7 @@ class AddVideoWidget extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: VideoPlayer(
-              isEditActvity: true,
+              isEditActivity: true,
               fileId: infoItem.fileId,
             ),
           ),
