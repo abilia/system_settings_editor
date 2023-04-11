@@ -195,7 +195,7 @@ void main() {
     await tester.pumpAndSettle();
     final background = tester
         .firstWidget(find.byKey(TestKey.calendarBackgroundColor)) as Container;
-    expect(background.color, TimepillarCalendar.nightBackgroundColor);
+    expect(background.color, nightBackgroundColor);
   });
 
   testWidgets(
@@ -1317,6 +1317,12 @@ void main() {
         startTime: nightTime.subtract(1.minutes()),
         duration: 30.minutes(),
       ),
+      Activity.createNew(
+        title: 'Full day',
+        startTime: nightTime.onlyDays(),
+        duration: 1.days() - 1.milliseconds(),
+        fullDay: true,
+      ),
     ]);
 
     await tester.pumpWidget(const App());
@@ -1325,5 +1331,10 @@ void main() {
     final finder = find.byType(Opacity).first;
     final op = finder.evaluate().single.widget as Opacity;
     expect(op.opacity, 0.4);
+    expect(find.byType(ActivityCard), findsNWidgets(2));
+    final r = tester.widgetList<ActivityCard>(find.byType(ActivityCard));
+    for (final w in r) {
+      expect(w.useOpacity, isTrue);
+    }
   });
 }

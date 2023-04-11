@@ -254,3 +254,14 @@ class FakeFeatureToggleCubit extends Fake implements FeatureToggleCubit {
   @override
   Future<void> close() async {}
 }
+
+class FakeNightMode extends Fake implements NightMode {
+  @override
+  bool get state => false;
+
+  @override
+  Stream<bool> get stream => const Stream.empty();
+
+  @override
+  Future<void> close() async {}
+}
