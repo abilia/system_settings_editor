@@ -566,6 +566,92 @@ void main() {
 
       expect(uniques.toSet().length, uniques.length);
     });
+
+    group('Interval position', () {
+      final firstMidnight = DateTime(2020, 04, 23);
+      final secondMidnight = DateTime(2020, 04, 24);
+      final beforeSecondMidnight = DateTime(2020, 04, 23, 23, 55);
+      final nightInterval = TimepillarInterval(
+        start: firstMidnight.subtract(2.days()),
+        end: firstMidnight.add(1.days()),
+        intervalPart: IntervalPart.night,
+      );
+      final dayInterval = TimepillarInterval(
+        start: firstMidnight.subtract(2.days()),
+        end: firstMidnight.add(1.days()),
+        intervalPart: IntervalPart.day,
+      );
+      final firstMidnightActivity = ActivityOccasion(
+        Activity.createNew(
+          title: 'activity',
+          startTime: firstMidnight,
+        ),
+        firstMidnight.onlyDays(),
+        Occasion.current,
+      );
+      final secondMidnightActivity = ActivityOccasion(
+        Activity.createNew(
+          title: 'activity',
+          startTime: secondMidnight,
+        ),
+        secondMidnight.onlyDays(),
+        Occasion.current,
+      );
+      final beforeSecondMidnightActivity = ActivityOccasion(
+        Activity.createNew(
+          title: 'activity',
+          startTime: beforeSecondMidnight,
+        ),
+        beforeSecondMidnight.onlyDays(),
+        Occasion.current,
+      );
+
+      CardPosition cardPosition(
+        EventOccasion eventOccasion,
+        TimepillarInterval interval,
+      ) =>
+          CardPosition.calculate(
+            eventOccasion: eventOccasion,
+            args: TimepillarBoardDataArguments(
+              textStyle: bodySmall,
+              textScaleFactor: 1.0,
+              dayParts: const DayParts(),
+              measures: TimepillarMeasures(interval, 1),
+              topMargin: layout.templates.l1.top,
+              bottomMargin: layout.templates.l1.bottom,
+              showCategoryColor: mockMemoplannerSettingsBloc
+                  .state.calendar.categories.showColors,
+              nightMode: false,
+            ),
+            timelineOffset: 0,
+            maxEndPos: 1000,
+            hasSideDots: false,
+            decoration: const BoxDecoration(),
+          );
+
+      test('Day interval', () async {
+        final firstMidnightCardPosition =
+            cardPosition(firstMidnightActivity, dayInterval);
+        final secondMidnightCardPosition =
+            cardPosition(firstMidnightActivity, dayInterval);
+        final beforeMidnightCardPosition =
+            cardPosition(beforeSecondMidnightActivity, dayInterval);
+
+        expect(beforeMidnightCardPosition.top,
+            greaterThan(firstMidnightCardPosition.top));
+        expect(beforeMidnightCardPosition.top,
+            greaterThan(secondMidnightCardPosition.top));
+      });
+
+      test('Night interval', () async {
+        final secondMidnightCardPosition =
+            cardPosition(secondMidnightActivity, nightInterval);
+        final beforeMidnightCardPosition =
+            cardPosition(beforeSecondMidnightActivity, nightInterval);
+
+        expect(secondMidnightCardPosition.top, beforeMidnightCardPosition.top);
+      });
+    });
   });
 
   group('side dots', () {
