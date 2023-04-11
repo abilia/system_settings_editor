@@ -150,7 +150,5 @@ class ClientWithDefaultHeaders extends ListenableClient {
   }
 
   @override
-  void close() {
-    _stateController.close();
-  }
+  Future<void> close() => _stateController.close();
 }

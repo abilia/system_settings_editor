@@ -24,34 +24,34 @@ class AuthenticatedDialog extends StatelessWidget {
           TermsOfUseDialog(
             loginDialogCubit: authenticatedDialogCubit,
             isMoreDialogs: loginDialogState.numberOfDialogs > 1,
-            onNext: () => _onNext(context, pageController),
+            onNext: () async => _onNext(context, pageController),
           ),
         if (loginDialogState.starterSet)
           StarterSetDialog(
-            onNext: () => _onNext(context, pageController),
+            onNext: () async => _onNext(context, pageController),
           ),
         if (loginDialogState.fullscreenAlarm)
           FullscreenAlarmInfoDialog(
             showRedirect: true,
-            onNext: () => _onNext(context, pageController),
+            onNext: () async => _onNext(context, pageController),
           ),
       ],
     );
   }
 
-  void _onNext(BuildContext context, PageController pageController) {
+  Future<void> _onNext(
+      BuildContext context, PageController pageController) async {
     final currentIndex = pageController.page?.toInt();
     final lastIndex = authenticatedDialogCubit.state.numberOfDialogs - 1;
     if (currentIndex == lastIndex) {
       return Navigator.of(context).pop();
     }
-    _nextPage(pageController);
+    await _nextPage(pageController);
   }
 
-  void _nextPage(PageController pageController) {
-    pageController.nextPage(
-      duration: 500.milliseconds(),
-      curve: Curves.easeOutQuad,
-    );
-  }
+  Future<void> _nextPage(PageController pageController) =>
+      pageController.nextPage(
+        duration: 500.milliseconds(),
+        curve: Curves.easeOutQuad,
+      );
 }

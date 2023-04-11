@@ -83,9 +83,9 @@ class ActivityTimepillarCard extends TimepillarCard {
                 nightMode: args.nightMode,
               ),
             GestureDetector(
-              onTap: () {
+              onTap: () async {
                 final authProviders = copiedAuthProviders(context);
-                Navigator.push(
+                await Navigator.push(
                   context,
                   ActivityPage.route(
                     activityDay: activityOccasion,

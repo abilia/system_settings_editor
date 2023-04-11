@@ -30,13 +30,14 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
   RecordSoundCubit({
     required AbiliaFile originalSoundFile,
     Record? record,
-    File? file,
   })  : _recorder = record ?? Record(),
         super(
           originalSoundFile.isEmpty
               ? const EmptyRecordSoundState()
               : UnchangedRecordingSoundState(originalSoundFile, Duration.zero),
-        ) {
+        );
+
+  Future<void> setFile(File? file) async {
     if (file != null) {
       final audioPlayer = AudioPlayer();
       onDurationChanged = audioPlayer.onDurationChanged.listen((event) {
@@ -45,7 +46,7 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
           emit(UnchangedRecordingSoundState(s.recordedFile, event));
         }
       });
-      audioPlayer.setSource(DeviceFileSource(file.path));
+      return audioPlayer.setSource(DeviceFileSource(file.path));
     }
   }
 

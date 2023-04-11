@@ -59,7 +59,7 @@ class FunctionSettingsPage extends StatelessWidget {
                     );
                     if (answer != true) return;
                   }
-                  functionSettingsCubit.save();
+                  await functionSettingsCubit.save();
                   navigator.pop();
                 },
               ),

@@ -26,7 +26,7 @@ class FullScreenActivityPage extends StatelessWidget {
           clockBloc: context.read<ClockBloc>(),
           alarmCubit: context.read<AlarmCubit>(),
           startingActivity: alarm.activityDay,
-        ),
+        )..loadActivities(),
         child: FullscreenActivityListener(
           child: BlocSelector<FullScreenActivityCubit, FullScreenActivityState,
               ActivityDay>(

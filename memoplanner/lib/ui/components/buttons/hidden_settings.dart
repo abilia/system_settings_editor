@@ -34,7 +34,7 @@ class _HiddenSettingState extends State<HiddenSetting> {
                 name: Translator.of(context).translate.settings,
               );
               if (accessGranted) {
-                navigator.push(
+                await navigator.push(
                   MaterialPageRoute(
                     builder: (_) => MultiBlocProvider(
                       providers: authProviders,

@@ -58,20 +58,20 @@ class MonthAppBarStepper extends StatelessWidget
             ),
             leftAction: showBrowseButtons
                 ? LeftNavButton(
-                    onPressed: () =>
+                    onPressed: () async =>
                         context.read<MonthCalendarCubit>().goToPreviousMonth(),
                   )
                 : null,
             showClock: showClock,
             clockReplacement: !currentMonth
                 ? GoToCurrentActionButton(
-                    onPressed: () =>
+                    onPressed: () async =>
                         context.read<MonthCalendarCubit>().goToCurrentMonth(),
                   )
                 : null,
             rightAction: showBrowseButtons
                 ? RightNavButton(
-                    onPressed: () =>
+                    onPressed: () async =>
                         context.read<MonthCalendarCubit>().goToNextMonth(),
                   )
                 : null,

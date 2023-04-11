@@ -18,7 +18,7 @@ class _BackendSwitcherDialogState extends State<BackendSwitcherDialog> {
     super.initState();
     textEditingController =
         TextEditingController(text: context.read<BaseUrlCubit>().state);
-    textEditingController.addListener(() =>
+    textEditingController.addListener(() async =>
         context.read<BaseUrlCubit>().updateBaseUrl(textEditingController.text));
   }
 

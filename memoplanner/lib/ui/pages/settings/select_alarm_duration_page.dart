@@ -73,7 +73,7 @@ class _SelectAlarmDurationPageState extends State<SelectAlarmDurationPage> {
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: OkButton(
-          onPressed: () =>
+          onPressed: () async =>
               Navigator.of(context).maybePop(selectedAlarmDuration),
         ),
       ),

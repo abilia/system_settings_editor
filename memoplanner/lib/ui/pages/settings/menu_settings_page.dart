@@ -40,7 +40,7 @@ class MenuSettingsPage extends StatelessWidget {
                       );
                       if (answer != true) return;
                     }
-                    menuSettingsCubit.save();
+                    await menuSettingsCubit.save();
                     navigator.pop();
                   },
                 ),

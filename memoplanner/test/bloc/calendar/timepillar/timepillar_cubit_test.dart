@@ -70,7 +70,8 @@ void main() {
         dayPickerBloc: dayPickerBloc,
         memoSettingsBloc: memoplannerSettingBloc,
         timerAlarmBloc: timerAlarmBloc,
-        dayPartCubit: FakeDayPartCubit()),
+        dayPartCubit: FakeDayPartCubit())
+      ..initialize(),
     verify: (cubit) => expect(
       cubit.state,
       TimepillarState(
@@ -111,7 +112,7 @@ void main() {
       memoSettingsBloc: memoplannerSettingBloc,
       timerAlarmBloc: timerAlarmBloc,
       dayPartCubit: FakeDayPartCubit(),
-    ),
+    )..initialize(),
     act: (cubit) => cubit.previous(),
     expect: () => [
       TimepillarState(

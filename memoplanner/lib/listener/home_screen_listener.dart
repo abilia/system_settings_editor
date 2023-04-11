@@ -28,10 +28,10 @@ class ReturnToHomeScreenListener extends StatelessWidget {
         ),
         BlocListener<ActionIntentCubit, String>(
           listenWhen: (_, current) => current == AndroidIntentAction.homeButton,
-          listener: (context, state) {
+          listener: (context, state) async {
             Navigator.of(context).popUntilRootOrPersistentPage();
             DefaultTabController.of(context).index = startViewIndex;
-            cancelAllActiveNotifications();
+            await cancelAllActiveNotifications();
           },
         ),
       ],

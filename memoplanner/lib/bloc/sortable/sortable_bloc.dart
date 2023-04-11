@@ -117,7 +117,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
       final uploadFolder = currentState.sortables.getUploadFolder();
       if (uploadFolder == null) return;
 
-      _mapPhotoAddedToState(
+      await _mapPhotoAddedToState(
         PhotoAdded(
           event.imageId,
           event.name,

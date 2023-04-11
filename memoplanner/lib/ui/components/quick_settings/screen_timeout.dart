@@ -124,8 +124,10 @@ class KeepOnWhileChargingSwitch extends StatelessWidget {
         .select((WakeLockCubit cubit) => cubit.state.keepScreenOnWhileCharging);
     return SwitchField(
       value: keepScreenOnWhileCharging,
-      onChanged: (switchOn) {
-        context.read<WakeLockCubit>().setKeepScreenOnWhileCharging(switchOn);
+      onChanged: (switchOn) async {
+        await context
+            .read<WakeLockCubit>()
+            .setKeepScreenOnWhileCharging(switchOn);
       },
       child:
           Text(Translator.of(context).translate.keepScreenAwakeWhileCharging),

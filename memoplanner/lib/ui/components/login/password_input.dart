@@ -195,7 +195,7 @@ class _PasswordInputBottomSheetState
             forwardNavigationWidget: OkButton(
               key: TestKey.inputOk,
               onPressed: state.valid
-                  ? () => Navigator.of(context).maybePop(controller.text)
+                  ? () async => Navigator.of(context).maybePop(controller.text)
                   : null,
             ),
           ),

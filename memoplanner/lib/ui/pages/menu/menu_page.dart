@@ -117,9 +117,9 @@ class MyPhotosButton extends StatelessWidget {
       builder: (context, myPhotoFolderId) => MenuItemButton(
         icon: AbiliaIcons.myPhotos,
         onPressed: myPhotoFolderId != null
-            ? () {
+            ? () async {
                 final authProviders = copiedAuthProviders(context);
-                Navigator.of(context).push(
+                await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => MultiBlocProvider(
                       providers: authProviders,
@@ -163,9 +163,9 @@ class QuickSettingsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MenuItemButton(
       icon: AbiliaIcons.quickSettings,
-      onPressed: () {
+      onPressed: () async {
         final authProviders = copiedAuthProviders(context);
-        Navigator.of(context).push(
+        await Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => MultiBlocProvider(
               providers: authProviders,
@@ -200,7 +200,7 @@ class SettingsButton extends StatelessWidget {
           name: name,
         );
         if (accessGranted) {
-          navigator.push(
+          await navigator.push(
             MaterialPageRoute(
               builder: (_) => MultiBlocProvider(
                 providers: authProviders,
@@ -272,9 +272,9 @@ class BasicTemplatesButton extends StatelessWidget {
       style: blackMenuButtonStyle,
       text: Translator.of(context).translate.templates,
       icon: AbiliaIcons.favoritesShow,
-      onPressed: () {
+      onPressed: () async {
         final authProviders = copiedAuthProviders(context);
-        Navigator.of(context).push(
+        await Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => MultiBlocProvider(
               providers: authProviders,

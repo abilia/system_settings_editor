@@ -34,10 +34,9 @@ class AuthenticatedDialogCubit extends Cubit<AuthenticatedDialogState> {
       _permissionSubscription =
           permissionCubit.stream.take(1).listen(_onPermissionChanged);
     }
-    _loadTermsOfUse();
   }
 
-  Future<void> _loadTermsOfUse() async {
+  Future<void> loadTermsOfUse() async {
     final termsAccepted = await termsOfUseRepository.isTermsOfUseAccepted();
     emit(state.copyWith(termsOfUse: !termsAccepted));
   }

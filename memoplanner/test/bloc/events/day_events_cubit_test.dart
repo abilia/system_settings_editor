@@ -38,7 +38,7 @@ void main() {
         ),
         ticker: ticker,
       ),
-    );
+    )..initialize();
   });
 
   group('dayEventsCubit', () {
@@ -795,7 +795,7 @@ void main() {
           ),
           ticker: ticker,
         ),
-      );
+      )..initialize();
     });
 
     test('EventsOccasionLoaded only loads todays activities', () {
@@ -1015,7 +1015,7 @@ void main() {
             ),
             ticker: ticker,
           ),
-        );
+        )..initialize();
       });
 
       test('Shows recurring weekends', () async {

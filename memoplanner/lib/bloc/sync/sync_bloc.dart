@@ -66,7 +66,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       var lastSynced = state.lastSynced;
       if (licenseCubit.validLicense) {
         lastSynced = clockBloc.state;
-        lastSyncDb.setSyncTime(lastSynced);
+        await lastSyncDb.setSyncTime(lastSynced);
       }
       emit(Synced(lastSynced: lastSynced, didFetchData: didFetchData));
     } catch (error) {

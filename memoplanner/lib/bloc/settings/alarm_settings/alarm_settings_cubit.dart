@@ -10,5 +10,6 @@ class AlarmSettingsCubit extends Cubit<AlarmSettings> {
   }) : super(alarmSettings);
 
   void changeAlarmSettings(AlarmSettings newState) => emit(newState);
-  void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
+  Future<void> save() =>
+      genericCubit.genericUpdated(state.memoplannerSettingData);
 }

@@ -21,7 +21,8 @@ class AlarmCubit extends Cubit<NotificationAlarm?> {
   }) : super(null) {
     _selectedNotificationSubscription =
         selectedNotificationSubject.listen((payload) => emit(payload));
-    _clockSubscription = clockBloc.stream.listen((now) => _newMinute(now));
+    _clockSubscription =
+        clockBloc.stream.listen((now) async => _newMinute(now));
     _timerSubscription = timerAlarm.listen(emit);
   }
 

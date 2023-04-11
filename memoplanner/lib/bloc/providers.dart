@@ -1,3 +1,5 @@
+// ignore_for_file: discarded_futures
+
 import 'package:auth/auth.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:calendar/all.dart';
@@ -218,7 +220,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 dayPickerBloc: context.read<DayPickerBloc>(),
                 timerAlarmBloc: context.read<TimerAlarmBloc>(),
-              ),
+              )..initialize(),
             ),
             BlocProvider<AlarmCubit>(
               create: (context) => AlarmCubit(
@@ -257,7 +259,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 timerAlarmBloc: context.read<TimerAlarmBloc>(),
                 dayPartCubit: context.read<DayPartCubit>(),
-              ),
+              )..initialize(),
             ),
             BlocProvider<TimepillarMeasuresCubit>(
               create: (context) => TimepillarMeasuresCubit(
@@ -278,7 +280,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             BlocProvider<SessionsCubit>(
               create: (context) => SessionsCubit(
                 sessionsRepository: context.read<SessionsRepository>(),
-              ),
+              )..initialize(),
               lazy: false,
             ),
             BlocProvider<AuthenticatedDialogCubit>(
@@ -287,7 +289,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 permissionCubit: context.read<PermissionCubit>(),
                 sortableBloc: context.read<SortableBloc>(),
                 newlyLoggedIn: authenticatedState.newlyLoggedIn,
-              ),
+              )..loadTermsOfUse(),
             ),
             if (Config.isMP) ...[
               BlocProvider<WakeLockCubit>(
@@ -389,7 +391,7 @@ class TopLevelProvider extends StatelessWidget {
               connectivity: GetIt.I<Connectivity>(),
               baseUrlDb: GetIt.I<BaseUrlDb>(),
               myAbiliaConnection: GetIt.I<MyAbiliaConnection>(),
-            ),
+            )..checkConnectivity(),
             lazy: false,
           ),
           BlocProvider(
@@ -448,7 +450,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
         BlocProvider<AuthenticationBloc>(
           create: (context) => AuthenticationBloc(
             userRepository: context.read<UserRepository>(),
-            onLogout: () => Future.wait<void>(
+            onLogout: () async => Future.wait<void>(
               [
                 DatabaseRepository.clearAll(GetIt.I<Database>()),
                 GetIt.I<SeagullLogger>().sendLogsToBackend(),

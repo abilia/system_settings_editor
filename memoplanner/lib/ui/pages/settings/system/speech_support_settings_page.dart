@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
@@ -20,7 +22,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
         ?.copyWith(color: AbiliaColors.black75);
     return WillPopScope(
       onWillPop: () async {
-        _disabledIfNoDownloadedVoice(context);
+        await _disabledIfNoDownloadedVoice(context);
         return true;
       },
       child: Scaffold(
@@ -68,13 +70,19 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                                         ? t.installing
                                         : t.noVoicesInstalled
                                     : state.voice),
-                                onTap: () async =>
+                                onTap: () async {
+                                  await context
+                                      .read<VoicesCubit>()
+                                      .loadAvailableVoices();
+                                  if (context.mounted) {
                                     await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (_) => const VoicesPage(),
-                                    settings: (VoicesPage).routeSetting(),
-                                  ),
-                                ),
+                                      MaterialPageRoute(
+                                        builder: (_) => const VoicesPage(),
+                                        settings: (VoicesPage).routeSetting(),
+                                      ),
+                                    );
+                                  }
+                                },
                               ),
                             ),
                           ),
@@ -121,7 +129,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                         leading: const Icon(AbiliaIcons.fastForward),
                         onChanged: state.voice.isEmpty
                             ? null
-                            : (v) => context
+                            : (v) async => context
                                 .read<SpeechSettingsCubit>()
                                 .setSpeechRate(_progressToSpeechRate(v)),
                         divisions: 10,
@@ -137,7 +145,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                   SwitchField(
                     onChanged: state.voice.isEmpty
                         ? null
-                        : (on) => context
+                        : (on) async => context
                             .read<SpeechSettingsCubit>()
                             .setSpeakEveryWord(on),
                     value: state.speakEveryWord,
@@ -155,30 +163,40 @@ class SpeechSupportSettingsPage extends StatelessWidget {
         ),
         bottomNavigationBar: BottomNavigation(
           backNavigationWidget: CancelButton(
-            onPressed: () {
-              if (!_disabledIfNoDownloadedVoice(context)) {
-                context
-                    .read<SpeechSettingsCubit>()
-                    .setTextToSpeech(textToSpeech);
-                context.read<SpeechSettingsCubit>().setSpeechRate(speechRate);
+            onPressed: () async {
+              final disabled = await _disabledIfNoDownloadedVoice(context);
+              if (!disabled && context.mounted) {
+                await Future.wait(
+                  <Future>[
+                    context
+                        .read<SpeechSettingsCubit>()
+                        .setTextToSpeech(textToSpeech),
+                    context
+                        .read<SpeechSettingsCubit>()
+                        .setSpeechRate(speechRate),
+                    Navigator.of(context).maybePop(),
+                  ],
+                );
               }
-              Navigator.of(context).maybePop();
             },
           ),
-          forwardNavigationWidget: OkButton(onPressed: () {
-            _disabledIfNoDownloadedVoice(context);
-            Navigator.of(context).maybePop();
+          forwardNavigationWidget: OkButton(onPressed: () async {
+            await _disabledIfNoDownloadedVoice(context);
+            if (context.mounted) {
+              await Navigator.of(context).maybePop();
+            }
           }),
         ),
       ),
     );
   }
 
-  bool _disabledIfNoDownloadedVoice(BuildContext context) {
+  Future<bool> _disabledIfNoDownloadedVoice(BuildContext context) async {
     if (context.read<VoicesCubit>().state.downloaded.isEmpty &&
         context.read<VoicesCubit>().state.downloading.isEmpty) {
-      context.read<SpeechSettingsCubit>().setVoice('');
-      context.read<SpeechSettingsCubit>().setTextToSpeech(false);
+      final speechSettingsCubit = context.read<SpeechSettingsCubit>();
+      await speechSettingsCubit.setVoice('');
+      await speechSettingsCubit.setTextToSpeech(false);
       return true;
     }
     return false;

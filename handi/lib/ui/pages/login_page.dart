@@ -57,7 +57,7 @@ class LoginPage extends StatelessWidget {
                     (kvp) => Builder(
                       builder: (context) => RadioMenuButton(
                         value: kvp.key,
-                        onChanged: (s) =>
+                        onChanged: (s) async =>
                             context.read<BaseUrlCubit>().updateBaseUrl(kvp.key),
                         groupValue: context.watch<BaseUrlCubit>().state,
                         child: Text(kvp.value),

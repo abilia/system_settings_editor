@@ -38,7 +38,7 @@ class TemplatesPage extends StatelessWidget {
                 ListLibrary<BasicTimerData>(
                   emptyLibraryMessage: translate.noTemplates,
                   libraryItemGenerator: BasicTemplatePickField.new,
-                  onTapEdit: (context, sortables) => _onEditTemplateTimer(
+                  onTapEdit: (context, sortables) async => _onEditTemplateTimer(
                     context,
                     sortables,
                     translate.editTimerTemplate,
@@ -51,7 +51,8 @@ class TemplatesPage extends StatelessWidget {
             ),
             floatingActionButton: AddTemplateButton(
               activityTemplateIndex: 0,
-              onNewTimerTemplate: (context, sortables) => _onEditTemplateTimer(
+              onNewTimerTemplate: (context, sortables) async =>
+                  _onEditTemplateTimer(
                 context,
                 sortables,
                 translate.newTimerTemplate,
@@ -73,11 +74,11 @@ class TemplatesPage extends StatelessWidget {
         .sortableSelected(null);
   }
 
-  void _onEditTemplateActivity(
-      BuildContext context, Sortable<BasicActivityData> sortable) {
+  Future<void> _onEditTemplateActivity(
+      BuildContext context, Sortable<BasicActivityData> sortable) async {
     if (sortable is! Sortable<BasicActivityDataItem>) return;
     final authProviders = copiedAuthProviders(context);
-    Navigator.of(context).push(
+    await Navigator.of(context).push(
       PersistentMaterialPageRoute(
         settings: (ActivityWizardPage).routeSetting(),
         builder: (_) => MultiBlocProvider(
@@ -274,7 +275,7 @@ class AddTemplateButton extends StatelessWidget {
           Translator.of(context).translate.add,
           AbiliaIcons.plus,
           onPressed: tabController.index == activityTemplateIndex
-              ? () => _addNewActivityTemplate(context)
+              ? () async => _addNewActivityTemplate(context)
               : () {
                   final state = context
                       .read<SortableArchiveCubit<BasicTimerData>>()
@@ -293,12 +294,12 @@ class AddTemplateButton extends StatelessWidget {
     );
   }
 
-  void _addNewActivityTemplate(BuildContext context) {
+  Future<void> _addNewActivityTemplate(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
     final sortableState =
         context.read<SortableArchiveCubit<BasicActivityData>>().state;
 
-    Navigator.of(context).push(
+    return Navigator.of(context).push(
       PersistentMaterialPageRoute(
         settings: (ActivityWizardPage).routeSetting(),
         builder: (_) => MultiBlocProvider(

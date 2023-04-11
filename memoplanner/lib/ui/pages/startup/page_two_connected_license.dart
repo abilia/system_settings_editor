@@ -147,7 +147,7 @@ class _PageTwoConnectedLicenseState extends State<PageTwoConnectedLicense> {
                 SizedBox(
                   width: layout.startupPage.pageTwoButtonWidth,
                   child: IconAndTextButton(
-                    onPressed: () => widget.pageController.previousPage(
+                    onPressed: () async => widget.pageController.previousPage(
                       duration: StartupGuidePage.pageDuration,
                       curve: StartupGuidePage.curve,
                     ),
@@ -163,7 +163,7 @@ class _PageTwoConnectedLicenseState extends State<PageTwoConnectedLicense> {
                     key: TestKey.nextWelcomeGuide,
                     style: textButtonStyleGreen,
                     onPressed: state is SuccessfullyConnectedLicense
-                        ? () => widget.pageController.nextPage(
+                        ? () async => widget.pageController.nextPage(
                               duration: StartupGuidePage.pageDuration,
                               curve: StartupGuidePage.curve,
                             )

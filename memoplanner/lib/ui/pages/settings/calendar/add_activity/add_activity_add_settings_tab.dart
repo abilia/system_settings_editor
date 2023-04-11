@@ -37,7 +37,7 @@ class AddActivityAddSettingsTab extends StatelessWidget {
   }
 }
 
-void _showErrorDialog(BuildContext context) => showDialog(
+Future<void> _showErrorDialog(BuildContext context) async => showDialog(
       context: context,
       builder: (context) => ErrorDialog(
         text: Translator.of(context).translate.missingRequiredActivitySetting,
@@ -61,13 +61,13 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           key: TestKey.showTemplatesSwitch,
           leading: const Icon(AbiliaIcons.basicActivity),
           value: editActivitySettings.template,
-          onChanged: (v) {
+          onChanged: (v) async {
             if (v || _checkRequiredStates(editActivitySettings)) {
               context
                   .read<AddActivitySettingsCubit>()
                   .editSettings(editActivitySettings.copyWith(template: v));
             } else {
-              _showErrorDialog(context);
+              await _showErrorDialog(context);
             }
           },
           child: Text(t.showTemplates),
@@ -76,13 +76,13 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           key: TestKey.addActivitySelectNameSwitch,
           leading: const Icon(AbiliaIcons.selectTextSize),
           value: editActivitySettings.title,
-          onChanged: (v) {
+          onChanged: (v) async {
             if (v || _checkRequiredStates(editActivitySettings)) {
               context
                   .read<AddActivitySettingsCubit>()
                   .editSettings(editActivitySettings.copyWith(title: v));
             } else {
-              _showErrorDialog(context);
+              await _showErrorDialog(context);
             }
           },
           child: Text(t.selectName),
@@ -91,13 +91,13 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           key: TestKey.addActivitySelectImageSwitch,
           leading: const Icon(AbiliaIcons.myPhotos),
           value: editActivitySettings.image,
-          onChanged: (v) {
+          onChanged: (v) async {
             if (v || _checkRequiredStates(editActivitySettings)) {
               context
                   .read<AddActivitySettingsCubit>()
                   .editSettings(editActivitySettings.copyWith(image: v));
             } else {
-              _showErrorDialog(context);
+              await _showErrorDialog(context);
             }
           },
           child: Text(t.selectImage),
@@ -220,13 +220,13 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           key: TestKey.showTemplatesSwitch,
           leading: const Icon(AbiliaIcons.basicActivity),
           value: settings.template,
-          onChanged: (v) {
+          onChanged: (v) async {
             if (v || _checkRequiredStates(settings)) {
               context
                   .read<AddActivitySettingsCubit>()
                   .stepByStepSetting(settings.copyWith(showBasicActivities: v));
             } else {
-              _showErrorDialog(context);
+              await _showErrorDialog(context);
             }
           },
           child: Text(t.showTemplates),
@@ -235,13 +235,13 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           key: TestKey.addActivitySelectNameSwitch,
           leading: const Icon(AbiliaIcons.selectTextSize),
           value: settings.title,
-          onChanged: (v) {
+          onChanged: (v) async {
             if (v || _checkRequiredStates(settings)) {
               context
                   .read<AddActivitySettingsCubit>()
                   .stepByStepSetting(settings.copyWith(selectName: v));
             } else {
-              _showErrorDialog(context);
+              await _showErrorDialog(context);
             }
           },
           child: Text(t.selectName),
@@ -250,13 +250,13 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           key: TestKey.addActivitySelectImageSwitch,
           leading: const Icon(AbiliaIcons.myPhotos),
           value: settings.image,
-          onChanged: (v) {
+          onChanged: (v) async {
             if (v || _checkRequiredStates(settings)) {
               context
                   .read<AddActivitySettingsCubit>()
                   .stepByStepSetting(settings.copyWith(selectImage: v));
             } else {
-              _showErrorDialog(context);
+              await _showErrorDialog(context);
             }
           },
           child: Text(t.selectImage),

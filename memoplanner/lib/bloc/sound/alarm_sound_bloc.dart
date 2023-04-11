@@ -82,7 +82,7 @@ class AlarmSoundBloc extends Bloc<AlarmSoundEvent, Sound?> {
   @override
   Future<void> close() async {
     await onPlayerCompletion.cancel();
-    audioPlayer.dispose();
+    await audioPlayer.dispose();
     return super.close();
   }
 }

@@ -127,7 +127,9 @@ class SelectPictureWidget extends StatelessWidget {
           SelectedImageWidget(
             errorState: errorState,
             isLarge: isLarge,
-            onTap: onImageSelected != null ? () => imageClick(context) : null,
+            onTap: onImageSelected != null
+                ? () async => imageClick(context)
+                : null,
             selectedImage: selectedImage,
           ),
         ],
@@ -518,7 +520,7 @@ class AvailableForWidget extends StatelessWidget {
           text: Text(
             availableFor.text(translator),
           ),
-          onTap: () => onTap(context),
+          onTap: () async => onTap(context),
         ),
       ],
     );

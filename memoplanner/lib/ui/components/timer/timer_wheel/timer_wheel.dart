@@ -158,7 +158,7 @@ class _TimerWheelState extends State<TimerWheel> {
     if (!_textToSpeech || !_pointIsOnNumberWheel(downPosition, config)) return;
 
     _cancelLongPressTimer();
-    _longPressTimer = Timer(kLongPressTimeout, () {
+    _longPressTimer = Timer(kLongPressTimeout, () async {
       final lastPosition = _longPressUpdatePosition;
       if (lastPosition != null) {
         final distance = (downPosition - lastPosition).distance;
@@ -170,7 +170,7 @@ class _TimerWheelState extends State<TimerWheel> {
           ((minutes % _upperLimit) / _intervalLength).round() * _intervalLength;
       final minute = minutes % _intervalLength;
       if (minute == 0 || minute == _intervalLength - 1) {
-        GetIt.I<TtsInterface>().speak(
+        await GetIt.I<TtsInterface>().speak(
           '$fiveMinInterval ${Translator.of(context).translate.minutes}',
         );
       }

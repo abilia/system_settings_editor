@@ -76,7 +76,7 @@ class RecordSoundWidget extends StatelessWidget {
                   left: layout.formPadding.horizontalItemDistance,
                 ),
                 child: InfoButton(
-                  onTap: () => showViewDialog(
+                  onTap: () async => showViewDialog(
                     useSafeArea: false,
                     context: context,
                     builder: (context) => const PermissionInfoDialog(
@@ -126,7 +126,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                 ? null
                 : permissionStatus == PermissionStatus.denied
                     ? () async {
-                        context
+                        await context
                             .read<PermissionCubit>()
                             .requestPermissions([Permission.microphone]);
                       }
@@ -152,8 +152,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                                   BlocProvider(
                                     create: (_) => RecordSoundCubit(
                                       originalSoundFile: recordedAudio,
-                                      file: file,
-                                    ),
+                                    )..setFile(file),
                                   ),
                                 ],
                                 child: RecordSoundPage(
@@ -392,9 +391,9 @@ class DeleteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IconActionButtonDark(
-        onPressed: () {
-          context.read<RecordSoundCubit>().deleteRecording();
+        onPressed: () async {
           context.read<SoundBloc>().add(const ResetPlayer());
+          await context.read<RecordSoundCubit>().deleteRecording();
         },
         child: const Icon(AbiliaIcons.deleteAllClear),
       );

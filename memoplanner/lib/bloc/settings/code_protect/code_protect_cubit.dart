@@ -6,5 +6,6 @@ class CodeProtectCubit extends Cubit<CodeProtectSettings> {
   CodeProtectCubit(this._genericCubit, CodeProtectSettings initial)
       : super(initial);
   void change(CodeProtectSettings newState) => emit(newState);
-  void save() => _genericCubit.genericUpdated(state.memoplannerSettingData);
+  Future<void> save() async =>
+      _genericCubit.genericUpdated(state.memoplannerSettingData);
 }

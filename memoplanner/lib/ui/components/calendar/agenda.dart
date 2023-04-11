@@ -19,7 +19,7 @@ class Agenda extends StatelessWidget with CalendarWidgetMixin {
           : layout.templates.s2,
     );
     return RefreshIndicator(
-      onRefresh: () => refresh(context),
+      onRefresh: () async => refresh(context),
       child: Stack(
         children: <Widget>[
           CalendarScrollListener(

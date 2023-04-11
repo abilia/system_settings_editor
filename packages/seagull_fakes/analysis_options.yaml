@@ -1,1 +1,1 @@
-include: package:seagull_lints/analysis_options.yaml
+include: package:seagull_lints/test.yaml

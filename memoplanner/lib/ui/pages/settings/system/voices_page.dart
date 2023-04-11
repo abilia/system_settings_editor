@@ -2,19 +2,8 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/settings/speech_support/voice_data.dart';
 import 'package:memoplanner/ui/all.dart';
 
-class VoicesPage extends StatefulWidget {
+class VoicesPage extends StatelessWidget {
   const VoicesPage({Key? key}) : super(key: key);
-
-  @override
-  State<VoicesPage> createState() => _VoicesPageState();
-}
-
-class _VoicesPageState extends State<VoicesPage> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<VoicesCubit>().readAvailableVoices();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +45,7 @@ class _VoicesPageState extends State<VoicesPage> {
       }),
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: OkButton(
-          onPressed: () => Navigator.of(context).maybePop(),
+          onPressed: () async => Navigator.of(context).maybePop(),
         ),
       ),
     );
@@ -85,7 +74,8 @@ class _VoiceRow extends StatelessWidget {
       children: <Widget>[
         if (downloaded)
           IconActionButtonDark(
-            onPressed: () => context.read<VoicesCubit>().deleteVoice(voice),
+            onPressed: () async =>
+                context.read<VoicesCubit>().deleteVoice(voice),
             child: const Icon(AbiliaIcons.deleteAllClear),
           )
         else if (downloading)
@@ -114,9 +104,8 @@ class _VoiceRow extends StatelessWidget {
             child: RadioField<String>(
               groupValue: selectedVoice,
               onChanged: downloaded
-                  ? (name) {
-                      context.read<SpeechSettingsCubit>().setVoice(voice.name);
-                    }
+                  ? (name) async =>
+                      context.read<SpeechSettingsCubit>().setVoice(voice.name)
                   : null,
               value: voice.name,
               text: Text('${voice.name}: ${voice.file.sizeInMB} MB'),

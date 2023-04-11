@@ -17,7 +17,7 @@ class ActivityWizardPage extends StatelessWidget {
           child: BlocListener<WizardCubit, WizardState>(
             listenWhen: (previous, current) =>
                 current.currentStep != previous.currentStep,
-            listener: (context, state) => pageController.animateToPage(
+            listener: (context, state) async => pageController.animateToPage(
                 state.step,
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.easeOutQuad),

@@ -125,7 +125,7 @@ class _AddButtonMPGO extends StatelessWidget {
       key: TestKey.addActivityButton,
       style: actionButtonStyleLight,
       ttsData: Translator.of(context).translate.add,
-      onPressed: () => onAddButtonPressed(
+      onPressed: () async => onAddButtonPressed(
         context,
         showActivities: true,
         showTimers: context
@@ -151,7 +151,7 @@ class _AddActivityButton extends StatelessWidget {
       AbiliaIcons.plus,
       key: TestKey.addActivityButton,
       ttsData: Translator.of(context).translate.addActivity,
-      onPressed: () => onAddButtonPressed(
+      onPressed: () async => onAddButtonPressed(
         context,
         showActivities: true,
         showTimers: false,
@@ -172,7 +172,7 @@ class _AddTimerButton extends StatelessWidget {
       AbiliaIcons.stopWatch,
       key: TestKey.addTimerButton,
       ttsData: Translator.of(context).translate.addTimer,
-      onPressed: () => onAddButtonPressed(
+      onPressed: () async => onAddButtonPressed(
         context,
         showActivities: false,
         showTimers: true,
@@ -207,7 +207,7 @@ class _AddActivityOrTimerButtons extends StatelessWidget {
             icon: AbiliaIcons.plus,
             position: _AddTabPosition.left,
             ttsData: Translator.of(context).translate.addActivity,
-            onTap: () => onAddButtonPressed(
+            onTap: () async => onAddButtonPressed(
               context,
               showActivities: true,
               showTimers: false,
@@ -222,7 +222,7 @@ class _AddActivityOrTimerButtons extends StatelessWidget {
             icon: AbiliaIcons.stopWatch,
             position: _AddTabPosition.right,
             ttsData: Translator.of(context).translate.addTimer,
-            onTap: () => onAddButtonPressed(
+            onTap: () async => onAddButtonPressed(
               context,
               showActivities: false,
               showTimers: true,

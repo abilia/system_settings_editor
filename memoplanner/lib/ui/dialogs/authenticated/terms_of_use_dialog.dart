@@ -111,7 +111,7 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
   }
 
   Future<void> saveAndClose() async {
-    termsOfUseCubit.acceptTermsOfUse();
+    await termsOfUseCubit.acceptTermsOfUse();
     return widget.onNext();
   }
 }

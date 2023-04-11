@@ -254,9 +254,9 @@ class ThumbnailPhoto extends StatelessWidget {
     final imageArchiveData = sortable.data;
     return InkWell(
       borderRadius: boxDecoration.borderRadius?.resolve(null),
-      onTap: () {
+      onTap: () async {
         final authProviders = copiedAuthProviders(context);
-        Navigator.of(context).push(
+        await Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => MultiBlocProvider(
               providers: authProviders,

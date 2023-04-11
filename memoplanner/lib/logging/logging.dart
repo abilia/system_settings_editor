@@ -150,16 +150,16 @@ class SeagullLogger {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
     loggingSubscriptions.add(
       Logger.root.onRecord.listen(
-        (record) {
+        (record) async {
           if (record.level > Level.WARNING) {
             if (record.error != null) {
-              FirebaseCrashlytics.instance.recordError(
+              await FirebaseCrashlytics.instance.recordError(
                 record.error,
                 record.stackTrace,
                 reason: format(record),
               );
             } else {
-              FirebaseCrashlytics.instance.log(format(record));
+              await FirebaseCrashlytics.instance.log(format(record));
             }
           }
         },

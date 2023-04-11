@@ -40,7 +40,7 @@ class TimeInputPage extends StatelessWidget {
             BottomNavigation(
           backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: OkButton(
-            onPressed: () => onSave(
+            onPressed: () async => onSave(
               context,
               newTimeInput,
               savedStartTimeInput,
@@ -57,7 +57,7 @@ class TimeInputPage extends StatelessWidget {
     String savedStartTimeInput,
   ) async {
     if (newTimInput != null) {
-      Navigator.of(context).maybePop(newTimInput);
+      await Navigator.of(context).maybePop(newTimInput);
       return true;
     } else {
       await showViewDialog(

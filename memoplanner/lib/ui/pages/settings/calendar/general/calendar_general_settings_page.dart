@@ -43,8 +43,8 @@ class CalendarGeneralSettingsPage extends StatelessWidget {
             forwardNavigationWidget: Builder(
               builder: (context) => OkButton(
                 onPressed: () async {
-                  context.read<GeneralCalendarSettingsCubit>().save();
                   Navigator.of(context).pop();
+                  await context.read<GeneralCalendarSettingsCubit>().save();
                 },
               ),
             ),

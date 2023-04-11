@@ -36,9 +36,8 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     log.info('Handling background message...');
     final alarmId = message.stopAlarmSoundKey;
     if (alarmId != null) {
-      notificationPlugin.cancel(alarmId);
       log.info('Handling alarm and canceling: $alarmId');
-      return;
+      return notificationPlugin.cancel(alarmId);
     }
 
     final now = DateTime.now();

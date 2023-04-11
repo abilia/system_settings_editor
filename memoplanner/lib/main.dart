@@ -25,7 +25,7 @@ final _log = Logger('main');
 void main() async {
   await initServices();
   if (Config.isMP) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   }
   final payload = await getOrAddPayloadToStream();
   runApp(App(payload: payload));

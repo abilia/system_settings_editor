@@ -183,7 +183,7 @@ class _TimerBottomBar extends StatelessWidget {
               child: const Icon(AbiliaIcons.deleteAllClear),
             ),
             IconActionButtonLight(
-              onPressed: () => Navigator.of(context).maybePop(),
+              onPressed: () async => Navigator.of(context).maybePop(),
               child: const Icon(AbiliaIcons.navigationPrevious),
             )
           ],

@@ -20,7 +20,7 @@ class MenuItemPickField extends StatelessWidget {
     return PickField(
       leading: Icon(icon),
       text: Text(text),
-      onTap: () => Navigator.of(context).push(
+      onTap: () async => Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: authProviders,

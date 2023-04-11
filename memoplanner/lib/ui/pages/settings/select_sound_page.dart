@@ -77,7 +77,7 @@ class _SelectSoundPageState extends State<SelectSoundPage> {
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: OkButton(
-          onPressed: () => Navigator.of(context).maybePop(selectedSound),
+          onPressed: () async => Navigator.of(context).maybePop(selectedSound),
         ),
       ),
     );

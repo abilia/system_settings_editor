@@ -46,9 +46,9 @@ class TimerCard extends StatelessWidget {
                   type: MaterialType.transparency,
                   child: InkWell(
                     borderRadius: borderRadius - BorderRadius.circular(2.0),
-                    onTap: () {
+                    onTap: () async {
                       final authProviders = copiedAuthProviders(context);
-                      Navigator.of(context).push(
+                      await Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => MultiBlocProvider(
                             providers: authProviders,

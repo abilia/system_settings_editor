@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/listener/all.dart';
 import 'package:memoplanner/models/all.dart';
@@ -11,6 +13,7 @@ import 'package:memoplanner/utils/all.dart';
 
 class AuthenticatedListener extends StatefulWidget {
   final bool newlyLoggedIn;
+
   const AuthenticatedListener({
     required this.child,
     required this.newlyLoggedIn,
@@ -29,15 +32,15 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _readScreenTimeOut();
-    _fetchDeviceLicense();
   }
 
   @override
-  void didChangeDependencies() {
+  Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
-    GetIt.I<SettingsDb>()
+    await GetIt.I<SettingsDb>()
         .setAlwaysUse24HourFormat(MediaQuery.of(context).alwaysUse24HourFormat);
+    await _readScreenTimeOut();
+    await _fetchDeviceLicense();
   }
 
   @override
@@ -49,13 +52,14 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
-      GetIt.I<SettingsDb>().setAlwaysUse24HourFormat(
-          MediaQuery.of(context).alwaysUse24HourFormat);
-      context
-        ..read<ClockBloc>().setTime(DateTime.now())
-        ..read<PermissionCubit>().checkAll();
-      _readScreenTimeOut();
-      _fetchDeviceLicense();
+      await Future.wait([
+        GetIt.I<SettingsDb>().setAlwaysUse24HourFormat(
+            MediaQuery.of(context).alwaysUse24HourFormat),
+        context.read<ClockBloc>().setTime(DateTime.now()),
+        context.read<PermissionCubit>().checkAll(),
+        _readScreenTimeOut(),
+        _fetchDeviceLicense(),
+      ]);
     }
   }
 
@@ -67,9 +71,9 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
     }
   }
 
-  void _fetchDeviceLicense() {
+  Future<void> _fetchDeviceLicense() async {
     if (Config.isMP) {
-      context.read<DeviceRepository>().fetchDeviceLicense();
+      await context.read<DeviceRepository>().fetchDeviceLicense();
     }
   }
 
@@ -94,9 +98,9 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
               context.read<NotificationBloc>().add(NotificationEvent()),
         ),
         BlocListener<LicenseCubit, LicenseState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (Config.isMP && state is NoValidLicense) {
-              showViewDialog(
+              await showViewDialog(
                 context: context,
                 builder: (context) => const LicenseExpiredWarningDialog(),
                 routeSettings: (LicenseExpiredWarningDialog).routeSetting(),
@@ -112,7 +116,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
         ),
         BlocListener<PermissionCubit, PermissionState>(
           listenWhen: _notificationsDenied,
-          listener: (context, state) => showViewDialog(
+          listener: (context, state) async => showViewDialog(
             context: context,
             builder: (context) => const NotificationPermissionWarningDialog(),
             routeSettings: (NotificationPermissionWarningDialog).routeSetting(),

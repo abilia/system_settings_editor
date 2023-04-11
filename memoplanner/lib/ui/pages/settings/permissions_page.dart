@@ -73,7 +73,7 @@ class PermissionSwitch extends StatelessWidget {
           await openAppSettings();
           return;
         }
-        context.read<PermissionCubit>().requestPermissions([permission]);
+        await context.read<PermissionCubit>().requestPermissions([permission]);
       },
       child: Text(permission.translate(Translator.of(context).translate)),
     );
@@ -117,7 +117,7 @@ class NotificationPermissionSwitch extends StatelessWidget {
                         (NotificationPermissionOffWarningDialog).routeSetting(),
                   );
                 } else {
-                  context
+                  await context
                       .read<PermissionCubit>()
                       .requestPermissions([permission]);
                 }
@@ -200,7 +200,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
                                   .routeSetting(),
                         );
                       } else {
-                        context
+                        await context
                             .read<PermissionCubit>()
                             .requestPermissions([Permission.systemAlertWindow]);
                       }
@@ -233,7 +233,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
                 left: layout.formPadding.horizontalItemDistance,
               ),
               child: InfoButton(
-                onTap: () => showViewDialog(
+                onTap: () async => showViewDialog(
                   context: context,
                   builder: (context) => const FullscreenAlarmInfoDialog(),
                   routeSettings: (FullscreenAlarmInfoDialog).routeSetting(),

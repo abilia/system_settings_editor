@@ -20,7 +20,7 @@ class StartupCubit extends Cubit<StartupState> {
               connectedState.isConnected && state is LoadingLicenseFailed,
         )
         .listen(checkConnectedLicense);
-    if (state is LoadingLicense) checkConnectedLicense();
+    if (state is LoadingLicense) unawaited(checkConnectedLicense());
   }
 
   final DeviceRepository deviceRepository;
@@ -81,7 +81,7 @@ class StartupCubit extends Cubit<StartupState> {
   }
 
   Future<void> skipProductionGuide() async {
-    deviceRepository.setSerialId('debugSerialId');
+    await deviceRepository.setSerialId('debugSerialId');
     await startGuideDone();
   }
 

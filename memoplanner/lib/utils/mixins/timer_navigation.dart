@@ -32,7 +32,7 @@ mixin TimerNavigation {
       ),
     );
     if (timerStarted != null) {
-      _navigateToTimerPage(
+      await _navigateToTimerPage(
         navigator,
         authProviders,
         timerStarted,
@@ -62,7 +62,7 @@ mixin TimerNavigation {
       ),
     );
     if (timerStarted != null) {
-      _navigateToTimerPage(
+      await _navigateToTimerPage(
         navigator,
         authProviders,
         timerStarted,
@@ -70,13 +70,13 @@ mixin TimerNavigation {
     }
   }
 
-  void _navigateToTimerPage(
+  Future<void> _navigateToTimerPage(
     NavigatorState navigator,
     List<BlocProvider> authProviders,
     AbiliaTimer timer,
-  ) {
+  ) async {
     navigator.pop();
-    navigator.push(
+    await navigator.push(
       MaterialPageRoute(
         builder: (context) => MultiBlocProvider(
           providers: authProviders,

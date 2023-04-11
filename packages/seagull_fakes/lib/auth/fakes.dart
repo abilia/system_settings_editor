@@ -114,10 +114,10 @@ class FakeListenableClient {
         (request) async {
           final pathSegments = request.url.pathSegments.toSet();
 
-          if (pathSegments.containsAll(['auth', 'client'])) {
+          if (pathSegments.containsAll(<String>{'auth', 'client'})) {
             return Response(json.encode(List.empty()), 200);
           }
-          if (pathSegments.containsAll(['entity', 'me'])) {
+          if (pathSegments.containsAll(<String>{'entity', 'me'})) {
             return Response(
                 json.encode({
                   'me': user.toJson(),

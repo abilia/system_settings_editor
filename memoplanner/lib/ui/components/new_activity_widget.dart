@@ -18,7 +18,7 @@ class NewActivityWidget extends StatelessWidget with ActivityNavigation {
             key: TestKey.newActivityChoice,
             leading: const Icon(AbiliaIcons.basicActivity),
             text: Text(t.newActivity),
-            onTap: () => navigateToActivityWizardWithContext(
+            onTap: () async => navigateToActivityWizardWithContext(
               context,
               authProviders,
             ),
@@ -28,7 +28,7 @@ class NewActivityWidget extends StatelessWidget with ActivityNavigation {
             key: TestKey.basicActivityChoice,
             leading: const Icon(AbiliaIcons.basicActivities),
             text: Text(t.fromTemplate),
-            onTap: () => navigateToBasicActivityPicker(
+            onTap: () async => navigateToBasicActivityPicker(
               context,
               authProviders,
               addActivitySettings.defaults,

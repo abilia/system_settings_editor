@@ -34,8 +34,8 @@ class WeekCalendar extends StatelessWidget {
     final weekCalendarState = context.read<WeekCalendarCubit>().state;
     final pageController = PageController(initialPage: weekCalendarState.index);
     return BlocListener<WeekCalendarCubit, WeekCalendarState>(
-      listener: (context, state) {
-        pageController.animateToPage(
+      listener: (context, state) async {
+        await pageController.animateToPage(
           state.index,
           duration: const Duration(milliseconds: 500),
           curve: Curves.easeOutQuad,
@@ -512,9 +512,9 @@ class _WeekActivityContent extends StatelessWidget {
         occasion: activityOccasion,
         selected: selected && !fullDay,
         showColors: !fullDay,
-        onClick: () {
+        onClick: () async {
           final authProviders = copiedAuthProviders(context);
-          Navigator.push(
+          await Navigator.push(
             context,
             ActivityPage.route(
               activityDay: activityOccasion,
@@ -578,10 +578,10 @@ class _WeekTimerContent extends StatelessWidget {
       child: _WeekEventContent(
         occasion: timerOccasion,
         selected: selected,
-        onClick: () {
+        onClick: () async {
           final authProviders = copiedAuthProviders(context);
           final day = context.read<DayPickerBloc>().state.day;
-          Navigator.push(
+          await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (_) => MultiBlocProvider(
