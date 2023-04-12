@@ -17,15 +17,19 @@ class RemoteAlarm {
     bool pop = false,
   }) async {
     if (alarm is TimerAlarm) return;
-    await client.post(
-      '${baseUrlDb.baseUrl}/api/v1/push'.toUri(),
-      headers: jsonHeader,
-      body: jsonEncode(
-        {
-          if (pop) popKey: alarm.stackId,
-          stopSoundKey: alarm.hashCode,
-        },
-      ),
-    );
+    try {
+      await client.post(
+        '${baseUrlDb.baseUrl}/api/v1/push'.toUri(),
+        headers: jsonHeader,
+        body: jsonEncode(
+          {
+            if (pop) popKey: alarm.stackId,
+            stopSoundKey: alarm.hashCode,
+          },
+        ),
+      );
+    } catch (error, stackTrace) {
+      AlarmNavigator.log.fine('Could not stop remote alarm', error, stackTrace);
+    }
   }
 }
