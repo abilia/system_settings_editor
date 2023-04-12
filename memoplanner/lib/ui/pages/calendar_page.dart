@@ -11,46 +11,54 @@ class CalendarPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: abiliaWhiteTheme,
-      child: Builder(
-        builder: (context) {
-          final isNotLoaded = context.select((MemoplannerSettingsBloc bloc) =>
-              bloc.state is MemoplannerSettingsNotLoaded);
-          if (isNotLoaded) {
-            return const Scaffold(
-                body: Center(child: AbiliaProgressIndicator()));
-          }
-          final functionsSettings = context
-              .select((MemoplannerSettingsBloc bloc) => bloc.state.functions);
-          final display = functionsSettings.display;
-          return DefaultTabController(
-            length: display.calendarCount,
-            initialIndex: functionsSettings.startViewIndex,
-            child: Scaffold(
-              bottomNavigationBar:
-                  display.bottomBar ? const CalendarBottomBar() : null,
-              body: Builder(
-                builder: (context) {
-                  const emptyPage = EmptyCalendarPage();
-                  const weekTab = WeekCalendarTab();
-                  const monthTab = MonthCalendarTab();
-                  const menuPage = MenuPage();
-                  return ReturnToHomeScreenListener(
-                    child: TrackableTabBarView(
-                      analytics: GetIt.I<SeagullAnalytics>(),
-                      children: [
-                        const DayCalendarTab(),
-                        if (display.week) weekTab else emptyPage,
-                        if (display.month) monthTab else emptyPage,
-                        if (display.menu) menuPage else emptyPage,
-                        if (Config.isMP) const PhotoCalendarPage(),
-                      ],
-                    ),
-                  );
-                },
+      child: BlocProvider<ScrollPositionCubit>(
+        create: (context) => ScrollPositionCubit(
+          dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
+        ),
+        child: Builder(
+          builder: (context) {
+            final isNotLoaded = context.select((MemoplannerSettingsBloc bloc) =>
+                bloc.state is MemoplannerSettingsNotLoaded);
+            if (isNotLoaded) {
+              return const Scaffold(
+                body: Center(
+                  child: AbiliaProgressIndicator(),
+                ),
+              );
+            }
+            final functionsSettings = context
+                .select((MemoplannerSettingsBloc bloc) => bloc.state.functions);
+            final display = functionsSettings.display;
+            return DefaultTabController(
+              length: display.calendarCount,
+              initialIndex: functionsSettings.startViewIndex,
+              child: Scaffold(
+                bottomNavigationBar:
+                    display.bottomBar ? const CalendarBottomBar() : null,
+                body: Builder(
+                  builder: (context) {
+                    const emptyPage = EmptyCalendarPage();
+                    const weekTab = WeekCalendarTab();
+                    const monthTab = MonthCalendarTab();
+                    const menuPage = MenuPage();
+                    return ReturnToHomeScreenListener(
+                      child: TrackableTabBarView(
+                        analytics: GetIt.I<SeagullAnalytics>(),
+                        children: [
+                          const DayCalendarTab(),
+                          if (display.week) weekTab else emptyPage,
+                          if (display.month) monthTab else emptyPage,
+                          if (display.menu) menuPage else emptyPage,
+                          if (Config.isMP) const PhotoCalendarPage(),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

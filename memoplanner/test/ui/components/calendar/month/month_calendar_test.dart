@@ -91,11 +91,11 @@ void main() {
     await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
-    expect(find.byType(GoToCurrentActionButton), findsOneWidget);
+    expect(find.byType(GoToTodayButton), findsOneWidget);
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.month));
     await tester.pumpAndSettle();
-    expect(find.byType(GoToCurrentActionButton), findsNothing);
+    expect(find.byType(GoToTodayButton), findsNothing);
     await tester.verifyTts(find.byType(MonthAppBar), contains: 'August 2020');
   });
 
@@ -115,7 +115,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
-      expect(find.byType(GoToCurrentActionButton), findsOneWidget);
+      expect(find.byType(GoToTodayButton), findsOneWidget);
       await tester.verifyTts(find.byType(MonthAppBar),
           contains: 'September 2020');
     });
@@ -127,7 +127,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       await tester.pumpAndSettle();
-      expect(find.byType(GoToCurrentActionButton), findsOneWidget);
+      expect(find.byType(GoToTodayButton), findsOneWidget);
       await tester.verifyTts(find.byType(MonthAppBar), contains: 'July 2020');
     });
 
@@ -138,9 +138,9 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(GoToCurrentActionButton));
+      await tester.tap(find.byType(GoToTodayButton));
       await tester.pumpAndSettle();
-      expect(find.byType(GoToCurrentActionButton), findsNothing);
+      expect(find.byType(GoToTodayButton), findsNothing);
       await tester.verifyTts(find.byType(MonthAppBar), contains: 'August 2020');
     });
   });
@@ -269,7 +269,7 @@ void main() {
       expect(find.byType(MonthDayPreviewHeading), findsNothing);
       expect(find.text(translate.selectADayToViewDetails), findsOneWidget);
 
-      await tester.tap(find.byType(GoToCurrentActionButton));
+      await tester.tap(find.byType(GoToTodayButton));
       await tester.pumpAndSettle();
       expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
       expect(find.text(translate.selectADayToViewDetails), findsNothing);

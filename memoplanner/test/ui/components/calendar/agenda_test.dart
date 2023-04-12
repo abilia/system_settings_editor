@@ -176,7 +176,7 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
-    expect(find.byKey(TestKey.goToNowButton), findsNothing);
+    expect(find.byKey(TestKey.goToTodayButton), findsNothing);
   });
 
   testWidgets('Agenda with one activity should not show Go to now-button',
@@ -185,7 +185,7 @@ void main() {
 
     await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
-    expect(find.byKey(TestKey.goToNowButton), findsNothing);
+    expect(find.byKey(TestKey.goToTodayButton), findsNothing);
   });
 
   testWidgets('Agenda background is dark during night interval',
@@ -213,7 +213,7 @@ void main() {
 
     await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
-    expect(find.byKey(TestKey.goToNowButton), findsNothing);
+    expect(find.byKey(TestKey.goToTodayButton), findsNothing);
     expect(find.text(key), findsOneWidget);
   });
 

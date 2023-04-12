@@ -20,22 +20,12 @@ class DayCalendarTab extends StatelessWidget {
       languageCode: Localizations.localeOf(context).languageCode,
       weekday: day.weekday,
     );
-    return BlocProvider<ScrollPositionCubit>(
-      create: (context) => ScrollPositionCubit(
-        dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
-      ),
-      child: Builder(
-        builder: (context) {
-          return Scaffold(
-            backgroundColor: dayTheme.theme.appBarTheme.backgroundColor,
-            appBar: const DayCalendarAppBar(),
-            floatingActionButton: const FloatingActions(),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.startFloat,
-            body: const Calendars(),
-          );
-        },
-      ),
+    return Scaffold(
+      backgroundColor: dayTheme.theme.appBarTheme.backgroundColor,
+      appBar: const DayCalendarAppBar(),
+      floatingActionButton: const FloatingActions(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      body: const Calendars(),
     );
   }
 }
@@ -135,7 +125,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
           ),
           Column(
             children: [
-              //Ensures position of category and now buttons are correct
+              // Ensures position of categories and hidden settings
               BlocSelector<DayEventsCubit, EventsState, bool>(
                 selector: (state) => state.fullDayActivities.isNotEmpty,
                 builder: (context, hasFullday) => AnimatedSize(
@@ -151,20 +141,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                   ),
                 ),
               ),
-              Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        top: layout.commonCalendar.goToNowButtonTop,
-                      ),
-                      child: const GoToNowButton(),
-                    ),
-                  ),
-                  const CategoriesAndHiddenSettings(),
-                ],
-              ),
+              const CategoriesAndHiddenSettings(),
             ],
           ),
         ],

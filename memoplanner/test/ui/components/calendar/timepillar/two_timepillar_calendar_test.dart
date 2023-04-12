@@ -97,17 +97,17 @@ void main() {
     expect(find.byType(TwoTimepillarCalendar), findsOneWidget);
   });
 
-  testWidgets('Go to now button shows for next day but not when going back',
+  testWidgets('Go to today button shows for next day but not when going back',
       (WidgetTester tester) async {
     await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
-    expect(find.byKey(TestKey.goToNowButton), findsNothing);
+    expect(find.byKey(TestKey.goToTodayButton), findsNothing);
     await tester.tap(nextDayButtonFinder);
     await tester.pumpAndSettle();
-    expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
+    expect(find.byKey(TestKey.goToTodayButton), findsOneWidget);
     await tester.tap(previusDayButtonFinder);
     await tester.pumpAndSettle();
-    expect(find.byKey(TestKey.goToNowButton), findsNothing);
+    expect(find.byKey(TestKey.goToTodayButton), findsNothing);
   });
 
   group('timepillar', () {

@@ -301,7 +301,7 @@ void main() {
     await expect;
   });
 
-  test('Bug SGC-1701 Now button not working correctly', () async {
+  test('SGC-1701 - Go to now is working correctly', () async {
     const initialOffset = 0.0, inViewMargin = 20.0;
 
     // Arrange

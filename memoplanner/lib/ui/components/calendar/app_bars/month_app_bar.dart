@@ -64,7 +64,7 @@ class MonthAppBarStepper extends StatelessWidget
                 : null,
             showClock: showClock,
             clockReplacement: !currentMonth
-                ? GoToCurrentActionButton(
+                ? GoToTodayButton(
                     onPressed: () async =>
                         context.read<MonthCalendarCubit>().goToCurrentMonth(),
                   )

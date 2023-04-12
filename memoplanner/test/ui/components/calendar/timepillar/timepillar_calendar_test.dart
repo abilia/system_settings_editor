@@ -159,46 +159,30 @@ void main() {
       expect(find.byType(SliverTimePillar), findsOneWidget);
     });
 
-    testWidgets('Shows go to now button when scrolling',
+    testWidgets('Show no GoToTodayButton when scrolling',
         (WidgetTester tester) async {
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.goToNowButton), findsNothing);
+      expect(find.byKey(TestKey.goToTodayButton), findsNothing);
       await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
       await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
+      expect(find.byKey(TestKey.goToTodayButton), findsNothing);
     });
 
-    testWidgets('BUG SGC-1427 GoToNowButton should not expand in width',
-        (WidgetTester tester) async {
-      final screenWidth = tester.binding.window.physicalSize.width /
-          tester.binding.window.devicePixelRatio;
-      await tester.pumpWidget(const App());
-      await tester.pumpAndSettle();
-      await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
-      await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
-
-      final nowButton = find.byKey(TestKey.goToNowButton).evaluate().first;
-      //Doesn't actually test that the width is exactly correct,
-      //just that it won't expand to fill as much space as it can.
-      expect(nowButton.size!.width, lessThan(screenWidth));
-    });
-
-    testWidgets('SGC-967 go to now button works more than once',
+    testWidgets('SGC-1427 GoToTodayButton works more than once',
         (WidgetTester tester) async {
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.goToNowButton), findsNothing);
-      await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
+      expect(find.byKey(TestKey.goToTodayButton), findsNothing);
+      await tester.tap(find.byType(RightNavButton));
       await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
-      await tester.tap(find.byKey(TestKey.goToNowButton));
+      expect(find.byKey(TestKey.goToTodayButton), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.goToTodayButton));
       await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.goToNowButton), findsNothing);
-      await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
+      expect(find.byKey(TestKey.goToTodayButton), findsNothing);
+      await tester.tap(find.byType(RightNavButton));
       await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
+      expect(find.byKey(TestKey.goToTodayButton), findsOneWidget);
     });
 
     testWidgets(
@@ -1455,22 +1439,22 @@ void main() {
     });
 
     testWidgets(
-        'SGC-2014 GoToNowButton should always go to the night calendar if it is night',
+        'SGC-2014 GoToTodayButton should always go to the night calendar if it is night',
         (WidgetTester tester) async {
       mockTicker.add(DateTime(2022, 04, 26, 23, 30));
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(previousDayButtonFinder);
       await tester.pumpAndSettle();
-      await tester.flingFrom(
-          const Offset(200, 200), const Offset(200, 400), 200);
-      await tester.pumpAndSettle();
 
       var tp = tester
           .firstWidget<TimepillarCalendar>(find.byType(TimepillarCalendar));
       expect(tp.timepillarState.showNightCalendar, false);
 
-      await tester.tap(find.byKey(TestKey.goToNowButton));
+      await tester.tap(previousDayButtonFinder);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(TestKey.goToTodayButton));
       await tester.pumpAndSettle();
 
       tp = tester
@@ -1482,15 +1466,15 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(nextDayButtonFinder);
       await tester.pumpAndSettle();
-      await tester.flingFrom(
-          const Offset(400, 200), const Offset(400, 400), 200);
-      await tester.pumpAndSettle();
 
       tp = tester
           .firstWidget<TimepillarCalendar>(find.byType(TimepillarCalendar));
       expect(tp.timepillarState.showNightCalendar, false);
 
-      await tester.tap(find.byKey(TestKey.goToNowButton));
+      await tester.tap(nextDayButtonFinder);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(TestKey.goToTodayButton));
       await tester.pumpAndSettle();
 
       tp = tester

@@ -33,6 +33,8 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
     if (scrollState is ScrollPositionReadyState) {
       final sc = scrollState.scrollController;
 
+      if (!sc.hasClients) return;
+
       final scrollTo = scrollState.nowOffset.clamp(
         sc.position.minScrollExtent,
         sc.position.maxScrollExtent,

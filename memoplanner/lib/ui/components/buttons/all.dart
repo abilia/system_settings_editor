@@ -1,6 +1,6 @@
 export 'add_button.dart';
 export 'floating_action/all.dart';
-export 'go_to_now_button.dart';
+export 'go_to_today_button.dart';
 export 'hidden_settings.dart';
 export 'icon_action_button.dart';
 export 'icon_text_button.dart';

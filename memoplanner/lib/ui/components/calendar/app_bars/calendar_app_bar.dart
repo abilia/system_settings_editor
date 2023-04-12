@@ -84,7 +84,12 @@ class CalendarAppBar extends StatelessWidget {
                     ),
                   ),
                   if (!clockSpaceEmpty) ...[
-                    clockReplacement ?? const AbiliaClock(),
+                    AnimatedSwitcher(
+                      switchInCurve: Curves.easeOut,
+                      switchOutCurve: Curves.easeOut,
+                      duration: DayCalendarTab.transitionDuration,
+                      child: clockReplacement ?? const AbiliaClock(),
+                    ),
                     SizedBox(width: layout.appBar.clockPadding)
                   ],
                   rightAction ??

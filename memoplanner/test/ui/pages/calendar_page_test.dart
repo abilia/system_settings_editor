@@ -158,7 +158,7 @@ void main() {
 
       expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day,
           initialTime.onlyDays().add(3.days()));
-      await tester.tap(find.byType(GoToNowButton));
+      await tester.tap(find.byType(GoToTodayButton));
       await tester.pumpAndSettle();
 
       expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day,
@@ -949,11 +949,11 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       await tester.pumpAndSettle();
-      expect(find.byType(GoToCurrentActionButton), findsOneWidget);
+      expect(find.byType(GoToTodayButton), findsOneWidget);
       await tester.verifyTts(find.byType(WeekAppBar), contains: 'week 30');
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-      expect(find.byType(GoToCurrentActionButton), findsNothing);
+      expect(find.byType(GoToTodayButton), findsNothing);
       await tester.verifyTts(find.byType(WeekAppBar), contains: 'week 32');
     });
 
@@ -972,7 +972,7 @@ void main() {
       expect(find.textContaining((initialTime.year + 1).toString()),
           findsOneWidget);
 
-      await tester.tap(find.byType(GoToCurrentActionButton));
+      await tester.tap(find.byType(GoToTodayButton));
       await tester.pumpAndSettle();
       expect(find.textContaining(initialTime.year.toString()), findsOneWidget);
 
@@ -1049,7 +1049,7 @@ void main() {
       expect(find.byType(OneTimepillarCalendar), findsOneWidget);
       expect(find.text(fridayTitle), findsOneWidget);
 
-      await tester.tap(find.byType(GoToNowButton));
+      await tester.tap(find.byType(GoToTodayButton));
       await tester.pumpAndSettle();
       expect(find.text(fridayTitle), findsNothing);
       expect(find.text(todayTitle), findsOneWidget);
@@ -1128,7 +1128,7 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(GoToCurrentActionButton));
+      await tester.tap(find.byType(GoToTodayButton));
       await tester.pumpAndSettle();
 
       final goToCurrentSelect = tester.widgetList(find.byWidgetPredicate(

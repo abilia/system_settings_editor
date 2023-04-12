@@ -265,3 +265,14 @@ class FakeNightMode extends Fake implements NightMode {
   @override
   Future<void> close() async {}
 }
+
+class FakeScrollPositionCubit extends Fake implements ScrollPositionCubit {
+  @override
+  ScrollPositionState get state => Unready();
+
+  @override
+  Stream<ScrollPositionState> get stream => const Stream.empty();
+
+  @override
+  Future<void> close() async {}
+}
