@@ -3,7 +3,6 @@ import 'package:memoplanner/ui/all.dart';
 
 class DayCalendarAppBar extends StatelessWidget implements PreferredSizeWidget {
   const DayCalendarAppBar({Key? key}) : super(key: key);
-
   @override
   Size get preferredSize => CalendarAppBar.size;
 
@@ -27,22 +26,22 @@ class DayCalendarAppBar extends StatelessWidget implements PreferredSizeWidget {
                 },
               )
             : null;
-        if (!showBrowseButtons) {
-          return DayAppBar(
-            day: day,
-            clockReplacement: clockReplacement,
-          );
-        }
+        final leftAction = showBrowseButtons
+            ? LeftNavButton(
+                onPressed: BlocProvider.of<TimepillarCubit>(context).previous,
+              )
+            : null;
+        final rightAction = showBrowseButtons
+            ? RightNavButton(
+                onPressed: BlocProvider.of<TimepillarCubit>(context).next,
+              )
+            : null;
 
         return DayAppBar(
           day: day,
           clockReplacement: clockReplacement,
-          leftAction: LeftNavButton(
-            onPressed: BlocProvider.of<TimepillarCubit>(context).previous,
-          ),
-          rightAction: RightNavButton(
-            onPressed: BlocProvider.of<TimepillarCubit>(context).next,
-          ),
+          leftAction: leftAction,
+          rightAction: rightAction,
         );
       },
     );
