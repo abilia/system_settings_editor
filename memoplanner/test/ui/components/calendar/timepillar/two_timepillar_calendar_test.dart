@@ -101,13 +101,13 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
-    expect(find.byKey(TestKey.goToTodayButton), findsNothing);
+    expect(find.byType(GoToTodayButton), findsNothing);
     await tester.tap(nextDayButtonFinder);
     await tester.pumpAndSettle();
-    expect(find.byKey(TestKey.goToTodayButton), findsOneWidget);
+    expect(find.byType(GoToTodayButton), findsOneWidget);
     await tester.tap(previusDayButtonFinder);
     await tester.pumpAndSettle();
-    expect(find.byKey(TestKey.goToTodayButton), findsNothing);
+    expect(find.byType(GoToTodayButton), findsNothing);
   });
 
   group('timepillar', () {

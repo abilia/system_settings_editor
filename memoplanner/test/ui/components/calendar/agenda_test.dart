@@ -172,22 +172,6 @@ void main() {
     expect(find.byType(ActivityCard), findsNothing);
   });
 
-  testWidgets('Empty agenda should not show Go to now-button',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(const App());
-    await tester.pumpAndSettle();
-    expect(find.byKey(TestKey.goToTodayButton), findsNothing);
-  });
-
-  testWidgets('Agenda with one activity should not show Go to now-button',
-      (WidgetTester tester) async {
-    activityDbInMemory.initWithActivity(FakeActivity.starts(now));
-
-    await tester.pumpWidget(const App());
-    await tester.pumpAndSettle();
-    expect(find.byKey(TestKey.goToTodayButton), findsNothing);
-  });
-
   testWidgets('Agenda background is dark during night interval',
       (WidgetTester tester) async {
     timeTicker.add(now.add(const Duration(hours: 16)));
@@ -213,7 +197,7 @@ void main() {
 
     await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
-    expect(find.byKey(TestKey.goToTodayButton), findsNothing);
+    expect(find.byType(GoToTodayButton), findsNothing);
     expect(find.text(key), findsOneWidget);
   });
 

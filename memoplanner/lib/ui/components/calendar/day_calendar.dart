@@ -166,46 +166,11 @@ class CategoriesAndHiddenSettings extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
               Expanded(child: LeftCategory()),
-              _GoToNowPlaceholder(),
               Expanded(child: RightCategory()),
             ],
           ),
         const HiddenSetting(),
       ],
-    );
-  }
-}
-
-class _GoToNowPlaceholder extends StatelessWidget {
-  const _GoToNowPlaceholder({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedSize(
-      duration: DayCalendarTab.transitionDuration,
-      child: Builder(builder: (context) {
-        final showingNowButton = context.select((ScrollPositionCubit c) =>
-            c.state is WrongDay || c.state is OutOfView);
-
-        if (showingNowButton) {
-          return Visibility(
-            visible: false,
-            maintainState: true,
-            maintainSize: true,
-            maintainAnimation: true,
-            child: IconAndTextButton(
-              text: Translator.of(context).translate.now,
-              icon: AbiliaIcons.reset,
-              style: actionIconTextButtonStyleRed,
-              padding: EdgeInsets.zero,
-            ).pad(
-              EdgeInsets.symmetric(horizontal: layout.category.topMargin),
-            ),
-          );
-        }
-
-        return SizedBox(width: layout.timepillar.width);
-      }),
     );
   }
 }

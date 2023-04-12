@@ -1,21 +1,21 @@
 import 'package:memoplanner/ui/all.dart';
 
 class GoToTodayButton extends StatelessWidget {
-  const GoToTodayButton({
-    Key? key,
-    this.onPressed,
-  }) : super(key: key);
   final VoidCallback? onPressed;
+
+  const GoToTodayButton({
+    this.onPressed,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return TextAndIconActionButton(
-      key: TestKey.goToTodayButton,
       translate.today,
       AbiliaIcons.reset,
-      style: actionButtonStyleRedLarge,
       onPressed: onPressed,
+      style: actionButtonStyleRedLarge,
       size: layout.actionButton.withTextIconSizeSmall,
     );
   }

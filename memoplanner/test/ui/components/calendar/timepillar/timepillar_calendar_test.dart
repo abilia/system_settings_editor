@@ -95,6 +95,18 @@ void main() {
     GetIt.I.reset();
   });
 
+  double timeLinePosY(tester) =>
+      tester.getTopLeft(find.byType(Timeline).first).dy;
+
+  double timeTextPosY(tester) => tester
+      .getTopLeft(
+        find.descendant(
+          of: find.byType(TimePillar),
+          matching: find.text('3').first,
+        ),
+      )
+      .dy;
+
   testWidgets('Shows when selected', (WidgetTester tester) async {
     await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
@@ -149,6 +161,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(SliverTimePillar), findsOneWidget);
     });
+
     testWidgets('Shows timepillar when scrolled in y',
         (WidgetTester tester) async {
       await tester.pumpWidget(const App());
@@ -157,32 +170,6 @@ void main() {
       await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
       await tester.pumpAndSettle();
       expect(find.byType(SliverTimePillar), findsOneWidget);
-    });
-
-    testWidgets('Show no GoToTodayButton when scrolling',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(const App());
-      await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.goToTodayButton), findsNothing);
-      await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
-      await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.goToTodayButton), findsNothing);
-    });
-
-    testWidgets('SGC-1427 GoToTodayButton works more than once',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(const App());
-      await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.goToTodayButton), findsNothing);
-      await tester.tap(find.byType(RightNavButton));
-      await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.goToTodayButton), findsOneWidget);
-      await tester.tap(find.byKey(TestKey.goToTodayButton));
-      await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.goToTodayButton), findsNothing);
-      await tester.tap(find.byType(RightNavButton));
-      await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.goToTodayButton), findsOneWidget);
     });
 
     testWidgets(
@@ -196,6 +183,79 @@ void main() {
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsNothing);
+    });
+
+    group('GoToTodayButton', () {
+      testWidgets(
+          'Show GoToTodayButton only when switching day and not when scrolling',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(const App());
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsNothing);
+        await tester.flingFrom(
+            const Offset(200, 200), const Offset(0, 200), 200);
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsNothing);
+
+        await tester.tap(nextDayButtonFinder);
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsOneWidget);
+      });
+
+      testWidgets('SGC-1427 GoToTodayButton works more than once',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(const App());
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsNothing);
+        await tester.tap(find.byType(RightNavButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsOneWidget);
+        await tester.tap(find.byType(GoToTodayButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsNothing);
+        await tester.tap(find.byType(RightNavButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsOneWidget);
+      });
+      testWidgets('GoToTodayButton shows up', (WidgetTester tester) async {
+        await tester.pumpWidget(const App());
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsNothing);
+        await tester.tap(find.byType(RightNavButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsOneWidget);
+        await tester.tap(find.byType(GoToTodayButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsNothing);
+        await tester.tap(find.byType(RightNavButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsOneWidget);
+      });
+
+      testWidgets(
+          'Scroll jumps to now when tapping on day calendar in bottom bar',
+          (WidgetTester tester) async {
+        // Arrange
+        await tester.pumpWidget(const App());
+        await tester.pumpAndSettle();
+        final firstTimelinePositionY = timeLinePosY(tester);
+
+        // Act - Scroll down
+        final center = tester.getCenter(find.byType(CalendarPage));
+        await tester.dragFrom(center, const Offset(0.0, -500));
+        await tester.pumpAndSettle();
+        await tester.pumpAndSettle();
+        final secondTimelinePositionY = timeLinePosY(tester);
+
+        // Act - Tap on day calendar in bottom bar
+        await tester.tap(find.byIcon(AbiliaIcons.day));
+        await tester.pumpAndSettle();
+        final thirdTimelinePositionY = timeLinePosY(tester);
+
+        // Assert - Scroll jumps to now
+        expect(firstTimelinePositionY, isNot(secondTimelinePositionY));
+        expect(firstTimelinePositionY, thirdTimelinePositionY);
+      });
     });
   });
 
@@ -399,18 +459,6 @@ void main() {
               ),
             ];
 
-        double timeLinePosY() =>
-            tester.getTopLeft(find.byType(Timeline).first).dy;
-
-        double timeTextPosY() => tester
-            .getTopLeft(
-              find.descendant(
-                of: find.byType(TimePillar),
-                matching: find.text('3').first,
-              ),
-            )
-            .dy;
-
         final testTime = time.copyWith(hour: 14, minute: 0);
 
         // Act
@@ -418,12 +466,12 @@ void main() {
         await tester.pumpAndSettle();
         mockTicker.add(testTime);
         await tester.pumpAndSettle();
-        final firstTimelinePositionY = timeLinePosY();
-        final firstTimeTextPositionY = timeTextPosY();
+        final firstTimelinePositionY = timeLinePosY(tester);
+        final firstTimeTextPositionY = timeTextPosY(tester);
         mockTicker.add(testTime.add(const Duration(minutes: 45)));
         await tester.pumpAndSettle();
-        final secondTimelinePositionY = timeLinePosY();
-        final secondTimeTextPositionY = timeTextPosY();
+        final secondTimelinePositionY = timeLinePosY(tester);
+        final secondTimeTextPositionY = timeTextPosY(tester);
 
         // Assert
         expect(secondTimelinePositionY, firstTimelinePositionY);
@@ -1454,7 +1502,7 @@ void main() {
       await tester.tap(previousDayButtonFinder);
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(TestKey.goToTodayButton));
+      await tester.tap(find.byType(GoToTodayButton));
       await tester.pumpAndSettle();
 
       tp = tester
@@ -1474,7 +1522,7 @@ void main() {
       await tester.tap(nextDayButtonFinder);
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(TestKey.goToTodayButton));
+      await tester.tap(find.byType(GoToTodayButton));
       await tester.pumpAndSettle();
 
       tp = tester
