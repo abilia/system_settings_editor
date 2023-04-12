@@ -119,13 +119,11 @@ class MonthContent extends StatelessWidget {
                   ),
                   ...state.weeks.map(
                     (week) => Expanded(
-                      child: week.inMonth
-                          ? WeekRow(
-                              week,
-                              dayThemes: dayThemes,
-                              builder: dayBuilder,
-                            )
-                          : const SizedBox(width: double.infinity),
+                      child: WeekRow(
+                        week,
+                        dayThemes: dayThemes,
+                        builder: dayBuilder,
+                      ),
                     ),
                   ),
                 ],

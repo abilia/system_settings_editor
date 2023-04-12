@@ -11,6 +11,7 @@ extension DateTimeExtensions on DateTime {
   DateTime previousDay() => copyWith(day: day - 1);
 
   DateTime firstDayOfMonth() => DateTime(year, month, 1);
+  DateTime lastDayOfMonth() => DateTime(year, month + 1, 0);
   DateTime nextMonth() => DateTime(year, month + 1, 1);
   DateTime previousMonth() => DateTime(year, month - 1, 1);
 
@@ -30,6 +31,7 @@ extension DateTimeExtensions on DateTime {
       );
 
   DateTime firstInWeek() => subtract(Duration(days: weekday - 1)).onlyDays();
+  DateTime lastInWeek() => addDays(DateTime.daysPerWeek - weekday);
 
   DateTime copyWith(
           {int? year,
