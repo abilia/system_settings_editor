@@ -4,11 +4,11 @@ import 'package:memoplanner/models/generic/generic.dart';
 import 'package:memoplanner/models/settings/all.dart';
 
 class WeekCalendarSettings extends Equatable {
-  final bool showBrowseButtons, showWeekNumber, showYear, showClock;
+  final bool showBrowseButtons, showWeekNumber, showYearAndMonth, showClock;
 
   static const String showBrowseButtonsKey = 'week_caption_show_week_buttons',
       showWeekNumberKey = 'week_caption_show_week_number',
-      showYearKey = 'week_caption_show_year',
+      showYearAndMonthKey = 'week_caption_show_year',
       showClockKey = 'week_caption_show_clock',
       showFullWeekKey = 'week_display_show_full_week',
       showColorModeKey = 'week_display_show_color_mode';
@@ -19,7 +19,7 @@ class WeekCalendarSettings extends Equatable {
   const WeekCalendarSettings({
     this.showBrowseButtons = true,
     this.showWeekNumber = true,
-    this.showYear = true,
+    this.showYearAndMonth = true,
     this.showClock = true,
     this.weekDisplayDays = WeekDisplayDays.everyDay,
     this.weekColor = WeekColor.columns,
@@ -31,7 +31,7 @@ class WeekCalendarSettings extends Equatable {
       WeekCalendarSettings(
         showBrowseButtons: settings.parse(showBrowseButtonsKey, true),
         showWeekNumber: settings.parse(showWeekNumberKey, true),
-        showYear: settings.parse(showYearKey, true),
+        showYearAndMonth: settings.parse(showYearAndMonthKey, true),
         showClock: settings.parse(showClockKey, true),
         weekDisplayDays: WeekDisplayDays.values[settings.parse(
           showFullWeekKey,
@@ -46,7 +46,7 @@ class WeekCalendarSettings extends Equatable {
   WeekCalendarSettings copyWith({
     bool? showBrowseButtons,
     bool? showWeekNumber,
-    bool? showYear,
+    bool? showYearAndMonth,
     bool? showClock,
     WeekDisplayDays? weekDisplayDays,
     WeekColor? weekColor,
@@ -54,7 +54,7 @@ class WeekCalendarSettings extends Equatable {
       WeekCalendarSettings(
         showBrowseButtons: showBrowseButtons ?? this.showBrowseButtons,
         showWeekNumber: showWeekNumber ?? this.showWeekNumber,
-        showYear: showYear ?? this.showYear,
+        showYearAndMonth: showYearAndMonth ?? this.showYearAndMonth,
         showClock: showClock ?? this.showClock,
         weekDisplayDays: weekDisplayDays ?? this.weekDisplayDays,
         weekColor: weekColor ?? this.weekColor,
@@ -70,8 +70,8 @@ class WeekCalendarSettings extends Equatable {
           identifier: WeekCalendarSettings.showWeekNumberKey,
         ),
         MemoplannerSettingData.fromData(
-          data: showYear,
-          identifier: WeekCalendarSettings.showYearKey,
+          data: showYearAndMonth,
+          identifier: WeekCalendarSettings.showYearAndMonthKey,
         ),
         MemoplannerSettingData.fromData(
           data: showClock,
@@ -91,7 +91,7 @@ class WeekCalendarSettings extends Equatable {
   List<Object> get props => [
         showBrowseButtons,
         showWeekNumber,
-        showYear,
+        showYearAndMonth,
         showClock,
         weekDisplayDays,
         weekColor,

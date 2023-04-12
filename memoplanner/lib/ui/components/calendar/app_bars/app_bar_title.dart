@@ -154,11 +154,26 @@ class AppBarTitleRows {
     final week = settings.showWeekNumber
         ? '$weekTranslation ${selectedWeekStart.getWeekNumber()}'
         : '';
-    final year = settings.showYear
-        ? DateFormat.y(langCode).format(selectedWeekStart)
-        : '';
 
-    return AppBarTitleRows._(day, week, year);
+    if (!settings.showYearAndMonth) return AppBarTitleRows._(day, week, '');
+
+    final selectedWeekEnd = selectedWeekStart.addDays(6);
+    if (selectedWeekStart.month == selectedWeekEnd.month) {
+      return AppBarTitleRows._(
+        day,
+        week,
+        DateFormat.yMMMM(langCode).format(selectedWeekStart),
+      );
+    }
+    return AppBarTitleRows._(
+      day,
+      week,
+      '${DateFormat.MMM(langCode).format(selectedWeekStart)}'
+      '-'
+      '${DateFormat.MMM(langCode).format(selectedWeekEnd)}'
+      ', '
+      '${DateFormat.y(langCode).format(selectedWeekStart)}',
+    );
   }
 
   factory AppBarTitleRows.month({

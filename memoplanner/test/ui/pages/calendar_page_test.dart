@@ -963,23 +963,48 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-      expect(find.text(initialTime.year.toString()), findsOneWidget);
+      expect(find.textContaining(initialTime.year.toString()), findsOneWidget);
 
       for (int i = 0; i < 52; i++) {
         await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       }
       await tester.pumpAndSettle();
-      expect(find.text((initialTime.year + 1).toString()), findsOneWidget);
+      expect(find.textContaining((initialTime.year + 1).toString()),
+          findsOneWidget);
 
       await tester.tap(find.byType(GoToCurrentActionButton));
       await tester.pumpAndSettle();
-      expect(find.text(initialTime.year.toString()), findsOneWidget);
+      expect(find.textContaining(initialTime.year.toString()), findsOneWidget);
 
       for (int i = 0; i < 52; i++) {
         await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       }
       await tester.pumpAndSettle();
-      expect(find.text((initialTime.year - 1).toString()), findsOneWidget);
+      expect(find.textContaining((initialTime.year - 1).toString()),
+          findsOneWidget);
+    });
+
+    testWidgets('SGC-2378 Show months in app bar', (WidgetTester tester) async {
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: StartView.weekCalendar.index,
+                identifier: FunctionsSettings.functionMenuStartViewKey,
+              ),
+            ),
+          ];
+      await tester.pumpWidget(const App());
+      await tester.pumpAndSettle();
+      await tester.tap(nextDayButtonFinder);
+      await tester.tap(nextDayButtonFinder);
+      await tester.tap(nextDayButtonFinder);
+      await tester.tap(nextDayButtonFinder);
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('Aug-Sep, 2020'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('Tapping week in TabBar, current day is selected',

@@ -699,6 +699,8 @@ abstract class Translated {
 
   final String showYear = 'Show year';
 
+  final String showMonthAndYear = 'Show month and year';
+
   final String everyDay = 'Every day (7)';
 
   final String view = 'View';
@@ -2053,6 +2055,9 @@ class SV extends Translated {
 
   @override
   final String showYear = 'Visa år';
+
+  @override
+  final String showMonthAndYear = 'Visa månad och år';
 
   @override
   final String everyDay = 'Alla dagar (7)';
