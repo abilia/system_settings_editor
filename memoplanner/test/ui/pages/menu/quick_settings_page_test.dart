@@ -2,8 +2,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/device.dart';
 import 'package:memoplanner/getit.dart';
+import 'package:memoplanner/models/device.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:seagull_fakes/all.dart';
 

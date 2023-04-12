@@ -3,11 +3,11 @@ import 'dart:math' as math;
 
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:meta/meta.dart';
 import 'package:synchronized/extension.dart';
 
 typedef JsonToDataModel<M extends DataModel> = DbModel<M> Function(

@@ -51,11 +51,10 @@ void main() {
               ),
             ),
           ),
-      act: (RecurringWeekCubit cubit) {
-        cubit.addOrRemoveWeekday(DateTime.monday);
-        cubit.addOrRemoveWeekday(DateTime.wednesday);
-        cubit.addOrRemoveWeekday(day.weekday);
-      },
+      act: (RecurringWeekCubit cubit) => cubit
+        ..addOrRemoveWeekday(DateTime.monday)
+        ..addOrRemoveWeekday(DateTime.wednesday)
+        ..addOrRemoveWeekday(day.weekday),
       expect: () => [
             RecurringWeekState(
               UnmodifiableSetView({
@@ -96,10 +95,10 @@ void main() {
   blocTest('Adding and removing days on EditActivityBloc',
       build: () => EditActivityCubit.edit(activityDay),
       act: (EditActivityCubit bloc) {
-        final cubit = RecurringWeekCubit(bloc);
-        cubit.addOrRemoveWeekday(DateTime.monday);
-        cubit.addOrRemoveWeekday(DateTime.wednesday);
-        cubit.addOrRemoveWeekday(day.weekday);
+        RecurringWeekCubit(bloc)
+          ..addOrRemoveWeekday(DateTime.monday)
+          ..addOrRemoveWeekday(DateTime.wednesday)
+          ..addOrRemoveWeekday(day.weekday);
       },
       expect: () {
         final initialState = StoredActivityState(
@@ -157,10 +156,9 @@ void main() {
               ),
             ),
           ),
-      act: (RecurringWeekCubit cubit) {
-        cubit.addOrRemoveWeekday(DateTime.monday);
-        cubit.changeEveryOtherWeek(true);
-      },
+      act: (RecurringWeekCubit cubit) => cubit
+        ..addOrRemoveWeekday(DateTime.monday)
+        ..changeEveryOtherWeek(true),
       expect: () => [
             RecurringWeekState(
               UnmodifiableSetView({
@@ -184,13 +182,9 @@ void main() {
 
   blocTest('Changing to every other week on EditActivityBloc',
       build: () => EditActivityCubit.edit(activityDay),
-      act: (EditActivityCubit bloc) {
-        final recurringWeekBloc = RecurringWeekCubit(bloc);
-
-        // Act
-        recurringWeekBloc.addOrRemoveWeekday(DateTime.monday);
-        recurringWeekBloc.changeEveryOtherWeek(true);
-      },
+      act: (EditActivityCubit bloc) => RecurringWeekCubit(bloc)
+        ..addOrRemoveWeekday(DateTime.monday)
+        ..changeEveryOtherWeek(true),
       expect: () {
         final initialState = StoredActivityState(
           activityDay.activity,
@@ -242,10 +236,10 @@ void main() {
       build: () => RecurringWeekCubit(editActivityBloc),
       act: (RecurringWeekCubit cubit) {
         final newStartDate = day.add(7.days());
-
         // Act
-        cubit.addOrRemoveWeekday(DateTime.monday);
-        cubit.changeEveryOtherWeek(true);
+        cubit
+          ..addOrRemoveWeekday(DateTime.monday)
+          ..changeEveryOtherWeek(true);
         editActivityBloc.changeStartDate(newStartDate);
       },
       expect: () => [

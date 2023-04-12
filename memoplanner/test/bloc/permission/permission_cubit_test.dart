@@ -26,8 +26,8 @@ void main() {
 
   test('requesting a permission requests the permission', () async {
     setupPermissions({Permission.camera: PermissionStatus.granted});
-    final permissionCubit = PermissionCubit();
-    permissionCubit.requestPermissions([Permission.camera]);
+    final permissionCubit = PermissionCubit()
+      ..requestPermissions([Permission.camera]);
     await expectLater(
       permissionCubit.stream,
       emits(PermissionState.empty()
@@ -38,26 +38,26 @@ void main() {
   });
 
   test('requesting multiple permission requests the permissions', () async {
-    final permissonSet = {
+    final permissionSet = {
       for (var key in PermissionCubit.allPermissions)
         key: PermissionStatus.granted
     };
 
-    setupPermissions(permissonSet);
-    final permissionCubit = PermissionCubit();
-    permissionCubit.requestPermissions(permissonSet.keys.toList());
+    setupPermissions(permissionSet);
+    final permissionCubit = PermissionCubit()
+      ..requestPermissions(permissionSet.keys.toList());
     await expectLater(
       permissionCubit.stream,
-      emits(PermissionState.empty().update(permissonSet)),
+      emits(PermissionState.empty().update(permissionSet)),
     );
-    expect(requestedPermissions, containsAll(permissonSet.keys));
-    expect(requestedPermissions, hasLength(permissonSet.length));
+    expect(requestedPermissions, containsAll(permissionSet.keys));
+    expect(requestedPermissions, hasLength(permissionSet.length));
   });
 
   test('checking a permission', () async {
     setupPermissions({Permission.camera: PermissionStatus.granted});
-    final permissionCubit = PermissionCubit();
-    permissionCubit.checkStatusForPermissions([Permission.camera]);
+    final permissionCubit = PermissionCubit()
+      ..checkStatusForPermissions([Permission.camera]);
     await expectLater(
       permissionCubit.stream,
       emits(PermissionState.empty()
@@ -68,19 +68,19 @@ void main() {
   });
 
   test('check multiple permissions', () async {
-    final permissonSet = {
+    final permissionSet = {
       for (var key in PermissionCubit.allPermissions)
         key: PermissionStatus.granted
     };
-    setupPermissions(permissonSet);
-    final permissionCubit = PermissionCubit();
-    permissionCubit.checkStatusForPermissions(permissonSet.keys.toList());
+    setupPermissions(permissionSet);
+    final permissionCubit = PermissionCubit()
+      ..checkStatusForPermissions(permissionSet.keys.toList());
     await expectLater(
       permissionCubit.stream,
-      emits(PermissionState.empty().update(permissonSet)),
+      emits(PermissionState.empty().update(permissionSet)),
     );
-    expect(checkedPermissions, containsAll(permissonSet.keys));
-    expect(checkedPermissions, hasLength(permissonSet.length));
+    expect(checkedPermissions, containsAll(permissionSet.keys));
+    expect(checkedPermissions, hasLength(permissionSet.length));
   });
 
   group('PermissionState conditional updates', () {

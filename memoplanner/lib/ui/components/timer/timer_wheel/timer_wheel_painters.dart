@@ -1,8 +1,9 @@
 import 'dart:math';
+
 import 'package:matrix4_transform/matrix4_transform.dart';
 import 'package:memoplanner/ui/all.dart';
-import 'package:memoplanner/ui/components/timer/timer_wheel/timer_wheel_styles.dart';
 import 'package:memoplanner/ui/components/timer/timer_wheel/timer_wheel_config.dart';
+import 'package:memoplanner/ui/components/timer/timer_wheel/timer_wheel_styles.dart';
 
 class TimerWheelBackgroundPainter extends CustomPainter {
   TimerWheelBackgroundPainter({
@@ -195,8 +196,9 @@ class TimerWheelForegroundPainter extends CustomPainter {
       wheelShape,
     );
 
-    canvas.drawPath(timeLeft, config.timeLeftFill);
-    canvas.drawPath(timeLeft, config.timeLeftStroke);
+    canvas
+      ..drawPath(timeLeft, config.timeLeftFill)
+      ..drawPath(timeLeft, config.timeLeftStroke);
 
     // Paint time left as text and slider thumb
     if (config.style != TimerWheelStyle.simplified) {

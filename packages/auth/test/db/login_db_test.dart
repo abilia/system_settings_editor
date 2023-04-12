@@ -1,7 +1,7 @@
-import 'package:test/test.dart';
 import 'package:auth/db/login_db.dart';
 import 'package:auth/models/login_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test/test.dart';
 
 void main() {
   test('Persist login info', () async {

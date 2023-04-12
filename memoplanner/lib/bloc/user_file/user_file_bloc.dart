@@ -6,12 +6,12 @@ import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:mime/mime.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:mime/mime.dart';
 
 part 'user_file_state.dart';
 

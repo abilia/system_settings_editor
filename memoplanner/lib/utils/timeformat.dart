@@ -1,5 +1,5 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 typedef TimeFormat = String Function(DateTime);
 TimeFormat hourAndMinuteFormat(BuildContext context) {

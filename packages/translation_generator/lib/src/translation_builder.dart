@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:build/build.dart';
-import 'package:code_builder/code_builder.dart';
 import 'package:built_collection/built_collection.dart';
+import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
 
 class TranslationBuilder extends Builder {
@@ -31,16 +31,16 @@ class TranslationBuilder extends Builder {
     final buffer = StringBuffer();
     final emitter = DartEmitter();
 
-    buffer.writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
-    buffer.writeln();
-    buffer.writeln('// instead, modify ${buildStep.inputId.path} and run');
-    buffer.writeln('// > flutter packages pub run build_runner build');
-    buffer.writeln();
-    buffer.writeln('// ignore_for_file: overridden_fields');
-    buffer.writeln();
-    buffer.writeln("import 'dart:ui';");
-
-    buffer.writeln(_generateLocalesMap(languages, emitter));
+    buffer
+      ..writeln('// GENERATED CODE - DO NOT MODIFY BY HAND')
+      ..writeln()
+      ..writeln('// instead, modify ${buildStep.inputId.path} and run')
+      ..writeln('// > flutter packages pub run build_runner build')
+      ..writeln()
+      ..writeln('// ignore_for_file: overridden_fields')
+      ..writeln()
+      ..writeln("import 'dart:ui';")
+      ..writeln(_generateLocalesMap(languages, emitter));
 
     // generate abstract class
     final fallbackLang = translations.values.first;

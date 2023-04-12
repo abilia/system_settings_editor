@@ -1,10 +1,12 @@
 import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/myabilia_connection.dart';
+
 part 'logout_sync_state.dart';
 
 class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {

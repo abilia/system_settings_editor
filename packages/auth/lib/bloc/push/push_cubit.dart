@@ -1,8 +1,9 @@
-export 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
+
+export 'package:firebase_messaging/firebase_messaging.dart';
 
 class PushCubit extends Cubit<RemoteMessage> {
   static final _log = Logger((PushCubit).toString());

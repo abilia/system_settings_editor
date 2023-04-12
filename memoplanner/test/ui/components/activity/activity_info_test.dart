@@ -1,16 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:mocktail_image_network/mocktail_image_network.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:seagull_fakes/all.dart';
-import 'package:uuid/uuid.dart';
-
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:seagull_fakes/all.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';

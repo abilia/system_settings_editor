@@ -1,11 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:seagull_clock/ticker.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_clock/ticker.dart';
 import 'package:seagull_fakes/all.dart';
 
 import '../../../fakes/activity_db_in_memory.dart';
@@ -40,8 +39,7 @@ void main() {
           .thenAnswer((_) => Future.value(null));
       when(() => genericDb.insert(any())).thenAnswer((_) async {});
 
-      activityDb = ActivityDbInMemory();
-      activityDb.initWithActivities(activities);
+      activityDb = ActivityDbInMemory()..initWithActivities(activities);
 
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()

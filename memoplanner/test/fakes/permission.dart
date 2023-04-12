@@ -1,7 +1,7 @@
 // https://github.com/Baseflow/flutter-permission-handler/issues/262#issuecomment-702691396
 import 'package:flutter/services.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 const _methodChannelName = 'flutter.baseflow.com/permissions/methods';
 Set<Permission> checkedPermissions = {};

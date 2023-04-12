@@ -1,6 +1,6 @@
+import 'package:collection/collection.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:test/test.dart';
-import 'package:collection/collection.dart';
 
 Function unorderedDeepEq = const DeepCollectionEquality.unordered().equals;
 

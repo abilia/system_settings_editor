@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-import 'package:rxdart/rxdart.dart';
-
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:rxdart/rxdart.dart';
 
 const _timeToReturnToToday = Duration(minutes: 5);
 

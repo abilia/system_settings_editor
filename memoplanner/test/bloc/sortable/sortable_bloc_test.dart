@@ -76,8 +76,9 @@ void main() {
     const imageName = 'nameOfImage';
 
     // Act
-    sortableBloc.add(const LoadSortables());
-    sortableBloc.add(const ImageArchiveImageAdded('id1', imageName));
+    sortableBloc
+      ..add(const LoadSortables())
+      ..add(const ImageArchiveImageAdded('id1', imageName));
 
     // Assert
     await expectLater(

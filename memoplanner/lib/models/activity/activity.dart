@@ -2,16 +2,14 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/timezone.dart' as tz;
 import 'package:memoplanner/utils/all.dart';
+import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 
 part 'activity_extras.dart';
-
 part 'db_activity.dart';
-
 part 'recurs.dart';
 
 class Activity extends DataModel {

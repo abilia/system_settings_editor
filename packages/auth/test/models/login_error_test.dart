@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:test/test.dart';
 import 'package:auth/models/login_error.dart';
+import 'package:test/test.dart';
 
 void main() {
   test('Parse correct body information', () {

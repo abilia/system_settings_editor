@@ -1,9 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:intl/intl.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
-
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -12,7 +11,6 @@ import 'package:seagull_fakes/all.dart';
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
-import 'package:intl/intl.dart';
 
 void main() {
   late MockSortableDb mockSortableDb;

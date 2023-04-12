@@ -210,15 +210,14 @@ class _SearchHeadingState extends State<_SearchHeading> {
   @override
   void initState() {
     super.initState();
-    _controller.text = context
-        .read<SortableArchiveCubit<ImageArchiveData>>()
-        .state
-        .searchValue;
-    _controller.addListener(() {
-      context
+    _controller
+      ..text = context
           .read<SortableArchiveCubit<ImageArchiveData>>()
-          .searchValueChanged(_controller.text);
-    });
+          .state
+          .searchValue
+      ..addListener(() => context
+          .read<SortableArchiveCubit<ImageArchiveData>>()
+          .searchValueChanged(_controller.text));
   }
 
   @override

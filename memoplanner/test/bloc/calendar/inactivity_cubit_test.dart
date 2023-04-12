@@ -82,8 +82,9 @@ void main() {
       timers.stream,
     ),
     act: (c) {
-      tickerController.add(initialTime.add(1.minutes()));
-      tickerController.add(initialTime.add(6.minutes()));
+      tickerController
+        ..add(initialTime.add(1.minutes()))
+        ..add(initialTime.add(6.minutes()));
     },
     expect: () => [
       ReturnToTodayThresholdReached(initialTime),
@@ -112,9 +113,10 @@ void main() {
       timers.stream,
     ),
     act: (c) {
-      tickerController.add(initialTime.add(1.minutes()));
-      tickerController.add(initialTime.add(6.minutes()));
-      tickerController.add(initialTime.add(10.minutes()));
+      tickerController
+        ..add(initialTime.add(1.minutes()))
+        ..add(initialTime.add(6.minutes()))
+        ..add(initialTime.add(10.minutes()));
     },
     expect: () => [
       ReturnToTodayThresholdReached(initialTime),
@@ -144,8 +146,9 @@ void main() {
       timers.stream,
     ),
     act: (c) {
-      tickerController.add(initialTime.add(1.minutes()));
-      tickerController.add(initialTime.add(6.minutes()));
+      tickerController
+        ..add(initialTime.add(1.minutes()))
+        ..add(initialTime.add(6.minutes()));
     },
     expect: () => [
       const HomeScreenFinalState(),
@@ -206,11 +209,12 @@ void main() {
       timers.stream,
     ),
     act: (c) {
-      tickerController.add(initialTime.add(1.minutes()));
-      tickerController.add(initialTime.add(2.minutes()));
-      tickerController.add(initialTime.add(3.minutes()));
-      tickerController.add(initialTime.add(4.minutes()));
-      tickerController.add(initialTime.add(5.minutes()));
+      tickerController
+        ..add(initialTime.add(1.minutes()))
+        ..add(initialTime.add(2.minutes()))
+        ..add(initialTime.add(3.minutes()))
+        ..add(initialTime.add(4.minutes()))
+        ..add(initialTime.add(5.minutes()));
     },
     expect: () => [const ReturnToTodayFinalState()],
   );
@@ -314,10 +318,11 @@ void main() {
         timers.stream,
       ),
       act: (c) {
-        tickerController.add(initialTime.add(1.minutes()));
-        tickerController.add(initialTime.add(5.minutes()));
-        tickerController.add(initialTime.add(10.minutes()));
-        tickerController.add(initialTime.add(20.minutes()));
+        tickerController
+          ..add(initialTime.add(1.minutes()))
+          ..add(initialTime.add(5.minutes()))
+          ..add(initialTime.add(10.minutes()))
+          ..add(initialTime.add(20.minutes()));
       },
       expect: () => [
         ReturnToTodayThresholdReached(initialTime),
@@ -350,10 +355,11 @@ void main() {
         timers.stream,
       ),
       act: (c) {
-        tickerController.add(initialTime.add(1.minutes()));
-        tickerController.add(initialTime.add(5.minutes()));
-        tickerController.add(initialTime.add(10.minutes()));
-        tickerController.add(initialTime.add(20.minutes()));
+        tickerController
+          ..add(initialTime.add(1.minutes()))
+          ..add(initialTime.add(5.minutes()))
+          ..add(initialTime.add(10.minutes()))
+          ..add(initialTime.add(20.minutes()));
       },
       expect: () => [
         const ScreensaverState(),
@@ -386,10 +392,11 @@ void main() {
         timers.stream,
       ),
       act: (c) {
-        tickerController.add(initialTime.add(1.minutes()));
-        tickerController.add(initialTime.add(5.minutes()));
-        tickerController.add(initialTime.add(10.minutes()));
-        tickerController.add(initialTime.add(20.minutes()));
+        tickerController
+          ..add(initialTime.add(1.minutes()))
+          ..add(initialTime.add(5.minutes()))
+          ..add(initialTime.add(10.minutes()))
+          ..add(initialTime.add(20.minutes()));
       },
       expect: () => [
         HomeScreenThresholdReached(initialTime),
@@ -424,11 +431,12 @@ void main() {
         timers.stream,
       ),
       act: (c) {
-        tickerController.add(initialTime.add(1.minutes()));
-        tickerController.add(initialTime.add(5.minutes()));
-        tickerController.add(initialTime.add(10.minutes()));
-        tickerController.add(initialTime.add(20.minutes()));
-        tickerController.add(night);
+        tickerController
+          ..add(initialTime.add(1.minutes()))
+          ..add(initialTime.add(5.minutes()))
+          ..add(initialTime.add(10.minutes()))
+          ..add(initialTime.add(20.minutes()))
+          ..add(night);
       },
       expect: () => [
         ReturnToTodayThresholdReached(initialTime),
@@ -464,11 +472,12 @@ void main() {
         timers.stream,
       ),
       act: (c) async {
-        tickerController.add(initialTime.add(1.minutes()));
-        tickerController.add(initialTime.add(5.minutes()));
-        tickerController.add(initialTime.add(10.minutes()));
-        tickerController.add(initialTime.add(20.minutes()));
-        tickerController.add(night);
+        tickerController
+          ..add(initialTime.add(1.minutes()))
+          ..add(initialTime.add(5.minutes()))
+          ..add(initialTime.add(10.minutes()))
+          ..add(initialTime.add(20.minutes()))
+          ..add(night);
         await c.dayPartCubit.stream.firstWhere((state) => state.isNight);
         tickerController.add(morning);
       },

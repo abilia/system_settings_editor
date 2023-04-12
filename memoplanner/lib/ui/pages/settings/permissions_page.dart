@@ -1,6 +1,6 @@
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/utils/all.dart';
 import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class PermissionsPage extends StatelessWidget {
   const PermissionsPage({Key? key}) : super(key: key);

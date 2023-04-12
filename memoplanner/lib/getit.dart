@@ -7,18 +7,18 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/config.dart';
-import 'package:memoplanner/logging/all.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:memoplanner/db/all.dart';
+import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/storage/file_storage.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:seagull_clock/ticker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 export 'package:get_it/get_it.dart';
 

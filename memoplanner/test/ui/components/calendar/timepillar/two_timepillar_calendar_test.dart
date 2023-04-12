@@ -1,24 +1,22 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:intl/intl.dart';
-import 'package:mocktail_image_network/mocktail_image_network.dart';
-import 'package:seagull_fakes/all.dart';
-import 'package:timezone/data/latest.dart' as tz;
-
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/main.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/utils/all.dart';
 import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
+import 'package:seagull_fakes/all.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
+import '../../../../fakes/activity_db_in_memory.dart';
 import '../../../../fakes/all.dart';
 import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/tts.dart';
-import '../../../../fakes/activity_db_in_memory.dart';
 
 void main() {
   late StreamController<DateTime> mockTicker;
@@ -268,9 +266,11 @@ void main() {
       final currentDotPosition = tester.getCenter(find.byWidget(currentDot));
 
       for (final element in find.byType(Timeline).evaluate()) {
-        final box = element.renderObject as RenderBox;
-        final timeLinePostion = box.localToGlobal(box.size.center(Offset.zero));
-        expect(timeLinePostion.dy, closeTo(currentDotPosition.dy, 0.0001));
+        final box = element.renderObject as RenderBox?;
+        if (box == null) throw AssertionError('box is null');
+        final timeLinePosition =
+            box.localToGlobal(box.size.center(Offset.zero));
+        expect(timeLinePosition.dy, closeTo(currentDotPosition.dy, 0.0001));
       }
     });
 
@@ -388,13 +388,13 @@ void main() {
             .widget<Container>(find.descendant(
                 of: find.widgetWithText(ActivityTimepillarCard, title),
                 matching: find.byType(Container)))
-            .decoration as BoxDecoration;
+            .decoration as BoxDecoration?;
         expect(
-          boxDecoration.border?.top.color,
+          boxDecoration?.border?.top.color,
           expectedColor,
         );
         expect(
-          boxDecoration.border?.bottom.color,
+          boxDecoration?.border?.bottom.color,
           expectedColor,
         );
       }

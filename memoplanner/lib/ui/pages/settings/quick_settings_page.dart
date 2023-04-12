@@ -40,18 +40,16 @@ class QuickSettingsPage extends StatelessWidget {
                 builder: (context, state) => QuickSettingsGroup(children: [
                   SubHeading(t.volumeAlarm),
                   AlarmVolumeSlider(
-                    onVolumeSet: () async {
-                      final alarmBloc = context.read<AlarmSoundBloc>();
-                      alarmBloc.add(const PlayAlarmSound(Sound.Default));
-                    },
+                    onVolumeSet: () async => context
+                        .read<AlarmSoundBloc>()
+                        .add(const PlayAlarmSound(Sound.Default)),
                   ),
                   SizedBox(height: layout.formPadding.groupBottomDistance),
                   SubHeading(t.volumeMedia),
                   MediaVolumeSlider(
-                    onVolumeSet: () async {
-                      final alarmBloc = context.read<AlarmSoundBloc>();
-                      alarmBloc.add(const PlayAlarmSoundAsMedia(Sound.Harpe));
-                    },
+                    onVolumeSet: () async => context
+                        .read<AlarmSoundBloc>()
+                        .add(const PlayAlarmSoundAsMedia(Sound.Harpe)),
                   ),
                 ]),
               ),

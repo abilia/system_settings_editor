@@ -32,7 +32,12 @@ class MemoplannerSettings extends Equatable {
     this.alarm = const AlarmSettings(),
     this.codeProtect = const CodeProtectSettings(),
     this.menu = const MenuSettings(),
-    this.keepScreenAwake = const KeepScreenAwakeSettings(),
+    @Deprecated(
+      'To be Remove on in 4.3, '
+      'use SettingsDb.keepScreenOnWhileCharging '
+      'and SystemSettingsEditor.screenOffTimeout',
+    )
+        this.keepScreenAwake = const KeepScreenAwakeSettings(),
     this.functions = const FunctionsSettings(),
     this.calendar = const GeneralCalendarSettings(),
     this.addActivity = const AddActivitySettings(),

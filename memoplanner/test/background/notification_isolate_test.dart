@@ -5,15 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logging/logging.dart';
+import 'package:memoplanner/background/all.dart';
+import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/storage/file_storage.dart';
-
-import 'package:uuid/uuid.dart';
+import 'package:memoplanner/utils/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:uuid/uuid.dart';
 
-import 'package:memoplanner/background/all.dart';
-import 'package:memoplanner/utils/all.dart';
-import 'package:memoplanner/models/all.dart';
 import '../mocks/mocks.dart';
 import '../test_helpers/register_fallback_values.dart';
 
@@ -359,13 +358,13 @@ void main() {
       expect(details.android?.styleInformation,
           isInstanceOf<BigPictureStyleInformation>());
       final bpd =
-          (details.android?.styleInformation as BigPictureStyleInformation)
-              .bigPicture as FilePathAndroidBitmap;
-      expect(bpd.data, fileId);
+          (details.android?.styleInformation as BigPictureStyleInformation?)
+              ?.bigPicture as FilePathAndroidBitmap?;
+      expect(bpd?.data, fileId);
 
       expect(details.android?.largeIcon, isInstanceOf<FilePathAndroidBitmap>());
-      final largeIcon = details.android?.largeIcon as FilePathAndroidBitmap;
-      expect(largeIcon.data, fileId);
+      final largeIcon = details.android?.largeIcon as FilePathAndroidBitmap?;
+      expect(largeIcon?.data, fileId);
 
       expect(details.android?.fullScreenIntent, isTrue);
     });
@@ -542,13 +541,13 @@ void main() {
       expect(details.android?.styleInformation,
           isInstanceOf<BigPictureStyleInformation>());
       final bpd =
-          (details.android?.styleInformation as BigPictureStyleInformation)
-              .bigPicture as FilePathAndroidBitmap;
-      expect(bpd.data, fileId);
+          (details.android?.styleInformation as BigPictureStyleInformation?)
+              ?.bigPicture as FilePathAndroidBitmap?;
+      expect(bpd?.data, fileId);
 
       expect(details.android?.largeIcon, isInstanceOf<FilePathAndroidBitmap>());
-      final largeIcon = details.android?.largeIcon as FilePathAndroidBitmap;
-      expect(largeIcon.data, fileId);
+      final largeIcon = details.android?.largeIcon as FilePathAndroidBitmap?;
+      expect(largeIcon?.data, fileId);
 
       expect(details.android?.fullScreenIntent, isTrue);
     });

@@ -45,6 +45,12 @@ linter:
     - avoid_escaping_inner_quotes
     - avoid_final_parameters
     - avoid_void_async
+    - cascade_invocations
+    - cast_nullable_to_non_nullable
+    - combinators_ordering
+    - deprecated_consistency
+    - directives_ordering
+    - eol_at_end_of_file
     - prefer_final_locals
     - prefer_if_elements_to_conditional_expressions
     - parameter_assignments

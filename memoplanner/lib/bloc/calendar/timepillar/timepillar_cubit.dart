@@ -1,16 +1,14 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-import 'package:rxdart/rxdart.dart';
-
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
-import 'package:memoplanner/models/all.dart';
-
-part 'timepillar_state.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'timepillar_interval_calculator.dart';
+part 'timepillar_state.dart';
 
 class TimepillarCubit extends Cubit<TimepillarState> {
   final ClockBloc clockBloc;

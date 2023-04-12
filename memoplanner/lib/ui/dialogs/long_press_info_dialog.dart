@@ -1,8 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:seagull_clock/ticker.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_clock/ticker.dart';
 
 class LongPressInfoDialog extends StatelessWidget {
   const LongPressInfoDialog({Key? key}) : super(key: key);

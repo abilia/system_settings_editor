@@ -289,12 +289,13 @@ void main() {
         curve: any(named: 'curve')));
 
     // Act
-    scrollPositionCubit.updateState(
-      scrollController: mockScrollController,
-      nowOffset: initialOffset,
-      inViewMargin: inViewMargin,
-    );
-    scrollPositionCubit.goToNow();
+    scrollPositionCubit
+      ..updateState(
+        scrollController: mockScrollController,
+        nowOffset: initialOffset,
+        inViewMargin: inViewMargin,
+      )
+      ..goToNow();
 
     // Assert
     await expect;

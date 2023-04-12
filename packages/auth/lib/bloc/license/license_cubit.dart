@@ -4,9 +4,8 @@ import 'package:auth/bloc/all.dart';
 import 'package:auth/licenses_extensions.dart';
 import 'package:auth/models/license.dart';
 import 'package:auth/repository/user_repository.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull_clock/clock_bloc.dart';
 
 part 'license_state.dart';

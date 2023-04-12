@@ -265,7 +265,8 @@ void main() {
 
       for (var cr in ConnectivityResult.values) {
         if (cr != ConnectivityResult.none) {
-          final crStream = StreamController<ConnectivityResult>();
+          final connectivityResultStream =
+              StreamController<ConnectivityResult>();
 
           final logoutSyncCubit = LogoutSyncCubit(
             authenticationBloc: mockAuthenticationBloc,
@@ -273,11 +274,10 @@ void main() {
             licenseCubit: licenseCubit,
             syncBloc: syncBloc,
             syncDelay: SyncDelays.zero,
-            connectivity: crStream.stream,
-          );
-
-          logoutSyncCubit.close();
-          await testConnectivityChange(cr, logoutSyncCubit, crStream);
+            connectivity: connectivityResultStream.stream,
+          )..close();
+          await testConnectivityChange(
+              cr, logoutSyncCubit, connectivityResultStream);
         }
       }
     });

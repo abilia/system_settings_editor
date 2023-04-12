@@ -52,7 +52,7 @@ void main() {
         LoginInfo(token: oldToken, endDate: 1, renewToken: 'renewToken');
     const newLoginInfo =
         LoginInfo(token: 'newToken', endDate: 2, renewToken: 'newRenew');
-    newLoginInfo.toJson();
+
     when(
       () => innerClient.post(
         renewUrl.toUri(),

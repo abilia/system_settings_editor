@@ -76,11 +76,9 @@ void main() {
 
     group('reorder', () {
       test('first down', () {
-        final cubit = SortableArchiveCubit<BasicActivityData>(
-            sortableBloc: mockSortableBloc);
-
-        cubit.sortableSelected(first);
-        cubit.reorder(SortableReorderDirection.down);
+        SortableArchiveCubit<BasicActivityData>(sortableBloc: mockSortableBloc)
+          ..sortableSelected(first)
+          ..reorder(SortableReorderDirection.down);
 
         final captured =
             verify(() => mockSortableBloc.add(captureAny())).captured.first;
@@ -97,21 +95,17 @@ void main() {
       });
 
       test('first up, no change', () {
-        final cubit = SortableArchiveCubit<BasicActivityData>(
-            sortableBloc: mockSortableBloc);
-
-        cubit.sortableSelected(first);
-        cubit.reorder(SortableReorderDirection.up);
+        SortableArchiveCubit<BasicActivityData>(sortableBloc: mockSortableBloc)
+          ..sortableSelected(first)
+          ..reorder(SortableReorderDirection.up);
 
         verifyNever(() => mockSortableBloc.add(any()));
       });
 
       test('second down', () {
-        final cubit = SortableArchiveCubit<BasicActivityData>(
-            sortableBloc: mockSortableBloc);
-
-        cubit.sortableSelected(second);
-        cubit.reorder(SortableReorderDirection.down);
+        SortableArchiveCubit<BasicActivityData>(sortableBloc: mockSortableBloc)
+          ..sortableSelected(second)
+          ..reorder(SortableReorderDirection.down);
 
         final captured =
             verify(() => mockSortableBloc.add(captureAny())).captured.first;
@@ -128,11 +122,9 @@ void main() {
       });
 
       test('second up', () async {
-        final cubit = SortableArchiveCubit<BasicActivityData>(
-            sortableBloc: mockSortableBloc);
-
-        cubit.sortableSelected(second);
-        cubit.reorder(SortableReorderDirection.up);
+        SortableArchiveCubit<BasicActivityData>(sortableBloc: mockSortableBloc)
+          ..sortableSelected(second)
+          ..reorder(SortableReorderDirection.up);
 
         final captured =
             verify(() => mockSortableBloc.add(captureAny())).captured.first;
@@ -173,10 +165,9 @@ void main() {
         'second, then first',
         build: () => SortableArchiveCubit<BasicActivityDataItem>(
             sortableBloc: mockSortableBloc),
-        act: (c) {
-          c.sortableSelected(second);
-          c.sortableSelected(first);
-        },
+        act: (c) => c
+          ..sortableSelected(second)
+          ..sortableSelected(first),
         expect: () => [
           SortableArchiveState.fromSortables(
             sortables: basicActivitySortables,
@@ -226,10 +217,9 @@ void main() {
         SortableArchiveState<ImageArchiveData>>(
       'Search full word',
       build: () => sortableArchiveCubit,
-      act: (cubit) {
-        cubit.sortablesUpdated(basicActivitySortables);
-        cubit.searchValueChanged('first');
-      },
+      act: (cubit) => cubit
+        ..sortablesUpdated(basicActivitySortables)
+        ..searchValueChanged('first'),
       verify: (_) {
         expect(sortableArchiveCubit.state.allFilteredAndSorted(translate),
             [first]);
@@ -240,10 +230,9 @@ void main() {
         SortableArchiveState<ImageArchiveData>>(
       'Search single letter',
       build: () => sortableArchiveCubit,
-      act: (cubit) {
-        cubit.sortablesUpdated(basicActivitySortables);
-        cubit.searchValueChanged('i');
-      },
+      act: (cubit) => cubit
+        ..sortablesUpdated(basicActivitySortables)
+        ..searchValueChanged('i'),
       verify: (_) {
         expect(sortableArchiveCubit.state.allFilteredAndSorted(translate),
             [first, third]);
@@ -254,10 +243,9 @@ void main() {
         SortableArchiveState<ImageArchiveData>>(
       'Search nothing',
       build: () => sortableArchiveCubit,
-      act: (cubit) {
-        cubit.sortablesUpdated(basicActivitySortables);
-        cubit.searchValueChanged('');
-      },
+      act: (cubit) => cubit
+        ..sortablesUpdated(basicActivitySortables)
+        ..searchValueChanged(''),
       verify: (_) {
         expect(sortableArchiveCubit.state.allFilteredAndSorted(translate), []);
       },
@@ -267,10 +255,9 @@ void main() {
         SortableArchiveState<ImageArchiveData>>(
       'Search nonsense',
       build: () => sortableArchiveCubit,
-      act: (cubit) {
-        cubit.sortablesUpdated(basicActivitySortables);
-        cubit.searchValueChanged('T43Q87Y87yh78yh6');
-      },
+      act: (cubit) => cubit
+        ..sortablesUpdated(basicActivitySortables)
+        ..searchValueChanged('T43Q87Y87yh78yh6'),
       verify: (_) {
         expect(sortableArchiveCubit.state.allFilteredAndSorted(translate), []);
       },

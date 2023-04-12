@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
-
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/i18n/translations.g.dart';
@@ -15,8 +14,8 @@ import 'package:seagull_fakes/all.dart';
 
 import '../../../../fakes/all.dart';
 import '../../../../mocks/mock_bloc.dart';
-import '../../../../test_helpers/tts.dart';
 import '../../../../test_helpers/register_fallback_values.dart';
+import '../../../../test_helpers/tts.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -226,16 +225,20 @@ void main() {
     final activityCardWidget =
         (tester.firstWidget(find.byType(ActivityTimepillarCard))
             as ActivityTimepillarCard);
-    final textStyle =
-        (titleTextElement.findAncestorWidgetOfExactType<DefaultTextStyle>()
-                as DefaultTextStyle)
-            .style;
-    final textScaleFactor = (titleTextElement
-            .findAncestorWidgetOfExactType<MediaQuery>() as MediaQuery)
-        .data
+    final textStyle = titleTextElement
+        .findAncestorWidgetOfExactType<DefaultTextStyle>()
+        ?.style;
+    final textScaleFactor = titleTextElement
+        .findAncestorWidgetOfExactType<MediaQuery>()
+        ?.data
         .textScaleFactor;
 
     // Act
+
+    if (textStyle == null) throw AssertionError('textStyle is null');
+    if (textScaleFactor == null) {
+      throw AssertionError('textScaleFactor is null');
+    }
 
     // The method we use to calculate the Text widget size
     final calculatedTextSize = title

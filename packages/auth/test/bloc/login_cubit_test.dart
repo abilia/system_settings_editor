@@ -108,10 +108,10 @@ void main() {
       );
 
       // Act
-      loginCubit.usernameChanged(username);
-      loginCubit.passwordChanged(password);
-
-      loginCubit.loginButtonPressed();
+      loginCubit
+        ..usernameChanged(username)
+        ..passwordChanged(password)
+        ..loginButtonPressed();
 
       // Assert
       await expected;
@@ -180,9 +180,10 @@ void main() {
       when(() => batch.commit()).thenAnswer((_) => Future.value([]));
       when(() => mockDb.batch()).thenReturn(batch);
 
-      loginCubit.usernameChanged('username');
-      loginCubit.passwordChanged('password');
-      loginCubit.loginButtonPressed();
+      loginCubit
+        ..usernameChanged('username')
+        ..passwordChanged('password')
+        ..loginButtonPressed();
 
       await expectLater(
         loginCubit.stream,
@@ -260,9 +261,10 @@ void main() {
           )).thenAnswer((_) => Future.value(loginInfo));
 
       // Act
-      loginCubit.usernameChanged(username);
-      loginCubit.passwordChanged(password);
-      loginCubit.loginButtonPressed();
+      loginCubit
+        ..usernameChanged(username)
+        ..passwordChanged(password)
+        ..loginButtonPressed();
       // Assert
       await untilCalled(() => mockedUserRepository.authenticate(
             username: any(named: 'username'),
@@ -361,10 +363,10 @@ void main() {
       );
 
       // Act
-      loginCubit.usernameChanged(username);
-      loginCubit.passwordChanged(password);
-
-      loginCubit.loginButtonPressed();
+      loginCubit
+        ..usernameChanged(username)
+        ..passwordChanged(password)
+        ..loginButtonPressed();
 
       // Assert
       await expected;
@@ -406,10 +408,10 @@ void main() {
       );
 
       // Act
-      loginCubit.usernameChanged(username);
-      loginCubit.passwordChanged(password);
-
-      loginCubit.loginButtonPressed();
+      loginCubit
+        ..usernameChanged(username)
+        ..passwordChanged(password)
+        ..loginButtonPressed();
 
       // Assert
       await expected;
@@ -450,11 +452,11 @@ void main() {
       );
 
       // Act
-      loginCubit.usernameChanged(username);
-      loginCubit.passwordChanged(password);
-
-      loginCubit.loginButtonPressed();
-      loginCubit.licenseExpiredWarningConfirmed();
+      loginCubit
+        ..usernameChanged(username)
+        ..passwordChanged(password)
+        ..loginButtonPressed()
+        ..licenseExpiredWarningConfirmed();
 
       // Assert
       await expected;

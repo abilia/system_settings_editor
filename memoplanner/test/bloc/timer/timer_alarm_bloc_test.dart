@@ -236,8 +236,9 @@ void main() {
       timerCubit: mockTimerCubit,
     ),
     act: (bloc) {
-      streamController.add(initialTime);
-      streamController.add(initialTime.add(1.minutes()));
+      streamController
+        ..add(initialTime)
+        ..add(initialTime.add(1.minutes()));
     },
     expect: () => [
       TimerAlarmState(
