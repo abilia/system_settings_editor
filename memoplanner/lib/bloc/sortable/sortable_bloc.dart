@@ -169,15 +169,18 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     }
   }
 
-  Future<bool> addStarter(String language) async {
-    final success = await sortableRepository.applyTemplate(language);
-    if (success) {
-      _refreshAfterAddedStarterSetSubscription =
-          Stream.periodic(const Duration(seconds: 10))
-              .take(12)
-              .listen((_) => add(const LoadSortables()));
+  Future<void> addStarter(String language) async {
+    try {
+      final success = await sortableRepository.applyTemplate(language);
+      if (success) {
+        _refreshAfterAddedStarterSetSubscription =
+            Stream.periodic(const Duration(seconds: 10))
+                .take(12)
+                .listen((_) => add(const LoadSortables()));
+      }
+    } catch (error, stackTrace) {
+      _log.warning('Could not add starter pack', error, stackTrace);
     }
-    return success;
   }
 
   @override
