@@ -51,7 +51,7 @@ void main() {
     sortableStream = sortableStreamController.stream.asBroadcastStream();
     when(() => sortableBloc.stream).thenAnswer((invocation) => sortableStream);
     when(() => sortableBloc.addStarter(any()))
-        .thenAnswer((invocation) => Future.value(true));
+        .thenAnswer((invocation) => Future.value());
 
     authenticatedDialogCubit = MockAuthenticatedDialogCubit();
     when(() => authenticatedDialogCubit.state)
