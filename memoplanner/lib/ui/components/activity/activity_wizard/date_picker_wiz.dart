@@ -7,8 +7,6 @@ class DatePickerWiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final editActivityState = context.watch<EditActivityCubit>().state;
-    final calendarDayColor = context
-        .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayColor);
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -32,10 +30,7 @@ class DatePickerWiz extends StatelessWidget {
           title: Translator.of(context).translate.selectDate,
           iconData: AbiliaIcons.day,
           bottom: const MonthAppBarStepper(),
-          body: MonthBody(
-            calendarDayColor: calendarDayColor,
-            showPreview: false,
-          ),
+          body: const MonthCalendar(),
         ),
       ),
     );

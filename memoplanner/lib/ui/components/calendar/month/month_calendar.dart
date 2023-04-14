@@ -4,11 +4,6 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-typedef MonthDayWidgetBuilder = Widget Function(
-  MonthDay day,
-  DayTheme dayTheme,
-);
-
 class MonthCalendarTab extends StatelessWidget {
   const MonthCalendarTab({Key? key}) : super(key: key);
 
@@ -18,34 +13,24 @@ class MonthCalendarTab extends StatelessWidget {
       appBar: MonthAppBar(),
       floatingActionButton: FloatingActions(),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      body: MonthCalendar(),
+      body: MonthCalendar(showPreview: true),
     );
   }
 }
 
 class MonthCalendar extends StatelessWidget {
-  const MonthCalendar({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final dayColor = context
-        .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayColor);
-    return MonthBody(calendarDayColor: dayColor);
-  }
-}
-
-class MonthBody extends StatelessWidget {
-  const MonthBody({
-    required this.calendarDayColor,
-    this.showPreview = true,
+  const MonthCalendar({
+    this.showPreview = false,
     Key? key,
   }) : super(key: key);
 
-  final DayColor calendarDayColor;
   final bool showPreview;
 
   @override
   Widget build(BuildContext context) {
+    final calendarDayColor = context
+        .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayColor);
+
     final dayThemes = List.generate(
       DateTime.daysPerWeek,
       (d) => weekdayTheme(
@@ -54,32 +39,15 @@ class MonthBody extends StatelessWidget {
         weekday: d + 1,
       ),
     );
-    final dayBuilder = Config.isMPGO
-        ? (day, dayTheme) => MonthDayViewCompact(
-              day,
-              dayTheme: dayTheme,
-              key: TestKey.monthCalendarDay,
-            )
-        : (day, dayTheme) => MonthDayView(
-              day,
-              dayTheme: dayTheme,
-              key: TestKey.monthCalendarDay,
-            );
     return Column(
       children: [
         MonthHeading(dayThemes: dayThemes),
         Expanded(
-          flex: layout.monthCalendar.monthContentFlex,
           child: MonthContent(
             dayThemes: dayThemes,
-            dayBuilder: dayBuilder,
+            showPreview: showPreview,
           ),
         ),
-        if (showPreview)
-          Expanded(
-            flex: layout.monthCalendar.monthListPreviewFlex,
-            child: MonthListPreview(dayThemes: dayThemes),
-          ),
       ],
     );
   }
@@ -88,17 +56,32 @@ class MonthBody extends StatelessWidget {
 class MonthContent extends StatelessWidget {
   const MonthContent({
     required this.dayThemes,
-    required this.dayBuilder,
+    required this.showPreview,
     Key? key,
   }) : super(key: key);
 
-  final MonthDayWidgetBuilder dayBuilder;
   final List<DayTheme> dayThemes;
+  final bool showPreview;
 
   @override
   Widget build(BuildContext context) {
     final pageController = PageController(
         initialPage: context.read<MonthCalendarCubit>().state.index);
+    final weekBuilder = showPreview
+        ? (MonthWeek week) => SizedBox(
+              height: layout.monthCalendar.weekHeight,
+              child: WeekRow(
+                week,
+                dayThemes: dayThemes,
+              ),
+            )
+        : (MonthWeek week) => Expanded(
+              child: WeekRow(
+                week,
+                dayThemes: dayThemes,
+              ),
+            );
+
     return BlocListener<MonthCalendarCubit, MonthCalendarState>(
       listener: (context, state) async => pageController.animateToPage(
           state.index,
@@ -107,32 +90,26 @@ class MonthContent extends StatelessWidget {
       child: PageView.builder(
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
-        itemBuilder: (context, item) {
-          return BlocBuilder<MonthCalendarCubit, MonthCalendarState>(
-            buildWhen: (oldState, newState) => newState.index == item,
-            builder: (context, state) {
-              if (state.index != item) return Container();
-              return Column(
-                children: [
-                  SizedBox(
-                    height: layout.monthCalendar.dayViewMargin.top,
-                  ),
-                  ...state.weeks.map(
-                    (week) => Expanded(
-                      child: week.inMonth
-                          ? WeekRow(
-                              week,
-                              dayThemes: dayThemes,
-                              builder: dayBuilder,
-                            )
-                          : const SizedBox(width: double.infinity),
+        itemBuilder: (context, item) =>
+            BlocBuilder<MonthCalendarCubit, MonthCalendarState>(
+          buildWhen: (oldState, newState) => newState.index == item,
+          builder: (context, state) {
+            if (state.index != item) return Container();
+            return Column(
+              children: [
+                SizedBox(height: layout.monthCalendar.day.viewMargin.top),
+                ...state.weeks.map(weekBuilder),
+                if (showPreview)
+                  Expanded(
+                    child: MonthListPreview(
+                      monthCalendarState: state,
+                      dayThemes: dayThemes,
                     ),
                   ),
-                ],
-              );
-            },
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -140,25 +117,34 @@ class MonthContent extends StatelessWidget {
 
 class WeekRow extends StatelessWidget {
   final MonthWeek week;
-  final MonthDayWidgetBuilder builder;
 
   const WeekRow(
     this.week, {
     required this.dayThemes,
-    required this.builder,
     Key? key,
   }) : super(key: key);
   final List<DayTheme> dayThemes;
 
   @override
   Widget build(BuildContext context) {
+    final dayBuilder = Config.isMPGO
+        ? (MonthDay day, DayTheme dayTheme) => MonthDayViewCompact(
+              day,
+              dayTheme: dayTheme,
+              key: TestKey.monthCalendarDay,
+            )
+        : (MonthDay day, DayTheme dayTheme) => MonthDayView(
+              day,
+              dayTheme: dayTheme,
+              key: TestKey.monthCalendarDay,
+            );
     return Row(
       children: [
         WeekNumber(weekNumber: week.number),
         ...week.days.map(
           (day) => Expanded(
             child: day is MonthDay
-                ? builder(day, dayThemes[day.day.weekday - 1])
+                ? dayBuilder(day, dayThemes[day.day.weekday - 1])
                 : const SizedBox.shrink(),
           ),
         ),
@@ -178,40 +164,43 @@ class MonthHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateformat = DateFormat('', '${Localizations.localeOf(context)}');
-    final weekdays = dateformat.dateSymbols.STANDALONEWEEKDAYS;
-    final weekdaysShort = dateformat.dateSymbols.STANDALONESHORTWEEKDAYS;
+    final dateFormat = DateFormat('', '${Localizations.localeOf(context)}');
+    final weekdays = dateFormat.dateSymbols.STANDALONEWEEKDAYS;
+    final weekdaysShort = dateFormat.dateSymbols.STANDALONESHORTWEEKDAYS;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         if (showLeadingWeekShort) const WeekNumber(),
-        ...List.generate(DateTime.daysPerWeek, (weekday) {
-          final weekdayindex = (weekday + 1) % DateTime.daysPerWeek;
-          final dayTheme = dayThemes[weekday];
-          final textTheme = dayTheme.theme.textTheme;
-          return DefaultTextStyle(
-            style: (textTheme.labelLarge ?? labelLarge).copyWith(
-              color: dayTheme.isColor
-                  ? textTheme.titleSmall?.color
-                  : AbiliaColors.black,
-            ),
-            child: Expanded(
-              child: Tts.data(
-                data: weekdays[weekdayindex],
-                child: Container(
-                  height: layout.monthCalendar.monthHeadingHeight,
-                  color: dayTheme.dayColor,
-                  child: Center(
-                    child: Text(
-                      weekdaysShort[weekdayindex],
-                      textAlign: TextAlign.center,
+        ...List.generate(
+          DateTime.daysPerWeek,
+          (weekday) {
+            final weekdayIndex = (weekday + 1) % DateTime.daysPerWeek;
+            final dayTheme = dayThemes[weekday];
+            final textTheme = dayTheme.theme.textTheme;
+            return DefaultTextStyle(
+              style: (textTheme.labelLarge ?? labelLarge).copyWith(
+                color: dayTheme.isColor
+                    ? textTheme.titleSmall?.color
+                    : AbiliaColors.black,
+              ),
+              child: Expanded(
+                child: Tts.data(
+                  data: weekdays[weekdayIndex],
+                  child: Container(
+                    height: layout.monthCalendar.headingHeight,
+                    color: dayTheme.dayColor,
+                    child: Center(
+                      child: Text(
+                        weekdaysShort[weekdayIndex],
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          );
-        }),
+            );
+          },
+        ),
       ],
     );
   }
@@ -233,7 +222,7 @@ class MonthDayView extends StatelessWidget {
         (dayTheme.theme.textTheme.titleSmall ?? titleSmall).copyWith(
       color: monthDay.isPast ? AbiliaColors.black : null,
       height: 1,
-      fontSize: layout.monthCalendar.dayHeadingFontSize,
+      fontSize: layout.monthCalendar.day.headingFontSize,
     );
 
     return Tts.data(
@@ -257,8 +246,8 @@ class MonthDayView extends StatelessWidget {
             final highlighted =
                 (monthDay.isCurrent || pickedDay.isAtSameDay(monthDay.day));
             final borderRadius = BorderRadius.circular(highlighted
-                ? layout.monthCalendar.dayRadiusHighlighted
-                : layout.monthCalendar.dayRadius);
+                ? layout.monthCalendar.day.radiusHighlighted
+                : layout.monthCalendar.day.radius);
             final backgroundColor = monthDay.isPast
                 ? AbiliaColors.white110
                 : monthWeekColor == WeekColor.captions
@@ -273,10 +262,10 @@ class MonthDayView extends StatelessWidget {
             return Container(
               key: TestKey.monthCalendarDayBackgroundColor,
               margin: highlighted
-                  ? layout.monthCalendar.dayViewMarginHighlighted
-                  : layout.monthCalendar.dayViewMargin,
+                  ? layout.monthCalendar.day.viewMarginHighlighted
+                  : layout.monthCalendar.day.viewMargin,
               padding: EdgeInsets.all(highlighted
-                  ? layout.monthCalendar.dayBorderWidthHighlighted / 2
+                  ? layout.monthCalendar.day.borderWidthHighlighted / 2
                   : 0),
               decoration: BoxDecoration(
                 color: backgroundColor,
@@ -290,7 +279,7 @@ class MonthDayView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Container(
-                    height: layout.monthCalendar.dayHeaderHeight,
+                    height: layout.monthCalendar.day.headerHeight,
                     decoration: BoxDecoration(
                       color: monthDay.isPast
                           ? AbiliaColors.white140
@@ -298,7 +287,7 @@ class MonthDayView extends StatelessWidget {
                       borderRadius:
                           BorderRadius.vertical(top: borderRadius.topRight),
                     ),
-                    padding: layout.monthCalendar.dayHeaderPadding,
+                    padding: layout.monthCalendar.day.headerPadding,
                     child: DefaultTextStyle(
                       style: headingTextStyleCorrectColor,
                       child: Row(
@@ -308,11 +297,11 @@ class MonthDayView extends StatelessWidget {
                           const Spacer(),
                           if (monthDay.hasEvent)
                             Padding(
-                              padding:
-                                  layout.monthCalendar.hasActivitiesDotPadding,
+                              padding: layout
+                                  .monthCalendar.day.hasActivitiesDotPadding,
                               child: ColorDot(
-                                radius:
-                                    layout.monthCalendar.hasActivitiesDotRadius,
+                                radius: layout
+                                    .monthCalendar.day.hasActivitiesDotRadius,
                                 color: monthDay.isPast
                                     ? AbiliaColors.black
                                     : dayTheme.theme.colorScheme.onSurface,
@@ -353,7 +342,7 @@ class MonthDayContainer extends StatelessWidget {
     final d = day;
 
     return Container(
-      padding: layout.monthCalendar.dayContainerPadding,
+      padding: layout.monthCalendar.day.containerPadding,
       child: d != null
           ? Stack(
               children: [
@@ -413,8 +402,8 @@ class MonthDayViewCompact extends StatelessWidget {
                 (monthDay.isCurrent || pickedDay.isAtSameDay(monthDay.day));
 
             final borderRadius = BorderRadius.circular(dayIsHighlighted
-                ? layout.monthCalendar.dayRadiusHighlighted
-                : layout.monthCalendar.dayRadius);
+                ? layout.monthCalendar.day.radiusHighlighted
+                : layout.monthCalendar.day.radius);
 
             final dayTextStyle =
                 monthDay.isPast || monthWeekColor == WeekColor.captions
@@ -444,11 +433,11 @@ class MonthDayViewCompact extends StatelessWidget {
                 borderRadius: borderRadius,
               ),
               padding: dayIsHighlighted
-                  ? layout.monthCalendar.dayViewPaddingHighlighted
-                  : layout.monthCalendar.dayViewPadding,
+                  ? layout.monthCalendar.day.viewPaddingHighlighted
+                  : layout.monthCalendar.day.viewPadding,
               margin: dayIsHighlighted
-                  ? layout.monthCalendar.dayViewMarginHighlighted
-                  : layout.monthCalendar.dayViewMargin,
+                  ? layout.monthCalendar.day.viewMarginHighlighted
+                  : layout.monthCalendar.day.viewMargin,
               child: DefaultTextStyle(
                 style: dayTextStyle,
                 child: Stack(
@@ -459,16 +448,17 @@ class MonthDayViewCompact extends StatelessWidget {
                         alignment: Alignment.topRight,
                         child: Padding(
                           padding: layout
-                              .monthCalendar.hasActivitiesDotPaddingCompact,
+                              .monthCalendar.day.hasActivitiesDotPaddingCompact,
                           child: ColorDot(
-                            radius: layout.monthCalendar.hasActivitiesDotRadius,
+                            radius:
+                                layout.monthCalendar.day.hasActivitiesDotRadius,
                             color: AbiliaColors.black,
                           ),
                         ),
                       ),
                     if (monthDay.isPast)
                       Padding(
-                        padding: layout.monthCalendar.crossOverPadding,
+                        padding: layout.monthCalendar.day.crossOverPadding,
                         child: const CrossOver(
                           style: CrossOverStyle.darkSecondary,
                         ),
@@ -528,11 +518,11 @@ class MonthActivityContent extends StatelessWidget {
       height: height,
       clipBehavior: Clip.hardEdge,
       foregroundDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(layout.monthCalendar.dayRadius),
+        borderRadius: BorderRadius.circular(layout.monthCalendar.day.radius),
         border: border,
       ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(layout.monthCalendar.dayRadius),
+        borderRadius: BorderRadius.circular(layout.monthCalendar.day.radius),
         color: AbiliaColors.white,
       ),
       child: Center(
@@ -550,13 +540,13 @@ class MonthActivityContent extends StatelessWidget {
                 ),
               )
             : Padding(
-                padding: layout.monthCalendar.activityTextContentPadding,
+                padding: layout.monthCalendar.day.activityTextContentPadding,
                 child: EllipsesText(
                   activityDay.activity.title,
                   tts: true,
                   maxLines: 3,
                   style: abiliaTextTheme.bodyMedium?.copyWith(
-                    fontSize: layout.monthCalendar.fullDayActivityFontSize,
+                    fontSize: layout.monthCalendar.day.fullDayActivityFontSize,
                   ),
                 ),
               ),

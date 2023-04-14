@@ -130,7 +130,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     final month = firstDayOfMonth.month;
 
     var dayIterator = firstDayOfMonth.firstInWeek();
-    final lastDay = dayIterator.addDays(6 * DateTime.daysPerWeek);
+    final lastDay = firstDayOfMonth.lastDayOfMonth().lastInWeek();
     final weekData = [
       for (int week = firstDayOfMonth.getWeekNumber();
           dayIterator.isBefore(lastDay);

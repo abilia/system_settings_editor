@@ -5,62 +5,53 @@ import 'package:memoplanner/ui/all.dart';
 
 class MonthListPreview extends StatelessWidget {
   final List<DayTheme> dayThemes;
+  final MonthCalendarState monthCalendarState;
 
   const MonthListPreview({
     required this.dayThemes,
+    required this.monthCalendarState,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DayPickerBloc, DayPickerState>(
-        builder: (context, dayPickerState) {
-      return BlocBuilder<MonthCalendarCubit, MonthCalendarState>(
-          buildWhen: (previous, current) =>
-              previous.firstDay != current.firstDay ||
-              previous.occasion != current.occasion,
-          builder: (context, monthCalendarState) {
-            final showPreview =
-                monthCalendarState.firstDay.month == dayPickerState.day.month &&
-                    monthCalendarState.firstDay.year == dayPickerState.day.year;
-
-            if (!showPreview) {
-              return Padding(
-                padding: layout.monthCalendar.monthPreview.noSelectedDayPadding,
-                child: Text(
-                  Translator.of(context).translate.selectADayToViewDetails,
-                  style: abiliaTextTheme.bodyLarge,
+    final dayPickerState = context.watch<DayPickerBloc>().state;
+    final showPreview =
+        monthCalendarState.firstDay.month == dayPickerState.day.month &&
+            monthCalendarState.firstDay.year == dayPickerState.day.year;
+    if (!showPreview) {
+      return Padding(
+        padding: layout.monthCalendar.monthPreview.noSelectedDayPadding,
+        child: Text(
+          Translator.of(context).translate.selectADayToViewDetails,
+          style: abiliaTextTheme.bodyLarge,
+        ),
+      );
+    } else {
+      final dayTheme = dayThemes[dayPickerState.day.weekday - 1];
+      return Padding(
+        padding: layout.monthCalendar.monthPreview.monthListPreviewPadding,
+        child: Column(
+          children: [
+            AnimatedTheme(
+              data: dayTheme.theme,
+              child: MonthDayPreviewHeading(
+                day: dayPickerState.day,
+                isLight: dayTheme.isLight,
+                occasion: dayPickerState.occasion,
+              ),
+            ),
+            Expanded(
+              child: Builder(
+                builder: (context) => MonthPreview(
+                  events: context.watch<DayEventsCubit>().state,
                 ),
-              );
-            } else {
-              final dayTheme = dayThemes[dayPickerState.day.weekday - 1];
-
-              return Padding(
-                padding:
-                    layout.monthCalendar.monthPreview.monthListPreviewPadding,
-                child: Column(
-                  children: [
-                    AnimatedTheme(
-                      data: dayTheme.theme,
-                      child: MonthDayPreviewHeading(
-                        day: dayPickerState.day,
-                        isLight: dayTheme.isLight,
-                        occasion: dayPickerState.occasion,
-                      ),
-                    ),
-                    Expanded(
-                      child: Builder(builder: (context) {
-                        return MonthPreview(
-                          events: context.watch<DayEventsCubit>().state,
-                        );
-                      }),
-                    ),
-                  ],
-                ),
-              );
-            }
-          });
-    });
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }
 
