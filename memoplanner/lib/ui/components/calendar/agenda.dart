@@ -23,7 +23,6 @@ class Agenda extends StatelessWidget with CalendarWidgetMixin {
         children: <Widget>[
           CalendarScrollListener(
             getNowOffset: (_) => -padding.top,
-            inViewMargin: layout.eventCard.height / 2,
             enabled: eventsState.isToday,
             agendaEvents: eventsState.events.length +
                 eventsState.fullDayActivities.length,

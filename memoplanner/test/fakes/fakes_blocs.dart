@@ -294,7 +294,7 @@ class FakeNightMode extends Fake implements NightMode {
 
 class FakeScrollPositionCubit extends Fake implements ScrollPositionCubit {
   @override
-  ScrollPositionState get state => Unready();
+  ScrollPositionState get state => ScrollPositionUnready();
 
   @override
   Stream<ScrollPositionState> get stream => const Stream.empty();
@@ -306,7 +306,6 @@ class FakeScrollPositionCubit extends Fake implements ScrollPositionCubit {
   void updateState({
     required ScrollController scrollController,
     required double nowOffset,
-    required double inViewMargin,
   }) {}
 
   @override

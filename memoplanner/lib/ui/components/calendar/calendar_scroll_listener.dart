@@ -12,7 +12,6 @@ typedef ScrollListenerWidgetBuilder = Widget Function(
 class CalendarScrollListener extends StatelessWidget {
   const CalendarScrollListener({
     required this.getNowOffset,
-    required this.inViewMargin,
     required this.builder,
     this.timepillarMeasures,
     this.agendaEvents,
@@ -23,7 +22,6 @@ class CalendarScrollListener extends StatelessWidget {
 
   final ScrollListenerWidgetBuilder builder;
   final GetNowOffset getNowOffset;
-  final double inViewMargin;
   final TimepillarMeasures? timepillarMeasures;
   final int? agendaEvents;
   final double? disabledInitOffset;
@@ -48,7 +46,6 @@ class CalendarScrollListener extends StatelessWidget {
 
     return _CalendarScrollListener(
       getNowOffset: getNowOffset,
-      inViewMargin: inViewMargin,
       timepillarMeasures: timepillarMeasures,
       agendaEvents: agendaEvents,
       builder: builder,
@@ -59,7 +56,6 @@ class CalendarScrollListener extends StatelessWidget {
 class _CalendarScrollListener extends StatefulWidget {
   const _CalendarScrollListener({
     required this.getNowOffset,
-    required this.inViewMargin,
     required this.builder,
     this.timepillarMeasures,
     this.agendaEvents,
@@ -67,7 +63,6 @@ class _CalendarScrollListener extends StatefulWidget {
   }) : super(key: key);
 
   final GetNowOffset getNowOffset;
-  final double inViewMargin;
   final ScrollListenerWidgetBuilder builder;
   final TimepillarMeasures? timepillarMeasures;
   final int? agendaEvents;
@@ -139,26 +134,17 @@ class _CalendarScrollListenerState extends State<_CalendarScrollListener>
     context.read<ScrollPositionCubit>().updateState(
           scrollController: controller,
           nowOffset: nowOffset,
-          inViewMargin: widget.inViewMargin,
         );
   }
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: (scrollNotification) {
-        if (scrollNotification.metrics.axis == Axis.vertical) {
-          context.read<ScrollPositionCubit>().scrollPositionUpdated();
-        }
-        return false;
-      },
-      child: !Config.isMP
-          ? widget.builder(context, controller)
-          : _AutoScrollToNow(
-              getNowOffset: widget.getNowOffset,
-              child: widget.builder(context, controller),
-            ),
-    );
+    return !Config.isMP
+        ? widget.builder(context, controller)
+        : _AutoScrollToNow(
+            getNowOffset: widget.getNowOffset,
+            child: widget.builder(context, controller),
+          );
   }
 }
 
@@ -189,7 +175,7 @@ class _AutoScrollToNow extends StatelessWidget {
       child: BlocListener<ClockBloc, DateTime>(
         listener: (context, now) async {
           final scrollState = context.read<ScrollPositionCubit>().state;
-          if (scrollState is! ScrollPositionReadyState) {
+          if (scrollState is! ScrollPositionReady) {
             return;
           }
 

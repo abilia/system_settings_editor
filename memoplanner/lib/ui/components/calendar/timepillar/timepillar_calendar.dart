@@ -172,11 +172,6 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                       ? measures.hourHeight * dayParts.morning.inHours
                       : 0,
               getNowOffset: getNowOffset,
-              inViewMargin: timeToPixels(
-                0,
-                minutesPerDotDuration.inMinutes,
-                measures.dotDistance,
-              ),
               builder: (_, verticalController) {
                 return RefreshIndicator(
                   onRefresh: () async => refresh(context),
