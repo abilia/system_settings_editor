@@ -6,8 +6,6 @@ class EndDatePickerWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final calendarDayColor = context
-        .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayColor);
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -32,10 +30,7 @@ class EndDatePickerWiz extends StatelessWidget {
               context.read<DayPickerBloc>().state.day,
             );
           },
-          child: MonthBody(
-            calendarDayColor: calendarDayColor,
-            showPreview: false,
-          ),
+          child: const MonthCalendar(),
         ),
         bottomNavigationBar: Builder(
           builder: (context) => const WizardBottomNavigation(),

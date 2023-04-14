@@ -20,7 +20,7 @@ class FullDayStack extends StatelessWidget {
   Widget build(BuildContext context) {
     final decoration = BoxDecoration(
       color: AbiliaColors.white,
-      borderRadius: BorderRadius.circular(layout.monthCalendar.dayRadius),
+      borderRadius: BorderRadius.circular(layout.monthCalendar.day.radius),
       border: border,
     );
     return Stack(

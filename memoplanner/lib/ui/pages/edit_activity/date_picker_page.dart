@@ -14,18 +14,13 @@ class DatePickerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dayColor = context
-        .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayColor);
     return Scaffold(
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.selectDate,
         iconData: AbiliaIcons.day,
         bottom: const MonthAppBarStepper(),
       ),
-      body: MonthBody(
-        calendarDayColor: dayColor,
-        showPreview: false,
-      ),
+      body: const MonthCalendar(),
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: BlocBuilder<DayPickerBloc, DayPickerState>(
