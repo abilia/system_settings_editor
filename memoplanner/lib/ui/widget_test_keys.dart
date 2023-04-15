@@ -5,7 +5,6 @@ class TestKey {
       inputOk = Key('inputOk'),
       bottomSheetOKButton = Key('bottomSheetOKButton'),
       bottomSheetHidePasswordButton = Key('bottomSheetHidePasswordButton'),
-      goToNowButton = Key('goToNow'),
       appBarCloseButton = Key('appBarCloseButton'),
       timePillarSettingsButton = Key('timePillarSettingsButton'),
       activityBackButton = Key('activityBackButton'),

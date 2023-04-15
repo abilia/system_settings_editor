@@ -20,22 +20,12 @@ class DayCalendarTab extends StatelessWidget {
       languageCode: Localizations.localeOf(context).languageCode,
       weekday: day.weekday,
     );
-    return BlocProvider<ScrollPositionCubit>(
-      create: (context) => ScrollPositionCubit(
-        dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
-      ),
-      child: Builder(
-        builder: (context) {
-          return Scaffold(
-            backgroundColor: dayTheme.theme.appBarTheme.backgroundColor,
-            appBar: const DayCalendarAppBar(),
-            floatingActionButton: const FloatingActions(),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.startFloat,
-            body: const Calendars(),
-          );
-        },
-      ),
+    return Scaffold(
+      backgroundColor: dayTheme.theme.appBarTheme.backgroundColor,
+      appBar: const DayCalendarAppBar(),
+      floatingActionButton: const FloatingActions(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      body: const Calendars(),
     );
   }
 }
@@ -135,7 +125,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
           ),
           Column(
             children: [
-              //Ensures position of category and now buttons are correct
+              // Ensures position of categories and hidden settings
               BlocSelector<DayEventsCubit, EventsState, bool>(
                 selector: (state) => state.fullDayActivities.isNotEmpty,
                 builder: (context, hasFullday) => AnimatedSize(
@@ -151,20 +141,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                   ),
                 ),
               ),
-              Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        top: layout.commonCalendar.goToNowButtonTop,
-                      ),
-                      child: const GoToNowButton(),
-                    ),
-                  ),
-                  const CategoriesAndHiddenSettings(),
-                ],
-              ),
+              const CategoriesAndHiddenSettings(),
             ],
           ),
         ],
@@ -189,46 +166,11 @@ class CategoriesAndHiddenSettings extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
               Expanded(child: LeftCategory()),
-              _GoToNowPlaceholder(),
               Expanded(child: RightCategory()),
             ],
           ),
         const HiddenSetting(),
       ],
-    );
-  }
-}
-
-class _GoToNowPlaceholder extends StatelessWidget {
-  const _GoToNowPlaceholder({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedSize(
-      duration: DayCalendarTab.transitionDuration,
-      child: Builder(builder: (context) {
-        final showingNowButton = context.select((ScrollPositionCubit c) =>
-            c.state is WrongDay || c.state is OutOfView);
-
-        if (showingNowButton) {
-          return Visibility(
-            visible: false,
-            maintainState: true,
-            maintainSize: true,
-            maintainAnimation: true,
-            child: IconAndTextButton(
-              text: Translator.of(context).translate.now,
-              icon: AbiliaIcons.reset,
-              style: actionIconTextButtonStyleRed,
-              padding: EdgeInsets.zero,
-            ).pad(
-              EdgeInsets.symmetric(horizontal: layout.category.topMargin),
-            ),
-          );
-        }
-
-        return SizedBox(width: layout.timepillar.width);
-      }),
     );
   }
 }

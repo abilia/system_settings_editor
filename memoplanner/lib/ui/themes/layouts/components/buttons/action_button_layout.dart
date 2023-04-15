@@ -1,7 +1,13 @@
 import 'package:memoplanner/ui/all.dart';
 
 class ActionButtonLayout {
-  final double size, largeSize, radius, largeRadius, spacing, withTextIconSize;
+  final double size,
+      largeSize,
+      radius,
+      largeRadius,
+      spacing,
+      withTextIconSize,
+      withTextIconSizeSmall;
   final EdgeInsets padding, withTextPadding;
 
   const ActionButtonLayout({
@@ -13,6 +19,7 @@ class ActionButtonLayout {
     this.padding = const EdgeInsets.all(8),
     this.withTextPadding = const EdgeInsets.only(left: 4, top: 4, right: 4),
     this.withTextIconSize = 24,
+    this.withTextIconSizeSmall = 24,
   });
 }
 
@@ -29,6 +36,7 @@ class ActionButtonLayoutMedium extends ActionButtonLayout {
           padding: const EdgeInsets.all(12),
           withTextPadding: const EdgeInsets.only(top: 6, left: 4, right: 4),
           withTextIconSize: 48,
+          withTextIconSizeSmall: 32,
         );
 }
 

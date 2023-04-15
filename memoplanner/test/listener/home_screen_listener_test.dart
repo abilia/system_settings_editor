@@ -76,15 +76,18 @@ void main() {
               authenticatedState: const Authenticated(user: Fakes.user),
               child: BlocProvider<InactivityCubit>(
                 create: (context) => inactivityCubit,
-                child: MaterialApp(
-                  theme: abiliaTheme,
-                  home: MultiBlocListener(
-                    listeners: [
-                      CalendarInactivityListener(),
-                      ScreensaverListener(),
-                    ],
-                    child: ReturnToHomeScreenListener(
-                      child: child ?? const CalendarPage(),
+                child: BlocProvider<ScrollPositionCubit>(
+                  create: (context) => FakeScrollPositionCubit(),
+                  child: MaterialApp(
+                    theme: abiliaTheme,
+                    home: MultiBlocListener(
+                      listeners: [
+                        CalendarInactivityListener(),
+                        ScreensaverListener(),
+                      ],
+                      child: ReturnToHomeScreenListener(
+                        child: child ?? const CalendarPage(),
+                      ),
                     ),
                   ),
                 ),

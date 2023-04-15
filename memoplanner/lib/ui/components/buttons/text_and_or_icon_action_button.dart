@@ -2,19 +2,21 @@ import 'package:auto_size_text/auto_size_text.dart';
 
 import 'package:memoplanner/ui/all.dart';
 
-class _TextAndIconActionButton extends StatelessWidget {
-  const _TextAndIconActionButton(
+class TextAndIconActionButton extends StatelessWidget {
+  const TextAndIconActionButton(
     this.text,
     this.iconData, {
     Key? key,
     this.onPressed,
     this.style,
+    this.size,
   }) : super(key: key);
 
   final ButtonStyle? style;
   final VoidCallback? onPressed;
   final String text;
   final IconData iconData;
+  final double? size;
 
   @override
   Widget build(BuildContext context) => TextButton(
@@ -30,7 +32,7 @@ class _TextAndIconActionButton extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: layout.actionButton.spacing),
-            Icon(iconData, size: layout.actionButton.withTextIconSize),
+            Icon(iconData, size: size ?? layout.actionButton.withTextIconSize),
           ],
         ),
       );
@@ -63,7 +65,7 @@ class TextAndOrIconActionButtonLight extends StatelessWidget {
                     : actionButtonStyleLight,
                 child: Icon(iconData),
               )
-            : _TextAndIconActionButton(
+            : TextAndIconActionButton(
                 text,
                 iconData,
                 onPressed: onPressed,
@@ -95,7 +97,7 @@ class TextAndOrIconActionButtonBlack extends StatelessWidget {
                 style: actionButtonStyleBlack,
                 child: Icon(iconData),
               )
-            : _TextAndIconActionButton(
+            : TextAndIconActionButton(
                 text,
                 iconData,
                 onPressed: onPressed,

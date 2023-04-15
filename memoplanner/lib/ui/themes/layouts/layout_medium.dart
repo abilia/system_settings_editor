@@ -160,7 +160,6 @@ class MediumLayout extends Layout {
           ),
           commonCalendar: const CommonCalendarLayout(
             fullDayStackDistance: 6,
-            goToNowButtonTop: 48,
             fullDayPadding: EdgeInsets.all(18),
             fullDayButtonPadding: EdgeInsets.fromLTRB(15, 6, 6, 6),
           ),

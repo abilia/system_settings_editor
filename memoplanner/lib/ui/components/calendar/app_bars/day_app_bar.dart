@@ -6,6 +6,7 @@ import 'package:memoplanner/utils/all.dart';
 class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leftAction;
   final Widget? rightAction;
+  final Widget? clockReplacement;
 
   final DateTime day;
 
@@ -13,6 +14,7 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.day,
     this.leftAction,
     this.rightAction,
+    this.clockReplacement,
     Key? key,
   }) : super(key: key);
 
@@ -45,6 +47,7 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
       rightAction: rightAction,
       leftAction: leftAction,
       crossedOver: day.isDayBefore(currentMinute),
+      clockReplacement: clockReplacement,
       showClock: appBarSettings.showClock,
     );
   }

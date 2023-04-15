@@ -34,6 +34,9 @@ void main() {
     BlocProvider<NightMode>(
       create: (context) => FakeNightMode(),
     ),
+    BlocProvider<ScrollPositionCubit>(
+      create: (context) => FakeScrollPositionCubit(),
+    ),
   ];
 
   Future<void> pumpDayCalendarAppBar(WidgetTester tester) async {

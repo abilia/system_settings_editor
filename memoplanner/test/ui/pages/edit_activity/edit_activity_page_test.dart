@@ -1389,7 +1389,7 @@ text''';
       expect(find.text('2020'), findsOneWidget);
       expect(find.byKey(TestKey.monthCalendarDay), findsNWidgets(30));
 
-      await tester.tap(find.byType(GoToCurrentActionButton));
+      await tester.tap(find.byType(GoToTodayButton));
       await tester.pumpAndSettle();
       expect(find.text('February'), findsOneWidget);
       expect(find.text('2020'), findsOneWidget);

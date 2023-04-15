@@ -14,7 +14,9 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
 
   ScrollPositionCubit({
     required this.dayPickerBloc,
-  }) : super(dayPickerBloc.state.isToday ? Unready() : WrongDay()) {
+  }) : super(dayPickerBloc.state.isToday
+            ? ScrollPositionUnready()
+            : WrongDay()) {
     dayPickerBlocSubscription = dayPickerBloc.stream
         .where((day) => !day.isToday)
         .listen((_) => emit(WrongDay()));
@@ -30,8 +32,10 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
       dayPickerBloc.add(const CurrentDay());
     }
 
-    if (scrollState is ScrollPositionReadyState) {
+    if (scrollState is ScrollPositionReady) {
       final sc = scrollState.scrollController;
+
+      if (!sc.hasClients) return;
 
       final scrollTo = scrollState.nowOffset.clamp(
         sc.position.minScrollExtent,
@@ -56,11 +60,12 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
 
   void updateNowOffset({required double nowOffset}) {
     final scrollState = state;
-    if (scrollState is ScrollPositionReadyState) {
-      updateState(
-        scrollController: scrollState.scrollController,
-        nowOffset: nowOffset,
-        inViewMargin: scrollState.inViewMargin,
+    if (scrollState is ScrollPositionReady) {
+      emit(
+        _getState(
+          scrollState.scrollController,
+          nowOffset,
+        ),
       );
     }
   }
@@ -68,71 +73,32 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
   void updateState({
     required ScrollController scrollController,
     required double nowOffset,
-    required double inViewMargin,
   }) {
     emit(
       _getState(
         scrollController,
         nowOffset,
-        inViewMargin,
       ),
     );
   }
 
   void reset() {
-    emit(Unready());
-  }
-
-  void scrollPositionUpdated() {
-    final scrollState = state;
-
-    if (scrollState is ScrollPositionReadyState) {
-      emit(
-        _getState(
-          scrollState.scrollController,
-          scrollState.nowOffset,
-          scrollState.inViewMargin,
-        ),
-      );
-    }
+    emit(ScrollPositionUnready());
   }
 
   ScrollPositionState _getState(
     ScrollController sc,
     double nowOffset,
-    double inViewMargin,
   ) {
     if (!dayPickerBloc.state.isToday) {
       return WrongDay();
     }
 
     if (sc.positions.length != 1) {
-      return Unready();
+      return ScrollPositionUnready();
     }
 
-    final clampedNowOffset = nowOffset.clamp(
-      sc.position.minScrollExtent,
-      sc.position.maxScrollExtent,
-    );
-
-    final inViewBottomOffset = clampedNowOffset + inViewMargin;
-    final inViewTopOffset = clampedNowOffset - inViewMargin;
-    final currentOffset = sc.offset;
-
-    final isInView =
-        currentOffset <= inViewBottomOffset && currentOffset >= inViewTopOffset;
-
-    return isInView
-        ? InView(
-            sc,
-            nowOffset,
-            inViewMargin,
-          )
-        : OutOfView(
-            sc,
-            nowOffset,
-            inViewMargin,
-          );
+    return ScrollPositionReady(sc, nowOffset);
   }
 
   @override
