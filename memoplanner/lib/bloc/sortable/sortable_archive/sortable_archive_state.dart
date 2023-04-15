@@ -6,17 +6,19 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
   final String initialFolderId;
   final Sortable<T>? selected;
   final String searchValue;
-  final bool showSearch;
   final bool showFolders;
+
+  // If true, only show images from my photos. If false, exclude images from my photos.
+  final bool myPhotos;
 
   const SortableArchiveState(
     this.sortableArchive, {
+    required this.showFolders,
+    required this.myPhotos,
     this.currentFolderId = '',
     this.initialFolderId = '',
     this.selected,
     this.searchValue = '',
-    this.showSearch = false,
-    this.showFolders = true,
   });
 
   factory SortableArchiveState.fromSortables({
@@ -24,7 +26,7 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
     required String initialFolderId,
     required String currentFolderId,
     required bool showFolders,
-    required bool showSearch,
+    required bool myPhotos,
     required Sortable<T>? selected,
     bool Function(Sortable<T>)? visibilityFilter,
   }) {
@@ -38,24 +40,10 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
       currentFolderId: currentFolderId,
       selected: selected,
       initialFolderId: initialFolderId,
-      showSearch: showSearch,
       showFolders: showFolders,
+      myPhotos: myPhotos,
     );
   }
-
-  SortableArchiveState<T> copyWith({
-    String? searchValue,
-    bool? showSearch,
-  }) =>
-      SortableArchiveState(
-        sortableArchive,
-        currentFolderId: currentFolderId,
-        initialFolderId: initialFolderId,
-        selected: selected,
-        searchValue: searchValue ?? this.searchValue,
-        showSearch: showSearch ?? this.showSearch,
-        showFolders: showFolders,
-      );
 
   bool get isSelected => selected != null;
 
@@ -73,13 +61,30 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
 
   List<Sortable<T>> get currentFolderSorted =>
       (allByFolder[currentFolderId] ?? [])
+          .where((s) => (myPhotos ? isMyPhotos(s) : !isMyPhotos(s)))
+          .toList()
         ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+
+  List<Sortable> get allMyPhotos {
+    final myPhotosFolder = sortableArchive.getMyPhotosFolder();
+    if (myPhotosFolder == null) {
+      return [];
+    }
+    return [...?allByFolder[myPhotosFolder.id], myPhotosFolder];
+  }
+
+  bool isMyPhotos(Sortable sortable) {
+    final photoIds = allMyPhotos.map((s) => s.id).toList();
+    return photoIds.contains(sortable.id);
+  }
 
   List<Sortable<T>> allFilteredAndSorted(Translated t) {
     if (searchValue.isEmpty) return [];
     return sortableArchive
         .where((s) =>
-            !s.isGroup && s.data.title(t).toLowerCase().contains(searchValue))
+            !s.isGroup &&
+            s.data.title(t).toLowerCase().contains(searchValue) &&
+            (myPhotos ? isMyPhotos(s) : !isMyPhotos(s)))
         .toList()
       ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
   }
@@ -100,8 +105,8 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
         initialFolderId,
         selected,
         searchValue,
-        showSearch,
         showFolders,
+        myPhotos,
       ];
 
   @override

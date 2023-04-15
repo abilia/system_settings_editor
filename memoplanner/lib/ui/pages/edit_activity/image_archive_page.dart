@@ -6,12 +6,16 @@ class ImageArchivePage extends StatelessWidget {
   final VoidCallback? onCancel;
   final String initialFolder;
   final String? header;
+  final bool showSearch;
+  final bool myPhotos;
 
   const ImageArchivePage({
     Key? key,
     this.onCancel,
     this.initialFolder = '',
     this.header,
+    this.showSearch = false,
+    this.myPhotos = false,
   }) : super(key: key);
 
   @override
@@ -21,13 +25,10 @@ class ImageArchivePage extends StatelessWidget {
       create: (_) => SortableArchiveCubit<ImageArchiveData>(
         sortableBloc: BlocProvider.of<SortableBloc>(context),
         initialFolderId: initialFolder,
-        visibilityFilter: (imageArchive) => !imageArchive.data.myPhotos,
+        myPhotos: myPhotos,
       ),
       child: Builder(
         builder: (context) {
-          final showSearch = context.select(
-              (SortableArchiveCubit<ImageArchiveData> cubit) =>
-                  cubit.state.showSearch);
           return LibraryPage<ImageArchiveData>.selectable(
             appBar: AbiliaAppBar(
               iconData: showSearch
@@ -35,6 +36,7 @@ class ImageArchivePage extends StatelessWidget {
                   : AbiliaIcons.pastPictureFromWindowsClipboard,
               title: showSearch ? translate.searchImage : translate.selectImage,
             ),
+            showSearch: showSearch,
             gridChildAspectRatio: layout.imageArchive.aspectRatio,
             rootHeading: header ?? translate.imageArchive,
             libraryItemGenerator: (imageArchive) =>
@@ -43,12 +45,17 @@ class ImageArchivePage extends StatelessWidget {
                 FullScreenArchiveImage(selected: imageArchive.data),
             emptyLibraryMessage: translate.noImages,
             onCancel: onCancel,
-            onOk: (selected) => Navigator.of(context).pop<AbiliaFile>(
-              AbiliaFile.from(
-                id: selected.data.fileId,
-                path: selected.data.file,
-              ),
-            ),
+            onOk: (selected) {
+              Navigator.of(context).pop<SelectedImageData>(
+                SelectedImageData(
+                  selectedImage: AbiliaFile.from(
+                    id: selected.data.fileId,
+                    path: selected.data.file,
+                  ),
+                  fromSearch: showSearch,
+                ),
+              );
+            },
           );
         },
       ),

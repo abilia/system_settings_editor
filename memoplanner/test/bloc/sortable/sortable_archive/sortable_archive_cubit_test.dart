@@ -24,7 +24,11 @@ void main() {
         SortableArchiveCubit<RawSortableData>(sortableBloc: mockSortableBloc),
     verify: (SortableArchiveCubit bloc) => expect(
       bloc.state,
-      const SortableArchiveState<RawSortableData>([]),
+      const SortableArchiveState<RawSortableData>(
+        [],
+        showFolders: true,
+        myPhotos: false,
+      ),
     ),
   );
 
@@ -38,6 +42,8 @@ void main() {
       bloc.state,
       const SortableArchiveState<RawSortableData>(
         [],
+        showFolders: true,
+        myPhotos: false,
         initialFolderId: 'someFolderId',
         currentFolderId: 'someFolderId',
       ),
@@ -155,7 +161,7 @@ void main() {
             currentFolderId: '',
             showFolders: true,
             selected: first,
-            showSearch: false,
+            myPhotos: true,
           )
         ],
       );
@@ -175,7 +181,7 @@ void main() {
             currentFolderId: '',
             showFolders: true,
             selected: second,
-            showSearch: false,
+            myPhotos: true,
           ),
           SortableArchiveState.fromSortables(
             sortables: basicActivitySortables,
@@ -183,7 +189,7 @@ void main() {
             currentFolderId: '',
             showFolders: true,
             selected: first,
-            showSearch: false,
+            myPhotos: true,
           )
         ],
       );

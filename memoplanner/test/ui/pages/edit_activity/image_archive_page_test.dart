@@ -368,12 +368,12 @@ void main() {
       // Search for folder name
       await tester.enterText(find.byType(TextField), folder.data.name);
       await tester.pumpAndSettle();
-      expect(find.text(translate.noImages), findsOneWidget);
+      expect(find.text(translate.noMatchingImage), findsOneWidget);
 
       // Search for nonsense
       await tester.enterText(find.byType(TextField), 'fa4t4t');
       await tester.pumpAndSettle();
-      expect(find.text(translate.noImages), findsOneWidget);
+      expect(find.text(translate.noMatchingImage), findsOneWidget);
 
       // Search for image name
       await tester.enterText(find.byType(TextField), image.data.name);
