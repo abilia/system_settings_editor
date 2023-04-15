@@ -181,7 +181,7 @@ class SelectPictureBody extends StatelessWidget {
         PersistentMaterialPageRoute(
           settings: (ImageArchivePage).routeSetting(
             properties: {
-              'Type': myPhotos ? 'My photos' : 'Image archive',
+              'type': myPhotos ? 'My photos' : 'Image archive',
             },
           ),
           builder: (_) => MultiBlocProvider(

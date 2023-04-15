@@ -8,6 +8,7 @@ class ImageArchivePage extends StatelessWidget {
   final String? header;
   final bool showSearch;
   final bool myPhotos;
+  final SortableArchiveCubit<ImageArchiveData>? sortableArchiveCubit;
 
   const ImageArchivePage({
     Key? key,
@@ -16,17 +17,20 @@ class ImageArchivePage extends StatelessWidget {
     this.header,
     this.showSearch = false,
     this.myPhotos = false,
+    this.sortableArchiveCubit,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return BlocProvider<SortableArchiveCubit<ImageArchiveData>>(
-      create: (_) => SortableArchiveCubit<ImageArchiveData>(
-        sortableBloc: BlocProvider.of<SortableBloc>(context),
-        initialFolderId: initialFolder,
-        myPhotos: myPhotos,
-      ),
+      create: (_) =>
+          sortableArchiveCubit ??
+          SortableArchiveCubit<ImageArchiveData>(
+            sortableBloc: BlocProvider.of<SortableBloc>(context),
+            initialFolderId: initialFolder,
+            myPhotos: myPhotos,
+          ),
       child: Builder(
         builder: (context) {
           return LibraryPage<ImageArchiveData>.selectable(
@@ -65,6 +69,7 @@ class ImageArchivePage extends StatelessWidget {
 
 class ArchiveImage extends StatelessWidget {
   final Sortable<ImageArchiveData> sortable;
+
   const ArchiveImage({
     required this.sortable,
     Key? key,

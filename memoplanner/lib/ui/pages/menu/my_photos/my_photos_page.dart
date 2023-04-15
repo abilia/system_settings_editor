@@ -23,6 +23,7 @@ class MyPhotosPage extends StatelessWidget {
     return BlocProvider<SortableArchiveCubit<ImageArchiveData>>(
       create: (_) => SortableArchiveCubit<ImageArchiveData>(
         initialFolderId: myPhotoFolderId,
+        myPhotos: true,
         sortableBloc: BlocProvider.of<SortableBloc>(context),
       ),
       child: DefaultTabController(

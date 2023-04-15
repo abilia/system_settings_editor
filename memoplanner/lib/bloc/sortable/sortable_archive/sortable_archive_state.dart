@@ -13,12 +13,12 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
 
   const SortableArchiveState(
     this.sortableArchive, {
-    required this.showFolders,
-    required this.myPhotos,
     this.currentFolderId = '',
     this.initialFolderId = '',
     this.selected,
     this.searchValue = '',
+    this.myPhotos = false,
+    this.showFolders = true,
   });
 
   factory SortableArchiveState.fromSortables({
@@ -60,9 +60,7 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
       {for (var s in sortableArchive) s.id: s};
 
   List<Sortable<T>> get currentFolderSorted =>
-      (allByFolder[currentFolderId] ?? [])
-          .where((s) => (myPhotos ? isMyPhotos(s) : !isMyPhotos(s)))
-          .toList()
+      (allByFolder[currentFolderId] ?? []).where(myPhotosFilter).toList()
         ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
   List<Sortable> get allMyPhotos {
@@ -71,6 +69,10 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
       return [];
     }
     return [...?allByFolder[myPhotosFolder.id], myPhotosFolder];
+  }
+
+  bool myPhotosFilter(Sortable sortable) {
+    return myPhotos ? isMyPhotos(sortable) : !isMyPhotos(sortable);
   }
 
   bool isMyPhotos(Sortable sortable) {
@@ -84,7 +86,7 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
         .where((s) =>
             !s.isGroup &&
             s.data.title(t).toLowerCase().contains(searchValue) &&
-            (myPhotos ? isMyPhotos(s) : !isMyPhotos(s)))
+            myPhotosFilter(s))
         .toList()
       ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
   }

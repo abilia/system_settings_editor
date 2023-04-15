@@ -68,7 +68,6 @@ class SortableArchiveCubit<T extends SortableData>
         state.sortableArchive,
         currentFolderId: currentFolder?.groupId ?? '',
         initialFolderId: state.initialFolderId,
-        showFolders: state.showFolders,
         myPhotos: state.myPhotos,
       ),
     );

@@ -186,7 +186,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                         PersistentMaterialPageRoute(
                           settings: (ImageArchivePage).routeSetting(
                             properties: {
-                              'Type': 'Search',
+                              'type': 'Search',
                             },
                           ),
                           builder: (_) => MultiBlocProvider(
@@ -194,6 +194,8 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                             child: ImageArchivePage(
                               onCancel: onCancel,
                               showSearch: true,
+                              sortableArchiveCubit: context.read<
+                                  SortableArchiveCubit<ImageArchiveData>>(),
                             ),
                           ),
                         ),

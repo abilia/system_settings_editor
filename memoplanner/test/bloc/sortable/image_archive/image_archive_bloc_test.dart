@@ -14,13 +14,8 @@ void main() {
   });
 
   test('Initial state is an empty ImageArchiveState', () {
-    expect(
-        imageArchiveBloc.state,
-        const SortableArchiveState<ImageArchiveData>(
-          [],
-          showFolders: true,
-          myPhotos: false,
-        ));
+    expect(imageArchiveBloc.state,
+        const SortableArchiveState<ImageArchiveData>([]));
   });
 
   test('FolderChanged will set the folder in the state', () async {
@@ -28,7 +23,7 @@ void main() {
     final expect = expectLater(
       imageArchiveBloc.stream,
       emits(const SortableArchiveState<ImageArchiveData>([],
-          showFolders: true, myPhotos: false, currentFolderId: folderId)),
+          currentFolderId: folderId)),
     );
     imageArchiveBloc.folderChanged(folderId);
 
@@ -42,11 +37,7 @@ void main() {
         Sortable.createNew(data: ChecklistData(Checklist()));
     final expect = expectLater(
       imageArchiveBloc.stream,
-      emits(SortableArchiveState<ImageArchiveData>(
-        [imageArchiveSortable],
-        showFolders: true,
-        myPhotos: false,
-      )),
+      emits(SortableArchiveState<ImageArchiveData>([imageArchiveSortable])),
     );
     imageArchiveBloc
         .sortablesUpdated([imageArchiveSortable, checklistSortable]);
@@ -68,20 +59,13 @@ void main() {
       imageArchiveBloc.stream,
       emitsInOrder([
         SortableArchiveState<ImageArchiveData>(
-          [imageArchiveFolder1, imageArchiveFolder2],
-          showFolders: true,
-          myPhotos: false,
-        ),
+            [imageArchiveFolder1, imageArchiveFolder2]),
         SortableArchiveState<ImageArchiveData>(
           [imageArchiveFolder1, imageArchiveFolder2],
-          showFolders: true,
-          myPhotos: false,
           currentFolderId: imageArchiveFolder2.id,
         ),
         SortableArchiveState<ImageArchiveData>(
           [imageArchiveFolder1, imageArchiveFolder2],
-          showFolders: true,
-          myPhotos: false,
           currentFolderId: imageArchiveFolder1.id,
         ),
       ]),
