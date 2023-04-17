@@ -67,7 +67,9 @@ class MonthContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final pageController = PageController(
         initialPage: context.read<MonthCalendarCubit>().state.index);
-    final weekBuilder = showPreview
+    final isCollapsed =
+        context.select((MonthCalendarCubit cubit) => cubit.state.isCollapsed);
+    final weekBuilder = showPreview && !isCollapsed
         ? (MonthWeek week) => SizedBox(
               height: layout.monthCalendar.weekHeight,
               child: WeekRow(
@@ -95,17 +97,19 @@ class MonthContent extends StatelessWidget {
           buildWhen: (oldState, newState) => newState.index == item,
           builder: (context, state) {
             if (state.index != item) return Container();
+            final preview = MonthListPreview(
+              dayThemes: dayThemes,
+            );
             return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(height: layout.monthCalendar.day.viewMargin.top),
                 ...state.weeks.map(weekBuilder),
                 if (showPreview)
-                  Expanded(
-                    child: MonthListPreview(
-                      monthCalendarState: state,
-                      dayThemes: dayThemes,
-                    ),
-                  ),
+                  if (state.isCollapsed) ...[
+                    const Spacer(),
+                    preview,
+                  ] else
+                    Expanded(child: preview),
               ],
             );
           },
@@ -127,7 +131,9 @@ class WeekRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dayBuilder = Config.isMPGO
+    final isCollapsed =
+        context.select((MonthCalendarCubit cubit) => cubit.state.isCollapsed);
+    final dayBuilder = layout.go && !isCollapsed
         ? (MonthDay day, DayTheme dayTheme) => MonthDayViewCompact(
               day,
               dayTheme: dayTheme,
@@ -446,14 +452,10 @@ class MonthDayViewCompact extends StatelessWidget {
                     if (monthDay.hasEvent || monthDay.fullDayActivityCount > 0)
                       Align(
                         alignment: Alignment.topRight,
-                        child: Padding(
-                          padding: layout
-                              .monthCalendar.day.hasActivitiesDotPaddingCompact,
-                          child: ColorDot(
-                            radius:
-                                layout.monthCalendar.day.hasActivitiesDotRadius,
-                            color: AbiliaColors.black,
-                          ),
+                        child: ColorDot(
+                          radius:
+                              layout.monthCalendar.day.hasActivitiesDotRadius,
+                          color: AbiliaColors.black,
                         ),
                       ),
                     if (monthDay.isPast)

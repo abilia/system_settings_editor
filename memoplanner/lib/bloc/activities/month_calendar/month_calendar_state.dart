@@ -4,14 +4,36 @@ class MonthCalendarState {
   final DateTime firstDay;
   final List<MonthWeek> weeks;
   final Occasion occasion;
+  final bool showMonthPreview;
 
   int get index => firstDay.year * DateTime.monthsPerYear + firstDay.month;
+
+  bool get isCollapsed => layout.go && !showMonthPreview;
 
   const MonthCalendarState({
     required this.firstDay,
     required this.occasion,
     required this.weeks,
+    required this.showMonthPreview,
   });
+
+  MonthCalendarState.initial(this.showMonthPreview)
+      : firstDay = DateTime.now(),
+        occasion = Occasion.current,
+        weeks = [];
+
+  MonthCalendarState copyWith({
+    DateTime? firstDay,
+    List<MonthWeek>? weeks,
+    Occasion? occasion,
+    bool? showMonthPreview,
+  }) =>
+      MonthCalendarState(
+        firstDay: firstDay ?? this.firstDay,
+        weeks: weeks ?? this.weeks,
+        occasion: occasion ?? this.occasion,
+        showMonthPreview: showMonthPreview ?? this.showMonthPreview,
+      );
 }
 
 class MonthWeek extends Equatable {
@@ -22,6 +44,7 @@ class MonthWeek extends Equatable {
 
   @override
   List<Object> get props => [number, days];
+
   @override
   bool get stringify => true;
 }
@@ -55,6 +78,7 @@ class MonthDay extends MonthCalendarDay {
         fullDayActivityCount,
         occasion,
       ];
+
   @override
   bool get stringify => true;
 }

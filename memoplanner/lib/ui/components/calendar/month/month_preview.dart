@@ -5,23 +5,30 @@ import 'package:memoplanner/ui/all.dart';
 
 class MonthListPreview extends StatelessWidget {
   final List<DayTheme> dayThemes;
-  final MonthCalendarState monthCalendarState;
 
   const MonthListPreview({
     required this.dayThemes,
-    required this.monthCalendarState,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final monthPreviewLayout = layout.monthCalendar.monthPreview;
     final dayPickerState = context.watch<DayPickerBloc>().state;
+    final monthCalendarState = context.watch<MonthCalendarCubit>().state;
+    final isCollapsed = monthCalendarState.isCollapsed;
     final showPreview =
         monthCalendarState.firstDay.month == dayPickerState.day.month &&
             monthCalendarState.firstDay.year == dayPickerState.day.year;
     if (!showPreview) {
+      if (isCollapsed) {
+        return SizedBox(
+          height: monthPreviewLayout.headingHeight +
+              monthPreviewLayout.monthListPreviewPadding.vertical,
+        );
+      }
       return Padding(
-        padding: layout.monthCalendar.monthPreview.noSelectedDayPadding,
+        padding: monthPreviewLayout.noSelectedDayPadding,
         child: Text(
           Translator.of(context).translate.selectADayToViewDetails,
           style: abiliaTextTheme.bodyLarge,
@@ -30,7 +37,7 @@ class MonthListPreview extends StatelessWidget {
     } else {
       final dayTheme = dayThemes[dayPickerState.day.weekday - 1];
       return Padding(
-        padding: layout.monthCalendar.monthPreview.monthListPreviewPadding,
+        padding: monthPreviewLayout.monthListPreviewPadding,
         child: Column(
           children: [
             AnimatedTheme(
@@ -39,15 +46,10 @@ class MonthListPreview extends StatelessWidget {
                 day: dayPickerState.day,
                 isLight: dayTheme.isLight,
                 occasion: dayPickerState.occasion,
+                isCollapsed: isCollapsed,
               ),
             ),
-            Expanded(
-              child: Builder(
-                builder: (context) => MonthPreview(
-                  events: context.watch<DayEventsCubit>().state,
-                ),
-              ),
-            ),
+            if (!isCollapsed) const Expanded(child: MonthPreview()),
           ],
         ),
       );
@@ -56,12 +58,7 @@ class MonthListPreview extends StatelessWidget {
 }
 
 class MonthPreview extends StatefulWidget {
-  const MonthPreview({
-    required this.events,
-    Key? key,
-  }) : super(key: key);
-
-  final EventsState events;
+  const MonthPreview({super.key});
 
   @override
   State<MonthPreview> createState() => _MonthPreviewState();
@@ -103,7 +100,7 @@ class _MonthPreviewState extends State<MonthPreview> {
           topPadding: layout.monthCalendar.monthPreview.activityListTopPadding,
           bottomPadding:
               layout.monthCalendar.monthPreview.activityListBottomPadding,
-          events: widget.events,
+          events: context.watch<DayEventsCubit>().state,
           centerNoActivitiesText: true,
         ),
       ),
@@ -116,12 +113,14 @@ class MonthDayPreviewHeading extends StatelessWidget {
     required this.day,
     required this.isLight,
     required this.occasion,
-    Key? key,
-  }) : super(key: key);
+    required this.isCollapsed,
+    super.key,
+  });
 
   final DateTime day;
   final bool isLight;
   final Occasion occasion;
+  final bool isCollapsed;
 
   @override
   Widget build(BuildContext context) {
@@ -204,6 +203,21 @@ class MonthDayPreviewHeading extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
+                  if (layout.go)
+                    SizedBox(
+                      height: previewLayout.headingFullDayActivityWidth,
+                      width: previewLayout.headingFullDayActivityWidth,
+                      child: IconActionButtonLight(
+                        onPressed: () async =>
+                            context.read<MonthCalendarCubit>().togglePreview(),
+                        child: Icon(
+                          isCollapsed
+                              ? AbiliaIcons.navigationUp
+                              : AbiliaIcons.navigationDown,
+                          size: previewLayout.headingButtonIconSize,
+                        ),
+                      ),
+                    ),
                 ],
               );
             },

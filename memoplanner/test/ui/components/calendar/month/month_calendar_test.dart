@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../fakes/activity_db_in_memory.dart';
 import '../../../../fakes/all.dart';
 import '../../../../mocks/mocks.dart';
+import '../../../../test_helpers/app_pumper.dart';
 import '../../../../test_helpers/enter_text.dart';
 import '../../../../test_helpers/register_fallback_values.dart';
 import '../../../../test_helpers/tts.dart';
@@ -178,7 +179,9 @@ void main() {
 
       testWidgets('shows fullday', (WidgetTester tester) async {
         // Act
-        await tester.pumpWidget(const App());
+        screenSize = const Size(800, 1280);
+        addTearDown(() => screenSize = const Size(600, 600));
+        await tester.pumpWidgetWithMPSize(const App());
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.month));
         await tester.pumpAndSettle();
@@ -214,10 +217,66 @@ void main() {
         );
       }, skip: !Config.isMPGO);
 
+      testWidgets('Collapsable month preview', (WidgetTester tester) async {
+        // Act - Go to month view
+        await tester.pumpWidget(const App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.month));
+        await tester.pumpAndSettle();
+
+        // Assert - Compact month view with month preview
+        expect(find.byType(MonthDayViewCompact), findsWidgets);
+        expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
+        expect(find.byType(EventList), findsOneWidget);
+        expect(find.byType(MonthDayView), findsNothing);
+
+        // Act - Tap on collapse button
+        await tester.tap(find.byType(IconActionButtonLight));
+        await tester.pumpAndSettle();
+
+        // Assert - Expanded month view collapsed preview
+        expect(find.byType(MonthDayViewCompact), findsNothing);
+        expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
+        expect(find.byType(EventList), findsNothing);
+        expect(find.byType(MonthDayView), findsWidgets);
+
+        // Act - Go to next day
+        await tester.tap(find.byType(RightNavButton));
+        await tester.pumpAndSettle();
+
+        // Assert - Noting shown, not even preview heading
+        expect(find.byType(MonthDayViewCompact), findsNothing);
+        expect(find.byType(MonthDayPreviewHeading), findsNothing);
+        expect(find.byType(EventList), findsNothing);
+        expect(find.byType(MonthDayView), findsWidgets);
+
+        // Act - Tap on a day
+        await tester.tap(find.byType(MonthDayView).first);
+        await tester.pumpAndSettle();
+
+        // Assert - Collapsed preview is shown
+        expect(find.byType(MonthDayViewCompact), findsNothing);
+        expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
+        expect(find.byType(EventList), findsNothing);
+        expect(find.byType(MonthDayView), findsWidgets);
+
+        // Act - Tap on collapse button again
+        await tester.tap(find.byType(IconActionButtonLight));
+        await tester.pumpAndSettle();
+
+        // Assert - Compact month view with preview
+        expect(find.byType(MonthDayViewCompact), findsWidgets);
+        expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
+        expect(find.byType(EventList), findsOneWidget);
+        expect(find.byType(MonthDayView), findsNothing);
+      }, skip: !Config.isMPGO);
+
       testWidgets('shows only non-fullday activities as dot on MP',
           (WidgetTester tester) async {
         // Act
-        await tester.pumpWidget(const App());
+        screenSize = const Size(800, 1280);
+        addTearDown(() => screenSize = const Size(600, 600));
+        await tester.pumpWidgetWithMPSize(const App());
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.month));
         await tester.pumpAndSettle();
@@ -226,6 +285,9 @@ void main() {
           find.byType(ColorDot),
           findsNWidgets(recursOnMonthDaySet.length),
         );
+
+        // Assert - No collapse month preview button
+        expect(find.byType(IconActionButtonLight), findsNothing);
       }, skip: !Config.isMP);
     });
   });

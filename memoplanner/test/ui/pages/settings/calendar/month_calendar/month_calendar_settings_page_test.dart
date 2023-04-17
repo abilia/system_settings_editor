@@ -240,6 +240,8 @@ void main() {
     testWidgets(
       'defaults',
       (tester) async {
+        screenSize = const Size(800, 1280);
+        addTearDown(() => screenSize = const Size(600, 600));
         await tester.goToMonthCalendar();
         final dayContainer = tester.firstWidget<Container>(
           find.descendant(
@@ -266,6 +268,8 @@ void main() {
             ),
           ),
         ];
+        screenSize = const Size(800, 1280);
+        addTearDown(() => screenSize = const Size(600, 600));
         await tester.goToMonthCalendar();
         final dayContainer = tester.firstWidget<Container>(
           find.byKey(TestKey.monthCalendarDayBackgroundColor),
