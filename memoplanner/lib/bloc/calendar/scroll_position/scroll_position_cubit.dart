@@ -30,6 +30,7 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
 
     if (scrollState is WrongDay) {
       dayPickerBloc.add(const CurrentDay());
+      return reset();
     }
 
     if (scrollState is ScrollPositionReady) {
