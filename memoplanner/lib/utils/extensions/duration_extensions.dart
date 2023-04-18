@@ -1,4 +1,5 @@
 import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 const iOSPersistentNotificationMaxDuration = Duration(seconds: 30),
     iOSUnlockedPhoneNotificationMaxDuration = Duration(seconds: 5);
@@ -87,4 +88,13 @@ extension DurationExtensions on Duration {
   int inDots(int minutesPerDot, roundingMinute) =>
       (inMinutes ~/ minutesPerDot) +
       (inMinutes % minutesPerDot > roundingMinute ? 1 : 0);
+
+  Duration roundUpToClosestHour() => Duration(hours: inHours);
+
+  Duration roundToClosestDot() => Duration(
+        minutes: (inMinutes / minutesPerDot).round() * minutesPerDot,
+      );
+
+  Duration roundDownToClosestDot() =>
+      Duration(minutes: (inMinutes / minutesPerDot).floor() * minutesPerDot);
 }

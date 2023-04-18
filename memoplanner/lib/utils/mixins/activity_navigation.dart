@@ -41,8 +41,10 @@ mixin ActivityNavigation {
 
   Future<void> navigateToActivityWizardWithContext(
     BuildContext context,
-    List<BlocProvider> authProviders,
-  ) {
+    List<BlocProvider> authProviders, {
+    BasicActivityDataItem? basicActivity,
+    AddActivityMode? addActivityMode,
+  }) {
     final settings = context.read<MemoplannerSettingsBloc>().state;
     final calendarId = context.read<CalendarCubit>().state;
     final defaultsSettings = settings.addActivity.defaults;
@@ -52,6 +54,8 @@ mixin ActivityNavigation {
       defaultsSettings: defaultsSettings,
       calendarId: calendarId ?? '',
       day: context.read<DayPickerBloc>().state.day,
+      basicActivity: basicActivity,
+      addActivityMode: addActivityMode,
     );
   }
 
@@ -62,6 +66,7 @@ mixin ActivityNavigation {
     required List<BlocProvider> authProviders,
     required String calendarId,
     BasicActivityDataItem? basicActivity,
+    AddActivityMode? addActivityMode,
   }) async {
     final activityCreated = await navigator.push<bool>(
       createSlideRoute<bool>(
@@ -84,7 +89,8 @@ mixin ActivityNavigation {
                 final showCategories = settings.calendar.categories.show;
                 final supportPersonsCubit = context.read<SupportPersonsCubit>()
                   ..loadSupportPersons();
-                return addActivitySettings.mode == AddActivityMode.editView
+                addActivityMode ??= addActivitySettings.mode;
+                return addActivityMode == AddActivityMode.editView
                     ? ActivityWizardCubit.newAdvanced(
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
