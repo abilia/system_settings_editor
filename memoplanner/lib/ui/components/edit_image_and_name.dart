@@ -7,8 +7,10 @@ class EditImageAndName extends StatefulWidget {
   final PreferredSizeWidget? appBar;
   final int? maxLines, minLines;
   final bool allowEmpty;
+  final bool nameFromImage;
   final String? hintText;
   final String? selectPictureLabel;
+
   const EditImageAndName({
     Key? key,
     this.imageAndName,
@@ -18,6 +20,7 @@ class EditImageAndName extends StatefulWidget {
     this.allowEmpty = false,
     this.hintText,
     this.selectPictureLabel,
+    this.nameFromImage = false,
   }) : super(key: key);
 
   @override
@@ -58,10 +61,19 @@ class _EditImageAndNameState extends State<EditImageAndName> {
                 SelectPictureWidget(
                   selectedImage: _imageAndName.image,
                   label: widget.selectPictureLabel,
-                  onImageSelected: (selectedImage) => setState(
-                    () => _imageAndName =
-                        _imageAndName.copyWith(image: selectedImage),
-                  ),
+                  onImageSelected: (imageAndName) {
+                    final nameFromImage = widget.nameFromImage &&
+                        !_imageAndName.hasName &&
+                        imageAndName.hasName;
+                    final name = nameFromImage ? imageAndName.name : null;
+                    setState(() {
+                      _imageAndName = _imageAndName.copyWith(
+                        image: imageAndName.image,
+                        name: name,
+                      );
+                    });
+                    _textEditController.text = _imageAndName.name;
+                  },
                 ),
                 SizedBox(width: layout.formPadding.groupHorizontalDistance),
                 Expanded(

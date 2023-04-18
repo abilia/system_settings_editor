@@ -233,9 +233,9 @@ class _TimerInfoInput extends StatelessWidget {
                 SelectPictureWidget(
                   selectedImage: state.image,
                   isLarge: true,
-                  onImageSelected: (selectedImage) {
+                  onImageSelected: (imageAndName) {
                     BlocProvider.of<EditTimerCubit>(context)
-                        .updateImage(selectedImage);
+                        .updateImage(imageAndName.image);
                   },
                 ),
                 SizedBox(width: layout.formPadding.largeVerticalItemDistance),

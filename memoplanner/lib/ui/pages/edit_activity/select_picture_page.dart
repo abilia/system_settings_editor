@@ -30,8 +30,8 @@ class SelectPicturePage extends StatelessWidget {
         label: label,
       ),
       body: SelectPictureBody(
-        imageCallback: (selectedImage) async {
-          await Navigator.of(context).maybePop(selectedImage);
+        imageCallback: (imageAndName) async {
+          await Navigator.of(context).maybePop(imageAndName);
         },
         selectedImage: selectedImage,
         onCancel: () async {
@@ -47,7 +47,7 @@ class SelectPicturePage extends StatelessWidget {
 }
 
 class SelectPictureBody extends StatelessWidget {
-  final ValueChanged<AbiliaFile> imageCallback;
+  final ValueChanged<ImageAndName> imageCallback;
   final AbiliaFile selectedImage;
   final VoidCallback? onCancel;
 
@@ -76,7 +76,7 @@ class SelectPictureBody extends StatelessWidget {
                 RemoveButton(
                   key: TestKey.removePicture,
                   onTap: () {
-                    imageCallback.call(AbiliaFile.empty);
+                    imageCallback.call(ImageAndName.empty);
                   },
                   icon: Icon(
                     AbiliaIcons.deleteAllClear,
@@ -99,8 +99,8 @@ class SelectPictureBody extends StatelessWidget {
                 text: Text(translate.imageArchive),
                 onTap: () async {
                   final authProviders = copiedAuthProviders(context);
-                  final selectedImage =
-                      await Navigator.of(context).push<AbiliaFile>(
+                  final imageAndName =
+                      await Navigator.of(context).push<ImageAndName>(
                     PersistentMaterialPageRoute(
                       settings:
                           RouteSettings(name: (ImageArchivePage).toString()),
@@ -110,8 +110,8 @@ class SelectPictureBody extends StatelessWidget {
                       ),
                     ),
                   );
-                  if (selectedImage != null) {
-                    imageCallback.call(selectedImage);
+                  if (imageAndName != null) {
+                    imageCallback.call(imageAndName);
                   }
                 },
               ),
@@ -129,8 +129,8 @@ class SelectPictureBody extends StatelessWidget {
                     onTap: (myPhotoFolder != null)
                         ? () async {
                             final authProviders = copiedAuthProviders(context);
-                            final selectedImage =
-                                await Navigator.of(context).push<AbiliaFile>(
+                            final imageAndName =
+                                await Navigator.of(context).push<ImageAndName>(
                               PersistentMaterialPageRoute(
                                 settings: (ImageArchivePage).routeSetting(),
                                 builder: (_) => MultiBlocProvider(
@@ -143,8 +143,8 @@ class SelectPictureBody extends StatelessWidget {
                                 ),
                               ),
                             );
-                            if (selectedImage != null) {
-                              imageCallback.call(selectedImage);
+                            if (imageAndName != null) {
+                              imageCallback.call(imageAndName);
                             }
                           }
                         : null,
@@ -158,7 +158,8 @@ class SelectPictureBody extends StatelessWidget {
                   text: translate.devicesLocalImages,
                   imageSource: ImageSource.gallery,
                   permission: Permission.photos,
-                  imageCallback: imageCallback,
+                  imageCallback: (image) =>
+                      imageCallback(ImageAndName('', image)),
                 ),
                 SizedBox(height: layout.formPadding.verticalItemDistance),
               ],
@@ -168,7 +169,8 @@ class SelectPictureBody extends StatelessWidget {
                   text: translate.takeNewPhoto,
                   imageSource: ImageSource.camera,
                   permission: Permission.camera,
-                  imageCallback: imageCallback,
+                  imageCallback: (image) =>
+                      imageCallback(ImageAndName('', image)),
                 ),
             ],
           ),

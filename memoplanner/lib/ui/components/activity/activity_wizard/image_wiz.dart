@@ -27,7 +27,8 @@ class ImageWizSelectPictureWidget extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.selectedImage != current.selectedImage,
       builder: (context, state) => SelectPictureBody(
-        imageCallback: (newImage) {
+        imageCallback: (imageAndName) {
+          final newImage = imageAndName.image;
           if (newImage is UnstoredAbiliaFile) {
             final now = context.read<ClockBloc>().state;
             final name = DateFormat.yMd(Platform.localeName).format(now);

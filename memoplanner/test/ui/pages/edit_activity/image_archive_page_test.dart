@@ -138,10 +138,10 @@ void main() {
       expect(find.byType(FullScreenImage), findsOneWidget);
       await tester.tap(find.byType(GreenButton));
       await tester.pumpAndSettle();
-      final poped = navObserver.routesPoped;
-      expect(poped, hasLength(1));
-      final res = await poped.first.popped;
-      expect(res, AbiliaFile.from(id: fileId, path: path));
+      final popped = navObserver.routesPoped;
+      expect(popped, hasLength(1));
+      final res = await popped.first.popped as ImageAndName;
+      expect(res.image, AbiliaFile.from(id: fileId, path: path));
     });
   });
 

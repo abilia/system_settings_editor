@@ -43,10 +43,13 @@ class ImageArchivePage extends StatelessWidget {
                 FullScreenArchiveImage(selected: imageArchive.data),
             emptyLibraryMessage: translate.noImages,
             onCancel: onCancel,
-            onOk: (selected) => Navigator.of(context).pop<AbiliaFile>(
-              AbiliaFile.from(
-                id: selected.data.fileId,
-                path: selected.data.file,
+            onOk: (selected) => Navigator.of(context).pop<ImageAndName>(
+              ImageAndName(
+                selected.data.name,
+                AbiliaFile.from(
+                  id: selected.data.fileId,
+                  path: selected.data.file,
+                ),
               ),
             ),
           );
