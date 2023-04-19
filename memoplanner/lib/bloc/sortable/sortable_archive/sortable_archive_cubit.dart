@@ -73,56 +73,16 @@ class SortableArchiveCubit<T extends SortableData>
     );
   }
 
-  void sortableSelected(Sortable<T>? selected) {
-    emit(
-      SortableArchiveState<T>(
-        state.sortableArchive,
-        currentFolderId: state.currentFolderId,
-        selected: selected,
-        initialFolderId: state.initialFolderId,
-        searchValue: state.searchValue,
-        showFolders: state.showFolders,
-        myPhotos: state.myPhotos,
-      ),
-    );
-  }
+  void sortableSelected(Sortable<T>? selected) =>
+      emit(state.copyWith(selected: selected));
 
-  void folderChanged(String folderId) {
-    emit(
-      SortableArchiveState<T>(
-        state.sortableArchive,
-        currentFolderId: folderId,
-        initialFolderId: state.initialFolderId,
-        searchValue: state.searchValue,
-        showFolders: state.showFolders,
-        myPhotos: state.myPhotos,
-      ),
-    );
-  }
+  void folderChanged(String folderId) =>
+      emit(state.copyWith(selected: state.selected, currentFolderId: folderId));
 
-  void unselect() {
-    emit(
-      SortableArchiveState<T>(
-        state.sortableArchive,
-        currentFolderId: state.currentFolderId,
-        initialFolderId: state.initialFolderId,
-        searchValue: state.searchValue,
-        showFolders: state.showFolders,
-        myPhotos: state.myPhotos,
-      ),
-    );
-  }
+  void unselect() => emit(state.copyWith(selected: null));
 
-  void searchValueChanged(String searchValue) => emit(
-        SortableArchiveState<T>(
-          state.sortableArchive,
-          currentFolderId: state.currentFolderId,
-          initialFolderId: state.initialFolderId,
-          searchValue: searchValue,
-          showFolders: state.showFolders,
-          myPhotos: state.myPhotos,
-        ),
-      );
+  void searchValueChanged(String searchValue) =>
+      emit(state.copyWith(selected: state.selected, searchValue: searchValue));
 
   void reorder(SortableReorderDirection direction) {
     final selectedId = state.selected?.id;

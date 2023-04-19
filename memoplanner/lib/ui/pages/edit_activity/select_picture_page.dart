@@ -186,11 +186,18 @@ class SelectPictureBody extends StatelessWidget {
           ),
           builder: (_) => MultiBlocProvider(
             providers: authProviders,
-            child: ImageArchivePage(
-              onCancel: onCancel,
-              initialFolder: initialFolder,
-              myPhotos: myPhotos,
-              header: header,
+            child: BlocProvider<SortableArchiveCubit<ImageArchiveData>>(
+              create: (_) => SortableArchiveCubit<ImageArchiveData>(
+                sortableBloc: BlocProvider.of<SortableBloc>(context),
+                initialFolderId: initialFolder,
+                myPhotos: myPhotos,
+              ),
+              child: ImageArchivePage(
+                onCancel: onCancel,
+                initialFolder: initialFolder,
+                myPhotos: myPhotos,
+                header: header,
+              ),
             ),
           ),
         ),

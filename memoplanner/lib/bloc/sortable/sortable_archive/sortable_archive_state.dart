@@ -21,6 +21,25 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
     this.showFolders = true,
   });
 
+  SortableArchiveState<T> copyWith({
+    required Sortable<T>? selected,
+    List<Sortable<T>>? sortableArchive,
+    String? currentFolderId,
+    String? initialFolderId,
+    String? searchValue,
+    bool? showFolders,
+    bool? myPhotos,
+  }) =>
+      SortableArchiveState(
+        sortableArchive ?? this.sortableArchive,
+        currentFolderId: currentFolderId ?? this.currentFolderId,
+        initialFolderId: initialFolderId ?? this.initialFolderId,
+        searchValue: searchValue ?? this.searchValue,
+        myPhotos: myPhotos ?? this.myPhotos,
+        showFolders: showFolders ?? this.showFolders,
+        selected: selected,
+      );
+
   factory SortableArchiveState.fromSortables({
     required Iterable<Sortable> sortables,
     required String initialFolderId,
@@ -71,14 +90,11 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
     return [...?allByFolder[myPhotosFolder.id], myPhotosFolder];
   }
 
-  bool myPhotosFilter(Sortable sortable) {
-    return myPhotos ? isMyPhotos(sortable) : !isMyPhotos(sortable);
-  }
+  bool myPhotosFilter(Sortable sortable) =>
+      myPhotos ? isMyPhotos(sortable) : !isMyPhotos(sortable);
 
-  bool isMyPhotos(Sortable sortable) {
-    final photoIds = allMyPhotos.map((s) => s.id).toList();
-    return photoIds.contains(sortable.id);
-  }
+  bool isMyPhotos(Sortable sortable) =>
+      allMyPhotos.map((s) => s.id).contains(sortable.id);
 
   List<Sortable<T>> allFilteredAndSorted(Translated t) {
     if (searchValue.isEmpty) return [];

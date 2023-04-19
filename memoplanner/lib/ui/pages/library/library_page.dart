@@ -191,11 +191,14 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                           ),
                           builder: (_) => MultiBlocProvider(
                             providers: authProviders,
-                            child: ImageArchivePage(
-                              onCancel: onCancel,
-                              showSearch: true,
-                              sortableArchiveCubit: context.read<
+                            child: BlocProvider<
+                                SortableArchiveCubit<ImageArchiveData>>.value(
+                              value: context.read<
                                   SortableArchiveCubit<ImageArchiveData>>(),
+                              child: ImageArchivePage(
+                                onCancel: onCancel,
+                                showSearch: true,
+                              ),
                             ),
                           ),
                         ),

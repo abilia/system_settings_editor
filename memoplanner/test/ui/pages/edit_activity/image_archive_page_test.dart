@@ -84,7 +84,12 @@ void main() {
 
   tearDown(() => navObserver = NavObserver());
 
-  Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
+  Widget wrapWithMaterialApp(
+    Widget widget, {
+    String initialFolder = '',
+    bool myPhotos = false,
+  }) =>
+      MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: const [Translator.delegate],
         navigatorObservers: [navObserver],
@@ -105,6 +110,13 @@ void main() {
             ),
             BlocProvider<SpeechSettingsCubit>(
               create: (context) => FakeSpeechSettingsCubit(),
+            ),
+            BlocProvider<SortableArchiveCubit<ImageArchiveData>>(
+              create: (context) => SortableArchiveCubit(
+                sortableBloc: mockSortableBloc,
+                initialFolderId: initialFolder,
+                myPhotos: myPhotos,
+              ),
             ),
           ], child: child!),
         ),
@@ -313,9 +325,14 @@ void main() {
     await mockNetworkImages(() async {
       when(() => mockSortableBloc.state).thenAnswer(
           (_) => SortablesLoaded(sortables: [folder, imageInFolder]));
-      await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage(
-        initialFolder: folder.id,
-      )));
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          ImageArchivePage(
+            initialFolder: folder.id,
+          ),
+          initialFolder: folder.id,
+        ),
+      );
       await tester.pumpAndSettle();
       expect(find.byType(ImageArchivePage), findsOneWidget);
       expect(find.byType(ArchiveImage), findsOneWidget);
@@ -392,7 +409,9 @@ void main() {
   });
 
   Future<void> pumpImageArchiveSearch(
-      WidgetTester tester, bool myPhotos) async {
+    WidgetTester tester,
+    bool myPhotos,
+  ) async {
     await mockNetworkImages(() async {
       when(() => mockSortableBloc.state).thenAnswer((_) => SortablesLoaded(
               sortables: [
@@ -408,6 +427,8 @@ void main() {
             initialFolder: folder.id,
             myPhotos: myPhotos,
           ),
+          initialFolder: folder.id,
+          myPhotos: myPhotos,
         ),
       );
       await tester.pumpAndSettle();
