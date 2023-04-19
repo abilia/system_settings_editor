@@ -169,10 +169,8 @@ class AppBarTitleRows {
       day,
       week,
       '${DateFormat.MMM(langCode).format(selectedWeekStart)}'
-      '-'
-      '${DateFormat.MMM(langCode).format(selectedWeekEnd)}'
-      ', '
-      '${DateFormat.y(langCode).format(selectedWeekStart)}',
+      '-${DateFormat.MMM(langCode).format(selectedWeekEnd)}'
+      ' ${DateFormat.y(langCode).format(selectedWeekStart)}',
     );
   }
 
