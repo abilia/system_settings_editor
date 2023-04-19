@@ -174,10 +174,10 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                     context
                         .read<SpeechSettingsCubit>()
                         .setSpeechRate(speechRate),
-                    Navigator.of(context).maybePop(),
                   ],
                 );
               }
+              if (context.mounted) await Navigator.of(context).maybePop();
             },
           ),
           forwardNavigationWidget: OkButton(onPressed: () async {
