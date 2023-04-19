@@ -91,7 +91,7 @@ extension DurationExtensions on Duration {
 
   Duration roundUpToClosestHour() => Duration(hours: inHours);
 
-  Duration roundToClosestDot() => Duration(
-        minutes: (inMinutes / minutesPerDot).round() * minutesPerDot,
+  Duration roundDownToClosestDot() => Duration(
+        minutes: (inMinutes / minutesPerDot).floor() * minutesPerDot,
       );
 }

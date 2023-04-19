@@ -17,6 +17,8 @@ double timeToMidDotPixelDistance({
     timeToPixels(now.hour, now.minute, dotDistance) + dotSize / 2;
 double timeToPixels(int hours, int minutes, double dotDistance) =>
     (hours * dotsPerHour + minutes ~/ minutesPerDot) * dotDistance;
+double durationToPixels(Duration duration, double dotDistance) =>
+    timeToPixels(0, duration.inMinutes, dotDistance);
 double hoursToPixels(int hours, double dotDistance) =>
     timeToPixels(hours, 0, dotDistance);
 

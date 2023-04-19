@@ -100,6 +100,7 @@ class TimePillar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formatHour = onlyHourFormat(context, use12h: use12h);
+    final selectionRange = this.selectionRange;
     return Padding(
       padding: EdgeInsets.fromLTRB(
         measures.timePillarPadding,
@@ -109,38 +110,61 @@ class TimePillar extends StatelessWidget {
       ),
       child: SizedBox(
         width: measures.timePillarWidth,
-        child: Column(
+        child: Stack(
           children: [
-            ...List.generate(
-              interval.lengthInHours,
-              (index) {
-                final hourIndex = index + interval.start.hour;
-                final hour =
-                    interval.start.onlyDays().copyWith(hour: hourIndex);
-                final isNight = hour.isNight(dayParts);
-                return Hour(
-                  hour: formatHour(hour),
-                  dots: TimePillarHourDots(
-                    hour: hour,
-                    isNight: isNight,
-                    columnOfDots: columnOfDots,
-                    selectionRange: selectionRange,
-                  ),
-                  isNight: isNight,
-                  measures: measures,
-                );
-              },
-            ),
-            if (!preview)
-              Hour(
-                hour: formatHour(interval.end),
-                dots: SizedBox(
-                  width: measures.dotSize,
-                  height: measures.dotSize,
+            if (selectionRange != null)
+              Positioned(
+                top: durationToPixels(
+                  selectionRange.start -
+                      interval.start.toDurationFromMidNight(),
+                  measures.dotDistance,
                 ),
-                isNight: interval.end.subtract(1.hours()).isNight(dayParts),
-                measures: measures,
+                width: measures.timePillarWidth,
+                height: durationToPixels(
+                  selectionRange.duration + minutesPerDotDuration,
+                  measures.dotDistance,
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AbiliaColors.green.withAlpha(0x19),
+                    borderRadius: borderRadius,
+                  ),
+                ),
               ),
+            Column(
+              children: [
+                ...List.generate(
+                  interval.lengthInHours,
+                  (index) {
+                    final hourIndex = index + interval.start.hour;
+                    final hour =
+                        interval.start.onlyDays().copyWith(hour: hourIndex);
+                    final isNight = hour.isNight(dayParts);
+                    return Hour(
+                      hour: formatHour(hour),
+                      dots: TimePillarHourDots(
+                        hour: hour,
+                        isNight: isNight,
+                        columnOfDots: columnOfDots,
+                        selectionRange: selectionRange,
+                      ),
+                      isNight: isNight,
+                      measures: measures,
+                    );
+                  },
+                ),
+                if (!preview)
+                  Hour(
+                    hour: formatHour(interval.end),
+                    dots: SizedBox(
+                      width: measures.dotSize,
+                      height: measures.dotSize,
+                    ),
+                    isNight: interval.end.subtract(1.hours()).isNight(dayParts),
+                    measures: measures,
+                  ),
+              ],
+            ),
           ],
         ),
       ),
@@ -185,7 +209,7 @@ class _TimePillarState extends State<_ClickableTimePillar>
     final dy = localPosition.dy - widget.topMargin;
     final duration = yPosToDuration(dy, widget.measures.dotDistance);
     final durationRounded = isDotTap(localPosition.dx)
-        ? duration.roundToClosestDot()
+        ? duration.roundDownToClosestDot()
         : duration.roundUpToClosestHour();
     return durationRounded + widget.interval.start.toDurationFromMidNight();
   }
@@ -196,7 +220,7 @@ class _TimePillarState extends State<_ClickableTimePillar>
     final p = yPosToDuration(
           localPosition.dy - widget.topMargin,
           widget.measures.dotDistance,
-        ).roundToClosestDot() +
+        ).roundDownToClosestDot() +
         widget.interval.start.toDurationFromMidNight();
     final tapOrigin = durationOrigin;
     if (tapOrigin != null && p > tapOrigin) {
@@ -220,7 +244,7 @@ class _TimePillarState extends State<_ClickableTimePillar>
           startTime: sr.start,
           duration: sr.duration == Duration.zero
               ? Duration.zero
-              : sr.duration + const Duration(minutes: minutesPerDot),
+              : sr.duration + minutesPerDotDuration,
         ),
         addActivityMode: AddActivityMode.editView,
       );
