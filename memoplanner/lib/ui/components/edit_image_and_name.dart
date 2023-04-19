@@ -73,6 +73,12 @@ class _EditImageAndNameState extends State<EditImageAndName> {
                       );
                     });
                     _textEditController.text = _imageAndName.name;
+                    if (nameFromImage) {
+                      _textEditController.selection = TextSelection(
+                        baseOffset: 0,
+                        extentOffset: _textEditController.text.length,
+                      );
+                    }
                   },
                 ),
                 SizedBox(width: layout.formPadding.groupHorizontalDistance),
