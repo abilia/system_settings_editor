@@ -27,8 +27,8 @@ class SpeechSettingsCubit extends Cubit<SpeechSettingsState> {
   Future<void> setSpeechRate(double speechRate) async {
     assert(Config.isMP, 'Cannot set speech rate on mpgo!');
     if (state.voice.isNotEmpty) {
-      await acapelaTts.setSpeechRate(speechRate);
       emit(state.copyWith(speechRate: speechRate));
+      await acapelaTts.setSpeechRate(speechRate);
       await voiceDb.setSpeechRate(speechRate);
     }
   }
