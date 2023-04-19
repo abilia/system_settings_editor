@@ -14,7 +14,6 @@ import 'package:memoplanner/logging/observers/bloc_logging_observer.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
-import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:seagull_fakes/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -1096,32 +1095,30 @@ Internal improvements to tests and examples.''';
             .thenReturn(mockFile);
         when(() => mockUserFileBloc.state).thenReturn(mockState);
 
-        await mockNetworkImages(() async {
-          // Act - Open new checklist question
-          await tester.pumpWidget(createEditActivityPage());
-          await tester.pumpAndSettle();
-          await goToChecklist(tester);
-          await tester.tap(find.byIcon(AbiliaIcons.newIcon));
-          await tester.pumpAndSettle();
+        // Act - Open new checklist question
+        await tester.pumpWidget(createEditActivityPage());
+        await tester.pumpAndSettle();
+        await goToChecklist(tester);
+        await tester.tap(find.byIcon(AbiliaIcons.newIcon));
+        await tester.pumpAndSettle();
 
-          // Expect - Name is empty
-          expect(find.text(imageName), findsNothing);
-          expect(find.text(imageName2), findsNothing);
+        // Expect - Name is empty
+        expect(find.text(imageName), findsNothing);
+        expect(find.text(imageName2), findsNothing);
 
-          // Act - Select an image
-          await tester.tap(find.byType(SelectPictureWidget));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byKey(TestKey.imageArchiveButton));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(ArchiveImage).first);
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(OkButton));
-          await tester.pumpAndSettle();
+        // Act - Select an image
+        await tester.tap(find.byType(SelectPictureWidget));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.imageArchiveButton));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(ArchiveImage).first);
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
 
-          // Expect - Question has taken the name of the image
-          expect(find.text(imageName), findsOneWidget);
-          expect(find.text(imageName2), findsNothing);
-        });
+        // Expect - Question has taken the name of the image
+        expect(find.text(imageName), findsOneWidget);
+        expect(find.text(imageName2), findsNothing);
       });
 
       testWidgets('Can add question to checklist', (WidgetTester tester) async {
