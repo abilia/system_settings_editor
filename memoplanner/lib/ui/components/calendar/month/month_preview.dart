@@ -21,39 +21,37 @@ class MonthListPreview extends StatelessWidget {
         monthCalendarState.firstDay.month == dayPickerState.day.month &&
             monthCalendarState.firstDay.year == dayPickerState.day.year;
     if (!showPreview) {
-      if (isCollapsed) {
-        return SizedBox(
-          height: monthPreviewLayout.headingHeight +
-              monthPreviewLayout.monthListPreviewPadding.vertical,
-        );
-      }
-      return Padding(
-        padding: monthPreviewLayout.noSelectedDayPadding,
-        child: Text(
-          Translator.of(context).translate.selectADayToViewDetails,
-          style: abiliaTextTheme.bodyLarge,
-        ),
-      );
-    } else {
-      final dayTheme = dayThemes[dayPickerState.day.weekday - 1];
-      return Padding(
-        padding: monthPreviewLayout.monthListPreviewPadding,
-        child: Column(
-          children: [
-            AnimatedTheme(
-              data: dayTheme.theme,
-              child: MonthDayPreviewHeading(
-                day: dayPickerState.day,
-                isLight: dayTheme.isLight,
-                occasion: dayPickerState.occasion,
-                isCollapsed: isCollapsed,
+      return isCollapsed
+          ? SizedBox(
+              height: monthPreviewLayout.headingHeight +
+                  monthPreviewLayout.monthListPreviewPadding.vertical,
+            )
+          : Padding(
+              padding: monthPreviewLayout.noSelectedDayPadding,
+              child: Text(
+                Translator.of(context).translate.selectADayToViewDetails,
+                style: abiliaTextTheme.bodyLarge,
               ),
-            ),
-            if (!isCollapsed) const Expanded(child: MonthPreview()),
-          ],
-        ),
-      );
+            );
     }
+    final dayTheme = dayThemes[dayPickerState.day.weekday - 1];
+    return Padding(
+      padding: monthPreviewLayout.monthListPreviewPadding,
+      child: Column(
+        children: [
+          AnimatedTheme(
+            data: dayTheme.theme,
+            child: MonthDayPreviewHeading(
+              day: dayPickerState.day,
+              isLight: dayTheme.isLight,
+              occasion: dayPickerState.occasion,
+              isCollapsed: isCollapsed,
+            ),
+          ),
+          if (!isCollapsed) const Expanded(child: MonthPreview()),
+        ],
+      ),
+    );
   }
 }
 

@@ -17,11 +17,6 @@ class MonthCalendarState {
     required this.showMonthPreview,
   });
 
-  MonthCalendarState.initial(this.showMonthPreview)
-      : firstDay = DateTime.now(),
-        occasion = Occasion.current,
-        weeks = [];
-
   MonthCalendarState copyWith({
     DateTime? firstDay,
     List<MonthWeek>? weeks,

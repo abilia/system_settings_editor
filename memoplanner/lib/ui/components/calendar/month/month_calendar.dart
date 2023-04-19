@@ -97,9 +97,6 @@ class MonthContent extends StatelessWidget {
           buildWhen: (oldState, newState) => newState.index == item,
           builder: (context, state) {
             if (state.index != item) return Container();
-            final preview = MonthListPreview(
-              dayThemes: dayThemes,
-            );
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -107,9 +104,15 @@ class MonthContent extends StatelessWidget {
                 if (showPreview)
                   if (state.isCollapsed) ...[
                     const Spacer(),
-                    preview,
+                    MonthListPreview(
+                      dayThemes: dayThemes,
+                    ),
                   ] else
-                    Expanded(child: preview),
+                    Expanded(
+                      child: MonthListPreview(
+                        dayThemes: dayThemes,
+                      ),
+                    ),
               ],
             );
           },
