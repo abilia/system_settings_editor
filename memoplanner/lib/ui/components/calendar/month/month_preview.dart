@@ -205,9 +205,12 @@ class MonthDayPreviewHeading extends StatelessWidget {
                     SizedBox(
                       height: previewLayout.headingFullDayActivityWidth,
                       width: previewLayout.headingFullDayActivityWidth,
-                      child: IconActionButtonLight(
+                      child: IconActionButton(
                         onPressed: () async =>
                             context.read<MonthCalendarCubit>().togglePreview(),
+                        style: isLight
+                            ? actionButtonStyleLight
+                            : actionButtonStyleDark,
                         child: Icon(
                           isCollapsed
                               ? AbiliaIcons.navigationUp
