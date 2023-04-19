@@ -1086,6 +1086,8 @@ Internal improvements to tests and examples.''';
             sortables: sortables,
           ),
         );
+        when(() => mockUserFileBloc.state)
+            .thenReturn(const UserFilesNotLoaded());
 
         await mockNetworkImages(() async {
           // Act - Open new checklist question
