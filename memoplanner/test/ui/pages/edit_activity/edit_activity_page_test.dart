@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:collection/src/unmodifiable_wrappers.dart';
+import 'package:file/memory.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -1086,8 +1089,12 @@ Internal improvements to tests and examples.''';
             sortables: sortables,
           ),
         );
-        when(() => mockUserFileBloc.state)
-            .thenReturn(const UserFilesNotLoaded());
+        final mockState = MockUserFileState();
+        final mockFile = await _tinyPng();
+
+        when(() => mockState.getLoadedByIdOrPath(any(), any(), any()))
+            .thenReturn(mockFile);
+        when(() => mockUserFileBloc.state).thenReturn(mockState);
 
         await mockNetworkImages(() async {
           // Act - Open new checklist question
@@ -4109,4 +4116,78 @@ extension on WidgetTester {
     await tap(find.byIcon(icon));
     await pumpAndSettle();
   }
+}
+
+Future<File> _tinyPng() async {
+  final bytes = Uint8List.fromList([
+    137,
+    80,
+    78,
+    71,
+    13,
+    10,
+    26,
+    10,
+    0,
+    0,
+    0,
+    13,
+    73,
+    72,
+    68,
+    82,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    8,
+    6,
+    0,
+    0,
+    0,
+    31,
+    21,
+    196,
+    137,
+    0,
+    0,
+    0,
+    10,
+    73,
+    68,
+    65,
+    84,
+    120,
+    156,
+    99,
+    0,
+    1,
+    0,
+    0,
+    5,
+    0,
+    1,
+    13,
+    10,
+    45,
+    180,
+    0,
+    0,
+    0,
+    0,
+    73,
+    69,
+    78,
+    68,
+    174,
+    66,
+    96,
+    130
+  ]);
+
+  return MemoryFileSystem().file('test.png')..writeAsBytesSync(bytes);
 }
