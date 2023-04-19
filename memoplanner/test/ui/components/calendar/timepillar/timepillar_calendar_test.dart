@@ -31,6 +31,12 @@ void main() {
         identifier: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
   );
 
+  final twoTimepillarGeneric = Generic.createNew<MemoplannerSettingData>(
+    data: MemoplannerSettingData.fromData(
+        data: DayCalendarType.twoTimepillars.index,
+        identifier: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
+  );
+
   ActivityResponse activityResponse = () => [];
   GenericResponse genericResponse = () => [];
   TimerResponse timerResponse = () => [];
@@ -217,6 +223,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.byType(GoToTodayButton), findsOneWidget);
       });
+
       testWidgets('GoToTodayButton shows up', (WidgetTester tester) async {
         await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
@@ -230,6 +237,47 @@ void main() {
         await tester.tap(find.byType(RightNavButton));
         await tester.pumpAndSettle();
         expect(find.byType(GoToTodayButton), findsOneWidget);
+      });
+
+      testWidgets(
+          'SGC-2373 - No TodayButton when have two time pillar and the ngo to month or week calendar, selecting a day, and then go back to two time pillar',
+          (WidgetTester tester) async {
+        // Arrange - Go to two time pillar view
+        genericResponse = () => [twoTimepillarGeneric];
+        await tester.pumpWidget(const App());
+        await tester.pumpAndSettle();
+        expect(find.byType(TwoTimepillarCalendar), findsOneWidget);
+        expect(find.byType(GoToTodayButton), findsNothing);
+
+        // Act - Go to month view
+        await tester.tap(find.byIcon(AbiliaIcons.month));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsNothing);
+
+        // Act - Click on day 8
+        await tester.tap(find.text('8'));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsNothing);
+
+        // Act - Go to day view
+        await tester.tap(find.byIcon(AbiliaIcons.day));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsNothing);
+
+        // Act - Go to week view
+        await tester.tap(find.byIcon(AbiliaIcons.week));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsNothing);
+
+        // Act - Click on day Wednesday
+        await tester.tap(find.text('8\nWed'));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsNothing);
+
+        // Act - Go to day view
+        await tester.tap(find.byIcon(AbiliaIcons.day));
+        await tester.pumpAndSettle();
+        expect(find.byType(GoToTodayButton), findsNothing);
       });
 
       testWidgets(
