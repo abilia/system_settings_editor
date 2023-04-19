@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/i18n/all.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 part 'sortable_archive_state.dart';
 
@@ -19,6 +20,7 @@ class SortableArchiveCubit<T extends SortableData>
     String initialFolderId = '',
     bool Function(Sortable<T>)? visibilityFilter,
     bool showFolders = true,
+    bool myPhotos = false,
   }) : super(
           SortableArchiveState.fromSortables(
             sortables: sortableBloc.state is SortablesLoaded
@@ -28,8 +30,8 @@ class SortableArchiveCubit<T extends SortableData>
             currentFolderId: initialFolderId,
             visibilityFilter: visibilityFilter,
             showFolders: showFolders,
-            showSearch: false,
             selected: null,
+            myPhotos: myPhotos,
           ),
         ) {
     _sortableSubscription = sortableBloc.stream.listen((sortableState) {
@@ -54,7 +56,7 @@ class SortableArchiveCubit<T extends SortableData>
         visibilityFilter: visibilityFilter,
         selected: state.selected,
         showFolders: state.showFolders,
-        showSearch: state.showSearch,
+        myPhotos: state.myPhotos,
       ),
     );
   }
@@ -66,42 +68,21 @@ class SortableArchiveCubit<T extends SortableData>
         state.sortableArchive,
         currentFolderId: currentFolder?.groupId ?? '',
         initialFolderId: state.initialFolderId,
+        myPhotos: state.myPhotos,
       ),
     );
   }
 
-  void sortableSelected(Sortable<T>? selected) {
-    emit(
-      SortableArchiveState<T>(
-        state.sortableArchive,
-        currentFolderId: state.currentFolderId,
-        selected: selected,
-        initialFolderId: state.initialFolderId,
-        searchValue: state.searchValue,
-        showSearch: state.showSearch,
-        showFolders: state.showFolders,
-      ),
-    );
-  }
+  void sortableSelected(Sortable<T>? selected) =>
+      emit(state.copyWith(selected: selected));
 
-  void folderChanged(String folderId) {
-    emit(
-      SortableArchiveState<T>(
-        state.sortableArchive,
-        currentFolderId: folderId,
-        initialFolderId: state.initialFolderId,
-        showSearch: state.showSearch,
-        searchValue: state.searchValue,
-        showFolders: state.showFolders,
-      ),
-    );
-  }
+  void folderChanged(String folderId) =>
+      emit(state.copyWith(selected: state.selected, currentFolderId: folderId));
 
-  void setShowSearch(bool showSearch) =>
-      emit(state.copyWith(searchValue: '', showSearch: showSearch));
+  void unselect() => emit(state.copyWith(selected: null));
 
   void searchValueChanged(String searchValue) =>
-      emit(state.copyWith(searchValue: searchValue));
+      emit(state.copyWith(selected: state.selected, searchValue: searchValue));
 
   void reorder(SortableReorderDirection direction) {
     final selectedId = state.selected?.id;

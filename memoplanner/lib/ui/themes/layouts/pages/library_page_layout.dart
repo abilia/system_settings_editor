@@ -28,7 +28,7 @@ class LibraryPageLayout {
     this.crossAxisCount = 3,
     this.headerPadding = const EdgeInsets.fromLTRB(16, 4, 16, 4),
     this.searchPadding = const EdgeInsets.fromLTRB(12, 24, 12, 16),
-    this.searchButtonSize = const Size(114, 56),
+    this.searchButtonSize = const Size(114, 48),
     this.backButtonSize = const Size(48, 48),
     this.backButtonIconSize = 32,
     this.folderImagePadding = const EdgeInsets.fromLTRB(10, 28, 10, 16),

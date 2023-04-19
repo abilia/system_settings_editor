@@ -1,6 +1,7 @@
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 typedef LibraryItemGenerator<T extends SortableData> = Widget Function(
     Sortable<T>);
@@ -26,6 +27,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   })  : selectableItems = false,
         selectedItemGenerator = null,
         onOk = null,
+        showSearch = false,
         super(key: key);
 
   const LibraryPage.selectable({
@@ -39,6 +41,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     this.showBottomNavigationBar = true,
     this.gridCrossAxisCount,
     this.gridChildAspectRatio,
+    this.showSearch = false,
     Key? key,
   })  : selectableItems = true,
         assert(
@@ -56,6 +59,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   final String? rootHeading;
   final int? gridCrossAxisCount;
   final double? gridChildAspectRatio;
+  final bool showSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +67,6 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     final sortableState = sortableArchiveCubit.state;
     final selected = selectableItems ? sortableState.selected : null;
     final selectedGenerator = selectedItemGenerator;
-    final showSearch = sortableState.showSearch;
     return Scaffold(
       appBar: appBar,
       body: Column(
@@ -87,6 +90,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                 : SortableLibrary<T>(
                     libraryItemGenerator,
                     emptyLibraryMessage,
+                    showSearch: showSearch,
                     selectableItems: selectableItems,
                     crossAxisCount: gridCrossAxisCount,
                     childAspectRatio: gridChildAspectRatio,
@@ -99,9 +103,10 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
               padding: MediaQuery.of(context).viewInsets,
               child: BottomNavigation(
                 backNavigationWidget: CancelButton(
-                    onPressed: showSearch
-                        ? () => sortableArchiveCubit.setShowSearch(false)
-                        : onCancel),
+                  onPressed: showSearch && sortableState.isSelected
+                      ? () => context.read<SortableArchiveCubit<T>>().unselect()
+                      : onCancel,
+                ),
                 forwardNavigationWidget: selected != null
                     ? OkButton(
                         onPressed: () => onOk?.call(selected),
@@ -120,12 +125,14 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
     required this.rootHeading,
     this.showOnlyFolders = false,
     this.showSearchButton = false,
+    this.onCancel,
     Key? key,
   }) : super(key: key);
   final SortableArchiveState<T> sortableArchiveState;
   final String rootHeading;
   final bool showOnlyFolders;
   final bool showSearchButton;
+  final VoidCallback? onCancel;
 
   @override
   Widget build(BuildContext context) {
@@ -172,9 +179,34 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                         ),
                     text: translate.search,
                     icon: AbiliaIcons.find,
-                    onPressed: () =>
-                        BlocProvider.of<SortableArchiveCubit<T>>(context)
-                            .setShowSearch(true),
+                    onPressed: () async {
+                      final authProviders = copiedAuthProviders(context);
+                      final selectedImageData =
+                          await Navigator.of(context).push<SelectedImageData>(
+                        PersistentMaterialPageRoute(
+                          settings: (ImageArchivePage).routeSetting(
+                            properties: {
+                              'type': 'Search',
+                            },
+                          ),
+                          builder: (_) => MultiBlocProvider(
+                            providers: authProviders,
+                            child: BlocProvider<
+                                SortableArchiveCubit<ImageArchiveData>>.value(
+                              value: context.read<
+                                  SortableArchiveCubit<ImageArchiveData>>(),
+                              child: ImageArchivePage(
+                                onCancel: onCancel,
+                                showSearch: true,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                      if (selectedImageData != null && context.mounted) {
+                        Navigator.of(context).pop(selectedImageData);
+                      }
+                    },
                   ),
               ],
             ),
@@ -187,13 +219,12 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 
   Future back(BuildContext context, SortableArchiveState<T> state) async {
     if (state.isSelected) {
-      BlocProvider.of<SortableArchiveCubit<T>>(context)
-          .folderChanged(state.currentFolderId);
-    } else if (!state.isAtRoot) {
-      BlocProvider.of<SortableArchiveCubit<T>>(context).navigateUp();
-    } else {
-      await Navigator.of(context).maybePop();
+      return context.read<SortableArchiveCubit<T>>().unselect();
     }
+    if (!state.isAtRoot) {
+      return context.read<SortableArchiveCubit<T>>().navigateUp();
+    }
+    return Navigator.of(context).maybePop();
   }
 }
 
@@ -268,15 +299,17 @@ class SortableLibrary<T extends SortableData> extends StatefulWidget {
   final LibraryItemGenerator<T> libraryItemGenerator;
   final String emptyLibraryMessage;
   final bool selectableItems;
+  final bool showSearch;
   final int? crossAxisCount;
   final double? childAspectRatio;
 
   const SortableLibrary(
     this.libraryItemGenerator,
     this.emptyLibraryMessage, {
-    this.selectableItems = true,
-    this.crossAxisCount,
-    this.childAspectRatio,
+    required this.showSearch,
+    required this.selectableItems,
+    required this.crossAxisCount,
+    required this.childAspectRatio,
     Key? key,
   }) : super(key: key);
 
@@ -299,15 +332,22 @@ class _SortableLibraryState<T extends SortableData>
     final translate = Translator.of(context).translate;
     return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
-        final content = archiveState.showSearch
+        final content = widget.showSearch
             ? archiveState.allFilteredAndSorted(translate)
             : archiveState.currentFolderSorted;
-        if (content.isEmpty &&
-            (archiveState.showSearch && archiveState.searchValue.isNotEmpty)) {
-          return EmptyLibraryMessage(
-            emptyLibraryMessage: widget.emptyLibraryMessage,
-            rootFolder: archiveState.isAtRoot,
-          );
+        if (content.isEmpty) {
+          if (!widget.showSearch) {
+            return EmptyLibraryMessage(
+              emptyLibraryMessage: widget.emptyLibraryMessage,
+              rootFolder: archiveState.isAtRoot,
+            );
+          }
+          if (widget.showSearch && archiveState.searchValue.isNotEmpty) {
+            return EmptyLibraryMessage(
+              emptyLibraryMessage: translate.noMatchingImage,
+              rootFolder: archiveState.isAtRoot,
+            );
+          }
         }
         return ScrollArrows.vertical(
           controller: _controller,

@@ -24,7 +24,7 @@ class AddActivity extends ManipulateActivitiesEvent implements TrackableEvent {
   const AddActivity(this.activity);
 
   @override
-  String get eventName => 'Activity created';
+  String get eventName => AnalyticsEvents.activityCreated;
 
   @override
   Map<String, dynamic> get properties => {
