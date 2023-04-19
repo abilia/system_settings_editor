@@ -1088,11 +1088,10 @@ Internal improvements to tests and examples.''';
             sortables: sortables,
           ),
         );
-        final mockState = MockUserFileState();
-        final mockFile = await _tinyPng();
 
+        final mockState = MockUserFileState();
         when(() => mockState.getLoadedByIdOrPath(any(), any(), any()))
-            .thenReturn(mockFile);
+            .thenReturn(await _tinyPng());
         when(() => mockUserFileBloc.state).thenReturn(mockState);
 
         // Act - Open new checklist question
