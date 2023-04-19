@@ -4596,7 +4596,7 @@ class NL extends Translated {
   final String no = 'Nee';
 
   @override
-  final String close = 'Dichtbij';
+  final String close = 'Sluiten';
 
   @override
   final String back = 'Terug';
