@@ -231,7 +231,9 @@ void main() {
         expect(find.byType(MonthDayView), findsNothing);
 
         // Act - Tap on collapse button
-        await tester.tap(find.byType(IconActionButtonLight));
+        await tester.tap(find.ancestor(
+            of: find.byIcon(AbiliaIcons.navigationDown),
+            matching: find.byType(IconActionButton)));
         await tester.pumpAndSettle();
 
         // Assert - Expanded month view collapsed preview
@@ -261,7 +263,9 @@ void main() {
         expect(find.byType(MonthDayView), findsWidgets);
 
         // Act - Tap on collapse button again
-        await tester.tap(find.byType(IconActionButtonLight));
+        await tester.tap(find.ancestor(
+            of: find.byIcon(AbiliaIcons.navigationUp),
+            matching: find.byType(IconActionButton)));
         await tester.pumpAndSettle();
 
         // Assert - Compact month view with preview
@@ -287,7 +291,16 @@ void main() {
         );
 
         // Assert - No collapse month preview button
-        expect(find.byType(IconActionButtonLight), findsNothing);
+        expect(
+            find.ancestor(
+                of: find.byIcon(AbiliaIcons.navigationDown),
+                matching: find.byType(IconActionButton)),
+            findsNothing);
+        expect(
+            find.ancestor(
+                of: find.byIcon(AbiliaIcons.navigationUp),
+                matching: find.byType(IconActionButton)),
+            findsNothing);
       }, skip: !Config.isMP);
     });
   });
