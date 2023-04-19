@@ -13,10 +13,6 @@ class SelectionRange {
       t.inMilliseconds >= start.inMilliseconds &&
       t.inMilliseconds <= end.inMilliseconds;
 
-  bool inRangeExclusiveEnd(Duration t) =>
-      t.inMilliseconds >= start.inMilliseconds &&
-      t.inMilliseconds < end.inMilliseconds;
-
   @override
   String toString() => 'SelectionRange {'
       'start: $start '
@@ -189,7 +185,7 @@ class _TimePillarState extends State<_ClickableTimePillar>
     final dy = localPosition.dy - widget.topMargin;
     final duration = yPosToDuration(dy, widget.measures.dotDistance);
     final durationRounded = isDotTap(localPosition.dx)
-        ? duration.roundDownToClosestDot()
+        ? duration.roundToClosestDot()
         : duration.roundUpToClosestHour();
     return durationRounded + widget.interval.start.toDurationFromMidNight();
   }
@@ -222,7 +218,9 @@ class _TimePillarState extends State<_ClickableTimePillar>
         copiedAuthProviders(context),
         basicActivity: BasicActivityDataItem.createNew(
           startTime: sr.start,
-          duration: sr.duration,
+          duration: sr.duration == Duration.zero
+              ? Duration.zero
+              : sr.duration + const Duration(minutes: minutesPerDot),
         ),
         addActivityMode: AddActivityMode.editView,
       );
