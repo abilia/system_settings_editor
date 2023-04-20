@@ -37,6 +37,8 @@ const pastDotShape = ShapeDecoration(
         ShapeDecoration(color: AbiliaColors.red, shape: CircleBorder()),
     futureNightDotShape =
         ShapeDecoration(color: AbiliaColors.blue, shape: CircleBorder()),
+    selectedDotShape =
+        ShapeDecoration(color: AbiliaColors.green, shape: CircleBorder()),
     futureSideDotShape = futureDotShape;
 
 final bigSideDotBorder = CircleBorder(
@@ -64,50 +66,6 @@ class PastDots extends StatelessWidget {
   Widget build(BuildContext context) => isNight
       ? const Dots(decoration: pastNightDotShape)
       : const Dots(decoration: pastDotShape);
-}
-
-class CurrentDots extends StatelessWidget {
-  const CurrentDots({
-    required this.hour,
-    required this.isNight,
-    required this.columnOfDots,
-    Key? key,
-  }) : super(key: key);
-
-  final DateTime hour;
-  final bool isNight, columnOfDots;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ClockBloc, DateTime>(
-      builder: (context, now) => Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List.generate(
-          dotsPerHour,
-          (q) {
-            final dotTime = hour.copyWith(minute: q * minutesPerDot);
-            if (dotTime.isAfter(now)) {
-              if (isNight) {
-                return const AnimatedDot(
-                  decoration: futureNightDotShape,
-                );
-              }
-              if (columnOfDots) {
-                return const AnimatedDot(decoration: currentDotShape);
-              }
-              return const AnimatedDot(decoration: futureDotShape);
-            } else if (now.isBefore(dotTime.add(minutesPerDotDuration))) {
-              return const AnimatedDot(decoration: currentDotShape);
-            }
-            if (isNight) {
-              return const AnimatedDot(decoration: pastNightDotShape);
-            }
-            return const AnimatedDot(decoration: pastDotShape);
-          },
-        ),
-      ),
-    );
-  }
 }
 
 class FutureDots extends StatelessWidget {
@@ -156,11 +114,13 @@ class AnimatedDot extends StatelessWidget {
   final Decoration? decoration;
   final double? size;
   final Widget? child;
+  final Duration? duration;
 
   const AnimatedDot({
     required this.decoration,
     this.size,
     this.child,
+    this.duration,
     Key? key,
   }) : super(key: key);
 
@@ -170,7 +130,7 @@ class AnimatedDot extends StatelessWidget {
         buildWhen: (previous, current) =>
             size == null && previous.dotSize != current.dotSize,
         builder: (context, measures) => AnimatedContainer(
-          duration: transitionDuration,
+          duration: duration ?? transitionDuration,
           height: size ?? measures.dotSize,
           width: size ?? measures.dotSize,
           decoration: decoration,
