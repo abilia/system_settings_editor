@@ -80,7 +80,9 @@ class NameAndPictureWidget extends StatelessWidget {
         children: <Widget>[
           SelectPictureWidget(
             selectedImage: selectedImage,
-            onImageSelected: onImageSelected,
+            onImageSelected: onImageSelected != null
+                ? (imageAndName) => onImageSelected?.call(imageAndName.image)
+                : null,
             errorState: errorState,
           ),
           SizedBox(width: layout.formPadding.largeVerticalItemDistance),
@@ -102,7 +104,7 @@ class NameAndPictureWidget extends StatelessWidget {
 
 class SelectPictureWidget extends StatelessWidget {
   final AbiliaFile selectedImage;
-  final void Function(AbiliaFile)? onImageSelected;
+  final void Function(ImageAndName)? onImageSelected;
   final bool errorState, isLarge;
   final String? label;
 
@@ -142,7 +144,7 @@ class SelectPictureWidget extends StatelessWidget {
     final userFileBloc = context.read<UserFileBloc>();
     final sortableBloc = context.read<SortableBloc>();
     final now = context.read<ClockBloc>().state;
-    final newSelectedImage = await Navigator.of(context).push<AbiliaFile>(
+    final imageAndName = await Navigator.of(context).push<ImageAndName>(
       PersistentMaterialPageRoute(
         builder: (_) => MultiBlocProvider(
           providers: authProviders,
@@ -154,10 +156,12 @@ class SelectPictureWidget extends StatelessWidget {
         settings: (SelectPicturePage).routeSetting(),
       ),
     );
+    final newSelectedImage = imageAndName?.image;
 
     if (newSelectedImage != null) {
-      final name = DateFormat.yMd(Platform.localeName).format(now);
+      String name = imageAndName?.name ?? '';
       if (newSelectedImage is UnstoredAbiliaFile) {
+        name = DateFormat.yMd(Platform.localeName).format(now);
         userFileBloc.add(
           FileAdded(
             newSelectedImage,
@@ -171,7 +175,7 @@ class SelectPictureWidget extends StatelessWidget {
           ),
         );
       }
-      onImageSelected?.call(newSelectedImage);
+      onImageSelected?.call(ImageAndName(name, newSelectedImage));
     }
   }
 }

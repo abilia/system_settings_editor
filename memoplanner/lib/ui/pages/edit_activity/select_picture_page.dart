@@ -31,8 +31,8 @@ class SelectPicturePage extends StatelessWidget {
         label: label,
       ),
       body: SelectPictureBody(
-        imageCallback: (selectedImage) async {
-          await Navigator.of(context).maybePop(selectedImage);
+        imageCallback: (imageAndName) async {
+          await Navigator.of(context).maybePop(imageAndName);
         },
         selectedImage: selectedImage,
         onCancel: () async {
@@ -48,17 +48,17 @@ class SelectPicturePage extends StatelessWidget {
 }
 
 class SelectedImageData {
-  final AbiliaFile selectedImage;
+  final ImageAndName imageAndName;
   final bool fromSearch;
 
   const SelectedImageData({
-    required this.selectedImage,
+    required this.imageAndName,
     required this.fromSearch,
   });
 }
 
 class SelectPictureBody extends StatelessWidget {
-  final ValueChanged<AbiliaFile> imageCallback;
+  final ValueChanged<ImageAndName> imageCallback;
   final AbiliaFile selectedImage;
   final VoidCallback? onCancel;
 
@@ -76,7 +76,7 @@ class SelectPictureBody extends StatelessWidget {
         'From search': selectedImageData.fromSearch,
       },
     );
-    imageCallback(selectedImageData.selectedImage);
+    imageCallback(selectedImageData.imageAndName);
   }
 
   @override
@@ -97,7 +97,7 @@ class SelectPictureBody extends StatelessWidget {
                 RemoveButton(
                   key: TestKey.removePicture,
                   onTap: () {
-                    imageCallback.call(AbiliaFile.empty);
+                    imageCallback.call(ImageAndName.empty);
                   },
                   icon: Icon(
                     AbiliaIcons.deleteAllClear,
@@ -149,7 +149,8 @@ class SelectPictureBody extends StatelessWidget {
                   text: translate.devicesLocalImages,
                   imageSource: ImageSource.gallery,
                   permission: Permission.photos,
-                  imageCallback: imageCallback,
+                  imageCallback: (image) =>
+                      imageCallback(ImageAndName('', image)),
                 ),
                 SizedBox(height: layout.formPadding.verticalItemDistance),
               ],
@@ -159,7 +160,8 @@ class SelectPictureBody extends StatelessWidget {
                   text: translate.takeNewPhoto,
                   imageSource: ImageSource.camera,
                   permission: Permission.camera,
-                  imageCallback: imageCallback,
+                  imageCallback: (image) =>
+                      imageCallback(ImageAndName('', image)),
                 ),
             ],
           ),

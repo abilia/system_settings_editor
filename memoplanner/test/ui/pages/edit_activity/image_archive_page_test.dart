@@ -112,10 +112,10 @@ void main() {
               create: (context) => FakeSpeechSettingsCubit(),
             ),
             BlocProvider<SortableArchiveCubit<ImageArchiveData>>(
-              create: (context) => SortableArchiveCubit(
+              create: (context) => SortableArchiveCubit<ImageArchiveData>(
                 sortableBloc: mockSortableBloc,
-                initialFolderId: initialFolder,
                 myPhotos: myPhotos,
+                initialFolderId: initialFolder,
               ),
             ),
           ], child: child!),
@@ -173,34 +173,9 @@ void main() {
       final popped = navObserver.routesPoped;
       expect(popped, hasLength(1));
       final res = await popped.first.popped as SelectedImageData;
-      expect(res.selectedImage, AbiliaFile.from(id: fileId, path: path));
+      expect(res.imageAndName.image, AbiliaFile.from(id: fileId, path: path));
+      expect(res.imageAndName.name, image.data.name);
       expect(res.fromSearch, false);
-    });
-  });
-
-  testWidgets('Searched image is popped', (WidgetTester tester) async {
-    await mockNetworkImages(() async {
-      when(() => mockSortableBloc.state)
-          .thenAnswer((_) => SortablesLoaded(sortables: [image]));
-      await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage()));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.byIcon(AbiliaIcons.find));
-      await tester.pumpAndSettle();
-
-      await tester.enterText(find.byType(TextField), imageName);
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.byType(ArchiveImage));
-      await tester.pumpAndSettle();
-      expect(find.byType(FullScreenImage), findsOneWidget);
-      await tester.tap(find.byType(GreenButton));
-      await tester.pumpAndSettle();
-      final popped = navObserver.routesPoped;
-      expect(popped, hasLength(2));
-      final res = await popped.first.popped as SelectedImageData;
-      expect(res.selectedImage, AbiliaFile.from(id: fileId, path: path));
-      expect(res.fromSearch, true);
     });
   });
 

@@ -104,3 +104,5 @@ class MockFactoryResetRepository extends Mock
 class MockTtsHandler extends Mock implements TtsInterface {}
 
 class MockSeagullAnalytics extends Mock implements SeagullAnalytics {}
+
+class MockUserFileState extends Mock implements UserFileState {}

@@ -20,35 +20,34 @@ class ImageArchivePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return Builder(
-      builder: (context) {
-        return LibraryPage<ImageArchiveData>.selectable(
-          appBar: AbiliaAppBar(
-            iconData: showSearch
-                ? AbiliaIcons.find
-                : AbiliaIcons.pastPictureFromWindowsClipboard,
-            title: showSearch ? translate.searchImage : translate.selectImage,
-          ),
-          showSearch: showSearch,
-          gridChildAspectRatio: layout.imageArchive.aspectRatio,
-          rootHeading: header ?? translate.imageArchive,
-          libraryItemGenerator: (imageArchive) =>
-              ArchiveImage(sortable: imageArchive),
-          selectedItemGenerator: (imageArchive) =>
-              FullScreenArchiveImage(selected: imageArchive.data),
-          emptyLibraryMessage: translate.noImages,
-          onCancel: onCancel,
-          onOk: (selected) {
-            Navigator.of(context).pop<SelectedImageData>(
-              SelectedImageData(
-                selectedImage: AbiliaFile.from(
-                  id: selected.data.fileId,
-                  path: selected.data.file,
-                ),
-                fromSearch: showSearch,
+    return LibraryPage<ImageArchiveData>.selectable(
+      appBar: AbiliaAppBar(
+        iconData: showSearch
+            ? AbiliaIcons.find
+            : AbiliaIcons.pastPictureFromWindowsClipboard,
+        title: showSearch ? translate.searchImage : translate.selectImage,
+      ),
+      showSearch: showSearch,
+      gridChildAspectRatio: layout.imageArchive.aspectRatio,
+      rootHeading: header ?? translate.imageArchive,
+      libraryItemGenerator: (imageArchive) =>
+          ArchiveImage(sortable: imageArchive),
+      selectedItemGenerator: (imageArchive) =>
+          FullScreenArchiveImage(selected: imageArchive.data),
+      emptyLibraryMessage: translate.noImages,
+      onCancel: onCancel,
+      onOk: (selected) {
+        Navigator.of(context).pop<SelectedImageData>(
+          SelectedImageData(
+            imageAndName: ImageAndName(
+              selected.data.name,
+              AbiliaFile.from(
+                id: selected.data.fileId,
+                path: selected.data.file,
               ),
-            );
-          },
+            ),
+            fromSearch: showSearch,
+          ),
         );
       },
     );
