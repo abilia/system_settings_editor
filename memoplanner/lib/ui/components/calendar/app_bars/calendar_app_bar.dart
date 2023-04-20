@@ -71,15 +71,18 @@ class CalendarAppBar extends StatelessWidget {
                       width: layout.appBar.clockPadding + layout.clock.width,
                     ),
                   Flexible(
-                    child: CrossOver(
-                      style: theme.crossOverStyle,
-                      applyCross: crossedOver,
-                      padding: EdgeInsets.all(
-                        layout.formPadding.verticalItemDistance,
-                      ),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: AppBarTitle(rows: rows, style: textStyle),
+                    child: Padding(
+                      padding: layout.appBar.titlesPadding,
+                      child: CrossOver(
+                        style: theme.crossOverStyle,
+                        applyCross: crossedOver,
+                        padding: EdgeInsets.all(
+                          layout.formPadding.verticalItemDistance,
+                        ),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: AppBarTitle(rows: rows, style: textStyle),
+                        ),
                       ),
                     ),
                   ),
