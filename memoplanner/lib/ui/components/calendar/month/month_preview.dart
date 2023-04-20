@@ -5,21 +5,20 @@ import 'package:memoplanner/ui/all.dart';
 
 class MonthListPreview extends StatelessWidget {
   final List<DayTheme> dayThemes;
+  final bool isCollapsed;
+  final bool showPreview;
 
   const MonthListPreview({
     required this.dayThemes,
-    Key? key,
-  }) : super(key: key);
+    required this.isCollapsed,
+    required this.showPreview,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     final monthPreviewLayout = layout.monthCalendar.monthPreview;
     final dayPickerState = context.watch<DayPickerBloc>().state;
-    final monthCalendarState = context.watch<MonthCalendarCubit>().state;
-    final isCollapsed = monthCalendarState.isCollapsed;
-    final showPreview =
-        monthCalendarState.firstDay.month == dayPickerState.day.month &&
-            monthCalendarState.firstDay.year == dayPickerState.day.year;
     if (!showPreview) {
       return isCollapsed
           ? SizedBox(

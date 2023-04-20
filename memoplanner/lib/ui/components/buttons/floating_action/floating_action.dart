@@ -2,7 +2,12 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class FloatingActions extends StatelessWidget {
-  const FloatingActions({Key? key}) : super(key: key);
+  final bool useBottomPadding;
+
+  const FloatingActions({
+    this.useBottomPadding = false,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +21,10 @@ class FloatingActions extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             if (tabController != null)
-              _ToggleAlarmAndEyeButtons(tabController: tabController)
-            else if (settings.alarm.showAlarmOnOffSwitch)
-              const ToggleAlarmButton(),
+              _ToggleAlarmAndEyeButtons(
+                tabController: tabController,
+                useBottomPadding: useBottomPadding,
+              ),
             if (permission.notificationDenied)
               Expanded(
                 child: Padding(
@@ -47,9 +53,11 @@ class FloatingActions extends StatelessWidget {
 
 class _ToggleAlarmAndEyeButtons extends StatelessWidget {
   final TabController tabController;
+  final bool useBottomPadding;
 
   const _ToggleAlarmAndEyeButtons({
     required this.tabController,
+    required this.useBottomPadding,
     Key? key,
   }) : super(key: key);
 
@@ -72,6 +80,8 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
               ),
               child: const EyeButtonDay(),
             ),
+        if (useBottomPadding)
+          const IconActionButtonLight(child: SizedBox.shrink()),
       ],
     );
   }
