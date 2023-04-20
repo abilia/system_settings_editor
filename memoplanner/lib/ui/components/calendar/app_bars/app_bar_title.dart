@@ -33,7 +33,7 @@ class AppBarTitle extends StatelessWidget {
               AutoSizeText(
                 rows.row3,
                 maxLines: 1,
-                minFontSize: fontSize,
+                minFontSize: rows.row3MinTextSize ?? fontSize,
                 overflowReplacement:
                     rows.row3Short.isNotEmpty ? Text(rows.row3Short) : null,
               ),
@@ -46,13 +46,15 @@ class AppBarTitle extends StatelessWidget {
 
 class AppBarTitleRows {
   final String row1, row2, row3, row3Short;
+  final double? row3MinTextSize;
 
-  const AppBarTitleRows._(
-    this.row1, [
+  const AppBarTitleRows._({
+    required this.row1,
     this.row2 = '',
     this.row3 = '',
     this.row3Short = '',
-  ]);
+    this.row3MinTextSize,
+  });
 
   static DateFormat longDate(String langCode) =>
       DateFormat('d MMMM y', langCode);
@@ -88,10 +90,10 @@ class AppBarTitleRows {
     final date = settings.showDate ? longDate(langCode).format(day) : '';
     final dateShort = settings.showDate ? shortDate(langCode).format(day) : '';
     return AppBarTitleRows._(
-      weekdayString + (compactDay ? ', $dayPartString' : ''),
-      compactDay ? '' : dayPartString,
-      date,
-      dateShort,
+      row1: weekdayString + (compactDay ? ', $dayPartString' : ''),
+      row2: compactDay ? '' : dayPartString,
+      row3: date,
+      row3Short: dateShort,
     );
   }
 
@@ -155,22 +157,30 @@ class AppBarTitleRows {
         ? '$weekTranslation ${selectedWeekStart.getWeekNumber()}'
         : '';
 
-    if (!settings.showYearAndMonth) return AppBarTitleRows._(day, week, '');
+    if (!settings.showYearAndMonth) {
+      return AppBarTitleRows._(
+        row1: day,
+        row2: week,
+        row3MinTextSize: layout.appBar.thirdLineFontSizeMin,
+      );
+    }
 
     final selectedWeekEnd = selectedWeekStart.addDays(6);
     if (selectedWeekStart.month == selectedWeekEnd.month) {
       return AppBarTitleRows._(
-        day,
-        week,
-        DateFormat.yMMMM(langCode).format(selectedWeekStart),
+        row1: day,
+        row2: week,
+        row3: DateFormat.yMMMM(langCode).format(selectedWeekStart),
+        row3MinTextSize: layout.appBar.thirdLineFontSizeMin,
       );
     }
     return AppBarTitleRows._(
-      day,
-      week,
-      '${DateFormat.MMM(langCode).format(selectedWeekStart)}'
-      '-${DateFormat.MMM(langCode).format(selectedWeekEnd)}'
-      ' ${DateFormat.y(langCode).format(selectedWeekStart)}',
+      row1: day,
+      row2: week,
+      row3: '${DateFormat.MMM(langCode).format(selectedWeekStart)}'
+          '-${DateFormat.MMM(langCode).format(selectedWeekEnd)}'
+          ' ${DateFormat.y(langCode).format(selectedWeekStart)}',
+      row3MinTextSize: layout.appBar.thirdLineFontSizeMin,
     );
   }
 
@@ -181,9 +191,9 @@ class AppBarTitleRows {
     required bool showDay,
   }) {
     return AppBarTitleRows._(
-      showDay ? DateFormat.EEEE(langCode).format(currentTime) : '',
-      DateFormat.MMMM(langCode).format(currentTime),
-      showYear ? DateFormat.y(langCode).format(currentTime) : '',
+      row1: showDay ? DateFormat.EEEE(langCode).format(currentTime) : '',
+      row2: DateFormat.MMMM(langCode).format(currentTime),
+      row3: showYear ? DateFormat.y(langCode).format(currentTime) : '',
     );
   }
 }

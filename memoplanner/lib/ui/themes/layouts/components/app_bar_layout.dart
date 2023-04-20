@@ -7,8 +7,10 @@ class AppBarLayout {
       largeHeight,
       mediumHeight,
       smallHeight,
-      monthStepperHeight;
+      monthStepperHeight,
+      thirdLineFontSizeMin;
 
+  final EdgeInsets titlesPadding;
   final BorderRadius borderRadius;
   final TextStyle _textStyle;
 
@@ -19,6 +21,8 @@ class AppBarLayout {
     this.mediumHeight = 80,
     this.smallHeight = 68,
     this.monthStepperHeight = 68,
+    this.thirdLineFontSizeMin = 14,
+    this.titlesPadding = const EdgeInsets.symmetric(horizontal: 2),
     this.borderRadius = const BorderRadius.only(
       topLeft: Radius.circular(24),
       topRight: Radius.circular(24),
@@ -51,6 +55,7 @@ class AppBarLayoutMedium extends AppBarLayout {
           mediumHeight: mediumHeight ?? 148,
           smallHeight: 104,
           monthStepperHeight: monthStepperHeight ?? 116,
+          titlesPadding: const EdgeInsets.symmetric(horizontal: 12),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(32),
             topRight: Radius.circular(32),
