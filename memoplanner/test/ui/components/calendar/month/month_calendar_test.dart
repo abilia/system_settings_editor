@@ -219,6 +219,7 @@ void main() {
 
       testWidgets('Collapsable month preview', (WidgetTester tester) async {
         // Act - Go to month view
+        final translate = Locales.language.values.first;
         await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.month));
@@ -242,15 +243,16 @@ void main() {
         expect(find.byType(EventList), findsNothing);
         expect(find.byType(MonthDayView), findsWidgets);
 
-        // Act - Go to next day
+        // Act - Go to next month
         await tester.tap(find.byType(RightNavButton));
         await tester.pumpAndSettle();
 
-        // Assert - Noting shown, not even preview heading
+        // Assert - Nothing shown, not even preview heading
         expect(find.byType(MonthDayViewCompact), findsNothing);
         expect(find.byType(MonthDayPreviewHeading), findsNothing);
         expect(find.byType(EventList), findsNothing);
         expect(find.byType(MonthDayView), findsWidgets);
+        expect(find.text(translate.selectADayToViewDetails), findsNothing);
 
         // Act - Tap on a day
         await tester.tap(find.byType(MonthDayView).first);
@@ -273,6 +275,18 @@ void main() {
         expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
         expect(find.byType(EventList), findsOneWidget);
         expect(find.byType(MonthDayView), findsNothing);
+
+        // Act - Go to next month
+        await tester.tap(find.byType(RightNavButton));
+        await tester.pumpAndSettle();
+
+        // Assert - Expanded month view and selectADayToViewDetails text is showing
+        expect(find.byType(MonthDayViewCompact), findsNothing);
+        expect(find.byType(MonthDayView), findsWidgets);
+        expect(find.byType(MonthDayPreviewHeading), findsNothing);
+        expect(find.byType(EventList), findsNothing);
+        expect(find.byType(EventList), findsNothing);
+        expect(find.text(translate.selectADayToViewDetails), findsOneWidget);
       }, skip: !Config.isMPGO);
 
       testWidgets('shows only non-fullday activities as dot on MP',
