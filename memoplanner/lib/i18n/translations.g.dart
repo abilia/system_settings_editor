@@ -518,6 +518,8 @@ abstract class Translated {
 
   final String searchImage = 'Search Image';
 
+  final String noMatchingImage = 'No matching image name';
+
   final String recurrence = 'Recurrence';
 
   final String once = 'Once';
@@ -1784,6 +1786,9 @@ class SV extends Translated {
 
   @override
   final String takeNewPhoto = 'Ta ny bild';
+
+  @override
+  final String noMatchingImage = 'Inget matchande bildnamn';
 
   @override
   final String recurrence = 'Upprepning';
@@ -4596,7 +4601,7 @@ class NL extends Translated {
   final String no = 'Nee';
 
   @override
-  final String close = 'Dichtbij';
+  final String close = 'Sluiten';
 
   @override
   final String back = 'Terug';

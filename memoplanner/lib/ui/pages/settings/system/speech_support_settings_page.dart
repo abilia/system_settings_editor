@@ -164,20 +164,13 @@ class SpeechSupportSettingsPage extends StatelessWidget {
         bottomNavigationBar: BottomNavigation(
           backNavigationWidget: CancelButton(
             onPressed: () async {
+              final speechSettingsCubit = context.read<SpeechSettingsCubit>();
               final disabled = await _disabledIfNoDownloadedVoice(context);
               if (!disabled && context.mounted) {
-                await Future.wait(
-                  <Future>[
-                    context
-                        .read<SpeechSettingsCubit>()
-                        .setTextToSpeech(textToSpeech),
-                    context
-                        .read<SpeechSettingsCubit>()
-                        .setSpeechRate(speechRate),
-                    Navigator.of(context).maybePop(),
-                  ],
-                );
+                await speechSettingsCubit.setTextToSpeech(textToSpeech);
+                await speechSettingsCubit.setSpeechRate(speechRate);
               }
+              if (context.mounted) await Navigator.of(context).maybePop();
             },
           ),
           forwardNavigationWidget: OkButton(onPressed: () async {

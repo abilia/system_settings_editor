@@ -17,5 +17,14 @@ double timeToMidDotPixelDistance({
     timeToPixels(now.hour, now.minute, dotDistance) + dotSize / 2;
 double timeToPixels(int hours, int minutes, double dotDistance) =>
     (hours * dotsPerHour + minutes ~/ minutesPerDot) * dotDistance;
+double durationToPixels(Duration duration, double dotDistance) =>
+    timeToPixels(0, duration.inMinutes, dotDistance);
 double hoursToPixels(int hours, double dotDistance) =>
     timeToPixels(hours, 0, dotDistance);
+
+Duration yPosToDuration(double dy, double dotDistance) {
+  final hours = dy / (dotDistance * dotsPerHour);
+  final hoursInt = hours.truncate();
+  final minutes = ((hours - hoursInt) * 60).round();
+  return Duration(hours: hoursInt, minutes: minutes);
+}

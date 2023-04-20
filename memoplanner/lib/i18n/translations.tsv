@@ -181,7 +181,7 @@ menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
 cancel	Cancel	Avbryt	Annuller	Annuleren	Peruuta	Abbrechen	Avbryt
 yes	Yes	Ja	Ja	Ja	Joo	Ja	Ja
 no	No	Nej	Nej	Nee	Ei	Nein	Nei
-close	Close	Stäng	Luk	Dichtbij	Kiinni	Schließen	Lukk
+close	Close	Stäng	Luk	Sluiten	Kiinni	Schließen	Lukk
 back	Previous	Tillbaka	Tilbage	Terug	Takaisin	Zurück	Tilbake
 next	Next	Nästa	Næste	Volgende	Seuraava	Nächster	Neste
 ok	OK	OK	OK	OK	OK	OK	OK
@@ -262,6 +262,7 @@ mobilePictures	Mobile pictures	Mobilbilder	Telefonbilleder	Telefoonafbeeldingen	
 takeNewPhoto	Take new photo	Ta ny bild	Tag et nyt billede	Nieuwe foto nemen	Ota uusi kuva	Neues Foto machen	Ta nytt bilde
 search	Search						
 searchImage	Search Image						
+noMatchingImage	No matching image name	Inget matchande bildnamn					
 							
 ### Recurrence							
 recurrence	Recurrence	Upprepning	Gentagelse	Terugkerend	Toistuminen	Intervall	Gjentakelse

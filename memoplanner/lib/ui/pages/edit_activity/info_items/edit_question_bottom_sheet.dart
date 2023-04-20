@@ -16,6 +16,7 @@ class EditQuestionBottomSheet extends StatelessWidget {
       maxLines: 8,
       minLines: 1,
       allowEmpty: false,
+      nameFromImage: true,
       imageAndName: question != null
           ? ImageAndName(
               question.name,

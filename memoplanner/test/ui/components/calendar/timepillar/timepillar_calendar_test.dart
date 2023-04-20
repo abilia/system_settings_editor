@@ -308,55 +308,64 @@ void main() {
   });
 
   group('timepillar dots', () {
-    testWidgets('Current dots shows', (WidgetTester tester) async {
+    Finder findPastDots() => find.byWidgetPredicate(
+          (widget) =>
+              widget is AnimatedContainer &&
+              (widget.decoration == pastDotShape ||
+                  widget.decoration == pastNightDotShape),
+          description: 'AnimatedContainer with past dots shape',
+        );
+
+    Finder findCurrentDots() => find.byWidgetPredicate(
+          (widget) =>
+              widget is AnimatedContainer &&
+              widget.decoration == currentDotShape,
+          description: 'AnimatedContainer with current dots shape',
+        );
+
+    Finder findFutureDots() => find.byWidgetPredicate(
+          (widget) =>
+              widget is AnimatedContainer &&
+              (widget.decoration == futureDotShape ||
+                  widget.decoration == futureNightDotShape),
+          description: 'AnimatedContainer with future dots shape',
+        );
+
+    testWidgets('One current dot today', (WidgetTester tester) async {
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
-      expect(find.byType(PastDots), findsNothing);
-      expect(find.byType(AnimatedDot), findsWidgets);
-      expect(find.byType(FutureDots), findsNothing);
+      expect(findCurrentDots(), findsOneWidget);
     });
+
     testWidgets('Yesterday shows only past dots', (WidgetTester tester) async {
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(previousDayButtonFinder);
       await tester.pumpAndSettle();
 
-      expect(find.byType(PastDots), findsWidgets);
-      expect(find.byType(AnimatedDot), findsNothing);
-      expect(find.byType(FutureDots), findsNothing);
+      expect(findPastDots(), findsWidgets);
+      expect(findCurrentDots(), findsNothing);
+      expect(findFutureDots(), findsNothing);
     });
+
     testWidgets('Tomorrow shows only future dots', (WidgetTester tester) async {
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(nextDayButtonFinder);
       await tester.pumpAndSettle();
 
-      expect(find.byType(FutureDots), findsWidgets);
-      expect(find.byType(PastDots), findsNothing);
-      expect(find.byType(AnimatedDot), findsNothing);
+      expect(findFutureDots(), findsWidgets);
+      expect(findCurrentDots(), findsNothing);
+      expect(findPastDots(), findsNothing);
     });
 
-    testWidgets('Only one current dot', (WidgetTester tester) async {
-      await tester.pumpWidget(const App());
-      await tester.pumpAndSettle();
-      expect(
-          tester
-              .widgetList<AnimatedDot>(find.byType(AnimatedDot))
-              .where((d) => d.decoration == currentDotShape),
-          hasLength(1));
-    });
-
-    testWidgets('Alwasy only one current dots', (WidgetTester tester) async {
+    testWidgets('Always only one current dots', (WidgetTester tester) async {
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       for (var i = 0; i < 20; i++) {
         mockTicker.add(time.add(i.minutes()));
         await tester.pumpAndSettle();
-        expect(
-            tester
-                .widgetList<AnimatedDot>(find.byType(AnimatedDot))
-                .where((d) => d.decoration == currentDotShape),
-            hasLength(1));
+        expect(findCurrentDots(), findsOneWidget);
       }
     });
   });

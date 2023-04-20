@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:collection/src/unmodifiable_wrappers.dart';
+import 'package:file/memory.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -72,6 +75,7 @@ void main() {
 
     when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
     mockUserFileBloc = MockUserFileBloc();
+
     when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
     mockTimerCubit = MockTimerCubit();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
@@ -1061,6 +1065,59 @@ Internal improvements to tests and examples.''';
         await tester.pumpAndSettle();
         expect(find.text(questionName), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.checkboxUnselected), findsNothing);
+      });
+
+      testWidgets('Question get name of image', (WidgetTester tester) async {
+        // Arrange - Two images and go to checklist
+        const imageName = 'yoyoyyo';
+        const imageName2 = 'hohohhoho';
+        final sortables = [
+          Sortable.createNew<ImageArchiveData>(
+            data: const ImageArchiveData(name: imageName, fileId: 'sasd'),
+          ),
+          Sortable.createNew<ImageArchiveData>(
+            data: const ImageArchiveData(name: imageName2, fileId: 'ssd'),
+          ),
+          Sortable.createNew<ImageArchiveData>(
+            isGroup: true,
+            data: const ImageArchiveData(upload: true),
+          ),
+        ];
+        when(() => mockSortableBloc.state).thenReturn(
+          SortablesLoaded(
+            sortables: sortables,
+          ),
+        );
+
+        final mockState = MockUserFileState();
+        when(() => mockState.getLoadedByIdOrPath(any(), any(), any()))
+            .thenReturn(await _tinyPng());
+        when(() => mockUserFileBloc.state).thenReturn(mockState);
+
+        // Act - Open new checklist question
+        await tester.pumpWidget(createEditActivityPage());
+        await tester.pumpAndSettle();
+        await goToChecklist(tester);
+        await tester.tap(find.byIcon(AbiliaIcons.newIcon));
+        await tester.pumpAndSettle();
+
+        // Expect - Name is empty
+        expect(find.text(imageName), findsNothing);
+        expect(find.text(imageName2), findsNothing);
+
+        // Act - Select an image
+        await tester.tap(find.byType(SelectPictureWidget));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.imageArchiveButton));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(ArchiveImage).first);
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        // Expect - Question has taken the name of the image
+        expect(find.text(imageName), findsOneWidget);
+        expect(find.text(imageName2), findsNothing);
       });
 
       testWidgets('Can add question to checklist', (WidgetTester tester) async {
@@ -4055,4 +4112,78 @@ extension on WidgetTester {
     await tap(find.byIcon(icon));
     await pumpAndSettle();
   }
+}
+
+Future<File> _tinyPng() async {
+  final bytes = Uint8List.fromList([
+    137,
+    80,
+    78,
+    71,
+    13,
+    10,
+    26,
+    10,
+    0,
+    0,
+    0,
+    13,
+    73,
+    72,
+    68,
+    82,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    8,
+    6,
+    0,
+    0,
+    0,
+    31,
+    21,
+    196,
+    137,
+    0,
+    0,
+    0,
+    10,
+    73,
+    68,
+    65,
+    84,
+    120,
+    156,
+    99,
+    0,
+    1,
+    0,
+    0,
+    5,
+    0,
+    1,
+    13,
+    10,
+    45,
+    180,
+    0,
+    0,
+    0,
+    0,
+    73,
+    69,
+    78,
+    68,
+    174,
+    66,
+    96,
+    130
+  ]);
+
+  return MemoryFileSystem().file('test.png')..writeAsBytesSync(bytes);
 }

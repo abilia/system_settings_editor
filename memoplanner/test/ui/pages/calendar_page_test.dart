@@ -1003,7 +1003,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(
-        find.text('Aug-Sep, 2020'),
+        find.text('Aug-Sep 2020'),
         findsOneWidget,
       );
     });

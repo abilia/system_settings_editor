@@ -35,6 +35,7 @@ class FeatureToggleState {
 enum FeatureToggle {
   fakeTime,
   videoInActivity,
+  tapTimepillarToAddActivity,
 }
 
 extension FeatureToggleExtension on FeatureToggle {
@@ -44,6 +45,8 @@ extension FeatureToggleExtension on FeatureToggle {
         return 'Fake time';
       case FeatureToggle.videoInActivity:
         return 'Video in activity';
+      case FeatureToggle.tapTimepillarToAddActivity:
+        return 'Tap timepillar to add activity';
     }
   }
 }

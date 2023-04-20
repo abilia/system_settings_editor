@@ -52,6 +52,12 @@ extension DateTimeExtensions on DateTime {
           millisecond ?? this.millisecond,
           microsecond ?? this.microsecond);
 
+  Duration toDurationFromMidNight() => Duration(
+        hours: hour,
+        minutes: minute,
+        seconds: second,
+      );
+
   bool isAtSameDay(DateTime otherDate) =>
       year == otherDate.year &&
       month == otherDate.month &&

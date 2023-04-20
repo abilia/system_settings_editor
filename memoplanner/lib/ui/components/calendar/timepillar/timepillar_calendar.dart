@@ -252,7 +252,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                                     ),
                                   SliverTimePillar(
                                     key: center,
-                                    child: TimePillar(
+                                    child: TimePillarWithAddActivity(
                                       interval: interval,
                                       dayOccasion: timepillarState.occasion,
                                       use12h: timepillarSettings.use12h,

@@ -2,11 +2,12 @@ class AnalyticsEvents {
   static const navigation = 'Navigation';
   static const timerDeleted = 'Timer Deleted';
   static const timerStarted = 'Timer Started';
-  static const activityCreated = 'Activity created'; // keep sentence cased
+  static const activityCreated = 'Activity created';
+  static const imageSelected = 'Image selected';
 }
 
 class AnalyticsProperties {
-  // super properties - keep camel cased
+  // super properties
   static const flavor = 'flavor';
   static const release = 'release';
   static const clientId = 'clientId';
