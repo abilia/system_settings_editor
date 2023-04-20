@@ -35,26 +35,44 @@ void main() {
   tearDown(GetIt.I.reset);
 
   const fileId = '351d5e7d-0d87-4037-9829-538a14936128',
-      path = '/images/Basic/Basic/bingo.gif';
+      myPhotoFileId = '351d5e7d-0d87-4037-9829-538a14936125',
+      path = '/images/Basic/Basic/bingo.gif',
+      myPhotoPath = '/images/Basic/Basic/jello.gif';
 
   const imageName = 'bingo';
+  const myPhotoName = 'jello';
+
   final imageData = ImageArchiveData.fromJson('''
           {"name":"$imageName","fileId":"$fileId","file":"$path"}
           ''');
+  final myPhotoData = ImageArchiveData.fromJson('''
+          {"name":"$myPhotoName","fileId":"$myPhotoFileId","file":"$myPhotoPath"}
+          ''');
+
   final image = Sortable.createNew<ImageArchiveData>(data: imageData);
 
   const folderName = 'Basic';
+  const myPhotosFolderName = 'My photos';
+
   final folderData = ImageArchiveData.fromJson('''
           {"name":"$folderName","fileId":"19da3060-be12-42f9-922e-7e1635293126","icon":"/images/Basic/Basic.png"}
           ''');
+  final myPhotosFolderData = ImageArchiveData.fromJson('''
+          {"name":"$myPhotosFolderName","fileId":"19da3060-be12-42f9-922e-7e1635293123","icon":"/images/Basic/My photos.png", "myPhotos": true}
+          ''');
+
   final folder =
       Sortable.createNew<ImageArchiveData>(data: folderData, isGroup: true);
+  final myPhotosFolder = Sortable.createNew<ImageArchiveData>(
+      data: myPhotosFolderData, isGroup: true);
 
   const imageInFolderName = 'Folder image';
   final imageInFolder =
       Sortable.createNew<ImageArchiveData>(data: ImageArchiveData.fromJson('''
           {"name":"$imageInFolderName","fileId":"351d5e7d-0d87-4037-9829-538a14936129","file":"/images/Basic/Basic/infolder.gif"}
           '''), groupId: folder.id);
+  final myPhoto = Sortable.createNew<ImageArchiveData>(
+      data: myPhotoData, groupId: myPhotosFolder.id);
 
   final folderData2 = ImageArchiveData.fromJson('''
           {"name":"folder2","fileId":"20da3060-be12-42f9-922e-7e1632993199","icon":"/images/Basic/Basic.png"}
@@ -62,9 +80,16 @@ void main() {
   final folderInsideFolder = Sortable.createNew<ImageArchiveData>(
       data: folderData2, isGroup: true, groupId: folder.id);
 
-  final navObserver = NavObserver();
+  NavObserver navObserver = NavObserver();
 
-  Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
+  tearDown(() => navObserver = NavObserver());
+
+  Widget wrapWithMaterialApp(
+    Widget widget, {
+    String initialFolder = '',
+    bool myPhotos = false,
+  }) =>
+      MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: const [Translator.delegate],
         navigatorObservers: [navObserver],
@@ -85,6 +110,13 @@ void main() {
             ),
             BlocProvider<SpeechSettingsCubit>(
               create: (context) => FakeSpeechSettingsCubit(),
+            ),
+            BlocProvider<SortableArchiveCubit<ImageArchiveData>>(
+              create: (context) => SortableArchiveCubit<ImageArchiveData>(
+                sortableBloc: mockSortableBloc,
+                myPhotos: myPhotos,
+                initialFolderId: initialFolder,
+              ),
             ),
           ], child: child!),
         ),
@@ -127,7 +159,7 @@ void main() {
     });
   });
 
-  testWidgets('Selected Image is poped', (WidgetTester tester) async {
+  testWidgets('Selected Image is popped', (WidgetTester tester) async {
     await mockNetworkImages(() async {
       when(() => mockSortableBloc.state)
           .thenAnswer((_) => SortablesLoaded(sortables: [image]));
@@ -140,8 +172,10 @@ void main() {
       await tester.pumpAndSettle();
       final popped = navObserver.routesPoped;
       expect(popped, hasLength(1));
-      final res = await popped.first.popped as ImageAndName;
-      expect(res.image, AbiliaFile.from(id: fileId, path: path));
+      final res = await popped.first.popped as SelectedImageData;
+      expect(res.imageAndName.image, AbiliaFile.from(id: fileId, path: path));
+      expect(res.imageAndName.name, image.data.name);
+      expect(res.fromSearch, false);
     });
   });
 
@@ -266,9 +300,14 @@ void main() {
     await mockNetworkImages(() async {
       when(() => mockSortableBloc.state).thenAnswer(
           (_) => SortablesLoaded(sortables: [folder, imageInFolder]));
-      await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage(
-        initialFolder: folder.id,
-      )));
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          ImageArchivePage(
+            initialFolder: folder.id,
+          ),
+          initialFolder: folder.id,
+        ),
+      );
       await tester.pumpAndSettle();
       expect(find.byType(ImageArchivePage), findsOneWidget);
       expect(find.byType(ArchiveImage), findsOneWidget);
@@ -344,15 +383,27 @@ void main() {
     });
   });
 
-  testWidgets('Search image archive', (WidgetTester tester) async {
+  Future<void> pumpImageArchiveSearch(
+    WidgetTester tester,
+    bool myPhotos,
+  ) async {
     await mockNetworkImages(() async {
-      when(() => mockSortableBloc.state).thenAnswer((_) =>
-          SortablesLoaded(sortables: [folder, folderInsideFolder, image]));
+      when(() => mockSortableBloc.state).thenAnswer((_) => SortablesLoaded(
+              sortables: [
+                folder,
+                folderInsideFolder,
+                image,
+                myPhotosFolder,
+                myPhoto
+              ]));
       await tester.pumpWidget(
         wrapWithMaterialApp(
           ImageArchivePage(
             initialFolder: folder.id,
+            myPhotos: myPhotos,
           ),
+          initialFolder: folder.id,
+          myPhotos: myPhotos,
         ),
       );
       await tester.pumpAndSettle();
@@ -364,27 +415,66 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(TextField), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.find), findsOneWidget);
-
-      // Search for folder name
-      await tester.enterText(find.byType(TextField), folder.data.name);
-      await tester.pumpAndSettle();
-      expect(find.text(translate.noImages), findsOneWidget);
-
-      // Search for nonsense
-      await tester.enterText(find.byType(TextField), 'fa4t4t');
-      await tester.pumpAndSettle();
-      expect(find.text(translate.noImages), findsOneWidget);
-
-      // Search for image name
-      await tester.enterText(find.byType(TextField), image.data.name);
-      await tester.pumpAndSettle();
-      expect(find.text(image.data.name), findsNWidgets(2));
-
-      // Press cancel returns to image archive
-      await tester.tap(find.byType(CancelButton));
-      await tester.pumpAndSettle();
-      expect(find.text(translate.imageArchive), findsOneWidget);
-      expect(find.byType(ImageArchivePage), findsOneWidget);
     });
+  }
+
+  testWidgets('Search image archive', (WidgetTester tester) async {
+    await pumpImageArchiveSearch(tester, false);
+
+    // Search for folder name
+    await tester.enterText(find.byType(TextField), folder.data.name);
+    await tester.pumpAndSettle();
+    expect(find.text(translate.noMatchingImage), findsOneWidget);
+
+    // Search for nonsense
+    await tester.enterText(find.byType(TextField), 'fa4t4t');
+    await tester.pumpAndSettle();
+    expect(find.text(translate.noMatchingImage), findsOneWidget);
+
+    // Search for myPhoto
+    await tester.enterText(find.byType(TextField), myPhoto.data.name);
+    await tester.pumpAndSettle();
+    expect(find.text(translate.noMatchingImage), findsOneWidget);
+
+    // Search for archive image name
+    await tester.enterText(find.byType(TextField), image.data.name);
+    await tester.pumpAndSettle();
+    expect(find.text(image.data.name), findsNWidgets(2));
+
+    // Press cancel returns to image archive
+    await tester.tap(find.byType(CancelButton));
+    await tester.pumpAndSettle();
+    expect(find.text(translate.imageArchive), findsOneWidget);
+    expect(find.byType(ImageArchivePage), findsOneWidget);
+  });
+
+  testWidgets('Search my photos', (WidgetTester tester) async {
+    await pumpImageArchiveSearch(tester, true);
+
+    // Search for folder name
+    await tester.enterText(find.byType(TextField), folder.data.name);
+    await tester.pumpAndSettle();
+    expect(find.text(translate.noMatchingImage), findsOneWidget);
+
+    // Search for nonsense
+    await tester.enterText(find.byType(TextField), ' fa4t4t');
+    await tester.pumpAndSettle();
+    expect(find.text(translate.noMatchingImage), findsOneWidget);
+
+    // Search for image archive name
+    await tester.enterText(find.byType(TextField), image.data.name);
+    await tester.pumpAndSettle();
+    expect(find.text(translate.noMatchingImage), findsOneWidget);
+
+    // Search for myPhoto
+    await tester.enterText(find.byType(TextField), myPhoto.data.name);
+    await tester.pumpAndSettle();
+    expect(find.text(myPhoto.data.name), findsNWidgets(2));
+
+    // Press cancel returns to image archive
+    await tester.tap(find.byType(CancelButton));
+    await tester.pumpAndSettle();
+    expect(find.text(translate.imageArchive), findsOneWidget);
+    expect(find.byType(ImageArchivePage), findsOneWidget);
   });
 }

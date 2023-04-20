@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/logging/all.dart';
@@ -46,6 +47,16 @@ class SelectPicturePage extends StatelessWidget {
   }
 }
 
+class SelectedImageData {
+  final ImageAndName imageAndName;
+  final bool fromSearch;
+
+  const SelectedImageData({
+    required this.imageAndName,
+    required this.fromSearch,
+  });
+}
+
 class SelectPictureBody extends StatelessWidget {
   final ValueChanged<ImageAndName> imageCallback;
   final AbiliaFile selectedImage;
@@ -57,6 +68,16 @@ class SelectPictureBody extends StatelessWidget {
     this.onCancel,
     Key? key,
   }) : super(key: key);
+
+  void _imageCallbackAndTrackEvent(SelectedImageData selectedImageData) {
+    GetIt.I<SeagullAnalytics>().trackEvent(
+      AnalyticsEvents.imageSelected,
+      properties: {
+        'From search': selectedImageData.fromSearch,
+      },
+    );
+    imageCallback(selectedImageData.imageAndName);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,23 +118,7 @@ class SelectPictureBody extends StatelessWidget {
                 key: TestKey.imageArchiveButton,
                 leading: const Icon(AbiliaIcons.folder),
                 text: Text(translate.imageArchive),
-                onTap: () async {
-                  final authProviders = copiedAuthProviders(context);
-                  final imageAndName =
-                      await Navigator.of(context).push<ImageAndName>(
-                    PersistentMaterialPageRoute(
-                      settings:
-                          RouteSettings(name: (ImageArchivePage).toString()),
-                      builder: (_) => MultiBlocProvider(
-                        providers: authProviders,
-                        child: ImageArchivePage(onCancel: onCancel),
-                      ),
-                    ),
-                  );
-                  if (imageAndName != null) {
-                    imageCallback.call(imageAndName);
-                  }
-                },
+                onTap: () async => _openImageArchivePage(context),
               ),
               SizedBox(height: layout.formPadding.verticalItemDistance),
               if (photoMenuSettings.displayMyPhotos) ...[
@@ -127,26 +132,12 @@ class SelectPictureBody extends StatelessWidget {
                     leading: const Icon(AbiliaIcons.folder),
                     text: Text(translate.myPhotos),
                     onTap: (myPhotoFolder != null)
-                        ? () async {
-                            final authProviders = copiedAuthProviders(context);
-                            final imageAndName =
-                                await Navigator.of(context).push<ImageAndName>(
-                              PersistentMaterialPageRoute(
-                                settings: (ImageArchivePage).routeSetting(),
-                                builder: (_) => MultiBlocProvider(
-                                  providers: authProviders,
-                                  child: ImageArchivePage(
-                                    onCancel: onCancel,
-                                    initialFolder: myPhotoFolder.id,
-                                    header: translate.myPhotos,
-                                  ),
-                                ),
-                              ),
-                            );
-                            if (imageAndName != null) {
-                              imageCallback.call(imageAndName);
-                            }
-                          }
+                        ? () async => _openImageArchivePage(
+                              context,
+                              myPhotos: true,
+                              initialFolder: myPhotoFolder.id,
+                              header: translate.myPhotos,
+                            )
                         : null,
                   ),
                 ),
@@ -177,6 +168,46 @@ class SelectPictureBody extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<void> _openImageArchivePage(
+    BuildContext context, {
+    bool myPhotos = false,
+    String initialFolder = '',
+    String? header,
+  }) async {
+    {
+      final authProviders = copiedAuthProviders(context);
+      final selectedImageData =
+          await Navigator.of(context).push<SelectedImageData>(
+        PersistentMaterialPageRoute(
+          settings: (ImageArchivePage).routeSetting(
+            properties: {
+              'type': myPhotos ? 'My photos' : 'Image archive',
+            },
+          ),
+          builder: (_) => MultiBlocProvider(
+            providers: authProviders,
+            child: BlocProvider<SortableArchiveCubit<ImageArchiveData>>(
+              create: (_) => SortableArchiveCubit<ImageArchiveData>(
+                sortableBloc: BlocProvider.of<SortableBloc>(context),
+                initialFolderId: initialFolder,
+                myPhotos: myPhotos,
+              ),
+              child: ImageArchivePage(
+                onCancel: onCancel,
+                initialFolder: initialFolder,
+                myPhotos: myPhotos,
+                header: header,
+              ),
+            ),
+          ),
+        ),
+      );
+      if (selectedImageData != null) {
+        _imageCallbackAndTrackEvent(selectedImageData);
+      }
+    }
   }
 }
 

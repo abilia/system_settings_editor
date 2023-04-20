@@ -155,7 +155,7 @@ void main() {
             currentFolderId: '',
             showFolders: true,
             selected: first,
-            showSearch: false,
+            myPhotos: false,
           )
         ],
       );
@@ -175,7 +175,7 @@ void main() {
             currentFolderId: '',
             showFolders: true,
             selected: second,
-            showSearch: false,
+            myPhotos: false,
           ),
           SortableArchiveState.fromSortables(
             sortables: basicActivitySortables,
@@ -183,7 +183,7 @@ void main() {
             currentFolderId: '',
             showFolders: true,
             selected: first,
-            showSearch: false,
+            myPhotos: false,
           )
         ],
       );
