@@ -27,6 +27,7 @@ class ActionButtonLayoutMedium extends ActionButtonLayout {
   const ActionButtonLayoutMedium({
     double? largeSize,
     double? largeRadius,
+    double? withTextIconSizeSmall,
   }) : super(
           size: 88,
           largeSize: largeSize ?? 88,
@@ -36,7 +37,7 @@ class ActionButtonLayoutMedium extends ActionButtonLayout {
           padding: const EdgeInsets.all(12),
           withTextPadding: const EdgeInsets.only(top: 6, left: 4, right: 4),
           withTextIconSize: 48,
-          withTextIconSizeSmall: 32,
+          withTextIconSizeSmall: withTextIconSizeSmall ?? 32,
         );
 }
 
@@ -45,5 +46,6 @@ class ActionButtonLayoutLarge extends ActionButtonLayoutMedium {
       : super(
           largeSize: 120,
           largeRadius: 32,
+          withTextIconSizeSmall: 48,
         );
 }

@@ -11,12 +11,18 @@ class GoToTodayButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return TextAndIconActionButton(
-      translate.today,
-      AbiliaIcons.reset,
-      onPressed: onPressed,
-      style: actionButtonStyleRedLarge,
-      size: layout.actionButton.withTextIconSizeSmall,
-    );
+    return Config.isMPGO
+        ? IconActionButton(
+            onPressed: onPressed,
+            style: actionButtonStyleRedLarge,
+            child: const Icon(AbiliaIcons.reset),
+          )
+        : TextAndIconActionButton(
+            translate.today,
+            AbiliaIcons.reset,
+            onPressed: onPressed,
+            style: actionButtonStyleRedLarge,
+            size: layout.actionButton.withTextIconSizeSmall,
+          );
   }
 }
