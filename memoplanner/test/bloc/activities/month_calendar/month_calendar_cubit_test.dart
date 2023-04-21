@@ -4,6 +4,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -76,6 +77,7 @@ void main() {
           MonthCalendarState(
             firstDay: DateTime(2021, 03, 01),
             occasion: Occasion.current,
+            showMonthPreview: true,
             weeks: [
               MonthWeek(
                 9,
@@ -210,6 +212,7 @@ void main() {
           MonthCalendarState(
             firstDay: DateTime(2021, 04, 01),
             occasion: Occasion.future,
+            showMonthPreview: true,
             weeks: [
               MonthWeek(
                 13,
@@ -343,6 +346,7 @@ void main() {
           MonthCalendarState(
             firstDay: DateTime(2021, 02, 01),
             occasion: Occasion.past,
+            showMonthPreview: true,
             weeks: [
               MonthWeek(
                 5,
@@ -480,6 +484,7 @@ void main() {
           MonthCalendarState(
             firstDay: DateTime(2021, 01, 01),
             occasion: Occasion.current,
+            showMonthPreview: true,
             weeks: [
               MonthWeek(
                 53,
@@ -672,6 +677,7 @@ void main() {
           MonthCalendarState(
             firstDay: DateTime(2021, 05, 01),
             occasion: Occasion.current,
+            showMonthPreview: true,
             weeks: weeks,
           ),
         ),
@@ -712,6 +718,7 @@ void main() {
             MonthCalendarState(
               firstDay: DateTime(2021, 03, 01),
               occasion: Occasion.current,
+              showMonthPreview: true,
               weeks: [
                 MonthWeek(
                   9,
@@ -846,6 +853,7 @@ void main() {
             MonthCalendarState(
               firstDay: firstDay,
               occasion: Occasion.current,
+              showMonthPreview: true,
               weeks: [
                 MonthWeek(
                   9,
@@ -1002,6 +1010,7 @@ void main() {
             MonthCalendarState(
               firstDay: firstDay,
               occasion: Occasion.current,
+              showMonthPreview: true,
               weeks: [
                 MonthWeek(
                   9,
@@ -1141,6 +1150,7 @@ void main() {
           MonthCalendarState(
             firstDay: firstDay,
             occasion: Occasion.current,
+            showMonthPreview: true,
             weeks: [
               MonthWeek(
                 9,
@@ -1243,6 +1253,27 @@ void main() {
       );
     },
   );
+
+  test('Toggle month preview', () async {
+    final SettingsDb mockSettingsDb = MockSettingsDb();
+    when(() => mockSettingsDb.showMonthPreview).thenAnswer((_) => true);
+    when(() => mockSettingsDb.setShowMonthPreview(any()))
+        .thenAnswer((_) => Future.value());
+    monthCalendarCubit = MonthCalendarCubit(
+      clockBloc: clockBloc,
+      dayPickerBloc: dayPickerBloc,
+      settingsDb: mockSettingsDb,
+    );
+
+    expect(monthCalendarCubit.state.showMonthPreview, isTrue);
+    await monthCalendarCubit.togglePreview();
+    expect(monthCalendarCubit.state.showMonthPreview, isFalse);
+    await monthCalendarCubit.togglePreview();
+    expect(monthCalendarCubit.state.showMonthPreview, isTrue);
+
+    verify(() => mockSettingsDb.setShowMonthPreview(true)).called(1);
+    verify(() => mockSettingsDb.setShowMonthPreview(false)).called(1);
+  });
 }
 
 class _MonthCalendarStateMatcher extends Matcher {

@@ -118,6 +118,7 @@ void main() {
         .thenAnswer((_) => Future.value());
     when(() => mockSettingsDb.alwaysUse24HourFormat).thenReturn(true);
     when(() => mockSettingsDb.keepScreenOnWhileCharging).thenReturn(false);
+    when(() => mockSettingsDb.showMonthPreview).thenReturn(true);
     // ignore: deprecated_member_use_from_same_package
     when(() => mockSettingsDb.keepScreenOnWhileChargingSet).thenReturn(true);
 

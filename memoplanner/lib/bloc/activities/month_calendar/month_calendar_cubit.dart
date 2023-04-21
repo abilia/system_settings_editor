@@ -4,8 +4,10 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
+import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 part 'month_calendar_state.dart';
@@ -15,6 +17,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
   final TimerAlarmBloc? timerAlarmBloc;
   final ClockBloc clockBloc;
   final DayPickerBloc dayPickerBloc;
+  final SettingsDb? settingsDb;
   late final StreamSubscription? _activitiesSubscription;
   late final StreamSubscription? _timersSubscription;
   late final StreamSubscription _clockSubscription;
@@ -24,19 +27,20 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     required this.dayPickerBloc,
     this.activityRepository, // ActivityRepository is null when this bloc is used for date picking
     this.timerAlarmBloc,
+    this.settingsDb,
     ActivitiesBloc?
         activitiesBloc, // ActivitiesBloc is null when this bloc is used for date picking
     DateTime? initialDay,
   }) : super(
-          _mapToState(
-            (initialDay ?? clockBloc.state).firstDayOfMonth(),
-            [],
-            [],
-            clockBloc.state,
+          MonthCalendarState(
+            firstDay: clockBloc.state,
+            occasion: Occasion.current,
+            weeks: [],
+            showMonthPreview: settingsDb?.showMonthPreview ?? true,
           ),
         ) {
-    _activitiesSubscription = activitiesBloc?.stream.listen(_updateMonth);
-    _timersSubscription = timerAlarmBloc?.stream.listen(_updateMonth);
+    _activitiesSubscription = activitiesBloc?.stream.listen(updateMonth);
+    _timersSubscription = timerAlarmBloc?.stream.listen(updateMonth);
     _clockSubscription = clockBloc.stream
         .where((time) =>
             state.weeks
@@ -46,10 +50,16 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
                 ?.day
                 .isAtSameDay(time) ==
             false)
-        .listen(_updateMonth);
+        .listen(updateMonth);
+    emit(
+      _mapToState(
+        (initialDay ?? clockBloc.state).firstDayOfMonth(),
+        [],
+        [],
+        clockBloc.state,
+      ),
+    );
   }
-
-  Future<void> initialize() => _updateMonth();
 
   Future<void> goToNextMonth() async {
     _maybeGoToCurrentDay(state.firstDay.nextMonth());
@@ -100,7 +110,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     }
   }
 
-  Future<void> _updateMonth([_]) async {
+  Future<void> updateMonth([_]) async {
     final first = state.firstDay;
     final last = first.nextMonth();
     emit(
@@ -113,7 +123,13 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     );
   }
 
-  static MonthCalendarState _mapToState(
+  Future<void> togglePreview() async {
+    final showMonthPreview = !state.showMonthPreview;
+    emit(state.copyWith(showMonthPreview: showMonthPreview));
+    return settingsDb?.setShowMonthPreview(showMonthPreview);
+  }
+
+  MonthCalendarState _mapToState(
     DateTime firstDayOfMonth,
     Iterable<Activity> activities,
     Iterable<TimerOccasion> timerOccasions,
@@ -158,6 +174,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
       firstDay: firstDayOfMonth,
       occasion: occasion,
       weeks: weekData,
+      showMonthPreview: state.showMonthPreview,
     );
   }
 

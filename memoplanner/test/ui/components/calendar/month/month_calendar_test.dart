@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../fakes/activity_db_in_memory.dart';
 import '../../../../fakes/all.dart';
 import '../../../../mocks/mocks.dart';
+import '../../../../test_helpers/app_pumper.dart';
 import '../../../../test_helpers/enter_text.dart';
 import '../../../../test_helpers/register_fallback_values.dart';
 import '../../../../test_helpers/tts.dart';
@@ -178,7 +179,9 @@ void main() {
 
       testWidgets('shows fullday', (WidgetTester tester) async {
         // Act
-        await tester.pumpWidget(const App());
+        screenSize = const Size(800, 1280);
+        addTearDown(() => screenSize = const Size(600, 600));
+        await tester.pumpWidgetWithMPSize(const App());
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.month));
         await tester.pumpAndSettle();
@@ -214,10 +217,84 @@ void main() {
         );
       }, skip: !Config.isMPGO);
 
+      testWidgets('Collapsable month preview', (WidgetTester tester) async {
+        // Act - Go to month view
+        final translate = Locales.language.values.first;
+        await tester.pumpWidget(const App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.month));
+        await tester.pumpAndSettle();
+
+        // Assert - Compact month view with month preview
+        expect(find.byType(MonthDayViewCompact), findsWidgets);
+        expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
+        expect(find.byType(EventList), findsOneWidget);
+        expect(find.byType(MonthDayView), findsNothing);
+
+        // Act - Tap on collapse button
+        await tester.tap(find.ancestor(
+            of: find.byIcon(AbiliaIcons.navigationDown),
+            matching: find.byType(IconActionButton)));
+        await tester.pumpAndSettle();
+
+        // Assert - Expanded month view collapsed preview
+        expect(find.byType(MonthDayViewCompact), findsNothing);
+        expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
+        expect(find.byType(EventList), findsNothing);
+        expect(find.byType(MonthDayView), findsWidgets);
+
+        // Act - Go to next month
+        await tester.tap(find.byType(RightNavButton));
+        await tester.pumpAndSettle();
+
+        // Assert - Nothing shown, not even preview heading
+        expect(find.byType(MonthDayViewCompact), findsNothing);
+        expect(find.byType(MonthDayPreviewHeading), findsNothing);
+        expect(find.byType(EventList), findsNothing);
+        expect(find.byType(MonthDayView), findsWidgets);
+        expect(find.text(translate.selectADayToViewDetails), findsNothing);
+
+        // Act - Tap on a day
+        await tester.tap(find.byType(MonthDayView).first);
+        await tester.pumpAndSettle();
+
+        // Assert - Collapsed preview is shown
+        expect(find.byType(MonthDayViewCompact), findsNothing);
+        expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
+        expect(find.byType(EventList), findsNothing);
+        expect(find.byType(MonthDayView), findsWidgets);
+
+        // Act - Tap on collapse button again
+        await tester.tap(find.ancestor(
+            of: find.byIcon(AbiliaIcons.navigationUp),
+            matching: find.byType(IconActionButton)));
+        await tester.pumpAndSettle();
+
+        // Assert - Compact month view with preview
+        expect(find.byType(MonthDayViewCompact), findsWidgets);
+        expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
+        expect(find.byType(EventList), findsOneWidget);
+        expect(find.byType(MonthDayView), findsNothing);
+
+        // Act - Go to next month
+        await tester.tap(find.byType(RightNavButton));
+        await tester.pumpAndSettle();
+
+        // Assert - Expanded month view and selectADayToViewDetails text is showing
+        expect(find.byType(MonthDayViewCompact), findsNothing);
+        expect(find.byType(MonthDayView), findsWidgets);
+        expect(find.byType(MonthDayPreviewHeading), findsNothing);
+        expect(find.byType(EventList), findsNothing);
+        expect(find.byType(EventList), findsNothing);
+        expect(find.text(translate.selectADayToViewDetails), findsOneWidget);
+      }, skip: !Config.isMPGO);
+
       testWidgets('shows only non-fullday activities as dot on MP',
           (WidgetTester tester) async {
         // Act
-        await tester.pumpWidget(const App());
+        screenSize = const Size(800, 1280);
+        addTearDown(() => screenSize = const Size(600, 600));
+        await tester.pumpWidgetWithMPSize(const App());
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.month));
         await tester.pumpAndSettle();
@@ -226,6 +303,18 @@ void main() {
           find.byType(ColorDot),
           findsNWidgets(recursOnMonthDaySet.length),
         );
+
+        // Assert - No collapse month preview button
+        expect(
+            find.ancestor(
+                of: find.byIcon(AbiliaIcons.navigationDown),
+                matching: find.byType(IconActionButton)),
+            findsNothing);
+        expect(
+            find.ancestor(
+                of: find.byIcon(AbiliaIcons.navigationUp),
+                matching: find.byType(IconActionButton)),
+            findsNothing);
       }, skip: !Config.isMP);
     });
   });

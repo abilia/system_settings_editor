@@ -5,63 +5,57 @@ import 'package:memoplanner/ui/all.dart';
 
 class MonthListPreview extends StatelessWidget {
   final List<DayTheme> dayThemes;
-  final MonthCalendarState monthCalendarState;
+  final bool isCollapsed;
+  final bool showPreview;
 
   const MonthListPreview({
     required this.dayThemes,
-    required this.monthCalendarState,
-    Key? key,
-  }) : super(key: key);
+    required this.isCollapsed,
+    required this.showPreview,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final monthPreviewLayout = layout.monthCalendar.monthPreview;
     final dayPickerState = context.watch<DayPickerBloc>().state;
-    final showPreview =
-        monthCalendarState.firstDay.month == dayPickerState.day.month &&
-            monthCalendarState.firstDay.year == dayPickerState.day.year;
     if (!showPreview) {
-      return Padding(
-        padding: layout.monthCalendar.monthPreview.noSelectedDayPadding,
-        child: Text(
-          Translator.of(context).translate.selectADayToViewDetails,
-          style: abiliaTextTheme.bodyLarge,
-        ),
-      );
-    } else {
-      final dayTheme = dayThemes[dayPickerState.day.weekday - 1];
-      return Padding(
-        padding: layout.monthCalendar.monthPreview.monthListPreviewPadding,
-        child: Column(
-          children: [
-            AnimatedTheme(
-              data: dayTheme.theme,
-              child: MonthDayPreviewHeading(
-                day: dayPickerState.day,
-                isLight: dayTheme.isLight,
-                occasion: dayPickerState.occasion,
+      return isCollapsed
+          ? SizedBox(
+              height: monthPreviewLayout.headingHeight +
+                  monthPreviewLayout.monthListPreviewPadding.vertical,
+            )
+          : Padding(
+              padding: monthPreviewLayout.noSelectedDayPadding,
+              child: Text(
+                Translator.of(context).translate.selectADayToViewDetails,
+                style: abiliaTextTheme.bodyLarge,
               ),
-            ),
-            Expanded(
-              child: Builder(
-                builder: (context) => MonthPreview(
-                  events: context.watch<DayEventsCubit>().state,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
+            );
     }
+    final dayTheme = dayThemes[dayPickerState.day.weekday - 1];
+    return Padding(
+      padding: monthPreviewLayout.monthListPreviewPadding,
+      child: Column(
+        children: [
+          AnimatedTheme(
+            data: dayTheme.theme,
+            child: MonthDayPreviewHeading(
+              day: dayPickerState.day,
+              isLight: dayTheme.isLight,
+              occasion: dayPickerState.occasion,
+              isCollapsed: isCollapsed,
+            ),
+          ),
+          if (!isCollapsed) const Expanded(child: MonthPreview()),
+        ],
+      ),
+    );
   }
 }
 
 class MonthPreview extends StatefulWidget {
-  const MonthPreview({
-    required this.events,
-    Key? key,
-  }) : super(key: key);
-
-  final EventsState events;
+  const MonthPreview({super.key});
 
   @override
   State<MonthPreview> createState() => _MonthPreviewState();
@@ -103,7 +97,7 @@ class _MonthPreviewState extends State<MonthPreview> {
           topPadding: layout.monthCalendar.monthPreview.activityListTopPadding,
           bottomPadding:
               layout.monthCalendar.monthPreview.activityListBottomPadding,
-          events: widget.events,
+          events: context.watch<DayEventsCubit>().state,
           centerNoActivitiesText: true,
         ),
       ),
@@ -116,12 +110,14 @@ class MonthDayPreviewHeading extends StatelessWidget {
     required this.day,
     required this.isLight,
     required this.occasion,
-    Key? key,
-  }) : super(key: key);
+    required this.isCollapsed,
+    super.key,
+  });
 
   final DateTime day;
   final bool isLight;
   final Occasion occasion;
+  final bool isCollapsed;
 
   @override
   Widget build(BuildContext context) {
@@ -204,6 +200,24 @@ class MonthDayPreviewHeading extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
+                  if (layout.go)
+                    SizedBox(
+                      height: previewLayout.headingFullDayActivityWidth,
+                      width: previewLayout.headingFullDayActivityWidth,
+                      child: IconActionButton(
+                        onPressed: () async =>
+                            context.read<MonthCalendarCubit>().togglePreview(),
+                        style: isLight
+                            ? actionButtonStyleLight
+                            : actionButtonStyleDark,
+                        child: Icon(
+                          isCollapsed
+                              ? AbiliaIcons.navigationUp
+                              : AbiliaIcons.navigationDown,
+                          size: previewLayout.headingButtonIconSize,
+                        ),
+                      ),
+                    ),
                 ],
               );
             },
