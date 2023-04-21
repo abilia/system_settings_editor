@@ -516,7 +516,7 @@ abstract class Translated {
 
   final String search = 'Search';
 
-  final String searchImage = 'Search Image';
+  final String searchImage = 'Search image';
 
   final String noMatchingImage = 'No matching image name';
 
