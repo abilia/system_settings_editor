@@ -7936,7 +7936,7 @@ class DE extends Translated {
   final String myPhotos = 'Meine Fotos';
 
   @override
-  final String mobilePictures = 'Mobilgerät Bilder';
+  final String mobilePictures = 'Handybilder';
 
   @override
   final String takeNewPhoto = 'Neues Foto machen';
