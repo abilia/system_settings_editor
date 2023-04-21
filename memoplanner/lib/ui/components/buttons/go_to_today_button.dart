@@ -11,7 +11,7 @@ class GoToTodayButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return Config.isMPGO
+    return layout.go
         ? IconActionButton(
             onPressed: onPressed,
             style: actionButtonStyleRedLarge,
