@@ -81,7 +81,7 @@ abstract class Translated {
   final String loggedOutMessage =
       'You have been logged out. Please log in again.';
 
-  final String unauthorizedHeader = 'You’ve been logged out';
+  final String unauthorizedHeader = 'You have been logged out';
 
   final String unauthorizedMessage =
       'This is most likely due to a password change, please try logging in again.';
@@ -1148,6 +1148,13 @@ class SV extends Translated {
       'Du har blivit utloggad. Vänligen logga in igen.';
 
   @override
+  final String unauthorizedHeader = 'Du har blivit utloggad';
+
+  @override
+  final String unauthorizedMessage =
+      'Detta beror troligen på en lösenordsändring, försök att logga in igen.';
+
+  @override
   final String createAccountHint = 'Har du inte ett myAbilia konto ännu?';
 
   @override
@@ -1786,6 +1793,12 @@ class SV extends Translated {
 
   @override
   final String takeNewPhoto = 'Ta ny bild';
+
+  @override
+  final String search = 'Sök';
+
+  @override
+  final String searchImage = 'Sök bild';
 
   @override
   final String noMatchingImage = 'Inget matchande bildnamn';
@@ -2451,7 +2464,7 @@ class SV extends Translated {
   final String aboutDevice = 'Om enheten';
 
   @override
-  final String supportId = 'Support id';
+  final String supportId = 'Support-id';
 
   @override
   final String deviceName = 'Enhetens namn';
@@ -2665,6 +2678,13 @@ class DA extends Translated {
 
   @override
   final String loggedOutMessage = 'Du er blevet logget ud. Log ind igen.';
+
+  @override
+  final String unauthorizedHeader = 'Du er blevet logget ud';
+
+  @override
+  final String unauthorizedMessage =
+      'Dette skyldes sandsynligt en ændring af adgangskoden. Prøv venligst at logge ind igen.';
 
   @override
   final String createAccountHint = 'Har du ikke en myAbilia-konto endnu?';
@@ -3305,6 +3325,15 @@ class DA extends Translated {
   final String takeNewPhoto = 'Tag et nyt billede';
 
   @override
+  final String search = 'Søg';
+
+  @override
+  final String searchImage = 'Søg billede';
+
+  @override
+  final String noMatchingImage = 'Intet matchende billedenavn';
+
+  @override
   final String recurrence = 'Gentagelse';
 
   @override
@@ -3575,6 +3604,9 @@ class DA extends Translated {
 
   @override
   final String showYear = 'Vis år';
+
+  @override
+  final String showMonthAndYear = 'Vis måned og år';
 
   @override
   final String everyDay = 'Alle dage (7)';
@@ -3965,6 +3997,9 @@ class DA extends Translated {
   final String aboutDevice = 'Om enheden';
 
   @override
+  final String supportId = 'Support-id';
+
+  @override
   final String deviceName = 'Enhedsnavn';
 
   @override
@@ -4177,6 +4212,13 @@ class NL extends Translated {
   @override
   final String loggedOutMessage =
       'U bent uitgelogd. Log alstublieft opnieuw in.';
+
+  @override
+  final String unauthorizedHeader = 'U bent uitgelogd';
+
+  @override
+  final String unauthorizedMessage =
+      'Dit komt waarschijnlijk door een wachtwoordwijziging. Probeer opnieuw in te loggen.';
 
   @override
   final String createAccountHint = 'Heeft u nog geen myAbilia-account?';
@@ -4818,6 +4860,15 @@ class NL extends Translated {
   final String takeNewPhoto = 'Nieuwe foto nemen';
 
   @override
+  final String search = 'Zoeken';
+
+  @override
+  final String searchImage = 'Afbeelding zoeken';
+
+  @override
+  final String noMatchingImage = 'Geen overeenkomende afbeeldingsnaam';
+
+  @override
   final String recurrence = 'Terugkerend';
 
   @override
@@ -5089,6 +5140,9 @@ class NL extends Translated {
 
   @override
   final String showYear = 'Jaar tonen';
+
+  @override
+  final String showMonthAndYear = 'Maand en jaar tonen';
 
   @override
   final String everyDay = 'Elke dag (7)';
@@ -5483,6 +5537,9 @@ class NL extends Translated {
   final String aboutDevice = 'Over het apparaat';
 
   @override
+  final String supportId = 'Support-id';
+
+  @override
   final String deviceName = 'Apparaatnaam';
 
   @override
@@ -5695,6 +5752,13 @@ class FI extends Translated {
   @override
   final String loggedOutMessage =
       'Olet kirjautunut ulos. Kirjaudu sisään uudelleen.';
+
+  @override
+  final String unauthorizedHeader = 'Olet kirjautunut ulos';
+
+  @override
+  final String unauthorizedMessage =
+      'Tämä johtuu todennäköisesti salasanan vaihdosta. Yritä kirjautua sisään uudelleen.';
 
   @override
   final String createAccountHint = 'Eikö sinulla ole vielä myAbilia-tiliä?';
@@ -6336,6 +6400,15 @@ class FI extends Translated {
   final String takeNewPhoto = 'Ota uusi kuva';
 
   @override
+  final String search = 'Etsi';
+
+  @override
+  final String searchImage = 'Etsi kuva';
+
+  @override
+  final String noMatchingImage = 'Ei vastaavaa kuvan nimeä';
+
+  @override
   final String recurrence = 'Toistuminen';
 
   @override
@@ -6606,6 +6679,9 @@ class FI extends Translated {
 
   @override
   final String showYear = 'Näytä vuosi';
+
+  @override
+  final String showMonthAndYear = 'Näytä kuukausi ja vuosi';
 
   @override
   final String everyDay = 'Joka päivä (7)';
@@ -6995,6 +7071,9 @@ class FI extends Translated {
   final String aboutDevice = 'Tietoja laitteesta';
 
   @override
+  final String supportId = 'Tukitunnus';
+
+  @override
   final String deviceName = 'Laitteen nimi';
 
   @override
@@ -7211,6 +7290,13 @@ class DE extends Translated {
   @override
   final String loggedOutMessage =
       'Sie wurden abgemeldet. Bitte melden Sie sich erneut an.';
+
+  @override
+  final String unauthorizedHeader = 'Sie wurden abgemeldet';
+
+  @override
+  final String unauthorizedMessage =
+      'Dies liegt wahrscheinlich an einer Passwortänderung, bitte versuchen Sie sich erneut anzumelden.';
 
   @override
   final String createAccountHint = 'Sie haben noch kein myAbilia-Konto?';
@@ -7856,6 +7942,15 @@ class DE extends Translated {
   final String takeNewPhoto = 'Neues Foto machen';
 
   @override
+  final String search = 'Suchen';
+
+  @override
+  final String searchImage = 'Bild suchen';
+
+  @override
+  final String noMatchingImage = 'Kein übereinstimmender Bildname';
+
+  @override
   final String recurrence = 'Intervall';
 
   @override
@@ -8129,6 +8224,9 @@ class DE extends Translated {
 
   @override
   final String showYear = 'Jahr anzeigen';
+
+  @override
+  final String showMonthAndYear = 'Monat und Jahr anzeigen';
 
   @override
   final String everyDay = 'Täglich (7)';
@@ -8521,6 +8619,9 @@ class DE extends Translated {
   final String aboutDevice = 'Über das Gerät';
 
   @override
+  final String supportId = 'Support-ID';
+
+  @override
   final String deviceName = 'Gerätename';
 
   @override
@@ -8731,6 +8832,13 @@ class NB extends Translated {
 
   @override
   final String loggedOutMessage = 'Du har blitt logget ut. Logg på igjen.';
+
+  @override
+  final String unauthorizedHeader = 'Du har blitt logget ut';
+
+  @override
+  final String unauthorizedMessage =
+      'Dette er sannsynlig på grunn av en passordendring, vennligst prøv å logge på igjen.';
 
   @override
   final String createAccountHint = 'Har du ikke en myAbilia-konto ennå?';
@@ -9371,6 +9479,15 @@ class NB extends Translated {
   final String takeNewPhoto = 'Ta nytt bilde';
 
   @override
+  final String search = 'Søk';
+
+  @override
+  final String searchImage = 'Søk bilde';
+
+  @override
+  final String noMatchingImage = 'Ingen samsvarende bildenavn';
+
+  @override
   final String recurrence = 'Gjentakelse';
 
   @override
@@ -9640,6 +9757,9 @@ class NB extends Translated {
 
   @override
   final String showYear = 'Vis år';
+
+  @override
+  final String showMonthAndYear = 'Vis måned og år';
 
   @override
   final String everyDay = 'Alle dager (7)';
@@ -10027,6 +10147,9 @@ class NB extends Translated {
 
   @override
   final String aboutDevice = 'Om enheten';
+
+  @override
+  final String supportId = 'Support-id';
 
   @override
   final String deviceName = 'Enhetsnavn';
