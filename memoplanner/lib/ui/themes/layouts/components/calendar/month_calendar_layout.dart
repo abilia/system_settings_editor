@@ -18,11 +18,10 @@ class MonthCalendarLayout {
 class MonthCalendarLayoutMedium extends MonthCalendarLayout {
   const MonthCalendarLayoutMedium({
     MonthPreviewLayout? monthPreviewLayout,
-    int? monthContentFlex,
-    int? monthListPreviewFlex,
+    double? weekHeight,
   }) : super(
           headingHeight: 48,
-          weekHeight: 104,
+          weekHeight: weekHeight ?? 104,
           weekNumberWidth: 36,
           monthPreview: monthPreviewLayout ?? const MonthPreviewLayoutMedium(),
           day: const MonthCalendarDayLayoutMedium(),
@@ -31,5 +30,8 @@ class MonthCalendarLayoutMedium extends MonthCalendarLayout {
 
 class MonthCalendarLayoutLarge extends MonthCalendarLayoutMedium {
   const MonthCalendarLayoutLarge()
-      : super(monthPreviewLayout: const MonthPreviewLayoutLarge());
+      : super(
+          weekHeight: 156,
+          monthPreviewLayout: const MonthPreviewLayoutLarge(),
+        );
 }

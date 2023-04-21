@@ -11,8 +11,8 @@ class MonthCalendarTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final monthCalendarState = context.watch<MonthCalendarCubit>().state;
     final dayPickerState = context.watch<DayPickerBloc>().state;
-    final isCollapsed =
-        context.select((MonthCalendarCubit cubit) => cubit.state.isCollapsed);
+    final isCollapsed = context.select((MonthCalendarCubit cubit) =>
+        layout.go && !cubit.state.showMonthPreview);
     final showPreview =
         monthCalendarState.firstDay.month == dayPickerState.day.month &&
             monthCalendarState.firstDay.year == dayPickerState.day.year;
