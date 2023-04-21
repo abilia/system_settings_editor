@@ -8,8 +8,6 @@ class MonthCalendarState {
 
   int get index => firstDay.year * DateTime.monthsPerYear + firstDay.month;
 
-  bool get isCollapsed => layout.go && !showMonthPreview;
-
   const MonthCalendarState({
     required this.firstDay,
     required this.occasion,
@@ -29,6 +27,14 @@ class MonthCalendarState {
         occasion: occasion ?? this.occasion,
         showMonthPreview: showMonthPreview ?? this.showMonthPreview,
       );
+
+  @override
+  String toString() => 'MonthCalendarState { '
+      'firstDay: $firstDay '
+      'occasion: $occasion '
+      'showMonthPreview: $showMonthPreview '
+      'index: $index '
+      '}';
 }
 
 class MonthWeek extends Equatable {
