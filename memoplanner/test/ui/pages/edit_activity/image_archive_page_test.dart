@@ -446,6 +446,25 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text(translate.imageArchive), findsOneWidget);
     expect(find.byType(ImageArchivePage), findsOneWidget);
+
+    // Open a folder and tap search
+    await tester.tap(find.byType(LibraryFolder));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.find));
+    await tester.pumpAndSettle();
+
+    // Expect - Search is empty
+    expect(
+        (find.byType(TextField).evaluate().single.widget as TextField)
+            .controller
+            ?.text,
+        '');
+    await tester.pumpAndSettle();
+
+    // Search for nonsense
+    await tester.enterText(find.byType(TextField), 'WGRwgrea');
+    await tester.pumpAndSettle();
+    expect(find.text(translate.noMatchingImage), findsOneWidget);
   });
 
   testWidgets('Search my photos', (WidgetTester tester) async {

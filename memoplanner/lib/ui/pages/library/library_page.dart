@@ -168,7 +168,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                 ),
                 if (showSearchButton)
                   IconAndTextButton(
-                    style: iconTextButtonStyleLightGrey
+                    style: actionButtonStyleDark
                         .withSize(
                           layout.libraryPage.searchButtonSize,
                         )
@@ -181,6 +181,9 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                     icon: AbiliaIcons.find,
                     onPressed: () async {
                       final authProviders = copiedAuthProviders(context);
+                      final sortableArchiveCubit = context
+                          .read<SortableArchiveCubit<ImageArchiveData>>()
+                        ..searchValueChanged('');
                       final selectedImageData =
                           await Navigator.of(context).push<SelectedImageData>(
                         PersistentMaterialPageRoute(
@@ -193,8 +196,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                             providers: authProviders,
                             child: BlocProvider<
                                 SortableArchiveCubit<ImageArchiveData>>.value(
-                              value: context.read<
-                                  SortableArchiveCubit<ImageArchiveData>>(),
+                              value: sortableArchiveCubit,
                               child: ImageArchivePage(
                                 onCancel: onCancel,
                                 showSearch: true,
@@ -345,7 +347,7 @@ class _SortableLibraryState<T extends SortableData>
           if (widget.showSearch && archiveState.searchValue.isNotEmpty) {
             return EmptyLibraryMessage(
               emptyLibraryMessage: translate.noMatchingImage,
-              rootFolder: archiveState.isAtRoot,
+              rootFolder: true,
             );
           }
         }
