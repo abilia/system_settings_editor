@@ -22,8 +22,14 @@ class MonthListPreview extends StatelessWidget {
     if (!showPreview) {
       return isCollapsed
           ? SizedBox(
-              height: monthPreviewLayout.headingHeight +
-                  monthPreviewLayout.monthListPreviewPadding.vertical,
+              height:
+                  monthPreviewLayout.monthListPreviewCollapsedPadding.vertical,
+              child: Center(
+                child: Text(
+                  Translator.of(context).translate.selectADayToViewDetails,
+                  style: abiliaTextTheme.bodyLarge,
+                ),
+              ),
             )
           : Padding(
               padding: monthPreviewLayout.noSelectedDayPadding,
@@ -35,7 +41,9 @@ class MonthListPreview extends StatelessWidget {
     }
     final dayTheme = dayThemes[dayPickerState.day.weekday - 1];
     return Padding(
-      padding: monthPreviewLayout.monthListPreviewPadding,
+      padding: isCollapsed
+          ? monthPreviewLayout.monthListPreviewCollapsedPadding
+          : monthPreviewLayout.monthListPreviewPadding,
       child: Column(
         children: [
           AnimatedTheme(
@@ -141,57 +149,53 @@ class MonthDayPreviewHeading extends StatelessWidget {
             builder: (context, eventState) {
               if (eventState is EventsLoading) return const SizedBox.shrink();
               final fullDayActivities = eventState.fullDayActivities.length;
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              return Stack(
                 children: [
-                  Flexible(
-                    fit: FlexFit.tight,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: (fullDayActivities > 0)
-                          ? CrossOver(
-                              style: CrossOverStyle.darkSecondary,
-                              applyCross: occasion.isPast,
-                              padding: previewLayout.crossOverPadding,
-                              child: (fullDayActivities > 1)
-                                  ? ClickableFullDayStack(
-                                      fullDayActivitiesBuilder: (context) =>
-                                          context.select(
-                                              (DayEventsCubit cubit) => cubit
-                                                  .state.fullDayActivities),
-                                      key: TestKey
-                                          .monthPreviewHeaderFullDayStack,
-                                      numberOfActivities:
-                                          eventState.fullDayActivities.length,
-                                      width: previewLayout
-                                          .headingFullDayActivityWidth,
-                                      height: previewLayout
-                                          .headingFullDayActivityHeight,
-                                      day: eventState.day,
-                                    )
-                                  : MonthActivityContent(
-                                      key: TestKey.monthPreviewHeaderActivity,
-                                      activityDay:
-                                          eventState.fullDayActivities.first,
-                                      isPast: eventState
-                                          .fullDayActivities.first.isPast,
-                                      width: previewLayout
-                                          .headingFullDayActivityWidth,
-                                      height: previewLayout
-                                          .headingFullDayActivityHeight,
-                                      goToActivityOnTap: true,
-                                    ),
-                            )
-                          : null,
-                    ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: (fullDayActivities > 0)
+                        ? CrossOver(
+                            style: CrossOverStyle.darkSecondary,
+                            applyCross: occasion.isPast,
+                            padding: previewLayout.crossOverPadding,
+                            child: (fullDayActivities > 1)
+                                ? ClickableFullDayStack(
+                                    fullDayActivitiesBuilder: (context) =>
+                                        context.select((DayEventsCubit cubit) =>
+                                            cubit.state.fullDayActivities),
+                                    key: TestKey.monthPreviewHeaderFullDayStack,
+                                    numberOfActivities:
+                                        eventState.fullDayActivities.length,
+                                    width: previewLayout
+                                        .headingFullDayActivityWidth,
+                                    height: previewLayout
+                                        .headingFullDayActivityHeight,
+                                    day: eventState.day,
+                                  )
+                                : MonthActivityContent(
+                                    key: TestKey.monthPreviewHeaderActivity,
+                                    activityDay:
+                                        eventState.fullDayActivities.first,
+                                    isPast: eventState
+                                        .fullDayActivities.first.isPast,
+                                    width: previewLayout
+                                        .headingFullDayActivityWidth,
+                                    height: previewLayout
+                                        .headingFullDayActivityHeight,
+                                    goToActivityOnTap: true,
+                                  ),
+                          )
+                        : null,
                   ),
-                  CrossOver(
-                    style: isLight
-                        ? CrossOverStyle.lightDefault
-                        : CrossOverStyle.darkDefault,
-                    applyCross: occasion.isPast,
-                    fallbackHeight: previewLayout.dateTextCrossOverSize.height,
-                    child: Center(
+                  Align(
+                    alignment: Alignment.center,
+                    child: CrossOver(
+                      style: isLight
+                          ? CrossOverStyle.lightDefault
+                          : CrossOverStyle.darkDefault,
+                      applyCross: occasion.isPast,
+                      fallbackHeight:
+                          previewLayout.dateTextCrossOverSize.height,
                       child: Text(
                         dateText,
                         style: Theme.of(context).textTheme.titleMedium,
@@ -199,22 +203,25 @@ class MonthDayPreviewHeading extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const Spacer(),
                   if (layout.go)
-                    SizedBox(
-                      height: previewLayout.headingFullDayActivityWidth,
-                      width: previewLayout.headingFullDayActivityWidth,
-                      child: IconActionButton(
-                        onPressed: () async =>
-                            context.read<MonthCalendarCubit>().togglePreview(),
-                        style: isLight
-                            ? actionButtonStyleLight
-                            : actionButtonStyleDark,
-                        child: Icon(
-                          isCollapsed
-                              ? AbiliaIcons.navigationUp
-                              : AbiliaIcons.navigationDown,
-                          size: previewLayout.headingButtonIconSize,
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: SizedBox(
+                        height: previewLayout.headingFullDayActivityWidth,
+                        width: previewLayout.headingFullDayActivityWidth,
+                        child: IconActionButton(
+                          onPressed: () async => context
+                              .read<MonthCalendarCubit>()
+                              .togglePreview(),
+                          style: isLight
+                              ? actionButtonStyleLight
+                              : actionButtonStyleDark,
+                          child: Icon(
+                            isCollapsed
+                                ? AbiliaIcons.navigationUp
+                                : AbiliaIcons.navigationDown,
+                            size: previewLayout.headingButtonIconSize,
+                          ),
                         ),
                       ),
                     ),

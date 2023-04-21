@@ -96,6 +96,7 @@ class MonthContent extends StatelessWidget {
                 week,
                 dayThemes: dayThemes,
                 showPreview: showPreview,
+                isCollapsed: isCollapsed,
               ),
             )
         : (MonthWeek week) => Expanded(
@@ -103,6 +104,7 @@ class MonthContent extends StatelessWidget {
                 week,
                 dayThemes: dayThemes,
                 showPreview: showPreview,
+                isCollapsed: isCollapsed,
               ),
             );
 
@@ -124,8 +126,7 @@ class MonthContent extends StatelessWidget {
               children: [
                 ...state.weeks.map(weekBuilder),
                 if (usePreview)
-                  if (state.isCollapsed) ...[
-                    const Spacer(),
+                  if (isCollapsed) ...[
                     MonthListPreview(
                       dayThemes: dayThemes,
                       isCollapsed: isCollapsed,
@@ -152,18 +153,18 @@ class WeekRow extends StatelessWidget {
   final MonthWeek week;
   final List<DayTheme> dayThemes;
   final bool showPreview;
+  final bool isCollapsed;
 
   const WeekRow(
     this.week, {
     required this.dayThemes,
     required this.showPreview,
+    required this.isCollapsed,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    final isCollapsed =
-        context.select((MonthCalendarCubit cubit) => cubit.state.isCollapsed);
     final dayBuilder = layout.go && !isCollapsed && showPreview
         ? (MonthDay day, DayTheme dayTheme) => MonthDayViewCompact(
               day,
@@ -273,6 +274,7 @@ class MonthDayView extends StatelessWidget {
               ? DefaultTabController.of(context).animateTo(0)
               : BlocProvider.of<DayPickerBloc>(context)
                   .add(GoTo(day: monthDay.day));
+          context.read<MonthCalendarCubit>().setPreview(true);
         },
         child: BlocSelector<DayPickerBloc, DayPickerState, DateTime>(
           selector: (state) => state.day,
@@ -428,6 +430,7 @@ class MonthDayViewCompact extends StatelessWidget {
               ? DefaultTabController.of(context).animateTo(0)
               : BlocProvider.of<DayPickerBloc>(context)
                   .add(GoTo(day: monthDay.day));
+          context.read<MonthCalendarCubit>().setPreview(true);
         },
         child: BlocSelector<DayPickerBloc, DayPickerState, DateTime>(
           selector: (state) => state.day,
