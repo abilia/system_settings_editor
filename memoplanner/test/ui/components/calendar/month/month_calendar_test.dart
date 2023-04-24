@@ -229,6 +229,33 @@ void main() {
         );
       }, skip: !Config.isMPGO);
 
+      testWidgets('Shows collapse button on go layout',
+          (WidgetTester tester) async {
+        // Act
+        await tester.pumpWidgetWithMPSize(const App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.month));
+        await tester.pumpAndSettle();
+
+        expect(layout.go, isTrue);
+        expect(collapseUpButton(), findsOneWidget);
+      }, skip: !Config.isMPGO);
+
+      testWidgets('Do not show collapse button on medium and large layout',
+          (WidgetTester tester) async {
+        // Act
+        screenSize = const Size(800, 1280);
+        addTearDown(() => screenSize = const Size(600, 600));
+        await tester.pumpWidgetWithMPSize(const App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.month));
+        await tester.pumpAndSettle();
+
+        expect(layout.go, isFalse);
+        expect(collapseUpButton(), findsNothing);
+        expect(collapseDownButton(), findsNothing);
+      }, skip: Config.isMPGO);
+
       testWidgets('Collapsable month preview', (WidgetTester tester) async {
         // Act - Go to month view
         final translate = Locales.language.values.first;
