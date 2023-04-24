@@ -21,6 +21,10 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
   late final StreamSubscription? _timersSubscription;
   late final StreamSubscription _clockSubscription;
 
+  bool get showPreview =>
+      state.firstDay.month == dayPickerBloc.state.day.month &&
+      state.firstDay.year == dayPickerBloc.state.day.year;
+
   MonthCalendarCubit({
     required this.clockBloc,
     required this.dayPickerBloc,

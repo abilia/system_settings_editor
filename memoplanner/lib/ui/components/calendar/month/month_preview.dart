@@ -5,13 +5,9 @@ import 'package:memoplanner/ui/all.dart';
 
 class MonthListPreview extends StatelessWidget {
   final List<DayTheme> dayThemes;
-  final bool isCollapsed;
-  final bool showPreview;
 
   const MonthListPreview({
     required this.dayThemes,
-    required this.isCollapsed,
-    required this.showPreview,
     super.key,
   });
 
@@ -19,6 +15,9 @@ class MonthListPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final monthPreviewLayout = layout.monthCalendar.monthPreview;
     final dayPickerState = context.watch<DayPickerBloc>().state;
+    final isCollapsed = context.select((MonthCalendarCubit cubit) =>
+        layout.go && !cubit.state.showMonthPreview);
+    final showPreview = context.watch<MonthCalendarCubit>().showPreview;
     if (!showPreview) {
       return isCollapsed
           ? SizedBox(
@@ -52,7 +51,6 @@ class MonthListPreview extends StatelessWidget {
               day: dayPickerState.day,
               isLight: dayTheme.isLight,
               occasion: dayPickerState.occasion,
-              isCollapsed: isCollapsed,
             ),
           ),
           if (!isCollapsed) const Expanded(child: MonthPreview()),
@@ -118,14 +116,12 @@ class MonthDayPreviewHeading extends StatelessWidget {
     required this.day,
     required this.isLight,
     required this.occasion,
-    required this.isCollapsed,
     super.key,
   });
 
   final DateTime day;
   final bool isLight;
   final Occasion occasion;
-  final bool isCollapsed;
 
   @override
   Widget build(BuildContext context) {
@@ -216,11 +212,16 @@ class MonthDayPreviewHeading extends StatelessWidget {
                           style: isLight
                               ? actionButtonStyleLight
                               : actionButtonStyleDark,
-                          child: Icon(
-                            isCollapsed
-                                ? AbiliaIcons.navigationUp
-                                : AbiliaIcons.navigationDown,
-                            size: previewLayout.headingButtonIconSize,
+                          child: BlocSelector<MonthCalendarCubit,
+                              MonthCalendarState, bool>(
+                            selector: (state) =>
+                                layout.go && !state.showMonthPreview,
+                            builder: (context, isCollapsed) => Icon(
+                              isCollapsed
+                                  ? AbiliaIcons.navigationUp
+                                  : AbiliaIcons.navigationDown,
+                              size: previewLayout.headingButtonIconSize,
+                            ),
                           ),
                         ),
                       ),

@@ -9,38 +9,24 @@ class MonthCalendarTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final monthCalendarState = context.watch<MonthCalendarCubit>().state;
-    final dayPickerState = context.watch<DayPickerBloc>().state;
-    final isCollapsed = context.select((MonthCalendarCubit cubit) =>
-        layout.go && !cubit.state.showMonthPreview);
-    final showPreview =
-        monthCalendarState.firstDay.month == dayPickerState.day.month &&
-            monthCalendarState.firstDay.year == dayPickerState.day.year;
+    final isCollapsed = context.select(
+      (MonthCalendarCubit cubit) => layout.go && !cubit.state.showMonthPreview,
+    );
+    final showPreview = context.watch<MonthCalendarCubit>().showPreview;
     return Scaffold(
       appBar: const MonthAppBar(),
       floatingActionButton:
           FloatingActions(useBottomPadding: isCollapsed && showPreview),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      body: MonthCalendar(
-        usePreview: true,
-        showPreview: showPreview,
-        isCollapsed: isCollapsed,
-      ),
+      body: const MonthCalendar(usePreview: true),
     );
   }
 }
 
 class MonthCalendar extends StatelessWidget {
-  const MonthCalendar({
-    this.usePreview = false,
-    this.showPreview = false,
-    this.isCollapsed = false,
-    super.key,
-  });
+  const MonthCalendar({this.usePreview = false, super.key});
 
-  final bool isCollapsed;
   final bool usePreview;
-  final bool showPreview;
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +48,6 @@ class MonthCalendar extends StatelessWidget {
           child: MonthContent(
             dayThemes: dayThemes,
             usePreview: usePreview,
-            showPreview: showPreview,
-            isCollapsed: isCollapsed,
           ),
         ),
       ],
@@ -74,19 +58,19 @@ class MonthCalendar extends StatelessWidget {
 class MonthContent extends StatelessWidget {
   final List<DayTheme> dayThemes;
   final bool usePreview;
-  final bool showPreview;
-  final bool isCollapsed;
 
   const MonthContent({
     required this.dayThemes,
     required this.usePreview,
-    required this.showPreview,
-    required this.isCollapsed,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isCollapsed = context.select(
+      (MonthCalendarCubit cubit) => layout.go && !cubit.state.showMonthPreview,
+    );
+    final showPreview = context.watch<MonthCalendarCubit>().showPreview;
     final pageController = PageController(
         initialPage: context.read<MonthCalendarCubit>().state.index);
     final weekBuilder = usePreview && !isCollapsed && showPreview
@@ -95,16 +79,12 @@ class MonthContent extends StatelessWidget {
               child: WeekRow(
                 week,
                 dayThemes: dayThemes,
-                showPreview: showPreview,
-                isCollapsed: isCollapsed,
               ),
             )
         : (MonthWeek week) => Expanded(
               child: WeekRow(
                 week,
                 dayThemes: dayThemes,
-                showPreview: showPreview,
-                isCollapsed: isCollapsed,
               ),
             );
 
@@ -127,18 +107,10 @@ class MonthContent extends StatelessWidget {
                 ...state.weeks.map(weekBuilder),
                 if (usePreview)
                   if (isCollapsed) ...[
-                    MonthListPreview(
-                      dayThemes: dayThemes,
-                      isCollapsed: isCollapsed,
-                      showPreview: showPreview,
-                    ),
+                    MonthListPreview(dayThemes: dayThemes),
                   ] else
                     Expanded(
-                      child: MonthListPreview(
-                        dayThemes: dayThemes,
-                        isCollapsed: isCollapsed,
-                        showPreview: showPreview,
-                      ),
+                      child: MonthListPreview(dayThemes: dayThemes),
                     ),
               ],
             );
@@ -152,19 +124,18 @@ class MonthContent extends StatelessWidget {
 class WeekRow extends StatelessWidget {
   final MonthWeek week;
   final List<DayTheme> dayThemes;
-  final bool showPreview;
-  final bool isCollapsed;
 
   const WeekRow(
     this.week, {
     required this.dayThemes,
-    required this.showPreview,
-    required this.isCollapsed,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final showPreview = context.watch<MonthCalendarCubit>().showPreview;
+    final isCollapsed = context.select((MonthCalendarCubit cubit) =>
+        layout.go && !cubit.state.showMonthPreview);
     final dayBuilder = layout.go && !isCollapsed && showPreview
         ? (MonthDay day, DayTheme dayTheme) => MonthDayViewCompact(
               day,
