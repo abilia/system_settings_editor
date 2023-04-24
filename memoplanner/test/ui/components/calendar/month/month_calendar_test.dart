@@ -25,6 +25,16 @@ void main() {
   late ActivityDbInMemory mockActivityDb;
   final initialDay = DateTime(2020, 08, 05);
 
+  Finder collapseUpButton() => find.ancestor(
+        of: find.byIcon(AbiliaIcons.navigationUp),
+        matching: find.byType(IconActionButton),
+      );
+
+  Finder collapseDownButton() => find.ancestor(
+        of: find.byIcon(AbiliaIcons.navigationDown),
+        matching: find.byType(IconActionButton),
+      );
+
   setUpAll(() async {
     sharedPreferences = await FakeSharedPreferences.getInstance();
     registerFallbackValues();
@@ -210,9 +220,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.month));
         await tester.pumpAndSettle();
-        await tester.tap(find.ancestor(
-            of: find.byIcon(AbiliaIcons.navigationUp),
-            matching: find.byType(IconActionButton)));
+        await tester.tap(collapseUpButton());
         await tester.pumpAndSettle();
         // Assert
         expect(
@@ -236,9 +244,7 @@ void main() {
         expect(find.byType(EventList), findsNothing);
 
         // Act - Tap on collapse button
-        await tester.tap(find.ancestor(
-            of: find.byIcon(AbiliaIcons.navigationUp),
-            matching: find.byType(IconActionButton)));
+        await tester.tap(collapseUpButton());
         await tester.pumpAndSettle();
 
         // Assert - Compact month view with month preview
@@ -248,9 +254,7 @@ void main() {
         expect(find.byType(MonthDayView), findsNothing);
 
         // Act - Tap on collapse button
-        await tester.tap(find.ancestor(
-            of: find.byIcon(AbiliaIcons.navigationDown),
-            matching: find.byType(IconActionButton)));
+        await tester.tap(collapseDownButton());
         await tester.pumpAndSettle();
 
         // Assert - Normal month view with no month preview
@@ -281,9 +285,7 @@ void main() {
         expect(find.byType(MonthDayView), findsNothing);
 
         // Act - Tap on collapse button again
-        await tester.tap(find.ancestor(
-            of: find.byIcon(AbiliaIcons.navigationDown),
-            matching: find.byType(IconActionButton)));
+        await tester.tap(collapseDownButton());
         await tester.pumpAndSettle();
 
         // Assert - Expanded month view with no collapsed preview
@@ -343,16 +345,8 @@ void main() {
         );
 
         // Assert - No collapse month preview button
-        expect(
-            find.ancestor(
-                of: find.byIcon(AbiliaIcons.navigationDown),
-                matching: find.byType(IconActionButton)),
-            findsNothing);
-        expect(
-            find.ancestor(
-                of: find.byIcon(AbiliaIcons.navigationUp),
-                matching: find.byType(IconActionButton)),
-            findsNothing);
+        expect(collapseUpButton(), findsNothing);
+        expect(collapseDownButton(), findsNothing);
       }, skip: !Config.isMP);
     });
   });
@@ -441,9 +435,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
-      await tester.tap(find.ancestor(
-          of: find.byIcon(AbiliaIcons.navigationUp),
-          matching: find.byType(IconActionButton)));
+      await tester.tap(collapseUpButton());
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsNWidgets(2));
       expect(find.text(title2), findsOneWidget);
@@ -477,9 +469,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
-      await tester.tap(find.ancestor(
-          of: find.byIcon(AbiliaIcons.navigationUp),
-          matching: find.byType(IconActionButton)));
+      await tester.tap(collapseUpButton());
       await tester.pumpAndSettle();
       final cardPaddingList = tester.widgetList<Padding>(find.ancestor(
           of: find.byType(ActivityCard), matching: find.byType(Padding)));
@@ -510,9 +500,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
-      await tester.tap(find.ancestor(
-          of: find.byIcon(AbiliaIcons.navigationUp),
-          matching: find.byType(IconActionButton)));
+      await tester.tap(collapseUpButton());
       await tester.pumpAndSettle();
 
       expect(find.byType(MonthPreview), findsOneWidget);
@@ -571,9 +559,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
-      await tester.tap(find.ancestor(
-          of: find.byIcon(AbiliaIcons.navigationUp),
-          matching: find.byType(IconActionButton)));
+      await tester.tap(collapseUpButton());
       await tester.pumpAndSettle();
 
       expect(find.byType(MonthPreview), findsOneWidget);
@@ -665,9 +651,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
-      await tester.tap(find.ancestor(
-          of: find.byIcon(AbiliaIcons.navigationUp),
-          matching: find.byType(IconActionButton)));
+      await tester.tap(collapseUpButton());
       await tester.pumpAndSettle();
 
       expect(find.byType(MonthPreview), findsOneWidget);

@@ -78,9 +78,7 @@ class CalendarBottomBar extends StatelessWidget {
                           final monthCalendarCubit = context
                               .read<MonthCalendarCubit>()
                             ..setPreview(false);
-                          return monthCalendarCubit.goToCurrentMonth(
-                            collapsePreview: true,
-                          );
+                          return monthCalendarCubit.goToCurrentMonth();
                         },
                       ),
                     )

@@ -88,7 +88,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     );
   }
 
-  Future<void> goToCurrentMonth({bool? collapsePreview}) async {
+  Future<void> goToCurrentMonth() async {
     dayPickerBloc.add(GoTo(day: clockBloc.state));
     final first = clockBloc.state.firstDayOfMonth();
     final last = first.nextMonth();
@@ -98,7 +98,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         await activityRepository?.allBetween(first, last) ?? [],
         timerAlarmBloc?.state.timers ?? [],
         clockBloc.state,
-        collapsePreview,
+        false,
       ),
     );
   }
@@ -133,7 +133,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     Iterable<Activity> activities,
     Iterable<TimerOccasion> timerOccasions,
     DateTime now, [
-    bool? collapsePreview,
+    bool? showMonthPreview,
   ]) {
     assert(firstDayOfMonth.day == 1);
     assert(firstDayOfMonth.hour == 0);
@@ -174,7 +174,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
       firstDay: firstDayOfMonth,
       occasion: occasion,
       weeks: weekData,
-      showMonthPreview: collapsePreview ?? state.showMonthPreview,
+      showMonthPreview: showMonthPreview ?? state.showMonthPreview,
     );
   }
 
