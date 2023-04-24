@@ -35,7 +35,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
             firstDay: clockBloc.state,
             occasion: Occasion.current,
             weeks: [],
-            showMonthPreview: settingsDb?.showMonthPreview ?? true,
+            showMonthPreview: false,
           ),
         ) {
     _activitiesSubscription = activitiesBloc?.stream.listen(updateMonth);
@@ -98,6 +98,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         await activityRepository?.allBetween(first, last) ?? [],
         timerAlarmBloc?.state.timers ?? [],
         clockBloc.state,
+        false,
       ),
     );
   }
@@ -122,18 +123,18 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     );
   }
 
-  Future<void> togglePreview() async {
-    final showMonthPreview = !state.showMonthPreview;
-    emit(state.copyWith(showMonthPreview: showMonthPreview));
-    return settingsDb?.setShowMonthPreview(showMonthPreview);
-  }
+  void togglePreview() => setPreview(!state.showMonthPreview);
+
+  void setPreview(bool showMonthPreview) =>
+      emit(state.copyWith(showMonthPreview: showMonthPreview));
 
   MonthCalendarState _mapToState(
     DateTime firstDayOfMonth,
     Iterable<Activity> activities,
     Iterable<TimerOccasion> timerOccasions,
-    DateTime now,
-  ) {
+    DateTime now, [
+    bool? showMonthPreview,
+  ]) {
     assert(firstDayOfMonth.day == 1);
     assert(firstDayOfMonth.hour == 0);
     assert(firstDayOfMonth.minute == 0);
@@ -173,7 +174,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
       firstDay: firstDayOfMonth,
       occasion: occasion,
       weeks: weekData,
-      showMonthPreview: state.showMonthPreview,
+      showMonthPreview: showMonthPreview ?? state.showMonthPreview,
     );
   }
 

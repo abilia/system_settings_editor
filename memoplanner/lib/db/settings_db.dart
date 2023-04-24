@@ -8,8 +8,7 @@ class SettingsDb {
       _alwaysUse24Record = 'ALWAYS_USE_24',
       _categoryLeftExpanded = 'CATEGORY_LEFT_EXPANDED',
       _categoryRightExpanded = 'CATEGORY_RIGHT_EXPANDED',
-      _keepScreenOnWhileChargingKey = 'keep_screen_on_while_charging',
-      _showMonthPreviewKey = 'show_month_preview';
+      _keepScreenOnWhileChargingKey = 'keep_screen_on_while_charging';
 
   final SharedPreferences preferences;
 
@@ -48,12 +47,6 @@ class SettingsDb {
 
   bool get keepScreenOnWhileCharging =>
       _tryGetBool(_keepScreenOnWhileChargingKey, false);
-
-  Future<void> setShowMonthPreview(bool showMonthPreview) =>
-      preferences.setBool(_showMonthPreviewKey, showMonthPreview);
-
-  bool get showMonthPreview =>
-      preferences.getBool(_showMonthPreviewKey) ?? true;
 
   Future setKeepScreenOnWhileCharging(bool keepScreenOnWhileCharging) =>
       preferences.setBool(

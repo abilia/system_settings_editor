@@ -1255,24 +1255,20 @@ void main() {
   );
 
   test('Toggle month preview', () async {
-    final SettingsDb mockSettingsDb = MockSettingsDb();
-    when(() => mockSettingsDb.showMonthPreview).thenAnswer((_) => true);
-    when(() => mockSettingsDb.setShowMonthPreview(any()))
-        .thenAnswer((_) => Future.value());
+    final SettingsDb fakeSettingsDb = FakeSettingsDb();
     monthCalendarCubit = MonthCalendarCubit(
       clockBloc: clockBloc,
       dayPickerBloc: dayPickerBloc,
-      settingsDb: mockSettingsDb,
+      settingsDb: fakeSettingsDb,
     );
 
-    expect(monthCalendarCubit.state.showMonthPreview, isTrue);
-    await monthCalendarCubit.togglePreview();
     expect(monthCalendarCubit.state.showMonthPreview, isFalse);
-    await monthCalendarCubit.togglePreview();
+    monthCalendarCubit.togglePreview();
     expect(monthCalendarCubit.state.showMonthPreview, isTrue);
-
-    verify(() => mockSettingsDb.setShowMonthPreview(true)).called(1);
-    verify(() => mockSettingsDb.setShowMonthPreview(false)).called(1);
+    monthCalendarCubit.togglePreview();
+    expect(monthCalendarCubit.state.showMonthPreview, isFalse);
+    monthCalendarCubit.togglePreview();
+    expect(monthCalendarCubit.state.showMonthPreview, isTrue);
   });
 }
 
