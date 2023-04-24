@@ -15,32 +15,26 @@ class MonthListPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final monthPreviewLayout = layout.monthCalendar.monthPreview;
     final dayPickerState = context.watch<DayPickerBloc>().state;
-    final isCollapsed = context.select((MonthCalendarCubit cubit) =>
-        layout.go && !cubit.state.showMonthPreview);
     final showPreview = context.watch<MonthCalendarCubit>().showPreview;
     if (!showPreview) {
-      return isCollapsed
-          ? SizedBox(
-              height:
-                  monthPreviewLayout.monthListPreviewCollapsedPadding.vertical,
-              child: Center(
-                child: Text(
-                  Translator.of(context).translate.selectADayToViewDetails,
-                  style: abiliaTextTheme.bodyLarge,
-                ),
-              ),
-            )
-          : Padding(
-              padding: monthPreviewLayout.noSelectedDayPadding,
-              child: Text(
-                Translator.of(context).translate.selectADayToViewDetails,
-                style: abiliaTextTheme.bodyLarge,
-              ),
-            );
+      return SizedBox(
+        height: monthPreviewLayout.monthListPreviewCollapsedPadding.vertical,
+        child: Center(
+          child: Text(
+            Translator.of(context).translate.selectADayToViewDetails,
+            style: abiliaTextTheme.bodyLarge,
+          ),
+        ),
+      );
     }
     final dayTheme = dayThemes[dayPickerState.day.weekday - 1];
+    final isCollapsed = context.select((MonthCalendarCubit cubit) =>
+        layout.go && !cubit.state.showMonthPreview);
+    final showAlarmOnOffSwitch = context.select(
+        (MemoplannerSettingsBloc bloc) =>
+            bloc.state.alarm.showAlarmOnOffSwitch);
     return Padding(
-      padding: isCollapsed
+      padding: (showAlarmOnOffSwitch || !showPreview) && isCollapsed
           ? monthPreviewLayout.monthListPreviewCollapsedPadding
           : monthPreviewLayout.monthListPreviewPadding,
       child: Column(

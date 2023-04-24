@@ -26,7 +26,7 @@ class MonthPreviewLayout {
     this.headingFullDayActivityWidth = 40,
     this.headingButtonIconSize = 24,
     this.monthListPreviewPadding =
-        const EdgeInsets.only(left: 8, top: 14, right: 8),
+        const EdgeInsets.only(left: 8, top: 16, right: 8),
     this.monthListPreviewCollapsedPadding =
         const EdgeInsets.only(left: 8, top: 82, right: 8),
     this.headingPadding = const EdgeInsets.only(left: 12, right: 8),
