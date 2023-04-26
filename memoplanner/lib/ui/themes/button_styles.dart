@@ -281,7 +281,9 @@ final actionButtonStyleDarkLarge = actionButtonStyleDark.copyWith(
 final secondaryActionButtonStyleDark = actionButtonStyleDark.copyWith(
   shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled) ||
-        states.contains(MaterialState.pressed)) return noBorderShape;
+        states.contains(MaterialState.pressed)) {
+      return noBorderShape.copyWith(borderRadius: circleRadius);
+    }
     return darkShapeBorder.copyWith(borderRadius: circleRadius);
   }),
   minimumSize: MaterialStateProperty.all(
