@@ -87,7 +87,17 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
     if (myPhotosFolder == null) {
       return [];
     }
-    return [...?allByFolder[myPhotosFolder.id], myPhotosFolder];
+    return allInFolder(myPhotosFolder.id)..add(myPhotosFolder);
+  }
+
+  List<Sortable> allInFolder(String groupId) {
+    final List<Sortable> sortables =
+        sortableArchive.where((s) => s.groupId == groupId).toList();
+    final folders = [...sortables.where((s) => s.isGroup)];
+    for (final folder in folders) {
+      sortables.addAll(allInFolder(folder.id));
+    }
+    return sortables;
   }
 
   bool myPhotosFilter(Sortable sortable) =>
