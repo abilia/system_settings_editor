@@ -5,60 +5,71 @@ import 'package:memoplanner/utils/all.dart';
 
 class FullscreenAlarmInfoDialog extends StatelessWidget {
   final bool showRedirect;
-  final Function()? onNext;
 
   const FullscreenAlarmInfoDialog({
-    this.onNext,
     this.showRedirect = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return ViewDialog(
-      bodyPadding: layout.templates.m4,
-      expanded: true,
-      backNavigationWidget: CancelButton(onPressed: onNext),
-      forwardNavigationWidget: showRedirect
-          ? RequestFullscreenNotificationButton(onPressed: onNext)
-          : null,
-      body: Column(
-        children: [
-          const Spacer(flex: 64),
-          const ActivityAlarmPreview(),
-          const Spacer(flex: 24),
-          Tts(
-            child: Text(
-              translate.fullScreenAlarm,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ),
-          SizedBox(height: layout.formPadding.verticalItemDistance),
-          Tts(
-            child: Text(
-              translate.fullScreenAlarmInfo,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AbiliaColors.black75,
-                  ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          if (showRedirect) ...[
-            const Spacer(flex: 43),
+    return BlocListener<PermissionCubit, PermissionState>(
+      listenWhen: (previous, current) =>
+          previous.status[Permission.systemAlertWindow]?.isGranted == false &&
+          current.status[Permission.systemAlertWindow]?.isGranted == true,
+      listener: (context, state) => Navigator.of(context).pop(),
+      child: ViewDialog(
+        bodyPadding: layout.templates.m4,
+        expanded: true,
+        backNavigationWidget: CancelButton(
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        forwardNavigationWidget: showRedirect
+            ? GreenButton(
+                icon: AbiliaIcons.ok,
+                text: Translator.of(context).translate.allow,
+                onPressed: () async => context
+                    .read<PermissionCubit>()
+                    .requestPermissions([Permission.systemAlertWindow]))
+            : null,
+        body: Column(
+          children: [
+            const Spacer(flex: 64),
+            const ActivityAlarmPreview(),
+            const Spacer(flex: 24),
             Tts(
               child: Text(
-                translate.redirectToAndroidSettings,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                translate.fullScreenAlarm,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            SizedBox(height: layout.formPadding.verticalItemDistance),
+            Tts(
+              child: Text(
+                translate.fullScreenAlarmInfo,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AbiliaColors.black75,
                     ),
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: layout.formPadding.largeVerticalItemDistance),
-          ] else
-            const Spacer(flex: 71),
-        ],
+            if (showRedirect) ...[
+              const Spacer(flex: 43),
+              Tts(
+                child: Text(
+                  translate.redirectToAndroidSettings,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AbiliaColors.black75,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(height: layout.formPadding.largeVerticalItemDistance),
+            ] else
+              const Spacer(flex: 71),
+          ],
+        ),
       ),
     );
   }
@@ -118,29 +129,4 @@ class ActivityAlarmPreview extends StatelessWidget {
       ),
     );
   }
-}
-
-class RequestFullscreenNotificationButton extends StatelessWidget {
-  final Function()? onPressed;
-
-  const RequestFullscreenNotificationButton({
-    required this.onPressed,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => GreenButton(
-        icon: AbiliaIcons.ok,
-        text: Translator.of(context).translate.allow,
-        onPressed: () async {
-          await context
-              .read<PermissionCubit>()
-              .requestPermissions([Permission.systemAlertWindow]);
-          if (onPressed != null) {
-            onPressed?.call();
-          } else if (context.mounted) {
-            await Navigator.of(context).maybePop();
-          }
-        },
-      );
 }

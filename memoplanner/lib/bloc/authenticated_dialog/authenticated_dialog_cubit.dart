@@ -31,8 +31,10 @@ class AuthenticatedDialogCubit extends Cubit<AuthenticatedDialogState> {
           .listen(_onSortableLoaded);
     }
     if (!state.fullscreenAlarmLoaded) {
-      _permissionSubscription =
-          permissionCubit.stream.take(1).listen(_onPermissionChanged);
+      _permissionSubscription = permissionCubit.stream
+          .where((state) => state is PermissionsChecked)
+          .take(1)
+          .listen(_onPermissionChanged);
     }
   }
 
