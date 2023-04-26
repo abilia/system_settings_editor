@@ -68,38 +68,11 @@ class ArchiveImage extends StatelessWidget {
     final name = imageArchiveData.name;
     final imageId = imageArchiveData.fileId;
     final iconPath = imageArchiveData.file;
-    return Tts.fromSemantics(
-      SemanticsProperties(
-        label: imageArchiveData.name,
-        image: imageArchiveData.fileId.isNotEmpty ||
-            imageArchiveData.file.isNotEmpty,
-        button: true,
-      ),
-      child: Container(
-        decoration: boxDecoration,
-        padding: EdgeInsets.all(layout.imageArchive.imagePadding),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            if (name.isNotEmpty) ...[
-              Text(
-                name,
-                overflow: TextOverflow.ellipsis,
-                style: abiliaTextTheme.bodySmall,
-              ),
-              SizedBox(height: layout.imageArchive.imageNameBottomPadding),
-            ],
-            Flexible(
-              child: FadeInAbiliaImage(
-                height: layout.imageArchive.imageHeight,
-                width: layout.imageArchive.imageWidth,
-                imageFileId: imageId,
-                imageFilePath: iconPath,
-              ),
-            ),
-          ],
-        ),
-      ),
+    return LibraryImage(
+      name: name,
+      isImage: imageId.isNotEmpty || imageArchiveData.file.isNotEmpty,
+      imageId: imageId,
+      iconPath: iconPath,
     );
   }
 }
