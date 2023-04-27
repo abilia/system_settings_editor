@@ -334,7 +334,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(FullscreenAlarmInfoDialog), findsOneWidget);
-      expect(find.byType(RequestFullscreenNotificationButton), findsNothing);
+      expect(find.byType(GreenButton), findsNothing);
       expect(find.text(translate.notificationsWarningHintText), findsNothing);
     });
   }, skip: Config.isMP);
