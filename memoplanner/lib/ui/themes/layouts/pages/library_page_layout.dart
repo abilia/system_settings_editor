@@ -8,9 +8,6 @@ class LibraryPageLayout {
       folderIconSize,
       headerFontSize,
       childAspectRatio,
-      imageHeight,
-      imageWidth,
-      textImageDistance,
       emptyMessageTopPadding,
       folderImageRadius,
       backButtonIconSize;
@@ -37,9 +34,6 @@ class LibraryPageLayout {
     this.folderIconSize = 86,
     this.headerFontSize = 20,
     this.childAspectRatio = 1,
-    this.imageHeight = 86,
-    this.imageWidth = 86,
-    this.textImageDistance = 2,
     this.emptyMessageTopPadding = 60,
     this.folderImageRadius = 4,
   });
@@ -72,9 +66,6 @@ class LibraryPageLayoutMedium extends LibraryPageLayout {
           folderIconSize: 128,
           headerFontSize: 32,
           childAspectRatio: 183 / 188,
-          imageHeight: 144,
-          imageWidth: 140,
-          textImageDistance: 3,
           emptyMessageTopPadding: 90,
           folderImageRadius: 6,
         );

@@ -29,6 +29,7 @@ class ChecklistLibraryPage extends StatelessWidget {
 
 class LibraryChecklist extends StatelessWidget {
   final Checklist checklist;
+
   const LibraryChecklist({
     required this.checklist,
     Key? key,
@@ -36,45 +37,14 @@ class LibraryChecklist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageHeight = layout.libraryPage.imageHeight;
-    final imageWidth = layout.libraryPage.imageWidth;
     final imageId = checklist.fileId;
     final name = checklist.name;
     final iconPath = checklist.image;
-    return Tts.fromSemantics(
-      SemanticsProperties(label: name),
-      child: Container(
-        decoration: boxDecoration,
-        padding: layout.templates.s3,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            if (name.isNotEmpty)
-              Text(
-                name,
-                overflow: TextOverflow.ellipsis,
-                style: abiliaTextTheme.bodySmall,
-              ),
-            SizedBox(height: layout.libraryPage.textImageDistance),
-            if (checklist.hasImage)
-              FadeInAbiliaImage(
-                height: imageHeight,
-                width: imageWidth,
-                imageFileId: imageId,
-                imageFilePath: iconPath,
-              )
-            else
-              SizedBox(
-                height: imageHeight,
-                child: Icon(
-                  AbiliaIcons.checkButton,
-                  size: layout.icon.large,
-                  color: AbiliaColors.white140,
-                ),
-              ),
-          ],
-        ),
-      ),
+    return LibraryImage(
+      name: name,
+      isImage: imageId.isNotEmpty || checklist.hasImage,
+      imageId: imageId,
+      iconPath: iconPath,
     );
   }
 }

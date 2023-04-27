@@ -392,6 +392,57 @@ class _SortableLibraryState<T extends SortableData>
   }
 }
 
+class LibraryImage extends StatelessWidget {
+  final String name;
+  final String imageId;
+  final String iconPath;
+  final bool isImage;
+
+  const LibraryImage({
+    required this.name,
+    required this.isImage,
+    required this.imageId,
+    required this.iconPath,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Tts.fromSemantics(
+      SemanticsProperties(
+        label: name,
+        image: isImage,
+        button: true,
+      ),
+      child: Container(
+        decoration: boxDecoration,
+        padding: EdgeInsets.all(layout.imageArchive.imagePadding),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            if (name.isNotEmpty) ...[
+              Text(
+                name,
+                overflow: TextOverflow.ellipsis,
+                style: abiliaTextTheme.bodySmall,
+              ),
+              SizedBox(height: layout.imageArchive.imageNameBottomPadding),
+            ],
+            Flexible(
+              child: FadeInAbiliaImage(
+                height: layout.imageArchive.imageHeight,
+                width: layout.imageArchive.imageWidth,
+                imageFileId: imageId,
+                imageFilePath: iconPath,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class Folder<T extends SortableData> extends StatelessWidget {
   const Folder({
     required this.sortable,
