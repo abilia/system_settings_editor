@@ -36,11 +36,14 @@ void main() {
 
   const fileId = '351d5e7d-0d87-4037-9829-538a14936128',
       myPhotoFileId = '351d5e7d-0d87-4037-9829-538a14936125',
+      myPhotoFileId2 = '351d5e7d-0d87-4037-9829-538a1asdasfsrg',
       path = '/images/Basic/Basic/bingo.gif',
-      myPhotoPath = '/images/Basic/Basic/jello.gif';
+      myPhotoPath = '/images/Basic/Basic/jello.gif',
+      myPhotoPath2 = '/images/Basic/Basic/göllo.gif';
 
   const imageName = 'bingo';
   const myPhotoName = 'jello';
+  const myPhotoName2 = 'göllo';
 
   final imageData = ImageArchiveData.fromJson('''
           {"name":"$imageName","fileId":"$fileId","file":"$path"}
@@ -48,11 +51,15 @@ void main() {
   final myPhotoData = ImageArchiveData.fromJson('''
           {"name":"$myPhotoName","fileId":"$myPhotoFileId","file":"$myPhotoPath"}
           ''');
+  final myPhotoData2 = ImageArchiveData.fromJson('''
+          {"name":"$myPhotoName2","fileId":"$myPhotoFileId2","file":"$myPhotoPath2"}
+          ''');
 
   final image = Sortable.createNew<ImageArchiveData>(data: imageData);
 
   const folderName = 'Basic';
   const myPhotosFolderName = 'My photos';
+  const myPhotosSubFolderName = 'Cute animals';
 
   final folderData = ImageArchiveData.fromJson('''
           {"name":"$folderName","fileId":"19da3060-be12-42f9-922e-7e1635293126","icon":"/images/Basic/Basic.png"}
@@ -60,11 +67,16 @@ void main() {
   final myPhotosFolderData = ImageArchiveData.fromJson('''
           {"name":"$myPhotosFolderName","fileId":"19da3060-be12-42f9-922e-7e1635293123","icon":"/images/Basic/My photos.png", "myPhotos": true}
           ''');
+  final myPhotosSubFolderData = ImageArchiveData.fromJson('''
+          {"name":"$myPhotosSubFolderName","fileId":"19da3060-be12-42f9-922e-7e1635293f<sdf","icon":"/images/Basic/YOYO.png"}
+          ''');
 
   final folder =
       Sortable.createNew<ImageArchiveData>(data: folderData, isGroup: true);
   final myPhotosFolder = Sortable.createNew<ImageArchiveData>(
       data: myPhotosFolderData, isGroup: true);
+  final myPhotosSubFolder = Sortable.createNew<ImageArchiveData>(
+      data: myPhotosSubFolderData, isGroup: true, groupId: myPhotosFolder.id);
 
   const imageInFolderName = 'Folder image';
   final imageInFolder =
@@ -73,6 +85,8 @@ void main() {
           '''), groupId: folder.id);
   final myPhoto = Sortable.createNew<ImageArchiveData>(
       data: myPhotoData, groupId: myPhotosFolder.id);
+  final myPhotoInSubFolder = Sortable.createNew<ImageArchiveData>(
+      data: myPhotoData2, groupId: myPhotosSubFolder.id);
 
   final folderData2 = ImageArchiveData.fromJson('''
           {"name":"folder2","fileId":"20da3060-be12-42f9-922e-7e1632993199","icon":"/images/Basic/Basic.png"}
@@ -383,24 +397,58 @@ void main() {
     });
   });
 
+  testWidgets('Can go into sub folder in My photos',
+      (WidgetTester tester) async {
+    await mockNetworkImages(() async {
+      when(() => mockSortableBloc.state).thenAnswer(
+        (_) => SortablesLoaded(
+          sortables: [
+            myPhotosFolder,
+            myPhoto,
+            myPhotosSubFolder,
+            myPhotoInSubFolder,
+          ],
+        ),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          ImageArchivePage(
+            initialFolder: myPhotosFolder.id,
+            header: myPhotosFolder.data.name,
+          ),
+          initialFolder: myPhotosFolder.id,
+          myPhotos: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text(myPhotosFolder.data.name), findsOneWidget);
+      expect(find.byType(ImageArchivePage), findsOneWidget);
+      await tester.tap(find.byType(LibraryFolder));
+      await tester.pumpAndSettle();
+      expect(find.text(myPhotosFolder.data.name), findsNothing);
+      expect(find.text(myPhotoInSubFolder.data.name), findsOneWidget);
+    });
+  });
+
   Future<void> pumpImageArchiveSearch(
     WidgetTester tester,
     bool myPhotos,
   ) async {
     await mockNetworkImages(() async {
-      when(() => mockSortableBloc.state).thenAnswer((_) => SortablesLoaded(
-              sortables: [
+      when(() => mockSortableBloc.state)
+          .thenAnswer((_) => SortablesLoaded(sortables: [
                 folder,
                 folderInsideFolder,
                 image,
                 myPhotosFolder,
-                myPhoto
+                myPhoto,
+                myPhotosSubFolder,
+                myPhotoInSubFolder,
               ]));
       await tester.pumpWidget(
         wrapWithMaterialApp(
           ImageArchivePage(
             initialFolder: folder.id,
-            myPhotos: myPhotos,
           ),
           initialFolder: folder.id,
           myPhotos: myPhotos,
@@ -489,6 +537,12 @@ void main() {
     await tester.enterText(find.byType(TextField), myPhoto.data.name);
     await tester.pumpAndSettle();
     expect(find.text(myPhoto.data.name), findsNWidgets(2));
+
+    // Search for photo in sub folder
+    await tester.enterText(
+        find.byType(TextField), myPhotoInSubFolder.data.name);
+    await tester.pumpAndSettle();
+    expect(find.text(myPhotoInSubFolder.data.name), findsNWidgets(2));
 
     // Press cancel returns to image archive
     await tester.tap(find.byType(CancelButton));
