@@ -8,6 +8,8 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:sortables/db/sortable_db.dart';
+import 'package:sortables/repository/data_repository/sortable_repository.dart';
 import 'package:test/fake.dart';
 
 import '../test_helpers/default_sortables.dart';

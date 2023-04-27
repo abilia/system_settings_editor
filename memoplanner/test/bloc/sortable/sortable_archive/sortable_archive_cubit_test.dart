@@ -221,7 +221,7 @@ void main() {
         ..sortablesUpdated(basicActivitySortables)
         ..searchValueChanged('first'),
       verify: (_) {
-        expect(sortableArchiveCubit.state.allFilteredAndSorted(translate),
+        expect(sortableArchiveCubit.state.allFilteredAndSorted(),
             [first]);
       },
     );
@@ -234,7 +234,7 @@ void main() {
         ..sortablesUpdated(basicActivitySortables)
         ..searchValueChanged('i'),
       verify: (_) {
-        expect(sortableArchiveCubit.state.allFilteredAndSorted(translate),
+        expect(sortableArchiveCubit.state.allFilteredAndSorted(),
             [first, third]);
       },
     );
@@ -247,7 +247,7 @@ void main() {
         ..sortablesUpdated(basicActivitySortables)
         ..searchValueChanged(''),
       verify: (_) {
-        expect(sortableArchiveCubit.state.allFilteredAndSorted(translate), []);
+        expect(sortableArchiveCubit.state.allFilteredAndSorted(), []);
       },
     );
 
@@ -259,7 +259,7 @@ void main() {
         ..sortablesUpdated(basicActivitySortables)
         ..searchValueChanged('T43Q87Y87yh78yh6'),
       verify: (_) {
-        expect(sortableArchiveCubit.state.allFilteredAndSorted(translate), []);
+        expect(sortableArchiveCubit.state.allFilteredAndSorted(), []);
       },
     );
   });

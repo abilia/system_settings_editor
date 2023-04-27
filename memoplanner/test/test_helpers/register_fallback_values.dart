@@ -10,6 +10,7 @@ import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:sortables/bloc/sortable/sortable_bloc.dart';
 
 void registerFallbackValues() {
   registerFallbackValue(File(''));

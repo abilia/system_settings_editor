@@ -2,6 +2,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:sortables/bloc/sortable/sortable_archive/sortable_archive_cubit.dart';
 
 typedef LibraryItemGenerator<T extends SortableData> = Widget Function(
     Sortable<T>);
@@ -139,7 +140,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final heading = sortableArchiveState.isAtRootAndNoSelection
         ? rootHeading
-        : sortableArchiveState.title(Translator.of(context).translate,
+        : sortableArchiveState.title(
             onlyFolders: showOnlyFolders);
     return Tts.data(
       data: heading,
@@ -335,7 +336,7 @@ class _SortableLibraryState<T extends SortableData>
     return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
         final content = widget.showSearch
-            ? archiveState.allFilteredAndSorted(translate)
+            ? archiveState.allFilteredAndSorted()
             : archiveState.currentFolderSorted;
         if (content.isEmpty) {
           if (!widget.showSearch) {
@@ -467,7 +468,16 @@ class LibraryFolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = sortableData.title(Translator.of(context).translate);
+    final translate = Translator.of(context).translate;
+    String title = '';
+    if (sortableData is ImageArchiveData) {
+      title = (sortableData as ImageArchiveData).isUpload()
+          ? translate.mobilePictures
+          : (sortableData as ImageArchiveData).isMyPhotos()
+              ? translate.myPhotos
+              : sortableData.title();
+    }
+
     return Tts.fromSemantics(
       SemanticsProperties(
         label: title,

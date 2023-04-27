@@ -1,6 +1,7 @@
 import 'package:logging/logging.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:sortables/db/data_db.dart';
 
 class ActivityDb extends DataDb<Activity> {
   ActivityDb(Database database) : super(database);

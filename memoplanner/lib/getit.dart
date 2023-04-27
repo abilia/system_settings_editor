@@ -19,6 +19,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
 import 'package:seagull_clock/ticker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sortables/db/sortable_db.dart';
 
 export 'package:get_it/get_it.dart';
 

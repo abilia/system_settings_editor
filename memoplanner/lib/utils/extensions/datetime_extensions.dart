@@ -19,9 +19,6 @@ extension DateTimeExtensionsModels on DateTime {
           ? Occasion.future
           : Occasion.past;
 
-  DateTime withTime(TimeOfDay? timeOfDay) =>
-      copyWith(hour: timeOfDay?.hour, minute: timeOfDay?.minute);
-
   DayPart dayPart(DayParts dayParts) {
     final timeAfterMidnight = difference(onlyDays());
 

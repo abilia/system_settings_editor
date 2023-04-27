@@ -3,6 +3,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:sortables/bloc/sortable/all.dart';
 
 class TemplatesPage extends StatelessWidget {
   const TemplatesPage({Key? key}) : super(key: key);
@@ -137,7 +138,7 @@ class TemplatesPage extends StatelessWidget {
       sortableBloc.add(
         SortableUpdated(
           sortable.copyWith(
-            data: BasicTimerDataItem.fromTimer(timer),
+            data: timer.toBasicTimer(),
           ),
         ),
       );
@@ -162,7 +163,7 @@ class BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final text = Text(_sortable.data.title(Translator.of(context).translate));
+    final text = Text(_sortable.data.title());
     final data = _sortable.data;
 
     if (_sortable.isGroup) {

@@ -1316,6 +1316,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  sortables:
+    dependency: "direct main"
+    description:
+      path: "../packages/sortables"
+      relative: true
+    source: path
+    version: "0.0.0"
   source_gen:
     dependency: transitive
     description:

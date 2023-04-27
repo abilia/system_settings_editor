@@ -1,7 +1,6 @@
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/i18n/all.dart';
 import 'package:memoplanner/models/abilia_timer.dart';
-import 'package:memoplanner/models/sortable/data/basic_timer_data.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:seagull_fakes/all.dart';
 import 'package:test/test.dart';
@@ -28,21 +27,19 @@ void main() {
   });
 
   test('Initial state with basicTimer', () async {
-    final basicTimer = BasicTimerDataItem.fromTimer(
-      AbiliaTimer.createNew(
+    final basicTimer = AbiliaTimer.createNew(
         startTime: now.subtract(5.minutes()),
         duration: 10.minutes(),
-      ),
-    );
+      ).toBasicTimerDataItem()
+    ;
     final editTimerCubit = EditTimerCubit(
       ticker: ticker,
       translate: translate,
-      basicTimer: BasicTimerDataItem.fromTimer(
+      basicTimer: 
         AbiliaTimer.createNew(
           startTime: now.subtract(5.minutes()),
           duration: 10.minutes(),
-        ),
-      ),
+        ).toBasicTimerDataItem(),
       timerCubit: TimerCubit(
         timerDb: MockTimerDb(),
         ticker: ticker,

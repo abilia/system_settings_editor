@@ -1,0 +1,35 @@
+name: sortables
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+  flutter: '>=2.0.0'
+
+dependencies:
+  auth:
+    path:
+      ../auth
+  bloc_concurrency: ^0.2.0
+  collection: ^1.17.0
+  equatable: ^2.0.3
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.0.1
+  http: ^0.13.5
+  intl: ^0.17.0
+  logging: any
+  meta: ^1.7.0
+  repository_base:
+    path: ../repository/repository_base
+  sqflite: any
+  synchronized: ^3.0.0
+  timezone: ^0.9.0
+  utils:
+    path: ../utils
+  uuid: ^3.0.5
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  seagull_lints:
+    path: ../seagull_lints

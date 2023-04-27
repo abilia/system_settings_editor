@@ -58,13 +58,11 @@ void main() {
       timerCubit: timerCubit,
       translate: Locales.language.values.first,
       ticker: fakeTicker,
-      basicTimer: BasicTimerDataItem.fromTimer(
-        AbiliaTimer(
-          id: 'id',
-          startTime: DateTime(2022),
-          duration: Duration.zero,
-        ),
-      ),
+      basicTimer: AbiliaTimer(
+        id: 'id',
+        startTime: DateTime(2022),
+        duration: Duration.zero,
+      ).toBasicTimerDataItem(),
     );
     GetItInitializer()
       ..database = FakeDatabase()
@@ -89,7 +87,7 @@ void main() {
       await tester.pumpWidget(wrapWithMaterialApp());
       await tester.pumpAndSettle();
 
-      // Assert
+      // AssertBasicTimerDataItem.fromTimer(
       expectAnimation(tester, animating: true);
     });
 
@@ -144,13 +142,11 @@ void main() {
         timerCubit: timerCubit,
         translate: Locales.language.values.first,
         ticker: fakeTicker,
-        basicTimer: BasicTimerDataItem.fromTimer(
-          AbiliaTimer(
-            id: 'id',
-            startTime: DateTime(2022),
-            duration: 1.seconds(),
-          ),
-        ),
+        basicTimer: AbiliaTimer(
+          id: 'id',
+          startTime: DateTime(2022),
+          duration: 1.seconds(),
+        ).toBasicTimerDataItem(),
       );
       await tester.pumpWidget(
         wrapWithMaterialApp(

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 extension DateTimeExtensions on DateTime {
   DateTime onlyDays() => DateTime(year, month, day);
   DateTime onlyHours() => DateTime(year, month, day, hour);
@@ -142,6 +144,10 @@ extension DateTimeExtensions on DateTime {
   }
 
   int get dayIndex => millisecondsSinceEpoch ~/ Duration.millisecondsPerDay;
+
+  DateTime withTime(TimeOfDay? timeOfDay) =>
+    copyWith(hour: timeOfDay?.hour, minute: timeOfDay?.minute);
+
 }
 
 extension IntDateTimeExtensions on int {

@@ -1,5 +1,5 @@
 import 'package:http/http.dart';
-import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/models/settings/speech_support/voice_data.dart';
 
 class UnavailableException implements Exception {
   final List<int> statusCodes;

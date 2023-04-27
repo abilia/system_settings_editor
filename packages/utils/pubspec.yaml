@@ -4,8 +4,17 @@ environment:
   sdk: '>=2.19.2 <3.0.0'
 
 dependencies:
+  equatable:
+    ^2.0.3
+  flutter:
+    sdk: flutter
   logging: any
 
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
   seagull_lints:
     path: ../seagull_lints
+
+flutter:
+  uses-material-design: true

@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:sortables/bloc/sortable/sortable_bloc.dart';
 
 class TemplateActivityWizardCubit extends WizardCubit {
   final EditActivityCubit editActivityCubit;
@@ -21,8 +22,7 @@ class TemplateActivityWizardCubit extends WizardCubit {
       return emit(state.failSave({SaveError.noTitleOrImage}));
     }
     final activity = editActivityState.activityToStore();
-    final item = BasicActivityDataItem.fromActivity(activity);
-    final sortable = original.copyWith(data: item);
+    final sortable = original.copyWith(data: activity.toBasicActivity());
     sortableBloc.add(SortableUpdated(sortable));
     emit(state.saveSuccess());
   }
