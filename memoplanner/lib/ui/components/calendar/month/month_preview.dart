@@ -48,7 +48,8 @@ class MonthListPreview extends StatelessWidget {
             ),
           ),
           if (isCollapsed && dayTheme.dayColor == null)
-            const Divider(endIndent: 0),
+            const Divider(
+                color: AbiliaColors.black60, endIndent: 0, thickness: 2),
           if (!isCollapsed) const Expanded(child: MonthPreview()),
         ],
       ),
