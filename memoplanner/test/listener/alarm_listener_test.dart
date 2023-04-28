@@ -246,7 +246,7 @@ void main() {
               title: 'Reminder',
               startTime: activityWithAlarmTime.subtract(reminder),
               checkable: true,
-              signedOffDates: [activityWithAlarmTime].map(whaleDateFormat),
+              signedOffDates: {whaleDateFormat(activityWithAlarmTime)},
             )
           ],
         ),

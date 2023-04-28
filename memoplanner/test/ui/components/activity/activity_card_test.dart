@@ -225,7 +225,7 @@ void main() {
             startTime: startTime,
             fileId: const Uuid().v4(),
             checkable: true,
-            signedOffDates: [startTime].map(whaleDateFormat),
+            signedOffDates: {whaleDateFormat(startTime)},
           ),
           Occasion.past);
 
@@ -239,7 +239,7 @@ void main() {
       startTime: startTime,
       fileId: const Uuid().v4(),
       checkable: true,
-      signedOffDates: [startTime].map(whaleDateFormat),
+      signedOffDates: {whaleDateFormat(startTime)},
     );
     await mockNetworkImages(() async {
       await pumpActivityCard(tester, activity, Occasion.past);

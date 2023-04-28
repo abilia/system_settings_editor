@@ -1,10 +1,9 @@
 import 'dart:collection';
 
-import 'package:equatable/equatable.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-class EventsState extends Equatable {
+class EventsState {
   final UnmodifiableListView<Event> events;
   final UnmodifiableListView<TimerOccasion> timers;
   final UnmodifiableListView<ActivityDay> activities;
@@ -38,14 +37,6 @@ class EventsState extends Equatable {
       .map((e) => e.toOccasion(now))
       .toList()
     ..sort();
-
-  @override
-  List<Object> get props => [
-        occasion,
-        events,
-        fullDayActivities,
-        day,
-      ];
 
   @override
   String toString() => 'EventsState '

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -189,8 +188,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     final dayActivities = activities
         .where((a) => !a.fullDay)
         .expand((activity) => activity.dayActivitiesForInterval(interval))
-        .removeAfterOccasion(occasion)
-        .toSet();
+        .removeAfterOccasion(occasion);
 
     final timerOccasions = timers.where(
       (timer) =>

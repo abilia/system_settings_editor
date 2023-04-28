@@ -1,6 +1,6 @@
 part of 'timepillar_cubit.dart';
 
-class TimepillarState extends Equatable {
+class TimepillarState {
   final TimepillarInterval interval;
   final List<Event> events;
   final DayCalendarType calendarType;
@@ -17,9 +17,6 @@ class TimepillarState extends Equatable {
     required this.day,
   });
 
-  @override
-  List<Object> get props => [interval, events, calendarType, occasion, day];
-
   bool get isToday => occasion.isCurrent;
 
   List<Event> eventsForInterval(TimepillarInterval interval) => events
@@ -34,7 +31,7 @@ class TimepillarState extends Equatable {
       .toList();
 }
 
-class TimepillarMeasures extends Equatable {
+class TimepillarMeasures {
   final double zoom;
   final TimepillarInterval interval;
   final TimepillarLayout _layout = layout.timepillar;
@@ -185,7 +182,4 @@ class TimepillarMeasures extends Equatable {
             : textPadding.vertical;
     return textHeight + imageHeight + verticalPadding;
   }
-
-  @override
-  List<Object> get props => [interval, zoom];
 }

@@ -1001,7 +1001,7 @@ void main() {
             title: 'title',
             startTime: time.subtract(40.minutes()),
             checkable: true,
-            signedOffDates: [time].map(whaleDateFormat))
+            signedOffDates: {whaleDateFormat(time)}),
       ]);
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();

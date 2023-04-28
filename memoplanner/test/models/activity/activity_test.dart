@@ -266,7 +266,7 @@ void main() {
       ]),
       fileId: fileId,
       checkable: true,
-      signedOffDates: const ['00-02-20'],
+      signedOffDates: const {'00-02-20'},
       infoItem: infoItem,
       extras: Extras.createNew(
         startTimeExtraAlarm: AbiliaFile.from(path: 'startTimeExtraAlarm'),
