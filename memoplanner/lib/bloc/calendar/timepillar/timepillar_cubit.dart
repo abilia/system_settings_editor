@@ -188,7 +188,8 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     final dayActivities = activities
         .where((a) => !a.fullDay)
         .expand((activity) => activity.dayActivitiesForInterval(interval))
-        .removeAfterOccasion(occasion);
+        .removeAfterOccasion(
+            occasion); // TODO: fix duplicates here without adding toSet()
 
     final timerOccasions = timers.where(
       (timer) =>
