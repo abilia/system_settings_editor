@@ -1,15 +1,13 @@
 part of 'permission_cubit.dart';
 
-class PermissionState extends Equatable {
-  const PermissionState(this.status);
-
-  factory PermissionState.empty() => PermissionState(UnmodifiableMapView({}));
-
+abstract class PermissionState extends Equatable {
   final UnmodifiableMapView<Permission, PermissionStatus> status;
 
+  const PermissionState(this.status);
+
   @visibleForTesting
-  PermissionState update(Map<Permission, PermissionStatus> newStates) {
-    return PermissionState(
+  PermissionsChecked update(Map<Permission, PermissionStatus> newStates) {
+    return PermissionsChecked(
       UnmodifiableMapView(
         Map.of(status)
           ..addAll(
@@ -39,4 +37,12 @@ class PermissionState extends Equatable {
 
   @override
   bool get stringify => true;
+}
+
+class PermissionsUnchecked extends PermissionState {
+  PermissionsUnchecked() : super(UnmodifiableMapView({}));
+}
+
+class PermissionsChecked extends PermissionState {
+  const PermissionsChecked(super.status);
 }

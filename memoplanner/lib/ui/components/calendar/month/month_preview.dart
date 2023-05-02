@@ -47,6 +47,9 @@ class MonthListPreview extends StatelessWidget {
               occasion: dayPickerState.occasion,
             ),
           ),
+          if (isCollapsed && dayTheme.dayColor == null)
+            const Divider(
+                color: AbiliaColors.black60, endIndent: 0, thickness: 2),
           if (!isCollapsed) const Expanded(child: MonthPreview()),
         ],
       ),

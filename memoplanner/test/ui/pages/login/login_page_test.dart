@@ -622,11 +622,7 @@ void main() {
           await tester.pumpAndSettle();
           expect(find.byType(AuthenticatedDialog), findsOneWidget);
           expect(find.byType(FullscreenAlarmInfoDialog), findsOneWidget);
-          expect(
-            find.byType(RequestFullscreenNotificationButton),
-            findsOneWidget,
-          );
-          await tester.tap(find.byType(RequestFullscreenNotificationButton));
+          await tester.tap(find.byType(GreenButton));
           expect(requestedPermissions, contains(Permission.systemAlertWindow));
           debugDefaultTargetPlatformOverride = null;
         });

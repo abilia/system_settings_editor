@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -35,13 +36,14 @@ class FullDayContainer extends StatelessWidget {
             child: SafeArea(
               child: Row(
                 children: [
-                  ...fullDayActivities.take(2).map<Widget>(
-                        (fd) => Flexible(
-                          flex: 2,
+                  ...fullDayActivities.take(2).mapIndexed<Widget>(
+                        (i, fd) => Flexible(
                           child: Padding(
-                            padding: EdgeInsets.only(
-                              right: layout.eventCard.marginSmall,
-                            ),
+                            padding: i > 0
+                                ? EdgeInsets.only(
+                                    left: layout.eventCard.marginSmall,
+                                  )
+                                : EdgeInsets.zero,
                             child: ActivityCard(
                               activityOccasion: fd,
                               useOpacity: nightMode,

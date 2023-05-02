@@ -99,7 +99,7 @@ void main() {
     }, skip: Config.isMP);
   });
 
-  group('My photos page on MP', () {
+  group('My photos page', () {
     testWidgets('The page shows', (tester) async {
       await mockNetworkImages(() async {
         await tester.goToMyPhotos();
@@ -115,7 +115,8 @@ void main() {
         expect(find.byType(MyPhotosPage), findsOneWidget);
         await tester.tap(find.byType(CloseButton));
         await tester.pumpAndSettle();
-        expect(find.byType(MenuPage), findsOneWidget);
+        expect(
+            find.byType(Config.isMP ? MenuPage : MpGoMenuPage), findsOneWidget);
       });
     });
 
@@ -151,6 +152,22 @@ void main() {
         expect(find.byKey(TestKey.photoCalendarTab), findsOneWidget);
         expect(find.byType(ThumbnailPhoto), findsOneWidget);
         expect(find.byType(PhotoCalendarSticker), findsOneWidget);
+      });
+    });
+
+    testWidgets('SGC-2424 - No search bar or search button shows',
+        (tester) async {
+      await mockNetworkImages(() async {
+        await tester.goToMyPhotos();
+
+        expect(find.byIcon(AbiliaIcons.find), findsNothing);
+        expect(find.byType(TextField), findsNothing);
+
+        await tester.tap(find.byType(LibraryFolder));
+        await tester.pumpAndSettle();
+
+        expect(find.byIcon(AbiliaIcons.find), findsNothing);
+        expect(find.byType(TextField), findsNothing);
       });
     });
 
@@ -195,11 +212,12 @@ void main() {
         expect(find.byIcon(AbiliaIcons.deleteAllClear), findsNothing);
       });
     });
-  }, skip: !Config.isMP);
+  });
 }
 
 extension on WidgetTester {
   Future<void> goToMyPhotos() async {
+    if (Config.isMPGO) return goToMyPhotosMpGo();
     await pumpApp();
     await tap(find.byType(MenuButton));
     await pumpAndSettle();

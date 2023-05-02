@@ -15,7 +15,7 @@ export 'package:permission_handler/permission_handler.dart';
 part 'permission_state.dart';
 
 class PermissionCubit extends Cubit<PermissionState> with Info {
-  PermissionCubit() : super(PermissionState.empty());
+  PermissionCubit() : super(PermissionsUnchecked());
 
   Future<void> requestPermissions(
     List<Permission> permissions,
@@ -48,6 +48,13 @@ class PermissionCubit extends Cubit<PermissionState> with Info {
       }
     },
   );
+
+  Future<void> checkAllAndRequestPermissions(
+    List<Permission> permissions,
+  ) async {
+    await checkAll();
+    return requestPermissions(permissions);
+  }
 
   Future<void> checkAll() => checkStatusForPermissions(allPermissions);
 }

@@ -13,7 +13,7 @@ void main() {
 
   test('initial state', () {
     final permissionCubit = PermissionCubit();
-    expect(permissionCubit.state, PermissionState.empty());
+    expect(permissionCubit.state, PermissionsUnchecked());
     expect(permissionCubit.state.props, [{}]);
   });
 
@@ -30,7 +30,7 @@ void main() {
       ..requestPermissions([Permission.camera]);
     await expectLater(
       permissionCubit.stream,
-      emits(PermissionState.empty()
+      emits(PermissionsUnchecked()
           .update({Permission.camera: PermissionStatus.granted})),
     );
     expect(requestedPermissions, contains(Permission.camera));
@@ -48,7 +48,7 @@ void main() {
       ..requestPermissions(permissionSet.keys.toList());
     await expectLater(
       permissionCubit.stream,
-      emits(PermissionState.empty().update(permissionSet)),
+      emits(PermissionsUnchecked().update(permissionSet)),
     );
     expect(requestedPermissions, containsAll(permissionSet.keys));
     expect(requestedPermissions, hasLength(permissionSet.length));
@@ -60,7 +60,7 @@ void main() {
       ..checkStatusForPermissions([Permission.camera]);
     await expectLater(
       permissionCubit.stream,
-      emits(PermissionState.empty()
+      emits(PermissionsUnchecked()
           .update({Permission.camera: PermissionStatus.granted})),
     );
     expect(checkedPermissions, contains(Permission.camera));
@@ -77,7 +77,7 @@ void main() {
       ..checkStatusForPermissions(permissionSet.keys.toList());
     await expectLater(
       permissionCubit.stream,
-      emits(PermissionState.empty().update(permissionSet)),
+      emits(PermissionsUnchecked().update(permissionSet)),
     );
     expect(checkedPermissions, containsAll(permissionSet.keys));
     expect(checkedPermissions, hasLength(permissionSet.length));
@@ -85,7 +85,7 @@ void main() {
 
   group('PermissionState conditional updates', () {
     test('a permanentlyDenied permission will not change to denied', () async {
-      final permissionState = PermissionState.empty()
+      final permissionState = PermissionsUnchecked()
           .update({Permission.camera: PermissionStatus.permanentlyDenied});
 
       final result =
@@ -95,7 +95,7 @@ void main() {
     });
 
     test('a granted permission will change to denied', () async {
-      final permissionState = PermissionState.empty()
+      final permissionState = PermissionsUnchecked()
           .update({Permission.camera: PermissionStatus.granted});
       final result =
           permissionState.update({Permission.camera: PermissionStatus.denied});
@@ -103,7 +103,7 @@ void main() {
     });
 
     test('a denied permission will return denied', () async {
-      final permissionState = PermissionState.empty()
+      final permissionState = PermissionsUnchecked()
           .update({Permission.camera: PermissionStatus.denied});
       final result =
           permissionState.update({Permission.camera: PermissionStatus.denied});
