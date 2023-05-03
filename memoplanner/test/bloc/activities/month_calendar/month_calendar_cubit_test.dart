@@ -77,7 +77,7 @@ void main() {
           MonthCalendarState(
             firstDay: DateTime(2021, 03, 01),
             occasion: Occasion.current,
-            showMonthPreview: true,
+            isCollapsed: true,
             weeks: [
               MonthWeek(
                 9,
@@ -212,7 +212,7 @@ void main() {
           MonthCalendarState(
             firstDay: DateTime(2021, 04, 01),
             occasion: Occasion.future,
-            showMonthPreview: true,
+            isCollapsed: true,
             weeks: [
               MonthWeek(
                 13,
@@ -346,7 +346,7 @@ void main() {
           MonthCalendarState(
             firstDay: DateTime(2021, 02, 01),
             occasion: Occasion.past,
-            showMonthPreview: true,
+            isCollapsed: true,
             weeks: [
               MonthWeek(
                 5,
@@ -484,7 +484,7 @@ void main() {
           MonthCalendarState(
             firstDay: DateTime(2021, 01, 01),
             occasion: Occasion.current,
-            showMonthPreview: true,
+            isCollapsed: true,
             weeks: [
               MonthWeek(
                 53,
@@ -677,7 +677,7 @@ void main() {
           MonthCalendarState(
             firstDay: DateTime(2021, 05, 01),
             occasion: Occasion.current,
-            showMonthPreview: true,
+            isCollapsed: true,
             weeks: weeks,
           ),
         ),
@@ -718,7 +718,7 @@ void main() {
             MonthCalendarState(
               firstDay: DateTime(2021, 03, 01),
               occasion: Occasion.current,
-              showMonthPreview: true,
+              isCollapsed: true,
               weeks: [
                 MonthWeek(
                   9,
@@ -853,7 +853,7 @@ void main() {
             MonthCalendarState(
               firstDay: firstDay,
               occasion: Occasion.current,
-              showMonthPreview: true,
+              isCollapsed: true,
               weeks: [
                 MonthWeek(
                   9,
@@ -1010,7 +1010,7 @@ void main() {
             MonthCalendarState(
               firstDay: firstDay,
               occasion: Occasion.current,
-              showMonthPreview: true,
+              isCollapsed: true,
               weeks: [
                 MonthWeek(
                   9,
@@ -1150,7 +1150,7 @@ void main() {
           MonthCalendarState(
             firstDay: firstDay,
             occasion: Occasion.current,
-            showMonthPreview: true,
+            isCollapsed: true,
             weeks: [
               MonthWeek(
                 9,
@@ -1262,13 +1262,13 @@ void main() {
       settingsDb: fakeSettingsDb,
     );
 
-    expect(monthCalendarCubit.state.showMonthPreview, isFalse);
-    monthCalendarCubit.togglePreview();
-    expect(monthCalendarCubit.state.showMonthPreview, isTrue);
-    monthCalendarCubit.togglePreview();
-    expect(monthCalendarCubit.state.showMonthPreview, isFalse);
-    monthCalendarCubit.togglePreview();
-    expect(monthCalendarCubit.state.showMonthPreview, isTrue);
+    expect(monthCalendarCubit.state.isCollapsed, isFalse);
+    monthCalendarCubit.toggleCollapsed();
+    expect(monthCalendarCubit.state.isCollapsed, isTrue);
+    monthCalendarCubit.toggleCollapsed();
+    expect(monthCalendarCubit.state.isCollapsed, isFalse);
+    monthCalendarCubit.toggleCollapsed();
+    expect(monthCalendarCubit.state.isCollapsed, isTrue);
   });
 }
 
