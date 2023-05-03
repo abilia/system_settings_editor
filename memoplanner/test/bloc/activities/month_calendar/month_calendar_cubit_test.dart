@@ -1262,13 +1262,13 @@ void main() {
       settingsDb: fakeSettingsDb,
     );
 
-    expect(monthCalendarCubit.state.isCollapsed, isFalse);
-    monthCalendarCubit.toggleCollapsed();
     expect(monthCalendarCubit.state.isCollapsed, isTrue);
     monthCalendarCubit.toggleCollapsed();
     expect(monthCalendarCubit.state.isCollapsed, isFalse);
     monthCalendarCubit.toggleCollapsed();
     expect(monthCalendarCubit.state.isCollapsed, isTrue);
+    monthCalendarCubit.toggleCollapsed();
+    expect(monthCalendarCubit.state.isCollapsed, isFalse);
   });
 }
 
