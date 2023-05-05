@@ -187,13 +187,14 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     List<TimerOccasion> timers,
     TimepillarInterval interval,
   ) {
-    final seen = <String>{};
+    final seen = <int>{};
     final dayActivities = activities
         .where((a) => !a.fullDay)
         .expand((activity) => activity.dayActivitiesForInterval(interval))
         .removeAfterOccasion(occasion)
-        .where((element) => seen.add(
-            '${element.activity.id} ${element.activity.seriesId} ${element.start}'));
+        .where(
+          (activity) => seen.add(activity.id.hashCode ^ activity.day.hashCode),
+        );
     final timerOccasions = timers.where(
       (timer) =>
           timer.start.inInclusiveRange(
