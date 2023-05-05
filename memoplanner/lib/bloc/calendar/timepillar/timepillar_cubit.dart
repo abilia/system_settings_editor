@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -7,6 +8,7 @@ import 'package:memoplanner/utils/all.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'timepillar_interval_calculator.dart';
+
 part 'timepillar_state.dart';
 
 class TimepillarCubit extends Cubit<TimepillarState> {
@@ -185,12 +187,13 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     List<TimerOccasion> timers,
     TimepillarInterval interval,
   ) {
+    final seen = <String>{};
     final dayActivities = activities
         .where((a) => !a.fullDay)
         .expand((activity) => activity.dayActivitiesForInterval(interval))
-        .removeAfterOccasion(
-            occasion); // TODO: fix duplicates here without adding toSet()
-
+        .removeAfterOccasion(occasion)
+        .where((element) => seen.add(
+            '${element.activity.id} ${element.activity.seriesId} ${element.start}'));
     final timerOccasions = timers.where(
       (timer) =>
           timer.start.inInclusiveRange(
