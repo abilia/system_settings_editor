@@ -548,7 +548,7 @@ void main() {
           startTime: initialDay.subtract(1.days()),
           fullDay: true,
           checkable: true,
-          signedOffDates: [time].map(whaleDateFormat),
+          signedOffDates: {whaleDateFormat(time)},
         )
       ];
       mockActivityDb.initWithActivities(activities);
@@ -608,14 +608,14 @@ void main() {
           startTime: initialDay.subtract(1.days()),
           fullDay: true,
           checkable: true,
-          signedOffDates: [time].map(whaleDateFormat),
+          signedOffDates: {whaleDateFormat(time)},
         ),
         Activity.createNew(
           title: 'title 2',
           startTime: initialDay.subtract(1.days()),
           fullDay: true,
           checkable: true,
-          signedOffDates: [time].map(whaleDateFormat),
+          signedOffDates: {whaleDateFormat(time)},
         )
       ];
       mockActivityDb.initWithActivities(activities);
@@ -648,7 +648,7 @@ void main() {
         startTime: time.subtract(1.hours()),
         duration: 30.minutes(),
         checkable: true,
-        signedOffDates: [time].map(whaleDateFormat),
+        signedOffDates: {whaleDateFormat(time)},
       ));
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();

@@ -151,9 +151,9 @@ class DbActivity extends DbModel<Activity> {
         'dirty': dirty,
       };
 
-  static UnmodifiableListView<String> _parseSignedOffDates(
+  static UnmodifiableSetView<String> _parseSignedOffDates(
           String? signedOffDates) =>
-      UnmodifiableListView(signedOffDates?.tryDecodeSignedOffDates() ?? []);
+      UnmodifiableSetView(signedOffDates?.tryDecodeSignedOffDates() ?? {});
 
   static UnmodifiableListView<int> parseReminders(String? reminders) =>
       UnmodifiableListView(reminders

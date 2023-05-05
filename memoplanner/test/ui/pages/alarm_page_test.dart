@@ -818,7 +818,7 @@ void main() {
             Checklist.dayKey(startTime): const {0}
           },
         ),
-        signedOffDates: [startTime].map(whaleDateFormat),
+        signedOffDates: {whaleDateFormat(startTime)},
       );
 
       final StartAlarm startAlarm = StartAlarm(
