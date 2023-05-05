@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:sortables/all.dart';
 

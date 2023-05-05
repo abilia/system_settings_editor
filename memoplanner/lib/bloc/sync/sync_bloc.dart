@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/logging/all.dart';
@@ -8,9 +7,6 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:repository_base/bloc/sync/sync_event.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sortables/bloc/sync/sortable_sync_event.dart';
-import 'package:sortables/repository/data_repository/sortable_repository.dart';
-import 'package:utils/bloc/sync/sync_state.dart';
 
 part 'sync_event.dart';
 

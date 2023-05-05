@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:sortables/db/data_db.dart';
 
 class GenericDb extends DataDb<Generic> {
   GenericDb(Database database) : super(database);

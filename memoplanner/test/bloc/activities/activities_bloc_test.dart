@@ -4,7 +4,6 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:seagull_fakes/all.dart';
-import 'package:utils/bloc/sync/sync_state.dart';
 
 import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';

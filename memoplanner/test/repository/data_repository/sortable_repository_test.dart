@@ -7,7 +7,6 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:seagull_fakes/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sortables/db/sortable_db.dart';
 import 'package:sortables/repository/data_repository/sortable_repository.dart';
 
 import '../../mocks/mocks.dart';

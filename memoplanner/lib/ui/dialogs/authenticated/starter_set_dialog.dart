@@ -1,6 +1,5 @@
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
-import 'package:sortables/bloc/sortable/sortable_bloc.dart';
 
 class StarterSetDialog extends StatelessWidget {
   final Function() onNext;

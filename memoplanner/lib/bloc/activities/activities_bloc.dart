@@ -6,7 +6,6 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
-import 'package:utils/bloc/sync/sync_state.dart';
 
 part 'activities_event.dart';
 

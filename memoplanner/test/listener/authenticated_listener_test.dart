@@ -7,7 +7,6 @@ import 'package:memoplanner/listener/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:seagull_fakes/all.dart';
-import 'package:sortables/bloc/sortable/sortable_bloc.dart';
 
 import '../fakes/all.dart';
 import '../mocks/mock_bloc.dart';

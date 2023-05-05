@@ -2,8 +2,6 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:repository_base/bloc/sync/sync_event.dart';
-import 'package:sortables/bloc/sortable/sortable_bloc.dart';
-import 'package:utils/bloc/sync/sync_state.dart';
 export 'package:mocktail/mocktail.dart';
 
 // Blocs

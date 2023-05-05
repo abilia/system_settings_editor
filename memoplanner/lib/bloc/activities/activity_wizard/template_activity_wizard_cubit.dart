@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:sortables/bloc/sortable/sortable_bloc.dart';
 
 class TemplateActivityWizardCubit extends WizardCubit {
   final EditActivityCubit editActivityCubit;

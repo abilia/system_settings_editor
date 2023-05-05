@@ -1,7 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/i18n/translations.g.dart';
 import 'package:memoplanner/models/all.dart';
 
 import '../../../mocks/mock_bloc.dart';
@@ -191,7 +190,6 @@ void main() {
   });
 
   group('Image archive search', () {
-    final translate = Locales.language.values.first;
     late SortableArchiveCubit<ImageArchiveData> sortableArchiveCubit;
     final first = Sortable.createNew<ImageArchiveData>(
           data: const ImageArchiveData(name: 'first'),

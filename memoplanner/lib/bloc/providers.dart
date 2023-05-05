@@ -19,9 +19,6 @@ import 'package:memoplanner/utils/all.dart';
 import 'package:rxdart/transformers.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sortables/bloc/sortable/sortable_bloc.dart';
-import 'package:sortables/db/sortable_db.dart';
-import 'package:sortables/repository/data_repository/sortable_repository.dart';
 
 class AuthenticatedBlocsProvider extends StatelessWidget {
   final Authenticated authenticatedState;

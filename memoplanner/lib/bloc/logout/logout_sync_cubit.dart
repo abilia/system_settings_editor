@@ -6,7 +6,6 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/myabilia_connection.dart';
-import 'package:utils/bloc/sync/sync_state.dart';
 
 part 'logout_sync_state.dart';
 

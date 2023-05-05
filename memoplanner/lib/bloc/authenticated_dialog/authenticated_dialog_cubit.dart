@@ -6,7 +6,6 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sortables/bloc/sortable/sortable_bloc.dart';
 
 part 'authenticated_dialog_state.dart';
 

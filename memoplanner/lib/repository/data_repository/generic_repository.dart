@@ -6,7 +6,6 @@ import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
-import 'package:sortables/repository/data_repository/data_repository.dart';
 
 class GenericRepository extends DataRepository<Generic> {
   final GenericDb genericDb;
