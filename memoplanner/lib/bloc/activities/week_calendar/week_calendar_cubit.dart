@@ -30,7 +30,6 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
         (_) async => _mapToState(state.currentWeekStart, clockBloc.state));
     _clockSubscription = clockBloc.stream.listen(
         (_) async => _mapToState(state.currentWeekStart, clockBloc.state));
-    unawaited(_mapToState(state.currentWeekStart, clockBloc.state));
   }
 
   Future<void> nextWeek() {

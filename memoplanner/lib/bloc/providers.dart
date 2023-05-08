@@ -163,7 +163,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 activityRepository: context.read<ActivityRepository>(),
                 timerAlarmBloc: context.read<TimerAlarmBloc>(),
                 clockBloc: context.read<ClockBloc>(),
-              ),
+              )..goToCurrentWeek(),
             ),
             BlocProvider<UserFileBloc>(
               create: (context) => UserFileBloc(
