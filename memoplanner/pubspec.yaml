@@ -26,7 +26,6 @@ dependencies:
   crypto: ^3.0.1
   device_info_plus: ^8.0.0
   dotted_border: ^2.0.0
-  dotted_line: ^3.1.0
   envied: ^0.3.0
   equatable: ^2.0.3
   firebase_core: ^2.1.1
