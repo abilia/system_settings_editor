@@ -23,6 +23,8 @@ void main() {
       mockedTicker = StreamController<DateTime>();
       clockBloc = ClockBloc(mockedTicker.stream, initialTime: initialMinutes);
       mockActivityRepository = MockActivityRepository();
+      when(() => mockActivityRepository.allBetween(any(), any()))
+          .thenAnswer((_) => Future.value(const Iterable.empty()));
       activitiesBloc = ActivitiesBloc(
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
@@ -53,18 +55,23 @@ void main() {
       mockedTicker.close();
     });
 
-    test('initial state is WeekCalendarInitial', () {
-      expect(weekCalendarBloc.state, isA<WeekCalendarInitial>());
-      expect(weekCalendarBloc.state.currentWeekStart,
-          initialMinutes.firstInWeek());
+    test('initial state is WeekCalendarLoaded', () {
+      // Assert
+      expect(
+        weekCalendarBloc.state,
+        _WeekCalendarLoadedMatcher(
+          WeekCalendarLoaded(
+            initialMinutes.firstInWeek(),
+            const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+            const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+          ),
+        ),
+      );
     });
 
     test(
         'state is WeekCalendarLoaded when ActivitiesBloc activities are loaded',
         () {
-      // Arrange
-      when(() => mockActivityRepository.allBetween(any(), any()))
-          .thenAnswer((_) => Future.value(const Iterable.empty()));
       // Act
       activitiesBloc.add(LoadActivities());
       // Assert
@@ -83,10 +90,6 @@ void main() {
     });
 
     test('week changes with NextWeek and PreviousWeek events', () async {
-      // Arrange
-      when(() => mockActivityRepository.allBetween(any(), any()))
-          .thenAnswer((_) => Future.value(const Iterable.empty()));
-
       // Assert
       final expected = expectLater(
         weekCalendarBloc.stream,
