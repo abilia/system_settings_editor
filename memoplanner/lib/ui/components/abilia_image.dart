@@ -86,7 +86,7 @@ class EventImage extends StatelessWidget {
             Padding(
               padding:
                   checkPadding ?? layout.eventImageLayout.fallbackCheckPadding,
-              child: checkMark ?? CheckMark(fit: fit),
+              child: checkMark ?? const CheckMark(fit: BoxFit.scaleDown),
             ),
         ],
       );
@@ -288,6 +288,7 @@ class FadeInCalendarImage extends StatelessWidget {
   final ImageSize imageSize;
   final BoxFit fit;
   final BorderRadius? radius;
+
   const FadeInCalendarImage({
     required this.imageFile,
     this.width,
@@ -297,6 +298,7 @@ class FadeInCalendarImage extends StatelessWidget {
     this.radius,
     Key? key,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final emptyImage = SizedBox(
@@ -400,6 +402,7 @@ class FadeInNetworkImage extends StatelessWidget {
   final String imageFileId, imageFilePath;
   final double? width, height;
   final BoxFit fit;
+
   const FadeInNetworkImage({
     required this.imageFileId,
     required this.imageFilePath,
@@ -408,6 +411,7 @@ class FadeInNetworkImage extends StatelessWidget {
     this.height,
     Key? key,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final emptyImage = SizedBox(
@@ -439,5 +443,56 @@ class FadeInNetworkImage extends StatelessWidget {
             )
           : emptyImage,
     );
+  }
+}
+
+class FullDayCalendarImage extends StatelessWidget {
+  final ActivityDay activityDay;
+  final bool isPast;
+  final BoxFit fit;
+
+  const FullDayCalendarImage({
+    required this.activityDay,
+    required this.isPast,
+    required this.fit,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final calendarLayout = layout.commonCalendar;
+    return activityDay.activity.hasImage
+        ? EventImage(
+            event: activityDay,
+            radius: BorderRadius.zero,
+            fit: fit,
+          )
+        : Stack(
+            alignment: Alignment.center,
+            children: [
+              Padding(
+                padding: layout.monthCalendar.day.activityTextContentPadding,
+                child: Center(
+                  child: EllipsesText(
+                    activityDay.activity.title,
+                    style: bodySmall,
+                    textAlign: TextAlign.center,
+                    maxLines: 3,
+                  ),
+                ),
+              ),
+              if (isPast)
+                CrossOver(
+                  style: CrossOverStyle.darkSecondary,
+                  padding: calendarLayout.crossOverActivityPadding,
+                ),
+              if (activityDay.isSignedOff)
+                FractionallySizedBox(
+                  widthFactor: calendarLayout.checkmarkFractional,
+                  heightFactor: calendarLayout.checkmarkFractional,
+                  child: const CheckMark(),
+                ),
+            ],
+          );
   }
 }

@@ -7,9 +7,7 @@ class WeekCalendarLayout {
 
   final double dayDistance, headerHeight, activityDistance, categoryInset;
 
-  final EdgeInsets crossOverDayHeadingPadding,
-      crossOverActivityPadding,
-      bodyPadding;
+  final EdgeInsets crossOverDayHeadingPadding, bodyPadding;
 
   final Radius columnRadius;
 
@@ -20,7 +18,6 @@ class WeekCalendarLayout {
     this.categoryInset = 0,
     this.columnRadius = const Radius.circular(8),
     this.crossOverDayHeadingPadding = const EdgeInsets.fromLTRB(3, 7, 3, 8),
-    this.crossOverActivityPadding = const EdgeInsets.all(5),
     this.bodyPadding = const EdgeInsets.fromLTRB(2, 4, 2, 4),
     this.timerCard = const TimerCardLayout(
       wheelPadding: EdgeInsets.only(top: 8),
@@ -57,7 +54,6 @@ class WeekCalendarLayoutMedium extends WeekCalendarLayout {
           activityDistance: 4,
           categoryInset: 24,
           crossOverDayHeadingPadding: const EdgeInsets.fromLTRB(6, 6, 6, 18),
-          crossOverActivityPadding: const EdgeInsets.all(7),
           bodyPadding: const EdgeInsets.fromLTRB(3, 6, 3, 6),
         );
 }
