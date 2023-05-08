@@ -4,7 +4,6 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:repository_base/bloc/sync/sync_event.dart';
 
 import 'all.dart';
 

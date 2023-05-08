@@ -1,15 +1,6 @@
 import 'package:http/http.dart';
 import 'package:memoplanner/models/settings/speech_support/voice_data.dart';
 
-class UnavailableException implements Exception {
-  final List<int> statusCodes;
-
-  UnavailableException(this.statusCodes);
-  String errMsg() => 'Unavailable with statusCodes: $statusCodes';
-  @override
-  String toString() => errMsg();
-}
-
 class WrongRevisionException implements Exception {
   String errMsg() => 'Unavailable';
 }

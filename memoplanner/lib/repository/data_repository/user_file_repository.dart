@@ -9,7 +9,6 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/utils/all.dart';
-import 'package:repository_base/models/data_update_response.dart';
 import 'package:synchronized/extension.dart';
 
 class UserFileRepository extends DataRepository<UserFile> {
