@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -40,20 +42,23 @@ class SystemSettingsPage extends StatelessWidget {
         PickField(
           leading: const Icon(AbiliaIcons.speakText),
           text: Text(t.textToSpeech),
-          onTap: () async => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => MultiBlocProvider(
-                providers: copiedAuthProviders(context),
-                child: SpeechSupportSettingsPage(
-                  textToSpeech:
-                      context.read<SpeechSettingsCubit>().state.textToSpeech,
-                  speechRate:
-                      context.read<SpeechSettingsCubit>().state.speechRate,
+          onTap: () async {
+            unawaited(context.read<VoicesCubit>().loadAvailableVoices());
+            await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => MultiBlocProvider(
+                  providers: copiedAuthProviders(context),
+                  child: SpeechSupportSettingsPage(
+                    textToSpeech:
+                        context.read<SpeechSettingsCubit>().state.textToSpeech,
+                    speechRate:
+                        context.read<SpeechSettingsCubit>().state.speechRate,
+                  ),
                 ),
+                settings: (SpeechSupportSettingsPage).routeSetting(),
               ),
-              settings: (SpeechSupportSettingsPage).routeSetting(),
-            ),
-          ),
+            );
+          },
         ),
         PickField(
           leading: const Icon(AbiliaIcons.android),
