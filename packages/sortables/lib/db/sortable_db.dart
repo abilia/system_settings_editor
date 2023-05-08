@@ -1,7 +1,6 @@
 import 'package:logging/logging.dart';
 import 'package:repository_base/db/database_repository.dart';
-import 'package:sortables/db/data_db.dart';
-import 'package:sortables/models/sortable/sortable.dart';
+import 'package:sortables/all.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SortableDb extends DataDb<Sortable> {

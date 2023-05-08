@@ -5,7 +5,6 @@ import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
-import 'package:repository_base/bloc/sync/sync_event.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'sync_event.dart';

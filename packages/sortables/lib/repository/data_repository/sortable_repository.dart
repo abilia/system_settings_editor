@@ -4,9 +4,7 @@ import 'package:logging/logging.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:sortables/db/sortable_db.dart';
 import 'package:sortables/models/meta_models.dart';
-import 'package:sortables/models/sortable/base_data_templates.dart';
-import 'package:sortables/models/sortable/data/sortable_data.dart';
-import 'package:sortables/models/sortable/sortable.dart';
+import 'package:sortables/models/sortable/all.dart';
 import 'package:sortables/repository/data_repository/data_repository.dart';
 import 'package:utils/utils.dart';
 

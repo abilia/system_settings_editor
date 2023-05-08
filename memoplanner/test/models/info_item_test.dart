@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sortables/models/all.dart';
+import 'package:sortables/models/info_item.dart';
 
 void main() {
   test('Parse note info item', () {

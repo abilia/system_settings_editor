@@ -6,4 +6,3 @@ class UnavailableException implements Exception {
   @override
   String toString() => errMsg();
 }
-

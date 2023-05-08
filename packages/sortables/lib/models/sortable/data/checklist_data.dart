@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:sortables/models/info_item.dart';
-import 'package:sortables/models/sortable/data/sortable_data.dart';
+import 'package:sortables/models/all.dart';
 
 class ChecklistData extends SortableData {
   final Checklist checklist;

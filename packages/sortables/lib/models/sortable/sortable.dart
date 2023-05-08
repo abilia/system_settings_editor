@@ -1,7 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:sortables/models/meta_models.dart';
-import 'package:sortables/models/sortable/data/all.dart';
-import 'package:sortables/utils/extensions/sort_order_extensions.dart';
+import 'package:sortables/all.dart';
 import 'package:utils/utils.dart';
 import 'package:uuid/uuid.dart';
 
