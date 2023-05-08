@@ -158,12 +158,7 @@ class MediumLayout extends Layout {
           menuButton: const MenuButtonLayout(
             dotPosition: -4.5,
           ),
-          commonCalendar: const CommonCalendarLayout(
-            fullDayStackDistance: 6,
-            fullDayPadding: EdgeInsets.all(18),
-            fullDayButtonPadding: EdgeInsets.fromLTRB(15, 6, 6, 6),
-            crossOverActivityPadding: EdgeInsets.all(7),
-          ),
+          commonCalendar: const CommonCalendarLayoutMedium(),
           message: const MessageLayoutMedium(),
           slider: const SliderLayout(
             defaultHeight: 84,

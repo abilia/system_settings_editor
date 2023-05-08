@@ -19,10 +19,9 @@ class CommonCalendarLayout {
 class CommonCalendarLayoutMedium extends CommonCalendarLayout {
   const CommonCalendarLayoutMedium()
       : super(
-          fullDayStackDistance: 4,
-          fullDayPadding: const EdgeInsets.all(12),
-          crossOverActivityPadding: const EdgeInsets.all(5),
-          checkmarkFractional: 2 / 3,
-          fullDayButtonPadding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
+          fullDayStackDistance: 6,
+          fullDayPadding: const EdgeInsets.all(18),
+          crossOverActivityPadding: const EdgeInsets.all(7),
+          fullDayButtonPadding: const EdgeInsets.fromLTRB(15, 6, 6, 6),
         );
 }
