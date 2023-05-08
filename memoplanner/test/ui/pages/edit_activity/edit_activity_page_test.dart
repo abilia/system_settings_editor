@@ -1406,9 +1406,18 @@ text''';
 
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
+
+      // Expect - MonthDayViewCompact not used in date picker
+      expect(find.byType(MonthDayViewCompact), findsNothing);
+      expect(find.byType(MonthDayView), findsWidgets);
+
       await tester.tap(find.ancestor(
           of: find.text('14'), matching: find.byKey(TestKey.monthCalendarDay)));
       await tester.pumpAndSettle();
+
+      expect(find.byType(MonthDayViewCompact), findsNothing);
+      expect(find.byType(MonthDayView), findsWidgets);
+
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 

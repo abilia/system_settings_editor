@@ -498,14 +498,11 @@ class _WeekActivityContent extends StatelessWidget {
   }) : super(key: key);
 
   final ActivityOccasion activityOccasion;
-  final double scaleFactor = 2 / 3;
   final bool selected, fullDay;
   final int maxLines;
 
   @override
   Widget build(BuildContext context) {
-    final wLayout = layout.weekCalendar;
-
     return Tts.fromSemantics(
       activityOccasion.semanticsProperties(context),
       child: _WeekEventContent(
@@ -522,36 +519,11 @@ class _WeekActivityContent extends StatelessWidget {
             ),
           );
         },
-        child: activityOccasion.activity.hasImage
-            ? EventImage(
-                event: activityOccasion,
-                radius: BorderRadius.zero,
-                fit: selected && fullDay ? BoxFit.scaleDown : BoxFit.cover,
-              )
-            : Stack(
-                alignment: Alignment.center,
-                children: [
-                  Center(
-                    child: EllipsesText(
-                      activityOccasion.activity.title,
-                      style: Theme.of(context).textTheme.bodySmall ?? bodySmall,
-                      textAlign: TextAlign.center,
-                      maxLines: maxLines,
-                    ),
-                  ),
-                  if (activityOccasion.isPast)
-                    CrossOver(
-                      style: CrossOverStyle.darkSecondary,
-                      padding: wLayout.crossOverActivityPadding,
-                    ),
-                  if (activityOccasion.isSignedOff)
-                    FractionallySizedBox(
-                      widthFactor: scaleFactor,
-                      heightFactor: scaleFactor,
-                      child: const CheckMark(),
-                    ),
-                ],
-              ),
+        child: FullDayCalendarImage(
+          activityDay: activityOccasion,
+          isPast: activityOccasion.isPast,
+          fit: selected && fullDay ? BoxFit.scaleDown : BoxFit.cover,
+        ),
       ),
     );
   }
@@ -630,7 +602,8 @@ class _WeekTimerContent extends StatelessWidget {
                       if (timerOccasion.isPast)
                         CrossOver(
                           style: CrossOverStyle.darkSecondary,
-                          padding: wLayout.crossOverActivityPadding,
+                          padding:
+                              layout.commonCalendar.crossOverActivityPadding,
                         ),
                     ],
                   ),

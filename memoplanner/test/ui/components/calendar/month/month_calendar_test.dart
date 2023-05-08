@@ -548,7 +548,7 @@ void main() {
           startTime: initialDay.subtract(1.days()),
           fullDay: true,
           checkable: true,
-          signedOffDates: [time].map(whaleDateFormat),
+          signedOffDates: {whaleDateFormat(time)},
         )
       ];
       mockActivityDb.initWithActivities(activities);
@@ -563,7 +563,7 @@ void main() {
       expect(find.byType(FullDayStack), findsNothing);
       expect(
           (find
-                  .ancestor(
+                  .descendant(
                     of: find.byKey(TestKey.monthPreviewHeaderActivity),
                     matching: find.byType(CrossOver),
                   )
@@ -608,14 +608,14 @@ void main() {
           startTime: initialDay.subtract(1.days()),
           fullDay: true,
           checkable: true,
-          signedOffDates: [time].map(whaleDateFormat),
+          signedOffDates: {whaleDateFormat(time)},
         ),
         Activity.createNew(
           title: 'title 2',
           startTime: initialDay.subtract(1.days()),
           fullDay: true,
           checkable: true,
-          signedOffDates: [time].map(whaleDateFormat),
+          signedOffDates: {whaleDateFormat(time)},
         )
       ];
       mockActivityDb.initWithActivities(activities);
@@ -641,6 +641,27 @@ void main() {
           true);
     });
 
+    testWidgets('Checked fullday activities show checkmarks',
+        (WidgetTester tester) async {
+      final activities = [
+        Activity.createNew(
+          title: 'title',
+          startTime: initialDay,
+          fullDay: true,
+          checkable: true,
+          signedOffDates: {whaleDateFormat(initialDay)},
+        ),
+      ];
+      mockActivityDb.initWithActivities(activities);
+
+      await tester.pumpWidget(const App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(CheckMark), findsNWidgets(2));
+    });
+
     testWidgets('Past day text has CrossOver', (WidgetTester tester) async {
       // Arrange
       mockActivityDb.initWithActivity(Activity.createNew(
@@ -648,7 +669,7 @@ void main() {
         startTime: time.subtract(1.hours()),
         duration: 30.minutes(),
         checkable: true,
-        signedOffDates: [time].map(whaleDateFormat),
+        signedOffDates: {whaleDateFormat(time)},
       ));
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();

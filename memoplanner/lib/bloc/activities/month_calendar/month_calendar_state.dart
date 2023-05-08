@@ -4,7 +4,7 @@ class MonthCalendarState {
   final DateTime firstDay;
   final List<MonthWeek> weeks;
   final Occasion occasion;
-  final bool showMonthPreview;
+  final bool isCollapsed;
 
   int get index => firstDay.year * DateTime.monthsPerYear + firstDay.month;
 
@@ -12,27 +12,27 @@ class MonthCalendarState {
     required this.firstDay,
     required this.occasion,
     required this.weeks,
-    required this.showMonthPreview,
+    required this.isCollapsed,
   });
 
   MonthCalendarState copyWith({
     DateTime? firstDay,
     List<MonthWeek>? weeks,
     Occasion? occasion,
-    bool? showMonthPreview,
+    bool? isCollapsed,
   }) =>
       MonthCalendarState(
         firstDay: firstDay ?? this.firstDay,
         weeks: weeks ?? this.weeks,
         occasion: occasion ?? this.occasion,
-        showMonthPreview: showMonthPreview ?? this.showMonthPreview,
+        isCollapsed: isCollapsed ?? this.isCollapsed,
       );
 
   @override
   String toString() => 'MonthCalendarState { '
       'firstDay: $firstDay '
       'occasion: $occasion '
-      'showMonthPreview: $showMonthPreview '
+      'isCollapsed: $isCollapsed '
       'index: $index '
       '}';
 }

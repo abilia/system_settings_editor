@@ -317,7 +317,7 @@ void main() {
               startTime: startTime,
               duration: duration,
               checkable: true,
-              signedOffDates: [startTime].map(whaleDateFormat),
+              signedOffDates: {whaleDateFormat(startTime)},
             ),
             startTime.onlyDays(),
             Occasion.current,

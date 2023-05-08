@@ -145,7 +145,7 @@ void main() {
       title: 'title',
       startTime: startTime,
       checkable: true,
-      signedOffDates: [day].map(whaleDateFormat),
+      signedOffDates: {whaleDateFormat(day)},
     );
     await tester.pumpWidget(
       wrapWithMaterialApp(

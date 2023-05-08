@@ -8,6 +8,7 @@ import 'package:memoplanner/utils/all.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'timepillar_interval_calculator.dart';
+
 part 'timepillar_state.dart';
 
 class TimepillarCubit extends Cubit<TimepillarState> {
@@ -186,12 +187,14 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     List<TimerOccasion> timers,
     TimepillarInterval interval,
   ) {
+    final seen = <int>{};
     final dayActivities = activities
         .where((a) => !a.fullDay)
         .expand((activity) => activity.dayActivitiesForInterval(interval))
         .removeAfterOccasion(occasion)
-        .toSet();
-
+        .where(
+          (activity) => seen.add(activity.id.hashCode ^ activity.day.hashCode),
+        );
     final timerOccasions = timers.where(
       (timer) =>
           timer.start.inInclusiveRange(
