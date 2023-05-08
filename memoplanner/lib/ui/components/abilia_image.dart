@@ -449,12 +449,14 @@ class FadeInNetworkImage extends StatelessWidget {
 class FullDayCalendarImage extends StatelessWidget {
   final ActivityDay activityDay;
   final bool isPast;
+  final EdgeInsets padding;
   final BoxFit fit;
 
   const FullDayCalendarImage({
     required this.activityDay,
     required this.isPast,
     required this.fit,
+    this.padding = EdgeInsets.zero,
     super.key,
   });
 
@@ -470,11 +472,14 @@ class FullDayCalendarImage extends StatelessWidget {
         : Stack(
             alignment: Alignment.center,
             children: [
-              EllipsesText(
-                activityDay.activity.title,
-                style: bodySmall,
-                textAlign: TextAlign.center,
-                maxLines: 3,
+              Padding(
+                padding: padding,
+                child: EllipsesText(
+                  activityDay.activity.title,
+                  style: bodySmall,
+                  textAlign: TextAlign.center,
+                  maxLines: 3,
+                ),
               ),
               if (isPast)
                 CrossOver(

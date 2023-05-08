@@ -541,6 +541,7 @@ class MonthActivityContent extends StatelessWidget {
           activityDay: activityDay,
           isPast: isPast,
           fit: BoxFit.contain,
+          padding: layout.monthCalendar.day.activityTextContentPadding,
         ),
       ),
     );
