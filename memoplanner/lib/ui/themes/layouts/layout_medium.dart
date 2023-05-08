@@ -162,6 +162,7 @@ class MediumLayout extends Layout {
             fullDayStackDistance: 6,
             fullDayPadding: EdgeInsets.all(18),
             fullDayButtonPadding: EdgeInsets.fromLTRB(15, 6, 6, 6),
+            crossOverActivityPadding: EdgeInsets.all(7),
           ),
           message: const MessageLayoutMedium(),
           slider: const SliderLayout(

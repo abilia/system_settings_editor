@@ -537,30 +537,11 @@ class MonthActivityContent extends StatelessWidget {
         color: AbiliaColors.white,
       ),
       child: Center(
-        child: activityDay.activity.hasImage
-            ? AnimatedOpacity(
-                duration: const Duration(milliseconds: 400),
-                opacity: isPast ? 0.5 : 1.0,
-                child: FadeInAbiliaImage(
-                  imageFileId: activityDay.activity.fileId,
-                  imageFilePath: activityDay.activity.icon,
-                  borderRadius: BorderRadius.zero,
-                  height: double.infinity,
-                  width: double.infinity,
-                  fit: BoxFit.contain,
-                ),
-              )
-            : Padding(
-                padding: layout.monthCalendar.day.activityTextContentPadding,
-                child: EllipsesText(
-                  activityDay.activity.title,
-                  tts: true,
-                  maxLines: 3,
-                  style: abiliaTextTheme.bodyMedium?.copyWith(
-                    fontSize: layout.monthCalendar.day.fullDayActivityFontSize,
-                  ),
-                ),
-              ),
+        child: FullDayCalendarImage(
+          activityDay: activityDay,
+          isPast: isPast,
+          fit: BoxFit.contain,
+        ),
       ),
     );
 
