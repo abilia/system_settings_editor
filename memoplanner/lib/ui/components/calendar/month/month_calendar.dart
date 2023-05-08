@@ -540,7 +540,7 @@ class MonthActivityContent extends StatelessWidget {
         child: FullDayCalendarImage(
           activityDay: activityDay,
           isPast: isPast,
-          fit: BoxFit.contain,
+          fit: BoxFit.cover,
         ),
       ),
     );
