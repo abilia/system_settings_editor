@@ -217,6 +217,8 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                                   child: HourLines(
                                     numberOfLines: interval.lengthInHours + 1,
                                     hourHeight: measures.hourHeight,
+                                    width: boxConstraints.maxWidth,
+                                    strokeWidth: measures.hourLineWidth,
                                   ),
                                 ),
                               if (showTimeLine)
