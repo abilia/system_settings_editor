@@ -179,6 +179,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   SortableBloc(
                     sortableRepository: context.read<SortableRepository>(),
                     syncBloc: context.read<SyncBloc>(),
+                    fileStorageFolder: FileStorage.folder,
                   ),
               lazy: false,
             ),

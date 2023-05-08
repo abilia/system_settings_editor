@@ -21,10 +21,12 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
   late final StreamSubscription syncSubscription;
   StreamSubscription? _refreshAfterAddedStarterSetSubscription;
   final Bloc syncBloc;
+  final String fileStorageFolder;
 
   SortableBloc({
     required this.sortableRepository,
     required this.syncBloc,
+    required this.fileStorageFolder,
   }) : super(SortablesNotLoaded()) {
     syncSubscription =
         syncBloc.stream.where((state) => state is SyncDone).listen((_) {
@@ -138,7 +140,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
       if (currentState is SortablesLoaded) {
         final sortableData = ImageArchiveData(
           name: event.name,
-          file: '${event.folderId}/${event.imageId}',
+          file: '$fileStorageFolder/${event.imageId}',
           fileId: event.imageId,
           tags: UnmodifiableSetView(event.tags),
         );

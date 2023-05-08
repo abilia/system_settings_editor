@@ -16,9 +16,9 @@ class LoadSortables extends SortableEvent {
 }
 
 class ImageArchiveImageAdded extends SortableEvent {
-  final String folder, imageId, name;
+  final String imageId, name;
 
-  const ImageArchiveImageAdded(this.imageId, this.name, {this.folder = ''});
+  const ImageArchiveImageAdded(this.imageId, this.name);
 
   @override
   List<Object> get props => [imageId, name];
