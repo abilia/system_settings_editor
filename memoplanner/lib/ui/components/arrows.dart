@@ -4,31 +4,11 @@ import 'package:vector_math/vector_math_64.dart';
 class ScrollArrows extends StatelessWidget {
   final Widget child;
   final bool upArrow, downArrow, leftArrow, rightArrow;
-  final double? upCollapseMargin,
-      downCollapseMargin,
-      leftCollapseMargin,
-      rightCollapseMargin;
+  final double? upCollapseMargin, downCollapseMargin;
   final bool verticalScrollBar;
   final bool verticalScrollBarAlwaysShown;
   final ScrollController? verticalController, horizontalController;
   late final ValueNotifier<double?> maxScrollExtent = ValueNotifier(null);
-
-  ScrollArrows({
-    required this.child,
-    required this.upArrow,
-    required this.downArrow,
-    required this.leftArrow,
-    required this.rightArrow,
-    required this.verticalScrollBar,
-    this.upCollapseMargin,
-    this.downCollapseMargin,
-    this.leftCollapseMargin,
-    this.rightCollapseMargin,
-    this.verticalScrollBarAlwaysShown = false,
-    this.verticalController,
-    this.horizontalController,
-    Key? key,
-  }) : super(key: key);
 
   ScrollArrows.vertical({
     required this.child,
@@ -38,15 +18,14 @@ class ScrollArrows extends StatelessWidget {
     bool scrollbarAlwaysShown = false,
     ScrollController? controller,
     Key? key,
-  })  : verticalScrollBar = hasScrollBar,
+  })  : assert(controller != null),
+        verticalScrollBar = hasScrollBar,
         verticalController = controller,
         verticalScrollBarAlwaysShown = scrollbarAlwaysShown,
         upArrow = true,
         downArrow = true,
         leftArrow = false,
         rightArrow = false,
-        leftCollapseMargin = null,
-        rightCollapseMargin = null,
         horizontalController = null,
         super(key: key);
 
@@ -54,14 +33,13 @@ class ScrollArrows extends StatelessWidget {
     required this.child,
     this.upCollapseMargin,
     this.downCollapseMargin,
-    this.leftCollapseMargin,
-    this.rightCollapseMargin,
     this.verticalScrollBar = false,
     this.verticalScrollBarAlwaysShown = false,
     this.verticalController,
     this.horizontalController,
     Key? key,
-  })  : upArrow = true,
+  })  : assert(verticalController != null && horizontalController != null),
+        upArrow = true,
         downArrow = true,
         leftArrow = true,
         rightArrow = true,
@@ -69,21 +47,20 @@ class ScrollArrows extends StatelessWidget {
 
   ScrollArrows.horizontal({
     required this.child,
-    this.leftCollapseMargin,
-    this.rightCollapseMargin,
     bool hasScrollBar = true,
     bool scrollbarAlwaysShown = false,
     ScrollController? controller,
     this.verticalScrollBar = false,
     this.verticalScrollBarAlwaysShown = false,
-    this.verticalController,
     Key? key,
-  })  : upArrow = false,
+  })  : assert(controller != null),
+        upArrow = false,
         downArrow = false,
         leftArrow = true,
         rightArrow = true,
         upCollapseMargin = null,
         downCollapseMargin = null,
+        verticalController = null,
         horizontalController = controller,
         super(key: key);
 
@@ -132,14 +109,12 @@ class ScrollArrows extends StatelessWidget {
               Positioned.fill(
                 child: _ArrowLeft(
                   controller: horizontalController,
-                  collapseMargin: leftCollapseMargin,
                 ),
               ),
             if (rightArrow)
               Positioned.fill(
                 child: _ArrowRight(
                   controller: horizontalController,
-                  collapseMargin: rightCollapseMargin,
                 ),
               ),
           ],
@@ -151,11 +126,7 @@ class ScrollArrows extends StatelessWidget {
 }
 
 class _ArrowLeft extends _ArrowBase {
-  const _ArrowLeft({
-    Key? key,
-    ScrollController? controller,
-    double? collapseMargin,
-  }) : super(key: key, controller: controller, collapseMargin: collapseMargin);
+  const _ArrowLeft({super.controller});
 
   @override
   Widget build(BuildContext context) => Align(
@@ -167,18 +138,16 @@ class _ArrowLeft extends _ArrowBase {
           vectorTranslation: Vector3(-_Arrow.translationPixels, 0, 0),
           heigth: _Arrow.arrowSize,
           controller: controller,
-          conditionFunction: (sc) =>
-              sc.position.extentBefore > getCollapseMargin,
+          conditionFunction: (sc) => sc.position.extentBefore > _collapseMargin,
         ),
       );
 }
 
 class _ArrowUp extends _ArrowBase {
   const _ArrowUp({
-    Key? key,
-    ScrollController? controller,
-    double? collapseMargin,
-  }) : super(key: key, controller: controller, collapseMargin: collapseMargin);
+    super.controller,
+    super.collapseMargin,
+  });
 
   @override
   Widget build(BuildContext context) => Align(
@@ -190,18 +159,13 @@ class _ArrowUp extends _ArrowBase {
           vectorTranslation: Vector3(0, -_Arrow.translationPixels, 0),
           width: _Arrow.arrowSize,
           controller: controller,
-          conditionFunction: (sc) =>
-              sc.position.extentBefore > getCollapseMargin,
+          conditionFunction: (sc) => sc.position.extentBefore > _collapseMargin,
         ),
       );
 }
 
 class _ArrowRight extends _ArrowBase {
-  const _ArrowRight({
-    Key? key,
-    ScrollController? controller,
-    double? collapseMargin,
-  }) : super(key: key, controller: controller, collapseMargin: collapseMargin);
+  const _ArrowRight({super.controller});
 
   @override
   Widget build(BuildContext context) => Align(
@@ -213,18 +177,16 @@ class _ArrowRight extends _ArrowBase {
           vectorTranslation: Vector3(_Arrow.translationPixels, 0, 0),
           heigth: _Arrow.arrowSize,
           controller: controller,
-          conditionFunction: (sc) =>
-              sc.position.extentAfter > getCollapseMargin,
+          conditionFunction: (sc) => sc.position.extentAfter > _collapseMargin,
         ),
       );
 }
 
 class _ArrowDown extends _ArrowBase {
   const _ArrowDown({
-    Key? key,
-    ScrollController? controller,
-    double? collapseMargin,
-  }) : super(key: key, controller: controller, collapseMargin: collapseMargin);
+    super.controller,
+    super.collapseMargin,
+  });
 
   @override
   Widget build(BuildContext context) => Align(
@@ -236,8 +198,7 @@ class _ArrowDown extends _ArrowBase {
           vectorTranslation: Vector3(0, _Arrow.translationPixels, 0),
           width: _Arrow.arrowSize,
           controller: controller,
-          conditionFunction: (sc) =>
-              sc.position.extentAfter > getCollapseMargin,
+          conditionFunction: (sc) => sc.position.extentAfter > _collapseMargin,
         ),
       );
 }
@@ -245,9 +206,8 @@ class _ArrowDown extends _ArrowBase {
 abstract class _ArrowBase extends StatelessWidget {
   final ScrollController? controller;
   final double? collapseMargin;
-  static final double defaultCollapseMargin = layout.arrows.collapseMargin;
 
-  double get getCollapseMargin => collapseMargin ?? defaultCollapseMargin;
+  double get _collapseMargin => collapseMargin ?? layout.arrows.collapseMargin;
 
   const _ArrowBase({
     Key? key,
@@ -287,18 +247,18 @@ class _Arrow extends StatefulWidget {
 class _ArrowState extends State<_Arrow> {
   bool condition = false;
 
-  ScrollController? get controller =>
+  ScrollController get controller =>
       widget.controller ?? PrimaryScrollController.of(context);
 
   @override
   void initState() {
-    controller?.addListener(listener);
+    controller.addListener(listener);
     super.initState();
   }
 
   @override
   void dispose() {
-    controller?.removeListener(listener);
+    controller.removeListener(listener);
     super.dispose();
   }
 
@@ -329,11 +289,9 @@ class _ArrowState extends State<_Arrow> {
   }
 
   void listener() {
-    final c = controller;
-    if (c != null &&
-        c.hasClients &&
-        c.position.haveDimensions &&
-        widget.conditionFunction(c) != condition) {
+    if (controller.hasClients &&
+        controller.position.haveDimensions &&
+        widget.conditionFunction(controller) != condition) {
       setState(() => condition = !condition);
     }
   }

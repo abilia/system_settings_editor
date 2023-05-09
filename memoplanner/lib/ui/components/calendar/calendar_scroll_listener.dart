@@ -6,7 +6,8 @@ import 'package:memoplanner/ui/all.dart';
 typedef GetNowOffset = double Function(DateTime now);
 typedef ScrollListenerWidgetBuilder = Widget Function(
   BuildContext context,
-  ScrollController controller,
+  ScrollController verticalController,
+  ScrollController horizontalController,
 );
 
 class CalendarScrollListener extends StatelessWidget {
@@ -40,6 +41,7 @@ class CalendarScrollListener extends StatelessWidget {
         child: builder(
           context,
           ScrollController(initialScrollOffset: disabledInitOffset ?? 0),
+          SnapToCenterScrollController(),
         ),
       );
     }
@@ -74,7 +76,8 @@ class _CalendarScrollListener extends StatefulWidget {
 
 class _CalendarScrollListenerState extends State<_CalendarScrollListener>
     with WidgetsBindingObserver {
-  late final ScrollController controller = ScrollController();
+  final verticalController = ScrollController();
+  final horizontalController = SnapToCenterScrollController();
 
   @override
   void initState() {
@@ -132,7 +135,7 @@ class _CalendarScrollListenerState extends State<_CalendarScrollListener>
   void _updateScrollState() {
     final nowOffset = widget.getNowOffset(context.read<ClockBloc>().state);
     context.read<ScrollPositionCubit>().updateState(
-          scrollController: controller,
+          scrollController: verticalController,
           nowOffset: nowOffset,
         );
   }
@@ -140,10 +143,11 @@ class _CalendarScrollListenerState extends State<_CalendarScrollListener>
   @override
   Widget build(BuildContext context) {
     return !Config.isMP
-        ? widget.builder(context, controller)
+        ? widget.builder(context, verticalController, horizontalController)
         : _AutoScrollToNow(
             getNowOffset: widget.getNowOffset,
-            child: widget.builder(context, controller),
+            child: widget.builder(
+                context, verticalController, horizontalController),
           );
   }
 }

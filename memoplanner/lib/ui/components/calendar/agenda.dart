@@ -26,11 +26,11 @@ class Agenda extends StatelessWidget with CalendarWidgetMixin {
             enabled: eventsState.isToday,
             agendaEvents: eventsState.events.length +
                 eventsState.fullDayActivities.length,
-            builder: (_, controller) {
+            builder: (_, verticalController, __) {
               return AbiliaScrollBar(
-                controller: controller,
+                controller: verticalController,
                 child: EventList(
-                  scrollController: controller,
+                  scrollController: verticalController,
                   topPadding: padding.top,
                   bottomPadding: padding.bottom,
                   events: eventsState,
