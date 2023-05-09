@@ -4,17 +4,18 @@ import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class TtsPlayButton extends StatelessWidget {
-  const TtsPlayButton({
-    Key? key,
-    this.controller,
-    this.padding = EdgeInsets.zero,
-    this.tts = '',
-    this.buttonStyle,
-  }) : super(key: key);
   final TextEditingController? controller;
   final EdgeInsets padding;
   final String tts;
-  final ButtonStyle? buttonStyle;
+  final bool transparent;
+
+  const TtsPlayButton({
+    this.controller,
+    this.padding = EdgeInsets.zero,
+    this.tts = '',
+    this.transparent = true,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,30 +26,29 @@ class TtsPlayButton extends StatelessWidget {
         builder: (context, child) => _TtsPlayButton(
           text: controller.text,
           padding: padding,
-          buttonStyle: buttonStyle,
+          transparent: transparent,
         ),
       );
     } else {
       return _TtsPlayButton(
         text: tts,
         padding: padding,
-        buttonStyle: buttonStyle,
+        transparent: transparent,
       );
     }
   }
 }
 
 class _TtsPlayButton extends StatefulWidget {
-  const _TtsPlayButton({
-    required this.text,
-    this.padding = EdgeInsets.zero,
-    this.buttonStyle,
-    Key? key,
-  }) : super(key: key);
-
   final String text;
   final EdgeInsets padding;
-  final ButtonStyle? buttonStyle;
+  final bool transparent;
+
+  const _TtsPlayButton({
+    required this.text,
+    required this.transparent,
+    required this.padding,
+  });
 
   @override
   State<_TtsPlayButton> createState() => _TtsPlayButtonState();
@@ -59,22 +59,23 @@ class _TtsPlayButtonState extends State<_TtsPlayButton> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<SpeechSettingsCubit, SpeechSettingsState, bool>(
-      selector: (state) => state.textToSpeech,
-      builder: (context, textToSpeech) => SizedBox(
-        height: layout.actionButton.size,
-        child: CollapsableWidget(
-          collapsed: !(textToSpeech && widget.text.isNotEmpty),
-          axis: Axis.horizontal,
-          child: Padding(
-            padding: widget.padding,
-            child: IconActionButton(
-              key: TestKey.ttsPlayButton,
-              style: widget.buttonStyle ?? actionButtonStyleDark,
-              onPressed: () async => ttsIsPlaying ? _stop() : _play(),
-              child: Icon(
-                ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
-              ),
+    final textToSpeech =
+        context.select((SpeechSettingsCubit cubit) => cubit.state.textToSpeech);
+    return SizedBox(
+      height: layout.actionButton.smallSize,
+      child: CollapsableWidget(
+        collapsed: !(textToSpeech && widget.text.isNotEmpty),
+        axis: Axis.horizontal,
+        child: Padding(
+          padding: widget.padding,
+          child: IconActionButton(
+            key: TestKey.ttsPlayButton,
+            style: widget.transparent
+                ? actionButtonStyleDark
+                : actionButtonStyleNoneTransparentDark,
+            onPressed: () async => ttsIsPlaying ? _stop() : _play(),
+            child: Icon(
+              ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
             ),
           ),
         ),

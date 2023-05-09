@@ -162,11 +162,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
             padding: layout.libraryPage.headerPadding,
             child: Row(
               children: [
-                IconActionButton(
-                  style: actionButtonStyleDark.withSize(
-                    layout.libraryPage.backButtonSize,
-                    iconSize: layout.libraryPage.backButtonIconSize,
-                  ),
+                IconActionButtonDark(
                   onPressed: () async => back(context, sortableArchiveState),
                   child: const Icon(AbiliaIcons.navigationPrevious),
                 ),
@@ -182,7 +178,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                 if (showSearchButton)
                   IconAndTextButton(
                     style: actionButtonStyleDark
-                        .withSize(
+                        .withMinimumSize(
                           layout.libraryPage.searchButtonSize,
                         )
                         .copyWith(
