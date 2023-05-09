@@ -18,7 +18,7 @@ class RemoteAlarm {
   }) async {
     if (alarm is TimerAlarm) return;
     try {
-      await client.post(
+      final response = await client.post(
         '${baseUrlDb.baseUrl}/api/v1/push'.toUri(),
         headers: jsonHeader,
         body: jsonEncode(
@@ -28,8 +28,11 @@ class RemoteAlarm {
           },
         ),
       );
+      if (response.statusCode != 200) {
+        AlarmNavigator.log.fine('Remote alarm response ', response);
+      }
     } catch (error, stackTrace) {
-      AlarmNavigator.log.fine('Could not stop remote alarm', error, stackTrace);
+      AlarmNavigator.log.info('Could not stop remote alarm', error, stackTrace);
     }
   }
 }
