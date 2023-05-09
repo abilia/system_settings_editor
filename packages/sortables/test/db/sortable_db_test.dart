@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/models/all.dart';
+import 'package:repository_base/db/database_repository.dart';
+import 'package:sortables/all.dart';
+import 'package:sqflite/sqflite.dart';
 
 void main() {
   late Database db;

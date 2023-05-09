@@ -13,6 +13,3 @@ dev_dependencies:
     sdk: flutter
   seagull_lints:
     path: ../seagull_lints
-
-flutter:
-  uses-material-design: true

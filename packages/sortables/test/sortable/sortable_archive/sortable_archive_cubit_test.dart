@@ -1,10 +1,12 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/all.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:sortables/all.dart';
+import 'package:sortables/bloc/sortable/sortable_bloc.dart';
 
-import '../../../mocks/mock_bloc.dart';
-import '../../../test_helpers/register_fallback_values.dart';
+import '../../mocks/mocks.dart';
+import '../../test_helpers/register_fallback_values.dart';
+
 
 void main() {
   late SortableBloc mockSortableBloc;
