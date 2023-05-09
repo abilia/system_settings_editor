@@ -399,7 +399,7 @@ final actionButtonStyleLightSelected = _actionButtonStyle.copyWith(
 final _textActionButtonStyle = ButtonStyle(
   textStyle:
       MaterialStateProperty.all(abiliaTextTheme.bodySmall?.copyWith(height: 1)),
-  maximumSize: mediumSize,
+  minimumSize: mediumSize,
   padding: MaterialStateProperty.all(layout.actionButton.withTextPadding),
   alignment: Alignment.topCenter,
 );
