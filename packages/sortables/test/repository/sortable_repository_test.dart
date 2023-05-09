@@ -12,7 +12,6 @@ import 'package:utils/string_extensions.dart';
 
 import '../test_helpers/register_fallback_values.dart';
 
-
 void main() {
   const baseUrl = 'url';
   late MockBaseClient mockClient;

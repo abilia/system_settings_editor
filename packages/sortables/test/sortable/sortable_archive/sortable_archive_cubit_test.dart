@@ -7,7 +7,6 @@ import 'package:sortables/bloc/sortable/sortable_bloc.dart';
 import '../../mocks/mocks.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
-
 void main() {
   late SortableBloc mockSortableBloc;
 
@@ -221,8 +220,7 @@ void main() {
         ..sortablesUpdated(basicActivitySortables)
         ..searchValueChanged('first'),
       verify: (_) {
-        expect(sortableArchiveCubit.state.allFilteredAndSorted(),
-            [first]);
+        expect(sortableArchiveCubit.state.allFilteredAndSorted(), [first]);
       },
     );
 
@@ -234,8 +232,8 @@ void main() {
         ..sortablesUpdated(basicActivitySortables)
         ..searchValueChanged('i'),
       verify: (_) {
-        expect(sortableArchiveCubit.state.allFilteredAndSorted(),
-            [first, third]);
+        expect(
+            sortableArchiveCubit.state.allFilteredAndSorted(), [first, third]);
       },
     );
 

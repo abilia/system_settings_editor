@@ -6,7 +6,6 @@ import 'package:sortables/all.dart';
 import '../fakes/fake_dummy_bloc.dart';
 import '../mocks/mocks.dart';
 
-
 void main() {
   late SortableBloc sortableBloc;
   late MockSortableRepository mockSortableRepository;

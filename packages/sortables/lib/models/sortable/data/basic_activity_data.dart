@@ -6,7 +6,6 @@ import 'package:sortables/models/sortable/data/sortable_data.dart';
 import 'package:sortables/models/time_interval.dart';
 import 'package:utils/utils.dart';
 
-
 abstract class BasicActivityData extends SortableData {}
 
 class BasicActivityDataItem extends BasicActivityData {
@@ -50,8 +49,7 @@ class BasicActivityDataItem extends BasicActivityData {
       reminders: sortableData['reminders'] ?? '',
       activityTitle: sortableData['title'] ?? '',
       name: sortableData['name'] ?? '',
-      secretExemptions:
-          _exemptionsListToSet(sortableData['secretExemptions']),
+      secretExemptions: _exemptionsListToSet(sortableData['secretExemptions']),
     );
   }
 
@@ -71,10 +69,8 @@ class BasicActivityDataItem extends BasicActivityData {
   TimeOfDay? get endTimeOfDay =>
       duration == 0 ? null : (startTime + duration).toTimeOfDay();
 
-
   static Set<int> _exemptionsListToSet(exemptions) =>
       exemptions is Iterable ? exemptions.whereType<int>().toSet() : {};
-
 
   @override
   String dataFileId() => fileId;

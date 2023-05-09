@@ -5,7 +5,6 @@ import 'package:repository_base/repository_base.dart';
 import 'package:sortables/all.dart';
 import 'package:utils/utils.dart';
 
-
 class SortableRepository extends DataRepository<Sortable> {
   static const mobileUploadPath = 'mobile-uploads-folder',
       myPhotosPath = 'my-photos-folder';

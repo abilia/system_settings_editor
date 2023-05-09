@@ -113,8 +113,7 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
           .title() ??
       '';
 
-  String folderTitle() =>
-      allById[currentFolderId]?.data.title() ?? '';
+  String folderTitle() => allById[currentFolderId]?.data.title() ?? '';
 
   @override
   List<Object?> get props => [

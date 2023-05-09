@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:sortables/models/sortable/data/sortable_data.dart';
 
-
 class NoteData extends SortableData {
   final String name, text, icon, fileId;
 
