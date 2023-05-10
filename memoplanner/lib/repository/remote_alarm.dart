@@ -28,9 +28,9 @@ class RemoteAlarm {
           },
         ),
       );
-      AlarmNavigator.log.fine('Remote alarm response ', response);
+      AlarmNavigator.log.fine('Remote alarm response ', response.toString());
     } catch (error, stackTrace) {
-      AlarmNavigator.log.info('Could not stop remote alarm', error, stackTrace);
+      AlarmNavigator.log.fine('Could not stop remote alarm', error, stackTrace);
     }
   }
 }
