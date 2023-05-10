@@ -617,7 +617,8 @@ class EndDateWidget extends StatelessWidget {
                   ? null
                   : (v) => context
                       .read<EditActivityCubit>()
-                      .changeRecurrentEndDate(v ? Recurs.noEndDate : null),
+                      .changeRecurrentEndDate(
+                          v ? TimeInterval.noEndDate : null),
               child: Text(translate.noEndDate),
             ),
           ],
@@ -644,7 +645,7 @@ class EndDateWizWidget extends StatelessWidget {
       value: recursWithNoEnd,
       onChanged: (v) => context
           .read<EditActivityCubit>()
-          .changeRecurrentEndDate(v ? Recurs.noEndDate : null),
+          .changeRecurrentEndDate(v ? TimeInterval.noEndDate : null),
       child: Text(translate.noEndDate),
     );
   }

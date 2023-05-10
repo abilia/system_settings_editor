@@ -8,7 +8,7 @@ enum ApplyTo { onlyThisDay, allDays, thisDayAndForward }
 class Recurs extends Equatable {
   final int type, data, endTime;
   DateTime get end => DateTime.fromMillisecondsSinceEpoch(endTime);
-  bool get hasNoEnd => endTime >= noEnd;
+  bool get hasNoEnd => endTime >= _noEnd;
   bool get isRecurring => type != typeNone;
   bool get weekly => type == typeWeekly;
   bool get monthly => type == typeMonthly;
@@ -20,13 +20,13 @@ class Recurs extends Equatable {
       : assert(type >= typeNone && type <= typeYearly),
         assert(type != typeWeekly || data < 0x4000),
         assert(type != typeMonthly || data < 0x80000000),
-        endTime = endTime == null || endTime > noEnd ? noEnd : endTime;
+        endTime = endTime == null || endTime > _noEnd ? _noEnd : endTime;
 
-  static const not = Recurs.raw(typeNone, 0, noEnd),
+  static const not = Recurs.raw(typeNone, 0, _noEnd),
       everyDay = Recurs.raw(
         typeWeekly,
         allDaysOfWeek,
-        noEnd,
+        _noEnd,
       );
 
   factory Recurs.yearly(DateTime dayOfYear, {DateTime? ends}) => Recurs.raw(
@@ -151,8 +151,7 @@ class Recurs extends Equatable {
       allWeekends = evenWeekends | oddWeekends,
       allDaysOfWeek = allWeekdays | allWeekends;
 
-  static const noEnd = 253402297199000;
-  static final noEndDate = DateTime.fromMillisecondsSinceEpoch(noEnd);
+  static const _noEnd = TimeInterval.noEnd;
 
   @visibleForTesting
   static int onDayOfMonth(int dayOfMonth) => _toBitMask(dayOfMonth);
@@ -207,5 +206,5 @@ class Recurs extends Equatable {
 
   @override
   String toString() =>
-      '$recurrence; ends -> ${endTime == noEnd ? 'no end' : end}; ${_generateBitsSet(31, data)}';
+      '$recurrence; ends -> ${endTime == _noEnd ? 'no end' : end}; ${_generateBitsSet(31, data)}';
 }

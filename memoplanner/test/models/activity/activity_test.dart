@@ -486,7 +486,7 @@ void main() {
       );
 
       final a2 = a.copyWith(recurs: Recurs.not);
-      expect(a.recurs.end, Recurs.noEndDate);
+      expect(a.recurs.end, TimeInterval.noEndDate);
       expect(a2.recurs.end, st.add(d));
     });
 
@@ -502,7 +502,7 @@ void main() {
       );
 
       final a2 = a.copyWith(recurs: Recurs.not);
-      expect(a.recurs.end, Recurs.noEndDate);
+      expect(a.recurs.end, TimeInterval.noEndDate);
       expect(a2.recurs.end, expected);
     });
 

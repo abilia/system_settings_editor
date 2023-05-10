@@ -139,8 +139,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final heading = sortableArchiveState.isAtRootAndNoSelection
         ? rootHeading
-        : sortableArchiveState.title(
-            onlyFolders: showOnlyFolders);
+        : sortableArchiveState.title(onlyFolders: showOnlyFolders);
     return Tts.data(
       data: heading,
       child: Column(

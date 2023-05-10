@@ -73,12 +73,11 @@ class EditActivityCubit extends Cubit<EditActivityState> {
                   TimeInterval(startDate: day),
                 )
               : UnstoredActivityState(
-
-              Activity.fromBaseActivity(
-                  baseActivity: basicActivityData,
-                  timezone: tz.local.name,
-                  day: day,
-                  calendarId: calendarId),
+                  Activity.fromBaseActivity(
+                      baseActivity: basicActivityData,
+                      timezone: tz.local.name,
+                      day: day,
+                      calendarId: calendarId),
                   basicActivityData.toTimeInterval(startDate: day),
                 ),
         );
@@ -200,7 +199,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
 
     DateTime? getEndDate() {
       if (newType == RecurrentType.yearly) {
-        return Recurs.noEndDate;
+        return TimeInterval.noEndDate;
       }
       if (state.storedRecurring) {
         return state.originalTimeInterval.endDate;
@@ -224,7 +223,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
 
     final newTimeInterval = state.timeInterval.copyWithEndDate(newEndDate);
     final newRecurs = state.activity.recurs.changeEnd(
-      newEndDate ?? Recurs.noEndDate,
+      newEndDate ?? TimeInterval.noEndDate,
     );
     _changeRecurrence(newRecurs, timeInterval: newTimeInterval);
   }

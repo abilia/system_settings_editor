@@ -1100,7 +1100,7 @@ void main() {
           startDate: aDay,
         );
         final recursTimeInterval =
-            timeInterval.copyWithEndDate(Recurs.noEndDate);
+            timeInterval.copyWithEndDate(TimeInterval.noEndDate);
 
         final expectedActivity = activity3.copyWith(startTime: aTime);
 
@@ -1194,7 +1194,7 @@ void main() {
         final expectedTimeInterval = TimeInterval(
           startTime: TimeOfDay.fromDateTime(aTime),
           startDate: aDay,
-          endDate: Recurs.noEndDate,
+          endDate: TimeInterval.noEndDate,
         );
 
         final activityWithNewTitle = activity.copyWith(title: 'new title');
@@ -1592,7 +1592,7 @@ void main() {
           endDate: null,
         );
         final secondTimeInterval =
-            firstTimeInterval.copyWithEndDate(Recurs.noEndDate);
+            firstTimeInterval.copyWithEndDate(TimeInterval.noEndDate);
         editActivityCubit.changeTimeInterval(startTime: time);
         final expectedActivity = activity.copyWith(startTime: aTime);
         final expected1 = expectLater(
@@ -1710,12 +1710,12 @@ void main() {
     );
     final expectedTimeInterval2 = expectedTimeInterval1.copyWithEndDate(null);
     final expectedTimeInterval3 =
-        expectedTimeInterval1.copyWithEndDate(Recurs.noEndDate);
+        expectedTimeInterval1.copyWithEndDate(TimeInterval.noEndDate);
     final recurringActivity1 = activity.copyWith(
       recurs: Recurs.weeklyOnDay(aDay.weekday),
     );
     final recurringActivity2 = activity.copyWith(
-      recurs: Recurs.weeklyOnDay(aTime.weekday, ends: Recurs.noEndDate),
+      recurs: Recurs.weeklyOnDay(aTime.weekday, ends: TimeInterval.noEndDate),
     );
 
     final expected1 = expectLater(
@@ -1743,7 +1743,7 @@ void main() {
     editActivityCubit
       ..changeRecurrentType(RecurrentType.weekly)
       ..changeRecurrentEndDate(null)
-      ..changeRecurrentEndDate(Recurs.noEndDate);
+      ..changeRecurrentEndDate(TimeInterval.noEndDate);
     // Assert
     await expected1;
 
@@ -1789,7 +1789,7 @@ void main() {
             TimeInterval(
               startTime: TimeOfDay.fromDateTime(activity.startTime),
               startDate: aDay,
-              endDate: Recurs.noEndDate,
+              endDate: TimeInterval.noEndDate,
             ),
             aDay,
           ),

@@ -620,7 +620,7 @@ void main() {
           recurs: const Recurs.raw(
             Recurs.typeWeekly,
             Recurs.allDaysOfWeek,
-            Recurs.noEnd,
+            TimeInterval.noEnd,
           ),
         );
 

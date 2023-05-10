@@ -185,7 +185,6 @@ class Activity extends DataModel {
         secretExemptions: secretExemptions,
       );
 
-
   factory Activity.fromBaseActivity({
     required BasicActivityDataItem baseActivity,
     required String timezone,
@@ -211,9 +210,7 @@ class Activity extends DataModel {
         secretExemptions: baseActivity.secretExemptions,
       );
 
-
-  BasicActivityDataItem toBasicActivity() =>
-      BasicActivityDataItem(
+  BasicActivityDataItem toBasicActivity() => BasicActivityDataItem(
         name: title,
         activityTitle: title,
         startTime: Duration(

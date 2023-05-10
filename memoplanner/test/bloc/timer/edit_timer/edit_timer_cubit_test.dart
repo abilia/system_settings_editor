@@ -28,18 +28,16 @@ void main() {
 
   test('Initial state with basicTimer', () async {
     final basicTimer = AbiliaTimer.createNew(
-        startTime: now.subtract(5.minutes()),
-        duration: 10.minutes(),
-      ).toBasicTimerDataItem()
-    ;
+      startTime: now.subtract(5.minutes()),
+      duration: 10.minutes(),
+    ).toBasicTimerDataItem();
     final editTimerCubit = EditTimerCubit(
       ticker: ticker,
       translate: translate,
-      basicTimer: 
-        AbiliaTimer.createNew(
-          startTime: now.subtract(5.minutes()),
-          duration: 10.minutes(),
-        ).toBasicTimerDataItem(),
+      basicTimer: AbiliaTimer.createNew(
+        startTime: now.subtract(5.minutes()),
+        duration: 10.minutes(),
+      ).toBasicTimerDataItem(),
       timerCubit: TimerCubit(
         timerDb: MockTimerDb(),
         ticker: ticker,
