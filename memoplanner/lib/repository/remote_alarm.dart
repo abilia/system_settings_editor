@@ -28,9 +28,7 @@ class RemoteAlarm {
           },
         ),
       );
-      if (response.statusCode != 200) {
-        AlarmNavigator.log.fine('Remote alarm response ', response);
-      }
+      AlarmNavigator.log.fine('Remote alarm response ', response);
     } catch (error, stackTrace) {
       AlarmNavigator.log.info('Could not stop remote alarm', error, stackTrace);
     }
