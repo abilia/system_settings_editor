@@ -12,11 +12,11 @@ class ScrollArrows extends StatelessWidget {
 
   ScrollArrows.vertical({
     required this.child,
+    required ScrollController? controller,
     this.upCollapseMargin,
     this.downCollapseMargin,
     bool hasScrollBar = true,
     bool scrollbarAlwaysShown = false,
-    ScrollController? controller,
     Key? key,
   })  : assert(controller != null),
         verticalScrollBar = hasScrollBar,
@@ -47,11 +47,7 @@ class ScrollArrows extends StatelessWidget {
 
   ScrollArrows.horizontal({
     required this.child,
-    bool hasScrollBar = true,
-    bool scrollbarAlwaysShown = false,
-    ScrollController? controller,
-    this.verticalScrollBar = false,
-    this.verticalScrollBarAlwaysShown = false,
+    required ScrollController? controller,
     Key? key,
   })  : assert(controller != null),
         upArrow = false,
@@ -61,6 +57,8 @@ class ScrollArrows extends StatelessWidget {
         upCollapseMargin = null,
         downCollapseMargin = null,
         verticalController = null,
+        verticalScrollBar = false,
+        verticalScrollBarAlwaysShown = false,
         horizontalController = controller,
         super(key: key);
 

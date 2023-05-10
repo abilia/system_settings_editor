@@ -147,7 +147,10 @@ class _CalendarScrollListenerState extends State<_CalendarScrollListener>
         : _AutoScrollToNow(
             getNowOffset: widget.getNowOffset,
             child: widget.builder(
-                context, verticalController, horizontalController),
+              context,
+              verticalController,
+              horizontalController,
+            ),
           );
   }
 }
