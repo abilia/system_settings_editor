@@ -2,8 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:sortables/models/sortable/data/sortable_data.dart';
-import 'package:sortables/models/time_interval.dart';
+import 'package:sortables/models/all.dart';
 import 'package:utils/utils.dart';
 
 abstract class BasicActivityData extends SortableData {}
