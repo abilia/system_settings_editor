@@ -18,15 +18,21 @@ class RemoteAlarm {
   }) async {
     if (alarm is TimerAlarm) return;
     try {
-      await client.post(
+      AlarmNavigator.log.info(
+        'stoping alarm $alarm->${alarm.hashCode}',
+      );
+      final response = await client.post(
         '${baseUrlDb.baseUrl}/api/v1/push'.toUri(),
         headers: jsonHeader,
         body: jsonEncode(
           {
             if (pop) popKey: alarm.stackId,
-            stopSoundKey: alarm.hashCode,
+            stopSoundKey: '${alarm.hashCode}',
           },
         ),
+      );
+      AlarmNavigator.log.info(
+        'Remote alarm response: ${response.body} ${response.statusCode}',
       );
     } catch (error, stackTrace) {
       AlarmNavigator.log.fine('Could not stop remote alarm', error, stackTrace);

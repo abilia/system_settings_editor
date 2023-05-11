@@ -8,6 +8,9 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/ui/themes/all.dart' as theme;
 import 'package:photo_view/photo_view.dart';
 
+Widget crossOverBuilder(context, error, stackTrace) =>
+    const CrossOver(style: CrossOverStyle.darkSecondary);
+
 class EventImage extends StatelessWidget {
   final Event event;
   final bool nightMode;
@@ -61,6 +64,7 @@ class EventImage extends StatelessWidget {
                     opacity: inactive ? 0.5 : 1.0,
                     child: FadeInImage(
                       fit: fit,
+                      imageErrorBuilder: crossOverBuilder,
                       image: getImage(
                         context,
                         event.image,
@@ -118,6 +122,7 @@ class EventImage extends StatelessWidget {
           imagePath: imageFile.path,
           size: ImageThumb.thumbSize,
         ),
+        errorBuilder: crossOverBuilder,
         headers: authHeader(GetIt.I<LoginDb>().getToken()),
       );
     }
@@ -274,6 +279,7 @@ class FullScreenImage extends StatelessWidget {
             backgroundDecoration: backgroundDecoration,
             imageProvider: getProvider(),
             tightMode: tightMode,
+            errorBuilder: crossOverBuilder,
             loadingBuilder: (_, __) => const SizedBox.shrink(),
           );
         });

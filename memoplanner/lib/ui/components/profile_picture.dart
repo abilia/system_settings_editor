@@ -49,6 +49,7 @@ class ProfilePicture extends StatelessWidget {
                 FadeInImage.memoryNetwork(
                   fit: BoxFit.cover,
                   placeholder: kTransparentImage,
+                  imageErrorBuilder: crossOverBuilder,
                   image:
                       profileImageUrl(baseUrl, image, size: widthHeight.ceil()),
                 )

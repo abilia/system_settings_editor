@@ -157,7 +157,8 @@ void main() {
     );
 
     blocTest(
-      'logged out cancel all on logout and repo in order',
+      'logged out cancel callback after logout on repository,'
+      ' or the token is removed before we can delete the token in the backend',
       setUp: () => when(() => mockedUserRepository.me())
           .thenAnswer((_) => Future.error(UnauthorizedException())),
       build: () => AuthenticationBloc(
@@ -169,8 +170,8 @@ void main() {
         ..add(const LoggedOut()),
       verify: (AuthenticationBloc bloc) => verifyInOrder(
         [
-          () => notificationMock.mockCancelAll(),
           () => mockedUserRepository.logout(),
+          () => notificationMock.mockCancelAll(),
         ],
       ),
     );

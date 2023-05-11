@@ -175,6 +175,7 @@ class _PopAwareAlarmPageState extends State<PopAwareAlarmPage> {
         child: BlocListener<TouchDetectionCubit, Touch>(
           listenWhen: (previous, current) => !isCanceled,
           listener: (context, state) async {
+            AlarmNavigator.log.fine('on touch ${widget.alarm}');
             await notificationPlugin.cancel(widget.alarm.hashCode);
             await remoteAlarm.stop(widget.alarm);
             isCanceled = true;

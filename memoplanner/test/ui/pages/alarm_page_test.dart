@@ -575,7 +575,7 @@ void main() {
 
       expect(
         captured.single,
-        '{"${RemoteAlarm.stopSoundKey}":${alarm.hashCode}}',
+        '{"${RemoteAlarm.stopSoundKey}":"${alarm.hashCode}"}',
       );
     });
 
@@ -615,7 +615,7 @@ void main() {
         captured.single,
         '{'
         '"${RemoteAlarm.popKey}":"${alarm.stackId}",'
-        '"${RemoteAlarm.stopSoundKey}":${alarm.hashCode}'
+        '"${RemoteAlarm.stopSoundKey}":"${alarm.hashCode}"'
         '}',
       );
     });

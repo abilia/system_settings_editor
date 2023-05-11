@@ -28,9 +28,9 @@ dependencies:
   dotted_border: ^2.0.0
   envied: ^0.3.0
   equatable: ^2.0.3
-  firebase_core: ^2.1.1
+  firebase_core: ^2.11.0
   firebase_crashlytics: ^3.0.4
-  firebase_messaging: ^14.0.4
+  firebase_messaging: ^14.5.0
   flutter:
     sdk: flutter
   flutter_archive: ^4.2.2
