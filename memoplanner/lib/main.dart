@@ -34,6 +34,7 @@ void main() async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.instance.isAutoInitEnabled;
   final preferences = await SharedPreferences.getInstance();
   final supportId = await DeviceDb(preferences).getSupportId();
   await FirebaseCrashlytics.instance.setUserIdentifier(supportId);
