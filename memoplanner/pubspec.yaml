@@ -1,6 +1,6 @@
 name: memoplanner
-description: MEMOplanner GO and MEMOPlanner 4
-version: 4.3.0
+description: The seagull app.
+version: 4.2.0
 publish_to: none
 
 environment:
