@@ -135,3 +135,22 @@ jobs:
         uses: geekyeggo/delete-artifact@v2
         with:
           name: app-${{ matrix.flavor }}-release
+
+  create_pull_request:
+    name: Create pull request to master
+    runs-on: ubuntu-latest
+    needs: upload
+    defaults:
+      run:
+        working-directory: ./memoplanner
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create pull request
+        run: |
+          if [[ "$GITHUB_REF" == "refs/heads/release" ]]
+          then
+            gh pr create -B master -H $(git rev-parse --abbrev-ref HEAD) --title "Release candidate" --body ""
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
