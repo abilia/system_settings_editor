@@ -151,15 +151,18 @@ class UserRepository extends Repository {
 
   bool isLoggedIn() => loginDb.getToken() != null;
 
-  Future<bool> _unregisterClient() async {
+  Future<void> _unregisterClient() async {
     try {
       final response = await client.delete(
         '$baseUrl/api/v$postApiVersion/auth/client'.toUri(),
       );
-      return response.statusCode == 200;
+      if (response.statusCode != 200) {
+        _log.warning('status code error when unregister client: '
+            '${response.statusCode} '
+            '${response.body} ');
+      }
     } catch (e) {
       _log.warning('can not unregister client: $e');
-      return false;
     }
   }
 

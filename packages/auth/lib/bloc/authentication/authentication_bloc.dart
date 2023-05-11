@@ -94,12 +94,12 @@ class AuthenticationBloc
 
   Future _logout() async {
     if (state is Unauthenticated) return;
+    await userRepository.logout();
     try {
       await onLogout?.call();
     } catch (e) {
       Logger('onLogout').severe('exception when logging out: $e');
     }
-    await userRepository.logout();
   }
 
   @override
