@@ -563,7 +563,7 @@ void main() {
       expect(find.byType(FullDayStack), findsNothing);
       expect(
           (find
-                  .ancestor(
+                  .descendant(
                     of: find.byKey(TestKey.monthPreviewHeaderActivity),
                     matching: find.byType(CrossOver),
                   )
@@ -639,6 +639,27 @@ void main() {
                   .widget as CrossOver)
               .applyCross,
           true);
+    });
+
+    testWidgets('Checked fullday activities show checkmarks',
+        (WidgetTester tester) async {
+      final activities = [
+        Activity.createNew(
+          title: 'title',
+          startTime: initialDay,
+          fullDay: true,
+          checkable: true,
+          signedOffDates: {whaleDateFormat(initialDay)},
+        ),
+      ];
+      mockActivityDb.initWithActivities(activities);
+
+      await tester.pumpWidget(const App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(CheckMark), findsNWidgets(2));
     });
 
     testWidgets('Past day text has CrossOver', (WidgetTester tester) async {
