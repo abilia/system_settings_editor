@@ -169,8 +169,8 @@ void main() {
         ..add(const LoggedOut()),
       verify: (AuthenticationBloc bloc) => verifyInOrder(
         [
-          () => notificationMock.mockCancelAll(),
           () => mockedUserRepository.logout(),
+          () => notificationMock.mockCancelAll(),
         ],
       ),
     );
