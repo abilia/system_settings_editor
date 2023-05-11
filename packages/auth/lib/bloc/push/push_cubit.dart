@@ -7,12 +7,17 @@ export 'package:firebase_messaging/firebase_messaging.dart';
 
 class PushCubit extends Cubit<RemoteMessage> {
   static final _log = Logger((PushCubit).toString());
-  PushCubit({BackgroundMessageHandler? backgroundMessageHandler})
-      : super(const RemoteMessage()) {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      emit(message);
-      _log.fine('onMessage push: ${message.toMap()}');
-    });
+  PushCubit({
+    BackgroundMessageHandler? backgroundMessageHandler,
+  }) : super(const RemoteMessage()) {
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage message) {
+        emit(message);
+        _log.info('onMessage push: ${message.toMap()}');
+      },
+      onError: (error) => _log.warning('FirebaseMessaging.onError: $error'),
+      onDone: () => _log.info('FirebaseMessaging.onDone'),
+    );
     if (backgroundMessageHandler != null) {
       FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
     }
