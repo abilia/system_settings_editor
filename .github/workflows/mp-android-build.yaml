@@ -24,12 +24,12 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: [analyze_and_test_memoplanner, analyze_and_test_packages]
+    needs: [ analyze_and_test_memoplanner, analyze_and_test_packages ]
     outputs:
       releasetype: ${{ steps.set_release_type.outputs.releasetype }}
     strategy:
       matrix:
-        flavor: ['mp', 'mpgo']
+        flavor: [ 'mp', 'mpgo' ]
     defaults:
       run:
         working-directory: ./memoplanner
@@ -91,7 +91,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        flavor: ['mp', 'mpgo']
+        flavor: [ 'mp', 'mpgo' ]
     steps:
       - id: set_package_name
         name: Set package name
@@ -150,7 +150,7 @@ jobs:
         run: |
           if [[ "$GITHUB_REF" == "refs/heads/release" ]]
           then
-            gh pr create -B master -H $(git rev-parse --abbrev-ref HEAD) --title "Release candidate" --body ""
+            gh pr create -B master -H release --title "Release candidate" --body ""
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
