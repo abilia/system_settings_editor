@@ -1,5 +1,26 @@
 import 'package:memoplanner/ui/all.dart';
 
+final smallSize = MaterialStateProperty.all(
+  Size(
+    layout.actionButton.smallSize,
+    layout.actionButton.smallSize,
+  ),
+);
+
+final mediumSize = MaterialStateProperty.all(
+  Size(
+    layout.actionButton.size,
+    layout.actionButton.size,
+  ),
+);
+
+final largeSize = MaterialStateProperty.all(
+  Size(
+    layout.actionButton.largeSize,
+    layout.actionButton.largeSize,
+  ),
+);
+
 final buttonBackgroundLight = MaterialStateProperty.resolveWith<Color>(
   (Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
@@ -21,6 +42,18 @@ final foregroundLight = MaterialStateProperty.resolveWith<Color>(
   },
 );
 
+final backgroundDark = MaterialStateProperty.resolveWith<Color>(
+  (Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled)) {
+      return Colors.transparent;
+    }
+    if (states.contains(MaterialState.pressed)) {
+      return AbiliaColors.transparentBlack40;
+    }
+    return AbiliaColors.transparentBlack20;
+  },
+);
+
 final foregroundDark = MaterialStateProperty.resolveWith<Color>(
   (Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
@@ -29,6 +62,15 @@ final foregroundDark = MaterialStateProperty.resolveWith<Color>(
     return AbiliaColors.black;
   },
 );
+
+final shapeDark =
+    MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+  if (states.contains(MaterialState.disabled) ||
+      states.contains(MaterialState.pressed)) {
+    return noBorderShape;
+  }
+  return darkShapeBorder;
+});
 
 final buttonBackgroundLightGrey = MaterialStateProperty.resolveWith<Color>(
   (Set<MaterialState> states) {
@@ -178,8 +220,7 @@ final actionIconTextButtonStyleRed = ButtonStyle(
 final _actionButtonStyle = ButtonStyle(
   textStyle:
       MaterialStateProperty.all(abiliaTextTheme.bodySmall?.copyWith(height: 1)),
-  minimumSize: MaterialStateProperty.all(
-      Size(layout.actionButton.size, layout.actionButton.size)),
+  minimumSize: mediumSize,
   padding: MaterialStateProperty.all(layout.actionButton.padding),
 );
 
@@ -203,9 +244,7 @@ final actionButtonStyleRed = _actionButtonStyle.copyWith(
 );
 
 final actionButtonStyleRedLarge = actionButtonStyleRed.copyWith(
-  minimumSize: MaterialStateProperty.all(
-    Size(layout.actionButton.largeSize, layout.actionButton.largeSize),
-  ),
+  minimumSize: largeSize,
   shape: MaterialStateProperty.resolveWith(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {
@@ -223,35 +262,14 @@ final actionButtonStyleRedLarge = actionButtonStyleRed.copyWith(
 );
 
 final actionButtonStyleDark = _actionButtonStyle.copyWith(
-  foregroundColor: MaterialStateProperty.resolveWith<Color>(
-    (Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return AbiliaColors.white140;
-      }
-      return AbiliaColors.black;
-    },
-  ),
-  backgroundColor: MaterialStateProperty.resolveWith<Color>(
-    (Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return Colors.transparent;
-      }
-      if (states.contains(MaterialState.pressed)) {
-        return AbiliaColors.transparentBlack40;
-      }
-      return AbiliaColors.transparentBlack20;
-    },
-  ),
-  shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled) ||
-        states.contains(MaterialState.pressed)) {
-      return noBorderShape;
-    }
-    return darkShapeBorder;
-  }),
+  foregroundColor: foregroundDark,
+  backgroundColor: backgroundDark,
+  shape: shapeDark,
+  minimumSize: smallSize,
+  iconSize: MaterialStateProperty.all(layout.actionButton.iconSize),
 );
 
-final actionButtonStyleNoneTransparantDark = actionButtonStyleDark.copyWith(
+final actionButtonStyleNoneTransparentDark = actionButtonStyleDark.copyWith(
   backgroundColor: MaterialStateProperty.resolveWith<Color>(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {
@@ -265,34 +283,34 @@ final actionButtonStyleNoneTransparantDark = actionButtonStyleDark.copyWith(
   ),
 );
 
-final actionButtonStyleDarkLarge = actionButtonStyleDark.copyWith(
-  minimumSize: MaterialStateProperty.all(
-    Size(layout.actionButton.largeSize, layout.actionButton.largeSize),
-  ),
-  shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled) ||
-        states.contains(MaterialState.pressed)) {
-      return noBorderShape.copyWith(borderRadius: largeBorderRadius);
-    }
-    return darkShapeBorder.copyWith(borderRadius: largeBorderRadius);
-  }),
-);
+final actionButtonStyleDarkLarge =
+    actionButtonStyleDark.withIconSize(null).copyWith(
+          minimumSize: largeSize,
+          shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+            if (states.contains(MaterialState.disabled) ||
+                states.contains(MaterialState.pressed)) {
+              return noBorderShape.copyWith(borderRadius: largeBorderRadius);
+            }
+            return darkShapeBorder.copyWith(borderRadius: largeBorderRadius);
+          }),
+        );
 
-final secondaryActionButtonStyleDark = actionButtonStyleDark.copyWith(
-  shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled) ||
-        states.contains(MaterialState.pressed)) {
-      return noBorderShape.copyWith(borderRadius: circleRadius);
-    }
-    return darkShapeBorder.copyWith(borderRadius: circleRadius);
-  }),
-  minimumSize: MaterialStateProperty.all(
-    layout.button.secondaryActionButtonSize,
-  ),
-  fixedSize: MaterialStateProperty.all(
-    layout.button.secondaryActionButtonSize,
-  ),
-);
+final secondaryActionButtonStyleDark =
+    actionButtonStyleDark.withIconSize(null).copyWith(
+          shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+            if (states.contains(MaterialState.disabled) ||
+                states.contains(MaterialState.pressed)) {
+              return noBorderShape.copyWith(borderRadius: circleRadius);
+            }
+            return darkShapeBorder.copyWith(borderRadius: circleRadius);
+          }),
+          minimumSize: MaterialStateProperty.all(
+            layout.button.secondaryActionButtonSize,
+          ),
+          fixedSize: MaterialStateProperty.all(
+            layout.button.secondaryActionButtonSize,
+          ),
+        );
 
 final actionButtonStyleBlack = _actionButtonStyle.copyWith(
   foregroundColor: MaterialStateProperty.resolveWith<Color>(
@@ -314,13 +332,7 @@ final actionButtonStyleBlack = _actionButtonStyle.copyWith(
       return AbiliaColors.black80;
     },
   ),
-  shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled) ||
-        states.contains(MaterialState.pressed)) {
-      return noBorderShape;
-    }
-    return darkShapeBorder;
-  }),
+  shape: shapeDark,
 );
 
 final actionButtonStyleLight = _actionButtonStyle.copyWith(
@@ -346,9 +358,7 @@ final actionButtonStyleLight = _actionButtonStyle.copyWith(
 );
 
 final actionButtonStyleLightLarge = actionButtonStyleLight.copyWith(
-  minimumSize: MaterialStateProperty.all(
-    Size(layout.actionButton.largeSize, layout.actionButton.largeSize),
-  ),
+  minimumSize: largeSize,
   shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled) ||
         states.contains(MaterialState.pressed)) {
@@ -389,8 +399,7 @@ final actionButtonStyleLightSelected = _actionButtonStyle.copyWith(
 final _textActionButtonStyle = ButtonStyle(
   textStyle:
       MaterialStateProperty.all(abiliaTextTheme.bodySmall?.copyWith(height: 1)),
-  maximumSize: MaterialStateProperty.all(
-      Size(layout.actionButton.size, layout.actionButton.size)),
+  minimumSize: mediumSize,
   padding: MaterialStateProperty.all(layout.actionButton.withTextPadding),
   alignment: Alignment.topCenter,
 );
@@ -612,20 +621,46 @@ class _ShapeBorders {
 }
 
 extension ButtonStyleSize on ButtonStyle {
-  ButtonStyle withSize(Size size, {double? iconSize}) => copyWith(
-        minimumSize: MaterialStateProperty.all(size),
-        maximumSize: MaterialStateProperty.all(size),
-        iconSize: iconSize != null
-            ? MaterialStateProperty.all(iconSize)
-            : this.iconSize,
+  ButtonStyle withMinimumSize(Size size) =>
+      copyWith(minimumSize: MaterialStateProperty.all(size));
+
+  ButtonStyle withIconSize(double? iconSize) => copyWithNullable(
+        iconSize: iconSize != null ? MaterialStateProperty.all(iconSize) : null,
       );
 
-  ButtonStyle get withoutMinWidth => copyWith(
-        minimumSize: MaterialStateProperty.all(
-          Size(
-              0,
-              minimumSize?.resolve(MaterialState.values.toSet())?.height ??
-                  layout.iconTextButton.minimumSize.height),
+  ButtonStyle get withoutMinimumWidth => withMinimumSize(
+        Size(
+          0,
+          minimumSize?.resolve(MaterialState.values.toSet())?.height ??
+              layout.iconTextButton.minimumSize.height,
         ),
+      );
+
+  ButtonStyle copyWithNullable({
+    required MaterialStateProperty<double?>? iconSize,
+  }) =>
+      ButtonStyle(
+        textStyle: textStyle,
+        backgroundColor: backgroundColor,
+        foregroundColor: foregroundColor,
+        overlayColor: overlayColor,
+        shadowColor: shadowColor,
+        surfaceTintColor: surfaceTintColor,
+        elevation: elevation,
+        padding: padding,
+        minimumSize: minimumSize,
+        fixedSize: fixedSize,
+        maximumSize: maximumSize,
+        iconColor: iconColor,
+        iconSize: iconSize,
+        side: side,
+        shape: shape,
+        mouseCursor: mouseCursor,
+        visualDensity: visualDensity,
+        tapTargetSize: tapTargetSize,
+        animationDuration: animationDuration,
+        enableFeedback: enableFeedback,
+        alignment: alignment,
+        splashFactory: splashFactory,
       );
 }
