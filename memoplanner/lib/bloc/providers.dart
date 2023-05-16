@@ -317,6 +317,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   context.read<TouchDetectionCubit>().stream,
                   context.read<AlarmCubit>().stream,
                   context.read<TimerAlarmBloc>().stream,
+                  clockDelay: GetIt.I<SyncDelays>().inactivityDelay,
                 ),
               ),
               BlocProvider<ActionIntentCubit>(
