@@ -46,6 +46,7 @@ void main() {
         TouchDetectionCubit().stream,
         const Stream.empty(),
         const Stream.empty(),
+        clockDelay: Duration.zero,
       );
       final mockFirebasePushService = MockFirebasePushService();
       when(() => mockFirebasePushService.initPushToken())

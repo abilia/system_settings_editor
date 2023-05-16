@@ -51,6 +51,7 @@ void main() {
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
+      clockDelay: Duration.zero,
     ),
     verify: (c) => expect(
       c.state,
@@ -80,6 +81,7 @@ void main() {
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
+      clockDelay: Duration.zero,
     ),
     act: (c) async {
       tickerController

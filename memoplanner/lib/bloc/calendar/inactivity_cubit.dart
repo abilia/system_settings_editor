@@ -24,7 +24,7 @@ class InactivityCubit extends Cubit<InactivityState> {
     Stream<Touch> activityDetectedStream,
     Stream<NotificationAlarm?> alarm,
     Stream<TimerAlarmState> timers, {
-    this.clockDelay = const Duration(seconds: 5),
+    required this.clockDelay,
   }) : super(SomethingHappened(ticker.time)) {
     _clockSubscription = MergeStream(
       [
