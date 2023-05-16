@@ -167,9 +167,9 @@ class _PopAwareAlarmPageState extends State<PopAwareAlarmPage> {
           AlarmNavigator.log.fine('onWillPop ${widget.alarm}');
           widget.alarmNavigator.removedFromRoutes(widget.alarm.stackId);
           if (!isCanceled) {
-            await notificationPlugin.cancel(widget.alarm.hashCode);
+            unawaited(notificationPlugin.cancel(widget.alarm.hashCode));
           }
-          await remoteAlarm.stop(widget.alarm, pop: true);
+          unawaited(remoteAlarm.stop(widget.alarm, pop: true));
           return true;
         },
         child: BlocListener<TouchDetectionCubit, Touch>(
