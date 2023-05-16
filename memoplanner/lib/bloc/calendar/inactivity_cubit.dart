@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/utils/all.dart';
 import 'package:rxdart/rxdart.dart';
 
 const _timeToReturnToToday = Duration(minutes: 5);
@@ -25,7 +26,7 @@ class InactivityCubit extends Cubit<InactivityState> {
   ) : super(SomethingHappened(ticker.time)) {
     _clockSubscription = MergeStream(
       [
-        ticker.minutes,
+        ticker.minutes.delay(5.seconds()),
         // Listen to changes from evening to night
         // Since DayPartCubit has not had time to update its state for the new
         // minute
