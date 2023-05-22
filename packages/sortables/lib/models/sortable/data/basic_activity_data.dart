@@ -33,6 +33,10 @@ class BasicActivityDataItem extends BasicActivityData {
 
   factory BasicActivityDataItem.fromJson(String data) {
     final sortableData = json.decode(data);
+    final secretExemptions = sortableData['secretExemptions'] is Iterable
+        ? sortableData['secretExemptions'].whereType<int>().toSet()
+        : {};
+
     return BasicActivityDataItem(
       alarmType: sortableData['alarmType'] ?? 0,
       category: sortableData['category'] ?? 0,
@@ -48,7 +52,7 @@ class BasicActivityDataItem extends BasicActivityData {
       reminders: sortableData['reminders'] ?? '',
       activityTitle: sortableData['title'] ?? '',
       name: sortableData['name'] ?? '',
-      secretExemptions: _exemptionsListToSet(sortableData['secretExemptions']),
+      secretExemptions: secretExemptions,
     );
   }
 
@@ -65,11 +69,9 @@ class BasicActivityDataItem extends BasicActivityData {
 
   TimeOfDay? get startTimeOfDay =>
       startTime == 0 && duration <= 0 ? null : startTime.toTimeOfDay();
+
   TimeOfDay? get endTimeOfDay =>
       duration == 0 ? null : (startTime + duration).toTimeOfDay();
-
-  static Set<int> _exemptionsListToSet(exemptions) =>
-      exemptions is Iterable ? exemptions.whereType<int>().toSet() : {};
 
   @override
   String dataFileId() => fileId;

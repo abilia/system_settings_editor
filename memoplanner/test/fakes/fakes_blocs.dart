@@ -12,7 +12,7 @@ class FakeSyncBloc extends Fake implements SyncBloc {
   Stream<Synced> get stream => const Stream.empty();
 
   @override
-  void add(SyncEvent event) {}
+  void add(Object event) {}
 
   @override
   Future<bool> hasDirty() => Future.value(false);

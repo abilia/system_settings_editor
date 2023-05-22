@@ -90,7 +90,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     );
 
     await userFileRepository.save([userFile]);
-    syncBloc.add(const FileSaved());
+    syncBloc.add(const SyncFiles());
     if (isClosed) return;
     emit(state.add(userFile));
   }

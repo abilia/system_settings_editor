@@ -1,5 +1,5 @@
 import 'package:mocktail/mocktail.dart';
-import 'package:sortables/bloc/sortable/sortable_bloc.dart';
+import 'package:sortables/bloc/sortable_bloc.dart';
 
 class FakeSortableBloc extends Fake implements SortableBloc {
   @override

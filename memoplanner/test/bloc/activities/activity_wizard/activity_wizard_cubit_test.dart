@@ -1099,8 +1099,7 @@ void main() {
           endTime: null,
           startDate: aDay,
         );
-        final recursTimeInterval =
-            timeInterval.copyWithEndDate(TimeInterval.noEndDate);
+        final recursTimeInterval = timeInterval.copyWithEndDate(noEndDate);
 
         final expectedActivity = activity3.copyWith(startTime: aTime);
 
@@ -1194,7 +1193,7 @@ void main() {
         final expectedTimeInterval = TimeInterval(
           startTime: TimeOfDay.fromDateTime(aTime),
           startDate: aDay,
-          endDate: TimeInterval.noEndDate,
+          endDate: noEndDate,
         );
 
         final activityWithNewTitle = activity.copyWith(title: 'new title');
@@ -1591,8 +1590,7 @@ void main() {
           startDate: aDay,
           endDate: null,
         );
-        final secondTimeInterval =
-            firstTimeInterval.copyWithEndDate(TimeInterval.noEndDate);
+        final secondTimeInterval = firstTimeInterval.copyWithEndDate(noEndDate);
         editActivityCubit.changeTimeInterval(startTime: time);
         final expectedActivity = activity.copyWith(startTime: aTime);
         final expected1 = expectLater(
@@ -1710,12 +1708,12 @@ void main() {
     );
     final expectedTimeInterval2 = expectedTimeInterval1.copyWithEndDate(null);
     final expectedTimeInterval3 =
-        expectedTimeInterval1.copyWithEndDate(TimeInterval.noEndDate);
+        expectedTimeInterval1.copyWithEndDate(noEndDate);
     final recurringActivity1 = activity.copyWith(
       recurs: Recurs.weeklyOnDay(aDay.weekday),
     );
     final recurringActivity2 = activity.copyWith(
-      recurs: Recurs.weeklyOnDay(aTime.weekday, ends: TimeInterval.noEndDate),
+      recurs: Recurs.weeklyOnDay(aTime.weekday, ends: noEndDate),
     );
 
     final expected1 = expectLater(
@@ -1743,7 +1741,7 @@ void main() {
     editActivityCubit
       ..changeRecurrentType(RecurrentType.weekly)
       ..changeRecurrentEndDate(null)
-      ..changeRecurrentEndDate(TimeInterval.noEndDate);
+      ..changeRecurrentEndDate(noEndDate);
     // Assert
     await expected1;
 
@@ -1789,7 +1787,7 @@ void main() {
             TimeInterval(
               startTime: TimeOfDay.fromDateTime(activity.startTime),
               startDate: aDay,
-              endDate: TimeInterval.noEndDate,
+              endDate: noEndDate,
             ),
             aDay,
           ),

@@ -1,17 +1,17 @@
 part of 'sync_bloc.dart';
 
-class SyncAll extends SyncEvent {
-  const SyncAll() : super();
+class SyncAll {
+  const SyncAll();
 }
 
-class ActivitySaved extends SyncEvent {
-  const ActivitySaved([String? id]) : super(id);
+class SyncActivities {
+  const SyncActivities();
 }
 
-class FileSaved extends SyncEvent {
-  const FileSaved([String? id]) : super(id);
+class SyncFiles {
+  const SyncFiles();
 }
 
-class GenericSaved extends SyncEvent {
-  const GenericSaved([String? id]) : super(id);
+class SyncGenerics {
+  const SyncGenerics();
 }

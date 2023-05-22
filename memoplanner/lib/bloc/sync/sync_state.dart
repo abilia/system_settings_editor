@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+part of 'sync_bloc.dart';
 
 abstract class SyncState extends Equatable {
   final DateTime? lastSynced;

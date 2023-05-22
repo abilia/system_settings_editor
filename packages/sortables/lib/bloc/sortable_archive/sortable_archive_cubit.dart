@@ -4,7 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:sortables/bloc/sortable/sortable_bloc.dart';
+import 'package:sortables/bloc/sortable_bloc.dart';
 import 'package:sortables/models/sortable/all.dart';
 import 'package:sortables/utils/extensions/sortables_extensions.dart';
 

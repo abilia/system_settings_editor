@@ -14,8 +14,9 @@ void main() {
     mockSortableRepository = MockSortableRepository();
     sortableBloc = SortableBloc(
       sortableRepository: mockSortableRepository,
-      syncBloc: FakeDummyBloc(),
       fileStorageFolder: 'seagull',
+      syncBloc: FakeDummyBloc(),
+      loadSortablesStream: FakeDummyBloc().stream,
     );
   });
 

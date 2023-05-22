@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/logging/all.dart';
@@ -9,7 +10,9 @@ import 'package:rxdart/rxdart.dart';
 
 part 'sync_event.dart';
 
-class SyncBloc extends Bloc<SyncEvent, SyncState> {
+part 'sync_state.dart';
+
+class SyncBloc extends Bloc<Object, SyncState> {
   final PushCubit pushCubit;
   final LicenseCubit licenseCubit;
 
@@ -39,10 +42,10 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }) : super(Syncing(lastSynced: lastSyncDb.getLastSyncTime())) {
     _pushSubscription =
         pushCubit.stream.listen((message) => add(const SyncAll()));
-    on<ActivitySaved>(_trySync, transformer: bufferTimer(syncDelay));
-    on<FileSaved>(_trySync, transformer: bufferTimer(syncDelay));
-    on<SortableSaved>(_trySync, transformer: bufferTimer(syncDelay));
-    on<GenericSaved>(_trySync, transformer: bufferTimer(syncDelay));
+    on<SyncActivities>(_trySync, transformer: bufferTimer(syncDelay));
+    on<SyncFiles>(_trySync, transformer: bufferTimer(syncDelay));
+    on<SyncSortables>(_trySync, transformer: bufferTimer(syncDelay));
+    on<SyncGenerics>(_trySync, transformer: bufferTimer(syncDelay));
     on<SyncAll>(_trySync, transformer: bufferTimer(syncDelay));
   }
 
@@ -54,7 +57,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }
 
   Future _trySync(
-    SyncEvent event,
+    Object event,
     Emitter emit,
   ) async {
     try {
@@ -76,18 +79,18 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     }
   }
 
-  Future<bool> _sync(SyncEvent event) async {
+  Future<bool> _sync(Object event) async {
     switch (event.runtimeType) {
       case SyncAll:
         return _syncAll();
-      case ActivitySaved:
+      case SyncActivities:
         if (licenseCubit.validLicense) return activityRepository.synchronize();
         return false;
-      case FileSaved:
+      case SyncFiles:
         return userFileRepository.synchronize();
-      case SortableSaved:
+      case SyncSortables:
         return sortableRepository.synchronize();
-      case GenericSaved:
+      case SyncGenerics:
         return genericRepository.synchronize();
     }
     throw Exception('Unknown event type $event');

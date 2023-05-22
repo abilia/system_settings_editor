@@ -5,20 +5,23 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
-import 'package:repository_base/bloc/sync/sync_state.dart';
-import 'package:sortables/bloc/sync/sortable_sync_event.dart';
 
 import 'package:sortables/models/sortable/all.dart';
 import 'package:sortables/repository/data_repository/sortable_repository.dart';
 import 'package:sortables/utils/extensions/all.dart';
 
 part 'sortable_event.dart';
+
 part 'sortable_state.dart';
+
+class SyncSortables {
+  const SyncSortables();
+}
 
 class SortableBloc extends Bloc<SortableEvent, SortableState> {
   static final _log = Logger((SortableBloc).toString());
   final SortableRepository sortableRepository;
-  late final StreamSubscription syncSubscription;
+  late final StreamSubscription _loadSortablesSubscription;
   StreamSubscription? _refreshAfterAddedStarterSetSubscription;
   final Bloc syncBloc;
   final String fileStorageFolder;
@@ -27,9 +30,9 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     required this.sortableRepository,
     required this.syncBloc,
     required this.fileStorageFolder,
+    required Stream loadSortablesStream,
   }) : super(SortablesNotLoaded()) {
-    syncSubscription =
-        syncBloc.stream.where((state) => state is SyncDone).listen((_) {
+    _loadSortablesSubscription = loadSortablesStream.listen((_) {
       final state = this.state;
       add(
         LoadSortables(
@@ -86,7 +89,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
           fixed: true,
         );
         await sortableRepository.save([myPhotos]);
-        syncBloc.add(const SortableSaved());
+        syncBloc.add(const SyncSortables());
       } else {
         add(const LoadSortables());
       }
@@ -104,7 +107,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
           fixed: true,
         );
         await sortableRepository.save([upload]);
-        syncBloc.add(const SortableSaved());
+        syncBloc.add(const SyncSortables());
       } else {
         add(const LoadSortables());
       }
@@ -157,7 +160,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
           ),
         );
         await sortableRepository.save([newSortable]);
-        syncBloc.add(const SortableSaved());
+        syncBloc.add(const SyncSortables());
       }
     }
   }
@@ -168,7 +171,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     if (currentState is SortablesLoaded) {
       await sortableRepository.save(event.sortables);
       await _mapLoadSortablesToState(false, emit);
-      syncBloc.add(const SortableSaved());
+      syncBloc.add(const SyncSortables());
     }
   }
 
@@ -188,7 +191,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
 
   @override
   Future<void> close() async {
-    await syncSubscription.cancel();
+    await _loadSortablesSubscription.cancel();
     await _refreshAfterAddedStarterSetSubscription?.cancel();
     return super.close();
   }

@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sortables/all.dart';
 
-import '../../mocks/mocks.dart';
-import '../../test_helpers/register_fallback_values.dart';
+import '../mocks/mocks.dart';
+import '../test_helpers/register_fallback_values.dart';
 
 void main() {
   late SortableBloc mockSortableBloc;

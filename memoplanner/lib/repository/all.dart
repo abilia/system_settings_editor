@@ -1,5 +1,4 @@
 export 'package:auth/repository/user_repository.dart';
-export 'package:repository_base/bloc/sync/sync_event.dart';
 export 'package:repository_base/repository_base.dart';
 export 'package:sortables/repository/all.dart';
 

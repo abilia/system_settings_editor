@@ -1,7 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:repository_base/bloc/sync/sync_event.dart';
 export 'package:mocktail/mocktail.dart';
 
 // Blocs
@@ -11,7 +10,7 @@ class MockActivitiesBloc extends MockBloc<ActivitiesEvent, ActivitiesChanged>
 class MockDayEventsCubit extends MockCubit<EventsState>
     implements DayEventsCubit {}
 
-class MockSyncBloc extends MockBloc<SyncEvent, SyncState> implements SyncBloc {}
+class MockSyncBloc extends MockBloc<Object, SyncState> implements SyncBloc {}
 
 class MockPushCubit extends MockCubit<RemoteMessage> implements PushCubit {}
 

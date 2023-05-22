@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+const noEnd = 253402297199000;
+final noEndDate = DateTime.fromMillisecondsSinceEpoch(noEnd);
+
 extension DateTimeExtensions on DateTime {
   DateTime onlyDays() => DateTime(year, month, day);
   DateTime onlyHours() => DateTime(year, month, day, hour);

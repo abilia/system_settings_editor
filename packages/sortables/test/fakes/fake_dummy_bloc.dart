@@ -1,14 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:repository_base/bloc/sync/sync_event.dart';
 
-class FakeDummyBloc extends Fake implements Bloc<SyncEvent, FakeDummyState> {
+class FakeDummyBloc extends Fake implements Bloc<Object, FakeDummyState> {
   @override
   Stream<FakeDummyState> get stream => const Stream.empty();
 
   @override
-  void add(SyncEvent event) {}
+  void add(Object event) {}
 }
 
 class FakeDummyState extends Equatable {
