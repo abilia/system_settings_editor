@@ -26,7 +26,7 @@ void main() {
     expect(all2.length, 1);
   });
 
-  tearDown(() {
-    DatabaseRepository.clearAll(db);
+  tearDown(() async {
+    await DatabaseRepository.clearAll(db);
   });
 }

@@ -146,8 +146,7 @@ extension DateTimeExtensions on DateTime {
   int get dayIndex => millisecondsSinceEpoch ~/ Duration.millisecondsPerDay;
 
   DateTime withTime(TimeOfDay? timeOfDay) =>
-    copyWith(hour: timeOfDay?.hour, minute: timeOfDay?.minute);
-
+      copyWith(hour: timeOfDay?.hour, minute: timeOfDay?.minute);
 }
 
 extension IntDateTimeExtensions on int {

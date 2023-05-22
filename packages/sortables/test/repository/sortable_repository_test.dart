@@ -35,7 +35,7 @@ void main() {
     );
   });
 
-  tearDown(() => DatabaseRepository.clearAll(db));
+  tearDown(() async => await DatabaseRepository.clearAll(db));
 
   test('Corrupt data is ignored (Bug SGC-381)', () async {
     // Arrange

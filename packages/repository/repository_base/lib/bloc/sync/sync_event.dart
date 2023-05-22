@@ -6,5 +6,3 @@ abstract class SyncEvent {
   @override
   String toString() => '$runtimeType(${id ?? ''})';
 }
-
-
