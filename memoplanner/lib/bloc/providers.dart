@@ -163,7 +163,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 activityRepository: context.read<ActivityRepository>(),
                 timerAlarmBloc: context.read<TimerAlarmBloc>(),
                 clockBloc: context.read<ClockBloc>(),
-              ),
+              )..goToCurrentWeek(),
             ),
             BlocProvider<UserFileBloc>(
               create: (context) => UserFileBloc(
@@ -244,8 +244,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             ),
             BlocProvider<PermissionCubit>(
               create: (context) => PermissionCubit()
-                ..requestPermissions([Permission.notification])
-                ..checkAll(),
+                ..checkAllAndRequestPermissions([Permission.notification]),
             ),
             BlocProvider<DayPartCubit>(
               create: (context) => DayPartCubit(
@@ -319,6 +318,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   context.read<TouchDetectionCubit>().stream,
                   context.read<AlarmCubit>().stream,
                   context.read<TimerAlarmBloc>().stream,
+                  clockDelay: GetIt.I<SyncDelays>().inactivityDelay,
                 ),
               ),
               BlocProvider<ActionIntentCubit>(

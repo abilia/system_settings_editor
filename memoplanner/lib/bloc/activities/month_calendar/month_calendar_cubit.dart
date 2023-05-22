@@ -39,7 +39,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
             firstDay: clockBloc.state,
             occasion: Occasion.current,
             weeks: [],
-            showMonthPreview: false,
+            isCollapsed: true,
           ),
         ) {
     _activitiesSubscription = activitiesBloc?.stream.listen(updateMonth);
@@ -74,6 +74,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         await activityRepository?.allBetween(first, last) ?? [],
         timerAlarmBloc?.state.timers ?? [],
         clockBloc.state,
+        true,
       ),
     );
   }
@@ -88,6 +89,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         await activityRepository?.allBetween(first, last) ?? [],
         timerAlarmBloc?.state.timers ?? [],
         clockBloc.state,
+        true,
       ),
     );
   }
@@ -102,7 +104,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         await activityRepository?.allBetween(first, last) ?? [],
         timerAlarmBloc?.state.timers ?? [],
         clockBloc.state,
-        false,
+        true,
       ),
     );
   }
@@ -127,17 +129,17 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     );
   }
 
-  void togglePreview() => setPreview(!state.showMonthPreview);
+  void toggleCollapsed() => setCollapsed(!state.isCollapsed);
 
-  void setPreview(bool showMonthPreview) =>
-      emit(state.copyWith(showMonthPreview: showMonthPreview));
+  void setCollapsed(bool isCollapsed) =>
+      emit(state.copyWith(isCollapsed: isCollapsed));
 
   MonthCalendarState _mapToState(
     DateTime firstDayOfMonth,
     Iterable<Activity> activities,
     Iterable<TimerOccasion> timerOccasions,
     DateTime now, [
-    bool? showMonthPreview,
+    bool? isCollapsed,
   ]) {
     assert(firstDayOfMonth.day == 1);
     assert(firstDayOfMonth.hour == 0);
@@ -178,7 +180,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
       firstDay: firstDayOfMonth,
       occasion: occasion,
       weeks: weekData,
-      showMonthPreview: showMonthPreview ?? state.showMonthPreview,
+      isCollapsed: isCollapsed ?? state.isCollapsed,
     );
   }
 

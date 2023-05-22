@@ -55,6 +55,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
                     Flexible(
                       flex: timepillarRatio,
                       child: BlocProvider<TimepillarMeasuresCubit>(
+                        key: ValueKey(dayTimepillarMeasures),
                         create: (_) => TimepillarMeasuresCubit.fixed(
                             state: dayTimepillarMeasures),
                         child: OneTimepillarCalendar(
@@ -90,6 +91,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
                           ),
                         ),
                         child: BlocProvider<TimepillarMeasuresCubit>(
+                          key: ValueKey(nightTimepillarMeasures),
                           create: (_) => TimepillarMeasuresCubit.fixed(
                               state: nightTimepillarMeasures),
                           child: OneTimepillarCalendar(

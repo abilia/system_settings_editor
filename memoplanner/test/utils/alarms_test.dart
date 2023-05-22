@@ -195,7 +195,7 @@ void main() {
         title: 'null',
         startTime: startDate.subtract(reminder),
         checkable: true,
-        signedOffDates: [day].map(whaleDateFormat),
+        signedOffDates: {whaleDateFormat(day)},
       );
       final activities = [uncheckedReminder];
 
@@ -211,7 +211,7 @@ void main() {
         title: 'null',
         startTime: startDate,
         checkable: true,
-        signedOffDates: [day].map(whaleDateFormat),
+        signedOffDates: {whaleDateFormat(day)},
       );
       final activities = [checkedActivity];
 
@@ -229,7 +229,7 @@ void main() {
         startTime: startDate,
         duration: duration,
         checkable: true,
-        signedOffDates: [day].map(whaleDateFormat),
+        signedOffDates: {whaleDateFormat(day)},
       );
       final activities = [checkedActivity];
 
@@ -601,7 +601,7 @@ void main() {
         alarmType: noAlarm,
         duration: 1.hours(),
         checkable: true,
-        signedOffDates: [day].map(whaleDateFormat),
+        signedOffDates: {whaleDateFormat(day)},
       );
       final activities = [checkable];
 

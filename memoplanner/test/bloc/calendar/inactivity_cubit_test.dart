@@ -51,11 +51,45 @@ void main() {
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
+      clockDelay: Duration.zero,
     ),
     verify: (c) => expect(
       c.state,
       SomethingHappened(initialTime),
     ),
+  );
+
+  blocTest<InactivityCubit, InactivityState>(
+    'Inactivity emits nothing without buffer delay',
+    setUp: () {
+      when(() => settingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            functions: FunctionsSettings(
+              timeout: TimeoutSettings(
+                duration: 10.minutes(),
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+    build: () => InactivityCubit(
+      fakeTicker,
+      settingsBloc,
+      dayPartCubit,
+      activityDetectionCubit.stream,
+      notificationAlarm.stream,
+      timers.stream,
+      clockDelay: Duration.zero,
+    ),
+    act: (c) async {
+      tickerController
+        ..add(initialTime.add(1.minutes()))
+        ..add(initialTime.add(6.minutes()));
+      // No delay here
+    },
+    expect: () => [],
   );
 
   blocTest<InactivityCubit, InactivityState>(
@@ -80,12 +114,14 @@ void main() {
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
+      clockDelay: Duration.zero,
     ),
-    act: (c) {
+    act: (c) async {
       tickerController
         ..add(initialTime.add(1.minutes()))
         ..add(initialTime.add(6.minutes()));
     },
+    wait: Duration.zero,
     expect: () => [
       ReturnToTodayThresholdReached(initialTime),
     ],
@@ -111,13 +147,15 @@ void main() {
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
+      clockDelay: Duration.zero,
     ),
-    act: (c) {
+    act: (c) async {
       tickerController
         ..add(initialTime.add(1.minutes()))
         ..add(initialTime.add(6.minutes()))
         ..add(initialTime.add(10.minutes()));
     },
+    wait: Duration.zero,
     expect: () => [
       ReturnToTodayThresholdReached(initialTime),
       const HomeScreenFinalState(),
@@ -144,12 +182,14 @@ void main() {
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
+      clockDelay: Duration.zero,
     ),
-    act: (c) {
+    act: (c) async {
       tickerController
         ..add(initialTime.add(1.minutes()))
         ..add(initialTime.add(6.minutes()));
     },
+    wait: Duration.zero,
     expect: () => [
       const HomeScreenFinalState(),
     ],
@@ -175,6 +215,7 @@ void main() {
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
+      clockDelay: Duration.zero,
     ),
     act: (c) async {
       tickerController.add(initialTime.add(59.seconds()));
@@ -182,6 +223,7 @@ void main() {
       activityDetectionCubit.onPointerDown();
       tickerController.add(initialTime.add(1.minutes()));
     },
+    wait: Duration.zero,
     expect: () => [
       SomethingHappened(initialTime.add(59.seconds())),
     ],
@@ -207,8 +249,9 @@ void main() {
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
+      clockDelay: Duration.zero,
     ),
-    act: (c) {
+    act: (c) async {
       tickerController
         ..add(initialTime.add(1.minutes()))
         ..add(initialTime.add(2.minutes()))
@@ -216,6 +259,7 @@ void main() {
         ..add(initialTime.add(4.minutes()))
         ..add(initialTime.add(5.minutes()));
     },
+    wait: Duration.zero,
     expect: () => [const ReturnToTodayFinalState()],
   );
 
@@ -245,10 +289,12 @@ void main() {
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
+      clockDelay: Duration.zero,
     ),
     act: (c) {
       notificationAlarm.add(activityAlarm);
     },
+    wait: Duration.zero,
     expect: () => [SomethingHappened(activityAlarm.notificationTime)],
   );
 
@@ -279,6 +325,7 @@ void main() {
       activityDetectionCubit.stream,
       notificationAlarm.stream,
       timers.stream,
+      clockDelay: Duration.zero,
     ),
     act: (c) async {
       timers.add(
@@ -289,6 +336,7 @@ void main() {
         ),
       );
     },
+    wait: Duration.zero,
     expect: () => [SomethingHappened(timerAlarm.notificationTime)],
   );
 
@@ -316,14 +364,16 @@ void main() {
         activityDetectionCubit.stream,
         notificationAlarm.stream,
         timers.stream,
+        clockDelay: Duration.zero,
       ),
-      act: (c) {
+      act: (c) async {
         tickerController
           ..add(initialTime.add(1.minutes()))
           ..add(initialTime.add(5.minutes()))
           ..add(initialTime.add(10.minutes()))
           ..add(initialTime.add(20.minutes()));
       },
+      wait: Duration.zero,
       expect: () => [
         ReturnToTodayThresholdReached(initialTime),
         const ScreensaverState(),
@@ -353,14 +403,16 @@ void main() {
         activityDetectionCubit.stream,
         notificationAlarm.stream,
         timers.stream,
+        clockDelay: Duration.zero,
       ),
-      act: (c) {
+      act: (c) async {
         tickerController
           ..add(initialTime.add(1.minutes()))
           ..add(initialTime.add(5.minutes()))
           ..add(initialTime.add(10.minutes()))
           ..add(initialTime.add(20.minutes()));
       },
+      wait: Duration.zero,
       expect: () => [
         const ScreensaverState(),
       ],
@@ -390,14 +442,16 @@ void main() {
         activityDetectionCubit.stream,
         notificationAlarm.stream,
         timers.stream,
+        clockDelay: Duration.zero,
       ),
-      act: (c) {
+      act: (c) async {
         tickerController
           ..add(initialTime.add(1.minutes()))
           ..add(initialTime.add(5.minutes()))
           ..add(initialTime.add(10.minutes()))
           ..add(initialTime.add(20.minutes()));
       },
+      wait: Duration.zero,
       expect: () => [
         HomeScreenThresholdReached(initialTime),
       ],
@@ -429,14 +483,20 @@ void main() {
         activityDetectionCubit.stream,
         notificationAlarm.stream,
         timers.stream,
+        clockDelay: Duration.zero,
       ),
-      act: (c) {
-        tickerController
-          ..add(initialTime.add(1.minutes()))
-          ..add(initialTime.add(5.minutes()))
-          ..add(initialTime.add(10.minutes()))
-          ..add(initialTime.add(20.minutes()))
-          ..add(night);
+      wait: Duration.zero,
+      act: (c) async {
+        tickerController.add(initialTime.add(1.minutes()));
+        await Future.delayed(Duration.zero);
+        tickerController.add(initialTime.add(5.minutes()));
+        await Future.delayed(Duration.zero);
+        tickerController.add(initialTime.add(10.minutes()));
+        await Future.delayed(Duration.zero);
+        tickerController.add(initialTime.add(20.minutes()));
+        await Future.delayed(Duration.zero);
+        tickerController.add(night);
+        await Future.delayed(Duration.zero);
       },
       expect: () => [
         ReturnToTodayThresholdReached(initialTime),
@@ -470,22 +530,28 @@ void main() {
         activityDetectionCubit.stream,
         notificationAlarm.stream,
         timers.stream,
+        clockDelay: Duration.zero,
       ),
       act: (c) async {
-        tickerController
-          ..add(initialTime.add(1.minutes()))
-          ..add(initialTime.add(5.minutes()))
-          ..add(initialTime.add(10.minutes()))
-          ..add(initialTime.add(20.minutes()))
-          ..add(night);
+        tickerController.add(initialTime.add(1.minutes()));
+        await Future.delayed(Duration.zero);
+        tickerController.add(initialTime.add(5.minutes()));
+        await Future.delayed(Duration.zero);
+        tickerController.add(initialTime.add(10.minutes()));
+        await Future.delayed(Duration.zero);
+        tickerController.add(initialTime.add(20.minutes()));
+        await Future.delayed(Duration.zero);
+        tickerController.add(night);
         await c.dayPartCubit.stream.firstWhere((state) => state.isNight);
         tickerController.add(morning);
       },
+      wait: Duration.zero,
       expect: () => [
         ReturnToTodayThresholdReached(initialTime),
         HomeScreenThresholdReached(initialTime),
         const ScreensaverState(),
         SomethingHappened(morning),
+        HomeScreenThresholdReached(morning),
       ],
     );
   });

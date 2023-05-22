@@ -126,7 +126,14 @@ class _ProfilePictureNameAndEmailState
                     ?.copyWith(color: AbiliaColors.black75),
               ),
             ),
-          if (showVersion) Text('${user.id} (${backendName(baseUrl)})'),
+          if (showVersion) ...[
+            Text('${user.id} (${backendName(baseUrl)})'),
+            FutureBuilder(
+              // ignore: discarded_futures
+              future: GetIt.I<DeviceDb>().getClientId(),
+              builder: (context, snapshot) => Text('${snapshot.data}'),
+            ),
+          ],
         ]
       ],
     );

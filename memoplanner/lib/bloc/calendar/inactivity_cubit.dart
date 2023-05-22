@@ -12,6 +12,8 @@ class InactivityCubit extends Cubit<InactivityState> {
   final MemoplannerSettingsBloc settingsBloc;
   final DayPartCubit dayPartCubit;
 
+  final Duration clockDelay;
+
   late StreamSubscription<DateTime> _clockSubscription;
   late StreamSubscription _activitySubscription;
 
@@ -21,11 +23,12 @@ class InactivityCubit extends Cubit<InactivityState> {
     this.dayPartCubit,
     Stream<Touch> activityDetectedStream,
     Stream<NotificationAlarm?> alarm,
-    Stream<TimerAlarmState> timers,
-  ) : super(SomethingHappened(ticker.time)) {
+    Stream<TimerAlarmState> timers, {
+    required this.clockDelay,
+  }) : super(SomethingHappened(ticker.time)) {
     _clockSubscription = MergeStream(
       [
-        ticker.minutes,
+        ticker.minutes.delay(clockDelay),
         // Listen to changes from evening to night
         // Since DayPartCubit has not had time to update its state for the new
         // minute

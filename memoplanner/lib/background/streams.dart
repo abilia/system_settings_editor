@@ -23,9 +23,10 @@ void onNotification(NotificationResponse notificationResponse) {
     } catch (e) {
       _log.severe('Failed to parse selected notification payload: $payload', e);
     }
+  } else {
+    _log.warning('NotificationResponse does not contain payload: '
+        '$notificationResponse');
   }
-  _log.warning('NotificationResponse does not contain payload: '
-      '$notificationResponse');
 }
 
 Future<void> clearNotificationSubject() async {

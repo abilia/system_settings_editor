@@ -198,7 +198,6 @@ class SelectPictureBody extends StatelessWidget {
               child: ImageArchivePage(
                 onCancel: onCancel,
                 initialFolder: initialFolder,
-                myPhotos: myPhotos,
                 header: header,
               ),
             ),

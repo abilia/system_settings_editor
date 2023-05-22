@@ -31,16 +31,14 @@ class AuthenticatedDialog extends StatelessWidget {
             onNext: () async => _onNext(context, pageController),
           ),
         if (loginDialogState.fullscreenAlarm)
-          FullscreenAlarmInfoDialog(
-            showRedirect: true,
-            onNext: () async => _onNext(context, pageController),
-          ),
+          const FullscreenAlarmInfoDialog(showRedirect: true),
       ],
     );
   }
 
   Future<void> _onNext(
       BuildContext context, PageController pageController) async {
+    if (!pageController.hasClients) return;
     final currentIndex = pageController.page?.toInt();
     final lastIndex = authenticatedDialogCubit.state.numberOfDialogs - 1;
     if (currentIndex == lastIndex) {

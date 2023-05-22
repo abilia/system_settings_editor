@@ -28,8 +28,8 @@ class MonthListPreview extends StatelessWidget {
       );
     }
     final dayTheme = dayThemes[dayPickerState.day.weekday - 1];
-    final isCollapsed = context.select((MonthCalendarCubit cubit) =>
-        layout.go && !cubit.state.showMonthPreview);
+    final isCollapsed = context.select(
+        (MonthCalendarCubit cubit) => layout.go && cubit.state.isCollapsed);
     final showAlarmOnOffSwitch = context.select(
         (MemoplannerSettingsBloc bloc) =>
             bloc.state.alarm.showAlarmOnOffSwitch);
@@ -47,6 +47,8 @@ class MonthListPreview extends StatelessWidget {
               occasion: dayPickerState.occasion,
             ),
           ),
+          if (isCollapsed && dayTheme.dayColor == null)
+            const Divider(color: AbiliaColors.black60, endIndent: 0),
           if (!isCollapsed) const Expanded(child: MonthPreview()),
         ],
       ),
@@ -144,37 +146,36 @@ class MonthDayPreviewHeading extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: (fullDayActivities > 0)
-                        ? CrossOver(
-                            style: CrossOverStyle.darkSecondary,
-                            applyCross: occasion.isPast,
-                            padding: previewLayout.crossOverPadding,
-                            child: (fullDayActivities > 1)
-                                ? ClickableFullDayStack(
-                                    fullDayActivitiesBuilder: (context) =>
-                                        context.select((DayEventsCubit cubit) =>
-                                            cubit.state.fullDayActivities),
-                                    key: TestKey.monthPreviewHeaderFullDayStack,
-                                    numberOfActivities:
-                                        eventState.fullDayActivities.length,
-                                    width: previewLayout
-                                        .headingFullDayActivityWidth,
-                                    height: previewLayout
-                                        .headingFullDayActivityHeight,
-                                    day: eventState.day,
-                                  )
-                                : MonthActivityContent(
-                                    key: TestKey.monthPreviewHeaderActivity,
-                                    activityDay:
-                                        eventState.fullDayActivities.first,
-                                    isPast: eventState
-                                        .fullDayActivities.first.isPast,
-                                    width: previewLayout
-                                        .headingFullDayActivityWidth,
-                                    height: previewLayout
-                                        .headingFullDayActivityHeight,
-                                    goToActivityOnTap: true,
-                                  ),
-                          )
+                        ? (fullDayActivities > 1)
+                            ? CrossOver(
+                                style: CrossOverStyle.darkSecondary,
+                                applyCross: occasion.isPast,
+                                padding: previewLayout.crossOverPadding,
+                                child: ClickableFullDayStack(
+                                  fullDayActivitiesBuilder: (context) =>
+                                      context.select((DayEventsCubit cubit) =>
+                                          cubit.state.fullDayActivities),
+                                  key: TestKey.monthPreviewHeaderFullDayStack,
+                                  numberOfActivities:
+                                      eventState.fullDayActivities.length,
+                                  width:
+                                      previewLayout.headingFullDayActivityWidth,
+                                  height: previewLayout
+                                      .headingFullDayActivityHeight,
+                                  day: eventState.day,
+                                ),
+                              )
+                            : MonthActivityContent(
+                                key: TestKey.monthPreviewHeaderActivity,
+                                activityDay: eventState.fullDayActivities.first,
+                                isPast:
+                                    eventState.fullDayActivities.first.isPast,
+                                width:
+                                    previewLayout.headingFullDayActivityWidth,
+                                height:
+                                    previewLayout.headingFullDayActivityHeight,
+                                goToActivityOnTap: true,
+                              )
                         : null,
                   ),
                   Align(
@@ -202,18 +203,18 @@ class MonthDayPreviewHeading extends StatelessWidget {
                         child: IconActionButton(
                           onPressed: () async => context
                               .read<MonthCalendarCubit>()
-                              .togglePreview(),
+                              .toggleCollapsed(),
                           style: isLight
                               ? actionButtonStyleLight
                               : actionButtonStyleDark,
                           child: BlocSelector<MonthCalendarCubit,
                               MonthCalendarState, bool>(
                             selector: (state) =>
-                                layout.go && !state.showMonthPreview,
+                                layout.go && !state.isCollapsed,
                             builder: (context, isCollapsed) => Icon(
                               isCollapsed
-                                  ? AbiliaIcons.navigationUp
-                                  : AbiliaIcons.navigationDown,
+                                  ? AbiliaIcons.navigationDown
+                                  : AbiliaIcons.navigationUp,
                               size: previewLayout.headingButtonIconSize,
                             ),
                           ),

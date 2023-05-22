@@ -5,16 +5,14 @@ class ImageArchivePage extends StatelessWidget {
   final VoidCallback? onCancel;
   final String initialFolder;
   final String? header;
-  final bool showSearch;
-  final bool myPhotos;
+  final SearchHeader searchHeader;
 
   const ImageArchivePage({
     Key? key,
     this.onCancel,
     this.initialFolder = '',
     this.header,
-    this.showSearch = false,
-    this.myPhotos = false,
+    this.searchHeader = SearchHeader.searchButton,
   }) : super(key: key);
 
   @override
@@ -22,12 +20,14 @@ class ImageArchivePage extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return LibraryPage<ImageArchiveData>.selectable(
       appBar: AbiliaAppBar(
-        iconData: showSearch
+        iconData: searchHeader == SearchHeader.searchBar
             ? AbiliaIcons.find
             : AbiliaIcons.pastPictureFromWindowsClipboard,
-        title: showSearch ? translate.searchImage : translate.selectImage,
+        title: searchHeader == SearchHeader.searchBar
+            ? translate.searchImage
+            : translate.selectImage,
       ),
-      showSearch: showSearch,
+      searchHeader: searchHeader,
       gridChildAspectRatio: layout.imageArchive.aspectRatio,
       rootHeading: header ?? translate.imageArchive,
       libraryItemGenerator: (imageArchive) =>
@@ -46,7 +46,7 @@ class ImageArchivePage extends StatelessWidget {
                 path: selected.data.file,
               ),
             ),
-            fromSearch: showSearch,
+            fromSearch: searchHeader == SearchHeader.searchBar,
           ),
         );
       },
@@ -68,38 +68,11 @@ class ArchiveImage extends StatelessWidget {
     final name = imageArchiveData.name;
     final imageId = imageArchiveData.fileId;
     final iconPath = imageArchiveData.file;
-    return Tts.fromSemantics(
-      SemanticsProperties(
-        label: imageArchiveData.name,
-        image: imageArchiveData.fileId.isNotEmpty ||
-            imageArchiveData.file.isNotEmpty,
-        button: true,
-      ),
-      child: Container(
-        decoration: boxDecoration,
-        padding: EdgeInsets.all(layout.imageArchive.imagePadding),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            if (name.isNotEmpty) ...[
-              Text(
-                name,
-                overflow: TextOverflow.ellipsis,
-                style: abiliaTextTheme.bodySmall,
-              ),
-              SizedBox(height: layout.imageArchive.imageNameBottomPadding),
-            ],
-            Flexible(
-              child: FadeInAbiliaImage(
-                height: layout.imageArchive.imageHeight,
-                width: layout.imageArchive.imageWidth,
-                imageFileId: imageId,
-                imageFilePath: iconPath,
-              ),
-            ),
-          ],
-        ),
-      ),
+    return LibraryImage(
+      name: name,
+      isImage: imageId.isNotEmpty || imageArchiveData.file.isNotEmpty,
+      imageId: imageId,
+      iconPath: iconPath,
     );
   }
 }

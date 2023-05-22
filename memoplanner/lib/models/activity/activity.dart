@@ -43,8 +43,8 @@ class Activity extends DataModel {
     final d = whaleDateFormat(day);
     return copyWith(
       signedOffDates: signedOffDates.contains(d)
-          ? (signedOffDates.toList()..remove(d))
-          : signedOffDates.followedBy([d]),
+          ? (signedOffDates.difference(<String>{d}))
+          : signedOffDates.union(<String>{d}),
     );
   }
 
@@ -54,7 +54,7 @@ class Activity extends DataModel {
   final int category, alarmType;
   final bool fullDay, checkable, removeAfter, secret;
   final UnmodifiableListView<int> reminderBefore;
-  final UnmodifiableListView<String> signedOffDates;
+  final UnmodifiableSetView<String> signedOffDates;
   final String infoItemString;
   final Recurs recurs;
   final Extras extras;
@@ -110,7 +110,7 @@ class Activity extends DataModel {
     String fileId = '',
     String icon = '',
     Iterable<int> reminderBefore = const [],
-    Iterable<String> signedOffDates = const [],
+    Set<String> signedOffDates = const {},
     Extras extras = Extras.empty,
     Set<int> secretExemptions = const {},
   }) {
@@ -133,7 +133,7 @@ class Activity extends DataModel {
       reminderBefore: UnmodifiableListView(reminderBefore),
       alarmType: alarmType,
       infoItemString: infoItemString,
-      signedOffDates: UnmodifiableListView(signedOffDates),
+      signedOffDates: UnmodifiableSetView(signedOffDates),
       timezone: timezone,
       extras: extras,
       calendarId: calendarId,
@@ -157,7 +157,7 @@ class Activity extends DataModel {
     String fileId = '',
     String icon = '',
     Iterable<int> reminderBefore = const [],
-    Iterable<String> signedOffDates = const [],
+    Set<String> signedOffDates = const {},
     String timezone = '',
     Extras extras = Extras.empty,
     String calendarId = '',
@@ -262,7 +262,7 @@ class Activity extends DataModel {
     Alarm? alarm,
     Recurs? recurs,
     InfoItem? infoItem,
-    Iterable<String>? signedOffDates,
+    Set<String>? signedOffDates,
     String? timezone,
     Extras? extras,
     String? calendarId,
@@ -294,7 +294,7 @@ class Activity extends DataModel {
         alarmType: alarmType ?? alarm?.intValue ?? this.alarmType,
         infoItemString: infoItem?.toBase64() ?? infoItemString,
         signedOffDates: signedOffDates != null
-            ? UnmodifiableListView(signedOffDates)
+            ? UnmodifiableSetView(signedOffDates)
             : this.signedOffDates,
         timezone: timezone ?? this.timezone,
         extras: extras ?? this.extras,

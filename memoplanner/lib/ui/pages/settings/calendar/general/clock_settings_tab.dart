@@ -134,6 +134,8 @@ class PreviewTimePillar extends StatelessWidget {
                         HourLines(
                           numberOfLines: 3,
                           hourHeight: measures.hourHeight,
+                          width: layout.settings.previewTimePillarWidth,
+                          strokeWidth: measures.hourLineWidth,
                         ),
                       Center(
                         child: TimePillar(

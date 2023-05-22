@@ -225,8 +225,9 @@ Future<bool> _scheduleNotification(
     return true;
   } catch (e) {
     log(
-      Level.WARNING,
-      'could not schedule $payload',
+      Level.SEVERE,
+      'could not schedule $payload\n'
+      '$e',
     );
     return false;
   }

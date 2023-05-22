@@ -3,6 +3,8 @@ import 'package:memoplanner/ui/all.dart';
 class ActionButtonLayout {
   final double size,
       largeSize,
+      smallSize,
+      iconSize,
       radius,
       largeRadius,
       spacing,
@@ -13,6 +15,8 @@ class ActionButtonLayout {
   const ActionButtonLayout({
     this.size = 48,
     this.largeSize = 48,
+    this.smallSize = 48,
+    this.iconSize = 32,
     this.radius = 12,
     this.largeRadius = 12,
     this.spacing = 0,
@@ -31,6 +35,8 @@ class ActionButtonLayoutMedium extends ActionButtonLayout {
   }) : super(
           size: 88,
           largeSize: largeSize ?? 88,
+          smallSize: 80,
+          iconSize: 56,
           radius: 20,
           largeRadius: largeRadius ?? 20,
           spacing: 4,

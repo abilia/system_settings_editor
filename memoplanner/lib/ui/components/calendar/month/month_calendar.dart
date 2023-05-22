@@ -10,9 +10,9 @@ class MonthCalendarTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isCollapsed = context.select(
-      (MonthCalendarCubit cubit) => layout.go && !cubit.state.showMonthPreview,
-    );
-    final showPreview = context.watch<MonthCalendarCubit>().showPreview;
+        (MonthCalendarCubit cubit) => layout.go && cubit.state.isCollapsed);
+    final showPreview =
+        context.select((MonthCalendarCubit cubit) => cubit.showPreview);
     return Scaffold(
       appBar: const MonthAppBar(),
       floatingActionButton:
@@ -68,9 +68,9 @@ class MonthContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isCollapsed = context.select(
-      (MonthCalendarCubit cubit) => layout.go && !cubit.state.showMonthPreview,
-    );
-    final showPreview = context.watch<MonthCalendarCubit>().showPreview;
+        (MonthCalendarCubit cubit) => layout.go && cubit.state.isCollapsed);
+    final showPreview =
+        context.select((MonthCalendarCubit cubit) => cubit.showPreview);
     final pageController = PageController(
         initialPage: context.read<MonthCalendarCubit>().state.index);
     final weekBuilder = usePreview && !isCollapsed && showPreview
@@ -79,12 +79,14 @@ class MonthContent extends StatelessWidget {
               child: WeekRow(
                 week,
                 dayThemes: dayThemes,
+                usePreview: usePreview,
               ),
             )
         : (MonthWeek week) => Expanded(
               child: WeekRow(
                 week,
                 dayThemes: dayThemes,
+                usePreview: usePreview,
               ),
             );
 
@@ -124,19 +126,21 @@ class MonthContent extends StatelessWidget {
 class WeekRow extends StatelessWidget {
   final MonthWeek week;
   final List<DayTheme> dayThemes;
+  final bool usePreview;
 
   const WeekRow(
     this.week, {
     required this.dayThemes,
+    required this.usePreview,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     final showPreview = context.watch<MonthCalendarCubit>().showPreview;
-    final isCollapsed = context.select((MonthCalendarCubit cubit) =>
-        layout.go && !cubit.state.showMonthPreview);
-    final dayBuilder = layout.go && !isCollapsed && showPreview
+    final isCollapsed = context.select(
+        (MonthCalendarCubit cubit) => layout.go && cubit.state.isCollapsed);
+    final dayBuilder = layout.go && !isCollapsed && showPreview && usePreview
         ? (MonthDay day, DayTheme dayTheme) => MonthDayViewCompact(
               day,
               dayTheme: dayTheme,
@@ -245,7 +249,7 @@ class MonthDayView extends StatelessWidget {
               ? DefaultTabController.of(context).animateTo(0)
               : BlocProvider.of<DayPickerBloc>(context)
                   .add(GoTo(day: monthDay.day));
-          context.read<MonthCalendarCubit>().setPreview(true);
+          context.read<MonthCalendarCubit>().setCollapsed(false);
         },
         child: BlocSelector<DayPickerBloc, DayPickerState, DateTime>(
           selector: (state) => state.day,
@@ -401,7 +405,7 @@ class MonthDayViewCompact extends StatelessWidget {
               ? DefaultTabController.of(context).animateTo(0)
               : BlocProvider.of<DayPickerBloc>(context)
                   .add(GoTo(day: monthDay.day));
-          context.read<MonthCalendarCubit>().setPreview(true);
+          context.read<MonthCalendarCubit>().setCollapsed(false);
         },
         child: BlocSelector<DayPickerBloc, DayPickerState, DateTime>(
           selector: (state) => state.day,
@@ -533,30 +537,11 @@ class MonthActivityContent extends StatelessWidget {
         color: AbiliaColors.white,
       ),
       child: Center(
-        child: activityDay.activity.hasImage
-            ? AnimatedOpacity(
-                duration: const Duration(milliseconds: 400),
-                opacity: isPast ? 0.5 : 1.0,
-                child: FadeInAbiliaImage(
-                  imageFileId: activityDay.activity.fileId,
-                  imageFilePath: activityDay.activity.icon,
-                  borderRadius: BorderRadius.zero,
-                  height: double.infinity,
-                  width: double.infinity,
-                  fit: BoxFit.contain,
-                ),
-              )
-            : Padding(
-                padding: layout.monthCalendar.day.activityTextContentPadding,
-                child: EllipsesText(
-                  activityDay.activity.title,
-                  tts: true,
-                  maxLines: 3,
-                  style: abiliaTextTheme.bodyMedium?.copyWith(
-                    fontSize: layout.monthCalendar.day.fullDayActivityFontSize,
-                  ),
-                ),
-              ),
+        child: FullDayCalendarImage(
+          activityDay: activityDay,
+          isPast: isPast,
+          fit: BoxFit.cover,
+        ),
       ),
     );
 

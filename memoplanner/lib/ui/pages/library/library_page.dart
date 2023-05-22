@@ -27,7 +27,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   })  : selectableItems = false,
         selectedItemGenerator = null,
         onOk = null,
-        showSearch = false,
+        searchHeader = SearchHeader.noSearch,
         super(key: key);
 
   const LibraryPage.selectable({
@@ -41,7 +41,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     this.showBottomNavigationBar = true,
     this.gridCrossAxisCount,
     this.gridChildAspectRatio,
-    this.showSearch = false,
+    this.searchHeader = SearchHeader.noSearch,
     Key? key,
   })  : selectableItems = true,
         assert(
@@ -59,7 +59,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   final String? rootHeading;
   final int? gridCrossAxisCount;
   final double? gridChildAspectRatio;
-  final bool showSearch;
+  final SearchHeader searchHeader;
 
   @override
   Widget build(BuildContext context) {
@@ -67,56 +67,69 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     final sortableState = sortableArchiveCubit.state;
     final selected = selectableItems ? sortableState.selected : null;
     final selectedGenerator = selectedItemGenerator;
-    return Scaffold(
-      appBar: appBar,
-      body: Column(
-        children: [
-          if (selected != null)
-            LibraryHeading<T>(
-              sortableArchiveState: sortableState,
-              rootHeading: rootHeading ?? '',
-            )
-          else if (showSearch)
-            const _SearchHeading()
-          else if (!sortableState.isAtRootAndNoSelection || rootHeading != null)
-            LibraryHeading<T>(
-              sortableArchiveState: sortableState,
-              rootHeading: rootHeading ?? '',
-              showSearchButton: true,
-            ),
-          Expanded(
-            child: selected != null && selectedGenerator != null
-                ? selectedGenerator(selected)
-                : SortableLibrary<T>(
-                    libraryItemGenerator,
-                    emptyLibraryMessage,
-                    showSearch: showSearch,
-                    selectableItems: selectableItems,
-                    crossAxisCount: gridCrossAxisCount,
-                    childAspectRatio: gridChildAspectRatio,
-                  ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: showBottomNavigationBar
-          ? Padding(
-              padding: MediaQuery.of(context).viewInsets,
-              child: BottomNavigation(
-                backNavigationWidget: CancelButton(
-                  onPressed: showSearch && sortableState.isSelected
-                      ? () => context.read<SortableArchiveCubit<T>>().unselect()
-                      : onCancel,
-                ),
-                forwardNavigationWidget: selected != null
-                    ? OkButton(
-                        onPressed: () => onOk?.call(selected),
-                      )
-                    : null,
+    return WillPopScope(
+      onWillPop: () async {
+        if (searchHeader != SearchHeader.noSearch && sortableState.isSelected) {
+          context.read<SortableArchiveCubit<T>>().unselect();
+          return false;
+        }
+        onCancel?.call();
+        return true;
+      },
+      child: Scaffold(
+        appBar: appBar,
+        body: Column(
+          children: [
+            if (selected != null)
+              LibraryHeading<T>(
+                sortableArchiveState: sortableState,
+                rootHeading: rootHeading ?? '',
+              )
+            else if (searchHeader == SearchHeader.searchBar)
+              const _SearchHeading()
+            else if (!sortableState.isAtRootAndNoSelection ||
+                rootHeading != null)
+              LibraryHeading<T>(
+                sortableArchiveState: sortableState,
+                rootHeading: rootHeading ?? '',
+                showSearchButton: searchHeader == SearchHeader.searchButton,
               ),
-            )
-          : null,
+            Expanded(
+              child: selected != null && selectedGenerator != null
+                  ? selectedGenerator(selected)
+                  : SortableLibrary<T>(
+                      libraryItemGenerator,
+                      emptyLibraryMessage,
+                      showSearch: searchHeader == SearchHeader.searchBar,
+                      selectableItems: selectableItems,
+                      crossAxisCount: gridCrossAxisCount,
+                      childAspectRatio: gridChildAspectRatio,
+                    ),
+            ),
+          ],
+        ),
+        bottomNavigationBar: showBottomNavigationBar
+            ? Padding(
+                padding: MediaQuery.of(context).viewInsets,
+                child: BottomNavigation(
+                  backNavigationWidget: const CancelButton(),
+                  forwardNavigationWidget: selected != null
+                      ? OkButton(
+                          onPressed: () => onOk?.call(selected),
+                        )
+                      : null,
+                ),
+              )
+            : null,
+      ),
     );
   }
+}
+
+enum SearchHeader {
+  noSearch,
+  searchButton,
+  searchBar,
 }
 
 class LibraryHeading<T extends SortableData> extends StatelessWidget {
@@ -148,11 +161,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
             padding: layout.libraryPage.headerPadding,
             child: Row(
               children: [
-                IconActionButton(
-                  style: actionButtonStyleDark.withSize(
-                    layout.libraryPage.backButtonSize,
-                    iconSize: layout.libraryPage.backButtonIconSize,
-                  ),
+                IconActionButtonDark(
                   onPressed: () async => back(context, sortableArchiveState),
                   child: const Icon(AbiliaIcons.navigationPrevious),
                 ),
@@ -168,7 +177,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                 if (showSearchButton)
                   IconAndTextButton(
                     style: actionButtonStyleDark
-                        .withSize(
+                        .withMinimumSize(
                           layout.libraryPage.searchButtonSize,
                         )
                         .copyWith(
@@ -198,7 +207,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                               value: sortableArchiveCubit,
                               child: ImageArchivePage(
                                 onCancel: onCancel,
-                                showSearch: true,
+                                searchHeader: SearchHeader.searchBar,
                               ),
                             ),
                           ),
@@ -374,6 +383,57 @@ class _SortableLibraryState<T extends SortableData>
           ),
         );
       },
+    );
+  }
+}
+
+class LibraryImage extends StatelessWidget {
+  final String name;
+  final String imageId;
+  final String iconPath;
+  final bool isImage;
+
+  const LibraryImage({
+    required this.name,
+    required this.isImage,
+    required this.imageId,
+    required this.iconPath,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Tts.fromSemantics(
+      SemanticsProperties(
+        label: name,
+        image: isImage,
+        button: true,
+      ),
+      child: Container(
+        decoration: boxDecoration,
+        padding: EdgeInsets.all(layout.imageArchive.imagePadding),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            if (name.isNotEmpty) ...[
+              Text(
+                name,
+                overflow: TextOverflow.ellipsis,
+                style: abiliaTextTheme.bodySmall,
+              ),
+              SizedBox(height: layout.imageArchive.imageNameBottomPadding),
+            ],
+            Flexible(
+              child: FadeInAbiliaImage(
+                height: layout.imageArchive.imageHeight,
+                width: layout.imageArchive.imageWidth,
+                imageFileId: imageId,
+                imageFilePath: iconPath,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
