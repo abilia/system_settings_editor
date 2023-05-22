@@ -137,7 +137,7 @@ class TemplatesPage extends StatelessWidget {
       sortableBloc.add(
         SortableUpdated(
           sortable.copyWith(
-            data: timer.toBasicTimer(),
+            data: timer.toBasicTimerDataItem(),
           ),
         ),
       );
