@@ -55,6 +55,10 @@ class LogoutPage extends StatelessWidget {
             child: BlocProvider<LogoutSyncCubit>(
               create: (context) => LogoutSyncCubit(
                 syncBloc: context.read<SyncBloc>(),
+                activityRepository: context.read<ActivityRepository>(),
+                userFileRepository: context.read<UserFileRepository>(),
+                genericRepository: context.read<GenericRepository>(),
+                sortableRepository: context.read<SortableRepository>(),
                 authenticationBloc: context.read<AuthenticationBloc>(),
                 syncDelay: GetIt.I<SyncDelays>(),
                 licenseCubit: context.read<LicenseCubit>(),
@@ -147,6 +151,7 @@ class LogoutButton extends StatelessWidget {
     this.style,
     super.key,
   });
+
   final ButtonStyle? style;
   final VoidCallback? onPressed;
 
