@@ -39,10 +39,11 @@ class EditActivityCubit extends Cubit<EditActivityState> {
   ) : super(
           StoredActivityState(
             Activity.fromBaseActivity(
-                baseActivity: basicActivityData,
-                timezone: tz.local.name,
-                day: day,
-                calendarId: ''),
+              baseActivity: basicActivityData,
+              timezone: tz.local.name,
+              day: day,
+              calendarId: '',
+            ),
             TimeInterval(
               startDate: day,
               startTime: basicActivityData.startTimeOfDay,

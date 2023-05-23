@@ -14,7 +14,7 @@ class ActivitiesChanged {}
 class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesChanged>
     with EditRecurringMixin {
   final ActivityRepository activityRepository;
-  final Bloc syncBloc;
+  final SyncBloc syncBloc;
   late final StreamSubscription _syncSubscription;
 
   ActivitiesBloc({
