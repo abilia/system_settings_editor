@@ -16,6 +16,7 @@ void main() {
     sortableBloc = SortableBloc(
       sortableRepository: mockSortableRepository,
       syncBloc: FakeSyncBloc(),
+      loadSortablesStream: FakeSyncBloc().stream,
       fileStorageFolder: FileStorage.folder,
     );
   });

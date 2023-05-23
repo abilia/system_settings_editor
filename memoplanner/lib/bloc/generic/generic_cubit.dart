@@ -40,7 +40,7 @@ class GenericCubit extends Cubit<GenericState> {
 
       final anyDirty = await genericRepository.save(toUpdate.values);
       if (anyDirty) {
-        syncBloc.add(const GenericSaved());
+        syncBloc.add(const SyncGenerics());
         await loadGenerics();
       }
     }

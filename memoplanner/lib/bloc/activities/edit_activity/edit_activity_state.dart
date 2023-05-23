@@ -48,7 +48,7 @@ abstract class EditActivityState extends Equatable with Finest {
     final endDate = timeInterval.endDate;
     return activity.isRecurring &&
         endDate != null &&
-        endDate.millisecondsSinceEpoch >= TimeInterval.noEnd &&
+        endDate.millisecondsSinceEpoch >= noEnd &&
         activity.recurs.hasNoEnd;
   }
 

@@ -34,7 +34,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesChanged>
     if (event is ManipulateActivitiesEvent) {
       final savableActivities = await _manipulateActivity(event);
       await activityRepository.save(savableActivities);
-      syncBloc.add(const ActivitySaved());
+      syncBloc.add(const SyncActivities());
     }
     emit(ActivitiesChanged());
   }

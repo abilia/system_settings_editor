@@ -22,9 +22,6 @@ class TimeInterval extends Equatable {
 
   DateTime get starts => startDate.withTime(startTime);
 
-  static const noEnd = 253402297199000;
-  static final noEndDate = DateTime.fromMillisecondsSinceEpoch(noEnd);
-
   TimeInterval({
     required this.startDate,
     this.startTime,

@@ -2,6 +2,7 @@ part of 'sortable_bloc.dart';
 
 abstract class SortableEvent extends Equatable {
   const SortableEvent();
+
   @override
   List<Object> get props => [];
 

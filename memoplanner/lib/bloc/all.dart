@@ -1,6 +1,5 @@
 export 'package:auth/bloc/all.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
-export 'package:repository_base/bloc/sync/sync_state.dart';
 export 'package:seagull_clock/clock_bloc.dart';
 export 'package:seagull_clock/ticker.dart';
 export 'package:sortables/bloc/all.dart';

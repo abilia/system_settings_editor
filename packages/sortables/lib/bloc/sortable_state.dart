@@ -2,6 +2,7 @@ part of 'sortable_bloc.dart';
 
 abstract class SortableState extends Equatable {
   const SortableState();
+
   @override
   List<Object> get props => [];
 
@@ -12,6 +13,8 @@ abstract class SortableState extends Equatable {
 }
 
 class SortablesNotLoaded extends SortableState {}
+
+class SortablesLoadedFailed extends SortableState {}
 
 class SortablesLoaded extends SortableState {
   final Iterable<Sortable> sortables;
@@ -28,4 +31,6 @@ class SortablesLoaded extends SortableState {
   List<Object> get props => [sortables];
 }
 
-class SortablesLoadedFailed extends SortableState {}
+class SortablesSaved extends SortablesLoaded {
+  const SortablesSaved({required super.sortables});
+}

@@ -151,7 +151,7 @@ class Recurs extends Equatable {
       allWeekends = evenWeekends | oddWeekends,
       allDaysOfWeek = allWeekdays | allWeekends;
 
-  static const _noEnd = TimeInterval.noEnd;
+  static const _noEnd = noEnd;
 
   @visibleForTesting
   static int onDayOfMonth(int dayOfMonth) => _toBitMask(dayOfMonth);

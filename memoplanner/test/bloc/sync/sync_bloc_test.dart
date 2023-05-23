@@ -51,7 +51,7 @@ void main() {
         clockBloc: ClockBloc.fixed(DateTime(2000)),
         syncDelay: SyncDelays.zero,
       ),
-      act: (SyncBloc syncBloc) => syncBloc.add(const ActivitySaved()),
+      act: (SyncBloc syncBloc) => syncBloc.add(const SyncActivities()),
       verify: (bloc) => verify(() => activityRepository.synchronize()),
     );
 
@@ -68,7 +68,7 @@ void main() {
         clockBloc: ClockBloc.fixed(DateTime(2000)),
         syncDelay: SyncDelays.zero,
       ),
-      act: (SyncBloc syncBloc) => syncBloc.add(const FileSaved()),
+      act: (SyncBloc syncBloc) => syncBloc.add(const SyncFiles()),
       verify: (bloc) => verify(() => userFileRepository.synchronize()),
     );
 
@@ -85,7 +85,7 @@ void main() {
         lastSyncDb: lastSyncDb,
         clockBloc: ClockBloc.fixed(DateTime(2000)),
       ),
-      act: (SyncBloc syncBloc) => syncBloc.add(const SortableSaved()),
+      act: (SyncBloc syncBloc) => syncBloc.add(const SyncSortables()),
       verify: (bloc) => verify(() => sortableRepository.synchronize()),
     );
 
@@ -102,7 +102,7 @@ void main() {
         clockBloc: ClockBloc.fixed(DateTime(2000)),
         syncDelay: SyncDelays.zero,
       ),
-      act: (SyncBloc syncBloc) => syncBloc.add(const GenericSaved()),
+      act: (SyncBloc syncBloc) => syncBloc.add(const SyncGenerics()),
       verify: (bloc) => verify(() => genericRepository.synchronize()),
     );
 
@@ -120,10 +120,10 @@ void main() {
               syncDelay: SyncDelays.zero,
             ),
         act: (SyncBloc syncBloc) => syncBloc
-          ..add(const ActivitySaved())
-          ..add(const FileSaved())
-          ..add(const SortableSaved())
-          ..add(const GenericSaved()),
+          ..add(const SyncActivities())
+          ..add(const SyncFiles())
+          ..add(const SyncSortables())
+          ..add(const SyncGenerics()),
         verify: (bloc) {
           verify(() => activityRepository.synchronize());
           verify(() => userFileRepository.synchronize());
@@ -185,7 +185,7 @@ void main() {
         clockBloc: ClockBloc.fixed(DateTime(2000)),
         syncDelay: syncDelays,
       ),
-      act: (bloc) => bloc.add(const ActivitySaved()),
+      act: (bloc) => bloc.add(const SyncActivities()),
       wait: retryDelay * 30,
       verify: (bloc) => verify(bloc.activityRepository.synchronize).called(2),
     );
@@ -205,7 +205,7 @@ void main() {
         clockBloc: ClockBloc.fixed(DateTime(2000)),
         syncDelay: syncDelays,
       ),
-      act: (bloc) => bloc.add(const FileSaved()),
+      act: (bloc) => bloc.add(const SyncFiles()),
       wait: retryDelay * 30,
       verify: (bloc) => verify(bloc.userFileRepository.synchronize).called(2),
     );
@@ -225,7 +225,7 @@ void main() {
         clockBloc: ClockBloc.fixed(DateTime(2000)),
         syncDelay: syncDelays,
       ),
-      act: (bloc) => bloc.add(const SortableSaved()),
+      act: (bloc) => bloc.add(const SyncSortables()),
       wait: retryDelay * 30,
       verify: (bloc) => verify(bloc.sortableRepository.synchronize).called(2),
     );
@@ -245,7 +245,7 @@ void main() {
         clockBloc: ClockBloc.fixed(DateTime(2000)),
         syncDelay: syncDelays,
       ),
-      act: (bloc) => bloc.add(const GenericSaved()),
+      act: (bloc) => bloc.add(const SyncGenerics()),
       wait: retryDelay * 30,
       verify: (bloc) => verify(bloc.genericRepository.synchronize).called(2),
     );
@@ -267,22 +267,23 @@ void main() {
 
     test('calls all repositories', () async {
       SyncBloc(
-          pushCubit: FakePushCubit(),
-          licenseCubit: FakeLicenseCubit(),
-          activityRepository: activityRepository,
-          userFileRepository: userFileRepository,
-          sortableRepository: sortableRepository,
-          genericRepository: genericRepository,
-          lastSyncDb: FakeLastSyncDb(),
-          clockBloc: ClockBloc.fixed(DateTime(2000)),
-          syncDelay: SyncDelays(
-            betweenSync: stallTime,
-            retryDelay: stallTime,
-          ))
-        ..add(const ActivitySaved())
-        ..add(const FileSaved())
-        ..add(const SortableSaved())
-        ..add(const GenericSaved());
+        pushCubit: FakePushCubit(),
+        licenseCubit: FakeLicenseCubit(),
+        activityRepository: activityRepository,
+        userFileRepository: userFileRepository,
+        sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
+        lastSyncDb: FakeLastSyncDb(),
+        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        syncDelay: SyncDelays(
+          betweenSync: stallTime,
+          retryDelay: stallTime,
+        ),
+      )
+        ..add(const SyncActivities())
+        ..add(const SyncFiles())
+        ..add(const SyncSortables())
+        ..add(const SyncGenerics());
       await untilCalled(() => activityRepository.synchronize());
       await untilCalled(() => userFileRepository.synchronize());
       await untilCalled(() => sortableRepository.synchronize());
@@ -291,33 +292,33 @@ void main() {
 
     test('throttles invocations of event', () async {
       final syncBloc = SyncBloc(
-          pushCubit: FakePushCubit(),
-          licenseCubit: FakeLicenseCubit(),
-          activityRepository: activityRepository,
-          userFileRepository: userFileRepository,
-          sortableRepository: sortableRepository,
-          genericRepository: genericRepository,
-          lastSyncDb: FakeLastSyncDb(),
-          clockBloc: ClockBloc.fixed(DateTime(2000)),
-          syncDelay: SyncDelays(
-            betweenSync: stallTime,
-            retryDelay: stallTime,
-          ))
-        ..add(const ActivitySaved());
+        pushCubit: FakePushCubit(),
+        licenseCubit: FakeLicenseCubit(),
+        activityRepository: activityRepository,
+        userFileRepository: userFileRepository,
+        sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
+        lastSyncDb: FakeLastSyncDb(),
+        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        syncDelay: SyncDelays(
+          betweenSync: stallTime,
+          retryDelay: stallTime,
+        ),
+      )..add(const SyncActivities());
       await untilCalled(() => activityRepository.synchronize());
       syncBloc
-        ..add(const ActivitySaved())
-        ..add(const ActivitySaved())
-        ..add(const ActivitySaved())
-        ..add(const ActivitySaved())
-        ..add(const FileSaved())
-        ..add(const FileSaved())
-        ..add(const FileSaved())
-        ..add(const FileSaved())
-        ..add(const SortableSaved())
-        ..add(const SortableSaved())
-        ..add(const SortableSaved())
-        ..add(const SortableSaved());
+        ..add(const SyncActivities())
+        ..add(const SyncActivities())
+        ..add(const SyncActivities())
+        ..add(const SyncActivities())
+        ..add(const SyncFiles())
+        ..add(const SyncFiles())
+        ..add(const SyncFiles())
+        ..add(const SyncFiles())
+        ..add(const SyncSortables())
+        ..add(const SyncSortables())
+        ..add(const SyncSortables())
+        ..add(const SyncSortables());
       await Future.delayed(stallTime * 2);
       await untilCalled(() => userFileRepository.synchronize());
       await Future.delayed(stallTime * 2);
@@ -334,33 +335,33 @@ void main() {
       when(() => activityRepository.synchronize())
           .thenThrow((_) => SyncFailedException());
       final syncBloc = SyncBloc(
-          pushCubit: FakePushCubit(),
-          licenseCubit: FakeLicenseCubit(),
-          activityRepository: activityRepository,
-          userFileRepository: userFileRepository,
-          sortableRepository: sortableRepository,
-          genericRepository: genericRepository,
-          lastSyncDb: FakeLastSyncDb(),
-          clockBloc: ClockBloc.fixed(DateTime(2000)),
-          syncDelay: SyncDelays(
-            betweenSync: stallTime,
-            retryDelay: stallTime,
-          ))
-        ..add(const ActivitySaved());
+        pushCubit: FakePushCubit(),
+        licenseCubit: FakeLicenseCubit(),
+        activityRepository: activityRepository,
+        userFileRepository: userFileRepository,
+        sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
+        lastSyncDb: FakeLastSyncDb(),
+        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        syncDelay: SyncDelays(
+          betweenSync: stallTime,
+          retryDelay: stallTime,
+        ),
+      )..add(const SyncActivities());
       await untilCalled(() => activityRepository.synchronize());
       syncBloc
-        ..add(const ActivitySaved())
-        ..add(const ActivitySaved())
-        ..add(const ActivitySaved())
-        ..add(const ActivitySaved())
-        ..add(const FileSaved())
-        ..add(const FileSaved())
-        ..add(const FileSaved())
-        ..add(const FileSaved())
-        ..add(const SortableSaved())
-        ..add(const SortableSaved())
-        ..add(const SortableSaved())
-        ..add(const SortableSaved());
+        ..add(const SyncActivities())
+        ..add(const SyncActivities())
+        ..add(const SyncActivities())
+        ..add(const SyncActivities())
+        ..add(const SyncFiles())
+        ..add(const SyncFiles())
+        ..add(const SyncFiles())
+        ..add(const SyncFiles())
+        ..add(const SyncSortables())
+        ..add(const SyncSortables())
+        ..add(const SyncSortables())
+        ..add(const SyncSortables());
       await untilCalled(() => userFileRepository.synchronize());
       await untilCalled(() => sortableRepository.synchronize());
     });

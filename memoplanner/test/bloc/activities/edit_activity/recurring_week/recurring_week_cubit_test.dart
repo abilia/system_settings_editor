@@ -29,7 +29,7 @@ void main() {
           UnmodifiableSetView({day.weekday}),
           false,
           day,
-          TimeInterval.noEndDate,
+          noEndDate,
         ),
       );
       expect(
@@ -63,7 +63,7 @@ void main() {
               }),
               false,
               day,
-              TimeInterval.noEndDate,
+              noEndDate,
             ),
             RecurringWeekState(
               UnmodifiableSetView({
@@ -73,7 +73,7 @@ void main() {
               }),
               false,
               day,
-              TimeInterval.noEndDate,
+              noEndDate,
             ),
             RecurringWeekState(
               UnmodifiableSetView({
@@ -82,7 +82,7 @@ void main() {
               }),
               false,
               day,
-              TimeInterval.noEndDate,
+              noEndDate,
             ),
           ]);
 
@@ -106,7 +106,7 @@ void main() {
           TimeInterval.fromDateTime(
               activityDay.activity.startClock(activityDay.day),
               null,
-              TimeInterval.noEndDate),
+              noEndDate),
           day,
         );
         return [
@@ -167,7 +167,7 @@ void main() {
               }),
               false,
               day,
-              TimeInterval.noEndDate,
+              noEndDate,
             ),
             RecurringWeekState(
               UnmodifiableSetView({
@@ -176,7 +176,7 @@ void main() {
               }),
               true,
               day,
-              TimeInterval.noEndDate,
+              noEndDate,
             ),
           ]);
 
@@ -191,7 +191,7 @@ void main() {
           TimeInterval.fromDateTime(
               activityDay.activity.startClock(activityDay.day),
               null,
-              TimeInterval.noEndDate),
+              noEndDate),
           day,
         );
         return [
@@ -230,7 +230,6 @@ void main() {
     );
     final newStartDate = day.add(7.days());
 
-    final noEnd = DateTime.fromMillisecondsSinceEpoch(TimeInterval.noEnd);
     blocTest(
       'Changing to every other week on even weeks',
       build: () => RecurringWeekCubit(editActivityBloc),
@@ -250,7 +249,7 @@ void main() {
           }),
           false,
           day,
-          noEnd,
+          noEndDate,
         ),
         RecurringWeekState(
           UnmodifiableSetView({
@@ -259,7 +258,7 @@ void main() {
           }),
           true,
           day,
-          noEnd,
+          noEndDate,
         ),
         RecurringWeekState(
           UnmodifiableSetView({
@@ -268,7 +267,7 @@ void main() {
           }),
           true,
           newStartDate,
-          noEnd,
+          noEndDate,
         ),
       ],
     );
@@ -302,8 +301,7 @@ void main() {
     final newStartDay = day.add(7.days());
     final EditActivityState initialState = StoredActivityState(
         activity,
-        TimeInterval.fromDateTime(
-            activity.startClock(day), null, TimeInterval.noEndDate),
+        TimeInterval.fromDateTime(activity.startClock(day), null, noEndDate),
         day);
     final TimeInterval newTimeInterval =
         initialState.timeInterval.copyWith(startDate: newStartDay);
