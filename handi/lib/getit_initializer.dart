@@ -3,17 +3,12 @@ import 'package:calendar/all.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/main.dart';
+import 'package:handi/models/sync_delays.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:seagull_clock/ticker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqlite_api.dart';
-
-// TODO replace with real push token
-class FakeFirebasePushService implements FirebasePushService {
-  @override
-  Future<String?> initPushToken() async => '';
-}
 
 Future<void> initGetIt() => initGetItWith();
 
@@ -22,6 +17,7 @@ Future<void> initGetItWith({
   ListenableClient? listenableClient,
   PackageInfo? packageInfo,
   SharedPreferences? sharedPreferences,
+  FirebasePushService? firebasePushService,
   Database? database,
 }) async {
   GetIt.I
@@ -48,5 +44,7 @@ Future<void> initGetItWith({
             version: GetIt.I<PackageInfo>().version,
           ),
     )
-    ..registerSingleton<FirebasePushService>(FakeFirebasePushService());
+    ..registerSingleton<SyncDelays>(SyncDelays.zero)
+    ..registerSingleton<FirebasePushService>(
+        firebasePushService ?? FirebasePushService());
 }

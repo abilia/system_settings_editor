@@ -11,13 +11,19 @@ dependencies:
     path: ../packages/auth
   calendar:
     path: ../packages/calendar
+  equatable: ^2.0.3
+  firebase_core: ^2.11.0
+  firebase_crashlytics: ^3.0.4
+  firebase_messaging: ^14.5.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
   get_it: ^7.2.0
+  logger: any
   package_info_plus: ^3.0.3
   repository_base:
     path: ../packages/repository/repository_base
+  rxdart: ^0.27.1
   seagull_analytics:
     path: ../packages/seagull_analytics
   seagull_clock:

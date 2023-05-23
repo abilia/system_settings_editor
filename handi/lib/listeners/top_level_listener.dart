@@ -1,5 +1,6 @@
 import 'package:auth/listeners/authentication_listener.dart';
 import 'package:flutter/material.dart';
+import 'package:handi/providers.dart';
 import 'package:handi/ui/pages/logged_in_page.dart';
 import 'package:handi/ui/pages/login_page.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
@@ -21,7 +22,12 @@ class TopLevelListener extends StatelessWidget {
       onAuthenticated: (navigator, state) async {
         await navigator.pushAndRemoveUntil<void>(
           MaterialPageRoute<void>(
-            builder: (_) => LoggedInPage(authenticated: state),
+            builder: (_) => AuthenticatedBlocsProvider(
+              authenticatedState: state,
+              child: LoggedInPage(
+                authenticated: state,
+              ),
+            ),
             settings: (LoggedInPage).routeSetting(),
           ),
           (_) => false,
