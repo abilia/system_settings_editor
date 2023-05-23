@@ -1,5 +1,5 @@
-import 'package:memoplanner/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:utils/utils.dart';
 
 class LastSyncDb {
   static const String _lastSyncKey = 'lastSync';

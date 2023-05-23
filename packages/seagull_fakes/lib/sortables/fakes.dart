@@ -1,5 +1,6 @@
+import 'dart:async';
 import 'package:mocktail/mocktail.dart';
-import 'package:sortables/bloc/sortable_bloc.dart';
+import 'package:sortables/all.dart';
 
 class FakeSortableBloc extends Fake implements SortableBloc {
   @override
@@ -11,3 +12,5 @@ class FakeSortableBloc extends Fake implements SortableBloc {
   @override
   Future<void> close() async {}
 }
+
+class MockDataRepository extends Mock implements DataRepository {}

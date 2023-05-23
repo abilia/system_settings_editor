@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:abilia_sync/abilia_sync.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/myabilia_connection.dart';
 
 part 'logout_sync_state.dart';
@@ -140,8 +142,10 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
     final dirtyActivities =
         await syncBloc.activityRepository.db.countAllDirty();
 
+    final sortableRepository =
+        syncBloc.sortableRepository as SortableRepository;
     final dirtySortables = groupBy(
-      await syncBloc.sortableRepository.db.getAllDirty(),
+      await sortableRepository.db.getAllDirty(),
       (sortable) => sortable.model.type,
     );
     final dirtyActivityTemplates =
@@ -149,7 +153,9 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
     final dirtyTimerTemplates =
         dirtySortables[SortableType.basicTimer]?.length ?? 0;
 
-    final dirtyPhotos = (await syncBloc.userFileRepository.db.getAllDirty())
+    final userFileRepository =
+        syncBloc.userFileRepository as UserFileRepository;
+    final dirtyPhotos = (await userFileRepository.db.getAllDirty())
         .where((userFile) => userFile.model.isImage)
         .length;
 

@@ -1,8 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:seagull_fakes/sortables/fakes.dart';
 import 'package:sortables/bloc/sortable_archive/sortable_archive_cubit.dart';
 import 'package:sortables/models/all.dart';
-
-import '../fakes/fake_sortable_bloc.dart';
 
 void main() {
   late SortableArchiveCubit<ImageArchiveData> imageArchiveBloc;

@@ -32,8 +32,6 @@ class MockActivityDb extends Mock implements ActivityDb {}
 
 class MockUserFileDb extends Mock implements UserFileDb {}
 
-class MockLastSyncDb extends Mock implements LastSyncDb {}
-
 class MockDatabase extends Mock implements Database {}
 
 class MockSettingsDb extends Mock implements SettingsDb {}

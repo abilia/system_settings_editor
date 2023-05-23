@@ -1,33 +1,29 @@
+import 'package:abilia_sync/abilia_sync.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:memoplanner/bloc/all.dart';
-
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:seagull_clock/clock_bloc.dart';
 import 'package:seagull_fakes/all.dart';
-
-import '../../fakes/all.dart';
-import '../../mocks/mocks.dart';
+import 'package:sortables/all.dart';
+import 'package:utils/utils.dart';
 
 void main() {
-  late ActivityRepository activityRepository;
-  late UserFileRepository userFileRepository;
-  late SortableRepository sortableRepository;
-  late GenericRepository genericRepository;
+  late DataRepository activityRepository;
+  late DataRepository userFileRepository;
+  late DataRepository sortableRepository;
+  late DataRepository genericRepository;
   late MockLastSyncDb lastSyncDb;
 
   setUp(() {
-    activityRepository = MockActivityRepository();
-    userFileRepository = MockUserFileRepository();
-    sortableRepository = MockSortableRepository();
-    genericRepository = MockGenericRepository();
+    activityRepository = MockDataRepository();
+    userFileRepository = MockDataRepository();
+    sortableRepository = MockDataRepository();
+    genericRepository = MockDataRepository();
     lastSyncDb = MockLastSyncDb();
   });
 
   group('happy cases', () {
-    setUp(() {
+    setUp(() async {
       when(() => activityRepository.synchronize())
           .thenAnswer((_) => Future.value(true));
       when(() => userFileRepository.synchronize())
@@ -52,7 +48,7 @@ void main() {
         syncDelay: SyncDelays.zero,
       ),
       act: (SyncBloc syncBloc) => syncBloc.add(const SyncActivities()),
-      verify: (bloc) => verify(() => activityRepository.synchronize()),
+      verify: (bloc) async => verify(() => activityRepository.synchronize()),
     );
 
     blocTest(
@@ -69,7 +65,7 @@ void main() {
         syncDelay: SyncDelays.zero,
       ),
       act: (SyncBloc syncBloc) => syncBloc.add(const SyncFiles()),
-      verify: (bloc) => verify(() => userFileRepository.synchronize()),
+      verify: (bloc) async => verify(() => userFileRepository.synchronize()),
     );
 
     blocTest(
@@ -86,7 +82,7 @@ void main() {
         clockBloc: ClockBloc.fixed(DateTime(2000)),
       ),
       act: (SyncBloc syncBloc) => syncBloc.add(const SyncSortables()),
-      verify: (bloc) => verify(() => sortableRepository.synchronize()),
+      verify: (bloc) async => verify(() => sortableRepository.synchronize()),
     );
 
     blocTest(
@@ -103,7 +99,7 @@ void main() {
         syncDelay: SyncDelays.zero,
       ),
       act: (SyncBloc syncBloc) => syncBloc.add(const SyncGenerics()),
-      verify: (bloc) => verify(() => genericRepository.synchronize()),
+      verify: (bloc) async => verify(() => genericRepository.synchronize()),
     );
 
     blocTest('all event calls synchronize on all repository',
@@ -124,30 +120,31 @@ void main() {
           ..add(const SyncFiles())
           ..add(const SyncSortables())
           ..add(const SyncGenerics()),
-        verify: (bloc) {
+        verify: (bloc) async {
           verify(() => activityRepository.synchronize());
           verify(() => userFileRepository.synchronize());
           verify(() => sortableRepository.synchronize());
           verify(() => genericRepository.synchronize());
         });
 
-    blocTest('last sync time is saved on sync',
-        wait: 1.milliseconds(),
-        build: () => SyncBloc(
-              pushCubit: FakePushCubit(),
-              licenseCubit: FakeLicenseCubit(),
-              activityRepository: activityRepository,
-              userFileRepository: userFileRepository,
-              sortableRepository: sortableRepository,
-              genericRepository: genericRepository,
-              lastSyncDb: lastSyncDb,
-              clockBloc: ClockBloc.fixed(DateTime(2000)),
-              syncDelay: SyncDelays.zero,
-            ),
-        act: (SyncBloc syncBloc) => syncBloc..add(const SyncAll()),
-        verify: (bloc) {
-          verify(() => lastSyncDb.setSyncTime(DateTime(2000)));
-        });
+    blocTest(
+      'last sync time is saved on sync',
+      wait: 1.milliseconds(),
+      build: () => SyncBloc(
+        pushCubit: FakePushCubit(),
+        licenseCubit: FakeLicenseCubit(),
+        activityRepository: activityRepository,
+        userFileRepository: userFileRepository,
+        sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
+        lastSyncDb: lastSyncDb,
+        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        syncDelay: SyncDelays.zero,
+      ),
+      act: (SyncBloc syncBloc) => syncBloc..add(const SyncAll()),
+      verify: (bloc) async =>
+          verify(() => lastSyncDb.setSyncTime(DateTime(2000))),
+    );
   });
 
   group('Failed cases', () {
@@ -172,7 +169,7 @@ void main() {
 
     blocTest<SyncBloc, dynamic>(
       'Failed ActivitySaved synchronize retrys to syncronize',
-      setUp: () => when(() => activityRepository.synchronize())
+      setUp: () async => when(() => activityRepository.synchronize())
           .thenAnswer((_) => failThenSucceed()),
       build: () => SyncBloc(
         pushCubit: FakePushCubit(),
@@ -192,7 +189,7 @@ void main() {
 
     blocTest<SyncBloc, dynamic>(
       'Failed FileSaved synchronize retrys to syncronize',
-      setUp: () => when(() => userFileRepository.synchronize())
+      setUp: () async => when(() => userFileRepository.synchronize())
           .thenAnswer((_) => failThenSucceed()),
       build: () => SyncBloc(
         pushCubit: FakePushCubit(),
@@ -212,7 +209,7 @@ void main() {
 
     blocTest<SyncBloc, dynamic>(
       'Failed SortableSaved synchronize retrys to syncronize',
-      setUp: () => when(() => sortableRepository.synchronize())
+      setUp: () async => when(() => sortableRepository.synchronize())
           .thenAnswer((_) => failThenSucceed()),
       build: () => SyncBloc(
         pushCubit: FakePushCubit(),
@@ -232,7 +229,7 @@ void main() {
 
     blocTest<SyncBloc, dynamic>(
       'Failed GenericSaved synchronize retrys to syncronize',
-      setUp: () => when(() => genericRepository.synchronize())
+      setUp: () async => when(() => genericRepository.synchronize())
           .thenAnswer((_) => failThenSucceed()),
       build: () => SyncBloc(
         pushCubit: FakePushCubit(),
@@ -254,7 +251,7 @@ void main() {
   group('queuing', () {
     final stallTime = 50.milliseconds();
 
-    setUp(() {
+    setUp(() async {
       when(() => activityRepository.synchronize())
           .thenAnswer((_) => Future.value(true));
       when(() => userFileRepository.synchronize())

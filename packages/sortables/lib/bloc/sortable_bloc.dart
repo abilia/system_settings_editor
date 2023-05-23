@@ -1,29 +1,24 @@
 import 'dart:async';
 
+import 'package:abilia_sync/abilia_sync.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
-
 import 'package:sortables/models/sortable/all.dart';
 import 'package:sortables/repository/data_repository/sortable_repository.dart';
 import 'package:sortables/utils/extensions/all.dart';
 
 part 'sortable_event.dart';
-
 part 'sortable_state.dart';
-
-class SyncSortables {
-  const SyncSortables();
-}
 
 class SortableBloc extends Bloc<SortableEvent, SortableState> {
   static final _log = Logger((SortableBloc).toString());
   final SortableRepository sortableRepository;
   late final StreamSubscription _loadSortablesSubscription;
   StreamSubscription? _refreshAfterAddedStarterSetSubscription;
-  final Bloc syncBloc;
+  final SyncBloc syncBloc;
   final String fileStorageFolder;
 
   SortableBloc({

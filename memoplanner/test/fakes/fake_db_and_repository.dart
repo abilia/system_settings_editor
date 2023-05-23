@@ -210,18 +210,6 @@ class FakeTtsHandler extends Fake implements TtsInterface {
   Future<List<Object?>> get availableVoices => Future.value(List.empty());
 }
 
-class FakeLastSyncDb extends Fake implements LastSyncDb {
-  int? fakeLastSync;
-
-  @override
-  Future<void> setSyncTime(DateTime syncTime) async {
-    fakeLastSync = syncTime.millisecondsSinceEpoch;
-  }
-
-  @override
-  DateTime? getLastSyncTime() => fakeLastSync.fromMillisecondsSinceEpoch();
-}
-
 class FakeMyAbiliaConnection extends Fake implements MyAbiliaConnection {
   @override
   Future<bool> hasConnection() async => true;

@@ -33,6 +33,5 @@ export 'sound/sound_bloc.dart';
 export 'start_guide/connect_license_bloc.dart';
 export 'start_guide/startup_cubit.dart';
 export 'support_persons/support_persons_cubit.dart';
-export 'sync/sync_bloc.dart';
 export 'timer/all.dart';
 export 'user_file/user_file_bloc.dart';

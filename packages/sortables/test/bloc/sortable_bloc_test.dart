@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:seagull_fakes/sync/fakes.dart';
 
 import 'package:sortables/all.dart';
 
-import '../fakes/fake_dummy_bloc.dart';
 import '../mocks/mocks.dart';
 
 void main() {
@@ -15,8 +15,8 @@ void main() {
     sortableBloc = SortableBloc(
       sortableRepository: mockSortableRepository,
       fileStorageFolder: 'seagull',
-      syncBloc: FakeDummyBloc(),
-      loadSortablesStream: FakeDummyBloc().stream,
+      syncBloc: FakeSyncBloc(),
+      loadSortablesStream: FakeSyncBloc().stream,
     );
   });
 
