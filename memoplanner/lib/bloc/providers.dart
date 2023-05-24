@@ -305,8 +305,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   battery: GetIt.I<Battery>(),
                   settingsDb: GetIt.I<SettingsDb>(),
                   hasBattery: GetIt.I<Device>().hasBattery,
-                  settingsStream:
-                      context.read<MemoplannerSettingsBloc>().stream,
                 ),
               ),
               BlocProvider<InactivityCubit>(

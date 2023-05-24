@@ -31,7 +31,6 @@ void main() {
     'set screen on while charging',
     build: () => WakeLockCubit(
       settingsDb: FakeSettingsDb(),
-      settingsStream: const Stream.empty(),
       battery: mockBattery,
       hasBattery: true,
     )..setScreenTimeout(const Duration(minutes: 30)),
@@ -50,7 +49,6 @@ void main() {
     'set timeout to 15 minutes',
     build: () => WakeLockCubit(
       settingsDb: FakeSettingsDb(),
-      settingsStream: const Stream.empty(),
       battery: mockBattery,
       hasBattery: true,
     ),
@@ -67,7 +65,6 @@ void main() {
     'set timeout to 0 minutes',
     build: () => WakeLockCubit(
       settingsDb: FakeSettingsDb(),
-      settingsStream: const Stream.empty(),
       battery: mockBattery,
       hasBattery: true,
     ),
@@ -84,7 +81,6 @@ void main() {
     'when battery stream changes to charging',
     build: () => WakeLockCubit(
       settingsDb: FakeSettingsDb(),
-      settingsStream: const Stream.empty(),
       battery: mockBattery,
       hasBattery: true,
     ),
