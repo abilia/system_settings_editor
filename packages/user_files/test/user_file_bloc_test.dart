@@ -32,18 +32,18 @@ void main() {
     registerFallbackValue(FileStorage(''));
   });
 
-  setUp(() {
+  setUp(() async {
     mockUserFileRepository = MockUserFileRepository();
-    when(() async => mockUserFileRepository.save(any()))
+    when(() => mockUserFileRepository.save(any()))
         .thenAnswer((_) => Future.value(true));
-    when(() async => mockUserFileRepository.downloadUserFiles(
+    when(() => mockUserFileRepository.downloadUserFiles(
         limit: any(named: 'limit'))).thenAnswer((_) => Future.value([]));
-    when(() async => mockUserFileRepository.fetchIntoDatabaseSynchronized())
+    when(() => mockUserFileRepository.fetchIntoDatabaseSynchronized())
         .thenAnswer((_) async {});
     final mockedFileStorage = MockFileStorage();
-    when(() async => mockedFileStorage.storeFile(any(), any()))
+    when(() => mockedFileStorage.storeFile(any(), any()))
         .thenAnswer((_) => Future.value());
-    when(() async => mockedFileStorage.storeImageThumb(any(), any()))
+    when(() => mockedFileStorage.storeImageThumb(any(), any()))
         .thenAnswer((_) => Future.value());
     userFileBloc = UserFileBloc(
       userFileRepository: mockUserFileRepository,

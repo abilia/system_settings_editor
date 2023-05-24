@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:file/memory.dart';
+import 'package:file_storage/file_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
@@ -27,6 +29,12 @@ void main() {
     userId: userId,
     multipartRequestBuilder: mockMultiRequestBuilder,
   );
+
+  setUpAll(() {
+    registerFallbackValue(Uri());
+    registerFallbackValue(Uint8List(1));
+    registerFallbackValue(const ImageThumb(id: ''));
+  });
 
   setUp(() async {
     when(() => mockBaseUrlDb.baseUrl).thenReturn(baseUrl);
