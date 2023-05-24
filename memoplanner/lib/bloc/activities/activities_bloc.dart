@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:abilia_sync/abilia_sync.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -34,7 +35,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesChanged>
     if (event is ManipulateActivitiesEvent) {
       final savableActivities = await _manipulateActivity(event);
       await activityRepository.save(savableActivities);
-      syncBloc.add(const ActivitySaved());
+      syncBloc.add(const SyncActivities());
     }
     emit(ActivitiesChanged());
   }

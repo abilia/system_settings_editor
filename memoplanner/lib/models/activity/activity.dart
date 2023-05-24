@@ -185,6 +185,52 @@ class Activity extends DataModel {
         secretExemptions: secretExemptions,
       );
 
+  factory Activity.fromBaseActivity({
+    required BasicActivityDataItem baseActivity,
+    required String timezone,
+    required DateTime day,
+    required String calendarId,
+  }) =>
+      Activity(
+        title: baseActivity.activityTitle,
+        startTime: day,
+        timezone: timezone,
+        alarmType: baseActivity.alarmType,
+        category: baseActivity.category,
+        duration: Duration(milliseconds: baseActivity.duration),
+        checkable: baseActivity.checkable,
+        fullDay: baseActivity.fullDay,
+        removeAfter: baseActivity.removeAfter,
+        secret: baseActivity.secret,
+        fileId: baseActivity.fileId,
+        icon: baseActivity.icon,
+        infoItemString: InfoItem.fromJsonString(baseActivity.info).toBase64(),
+        reminderBefore: DbActivity.parseReminders(baseActivity.reminders),
+        calendarId: calendarId,
+        secretExemptions: baseActivity.secretExemptions,
+      );
+
+  BasicActivityDataItem toBasicActivity() => BasicActivityDataItem(
+        name: title,
+        activityTitle: title,
+        startTime: Duration(
+          hours: startTime.hour,
+          minutes: startTime.minute,
+        ).inMilliseconds,
+        duration: duration.inMilliseconds,
+        alarmType: alarmType,
+        category: category,
+        checkable: checkable,
+        fullDay: fullDay,
+        removeAfter: removeAfter,
+        secret: secret,
+        fileId: fileId,
+        icon: icon,
+        info: infoItem.infoItemJson(),
+        reminders: reminderBefore.join(';'),
+        secretExemptions: secretExemptions,
+      );
+
   @override
   DbActivity wrapWithDbModel({int revision = 0, int dirty = 0}) => DbActivity._(
         activity: this,

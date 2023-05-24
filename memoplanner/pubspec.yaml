@@ -8,6 +8,8 @@ environment:
   flutter: '>=2.0.0'
 
 dependencies:
+  abilia_sync:
+    path: ../packages/abilia_sync
   acapela_tts:
     git:
       url: https://github.com/abilia/acapela_tts.git
@@ -72,6 +74,8 @@ dependencies:
   seagull_clock:
     path: ../packages/seagull_clock
   shared_preferences: ^2.0.8
+  sortables:
+    path: ../packages/sortables
   sqflite: ^2.2.0
   synchronized: ^3.0.0
   system_settings_editor:

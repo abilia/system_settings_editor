@@ -1,4 +1,6 @@
 import 'dart:async';
+
+import 'package:abilia_sync/abilia_sync.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -6,7 +8,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:seagull_fakes/all.dart';
-import '../../fakes/all.dart';
+
 import '../../mocks/mocks.dart';
 
 void main() {
@@ -101,6 +103,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       expect(
@@ -124,6 +130,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       ),
       act: (LogoutSyncCubit cubit) => cubit.next(),
       expect: () => [
@@ -157,6 +167,10 @@ void main() {
           syncBloc: syncBloc,
           syncDelay: SyncDelays.zero,
           connectivity: connectivityStream.stream,
+          activityDb: activityDb,
+          userFileDb: userFileDb,
+          genericDb: genericDb,
+          sortableDb: sortableDb,
         );
       },
       act: (LogoutSyncCubit cubit) => cubit
@@ -205,6 +219,10 @@ void main() {
           syncBloc: syncBloc,
           syncDelay: SyncDelays.zero,
           connectivity: crStream.stream,
+          activityDb: activityDb,
+          userFileDb: userFileDb,
+          genericDb: genericDb,
+          sortableDb: sortableDb,
         );
 
         crStream.add(cr);
@@ -275,6 +293,10 @@ void main() {
             syncBloc: syncBloc,
             syncDelay: SyncDelays.zero,
             connectivity: connectivityResultStream.stream,
+            activityDb: activityDb,
+            userFileDb: userFileDb,
+            genericDb: genericDb,
+            sortableDb: sortableDb,
           )..close();
           await testConnectivityChange(
               cr, logoutSyncCubit, connectivityResultStream);
@@ -291,6 +313,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       connectivityStream.add(ConnectivityResult.none);
@@ -329,6 +355,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       await expectLater(
@@ -359,6 +389,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       await expectLater(
@@ -388,6 +422,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       expectLater(
@@ -423,6 +461,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       expectLater(
@@ -446,6 +488,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       expectLater(
@@ -476,6 +522,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       connectivityStream.add(ConnectivityResult.wifi);
@@ -499,6 +549,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       connectivityStream.add(ConnectivityResult.wifi);

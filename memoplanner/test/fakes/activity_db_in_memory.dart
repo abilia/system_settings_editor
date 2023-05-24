@@ -1,8 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:logging/src/logger.dart';
 import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/models/activity/activity.dart';
-import 'package:memoplanner/models/meta_models.dart';
+import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class ActivityDbInMemory implements ActivityDb {

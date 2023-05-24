@@ -17,6 +17,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  abilia_sync:
+    dependency: "direct main"
+    description:
+      path: "../packages/abilia_sync"
+      relative: true
+    source: path
+    version: "0.0.0"
   acapela_tts:
     dependency: "direct main"
     description:
@@ -1300,6 +1307,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  sortables:
+    dependency: "direct main"
+    description:
+      path: "../packages/sortables"
+      relative: true
+    source: path
+    version: "0.0.0"
   source_gen:
     dependency: transitive
     description:

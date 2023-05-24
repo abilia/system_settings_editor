@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:utils/date_time_extensions.dart';
@@ -18,9 +17,6 @@ extension DateTimeExtensionsModels on DateTime {
       : isAfter(now)
           ? Occasion.future
           : Occasion.past;
-
-  DateTime withTime(TimeOfDay? timeOfDay) =>
-      copyWith(hour: timeOfDay?.hour, minute: timeOfDay?.minute);
 
   DayPart dayPart(DayParts dayParts) {
     final timeAfterMidnight = difference(onlyDays());

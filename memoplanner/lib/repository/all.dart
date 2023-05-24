@@ -1,5 +1,6 @@
 export 'package:auth/repository/user_repository.dart';
 export 'package:repository_base/repository_base.dart';
+export 'package:sortables/repository/all.dart';
 
 export 'data_repository/all.dart';
 export 'device_repository.dart';

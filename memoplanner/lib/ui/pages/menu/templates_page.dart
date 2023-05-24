@@ -137,7 +137,7 @@ class TemplatesPage extends StatelessWidget {
       sortableBloc.add(
         SortableUpdated(
           sortable.copyWith(
-            data: BasicTimerDataItem.fromTimer(timer),
+            data: timer.toBasicTimerDataItem(),
           ),
         ),
       );
@@ -162,7 +162,7 @@ class BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final text = Text(_sortable.data.title(Translator.of(context).translate));
+    final text = Text(_sortable.data.title());
     final data = _sortable.data;
 
     if (_sortable.isGroup) {

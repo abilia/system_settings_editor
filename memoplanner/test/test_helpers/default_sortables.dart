@@ -1,5 +1,4 @@
-import 'package:memoplanner/models/sortable/data/image_archive_data.dart';
-import 'package:memoplanner/models/sortable/sortable.dart';
+import 'package:memoplanner/models/all.dart';
 
 final defaultSortables = [
   Sortable.createNew(
