@@ -59,6 +59,7 @@ class FullScreenActivityPage extends StatelessWidget {
 
 class _FullScreenActivityTabBar extends StatelessWidget with ActivityMixin {
   final ActivityDay selectedActivityDay;
+  final scrollController = ScrollController();
 
   _FullScreenActivityTabBar({
     required this.selectedActivityDay,
@@ -67,7 +68,6 @@ class _FullScreenActivityTabBar extends StatelessWidget with ActivityMixin {
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController scrollController = ScrollController();
     return DefaultTextStyle(
       overflow: TextOverflow.fade,
       style: (Theme.of(context).textTheme.bodySmall ?? bodySmall),
