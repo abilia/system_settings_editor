@@ -1,4 +1,3 @@
-import 'package:auth/bloc/push/push_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:handi/firebase_options.dart';
@@ -20,14 +19,11 @@ void main() async {
 final _navigatorKey = GlobalKey<NavigatorState>();
 
 class HandiApp extends StatelessWidget {
-  final PushCubit? pushCubit;
-
-  const HandiApp({super.key, this.pushCubit});
+  const HandiApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Providers(
-      pushCubit: pushCubit,
       child: TopLevelListener(
         navigatorKey: _navigatorKey,
         child: MaterialApp(

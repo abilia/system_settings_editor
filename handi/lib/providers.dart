@@ -45,9 +45,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
 
 class Providers extends StatelessWidget {
   final Widget child;
-  final PushCubit? pushCubit;
 
-  const Providers({required this.child, super.key, this.pushCubit});
+  const Providers({required this.child, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +90,6 @@ class Providers extends StatelessWidget {
           ),
           BlocProvider<PushCubit>(
             create: (context) =>
-                pushCubit ??
                 PushCubit(backgroundMessageHandler: myBackgroundMessageHandler),
           ),
           BlocProvider<ClockBloc>(
