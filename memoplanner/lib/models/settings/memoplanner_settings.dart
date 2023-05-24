@@ -11,13 +11,6 @@ class MemoplannerSettings extends Equatable {
 
   final AlarmSettings alarm;
   final CodeProtectSettings codeProtect;
-  // TODO Remove in 4.3
-  @Deprecated(
-    'To be Remove on in 4.3, '
-    'use SettingsDb.keepScreenOnWhileCharging '
-    'and SystemSettingsEditor.screenOffTimeout',
-  )
-  final KeepScreenAwakeSettings keepScreenAwake;
   final MenuSettings menu;
   final FunctionsSettings functions;
   final GeneralCalendarSettings calendar;
@@ -32,12 +25,6 @@ class MemoplannerSettings extends Equatable {
     this.alarm = const AlarmSettings(),
     this.codeProtect = const CodeProtectSettings(),
     this.menu = const MenuSettings(),
-    @Deprecated(
-      'To be Remove on in 4.3, '
-      'use SettingsDb.keepScreenOnWhileCharging '
-      'and SystemSettingsEditor.screenOffTimeout',
-    )
-        this.keepScreenAwake = const KeepScreenAwakeSettings(),
     this.functions = const FunctionsSettings(),
     this.calendar = const GeneralCalendarSettings(),
     this.addActivity = const AddActivitySettings(),
@@ -54,7 +41,6 @@ class MemoplannerSettings extends Equatable {
       alarm: AlarmSettings.fromSettingsMap(settings),
       codeProtect: CodeProtectSettings.fromSettingsMap(settings),
       menu: MenuSettings.fromSettingsMap(settings),
-      keepScreenAwake: KeepScreenAwakeSettings.fromSettingsMap(settings),
       functions: FunctionsSettings.fromSettingsMap(settings),
       calendar: GeneralCalendarSettings.fromSettingsMap(settings),
       addActivity: AddActivitySettings.fromSettingsMap(settings),
@@ -88,7 +74,6 @@ class MemoplannerSettingsLoaded extends MemoplannerSettings {
           alarm: settings.alarm,
           codeProtect: settings.codeProtect,
           menu: settings.menu,
-          keepScreenAwake: settings.keepScreenAwake,
           functions: settings.functions,
           calendar: settings.calendar,
           addActivity: settings.addActivity,

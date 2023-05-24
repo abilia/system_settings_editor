@@ -65,7 +65,6 @@ void main() {
 
     wakeLockCubit = WakeLockCubit(
       battery: mockBattery,
-      settingsStream: const Stream.empty(),
       settingsDb: FakeSettingsDb(),
       hasBattery: true,
     );
