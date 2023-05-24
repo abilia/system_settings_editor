@@ -21,6 +21,7 @@ export 'settings/all.dart';
 export 'sound.dart';
 export 'support_person.dart';
 export 'terms_of_use.dart';
+export 'time_interval.dart';
 export 'user_file.dart';
 
 typedef ActionIntentStream = Stream<String>;

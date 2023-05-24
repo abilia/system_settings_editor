@@ -122,12 +122,6 @@ class BasicActivityDataItem extends BasicActivityData {
         'name': name,
         'secretExemptions': secretExemptions.toList(),
       });
-
-  TimeInterval toTimeInterval({required DateTime startDate}) => TimeInterval(
-        startDate: startDate.onlyDays(),
-        startTime: startTimeOfDay,
-        endTime: endTimeOfDay,
-      );
 }
 
 class BasicActivityDataFolder extends BasicActivityData {

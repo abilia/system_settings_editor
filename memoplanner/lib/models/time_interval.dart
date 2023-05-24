@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:utils/date_time_extensions.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class TimeInterval extends Equatable {
   final DateTime startDate;

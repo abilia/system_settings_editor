@@ -79,7 +79,10 @@ class EditActivityCubit extends Cubit<EditActivityState> {
                       timezone: tz.local.name,
                       day: day,
                       calendarId: calendarId),
-                  basicActivityData.toTimeInterval(startDate: day),
+                  TimeInterval(
+                      startDate: day.onlyDays(),
+                      startTime: basicActivityData.startTimeOfDay,
+                      endTime: basicActivityData.endTimeOfDay),
                 ),
         );
 
