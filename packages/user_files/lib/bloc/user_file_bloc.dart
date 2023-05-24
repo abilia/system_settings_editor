@@ -6,25 +6,14 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
 import 'package:equatable/equatable.dart';
+import 'package:file_storage/file_storage.dart';
 import 'package:flutter/foundation.dart';
-import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/storage/all.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mime/mime.dart';
+import 'package:user_files/user_files.dart';
 
+part 'user_file_event.dart';
 part 'user_file_state.dart';
-
-class UserFileEvent {}
-
-class FileAdded extends UserFileEvent {
-  final UnstoredAbiliaFile unstoredFile;
-  final bool isImage;
-  FileAdded(this.unstoredFile, {this.isImage = false});
-}
-
-class LoadUserFiles extends UserFileEvent {}
 
 class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   final UserFileRepository userFileRepository;

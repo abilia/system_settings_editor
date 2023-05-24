@@ -6,7 +6,7 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
-import 'package:repository_base/listenable_client.dart';
+import 'package:repository_base/repository_base.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';

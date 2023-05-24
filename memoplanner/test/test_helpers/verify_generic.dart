@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:repository_base/repository_base.dart';
 
 import '../mocks/mocks.dart';
 

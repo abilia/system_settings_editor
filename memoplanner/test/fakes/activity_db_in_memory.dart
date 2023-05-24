@@ -3,6 +3,7 @@ import 'package:logging/src/logger.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:repository_base/models/all.dart';
 
 class ActivityDbInMemory implements ActivityDb {
   final List<DbModel<Activity>> activities = [];

@@ -30,6 +30,8 @@ dependencies:
   dotted_border: ^2.0.0
   envied: ^0.3.0
   equatable: ^2.0.3
+  file_storage:
+    path: ../packages/file_storage
   firebase_core: ^2.11.0
   firebase_crashlytics: ^3.0.4
   firebase_messaging: ^14.5.0
@@ -51,7 +53,6 @@ dependencies:
   get_it: ^7.2.0
   google_fonts: ^4.0.3
   http: ^0.13.5
-  image: ^4.0.15
   image_picker: ^0.8.6
   intl: ^0.17.0
   logging: ^1.1.0
@@ -84,6 +85,8 @@ dependencies:
       ref: v1.3.7
   timezone: ^0.9.0
   transparent_image: ^2.0.0
+  user_files:
+    path: ../packages/user_files
   utils:
     path: ../packages/utils
   uuid: ^3.0.5

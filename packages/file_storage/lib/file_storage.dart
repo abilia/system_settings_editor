@@ -1,8 +1,12 @@
+library file_storage;
+
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
+import 'package:file_storage/image_thumb.dart';
 import 'package:logging/logging.dart';
-import 'package:memoplanner/models/image_thumb.dart';
+
+export 'package:file_storage/image_thumb.dart';
 
 class FileStorage extends Equatable {
   final _log = Logger((FileStorage).toString());

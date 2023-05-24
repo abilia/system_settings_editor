@@ -7,10 +7,15 @@ dependencies:
   collection: any
   equatable: any
   http: any
+  logging: any
+  meta: any
   path: any
   shared_preferences: any
   sqflite: any
   sqflite_common_ffi: ^2.2.0
+  synchronized: any
+  utils:
+    path: ../../utils
 
 dev_dependencies:
   flutter_test:

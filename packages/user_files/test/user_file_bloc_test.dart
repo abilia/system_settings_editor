@@ -2,15 +2,11 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:file/memory.dart';
+import 'package:file_storage/file_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull_fakes/all.dart';
-
-import '../../fakes/all.dart';
-import '../../mocks/mocks.dart';
-import '../../test_helpers/register_fallback_values.dart';
+import 'package:user_files/user_files.dart';
 
 void main() {
   late UserFileBloc userFileBloc;
@@ -32,21 +28,22 @@ void main() {
   const filePath = 'test.dart';
 
   setUpAll(() {
-    registerFallbackValues();
+    registerFallbackValue(const ImageThumb(id: ''));
+    registerFallbackValue(FileStorage(''));
   });
 
   setUp(() {
     mockUserFileRepository = MockUserFileRepository();
-    when(() => mockUserFileRepository.save(any()))
+    when(() async => mockUserFileRepository.save(any()))
         .thenAnswer((_) => Future.value(true));
-    when(() => mockUserFileRepository.downloadUserFiles(
+    when(() async => mockUserFileRepository.downloadUserFiles(
         limit: any(named: 'limit'))).thenAnswer((_) => Future.value([]));
-    when(() => mockUserFileRepository.fetchIntoDatabaseSynchronized())
+    when(() async => mockUserFileRepository.fetchIntoDatabaseSynchronized())
         .thenAnswer((_) async {});
     final mockedFileStorage = MockFileStorage();
-    when(() => mockedFileStorage.storeFile(any(), any()))
+    when(() async => mockedFileStorage.storeFile(any(), any()))
         .thenAnswer((_) => Future.value());
-    when(() => mockedFileStorage.storeImageThumb(any(), any()))
+    when(() async => mockedFileStorage.storeImageThumb(any(), any()))
         .thenAnswer((_) => Future.value());
     userFileBloc = UserFileBloc(
       userFileRepository: mockUserFileRepository,
@@ -141,7 +138,8 @@ void main() {
       sha1: sha1.convert(processedFile1).toString(),
       md5: md5.convert(processedFile1).toString(),
       path: 'seagull/$fileId',
-      contentType: 'image/jpeg', // File is converted to jpeg
+      contentType: 'image/jpeg',
+      // File is converted to jpeg
       fileSize: processedFile1.length,
       deleted: false,
       fileLoaded: true,
@@ -287,7 +285,8 @@ void main() {
       sha1: sha1.convert(processedFile1).toString(),
       md5: md5.convert(processedFile1).toString(),
       path: 'seagull/$fileId',
-      contentType: 'image/jpeg', // images are converted to jpeg
+      contentType: 'image/jpeg',
+      // images are converted to jpeg
       fileSize: processedFile1.length,
       deleted: false,
       fileLoaded: true,

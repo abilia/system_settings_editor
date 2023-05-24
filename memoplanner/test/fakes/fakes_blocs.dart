@@ -99,14 +99,6 @@ class FakeTimepillarMeasuresCubit extends Fake
   Future<void> close() async {}
 }
 
-class FakeUserFileBloc extends Fake implements UserFileBloc {
-  @override
-  Stream<UserFileState> get stream => const Stream.empty();
-
-  @override
-  Future<void> close() async {}
-}
-
 class FakeDayPickerBloc extends Fake implements DayPickerBloc {
   @override
   Stream<DayPickerState> get stream => const Stream.empty();

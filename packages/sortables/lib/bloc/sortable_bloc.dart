@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:sortables/models/sortable/all.dart';
-import 'package:sortables/repository/data_repository/sortable_repository.dart';
+import 'package:sortables/repository/sortable_repository.dart';
 import 'package:sortables/utils/extensions/all.dart';
 
 part 'sortable_event.dart';

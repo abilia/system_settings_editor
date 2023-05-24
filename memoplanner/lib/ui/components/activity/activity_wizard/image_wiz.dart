@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:intl/intl.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/abilia_file.dart';
+import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class ImageWiz extends StatelessWidget {

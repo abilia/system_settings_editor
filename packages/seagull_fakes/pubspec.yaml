@@ -12,6 +12,8 @@ dependencies:
   bloc_test: ^9.1.1
   calendar:
     path: ../calendar
+  file_storage:
+    path: ../file_storage
   flutter:
     sdk: flutter
   http: ^0.13.5
@@ -24,6 +26,8 @@ dependencies:
   sortables:
     path: ../sortables
   sqflite: ^2.2.5
+  user_files:
+    path: ../user_files
   utils:
     path: ../utils
 

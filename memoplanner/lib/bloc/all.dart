@@ -3,6 +3,9 @@ export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:seagull_clock/clock_bloc.dart';
 export 'package:seagull_clock/ticker.dart';
 export 'package:sortables/bloc/all.dart';
+export 'package:sortables/repository/sortable_repository.dart';
+export 'package:user_files/bloc/user_file_bloc.dart';
+export 'package:user_files/repository/user_file_repository.dart';
 
 export 'activities/all.dart';
 export 'alarm/alarm_cubit.dart';
@@ -34,4 +37,3 @@ export 'start_guide/connect_license_bloc.dart';
 export 'start_guide/startup_cubit.dart';
 export 'support_persons/support_persons_cubit.dart';
 export 'timer/all.dart';
-export 'user_file/user_file_bloc.dart';
