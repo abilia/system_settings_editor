@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:abilia_sync/abilia_sync.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/myabilia_connection.dart';
 
 part 'logout_sync_state.dart';
@@ -17,6 +19,10 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
     required Stream<ConnectivityResult> connectivity,
     required this.myAbiliaConnection,
     required this.authenticationBloc,
+    required this.activityRepository,
+    required this.userFileRepository,
+    required this.sortableRepository,
+    required this.genericRepository,
   }) : super(const LogoutSyncState(
           logoutWarning: LogoutWarning.firstWarningSyncFailed,
         )) {
@@ -47,6 +53,10 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
   late final StreamSubscription _connectivitySubscription;
   late final StreamSubscription _licenseSubscription;
   late final log = Logger((LogoutSyncCubit).toString());
+  final ActivityRepository activityRepository;
+  final UserFileRepository userFileRepository;
+  final SortableRepository sortableRepository;
+  final GenericRepository genericRepository;
 
   Future<void> next() async {
     if (state.logoutWarning.syncedSuccess) {
@@ -137,11 +147,10 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
   }
 
   Future<void> _fetchDirtyItems() async {
-    final dirtyActivities =
-        await syncBloc.activityRepository.db.countAllDirty();
+    final dirtyActivities = await activityRepository.db.countAllDirty();
 
     final dirtySortables = groupBy(
-      await syncBloc.sortableRepository.db.getAllDirty(),
+      await sortableRepository.db.getAllDirty(),
       (sortable) => sortable.model.type,
     );
     final dirtyActivityTemplates =
@@ -149,12 +158,11 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
     final dirtyTimerTemplates =
         dirtySortables[SortableType.basicTimer]?.length ?? 0;
 
-    final dirtyPhotos = (await syncBloc.userFileRepository.db.getAllDirty())
+    final dirtyPhotos = (await userFileRepository.db.getAllDirty())
         .where((userFile) => userFile.model.isImage)
         .length;
 
-    final settingsDataDirty =
-        await syncBloc.genericRepository.db.countAllDirty() > 0;
+    final settingsDataDirty = await genericRepository.db.countAllDirty() > 0;
 
     final dirtyItems = DirtyItems(
       activities: dirtyActivities,

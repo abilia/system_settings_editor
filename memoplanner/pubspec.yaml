@@ -8,6 +8,8 @@ environment:
   flutter: '>=2.0.0'
 
 dependencies:
+  abilia_sync:
+    path: ../packages/abilia_sync
   acapela_tts:
     git:
       url: https://github.com/abilia/acapela_tts.git

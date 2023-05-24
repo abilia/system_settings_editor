@@ -1,25 +1,26 @@
 import 'dart:async';
 
+import 'package:abilia_sync/abilia_sync.dart';
+import 'package:auth/auth.dart';
 import 'package:equatable/equatable.dart';
-import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/logging/all.dart';
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:seagull_clock/clock_bloc.dart';
+import 'package:sortables/all.dart';
 
 part 'sync_event.dart';
 
 part 'sync_state.dart';
 
-class SyncBloc extends Bloc<Object, SyncState> {
+class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final PushCubit pushCubit;
   final LicenseCubit licenseCubit;
 
-  final ActivityRepository activityRepository;
-  final UserFileRepository userFileRepository;
-  final SortableRepository sortableRepository;
-  final GenericRepository genericRepository;
+  final DataRepository activityRepository;
+  final DataRepository userFileRepository;
+  final DataRepository sortableRepository;
+  final DataRepository genericRepository;
   final LastSyncDb lastSyncDb;
   final ClockBloc clockBloc;
   final SyncDelays syncDelay;
@@ -57,7 +58,7 @@ class SyncBloc extends Bloc<Object, SyncState> {
   }
 
   Future _trySync(
-    Object event,
+    SyncEvent event,
     Emitter emit,
   ) async {
     try {
@@ -79,7 +80,7 @@ class SyncBloc extends Bloc<Object, SyncState> {
     }
   }
 
-  Future<bool> _sync(Object event) async {
+  Future<bool> _sync(SyncEvent event) async {
     switch (event.runtimeType) {
       case SyncAll:
         return _syncAll();

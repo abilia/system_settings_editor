@@ -5,7 +5,6 @@ export 'package:sqflite/sqlite_api.dart';
 
 export 'activity_db.dart';
 export 'generic_db.dart';
-export 'last_sync_db.dart';
 export 'sessions_db.dart';
 export 'settings_db.dart';
 export 'support_persons_db.dart';

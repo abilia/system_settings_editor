@@ -1,6 +1,8 @@
+import 'package:abilia_sync/abilia_sync.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
+
 export 'package:mocktail/mocktail.dart';
 
 // Blocs
@@ -10,7 +12,7 @@ class MockActivitiesBloc extends MockBloc<ActivitiesEvent, ActivitiesChanged>
 class MockDayEventsCubit extends MockCubit<EventsState>
     implements DayEventsCubit {}
 
-class MockSyncBloc extends MockBloc<Object, SyncState> implements SyncBloc {}
+class MockSyncBloc extends MockBloc<SyncEvent, SyncState> implements SyncBloc {}
 
 class MockPushCubit extends MockCubit<RemoteMessage> implements PushCubit {}
 

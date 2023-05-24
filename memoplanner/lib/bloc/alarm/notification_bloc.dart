@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:abilia_sync/abilia_sync.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';

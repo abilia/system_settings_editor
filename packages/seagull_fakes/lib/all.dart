@@ -3,3 +3,5 @@ export 'auth/fakes.dart';
 export 'auth/mocks.dart';
 export 'calendar.dart';
 export 'repository/fakes.dart';
+export 'sortables/fakes.dart';
+export 'sync/fakes.dart';

@@ -20,7 +20,6 @@ export 'session.dart';
 export 'settings/all.dart';
 export 'sound.dart';
 export 'support_person.dart';
-export 'sync_delays.dart';
 export 'terms_of_use.dart';
 export 'user_file.dart';
 

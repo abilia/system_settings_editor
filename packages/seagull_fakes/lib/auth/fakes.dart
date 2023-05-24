@@ -155,3 +155,17 @@ class ListenableMockClient extends MockClient implements ListenableClient {
     _stateController.add(HttpMessage.unauthorized);
   }
 }
+
+class FakeLicenseCubit extends Fake implements LicenseCubit {
+  @override
+  bool get validLicense => true;
+
+  @override
+  ValidLicense get state => ValidLicense();
+
+  @override
+  Stream<LicenseState> get stream => const Stream.empty();
+
+  @override
+  Future<void> close() async {}
+}
