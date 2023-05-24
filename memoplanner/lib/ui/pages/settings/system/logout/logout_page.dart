@@ -55,10 +55,10 @@ class LogoutPage extends StatelessWidget {
             child: BlocProvider<LogoutSyncCubit>(
               create: (context) => LogoutSyncCubit(
                 syncBloc: context.read<SyncBloc>(),
-                activityRepository: context.read<ActivityRepository>(),
-                userFileRepository: context.read<UserFileRepository>(),
-                genericRepository: context.read<GenericRepository>(),
-                sortableRepository: context.read<SortableRepository>(),
+                activityDb: context.read<ActivityRepository>().activityDb,
+                userFileDb: context.read<UserFileRepository>().userFileDb,
+                genericDb: context.read<GenericRepository>().genericDb,
+                sortableDb: context.read<SortableRepository>().sortableDb,
                 authenticationBloc: context.read<AuthenticationBloc>(),
                 syncDelay: GetIt.I<SyncDelays>(),
                 licenseCubit: context.read<LicenseCubit>(),

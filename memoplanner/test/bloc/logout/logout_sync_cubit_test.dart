@@ -103,10 +103,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
-        activityRepository: activityRepository,
-        userFileRepository: userFileRepository,
-        genericRepository: genericRepository,
-        sortableRepository: sortableRepository,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       expect(
@@ -130,10 +130,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
-        activityRepository: activityRepository,
-        userFileRepository: userFileRepository,
-        genericRepository: genericRepository,
-        sortableRepository: sortableRepository,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       ),
       act: (LogoutSyncCubit cubit) => cubit.next(),
       expect: () => [
@@ -167,10 +167,10 @@ void main() {
           syncBloc: syncBloc,
           syncDelay: SyncDelays.zero,
           connectivity: connectivityStream.stream,
-          activityRepository: activityRepository,
-          userFileRepository: userFileRepository,
-          genericRepository: genericRepository,
-          sortableRepository: sortableRepository,
+          activityDb: activityDb,
+          userFileDb: userFileDb,
+          genericDb: genericDb,
+          sortableDb: sortableDb,
         );
       },
       act: (LogoutSyncCubit cubit) => cubit
@@ -219,10 +219,10 @@ void main() {
           syncBloc: syncBloc,
           syncDelay: SyncDelays.zero,
           connectivity: crStream.stream,
-          activityRepository: activityRepository,
-          userFileRepository: userFileRepository,
-          genericRepository: genericRepository,
-          sortableRepository: sortableRepository,
+          activityDb: activityDb,
+          userFileDb: userFileDb,
+          genericDb: genericDb,
+          sortableDb: sortableDb,
         );
 
         crStream.add(cr);
@@ -293,10 +293,10 @@ void main() {
             syncBloc: syncBloc,
             syncDelay: SyncDelays.zero,
             connectivity: connectivityResultStream.stream,
-            activityRepository: activityRepository,
-            userFileRepository: userFileRepository,
-            genericRepository: genericRepository,
-            sortableRepository: sortableRepository,
+            activityDb: activityDb,
+            userFileDb: userFileDb,
+            genericDb: genericDb,
+            sortableDb: sortableDb,
           )..close();
           await testConnectivityChange(
               cr, logoutSyncCubit, connectivityResultStream);
@@ -313,10 +313,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
-        activityRepository: activityRepository,
-        userFileRepository: userFileRepository,
-        genericRepository: genericRepository,
-        sortableRepository: sortableRepository,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       connectivityStream.add(ConnectivityResult.none);
@@ -355,10 +355,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
-        activityRepository: activityRepository,
-        userFileRepository: userFileRepository,
-        genericRepository: genericRepository,
-        sortableRepository: sortableRepository,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       await expectLater(
@@ -389,10 +389,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
-        activityRepository: activityRepository,
-        userFileRepository: userFileRepository,
-        genericRepository: genericRepository,
-        sortableRepository: sortableRepository,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       await expectLater(
@@ -422,10 +422,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
-        activityRepository: activityRepository,
-        userFileRepository: userFileRepository,
-        genericRepository: genericRepository,
-        sortableRepository: sortableRepository,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       expectLater(
@@ -461,10 +461,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
-        activityRepository: activityRepository,
-        userFileRepository: userFileRepository,
-        genericRepository: genericRepository,
-        sortableRepository: sortableRepository,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       expectLater(
@@ -488,10 +488,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
-        activityRepository: activityRepository,
-        userFileRepository: userFileRepository,
-        genericRepository: genericRepository,
-        sortableRepository: sortableRepository,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       expectLater(
@@ -522,10 +522,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
-        activityRepository: activityRepository,
-        userFileRepository: userFileRepository,
-        genericRepository: genericRepository,
-        sortableRepository: sortableRepository,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       connectivityStream.add(ConnectivityResult.wifi);
@@ -549,10 +549,10 @@ void main() {
         syncBloc: syncBloc,
         syncDelay: SyncDelays.zero,
         connectivity: connectivityStream.stream,
-        activityRepository: activityRepository,
-        userFileRepository: userFileRepository,
-        genericRepository: genericRepository,
-        sortableRepository: sortableRepository,
+        activityDb: activityDb,
+        userFileDb: userFileDb,
+        genericDb: genericDb,
+        sortableDb: sortableDb,
       );
 
       connectivityStream.add(ConnectivityResult.wifi);

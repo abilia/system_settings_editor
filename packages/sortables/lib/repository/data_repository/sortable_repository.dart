@@ -8,11 +8,13 @@ import 'package:utils/utils.dart';
 class SortableRepository extends DataRepository<Sortable> {
   static const mobileUploadPath = 'mobile-uploads-folder',
       myPhotosPath = 'my-photos-folder';
+  final SortableDb sortableDb;
+
   SortableRepository({
     required BaseUrlDb baseUrlDb,
     required BaseClient client,
     required int userId,
-    required SortableDb sortableDb,
+    required this.sortableDb,
   }) : super(
             client: client,
             baseUrlDb: baseUrlDb,

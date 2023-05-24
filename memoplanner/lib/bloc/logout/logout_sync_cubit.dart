@@ -4,9 +4,9 @@ import 'package:abilia_sync/abilia_sync.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/myabilia_connection.dart';
 
 part 'logout_sync_state.dart';
@@ -19,10 +19,10 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
     required Stream<ConnectivityResult> connectivity,
     required this.myAbiliaConnection,
     required this.authenticationBloc,
-    required this.activityRepository,
-    required this.userFileRepository,
-    required this.sortableRepository,
-    required this.genericRepository,
+    required this.activityDb,
+    required this.userFileDb,
+    required this.sortableDb,
+    required this.genericDb,
   }) : super(const LogoutSyncState(
           logoutWarning: LogoutWarning.firstWarningSyncFailed,
         )) {
@@ -53,10 +53,10 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
   late final StreamSubscription _connectivitySubscription;
   late final StreamSubscription _licenseSubscription;
   late final log = Logger((LogoutSyncCubit).toString());
-  final ActivityRepository activityRepository;
-  final UserFileRepository userFileRepository;
-  final SortableRepository sortableRepository;
-  final GenericRepository genericRepository;
+  final ActivityDb activityDb;
+  final UserFileDb userFileDb;
+  final SortableDb sortableDb;
+  final GenericDb genericDb;
 
   Future<void> next() async {
     if (state.logoutWarning.syncedSuccess) {
@@ -147,10 +147,10 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
   }
 
   Future<void> _fetchDirtyItems() async {
-    final dirtyActivities = await activityRepository.db.countAllDirty();
+    final dirtyActivities = await activityDb.countAllDirty();
 
     final dirtySortables = groupBy(
-      await sortableRepository.db.getAllDirty(),
+      await sortableDb.getAllDirty(),
       (sortable) => sortable.model.type,
     );
     final dirtyActivityTemplates =
@@ -158,11 +158,11 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
     final dirtyTimerTemplates =
         dirtySortables[SortableType.basicTimer]?.length ?? 0;
 
-    final dirtyPhotos = (await userFileRepository.db.getAllDirty())
+    final dirtyPhotos = (await userFileDb.getAllDirty())
         .where((userFile) => userFile.model.isImage)
         .length;
 
-    final settingsDataDirty = await genericRepository.db.countAllDirty() > 0;
+    final settingsDataDirty = await genericDb.countAllDirty() > 0;
 
     final dirtyItems = DirtyItems(
       activities: dirtyActivities,
