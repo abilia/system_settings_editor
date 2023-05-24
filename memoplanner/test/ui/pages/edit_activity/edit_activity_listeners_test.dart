@@ -160,7 +160,6 @@ void main() {
                 BlocProvider<WakeLockCubit>(
                   create: (context) => WakeLockCubit(
                     settingsDb: FakeSettingsDb(),
-                    settingsStream: const Stream.empty(),
                     battery: FakeBattery(),
                     hasBattery: true,
                   ),

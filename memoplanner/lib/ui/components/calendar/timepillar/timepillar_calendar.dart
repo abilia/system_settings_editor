@@ -92,7 +92,6 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
 
   @override
   Widget build(BuildContext context) {
-    final horizontalScrollController = SnapToCenterScrollController();
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         double getNowOffset(DateTime now) =>
@@ -166,13 +165,14 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                     bloc.state.calendar.timepillar);
             return CalendarScrollListener(
               timepillarMeasures: measures,
-              enabled: timepillarState.isToday && scrollToTimeOffset,
+              enabled: scrollToTimeOffset && timepillarState.isToday ||
+                  !scrollToTimeOffset,
               disabledInitOffset:
                   timepillarState.calendarType == DayCalendarType.oneTimepillar
                       ? measures.hourHeight * dayParts.morning.inHours
                       : 0,
               getNowOffset: getNowOffset,
-              builder: (_, verticalController) {
+              builder: (_, verticalController, horizontalController) {
                 return RefreshIndicator(
                   onRefresh: () async => refresh(context),
                   notificationPredicate: (scrollNotification) =>
@@ -186,7 +186,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                     child: ScrollArrows.all(
                       upCollapseMargin: topMargin,
                       downCollapseMargin: bottomMargin,
-                      horizontalController: horizontalScrollController,
+                      horizontalController: horizontalController,
                       verticalController: verticalController,
                       child: SingleChildScrollView(
                         controller: verticalController,
@@ -239,7 +239,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
                                 anchor: horizontalAnchor,
                                 center: center,
                                 scrollDirection: Axis.horizontal,
-                                controller: horizontalScrollController,
+                                controller: horizontalController,
                                 slivers: <Widget>[
                                   if (showCategories)
                                     SliverToBoxAdapter(

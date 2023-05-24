@@ -5,6 +5,8 @@ environment:
   flutter: '>=2.0.0'
 
 dependencies:
+  abilia_sync:
+    path: ../abilia_sync
   auth:
     path: ../auth
   bloc_test: ^9.1.1
@@ -19,7 +21,11 @@ dependencies:
   seagull_analytics:
     path: ../seagull_analytics
   shared_preferences: ^2.0.18
+  sortables:
+    path: ../sortables
   sqflite: ^2.2.5
+  utils:
+    path: ../utils
 
 dev_dependencies:
   flutter_test:

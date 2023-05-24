@@ -21,8 +21,7 @@ class TemplateActivityWizardCubit extends WizardCubit {
       return emit(state.failSave({SaveError.noTitleOrImage}));
     }
     final activity = editActivityState.activityToStore();
-    final item = BasicActivityDataItem.fromActivity(activity);
-    final sortable = original.copyWith(data: item);
+    final sortable = original.copyWith(data: activity.toBasicActivity());
     sortableBloc.add(SortableUpdated(sortable));
     emit(state.saveSuccess());
   }

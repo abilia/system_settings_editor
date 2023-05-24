@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:abilia_sync/abilia_sync.dart';
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
@@ -40,7 +41,7 @@ class GenericCubit extends Cubit<GenericState> {
 
       final anyDirty = await genericRepository.save(toUpdate.values);
       if (anyDirty) {
-        syncBloc.add(const GenericSaved());
+        syncBloc.add(const SyncGenerics());
         await loadGenerics();
       }
     }

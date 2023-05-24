@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memoplanner/models/all.dart';
+import 'package:repository_base/models/data_update_response.dart';
 
 void main() {
   test('parse json', () {

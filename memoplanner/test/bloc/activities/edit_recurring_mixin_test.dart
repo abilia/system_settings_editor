@@ -491,7 +491,7 @@ void main() {
               fullDay: true,
               title: 'now full day',
             )
-            .copyWithRecurringEnd(Recurs.noEndDate);
+            .copyWithRecurringEnd(noEndDate);
 
         final strayAfterNoRecurrence = org.copyWith(
           newId: true,
@@ -648,7 +648,7 @@ void main() {
           recurs: const Recurs.raw(
             Recurs.typeYearly,
             1006,
-            Recurs.noEnd,
+            noEnd,
           ),
         );
         final updated = original.copyWith(
@@ -683,7 +683,7 @@ void main() {
           recurs: const Recurs.raw(
             Recurs.typeYearly,
             1006,
-            Recurs.noEnd,
+            noEnd,
           ),
         );
         final updated = original.copyWith(
@@ -778,7 +778,7 @@ void main() {
 
       final onlyThis = activity.copyWith(
         title: 'new title',
-        recurs: const Recurs.raw(0, 0, Recurs.noEnd),
+        recurs: const Recurs.raw(0, 0, noEnd),
       );
       final recurring = activity.copyWith(
         startTime: activity.startTime.nextDay(),

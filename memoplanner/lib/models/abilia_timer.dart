@@ -88,6 +88,15 @@ class AbiliaTimer extends Event {
     );
   }
 
+  BasicTimerDataItem toBasicTimerDataItem() {
+    return BasicTimerDataItem(
+      basicTimerTitle: title,
+      duration: duration.inMilliseconds,
+      icon: image.path,
+      fileId: image.id,
+    );
+  }
+
   static AbiliaTimer fromDbMap(Map<String, dynamic> dbRow) => AbiliaTimer(
         id: dbRow['id'],
         title: dbRow['title'],

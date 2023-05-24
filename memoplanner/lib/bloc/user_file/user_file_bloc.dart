@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:abilia_sync/abilia_sync.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
@@ -90,7 +91,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     );
 
     await userFileRepository.save([userFile]);
-    syncBloc.add(const FileSaved());
+    syncBloc.add(const SyncFiles());
     if (isClosed) return;
     emit(state.add(userFile));
   }

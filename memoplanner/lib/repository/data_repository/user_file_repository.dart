@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:abilia_sync/abilia_sync.dart';
 import 'package:collection/collection.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
