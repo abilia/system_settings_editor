@@ -16,7 +16,6 @@ void main() {
       sortableRepository: mockSortableRepository,
       fileStorageFolder: 'seagull',
       syncBloc: FakeSyncBloc(),
-      loadSortablesStream: FakeSyncBloc().stream,
     );
   });
 

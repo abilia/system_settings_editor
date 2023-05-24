@@ -87,7 +87,7 @@ void main() {
       await tester.pumpWidget(wrapWithMaterialApp());
       await tester.pumpAndSettle();
 
-      // AssertBasicTimerDataItem.fromTimer(
+      // Assert
       expectAnimation(tester, animating: true);
     });
 
