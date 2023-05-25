@@ -4,37 +4,11 @@ import 'package:calendar/all.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:handi/background/background.dart';
 import 'package:handi/main.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:seagull_clock/clock_bloc.dart';
 import 'package:seagull_clock/ticker.dart';
 import 'package:sqflite/sqlite_api.dart';
-
-class AuthenticatedBlocsProvider extends StatelessWidget {
-  final Authenticated authenticatedState;
-  final Widget child;
-  final PushCubit? pushCubit;
-
-  const AuthenticatedBlocsProvider({
-    required this.authenticatedState,
-    required this.child,
-    this.pushCubit,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => MultiBlocProvider(
-        providers: [
-          BlocProvider<PushCubit>(
-            create: (context) =>
-                PushCubit(backgroundMessageHandler: myBackgroundMessageHandler),
-            lazy: false,
-          ),
-        ],
-        child: child,
-      );
-}
 
 class Providers extends StatelessWidget {
   final Widget child;
