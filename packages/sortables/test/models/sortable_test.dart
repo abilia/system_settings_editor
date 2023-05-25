@@ -176,4 +176,22 @@ void main() {
     expect(title, converted.basicTimerTitle);
     expect(duration, converted.duration);
   });
+
+  test('BUG-2480 parsing issue when secretExemptions does not exist', () {
+    const data = '{"checkable":false,'
+        '"alarmType":100,'
+        '"icon":"/Handi/User/Picture/shower.gif",'
+        '"category":0,'
+        '"title":"Shower",'
+        '"info":null,'
+        '"fullDay":false,'
+        '"removeAfter":true,'
+        '"fileId":"334f2339-ef6a-4fcb-91a1-917f4b45bb53",'
+        '"startTime":0,'
+        '"reminders":"",'
+        '"duration":0}';
+
+    final result = BasicActivityDataItem.fromJson(data);
+    expect(<int>{}, result.secretExemptions);
+  });
 }

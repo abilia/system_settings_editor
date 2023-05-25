@@ -35,7 +35,7 @@ class BasicActivityDataItem extends BasicActivityData {
     final sortableData = json.decode(data);
     final secretExemptions = sortableData['secretExemptions'] is Iterable
         ? sortableData['secretExemptions'].whereType<int>().toSet()
-        : {};
+        : <int>{};
 
     return BasicActivityDataItem(
       alarmType: sortableData['alarmType'] ?? 0,
