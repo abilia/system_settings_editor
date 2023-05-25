@@ -1,4 +1,3 @@
-import 'package:abilia_sync/models/sync_delays.dart';
 import 'package:auth/auth.dart';
 import 'package:calendar/all.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +43,6 @@ Future<void> initGetItWith({
             version: GetIt.I<PackageInfo>().version,
           ),
     )
-    ..registerSingleton<SyncDelays>(SyncDelays.zero)
     ..registerSingleton<FirebasePushService>(
         firebasePushService ?? FirebasePushService());
 }
