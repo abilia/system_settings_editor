@@ -627,7 +627,7 @@ packages:
     source: path
     version: "0.0.0"
   seagull_fakes:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       path: "../packages/seagull_fakes"
       relative: true
