@@ -1,9 +1,9 @@
+import 'package:abilia_sync/models/sync_delays.dart';
 import 'package:auth/auth.dart';
 import 'package:calendar/all.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/main.dart';
-import 'package:handi/models/sync_delays.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:seagull_clock/ticker.dart';
