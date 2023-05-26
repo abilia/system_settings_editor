@@ -1,7 +1,7 @@
 export 'package:auth/models/all.dart';
 export 'package:sortables/models/all.dart';
+export 'package:user_files/models/all.dart';
 
-export 'abilia_file.dart';
 export 'abilia_timer.dart';
 export 'activity/activity.dart';
 export 'alarm.dart';
@@ -13,7 +13,6 @@ export 'exceptions.dart';
 export 'eye_button_settings.dart';
 export 'generic/generic.dart';
 export 'image_and_name.dart';
-export 'image_thumb.dart';
 export 'notification/all.dart';
 export 'occasion/all.dart';
 export 'session.dart';
@@ -22,6 +21,5 @@ export 'sound.dart';
 export 'support_person.dart';
 export 'terms_of_use.dart';
 export 'time_interval.dart';
-export 'user_file.dart';
 
 typedef ActionIntentStream = Stream<String>;

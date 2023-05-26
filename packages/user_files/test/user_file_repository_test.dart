@@ -1,17 +1,16 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:file/memory.dart';
+import 'package:file_storage/file_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:repository_base/repository_base.dart';
 
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/utils/all.dart';
 import 'package:seagull_fakes/all.dart';
-
-import '../../fakes/all.dart';
-import '../../mocks/mocks.dart';
-import '../../test_helpers/register_fallback_values.dart';
+import 'package:user_files/user_files.dart';
+import 'package:utils/utils.dart';
 
 void main() {
   final mockUserFileDb = MockUserFileDb();
@@ -32,10 +31,12 @@ void main() {
   );
 
   setUpAll(() {
-    registerFallbackValues();
+    registerFallbackValue(Uri());
+    registerFallbackValue(Uint8List(1));
+    registerFallbackValue(const ImageThumb(id: ''));
   });
 
-  setUp(() {
+  setUp(() async {
     when(() => mockBaseUrlDb.baseUrl).thenReturn(baseUrl);
     when(() => mockUserFileDb.insert(any())).thenAnswer((invocation) async {});
   });

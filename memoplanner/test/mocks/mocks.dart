@@ -2,11 +2,10 @@ import 'package:battery_plus/battery_plus.dart';
 import 'package:calendar/all.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:http/http.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/storage/all.dart';
+
 import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:mocktail/mocktail.dart';
@@ -18,10 +17,6 @@ export 'package:mocktail/mocktail.dart';
 // Repository
 class MockActivityRepository extends Mock implements ActivityRepository {}
 
-class MockUserFileRepository extends Mock implements UserFileRepository {}
-
-class MockSortableRepository extends Mock implements SortableRepository {}
-
 class MockGenericRepository extends Mock implements GenericRepository {}
 
 class MockSupportPersonsRepository extends Mock
@@ -29,8 +24,6 @@ class MockSupportPersonsRepository extends Mock
 
 // Db
 class MockActivityDb extends Mock implements ActivityDb {}
-
-class MockUserFileDb extends Mock implements UserFileDb {}
 
 class MockDatabase extends Mock implements Database {}
 
@@ -56,12 +49,6 @@ class MockScrollController extends Mock implements ScrollController {}
 
 class MockScrollPosition extends Mock implements ScrollPosition {}
 
-// Storage
-class MockFileStorage extends Mock implements FileStorage {
-  @override
-  String get dir => '';
-}
-
 // Plugin
 class MockRecord extends Mock implements Record {}
 
@@ -74,11 +61,6 @@ class MockAndroidFlutterLocalNotificationsPlugin extends Mock
 // Misc
 
 class MockNotification extends Mock implements Notification {}
-
-class MockMultipartRequestBuilder extends Mock
-    implements MultipartRequestBuilder {}
-
-class MockMultipartRequest extends Mock implements MultipartRequest {}
 
 class Notification {
   void mockCancelAll() {}

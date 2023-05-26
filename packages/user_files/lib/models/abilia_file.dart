@@ -1,8 +1,10 @@
+library file_storage;
+
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
-import 'package:memoplanner/storage/all.dart';
-import 'package:memoplanner/ui/all.dart';
+import 'package:file_storage/file_storage.dart';
+import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 
 class AbiliaFile extends Equatable {

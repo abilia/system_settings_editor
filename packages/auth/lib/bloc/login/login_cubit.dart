@@ -3,7 +3,7 @@ import 'package:auth/repository/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
-import 'package:repository_base/db.dart';
+import 'package:repository_base/repository_base.dart';
 import 'package:seagull_clock/clock_bloc.dart';
 import 'package:sqflite/sqlite_api.dart';
 

@@ -1,0 +1,13 @@
+name: file_storage
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+  flutter: '>=2.0.0'
+
+dependencies:
+  equatable: any
+  logging: any
+
+dev_dependencies:
+  seagull_lints:
+    path: ../seagull_lints

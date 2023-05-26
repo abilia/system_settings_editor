@@ -5,7 +5,6 @@ export 'android_intents.dart';
 export 'copied_providers.dart';
 export 'dots_definition.dart';
 export 'extensions/all.dart';
-export 'image_processing.dart';
 export 'logout_messages.dart';
 export 'mixins/all.dart';
 export 'myabilia_connection.dart';

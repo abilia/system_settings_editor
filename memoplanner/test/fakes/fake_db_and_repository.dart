@@ -2,10 +2,11 @@ import 'dart:io';
 
 import 'package:auth/auth.dart';
 import 'package:calendar/all.dart';
+import 'package:file_storage/file_storage.dart';
+import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:test/fake.dart';
@@ -54,21 +55,6 @@ class FakeUserDb extends Fake implements UserDb {
 }
 
 class FakeCalendarDb extends Fake implements CalendarDb {}
-
-class FakeUserFileDb extends Fake implements UserFileDb {
-  @override
-  Future<Iterable<UserFile>> getMissingFiles({int? limit}) => Future.value([]);
-  @override
-  Future<Iterable<UserFile>> getAllLoadedFiles() => Future.value([]);
-  @override
-  Future<Iterable<DbModel<UserFile>>> getAllDirty() => Future.value([]);
-  @override
-  Future<int> getLastRevision() => Future.value(0);
-  @override
-  Future insert(Iterable<DbModel<UserFile>> dataModels) => Future.value();
-  @override
-  Future<int> countAllDirty() => Future.value(0);
-}
 
 class FakeSortableDb extends Fake implements SortableDb {
   @override
@@ -163,8 +149,6 @@ class FakeFile extends Fake implements File {
   @override
   Future<bool> exists() => Future.value(true);
 }
-
-class FakeUserFileRepository extends Fake implements UserFileRepository {}
 
 class FakeSortableRepository extends Fake implements SortableRepository {}
 

@@ -6,6 +6,7 @@ import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
+import 'package:repository_base/models/data_models.dart';
 import 'package:seagull_clock/ticker.dart';
 import 'package:seagull_fakes/all.dart';
 

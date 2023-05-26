@@ -1,5 +1,5 @@
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:repository_base/repository_base.dart';
+import 'package:utils/utils.dart';
 
 class UserFile extends DataModel {
   static const imageEndings = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff'];

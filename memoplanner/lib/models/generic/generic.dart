@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:uuid/uuid.dart';
 

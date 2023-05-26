@@ -1,11 +1,10 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:file_storage/image_thumb.dart';
 import 'package:image/image.dart';
-import 'package:memoplanner/models/all.dart';
 
 const imageQuality = 80;
-const imageMaxSize = 1500;
 
 class ImageResponse {
   final List<int> originalImage;
@@ -14,18 +13,6 @@ class ImageResponse {
   ImageResponse({
     required this.originalImage,
     required this.thumb,
-  });
-}
-
-class ImageRequest {
-  final List<int> data;
-  final String id;
-  final String path;
-
-  ImageRequest({
-    required this.data,
-    required this.id,
-    required this.path,
   });
 }
 

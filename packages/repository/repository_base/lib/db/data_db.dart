@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 
-import 'package:sortables/models/meta_models.dart';
+import 'package:repository_base/models/data_models.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:utils/utils.dart';
 

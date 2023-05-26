@@ -1,3 +1,4 @@
+export 'data_repository.dart';
 export 'db.dart';
 export 'end_point.dart';
 export 'json_response.dart';

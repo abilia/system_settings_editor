@@ -455,6 +455,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.4"
+  file_storage:
+    dependency: "direct main"
+    description:
+      path: "../packages/file_storage"
+      relative: true
+    source: path
+    version: "0.0.0"
   firebase_core:
     dependency: "direct main"
     description:
@@ -719,7 +726,7 @@ packages:
     source: hosted
     version: "4.0.2"
   image:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: image
       sha256: "483a389d6ccb292b570c31b3a193779b1b0178e7eb571986d9a49904b6861227"
@@ -1578,6 +1585,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
+  user_files:
+    dependency: "direct main"
+    description:
+      path: "../packages/user_files"
+      relative: true
+    source: path
+    version: "0.0.0"
   utils:
     dependency: "direct main"
     description:

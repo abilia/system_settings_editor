@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:repository_base/db/database_repository.dart';
+import 'package:repository_base/repository_base.dart';
 import 'package:sortables/all.dart';
 import 'package:sqflite/sqflite.dart';
 

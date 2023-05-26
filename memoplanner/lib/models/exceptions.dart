@@ -1,10 +1,6 @@
 import 'package:http/http.dart';
 import 'package:memoplanner/models/settings/speech_support/voice_data.dart';
 
-class WrongRevisionException implements Exception {
-  String errMsg() => 'Unavailable';
-}
-
 class VoiceFileDownloadException implements Exception {
   final VoiceFile voiceFile;
   final String? message;
