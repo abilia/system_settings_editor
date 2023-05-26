@@ -90,6 +90,9 @@ void main() {
 
       testWidgets('Add recurring activity', (tester) async {
         await tester.goToNewActivitySettingsPage();
+        await tester.dragFrom(
+            tester.getCenter(find.byType(Scaffold)), const Offset(0.0, -200));
+        await tester.pump();
         await tester.tap(find.text(translate.addRecurringActivity));
         await tester.pumpAndSettle();
         await tester.tap(find.byType(OkButton));
@@ -282,6 +285,7 @@ void main() {
             genericDb,
             key: EditActivitySettings.titleKey,
             matcher: isFalse,
+            scroll: -100,
           );
         });
 
@@ -291,6 +295,7 @@ void main() {
             genericDb,
             key: EditActivitySettings.imageKey,
             matcher: isFalse,
+            scroll: -100,
           );
         });
 
@@ -311,6 +316,7 @@ void main() {
             genericDb,
             key: EditActivitySettings.dateKey,
             matcher: isFalse,
+            scroll: -100,
           );
         });
 
@@ -320,6 +326,7 @@ void main() {
             genericDb,
             key: EditActivitySettings.checkableKey,
             matcher: isFalse,
+            scroll: -100,
           );
         });
 
@@ -329,6 +336,7 @@ void main() {
             genericDb,
             key: EditActivitySettings.availabilityKey,
             matcher: isFalse,
+            scroll: -200,
           );
         });
 
@@ -338,6 +346,7 @@ void main() {
             genericDb,
             key: EditActivitySettings.removeAfterKey,
             matcher: isFalse,
+            scroll: -200,
           );
         });
 
@@ -347,6 +356,7 @@ void main() {
             genericDb,
             key: EditActivitySettings.alarmKey,
             matcher: isFalse,
+            scroll: -300,
           );
         });
 
@@ -356,6 +366,7 @@ void main() {
             genericDb,
             key: EditActivitySettings.checklistKey,
             matcher: isFalse,
+            scroll: -600,
           );
         });
 
@@ -365,6 +376,7 @@ void main() {
             genericDb,
             key: EditActivitySettings.notesKey,
             matcher: isFalse,
+            scroll: -600,
           );
         });
 
@@ -374,6 +386,7 @@ void main() {
             genericDb,
             key: EditActivitySettings.remindersKey,
             matcher: isFalse,
+            scroll: -600,
           );
         });
 
@@ -395,6 +408,7 @@ void main() {
             genericDb,
             key: StepByStepSettings.templateKey,
             matcher: isFalse,
+            scroll: -200,
           );
         });
 
@@ -413,6 +427,7 @@ void main() {
             genericDb,
             key: StepByStepSettings.imageKey,
             matcher: isFalse,
+            scroll: -200,
           );
         });
 
@@ -462,6 +477,7 @@ void main() {
             genericDb,
             key: StepByStepSettings.availabilityKey,
             matcher: isFalse,
+            scroll: -200,
           );
         });
 
@@ -480,6 +496,7 @@ void main() {
             genericDb,
             key: StepByStepSettings.alarmKey,
             matcher: isFalse,
+            scroll: -400,
           );
         });
 
@@ -489,6 +506,7 @@ void main() {
             genericDb,
             key: StepByStepSettings.checklistKey,
             matcher: isFalse,
+            scroll: -600,
           );
         });
 
@@ -498,6 +516,7 @@ void main() {
             genericDb,
             key: StepByStepSettings.notesKey,
             matcher: isFalse,
+            scroll: -600,
           );
         });
 
@@ -507,6 +526,7 @@ void main() {
             genericDb,
             key: StepByStepSettings.remindersKey,
             matcher: isFalse,
+            scroll: -600,
           );
         });
       });
@@ -532,6 +552,9 @@ void main() {
       testWidgets('Select silent only at start', (tester) async {
         await tester.goToDefaultsTab();
         expect(find.byType(AddActivityDefaultSettingsTab), findsOneWidget);
+        await tester.dragFrom(
+            tester.getCenter(find.byType(Scaffold)), const Offset(0.0, -200));
+        await tester.pump();
         await tester.tap(find.text(translate.silentAlarm));
         await tester.pumpAndSettle();
         await tester.tap(find.text(translate.alarmOnlyAtStartTime));
@@ -630,8 +653,11 @@ extension on WidgetTester {
     MockGenericDb genericDb, {
     required String key,
     required matcher,
+        double scroll = 0,
   }) async {
     await goToAddTab();
+    await dragFrom(getCenter(find.byType(Scaffold)), Offset(0.0, scroll));
+    await pump();
     await tap(f);
     await pumpAndSettle();
     await tap(find.byType(OkButton));
@@ -650,13 +676,14 @@ extension on WidgetTester {
     MockGenericDb genericDb, {
     required String key,
     required matcher,
+    double scroll = -100,
   }) async {
     await goToAddTab();
     await tap(find.text(Locales.language.values.first.stepByStep));
     await pumpAndSettle();
     expect(find.byType(AddActivityAddSettingsTab), findsOneWidget);
-    await dragUntilVisible(
-        finder, find.byType(AddActivityAddSettingsTab), const Offset(0, -100));
+    await dragFrom(getCenter(find.byType(Scaffold)), Offset(0.0, scroll));
+    await pumpAndSettle();
     await pumpAndSettle();
     await tap(finder);
     await pumpAndSettle();

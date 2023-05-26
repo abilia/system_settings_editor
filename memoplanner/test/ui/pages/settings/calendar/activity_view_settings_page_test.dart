@@ -170,7 +170,7 @@ void main() {
     testWidgets('hide alarm button saved', (tester) async {
       await tester.goToActivityViewSettingsPage();
       expect(find.byKey(TestKey.editAlarm), findsOneWidget);
-      await tester.tap(find.text(translate.alarm));
+      await tester.tap(find.text(translate.alarm).last);
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.editAlarm), findsNothing);
       await tester.tap(find.byType(OkButton));
@@ -186,7 +186,7 @@ void main() {
     testWidgets('hide delete button saved', (tester) async {
       await tester.goToActivityViewSettingsPage();
       expect(find.byIcon(AbiliaIcons.deleteAllClear), findsNWidgets(2));
-      await tester.tap(find.text(translate.delete));
+      await tester.tap(find.text(translate.delete).last);
       await tester.pumpAndSettle();
       expect(find.byIcon(AbiliaIcons.deleteAllClear), findsOneWidget);
       await tester.tap(find.byType(OkButton));
@@ -203,12 +203,12 @@ void main() {
       await tester.goToActivityViewSettingsPage();
       expect(find.byIcon(AbiliaIcons.edit), findsNWidgets(2));
       await tester.dragUntilVisible(
-        find.text(translate.edit),
+        find.text(translate.edit).last,
         find.byType(ActivityViewSettingsPage),
         const Offset(0, -100),
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.text(translate.edit));
+      await tester.tap(find.text(translate.edit).last);
       await tester.pumpAndSettle();
       expect(find.byIcon(AbiliaIcons.edit), findsOneWidget);
       await tester.tap(find.byType(OkButton));

@@ -501,7 +501,7 @@ void main() {
           // Act
           await goToNewActivity(tester);
           final center = tester.getCenter(find.byType(EditActivityPage));
-          await tester.dragFrom(center, const Offset(0.0, -200));
+          await tester.dragFrom(center, const Offset(0.0, -500));
           await tester.pump();
           await tester.tap(find.byType(AvailableForWidget));
           await tester.pumpAndSettle();
