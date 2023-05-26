@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:abilia_sync/abilia_sync.dart';
+import 'package:auth/push.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:utils/utils.dart';
 
@@ -30,4 +31,9 @@ class FakeLastSyncDb extends Fake implements LastSyncDb {
 
   @override
   DateTime? getLastSyncTime() => fakeLastSync.fromMillisecondsSinceEpoch();
+}
+
+class FakeFirebasePushService extends Fake implements FirebasePushService {
+  @override
+  Future<String?> initPushToken() => Future.value('fakeToken');
 }

@@ -152,11 +152,6 @@ class FakeFile extends Fake implements File {
 
 class FakeSortableRepository extends Fake implements SortableRepository {}
 
-class FakeFirebasePushService extends Fake implements FirebasePushService {
-  @override
-  Future<String?> initPushToken() => Future.value('fakeToken');
-}
-
 class FakeVoiceDb extends Fake implements VoiceDb {
   @override
   Future setVoice(String voice) async {}

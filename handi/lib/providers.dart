@@ -12,6 +12,7 @@ import 'package:sqflite/sqlite_api.dart';
 
 class Providers extends StatelessWidget {
   final Widget child;
+
   const Providers({required this.child, super.key});
 
   @override
@@ -64,7 +65,7 @@ class Providers extends StatelessWidget {
               clockBloc: context.read<ClockBloc>(),
               userRepository: context.read<UserRepository>(),
               database: GetIt.I<Database>(),
-              allowExiredLicense: false,
+              allowExpiredLicense: false,
               licenseType: LicenseType.handi,
             ),
           ),
