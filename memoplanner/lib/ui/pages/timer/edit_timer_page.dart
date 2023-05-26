@@ -109,9 +109,9 @@ class _EditTimerPage extends StatelessWidget {
         ),
         body: Padding(
           padding: layout.templates.m3,
-          child: Column(
+          child: const Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
+            children: [
               _TimerInfoInput(),
               Expanded(
                 child: EditTimerWheel(),

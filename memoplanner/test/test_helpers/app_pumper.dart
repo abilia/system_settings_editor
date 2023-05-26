@@ -20,15 +20,16 @@ extension IncreaseSizeOnMp on WidgetTester {
       setScreenSize(const Size(800, 1280));
     }
     if (use24) {
-      binding.platformDispatcher.alwaysUse24HourFormatTestValue = use24;
-      addTearDown(binding.platformDispatcher.clearAlwaysUse24HourTestValue);
+      platformDispatcher.alwaysUse24HourFormatTestValue = use24;
+      addTearDown(platformDispatcher.clearAlwaysUse24HourTestValue);
     }
   }
 
   void setScreenSize(Size size) {
-    binding.window.physicalSizeTestValue = size;
-    binding.window.devicePixelRatioTestValue = 1;
-    addTearDown(binding.window.clearPhysicalSizeTestValue);
-    addTearDown(binding.window.clearDevicePixelRatioTestValue);
+    view
+      ..physicalSize = size
+      ..devicePixelRatio = 1;
+    addTearDown(view.resetPhysicalSize);
+    addTearDown(view.resetDevicePixelRatio);
   }
 }

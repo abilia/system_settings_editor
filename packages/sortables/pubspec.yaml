@@ -10,32 +10,32 @@ dependencies:
   auth:
     path:
       ../auth
-  bloc_concurrency: ^0.2.0
-  bloc_test: ^9.0.3
-  collection: ^1.17.0
-  equatable: ^2.0.3
+  bloc_concurrency: any
+  bloc_test: any
+  collection: any
+  equatable: any
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.0.1
-  http: ^0.13.5
-  intl: ^0.17.0
+  flutter_bloc: any
+  http: any
+  intl: any
   logging: any
-  meta: ^1.7.0
+  meta: any
   repository_base:
     path: ../repository/repository_base
-  shared_preferences: ^2.0.8
+  shared_preferences: any
   sqflite: any
-  synchronized: ^3.0.0
-  timezone: ^0.9.0
+  synchronized: any
+  timezone: any
   utils:
     path: ../utils
-  uuid: ^3.0.5
+  uuid: any
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail: any
-  mocktail_image_network: ^0.3.1
+  mocktail_image_network: any
   seagull_fakes:
     path: ../seagull_fakes
   seagull_lints:

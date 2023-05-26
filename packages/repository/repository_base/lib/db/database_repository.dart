@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart' as ffi;
 
 class DatabaseRepository {
   DatabaseRepository._();
@@ -130,8 +130,8 @@ class DatabaseRepository {
   }
 
   static Future<Database> createInMemoryFfiDb() async {
-    sqfliteFfiInit();
-    return await databaseFactoryFfi.openDatabase(
+    ffi.sqfliteFfiInit();
+    return await ffi.databaseFactoryFfi.openDatabase(
       inMemoryDatabasePath,
       options: OpenDatabaseOptions(
         version: migrations.length + 1,

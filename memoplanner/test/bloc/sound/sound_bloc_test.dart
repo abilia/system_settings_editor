@@ -19,8 +19,9 @@ void main() {
       UnstoredAbiliaFile.forTest('testfile', 'jksd', File('nbnb'));
 
   setUp(() {
-    const MethodChannel('xyz.luan/audioplayers')
-        .setMockMethodCallHandler((methodCall) {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(const MethodChannel('xyz.luan/audioplayers'),
+            (methodCall) async {
       return null;
     });
 

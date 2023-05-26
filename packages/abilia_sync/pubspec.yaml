@@ -7,19 +7,19 @@ environment:
 dependencies:
   auth:
     path: ../auth
-  bloc_test: ^9.0.3
-  equatable: ^2.0.3
+  bloc_test: any
+  equatable: any
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.0.1
-  http: ^0.13.5
+  flutter_bloc: any
+  http: any
   logging: any
   repository_base:
     path: ../repository/repository_base
-  rxdart: ^0.27.1
+  rxdart: any
   seagull_clock:
     path: ../seagull_clock
-  shared_preferences: ^2.0.8
+  shared_preferences: any
   sortables:
     path: ../sortables
   utils:
@@ -29,8 +29,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mocktail: ^0.3.0
-  mocktail_image_network: ^0.3.1
+  mocktail: any
+  mocktail_image_network: any
   seagull_fakes:
     path: ../seagull_fakes
   seagull_lints:

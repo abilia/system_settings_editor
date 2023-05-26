@@ -149,9 +149,9 @@ void main() {
 
     testWidgets('tts on 24 h', (WidgetTester tester) async {
       addTearDown(
-        tester.binding.platformDispatcher.clearAlwaysUse24HourTestValue,
+        tester.platformDispatcher.clearAlwaysUse24HourTestValue,
       );
-      tester.binding.platformDispatcher.alwaysUse24HourFormatTestValue = true;
+      tester.platformDispatcher.alwaysUse24HourFormatTestValue = true;
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       final hour = DateFormat('H').format(time);

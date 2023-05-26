@@ -80,7 +80,8 @@ void main() {
     final List<MethodCall> log = <MethodCall>[];
 
     setUp(() {
-      channel.setMockMethodCallHandler((MethodCall methodCall) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (methodCall) async {
         log.add(methodCall);
         return newImagePath;
       });
