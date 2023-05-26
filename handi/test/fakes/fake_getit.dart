@@ -9,6 +9,7 @@ Future<void> initGetItFakes() async => initGetItWith(
       sharedPreferences:
           await FakeSharedPreferences.getInstance(loggedIn: false),
       database: FakeDatabase(),
+      firebasePushService: FakeFirebasePushService(),
       packageInfo: PackageInfo(
         appName: '',
         buildNumber: '',

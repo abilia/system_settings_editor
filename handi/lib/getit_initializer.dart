@@ -9,12 +9,6 @@ import 'package:seagull_clock/ticker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-// TODO replace with real push token
-class FakeFirebasePushService implements FirebasePushService {
-  @override
-  Future<String?> initPushToken() async => '';
-}
-
 Future<void> initGetIt() => initGetItWith();
 
 @visibleForTesting
@@ -22,6 +16,7 @@ Future<void> initGetItWith({
   ListenableClient? listenableClient,
   PackageInfo? packageInfo,
   SharedPreferences? sharedPreferences,
+  FirebasePushService? firebasePushService,
   Database? database,
 }) async {
   GetIt.I
@@ -48,5 +43,6 @@ Future<void> initGetItWith({
             version: GetIt.I<PackageInfo>().version,
           ),
     )
-    ..registerSingleton<FirebasePushService>(FakeFirebasePushService());
+    ..registerSingleton<FirebasePushService>(
+        firebasePushService ?? FirebasePushService());
 }
