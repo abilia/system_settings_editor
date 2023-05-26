@@ -65,7 +65,7 @@ class Providers extends StatelessWidget {
               clockBloc: context.read<ClockBloc>(),
               userRepository: context.read<UserRepository>(),
               database: GetIt.I<Database>(),
-              allowExiredLicense: false,
+              allowExpiredLicense: false,
               licenseType: LicenseType.handi,
             ),
           ),
