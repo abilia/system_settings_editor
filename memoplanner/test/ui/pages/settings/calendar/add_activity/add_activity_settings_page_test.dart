@@ -653,7 +653,7 @@ extension on WidgetTester {
     MockGenericDb genericDb, {
     required String key,
     required matcher,
-        double scroll = 0,
+    double scroll = 0,
   }) async {
     await goToAddTab();
     await dragFrom(getCenter(find.byType(Scaffold)), Offset(0.0, scroll));

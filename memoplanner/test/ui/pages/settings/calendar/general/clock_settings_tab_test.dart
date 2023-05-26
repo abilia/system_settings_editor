@@ -184,7 +184,8 @@ void main() {
       expect(find.text('13'), findsOneWidget);
       expect(find.text('14'), findsOneWidget);
 
-      await tester.dragFrom(tester.getCenter(find.byType(Scaffold)), const Offset(0.0, -200));
+      await tester.dragFrom(
+          tester.getCenter(find.byType(Scaffold)), const Offset(0.0, -200));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.use12hSwitch));
       await tester.pumpAndSettle();
@@ -217,7 +218,8 @@ void main() {
 
       expect(timepillarBefore.columnOfDots, isFalse);
 
-      await tester.dragFrom(tester.getCenter(find.byType(Scaffold)), const Offset(0.0, -200));
+      await tester.dragFrom(
+          tester.getCenter(find.byType(Scaffold)), const Offset(0.0, -200));
       await tester.pumpAndSettle();
 
       await tester.tap(find.text(translate.columnOfDots));
