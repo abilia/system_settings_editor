@@ -2,7 +2,7 @@
 // ignore_for_file: lines_longer_than_80_chars, avoid_classes_with_only_static_members
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, kIsWeb, TargetPlatform;
+    show TargetPlatform, defaultTargetPlatform, kIsWeb;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -56,8 +56,10 @@ class DefaultFirebaseOptions {
     projectId: 'whalewhale2013',
     databaseURL: 'https://whalewhale2013.firebaseio.com',
     storageBucket: 'whalewhale2013.appspot.com',
-    androidClientId: '340774293730-2d5k7dr9cgl2re8chbk85ltjh05s2v6v.apps.googleusercontent.com',
-    iosClientId: '340774293730-79s4gm8ju2d9hftg8pcjhgkel181ihe3.apps.googleusercontent.com',
+    androidClientId:
+        '340774293730-2d5k7dr9cgl2re8chbk85ltjh05s2v6v.apps.googleusercontent.com',
+    iosClientId:
+        '340774293730-79s4gm8ju2d9hftg8pcjhgkel181ihe3.apps.googleusercontent.com',
     iosBundleId: 'com.abilia.handicalendar6',
   );
 }
