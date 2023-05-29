@@ -10,8 +10,9 @@ void main() {
   var hasBatteryResponse = () => true;
 
   setUp(() {
-    systemSettingsChannel.setMockMethodCallHandler(
-        (MethodCall methodCall) async => hasBatteryResponse());
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+            systemSettingsChannel, (methodCall) async => hasBatteryResponse());
   });
 
   group('MPGO', () {

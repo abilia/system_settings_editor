@@ -20,8 +20,10 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
+  flutter_lints: ^2.0.1
   get_it: ^7.2.0
-  package_info_plus: ^3.0.3
+  mixpanel_flutter: ^2.1.1
+  package_info_plus: ^4.0.1
   repository_base:
     path: ../packages/repository/repository_base
   rxdart: ^0.27.1
@@ -30,11 +32,12 @@ dependencies:
   seagull_clock:
     path: ../packages/seagull_clock
   shared_preferences: ^2.0.8
-  sqflite: ^2.2.0
+  sqflite: ^2.2.5
+  sqflite_common_ffi: ^2.2.5
 
 dev_dependencies:
   bloc_test: ^9.0.3
-  flutter_launcher_icons: ^0.12.0
+  flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
   http: ^0.13.5

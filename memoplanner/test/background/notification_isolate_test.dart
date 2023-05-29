@@ -92,11 +92,13 @@ void main() {
   setUpAll(registerFallbackValues);
 
   setUp(() {
-    const MethodChannel('flutter_native_timezone')
-        .setMockMethodCallHandler((MethodCall methodCall) async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+            const MethodChannel('flutter_native_timezone'), (methodCall) async {
       if (methodCall.method == 'getLocalTimezone') {
         return '';
       }
+      return '';
     });
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.UTC);

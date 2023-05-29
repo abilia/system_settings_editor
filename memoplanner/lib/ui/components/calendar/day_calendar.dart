@@ -161,10 +161,10 @@ class CategoriesAndHiddenSettings extends StatelessWidget {
     return Column(
       children: [
         if (showCategories)
-          Row(
+          const Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children: [
               Expanded(child: LeftCategory()),
               Expanded(child: RightCategory()),
             ],

@@ -9,7 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
   logging: any
-  mixpanel_flutter: ^2.0.0
+  mixpanel_flutter: any
   seagull_lints:
     path: ../seagull_lints
 

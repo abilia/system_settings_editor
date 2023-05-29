@@ -12,7 +12,10 @@ bool get isMediumScreen => _screenSize.shortestSide > 600;
 
 Layout get layout => _layout;
 
-Size _screenSize = window.physicalSize / window.devicePixelRatio;
+FlutterView get deviceView =>
+    WidgetsBinding.instance.platformDispatcher.views.first;
+
+Size _screenSize = deviceView.physicalSize / deviceView.devicePixelRatio;
 Layout _layout = _getLayout();
 
 @visibleForTesting
@@ -191,6 +194,8 @@ abstract class Layout {
   });
 
   bool get go => runtimeType == GoLayout;
+
   bool get medium => runtimeType == MediumLayout;
+
   bool get large => runtimeType == LargeLayout;
 }

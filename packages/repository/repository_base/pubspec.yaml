@@ -12,7 +12,7 @@ dependencies:
   path: any
   shared_preferences: any
   sqflite: any
-  sqflite_common_ffi: ^2.2.0
+  sqflite_common_ffi: any
   synchronized: any
   utils:
     path: ../../utils

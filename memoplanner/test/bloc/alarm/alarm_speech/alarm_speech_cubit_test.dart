@@ -72,8 +72,9 @@ void main() {
     setUp(() async {
       touchStream = StreamController<Touch>();
       localNotificationLog.clear();
-      localNotificationChannel.setMockMethodCallHandler((methodCall) async {
-        localNotificationLog.add(methodCall);
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(localNotificationChannel,
+              (methodCall) async {
         if (methodCall.method == 'initialize') return Future.value(true);
         if (methodCall.method == 'getActiveNotifications') {
           return activeNotifications
@@ -85,13 +86,16 @@ void main() {
                   })
               .toList();
         }
+        return null;
       });
       audioLog.clear();
-      audioPlayerChannel.setMockMethodCallHandler((methodCall) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(audioPlayerChannel, (methodCall) async {
         audioLog.add(methodCall);
         if (methodCall.method == 'play') {
           return Future.value(1);
         }
+        return null;
       });
       mockUserFileBloc = MockUserFileBloc();
       when(() => mockUserFileBloc.state)

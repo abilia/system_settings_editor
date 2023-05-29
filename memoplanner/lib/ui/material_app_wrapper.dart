@@ -22,7 +22,12 @@ class MaterialAppWrapper extends StatelessWidget {
             navigatorKey: navigatorKey,
             builder: (context, child) => child != null
                 ? MediaQuery(
-                    data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                    data: MediaQuery.of(context).copyWith(
+                      textScaleFactor: 1.0,
+                      alwaysUse24HourFormat: View.of(context)
+                          .platformDispatcher
+                          .alwaysUse24HourFormat,
+                    ),
                     child: child,
                   )
                 : const SplashPage(),

@@ -26,7 +26,7 @@ dependencies:
   mime: any
   repository_base:
     path: ../repository/repository_base
-  rxdart: ^0.27.1
+  rxdart: any
   shared_preferences: any
   sqflite: any
   synchronized: any
