@@ -219,7 +219,7 @@ Future<bool> _scheduleNotification(
       time,
       NotificationDetails(android: and, iOS: iOS),
       payload: payload,
-      androidAllowWhileIdle: true,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.wallClockTime,
     );
