@@ -7,11 +7,10 @@ import 'package:flutter_archive/flutter_archive.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
-import 'package:memoplanner/config.dart';
-import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:repository_base/db.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
+import 'package:utils/string_extensions.dart';
 
 export 'package:logging/logging.dart';
 
@@ -21,6 +20,7 @@ class SeagullLogger {
   File? _logFile;
   final _uploadLock = Lock();
   final _logFileLock = Lock();
+  final String logBaseName;
   final Set<LoggingType> loggingType;
   List<StreamSubscription> loggingSubscriptions = [];
   final _log = Logger((SeagullLogger).toString());
@@ -33,25 +33,28 @@ class SeagullLogger {
   late final bool crashReporting =
       loggingType.contains(LoggingType.crashReporting);
 
-  String get logFileName => '${Config.flavor.id}.log';
+  String get logFileName => '$logBaseName.log';
 
-  factory SeagullLogger.test() => SeagullLogger(
+  factory SeagullLogger.test(logBaseName) => SeagullLogger(
         loggingType: const {LoggingType.print},
         documentsDirectory: '',
         supportId: '',
         level: Level.ALL,
+        logBaseName: logBaseName,
       );
 
-  factory SeagullLogger.nothing() => SeagullLogger(
+  factory SeagullLogger.nothing(logBaseName) => SeagullLogger(
         loggingType: const {},
         documentsDirectory: '',
         supportId: '',
         level: Level.OFF,
+        logBaseName: logBaseName,
       );
 
   SeagullLogger({
     required this.documentsDirectory,
     required this.supportId,
+    required this.logBaseName,
     this.preferences,
     this.loggingType = const {
       if (kDebugMode)
@@ -106,8 +109,7 @@ class SeagullLogger {
       final logArchivePath = '$documentsDirectory/$logArchiveDirectory';
       final logArchiveDir = Directory(logArchivePath);
       await logArchiveDir.create(recursive: true);
-      final archiveFilePath =
-          '$logArchivePath/${Config.flavor.id}_log_$time.log';
+      final archiveFilePath = '$logArchivePath/${logBaseName}_log_$time.log';
       await _logFileLock.synchronized(() async {
         await _logFile?.copy(archiveFilePath);
         await _logFile?.writeAsString('');
@@ -255,7 +257,7 @@ class SeagullLogger {
           ))
           ..fields.addAll({
             'owner': supportId,
-            'app': Config.flavor.id,
+            'app': logBaseName,
             'fileType': 'zip',
             'secret': 'Mkediq9Jjdn23jKfnKpqmfhkfjMfj',
           });

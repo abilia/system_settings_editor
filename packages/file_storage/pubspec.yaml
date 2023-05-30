@@ -6,7 +6,8 @@ environment:
 
 dependencies:
   equatable: any
-  logging: any
+  seagull_logging:
+    path: ../seagull_logging
 
 dev_dependencies:
   seagull_lints:

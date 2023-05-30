@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:memoplanner/ui/all.dart';
 
 part 'layout_large.dart';
-
 part 'layout_medium.dart';
 
 bool get isLargeScreen => _screenSize.shortestSide > 1000;
