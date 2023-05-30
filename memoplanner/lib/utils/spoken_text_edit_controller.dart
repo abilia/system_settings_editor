@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
-
 import 'package:memoplanner/tts/tts_handler.dart';
 
 class SpokenTextEditController extends TextEditingController {

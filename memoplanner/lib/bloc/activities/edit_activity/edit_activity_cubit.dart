@@ -1,12 +1,13 @@
 import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
+import 'package:logging/logging.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/timezone.dart' as tz;
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_logging/logging_levels_mixin.dart';
 
 part 'edit_activity_state.dart';
 

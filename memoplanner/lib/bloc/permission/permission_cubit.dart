@@ -5,10 +5,10 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:memoplanner/config.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:meta/meta.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:seagull_logging/logging_levels_mixin.dart';
 
 export 'package:permission_handler/permission_handler.dart';
 

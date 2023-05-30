@@ -11,7 +11,6 @@ import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/repository/sessions_repository.dart';
@@ -19,6 +18,7 @@ import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:rxdart/transformers.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
+import 'package:seagull_logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticatedBlocsProvider extends StatelessWidget {

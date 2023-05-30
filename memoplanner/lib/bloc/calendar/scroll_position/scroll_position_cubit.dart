@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/ui/components/calendar/day_calendar.dart';
+import 'package:seagull_logging/logging_levels_mixin.dart';
 
 part 'scroll_position_state.dart';
 

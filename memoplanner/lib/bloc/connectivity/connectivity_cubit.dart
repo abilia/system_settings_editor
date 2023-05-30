@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:logging/logging.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 export 'package:connectivity_plus/connectivity_plus.dart';

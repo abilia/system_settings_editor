@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:http/http.dart';
-
 import 'package:logging/logging.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';

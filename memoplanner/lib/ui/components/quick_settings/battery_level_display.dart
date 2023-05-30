@@ -1,5 +1,4 @@
 import 'package:battery_plus/battery_plus.dart';
-
 import 'package:memoplanner/ui/all.dart';
 
 class BatteryLevel extends StatelessWidget {

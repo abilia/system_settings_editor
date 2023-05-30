@@ -12,13 +12,14 @@ import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/firebase_options.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/listener/all.dart';
-import 'package:memoplanner/logging/all.dart';
+import 'package:memoplanner/logging/bloc_logging_observer.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:seagull_logging/seagull_logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final _log = Logger('main');
@@ -47,6 +48,7 @@ Future<void> initServices() async {
     documentsDirectory: documentDirectory.path,
     supportId: supportId,
     preferences: preferences,
+    logBaseName: Config.flavor.id,
   );
   _log.fine('Initializing services');
   final analytics = kReleaseMode

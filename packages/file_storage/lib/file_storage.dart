@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:file_storage/image_thumb.dart';
-import 'package:logging/logging.dart';
+import 'package:seagull_logging/seagull_logging.dart';
 
 export 'package:file_storage/image_thumb.dart';
 

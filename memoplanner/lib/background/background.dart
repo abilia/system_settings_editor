@@ -9,12 +9,12 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/firebase_options.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:seagull_logging/seagull_logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @pragma('vm:entry-point')
@@ -28,6 +28,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     documentsDirectory: documentDirectory.path,
     preferences: preferences,
     supportId: await deviceDb.getSupportId(),
+    logBaseName: Config.flavor.id,
   );
   final log = Logger('BackgroundMessageHandler');
 

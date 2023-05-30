@@ -1229,6 +1229,13 @@ packages:
       relative: true
     source: path
     version: "0.0.0"
+  seagull_logging:
+    dependency: "direct main"
+    description:
+      path: "../packages/seagull_logging"
+      relative: true
+    source: path
+    version: "0.0.0"
   shared_preferences:
     dependency: "direct main"
     description:

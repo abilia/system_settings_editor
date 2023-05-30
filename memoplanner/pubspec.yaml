@@ -76,6 +76,8 @@ dependencies:
     path: ../packages/seagull_analytics
   seagull_clock:
     path: ../packages/seagull_clock
+  seagull_logging:
+    path: ../packages/seagull_logging
   shared_preferences: ^2.0.8
   sortables:
     path: ../packages/sortables
