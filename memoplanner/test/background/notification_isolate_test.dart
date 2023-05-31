@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_storage/file_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -7,8 +8,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:logging/logging.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/storage/file_storage.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_fakes/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:uuid/uuid.dart';
@@ -91,11 +92,13 @@ void main() {
   setUpAll(registerFallbackValues);
 
   setUp(() {
-    const MethodChannel('flutter_native_timezone')
-        .setMockMethodCallHandler((MethodCall methodCall) async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+            const MethodChannel('flutter_native_timezone'), (methodCall) async {
       if (methodCall.method == 'getLocalTimezone') {
         return '';
       }
+      return '';
     });
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.UTC);
@@ -211,7 +214,7 @@ void main() {
           any(),
           captureAny(),
           payload: any(named: 'payload'),
-          androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.wallClockTime,
         ),
@@ -274,7 +277,7 @@ void main() {
       verify(() => mockedNotificationsPlugin.zonedSchedule(
           any(), any(), any(), any(), any(),
           payload: any(named: 'payload'),
-          androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.wallClockTime)).called(11);
     });
@@ -296,7 +299,7 @@ void main() {
       verify(() => mockedNotificationsPlugin.zonedSchedule(
           any(), any(), any(), any(), any(),
           payload: any(named: 'payload'),
-          androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.wallClockTime)).called(11);
     });
@@ -321,7 +324,7 @@ void main() {
       verify(() => mockedNotificationsPlugin.zonedSchedule(
           any(), any(), any(), any(), any(),
           payload: any(named: 'payload'),
-          androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.wallClockTime)).called(5);
     });
@@ -348,7 +351,7 @@ void main() {
       final details = verify(() => mockedNotificationsPlugin.zonedSchedule(
               any(), any(), any(), any(), captureAny(),
               payload: any(named: 'payload'),
-              androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+              androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
               uiLocalNotificationDateInterpretation:
                   UILocalNotificationDateInterpretation.wallClockTime))
           .captured
@@ -391,7 +394,7 @@ void main() {
         () => mockedNotificationsPlugin.zonedSchedule(
             any(), any(), any(), any(), captureAny(),
             payload: any(named: 'payload'),
-            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime),
       ).captured.single as NotificationDetails;
@@ -423,7 +426,7 @@ void main() {
         () => mockedNotificationsPlugin.zonedSchedule(
             timer1.hashCode, timer1.timer.title, any(), any(), any(),
             payload: timer1.encode(),
-            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime),
       ).called(1);
@@ -447,7 +450,7 @@ void main() {
         () => mockedNotificationsPlugin.zonedSchedule(
             any(), any(), any(), any(), any(),
             payload: any(named: 'payload'),
-            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime),
       ).called(3);
@@ -471,7 +474,7 @@ void main() {
         () => mockedNotificationsPlugin.zonedSchedule(
             timer1.hashCode, timer1.timer.title, any(), any(), any(),
             payload: timer1.encode(),
-            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime),
       ).called(1);
@@ -495,7 +498,7 @@ void main() {
         () => mockedNotificationsPlugin.zonedSchedule(
             any(), any(), any(), any(), any(),
             payload: any(named: 'payload'),
-            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime),
       ).called(3);
@@ -531,7 +534,7 @@ void main() {
       final details = verify(() => mockedNotificationsPlugin.zonedSchedule(
               any(), any(), any(), any(), captureAny(),
               payload: any(named: 'payload'),
-              androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+              androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
               uiLocalNotificationDateInterpretation:
                   UILocalNotificationDateInterpretation.wallClockTime))
           .captured
@@ -581,7 +584,7 @@ void main() {
       final details = verify(() => mockedNotificationsPlugin.zonedSchedule(
               any(), any(), any(), any(), captureAny(),
               payload: any(named: 'payload'),
-              androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+              androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
               uiLocalNotificationDateInterpretation:
                   UILocalNotificationDateInterpretation.wallClockTime))
           .captured
@@ -616,7 +619,7 @@ void main() {
       verify(() => mockedNotificationsPlugin.zonedSchedule(
           any(), any(), any(), any(), any(),
           payload: any(named: 'payload'),
-          androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.wallClockTime)).called(3);
     });
@@ -641,7 +644,7 @@ void main() {
         () => mockedNotificationsPlugin.zonedSchedule(
             any(), any(), any(), any(), any(),
             payload: any(named: 'payload'),
-            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime),
       ).called(11 + 3);
@@ -664,7 +667,7 @@ void main() {
         () => mockedNotificationsPlugin.zonedSchedule(
             any(), any(), any(), any(), any(),
             payload: any(named: 'payload'),
-            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime),
       ).called(11 + 3);

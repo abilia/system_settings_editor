@@ -1,18 +1,5 @@
 import 'package:http/http.dart';
-import 'package:memoplanner/models/all.dart';
-
-class UnavailableException implements Exception {
-  final List<int> statusCodes;
-
-  UnavailableException(this.statusCodes);
-  String errMsg() => 'Unavailable with statusCodes: $statusCodes';
-  @override
-  String toString() => errMsg();
-}
-
-class WrongRevisionException implements Exception {
-  String errMsg() => 'Unavailable';
-}
+import 'package:memoplanner/models/settings/speech_support/voice_data.dart';
 
 class VoiceFileDownloadException implements Exception {
   final VoiceFile voiceFile;
@@ -35,11 +22,4 @@ class StatusCodeException implements Exception {
 class FetchSessionsException implements Exception {
   FetchSessionsException(this.statusCode);
   final int statusCode;
-}
-
-class SyncFailedException implements Exception {
-  SyncFailedException([this.e]);
-  final Exception? e;
-  @override
-  String toString() => 'Sync failed $e';
 }

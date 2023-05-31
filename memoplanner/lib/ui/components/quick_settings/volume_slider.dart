@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:memoplanner/logging/all.dart';
+import 'package:logging/logging.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:system_settings_editor/volume_settings.dart';
 

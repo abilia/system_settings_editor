@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:file_storage/file_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -11,7 +12,7 @@ import 'package:memoplanner/config.dart';
 import 'package:memoplanner/i18n/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/storage/all.dart';
+
 import 'package:memoplanner/utils/all.dart';
 
 final _log = Logger('Notifications');
@@ -218,7 +219,7 @@ Future<bool> _scheduleNotification(
       time,
       NotificationDetails(android: and, iOS: iOS),
       payload: payload,
-      androidAllowWhileIdle: true,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.wallClockTime,
     );

@@ -12,19 +12,28 @@ class LoggedInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Center(child: Text('${authenticated.user}')),
-          OutlinedButton(
-            onPressed: () =>
-                context.read<AuthenticationBloc>().add(const LoggedOut()),
-            child: const Text('Log out'),
+        body: BlocListener<PushCubit, RemoteMessage>(
+      listener: (context, message) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Push received $message'),
           ),
-        ],
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Center(child: Text('${authenticated.user}')),
+            OutlinedButton(
+              onPressed: () =>
+                  context.read<AuthenticationBloc>().add(const LoggedOut()),
+              child: const Text('Log out'),
+            ),
+          ],
+        ),
       ),
     ));
   }

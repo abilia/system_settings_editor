@@ -6,6 +6,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
+import 'package:repository_base/models/data_models.dart';
 import 'package:seagull_fakes/all.dart';
 
 import '../../../fakes/all.dart';
@@ -79,7 +80,8 @@ void main() {
     final List<MethodCall> log = <MethodCall>[];
 
     setUp(() {
-      channel.setMockMethodCallHandler((MethodCall methodCall) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (methodCall) async {
         log.add(methodCall);
         return newImagePath;
       });

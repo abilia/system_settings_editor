@@ -240,8 +240,6 @@ void main() {
     testWidgets(
       'defaults',
       (tester) async {
-        screenSize = const Size(800, 1280);
-        addTearDown(() => screenSize = const Size(600, 600));
         await tester.goToMonthCalendar();
         final dayContainer = tester.firstWidget<Container>(
           find.descendant(
@@ -254,7 +252,6 @@ void main() {
         expect((dayContainer.decoration as BoxDecoration?)?.color,
             isNot(AbiliaColors.white110));
       },
-      skip: Config.isMPGO,
     );
 
     testWidgets(
@@ -268,8 +265,6 @@ void main() {
             ),
           ),
         ];
-        screenSize = const Size(800, 1280);
-        addTearDown(() => screenSize = const Size(600, 600));
         await tester.goToMonthCalendar();
         final dayContainer = tester.firstWidget<Container>(
           find.byKey(TestKey.monthCalendarDayBackgroundColor),
@@ -277,7 +272,6 @@ void main() {
         expect((dayContainer.decoration as BoxDecoration?)?.color,
             AbiliaColors.white110);
       },
-      skip: Config.isMPGO,
     );
   });
 }

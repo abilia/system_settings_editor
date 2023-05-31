@@ -1,0 +1,32 @@
+name: seagull_logging
+
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+  flutter: '>=2.0.0'
+
+dependencies:
+  firebase_core: any
+  firebase_crashlytics: any
+  flutter:
+    sdk: flutter
+  flutter_archive: any
+  http: any
+  intl: any
+  logging: any
+  repository_base:
+    path: ../repository/repository_base
+  shared_preferences: any
+  synchronized: any
+  utils:
+    path: ../utils
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: any
+  mocktail_image_network: any
+  seagull_fakes:
+    path: ../seagull_fakes
+  seagull_lints:
+    path: ../seagull_lints

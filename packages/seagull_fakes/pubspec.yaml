@@ -5,21 +5,31 @@ environment:
   flutter: '>=2.0.0'
 
 dependencies:
+  abilia_sync:
+    path: ../abilia_sync
   auth:
     path: ../auth
-  bloc_test: ^9.1.1
+  bloc_test: any
   calendar:
     path: ../calendar
+  file_storage:
+    path: ../file_storage
   flutter:
     sdk: flutter
-  http: ^0.13.5
-  mocktail: ^0.3.0
+  http: any
+  mocktail: any
   repository_base:
     path: ../repository/repository_base
   seagull_analytics:
     path: ../seagull_analytics
-  shared_preferences: ^2.0.18
-  sqflite: ^2.2.5
+  shared_preferences: any
+  sortables:
+    path: ../sortables
+  sqflite: any
+  user_files:
+    path: ../user_files
+  utils:
+    path: ../utils
 
 dev_dependencies:
   flutter_test:

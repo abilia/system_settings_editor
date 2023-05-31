@@ -16,8 +16,8 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() async {
-    systemSettingsChannel
-        .setMockMethodCallHandler((MethodCall methodCall) async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(systemSettingsChannel, (methodCall) async {
       switch (methodCall.method) {
         case 'getSoundEffectsEnabled':
           return true;
@@ -28,6 +28,7 @@ void main() {
         case 'canWriteSettings':
           return true;
       }
+      return null;
     });
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
@@ -46,7 +47,8 @@ void main() {
   });
 
   tearDown(() {
-    systemSettingsChannel.setMockMethodCallHandler(null);
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(systemSettingsChannel, null);
     GetIt.I.reset();
   });
 

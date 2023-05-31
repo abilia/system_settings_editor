@@ -1,23 +1,24 @@
 import 'dart:io';
 
+import 'package:abilia_sync/abilia_sync.dart';
 import 'package:auth/auth.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:calendar/all.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:file_storage/file_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/storage/file_storage.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
 import 'package:seagull_clock/ticker.dart';
+import 'package:seagull_logging/seagull_logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 export 'package:get_it/get_it.dart';
@@ -101,7 +102,7 @@ class GetItInitializer {
   late Database _database;
   set database(Database database) => _database = database;
 
-  late SeagullLogger _seagullLogger = SeagullLogger.nothing();
+  late SeagullLogger _seagullLogger = SeagullLogger.nothing(Config.flavor.id);
   set seagullLogger(SeagullLogger seagullLogger) =>
       _seagullLogger = seagullLogger;
 

@@ -1,23 +1,24 @@
 // ignore_for_file: discarded_futures
 
+import 'package:abilia_sync/abilia_sync.dart';
 import 'package:auth/auth.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:calendar/all.dart';
+import 'package:file_storage/file_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/repository/sessions_repository.dart';
-import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:rxdart/transformers.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
+import 'package:seagull_logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticatedBlocsProvider extends StatelessWidget {
@@ -179,6 +180,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   SortableBloc(
                     sortableRepository: context.read<SortableRepository>(),
                     syncBloc: context.read<SyncBloc>(),
+                    fileStorageFolder: FileStorage.folder,
                   ),
               lazy: false,
             ),
@@ -305,8 +307,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   battery: GetIt.I<Battery>(),
                   settingsDb: GetIt.I<SettingsDb>(),
                   hasBattery: GetIt.I<Device>().hasBattery,
-                  settingsStream:
-                      context.read<MemoplannerSettingsBloc>().stream,
                 ),
               ),
               BlocProvider<InactivityCubit>(

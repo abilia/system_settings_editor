@@ -6,36 +6,19 @@ import 'package:battery_plus/battery_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/models/settings/all.dart';
 import 'package:memoplanner/utils/all.dart';
-import 'package:rxdart/rxdart.dart';
 
 class WakeLockCubit extends Cubit<WakeLockState> {
   late final StreamSubscription _batterySubscription;
   final SettingsDb settingsDb;
   WakeLockCubit({
     required Battery battery,
-    required Stream<MemoplannerSettings> settingsStream,
     required this.settingsDb,
     required bool hasBattery,
   }) : super(WakeLockState(
           keepScreenOnWhileCharging: settingsDb.keepScreenOnWhileCharging,
           hasBattery: hasBattery,
         )) {
-    // TODO Remove in 4.3
-    if (!settingsDb.keepScreenOnWhileChargingSet) {
-      settingsStream.whereType<MemoplannerSettingsLoaded>().take(1).listen(
-        (state) async {
-          await setKeepScreenOnWhileCharging(
-            state.keepScreenAwake.keepScreenOnWhileCharging,
-          );
-          if (state.keepScreenAwake.keepScreenOnAlways) {
-            setScreenTimeout(maxScreenTimeoutDuration);
-          }
-        },
-      );
-    }
-
     _batterySubscription = battery.onBatteryStateChanged.listen(
       (event) => emit(
         state.copyWith(

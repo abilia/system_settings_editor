@@ -1,0 +1,45 @@
+name: user_files
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+  flutter: '>=2.0.0'
+
+dependencies:
+  abilia_sync:
+    path: ../abilia_sync
+  auth:
+    path: ../auth
+  bloc_concurrency: any
+  bloc_test: any
+  collection: any
+  crypto: any
+  equatable: any
+  file_storage:
+    path: ../file_storage
+  flutter:
+    sdk: flutter
+  flutter_bloc: any
+  http: any
+  image: any
+  logging: any
+  meta: any
+  mime: any
+  repository_base:
+    path: ../repository/repository_base
+  rxdart: any
+  shared_preferences: any
+  sqflite: any
+  synchronized: any
+  utils:
+    path: ../utils
+  uuid: any
+
+dev_dependencies:
+  file: any
+  flutter_test:
+    sdk: flutter
+  mocktail: any
+  seagull_fakes:
+    path: ../seagull_fakes
+  seagull_lints:
+    path: ../seagull_lints

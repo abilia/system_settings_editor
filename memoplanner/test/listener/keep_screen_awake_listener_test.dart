@@ -37,8 +37,8 @@ void main() {
   }) {
     systemSettingsChannelCallCounter = {};
     systemSettingsChannelCallArguments = {};
-    systemSettingsChannel
-        .setMockMethodCallHandler((MethodCall methodCall) async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(systemSettingsChannel, (methodCall) async {
       final cc = systemSettingsChannelCallCounter[methodCall.method] ?? 0;
       systemSettingsChannelCallCounter[methodCall.method] = cc + 1;
       if (methodCall.arguments != null) {
@@ -51,6 +51,7 @@ void main() {
         case getScreenOffTimeout:
           return screenOffTimeout;
       }
+      return null;
     });
   }
 
@@ -65,7 +66,6 @@ void main() {
 
     wakeLockCubit = WakeLockCubit(
       battery: mockBattery,
-      settingsStream: const Stream.empty(),
       settingsDb: FakeSettingsDb(),
       hasBattery: true,
     );

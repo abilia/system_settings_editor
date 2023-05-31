@@ -48,9 +48,9 @@ class StartupGuidePage extends StatelessWidget {
             ),
             bottomNavigationBar: Padding(
               padding: layout.templates.m7.copyWith(top: 0),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   AbiliaLogo(),
                   if (Config.dev) _SkipStartupGuide(),
                   IconActionButtonDark(

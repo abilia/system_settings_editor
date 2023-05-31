@@ -41,7 +41,7 @@ class LoginPage extends StatelessWidget {
         clockBloc: BlocProvider.of<ClockBloc>(context),
         userRepository: context.read<UserRepository>(),
         database: GetIt.I<Database>(),
-        allowExiredLicense: Config.isMP,
+        allowExpiredLicense: Config.isMP,
         licenseType: LicenseType.memoplanner,
       ),
       child: BlocListener<LoginCubit, LoginState>(

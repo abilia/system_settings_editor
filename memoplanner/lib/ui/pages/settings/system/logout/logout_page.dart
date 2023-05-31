@@ -1,14 +1,15 @@
 import 'dart:io';
 
+import 'package:abilia_sync/abilia_sync.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_logging/logging.dart';
 
 part 'warning_modal.dart';
 
@@ -54,6 +55,10 @@ class LogoutPage extends StatelessWidget {
             child: BlocProvider<LogoutSyncCubit>(
               create: (context) => LogoutSyncCubit(
                 syncBloc: context.read<SyncBloc>(),
+                activityDb: context.read<ActivityRepository>().activityDb,
+                userFileDb: context.read<UserFileRepository>().userFileDb,
+                genericDb: context.read<GenericRepository>().genericDb,
+                sortableDb: context.read<SortableRepository>().sortableDb,
                 authenticationBloc: context.read<AuthenticationBloc>(),
                 syncDelay: GetIt.I<SyncDelays>(),
                 licenseCubit: context.read<LicenseCubit>(),
@@ -146,6 +151,7 @@ class LogoutButton extends StatelessWidget {
     this.style,
     super.key,
   });
+
   final ButtonStyle? style;
   final VoidCallback? onPressed;
 

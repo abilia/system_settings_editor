@@ -4,12 +4,11 @@ import 'dart:collection';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/logging/all.dart';
-
 import 'package:memoplanner/models/all.dart';
+import 'package:seagull_logging/logging_levels_mixin.dart';
 
-part 'timer_alarm_state.dart';
 part 'timer_alarm_event.dart';
+part 'timer_alarm_state.dart';
 
 class TimerAlarmBloc extends Bloc<TimerAlarmEvent, TimerAlarmState> {
   static const timerLifespan = Duration(hours: 24);

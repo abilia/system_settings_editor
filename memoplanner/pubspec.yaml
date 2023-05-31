@@ -1,6 +1,6 @@
 name: memoplanner
-description: The seagull app.
-version: 4.2.1
+description: MEMOplanner GO and MEMOPlanner 4
+version: 4.3.0
 publish_to: none
 
 environment:
@@ -8,26 +8,30 @@ environment:
   flutter: '>=2.0.0'
 
 dependencies:
+  abilia_sync:
+    path: ../packages/abilia_sync
   acapela_tts:
     git:
       url: https://github.com/abilia/acapela_tts.git
       ref: v1.1.3
-  android_intent_plus: ^3.1.5
-  audioplayers: ^3.0.1
+  android_intent_plus: ^4.0.1
+  audioplayers: ^4.0.1
   auth:
     path: ../packages/auth
   auto_size_text: ^3.0.0
-  battery_plus: ^3.0.2
+  battery_plus: ^4.0.1
   bloc_concurrency: ^0.2.0
   calendar:
     path: ../packages/calendar
   collection: ^1.17.0
-  connectivity_plus: ^3.0.2
+  connectivity_plus: ^4.0.1
   crypto: ^3.0.1
   device_info_plus: ^8.0.0
   dotted_border: ^2.0.0
   envied: ^0.3.0
   equatable: ^2.0.3
+  file_storage:
+    path: ../packages/file_storage
   firebase_core: ^2.11.0
   firebase_crashlytics: ^3.0.4
   firebase_messaging: ^14.5.0
@@ -36,10 +40,11 @@ dependencies:
   flutter_archive: ^4.2.2
   flutter_bloc: ^8.0.1
   flutter_isolate: ^2.0.3
+  flutter_lints: ^2.0.1
   flutter_local_notifications:
     git:
       url: https://github.com/abilia/flutter_local_notifications.git
-      ref: flutter_local_notifications-v13.0.0-fork-3.2
+      ref: flutter_local_notifications-v14.1.0-fork-3.4
       path: flutter_local_notifications/
   flutter_localizations:
     sdk: flutter
@@ -49,13 +54,13 @@ dependencies:
   get_it: ^7.2.0
   google_fonts: ^4.0.3
   http: ^0.13.5
-  image: ^4.0.15
   image_picker: ^0.8.6
-  intl: ^0.17.0
+  intl: ^0.18.0
   logging: ^1.1.0
   matrix4_transform: ^2.0.1
   meta: ^1.7.0
   mime: ^1.0.1
+  mixpanel_flutter: ^2.1.1
   murmurhash: ^1.0.1
   package_info_plus: ^3.0.3
   path: ^1.8.1
@@ -71,8 +76,13 @@ dependencies:
     path: ../packages/seagull_analytics
   seagull_clock:
     path: ../packages/seagull_clock
+  seagull_logging:
+    path: ../packages/seagull_logging
   shared_preferences: ^2.0.8
-  sqflite: ^2.2.0
+  sortables:
+    path: ../packages/sortables
+  sqflite: ^2.2.5
+  sqflite_common_ffi: ^2.2.5
   synchronized: ^3.0.0
   system_settings_editor:
     git:
@@ -80,6 +90,8 @@ dependencies:
       ref: v1.3.7
   timezone: ^0.9.0
   transparent_image: ^2.0.0
+  user_files:
+    path: ../packages/user_files
   utils:
     path: ../packages/utils
   uuid: ^3.0.5

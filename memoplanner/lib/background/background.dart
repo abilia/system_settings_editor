@@ -2,19 +2,19 @@ import 'dart:async';
 
 import 'package:auth/http_client.dart';
 import 'package:auth/licenses_extensions.dart';
+import 'package:file_storage/file_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:memoplanner/background/all.dart';
+import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/firebase_options.dart';
-import 'package:memoplanner/logging/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/storage/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:seagull_logging/seagull_logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @pragma('vm:entry-point')
@@ -28,6 +28,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     documentsDirectory: documentDirectory.path,
     preferences: preferences,
     supportId: await deviceDb.getSupportId(),
+    logBaseName: Config.flavor.id,
   );
   final log = Logger('BackgroundMessageHandler');
 

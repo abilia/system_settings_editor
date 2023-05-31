@@ -13,10 +13,12 @@ Future _ttsHandler(MethodCall methodCall) async {
 
 void setupFakeTts() {
   _spoken = null;
-  if (TestDefaultBinaryMessengerBinding.instance?.defaultBinaryMessenger
+  if (TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .checkMockMessageHandler(_ttsChannelName, _ttsHandler) ==
       false) {
-    const MethodChannel(_ttsChannelName).setMockMethodCallHandler(_ttsHandler);
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+            const MethodChannel(_ttsChannelName), _ttsHandler);
   }
 }
 

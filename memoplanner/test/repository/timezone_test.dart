@@ -5,12 +5,14 @@ import 'package:memoplanner/repository/timezone.dart';
 void main() {
   setUp(() {
     TestWidgetsFlutterBinding.ensureInitialized();
-    const MethodChannel('flutter_native_timezone')
-        .setMockMethodCallHandler((MethodCall methodCall) async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+            const MethodChannel('flutter_native_timezone'), (methodCall) async {
       switch (methodCall.method) {
         case 'getLocalTimezone':
           return 'UTC+2';
       }
+      return null;
     });
   });
 

@@ -1,0 +1,37 @@
+name: abilia_sync
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+  flutter: '>=2.0.0'
+
+dependencies:
+  auth:
+    path: ../auth
+  bloc_test: any
+  equatable: any
+  flutter:
+    sdk: flutter
+  flutter_bloc: any
+  http: any
+  logging: any
+  repository_base:
+    path: ../repository/repository_base
+  rxdart: any
+  seagull_clock:
+    path: ../seagull_clock
+  shared_preferences: any
+  sortables:
+    path: ../sortables
+  utils:
+    path: ../utils
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: any
+  mocktail_image_network: any
+  seagull_fakes:
+    path: ../seagull_fakes
+  seagull_lints:
+    path: ../seagull_lints

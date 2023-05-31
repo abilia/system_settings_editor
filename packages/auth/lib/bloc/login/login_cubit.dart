@@ -3,7 +3,7 @@ import 'package:auth/repository/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
-import 'package:repository_base/db.dart';
+import 'package:repository_base/repository_base.dart';
 import 'package:seagull_clock/clock_bloc.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -16,7 +16,7 @@ class LoginCubit extends Cubit<LoginState> {
     required this.clockBloc,
     required this.userRepository,
     required this.database,
-    required this.allowExiredLicense,
+    required this.allowExpiredLicense,
     required this.licenseType,
   }) : super(LoginState.initial());
 
@@ -27,7 +27,7 @@ class LoginCubit extends Cubit<LoginState> {
   final FirebasePushService pushService;
   final ClockBloc clockBloc;
   final UserRepository userRepository;
-  final bool allowExiredLicense;
+  final bool allowExpiredLicense;
   final LicenseType licenseType;
 
   void usernameChanged(String username) {
@@ -114,7 +114,7 @@ class LoginCubit extends Cubit<LoginState> {
         licenses.anyValidLicense(clockBloc.state, licenseType);
     final hasLicense = licenses.anyLicense(licenseType);
     final hasLicenseAndLicenseExpiredConfirmed =
-        allowExiredLicense && hasLicense && licenseExpiredConfirmed;
+        allowExpiredLicense && hasLicense && licenseExpiredConfirmed;
 
     if (hasValidLicense || hasLicenseAndLicenseExpiredConfirmed) {
       return _loginSuccess();
@@ -124,7 +124,7 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   LoginFailureCause _getLicenceFailureCause(bool hasLicense) {
-    if (allowExiredLicense && hasLicense) {
+    if (allowExpiredLicense && hasLicense) {
       return LoginFailureCause.licenseExpired;
     }
     return LoginFailureCause.noLicense;

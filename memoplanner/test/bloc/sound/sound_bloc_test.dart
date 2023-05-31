@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_fakes/all.dart';
 
 import '../../fakes/all.dart';
 
@@ -18,8 +19,9 @@ void main() {
       UnstoredAbiliaFile.forTest('testfile', 'jksd', File('nbnb'));
 
   setUp(() {
-    const MethodChannel('xyz.luan/audioplayers')
-        .setMockMethodCallHandler((methodCall) {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(const MethodChannel('xyz.luan/audioplayers'),
+            (methodCall) async {
       return null;
     });
 

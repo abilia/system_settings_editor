@@ -2,4 +2,8 @@ export 'analytics/fake_seagull_analytics.dart';
 export 'auth/fakes.dart';
 export 'auth/mocks.dart';
 export 'calendar.dart';
+export 'multipart_request.dart';
 export 'repository/fakes.dart';
+export 'sortables/fakes.dart';
+export 'sync/fakes.dart';
+export 'user_files/fakes.dart';

@@ -1,3 +1,4 @@
+export 'package:file_storage/file_storage.dart';
 export 'package:flutter/material.dart'
     hide AboutDialog, BackButton, CloseButton, MenuItemButton;
 export 'package:memoplanner/config.dart';

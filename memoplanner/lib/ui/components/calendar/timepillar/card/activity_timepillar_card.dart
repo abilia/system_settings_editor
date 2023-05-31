@@ -36,7 +36,7 @@ class ActivityTimepillarCard extends TimepillarCard {
         bloc.state.dayCalendar.viewOptions.dots);
     final showCategoryColor = context.select((MemoplannerSettingsBloc bloc) =>
         bloc.state.calendar.categories.showColors);
-    final borderWidth = (decoration.padding?.vertical ?? 0) / 2;
+    final borderWidth = (decoration.padding.vertical) / 2;
     final imagePadding = measures.imagePadding.vertical / 2;
     final smallImagePadding = measures.smallImagePadding.vertical / 2;
     final textPadding = measures.textPadding.vertical / 2;

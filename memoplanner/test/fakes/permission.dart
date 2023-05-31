@@ -38,10 +38,12 @@ void setupPermissions(
   openAppSettingsCalls = 0;
   _permissions = permissions;
 
-  if (TestDefaultBinaryMessengerBinding.instance?.defaultBinaryMessenger
+  if (TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .checkMockMessageHandler(_methodChannelName, _handler) ==
       false) {
-    const MethodChannel(_methodChannelName).setMockMethodCallHandler(_handler);
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+            const MethodChannel(_methodChannelName), _handler);
   }
 }
 

@@ -1,7 +1,6 @@
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/settings/all.dart';
 import 'package:memoplanner/ui/all.dart';
-
 import 'package:memoplanner/ui/pages/settings/system/code_protect/change_code_protect_page.dart';
 
 class CodeProtectSettingsPage extends StatelessWidget {

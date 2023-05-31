@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class TimeInterval extends Equatable {
@@ -28,7 +27,7 @@ class TimeInterval extends Equatable {
     this.startTime,
     this.endTime,
     DateTime? endDate,
-  }) : endDate = endDate ?? Recurs.noEndDate;
+  }) : endDate = endDate ?? noEndDate;
 
   const TimeInterval._({
     required this.startDate,
@@ -43,7 +42,7 @@ class TimeInterval extends Equatable {
     DateTime? endDate,
   )   : startTime = TimeOfDay.fromDateTime(startDate),
         endTime = endTime != null ? TimeOfDay.fromDateTime(endTime) : null,
-        endDate = endDate ?? Recurs.noEndDate;
+        endDate = endDate ?? noEndDate;
 
   TimeInterval copyWith({
     TimeOfDay? startTime,

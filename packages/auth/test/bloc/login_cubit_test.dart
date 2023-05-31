@@ -42,7 +42,7 @@ void main() {
         clockBloc: ClockBloc.fixed(time),
         userRepository: mockUserRepository,
         database: mockDb,
-        allowExiredLicense: false,
+        allowExpiredLicense: false,
         licenseType: LicenseType.memoplanner,
       );
     });
@@ -225,7 +225,7 @@ void main() {
         clockBloc: ClockBloc.fixed(time),
         userRepository: mockedUserRepository,
         database: mockDb,
-        allowExiredLicense: false,
+        allowExpiredLicense: false,
         licenseType: LicenseType.memoplanner,
       );
       when(() => mockedUserRepository.baseUrl).thenReturn('url');
@@ -332,7 +332,7 @@ void main() {
         clockBloc: ClockBloc.fixed(time),
         userRepository: mockUserRepository,
         database: mockDb,
-        allowExiredLicense: false,
+        allowExpiredLicense: false,
         licenseType: LicenseType.memoplanner,
       );
 
@@ -389,7 +389,7 @@ void main() {
         clockBloc: ClockBloc.fixed(time),
         userRepository: mockUserRepository,
         database: mockDb,
-        allowExiredLicense: false,
+        allowExpiredLicense: false,
         licenseType: LicenseType.memoplanner,
       );
 
@@ -435,7 +435,7 @@ void main() {
         clockBloc: ClockBloc.fixed(time),
         userRepository: mockUserRepository,
         database: mockDb,
-        allowExiredLicense: true,
+        allowExpiredLicense: true,
         licenseType: LicenseType.memoplanner,
       );
 

@@ -1,3 +1,4 @@
+import 'package:abilia_sync/abilia_sync.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -88,7 +89,7 @@ void main() {
             ],
         verify: (bloc) {
           verify(() => mockActivityRepository.save([activity1]));
-          verify(() => mockSyncBloc.add(const ActivitySaved()));
+          verify(() => mockSyncBloc.add(const SyncActivities()));
         });
 
     blocTest('UpdateActivities calls save activities on mockActivityRepository',
@@ -105,7 +106,7 @@ void main() {
             ],
         verify: (bloc) {
           verify(() => mockActivityRepository.save([updatedActivity1]));
-          verify(() => mockSyncBloc.add(const ActivitySaved()));
+          verify(() => mockSyncBloc.add(const SyncActivities()));
         });
 
     blocTest(
@@ -123,7 +124,7 @@ void main() {
             ],
         verify: (bloc) {
           verify(() => mockActivityRepository.save([deletedStoredActivity]));
-          verify(() => mockSyncBloc.add(const ActivitySaved()));
+          verify(() => mockSyncBloc.add(const SyncActivities()));
         });
 
     test('Nothing happens when UnSynced is emitted', () async {
@@ -209,7 +210,7 @@ void main() {
             recurringActivity,
             recurringActivity2
           ].map((a) => a.copyWith(deleted: true))));
-      verify(() => mockSyncBloc.add(const ActivitySaved()));
+      verify(() => mockSyncBloc.add(const SyncActivities()));
     });
 
     group('Only this day', () {
@@ -250,7 +251,7 @@ void main() {
         verify(() => mockActivityRepository.save([
               expectedRecurring,
             ]));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
 
       test('for last day edits end time', () async {
@@ -294,7 +295,7 @@ void main() {
         verify(() => mockActivityRepository.save([
               expectedRecurring,
             ]));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
 
       test('for a mid day splits the activity up', () async {
@@ -340,7 +341,7 @@ void main() {
         // Assert calls save with deleted recurring
         verify(() => mockActivityRepository
             .save(any(that: MatchActivitiesWithoutId(expectedActivityList))));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
     });
 
@@ -382,7 +383,7 @@ void main() {
               recurringActivity,
               recurringActivity2
             ].map((a) => a.copyWith(deleted: true))));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
 
       test('for a day modifies end time on activity', () async {
@@ -413,7 +414,7 @@ void main() {
         // Assert calls save with deleted recurring
         verify(
             () => mockActivityRepository.save([recurringActivityWithEndTime]));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
 
       test('for a day modifies end time on activity and deletes future series',
@@ -461,7 +462,7 @@ void main() {
               recurringActivity2.copyWith(deleted: true),
               recurringActivity1AfterDelete,
             ]));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
     });
   });
@@ -501,7 +502,7 @@ void main() {
 
         // Assert calls save
         verify(() => mockActivityRepository.save([expected]));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
 
       test('on first day split activity in two and updates the activity',
@@ -544,7 +545,7 @@ void main() {
         verify(() => mockActivityRepository.save(any(
             that: MatchActivitiesWithoutId(
                 [expectedUpdatedActivity, updatedOldActivity]))));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
 
       test('on last day split activity in two and updates the activity',
@@ -606,7 +607,7 @@ void main() {
 
         // Assert calls save
         verify(() => mockActivityRepository.save(any(that: expected)));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
 
       test(
@@ -620,7 +621,7 @@ void main() {
           recurs: const Recurs.raw(
             Recurs.typeWeekly,
             Recurs.allDaysOfWeek,
-            Recurs.noEnd,
+            noEnd,
           ),
         );
 
@@ -666,7 +667,7 @@ void main() {
 
         // Assert calls save
         verify(() => mockActivityRepository.save(any(that: expected)));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
 
       test('fullDay split', () async {
@@ -719,7 +720,7 @@ void main() {
 
         // Assert calls save
         verify(() => mockActivityRepository.save(any(that: expected)));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
     });
 
@@ -753,7 +754,7 @@ void main() {
 
         // Assert calls save with deleted recurring
         verify(() => mockActivityRepository.save([updatedRecurringActivity]));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
 
       test('on second day splits the activity ', () async {
@@ -796,7 +797,7 @@ void main() {
         );
         verify(() => mockActivityRepository
             .save(any(that: MatchActivitiesWithoutId(expected))));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
 
       test('change on occurrence backwards ', () async {
@@ -840,7 +841,7 @@ void main() {
 
         verify(() => mockActivityRepository
             .save(any(that: MatchActivitiesWithoutId(expectedList))));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
 
       test('change on occurrence forward ', () async {
@@ -887,7 +888,7 @@ void main() {
 
         verify(() => mockActivityRepository
             .save(any(that: MatchActivitiesWithoutId(expectedList))));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
 
       test('changes all future activities in series ', () async {
@@ -996,7 +997,7 @@ void main() {
 
         verify(() => mockActivityRepository
             .save(any(that: MatchActivitiesWithoutId(expectedList))));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
 
       test("don't edited activity before", () async {
@@ -1065,7 +1066,7 @@ void main() {
         );
         verify(() => mockActivityRepository.save(any(
             that: MatchActivitiesWithoutId([a2Part1, updatedA2, expectedA3]))));
-        verify(() => mockSyncBloc.add(const ActivitySaved()));
+        verify(() => mockSyncBloc.add(const SyncActivities()));
       });
     });
   });

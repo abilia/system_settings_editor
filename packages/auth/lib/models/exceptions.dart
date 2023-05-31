@@ -1,9 +1,5 @@
 import 'package:repository_base/models/whale_error.dart';
 
-class UnauthorizedException implements Exception {
-  String errMsg() => 'Not authorized';
-}
-
 class NoLicenseException implements Exception {
   String errMsg() => 'No valid license';
 }

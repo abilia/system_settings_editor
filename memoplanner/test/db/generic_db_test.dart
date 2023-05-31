@@ -1,5 +1,6 @@
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:repository_base/repository_base.dart';
 import 'package:test/test.dart';
 
 import '../test_helpers/verify_generic.dart';

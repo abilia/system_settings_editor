@@ -22,7 +22,7 @@ class TimerTimepillarCard extends TimepillarCard {
   @override
   Widget build(BuildContext context) {
     final timer = timerOccasion.timer;
-    final borderWidth = (decoration.padding?.vertical ?? 0) / 2;
+    final borderWidth = (decoration.padding.vertical) / 2;
     final imagePadding = measures.imagePadding.vertical / 2;
     final textPadding = measures.textPadding.vertical / 2;
     final timerWheelPadding = measures.timerWheelPadding.vertical / 2;

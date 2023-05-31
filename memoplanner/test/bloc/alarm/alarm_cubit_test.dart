@@ -6,6 +6,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:seagull_fakes/all.dart';
 import 'package:timezone/timezone.dart';
 
 import '../../fakes/all.dart';

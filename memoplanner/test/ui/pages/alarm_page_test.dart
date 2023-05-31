@@ -151,19 +151,23 @@ void main() {
 
   setUp(() async {
     localNotificationLog.clear();
-    localNotificationChannel.setMockMethodCallHandler((methodCall) async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(localNotificationChannel, (methodCall) async {
       localNotificationLog.add(methodCall);
       if (methodCall.method == 'initialize') return Future.value(true);
       if (methodCall.method == 'getActiveNotifications') {
         return null;
       }
+      return null;
     });
     audioLog.clear();
-    audioPlayerChannel.setMockMethodCallHandler((methodCall) async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(audioPlayerChannel, (methodCall) async {
       audioLog.add(methodCall);
       if (methodCall.method == 'play') {
         return Future.value(1);
       }
+      return null;
     });
 
     mockUserFileBloc = MockUserFileBloc();
@@ -250,12 +254,11 @@ void main() {
             startAlarm.activityDay,
             fullScreenActivity: true,
           );
-          tester.binding.window.physicalSizeTestValue = const Size(800, 1280);
-          tester.binding.window.devicePixelRatioTestValue = 1;
+          tester.view.physicalSize = const Size(800, 1280);
+          tester.view.devicePixelRatio = 1;
 
-          // resets the screen to its orinal size after the test end
-          addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
-          addTearDown(tester.binding.window.clearDevicePixelRatioTestValue);
+          addTearDown(tester.view.resetPhysicalSize);
+          addTearDown(tester.view.resetDevicePixelRatio);
           await tester.pumpWidget(
             wrapWithMaterialApp(
               PopAwareAlarmPage(
@@ -891,12 +894,11 @@ void main() {
         'BUG SGC-2033 - Checklist not responsive on reminder'
         ' with "show ongoing activity" setting on',
         (WidgetTester tester) async {
-      tester.binding.window.physicalSizeTestValue = const Size(800, 1280);
-      tester.binding.window.devicePixelRatioTestValue = 1;
+      tester.view.physicalSize = const Size(800, 1280);
+      tester.view.devicePixelRatio = 1;
 
-      // resets the screen to its orinal size after the test end
-      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
-      addTearDown(tester.binding.window.clearDevicePixelRatioTestValue);
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
       const q1 = Question(id: 1, name: '1one');
       final checklist = Checklist(

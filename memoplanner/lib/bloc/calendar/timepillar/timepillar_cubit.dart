@@ -8,7 +8,6 @@ import 'package:memoplanner/utils/all.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'timepillar_interval_calculator.dart';
-
 part 'timepillar_state.dart';
 
 class TimepillarCubit extends Cubit<TimepillarState> {
