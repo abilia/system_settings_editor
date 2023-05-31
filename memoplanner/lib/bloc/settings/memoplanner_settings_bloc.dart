@@ -22,7 +22,7 @@ class MemoplannerSettingsBloc
                   (genericCubit?.state as GenericsLoaded?)
                           ?.generics
                           .filterMemoplannerSettingsData() ??
-                      <String, MemoplannerSettingData>{},
+                      <String, GenericSettingData>{},
                 ),
               )
             : const MemoplannerSettingsNotLoaded()) {

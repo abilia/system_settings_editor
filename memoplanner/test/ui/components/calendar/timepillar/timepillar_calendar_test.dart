@@ -25,14 +25,14 @@ void main() {
   const leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RightCategoryActivity';
 
-  final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
-    data: MemoplannerSettingData.fromData(
+  final timepillarGeneric = Generic.createNew<GenericSettingData>(
+    data: GenericSettingData.fromData(
         data: DayCalendarType.oneTimepillar.index,
         identifier: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
   );
 
-  final twoTimepillarGeneric = Generic.createNew<MemoplannerSettingData>(
-    data: MemoplannerSettingData.fromData(
+  final twoTimepillarGeneric = Generic.createNew<GenericSettingData>(
+    data: GenericSettingData.fromData(
         data: DayCalendarType.twoTimepillars.index,
         identifier: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
   );
@@ -380,8 +380,8 @@ void main() {
     testWidgets('Dont Exists if settings say so', (WidgetTester tester) async {
       genericResponse = () => [
             timepillarGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: false,
                 identifier: TimepillarSettings.settingDisplayTimelineKey,
               ),
@@ -404,8 +404,8 @@ void main() {
 
       genericResponse = () => [
             timepillarGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: false,
                 identifier: TimepillarSettings.settingDisplayTimelineKey,
               ),
@@ -462,8 +462,8 @@ void main() {
         (WidgetTester tester) async {
       genericResponse = () => [
             timepillarGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: true,
                 identifier: TimepillarSettings.settingDisplayHourLinesKey,
               ),
@@ -482,8 +482,8 @@ void main() {
 
       genericResponse = () => [
             timepillarGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: true,
                 identifier: TimepillarSettings.settingDisplayHourLinesKey,
               ),
@@ -500,15 +500,15 @@ void main() {
         // Arrange
         genericResponse = () => [
               timepillarGeneric,
-              Generic.createNew<MemoplannerSettingData>(
-                data: MemoplannerSettingData.fromData(
+              Generic.createNew<GenericSettingData>(
+                data: GenericSettingData.fromData(
                   data: TimepillarIntervalType.dayAndNight.index,
                   identifier:
                       DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,
                 ),
               ),
-              Generic.createNew<MemoplannerSettingData>(
-                data: MemoplannerSettingData.fromData(
+              Generic.createNew<GenericSettingData>(
+                data: GenericSettingData.fromData(
                   data: TimepillarZoom.large.index,
                   identifier: DayCalendarViewOptionsSettings
                       .viewOptionsTimepillarZoomKey,
@@ -553,8 +553,8 @@ void main() {
         (WidgetTester tester) async {
       genericResponse = () => [
             timepillarGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: false,
                 identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
@@ -580,8 +580,8 @@ void main() {
 
       genericResponse = () => [
             timepillarGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: false,
                 identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
@@ -676,8 +676,8 @@ void main() {
           mockActivityDb.initWithActivities([a1, a2, a3, a4]);
           genericResponse = () => [
                 timepillarGeneric,
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
+                Generic.createNew<GenericSettingData>(
+                  data: GenericSettingData.fromData(
                     data: false,
                     identifier:
                         CategoriesSettings.calendarActivityTypeShowColorKey,
@@ -768,8 +768,8 @@ void main() {
           mockActivityDb.initWithActivities([a1, a2, a3, a4]);
           genericResponse = () => [
                 timepillarGeneric,
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
+                Generic.createNew<GenericSettingData>(
+                  data: GenericSettingData.fromData(
                     data: false,
                     identifier:
                         CategoriesSettings.calendarActivityTypeShowColorKey,
@@ -829,8 +829,8 @@ void main() {
       // Arrange
       genericResponse = () => [
             timepillarGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: false,
                 identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
@@ -908,8 +908,8 @@ void main() {
       // Arrange
       genericResponse = () => [
             timepillarGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                   data: false,
                   identifier:
                       DayCalendarViewOptionsSettings.viewOptionsDotsKey),
@@ -1137,8 +1137,8 @@ void main() {
     setUp(() {
       genericResponse = () => [
             timepillarGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: TimepillarIntervalType.interval.index,
                 identifier:
                     DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,
@@ -1232,8 +1232,8 @@ void main() {
         final startTime = DateTime(2020, 12, 01, 10, 00);
         genericResponse = () => [
               timepillarGeneric,
-              Generic.createNew<MemoplannerSettingData>(
-                data: MemoplannerSettingData.fromData(
+              Generic.createNew<GenericSettingData>(
+                data: GenericSettingData.fromData(
                   data: TimepillarIntervalType.dayAndNight.index,
                   identifier:
                       DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,
@@ -1271,8 +1271,8 @@ void main() {
 
         genericResponse = () => [
               timepillarGeneric,
-              Generic.createNew<MemoplannerSettingData>(
-                data: MemoplannerSettingData.fromData(
+              Generic.createNew<GenericSettingData>(
+                data: GenericSettingData.fromData(
                   data: TimepillarIntervalType.dayAndNight.index,
                   identifier:
                       DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,
@@ -1300,8 +1300,8 @@ void main() {
 
         genericResponse = () => [
               timepillarGeneric,
-              Generic.createNew<MemoplannerSettingData>(
-                data: MemoplannerSettingData.fromData(
+              Generic.createNew<GenericSettingData>(
+                data: GenericSettingData.fromData(
                   data: TimepillarIntervalType.day.index,
                   identifier:
                       DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,
@@ -1397,8 +1397,8 @@ void main() {
 
         genericResponse = () => [
               timepillarGeneric,
-              Generic.createNew<MemoplannerSettingData>(
-                data: MemoplannerSettingData.fromData(
+              Generic.createNew<GenericSettingData>(
+                data: GenericSettingData.fromData(
                   data: TimepillarIntervalType.dayAndNight.index,
                   identifier:
                       DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,
@@ -1426,8 +1426,8 @@ void main() {
 
         genericResponse = () => [
               timepillarGeneric,
-              Generic.createNew<MemoplannerSettingData>(
-                data: MemoplannerSettingData.fromData(
+              Generic.createNew<GenericSettingData>(
+                data: GenericSettingData.fromData(
                   data: TimepillarIntervalType.day.index,
                   identifier:
                       DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,

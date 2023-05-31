@@ -10,7 +10,6 @@ import 'package:timezone/data/latest.dart' as tz;
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
-import '../../../test_helpers/verify_generic.dart';
 
 void main() {
   final translate = Locales.language.values.first;
@@ -117,8 +116,8 @@ void main() {
     testWidgets('hides camera image option', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: false,
             identifier: PhotoMenuSettings.displayCameraKey,
           ),
@@ -131,8 +130,8 @@ void main() {
     testWidgets('hides my photo image option', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: false,
             identifier: PhotoMenuSettings.displayPhotoKey,
           ),

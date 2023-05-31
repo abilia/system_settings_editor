@@ -9,7 +9,6 @@ import 'package:seagull_fakes/all.dart';
 import '../../../../../fakes/all.dart';
 import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
-import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {
   final initialTime = DateTime(2021, 04, 13, 13, 37);
@@ -17,8 +16,8 @@ void main() {
 
   Iterable<Generic> generics;
   late MockGenericDb genericDb;
-  final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
-    data: MemoplannerSettingData.fromData(
+  final timepillarGeneric = Generic.createNew<GenericSettingData>(
+    data: GenericSettingData.fromData(
         data: DayCalendarType.oneTimepillar.index,
         identifier: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
   );
@@ -119,8 +118,8 @@ void main() {
     testWidgets('hides digital', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: ClockType.analogue.index,
             identifier: GeneralCalendarSettings.settingClockTypeKey,
           ),
@@ -136,8 +135,8 @@ void main() {
     testWidgets('hides analog', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: ClockType.digital.index,
             identifier: GeneralCalendarSettings.settingClockTypeKey,
           ),
@@ -317,8 +316,8 @@ void main() {
 
     testWidgets('12h true in 24h settings', (tester) async {
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: true,
             identifier: TimepillarSettings.setting12hTimeFormatTimelineKey,
           ),
@@ -334,8 +333,8 @@ void main() {
 
     testWidgets('column of red dots', (tester) async {
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: true,
             identifier: TimepillarSettings.settingTimePillarTimelineKey,
           ),
@@ -351,8 +350,8 @@ void main() {
 
     testWidgets('time line hides', (tester) async {
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: false,
             identifier: TimepillarSettings.settingDisplayTimelineKey,
           ),
@@ -365,8 +364,8 @@ void main() {
 
     testWidgets('HourLines shows', (tester) async {
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: true,
             identifier: TimepillarSettings.settingDisplayHourLinesKey,
           ),

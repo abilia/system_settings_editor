@@ -70,8 +70,8 @@ void main() {
     setupPermissions();
   });
 
-  final agendaGeneric = Generic.createNew<MemoplannerSettingData>(
-    data: MemoplannerSettingData.fromData(
+  final agendaGeneric = Generic.createNew<GenericSettingData>(
+    data: GenericSettingData.fromData(
       data: DayCalendarType.list.index,
       identifier: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey,
     ),
@@ -231,8 +231,8 @@ void main() {
       (WidgetTester tester) async {
     genericResponse = () => [
           agendaGeneric,
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
+          Generic.createNew<GenericSettingData>(
+            data: GenericSettingData.fromData(
               data: false,
               identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
             ),
@@ -668,14 +668,14 @@ void main() {
       const leftCategoryName = 'New Left', rightCategoryName = 'New Right';
       genericResponse = () => [
             agendaGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: leftCategoryName,
                 identifier: CategoriesSettings.calendarActivityTypeLeftKey,
               ),
             ),
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: rightCategoryName,
                 identifier: CategoriesSettings.calendarActivityTypeRightKey,
               ),
@@ -695,8 +695,8 @@ void main() {
         (WidgetTester tester) async {
       genericResponse = () => [
             agendaGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: false,
                 identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
@@ -726,14 +726,14 @@ void main() {
 
       genericResponse = () => [
             agendaGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: leftCategoryName,
                 identifier: CategoriesSettings.calendarActivityTypeLeftKey,
               ),
             ),
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: rightCategoryName,
                 identifier: CategoriesSettings.calendarActivityTypeRightKey,
               ),
@@ -762,8 +762,8 @@ void main() {
 
       genericResponse = () => [
             agendaGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: false,
                 identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
@@ -808,8 +808,8 @@ void main() {
         (WidgetTester tester) async {
       genericResponse = () => [
             agendaGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: false,
                 identifier: CategoriesSettings.calendarActivityTypeShowColorKey,
               ),
@@ -826,14 +826,14 @@ void main() {
         (WidgetTester tester) async {
       genericResponse = () => [
             agendaGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: false,
                 identifier: CategoriesSettings.calendarActivityTypeShowColorKey,
               ),
             ),
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: 'file id',
                 identifier: CategoriesSettings.calendarActivityTypeLeftImageKey,
               ),
@@ -911,14 +911,14 @@ void main() {
         (WidgetTester tester) async {
       genericResponse = () => [
             agendaGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: true,
                 identifier: CategoriesSettings.calendarActivityTypeShowColorKey,
               ),
             ),
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: false,
                 identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),

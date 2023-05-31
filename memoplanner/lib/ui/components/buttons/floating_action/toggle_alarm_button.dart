@@ -32,7 +32,7 @@ class ToggleAlarmButtonActive extends StatelessWidget {
       style: actionButtonStyleRed,
       onPressed: () async => context.read<GenericCubit>().genericUpdated(
         [
-          MemoplannerSettingData.fromData(
+          GenericSettingData.fromData(
             data: 0,
             identifier: AlarmSettings.alarmsDisabledUntilKey,
           ),
@@ -67,7 +67,7 @@ class ToggleAlarmButtonInactive extends StatelessWidget {
           ),
           context.read<GenericCubit>().genericUpdated(
             [
-              MemoplannerSettingData.fromData(
+              GenericSettingData.fromData(
                 data: now.onlyDays().nextDay().millisecondsSinceEpoch,
                 identifier: AlarmSettings.alarmsDisabledUntilKey,
               ),

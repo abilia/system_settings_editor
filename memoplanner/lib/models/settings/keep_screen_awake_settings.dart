@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:memoplanner/models/generic/generic.dart';
-import 'package:memoplanner/models/settings/memoplanner_settings.dart';
+import 'package:memoplanner/models/all.dart';
 
 @Deprecated(
   'To be Remove on in 4.3, '
@@ -31,7 +30,7 @@ class KeepScreenAwakeSettings extends Equatable {
     'use SettingsDb.keepScreenOnWhileCharging instead',
   )
   factory KeepScreenAwakeSettings.fromSettingsMap(
-      Map<String, MemoplannerSettingData> settings) {
+      Map<String, GenericSettingData> settings) {
     final savedKeepOnWhileCharging =
         settings.parse(keepScreenOnWhileChargingKey, false);
     final savedKeepOnAlways = settings.parse(keepScreenOnAlwaysKey, false);

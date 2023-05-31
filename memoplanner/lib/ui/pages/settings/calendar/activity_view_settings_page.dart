@@ -140,8 +140,8 @@ class _FakeMemoplannerSetting extends StatelessWidget {
               ? Map<String, Generic>.from(genericState.generics)
               : Map<String, Generic>.identity())
             ..addAll(activityViewSettings.memoplannerSettingData
-                .map((data) =>
-                    Generic.createNew<MemoplannerSettingData>(data: data))
+                .map(
+                    (data) => Generic.createNew<GenericSettingData>(data: data))
                 .toGenericKeyMap()),
         ),
       );

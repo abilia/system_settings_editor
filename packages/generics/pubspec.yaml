@@ -1,0 +1,33 @@
+name: generics
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+  flutter: '>=2.0.0'
+
+dependencies:
+  abilia_sync:
+    path: ../abilia_sync
+  auth:
+    path:
+      ../auth
+  collection: any
+  equatable: any
+  flutter:
+    sdk: flutter
+  flutter_bloc: any
+  http: any
+  logging: any
+  repository_base:
+    path: ../repository/repository_base
+  sqflite: any
+  utils:
+    path: ../utils
+  uuid: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  seagull_fakes:
+    path: ../seagull_fakes
+  seagull_lints:
+    path: ../seagull_lints

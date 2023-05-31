@@ -26,10 +26,10 @@ class DbGeneric extends DbModel<Generic> {
   }) {
     switch (type) {
       case GenericType.memoPlannerSettings:
-        return Generic<MemoplannerSettingData>._(
+        return Generic<GenericSettingData>._(
           id: id,
           type: type,
-          data: MemoplannerSettingData.fromJson(data, identifier),
+          data: GenericSettingData.fromJson(data, identifier),
           deleted: deleted,
         );
       default:

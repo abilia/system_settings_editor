@@ -9,7 +9,6 @@ import 'package:seagull_fakes/all.dart';
 import '../../../../../fakes/all.dart';
 import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
-import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {
   final translate = Locales.language.values.first;
@@ -63,20 +62,20 @@ void main() {
 
     testWidgets('memosettings respected', (tester) async {
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             identifier: MonthCalendarSettings.monthCaptionShowClockKey,
             data: false,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             identifier: MonthCalendarSettings.monthCaptionShowMonthButtonsKey,
             data: false,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             identifier: MonthCalendarSettings.monthCaptionShowYearKey,
             data: false,
           ),
@@ -150,20 +149,20 @@ void main() {
 
     testWidgets('memosettings respected', (tester) async {
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             identifier: MonthCalendarSettings.monthCaptionShowClockKey,
             data: false,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             identifier: MonthCalendarSettings.monthCaptionShowMonthButtonsKey,
             data: false,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             identifier: MonthCalendarSettings.monthCaptionShowYearKey,
             data: false,
           ),
@@ -193,8 +192,8 @@ void main() {
 
     testWidgets('memosettings respected', (tester) async {
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             identifier: MonthCalendarSettings.calendarMonthViewShowColorsKey,
             data: WeekColor.captions.index,
           ),
@@ -258,8 +257,8 @@ void main() {
       'color respected',
       (tester) async {
         generics = [
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
+          Generic.createNew<GenericSettingData>(
+            data: GenericSettingData.fromData(
               identifier: MonthCalendarSettings.calendarMonthViewShowColorsKey,
               data: WeekColor.captions.index,
             ),

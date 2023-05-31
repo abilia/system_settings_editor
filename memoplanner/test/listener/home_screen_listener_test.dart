@@ -233,8 +233,8 @@ void main() {
     TimerResponse timerResponse = () => [];
 
     Generic startViewGeneric(StartView startView) =>
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: startView.index,
             identifier: FunctionsSettings.functionMenuStartViewKey,
           ),

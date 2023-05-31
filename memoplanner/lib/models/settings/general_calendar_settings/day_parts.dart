@@ -62,7 +62,7 @@ class DayParts extends Equatable {
   bool atMin(DayPart part) => fromDayPart(part) <= DayParts.limits[part]!.min;
 
   factory DayParts.fromSettingsMap(
-    Map<String, MemoplannerSettingData> settings,
+    Map<String, GenericSettingData> settings,
   ) =>
       DayParts(
         morning: Duration(
@@ -91,20 +91,20 @@ class DayParts extends Equatable {
         ),
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(
           data: morning.inMilliseconds,
           identifier: DayParts.morningIntervalStartKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: day.inMilliseconds,
           identifier: DayParts.forenoonIntervalStartKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: evening.inMilliseconds,
           identifier: DayParts.eveningIntervalStartKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: night.inMilliseconds,
           identifier: DayParts.nightIntervalStartKey,
         ),

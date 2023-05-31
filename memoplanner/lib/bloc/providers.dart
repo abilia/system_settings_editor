@@ -75,6 +75,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               client: GetIt.I<ListenableClient>(),
               genericDb: GetIt.I<GenericDb>(),
               userId: authenticatedState.userId,
+              noSyncSettings: MemoplannerSettings.noSyncSettings,
             ),
           ),
           RepositoryProvider<SessionsRepository>(

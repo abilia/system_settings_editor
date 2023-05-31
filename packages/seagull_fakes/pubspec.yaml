@@ -16,6 +16,10 @@ dependencies:
     path: ../file_storage
   flutter:
     sdk: flutter
+  flutter_test:
+    sdk: flutter
+  generics:
+    path: ../generics
   http: any
   mocktail: any
   repository_base:
@@ -32,7 +36,5 @@ dependencies:
     path: ../utils
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
   seagull_lints:
     path: ../seagull_lints

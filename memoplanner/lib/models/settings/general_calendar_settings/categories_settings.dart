@@ -22,7 +22,7 @@ class CategoriesSettings extends Equatable {
   });
 
   factory CategoriesSettings.fromSettingsMap(
-    Map<String, MemoplannerSettingData> settings,
+    Map<String, GenericSettingData> settings,
   ) =>
       CategoriesSettings(
         show: settings.getBool(
@@ -69,28 +69,28 @@ class CategoriesSettings extends Equatable {
         right: right ?? this.right,
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(
           data: show,
           identifier: calendarActivityTypeShowTypesKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: colors,
           identifier: calendarActivityTypeShowColorKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: left.name,
           identifier: calendarActivityTypeLeftKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: right.name,
           identifier: calendarActivityTypeRightKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: left.image.id,
           identifier: calendarActivityTypeLeftImageKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: right.image.id,
           identifier: calendarActivityTypeRightImageKey,
         ),

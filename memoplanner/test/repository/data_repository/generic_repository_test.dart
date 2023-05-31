@@ -30,6 +30,7 @@ void main() {
       client: mockClient,
       genericDb: genericDb,
       userId: 1,
+      noSyncSettings: MemoplannerSettings.noSyncSettings,
     );
   });
 
@@ -37,14 +38,14 @@ void main() {
     genericDb.db.delete(DatabaseRepository.genericTableName);
   });
 
-  final synced = Generic.createNew<MemoplannerSettingData>(
-        data: MemoplannerSettingData.fromData(
+  final synced = Generic.createNew<GenericSettingData>(
+        data: GenericSettingData.fromData(
           data: false,
           identifier: ActivityViewSettings.displayAlarmButtonKey,
         ),
       ),
-      unsynced = Generic.createNew<MemoplannerSettingData>(
-        data: MemoplannerSettingData.fromData(
+      unsynced = Generic.createNew<GenericSettingData>(
+        data: GenericSettingData.fromData(
           data: false,
           identifier: DayCalendarViewOptionsSettings.viewOptionsDotsKey,
         ),
@@ -53,8 +54,8 @@ void main() {
 
   final allUnsynced = MemoplannerSettings.noSyncSettings
       .map(
-        (e) => Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        (e) => Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: false,
             identifier: e,
           ),
@@ -65,8 +66,8 @@ void main() {
   test('synchronize - calls get before posting', () async {
     // Arrange
     final getResponse = jsonEncode([
-      Generic.createNew<MemoplannerSettingData>(
-        data: MemoplannerSettingData.fromData(data: false, identifier: 'id'),
+      Generic.createNew<GenericSettingData>(
+        data: GenericSettingData.fromData(data: false, identifier: 'id'),
       ).wrapWithDbModel()
     ]);
     final postResponse = jsonEncode({
@@ -100,8 +101,8 @@ void main() {
   test('Only fetches memoplannerSettings', () async {
     // Arrange
     final getResponse = jsonEncode([
-      Generic.createNew<MemoplannerSettingData>(
-        data: MemoplannerSettingData.fromData(data: false, identifier: 'id'),
+      Generic.createNew<GenericSettingData>(
+        data: GenericSettingData.fromData(data: false, identifier: 'id'),
       ).wrapWithDbModel(),
       Generic.createNew<RawGenericData>(
         data: const RawGenericData('data', 'identifier'),
@@ -169,16 +170,16 @@ void main() {
 
     test('unsynced settings should not overwrite revision', () async {
       // Arrange
-      final data2 = Generic.createNew<MemoplannerSettingData>(
-        data: MemoplannerSettingData.fromData(
+      final data2 = Generic.createNew<GenericSettingData>(
+        data: GenericSettingData.fromData(
           data: 200,
           identifier:
               DayCalendarViewOptionsSettings.viewOptionsTimepillarZoomKey,
         ),
       );
       await genericRepository.db.insert([
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: 100,
             identifier:
                 DayCalendarViewOptionsSettings.viewOptionsTimepillarZoomKey,
@@ -189,7 +190,7 @@ void main() {
 
       // Act
       final data3 = data2.copyWithNewData(
-        newData: MemoplannerSettingData.fromData(
+        newData: GenericSettingData.fromData(
           data: 300,
           identifier:
               DayCalendarViewOptionsSettings.viewOptionsTimepillarZoomKey,
@@ -221,6 +222,7 @@ void main() {
         client: Fakes.client(genericResponse: () => repsonseAll),
         genericDb: genericDb,
         userId: 1,
+        noSyncSettings: MemoplannerSettings.noSyncSettings,
       );
     });
 

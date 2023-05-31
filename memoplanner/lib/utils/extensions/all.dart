@@ -7,7 +7,6 @@ export 'alarm_extensions.dart';
 export 'available_for_extensions.dart';
 export 'datetime_extensions.dart';
 export 'duration_extensions.dart';
-export 'generics_extensions.dart';
 export 'login_extensions.dart';
 export 'navigation_extension.dart';
 export 'occasions_extensions.dart';

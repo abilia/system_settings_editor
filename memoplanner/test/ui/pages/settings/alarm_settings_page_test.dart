@@ -11,7 +11,7 @@ import '../../../fakes/activity_db_in_memory.dart';
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
-import '../../../test_helpers/verify_generic.dart';
+import '../../../test_helpers/verify_generic_mp.dart';
 
 void main() {
   group('Alarm settings page', () {
@@ -88,7 +88,7 @@ void main() {
           find.text(Sound.AfloatSynth.displayName(translate)), findsOneWidget);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      verifyUnsyncedGeneric(
+      verifyUnsyncedGenericMP(
         tester,
         genericDb,
         key: AlarmSettings.nonCheckableActivityAlarmKey,
@@ -106,7 +106,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      verifyUnsyncedGeneric(
+      verifyUnsyncedGenericMP(
         tester,
         genericDb,
         key: AlarmSettings.checkableActivityAlarmKey,
@@ -124,7 +124,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      verifyUnsyncedGeneric(
+      verifyUnsyncedGenericMP(
         tester,
         genericDb,
         key: AlarmSettings.reminderAlarmKey,
@@ -143,7 +143,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      verifyUnsyncedGeneric(
+      verifyUnsyncedGenericMP(
         tester,
         genericDb,
         key: AlarmSettings.timerAlarmKey,
@@ -167,7 +167,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      verifyUnsyncedGeneric(
+      verifyUnsyncedGenericMP(
         tester,
         genericDb,
         key: AlarmSettings.alarmDurationKey,
@@ -182,7 +182,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      verifyUnsyncedGeneric(
+      verifyUnsyncedGenericMP(
         tester,
         genericDb,
         key: AlarmSettings.showAlarmOnOffSwitchKey,
@@ -197,7 +197,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      verifyUnsyncedGeneric(
+      verifyUnsyncedGenericMP(
         tester,
         genericDb,
         key: AlarmSettings.showOngoingActivityInFullScreenKey,

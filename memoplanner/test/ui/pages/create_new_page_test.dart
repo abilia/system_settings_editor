@@ -193,8 +193,8 @@ void main() {
       testWidgets(
         'Only show activity related options if add timer button is hidden',
         (WidgetTester tester) async {
-          final settings = Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
+          final settings = Generic.createNew<GenericSettingData>(
+            data: GenericSettingData.fromData(
               data: false,
               identifier: DisplaySettings.functionMenuDisplayNewTimerKey,
             ),
@@ -215,8 +215,8 @@ void main() {
       testWidgets('New activity with wizard, default steps',
           (WidgetTester tester) async {
         mockActivityDb.clear();
-        final wizardSetting = Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        final wizardSetting = Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: false,
             identifier: AddActivitySettings.addActivityTypeAdvancedKey,
           ),
@@ -300,38 +300,38 @@ void main() {
 
       testWidgets('New activity with wizard, custom steps',
           (WidgetTester tester) async {
-        final wizardSetting = Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        final wizardSetting = Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: false,
             identifier: AddActivitySettings.addActivityTypeAdvancedKey,
           ),
         );
-        final removeAfter = Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        final removeAfter = Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: true,
             identifier: StepByStepSettings.removeAfterKey,
           ),
         );
-        final reminderStep = Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        final reminderStep = Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: true,
             identifier: StepByStepSettings.remindersKey,
           ),
         );
-        final noBasic = Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        final noBasic = Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: true,
             identifier: StepByStepSettings.templateKey,
           ),
         );
-        final noImage = Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        final noImage = Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: false,
             identifier: StepByStepSettings.imageKey,
           ),
         );
-        final noDate = Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        final noDate = Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: false,
             identifier: StepByStepSettings.dateKey,
           ),
@@ -485,14 +485,14 @@ void main() {
         testWidgets('No option for basic activity when step-by-step',
             (WidgetTester tester) async {
           genericResponse = () => [
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
+                Generic.createNew<GenericSettingData>(
+                  data: GenericSettingData.fromData(
                     data: false,
                     identifier: AddActivitySettings.addActivityTypeAdvancedKey,
                   ),
                 ),
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
+                Generic.createNew<GenericSettingData>(
+                  data: GenericSettingData.fromData(
                     data: false,
                     identifier: StepByStepSettings.templateKey,
                   ),
@@ -510,8 +510,8 @@ void main() {
         testWidgets('No option for basic activity when option set',
             (WidgetTester tester) async {
           genericResponse = () => [
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
+                Generic.createNew<GenericSettingData>(
+                  data: GenericSettingData.fromData(
                     data: false,
                     identifier: EditActivitySettings.templateKey,
                   ),
@@ -530,8 +530,8 @@ void main() {
             'BUG - 2060 can save when template activity when option not set',
             (WidgetTester tester) async {
           genericResponse = () => [
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
+                Generic.createNew<GenericSettingData>(
+                  data: GenericSettingData.fromData(
                     data: false,
                     identifier: EditActivitySettings.templateKey,
                   ),
@@ -564,13 +564,13 @@ void main() {
             (WidgetTester tester) async {
           genericResponse = () => [
                 Generic.createNew(
-                  data: MemoplannerSettingData.fromData(
+                  data: GenericSettingData.fromData(
                     data: false,
                     identifier: EditActivitySettings.titleKey,
                   ),
                 ),
                 Generic.createNew(
-                  data: MemoplannerSettingData.fromData(
+                  data: GenericSettingData.fromData(
                     data: false,
                     identifier: EditActivitySettings.imageKey,
                   ),
@@ -603,20 +603,20 @@ void main() {
             'one basic activites: No new activity option',
             (WidgetTester tester) async {
           genericResponse = () => [
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
+                Generic.createNew<GenericSettingData>(
+                  data: GenericSettingData.fromData(
                     data: false,
                     identifier: AddActivitySettings.addActivityTypeAdvancedKey,
                   ),
                 ),
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
+                Generic.createNew<GenericSettingData>(
+                  data: GenericSettingData.fromData(
                     data: false,
                     identifier: StepByStepSettings.titleKey,
                   ),
                 ),
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
+                Generic.createNew<GenericSettingData>(
+                  data: GenericSettingData.fromData(
                     data: false,
                     identifier: StepByStepSettings.imageKey,
                   ),
@@ -910,8 +910,8 @@ void main() {
       final activities = [Activity.createNew(title: title1, startTime: d)];
       mockActivityDb.initWithActivities(activities);
       genericResponse = () => [
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                   data: DayCalendarType.list.index,
                   identifier: DayCalendarViewOptionsSettings
                       .viewOptionsCalendarTypeKey),
@@ -954,8 +954,8 @@ void main() {
       testWidgets(
         'Only show timer related options if add activity button is hidden',
         (WidgetTester tester) async {
-          final settings = Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
+          final settings = Generic.createNew<GenericSettingData>(
+            data: GenericSettingData.fromData(
               data: false,
               identifier: DisplaySettings.functionMenuDisplayNewActivityKey,
             ),
@@ -1312,14 +1312,14 @@ void main() {
       testWidgets('Only activity shown skips create new page on MP',
           (WidgetTester tester) async {
         genericResponse = () => [
-              Generic.createNew<MemoplannerSettingData>(
-                data: MemoplannerSettingData.fromData(
+              Generic.createNew<GenericSettingData>(
+                data: GenericSettingData.fromData(
                   data: false,
                   identifier: DisplaySettings.functionMenuDisplayNewTimerKey,
                 ),
               ),
-              Generic.createNew<MemoplannerSettingData>(
-                data: MemoplannerSettingData.fromData(
+              Generic.createNew<GenericSettingData>(
+                data: GenericSettingData.fromData(
                   data: false,
                   identifier: EditActivitySettings.templateKey,
                 ),
@@ -1338,20 +1338,20 @@ void main() {
       testWidgets('Only basic activity shown skips create new page on MP',
           (WidgetTester tester) async {
         genericResponse = () => [
-              Generic.createNew<MemoplannerSettingData>(
-                data: MemoplannerSettingData.fromData(
+              Generic.createNew<GenericSettingData>(
+                data: GenericSettingData.fromData(
                   data: false,
                   identifier: DisplaySettings.functionMenuDisplayNewTimerKey,
                 ),
               ),
-              Generic.createNew<MemoplannerSettingData>(
-                data: MemoplannerSettingData.fromData(
+              Generic.createNew<GenericSettingData>(
+                data: GenericSettingData.fromData(
                   data: false,
                   identifier: EditActivitySettings.titleKey,
                 ),
               ),
-              Generic.createNew<MemoplannerSettingData>(
-                data: MemoplannerSettingData.fromData(
+              Generic.createNew<GenericSettingData>(
+                data: GenericSettingData.fromData(
                   data: false,
                   identifier: EditActivitySettings.imageKey,
                 ),

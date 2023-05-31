@@ -1,10 +1,10 @@
-import 'package:memoplanner/models/all.dart';
+import 'package:generics/generics.dart';
 
 extension GenericMapExtensions on Map<String, Generic> {
-  Map<String, MemoplannerSettingData> filterMemoplannerSettingsData() {
+  Map<String, GenericSettingData> filterMemoplannerSettingsData() {
     return (map((key, value) => MapEntry(key, value.data))
-          ..removeWhere((key, value) => value is! MemoplannerSettingData))
-        .cast<String, MemoplannerSettingData>();
+          ..removeWhere((key, value) => value is! GenericSettingData))
+        .cast<String, GenericSettingData>();
   }
 }
 

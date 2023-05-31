@@ -13,7 +13,7 @@ class DayCalendarSettings extends Equatable {
   });
 
   factory DayCalendarSettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
+          Map<String, GenericSettingData> settings) =>
       DayCalendarSettings(
         appBar: AppBarSettings.fromSettingsMap(settings),
         viewOptions: DayCalendarViewOptionsSettings.fromSettingsMap(settings),
@@ -28,7 +28,7 @@ class DayCalendarSettings extends Equatable {
         viewOptions: viewOptions ?? this.viewOptions,
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
+  List<GenericSettingData> get memoplannerSettingData => [
         ...appBar.memoplannerSettingData,
         ...viewOptions.memoplannerSettingData,
       ];

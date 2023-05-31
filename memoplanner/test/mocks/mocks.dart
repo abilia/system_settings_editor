@@ -35,8 +35,6 @@ class MockDeviceDb extends Mock implements DeviceDb {}
 
 class MockCalendarDb extends Mock implements CalendarDb {}
 
-class MockGenericDb extends Mock implements GenericDb {}
-
 class MockSortableDb extends Mock implements SortableDb {}
 
 class MockSupportPersonsDb extends Mock implements SupportPersonsDb {}

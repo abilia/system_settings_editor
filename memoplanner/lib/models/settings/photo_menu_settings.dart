@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:memoplanner/models/generic/generic.dart';
-import 'package:memoplanner/models/settings/memoplanner_settings.dart';
+import 'package:memoplanner/models/all.dart';
 
 class PhotoMenuSettings extends Equatable {
   final bool displayLocalImages, displayCamera, displayMyPhotos;
@@ -16,7 +15,7 @@ class PhotoMenuSettings extends Equatable {
       displayMyPhotosKey = 'image_menu_display_my_photos_item';
 
   factory PhotoMenuSettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
+          Map<String, GenericSettingData> settings) =>
       PhotoMenuSettings(
         displayLocalImages: settings.getBool(
           displayPhotoKey,

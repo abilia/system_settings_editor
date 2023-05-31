@@ -3,10 +3,8 @@ import 'dart:collection';
 
 import 'package:abilia_sync/abilia_sync.dart';
 import 'package:equatable/equatable.dart';
-import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:generics/generics.dart';
 
 part 'generic_state.dart';
 
@@ -26,10 +24,10 @@ class GenericCubit extends Cubit<GenericState> {
     final currentState = state;
     if (currentState is GenericsLoaded) {
       final toUpdate = {
-        for (var generic in genericData.whereType<MemoplannerSettingData>())
+        for (var generic in genericData.whereType<GenericSettingData>())
           generic.key: currentState.generics[generic.key]
                   ?.copyWithNewData(newData: generic) ??
-              Generic.createNew<MemoplannerSettingData>(data: generic)
+              Generic.createNew<GenericSettingData>(data: generic)
       };
 
       emit(

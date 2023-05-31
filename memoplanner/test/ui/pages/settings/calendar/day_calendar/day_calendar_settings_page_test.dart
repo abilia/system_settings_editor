@@ -9,7 +9,6 @@ import 'package:seagull_fakes/all.dart';
 import '../../../../../fakes/all.dart';
 import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
-import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {
   group('Day calendar settings page', () {
@@ -134,32 +133,32 @@ void main() {
           'BUG SGC-1683 - Header shown in menu page even when turned off',
           (tester) async {
         generics = [
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
+          Generic.createNew<GenericSettingData>(
+            data: GenericSettingData.fromData(
               data: false,
               identifier: AppBarSettings.dayCaptionShowDayButtonsKey,
             ),
           ),
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
+          Generic.createNew<GenericSettingData>(
+            data: GenericSettingData.fromData(
               data: false,
               identifier: AppBarSettings.activityDisplayWeekdayKey,
             ),
           ),
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
+          Generic.createNew<GenericSettingData>(
+            data: GenericSettingData.fromData(
               data: false,
               identifier: AppBarSettings.activityDisplayDayPeriodKey,
             ),
           ),
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
+          Generic.createNew<GenericSettingData>(
+            data: GenericSettingData.fromData(
               data: false,
               identifier: AppBarSettings.activityDisplayDateKey,
             ),
           ),
-          Generic.createNew<MemoplannerSettingData>(
-            data: MemoplannerSettingData.fromData(
+          Generic.createNew<GenericSettingData>(
+            data: GenericSettingData.fromData(
               data: false,
               identifier: AppBarSettings.activityDisplayClockKey,
             ),

@@ -9,7 +9,6 @@ import 'package:seagull_fakes/all.dart';
 import '../../../../../fakes/all.dart';
 import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
-import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {
   final initialTime = DateTime(2021, 04, 16, 13, 37);
@@ -192,26 +191,26 @@ void main() {
     testWidgets('Change time interval - one timepillar', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: 10 * Duration.millisecondsPerHour,
             identifier: DayParts.morningIntervalStartKey,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: 12 * Duration.millisecondsPerHour,
             identifier: DayParts.forenoonIntervalStartKey,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: 19 * Duration.millisecondsPerHour,
             identifier: DayParts.nightIntervalStartKey,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: DayCalendarType.oneTimepillar.index,
             identifier:
                 DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey,
@@ -230,26 +229,26 @@ void main() {
     testWidgets('Change time interval - two timepillars', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: 10 * Duration.millisecondsPerHour,
             identifier: DayParts.morningIntervalStartKey,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: 12 * Duration.millisecondsPerHour,
             identifier: DayParts.forenoonIntervalStartKey,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: 19 * Duration.millisecondsPerHour,
             identifier: DayParts.nightIntervalStartKey,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
               data: DayCalendarType.twoTimepillars.index,
               identifier:
                   DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),

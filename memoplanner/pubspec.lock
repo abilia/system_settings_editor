@@ -661,6 +661,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  generics:
+    dependency: "direct main"
+    description:
+      path: "../packages/generics"
+      relative: true
+    source: path
+    version: "0.0.0"
   get_it:
     dependency: "direct main"
     description:

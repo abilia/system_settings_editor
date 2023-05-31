@@ -23,8 +23,8 @@ class GenericsFailedEvent extends MemoplannerSettingsEvent {
 class SettingsUpdateEvent<T extends Object> extends MemoplannerSettingsEvent {
   final String identifier;
   final T data;
-  MemoplannerSettingData get settingData =>
-      MemoplannerSettingData.fromData(data: data, identifier: identifier);
+  GenericSettingData get settingData =>
+      GenericSettingData.fromData(data: data, identifier: identifier);
   const SettingsUpdateEvent(this.identifier, this.data);
   @override
   List<Object> get props => [identifier, data];

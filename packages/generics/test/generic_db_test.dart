@@ -1,9 +1,8 @@
-import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/models/all.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:generics/generics.dart';
 import 'package:repository_base/repository_base.dart';
-import 'package:test/test.dart';
-
-import '../test_helpers/verify_generic.dart';
+import 'package:seagull_fakes/all.dart';
+import 'package:sqflite/sqflite.dart';
 
 void main() {
   late Database db;
@@ -16,12 +15,11 @@ void main() {
 
   test('Several with same identifier should get last revision', () async {
     final all = await genericDb.getAllNonDeleted();
+    const key = 'KeY';
     expect(all.length, 0);
 
-    final g1 =
-        memoplannerSetting(true, ActivityViewSettings.displayDeleteButtonKey);
-    final g2 =
-        memoplannerSetting(false, ActivityViewSettings.displayDeleteButtonKey);
+    final g1 = genericSetting(true, key);
+    final g2 = genericSetting(false, key);
     await genericDb.insert([g1.wrapWithDbModel(revision: 1)]
         .whereType<DbModel<Generic<GenericData>>>());
     await genericDb.insert([g2.wrapWithDbModel(revision: 2)]
@@ -32,15 +30,11 @@ void main() {
 
     final unique = await genericDb.getAllNonDeletedMaxRevision();
     expect(unique.length, 1);
-    expect(unique.first.data.identifier,
-        ActivityViewSettings.displayDeleteButtonKey);
-    final settings = MemoplannerSettings.fromSettingsMap(
-      {for (var e in unique) e.data.key: e.data as MemoplannerSettingData},
-    );
-    expect(settings.activityView.displayDeleteButton, false);
+    expect(unique.first.data.identifier, key);
+    expect((unique.first.data as GenericSettingData).data, isFalse);
   });
 
-  tearDown(() {
-    DatabaseRepository.clearAll(db);
+  tearDown(() async {
+    await DatabaseRepository.clearAll(db);
   });
 }

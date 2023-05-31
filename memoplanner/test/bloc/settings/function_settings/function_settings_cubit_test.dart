@@ -239,37 +239,37 @@ void main() {
     );
 
     final expectedSettingsData = [
-      MemoplannerSettingData<dynamic>.fromData(
+      GenericSettingData<dynamic>.fromData(
         data: false,
         identifier: DisplaySettings.functionMenuDisplayWeekKey,
       ),
-      MemoplannerSettingData<dynamic>.fromData(
+      GenericSettingData<dynamic>.fromData(
         data: false,
         identifier: DisplaySettings.functionMenuDisplayMonthKey,
       ),
-      MemoplannerSettingData<dynamic>.fromData(
+      GenericSettingData<dynamic>.fromData(
         data: false,
         identifier: DisplaySettings.functionMenuDisplayNewActivityKey,
       ),
-      MemoplannerSettingData<dynamic>.fromData(
+      GenericSettingData<dynamic>.fromData(
         data: false,
         identifier: DisplaySettings.functionMenuDisplayNewTimerKey,
       ),
-      MemoplannerSettingData<dynamic>.fromData(
+      GenericSettingData<dynamic>.fromData(
           data: false, identifier: DisplaySettings.functionMenuDisplayMenuKey),
-      MemoplannerSettingData<dynamic>.fromData(
+      GenericSettingData<dynamic>.fromData(
         data: 0,
         identifier: TimeoutSettings.activityTimeoutKey,
       ),
-      MemoplannerSettingData<dynamic>.fromData(
+      GenericSettingData<dynamic>.fromData(
         data: false, // if timeout is 0 screensaver should be false
         identifier: TimeoutSettings.useScreensaverKey,
       ),
-      MemoplannerSettingData<dynamic>.fromData(
+      GenericSettingData<dynamic>.fromData(
         data: true,
         identifier: TimeoutSettings.screensaverOnlyDuringNightKey,
       ),
-      MemoplannerSettingData<dynamic>.fromData(
+      GenericSettingData<dynamic>.fromData(
         data: StartView.photoAlbum.index,
         identifier: FunctionsSettings.functionMenuStartViewKey,
       ),
@@ -289,9 +289,9 @@ void main() {
         verify(() => genericCubit.genericUpdated(captureAny())).captured;
     expect(captured, hasLength(1));
 
-    expect(captured.single.runtimeType, List<MemoplannerSettingData<dynamic>>);
+    expect(captured.single.runtimeType, List<GenericSettingData<dynamic>>);
     expect(
-      (captured.single as List<MemoplannerSettingData<dynamic>>),
+      (captured.single as List<GenericSettingData<dynamic>>),
       expectedSettingsData,
     );
   });

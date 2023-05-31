@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:repository_base/repository_base.dart';
+import 'package:utils/utils.dart';
 import 'package:uuid/uuid.dart';
 
 part 'db_generic.dart';
@@ -38,7 +37,7 @@ class Generic<T extends GenericData> extends DataModel {
   }
 
   static String? _getTypeString<T extends GenericData>() {
-    if (T == MemoplannerSettingData) return GenericType.memoPlannerSettings;
+    if (T == GenericSettingData) return GenericType.memoPlannerSettings;
     return null;
   }
 

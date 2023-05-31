@@ -18,7 +18,6 @@ import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
 import '../../test_helpers/enter_text.dart';
 import '../../test_helpers/tts.dart';
-import '../../test_helpers/verify_generic.dart';
 
 void main() {
   late ActivityDbInMemory mockActivityDb;
@@ -1366,8 +1365,7 @@ void main() {
       when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           <Generic>[
-            memoplannerSetting(
-                false, ActivityViewSettings.displayDeleteButtonKey)
+            genericSetting(false, ActivityViewSettings.displayDeleteButtonKey)
           ],
         ),
       );
@@ -1383,12 +1381,9 @@ void main() {
       when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           <Generic>[
-            memoplannerSetting(
-                false, ActivityViewSettings.displayDeleteButtonKey),
-            memoplannerSetting(
-                false, ActivityViewSettings.displayAlarmButtonKey),
-            memoplannerSetting(
-                false, ActivityViewSettings.displayEditButtonKey),
+            genericSetting(false, ActivityViewSettings.displayDeleteButtonKey),
+            genericSetting(false, ActivityViewSettings.displayAlarmButtonKey),
+            genericSetting(false, ActivityViewSettings.displayEditButtonKey),
           ],
         ),
       );
@@ -1404,8 +1399,7 @@ void main() {
       when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           <Generic>[
-            memoplannerSetting(
-                false, ActivityViewSettings.displayQuarterHourKey),
+            genericSetting(false, ActivityViewSettings.displayQuarterHourKey),
           ],
         ),
       );
