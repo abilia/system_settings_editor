@@ -108,7 +108,7 @@ Future<NotificationAlarm?> getOrAddPayloadToStream() async {
 
 Future<SeagullAnalytics> _initAnalytics(String supportId, String environment) =>
     SeagullAnalytics.init(
-      project: Config.release && environment == prod
+      project: Config.release && environment == prodName
           ? MixpanelProject.memoProd
           : MixpanelProject.sandbox,
       identifier: supportId,
