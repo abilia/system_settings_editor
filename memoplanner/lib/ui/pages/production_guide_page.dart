@@ -138,6 +138,23 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                         ),
                         const SizedBox(height: 50),
                       ],
+                      BlocSelector<PermissionCubit, PermissionState, bool>(
+                        selector: (state) =>
+                            state.status[Permission.ignoreBatteryOptimizations]
+                                ?.isGranted ??
+                            false,
+                        builder: (context, granted) => SwitchField(
+                          value: granted,
+                          child: const Text('Disabled battery optimizations'),
+                          onChanged: (_) async {
+                            await context
+                                .read<PermissionCubit>()
+                                .requestPermissions(
+                                    [Permission.ignoreBatteryOptimizations]);
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 50),
                       TextButton(
                         onPressed:
                             canWriteSettings && startupState is! Verifying
