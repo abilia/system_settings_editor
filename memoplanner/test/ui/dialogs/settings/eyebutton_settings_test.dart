@@ -11,7 +11,7 @@ import '../../../fakes/activity_db_in_memory.dart';
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/tts.dart';
-import '../../../test_helpers/verify_generic.dart';
+import '../../../test_helpers/verify_generic_mp.dart';
 
 void main() {
   final translate = Locales.language.values.first;
@@ -29,8 +29,8 @@ void main() {
       ..initWithActivity(
           Activity.createNew(title: 'null', startTime: initTime));
 
-    final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
-      data: MemoplannerSettingData.fromData(
+    final timepillarGeneric = Generic.createNew<GenericSettingData>(
+      data: GenericSettingData.fromData(
           data: DayCalendarType.oneTimepillar.index,
           identifier:
               DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
@@ -92,7 +92,7 @@ void main() {
     await tester.tap(find.byType(OkButton));
     await tester.pumpAndSettle();
 
-    verifyUnsyncedGeneric(
+    verifyUnsyncedGenericMP(
       tester,
       mockGenericDb,
       key: DayCalendarViewOptionsSettings.viewOptionsDotsKey,

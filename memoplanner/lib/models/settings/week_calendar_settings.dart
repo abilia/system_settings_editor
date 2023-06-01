@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:memoplanner/models/generic/generic.dart';
-import 'package:memoplanner/models/settings/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class WeekCalendarSettings extends Equatable {
   final bool showBrowseButtons, showWeekNumber, showYearAndMonth, showClock;
@@ -27,7 +26,7 @@ class WeekCalendarSettings extends Equatable {
   });
 
   factory WeekCalendarSettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
+          Map<String, GenericSettingData> settings) =>
       WeekCalendarSettings(
         showBrowseButtons: settings.parse(showBrowseButtonsKey, true),
         showWeekNumber: settings.parse(showWeekNumberKey, true),
@@ -60,28 +59,28 @@ class WeekCalendarSettings extends Equatable {
         weekColor: weekColor ?? this.weekColor,
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(
           data: showBrowseButtons,
           identifier: WeekCalendarSettings.showBrowseButtonsKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: showWeekNumber,
           identifier: WeekCalendarSettings.showWeekNumberKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: showYearAndMonth,
           identifier: WeekCalendarSettings.showYearAndMonthKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: showClock,
           identifier: WeekCalendarSettings.showClockKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: weekDisplayDays.index,
           identifier: WeekCalendarSettings.showFullWeekKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: weekColor.index,
           identifier: WeekCalendarSettings.showColorModeKey,
         ),

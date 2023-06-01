@@ -44,7 +44,7 @@ class EditActivitySettings extends Equatable {
   });
 
   factory EditActivitySettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
+          Map<String, GenericSettingData> settings) =>
       EditActivitySettings(
         template: settings.getBool(templateKey),
         title: settings.getBool(titleKey),
@@ -60,25 +60,21 @@ class EditActivitySettings extends Equatable {
         reminders: settings.getBool(remindersKey),
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
-            data: template, identifier: templateKey),
-        MemoplannerSettingData.fromData(data: title, identifier: titleKey),
-        MemoplannerSettingData.fromData(data: image, identifier: imageKey),
-        MemoplannerSettingData.fromData(data: date, identifier: dateKey),
-        MemoplannerSettingData.fromData(data: fullDay, identifier: fullDayKey),
-        MemoplannerSettingData.fromData(
-            data: checkable, identifier: checkableKey),
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(data: template, identifier: templateKey),
+        GenericSettingData.fromData(data: title, identifier: titleKey),
+        GenericSettingData.fromData(data: image, identifier: imageKey),
+        GenericSettingData.fromData(data: date, identifier: dateKey),
+        GenericSettingData.fromData(data: fullDay, identifier: fullDayKey),
+        GenericSettingData.fromData(data: checkable, identifier: checkableKey),
+        GenericSettingData.fromData(
             data: availability, identifier: availabilityKey),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
             data: removeAfter, identifier: removeAfterKey),
-        MemoplannerSettingData.fromData(data: alarm, identifier: alarmKey),
-        MemoplannerSettingData.fromData(
-            data: checklist, identifier: checklistKey),
-        MemoplannerSettingData.fromData(data: notes, identifier: notesKey),
-        MemoplannerSettingData.fromData(
-            data: reminders, identifier: remindersKey),
+        GenericSettingData.fromData(data: alarm, identifier: alarmKey),
+        GenericSettingData.fromData(data: checklist, identifier: checklistKey),
+        GenericSettingData.fromData(data: notes, identifier: notesKey),
+        GenericSettingData.fromData(data: reminders, identifier: remindersKey),
       ];
 
   EditActivitySettings copyWith({

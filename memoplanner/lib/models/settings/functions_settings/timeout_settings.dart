@@ -33,7 +33,7 @@ class TimeoutSettings extends Equatable {
       );
 
   factory TimeoutSettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
+          Map<String, GenericSettingData> settings) =>
       TimeoutSettings(
         duration: Duration(milliseconds: settings.parse(activityTimeoutKey, 0)),
         screensaver: settings.getBool(
@@ -46,16 +46,16 @@ class TimeoutSettings extends Equatable {
         ),
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(
           data: duration.inMilliseconds,
           identifier: activityTimeoutKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: shouldUseScreensaver,
           identifier: useScreensaverKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: screensaverOnlyDuringNight && screensaver,
           identifier: screensaverOnlyDuringNightKey,
         ),

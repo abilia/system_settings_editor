@@ -19,7 +19,7 @@ class GeneralCalendarSettings extends Equatable {
   });
 
   factory GeneralCalendarSettings.fromSettingsMap(
-    Map<String, MemoplannerSettingData> settings,
+    Map<String, GenericSettingData> settings,
   ) =>
       GeneralCalendarSettings(
         clockType: ClockType.values[settings.parse(settingClockTypeKey, 0)],
@@ -44,14 +44,14 @@ class GeneralCalendarSettings extends Equatable {
         categories: categories ?? this.categories,
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(
           data: clockType.index,
           identifier: settingClockTypeKey,
         ),
         ...timepillar.memoplannerSettingData,
         ...dayParts.memoplannerSettingData,
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: dayColor.index,
           identifier: calendarDayColorKey,
         ),

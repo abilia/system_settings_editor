@@ -13,7 +13,6 @@ import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
 import '../../../../../test_helpers/default_sortables.dart';
 import '../../../../../test_helpers/register_fallback_values.dart';
-import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {
   final translate = Locales.language.values.first;
@@ -24,14 +23,14 @@ void main() {
   late MockGenericDb genericDb;
   late MockSortableDb sortableDb;
 
-  final oneTimepillarGeneric = Generic.createNew<MemoplannerSettingData>(
-        data: MemoplannerSettingData.fromData(
+  final oneTimepillarGeneric = Generic.createNew<GenericSettingData>(
+        data: GenericSettingData.fromData(
             data: DayCalendarType.oneTimepillar.index,
             identifier:
                 DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
       ),
-      twoTimepillarsGeneric = Generic.createNew<MemoplannerSettingData>(
-        data: MemoplannerSettingData.fromData(
+      twoTimepillarsGeneric = Generic.createNew<GenericSettingData>(
+        data: GenericSettingData.fromData(
             data: DayCalendarType.twoTimepillars.index,
             identifier:
                 DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
@@ -102,32 +101,32 @@ void main() {
         leftName = 'leftName',
         rightName = 'leftName';
     generics = [
-      Generic.createNew<MemoplannerSettingData>(
-        data: MemoplannerSettingData.fromData(
+      Generic.createNew<GenericSettingData>(
+        data: GenericSettingData.fromData(
           data: false,
           identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
         ),
       ),
-      Generic.createNew<MemoplannerSettingData>(
-        data: MemoplannerSettingData.fromData(
+      Generic.createNew<GenericSettingData>(
+        data: GenericSettingData.fromData(
           data: leftName,
           identifier: CategoriesSettings.calendarActivityTypeLeftKey,
         ),
       ),
-      Generic.createNew<MemoplannerSettingData>(
-        data: MemoplannerSettingData.fromData(
+      Generic.createNew<GenericSettingData>(
+        data: GenericSettingData.fromData(
           data: rightName,
           identifier: CategoriesSettings.calendarActivityTypeRightKey,
         ),
       ),
-      Generic.createNew<MemoplannerSettingData>(
-        data: MemoplannerSettingData.fromData(
+      Generic.createNew<GenericSettingData>(
+        data: GenericSettingData.fromData(
           data: fileIdLeft,
           identifier: CategoriesSettings.calendarActivityTypeLeftImageKey,
         ),
       ),
-      Generic.createNew<MemoplannerSettingData>(
-        data: MemoplannerSettingData.fromData(
+      Generic.createNew<GenericSettingData>(
+        data: GenericSettingData.fromData(
           data: fileIdRight,
           identifier: CategoriesSettings.calendarActivityTypeRightImageKey,
         ),
@@ -352,8 +351,8 @@ void main() {
       // Arrange
       generics = [
         oneTimepillarGeneric,
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: false,
             identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
           ),
@@ -370,8 +369,8 @@ void main() {
       // Arrange
       generics = [
         twoTimepillarsGeneric,
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: false,
             identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
           ),
@@ -389,8 +388,8 @@ void main() {
       // Arrange
       generics = [
         oneTimepillarGeneric,
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: true,
             identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
           ),
@@ -407,8 +406,8 @@ void main() {
       // Arrange
       const right = 'some right name';
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: right,
             identifier: CategoriesSettings.calendarActivityTypeRightKey,
           ),
@@ -428,8 +427,8 @@ void main() {
       const right = 'some right name';
       generics = [
         oneTimepillarGeneric,
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: right,
             identifier: CategoriesSettings.calendarActivityTypeRightKey,
           ),
@@ -448,8 +447,8 @@ void main() {
       // Arrange
       const left = 'some left name';
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: left,
             identifier: CategoriesSettings.calendarActivityTypeLeftKey,
           ),
@@ -469,8 +468,8 @@ void main() {
       const left = 'some left name';
       generics = [
         oneTimepillarGeneric,
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: left,
             identifier: CategoriesSettings.calendarActivityTypeLeftKey,
           ),
@@ -490,14 +489,14 @@ void main() {
       const fileIdLeft = 'fileIdLeft', fileIdRight = 'fileIdRight';
       generics = [
         oneTimepillarGeneric,
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: fileIdLeft,
             identifier: CategoriesSettings.calendarActivityTypeLeftImageKey,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: fileIdRight,
             identifier: CategoriesSettings.calendarActivityTypeRightImageKey,
           ),
@@ -526,26 +525,26 @@ void main() {
           rightName = 'some right name';
       generics = [
         twoTimepillarsGeneric,
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: fileIdLeft,
             identifier: CategoriesSettings.calendarActivityTypeLeftImageKey,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: fileIdRight,
             identifier: CategoriesSettings.calendarActivityTypeRightImageKey,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: leftName,
             identifier: CategoriesSettings.calendarActivityTypeLeftKey,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: rightName,
             identifier: CategoriesSettings.calendarActivityTypeRightKey,
           ),
@@ -571,14 +570,14 @@ void main() {
       // Arrange
       const fileIdLeft = 'fileIdLeft', fileIdRight = 'fileIdRight';
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: fileIdLeft,
             identifier: CategoriesSettings.calendarActivityTypeLeftImageKey,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: fileIdRight,
             identifier: CategoriesSettings.calendarActivityTypeRightImageKey,
           ),
@@ -607,26 +606,26 @@ void main() {
           fileIdRight = 'fileIdRight';
 
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: nameLeft,
             identifier: CategoriesSettings.calendarActivityTypeLeftKey,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: nameRight,
             identifier: CategoriesSettings.calendarActivityTypeRightKey,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: fileIdLeft,
             identifier: CategoriesSettings.calendarActivityTypeLeftImageKey,
           ),
         ),
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: fileIdRight,
             identifier: CategoriesSettings.calendarActivityTypeRightImageKey,
           ),

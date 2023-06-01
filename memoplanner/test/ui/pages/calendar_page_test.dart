@@ -21,7 +21,7 @@ import '../../test_helpers/enter_text.dart';
 import '../../test_helpers/register_fallback_values.dart';
 import '../../test_helpers/tap_link.dart';
 import '../../test_helpers/tts.dart';
-import '../../test_helpers/verify_generic.dart';
+import '../../test_helpers/verify_generic_mp.dart';
 
 void main() {
   final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
@@ -318,8 +318,8 @@ void main() {
   });
 
   group('Chosen calendar setting', () {
-    final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
-      data: MemoplannerSettingData.fromData(
+    final timepillarGeneric = Generic.createNew<GenericSettingData>(
+      data: GenericSettingData.fromData(
         data: DayCalendarType.oneTimepillar.index,
         identifier: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey,
       ),
@@ -355,7 +355,7 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.ok));
       await tester.pumpAndSettle();
 
-      verifyUnsyncedGeneric(
+      verifyUnsyncedGenericMP(
         tester,
         mockGenericDb,
         key: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey,
@@ -372,8 +372,8 @@ void main() {
 
       testWidgets('week', (WidgetTester tester) async {
         genericResponse = () => [
-              Generic.createNew<MemoplannerSettingData>(
-                data: MemoplannerSettingData.fromData(
+              Generic.createNew<GenericSettingData>(
+                data: GenericSettingData.fromData(
                   data: StartView.weekCalendar.index,
                   identifier: FunctionsSettings.functionMenuStartViewKey,
                 ),
@@ -387,8 +387,8 @@ void main() {
 
       testWidgets('month', (WidgetTester tester) async {
         genericResponse = () => [
-              Generic.createNew<MemoplannerSettingData>(
-                data: MemoplannerSettingData.fromData(
+              Generic.createNew<GenericSettingData>(
+                data: GenericSettingData.fromData(
                   data: StartView.monthCalendar.index,
                   identifier: FunctionsSettings.functionMenuStartViewKey,
                 ),
@@ -402,8 +402,8 @@ void main() {
 
       testWidgets('photo album', (WidgetTester tester) async {
         genericResponse = () => [
-              Generic.createNew<MemoplannerSettingData>(
-                data: MemoplannerSettingData.fromData(
+              Generic.createNew<GenericSettingData>(
+                data: GenericSettingData.fromData(
                   data: StartView.photoAlbum.index,
                   identifier: FunctionsSettings.functionMenuStartViewKey,
                 ),
@@ -987,8 +987,8 @@ void main() {
 
     testWidgets('SGC-2378 Show months in app bar', (WidgetTester tester) async {
       genericResponse = () => [
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: StartView.weekCalendar.index,
                 identifier: FunctionsSettings.functionMenuStartViewKey,
               ),
@@ -1397,8 +1397,8 @@ void main() {
       final expectedTime =
           initialTime.onlyDays().nextDay().millisecondsSinceEpoch;
       genericResponse = () => [
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: true,
                 identifier: AlarmSettings.showAlarmOnOffSwitchKey,
               ),
@@ -1410,14 +1410,14 @@ void main() {
       expect(find.byType(ToggleAlarmButtonInactive), findsOneWidget);
 
       genericResponse = () => [
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: true,
                 identifier: AlarmSettings.showAlarmOnOffSwitchKey,
               ),
             ),
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: expectedTime,
                 identifier: AlarmSettings.alarmsDisabledUntilKey,
               ),
@@ -1428,7 +1428,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      verifyUnsyncedGeneric(
+      verifyUnsyncedGenericMP(
         tester,
         mockGenericDb,
         key: AlarmSettings.alarmsDisabledUntilKey,
@@ -1499,8 +1499,8 @@ void main() {
         syncDelay: SyncDelays.zero,
       );
       genericResponse = () => [
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: true,
                 identifier: AlarmSettings.showAlarmOnOffSwitchKey,
               ),

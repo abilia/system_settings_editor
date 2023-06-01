@@ -28,22 +28,22 @@ void main() {
     ActivityResponse activityResponse = () => [];
 
     Generic activityTimeoutGeneric([int minutes = 1]) =>
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: minutes.minutes().inMilliseconds,
             identifier: TimeoutSettings.activityTimeoutKey,
           ),
         );
     Generic startViewGeneric(StartView startView) =>
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: startView.index,
             identifier: FunctionsSettings.functionMenuStartViewKey,
           ),
         );
 
-    final useScreensaverGeneric = Generic.createNew<MemoplannerSettingData>(
-      data: MemoplannerSettingData.fromData(
+    final useScreensaverGeneric = Generic.createNew<GenericSettingData>(
+      data: GenericSettingData.fromData(
         data: true,
         identifier: TimeoutSettings.useScreensaverKey,
       ),
@@ -367,8 +367,8 @@ void main() {
       genericResponse = () => [
             activityTimeoutGeneric(1),
             useScreensaverGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: true,
                 identifier: TimeoutSettings.screensaverOnlyDuringNightKey,
               ),
@@ -607,8 +607,8 @@ void main() {
           // Arrange
           genericResponse = () => [
                 activityTimeoutGeneric(),
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
+                Generic.createNew<GenericSettingData>(
+                  data: GenericSettingData.fromData(
                     data: false,
                     identifier: AddActivitySettings.addActivityTypeAdvancedKey,
                   ),

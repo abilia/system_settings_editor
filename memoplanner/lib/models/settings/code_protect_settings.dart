@@ -39,7 +39,7 @@ class CodeProtectSettings extends Equatable {
             protectAndroidSettings ?? this.protectAndroidSettings,
       );
   factory CodeProtectSettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
+          Map<String, GenericSettingData> settings) =>
       CodeProtectSettings(
         code: settings.parse(
           codeKey,
@@ -59,20 +59,20 @@ class CodeProtectSettings extends Equatable {
         ),
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(
           data: code,
           identifier: codeKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: protectSettings,
           identifier: protectSettingsKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: protectCodeProtect,
           identifier: protectCodeProtectKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: protectAndroidSettings,
           identifier: protectAndroidSettingsKey,
         ),

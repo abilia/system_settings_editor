@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:memoplanner/models/generic/generic.dart';
-import 'package:memoplanner/models/settings/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class ActivityViewSettings extends Equatable {
   final bool displayAlarmButton,
@@ -26,7 +25,7 @@ class ActivityViewSettings extends Equatable {
       displayTimeLeftKey = 'activity_detailed_setting_display_qhw_time_left';
 
   factory ActivityViewSettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
+          Map<String, GenericSettingData> settings) =>
       ActivityViewSettings(
         displayAlarmButton: settings.getBool(
           displayAlarmButtonKey,
@@ -60,24 +59,24 @@ class ActivityViewSettings extends Equatable {
         displayTimeLeft: displayTimeLeft ?? this.displayTimeLeft,
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(
           data: displayAlarmButton,
           identifier: ActivityViewSettings.displayAlarmButtonKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: displayDeleteButton,
           identifier: ActivityViewSettings.displayDeleteButtonKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: displayEditButton,
           identifier: ActivityViewSettings.displayEditButtonKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: displayQuarterHour,
           identifier: ActivityViewSettings.displayQuarterHourKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: displayTimeLeft,
           identifier: ActivityViewSettings.displayTimeLeftKey,
         ),

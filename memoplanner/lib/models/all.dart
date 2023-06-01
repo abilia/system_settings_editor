@@ -1,4 +1,5 @@
 export 'package:auth/models/all.dart';
+export 'package:generics/models/all.dart';
 export 'package:sortables/models/all.dart';
 export 'package:user_files/models/all.dart';
 
@@ -11,7 +12,6 @@ export 'category.dart';
 export 'device.dart';
 export 'exceptions.dart';
 export 'eye_button_settings.dart';
-export 'generic/generic.dart';
 export 'image_and_name.dart';
 export 'notification/all.dart';
 export 'occasion/all.dart';

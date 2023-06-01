@@ -78,7 +78,7 @@ class AlarmSettings extends Equatable {
       );
 
   factory AlarmSettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
+          Map<String, GenericSettingData> settings) =>
       AlarmSettings(
         durationMs: settings.parse(
           alarmDurationKey,
@@ -138,32 +138,32 @@ class AlarmSettings extends Equatable {
         showOngoingActivityInFullScreenKey: showOngoingActivityInFullScreen,
       };
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(
           data: nonCheckableSound.name,
           identifier: AlarmSettings.nonCheckableActivityAlarmKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: checkableSound.name,
           identifier: AlarmSettings.checkableActivityAlarmKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: reminderSound.name,
           identifier: AlarmSettings.reminderAlarmKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: timerSound.name,
           identifier: AlarmSettings.timerAlarmKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: alarmDuration.milliseconds(),
           identifier: AlarmSettings.alarmDurationKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: showAlarmOnOffSwitch,
           identifier: AlarmSettings.showAlarmOnOffSwitchKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: _showOngoingActivityInFullScreen,
           identifier: AlarmSettings.showOngoingActivityInFullScreenKey,
         )

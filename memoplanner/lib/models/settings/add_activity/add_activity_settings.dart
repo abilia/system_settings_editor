@@ -44,7 +44,7 @@ class AddActivitySettings extends Equatable {
       );
 
   factory AddActivitySettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
+          Map<String, GenericSettingData> settings) =>
       AddActivitySettings(
         stepByStep: StepByStepSettings.fromSettingsMap(settings),
         editActivity: EditActivitySettings.fromSettingsMap(settings),
@@ -55,12 +55,12 @@ class AddActivitySettings extends Equatable {
             : AddActivityMode.stepByStep,
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
+  List<GenericSettingData> get memoplannerSettingData => [
         ...stepByStep.memoplannerSettingData,
         ...editActivity.memoplannerSettingData,
         ...general.memoplannerSettingData,
         ...defaults.memoplannerSettingData,
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: mode == AddActivityMode.editView,
           identifier: addActivityTypeAdvancedKey,
         ),

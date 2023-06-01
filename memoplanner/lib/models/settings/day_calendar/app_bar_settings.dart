@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:memoplanner/models/generic/generic.dart';
-import 'package:memoplanner/models/settings/memoplanner_settings.dart';
+import 'package:memoplanner/models/all.dart';
 
 class AppBarSettings extends Equatable {
   final bool showBrowseButtons, showWeekday, showDayPeriod, showDate, showClock;
@@ -24,7 +23,7 @@ class AppBarSettings extends Equatable {
       showWeekday || showDayPeriod || showDate || showClock;
 
   factory AppBarSettings.fromSettingsMap(
-      Map<String, MemoplannerSettingData> settings) {
+      Map<String, GenericSettingData> settings) {
     return AppBarSettings(
       showBrowseButtons: settings.getBool(
         dayCaptionShowDayButtonsKey,
@@ -59,24 +58,24 @@ class AppBarSettings extends Equatable {
         showClock: showClock ?? this.showClock,
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(
           data: showBrowseButtons,
           identifier: dayCaptionShowDayButtonsKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: showWeekday,
           identifier: activityDisplayWeekdayKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: showDayPeriod,
           identifier: activityDisplayDayPeriodKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: showDate,
           identifier: activityDisplayDateKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: showClock,
           identifier: activityDisplayClockKey,
         ),

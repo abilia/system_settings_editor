@@ -1,3 +1,4 @@
+export 'package:generics/utils/all.dart';
 export 'package:utils/utils.dart';
 
 export 'alarm_navigator.dart';

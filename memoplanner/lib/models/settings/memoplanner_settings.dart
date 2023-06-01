@@ -1,13 +1,16 @@
 // ignore_for_file: deprecated_member_use_from_same_package
 
 import 'package:equatable/equatable.dart';
+import 'package:memoplanner/config.dart';
 import 'package:memoplanner/models/all.dart';
 
 class MemoplannerSettings extends Equatable {
-  static const Set<String> noSyncSettings = {
-    ...AlarmSettings.keys,
-    ...DayCalendarViewOptionsSettings.keys,
-  };
+  static const Set<String> noSyncSettings = Config.isMPGO
+      ? {
+          ...AlarmSettings.keys,
+          ...DayCalendarViewOptionsSettings.keys,
+        }
+      : {};
 
   final AlarmSettings alarm;
   final CodeProtectSettings codeProtect;
@@ -36,7 +39,7 @@ class MemoplannerSettings extends Equatable {
   });
 
   factory MemoplannerSettings.fromSettingsMap(
-      Map<String, MemoplannerSettingData> settings) {
+      Map<String, GenericSettingData> settings) {
     return MemoplannerSettings(
       alarm: AlarmSettings.fromSettingsMap(settings),
       codeProtect: CodeProtectSettings.fromSettingsMap(settings),
@@ -93,7 +96,7 @@ class MemoplannerSettingsFailed extends MemoplannerSettings {
   const MemoplannerSettingsFailed() : super();
 }
 
-extension Parsing on Map<String, MemoplannerSettingData> {
+extension Parsing on Map<String, GenericSettingData> {
   T parse<T>(String settingName, T defaultValue) {
     try {
       return this[GenericData.uniqueId(

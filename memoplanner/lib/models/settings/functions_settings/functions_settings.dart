@@ -64,7 +64,7 @@ class FunctionsSettings extends Equatable {
       );
 
   factory FunctionsSettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
+          Map<String, GenericSettingData> settings) =>
       FunctionsSettings(
         display: DisplaySettings.fromSettingsMap(settings),
         timeout: TimeoutSettings.fromSettingsMap(settings),
@@ -72,10 +72,10 @@ class FunctionsSettings extends Equatable {
             StartView.values[settings.parse(functionMenuStartViewKey, 0)],
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
+  List<GenericSettingData> get memoplannerSettingData => [
         ...display.memoplannerSettingData,
         ...timeout.memoplannerSettingData,
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: startView.index,
           identifier: functionMenuStartViewKey,
         ),

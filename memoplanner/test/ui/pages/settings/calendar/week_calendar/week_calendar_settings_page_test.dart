@@ -10,7 +10,6 @@ import 'package:seagull_fakes/all.dart';
 import '../../../../../fakes/all.dart';
 import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
-import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {
   group('week calendar settings page', () {

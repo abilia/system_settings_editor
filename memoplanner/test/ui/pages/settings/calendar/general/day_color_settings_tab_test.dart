@@ -9,7 +9,6 @@ import 'package:seagull_fakes/all.dart';
 import '../../../../../fakes/all.dart';
 import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
-import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {
   final initialTime = DateTime(2021, 04, 23, 13, 37);
@@ -142,8 +141,8 @@ void main() {
 
     testWidgets('no color respected ', (tester) async {
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: DayColor.noColors.index,
             identifier: GeneralCalendarSettings.calendarDayColorKey,
           ),
@@ -160,8 +159,8 @@ void main() {
 
     testWidgets('weekend color respected ', (tester) async {
       generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
+        Generic.createNew<GenericSettingData>(
+          data: GenericSettingData.fromData(
             data: DayColor.saturdayAndSunday.index,
             identifier: GeneralCalendarSettings.calendarDayColorKey,
           ),

@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
+import 'package:generics/generics.dart';
 import 'package:logging/logging.dart';
-import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
+import 'package:repository_base/repository_base.dart';
+import 'package:sqflite/sqflite.dart';
 
 class GenericDb extends DataDb<Generic> {
   GenericDb(Database database) : super(database);

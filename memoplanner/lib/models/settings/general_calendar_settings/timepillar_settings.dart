@@ -18,7 +18,7 @@ class TimepillarSettings extends Equatable {
   });
 
   factory TimepillarSettings.fromSettingsMap(
-    Map<String, MemoplannerSettingData> settings,
+    Map<String, GenericSettingData> settings,
   ) =>
       TimepillarSettings(
         use12h: settings.getBool(
@@ -51,20 +51,20 @@ class TimepillarSettings extends Equatable {
         columnOfDots: columnOfDots ?? this.columnOfDots,
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(
           data: use12h,
           identifier: setting12hTimeFormatTimelineKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: timeline,
           identifier: settingDisplayTimelineKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: hourLines,
           identifier: settingDisplayHourLinesKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: columnOfDots,
           identifier: settingTimePillarTimelineKey,
         ),

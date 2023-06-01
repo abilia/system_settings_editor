@@ -167,21 +167,20 @@ void main() {
   }, skip: !Config.isMP);
 
   group('Settings', () {
-    final weekCalendarStartViewSettings =
-        Generic.createNew<MemoplannerSettingData>(
-      data: MemoplannerSettingData.fromData(
+    final weekCalendarStartViewSettings = Generic.createNew<GenericSettingData>(
+      data: GenericSettingData.fromData(
         data: StartView.weekCalendar.index,
         identifier: FunctionsSettings.functionMenuStartViewKey,
       ),
     );
-    final menuPageOffSetting = Generic.createNew<MemoplannerSettingData>(
-      data: MemoplannerSettingData.fromData(
+    final menuPageOffSetting = Generic.createNew<GenericSettingData>(
+      data: GenericSettingData.fromData(
         data: false,
         identifier: DisplaySettings.functionMenuDisplayMenuKey,
       ),
     );
-    final weekCalendarOffSetting = Generic.createNew<MemoplannerSettingData>(
-      data: MemoplannerSettingData.fromData(
+    final weekCalendarOffSetting = Generic.createNew<GenericSettingData>(
+      data: GenericSettingData.fromData(
         data: false,
         identifier: DisplaySettings.functionMenuDisplayWeekKey,
       ),

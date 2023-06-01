@@ -55,7 +55,7 @@ class MenuSettings extends Equatable {
       );
 
   factory MenuSettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
+          Map<String, GenericSettingData> settings) =>
       MenuSettings(
         showCamera: settings.getBool(
           showCameraKey,
@@ -77,28 +77,28 @@ class MenuSettings extends Equatable {
         ),
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(
           data: showCamera,
           identifier: MenuSettings.showCameraKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: showPhotos,
           identifier: MenuSettings.showPhotosKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: showPhotoCalendar,
           identifier: MenuSettings.showPhotoCalendarKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: showTemplates,
           identifier: MenuSettings.showTemplatesKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: showQuickSettings,
           identifier: MenuSettings.showQuickSettingsKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: showSettings,
           identifier: MenuSettings.showSettingsKey,
         ),

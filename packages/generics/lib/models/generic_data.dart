@@ -26,21 +26,19 @@ class RawGenericData extends GenericData {
 
   @override
   List<Object> get props => [data, identifier];
-
-  static RawSortableData fromJson(String data) => RawSortableData(data);
 }
 
-class MemoplannerSettingData<T> extends GenericData {
+class GenericSettingData<T> extends GenericData {
   final T data;
   final String type;
 
-  const MemoplannerSettingData._({
+  const GenericSettingData._({
     required this.data,
     required this.type,
     required String identifier,
   }) : super(identifier);
 
-  factory MemoplannerSettingData.fromData({
+  factory GenericSettingData.fromData({
     required T data,
     required String identifier,
   }) {
@@ -58,7 +56,7 @@ class MemoplannerSettingData<T> extends GenericData {
       default:
         throw UnimplementedError();
     }
-    return MemoplannerSettingData._(
+    return GenericSettingData._(
       data: data,
       type: type,
       identifier: identifier,
@@ -77,9 +75,9 @@ class MemoplannerSettingData<T> extends GenericData {
   @override
   List<Object?> get props => [data, type, identifier];
 
-  factory MemoplannerSettingData.fromJson(String data, String identifier) {
+  factory GenericSettingData.fromJson(String data, String identifier) {
     final genericData = json.decode(data);
-    return MemoplannerSettingData._(
+    return GenericSettingData._(
       data: genericData['data'],
       type: genericData['type'],
       identifier: identifier,

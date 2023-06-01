@@ -10,7 +10,6 @@ import 'package:seagull_fakes/all.dart';
 import '../../../../../fakes/all.dart';
 import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
-import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {
   GenericResponse genericResponse = () => [];
@@ -191,8 +190,8 @@ void main() {
     testWidgets('settings is protected', (tester) async {
       // Arrange
       genericResponse = () => [
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: true,
                 identifier: CodeProtectSettings.protectSettingsKey,
               ),
@@ -209,14 +208,14 @@ void main() {
     testWidgets('hidden settings is protected', (tester) async {
       // Arrange
       genericResponse = () => [
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: true,
                 identifier: CodeProtectSettings.protectSettingsKey,
               ),
             ),
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: false,
                 identifier: MenuSettings.showSettingsKey,
               ),
@@ -239,8 +238,8 @@ void main() {
     testWidgets('android settings is protected', (tester) async {
       // Arrange
       genericResponse = () => [
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: true,
                 identifier: CodeProtectSettings.protectAndroidSettingsKey,
               ),
@@ -261,14 +260,14 @@ void main() {
         (tester) async {
       // Assert
       genericResponse = () => [
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: true,
                 identifier: CodeProtectSettings.protectCodeProtectKey,
               ),
             ),
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
+            Generic.createNew<GenericSettingData>(
+              data: GenericSettingData.fromData(
                 data: '1234',
                 identifier: CodeProtectSettings.codeKey,
               ),

@@ -42,7 +42,7 @@ class DayCalendarViewOptionsSettings extends Equatable {
   });
 
   factory DayCalendarViewOptionsSettings.fromSettingsMap(
-      Map<String, MemoplannerSettingData> settings) {
+      Map<String, GenericSettingData> settings) {
     return DayCalendarViewOptionsSettings(
       display: DayCalendarViewOptionsDisplaySettings.fromSettingsMap(settings),
       dots: settings.parse(viewOptionsDotsKey, false),
@@ -76,21 +76,21 @@ class DayCalendarViewOptionsSettings extends Equatable {
         timepillarZoomIndex: timepillarZoom?.index ?? timepillarZoomIndex,
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
+  List<GenericSettingData> get memoplannerSettingData => [
         ...display.memoplannerSettingData,
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: dots,
           identifier: viewOptionsDotsKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: calendarTypeIndex,
           identifier: viewOptionsCalendarTypeKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: intervalTypeIndex,
           identifier: viewOptionsTimeIntervalKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: timepillarZoomIndex,
           identifier: viewOptionsTimepillarZoomKey,
         ),

@@ -73,7 +73,7 @@ class StepByStepSettings extends Equatable {
       );
 
   factory StepByStepSettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
+          Map<String, GenericSettingData> settings) =>
       StepByStepSettings(
         template: settings.getBool(
           templateKey,
@@ -113,37 +113,37 @@ class StepByStepSettings extends Equatable {
         ),
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(
           data: template,
           identifier: templateKey,
         ),
-        MemoplannerSettingData.fromData(data: title, identifier: titleKey),
-        MemoplannerSettingData.fromData(data: image, identifier: imageKey),
-        MemoplannerSettingData.fromData(data: date, identifier: dateKey),
-        MemoplannerSettingData.fromData(data: fullDay, identifier: fullDayKey),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(data: title, identifier: titleKey),
+        GenericSettingData.fromData(data: image, identifier: imageKey),
+        GenericSettingData.fromData(data: date, identifier: dateKey),
+        GenericSettingData.fromData(data: fullDay, identifier: fullDayKey),
+        GenericSettingData.fromData(
           data: checkable,
           identifier: checkableKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: availability,
           identifier: availabilityKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: removeAfter,
           identifier: removeAfterKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: alarm,
           identifier: alarmKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: checklist,
           identifier: checklistKey,
         ),
-        MemoplannerSettingData.fromData(data: notes, identifier: notesKey),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(data: notes, identifier: notesKey),
+        GenericSettingData.fromData(
           data: reminders,
           identifier: remindersKey,
         ),

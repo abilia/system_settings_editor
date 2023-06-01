@@ -53,7 +53,7 @@ class DisplaySettings extends Equatable {
       );
 
   factory DisplaySettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
+          Map<String, GenericSettingData> settings) =>
       DisplaySettings(
         week: settings.getBool(functionMenuDisplayWeekKey),
         month: settings.getBool(functionMenuDisplayMonthKey),
@@ -64,24 +64,24 @@ class DisplaySettings extends Equatable {
             MenuSettings.fromSettingsMap(settings).allDisabled,
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(
           data: week,
           identifier: functionMenuDisplayWeekKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: month,
           identifier: functionMenuDisplayMonthKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: newActivity,
           identifier: functionMenuDisplayNewActivityKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: newTimer,
           identifier: functionMenuDisplayNewTimerKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: menuValue,
           identifier: functionMenuDisplayMenuKey,
         ),

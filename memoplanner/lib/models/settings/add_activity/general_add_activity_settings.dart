@@ -69,7 +69,7 @@ class GeneralAddActivitySettings extends Equatable {
       );
 
   factory GeneralAddActivitySettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
+          Map<String, GenericSettingData> settings) =>
       GeneralAddActivitySettings(
         allowPassedStartTime: settings.getBool(allowPassedStartTimeKey),
         addRecurringActivity: settings.getBool(addRecurringActivityKey),
@@ -82,24 +82,23 @@ class GeneralAddActivitySettings extends Equatable {
         showSpeechAtAlarm: settings.getBool(showSpeechAtAlarmKey),
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(
             data: allowPassedStartTime, identifier: allowPassedStartTimeKey),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
             data: addRecurringActivity, identifier: addRecurringActivityKey),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
             data: showEndTime, identifier: showEndTimeKey),
-        MemoplannerSettingData.fromData(
-            data: showAlarm, identifier: showAlarmKey),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(data: showAlarm, identifier: showAlarmKey),
+        GenericSettingData.fromData(
             data: showVibrationAlarm, identifier: showVibrationAlarmKey),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
             data: showSilentAlarm, identifier: showSilentAlarmKey),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
             data: showNoAlarm, identifier: showNoAlarmKey),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
             data: showAlarmOnlyAtStart, identifier: showAlarmOnlyAtStartKey),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
             data: showSpeechAtAlarm, identifier: showSpeechAtAlarmKey),
       ];
 

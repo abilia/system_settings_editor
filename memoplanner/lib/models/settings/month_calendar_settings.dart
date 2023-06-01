@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:memoplanner/models/generic/generic.dart';
-import 'package:memoplanner/models/settings/all.dart';
+import 'package:memoplanner/models/all.dart';
 
 class MonthCalendarSettings extends Equatable {
   static const String monthCaptionShowMonthButtonsKey =
@@ -25,7 +24,7 @@ class MonthCalendarSettings extends Equatable {
   });
 
   factory MonthCalendarSettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
+          Map<String, GenericSettingData> settings) =>
       MonthCalendarSettings(
         showBrowseButtons: settings.getBool(
           monthCaptionShowMonthButtonsKey,
@@ -55,20 +54,20 @@ class MonthCalendarSettings extends Equatable {
         colorTypeIndex: colorTypeIndex ?? this.colorTypeIndex,
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(
           data: showBrowseButtons,
           identifier: monthCaptionShowMonthButtonsKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: showYear,
           identifier: monthCaptionShowYearKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: showClock,
           identifier: monthCaptionShowClockKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: colorTypeIndex,
           identifier: calendarMonthViewShowColorsKey,
         ),

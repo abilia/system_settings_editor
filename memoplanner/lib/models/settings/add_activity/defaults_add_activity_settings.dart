@@ -33,7 +33,7 @@ class DefaultsAddActivitySettings extends Equatable {
       );
 
   factory DefaultsAddActivitySettings.fromSettingsMap(
-          Map<String, MemoplannerSettingData> settings) =>
+          Map<String, GenericSettingData> settings) =>
       DefaultsAddActivitySettings(
         alarm: Alarm.fromInt(
           settings.parse(
@@ -55,20 +55,20 @@ class DefaultsAddActivitySettings extends Equatable {
         ),
       );
 
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
+  List<GenericSettingData> get memoplannerSettingData => [
+        GenericSettingData.fromData(
           data: alarm.intValue,
           identifier: defaultAlarmTypeKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: availableForType.index,
           identifier: defaultAvailableForTypeKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: checkable,
           identifier: defaultCheckableKey,
         ),
-        MemoplannerSettingData.fromData(
+        GenericSettingData.fromData(
           data: removeAtEndOfDay,
           identifier: defaultRemoveAtEndOfDayKey,
         ),
