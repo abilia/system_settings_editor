@@ -427,9 +427,6 @@ class TopLevelProvider extends StatelessWidget {
                 connectivityChanged: context.read<ConnectivityCubit>().stream,
               ),
             ),
-            BlocProvider(
-              create: (context) => PermissionCubit(),
-            ),
             BlocProvider<VoicesCubit>(
               create: (context) => VoicesCubit(
                 languageCode: GetIt.I<SettingsDb>().language,

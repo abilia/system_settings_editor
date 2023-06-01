@@ -11,8 +11,9 @@ extension PermissionExtension on Permission {
     if (this == Permission.systemAlertWindow) return translate.fullScreenAlarm;
     if (this == Permission.photos) return translate.accessToPhotos;
     if (this == Permission.microphone) return translate.accessToMicrophone;
-    if (this == Permission.ignoreBatteryOptimizations)
+    if (this == Permission.ignoreBatteryOptimizations) {
       return translate.ignoreBatteryOptimizations;
+    }
     return toString();
   }
 
@@ -28,8 +29,9 @@ extension PermissionExtension on Permission {
     if (this == Permission.photos) return AbiliaIcons.upload;
     if (this == Permission.microphone) return AbiliaIcons.dictaphone;
     if (this == Permission.location) return AbiliaIcons.gewaRadio;
-    if (this == Permission.ignoreBatteryOptimizations)
+    if (this == Permission.ignoreBatteryOptimizations) {
       return AbiliaIcons.batteryLevelWarning;
+    }
     return AbiliaIcons.quickSettings;
   }
 }
