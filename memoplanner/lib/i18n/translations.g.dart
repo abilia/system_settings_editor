@@ -956,8 +956,6 @@ abstract class Translated {
 
   final String ignoreBatteryOptimizations = 'Ignore battery optimizations';
 
-  final String allowIgnoreBatteryOptimizationsBody = 'etc etc';
-
   final String about = 'About';
 
   final String aboutMemoplanner = 'About';
