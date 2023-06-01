@@ -220,6 +220,7 @@ void main() {
             PopAwareAlarmPage(
               alarm: startAlarm,
               alarmNavigator: alarmNavigator,
+              stopRemoteSoundDelay: Duration.zero,
               child: AlarmPage(
                 alarm: startAlarm,
               ),
@@ -237,6 +238,7 @@ void main() {
             PopAwareAlarmPage(
               alarm: startAlarm,
               alarmNavigator: alarmNavigator,
+              stopRemoteSoundDelay: Duration.zero,
               child: AlarmPage(alarm: startAlarm),
             ),
           ),
@@ -262,6 +264,7 @@ void main() {
               PopAwareAlarmPage(
                 alarm: fullscreenStartAlarm,
                 alarmNavigator: alarmNavigator,
+                stopRemoteSoundDelay: Duration.zero,
                 child: AlarmPage(alarm: fullscreenStartAlarm),
               ),
             ),
@@ -278,6 +281,7 @@ void main() {
             PopAwareAlarmPage(
               alarm: startAlarm,
               alarmNavigator: alarmNavigator,
+              stopRemoteSoundDelay: Duration.zero,
               child: AlarmPage(alarm: endAlarmWithNoSpeech),
             ),
           ),
@@ -292,6 +296,7 @@ void main() {
           wrapWithMaterialApp(PopAwareAlarmPage(
             alarm: startAlarm,
             alarmNavigator: alarmNavigator,
+            stopRemoteSoundDelay: Duration.zero,
             child: AlarmPage(alarm: endAlarmWithSpeech),
           )),
         );
@@ -310,6 +315,7 @@ void main() {
             PopAwareAlarmPage(
               alarm: startAlarm,
               alarmNavigator: alarmNavigator,
+              stopRemoteSoundDelay: Duration.zero,
               child: AlarmPage(alarm: startAlarm),
             ),
           ),
@@ -332,6 +338,7 @@ void main() {
             PopAwareAlarmPage(
               alarm: startAlarm,
               alarmNavigator: alarmNavigator,
+              stopRemoteSoundDelay: Duration.zero,
               child: AlarmPage(alarm: startAlarm),
             ),
           ),
@@ -354,6 +361,7 @@ void main() {
             PopAwareAlarmPage(
               alarm: startAlarm,
               alarmNavigator: alarmNavigator,
+              stopRemoteSoundDelay: Duration.zero,
               child: AlarmPage(
                 alarm: startAlarm,
               ),
@@ -382,6 +390,7 @@ void main() {
             PopAwareAlarmPage(
               alarm: startAlarm,
               alarmNavigator: alarmNavigator,
+              stopRemoteSoundDelay: Duration.zero,
               child: AlarmPage(alarm: startAlarm),
             ),
           ),
@@ -411,6 +420,7 @@ void main() {
             PopAwareAlarmPage(
               alarm: startAlarm,
               alarmNavigator: alarmNavigator,
+              stopRemoteSoundDelay: Duration.zero,
               child: AlarmPage(
                 alarm: startAlarm,
               ),
@@ -447,6 +457,7 @@ void main() {
               PopAwareAlarmPage(
                 alarm: startAlarm,
                 alarmNavigator: alarmNavigator,
+                stopRemoteSoundDelay: Duration.zero,
                 child: AlarmPage(
                   alarm: startAlarm,
                 ),
@@ -490,6 +501,7 @@ void main() {
       wrapWithMaterialApp(PopAwareAlarmPage(
         alarm: startAlarm,
         alarmNavigator: alarmNavigator,
+        stopRemoteSoundDelay: Duration.zero,
         child: AlarmPage(alarm: endAlarmWithNoSpeech),
       )),
     );
@@ -522,6 +534,7 @@ void main() {
         PopAwareAlarmPage(
           alarm: startAlarm,
           alarmNavigator: alarmNavigator,
+          stopRemoteSoundDelay: Duration.zero,
           child: AlarmPage(alarm: startAlarm),
         ),
       ),
@@ -555,6 +568,7 @@ void main() {
           PopAwareAlarmPage(
             alarm: alarm,
             alarmNavigator: alarmNavigator,
+            stopRemoteSoundDelay: Duration.zero,
             child: AlarmPage(alarm: alarm),
           ),
         ),
@@ -592,6 +606,7 @@ void main() {
           PopAwareAlarmPage(
             alarm: alarm,
             alarmNavigator: alarmNavigator,
+            stopRemoteSoundDelay: Duration.zero,
             child: AlarmPage(alarm: alarm),
           ),
         ),
@@ -636,6 +651,7 @@ void main() {
           PopAwareAlarmPage(
             alarm: alarm,
             alarmNavigator: alarmNavigator,
+            stopRemoteSoundDelay: Duration.zero,
             child: AlarmPage(alarm: alarm),
           ),
         ),
@@ -661,6 +677,7 @@ void main() {
           PopAwareAlarmPage(
             alarm: alarm,
             alarmNavigator: alarmNavigator,
+            stopRemoteSoundDelay: Duration.zero,
             child: AlarmPage(alarm: alarm),
           ),
         ),
@@ -685,6 +702,7 @@ void main() {
           PopAwareAlarmPage(
             alarm: alarm,
             alarmNavigator: alarmNavigator,
+            stopRemoteSoundDelay: Duration.zero,
             child: AlarmPage(alarm: alarm),
           ),
         ),
@@ -713,6 +731,7 @@ void main() {
           PopAwareAlarmPage(
             alarm: alarm,
             alarmNavigator: alarmNavigator,
+            stopRemoteSoundDelay: Duration.zero,
             child: AlarmPage(alarm: alarm),
           ),
         ),
@@ -736,6 +755,7 @@ void main() {
           PopAwareAlarmPage(
             alarm: alarm,
             alarmNavigator: alarmNavigator,
+            stopRemoteSoundDelay: Duration.zero,
             child: AlarmPage(alarm: alarm),
           ),
         ),
@@ -762,6 +782,7 @@ void main() {
           PopAwareAlarmPage(
             alarm: reminder,
             alarmNavigator: alarmNavigator,
+            stopRemoteSoundDelay: Duration.zero,
             child: ReminderPage(reminder: reminder),
           ),
         ),
@@ -788,6 +809,7 @@ void main() {
           PopAwareAlarmPage(
             alarm: reminder,
             alarmNavigator: alarmNavigator,
+            stopRemoteSoundDelay: Duration.zero,
             child: ReminderPage(reminder: reminder),
           ),
         ),
@@ -830,6 +852,7 @@ void main() {
           PopAwareAlarmPage(
             alarm: startAlarm,
             alarmNavigator: alarmNavigator,
+            stopRemoteSoundDelay: Duration.zero,
             child: AlarmPage(alarm: startAlarm),
           ),
         ),
@@ -870,6 +893,7 @@ void main() {
           PopAwareAlarmPage(
             alarm: reminder,
             alarmNavigator: alarmNavigator,
+            stopRemoteSoundDelay: Duration.zero,
             child: ReminderPage(reminder: reminder),
           ),
         ),
@@ -919,6 +943,7 @@ void main() {
           PopAwareAlarmPage(
             alarm: startAlarm,
             alarmNavigator: alarmNavigator,
+            stopRemoteSoundDelay: Duration.zero,
             child: AlarmPage(alarm: startAlarm),
           ),
         ),

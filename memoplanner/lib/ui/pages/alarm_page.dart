@@ -137,10 +137,12 @@ class PopAwareAlarmPage extends StatefulWidget {
   final Widget child;
   final AlarmNavigator alarmNavigator;
   final NotificationAlarm alarm;
+  final Duration stopRemoteSoundDelay;
 
   const PopAwareAlarmPage({
     required this.alarm,
     required this.alarmNavigator,
+    required this.stopRemoteSoundDelay,
     required this.child,
     Key? key,
   }) : super(key: key);
@@ -170,12 +172,20 @@ class _PopAwareAlarmPageState extends State<PopAwareAlarmPage> {
             unawaited(notificationPlugin.cancel(widget.alarm.hashCode));
           }
           unawaited(remoteAlarm.stop(widget.alarm, pop: true));
+          isCanceled = true;
           return true;
         },
         child: BlocListener<TouchDetectionCubit, Touch>(
           listenWhen: (previous, current) => !isCanceled,
           listener: (context, state) async {
             AlarmNavigator.log.fine('on touch ${widget.alarm}');
+            // If user presses Close button,
+            // this will fire before the on onWillPop.
+            // Causing two push and unnecessary load on backend.
+            // So we wait for a little to see it this touch was
+            // a Close button event.
+            await Future.delayed(widget.stopRemoteSoundDelay);
+            if (isCanceled) return;
             await notificationPlugin.cancel(widget.alarm.hashCode);
             await remoteAlarm.stop(widget.alarm);
             isCanceled = true;
