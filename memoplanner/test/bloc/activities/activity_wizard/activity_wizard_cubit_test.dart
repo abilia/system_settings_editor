@@ -9,7 +9,6 @@ import 'package:timezone/data/latest.dart' as tz;
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
-import '../../../mocks/mocks.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {

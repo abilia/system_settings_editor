@@ -1,0 +1,51 @@
+name: calendar_events
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+  flutter: '>=2.0.0'
+
+dependencies:
+  abilia_sync:
+    path: ../abilia_sync
+  auth:
+    path:
+      ../auth
+  bloc: any
+  bloc_concurrency: any
+  bloc_test: any
+  collection: any
+  equatable: any
+  flutter:
+    sdk: flutter
+  flutter_bloc: any
+  http: any
+  intl: any
+  logging: any
+  meta: any
+  repository_base:
+    path: ../repository/repository_base
+  seagull_analytics:
+    path: ../seagull_analytics
+  seagull_clock:
+    path: ../seagull_clock
+  shared_preferences: any
+  sortables:
+    path: ../sortables
+  sqflite: any
+  synchronized: any
+  timezone: any
+  user_files:
+    path: ../user_files
+  utils:
+    path: ../utils
+  uuid: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: any
+  mocktail_image_network: any
+  seagull_fakes:
+    path: ../seagull_fakes
+  seagull_lints:
+    path: ../seagull_lints

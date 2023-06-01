@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/activity/activity.dart';
-import 'package:memoplanner/models/support_person.dart';
+import 'package:memoplanner/models/all.dart';
 
 class AvailableForCubit extends Cubit<AvailableForState> {
   late StreamSubscription _supportPersonsSubscription;

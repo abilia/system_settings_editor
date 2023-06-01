@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:auth/auth.dart';
 import 'package:calendar/all.dart';
 import 'package:file_storage/file_storage.dart';
-import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
@@ -11,7 +10,6 @@ import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:test/fake.dart';
 
-import '../test_helpers/default_sortables.dart';
 import 'fake_client.dart';
 
 class FakeSettingsDb extends Fake implements SettingsDb {
@@ -55,25 +53,6 @@ class FakeUserDb extends Fake implements UserDb {
 }
 
 class FakeCalendarDb extends Fake implements CalendarDb {}
-
-class FakeSortableDb extends Fake implements SortableDb {
-  @override
-  Future<Iterable<Sortable<SortableData>>> getAllNonDeleted() =>
-      Future.value(defaultSortables);
-
-  @override
-  Future<bool> insertAndAddDirty(Iterable<Sortable> data) => Future.value(true);
-
-  @override
-  Future<Iterable<DbModel<Sortable>>> getAllDirty() =>
-      Future.value(<DbModel<Sortable>>[]);
-
-  @override
-  Future<int> getLastRevision() => Future.value(0);
-
-  @override
-  Future<int> countAllDirty() => Future.value(0);
-}
 
 class FakeGenericDb extends Fake implements GenericDb {
   @override
@@ -122,18 +101,6 @@ class FakeGenericRepository extends Fake implements GenericRepository {
   Future<bool> synchronize() => Future.value(true);
 }
 
-class FakeActivityRepository extends Fake implements ActivityRepository {
-  @override
-  Future<bool> synchronize() => Future.value(true);
-
-  @override
-  Future<bool> save(Iterable<Activity> data) => Future.value(true);
-
-  @override
-  Future<Iterable<Activity>> allBetween(DateTime start, DateTime end) =>
-      Future.value([]);
-}
-
 class FakeFileStorage extends Fake implements FileStorage {
   @override
   File getFile(String id) => FakeFile('$id.mp3');
@@ -149,8 +116,6 @@ class FakeFile extends Fake implements File {
   @override
   Future<bool> exists() => Future.value(true);
 }
-
-class FakeSortableRepository extends Fake implements SortableRepository {}
 
 class FakeVoiceDb extends Fake implements VoiceDb {
   @override

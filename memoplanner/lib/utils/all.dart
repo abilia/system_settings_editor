@@ -1,3 +1,4 @@
+export 'package:calendar_events/utils/all.dart';
 export 'package:generics/utils/all.dart';
 export 'package:utils/utils.dart';
 

@@ -1,5 +1,5 @@
+export 'package:seagull_fakes/all.dart';
 export 'alarm_scheduler.dart';
-export 'fake_activities.dart';
 export 'fake_authenticated_blocs_provider.dart';
 export 'fake_battery.dart';
 export 'fake_client.dart';

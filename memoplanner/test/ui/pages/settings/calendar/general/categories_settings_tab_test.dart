@@ -5,13 +5,12 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:seagull_clock/ticker.dart';
-import 'package:seagull_fakes/all.dart';
+
 import 'package:timezone/data/latest.dart' as tz;
 
 import '../../../../../fakes/all.dart';
 import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
-import '../../../../../test_helpers/default_sortables.dart';
 import '../../../../../test_helpers/register_fallback_values.dart';
 
 void main() {

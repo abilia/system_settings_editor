@@ -7,13 +7,12 @@ import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
-import 'package:seagull_fakes/all.dart';
+
 import 'package:sortables/db/sortable_db.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
-import '../../../test_helpers/default_sortables.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/tts.dart';
 

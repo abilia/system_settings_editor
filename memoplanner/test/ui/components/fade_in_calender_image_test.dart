@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/ui/components/all.dart';
-import 'package:seagull_fakes/all.dart';
 
 import '../../fakes/all.dart';
 

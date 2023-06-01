@@ -6,7 +6,6 @@ import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
-import 'package:seagull_fakes/all.dart';
 
 import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';

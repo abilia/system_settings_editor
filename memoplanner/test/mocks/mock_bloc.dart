@@ -1,4 +1,3 @@
-import 'package:abilia_sync/abilia_sync.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
@@ -11,8 +10,6 @@ class MockActivitiesBloc extends MockBloc<ActivitiesEvent, ActivitiesChanged>
 
 class MockDayEventsCubit extends MockCubit<EventsState>
     implements DayEventsCubit {}
-
-class MockSyncBloc extends MockBloc<SyncEvent, SyncState> implements SyncBloc {}
 
 class MockPushCubit extends MockCubit<RemoteMessage> implements PushCubit {}
 
@@ -43,8 +40,6 @@ class MockUserFileBloc extends MockBloc<UserFileEvent, UserFileState>
 
 class MockWakeLockCubit extends MockCubit<WakeLockState>
     implements WakeLockCubit {}
-
-class MockTimerCubit extends MockCubit<TimerState> implements TimerCubit {}
 
 class MockTimerAlarmBloc extends MockBloc<TimerAlarmEvent, TimerAlarmState>
     implements TimerAlarmBloc {}

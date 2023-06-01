@@ -1,11 +1,11 @@
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/i18n/all.dart';
-import 'package:memoplanner/models/abilia_timer.dart';
+import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
-import 'package:seagull_fakes/all.dart';
+
 import 'package:test/test.dart';
 
-import '../../../mocks/mocks.dart';
+import '../../../fakes/all.dart';
 
 void main() {
   final now = DateTime(2033, 01, 27, 11, 55);

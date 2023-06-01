@@ -5,7 +5,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:repository_base/models/data_models.dart';
-import 'package:seagull_fakes/all.dart';
+
 import 'package:sortables/db/sortable_db.dart';
 import 'package:timezone/data/latest.dart' as tz;
 

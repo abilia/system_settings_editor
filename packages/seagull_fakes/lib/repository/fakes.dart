@@ -1,4 +1,5 @@
 import 'package:mocktail/mocktail.dart';
+import 'package:repository_base/repository_base.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class FakeDatabase extends Fake implements Database {
@@ -6,6 +7,7 @@ class FakeDatabase extends Fake implements Database {
   Future<List<Map<String, Object?>>> rawQuery(String sql,
           [List<Object?>? arguments]) =>
       Future.value([]);
+
   @override
   Batch batch() => FakeBatch();
 
@@ -33,6 +35,11 @@ class FakeBatch extends Fake implements Batch {
   Future<List<Object?>> commit(
           {bool? exclusive, bool? noResult, bool? continueOnError}) =>
       Future.value([]);
+
   @override
   void delete(String table, {String? where, List<Object?>? whereArgs}) {}
 }
+
+class MockDataRepository extends Mock implements DataRepository {}
+
+class FakeDataRepository extends Fake implements DataRepository {}

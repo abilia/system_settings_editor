@@ -2,7 +2,6 @@ import 'package:abilia_sync/abilia_sync.dart';
 import 'package:flutter/widgets.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/repository/all.dart';
-import 'package:seagull_fakes/all.dart';
 
 import 'all.dart';
 
