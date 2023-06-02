@@ -286,7 +286,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 activityRepository: context.read<ActivityRepository>(),
                 settingsDb: GetIt.I<SettingsDb>(),
                 timerDb: GetIt.I<TimerDb>(),
-                scheduleNotificationsDelay: GetIt.I<Delays>().scheduleNotificationsDelay,
+                scheduleNotificationsDelay:
+                    GetIt.I<Delays>().scheduleNotificationsDelay,
               ),
             ),
             BlocProvider<SessionsCubit>(
