@@ -1,5 +1,4 @@
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class EyeButtonSettingsTab extends StatelessWidget {
@@ -64,10 +63,9 @@ class EyeButtonSettingsTab extends StatelessWidget {
               key: TestKey.showTypeOfDisplaySwitch,
               value: displaySettings.calendarType,
               onChanged: (v) => {
-                context.read<DayCalendarSettingsCubit>().changeSettings(
-                      dayCalendarSettings.copyWith(
-                        viewOptions: dayCalendarSettings.viewOptions.copyWith(
-                            display: displaySettings.copyWith(calendarType: v)),
+                context.read<DayCalendarSettingsCubit>().changeViewOptions(
+                      dayCalendarSettings.viewOptions.copyWith(
+                        display: displaySettings.copyWith(calendarType: v),
                       ),
                     ),
               },
@@ -82,11 +80,9 @@ class EyeButtonSettingsTab extends StatelessWidget {
               key: TestKey.showTimepillarLengthSwitch,
               value: displaySettings.intervalType,
               onChanged: (v) => {
-                context.read<DayCalendarSettingsCubit>().changeSettings(
-                      dayCalendarSettings.copyWith(
-                        viewOptions: dayCalendarSettings.viewOptions.copyWith(
-                          display: displaySettings.copyWith(intervalType: v),
-                        ),
+                context.read<DayCalendarSettingsCubit>().changeViewOptions(
+                      dayCalendarSettings.viewOptions.copyWith(
+                        display: displaySettings.copyWith(intervalType: v),
                       ),
                     ),
               },
@@ -96,11 +92,9 @@ class EyeButtonSettingsTab extends StatelessWidget {
               key: TestKey.showTimelineZoomSwitch,
               value: displaySettings.timepillarZoom,
               onChanged: (v) => {
-                context.read<DayCalendarSettingsCubit>().changeSettings(
-                      dayCalendarSettings.copyWith(
-                        viewOptions: dayCalendarSettings.viewOptions.copyWith(
-                          display: displaySettings.copyWith(timepillarZoom: v),
-                        ),
+                context.read<DayCalendarSettingsCubit>().changeViewOptions(
+                      dayCalendarSettings.viewOptions.copyWith(
+                        display: displaySettings.copyWith(timepillarZoom: v),
                       ),
                     ),
               },
@@ -110,11 +104,9 @@ class EyeButtonSettingsTab extends StatelessWidget {
               key: TestKey.showDurationSelectionSwitch,
               value: displaySettings.duration,
               onChanged: (v) => {
-                context.read<DayCalendarSettingsCubit>().changeSettings(
-                      dayCalendarSettings.copyWith(
-                        viewOptions: dayCalendarSettings.viewOptions.copyWith(
-                          display: displaySettings.copyWith(duration: v),
-                        ),
+                context.read<DayCalendarSettingsCubit>().changeViewOptions(
+                      dayCalendarSettings.viewOptions.copyWith(
+                        display: displaySettings.copyWith(duration: v),
                       ),
                     ),
               },

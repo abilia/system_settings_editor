@@ -4,6 +4,7 @@ import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:seagull_clock/ticker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../fakes/all.dart';
 import '../../../../../mocks/mocks.dart';
@@ -211,8 +212,7 @@ void main() {
         Generic.createNew<GenericSettingData>(
           data: GenericSettingData.fromData(
             data: DayCalendarType.oneTimepillar.index,
-            identifier:
-                DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey,
+            identifier: DayCalendarViewSettings.viewOptionsCalendarTypeKey,
           ),
         ),
       ];
@@ -246,13 +246,12 @@ void main() {
             identifier: DayParts.nightIntervalStartKey,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
-              data: DayCalendarType.twoTimepillars.index,
-              identifier:
-                  DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
-        ),
       ];
+      final sp = await SharedPreferences.getInstance();
+      sp.setInt(
+        DayCalendarViewSettings.viewOptionsCalendarTypeKey,
+        DayCalendarType.twoTimepillars.index,
+      );
       // Act
       await tester.pumpApp(use24: true);
       // Assert

@@ -5,15 +5,15 @@ import 'package:memoplanner/main.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:seagull_clock/ticker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/mocks.dart';
 import '../../../test_helpers/tts.dart';
-import '../../../test_helpers/verify_generic_mp.dart';
 
 void main() {
   final translate = Locales.language.values.first;
-  late MockGenericDb mockGenericDb;
+
+  late SharedPreferences fakeSharedPreferences;
 
   setUp(() async {
     setupPermissions();
@@ -26,28 +26,15 @@ void main() {
     final mockActivityDb = ActivityDbInMemory()
       ..initWithActivity(
           Activity.createNew(title: 'null', startTime: initTime));
-
-    final timepillarGeneric = Generic.createNew<GenericSettingData>(
-      data: GenericSettingData.fromData(
-          data: DayCalendarType.oneTimepillar.index,
-          identifier:
-              DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
+    fakeSharedPreferences = await FakeSharedPreferences.getInstance(
+      extras: {
+        DayCalendarViewSettings.viewOptionsCalendarTypeKey:
+            DayCalendarType.oneTimepillar.index
+      },
     );
 
-    mockGenericDb = MockGenericDb();
-    when(() => mockGenericDb.getAllNonDeletedMaxRevision())
-        .thenAnswer((_) => Future.value([timepillarGeneric]));
-    when(() => mockGenericDb.getLastRevision())
-        .thenAnswer((_) => Future.value(0));
-    when(() => mockGenericDb.getById(any()))
-        .thenAnswer((_) => Future.value(null));
-    when(() => mockGenericDb.insert(any())).thenAnswer((_) async {});
-    when(() => mockGenericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(() => mockGenericDb.insertAndAddDirty(any()))
-        .thenAnswer((_) => Future.value(true));
-
     GetItInitializer()
-      ..sharedPreferences = await FakeSharedPreferences.getInstance()
+      ..sharedPreferences = fakeSharedPreferences
       ..activityDb = mockActivityDb
       ..sortableDb = FakeSortableDb()
       ..ticker = Ticker.fake(initialTime: initTime)
@@ -55,7 +42,6 @@ void main() {
       ..client = Fakes.client(activityResponse: () => [])
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
-      ..genericDb = mockGenericDb
       ..database = FakeDatabase()
       ..battery = FakeBattery()
       ..deviceDb = FakeDeviceDb()
@@ -90,11 +76,9 @@ void main() {
     await tester.tap(find.byType(OkButton));
     await tester.pumpAndSettle();
 
-    verifyUnsyncedGenericMP(
-      tester,
-      mockGenericDb,
-      key: DayCalendarViewOptionsSettings.viewOptionsDotsKey,
-      matcher: isTrue,
+    expect(
+      fakeSharedPreferences.getBool(DayCalendarViewSettings.viewOptionsDotsKey),
+      isTrue,
     );
   });
 

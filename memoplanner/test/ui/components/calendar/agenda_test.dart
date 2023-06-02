@@ -69,13 +69,6 @@ void main() {
     setupPermissions();
   });
 
-  final agendaGeneric = Generic.createNew<GenericSettingData>(
-    data: GenericSettingData.fromData(
-      data: DayCalendarType.list.index,
-      identifier: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey,
-    ),
-  );
-
   setUp(() async {
     setupPermissions();
     setupFakeTts();
@@ -84,7 +77,7 @@ void main() {
     timeTicker = StreamController<DateTime>();
     activityDbInMemory = ActivityDbInMemory();
 
-    genericResponse = () => [agendaGeneric];
+    genericResponse = () => [];
 
     final mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
@@ -101,7 +94,10 @@ void main() {
         .thenAnswer((_) => Future.value(timerResponse()));
 
     GetItInitializer()
-      ..sharedPreferences = await FakeSharedPreferences.getInstance()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance(extras: {
+        DayCalendarViewSettings.viewOptionsCalendarTypeKey:
+            DayCalendarType.list.index,
+      })
       ..activityDb = activityDbInMemory
       ..genericDb = mockGenericDb
       ..timerDb = mockTimerDb
@@ -229,7 +225,6 @@ void main() {
   testWidgets('past activities are hidden by scroll',
       (WidgetTester tester) async {
     genericResponse = () => [
-          agendaGeneric,
           Generic.createNew<GenericSettingData>(
             data: GenericSettingData.fromData(
               data: false,
@@ -666,7 +661,6 @@ void main() {
         (WidgetTester tester) async {
       const leftCategoryName = 'New Left', rightCategoryName = 'New Right';
       genericResponse = () => [
-            agendaGeneric,
             Generic.createNew<GenericSettingData>(
               data: GenericSettingData.fromData(
                 data: leftCategoryName,
@@ -693,7 +687,6 @@ void main() {
     testWidgets('memoplanner settings - show categories ',
         (WidgetTester tester) async {
       genericResponse = () => [
-            agendaGeneric,
             Generic.createNew<GenericSettingData>(
               data: GenericSettingData.fromData(
                 data: false,
@@ -724,7 +717,6 @@ void main() {
       expect(rightFinder, findsOneWidget);
 
       genericResponse = () => [
-            agendaGeneric,
             Generic.createNew<GenericSettingData>(
               data: GenericSettingData.fromData(
                 data: leftCategoryName,
@@ -760,7 +752,6 @@ void main() {
       expect(find.byType(CategoryLeft), findsOneWidget);
 
       genericResponse = () => [
-            agendaGeneric,
             Generic.createNew<GenericSettingData>(
               data: GenericSettingData.fromData(
                 data: false,
@@ -806,7 +797,6 @@ void main() {
     testWidgets('memoplanner settings - show colors false',
         (WidgetTester tester) async {
       genericResponse = () => [
-            agendaGeneric,
             Generic.createNew<GenericSettingData>(
               data: GenericSettingData.fromData(
                 data: false,
@@ -824,7 +814,6 @@ void main() {
     testWidgets('memoplanner settings - show colors false, leftImageId',
         (WidgetTester tester) async {
       genericResponse = () => [
-            agendaGeneric,
             Generic.createNew<GenericSettingData>(
               data: GenericSettingData.fromData(
                 data: false,
@@ -909,7 +898,6 @@ void main() {
         'memoplanner settings - show colors true, category false -> no colors',
         (WidgetTester tester) async {
       genericResponse = () => [
-            agendaGeneric,
             Generic.createNew<GenericSettingData>(
               data: GenericSettingData.fromData(
                 data: true,
@@ -1177,6 +1165,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ActivityCard), findsOneWidget);
+      expect(find.byType(Agenda), findsOneWidget);
 
       await tester.tap(find.byType(ActivityCard));
       await tester.pumpAndSettle();
@@ -1192,7 +1181,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
       await tester.pumpAndSettle();
-
+      expect(find.byType(Agenda), findsOneWidget);
       expect(find.byType(ActivityCard), findsOneWidget);
     });
 

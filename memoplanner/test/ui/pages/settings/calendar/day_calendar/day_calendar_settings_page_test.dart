@@ -4,12 +4,14 @@ import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:seagull_clock/ticker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../fakes/all.dart';
 import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
 
 void main() {
+  late SharedPreferences fakeSharedPreferences;
   group('Day calendar settings page', () {
     final translate = Locales.language.values.first;
     final initialTime = DateTime(2021, 04, 17, 09, 20);
@@ -28,8 +30,10 @@ void main() {
           .thenAnswer((_) => Future.value(true));
       when(() => genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
 
+      fakeSharedPreferences = await FakeSharedPreferences.getInstance();
+
       GetItInitializer()
-        ..sharedPreferences = await FakeSharedPreferences.getInstance()
+        ..sharedPreferences = fakeSharedPreferences
         ..ticker = Ticker.fake(initialTime: initialTime)
         ..client = Fakes.client(genericResponse: () => generics)
         ..database = FakeDatabase()
@@ -60,7 +64,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: AppBarSettings.dayCaptionShowDayButtonsKey,
+          key: DayAppBarSettings.dayCaptionShowDayButtonsKey,
           matcher: isFalse,
         );
       });
@@ -75,7 +79,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: AppBarSettings.activityDisplayWeekdayKey,
+          key: DayAppBarSettings.activityDisplayWeekdayKey,
           matcher: isFalse,
         );
       });
@@ -90,7 +94,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: AppBarSettings.activityDisplayDayPeriodKey,
+          key: DayAppBarSettings.activityDisplayDayPeriodKey,
           matcher: isFalse,
         );
       });
@@ -105,7 +109,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: AppBarSettings.activityDisplayDateKey,
+          key: DayAppBarSettings.activityDisplayDateKey,
           matcher: isFalse,
         );
       });
@@ -123,7 +127,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: AppBarSettings.activityDisplayClockKey,
+          key: DayAppBarSettings.activityDisplayClockKey,
           matcher: isFalse,
         );
       });
@@ -135,31 +139,31 @@ void main() {
           Generic.createNew<GenericSettingData>(
             data: GenericSettingData.fromData(
               data: false,
-              identifier: AppBarSettings.dayCaptionShowDayButtonsKey,
+              identifier: DayAppBarSettings.dayCaptionShowDayButtonsKey,
             ),
           ),
           Generic.createNew<GenericSettingData>(
             data: GenericSettingData.fromData(
               data: false,
-              identifier: AppBarSettings.activityDisplayWeekdayKey,
+              identifier: DayAppBarSettings.activityDisplayWeekdayKey,
             ),
           ),
           Generic.createNew<GenericSettingData>(
             data: GenericSettingData.fromData(
               data: false,
-              identifier: AppBarSettings.activityDisplayDayPeriodKey,
+              identifier: DayAppBarSettings.activityDisplayDayPeriodKey,
             ),
           ),
           Generic.createNew<GenericSettingData>(
             data: GenericSettingData.fromData(
               data: false,
-              identifier: AppBarSettings.activityDisplayDateKey,
+              identifier: DayAppBarSettings.activityDisplayDateKey,
             ),
           ),
           Generic.createNew<GenericSettingData>(
             data: GenericSettingData.fromData(
               data: false,
-              identifier: AppBarSettings.activityDisplayClockKey,
+              identifier: DayAppBarSettings.activityDisplayClockKey,
             ),
           ),
         ];
@@ -180,11 +184,10 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        verifySyncGeneric(
-          tester,
-          genericDb,
-          key: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey,
-          matcher: DayCalendarType.list.index,
+        expect(
+          fakeSharedPreferences
+              .getInt(DayCalendarViewSettings.viewOptionsCalendarTypeKey),
+          DayCalendarType.list.index,
         );
       });
 
@@ -197,11 +200,10 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        verifySyncGeneric(
-          tester,
-          genericDb,
-          key: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey,
-          matcher: DayCalendarType.twoTimepillars.index,
+        expect(
+          fakeSharedPreferences
+              .getInt(DayCalendarViewSettings.viewOptionsCalendarTypeKey),
+          DayCalendarType.twoTimepillars.index,
         );
       });
 
@@ -214,11 +216,11 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        verifySyncGeneric(
-          tester,
-          genericDb,
-          key: DayCalendarViewOptionsSettings.viewOptionsTimeIntervalKey,
-          matcher: TimepillarIntervalType.dayAndNight.index,
+
+        expect(
+          fakeSharedPreferences
+              .getInt(DayCalendarViewSettings.viewOptionsTimeIntervalKey),
+          TimepillarIntervalType.dayAndNight.index,
         );
       });
 
@@ -231,11 +233,11 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        verifySyncGeneric(
-          tester,
-          genericDb,
-          key: DayCalendarViewOptionsSettings.viewOptionsTimepillarZoomKey,
-          matcher: TimepillarZoom.large.index,
+
+        expect(
+          fakeSharedPreferences
+              .getInt(DayCalendarViewSettings.viewOptionsTimepillarZoomKey),
+          TimepillarZoom.large.index,
         );
       });
 
@@ -254,8 +256,14 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: DayCalendarViewOptionsSettings.viewOptionsDotsKey,
+          key: DayCalendarViewSettings.viewOptionsDotsKey,
           matcher: isFalse,
+        );
+
+        expect(
+          fakeSharedPreferences
+              .getBool(DayCalendarViewSettings.viewOptionsDotsKey),
+          isFalse,
         );
       });
     });
@@ -268,11 +276,12 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        verifySyncGeneric(
-          tester,
-          genericDb,
-          key: DayCalendarViewOptionsDisplaySettings.displayCalendarTypeKey,
-          matcher: isFalse,
+
+        expect(
+          fakeSharedPreferences.getBool(
+            DayCalendarViewOptionsDisplaySettings.displayCalendarTypeKey,
+          ),
+          isFalse,
         );
       });
 
@@ -290,6 +299,13 @@ void main() {
               .displayIntervalTypeIntervalKey,
           matcher: isFalse,
         );
+        expect(
+          fakeSharedPreferences.getBool(
+            DayCalendarViewOptionsDisplaySettings
+                .displayIntervalTypeIntervalKey,
+          ),
+          isFalse,
+        );
       });
 
       testWidgets('Hide zoom setting', (tester) async {
@@ -299,11 +315,12 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        verifySyncGeneric(
-          tester,
-          genericDb,
-          key: DayCalendarViewOptionsDisplaySettings.displayTimepillarZoomKey,
-          matcher: isFalse,
+
+        expect(
+          fakeSharedPreferences.getBool(
+            DayCalendarViewOptionsDisplaySettings.displayTimepillarZoomKey,
+          ),
+          isFalse,
         );
       });
 
@@ -314,11 +331,12 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        verifySyncGeneric(
-          tester,
-          genericDb,
-          key: DayCalendarViewOptionsDisplaySettings.displayDurationKey,
-          matcher: isFalse,
+
+        expect(
+          fakeSharedPreferences.getBool(
+            DayCalendarViewOptionsDisplaySettings.displayDurationKey,
+          ),
+          isFalse,
         );
       });
 

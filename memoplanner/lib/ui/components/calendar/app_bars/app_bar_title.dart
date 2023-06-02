@@ -69,7 +69,7 @@ class AppBarTitleRows {
     required DayPart dayPart,
     required String langCode,
     required Translated translator,
-    required AppBarSettings settings,
+    required DayAppBarSettings settings,
     bool compactDay = false,
     bool currentNight = false,
   }) {

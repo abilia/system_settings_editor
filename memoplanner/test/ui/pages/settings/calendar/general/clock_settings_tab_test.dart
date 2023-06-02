@@ -18,7 +18,7 @@ void main() {
   final timepillarGeneric = Generic.createNew<GenericSettingData>(
     data: GenericSettingData.fromData(
         data: DayCalendarType.oneTimepillar.index,
-        identifier: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
+        identifier: DayCalendarViewSettings.viewOptionsCalendarTypeKey),
   );
 
   setUp(() async {

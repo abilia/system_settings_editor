@@ -9,6 +9,7 @@ import 'package:memoplanner/main.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -61,6 +62,7 @@ void main() {
   late MockSortableDb mockSortableDb;
   late MockTimerDb mockTimerDb;
   late MockSupportPersonsDb mockSupportPersonsDb;
+  late SharedPreferences fakeSharedPreferences;
 
   ActivityResponse activityResponse = () => [];
   SortableResponse sortableResponse = () => defaultSortables;
@@ -128,8 +130,10 @@ void main() {
     when(() => mockTimerDb.getRunningTimersFrom(any()))
         .thenAnswer((_) => Future.value([]));
 
+    fakeSharedPreferences = await FakeSharedPreferences.getInstance();
+
     GetItInitializer()
-      ..sharedPreferences = await FakeSharedPreferences.getInstance()
+      ..sharedPreferences = fakeSharedPreferences
       ..activityDb = mockActivityDb
       ..ticker = Ticker.fake(initialTime: initialDay)
       ..fireBasePushService = mockFirebasePushService
@@ -907,15 +911,10 @@ void main() {
 
       final activities = [Activity.createNew(title: title1, startTime: d)];
       mockActivityDb.initWithActivities(activities);
-      genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
-                  data: DayCalendarType.list.index,
-                  identifier: DayCalendarViewOptionsSettings
-                      .viewOptionsCalendarTypeKey),
-            ),
-          ];
-
+      fakeSharedPreferences.setInt(
+        DayCalendarViewSettings.viewOptionsCalendarTypeKey,
+        DayCalendarType.list.index,
+      );
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(aFinder);

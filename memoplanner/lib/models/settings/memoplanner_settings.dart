@@ -5,12 +5,8 @@ import 'package:memoplanner/config.dart';
 import 'package:memoplanner/models/all.dart';
 
 class MemoplannerSettings extends Equatable {
-  static const Set<String> noSyncSettings = Config.isMPGO
-      ? {
-          ...AlarmSettings.keys,
-          ...DayCalendarViewOptionsSettings.keys,
-        }
-      : {};
+  static const Set<String> noSyncSettings =
+      Config.isMPGO ? AlarmSettings.keys : {};
 
   final AlarmSettings alarm;
   final CodeProtectSettings codeProtect;
@@ -21,7 +17,7 @@ class MemoplannerSettings extends Equatable {
   final WeekCalendarSettings weekCalendar;
   final MonthCalendarSettings monthCalendar;
   final ActivityViewSettings activityView;
-  final DayCalendarSettings dayCalendar;
+  final DayAppBarSettings dayAppBar;
   final PhotoMenuSettings photoMenu;
 
   const MemoplannerSettings({
@@ -34,7 +30,7 @@ class MemoplannerSettings extends Equatable {
     this.weekCalendar = const WeekCalendarSettings(),
     this.monthCalendar = const MonthCalendarSettings(),
     this.activityView = const ActivityViewSettings(),
-    this.dayCalendar = const DayCalendarSettings(),
+    this.dayAppBar = const DayAppBarSettings(),
     this.photoMenu = const PhotoMenuSettings(),
   });
 
@@ -50,7 +46,7 @@ class MemoplannerSettings extends Equatable {
       weekCalendar: WeekCalendarSettings.fromSettingsMap(settings),
       monthCalendar: MonthCalendarSettings.fromSettingsMap(settings),
       activityView: ActivityViewSettings.fromSettingsMap(settings),
-      dayCalendar: DayCalendarSettings.fromSettingsMap(settings),
+      dayAppBar: DayAppBarSettings.fromSettingsMap(settings),
       photoMenu: PhotoMenuSettings.fromSettingsMap(settings),
     );
   }
@@ -66,7 +62,7 @@ class MemoplannerSettings extends Equatable {
         weekCalendar,
         monthCalendar,
         activityView,
-        dayCalendar,
+        dayAppBar,
         photoMenu,
       ];
 }
@@ -83,7 +79,7 @@ class MemoplannerSettingsLoaded extends MemoplannerSettings {
           weekCalendar: settings.weekCalendar,
           monthCalendar: settings.monthCalendar,
           activityView: settings.activityView,
-          dayCalendar: settings.dayCalendar,
+          dayAppBar: settings.dayAppBar,
           photoMenu: settings.photoMenu,
         );
 }

@@ -21,7 +21,7 @@ class AlarmSettings extends Equatable {
       showOngoingActivityInFullScreenKey =
           'setting_show_activity_in_full_screen';
 
-  static const keys = [
+  static const keys = {
     nonCheckableActivityAlarmKey,
     checkableActivityAlarmKey,
     reminderAlarmKey,
@@ -30,7 +30,7 @@ class AlarmSettings extends Equatable {
     alarmsDisabledUntilKey,
     showAlarmOnOffSwitchKey,
     showOngoingActivityInFullScreenKey,
-  ];
+  };
 
   final int durationMs, disabledUntilEpoch;
   final bool showAlarmOnOffSwitch, _showOngoingActivityInFullScreen;
