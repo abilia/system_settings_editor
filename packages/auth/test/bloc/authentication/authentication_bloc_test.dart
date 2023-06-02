@@ -33,6 +33,7 @@ void main() {
       build: () => AuthenticationBloc(
         userRepository: userRepository,
         onLogout: () {},
+        client: FakeListenableClient.client(),
       ),
       verify: (AuthenticationBloc bloc) => expect(
         bloc.state,
@@ -45,6 +46,7 @@ void main() {
       build: () => AuthenticationBloc(
         userRepository: userRepository,
         onLogout: () {},
+        client: FakeListenableClient.client(),
       ),
       act: (AuthenticationBloc bloc) => bloc.add(CheckAuthentication()),
       expect: () => [const Unauthenticated()],
@@ -56,6 +58,7 @@ void main() {
       build: () => AuthenticationBloc(
         userRepository: userRepository,
         onLogout: () {},
+        client: FakeListenableClient.client(),
       ),
       act: (AuthenticationBloc bloc) => bloc
         ..add(CheckAuthentication())
@@ -76,6 +79,7 @@ void main() {
       build: () => AuthenticationBloc(
         userRepository: userRepository,
         onLogout: () {},
+        client: FakeListenableClient.client(),
       ),
       act: (AuthenticationBloc bloc) => bloc
         ..add(CheckAuthentication())
@@ -116,6 +120,7 @@ void main() {
       'loggedOut calls deletes token',
       build: () => AuthenticationBloc(
         userRepository: mockedUserRepository,
+        client: FakeListenableClient.client(),
         onLogout: () {
           notificationMock.mockCancelAll();
         },
@@ -130,6 +135,7 @@ void main() {
       'logged out cancel all Notification Function is called',
       build: () => AuthenticationBloc(
         userRepository: mockedUserRepository,
+        client: FakeListenableClient.client(),
         onLogout: () {
           notificationMock.mockCancelAll();
         },
@@ -148,6 +154,7 @@ void main() {
       build: () => AuthenticationBloc(
         userRepository: mockedUserRepository,
         onLogout: () {},
+        client: FakeListenableClient.client(),
       ),
       act: (AuthenticationBloc bloc) => bloc.add(CheckAuthentication()),
       expect: () => [const Unauthenticated()],
@@ -164,6 +171,7 @@ void main() {
       build: () => AuthenticationBloc(
         userRepository: mockedUserRepository,
         onLogout: notificationMock.mockCancelAll,
+        client: FakeListenableClient.client(),
       ),
       act: (AuthenticationBloc bloc) => bloc
         ..add(CheckAuthentication())
