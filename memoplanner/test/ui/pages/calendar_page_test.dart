@@ -1468,7 +1468,8 @@ void main() {
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
         clockBloc: ClockBloc.fixed(DateTime(2000)),
-        syncDelay: SyncDelays.zero,
+        retryDelay: Duration.zero,
+        syncDelay: Duration.zero,
       );
 
       await tester.pumpWidget(wrapWithMaterialApp(
@@ -1495,7 +1496,8 @@ void main() {
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
         clockBloc: ClockBloc.fixed(DateTime(2000)),
-        syncDelay: SyncDelays.zero,
+        retryDelay: Duration.zero,
+        syncDelay: Duration.zero,
       );
       genericResponse = () => [
             Generic.createNew<GenericSettingData>(

@@ -1,11 +1,11 @@
-class SyncDelays {
+class Delays {
   final Duration betweenSync;
   final Duration retryDelay;
   final Duration scheduleNotificationsDelay;
   final Duration inactivityDelay;
   final Duration stopRemoteSoundDelay;
 
-  const SyncDelays({
+  const Delays({
     this.betweenSync = const Duration(seconds: 3),
     this.retryDelay = const Duration(minutes: 1),
     this.scheduleNotificationsDelay = const Duration(seconds: 2),
@@ -13,7 +13,7 @@ class SyncDelays {
     this.stopRemoteSoundDelay = const Duration(milliseconds: 100),
   });
 
-  static const SyncDelays zero = SyncDelays(
+  static const Delays zero = Delays(
     betweenSync: Duration.zero,
     retryDelay: Duration.zero,
     scheduleNotificationsDelay: Duration.zero,

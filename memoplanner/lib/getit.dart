@@ -96,8 +96,8 @@ class GetItInitializer {
           MultipartRequestBuilder multipartRequestBuilder) =>
       _multipartRequestBuilder = multipartRequestBuilder;
 
-  late SyncDelays _syncDelay = SyncDelays.zero;
-  set syncDelay(SyncDelays syncDelay) => _syncDelay = syncDelay;
+  late Delays _syncDelay = Delays.zero;
+  set syncDelay(Delays syncDelay) => _syncDelay = syncDelay;
 
   late Database _database;
   set database(Database database) => _database = database;
@@ -187,7 +187,7 @@ class GetItInitializer {
       ..registerSingleton<FileStorage>(
           _fileStorage ?? FileStorage.inDirectory(_directories?.documents.path))
       ..registerSingleton<MultipartRequestBuilder>(_multipartRequestBuilder)
-      ..registerSingleton<SyncDelays>(_syncDelay)
+      ..registerSingleton<Delays>(_syncDelay)
       ..registerSingleton<PackageInfo>(_packageInfo)
       ..registerSingleton<Battery>(_battery)
       ..registerSingleton<TtsInterface>(_ttsHandler)

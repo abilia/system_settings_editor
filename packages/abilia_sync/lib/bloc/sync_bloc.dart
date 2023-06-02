@@ -23,7 +23,9 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final DataRepository genericRepository;
   final LastSyncDb lastSyncDb;
   final ClockBloc clockBloc;
-  final SyncDelays syncDelay;
+  final Duration retryDelay;
+  final Duration syncDelay;
+
   final _log = Logger('SyncBloc');
 
   late StreamSubscription _pushSubscription;
@@ -37,6 +39,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     required this.userFileRepository,
     required this.sortableRepository,
     required this.genericRepository,
+    required this.retryDelay,
     required this.syncDelay,
     required this.lastSyncDb,
     required this.clockBloc,
@@ -72,8 +75,8 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       emit(Synced(lastSynced: lastSynced, didFetchData: didFetchData));
     } catch (error) {
       emit(SyncedFailed(lastSynced: state.lastSynced));
-      _log.info('could not sync $event, retries in ${syncDelay.retryDelay}');
-      await Future.delayed(syncDelay.retryDelay);
+      _log.info('could not sync $event, retries in $retryDelay');
+      await Future.delayed(retryDelay);
       if (isClosed) return;
       _log.info('retrying $event');
       add(event);
@@ -114,7 +117,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }
 }
 
-EventTransformer<Event> bufferTimer<Event>(SyncDelays syncDelays) =>
+EventTransformer<Event> bufferTimer<Event>(Duration betweenSync) =>
     (events, mapper) => events
-        .throttleTime(syncDelays.betweenSync, trailing: true, leading: false)
+        .throttleTime(betweenSync, trailing: true, leading: false)
         .asyncExpand(mapper); // sequential

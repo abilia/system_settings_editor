@@ -44,7 +44,7 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
     });
   }
 
-  final SyncDelays syncDelay;
+  final Delays syncDelay;
   final SyncBloc syncBloc;
   final LicenseCubit licenseCubit;
   final AuthenticationBloc authenticationBloc;

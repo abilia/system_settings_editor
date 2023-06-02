@@ -31,7 +31,7 @@ class AlarmNavigator {
           child: PopAwareAlarmPage(
             alarm: alarm,
             alarmNavigator: this,
-            stopRemoteSoundDelay: GetIt.I<SyncDelays>().stopRemoteSoundDelay,
+            stopRemoteSoundDelay: GetIt.I<Delays>().stopRemoteSoundDelay,
             child: alarmPage,
           ),
         ),
@@ -74,7 +74,7 @@ class AlarmNavigator {
           child: PopAwareAlarmPage(
             alarm: alarm,
             alarmNavigator: this,
-            stopRemoteSoundDelay: GetIt.I<SyncDelays>().stopRemoteSoundDelay,
+            stopRemoteSoundDelay: GetIt.I<Delays>().stopRemoteSoundDelay,
             child: alarmPage,
           ),
         ),
