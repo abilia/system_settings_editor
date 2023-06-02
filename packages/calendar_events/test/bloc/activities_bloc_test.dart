@@ -39,7 +39,8 @@ void main() {
       genericRepository: FakeDataRepository(),
       lastSyncDb: FakeLastSyncDb(),
       clockBloc: ClockBloc.fixed(DateTime(2000)),
-      syncDelay: SyncDelays.zero,
+      syncDelay: Duration.zero,
+      retryDelay: Duration.zero,
     );
 
     activitiesBloc = ActivitiesBloc(

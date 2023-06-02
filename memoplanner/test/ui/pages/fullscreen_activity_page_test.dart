@@ -171,6 +171,7 @@ void main() {
             PopAwareAlarmPage(
               alarm: startAlarm,
               alarmNavigator: alarmNavigator,
+              stopRemoteSoundDelay: Duration.zero,
               child: FullScreenActivityPage(alarm: alarms.first),
             ),
           ),
@@ -187,6 +188,7 @@ void main() {
             PopAwareAlarmPage(
               alarm: startAlarm,
               alarmNavigator: alarmNavigator,
+              stopRemoteSoundDelay: Duration.zero,
               child: FullScreenActivityPage(alarm: alarms.first),
             ),
           ),
@@ -207,6 +209,7 @@ void main() {
             PopAwareAlarmPage(
               alarm: startAlarm,
               alarmNavigator: alarmNavigator,
+              stopRemoteSoundDelay: Duration.zero,
               child: FullScreenActivityPage(alarm: alarms[1]),
             ),
           ),
