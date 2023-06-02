@@ -20,8 +20,6 @@ dependencies:
   seagull_clock:
     path: ../seagull_clock
   shared_preferences: any
-  sortables:
-    path: ../sortables
   utils:
     path: ../utils
 

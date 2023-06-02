@@ -96,11 +96,6 @@ class FakeActivityDb extends Fake implements ActivityDb {
   Future<int> countAllDirty() => Future.value(0);
 }
 
-class FakeGenericRepository extends Fake implements GenericRepository {
-  @override
-  Future<bool> synchronize() => Future.value(true);
-}
-
 class FakeFileStorage extends Fake implements FileStorage {
   @override
   File getFile(String id) => FakeFile('$id.mp3');

@@ -1,8 +1,6 @@
-import 'package:auth/bloc/push/push_cubit.dart';
 import 'package:auth/listeners/authentication_listener.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:handi/background/background.dart';
+import 'package:handi/providers.dart';
 import 'package:handi/ui/pages/logged_in_page.dart';
 import 'package:handi/ui/pages/login_page.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
@@ -24,10 +22,8 @@ class TopLevelListener extends StatelessWidget {
       onAuthenticated: (navigator, state) async {
         await navigator.pushAndRemoveUntil<void>(
           MaterialPageRoute<void>(
-            builder: (_) => BlocProvider<PushCubit>(
-              create: (context) => PushCubit(
-                  backgroundMessageHandler: myBackgroundMessageHandler),
-              lazy: false,
+            builder: (_) => AuthenticatedProviders(
+              userId: state.userId,
               child: LoggedInPage(
                 authenticated: state,
               ),

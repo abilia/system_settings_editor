@@ -48,7 +48,7 @@ Future<void> initServices() async {
     documentsDirectory: documentDirectory.path,
     supportId: supportId,
     preferences: preferences,
-    logBaseName: Config.flavor.id,
+    app: Config.flavor.id,
   );
   _log.fine('Initializing services');
   final analytics = kReleaseMode

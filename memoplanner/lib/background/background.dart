@@ -28,7 +28,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     documentsDirectory: documentDirectory.path,
     preferences: preferences,
     supportId: await deviceDb.getSupportId(),
-    logBaseName: Config.flavor.id,
+    app: Config.flavor.id,
   );
   final log = Logger('BackgroundMessageHandler');
 
