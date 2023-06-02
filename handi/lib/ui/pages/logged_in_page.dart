@@ -79,7 +79,7 @@ class _LoggedInPageState extends State<LoggedInPage> {
                 listener: (context, message) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Push received $message'),
+                      content: Text('Push received ${message.data}'),
                     ),
                   );
                 },

@@ -13,13 +13,13 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final FutureOr<void> Function()? onLogout;
+  final FutureOr<void> Function() onLogout;
   final UserRepository userRepository;
   late final StreamSubscription? _clientSubscription;
 
   AuthenticationBloc({
     required this.userRepository,
-    this.onLogout,
+    required this.onLogout,
     ListenableClient? client,
   }) : super(const AuthenticationLoading()) {
     _clientSubscription = client?.messageStream
@@ -96,7 +96,7 @@ class AuthenticationBloc
     if (state is Unauthenticated) return;
     await userRepository.logout();
     try {
-      await onLogout?.call();
+      await onLogout.call();
     } catch (e) {
       Logger('onLogout').severe('exception when logging out: $e');
     }

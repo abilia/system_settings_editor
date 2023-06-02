@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:handi/firebase_options.dart';
@@ -10,13 +11,16 @@ import 'package:handi/providers.dart';
 const appName = 'handi';
 
 void main() async {
+  await initServices();
+  runApp(const HandiApp());
+}
+
+Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.instance.isAutoInitEnabled;
   Bloc.observer = BlocLoggingObserver();
   await initGetIt();
-  runApp(
-    const HandiApp(),
-  );
 }
 
 final _navigatorKey = GlobalKey<NavigatorState>();

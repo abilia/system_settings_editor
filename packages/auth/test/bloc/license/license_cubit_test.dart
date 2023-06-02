@@ -20,6 +20,7 @@ void main() {
       pushCubit: FakePushCubit(),
       authenticationBloc: AuthenticationBloc(
         userRepository: userRepository,
+        onLogout: () {},
       ),
       licenseType: LicenseType.memoplanner,
     );

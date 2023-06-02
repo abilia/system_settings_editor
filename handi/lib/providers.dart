@@ -16,6 +16,7 @@ import 'package:repository_base/repository_base.dart';
 import 'package:seagull_clock/clock_bloc.dart';
 import 'package:seagull_clock/ticker.dart';
 import 'package:sortables/sortables.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:user_files/user_files.dart';
 
 class TopLevelProviders extends StatelessWidget {
@@ -84,15 +85,12 @@ class AuthenticationBlocProvider extends StatelessWidget {
       providers: [
         BlocProvider<AuthenticationBloc>(
           create: (context) => AuthenticationBloc(
-            userRepository: UserRepository(
-              baseUrlDb: GetIt.I<BaseUrlDb>(),
-              client: GetIt.I<ListenableClient>(),
-              loginDb: GetIt.I<LoginDb>(),
-              userDb: GetIt.I<UserDb>(),
-              licenseDb: GetIt.I<LicenseDb>(),
-              deviceDb: GetIt.I<DeviceDb>(),
-              app: appName,
-              name: appName,
+            userRepository: context.read<UserRepository>(),
+            onLogout: () async => Future.wait<void>(
+              [
+                DatabaseRepository.clearAll(GetIt.I<Database>()),
+                GetIt.I<FileStorage>().deleteUserFolder(),
+              ],
             ),
           )..add(CheckAuthentication()),
         ),

@@ -35,6 +35,7 @@ void main() {
 
       authenticationBloc = AuthenticationBloc(
         userRepository: mockUserRepository,
+        onLogout: () {},
       );
       loginCubit = LoginCubit(
         authenticationBloc: authenticationBloc,
@@ -213,6 +214,7 @@ void main() {
           .thenAnswer((_) => Future.value());
       final authenticationBloc = AuthenticationBloc(
         userRepository: mockedUserRepository,
+        onLogout: () {},
       )..add(CheckAuthentication());
       mockFirebasePushService = MockFirebasePushService();
       final mockDb = MockDatabase();
@@ -321,6 +323,7 @@ void main() {
 
       authenticationBloc = AuthenticationBloc(
         userRepository: mockUserRepository,
+        onLogout: () {},
       );
       final mockDb = MockDatabase();
       when(() => mockDb.rawQuery(any())).thenAnswer((_) => Future.value([
