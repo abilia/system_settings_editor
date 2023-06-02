@@ -124,7 +124,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                     lastSyncDb: GetIt.I<LastSyncDb>(),
                     clockBloc: context.read<ClockBloc>(),
                     retryDelay: GetIt.I<Delays>().retryDelay,
-                    syncDelay: GetIt.I<Delays>().betweenSync,
+                    syncDelay: GetIt.I<Delays>().syncDelay,
                   )..add(const SyncAll())),
               lazy: false,
             ),
@@ -286,7 +286,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 activityRepository: context.read<ActivityRepository>(),
                 settingsDb: GetIt.I<SettingsDb>(),
                 timerDb: GetIt.I<TimerDb>(),
-                syncDelays: GetIt.I<Delays>(),
+                scheduleNotificationsDelay: GetIt.I<Delays>().scheduleNotificationsDelay,
               ),
             ),
             BlocProvider<SessionsCubit>(

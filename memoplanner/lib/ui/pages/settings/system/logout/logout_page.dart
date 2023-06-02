@@ -60,7 +60,7 @@ class LogoutPage extends StatelessWidget {
                 genericDb: context.read<GenericRepository>().genericDb,
                 sortableDb: context.read<SortableRepository>().sortableDb,
                 authenticationBloc: context.read<AuthenticationBloc>(),
-                syncDelay: GetIt.I<Delays>(),
+                syncDelay: GetIt.I<Delays>().syncDelay,
                 licenseCubit: context.read<LicenseCubit>(),
                 connectivity: Connectivity().onConnectivityChanged,
                 myAbiliaConnection: MyAbiliaConnection(

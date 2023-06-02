@@ -18,11 +18,11 @@ class NotificationBloc extends Bloc<NotificationEvent, String> {
     required this.timerDb,
     required this.settingsDb,
     required this.memoplannerSettingBloc,
-    required Delays syncDelays,
+    required Duration scheduleNotificationsDelay,
   }) : super('init') {
     on<NotificationEvent>(
       (event, emit) async => _scheduleNotifications(),
-      transformer: _debounceTime(syncDelays.scheduleNotificationsDelay),
+      transformer: _debounceTime(scheduleNotificationsDelay),
     );
   }
 
