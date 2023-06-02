@@ -1,5 +1,6 @@
 import 'package:logging/logging.dart';
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/listener/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
@@ -30,6 +31,7 @@ class AlarmNavigator {
           child: PopAwareAlarmPage(
             alarm: alarm,
             alarmNavigator: this,
+            stopRemoteSoundDelay: GetIt.I<Delays>().stopRemoteSoundDelay,
             child: alarmPage,
           ),
         ),
@@ -72,6 +74,7 @@ class AlarmNavigator {
           child: PopAwareAlarmPage(
             alarm: alarm,
             alarmNavigator: this,
+            stopRemoteSoundDelay: GetIt.I<Delays>().stopRemoteSoundDelay,
             child: alarmPage,
           ),
         ),

@@ -44,7 +44,7 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
     });
   }
 
-  final SyncDelays syncDelay;
+  final Duration syncDelay;
   final SyncBloc syncBloc;
   final LicenseCubit licenseCubit;
   final AuthenticationBloc authenticationBloc;
@@ -126,9 +126,9 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
     emit(state.copyWith(isOnline: isOnline));
     if (!isOnline) {
       log.warning(
-        'No connection to myAbilia, retrying in ${syncDelay.betweenSync.inSeconds} seconds.',
+        'No connection to myAbilia, retrying in ${syncDelay.inSeconds} seconds.',
       );
-      return await Future.delayed(syncDelay.betweenSync, _checkConnectivity);
+      return await Future.delayed(syncDelay, _checkConnectivity);
     }
 
     final hasDirtyItems = await syncBloc.hasDirty();

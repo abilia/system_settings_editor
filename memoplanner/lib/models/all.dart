@@ -6,6 +6,7 @@ export 'package:user_files/models/all.dart';
 
 export 'alarm_duration.dart';
 export 'calendar_type.dart';
+export 'delays.dart';
 export 'device.dart';
 export 'exceptions.dart';
 export 'eye_button_settings.dart';

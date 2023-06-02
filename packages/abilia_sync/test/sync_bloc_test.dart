@@ -45,7 +45,8 @@ void main() {
         genericRepository: genericRepository,
         lastSyncDb: lastSyncDb,
         clockBloc: ClockBloc.fixed(DateTime(2000)),
-        syncDelay: SyncDelays.zero,
+        retryDelay: Duration.zero,
+        syncDelay: Duration.zero,
       ),
       act: (SyncBloc syncBloc) => syncBloc.add(const SyncActivities()),
       verify: (bloc) async => verify(() => activityRepository.synchronize()),
@@ -62,7 +63,8 @@ void main() {
         genericRepository: genericRepository,
         lastSyncDb: lastSyncDb,
         clockBloc: ClockBloc.fixed(DateTime(2000)),
-        syncDelay: SyncDelays.zero,
+        retryDelay: Duration.zero,
+        syncDelay: Duration.zero,
       ),
       act: (SyncBloc syncBloc) => syncBloc.add(const SyncFiles()),
       verify: (bloc) async => verify(() => userFileRepository.synchronize()),
@@ -77,7 +79,8 @@ void main() {
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
-        syncDelay: SyncDelays.zero,
+        retryDelay: Duration.zero,
+        syncDelay: Duration.zero,
         lastSyncDb: lastSyncDb,
         clockBloc: ClockBloc.fixed(DateTime(2000)),
       ),
@@ -96,7 +99,8 @@ void main() {
         genericRepository: genericRepository,
         lastSyncDb: lastSyncDb,
         clockBloc: ClockBloc.fixed(DateTime(2000)),
-        syncDelay: SyncDelays.zero,
+        retryDelay: Duration.zero,
+        syncDelay: Duration.zero,
       ),
       act: (SyncBloc syncBloc) => syncBloc.add(const SyncGenerics()),
       verify: (bloc) async => verify(() => genericRepository.synchronize()),
@@ -113,7 +117,8 @@ void main() {
               genericRepository: genericRepository,
               lastSyncDb: lastSyncDb,
               clockBloc: ClockBloc.fixed(DateTime(2000)),
-              syncDelay: SyncDelays.zero,
+              retryDelay: Duration.zero,
+              syncDelay: Duration.zero,
             ),
         act: (SyncBloc syncBloc) => syncBloc
           ..add(const SyncActivities())
@@ -139,7 +144,8 @@ void main() {
         genericRepository: genericRepository,
         lastSyncDb: lastSyncDb,
         clockBloc: ClockBloc.fixed(DateTime(2000)),
-        syncDelay: SyncDelays.zero,
+        retryDelay: Duration.zero,
+        syncDelay: Duration.zero,
       ),
       act: (SyncBloc syncBloc) => syncBloc..add(const SyncAll()),
       verify: (bloc) async =>
@@ -150,10 +156,7 @@ void main() {
   group('Failed cases', () {
     final retryDelay = 10.milliseconds();
     final betweenSync = 5.milliseconds();
-    final syncDelays = SyncDelays(
-      betweenSync: betweenSync,
-      retryDelay: retryDelay,
-    );
+
     late List<bool> responses;
     setUp(() {
       responses = [false, true];
@@ -180,7 +183,8 @@ void main() {
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
         clockBloc: ClockBloc.fixed(DateTime(2000)),
-        syncDelay: syncDelays,
+        syncDelay: betweenSync,
+        retryDelay: retryDelay,
       ),
       act: (bloc) => bloc.add(const SyncActivities()),
       wait: retryDelay * 30,
@@ -200,7 +204,8 @@ void main() {
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
         clockBloc: ClockBloc.fixed(DateTime(2000)),
-        syncDelay: syncDelays,
+        syncDelay: betweenSync,
+        retryDelay: retryDelay,
       ),
       act: (bloc) => bloc.add(const SyncFiles()),
       wait: retryDelay * 30,
@@ -220,7 +225,8 @@ void main() {
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
         clockBloc: ClockBloc.fixed(DateTime(2000)),
-        syncDelay: syncDelays,
+        syncDelay: betweenSync,
+        retryDelay: retryDelay,
       ),
       act: (bloc) => bloc.add(const SyncSortables()),
       wait: retryDelay * 30,
@@ -240,7 +246,8 @@ void main() {
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
         clockBloc: ClockBloc.fixed(DateTime(2000)),
-        syncDelay: syncDelays,
+        syncDelay: betweenSync,
+        retryDelay: retryDelay,
       ),
       act: (bloc) => bloc.add(const SyncGenerics()),
       wait: retryDelay * 30,
@@ -272,10 +279,8 @@ void main() {
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
         clockBloc: ClockBloc.fixed(DateTime(2000)),
-        syncDelay: SyncDelays(
-          betweenSync: stallTime,
-          retryDelay: stallTime,
-        ),
+        syncDelay: stallTime,
+        retryDelay: stallTime,
       )
         ..add(const SyncActivities())
         ..add(const SyncFiles())
@@ -297,10 +302,8 @@ void main() {
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
         clockBloc: ClockBloc.fixed(DateTime(2000)),
-        syncDelay: SyncDelays(
-          betweenSync: stallTime,
-          retryDelay: stallTime,
-        ),
+        syncDelay: stallTime,
+        retryDelay: stallTime,
       )..add(const SyncActivities());
       await untilCalled(() => activityRepository.synchronize());
       syncBloc
@@ -340,10 +343,8 @@ void main() {
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
         clockBloc: ClockBloc.fixed(DateTime(2000)),
-        syncDelay: SyncDelays(
-          betweenSync: stallTime,
-          retryDelay: stallTime,
-        ),
+        syncDelay: stallTime,
+        retryDelay: stallTime,
       )..add(const SyncActivities());
       await untilCalled(() => activityRepository.synchronize());
       syncBloc
