@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:repository_base/repository_base.dart';
-import 'package:sortables/all.dart';
+import 'package:sortables/sortables.dart';
 import 'package:utils/utils.dart';
 import 'package:uuid/uuid.dart';
 

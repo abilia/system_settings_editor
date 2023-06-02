@@ -1,4 +1,5 @@
 export 'package:auth/repository/user_repository.dart';
+export 'package:calendar_events/repository/all.dart';
 export 'package:repository_base/repository_base.dart';
 
 export 'data_repository/all.dart';

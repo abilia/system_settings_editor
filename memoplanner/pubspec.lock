@@ -263,6 +263,13 @@ packages:
       relative: true
     source: path
     version: "0.0.0"
+  calendar_events:
+    dependency: "direct main"
+    description:
+      path: "../packages/calendar_events"
+      relative: true
+    source: path
+    version: "0.0.0"
   characters:
     dependency: transitive
     description:

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -24,10 +25,15 @@ class EditTimerCubit extends Cubit<EditTimerState> {
 
   Future<void> start() {
     final timer = save();
-    return timerCubit.addTimer(
-      timer,
-      state.metaData,
-    );
+    GetIt.I<SeagullAnalytics>()
+        .trackEvent(AnalyticsEvents.timerStarted, properties: {
+      'From Template': state.metaData.fromTemplate,
+      'Duration': timer.duration.inMinutes,
+      'Image': timer.hasImage,
+      'Title Changed': state.metaData.titleChanged,
+      'Set Type': state.metaData.timerSetType.name,
+    });
+    return timerCubit.addTimer(timer);
   }
 
   AbiliaTimer save() {

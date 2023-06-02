@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memoplanner/models/alarm.dart';
+import 'package:memoplanner/models/all.dart';
 
 void main() {
   void fromIntSameAsToInt(int value) =>

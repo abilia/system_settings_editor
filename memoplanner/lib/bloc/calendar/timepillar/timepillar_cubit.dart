@@ -189,7 +189,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     final seen = <int>{};
     final dayActivities = activities
         .where((a) => !a.fullDay)
-        .expand((activity) => activity.dayActivitiesForInterval(interval))
+        .expand((activity) => dayActivitiesForInterval(activity, interval))
         .removeAfterOccasion(occasion)
         .where(
           (activity) => seen.add(activity.id.hashCode ^ activity.day.hashCode),
@@ -207,6 +207,15 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     );
     return [...dayActivities, ...timerOccasions];
   }
+
+  static List<ActivityDay> dayActivitiesForInterval(
+    Activity activity,
+    TimepillarInterval interval,
+  ) =>
+      List.generate(
+        interval.daySpan,
+        interval.start.onlyDays().addDays,
+      ).expand(activity.dayActivitiesForDay).toList();
 
   static DayCalendarType _getCalendarType(
     bool showNightCalendar,

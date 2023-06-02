@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:abilia_sync/abilia_sync.dart';
 import 'package:auth/push.dart';
+import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:utils/utils.dart';
 
@@ -18,6 +19,8 @@ class FakeSyncBloc extends Fake implements SyncBloc {
   @override
   Future<void> close() async {}
 }
+
+class MockSyncBloc extends MockBloc<SyncEvent, SyncState> implements SyncBloc {}
 
 class MockLastSyncDb extends Mock implements LastSyncDb {}
 

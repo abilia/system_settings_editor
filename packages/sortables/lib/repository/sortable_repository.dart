@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:repository_base/repository_base.dart';
-import 'package:sortables/all.dart';
+import 'package:sortables/sortables.dart';
 import 'package:utils/utils.dart';
 
 class SortableRepository extends DataRepository<Sortable> {

@@ -15,7 +15,6 @@ import 'package:seagull_analytics/seagull_analytics.dart';
 export 'package:mocktail/mocktail.dart';
 
 // Repository
-class MockActivityRepository extends Mock implements ActivityRepository {}
 
 class MockGenericRepository extends Mock implements GenericRepository {}
 
@@ -23,7 +22,6 @@ class MockSupportPersonsRepository extends Mock
     implements SupportPersonsRepository {}
 
 // Db
-class MockActivityDb extends Mock implements ActivityDb {}
 
 class MockDatabase extends Mock implements Database {}
 
@@ -38,8 +36,6 @@ class MockCalendarDb extends Mock implements CalendarDb {}
 class MockSortableDb extends Mock implements SortableDb {}
 
 class MockSupportPersonsDb extends Mock implements SupportPersonsDb {}
-
-class MockTimerDb extends Mock implements TimerDb {}
 
 class MockVoiceDb extends Mock implements VoiceDb {}
 

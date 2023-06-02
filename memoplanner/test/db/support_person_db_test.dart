@@ -2,8 +2,10 @@ import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/support_person.dart';
-import 'package:seagull_fakes/all.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../fakes/all.dart';
 
 void main() {
   const testSupportPerson = SupportPerson(id: 0, name: 'Test', image: '');

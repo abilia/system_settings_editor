@@ -1,8 +1,6 @@
 export 'package:sortables/utils/extensions/all.dart';
 
 export 'activities_alarms_extensions.dart';
-export 'activities_extensions.dart';
-export 'activity_days_extensions.dart';
 export 'alarm_extensions.dart';
 export 'available_for_extensions.dart';
 export 'datetime_extensions.dart';
@@ -14,5 +12,4 @@ export 'permission_extensions.dart';
 export 'recurring_extensions.dart';
 export 'remote_message_extensions.dart';
 export 'semantics_properties_extensions.dart';
-export 'signed_off_dates_extensions.dart';
 export 'string_extensions.dart';

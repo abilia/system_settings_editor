@@ -10,7 +10,6 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/components/all.dart';
 import 'package:memoplanner/ui/themes/all.dart';
 import 'package:memoplanner/utils/all.dart';
-import 'package:seagull_fakes/all.dart';
 
 import '../../../../fakes/all.dart';
 import '../../../../mocks/mock_bloc.dart';

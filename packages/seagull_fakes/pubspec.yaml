@@ -12,6 +12,9 @@ dependencies:
   bloc_test: any
   calendar:
     path: ../calendar
+  calendar_events:
+    path: ../calendar_events
+  collection: any
   file_storage:
     path: ../file_storage
   flutter:
@@ -21,6 +24,7 @@ dependencies:
   generics:
     path: ../generics
   http: any
+  logging: any
   mocktail: any
   repository_base:
     path: ../repository/repository_base
@@ -30,6 +34,7 @@ dependencies:
   sortables:
     path: ../sortables
   sqflite: any
+  test: any
   user_files:
     path: ../user_files
   utils:

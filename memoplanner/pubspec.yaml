@@ -23,6 +23,8 @@ dependencies:
   bloc_concurrency: ^0.2.0
   calendar:
     path: ../packages/calendar
+  calendar_events:
+    path: ../packages/calendar_events
   collection: ^1.17.0
   connectivity_plus: ^4.0.1
   crypto: ^3.0.1

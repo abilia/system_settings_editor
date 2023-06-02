@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:seagull_fakes/sync/fakes.dart';
 
-import 'package:sortables/all.dart';
+import 'package:sortables/sortables.dart';
 
 import '../mocks/mocks.dart';
 

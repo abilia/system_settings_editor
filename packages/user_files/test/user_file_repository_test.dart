@@ -7,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:repository_base/repository_base.dart';
-
 import 'package:seagull_fakes/all.dart';
 import 'package:user_files/user_files.dart';
 import 'package:utils/utils.dart';

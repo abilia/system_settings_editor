@@ -8,11 +8,10 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:seagull_fakes/all.dart';
+
 import 'package:uuid/uuid.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/mock_bloc.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
 

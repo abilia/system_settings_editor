@@ -4,6 +4,7 @@ import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:seagull_fakes/all.dart';
+
 import 'package:test/test.dart';
 import 'package:utils/utils.dart';
 

@@ -9,7 +9,7 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/components/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
-import 'package:seagull_fakes/all.dart';
+
 import 'package:uuid/uuid.dart';
 
 import '../../../fakes/all.dart';

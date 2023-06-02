@@ -6,7 +6,7 @@ import 'package:repository_base/db.dart';
 
 import 'package:seagull_fakes/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sortables/all.dart';
+import 'package:sortables/sortables.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:utils/string_extensions.dart';
 

@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:sortables/all.dart';
+import 'package:sortables/sortables.dart';
 
 import '../mocks/mocks.dart';
 import '../test_helpers/register_fallback_values.dart';
