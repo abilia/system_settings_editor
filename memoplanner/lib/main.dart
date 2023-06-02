@@ -70,7 +70,7 @@ Future<void> initServices() async {
       voicesPath: applicationSupportDirectory.path,
     )
     ..packageInfo = await PackageInfo.fromPlatform()
-    ..syncDelay = const Delays()
+    ..delays = const Delays()
     ..analytics = analytics
     ..device = await Device.init()
     ..init();
