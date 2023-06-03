@@ -1207,15 +1207,11 @@ void main() {
           'SGC-1891 - Activity that spans over two days only shows one card',
           (WidgetTester tester) async {
         final startTime = DateTime(2020, 12, 01, 10, 00);
-        genericResponse = () => [
-              Generic.createNew<GenericSettingData>(
-                data: GenericSettingData.fromData(
-                  data: TimepillarIntervalType.dayAndNight.index,
-                  identifier:
-                      DayCalendarViewSettings.viewOptionsTimeIntervalKey,
-                ),
-              ),
-            ];
+        fakeSharedPreferences.setInt(
+          DayCalendarViewSettings.viewOptionsTimeIntervalKey,
+          TimepillarIntervalType.dayAndNight.index,
+        );
+
         mockActivityDb.initWithActivities([
           Activity.createNew(
             title: 'title',

@@ -253,12 +253,6 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        verifySyncGeneric(
-          tester,
-          genericDb,
-          key: DayCalendarViewSettings.viewOptionsDotsKey,
-          matcher: isFalse,
-        );
 
         expect(
           fakeSharedPreferences
@@ -292,13 +286,7 @@ void main() {
 
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
-        verifySyncGeneric(
-          tester,
-          genericDb,
-          key: DayCalendarViewOptionsDisplaySettings
-              .displayIntervalTypeIntervalKey,
-          matcher: isFalse,
-        );
+
         expect(
           fakeSharedPreferences.getBool(
             DayCalendarViewOptionsDisplaySettings
