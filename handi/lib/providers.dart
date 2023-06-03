@@ -12,6 +12,7 @@ import 'package:generics/generics.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/background/background.dart';
 import 'package:handi/main.dart';
+import 'package:handi/models/delays.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:seagull_clock/clock_bloc.dart';
 import 'package:seagull_clock/ticker.dart';
@@ -173,7 +174,8 @@ class AuthenticatedProviders extends StatelessWidget {
               genericRepository: context.read<GenericRepository>(),
               lastSyncDb: GetIt.I<LastSyncDb>(),
               clockBloc: context.read<ClockBloc>(),
-              syncDelay: GetIt.I<SyncDelays>(),
+              syncDelay: GetIt.I<Delays>().syncDelay,
+              retryDelay: GetIt.I<Delays>().retryDelay,
             )..add(const SyncAll()),
           ),
           BlocProvider(

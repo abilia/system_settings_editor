@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:abilia_sync/abilia_sync.dart';
 import 'package:handi/getit_initializer.dart';
+import 'package:handi/models/delays.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:seagull_fakes/all.dart';
 
@@ -14,7 +14,7 @@ Future<void> initGetItFakes() async => initGetItWith(
       database: FakeDatabase(),
       directory: Directory('documents'),
       firebasePushService: FakeFirebasePushService(),
-      syncDelays: SyncDelays.zero,
+      delays: Delays.zero,
       sortableDb: FakeSortableDb(),
       userFileDb: FakeUserFileDb(),
       packageInfo: PackageInfo(

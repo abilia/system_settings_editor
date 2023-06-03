@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:generics/db/generic_db.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/main.dart';
+import 'package:handi/models/delays.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:repository_base/repository_base.dart';
@@ -39,7 +40,7 @@ Future<void> initGetItWith({
   GenericDb? genericDb,
   UserFileDb? userFileDb,
   LastSyncDb? lastSyncDb,
-  SyncDelays? syncDelays,
+  Delays? delays,
   SeagullLogger? seagullLogger,
 }) async {
   GetIt.I
@@ -60,7 +61,7 @@ Future<void> initGetItWith({
     ..registerSingleton(genericDb ?? GenericDb(database))
     ..registerSingleton(userFileDb ?? UserFileDb(database))
     ..registerSingleton(lastSyncDb ?? LastSyncDb(sharedPreferences))
-    ..registerSingleton(syncDelays ?? const SyncDelays())
+    ..registerSingleton(delays ?? const Delays())
     ..registerSingleton(seagullLogger ?? SeagullLogger.nothing())
     ..registerSingleton(
       listenableClient ??
