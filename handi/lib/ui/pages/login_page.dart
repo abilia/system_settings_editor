@@ -59,12 +59,9 @@ class LoginPage extends StatelessWidget {
         body: BlocListener<LoginCubit, LoginState>(
           listener: (context, state) {
             if (state is LoginFailure) {
-              Future.delayed(
-                Duration.zero,
-                () async => ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.cause.name),
-                  ),
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.cause.name),
                 ),
               );
             }
