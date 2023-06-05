@@ -35,4 +35,5 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(LoggedInPage), findsOneWidget);
   });
+
 }

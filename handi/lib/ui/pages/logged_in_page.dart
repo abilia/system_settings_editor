@@ -6,6 +6,7 @@ import 'package:calendar_events/calendar_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:generics/generics.dart';
+import 'package:seagull_logging/logging.dart';
 import 'package:sortables/sortables.dart';
 import 'package:user_files/user_files.dart';
 
@@ -26,6 +27,8 @@ class _LoggedInPageState extends State<LoggedInPage> {
   List<Generic> generics = [];
   List<Sortable> sortables = [];
   List<UserFile> userFiles = [];
+
+  Logger logger = Logger('');
 
   Future<void> _fetchActivities(BuildContext context) async {
     final activities = await context
@@ -77,6 +80,7 @@ class _LoggedInPageState extends State<LoggedInPage> {
             child: Scaffold(
               body: BlocListener<PushCubit, RemoteMessage>(
                 listener: (context, message) {
+                  logger.fine('Push received  ${message.data}');
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Push received ${message.data}'),
