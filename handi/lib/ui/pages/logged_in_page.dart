@@ -66,6 +66,7 @@ class _LoggedInPageState extends State<LoggedInPage> {
 
   @override
   Widget build(BuildContext context) {
+    final hasSynced = context.select((SyncBloc bloc) => bloc.hasSynced);
     return BlocListener<ActivitiesBloc, ActivitiesChanged>(
       listener: (context, _) async => _fetchActivities(context),
       child: BlocListener<GenericCubit, GenericState>(
@@ -83,36 +84,42 @@ class _LoggedInPageState extends State<LoggedInPage> {
                     ),
                   );
                 },
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const SizedBox(height: 100),
-                      Center(child: Text('${widget.authenticated.user}')),
-                      const SizedBox(height: 100),
-                      Center(child: Text('''
+                child: !hasSynced
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(Colors.blue),
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const SizedBox(height: 100),
+                            Center(child: Text('${widget.authenticated.user}')),
+                            const SizedBox(height: 100),
+                            Center(child: Text('''
 Upcoming activities: ${activities.length}
 Generics: ${generics.length}
 Sortables: ${sortables.length}
 Loaded user files: ${userFiles.length}
                       ''')),
-                      const Spacer(),
-                      OutlinedButton(
-                        onPressed: () =>
-                            context.read<SyncBloc>().add(const SyncAll()),
-                        child: const Text('Sync'),
+                            const Spacer(),
+                            OutlinedButton(
+                              onPressed: () =>
+                                  context.read<SyncBloc>().add(const SyncAll()),
+                              child: const Text('Sync'),
+                            ),
+                            OutlinedButton(
+                              onPressed: () => context
+                                  .read<AuthenticationBloc>()
+                                  .add(const LoggedOut()),
+                              child: const Text('Log out'),
+                            ),
+                          ],
+                        ),
                       ),
-                      OutlinedButton(
-                        onPressed: () => context
-                            .read<AuthenticationBloc>()
-                            .add(const LoggedOut()),
-                        child: const Text('Log out'),
-                      ),
-                    ],
-                  ),
-                ),
               ),
             ),
           ),
