@@ -495,6 +495,7 @@ allowAccessCameraBody	Allow access to camera to be able to take a photo from the
 allowAccessBody2	You can always do that later from the	Du kan alltid göra det senare från	Du kan altid gøre det senere fra	U kunt dat later altijd doen vanuit de	Voit aina tehdä sen myöhemmin	Dies kann jederzeit später erfolgen von der	Du kan alltids gjøre det senere fra
 accessToMicrophone	Access to Microphone	Tillgång till mikrofon	Adgang til mikrofon	Toegang tot microfoon	Pääsy mikrofoniin	Zugang zum Mikrofon	Tilgang til mikrofon
 allowAccessMicrophoneBody	Allow access to microphone to be able to record speech from the device	Tillåt åtkomst till mikrofon för att kunna spela in tal från enheten	Tillad adgang til mikrofon for at kunne optage tale fra enheden	Toegang tot microfoon toestaan om spraak van het apparaat op te nemen	Salli mikrofonin käyttö, jotta voit tallentaa puhetta laitteelta	Erlauben Sie den Zugriff auf das Mikrofon, um Sprache vom Gerät aufzeichnen zu können	Tillat tilgang til mikrofon for å kunne ta opp tale fra enheten
+ignoreBatteryOptimizations	Ignore battery optimizations	Ignorera batteryoptimeringar					
 							
 ### About							
 about	About	Information	Information	Informatie	Tiedot	Information	Informasjon

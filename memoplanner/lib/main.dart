@@ -144,7 +144,10 @@ class App extends StatelessWidget {
                   if (productionGuideState is WelcomeGuide) {
                     return const StartupGuidePage();
                   }
-                  return const ProductionGuidePage();
+                  return BlocProvider(
+                    create: (context) => PermissionCubit(),
+                    child: const ProductionGuidePage(),
+                  );
                 },
               ),
       );
