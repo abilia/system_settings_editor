@@ -28,7 +28,7 @@ class _LoggedInPageState extends State<LoggedInPage> {
   List<Sortable> sortables = [];
   List<UserFile> userFiles = [];
 
-  Logger logger = Logger('');
+  final Logger _logger = Logger('');
 
   Future<void> _fetchActivities(BuildContext context) async {
     final activities = await context
@@ -80,7 +80,7 @@ class _LoggedInPageState extends State<LoggedInPage> {
             child: Scaffold(
               body: BlocListener<PushCubit, RemoteMessage>(
                 listener: (context, message) {
-                  logger.fine('Push received  ${message.data}');
+                  _logger.fine('Push received  ${message.data}');
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Push received ${message.data}'),
