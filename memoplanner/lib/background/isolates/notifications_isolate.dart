@@ -6,7 +6,7 @@ import 'package:flutter_isolate/flutter_isolate.dart';
 import 'package:logging/logging.dart';
 import 'package:memoplanner/background/notifications.dart';
 import 'package:memoplanner/models/notification/all.dart';
-import 'package:memoplanner/repository/timezone.dart';
+import 'package:utils/timezone.dart';
 
 FlutterIsolate? alarmSchedulerIsolate;
 

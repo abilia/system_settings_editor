@@ -201,7 +201,6 @@ void main() {
           alwaysUse24HourFormat: true,
           settings: const AlarmSettings().copyWith(timerSound: timerSound),
           fileStorage: mockedFileStorage,
-          dateTime: now,
         ),
         testLogger.log,
       );
@@ -253,7 +252,6 @@ void main() {
         alwaysUse24HourFormat: true,
         settings: const AlarmSettings(),
         fileStorage: FileStorage('jollo'),
-        dateTime: now,
       );
       final serialized = schedulerData.toMap();
       expect(schedulerData, NotificationsSchedulerData.fromMap(serialized));
@@ -270,7 +268,6 @@ void main() {
           alwaysUse24HourFormat: true,
           settings: const AlarmSettings(),
           fileStorage: mockedFileStorage,
-          dateTime: now,
         ),
       );
       await Future.delayed(1.seconds());
@@ -292,7 +289,6 @@ void main() {
           alwaysUse24HourFormat: true,
           settings: const AlarmSettings(),
           fileStorage: mockedFileStorage,
-          dateTime: now,
         ),
         testLogger.log,
       );
@@ -316,7 +312,6 @@ void main() {
             disabledUntilEpoch: now.onlyDays().nextDay().millisecondsSinceEpoch,
           ),
           fileStorage: mockedFileStorage,
-          dateTime: now,
         ),
         testLogger.log,
       );
@@ -341,7 +336,6 @@ void main() {
           alwaysUse24HourFormat: true,
           settings: const AlarmSettings(),
           fileStorage: mockedFileStorage,
-          dateTime: now,
         ),
         testLogger.log,
       );
@@ -384,7 +378,6 @@ void main() {
           alwaysUse24HourFormat: true,
           settings: const AlarmSettings(),
           fileStorage: mockedFileStorage,
-          dateTime: now,
         ),
         testLogger.log,
       );
@@ -418,7 +411,6 @@ void main() {
           alwaysUse24HourFormat: true,
           settings: const AlarmSettings(),
           fileStorage: mockedFileStorage,
-          dateTime: now,
         ),
       );
       await Future.delayed(10.milliseconds());
@@ -442,7 +434,6 @@ void main() {
           alwaysUse24HourFormat: true,
           settings: const AlarmSettings(),
           fileStorage: mockedFileStorage,
-          dateTime: now,
         ),
       );
       await Future.delayed(10.milliseconds());
@@ -466,7 +457,6 @@ void main() {
           alwaysUse24HourFormat: true,
           settings: const AlarmSettings(),
           fileStorage: mockedFileStorage,
-          dateTime: now,
         ),
         testLogger.log,
       );
@@ -490,7 +480,6 @@ void main() {
           alwaysUse24HourFormat: true,
           settings: const AlarmSettings(),
           fileStorage: mockedFileStorage,
-          dateTime: now,
         ),
         testLogger.log,
       );
@@ -524,7 +513,6 @@ void main() {
           alwaysUse24HourFormat: true,
           settings: const AlarmSettings(),
           fileStorage: mockedFileStorage,
-          dateTime: now,
         ),
         testLogger.log,
       );
@@ -575,7 +563,6 @@ void main() {
           alwaysUse24HourFormat: true,
           settings: const AlarmSettings(),
           fileStorage: mockedFileStorage,
-          dateTime: now,
         ),
         testLogger.log,
       );
@@ -611,7 +598,6 @@ void main() {
             disabledUntilEpoch: now.onlyDays().nextDay().millisecondsSinceEpoch,
           ),
           fileStorage: mockedFileStorage,
-          dateTime: now,
         ),
         testLogger.log,
       );
@@ -636,7 +622,6 @@ void main() {
           alwaysUse24HourFormat: true,
           settings: const AlarmSettings(),
           fileStorage: mockedFileStorage,
-          dateTime: now,
         ),
       );
       await Future.delayed(300.milliseconds());
@@ -659,7 +644,6 @@ void main() {
           alwaysUse24HourFormat: true,
           settings: const AlarmSettings(),
           fileStorage: mockedFileStorage,
-          dateTime: now,
         ),
         testLogger.log,
       );

@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:generics/generics.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/background/background.dart';
+import 'package:handi/bloc/notification_bloc.dart';
 import 'package:handi/main.dart';
 import 'package:handi/models/delays.dart';
 import 'package:repository_base/repository_base.dart';
@@ -202,6 +203,13 @@ class AuthenticatedProviders extends StatelessWidget {
             create: (context) => GenericCubit(
               genericRepository: context.read<GenericRepository>(),
               syncBloc: context.read<SyncBloc>(),
+            ),
+          ),
+          BlocProvider<NotificationBloc>(
+            create: (context) => NotificationBloc(
+              activityRepository: context.read<ActivityRepository>(),
+              scheduleNotificationsDelay:
+                  GetIt.I<Delays>().scheduleNotificationsDelay,
             ),
           ),
         ],

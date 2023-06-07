@@ -2,11 +2,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:handi/background/notifications.dart';
 import 'package:handi/firebase_options.dart';
 import 'package:handi/getit_initializer.dart';
 import 'package:handi/listeners/top_level_listener.dart';
 import 'package:handi/logging/bloc_logging_observer.dart';
 import 'package:handi/providers.dart';
+import 'package:logging/logging.dart';
+import 'package:utils/utils.dart';
+
+final _log = Logger('main');
 
 const appName = 'handi';
 
@@ -17,8 +22,10 @@ void main() async {
 
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await configureLocalTimeZone(log: _log);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.instance.isAutoInitEnabled;
+  await initializeNotificationPlugin();
   Bloc.observer = BlocLoggingObserver();
   await initGetIt();
 }

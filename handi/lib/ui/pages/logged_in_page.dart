@@ -32,7 +32,9 @@ class _LoggedInPageState extends State<LoggedInPage> {
         .read<ActivitiesBloc>()
         .activityRepository
         .allAfter(DateTime.now());
-    setState(() => this.activities = activities.toList());
+    setState(() => this.activities = activities
+        .where((activity) => activity.startTime.isAfter(DateTime.now()))
+        .toList());
   }
 
   Future<void> _fetchGenerics(BuildContext context) async {
