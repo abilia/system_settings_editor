@@ -730,11 +730,6 @@ void main() {
             calendar: GeneralCalendarSettings(
               categories: CategoriesSettings(show: true),
             ),
-            // dayCalendar: DayCalendarSettings(
-            //   viewOptions: DayCalendarViewSettings(
-            //     calendarTypeIndex: 1,
-            //   ),
-            // ),
           ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
