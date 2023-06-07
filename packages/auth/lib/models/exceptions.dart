@@ -7,6 +7,9 @@ class NoLicenseException implements Exception {
 class WrongUserTypeException implements Exception {
   String errMsg() => 'Only type User is supported';
 }
+class TooManyAttempsException implements Exception {
+  String errMsg() => 'Too many login attempts';
+}
 
 enum CreateAccountFailure {
   noUsername,

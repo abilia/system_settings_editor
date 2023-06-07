@@ -102,6 +102,8 @@ class LoginCubit extends Cubit<LoginState> {
         return LoginFailureCause.credentials;
       case WrongUserTypeException:
         return LoginFailureCause.unsupportedUserType;
+      case TooManyAttempsException:
+        return LoginFailureCause.tooManyAttempts;
       default:
         _log.severe('could not login: $error');
         return LoginFailureCause.noConnection;

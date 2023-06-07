@@ -58,6 +58,8 @@ class UserRepository extends Repository {
         return LoginInfo.fromJson(response.json());
       case 401:
         throw UnauthorizedException();
+      case 429:
+        throw TooManyAttempsException();
       case 403:
         final errorMessage = LoginError.fromJson(response.json());
         if (errorMessage.errors.isNotEmpty &&

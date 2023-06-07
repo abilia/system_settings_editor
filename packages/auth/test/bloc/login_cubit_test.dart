@@ -462,4 +462,12 @@ void main() {
       await expected;
     });
   });
+
+  test('too many attempts exception', () async {
+    when(() => mockUserRepository.authenticate.getLicensesFromApi()).thenAnswer(
+          (_) => Future.value([
+        expiredLicense,
+      ]),
+    );
+  });
 }
