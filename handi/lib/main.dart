@@ -5,8 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:handi/firebase_options.dart';
 import 'package:handi/getit_initializer.dart';
 import 'package:handi/listeners/top_level_listener.dart';
-import 'package:handi/logging/bloc_logging_observer.dart';
 import 'package:handi/providers.dart';
+import 'package:seagull_analytics/seagull_analytics.dart';
+import 'package:seagull_logging/seagull_logging.dart';
 
 const appName = 'handi';
 
@@ -19,7 +20,8 @@ Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.instance.isAutoInitEnabled;
-  Bloc.observer = BlocLoggingObserver();
+  Bloc.observer =
+      BlocLoggingObserver(SeagullAnalytics.empty(), isRelease: false);
   await initGetIt();
 }
 
