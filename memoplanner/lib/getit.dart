@@ -195,6 +195,8 @@ class GetItInitializer {
       ..registerSingleton<ActionIntentStream>(_actionIntentStream)
       ..registerSingleton<SupportPersonsDb>(
           _supportPersonsDb ?? SupportPersonsDb(_sharedPreferences))
+      ..registerSingleton<DayCalendarViewDb>(
+          DayCalendarViewDb(_sharedPreferences))
       ..registerSingleton<Directories>(
         _directories ??
             Directories(

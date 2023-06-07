@@ -68,14 +68,12 @@ void main() {
         (WidgetTester tester) async {
       when(() => memoplannerSettingBloc.state).thenAnswer(
         (_) => const MemoplannerSettings(
-          dayCalendar: DayCalendarSettings(
-            appBar: AppBarSettings(
-              showBrowseButtons: true,
-              showWeekday: true,
-              showDayPeriod: true,
-              showDate: true,
-              showClock: true,
-            ),
+          dayAppBar: DayAppBarSettings(
+            showBrowseButtons: true,
+            showWeekday: true,
+            showDayPeriod: true,
+            showDate: true,
+            showClock: true,
           ),
         ),
       );
@@ -95,14 +93,12 @@ void main() {
         (WidgetTester tester) async {
       when(() => memoplannerSettingBloc.state).thenAnswer(
         (_) => const MemoplannerSettings(
-          dayCalendar: DayCalendarSettings(
-            appBar: AppBarSettings(
-              showBrowseButtons: false,
-              showWeekday: true,
-              showDayPeriod: true,
-              showDate: true,
-              showClock: false,
-            ),
+          dayAppBar: DayAppBarSettings(
+            showBrowseButtons: false,
+            showWeekday: true,
+            showDayPeriod: true,
+            showDate: true,
+            showClock: false,
           ),
         ),
       );
@@ -121,14 +117,12 @@ void main() {
         (WidgetTester tester) async {
       when(() => memoplannerSettingBloc.state).thenAnswer(
         (_) => const MemoplannerSettings(
-          dayCalendar: DayCalendarSettings(
-            appBar: AppBarSettings(
-              showBrowseButtons: false,
-              showWeekday: false,
-              showDayPeriod: false,
-              showDate: false,
-              showClock: false,
-            ),
+          dayAppBar: DayAppBarSettings(
+            showBrowseButtons: false,
+            showWeekday: false,
+            showDayPeriod: false,
+            showDate: false,
+            showClock: false,
           ),
         ),
       );
@@ -142,14 +136,12 @@ void main() {
         (WidgetTester tester) async {
       when(() => memoplannerSettingBloc.state).thenAnswer(
         (_) => const MemoplannerSettings(
-          dayCalendar: DayCalendarSettings(
-            appBar: AppBarSettings(
-              showBrowseButtons: true,
-              showWeekday: false,
-              showDayPeriod: false,
-              showDate: false,
-              showClock: false,
-            ),
+          dayAppBar: DayAppBarSettings(
+            showBrowseButtons: true,
+            showWeekday: false,
+            showDayPeriod: false,
+            showDate: false,
+            showClock: false,
           ),
         ),
       );
@@ -168,14 +160,12 @@ void main() {
         (WidgetTester tester) async {
       when(() => memoplannerSettingBloc.state).thenAnswer(
         (_) => const MemoplannerSettings(
-          dayCalendar: DayCalendarSettings(
-            appBar: AppBarSettings(
-              showBrowseButtons: false,
-              showWeekday: false,
-              showDayPeriod: false,
-              showDate: false,
-              showClock: false,
-            ),
+          dayAppBar: DayAppBarSettings(
+            showBrowseButtons: false,
+            showWeekday: false,
+            showDayPeriod: false,
+            showDate: false,
+            showClock: false,
           ),
         ),
       );
@@ -191,14 +181,12 @@ void main() {
         (WidgetTester tester) async {
       when(() => memoplannerSettingBloc.state).thenAnswer(
         (_) => const MemoplannerSettings(
-          dayCalendar: DayCalendarSettings(
-            appBar: AppBarSettings(
-              showBrowseButtons: true,
-              showWeekday: false,
-              showDayPeriod: false,
-              showDate: false,
-              showClock: false,
-            ),
+          dayAppBar: DayAppBarSettings(
+            showBrowseButtons: true,
+            showWeekday: false,
+            showDayPeriod: false,
+            showDate: false,
+            showClock: false,
           ),
         ),
       );

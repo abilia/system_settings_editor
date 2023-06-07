@@ -34,12 +34,16 @@ class FakeDeviceDb extends Fake implements DeviceDb {
 }
 
 class FakeSharedPreferences {
-  static Future<SharedPreferences> getInstance({bool loggedIn = true}) {
+  static Future<SharedPreferences> getInstance({
+    bool loggedIn = true,
+    Map<String, Object> extras = const {},
+  }) {
     // ignore: invalid_use_of_visible_for_testing_member
     SharedPreferences.setMockInitialValues({
       if (loggedIn) LoginDb.tokenKey: 'Fakes.token',
       // ToDo: use VoiceDb.textToSpeechRecord when tts is a separate package
       'TEXT_TO_SPEECH': true,
+      ...extras,
     });
     return SharedPreferences.getInstance();
   }

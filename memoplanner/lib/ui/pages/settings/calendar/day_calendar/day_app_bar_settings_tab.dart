@@ -1,5 +1,4 @@
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
@@ -19,32 +18,32 @@ class DayAppBarSettingsTab extends StatelessWidget {
             const DayAppBarPreview(),
             SwitchField(
               value: appBar.showBrowseButtons,
-              onChanged: (v) => dayCalendar.changeSettings(settings.copyWith(
-                  appBar: appBar.copyWith(showBrowseButtons: v))),
+              onChanged: (v) => dayCalendar
+                  .changeAppBar(appBar.copyWith(showBrowseButtons: v)),
               child: Text(t.showBrowseButtons),
             ),
             SwitchField(
               value: appBar.showWeekday,
-              onChanged: (v) => dayCalendar.changeSettings(
-                  settings.copyWith(appBar: appBar.copyWith(showWeekday: v))),
+              onChanged: (v) =>
+                  dayCalendar.changeAppBar(appBar.copyWith(showWeekday: v)),
               child: Text(t.showWeekday),
             ),
             SwitchField(
               value: appBar.showDayPeriod,
-              onChanged: (v) => dayCalendar.changeSettings(
-                  settings.copyWith(appBar: appBar.copyWith(showDayPeriod: v))),
+              onChanged: (v) =>
+                  dayCalendar.changeAppBar(appBar.copyWith(showDayPeriod: v)),
               child: Text(t.showDayPeriod),
             ),
             SwitchField(
               value: appBar.showDate,
-              onChanged: (v) => dayCalendar.changeSettings(
-                  settings.copyWith(appBar: appBar.copyWith(showDate: v))),
+              onChanged: (v) =>
+                  dayCalendar.changeAppBar(appBar.copyWith(showDate: v)),
               child: Text(t.showDate),
             ),
             SwitchField(
               value: appBar.showClock,
-              onChanged: (v) => dayCalendar.changeSettings(
-                  settings.copyWith(appBar: appBar.copyWith(showClock: v))),
+              onChanged: (v) =>
+                  dayCalendar.changeAppBar(appBar.copyWith(showClock: v)),
               child: Text(t.showClock),
             ),
           ],

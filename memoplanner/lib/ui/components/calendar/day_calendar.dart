@@ -70,9 +70,8 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final isAgenda = context.select((MemoplannerSettingsBloc bloc) =>
-        bloc.state.dayCalendar.viewOptions.calendarType ==
-        DayCalendarType.list);
+    final isAgenda = context.select((DayCalendarViewCubit bloc) =>
+        bloc.state.calendarType == DayCalendarType.list);
     return BlocListener<DayPickerBloc, DayPickerState>(
       listenWhen: (previous, current) => previous.index != current.index,
       listener: (context, state) async => pageController.animateToPage(

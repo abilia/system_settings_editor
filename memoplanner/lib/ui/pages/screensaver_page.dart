@@ -48,8 +48,8 @@ class _ScreensaverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appBarSettings = context.select(
-        (MemoplannerSettingsBloc bloc) => bloc.state.dayCalendar.appBar);
+    final appBarSettings =
+        context.select((MemoplannerSettingsBloc bloc) => bloc.state.dayAppBar);
     final dayParts = context
         .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayParts);
 
