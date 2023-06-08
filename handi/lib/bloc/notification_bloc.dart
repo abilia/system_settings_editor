@@ -5,11 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:handi/background/notifications.dart';
 import 'package:rxdart/rxdart.dart';
 
-class NotificationEvent {}
+class ScheduleNotifications {}
 
 class NotificationState {}
 
-class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
+class NotificationBloc extends Bloc<ScheduleNotifications, NotificationState> {
   final ActivitiesBloc activitiesBloc;
   late final StreamSubscription _activitiesSubscription;
 
@@ -17,12 +17,12 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     required this.activitiesBloc,
     required Duration scheduleNotificationsDelay,
   }) : super(NotificationState()) {
-    on<NotificationEvent>(
+    on<ScheduleNotifications>(
       (event, emit) async => _scheduleNotifications(),
       transformer: _debounceTime(scheduleNotificationsDelay),
     );
     _activitiesSubscription =
-        activitiesBloc.stream.listen((_) async => add(NotificationEvent()));
+        activitiesBloc.stream.listen((_) async => add(ScheduleNotifications()));
   }
 
   Future<void> _scheduleNotifications() async {

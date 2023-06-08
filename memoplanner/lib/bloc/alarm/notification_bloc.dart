@@ -10,11 +10,11 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:rxdart/rxdart.dart';
 
-class NotificationEvent {}
+class ScheduleNotifications {}
 
 class NotificationState {}
 
-class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
+class NotificationBloc extends Bloc<ScheduleNotifications, NotificationState> {
   NotificationBloc({
     required this.activityRepository,
     required this.timerDb,
@@ -22,7 +22,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     required this.memoplannerSettingBloc,
     required Duration scheduleNotificationsDelay,
   }) : super(NotificationState()) {
-    on<NotificationEvent>(
+    on<ScheduleNotifications>(
       (event, emit) async => _scheduleNotifications(),
       transformer: _debounceTime(scheduleNotificationsDelay),
     );

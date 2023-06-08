@@ -207,11 +207,12 @@ class AuthenticatedProviders extends StatelessWidget {
             ),
           ),
           BlocProvider<NotificationBloc>(
+            lazy: false,
             create: (context) => NotificationBloc(
               activitiesBloc: context.read<ActivitiesBloc>(),
               scheduleNotificationsDelay:
                   GetIt.I<Delays>().scheduleNotificationsDelay,
-            ),
+            )..add(ScheduleNotifications()),
           ),
         ],
         child: child,

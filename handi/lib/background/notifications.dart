@@ -35,7 +35,7 @@ Future cancelAllPendingNotifications() async {
 
 Future scheduleActivityNotifications(Iterable<Activity> activities) async {
   await cancelAllPendingNotifications();
-  _log.fine('scheduling ${activities.length} notifications...');
+  _log.fine('scheduling ${activities.length} activity notifications...');
   var scheduled = 0;
   for (final activity in activities) {
     if (await _scheduleActivityNotification(activity)) scheduled++;
@@ -81,7 +81,7 @@ DarwinNotificationDetails _iosNotificationDetails(Activity activity) =>
 
 AndroidNotificationDetails _androidNotificationDetails(Activity activity) =>
     AndroidNotificationDetails(
-      'id',
+      'HandiActivities',
       'Activities',
       channelDescription: 'Notifications for activities',
       groupKey: activity.seriesId,

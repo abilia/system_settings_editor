@@ -32,7 +32,7 @@ void registerFallbackValues() {
   );
   registerFallbackValue(const LoadSortables());
   registerFallbackValue(Request('GET', ''.toUri()));
-  registerFallbackValue(NotificationEvent());
+  registerFallbackValue(ScheduleNotifications());
   registerFallbackValue(const StopSound());
   registerFallbackValue(FileStorage(''));
 }
