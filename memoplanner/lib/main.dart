@@ -11,7 +11,6 @@ import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/firebase_options.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/listener/all.dart';
-import 'package:memoplanner/logging/bloc_logging_observer.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/tts/tts_handler.dart';
@@ -47,13 +46,18 @@ Future<void> initServices() async {
     documentsDirectory: documentDirectory.path,
     supportId: supportId,
     preferences: preferences,
-    logBaseName: Config.flavor.id,
+    app: Config.flavor.id,
   );
   _log.fine('Initializing services');
   final analytics = kReleaseMode
       ? await _initAnalytics(supportId, BaseUrlDb(preferences).environment)
       : SeagullAnalytics.empty();
-  Bloc.observer = BlocLoggingObserver(analytics);
+  Bloc.observer = BlocLoggingObserver(
+    analytics,
+    isRelease: Config.release,
+    localeCondition: (bloc, change) =>
+        bloc is LocaleCubit && change is Change<Locale>,
+  );
   await configureLocalTimeZone(log: _log);
   final applicationSupportDirectory = await getApplicationSupportDirectory();
   GetItInitializer()

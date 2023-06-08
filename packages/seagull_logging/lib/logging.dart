@@ -20,7 +20,7 @@ class SeagullLogger {
   File? _logFile;
   final _uploadLock = Lock();
   final _logFileLock = Lock();
-  final String logBaseName;
+  final String app;
   final Set<LoggingType> loggingType;
   List<StreamSubscription> loggingSubscriptions = [];
   final _log = Logger((SeagullLogger).toString());
@@ -33,28 +33,28 @@ class SeagullLogger {
   late final bool crashReporting =
       loggingType.contains(LoggingType.crashReporting);
 
-  String get logFileName => '$logBaseName.log';
+  String get logFileName => '$app.log';
 
-  factory SeagullLogger.test(logBaseName) => SeagullLogger(
+  factory SeagullLogger.test() => SeagullLogger(
         loggingType: const {LoggingType.print},
         documentsDirectory: '',
         supportId: '',
         level: Level.ALL,
-        logBaseName: logBaseName,
+        app: '',
       );
 
-  factory SeagullLogger.nothing(logBaseName) => SeagullLogger(
+  factory SeagullLogger.nothing() => SeagullLogger(
         loggingType: const {},
         documentsDirectory: '',
         supportId: '',
         level: Level.OFF,
-        logBaseName: logBaseName,
+        app: '',
       );
 
   SeagullLogger({
     required this.documentsDirectory,
     required this.supportId,
-    required this.logBaseName,
+    required this.app,
     this.preferences,
     this.loggingType = const {
       if (kDebugMode)
@@ -109,7 +109,7 @@ class SeagullLogger {
       final logArchivePath = '$documentsDirectory/$logArchiveDirectory';
       final logArchiveDir = Directory(logArchivePath);
       await logArchiveDir.create(recursive: true);
-      final archiveFilePath = '$logArchivePath/${logBaseName}_log_$time.log';
+      final archiveFilePath = '$logArchivePath/${app}_log_$time.log';
       await _logFileLock.synchronized(() async {
         await _logFile?.copy(archiveFilePath);
         await _logFile?.writeAsString('');
@@ -257,7 +257,7 @@ class SeagullLogger {
           ))
           ..fields.addAll({
             'owner': supportId,
-            'app': logBaseName,
+            'app': app,
             'fileType': 'zip',
             'secret': 'Mkediq9Jjdn23jKfnKpqmfhkfjMfj',
           });

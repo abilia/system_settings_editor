@@ -16,8 +16,6 @@ export 'package:mocktail/mocktail.dart';
 
 // Repository
 
-class MockGenericRepository extends Mock implements GenericRepository {}
-
 class MockSupportPersonsRepository extends Mock
     implements SupportPersonsRepository {}
 

@@ -10,10 +10,10 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
-import 'package:memoplanner/logging/bloc_logging_observer.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:seagull_logging/seagull_logging.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -101,7 +101,8 @@ void main() {
       ..client = Fakes.client()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..init();
-    Bloc.observer = BlocLoggingObserver(GetIt.I<SeagullAnalytics>());
+    Bloc.observer =
+        BlocLoggingObserver(GetIt.I<SeagullAnalytics>(), isRelease: false);
   });
 
   tearDown(GetIt.I.reset);

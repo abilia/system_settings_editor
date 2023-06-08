@@ -13,7 +13,11 @@ dependencies:
     path: ../packages/auth
   calendar:
     path: ../packages/calendar
+  calendar_events:
+    path: ../packages/calendar_events
   equatable: ^2.0.3
+  file_storage:
+    path: ../packages/file_storage
   firebase_core: ^2.11.0
   firebase_crashlytics: ^3.0.4
   firebase_messaging: ^14.5.0
@@ -21,9 +25,11 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.0.1
   flutter_lints: ^2.0.1
+  generics:
+    path: ../packages/generics
   get_it: ^7.2.0
-  mixpanel_flutter: ^2.1.1
   package_info_plus: ^4.0.1
+  path_provider: ^2.0.5
   repository_base:
     path: ../packages/repository/repository_base
   rxdart: ^0.27.1
@@ -31,9 +37,15 @@ dependencies:
     path: ../packages/seagull_analytics
   seagull_clock:
     path: ../packages/seagull_clock
+  seagull_logging:
+    path: ../packages/seagull_logging
   shared_preferences: ^2.0.8
+  sortables:
+    path: ../packages/sortables
   sqflite: ^2.2.5
   sqflite_common_ffi: ^2.2.5
+  user_files:
+    path: ../packages/user_files
 
 dev_dependencies:
   bloc_test: ^9.0.3
