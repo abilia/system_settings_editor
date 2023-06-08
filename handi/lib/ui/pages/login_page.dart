@@ -18,8 +18,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final reason = unauthenticatedState.loggedOutReason;
     if (reason != LoggedOutReason.logOut) {
-      Future.delayed(
-        Duration.zero,
+      Future(
         () async => showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -34,7 +33,7 @@ class LoginPage extends StatelessWidget {
               ),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('Approve'),
+                  child: const Text('Ok'),
                   onPressed: () {
                     Navigator.of(context).maybePop();
                   },
