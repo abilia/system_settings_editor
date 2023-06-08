@@ -18,6 +18,7 @@ import 'package:seagull_logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sortables/db/sortable_db.dart';
 import 'package:sqflite/sqlite_api.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 import 'package:user_files/db/user_file_db.dart';
 
 Future<void> initGetIt() async => initGetItWith(
@@ -25,6 +26,7 @@ Future<void> initGetIt() async => initGetItWith(
       database: await DatabaseRepository.createSqfliteDb(),
       directory: await getApplicationDocumentsDirectory(),
       seagullLogger: SeagullLogger.test(),
+      ttsHandler: await FlutterTtsHandler.implementation(),
     );
 
 @visibleForTesting
@@ -33,6 +35,7 @@ Future<void> initGetItWith({
   required Database database,
   required Directory directory,
   ListenableClient? listenableClient,
+  TtsHandler? ttsHandler,
   PackageInfo? packageInfo,
   FirebasePushService? firebasePushService,
   ActivityDb? activityDb,
@@ -63,6 +66,7 @@ Future<void> initGetItWith({
     ..registerSingleton(lastSyncDb ?? LastSyncDb(sharedPreferences))
     ..registerSingleton(delays ?? const Delays())
     ..registerSingleton(seagullLogger ?? SeagullLogger.nothing())
+    ..registerSingleton<TtsHandler>(ttsHandler ?? FlutterTtsHandler())
     ..registerSingleton(
       listenableClient ??
           ClientWithDefaultHeaders(

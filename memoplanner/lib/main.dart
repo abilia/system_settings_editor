@@ -13,13 +13,13 @@ import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/listener/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:seagull_logging/seagull_logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 
 final _log = Logger('main');
 
@@ -61,6 +61,7 @@ Future<void> initServices() async {
   );
   await configureLocalTimeZone(log: _log);
   final applicationSupportDirectory = await getApplicationSupportDirectory();
+  final voiceDb = VoiceDb(preferences);
   GetItInitializer()
     ..directories = Directories(
       applicationSupport: applicationSupportDirectory,
@@ -70,9 +71,12 @@ Future<void> initServices() async {
     ..sharedPreferences = preferences
     ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
-    ..ttsHandler = await TtsInterface.implementation(
-      voiceDb: VoiceDb(preferences),
+    ..voiceDb = voiceDb
+    ..ttsHandler = await TtsHandler.implementation(
+      handler: Config.isMP ? TtsHandlerType.acapela : TtsHandlerType.flutter,
       voicesPath: applicationSupportDirectory.path,
+      voice: voiceDb.voice,
+      speechRate: voiceDb.speechRate,
     )
     ..packageInfo = await PackageInfo.fromPlatform()
     ..delays = const Delays()

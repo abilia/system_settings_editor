@@ -3,12 +3,12 @@ import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/main.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:seagull_clock/ticker.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 
 import '../../../../fakes/all.dart';
 import '../../../../mocks/mocks.dart';

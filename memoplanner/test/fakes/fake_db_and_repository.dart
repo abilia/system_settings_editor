@@ -6,9 +6,9 @@ import 'package:file_storage/file_storage.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:test/fake.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 
 import 'fake_client.dart';
 
@@ -126,7 +126,7 @@ class FakeVoiceDb extends Fake implements VoiceDb {
   double get speechRate => 100;
 }
 
-class FakeTtsHandler extends Fake implements TtsInterface {
+class FakeTtsHandler extends Fake implements TtsHandler {
   @override
   Future<dynamic> speak(String text) async {}
 

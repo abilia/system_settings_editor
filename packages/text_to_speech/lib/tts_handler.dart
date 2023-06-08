@@ -3,19 +3,25 @@ import 'dart:io';
 import 'package:acapela_tts/acapela_tts.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:logging/logging.dart';
-import 'package:memoplanner/config.dart';
-import 'package:memoplanner/db/voice_db.dart';
 
-abstract class TtsInterface {
-  static Future<TtsInterface> implementation({
-    required VoiceDb voiceDb,
+enum TtsHandlerType {
+  acapela,
+  flutter,
+}
+
+abstract class TtsHandler {
+  static Future<TtsHandler> implementation({
     required String voicesPath,
+    required String voice,
+    required double speechRate,
+    required TtsHandlerType handler,
   }) async {
     try {
-      if (Config.isMP) {
+      if (handler == TtsHandlerType.acapela) {
         return await AcapelaTtsHandler.implementation(
-          voiceDb: voiceDb,
           voicesPath: voicesPath,
+          voice: voice,
+          speechRate: speechRate,
         );
       }
     } catch (e) {
@@ -37,12 +43,13 @@ abstract class TtsInterface {
   Future<List<Object?>> get availableVoices;
 }
 
-class AcapelaTtsHandler extends AcapelaTts implements TtsInterface {
+class AcapelaTtsHandler extends AcapelaTts implements TtsHandler {
   static final Logger _log = Logger((AcapelaTts).toString());
 
   static Future<AcapelaTtsHandler> implementation({
-    required VoiceDb voiceDb,
     required String voicesPath,
+    required String voice,
+    required double speechRate,
   }) async {
     final acapela = AcapelaTtsHandler();
     final initialized = await acapela.initialize(
@@ -55,17 +62,17 @@ class AcapelaTtsHandler extends AcapelaTts implements TtsInterface {
       voicesPath: voicesPath,
     );
     if (initialized &&
-        voiceDb.voice.isNotEmpty &&
+        voice.isNotEmpty &&
         (await acapela.availableVoices).isNotEmpty) {
-      await acapela.setVoice({'voice': voiceDb.voice});
-      await acapela.setSpeechRate(voiceDb.speechRate);
+      await acapela.setVoice({'voice': voice});
+      await acapela.setSpeechRate(speechRate);
     }
     _log.fine('Initialized $initialized');
     return acapela;
   }
 }
 
-class FlutterTtsHandler extends FlutterTts implements TtsInterface {
+class FlutterTtsHandler extends FlutterTts implements TtsHandler {
   static final Logger _log = Logger((FlutterTts).toString());
 
   static Future<FlutterTtsHandler> implementation() async {

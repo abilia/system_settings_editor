@@ -4,6 +4,7 @@ import 'package:calendar_events/calendar_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:generics/generics.dart';
+import 'package:handi/utils/tts_extension.dart';
 import 'package:sortables/sortables.dart';
 import 'package:user_files/user_files.dart';
 
@@ -51,37 +52,42 @@ class LoggedInPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 100),
-                    Center(child: Text('${authenticated.user}')),
+                    Center(child: Text('${authenticated.user}').withTts()),
                     const SizedBox(height: 100),
-                    FutureBuilder(
-                      future: context
-                          .read<ActivitiesBloc>()
-                          // ignore: discarded_futures
-                          .getActivitiesAfter(DateTime.now()),
-                      builder: (context, snapshot) {
-                        final activities = snapshot.data?.where((activity) =>
-                                activity.startTime.isAfter(DateTime.now())) ??
-                            [];
+                    Column(
+                      children: [
+                        FutureBuilder(
+                          future: context
+                              .read<ActivitiesBloc>()
+                              // ignore: discarded_futures
+                              .getActivitiesAfter(DateTime.now()),
+                          builder: (context, snapshot) {
+                            final activities = snapshot.data?.where(
+                                    (activity) => activity.startTime
+                                        .isAfter(DateTime.now())) ??
+                                [];
 
-                        return Text(
-                            'Upcoming activities: ${activities.length}');
-                      },
-                    ),
-                    Text('Generics: $generics'),
-                    Text('Sortables: $sortables'),
-                    Text('User files: $userFiles'),
+                            return Text(
+                                'Upcoming activities: ${activities.length}');
+                          },
+                        ),
+                        Text('Generics: $generics'),
+                        Text('Sortables: $sortables'),
+                        Text('User files: $userFiles'),
+                      ],
+                    ).withTts('This is pretty cool'),
                     const Spacer(),
                     OutlinedButton(
                       onPressed: () =>
                           context.read<SyncBloc>().add(const SyncAll()),
                       child: const Text('Sync'),
-                    ),
+                    ).withTts('Sync'),
                     OutlinedButton(
                       onPressed: () => context
                           .read<AuthenticationBloc>()
                           .add(const LoggedOut()),
                       child: const Text('Log out'),
-                    ),
+                    ).withTts('Log out'),
                   ],
                 ),
               ),
