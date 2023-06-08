@@ -20,9 +20,9 @@ class AuthenticationBloc
   AuthenticationBloc({
     required this.userRepository,
     required this.onLogout,
-    ListenableClient? client,
+    required ListenableClient client,
   }) : super(const AuthenticationLoading()) {
-    _clientSubscription = client?.messageStream
+    _clientSubscription = client.messageStream
         .where((event) => event == HttpMessage.unauthorized)
         .listen((event) {
       if (state is Authenticated) {

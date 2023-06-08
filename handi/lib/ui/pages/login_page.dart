@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auth/auth.dart';
 import 'package:auth/repository/user_repository.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +10,40 @@ import 'package:seagull_clock/clock_bloc.dart';
 import 'package:sqflite/sqflite.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  const LoginPage({required this.unauthenticatedState, super.key});
+
+  final Unauthenticated unauthenticatedState;
 
   @override
   Widget build(BuildContext context) {
+    final reason = unauthenticatedState.loggedOutReason;
+    if (reason != LoggedOutReason.logOut) {
+      Future(
+        () async => showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Unauthorized dialogue'),
+              content: const SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    Text('You have been logged out.'),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Ok'),
+                  onPressed: () {
+                    Navigator.of(context).maybePop();
+                  },
+                ),
+              ],
+            );
+          },
+        ),
+      );
+    }
     return BlocProvider(
       create: (context) => LoginCubit(
         authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),

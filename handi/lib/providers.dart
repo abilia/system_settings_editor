@@ -87,6 +87,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
         BlocProvider<AuthenticationBloc>(
           create: (context) => AuthenticationBloc(
             userRepository: context.read<UserRepository>(),
+            client: GetIt.I<ListenableClient>(),
             onLogout: () async => Future.wait<void>(
               [
                 DatabaseRepository.clearAll(GetIt.I<Database>()),
