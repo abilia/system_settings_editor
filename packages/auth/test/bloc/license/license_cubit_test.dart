@@ -21,6 +21,7 @@ void main() {
       authenticationBloc: AuthenticationBloc(
         userRepository: userRepository,
         onLogout: () {},
+        client: FakeListenableClient.client(),
       ),
       licenseType: LicenseType.memoplanner,
     );
