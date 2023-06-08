@@ -11,7 +11,8 @@ class DayCalendarSettingsPage extends StatelessWidget {
     final settings = context.read<MemoplannerSettingsBloc>().state;
     return BlocProvider<DayCalendarSettingsCubit>(
       create: (context) => DayCalendarSettingsCubit(
-        dayCalendarSettings: settings.dayCalendar,
+        dayAppBarSettings: settings.dayAppBar,
+        dayCalendarViewCubit: context.read<DayCalendarViewCubit>(),
         genericCubit: context.read<GenericCubit>(),
       ),
       child: DefaultTabController(

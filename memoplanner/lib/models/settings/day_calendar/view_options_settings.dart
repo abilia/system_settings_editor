@@ -1,18 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/models/all.dart';
 
-class DayCalendarViewOptionsSettings extends Equatable {
+class DayCalendarViewSettings extends Equatable {
   static const String viewOptionsTimeIntervalKey = 'view_options_time_interval',
       viewOptionsTimepillarZoomKey = 'view_options_zoom',
       viewOptionsCalendarTypeKey = 'view_options_time_view',
       viewOptionsDotsKey = 'dots_in_timepillar';
-
-  static const List<String> keys = [
-    viewOptionsTimepillarZoomKey,
-    viewOptionsTimeIntervalKey,
-    viewOptionsCalendarTypeKey,
-    viewOptionsDotsKey
-  ];
 
   final DayCalendarViewOptionsDisplaySettings display;
 
@@ -33,7 +26,7 @@ class DayCalendarViewOptionsSettings extends Equatable {
       (calendarType == DayCalendarType.oneTimepillar &&
           (display.intervalType || display.timepillarZoom || display.duration));
 
-  const DayCalendarViewOptionsSettings({
+  const DayCalendarViewSettings({
     this.display = const DayCalendarViewOptionsDisplaySettings(),
     this.dots = false,
     this.timepillarZoomIndex = 1,
@@ -41,60 +34,20 @@ class DayCalendarViewOptionsSettings extends Equatable {
     this.calendarTypeIndex = 1,
   });
 
-  factory DayCalendarViewOptionsSettings.fromSettingsMap(
-      Map<String, GenericSettingData> settings) {
-    return DayCalendarViewOptionsSettings(
-      display: DayCalendarViewOptionsDisplaySettings.fromSettingsMap(settings),
-      dots: settings.parse(viewOptionsDotsKey, false),
-      timepillarZoomIndex: settings.parse(
-        viewOptionsTimepillarZoomKey,
-        1,
-      ),
-      intervalTypeIndex: settings.parse(
-        viewOptionsTimeIntervalKey,
-        1,
-      ),
-      calendarTypeIndex: settings.parse(
-        viewOptionsCalendarTypeKey,
-        1,
-      ),
-    );
-  }
-
-  DayCalendarViewOptionsSettings copyWith({
+  DayCalendarViewSettings copyWith({
     DayCalendarViewOptionsDisplaySettings? display,
     bool? dots,
     DayCalendarType? calendarType,
     TimepillarIntervalType? intervalType,
     TimepillarZoom? timepillarZoom,
   }) =>
-      DayCalendarViewOptionsSettings(
+      DayCalendarViewSettings(
         display: display ?? this.display,
         dots: dots ?? this.dots,
         calendarTypeIndex: calendarType?.index ?? calendarTypeIndex,
         intervalTypeIndex: intervalType?.index ?? intervalTypeIndex,
         timepillarZoomIndex: timepillarZoom?.index ?? timepillarZoomIndex,
       );
-
-  List<GenericSettingData> get memoplannerSettingData => [
-        ...display.memoplannerSettingData,
-        GenericSettingData.fromData(
-          data: dots,
-          identifier: viewOptionsDotsKey,
-        ),
-        GenericSettingData.fromData(
-          data: calendarTypeIndex,
-          identifier: viewOptionsCalendarTypeKey,
-        ),
-        GenericSettingData.fromData(
-          data: intervalTypeIndex,
-          identifier: viewOptionsTimeIntervalKey,
-        ),
-        GenericSettingData.fromData(
-          data: timepillarZoomIndex,
-          identifier: viewOptionsTimepillarZoomKey,
-        ),
-      ];
 
   @override
   List<Object> get props => [

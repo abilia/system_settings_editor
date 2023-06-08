@@ -23,8 +23,8 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appBarSettings = context.select(
-        (MemoplannerSettingsBloc bloc) => bloc.state.dayCalendar.appBar);
+    final appBarSettings =
+        context.select((MemoplannerSettingsBloc bloc) => bloc.state.dayAppBar);
     final calendarSettings =
         context.select((MemoplannerSettingsBloc bloc) => bloc.state.calendar);
     final currentMinute = context.watch<ClockBloc>().state;

@@ -63,8 +63,8 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final displayEyeButton = context.select((MemoplannerSettingsBloc bloc) =>
-        bloc.state.dayCalendar.viewOptions.displayEyeButton);
+    final displayEyeButton = context
+        .select((DayCalendarViewCubit bloc) => bloc.state.displayEyeButton);
     final showAlarmOnOffSwitch = context.select(
         (MemoplannerSettingsBloc bloc) =>
             bloc.state.alarm.showAlarmOnOffSwitch);

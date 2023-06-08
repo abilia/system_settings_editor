@@ -196,5 +196,4 @@ void main() {
     verify(() => mockLoginDb.deleteLoginInfo());
     verify(() => mockUserDb.deleteUser());
   });
-
 }

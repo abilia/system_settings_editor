@@ -1,4 +1,5 @@
 export 'calendar_view/calendar_view_cubit.dart';
+export 'day_calendar_view/day_calendar_view_cubit.dart';
 export 'day_picker_bloc.dart';
 export 'inactivity_cubit.dart';
 export 'month_calendar/month_calendar_cubit.dart';

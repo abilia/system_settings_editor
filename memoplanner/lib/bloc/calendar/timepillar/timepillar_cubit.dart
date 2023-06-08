@@ -13,6 +13,7 @@ part 'timepillar_state.dart';
 class TimepillarCubit extends Cubit<TimepillarState> {
   final ClockBloc clockBloc;
   final MemoplannerSettingsBloc memoSettingsBloc;
+  final DayCalendarViewCubit dayCalendarViewCubit;
   final DayPickerBloc dayPickerBloc;
   final ActivitiesBloc activitiesBloc;
   final TimerAlarmBloc timerAlarmBloc;
@@ -25,17 +26,19 @@ class TimepillarCubit extends Cubit<TimepillarState> {
   TimepillarCubit({
     required this.clockBloc,
     required this.memoSettingsBloc,
+    required this.dayCalendarViewCubit,
     required this.dayPickerBloc,
     required this.timerAlarmBloc,
     required this.activitiesBloc,
     required this.dayPartCubit,
   }) : super(_initialEmptyState(
-          clockBloc.state,
-          dayPickerBloc.state.day,
-          memoSettingsBloc.state,
-          timerAlarmBloc.state.timers,
-          true,
-          dayPartCubit.state,
+          now: clockBloc.state,
+          selectedDay: dayPickerBloc.state.day,
+          memoplannerSettings: memoSettingsBloc.state,
+          dayCalendarViewOptionsSettings: dayCalendarViewCubit.state,
+          timers: timerAlarmBloc.state.timers,
+          showNightCalendar: true,
+          dayPart: dayPartCubit.state,
         )) {
     _streamSubscription = MergeStream([
       clockBloc.stream,
@@ -43,6 +46,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
       dayPickerBloc.stream,
       activitiesBloc.stream,
       timerAlarmBloc.stream,
+      dayCalendarViewCubit.stream,
     ]).listen(
       (streamState) async => _onTimepillarConditionsChanged(
         showNightCalendar: streamState is DayPickerState &&
@@ -59,11 +63,12 @@ class TimepillarCubit extends Cubit<TimepillarState> {
   Future<void> _onTimepillarConditionsChanged(
       {required bool showNightCalendar}) async {
     final interval = _getInterval(
-      clockBloc.state,
-      dayPickerBloc.state.day,
-      memoSettingsBloc.state,
-      showNightCalendar,
-      dayPartCubit.state,
+      now: clockBloc.state,
+      day: dayPickerBloc.state.day,
+      calendarSettings: memoSettingsBloc.state.calendar,
+      showNightCalendar: showNightCalendar,
+      dayCalendarViewOptions: dayCalendarViewCubit.state,
+      dayPart: dayPartCubit.state,
     );
     final activities = await activitiesBloc.activityRepository
         .allBetween(interval.start.onlyDays(), interval.end);
@@ -71,51 +76,56 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     if (isClosed) return;
     emit(
       _generateState(
-        clockBloc.state,
-        dayPickerBloc.state.day,
-        memoSettingsBloc.state,
-        activities,
-        timerAlarmBloc.state.timers,
-        showNightCalendar,
-        dayPartCubit.state,
+        now: clockBloc.state,
+        selectedDay: dayPickerBloc.state.day,
+        memoplannerSettings: memoSettingsBloc.state,
+        dayCalendarViewOptionsSettings: dayCalendarViewCubit.state,
+        activities: activities,
+        timers: timerAlarmBloc.state.timers,
+        showNightCalendar: showNightCalendar,
+        dayPart: dayPartCubit.state,
       ),
     );
   }
 
-  static TimepillarState _initialEmptyState(
-    DateTime now,
-    DateTime selectedDay,
-    MemoplannerSettings settings,
-    List<TimerOccasion> timers,
-    bool showNightCalendar,
-    DayPart dayPart,
-  ) {
+  static TimepillarState _initialEmptyState({
+    required DateTime now,
+    required DateTime selectedDay,
+    required MemoplannerSettings memoplannerSettings,
+    required DayCalendarViewSettings dayCalendarViewOptionsSettings,
+    required List<TimerOccasion> timers,
+    required bool showNightCalendar,
+    required DayPart dayPart,
+  }) {
     return _generateState(
-      now,
-      selectedDay,
-      settings,
-      [],
-      timers,
-      showNightCalendar,
-      dayPart,
+      now: now,
+      selectedDay: selectedDay,
+      memoplannerSettings: memoplannerSettings,
+      dayCalendarViewOptionsSettings: dayCalendarViewOptionsSettings,
+      activities: [],
+      timers: timers,
+      showNightCalendar: showNightCalendar,
+      dayPart: dayPart,
     );
   }
 
-  static TimepillarState _generateState(
-    DateTime now,
-    DateTime selectedDay,
-    MemoplannerSettings settings,
-    Iterable<Activity> activities,
-    List<TimerOccasion> timers,
-    bool showNightCalendar,
-    DayPart dayPart,
-  ) {
+  static TimepillarState _generateState({
+    required DateTime now,
+    required DateTime selectedDay,
+    required MemoplannerSettings memoplannerSettings,
+    required DayCalendarViewSettings dayCalendarViewOptionsSettings,
+    required Iterable<Activity> activities,
+    required List<TimerOccasion> timers,
+    required bool showNightCalendar,
+    required DayPart dayPart,
+  }) {
     final interval = _getInterval(
-      now,
-      selectedDay,
-      settings,
-      showNightCalendar,
-      dayPart,
+      now: now,
+      day: selectedDay,
+      calendarSettings: memoplannerSettings.calendar,
+      dayCalendarViewOptions: dayCalendarViewOptionsSettings,
+      showNightCalendar: showNightCalendar,
+      dayPart: dayPart,
     );
     final occasion = interval.occasion(now);
     return TimepillarState(
@@ -128,7 +138,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
       ),
       calendarType: _getCalendarType(
         showNightCalendar,
-        settings.dayCalendar.viewOptions.calendarType,
+        dayCalendarViewOptionsSettings.calendarType,
         selectedDay,
         now,
         dayPart,
@@ -139,16 +149,17 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     );
   }
 
-  static TimepillarInterval _getInterval(
-    DateTime now,
-    DateTime day,
-    MemoplannerSettings settings,
-    bool showNightCalendar,
-    DayPart dayPart,
-  ) {
+  static TimepillarInterval _getInterval({
+    required DateTime now,
+    required DateTime day,
+    required GeneralCalendarSettings calendarSettings,
+    required DayCalendarViewSettings dayCalendarViewOptions,
+    required bool showNightCalendar,
+    required DayPart dayPart,
+  }) {
     final isToday = day.isAtSameDay(now);
-    final twoTimepillars = settings.dayCalendar.viewOptions.calendarType ==
-        DayCalendarType.twoTimepillars;
+    final twoTimepillars =
+        dayCalendarViewOptions.calendarType == DayCalendarType.twoTimepillars;
 
     if (twoTimepillars) {
       final shouldShowNightCalendar =
@@ -158,21 +169,21 @@ class TimepillarCubit extends Cubit<TimepillarState> {
         return _todayTimepillarIntervalFromType(
           now,
           TimepillarIntervalType.interval,
-          settings.calendar.dayParts,
+          calendarSettings.dayParts,
           dayPart,
         );
       }
 
       return TimepillarInterval.dayAndNight(
-        day.add(settings.calendar.dayParts.morning),
+        day.add(calendarSettings.dayParts.morning),
       );
     }
 
     if (showNightCalendar && isToday) {
       return _todayTimepillarIntervalFromType(
         now,
-        settings.dayCalendar.viewOptions.intervalType,
-        settings.calendar.dayParts,
+        dayCalendarViewOptions.intervalType,
+        calendarSettings.dayParts,
         dayPart,
       );
     }
@@ -261,7 +272,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
 
   bool get _shouldGoToNightCalendar {
     final settings = memoSettingsBloc.state;
-    final viewOptions = settings.dayCalendar.viewOptions;
+    final viewOptions = dayCalendarViewCubit.state;
     final isToday = dayPickerBloc.state.isToday;
     final isList = viewOptions.calendarType == DayCalendarType.list;
     final showingNightCalendar = state.showNightCalendar;
@@ -279,7 +290,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
 
   bool _shouldStepDay({required bool forward}) {
     final settings = memoSettingsBloc.state;
-    final viewOptions = settings.dayCalendar.viewOptions;
+    final viewOptions = dayCalendarViewCubit.state;
 
     if (viewOptions.calendarType == DayCalendarType.list) {
       return true;

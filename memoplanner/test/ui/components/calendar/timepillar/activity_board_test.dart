@@ -24,6 +24,7 @@ void main() {
   final endTime = startTime.add(duration);
   final translate = Locales.language.values.first;
 
+  late MockDayCalendarViewCubit mockDayCalendarViewCubit;
   late MockMemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
   setUpAll(() {
@@ -35,24 +36,26 @@ void main() {
 
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state)
-        .thenReturn(MemoplannerSettingsLoaded(const MemoplannerSettings(
-            dayCalendar: DayCalendarSettings(
-                viewOptions: DayCalendarViewOptionsSettings(
-      dots: true,
-    )))));
+        .thenReturn(MemoplannerSettingsLoaded(const MemoplannerSettings()));
 
     when(() => mockMemoplannerSettingsBloc.stream).thenAnswer(
       (_) => Stream.fromIterable(
         [
           MemoplannerSettingsLoaded(
-            const MemoplannerSettings(
-              dayCalendar: DayCalendarSettings(
-                viewOptions: DayCalendarViewOptionsSettings(
-                  dots: true,
-                ),
-              ),
-            ),
+            const MemoplannerSettings(),
           )
+        ],
+      ),
+    );
+
+    mockDayCalendarViewCubit = MockDayCalendarViewCubit();
+    when(() => mockDayCalendarViewCubit.state)
+        .thenReturn(const DayCalendarViewSettings(dots: true));
+
+    when(() => mockDayCalendarViewCubit.stream).thenAnswer(
+      (_) => Stream.fromIterable(
+        [
+          const DayCalendarViewSettings(dots: true),
         ],
       ),
     );
@@ -112,6 +115,9 @@ void main() {
             BlocProvider<MemoplannerSettingsBloc>(
               create: (context) => mockMemoplannerSettingsBloc,
             ),
+            BlocProvider<DayCalendarViewCubit>(
+              create: (context) => mockDayCalendarViewCubit,
+            ),
             BlocProvider<TimepillarCubit>(
               create: (context) => mocktimepillarCubit,
             ),
@@ -140,8 +146,7 @@ void main() {
                     measures: measures,
                     topMargin: layout.templates.l1.top,
                     bottomMargin: layout.templates.l1.bottom,
-                    showCategoryColor: mockMemoplannerSettingsBloc
-                        .state.calendar.categories.showColors,
+                    showCategoryColor: true,
                     nightMode: false,
                   ),
                   timepillarSide: TimepillarSide.right,
@@ -556,8 +561,7 @@ void main() {
           measures: TimepillarMeasures(interval, 1),
           topMargin: layout.templates.l1.top,
           bottomMargin: layout.templates.l1.bottom,
-          showCategoryColor:
-              mockMemoplannerSettingsBloc.state.calendar.categories.showColors,
+          showCategoryColor: true,
           nightMode: false,
         ),
         timepillarSide: TimepillarSide.right,
@@ -621,8 +625,7 @@ void main() {
               measures: TimepillarMeasures(interval, 1),
               topMargin: layout.templates.l1.top,
               bottomMargin: layout.templates.l1.bottom,
-              showCategoryColor: mockMemoplannerSettingsBloc
-                  .state.calendar.categories.showColors,
+              showCategoryColor: true,
               nightMode: false,
             ),
             timelineOffset: 0,
@@ -804,12 +807,9 @@ void main() {
 
     testWidgets('No side dots when setting is flarp',
         (WidgetTester tester) async {
-      when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(MemoplannerSettingsLoaded(const MemoplannerSettings(
-              dayCalendar: DayCalendarSettings(
-                  viewOptions: DayCalendarViewOptionsSettings(
-        dots: false,
-      )))));
+      mockDayCalendarViewCubit = MockDayCalendarViewCubit();
+      when(() => mockDayCalendarViewCubit.state)
+          .thenReturn(const DayCalendarViewSettings(dots: false));
 
       await tester.pumpWidget(
         wrap(

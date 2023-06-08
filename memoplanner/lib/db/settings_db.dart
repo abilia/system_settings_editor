@@ -41,10 +41,6 @@ class SettingsDb {
 
   bool get leftCategoryExpanded => _tryGetBool(_categoryLeftExpanded, true);
 
-  @Deprecated('To be Remove on in 4.3')
-  bool get keepScreenOnWhileChargingSet =>
-      preferences.getBool(_keepScreenOnWhileChargingKey) != null;
-
   bool get keepScreenOnWhileCharging =>
       _tryGetBool(_keepScreenOnWhileChargingKey, false);
 

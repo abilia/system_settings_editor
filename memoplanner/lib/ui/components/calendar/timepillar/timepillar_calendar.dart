@@ -25,9 +25,8 @@ class TimepillarCalendar extends StatelessWidget {
     if (timepillarState.calendarType == DayCalendarType.oneTimepillar) {
       final isNight = context.watch<NightMode>().state;
       final notDayAndNightTimepillar = context.select(
-        (MemoplannerSettingsBloc settings) =>
-            settings.state.dayCalendar.viewOptions.intervalType !=
-            TimepillarIntervalType.dayAndNight,
+        (DayCalendarViewCubit cubit) =>
+            cubit.state.intervalType != TimepillarIntervalType.dayAndNight,
       );
       final nightMode = isNight && notDayAndNightTimepillar;
 
