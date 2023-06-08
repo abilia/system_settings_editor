@@ -27,9 +27,6 @@ class FakeSettingsDb extends Fake implements SettingsDb {
   @override
   Future setKeepScreenOnWhileCharging(bool keepScreenOnWhileCharging) async {}
   @override
-  bool get keepScreenOnWhileChargingSet => false;
-
-  @override
   String language = 'en';
 
   @override

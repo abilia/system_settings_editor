@@ -1,12 +1,19 @@
-import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/ui/all.dart';
+import 'package:auth/auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:repository_base/end_point.dart';
+import 'package:seagull_analytics/seagull_analytics.dart';
 import 'package:seagull_logging/seagull_logging.dart';
 
 class BlocLoggingObserver extends BlocObserver {
-  BlocLoggingObserver(this.analytics);
+  BlocLoggingObserver(
+    this.analytics, {
+    required this.isRelease,
+    this.localeCondition,
+  });
 
   final SeagullAnalytics analytics;
+  final bool isRelease;
+  final Function(BlocBase, Change)? localeCondition;
   final _loggers = <BlocBase, Logger>{};
 
   Logger _getLog(BlocBase bloc) =>
@@ -95,7 +102,7 @@ class BlocLoggingObserver extends BlocObserver {
   }
 
   Future<void> onChangeAnalytics(BlocBase bloc, Change change) async {
-    if (bloc is LocaleCubit && change is Change<Locale>) {
+    if (localeCondition?.call(bloc, change) ?? false) {
       analytics.setLocale(change.nextState);
     }
     if (bloc is BaseUrlCubit && change is Change<String>) {
@@ -105,7 +112,7 @@ class BlocLoggingObserver extends BlocObserver {
 
   Future<void> _backendChanged(Change<String> change) async {
     analytics.setBackend(backendName(change.nextState));
-    if (!Config.release) return;
+    if (isRelease) return;
     if (change.nextState == prod) {
       // Changed from sandbox to prod
       await analytics.changeMixpanelProject(MixpanelProject.memoProd);

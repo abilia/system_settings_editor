@@ -4,6 +4,7 @@ import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:seagull_clock/ticker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../fakes/all.dart';
 import '../../../../../mocks/mocks.dart';
@@ -15,17 +16,13 @@ void main() {
 
   Iterable<Generic> generics;
   late MockGenericDb genericDb;
-  final timepillarGeneric = Generic.createNew<GenericSettingData>(
-    data: GenericSettingData.fromData(
-        data: DayCalendarType.oneTimepillar.index,
-        identifier: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
-  );
+  late SharedPreferences fakeSharedPreferences;
 
   setUp(() async {
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleNotificationsIsolated = noAlarmScheduler;
-    generics = [timepillarGeneric];
+    generics = [];
 
     genericDb = MockGenericDb();
     when(() => genericDb.getAllNonDeletedMaxRevision())
@@ -34,8 +31,13 @@ void main() {
     when(() => genericDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
+    fakeSharedPreferences = await FakeSharedPreferences.getInstance(extras: {
+      DayCalendarViewSettings.viewOptionsCalendarTypeKey:
+          DayCalendarType.oneTimepillar.index,
+    });
+
     GetItInitializer()
-      ..sharedPreferences = await FakeSharedPreferences.getInstance()
+      ..sharedPreferences = fakeSharedPreferences
       ..ticker = Ticker.fake(initialTime: initialTime)
       ..client = Fakes.client(genericResponse: () => generics)
       ..database = FakeDatabase()
@@ -321,7 +323,6 @@ void main() {
             identifier: TimepillarSettings.setting12hTimeFormatTimelineKey,
           ),
         ),
-        timepillarGeneric,
       ];
       await tester.pumpApp(use24: true);
       expect(find.text('1'), findsOneWidget);
@@ -338,7 +339,6 @@ void main() {
             identifier: TimepillarSettings.settingTimePillarTimelineKey,
           ),
         ),
-        timepillarGeneric,
       ];
       await tester.pumpApp(use24: false);
       expect(
@@ -355,7 +355,6 @@ void main() {
             identifier: TimepillarSettings.settingDisplayTimelineKey,
           ),
         ),
-        timepillarGeneric,
       ];
       await tester.pumpApp(use24: false);
       expect(find.byType(Timeline), findsNothing);
@@ -369,7 +368,6 @@ void main() {
             identifier: TimepillarSettings.settingDisplayHourLinesKey,
           ),
         ),
-        timepillarGeneric,
       ];
       await tester.pumpApp(use24: false);
       expect(find.byType(HourLines), findsWidgets);

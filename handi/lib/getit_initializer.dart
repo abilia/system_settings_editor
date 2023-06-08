@@ -55,7 +55,7 @@ Future<void> initGetItWith({
     ..registerSingleton(Ticker(initialTime: DateTime.now()))
     ..registerSingleton(MultipartRequestBuilder())
     ..registerSingleton(packageInfo ?? await PackageInfo.fromPlatform())
-    ..registerSingleton(FileStorage(directory.path))
+    ..registerSingleton(FileStorage.inDirectory(directory.path))
     ..registerSingleton(activityDb ?? ActivityDb(database))
     ..registerSingleton(sortableDb ?? SortableDb(database))
     ..registerSingleton(genericDb ?? GenericDb(database))

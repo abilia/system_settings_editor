@@ -32,8 +32,8 @@ class ActivityTimepillarCard extends TimepillarCard {
     final dotHeight = cardPosition.dots * measures.dotDistance;
     final right = TimepillarSide.right == timepillarSide;
     final timepillarInterval = measures.interval;
-    final dotsInTimepillar = context.select((MemoplannerSettingsBloc bloc) =>
-        bloc.state.dayCalendar.viewOptions.dots);
+    final dotsInTimepillar =
+        context.select((DayCalendarViewCubit cubit) => cubit.state.dots);
     final showCategoryColor = context.select((MemoplannerSettingsBloc bloc) =>
         bloc.state.calendar.categories.showColors);
     final borderWidth = (decoration.padding.vertical) / 2;

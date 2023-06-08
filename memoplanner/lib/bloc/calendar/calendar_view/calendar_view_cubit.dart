@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
 
-part 'calendar_view_event.dart';
 part 'calendar_view_state.dart';
 
 class CalendarViewCubit extends Cubit<CalendarViewState> {

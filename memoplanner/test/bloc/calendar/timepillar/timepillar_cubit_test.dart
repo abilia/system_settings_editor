@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -15,12 +16,13 @@ void main() {
   late ActivityRepository mockActivityRepository;
   late ActivitiesBloc activitiesBloc;
   late DayPickerBloc dayPickerBloc;
+  late DayCalendarViewCubit dayCalendarViewCubit;
   late MemoplannerSettingsBloc memoplannerSettingBloc;
   late TimerAlarmBloc timerAlarmBloc;
   late StreamController<DateTime> clockStream;
   final now = DateTime(2022, 05, 12, 13, 15);
 
-  setUp(() {
+  setUp(() async {
     clockStream = StreamController();
     clockBloc = ClockBloc(clockStream.stream, initialTime: now);
     activitiesBloc = MockActivitiesBloc();
@@ -28,6 +30,10 @@ void main() {
     when(() => activitiesBloc.activityRepository)
         .thenReturn(mockActivityRepository);
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
+    dayCalendarViewCubit = DayCalendarViewCubit(
+      DayCalendarViewDb(await FakeSharedPreferences.getInstance()),
+      FakeGenericCubit(),
+    );
     memoplannerSettingBloc = MockMemoplannerSettingBloc();
     when(() => memoplannerSettingBloc.state).thenReturn(
       MemoplannerSettingsLoaded(
@@ -35,11 +41,6 @@ void main() {
           calendar: GeneralCalendarSettings(
             categories: CategoriesSettings(
               show: false,
-            ),
-          ),
-          dayCalendar: DayCalendarSettings(
-            viewOptions: DayCalendarViewOptionsSettings(
-              calendarTypeIndex: 1,
             ),
           ),
         ),
@@ -68,6 +69,7 @@ void main() {
         activitiesBloc: activitiesBloc,
         dayPickerBloc: dayPickerBloc,
         memoSettingsBloc: memoplannerSettingBloc,
+        dayCalendarViewCubit: dayCalendarViewCubit,
         timerAlarmBloc: timerAlarmBloc,
         dayPartCubit: FakeDayPartCubit())
       ..initialize(),
@@ -109,6 +111,7 @@ void main() {
       activitiesBloc: activitiesBloc,
       dayPickerBloc: dayPickerBloc,
       memoSettingsBloc: memoplannerSettingBloc,
+      dayCalendarViewCubit: dayCalendarViewCubit,
       timerAlarmBloc: timerAlarmBloc,
       dayPartCubit: FakeDayPartCubit(),
     )..initialize(),

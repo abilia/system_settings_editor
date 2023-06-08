@@ -29,8 +29,8 @@ class EyeButtonDay extends StatelessWidget {
   Widget build(BuildContext context) {
     return _EyeButton(
       onPressed: () async {
-        final settingsBloc = context.read<MemoplannerSettingsBloc>();
-        final viewOptions = settingsBloc.state.dayCalendar.viewOptions;
+        final dayCalendarViewCubit = context.read<DayCalendarViewCubit>();
+        final viewOptions = dayCalendarViewCubit.state;
         final settings = await showViewDialog<EyeButtonSettings?>(
             context: context,
             builder: (context) => EyeButtonDayDialog(
@@ -46,20 +46,14 @@ class EyeButtonDay extends StatelessWidget {
               'currentZoom': viewOptions.timepillarZoom.name,
             }));
         if (settings != null) {
-          if (viewOptions.calendarType != settings.calendarType) {
-            settingsBloc
-                .add(DayCalendarTypeUpdatedEvent(settings.calendarType));
-          }
-          if (viewOptions.dots != settings.dotsInTimepillar) {
-            settingsBloc
-                .add(DotsInTimepillarUpdatedEvent(settings.dotsInTimepillar));
-          }
-          if (viewOptions.intervalType != settings.intervalType) {
-            settingsBloc.add(IntervalTypeUpdatedEvent(settings.intervalType));
-          }
-          if (viewOptions.timepillarZoom != settings.timepillarZoom) {
-            settingsBloc.add(ZoomSettingUpdatedEvent(settings.timepillarZoom));
-          }
+          await dayCalendarViewCubit.setDayCalendarViewOptionsSettings(
+            DayCalendarViewSettings(
+              dots: settings.dotsInTimepillar,
+              calendarTypeIndex: settings.calendarType.index,
+              intervalTypeIndex: settings.intervalType.index,
+              timepillarZoomIndex: settings.timepillarZoom.index,
+            ),
+          );
         }
       },
     );

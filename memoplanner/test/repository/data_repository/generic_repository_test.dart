@@ -46,7 +46,7 @@ void main() {
       unsynced = Generic.createNew<GenericSettingData>(
         data: GenericSettingData.fromData(
           data: false,
-          identifier: DayCalendarViewOptionsSettings.viewOptionsDotsKey,
+          identifier: AlarmSettings.showOngoingActivityInFullScreenKey,
         ),
       );
   final oneSyncOneUnsync = [synced, unsynced];
@@ -172,16 +172,14 @@ void main() {
       final data2 = Generic.createNew<GenericSettingData>(
         data: GenericSettingData.fromData(
           data: 200,
-          identifier:
-              DayCalendarViewOptionsSettings.viewOptionsTimepillarZoomKey,
+          identifier: AlarmSettings.alarmDurationKey,
         ),
       );
       await genericRepository.db.insert([
         Generic.createNew<GenericSettingData>(
           data: GenericSettingData.fromData(
             data: 100,
-            identifier:
-                DayCalendarViewOptionsSettings.viewOptionsTimepillarZoomKey,
+            identifier: AlarmSettings.alarmDurationKey,
           ),
         ).wrapWithDbModel(revision: 1) as DbModel<Generic<GenericData>>,
         data2.wrapWithDbModel(revision: 2) as DbModel<Generic<GenericData>>,
@@ -191,8 +189,7 @@ void main() {
       final data3 = data2.copyWithNewData(
         newData: GenericSettingData.fromData(
           data: 300,
-          identifier:
-              DayCalendarViewOptionsSettings.viewOptionsTimepillarZoomKey,
+          identifier: AlarmSettings.alarmDurationKey,
         ),
       );
       final allMaxRevisionPre = await genericDb.getAllNonDeletedMaxRevision();

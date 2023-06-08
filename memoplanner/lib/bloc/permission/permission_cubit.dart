@@ -41,6 +41,7 @@ class PermissionCubit extends Cubit<PermissionState> with Info {
       Permission.microphone,
       if (Config.isMPGO && !Platform.isIOS) ...{
         Permission.systemAlertWindow,
+        Permission.ignoreBatteryOptimizations,
       },
       if (!Platform.isAndroid) ...{
         Permission.photos,

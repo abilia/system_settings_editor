@@ -255,11 +255,18 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 context.read<ClockBloc>(),
               ),
             ),
+            BlocProvider<DayCalendarViewCubit>(
+              create: (context) => DayCalendarViewCubit(
+                GetIt.I<DayCalendarViewDb>(),
+                context.read<GenericCubit>(),
+              ),
+            ),
             BlocProvider<TimepillarCubit>(
               create: (context) => TimepillarCubit(
                 clockBloc: context.read<ClockBloc>(),
                 dayPickerBloc: context.read<DayPickerBloc>(),
                 memoSettingsBloc: context.read<MemoplannerSettingsBloc>(),
+                dayCalendarViewCubit: context.read<DayCalendarViewCubit>(),
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 timerAlarmBloc: context.read<TimerAlarmBloc>(),
                 dayPartCubit: context.read<DayPartCubit>(),
@@ -268,14 +275,13 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             BlocProvider<TimepillarMeasuresCubit>(
               create: (context) => TimepillarMeasuresCubit(
                 timepillarCubit: context.read<TimepillarCubit>(),
-                memoplannerSettingsBloc:
-                    context.read<MemoplannerSettingsBloc>(),
+                dayCalendarViewCubit: context.read<DayCalendarViewCubit>(),
               ),
             ),
             BlocProvider<NightMode>(
               create: (context) => NightMode(
                 dayPart: context.read<DayPartCubit>(),
-                settings: context.read<MemoplannerSettingsBloc>(),
+                dayCalendarViewCubit: context.read<DayCalendarViewCubit>(),
                 picker: context.read<DayPickerBloc>(),
                 timepillarCubit: context.read<TimepillarCubit>(),
               ),

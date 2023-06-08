@@ -10,7 +10,7 @@ import 'package:memoplanner/main.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import '../../fakes/all.dart';
@@ -63,6 +63,8 @@ void main() {
   late MockGenericDb mockGenericDb;
   late MockTimerDb mockTimerDb;
   late MockSettingsDb mockSettingsDb;
+  late SharedPreferences fakeSharedPreferences;
+
   TimerResponse timerResponse = () => [];
   GenericResponse genericResponse = () => [];
   final initialTime = DateTime(2020, 08, 05, 14, 10, 00);
@@ -78,6 +80,7 @@ void main() {
     tz.initializeTimeZones();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleNotificationsIsolated = noAlarmScheduler;
+    fakeSharedPreferences = await FakeSharedPreferences.getInstance();
 
     final mockFirebasePushService = MockFirebasePushService();
     when(() => mockFirebasePushService.initPushToken())
@@ -118,11 +121,9 @@ void main() {
         .thenAnswer((_) => Future.value());
     when(() => mockSettingsDb.alwaysUse24HourFormat).thenReturn(true);
     when(() => mockSettingsDb.keepScreenOnWhileCharging).thenReturn(false);
-    // ignore: deprecated_member_use_from_same_package
-    when(() => mockSettingsDb.keepScreenOnWhileChargingSet).thenReturn(true);
 
     GetItInitializer()
-      ..sharedPreferences = await FakeSharedPreferences.getInstance()
+      ..sharedPreferences = fakeSharedPreferences
       ..activityDb = mockActivityDb
       ..ticker = Ticker.fake(initialTime: initialTime)
       ..fireBasePushService = mockFirebasePushService
@@ -320,7 +321,7 @@ void main() {
     final timepillarGeneric = Generic.createNew<GenericSettingData>(
       data: GenericSettingData.fromData(
         data: DayCalendarType.oneTimepillar.index,
-        identifier: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey,
+        identifier: DayCalendarViewSettings.viewOptionsCalendarTypeKey,
       ),
     );
 
@@ -354,12 +355,10 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.ok));
       await tester.pumpAndSettle();
 
-      verifyUnsyncedGenericMP(
-        tester,
-        mockGenericDb,
-        key: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey,
-        matcher: DayCalendarType.list.index,
-      );
+      expect(
+          fakeSharedPreferences
+              .getInt(DayCalendarViewSettings.viewOptionsCalendarTypeKey),
+          DayCalendarType.list.index);
     });
 
     group('start calendar', () {
@@ -652,14 +651,13 @@ void main() {
     group('dayCaptionShowDayButtons settings', () {
       testWidgets('show next/previous day buttons',
           (WidgetTester tester) async {
-        when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(MemoplannerSettingsLoaded(
-          const MemoplannerSettings(
-            dayCalendar: DayCalendarSettings(
-              appBar: AppBarSettings(showBrowseButtons: true),
+        when(() => memoplannerSettingBlocMock.state).thenReturn(
+          MemoplannerSettingsLoaded(
+            const MemoplannerSettings(
+              dayAppBar: DayAppBarSettings(showBrowseButtons: true),
             ),
           ),
-        ));
+        );
         await tester.pumpWidget(wrapWithMaterialApp(
           const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
@@ -675,14 +673,13 @@ void main() {
 
       testWidgets('do not show next/previous day buttons',
           (WidgetTester tester) async {
-        when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(MemoplannerSettingsLoaded(
-          const MemoplannerSettings(
-            dayCalendar: DayCalendarSettings(
-              appBar: AppBarSettings(showBrowseButtons: false),
+        when(() => memoplannerSettingBlocMock.state).thenReturn(
+          MemoplannerSettingsLoaded(
+            const MemoplannerSettings(
+              dayAppBar: DayAppBarSettings(showBrowseButtons: false),
             ),
           ),
-        ));
+        );
         await tester.pumpWidget(wrapWithMaterialApp(
           const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
@@ -700,19 +697,17 @@ void main() {
     group('calendarActivityTypeShowTypes setting', () {
       testWidgets('Timepillar is left when no categories',
           (WidgetTester tester) async {
-        when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(MemoplannerSettingsLoaded(
-          const MemoplannerSettings(
-            calendar: GeneralCalendarSettings(
-              categories: CategoriesSettings(show: false),
-            ),
-            dayCalendar: DayCalendarSettings(
-              viewOptions: DayCalendarViewOptionsSettings(
-                calendarTypeIndex: 1,
+        fakeSharedPreferences.setInt(
+            DayCalendarViewSettings.viewOptionsCalendarTypeKey, 1);
+        when(() => memoplannerSettingBlocMock.state).thenReturn(
+          MemoplannerSettingsLoaded(
+            const MemoplannerSettings(
+              calendar: GeneralCalendarSettings(
+                categories: CategoriesSettings(show: false),
               ),
             ),
           ),
-        ));
+        );
         await tester.pumpWidget(wrapWithMaterialApp(
           const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
@@ -727,16 +722,13 @@ void main() {
       testWidgets(
           'Center of timepillar is center of page when categories are on',
           (WidgetTester tester) async {
+        fakeSharedPreferences.setInt(
+            DayCalendarViewSettings.viewOptionsCalendarTypeKey, 1);
         when(() => memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
           const MemoplannerSettings(
             calendar: GeneralCalendarSettings(
               categories: CategoriesSettings(show: true),
-            ),
-            dayCalendar: DayCalendarSettings(
-              viewOptions: DayCalendarViewOptionsSettings(
-                calendarTypeIndex: 1,
-              ),
             ),
           ),
         ));

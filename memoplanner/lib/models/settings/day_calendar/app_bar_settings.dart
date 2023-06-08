@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/models/all.dart';
 
-class AppBarSettings extends Equatable {
+class DayAppBarSettings extends Equatable {
   final bool showBrowseButtons, showWeekday, showDayPeriod, showDate, showClock;
 
-  const AppBarSettings({
+  const DayAppBarSettings({
     this.showBrowseButtons = true,
     this.showWeekday = true,
     this.showDayPeriod = true,
@@ -22,9 +22,9 @@ class AppBarSettings extends Equatable {
   bool get displayDayCalendarAppBar =>
       showWeekday || showDayPeriod || showDate || showClock;
 
-  factory AppBarSettings.fromSettingsMap(
+  factory DayAppBarSettings.fromSettingsMap(
       Map<String, GenericSettingData> settings) {
-    return AppBarSettings(
+    return DayAppBarSettings(
       showBrowseButtons: settings.getBool(
         dayCaptionShowDayButtonsKey,
       ),
@@ -43,14 +43,14 @@ class AppBarSettings extends Equatable {
     );
   }
 
-  AppBarSettings copyWith({
+  DayAppBarSettings copyWith({
     bool? showBrowseButtons,
     bool? showWeekday,
     bool? showDayPeriod,
     bool? showDate,
     bool? showClock,
   }) =>
-      AppBarSettings(
+      DayAppBarSettings(
         showBrowseButtons: showBrowseButtons ?? this.showBrowseButtons,
         showWeekday: showWeekday ?? this.showWeekday,
         showDayPeriod: showDayPeriod ?? this.showDayPeriod,
