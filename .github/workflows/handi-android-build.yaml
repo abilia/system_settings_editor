@@ -5,12 +5,13 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-      - 'memoplanner/**'
-      - 'handi/ios/**'
-      - '**/test*/**'
-      - '**/*.md'
-      - '**/*.yaml'
+    paths:
+      - 'handi/**'
+      - '!handi/ios/**'
+      - 'packages/**'
+      - '!**/test*/**'
+      - '!**.md'
+      - '!**.yaml'
 jobs:
   analyze_and_test_packages:
     uses: ./.github/workflows/packages-analyze.yaml

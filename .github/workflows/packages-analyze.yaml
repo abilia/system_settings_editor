@@ -7,11 +7,10 @@ on:
     branches:
       - master
       - release*
-    paths-ignore:
-      - 'memoplanner/**'
-      - 'handi/**'
-      - '**/*.md'
-      - '**/*.yaml'
+    paths:
+      - 'packages/**'
+      - '!**/*.md'
+      - '!**/*.yaml'
 
 jobs:
   collect_analyze:

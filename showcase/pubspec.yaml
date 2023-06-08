@@ -1,0 +1,24 @@
+name: showcase
+description: A showcase app for UI components
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  ui:
+    path: ../packages/ui
+  widgetbook: ^3.0.0-rc.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  seagull_lints:
+    path: ../packages/seagull_lints
+
+flutter:
+  uses-material-design: true

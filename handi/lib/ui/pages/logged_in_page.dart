@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:generics/generics.dart';
 import 'package:sortables/sortables.dart';
+import 'package:ui/buttons/link_button.dart';
 import 'package:user_files/user_files.dart';
 
 class LoggedInPage extends StatelessWidget {
@@ -66,16 +67,16 @@ class LoggedInPage extends StatelessWidget {
                     Text('Sortables: $sortables'),
                     Text('User files: $userFiles'),
                     const Spacer(),
-                    OutlinedButton(
+                    LinkButton(
                       onPressed: () =>
                           context.read<SyncBloc>().add(const SyncAll()),
-                      child: const Text('Sync'),
+                      title: 'Sync',
                     ),
-                    OutlinedButton(
+                    LinkButton(
                       onPressed: () => context
                           .read<AuthenticationBloc>()
                           .add(const LoggedOut()),
-                      child: const Text('Log out'),
+                      title: 'Log out',
                     ),
                   ],
                 ),

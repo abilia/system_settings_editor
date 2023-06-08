@@ -44,6 +44,8 @@ dependencies:
     path: ../packages/sortables
   sqflite: ^2.2.5
   sqflite_common_ffi: ^2.2.5
+  ui:
+    path: ../packages/ui
   user_files:
     path: ../packages/user_files
 
