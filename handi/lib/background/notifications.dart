@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:calendar_events/calendar_events.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logging/logging.dart';
 import 'package:utils/utils.dart';
@@ -19,14 +18,14 @@ Future<void> initializeNotificationPlugin() async {
         requestAlertPermission: false,
       ),
     ),
-    onDidReceiveNotificationResponse: (notificationResponse) {
-      _log.finer(notificationResponse);
-    },
+    onDidReceiveNotificationResponse: (notificationResponse) => _log.finer(
+      'clicked on notification, payload: {notificationResponse.payload}',
+    ),
   );
   _log.finer('notification plugin initialized');
 }
 
-Future cancelPendingNotifications() async {
+Future cancelAllPendingNotifications() async {
   final pendingNotifications =
       await FlutterLocalNotificationsPlugin().pendingNotificationRequests();
   for (var notification in pendingNotifications) {
@@ -35,25 +34,20 @@ Future cancelPendingNotifications() async {
 }
 
 Future scheduleActivityNotifications(Iterable<Activity> activities) async {
-  await cancelPendingNotifications();
+  await cancelAllPendingNotifications();
   _log.fine('scheduling ${activities.length} notifications...');
+  var scheduled = 0;
   for (final activity in activities) {
-    await _scheduleActivityNotification(activity);
+    if (await _scheduleActivityNotification(activity)) scheduled++;
   }
+  _log.fine('$scheduled notifications scheduled');
 }
 
 Future<bool> _scheduleActivityNotification(Activity activity) async {
   final title = activity.title;
-
-  final and = defaultTargetPlatform == TargetPlatform.android
-      ? _androidNotificationDetails(activity)
-      : null;
-
-  final iOS = defaultTargetPlatform == TargetPlatform.iOS
-      ? _iosNotificationDetails(activity)
-      : null;
   final startTime = TZDateTime.from(
       activity.startTime, tryGetLocation(activity.timezone, log: _log));
+
   if (startTime.isBefore(DateTime.now())) return false;
 
   try {
@@ -63,7 +57,10 @@ Future<bool> _scheduleActivityNotification(Activity activity) async {
       title,
       null,
       startTime,
-      NotificationDetails(android: and, iOS: iOS),
+      NotificationDetails(
+        android: _androidNotificationDetails(activity),
+        iOS: _iosNotificationDetails(activity),
+      ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.wallClockTime,

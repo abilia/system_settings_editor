@@ -9,7 +9,6 @@ import 'package:handi/listeners/top_level_listener.dart';
 import 'package:handi/providers.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
 import 'package:seagull_logging/seagull_logging.dart';
-import 'package:logging/logging.dart';
 import 'package:utils/utils.dart';
 
 final _log = Logger('main');

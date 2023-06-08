@@ -12,14 +12,16 @@ import 'package:rxdart/rxdart.dart';
 
 class NotificationEvent {}
 
-class NotificationBloc extends Bloc<NotificationEvent, String> {
+class NotificationState {}
+
+class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   NotificationBloc({
     required this.activityRepository,
     required this.timerDb,
     required this.settingsDb,
     required this.memoplannerSettingBloc,
     required Duration scheduleNotificationsDelay,
-  }) : super('init') {
+  }) : super(NotificationState()) {
     on<NotificationEvent>(
       (event, emit) async => _scheduleNotifications(),
       transformer: _debounceTime(scheduleNotificationsDelay),

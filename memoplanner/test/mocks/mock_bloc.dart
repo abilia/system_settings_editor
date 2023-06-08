@@ -32,7 +32,7 @@ class MockTimepillarCubit extends MockCubit<TimepillarState>
 class MockDayCalendarViewCubit extends MockCubit<DayCalendarViewSettings>
     implements DayCalendarViewCubit {}
 
-class MockNotificationBloc extends MockCubit<String>
+class MockNotificationBloc extends MockCubit<NotificationState>
     implements NotificationBloc {}
 
 class MockTimepillarMeasuresCubit extends MockCubit<TimepillarMeasures>
