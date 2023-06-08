@@ -954,6 +954,8 @@ abstract class Translated {
   final String allowAccessMicrophoneBody =
       'Allow access to microphone to be able to record speech from the device';
 
+  final String ignoreBatteryOptimizations = 'Ignore battery optimizations';
+
   final String about = 'About';
 
   final String aboutMemoplanner = 'About';
@@ -2444,6 +2446,9 @@ class SV extends Translated {
   @override
   final String allowAccessMicrophoneBody =
       'Tillåt åtkomst till mikrofon för att kunna spela in tal från enheten';
+
+  @override
+  final String ignoreBatteryOptimizations = 'Ignorera batteryoptimeringar';
 
   @override
   final String about = 'Information';

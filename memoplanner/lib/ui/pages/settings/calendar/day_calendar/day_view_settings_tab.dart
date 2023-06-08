@@ -34,9 +34,8 @@ class DayViewSettingsTab extends StatelessWidget {
                   DayCalendarType.twoTimepillars,
                 ),
               ],
-              onChanged: (type) => dayCalendar.changeSettings(settings.copyWith(
-                  viewOptions:
-                      settings.viewOptions.copyWith(calendarType: type))),
+              onChanged: (type) => dayCalendar.changeViewOptions(
+                  settings.viewOptions.copyWith(calendarType: type)),
             ),
             const Divider(),
             Selector<TimepillarIntervalType>(
@@ -59,10 +58,8 @@ class DayViewSettingsTab extends StatelessWidget {
                   TimepillarIntervalType.dayAndNight,
                 ),
               ],
-              onChanged: (newDayInterval) => dayCalendar.changeSettings(
-                  settings.copyWith(
-                      viewOptions: settings.viewOptions
-                          .copyWith(intervalType: newDayInterval))),
+              onChanged: (newDayInterval) => dayCalendar.changeViewOptions(
+                  settings.viewOptions.copyWith(intervalType: newDayInterval)),
             ),
             const Divider(),
             Selector<TimepillarZoom>(
@@ -85,10 +82,8 @@ class DayViewSettingsTab extends StatelessWidget {
                   TimepillarZoom.large,
                 ),
               ],
-              onChanged: (newZoom) => dayCalendar.changeSettings(
-                  settings.copyWith(
-                      viewOptions: settings.viewOptions
-                          .copyWith(timepillarZoom: newZoom))),
+              onChanged: (newZoom) => dayCalendar.changeViewOptions(
+                  settings.viewOptions.copyWith(timepillarZoom: newZoom)),
             ),
             const Divider(),
             Selector<bool>(
@@ -106,8 +101,8 @@ class DayViewSettingsTab extends StatelessWidget {
                   false,
                 ),
               ],
-              onChanged: (dots) => dayCalendar.changeSettings(settings.copyWith(
-                  viewOptions: settings.viewOptions.copyWith(dots: dots))),
+              onChanged: (dots) => dayCalendar
+                  .changeViewOptions(settings.viewOptions.copyWith(dots: dots)),
             ),
           ],
         );

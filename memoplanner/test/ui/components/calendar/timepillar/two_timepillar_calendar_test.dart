@@ -10,6 +10,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -20,6 +21,9 @@ import '../../../../test_helpers/tts.dart';
 void main() {
   late StreamController<DateTime> mockTicker;
   late ActivityDbInMemory mockActivityDb;
+
+  late SharedPreferences fakeSharedPreferences;
+
   final time = DateTime(2021, 09, 02, 12, 47);
   const leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RightCategoryActivity';
@@ -31,12 +35,6 @@ void main() {
   final previousDayButtonFinder = find.byIcon(AbiliaIcons.returnToPreviousPage);
   bool applyCrossOver() =>
       (find.byType(CrossOver).evaluate().first.widget as CrossOver).applyCross;
-
-  final twoTimepillarGeneric = Generic.createNew<GenericSettingData>(
-    data: GenericSettingData.fromData(
-        data: DayCalendarType.twoTimepillars.index,
-        identifier: DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
-  );
 
   setUpAll(() {
     tz.initializeTimeZones();
@@ -61,11 +59,14 @@ void main() {
         .thenAnswer((_) => Future.value(timerResponse()));
     when(() => mockTimerDb.getRunningTimersFrom(any()))
         .thenAnswer((_) => Future.value(timerResponse()));
-
-    genericResponse = () => [twoTimepillarGeneric];
-
+    fakeSharedPreferences = await FakeSharedPreferences.getInstance(
+      extras: {
+        DayCalendarViewSettings.viewOptionsCalendarTypeKey:
+            DayCalendarType.twoTimepillars.index
+      },
+    );
     GetItInitializer()
-      ..sharedPreferences = await FakeSharedPreferences.getInstance()
+      ..sharedPreferences = fakeSharedPreferences
       ..activityDb = mockActivityDb
       ..genericDb = mockGenericDb
       ..timerDb = mockTimerDb
@@ -110,12 +111,6 @@ void main() {
   });
 
   group('timepillar', () {
-    testWidgets('timepillar shows', (WidgetTester tester) async {
-      await tester.pumpWidget(const App());
-      await tester.pumpAndSettle();
-      expect(find.byType(SliverTimePillar), findsNWidgets(2));
-    });
-
     testWidgets('tts', (WidgetTester tester) async {
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
@@ -211,7 +206,6 @@ void main() {
 
     testWidgets('Dont Exists if settings say so', (WidgetTester tester) async {
       genericResponse = () => [
-            twoTimepillarGeneric,
             Generic.createNew<GenericSettingData>(
               data: GenericSettingData.fromData(
                 data: false,
@@ -235,7 +229,6 @@ void main() {
       expect(find.byType(Timeline), findsWidgets);
 
       genericResponse = () => [
-            twoTimepillarGeneric,
             Generic.createNew<GenericSettingData>(
               data: GenericSettingData.fromData(
                 data: false,
@@ -292,7 +285,6 @@ void main() {
     testWidgets('hourTimeline shows if setting is set',
         (WidgetTester tester) async {
       genericResponse = () => [
-            twoTimepillarGeneric,
             Generic.createNew<GenericSettingData>(
               data: GenericSettingData.fromData(
                 data: true,
@@ -312,7 +304,6 @@ void main() {
       expect(find.byType(HourLines), findsNothing);
 
       genericResponse = () => [
-            twoTimepillarGeneric,
             Generic.createNew<GenericSettingData>(
               data: GenericSettingData.fromData(
                 data: true,
@@ -340,7 +331,6 @@ void main() {
     testWidgets('Categories dont Exists if settings say so',
         (WidgetTester tester) async {
       genericResponse = () => [
-            twoTimepillarGeneric,
             Generic.createNew<GenericSettingData>(
               data: GenericSettingData.fromData(
                 data: false,
@@ -367,7 +357,6 @@ void main() {
       expect(rightFinder, findsOneWidget);
 
       genericResponse = () => [
-            twoTimepillarGeneric,
             Generic.createNew<GenericSettingData>(
               data: GenericSettingData.fromData(
                 data: false,
@@ -470,7 +459,6 @@ void main() {
             );
         mockActivityDb.initWithActivities([a1, a2, a3, a4]);
         genericResponse = () => [
-              twoTimepillarGeneric,
               Generic.createNew<GenericSettingData>(
                 data: GenericSettingData.fromData(
                   data: false,
@@ -704,15 +692,10 @@ void main() {
 
     testWidgets('setting no dots shows SideTime', (WidgetTester tester) async {
       // Arrange
-      genericResponse = () => [
-            twoTimepillarGeneric,
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
-                  data: false,
-                  identifier:
-                      DayCalendarViewOptionsSettings.viewOptionsDotsKey),
-            ),
-          ];
+      fakeSharedPreferences.setBool(
+        DayCalendarViewSettings.viewOptionsDotsKey,
+        false,
+      );
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       // Act
@@ -937,7 +920,6 @@ void main() {
         'When night is longer than day, timepillars have the same width',
         (WidgetTester tester) async {
       genericResponse = () => [
-            twoTimepillarGeneric,
             Generic.createNew<GenericSettingData>(
               data: GenericSettingData.fromData(
                 data: 10 * Duration.millisecondsPerHour,
@@ -967,7 +949,6 @@ void main() {
         'When day is longer than night, day timepillar is wider than night timepillar',
         (WidgetTester tester) async {
       genericResponse = () => [
-            twoTimepillarGeneric,
             Generic.createNew<GenericSettingData>(
               data: GenericSettingData.fromData(
                 data: 5 * Duration.millisecondsPerHour,

@@ -5,25 +5,25 @@ import 'package:memoplanner/models/all.dart';
 
 class TimepillarMeasuresCubit extends Cubit<TimepillarMeasures> {
   final TimepillarCubit? _timepillarCubit;
-  final MemoplannerSettingsBloc? _memoplannerSettingsBloc;
+  final DayCalendarViewCubit? _dayCalendarViewCubit;
   StreamSubscription? _timepillarSubscription;
-  StreamSubscription? _memoplannerSubscription;
+  StreamSubscription? _dayCalendarViewSubscription;
   // Makes animated page transitions possible in DayCalendar
   late TimepillarMeasures previousState = state;
 
   TimepillarMeasuresCubit({
     required TimepillarCubit timepillarCubit,
-    required MemoplannerSettingsBloc memoplannerSettingsBloc,
+    required DayCalendarViewCubit dayCalendarViewCubit,
   })  : _timepillarCubit = timepillarCubit,
-        _memoplannerSettingsBloc = memoplannerSettingsBloc,
+        _dayCalendarViewCubit = dayCalendarViewCubit,
         super(TimepillarMeasures(
-            timepillarCubit.state.interval,
-            memoplannerSettingsBloc
-                .state.dayCalendar.viewOptions.timepillarZoom.zoomValue)) {
+          timepillarCubit.state.interval,
+          dayCalendarViewCubit.state.timepillarZoom.zoomValue,
+        )) {
     _timepillarSubscription = timepillarCubit.stream.listen((state) {
       _onConditionsChanged();
     });
-    _memoplannerSubscription = memoplannerSettingsBloc.stream.listen((state) {
+    _dayCalendarViewSubscription = dayCalendarViewCubit.stream.listen((state) {
       _onConditionsChanged();
     });
   }
@@ -31,13 +31,12 @@ class TimepillarMeasuresCubit extends Cubit<TimepillarMeasures> {
   TimepillarMeasuresCubit.fixed({
     required TimepillarMeasures state,
   })  : _timepillarCubit = null,
-        _memoplannerSettingsBloc = null,
+        _dayCalendarViewCubit = null,
         super(state);
 
   void _onConditionsChanged() {
     final interval = _timepillarCubit?.state.interval;
-    final zoom = _memoplannerSettingsBloc
-        ?.state.dayCalendar.viewOptions.timepillarZoom.zoomValue;
+    final zoom = _dayCalendarViewCubit?.state.timepillarZoom.zoomValue;
     if (interval != null && zoom != null) {
       previousState = state;
       emit(TimepillarMeasures(interval, zoom));
@@ -47,7 +46,7 @@ class TimepillarMeasuresCubit extends Cubit<TimepillarMeasures> {
   @override
   Future<void> close() async {
     await _timepillarSubscription?.cancel();
-    await _memoplannerSubscription?.cancel();
+    await _dayCalendarViewSubscription?.cancel();
     return super.close();
   }
 }

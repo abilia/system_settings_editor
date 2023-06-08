@@ -40,8 +40,8 @@ class CalendarAppBar extends StatelessWidget {
     final clockToTheRight = rightAction == null && showClock;
     final clockSpaceEmpty = (clockReplacement == null && !showClock) ||
         (clockReplacement == null && clockToTheRight);
-    final appBarSettings = context.select(
-        (MemoplannerSettingsBloc bloc) => bloc.state.dayCalendar.appBar);
+    final appBarSettings =
+        context.select((MemoplannerSettingsBloc bloc) => bloc.state.dayAppBar);
     final hasActions = leftAction != null || rightAction != null;
     final showAppBar = appBarSettings.displayDayCalendarAppBar || hasActions;
 

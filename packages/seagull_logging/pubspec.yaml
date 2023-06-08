@@ -6,16 +6,21 @@ environment:
   flutter: '>=2.0.0'
 
 dependencies:
+  auth:
+    path: ../auth
   firebase_core: any
   firebase_crashlytics: any
   flutter:
     sdk: flutter
   flutter_archive: any
+  flutter_bloc: any
   http: any
   intl: any
   logging: any
   repository_base:
     path: ../repository/repository_base
+  seagull_analytics:
+    path: ../seagull_analytics
   shared_preferences: any
   synchronized: any
   utils:

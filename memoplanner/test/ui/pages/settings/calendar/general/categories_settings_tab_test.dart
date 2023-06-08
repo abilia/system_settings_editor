@@ -5,6 +5,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:seagull_clock/ticker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -21,19 +22,8 @@ void main() {
   Iterable<Sortable> sortable = defaultSortables;
   late MockGenericDb genericDb;
   late MockSortableDb sortableDb;
+  late SharedPreferences fakeSharedPreferences;
 
-  final oneTimepillarGeneric = Generic.createNew<GenericSettingData>(
-        data: GenericSettingData.fromData(
-            data: DayCalendarType.oneTimepillar.index,
-            identifier:
-                DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
-      ),
-      twoTimepillarsGeneric = Generic.createNew<GenericSettingData>(
-        data: GenericSettingData.fromData(
-            data: DayCalendarType.twoTimepillars.index,
-            identifier:
-                DayCalendarViewOptionsSettings.viewOptionsCalendarTypeKey),
-      );
   setUp(() async {
     tz.initializeTimeZones();
     setupPermissions();
@@ -53,9 +43,9 @@ void main() {
     when(() => sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     when(() => sortableDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
-
+    fakeSharedPreferences = await FakeSharedPreferences.getInstance();
     GetItInitializer()
-      ..sharedPreferences = await FakeSharedPreferences.getInstance()
+      ..sharedPreferences = fakeSharedPreferences
       ..ticker = Ticker.fake(initialTime: initialTime)
       ..client = Fakes.client(
         genericResponse: () => generics,
@@ -348,8 +338,11 @@ void main() {
 
     testWidgets('show category false', (tester) async {
       // Arrange
+      fakeSharedPreferences.setInt(
+        DayCalendarViewSettings.viewOptionsCalendarTypeKey,
+        DayCalendarType.oneTimepillar.index,
+      );
       generics = [
-        oneTimepillarGeneric,
         Generic.createNew<GenericSettingData>(
           data: GenericSettingData.fromData(
             data: false,
@@ -366,8 +359,11 @@ void main() {
 
     testWidgets('show category false - two timepillar', (tester) async {
       // Arrange
+      fakeSharedPreferences.setInt(
+        DayCalendarViewSettings.viewOptionsCalendarTypeKey,
+        DayCalendarType.twoTimepillars.index,
+      );
       generics = [
-        twoTimepillarsGeneric,
         Generic.createNew<GenericSettingData>(
           data: GenericSettingData.fromData(
             data: false,
@@ -385,8 +381,11 @@ void main() {
 
     testWidgets('show category true', (tester) async {
       // Arrange
+      fakeSharedPreferences.setInt(
+        DayCalendarViewSettings.viewOptionsCalendarTypeKey,
+        DayCalendarType.oneTimepillar.index,
+      );
       generics = [
-        oneTimepillarGeneric,
         Generic.createNew<GenericSettingData>(
           data: GenericSettingData.fromData(
             data: true,
@@ -424,8 +423,11 @@ void main() {
     testWidgets('category right name, one timepillar view', (tester) async {
       // Arrange
       const right = 'some right name';
+      fakeSharedPreferences.setInt(
+        DayCalendarViewSettings.viewOptionsCalendarTypeKey,
+        DayCalendarType.oneTimepillar.index,
+      );
       generics = [
-        oneTimepillarGeneric,
         Generic.createNew<GenericSettingData>(
           data: GenericSettingData.fromData(
             data: right,
@@ -465,8 +467,11 @@ void main() {
     testWidgets('category left name, timepillar view', (tester) async {
       // Arrange
       const left = 'some left name';
+      fakeSharedPreferences.setInt(
+        DayCalendarViewSettings.viewOptionsCalendarTypeKey,
+        DayCalendarType.oneTimepillar.index,
+      );
       generics = [
-        oneTimepillarGeneric,
         Generic.createNew<GenericSettingData>(
           data: GenericSettingData.fromData(
             data: left,
@@ -486,8 +491,11 @@ void main() {
     testWidgets('category image, timepillar view', (tester) async {
       // Arrange
       const fileIdLeft = 'fileIdLeft', fileIdRight = 'fileIdRight';
+      fakeSharedPreferences.setInt(
+        DayCalendarViewSettings.viewOptionsCalendarTypeKey,
+        DayCalendarType.oneTimepillar.index,
+      );
       generics = [
-        oneTimepillarGeneric,
         Generic.createNew<GenericSettingData>(
           data: GenericSettingData.fromData(
             data: fileIdLeft,
@@ -522,8 +530,11 @@ void main() {
           fileIdRight = 'fileIdRight',
           leftName = 'some left name',
           rightName = 'some right name';
+      fakeSharedPreferences.setInt(
+        DayCalendarViewSettings.viewOptionsCalendarTypeKey,
+        DayCalendarType.twoTimepillars.index,
+      );
       generics = [
-        twoTimepillarsGeneric,
         Generic.createNew<GenericSettingData>(
           data: GenericSettingData.fromData(
             data: fileIdLeft,
