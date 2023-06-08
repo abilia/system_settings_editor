@@ -9,6 +9,7 @@ class NotificationsSchedulerData extends Equatable {
   final bool alwaysUse24HourFormat;
   final AlarmSettings settings;
   final FileStorage fileStorage;
+  final DateTime? dateTime;
 
   const NotificationsSchedulerData({
     required this.activities,
@@ -17,6 +18,7 @@ class NotificationsSchedulerData extends Equatable {
     required this.alwaysUse24HourFormat,
     required this.settings,
     required this.fileStorage,
+    this.dateTime,
   });
 
   Map<String, dynamic> toMap() {
@@ -34,6 +36,7 @@ class NotificationsSchedulerData extends Equatable {
       'alwaysUse24HourFormat': alwaysUse24HourFormat,
       'settings': settings.toMap(),
       'fileStorage': fileStorage.dir,
+      'dateTime': dateTime?.millisecondsSinceEpoch,
     };
   }
 
@@ -46,6 +49,9 @@ class NotificationsSchedulerData extends Equatable {
         .values
         .map((e) => NotificationAlarm.fromJson(e) as TimerAlarm)
         .toList();
+    final dateTime = data['dateTime'] != null
+        ? DateTime.fromMillisecondsSinceEpoch(data['dateTime'])
+        : null;
     return NotificationsSchedulerData(
       activities: activities,
       timers: timers,
@@ -53,6 +59,7 @@ class NotificationsSchedulerData extends Equatable {
       alwaysUse24HourFormat: data['alwaysUse24HourFormat'],
       settings: AlarmSettings.fromMap(data['settings']),
       fileStorage: FileStorage(data['fileStorage']),
+      dateTime: dateTime,
     );
   }
 
@@ -63,5 +70,6 @@ class NotificationsSchedulerData extends Equatable {
         language,
         settings,
         fileStorage,
+        dateTime,
       ];
 }

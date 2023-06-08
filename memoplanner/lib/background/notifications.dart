@@ -85,9 +85,12 @@ Future scheduleNotifications(
   NotificationsSchedulerData schedulerData,
   Logging log,
 ) async {
-  final from = schedulerData.settings.disabledUntilDate.isAfter(DateTime.now())
+  final dateTime = schedulerData.dateTime;
+  final hasDateTime = dateTime != null;
+  final DateTime Function() now = hasDateTime ? () => dateTime : DateTime.now;
+  final from = schedulerData.settings.disabledUntilDate.isAfter(now())
       ? schedulerData.settings.disabledUntilDate
-      : DateTime.now().nextMinute();
+      : now().nextMinute();
   final activityNotifications = schedulerData.activities.alarmsFrom(
     from,
     take: max(maxNotifications - schedulerData.timers.length, 0),
@@ -101,6 +104,7 @@ Future scheduleNotifications(
     schedulerData.alwaysUse24HourFormat,
     schedulerData.settings,
     schedulerData.fileStorage,
+    now,
     log,
   );
 }
@@ -111,6 +115,7 @@ Future _scheduleAllNotifications(
   bool alwaysUse24HourFormat,
   AlarmSettings settings,
   FileStorage fileStorage,
+  DateTime Function() now,
   Logging log,
 ) async {
   await cancelAllPendingNotifications();
@@ -130,6 +135,7 @@ Future _scheduleAllNotifications(
       alwaysUse24HourFormat,
       settings,
       fileStorage,
+      now,
       androidNotificationChannels,
       // Adding a delay on simultaneous alarms to let the
       // selectNotificationSubject handle them
@@ -158,6 +164,7 @@ Future<bool> _scheduleNotification(
   bool alwaysUse24HourFormat,
   AlarmSettings settings,
   FileStorage fileStorage,
+  DateTime Function() now,
   Set<String> androidChannelIds,
   int secondsOffset,
   Logging log,
@@ -196,7 +203,7 @@ Future<bool> _scheduleNotification(
   final tz = notificationAlarm is ActivityAlarm
       ? tryGetLocation(notificationAlarm.activity.timezone, log: _log)
       : local;
-  if (notificationTime.isBefore(DateTime.now())) return false;
+  if (notificationTime.isBefore(now())) return false;
   final time = TZDateTime.from(notificationTime, tz);
   try {
     log(

@@ -26,6 +26,7 @@ dependencies:
   http: any
   logging: any
   mocktail: any
+  permission_handler: any
   repository_base:
     path: ../repository/repository_base
   seagull_analytics:
