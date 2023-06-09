@@ -37,7 +37,7 @@ class Fakes {
     SessionsResponse? sessionsResponse,
     TermsOfUseResponse? termsOfUseResponse,
     Response Function()? connectLicenseResponse,
-    Response Function()? tooManyAttemptsResponse,
+    bool allowMultipleLogins = true,
     bool Function()? factoryResetResponse,
   }) =>
       ListenableMockClient(
@@ -51,8 +51,8 @@ class Fakes {
                 'Basic ${base64Encode(utf8.encode('$username:$incorrectPassword'))}';
             final supportUserHeader =
                 'Basic ${base64Encode(utf8.encode('$supportUserName:$incorrectPassword'))}';
-            if (_loginAttempts > 0 && tooManyAttemptsResponse != null) {
-              return tooManyAttemptsResponse.call();
+            if (!allowMultipleLogins && _loginAttempts > 0) {
+              return tooManyAttemptsTypeResponse;
             }
             if (authHeaders == incorrect) {
               _loginAttempts++;

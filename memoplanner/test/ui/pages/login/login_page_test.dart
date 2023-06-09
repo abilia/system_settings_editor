@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
@@ -23,19 +22,19 @@ void main() {
   final translate = Locales.language.values.first;
 
   final time = DateTime(2020, 11, 11, 11, 11);
-  DateTime licensExpireTime;
+  DateTime licenseExpireTime;
   late ListenableMockClient client;
   TermsOfUseResponse termsOfUseResponse = () => TermsOfUse.accepted();
 
   setUpAll(() {
     registerFallbackValues();
     scheduleNotificationsIsolated = noAlarmScheduler;
-    licensExpireTime = time.add(10.days());
+    licenseExpireTime = time.add(10.days());
     client = Fakes.client(
       activityResponse: () => [],
-      licenseResponse: () => Fakes.licenseResponseExpires(licensExpireTime),
+      licenseResponse: () => Fakes.licenseResponseExpires(licenseExpireTime),
       termsOfUseResponse: () => termsOfUseResponse(),
-      tooManyAttemptsResponse: () => Response('', 429),
+      allowMultipleLogins: false,
     );
   });
 
@@ -45,7 +44,7 @@ void main() {
     setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
     setupFakeTts();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-    licensExpireTime = time.add(10.days());
+    licenseExpireTime = time.add(10.days());
 
     sortableDb = MockSortableDb();
     when(() => sortableDb.getAllNonDeleted())
@@ -300,7 +299,7 @@ void main() {
 
   testWidgets('Gets no valid license dialog when no valid license',
       (WidgetTester tester) async {
-    licensExpireTime = time.subtract(10.days());
+    licenseExpireTime = time.subtract(10.days());
 
     await tester.pumpApp();
 
@@ -327,7 +326,7 @@ void main() {
 
     expect(find.byType(CalendarPage), findsOneWidget);
 
-    licensExpireTime = time.subtract(10.days());
+    licenseExpireTime = time.subtract(10.days());
 
     pushCubit.fakePush();
     await tester.pumpAndSettle();
@@ -347,7 +346,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(CalendarPage), findsOneWidget);
 
-    licensExpireTime = time.subtract(10.days());
+    licenseExpireTime = time.subtract(10.days());
 
     pushCubit.fakePush();
     await tester.pumpAndSettle();
@@ -360,7 +359,7 @@ void main() {
 
   testWidgets('Can login when no valid expired license, sync warning',
       (WidgetTester tester) async {
-    licensExpireTime = time.subtract(10.days());
+    licenseExpireTime = time.subtract(10.days());
 
     await tester.pumpApp();
 
