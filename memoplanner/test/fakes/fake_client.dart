@@ -19,6 +19,7 @@ typedef TermsOfUseResponse = TermsOfUse Function();
 class Fakes {
   Fakes._();
 
+  static int _loginAttempts = 0;
   static const int userId = 1234;
   static const user = User(id: userId, type: type, name: name);
   static const String name = 'Test case user',
@@ -36,6 +37,7 @@ class Fakes {
     SessionsResponse? sessionsResponse,
     TermsOfUseResponse? termsOfUseResponse,
     Response Function()? connectLicenseResponse,
+    Response Function()? tooManyAttemptsResponse,
     bool Function()? factoryResetResponse,
   }) =>
       ListenableMockClient(
@@ -49,13 +51,18 @@ class Fakes {
                 'Basic ${base64Encode(utf8.encode('$username:$incorrectPassword'))}';
             final supportUserHeader =
                 'Basic ${base64Encode(utf8.encode('$supportUserName:$incorrectPassword'))}';
+            if (_loginAttempts > 0 && tooManyAttemptsResponse != null) {
+              return tooManyAttemptsResponse.call();
+            }
             if (authHeaders == incorrect) {
+              _loginAttempts++;
               return Response(
                   '{"timestamp":"${DateTime.now()}","status":401,"error":"Unauthorized","message":"Unable to authorize","path":"//api/v1/auth/client/me"}',
                   401);
             } else if (authHeaders == supportUserHeader) {
               return unsupportedUserTypeResponse;
             }
+            _loginAttempts = 0;
             return clientMeSuccessResponse;
           }
           if (pathSegments.containsAll(<String>{'entity', 'me'})) {
@@ -154,6 +161,10 @@ class Fakes {
         },
       );
 
+  static void resetLoginAttempts() {
+    _loginAttempts = 0;
+  }
+
   static final allActivities = [
     FakeActivity.reoccursMondays(),
     FakeActivity.reoccursTuesdays(),
@@ -231,4 +242,6 @@ class Fakes {
   static Response unsupportedUserTypeResponse = Response('''
   {"status":403,"message":"Clients can only be registered with entities of type 'user'","errorId":217,"errors":[{"code":"WHALE-0156","message":"Clients can only be registered with entities of type 'user'"}]}''',
       403);
+
+  static Response tooManyAttemptsTypeResponse = Response('', 429);
 }

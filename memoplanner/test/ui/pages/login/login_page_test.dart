@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
@@ -14,6 +15,7 @@ import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
 import '../../../test_helpers/enter_text.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
@@ -26,12 +28,14 @@ void main() {
   TermsOfUseResponse termsOfUseResponse = () => TermsOfUse.accepted();
 
   setUpAll(() {
+    registerFallbackValues();
     scheduleNotificationsIsolated = noAlarmScheduler;
     licensExpireTime = time.add(10.days());
     client = Fakes.client(
       activityResponse: () => [],
       licenseResponse: () => Fakes.licenseResponseExpires(licensExpireTime),
       termsOfUseResponse: () => termsOfUseResponse(),
+      tooManyAttemptsResponse: () => Response('', 429),
     );
   });
 
@@ -70,6 +74,7 @@ void main() {
   });
 
   tearDown(() async {
+    Fakes.resetLoginAttempts();
     setupPermissions();
     termsOfUseResponse = () => TermsOfUse.accepted();
     await GetIt.I.reset();
@@ -847,6 +852,29 @@ void main() {
 
         // Assert - Calendar page shows
         expect(find.byType(CalendarPage), findsOneWidget);
+      });
+
+      testWidgets('SGC-2463 - Too many login attempts dialog',
+          (WidgetTester tester) async {
+        await tester.pumpApp();
+        await tester.pumpAndSettle();
+
+        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+        await tester.ourEnterText(
+            find.byType(PasswordInput), Fakes.incorrectPassword);
+        await tester.pump();
+        await tester.tap(find.byType(LoginButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(ErrorDialog), findsOneWidget);
+        await tester.tap(find.byType(PreviousButton));
+        await tester.pumpAndSettle();
+        await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(LoginButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(CalendarPage), findsNothing);
+        expect(find.byType(ErrorDialog), findsOneWidget);
+        expect(find.text(translate.tooManyAttempts), findsOneWidget);
       });
     });
   });
