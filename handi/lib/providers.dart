@@ -12,6 +12,8 @@ import 'package:generics/generics.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/background/background.dart';
 import 'package:handi/bloc/notification_bloc.dart';
+import 'package:handi/bloc/settings_cubit.dart';
+import 'package:handi/db/settings_db.dart';
 import 'package:handi/main.dart';
 import 'package:handi/models/delays.dart';
 import 'package:repository_base/repository_base.dart';
@@ -165,7 +167,12 @@ class AuthenticatedProviders extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<SyncBloc>(
+          BlocProvider(
+            create: (context) => SettingsCubit(
+              settingsDb:  GetIt.I<SettingsDb>(),
+            ),
+          ),
+          BlocProvider(
             lazy: false,
             create: (context) => SyncBloc(
               pushCubit: context.read<PushCubit>(),

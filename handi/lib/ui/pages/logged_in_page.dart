@@ -4,6 +4,7 @@ import 'package:calendar_events/calendar_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:generics/generics.dart';
+import 'package:handi/bloc/settings_cubit.dart';
 import 'package:handi/utils/tts_extension.dart';
 import 'package:sortables/sortables.dart';
 import 'package:user_files/user_files.dart';
@@ -28,6 +29,8 @@ class LoggedInPage extends StatelessWidget {
     });
     final userFiles = context
         .select((UserFileBloc userFiles) => userFiles.state.userFiles.length);
+    final tts = context
+        .select((SettingsCubit settingsCubit) => settingsCubit.state.textToSpeech);
 
     final hasSynced = context.select((SyncBloc bloc) => bloc.hasSynced);
     return Scaffold(
@@ -77,6 +80,18 @@ class LoggedInPage extends StatelessWidget {
                       ],
                     ).withTts('This is pretty cool'),
                     const Spacer(),
+                    Center(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text('Text to speech'),
+                          Switch(
+                            value: tts,
+                            onChanged: context.read<SettingsCubit>().setTts,
+                          ),
+                        ],
+                      ).withTts('Text to speech'),
+                    ),
                     OutlinedButton(
                       onPressed: () =>
                           context.read<SyncBloc>().add(const SyncAll()),

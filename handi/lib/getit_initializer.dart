@@ -8,6 +8,7 @@ import 'package:file_storage/file_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:generics/db/generic_db.dart';
 import 'package:get_it/get_it.dart';
+import 'package:handi/db/settings_db.dart';
 import 'package:handi/main.dart';
 import 'package:handi/models/delays.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -45,6 +46,7 @@ Future<void> initGetItWith({
   LastSyncDb? lastSyncDb,
   Delays? delays,
   SeagullLogger? seagullLogger,
+  SettingsDb? settingsDb,
 }) async {
   GetIt.I
     ..registerSingleton(sharedPreferences)
@@ -67,6 +69,7 @@ Future<void> initGetItWith({
     ..registerSingleton(delays ?? const Delays())
     ..registerSingleton(seagullLogger ?? SeagullLogger.nothing())
     ..registerSingleton<TtsHandler>(ttsHandler ?? FlutterTtsHandler())
+    ..registerSingleton<SettingsDb>(settingsDb ?? SettingsDb(sharedPreferences))
     ..registerSingleton(
       listenableClient ??
           ClientWithDefaultHeaders(
