@@ -171,7 +171,7 @@ class AuthenticatedProviders extends StatelessWidget {
         providers: [
           BlocProvider(
             create: (context) => SettingsCubit(
-              settingsDb:  GetIt.I<SettingsDb>(),
+              settingsDb: GetIt.I<SettingsDb>(),
             ),
           ),
           BlocProvider(

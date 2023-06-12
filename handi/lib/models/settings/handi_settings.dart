@@ -11,9 +11,9 @@ class HandiSettings {
       HandiSettings._(textToSpeech: settingsDb.tts);
 
   HandiSettings copyWith({
-    bool? tts,
+    bool? textToSpeech,
   }) =>
       HandiSettings._(
-        textToSpeech: tts ?? this.textToSpeech,
+        textToSpeech: textToSpeech ?? this.textToSpeech,
       );
 }

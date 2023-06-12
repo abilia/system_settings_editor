@@ -73,7 +73,7 @@ Future<void> initServices() async {
     ..database = await DatabaseRepository.createSqfliteDb()
     ..voiceDb = voiceDb
     ..ttsHandler = await TtsHandler.implementation(
-      handler: Config.isMP ? TtsHandlerType.acapela : TtsHandlerType.flutter,
+      type: Config.isMP ? TtsType.acapela : TtsType.flutter,
       voicesPath: applicationSupportDirectory.path,
       voice: voiceDb.voice,
       speechRate: voiceDb.speechRate,

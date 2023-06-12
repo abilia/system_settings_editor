@@ -4,7 +4,7 @@ import 'package:acapela_tts/acapela_tts.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:logging/logging.dart';
 
-enum TtsHandlerType {
+enum TtsType {
   acapela,
   flutter,
 }
@@ -14,10 +14,10 @@ abstract class TtsHandler {
     required String voicesPath,
     required String voice,
     required double speechRate,
-    required TtsHandlerType handler,
+    required TtsType type,
   }) async {
     try {
-      if (handler == TtsHandlerType.acapela) {
+      if (type == TtsType.acapela) {
         return await AcapelaTtsHandler.implementation(
           voicesPath: voicesPath,
           voice: voice,

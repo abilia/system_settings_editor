@@ -29,8 +29,8 @@ class LoggedInPage extends StatelessWidget {
     });
     final userFiles = context
         .select((UserFileBloc userFiles) => userFiles.state.userFiles.length);
-    final tts = context
-        .select((SettingsCubit settingsCubit) => settingsCubit.state.textToSpeech);
+    final tts = context.select(
+        (SettingsCubit settingsCubit) => settingsCubit.state.textToSpeech);
 
     final hasSynced = context.select((SyncBloc bloc) => bloc.hasSynced);
     return Scaffold(

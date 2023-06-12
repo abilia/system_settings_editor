@@ -10,7 +10,7 @@ class SettingsCubit extends Cubit<HandiSettings> {
         super(HandiSettings.fromDb(settingsDb));
 
   Future<void> setTts(bool tts) async {
-    emit(state.copyWith(tts: tts));
+    emit(state.copyWith(textToSpeech: tts));
     await _settingsDb.setTts(tts);
   }
 }
