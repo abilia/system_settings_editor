@@ -4,3 +4,4 @@ export 'iterable_extensions.dart';
 export 'logger_extensions.dart';
 export 'string_extensions.dart';
 export 'time_of_day_extensions.dart';
+export 'timezone.dart';

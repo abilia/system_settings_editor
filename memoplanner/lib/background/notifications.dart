@@ -11,7 +11,6 @@ import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/i18n/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
 
 import 'package:memoplanner/utils/all.dart';
 

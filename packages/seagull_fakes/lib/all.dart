@@ -5,6 +5,7 @@ export 'calenar_events/all.dart';
 export 'calendar.dart';
 export 'generics/fakes.dart';
 export 'multipart_request.dart';
+export 'permissions.dart';
 export 'repository/fakes.dart';
 export 'sortables/all.dart';
 export 'sync/fakes.dart';

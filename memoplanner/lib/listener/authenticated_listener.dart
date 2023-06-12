@@ -82,7 +82,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
       listeners: [
         BlocListener<ActivitiesBloc, ActivitiesChanged>(
           listener: (context, state) =>
-              context.read<NotificationBloc>().add(NotificationEvent()),
+              context.read<NotificationBloc>().add(ScheduleNotifications()),
         ),
         BlocListener<MemoplannerSettingsBloc, MemoplannerSettings>(
           listenWhen: (previous, current) =>
@@ -90,11 +90,11 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
                   current is! MemoplannerSettingsNotLoaded) ||
               previous.alarm != current.alarm,
           listener: (context, state) =>
-              context.read<NotificationBloc>().add(NotificationEvent()),
+              context.read<NotificationBloc>().add(ScheduleNotifications()),
         ),
         BlocListener<TimerCubit, TimerState>(
           listener: (context, state) =>
-              context.read<NotificationBloc>().add(NotificationEvent()),
+              context.read<NotificationBloc>().add(ScheduleNotifications()),
         ),
         BlocListener<LicenseCubit, LicenseState>(
           listener: (context, state) async {

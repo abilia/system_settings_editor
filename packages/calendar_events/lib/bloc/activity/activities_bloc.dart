@@ -97,6 +97,10 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesChanged>
     }
   }
 
+  Future<Iterable<Activity>> getActivitiesAfter(DateTime time) {
+    return activityRepository.allAfter(time);
+  }
+
   @override
   Future<void> close() async {
     await _syncSubscription.cancel();

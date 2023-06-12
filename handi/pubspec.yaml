@@ -25,11 +25,14 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.0.1
   flutter_lints: ^2.0.1
+  flutter_local_notifications: ^14.1.1
   generics:
     path: ../packages/generics
   get_it: ^7.2.0
+  logging: ^1.1.0
   package_info_plus: ^4.0.1
   path_provider: ^2.0.5
+  permission_handler: ^10.2.0
   repository_base:
     path: ../packages/repository/repository_base
   rxdart: ^0.27.1
@@ -44,8 +47,11 @@ dependencies:
     path: ../packages/sortables
   sqflite: ^2.2.5
   sqflite_common_ffi: ^2.2.5
+  timezone: ^0.9.0
   user_files:
     path: ../packages/user_files
+  utils:
+    path: ../packages/utils
 
 dev_dependencies:
   bloc_test: ^9.0.3
