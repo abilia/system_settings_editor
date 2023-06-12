@@ -1,30 +1,57 @@
-name: Publish showcase to GitHub Pages
+name: Publish Showcase to GitHub Pages
 
 on:
-    workflow_dispatch:
-    push:
-      branches:
-        - master
-      paths:
-        - 'showcase/**'
-        - 'packages/ui/**'
-        - '!**/*.md'
-        - '!**/*.yaml'
-jobs:
-  analyze_and_test_packages:
-    uses: ./.github/workflows/packages-analyze.yaml
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'showcase/**'
+      - 'packages/ui/**'
+      - '!**/*.md'
+      - '!**/*.yaml'
 
+jobs:
   build:
     name: Publish showcase to github pages
     runs-on: ubuntu-latest
-    needs: [analyze_and_test_packages]
+
     steps:
       - uses: actions/checkout@v2 # Only works with v2
       - uses: subosito/flutter-action@v2.5.0
         with:
           flutter-version: '3.10.2'
           channel: 'stable'
-      - uses: bluefireteam/flutter-gh-pages@v7
+
+      - name: Extract branch name
+        id: extract_branch
+        run: echo ::set-output name=branch::${GITHUB_REF#refs/heads/}
+
+      - name: Build showcase to buffer branch
+        uses: bluefireteam/flutter-gh-pages@v7
         with:
           workingDir: showcase
-          baseHref: /seagull/
+          baseHref: /seagull/branches/${{ steps.extract_branch.outputs.branch }}/
+          targetBranch: gh-pages-buffer
+
+      - uses: actions/checkout@v2
+        with:
+          ref: gh-pages-buffer
+
+      - name: Copy files to new folder in buffer branch
+        run: |
+          mkdir -p branches/${{ steps.extract_branch.outputs.branch }}
+          rsync -r --exclude=${{ steps.extract_branch.outputs.branch }}/ * branches/${{ steps.extract_branch.outputs.branch }}/
+          git add .
+          git commit -m "Copy files to ${{ steps.extract_branch.outputs.branch }}"
+
+      - name: Copy files in buffer branch to github pages branch
+        run: |
+          git fetch --all
+          git checkout gh-pages
+          git rm -r --ignore-unmatch branches/${{ steps.extract_branch.outputs.branch }}/*
+          mkdir -p branches/${{ steps.extract_branch.outputs.branch }} || exit 1
+          git checkout -f gh-pages-buffer branches/${{ steps.extract_branch.outputs.branch }}/
+          git add branches/${{ steps.extract_branch.outputs.branch }}/
+          git commit -m "Create showcase for branch ${{ steps.extract_branch.outputs.branch }}"
+          git push
