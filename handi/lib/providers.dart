@@ -8,6 +8,7 @@ import 'package:calendar_events/calendar_events.dart';
 import 'package:file_storage/file_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:generics/generics.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/background/background.dart';
@@ -95,6 +96,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
               [
                 DatabaseRepository.clearAll(GetIt.I<Database>()),
                 GetIt.I<FileStorage>().deleteUserFolder(),
+                FlutterLocalNotificationsPlugin().cancelAll(),
               ],
             ),
           )..add(CheckAuthentication()),
