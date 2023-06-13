@@ -75,7 +75,7 @@ void main() {
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..database = FakeDatabase()
       ..analytics = MockSeagullAnalytics()
-      ..client = Fakes.client(
+      ..client = fakeClient(
         factoryResetResponse: () => factoryResetResponse(),
       )
       ..init();

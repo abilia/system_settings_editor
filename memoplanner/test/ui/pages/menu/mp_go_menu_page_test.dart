@@ -20,7 +20,7 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..ticker = Ticker.fake(initialTime: time)
-      ..client = Fakes.client(sessionsResponse: () => sessions)
+      ..client = fakeClient(sessionsResponse: () => sessions)
       ..database = FakeDatabase()
       ..genericDb = FakeGenericDb()
       ..sortableDb = FakeSortableDb()

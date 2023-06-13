@@ -42,7 +42,7 @@ void main() {
           child: AuthenticatedBlocsProvider(
             memoplannerSettingBloc: memoplannerSettingBloc,
             syncBloc: syncBloc,
-            authenticatedState: const Authenticated(user: Fakes.user),
+            authenticatedState: const Authenticated(user: user),
             child: MaterialApp(
               theme: abiliaTheme,
               supportedLocales: Translator.supportedLocals,
@@ -127,7 +127,7 @@ void main() {
       ..activityDb = mockActivityDb
       ..ticker = Ticker.fake(initialTime: initialTime)
       ..fireBasePushService = mockFirebasePushService
-      ..client = Fakes.client(genericResponse: genericResponse)
+      ..client = fakeClient(genericResponse: genericResponse)
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
       ..settingsDb = mockSettingsDb

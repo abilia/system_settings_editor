@@ -25,7 +25,7 @@ void main() {
       setupPermissions();
       notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
       scheduleNotificationsIsolated = noAlarmScheduler;
-      sessions = Fakes.fakeSessions;
+      sessions = fakeSessions;
 
       genericDb = MockGenericDb();
       when(() => genericDb.getAllNonDeletedMaxRevision())
@@ -42,7 +42,7 @@ void main() {
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..ticker = Ticker.fake(initialTime: initialTime)
-        ..client = Fakes.client(sessionsResponse: () => sessions)
+        ..client = fakeClient(sessionsResponse: () => sessions)
         ..database = FakeDatabase()
         ..sortableDb = FakeSortableDb()
         ..genericDb = genericDb
