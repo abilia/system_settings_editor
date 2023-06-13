@@ -102,7 +102,7 @@ void main() {
         ..timerDb = mockTimerDb
         ..activityDb = mockActivityDb
         ..sortableDb = FakeSortableDb()
-        ..client = Fakes.client()
+        ..client = fakeClient()
         ..ticker = Ticker.fake(
           initialTime: initialTime,
           stream: clockStreamController.stream,

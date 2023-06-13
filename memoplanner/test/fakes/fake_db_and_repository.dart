@@ -43,7 +43,7 @@ class FakeUserDb extends Fake implements UserDb {
   Future insertUser(User user) async {}
 
   @override
-  User? getUser() => Fakes.user;
+  User? getUser() => user;
 
   @override
   Future deleteUser() async {}

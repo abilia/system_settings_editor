@@ -124,7 +124,7 @@ void main() {
         ..database = FakeDatabase()
         ..deviceDb = FakeDeviceDb()
         ..sortableDb = FakeSortableDb()
-        ..client = Fakes.client()
+        ..client = fakeClient()
         ..init();
     });
 

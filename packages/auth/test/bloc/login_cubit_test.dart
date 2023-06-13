@@ -11,6 +11,7 @@ void main() {
     late LoginCubit loginCubit;
     late AuthenticationBloc authenticationBloc;
     late MockUserRepository mockUserRepository;
+    late MockFirebasePushService mockFirebasePushService;
 
     const pushToken = 'pushToken';
     final mockDb = MockDatabase();
@@ -20,7 +21,7 @@ void main() {
     });
 
     setUp(() async {
-      final mockFirebasePushService = MockFirebasePushService();
+      mockFirebasePushService = MockFirebasePushService();
       mockUserRepository = MockUserRepository();
       when(() => mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value(pushToken));
@@ -197,6 +198,40 @@ void main() {
       );
     });
 
+    test(
+        'SGC-2463 - When too many attempts exception, failure cause should be correct',
+        () async {
+      when(() => mockUserRepository.authenticate(
+          username: any(named: 'username'),
+          password: any(named: 'password'),
+          pushToken: any(named: 'pushToken'),
+          time: any(named: 'time'))).thenThrow(
+        TooManyAttempsException(),
+      );
+
+      final loginCubit = LoginCubit(
+        authenticationBloc: authenticationBloc,
+        pushService: mockFirebasePushService,
+        clockBloc: ClockBloc.fixed(time),
+        userRepository: mockUserRepository,
+        database: mockDb,
+        allowExpiredLicense: true,
+        licenseType: LicenseType.memoplanner,
+      )
+        ..usernameChanged('username')
+        ..passwordChanged('password')
+        ..loginButtonPressed();
+
+      await expectLater(
+        loginCubit.stream,
+        emitsInOrder([
+          const LoginState(username: 'username', password: 'password')
+              .loading()
+              .failure(cause: LoginFailureCause.tooManyAttempts),
+        ]),
+      );
+    });
+
     tearDown(() {
       loginCubit.close();
       authenticationBloc.close();
@@ -248,7 +283,7 @@ void main() {
 
     tearDown(() {});
 
-    test('LoginButtonPressed event loggs in and saves token', () async {
+    test('LoginButtonPressed event logs in and saves token', () async {
       // Arrange
       const username = 'username',
           password = 'long enough password',

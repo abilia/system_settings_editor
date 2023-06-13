@@ -31,7 +31,7 @@ void main() {
       ..ticker = Ticker.fake(
         initialTime: DateTime(2021, 10, 29, 09, 20),
       )
-      ..client = Fakes.client(genericResponse: genericResponse)
+      ..client = fakeClient(genericResponse: genericResponse)
       ..database = FakeDatabase()
       ..sortableDb = FakeSortableDb()
       ..genericDb = genericDb

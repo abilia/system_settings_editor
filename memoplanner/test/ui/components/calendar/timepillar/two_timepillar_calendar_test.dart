@@ -73,7 +73,7 @@ void main() {
       ..sortableDb = FakeSortableDb()
       ..ticker = Ticker.fake(stream: mockTicker.stream, initialTime: time)
       ..fireBasePushService = FakeFirebasePushService()
-      ..client = Fakes.client(
+      ..client = fakeClient(
         genericResponse: genericResponse,
       )
       ..fileStorage = FakeFileStorage()
