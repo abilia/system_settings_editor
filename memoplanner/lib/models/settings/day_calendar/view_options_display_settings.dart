@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:memoplanner/models/all.dart';
 
 class DayCalendarViewOptionsDisplaySettings extends Equatable {
   static const String displayCalendarTypeKey = 'setting_view_options_time_view',
@@ -14,6 +15,17 @@ class DayCalendarViewOptionsDisplaySettings extends Equatable {
     this.timepillarZoom = true,
     this.duration = true,
   });
+
+  // TODO remove in 4.4
+  factory DayCalendarViewOptionsDisplaySettings.fromSettingsMap(
+      Map<String, GenericSettingData> settings) {
+    return DayCalendarViewOptionsDisplaySettings(
+      calendarType: settings.parse(displayCalendarTypeKey, true),
+      intervalType: settings.parse(displayIntervalTypeIntervalKey, true),
+      timepillarZoom: settings.parse(displayTimepillarZoomKey, true),
+      duration: settings.parse(displayDurationKey, true),
+    );
+  }
 
   DayCalendarViewOptionsDisplaySettings copyWith({
     bool? calendarType,
