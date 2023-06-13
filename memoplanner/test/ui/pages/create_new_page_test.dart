@@ -42,7 +42,7 @@ void main() {
           child: AuthenticatedBlocsProvider(
             memoplannerSettingBloc: memoplannerSettingBloc,
             sortableBloc: sortableBloc,
-            authenticatedState: const Authenticated(user: Fakes.user),
+            authenticatedState: const Authenticated(user: user),
             child: MaterialApp(
               theme: abiliaTheme,
               supportedLocales: Translator.supportedLocals,
@@ -67,7 +67,7 @@ void main() {
   ActivityResponse activityResponse = () => [];
   SortableResponse sortableResponse = () => defaultSortables;
   GenericResponse genericResponse = () => [];
-  SessionsResponse sessionResponse = () => Fakes.fakeSessions;
+  SessionsResponse sessionResponse = () => fakeSessions;
   final initialDay = DateTime(2020, 08, 05);
 
   setUpAll(() {
@@ -137,7 +137,7 @@ void main() {
       ..activityDb = mockActivityDb
       ..ticker = Ticker.fake(initialTime: initialDay)
       ..fireBasePushService = mockFirebasePushService
-      ..client = Fakes.client(
+      ..client = fakeClient(
         activityResponse: () => activityResponse(),
         sortableResponse: () => sortableResponse(),
         genericResponse: () => genericResponse(),
@@ -160,7 +160,7 @@ void main() {
     activityResponse = () => [];
     sortableResponse = () => defaultSortables;
     genericResponse = () => [];
-    sessionResponse = () => Fakes.fakeSessions;
+    sessionResponse = () => fakeSessions;
     GetIt.I.reset();
   });
 

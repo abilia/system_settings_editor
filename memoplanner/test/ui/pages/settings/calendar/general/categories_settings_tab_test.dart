@@ -47,7 +47,7 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = fakeSharedPreferences
       ..ticker = Ticker.fake(initialTime: initialTime)
-      ..client = Fakes.client(
+      ..client = fakeClient(
         genericResponse: () => generics,
         sortableResponse: () => sortable,
       )

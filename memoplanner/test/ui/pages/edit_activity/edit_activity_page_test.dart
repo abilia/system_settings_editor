@@ -98,7 +98,7 @@ void main() {
       ..fileStorage = FakeFileStorage()
       ..database = FakeDatabase()
       ..analytics = MockSeagullAnalytics()
-      ..client = Fakes.client()
+      ..client = fakeClient()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..init();
     Bloc.observer = BlocLoggingObserver(GetIt.I<SeagullAnalytics>());

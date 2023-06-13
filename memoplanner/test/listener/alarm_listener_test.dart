@@ -88,7 +88,7 @@ void main() {
         initialTime: initialTime,
       )
       ..fireBasePushService = FakeFirebasePushService()
-      ..client = Fakes.client(activityResponse: () => response)
+      ..client = fakeClient(activityResponse: () => response)
       ..fileStorage = MockFileStorage()
       ..userFileDb = FakeUserFileDb()
       ..database = FakeDatabase()
@@ -391,7 +391,7 @@ void main() {
 
       // Act Login
       await tester.ourEnterText(find.byType(PasswordInput), 'secretPassword');
-      await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+      await tester.ourEnterText(find.byType(UsernameInput), username);
       await tester.pump();
       await tester.tap(find.byType(LoginButton));
       await tester.pumpAndSettle();

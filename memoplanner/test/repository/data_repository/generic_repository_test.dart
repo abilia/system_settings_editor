@@ -215,7 +215,7 @@ void main() {
       when(() => mockBaseUrlDb.baseUrl).thenReturn('baseUrl');
       genericRepository = GenericRepository(
         baseUrlDb: mockBaseUrlDb,
-        client: Fakes.client(genericResponse: () => repsonseAll),
+        client: fakeClient(genericResponse: () => repsonseAll),
         genericDb: genericDb,
         userId: 1,
         noSyncSettings: MemoplannerSettings.noSyncSettings,

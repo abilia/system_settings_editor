@@ -46,7 +46,7 @@ void main() {
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..ticker = Ticker.fake(initialTime: DateTime(2021, 04, 17, 09, 20))
-        ..client = Fakes.client(
+        ..client = fakeClient(
           genericResponse: () => generics,
           activityResponse: () => [],
           voicesResponse: () => [

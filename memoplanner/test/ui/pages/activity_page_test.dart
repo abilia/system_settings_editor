@@ -75,10 +75,9 @@ void main() {
       ..activityDb = mockActivityDb
       ..ticker = Ticker.fake(initialTime: startTime)
       ..fireBasePushService = FakeFirebasePushService()
-      ..client = Fakes.client(
+      ..client = fakeClient(
         activityResponse: () => activityResponse(),
-        licenseResponse: () =>
-            Fakes.licenseResponseExpires(startTime.add(5.days())),
+        licenseResponse: () => licenseResponseExpires(startTime.add(5.days())),
       )
       ..fileStorage = FakeFileStorage()
       ..genericDb = mockGenericDb

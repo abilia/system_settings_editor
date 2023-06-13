@@ -92,7 +92,7 @@ void main() {
         GetItInitializer()
           ..sharedPreferences = await FakeSharedPreferences.getInstance()
           ..ticker = Ticker.fake(initialTime: time)
-          ..client = Fakes.client()
+          ..client = fakeClient()
           ..database = FakeDatabase()
           ..genericDb = FakeGenericDb()
           ..sortableDb = mockSortableDb
