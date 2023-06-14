@@ -5,7 +5,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
 
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -33,7 +32,7 @@ void registerFallbackValues() {
   );
   registerFallbackValue(const LoadSortables());
   registerFallbackValue(Request('GET', ''.toUri()));
-  registerFallbackValue(NotificationEvent());
+  registerFallbackValue(ScheduleNotifications());
   registerFallbackValue(const StopSound());
   registerFallbackValue(FileStorage(''));
 }

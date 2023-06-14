@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/permission/permission_cubit.dart';
-
-import '../../fakes/permission.dart';
+import 'package:seagull_fakes/all.dart';
 
 void main() {
   setUp(TestWidgetsFlutterBinding.ensureInitialized);

@@ -73,7 +73,7 @@ void main() {
       ..ticker = Ticker.fake(
         initialTime: DateTime(2021, 04, 17, 09, 20),
       )
-      ..client = Fakes.client()
+      ..client = fakeClient()
       ..database = FakeDatabase()
       ..genericDb = FakeGenericDb()
       ..sortableDb = mockSortableDb

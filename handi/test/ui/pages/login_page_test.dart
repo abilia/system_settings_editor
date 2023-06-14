@@ -3,13 +3,19 @@ import 'package:get_it/get_it.dart';
 import 'package:handi/main.dart';
 import 'package:handi/ui/pages/logged_in_page.dart';
 import 'package:handi/ui/pages/login_page.dart';
+import 'package:seagull_fakes/all.dart';
 import 'package:ui/buttons/link_button.dart';
 
 import '../../fakes/fake_getit.dart';
 
 void main() {
-  setUp(() => initGetItFakes());
+  setUp(() {
+    setupPermissions();
+    initGetItFakes();
+  });
+
   tearDown(() => GetIt.I.reset());
+
   testWidgets('shows', (tester) async {
     await tester.pumpWidget(const HandiApp());
     await tester.pumpAndSettle();

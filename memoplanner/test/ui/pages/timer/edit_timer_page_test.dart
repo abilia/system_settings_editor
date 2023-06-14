@@ -66,7 +66,7 @@ void main() {
     GetItInitializer()
       ..database = FakeDatabase()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
-      ..client = Fakes.client()
+      ..client = fakeClient()
       ..analytics = analytics
       ..init();
   });

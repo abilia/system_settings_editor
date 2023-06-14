@@ -28,7 +28,7 @@ void main() {
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..activityDb = ActivityDbInMemory()
-        ..client = Fakes.client(
+        ..client = fakeClient(
             activityResponse: () => serverActivityAnswers.removeAt(0))
         ..fireBasePushService = MockFirebasePushService()
         ..userFileDb = FakeUserFileDb()

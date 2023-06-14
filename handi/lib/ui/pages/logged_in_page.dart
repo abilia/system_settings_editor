@@ -57,11 +57,16 @@ class LoggedInPage extends StatelessWidget {
                     FutureBuilder(
                       future: context
                           .read<ActivitiesBloc>()
-                          .activityRepository
                           // ignore: discarded_futures
-                          .allAfter(DateTime.now()),
-                      builder: (context, snapshot) => Text(
-                          'Upcoming activities: ${snapshot.data?.length ?? 0}'),
+                          .getActivitiesAfter(DateTime.now()),
+                      builder: (context, snapshot) {
+                        final activities = snapshot.data?.where((activity) =>
+                                activity.startTime.isAfter(DateTime.now())) ??
+                            [];
+
+                        return Text(
+                            'Upcoming activities: ${activities.length}');
+                      },
                     ),
                     Text('Generics: $generics'),
                     Text('Sortables: $sortables'),

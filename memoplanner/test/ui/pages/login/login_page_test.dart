@@ -14,6 +14,7 @@ import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
 import '../../../test_helpers/enter_text.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
@@ -21,17 +22,19 @@ void main() {
   final translate = Locales.language.values.first;
 
   final time = DateTime(2020, 11, 11, 11, 11);
-  DateTime licensExpireTime;
+  DateTime licenseExpireTime;
   late ListenableMockClient client;
   TermsOfUseResponse termsOfUseResponse = () => TermsOfUse.accepted();
 
   setUpAll(() {
+    registerFallbackValues();
     scheduleNotificationsIsolated = noAlarmScheduler;
-    licensExpireTime = time.add(10.days());
-    client = Fakes.client(
+    licenseExpireTime = time.add(10.days());
+    client = fakeClient(
       activityResponse: () => [],
-      licenseResponse: () => Fakes.licenseResponseExpires(licensExpireTime),
+      licenseResponse: () => licenseResponseExpires(licenseExpireTime),
       termsOfUseResponse: () => termsOfUseResponse(),
+      allowMultipleLogins: false,
     );
   });
 
@@ -41,7 +44,7 @@ void main() {
     setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
     setupFakeTts();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-    licensExpireTime = time.add(10.days());
+    licenseExpireTime = time.add(10.days());
 
     sortableDb = MockSortableDb();
     when(() => sortableDb.getAllNonDeleted())
@@ -70,6 +73,7 @@ void main() {
   });
 
   tearDown(() async {
+    loginAttempts = 0;
     setupPermissions();
     termsOfUseResponse = () => TermsOfUse.accepted();
     await GetIt.I.reset();
@@ -173,7 +177,7 @@ void main() {
     await tester.pumpApp();
     await tester.pumpAndSettle();
 
-    await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+    await tester.ourEnterText(find.byType(UsernameInput), username);
     expect(find.byType(LoginButton), findsOneWidget);
 
     await tester.tap(find.byType(LoginButton));
@@ -188,9 +192,8 @@ void main() {
     await tester.pumpApp();
     await tester.pumpAndSettle();
 
-    await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
-    await tester.ourEnterText(
-        find.byType(PasswordInput), Fakes.incorrectPassword);
+    await tester.ourEnterText(find.byType(UsernameInput), username);
+    await tester.ourEnterText(find.byType(PasswordInput), incorrectPassword);
     await tester.pump();
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
@@ -203,7 +206,7 @@ void main() {
     await tester.pumpApp();
     await tester.pumpAndSettle();
     await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-    await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+    await tester.ourEnterText(find.byType(UsernameInput), username);
     await tester.pumpAndSettle();
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
@@ -216,7 +219,7 @@ void main() {
 
     // Login
     await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-    await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+    await tester.ourEnterText(find.byType(UsernameInput), username);
     await tester.pump();
     expect(find.byType(LoginButton), findsOneWidget);
     await tester.tap(find.byType(LoginButton));
@@ -246,7 +249,7 @@ void main() {
 
     // Login
     await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-    await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+    await tester.ourEnterText(find.byType(UsernameInput), username);
     await tester.pump();
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
@@ -259,12 +262,11 @@ void main() {
 
     await tester.verifyTts(find.byType(UsernameInput),
         exact: translate.usernameHint);
-    await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
-    await tester.verifyTts(find.byType(UsernameInput), exact: Fakes.username);
+    await tester.ourEnterText(find.byType(UsernameInput), username);
+    await tester.verifyTts(find.byType(UsernameInput), exact: username);
     await tester.verifyTts(find.text(translate.password),
         exact: translate.password);
-    await tester.ourEnterText(
-        find.byType(PasswordInput), Fakes.incorrectPassword);
+    await tester.ourEnterText(find.byType(PasswordInput), incorrectPassword);
     await tester.verifyTts(find.byType(LoginButton), exact: translate.login);
     await tester.pump();
     await tester.tap(find.byType(LoginButton));
@@ -295,14 +297,14 @@ void main() {
 
   testWidgets('Gets no valid license dialog when no valid license',
       (WidgetTester tester) async {
-    licensExpireTime = time.subtract(10.days());
+    licenseExpireTime = time.subtract(10.days());
 
     await tester.pumpApp();
 
     await tester.pumpAndSettle();
 
     await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-    await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+    await tester.ourEnterText(find.byType(UsernameInput), username);
     await tester.pump();
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
@@ -315,14 +317,14 @@ void main() {
     await tester.pumpApp(pushCubit: pushCubit);
     await tester.pumpAndSettle();
     await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-    await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+    await tester.ourEnterText(find.byType(UsernameInput), username);
     await tester.pumpAndSettle();
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
 
     expect(find.byType(CalendarPage), findsOneWidget);
 
-    licensExpireTime = time.subtract(10.days());
+    licenseExpireTime = time.subtract(10.days());
 
     pushCubit.fakePush();
     await tester.pumpAndSettle();
@@ -336,13 +338,13 @@ void main() {
     await tester.pumpApp(pushCubit: pushCubit);
     await tester.pumpAndSettle();
     await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-    await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+    await tester.ourEnterText(find.byType(UsernameInput), username);
     await tester.pumpAndSettle();
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
     expect(find.byType(CalendarPage), findsOneWidget);
 
-    licensExpireTime = time.subtract(10.days());
+    licenseExpireTime = time.subtract(10.days());
 
     pushCubit.fakePush();
     await tester.pumpAndSettle();
@@ -355,14 +357,14 @@ void main() {
 
   testWidgets('Can login when no valid expired license, sync warning',
       (WidgetTester tester) async {
-    licensExpireTime = time.subtract(10.days());
+    licenseExpireTime = time.subtract(10.days());
 
     await tester.pumpApp();
 
     await tester.pumpAndSettle();
 
     await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-    await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+    await tester.ourEnterText(find.byType(UsernameInput), username);
     await tester.pumpAndSettle();
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
@@ -383,10 +385,8 @@ void main() {
     await tester.pumpApp();
     await tester.pumpAndSettle();
 
-    await tester.ourEnterText(
-        find.byType(UsernameInput), Fakes.supportUserName);
-    await tester.ourEnterText(
-        find.byType(PasswordInput), Fakes.incorrectPassword);
+    await tester.ourEnterText(find.byType(UsernameInput), supportUserName);
+    await tester.ourEnterText(find.byType(PasswordInput), incorrectPassword);
     await tester.pump();
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
@@ -436,12 +436,12 @@ void main() {
     expect(find.text(testUsername), findsOneWidget);
     await tester.tap(find.byType(UsernameInput), warnIfMissed: false);
     await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(TestKey.input), Fakes.username);
+    await tester.enterText(find.byKey(TestKey.input), username);
     await tester.pumpAndSettle();
     await tester.tap(find.byType(CancelButton));
     await tester.pumpAndSettle();
     expect(find.byType(LoginPage), findsOneWidget);
-    expect(find.text(Fakes.username), findsNothing);
+    expect(find.text(username), findsNothing);
     expect(find.text(testUsername), findsOneWidget);
   });
 
@@ -474,7 +474,7 @@ void main() {
     await tester.pumpApp();
     await tester.pumpAndSettle();
     await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-    await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+    await tester.ourEnterText(find.byType(UsernameInput), username);
     await tester.pumpAndSettle();
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
@@ -525,7 +525,7 @@ void main() {
         await tester.pumpApp();
         await tester.pumpAndSettle();
         await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+        await tester.ourEnterText(find.byType(UsernameInput), username);
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
@@ -542,7 +542,7 @@ void main() {
         await tester.pumpApp();
         await tester.pumpAndSettle();
         await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+        await tester.ourEnterText(find.byType(UsernameInput), username);
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
@@ -557,7 +557,7 @@ void main() {
         await tester.pumpApp();
         await tester.pumpAndSettle();
         await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+        await tester.ourEnterText(find.byType(UsernameInput), username);
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
@@ -583,7 +583,7 @@ void main() {
         await tester.pumpApp();
         await tester.pumpAndSettle();
         await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+        await tester.ourEnterText(find.byType(UsernameInput), username);
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
@@ -596,7 +596,7 @@ void main() {
         await tester.pumpApp();
         await tester.pumpAndSettle();
         await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+        await tester.ourEnterText(find.byType(UsernameInput), username);
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
@@ -615,7 +615,7 @@ void main() {
           await tester.pumpApp();
           await tester.pumpAndSettle();
           await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-          await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+          await tester.ourEnterText(find.byType(UsernameInput), username);
           await tester.pump();
           await tester.tap(find.byType(LoginButton));
           await tester.pumpAndSettle();
@@ -633,7 +633,7 @@ void main() {
           await tester.pumpApp();
           await tester.pumpAndSettle();
           await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-          await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+          await tester.ourEnterText(find.byType(UsernameInput), username);
           await tester.pump();
           await tester.tap(find.byType(LoginButton));
           await tester.pumpAndSettle();
@@ -649,7 +649,7 @@ void main() {
           await tester.pumpApp();
           await tester.pumpAndSettle();
           await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-          await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+          await tester.ourEnterText(find.byType(UsernameInput), username);
           await tester.pump();
           await tester.tap(find.byType(LoginButton));
           await tester.pumpAndSettle();
@@ -680,7 +680,7 @@ void main() {
         await tester.pumpApp();
         await tester.pumpAndSettle();
         await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+        await tester.ourEnterText(find.byType(UsernameInput), username);
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
@@ -730,7 +730,7 @@ void main() {
         await tester.pumpApp();
         await tester.pumpAndSettle();
         await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+        await tester.ourEnterText(find.byType(UsernameInput), username);
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
@@ -783,7 +783,7 @@ void main() {
         await tester.pumpApp();
         await tester.pumpAndSettle();
         await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+        await tester.ourEnterText(find.byType(UsernameInput), username);
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
@@ -832,7 +832,7 @@ void main() {
         await tester.pumpApp();
         await tester.pumpAndSettle();
         await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
-        await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
+        await tester.ourEnterText(find.byType(UsernameInput), username);
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
@@ -847,6 +847,29 @@ void main() {
 
         // Assert - Calendar page shows
         expect(find.byType(CalendarPage), findsOneWidget);
+      });
+
+      testWidgets('SGC-2463 - Too many login attempts dialog',
+          (WidgetTester tester) async {
+        await tester.pumpApp();
+        await tester.pumpAndSettle();
+
+        await tester.ourEnterText(find.byType(UsernameInput), username);
+        await tester.ourEnterText(
+            find.byType(PasswordInput), incorrectPassword);
+        await tester.pump();
+        await tester.tap(find.byType(LoginButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(ErrorDialog), findsOneWidget);
+        await tester.tap(find.byType(PreviousButton));
+        await tester.pumpAndSettle();
+        await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(LoginButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(CalendarPage), findsNothing);
+        expect(find.byType(ErrorDialog), findsOneWidget);
+        expect(find.text(translate.tooManyAttempts), findsOneWidget);
       });
     });
   });

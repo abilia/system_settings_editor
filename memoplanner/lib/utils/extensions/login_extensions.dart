@@ -29,6 +29,8 @@ extension LoginFailureErrorMessage on LoginFailureCause {
         return translate.userTypeNotSupported;
       case LoginFailureCause.notEmptyDatabase:
         return translate.unknownError;
+      case LoginFailureCause.tooManyAttempts:
+        return translate.tooManyAttempts;
       default:
         return '';
     }

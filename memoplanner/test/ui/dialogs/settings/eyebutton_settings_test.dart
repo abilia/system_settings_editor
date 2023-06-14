@@ -39,7 +39,7 @@ void main() {
       ..sortableDb = FakeSortableDb()
       ..ticker = Ticker.fake(initialTime: initTime)
       ..fireBasePushService = FakeFirebasePushService()
-      ..client = Fakes.client(activityResponse: () => [])
+      ..client = fakeClient(activityResponse: () => [])
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
       ..database = FakeDatabase()

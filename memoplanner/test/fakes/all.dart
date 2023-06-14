@@ -7,4 +7,3 @@ export 'fake_db_and_repository.dart';
 export 'fake_webview.dart';
 export 'fakes_blocs.dart';
 export 'flutter_local_notifications_plugin.dart';
-export 'permission.dart';

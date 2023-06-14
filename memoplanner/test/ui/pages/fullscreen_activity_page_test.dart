@@ -90,10 +90,10 @@ void main() {
       ..genericDb = FakeGenericDb()
       ..database = FakeDatabase()
       ..fireBasePushService = FakeFirebasePushService()
-      ..client = Fakes.client(
+      ..client = fakeClient(
         activityResponse: () => [],
         licenseResponse: () =>
-            Fakes.licenseResponseExpires(startTimeOne.add(5.days())),
+            licenseResponseExpires(startTimeOne.add(5.days())),
       )
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()

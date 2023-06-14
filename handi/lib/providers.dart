@@ -8,9 +8,11 @@ import 'package:calendar_events/calendar_events.dart';
 import 'package:file_storage/file_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:generics/generics.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/background/background.dart';
+import 'package:handi/bloc/notification_bloc.dart';
 import 'package:handi/main.dart';
 import 'package:handi/models/delays.dart';
 import 'package:repository_base/repository_base.dart';
@@ -92,6 +94,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
               [
                 DatabaseRepository.clearAll(GetIt.I<Database>()),
                 GetIt.I<FileStorage>().deleteUserFolder(),
+                FlutterLocalNotificationsPlugin().cancelAll(),
               ],
             ),
           )..add(CheckAuthentication()),
@@ -204,6 +207,14 @@ class AuthenticatedProviders extends StatelessWidget {
               genericRepository: context.read<GenericRepository>(),
               syncBloc: context.read<SyncBloc>(),
             ),
+          ),
+          BlocProvider<NotificationBloc>(
+            lazy: false,
+            create: (context) => NotificationBloc(
+              activitiesBloc: context.read<ActivitiesBloc>(),
+              scheduleNotificationsDelay:
+                  GetIt.I<Delays>().scheduleNotificationsDelay,
+            )..add(ScheduleNotifications()),
           ),
         ],
         child: child,
