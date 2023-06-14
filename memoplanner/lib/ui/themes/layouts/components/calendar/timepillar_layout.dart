@@ -25,7 +25,7 @@ class TimepillarLayout {
     this.hourTextPadding = 3,
     this.hourLineWidth = 1,
     this.timeLineHeight = 2,
-    this.flarpRadius = 8,
+    this.flarpRadius = 4,
     this.dot = const TimepillarDotLayout(),
     this.card = const TimepillarCardLayout(),
     this.twoTimePillar = const TwoTimepillarLayout(),
@@ -50,6 +50,7 @@ class TimepillarLayoutMedium extends TimepillarLayout {
     double? hourIntervalPadding,
     double? hourTextPadding,
     double? hourLineWidth,
+    double? flarpRadius,
     TimepillarDotLayout? dot,
     TimepillarCardLayout? card,
     TwoTimepillarLayout? twoTimePillar,
@@ -61,7 +62,6 @@ class TimepillarLayoutMedium extends TimepillarLayout {
           hourIntervalPadding: hourIntervalPadding ?? 1.5,
           hourTextPadding: hourTextPadding ?? 4.5,
           hourLineWidth: hourLineWidth ?? 1,
-          flarpRadius: 12,
           dot: dot ??
               const TimepillarDotLayout(
                 size: 16,
@@ -103,6 +103,7 @@ class TimepillarLayoutLarge extends TimepillarLayoutMedium {
           hourIntervalPadding: 2,
           hourLineWidth: 2,
           hourTextPadding: 4,
+          flarpRadius: 6,
           dot: const TimepillarDotLayout(
             size: 18,
             padding: 6,
