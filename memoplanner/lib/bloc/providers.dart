@@ -260,6 +260,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 GetIt.I<DayCalendarViewDb>(),
                 context.read<GenericCubit>(),
               ),
+              lazy: false,
             ),
             BlocProvider<TimepillarCubit>(
               create: (context) => TimepillarCubit(

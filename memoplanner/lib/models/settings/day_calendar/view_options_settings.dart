@@ -34,6 +34,27 @@ class DayCalendarViewSettings extends Equatable {
     this.calendarTypeIndex = 1,
   });
 
+  // TODO remove in 4.4
+  factory DayCalendarViewSettings.fromSettingsMap(
+      Map<String, GenericSettingData> settings) {
+    return DayCalendarViewSettings(
+      display: DayCalendarViewOptionsDisplaySettings.fromSettingsMap(settings),
+      dots: settings.parse(viewOptionsDotsKey, false),
+      timepillarZoomIndex: settings.parse(
+        viewOptionsTimepillarZoomKey,
+        1,
+      ),
+      intervalTypeIndex: settings.parse(
+        viewOptionsTimeIntervalKey,
+        1,
+      ),
+      calendarTypeIndex: settings.parse(
+        viewOptionsCalendarTypeKey,
+        1,
+      ),
+    );
+  }
+
   DayCalendarViewSettings copyWith({
     DayCalendarViewOptionsDisplaySettings? display,
     bool? dots,
