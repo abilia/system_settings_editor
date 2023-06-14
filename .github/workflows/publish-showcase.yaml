@@ -11,6 +11,9 @@ on:
       - '!**/*.md'
       - '!**/*.yaml'
 
+concurrency:
+  group: 'github-pages'
+
 jobs:
   build:
     name: Publish showcase to github pages
