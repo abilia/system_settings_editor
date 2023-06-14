@@ -117,6 +117,7 @@ void main() {
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileBloc: mockUserFileBloc,
+          spamProtectionDelay: Duration.zero,
         ),
         remoteMessageStream: FakePushCubit().stream,
       ),
@@ -134,6 +135,7 @@ void main() {
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileBloc: mockUserFileBloc,
+          spamProtectionDelay: Duration.zero,
         ),
         remoteMessageStream: FakePushCubit().stream,
       ),
@@ -163,6 +165,7 @@ void main() {
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileBloc: mockUserFileBloc,
+          spamProtectionDelay: Duration.zero,
         ),
         remoteMessageStream: FakePushCubit().stream,
       ),
@@ -193,6 +196,7 @@ void main() {
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileBloc: mockUserFileBloc,
+          spamProtectionDelay: Duration.zero,
         ),
         remoteMessageStream: FakePushCubit().stream,
       ),
@@ -210,6 +214,7 @@ void main() {
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileBloc: mockUserFileBloc,
+          spamProtectionDelay: Duration.zero,
         ),
         remoteMessageStream: FakePushCubit().stream,
       ),
@@ -231,6 +236,7 @@ void main() {
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileBloc: mockUserFileBloc,
+          spamProtectionDelay: Duration.zero,
         ),
         remoteMessageStream: FakePushCubit().stream,
       ),
@@ -252,6 +258,7 @@ void main() {
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileBloc: mockUserFileBloc,
+          spamProtectionDelay: Duration.zero,
         ),
         remoteMessageStream: FakePushCubit().stream,
       ),
@@ -273,6 +280,7 @@ void main() {
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileBloc: mockUserFileBloc,
+          spamProtectionDelay: Duration.zero,
         ),
         remoteMessageStream: FakePushCubit().stream,
       ),
@@ -293,6 +301,7 @@ void main() {
         soundBloc: SoundBloc(
           storage: FakeFileStorage(),
           userFileBloc: mockUserFileBloc,
+          spamProtectionDelay: Duration.zero,
         )..add(PlaySound(speechFile)),
         remoteMessageStream: FakePushCubit().stream,
       ),

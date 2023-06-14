@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -23,7 +24,9 @@ class AlarmSettingsPage extends StatelessWidget {
         genericCubit: context.read<GenericCubit>(),
       ),
       child: BlocProvider<AlarmSoundBloc>(
-        create: (_) => AlarmSoundBloc(),
+        create: (_) => AlarmSoundBloc(
+          spamProtectionDelay: GetIt.I<Delays>().spamProtectionDelay,
+        ),
         child: BlocBuilder<AlarmSettingsCubit, AlarmSettings>(
           builder: (context, state) {
             return Scaffold(
