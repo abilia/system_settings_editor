@@ -20,6 +20,7 @@ import 'package:handi/models/delays.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:seagull_clock/clock_bloc.dart';
 import 'package:seagull_clock/ticker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sortables/sortables.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:user_files/user_files.dart';
@@ -97,6 +98,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
                 DatabaseRepository.clearAll(GetIt.I<Database>()),
                 GetIt.I<FileStorage>().deleteUserFolder(),
                 FlutterLocalNotificationsPlugin().cancelAll(),
+                _clearSettings(),
               ],
             ),
           )..add(CheckAuthentication()),
@@ -113,6 +115,18 @@ class AuthenticationBlocProvider extends StatelessWidget {
       ],
       child: child,
     );
+  }
+
+  Future<void> _clearSettings() async {
+    const deviceRecords = DeviceDb.records;
+    const baseUrlRecord = BaseUrlDb.baseUrlRecord;
+    const records = {...deviceRecords, baseUrlRecord};
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final keys = prefs.getKeys().where((key) => !records.contains(key));
+    for (final key in keys) {
+      await prefs.remove(key);
+    }
   }
 }
 

@@ -475,7 +475,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
                 clearNotificationSubject(),
                 notificationPlugin.cancelAll(),
                 GetIt.I<FileStorage>().deleteUserFolder(),
-                _clearSettings(context.read<SpeechSettingsCubit>()),
+                _clearSettings(),
               ],
             ),
             client: GetIt.I<ListenableClient>(),
@@ -495,7 +495,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
     );
   }
 
-  Future<void> _clearSettings(SpeechSettingsCubit speechSettingsCubit) async {
+  Future<void> _clearSettings() async {
     const deviceRecords = DeviceDb.records;
     const voiceRecords = VoiceDb.storeOnLogoutRecords;
     const baseUrlRecord = BaseUrlDb.baseUrlRecord;
