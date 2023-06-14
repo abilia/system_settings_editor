@@ -1,30 +1,81 @@
-name: Publish showcase to GitHub Pages
+name: Publish Showcase to GitHub Pages
 
 on:
-    workflow_dispatch:
-    push:
-      branches:
-        - master
-      paths:
-        - 'showcase/**'
-        - 'packages/ui/**'
-        - '!**/*.md'
-        - '!**/*.yaml'
-jobs:
-  analyze_and_test_packages:
-    uses: ./.github/workflows/packages-analyze.yaml
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'showcase/**'
+      - 'packages/ui/**'
+      - '!**/*.md'
+      - '!**/*.yaml'
 
+concurrency:
+  group: 'github-pages'
+
+jobs:
   build:
     name: Publish showcase to github pages
     runs-on: ubuntu-latest
-    needs: [analyze_and_test_packages]
+    environment:
+      name: Showcase
+      url: ${{ steps.extract_branch.outputs.url }}
+
     steps:
       - uses: actions/checkout@v2 # Only works with v2
       - uses: subosito/flutter-action@v2.5.0
         with:
           flutter-version: '3.10.2'
           channel: 'stable'
-      - uses: bluefireteam/flutter-gh-pages@v7
+
+      - name: Extract branch name
+        id: extract_branch
+        run: |
+          branch_name=${GITHUB_REF#refs/heads/}
+          echo "branch=$branch_name" >> $GITHUB_OUTPUT
+          echo "url=https://abilia.github.io/seagull/$branch_name" >> $GITHUB_OUTPUT
+
+      - name: Build showcase to buffer branch
+        uses: bluefireteam/flutter-gh-pages@v7
         with:
           workingDir: showcase
-          baseHref: /seagull/
+          baseHref: /seagull/${{ steps.extract_branch.outputs.branch }}/
+          targetBranch: gh-pages-buffer
+
+      - uses: actions/checkout@v2
+        with:
+          ref: gh-pages-buffer
+
+      - name: Copy files to new folder in buffer branch
+        run: |
+          mkdir -p ${{ steps.extract_branch.outputs.branch }}
+          rsync -r --exclude=${{ steps.extract_branch.outputs.branch }}/ * ${{ steps.extract_branch.outputs.branch }}/
+          git add .
+          git commit -m "Copy files to ${{ steps.extract_branch.outputs.branch }}"
+
+      - name: Copy files from buffer branch to github pages
+        run: |
+          git fetch
+          git checkout gh-pages
+          git rm -r --ignore-unmatch ${{ steps.extract_branch.outputs.branch }}/*
+          mkdir -p ${{ steps.extract_branch.outputs.branch }} || exit 1
+          git checkout -f gh-pages-buffer ${{ steps.extract_branch.outputs.branch }}/
+          git add ${{ steps.extract_branch.outputs.branch }}/
+          git commit -m "Create showcase for branch ${{ steps.extract_branch.outputs.branch }}"
+
+      - name: Cleanup showcases
+        run: |
+          branches=$(git ls-remote --quiet --refs --heads origin | awk -F'/' '{print $NF}')
+          top_level_dirs=$(find . -maxdepth 1 -type d ! -path . -name "[!.]*" | sed 's|^\./||') 
+          
+          for folder in $top_level_dirs; do
+            if [[ ! " ${branches[*]} " == *"$folder"* ]]; then
+              rm -rf "$folder"
+              echo "Deleted folder: $folder"
+            fi
+          done
+          
+          git add -A
+          git commit  --allow-empty -m "Cleanup removed branches"
+          git push
