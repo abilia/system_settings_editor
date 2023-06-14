@@ -15,6 +15,9 @@ jobs:
   build:
     name: Publish showcase to github pages
     runs-on: ubuntu-latest
+    environment:
+      name: Showcase
+      url: ${{ steps.extract_branch.outputs.url }}
 
     steps:
       - uses: actions/checkout@v2 # Only works with v2
@@ -25,7 +28,10 @@ jobs:
 
       - name: Extract branch name
         id: extract_branch
-        run: echo ::set-output name=branch::${GITHUB_REF#refs/heads/}
+        run: |
+          branch_name=${GITHUB_REF#refs/heads/}
+          echo "branch=$branch_name" >> $GITHUB_OUTPUT
+          echo "url=https://abilia.github.io/seagull/$branch_name" >> $GITHUB_OUTPUT
 
       - name: Build showcase to buffer branch
         uses: bluefireteam/flutter-gh-pages@v7
@@ -45,7 +51,7 @@ jobs:
           git add .
           git commit -m "Copy files to ${{ steps.extract_branch.outputs.branch }}"
 
-      - name: Copy files in buffer branch to github pages branch
+      - name: Copy files from buffer branch to github pages
         run: |
           git fetch
           git checkout gh-pages
@@ -54,7 +60,19 @@ jobs:
           git checkout -f gh-pages-buffer ${{ steps.extract_branch.outputs.branch }}/
           git add ${{ steps.extract_branch.outputs.branch }}/
           git commit -m "Create showcase for branch ${{ steps.extract_branch.outputs.branch }}"
-          git push
 
-      - name: Print url
-        run: echo "Link to showcase:\ https://abilia.github.io/${{ steps.extract_branch.outputs.branch }}"
+      - name: Cleanup showcases
+        run: |
+          branches=$(git ls-remote --quiet --refs --heads origin | awk -F'/' '{print $NF}')
+          top_level_dirs=$(find . -maxdepth 1 -type d ! -path . -name "[!.]*" | sed 's|^\./||') 
+          
+          for folder in $top_level_dirs; do
+            if [[ ! " ${branches[*]} " == *"$folder"* ]]; then
+              rm -rf "$folder"
+              echo "Deleted folder: $folder"
+            fi
+          done
+          
+          git add -A
+          git commit  --allow-empty -m "Cleanup removed branches"
+          git push
