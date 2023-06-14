@@ -4,6 +4,8 @@ import 'package:calendar_events/calendar_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:generics/generics.dart';
+import 'package:handi/bloc/settings_cubit.dart';
+import 'package:handi/ui/components/tts.dart';
 import 'package:sortables/sortables.dart';
 import 'package:ui/buttons/link_button.dart';
 import 'package:user_files/user_files.dart';
@@ -28,6 +30,8 @@ class LoggedInPage extends StatelessWidget {
     });
     final userFiles = context
         .select((UserFileBloc userFiles) => userFiles.state.userFiles.length);
+    final tts = context.select(
+        (SettingsCubit settingsCubit) => settingsCubit.state.textToSpeech);
 
     final hasSynced = context.select((SyncBloc bloc) => bloc.hasSynced);
     return Scaffold(
@@ -52,26 +56,47 @@ class LoggedInPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 100),
-                    Center(child: Text('${authenticated.user}')),
-                    const SizedBox(height: 100),
-                    FutureBuilder(
-                      future: context
-                          .read<ActivitiesBloc>()
-                          // ignore: discarded_futures
-                          .getActivitiesAfter(DateTime.now()),
-                      builder: (context, snapshot) {
-                        final activities = snapshot.data?.where((activity) =>
-                                activity.startTime.isAfter(DateTime.now())) ??
-                            [];
-
-                        return Text(
-                            'Upcoming activities: ${activities.length}');
-                      },
+                    Center(
+                      child: Tts(
+                        child: Text('${authenticated.user}'),
+                      ),
                     ),
-                    Text('Generics: $generics'),
-                    Text('Sortables: $sortables'),
-                    Text('User files: $userFiles'),
+                    const SizedBox(height: 100),
+                    Column(
+                      children: [
+                        FutureBuilder(
+                          future: context
+                              .read<ActivitiesBloc>()
+                              // ignore: discarded_futures
+                              .getActivitiesAfter(DateTime.now()),
+                          builder: (context, snapshot) {
+                            final activities = snapshot.data?.where(
+                                    (activity) => activity.startTime
+                                        .isAfter(DateTime.now())) ??
+                                [];
+
+                            return Text(
+                                'Upcoming activities: ${activities.length}');
+                          },
+                        ),
+                        Text('Generics: $generics'),
+                        Text('Sortables: $sortables'),
+                        Text('User files: $userFiles'),
+                      ],
+                    ),
                     const Spacer(),
+                    Center(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text('Text to speech'),
+                          Switch(
+                            value: tts,
+                            onChanged: context.read<SettingsCubit>().setTts,
+                          ),
+                        ],
+                      ),
+                    ),
                     LinkButton(
                       onPressed: () =>
                           context.read<SyncBloc>().add(const SyncAll()),

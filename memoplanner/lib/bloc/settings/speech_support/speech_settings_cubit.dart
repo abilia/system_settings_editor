@@ -4,13 +4,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/tts/tts_handler.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 
 part 'speech_settings_state.dart';
 
 class SpeechSettingsCubit extends Cubit<SpeechSettingsState> {
   final VoiceDb voiceDb;
-  final TtsInterface acapelaTts;
+  final TtsHandler acapelaTts;
 
   SpeechSettingsCubit({
     required this.voiceDb,

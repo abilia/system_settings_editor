@@ -6,11 +6,11 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/repository/all.dart';
 
-import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:record/record.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 
 export 'package:mocktail/mocktail.dart';
 
@@ -73,7 +73,7 @@ class MockDeviceRepository extends Mock implements DeviceRepository {}
 class MockFactoryResetRepository extends Mock
     implements FactoryResetRepository {}
 
-class MockTtsHandler extends Mock implements TtsInterface {}
+class MockTtsHandler extends Mock implements TtsHandler {}
 
 class MockSeagullAnalytics extends Mock implements SeagullAnalytics {}
 

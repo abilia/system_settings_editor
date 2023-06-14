@@ -8,6 +8,7 @@ import 'package:file_storage/file_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:generics/db/generic_db.dart';
 import 'package:get_it/get_it.dart';
+import 'package:handi/db/settings_db.dart';
 import 'package:handi/main.dart';
 import 'package:handi/models/delays.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -18,6 +19,7 @@ import 'package:seagull_logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sortables/db/sortable_db.dart';
 import 'package:sqflite/sqlite_api.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 import 'package:user_files/db/user_file_db.dart';
 
 Future<void> initGetIt() async => initGetItWith(
@@ -25,6 +27,7 @@ Future<void> initGetIt() async => initGetItWith(
       database: await DatabaseRepository.createSqfliteDb(),
       directory: await getApplicationDocumentsDirectory(),
       seagullLogger: SeagullLogger.test(),
+      ttsHandler: await FlutterTtsHandler.implementation(),
     );
 
 @visibleForTesting
@@ -33,6 +36,7 @@ Future<void> initGetItWith({
   required Database database,
   required Directory directory,
   ListenableClient? listenableClient,
+  TtsHandler? ttsHandler,
   PackageInfo? packageInfo,
   FirebasePushService? firebasePushService,
   ActivityDb? activityDb,
@@ -42,6 +46,7 @@ Future<void> initGetItWith({
   LastSyncDb? lastSyncDb,
   Delays? delays,
   SeagullLogger? seagullLogger,
+  SettingsDb? settingsDb,
 }) async {
   GetIt.I
     ..registerSingleton(sharedPreferences)
@@ -63,6 +68,8 @@ Future<void> initGetItWith({
     ..registerSingleton(lastSyncDb ?? LastSyncDb(sharedPreferences))
     ..registerSingleton(delays ?? const Delays())
     ..registerSingleton(seagullLogger ?? SeagullLogger.nothing())
+    ..registerSingleton<TtsHandler>(ttsHandler ?? FlutterTtsHandler())
+    ..registerSingleton<SettingsDb>(settingsDb ?? SettingsDb(sharedPreferences))
     ..registerSingleton(
       listenableClient ??
           ClientWithDefaultHeaders(

@@ -5,32 +5,19 @@ class DayCalendarViewDb {
   final SharedPreferences prefs;
   const DayCalendarViewDb(this.prefs);
 
+  static const _keys = {
+    DayCalendarViewOptionsDisplaySettings.displayCalendarTypeKey,
+    DayCalendarViewOptionsDisplaySettings.displayIntervalTypeIntervalKey,
+    DayCalendarViewOptionsDisplaySettings.displayTimepillarZoomKey,
+    DayCalendarViewOptionsDisplaySettings.displayDurationKey,
+    DayCalendarViewSettings.viewOptionsDotsKey,
+    DayCalendarViewSettings.viewOptionsTimepillarZoomKey,
+    DayCalendarViewSettings.viewOptionsTimeIntervalKey,
+    DayCalendarViewSettings.viewOptionsCalendarTypeKey,
+  };
+
   // TODO remove in 4.4
-  bool get isNotSet =>
-      !prefs.containsKey(
-        DayCalendarViewOptionsDisplaySettings.displayCalendarTypeKey,
-      ) ||
-      !prefs.containsKey(
-        DayCalendarViewOptionsDisplaySettings.displayIntervalTypeIntervalKey,
-      ) ||
-      !prefs.containsKey(
-        DayCalendarViewOptionsDisplaySettings.displayTimepillarZoomKey,
-      ) ||
-      !prefs.containsKey(
-        DayCalendarViewOptionsDisplaySettings.displayDurationKey,
-      ) ||
-      !prefs.containsKey(
-        DayCalendarViewSettings.viewOptionsDotsKey,
-      ) ||
-      !prefs.containsKey(
-        DayCalendarViewSettings.viewOptionsTimepillarZoomKey,
-      ) ||
-      !prefs.containsKey(
-        DayCalendarViewSettings.viewOptionsTimeIntervalKey,
-      ) ||
-      !prefs.containsKey(
-        DayCalendarViewSettings.viewOptionsCalendarTypeKey,
-      );
+  bool get isNotSet => _keys.intersection(prefs.getKeys()).isEmpty;
 
   Future<void> setDayCalendarViewOptionsSettings(
     DayCalendarViewSettings dayCalendarViewOptionsSettings,

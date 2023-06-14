@@ -2,7 +2,7 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/tts/tts_handler.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 
 class Tts extends StatelessWidget {
   final Text child;
@@ -74,5 +74,5 @@ class _Tts extends StatelessWidget {
       );
 
   Future<void> _playTts() async =>
-      GetIt.I<TtsInterface>().speak(onLongPress?.call() ?? data ?? '');
+      GetIt.I<TtsHandler>().speak(onLongPress?.call() ?? data ?? '');
 }
