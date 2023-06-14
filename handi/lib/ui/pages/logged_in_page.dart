@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:generics/generics.dart';
 import 'package:handi/bloc/settings_cubit.dart';
-import 'package:handi/utils/tts_extension.dart';
+import 'package:handi/ui/components/tts.dart';
 import 'package:sortables/sortables.dart';
 import 'package:user_files/user_files.dart';
 
@@ -55,7 +55,11 @@ class LoggedInPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 100),
-                    Center(child: Text('${authenticated.user}').withTts()),
+                    Center(
+                      child: Tts(
+                        child: Text('${authenticated.user}'),
+                      ),
+                    ),
                     const SizedBox(height: 100),
                     Column(
                       children: [
@@ -78,7 +82,7 @@ class LoggedInPage extends StatelessWidget {
                         Text('Sortables: $sortables'),
                         Text('User files: $userFiles'),
                       ],
-                    ).withTts('This is pretty cool'),
+                    ),
                     const Spacer(),
                     Center(
                       child: Row(
@@ -90,19 +94,19 @@ class LoggedInPage extends StatelessWidget {
                             onChanged: context.read<SettingsCubit>().setTts,
                           ),
                         ],
-                      ).withTts('Text to speech'),
+                      ),
                     ),
                     OutlinedButton(
                       onPressed: () =>
                           context.read<SyncBloc>().add(const SyncAll()),
                       child: const Text('Sync'),
-                    ).withTts('Sync'),
+                    ),
                     OutlinedButton(
                       onPressed: () => context
                           .read<AuthenticationBloc>()
                           .add(const LoggedOut()),
                       child: const Text('Log out'),
-                    ).withTts('Log out'),
+                    ),
                   ],
                 ),
               ),

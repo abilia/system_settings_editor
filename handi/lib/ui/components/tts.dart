@@ -6,14 +6,12 @@ import 'package:handi/models/settings/handi_settings.dart';
 import 'package:text_to_speech/text_to_speech.dart';
 
 class Tts extends StatelessWidget {
-  final Widget child;
-  final String data;
+  final Text child;
 
   const Tts({
     required this.child,
-    required this.data,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) =>
@@ -27,5 +25,6 @@ class Tts extends StatelessWidget {
         ),
       );
 
-  Future<void> _playTts() async => GetIt.I<TtsHandler>().speak(data);
+  Future<void> _playTts() async =>
+      GetIt.I<TtsHandler>().speak(child.data ?? '');
 }
