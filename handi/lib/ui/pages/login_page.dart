@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_bloc.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:ui/buttons/link_button.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({required this.unauthenticatedState, super.key});
@@ -32,8 +33,8 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
-                TextButton(
-                  child: const Text('Ok'),
+                LinkButton(
+                  title: 'Ok',
                   onPressed: () {
                     Navigator.of(context).maybePop();
                   },
@@ -113,11 +114,11 @@ class LoginPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  OutlinedButton(
+                  LinkButton(
                     onPressed: state.isFormValid
                         ? context.read<LoginCubit>().loginButtonPressed
                         : null,
-                    child: const Text('Sign in'),
+                    title: ('Sign in'),
                   )
                 ],
               ),

@@ -7,6 +7,7 @@ import 'package:generics/generics.dart';
 import 'package:handi/bloc/settings_cubit.dart';
 import 'package:handi/ui/components/tts.dart';
 import 'package:sortables/sortables.dart';
+import 'package:ui/buttons/link_button.dart';
 import 'package:user_files/user_files.dart';
 
 class LoggedInPage extends StatelessWidget {
@@ -96,16 +97,16 @@ class LoggedInPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    OutlinedButton(
+                    LinkButton(
                       onPressed: () =>
                           context.read<SyncBloc>().add(const SyncAll()),
-                      child: const Text('Sync'),
+                      title: 'Sync',
                     ),
-                    OutlinedButton(
+                    LinkButton(
                       onPressed: () => context
                           .read<AuthenticationBloc>()
                           .add(const LoggedOut()),
-                      child: const Text('Log out'),
+                      title: 'Log out',
                     ),
                   ],
                 ),
