@@ -9,9 +9,9 @@ import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:path/path.dart' as p;
+import 'package:text_to_speech/text_to_speech.dart';
 
 class VoiceRepository {
   VoiceRepository({
@@ -31,7 +31,7 @@ class VoiceRepository {
   final BaseClient client;
   final BaseUrlDb baseUrlDb;
   final Directory _voicesDirectory, tempDirectory;
-  final TtsInterface ttsHandler;
+  final TtsHandler ttsHandler;
 
   static const String baseUrl = 'library.myabilia.com';
   static const String pathSegments = 'voices/v1/metadata';

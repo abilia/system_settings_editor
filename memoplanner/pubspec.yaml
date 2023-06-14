@@ -10,10 +10,6 @@ environment:
 dependencies:
   abilia_sync:
     path: ../packages/abilia_sync
-  acapela_tts:
-    git:
-      url: https://github.com/abilia/acapela_tts.git
-      ref: v1.1.3
   android_intent_plus: ^4.0.1
   audioplayers: ^4.0.1
   auth:
@@ -52,7 +48,6 @@ dependencies:
     sdk: flutter
   flutter_native_timezone: ^2.0.0
   flutter_ringtone_player: ^3.1.0
-  flutter_tts: ^3.6.0
   generics:
     path: ../packages/generics
   get_it: ^7.2.0
@@ -64,7 +59,6 @@ dependencies:
   matrix4_transform: ^2.0.1
   meta: ^1.7.0
   mime: ^1.0.1
-  mixpanel_flutter: ^2.1.1
   murmurhash: ^1.0.1
   package_info_plus: ^3.0.3
   path: ^1.8.1
@@ -92,6 +86,8 @@ dependencies:
     git:
       url: https://github.com/abilia/system_settings_editor.git
       ref: v1.3.7
+  text_to_speech:
+    path: ../packages/text_to_speech
   timezone: ^0.9.0
   transparent_image: ^2.0.0
   user_files:

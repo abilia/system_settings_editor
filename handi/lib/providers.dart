@@ -13,11 +13,14 @@ import 'package:generics/generics.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/background/background.dart';
 import 'package:handi/bloc/notification_bloc.dart';
+import 'package:handi/bloc/settings_cubit.dart';
+import 'package:handi/db/settings_db.dart';
 import 'package:handi/main.dart';
 import 'package:handi/models/delays.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:seagull_clock/clock_bloc.dart';
 import 'package:seagull_clock/ticker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sortables/sortables.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:user_files/user_files.dart';
@@ -95,6 +98,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
                 DatabaseRepository.clearAll(GetIt.I<Database>()),
                 GetIt.I<FileStorage>().deleteUserFolder(),
                 FlutterLocalNotificationsPlugin().cancelAll(),
+                _clearSettings(),
               ],
             ),
           )..add(CheckAuthentication()),
@@ -111,6 +115,18 @@ class AuthenticationBlocProvider extends StatelessWidget {
       ],
       child: child,
     );
+  }
+
+  Future<void> _clearSettings() async {
+    const deviceRecords = DeviceDb.records;
+    const baseUrlRecord = BaseUrlDb.baseUrlRecord;
+    const records = {...deviceRecords, baseUrlRecord};
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final keys = prefs.getKeys().where((key) => !records.contains(key));
+    for (final key in keys) {
+      await prefs.remove(key);
+    }
   }
 }
 
@@ -167,7 +183,12 @@ class AuthenticatedProviders extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<SyncBloc>(
+          BlocProvider(
+            create: (context) => SettingsCubit(
+              settingsDb: GetIt.I<SettingsDb>(),
+            ),
+          ),
+          BlocProvider(
             lazy: false,
             create: (context) => SyncBloc(
               pushCubit: context.read<PushCubit>(),

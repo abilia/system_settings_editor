@@ -14,12 +14,12 @@ import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/repository/sessions_repository.dart';
-import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:rxdart/transformers.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
 import 'package:seagull_logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 
 class AuthenticatedBlocsProvider extends StatelessWidget {
   final Authenticated authenticatedState;
@@ -389,7 +389,7 @@ class TopLevelProvider extends StatelessWidget {
               applicationSupportDirectory:
                   GetIt.I<Directories>().applicationSupport,
               tempDirectory: GetIt.I<Directories>().temp,
-              ttsHandler: GetIt.I<TtsInterface>(),
+              ttsHandler: GetIt.I<TtsHandler>(),
             ),
           ),
         ],
@@ -426,7 +426,7 @@ class TopLevelProvider extends StatelessWidget {
           BlocProvider<SpeechSettingsCubit>(
             create: (context) => SpeechSettingsCubit(
               voiceDb: GetIt.I<VoiceDb>(),
-              acapelaTts: GetIt.I<TtsInterface>(),
+              acapelaTts: GetIt.I<TtsHandler>(),
             ),
           ),
           if (Config.isMP) ...[
@@ -475,7 +475,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
                 clearNotificationSubject(),
                 notificationPlugin.cancelAll(),
                 GetIt.I<FileStorage>().deleteUserFolder(),
-                _clearSettings(context.read<SpeechSettingsCubit>()),
+                _clearSettings(),
               ],
             ),
             client: GetIt.I<ListenableClient>(),
@@ -495,7 +495,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
     );
   }
 
-  Future<void> _clearSettings(SpeechSettingsCubit speechSettingsCubit) async {
+  Future<void> _clearSettings() async {
     const deviceRecords = DeviceDb.records;
     const voiceRecords = VoiceDb.storeOnLogoutRecords;
     const baseUrlRecord = BaseUrlDb.baseUrlRecord;

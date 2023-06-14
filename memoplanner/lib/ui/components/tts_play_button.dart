@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/ui/all.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 
 class TtsPlayButton extends StatelessWidget {
   final TextEditingController? controller;
@@ -85,14 +85,14 @@ class _TtsPlayButtonState extends State<_TtsPlayButton> {
 
   Future<void> _play() async {
     setState(() => ttsIsPlaying = true);
-    await GetIt.I<TtsInterface>().speak(widget.text);
+    await GetIt.I<TtsHandler>().speak(widget.text);
     if (mounted) {
       setState(() => ttsIsPlaying = false);
     }
   }
 
   Future<void> _stop() async {
-    await GetIt.I<TtsInterface>().stop();
+    await GetIt.I<TtsHandler>().stop();
     if (mounted) {
       setState(() => ttsIsPlaying = false);
     }

@@ -12,7 +12,6 @@ import 'package:memoplanner/config.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/tts/tts_handler.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:rxdart/rxdart.dart';
@@ -20,6 +19,7 @@ import 'package:seagull_analytics/seagull_analytics.dart';
 import 'package:seagull_clock/ticker.dart';
 import 'package:seagull_logging/seagull_logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 
 export 'package:get_it/get_it.dart';
 
@@ -117,8 +117,8 @@ class GetItInitializer {
   late Battery _battery = Battery();
   set battery(Battery battery) => _battery = battery;
 
-  late TtsInterface _ttsHandler = FlutterTtsHandler();
-  set ttsHandler(TtsInterface ttsHandler) => _ttsHandler = ttsHandler;
+  late TtsHandler _ttsHandler = FlutterTtsHandler();
+  set ttsHandler(TtsHandler ttsHandler) => _ttsHandler = ttsHandler;
 
   static const platformChannel = 'memoplanner/intent_actions';
   late ActionIntentStream _actionIntentStream =
@@ -190,7 +190,7 @@ class GetItInitializer {
       ..registerSingleton<Delays>(_delays)
       ..registerSingleton<PackageInfo>(_packageInfo)
       ..registerSingleton<Battery>(_battery)
-      ..registerSingleton<TtsInterface>(_ttsHandler)
+      ..registerSingleton<TtsHandler>(_ttsHandler)
       ..registerSingleton<VoiceDb>(_voiceDb ?? VoiceDb(_sharedPreferences))
       ..registerSingleton<ActionIntentStream>(_actionIntentStream)
       ..registerSingleton<SupportPersonsDb>(

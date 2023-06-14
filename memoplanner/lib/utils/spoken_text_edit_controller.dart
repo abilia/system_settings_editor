@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/config.dart';
-import 'package:memoplanner/tts/tts_handler.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 
 class SpokenTextEditController extends TextEditingController {
   static TextEditingController ifApplicable(BuildContext context,
@@ -10,7 +10,7 @@ class SpokenTextEditController extends TextEditingController {
       Config.isMP && context.read<SpeechSettingsCubit>().state.speakEveryWord
           ? SpokenTextEditController._(
               text: text,
-              onNewWord: GetIt.I<TtsInterface>().speak,
+              onNewWord: GetIt.I<TtsHandler>().speak,
             )
           : TextEditingController(text: text);
 
