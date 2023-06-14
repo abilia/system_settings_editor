@@ -7,7 +7,7 @@ class AlarmSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final topPadding = layout.templates.m1.copyWith(bottom: 0);
     final defaultPadding = m1ItemPadding;
     final bottomPadding = layout.templates.m1.copyWith(
@@ -145,7 +145,7 @@ class _AlarmSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -165,9 +165,8 @@ class _AlarmSelector extends StatelessWidget {
                           noSoundOption: noSoundOption,
                           appBarIcon: icon,
                           appBarTitle: heading,
-                          appBarLabel: Config.isMP
-                              ? Translator.of(context).translate.alarmSettings
-                              : null,
+                          appBarLabel:
+                              Config.isMP ? Lt.of(context).alarmSettings : null,
                         ),
                       ),
                       settings: (SelectSoundPage).routeSetting(),
@@ -200,7 +199,7 @@ class _AlarmDurationSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

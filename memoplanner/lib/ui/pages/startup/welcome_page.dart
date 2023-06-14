@@ -10,7 +10,7 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return Padding(
       padding: layout.templates.m7,
       child: Column(

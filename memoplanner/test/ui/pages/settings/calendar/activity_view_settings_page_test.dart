@@ -11,11 +11,15 @@ import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/app_pumper.dart';
 
 void main() {
-  final translate = Locales.language.values.first;
+  late final Lt translate;
   final initialTime = DateTime(2021, 05, 04, 19, 20);
   Iterable<Generic> generics = [];
   late MockGenericDb genericDb;
   late ActivityDbInMemory activityDb;
+
+  setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
+  });
 
   setUp(() async {
     setupPermissions();

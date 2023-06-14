@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/l10n/generated/l10n.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/components/all.dart';
 
@@ -17,7 +17,7 @@ extension RecursExtensions on RecurrentType {
     }
   }
 
-  String text(Translated translator) {
+  String text(Lt translator) {
     switch (this) {
       case RecurrentType.weekly:
         return translator.weekly;

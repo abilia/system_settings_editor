@@ -80,7 +80,7 @@ class LogoutWarningModal extends StatelessWidget {
     LogoutWarning warning,
     DateTime? lastSync,
   ) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
 
     switch (warning) {
       case LogoutWarning.firstWarningSyncing:
@@ -108,7 +108,7 @@ class LogoutWarningModal extends StatelessWidget {
     BuildContext context,
     LogoutWarning warning,
   ) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     switch (warning) {
       case LogoutWarning.firstWarningSuccess:
       case LogoutWarning.secondWarningSuccess:
@@ -130,7 +130,7 @@ class _InternetConnection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return layout.go
         ? InfoRow(
             state: InfoRowState.normal,
@@ -156,7 +156,7 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dirty = dirtyItems;
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final labelStyle = Theme.of(context)
         .textTheme
         .bodyMedium
@@ -268,7 +268,7 @@ class _DirtyItemsState extends State<_DirtyItems> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final labelStyle = Theme.of(context)
         .textTheme
         .bodyMedium

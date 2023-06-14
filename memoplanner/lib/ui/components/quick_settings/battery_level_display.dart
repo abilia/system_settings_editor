@@ -7,7 +7,7 @@ class BatteryLevel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return StreamBuilder(
       stream: battery.onBatteryStateChanged,
       builder: (context, _) => FutureBuilder<List<dynamic>>(

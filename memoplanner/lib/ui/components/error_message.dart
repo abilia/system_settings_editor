@@ -54,7 +54,7 @@ class NoInternetErrorMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ErrorMessage(
-      text: Text(Translator.of(context).translate.connectInternetToContinue),
+      text: Text(Lt.of(context).connectInternetToContinue),
       trailing: const IconActionButtonDark(
         onPressed: AndroidIntents.openWifiSettings,
         child: Icon(

@@ -10,8 +10,13 @@ import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
 
 void main() {
+  late final Lt translate;
+
+  setUp(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
+  });
+
   group('New activity settings page -', () {
-    final translate = Locales.language.values.first;
     final initialTime = DateTime(2021, 04, 17, 09, 20);
     Iterable<Generic> generics = [];
     late MockGenericDb genericDb;
@@ -677,7 +682,8 @@ extension on WidgetTester {
     double scroll = -100,
   }) async {
     await goToAddTab();
-    await tap(find.text(Locales.language.values.first.stepByStep));
+    final translate = await englishTranslate;
+    await tap(find.text(translate.stepByStep));
     await pumpAndSettle();
     expect(find.byType(AddActivityAddSettingsTab), findsOneWidget);
     await dragFrom(getCenter(find.byType(Scaffold)), Offset(0.0, scroll));

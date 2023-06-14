@@ -13,7 +13,7 @@ class PhotoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
 
     return BlocBuilder<SortableBloc, SortableState>(
       builder: (context, state) {
@@ -138,7 +138,7 @@ class RemoveFromPhotoCalendarDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return _AddOrRemoveFromPhotoCalendarDialog(
       bodyText: translate.removeFromPhotoCalendarQuestion,
       buttonText: translate.remove,
@@ -153,7 +153,7 @@ class AddToPhotoCalendarDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return _AddOrRemoveFromPhotoCalendarDialog(
       bodyText: translate.addToPhotoCalendarQuestion,
       buttonText: translate.add,
@@ -172,7 +172,7 @@ class _AddOrRemoveFromPhotoCalendarDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return ViewDialog(
       heading: AppBarHeading(
         text: translate.photoCalendar,
@@ -214,7 +214,7 @@ class DeletePhotoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return YesNoDialog(
       heading: translate.delete,
       headingIcon: AbiliaIcons.deleteAllClear,

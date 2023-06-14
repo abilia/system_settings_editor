@@ -99,10 +99,11 @@ class _AnalogClock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dayPart = context.watch<DayPartCubit>().state;
+    final locale = context.watch<LocaleCubit>().state;
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, time) => Tts.data(
         data:
-            analogTimeStringWithInterval(Translator.of(context), time, dayPart),
+            analogTimeStringWithInterval(Lt.of(context), locale, time, dayPart),
         child: SizedBox(
           width: width,
           height: height,

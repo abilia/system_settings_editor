@@ -11,9 +11,9 @@ final navObserver = NavObserver();
 void main() {
   Widget wrapWithMaterialApp({Duration initialDuration = Duration.zero}) =>
       MaterialApp(
-        supportedLocales: Translator.supportedLocals,
+        supportedLocales: Lt.supportedLocales,
         navigatorObservers: [navObserver],
-        localizationsDelegates: const [Translator.delegate],
+        localizationsDelegates: const [Lt.delegate],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),

@@ -6,46 +6,46 @@ class CalendarSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsBasePage(
-      label: Config.isMP ? Translator.of(context).translate.settings : null,
+      label: Config.isMP ? Lt.of(context).settings : null,
       widgets: [
         MenuItemPickField(
           icon: AbiliaIcons.settings,
-          text: Translator.of(context).translate.general,
+          text: Lt.of(context).general,
           navigateTo: const CalendarGeneralSettingsPage(),
         ),
         MenuItemPickField(
           icon: AbiliaIcons.day,
-          text: Translator.of(context).translate.dayCalendar,
+          text: Lt.of(context).dayCalendar,
           navigateTo: const DayCalendarSettingsPage(),
         ),
         MenuItemPickField(
           icon: AbiliaIcons.week,
-          text: Translator.of(context).translate.weekCalendar,
+          text: Lt.of(context).weekCalendar,
           navigateTo: const WeekCalendarSettingsPage(),
         ),
         MenuItemPickField(
           icon: AbiliaIcons.month,
-          text: Translator.of(context).translate.monthCalendar,
+          text: Lt.of(context).monthCalendar,
           navigateTo: const MonthCalendarSettingsPage(),
         ),
         MenuItemPickField(
           icon: AbiliaIcons.fullScreen,
-          text: Translator.of(context).translate.activityView,
+          text: Lt.of(context).activityView,
           navigateTo: const ActivityViewSettingsPage(),
         ),
         MenuItemPickField(
           icon: AbiliaIcons.newIcon,
-          text: Translator.of(context).translate.addActivity,
+          text: Lt.of(context).addActivity,
           navigateTo: const AddActivitySettingsPage(),
         ),
         MenuItemPickField(
           icon: AbiliaIcons.handiAlarmVibration,
-          text: Translator.of(context).translate.alarmSettings,
+          text: Lt.of(context).alarmSettings,
           navigateTo: const AlarmSettingsPage(),
         ),
       ],
       icon: AbiliaIcons.month,
-      title: Translator.of(context).translate.calendar,
+      title: Lt.of(context).calendar,
     );
   }
 }

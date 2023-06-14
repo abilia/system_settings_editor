@@ -14,12 +14,11 @@ class CreateAccountPage extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final translator = Translator.of(context);
-    final t = translator.translate;
+    final t = Lt.of(context);
     final textTheme = Theme.of(context).textTheme;
     return BlocProvider(
       create: (context) => CreateAccountCubit(
-        languageTag: translator.locale.toLanguageTag(),
+        languageTag: Localizations.localeOf(context).toLanguageTag(),
         repository: userRepository,
       ),
       child: MultiBlocListener(
@@ -155,7 +154,7 @@ class AccountCreatedDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return ViewDialog(
       heading: AppBarHeading(
         text: t.accountCreatedHeading,
@@ -201,7 +200,7 @@ class BackToLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return LightButton(
       icon: AbiliaIcons.navigationPrevious,
-      text: Translator.of(context).translate.backToLogin,
+      text: Lt.of(context).backToLogin,
       onPressed: Navigator.of(context).maybePop,
     );
   }
@@ -216,7 +215,7 @@ class CreateAccountButton extends StatelessWidget {
       builder: (context, state) {
         return GreenButton(
           icon: AbiliaIcons.ok,
-          text: Translator.of(context).translate.createAccount,
+          text: Lt.of(context).createAccount,
           onPressed: state is! CreateAccountLoading
               ? () async => context
                   .read<CreateAccountCubit>()
@@ -229,7 +228,7 @@ class CreateAccountButton extends StatelessWidget {
 }
 
 extension CreateAccountErrorMessage on CreateAccountFailed {
-  String errorMessage(Translated translate) {
+  String errorMessage(Lt translate) {
     switch (failure) {
       case CreateAccountFailure.noUsername:
         return translate.enterUsername;

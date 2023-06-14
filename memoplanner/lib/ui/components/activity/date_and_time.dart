@@ -8,7 +8,7 @@ class DateAndTimeWidget extends StatelessWidget {
   const DateAndTimeWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final translator = Translator.of(context).translate;
+    final translator = Lt.of(context);
     final editActivityState = context.watch<EditActivityCubit>().state;
     final isFullDay = editActivityState.activity.fullDay;
     final showFullDay = context.select((MemoplannerSettingsBloc bloc) =>
@@ -94,7 +94,7 @@ class ReminderSwitch extends StatelessWidget {
             .read<EditActivityCubit>()
             .replaceActivity(activity.copyWith(reminderBefore: reminders));
       },
-      child: Text(Translator.of(context).translate.reminders),
+      child: Text(Lt.of(context).reminders),
     );
   }
 }
@@ -161,9 +161,7 @@ class DatePicker extends StatelessWidget {
         text: Text(
           emptyText
               ? ''
-              : (time.isAtSameDay(date)
-                      ? '(${Translator.of(context).translate.today}) '
-                      : '') +
+              : (time.isAtSameDay(date) ? '(${Lt.of(context).today}) ' : '') +
                   timeFormat.format(date),
         ),
         errorState: errorState,
@@ -181,7 +179,7 @@ class TimeIntervalPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
-    final translator = Translator.of(context).translate;
+    final translator = Lt.of(context);
     final showEndTime = context.select((MemoplannerSettingsBloc bloc) =>
         bloc.state.addActivity.general.showEndTime);
     return Row(
@@ -286,7 +284,7 @@ class Reminders extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final translator = Translator.of(context).translate;
+    final translator = Lt.of(context);
     return Wrap(
       spacing: layout.formPadding.horizontalItemDistance,
       runSpacing: layout.formPadding.verticalItemDistance,

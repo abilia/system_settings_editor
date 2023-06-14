@@ -21,7 +21,11 @@ void main() {
   final infoItemWithTestNote = InfoItem.fromBase64(
           'eyJpbmZvLWl0ZW0iOlt7InR5cGUiOiJub3RlIiwiZGF0YSI6eyJ0ZXh0IjoiVGVzdCJ9fV19')
       as NoteInfoItem;
-  final translate = Locales.language.values.first;
+  late final Lt translate;
+
+  setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
+  });
 
   Widget wrapWithMaterialApp(ActivityInfo activityInfo) =>
       FakeAuthenticatedBlocsProvider(
@@ -61,8 +65,8 @@ void main() {
             ),
           ],
           child: MaterialApp(
-            supportedLocales: Translator.supportedLocals,
-            localizationsDelegates: const [Translator.delegate],
+            supportedLocales: Lt.supportedLocales,
+            localizationsDelegates: const [Lt.delegate],
             localeResolutionCallback: (locale, supportedLocales) =>
                 supportedLocales.firstWhere(
                     (l) => l.languageCode == locale?.languageCode,
@@ -238,7 +242,8 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text(Locales.language.values.first.fullDay), findsOneWidget);
+    final translate = await englishTranslate;
+    expect(find.text(translate.fullDay), findsOneWidget);
   });
 
   testWidgets('image and no attatchment', (WidgetTester tester) async {

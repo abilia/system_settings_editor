@@ -8,7 +8,7 @@ class LongPressInfoDialog extends StatelessWidget {
   const LongPressInfoDialog({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return ViewDialog(
       bodyPadding: layout.templates.m4,
       expanded: true,
@@ -67,7 +67,7 @@ class _Preview extends StatelessWidget {
       child: ActivityCard(
         activityOccasion: ActivityOccasion(
           Activity(
-            title: Translator.of(context).translate.lunch,
+            title: Lt.of(context).lunch,
             startTime: time.withTime(const TimeOfDay(hour: 12, minute: 0)),
             calendarId: '',
             timezone: '',

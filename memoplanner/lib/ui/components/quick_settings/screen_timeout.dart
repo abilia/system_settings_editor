@@ -8,7 +8,7 @@ class ScreenTimeoutPickField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return BlocBuilder<WakeLockCubit, WakeLockState>(
       builder: (context, wakeLockState) => PickField(
         text: Text(
@@ -61,7 +61,7 @@ class ScreenTimeOutSelectorPageState extends State<ScreenTimeOutSelectorPage> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return Scaffold(
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
@@ -129,8 +129,7 @@ class KeepOnWhileChargingSwitch extends StatelessWidget {
             .read<WakeLockCubit>()
             .setKeepScreenOnWhileCharging(switchOn);
       },
-      child:
-          Text(Translator.of(context).translate.keepScreenAwakeWhileCharging),
+      child: Text(Lt.of(context).keepScreenAwakeWhileCharging),
     );
   }
 }

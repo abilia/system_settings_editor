@@ -15,7 +15,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final textStyle = Theme.of(context)
         .textTheme
         .bodyMedium

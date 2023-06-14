@@ -7,7 +7,7 @@ class DayAppBarSettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return BlocBuilder<DayCalendarSettingsCubit, DayCalendarSettings>(
       builder: (context, settings) {
         final dayCalendar = context.read<DayCalendarSettingsCubit>();
@@ -73,7 +73,7 @@ class DayAppBarPreview extends StatelessWidget {
         dayParts: dayParts,
         dayPart: context.read<DayPartCubit>().state,
         langCode: Localizations.localeOf(context).toLanguageTag(),
-        translator: Translator.of(context).translate,
+        translator: Lt.of(context),
       ),
     );
   }

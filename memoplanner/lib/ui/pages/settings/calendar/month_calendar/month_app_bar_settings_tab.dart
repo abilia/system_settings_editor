@@ -7,7 +7,7 @@ class MonthAppBarSettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final monthCalendarSettings =
         context.watch<MonthCalendarSettingsCubit>().state;
     return SettingsTab(

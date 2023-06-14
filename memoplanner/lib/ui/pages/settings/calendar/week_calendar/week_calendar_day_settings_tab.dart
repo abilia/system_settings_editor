@@ -8,7 +8,7 @@ class WeekSettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettings>(
         builder: (context, state) {
       void onDisplayDaysChanged(WeekDisplayDays? w) => context

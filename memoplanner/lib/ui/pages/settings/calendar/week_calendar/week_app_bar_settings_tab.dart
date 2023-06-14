@@ -7,7 +7,7 @@ class WeekAppBarSettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final state = context.watch<WeekCalendarSettingsCubit>().state;
     return SettingsTab(
       children: [
@@ -58,7 +58,7 @@ class WeekAppBarPreview extends StatelessWidget {
       showBrowseButtons: weekCalendarSettings.showBrowseButtons,
       showClock: weekCalendarSettings.showClock,
       rows: AppBarTitleRows.week(
-        translator: Translator.of(context).translate,
+        translator: Lt.of(context),
         selectedDay: currentTime.onlyDays(),
         selectedWeekStart: currentTime.firstInWeek(),
         settings: weekCalendarSettings,

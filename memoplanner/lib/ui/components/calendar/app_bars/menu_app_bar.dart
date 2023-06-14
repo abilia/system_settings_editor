@@ -25,7 +25,7 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
         dayPart: context.read<DayPartCubit>().state,
         dayParts: calendarSettings.dayParts,
         langCode: Localizations.localeOf(context).toLanguageTag(),
-        translator: Translator.of(context).translate,
+        translator: Lt.of(context),
       ),
       showClock: appBarSettings.showClock,
     );

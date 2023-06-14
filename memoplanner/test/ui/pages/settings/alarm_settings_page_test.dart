@@ -13,13 +13,17 @@ import '../../../test_helpers/verify_generic_mp.dart';
 
 void main() {
   group('Alarm settings page', () {
-    final translate = Locales.language.values.first;
+    late final Lt translate;
     final initialTime = DateTime(2021, 04, 17, 09, 20);
     Iterable<Generic> generics = [];
     Iterable<Activity> activities = [];
     late MockGenericDb genericDb;
     late ActivityDbInMemory activityDb;
     Iterable<Session> sessions;
+
+    setUpAll(() async {
+      translate = await Lt.load(Lt.supportedLocales.first);
+    });
 
     setUp(() async {
       setupPermissions();

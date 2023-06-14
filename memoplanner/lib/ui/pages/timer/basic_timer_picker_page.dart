@@ -7,7 +7,7 @@ class BasicTimerPickerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return BlocListener<EditTimerCubit, EditTimerState>(
       listener: (context, state) {
         if (state is SavedTimerState) {
@@ -69,7 +69,7 @@ class _StartBasicTimerButton extends StatelessWidget {
     return IconAndTextButton(
       onPressed: onPressed,
       icon: AbiliaIcons.playSound,
-      text: Translator.of(context).translate.start,
+      text: Lt.of(context).start,
       style: iconTextButtonStyleGreen.copyWith(
         shape: MaterialStateProperty.all(darkShapeBorder),
         minimumSize: MaterialStateProperty.all(null),

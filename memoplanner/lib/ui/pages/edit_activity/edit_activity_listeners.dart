@@ -33,7 +33,7 @@ class ErrorPopupListener extends StatelessWidget {
     Set<SaveError> errors,
     BuildContext context,
   ) async {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     Future<void> showError(String msg, Set<SaveError> saveErrors) async =>
         showViewDialog(
             context: context,
@@ -64,7 +64,7 @@ class ErrorPopupListener extends StatelessWidget {
     Set<SaveError> errors,
     BuildContext context,
   ) async {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     SaveRecurring? saveEvent;
     final state = context.read<EditActivityCubit>().state;
     final wizardCubit = context.read<WizardCubit>();
@@ -124,7 +124,7 @@ class ConfirmConflictWarningDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ConfirmWarningDialog(
-        text: Translator.of(context).translate.conflictWarning,
+        text: Lt.of(context).conflictWarning,
       );
 }
 
@@ -135,7 +135,7 @@ class ConfirmStartTimeBeforeNowWarningDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ConfirmWarningDialog(
-        text: Translator.of(context).translate.startTimeBeforeNowWarning,
+        text: Lt.of(context).startTimeBeforeNowWarning,
       );
 }
 

@@ -37,9 +37,9 @@ class MaterialAppWrapper extends StatelessWidget {
               AnalyticNavigationObserver(GetIt.I<SeagullAnalytics>()),
               NavigationObserver(context.read<NavigationCubit>()),
             ],
-            supportedLocales: Translator.supportedLocals,
+            supportedLocales: Lt.supportedLocales,
             localizationsDelegates: [
-              Translator.delegate,
+              Lt.delegate,
               LocaleCubit.delegate(context.read<LocaleCubit>()),
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,

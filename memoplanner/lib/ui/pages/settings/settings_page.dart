@@ -5,7 +5,7 @@ class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final fakeTime = context
         .watch<FeatureToggleCubit>()
         .state

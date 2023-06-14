@@ -13,7 +13,7 @@ extension AvailableForHelper on AvailableForType {
     }
   }
 
-  String text(Translated translator) {
+  String text(Lt translator) {
     switch (this) {
       case AvailableForType.onlyMe:
         return translator.onlyMe;

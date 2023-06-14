@@ -124,7 +124,7 @@ class _AddButtonMPGO extends StatelessWidget {
     return IconActionButton(
       key: TestKey.addActivityButton,
       style: actionButtonStyleLight,
-      ttsData: Translator.of(context).translate.add,
+      ttsData: Lt.of(context).add,
       onPressed: () async => onAddButtonPressed(
         context,
         showActivities: true,
@@ -147,10 +147,10 @@ class _AddActivityButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextAndOrIconActionButtonLight(
-      Translator.of(context).translate.activity,
+      Lt.of(context).activity,
       AbiliaIcons.plus,
       key: TestKey.addActivityButton,
-      ttsData: Translator.of(context).translate.addActivity,
+      ttsData: Lt.of(context).addActivity,
       onPressed: () async => onAddButtonPressed(
         context,
         showActivities: true,
@@ -168,10 +168,10 @@ class _AddTimerButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextAndOrIconActionButtonLight(
-      Translator.of(context).translate.timer,
+      Lt.of(context).timer,
       AbiliaIcons.stopWatch,
       key: TestKey.addTimerButton,
-      ttsData: Translator.of(context).translate.addTimer,
+      ttsData: Lt.of(context).addTimer,
       onPressed: () async => onAddButtonPressed(
         context,
         showActivities: false,
@@ -189,7 +189,7 @@ class _AddActivityOrTimerButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Material(
       type: MaterialType.transparency,
       clipBehavior: Clip.antiAlias,
@@ -206,7 +206,7 @@ class _AddActivityOrTimerButtons extends StatelessWidget {
             text: translate.activity,
             icon: AbiliaIcons.plus,
             position: _AddTabPosition.left,
-            ttsData: Translator.of(context).translate.addActivity,
+            ttsData: Lt.of(context).addActivity,
             onTap: () async => onAddButtonPressed(
               context,
               showActivities: true,
@@ -221,7 +221,7 @@ class _AddActivityOrTimerButtons extends StatelessWidget {
             text: translate.timer,
             icon: AbiliaIcons.stopWatch,
             position: _AddTabPosition.right,
-            ttsData: Translator.of(context).translate.addTimer,
+            ttsData: Lt.of(context).addTimer,
             onTap: () async => onAddButtonPressed(
               context,
               showActivities: false,

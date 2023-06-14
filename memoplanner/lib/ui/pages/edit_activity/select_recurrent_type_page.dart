@@ -22,7 +22,7 @@ class _SelectRecurrentTypePageState extends State<SelectRecurrentTypePage> {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Scaffold(
       appBar: AbiliaAppBar(
         title: widget.heading,

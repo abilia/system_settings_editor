@@ -22,7 +22,7 @@ void main() {
     title: '',
     startTime: startTime,
   );
-  final translate = Locales.language.values.first;
+  late final Lt translate;
 
   final timeFieldFinder = find.byType(TimeIntervalPicker);
   final okButtonFinder = find.byType(OkButton);
@@ -31,7 +31,8 @@ void main() {
   late MockActivityRepository mockActivityRepository;
   late MemoplannerSettingsBloc mockMemoplannerSettingsBloc;
 
-  setUpAll(() {
+  setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
     registerFallbackValues();
     tz.initializeTimeZones();
   });
@@ -76,9 +77,9 @@ void main() {
     final activity = givenActivity ?? startActivity;
     final navKey = GlobalKey<NavigatorState>();
     return MaterialApp(
-      supportedLocales: Translator.supportedLocals,
+      supportedLocales: Lt.supportedLocales,
       navigatorKey: navKey,
-      localizationsDelegates: const [Translator.delegate],
+      localizationsDelegates: const [Lt.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),

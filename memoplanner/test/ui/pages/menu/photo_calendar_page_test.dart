@@ -151,7 +151,7 @@ void main() {
           'BUG SGC-1655 - Wrong day in header in Menu/photo calendar/screensaver',
           (tester) async {
         final locale = Intl.getCurrentLocale();
-        final translate = Locales.language.values.first;
+        final translate = await Lt.load(Lt.supportedLocales.first);
         await tester.goToPhotoCalendarPage(pump: true);
         expect(
           find.text(DateFormat.EEEE(locale).format(time)),

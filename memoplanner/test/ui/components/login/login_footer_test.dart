@@ -11,7 +11,7 @@ import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 
 void main() {
-  final translate = Locales.language.values.first;
+  late final Lt translate;
   late VoicesCubit voicesCubit;
   late SpeechSettingsCubit speechSettingsCubit;
   late StartupCubit startupCubit;
@@ -21,6 +21,10 @@ void main() {
   final mockConnectivity = MockConnectivity();
   late MockMyAbiliaConnection mockMyAbiliaConnection;
   bool Function() factoryResetResponse = () => true;
+
+  setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
+  });
 
   setUp(() async {
     voiceDb = MockVoiceDb();

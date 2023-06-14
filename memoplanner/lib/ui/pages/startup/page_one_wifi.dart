@@ -15,7 +15,7 @@ class PageOneWifi extends StatelessWidget {
   Widget build(BuildContext context) {
     final startUpState = context.watch<StartupCubit>().state;
     final connectivityState = context.watch<ConnectivityCubit>().state;
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return Padding(
       padding: layout.templates.m7,
       child: Column(

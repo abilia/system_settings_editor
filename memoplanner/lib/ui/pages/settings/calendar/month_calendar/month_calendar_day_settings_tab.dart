@@ -7,7 +7,7 @@ class MonthDisplaySettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final monthCalendarCubit = context.watch<MonthCalendarSettingsCubit>();
     final settings = monthCalendarCubit.state;
     void onWeekColorChanged(int? index) => monthCalendarCubit

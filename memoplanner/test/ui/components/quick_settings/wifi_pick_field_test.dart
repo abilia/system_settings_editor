@@ -11,6 +11,11 @@ import '../../../mocks/mocks.dart';
 void main() {
   final mockConnectivity = MockConnectivity();
   late MockMyAbiliaConnection mockMyAbiliaConnection;
+  late final Lt translate;
+
+  setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
+  });
 
   setUp(() {
     mockMyAbiliaConnection = MockMyAbiliaConnection();
@@ -22,11 +27,9 @@ void main() {
         .thenAnswer((_) => Future.value(ConnectivityResult.none));
   });
 
-  final translate = Locales.language.values.first;
-
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
-        supportedLocales: Translator.supportedLocals,
-        localizationsDelegates: const [Translator.delegate],
+        supportedLocales: Lt.supportedLocales,
+        localizationsDelegates: const [Lt.delegate],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),

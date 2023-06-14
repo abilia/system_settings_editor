@@ -11,14 +11,15 @@ import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/tap_link.dart';
 
 void main() {
-  setUpAll(() {
+  late final Lt translate;
+
+  setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
     WebViewPlatform.instance = FakeWebViewPlatform();
   });
   group(
     'create account',
     () {
-      final translate = Locales.language.values.first;
-
       setUp(() async {
         GetItInitializer()
           ..sharedPreferences =

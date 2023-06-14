@@ -7,7 +7,7 @@ class NewTimerWidget extends StatelessWidget with TimerNavigation {
   @override
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return Column(
       children: [
         PickField(

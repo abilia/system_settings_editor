@@ -12,7 +12,7 @@ class EditCategoryBottomSheet extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final label = Translator.of(context).translate.general;
+    final label = Lt.of(context).general;
     return EditImageAndName(
       maxLines: 1,
       minLines: 1,
@@ -22,7 +22,7 @@ class EditCategoryBottomSheet extends StatelessWidget {
       selectPictureLabel: Config.isMP ? label : null,
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.phoneLog,
-        title: Translator.of(context).translate.editCategory,
+        title: Lt.of(context).editCategory,
         label: Config.isMP ? label : null,
         borderRadius: layout.appBar.borderRadius,
       ),

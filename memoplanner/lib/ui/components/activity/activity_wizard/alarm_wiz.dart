@@ -7,7 +7,7 @@ class AlarmWiz extends StatelessWidget {
   Widget build(BuildContext context) {
     return WizardScaffold(
       iconData: AbiliaIcons.attention,
-      title: Translator.of(context).translate.alarm,
+      title: Lt.of(context).alarm,
       body: const SelectAlarmWizPage(),
     );
   }

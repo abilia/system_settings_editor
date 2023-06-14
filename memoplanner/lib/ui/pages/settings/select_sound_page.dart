@@ -32,7 +32,7 @@ class _SelectSoundPageState extends State<SelectSoundPage> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final widgets = Sound.values
         .where((s) => widget.noSoundOption || s != Sound.NoSound)
         .map(

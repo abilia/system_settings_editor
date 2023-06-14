@@ -13,7 +13,7 @@ class AvailableForPage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.unlock,
-        title: Translator.of(context).translate.availableFor,
+        title: Lt.of(context).availableFor,
       ),
       body: const AvailableForPageBody(),
       bottomNavigationBar: BottomNavigation(
@@ -116,7 +116,7 @@ class AvailableForRadioField extends StatelessWidget {
       ),
       text: Text(
         type.text(
-          Translator.of(context).translate,
+          Lt.of(context),
         ),
       ),
     );
@@ -141,7 +141,7 @@ class SupportPersonsWidget extends StatelessWidget {
             children: <Widget>[
               Tts(
                 child: Text(
-                  Translator.of(context).translate.supportPersons,
+                  Lt.of(context).supportPersons,
                   style: bodyMedium.copyWith(color: AbiliaColors.black75),
                 ),
               ).pad(

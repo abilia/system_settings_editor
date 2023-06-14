@@ -15,7 +15,7 @@ import '../../../../../test_helpers/app_pumper.dart';
 import '../../../../../test_helpers/register_fallback_values.dart';
 
 void main() {
-  final translate = Locales.language.values.first;
+  late final Lt translate;
   final initialTime = DateTime(2021, 04, 26, 13, 37);
 
   Iterable<Generic> generics = [];
@@ -23,6 +23,10 @@ void main() {
   late MockGenericDb genericDb;
   late MockSortableDb sortableDb;
   late SharedPreferences fakeSharedPreferences;
+
+  setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
+  });
 
   setUp(() async {
     tz.initializeTimeZones();

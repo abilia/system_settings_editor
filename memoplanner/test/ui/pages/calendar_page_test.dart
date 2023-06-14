@@ -29,7 +29,11 @@ void main() {
   final editTitleFieldFinder = find.byKey(TestKey.editTitleTextFormField);
   final saveEditActivityButtonFinder = find.byType(NextWizardStepButton);
 
-  final translate = Locales.language.values.first;
+  late final Lt translate;
+
+  setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
+  });
 
   Widget wrapWithMaterialApp(
     Widget widget, {
@@ -45,8 +49,8 @@ void main() {
             authenticatedState: const Authenticated(user: user),
             child: MaterialApp(
               theme: abiliaTheme,
-              supportedLocales: Translator.supportedLocals,
-              localizationsDelegates: const [Translator.delegate],
+              supportedLocales: Lt.supportedLocales,
+              localizationsDelegates: const [Lt.delegate],
               locale:
                   Locale.fromSubtags(languageCode: languageOverride ?? 'und'),
               localeResolutionCallback: (locale, supportedLocales) =>
@@ -238,8 +242,6 @@ void main() {
     });
 
     group('Permissions', () {
-      final translate = Locales.language.values.first;
-
       tearDown(() {
         setupPermissions();
       });

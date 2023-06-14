@@ -74,9 +74,7 @@ class TimerPage extends StatelessWidget {
                               child: timer.paused
                                   ? Tts(
                                       child: Text(
-                                        Translator.of(context)
-                                            .translate
-                                            .timerPaused,
+                                        Lt.of(context).timerPaused,
                                         style: Theme.of(context)
                                             .textTheme
                                             .headlineMedium
@@ -200,7 +198,7 @@ class DeleteTimerDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return YesNoDialog(
       headingIcon: AbiliaIcons.deleteAllClear,
       heading: t.delete,

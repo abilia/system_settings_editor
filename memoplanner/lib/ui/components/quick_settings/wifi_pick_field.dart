@@ -9,7 +9,7 @@ class WiFiPickField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final connectedState = context.watch<ConnectivityCubit>().state;
     final wifi = connectedState.connectivityResult == ConnectivityResult.wifi;
     final internet = connectedState.isConnected;

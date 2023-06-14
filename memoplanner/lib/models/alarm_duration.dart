@@ -1,4 +1,4 @@
-import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 enum AlarmDuration {
@@ -11,7 +11,7 @@ enum AlarmDuration {
 }
 
 extension AlarmDurationExtension on AlarmDuration {
-  String displayText(Translated t) {
+  String displayText(Lt t) {
     switch (this) {
       case AlarmDuration.alert:
         return t.alert;

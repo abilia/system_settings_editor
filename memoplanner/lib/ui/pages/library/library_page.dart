@@ -149,7 +149,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final heading = sortableArchiveState.isAtRootAndNoSelection
         ? rootHeading
         : sortableArchiveState.title(onlyFolders: showOnlyFolders);
@@ -339,7 +339,7 @@ class _SortableLibraryState<T extends SortableData>
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
         final content = widget.showSearch
@@ -502,9 +502,7 @@ class EmptyLibraryMessage extends StatelessWidget {
         alignment: Alignment.topCenter,
         child: Tts(
           child: Text(
-            rootFolder
-                ? emptyLibraryMessage
-                : Translator.of(context).translate.emptyFolder,
+            rootFolder ? emptyLibraryMessage : Lt.of(context).emptyFolder,
             style: Theme.of(context)
                 .textTheme
                 .bodyLarge
@@ -526,7 +524,7 @@ class LibraryFolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     String title = '';
     if (sortableData is ImageArchiveData) {
       title = (sortableData as ImageArchiveData).isUpload()

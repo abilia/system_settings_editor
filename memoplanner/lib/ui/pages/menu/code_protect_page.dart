@@ -43,7 +43,7 @@ class _CodeProtectPageState extends State<CodeProtectPage> {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Scaffold(
       appBar: AbiliaAppBar(
         title: translate.enterCode,
@@ -76,7 +76,7 @@ class _CodeProtectPageState extends State<CodeProtectPage> {
       context: context,
       wrapWithAuthProviders: false,
       builder: (context) => ErrorDialog(
-        text: Translator.of(context).translate.incorrectCode,
+        text: Lt.of(context).incorrectCode,
       ),
       routeSettings:
           (ErrorDialog).routeSetting(properties: {'reason': 'Incorrect code'}),
@@ -99,7 +99,7 @@ class PinCodeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final message = fieldMessage;
     return Column(
       children: [

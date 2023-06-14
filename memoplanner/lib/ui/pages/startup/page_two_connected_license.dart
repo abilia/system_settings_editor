@@ -49,7 +49,7 @@ class _PageTwoConnectedLicenseState extends State<PageTwoConnectedLicense> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return BlocBuilder<ConnectLicenseBloc, ConnectLicenseState>(
       builder: (context, state) => Padding(
         padding: layout.templates.m7,
@@ -168,7 +168,7 @@ class _PageTwoConnectedLicenseState extends State<PageTwoConnectedLicense> {
                               curve: StartupGuidePage.curve,
                             )
                         : null,
-                    child: Text(Translator.of(context).translate.next),
+                    child: Text(Lt.of(context).next),
                   ),
                 ),
               ],

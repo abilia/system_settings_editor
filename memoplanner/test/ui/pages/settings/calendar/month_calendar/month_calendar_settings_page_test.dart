@@ -10,10 +10,14 @@ import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
 
 void main() {
-  final translate = Locales.language.values.first;
+  late final Lt translate;
   final initialTime = DateTime(2021, 05, 03, 16, 25);
   Iterable<Generic> generics;
   late MockGenericDb genericDb;
+
+  setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
+  });
 
   setUp(() async {
     setupPermissions();
@@ -283,7 +287,8 @@ extension on WidgetTester {
     await pumpAndSettle();
     await tap(find.byIcon(AbiliaIcons.month));
     await pumpAndSettle();
-    await tap(find.text(Locales.language.values.first.monthCalendar));
+    final translate = await englishTranslate;
+    await tap(find.text(translate.monthCalendar));
     await pumpAndSettle();
   }
 

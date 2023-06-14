@@ -11,8 +11,13 @@ import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
 
 void main() {
+  late final Lt translate;
+
+  setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
+  });
+
   group('week calendar settings page', () {
-    final translate = Locales.language.values.first;
     final initialTime = DateTime(2021, 04, 17, 09, 20);
     final Iterable<Generic> generics = [];
     late MockGenericDb genericDb;

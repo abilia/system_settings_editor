@@ -1,12 +1,10 @@
-import 'package:flutter/widgets.dart';
-import 'package:memoplanner/i18n/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/ui/components/all.dart';
+import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 extension ActivityExtensions on ActivityOccasion {
   String subtitle(BuildContext context, [bool tts = false]) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     if (activity.fullDay) return t.fullDay;
     final timeFormat = hourAndMinuteFormat(context);
     final timeBinding = tts ? t.timeTo : '-';
@@ -17,7 +15,7 @@ extension ActivityExtensions on ActivityOccasion {
   }
 
   SemanticsProperties semanticsProperties(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final label = [
       if (activity.hasTitle) activity.title,
       subtitle(context, true),
@@ -37,8 +35,6 @@ extension TimerExtensions on AbiliaTimer {
       SemanticsProperties(
         button: true,
         image: hasImage,
-        label: !hasTitle
-            ? duration.toUntilString(Translator.of(context).translate)
-            : title,
+        label: !hasTitle ? duration.toUntilString(Lt.of(context)) : title,
       );
 }

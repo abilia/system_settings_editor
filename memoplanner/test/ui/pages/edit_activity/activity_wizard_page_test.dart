@@ -19,14 +19,15 @@ import '../../../test_helpers/tts.dart';
 void main() {
   final startTime = DateTime(2021, 09, 22, 12, 46);
   final today = startTime.onlyDays();
-  final translate = Locales.language.values.first;
+  late final Lt translate;
 
   late MockSortableBloc mockSortableBloc;
   late MockUserFileBloc mockUserFileBloc;
   late MockTimerCubit mockTimerCubit;
   late MemoplannerSettingsBloc mockMemoplannerSettingsBloc;
 
-  setUpAll(() {
+  setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
     registerFallbackValues();
   });
 
@@ -89,9 +90,9 @@ void main() {
     final navKey = GlobalKey<NavigatorState>();
 
     return MaterialApp(
-      supportedLocales: Translator.supportedLocals,
+      supportedLocales: Lt.supportedLocales,
       navigatorKey: navKey,
-      localizationsDelegates: const [Translator.delegate],
+      localizationsDelegates: const [Lt.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),

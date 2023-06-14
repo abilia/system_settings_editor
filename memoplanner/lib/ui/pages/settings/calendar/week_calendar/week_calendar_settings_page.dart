@@ -6,7 +6,7 @@ class WeekCalendarSettingsPage extends StatelessWidget {
   const WeekCalendarSettingsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final settings = context.read<MemoplannerSettingsBloc>().state;
     return BlocProvider<WeekCalendarSettingsCubit>(
       create: (context) => WeekCalendarSettingsCubit(

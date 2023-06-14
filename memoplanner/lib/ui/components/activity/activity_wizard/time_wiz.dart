@@ -12,7 +12,7 @@ class TimeWiz extends StatelessWidget {
           FocusScope.of(context).requestFocus(FocusNode()),
       child: WizardScaffold(
         iconData: AbiliaIcons.clock,
-        title: Translator.of(context).translate.setTime,
+        title: Lt.of(context).setTime,
         appBarHeight: layout.appBar.mediumHeight,
         appBarTrailing: Padding(
           padding: layout.alarmPage.clockPadding,

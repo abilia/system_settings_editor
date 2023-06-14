@@ -17,7 +17,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final reason = unauthenticatedState.loggedOutReason;
     if (reason != LoggedOutReason.logOut) {
       Future.delayed(
@@ -67,7 +67,7 @@ class LoginPage extends StatelessWidget {
               final licenseExpiredConfirmed = await showViewDialog(
                 context: context,
                 builder: (context) => ConfirmWarningDialog(
-                  text: Translator.of(context).translate.licenseExpiredMessage,
+                  text: Lt.of(context).licenseExpiredMessage,
                 ),
                 routeSettings: (ConfirmWarningDialog).routeSetting(
                   properties: {'reason': 'License Expired'},

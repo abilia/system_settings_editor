@@ -6,7 +6,7 @@ class MpGoMenuPage extends StatelessWidget {
   const MpGoMenuPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return BlocBuilder<SessionsCubit, SessionsState>(
       builder: (context, sessionsState) => SettingsBasePage(
         icon: sessionsState.hasMP4Session
@@ -59,7 +59,7 @@ class MyPhotosPickField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = (Theme.of(context).textTheme.bodyLarge ?? bodyLarge);
-    final text = Translator.of(context).translate.myPhotos;
+    final text = Lt.of(context).myPhotos;
     return BlocSelector<SortableBloc, SortableState, String?>(
       selector: (state) => state is SortablesLoaded
           ? state.sortables.getMyPhotosFolder()?.id

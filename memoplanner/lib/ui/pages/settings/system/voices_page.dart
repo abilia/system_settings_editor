@@ -7,7 +7,7 @@ class VoicesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final scrollController = ScrollController();
 
     return Scaffold(

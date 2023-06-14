@@ -12,7 +12,7 @@ class MpGoMenuButton extends StatelessWidget {
     return BlocSelector<PermissionCubit, PermissionState, bool>(
       selector: (state) => state.importantPermissionMissing,
       builder: (context, importantPermissionMissing) {
-        final t = Translator.of(context).translate;
+        final t = Lt.of(context);
         return Stack(
           clipBehavior: Clip.none,
           children: [

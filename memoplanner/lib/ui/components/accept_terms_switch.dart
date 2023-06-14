@@ -20,7 +20,7 @@ class AcceptTermsSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return SwitchField(
       ttsData: '${t.acceptTerms} $linkText',
       value: value,

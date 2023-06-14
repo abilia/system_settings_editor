@@ -32,7 +32,7 @@ class _SelectAlarmDurationPageState extends State<SelectAlarmDurationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final widgets = [
       CollapsableWidget(
         collapsed: Platform.isAndroid ||

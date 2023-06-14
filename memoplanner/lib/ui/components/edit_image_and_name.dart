@@ -42,7 +42,7 @@ class _EditImageAndNameState extends State<EditImageAndName> {
   @override
   Widget build(BuildContext context) {
     final appbar = widget.appBar;
-    final heading = Translator.of(context).translate.name;
+    final heading = Lt.of(context).name;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[

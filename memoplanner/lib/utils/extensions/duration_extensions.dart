@@ -1,4 +1,5 @@
-import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/l10n/generated/l10n.dart';
+import 'package:memoplanner/l10n/translations_extensions.dart';
 import 'package:memoplanner/utils/all.dart';
 
 const iOSPersistentNotificationMaxDuration = Duration(seconds: 30),
@@ -7,7 +8,7 @@ const iOSPersistentNotificationMaxDuration = Duration(seconds: 30),
 const Duration maxScreenTimeoutDuration = Duration(milliseconds: 2147483647);
 
 extension DurationExtensions on Duration {
-  String toDurationString(Translated translator, {bool shortMin = true}) {
+  String toDurationString(Lt translator, {bool shortMin = true}) {
     if (inDays > 1) return '$inDays ${translator.days}';
     if (inDays == 1) return '$inDays ${translator.day}';
     if (inHours > 1) return '$inHours ${translator.hours}';
@@ -31,7 +32,7 @@ extension DurationExtensions on Duration {
     return '${_twoDigits(inMinutes)}:${_twoDigits(inSeconds.remainder(60))}';
   }
 
-  String toUntilString(Translated translator) {
+  String toUntilString(Lt translator) {
     final sb = StringBuffer();
     if (inHours > 0) {
       sb.writeln('$inHours ${translator.h}');
@@ -44,7 +45,7 @@ extension DurationExtensions on Duration {
   }
 
   String comparedToNowString(
-    Translated translator,
+    Lt translator,
     bool before, {
     bool daysOnly = false,
   }) {

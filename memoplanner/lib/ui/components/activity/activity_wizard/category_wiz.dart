@@ -9,7 +9,7 @@ class CategoryWiz extends StatelessWidget {
   Widget build(BuildContext context) {
     return WizardScaffold(
       iconData: AbiliaIcons.categories,
-      title: Translator.of(context).translate.selectCategory,
+      title: Lt.of(context).selectCategory,
       body: Padding(
         padding: layout.templates.m1,
         child: const _CategoryWidget(),

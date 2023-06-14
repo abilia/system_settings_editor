@@ -52,8 +52,8 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: abiliaTheme,
-      supportedLocales: Translator.supportedLocals,
-      localizationsDelegates: const [Translator.delegate],
+      supportedLocales: Lt.supportedLocales,
+      localizationsDelegates: const [Lt.delegate],
       home: Scaffold(
         body: SafeArea(
           child: Padding(

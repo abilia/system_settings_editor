@@ -8,7 +8,7 @@ class FunctionSettingsPage extends StatelessWidget {
   const FunctionSettingsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final settings = context.read<MemoplannerSettingsBloc>().state;
     return BlocProvider<FunctionSettingsCubit>(
       create: (context) => FunctionSettingsCubit(
@@ -78,7 +78,7 @@ class MenuRemovalWarningDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return YesNoDialog(
       heading: t.menu,
       text: t.menuRemovalWarning,
@@ -109,7 +109,7 @@ class ToolbarSettingsTab extends StatelessWidget {
   const ToolbarSettingsTab({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
 
     final display =
         context.select((FunctionSettingsCubit s) => s.state.display);
@@ -176,7 +176,7 @@ class HomeScreenSettingsTab extends StatelessWidget {
   final widgets = const <Widget>[];
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return BlocBuilder<FunctionSettingsCubit, FunctionsSettings>(
       builder: (context, functions) {
         void onChange(v) => context
@@ -235,7 +235,7 @@ class TimeoutSettingsTab extends StatelessWidget {
   final widgets = const <Widget>[];
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final timeoutSettings = context.select(
       (FunctionSettingsCubit value) => value.state.timeout,
     );

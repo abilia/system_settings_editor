@@ -25,7 +25,7 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              SubHeading(Translator.of(context).translate.infoType),
+              SubHeading(Lt.of(context).infoType),
               PickInfoItem(
                 showChecklist: showChecklist,
                 showNote: showNote,
@@ -94,7 +94,7 @@ class ChangeInfoItemPicker extends StatelessWidget {
   Widget build(BuildContext context) => Expanded(
         child: PickField(
           leading: _icon(infoItem),
-          text: Text(_text(Translator.of(context).translate, infoItem)),
+          text: Text(_text(Lt.of(context), infoItem)),
           onTap: () async {
             final featureToggleCubit = context.read<FeatureToggleCubit>();
             final editActivityCubit = context.read<EditActivityCubit>();
@@ -118,7 +118,7 @@ class ChangeInfoItemPicker extends StatelessWidget {
         ),
       );
 
-  String _text(Translated t, InfoItem infoItem) {
+  String _text(Lt t, InfoItem infoItem) {
     if (infoItem is Checklist) {
       return t.addChecklist;
     } else if (infoItem is NoteInfoItem) {
@@ -291,7 +291,7 @@ class AddNewQuestionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Tts.data(
       data: translate.addNew,
       child: RawMaterialButton(
@@ -364,7 +364,7 @@ class EditNoteWidget extends StatelessWidget {
               text: infoItem.text,
               textWidget: infoItem.text.isEmpty
                   ? Text(
-                      Translator.of(context).translate.typeSomething,
+                      Lt.of(context).typeSomething,
                       style: abiliaTextTheme.bodyLarge
                           ?.copyWith(color: const Color(0xff747474)),
                     )

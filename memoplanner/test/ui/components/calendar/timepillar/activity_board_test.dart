@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
-import 'package:memoplanner/i18n/translations.g.dart';
+import 'package:memoplanner/l10n/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/components/all.dart';
 import 'package:memoplanner/ui/themes/all.dart';
@@ -22,12 +22,13 @@ void main() {
   final startTime = DateTime(1987, 05, 22, 04, 04);
   final duration = 30.minutes();
   final endTime = startTime.add(duration);
-  final translate = Locales.language.values.first;
+  late final Lt translate;
 
   late MockDayCalendarViewCubit mockDayCalendarViewCubit;
   late MockMemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
-  setUpAll(() {
+  setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
     registerFallbackValues();
   });
 

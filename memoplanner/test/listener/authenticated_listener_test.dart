@@ -101,6 +101,7 @@ void main() {
     Authenticated state = const Authenticated(user: user),
   }) =>
       MaterialApp(
+        localizationsDelegates: const [Lt.delegate],
         home: TopLevelProvider(
           child: AuthenticationBlocProvider(
             child: AuthenticatedBlocsProvider(

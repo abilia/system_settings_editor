@@ -98,7 +98,7 @@ class CameraButton extends StatelessWidget {
             }
           },
           style: blueMenuButtonStyle,
-          text: Translator.of(context).translate.camera,
+          text: Lt.of(context).camera,
         ),
       ),
     );
@@ -131,7 +131,7 @@ class MyPhotosButton extends StatelessWidget {
               }
             : null,
         style: blueMenuButtonStyle,
-        text: Translator.of(context).translate.myPhotos,
+        text: Lt.of(context).myPhotos,
       ),
     );
   }
@@ -151,7 +151,7 @@ class PhotoCalendarButton extends StatelessWidget {
         DefaultTabController.of(context).index = photoAlbumTabIndex;
       },
       style: blueMenuButtonStyle,
-      text: Translator.of(context).translate.photoCalendar,
+      text: Lt.of(context).photoCalendar,
     );
   }
 }
@@ -176,7 +176,7 @@ class QuickSettingsButton extends StatelessWidget {
         );
       },
       style: yellowMenuButtonStyle,
-      text: Translator.of(context).translate.quickSettingsMenu,
+      text: Lt.of(context).quickSettingsMenu,
     );
   }
 }
@@ -186,7 +186,7 @@ class SettingsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name = Translator.of(context).translate.settings;
+    final name = Lt.of(context).settings;
     return MenuItemButton(
       style: blackMenuButtonStyle,
       text: name,
@@ -270,7 +270,7 @@ class BasicTemplatesButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MenuItemButton(
       style: blackMenuButtonStyle,
-      text: Translator.of(context).translate.templates,
+      text: Lt.of(context).templates,
       icon: AbiliaIcons.favoritesShow,
       onPressed: () async {
         final authProviders = copiedAuthProviders(context);

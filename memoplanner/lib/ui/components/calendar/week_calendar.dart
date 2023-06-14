@@ -214,7 +214,7 @@ class WeekCalendarHeadingContent extends StatelessWidget {
                       padding: wLayout.crossOverDayHeadingPadding,
                       child: Center(
                         child: Text(
-                          '${day.day}\n${Translator.of(context).translate.shortWeekday(day.weekday)}',
+                          '${day.day}\n${Lt.of(context).shortWeekday(day.weekday)}',
                           textAlign: TextAlign.center,
                           style: textStyle,
                         ),

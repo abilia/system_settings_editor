@@ -38,7 +38,7 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final displaySettings =
         context.select((DayCalendarViewCubit cubit) => cubit.state.display);
     final dividerPad = EdgeInsets.only(

@@ -68,7 +68,7 @@ class AppBarTitleRows {
     required DayParts dayParts,
     required DayPart dayPart,
     required String langCode,
-    required Translated translator,
+    required Lt translator,
     required DayAppBarSettings settings,
     bool compactDay = false,
     bool currentNight = false,
@@ -119,7 +119,7 @@ class AppBarTitleRows {
     bool today,
     int hour,
     DayPart part,
-    Translated translator,
+    Lt translator,
   ) {
     if (today) {
       switch (part) {
@@ -146,7 +146,7 @@ class AppBarTitleRows {
     required DateTime selectedDay,
     required WeekCalendarSettings settings,
     required String langCode,
-    required Translated translator,
+    required Lt translator,
   }) {
     final displayWeekday = selectedDay.isSameWeekAndYear(selectedWeekStart);
     final day =

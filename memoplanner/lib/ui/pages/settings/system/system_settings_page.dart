@@ -9,7 +9,7 @@ class SystemSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return SettingsBasePage(
       icon: AbiliaIcons.technicalSettings,
       title: t.system,

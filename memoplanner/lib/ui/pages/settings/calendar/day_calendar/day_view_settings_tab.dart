@@ -7,7 +7,7 @@ class DayViewSettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return BlocBuilder<DayCalendarSettingsCubit, DayCalendarSettings>(
       builder: (context, settings) {
         final dayCalendar = context.read<DayCalendarSettingsCubit>();

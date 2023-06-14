@@ -292,9 +292,7 @@ class SideDotsLarge extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Tts(
                     child: Text(
-                      endTime
-                          .difference(now)
-                          .toUntilString(Translator.of(context).translate),
+                      endTime.difference(now).toUntilString(Lt.of(context)),
                       key: TestKey.sideDotsTimeText,
                       textAlign: TextAlign.center,
                     ),

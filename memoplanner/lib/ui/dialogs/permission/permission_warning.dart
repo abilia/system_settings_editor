@@ -9,7 +9,7 @@ class NotificationPermissionOffWarningDialog extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return ViewDialog(
       expanded: true,
       bodyPadding: layout.templates.m4,
@@ -54,7 +54,7 @@ class NotificationPermissionWarningDialog extends StatelessWidget {
         bodyPadding: layout.templates.m4,
         backNavigationWidget: const CloseButton(),
         body: _WarningContent(
-          heading: Translator.of(context).translate.allowNotifications,
+          heading: Lt.of(context).allowNotifications,
           body: const NotificationBodyTextWarning(),
         ),
       );
@@ -100,7 +100,7 @@ class NotificationBodyTextWarning extends StatelessWidget {
         .textTheme
         .bodyMedium
         ?.copyWith(color: AbiliaColors.black75);
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Tts.fromSemantics(
       SemanticsProperties(
         multiline: true,

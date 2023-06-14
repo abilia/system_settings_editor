@@ -7,7 +7,7 @@ class AddActivityAddSettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final newActivityMode =
         context.select((AddActivitySettingsCubit cubit) => cubit.state.mode);
     return SettingsTab(
@@ -40,7 +40,7 @@ class AddActivityAddSettingsTab extends StatelessWidget {
 Future<void> _showErrorDialog(BuildContext context) async => showDialog(
       context: context,
       builder: (context) => ErrorDialog(
-        text: Translator.of(context).translate.missingRequiredActivitySetting,
+        text: Lt.of(context).missingRequiredActivitySetting,
       ),
     );
 
@@ -49,7 +49,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final editActivitySettings = context
         .select((AddActivitySettingsCubit cubit) => cubit.state.editActivity);
     final showAvailableFor = context
@@ -208,7 +208,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final settings = context
         .select((AddActivitySettingsCubit cubit) => cubit.state.stepByStep);
     final showAvailableFor = context

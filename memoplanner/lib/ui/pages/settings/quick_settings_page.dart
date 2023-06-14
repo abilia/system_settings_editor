@@ -11,7 +11,7 @@ class QuickSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final hasBattery = GetIt.I<Device>().hasBattery;
     return Scaffold(
       appBar: AbiliaAppBar(

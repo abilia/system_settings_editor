@@ -23,11 +23,12 @@ void main() {
   const String activityNameOne = 'Basic Activity 1';
   const String activityNameTwo = 'Basic Activity 2';
   const String timerTitle = 'Basic Timer';
-  final translate = Locales.language.values.first;
+  late final Lt translate;
 
   late List<Sortable> initialSortables;
   late SortableDb mockSortableDb;
-  setUpAll(() {
+  setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
     tz.initializeTimeZones();
     setupPermissions();
   });

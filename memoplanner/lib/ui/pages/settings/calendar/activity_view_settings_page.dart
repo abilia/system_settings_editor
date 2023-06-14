@@ -10,7 +10,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final settings = context.read<MemoplannerSettingsBloc>().state;
     return BlocProvider(
       create: (context) => ActivityViewSettingsCubit(
@@ -176,9 +176,7 @@ class ActivityPagePreview extends StatelessWidget {
                   child: ActivityPage(
                     activityDay: ActivityDay(
                       Activity(
-                        title: Translator.of(context)
-                            .translate
-                            .previewActivityTitle,
+                        title: Lt.of(context).previewActivityTitle,
                         startTime: startTime,
                         duration: const Duration(hours: 1),
                         calendarId: '',

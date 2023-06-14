@@ -12,8 +12,8 @@ void main() {
   late SpeechSettingsCubit mockSpeechSettingsCubit;
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
-        supportedLocales: Translator.supportedLocals,
-        localizationsDelegates: const [Translator.delegate],
+        supportedLocales: Lt.supportedLocales,
+        localizationsDelegates: const [Lt.delegate],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),

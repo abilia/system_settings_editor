@@ -1,6 +1,7 @@
-import 'package:memoplanner/i18n/all.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:memoplanner/l10n/generated/l10n.dart';
 
-extension TranslatedExtensions on Translated {
+extension TranslatedExtensions on Lt {
   static const String _stringWildcard = '%s';
   String inTime(String time) => '$inTimePre $time'.trim();
   String timeAgo(String time) => '$timeAgoPre $time $timeAgoPost'.trim();
@@ -35,3 +36,7 @@ extension TranslatedExtensions on Translated {
   String replaceInString(String string, String replacement) =>
       string.replaceFirst(_stringWildcard, replacement);
 }
+
+@visibleForTesting
+Future<Lt> get englishTranslate =>
+    Lt.load(const Locale.fromSubtags(languageCode: 'en'));

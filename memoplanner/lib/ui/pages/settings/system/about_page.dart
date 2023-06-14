@@ -15,7 +15,7 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Scaffold(
       appBar: AbiliaAppBar(
         title: translate.aboutMemoplanner,
@@ -37,7 +37,7 @@ class AboutDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
 
     return ViewDialog(
       heading: AppBarHeading(
@@ -97,7 +97,7 @@ class AboutMemoplannerColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final textTheme = Theme.of(context).textTheme;
     final license = GetIt.I<DeviceDb>().getDeviceLicense();
     final licenseEnd = license?.endTime;
@@ -143,7 +143,7 @@ class LoggedInAccountColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -176,7 +176,7 @@ class AboutDeviceColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final textTheme = Theme.of(context).textTheme;
     return FutureBuilder(
       // ignore: discarded_futures
@@ -229,7 +229,7 @@ class ProducerColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final textTheme = Theme.of(context).textTheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,7 +266,7 @@ class SearchForUpdateButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Tts.data(
       data: translate.searchForUpdate,
       child: ConstrainedBox(

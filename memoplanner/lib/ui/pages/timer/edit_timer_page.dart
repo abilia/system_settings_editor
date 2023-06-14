@@ -11,7 +11,7 @@ class EditTimerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
 
     return PopAwareDiscardListener(
       showDiscardDialogCondition: (context) =>
@@ -252,8 +252,7 @@ class _TimerInfoInput extends StatelessWidget {
                           }
                         },
                         inputFormatters: [LengthLimitingTextInputFormatter(50)],
-                        inputHeading:
-                            Translator.of(context).translate.enterNameForTimer,
+                        inputHeading: Lt.of(context).enterNameForTimer,
                       ),
                       SizedBox(height: layout.formPadding.verticalItemDistance),
                       PickField(

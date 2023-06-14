@@ -11,9 +11,13 @@ import '../../../fakes/all.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
-  final translate = Locales.language.values.first;
+  late final Lt translate;
 
   late SharedPreferences fakeSharedPreferences;
+
+  setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
+  });
 
   setUp(() async {
     setupPermissions();

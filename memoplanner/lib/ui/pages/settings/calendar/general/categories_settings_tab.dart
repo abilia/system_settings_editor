@@ -9,7 +9,7 @@ class CategoriesSettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final generalSettings = context.watch<GeneralCalendarSettingsCubit>().state;
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return SettingsTab(
       children: [
         _CategoriesPreview(state: generalSettings),

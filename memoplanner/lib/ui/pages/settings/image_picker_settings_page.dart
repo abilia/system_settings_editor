@@ -24,11 +24,11 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return SettingsBasePage(
       icon: AbiliaIcons.myPhotos,
-      title: Translator.of(context).translate.imagePicker,
-      label: Config.isMP ? Translator.of(context).translate.settings : null,
+      title: Lt.of(context).imagePicker,
+      label: Config.isMP ? Lt.of(context).settings : null,
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: Builder(

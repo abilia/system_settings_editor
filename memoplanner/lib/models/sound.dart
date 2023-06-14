@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/l10n/all.dart';
 
 enum Sound {
   NoSound,
@@ -20,7 +20,7 @@ enum Sound {
 
 extension SoundExtension on Sound {
   static const defaultName = 'Default';
-  String displayName(Translated t) {
+  String displayName(Lt t) {
     switch (this) {
       case Sound.Default:
         return defaultName;

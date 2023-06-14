@@ -14,13 +14,18 @@ void main() {
   late EditTimerCubit editTimerCubit;
   late TimerCubit timerCubit;
   late Ticker fakeTicker;
+  late final Lt translate;
+
+  setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
+  });
 
   Widget wrapWithMaterialApp({
     bool editTemplateTimer = false,
   }) {
     return MaterialApp(
-      supportedLocales: Translator.supportedLocals,
-      localizationsDelegates: const [Translator.delegate],
+      supportedLocales: Lt.supportedLocales,
+      localizationsDelegates: const [Lt.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),
@@ -55,7 +60,7 @@ void main() {
     );
     editTimerCubit = EditTimerCubit(
       timerCubit: timerCubit,
-      translate: Locales.language.values.first,
+      translate: translate,
       ticker: fakeTicker,
       basicTimer: AbiliaTimer(
         id: 'id',
@@ -139,7 +144,7 @@ void main() {
       // Act
       editTimerCubit = EditTimerCubit(
         timerCubit: timerCubit,
-        translate: Locales.language.values.first,
+        translate: translate,
         ticker: fakeTicker,
         basicTimer: AbiliaTimer(
           id: 'id',

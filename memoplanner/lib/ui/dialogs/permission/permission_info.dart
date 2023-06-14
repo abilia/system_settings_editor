@@ -12,7 +12,7 @@ class PermissionInfoDialog extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return BlocListener<PermissionCubit, PermissionState>(
       listenWhen: (previous, current) =>
           current.status[permission]?.isGranted ?? true,
@@ -54,7 +54,7 @@ class PermissionInfoDialog extends StatelessWidget {
     );
   }
 
-  String body(Translated translate) {
+  String body(Lt translate) {
     if (permission == Permission.camera) return translate.allowAccessCameraBody;
     if (permission == Permission.photos) return translate.allowAccessPhotosBody;
     if (permission == Permission.microphone) {
@@ -77,7 +77,7 @@ class PermissionInfoBodyText extends StatelessWidget {
         .textTheme
         .bodyMedium
         ?.copyWith(color: AbiliaColors.black75);
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Padding(
       padding: layout.templates.m4,
       child: Tts.fromSemantics(
@@ -104,7 +104,7 @@ class PermissionInfoBodyText extends StatelessWidget {
 TextSpan buildSettingsLinkTextSpan(BuildContext context) => TextSpan(
       children: [
         TextSpan(
-          text: Translator.of(context).translate.settingsLink,
+          text: Lt.of(context).settingsLink,
           style: DefaultTextStyle.of(context)
               .style
               .copyWith(decoration: TextDecoration.underline),

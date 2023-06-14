@@ -117,14 +117,14 @@ class ConfirmDeleteTimerTemplateDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      ConfirmDeleteDialog(text: Translator.of(context).translate.timerDelete);
+      ConfirmDeleteDialog(text: Lt.of(context).timerDelete);
 }
 
 class ConfirmDeleteActivityTemplateDialog extends StatelessWidget {
   const ConfirmDeleteActivityTemplateDialog({Key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context) => ConfirmDeleteDialog(
-      text: Translator.of(context).translate.deleteActivityQuestion);
+  Widget build(BuildContext context) =>
+      ConfirmDeleteDialog(text: Lt.of(context).deleteActivityQuestion);
 }
 
 class ConfirmDeleteDialog extends StatelessWidget {
@@ -134,7 +134,7 @@ class ConfirmDeleteDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => YesNoDialog(
-        heading: Translator.of(context).translate.delete,
+        heading: Lt.of(context).delete,
         headingIcon: AbiliaIcons.deleteAllClear,
         text: text,
       );

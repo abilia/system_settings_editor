@@ -31,7 +31,7 @@ void main() {
     title: '',
     startTime: startTime,
   );
-  final translate = Locales.language.values.first;
+  late final Lt translate;
 
   final timeFieldFinder = find.byType(TimeIntervalPicker);
   final okButtonFinder = find.byType(OkButton);
@@ -45,6 +45,7 @@ void main() {
   late MockSupportPersonsCubit supportPersonsCubit;
 
   setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
     registerFallbackValues();
     tz.initializeTimeZones();
     await initializeDateFormatting();
@@ -119,8 +120,8 @@ void main() {
       navigatorObservers: [
         AnalyticNavigationObserver(GetIt.I<SeagullAnalytics>()),
       ],
-      supportedLocales: Translator.supportedLocals,
-      localizationsDelegates: const [Translator.delegate],
+      supportedLocales: Lt.supportedLocales,
+      localizationsDelegates: const [Lt.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),

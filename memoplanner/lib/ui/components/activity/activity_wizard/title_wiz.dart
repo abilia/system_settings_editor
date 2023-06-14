@@ -23,10 +23,10 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final appBar = AbiliaAppBar(
       iconData: AbiliaIcons.edit,
-      label: Translator.of(context).translate.newActivity,
+      label: Lt.of(context).newActivity,
       title: t.enterNameForActivity,
       borderRadius: layout.appBar.borderRadius,
       useVerticalSafeArea: false,

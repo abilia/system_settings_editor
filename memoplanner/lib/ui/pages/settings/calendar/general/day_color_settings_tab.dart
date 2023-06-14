@@ -11,7 +11,7 @@ class DayColorsSettingsTab extends StatelessWidget {
       builder: (context, state) {
         return SettingsTab(
           children: [
-            Tts(child: Text(Translator.of(context).translate.dayColours)),
+            Tts(child: Text(Lt.of(context).dayColours)),
             MonthHeading(
               showLeadingWeekShort: false,
               dayThemes: List.generate(
@@ -26,7 +26,7 @@ class DayColorsSettingsTab extends StatelessWidget {
             ...DayColor.values.map(
               (dc) => RadioField<DayColor>(
                 key: Key('$dc'),
-                text: Text(_title(dc, Translator.of(context).translate)),
+                text: Text(_title(dc, Lt.of(context))),
                 value: dc,
                 groupValue: state.dayColor,
                 onChanged: (v) => context
@@ -40,7 +40,7 @@ class DayColorsSettingsTab extends StatelessWidget {
     );
   }
 
-  String _title(DayColor dayColor, Translated translator) {
+  String _title(DayColor dayColor, Lt translator) {
     switch (dayColor) {
       case DayColor.allDays:
         return translator.allDays;

@@ -8,7 +8,7 @@ class MenuSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     final settings = context.read<MemoplannerSettingsBloc>().state;
     return BlocProvider<MenuSettingsCubit>(
       create: (context) => MenuSettingsCubit(
@@ -19,9 +19,8 @@ class MenuSettingsPage extends StatelessWidget {
         builder: (context, state) {
           return SettingsBasePage(
             icon: AbiliaIcons.appMenu,
-            title: Translator.of(context).translate.menu,
-            label:
-                Config.isMP ? Translator.of(context).translate.settings : null,
+            title: Lt.of(context).menu,
+            label: Config.isMP ? Lt.of(context).settings : null,
             bottomNavigationBar: BottomNavigation(
               backNavigationWidget: const CancelButton(),
               forwardNavigationWidget: Builder(

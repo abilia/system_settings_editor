@@ -19,14 +19,15 @@ import '../../../test_helpers/tts.dart';
 
 void main() {
   const secretPassword = 'pwfafawfapwfafawfa';
-  final translate = Locales.language.values.first;
+  late final Lt translate;
 
   final time = DateTime(2020, 11, 11, 11, 11);
   DateTime licenseExpireTime;
   late ListenableMockClient client;
   TermsOfUseResponse termsOfUseResponse = () => TermsOfUse.accepted();
 
-  setUpAll(() {
+  setUpAll(() async {
+    translate = await Lt.load(Lt.supportedLocales.first);
     registerFallbackValues();
     scheduleNotificationsIsolated = noAlarmScheduler;
     licenseExpireTime = time.add(10.days());

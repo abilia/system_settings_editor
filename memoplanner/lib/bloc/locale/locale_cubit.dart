@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/i18n/translations.g.dart';
+import 'package:memoplanner/l10n/all.dart';
 
 class LocaleCubit extends Cubit<Locale> {
   final SettingsDb settingsDb;
@@ -23,7 +23,7 @@ class _LocaleCubitsDelegate extends LocalizationsDelegate<LocaleCubit> {
   final LocaleCubit cubit;
 
   @override
-  bool isSupported(Locale locale) => Locales.language.containsKey(locale);
+  bool isSupported(Locale locale) => Lt.supportedLocales.contains(locale);
 
   @override
   Future<LocaleCubit> load(Locale locale) async {

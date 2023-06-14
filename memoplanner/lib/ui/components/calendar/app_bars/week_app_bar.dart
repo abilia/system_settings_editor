@@ -27,7 +27,7 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
       rows: AppBarTitleRows.week(
         selectedWeekStart: currentWeekStart,
         selectedDay: time.onlyDays(),
-        translator: Translator.of(context).translate,
+        translator: Lt.of(context),
         settings: weekCalendarSettings,
         langCode: Localizations.localeOf(context).toLanguageTag(),
       ),

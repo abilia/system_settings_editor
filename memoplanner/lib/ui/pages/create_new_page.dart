@@ -19,8 +19,7 @@ class CreateNewPage extends StatelessWidget {
     final displayNewTimer = displaysSettings.newTimer && showTimers;
 
     return Scaffold(
-      appBar: _appBar(Translator.of(context).translate, displayNewActivity,
-          displayNewTimer),
+      appBar: _appBar(Lt.of(context), displayNewActivity, displayNewTimer),
       body: Column(
         children: [
           if (displayNewActivity) const NewActivityWidget(),
@@ -40,7 +39,7 @@ class CreateNewPage extends StatelessWidget {
   }
 
   AbiliaAppBar _appBar(
-    Translated t,
+    Lt t,
     bool displayNewActivity,
     bool displayNewTimer,
   ) {

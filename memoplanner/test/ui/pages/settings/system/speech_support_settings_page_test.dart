@@ -17,8 +17,10 @@ void main() {
     final Iterable<Generic> generics = [];
     late MockGenericDb genericDb;
     late MockVoiceDb voiceDb;
+    late final Lt translate;
 
     setUp(() async {
+      translate = await Lt.load(Lt.supportedLocales.first);
       setupPermissions();
       setupFakeTts();
 
@@ -145,7 +147,7 @@ void main() {
       await tester.tap(find.byType(TextToSpeechSwitch));
       await tester.pumpAndSettle();
       expect(
-        find.widgetWithText(PickField, const SV().noVoicesInstalled),
+        find.widgetWithText(PickField, translate.noVoicesInstalled),
         findsOneWidget,
       );
       expect(find.widgetWithText(PickField, 'en'), findsNothing);
@@ -169,7 +171,7 @@ void main() {
       await tester.tap(find.byType(TextToSpeechSwitch));
       await tester.pumpAndSettle();
       expect(
-        find.widgetWithText(PickField, const EN().noVoicesInstalled),
+        find.widgetWithText(PickField, translate.noVoicesInstalled),
         findsOneWidget,
       );
       expect(find.widgetWithText(PickField, 'en'), findsNothing);

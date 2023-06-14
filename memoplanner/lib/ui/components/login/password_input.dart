@@ -20,8 +20,7 @@ class PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final subheading =
-        inputHeading ?? Translator.of(context).translate.password;
+    final subheading = inputHeading ?? Lt.of(context).password;
     return BlocProvider(
       create: (_) => PasswordCubit(password, validator),
       child: BlocBuilder<PasswordCubit, PasswordState>(
@@ -122,10 +121,9 @@ class _PasswordInputBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    final subheading =
-        widget.inputHeading ?? Translator.of(context).translate.password;
+    final subheading = widget.inputHeading ?? Lt.of(context).password;
     final appBar = AbiliaAppBar(
-      title: Translator.of(context).translate.password,
+      title: Lt.of(context).password,
       iconData: AbiliaIcons.lock,
       borderRadius: layout.appBar.borderRadius,
     );

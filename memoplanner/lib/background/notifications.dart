@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:logging/logging.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/config.dart';
-import 'package:memoplanner/i18n/all.dart';
+
+import 'package:memoplanner/l10n/generated/l10n.dart';
 import 'package:memoplanner/models/all.dart';
 
 import 'package:memoplanner/utils/all.dart';
@@ -121,6 +123,10 @@ Future _scheduleAllNotifications(
   await cancelAllPendingNotifications();
   final locale = Locale(language);
   await initializeDateFormatting(locale.languageCode);
+  await Lokalise.init(
+    projectId: '5478615164886d27c51a59.58833679',
+    sdkToken: 'd3fbf2cb3b69f06694974560af79cb31fc6b',
+  );
   final androidNotificationChannels = await _androidNotificationChannelIds();
   log(
     Level.FINE,
@@ -170,7 +176,7 @@ Future<bool> _scheduleNotification(
   Logging log,
 ) async {
   final title = notificationAlarm.event.title;
-  final subtitle = _subtitle(
+  final subtitle = await _subtitle(
     notificationAlarm,
     locale,
     alwaysUse24HourFormat,
@@ -348,14 +354,14 @@ class NotificationChannel {
   NotificationChannel(this.id, this.name, this.description);
 }
 
-String? _subtitle(
+Future<String?> _subtitle(
   NotificationAlarm notificationAlarm,
   Locale givenLocale,
   bool alwaysUse24HourFormat,
-) {
+) async {
   final timeFormat =
       hourAndMinuteFromUse24(alwaysUse24HourFormat, givenLocale.languageCode);
-  final translator = Locales.language[givenLocale] ?? const EN();
+  final translator = await Lt.load(givenLocale);
   if (notificationAlarm is ActivityAlarm) {
     return _activitySubtitle(notificationAlarm, timeFormat, translator);
   }
@@ -365,7 +371,7 @@ String? _subtitle(
 String _activitySubtitle(
   ActivityAlarm activeNotification,
   TimeFormat timeFormat,
-  Translated? translator,
+  Lt? translator,
 ) {
   final ad = activeNotification.activityDay;
   final endTime = ad.activity.hasEndTime ? ' - ${timeFormat(ad.end)} ' : ' ';
@@ -374,7 +380,7 @@ String _activitySubtitle(
   return timeFormat(ad.start) + endTime + extra;
 }
 
-String _extra(ActivityAlarm notificationAlarm, Translated translator) {
+String _extra(ActivityAlarm notificationAlarm, Lt translator) {
   if (notificationAlarm is StartAlarm) return translator.startsNow;
   if (notificationAlarm is EndAlarm) return translator.endsNow;
   if (notificationAlarm is NewReminder) {

@@ -1,11 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
-import 'package:memoplanner/i18n/app_localizations.dart';
-import 'package:memoplanner/ui/components/all.dart';
-import 'package:memoplanner/ui/widget_test_keys.dart';
+import 'package:memoplanner/ui/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
 class BrightnessSlider extends StatefulWidget {
@@ -49,7 +46,7 @@ class _BrightnessSliderState extends State<BrightnessSlider>
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

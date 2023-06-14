@@ -8,7 +8,7 @@ class ClockSettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final is24h = MediaQuery.of(context).alwaysUse24HourFormat;
-    final t = Translator.of(context).translate;
+    final t = Lt.of(context);
     return BlocBuilder<GeneralCalendarSettingsCubit, GeneralCalendarSettings>(
       builder: (context, state) {
         final tpState = state.timepillar;
