@@ -24,7 +24,7 @@ void main() {
           ..sharedPreferences =
               await FakeSharedPreferences.getInstance(loggedIn: false)
           ..ticker = Ticker.fake(initialTime: DateTime(2021, 05, 13, 11, 29))
-          ..client = Fakes.client()
+          ..client = fakeClient()
           ..database = FakeDatabase()
           ..deviceDb = FakeDeviceDb()
           ..init();

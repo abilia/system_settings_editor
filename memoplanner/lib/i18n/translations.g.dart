@@ -86,6 +86,9 @@ abstract class Translated {
   final String unauthorizedMessage =
       'This is most likely due to a password change, please try logging in again.';
 
+  final String tooManyAttempts =
+      'You have made too many attempts to log in. Please wait a few seconds until trying again';
+
   final String createAccountHint = 'Don’t have a myAbilia account yet?';
 
   final String createAccount = 'Create Account';
@@ -1155,6 +1158,10 @@ class SV extends Translated {
   @override
   final String unauthorizedMessage =
       'Detta beror troligen på en lösenordsändring, försök att logga in igen.';
+
+  @override
+  final String tooManyAttempts =
+      'Du har försökt logga in för många gånger. Var vänlig vänta lite innan du försöker igen';
 
   @override
   final String createAccountHint = 'Har du inte ett myAbilia konto ännu?';
@@ -2448,7 +2455,7 @@ class SV extends Translated {
       'Tillåt åtkomst till mikrofon för att kunna spela in tal från enheten';
 
   @override
-  final String ignoreBatteryOptimizations = 'Ignorera batteryoptimeringar';
+  final String ignoreBatteryOptimizations = 'Ignorera batterioptimeringar';
 
   @override
   final String about = 'Information';

@@ -14,7 +14,7 @@ void main() {
   group('Startup,', () {
     late MockConnectivity mockConnectivity;
     late DeviceDb deviceDb;
-    Response connectLicenseResponse = Fakes.deviceLicenseSuccessResponse;
+    Response connectLicenseResponse = deviceLicenseSuccessResponse;
 
     setUp(() async {
       deviceDb = MockDeviceDb();
@@ -33,7 +33,7 @@ void main() {
             await FakeSharedPreferences.getInstance(loggedIn: false)
         ..database = FakeDatabase()
         ..deviceDb = deviceDb
-        ..client = Fakes.client(
+        ..client = fakeClient(
           connectLicenseResponse: () => connectLicenseResponse,
         )
         ..connectivity = mockConnectivity
@@ -152,7 +152,7 @@ void main() {
             isNull,
           );
           // Success response
-          connectLicenseResponse = Fakes.deviceLicenseSuccessResponse;
+          connectLicenseResponse = deviceLicenseSuccessResponse;
           // remove field
           await tester.enterText(find.byType(TextField), '');
           await tester.pumpAndSettle();

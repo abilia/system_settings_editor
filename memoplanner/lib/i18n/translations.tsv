@@ -29,6 +29,7 @@ userTypeNotSupported	Users of type Support person or Admin can't log in to MEMOp
 loggedOutMessage	You have been logged out. Please log in again.	Du har blivit utloggad. Vänligen logga in igen.	Du er blevet logget ud. Log ind igen.	U bent uitgelogd. Log alstublieft opnieuw in.	Olet kirjautunut ulos. Kirjaudu sisään uudelleen.	Sie wurden abgemeldet. Bitte melden Sie sich erneut an.	Du har blitt logget ut. Logg på igjen.
 unauthorizedHeader	You have been logged out	Du har blivit utloggad	Du er blevet logget ud	U bent uitgelogd	Olet kirjautunut ulos	Sie wurden abgemeldet	Du har blitt logget ut
 unauthorizedMessage	This is most likely due to a password change, please try logging in again.	Detta beror troligen på en lösenordsändring, försök att logga in igen.	Dette skyldes sandsynligt en ændring af adgangskoden. Prøv venligst at logge ind igen.	Dit komt waarschijnlijk door een wachtwoordwijziging. Probeer opnieuw in te loggen.	Tämä johtuu todennäköisesti salasanan vaihdosta. Yritä kirjautua sisään uudelleen.	Dies liegt wahrscheinlich an einer Passwortänderung, bitte versuchen Sie sich erneut anzumelden.	Dette er sannsynlig på grunn av en passordendring, vennligst prøv å logge på igjen.
+tooManyAttempts	You have made too many attempts to log in. Please wait a few seconds until trying again	Du har försökt logga in för många gånger. Var vänlig vänta lite innan du försöker igen					
 							
 ### Create Account							
 createAccountHint	Don’t have a myAbilia account yet?	Har du inte ett myAbilia konto ännu?	Har du ikke en myAbilia-konto endnu?	Heeft u nog geen myAbilia-account?	Eikö sinulla ole vielä myAbilia-tiliä?	Sie haben noch kein myAbilia-Konto?	Har du ikke en myAbilia-konto ennå?
@@ -495,7 +496,7 @@ allowAccessCameraBody	Allow access to camera to be able to take a photo from the
 allowAccessBody2	You can always do that later from the	Du kan alltid göra det senare från	Du kan altid gøre det senere fra	U kunt dat later altijd doen vanuit de	Voit aina tehdä sen myöhemmin	Dies kann jederzeit später erfolgen von der	Du kan alltids gjøre det senere fra
 accessToMicrophone	Access to Microphone	Tillgång till mikrofon	Adgang til mikrofon	Toegang tot microfoon	Pääsy mikrofoniin	Zugang zum Mikrofon	Tilgang til mikrofon
 allowAccessMicrophoneBody	Allow access to microphone to be able to record speech from the device	Tillåt åtkomst till mikrofon för att kunna spela in tal från enheten	Tillad adgang til mikrofon for at kunne optage tale fra enheden	Toegang tot microfoon toestaan om spraak van het apparaat op te nemen	Salli mikrofonin käyttö, jotta voit tallentaa puhetta laitteelta	Erlauben Sie den Zugriff auf das Mikrofon, um Sprache vom Gerät aufzeichnen zu können	Tillat tilgang til mikrofon for å kunne ta opp tale fra enheten
-ignoreBatteryOptimizations	Ignore battery optimizations	Ignorera batteryoptimeringar					
+ignoreBatteryOptimizations	Ignore battery optimizations	Ignorera batterioptimeringar					
 							
 ### About							
 about	About	Information	Information	Informatie	Tiedot	Information	Informasjon

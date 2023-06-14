@@ -55,7 +55,7 @@ void main() {
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..ticker = fakeTicker
-        ..client = Fakes.client(
+        ..client = fakeClient(
           activityResponse: () => [],
         )
         ..battery = FakeBattery()
@@ -74,7 +74,7 @@ void main() {
           child: AuthenticationBlocProvider(
             child: AuthenticatedBlocsProvider(
               memoplannerSettingBloc: mockSettingBloc,
-              authenticatedState: const Authenticated(user: Fakes.user),
+              authenticatedState: const Authenticated(user: user),
               child: BlocProvider<InactivityCubit>(
                 create: (context) => inactivityCubit,
                 child: BlocProvider<ScrollPositionCubit>(
@@ -288,7 +288,7 @@ void main() {
         ..genericDb = mockGenericDb
         ..sortableDb = FakeSortableDb()
         ..timerDb = mockTimerDb
-        ..client = Fakes.client()
+        ..client = fakeClient()
         ..ticker = Ticker.fake(
           initialTime: initialTime,
           stream: clockStreamController.stream,

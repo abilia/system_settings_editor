@@ -68,7 +68,7 @@ void main() {
       ..activityDb = mockActivityDb
       ..sortableDb = FakeSortableDb()
       ..timerDb = mockTimerDb
-      ..client = Fakes.client()
+      ..client = fakeClient()
       ..database = FakeDatabase()
       ..genericDb = mockGenericDb
       ..voiceDb = FakeVoiceDb()

@@ -82,7 +82,7 @@ void main() {
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..database = FakeDatabase()
       ..sortableDb = FakeSortableDb()
-      ..client = Fakes.client()
+      ..client = fakeClient()
       ..battery = FakeBattery()
       ..deviceDb = FakeDeviceDb()
       ..init();
@@ -98,7 +98,7 @@ void main() {
   });
 
   Widget authListener({
-    Authenticated state = const Authenticated(user: Fakes.user),
+    Authenticated state = const Authenticated(user: user),
   }) =>
       MaterialApp(
         home: TopLevelProvider(
@@ -191,7 +191,7 @@ void main() {
 
     // Act - Start app
     await tester.pumpWidget(authListener(
-        state: const Authenticated(user: Fakes.user, newlyLoggedIn: true)));
+        state: const Authenticated(user: user, newlyLoggedIn: true)));
     await tester.pumpAndSettle();
 
     // Assert - No dialog
