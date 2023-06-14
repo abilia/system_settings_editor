@@ -31,7 +31,7 @@ jobs:
         uses: bluefireteam/flutter-gh-pages@v7
         with:
           workingDir: showcase
-          baseHref: /seagull/branches/${{ steps.extract_branch.outputs.branch }}/
+          baseHref: /seagull/${{ steps.extract_branch.outputs.branch }}/
           targetBranch: gh-pages-buffer
 
       - uses: actions/checkout@v2
@@ -40,18 +40,21 @@ jobs:
 
       - name: Copy files to new folder in buffer branch
         run: |
-          mkdir -p branches/${{ steps.extract_branch.outputs.branch }}
-          rsync -r --exclude=${{ steps.extract_branch.outputs.branch }}/ * branches/${{ steps.extract_branch.outputs.branch }}/
+          mkdir -p ${{ steps.extract_branch.outputs.branch }}
+          rsync -r --exclude=${{ steps.extract_branch.outputs.branch }}/ * ${{ steps.extract_branch.outputs.branch }}/
           git add .
           git commit -m "Copy files to ${{ steps.extract_branch.outputs.branch }}"
 
       - name: Copy files in buffer branch to github pages branch
         run: |
-          git fetch --all
+          git fetch
           git checkout gh-pages
-          git rm -r --ignore-unmatch branches/${{ steps.extract_branch.outputs.branch }}/*
-          mkdir -p branches/${{ steps.extract_branch.outputs.branch }} || exit 1
-          git checkout -f gh-pages-buffer branches/${{ steps.extract_branch.outputs.branch }}/
-          git add branches/${{ steps.extract_branch.outputs.branch }}/
+          git rm -r --ignore-unmatch ${{ steps.extract_branch.outputs.branch }}/*
+          mkdir -p ${{ steps.extract_branch.outputs.branch }} || exit 1
+          git checkout -f gh-pages-buffer ${{ steps.extract_branch.outputs.branch }}/
+          git add ${{ steps.extract_branch.outputs.branch }}/
           git commit -m "Create showcase for branch ${{ steps.extract_branch.outputs.branch }}"
           git push
+
+      - name: Print url
+        run: echo "Link to showcase:\ https://abilia.github.io/${{ steps.extract_branch.outputs.branch }}"
