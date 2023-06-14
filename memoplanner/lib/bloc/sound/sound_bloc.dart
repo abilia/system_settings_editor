@@ -9,7 +9,6 @@ import 'package:file_storage/file_storage.dart';
 import 'package:logging/logging.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/utils/all.dart';
 import 'package:mime/mime.dart' as mime;
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
@@ -20,7 +19,6 @@ part 'sound_state.dart';
 
 class SoundBloc extends Bloc<SoundEvent, SoundState> {
   static const tmpFileEnding = 'mp3';
-  static final spamProtectionDelay = 250.milliseconds();
 
   final log = Logger((SoundBloc).toString());
 
@@ -36,6 +34,7 @@ class SoundBloc extends Bloc<SoundEvent, SoundState> {
   SoundBloc({
     required this.storage,
     required this.userFileBloc,
+    required Duration spamProtectionDelay,
   }) : super(const NoSoundPlaying()) {
     on<SoundControlEvent>(
       _onEvent,

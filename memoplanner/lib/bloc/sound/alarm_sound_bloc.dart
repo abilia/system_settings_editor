@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
-import 'package:memoplanner/bloc/sound/sound_bloc.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -13,11 +12,11 @@ class AlarmSoundBloc extends Bloc<AlarmSoundEvent, Sound?> {
   final AudioPlayer audioPlayer;
   late final StreamSubscription onPlayerCompletion;
 
-  AlarmSoundBloc()
-      : audioPlayer = AudioPlayer(),
+  AlarmSoundBloc({
+    required Duration spamProtectionDelay,
+  })  : audioPlayer = AudioPlayer(),
         super(null) {
-    on<AlarmSoundEvent>(_onEvent,
-        transformer: _throttle(SoundBloc.spamProtectionDelay));
+    on<AlarmSoundEvent>(_onEvent, transformer: _throttle(spamProtectionDelay));
     onPlayerCompletion = audioPlayer.onPlayerComplete
         .listen((_) => add(const AlarmSoundCompleted()));
   }
