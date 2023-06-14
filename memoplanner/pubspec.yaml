@@ -46,7 +46,7 @@ dependencies:
   flutter_local_notifications:
     git:
       url: https://github.com/abilia/flutter_local_notifications.git
-      ref: flutter_local_notifications-v14.1.0-fork-3.4
+      ref: flutter_local_notifications-v14.1.0-fork-3.5
       path: flutter_local_notifications/
   flutter_localizations:
     sdk: flutter
