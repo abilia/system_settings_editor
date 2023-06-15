@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:file/memory.dart';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';

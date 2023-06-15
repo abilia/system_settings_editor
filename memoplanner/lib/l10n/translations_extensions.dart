@@ -1,6 +1,6 @@
 import 'package:memoplanner/l10n/all.dart';
 
-extension TranslatedExtensions on Lt {
+extension TranslationsExtensions on Lt {
   static const String _stringWildcard = '%s';
   String inTime(String time) => '$inTimePre $time'.trim();
   String timeAgo(String time) => '$timeAgoPre $time $timeAgoPost'.trim();

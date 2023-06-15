@@ -1,4 +1,3 @@
-import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/bloc/all.dart';
 
 import 'package:memoplanner/models/all.dart';

@@ -5,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
@@ -61,10 +60,7 @@ Future<void> initServices() async {
   await configureLocalTimeZone(log: _log);
   final applicationSupportDirectory = await getApplicationSupportDirectory();
   final voiceDb = VoiceDb(preferences);
-  await Lokalise.init(
-    projectId: '5478615164886d27c51a59.58833679',
-    sdkToken: 'd3fbf2cb3b69f06694974560af79cb31fc6b',
-  );
+  await initLokalise();
   GetItInitializer()
     ..directories = Directories(
       applicationSupport: applicationSupportDirectory,

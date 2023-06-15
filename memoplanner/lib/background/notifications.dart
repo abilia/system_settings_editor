@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:logging/logging.dart';
-import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/l10n/all.dart';
@@ -122,10 +121,7 @@ Future _scheduleAllNotifications(
   await cancelAllPendingNotifications();
   final locale = Locale(language);
   await initializeDateFormatting(locale.languageCode);
-  await Lokalise.init(
-    projectId: '5478615164886d27c51a59.58833679',
-    sdkToken: 'd3fbf2cb3b69f06694974560af79cb31fc6b',
-  );
+  await initLokalise();
   final androidNotificationChannels = await _androidNotificationChannelIds();
   log(
     Level.FINE,
