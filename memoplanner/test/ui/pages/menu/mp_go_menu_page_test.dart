@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
@@ -12,6 +13,7 @@ void main() {
   final time = DateTime(2022, 05, 10, 13, 37);
   Iterable<Session> sessions;
   setUp(() async {
+    await Lokalise.initMock();
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleNotificationsIsolated = noAlarmScheduler;

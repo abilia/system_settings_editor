@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/getit.dart';
@@ -17,6 +18,7 @@ void main() {
   late MockSortableDb mockSortableDb;
   late SessionsDb mockSessionsDb;
   setUp(() async {
+    await Lokalise.initMock();
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleNotificationsIsolated = noAlarmScheduler;

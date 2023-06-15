@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
@@ -19,8 +20,12 @@ void main() {
     late MockVoiceDb voiceDb;
     late final Lt translate;
 
-    setUp(() async {
+    setUpAll(() async {
+      await Lokalise.initMock();
       translate = await Lt.load(Lt.supportedLocales.first);
+    });
+
+    setUp(() async {
       setupPermissions();
       setupFakeTts();
 

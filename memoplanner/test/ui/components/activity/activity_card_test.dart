@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
@@ -26,7 +27,11 @@ void main() {
   bool applyCrossOver() =>
       (find.byType(CrossOver).evaluate().first.widget as CrossOver).applyCross;
 
-  setUp(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
+  });
+
+  setUp(() async {
     supportPersonsRepository = MockSupportPersonsRepository();
     when(() => supportPersonsRepository.load())
         .thenAnswer((_) => Future.value({}));
@@ -40,7 +45,6 @@ void main() {
       tester
           .pumpWidget(
             MaterialApp(
-              supportedLocales: Lt.supportedLocales,
               localizationsDelegates: const [Lt.delegate],
               localeResolutionCallback: (locale, supportedLocales) =>
                   supportedLocales.firstWhere(

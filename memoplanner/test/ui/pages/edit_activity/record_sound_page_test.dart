@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:file/memory.dart';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
@@ -22,6 +23,7 @@ void main() {
       'AAAAGGZ0eXBtcDQyAAAAAGlzb21tcDQyAAADFW1vb3YAAABsbXZoZAAAAADdaLlC3Wi5QgAAA+gAAAAAAAEAAAEAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAADqbWV0YQAAACFoZGxyAAAAAAAAAABtZHRhAAAAAAAAAAAAAAAAAAAAAGRrZXlzAAAAAAAAAAMAAAAbbWR0YWNvbS5hbmRyb2lkLnZlcnNpb24AAAAgbWR0YWNvbS5hbmRyb2lkLm1hbnVmYWN0dXJlcgAAABltZHRhY29tLmFuZHJvaWQubW9kZWwAAABdaWxzdAAAABoAAAABAAAAEmRhdGEAAAABAAAAADEwAAAAHgAAAAIAAAAWZGF0YQAAAAEAAAAAR29vZ2xlAAAAHQAAAAMAAAAVZGF0YQAAAAEAAAAAUGl4ZWwAAAG3dHJhawAAAFx0a2hkAAAAB91ouULdaLlCAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAABU21kaWEAAAAgbWRoZAAAAADdaLlC3Wi5QgAArEQAAAAAAAAAAAAAACxoZGxyAAAAAAAAAABzb3VuAAAAAAAAAAAAAAAAU291bmRIYW5kbGUAAAAA/21pbmYAAAAQc21oZAAAAAAAAAAAAAAAJGRpbmYAAAAcZHJlZgAAAAAAAAABAAAADHVybCAAAAABAAAAw3N0YmwAAABbc3RzZAAAAAAAAAABAAAAS21wNGEAAAAAAAAAAQAAAAAAAAAAAAEAEAAAAACsRAAAAAAAJ2VzZHMAAAAAAxkAAAAEEUAVAAMAAAH0AAAB9AAFAhIIBgECAAAAGHN0dHMAAAAAAAAAAQAAAAEAAAAAAAAAGHN0c3oAAAAAAAAAAAAAAAEAAAFzAAAA';
   const filePath = 'hmm.m4a';
   setUp(() async {
+    await Lokalise.initMock();
     final fileContent = base64.decode(recordedBytes);
     final file = MemoryFileSystem().file(filePath);
     await file.writeAsBytes(fileContent);
@@ -40,7 +42,6 @@ void main() {
       AbiliaFile originalSoundFile = AbiliaFile.empty,
     }) =>
         MaterialApp(
-          supportedLocales: Lt.supportedLocales,
           localizationsDelegates: const [Lt.delegate],
           localeResolutionCallback: (locale, supportedLocales) =>
               supportedLocales.firstWhere(
@@ -204,12 +205,12 @@ void main() {
       mockSoundBloc = MockSoundBloc();
     });
 
-    setUpAll(() {
+    setUpAll(() async {
+      await Lokalise.initMock();
       registerFallbackValues();
     });
 
     Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
-          supportedLocales: Lt.supportedLocales,
           localizationsDelegates: const [Lt.delegate],
           localeResolutionCallback: (locale, supportedLocales) =>
               supportedLocales.firstWhere(

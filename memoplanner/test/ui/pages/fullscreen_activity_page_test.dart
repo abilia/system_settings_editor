@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
@@ -53,7 +54,8 @@ void main() {
   final StartAlarm startAlarm =
       StartAlarm(ActivityDay(testActivity, startTimeOne.onlyDays()));
 
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
     registerFallbackValues();
   });
 
@@ -149,7 +151,6 @@ void main() {
               ),
             ],
             child: MaterialApp(
-              supportedLocales: Lt.supportedLocales,
               localizationsDelegates: const [Lt.delegate],
               localeResolutionCallback: (locale, supportedLocales) =>
                   supportedLocales.firstWhere(

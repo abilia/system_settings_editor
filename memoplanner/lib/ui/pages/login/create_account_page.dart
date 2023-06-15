@@ -16,9 +16,10 @@ class CreateAccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Lt.of(context);
     final textTheme = Theme.of(context).textTheme;
+    final locale = Localizations.localeOf(context);
     return BlocProvider(
       create: (context) => CreateAccountCubit(
-        languageTag: Localizations.localeOf(context).toLanguageTag(),
+        languageTag: locale.languageCode,
         repository: userRepository,
       ),
       child: MultiBlocListener(

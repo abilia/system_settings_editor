@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/l10n/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 void main() {
+  setUpAll(() async {
+    await Lokalise.initMock();
+  });
+
   group('minutes. five min interval', () {
     test('2 minutes past, first interval', () {
       expect(fiveMinInterval(DateTime(2021, 10, 25, 14, 02, 0)), 0);
@@ -110,7 +115,7 @@ void main() {
     });
 
     test('nb one o clock', () async {
-      const locale = Locale('en');
+      const locale = Locale('nb');
       final translate = await Lt.load(locale);
       expect(
           analogTimeString(translate, locale, DateTime(2021, 10, 25, 1, 15, 0)),
@@ -118,7 +123,7 @@ void main() {
     });
 
     test('sv half past 5', () async {
-      const locale = Locale('en');
+      const locale = Locale('sv');
       final translate = await Lt.load(locale);
       expect(
           analogTimeString(translate, locale, DateTime(2021, 10, 25, 5, 29, 0)),

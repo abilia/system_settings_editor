@@ -9,6 +9,7 @@ import 'package:logging/logging.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -92,7 +93,15 @@ void main() {
 
   setUpAll(registerFallbackValues);
 
-  setUp(() {
+  setUp(() async {
+    await FakeSharedPreferences.getInstance();
+    PackageInfo.setMockInitialValues(
+      appName: 'appName',
+      packageName: 'packageName',
+      version: 'version',
+      buildNumber: 'buildNumber',
+      buildSignature: 'buildSignature',
+    );
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(
             const MethodChannel('flutter_native_timezone'), (methodCall) async {

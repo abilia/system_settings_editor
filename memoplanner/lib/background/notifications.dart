@@ -10,7 +10,6 @@ import 'package:logging/logging.dart';
 import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/config.dart';
-
 import 'package:memoplanner/l10n/generated/l10n.dart';
 import 'package:memoplanner/models/all.dart';
 

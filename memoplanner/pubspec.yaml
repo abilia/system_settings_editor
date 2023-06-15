@@ -119,8 +119,6 @@ dev_dependencies:
   seagull_lints:
     path: ../packages/seagull_lints
   test: any
-  translation_generator:
-    path: ../packages/translation_generator
 
 flutter_icons:
   android: false

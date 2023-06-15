@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
@@ -27,6 +28,7 @@ void main() {
   TermsOfUseResponse termsOfUseResponse = () => TermsOfUse.accepted();
 
   setUpAll(() async {
+    await Lokalise.initMock();
     translate = await Lt.load(Lt.supportedLocales.first);
     registerFallbackValues();
     scheduleNotificationsIsolated = noAlarmScheduler;
@@ -497,6 +499,7 @@ void main() {
     testWidgets('Login footer buttons', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
+          localizationsDelegates: const [Lt.delegate],
           home: BlocProvider<SpeechSettingsCubit>(
             create: (_) => FakeSpeechSettingsCubit(),
             child: Builder(
@@ -507,6 +510,7 @@ void main() {
           ),
         ),
       );
+      await tester.pumpAndSettle();
       expect(find.byType(AbiliaLogoWithReset), findsOneWidget);
       expect(find.byType(AboutButton), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.settings), findsOneWidget);

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
@@ -33,7 +34,8 @@ void main() {
   late NavObserver navObserver;
   late TimerCubit timerCubit;
 
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
     registerFallbackValues();
   });
 
@@ -91,7 +93,6 @@ void main() {
 
   Widget wrapWithMaterialApp({required AbiliaTimer timer}) => MaterialApp(
       navigatorObservers: [navObserver],
-      supportedLocales: Lt.supportedLocales,
       localizationsDelegates: const [Lt.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,

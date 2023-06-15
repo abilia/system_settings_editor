@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
@@ -27,6 +28,7 @@ void main() {
   late MemoplannerSettingsBloc mockMemoplannerSettingsBloc;
 
   setUpAll(() async {
+    await Lokalise.initMock();
     translate = await Lt.load(Lt.supportedLocales.first);
     registerFallbackValues();
   });
@@ -90,7 +92,6 @@ void main() {
     final navKey = GlobalKey<NavigatorState>();
 
     return MaterialApp(
-      supportedLocales: Lt.supportedLocales,
       navigatorKey: navKey,
       localizationsDelegates: const [Lt.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales

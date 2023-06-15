@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
@@ -23,6 +24,10 @@ void main() {
       const file4 = 'file4';
 
       final time = DateTime(2021, 04, 17, 09, 20);
+
+      setUpAll(() async {
+        await Lokalise.initMock();
+      });
 
       setUp(() async {
         setupPermissions();

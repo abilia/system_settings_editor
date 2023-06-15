@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/bloc/all.dart';
 
 import 'package:memoplanner/db/all.dart';
@@ -17,8 +18,12 @@ void main() {
     late final Lt translate;
     Response connectLicenseResponse = deviceLicenseSuccessResponse;
 
-    setUp(() async {
+    setUpAll(() async {
+      await Lokalise.initMock();
       translate = await Lt.load(Lt.supportedLocales.first);
+    });
+
+    setUp(() async {
       deviceDb = MockDeviceDb();
       when(() => deviceDb.startGuideCompleted).thenReturn(false);
       when(() => deviceDb.getClientId())

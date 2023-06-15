@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -19,10 +20,9 @@ import '../../../mocks/mocks.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
+  late final Lt translate;
   final now = DateTime(2020, 06, 04, 11, 24);
   late ActivityDbInMemory activityDbInMemory;
-
-  late final Lt translate;
   GenericResponse genericResponse = () => [];
   TimerResponse timerResponse = () => [];
   List<Activity> activityResponse = [];
@@ -64,13 +64,11 @@ void main() {
           .widget as CrossOver)
       .applyCross;
 
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
+    translate = await Lt.load(Lt.supportedLocales.first);
     tz.initializeTimeZones();
     setupPermissions();
-  });
-
-  setUpAll(() async {
-    translate = await Lt.load(Lt.supportedLocales.first);
   });
 
   setUp(() async {
@@ -578,13 +576,16 @@ void main() {
         rightCategoryInactiveColor = AbiliaColors.green40,
         leftCategoryActiveColor = AbiliaColors.black60,
         noCategoryColor = AbiliaColors.white140;
-    final right = translate.right;
-    final left = translate.left;
-    final leftFinder = find.text(left);
-    final rightFinder = find.text(right);
+    late final Finder leftFinder;
+    late final Finder rightFinder;
     final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
     final previousDayButtonFinder =
         find.byIcon(AbiliaIcons.returnToPreviousPage);
+
+    setUpAll(() {
+      leftFinder = find.text(translate.left);
+      rightFinder = find.text(translate.right);
+    });
 
     testWidgets('Exists', (WidgetTester tester) async {
       await tester.pumpWidget(const App());

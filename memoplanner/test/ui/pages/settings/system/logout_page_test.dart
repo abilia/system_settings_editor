@@ -2,6 +2,7 @@ import 'package:abilia_sync/abilia_sync.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -29,6 +30,7 @@ void main() {
   late LicenseCubit mockLicenseCubit;
 
   setUpAll(() async {
+    await Lokalise.initMock();
     translate = await Lt.load(Lt.supportedLocales.first);
     if (Config.isMP) {
       screenSize = const Size(800, 1200);
@@ -76,7 +78,6 @@ void main() {
 
   Widget createLogoutWarningModal() {
     return MaterialApp(
-      supportedLocales: Lt.supportedLocales,
       localizationsDelegates: const [Lt.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,
@@ -102,7 +103,6 @@ void main() {
 
   Widget createLogoutPage() {
     return MaterialApp(
-      supportedLocales: Lt.supportedLocales,
       localizationsDelegates: const [Lt.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,

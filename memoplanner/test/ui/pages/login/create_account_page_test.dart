@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -14,25 +15,27 @@ void main() {
   late final Lt translate;
 
   setUpAll(() async {
+    await Lokalise.initMock();
     translate = await Lt.load(Lt.supportedLocales.first);
     WebViewPlatform.instance = FakeWebViewPlatform();
   });
+
+  setUp(() async {
+    GetItInitializer()
+      ..sharedPreferences =
+          await FakeSharedPreferences.getInstance(loggedIn: false)
+      ..ticker = Ticker.fake(initialTime: DateTime(2021, 05, 13, 11, 29))
+      ..client = fakeClient()
+      ..database = FakeDatabase()
+      ..deviceDb = FakeDeviceDb()
+      ..init();
+  });
+
+  tearDown(GetIt.I.reset);
+
   group(
     'create account',
     () {
-      setUp(() async {
-        GetItInitializer()
-          ..sharedPreferences =
-              await FakeSharedPreferences.getInstance(loggedIn: false)
-          ..ticker = Ticker.fake(initialTime: DateTime(2021, 05, 13, 11, 29))
-          ..client = fakeClient()
-          ..database = FakeDatabase()
-          ..deviceDb = FakeDeviceDb()
-          ..init();
-      });
-
-      tearDown(GetIt.I.reset);
-
       testWidgets('Go to create account and back', (tester) async {
         await tester.pumpApp();
         expect(find.byType(MEMOplannerLoginFooter), findsOneWidget);

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -12,6 +13,10 @@ import '../../../test_helpers/tts.dart';
 
 void main() {
   late MockBattery mockBattery;
+
+  setUpAll(() async {
+    await Lokalise.initMock();
+  });
 
   setUp(() async {
     setupFakeTts();
@@ -30,7 +35,6 @@ void main() {
   tearDown(GetIt.I.reset);
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
-        supportedLocales: Lt.supportedLocales,
         localizationsDelegates: const [Lt.delegate],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,

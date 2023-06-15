@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
@@ -20,7 +21,8 @@ import '../test_helpers/app_pumper.dart';
 import '../test_helpers/register_fallback_values.dart';
 
 void main() {
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
     tz.initializeTimeZones();
     setupPermissions();
     registerFallbackValues();
@@ -80,6 +82,7 @@ void main() {
                 child: BlocProvider<ScrollPositionCubit>(
                   create: (context) => FakeScrollPositionCubit(),
                   child: MaterialApp(
+                    localizationsDelegates: const [Lt.delegate],
                     theme: abiliaTheme,
                     home: MultiBlocListener(
                       listeners: [
@@ -172,6 +175,7 @@ void main() {
         'When timeout is reached, screensaver is true, app switches to Screensaver',
         (tester) async {
       await tester.pumpWidget(wrapWithMaterialApp(child: const CalendarPage()));
+      await tester.pumpAndSettle();
       inactivityCubit.emit(const ScreensaverState());
       await tester.pumpAndSettle();
       expect(find.byType(ScreensaverPage), findsOneWidget);
@@ -182,6 +186,7 @@ void main() {
         'When timeout is reached, screensaver is false, '
         'app switches to DayCalendar from Menu', (tester) async {
       await tester.pumpWidget(wrapWithMaterialApp(child: const CalendarPage()));
+      await tester.pumpAndSettle();
       await tester.tap(find.byType(MenuButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(SettingsButton));

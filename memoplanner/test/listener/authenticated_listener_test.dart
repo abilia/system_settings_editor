@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/listener/all.dart';
@@ -37,6 +38,7 @@ void main() {
 
   setUpAll(registerFallbackValues);
   setUp(() async {
+    await Lokalise.initMock();
     activitiesBloc = MockActivitiesBloc();
     when(() => activitiesBloc.state).thenReturn(ActivitiesChanged());
     activitiesStreamController = StreamController<ActivitiesChanged>();

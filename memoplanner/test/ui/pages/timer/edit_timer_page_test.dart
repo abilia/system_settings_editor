@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
@@ -17,6 +18,7 @@ void main() {
   late final Lt translate;
 
   setUpAll(() async {
+    await Lokalise.initMock();
     translate = await Lt.load(Lt.supportedLocales.first);
   });
 
@@ -24,7 +26,6 @@ void main() {
     bool editTemplateTimer = false,
   }) {
     return MaterialApp(
-      supportedLocales: Lt.supportedLocales,
       localizationsDelegates: const [Lt.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,

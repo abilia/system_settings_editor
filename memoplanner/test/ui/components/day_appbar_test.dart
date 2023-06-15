@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -11,6 +12,10 @@ void main() {
   final memoplannerSettingBloc = MockMemoplannerSettingBloc();
   final clockBloc = ClockBloc.fixed(now);
   final dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
+
+  setUpAll(() async {
+    await Lokalise.initMock();
+  });
 
   final providers = [
     BlocProvider<ClockBloc>(
@@ -42,6 +47,7 @@ void main() {
   Future<void> pumpDayCalendarAppBar(WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: const [Lt.delegate],
         home: MultiBlocProvider(
           providers: providers,
           child: const DayCalendarAppBar(),
@@ -53,6 +59,7 @@ void main() {
   Future<void> pumpDayAppBar(WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: const [Lt.delegate],
         home: MultiBlocProvider(
           providers: providers,
           child: DayAppBar(

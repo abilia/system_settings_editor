@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
@@ -53,6 +54,10 @@ void main() {
       return null;
     });
   }
+
+  setUpAll(() async {
+    await Lokalise.initMock();
+  });
 
   setUp(() async {
     setUpMockSystemSettingsChannel();

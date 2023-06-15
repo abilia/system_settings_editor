@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
@@ -9,9 +10,11 @@ import '../../../test_helpers/navigation_observer.dart';
 final navObserver = NavObserver();
 
 void main() {
+  setUpAll(() async {
+    await Lokalise.initMock();
+  });
   Widget wrapWithMaterialApp({Duration initialDuration = Duration.zero}) =>
       MaterialApp(
-        supportedLocales: Lt.supportedLocales,
         navigatorObservers: [navObserver],
         localizationsDelegates: const [Lt.delegate],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales

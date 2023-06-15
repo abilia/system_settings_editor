@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
@@ -16,7 +17,8 @@ import '../test_helpers/app_pumper.dart';
 import '../test_helpers/register_fallback_values.dart';
 
 void main() {
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
     tz.initializeTimeZones();
     setupPermissions();
     registerFallbackValues();

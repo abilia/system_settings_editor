@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
@@ -11,13 +12,13 @@ void main() {
   late final Lt translate;
   const baseState = WakeLockState(hasBattery: true);
 
-  setUp(() async {
+  setUpAll(() async {
+    await Lokalise.initMock();
     translate = await Lt.load(Lt.supportedLocales.first);
     mockWakeLockCubit = MockWakeLockCubit();
   });
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
-        supportedLocales: Lt.supportedLocales,
         localizationsDelegates: const [Lt.delegate],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,

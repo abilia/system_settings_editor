@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
-import 'package:memoplanner/l10n/generated/intl/messages_all.dart';
+import 'intl/messages_all.dart';
 
 class Lt {
   Lt._internal();
@@ -1436,30 +1436,30 @@ class Lt {
     );
   }
 
-  /// `&empty&`
+  /// ``
   String get dayInessive {
     return Intl.message(
-      '&empty&',
+      '',
       name: 'dayInessive',
       desc: '',
       args: [],
     );
   }
 
-  /// `&empty&`
+  /// ``
   String get hourInessive {
     return Intl.message(
-      '&empty&',
+      '',
       name: 'hourInessive',
       desc: '',
       args: [],
     );
   }
 
-  /// `&empty&`
+  /// ``
   String get minuteInessive {
     return Intl.message(
-      '&empty&',
+      '',
       name: 'minuteInessive',
       desc: '',
       args: [],
@@ -1986,10 +1986,10 @@ class Lt {
     );
   }
 
-  /// `&empty&`
+  /// ``
   String get timeAgoPre {
     return Intl.message(
-      '&empty&',
+      '',
       name: 'timeAgoPre',
       desc: '',
       args: [],

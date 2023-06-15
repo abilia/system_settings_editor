@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -12,7 +13,8 @@ void main() {
     late MockSortableBloc mockSortableBloc;
     late MemoplannerSettingsBloc mockMemoplannerSettingsBloc;
 
-    setUpAll(() {
+    setUpAll(() async {
+      await Lokalise.initMock();
       registerFallbackValues();
     });
 
@@ -36,7 +38,6 @@ void main() {
     });
 
     Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
-          supportedLocales: Lt.supportedLocales,
           localizationsDelegates: const [Lt.delegate],
           localeResolutionCallback: (locale, supportedLocales) =>
               supportedLocales.firstWhere(

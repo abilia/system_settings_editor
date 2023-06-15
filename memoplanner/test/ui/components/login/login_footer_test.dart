@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/getit.dart';
@@ -23,6 +24,7 @@ void main() {
   bool Function() factoryResetResponse = () => true;
 
   setUpAll(() async {
+    await Lokalise.initMock();
     translate = await Lt.load(Lt.supportedLocales.first);
   });
 
@@ -97,6 +99,7 @@ void main() {
     await tester.binding.setSurfaceSize(const Size(1000, 1000));
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: const [Lt.delegate],
         home: MultiBlocProvider(
           providers: [
             BlocProvider.value(value: speechSettingsCubit),
@@ -155,6 +158,7 @@ void main() {
       // Arrange
       factoryResetResponse = () => true;
       await pumpAbiliaLogoWithReset(tester);
+      await tester.pumpAndSettle();
       await goToConfirmFactoryReset(tester);
 
       // Act
@@ -175,6 +179,7 @@ void main() {
       // Arrange
       factoryResetResponse = () => false;
       await pumpAbiliaLogoWithReset(tester);
+      await tester.pumpAndSettle();
       await goToConfirmFactoryReset(tester);
 
       // Act
@@ -192,6 +197,7 @@ void main() {
       when(() => mockMyAbiliaConnection.hasConnection())
           .thenAnswer((invocation) async => false);
       await pumpAbiliaLogoWithReset(tester);
+      await tester.pumpAndSettle();
       await goToConfirmFactoryReset(tester);
 
       // Act
@@ -208,6 +214,7 @@ void main() {
   testWidgets('Analytics are correct', (tester) async {
     // Arrange
     await pumpAbiliaLogoWithReset(tester);
+    await tester.pumpAndSettle();
     await goToConfirmFactoryReset(tester);
 
     final analytics = GetIt.I<SeagullAnalytics>() as MockSeagullAnalytics;
