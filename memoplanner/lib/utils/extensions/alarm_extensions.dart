@@ -11,10 +11,10 @@ extension AlarmTypeExtensions on Alarm {
     return AbiliaIcons.handiNoAlarmVibration;
   }
 
-  String text(Lt translator) {
-    if (sound) return translator.alarmAndVibration;
-    if (vibrate) return translator.vibrationIfAvailable;
-    if (silent) return translator.silentAlarm;
-    return translator.noAlarm;
+  String text(Lt translate) {
+    if (sound) return translate.alarmAndVibration;
+    if (vibrate) return translate.vibrationIfAvailable;
+    if (silent) return translate.silentAlarm;
+    return translate.noAlarm;
   }
 }

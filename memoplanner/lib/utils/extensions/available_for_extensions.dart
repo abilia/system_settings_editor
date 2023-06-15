@@ -13,14 +13,14 @@ extension AvailableForHelper on AvailableForType {
     }
   }
 
-  String text(Lt translator) {
+  String text(Lt translate) {
     switch (this) {
       case AvailableForType.onlyMe:
-        return translator.onlyMe;
+        return translate.onlyMe;
       case AvailableForType.allSupportPersons:
-        return translator.allSupportPersons;
+        return translate.allSupportPersons;
       case AvailableForType.selectedSupportPersons:
-        return translator.selectedSupportPersons;
+        return translate.selectedSupportPersons;
     }
   }
 }

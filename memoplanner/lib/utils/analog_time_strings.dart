@@ -55,9 +55,9 @@ String _analogHourString(Lt translate, Locale locale, int hour) {
   return hourString;
 }
 
-String _analogMinuteString(Lt translator, DateTime time) {
+String _analogMinuteString(Lt translate, DateTime time) {
   final interval = fiveMinInterval(time);
-  return _stringForInterval(translator, interval);
+  return _stringForInterval(translate, interval);
 }
 
 @visibleForTesting

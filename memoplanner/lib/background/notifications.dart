@@ -360,9 +360,9 @@ Future<String?> _subtitle(
 ) async {
   final timeFormat =
       hourAndMinuteFromUse24(alwaysUse24HourFormat, givenLocale.languageCode);
-  final translator = await Lt.load(givenLocale);
+  final translate = await Lt.load(givenLocale);
   if (notificationAlarm is ActivityAlarm) {
-    return _activitySubtitle(notificationAlarm, timeFormat, translator);
+    return _activitySubtitle(notificationAlarm, timeFormat, translate);
   }
   return null;
 }
@@ -370,21 +370,20 @@ Future<String?> _subtitle(
 String _activitySubtitle(
   ActivityAlarm activeNotification,
   TimeFormat timeFormat,
-  Lt? translator,
+  Lt? translate,
 ) {
   final ad = activeNotification.activityDay;
   final endTime = ad.activity.hasEndTime ? ' - ${timeFormat(ad.end)} ' : ' ';
-  final extra =
-      translator != null ? _extra(activeNotification, translator) : '';
+  final extra = translate != null ? _extra(activeNotification, translate) : '';
   return timeFormat(ad.start) + endTime + extra;
 }
 
-String _extra(ActivityAlarm notificationAlarm, Lt translator) {
-  if (notificationAlarm is StartAlarm) return translator.startsNow;
-  if (notificationAlarm is EndAlarm) return translator.endsNow;
+String _extra(ActivityAlarm notificationAlarm, Lt translate) {
+  if (notificationAlarm is StartAlarm) return translate.startsNow;
+  if (notificationAlarm is EndAlarm) return translate.endsNow;
   if (notificationAlarm is NewReminder) {
     return notificationAlarm.reminder
-        .comparedToNowString(translator, notificationAlarm is ReminderBefore);
+        .comparedToNowString(translate, notificationAlarm is ReminderBefore);
   }
   return '';
 }

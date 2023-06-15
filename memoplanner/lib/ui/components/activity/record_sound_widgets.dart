@@ -9,7 +9,7 @@ class RecordSoundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translator = Lt.of(context);
+    final translate = Lt.of(context);
     final permission = context.select(
         (PermissionCubit cubit) => cubit.state.status[Permission.microphone]);
     final activity =
@@ -18,7 +18,7 @@ class RecordSoundWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        SubHeading(translator.speech),
+        SubHeading(translate.speech),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
@@ -35,7 +35,7 @@ class RecordSoundWidget extends StatelessWidget {
                           GetIt.I<Delays>().spamProtectionDelay,
                     ),
                     child: SelectOrPlaySoundWidget(
-                      label: translator.speechOnStart,
+                      label: translate.speechOnStart,
                       permissionStatus: permission,
                       recordedAudio: activity.extras.startTimeExtraAlarm,
                       onResult: (AbiliaFile result) =>
@@ -57,7 +57,7 @@ class RecordSoundWidget extends StatelessWidget {
                           GetIt.I<Delays>().spamProtectionDelay,
                     ),
                     child: SelectOrPlaySoundWidget(
-                      label: translator.speechOnEnd,
+                      label: translate.speechOnEnd,
                       permissionStatus: permission,
                       recordedAudio: activity.extras.endTimeExtraAlarm,
                       onResult: (AbiliaFile result) =>

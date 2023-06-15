@@ -68,7 +68,7 @@ class AppBarTitleRows {
     required DayParts dayParts,
     required DayPart dayPart,
     required String langCode,
-    required Lt translator,
+    required Lt translate,
     required DayAppBarSettings settings,
     bool compactDay = false,
     bool currentNight = false,
@@ -84,7 +84,7 @@ class AppBarTitleRows {
                 currentTime.isAtSameDay(day),
                 currentTime.hour,
                 dayPart,
-                translator,
+                translate,
               )
             : '';
     final date = settings.showDate ? longDate(langCode).format(day) : '';
@@ -119,21 +119,21 @@ class AppBarTitleRows {
     bool today,
     int hour,
     DayPart part,
-    Lt translator,
+    Lt translate,
   ) {
     if (today) {
       switch (part) {
         case DayPart.night:
-          return translator.night;
+          return translate.night;
         case DayPart.evening:
-          return translator.evening;
+          return translate.evening;
         case DayPart.day:
           if (hour > 11) {
-            return translator.afternoon;
+            return translate.afternoon;
           }
-          return translator.midMorning;
+          return translate.midMorning;
         case DayPart.morning:
-          return translator.earlyMorning;
+          return translate.earlyMorning;
         default:
           return '';
       }
@@ -146,13 +146,13 @@ class AppBarTitleRows {
     required DateTime selectedDay,
     required WeekCalendarSettings settings,
     required String langCode,
-    required Lt translator,
+    required Lt translate,
   }) {
     final displayWeekday = selectedDay.isSameWeekAndYear(selectedWeekStart);
     final day =
         displayWeekday ? DateFormat.EEEE(langCode).format(selectedDay) : '';
     final weekTranslation =
-        displayWeekday ? translator.week : translator.week.capitalize();
+        displayWeekday ? translate.week : translate.week.capitalize();
     final week = settings.showWeekNumber
         ? '$weekTranslation ${selectedWeekStart.getWeekNumber()}'
         : '';

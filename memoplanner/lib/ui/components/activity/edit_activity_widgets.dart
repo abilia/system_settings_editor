@@ -283,14 +283,14 @@ class CategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translator = Lt.of(context);
+    final translate = Lt.of(context);
     void onChange(v) => context
         .read<EditActivityCubit>()
         .replaceActivity(activity.copyWith(category: v));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SubHeading(translator.category),
+        SubHeading(translate.category),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -381,7 +381,7 @@ class AlarmWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translator = Lt.of(context);
+    final translate = Lt.of(context);
     final editActivityCubit = context.watch<EditActivityCubit>();
     final activity = editActivityCubit.state.activity;
     final alarm = activity.alarm;
@@ -390,11 +390,11 @@ class AlarmWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SubHeading(translator.alarm),
+        SubHeading(translate.alarm),
         PickField(
           key: TestKey.selectAlarm,
           leading: Icon(alarm.iconData()),
-          text: Text(alarm.text(translator)),
+          text: Text(alarm.text(translate)),
           onTap: generalSettings.abilityToSelectAlarm
               ? () async {
                   final authProviders = [
@@ -464,7 +464,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translator = Lt.of(context);
+    final translate = Lt.of(context);
     final editActivitySettings = context.select(
         (MemoplannerSettingsBloc bloc) => bloc.state.addActivity.editActivity);
     return Column(
@@ -485,7 +485,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
               onChanged: (v) => context
                   .read<EditActivityCubit>()
                   .replaceActivity(activity.copyWith(checkable: v)),
-              child: Text(translator.checkable),
+              child: Text(translate.checkable),
             ),
           ),
         if (editActivitySettings.removeAfter)
@@ -499,7 +499,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
             onChanged: (v) => context
                 .read<EditActivityCubit>()
                 .replaceActivity(activity.copyWith(removeAfter: v)),
-            child: Text(translator.deleteAfter),
+            child: Text(translate.deleteAfter),
           ),
       ],
     );
@@ -513,16 +513,16 @@ class AvailableForWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translator = Lt.of(context);
+    final translate = Lt.of(context);
     final availableFor = activity.availableFor;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SubHeading(translator.availableFor),
+        SubHeading(translate.availableFor),
         PickField(
           leading: Icon(availableFor.icon),
           text: Text(
-            availableFor.text(translator),
+            availableFor.text(translate),
           ),
           onTap: () async => onTap(context),
         ),

@@ -58,7 +58,7 @@ class WeekAppBarPreview extends StatelessWidget {
       showBrowseButtons: weekCalendarSettings.showBrowseButtons,
       showClock: weekCalendarSettings.showClock,
       rows: AppBarTitleRows.week(
-        translator: Lt.of(context),
+        translate: Lt.of(context),
         selectedDay: currentTime.onlyDays(),
         selectedWeekStart: currentTime.firstInWeek(),
         settings: weekCalendarSettings,

@@ -8,7 +8,7 @@ class DateAndTimeWidget extends StatelessWidget {
   const DateAndTimeWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final translator = Lt.of(context);
+    final translate = Lt.of(context);
     final editActivityState = context.watch<EditActivityCubit>().state;
     final isFullDay = editActivityState.activity.fullDay;
     final showFullDay = context.select((MemoplannerSettingsBloc bloc) =>
@@ -22,7 +22,7 @@ class DateAndTimeWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           if (context.read<WizardCubit>() is! TemplateActivityWizardCubit) ...[
-            SubHeading(translator.date),
+            SubHeading(translate.date),
             DatePicker(
               editActivityState.timeInterval.startDate,
               onChange: canEditDate
@@ -33,7 +33,7 @@ class DateAndTimeWidget extends StatelessWidget {
           ],
           if (showTimeWidgets) ...[
             SizedBox(height: layout.formPadding.groupTopDistance),
-            SubHeading(translator.time),
+            SubHeading(translate.time),
             if (showFullDay)
               SwitchField(
                 key: TestKey.fullDaySwitch,
@@ -46,7 +46,7 @@ class DateAndTimeWidget extends StatelessWidget {
                     context.read<EditActivityCubit>().replaceActivity(
                           editActivityState.activity.copyWith(fullDay: v),
                         ),
-                child: Text(translator.fullDay),
+                child: Text(translate.fullDay),
               ),
             CollapsableWidget(
               collapsed: isFullDay,
@@ -179,7 +179,7 @@ class TimeIntervalPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
-    final translator = Lt.of(context);
+    final translate = Lt.of(context);
     final showEndTime = context.select((MemoplannerSettingsBloc bloc) =>
         bloc.state.addActivity.general.showEndTime);
     return Row(
@@ -188,7 +188,7 @@ class TimeIntervalPicker extends StatelessWidget {
         Expanded(
           flex: 148,
           child: TimePicker(
-            translator.time,
+            translate.time,
             TimeInput(
               timeInterval.startTime,
               timeInterval.sameTime ? null : timeInterval.endTime,
@@ -284,7 +284,7 @@ class Reminders extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final translator = Lt.of(context);
+    final translate = Lt.of(context);
     return Wrap(
       spacing: layout.formPadding.horizontalItemDistance,
       runSpacing: layout.formPadding.verticalItemDistance,
@@ -300,7 +300,7 @@ class Reminders extends StatelessWidget {
             (r) => SelectableField(
               width: expanded ? double.infinity : null,
               text: Text(
-                r.toDurationString(translator),
+                r.toDurationString(translate),
                 style: Theme.of(context)
                     .textTheme
                     .bodyLarge

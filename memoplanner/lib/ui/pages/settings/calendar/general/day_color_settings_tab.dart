@@ -40,14 +40,14 @@ class DayColorsSettingsTab extends StatelessWidget {
     );
   }
 
-  String _title(DayColor dayColor, Lt translator) {
+  String _title(DayColor dayColor, Lt translate) {
     switch (dayColor) {
       case DayColor.allDays:
-        return translator.allDays;
+        return translate.allDays;
       case DayColor.saturdayAndSunday:
-        return translator.saturdayAndSunday;
+        return translate.saturdayAndSunday;
       case DayColor.noColors:
-        return translator.noDayColours;
+        return translate.noDayColours;
       default:
         return dayColor.toString();
     }

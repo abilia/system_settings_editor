@@ -73,7 +73,7 @@ class DayAppBarPreview extends StatelessWidget {
         dayParts: dayParts,
         dayPart: context.read<DayPartCubit>().state,
         langCode: Localizations.localeOf(context).toLanguageTag(),
-        translator: Lt.of(context),
+        translate: Lt.of(context),
       ),
     );
   }
