@@ -14,6 +14,8 @@ void main() {
 
   late SoundBloc soundBloc;
 
+  const Duration spamProtectionDelay = Duration(milliseconds: 100);
+
   final dummyFile =
       UnstoredAbiliaFile.forTest('testfile', 'jksd', File('nbnb'));
 
@@ -27,6 +29,7 @@ void main() {
     soundBloc = SoundBloc(
       storage: FakeFileStorage(),
       userFileBloc: FakeUserFileBloc(),
+      spamProtectionDelay: spamProtectionDelay,
     );
   });
 
@@ -99,7 +102,7 @@ void main() {
     });
 
     test(
-        'When PlaySound and StopSound is added within 250 ms of each other only the first event triggers',
+        'When PlaySound and StopSound is added within spamProtectionDelay only the first event triggers',
         () async {
       soundBloc
         ..add(PlaySound(dummyFile))
@@ -109,10 +112,11 @@ void main() {
     });
 
     test(
-        'When PlaySound and StopSound is added with more than 250 ms of each other both event triggers',
+        'When PlaySound and StopSound is added with more than spamProtectionDelay both event triggers',
         () async {
       soundBloc.add(PlaySound(dummyFile));
-      await Future.delayed(SoundBloc.spamProtectionDelay);
+      await Future.delayed(spamProtectionDelay);
+      await Future.delayed(spamProtectionDelay);
       soundBloc.add(const StopSound());
       await Future.delayed(10.milliseconds());
       expect(soundBloc.state, const NoSoundPlaying());

@@ -74,6 +74,7 @@ void main() {
                 create: (context) => SoundBloc(
                   storage: FakeFileStorage(),
                   userFileBloc: context.read<UserFileBloc>(),
+                  spamProtectionDelay: Duration.zero,
                 ),
               ),
             ], child: child!),

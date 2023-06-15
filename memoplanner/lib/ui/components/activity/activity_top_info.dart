@@ -46,6 +46,7 @@ class ActivityTopInfo extends StatelessWidget {
         create: (context) => SoundBloc(
           storage: GetIt.I<FileStorage>(),
           userFileBloc: context.read<UserFileBloc>(),
+          spamProtectionDelay: GetIt.I<Delays>().spamProtectionDelay,
         ),
         child: _ActivityTopInfo(
           activityDay,

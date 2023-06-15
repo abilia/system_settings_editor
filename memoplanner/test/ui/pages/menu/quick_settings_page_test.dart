@@ -97,7 +97,7 @@ void main() {
 
       // Act - Change alarm volume
       await tester.tapAt(tester.getCenter(find.byType(AlarmVolumeSlider)));
-      await tester.pumpAndSettle(SoundBloc.spamProtectionDelay);
+      await tester.pumpAndSettle();
 
       // Assert - Icons not changed
       expect(alarmSlider().value, greaterThan(0));
@@ -107,7 +107,7 @@ void main() {
 
       // Act - Change media volume
       await tester.tapAt(tester.getCenter(find.byType(MediaVolumeSlider)));
-      await tester.pumpAndSettle(SoundBloc.spamProtectionDelay);
+      await tester.pumpAndSettle();
 
       // Assert - Icon changed
       expect(alarmSlider().value, greaterThan(0));

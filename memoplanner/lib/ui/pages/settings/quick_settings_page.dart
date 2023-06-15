@@ -1,8 +1,7 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/device.dart';
-import 'package:memoplanner/models/sound.dart';
+import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
@@ -35,7 +34,9 @@ class QuickSettingsPage extends StatelessWidget {
               const SoundEffectsSwitch(),
             ]),
             BlocProvider<AlarmSoundBloc>(
-              create: (_) => AlarmSoundBloc(),
+              create: (_) => AlarmSoundBloc(
+                spamProtectionDelay: GetIt.I<Delays>().spamProtectionDelay,
+              ),
               child: BlocBuilder<AlarmSoundBloc, Sound?>(
                 builder: (context, state) => QuickSettingsGroup(children: [
                   SubHeading(t.volumeAlarm),

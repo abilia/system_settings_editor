@@ -31,6 +31,8 @@ class RecordSoundWidget extends StatelessWidget {
                     create: (context) => SoundBloc(
                       storage: GetIt.I<FileStorage>(),
                       userFileBloc: context.read<UserFileBloc>(),
+                      spamProtectionDelay:
+                          GetIt.I<Delays>().spamProtectionDelay,
                     ),
                     child: SelectOrPlaySoundWidget(
                       label: translator.speechOnStart,
@@ -51,6 +53,8 @@ class RecordSoundWidget extends StatelessWidget {
                     create: (context) => SoundBloc(
                       storage: GetIt.I<FileStorage>(),
                       userFileBloc: context.read<UserFileBloc>(),
+                      spamProtectionDelay:
+                          GetIt.I<Delays>().spamProtectionDelay,
                     ),
                     child: SelectOrPlaySoundWidget(
                       label: translator.speechOnEnd,
