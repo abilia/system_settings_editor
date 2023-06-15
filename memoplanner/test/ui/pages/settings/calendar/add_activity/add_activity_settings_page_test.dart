@@ -684,7 +684,7 @@ extension on WidgetTester {
     double scroll = -100,
   }) async {
     await goToAddTab();
-    final translate = await englishTranslate;
+    final translate = await Lt.load(Lt.supportedLocales.first);
     await tap(find.text(translate.stepByStep));
     await pumpAndSettle();
     expect(find.byType(AddActivityAddSettingsTab), findsOneWidget);

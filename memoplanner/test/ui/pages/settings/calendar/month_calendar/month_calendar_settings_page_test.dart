@@ -289,7 +289,7 @@ extension on WidgetTester {
     await pumpAndSettle();
     await tap(find.byIcon(AbiliaIcons.month));
     await pumpAndSettle();
-    final translate = await englishTranslate;
+    final translate = await Lt.load(Lt.supportedLocales.first);
     await tap(find.text(translate.monthCalendar));
     await pumpAndSettle();
   }

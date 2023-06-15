@@ -1,5 +1,4 @@
-import 'package:memoplanner/l10n/generated/l10n.dart';
-import 'package:memoplanner/l10n/translations_extensions.dart';
+import 'package:memoplanner/l10n/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 const iOSPersistentNotificationMaxDuration = Duration(seconds: 30),

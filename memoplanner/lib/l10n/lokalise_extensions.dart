@@ -1,5 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:memoplanner/l10n/generated/l10n.dart';
+import 'package:memoplanner/l10n/all.dart';
 
 extension TranslatedExtensions on Lt {
   static const String _stringWildcard = '%s';
@@ -36,7 +35,3 @@ extension TranslatedExtensions on Lt {
   String replaceInString(String string, String replacement) =>
       string.replaceFirst(_stringWildcard, replacement);
 }
-
-@visibleForTesting
-Future<Lt> get englishTranslate =>
-    Lt.load(const Locale.fromSubtags(languageCode: 'en'));

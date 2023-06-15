@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:memoplanner/l10n/generated/l10n.dart';
+import 'package:memoplanner/l10n/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/components/all.dart';
 

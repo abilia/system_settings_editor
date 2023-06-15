@@ -243,7 +243,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    final translate = await englishTranslate;
+    final translate = await Lt.load(Lt.supportedLocales.first);
     expect(find.text(translate.fullDay), findsOneWidget);
   });
 
