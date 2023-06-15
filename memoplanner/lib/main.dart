@@ -57,8 +57,6 @@ Future<void> initServices() async {
   Bloc.observer = BlocLoggingObserver(
     analytics,
     isRelease: Config.release,
-    localeCondition: (bloc, change) =>
-        bloc is LocaleCubit && change is Change<Locale>,
   );
   await configureLocalTimeZone(log: _log);
   final applicationSupportDirectory = await getApplicationSupportDirectory();

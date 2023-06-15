@@ -23,7 +23,6 @@ export 'connectivity/connectivity_cubit.dart';
 export 'events/day_events_cubit.dart';
 export 'events/events_state.dart';
 export 'feature_toggle/feature_toggle_cubit.dart';
-export 'locale/locale_cubit.dart';
 export 'login/all.dart';
 export 'logout/logout_sync_cubit.dart';
 export 'navigation/navigation_cubit.dart';

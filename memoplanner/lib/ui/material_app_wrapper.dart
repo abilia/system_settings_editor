@@ -38,9 +38,8 @@ class MaterialAppWrapper extends StatelessWidget {
               NavigationObserver(context.read<NavigationCubit>()),
             ],
             supportedLocales: Lt.supportedLocales,
-            localizationsDelegates: [
+            localizationsDelegates: const [
               Lt.delegate,
-              LocaleCubit.delegate(context.read<LocaleCubit>()),
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,

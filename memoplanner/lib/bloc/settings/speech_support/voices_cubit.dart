@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
@@ -16,12 +15,7 @@ class VoicesCubit extends Cubit<VoicesState> {
     required String languageCode,
     required this.speechSettingsCubit,
     required this.voiceRepository,
-    required Stream<Locale> localeStream,
-  }) : super(VoicesLoading(languageCode: languageCode)) {
-    _localeSubscription = localeStream
-        .map((locale) => locale.languageCode)
-        .listen(onLocaleChanged);
-  }
+  }) : super(VoicesLoading(languageCode: languageCode));
 
   final _log = Logger((VoicesCubit).toString());
   final VoiceRepository voiceRepository;

@@ -419,9 +419,6 @@ class TopLevelProvider extends StatelessWidget {
             ),
           ),
           BlocProvider(
-            create: (context) => LocaleCubit(GetIt.I<SettingsDb>()),
-          ),
-          BlocProvider(
             create: (context) => TouchDetectionCubit(),
           ),
           BlocProvider<SpeechSettingsCubit>(
@@ -442,7 +439,6 @@ class TopLevelProvider extends StatelessWidget {
                 languageCode: GetIt.I<SettingsDb>().language,
                 speechSettingsCubit: context.read<SpeechSettingsCubit>(),
                 voiceRepository: context.read<VoiceRepository>(),
-                localeStream: context.read<LocaleCubit>().stream,
               )..initialize(),
               lazy: false,
             ),

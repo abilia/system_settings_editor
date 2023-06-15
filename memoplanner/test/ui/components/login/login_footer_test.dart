@@ -54,7 +54,6 @@ void main() {
       languageCode: 'en',
       speechSettingsCubit: speechSettingsCubit,
       voiceRepository: voiceRepository,
-      localeStream: const Stream.empty(),
     );
 
     deviceRepository = MockDeviceRepository();

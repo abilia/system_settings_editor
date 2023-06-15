@@ -36,10 +36,15 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
   @override
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
+    final locale = Localizations.localeOf(context);
+    final voicesCubit = context.read<VoicesCubit>();
     await GetIt.I<SettingsDb>()
         .setAlwaysUse24HourFormat(MediaQuery.of(context).alwaysUse24HourFormat);
     await _readScreenTimeOut();
     await _fetchDeviceLicense();
+    await GetIt.I<SettingsDb>().setLanguage(locale.languageCode);
+    await voicesCubit.onLocaleChanged(locale.languageCode);
+    GetIt.I<SeagullAnalytics>().setLocale(locale);
   }
 
   @override
