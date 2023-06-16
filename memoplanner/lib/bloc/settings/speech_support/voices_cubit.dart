@@ -20,7 +20,6 @@ class VoicesCubit extends Cubit<VoicesState> {
   final _log = Logger((VoicesCubit).toString());
   final VoiceRepository voiceRepository;
   final SpeechSettingsCubit speechSettingsCubit;
-  late final StreamSubscription _localeSubscription;
 
   Future<void> initialize() async {
     emit(
@@ -32,7 +31,7 @@ class VoicesCubit extends Cubit<VoicesState> {
     );
   }
 
-  Future<void> onLocaleChanged(String languageCode) async {
+  Future<void> setLanguage(String languageCode) async {
     if (state.languageCode == languageCode) return;
     emit(state.copyWith(languageCode: languageCode));
     await _setNewOrUnsetVoice();
@@ -109,11 +108,5 @@ class VoicesCubit extends Cubit<VoicesState> {
       await Future.delayed(const Duration(seconds: 2));
     }
     await voiceRepository.deleteAllVoices();
-  }
-
-  @override
-  Future<void> close() {
-    _localeSubscription.cancel();
-    return super.close();
   }
 }

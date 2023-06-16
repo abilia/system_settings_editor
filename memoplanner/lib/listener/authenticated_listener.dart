@@ -36,15 +36,20 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
   @override
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
-    final locale = Localizations.localeOf(context);
-    final voicesCubit = context.read<VoicesCubit>();
     await GetIt.I<SettingsDb>()
         .setAlwaysUse24HourFormat(MediaQuery.of(context).alwaysUse24HourFormat);
     await _readScreenTimeOut();
     await _fetchDeviceLicense();
-    await GetIt.I<SettingsDb>().setLanguage(locale.languageCode);
-    await voicesCubit.onLocaleChanged(locale.languageCode);
+    await _updateLocale();
+  }
+
+  Future<void> _updateLocale() async {
+    final locale = Localizations.localeOf(context);
     GetIt.I<SeagullAnalytics>().setLocale(locale);
+    await GetIt.I<SettingsDb>().setLanguage(locale.languageCode);
+    if (Config.isMP && mounted) {
+      await context.read<VoicesCubit>().setLanguage(locale.languageCode);
+    }
   }
 
   @override
