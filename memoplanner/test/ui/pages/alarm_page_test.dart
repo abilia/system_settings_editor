@@ -431,7 +431,7 @@ void main() {
         expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.stop), findsNothing);
-        // wait Default time
+        // wait DefauLt translateime
         final defaultDuration = const AlarmSettings().duration;
         await tester.pumpAndSettle(defaultDuration);
         // not playing

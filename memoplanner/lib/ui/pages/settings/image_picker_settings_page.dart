@@ -24,7 +24,7 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     return SettingsBasePage(
       icon: AbiliaIcons.myPhotos,
       title: Lt.of(context).imagePicker,
@@ -59,28 +59,28 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
         SwitchField(
           leading: const Icon(AbiliaIcons.folder),
           value: true,
-          child: Text(t.imageArchive),
+          child: Text(translate.imageArchive),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.myPhotos),
           value: _displayMyPhotos,
           onChanged: (v) => setState(() => _displayMyPhotos = v),
-          child: Text(t.myPhotos),
+          child: Text(translate.myPhotos),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.cameraPhoto),
           value: _displayCamera,
           onChanged: (v) => setState(() => _displayCamera = v),
-          child: Text(t.takeNewPhoto),
+          child: Text(translate.takeNewPhoto),
         ),
         const Divider(),
         SwitchField(
           leading: const Icon(AbiliaIcons.phone),
           value: _displayLocalImages,
           onChanged: (v) => setState(() => _displayLocalImages = v),
-          child: Text(t.devicesLocalImages),
+          child: Text(translate.devicesLocalImages),
         ),
-        Tts(child: Text(t.onlyAppliesToGo)),
+        Tts(child: Text(translate.onlyAppliesToGo)),
       ],
     );
   }

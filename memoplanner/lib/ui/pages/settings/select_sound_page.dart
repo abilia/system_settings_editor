@@ -32,7 +32,7 @@ class _SelectSoundPageState extends State<SelectSoundPage> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     final widgets = Sound.values
         .where((s) => widget.noSoundOption || s != Sound.NoSound)
         .map(
@@ -43,7 +43,7 @@ class _SelectSoundPageState extends State<SelectSoundPage> {
                   groupValue: selectedSound,
                   onChanged: setSelectedSound,
                   value: s,
-                  text: Text(s.displayName(t)),
+                  text: Text(s.displayName(translate)),
                 ),
               ),
               CollapsableWidget(

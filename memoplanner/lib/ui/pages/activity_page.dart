@@ -84,7 +84,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
 
     if (noButtons) return const SizedBox.shrink();
 
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     return BottomAppBar(
       child: SizedBox(
         height: layout.toolbar.height,
@@ -92,7 +92,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
           children: <Widget>[
             if (displayUncheckButton)
               TextAndOrIconActionButtonLight(
-                t.undo,
+                translate.undo,
                 AbiliaIcons.handiUncheck,
                 key: TestKey.uncheckButton,
                 onPressed: () async {
@@ -104,7 +104,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
               ),
             if (displayAlarmButton)
               TextAndOrIconActionButtonLight(
-                t.alarm,
+                translate.alarm,
                 activity.alarm.iconData(),
                 key: TestKey.editAlarm,
                 onPressed: () async => _alarmButtonPressed(
@@ -114,7 +114,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
               ),
             if (displayDeleteButton)
               TextAndOrIconActionButtonLight(
-                t.delete,
+                translate.delete,
                 AbiliaIcons.deleteAllClear,
                 onPressed: () async => _deleteButtonPressed(
                   context,

@@ -10,7 +10,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     final settings = context.read<MemoplannerSettingsBloc>().state;
     return BlocProvider(
       create: (context) => ActivityViewSettingsCubit(
@@ -20,8 +20,8 @@ class ActivityViewSettingsPage extends StatelessWidget {
       child: BlocBuilder<ActivityViewSettingsCubit, ActivityViewSettings>(
         builder: (context, activityViewSettings) => SettingsBasePage(
           icon: AbiliaIcons.fullScreen,
-          title: t.activityView,
-          label: Config.isMP ? t.calendar : null,
+          title: translate.activityView,
+          label: Config.isMP ? translate.calendar : null,
           widgets: [
             const _FakeMemoplannerSetting(
               child: ActivityPagePreview(),
@@ -35,7 +35,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
                   .read<ActivityViewSettingsCubit>()
                   .changeSettings(
                       activityViewSettings.copyWith(displayAlarmButton: v)),
-              child: Text(t.alarm),
+              child: Text(translate.alarm),
             ),
             SwitchField(
               key: TestKey.activityViewRemoveSwitch,
@@ -45,7 +45,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
                   .read<ActivityViewSettingsCubit>()
                   .changeSettings(
                       activityViewSettings.copyWith(displayDeleteButton: v)),
-              child: Text(t.delete),
+              child: Text(translate.delete),
             ),
             SwitchField(
               key: TestKey.activityViewEditSwitch,
@@ -55,7 +55,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
                   .read<ActivityViewSettingsCubit>()
                   .changeSettings(
                       activityViewSettings.copyWith(displayEditButton: v)),
-              child: Text(t.edit),
+              child: Text(translate.edit),
             ),
             const SizedBox.shrink(),
             SwitchField(
@@ -65,7 +65,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
                   .read<ActivityViewSettingsCubit>()
                   .changeSettings(
                       activityViewSettings.copyWith(displayQuarterHour: v)),
-              child: Text(t.showQuarterHourWatchBar),
+              child: Text(translate.showQuarterHourWatchBar),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.clock),
@@ -77,7 +77,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
                       .changeSettings(
                           activityViewSettings.copyWith(displayTimeLeft: v))
                   : null,
-              child: Text(t.timeOnQuarterHourBar),
+              child: Text(translate.timeOnQuarterHourBar),
             )
           ],
           bottomNavigationBar: BottomNavigation(

@@ -15,7 +15,7 @@ class PageOneWifi extends StatelessWidget {
   Widget build(BuildContext context) {
     final startUpState = context.watch<StartupCubit>().state;
     final connectivityState = context.watch<ConnectivityCubit>().state;
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     return Padding(
       padding: layout.templates.m7,
       child: Column(
@@ -28,7 +28,7 @@ class PageOneWifi extends StatelessWidget {
           SizedBox(height: layout.startupPage.welcomeLogoDistance),
           Tts(
             child: Text(
-              '${t.step} 1/$pages',
+              '${translate.step} 1/$pages',
               style: abiliaTextTheme.bodyMedium
                   ?.copyWith(color: AbiliaColors.black75),
             ),
@@ -36,7 +36,7 @@ class PageOneWifi extends StatelessWidget {
           SizedBox(height: layout.formPadding.smallVerticalItemDistance),
           Tts(
             child: Text(
-              t.setupYourInternetConnection,
+              translate.setupYourInternetConnection,
               style: abiliaTextTheme.titleLarge
                   ?.copyWith(color: AbiliaColors.black75),
             ),
@@ -54,7 +54,7 @@ class PageOneWifi extends StatelessWidget {
               child: SizedBox(
                 width: layout.startupPage.contentWidth,
                 child: Text(
-                  t.wifiNoInternet,
+                  translate.wifiNoInternet,
                   style: abiliaTextTheme.bodyMedium
                       ?.copyWith(color: AbiliaColors.red),
                 ),
@@ -66,7 +66,7 @@ class PageOneWifi extends StatelessWidget {
             SizedBox(
               width: layout.startupPage.contentWidth,
               child: Tts.data(
-                data: t.next,
+                data: translate.next,
                 child: TextButton(
                   key: TestKey.nextWelcomeGuide,
                   style: textButtonStyleGreen,
@@ -75,7 +75,7 @@ class PageOneWifi extends StatelessWidget {
                     curve: StartupGuidePage.curve,
                   ),
                   child: Text(
-                    t.next,
+                    translate.next,
                   ),
                 ),
               ),

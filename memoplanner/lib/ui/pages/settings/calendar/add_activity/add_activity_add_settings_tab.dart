@@ -7,24 +7,24 @@ class AddActivityAddSettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     final newActivityMode =
         context.select((AddActivitySettingsCubit cubit) => cubit.state.mode);
     return SettingsTab(
       children: [
-        Tts(child: Text(t.add)),
+        Tts(child: Text(translate.add)),
         RadioField(
           value: AddActivityMode.editView,
           groupValue: newActivityMode,
           onChanged: context.read<AddActivitySettingsCubit>().newActivityMode,
-          text: Text(t.throughEditView),
+          text: Text(translate.throughEditView),
           leading: const Icon(AbiliaIcons.editView),
         ),
         RadioField(
           value: AddActivityMode.stepByStep,
           groupValue: newActivityMode,
           onChanged: context.read<AddActivitySettingsCubit>().newActivityMode,
-          text: Text(t.stepByStep),
+          text: Text(translate.stepByStep),
           leading: const Icon(AbiliaIcons.stepByStep),
         ),
         const Divider(),
@@ -49,7 +49,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     final editActivitySettings = context
         .select((AddActivitySettingsCubit cubit) => cubit.state.editActivity);
     final showAvailableFor = context
@@ -70,7 +70,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
               await _showErrorDialog(context);
             }
           },
-          child: Text(t.showTemplates),
+          child: Text(translate.showTemplates),
         ),
         SwitchField(
           key: TestKey.addActivitySelectNameSwitch,
@@ -85,7 +85,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
               await _showErrorDialog(context);
             }
           },
-          child: Text(t.selectName),
+          child: Text(translate.selectName),
         ),
         SwitchField(
           key: TestKey.addActivitySelectImageSwitch,
@@ -100,7 +100,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
               await _showErrorDialog(context);
             }
           },
-          child: Text(t.selectImage),
+          child: Text(translate.selectImage),
         ),
         SwitchField(
           key: TestKey.addActivitySelectDateSwitch,
@@ -109,7 +109,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .editSettings(editActivitySettings.copyWith(date: v)),
-          child: Text(t.selectDate),
+          child: Text(translate.selectDate),
         ),
         SwitchField(
           key: TestKey.addActivitySelectAllDaySwitch,
@@ -118,7 +118,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .editSettings(editActivitySettings.copyWith(fullDay: v)),
-          child: Text(t.selectAllDay),
+          child: Text(translate.selectAllDay),
         ),
         SwitchField(
           key: TestKey.addActivitySelectCheckableSwitch,
@@ -127,7 +127,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .editSettings(editActivitySettings.copyWith(checkable: v)),
-          child: Text(t.selectCheckable),
+          child: Text(translate.selectCheckable),
         ),
         SwitchField(
           key: TestKey.addActivityDeleteAfterSwitch,
@@ -136,7 +136,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .editSettings(editActivitySettings.copyWith(removeAfter: v)),
-          child: Text(t.deleteAfter),
+          child: Text(translate.deleteAfter),
         ),
         if (showAvailableFor)
           SwitchField(
@@ -146,7 +146,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
             onChanged: (v) => context
                 .read<AddActivitySettingsCubit>()
                 .editSettings(editActivitySettings.copyWith(availability: v)),
-            child: Text(t.selectAvailableFor),
+            child: Text(translate.selectAvailableFor),
           ),
         SwitchField(
           key: TestKey.addActivitySelectAlarmSwitch,
@@ -155,7 +155,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .editSettings(editActivitySettings.copyWith(alarm: v)),
-          child: Text(t.selectAlarm),
+          child: Text(translate.selectAlarm),
         ),
         SwitchField(
           key: TestKey.addActivitySelectReminderSwitch,
@@ -164,7 +164,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .editSettings(editActivitySettings.copyWith(reminders: v)),
-          child: Text(t.selectReminder),
+          child: Text(translate.selectReminder),
         ),
         SwitchField(
           key: TestKey.addActivitySelectChecklistSwitch,
@@ -173,7 +173,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .editSettings(editActivitySettings.copyWith(checklist: v)),
-          child: Text(t.selectChecklist),
+          child: Text(translate.selectChecklist),
         ),
         SwitchField(
           key: TestKey.addActivitySelectNoteSwitch,
@@ -182,7 +182,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .editSettings(editActivitySettings.copyWith(notes: v)),
-          child: Text(t.selectNote),
+          child: Text(translate.selectNote),
         ),
       ]
           .map((c) => Padding(
@@ -208,7 +208,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     final settings = context
         .select((AddActivitySettingsCubit cubit) => cubit.state.stepByStep);
     final showAvailableFor = context
@@ -229,7 +229,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
               await _showErrorDialog(context);
             }
           },
-          child: Text(t.showTemplates),
+          child: Text(translate.showTemplates),
         ),
         SwitchField(
           key: TestKey.addActivitySelectNameSwitch,
@@ -244,7 +244,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
               await _showErrorDialog(context);
             }
           },
-          child: Text(t.selectName),
+          child: Text(translate.selectName),
         ),
         SwitchField(
           key: TestKey.addActivitySelectImageSwitch,
@@ -259,7 +259,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
               await _showErrorDialog(context);
             }
           },
-          child: Text(t.selectImage),
+          child: Text(translate.selectImage),
         ),
         SwitchField(
           key: TestKey.addActivitySelectDateSwitch,
@@ -268,7 +268,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .stepByStepSetting(settings.copyWith(setDate: v)),
-          child: Text(t.selectDate),
+          child: Text(translate.selectDate),
         ),
         SwitchField(
           key: TestKey.addActivitySelectAllDaySwitch,
@@ -277,7 +277,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .stepByStepSetting(settings.copyWith(showFullDay: v)),
-          child: Text(t.selectAllDay),
+          child: Text(translate.selectAllDay),
         ),
         SwitchField(
           key: TestKey.addActivitySelectCheckableSwitch,
@@ -286,7 +286,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .stepByStepSetting(settings.copyWith(selectCheckable: v)),
-          child: Text(t.selectCheckable),
+          child: Text(translate.selectCheckable),
         ),
         SwitchField(
           key: TestKey.addActivityDeleteAfterSwitch,
@@ -295,7 +295,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .stepByStepSetting(settings.copyWith(selectDeleteAfter: v)),
-          child: Text(t.deleteAfter),
+          child: Text(translate.deleteAfter),
         ),
         if (showAvailableFor)
           SwitchField(
@@ -305,7 +305,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
             onChanged: (v) => context
                 .read<AddActivitySettingsCubit>()
                 .stepByStepSetting(settings.copyWith(selectAvailableFor: v)),
-            child: Text(t.selectAvailableFor),
+            child: Text(translate.selectAvailableFor),
           ),
         SwitchField(
           key: TestKey.addActivitySelectAlarmSwitch,
@@ -314,7 +314,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .stepByStepSetting(settings.copyWith(selectAlarm: v)),
-          child: Text(t.selectAlarm),
+          child: Text(translate.selectAlarm),
         ),
         SwitchField(
           key: TestKey.addActivitySelectReminderSwitch,
@@ -323,7 +323,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .stepByStepSetting(settings.copyWith(selectReminder: v)),
-          child: Text(t.selectReminder),
+          child: Text(translate.selectReminder),
         ),
         SwitchField(
           key: TestKey.addActivitySelectChecklistSwitch,
@@ -332,7 +332,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .stepByStepSetting(settings.copyWith(selectChecklist: v)),
-          child: Text(t.selectChecklist),
+          child: Text(translate.selectChecklist),
         ),
         SwitchField(
           key: TestKey.addActivitySelectNoteSwitch,
@@ -341,7 +341,7 @@ class _StepByStepSettingsWidget extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .stepByStepSetting(settings.copyWith(selectNote: v)),
-          child: Text(t.selectNote),
+          child: Text(translate.selectNote),
         ),
       ]
           .map((c) => Padding(

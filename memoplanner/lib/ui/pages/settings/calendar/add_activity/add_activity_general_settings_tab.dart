@@ -6,12 +6,12 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     final generalSettings =
         context.select((AddActivitySettingsCubit cubit) => cubit.state.general);
     return SettingsTab(
       children: [
-        Tts(child: Text(t.time)),
+        Tts(child: Text(translate.time)),
         SwitchField(
           leading: const Icon(AbiliaIcons.clock),
           value: generalSettings.allowPassedStartTime,
@@ -19,7 +19,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
               .read<AddActivitySettingsCubit>()
               .addGeneralSettings(
                   generalSettings.copyWith(allowPassedStartTime: v)),
-          child: Text(t.allowPassedStartTime),
+          child: Text(translate.allowPassedStartTime),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.endTime),
@@ -27,17 +27,17 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .addGeneralSettings(generalSettings.copyWith(showEndTime: v)),
-          child: Text(t.showEndTime),
+          child: Text(translate.showEndTime),
         ),
         const Divider(),
-        Tts(child: Text(t.alarm)),
+        Tts(child: Text(translate.alarm)),
         SwitchField(
           leading: const Icon(AbiliaIcons.handiAlarmVibration),
           value: generalSettings.showAlarm,
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .addGeneralSettings(generalSettings.copyWith(showAlarm: v)),
-          child: Text(t.showAlarm),
+          child: Text(translate.showAlarm),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.handiVibration),
@@ -46,7 +46,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
               .read<AddActivitySettingsCubit>()
               .addGeneralSettings(
                   generalSettings.copyWith(showVibrationAlarm: v)),
-          child: Text(t.showVibrationAlarm),
+          child: Text(translate.showVibrationAlarm),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.handiAlarm),
@@ -54,7 +54,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .addGeneralSettings(generalSettings.copyWith(showSilentAlarm: v)),
-          child: Text(t.showSilentAlarm),
+          child: Text(translate.showSilentAlarm),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.handiNoAlarm),
@@ -62,7 +62,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .addGeneralSettings(generalSettings.copyWith(showNoAlarm: v)),
-          child: Text(t.showNoAlarm),
+          child: Text(translate.showNoAlarm),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.handiAlarm),
@@ -71,7 +71,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
               .read<AddActivitySettingsCubit>()
               .addGeneralSettings(
                   generalSettings.copyWith(showAlarmOnlyAtStart: v)),
-          child: Text(t.showAlarmOnlyAtStartTime),
+          child: Text(translate.showAlarmOnlyAtStartTime),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.dictaphone),
@@ -80,10 +80,10 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
               .read<AddActivitySettingsCubit>()
               .addGeneralSettings(
                   generalSettings.copyWith(showSpeechAtAlarm: v)),
-          child: Text(t.showSpeechAtAlarm),
+          child: Text(translate.showSpeechAtAlarm),
         ),
         const Divider(),
-        Tts(child: Text(t.recurring)),
+        Tts(child: Text(translate.recurring)),
         SwitchField(
           leading: const Icon(AbiliaIcons.week),
           value: generalSettings.addRecurringActivity,
@@ -91,7 +91,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
               .read<AddActivitySettingsCubit>()
               .addGeneralSettings(
                   generalSettings.copyWith(addRecurringActivity: v)),
-          child: Text(t.addRecurringActivity),
+          child: Text(translate.addRecurringActivity),
         ),
       ],
     );

@@ -13,7 +13,7 @@ class PageTwoVoiceSupport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     return Padding(
       padding: layout.templates.m7,
       child: Column(
@@ -24,7 +24,7 @@ class PageTwoVoiceSupport extends StatelessWidget {
           SizedBox(height: layout.startupPage.logoDistance),
           Tts(
             child: Text(
-              '${t.step} $pages/$pages',
+              '${translate.step} $pages/$pages',
               style: abiliaTextTheme.bodyMedium
                   ?.copyWith(color: AbiliaColors.black75),
             ),
@@ -32,7 +32,7 @@ class PageTwoVoiceSupport extends StatelessWidget {
           SizedBox(height: layout.formPadding.smallVerticalItemDistance),
           Tts(
             child: Text(
-              t.downloadVoiceText,
+              translate.downloadVoiceText,
               style: abiliaTextTheme.titleLarge
                   ?.copyWith(color: AbiliaColors.black75),
             ),
@@ -45,11 +45,13 @@ class PageTwoVoiceSupport extends StatelessWidget {
                   context.watch<VoicesCubit>().state.downloading.isNotEmpty;
               final voice = context.watch<SpeechSettingsCubit>().state.voice;
               final trailingText = voice.isEmpty
-                  ? (downloadingVoices ? t.installing : t.notSelected)
+                  ? (downloadingVoices
+                      ? translate.installing
+                      : translate.notSelected)
                   : voice;
               return PickField(
                 leading: const Icon(AbiliaIcons.speakText),
-                text: Text(t.textToSpeech),
+                text: Text(translate.textToSpeech),
                 trailingText: Text(
                   trailingText,
                   style: (Theme.of(context).textTheme.bodyMedium ?? bodyMedium)
@@ -85,7 +87,7 @@ class PageTwoVoiceSupport extends StatelessWidget {
                     duration: StartupGuidePage.pageDuration,
                     curve: StartupGuidePage.curve,
                   ),
-                  text: t.back,
+                  text: translate.back,
                   style: textButtonStyleDarkGrey,
                   icon: AbiliaIcons.navigationPrevious,
                 ),
@@ -99,7 +101,7 @@ class PageTwoVoiceSupport extends StatelessWidget {
                   key: TestKey.finishWelcomeGuide,
                   onPressed: () async =>
                       context.read<StartupCubit>().startGuideDone(),
-                  text: t.finish,
+                  text: translate.finish,
                   icon: AbiliaIcons.ok,
                   style: textButtonStyleGreen,
                 ),

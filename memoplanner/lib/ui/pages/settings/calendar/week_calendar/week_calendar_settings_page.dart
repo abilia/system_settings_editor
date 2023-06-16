@@ -6,7 +6,7 @@ class WeekCalendarSettingsPage extends StatelessWidget {
   const WeekCalendarSettingsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     final settings = context.read<MemoplannerSettingsBloc>().state;
     return BlocProvider<WeekCalendarSettingsCubit>(
       create: (context) => WeekCalendarSettingsCubit(
@@ -17,13 +17,13 @@ class WeekCalendarSettingsPage extends StatelessWidget {
         length: 2,
         child: Scaffold(
           appBar: AbiliaAppBar(
-            title: t.weekCalendar,
-            label: Config.isMP ? t.calendar : null,
+            title: translate.weekCalendar,
+            label: Config.isMP ? translate.calendar : null,
             iconData: AbiliaIcons.week,
             bottom: AbiliaTabBar(
               tabs: <Widget>[
-                TabItem(t.topField, AbiliaIcons.settings),
-                TabItem(t.display, AbiliaIcons.menuSetup),
+                TabItem(translate.topField, AbiliaIcons.settings),
+                TabItem(translate.display, AbiliaIcons.menuSetup),
               ],
             ),
           ),

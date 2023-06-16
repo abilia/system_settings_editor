@@ -32,7 +32,7 @@ class _SelectAlarmDurationPageState extends State<SelectAlarmDurationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     final widgets = [
       CollapsableWidget(
         collapsed: Platform.isAndroid ||
@@ -40,14 +40,14 @@ class _SelectAlarmDurationPageState extends State<SelectAlarmDurationPage> {
                 iOSPersistentNotificationMaxDuration,
         padding:
             EdgeInsets.only(bottom: layout.formPadding.verticalItemDistance),
-        child: ErrorMessage(text: Text(t.iOSAlarmTimeWarning)),
+        child: ErrorMessage(text: Text(translate.iOSAlarmTimeWarning)),
       ),
       ...AlarmDuration.values.map(
         (d) => RadioField<AlarmDuration>(
           groupValue: selectedAlarmDuration,
           onChanged: setSelectedAlarmDuration,
           value: d,
-          text: Text(d.displayText(t)),
+          text: Text(d.displayText(translate)),
         ),
       )
     ];

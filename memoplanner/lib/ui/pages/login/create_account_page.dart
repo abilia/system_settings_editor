@@ -14,7 +14,7 @@ class CreateAccountPage extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     final textTheme = Theme.of(context).textTheme;
     final locale = Localizations.localeOf(context);
     return BlocProvider(
@@ -45,7 +45,7 @@ class CreateAccountPage extends StatelessWidget {
                   context: context,
                   wrapWithAuthProviders: false,
                   builder: (_) => ErrorDialog(
-                    text: state.errorMessage(t),
+                    text: state.errorMessage(translate),
                     backNavigationWidget:
                         OkButton(onPressed: Navigator.of(context).maybePop),
                   ),
@@ -68,14 +68,14 @@ class CreateAccountPage extends StatelessWidget {
                   SizedBox(height: layout.formPadding.largeGroupDistance),
                   Tts(
                     child: Text(
-                      t.createAccountHeading,
+                      translate.createAccountHeading,
                       style: textTheme.titleLarge,
                     ),
                   ),
                   SizedBox(height: layout.formPadding.verticalItemDistance),
                   Tts(
                     child: Text(
-                      t.createAccountSubheading,
+                      translate.createAccountSubheading,
                       style: textTheme.bodyMedium,
                     ),
                   ),
@@ -93,7 +93,7 @@ class CreateAccountPage extends StatelessWidget {
                   SizedBox(height: layout.formPadding.groupBottomDistance),
                   PasswordInput(
                     key: TestKey.createAccountPassword,
-                    inputHeading: t.passwordHint,
+                    inputHeading: translate.passwordHint,
                     password: state.firstPassword,
                     onPasswordChange: (password) => context
                         .read<CreateAccountCubit>()
@@ -104,7 +104,7 @@ class CreateAccountPage extends StatelessWidget {
                   SizedBox(height: layout.formPadding.groupBottomDistance),
                   PasswordInput(
                     key: TestKey.createAccountPasswordConfirm,
-                    inputHeading: t.confirmPassword,
+                    inputHeading: translate.confirmPassword,
                     password: state.secondPassword,
                     onPasswordChange: (password) => context
                         .read<CreateAccountCubit>()
@@ -115,9 +115,9 @@ class CreateAccountPage extends StatelessWidget {
                   SizedBox(height: layout.login.termsPadding),
                   AcceptTermsSwitch(
                     key: TestKey.acceptTermsOfUse,
-                    linkText: t.termsOfUse,
+                    linkText: translate.termsOfUse,
                     value: state.termsOfUse,
-                    url: t.termsOfUseUrl,
+                    url: translate.termsOfUseUrl,
                     errorState: state.termsOfUseFailure,
                     onChanged: (v) => context
                         .read<CreateAccountCubit>()
@@ -126,9 +126,9 @@ class CreateAccountPage extends StatelessWidget {
                   SizedBox(height: layout.formPadding.verticalItemDistance),
                   AcceptTermsSwitch(
                     key: TestKey.acceptPrivacyPolicy,
-                    linkText: t.privacyPolicy,
+                    linkText: translate.privacyPolicy,
                     value: state.privacyPolicy,
-                    url: t.privacyPolicyUrl,
+                    url: translate.privacyPolicyUrl,
                     errorState: state.privacyPolicyFailure,
                     onChanged: (v) => context
                         .read<CreateAccountCubit>()
@@ -155,13 +155,13 @@ class AccountCreatedDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     return ViewDialog(
       heading: AppBarHeading(
-        text: t.accountCreatedHeading,
+        text: translate.accountCreatedHeading,
         iconData: AbiliaIcons.ok,
       ),
-      body: Tts(child: Text(t.accountCreatedBody)),
+      body: Tts(child: Text(translate.accountCreatedBody)),
       backNavigationWidget: OkButton(onPressed: Navigator.of(context).maybePop),
     );
   }

@@ -60,11 +60,13 @@ class _ChangeCodeProtectPageState extends State<ChangeCodeProtectPage> {
         return Navigator.pop(context, firstCode);
       }
     }
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     await showDialog(
       context: context,
       builder: (context) => ErrorDialog(
-          text: firstCode == null ? t.enterNewCode : t.incorrectCode),
+          text: firstCode == null
+              ? translate.enterNewCode
+              : translate.incorrectCode),
     );
   }
 }

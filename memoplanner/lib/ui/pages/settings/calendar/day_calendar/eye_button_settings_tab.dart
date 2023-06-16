@@ -6,7 +6,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     final scrollController = ScrollController();
     return BlocBuilder<DayCalendarSettingsCubit, DayCalendarSettings>(
         builder: (context, dayCalendarSettings) {
@@ -17,16 +17,18 @@ class EyeButtonSettingsTab extends StatelessWidget {
           controller: scrollController,
           padding: layout.templates.m1.onlyVertical,
           children: [
-            Tts(child: Text(t.viewSettings)).pad(
+            Tts(child: Text(translate.viewSettings)).pad(
               layout.templates.m1.onlyHorizontal,
             ),
             CollapsableWidget(
               collapsed: !displaySettings.calendarType,
               child: _buildSelector(
                 [
-                  SelectorItem(t.listView, AbiliaIcons.calendarList),
-                  SelectorItem(t.oneTimePillarView, AbiliaIcons.timeline),
-                  SelectorItem(t.twoTimePillarsView, AbiliaIcons.twoTimelines),
+                  SelectorItem(translate.listView, AbiliaIcons.calendarList),
+                  SelectorItem(
+                      translate.oneTimePillarView, AbiliaIcons.timeline),
+                  SelectorItem(
+                      translate.twoTimePillarsView, AbiliaIcons.twoTimelines),
                 ],
               ),
             ),
@@ -34,9 +36,9 @@ class EyeButtonSettingsTab extends StatelessWidget {
               collapsed: !displaySettings.intervalType,
               child: _buildSelector(
                 [
-                  SelectorItem(t.interval, AbiliaIcons.dayInterval),
-                  SelectorItem(t.viewDay, AbiliaIcons.sun),
-                  SelectorItem(t.dayAndNight, AbiliaIcons.dayNight),
+                  SelectorItem(translate.interval, AbiliaIcons.dayInterval),
+                  SelectorItem(translate.viewDay, AbiliaIcons.sun),
+                  SelectorItem(translate.dayAndNight, AbiliaIcons.dayNight),
                 ],
               ),
             ),
@@ -44,9 +46,9 @@ class EyeButtonSettingsTab extends StatelessWidget {
               collapsed: !displaySettings.timepillarZoom,
               child: _buildSelector(
                 [
-                  SelectorItem(t.small, AbiliaIcons.decreaseText),
-                  SelectorItem(t.medium, AbiliaIcons.mediumText),
-                  SelectorItem(t.large, AbiliaIcons.enlargeText),
+                  SelectorItem(translate.small, AbiliaIcons.decreaseText),
+                  SelectorItem(translate.medium, AbiliaIcons.mediumText),
+                  SelectorItem(translate.large, AbiliaIcons.enlargeText),
                 ],
               ),
             ),
@@ -54,8 +56,8 @@ class EyeButtonSettingsTab extends StatelessWidget {
               collapsed: !displaySettings.duration,
               child: _buildSelector(
                 [
-                  SelectorItem(t.dots, AbiliaIcons.options),
-                  SelectorItem(t.edge, AbiliaIcons.flarp),
+                  SelectorItem(translate.dots, AbiliaIcons.options),
+                  SelectorItem(translate.edge, AbiliaIcons.flarp),
                 ],
               ),
             ),
@@ -69,7 +71,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
                       ),
                     ),
               },
-              child: Text(t.viewMode),
+              child: Text(translate.viewMode),
             ).pad(EdgeInsets.fromLTRB(
               layout.templates.m1.left,
               layout.formPadding.groupBottomDistance,
@@ -86,7 +88,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
                       ),
                     ),
               },
-              child: Text(t.dayInterval),
+              child: Text(translate.dayInterval),
             ).pad(m1ItemPadding),
             SwitchField(
               key: TestKey.showTimelineZoomSwitch,
@@ -98,7 +100,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
                       ),
                     ),
               },
-              child: Text(t.timelineZoom),
+              child: Text(translate.timelineZoom),
             ).pad(m1ItemPadding),
             SwitchField(
               key: TestKey.showDurationSelectionSwitch,
@@ -110,7 +112,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
                       ),
                     ),
               },
-              child: Text(t.activityDuration),
+              child: Text(translate.activityDuration),
             ).pad(m1ItemPadding),
           ],
         ),

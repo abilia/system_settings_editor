@@ -8,7 +8,7 @@ class MenuSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     final settings = context.read<MemoplannerSettingsBloc>().state;
     return BlocProvider<MenuSettingsCubit>(
       create: (context) => MenuSettingsCubit(
@@ -52,7 +52,7 @@ class MenuSettingsPage extends StatelessWidget {
                 onChanged: (v) => context
                     .read<MenuSettingsCubit>()
                     .change(state.copyWith(showCamera: v)),
-                child: Text(t.camera),
+                child: Text(translate.camera),
               ),
               SwitchField(
                 leading: const Icon(AbiliaIcons.myPhotos),
@@ -60,7 +60,7 @@ class MenuSettingsPage extends StatelessWidget {
                 onChanged: (v) => context
                     .read<MenuSettingsCubit>()
                     .change(state.copyWith(showPhotos: v)),
-                child: Text(t.myPhotos),
+                child: Text(translate.myPhotos),
               ),
               SwitchField(
                 leading: const Icon(AbiliaIcons.photoCalendar),
@@ -68,7 +68,7 @@ class MenuSettingsPage extends StatelessWidget {
                 onChanged: (v) => context
                     .read<MenuSettingsCubit>()
                     .change(state.copyWith(showPhotoCalendar: v)),
-                child: Text(t.photoCalendar.singleLine),
+                child: Text(translate.photoCalendar.singleLine),
               ),
               SwitchField(
                 leading: const Icon(AbiliaIcons.favoritesShow),
@@ -76,7 +76,7 @@ class MenuSettingsPage extends StatelessWidget {
                 onChanged: (v) => context
                     .read<MenuSettingsCubit>()
                     .change(state.copyWith(showTemplates: v)),
-                child: Text(t.templates.singleLine),
+                child: Text(translate.templates.singleLine),
               ),
               SwitchField(
                 leading: const Icon(AbiliaIcons.menuSetup),
@@ -84,7 +84,7 @@ class MenuSettingsPage extends StatelessWidget {
                 onChanged: (v) => context
                     .read<MenuSettingsCubit>()
                     .change(state.copyWith(showQuickSettings: v)),
-                child: Text(t.quickSettingsMenu.singleLine),
+                child: Text(translate.quickSettingsMenu.singleLine),
               ),
               SwitchField(
                 leading: const Icon(AbiliaIcons.settings),
@@ -92,7 +92,7 @@ class MenuSettingsPage extends StatelessWidget {
                 onChanged: (v) => context
                     .read<MenuSettingsCubit>()
                     .change(state.copyWith(showSettings: v)),
-                child: Text(t.settings),
+                child: Text(translate.settings),
               ),
             ],
           );

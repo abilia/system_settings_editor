@@ -39,7 +39,7 @@ class CreateNewPage extends StatelessWidget {
   }
 
   AbiliaAppBar _appBar(
-    Lt t,
+    Lt translate,
     bool displayNewActivity,
     bool displayNewTimer,
   ) {
@@ -48,10 +48,10 @@ class CreateNewPage extends StatelessWidget {
           ? AbiliaIcons.plus
           : AbiliaIcons.stopWatch,
       title: Config.isMPGO || displayNewTimer && displayNewActivity
-          ? t.add
+          ? translate.add
           : displayNewActivity
-              ? t.addActivity
-              : t.addTimer,
+              ? translate.addActivity
+              : translate.addTimer,
     );
   }
 }

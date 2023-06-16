@@ -59,7 +59,7 @@ void main() {
   }, skip: !Config.isMP);
 
   group('time interval', () {
-    testWidgets('Default time interval 12h clock', (tester) async {
+    testWidgets('DefauLt translateime interval 12h clock', (tester) async {
       // Act
       await tester.goToGeneralCalendarSettingsPageIntervalTab();
       // Assert
@@ -69,7 +69,7 @@ void main() {
       expect(find.text('11:00 PM'), findsOneWidget);
     });
 
-    testWidgets('Default time interval 24h clock', (tester) async {
+    testWidgets('DefauLt translateime interval 24h clock', (tester) async {
       // Act
       await tester.goToGeneralCalendarSettingsPageIntervalTab(use24: true);
       // Assert

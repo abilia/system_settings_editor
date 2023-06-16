@@ -118,15 +118,15 @@ class ChangeInfoItemPicker extends StatelessWidget {
         ),
       );
 
-  String _text(Lt t, InfoItem infoItem) {
+  String _text(Lt translate, InfoItem infoItem) {
     if (infoItem is Checklist) {
-      return t.addChecklist;
+      return translate.addChecklist;
     } else if (infoItem is NoteInfoItem) {
-      return t.addNote;
+      return translate.addNote;
     } else if (infoItem is VideoInfoItem) {
       return 'Add video';
     }
-    return t.infoTypeNone;
+    return translate.infoTypeNone;
   }
 
   Icon _icon(InfoItem infoItem) {

@@ -12,14 +12,14 @@ class MpGoMenuButton extends StatelessWidget {
     return BlocSelector<PermissionCubit, PermissionState, bool>(
       selector: (state) => state.importantPermissionMissing,
       builder: (context, importantPermissionMissing) {
-        final t = Lt.of(context);
+        final translate = Lt.of(context);
         return Stack(
           clipBehavior: Clip.none,
           children: [
             BlocBuilder<SessionsCubit, SessionsState>(
               builder: (context, sessionsState) => IconActionButton(
                 style: actionButtonStyleLight,
-                ttsData: t.menu,
+                ttsData: translate.menu,
                 onPressed: () async {
                   final authProviders = copiedAuthProviders(context);
                   await Navigator.of(context).push(

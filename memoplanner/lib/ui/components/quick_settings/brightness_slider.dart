@@ -46,11 +46,11 @@ class _BrightnessSliderState extends State<BrightnessSlider>
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SubHeading(t.screenBrightness),
+        SubHeading(translate.screenBrightness),
         AbiliaSlider(
             key: TestKey.brightnessSlider,
             leading: const Icon(AbiliaIcons.brightnessNormal),

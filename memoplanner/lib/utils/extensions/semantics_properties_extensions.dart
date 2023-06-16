@@ -4,10 +4,10 @@ import 'package:memoplanner/utils/all.dart';
 
 extension ActivityExtensions on ActivityOccasion {
   String subtitle(BuildContext context, [bool tts = false]) {
-    final t = Lt.of(context);
-    if (activity.fullDay) return t.fullDay;
+    final translate = Lt.of(context);
+    if (activity.fullDay) return translate.fullDay;
     final timeFormat = hourAndMinuteFormat(context);
-    final timeBinding = tts ? t.timeTo : '-';
+    final timeBinding = tts ? translate.timeTo : '-';
     if (activity.hasEndTime) {
       return '${timeFormat(activity.startTime)} $timeBinding ${timeFormat(activity.noneRecurringEnd)}';
     }
@@ -15,12 +15,12 @@ extension ActivityExtensions on ActivityOccasion {
   }
 
   SemanticsProperties semanticsProperties(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     final label = [
       if (activity.hasTitle) activity.title,
       subtitle(context, true),
       if (activity.checkable)
-        if (isSignedOff) t.completed else t.notCompleted
+        if (isSignedOff) translate.completed else translate.notCompleted
     ].join(', ');
     return SemanticsProperties(
       button: true,

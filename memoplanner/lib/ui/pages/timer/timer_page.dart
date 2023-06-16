@@ -198,11 +198,11 @@ class DeleteTimerDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     return YesNoDialog(
       headingIcon: AbiliaIcons.deleteAllClear,
-      heading: t.delete,
-      text: t.timerDelete,
+      heading: translate.delete,
+      text: translate.timerDelete,
     );
   }
 }

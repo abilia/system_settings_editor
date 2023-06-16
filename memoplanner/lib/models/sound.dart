@@ -20,12 +20,12 @@ enum Sound {
 
 extension SoundExtension on Sound {
   static const defaultName = 'Default';
-  String displayName(Lt t) {
+  String displayName(Lt translate) {
     switch (this) {
       case Sound.Default:
         return defaultName;
       case Sound.NoSound:
-        return t.noSound;
+        return translate.noSound;
       case Sound.AfloatSynth:
         return 'Afloat Synth';
       case Sound.AlarmClock:

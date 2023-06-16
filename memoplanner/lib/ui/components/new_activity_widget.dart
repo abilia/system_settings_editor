@@ -8,7 +8,7 @@ class NewActivityWidget extends StatelessWidget with ActivityNavigation {
   @override
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     final addActivitySettings = context
         .select((MemoplannerSettingsBloc bloc) => bloc.state.addActivity);
     return Column(
@@ -17,7 +17,7 @@ class NewActivityWidget extends StatelessWidget with ActivityNavigation {
           PickField(
             key: TestKey.newActivityChoice,
             leading: const Icon(AbiliaIcons.basicActivity),
-            text: Text(t.newActivity),
+            text: Text(translate.newActivity),
             onTap: () async => navigateToActivityWizardWithContext(
               context,
               authProviders,
@@ -27,7 +27,7 @@ class NewActivityWidget extends StatelessWidget with ActivityNavigation {
           PickField(
             key: TestKey.basicActivityChoice,
             leading: const Icon(AbiliaIcons.basicActivities),
-            text: Text(t.fromTemplate),
+            text: Text(translate.fromTemplate),
             onTap: () async => navigateToBasicActivityPicker(
               context,
               authProviders,

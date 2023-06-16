@@ -7,44 +7,44 @@ class DayAppBarSettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     return BlocBuilder<DayCalendarSettingsCubit, DayCalendarSettings>(
       builder: (context, settings) {
         final dayCalendar = context.read<DayCalendarSettingsCubit>();
         final appBar = dayCalendar.state.appBar;
         return SettingsTab(
           children: [
-            Tts(child: Text(t.topField)),
+            Tts(child: Text(translate.topField)),
             const DayAppBarPreview(),
             SwitchField(
               value: appBar.showBrowseButtons,
               onChanged: (v) => dayCalendar
                   .changeAppBar(appBar.copyWith(showBrowseButtons: v)),
-              child: Text(t.showBrowseButtons),
+              child: Text(translate.showBrowseButtons),
             ),
             SwitchField(
               value: appBar.showWeekday,
               onChanged: (v) =>
                   dayCalendar.changeAppBar(appBar.copyWith(showWeekday: v)),
-              child: Text(t.showWeekday),
+              child: Text(translate.showWeekday),
             ),
             SwitchField(
               value: appBar.showDayPeriod,
               onChanged: (v) =>
                   dayCalendar.changeAppBar(appBar.copyWith(showDayPeriod: v)),
-              child: Text(t.showDayPeriod),
+              child: Text(translate.showDayPeriod),
             ),
             SwitchField(
               value: appBar.showDate,
               onChanged: (v) =>
                   dayCalendar.changeAppBar(appBar.copyWith(showDate: v)),
-              child: Text(t.showDate),
+              child: Text(translate.showDate),
             ),
             SwitchField(
               value: appBar.showClock,
               onChanged: (v) =>
                   dayCalendar.changeAppBar(appBar.copyWith(showClock: v)),
-              child: Text(t.showClock),
+              child: Text(translate.showClock),
             ),
           ],
         );

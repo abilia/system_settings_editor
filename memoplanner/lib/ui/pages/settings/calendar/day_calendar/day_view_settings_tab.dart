@@ -7,7 +7,7 @@ class DayViewSettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     return BlocBuilder<DayCalendarSettingsCubit, DayCalendarSettings>(
       builder: (context, settings) {
         final dayCalendar = context.read<DayCalendarSettingsCubit>();
@@ -15,21 +15,21 @@ class DayViewSettingsTab extends StatelessWidget {
           dividerPadding: layout.formPadding.verticalItemDistance,
           children: [
             Selector<DayCalendarType>(
-              heading: t.viewMode,
+              heading: translate.viewMode,
               groupValue: settings.viewOptions.calendarType,
               items: [
                 SelectorItem(
-                  t.listView,
+                  translate.listView,
                   AbiliaIcons.calendarList,
                   DayCalendarType.list,
                 ),
                 SelectorItem(
-                  t.oneTimePillarView,
+                  translate.oneTimePillarView,
                   AbiliaIcons.timeline,
                   DayCalendarType.oneTimepillar,
                 ),
                 SelectorItem(
-                  t.twoTimePillarsView,
+                  translate.twoTimePillarsView,
                   AbiliaIcons.twoTimelines,
                   DayCalendarType.twoTimepillars,
                 ),
@@ -39,21 +39,21 @@ class DayViewSettingsTab extends StatelessWidget {
             ),
             const Divider(),
             Selector<TimepillarIntervalType>(
-              heading: t.dayInterval,
+              heading: translate.dayInterval,
               groupValue: settings.viewOptions.intervalType,
               items: [
                 SelectorItem(
-                  t.interval,
+                  translate.interval,
                   AbiliaIcons.dayInterval,
                   TimepillarIntervalType.interval,
                 ),
                 SelectorItem(
-                  t.viewDay,
+                  translate.viewDay,
                   AbiliaIcons.sun,
                   TimepillarIntervalType.day,
                 ),
                 SelectorItem(
-                  t.dayAndNight,
+                  translate.dayAndNight,
                   AbiliaIcons.dayNight,
                   TimepillarIntervalType.dayAndNight,
                 ),
@@ -63,21 +63,21 @@ class DayViewSettingsTab extends StatelessWidget {
             ),
             const Divider(),
             Selector<TimepillarZoom>(
-              heading: t.timelineZoom,
+              heading: translate.timelineZoom,
               groupValue: settings.viewOptions.timepillarZoom,
               items: [
                 SelectorItem(
-                  t.small,
+                  translate.small,
                   AbiliaIcons.decreaseText,
                   TimepillarZoom.small,
                 ),
                 SelectorItem(
-                  t.medium,
+                  translate.medium,
                   AbiliaIcons.mediumText,
                   TimepillarZoom.normal,
                 ),
                 SelectorItem(
-                  t.large,
+                  translate.large,
                   AbiliaIcons.enlargeText,
                   TimepillarZoom.large,
                 ),
@@ -87,16 +87,16 @@ class DayViewSettingsTab extends StatelessWidget {
             ),
             const Divider(),
             Selector<bool>(
-              heading: t.activityDuration,
+              heading: translate.activityDuration,
               groupValue: settings.viewOptions.dots,
               items: [
                 SelectorItem(
-                  t.dots,
+                  translate.dots,
                   AbiliaIcons.options,
                   true,
                 ),
                 SelectorItem(
-                  t.edge,
+                  translate.edge,
                   AbiliaIcons.flarp,
                   false,
                 ),

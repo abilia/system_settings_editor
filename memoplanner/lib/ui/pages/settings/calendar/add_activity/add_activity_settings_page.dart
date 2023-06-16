@@ -7,7 +7,7 @@ class AddActivitySettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Lt.of(context);
+    final translate = Lt.of(context);
     final settings = context.read<MemoplannerSettingsBloc>().state;
     return BlocProvider<AddActivitySettingsCubit>(
       create: (context) => AddActivitySettingsCubit(
@@ -18,18 +18,18 @@ class AddActivitySettingsPage extends StatelessWidget {
         length: 3,
         child: Scaffold(
           appBar: AbiliaAppBar(
-            title: t.addActivity,
-            label: Config.isMP ? t.calendar : null,
+            title: translate.addActivity,
+            label: Config.isMP ? translate.calendar : null,
             iconData: AbiliaIcons.newIcon,
             bottom: AbiliaTabBar(
               tabs: <Widget>[
                 TabItem(
-                  t.add,
+                  translate.add,
                   AbiliaIcons.newIcon,
                   key: TestKey.addSettingsTab,
                 ),
-                TabItem(t.general, AbiliaIcons.settings),
-                TabItem(t.defaults, AbiliaIcons.technicalSettings),
+                TabItem(translate.general, AbiliaIcons.settings),
+                TabItem(translate.defaults, AbiliaIcons.technicalSettings),
               ],
             ),
           ),
