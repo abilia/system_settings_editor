@@ -50,10 +50,7 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: abiliaTheme,
-      supportedLocales: Lt.supportedLocales,
-      localizationsDelegates: Lt.localizationsDelegates,
+    return MaterialAppWrapper(
       home: Scaffold(
         body: SafeArea(
           child: Padding(

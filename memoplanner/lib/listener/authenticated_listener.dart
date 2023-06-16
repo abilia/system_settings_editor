@@ -40,16 +40,6 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
         .setAlwaysUse24HourFormat(MediaQuery.of(context).alwaysUse24HourFormat);
     await _readScreenTimeOut();
     await _fetchDeviceLicense();
-    await _updateLocale();
-  }
-
-  Future<void> _updateLocale() async {
-    final locale = Localizations.localeOf(context);
-    GetIt.I<SeagullAnalytics>().setLocale(locale);
-    await GetIt.I<SettingsDb>().setLanguage(locale.languageCode);
-    if (Config.isMP && mounted) {
-      await context.read<VoicesCubit>().setLanguage(locale.languageCode);
-    }
   }
 
   @override
