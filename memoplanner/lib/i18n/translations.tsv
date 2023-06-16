@@ -221,6 +221,7 @@ duration	Duration	Tidslängd	Tidslængde	Duur	Kesto	Dauer	Varighet
 stop	Stop	Stopp	Stop	Stoppen	Pysäytä	Stopp	Stopp
 play	Play	Lyssna	Spil	Afspelen	Toista	Wiedergabe	Spill av
 enterNameForActivity	Enter name for activity	Skriv in namn för aktivitet	Indtast navn på aktiviteten	Voer naam voor activiteit in	Anna aktiviteetille nimi	Name für Aktivität eingeben	Skriv inn navnet på aktiviteten
+selectTemplate	Select template	Välj mall					
 							
 ### Errors & warnings							
 error	Error	Fel	Fejl	Fout	Virhe	Error	Feil

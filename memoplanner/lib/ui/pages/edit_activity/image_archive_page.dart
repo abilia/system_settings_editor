@@ -19,17 +19,11 @@ class ImageArchivePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return LibraryPage<ImageArchiveData>.selectable(
-      appBar: AbiliaAppBar(
-        iconData: searchHeader == SearchHeader.searchBar
-            ? AbiliaIcons.find
-            : AbiliaIcons.pastPictureFromWindowsClipboard,
-        title: searchHeader == SearchHeader.searchBar
-            ? translate.searchImage
-            : translate.selectImage,
-      ),
+      appBarTitle: translate.imageArchive,
       searchHeader: searchHeader,
       gridChildAspectRatio: layout.imageArchive.aspectRatio,
       rootHeading: header ?? translate.imageArchive,
+      useHeader: false,
       libraryItemGenerator: (imageArchive) =>
           ArchiveImage(sortable: imageArchive),
       selectedItemGenerator: (imageArchive) =>

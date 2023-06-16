@@ -17,12 +17,15 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   const LibraryPage.nonSelectable({
     required this.libraryItemGenerator,
     required this.emptyLibraryMessage,
+    this.appBarTitle = '',
+    this.showAppBar = false,
     this.onCancel,
     this.appBar,
     this.rootHeading,
     this.showBottomNavigationBar = true,
     this.gridCrossAxisCount,
     this.gridChildAspectRatio,
+    this.useHeader = true,
     Key? key,
   })  : selectableItems = false,
         selectedItemGenerator = null,
@@ -35,13 +38,16 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     required this.libraryItemGenerator,
     required this.emptyLibraryMessage,
     required this.onOk,
+    this.appBarTitle = '',
     this.onCancel,
+    this.showAppBar = true,
     this.appBar,
     this.rootHeading,
     this.showBottomNavigationBar = true,
     this.gridCrossAxisCount,
     this.gridChildAspectRatio,
     this.searchHeader = SearchHeader.noSearch,
+    this.useHeader = true,
     Key? key,
   })  : selectableItems = true,
         assert(
@@ -60,6 +66,9 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   final int? gridCrossAxisCount;
   final double? gridChildAspectRatio;
   final SearchHeader searchHeader;
+  final String appBarTitle;
+  final bool showAppBar;
+  final bool useHeader;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +76,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     final sortableState = sortableArchiveCubit.state;
     final selected = selectableItems ? sortableState.selected : null;
     final selectedGenerator = selectedItemGenerator;
+    final translate = Translator.of(context).translate;
     return WillPopScope(
       onWillPop: () async {
         if (searchHeader != SearchHeader.noSearch && sortableState.isSelected) {
@@ -77,22 +87,40 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
         return true;
       },
       child: Scaffold(
-        appBar: appBar,
+        appBar: appBar ??
+            (showAppBar
+                ? AbiliaAppBar(
+                    iconData: searchHeader == SearchHeader.searchBar
+                        ? AbiliaIcons.find
+                        : AbiliaIcons.pastPictureFromWindowsClipboard,
+                    label:
+                        sortableState.breadCrumbPath(initialTitle: appBarTitle),
+                    title: searchHeader == SearchHeader.searchBar
+                        ? translate.searchImage
+                        : translate.selectImage,
+                    trailing: searchHeader == SearchHeader.searchButton
+                        ? SearchButton(
+                            onCancel: onCancel,
+                            style: actionButtonStyleLightLarge,
+                          )
+                        : null,
+                    selector: !useHeader,
+                  )
+                : null),
         body: Column(
           children: [
-            if (selected != null)
+            if (useHeader && selected != null)
               LibraryHeading<T>(
                 sortableArchiveState: sortableState,
                 rootHeading: rootHeading ?? '',
               )
-            else if (searchHeader == SearchHeader.searchBar)
+            else if (useHeader && searchHeader == SearchHeader.searchBar)
               const _SearchHeading()
-            else if (!sortableState.isAtRootAndNoSelection ||
-                rootHeading != null)
+            else if (useHeader &&
+                (!sortableState.isAtRootAndNoSelection || rootHeading != null))
               LibraryHeading<T>(
                 sortableArchiveState: sortableState,
                 rootHeading: rootHeading ?? '',
-                showSearchButton: searchHeader == SearchHeader.searchButton,
               ),
             Expanded(
               child: selected != null && selectedGenerator != null
@@ -112,7 +140,9 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
             ? Padding(
                 padding: MediaQuery.of(context).viewInsets,
                 child: BottomNavigation(
-                  backNavigationWidget: const CancelButton(),
+                  backNavigationWidget: PreviousButton(
+                    onPressed: () async => back(context, sortableState),
+                  ),
                   forwardNavigationWidget: selected != null
                       ? OkButton(
                           onPressed: () => onOk?.call(selected),
@@ -124,12 +154,23 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
       ),
     );
   }
+
+  Future back(BuildContext context, SortableArchiveState<T> state) async {
+    if (state.isSelected) {
+      return context.read<SortableArchiveCubit<T>>().unselect();
+    }
+    if (!state.isAtRoot) {
+      return context.read<SortableArchiveCubit<T>>().navigateUp();
+    }
+    return Navigator.of(context).maybePop();
+  }
 }
 
 enum SearchHeader {
   noSearch,
   searchButton,
   searchBar,
+  searchHidden,
 }
 
 class LibraryHeading<T extends SortableData> extends StatelessWidget {
@@ -149,7 +190,6 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
     final heading = sortableArchiveState.isAtRootAndNoSelection
         ? rootHeading
         : sortableArchiveState.title(onlyFolders: showOnlyFolders);
@@ -161,10 +201,6 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
             padding: layout.libraryPage.headerPadding,
             child: Row(
               children: [
-                IconActionButtonDark(
-                  onPressed: () async => back(context, sortableArchiveState),
-                  child: const Icon(AbiliaIcons.navigationPrevious),
-                ),
                 SizedBox(width: layout.formPadding.largeHorizontalItemDistance),
                 Expanded(
                   child: Text(
@@ -175,48 +211,8 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                   ),
                 ),
                 if (showSearchButton)
-                  IconAndTextButton(
-                    style: actionButtonStyleDark
-                        .withMinimumSize(
-                          layout.libraryPage.searchButtonSize,
-                        )
-                        .copyWith(
-                          textStyle: MaterialStateProperty.all(
-                            abiliaTextTheme.bodyLarge,
-                          ),
-                        ),
-                    text: translate.search,
-                    icon: AbiliaIcons.find,
-                    onPressed: () async {
-                      final authProviders = copiedAuthProviders(context);
-                      final sortableArchiveCubit = context
-                          .read<SortableArchiveCubit<ImageArchiveData>>()
-                        ..searchValueChanged('');
-                      final selectedImageData =
-                          await Navigator.of(context).push<SelectedImageData>(
-                        PersistentMaterialPageRoute(
-                          settings: (ImageArchivePage).routeSetting(
-                            properties: {
-                              'type': 'Search',
-                            },
-                          ),
-                          builder: (_) => MultiBlocProvider(
-                            providers: authProviders,
-                            child: BlocProvider<
-                                SortableArchiveCubit<ImageArchiveData>>.value(
-                              value: sortableArchiveCubit,
-                              child: ImageArchivePage(
-                                onCancel: onCancel,
-                                searchHeader: SearchHeader.searchBar,
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                      if (selectedImageData != null && context.mounted) {
-                        Navigator.of(context).pop(selectedImageData);
-                      }
-                    },
+                  SearchButton(
+                    onCancel: onCancel,
                   ),
               ],
             ),
@@ -226,15 +222,58 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
       ),
     );
   }
+}
 
-  Future back(BuildContext context, SortableArchiveState<T> state) async {
-    if (state.isSelected) {
-      return context.read<SortableArchiveCubit<T>>().unselect();
-    }
-    if (!state.isAtRoot) {
-      return context.read<SortableArchiveCubit<T>>().navigateUp();
-    }
-    return Navigator.of(context).maybePop();
+class SearchButton extends StatelessWidget {
+  final VoidCallback? onCancel;
+  final ButtonStyle? style;
+
+  const SearchButton({super.key, this.onCancel, this.style});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconAndTextButton(
+      style: (style ?? actionButtonStyleDark)
+          .withMinimumSize(
+            layout.libraryPage.searchButtonSize,
+          )
+          .copyWith(
+            textStyle: MaterialStateProperty.all(
+              abiliaTextTheme.bodyLarge,
+            ),
+          ),
+      text: Translator.of(context).translate.search,
+      icon: AbiliaIcons.find,
+      onPressed: () async {
+        final authProviders = copiedAuthProviders(context);
+        final sortableArchiveCubit = context
+            .read<SortableArchiveCubit<ImageArchiveData>>()
+          ..searchValueChanged('');
+        final selectedImageData =
+            await Navigator.of(context).push<SelectedImageData>(
+          PersistentMaterialPageRoute(
+            settings: (ImageArchivePage).routeSetting(
+              properties: {
+                'type': 'Search',
+              },
+            ),
+            builder: (_) => MultiBlocProvider(
+              providers: authProviders,
+              child: BlocProvider<SortableArchiveCubit<ImageArchiveData>>.value(
+                value: sortableArchiveCubit,
+                child: ImageArchivePage(
+                  onCancel: onCancel,
+                  searchHeader: SearchHeader.searchBar,
+                ),
+              ),
+            ),
+          ),
+        );
+        if (selectedImageData != null && context.mounted) {
+          Navigator.of(context).pop(selectedImageData);
+        }
+      },
+    );
   }
 }
 

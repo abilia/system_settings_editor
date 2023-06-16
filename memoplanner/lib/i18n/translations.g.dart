@@ -445,6 +445,8 @@ abstract class Translated {
 
   final String enterNameForActivity = 'Enter name for activity';
 
+  final String selectTemplate = 'Select template';
+
   final String error = 'Error';
 
   final String warning = 'Warning';
@@ -1697,6 +1699,9 @@ class SV extends Translated {
 
   @override
   final String enterNameForActivity = 'Skriv in namn för aktivitet';
+
+  @override
+  final String selectTemplate = 'Välj mall';
 
   @override
   final String error = 'Fel';

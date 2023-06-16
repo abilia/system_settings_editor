@@ -5,12 +5,14 @@ class AppBarHeading extends StatelessWidget {
     required this.text,
     this.label = '',
     this.iconData,
+    this.reverseText = false,
     Key? key,
   }) : super(key: key);
 
   final String text;
   final String label;
   final IconData? iconData;
+  final bool reverseText;
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +42,8 @@ class AppBarHeading extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(label, style: theme.textTheme.labelLarge),
-                            Text(
-                              text,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
+                          children:
+                              getTextFields(label, text, reverseText, theme),
                         ),
                       )
                     else
@@ -61,5 +57,16 @@ class AppBarHeading extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<Text> getTextFields(
+      String label, String text, bool reverse, ThemeData theme) {
+    final labelText = Text(label, style: theme.textTheme.labelLarge);
+    final textText = Text(
+      text,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
+    return reverse ? [textText, labelText] : [labelText, textText];
   }
 }
