@@ -53,7 +53,7 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
     return MaterialApp(
       theme: abiliaTheme,
       supportedLocales: Lt.supportedLocales,
-      localizationsDelegates: const [Lt.delegate],
+      localizationsDelegates: Lt.localizationsDelegates,
       home: Scaffold(
         body: SafeArea(
           child: Padding(

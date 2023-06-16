@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -38,13 +36,7 @@ class MaterialAppWrapper extends StatelessWidget {
               NavigationObserver(context.read<NavigationCubit>()),
             ],
             supportedLocales: Lt.supportedLocales,
-            localizationsDelegates: const [
-              Lt.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-              DefaultCupertinoLocalizations.delegate,
-            ],
+            localizationsDelegates: Lt.localizationsDelegates,
             localeResolutionCallback: (locale, supportedLocales) =>
                 supportedLocales.firstWhere(
                     (l) => l.languageCode == locale?.languageCode,

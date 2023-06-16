@@ -171,9 +171,11 @@ Future<bool> _scheduleNotification(
   Logging log,
 ) async {
   final title = notificationAlarm.event.title;
-  final subtitle = await _subtitle(
+  final translate = await Lt.load(locale);
+  final subtitle = _subtitle(
     notificationAlarm,
     locale,
+    translate,
     alwaysUse24HourFormat,
   );
 
@@ -349,14 +351,14 @@ class NotificationChannel {
   NotificationChannel(this.id, this.name, this.description);
 }
 
-Future<String?> _subtitle(
+String? _subtitle(
   NotificationAlarm notificationAlarm,
   Locale givenLocale,
+  Lt translate,
   bool alwaysUse24HourFormat,
-) async {
+) {
   final timeFormat =
       hourAndMinuteFromUse24(alwaysUse24HourFormat, givenLocale.languageCode);
-  final translate = await Lt.load(givenLocale);
   if (notificationAlarm is ActivityAlarm) {
     return _activitySubtitle(notificationAlarm, timeFormat, translate);
   }
