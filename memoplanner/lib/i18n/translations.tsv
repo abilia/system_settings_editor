@@ -183,7 +183,8 @@ cancel	Cancel	Avbryt	Annuller	Annuleren	Peruuta	Abbrechen	Avbryt
 yes	Yes	Ja	Ja	Ja	Joo	Ja	Ja
 no	No	Nej	Nej	Nee	Ei	Nein	Nei
 close	Close	Stäng	Luk	Sluiten	Kiinni	Schließen	Lukk
-back	Previous	Tillbaka	Tilbage	Terug	Takaisin	Zurück	Tilbake
+previous	Previous	Tillbaka	Tilbage	Terug	Takaisin	Zurück	Tilbake
+back	Back	Tillbaka					
 next	Next	Nästa	Næste	Volgende	Seuraava	Nächster	Neste
 ok	OK	OK	OK	OK	OK	OK	OK
 record	Record	Spela in	Indspil	Opnemen	Nauhoita	Aufnahme	Spill inn

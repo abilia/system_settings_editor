@@ -9,7 +9,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
   final BorderRadiusGeometry? borderRadius;
   final bool useVerticalSafeArea;
-  final bool selector;
+  final bool isSelector;
 
   @override
   final Size preferredSize;
@@ -22,7 +22,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.trailing,
     this.borderRadius,
     this.useVerticalSafeArea = true,
-    this.selector = false,
+    this.isSelector = false,
     double? height,
     Key? key,
   })  : preferredSize = Size.fromHeight(height ??
@@ -35,7 +35,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
       text: title,
       label: label ?? '',
       iconData: iconData,
-      reverseText: selector,
+      reverseText: isSelector,
     );
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -55,12 +55,12 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
                       child: Stack(
                         children: [
                           Align(
-                            alignment: selector
+                            alignment: isSelector
                                 ? Alignment.centerLeft
                                 : Alignment.center,
                             child: appBarHeading,
                           ),
-                          if (selector) const SizedBox.expand(),
+                          if (isSelector) const SizedBox.expand(),
                           if (trailing != null)
                             Align(
                               alignment: Alignment.centerRight,

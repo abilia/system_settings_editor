@@ -151,7 +151,7 @@ class _PageTwoConnectedLicenseState extends State<PageTwoConnectedLicense> {
                       duration: StartupGuidePage.pageDuration,
                       curve: StartupGuidePage.curve,
                     ),
-                    text: t.back,
+                    text: t.previous,
                     style: textButtonStyleDarkGrey,
                     icon: AbiliaIcons.navigationPrevious,
                   ),

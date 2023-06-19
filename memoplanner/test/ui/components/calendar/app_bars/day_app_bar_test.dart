@@ -301,7 +301,8 @@ void main() {
             defaultClockBloc),
       );
       await tester.pumpAndSettle();
-      await tester.verifyTts(find.byType(LeftNavButton), exact: translate.back);
+      await tester.verifyTts(find.byType(LeftNavButton),
+          exact: translate.previous);
       await tester.verifyTts(
         find.byType(RightNavButton),
         exact: translate.next,

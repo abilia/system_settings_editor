@@ -373,7 +373,9 @@ abstract class Translated {
 
   final String close = 'Close';
 
-  final String back = 'Previous';
+  final String previous = 'Previous';
+
+  final String back = 'Back';
 
   final String next = 'Next';
 
@@ -1591,6 +1593,9 @@ class SV extends Translated {
 
   @override
   final String close = 'Stäng';
+
+  @override
+  final String previous = 'Tillbaka';
 
   @override
   final String back = 'Tillbaka';
@@ -3129,7 +3134,7 @@ class DA extends Translated {
   final String close = 'Luk';
 
   @override
-  final String back = 'Tilbage';
+  final String previous = 'Tilbage';
 
   @override
   final String next = 'Næste';
@@ -4663,7 +4668,7 @@ class NL extends Translated {
   final String close = 'Sluiten';
 
   @override
-  final String back = 'Terug';
+  final String previous = 'Terug';
 
   @override
   final String next = 'Volgende';
@@ -6203,7 +6208,7 @@ class FI extends Translated {
   final String close = 'Kiinni';
 
   @override
-  final String back = 'Takaisin';
+  final String previous = 'Takaisin';
 
   @override
   final String next = 'Seuraava';
@@ -7745,7 +7750,7 @@ class DE extends Translated {
   final String close = 'Schließen';
 
   @override
-  final String back = 'Zurück';
+  final String previous = 'Zurück';
 
   @override
   final String next = 'Nächster';
@@ -9283,7 +9288,7 @@ class NB extends Translated {
   final String close = 'Lukk';
 
   @override
-  final String back = 'Tilbake';
+  final String previous = 'Tilbake';
 
   @override
   final String next = 'Neste';

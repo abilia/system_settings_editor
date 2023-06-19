@@ -17,20 +17,20 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   const LibraryPage.nonSelectable({
     required this.libraryItemGenerator,
     required this.emptyLibraryMessage,
-    this.appBarTitle = '',
-    this.showAppBar = false,
     this.onCancel,
     this.appBar,
     this.rootHeading,
     this.showBottomNavigationBar = true,
     this.gridCrossAxisCount,
     this.gridChildAspectRatio,
-    this.useHeader = true,
     Key? key,
   })  : selectableItems = false,
         selectedItemGenerator = null,
         onOk = null,
         searchHeader = SearchHeader.noSearch,
+        useHeader = true,
+        showAppBar = false,
+        appBarTitle = '',
         super(key: key);
 
   const LibraryPage.selectable({
@@ -108,24 +108,25 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                             ),
                           )
                         : null,
-                    selector: !useHeader,
+                    isSelector: !useHeader,
                   )
                 : null),
         body: Column(
           children: [
-            if (useHeader && selected != null)
-              LibraryHeading<T>(
-                sortableArchiveState: sortableState,
-                rootHeading: rootHeading ?? '',
-              )
-            else if (useHeader && searchHeader == SearchHeader.searchBar)
-              const _SearchHeading()
-            else if (useHeader &&
-                (!sortableState.isAtRootAndNoSelection || rootHeading != null))
-              LibraryHeading<T>(
-                sortableArchiveState: sortableState,
-                rootHeading: rootHeading ?? '',
-              ),
+            if (useHeader)
+              if (selected != null)
+                LibraryHeading<T>(
+                  sortableArchiveState: sortableState,
+                  rootHeading: rootHeading ?? '',
+                )
+              else if (searchHeader == SearchHeader.searchBar)
+                const _SearchHeading()
+              else if (!sortableState.isAtRootAndNoSelection ||
+                  rootHeading != null)
+                LibraryHeading<T>(
+                  sortableArchiveState: sortableState,
+                  rootHeading: rootHeading ?? '',
+                ),
             Expanded(
               child: selected != null && selectedGenerator != null
                   ? selectedGenerator(selected)
@@ -145,7 +146,8 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                 padding: MediaQuery.of(context).viewInsets,
                 child: BottomNavigation(
                   backNavigationWidget: PreviousButton(
-                    onPressed: () async => back(context, sortableState),
+                    text: Translator.of(context).translate.back,
+                    onPressed: () async => _back(context, sortableState),
                   ),
                   forwardNavigationWidget: selected != null
                       ? OkButton(
@@ -159,7 +161,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     );
   }
 
-  Future back(BuildContext context, SortableArchiveState<T> state) async {
+  Future _back(BuildContext context, SortableArchiveState<T> state) async {
     if (state.isSelected) {
       return context.read<SortableArchiveCubit<T>>().unselect();
     }
