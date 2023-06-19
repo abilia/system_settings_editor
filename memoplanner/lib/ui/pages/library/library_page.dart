@@ -99,9 +99,13 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                         ? translate.searchImage
                         : translate.selectImage,
                     trailing: searchHeader == SearchHeader.searchButton
-                        ? SearchButton(
-                            onCancel: onCancel,
-                            style: actionButtonStyleLightLarge,
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                                right: layout.actionButton.padding.right),
+                            child: SearchButton(
+                              onCancel: onCancel,
+                              style: actionButtonStyleLightLarge,
+                            ),
                           )
                         : null,
                     selector: !useHeader,

@@ -30,7 +30,9 @@ class AppBarHeading extends StatelessWidget {
               Expanded(
                 flex: 345,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: reverseText
+                      ? MainAxisAlignment.start
+                      : MainAxisAlignment.center,
                   children: [
                     if (iconData != null) ...[
                       Icon(iconData),
