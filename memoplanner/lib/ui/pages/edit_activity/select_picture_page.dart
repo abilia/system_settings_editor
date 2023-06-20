@@ -199,6 +199,7 @@ class SelectPictureBody extends StatelessWidget {
                 onCancel: onCancel,
                 initialFolder: initialFolder,
                 header: header,
+                useHeader: false,
               ),
             ),
           ),

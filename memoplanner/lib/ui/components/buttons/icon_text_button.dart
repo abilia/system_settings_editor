@@ -218,20 +218,6 @@ class OkButton extends StatelessWidget {
   }
 }
 
-class BackButton extends StatelessWidget {
-  const BackButton({required this.onPressed, Key? key}) : super(key: key);
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return LightButton(
-      text: Translator.of(context).translate.back,
-      icon: AbiliaIcons.navigationPrevious,
-      onPressed: onPressed,
-    );
-  }
-}
-
 class PreviousButton extends StatelessWidget {
   const PreviousButton({Key? key, this.onPressed, this.text}) : super(key: key);
   final VoidCallback? onPressed;

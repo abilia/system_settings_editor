@@ -102,7 +102,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                         ? Padding(
                             padding: EdgeInsets.only(
                                 right: layout.actionButton.padding.right),
-                            child: SearchButton(
+                            child: _SearchButton(
                               onCancel: onCancel,
                               style: actionButtonStyleLightLarge,
                             ),
@@ -145,8 +145,10 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
             ? Padding(
                 padding: MediaQuery.of(context).viewInsets,
                 child: BottomNavigation(
-                  backNavigationWidget: BackButton(
-                    onPressed: () async => _back(context, sortableState),
+                  backNavigationWidget: PreviousButton(
+                    text: translate.back,
+                    onPressed: () async =>
+                        onCancel ?? _back(context, sortableState),
                   ),
                   forwardNavigationWidget: selected != null
                       ? OkButton(
@@ -216,7 +218,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                   ),
                 ),
                 if (showSearchButton)
-                  SearchButton(
+                  _SearchButton(
                     onCancel: onCancel,
                   ),
               ],
@@ -229,11 +231,11 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
   }
 }
 
-class SearchButton extends StatelessWidget {
+class _SearchButton extends StatelessWidget {
   final VoidCallback? onCancel;
   final ButtonStyle? style;
 
-  const SearchButton({super.key, this.onCancel, this.style});
+  const _SearchButton({this.onCancel, this.style});
 
   @override
   Widget build(BuildContext context) {

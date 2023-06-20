@@ -29,10 +29,10 @@ class BasicTimerPickerPage extends StatelessWidget {
               selectableItems: false,
               libraryItemGenerator: (sortable, onTap, _, __) {
                 final sortableData = sortable.data;
-                return TemplatePickField<BasicTimerData>(
+                return BasicTemplatePickField<BasicTimerData>(
                   sortable,
                   onTap,
-                  _StartTemplateTimerButton(
+                  _StartBasicTimerButton(
                     onPressed: () async {
                       if (sortableData is BasicTimerDataItem) {
                         context
@@ -49,7 +49,8 @@ class BasicTimerPickerPage extends StatelessWidget {
               useHeading: false,
             ),
             bottomNavigationBar: BottomNavigation(
-              backNavigationWidget: BackButton(
+              backNavigationWidget: PreviousButton(
+                text: translate.back,
                 onPressed: state.isAtRoot
                     ? Navigator.of(context).maybePop
                     : context
@@ -64,8 +65,8 @@ class BasicTimerPickerPage extends StatelessWidget {
   }
 }
 
-class _StartTemplateTimerButton extends StatelessWidget {
-  const _StartTemplateTimerButton({Key? key, this.onPressed}) : super(key: key);
+class _StartBasicTimerButton extends StatelessWidget {
+  const _StartBasicTimerButton({Key? key, this.onPressed}) : super(key: key);
   final VoidCallback? onPressed;
 
   @override

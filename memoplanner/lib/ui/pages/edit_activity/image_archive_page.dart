@@ -6,6 +6,7 @@ class ImageArchivePage extends StatelessWidget {
   final String initialFolder;
   final String? header;
   final SearchHeader searchHeader;
+  final bool useHeader;
 
   const ImageArchivePage({
     Key? key,
@@ -13,6 +14,7 @@ class ImageArchivePage extends StatelessWidget {
     this.initialFolder = '',
     this.header,
     this.searchHeader = SearchHeader.searchButton,
+    this.useHeader = true,
   }) : super(key: key);
 
   @override
@@ -23,7 +25,7 @@ class ImageArchivePage extends StatelessWidget {
       searchHeader: searchHeader,
       gridChildAspectRatio: layout.imageArchive.aspectRatio,
       rootHeading: header ?? translate.imageArchive,
-      useHeader: false,
+      useHeader: useHeader,
       libraryItemGenerator: (imageArchive) =>
           ArchiveImage(sortable: imageArchive),
       selectedItemGenerator: (imageArchive) =>

@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
+
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
@@ -544,7 +545,7 @@ void main() {
     expect(find.text(myPhotoInSubFolder.data.name), findsNWidgets(2));
 
     // Press cancel returns to image archive
-    await tester.tap(find.byType(CancelButton));
+    await tester.tap(find.byType(PreviousButton));
     await tester.pumpAndSettle();
     expect(find.text(translate.imageArchive), findsOneWidget);
     expect(find.byType(ImageArchivePage), findsOneWidget);

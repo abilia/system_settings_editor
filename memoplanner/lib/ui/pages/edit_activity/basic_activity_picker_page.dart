@@ -16,15 +16,15 @@ class BasicActivityPickerPage extends StatelessWidget {
         return Scaffold(
           appBar: AbiliaAppBar(
             iconData: AbiliaIcons.basicActivities,
-            label: !state.isAtRoot ? state.breadCrumbPath() : null,
             title: translate.selectTemplate,
+            label: !state.isAtRoot ? state.breadCrumbPath() : null,
             isTemplateSelector: true,
           ),
           body: ListLibrary<BasicActivityData>(
             emptyLibraryMessage: translate.noTemplates,
             selectableItems: false,
             libraryItemGenerator: (sortable, onTap, _, __) {
-              return TemplatePickField<BasicActivityData>(
+              return BasicTemplatePickField<BasicActivityData>(
                   sortable,
                   () => sortable.isGroup
                       ? context
@@ -38,7 +38,8 @@ class BasicActivityPickerPage extends StatelessWidget {
             useHeading: false,
           ),
           bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: BackButton(
+            backNavigationWidget: PreviousButton(
+              text: translate.back,
               onPressed: state.isAtRoot
                   ? Navigator.of(context).maybePop
                   : () => context
