@@ -1,6 +1,6 @@
 part of 'activity.dart';
 
-enum RecurrentType { none, weekly, monthly, yearly }
+enum RecurrentType { none, daily, weekly, monthly, yearly }
 
 enum ApplyTo { onlyThisDay, allDays, thisDayAndForward }
 
@@ -10,6 +10,7 @@ class Recurs extends Equatable {
   DateTime get end => DateTime.fromMillisecondsSinceEpoch(endTime);
   bool get hasNoEnd => endTime >= _noEnd;
   bool get isRecurring => type != typeNone;
+  bool get daily => type == typeDaily;
   bool get weekly => type == typeWeekly;
   bool get monthly => type == typeMonthly;
   bool get yearly => type == typeYearly;
@@ -24,7 +25,7 @@ class Recurs extends Equatable {
 
   static const not = Recurs.raw(typeNone, 0, _noEnd),
       everyDay = Recurs.raw(
-        typeWeekly,
+        typeDaily,
         allDaysOfWeek,
         _noEnd,
       );
@@ -79,6 +80,8 @@ class Recurs extends Equatable {
 
   bool recursOnDay(DateTime day) {
     switch (recurrence) {
+      case RecurrentType.daily:
+        return _recursOnWeeklyDay(day);
       case RecurrentType.weekly:
         return _recursOnWeeklyDay(day);
       case RecurrentType.monthly:
@@ -111,9 +114,10 @@ class Recurs extends Equatable {
   bool get stringify => true;
 
   static const int typeNone = 0,
-      typeWeekly = 1,
-      typeMonthly = 2,
-      typeYearly = 3,
+      typeDaily = 1,
+      typeWeekly = 2,
+      typeMonthly = 3,
+      typeYearly = 4,
       evenMonday = 0x1,
       evenTuesday = 0x2,
       evenWednesday = 0x4,

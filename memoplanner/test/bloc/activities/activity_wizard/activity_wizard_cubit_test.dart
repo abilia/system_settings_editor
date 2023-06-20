@@ -1084,6 +1084,8 @@ void main() {
             editActivity: EditActivitySettings(template: false),
           ),
         );
+        final recursWeeklyEveryDay =
+            Recurs.weeklyOnDays(List.generate(7, (d) => d + 1));
 
         // Act
         final originalActivity = editActivityCubit.state.activity;
@@ -1091,7 +1093,7 @@ void main() {
         final activity2 = activity1.copyWith(
           recurs: Recurs.weeklyOnDay(clockBloc.state.weekday),
         );
-        final activity3 = activity2.copyWith(recurs: Recurs.everyDay);
+        final activity3 = activity2.copyWith(recurs: recursWeeklyEveryDay);
         final time = TimeOfDay.fromDateTime(aTime);
         final timeInterval = TimeInterval(
           startTime: time,
@@ -1128,7 +1130,7 @@ void main() {
           ..changeTimeInterval(startTime: time)
           ..replaceActivity(activity1)
           ..changeRecurrentType(RecurrentType.weekly)
-          ..changeWeeklyRecurring(Recurs.everyDay);
+          ..changeWeeklyRecurring(recursWeeklyEveryDay);
 
         // Assert
         await expected1;
@@ -2232,254 +2234,6 @@ void main() {
           ]),
           WizardState(0, allWizStep),
         ]),
-      );
-    });
-
-    test('Changing recurring changes wizard steps', () async {
-      // Arrange
-      final editActivityCubit = EditActivityCubit.newActivity(
-        day: aDay,
-        defaultsSettings:
-            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
-        calendarId: calendarId,
-      );
-      final activity = editActivityCubit.state.activity;
-
-      final wizCubit = ActivityWizardCubit.newActivity(
-        supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
-        activitiesBloc: FakeActivitiesBloc(),
-        editActivityCubit: editActivityCubit,
-        clockBloc: clockBloc,
-        addActivitySettings: allWizStepsSettings,
-      );
-
-      editActivityCubit
-        ..replaceActivity(activity.copyWith(recurs: Recurs.monthly(aDay.day)))
-        ..changeRecurrentEndDate(DateTime(2023))
-        ..replaceActivity(
-            activity.copyWith(recurs: Recurs.weeklyOnDay(aDay.weekday)))
-        ..replaceActivity(activity.copyWith(recurs: Recurs.not));
-      await expectLater(
-        wizCubit.stream,
-        emitsInOrder([
-          WizardState(0, [
-            ...List.from(allWizStep)
-              ..insert(allWizStep.length - 1, WizardStep.recursMonthly)
-          ]),
-          WizardState(0, [
-            ...List.from(allWizStep)
-              ..insert(allWizStep.length - 1, WizardStep.endDate)
-              ..insert(allWizStep.length - 1, WizardStep.recursMonthly)
-          ]),
-          WizardState(0, [
-            ...List.from(allWizStep)
-              ..insert(allWizStep.length - 1, WizardStep.endDate)
-              ..insert(allWizStep.length - 1, WizardStep.recursWeekly)
-          ]),
-          WizardState(0, allWizStep),
-        ]),
-      );
-    });
-
-    test('Saving recurring weekly without any days yields warning', () async {
-      // Arrange
-      final editActivityCubit = EditActivityCubit.newActivity(
-        day: aDay,
-        defaultsSettings:
-            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
-        calendarId: calendarId,
-      );
-      final activity = editActivityCubit.state.activity;
-
-      final wizCubit = ActivityWizardCubit.newActivity(
-        supportPersonsCubit: FakeSupportPersonsCubit(),
-        activitiesBloc: FakeActivitiesBloc(),
-        editActivityCubit: editActivityCubit,
-        clockBloc: clockBloc,
-        addActivitySettings: const AddActivitySettings(
-          mode: AddActivityMode.stepByStep,
-          general: GeneralAddActivitySettings(
-            addRecurringActivity: true,
-          ),
-          stepByStep: StepByStepSettings(
-            template: false,
-            date: false,
-            image: false,
-            title: false,
-            fullDay: false,
-            availability: false,
-            checkable: false,
-            removeAfter: false,
-            alarm: false,
-            checklist: false,
-            notes: false,
-            reminders: false,
-          ),
-        ),
-      );
-      editActivityCubit
-        ..replaceActivity(activity.copyWith(title: 'title'))
-        ..changeTimeInterval(startTime: const TimeOfDay(hour: 22, minute: 22))
-        ..changeRecurrentType(RecurrentType.weekly)
-        ..changeWeeklyRecurring(Recurs.weeklyOnDays(const []))
-        ..changeRecurrentEndDate(DateTime(2023));
-
-      await expectLater(
-        wizCubit.stream,
-        emitsInOrder([
-          WizardState(
-            0,
-            const [
-              WizardStep.time,
-              WizardStep.category,
-              WizardStep.recurring,
-            ],
-          ),
-          WizardState(
-            0,
-            const [
-              WizardStep.time,
-              WizardStep.category,
-              WizardStep.recurring,
-              WizardStep.recursWeekly,
-            ],
-          ),
-          WizardState(
-            0,
-            const [
-              WizardStep.time,
-              WizardStep.category,
-              WizardStep.recurring,
-              WizardStep.recursWeekly,
-              WizardStep.endDate,
-            ],
-          ),
-        ]),
-      );
-
-      await wizCubit.next();
-      await wizCubit.next();
-      await wizCubit.next();
-      await wizCubit.next();
-
-      expect(
-        wizCubit.state,
-        WizardState(
-          3,
-          const [
-            WizardStep.time,
-            WizardStep.category,
-            WizardStep.recurring,
-            WizardStep.recursWeekly,
-            WizardStep.endDate,
-          ],
-          saveErrors: const {SaveError.noRecurringDays},
-          successfulSave: false,
-        ),
-      );
-    });
-
-    test(
-        'BUG SGC-1595 '
-        'Saving recurring weekly without any days yields warning', () async {
-      // Arrange
-      final editActivityCubit = EditActivityCubit.newActivity(
-        day: aDay,
-        defaultsSettings:
-            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
-        calendarId: '',
-      );
-      final activity = editActivityCubit.state.activity;
-
-      final wizCubit = ActivityWizardCubit.newActivity(
-        supportPersonsCubit: FakeSupportPersonsCubit(),
-        activitiesBloc: FakeActivitiesBloc(),
-        editActivityCubit: editActivityCubit,
-        clockBloc: clockBloc,
-        addActivitySettings: const AddActivitySettings(
-          mode: AddActivityMode.stepByStep,
-          general: GeneralAddActivitySettings(
-            addRecurringActivity: true,
-          ),
-          stepByStep: StepByStepSettings(
-            template: false,
-            title: false,
-            image: false,
-            date: false,
-            fullDay: false,
-            availability: false,
-            checkable: false,
-            removeAfter: false,
-            alarm: false,
-            checklist: false,
-            notes: false,
-            reminders: false,
-          ),
-        ),
-      );
-
-      editActivityCubit
-        ..changeStartDate(nowTime.add(7.days()).onlyDays())
-        ..changeTimeInterval(
-          startTime: const TimeOfDay(hour: 12, minute: 34),
-        )
-        ..replaceActivity(
-          activity.copyWith(
-            title: '-_title_-',
-            recurs: Recurs.weeklyOnDays(
-              const [1, 2, 3, 4, 5, 6, 7],
-              ends: nowTime.add(1.days()).onlyDays(),
-            ),
-          ),
-        )
-        ..changeRecurrentEndDate(
-          nowTime.add(1.days()).onlyDays(),
-        );
-
-      await expectLater(
-        wizCubit.stream,
-        emitsInOrder([
-          WizardState(
-            0,
-            const [
-              WizardStep.time,
-              WizardStep.category,
-              WizardStep.recurring,
-            ],
-          ),
-          WizardState(
-            0,
-            const [
-              WizardStep.time,
-              WizardStep.category,
-              WizardStep.recurring,
-              WizardStep.recursWeekly,
-              WizardStep.endDate,
-            ],
-          ),
-        ]),
-      );
-
-      await wizCubit.next();
-      await wizCubit.next();
-      await wizCubit.next();
-      await wizCubit.next();
-      await wizCubit.next();
-
-      expect(
-        wizCubit.state,
-        WizardState(
-          4,
-          const [
-            WizardStep.time,
-            WizardStep.category,
-            WizardStep.recurring,
-            WizardStep.recursWeekly,
-            WizardStep.endDate,
-          ],
-          saveErrors: const {SaveError.endDateBeforeStart},
-          successfulSave: false,
-        ),
       );
     });
   });

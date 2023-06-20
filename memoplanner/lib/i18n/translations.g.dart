@@ -525,7 +525,9 @@ abstract class Translated {
 
   final String recurrence = 'Recurrence';
 
-  final String once = 'Once';
+  final String noRecurrence = 'No recurrence';
+
+  final String daily = 'Daily';
 
   final String weekly = 'Weekly';
 
@@ -1814,9 +1816,6 @@ class SV extends Translated {
 
   @override
   final String recurrence = 'Upprepning';
-
-  @override
-  final String once = 'Enstaka';
 
   @override
   final String weekly = 'Veckovis';
@@ -3349,9 +3348,6 @@ class DA extends Translated {
   final String recurrence = 'Gentagelse';
 
   @override
-  final String once = 'En gang';
-
-  @override
   final String weekly = 'Ugentlig';
 
   @override
@@ -4882,9 +4878,6 @@ class NL extends Translated {
 
   @override
   final String recurrence = 'Terugkerend';
-
-  @override
-  final String once = 'Eén keer';
 
   @override
   final String weekly = 'Wekelijks';
@@ -6422,9 +6415,6 @@ class FI extends Translated {
 
   @override
   final String recurrence = 'Toistuminen';
-
-  @override
-  final String once = 'Kerran';
 
   @override
   final String weekly = 'Viikoittain';
@@ -7966,9 +7956,6 @@ class DE extends Translated {
   final String recurrence = 'Intervall';
 
   @override
-  final String once = 'Einmal';
-
-  @override
   final String weekly = 'Wöchentlich';
 
   @override
@@ -9501,9 +9488,6 @@ class NB extends Translated {
 
   @override
   final String recurrence = 'Gjentakelse';
-
-  @override
-  final String once = 'En gang';
 
   @override
   final String weekly = 'Ukentlig';

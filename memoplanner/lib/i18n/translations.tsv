@@ -267,7 +267,8 @@ noMatchingImage	No matching image name	Inget matchande bildnamn	Intet matchende 
 							
 ### Recurrence							
 recurrence	Recurrence	Upprepning	Gentagelse	Terugkerend	Toistuminen	Intervall	Gjentakelse
-once	Once	Enstaka	En gang	Eén keer	Kerran	Einmal	En gang
+noRecurrence	No recurrence						
+daily	Daily						
 weekly	Weekly	Veckovis	Ugentlig	Wekelijks	Viikoittain	Wöchentlich	Ukentlig
 monthly	Monthly	Månadsvis	Månedlig	Maandelijks	Kuukausittain	Monatlich	Månedlig
 yearly	Yearly	Årsvis	Årlig	Jaarlijks	Vuosittain	Jährlich	Årlig

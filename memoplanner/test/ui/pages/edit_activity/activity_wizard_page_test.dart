@@ -919,66 +919,7 @@ void main() {
   });
 
   group('recurring step', () {
-    const recurringOnly = MemoplannerSettings(
-      addActivity: AddActivitySettings(
-        mode: AddActivityMode.stepByStep,
-        general: GeneralAddActivitySettings(
-          addRecurringActivity: true,
-        ),
-        stepByStep: StepByStepSettings(
-          template: false,
-          date: false,
-          image: false,
-          title: false,
-          fullDay: true,
-          availability: false,
-          checkable: false,
-          removeAfter: false,
-          alarm: false,
-          notes: false,
-          checklist: false,
-          reminders: false,
-        ),
-      ),
-    );
-
-    testWidgets('changing recurring changes save button',
-        (WidgetTester tester) async {
-      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        MemoplannerSettingsLoaded(recurringOnly),
-      );
-      await tester.pumpWidget(wizardPage());
-      await tester.pumpAndSettle();
-
-      expect(find.byType(ActivityWizardPage), findsOneWidget);
-      expect(find.byType(FullDayWiz), findsOneWidget);
-      await tester.tap(find.byType(SwitchField));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.byType(NextButton));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(RecurringWiz), findsOneWidget);
-      expect(find.byType(SaveButton), findsOneWidget);
-      expect(find.byType(NextButton), findsNothing);
-
-      await tester.tap(find.byIcon(AbiliaIcons.week));
-      await tester.pumpAndSettle();
-      expect(find.byType(SaveButton), findsNothing);
-      expect(find.byType(NextButton), findsOneWidget);
-
-      await tester.tap(find.byIcon(AbiliaIcons.basicActivity)); // yearly
-      await tester.pumpAndSettle();
-      expect(find.byType(SaveButton), findsOneWidget);
-      expect(find.byType(NextButton), findsNothing);
-
-      await tester.tap(find.byIcon(AbiliaIcons.month));
-      await tester.pumpAndSettle();
-      expect(find.byType(SaveButton), findsNothing);
-      expect(find.byType(NextButton), findsOneWidget);
-    });
-
-    testWidgets('weekly recurring shows weekly recurring',
+    testWidgets('recurring step uses RecurrenceTab and save errors works',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
@@ -1022,22 +963,18 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(RecurringWiz), findsOneWidget);
+      expect(find.byType(RecurrenceTab), findsOneWidget);
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-
-      await tester.tap(find.byType(NextButton));
+      await tester.dragFrom(
+          tester.getCenter(find.byType(Scaffold)), const Offset(0.0, -500));
       await tester.pumpAndSettle();
-      expect(find.byType(RecurringWeeklyWiz), findsOneWidget);
-      expect(find.byType(Weekdays), findsOneWidget);
-      expect(find.byType(SelectAllWeekdaysButton), findsOneWidget);
-      expect(find.byType(EveryOtherWeekSwitch), findsOneWidget);
-      expect(find.byType(EndDateWizWidget), findsOneWidget);
 
       await tester.tap(find.text(translate.shortWeekday(today.weekday)));
       await tester.pumpAndSettle();
       await tester.tap(find.text(translate.noEndDate));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(NextButton));
+      await tester.tap(find.byType(SaveButton));
       await tester.pumpAndSettle();
       expect(find.byType(ErrorDialog), findsOneWidget);
       expect(
@@ -1049,159 +986,25 @@ void main() {
       await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(SelectAllWeekdaysButton));
+      await tester.tap(find.byIcon(AbiliaIcons.radioCheckboxSelected));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(NextButton));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(EndDatePickerWiz), findsOneWidget);
-      expect(find.byType(SaveButton), findsOneWidget);
-
-      await tester.tap(find.text('${today.day + 1}'));
-      await tester.pumpAndSettle();
       await tester.tap(find.byType(SaveButton));
       await tester.pumpAndSettle();
 
-      expect(find.byType(ErrorDialog), findsNothing);
-    });
-
-    testWidgets('monthly recurring shows monthly recurring',
-        (WidgetTester tester) async {
-      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        MemoplannerSettingsLoaded(const MemoplannerSettings(
-          addActivity: AddActivitySettings(
-            mode: AddActivityMode.stepByStep,
-            general: GeneralAddActivitySettings(
-              addRecurringActivity: true,
-            ),
-            stepByStep: StepByStepSettings(
-              template: false,
-              date: false,
-              image: false,
-              title: true,
-              fullDay: true,
-              availability: false,
-              checkable: false,
-              removeAfter: false,
-              alarm: false,
-              notes: false,
-              checklist: false,
-              reminders: false,
-            ),
-          ),
-        )),
-      );
-      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+      expect(find.byType(ErrorDialog), findsOneWidget);
+      await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
 
-      expect(find.byType(TitleWiz), findsOneWidget);
-      await tester.enterText(find.byType(TextField), 'title');
-      await tester.tap(find.byType(NextButton));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(FullDayWiz), findsOneWidget);
-      await tester.tap(find.byType(SwitchField));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.byType(NextButton));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(RecurringWiz), findsOneWidget);
-      await tester.tap(find.byIcon(AbiliaIcons.month));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.byType(NextButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(RecurringMonthlyWiz), findsOneWidget);
-      expect(find.byType(MonthDays), findsOneWidget);
-      expect(find.byType(EndDateWizWidget), findsOneWidget);
-
-      await tester.tap(find.text('${today.day}'));
+      await tester.dragFrom(
+          tester.getCenter(find.byType(Scaffold)), const Offset(0.0, -500));
       await tester.pumpAndSettle();
       await tester.tap(find.text(translate.noEndDate));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(NextButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(ErrorDialog), findsOneWidget);
-      expect(
-        find.text(translate.recurringDataEmptyErrorMessage),
-        findsOneWidget,
-      );
-
-      // Dismiss
-      await tester.tapAt(Offset.zero);
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.text('31'));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.byType(NextButton));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(EndDatePickerWiz), findsOneWidget);
-      expect(find.byType(SaveButton), findsOneWidget);
-
-      await tester.tap(find.text('${today.day + 1}'));
-      await tester.pumpAndSettle();
       await tester.tap(find.byType(SaveButton));
       await tester.pumpAndSettle();
-
       expect(find.byType(ErrorDialog), findsNothing);
-    });
-
-    testWidgets('No end date defaults to selected',
-        (WidgetTester tester) async {
-      // Arrange
-      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        MemoplannerSettingsLoaded(
-          const MemoplannerSettings(
-            addActivity: AddActivitySettings(
-              mode: AddActivityMode.stepByStep,
-              general: GeneralAddActivitySettings(
-                addRecurringActivity: true,
-              ),
-              stepByStep: StepByStepSettings(
-                template: false,
-                date: false,
-                image: false,
-                title: true,
-                fullDay: true,
-                availability: false,
-                checkable: false,
-                removeAfter: false,
-                alarm: false,
-                notes: false,
-                reminders: false,
-              ),
-            ),
-          ),
-        ),
-      );
-
-      // Act
-      await tester.pumpWidget(wizardPage());
-      await tester.pumpAndSettle();
-      await tester.enterText(find.byType(TextField), 'title');
-      await tester.tap(find.byType(NextButton));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(SwitchField));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(NextButton));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.week));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(NextButton));
-      await tester.pumpAndSettle();
-
-      // Assert
-      final noEndDateSwitchValue = (find
-              .byKey(TestKey.noEndDateSwitch)
-              .evaluate()
-              .first
-              .widget as SwitchField)
-          .value;
-      expect(noEndDateSwitchValue, true);
     });
   });
 

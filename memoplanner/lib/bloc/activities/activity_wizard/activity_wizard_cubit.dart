@@ -124,10 +124,6 @@ class ActivityWizardCubit extends WizardCubit {
         if (stepByStep.reminders && !editState.activity.fullDay)
           WizardStep.reminder,
         if (addRecurringActivity) WizardStep.recurring,
-        if (editState.activity.recurs.weekly) WizardStep.recursWeekly,
-        if (editState.activity.recurs.monthly) WizardStep.recursMonthly,
-        if (editState.activity.isRecurring && !editState.recursWithNoEnd)
-          WizardStep.endDate,
         if (stepByStep.checklist || stepByStep.notes)
           WizardStep.connectedFunction,
       ];
@@ -307,11 +303,11 @@ extension SaveErrorExtension on EditActivityState {
           }
         }
         break;
-      case WizardStep.recursWeekly:
-      case WizardStep.recursMonthly:
+      case WizardStep.recurring:
+        if (activity.isRecurring && !hasEndDate) {
+          return SaveError.noRecurringEndDate;
+        }
         if (emptyRecurringData) return SaveError.noRecurringDays;
-        break;
-      case WizardStep.endDate:
         if (activity.recurs.end.isBefore(timeInterval.startDate)) {
           return SaveError.endDateBeforeStart;
         }

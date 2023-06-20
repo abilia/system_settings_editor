@@ -628,6 +628,10 @@ extension ButtonStyleSize on ButtonStyle {
         iconSize: iconSize != null ? MaterialStateProperty.all(iconSize) : null,
       );
 
+  ButtonStyle withTextStyle(TextStyle textStyle) => copyWith(
+        textStyle: MaterialStateProperty.all(textStyle),
+      );
+
   ButtonStyle get withoutMinimumWidth => withMinimumSize(
         Size(
           0,

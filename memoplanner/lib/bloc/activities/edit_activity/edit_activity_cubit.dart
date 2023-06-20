@@ -279,6 +279,8 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     DateTime? endDate,
   }) {
     switch (type) {
+      case RecurrentType.daily:
+        return Recurs.everyDay;
       case RecurrentType.weekly:
         return Recurs.weeklyOnDay(startDate.weekday, ends: endDate);
       case RecurrentType.monthly:
