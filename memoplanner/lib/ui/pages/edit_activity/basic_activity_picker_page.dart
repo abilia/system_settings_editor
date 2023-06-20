@@ -38,8 +38,7 @@ class BasicActivityPickerPage extends StatelessWidget {
             useHeading: false,
           ),
           bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: PreviousButton(
-              text: translate.back,
+            backNavigationWidget: BackButton(
               onPressed: state.isAtRoot
                   ? Navigator.of(context).maybePop
                   : () => context

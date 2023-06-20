@@ -61,7 +61,6 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
                             alignment: Alignment.center,
                             child: appBarHeading,
                           ),
-                          // if (isImageSelector) const SizedBox.expand(),
                           if (trailing != null)
                             Align(
                               alignment: Alignment.centerRight,

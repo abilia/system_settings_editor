@@ -145,8 +145,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
             ? Padding(
                 padding: MediaQuery.of(context).viewInsets,
                 child: BottomNavigation(
-                  backNavigationWidget: PreviousButton(
-                    text: Translator.of(context).translate.back,
+                  backNavigationWidget: BackButton(
                     onPressed: () async => _back(context, sortableState),
                   ),
                   forwardNavigationWidget: selected != null

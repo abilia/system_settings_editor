@@ -46,7 +46,7 @@ class AppBarHeading extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: getTextFields(label, text,
+                          children: _getTextFields(label, text,
                               isTemplateSelector || isImageSelector, theme),
                         ),
                       )
@@ -63,14 +63,14 @@ class AppBarHeading extends StatelessWidget {
     );
   }
 
-  List<Text> getTextFields(
-      String label, String text, bool reverse, ThemeData theme) {
+  List<Text> _getTextFields(
+      String label, String text, bool flipVertically, ThemeData theme) {
     final labelText = Text(label, style: theme.textTheme.labelLarge);
     final textText = Text(
       text,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
-    return reverse ? [textText, labelText] : [labelText, textText];
+    return flipVertically ? [textText, labelText] : [labelText, textText];
   }
 }
