@@ -12,7 +12,11 @@ Future<void> initializeNotificationPlugin() async {
   await FlutterLocalNotificationsPlugin().initialize(
     const InitializationSettings(
       android: AndroidInitializationSettings('icon_notification'),
-      iOS: DarwinInitializationSettings(),
+      iOS: DarwinInitializationSettings(
+        requestSoundPermission: false,
+        requestBadgePermission: false,
+        requestAlertPermission: false,
+      ),
     ),
     onDidReceiveNotificationResponse: (notificationResponse) => _log.finer(
       'clicked on notification, payload: ${notificationResponse.payload}',
