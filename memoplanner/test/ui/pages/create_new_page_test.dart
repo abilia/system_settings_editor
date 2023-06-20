@@ -745,7 +745,7 @@ void main() {
 
           // Assert no folder, one item, nothing selected
           expect(find.byIcon(AbiliaIcons.folder), findsNothing);
-          expect(find.byType(BasicTemplatePickField<BasicActivityData>),
+          expect(find.byType(TemplatePickField<BasicActivityData>),
               findsOneWidget);
           expect(find.text(title), findsOneWidget);
           expect(find.text(folderTitle), findsOneWidget);
@@ -1188,7 +1188,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.byType(ListLibrary<BasicTimerData>), findsOneWidget);
         expect(
-          find.byType(BasicTemplatePickField<BasicTimerData>),
+          find.byType(TemplatePickField<BasicTimerData>),
           findsOneWidget,
         );
         expect(find.text(title), findsOneWidget);
@@ -1242,8 +1242,7 @@ void main() {
 
         // Assert no folder, one item
         expect(find.byKey(TestKey.basicTimerLibraryFolder), findsNothing);
-        expect(find.byType(BasicTemplatePickField<BasicTimerData>),
-            findsOneWidget);
+        expect(find.byType(TemplatePickField<BasicTimerData>), findsOneWidget);
         expect(find.text(title), findsOneWidget);
         expect(find.text(folderTitle), findsOneWidget);
 

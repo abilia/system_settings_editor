@@ -18,13 +18,13 @@ class BasicActivityPickerPage extends StatelessWidget {
             iconData: AbiliaIcons.basicActivities,
             label: !state.isAtRoot ? state.breadCrumbPath() : null,
             title: translate.selectTemplate,
-            isSelector: true,
+            isTemplateSelector: true,
           ),
           body: ListLibrary<BasicActivityData>(
             emptyLibraryMessage: translate.noTemplates,
             selectableItems: false,
             libraryItemGenerator: (sortable, onTap, _, __) {
-              return BasicTemplatePickField<BasicActivityData>(
+              return TemplatePickField<BasicActivityData>(
                   sortable,
                   () => sortable.isGroup
                       ? context

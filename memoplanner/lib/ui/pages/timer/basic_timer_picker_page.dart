@@ -22,17 +22,17 @@ class BasicTimerPickerPage extends StatelessWidget {
               iconData: AbiliaIcons.basicTimers,
               label: !state.isAtRoot ? state.breadCrumbPath() : null,
               title: translate.selectTemplate,
-              isSelector: true,
+              isTemplateSelector: true,
             ),
             body: ListLibrary<BasicTimerData>(
               emptyLibraryMessage: translate.noTemplates,
               selectableItems: false,
               libraryItemGenerator: (sortable, onTap, _, __) {
                 final sortableData = sortable.data;
-                return BasicTemplatePickField<BasicTimerData>(
+                return TemplatePickField<BasicTimerData>(
                   sortable,
                   onTap,
-                  _StartBasicTimerButton(
+                  _StartTemplateTimerButton(
                     onPressed: () async {
                       if (sortableData is BasicTimerDataItem) {
                         context
@@ -65,8 +65,8 @@ class BasicTimerPickerPage extends StatelessWidget {
   }
 }
 
-class _StartBasicTimerButton extends StatelessWidget {
-  const _StartBasicTimerButton({Key? key, this.onPressed}) : super(key: key);
+class _StartTemplateTimerButton extends StatelessWidget {
+  const _StartTemplateTimerButton({Key? key, this.onPressed}) : super(key: key);
   final VoidCallback? onPressed;
 
   @override

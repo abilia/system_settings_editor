@@ -5,14 +5,16 @@ class AppBarHeading extends StatelessWidget {
     required this.text,
     this.label = '',
     this.iconData,
-    this.reverseText = false,
+    this.isImageSelector = false,
+    this.isTemplateSelector = false,
     Key? key,
   }) : super(key: key);
 
   final String text;
   final String label;
   final IconData? iconData;
-  final bool reverseText;
+  final bool isImageSelector;
+  final bool isTemplateSelector;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class AppBarHeading extends StatelessWidget {
               Expanded(
                 flex: 345,
                 child: Row(
-                  mainAxisAlignment: reverseText
+                  mainAxisAlignment: isImageSelector
                       ? MainAxisAlignment.start
                       : MainAxisAlignment.center,
                   children: [
@@ -44,8 +46,8 @@ class AppBarHeading extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children:
-                              getTextFields(label, text, reverseText, theme),
+                          children: getTextFields(label, text,
+                              isTemplateSelector || isImageSelector, theme),
                         ),
                       )
                     else

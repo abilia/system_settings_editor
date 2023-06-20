@@ -32,12 +32,12 @@ class TemplatesPage extends StatelessWidget {
               children: [
                 ListLibrary<BasicActivityData>(
                   emptyLibraryMessage: translate.noTemplates,
-                  libraryItemGenerator: BasicTemplatePickField.new,
+                  libraryItemGenerator: TemplatePickField.new,
                   onTapEdit: _onEditTemplateActivity,
                 ),
                 ListLibrary<BasicTimerData>(
                   emptyLibraryMessage: translate.noTemplates,
-                  libraryItemGenerator: BasicTemplatePickField.new,
+                  libraryItemGenerator: TemplatePickField.new,
                   onTapEdit: (context, sortables) async => _onEditTemplateTimer(
                     context,
                     sortables,
@@ -145,8 +145,8 @@ class TemplatesPage extends StatelessWidget {
   }
 }
 
-class BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
-  const BasicTemplatePickField(
+class TemplatePickField<T extends SortableData> extends StatelessWidget {
+  const TemplatePickField(
     this._sortable,
     this._onTap,
     this._trailing,

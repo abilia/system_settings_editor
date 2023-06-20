@@ -108,7 +108,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                             ),
                           )
                         : null,
-                    isSelector: !useHeader,
+                    isImageSelector: !useHeader,
                   )
                 : null),
         body: Column(
