@@ -2,19 +2,15 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class ImageArchivePage extends StatelessWidget {
-  final VoidCallback? onCancel;
   final String initialFolder;
-  final String? header;
   final SearchHeader searchHeader;
   final bool useHeader;
 
   const ImageArchivePage({
     Key? key,
-    this.onCancel,
     this.initialFolder = '',
-    this.header,
     this.searchHeader = SearchHeader.searchButton,
-    this.useHeader = true,
+    this.useHeader = false,
   }) : super(key: key);
 
   @override
@@ -24,14 +20,12 @@ class ImageArchivePage extends StatelessWidget {
       appBarTitle: translate.imageArchive,
       searchHeader: searchHeader,
       gridChildAspectRatio: layout.imageArchive.aspectRatio,
-      rootHeading: header ?? translate.imageArchive,
       useHeader: useHeader,
       libraryItemGenerator: (imageArchive) =>
           ArchiveImage(sortable: imageArchive),
       selectedItemGenerator: (imageArchive) =>
           FullScreenArchiveImage(selected: imageArchive.data),
       emptyLibraryMessage: translate.noImages,
-      onCancel: onCancel,
       onOk: (selected) {
         Navigator.of(context).pop<SelectedImageData>(
           SelectedImageData(
