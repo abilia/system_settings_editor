@@ -14,11 +14,6 @@ import 'package:text_to_speech/text_to_speech.dart';
 
 export 'package:mocktail/mocktail.dart';
 
-// Repository
-
-class MockSupportPersonsRepository extends Mock
-    implements SupportPersonsRepository {}
-
 // Db
 
 class MockDatabase extends Mock implements Database {}
@@ -32,8 +27,6 @@ class MockDeviceDb extends Mock implements DeviceDb {}
 class MockCalendarDb extends Mock implements CalendarDb {}
 
 class MockSortableDb extends Mock implements SortableDb {}
-
-class MockSupportPersonsDb extends Mock implements SupportPersonsDb {}
 
 class MockVoiceDb extends Mock implements VoiceDb {}
 

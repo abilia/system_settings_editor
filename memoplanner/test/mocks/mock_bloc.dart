@@ -58,6 +58,3 @@ class MockLogoutSyncCubit extends MockCubit<LogoutSyncState>
 
 class MockEditTimerCubit extends MockCubit<EditTimerState>
     implements EditTimerCubit {}
-
-class MockSupportPersonsCubit extends MockCubit<SupportPersonsState>
-    implements SupportPersonsCubit {}

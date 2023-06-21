@@ -41,7 +41,6 @@ void main() {
   late MockUserFileBloc mockUserFileBloc;
   late MockTimerCubit mockTimerCubit;
   late MemoplannerSettingsBloc mockMemoplannerSettingsBloc;
-  late MockSupportPersonsRepository supportUserRepo;
   late MockSupportPersonsCubit supportPersonsCubit;
 
   setUpAll(() async {
@@ -91,9 +90,6 @@ void main() {
     when(() => mockMemoplannerSettingsBloc.stream)
         .thenAnswer((_) => const Stream.empty());
 
-    supportUserRepo = MockSupportPersonsRepository();
-    when(() => supportUserRepo.load())
-        .thenAnswer((_) => Future.value(const {}));
     GetItInitializer()
       ..fileStorage = FakeFileStorage()
       ..database = FakeDatabase()
