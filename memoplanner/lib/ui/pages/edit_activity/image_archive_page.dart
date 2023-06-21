@@ -1,3 +1,4 @@
+import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
@@ -16,11 +17,36 @@ class ImageArchivePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
+    final sortableArchiveCubit =
+        context.watch<SortableArchiveCubit<ImageArchiveData>>();
+    final sortableState = sortableArchiveCubit.state;
     return LibraryPage<ImageArchiveData>.selectable(
       appBarTitle: translate.imageArchive,
       searchHeader: searchHeader,
       gridChildAspectRatio: layout.imageArchive.aspectRatio,
       useHeader: useHeader,
+      appBar: AbiliaAppBar(
+        iconData: searchHeader == SearchHeader.searchBar
+            ? AbiliaIcons.find
+            : AbiliaIcons.pastPictureFromWindowsClipboard,
+        label: searchHeader == SearchHeader.searchBar
+            ? null
+            : sortableState.breadCrumbPath(
+                initialTitle: translate.imageArchive),
+        title: searchHeader == SearchHeader.searchBar
+            ? translate.searchImage
+            : translate.selectImage,
+        trailing: searchHeader == SearchHeader.searchButton
+            ? Padding(
+                padding:
+                    EdgeInsets.only(right: layout.actionButton.padding.right),
+                child: SearchButton(
+                  style: actionButtonStyleLightLarge,
+                ),
+              )
+            : null,
+        isImageSelector: true,
+      ),
       libraryItemGenerator: (imageArchive) =>
           ArchiveImage(sortable: imageArchive),
       selectedItemGenerator: (imageArchive) =>

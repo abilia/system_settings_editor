@@ -30,7 +30,6 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
         searchHeader = SearchHeader.noSearch,
         useHeader = true,
         headerBackNavigation = true,
-        showAppBar = false,
         appBarTitle = '',
         super(key: key);
 
@@ -41,7 +40,6 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     required this.onOk,
     this.appBarTitle = '',
     this.onCancel,
-    this.showAppBar = true,
     this.appBar,
     this.rootHeading,
     this.showBottomNavigationBar = true,
@@ -69,7 +67,6 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   final double? gridChildAspectRatio;
   final SearchHeader searchHeader;
   final String appBarTitle;
-  final bool showAppBar;
   final bool useHeader;
   final bool headerBackNavigation;
 
@@ -89,31 +86,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
         return true;
       },
       child: Scaffold(
-        appBar: appBar ??
-            (showAppBar
-                ? AbiliaAppBar(
-                    iconData: searchHeader == SearchHeader.searchBar
-                        ? AbiliaIcons.find
-                        : AbiliaIcons.pastPictureFromWindowsClipboard,
-                    label: searchHeader == SearchHeader.searchBar
-                        ? null
-                        : sortableState.breadCrumbPath(
-                            initialTitle: appBarTitle),
-                    title: searchHeader == SearchHeader.searchBar
-                        ? translate.searchImage
-                        : translate.selectImage,
-                    trailing: searchHeader == SearchHeader.searchButton
-                        ? Padding(
-                            padding: EdgeInsets.only(
-                                right: layout.actionButton.padding.right),
-                            child: _SearchButton(
-                              style: actionButtonStyleLightLarge,
-                            ),
-                          )
-                        : null,
-                    isImageSelector: !useHeader,
-                  )
-                : null),
+        appBar: appBar,
         body: Column(
           children: [
             if (useHeader && selected != null)
@@ -227,7 +200,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                   ),
                 ),
                 if (showSearchButton)
-                  _SearchButton(
+                  SearchButton(
                     onCancel: onCancel,
                   ),
               ],
@@ -240,11 +213,11 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
   }
 }
 
-class _SearchButton extends StatelessWidget {
+class SearchButton extends StatelessWidget {
   final VoidCallback? onCancel;
   final ButtonStyle? style;
 
-  const _SearchButton({this.onCancel, this.style});
+  const SearchButton({super.key, this.onCancel, this.style});
 
   @override
   Widget build(BuildContext context) {

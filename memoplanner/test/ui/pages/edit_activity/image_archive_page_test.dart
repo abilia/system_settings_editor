@@ -220,7 +220,9 @@ void main() {
     await mockNetworkImages(() async {
       when(() => mockSortableBloc.state).thenAnswer(
           (_) => SortablesLoaded(sortables: [folder, imageInFolder]));
-      await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage(useHeader: true,)));
+      await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage(
+        useHeader: true,
+      )));
       await tester.pumpAndSettle();
 
       expect(find.byType(LibraryFolder), findsOneWidget);
