@@ -5,13 +5,11 @@ import 'package:memoplanner/ui/all.dart';
 class ImageArchivePage extends StatelessWidget {
   final String initialFolder;
   final SearchHeader searchHeader;
-  final bool useHeader;
 
   const ImageArchivePage({
     Key? key,
     this.initialFolder = '',
     this.searchHeader = SearchHeader.searchButton,
-    this.useHeader = false,
   }) : super(key: key);
 
   @override
@@ -20,23 +18,26 @@ class ImageArchivePage extends StatelessWidget {
     final sortableArchiveCubit =
         context.watch<SortableArchiveCubit<ImageArchiveData>>();
     final sortableState = sortableArchiveCubit.state;
+    final selected = sortableState.isSelected;
     return LibraryPage<ImageArchiveData>.selectable(
       appBarTitle: translate.imageArchive,
       searchHeader: searchHeader,
       gridChildAspectRatio: layout.imageArchive.aspectRatio,
-      useHeader: useHeader,
+      useHeader: false,
       appBar: AbiliaAppBar(
         iconData: searchHeader == SearchHeader.searchBar
             ? AbiliaIcons.find
             : AbiliaIcons.pastPictureFromWindowsClipboard,
         label: searchHeader == SearchHeader.searchBar
             ? null
-            : sortableState.breadCrumbPath(
-                initialTitle: translate.imageArchive),
+            : selected
+                ? sortableState.selected?.data.name
+                : sortableState.breadCrumbPath(
+                    initialTitle: translate.imageArchive),
         title: searchHeader == SearchHeader.searchBar
             ? translate.searchImage
             : translate.selectImage,
-        trailing: searchHeader == SearchHeader.searchButton
+        trailing: !selected && searchHeader == SearchHeader.searchButton
             ? Padding(
                 padding:
                     EdgeInsets.only(right: layout.actionButton.padding.right),
@@ -45,7 +46,7 @@ class ImageArchivePage extends StatelessWidget {
                 ),
               )
             : null,
-        isImageSelector: true,
+        isFlipLabels: true,
       ),
       libraryItemGenerator: (imageArchive) =>
           ArchiveImage(sortable: imageArchive),

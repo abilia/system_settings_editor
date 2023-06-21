@@ -126,19 +126,18 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
   String folderTitle() => allById[currentFolderId]?.data.title() ?? '';
 
   String breadCrumbPath({String? initialTitle}) {
-    String result;
     String? folder = currentFolderId;
-    List<String> folderNames = <String>[];
+    final folderNames = <String>[];
 
-    while(folder != null && folder != initialFolderId) {
+    while (folder != null && folder != initialFolderId) {
       final currentFolder = allById[folder];
-      if(currentFolder != null) {
+      if (currentFolder != null) {
         folderNames.add(currentFolder.data.title());
       }
-      folder = currentFolder?.groupId ?? null;
+      folder = currentFolder?.groupId;
     }
 
-    if(initialTitle != null) {
+    if (initialTitle != null) {
       folderNames.add(initialTitle);
     }
     return folderNames.reversed.join(' / ');

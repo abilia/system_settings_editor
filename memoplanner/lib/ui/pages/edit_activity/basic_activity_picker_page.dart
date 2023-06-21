@@ -18,7 +18,7 @@ class BasicActivityPickerPage extends StatelessWidget {
             iconData: AbiliaIcons.basicActivities,
             title: translate.selectTemplate,
             label: !state.isAtRoot ? state.breadCrumbPath() : null,
-            isTemplateSelector: true,
+            isFlipLabels: true,
           ),
           body: ListLibrary<BasicActivityData>(
             emptyLibraryMessage: translate.noTemplates,

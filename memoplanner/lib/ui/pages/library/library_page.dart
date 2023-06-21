@@ -89,20 +89,22 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
         appBar: appBar,
         body: Column(
           children: [
-            if (useHeader && selected != null)
-              LibraryHeading<T>(
-                sortableArchiveState: sortableState,
-                rootHeading: rootHeading ?? '',
-              )
-            else if (searchHeader == SearchHeader.searchBar)
+            if (searchHeader == SearchHeader.searchBar)
               const _SearchHeading()
-            else if (useHeader &&
-                (!sortableState.isAtRootAndNoSelection || rootHeading != null))
-              LibraryHeading<T>(
-                sortableArchiveState: sortableState,
-                rootHeading: rootHeading ?? '',
-                back: headerBackNavigation ? _back : null,
-              ),
+            else if (useHeader)
+              if (selected != null)
+                LibraryHeading<T>(
+                  sortableArchiveState: sortableState,
+                  rootHeading: rootHeading ?? '',
+                )
+              else if (useHeader &&
+                  (!sortableState.isAtRootAndNoSelection ||
+                      rootHeading != null))
+                LibraryHeading<T>(
+                  sortableArchiveState: sortableState,
+                  rootHeading: rootHeading ?? '',
+                  back: headerBackNavigation ? _back : null,
+                ),
             Expanded(
               child: selected != null && selectedGenerator != null
                   ? selectedGenerator(selected)

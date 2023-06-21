@@ -22,7 +22,7 @@ class BasicTimerPickerPage extends StatelessWidget {
               iconData: AbiliaIcons.basicTimers,
               label: !state.isAtRoot ? state.breadCrumbPath() : null,
               title: translate.selectTemplate,
-              isTemplateSelector: true,
+              isFlipLabels: true,
             ),
             body: ListLibrary<BasicTimerData>(
               emptyLibraryMessage: translate.noTemplates,
