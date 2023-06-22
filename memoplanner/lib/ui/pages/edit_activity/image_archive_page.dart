@@ -3,12 +3,10 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class ImageArchivePage extends StatelessWidget {
-  final String initialFolder;
   final SearchHeader searchHeader;
 
   const ImageArchivePage({
     Key? key,
-    this.initialFolder = '',
     this.searchHeader = SearchHeader.searchButton,
   }) : super(key: key);
 

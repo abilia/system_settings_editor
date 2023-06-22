@@ -327,9 +327,7 @@ void main() {
           (_) => SortablesLoaded(sortables: [folder, imageInFolder]));
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ImageArchivePage(
-            initialFolder: folder.id,
-          ),
+          const ImageArchivePage(),
           initialFolder: folder.id,
         ),
       );
@@ -374,9 +372,7 @@ void main() {
     await mockNetworkImages(() async {
       when(() => mockSortableBloc.state).thenAnswer(
           (_) => SortablesLoaded(sortables: [folder, folderInsideFolder]));
-      await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage(
-        initialFolder: folder.id,
-      )));
+      await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage()));
       await tester.pumpAndSettle();
       expect(find.text(translate.imageArchive), findsOneWidget);
       expect(find.byType(ImageArchivePage), findsOneWidget);
@@ -408,8 +404,10 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(find.text(myPhotosFolder.data.name), findsOneWidget);
+      await tester.tap(find.text(myPhotosFolder.data.name));
+      await tester.pumpAndSettle();
       expect(find.byType(ImageArchivePage), findsOneWidget);
-      await tester.tap(find.byType(LibraryFolder));
+      await tester.tap(find.text(myPhotosSubFolder.data.name));
       await tester.pumpAndSettle();
       expect(find.text(myPhotosFolder.data.name), findsNothing);
       expect(find.text(myPhotoInSubFolder.data.name), findsOneWidget);
@@ -434,7 +432,7 @@ void main() {
               ]));
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ImageArchivePage(initialFolder: folder.id),
+          const ImageArchivePage(),
           initialFolder: folder.id,
           myPhotos: myPhotos,
         ),
