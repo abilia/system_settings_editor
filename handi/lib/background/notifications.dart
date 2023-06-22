@@ -19,7 +19,7 @@ Future<void> initializeNotificationPlugin() async {
       ),
     ),
     onDidReceiveNotificationResponse: (notificationResponse) => _log.finer(
-      'clicked on notification, payload: {notificationResponse.payload}',
+      'clicked on notification, payload: ${notificationResponse.payload}',
     ),
   );
   _log.finer('notification plugin initialized');
