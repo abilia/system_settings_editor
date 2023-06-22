@@ -20,7 +20,6 @@ class ImageArchivePage extends StatelessWidget {
     final sortableState = sortableArchiveCubit.state;
     final selected = sortableState.isSelected;
     return LibraryPage<ImageArchiveData>.selectable(
-      appBarTitle: translate.imageArchive,
       searchHeader: searchHeader,
       gridChildAspectRatio: layout.imageArchive.aspectRatio,
       useHeader: false,

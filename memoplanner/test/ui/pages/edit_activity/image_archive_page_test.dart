@@ -229,12 +229,15 @@ void main() {
 
       // Assert heading contains image archive tts
       await tester.verifyTts(
-        find.textContaining(translate.imageArchive),
+        find.byType(AppBarHeading),
+        contains: translate.imageArchive,
       );
 
+      // Go to search page
       await tester.tap(find.byType(SearchButton));
       await tester.pumpAndSettle();
 
+      // Assert search heading
       await tester.verifyTts(find.byType(AppBarHeading),
           exact: translate.searchImage);
 
@@ -380,6 +383,7 @@ void main() {
       await tester.tap(find.byType(LibraryFolder));
       await tester.pumpAndSettle();
       expect(find.text(translate.imageArchive), findsNothing);
+      expect(find.byType(LibraryHeading), findsNothing);
     });
   });
 
@@ -398,20 +402,18 @@ void main() {
       );
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ImageArchivePage(
-            initialFolder: myPhotosFolder.id,
-          ),
-          initialFolder: myPhotosFolder.id,
+          const ImageArchivePage(),
           myPhotos: true,
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.text(myPhotosFolder.data.name), findsNothing);
+      expect(find.text(myPhotosFolder.data.name), findsOneWidget);
       expect(find.byType(ImageArchivePage), findsOneWidget);
       await tester.tap(find.byType(LibraryFolder));
       await tester.pumpAndSettle();
       expect(find.text(myPhotosFolder.data.name), findsNothing);
       expect(find.text(myPhotoInSubFolder.data.name), findsOneWidget);
+      expect(find.byType(LibraryHeading), findsNothing);
     });
   });
 
@@ -432,9 +434,7 @@ void main() {
               ]));
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ImageArchivePage(
-            initialFolder: folder.id,
-          ),
+          ImageArchivePage(initialFolder: folder.id),
           initialFolder: folder.id,
           myPhotos: myPhotos,
         ),
