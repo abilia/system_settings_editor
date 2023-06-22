@@ -1,6 +1,6 @@
 part of 'activity.dart';
 
-enum RecurrentType { none, daily, weekly, monthly, yearly }
+enum RecurrentType { none, weekly, monthly, yearly, daily }
 
 enum ApplyTo { onlyThisDay, allDays, thisDayAndForward }
 
@@ -14,11 +14,10 @@ class Recurs extends Equatable {
   bool get weekly => type == typeWeekly;
   bool get monthly => type == typeMonthly;
   bool get yearly => type == typeYearly;
-  bool get once => type == typeNone;
 
   @visibleForTesting
   const Recurs.raw(this.type, this.data, int? endTime)
-      : assert(type >= typeNone && type <= typeYearly),
+      : assert(type >= typeNone && type <= typeDaily),
         assert(type != typeWeekly || data < 0x4000),
         assert(type != typeMonthly || data < 0x80000000),
         endTime = endTime == null || endTime > _noEnd ? _noEnd : endTime;
@@ -114,11 +113,13 @@ class Recurs extends Equatable {
   bool get stringify => true;
 
   static const int typeNone = 0,
-      typeDaily = 1,
-      typeWeekly = 2,
-      typeMonthly = 3,
-      typeYearly = 4,
-      evenMonday = 0x1,
+      typeWeekly = 1,
+      typeMonthly = 2,
+      typeYearly = 3,
+      typeDaily = 4;
+
+  @visibleForTesting
+  static const int evenMonday = 0x1,
       evenTuesday = 0x2,
       evenWednesday = 0x4,
       evenThursday = 0x8,
@@ -192,12 +193,17 @@ class Recurs extends Equatable {
       : {};
 
   Set<int> get monthDays => monthly ? _generateBitsSet(31, data) : {};
+
   bool get everyOtherWeek => weekly && _onEvenWeek != _onOddWeek;
 
   bool get _onEvenWeek => weekly && _evenWeekBits > 0;
+
   bool get _onOddWeek => weekly && _oddWeekBits > 0;
+
   bool get _onlyOddWeeks => everyOtherWeek && _onOddWeek;
+
   int get _oddWeekBits => data >> 7;
+
   int get _evenWeekBits => data & 0x7F;
 
   bool _isBitSet(int recurrentData, int bit) => recurrentData & (1 << bit) > 0;

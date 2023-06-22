@@ -22,22 +22,29 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
           controller: scrollController,
           padding: layout.templates.m1.onlyVertical,
           children: <Widget>[
-            for (int i = 0; i < RecurrentType.values.length; i++)
-              RadioField<RecurrentType>(
+            ...[
+              RecurrentType.none,
+              RecurrentType.daily,
+              RecurrentType.weekly,
+              RecurrentType.monthly,
+              RecurrentType.yearly,
+            ].map(
+              (recurrentType) => RadioField<RecurrentType>(
                 groupValue: activity.recurs.recurrence,
                 onChanged: (v) {
                   if (v != null) {
                     editActivityCubit.changeRecurrentType(v);
                   }
                 },
-                value: RecurrentType.values[i],
-                leading: Icon(RecurrentType.values[i].iconData()),
-                text: Text(RecurrentType.values[i].text(translate)),
+                value: recurrentType,
+                leading: Icon(recurrentType.iconData()),
+                text: Text(recurrentType.text(translate)),
               ).pad(
-                i != RecurrentType.values.length - 1
+                recurrentType != RecurrentType.yearly
                     ? m1ItemPadding.flipped
                     : m1ItemPadding.onlyHorizontal,
               ),
+            ),
             if (recurs.daily || recurs.weekly || recurs.monthly)
               BlocBuilder<WizardCubit, WizardState>(
                 builder: (context, wizState) {
