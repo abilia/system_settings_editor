@@ -116,32 +116,6 @@ void main() {
                 translate, locale, DateTime(2021, 10, 25, 1, 15, 0)),
             'quarter past 1 :');
       });
-
-      group('interval strings', () {
-        test('morning', () async {
-          expect(intervalString(translate, DayPart.morning, 11),
-              '%s in the early morning');
-        });
-
-        test('day, fore-noon', () async {
-          expect(intervalString(translate, DayPart.day, 11),
-              '%s in the mid-morning');
-        });
-
-        test('day, afternoon', () async {
-          expect(intervalString(translate, DayPart.day, 12),
-              '%s in the afternoon');
-        });
-
-        test('evening', () async {
-          expect(intervalString(translate, DayPart.evening, 11),
-              '%s in the evening');
-        });
-
-        test('night', () async {
-          expect(intervalString(translate, DayPart.night, 20), '%s at night');
-        });
-      });
     });
 
     test('nb one o clock', () async {
@@ -158,6 +132,38 @@ void main() {
       expect(
           analogTimeString(translate, locale, DateTime(2021, 10, 25, 5, 29, 0)),
           'Halv 6');
+    });
+  });
+
+  group('interval strings', () {
+    late final Lt translate;
+    late final Locale locale;
+    setUpAll(() async => {
+          locale = const Locale('en'),
+          translate = await Lt.load(locale),
+        });
+
+    test('morning', () async {
+      expect(intervalString(translate, DayPart.morning, 11),
+          '%s in the early morning');
+    });
+
+    test('day, fore-noon', () async {
+      expect(
+          intervalString(translate, DayPart.day, 11), '%s in the mid-morning');
+    });
+
+    test('day, afternoon', () async {
+      expect(intervalString(translate, DayPart.day, 12), '%s in the afternoon');
+    });
+
+    test('evening', () async {
+      expect(
+          intervalString(translate, DayPart.evening, 11), '%s in the evening');
+    });
+
+    test('night', () async {
+      expect(intervalString(translate, DayPart.night, 20), '%s at night');
     });
   });
 }
