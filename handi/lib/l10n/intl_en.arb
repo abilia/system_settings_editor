@@ -1,0 +1,18 @@
+{
+    "@@locale": "en",
+    "@@last_modified": "2023-06-15T11:46:41+02:00",
+    "generics": "Generics",
+    "logOut": "Log out",
+    "loggedOut": "You have been logged out.",
+    "ok": "Ok",
+    "password": "Password",
+    "pushReceived": "Push received",
+    "signIn": "Sign In",
+    "sortables": "Sortables",
+    "sync": "Sync",
+    "textToSpeech": "Text to speech",
+    "unauthorized": "Unauthorized",
+    "userFiles": "User Files",
+    "userName": "User Name",
+    "upcomingActivities": "Upcoming activities"
+}

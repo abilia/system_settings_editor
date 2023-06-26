@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:handi/background/notifications.dart';
 import 'package:handi/firebase_options.dart';
 import 'package:handi/getit_initializer.dart';
+import 'package:handi/l10n/all.dart';
 import 'package:handi/listeners/top_level_listener.dart';
 import 'package:handi/providers.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
@@ -28,6 +29,7 @@ Future<void> initServices() async {
   await initializeNotificationPlugin();
   Bloc.observer =
       BlocLoggingObserver(SeagullAnalytics.empty(), isRelease: false);
+  await initLokalise();
   await initGetIt();
 }
 

@@ -5,6 +5,7 @@ import 'package:auth/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:handi/l10n/generated/l10n.dart';
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_bloc.dart';
 import 'package:sqflite/sqflite.dart';
@@ -18,23 +19,24 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final reason = unauthenticatedState.loggedOutReason;
+    final translate = Lt.of(context);
     if (reason != LoggedOutReason.logOut) {
       Future(
         () async => showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text('Unauthorized dialogue'),
-              content: const SingleChildScrollView(
+              title: Text(translate.unauthorized),
+              content: SingleChildScrollView(
                 child: ListBody(
                   children: <Widget>[
-                    Text('You have been logged out.'),
+                    Text(translate.loggedOut),
                   ],
                 ),
               ),
               actions: <Widget>[
                 LinkButton(
-                  title: 'Ok',
+                  title: translate.ok,
                   onPressed: () {
                     Navigator.of(context).maybePop();
                   },
@@ -76,9 +78,9 @@ class LoginPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Username'),
+                      Text(translate.userName),
                       Tooltip(
-                        message: 'Username',
+                        message: translate.userName,
                         child: TextField(
                           onChanged: context.read<LoginCubit>().usernameChanged,
                         ),
@@ -88,9 +90,9 @@ class LoginPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Password'),
+                      Text(translate.password),
                       Tooltip(
-                        message: 'Password',
+                        message: translate.password,
                         child: TextField(
                           onChanged: context.read<LoginCubit>().passwordChanged,
                         ),
@@ -118,7 +120,7 @@ class LoginPage extends StatelessWidget {
                     onPressed: state.isFormValid
                         ? context.read<LoginCubit>().loginButtonPressed
                         : null,
-                    title: ('Sign in'),
+                    title: (translate.signIn),
                   )
                 ],
               ),

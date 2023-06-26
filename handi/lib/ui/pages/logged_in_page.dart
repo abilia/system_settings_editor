@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:generics/generics.dart';
 import 'package:handi/bloc/settings_cubit.dart';
+import 'package:handi/l10n/generated/l10n.dart';
 import 'package:handi/ui/components/tts.dart';
 import 'package:sortables/sortables.dart';
 import 'package:ui/buttons/link_button.dart';
@@ -34,12 +35,13 @@ class LoggedInPage extends StatelessWidget {
         (SettingsCubit settingsCubit) => settingsCubit.state.textToSpeech);
 
     final hasSynced = context.select((SyncBloc bloc) => bloc.hasSynced);
+    final translate = Lt.of(context);
     return Scaffold(
       body: BlocListener<PushCubit, RemoteMessage>(
         listener: (context, message) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Push received ${message.data}'),
+              content: Text('${translate.pushReceived} ${message.data}'),
             ),
           );
         },
@@ -76,12 +78,12 @@ class LoggedInPage extends StatelessWidget {
                                 [];
 
                             return Text(
-                                'Upcoming activities: ${activities.length}');
+                                '${translate.upcomingActivities}: ${activities.length}');
                           },
                         ),
-                        Text('Generics: $generics'),
-                        Text('Sortables: $sortables'),
-                        Text('User files: $userFiles'),
+                        Text('${translate.generics}: $generics'),
+                        Text('${translate.sortables}: $sortables'),
+                        Text('${translate.userFiles}: $userFiles'),
                       ],
                     ),
                     const Spacer(),
@@ -89,7 +91,7 @@ class LoggedInPage extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text('Text to speech'),
+                          Text(translate.textToSpeech),
                           Switch(
                             value: tts,
                             onChanged: context.read<SettingsCubit>().setTts,
@@ -100,13 +102,13 @@ class LoggedInPage extends StatelessWidget {
                     LinkButton(
                       onPressed: () =>
                           context.read<SyncBloc>().add(const SyncAll()),
-                      title: 'Sync',
+                      title: translate.sync,
                     ),
                     LinkButton(
                       onPressed: () => context
                           .read<AuthenticationBloc>()
                           .add(const LoggedOut()),
-                      title: 'Log out',
+                      title: translate.logOut,
                     ),
                   ],
                 ),
