@@ -53,6 +53,10 @@ void main() {
       languageCode: 'en',
       speechSettingsCubit: speechSettingsCubit,
       voiceRepository: voiceRepository,
+      localeCubit: LocaleCubit(
+        settingsDb: FakeSettingsDb(),
+        seagullAnalytics: FakeSeagullAnalytics(),
+      ),
     );
 
     deviceRepository = MockDeviceRepository();
