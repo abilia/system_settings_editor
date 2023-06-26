@@ -81,36 +81,41 @@ void main() {
   });
 
   group('time strings', () {
-    test('Half past', () async {
-      const locale = Locale('en');
-      final translate = await Lt.load(locale);
-      expect(
-          analogTimeString(translate, locale, DateTime(2021, 10, 25, 5, 32, 0)),
-          'Half past 5');
-    });
+    group('en ', () {
+      late final Lt translate;
+      late final Locale locale;
+      setUpAll(() async => {
+            locale = const Locale('en'),
+            translate = await Lt.load(locale),
+          });
 
-    test('Ten to', () async {
-      const locale = Locale('en');
-      final translate = await Lt.load(locale);
-      expect(
-          analogTimeString(translate, locale, DateTime(2021, 10, 25, 4, 49, 0)),
-          'ten to 5');
-    });
+      test('Half past', () async {
+        expect(
+            analogTimeString(
+                translate, locale, DateTime(2021, 10, 25, 5, 32, 0)),
+            'Half past 5');
+      });
 
-    test('5 to half past', () async {
-      const locale = Locale('en');
-      final translate = await Lt.load(locale);
-      expect(
-          analogTimeString(translate, locale, DateTime(2021, 10, 25, 4, 24, 0)),
-          'twenty five past 4');
-    });
+      test('Ten to', () async {
+        expect(
+            analogTimeString(
+                translate, locale, DateTime(2021, 10, 25, 4, 49, 0)),
+            'ten to 5');
+      });
 
-    test('en one o clock', () async {
-      const locale = Locale('en');
-      final translate = await Lt.load(locale);
-      expect(
-          analogTimeString(translate, locale, DateTime(2021, 10, 25, 1, 15, 0)),
-          'quarter past 1 :');
+      test('5 to half past', () async {
+        expect(
+            analogTimeString(
+                translate, locale, DateTime(2021, 10, 25, 4, 24, 0)),
+            'twenty five past 4');
+      });
+
+      test('en one o clock', () async {
+        expect(
+            analogTimeString(
+                translate, locale, DateTime(2021, 10, 25, 1, 15, 0)),
+            'quarter past 1 :');
+      });
     });
 
     test('nb one o clock', () async {
@@ -131,34 +136,34 @@ void main() {
   });
 
   group('interval strings', () {
+    late final Lt translate;
+    late final Locale locale;
+    setUpAll(() async => {
+          locale = const Locale('en'),
+          translate = await Lt.load(locale),
+        });
+
     test('morning', () async {
-      expect(
-          intervalString(
-              await Lt.load(const Locale('en')), DayPart.morning, 11),
+      expect(intervalString(translate, DayPart.morning, 11),
           '%s in the early morning');
     });
 
     test('day, fore-noon', () async {
-      expect(intervalString(await Lt.load(const Locale('en')), DayPart.day, 11),
-          '%s in the mid-morning');
+      expect(
+          intervalString(translate, DayPart.day, 11), '%s in the mid-morning');
     });
 
     test('day, afternoon', () async {
-      expect(intervalString(await Lt.load(const Locale('en')), DayPart.day, 12),
-          '%s in the afternoon');
+      expect(intervalString(translate, DayPart.day, 12), '%s in the afternoon');
     });
 
     test('evening', () async {
       expect(
-          intervalString(
-              await Lt.load(const Locale('en')), DayPart.evening, 11),
-          '%s in the evening');
+          intervalString(translate, DayPart.evening, 11), '%s in the evening');
     });
 
     test('night', () async {
-      expect(
-          intervalString(await Lt.load(const Locale('en')), DayPart.night, 20),
-          '%s at night');
+      expect(intervalString(translate, DayPart.night, 20), '%s at night');
     });
   });
 }

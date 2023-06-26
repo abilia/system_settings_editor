@@ -1,4 +1,4 @@
-import 'package:memoplanner/ui/all.dart';
+import 'package:memoplanner/l10n/generated/l10n.dart';
 import 'package:memoplanner/utils/all.dart';
 
 enum AlarmDuration {
