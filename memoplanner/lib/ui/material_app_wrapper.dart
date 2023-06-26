@@ -42,9 +42,13 @@ class MaterialAppWrapper extends StatelessWidget {
               supportedLocales: Lt.supportedLocales,
               localizationsDelegates: Lt.localizationsDelegates,
               localeListResolutionCallback: (locales, supportedLocales) {
-                final locale = locales?.firstWhereOrNull((l) => supportedLocales
+                final language = locales
+                    ?.firstWhereOrNull((l) => supportedLocales
                         .map((e) => e.languageCode)
-                        .contains(l.languageCode)) ??
+                        .contains(l.languageCode))
+                    ?.languageCode;
+                final locale = supportedLocales
+                        .firstWhereOrNull((l) => l.languageCode == language) ??
                     supportedLocales.first;
                 unawaited(context.read<LocaleCubit>().setLocale(locale));
                 return locale;
