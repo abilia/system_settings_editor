@@ -19,6 +19,7 @@ import 'package:seagull_logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sortables/db/sortable_db.dart';
 import 'package:sqflite/sqlite_api.dart';
+import 'package:support_persons/support_persons.dart';
 import 'package:text_to_speech/text_to_speech.dart';
 import 'package:user_files/db/user_file_db.dart';
 
@@ -47,6 +48,7 @@ Future<void> initGetItWith({
   Delays? delays,
   SeagullLogger? seagullLogger,
   SettingsDb? settingsDb,
+  SupportPersonsDb? supportPersonsDb,
 }) async {
   GetIt.I
     ..registerSingleton(sharedPreferences)
@@ -70,6 +72,8 @@ Future<void> initGetItWith({
     ..registerSingleton(seagullLogger ?? SeagullLogger.nothing())
     ..registerSingleton<TtsHandler>(ttsHandler ?? FlutterTtsHandler())
     ..registerSingleton<SettingsDb>(settingsDb ?? SettingsDb(sharedPreferences))
+    ..registerSingleton<SupportPersonsDb>(
+        supportPersonsDb ?? SupportPersonsDb(sharedPreferences))
     ..registerSingleton(
       listenableClient ??
           ClientWithDefaultHeaders(

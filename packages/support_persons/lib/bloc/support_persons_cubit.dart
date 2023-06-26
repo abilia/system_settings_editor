@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:memoplanner/models/support_person.dart';
-import 'package:memoplanner/repository/data_repository/support_persons_repository.dart';
+import 'package:support_persons/support_persons.dart';
 
 class SupportPersonsCubit extends Cubit<SupportPersonsState> {
   final SupportPersonsRepository supportPersonsRepository;

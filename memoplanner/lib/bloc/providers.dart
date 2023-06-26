@@ -94,6 +94,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             ),
           ),
           RepositoryProvider<SupportPersonsRepository>(
+            lazy: false,
             create: (context) => SupportPersonsRepository(
               baseUrlDb: GetIt.I<BaseUrlDb>(),
               client: GetIt.I<ListenableClient>(),

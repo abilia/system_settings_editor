@@ -81,6 +81,8 @@ dependencies:
     path: ../packages/sortables
   sqflite: ^2.2.5
   sqflite_common_ffi: ^2.2.5
+  support_persons:
+    path: ../packages/support_persons
   synchronized: ^3.0.0
   system_settings_editor:
     git:
