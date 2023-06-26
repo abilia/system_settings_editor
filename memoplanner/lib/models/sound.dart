@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:memoplanner/l10n/all.dart';
+import 'package:memoplanner/l10n/generated/l10n.dart';
 
 enum Sound {
   NoSound,
