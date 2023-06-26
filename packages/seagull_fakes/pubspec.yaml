@@ -35,6 +35,8 @@ dependencies:
   sortables:
     path: ../sortables
   sqflite: any
+  support_persons:
+    path: ../support_persons
   test: any
   user_files:
     path: ../user_files

@@ -1,9 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
-import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/models/support_person.dart';
-import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:repository_base/repository_base.dart';
+import 'package:support_persons/support_persons.dart';
+import 'package:utils/utils.dart';
 
 class SupportPersonsRepository extends Repository {
   SupportPersonsRepository({
