@@ -1066,7 +1066,7 @@ void main() {
         await expected2;
       });
 
-      test('Trying to save new recurring before now yields warning', () async {
+      test('Trying to save recurring with errors yields warnings', () async {
         final clockBloc = ClockBloc.fixed(aTime.add(1.hours()));
         // Arrange
         final editActivityCubit = EditActivityCubit.newActivity(
