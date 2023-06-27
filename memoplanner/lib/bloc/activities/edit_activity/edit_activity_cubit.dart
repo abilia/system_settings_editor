@@ -234,7 +234,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
   }
 
   void changeWeeklyRecurring(Recurs recurs) {
-    if (recurs.recurrence != RecurrentType.weekly ||
+    if (recurs.type != Recurs.typeWeekly ||
         state.activity.recurs.recurrence != RecurrentType.weekly ||
         (state.storedRecurring &&
             recurs.end != state.originalActivity.recurs.end) ||

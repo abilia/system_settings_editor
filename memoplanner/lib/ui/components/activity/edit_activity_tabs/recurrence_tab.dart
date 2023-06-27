@@ -126,7 +126,7 @@ class Weekly extends StatelessWidget with EditActivityTab {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconAndTextButton(
-              style: actionButtonStyleDark.withTextStyle(bodyLarge),
+              style: actionButtonStyleDark,
               text: isAllSelected ? translate.deselectAll : translate.selectAll,
               icon: isAllSelected
                   ? AbiliaIcons.cancel

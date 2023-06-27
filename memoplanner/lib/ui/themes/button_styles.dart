@@ -267,6 +267,7 @@ final actionButtonStyleDark = _actionButtonStyle.copyWith(
   shape: shapeDark,
   minimumSize: smallSize,
   iconSize: MaterialStateProperty.all(layout.actionButton.iconSize),
+  textStyle: MaterialStateProperty.all(bodyLarge),
 );
 
 final actionButtonStyleNoneTransparentDark = actionButtonStyleDark.copyWith(
@@ -626,10 +627,6 @@ extension ButtonStyleSize on ButtonStyle {
 
   ButtonStyle withIconSize(double? iconSize) => copyWithNullable(
         iconSize: iconSize != null ? MaterialStateProperty.all(iconSize) : null,
-      );
-
-  ButtonStyle withTextStyle(TextStyle textStyle) => copyWith(
-        textStyle: MaterialStateProperty.all(textStyle),
       );
 
   ButtonStyle get withoutMinimumWidth => withMinimumSize(

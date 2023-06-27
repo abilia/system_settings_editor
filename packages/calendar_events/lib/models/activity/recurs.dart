@@ -10,21 +10,21 @@ class Recurs extends Equatable {
   DateTime get end => DateTime.fromMillisecondsSinceEpoch(endTime);
   bool get hasNoEnd => endTime >= _noEnd;
   bool get isRecurring => type != typeNone;
-  bool get daily => type == typeDaily;
-  bool get weekly => type == typeWeekly;
+  bool get daily => type == typeWeekly && data == allDaysOfWeek;
+  bool get weekly => type == typeWeekly && !daily;
   bool get monthly => type == typeMonthly;
   bool get yearly => type == typeYearly;
 
   @visibleForTesting
   const Recurs.raw(this.type, this.data, int? endTime)
-      : assert(type >= typeNone && type <= typeDaily),
+      : assert(type >= typeNone && type <= typeYearly),
         assert(type != typeWeekly || data < 0x4000),
         assert(type != typeMonthly || data < 0x80000000),
         endTime = endTime == null || endTime > _noEnd ? _noEnd : endTime;
 
   static const not = Recurs.raw(typeNone, 0, _noEnd),
       everyDay = Recurs.raw(
-        typeDaily,
+        typeWeekly,
         allDaysOfWeek,
         _noEnd,
       );
@@ -75,7 +75,8 @@ class Recurs extends Equatable {
   Recurs changeEnd(DateTime endTime) =>
       Recurs.raw(type, data, endTime.millisecondsSinceEpoch);
 
-  RecurrentType get recurrence => RecurrentType.values[type];
+  RecurrentType get recurrence =>
+      daily ? RecurrentType.daily : RecurrentType.values[type];
 
   bool recursOnDay(DateTime day) {
     switch (recurrence) {
@@ -115,8 +116,7 @@ class Recurs extends Equatable {
   static const int typeNone = 0,
       typeWeekly = 1,
       typeMonthly = 2,
-      typeYearly = 3,
-      typeDaily = 4;
+      typeYearly = 3;
 
   @visibleForTesting
   static const int evenMonday = 0x1,
@@ -193,17 +193,12 @@ class Recurs extends Equatable {
       : {};
 
   Set<int> get monthDays => monthly ? _generateBitsSet(31, data) : {};
-
   bool get everyOtherWeek => weekly && _onEvenWeek != _onOddWeek;
 
   bool get _onEvenWeek => weekly && _evenWeekBits > 0;
-
   bool get _onOddWeek => weekly && _oddWeekBits > 0;
-
   bool get _onlyOddWeeks => everyOtherWeek && _onOddWeek;
-
   int get _oddWeekBits => data >> 7;
-
   int get _evenWeekBits => data & 0x7F;
 
   bool _isBitSet(int recurrentData, int bit) => recurrentData & (1 << bit) > 0;
