@@ -24,6 +24,7 @@ class Lt {
 
   static const List<Locale> supportedLocales = [
     Locale.fromSubtags(languageCode: 'en'),
+    Locale.fromSubtags(languageCode: 'sv'),
   ];
 
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =

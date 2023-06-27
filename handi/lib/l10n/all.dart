@@ -4,6 +4,6 @@ export 'package:lokalise_flutter_sdk/lokalise_flutter_sdk.dart';
 export 'generated/l10n.dart';
 
 Future<void> initLokalise() => Lokalise.init(
-      projectId: '5478615164886d27c51a59.58833679',
-      sdkToken: 'd3fbf2cb3b69f06694974560af79cb31fc6b',
+      projectId: '49319703649a92c05413c1.00679798',
+      sdkToken: 'b264097c55c0e227361567693016597b2f3f',
     );

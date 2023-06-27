@@ -1,0 +1,18 @@
+{
+    "@@locale": "sv",
+    "@@last_modified": "2023-26-15T11:46:41+02:00",
+    "generics": "",
+    "logOut": "Logga ut",
+    "loggedOut": "Du har blivit utloggad",
+    "ok": "",
+    "password": "Lösenord",
+    "pushReceived": "Push mottagen",
+    "signIn": "Logga in",
+    "sortables": "",
+    "sync": "Synkronisera",
+    "textToSpeech": "Text till tal",
+    "unauthorized": "Obehörig",
+    "userFiles": "Användarfiler",
+    "userName": "Användarnamn",
+    "upcomingActivities": "Kommande aktiviteter"
+}
