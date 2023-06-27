@@ -22,6 +22,11 @@ void main() {
     fixed: true,
   );
   final time = DateTime(2022, 05, 10, 13, 37);
+
+  setUpAll(() async {
+    await Lokalise.initMock();
+  });
+
   setUp(() async {
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();

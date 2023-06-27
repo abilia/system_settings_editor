@@ -10,7 +10,7 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Padding(
       padding: layout.templates.m7,
       child: Column(
@@ -21,11 +21,11 @@ class WelcomePage extends StatelessWidget {
             height: layout.startupPage.welcomeLogoHeight,
           ),
           SizedBox(height: layout.startupPage.welcomeLogoDistance),
-          Text(t.welcome,
+          Text(translate.welcome,
               style: abiliaTextTheme.headlineMedium
                   ?.copyWith(color: AbiliaColors.black75)),
           SizedBox(height: layout.formPadding.largeHorizontalItemDistance),
-          Text(t.welcomeText,
+          Text(translate.welcomeText,
               style: abiliaTextTheme.bodyMedium
                   ?.copyWith(color: AbiliaColors.black75)),
           SizedBox(height: layout.startupPage.startButtonDistance),
@@ -39,7 +39,7 @@ class WelcomePage extends StatelessWidget {
                 curve: StartupGuidePage.curve,
               ),
               child: Text(
-                t.start,
+                translate.start,
                 key: TestKey.startWelcomeGuide,
               ),
             ),

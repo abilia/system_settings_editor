@@ -54,6 +54,10 @@ void main() {
     });
   }
 
+  setUpAll(() async {
+    await Lokalise.initMock();
+  });
+
   setUp(() async {
     setUpMockSystemSettingsChannel();
     registerFallbackValues();

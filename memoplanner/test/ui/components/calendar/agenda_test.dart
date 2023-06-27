@@ -19,14 +19,13 @@ import '../../../mocks/mocks.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
+  late final Lt translate;
   final now = DateTime(2020, 06, 04, 11, 24);
   late ActivityDbInMemory activityDbInMemory;
   GenericResponse genericResponse = () => [];
   TimerResponse timerResponse = () => [];
   List<Activity> activityResponse = [];
   Response licenseResponse = licenseResponseExpires(now.add(5.days()));
-
-  final translate = Locales.language.values.first;
 
   const firstFullDayTitle = 'first full day',
       secondFullDayTitle = 'second full day',
@@ -64,7 +63,9 @@ void main() {
           .widget as CrossOver)
       .applyCross;
 
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
+    translate = await Lt.load(Lt.supportedLocales.first);
     tz.initializeTimeZones();
     setupPermissions();
   });
@@ -574,15 +575,16 @@ void main() {
         rightCategoryInactiveColor = AbiliaColors.green40,
         leftCategoryActiveColor = AbiliaColors.black60,
         noCategoryColor = AbiliaColors.white140;
-
-    final translated = Locales.language.values.first;
-    final right = translated.right;
-    final left = translated.left;
-    final leftFinder = find.text(left);
-    final rightFinder = find.text(right);
+    late final Finder leftFinder;
+    late final Finder rightFinder;
     final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
     final previousDayButtonFinder =
         find.byIcon(AbiliaIcons.returnToPreviousPage);
+
+    setUpAll(() {
+      leftFinder = find.text(translate.left);
+      rightFinder = find.text(translate.right);
+    });
 
     testWidgets('Exists', (WidgetTester tester) async {
       await tester.pumpWidget(const App());
@@ -619,8 +621,8 @@ void main() {
     testWidgets('tts', (WidgetTester tester) async {
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
-      await tester.verifyTts(leftFinder, exact: translated.left);
-      await tester.verifyTts(rightFinder, exact: translated.right);
+      await tester.verifyTts(leftFinder, exact: translate.left);
+      await tester.verifyTts(rightFinder, exact: translate.right);
       await tester.tap(leftFinder);
       await tester.tap(rightFinder);
       await tester.pumpAndSettle();
@@ -628,12 +630,12 @@ void main() {
           find.descendant(
               of: find.byType(LeftCategory),
               matching: find.byType(CategoryImage)),
-          exact: translated.left);
+          exact: translate.left);
       await tester.verifyTts(
           find.descendant(
               of: find.byType(RightCategory),
               matching: find.byType(CategoryImage)),
-          exact: translated.right);
+          exact: translate.right);
     });
 
     testWidgets('Tap left, change day', (WidgetTester tester) async {

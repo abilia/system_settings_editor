@@ -492,7 +492,7 @@ class WeekNumber extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final weekTranslation = Translator.of(context).translate.week;
+    final weekTranslation = Lt.of(context).week;
     return Tts.data(
       data: '$weekTranslation ${weekNumber ?? ''}',
       child: SizedBox(

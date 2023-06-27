@@ -37,6 +37,7 @@ void main() {
 
   setUpAll(registerFallbackValues);
   setUp(() async {
+    await Lokalise.initMock();
     activitiesBloc = MockActivitiesBloc();
     when(() => activitiesBloc.state).thenReturn(ActivitiesChanged());
     activitiesStreamController = StreamController<ActivitiesChanged>();
@@ -101,6 +102,7 @@ void main() {
     Authenticated state = const Authenticated(user: user),
   }) =>
       MaterialApp(
+        localizationsDelegates: const [Lt.delegate],
         home: TopLevelProvider(
           child: AuthenticationBlocProvider(
             child: AuthenticatedBlocsProvider(

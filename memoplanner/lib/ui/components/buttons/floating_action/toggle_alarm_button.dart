@@ -38,7 +38,7 @@ class ToggleAlarmButtonActive extends StatelessWidget {
           ),
         ],
       ),
-      ttsData: Translator.of(context).translate.disableAlarms,
+      ttsData: Lt.of(context).disableAlarms,
       child: const Icon(AbiliaIcons.handiNoAlarmVibration),
     );
   }
@@ -59,7 +59,7 @@ class ToggleAlarmButtonInactive extends StatelessWidget {
           showViewDialog(
             context: context,
             builder: (context) => WarningDialog(
-              text: Translator.of(context).translate.alertAlarmsDisabled,
+              text: Lt.of(context).alertAlarmsDisabled,
             ),
             routeSettings: (WarningDialog).routeSetting(
               properties: {'reason': 'Alarms disabled until midnight'},
@@ -75,7 +75,7 @@ class ToggleAlarmButtonInactive extends StatelessWidget {
           ),
         ],
       ),
-      ttsData: Translator.of(context).translate.disableAlarms,
+      ttsData: Lt.of(context).disableAlarms,
       child: const Icon(AbiliaIcons.handiAlarmVibration),
     );
   }

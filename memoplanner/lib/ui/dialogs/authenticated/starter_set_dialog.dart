@@ -6,7 +6,7 @@ class StarterSetDialog extends StatelessWidget {
   const StarterSetDialog({required this.onNext, Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return ViewDialog(
       bodyPadding: layout.templates.m4,
       expanded: true,
@@ -42,7 +42,7 @@ class StarterSetDialog extends StatelessWidget {
       ),
       forwardNavigationWidget: YesButton(
         onPressed: () async {
-          final language = Translator.of(context).locale.languageCode;
+          final language = Localizations.localeOf(context).languageCode;
           await context.read<SortableBloc>().addStarter(language);
           onNext();
         },

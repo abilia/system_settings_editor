@@ -19,14 +19,16 @@ import '../../../test_helpers/tts.dart';
 
 void main() {
   const secretPassword = 'pwfafawfapwfafawfa';
-  final translate = Locales.language.values.first;
+  late final Lt translate;
 
   final time = DateTime(2020, 11, 11, 11, 11);
   DateTime licenseExpireTime;
   late ListenableMockClient client;
   TermsOfUseResponse termsOfUseResponse = () => TermsOfUse.accepted();
 
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
+    translate = await Lt.load(Lt.supportedLocales.first);
     registerFallbackValues();
     scheduleNotificationsIsolated = noAlarmScheduler;
     licenseExpireTime = time.add(10.days());
@@ -496,6 +498,7 @@ void main() {
     testWidgets('Login footer buttons', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
+          localizationsDelegates: const [Lt.delegate],
           home: BlocProvider<SpeechSettingsCubit>(
             create: (_) => FakeSpeechSettingsCubit(),
             child: Builder(
@@ -506,6 +509,7 @@ void main() {
           ),
         ),
       );
+      await tester.pumpAndSettle();
       expect(find.byType(AbiliaLogoWithReset), findsOneWidget);
       expect(find.byType(AboutButton), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.settings), findsOneWidget);

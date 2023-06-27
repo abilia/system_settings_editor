@@ -13,7 +13,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return BlocListener<PermissionCubit, PermissionState>(
       listenWhen: (previous, current) =>
           previous.status[Permission.systemAlertWindow]?.isGranted == false &&
@@ -28,7 +28,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
         forwardNavigationWidget: showRedirect
             ? GreenButton(
                 icon: AbiliaIcons.ok,
-                text: Translator.of(context).translate.allow,
+                text: Lt.of(context).allow,
                 onPressed: () async => context
                     .read<PermissionCubit>()
                     .requestPermissions([Permission.systemAlertWindow]))
@@ -110,9 +110,7 @@ class ActivityAlarmPreview extends StatelessWidget {
                   alarm: StartAlarm(
                     ActivityDay(
                       Activity(
-                        title: Translator.of(context)
-                            .translate
-                            .previewActivityTitle,
+                        title: Lt.of(context).previewActivityTitle,
                         startTime: startTime,
                         duration: 3.hours(),
                         calendarId: '',

@@ -33,6 +33,7 @@ void main() {
   late SharedPreferences fakeSharedPreferences;
 
   setUp(() async {
+    await Lokalise.initMock();
     setupPermissions();
     setupFakeTts();
 
@@ -1562,8 +1563,9 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(WeekCalendar), findsOneWidget);
+      final translate = await Lt.load(Lt.supportedLocales.first);
       final currentDayHeading =
-          '${currentTime.day}\n${const Translator(Locale('en')).translate.shortWeekday(currentTime.weekday)}';
+          '${currentTime.day}\n${translate.shortWeekday(currentTime.weekday)}';
       await tester.tap(find.textContaining(currentDayHeading));
       await tester.pumpAndSettle();
 

@@ -67,7 +67,7 @@ class _ScreensaverAppBar extends StatelessWidget {
           dayPart: context.read<DayPartCubit>().state,
           dayParts: dayParts,
           langCode: Localizations.localeOf(context).toLanguageTag(),
-          translator: Translator.of(context).translate,
+          translate: Lt.of(context),
         ),
       ),
     );

@@ -7,7 +7,7 @@ class RecurringMonthlyWiz extends StatelessWidget {
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
     return WizardScaffold(
-      title: Translator.of(context).translate.monthly,
+      title: Lt.of(context).monthly,
       iconData: AbiliaIcons.month,
       body: ScrollArrows.vertical(
         controller: scrollController,

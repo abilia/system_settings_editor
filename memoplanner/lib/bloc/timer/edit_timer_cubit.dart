@@ -11,7 +11,7 @@ part 'edit_timer_state.dart';
 
 class EditTimerCubit extends Cubit<EditTimerState> {
   final TimerCubit timerCubit;
-  final Translated translate;
+  final Lt translate;
   final Ticker ticker;
 
   EditTimerCubit({

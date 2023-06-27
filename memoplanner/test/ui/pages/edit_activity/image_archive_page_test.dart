@@ -12,10 +12,12 @@ import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
-  final translate = Locales.language.values.first;
+  late final Lt translate;
   late MockSortableBloc mockSortableBloc;
 
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
+    translate = await Lt.load(Lt.supportedLocales.first);
     registerFallbackValues();
   });
 
@@ -103,8 +105,7 @@ void main() {
     bool myPhotos = false,
   }) =>
       MaterialApp(
-        supportedLocales: Translator.supportedLocals,
-        localizationsDelegates: const [Translator.delegate],
+        localizationsDelegates: const [Lt.delegate],
         navigatorObservers: [navObserver],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,

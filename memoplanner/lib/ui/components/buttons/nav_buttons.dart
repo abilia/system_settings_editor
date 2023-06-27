@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:memoplanner/i18n/app_localizations.dart';
-import 'package:memoplanner/ui/components/abilia_icons.dart';
-import 'package:memoplanner/ui/components/buttons/icon_action_button.dart';
+import 'package:memoplanner/ui/all.dart';
 
 class LeftNavButton extends StatelessWidget {
   const LeftNavButton({
@@ -13,7 +10,7 @@ class LeftNavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IconActionButton(
         onPressed: onPressed,
-        ttsData: Translator.of(context).translate.back,
+        ttsData: Lt.of(context).back,
         child: const Icon(AbiliaIcons.returnToPreviousPage),
       );
 }
@@ -28,7 +25,7 @@ class RightNavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IconActionButton(
         onPressed: onPressed,
-        ttsData: Translator.of(context).translate.next,
+        ttsData: Lt.of(context).next,
         child: const Icon(AbiliaIcons.goToNextPage),
       );
 }

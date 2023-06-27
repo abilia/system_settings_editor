@@ -1,12 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
-import 'package:memoplanner/i18n/app_localizations.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
-import 'package:memoplanner/ui/components/all.dart';
+import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 
@@ -27,7 +25,11 @@ void main() {
   bool applyCrossOver() =>
       (find.byType(CrossOver).evaluate().first.widget as CrossOver).applyCross;
 
-  setUp(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
+  });
+
+  setUp(() async {
     supportPersonsRepository = MockSupportPersonsRepository();
     when(() => supportPersonsRepository.load())
         .thenAnswer((_) => Future.value({}));
@@ -41,8 +43,7 @@ void main() {
       tester
           .pumpWidget(
             MaterialApp(
-              supportedLocales: Translator.supportedLocals,
-              localizationsDelegates: const [Translator.delegate],
+              localizationsDelegates: const [Lt.delegate],
               localeResolutionCallback: (locale, supportedLocales) =>
                   supportedLocales.firstWhere(
                       (l) => l.languageCode == locale?.languageCode,

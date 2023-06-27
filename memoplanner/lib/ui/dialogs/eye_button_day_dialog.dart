@@ -38,7 +38,7 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final displaySettings =
         context.select((DayCalendarViewCubit cubit) => cubit.state.display);
     final dividerPad = EdgeInsets.only(
@@ -46,7 +46,7 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
         bottom: layout.formPadding.groupBottomDistance);
     return ViewDialog(
       heading: AppBarHeading(
-        text: t.display,
+        text: translate.display,
         iconData: AbiliaIcons.show,
       ),
       body: ScrollArrows.vertical(
@@ -59,21 +59,21 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
             ),
             if (displaySettings.calendarType) ...[
               Selector<DayCalendarType>(
-                heading: t.viewMode,
+                heading: translate.viewMode,
                 groupValue: calendarType,
                 items: [
                   SelectorItem(
-                    t.listView,
+                    translate.listView,
                     AbiliaIcons.calendarList,
                     DayCalendarType.list,
                   ),
                   SelectorItem(
-                    t.oneTimePillarView,
+                    translate.oneTimePillarView,
                     AbiliaIcons.timeline,
                     DayCalendarType.oneTimepillar,
                   ),
                   SelectorItem(
-                    t.twoTimePillarsView,
+                    translate.twoTimePillarsView,
                     AbiliaIcons.twoTimelines,
                     DayCalendarType.twoTimepillars,
                   ),
@@ -90,21 +90,21 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                   ...[
                     if (displaySettings.intervalType) ...[
                       Selector<TimepillarIntervalType>(
-                        heading: t.dayInterval,
+                        heading: translate.dayInterval,
                         groupValue: dayInterval,
                         items: [
                           SelectorItem(
-                            t.interval,
+                            translate.interval,
                             AbiliaIcons.dayInterval,
                             TimepillarIntervalType.interval,
                           ),
                           SelectorItem(
-                            t.viewDay,
+                            translate.viewDay,
                             AbiliaIcons.sun,
                             TimepillarIntervalType.day,
                           ),
                           SelectorItem(
-                            t.dayAndNight,
+                            translate.dayAndNight,
                             AbiliaIcons.dayNight,
                             TimepillarIntervalType.dayAndNight,
                           ),
@@ -116,21 +116,21 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                     ],
                     if (displaySettings.timepillarZoom) ...[
                       Selector<TimepillarZoom>(
-                        heading: t.timelineZoom,
+                        heading: translate.timelineZoom,
                         groupValue: timepillarZoom,
                         items: [
                           SelectorItem(
-                            t.small,
+                            translate.small,
                             AbiliaIcons.decreaseText,
                             TimepillarZoom.small,
                           ),
                           SelectorItem(
-                            t.medium,
+                            translate.medium,
                             AbiliaIcons.mediumText,
                             TimepillarZoom.normal,
                           ),
                           SelectorItem(
-                            t.large,
+                            translate.large,
                             AbiliaIcons.enlargeText,
                             TimepillarZoom.large,
                           ),
@@ -151,16 +151,16 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
               collapsed: calendarType == DayCalendarType.list,
               child: displaySettings.duration
                   ? Selector<bool>(
-                      heading: t.activityDuration,
+                      heading: translate.activityDuration,
                       groupValue: dotsInTimePillar,
                       items: [
                         SelectorItem(
-                          t.dots,
+                          translate.dots,
                           AbiliaIcons.options,
                           true,
                         ),
                         SelectorItem(
-                          t.edge,
+                          translate.edge,
                           AbiliaIcons.flarp,
                           false,
                         ),

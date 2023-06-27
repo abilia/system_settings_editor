@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
-import 'package:memoplanner/i18n/translations.g.dart';
+import 'package:memoplanner/l10n/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/components/all.dart';
 import 'package:memoplanner/ui/themes/all.dart';
@@ -22,12 +22,14 @@ void main() {
   final startTime = DateTime(1987, 05, 22, 04, 04);
   final duration = 30.minutes();
   final endTime = startTime.add(duration);
-  final translate = Locales.language.values.first;
+  late final Lt translate;
 
   late MockDayCalendarViewCubit mockDayCalendarViewCubit;
   late MockMemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
+    translate = await Lt.load(Lt.supportedLocales.first);
     registerFallbackValues();
   });
 
@@ -102,6 +104,7 @@ void main() {
       ),
     );
     return MaterialApp(
+      localizationsDelegates: const [Lt.delegate],
       home: Directionality(
         textDirection: TextDirection.ltr,
         child: MultiBlocProvider(
@@ -179,6 +182,7 @@ void main() {
         ),
       ),
     );
+    await tester.pumpAndSettle();
     expect(find.text(title), findsOneWidget);
   });
 
@@ -200,6 +204,7 @@ void main() {
         ),
       ),
     );
+    await tester.pumpAndSettle();
     expect(find.text(title), findsOneWidget);
   });
 
@@ -224,6 +229,7 @@ void main() {
         ),
       ),
     );
+    await tester.pumpAndSettle();
 
     final titleTextElement = tester.firstElement(find.text(title));
     final activityCardWidget =
@@ -278,6 +284,7 @@ void main() {
           ),
         ),
       );
+      await tester.pumpAndSettle();
       await tester.verifyTts(
         find.text(title),
         exact: '$title, ${dateFormat(startTime)} to ${dateFormat(endTime)}',
@@ -302,6 +309,7 @@ void main() {
           ),
         ),
       );
+      await tester.pumpAndSettle();
       await tester.verifyTts(
         find.text(title),
         exact:
@@ -328,6 +336,7 @@ void main() {
           ),
         ),
       );
+      await tester.pumpAndSettle();
       await tester.verifyTts(
         find.text(title),
         exact:
@@ -391,6 +400,7 @@ void main() {
           .toList();
 
       await tester.pumpWidget(multiWrap(activities, initialTime: time));
+      await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsOneWidget);
 
       final timelineYPostion =
@@ -431,6 +441,7 @@ void main() {
 
       await tester
           .pumpWidget(multiWrap([activityA, activityB], initialTime: time));
+      await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsOneWidget);
 
       final activityAXPos =
@@ -463,6 +474,7 @@ void main() {
 
       await tester
           .pumpWidget(multiWrap([activityA, activityB], initialTime: time));
+      await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsOneWidget);
 
       final activityAXPos =
@@ -498,6 +510,7 @@ void main() {
 
       await tester
           .pumpWidget(multiWrap([activityA, activityB], initialTime: time));
+      await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsOneWidget);
 
       final activityAXPos =
@@ -527,6 +540,7 @@ void main() {
       );
 
       await tester.pumpWidget(multiWrap(activities));
+      await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsOneWidget);
 
       final activityXPositions = activities.map(
@@ -673,6 +687,7 @@ void main() {
           ),
         ),
       );
+      await tester.pumpAndSettle();
       expect(find.byType(AnimatedDot), findsNothing);
     });
     testWidgets('7 minutes does not show dots', (WidgetTester tester) async {
@@ -689,6 +704,7 @@ void main() {
           ),
         ),
       );
+      await tester.pumpAndSettle();
       expect(find.byType(AnimatedDot), findsNothing);
     });
     testWidgets('8 minutes shows one dot', (WidgetTester tester) async {
@@ -705,6 +721,7 @@ void main() {
           ),
         ),
       );
+      await tester.pumpAndSettle();
       expect(find.byType(AnimatedDot), findsOneWidget);
     });
     testWidgets('22 minutes shows one dot', (WidgetTester tester) async {
@@ -721,6 +738,7 @@ void main() {
           ),
         ),
       );
+      await tester.pumpAndSettle();
       expect(find.byType(AnimatedDot), findsOneWidget);
     });
     testWidgets('23 minutes shows two dot', (WidgetTester tester) async {
@@ -737,6 +755,7 @@ void main() {
           ),
         ),
       );
+      await tester.pumpAndSettle();
       expect(find.byType(AnimatedDot), findsNWidgets(2));
     });
     testWidgets('All different dots (day)', (WidgetTester tester) async {
@@ -755,6 +774,7 @@ void main() {
           initialTime: start,
         ),
       );
+      await tester.pumpAndSettle();
       expect(find.byType(AnimatedDot), findsNWidgets(4));
       expect(
           tester
@@ -787,6 +807,7 @@ void main() {
           ),
         ),
       );
+      await tester.pumpAndSettle();
       expect(find.byType(AnimatedDot), findsNWidgets(4));
       expect(
           tester
@@ -824,6 +845,7 @@ void main() {
           ),
         ),
       );
+      await tester.pumpAndSettle();
       expect(find.byType(AnimatedDot), findsNothing);
       expect(find.byType(SideTime), findsOneWidget);
     });

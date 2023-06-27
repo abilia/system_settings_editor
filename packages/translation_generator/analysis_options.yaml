@@ -1,4 +1,0 @@
-include: package:seagull_lints/seagull.yaml
-linter:
-  rules:
-    depend_on_referenced_packages: false

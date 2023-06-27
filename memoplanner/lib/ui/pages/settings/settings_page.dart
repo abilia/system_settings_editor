@@ -5,38 +5,38 @@ class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final fakeTime = context
         .watch<FeatureToggleCubit>()
         .state
         .isToggleEnabled(FeatureToggle.fakeTime);
     return SettingsBasePage(
       icon: AbiliaIcons.settings,
-      title: t.settings,
+      title: translate.settings,
       widgets: [
         MenuItemPickField(
           icon: AbiliaIcons.month,
-          text: t.calendar,
+          text: translate.calendar,
           navigateTo: const CalendarSettingsPage(),
         ),
         MenuItemPickField(
           icon: AbiliaIcons.menuSetup,
-          text: t.functions,
+          text: translate.functions,
           navigateTo: const FunctionSettingsPage(),
         ),
         MenuItemPickField(
           icon: AbiliaIcons.myPhotos,
-          text: t.imagePicker,
+          text: translate.imagePicker,
           navigateTo: const ImagePickerSettingsPage(),
         ),
         MenuItemPickField(
           icon: AbiliaIcons.appMenu,
-          text: t.menu,
+          text: translate.menu,
           navigateTo: const MenuSettingsPage(),
         ),
         MenuItemPickField(
           icon: AbiliaIcons.technicalSettings,
-          text: t.system,
+          text: translate.system,
           navigateTo: const SystemSettingsPage(),
         ),
         if (fakeTime) const FakeTicker(),

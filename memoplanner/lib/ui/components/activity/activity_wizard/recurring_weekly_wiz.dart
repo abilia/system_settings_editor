@@ -6,7 +6,7 @@ class RecurringWeeklyWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
 
     return WizardScaffold(
       title: translate.weekly,
@@ -42,14 +42,14 @@ class SelectAllWeekdaysButton extends StatelessWidget {
       buildWhen: (previous, current) => previous.weekdays != current.weekdays,
       builder: (context, state) => state.containsAllWeekdays
           ? IconAndTextButton(
-              text: Translator.of(context).translate.deselectAll,
+              text: Lt.of(context).deselectAll,
               icon: AbiliaIcons.cancel,
               style: actionButtonStyleDark,
               onPressed: () =>
                   context.read<RecurringWeekCubit>().selectWeekdays(),
             )
           : IconAndTextButton(
-              text: Translator.of(context).translate.selectAll,
+              text: Lt.of(context).selectAll,
               icon: AbiliaIcons.radioCheckboxSelected,
               style: actionButtonStyleDark,
               onPressed: () => context

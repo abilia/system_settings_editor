@@ -14,13 +14,13 @@ class ChecklistLibraryPage extends StatelessWidget {
         child: LibraryPage<ChecklistData>.selectable(
           appBar: AbiliaAppBar(
             iconData: AbiliaIcons.documents,
-            title: Translator.of(context).translate.selectFromLibrary,
+            title: Lt.of(context).selectFromLibrary,
           ),
           libraryItemGenerator: (checklist) =>
               LibraryChecklist(checklist: checklist.data.checklist),
           selectedItemGenerator: (checklist) =>
               FullScreenChecklist(checklist: checklist.data.checklist),
-          emptyLibraryMessage: Translator.of(context).translate.noChecklists,
+          emptyLibraryMessage: Lt.of(context).noChecklists,
           onOk: (selected) =>
               Navigator.of(context).pop<Checklist>(selected.data.checklist),
         ),

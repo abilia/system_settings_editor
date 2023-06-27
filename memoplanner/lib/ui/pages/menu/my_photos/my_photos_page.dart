@@ -18,7 +18,7 @@ class MyPhotosPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return BlocProvider<SortableArchiveCubit<ImageArchiveData>>(
       create: (_) => SortableArchiveCubit<ImageArchiveData>(
         initialFolderId: myPhotoFolderId,
@@ -86,7 +86,7 @@ class _AllPhotosTab extends StatelessWidget {
       showBottomNavigationBar: false,
       gridCrossAxisCount: layout.myPhotos.crossAxisCount,
       gridChildAspectRatio: layout.myPhotos.childAspectRatio,
-      emptyLibraryMessage: Translator.of(context).translate.noImages,
+      emptyLibraryMessage: Lt.of(context).noImages,
       libraryItemGenerator: (imageArchive) =>
           ThumbnailPhoto(sortable: imageArchive),
     );
@@ -115,7 +115,7 @@ class _PhotoCalendarTab extends StatelessWidget {
         showBottomNavigationBar: false,
         gridCrossAxisCount: layout.myPhotos.crossAxisCount,
         gridChildAspectRatio: layout.myPhotos.childAspectRatio,
-        emptyLibraryMessage: Translator.of(context).translate.noImages,
+        emptyLibraryMessage: Lt.of(context).noImages,
         libraryItemGenerator: (imageArchive) =>
             ThumbnailPhoto(sortable: imageArchive),
       ),
@@ -144,7 +144,7 @@ class _AddPhotoButton extends StatelessWidget {
               final includeInPhotoCalendar =
                   tabController.index == photoCalendarTabIndex;
               return TextAndOrIconActionButtonBlack(
-                Translator.of(context).translate.newText,
+                Lt.of(context).newText,
                 AbiliaIcons.plus,
                 onPressed: () async {
                   final userFileBloc = context.read<UserFileBloc>();

@@ -17,6 +17,7 @@ void main() {
   late MockGenericDb genericDb;
 
   setUp(() async {
+    await Lokalise.initMock();
     setupPermissions();
     tz.initializeTimeZones();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();

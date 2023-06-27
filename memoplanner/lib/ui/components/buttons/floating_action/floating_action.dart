@@ -34,7 +34,7 @@ class FloatingActions extends StatelessWidget {
                   ),
                   child: ErrorMessage(
                     text: Text(
-                      Translator.of(context).translate.notificationsWarningText,
+                      Lt.of(context).notificationsWarningText,
                     ),
                   ),
                 ),

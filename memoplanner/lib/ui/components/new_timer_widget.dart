@@ -7,19 +7,19 @@ class NewTimerWidget extends StatelessWidget with TimerNavigation {
   @override
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Column(
       children: [
         PickField(
           key: TestKey.newTimerChoice,
           leading: const Icon(AbiliaIcons.stopWatch),
-          text: Text(t.newTimer),
+          text: Text(translate.newTimer),
           onTap: () async => navigateToEditTimerPage(context, authProviders),
         ).pad(layout.templates.m1.withoutBottom),
         PickField(
           key: TestKey.basicTimerChoice,
           leading: const Icon(AbiliaIcons.basicTimers),
-          text: Text(t.fromTemplate),
+          text: Text(translate.fromTemplate),
           onTap: () async => navigateToBasicTimerPage(context, authProviders),
         ).pad(m1ItemPadding),
       ],

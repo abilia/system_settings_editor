@@ -30,6 +30,7 @@ void main() {
   late MockBaseUrlDb mockBaseUrlDb;
 
   setUpAll(() async {
+    await Lokalise.initMock();
     registerFallbackValues();
     tz.initializeTimeZones();
     await initializeDateFormatting();
@@ -79,8 +80,7 @@ void main() {
   }) {
     final activity = givenActivity ?? startActivity;
     return MaterialApp(
-      supportedLocales: Translator.supportedLocals,
-      localizationsDelegates: const [Translator.delegate],
+      localizationsDelegates: const [Lt.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),

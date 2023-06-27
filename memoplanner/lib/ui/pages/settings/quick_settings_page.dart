@@ -10,11 +10,11 @@ class QuickSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final hasBattery = GetIt.I<Device>().hasBattery;
     return Scaffold(
       appBar: AbiliaAppBar(
-        title: t.quickSettingsMenu.singleLine,
+        title: translate.quickSettingsMenu.singleLine,
         iconData: AbiliaIcons.settings,
       ),
       body: ScrollArrows.vertical(
@@ -39,14 +39,14 @@ class QuickSettingsPage extends StatelessWidget {
               ),
               child: BlocBuilder<AlarmSoundBloc, Sound?>(
                 builder: (context, state) => QuickSettingsGroup(children: [
-                  SubHeading(t.volumeAlarm),
+                  SubHeading(translate.volumeAlarm),
                   AlarmVolumeSlider(
                     onVolumeSet: () async => context
                         .read<AlarmSoundBloc>()
                         .add(const PlayAlarmSound(Sound.Default)),
                   ),
                   SizedBox(height: layout.formPadding.groupBottomDistance),
-                  SubHeading(t.volumeMedia),
+                  SubHeading(translate.volumeMedia),
                   MediaVolumeSlider(
                     onVolumeSet: () async => context
                         .read<AlarmSoundBloc>()
@@ -61,7 +61,7 @@ class QuickSettingsPage extends StatelessWidget {
             if (hasBattery)
               QuickSettingsGroup(
                 children: [
-                  SubHeading(t.screenTimeout),
+                  SubHeading(translate.screenTimeout),
                   const ScreenTimeoutPickField(),
                   SizedBox(height: layout.formPadding.verticalItemDistance),
                   const KeepOnWhileChargingSwitch(),

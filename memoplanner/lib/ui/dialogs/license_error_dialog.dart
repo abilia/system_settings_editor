@@ -12,10 +12,10 @@ class LicenseErrorDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translator = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return ViewDialog(
       heading: AppBarHeading(
-        text: heading ?? translator.error,
+        text: heading ?? translate.error,
         iconData: AbiliaIcons.passwordProtection,
       ),
       body: Column(
@@ -37,7 +37,7 @@ class LicenseErrorDialog extends StatelessWidget {
         ],
       ),
       backNavigationWidget: LightButton(
-        text: Translator.of(context).translate.toLogin,
+        text: Lt.of(context).toLogin,
         icon: AbiliaIcons.openDoor,
         onPressed: () async => Navigator.of(context).maybePop(false),
       ),

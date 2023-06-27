@@ -16,7 +16,7 @@ class DatePickerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AbiliaAppBar(
-        title: Translator.of(context).translate.selectDate,
+        title: Lt.of(context).selectDate,
         iconData: AbiliaIcons.day,
         bottom: const MonthAppBarStepper(),
       ),
@@ -31,7 +31,7 @@ class DatePickerPage extends StatelessWidget {
                 return showDialog(
                   context: context,
                   builder: (context) => ErrorDialog(
-                    text: Translator.of(context).translate.endBeforeStartError,
+                    text: Lt.of(context).endBeforeStartError,
                   ),
                 );
               }

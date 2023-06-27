@@ -9,22 +9,22 @@ class SystemSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return SettingsBasePage(
       icon: AbiliaIcons.technicalSettings,
-      title: t.system,
-      label: Config.isMP ? t.settings : null,
+      title: translate.system,
+      label: Config.isMP ? translate.settings : null,
       widgets: [
         PickField(
           leading: const Icon(AbiliaIcons.numericKeyboard),
-          text: Text(t.codeProtect),
+          text: Text(translate.codeProtect),
           onTap: () async {
             final authProviders = copiedAuthProviders(context);
             final navigator = Navigator.of(context);
             final accessGranted = await codeProtectAccess(
               context,
               restricted: (codeSettings) => codeSettings.protectCodeProtect,
-              name: t.codeProtect,
+              name: translate.codeProtect,
             );
             if (accessGranted) {
               await navigator.push(
@@ -41,7 +41,7 @@ class SystemSettingsPage extends StatelessWidget {
         ),
         PickField(
           leading: const Icon(AbiliaIcons.speakText),
-          text: Text(t.textToSpeech),
+          text: Text(translate.textToSpeech),
           onTap: () async {
             unawaited(context.read<VoicesCubit>().loadAvailableVoices());
             await Navigator.of(context).push(
@@ -62,12 +62,12 @@ class SystemSettingsPage extends StatelessWidget {
         ),
         PickField(
           leading: const Icon(AbiliaIcons.android),
-          text: Text(t.androidSettings),
+          text: Text(translate.androidSettings),
           onTap: () async {
             final accessGranted = await codeProtectAccess(
               context,
               restricted: (codeSettings) => codeSettings.protectAndroidSettings,
-              name: t.androidSettings,
+              name: translate.androidSettings,
             );
             if (accessGranted) {
               await AndroidIntents.openSettings();
@@ -76,12 +76,12 @@ class SystemSettingsPage extends StatelessWidget {
         ),
         MenuItemPickField(
           icon: AbiliaIcons.information,
-          text: t.about,
+          text: translate.about,
           navigateTo: const AboutPage(),
         ),
         MenuItemPickField(
           icon: AbiliaIcons.powerOffOn,
-          text: t.logout,
+          text: translate.logout,
           navigateTo: const LogoutPage(),
         ),
       ],

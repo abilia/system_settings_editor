@@ -16,7 +16,7 @@ class TimeInputPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AbiliaAppBar(
-        title: Translator.of(context).translate.setTime,
+        title: Lt.of(context).setTime,
         iconData: AbiliaIcons.clock,
         height: layout.appBar.mediumHeight,
         trailing: Padding(
@@ -80,7 +80,7 @@ class MissingStartTimeErrorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ErrorDialog(
-      text: Translator.of(context).translate.missingStartTime,
+      text: Lt.of(context).missingStartTime,
     );
   }
 }
@@ -219,7 +219,7 @@ class _TimeInputContentState extends State<TimeInputContent> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final bottomNavigationBuilder = widget.bottomNavigationBuilder;
     final showEndTime = context.select((MemoplannerSettingsBloc bloc) =>
         bloc.state.addActivity.general.showEndTime);
@@ -445,7 +445,7 @@ class _TimeInput extends StatelessWidget {
     final clockTime = '$heading ${formatTimeToDisplay(controller.text)}';
     if (!twelveHourClock) return clockTime;
     return '$clockTime '
-        '${(period == DayPeriod.am ? Translator.of(context).translate.am : Translator.of(context).translate.pm)}';
+        '${(period == DayPeriod.am ? Lt.of(context).am : Lt.of(context).pm)}';
   }
 }
 
@@ -584,7 +584,7 @@ class AmPmSelector extends StatelessWidget {
     return Row(children: [
       _AmPmButton(
         buttonKey: amRadioFieldKey,
-        text: Translator.of(context).translate.am,
+        text: Lt.of(context).am,
         onPressed: () => onChanged(DayPeriod.am),
         groupValue: groupValue,
         value: DayPeriod.am,
@@ -593,7 +593,7 @@ class AmPmSelector extends StatelessWidget {
       SizedBox(width: layout.timeInput.amPmDistance),
       _AmPmButton(
         buttonKey: pmRadioFieldKey,
-        text: Translator.of(context).translate.pm,
+        text: Lt.of(context).pm,
         onPressed: () => onChanged(DayPeriod.pm),
         groupValue: groupValue,
         value: DayPeriod.pm,

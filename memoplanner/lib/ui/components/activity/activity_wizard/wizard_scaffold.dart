@@ -29,7 +29,7 @@ class WizardScaffold extends StatelessWidget {
         appBar: showAppBar
             ? AbiliaAppBar(
                 iconData: iconData,
-                label: Translator.of(context).translate.newActivity,
+                label: Lt.of(context).newActivity,
                 height: appBarHeight,
                 title: title,
                 bottom: bottom,

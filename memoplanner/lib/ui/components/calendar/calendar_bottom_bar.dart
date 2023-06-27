@@ -11,7 +11,7 @@ class CalendarBottomBar extends StatelessWidget {
         .select((MemoplannerSettingsBloc bloc) => bloc.state.functions.display);
     return DefaultTabControllerBuilder(
       builder: (context, tabController) {
-        final translate = Translator.of(context).translate;
+        final translate = Lt.of(context);
         final height = display.photoAlbumTabIndex == tabController?.index
             ? 0.0
             : layout.toolbar.height;

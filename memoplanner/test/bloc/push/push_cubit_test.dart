@@ -4,7 +4,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/main.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/ui/components/all.dart';
+import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -13,6 +13,7 @@ import '../../fakes/all.dart';
 void main() {
   group('Push integration test', () {
     setUp(() async {
+      await Lokalise.initMock();
       tz.initializeTimeZones();
       setupPermissions();
       notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();

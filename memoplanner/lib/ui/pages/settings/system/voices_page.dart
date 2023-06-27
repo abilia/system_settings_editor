@@ -7,13 +7,13 @@ class VoicesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final scrollController = ScrollController();
 
     return Scaffold(
       appBar: AbiliaAppBar(
-        title: t.voices,
-        label: t.textToSpeech,
+        title: translate.voices,
+        label: translate.textToSpeech,
         iconData: AbiliaIcons.speakText,
       ),
       body: Builder(builder: (context) {

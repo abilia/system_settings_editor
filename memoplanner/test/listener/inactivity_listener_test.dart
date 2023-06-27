@@ -16,7 +16,8 @@ import '../test_helpers/app_pumper.dart';
 import '../test_helpers/register_fallback_values.dart';
 
 void main() {
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
     tz.initializeTimeZones();
     setupPermissions();
     registerFallbackValues();

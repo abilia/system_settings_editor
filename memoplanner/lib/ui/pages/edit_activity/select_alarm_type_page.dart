@@ -16,7 +16,7 @@ class SelectAlarmTypePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Scaffold(
       appBar: AbiliaAppBar(
         title: translate.selectAlarmType,
@@ -42,7 +42,7 @@ class SelectAlarmTypeBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final generalSettings = context.select(
         (MemoplannerSettingsBloc bloc) => bloc.state.addActivity.general);
     final cubit = context.watch<EditActivityCubit>();

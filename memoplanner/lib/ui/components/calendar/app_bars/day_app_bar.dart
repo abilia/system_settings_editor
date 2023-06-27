@@ -40,7 +40,7 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
         day: day,
         dayParts: calendarSettings.dayParts,
         langCode: Localizations.localeOf(context).toLanguageTag(),
-        translator: Translator.of(context).translate,
+        translate: Lt.of(context),
         currentNight: isNight,
         dayPart: dayPart,
       ),

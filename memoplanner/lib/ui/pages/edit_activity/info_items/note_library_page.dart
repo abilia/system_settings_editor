@@ -15,11 +15,11 @@ class NoteLibraryPage extends StatelessWidget {
         child: LibraryPage<NoteData>.selectable(
           appBar: AbiliaAppBar(
             iconData: AbiliaIcons.documents,
-            title: Translator.of(context).translate.selectFromLibrary,
+            title: Lt.of(context).selectFromLibrary,
           ),
           libraryItemGenerator: (note) => LibraryNote(content: note.data.text),
           selectedItemGenerator: (note) => FullScreenNote(noteData: note.data),
-          emptyLibraryMessage: Translator.of(context).translate.noNotes,
+          emptyLibraryMessage: Lt.of(context).noNotes,
           onOk: (selected) => Navigator.of(context)
               .pop<InfoItem>(NoteInfoItem(selected.data.text)),
         ),

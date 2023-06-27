@@ -36,7 +36,8 @@ void main() {
   bool applyCrossOver() =>
       (find.byType(CrossOver).evaluate().first.widget as CrossOver).applyCross;
 
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
     tz.initializeTimeZones();
     setupPermissions();
     setupFakeTts();

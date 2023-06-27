@@ -8,16 +8,17 @@ import '../../../mocks/mock_bloc.dart';
 
 void main() {
   late MockWakeLockCubit mockWakeLockCubit;
-  const translate = EN();
+  late final Lt translate;
   const baseState = WakeLockState(hasBattery: true);
 
-  setUp(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
+    translate = await Lt.load(Lt.supportedLocales.first);
     mockWakeLockCubit = MockWakeLockCubit();
   });
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
-        supportedLocales: Translator.supportedLocals,
-        localizationsDelegates: const [Translator.delegate],
+        localizationsDelegates: const [Lt.delegate],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),

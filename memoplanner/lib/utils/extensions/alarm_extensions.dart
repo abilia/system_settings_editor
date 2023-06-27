@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/l10n/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/components/all.dart';
 
@@ -11,10 +11,10 @@ extension AlarmTypeExtensions on Alarm {
     return AbiliaIcons.handiNoAlarmVibration;
   }
 
-  String text(Translated translator) {
-    if (sound) return translator.alarmAndVibration;
-    if (vibrate) return translator.vibrationIfAvailable;
-    if (silent) return translator.silentAlarm;
-    return translator.noAlarm;
+  String text(Lt translate) {
+    if (sound) return translate.alarmAndVibration;
+    if (vibrate) return translate.vibrationIfAvailable;
+    if (silent) return translate.silentAlarm;
+    return translate.noAlarm;
   }
 }

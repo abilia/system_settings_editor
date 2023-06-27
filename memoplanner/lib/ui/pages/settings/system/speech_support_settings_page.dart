@@ -15,7 +15,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final textStyle = Theme.of(context)
         .textTheme
         .bodyMedium
@@ -27,8 +27,8 @@ class SpeechSupportSettingsPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AbiliaAppBar(
-          title: t.textToSpeech,
-          label: t.system,
+          title: translate.textToSpeech,
+          label: translate.system,
           iconData: AbiliaIcons.speakText,
         ),
         body: DividerTheme(
@@ -50,7 +50,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                     children: [
                       Tts(
                         child: Text(
-                          t.voice,
+                          translate.voice,
                           style: textStyle,
                         ),
                       ).pad(
@@ -67,8 +67,8 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                                   PickField(
                                 text: Text(state.voice.isEmpty
                                     ? downloadingVoices
-                                        ? t.installing
-                                        : t.noVoicesInstalled
+                                        ? translate.installing
+                                        : translate.noVoicesInstalled
                                     : state.voice),
                                 onTap: () async => Navigator.of(context).push(
                                   MaterialPageRoute(
@@ -88,7 +88,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                             ),
                             child: TtsPlayButton(
                               tts: state.voice.isNotEmpty
-                                  ? t.testOfSpeechRate
+                                  ? translate.testOfSpeechRate
                                   : '',
                             ),
                           ),
@@ -107,7 +107,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                     children: [
                       Tts(
                         child: Text(
-                          '${t.speechRate} ${_speechRateToProgress(state.speechRate).round()}',
+                          '${translate.speechRate} ${_speechRateToProgress(state.speechRate).round()}',
                           style: textStyle,
                         ),
                       ).pad(
@@ -142,7 +142,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                             .read<SpeechSettingsCubit>()
                             .setSpeakEveryWord(on),
                     value: state.speakEveryWord,
-                    child: Text(t.speakEveryWord),
+                    child: Text(translate.speakEveryWord),
                   ).pad(
                     EdgeInsets.only(
                           top: layout.formPadding.groupTopDistance,

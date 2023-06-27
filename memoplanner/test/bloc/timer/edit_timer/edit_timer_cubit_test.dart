@@ -1,6 +1,7 @@
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/i18n/all.dart';
+
 import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 import 'package:test/test.dart';
@@ -10,7 +11,12 @@ import '../../../fakes/all.dart';
 void main() {
   final now = DateTime(2033, 01, 27, 11, 55);
   final ticker = Ticker.fake(initialTime: now);
-  final translate = Locales.language.values.first;
+  late final Lt translate;
+
+  setUpAll(() async {
+    await Lokalise.initMock();
+    translate = await Lt.load(Lt.supportedLocales.first);
+  });
 
   test('Initial state without basicTimer', () async {
     final editTimerCubit = EditTimerCubit(

@@ -1,5 +1,6 @@
 import 'package:logging/logging.dart';
-import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/l10n/all.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsDb {
@@ -21,7 +22,7 @@ class SettingsDb {
     final lang = preferences.getString(_languageRecord);
     if (lang == null) {
       _log.warning('language is missing in db, falls back to default');
-      return Locales.language.keys.first.toLanguageTag();
+      return Lt.supportedLocales.first.toLanguageTag();
     }
     return lang;
   }

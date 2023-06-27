@@ -30,7 +30,7 @@ void main() {
     Config.isMPGO ? TestKey.addActivityButton : TestKey.addTimerButton,
   );
 
-  final translate = Locales.language.values.first;
+  late final Lt translate;
 
   Widget wrapWithMaterialApp(
     Widget widget, {
@@ -45,8 +45,7 @@ void main() {
             authenticatedState: const Authenticated(user: user),
             child: MaterialApp(
               theme: abiliaTheme,
-              supportedLocales: Translator.supportedLocals,
-              localizationsDelegates: const [Translator.delegate],
+              localizationsDelegates: const [Lt.delegate],
               localeResolutionCallback: (locale, supportedLocales) =>
                   supportedLocales.firstWhere(
                       (l) => l.languageCode == locale?.languageCode,
@@ -70,7 +69,9 @@ void main() {
   SessionsResponse sessionResponse = () => fakeSessions;
   final initialDay = DateTime(2020, 08, 05);
 
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
+    translate = await Lt.load(Lt.supportedLocales.first);
     registerFallbackValues();
     scheduleNotificationsIsolated = noAlarmScheduler;
   });

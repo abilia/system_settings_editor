@@ -28,7 +28,7 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final videoFeatureToggle = context
         .read<FeatureToggleCubit>()
         .state
