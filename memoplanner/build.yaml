@@ -1,7 +1,0 @@
-targets:
-  $default:
-    builders:
-      translation_generator|translationGeneratorBuilder:
-        enabled: True
-        generate_for:
-            - lib/i18n/translations.tsv
