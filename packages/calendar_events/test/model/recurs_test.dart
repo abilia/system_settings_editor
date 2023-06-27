@@ -690,7 +690,7 @@ void main() {
         expect(monthDays.weekdays, days);
       });
 
-      test('on day all weekdays', () {
+      test('on day all weekdays makes recurring daily', () {
         // arrange
         final days = [
           DateTime.monday,
@@ -701,19 +701,21 @@ void main() {
           DateTime.saturday,
           DateTime.sunday,
         ];
-        final monthDays = Recurs.weeklyOnDays(days);
+        final recurs = Recurs.weeklyOnDays(days);
         // assert
-        expect(monthDays.weekdays, days);
+        expect(recurs.weekly, isFalse);
+        expect(recurs.daily, isTrue);
       });
 
-      test('on all days dateTime', () {
+      test('on all days dateTime makes recurring daily', () {
         // arrange
         final days = List.generate(7, (index) => DateTime(2000, 12, index + 1))
             .map((e) => e.weekday)
             .toList();
-        final monthDays = Recurs.weeklyOnDays(days);
+        final recurs = Recurs.weeklyOnDays(days);
         // assert
-        expect(monthDays.weekdays, unorderedEquals(days));
+        expect(recurs.weekly, isFalse);
+        expect(recurs.daily, isTrue);
       });
     });
   });
