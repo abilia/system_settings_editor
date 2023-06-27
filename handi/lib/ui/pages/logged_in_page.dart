@@ -8,6 +8,7 @@ import 'package:handi/bloc/settings_cubit.dart';
 import 'package:handi/l10n/generated/l10n.dart';
 import 'package:handi/ui/components/tts.dart';
 import 'package:sortables/sortables.dart';
+import 'package:support_persons/bloc/support_persons_cubit.dart';
 import 'package:ui/buttons/link_button.dart';
 import 'package:user_files/user_files.dart';
 
@@ -31,6 +32,8 @@ class LoggedInPage extends StatelessWidget {
     });
     final userFiles = context
         .select((UserFileBloc userFiles) => userFiles.state.userFiles.length);
+    final supportPersons = context.select(
+        (SupportPersonsCubit cubit) => cubit.state.supportPersons.length);
     final tts = context.select(
         (SettingsCubit settingsCubit) => settingsCubit.state.textToSpeech);
 
@@ -84,6 +87,7 @@ class LoggedInPage extends StatelessWidget {
                         Text('${translate.generics}: $generics'),
                         Text('${translate.sortables}: $sortables'),
                         Text('${translate.userFiles}: $userFiles'),
+                        Text('${translate.supportPersons}: $supportPersons'),
                       ],
                     ),
                     const Spacer(),

@@ -7,6 +7,7 @@ export 'package:seagull_clock/clock_bloc.dart';
 export 'package:seagull_clock/ticker.dart';
 export 'package:sortables/bloc/all.dart';
 export 'package:sortables/repository/sortable_repository.dart';
+export 'package:support_persons/bloc/support_persons_cubit.dart';
 export 'package:user_files/bloc/user_file_bloc.dart';
 export 'package:user_files/repository/user_file_repository.dart';
 
@@ -36,5 +37,4 @@ export 'sound/alarm_sound_bloc.dart';
 export 'sound/sound_bloc.dart';
 export 'start_guide/connect_license_bloc.dart';
 export 'start_guide/startup_cubit.dart';
-export 'support_persons/support_persons_cubit.dart';
 export 'timer/edit_timer_cubit.dart';

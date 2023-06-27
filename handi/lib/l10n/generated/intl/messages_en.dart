@@ -34,6 +34,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'pushReceived': MessageLookupByLibrary.simpleMessage('Push received'),
         'signIn': MessageLookupByLibrary.simpleMessage('Sign In'),
         'sortables': MessageLookupByLibrary.simpleMessage('Sortables'),
+        'supportPersons':
+            MessageLookupByLibrary.simpleMessage('Support persons'),
         'sync': MessageLookupByLibrary.simpleMessage('Sync'),
         'textToSpeech': MessageLookupByLibrary.simpleMessage('Text to speech'),
         'unauthorized': MessageLookupByLibrary.simpleMessage('Unauthorized'),

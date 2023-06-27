@@ -65,6 +65,7 @@ class Lt {
     'pushReceived': [],
     'signIn': [],
     'sortables': [],
+    'supportPersons': [],
     'sync': [],
     'textToSpeech': [],
     'unauthorized': [],
@@ -148,6 +149,16 @@ class Lt {
     return Intl.message(
       'Sortables',
       name: 'sortables',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Support persons`
+  String get supportPersons {
+    return Intl.message(
+      'Support persons',
+      name: 'supportPersons',
       desc: '',
       args: [],
     );
