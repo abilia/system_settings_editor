@@ -262,7 +262,8 @@ void main() {
     expect(find.byType(CalendarPage), findsOneWidget);
   });
 
-  testWidgets('SGC- Shows logout warning when offline and has unsynced data',
+  testWidgets(
+      'SGC-2512 Shows logout warning when offline and has unsynced data',
       (WidgetTester tester) async {
     when(() => sortableDb.countAllDirty()).thenAnswer((_) => Future.value(1));
     when(() => mockMyAbiliaConnection.hasConnection())
@@ -302,6 +303,13 @@ void main() {
     await tester.pump();
     expect(find.byType(LogoutWarningModal), findsOneWidget);
     expect(find.textContaining(translate.goOnlineBeforeLogout), findsOneWidget);
+    await tester.tap(
+      find.descendant(
+        of: find.byType(LogoutWarningModal),
+        matching: find.byType(CloseButton),
+      ),
+    );
+    await tester.pumpAndSettle();
   });
 
   testWidgets('tts', (WidgetTester tester) async {

@@ -120,15 +120,19 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
     emit(state.copyWith(logoutWarning: logoutWarning));
   }
 
-  Future<void> _checkConnectivity() async {
+  Future<void> _checkConnectivity({int retry = 0}) async {
     final isOnline = await myAbiliaConnection.hasConnection();
     if (isClosed) return;
     emit(state.copyWith(isOnline: isOnline));
     if (!isOnline) {
+      if (retry > 3) return;
       log.warning(
         'No connection to myAbilia, retrying in ${syncDelay.inSeconds} seconds.',
       );
-      return await Future.delayed(syncDelay, _checkConnectivity);
+      await Future.delayed(
+        syncDelay,
+        () => _checkConnectivity(retry: retry + 1),
+      );
     }
 
     final hasDirtyItems = await syncBloc.hasDirty();
