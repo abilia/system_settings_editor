@@ -50,7 +50,6 @@ void main() {
         .thenAnswer((_) async => []);
 
     voicesCubit = VoicesCubit(
-      languageCode: 'en',
       speechSettingsCubit: speechSettingsCubit,
       voiceRepository: voiceRepository,
       localeCubit: LocaleCubit(

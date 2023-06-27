@@ -13,7 +13,6 @@ class LocaleCubit extends Cubit<Locale> {
   }) : super(Locale(settingsDb.language));
 
   Future<void> setLocale(Locale locale) async {
-    if (state == locale) return;
     emit(locale);
     seagullAnalytics.setLocale(locale);
     await settingsDb.setLanguage(locale.languageCode);

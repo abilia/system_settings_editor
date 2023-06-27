@@ -12,11 +12,10 @@ part 'voices_state.dart';
 
 class VoicesCubit extends Cubit<VoicesState> {
   VoicesCubit({
-    required String languageCode,
     required this.speechSettingsCubit,
     required this.voiceRepository,
     required LocaleCubit localeCubit,
-  }) : super(VoicesLoading(languageCode: languageCode)) {
+  }) : super(VoicesLoading(languageCode: localeCubit.state.languageCode)) {
     _localeSubscription = localeCubit.stream
         .map((locale) => locale.languageCode)
         .listen(_onLanguageChanged);

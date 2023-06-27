@@ -443,7 +443,6 @@ class TopLevelProvider extends StatelessWidget {
             ),
             BlocProvider<VoicesCubit>(
               create: (context) => VoicesCubit(
-                languageCode: GetIt.I<SettingsDb>().language,
                 speechSettingsCubit: context.read<SpeechSettingsCubit>(),
                 voiceRepository: context.read<VoiceRepository>(),
                 localeCubit: context.read<LocaleCubit>(),
