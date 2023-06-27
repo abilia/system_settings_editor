@@ -7,7 +7,7 @@ class RemindersWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) => WizardScaffold(
         iconData: AbiliaIcons.handiReminder,

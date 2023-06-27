@@ -41,7 +41,7 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
   }
 
   String _heading(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final isTemplate =
         context.read<WizardCubit>() is TemplateActivityWizardCubit;
     if (isTemplate) return translate.enterNameForActivity;
@@ -119,7 +119,7 @@ class SelectPictureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final heading = Translator.of(context).translate.picture;
+    final heading = Lt.of(context).picture;
     return Tts.fromSemantics(
       SemanticsProperties(button: true, label: heading),
       child: Column(
@@ -267,8 +267,8 @@ class NameInput extends StatelessWidget {
       formKey: TestKey.editTitleTextFormField,
       errorState: errorState,
       icon: AbiliaIcons.edit,
-      heading: Translator.of(context).translate.name,
-      inputHeading: inputHeading ?? Translator.of(context).translate.name,
+      heading: Lt.of(context).name,
+      inputHeading: inputHeading ?? Lt.of(context).name,
       textCapitalization: TextCapitalization.sentences,
       inputFormatters: inputFormatters,
       maxLines: maxLines,
@@ -283,14 +283,14 @@ class CategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translator = Translator.of(context).translate;
+    final translate = Lt.of(context);
     void onChange(v) => context
         .read<EditActivityCubit>()
         .replaceActivity(activity.copyWith(category: v));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SubHeading(translator.category),
+        SubHeading(translate.category),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -343,8 +343,8 @@ class CategoryRadioField extends StatelessWidget {
     final label = imageAndName.hasName
         ? imageAndName.name
         : isRight
-            ? Translator.of(context).translate.right
-            : Translator.of(context).translate.left;
+            ? Lt.of(context).right
+            : Lt.of(context).left;
 
     final nothing = fileId.isEmpty && !categoriesSettings.showColors;
     return RadioField<int>(
@@ -381,7 +381,7 @@ class AlarmWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translator = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final editActivityCubit = context.watch<EditActivityCubit>();
     final activity = editActivityCubit.state.activity;
     final alarm = activity.alarm;
@@ -390,11 +390,11 @@ class AlarmWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SubHeading(translator.alarm),
+        SubHeading(translate.alarm),
         PickField(
           key: TestKey.selectAlarm,
           leading: Icon(alarm.iconData()),
-          text: Text(alarm.text(translator)),
+          text: Text(alarm.text(translate)),
           onTap: generalSettings.abilityToSelectAlarm
               ? () async {
                   final authProviders = [
@@ -451,7 +451,7 @@ class AlarmOnlyAtStartSwitch extends StatelessWidget {
                   alarm: alarm.copyWith(onlyStart: alarmOnlyOnStart)));
             }
           : null,
-      child: Text(Translator.of(context).translate.alarmOnlyAtStartTime),
+      child: Text(Lt.of(context).alarmOnlyAtStartTime),
     );
   }
 }
@@ -464,7 +464,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translator = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final editActivitySettings = context.select(
         (MemoplannerSettingsBloc bloc) => bloc.state.addActivity.editActivity);
     return Column(
@@ -485,7 +485,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
               onChanged: (v) => context
                   .read<EditActivityCubit>()
                   .replaceActivity(activity.copyWith(checkable: v)),
-              child: Text(translator.checkable),
+              child: Text(translate.checkable),
             ),
           ),
         if (editActivitySettings.removeAfter)
@@ -499,7 +499,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
             onChanged: (v) => context
                 .read<EditActivityCubit>()
                 .replaceActivity(activity.copyWith(removeAfter: v)),
-            child: Text(translator.deleteAfter),
+            child: Text(translate.deleteAfter),
           ),
       ],
     );
@@ -513,16 +513,16 @@ class AvailableForWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translator = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final availableFor = activity.availableFor;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SubHeading(translator.availableFor),
+        SubHeading(translate.availableFor),
         PickField(
           leading: Icon(availableFor.icon),
           text: Text(
-            availableFor.text(translator),
+            availableFor.text(translate),
           ),
           onTap: () async => onTap(context),
         ),
@@ -578,7 +578,7 @@ class EndDateWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) {
         final disabled = state.storedRecurring;
@@ -632,7 +632,7 @@ class EndDateWizWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final recursWithNoEnd = context
         .select((EditActivityCubit cubit) => cubit.state.recursWithNoEnd);
     return SwitchField(
@@ -657,7 +657,7 @@ class Weekdays extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final dateFormat = DateFormat('', '${Localizations.localeOf(context)}');
     final weekdaysTts = dateFormat.dateSymbols.STANDALONEWEEKDAYS;
     final weekdays =

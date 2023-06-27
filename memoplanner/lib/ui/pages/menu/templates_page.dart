@@ -9,7 +9,7 @@ class TemplatesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return DefaultTabController(
       length: 2,
       child: Builder(
@@ -121,7 +121,7 @@ class TemplatesPage extends StatelessWidget {
             BlocProvider<EditTimerCubit>(
               create: (_) => EditTimerCubit(
                 timerCubit: context.read<TimerCubit>(),
-                translate: Translator.of(context).translate,
+                translate: Lt.of(context),
                 ticker: GetIt.I<Ticker>(),
                 basicTimer: sortable.data as BasicTimerDataItem,
               ),
@@ -208,9 +208,8 @@ class BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
       trailing: _trailing,
       alwaysShowTrailing: alwaysShowTrailing,
       semanticsLabel: data is BasicTimerDataItem
-          ? Duration(milliseconds: data.duration).toDurationString(
-              Translator.of(context).translate,
-              shortMin: false)
+          ? Duration(milliseconds: data.duration)
+              .toDurationString(Lt.of(context), shortMin: false)
           : null,
     );
   }
@@ -272,7 +271,7 @@ class AddTemplateButton extends StatelessWidget {
       animation: tabController,
       builder: (context, _) {
         return TextAndOrIconActionButtonBlack(
-          Translator.of(context).translate.add,
+          Lt.of(context).add,
           AbiliaIcons.plus,
           onPressed: tabController.index == activityTemplateIndex
               ? () async => _addNewActivityTemplate(context)

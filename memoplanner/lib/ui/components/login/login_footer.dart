@@ -13,7 +13,7 @@ class MEMOplannerLoginFooter extends StatelessWidget {
       children: [
         Tts(
           child: Text(
-            Translator.of(context).translate.createAccountHint,
+            Lt.of(context).createAccountHint,
             style:
                 (Theme.of(context).textTheme.bodyLarge ?? bodyLarge).copyWith(
               color: AbiliaColors.black75,
@@ -46,7 +46,7 @@ class GoToCreateAccountButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Tts.data(
       data: translate.createAccount,
       child: TextButton(

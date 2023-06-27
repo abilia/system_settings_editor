@@ -2,7 +2,7 @@ export 'package:file_storage/file_storage.dart';
 export 'package:flutter/material.dart'
     hide AboutDialog, BackButton, CloseButton, MenuItemButton;
 export 'package:memoplanner/config.dart';
-export 'package:memoplanner/i18n/all.dart';
+export 'package:memoplanner/l10n/all.dart';
 export 'package:seagull_analytics/seagull_analytics.dart';
 export 'package:transparent_image/transparent_image.dart';
 

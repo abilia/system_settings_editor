@@ -5,7 +5,7 @@ class RecurringWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => WizardScaffold(
-        title: Translator.of(context).translate.recurrence,
+        title: Lt.of(context).recurrence,
         iconData: AbiliaIcons.repeat,
         body: const RecurrenceTab(),
       );

@@ -21,7 +21,7 @@ class MonthListPreview extends StatelessWidget {
         height: monthPreviewLayout.monthListPreviewCollapsedPadding.vertical,
         child: Center(
           child: Text(
-            Translator.of(context).translate.selectADayToViewDetails,
+            Lt.of(context).selectADayToViewDetails,
             style: abiliaTextTheme.bodyLarge,
           ),
         ),

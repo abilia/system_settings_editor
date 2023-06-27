@@ -22,7 +22,7 @@ void main() {
   late ActivityDbInMemory mockActivityDb;
   late MockGenericDb mockGenericDb;
 
-  final translate = Locales.language.values.first;
+  late final Lt translate;
   final startTime = DateTime(2111, 11, 11, 11, 11);
   final tenDaysAgo = DateTime(2111, 11, 01, 11, 11);
 
@@ -53,7 +53,9 @@ void main() {
   ActivityResponse activityResponse = () => [];
 
   final activityInfoSideDotsFinder = find.byType(ActivityInfoSideDots);
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
+    translate = await Lt.load(Lt.supportedLocales.first);
     WebViewPlatform.instance = FakeWebViewPlatform();
   });
 

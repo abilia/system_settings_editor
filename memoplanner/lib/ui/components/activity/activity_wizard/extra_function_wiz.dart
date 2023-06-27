@@ -12,7 +12,7 @@ class ExtraFunctionWiz extends StatelessWidget {
         bloc.state.addActivity.stepByStep.notes);
     return WizardScaffold(
       iconData: AbiliaIcons.addAttachment,
-      title: Translator.of(context).translate.selectInfoType,
+      title: Lt.of(context).selectInfoType,
       body: InfoItemTab(
         showChecklist: checklist,
         showNote: notes,

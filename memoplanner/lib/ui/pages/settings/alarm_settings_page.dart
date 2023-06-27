@@ -8,7 +8,7 @@ class AlarmSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final topPadding = layout.templates.m1.copyWith(bottom: 0);
     final defaultPadding = m1ItemPadding;
     final bottomPadding = layout.templates.m1.copyWith(
@@ -31,8 +31,8 @@ class AlarmSettingsPage extends StatelessWidget {
           builder: (context, state) {
             return Scaffold(
               appBar: AbiliaAppBar(
-                title: t.alarmSettings,
-                label: Config.isMP ? t.calendar : null,
+                title: translate.alarmSettings,
+                label: Config.isMP ? translate.calendar : null,
                 iconData: AbiliaIcons.handiAlarmVibration,
               ),
               body: ScrollArrows.vertical(
@@ -42,7 +42,7 @@ class AlarmSettingsPage extends StatelessWidget {
                   children: [
                     _AlarmSelector(
                       key: TestKey.nonCheckableAlarmSelector,
-                      heading: t.nonCheckableActivities,
+                      heading: translate.nonCheckableActivities,
                       icon: AbiliaIcons.handiUncheck,
                       sound: state.nonCheckableSound,
                       onChanged: (sound) => context
@@ -52,7 +52,7 @@ class AlarmSettingsPage extends StatelessWidget {
                     ).pad(topPadding),
                     _AlarmSelector(
                       key: TestKey.checkableAlarmSelector,
-                      heading: t.checkableActivities,
+                      heading: translate.checkableActivities,
                       icon: AbiliaIcons.handiCheck,
                       sound: state.checkableSound,
                       onChanged: (sound) => context
@@ -62,7 +62,7 @@ class AlarmSettingsPage extends StatelessWidget {
                     ).pad(defaultPadding),
                     _AlarmSelector(
                       key: TestKey.reminderAlarmSelector,
-                      heading: t.reminders,
+                      heading: translate.reminders,
                       icon: AbiliaIcons.handiReminder,
                       sound: state.reminderSound,
                       noSoundOption: true,
@@ -74,7 +74,7 @@ class AlarmSettingsPage extends StatelessWidget {
                     if (hasMP4Session)
                       _AlarmSelector(
                         key: TestKey.timerAlarmSelector,
-                        heading: t.timer,
+                        heading: translate.timer,
                         icon: AbiliaIcons.stopWatch,
                         sound: state.timerSound,
                         noSoundOption: true,
@@ -97,7 +97,7 @@ class AlarmSettingsPage extends StatelessWidget {
                             .read<AlarmSettingsCubit>()
                             .changeAlarmSettings(state.copyWith(
                                 showOngoingActivityInFullScreen: v)),
-                        child: Text(t.showOngoingActivityInFullScreen),
+                        child: Text(translate.showOngoingActivityInFullScreen),
                       ).pad(defaultPadding),
                     const Divider().pad(dividerPadding),
                     SwitchField(
@@ -108,7 +108,7 @@ class AlarmSettingsPage extends StatelessWidget {
                           .read<AlarmSettingsCubit>()
                           .changeAlarmSettings(
                               state.copyWith(showAlarmOnOffSwitch: v)),
-                      child: Text(t.showDisableAlarms),
+                      child: Text(translate.showDisableAlarms),
                     ).pad(bottomPadding),
                   ],
                 ),
@@ -148,7 +148,7 @@ class _AlarmSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -157,7 +157,7 @@ class _AlarmSelector extends StatelessWidget {
           children: [
             Expanded(
               child: PickField(
-                text: Text(sound.displayName(t)),
+                text: Text(sound.displayName(translate)),
                 onTap: () async {
                   final result = await Navigator.of(context).push<Sound>(
                     MaterialPageRoute(
@@ -168,9 +168,8 @@ class _AlarmSelector extends StatelessWidget {
                           noSoundOption: noSoundOption,
                           appBarIcon: icon,
                           appBarTitle: heading,
-                          appBarLabel: Config.isMP
-                              ? Translator.of(context).translate.alarmSettings
-                              : null,
+                          appBarLabel:
+                              Config.isMP ? Lt.of(context).alarmSettings : null,
                         ),
                       ),
                       settings: (SelectSoundPage).routeSetting(),
@@ -203,13 +202,13 @@ class _AlarmDurationSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SubHeading(t.alarmTime),
+        SubHeading(translate.alarmTime),
         PickField(
-            text: Text(duration.displayText(t)),
+            text: Text(duration.displayText(translate)),
             onTap: () async {
               final cubit = context.read<AlarmSettingsCubit>();
               final result = await Navigator.of(context).push<AlarmDuration>(
@@ -217,8 +216,8 @@ class _AlarmDurationSelector extends StatelessWidget {
                   builder: (context) => SelectAlarmDurationPage(
                     duration: duration,
                     appBarIcon: AbiliaIcons.stopWatch,
-                    appBarTitle: t.alarmTime,
-                    appBarLabel: Config.isMP ? t.alarmSettings : null,
+                    appBarTitle: translate.alarmTime,
+                    appBarLabel: Config.isMP ? translate.alarmSettings : null,
                   ),
                   settings: (SelectAlarmDurationPage).routeSetting(),
                 ),

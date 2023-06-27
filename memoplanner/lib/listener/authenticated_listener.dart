@@ -151,7 +151,7 @@ class LicenseExpiredWarningDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WarningDialog(
-      text: Translator.of(context).translate.licenseExpiredMessage,
+      text: Lt.of(context).licenseExpiredMessage,
     );
   }
 }

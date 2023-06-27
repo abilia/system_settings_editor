@@ -96,7 +96,7 @@ class _ActivityTopInfo extends StatelessWidget {
                             occasion: activityDay.day.isDayBefore(now)
                                 ? Occasion.past
                                 : Occasion.future,
-                            text: Translator.of(context).translate.fullDay,
+                            text: Lt.of(context).fullDay,
                           )
                         else if (!activity.hasEndTime)
                           _TimeBox(

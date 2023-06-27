@@ -8,7 +8,7 @@ class FullDayWiz extends StatelessWidget {
   Widget build(BuildContext context) {
     return WizardScaffold(
       iconData: AbiliaIcons.restore,
-      title: Translator.of(context).translate.allDay,
+      title: Lt.of(context).allDay,
       body: Padding(
         padding: layout.templates.m1,
         child: const _FullDayWidget(),
@@ -38,7 +38,7 @@ class _FullDayWidget extends StatelessWidget {
           onChanged: (v) =>
               editActivityCubit.replaceActivity(activity.copyWith(fullDay: v)),
           child: Text(
-            Translator.of(context).translate.fullDay,
+            Lt.of(context).fullDay,
           ),
         ),
       ],

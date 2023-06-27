@@ -8,7 +8,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final editActivityCubit = context.watch<EditActivityCubit>();
     final selectedType = editActivityCubit.state.selectedType;
     final scrollController = ScrollController();
@@ -111,7 +111,7 @@ class Weekly extends StatelessWidget with EditActivityTab {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final isAllSelected = context
         .select((RecurringWeekCubit cubit) => cubit.state.weekdays.length == 7);
     return Column(
@@ -164,7 +164,7 @@ class EveryOtherWeekSwitch extends StatelessWidget {
         onChanged: (v) =>
             context.read<RecurringWeekCubit>().changeEveryOtherWeek(v),
         child: Text(
-          Translator.of(context).translate.everyOtherWeek,
+          Lt.of(context).everyOtherWeek,
         ),
       ),
     );

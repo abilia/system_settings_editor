@@ -1,8 +1,8 @@
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/l10n/all.dart';
 
 extension LoginFailureErrorMessage on LoginFailureCause {
-  String heading(Translated translate) {
+  String heading(Lt translate) {
     switch (this) {
       case LoginFailureCause.licenseExpired:
         return translate.licenseExpired;
@@ -11,7 +11,7 @@ extension LoginFailureErrorMessage on LoginFailureCause {
     }
   }
 
-  String message(Translated translate) {
+  String message(Lt translate) {
     switch (this) {
       case LoginFailureCause.credentials:
         return translate.wrongCredentials;

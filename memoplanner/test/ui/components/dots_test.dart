@@ -21,8 +21,7 @@ void main() {
   late MockMemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
-        supportedLocales: Translator.supportedLocals,
-        localizationsDelegates: const [Translator.delegate],
+        localizationsDelegates: const [Lt.delegate],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),
@@ -45,7 +44,8 @@ void main() {
         ),
       );
 
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
     registerFallbackValues();
   });
 

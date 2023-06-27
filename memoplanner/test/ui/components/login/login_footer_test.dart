@@ -11,7 +11,7 @@ import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 
 void main() {
-  final translate = Locales.language.values.first;
+  late final Lt translate;
   late VoicesCubit voicesCubit;
   late SpeechSettingsCubit speechSettingsCubit;
   late StartupCubit startupCubit;
@@ -21,6 +21,11 @@ void main() {
   final mockConnectivity = MockConnectivity();
   late MockMyAbiliaConnection mockMyAbiliaConnection;
   bool Function() factoryResetResponse = () => true;
+
+  setUpAll(() async {
+    await Lokalise.initMock();
+    translate = await Lt.load(Lt.supportedLocales.first);
+  });
 
   setUp(() async {
     voiceDb = MockVoiceDb();
@@ -45,10 +50,12 @@ void main() {
         .thenAnswer((_) async => []);
 
     voicesCubit = VoicesCubit(
-      languageCode: 'en',
       speechSettingsCubit: speechSettingsCubit,
       voiceRepository: voiceRepository,
-      localeStream: const Stream.empty(),
+      localeCubit: LocaleCubit(
+        settingsDb: FakeSettingsDb(),
+        seagullAnalytics: FakeSeagullAnalytics(),
+      ),
     );
 
     deviceRepository = MockDeviceRepository();
@@ -93,6 +100,7 @@ void main() {
     await tester.binding.setSurfaceSize(const Size(1000, 1000));
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: const [Lt.delegate],
         home: MultiBlocProvider(
           providers: [
             BlocProvider.value(value: speechSettingsCubit),
@@ -151,6 +159,7 @@ void main() {
       // Arrange
       factoryResetResponse = () => true;
       await pumpAbiliaLogoWithReset(tester);
+      await tester.pumpAndSettle();
       await goToConfirmFactoryReset(tester);
 
       // Act
@@ -171,6 +180,7 @@ void main() {
       // Arrange
       factoryResetResponse = () => false;
       await pumpAbiliaLogoWithReset(tester);
+      await tester.pumpAndSettle();
       await goToConfirmFactoryReset(tester);
 
       // Act
@@ -188,6 +198,7 @@ void main() {
       when(() => mockMyAbiliaConnection.hasConnection())
           .thenAnswer((invocation) async => false);
       await pumpAbiliaLogoWithReset(tester);
+      await tester.pumpAndSettle();
       await goToConfirmFactoryReset(tester);
 
       // Act
@@ -204,6 +215,7 @@ void main() {
   testWidgets('Analytics are correct', (tester) async {
     // Arrange
     await pumpAbiliaLogoWithReset(tester);
+    await tester.pumpAndSettle();
     await goToConfirmFactoryReset(tester);
 
     final analytics = GetIt.I<SeagullAnalytics>() as MockSeagullAnalytics;

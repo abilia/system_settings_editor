@@ -2,11 +2,10 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/settings/all.dart';
-import 'package:memoplanner/i18n/app_localizations.dart';
+import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/ui/components/timer/timer_wheel/timer_wheel_config.dart';
 import 'package:memoplanner/ui/components/timer/timer_wheel/timer_wheel_painters.dart';
 import 'package:memoplanner/ui/components/timer/timer_wheel/timer_wheel_styles.dart';
@@ -171,7 +170,7 @@ class _TimerWheelState extends State<TimerWheel> {
       final minute = minutes % _intervalLength;
       if (minute == 0 || minute == _intervalLength - 1) {
         await GetIt.I<TtsHandler>().speak(
-          '$fiveMinInterval ${Translator.of(context).translate.minutes}',
+          '$fiveMinInterval ${Lt.of(context).minutes}',
         );
       }
     });

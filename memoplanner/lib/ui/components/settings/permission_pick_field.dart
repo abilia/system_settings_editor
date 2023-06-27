@@ -12,7 +12,7 @@ class PermissionPickField extends StatelessWidget {
         children: [
           PickField(
             leading: const Icon(AbiliaIcons.menuSetup),
-            text: Text(Translator.of(context).translate.permissions),
+            text: Text(Lt.of(context).permissions),
             onTap: () async {
               final authProviders = copiedAuthProviders(context);
               await Future.wait([

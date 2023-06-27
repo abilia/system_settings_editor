@@ -3,7 +3,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/data_repository/support_persons_repository.dart';
+import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
@@ -11,7 +11,6 @@ import 'package:timezone/data/latest.dart' as tz;
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
-import '../../../mocks/mocks.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
@@ -31,6 +30,7 @@ void main() {
   late MockBaseUrlDb mockBaseUrlDb;
 
   setUpAll(() async {
+    await Lokalise.initMock();
     registerFallbackValues();
     tz.initializeTimeZones();
     await initializeDateFormatting();
@@ -80,8 +80,7 @@ void main() {
   }) {
     final activity = givenActivity ?? startActivity;
     return MaterialApp(
-      supportedLocales: Translator.supportedLocals,
-      localizationsDelegates: const [Translator.delegate],
+      localizationsDelegates: const [Lt.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),

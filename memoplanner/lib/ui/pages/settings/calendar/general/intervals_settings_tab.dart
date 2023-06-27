@@ -44,7 +44,7 @@ class IntervalStepper extends StatelessWidget {
           children: [
             SizedBox(height: layout.formPadding.verticalItemDistance),
             Tts(
-              child: Text(_title(part, Translator.of(context).translate)),
+              child: Text(_title(part, Lt.of(context))),
             ),
             SizedBox(height: layout.formPadding.verticalItemDistance),
             SizedBox(
@@ -93,17 +93,17 @@ class IntervalStepper extends StatelessWidget {
 
   String _title(
     DayPart part,
-    Translated translator,
+    Lt translate,
   ) {
     switch (part) {
       case DayPart.morning:
-        return translator.earyMorning;
+        return translate.earyMorning;
       case DayPart.day:
-        return translator.day;
+        return translate.day;
       case DayPart.evening:
-        return translator.evening;
+        return translate.evening;
       case DayPart.night:
-        return translator.night;
+        return translate.night;
       default:
         return '';
     }

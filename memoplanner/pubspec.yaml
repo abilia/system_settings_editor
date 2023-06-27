@@ -56,6 +56,7 @@ dependencies:
   image_picker: ^0.8.6
   intl: ^0.18.0
   logging: ^1.1.0
+  lokalise_flutter_sdk: ^1.1.1
   matrix4_transform: ^2.0.1
   meta: ^1.7.0
   mime: ^1.0.1
@@ -81,6 +82,8 @@ dependencies:
     path: ../packages/sortables
   sqflite: ^2.2.5
   sqflite_common_ffi: ^2.2.5
+  support_persons:
+    path: ../packages/support_persons
   synchronized: ^3.0.0
   system_settings_editor:
     git:
@@ -118,8 +121,6 @@ dev_dependencies:
   seagull_lints:
     path: ../packages/seagull_lints
   test: any
-  translation_generator:
-    path: ../packages/translation_generator
 
 flutter_icons:
   android: false

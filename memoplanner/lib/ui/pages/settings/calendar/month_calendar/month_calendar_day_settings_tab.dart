@@ -7,14 +7,14 @@ class MonthDisplaySettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final monthCalendarCubit = context.watch<MonthCalendarSettingsCubit>();
     final settings = monthCalendarCubit.state;
     void onWeekColorChanged(int? index) => monthCalendarCubit
         .changeMonthCalendarSettings(settings.copyWith(colorTypeIndex: index));
     return SettingsTab(
       children: [
-        Tts(child: Text(t.display)),
+        Tts(child: Text(translate.display)),
         Padding(
           padding: layout.settings.monthDaysPadding,
           child: const _MonthCalendarPreview(),
@@ -27,13 +27,13 @@ class MonthDisplaySettingsTab extends StatelessWidget {
           value: WeekColor.captions.index,
           groupValue: settings.colorTypeIndex,
           onChanged: onWeekColorChanged,
-          text: Text(t.captions),
+          text: Text(translate.captions),
         ),
         RadioField(
           value: WeekColor.columns.index,
           groupValue: settings.colorTypeIndex,
           onChanged: onWeekColorChanged,
-          text: Text(t.columns),
+          text: Text(translate.columns),
         ),
       ],
     );

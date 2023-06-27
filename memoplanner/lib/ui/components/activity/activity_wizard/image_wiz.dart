@@ -11,7 +11,7 @@ class ImageWiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WizardScaffold(
-      title: Translator.of(context).translate.selectImage,
+      title: Lt.of(context).selectImage,
       iconData: AbiliaIcons.edit,
       body: const ImageWizSelectPictureWidget(),
     );

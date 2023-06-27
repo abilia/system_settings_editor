@@ -25,7 +25,7 @@ class _TermsOfUseDialogState extends State<TermsOfUseDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return WillPopScope(
       onWillPop: () async => false,
       child: ViewDialog(

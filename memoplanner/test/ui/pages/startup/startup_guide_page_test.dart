@@ -14,7 +14,13 @@ void main() {
   group('Startup,', () {
     late MockConnectivity mockConnectivity;
     late DeviceDb deviceDb;
+    late final Lt translate;
     Response connectLicenseResponse = deviceLicenseSuccessResponse;
+
+    setUpAll(() async {
+      await Lokalise.initMock();
+      translate = await Lt.load(Lt.supportedLocales.first);
+    });
 
     setUp(() async {
       deviceDb = MockDeviceDb();
@@ -97,7 +103,7 @@ void main() {
           await tester.tap(find.byKey(TestKey.startWelcomeGuide));
           await tester.pumpAndSettle();
           expect(find.byKey(TestKey.nextWelcomeGuide), findsNothing);
-          expect(find.text(const EN().wifiNoInternet), findsOneWidget);
+          expect(find.text(translate.wifiNoInternet), findsOneWidget);
         });
       });
 
@@ -189,7 +195,7 @@ void main() {
             }''',
               400,
             ),
-            const EN().licenseErrorNotFound,
+            translate.licenseErrorNotFound,
             tester,
           ),
         );
@@ -211,7 +217,7 @@ void main() {
                 }''',
               400,
             ),
-            const EN().licenseErrorAlreadyInUse,
+            translate.licenseErrorAlreadyInUse,
             tester,
           ),
         );
@@ -233,7 +239,7 @@ void main() {
               }''',
               400,
             ),
-            const EN().licenseErrorNotFound,
+            translate.licenseErrorNotFound,
             tester,
           ),
         );

@@ -7,7 +7,7 @@ To get started, first set up the environment keys:
 1. Get the `.env` file from either Lastpass or from a developer and make sure the file name is `.env.key`.
 2. Put the file in the `lib/env` folder.
 3. Run `$ flutter pub get` to get packages.
-4. Run `$ flutter pub run build_runner build --delete-conflicting-outputs` to generate keys and translations.
+4. Run `$ dart run build_runner build --delete-conflicting-outputs` to generate keys.
 
 ## Building for android
 
@@ -36,28 +36,13 @@ for building with dev features such as feature toggles and to be able to skip in
 
 ## Translations
 
-### How it works
+We're using [lokalise](https://app.lokalise.com) and [lokalise_flutter_sdk](https://pub.dev/packages/lokalise_flutter_sdk) for our translations.
 
-The translations are written in [memoplanner/lib/i18n/translations.tsv](https://github.com/abilia/seagull/blob/master/memoplanner/lib/i18n/translations.tsv) as tab separated values.
+To add translations after a newly added string or language, download all languages as .arb files and put them in the l10n folder. They should be formatted as `intl_%LANG_ISO%.arb`. Then run
 
-The first column is the id and need to be unique, then each column [memoplanner/lib/i18n/translations.g.dart](https://github.com/abilia/seagull/blob/master/memoplanner/lib/i18n/translations.g.dart) is each language as define by the first line in that column (the first row).
+`$ dart run lokalise_flutter_sdk:gen-lok-l10n`
 
-The translations are automatically generated as the file [memoplanner/lib/i18n/translations.g.dart](https://github.com/abilia/seagull/blob/master/memoplanner/lib/i18n/translations.g.dart) when running the command  
-
-`$ flutter packages pub run build_runner build --delete-conflicting-outputs`
-
-Missing translations will fallback to the english translation.
-
-All missing translations will be written to the file [memoplanner/lib/i18n/translation.missing.tsv](https://github.com/abilia/seagull/blob/master/memoplanner/lib/i18n/translations.missing.tsv)
-
-### Add new string
-
-To add new strings for translation:
-
-- add a unique id to a new row
-- separate with a tab
-- write the english translation
-- run `$ flutter packages pub run build_runner build --delete-conflicting-outputs`
+To generate the translations as a dart file.
 
 ### Add new language
 
@@ -65,13 +50,6 @@ To add a new language:
 
 - Add the language code to the header row
 - Add the supported language to [`ios/Runner/Info.plist`](https://github.com/abilia/seagull/blob/master/memoplanner/ios/Runner/Info.plist) - see <https://flutter.dev/docs/development/accessibility-and-localization/internationalization#localizing-for-ios-updating-the-ios-app-bundle>
-
-#### Special cases
-
-- If you want an empty string, put **&empty&** as placeholder
-- **\\** needs to be escaped with another **\\** as such: **\\\\**
-- The character **( )**(tab) is not supported
-- Comments line starts with **#**
 
 ## Tests
 

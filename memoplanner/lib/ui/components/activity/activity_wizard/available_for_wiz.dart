@@ -6,7 +6,7 @@ class AvailableForWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final activity = context.select((EditActivityCubit c) => c.state.activity);
     final authenticatedState = context.read<AuthenticationBloc>().state;
     final supportPersonsCubit = context.read<SupportPersonsCubit>();

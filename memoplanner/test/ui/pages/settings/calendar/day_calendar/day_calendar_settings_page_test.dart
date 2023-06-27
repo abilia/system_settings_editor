@@ -13,10 +13,15 @@ import '../../../../../test_helpers/app_pumper.dart';
 void main() {
   late SharedPreferences fakeSharedPreferences;
   group('Day calendar settings page', () {
-    final translate = Locales.language.values.first;
+    late final Lt translate;
     final initialTime = DateTime(2021, 04, 17, 09, 20);
     Iterable<Generic> generics = [];
     late MockGenericDb genericDb;
+
+    setUpAll(() async {
+      await Lokalise.initMock();
+      translate = await Lt.load(Lt.supportedLocales.first);
+    });
 
     setUp(() async {
       setupPermissions();

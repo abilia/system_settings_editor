@@ -7,7 +7,7 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final defaultsSettings = context
         .select((AddActivitySettingsCubit cubit) => cubit.state.defaults);
     final showAvailableFor = context
@@ -21,7 +21,7 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
           onChanged: (v) => context
               .read<AddActivitySettingsCubit>()
               .addDefaultsSettings(defaultsSettings.copyWith(checkable: v)),
-          child: Text(t.checkable),
+          child: Text(translate.checkable),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.deleteAllClear),
@@ -30,11 +30,11 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
               .read<AddActivitySettingsCubit>()
               .addDefaultsSettings(
                   defaultsSettings.copyWith(removeAtEndOfDay: v)),
-          child: Text(t.deleteAfter),
+          child: Text(translate.deleteAfter),
         ),
         if (showAvailableFor) ...[
           const Divider(),
-          Tts(child: Text(t.availableFor)),
+          Tts(child: Text(translate.availableFor)),
           RadioField(
             value: AvailableForType.onlyMe,
             groupValue: defaultsSettings.availableForType,
@@ -42,7 +42,7 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
                 .read<AddActivitySettingsCubit>()
                 .addDefaultsSettings(
                     defaultsSettings.copyWith(availableForType: type)),
-            text: Text(t.onlyMe),
+            text: Text(translate.onlyMe),
             leading: const Icon(
               AbiliaIcons.lock,
             ),
@@ -54,14 +54,14 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
                 .read<AddActivitySettingsCubit>()
                 .addDefaultsSettings(
                     defaultsSettings.copyWith(availableForType: type)),
-            text: Text(t.allSupportPersons),
+            text: Text(translate.allSupportPersons),
             leading: const Icon(
               AbiliaIcons.unlock,
             ),
           ),
         ],
         const Divider(),
-        Tts(child: Text(t.alarm)),
+        Tts(child: Text(translate.alarm)),
         RadioField(
           value: AlarmType.soundAndVibration,
           groupValue: defaultsSettings.alarm.type,
@@ -69,7 +69,7 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
               .read<AddActivitySettingsCubit>()
               .addDefaultsSettings(defaultsSettings.copyWith(
                   alarm: defaultsSettings.alarm.copyWith(type: type))),
-          text: Text(t.alarmAndVibration),
+          text: Text(translate.alarmAndVibration),
           leading: const Icon(
             AbiliaIcons.handiAlarmVibration,
           ),
@@ -81,7 +81,7 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
               .read<AddActivitySettingsCubit>()
               .addDefaultsSettings(defaultsSettings.copyWith(
                   alarm: defaultsSettings.alarm.copyWith(type: type))),
-          text: Text(t.vibrationIfAvailable),
+          text: Text(translate.vibrationIfAvailable),
           leading: const Icon(
             AbiliaIcons.handiVibration,
           ),
@@ -97,7 +97,7 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
                       ),
                     ),
                   ),
-          text: Text(t.silentAlarm),
+          text: Text(translate.silentAlarm),
           leading: const Icon(
             AbiliaIcons.handiAlarm,
           ),
@@ -109,7 +109,7 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
               .read<AddActivitySettingsCubit>()
               .addDefaultsSettings(defaultsSettings.copyWith(
                   alarm: defaultsSettings.alarm.copyWith(type: type))),
-          text: Text(t.noAlarm),
+          text: Text(translate.noAlarm),
           leading: const Icon(
             AbiliaIcons.handiNoAlarmVibration,
           ),
@@ -122,7 +122,7 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
               .read<AddActivitySettingsCubit>()
               .addDefaultsSettings(defaultsSettings.copyWith(
                   alarm: defaultsSettings.alarm.copyWith(onlyStart: v))),
-          child: Text(t.alarmOnlyAtStartTime),
+          child: Text(translate.alarmOnlyAtStartTime),
         ),
       ],
     );

@@ -7,12 +7,12 @@ class MonthAppBarSettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final monthCalendarSettings =
         context.watch<MonthCalendarSettingsCubit>().state;
     return SettingsTab(
       children: [
-        Tts(child: Text(t.topField)),
+        Tts(child: Text(translate.topField)),
         const _MonthAppBarPreview(),
         SwitchField(
           value: monthCalendarSettings.showBrowseButtons,
@@ -20,7 +20,7 @@ class MonthAppBarSettingsTab extends StatelessWidget {
               .read<MonthCalendarSettingsCubit>()
               .changeMonthCalendarSettings(
                   monthCalendarSettings.copyWith(showBrowseButtons: v)),
-          child: Text(t.showBrowseButtons),
+          child: Text(translate.showBrowseButtons),
         ),
         SwitchField(
           value: monthCalendarSettings.showYear,
@@ -28,7 +28,7 @@ class MonthAppBarSettingsTab extends StatelessWidget {
               .read<MonthCalendarSettingsCubit>()
               .changeMonthCalendarSettings(
                   monthCalendarSettings.copyWith(showYear: v)),
-          child: Text(t.showYear),
+          child: Text(translate.showYear),
         ),
         SwitchField(
           value: monthCalendarSettings.showClock,
@@ -36,7 +36,7 @@ class MonthAppBarSettingsTab extends StatelessWidget {
               .read<MonthCalendarSettingsCubit>()
               .changeMonthCalendarSettings(
                   monthCalendarSettings.copyWith(showClock: v)),
-          child: Text(t.showClock),
+          child: Text(translate.showClock),
         ),
       ],
     );

@@ -20,7 +20,7 @@ void main() {
     photos: 4,
     settingsData: true,
   );
-  final translate = Locales.language.values.first;
+  late final Lt translate;
   final now = DateTime(2020, 01, 01);
 
   late MockLogoutSyncCubit mockLogoutSyncCubit;
@@ -28,7 +28,9 @@ void main() {
   late MockSyncBloc mockSyncBloc;
   late LicenseCubit mockLicenseCubit;
 
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
+    translate = await Lt.load(Lt.supportedLocales.first);
     if (Config.isMP) {
       screenSize = const Size(800, 1200);
     }
@@ -75,8 +77,7 @@ void main() {
 
   Widget createLogoutWarningModal() {
     return MaterialApp(
-      supportedLocales: Translator.supportedLocals,
-      localizationsDelegates: const [Translator.delegate],
+      localizationsDelegates: const [Lt.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),
@@ -101,8 +102,7 @@ void main() {
 
   Widget createLogoutPage() {
     return MaterialApp(
-      supportedLocales: Translator.supportedLocals,
-      localizationsDelegates: const [Translator.delegate],
+      localizationsDelegates: const [Lt.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),
@@ -157,9 +157,8 @@ void main() {
   group('Warning modal variations', () {
     void verifyLastSyncText() {
       final daysAgo = now.difference(mockLastSyncDb.getLastSyncTime()!);
-      final dateString =
-          DateFormat.yMd(Translator.supportedLocals.first.languageCode)
-              .format(mockLastSyncDb.getLastSyncTime()!.onlyDays());
+      final dateString = DateFormat.yMd(Lt.supportedLocales.first.languageCode)
+          .format(mockLastSyncDb.getLastSyncTime()!.onlyDays());
       final lastSyncString =
           '${translate.lastSyncWas} $dateString (${daysAgo.comparedToNowString(translate, false, daysOnly: true)}).';
       expect(

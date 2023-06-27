@@ -174,7 +174,7 @@ class PhotoCalendarAppBar extends StatelessWidget
         dayPart: context.read<DayPartCubit>().state,
         dayParts: settings.calendar.dayParts,
         langCode: Localizations.localeOf(context).toLanguageTag(),
-        translator: Translator.of(context).translate,
+        translate: Lt.of(context),
         compactDay: false,
       ),
       showClock: false,

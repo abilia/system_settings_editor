@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:memoplanner/models/support_person.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:support_persons/support_persons.dart';
 
 class SupportPersonsDb {
   SupportPersonsDb(this.prefs);

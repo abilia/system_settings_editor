@@ -7,7 +7,7 @@ class CodeProtectSettingsPage extends StatelessWidget {
   const CodeProtectSettingsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final settings = context.read<MemoplannerSettingsBloc>().state;
 
     return BlocProvider(

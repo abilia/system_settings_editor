@@ -80,15 +80,15 @@ class LogoutWarningModal extends StatelessWidget {
     LogoutWarning warning,
     DateTime? lastSync,
   ) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
 
     switch (warning) {
       case LogoutWarning.firstWarningSyncing:
       case LogoutWarning.secondWarningSyncing:
-        return t.syncing;
+        return translate.syncing;
       case LogoutWarning.firstWarningSuccess:
       case LogoutWarning.secondWarningSuccess:
-        return t.canLogOutSafely;
+        return translate.canLogOutSafely;
       case LogoutWarning.firstWarningSyncFailed:
       case LogoutWarning.secondWarningSyncFailed:
         if (lastSync == null) {
@@ -98,9 +98,9 @@ class LogoutWarningModal extends StatelessWidget {
 
         final dateString =
             DateFormat.yMd(Platform.localeName).format(lastSync.onlyDays());
-        return '${t.lastSyncWas} $dateString (${daysAgo.comparedToNowString(t, false, daysOnly: true)}).';
+        return '${translate.lastSyncWas} $dateString (${daysAgo.comparedToNowString(translate, false, daysOnly: true)}).';
       case LogoutWarning.licenseExpiredWarning:
-        return t.needLicenseToSaveData;
+        return translate.needLicenseToSaveData;
     }
   }
 
@@ -108,19 +108,19 @@ class LogoutWarningModal extends StatelessWidget {
     BuildContext context,
     LogoutWarning warning,
   ) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     switch (warning) {
       case LogoutWarning.firstWarningSuccess:
       case LogoutWarning.secondWarningSuccess:
-        return t.allDataSaved;
+        return translate.allDataSaved;
       case LogoutWarning.firstWarningSyncFailed:
       case LogoutWarning.firstWarningSyncing:
-        return t.goOnlineBeforeLogout;
+        return translate.goOnlineBeforeLogout;
       case LogoutWarning.secondWarningSyncFailed:
       case LogoutWarning.secondWarningSyncing:
-        return t.doNotLoseYourContent;
+        return translate.doNotLoseYourContent;
       case LogoutWarning.licenseExpiredWarning:
-        return t.memoplannerLicenseExpired;
+        return translate.memoplannerLicenseExpired;
     }
   }
 }
@@ -130,12 +130,12 @@ class _InternetConnection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return layout.go
         ? InfoRow(
             state: InfoRowState.normal,
             icon: AbiliaIcons.noWifi,
-            title: t.connectToInternetToLogOut,
+            title: translate.connectToInternetToLogOut,
             padding: layout.logout.infoPadding,
             textColor: AbiliaColors.black75,
           )
@@ -156,7 +156,7 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dirty = dirtyItems;
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final labelStyle = Theme.of(context)
         .textTheme
         .bodyMedium
@@ -184,7 +184,7 @@ class _Body extends StatelessWidget {
               if (!layout.go)
                 Tts(
                   child: Text(
-                    t.connectToWifiToLogOut,
+                    translate.connectToWifiToLogOut,
                     style: labelStyle,
                   ),
                 ),
@@ -220,7 +220,7 @@ class _Body extends StatelessWidget {
             InfoRow(
               state: InfoRowState.normal,
               icon: AbiliaIcons.supportCall,
-              title: t.contactProviderToExtendLicense,
+              title: translate.contactProviderToExtendLicense,
               padding: layout.logout.infoPadding,
               textColor: AbiliaColors.black75,
             ),
@@ -268,7 +268,7 @@ class _DirtyItemsState extends State<_DirtyItems> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final labelStyle = Theme.of(context)
         .textTheme
         .bodyMedium
@@ -291,7 +291,7 @@ class _DirtyItemsState extends State<_DirtyItems> {
               : defaultInfoRowState,
           icon: AbiliaIcons.day,
           title:
-              '${_dirtyStart.activities} ${(_dirtyStart.activities == 1 ? t.activity : t.activities).toLowerCase()}',
+              '${_dirtyStart.activities} ${(_dirtyStart.activities == 1 ? translate.activity : translate.activities).toLowerCase()}',
         ),
       if (_dirtyStart.activityTemplates > 0)
         InfoRow(
@@ -300,7 +300,7 @@ class _DirtyItemsState extends State<_DirtyItems> {
               : defaultInfoRowState,
           icon: AbiliaIcons.basicActivities,
           title:
-              '${_dirtyStart.activityTemplates} ${(_dirtyStart.activityTemplates == 1 ? t.activityTemplateSingular : t.activityTemplatePlural)}',
+              '${_dirtyStart.activityTemplates} ${(_dirtyStart.activityTemplates == 1 ? translate.activityTemplateSingular : translate.activityTemplatePlural)}',
         ),
       if (_dirtyStart.photos > 0)
         InfoRow(
@@ -309,7 +309,7 @@ class _DirtyItemsState extends State<_DirtyItems> {
               : defaultInfoRowState,
           icon: AbiliaIcons.myPhotos,
           title:
-              '${_dirtyStart.photos} ${(_dirtyStart.photos == 1 ? t.photoSingular : t.photoPlural)}',
+              '${_dirtyStart.photos} ${(_dirtyStart.photos == 1 ? translate.photoSingular : translate.photoPlural)}',
         ),
       if (_dirtyStart.timerTemplate > 0)
         InfoRow(
@@ -318,7 +318,7 @@ class _DirtyItemsState extends State<_DirtyItems> {
               : defaultInfoRowState,
           icon: AbiliaIcons.basicTimers,
           title:
-              '${_dirtyStart.timerTemplate} ${(_dirtyStart.timerTemplate == 1 ? t.timerTemplateSingular : t.timerTemplatePlural)}',
+              '${_dirtyStart.timerTemplate} ${(_dirtyStart.timerTemplate == 1 ? translate.timerTemplateSingular : translate.timerTemplatePlural)}',
         ),
       if (_dirtyStart.settingsData)
         InfoRow(
@@ -326,7 +326,7 @@ class _DirtyItemsState extends State<_DirtyItems> {
               ? InfoRowState.verified
               : defaultInfoRowState,
           icon: AbiliaIcons.settings,
-          title: t.settingsData,
+          title: translate.settingsData,
         ),
     ];
 
@@ -349,7 +349,7 @@ class _DirtyItemsState extends State<_DirtyItems> {
             !widget.warning.syncedSuccess)
           Tts(
             child: Text(
-              t.ifYouLogoutYouWillLose,
+              translate.ifYouLogoutYouWillLose,
               style: labelStyle,
             ),
           ),

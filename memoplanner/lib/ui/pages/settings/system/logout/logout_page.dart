@@ -20,8 +20,8 @@ class LogoutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AbiliaAppBar(
-        title: Translator.of(context).translate.logout,
-        label: Config.isMP ? Translator.of(context).translate.system : null,
+        title: Lt.of(context).logout,
+        label: Config.isMP ? Lt.of(context).system : null,
         iconData: AbiliaIcons.powerOffOn,
       ),
       body: Center(
@@ -157,7 +157,7 @@ class LogoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IconAndTextButton(
-        text: Translator.of(context).translate.logout,
+        text: Lt.of(context).logout,
         icon: AbiliaIcons.powerOffOn,
         onPressed: onPressed,
         style: style ?? iconTextButtonStyleRed,

@@ -17,6 +17,7 @@ void main() {
   late MockSortableDb mockSortableDb;
   late SessionsDb mockSessionsDb;
   setUp(() async {
+    await Lokalise.initMock();
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleNotificationsIsolated = noAlarmScheduler;

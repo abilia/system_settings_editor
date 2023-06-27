@@ -13,13 +13,18 @@ import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
+  late final Lt translate;
   const user = User(
       id: 1,
       name: 'Slartibartfast',
       username: 'Zaphod Beeblebrox',
       type: 'type');
 
-  final translate = Locales.language.values.first;
+  setUpAll(() async {
+    await Lokalise.initMock();
+    translate = await Lt.load(Lt.supportedLocales.first);
+  });
+
   setUp(() async {
     setupFakeTts();
     registerFallbackValues();
@@ -42,8 +47,7 @@ void main() {
   tearDown(GetIt.I.reset);
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
-        supportedLocales: Translator.supportedLocals,
-        localizationsDelegates: const [Translator.delegate],
+        localizationsDelegates: const [Lt.delegate],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),

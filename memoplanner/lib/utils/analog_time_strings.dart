@@ -1,62 +1,63 @@
-import 'package:memoplanner/i18n/app_localizations.dart';
-import 'package:memoplanner/i18n/translations_extensions.dart';
+import 'dart:ui';
+
+import 'package:memoplanner/l10n/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:meta/meta.dart';
 
 const String _clockNoMinutesTts = '%s';
 
 String analogTimeStringWithInterval(
-  Translator translator,
+  Lt translate,
+  Locale locale,
   DateTime time,
   DayPart dayPart,
 ) {
-  final timeWithInterval = translator.translate.replaceInString(
-      intervalString(translator, dayPart, time.hour),
-      analogTimeString(translator, time));
-  return translator.translate.replaceInString(
-      translator.translate.clockTheTimeIsTts, timeWithInterval);
+  final timeWithInterval = translate.replaceInString(
+      intervalString(translate, dayPart, time.hour),
+      analogTimeString(translate, locale, time));
+  return translate.replaceInString(
+      translate.clockTheTimeIsTts, timeWithInterval);
 }
 
 @visibleForTesting
-String intervalString(Translator translator, DayPart dayPart, int hour) {
+String intervalString(Lt translate, DayPart dayPart, int hour) {
   switch (dayPart) {
     case DayPart.day:
       if (hour > 11) {
-        return translator.translate.timeAfternoonTts;
+        return translate.timeAfternoonTts;
       }
-      return translator.translate.timeForeNoonTts;
+      return translate.timeForeNoonTts;
     case DayPart.evening:
-      return translator.translate.timeEveningTts;
+      return translate.timeEveningTts;
     case DayPart.night:
-      return translator.translate.timeNightTts;
+      return translate.timeNightTts;
     case DayPart.morning:
-      return translator.translate.timeMorningTts;
+      return translate.timeMorningTts;
   }
 }
 
 @visibleForTesting
-String analogTimeString(Translator translator, DateTime time) {
-  final hour = hourForTime(translator.locale.languageCode, time);
-  return translator.translate.replaceInString(
-      _analogMinuteString(translator, time),
-      _analogHourString(translator, hour));
+String analogTimeString(Lt translate, Locale locale, DateTime time) {
+  final hour = hourForTime(locale.languageCode, time);
+  return translate.replaceInString(_analogMinuteString(translate, time),
+      _analogHourString(translate, locale, hour));
 }
 
-String _analogHourString(Translator translator, int hour) {
+String _analogHourString(Lt translate, Locale locale, int hour) {
   String hourString = hour.toString();
 
   if (hour == 1) {
-    if (translator.locale.languageCode == 'nb') {
-      hourString = translator.translate.nbOneAClock;
+    if (locale.languageCode == 'nb') {
+      hourString = translate.nbOneAClock;
     }
     hourString += ' :';
   }
   return hourString;
 }
 
-String _analogMinuteString(Translator translator, DateTime time) {
+String _analogMinuteString(Lt translate, DateTime time) {
   final interval = fiveMinInterval(time);
-  return _stringForInterval(translator, interval);
+  return _stringForInterval(translate, interval);
 }
 
 @visibleForTesting
@@ -82,8 +83,7 @@ int fiveMinInterval(DateTime time) {
   return (((time.minute + 2) % 60) / 5).floor();
 }
 
-String _stringForInterval(Translator translator, int interval) {
-  final translate = translator.translate;
+String _stringForInterval(Lt translate, int interval) {
   switch (interval) {
     case 1:
       return translate.clockFiveMinutesPastTts;

@@ -281,7 +281,7 @@ class Attachment extends StatelessWidget with ActivityMixin {
               context,
               ActivityDay(updatedActivity, activityDay.day),
               alarm: alarm,
-              message: Translator.of(context).translate.checklistDoneInfo,
+              message: Lt.of(context).checklistDoneInfo,
             );
           }
         },
@@ -320,7 +320,7 @@ class CheckButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final text = Translator.of(context).translate.check;
+    final text = Lt.of(context).check;
     return Tts.data(
       data: text,
       child: IconTheme(
