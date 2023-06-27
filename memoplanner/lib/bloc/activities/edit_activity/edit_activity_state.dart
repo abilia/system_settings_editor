@@ -7,9 +7,11 @@ abstract class EditActivityState extends Equatable with Finest {
     this.infoItems, {
     required this.originalActivity,
     required this.originalTimeInterval,
+    required this.selectedType,
   });
 
   final Activity activity, originalActivity;
+  final RecurrentType selectedType;
   final TimeInterval timeInterval, originalTimeInterval;
   final MapView<Type, InfoItem> infoItems;
 
@@ -110,6 +112,7 @@ abstract class EditActivityState extends Equatable with Finest {
     Activity activity, {
     TimeInterval timeInterval,
     Map<Type, InfoItem> infoItems,
+    RecurrentType selectedType,
   });
 }
 
@@ -123,6 +126,7 @@ class UnstoredActivityState extends EditActivityState {
           const MapView(<Type, InfoItem>{}),
           originalActivity: activity,
           originalTimeInterval: timeInterval,
+          selectedType: RecurrentType.none,
         );
 
   const UnstoredActivityState._(
@@ -131,12 +135,14 @@ class UnstoredActivityState extends EditActivityState {
     MapView<Type, InfoItem> infoItems,
     Activity originalActivity,
     TimeInterval originalTimeInterval,
+    RecurrentType selectedType,
   ) : super(
           activity,
           timeInterval,
           infoItems,
           originalActivity: originalActivity,
           originalTimeInterval: originalTimeInterval,
+          selectedType: selectedType,
         );
 
   @override
@@ -144,6 +150,7 @@ class UnstoredActivityState extends EditActivityState {
     Activity activity, {
     TimeInterval? timeInterval,
     Map<Type, InfoItem>? infoItems,
+    RecurrentType? selectedType,
   }) =>
       UnstoredActivityState._(
         activity,
@@ -151,6 +158,7 @@ class UnstoredActivityState extends EditActivityState {
         MapView(infoItems ?? this.infoItems),
         originalActivity,
         originalTimeInterval,
+        selectedType ?? this.selectedType,
       );
 }
 
@@ -160,13 +168,15 @@ class StoredActivityState extends EditActivityState {
   const StoredActivityState(
     Activity activity,
     TimeInterval timeInterval,
-    this.day,
-  ) : super(
+    this.day, [
+    RecurrentType selectedType = RecurrentType.none,
+  ]) : super(
           activity,
           timeInterval,
           const MapView(<Type, InfoItem>{}),
           originalActivity: activity,
           originalTimeInterval: timeInterval,
+          selectedType: selectedType,
         );
 
   const StoredActivityState._(
@@ -176,12 +186,14 @@ class StoredActivityState extends EditActivityState {
     TimeInterval originalTimeInterval,
     MapView<Type, InfoItem> infoItems,
     this.day,
+    RecurrentType selectedType,
   ) : super(
           activity,
           timeInterval,
           infoItems,
           originalActivity: originalActivity,
           originalTimeInterval: originalTimeInterval,
+          selectedType: selectedType,
         );
 
   @override
@@ -192,6 +204,7 @@ class StoredActivityState extends EditActivityState {
     Activity activity, {
     Map<Type, InfoItem>? infoItems,
     TimeInterval? timeInterval,
+    RecurrentType? selectedType,
   }) =>
       StoredActivityState._(
         activity,
@@ -200,5 +213,6 @@ class StoredActivityState extends EditActivityState {
         originalTimeInterval,
         MapView(infoItems ?? this.infoItems),
         day,
+        selectedType ?? this.selectedType,
       );
 }

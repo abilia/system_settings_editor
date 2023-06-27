@@ -10,9 +10,8 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     final editActivityCubit = context.watch<EditActivityCubit>();
+    final selectedType = editActivityCubit.state.selectedType;
     final scrollController = ScrollController();
-    final activity = editActivityCubit.state.activity;
-    final recurs = activity.recurs;
     return BlocProvider(
       create: (context) =>
           RecurringWeekCubit(context.read<EditActivityCubit>()),
@@ -30,7 +29,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
               RecurrentType.yearly,
             ].map(
               (recurrentType) => RadioField<RecurrentType>(
-                groupValue: activity.recurs.recurrence,
+                groupValue: selectedType,
                 onChanged: (v) {
                   if (v != null) {
                     editActivityCubit.changeRecurrentType(v);
@@ -45,7 +44,9 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                     : m1ItemPadding.onlyHorizontal,
               ),
             ),
-            if (recurs.daily || recurs.weekly || recurs.monthly)
+            if (selectedType == RecurrentType.daily ||
+                selectedType == RecurrentType.weekly ||
+                selectedType == RecurrentType.monthly)
               BlocBuilder<WizardCubit, WizardState>(
                 builder: (context, wizState) {
                   final recurringDataError =
@@ -58,7 +59,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                           vertical: layout.formPadding.groupBottomDistance,
                         ),
                       ),
-                      if (recurs.weekly) ...[
+                      if (selectedType == RecurrentType.weekly) ...[
                         Weekly(errorState: recurringDataError).pad(
                           layout.templates.m1.onlyHorizontal,
                         ),
@@ -72,7 +73,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                         ),
                         SizedBox(
                             height: layout.formPadding.groupBottomDistance),
-                      ] else if (recurs.monthly) ...[
+                      ] else if (selectedType == RecurrentType.monthly) ...[
                         errorBordered(
                           const MonthDays(),
                           errorState: recurringDataError,

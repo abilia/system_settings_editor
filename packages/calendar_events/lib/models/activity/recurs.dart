@@ -10,8 +10,7 @@ class Recurs extends Equatable {
   DateTime get end => DateTime.fromMillisecondsSinceEpoch(endTime);
   bool get hasNoEnd => endTime >= _noEnd;
   bool get isRecurring => type != typeNone;
-  bool get daily => type == typeWeekly && data == allDaysOfWeek;
-  bool get weekly => type == typeWeekly && !daily;
+  bool get weekly => type == typeWeekly;
   bool get monthly => type == typeMonthly;
   bool get yearly => type == typeYearly;
 
@@ -75,8 +74,9 @@ class Recurs extends Equatable {
   Recurs changeEnd(DateTime endTime) =>
       Recurs.raw(type, data, endTime.millisecondsSinceEpoch);
 
-  RecurrentType get recurrence =>
-      daily ? RecurrentType.daily : RecurrentType.values[type];
+  RecurrentType get recurrence => type == typeWeekly && data == allDaysOfWeek
+      ? RecurrentType.daily
+      : RecurrentType.values[type];
 
   bool recursOnDay(DateTime day) {
     switch (recurrence) {

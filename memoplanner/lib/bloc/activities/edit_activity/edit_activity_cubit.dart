@@ -31,6 +31,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
                         : null,
                   ),
             activityDay.day,
+            activityDay.activity.recurs.recurrence,
           ),
         );
 
@@ -51,6 +52,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
               endTime: basicActivityData.endTimeOfDay,
             ),
             day,
+            RecurrentType.none,
           ),
         );
 
@@ -100,6 +102,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
         state is StoredActivityState
             ? state.day
             : activitySaved.startTime.onlyDays(),
+        activitySaved.recurs.recurrence,
       ),
     );
   }
@@ -186,8 +189,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
   }
 
   void changeRecurrentType(RecurrentType newType) {
-    final previousType = state.activity.recurs.recurrence;
-    if (newType == previousType) {
+    if (newType == state.selectedType) {
       return;
     }
 
@@ -196,6 +198,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
       _changeRecurrence(
         state.originalActivity.recurs,
         timeInterval: state.originalTimeInterval,
+        selectedType: newType,
       );
       return;
     }
@@ -215,6 +218,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     _changeRecurrence(
       newRecurs,
       timeInterval: state.timeInterval.copyWithEndDate(getEndDate()),
+      selectedType: newType,
     );
   }
 
@@ -230,7 +234,11 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     final newRecurs = state.activity.recurs.changeEnd(
       newEndDate ?? noEndDate,
     );
-    _changeRecurrence(newRecurs, timeInterval: newTimeInterval);
+    _changeRecurrence(
+      newRecurs,
+      timeInterval: newTimeInterval,
+      selectedType: state.selectedType,
+    );
   }
 
   void changeWeeklyRecurring(Recurs recurs) {
@@ -244,7 +252,11 @@ class EditActivityCubit extends Cubit<EditActivityState> {
       return;
     }
 
-    _changeRecurrence(recurs, timeInterval: state.timeInterval);
+    _changeRecurrence(
+      recurs,
+      timeInterval: state.timeInterval,
+      selectedType: RecurrentType.weekly,
+    );
   }
 
   void changeSelectedMonthDays(Set<int> selectedMonthDays) {
@@ -257,11 +269,16 @@ class EditActivityCubit extends Cubit<EditActivityState> {
         selectedMonthDays,
         ends: state.timeInterval.endDate,
       ),
+      selectedType: RecurrentType.monthly,
       timeInterval: state.timeInterval,
     );
   }
 
-  void _changeRecurrence(Recurs recurs, {TimeInterval? timeInterval}) {
+  void _changeRecurrence(
+    Recurs recurs, {
+    required RecurrentType selectedType,
+    TimeInterval? timeInterval,
+  }) {
     emit(
       state.copyWith(
         state.activity.copyWith(recurs: recurs),
@@ -269,6 +286,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
             state.timeInterval.copyWithEndDate(
               DateTime.fromMillisecondsSinceEpoch(recurs.endTime),
             ),
+        selectedType: selectedType,
       ),
     );
   }
