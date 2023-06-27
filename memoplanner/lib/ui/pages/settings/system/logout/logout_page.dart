@@ -55,18 +55,15 @@ class LogoutPage extends StatelessWidget {
             child: BlocProvider<LogoutSyncCubit>(
               create: (context) => LogoutSyncCubit(
                 syncBloc: context.read<SyncBloc>(),
-                activityDb: context.read<ActivityRepository>().activityDb,
-                userFileDb: context.read<UserFileRepository>().userFileDb,
-                genericDb: context.read<GenericRepository>().genericDb,
-                sortableDb: context.read<SortableRepository>().sortableDb,
+                activityDb: GetIt.I<ActivityDb>(),
+                userFileDb: GetIt.I<UserFileDb>(),
+                genericDb: GetIt.I<GenericDb>(),
+                sortableDb: GetIt.I<SortableDb>(),
                 authenticationBloc: context.read<AuthenticationBloc>(),
                 syncDelay: GetIt.I<Delays>().syncDelay,
                 licenseCubit: context.read<LicenseCubit>(),
                 connectivity: Connectivity().onConnectivityChanged,
-                myAbiliaConnection: MyAbiliaConnection(
-                  baseUrlDb: GetIt.I<BaseUrlDb>(),
-                  client: GetIt.I<ListenableClient>(),
-                ),
+                myAbiliaConnection: GetIt.I<MyAbiliaConnection>(),
               ),
               child: const LogoutWarningModal(),
             ),
