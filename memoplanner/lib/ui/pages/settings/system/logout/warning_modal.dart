@@ -21,7 +21,6 @@ class LogoutWarningModal extends StatelessWidget {
         warning,
         context.read<SyncBloc>().state.lastSynced,
       ),
-      onLogoutPressed: (c) async => c.read<LogoutSyncCubit>().next(),
       body: _Body(
         dirtyItems: state.dirtyItems,
         warning: warning,
@@ -398,7 +397,6 @@ class _LogoutModal extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.body,
-    required this.onLogoutPressed,
     this.label,
     this.bodyWithoutBottomPadding = false,
     Key? key,
@@ -409,12 +407,10 @@ class _LogoutModal extends StatelessWidget {
   final String title;
   final String? label;
   final bool bodyWithoutBottomPadding;
-  final Function(BuildContext context)? onLogoutPressed;
 
   @override
   Widget build(BuildContext context) {
     final labelString = label;
-    final onLogout = onLogoutPressed;
     final bodyWidget = body;
 
     return SafeArea(
@@ -480,8 +476,8 @@ class _LogoutModal extends StatelessWidget {
                   Expanded(
                     child: LogoutButton(
                       style: iconTextButtonStyleRed.withoutMinimumWidth,
-                      onPressed:
-                          onLogout != null ? () => onLogout(context) : null,
+                      onPressed: () async =>
+                          context.read<LogoutSyncCubit>().next(),
                     ),
                   ),
                 ],
