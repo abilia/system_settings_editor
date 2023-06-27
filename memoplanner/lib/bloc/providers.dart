@@ -420,6 +420,12 @@ class TopLevelProvider extends StatelessWidget {
             ),
           ),
           BlocProvider(
+            create: (context) => LocaleCubit(
+              settingsDb: GetIt.I<SettingsDb>(),
+              seagullAnalytics: GetIt.I<SeagullAnalytics>(),
+            ),
+          ),
+          BlocProvider(
             create: (context) => TouchDetectionCubit(),
           ),
           BlocProvider<SpeechSettingsCubit>(
@@ -437,9 +443,9 @@ class TopLevelProvider extends StatelessWidget {
             ),
             BlocProvider<VoicesCubit>(
               create: (context) => VoicesCubit(
-                languageCode: GetIt.I<SettingsDb>().language,
                 speechSettingsCubit: context.read<SpeechSettingsCubit>(),
                 voiceRepository: context.read<VoiceRepository>(),
+                localeCubit: context.read<LocaleCubit>(),
               )..initialize(),
               lazy: false,
             ),

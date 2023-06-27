@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/getit.dart';
 import 'package:memoplanner/ui/all.dart';
 
@@ -43,13 +42,15 @@ class MaterialAppWrapper extends StatelessWidget {
               supportedLocales: Lt.supportedLocales,
               localizationsDelegates: Lt.localizationsDelegates,
               localeListResolutionCallback: (locales, supportedLocales) {
-                final languageCodes =
-                    locales?.map((locale) => locale.languageCode).toList() ??
-                        [];
-                final locale = supportedLocales.firstWhereOrNull(
-                        (l) => languageCodes.contains(l.languageCode)) ??
+                final language = locales
+                    ?.firstWhereOrNull((l) => supportedLocales
+                        .map((e) => e.languageCode)
+                        .contains(l.languageCode))
+                    ?.languageCode;
+                final locale = supportedLocales
+                        .firstWhereOrNull((l) => l.languageCode == language) ??
                     supportedLocales.first;
-                unawaited(_updateLocale(context, locale));
+                unawaited(context.read<LocaleCubit>().setLocale(locale));
                 return locale;
               },
               home: home,
@@ -57,12 +58,4 @@ class MaterialAppWrapper extends StatelessWidget {
           },
         ),
       );
-
-  Future<void> _updateLocale(BuildContext context, Locale locale) async {
-    GetIt.I<SeagullAnalytics>().setLocale(locale);
-    await GetIt.I<SettingsDb>().setLanguage(locale.languageCode);
-    if (Config.isMP && context.mounted) {
-      await context.read<VoicesCubit>().setLanguage(locale.languageCode);
-    }
-  }
 }
