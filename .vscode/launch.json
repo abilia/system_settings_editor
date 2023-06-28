@@ -5,6 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "showcase",
+      "cwd": "showcase",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+    },
+    {
       "name": "Handi",
       "cwd": "handi",
       "request": "launch",

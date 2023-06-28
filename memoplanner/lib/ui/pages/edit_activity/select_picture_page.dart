@@ -24,7 +24,7 @@ class SelectPicturePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Scaffold(
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
@@ -82,7 +82,7 @@ class SelectPictureBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final photoMenuSettings =
         context.select((MemoplannerSettingsBloc bloc) => bloc.state.photoMenu);
     return Column(

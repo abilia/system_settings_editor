@@ -8,6 +8,7 @@ export 'multipart_request.dart';
 export 'permissions.dart';
 export 'repository/fakes.dart';
 export 'sortables/all.dart';
+export 'support_persons/fakes.dart';
 export 'sync/fakes.dart';
 export 'test_helpers/all.dart';
 export 'user_files/fakes.dart';

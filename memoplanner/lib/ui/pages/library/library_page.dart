@@ -115,7 +115,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                 padding: MediaQuery.of(context).viewInsets,
                 child: BottomNavigation(
                   backNavigationWidget: PreviousButton(
-                    text: Translator.of(context).translate.back,
+                    text: Lt.of(context).back,
                     onPressed: () async => _back(context, sortableState),
                   ),
                   forwardNavigationWidget: selected != null
@@ -223,7 +223,7 @@ class SearchButton extends StatelessWidget {
               abiliaTextTheme.bodyLarge,
             ),
           ),
-      text: Translator.of(context).translate.search,
+      text: Lt.of(context).search,
       icon: AbiliaIcons.find,
       onPressed: () async {
         final authProviders = copiedAuthProviders(context);
@@ -358,7 +358,7 @@ class _SortableLibraryState<T extends SortableData>
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
         final content = widget.showSearch
@@ -521,9 +521,7 @@ class EmptyLibraryMessage extends StatelessWidget {
         alignment: Alignment.topCenter,
         child: Tts(
           child: Text(
-            rootFolder
-                ? emptyLibraryMessage
-                : Translator.of(context).translate.emptyFolder,
+            rootFolder ? emptyLibraryMessage : Lt.of(context).emptyFolder,
             style: Theme.of(context)
                 .textTheme
                 .bodyLarge
@@ -545,7 +543,7 @@ class LibraryFolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     String title = '';
     if (sortableData is ImageArchiveData) {
       title = (sortableData as ImageArchiveData).isUpload()

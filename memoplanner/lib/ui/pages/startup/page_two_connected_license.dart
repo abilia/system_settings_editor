@@ -49,7 +49,7 @@ class _PageTwoConnectedLicenseState extends State<PageTwoConnectedLicense> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return BlocBuilder<ConnectLicenseBloc, ConnectLicenseState>(
       builder: (context, state) => Padding(
         padding: layout.templates.m7,
@@ -63,7 +63,7 @@ class _PageTwoConnectedLicenseState extends State<PageTwoConnectedLicense> {
             SizedBox(height: layout.startupPage.logoDistance),
             Tts(
               child: Text(
-                '${t.step} 2/3',
+                '${translate.step} 2/3',
                 style: abiliaTextTheme.bodyMedium
                     ?.copyWith(color: AbiliaColors.black75),
               ),
@@ -71,7 +71,7 @@ class _PageTwoConnectedLicenseState extends State<PageTwoConnectedLicense> {
             SizedBox(height: layout.formPadding.smallVerticalItemDistance),
             Tts(
               child: Text(
-                t.enterYourLicense,
+                translate.enterYourLicense,
                 style: abiliaTextTheme.titleLarge
                     ?.copyWith(color: AbiliaColors.black75),
               ),
@@ -115,22 +115,22 @@ class _PageTwoConnectedLicenseState extends State<PageTwoConnectedLicense> {
                   if (state is SuccessfullyConnectedLicense)
                     Text(
                       state.hasEndTime
-                          ? '${t.licenseValidDate}: '
+                          ? '${translate.licenseValidDate}: '
                               '${DateFormat('yyyy-MM-dd').format(state.endTime)}'
                           : '',
                     )
                   else if (state is! ConnectingLicenseFailed)
-                    Text(t.enterYourLicenseHint)
+                    Text(translate.enterYourLicenseHint)
                   else if (state.reason.notFoundOrWrongLicense)
                     Text(
-                      t.licenseErrorNotFound,
+                      translate.licenseErrorNotFound,
                       style: DefaultTextStyle.of(context).style.copyWith(
                             color: AbiliaColors.red,
                           ),
                     )
                   else if (state.reason.alreadyInuUse)
                     Text(
-                      t.licenseErrorAlreadyInUse,
+                      translate.licenseErrorAlreadyInUse,
                       style: DefaultTextStyle.of(context).style.copyWith(
                             color: AbiliaColors.red,
                           ),
@@ -151,7 +151,7 @@ class _PageTwoConnectedLicenseState extends State<PageTwoConnectedLicense> {
                       duration: StartupGuidePage.pageDuration,
                       curve: StartupGuidePage.curve,
                     ),
-                    text: t.previous,
+                    text: translate.previous,
                     style: textButtonStyleDarkGrey,
                     icon: AbiliaIcons.navigationPrevious,
                   ),
@@ -168,7 +168,7 @@ class _PageTwoConnectedLicenseState extends State<PageTwoConnectedLicense> {
                               curve: StartupGuidePage.curve,
                             )
                         : null,
-                    child: Text(Translator.of(context).translate.next),
+                    child: Text(Lt.of(context).next),
                   ),
                 ),
               ],

@@ -42,7 +42,7 @@ class _EditNotePageState extends State<EditNotePage> {
   @override
   Widget build(BuildContext context) {
     final bottomPadding = EdgeInsets.only(bottom: layout.navigationBar.height);
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Theme(
       data: abiliaTheme.copyWith(
         inputDecorationTheme: InputDecorationTheme(

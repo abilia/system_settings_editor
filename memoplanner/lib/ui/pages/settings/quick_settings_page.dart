@@ -1,8 +1,7 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/device.dart';
-import 'package:memoplanner/models/sound.dart';
+import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
@@ -11,11 +10,11 @@ class QuickSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final hasBattery = GetIt.I<Device>().hasBattery;
     return Scaffold(
       appBar: AbiliaAppBar(
-        title: t.quickSettingsMenu.singleLine,
+        title: translate.quickSettingsMenu.singleLine,
         iconData: AbiliaIcons.settings,
       ),
       body: ScrollArrows.vertical(
@@ -35,17 +34,19 @@ class QuickSettingsPage extends StatelessWidget {
               const SoundEffectsSwitch(),
             ]),
             BlocProvider<AlarmSoundBloc>(
-              create: (_) => AlarmSoundBloc(),
+              create: (_) => AlarmSoundBloc(
+                spamProtectionDelay: GetIt.I<Delays>().spamProtectionDelay,
+              ),
               child: BlocBuilder<AlarmSoundBloc, Sound?>(
                 builder: (context, state) => QuickSettingsGroup(children: [
-                  SubHeading(t.volumeAlarm),
+                  SubHeading(translate.volumeAlarm),
                   AlarmVolumeSlider(
                     onVolumeSet: () async => context
                         .read<AlarmSoundBloc>()
                         .add(const PlayAlarmSound(Sound.Default)),
                   ),
                   SizedBox(height: layout.formPadding.groupBottomDistance),
-                  SubHeading(t.volumeMedia),
+                  SubHeading(translate.volumeMedia),
                   MediaVolumeSlider(
                     onVolumeSet: () async => context
                         .read<AlarmSoundBloc>()
@@ -60,7 +61,7 @@ class QuickSettingsPage extends StatelessWidget {
             if (hasBattery)
               QuickSettingsGroup(
                 children: [
-                  SubHeading(t.screenTimeout),
+                  SubHeading(translate.screenTimeout),
                   const ScreenTimeoutPickField(),
                   SizedBox(height: layout.formPadding.verticalItemDistance),
                   const KeepOnWhileChargingSwitch(),

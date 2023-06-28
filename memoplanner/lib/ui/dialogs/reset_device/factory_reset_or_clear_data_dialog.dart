@@ -14,7 +14,7 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = context.watch<ResetDeviceCubit>().state;
 
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final isConnected = context.watch<ConnectivityCubit>().state.isConnected;
     final isClearData = state.resetType == ResetType.clearData;
     final isFactoryReset = state.resetType == ResetType.factoryReset;

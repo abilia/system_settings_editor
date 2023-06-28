@@ -22,7 +22,7 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SubHeading(Translator.of(context).translate.reminders),
+            SubHeading(Lt.of(context).reminders),
             Reminders(activity: activity),
           ],
         ),

@@ -9,11 +9,13 @@ import '../../../test_helpers/navigation_observer.dart';
 final navObserver = NavObserver();
 
 void main() {
+  setUpAll(() async {
+    await Lokalise.initMock();
+  });
   Widget wrapWithMaterialApp({Duration initialDuration = Duration.zero}) =>
       MaterialApp(
-        supportedLocales: Translator.supportedLocals,
         navigatorObservers: [navObserver],
-        localizationsDelegates: const [Translator.delegate],
+        localizationsDelegates: const [Lt.delegate],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),

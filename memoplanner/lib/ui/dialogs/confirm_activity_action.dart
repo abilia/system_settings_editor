@@ -13,7 +13,7 @@ class CheckActivityConfirmDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final signedOff = activityDay.isSignedOff;
     return YesNoDialog(
       heading: signedOff ? translate.undo : translate.check,

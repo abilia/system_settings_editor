@@ -16,6 +16,7 @@ void main() {
   late MockGenericDb genericDb;
 
   setUp(() async {
+    await Lokalise.initMock();
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleNotificationsIsolated = noAlarmScheduler;

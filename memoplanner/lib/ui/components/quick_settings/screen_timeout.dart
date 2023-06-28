@@ -8,13 +8,13 @@ class ScreenTimeoutPickField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return BlocBuilder<WakeLockCubit, WakeLockState>(
       builder: (context, wakeLockState) => PickField(
         text: Text(
           wakeLockState.alwaysOn
-              ? t.alwaysOn
-              : wakeLockState.screenTimeout.toDurationString(t),
+              ? translate.alwaysOn
+              : wakeLockState.screenTimeout.toDurationString(translate),
         ),
         onTap: () async {
           final wakeLockCubit = context.read<WakeLockCubit>();
@@ -61,11 +61,11 @@ class ScreenTimeOutSelectorPageState extends State<ScreenTimeOutSelectorPage> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Scaffold(
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
-        title: t.screenTimeout,
+        title: translate.screenTimeout,
       ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
@@ -89,7 +89,9 @@ class ScreenTimeOutSelectorPageState extends State<ScreenTimeOutSelectorPage> {
                       ),
                       child: RadioField<Duration>(
                         text: Text(
-                          d.inDays > 1 ? t.alwaysOn : d.toDurationString(t),
+                          d.inDays > 1
+                              ? translate.alwaysOn
+                              : d.toDurationString(translate),
                         ),
                         onChanged: (v) {
                           if (v != null) setState(() => _timeout = v);
@@ -129,8 +131,7 @@ class KeepOnWhileChargingSwitch extends StatelessWidget {
             .read<WakeLockCubit>()
             .setKeepScreenOnWhileCharging(switchOn);
       },
-      child:
-          Text(Translator.of(context).translate.keepScreenAwakeWhileCharging),
+      child: Text(Lt.of(context).keepScreenAwakeWhileCharging),
     );
   }
 }

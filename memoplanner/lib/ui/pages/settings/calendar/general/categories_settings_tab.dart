@@ -9,7 +9,7 @@ class CategoriesSettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final generalSettings = context.watch<GeneralCalendarSettingsCubit>().state;
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return SettingsTab(
       children: [
         _CategoriesPreview(state: generalSettings),
@@ -22,7 +22,7 @@ class CategoriesSettingsTab extends StatelessWidget {
                 generalSettings.categories.copyWith(show: value),
               ),
           leading: const Icon(AbiliaIcons.categories),
-          child: Text(t.showCagetories),
+          child: Text(translate.showCagetories),
         ),
         CollapsableWidget(
           collapsed: !generalSettings.categories.show,
@@ -32,14 +32,14 @@ class CategoriesSettingsTab extends StatelessWidget {
               _CategoryPickField(
                 key: TestKey.editLeftCategory,
                 imageAndName: generalSettings.categories.left,
-                defaultName: t.left,
+                defaultName: translate.left,
                 onResult: (r) => generalSettings.categories.copyWith(left: r),
               ),
               SizedBox(height: layout.formPadding.verticalItemDistance),
               _CategoryPickField(
                 key: TestKey.editRightCategory,
                 imageAndName: generalSettings.categories.right,
-                defaultName: t.right,
+                defaultName: translate.right,
                 onResult: (r) => generalSettings.categories.copyWith(right: r),
               ),
               SizedBox(height: layout.formPadding.groupBottomDistance),
@@ -51,7 +51,7 @@ class CategoriesSettingsTab extends StatelessWidget {
                       generalSettings.categories.copyWith(colors: value),
                     ),
                 leading: const Icon(AbiliaIcons.changePageColor),
-                child: Text(t.showColours),
+                child: Text(translate.showColours),
               ),
             ],
           ),

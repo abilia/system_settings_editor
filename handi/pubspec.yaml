@@ -47,9 +47,13 @@ dependencies:
     path: ../packages/sortables
   sqflite: ^2.2.5
   sqflite_common_ffi: ^2.2.5
+  support_persons:
+    path: ../packages/support_persons
   text_to_speech:
     path: ../packages/text_to_speech
   timezone: ^0.9.0
+  ui:
+    path: ../packages/ui
   user_files:
     path: ../packages/user_files
   utils:

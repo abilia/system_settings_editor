@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/l10n/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 void main() {
+  setUpAll(() async {
+    await Lokalise.initMock();
+  });
+
   group('minutes. five min interval', () {
     test('2 minutes past, first interval', () {
       expect(fiveMinInterval(DateTime(2021, 10, 25, 14, 02, 0)), 0);
@@ -77,75 +81,89 @@ void main() {
   });
 
   group('time strings', () {
-    test('Half past', () {
-      expect(
-          analogTimeString(
-              const Translator(Locale('en')), DateTime(2021, 10, 25, 5, 32, 0)),
-          'Half past 5');
+    group('en ', () {
+      late final Lt translate;
+      late final Locale locale;
+      setUpAll(() async => {
+            locale = const Locale('en'),
+            translate = await Lt.load(locale),
+          });
+
+      test('Half past', () async {
+        expect(
+            analogTimeString(
+                translate, locale, DateTime(2021, 10, 25, 5, 32, 0)),
+            'Half past 5');
+      });
+
+      test('Ten to', () async {
+        expect(
+            analogTimeString(
+                translate, locale, DateTime(2021, 10, 25, 4, 49, 0)),
+            'ten to 5');
+      });
+
+      test('5 to half past', () async {
+        expect(
+            analogTimeString(
+                translate, locale, DateTime(2021, 10, 25, 4, 24, 0)),
+            'twenty five past 4');
+      });
+
+      test('en one o clock', () async {
+        expect(
+            analogTimeString(
+                translate, locale, DateTime(2021, 10, 25, 1, 15, 0)),
+            'quarter past 1 :');
+      });
     });
 
-    test('Ten to', () {
+    test('nb one o clock', () async {
+      const locale = Locale('nb');
+      final translate = await Lt.load(locale);
       expect(
-          analogTimeString(
-              const Translator(Locale('en')), DateTime(2021, 10, 25, 4, 49, 0)),
-          'ten to 5');
-    });
-
-    test('5 to half past', () {
-      expect(
-          analogTimeString(
-              const Translator(Locale('en')), DateTime(2021, 10, 25, 4, 24, 0)),
-          'twenty five past 4');
-    });
-
-    test('en one o clock', () {
-      expect(
-          analogTimeString(
-              const Translator(Locale('en')), DateTime(2021, 10, 25, 1, 15, 0)),
-          'quarter past 1 :');
-    });
-
-    test('nb one o clock', () {
-      expect(
-          analogTimeString(
-              const Translator(Locale('nb')), DateTime(2021, 10, 25, 1, 15, 0)),
+          analogTimeString(translate, locale, DateTime(2021, 10, 25, 1, 15, 0)),
           'Kvart over : ett :');
     });
 
-    test('sv half past 5', () {
+    test('sv half past 5', () async {
+      const locale = Locale('sv');
+      final translate = await Lt.load(locale);
       expect(
-          analogTimeString(
-              const Translator(Locale('nb')), DateTime(2021, 10, 25, 5, 29, 0)),
+          analogTimeString(translate, locale, DateTime(2021, 10, 25, 5, 29, 0)),
           'Halv 6');
     });
   });
 
   group('interval strings', () {
-    test('morning', () {
-      expect(
-          intervalString(const Translator(Locale('en')), DayPart.morning, 11),
+    late final Lt translate;
+    late final Locale locale;
+    setUpAll(() async => {
+          locale = const Locale('en'),
+          translate = await Lt.load(locale),
+        });
+
+    test('morning', () async {
+      expect(intervalString(translate, DayPart.morning, 11),
           '%s in the early morning');
     });
 
-    test('day, fore-noon', () {
-      expect(intervalString(const Translator(Locale('en')), DayPart.day, 11),
-          '%s in the mid-morning');
-    });
-
-    test('day, afternoon', () {
-      expect(intervalString(const Translator(Locale('en')), DayPart.day, 12),
-          '%s in the afternoon');
-    });
-
-    test('evening', () {
+    test('day, fore-noon', () async {
       expect(
-          intervalString(const Translator(Locale('en')), DayPart.evening, 11),
-          '%s in the evening');
+          intervalString(translate, DayPart.day, 11), '%s in the mid-morning');
     });
 
-    test('night', () {
-      expect(intervalString(const Translator(Locale('en')), DayPart.night, 20),
-          '%s at night');
+    test('day, afternoon', () async {
+      expect(intervalString(translate, DayPart.day, 12), '%s in the afternoon');
+    });
+
+    test('evening', () async {
+      expect(
+          intervalString(translate, DayPart.evening, 11), '%s in the evening');
+    });
+
+    test('night', () async {
+      expect(intervalString(translate, DayPart.night, 20), '%s at night');
     });
   });
 }

@@ -23,6 +23,7 @@ import 'package:seagull_clock/ticker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sortables/sortables.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:support_persons/support_persons.dart';
 import 'package:user_files/user_files.dart';
 
 class TopLevelProviders extends StatelessWidget {
@@ -180,6 +181,14 @@ class AuthenticatedProviders extends StatelessWidget {
             noSyncSettings: const {},
           ),
         ),
+        RepositoryProvider<SupportPersonsRepository>(
+          create: (context) => SupportPersonsRepository(
+            baseUrlDb: GetIt.I<BaseUrlDb>(),
+            client: GetIt.I<ListenableClient>(),
+            db: GetIt.I<SupportPersonsDb>(),
+            userId: userId,
+          ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -236,6 +245,13 @@ class AuthenticatedProviders extends StatelessWidget {
               scheduleNotificationsDelay:
                   GetIt.I<Delays>().scheduleNotificationsDelay,
             )..add(ScheduleNotifications()),
+          ),
+          BlocProvider<SupportPersonsCubit>(
+            lazy: false,
+            create: (context) => SupportPersonsCubit(
+              supportPersonsRepository:
+                  context.read<SupportPersonsRepository>(),
+            )..loadSupportPersons(),
           ),
         ],
         child: child,

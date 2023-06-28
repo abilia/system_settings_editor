@@ -27,7 +27,7 @@ class DatePickerWiz extends StatelessWidget {
         listener: (context, state) =>
             context.read<EditActivityCubit>().changeStartDate(state.day),
         child: WizardScaffold(
-          title: Translator.of(context).translate.selectDate,
+          title: Lt.of(context).selectDate,
           iconData: AbiliaIcons.day,
           bottom: const MonthAppBarStepper(),
           body: const MonthCalendar(),

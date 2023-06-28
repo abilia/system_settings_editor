@@ -10,7 +10,7 @@ class EditQuestionBottomSheet extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final question = this.question;
     return EditImageAndName(
       maxLines: 8,
@@ -28,7 +28,7 @@ class EditQuestionBottomSheet extends StatelessWidget {
           : null,
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.phoneLog,
-        title: t.enterTask,
+        title: translate.enterTask,
         borderRadius: layout.appBar.borderRadius,
       ),
     );

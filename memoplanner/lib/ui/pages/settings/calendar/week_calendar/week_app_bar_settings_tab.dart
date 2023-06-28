@@ -7,39 +7,39 @@ class WeekAppBarSettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final state = context.watch<WeekCalendarSettingsCubit>().state;
     return SettingsTab(
       children: [
-        Tts(child: Text(t.topField)),
+        Tts(child: Text(translate.topField)),
         const WeekAppBarPreview(),
         SwitchField(
           value: state.showBrowseButtons,
           onChanged: (v) => context
               .read<WeekCalendarSettingsCubit>()
               .changeWeekCalendarSettings(state.copyWith(showBrowseButtons: v)),
-          child: Text(t.showBrowseButtons),
+          child: Text(translate.showBrowseButtons),
         ),
         SwitchField(
           value: state.showWeekNumber,
           onChanged: (v) => context
               .read<WeekCalendarSettingsCubit>()
               .changeWeekCalendarSettings(state.copyWith(showWeekNumber: v)),
-          child: Text(t.showWeekNumber),
+          child: Text(translate.showWeekNumber),
         ),
         SwitchField(
           value: state.showYearAndMonth,
           onChanged: (v) => context
               .read<WeekCalendarSettingsCubit>()
               .changeWeekCalendarSettings(state.copyWith(showYearAndMonth: v)),
-          child: Text(t.showMonthAndYear),
+          child: Text(translate.showMonthAndYear),
         ),
         SwitchField(
           value: state.showClock,
           onChanged: (v) => context
               .read<WeekCalendarSettingsCubit>()
               .changeWeekCalendarSettings(state.copyWith(showClock: v)),
-          child: Text(t.showClock),
+          child: Text(translate.showClock),
         ),
       ],
     );
@@ -58,7 +58,7 @@ class WeekAppBarPreview extends StatelessWidget {
       showBrowseButtons: weekCalendarSettings.showBrowseButtons,
       showClock: weekCalendarSettings.showClock,
       rows: AppBarTitleRows.week(
-        translator: Translator.of(context).translate,
+        translate: Lt.of(context),
         selectedDay: currentTime.onlyDays(),
         selectedWeekStart: currentTime.firstInWeek(),
         settings: weekCalendarSettings,

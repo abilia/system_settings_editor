@@ -31,7 +31,7 @@ class _HiddenSettingState extends State<HiddenSetting> {
               final accessGranted = await codeProtectAccess(
                 context,
                 restricted: (codeSettings) => codeSettings.protectSettings,
-                name: Translator.of(context).translate.settings,
+                name: Lt.of(context).settings,
               );
               if (accessGranted) {
                 await navigator.push(

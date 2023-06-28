@@ -11,7 +11,7 @@ class MenuButton extends StatelessWidget {
     final settings = context.read<MemoplannerSettingsBloc>().state;
     final tabIndex = settings.functions.display.menuTabIndex;
     return TabControlledButton(
-      Translator.of(context).translate.menu,
+      Lt.of(context).menu,
       AbiliaIcons.appMenu,
       tabIndex: tabIndex,
     );

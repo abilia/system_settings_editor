@@ -6,7 +6,7 @@ class PermissionsPage extends StatelessWidget {
   const PermissionsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Scaffold(
       appBar: AbiliaAppBar(
         title: translate.permissions,
@@ -75,7 +75,7 @@ class PermissionSwitch extends StatelessWidget {
         }
         await context.read<PermissionCubit>().requestPermissions([permission]);
       },
-      child: Text(permission.translate(Translator.of(context).translate)),
+      child: Text(permission.translate(Lt.of(context))),
     );
   }
 }
@@ -91,7 +91,7 @@ class NotificationPermissionSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final denied = status.isDeniedOrPermanentlyDenied;
     return Column(
       children: [
@@ -170,7 +170,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final denied = status.isDeniedOrPermanentlyDenied;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

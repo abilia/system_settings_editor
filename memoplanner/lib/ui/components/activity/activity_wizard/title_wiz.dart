@@ -23,11 +23,11 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final appBar = AbiliaAppBar(
       iconData: AbiliaIcons.edit,
-      label: Translator.of(context).translate.newActivity,
-      title: t.enterNameForActivity,
+      label: Lt.of(context).newActivity,
+      title: translate.enterNameForActivity,
       borderRadius: layout.appBar.borderRadius,
       useVerticalSafeArea: false,
     );
@@ -43,10 +43,10 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
       child: WizardScaffold(
         backgroundColor: AbiliaColors.black,
         showAppBar: false,
-        title: t.enterNameForActivity,
+        title: translate.enterNameForActivity,
         iconData: AbiliaIcons.edit,
         body: Tts.fromSemantics(
-          SemanticsProperties(label: t.name),
+          SemanticsProperties(label: translate.name),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.end,
@@ -62,7 +62,7 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      SubHeading(t.name),
+                      SubHeading(translate.name),
                       Row(
                         children: [
                           Expanded(

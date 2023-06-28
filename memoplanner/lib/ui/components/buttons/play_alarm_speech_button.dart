@@ -16,6 +16,7 @@ class PlayAlarmSpeechButton extends StatelessWidget {
         create: (context) => SoundBloc(
           storage: GetIt.I<FileStorage>(),
           userFileBloc: context.read<UserFileBloc>(),
+          spamProtectionDelay: GetIt.I<Delays>().spamProtectionDelay,
         ),
         child: Row(
           children: [

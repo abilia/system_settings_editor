@@ -12,6 +12,7 @@ void main() {
   final time = DateTime(2022, 05, 10, 13, 37);
   Iterable<Session> sessions;
   setUp(() async {
+    await Lokalise.initMock();
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleNotificationsIsolated = noAlarmScheduler;

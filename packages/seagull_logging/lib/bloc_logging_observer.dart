@@ -8,12 +8,10 @@ class BlocLoggingObserver extends BlocObserver {
   BlocLoggingObserver(
     this.analytics, {
     required this.isRelease,
-    this.localeCondition,
   });
 
   final SeagullAnalytics analytics;
   final bool isRelease;
-  final Function(BlocBase, Change)? localeCondition;
   final _loggers = <BlocBase, Logger>{};
 
   Logger _getLog(BlocBase bloc) =>
@@ -102,9 +100,6 @@ class BlocLoggingObserver extends BlocObserver {
   }
 
   Future<void> onChangeAnalytics(BlocBase bloc, Change change) async {
-    if (localeCondition?.call(bloc, change) ?? false) {
-      analytics.setLocale(change.nextState);
-    }
     if (bloc is BaseUrlCubit && change is Change<String>) {
       await _backendChanged(change);
     }

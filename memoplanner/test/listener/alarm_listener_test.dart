@@ -23,7 +23,7 @@ void main() {
   final mockGenericDb = MockGenericDb();
   final mockTimerDb = MockTimerDb();
   final getItInitializer = GetItInitializer();
-  final translater = Locales.language.values.first;
+  late final Lt translate;
 
   final activityWithAlarmTime = DateTime(2011, 11, 11, 11, 11);
   final initialTime = activityWithAlarmTime.subtract(1.minutes());
@@ -41,6 +41,11 @@ void main() {
       activityWithAlarmday,
     ),
   );
+
+  setUpAll(() async {
+    await Lokalise.initMock();
+    translate = await Lt.load(Lt.supportedLocales.first);
+  });
 
   setUp(() async {
     tz.setLocalLocation(tz.UTC);
@@ -207,7 +212,7 @@ void main() {
       // Assert
       expect(find.byType(PopAwareAlarmPage), findsOneWidget);
       expect(find.byType(ReminderPage), findsOneWidget);
-      expect(find.text(translater.inTime('15 ${translater.minutes}')),
+      expect(find.text(translate.inTime('15 ${translate.minutes}')),
           findsOneWidget);
     });
 
@@ -231,7 +236,7 @@ void main() {
       // Assert
       expect(find.byType(PopAwareAlarmPage), findsOneWidget);
       expect(find.byType(ReminderPage), findsOneWidget);
-      expect(find.text(translater.timeAgo('15 ${translater.minutes}')),
+      expect(find.text(translate.timeAgo('15 ${translate.minutes}')),
           findsOneWidget);
     });
 
@@ -284,7 +289,7 @@ void main() {
       // Assert
       expect(find.byType(PopAwareAlarmPage), findsOneWidget);
       expect(find.byType(ReminderPage), findsOneWidget);
-      expect(find.text(translater.timeAgo('15 ${translater.minutes}')),
+      expect(find.text(translate.timeAgo('15 ${translate.minutes}')),
           findsOneWidget);
     });
 

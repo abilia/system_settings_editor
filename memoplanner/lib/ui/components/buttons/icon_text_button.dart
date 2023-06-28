@@ -179,7 +179,7 @@ class NextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Tts.data(
-        data: Translator.of(context).translate.next,
+        data: Lt.of(context).next,
         child: TextButton(
           style: iconTextButtonStyleNext,
           onPressed: onPressed,
@@ -188,7 +188,7 @@ class NextButton extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(Translator.of(context).translate.next),
+                Text(Lt.of(context).next),
                 IconTheme(
                   data: lightIconThemeData,
                   child: const Icon(AbiliaIcons.navigationNext),
@@ -212,7 +212,7 @@ class OkButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GreenButton(
       icon: AbiliaIcons.ok,
-      text: Translator.of(context).translate.ok,
+      text: Lt.of(context).ok,
       onPressed: onPressed,
     );
   }
@@ -226,7 +226,7 @@ class PreviousButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LightButton(
-      text: text ?? Translator.of(context).translate.previous,
+      text: text ?? Lt.of(context).previous,
       icon: AbiliaIcons.navigationPrevious,
       onPressed: onPressed ?? Navigator.of(context).maybePop,
     );
@@ -240,7 +240,7 @@ class CancelButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LightButton(
-      text: Translator.of(context).translate.cancel,
+      text: Lt.of(context).cancel,
       icon: AbiliaIcons.closeProgram,
       onPressed: onPressed ?? Navigator.of(context).maybePop,
     );
@@ -260,7 +260,7 @@ class CloseButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconAndTextButton(
       icon: AbiliaIcons.closeProgram,
-      text: Translator.of(context).translate.close,
+      text: Lt.of(context).close,
       onPressed: onPressed ?? Navigator.of(context).maybePop,
       style: style ?? iconTextButtonStyleLight,
     );
@@ -274,7 +274,7 @@ class YesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GreenButton(
-      text: Translator.of(context).translate.yes,
+      text: Lt.of(context).yes,
       icon: AbiliaIcons.ok,
       onPressed: () async => onPressed != null
           ? onPressed?.call()
@@ -290,7 +290,7 @@ class NoButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LightButton(
-      text: Translator.of(context).translate.no,
+      text: Lt.of(context).no,
       icon: AbiliaIcons.closeProgram,
       onPressed: () async => onPressed != null
           ? onPressed?.call()
@@ -307,7 +307,7 @@ class SaveButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GreenButton(
-      text: Translator.of(context).translate.save,
+      text: Lt.of(context).save,
       icon: AbiliaIcons.ok,
       onPressed: onPressed ?? Navigator.of(context).maybePop,
     );
@@ -322,7 +322,7 @@ class StartButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GreenButton(
-      text: Translator.of(context).translate.start,
+      text: Lt.of(context).start,
       icon: AbiliaIcons.ok,
       onPressed: onPressed ?? Navigator.of(context).maybePop,
     );

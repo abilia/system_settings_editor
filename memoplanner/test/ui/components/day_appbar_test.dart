@@ -12,6 +12,10 @@ void main() {
   final clockBloc = ClockBloc.fixed(now);
   final dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
 
+  setUpAll(() async {
+    await Lokalise.initMock();
+  });
+
   final providers = [
     BlocProvider<ClockBloc>(
       create: (context) => clockBloc,
@@ -42,6 +46,7 @@ void main() {
   Future<void> pumpDayCalendarAppBar(WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: const [Lt.delegate],
         home: MultiBlocProvider(
           providers: providers,
           child: const DayCalendarAppBar(),
@@ -53,6 +58,7 @@ void main() {
   Future<void> pumpDayAppBar(WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: const [Lt.delegate],
         home: MultiBlocProvider(
           providers: providers,
           child: DayAppBar(

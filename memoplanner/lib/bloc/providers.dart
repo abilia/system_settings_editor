@@ -94,6 +94,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             ),
           ),
           RepositoryProvider<SupportPersonsRepository>(
+            lazy: false,
             create: (context) => SupportPersonsRepository(
               baseUrlDb: GetIt.I<BaseUrlDb>(),
               client: GetIt.I<ListenableClient>(),
@@ -419,7 +420,10 @@ class TopLevelProvider extends StatelessWidget {
             ),
           ),
           BlocProvider(
-            create: (context) => LocaleCubit(GetIt.I<SettingsDb>()),
+            create: (context) => LocaleCubit(
+              settingsDb: GetIt.I<SettingsDb>(),
+              seagullAnalytics: GetIt.I<SeagullAnalytics>(),
+            ),
           ),
           BlocProvider(
             create: (context) => TouchDetectionCubit(),
@@ -439,10 +443,9 @@ class TopLevelProvider extends StatelessWidget {
             ),
             BlocProvider<VoicesCubit>(
               create: (context) => VoicesCubit(
-                languageCode: GetIt.I<SettingsDb>().language,
                 speechSettingsCubit: context.read<SpeechSettingsCubit>(),
                 voiceRepository: context.read<VoiceRepository>(),
-                localeStream: context.read<LocaleCubit>().stream,
+                localeCubit: context.read<LocaleCubit>(),
               )..initialize(),
               lazy: false,
             ),

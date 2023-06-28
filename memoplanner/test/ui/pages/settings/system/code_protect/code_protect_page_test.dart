@@ -14,6 +14,10 @@ void main() {
   GenericResponse genericResponse = () => [];
   late MockGenericDb genericDb;
 
+  setUpAll(() async {
+    await Lokalise.initMock();
+  });
+
   setUp(() async {
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();

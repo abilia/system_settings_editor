@@ -34,6 +34,7 @@ void main() {
   });
 
   setUp(() async {
+    await Lokalise.initMock();
     when(() => mockUserDb.getUser()).thenReturn(user);
     when(() => mockDeviceDb.getDeviceLicense()).thenReturn(activatedLicense);
     when(() => mockDeviceDb.getSupportId())
@@ -61,6 +62,7 @@ void main() {
           child: Builder(
             builder: (context) {
               return MaterialApp(
+                localizationsDelegates: const [Lt.delegate],
                 home: BlocProvider<SpeechSettingsCubit>(
                   create: (context) => FakeSpeechSettingsCubit(),
                   child: isDialog ? const AboutDialog() : const AboutPage(),
@@ -73,6 +75,7 @@ void main() {
 
   testWidgets('About Page', (WidgetTester tester) async {
     await pumpAboutContent(tester);
+    await tester.pumpAndSettle();
 
     expect(find.byType(AboutPage), findsOneWidget);
     expect(find.byType(AboutContent), findsOneWidget);
@@ -90,6 +93,7 @@ void main() {
 
   testWidgets('About Dialog', (WidgetTester tester) async {
     await pumpAboutContent(tester, isDialog: true);
+    await tester.pumpAndSettle();
 
     expect(find.byType(AboutDialog), findsOneWidget);
     expect(find.byType(AboutContent), findsOneWidget);
@@ -103,12 +107,14 @@ void main() {
   testWidgets('User logged out', (WidgetTester tester) async {
     when(() => mockUserDb.getUser()).thenReturn(null);
     await pumpAboutContent(tester);
+    await tester.pumpAndSettle();
 
     expect(find.byType(LoggedInAccountColumn), findsNothing);
   });
 
   testWidgets('Activated license', (WidgetTester tester) async {
     await pumpAboutContent(tester);
+    await tester.pumpAndSettle();
 
     final doubleTextsInAboutColumn = find
         .descendant(
@@ -125,6 +131,7 @@ void main() {
   testWidgets('Non activated license', (WidgetTester tester) async {
     when(() => mockDeviceDb.getDeviceLicense()).thenReturn(nonActivatedLicense);
     await pumpAboutContent(tester);
+    await tester.pumpAndSettle();
 
     final doubleTextsInAboutColumn = find
         .descendant(

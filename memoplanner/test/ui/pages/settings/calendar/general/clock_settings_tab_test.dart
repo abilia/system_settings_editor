@@ -12,11 +12,16 @@ import '../../../../../test_helpers/app_pumper.dart';
 
 void main() {
   final initialTime = DateTime(2021, 04, 13, 13, 37);
-  final translate = Locales.language.values.first;
+  late final Lt translate;
 
   Iterable<Generic> generics;
   late MockGenericDb genericDb;
   late SharedPreferences fakeSharedPreferences;
+
+  setUpAll(() async {
+    await Lokalise.initMock();
+    translate = await Lt.load(Lt.supportedLocales.first);
+  });
 
   setUp(() async {
     setupPermissions();

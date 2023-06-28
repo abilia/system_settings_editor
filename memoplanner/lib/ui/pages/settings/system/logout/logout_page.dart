@@ -20,8 +20,8 @@ class LogoutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AbiliaAppBar(
-        title: Translator.of(context).translate.logout,
-        label: Config.isMP ? Translator.of(context).translate.system : null,
+        title: Lt.of(context).logout,
+        label: Config.isMP ? Lt.of(context).system : null,
         iconData: AbiliaIcons.powerOffOn,
       ),
       body: Center(
@@ -55,18 +55,15 @@ class LogoutPage extends StatelessWidget {
             child: BlocProvider<LogoutSyncCubit>(
               create: (context) => LogoutSyncCubit(
                 syncBloc: context.read<SyncBloc>(),
-                activityDb: context.read<ActivityRepository>().activityDb,
-                userFileDb: context.read<UserFileRepository>().userFileDb,
-                genericDb: context.read<GenericRepository>().genericDb,
-                sortableDb: context.read<SortableRepository>().sortableDb,
+                activityDb: GetIt.I<ActivityDb>(),
+                userFileDb: GetIt.I<UserFileDb>(),
+                genericDb: GetIt.I<GenericDb>(),
+                sortableDb: GetIt.I<SortableDb>(),
                 authenticationBloc: context.read<AuthenticationBloc>(),
                 syncDelay: GetIt.I<Delays>().syncDelay,
                 licenseCubit: context.read<LicenseCubit>(),
                 connectivity: Connectivity().onConnectivityChanged,
-                myAbiliaConnection: MyAbiliaConnection(
-                  baseUrlDb: GetIt.I<BaseUrlDb>(),
-                  client: GetIt.I<ListenableClient>(),
-                ),
+                myAbiliaConnection: GetIt.I<MyAbiliaConnection>(),
               ),
               child: const LogoutWarningModal(),
             ),
@@ -157,7 +154,7 @@ class LogoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IconAndTextButton(
-        text: Translator.of(context).translate.logout,
+        text: Lt.of(context).logout,
         icon: AbiliaIcons.powerOffOn,
         onPressed: onPressed,
         style: style ?? iconTextButtonStyleRed,

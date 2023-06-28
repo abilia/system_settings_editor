@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/l10n/all.dart';
 import 'package:memoplanner/ui/components/all.dart';
 import 'package:memoplanner/ui/themes/all.dart';
 
 extension PermissionExtension on Permission {
-  String translate(Translated translate) {
+  String translate(Lt translate) {
     if (this == Permission.camera) return translate.accessToCamera;
     if (this == Permission.notification) return translate.notifications;
     if (this == Permission.systemAlertWindow) return translate.fullScreenAlarm;

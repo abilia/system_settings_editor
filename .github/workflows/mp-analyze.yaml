@@ -7,12 +7,14 @@ on:
     branches:
       - master
       - release*
-    paths-ignore:
-      - 'handi/**'
-      - '**/ios/**'
-      - '**/android/**'
-      - '**/*.md'
-      - '**/*.yaml'
+    paths:
+      - 'memoplanner/**'
+      - '!memoplanner/ios/**'
+      - '!memoplanner/android/**'
+      - 'packages/**'
+      - '!packages/ui/**'
+      - '!**.md'
+      - '!**.yaml'
 
 jobs:
   analyze:

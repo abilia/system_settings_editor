@@ -11,13 +11,11 @@ class EditTimerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
-
     return PopAwareDiscardListener(
       showDiscardDialogCondition: (context) =>
           !context.read<EditTimerCubit>().state.unchanged,
       child: _EditTimerPage(
-        title: t.newTimer,
+        title: Lt.of(context).newTimer,
         icon: AbiliaIcons.stopWatch,
         bottomNavigation: BottomNavigation(
           backNavigationWidget: const PreviousButton(),
@@ -252,8 +250,7 @@ class _TimerInfoInput extends StatelessWidget {
                           }
                         },
                         inputFormatters: [LengthLimitingTextInputFormatter(50)],
-                        inputHeading:
-                            Translator.of(context).translate.enterNameForTimer,
+                        inputHeading: Lt.of(context).enterNameForTimer,
                       ),
                       SizedBox(height: layout.formPadding.verticalItemDistance),
                       PickField(

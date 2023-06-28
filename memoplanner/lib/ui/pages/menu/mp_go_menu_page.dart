@@ -6,13 +6,14 @@ class MpGoMenuPage extends StatelessWidget {
   const MpGoMenuPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return BlocBuilder<SessionsCubit, SessionsState>(
       builder: (context, sessionsState) => SettingsBasePage(
         icon: sessionsState.hasMP4Session
             ? AbiliaIcons.menu
             : AbiliaIcons.settings,
-        title: sessionsState.hasMP4Session ? t.menu : t.settings,
+        title:
+            sessionsState.hasMP4Session ? translate.menu : translate.settings,
         bottomNavigationBar:
             const BottomNavigation(backNavigationWidget: CloseButton()),
         widgets: [
@@ -21,24 +22,24 @@ class MpGoMenuPage extends StatelessWidget {
             const SizedBox(height: 10),
             const Divider(),
           ],
-          Tts(child: Text(t.calendar)),
+          Tts(child: Text(translate.calendar)),
           MenuItemPickField(
             icon: AbiliaIcons.handiAlarmVibration,
-            text: t.alarmSettings,
+            text: translate.alarmSettings,
             navigateTo: const AlarmSettingsPage(),
           ),
           SizedBox(height: layout.formPadding.verticalItemDistance),
-          Tts(child: Text(t.system)),
+          Tts(child: Text(translate.system)),
           const TextToSpeechSwitch(),
           const PermissionPickField(),
           MenuItemPickField(
             icon: AbiliaIcons.information,
-            text: t.about,
+            text: translate.about,
             navigateTo: const AboutPage(),
           ),
           MenuItemPickField(
             icon: AbiliaIcons.powerOffOn,
-            text: t.logout,
+            text: translate.logout,
             navigateTo: const LogoutPage(),
           ),
           if (Config.dev)
@@ -59,7 +60,7 @@ class MyPhotosPickField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = (Theme.of(context).textTheme.bodyLarge ?? bodyLarge);
-    final text = Translator.of(context).translate.myPhotos;
+    final text = Lt.of(context).myPhotos;
     return BlocSelector<SortableBloc, SortableState, String?>(
       selector: (state) => state is SortablesLoaded
           ? state.sortables.getMyPhotosFolder()?.id

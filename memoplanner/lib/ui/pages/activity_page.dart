@@ -84,7 +84,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
 
     if (noButtons) return const SizedBox.shrink();
 
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return BottomAppBar(
       child: SizedBox(
         height: layout.toolbar.height,
@@ -92,7 +92,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
           children: <Widget>[
             if (displayUncheckButton)
               TextAndOrIconActionButtonLight(
-                t.undo,
+                translate.undo,
                 AbiliaIcons.handiUncheck,
                 key: TestKey.uncheckButton,
                 onPressed: () async {
@@ -104,7 +104,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
               ),
             if (displayAlarmButton)
               TextAndOrIconActionButtonLight(
-                t.alarm,
+                translate.alarm,
                 activity.alarm.iconData(),
                 key: TestKey.editAlarm,
                 onPressed: () async => _alarmButtonPressed(
@@ -114,7 +114,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
               ),
             if (displayDeleteButton)
               TextAndOrIconActionButtonLight(
-                t.delete,
+                translate.delete,
                 AbiliaIcons.deleteAllClear,
                 onPressed: () async => _deleteButtonPressed(
                   context,
@@ -123,7 +123,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
               ),
             if (displayEditButton) EditActivityButton(activityDay: activityDay),
             TextAndOrIconActionButtonLight(
-              Translator.of(context).translate.close,
+              Lt.of(context).close,
               AbiliaIcons.navigationPrevious,
               key: TestKey.activityBackButton,
               onPressed: () async => Navigator.of(context).maybePop(),
@@ -164,7 +164,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
           PersistentMaterialPageRoute(
             settings: (SelectRecurrentTypePage).routeSetting(),
             builder: (_) => SelectRecurrentTypePage(
-              heading: Translator.of(context).translate.editRecurringActivity,
+              heading: Lt.of(context).editRecurringActivity,
               headingIcon: AbiliaIcons.edit,
             ),
           ),
@@ -207,7 +207,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
         final applyTo = await navigator.push<ApplyTo>(
           MaterialPageRoute(
             builder: (_) => SelectRecurrentTypePage(
-              heading: Translator.of(context).translate.deleteRecurringActivity,
+              heading: Lt.of(context).deleteRecurringActivity,
               allDaysVisible: true,
               headingIcon: AbiliaIcons.deleteAllClear,
             ),
@@ -237,9 +237,9 @@ class DeleteActivityDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return YesNoDialog(
-      heading: Translator.of(context).translate.delete,
+      heading: Lt.of(context).delete,
       headingIcon: AbiliaIcons.deleteAllClear,
-      text: Translator.of(context).translate.deleteActivityQuestion,
+      text: Lt.of(context).deleteActivityQuestion,
     );
   }
 }
@@ -254,7 +254,7 @@ class EditActivityButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TextAndOrIconActionButtonLight(
-        Translator.of(context).translate.edit,
+        Lt.of(context).edit,
         AbiliaIcons.edit,
         onPressed: () async {
           final authProviders = copiedAuthProviders(context);

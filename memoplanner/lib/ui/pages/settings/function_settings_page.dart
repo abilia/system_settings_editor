@@ -8,7 +8,7 @@ class FunctionSettingsPage extends StatelessWidget {
   const FunctionSettingsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final settings = context.read<MemoplannerSettingsBloc>().state;
     return BlocProvider<FunctionSettingsCubit>(
       create: (context) => FunctionSettingsCubit(
@@ -19,14 +19,14 @@ class FunctionSettingsPage extends StatelessWidget {
         length: 3,
         child: Scaffold(
           appBar: AbiliaAppBar(
-            title: t.functions,
-            label: Config.isMP ? t.settings : null,
+            title: translate.functions,
+            label: Config.isMP ? translate.settings : null,
             iconData: AbiliaIcons.menuSetup,
             bottom: AbiliaTabBar(
               tabs: <Widget>[
-                TabItem(t.toolbar, AbiliaIcons.shortcutMenu),
-                TabItem(t.homeScreen, AbiliaIcons.browserHome),
-                TabItem(t.timeout, AbiliaIcons.restore),
+                TabItem(translate.toolbar, AbiliaIcons.shortcutMenu),
+                TabItem(translate.homeScreen, AbiliaIcons.browserHome),
+                TabItem(translate.timeout, AbiliaIcons.restore),
               ],
             ),
           ),
@@ -78,10 +78,10 @@ class MenuRemovalWarningDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return YesNoDialog(
-      heading: t.menu,
-      text: t.menuRemovalWarning,
+      heading: translate.menu,
+      text: translate.menuRemovalWarning,
     );
   }
 }
@@ -109,13 +109,13 @@ class ToolbarSettingsTab extends StatelessWidget {
   const ToolbarSettingsTab({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
 
     final display =
         context.select((FunctionSettingsCubit s) => s.state.display);
 
     return _SettingsTab(
-      hint: t.toolbarSettingsHint,
+      hint: translate.toolbarSettingsHint,
       children: [
         SwitchField(
           leading: const Icon(AbiliaIcons.plus),
@@ -123,7 +123,7 @@ class ToolbarSettingsTab extends StatelessWidget {
           onChanged: (v) => context
               .read<FunctionSettingsCubit>()
               .changeDisplaySettings(display.copyWith(newActivity: v)),
-          child: Text(t.newActivity),
+          child: Text(translate.newActivity),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.stopWatch),
@@ -131,12 +131,12 @@ class ToolbarSettingsTab extends StatelessWidget {
           onChanged: (v) => context
               .read<FunctionSettingsCubit>()
               .changeDisplaySettings(display.copyWith(newTimer: v)),
-          child: Text(t.newTimer),
+          child: Text(translate.newTimer),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.day),
           value: true,
-          child: Text(t.calendarView),
+          child: Text(translate.calendarView),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.week),
@@ -144,7 +144,7 @@ class ToolbarSettingsTab extends StatelessWidget {
           onChanged: (v) => context
               .read<FunctionSettingsCubit>()
               .changeDisplaySettings(display.copyWith(week: v)),
-          child: Text(t.weekCalendar),
+          child: Text(translate.weekCalendar),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.month),
@@ -152,7 +152,7 @@ class ToolbarSettingsTab extends StatelessWidget {
           onChanged: (v) => context
               .read<FunctionSettingsCubit>()
               .changeDisplaySettings(display.copyWith(month: v)),
-          child: Text(t.monthCalendar),
+          child: Text(translate.monthCalendar),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.appMenu),
@@ -163,7 +163,7 @@ class ToolbarSettingsTab extends StatelessWidget {
                   .read<FunctionSettingsCubit>()
                   .changeDisplaySettings(display.copyWith(menuValue: v)),
           child: Text(
-            '${t.menu}${display.allMenuItemsDisabled ? ' (${t.menuItemsDisabled})' : ''}',
+            '${translate.menu}${display.allMenuItemsDisabled ? ' (${translate.menuItemsDisabled})' : ''}',
           ),
         ),
       ],
@@ -176,18 +176,18 @@ class HomeScreenSettingsTab extends StatelessWidget {
   final widgets = const <Widget>[];
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return BlocBuilder<FunctionSettingsCubit, FunctionsSettings>(
       builder: (context, functions) {
         void onChange(v) => context
             .read<FunctionSettingsCubit>()
             .changeFunctionSettings(functions.copyWith(startView: v));
         return _SettingsTab(
-          hint: t.homeScreenSettingsHint,
+          hint: translate.homeScreenSettingsHint,
           children: [
             RadioField(
               leading: const Icon(AbiliaIcons.day),
-              text: Text(t.calendarView),
+              text: Text(translate.calendarView),
               value: StartView.dayCalendar,
               groupValue: functions.startView,
               onChanged: onChange,
@@ -195,7 +195,7 @@ class HomeScreenSettingsTab extends StatelessWidget {
             if (functions.display.week)
               RadioField(
                 leading: const Icon(AbiliaIcons.week),
-                text: Text(t.weekCalendar),
+                text: Text(translate.weekCalendar),
                 value: StartView.weekCalendar,
                 groupValue: functions.startView,
                 onChanged: onChange,
@@ -203,7 +203,7 @@ class HomeScreenSettingsTab extends StatelessWidget {
             if (functions.display.month)
               RadioField(
                 leading: const Icon(AbiliaIcons.month),
-                text: Text(t.monthCalendar),
+                text: Text(translate.monthCalendar),
                 value: StartView.monthCalendar,
                 groupValue: functions.startView,
                 onChanged: onChange,
@@ -211,14 +211,14 @@ class HomeScreenSettingsTab extends StatelessWidget {
             if (functions.display.menuValue)
               RadioField(
                 leading: const Icon(AbiliaIcons.appMenu),
-                text: Text(t.menu),
+                text: Text(translate.menu),
                 value: StartView.menu,
                 groupValue: functions.startView,
                 onChanged: onChange,
               ),
             RadioField(
               leading: const Icon(AbiliaIcons.photoCalendar),
-              text: Text(t.photoCalendar.singleLine),
+              text: Text(translate.photoCalendar.singleLine),
               value: StartView.photoAlbum,
               groupValue: functions.startView,
               onChanged: onChange,
@@ -235,20 +235,20 @@ class TimeoutSettingsTab extends StatelessWidget {
   final widgets = const <Widget>[];
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final timeoutSettings = context.select(
       (FunctionSettingsCubit value) => value.state.timeout,
     );
 
     return _SettingsTab(
-      hint: t.timeoutSettingsHint,
+      hint: translate.timeoutSettingsHint,
       children: [
         ...TimeoutSettings.timeoutOptions.map((d) => d.minutes()).map(
               (d) => RadioField<Duration>(
                 text: Text(
                   d == Duration.zero
-                      ? t.noTimeout
-                      : d.toDurationString(t, shortMin: false),
+                      ? translate.noTimeout
+                      : d.toDurationString(translate, shortMin: false),
                 ),
                 value: d,
                 groupValue: timeoutSettings.duration,
@@ -268,7 +268,7 @@ class TimeoutSettingsTab extends StatelessWidget {
                   .changeTimeoutSettings(
                       timeoutSettings.copyWith(screensaver: v))
               : null,
-          child: Text(t.activateScreensaver),
+          child: Text(translate.activateScreensaver),
         ),
         CollapsableWidget(
           collapsed: !timeoutSettings.shouldUseScreensaver,
@@ -281,7 +281,7 @@ class TimeoutSettingsTab extends StatelessWidget {
                     .changeTimeoutSettings(
                         timeoutSettings.copyWith(screensaverOnlyDuringNight: v))
                 : null,
-            child: Text(t.onlyActivateScreensaverDuringNight),
+            child: Text(translate.onlyActivateScreensaverDuringNight),
           ),
         ),
       ],

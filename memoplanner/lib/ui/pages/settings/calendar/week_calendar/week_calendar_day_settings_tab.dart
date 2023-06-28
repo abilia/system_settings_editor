@@ -8,7 +8,7 @@ class WeekSettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettings>(
         builder: (context, state) {
       void onDisplayDaysChanged(WeekDisplayDays? w) => context
@@ -19,32 +19,32 @@ class WeekSettingsTab extends StatelessWidget {
           .changeWeekCalendarSettings(state.copyWith(weekColor: w));
       return SettingsTab(
         children: [
-          Tts(child: Text(t.display)),
+          Tts(child: Text(translate.display)),
           const WeekCalendarDisplay(),
           RadioField(
             value: WeekDisplayDays.everyDay,
             groupValue: state.weekDisplayDays,
             onChanged: onDisplayDaysChanged,
-            text: Text(t.everyDay),
+            text: Text(translate.everyDay),
           ),
           RadioField(
             value: WeekDisplayDays.weekdays,
             groupValue: state.weekDisplayDays,
             onChanged: onDisplayDaysChanged,
-            text: Text(t.weekdays),
+            text: Text(translate.weekdays),
           ),
           const Divider(),
           RadioField(
             value: WeekColor.captions,
             groupValue: state.weekColor,
             onChanged: onWeekColorChanged,
-            text: Text(t.captions),
+            text: Text(translate.captions),
           ),
           RadioField(
             value: WeekColor.columns,
             groupValue: state.weekColor,
             onChanged: onWeekColorChanged,
-            text: Text(t.columns),
+            text: Text(translate.columns),
           ),
         ],
       );

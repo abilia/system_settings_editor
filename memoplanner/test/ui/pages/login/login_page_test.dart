@@ -19,14 +19,16 @@ import '../../../test_helpers/tts.dart';
 
 void main() {
   const secretPassword = 'pwfafawfapwfafawfa';
-  final translate = Locales.language.values.first;
+  late final Lt translate;
 
   final time = DateTime(2020, 11, 11, 11, 11);
   DateTime licenseExpireTime;
   late ListenableMockClient client;
   TermsOfUseResponse termsOfUseResponse = () => TermsOfUse.accepted();
 
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
+    translate = await Lt.load(Lt.supportedLocales.first);
     registerFallbackValues();
     scheduleNotificationsIsolated = noAlarmScheduler;
     licenseExpireTime = time.add(10.days());
@@ -39,6 +41,7 @@ void main() {
   });
 
   late SortableDb sortableDb;
+  late MyAbiliaConnection mockMyAbiliaConnection;
 
   setUp(() async {
     setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
@@ -53,6 +56,10 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(() => sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     when(() => sortableDb.countAllDirty()).thenAnswer((_) => Future.value(0));
+
+    mockMyAbiliaConnection = MockMyAbiliaConnection();
+    when(() => mockMyAbiliaConnection.hasConnection())
+        .thenAnswer((_) async => true);
 
     GetItInitializer()
       ..sharedPreferences =
@@ -69,6 +76,7 @@ void main() {
       ..sortableDb = sortableDb
       ..battery = FakeBattery()
       ..deviceDb = FakeDeviceDb()
+      ..myAbiliaConnection = mockMyAbiliaConnection
       ..init();
   });
 
@@ -254,6 +262,56 @@ void main() {
     await tester.tap(find.byType(LoginButton));
     await tester.pumpAndSettle();
     expect(find.byType(CalendarPage), findsOneWidget);
+  });
+
+  testWidgets(
+      'SGC-2512 Shows logout warning when offline and has unsynced data',
+      (WidgetTester tester) async {
+    when(() => sortableDb.countAllDirty()).thenAnswer((_) => Future.value(1));
+    when(() => mockMyAbiliaConnection.hasConnection())
+        .thenAnswer((_) async => false);
+
+    await tester.pumpApp();
+    await tester.pumpAndSettle();
+
+    // Login
+    await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+    await tester.ourEnterText(find.byType(UsernameInput), username);
+    await tester.pump();
+    expect(find.byType(LoginButton), findsOneWidget);
+    await tester.tap(find.byType(LoginButton));
+    await tester.pumpAndSettle();
+    expect(find.byType(CalendarPage), findsOneWidget);
+
+    // Logout
+    if (Config.isMP) {
+      await tester.tap(find.byIcon(AbiliaIcons.appMenu));
+      await tester.pumpAndSettle();
+      expect(find.byType(MenuPage), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.settings));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(AbiliaIcons.technicalSettings));
+      await tester.pumpAndSettle();
+    } else if (Config.isMPGO) {
+      await tester.tap(find.byIcon(AbiliaIcons.menu));
+      await tester.pumpAndSettle();
+      expect(find.byType(MpGoMenuPage), findsOneWidget);
+      await tester.scrollDownMpGoMenu(dy: -200);
+    }
+    await tester.tap(find.byIcon(AbiliaIcons.powerOffOn));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(LogoutButton));
+    await tester.pump();
+    expect(find.byType(LogoutWarningModal), findsOneWidget);
+    expect(find.textContaining(translate.goOnlineBeforeLogout), findsOneWidget);
+    await tester.tap(
+      find.descendant(
+        of: find.byType(LogoutWarningModal),
+        matching: find.byType(CloseButton),
+      ),
+    );
+    await tester.pumpAndSettle();
   });
 
   testWidgets('tts', (WidgetTester tester) async {
@@ -496,6 +554,7 @@ void main() {
     testWidgets('Login footer buttons', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
+          localizationsDelegates: const [Lt.delegate],
           home: BlocProvider<SpeechSettingsCubit>(
             create: (_) => FakeSpeechSettingsCubit(),
             child: Builder(
@@ -506,6 +565,7 @@ void main() {
           ),
         ),
       );
+      await tester.pumpAndSettle();
       expect(find.byType(AbiliaLogoWithReset), findsOneWidget);
       expect(find.byType(AboutButton), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.settings), findsOneWidget);

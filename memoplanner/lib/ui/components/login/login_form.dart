@@ -12,7 +12,7 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final theme = Theme.of(context);
     return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
@@ -88,7 +88,7 @@ class UsernameInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return AbiliaTextInput(
       initialValue: initialValue,
       keyboardType: TextInputType.emailAddress,
@@ -110,7 +110,7 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Tts.data(
       data: translate.login,
       child: BlocBuilder<LoginCubit, LoginState>(

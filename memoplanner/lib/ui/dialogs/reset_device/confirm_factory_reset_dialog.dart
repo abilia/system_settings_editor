@@ -7,7 +7,7 @@ class ConfirmFactoryResetDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isConnected = context.watch<ConnectivityCubit>().state.isConnected;
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final dialogLayout = layout.resetDeviceDialog;
     final resetDeviceCubit = context.watch<ResetDeviceCubit>();
     final isResetting = resetDeviceCubit.isResetting;
@@ -78,7 +78,7 @@ class ConfirmFactoryResetDialog extends StatelessWidget {
     if (!isConnected) return const NoInternetErrorMessage();
     if (state is FactoryResetFailed) {
       return ErrorMessage(
-        text: Text(Translator.of(context).translate.factoryResetFailed),
+        text: Text(Lt.of(context).factoryResetFailed),
       );
     }
     return null;

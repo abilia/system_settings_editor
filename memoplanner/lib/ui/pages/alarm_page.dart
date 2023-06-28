@@ -35,7 +35,7 @@ class AlarmPage extends StatelessWidget {
             data: abiliaWhiteTheme,
             child: Scaffold(
               appBar: AbiliaAppBar(
-                title: Translator.of(context).translate.alarm,
+                title: Lt.of(context).alarm,
                 iconData: alarm.activityDay.activity.alarm.iconData(),
                 height: layout.appBar.mediumHeight,
                 trailing: Padding(
@@ -74,7 +74,7 @@ class ReminderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final text = reminder.reminder
         .comparedToNowString(translate, reminder is ReminderBefore);
     return Theme(
@@ -245,7 +245,7 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
               Expanded(
                 child: GreenButton(
                   key: TestKey.activityCheckButton,
-                  text: Translator.of(context).translate.check,
+                  text: Lt.of(context).check,
                   icon: AbiliaIcons.handiCheck,
                   onPressed: () async => checkConfirmationAndRemoveAlarm(
                     context,
@@ -272,7 +272,7 @@ class TimerAlarmPage extends StatelessWidget with ActivityMixin {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final timer = timerAlarm.timer;
     return Theme(
       data: abiliaWhiteTheme,
@@ -314,9 +314,7 @@ class TimerAlarmPage extends StatelessWidget with ActivityMixin {
                           child: timer.paused
                               ? Tts(
                                   child: Text(
-                                    Translator.of(context)
-                                        .translate
-                                        .timerPaused,
+                                    Lt.of(context).timerPaused,
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineMedium

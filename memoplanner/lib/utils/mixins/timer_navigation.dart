@@ -21,7 +21,7 @@ mixin TimerNavigation {
             BlocProvider<EditTimerCubit>(
               create: (_) => EditTimerCubit(
                 timerCubit: context.read<TimerCubit>(),
-                translate: Translator.of(context).translate,
+                translate: Lt.of(context),
                 ticker: GetIt.I<Ticker>(),
               ),
             ),
@@ -52,7 +52,7 @@ mixin TimerNavigation {
           child: BlocProvider(
             create: (context) => EditTimerCubit(
               timerCubit: context.read<TimerCubit>(),
-              translate: Translator.of(buildContext).translate,
+              translate: Lt.of(buildContext),
               ticker: GetIt.I<Ticker>(),
               basicTimer: basicTimer,
             ),

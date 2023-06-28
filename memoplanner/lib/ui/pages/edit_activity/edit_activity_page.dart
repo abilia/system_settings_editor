@@ -9,7 +9,7 @@ class EditActivityPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final generalSettings = context.select(
         (MemoplannerSettingsBloc bloc) => bloc.state.addActivity.general);
     final editActivitySettings = context.select(
@@ -105,7 +105,7 @@ class EditActivityPage extends StatelessWidget {
   }
 
   String _getTitle(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final isTemplate =
         context.read<WizardCubit>() is TemplateActivityWizardCubit;
     final isEdit =

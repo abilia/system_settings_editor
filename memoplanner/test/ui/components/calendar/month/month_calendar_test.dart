@@ -23,6 +23,7 @@ void main() {
   TimerResponse timerResponse = () => [];
   late ActivityDbInMemory mockActivityDb;
   final initialDay = DateTime(2020, 08, 05);
+  late final Lt translate;
 
   Finder collapseUpButton() => find.ancestor(
         of: find.byIcon(AbiliaIcons.navigationUp),
@@ -35,6 +36,8 @@ void main() {
       );
 
   setUpAll(() async {
+    await Lokalise.initMock();
+    translate = await Lt.load(Lt.supportedLocales.first);
     sharedPreferences = await FakeSharedPreferences.getInstance();
     registerFallbackValues();
     setupPermissions();
@@ -240,7 +243,6 @@ void main() {
 
         testWidgets('Collapsable month preview', (WidgetTester tester) async {
           // Act - Go to month view
-          final translate = Locales.language.values.first;
           await tester.pumpWidget(const App());
           await tester.pumpAndSettle();
           await tester.tap(find.byIcon(AbiliaIcons.month));
@@ -393,8 +395,6 @@ void main() {
     testWidgets(
         'Day preview hides when navigation to non-current month and shows when navigating to current month',
         (WidgetTester tester) async {
-      final translate = Locales.language.values.first;
-
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));

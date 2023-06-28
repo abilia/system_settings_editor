@@ -1,8 +1,8 @@
 import 'package:auth/auth.dart';
-import 'package:memoplanner/i18n/translations.g.dart';
+import 'package:memoplanner/ui/all.dart';
 
 extension LogoutMessage on LoggedOutReason {
-  String header(Translated translate) {
+  String header(Lt translate) {
     switch (this) {
       case LoggedOutReason.licenseExpired:
         return translate.licenseExpired;
@@ -13,7 +13,7 @@ extension LogoutMessage on LoggedOutReason {
     }
   }
 
-  String message(Translated translate) {
+  String message(Lt translate) {
     switch (this) {
       case LoggedOutReason.licenseExpired:
         return translate.licenseExpiredMessage;

@@ -9,7 +9,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:logging/logging.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/config.dart';
-import 'package:memoplanner/i18n/all.dart';
+import 'package:memoplanner/l10n/all.dart';
 import 'package:memoplanner/models/all.dart';
 
 import 'package:memoplanner/utils/all.dart';
@@ -121,6 +121,7 @@ Future _scheduleAllNotifications(
   await cancelAllPendingNotifications();
   final locale = Locale(language);
   await initializeDateFormatting(locale.languageCode);
+  await initLokalise();
   final androidNotificationChannels = await _androidNotificationChannelIds();
   log(
     Level.FINE,
@@ -170,9 +171,11 @@ Future<bool> _scheduleNotification(
   Logging log,
 ) async {
   final title = notificationAlarm.event.title;
+  final translate = await Lt.load(locale);
   final subtitle = _subtitle(
     notificationAlarm,
     locale,
+    translate,
     alwaysUse24HourFormat,
   );
 
@@ -351,13 +354,13 @@ class NotificationChannel {
 String? _subtitle(
   NotificationAlarm notificationAlarm,
   Locale givenLocale,
+  Lt translate,
   bool alwaysUse24HourFormat,
 ) {
   final timeFormat =
       hourAndMinuteFromUse24(alwaysUse24HourFormat, givenLocale.languageCode);
-  final translator = Locales.language[givenLocale] ?? const EN();
   if (notificationAlarm is ActivityAlarm) {
-    return _activitySubtitle(notificationAlarm, timeFormat, translator);
+    return _activitySubtitle(notificationAlarm, timeFormat, translate);
   }
   return null;
 }
@@ -365,21 +368,20 @@ String? _subtitle(
 String _activitySubtitle(
   ActivityAlarm activeNotification,
   TimeFormat timeFormat,
-  Translated? translator,
+  Lt? translate,
 ) {
   final ad = activeNotification.activityDay;
   final endTime = ad.activity.hasEndTime ? ' - ${timeFormat(ad.end)} ' : ' ';
-  final extra =
-      translator != null ? _extra(activeNotification, translator) : '';
+  final extra = translate != null ? _extra(activeNotification, translate) : '';
   return timeFormat(ad.start) + endTime + extra;
 }
 
-String _extra(ActivityAlarm notificationAlarm, Translated translator) {
-  if (notificationAlarm is StartAlarm) return translator.startsNow;
-  if (notificationAlarm is EndAlarm) return translator.endsNow;
+String _extra(ActivityAlarm notificationAlarm, Lt translate) {
+  if (notificationAlarm is StartAlarm) return translate.startsNow;
+  if (notificationAlarm is EndAlarm) return translate.endsNow;
   if (notificationAlarm is NewReminder) {
     return notificationAlarm.reminder
-        .comparedToNowString(translator, notificationAlarm is ReminderBefore);
+        .comparedToNowString(translate, notificationAlarm is ReminderBefore);
   }
   return '';
 }

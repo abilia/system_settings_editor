@@ -40,7 +40,7 @@ class _SoundEffectSwitchState extends State<SoundEffectsSwitch> {
           await SystemSettingsEditor.setSoundEffectsEnabled(switchOn);
         });
       },
-      child: Text(Translator.of(context).translate.clickSound),
+      child: Text(Lt.of(context).clickSound),
     );
   }
 

@@ -53,7 +53,8 @@ void main() {
   final StartAlarm startAlarm =
       StartAlarm(ActivityDay(testActivity, startTimeOne.onlyDays()));
 
-  setUpAll(() {
+  setUpAll(() async {
+    await Lokalise.initMock();
     registerFallbackValues();
   });
 
@@ -149,8 +150,7 @@ void main() {
               ),
             ],
             child: MaterialApp(
-              supportedLocales: Translator.supportedLocals,
-              localizationsDelegates: const [Translator.delegate],
+              localizationsDelegates: const [Lt.delegate],
               localeResolutionCallback: (locale, supportedLocales) =>
                   supportedLocales.firstWhere(
                       (l) => l.languageCode == locale?.languageCode,

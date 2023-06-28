@@ -7,7 +7,7 @@ class BatteryLevel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return StreamBuilder(
       stream: battery.onBatteryStateChanged,
       builder: (context, _) => FutureBuilder<List<dynamic>>(
@@ -19,7 +19,7 @@ class BatteryLevel extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SubHeading(t.battery),
+              SubHeading(translate.battery),
               Tts.data(
                 data: '$batteryLevel%',
                 child: Row(

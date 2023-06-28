@@ -73,8 +73,7 @@ void main() {
 
   Widget wrapWithMaterialApp(Widget widget, {PushCubit? pushCubit}) =>
       MaterialApp(
-        supportedLocales: Translator.supportedLocals,
-        localizationsDelegates: const [Translator.delegate],
+        localizationsDelegates: const [Lt.delegate],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),
@@ -136,8 +135,9 @@ void main() {
         ),
       );
 
-  setUpAll(() {
+  setUpAll(() async {
     registerFallbackValues();
+    await Lokalise.initMock();
   });
 
   const MethodChannel localNotificationChannel =
@@ -431,7 +431,7 @@ void main() {
         expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.stop), findsNothing);
-        // wait Default time
+        // wait DefauLt translateime
         final defaultDuration = const AlarmSettings().duration;
         await tester.pumpAndSettle(defaultDuration);
         // not playing

@@ -44,9 +44,7 @@ class CategoryLeft extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.expandLeftCategory != current.expandLeftCategory,
         builder: (context, calendarViewState) => _Category(
-          label: categoryName.isEmpty
-              ? Translator.of(context).translate.left
-              : categoryName,
+          label: categoryName.isEmpty ? Lt.of(context).left : categoryName,
           fileId: fileId,
           expanded: calendarViewState.expandLeftCategory,
           icon: AbiliaIcons.navigationPrevious,
@@ -98,9 +96,7 @@ class CategoryRight extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.expandRightCategory != current.expandRightCategory,
         builder: (context, calendarViewState) => _Category(
-          label: categoryName.isEmpty
-              ? Translator.of(context).translate.right
-              : categoryName,
+          label: categoryName.isEmpty ? Lt.of(context).right : categoryName,
           fileId: fileId,
           expanded: calendarViewState.expandRightCategory,
           icon: AbiliaIcons.navigationNext,

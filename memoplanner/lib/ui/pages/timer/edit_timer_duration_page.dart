@@ -16,7 +16,7 @@ class EditTimerDurationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AbiliaAppBar(
-        title: Translator.of(context).translate.selectDuration,
+        title: Lt.of(context).selectDuration,
         iconData: AbiliaIcons.clock,
       ),
       body: _TimerInputContent(initialDuration: initialDuration),
@@ -54,7 +54,7 @@ class _TimerInputContentState extends State<_TimerInputContent> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return Column(
       children: [
         const Spacer(),
@@ -167,7 +167,7 @@ class InvalidTimerDurationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ErrorDialog(
-      text: Translator.of(context).translate.timerInvalidDuration,
+      text: Lt.of(context).timerInvalidDuration,
     );
   }
 }

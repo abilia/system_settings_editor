@@ -13,6 +13,10 @@ import '../../../test_helpers/tts.dart';
 void main() {
   late MockBattery mockBattery;
 
+  setUpAll(() async {
+    await Lokalise.initMock();
+  });
+
   setUp(() async {
     setupFakeTts();
     registerFallbackValue(BatteryState.unknown);
@@ -30,8 +34,7 @@ void main() {
   tearDown(GetIt.I.reset);
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
-        supportedLocales: Translator.supportedLocals,
-        localizationsDelegates: const [Translator.delegate],
+        localizationsDelegates: const [Lt.delegate],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),

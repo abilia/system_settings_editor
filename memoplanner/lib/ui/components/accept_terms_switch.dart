@@ -20,9 +20,9 @@ class AcceptTermsSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
+    final translate = Lt.of(context);
     return SwitchField(
-      ttsData: '${t.acceptTerms} $linkText',
+      ttsData: '${translate.acceptTerms} $linkText',
       value: value,
       onChanged: onChanged,
       decoration: errorState ? whiteErrorBoxDecoration : null,
@@ -30,7 +30,7 @@ class AcceptTermsSwitch extends StatelessWidget {
         text: TextSpan(
           style: DefaultTextStyle.of(context).style,
           children: [
-            TextSpan(text: '${t.acceptTerms} '),
+            TextSpan(text: '${translate.acceptTerms} '),
             TextSpan(
               text: linkText,
               style: DefaultTextStyle.of(context).style.copyWith(

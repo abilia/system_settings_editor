@@ -9,7 +9,7 @@ class RecordSoundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translator = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final permission = context.select(
         (PermissionCubit cubit) => cubit.state.status[Permission.microphone]);
     final activity =
@@ -18,7 +18,7 @@ class RecordSoundWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        SubHeading(translator.speech),
+        SubHeading(translate.speech),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
@@ -31,9 +31,11 @@ class RecordSoundWidget extends StatelessWidget {
                     create: (context) => SoundBloc(
                       storage: GetIt.I<FileStorage>(),
                       userFileBloc: context.read<UserFileBloc>(),
+                      spamProtectionDelay:
+                          GetIt.I<Delays>().spamProtectionDelay,
                     ),
                     child: SelectOrPlaySoundWidget(
-                      label: translator.speechOnStart,
+                      label: translate.speechOnStart,
                       permissionStatus: permission,
                       recordedAudio: activity.extras.startTimeExtraAlarm,
                       onResult: (AbiliaFile result) =>
@@ -51,9 +53,11 @@ class RecordSoundWidget extends StatelessWidget {
                     create: (context) => SoundBloc(
                       storage: GetIt.I<FileStorage>(),
                       userFileBloc: context.read<UserFileBloc>(),
+                      spamProtectionDelay:
+                          GetIt.I<Delays>().spamProtectionDelay,
                     ),
                     child: SelectOrPlaySoundWidget(
-                      label: translator.speechOnEnd,
+                      label: translate.speechOnEnd,
                       permissionStatus: permission,
                       recordedAudio: activity.extras.endTimeExtraAlarm,
                       onResult: (AbiliaFile result) =>
@@ -201,7 +205,7 @@ class RecordingWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SubHeading(Translator.of(context).translate.duration),
+              SubHeading(Lt.of(context).duration),
               const _TimeDisplay(),
             ],
           ),
@@ -379,7 +383,7 @@ class RecordAudioButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => RedButton(
-        text: Translator.of(context).translate.record,
+        text: Lt.of(context).record,
         icon: AbiliaIcons.dictaphone,
         onPressed: context.read<RecordSoundCubit>().startRecording,
       );
@@ -409,7 +413,7 @@ class StopButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DarkGreyButton(
-      text: Translator.of(context).translate.stop,
+      text: Lt.of(context).stop,
       icon: AbiliaIcons.stop,
       onPressed: onPressed,
     );
@@ -427,7 +431,7 @@ class PlayRecordingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DarkGreyButton(
-      text: Translator.of(context).translate.play,
+      text: Lt.of(context).play,
       icon: AbiliaIcons.playSound,
       onPressed: () => context.read<SoundBloc>().add(PlaySound(sound)),
     );

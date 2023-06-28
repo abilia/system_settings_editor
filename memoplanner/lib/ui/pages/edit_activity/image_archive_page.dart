@@ -12,7 +12,7 @@ class ImageArchivePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
+    final translate = Lt.of(context);
     final sortableArchiveCubit =
         context.watch<SortableArchiveCubit<ImageArchiveData>>();
     final sortableState = sortableArchiveCubit.state;
