@@ -23,7 +23,6 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
 
   SortableArchiveState<T> copyWith({
     required Sortable<T>? selected,
-    List<Sortable<T>>? sortableArchive,
     String? currentFolderId,
     String? initialFolderId,
     String? searchValue,
@@ -31,7 +30,7 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
     bool? myPhotos,
   }) =>
       SortableArchiveState(
-        sortableArchive ?? this.sortableArchive,
+        this.sortableArchive,
         currentFolderId: currentFolderId ?? this.currentFolderId,
         initialFolderId: initialFolderId ?? this.initialFolderId,
         searchValue: searchValue ?? this.searchValue,
@@ -125,27 +124,19 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
 
   String folderTitle() => allById[currentFolderId]?.data.title() ?? '';
 
-  String breadCrumbPath({String? initialTitle}) {
-    String? folder = currentFolderId;
-    final folderNames = <String>[];
+  List<Sortable<T>> folderPath() => [
+        for (var folder = allById[currentFolderId];
+            folder != null;
+            folder = allById[folder.groupId])
+          folder,
+      ];
 
-    while (folder != null && folder != initialFolderId) {
-      final currentFolder = allById[folder];
-      if (currentFolder != null) {
-        folderNames.add(currentFolder.data.title());
-      }
-      folder = currentFolder?.groupId;
-    }
-
-    if (initialTitle != null) {
-      folderNames.add(initialTitle);
-    }
-    return folderNames.reversed.join(' / ');
-  }
+  String? breadCrumbPath() => !isAtRoot
+      ? folderPath().reversed.map((e) => e.data.title()).join(' / ')
+      : null;
 
   @override
   List<Object?> get props => [
-        sortableArchive,
         currentFolderId,
         initialFolderId,
         selected,

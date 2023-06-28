@@ -29,8 +29,9 @@ class ImageArchivePage extends StatelessWidget {
             ? null
             : selected
                 ? sortableState.selected?.data.name
-                : sortableState.breadCrumbPath(
-                    initialTitle: translate.imageArchive),
+                : sortableState.isAtRoot
+                    ? translate.imageArchive
+                    : '${translate.imageArchive} / ${sortableState.breadCrumbPath()}',
         title: searchHeader == SearchHeader.searchBar
             ? translate.searchImage
             : translate.selectImage,

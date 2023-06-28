@@ -17,7 +17,7 @@ class BasicActivityPickerPage extends StatelessWidget {
           appBar: AbiliaAppBar(
             iconData: AbiliaIcons.basicActivities,
             title: translate.selectTemplate,
-            label: !state.isAtRoot ? state.breadCrumbPath() : null,
+            label: state.breadCrumbPath(),
             isFlipLabels: true,
           ),
           body: ListLibrary<BasicActivityData>(
