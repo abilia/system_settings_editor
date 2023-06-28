@@ -26,13 +26,15 @@ dependencies:
   flutter_bloc: ^8.0.1
   flutter_lints: ^2.0.1
   flutter_local_notifications: ^14.1.1
+  flutter_localizations:
+    sdk: flutter
   generics:
     path: ../packages/generics
   get_it: ^7.2.0
   intl: ^0.18.0
   logging: ^1.1.0
   lokalise_flutter_sdk: ^1.1.1
-  package_info_plus: ^3.0.2
+  package_info_plus: ^3.0.3
   path_provider: ^2.0.5
   permission_handler: ^10.2.0
   repository_base:

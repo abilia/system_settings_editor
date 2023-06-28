@@ -46,6 +46,7 @@ class HandiApp extends StatelessWidget {
           navigatorKey: _navigatorKey,
           child: MaterialApp(
             navigatorKey: _navigatorKey,
+            localizationsDelegates: const [Lt.delegate],
             home: Scaffold(
               body: Center(
                 child: Text('${appName.toUpperCase()}!'),
