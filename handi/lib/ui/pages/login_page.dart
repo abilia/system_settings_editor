@@ -26,17 +26,17 @@ class LoginPage extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text(translate.unauthorized),
-              content: SingleChildScrollView(
+              title: const Text('Unauthorized'),
+              content: const SingleChildScrollView(
                 child: ListBody(
                   children: <Widget>[
-                    Text(translate.loggedOut),
+                    Text('Logged out'),
                   ],
                 ),
               ),
               actions: <Widget>[
                 LinkButton(
-                  title: translate.ok,
+                  title: 'Ok',
                   onPressed: () {
                     Navigator.of(context).maybePop();
                   },
@@ -78,9 +78,9 @@ class LoginPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(translate.userName),
+                      const Text('Username'),
                       Tooltip(
-                        message: translate.userName,
+                        message: 'Username',
                         child: TextField(
                           onChanged: context.read<LoginCubit>().usernameChanged,
                         ),
@@ -90,9 +90,9 @@ class LoginPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(translate.password),
+                      const Text('Password'),
                       Tooltip(
-                        message: translate.password,
+                        message: 'Password',
                         child: TextField(
                           onChanged: context.read<LoginCubit>().passwordChanged,
                         ),

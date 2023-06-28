@@ -36,21 +36,8 @@ class Lt {
   ];
 
   static final Map<String, List<String>> _metadata = {
-    'generics': [],
     'logOut': [],
-    'loggedOut': [],
-    'ok': [],
-    'password': [],
-    'pushReceived': [],
-    'signIn': [],
-    'sortables': [],
-    'supportPersons': [],
-    'sync': [],
-    'textToSpeech': [],
-    'unauthorized': [],
-    'userFiles': [],
-    'userName': [],
-    'upcomingActivities': []
+    'signIn': []
   };
 
   static Future<Lt> load(Locale locale) {
@@ -74,16 +61,6 @@ class Lt {
     return instance!;
   }
 
-  /// `Generics`
-  String get generics {
-    return Intl.message(
-      'Generics',
-      name: 'generics',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Log out`
   String get logOut {
     return Intl.message(
@@ -94,131 +71,11 @@ class Lt {
     );
   }
 
-  /// `You have been logged out.`
-  String get loggedOut {
-    return Intl.message(
-      'You have been logged out.',
-      name: 'loggedOut',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Ok`
-  String get ok {
-    return Intl.message(
-      'Ok',
-      name: 'ok',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Password`
-  String get password {
-    return Intl.message(
-      'Password',
-      name: 'password',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Push received`
-  String get pushReceived {
-    return Intl.message(
-      'Push received',
-      name: 'pushReceived',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Sign In`
   String get signIn {
     return Intl.message(
       'Sign In',
       name: 'signIn',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sortables`
-  String get sortables {
-    return Intl.message(
-      'Sortables',
-      name: 'sortables',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Support persons`
-  String get supportPersons {
-    return Intl.message(
-      'Support persons',
-      name: 'supportPersons',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sync`
-  String get sync {
-    return Intl.message(
-      'Sync',
-      name: 'sync',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Text to speech`
-  String get textToSpeech {
-    return Intl.message(
-      'Text to speech',
-      name: 'textToSpeech',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Unauthorized`
-  String get unauthorized {
-    return Intl.message(
-      'Unauthorized',
-      name: 'unauthorized',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `User Files`
-  String get userFiles {
-    return Intl.message(
-      'User Files',
-      name: 'userFiles',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `User Name`
-  String get userName {
-    return Intl.message(
-      'User Name',
-      name: 'userName',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Upcoming activities`
-  String get upcomingActivities {
-    return Intl.message(
-      'Upcoming activities',
-      name: 'upcomingActivities',
       desc: '',
       args: [],
     );

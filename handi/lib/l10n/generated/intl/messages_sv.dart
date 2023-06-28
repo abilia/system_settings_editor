@@ -25,23 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
       _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, dynamic> _notInlinedMessages(_) => {
-        'generics': MessageLookupByLibrary.simpleMessage(''),
         'logOut': MessageLookupByLibrary.simpleMessage('Logga ut'),
-        'loggedOut':
-            MessageLookupByLibrary.simpleMessage('Du har blivit utloggad'),
-        'ok': MessageLookupByLibrary.simpleMessage(''),
-        'password': MessageLookupByLibrary.simpleMessage('Lösenord'),
-        'pushReceived': MessageLookupByLibrary.simpleMessage('Push mottagen'),
-        'signIn': MessageLookupByLibrary.simpleMessage('Logga in'),
-        'sortables': MessageLookupByLibrary.simpleMessage(''),
-        'supportPersons':
-            MessageLookupByLibrary.simpleMessage('Supportpersoner'),
-        'sync': MessageLookupByLibrary.simpleMessage('Synkronisera'),
-        'textToSpeech': MessageLookupByLibrary.simpleMessage('Text till tal'),
-        'unauthorized': MessageLookupByLibrary.simpleMessage('Obehörig'),
-        'upcomingActivities':
-            MessageLookupByLibrary.simpleMessage('Kommande aktiviteter'),
-        'userFiles': MessageLookupByLibrary.simpleMessage('Användarfiler'),
-        'userName': MessageLookupByLibrary.simpleMessage('Användarnamn')
+        'signIn': MessageLookupByLibrary.simpleMessage('Logga in')
       };
 }

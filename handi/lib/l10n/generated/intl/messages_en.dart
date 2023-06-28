@@ -25,23 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
       _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, dynamic> _notInlinedMessages(_) => {
-        'generics': MessageLookupByLibrary.simpleMessage('Generics'),
         'logOut': MessageLookupByLibrary.simpleMessage('Log out'),
-        'loggedOut':
-            MessageLookupByLibrary.simpleMessage('You have been logged out.'),
-        'ok': MessageLookupByLibrary.simpleMessage('Ok'),
-        'password': MessageLookupByLibrary.simpleMessage('Password'),
-        'pushReceived': MessageLookupByLibrary.simpleMessage('Push received'),
-        'signIn': MessageLookupByLibrary.simpleMessage('Sign In'),
-        'sortables': MessageLookupByLibrary.simpleMessage('Sortables'),
-        'supportPersons':
-            MessageLookupByLibrary.simpleMessage('Support persons'),
-        'sync': MessageLookupByLibrary.simpleMessage('Sync'),
-        'textToSpeech': MessageLookupByLibrary.simpleMessage('Text to speech'),
-        'unauthorized': MessageLookupByLibrary.simpleMessage('Unauthorized'),
-        'upcomingActivities':
-            MessageLookupByLibrary.simpleMessage('Upcoming activities'),
-        'userFiles': MessageLookupByLibrary.simpleMessage('User Files'),
-        'userName': MessageLookupByLibrary.simpleMessage('User Name')
+        'signIn': MessageLookupByLibrary.simpleMessage('Sign In')
       };
 }

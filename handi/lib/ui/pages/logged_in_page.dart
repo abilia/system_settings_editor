@@ -38,13 +38,12 @@ class LoggedInPage extends StatelessWidget {
         (SettingsCubit settingsCubit) => settingsCubit.state.textToSpeech);
 
     final hasSynced = context.select((SyncBloc bloc) => bloc.hasSynced);
-    final translate = Lt.of(context);
     return Scaffold(
       body: BlocListener<PushCubit, RemoteMessage>(
         listener: (context, message) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${translate.pushReceived} ${message.data}'),
+              content: Text('${'Push received'} ${message.data}'),
             ),
           );
         },
@@ -81,13 +80,13 @@ class LoggedInPage extends StatelessWidget {
                                 [];
 
                             return Text(
-                                '${translate.upcomingActivities}: ${activities.length}');
+                                'Upcoming activities: ${activities.length}');
                           },
                         ),
-                        Text('${translate.generics}: $generics'),
-                        Text('${translate.sortables}: $sortables'),
-                        Text('${translate.userFiles}: $userFiles'),
-                        Text('${translate.supportPersons}: $supportPersons'),
+                        Text('Generics: $generics'),
+                        Text('Sortables: $sortables'),
+                        Text('User files: $userFiles'),
+                        Text('Support persons: $supportPersons'),
                       ],
                     ),
                     const Spacer(),
@@ -95,7 +94,7 @@ class LoggedInPage extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(translate.textToSpeech),
+                          const Text('Tts'),
                           Switch(
                             value: tts,
                             onChanged: context.read<SettingsCubit>().setTts,
@@ -106,13 +105,13 @@ class LoggedInPage extends StatelessWidget {
                     LinkButton(
                       onPressed: () =>
                           context.read<SyncBloc>().add(const SyncAll()),
-                      title: translate.sync,
+                      title: 'Sync',
                     ),
                     LinkButton(
                       onPressed: () => context
                           .read<AuthenticationBloc>()
                           .add(const LoggedOut()),
-                      title: translate.logOut,
+                      title: Lt.of(context).logOut,
                     ),
                   ],
                 ),

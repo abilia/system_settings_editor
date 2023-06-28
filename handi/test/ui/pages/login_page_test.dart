@@ -39,8 +39,8 @@ void main() {
       tester.widget<LinkButton>(loginButtonFinder).onPressed,
       isNull,
     );
-    await tester.enterText(find.byTooltip(translate.userName), 'uname');
-    await tester.enterText(find.byTooltip(translate.password), 'pword');
+    await tester.enterText(find.byTooltip('Username'), 'uname');
+    await tester.enterText(find.byTooltip('Password'), 'pword');
     await tester.pumpAndSettle();
     expect(
       tester.widget<LinkButton>(loginButtonFinder).onPressed,
