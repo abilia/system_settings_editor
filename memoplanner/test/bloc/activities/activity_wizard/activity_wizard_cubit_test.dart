@@ -1212,7 +1212,7 @@ void main() {
                 activityWithNewTitle,
                 expectedTimeInterval,
                 aDay,
-                RecurrentType.weekly,
+                RecurrentType.daily,
               ),
             ));
 
@@ -1228,7 +1228,7 @@ void main() {
               expectedActivityToSave,
               expectedTimeInterval,
               aDay,
-              RecurrentType.weekly,
+              RecurrentType.daily,
             )));
 
         // Act
@@ -1622,7 +1622,6 @@ void main() {
               expectedActivity,
               secondTimeInterval,
               aDay,
-              RecurrentType.weekly,
             ),
           ),
         );
@@ -1800,7 +1799,7 @@ void main() {
               endDate: noEndDate,
             ),
             aDay,
-            RecurrentType.weekly,
+            RecurrentType.daily,
           ),
         ]));
     // Act

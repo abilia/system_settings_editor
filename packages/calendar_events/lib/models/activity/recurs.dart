@@ -78,16 +78,10 @@ class Recurs extends Equatable {
   RecurrentType get recurrence => RecurrentType.values[type];
 
   bool recursOnDay(DateTime day) {
-    switch (recurrence) {
-      case RecurrentType.weekly:
-        return _recursOnWeeklyDay(day);
-      case RecurrentType.monthly:
-        return _recursOnMonthDay(day);
-      case RecurrentType.yearly:
-        return _recursOnYearDay(day);
-      default:
-        return false;
-    }
+    if (weekly) return _recursOnWeeklyDay(day);
+    if (monthly) return _recursOnMonthDay(day);
+    if (yearly) return _recursOnYearDay(day);
+    return false;
   }
 
   bool _recursOnWeeklyDay(DateTime date) {
@@ -115,7 +109,6 @@ class Recurs extends Equatable {
       typeMonthly = 2,
       typeYearly = 3;
 
-  @visibleForTesting
   static const int evenMonday = 0x1,
       evenTuesday = 0x2,
       evenWednesday = 0x4,

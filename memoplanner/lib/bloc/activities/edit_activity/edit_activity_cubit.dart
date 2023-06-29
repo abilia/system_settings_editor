@@ -31,7 +31,10 @@ class EditActivityCubit extends Cubit<EditActivityState> {
                         : null,
                   ),
             activityDay.day,
-            activityDay.activity.recurs.recurrence,
+            activityDay.activity.recurs.weekly &&
+                    activityDay.activity.recurs.data == Recurs.allDaysOfWeek
+                ? RecurrentType.daily
+                : activityDay.activity.recurs.recurrence,
           ),
         );
 
@@ -52,7 +55,6 @@ class EditActivityCubit extends Cubit<EditActivityState> {
               endTime: basicActivityData.endTimeOfDay,
             ),
             day,
-            RecurrentType.none,
           ),
         );
 
@@ -102,7 +104,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
         state is StoredActivityState
             ? state.day
             : activitySaved.startTime.onlyDays(),
-        activitySaved.recurs.recurrence,
+        state.selectedType,
       ),
     );
   }
@@ -223,8 +225,8 @@ class EditActivityCubit extends Cubit<EditActivityState> {
 
   void changeRecurrentEndDate(DateTime? newEndDate) {
     if (state.storedRecurring ||
-        state.activity.recurs.recurrence == RecurrentType.none ||
-        state.activity.recurs.recurrence == RecurrentType.yearly) {
+        !state.activity.recurs.isRecurring ||
+        state.activity.recurs.yearly) {
       _log.warning('Invalid attempt at updating recurring end date');
       return;
     }
@@ -242,7 +244,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
 
   void changeWeeklyRecurring(Recurs recurs) {
     if (recurs.type != Recurs.typeWeekly ||
-        state.activity.recurs.recurrence != RecurrentType.weekly ||
+        !state.activity.recurs.weekly ||
         (state.storedRecurring &&
             recurs.end != state.originalActivity.recurs.end) ||
         recurs.end != state.activity.recurs.end) {
@@ -259,7 +261,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
   }
 
   void changeSelectedMonthDays(Set<int> selectedMonthDays) {
-    if (state.activity.recurs.recurrence != RecurrentType.monthly) {
+    if (!state.activity.recurs.monthly) {
       return;
     }
 
