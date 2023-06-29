@@ -242,7 +242,7 @@ void main() {
       await tester.verifyTts(find.byType(AppBarHeading),
           exact: translate.searchImage);
 
-      await tester.tap(find.byType(PreviousButton));
+      await tester.tap(find.text(translate.back));
       await tester.pumpAndSettle();
 
       expect(find.byType(LibraryFolder), findsOneWidget);
@@ -474,7 +474,7 @@ void main() {
     expect(find.text(image.data.name), findsNWidgets(2));
 
     // Press back returns to image archive
-    await tester.tap(find.byType(PreviousButton));
+    await tester.tap(find.text(translate.back));
     await tester.pumpAndSettle();
     expect(find.text(translate.imageArchive), findsOneWidget);
     expect(find.byType(ImageArchivePage), findsOneWidget);
@@ -529,7 +529,7 @@ void main() {
     expect(find.text(myPhotoInSubFolder.data.name), findsNWidgets(2));
 
     // Press back returns to image archive
-    await tester.tap(find.byType(PreviousButton));
+    await tester.tap(find.text(translate.back));
     await tester.pumpAndSettle();
     expect(find.text(translate.imageArchive), findsOneWidget);
     expect(find.byType(ImageArchivePage), findsOneWidget);

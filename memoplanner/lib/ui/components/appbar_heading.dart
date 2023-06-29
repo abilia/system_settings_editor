@@ -20,7 +20,7 @@ class AppBarHeading extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Tts.data(
-      data: label.isEmpty ? text : '$label $text',
+      data: '$label $text $breadcrumbs'.trim(),
       child: IconTheme(
         data: theme.iconTheme.copyWith(color: AbiliaColors.white),
         child: DefaultTextStyle(
