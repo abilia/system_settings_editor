@@ -752,13 +752,13 @@ void main() {
           expect(find.text(folderTitle), findsOneWidget);
 
           // Act - Go back
-          await tester.tap(find.byType(PreviousButton));
+          await tester.tap(find.text(translate.back));
           await tester.pumpAndSettle();
 
           expect(find.byIcon(AbiliaIcons.folder), findsOneWidget);
 
           // Act - Go back
-          await tester.tap(find.byType(PreviousButton));
+          await tester.tap(find.text(translate.back));
           await tester.pumpAndSettle();
 
           // Assert back at create acitivy page
@@ -1249,9 +1249,9 @@ void main() {
         expect(find.text(folderTitle), findsOneWidget);
 
         // Act - Go back
-        await tester.tap(find.byType(PreviousButton));
+        await tester.tap(find.text(translate.back));
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(PreviousButton));
+        await tester.tap(find.text(translate.back));
         await tester.pumpAndSettle();
 
         // Assert back at create new page
