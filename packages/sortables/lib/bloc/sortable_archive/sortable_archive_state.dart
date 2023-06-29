@@ -23,6 +23,7 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
 
   SortableArchiveState<T> copyWith({
     required Sortable<T>? selected,
+    List<Sortable<T>>? sortableArchive,
     String? currentFolderId,
     String? initialFolderId,
     String? searchValue,
@@ -30,7 +31,7 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
     bool? myPhotos,
   }) =>
       SortableArchiveState(
-        this.sortableArchive,
+        sortableArchive ?? this.sortableArchive,
         currentFolderId: currentFolderId ?? this.currentFolderId,
         initialFolderId: initialFolderId ?? this.initialFolderId,
         searchValue: searchValue ?? this.searchValue,
