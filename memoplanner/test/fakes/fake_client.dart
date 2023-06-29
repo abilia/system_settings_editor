@@ -229,6 +229,8 @@ Response licenseResponseExpires(DateTime expires) => Response('''
     ]
   ''', 200);
 
+Response noLicenseResponse = Response('[]', 200);
+
 Response unsupportedUserTypeResponse = Response('''
   {"status":403,"message":"Clients can only be registered with entities of type 'user'","errorId":217,"errors":[{"code":"WHALE-0156","message":"Clients can only be registered with entities of type 'user'"}]}''',
     403);

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
@@ -22,7 +23,7 @@ void main() {
   late final Lt translate;
 
   final time = DateTime(2020, 11, 11, 11, 11);
-  DateTime licenseExpireTime;
+  Response licenseResponse;
   late ListenableMockClient client;
   TermsOfUseResponse termsOfUseResponse = () => TermsOfUse.accepted();
 
@@ -31,22 +32,22 @@ void main() {
     translate = await Lt.load(Lt.supportedLocales.first);
     registerFallbackValues();
     scheduleNotificationsIsolated = noAlarmScheduler;
-    licenseExpireTime = time.add(10.days());
-    client = fakeClient(
-      activityResponse: () => [],
-      licenseResponse: () => licenseResponseExpires(licenseExpireTime),
-      termsOfUseResponse: () => termsOfUseResponse(),
-      allowMultipleLogins: false,
-    );
   });
 
   late SortableDb sortableDb;
+  late MyAbiliaConnection mockMyAbiliaConnection;
 
   setUp(() async {
     setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
     setupFakeTts();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
-    licenseExpireTime = time.add(10.days());
+    licenseResponse = licenseResponseExpires(time.add(10.days()));
+    client = fakeClient(
+      activityResponse: () => [],
+      licenseResponse: () => licenseResponse,
+      termsOfUseResponse: () => termsOfUseResponse(),
+      allowMultipleLogins: false,
+    );
 
     sortableDb = MockSortableDb();
     when(() => sortableDb.getAllNonDeleted())
@@ -55,6 +56,10 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(() => sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     when(() => sortableDb.countAllDirty()).thenAnswer((_) => Future.value(0));
+
+    mockMyAbiliaConnection = MockMyAbiliaConnection();
+    when(() => mockMyAbiliaConnection.hasConnection())
+        .thenAnswer((_) async => true);
 
     GetItInitializer()
       ..sharedPreferences =
@@ -71,6 +76,7 @@ void main() {
       ..sortableDb = sortableDb
       ..battery = FakeBattery()
       ..deviceDb = FakeDeviceDb()
+      ..myAbiliaConnection = mockMyAbiliaConnection
       ..init();
   });
 
@@ -258,6 +264,56 @@ void main() {
     expect(find.byType(CalendarPage), findsOneWidget);
   });
 
+  testWidgets(
+      'SGC-2512 Shows logout warning when offline and has unsynced data',
+      (WidgetTester tester) async {
+    when(() => sortableDb.countAllDirty()).thenAnswer((_) => Future.value(1));
+    when(() => mockMyAbiliaConnection.hasConnection())
+        .thenAnswer((_) async => false);
+
+    await tester.pumpApp();
+    await tester.pumpAndSettle();
+
+    // Login
+    await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+    await tester.ourEnterText(find.byType(UsernameInput), username);
+    await tester.pump();
+    expect(find.byType(LoginButton), findsOneWidget);
+    await tester.tap(find.byType(LoginButton));
+    await tester.pumpAndSettle();
+    expect(find.byType(CalendarPage), findsOneWidget);
+
+    // Logout
+    if (Config.isMP) {
+      await tester.tap(find.byIcon(AbiliaIcons.appMenu));
+      await tester.pumpAndSettle();
+      expect(find.byType(MenuPage), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.settings));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(AbiliaIcons.technicalSettings));
+      await tester.pumpAndSettle();
+    } else if (Config.isMPGO) {
+      await tester.tap(find.byIcon(AbiliaIcons.menu));
+      await tester.pumpAndSettle();
+      expect(find.byType(MpGoMenuPage), findsOneWidget);
+      await tester.scrollDownMpGoMenu(dy: -200);
+    }
+    await tester.tap(find.byIcon(AbiliaIcons.powerOffOn));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(LogoutButton));
+    await tester.pump();
+    expect(find.byType(LogoutWarningModal), findsOneWidget);
+    expect(find.textContaining(translate.goOnlineBeforeLogout), findsOneWidget);
+    await tester.tap(
+      find.descendant(
+        of: find.byType(LogoutWarningModal),
+        matching: find.byType(CloseButton),
+      ),
+    );
+    await tester.pumpAndSettle();
+  });
+
   testWidgets('tts', (WidgetTester tester) async {
     await tester.pumpApp();
     await tester.pumpAndSettle();
@@ -299,12 +355,9 @@ void main() {
 
   testWidgets('Gets no valid license dialog when no valid license',
       (WidgetTester tester) async {
-    licenseExpireTime = time.subtract(10.days());
+    licenseResponse = licenseResponseExpires(time.subtract(10.days()));
 
     await tester.pumpApp();
-
-    await tester.pumpAndSettle();
-
     await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
     await tester.ourEnterText(find.byType(UsernameInput), username);
     await tester.pump();
@@ -312,6 +365,21 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(LicenseErrorDialog), findsOneWidget);
   }, skip: Config.isMP);
+
+  testWidgets('Gets logout when missing license', (WidgetTester tester) async {
+    final pushCubit = PushCubit();
+    await tester.pumpApp(pushCubit: pushCubit);
+    await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
+    await tester.ourEnterText(find.byType(UsernameInput), username);
+    await tester.pump();
+    await tester.tap(find.byType(LoginButton));
+    await tester.pumpAndSettle();
+    licenseResponse = noLicenseResponse;
+    expect(find.byType(CalendarPage), findsOneWidget);
+    pushCubit.fakePush();
+    await tester.pumpAndSettle();
+    expect(find.byType(LoginPage), findsOneWidget);
+  });
 
   testWidgets('Can login when valid license, but gets logged out when invalid',
       (WidgetTester tester) async {
@@ -326,7 +394,7 @@ void main() {
 
     expect(find.byType(CalendarPage), findsOneWidget);
 
-    licenseExpireTime = time.subtract(10.days());
+    licenseResponse = licenseResponseExpires(time.subtract(10.days()));
 
     pushCubit.fakePush();
     await tester.pumpAndSettle();
@@ -346,7 +414,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(CalendarPage), findsOneWidget);
 
-    licenseExpireTime = time.subtract(10.days());
+    licenseResponse = licenseResponseExpires(time.subtract(10.days()));
 
     pushCubit.fakePush();
     await tester.pumpAndSettle();
@@ -359,10 +427,9 @@ void main() {
 
   testWidgets('Can login when no valid expired license, sync warning',
       (WidgetTester tester) async {
-    licenseExpireTime = time.subtract(10.days());
+    licenseResponse = licenseResponseExpires(time.subtract(10.days()));
 
     await tester.pumpApp();
-
     await tester.pumpAndSettle();
 
     await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
