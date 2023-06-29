@@ -493,7 +493,7 @@
     "confirmFactoryReset": "Wilt u beginnen met het herstellen van de fabrieksinstellingen?",
     "confirmFactoryResetDescription": "Nadat de fabrieksinstellingen zijn hersteld, moet u de MEMOplanner-software opnieuw installeren. Volg hiervoor de revisie-instructies.",
     "factoryResetFailed": "Terugzetten naar de fabrieksinstellingen is mislukt, probeer het later opnieuw.",
-    "back": "",
+    "back": "Terug",
     "noRecurrence": "",
     "daily": ""
 }

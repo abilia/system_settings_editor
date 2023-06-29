@@ -493,7 +493,7 @@
     "confirmFactoryReset": "Haluatko aloittaa tehdasasetusten palautuksen?",
     "confirmFactoryResetDescription": "Kun tehdasasetusten palautus on päättynyt, MEMOplanner-ohjelmisto pitää asentaa uudelleen. Noudata sen toteuttamiseen korjausohjeita.",
     "factoryResetFailed": "Tehdasasetusten palautus epäonnistui, yritä myöhemmin uudelleen.",
-    "back": "",
+    "back": "Takaisin",
     "noRecurrence": "",
     "daily": ""
 }

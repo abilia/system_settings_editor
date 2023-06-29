@@ -111,7 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'androidVersion':
             MessageLookupByLibrary.simpleMessage('Android-versio'),
         'availableFor': MessageLookupByLibrary.simpleMessage('Käytettävissä'),
-        'back': MessageLookupByLibrary.simpleMessage(''),
+        'back': MessageLookupByLibrary.simpleMessage('Takaisin'),
         'backToLogin': MessageLookupByLibrary.simpleMessage(
             'Takaisin sisäänkirjautumiseen'),
         'battery': MessageLookupByLibrary.simpleMessage('Akku'),

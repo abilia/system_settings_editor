@@ -493,7 +493,7 @@
     "confirmFactoryReset": "Vil du gjenopprette fabrikkinstillinger?",
     "confirmFactoryResetDescription": "Etter at tilbakestillingen er fullført må du reinstallere MEOMplanner programvaren. Følg instruksjonene for å gjøre det.",
     "factoryResetFailed": "Tilbakestilling mislyktes, prøv på nytt senere.",
-    "back": "",
+    "back": "Tilbake",
     "noRecurrence": "",
     "daily": ""
 }

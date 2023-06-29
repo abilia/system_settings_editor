@@ -110,7 +110,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'androidVersion':
             MessageLookupByLibrary.simpleMessage('Android-Version'),
         'availableFor': MessageLookupByLibrary.simpleMessage('Verfügbar für'),
-        'back': MessageLookupByLibrary.simpleMessage(''),
+        'back': MessageLookupByLibrary.simpleMessage('Zurück'),
         'backToLogin':
             MessageLookupByLibrary.simpleMessage('Zurück zur Anmeldung'),
         'battery': MessageLookupByLibrary.simpleMessage('Akkus'),

@@ -493,7 +493,7 @@
     "confirmFactoryReset": "Möchten Sie auf Werkseinstellungen zurücksetzen?",
     "confirmFactoryResetDescription": "Nachdem das Rücksetzen auf Werkseinstellungen erfolgt ist, müssen Sie die MEMOplanner-Software neu installieren. Befolgen Sie dazu die Wiederherstellungsanweisungen.",
     "factoryResetFailed": "Das Rücksetzen auf Werkseinstellungen ist fehlgeschlagen, bitte versuchen Sie es später.",
-    "back": "",
+    "back": "Zurück",
     "noRecurrence": "",
     "daily": ""
 }

@@ -112,7 +112,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Android-versie'),
         'availableFor':
             MessageLookupByLibrary.simpleMessage('Beschikbaar voor'),
-        'back': MessageLookupByLibrary.simpleMessage(''),
+        'back': MessageLookupByLibrary.simpleMessage('Terug'),
         'backToLogin':
             MessageLookupByLibrary.simpleMessage('Terug naar Inloggen'),
         'battery': MessageLookupByLibrary.simpleMessage('Batterij'),
