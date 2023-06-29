@@ -28,7 +28,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
         selectedItemGenerator = null,
         onOk = null,
         searchHeader = SearchHeader.noSearch,
-        useHeader = true,
+        useHeading = true,
         headerBackNavigation = true,
         super(key: key);
 
@@ -44,10 +44,10 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     this.gridCrossAxisCount,
     this.gridChildAspectRatio,
     this.searchHeader = SearchHeader.noSearch,
-    this.useHeader = true,
-    this.headerBackNavigation = false,
+    this.useHeading = true,
     Key? key,
   })  : selectableItems = true,
+        headerBackNavigation = false,
         assert(
             onOk != null, 'onOk should not be null in LibraryPage.selectable'),
         assert(selectedItemGenerator != null,
@@ -64,7 +64,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   final int? gridCrossAxisCount;
   final double? gridChildAspectRatio;
   final SearchHeader searchHeader;
-  final bool useHeader;
+  final bool useHeading;
   final bool headerBackNavigation;
 
   @override
@@ -85,10 +85,8 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
         appBar: appBar,
         body: Column(
           children: [
-            if (useHeader &&
-                (selected != null ||
-                    !sortableState.isAtRootAndNoSelection ||
-                    rootHeading != null))
+            if (useHeading &&
+                (!sortableState.isAtRootAndNoSelection || rootHeading != null))
               LibraryHeading<T>(
                 sortableArchiveState: sortableState,
                 rootHeading: rootHeading ?? '',

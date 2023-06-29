@@ -20,7 +20,7 @@ class ImageArchivePage extends StatelessWidget {
     return LibraryPage<ImageArchiveData>.selectable(
       searchHeader: searchHeader,
       gridChildAspectRatio: layout.imageArchive.aspectRatio,
-      useHeader: false,
+      useHeading: false,
       appBar: AbiliaAppBar(
         iconData: searchHeader == SearchHeader.searchBar
             ? AbiliaIcons.find
