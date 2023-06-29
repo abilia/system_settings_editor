@@ -31,7 +31,7 @@ We're using [lokalise](https://app.lokalise.com) and [lokalise_flutter_sdk](http
 
 ### Add new language for iOS
 
-Add the supported language to [`ios/Runner/Info.plist`](https://github.com/abilia/seagull/blob/master/memoplanner/ios/Runner/Info.plist)[:calendar:](https://github.com/abilia/seagull/blob/master/memoplanner/ios/Runner/Info.plist)[:blue_book:](https://github.com/abilia/seagull/tree/master/handi/ios/Runner/Info.plist)
+Add the supported language to `ios/Runner/Info.plist`[:calendar:](https://github.com/abilia/seagull/blob/master/memoplanner/ios/Runner/Info.plist)[:blue_book:](https://github.com/abilia/seagull/tree/master/handi/ios/Runner/Info.plist)
 For more info read <https://flutter.dev/docs/development/accessibility-and-localization/internationalization#localizing-for-ios-updating-the-ios-app-bundle>
 
 ## Version numbering
