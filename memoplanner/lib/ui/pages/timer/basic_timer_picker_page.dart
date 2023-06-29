@@ -20,9 +20,8 @@ class BasicTimerPickerPage extends StatelessWidget {
           return Scaffold(
             appBar: AbiliaAppBar(
               iconData: AbiliaIcons.basicTimers,
-              title: translate.selectTemplate,
-              label: !state.isAtRoot ? state.breadCrumbPath() : null,
-              isFlipLabels: true,
+              title: translate.fromTemplate,
+              breadcrumbs: !state.isAtRoot ? state.breadCrumbPath() : null,
             ),
             body: ListLibrary<BasicTimerData>(
               emptyLibraryMessage: translate.noTemplates,
@@ -49,8 +48,9 @@ class BasicTimerPickerPage extends StatelessWidget {
               useHeading: false,
             ),
             bottomNavigationBar: BottomNavigation(
-              backNavigationWidget: PreviousButton(
+              backNavigationWidget: LightButton(
                 text: translate.back,
+                icon: AbiliaIcons.navigationPrevious,
                 onPressed: state.isAtRoot
                     ? Navigator.of(context).maybePop
                     : context

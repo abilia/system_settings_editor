@@ -239,6 +239,7 @@
     "searchImage": "Bild suchen",
     "noMatchingImage": "Kein übereinstimmender Bildname",
     "recurrence": "Intervall",
+    "once": "Einmal",
     "weekly": "Wöchentlich",
     "monthly": "Monatlich",
     "yearly": "Jährlich",
@@ -493,7 +494,6 @@
     "confirmFactoryResetDescription": "Nachdem das Rücksetzen auf Werkseinstellungen erfolgt ist, müssen Sie die MEMOplanner-Software neu installieren. Befolgen Sie dazu die Wiederherstellungsanweisungen.",
     "factoryResetFailed": "Das Rücksetzen auf Werkseinstellungen ist fehlgeschlagen, bitte versuchen Sie es später.",
     "back": "",
-    "selectTemplate": "",
     "noRecurrence": "",
     "daily": ""
 }

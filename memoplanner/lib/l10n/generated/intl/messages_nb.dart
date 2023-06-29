@@ -460,6 +460,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Tillat notifikasjoner fra innstillinger for å få alarm og påminnelser'),
         'now': MessageLookupByLibrary.simpleMessage('Nå'),
         'ok': MessageLookupByLibrary.simpleMessage('OK'),
+        'once': MessageLookupByLibrary.simpleMessage('En gang'),
         'oneDot': MessageLookupByLibrary.simpleMessage('Et punkt'),
         'oneTimePillarView': MessageLookupByLibrary.simpleMessage('1 tidsøyle'),
         'onlyActivateScreensaverDuringNight':
@@ -551,7 +552,6 @@ class MessageLookup extends MessageLookupByLibrary {
         'selectNote': MessageLookupByLibrary.simpleMessage('Velg notat'),
         'selectReminder':
             MessageLookupByLibrary.simpleMessage('Velg påminnelser'),
-        'selectTemplate': MessageLookupByLibrary.simpleMessage(''),
         'selectTemplateTimer':
             MessageLookupByLibrary.simpleMessage('Velg timer'),
         'selectType': MessageLookupByLibrary.simpleMessage('Velg type'),

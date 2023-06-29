@@ -239,6 +239,7 @@
     "searchImage": "Etsi kuva",
     "noMatchingImage": "Ei vastaavaa kuvan nimeä",
     "recurrence": "Toistuminen",
+    "once": "Kerran",
     "weekly": "Viikoittain",
     "monthly": "Kuukausittain",
     "yearly": "Vuosittain",
@@ -493,7 +494,6 @@
     "confirmFactoryResetDescription": "Kun tehdasasetusten palautus on päättynyt, MEMOplanner-ohjelmisto pitää asentaa uudelleen. Noudata sen toteuttamiseen korjausohjeita.",
     "factoryResetFailed": "Tehdasasetusten palautus epäonnistui, yritä myöhemmin uudelleen.",
     "back": "",
-    "selectTemplate": "",
     "noRecurrence": "",
     "daily": ""
 }

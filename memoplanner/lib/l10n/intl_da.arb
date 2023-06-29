@@ -239,6 +239,7 @@
     "searchImage": "Søg billede",
     "noMatchingImage": "Intet matchende billedenavn",
     "recurrence": "Gentagelse",
+    "once": "En gang",
     "weekly": "Ugentlig",
     "monthly": "Månedlig",
     "yearly": "Årlig",
@@ -493,7 +494,6 @@
     "confirmFactoryResetDescription": "Når fabriksnulstillingen er færdig, skal du geninstallere MEMOplanner-softwaren. Følg anvisningerne til rekonditionering for at gøre det.",
     "factoryResetFailed": "Fabriksnulstillingen mislykkedes, prøv venligst senere.",
     "back": "",
-    "selectTemplate": "",
     "noRecurrence": "",
     "daily": ""
 }

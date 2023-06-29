@@ -300,6 +300,7 @@ class Lt {
     'searchImage': [],
     'noMatchingImage': [],
     'recurrence': [],
+    'once': [],
     'weekly': [],
     'monthly': [],
     'yearly': [],
@@ -554,10 +555,8 @@ class Lt {
     'confirmFactoryResetDescription': [],
     'factoryResetFailed': [],
     'back': [],
-    'selectTemplate': [],
     'noRecurrence': [],
-    'daily': [],
-    'once': []
+    'daily': []
   };
 
   /// `Welcome!`
@@ -2935,6 +2934,16 @@ class Lt {
     return Intl.message(
       'Recurrence',
       name: 'recurrence',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Once`
+  String get once {
+    return Intl.message(
+      'Once',
+      name: 'once',
       desc: '',
       args: [],
     );
@@ -5480,16 +5489,6 @@ class Lt {
     );
   }
 
-  /// `Select template`
-  String get selectTemplate {
-    return Intl.message(
-      'Select template',
-      name: 'selectTemplate',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `No recurrence`
   String get noRecurrence {
     return Intl.message(
@@ -5505,16 +5504,6 @@ class Lt {
     return Intl.message(
       'Daily',
       name: 'daily',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Once`
-  String get once {
-    return Intl.message(
-      'Once',
-      name: 'once',
       desc: '',
       args: [],
     );

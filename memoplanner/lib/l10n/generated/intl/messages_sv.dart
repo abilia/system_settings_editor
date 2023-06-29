@@ -461,6 +461,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Tillåt notiser från inställningar för att få larm och påminnelser.'),
         'now': MessageLookupByLibrary.simpleMessage('Nu'),
         'ok': MessageLookupByLibrary.simpleMessage('OK'),
+        'once': MessageLookupByLibrary.simpleMessage('Enstaka'),
         'oneDot': MessageLookupByLibrary.simpleMessage('En punkt'),
         'oneTimePillarView':
             MessageLookupByLibrary.simpleMessage('1 tidpelare'),
@@ -555,7 +556,6 @@ class MessageLookup extends MessageLookupByLibrary {
         'selectNote': MessageLookupByLibrary.simpleMessage('Välj anteckning'),
         'selectReminder':
             MessageLookupByLibrary.simpleMessage('Välj påminnelser'),
-        'selectTemplate': MessageLookupByLibrary.simpleMessage('Välj mall'),
         'selectTemplateTimer':
             MessageLookupByLibrary.simpleMessage('Välj timer'),
         'selectType': MessageLookupByLibrary.simpleMessage('Välj typ'),
