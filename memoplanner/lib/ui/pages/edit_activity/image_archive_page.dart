@@ -28,8 +28,9 @@ class ImageArchivePage extends StatelessWidget {
         breadcrumbs: searchHeader != SearchHeader.searchBar
             ? selected
                 ? sortableState.selected?.data.name
-                : sortableState.breadCrumbPath(
-                    initialTitle: translate.imageArchive)
+                : sortableState.isAtRoot
+                    ? translate.imageArchive
+                    : '${translate.imageArchive} / ${sortableState.breadCrumbPath()}'
             : null,
         title: searchHeader == SearchHeader.searchBar
             ? translate.searchImage

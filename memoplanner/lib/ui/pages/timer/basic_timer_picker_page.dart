@@ -21,7 +21,7 @@ class BasicTimerPickerPage extends StatelessWidget {
             appBar: AbiliaAppBar(
               iconData: AbiliaIcons.basicTimers,
               title: translate.fromTemplate,
-              breadcrumbs: !state.isAtRoot ? state.breadCrumbPath() : null,
+              breadcrumbs: state.breadCrumbPath(),
             ),
             body: ListLibrary<BasicTimerData>(
               emptyLibraryMessage: translate.noTemplates,
