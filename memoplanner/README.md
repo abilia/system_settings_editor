@@ -34,13 +34,6 @@ Add
 
 for building with dev features such as feature toggles and to be able to skip initial startup guide for MEMOplanner
 
-### Add new language
-
-To add a new language:
-
-- Add the language code to the header row
-- Add the supported language to [`ios/Runner/Info.plist`](https://github.com/abilia/seagull/blob/master/memoplanner/ios/Runner/Info.plist) - see <https://flutter.dev/docs/development/accessibility-and-localization/internationalization#localizing-for-ios-updating-the-ios-app-bundle>
-
 ## Tests
 
 ### Testing flavor specific code
