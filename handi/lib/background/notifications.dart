@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:calendar_events/calendar_events.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:handi/l10n/all.dart';
 import 'package:logging/logging.dart';
 import 'package:utils/utils.dart';
 
@@ -35,11 +36,14 @@ Future cancelAllPendingNotifications() async {
 
 Future scheduleActivityNotifications(Iterable<Activity> activities) async {
   await cancelAllPendingNotifications();
+  await initLokalise();
+
   _log.fine('scheduling ${activities.length} activity notifications...');
   var scheduled = 0;
   for (final activity in activities) {
     if (await _scheduleActivityNotification(activity)) scheduled++;
   }
+
   _log.fine('$scheduled notifications scheduled');
 }
 

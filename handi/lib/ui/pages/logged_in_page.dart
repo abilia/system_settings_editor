@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:generics/generics.dart';
 import 'package:handi/bloc/settings_cubit.dart';
+import 'package:handi/l10n/generated/l10n.dart';
 import 'package:handi/ui/components/tts.dart';
 import 'package:sortables/sortables.dart';
 import 'package:support_persons/bloc/support_persons_cubit.dart';
@@ -42,7 +43,7 @@ class LoggedInPage extends StatelessWidget {
         listener: (context, message) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Push received ${message.data}'),
+              content: Text('${'Push received'} ${message.data}'),
             ),
           );
         },
@@ -93,7 +94,7 @@ class LoggedInPage extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text('Text to speech'),
+                          const Text('Tts'),
                           Switch(
                             value: tts,
                             onChanged: context.read<SettingsCubit>().setTts,
@@ -110,7 +111,7 @@ class LoggedInPage extends StatelessWidget {
                       onPressed: () => context
                           .read<AuthenticationBloc>()
                           .add(const LoggedOut()),
-                      title: 'Log out',
+                      title: Lt.of(context).logOut,
                     ),
                   ],
                 ),
