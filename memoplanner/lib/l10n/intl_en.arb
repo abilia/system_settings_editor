@@ -239,6 +239,7 @@
     "searchImage": "Search image",
     "noMatchingImage": "No matching image name",
     "recurrence": "Recurrence",
+    "once": "Once",
     "weekly": "Weekly",
     "monthly": "Monthly",
     "yearly": "Yearly",
@@ -493,8 +494,6 @@
     "confirmFactoryResetDescription": "After factory reset is finished you will need to reinstall MEMOplanner software. Follow the reconditioning instructions to do that.",
     "factoryResetFailed": "Factory reset failed, please try again later.",
     "back": "Back",
-    "selectTemplate": "Select template",
     "noRecurrence": "No recurrence",
-    "daily": "Daily",
-    "once": "Once"
+    "daily": "Daily"
 }

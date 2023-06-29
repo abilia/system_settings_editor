@@ -25,13 +25,13 @@ class ImageArchivePage extends StatelessWidget {
         iconData: searchHeader == SearchHeader.searchBar
             ? AbiliaIcons.find
             : AbiliaIcons.pastPictureFromWindowsClipboard,
-        label: searchHeader == SearchHeader.searchBar
-            ? null
-            : selected
+        breadcrumbs: searchHeader != SearchHeader.searchBar
+            ? selected
                 ? sortableState.selected?.data.name
                 : sortableState.isAtRoot
                     ? translate.imageArchive
-                    : '${translate.imageArchive} / ${sortableState.breadCrumbPath()}',
+                    : '${translate.imageArchive} / ${sortableState.breadCrumbPath()}'
+            : null,
         title: searchHeader == SearchHeader.searchBar
             ? translate.searchImage
             : translate.selectImage,
@@ -44,7 +44,6 @@ class ImageArchivePage extends StatelessWidget {
                 ),
               )
             : null,
-        isFlipLabels: true,
       ),
       libraryItemGenerator: (imageArchive) =>
           ArchiveImage(sortable: imageArchive),

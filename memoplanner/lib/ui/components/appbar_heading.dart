@@ -4,17 +4,17 @@ class AppBarHeading extends StatelessWidget {
   const AppBarHeading({
     required this.text,
     this.label = '',
+    this.breadcrumbs = '',
     this.iconData,
     this.hasTrailing = false,
-    this.isFlipLabels = false,
     Key? key,
   }) : super(key: key);
 
   final String text;
   final String label;
+  final String breadcrumbs;
   final IconData? iconData;
   final bool hasTrailing;
-  final bool isFlipLabels;
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +41,25 @@ class AppBarHeading extends StatelessWidget {
                       SizedBox(
                           width: layout.formPadding.horizontalItemDistance),
                     ],
-                    if (label.isNotEmpty)
+                    if (label.isNotEmpty || breadcrumbs.isNotEmpty)
                       Flexible(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: _getTextFields(
-                              label, text, isFlipLabels || hasTrailing, theme),
+                          children: [
+                            if (label.isNotEmpty)
+                              Text(label, style: theme.textTheme.labelLarge),
+                            Text(
+                              text,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            if (breadcrumbs.isNotEmpty)
+                              Text(breadcrumbs,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: theme.textTheme.labelLarge),
+                          ],
                         ),
                       )
                     else
@@ -61,16 +73,5 @@ class AppBarHeading extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  List<Text> _getTextFields(
-      String label, String text, bool flipVertically, ThemeData theme) {
-    final labelText = Text(label, style: theme.textTheme.labelLarge);
-    final textText = Text(
-      text,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-    );
-    return flipVertically ? [textText, labelText] : [labelText, textText];
   }
 }

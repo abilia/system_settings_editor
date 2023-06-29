@@ -107,7 +107,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'androidVersion':
             MessageLookupByLibrary.simpleMessage('Android-version'),
         'availableFor': MessageLookupByLibrary.simpleMessage('Fås til'),
-        'back': MessageLookupByLibrary.simpleMessage(''),
+        'back': MessageLookupByLibrary.simpleMessage('Tilbage'),
         'backToLogin':
             MessageLookupByLibrary.simpleMessage('Tilbage til login'),
         'battery': MessageLookupByLibrary.simpleMessage('Batteri'),
@@ -464,6 +464,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Tillad notifikationer fra indstillingerne for at kunne modtage alarmer og påmindelser.'),
         'now': MessageLookupByLibrary.simpleMessage('Nu'),
         'ok': MessageLookupByLibrary.simpleMessage('OK'),
+        'once': MessageLookupByLibrary.simpleMessage('En gang'),
         'oneDot': MessageLookupByLibrary.simpleMessage('Et punkt'),
         'oneTimePillarView': MessageLookupByLibrary.simpleMessage('1 tidsøjle'),
         'onlyActivateScreensaverDuringNight':
@@ -558,7 +559,6 @@ class MessageLookup extends MessageLookupByLibrary {
         'selectNote': MessageLookupByLibrary.simpleMessage('Vælg note'),
         'selectReminder':
             MessageLookupByLibrary.simpleMessage('Vælg påmindelse'),
-        'selectTemplate': MessageLookupByLibrary.simpleMessage(''),
         'selectTemplateTimer':
             MessageLookupByLibrary.simpleMessage('Vælg timer'),
         'selectType': MessageLookupByLibrary.simpleMessage('Vælg type'),

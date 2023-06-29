@@ -239,6 +239,7 @@
     "searchImage": "Afbeelding zoeken",
     "noMatchingImage": "Geen overeenkomende afbeeldingsnaam",
     "recurrence": "Terugkerend",
+    "once": "Eén keer",
     "weekly": "Wekelijks",
     "monthly": "Maandelijks",
     "yearly": "Jaarlijks",
@@ -492,8 +493,7 @@
     "confirmFactoryReset": "Wilt u beginnen met het herstellen van de fabrieksinstellingen?",
     "confirmFactoryResetDescription": "Nadat de fabrieksinstellingen zijn hersteld, moet u de MEMOplanner-software opnieuw installeren. Volg hiervoor de revisie-instructies.",
     "factoryResetFailed": "Terugzetten naar de fabrieksinstellingen is mislukt, probeer het later opnieuw.",
-    "back": "",
-    "selectTemplate": "",
+    "back": "Terug",
     "noRecurrence": "",
     "daily": ""
 }

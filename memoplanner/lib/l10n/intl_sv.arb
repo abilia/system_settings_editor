@@ -239,6 +239,7 @@
     "searchImage": "Sök bild",
     "noMatchingImage": "Inget matchande bildnamn",
     "recurrence": "Upprepning",
+    "once": "Enstaka",
     "weekly": "Veckovis",
     "monthly": "Månadsvis",
     "yearly": "Årsvis",
@@ -493,7 +494,6 @@
     "confirmFactoryResetDescription": "När fabriksinställningarna har återställts behöver du installera om MEMOplanner-programvaran. Följ instruktionerna om rekonditionering för att göra detta.",
     "factoryResetFailed": "Kunde inte återställa fabriksinställningarna, försök igen senare.",
     "back": "Tillbaka",
-    "selectTemplate": "Välj mall",
     "noRecurrence": "",
     "daily": ""
 }

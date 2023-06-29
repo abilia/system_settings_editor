@@ -4,12 +4,12 @@ import 'package:memoplanner/ui/all.dart';
 class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final String? label;
+  final String? breadcrumbs;
   final IconData iconData;
   final Widget? trailing;
   final PreferredSizeWidget? bottom;
   final BorderRadiusGeometry? borderRadius;
   final bool useVerticalSafeArea;
-  final bool isFlipLabels;
 
   @override
   final Size preferredSize;
@@ -18,11 +18,11 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     required this.iconData,
     this.label,
+    this.breadcrumbs,
     this.bottom,
     this.trailing,
     this.borderRadius,
     this.useVerticalSafeArea = true,
-    this.isFlipLabels = false,
     double? height,
     Key? key,
   })  : preferredSize = Size.fromHeight(height ??
@@ -34,9 +34,9 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
     final appBarHeading = AppBarHeading(
       text: title,
       label: label ?? '',
+      breadcrumbs: breadcrumbs ?? '',
       iconData: iconData,
       hasTrailing: trailing != null,
-      isFlipLabels: isFlipLabels,
     );
 
     return AnnotatedRegion<SystemUiOverlayStyle>(

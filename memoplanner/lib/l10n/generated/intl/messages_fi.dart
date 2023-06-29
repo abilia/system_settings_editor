@@ -111,7 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'androidVersion':
             MessageLookupByLibrary.simpleMessage('Android-versio'),
         'availableFor': MessageLookupByLibrary.simpleMessage('Käytettävissä'),
-        'back': MessageLookupByLibrary.simpleMessage(''),
+        'back': MessageLookupByLibrary.simpleMessage('Takaisin'),
         'backToLogin': MessageLookupByLibrary.simpleMessage(
             'Takaisin sisäänkirjautumiseen'),
         'battery': MessageLookupByLibrary.simpleMessage('Akku'),
@@ -473,6 +473,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Salli asetusten ilmoitusten vastaanottaa hälytyksiä ja muistutuksia.'),
         'now': MessageLookupByLibrary.simpleMessage('Nyt'),
         'ok': MessageLookupByLibrary.simpleMessage('OK'),
+        'once': MessageLookupByLibrary.simpleMessage('Kerran'),
         'oneDot': MessageLookupByLibrary.simpleMessage('Yksi piste'),
         'oneTimePillarView':
             MessageLookupByLibrary.simpleMessage('1 aikasarake'),
@@ -571,7 +572,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Valitse muistiinpano'),
         'selectReminder':
             MessageLookupByLibrary.simpleMessage('Valitse muistutus'),
-        'selectTemplate': MessageLookupByLibrary.simpleMessage(''),
         'selectTemplateTimer':
             MessageLookupByLibrary.simpleMessage('Valitse ajastin'),
         'selectType': MessageLookupByLibrary.simpleMessage('Valitse tyyppi'),

@@ -112,7 +112,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Android-versie'),
         'availableFor':
             MessageLookupByLibrary.simpleMessage('Beschikbaar voor'),
-        'back': MessageLookupByLibrary.simpleMessage(''),
+        'back': MessageLookupByLibrary.simpleMessage('Terug'),
         'backToLogin':
             MessageLookupByLibrary.simpleMessage('Terug naar Inloggen'),
         'battery': MessageLookupByLibrary.simpleMessage('Batterij'),
@@ -473,6 +473,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Sta meldingen van de instellingen toe om alarmen en herinneringen te kunnen ontvangen.'),
         'now': MessageLookupByLibrary.simpleMessage('Nu'),
         'ok': MessageLookupByLibrary.simpleMessage('OK'),
+        'once': MessageLookupByLibrary.simpleMessage('Eén keer'),
         'oneDot': MessageLookupByLibrary.simpleMessage('Eén punt'),
         'oneTimePillarView': MessageLookupByLibrary.simpleMessage('1 tijdzuil'),
         'onlyActivateScreensaverDuringNight':
@@ -571,7 +572,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Notitie selecteren'),
         'selectReminder':
             MessageLookupByLibrary.simpleMessage('Herinnering selecteren'),
-        'selectTemplate': MessageLookupByLibrary.simpleMessage(''),
         'selectTemplateTimer':
             MessageLookupByLibrary.simpleMessage('Timers selecteren'),
         'selectType': MessageLookupByLibrary.simpleMessage('Type selecteren'),

@@ -110,7 +110,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'androidVersion':
             MessageLookupByLibrary.simpleMessage('Android-Version'),
         'availableFor': MessageLookupByLibrary.simpleMessage('Verfügbar für'),
-        'back': MessageLookupByLibrary.simpleMessage(''),
+        'back': MessageLookupByLibrary.simpleMessage('Zurück'),
         'backToLogin':
             MessageLookupByLibrary.simpleMessage('Zurück zur Anmeldung'),
         'battery': MessageLookupByLibrary.simpleMessage('Akkus'),
@@ -475,6 +475,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Benachrichtigungen aus den Einstellungen zulassen, um Alarme und Erinnerungen erhalten zu können.'),
         'now': MessageLookupByLibrary.simpleMessage('Jetzt'),
         'ok': MessageLookupByLibrary.simpleMessage('OK'),
+        'once': MessageLookupByLibrary.simpleMessage('Einmal'),
         'oneDot': MessageLookupByLibrary.simpleMessage('Ein Punkt'),
         'oneTimePillarView':
             MessageLookupByLibrary.simpleMessage('1 Zeitsäule'),
@@ -573,7 +574,6 @@ class MessageLookup extends MessageLookupByLibrary {
         'selectNote': MessageLookupByLibrary.simpleMessage('Hinweis auswählen'),
         'selectReminder':
             MessageLookupByLibrary.simpleMessage('Erinnerung auswählen'),
-        'selectTemplate': MessageLookupByLibrary.simpleMessage(''),
         'selectTemplateTimer':
             MessageLookupByLibrary.simpleMessage('Timer auswählen'),
         'selectType': MessageLookupByLibrary.simpleMessage('Typ auswählen'),

@@ -219,14 +219,13 @@ class OkButton extends StatelessWidget {
 }
 
 class PreviousButton extends StatelessWidget {
-  const PreviousButton({Key? key, this.onPressed, this.text}) : super(key: key);
+  const PreviousButton({Key? key, this.onPressed}) : super(key: key);
   final VoidCallback? onPressed;
-  final String? text;
 
   @override
   Widget build(BuildContext context) {
     return LightButton(
-      text: text ?? Lt.of(context).previous,
+      text: Lt.of(context).previous,
       icon: AbiliaIcons.navigationPrevious,
       onPressed: onPressed ?? Navigator.of(context).maybePop,
     );
