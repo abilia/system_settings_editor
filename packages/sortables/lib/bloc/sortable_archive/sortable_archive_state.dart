@@ -137,6 +137,7 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
 
   @override
   List<Object?> get props => [
+        sortableArchive.length,
         currentFolderId,
         initialFolderId,
         selected,
