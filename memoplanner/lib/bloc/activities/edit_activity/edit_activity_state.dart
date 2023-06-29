@@ -103,6 +103,7 @@ abstract class EditActivityState extends Equatable with Finest {
         activity,
         timeInterval,
         infoItems,
+        selectedType,
       ];
 
   @override
@@ -119,14 +120,15 @@ abstract class EditActivityState extends Equatable with Finest {
 class UnstoredActivityState extends EditActivityState {
   const UnstoredActivityState(
     Activity activity,
-    TimeInterval timeInterval,
-  ) : super(
+    TimeInterval timeInterval, [
+    RecurrentType selectedType = RecurrentType.none,
+  ]) : super(
           activity,
           timeInterval,
           const MapView(<Type, InfoItem>{}),
           originalActivity: activity,
           originalTimeInterval: timeInterval,
-          selectedType: RecurrentType.none,
+          selectedType: selectedType,
         );
 
   const UnstoredActivityState._(

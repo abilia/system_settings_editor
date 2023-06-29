@@ -1118,10 +1118,12 @@ void main() {
               UnstoredActivityState(
                 activity2,
                 timeInterval,
+                RecurrentType.weekly,
               ),
               UnstoredActivityState(
                 activity3,
                 timeInterval,
+                RecurrentType.weekly,
               ),
             ]));
 
@@ -1142,6 +1144,7 @@ void main() {
                 expectedActivity,
                 recursTimeInterval,
                 aDay,
+                RecurrentType.weekly,
               ),
             ));
 
@@ -1209,6 +1212,7 @@ void main() {
                 activityWithNewTitle,
                 expectedTimeInterval,
                 aDay,
+                RecurrentType.weekly,
               ),
             ));
 
@@ -1224,6 +1228,7 @@ void main() {
               expectedActivityToSave,
               expectedTimeInterval,
               aDay,
+              RecurrentType.weekly,
             )));
 
         // Act
@@ -1617,6 +1622,7 @@ void main() {
               expectedActivity,
               secondTimeInterval,
               aDay,
+              RecurrentType.weekly,
             ),
           ),
         );
@@ -1724,16 +1730,19 @@ void main() {
           recurringActivity1,
           expectedTimeInterval1,
           aDay,
+          RecurrentType.weekly,
         ),
         StoredActivityState(
           recurringActivity2,
           expectedTimeInterval2,
           aDay,
+          RecurrentType.weekly,
         ),
         StoredActivityState(
           recurringActivity2,
           expectedTimeInterval3,
           aDay,
+          RecurrentType.weekly,
         ),
       ]),
     );
@@ -1791,6 +1800,7 @@ void main() {
               endDate: noEndDate,
             ),
             aDay,
+            RecurrentType.weekly,
           ),
         ]));
     // Act

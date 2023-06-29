@@ -190,17 +190,16 @@ class EditActivityCubit extends Cubit<EditActivityState> {
 
   void changeRecurrentType(RecurrentType newType) {
     if (newType == state.selectedType) {
-      return;
+      return _changeSelectedRecurrence(newType);
     }
 
     if (state.storedRecurring &&
         newType == state.originalActivity.recurs.recurrence) {
-      _changeRecurrence(
+      return _changeRecurrence(
         state.originalActivity.recurs,
         timeInterval: state.originalTimeInterval,
         selectedType: newType,
       );
-      return;
     }
 
     final newRecurs = _newRecurs(newType, state.timeInterval.startDate);
@@ -271,6 +270,15 @@ class EditActivityCubit extends Cubit<EditActivityState> {
       ),
       selectedType: RecurrentType.monthly,
       timeInterval: state.timeInterval,
+    );
+  }
+
+  void _changeSelectedRecurrence(RecurrentType selectedType) {
+    emit(
+      state.copyWith(
+        state.activity,
+        selectedType: selectedType,
+      ),
     );
   }
 

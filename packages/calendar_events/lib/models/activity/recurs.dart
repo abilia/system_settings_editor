@@ -15,10 +15,11 @@ class Recurs extends Equatable {
   bool get yearly => type == typeYearly;
 
   @visibleForTesting
-  const Recurs.raw(this.type, this.data, int? endTime)
+  const Recurs.raw(int type, this.data, int? endTime)
       : assert(type >= typeNone && type <= typeYearly),
         assert(type != typeWeekly || data < 0x4000),
         assert(type != typeMonthly || data < 0x80000000),
+        type = type > typeYearly || type < typeNone ? typeNone : type,
         endTime = endTime == null || endTime > _noEnd ? _noEnd : endTime;
 
   static const not = Recurs.raw(typeNone, 0, _noEnd),
@@ -74,14 +75,10 @@ class Recurs extends Equatable {
   Recurs changeEnd(DateTime endTime) =>
       Recurs.raw(type, data, endTime.millisecondsSinceEpoch);
 
-  RecurrentType get recurrence => type == typeWeekly && data == allDaysOfWeek
-      ? RecurrentType.daily
-      : RecurrentType.values[type];
+  RecurrentType get recurrence => RecurrentType.values[type];
 
   bool recursOnDay(DateTime day) {
     switch (recurrence) {
-      case RecurrentType.daily:
-        return _recursOnWeeklyDay(day);
       case RecurrentType.weekly:
         return _recursOnWeeklyDay(day);
       case RecurrentType.monthly:

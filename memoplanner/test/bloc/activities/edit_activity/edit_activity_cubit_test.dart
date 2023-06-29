@@ -419,6 +419,7 @@ void main() {
         UnstoredActivityState(
           expectedActivity,
           timeInterval,
+          RecurrentType.weekly,
         ),
       ),
     );
@@ -457,10 +458,12 @@ void main() {
         UnstoredActivityState(
           expectedActivity1,
           expectedTimeInterval1,
+          RecurrentType.monthly,
         ),
         UnstoredActivityState(
           expectedActivity2,
           expectedTimeInterval2,
+          RecurrentType.monthly,
         ),
       ]),
     );
@@ -501,16 +504,19 @@ void main() {
             expectedActivity1,
             timeInterval,
             aDay,
+            RecurrentType.weekly,
           ),
           StoredActivityState(
             expectedActivity2,
             timeInterval,
             aDay,
+            RecurrentType.weekly,
           ),
           StoredActivityState(
             originalActivity,
             timeInterval,
             aDay,
+            RecurrentType.monthly,
           )
         ],
       ),
