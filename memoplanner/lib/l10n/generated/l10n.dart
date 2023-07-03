@@ -27,6 +27,7 @@ class Lt {
     Locale.fromSubtags(languageCode: 'da'),
     Locale.fromSubtags(languageCode: 'de'),
     Locale.fromSubtags(languageCode: 'fi'),
+    Locale.fromSubtags(languageCode: 'is'),
     Locale.fromSubtags(languageCode: 'nb'),
     Locale.fromSubtags(languageCode: 'nl'),
     Locale.fromSubtags(languageCode: 'sv'),
