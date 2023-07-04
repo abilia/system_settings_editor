@@ -107,7 +107,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'androidVersion':
             MessageLookupByLibrary.simpleMessage('Android-version'),
         'availableFor': MessageLookupByLibrary.simpleMessage('Fås til'),
-        'back': MessageLookupByLibrary.simpleMessage(''),
+        'back': MessageLookupByLibrary.simpleMessage('Tilbage'),
         'backToLogin':
             MessageLookupByLibrary.simpleMessage('Tilbage til login'),
         'battery': MessageLookupByLibrary.simpleMessage('Batteri'),
@@ -205,7 +205,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Har du ikke en myAbilia-konto endnu?'),
         'createAccountSubheading': MessageLookupByLibrary.simpleMessage(
             'Du har brug for en myAbilia-konto for at bruge MEMOplanner'),
-        'daily': MessageLookupByLibrary.simpleMessage(''),
+        'daily': MessageLookupByLibrary.simpleMessage('Daily'),
         'date': MessageLookupByLibrary.simpleMessage('Dato'),
         'day': MessageLookupByLibrary.simpleMessage('dag'),
         'dayAndNight': MessageLookupByLibrary.simpleMessage('Døgnet'),
@@ -323,7 +323,8 @@ class MessageLookup extends MessageLookupByLibrary {
             'På en iPhone kan alarmlyde kun afspilles i maksimalt 30 sekunder'),
         'ifYouLogoutYouWillLose': MessageLookupByLibrary.simpleMessage(
             'Hvis du logger ud nu, taber du:'),
-        'ignoreBatteryOptimizations': MessageLookupByLibrary.simpleMessage(''),
+        'ignoreBatteryOptimizations': MessageLookupByLibrary.simpleMessage(
+            'Ignore battery optimizations'),
         'imageArchive': MessageLookupByLibrary.simpleMessage('Billedarkiv'),
         'imagePicker': MessageLookupByLibrary.simpleMessage('Billedvalg'),
         'inTimePre': MessageLookupByLibrary.simpleMessage('om'),
@@ -410,7 +411,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'monthly': MessageLookupByLibrary.simpleMessage('Månedlig'),
         'myPhotos': MessageLookupByLibrary.simpleMessage('Mine fotos'),
         'name': MessageLookupByLibrary.simpleMessage('Navn'),
-        'nbOneAClock': MessageLookupByLibrary.simpleMessage(''),
+        'nbOneAClock': MessageLookupByLibrary.simpleMessage('one o clock'),
         'needLicenseToSaveData': MessageLookupByLibrary.simpleMessage(
             'Du skal have en aktiv licens for at gemme dine data i myAbilia.'),
         'newActivity': MessageLookupByLibrary.simpleMessage('Ny aktivitet'),
@@ -440,7 +441,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'noMatchingImage':
             MessageLookupByLibrary.simpleMessage('Intet matchende billedenavn'),
         'noNotes': MessageLookupByLibrary.simpleMessage('Du har ingen noter'),
-        'noRecurrence': MessageLookupByLibrary.simpleMessage(''),
+        'noRecurrence': MessageLookupByLibrary.simpleMessage('No recurrence'),
         'noSound': MessageLookupByLibrary.simpleMessage('- Ingen lyd -'),
         'noTemplateActivityError1': MessageLookupByLibrary.simpleMessage(
             'Der er ingen skabeloner, og du har ikke valgt navn og billede i sekvensmodus.'),
@@ -558,7 +559,6 @@ class MessageLookup extends MessageLookupByLibrary {
         'selectNote': MessageLookupByLibrary.simpleMessage('Vælg note'),
         'selectReminder':
             MessageLookupByLibrary.simpleMessage('Vælg påmindelse'),
-        'selectTemplate': MessageLookupByLibrary.simpleMessage(''),
         'selectTemplateTimer':
             MessageLookupByLibrary.simpleMessage('Vælg timer'),
         'selectType': MessageLookupByLibrary.simpleMessage('Vælg type'),
@@ -690,7 +690,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'timers': MessageLookupByLibrary.simpleMessage('Timere'),
         'toLogin': MessageLookupByLibrary.simpleMessage('til Log ind'),
         'today': MessageLookupByLibrary.simpleMessage('I dag'),
-        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(''),
+        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(
+            'You have made too many attempts to log in. Please wait a few seconds until trying again'),
         'toolbar': MessageLookupByLibrary.simpleMessage('Værktøjslinje'),
         'toolbarSettingsHint': MessageLookupByLibrary.simpleMessage(
             'Visninger vises i værktøjslinjen'),

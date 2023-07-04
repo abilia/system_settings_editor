@@ -61,7 +61,11 @@ void main() {
 
     final expect = expectLater(
       editActivityCubit.stream,
-      emits(UnstoredActivityState(activityWithTitle, timeInterval)),
+      emits(UnstoredActivityState(
+        activityWithTitle,
+        timeInterval,
+        RecurrentType.none,
+      )),
     );
 
     // Act
@@ -88,7 +92,11 @@ void main() {
 
     final expect = expectLater(
       editActivityCubit.stream,
-      emits(UnstoredActivityState(activity, expectedTimeInterval)),
+      emits(UnstoredActivityState(
+        activity,
+        expectedTimeInterval,
+        RecurrentType.none,
+      )),
     );
 
     // Act
@@ -129,9 +137,21 @@ void main() {
       editActivityCubit.stream,
       emitsInOrder(
         [
-          UnstoredActivityState(activity, expectedTimeInterval1),
-          UnstoredActivityState(activity, expectedTimeInterval2),
-          UnstoredActivityState(newActivity, expectedTimeInterval2),
+          UnstoredActivityState(
+            activity,
+            expectedTimeInterval1,
+            RecurrentType.none,
+          ),
+          UnstoredActivityState(
+            activity,
+            expectedTimeInterval2,
+            RecurrentType.none,
+          ),
+          UnstoredActivityState(
+            newActivity,
+            expectedTimeInterval2,
+            RecurrentType.none,
+          ),
         ],
       ),
     );
@@ -176,10 +196,30 @@ void main() {
     final expected = expectLater(
       editActivityCubit.stream,
       emitsInOrder([
-        StoredActivityState(with15MinReminder, timeInterval, aDay),
-        StoredActivityState(with15MinAnd1HourReminder, timeInterval, aDay),
-        StoredActivityState(with15MinReminder, timeInterval, aDay),
-        StoredActivityState(activity, timeInterval, aDay),
+        StoredActivityState(
+          with15MinReminder,
+          timeInterval,
+          aDay,
+          RecurrentType.none,
+        ),
+        StoredActivityState(
+          with15MinAnd1HourReminder,
+          timeInterval,
+          aDay,
+          RecurrentType.none,
+        ),
+        StoredActivityState(
+          with15MinReminder,
+          timeInterval,
+          aDay,
+          RecurrentType.none,
+        ),
+        StoredActivityState(
+          activity,
+          timeInterval,
+          aDay,
+          RecurrentType.none,
+        ),
       ]),
     );
 
@@ -235,14 +275,17 @@ void main() {
               endTime: const TimeOfDay(hour: 10, minute: 0),
               startDate: aDay,
             ),
+            RecurrentType.none,
           ),
           UnstoredActivityState(
             activity,
             expectedTimeInterval,
+            RecurrentType.none,
           ),
           UnstoredActivityState(
             activityWithTitle,
             expectedTimeInterval,
+            RecurrentType.none,
           ),
         ],
       ),
@@ -267,6 +310,7 @@ void main() {
           expectedActivity,
           expectedTimeInterval,
           aDay,
+          RecurrentType.none,
         ),
       ),
     );
@@ -304,6 +348,7 @@ void main() {
           withChecklist,
           timeInterval,
           aDay,
+          RecurrentType.none,
         ).copyWith(
           withChecklist,
           infoItems: {
@@ -314,6 +359,7 @@ void main() {
           withNote,
           timeInterval,
           aDay,
+          RecurrentType.none,
         ).copyWith(
           withNote,
           infoItems: {
@@ -325,6 +371,7 @@ void main() {
           withNoInfoItem,
           timeInterval,
           aDay,
+          RecurrentType.none,
         ).copyWith(withNoInfoItem, infoItems: {
           NoteInfoItem: note,
           Checklist: Checklist(),
@@ -371,14 +418,17 @@ void main() {
           UnstoredActivityState(
             recurringActivity,
             timeInterval,
+            RecurrentType.none,
           ),
           UnstoredActivityState(
             recurringActivity,
             timeInterval.copyWithEndDate(recurringActivity.recurs.end),
+            RecurrentType.none,
           ),
           UnstoredActivityState(
             expectedActivity,
             expectedInterval.copyWithEndDate(expectedActivity.recurs.end),
+            RecurrentType.none,
           ),
         ],
       ),

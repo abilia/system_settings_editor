@@ -203,6 +203,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Don’t have a myAbilia account yet?'),
         'createAccountSubheading': MessageLookupByLibrary.simpleMessage(
             'You need a myAbilia account to use MEMOplanner'),
+        'daily': MessageLookupByLibrary.simpleMessage('Daily'),
         'date': MessageLookupByLibrary.simpleMessage('Date'),
         'day': MessageLookupByLibrary.simpleMessage('day'),
         'dayAndNight': MessageLookupByLibrary.simpleMessage('Day and night'),
@@ -427,6 +428,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'noMatchingImage':
             MessageLookupByLibrary.simpleMessage('No matching image name'),
         'noNotes': MessageLookupByLibrary.simpleMessage('You have no notes'),
+        'noRecurrence': MessageLookupByLibrary.simpleMessage('No recurrence'),
         'noSound': MessageLookupByLibrary.simpleMessage('- No sound -'),
         'noTemplateActivityError1': MessageLookupByLibrary.simpleMessage(
             'There are no templates and you have not selected name or image in adding an activity step-by-step.'),
@@ -477,6 +479,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'pm': MessageLookupByLibrary.simpleMessage('PM'),
         'previewActivityTitle':
             MessageLookupByLibrary.simpleMessage('Erik\'s birthday party'),
+        'previous': MessageLookupByLibrary.simpleMessage('Previous'),
         'privacyPolicy': MessageLookupByLibrary.simpleMessage('privacy policy'),
         'privacyPolicyUrl': MessageLookupByLibrary.simpleMessage(
             'intl/policy-for-the-processing-of-personal-data'),

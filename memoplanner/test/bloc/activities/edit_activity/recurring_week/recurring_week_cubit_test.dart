@@ -195,6 +195,7 @@ void main() {
               null,
               noEndDate),
           day,
+          RecurrentType.none,
         );
         return [
           initialState.copyWith(
@@ -206,7 +207,7 @@ void main() {
                 },
               ),
             ),
-            selectedType: RecurrentType.weekly,
+            selectedRecurrentType: RecurrentType.weekly,
           ),
           initialState.copyWith(
             initialState.activity.copyWith(
@@ -217,7 +218,7 @@ void main() {
                 },
               ),
             ),
-            selectedType: RecurrentType.weekly,
+            selectedRecurrentType: RecurrentType.weekly,
           ),
         ];
       });

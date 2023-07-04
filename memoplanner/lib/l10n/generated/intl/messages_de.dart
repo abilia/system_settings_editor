@@ -110,7 +110,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'androidVersion':
             MessageLookupByLibrary.simpleMessage('Android-Version'),
         'availableFor': MessageLookupByLibrary.simpleMessage('Verfügbar für'),
-        'back': MessageLookupByLibrary.simpleMessage(''),
+        'back': MessageLookupByLibrary.simpleMessage('Zurück'),
         'backToLogin':
             MessageLookupByLibrary.simpleMessage('Zurück zur Anmeldung'),
         'battery': MessageLookupByLibrary.simpleMessage('Akkus'),
@@ -213,7 +213,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Sie haben noch kein myAbilia-Konto?'),
         'createAccountSubheading': MessageLookupByLibrary.simpleMessage(
             'Sie benötigen ein myAbilia-Konto, um MEMOplanner verwenden zu können'),
-        'daily': MessageLookupByLibrary.simpleMessage(''),
+        'daily': MessageLookupByLibrary.simpleMessage('Daily'),
         'date': MessageLookupByLibrary.simpleMessage('Datum'),
         'day': MessageLookupByLibrary.simpleMessage('Tag'),
         'dayAndNight': MessageLookupByLibrary.simpleMessage('Tag und Nacht'),
@@ -331,7 +331,8 @@ class MessageLookup extends MessageLookupByLibrary {
             'Auf einem iPhone können Alarmtöne nur maximal 30 Sekunden lang abgespielt werden'),
         'ifYouLogoutYouWillLose': MessageLookupByLibrary.simpleMessage(
             'Wenn Sie sich jetzt abmelden, verlieren Folgendes:'),
-        'ignoreBatteryOptimizations': MessageLookupByLibrary.simpleMessage(''),
+        'ignoreBatteryOptimizations': MessageLookupByLibrary.simpleMessage(
+            'Ignore battery optimizations'),
         'imageArchive': MessageLookupByLibrary.simpleMessage('Bildarchiv'),
         'imagePicker': MessageLookupByLibrary.simpleMessage('Bildauswahl'),
         'inTimePre': MessageLookupByLibrary.simpleMessage('in'),
@@ -416,7 +417,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'monthly': MessageLookupByLibrary.simpleMessage('Monatlich'),
         'myPhotos': MessageLookupByLibrary.simpleMessage('Meine Fotos'),
         'name': MessageLookupByLibrary.simpleMessage('Name'),
-        'nbOneAClock': MessageLookupByLibrary.simpleMessage(''),
+        'nbOneAClock': MessageLookupByLibrary.simpleMessage('one o clock'),
         'needLicenseToSaveData': MessageLookupByLibrary.simpleMessage(
             'Um Ihre Daten in myAbilia zu speichern, benötigen Sie eine aktive Lizenz.'),
         'newActivity': MessageLookupByLibrary.simpleMessage('Neue Aktivität'),
@@ -447,7 +448,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Kein übereinstimmender Bildname'),
         'noNotes':
             MessageLookupByLibrary.simpleMessage('Sie haben keine Notizen'),
-        'noRecurrence': MessageLookupByLibrary.simpleMessage(''),
+        'noRecurrence': MessageLookupByLibrary.simpleMessage('No recurrence'),
         'noSound': MessageLookupByLibrary.simpleMessage('- Kein Klang -'),
         'noTemplateActivityError1': MessageLookupByLibrary.simpleMessage(
             'Es gibt keine vorlagen und Sie haben beim schrittweisen Hinzufügen einer Aktivität keinen Namen oder kein Bild ausgewählt.'),
@@ -573,7 +574,6 @@ class MessageLookup extends MessageLookupByLibrary {
         'selectNote': MessageLookupByLibrary.simpleMessage('Hinweis auswählen'),
         'selectReminder':
             MessageLookupByLibrary.simpleMessage('Erinnerung auswählen'),
-        'selectTemplate': MessageLookupByLibrary.simpleMessage(''),
         'selectTemplateTimer':
             MessageLookupByLibrary.simpleMessage('Timer auswählen'),
         'selectType': MessageLookupByLibrary.simpleMessage('Typ auswählen'),
@@ -674,7 +674,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'time': MessageLookupByLibrary.simpleMessage('Zeit'),
         'timeAfternoonTts':
             MessageLookupByLibrary.simpleMessage('%s nachmittags'),
-        'timeAgoPost': MessageLookupByLibrary.simpleMessage(''),
+        'timeAgoPost': MessageLookupByLibrary.simpleMessage('ago'),
         'timeAgoPre': MessageLookupByLibrary.simpleMessage('vor'),
         'timeEveningTts':
             MessageLookupByLibrary.simpleMessage('%s nachmittags'),
@@ -714,7 +714,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'timers': MessageLookupByLibrary.simpleMessage('Timer'),
         'toLogin': MessageLookupByLibrary.simpleMessage('zur Anmelden'),
         'today': MessageLookupByLibrary.simpleMessage('Heute'),
-        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(''),
+        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(
+            'You have made too many attempts to log in. Please wait a few seconds until trying again'),
         'toolbar': MessageLookupByLibrary.simpleMessage('Symbolleiste'),
         'toolbarSettingsHint': MessageLookupByLibrary.simpleMessage(
             'In der Symbolleiste angezeigte Ansichten'),

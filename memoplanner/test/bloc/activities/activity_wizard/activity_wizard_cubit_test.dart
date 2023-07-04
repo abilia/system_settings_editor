@@ -223,7 +223,11 @@ void main() {
     final expect1 = expectLater(
       editActivityCubit.stream,
       emits(
-        UnstoredActivityState(activityWithTitle, timeInterval),
+        UnstoredActivityState(
+          activityWithTitle,
+          timeInterval,
+          RecurrentType.none,
+        ),
       ),
     );
     // Act
@@ -246,7 +250,11 @@ void main() {
     final expect2 = expectLater(
       editActivityCubit.stream,
       emits(
-        UnstoredActivityState(activityWithTitle, newTimeInterval),
+        UnstoredActivityState(
+          activityWithTitle,
+          newTimeInterval,
+          RecurrentType.none,
+        ),
       ),
     );
     editActivityCubit.changeTimeInterval(startTime: newStartTime);
@@ -305,7 +313,12 @@ void main() {
 
     final expect1 = expectLater(
       editActivityCubit.stream,
-      emits(StoredActivityState(activityAsFullDay, timeInterval, aDay)),
+      emits(StoredActivityState(
+        activityAsFullDay,
+        timeInterval,
+        aDay,
+        RecurrentType.none,
+      )),
     );
 
     // Act
@@ -372,9 +385,21 @@ void main() {
       editActivityCubit.stream,
       emitsInOrder(
         [
-          UnstoredActivityState(activity, expectedTimeInterval1),
-          UnstoredActivityState(activity, expectedTimeInterval2),
-          UnstoredActivityState(newActivity, expectedTimeInterval2),
+          UnstoredActivityState(
+            activity,
+            expectedTimeInterval1,
+            RecurrentType.none,
+          ),
+          UnstoredActivityState(
+            activity,
+            expectedTimeInterval2,
+            RecurrentType.none,
+          ),
+          UnstoredActivityState(
+            newActivity,
+            expectedTimeInterval2,
+            RecurrentType.none,
+          ),
         ],
       ),
     );
@@ -396,6 +421,7 @@ void main() {
           expectedFinalActivity,
           expectedTimeInterval2,
           expectedFinalStartTime.onlyDays(),
+          RecurrentType.none,
         ),
       ),
     );
@@ -456,13 +482,23 @@ void main() {
       // Assert
       expect(
         editActivityCubit.state,
-        StoredActivityState(activity, expectedTimeInterval, aDay),
+        StoredActivityState(
+          activity,
+          expectedTimeInterval,
+          aDay,
+          RecurrentType.none,
+        ),
       );
 
       final expected1 = expectLater(
         editActivityCubit.stream,
         emits(
-          StoredActivityState(activity, expectedNewTimeInterval, aDay),
+          StoredActivityState(
+            activity,
+            expectedNewTimeInterval,
+            aDay,
+            RecurrentType.none,
+          ),
         ),
       );
       // Act
@@ -477,7 +513,11 @@ void main() {
         editActivityCubit.stream,
         emits(
           StoredActivityState(
-              expectedNewActivity, expectedNewTimeInterval, aDay),
+            expectedNewActivity,
+            expectedNewTimeInterval,
+            aDay,
+            RecurrentType.none,
+          ),
         ),
       );
       await wizCubit.next();
@@ -534,13 +574,24 @@ void main() {
     );
 
     // Assert
-    expect(editActivityCubit.state,
-        StoredActivityState(activity, expectedTimeInterval, aDay));
+    expect(
+        editActivityCubit.state,
+        StoredActivityState(
+          activity,
+          expectedTimeInterval,
+          aDay,
+          RecurrentType.none,
+        ));
 
     final expected1 = expectLater(
       editActivityCubit.stream,
       emits(
-        StoredActivityState(activity, expectedNewTimeInterval, aDay),
+        StoredActivityState(
+          activity,
+          expectedNewTimeInterval,
+          aDay,
+          RecurrentType.none,
+        ),
       ),
     );
 
@@ -555,7 +606,12 @@ void main() {
     final expected2 = expectLater(
       editActivityCubit.stream,
       emits(
-        StoredActivityState(expectedNewActivity, expectedNewTimeInterval, aDay),
+        StoredActivityState(
+          expectedNewActivity,
+          expectedNewTimeInterval,
+          aDay,
+          RecurrentType.none,
+        ),
       ),
     );
 
@@ -605,12 +661,23 @@ void main() {
     );
 
     // Assert
-    expect(editActivityCubit.state,
-        StoredActivityState(activity, expectedTimeInterval, aDay));
+    expect(
+        editActivityCubit.state,
+        StoredActivityState(
+          activity,
+          expectedTimeInterval,
+          aDay,
+          RecurrentType.none,
+        ));
 
     final expected1 = expectLater(
       editActivityCubit.stream,
-      emits(StoredActivityState(activity, expectedNewTimeInterval, aDay)),
+      emits(StoredActivityState(
+        activity,
+        expectedNewTimeInterval,
+        aDay,
+        RecurrentType.none,
+      )),
     );
 
     // Act
@@ -622,7 +689,11 @@ void main() {
     final expected2 = expectLater(
       editActivityCubit.stream,
       emits(StoredActivityState(
-          expectedNewActivity, expectedNewTimeInterval, aDay)),
+        expectedNewActivity,
+        expectedNewTimeInterval,
+        aDay,
+        RecurrentType.none,
+      )),
     );
 
     // Act
@@ -672,6 +743,7 @@ void main() {
           activityWithEmptyChecklist,
           timeInterval,
           aDay,
+          RecurrentType.none,
         ).copyWith(activityWithEmptyChecklist,
             infoItems: {NoteInfoItem: activity.infoItem}),
       ),
@@ -722,6 +794,7 @@ void main() {
           activityWithEmptyNote,
           timeInterval,
           aDay,
+          RecurrentType.none,
         ).copyWith(activityWithEmptyNote,
             infoItems: {Checklist: activity.infoItem}),
       ),
@@ -778,10 +851,12 @@ void main() {
           UnstoredActivityState(
             originalActivity,
             expectedTimeInterval,
+            RecurrentType.none,
           ),
           UnstoredActivityState(
             activity,
             expectedTimeInterval,
+            RecurrentType.none,
           ),
         ]));
     editActivityCubit
@@ -853,10 +928,12 @@ void main() {
               UnstoredActivityState(
                 originalActivity,
                 timeInterval,
+                RecurrentType.none,
               ),
               UnstoredActivityState(
                 activity,
                 timeInterval,
+                RecurrentType.none,
               ),
             ]));
         editActivityCubit
@@ -922,10 +999,12 @@ void main() {
               UnstoredActivityState(
                 originalActivity,
                 timeInterval,
+                RecurrentType.none,
               ),
               UnstoredActivityState(
                 activity,
                 timeInterval,
+                RecurrentType.none,
               ),
             ]));
         editActivityCubit
@@ -942,6 +1021,7 @@ void main() {
               expectedActivity,
               timeInterval,
               aDay,
+              RecurrentType.none,
             ),
           ),
         );
@@ -1017,10 +1097,12 @@ void main() {
               UnstoredActivityState(
                 originalActivity,
                 timeInterval,
+                RecurrentType.none,
               ),
               UnstoredActivityState(
                 activity,
                 timeInterval,
+                RecurrentType.none,
               ),
             ],
           ),
@@ -1038,6 +1120,7 @@ void main() {
               expectedActivity,
               timeInterval,
               saveTime,
+              RecurrentType.none,
             ),
           ),
         );
@@ -1110,10 +1193,12 @@ void main() {
               UnstoredActivityState(
                 originalActivity,
                 timeInterval,
+                RecurrentType.none,
               ),
               UnstoredActivityState(
                 activity1,
                 timeInterval,
+                RecurrentType.none,
               ),
               UnstoredActivityState(
                 activity2,
@@ -1305,10 +1390,12 @@ void main() {
               UnstoredActivityState(
                 originalActivity,
                 timeInterval,
+                RecurrentType.none,
               ),
               UnstoredActivityState(
                 activity,
                 timeInterval,
+                RecurrentType.none,
               ),
             ]));
         editActivityCubit
@@ -1325,6 +1412,7 @@ void main() {
               expectedActivity,
               timeInterval,
               aDay,
+              RecurrentType.none,
             ),
           ),
         );
@@ -1391,10 +1479,15 @@ void main() {
         final expected1 = expectLater(
             editActivityCubit.stream,
             emitsInOrder([
-              UnstoredActivityState(originalActivity, timeInterval),
+              UnstoredActivityState(
+                originalActivity,
+                timeInterval,
+                RecurrentType.none,
+              ),
               UnstoredActivityState(
                 activity,
                 timeInterval,
+                RecurrentType.none,
               ),
             ]));
 
@@ -1411,6 +1504,7 @@ void main() {
               expectedActivity,
               timeInterval,
               aDay,
+              RecurrentType.none,
             ),
           ),
         );
@@ -1473,6 +1567,7 @@ void main() {
               titleChanged,
               timeInterval,
               aDay,
+              RecurrentType.none,
             ),
           ),
         );
@@ -1494,6 +1589,7 @@ void main() {
             expectedActivity,
             timeInterval,
             aDay,
+            RecurrentType.none,
           ),
         );
       });
@@ -1539,6 +1635,7 @@ void main() {
               UnstoredActivityState(
                 activity,
                 timeInterval,
+                RecurrentType.none,
               ),
             ));
         editActivityCubit.replaceActivity(activity);
@@ -1551,6 +1648,7 @@ void main() {
               expectedActivity,
               timeInterval,
               aDay,
+              RecurrentType.none,
             )));
 
         await wizCubit.next();
@@ -1606,6 +1704,7 @@ void main() {
               UnstoredActivityState(
                 activity,
                 firstTimeInterval,
+                RecurrentType.none,
               ),
             ],
           ),
@@ -1622,6 +1721,7 @@ void main() {
               expectedActivity,
               secondTimeInterval,
               aDay,
+              RecurrentType.none,
             ),
           ),
         );
@@ -1668,6 +1768,7 @@ void main() {
               titleChanged,
               timeInterval,
               aDay,
+              RecurrentType.none,
             ),
           ),
         );
@@ -1688,6 +1789,7 @@ void main() {
             expectedActivity,
             timeInterval,
             aDay,
+            RecurrentType.none,
           ),
         );
       });

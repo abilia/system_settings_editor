@@ -112,7 +112,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Android-versie'),
         'availableFor':
             MessageLookupByLibrary.simpleMessage('Beschikbaar voor'),
-        'back': MessageLookupByLibrary.simpleMessage(''),
+        'back': MessageLookupByLibrary.simpleMessage('Terug'),
         'backToLogin':
             MessageLookupByLibrary.simpleMessage('Terug naar Inloggen'),
         'battery': MessageLookupByLibrary.simpleMessage('Batterij'),
@@ -213,7 +213,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Heeft u nog geen myAbilia-account?'),
         'createAccountSubheading': MessageLookupByLibrary.simpleMessage(
             'U heeft een myAbilia-account nodig om MEMOplanner te gebruiken'),
-        'daily': MessageLookupByLibrary.simpleMessage(''),
+        'daily': MessageLookupByLibrary.simpleMessage('Daily'),
         'date': MessageLookupByLibrary.simpleMessage('Datum'),
         'day': MessageLookupByLibrary.simpleMessage('dag'),
         'dayAndNight': MessageLookupByLibrary.simpleMessage('Dag en nacht'),
@@ -331,7 +331,8 @@ class MessageLookup extends MessageLookupByLibrary {
             'Op een iPhone kunnen alarmgeluiden maximaal 30 seconden worden afgespeeld'),
         'ifYouLogoutYouWillLose': MessageLookupByLibrary.simpleMessage(
             'Als u nu uitlogt, gaat het volgende verloren:'),
-        'ignoreBatteryOptimizations': MessageLookupByLibrary.simpleMessage(''),
+        'ignoreBatteryOptimizations': MessageLookupByLibrary.simpleMessage(
+            'Ignore battery optimizations'),
         'imageArchive':
             MessageLookupByLibrary.simpleMessage('Afbeeldingenarchief'),
         'imagePicker': MessageLookupByLibrary.simpleMessage('Afbeeldingkiezer'),
@@ -418,7 +419,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'monthly': MessageLookupByLibrary.simpleMessage('Maandelijks'),
         'myPhotos': MessageLookupByLibrary.simpleMessage('Mijn foto\'s'),
         'name': MessageLookupByLibrary.simpleMessage('Naam'),
-        'nbOneAClock': MessageLookupByLibrary.simpleMessage(''),
+        'nbOneAClock': MessageLookupByLibrary.simpleMessage('one o clock'),
         'needLicenseToSaveData': MessageLookupByLibrary.simpleMessage(
             'U hebt een actieve licentie nodig om uw gegevens op te slaan in myAbilia.'),
         'newActivity': MessageLookupByLibrary.simpleMessage('Nieuw activiteit'),
@@ -448,7 +449,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Geen overeenkomende afbeeldingsnaam'),
         'noNotes':
             MessageLookupByLibrary.simpleMessage('Je hebt geen aantekeningen'),
-        'noRecurrence': MessageLookupByLibrary.simpleMessage(''),
+        'noRecurrence': MessageLookupByLibrary.simpleMessage('No recurrence'),
         'noSound': MessageLookupByLibrary.simpleMessage('- Geen geluid -'),
         'noTemplateActivityError1': MessageLookupByLibrary.simpleMessage(
             'Er zijn geen sjablonen en u heeft geen naam of afbeelding geselecteerd in het stap voor stap toevoegen van een activiteit.'),
@@ -571,7 +572,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Notitie selecteren'),
         'selectReminder':
             MessageLookupByLibrary.simpleMessage('Herinnering selecteren'),
-        'selectTemplate': MessageLookupByLibrary.simpleMessage(''),
         'selectTemplateTimer':
             MessageLookupByLibrary.simpleMessage('Timers selecteren'),
         'selectType': MessageLookupByLibrary.simpleMessage('Type selecteren'),
@@ -710,7 +710,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'timers': MessageLookupByLibrary.simpleMessage('Timers'),
         'toLogin': MessageLookupByLibrary.simpleMessage('naar Inloggen'),
         'today': MessageLookupByLibrary.simpleMessage('Vandaag'),
-        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(''),
+        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(
+            'You have made too many attempts to log in. Please wait a few seconds until trying again'),
         'toolbar': MessageLookupByLibrary.simpleMessage('Werkbalk'),
         'toolbarSettingsHint': MessageLookupByLibrary.simpleMessage(
             'Weergaven weergegeven in de werkbalk'),

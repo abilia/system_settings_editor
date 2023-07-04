@@ -1,6 +1,6 @@
 {
     "@@locale": "sv",
-    "@@last_modified": "2023-06-27T16:12:38+02:00",
+    "@@last_modified": "2023-06-29T12:58:36+02:00",
     "welcome": "Välkommen!",
     "welcomeText": "Den här guiden hjälper dig att komma igång med MEMOplanner.",
     "step": "Steg",
@@ -107,7 +107,7 @@
     "clockTenMinutesToTts": "Tio minuter i %s",
     "clockTwentyMinutesPastTts": "Tjugo minuter över %s",
     "clockTwentyMinutesToTts": "Tjugo minuter i %s",
-    "nbOneAClock": "",
+    "nbOneAClock": "one o clock",
     "timeMorningTts": "%s på morgonen",
     "timeForeNoonTts": "%s på förmiddagen",
     "timeAfternoonTts": "%s på eftermiddagen",
@@ -492,8 +492,7 @@
     "confirmFactoryReset": "Vill du påbörja återställningen av fabriksinställningarna?",
     "confirmFactoryResetDescription": "När fabriksinställningarna har återställts behöver du installera om MEMOplanner-programvaran. Följ instruktionerna om rekonditionering för att göra detta.",
     "factoryResetFailed": "Kunde inte återställa fabriksinställningarna, försök igen senare.",
-    "back": "Tillbaka",
-    "selectTemplate": "Välj mall",
-    "noRecurrence": "",
-    "daily": ""
+    "noRecurrence": "No recurrence",
+    "daily": "Daily",
+    "back": "Tillbaka"
 }

@@ -218,8 +218,7 @@ final actionIconTextButtonStyleRed = ButtonStyle(
 );
 
 final _actionButtonStyle = ButtonStyle(
-  textStyle:
-      MaterialStateProperty.all(abiliaTextTheme.bodySmall?.copyWith(height: 1)),
+  textStyle: MaterialStateProperty.all(bodyLarge),
   minimumSize: mediumSize,
   padding: MaterialStateProperty.all(layout.actionButton.padding),
 );
@@ -267,7 +266,6 @@ final actionButtonStyleDark = _actionButtonStyle.copyWith(
   shape: shapeDark,
   minimumSize: smallSize,
   iconSize: MaterialStateProperty.all(layout.actionButton.iconSize),
-  textStyle: MaterialStateProperty.all(bodyLarge),
 );
 
 final actionButtonStyleNoneTransparentDark = actionButtonStyleDark.copyWith(

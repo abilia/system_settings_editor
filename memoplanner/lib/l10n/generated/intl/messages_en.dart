@@ -544,8 +544,6 @@ class MessageLookup extends MessageLookupByLibrary {
         'selectNote': MessageLookupByLibrary.simpleMessage('Select note'),
         'selectReminder':
             MessageLookupByLibrary.simpleMessage('Select reminder'),
-        'selectTemplate':
-            MessageLookupByLibrary.simpleMessage('Select template'),
         'selectTemplateTimer':
             MessageLookupByLibrary.simpleMessage('Select timer'),
         'selectType': MessageLookupByLibrary.simpleMessage('Select type'),

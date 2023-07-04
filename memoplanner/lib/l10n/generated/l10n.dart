@@ -554,10 +554,9 @@ class Lt {
     'confirmFactoryReset': [],
     'confirmFactoryResetDescription': [],
     'factoryResetFailed': [],
-    'back': [],
-    'selectTemplate': [],
     'noRecurrence': [],
-    'daily': []
+    'daily': [],
+    'back': []
   };
 
   /// `Welcome!`
@@ -5470,26 +5469,6 @@ class Lt {
     );
   }
 
-  /// `Back`
-  String get back {
-    return Intl.message(
-      'Back',
-      name: 'back',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Select template`
-  String get selectTemplate {
-    return Intl.message(
-      'Select template',
-      name: 'selectTemplate',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `No recurrence`
   String get noRecurrence {
     return Intl.message(
@@ -5505,6 +5484,16 @@ class Lt {
     return Intl.message(
       'Daily',
       name: 'daily',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back`
+  String get back {
+    return Intl.message(
+      'Back',
+      name: 'back',
       desc: '',
       args: [],
     );
