@@ -7,7 +7,7 @@ To get started, first set up the environment keys:
 1. Get the `.env` file from either Lastpass or from a developer and make sure the file name is `.env.key`.
 2. Put the file in the `lib/env` folder.
 3. Run `$ flutter pub get` to get packages.
-4. Run `$ flutter pub run build_runner build --delete-conflicting-outputs` to generate keys.
+4. Run `$ dart run build_runner build --delete-conflicting-outputs` to generate keys.
 
 ## Building for android
 

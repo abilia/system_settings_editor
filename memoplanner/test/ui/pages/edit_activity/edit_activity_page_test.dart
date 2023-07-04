@@ -1474,9 +1474,7 @@ text''';
       await tester.goToRecurrenceTab();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.week));
-      await tester.pumpAndSettle();
-      await tester.scrollDown(dy: -250);
+      await tester.scrollDown(dy: -500);
       await tester.tap(find.text(translate.noEndDate));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(DatePicker));
@@ -1529,7 +1527,7 @@ text''';
       await tester.goToRecurrenceTab();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-      await tester.scrollDown(dy: -250);
+      await tester.scrollDown(dy: -500);
       await tester.tap(find.text(translate.noEndDate));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
@@ -2032,7 +2030,7 @@ text''';
 
       // Assert
       expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
-      expect(find.text(translate.once), findsOneWidget);
+      expect(find.text(translate.noRecurrence), findsOneWidget);
     });
 
     testWidgets('all recurrence present', (WidgetTester tester) async {
@@ -2046,8 +2044,10 @@ text''';
 
       // Assert
       expect(find.text(translate.recurrence), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.cancel), findsOneWidget);
+      expect(find.text(translate.noRecurrence), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
-      expect(find.text(translate.once), findsOneWidget);
+      expect(find.text(translate.daily), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.week), findsOneWidget);
       expect(find.text(translate.weekly), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.month), findsOneWidget);
@@ -2081,6 +2081,32 @@ text''';
         find.byType(RadioField<RecurrentType>),
       ) as RadioField<RecurrentType>;
       expect(radioWidget.groupValue, RecurrentType.yearly);
+    });
+
+    testWidgets('can change to daily', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(createEditActivityPage(
+        newActivity: true,
+      ));
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.goToRecurrenceTab();
+
+      // Assert -- Once selected
+      var radioWidget = tester.firstWidget(
+        find.byType(RadioField<RecurrentType>),
+      ) as RadioField<RecurrentType>;
+
+      // Act -- Change to Yearly
+      await tester.tap(find.byIcon(AbiliaIcons.day));
+      await tester.pumpAndSettle();
+
+      // Assert -- Yearly selected
+      radioWidget = tester.firstWidget(
+        find.byType(RadioField<RecurrentType>),
+      ) as RadioField<RecurrentType>;
+      expect(radioWidget.groupValue, RecurrentType.daily);
     });
 
     testWidgets('can change to monthly', (WidgetTester tester) async {
@@ -2157,7 +2183,7 @@ text''';
       // Act -- Change to weekly
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-      await tester.scrollDown(dy: -250);
+      await tester.scrollDown(dy: -500);
 
       // Assert -- date picker visible
       expect(find.byType(EndDateWidget), findsOneWidget);
@@ -2266,6 +2292,7 @@ text''';
       await tester.pumpAndSettle();
 
       // Arrange -- deselect preselect
+      await tester.scrollDown(dy: -250);
       await tester.tap(find.text(translate.shortWeekday(startTime.weekday)));
       await tester.goToMainTab();
       await tester.pumpAndSettle();
@@ -2362,12 +2389,12 @@ text''';
 
       // Assert -- Once selected
       expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
-      expect(find.text(translate.once), findsOneWidget);
+      expect(find.text(translate.noRecurrence), findsOneWidget);
 
       // Act -- Change to weekly
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-      await tester.scrollDown(dy: -250);
+      await tester.scrollDown(dy: -500);
       await tester.tap(find.text(translate.noEndDate));
       await tester.pumpAndSettle();
 
@@ -2428,12 +2455,12 @@ text''';
 
       // Assert -- Once selected
       expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
-      expect(find.text(translate.once), findsOneWidget);
+      expect(find.text(translate.noRecurrence), findsOneWidget);
 
       // Act -- Change to weekly
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-      await tester.scrollDown(dy: -250);
+      await tester.scrollDown(dy: -500);
       await tester.tap(find.text(translate.noEndDate));
       await tester.pumpAndSettle();
 
@@ -2475,7 +2502,7 @@ text''';
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
 
-      await tester.scrollDown(dy: -250);
+      await tester.scrollDown(dy: -500);
       await tester.tap(find.text(translate.noEndDate));
       await tester.pumpAndSettle();
 
@@ -2490,7 +2517,6 @@ text''';
 
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await tester.scrollDown(dy: -250);
 
       expect(find.text('February 17, 2020'), findsOneWidget);
 
@@ -2524,6 +2550,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
 
       await tester.tap(find.text('Thu'));
       await tester.tap(find.text('Sun'));
@@ -2557,6 +2584,7 @@ text''';
       await tester.pumpAndSettle();
       // Assert -- One day selected
       expect(find.byIcon(AbiliaIcons.radioCheckboxSelected), findsNWidgets(1));
+      await tester.scrollDown(dy: -250);
 
       // Act -- Select two more days
       await tester.tap(find.text('5'));
@@ -3541,8 +3569,10 @@ text''';
       );
       await tester.pumpAndSettle();
       await tester.goToRecurrenceTab();
+      await tester.verifyTts(find.byIcon(AbiliaIcons.cancel),
+          exact: translate.noRecurrence);
       await tester.verifyTts(find.byIcon(AbiliaIcons.day),
-          exact: translate.once);
+          exact: translate.daily);
       await tester.verifyTts(find.byIcon(AbiliaIcons.week),
           exact: translate.weekly);
       await tester.verifyTts(find.byIcon(AbiliaIcons.month),
@@ -3900,7 +3930,7 @@ text''';
       await tester.goToRecurrenceTab();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
-      await tester.scrollDown(dy: -250);
+      await tester.scrollDown(dy: -500);
       await tester.tap(find.text(translate.noEndDate));
       await tester.pumpAndSettle();
 

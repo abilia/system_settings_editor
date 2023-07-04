@@ -210,6 +210,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Eikö sinulla ole vielä myAbilia-tiliä?'),
         'createAccountSubheading': MessageLookupByLibrary.simpleMessage(
             'Tarvitset myAbilia-tilin käyttääksesi MEMOplanneria'),
+        'daily': MessageLookupByLibrary.simpleMessage('Daily'),
         'date': MessageLookupByLibrary.simpleMessage('Päivämäärä'),
         'day': MessageLookupByLibrary.simpleMessage('päivä'),
         'dayAndNight': MessageLookupByLibrary.simpleMessage('Päivä ja yö'),
@@ -326,10 +327,11 @@ class MessageLookup extends MessageLookupByLibrary {
             'IPhonessa hälytysääniä voidaan toistaa enintään 30 sekunnin ajan'),
         'ifYouLogoutYouWillLose': MessageLookupByLibrary.simpleMessage(
             'Jos kirjaudut ulos nyt, menetät:'),
-        'ignoreBatteryOptimizations': MessageLookupByLibrary.simpleMessage(''),
+        'ignoreBatteryOptimizations': MessageLookupByLibrary.simpleMessage(
+            'Ignore battery optimizations'),
         'imageArchive': MessageLookupByLibrary.simpleMessage('Kuva-arkisto'),
         'imagePicker': MessageLookupByLibrary.simpleMessage('Kuvanvalitsin'),
-        'inTimePre': MessageLookupByLibrary.simpleMessage(''),
+        'inTimePre': MessageLookupByLibrary.simpleMessage('in'),
         'incorrectCode':
             MessageLookupByLibrary.simpleMessage('Virheellinen koodi'),
         'infoType':
@@ -415,7 +417,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'monthly': MessageLookupByLibrary.simpleMessage('Kuukausittain'),
         'myPhotos': MessageLookupByLibrary.simpleMessage('Omat valokuvat'),
         'name': MessageLookupByLibrary.simpleMessage('Nimi'),
-        'nbOneAClock': MessageLookupByLibrary.simpleMessage(''),
+        'nbOneAClock': MessageLookupByLibrary.simpleMessage('one o clock'),
         'needLicenseToSaveData': MessageLookupByLibrary.simpleMessage(
             'Sinun pitää aktivoida lisenssi tietojen myAbiliaan tallentamiseen.'),
         'newActivity':
@@ -447,6 +449,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Ei vastaavaa kuvan nimeä'),
         'noNotes': MessageLookupByLibrary.simpleMessage(
             'Sinulla ei ole muistiinpanoja'),
+        'noRecurrence': MessageLookupByLibrary.simpleMessage('No recurrence'),
         'noSound': MessageLookupByLibrary.simpleMessage('- Ei ääntä -'),
         'noTemplateActivityError1': MessageLookupByLibrary.simpleMessage(
             'Mallit ei ole, etkä ole valinnut nimeä tai kuvaa lisätessäsi aktiviteettia vaiheittain.'),
@@ -471,7 +474,6 @@ class MessageLookup extends MessageLookupByLibrary {
             'Salli asetusten ilmoitusten vastaanottaa hälytyksiä ja muistutuksia.'),
         'now': MessageLookupByLibrary.simpleMessage('Nyt'),
         'ok': MessageLookupByLibrary.simpleMessage('OK'),
-        'once': MessageLookupByLibrary.simpleMessage('Kerran'),
         'oneDot': MessageLookupByLibrary.simpleMessage('Yksi piste'),
         'oneTimePillarView':
             MessageLookupByLibrary.simpleMessage('1 aikasarake'),
@@ -500,6 +502,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'pm': MessageLookupByLibrary.simpleMessage('pm'),
         'previewActivityTitle':
             MessageLookupByLibrary.simpleMessage('Erikin syntymäpäiväjuhlat'),
+        'previous': MessageLookupByLibrary.simpleMessage('Takaisin'),
         'privacyPolicy':
             MessageLookupByLibrary.simpleMessage('tietosuojakäytäntö'),
         'privacyPolicyUrl': MessageLookupByLibrary.simpleMessage(
@@ -704,7 +707,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'timers': MessageLookupByLibrary.simpleMessage('Ajastimet'),
         'toLogin': MessageLookupByLibrary.simpleMessage('kirjautumissivulle'),
         'today': MessageLookupByLibrary.simpleMessage('Tänään'),
-        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(''),
+        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(
+            'You have made too many attempts to log in. Please wait a few seconds until trying again'),
         'toolbar': MessageLookupByLibrary.simpleMessage('Työkalurivi'),
         'toolbarSettingsHint': MessageLookupByLibrary.simpleMessage(
             'Näkymät näkyvät työkalupalkissa'),

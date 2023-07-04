@@ -417,6 +417,7 @@ void main() {
     // Act -- set to weekly, deselect all days
     await tester.tap(find.byIcon(AbiliaIcons.week));
     await tester.pumpAndSettle();
+    await tester.scrollDown(dy: -500);
     await tester.tap(find.byWidgetPredicate(
         (widget) => widget is SelectableField && widget.selected));
     await tester.pumpAndSettle();
@@ -497,7 +498,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Act -- turn off no end date
-    await tester.scrollDown(dy: -250);
+    await tester.scrollDown(dy: -500);
     await tester.tap(find.text(translate.noEndDate));
     await tester.pumpAndSettle();
 

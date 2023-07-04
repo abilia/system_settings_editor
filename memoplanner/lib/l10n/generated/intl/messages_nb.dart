@@ -209,6 +209,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Har du ikke en myAbilia-konto ennå?'),
         'createAccountSubheading': MessageLookupByLibrary.simpleMessage(
             'Du trenger en myAbilia-konto for å bruke MEMOplanner'),
+        'daily': MessageLookupByLibrary.simpleMessage('Daily'),
         'date': MessageLookupByLibrary.simpleMessage('Dato'),
         'day': MessageLookupByLibrary.simpleMessage('dag'),
         'dayAndNight': MessageLookupByLibrary.simpleMessage('Døgnet'),
@@ -322,7 +323,8 @@ class MessageLookup extends MessageLookupByLibrary {
             'På en iPhone kan alarmlyder bare spilles av i maksimalt 30 sekunder'),
         'ifYouLogoutYouWillLose': MessageLookupByLibrary.simpleMessage(
             'Hvis du logger ut nå vil du miste følgende:'),
-        'ignoreBatteryOptimizations': MessageLookupByLibrary.simpleMessage(''),
+        'ignoreBatteryOptimizations': MessageLookupByLibrary.simpleMessage(
+            'Ignore battery optimizations'),
         'imageArchive': MessageLookupByLibrary.simpleMessage('Bildearkiv'),
         'imagePicker': MessageLookupByLibrary.simpleMessage('Bildevalg'),
         'inTimePre': MessageLookupByLibrary.simpleMessage('om'),
@@ -435,6 +437,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'noMatchingImage':
             MessageLookupByLibrary.simpleMessage('Ingen samsvarende bildenavn'),
         'noNotes': MessageLookupByLibrary.simpleMessage('Du har ingen notater'),
+        'noRecurrence': MessageLookupByLibrary.simpleMessage('No recurrence'),
         'noSound': MessageLookupByLibrary.simpleMessage('- Ingen lyd -'),
         'noTemplateActivityError1': MessageLookupByLibrary.simpleMessage(
             'Det er ingen maler, og du har ikke valgt navn og bilde i sekvensmodus.'),
@@ -458,7 +461,6 @@ class MessageLookup extends MessageLookupByLibrary {
             'Tillat notifikasjoner fra innstillinger for å få alarm og påminnelser'),
         'now': MessageLookupByLibrary.simpleMessage('Nå'),
         'ok': MessageLookupByLibrary.simpleMessage('OK'),
-        'once': MessageLookupByLibrary.simpleMessage('En gang'),
         'oneDot': MessageLookupByLibrary.simpleMessage('Et punkt'),
         'oneTimePillarView': MessageLookupByLibrary.simpleMessage('1 tidsøyle'),
         'onlyActivateScreensaverDuringNight':
@@ -485,6 +487,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'pm': MessageLookupByLibrary.simpleMessage('pm'),
         'previewActivityTitle':
             MessageLookupByLibrary.simpleMessage('Eiriks bursdagsselskap'),
+        'previous': MessageLookupByLibrary.simpleMessage('Tilbake'),
         'privacyPolicy':
             MessageLookupByLibrary.simpleMessage('personvernerklæring'),
         'privacyPolicyUrl':
@@ -677,7 +680,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'timers': MessageLookupByLibrary.simpleMessage('Timere'),
         'toLogin': MessageLookupByLibrary.simpleMessage('til Logg inn'),
         'today': MessageLookupByLibrary.simpleMessage('I dag'),
-        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(''),
+        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(
+            'You have made too many attempts to log in. Please wait a few seconds until trying again'),
         'toolbar': MessageLookupByLibrary.simpleMessage('Knapperad'),
         'toolbarSettingsHint': MessageLookupByLibrary.simpleMessage(
             'Visninger som vises på verktøylinjen'),

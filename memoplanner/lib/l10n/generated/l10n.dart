@@ -229,7 +229,7 @@ class Lt {
     'yes': [],
     'no': [],
     'close': [],
-    'back': [],
+    'previous': [],
     'next': [],
     'ok': [],
     'record': [],
@@ -301,7 +301,6 @@ class Lt {
     'searchImage': [],
     'noMatchingImage': [],
     'recurrence': [],
-    'once': [],
     'weekly': [],
     'monthly': [],
     'yearly': [],
@@ -554,7 +553,10 @@ class Lt {
     'clearDataDescription': [],
     'confirmFactoryReset': [],
     'confirmFactoryResetDescription': [],
-    'factoryResetFailed': []
+    'factoryResetFailed': [],
+    'noRecurrence': [],
+    'daily': [],
+    'back': []
   };
 
   /// `Welcome!`
@@ -2218,10 +2220,10 @@ class Lt {
   }
 
   /// `Previous`
-  String get back {
+  String get previous {
     return Intl.message(
       'Previous',
-      name: 'back',
+      name: 'previous',
       desc: '',
       args: [],
     );
@@ -2932,16 +2934,6 @@ class Lt {
     return Intl.message(
       'Recurrence',
       name: 'recurrence',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Once`
-  String get once {
-    return Intl.message(
-      'Once',
-      name: 'once',
       desc: '',
       args: [],
     );
@@ -5472,6 +5464,36 @@ class Lt {
     return Intl.message(
       'Factory reset failed, please try again later.',
       name: 'factoryResetFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No recurrence`
+  String get noRecurrence {
+    return Intl.message(
+      'No recurrence',
+      name: 'noRecurrence',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Daily`
+  String get daily {
+    return Intl.message(
+      'Daily',
+      name: 'daily',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back`
+  String get back {
+    return Intl.message(
+      'Back',
+      name: 'back',
       desc: '',
       args: [],
     );

@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2023-06-15T11:46:41+02:00",
+    "@@last_modified": "2023-06-29T12:58:36+02:00",
     "welcome": "Welcome!",
     "welcomeText": "This guide will help you get started with MEMOplanner.",
     "step": "Step",
@@ -167,7 +167,7 @@
     "yes": "Yes",
     "no": "No",
     "close": "Close",
-    "back": "Previous",
+    "previous": "Previous",
     "next": "Next",
     "ok": "OK",
     "record": "Record",
@@ -239,7 +239,6 @@
     "searchImage": "Search image",
     "noMatchingImage": "No matching image name",
     "recurrence": "Recurrence",
-    "once": "Once",
     "weekly": "Weekly",
     "monthly": "Monthly",
     "yearly": "Yearly",
@@ -492,5 +491,8 @@
     "clearDataDescription": "Clear app data and go to startup guide.",
     "confirmFactoryReset": "Do you want to start factory reset?",
     "confirmFactoryResetDescription": "After factory reset is finished you will need to reinstall MEMOplanner software. Follow the reconditioning instructions to do that.",
-    "factoryResetFailed": "Factory reset failed, please try again later."
+    "factoryResetFailed": "Factory reset failed, please try again later.",
+    "noRecurrence": "No recurrence",
+    "daily": "Daily",
+    "back": "Back"
 }
