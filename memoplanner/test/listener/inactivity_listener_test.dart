@@ -706,7 +706,7 @@ void main() {
         // Act
         await tester.pumpApp();
         expect(find.byType(MenuPage), findsOneWidget);
-        await tester.tap(find.byType(BasicTemplatesButton));
+        await tester.tap(find.byType(TemplatesButton));
         await tester.pumpAndSettle();
         await tester.tap(find.byType(AddTemplateButton));
         await tester.pumpAndSettle();
@@ -727,7 +727,7 @@ void main() {
         // Act
         await tester.pumpApp();
         expect(find.byType(MenuPage), findsOneWidget);
-        await tester.tap(find.byType(BasicTemplatesButton));
+        await tester.tap(find.byType(TemplatesButton));
         await tester.pumpAndSettle();
         await tester.tap(
           find.descendant(

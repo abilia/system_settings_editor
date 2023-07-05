@@ -242,7 +242,7 @@ void main() {
         ),
       ];
       await tester.goToMenuPage();
-      expect(find.byType(BasicTemplatesButton), findsNothing);
+      expect(find.byType(TemplatesButton), findsNothing);
     });
 
     testWidgets('hides QuickSettingsButton', (tester) async {

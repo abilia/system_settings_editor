@@ -474,7 +474,7 @@ extension on WidgetTester {
     await pumpApp();
     await tap(find.byType(MenuButton));
     await pumpAndSettle();
-    await tap(find.byType(BasicTemplatesButton));
+    await tap(find.byType(TemplatesButton));
     await pumpAndSettle();
   }
 }

@@ -34,7 +34,7 @@ class MenuPage extends StatelessWidget {
                 const PhotoCalendarButton(),
               if (menuSettings.quickSettingsEnabled)
                 const QuickSettingsButton(),
-              if (menuSettings.showTemplates) const BasicTemplatesButton(),
+              if (menuSettings.showTemplates) const TemplatesButton(),
               if (menuSettings.showSettings) const SettingsButton(),
             ],
           ),
@@ -263,8 +263,8 @@ class MenuItemButton extends StatelessWidget {
   }
 }
 
-class BasicTemplatesButton extends StatelessWidget {
-  const BasicTemplatesButton({Key? key}) : super(key: key);
+class TemplatesButton extends StatelessWidget {
+  const TemplatesButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
