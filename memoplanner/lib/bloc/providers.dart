@@ -28,16 +28,14 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
   final SortableBloc? sortableBloc;
   final SyncBloc? syncBloc;
 
-  AuthenticatedBlocsProvider({
+  const AuthenticatedBlocsProvider({
     required this.authenticatedState,
     required this.child,
     this.memoplannerSettingBloc,
     this.sortableBloc,
     this.syncBloc,
     Key? key,
-  }) : super(key: key) {
-    ensureNotificationPluginInitialized();
-  }
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => MultiRepositoryProvider(

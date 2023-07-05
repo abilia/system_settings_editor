@@ -112,6 +112,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     final timers = await TimerDb(database).getRunningTimersFrom(now);
     log.fine('active timers: ${timers.length}');
 
+    await initializeNotificationPlugin();
     await scheduleNotifications(
       NotificationsSchedulerData(
         activities: activities,

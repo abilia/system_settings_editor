@@ -70,6 +70,8 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     );
     await activityRepository.fetchIntoDatabase();
     final activities = await activityRepository.allAfter(now);
+
+    await initializeNotificationPlugin();
     return scheduleActivityNotifications(activities);
   } catch (e) {
     log.severe('Exception when running background handler', e);

@@ -23,11 +23,11 @@ FlutterLocalNotificationsPlugin? notificationsPluginInstance;
 
 FlutterLocalNotificationsPlugin get notificationPlugin {
   if (notificationsPluginInstance != null) return notificationsPluginInstance!;
-  unawaited(ensureNotificationPluginInitialized());
+  unawaited(initializeNotificationPlugin());
   return FlutterLocalNotificationsPlugin();
 }
 
-Future<void> ensureNotificationPluginInitialized() async {
+Future<void> initializeNotificationPlugin() async {
   if (notificationsPluginInstance != null) return;
   _log.finer('initialize notification plugin... ');
   final pluginInstance = FlutterLocalNotificationsPlugin();
