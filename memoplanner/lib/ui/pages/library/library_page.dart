@@ -161,7 +161,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
   final bool showOnlyFolders;
   final bool showSearchButton;
   final VoidCallback? onCancel;
-  final Function? back;
+  final Function(BuildContext, SortableArchiveState<T>)? back;
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +178,8 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
               children: [
                 if (back != null)
                   IconActionButtonDark(
-                    onPressed: () async => back!(context, sortableArchiveState),
+                    onPressed: () async =>
+                        back?.call(context, sortableArchiveState),
                     child: const Icon(AbiliaIcons.navigationPrevious),
                   ),
                 SizedBox(width: layout.formPadding.largeHorizontalItemDistance),
@@ -190,10 +191,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                     maxLines: 1,
                   ),
                 ),
-                if (showSearchButton)
-                  SearchButton(
-                    onCancel: onCancel,
-                  ),
+                if (showSearchButton) SearchButton(onCancel: onCancel),
               ],
             ),
           ),
