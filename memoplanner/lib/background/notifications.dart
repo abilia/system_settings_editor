@@ -122,7 +122,7 @@ Future _scheduleAllNotifications(
   final locale = Locale(language);
   await initializeDateFormatting(locale.languageCode);
   await initLokalise();
-  final androidNotificationChannels = await _androidNotificationChannelIds();
+  final androidNotificationChannels = await _androidNotificationChannelIds(log);
   log(
     Level.FINE,
     'scheduling ${notifications.length} notifications...',
@@ -150,14 +150,20 @@ Future _scheduleAllNotifications(
   );
 }
 
-Future<Set<String>> _androidNotificationChannelIds() async =>
-    (await notificationPlugin
-            .resolvePlatformSpecificImplementation<
-                AndroidFlutterLocalNotificationsPlugin>()
-            ?.getNotificationChannels())
-        ?.map((e) => e.id)
-        .toSet() ??
-    {};
+Future<Set<String>> _androidNotificationChannelIds(Logging log) async {
+  try {
+    return (await notificationPlugin
+                .resolvePlatformSpecificImplementation<
+                    AndroidFlutterLocalNotificationsPlugin>()
+                ?.getNotificationChannels())
+            ?.map((e) => e.id)
+            .toSet() ??
+        {};
+  } catch (e) {
+    log(Level.SEVERE, 'Failed to get android notification channels: $e');
+    return {};
+  }
+}
 
 Future<bool> _scheduleNotification(
   NotificationAlarm notificationAlarm,
