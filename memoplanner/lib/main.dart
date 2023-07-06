@@ -61,6 +61,7 @@ Future<void> initServices() async {
   final applicationSupportDirectory = await getApplicationSupportDirectory();
   final voiceDb = VoiceDb(preferences);
   await initLokalise();
+  await initializeNotificationPlugin();
   GetItInitializer()
     ..directories = Directories(
       applicationSupport: applicationSupportDirectory,
