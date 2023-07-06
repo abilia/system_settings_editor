@@ -295,7 +295,7 @@ void main() {
       verify: (_) {
         final state = sortableArchiveCubit.state;
         expect(state.currentFolderId, folder.id);
-        expect(state.breadCrumbPath(), folderTwo);
+        expect(state.breadCrumbPath(), [folderTwo]);
       },
     );
 
@@ -309,7 +309,7 @@ void main() {
       verify: (_) {
         final state = sortableArchiveCubit.state;
         expect(state.currentFolderId, subFolder.id);
-        expect(state.breadCrumbPath(), '$folderTwo / $folderThree');
+        expect(state.breadCrumbPath(), [folderTwo, folderThree]);
       },
     );
   });
