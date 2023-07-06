@@ -182,6 +182,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
+  dart_style:
+    dependency: transitive
+    description:
+      name: dart_style
+      sha256: f4f1f73ab3fd2afcbcca165ee601fe980d966af6a21b5970c6c9376955c528ad
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.1"
   dbus:
     dependency: transitive
     description:
@@ -362,6 +370,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0+1"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_native_timezone:
     dependency: transitive
     description:
@@ -452,13 +465,21 @@ packages:
     source: hosted
     version: "4.0.17"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
-      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
+      sha256: a3715e3bc90294e971cb7dc063fbf3cd9ee0ebf8604ffeafabd9e6f16abbdbe6
       url: "https://pub.dev"
     source: hosted
-    version: "0.18.1"
+    version: "0.18.0"
+  intl_translation:
+    dependency: transitive
+    description:
+      name: intl_translation
+      sha256: c8dce69cd7ce7ffea26126c32d284c829a94f08c13e4322ec0d98753dde6baff
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.18.2"
   io:
     dependency: transitive
     description:
@@ -491,11 +512,27 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  logger:
+    dependency: transitive
+    description:
+      name: logger
+      sha256: "7ad7215c15420a102ec687bb320a7312afd449bac63bfb1c60d9787c27b9767f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
   logging:
     dependency: "direct main"
     description:
       name: logging
       sha256: "623a88c9594aa774443aa3eb2d41807a48486b5613e67599fb4c41c0ad47c340"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
+  lokalise_flutter_sdk:
+    dependency: "direct main"
+    description:
+      name: lokalise_flutter_sdk
+      sha256: "53992e5c6bf169a86168ce54d4dcbef273102bfb8f04b0db646eac13bd6f2e99"
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
@@ -575,10 +612,10 @@ packages:
     dependency: "direct main"
     description:
       name: package_info_plus
-      sha256: "28386bbe89ab5a7919a47cea99cdd1128e5a6e0bbd7eaafe20440ead84a15de3"
+      sha256: "10259b111176fba5c505b102e3a5b022b51dd97e30522e906d6922c745584745"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.1"
+    version: "3.1.2"
   package_info_plus_platform_interface:
     dependency: transitive
     description:

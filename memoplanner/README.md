@@ -7,7 +7,7 @@ To get started, first set up the environment keys:
 1. Get the `.env` file from either Lastpass or from a developer and make sure the file name is `.env.key`.
 2. Put the file in the `lib/env` folder.
 3. Run `$ flutter pub get` to get packages.
-4. Run `$ flutter pub run build_runner build --delete-conflicting-outputs` to generate keys.
+4. Run `$ dart run build_runner build --delete-conflicting-outputs` to generate keys.
 
 ## Building for android
 
@@ -33,23 +33,6 @@ Add
 `--dart-define release=dev`
 
 for building with dev features such as feature toggles and to be able to skip initial startup guide for MEMOplanner
-
-## Translations
-
-We're using [lokalise](https://app.lokalise.com) and [lokalise_flutter_sdk](https://pub.dev/packages/lokalise_flutter_sdk) for our translations.
-
-To add translations after a newly added string or language, download all languages as .arb files and put them in the l10n folder. They should be formatted as `intl_%LANG_ISO%.arb`. Then run
-
-`$ flutter pub run lokalise_flutter_sdk:gen-lok-l10n`
-
-To generate the translations as a dart file.
-
-### Add new language
-
-To add a new language:
-
-- Add the language code to the header row
-- Add the supported language to [`ios/Runner/Info.plist`](https://github.com/abilia/seagull/blob/master/memoplanner/ios/Runner/Info.plist) - see <https://flutter.dev/docs/development/accessibility-and-localization/internationalization#localizing-for-ios-updating-the-ios-app-bundle>
 
 ## Tests
 

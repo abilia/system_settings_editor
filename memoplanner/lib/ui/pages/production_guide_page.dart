@@ -94,23 +94,30 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                         SizedBox(
                           height: layout.formPadding.smallVerticalItemDistance,
                         ),
-                        Row(children: [
-                          const IconAndTextButtonDark(
-                            icon: AbiliaIcons.inputSettings,
-                            text: 'Fetch from settings',
-                            onPressed: AndroidIntents.openDeviceInfoSettings,
+                        SizedBox(
+                          width: double.infinity,
+                          child: Wrap(
+                            children: [
+                              const IconAndTextButtonDark(
+                                icon: AbiliaIcons.inputSettings,
+                                text: 'Fetch from settings',
+                                onPressed:
+                                    AndroidIntents.openDeviceInfoSettings,
+                              ),
+                              SizedBox(
+                                width:
+                                    layout.formPadding.horizontalItemDistance,
+                              ),
+                              IconAndTextButtonDark(
+                                  icon: AbiliaIcons.past,
+                                  text: 'Paste from clipboard',
+                                  onPressed: () async =>
+                                      Clipboard.getData(Clipboard.kTextPlain)
+                                          .then((value) => serialIdController
+                                              .text = value?.text ?? '')),
+                            ],
                           ),
-                          SizedBox(
-                            width: layout.formPadding.horizontalItemDistance,
-                          ),
-                          IconAndTextButtonDark(
-                              icon: AbiliaIcons.past,
-                              text: 'Paste from clipboard',
-                              onPressed: () async =>
-                                  Clipboard.getData(Clipboard.kTextPlain).then(
-                                      (value) => serialIdController.text =
-                                          value?.text ?? '')),
-                        ]),
+                        ),
                         const SizedBox(height: 50),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,

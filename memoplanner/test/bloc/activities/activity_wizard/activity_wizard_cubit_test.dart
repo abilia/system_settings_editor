@@ -223,7 +223,11 @@ void main() {
     final expect1 = expectLater(
       editActivityCubit.stream,
       emits(
-        UnstoredActivityState(activityWithTitle, timeInterval),
+        UnstoredActivityState(
+          activityWithTitle,
+          timeInterval,
+          RecurrentType.none,
+        ),
       ),
     );
     // Act
@@ -246,7 +250,11 @@ void main() {
     final expect2 = expectLater(
       editActivityCubit.stream,
       emits(
-        UnstoredActivityState(activityWithTitle, newTimeInterval),
+        UnstoredActivityState(
+          activityWithTitle,
+          newTimeInterval,
+          RecurrentType.none,
+        ),
       ),
     );
     editActivityCubit.changeTimeInterval(startTime: newStartTime);
@@ -305,7 +313,12 @@ void main() {
 
     final expect1 = expectLater(
       editActivityCubit.stream,
-      emits(StoredActivityState(activityAsFullDay, timeInterval, aDay)),
+      emits(StoredActivityState(
+        activityAsFullDay,
+        timeInterval,
+        aDay,
+        RecurrentType.none,
+      )),
     );
 
     // Act
@@ -372,9 +385,21 @@ void main() {
       editActivityCubit.stream,
       emitsInOrder(
         [
-          UnstoredActivityState(activity, expectedTimeInterval1),
-          UnstoredActivityState(activity, expectedTimeInterval2),
-          UnstoredActivityState(newActivity, expectedTimeInterval2),
+          UnstoredActivityState(
+            activity,
+            expectedTimeInterval1,
+            RecurrentType.none,
+          ),
+          UnstoredActivityState(
+            activity,
+            expectedTimeInterval2,
+            RecurrentType.none,
+          ),
+          UnstoredActivityState(
+            newActivity,
+            expectedTimeInterval2,
+            RecurrentType.none,
+          ),
         ],
       ),
     );
@@ -396,6 +421,7 @@ void main() {
           expectedFinalActivity,
           expectedTimeInterval2,
           expectedFinalStartTime.onlyDays(),
+          RecurrentType.none,
         ),
       ),
     );
@@ -456,13 +482,23 @@ void main() {
       // Assert
       expect(
         editActivityCubit.state,
-        StoredActivityState(activity, expectedTimeInterval, aDay),
+        StoredActivityState(
+          activity,
+          expectedTimeInterval,
+          aDay,
+          RecurrentType.none,
+        ),
       );
 
       final expected1 = expectLater(
         editActivityCubit.stream,
         emits(
-          StoredActivityState(activity, expectedNewTimeInterval, aDay),
+          StoredActivityState(
+            activity,
+            expectedNewTimeInterval,
+            aDay,
+            RecurrentType.none,
+          ),
         ),
       );
       // Act
@@ -477,7 +513,11 @@ void main() {
         editActivityCubit.stream,
         emits(
           StoredActivityState(
-              expectedNewActivity, expectedNewTimeInterval, aDay),
+            expectedNewActivity,
+            expectedNewTimeInterval,
+            aDay,
+            RecurrentType.none,
+          ),
         ),
       );
       await wizCubit.next();
@@ -534,13 +574,24 @@ void main() {
     );
 
     // Assert
-    expect(editActivityCubit.state,
-        StoredActivityState(activity, expectedTimeInterval, aDay));
+    expect(
+        editActivityCubit.state,
+        StoredActivityState(
+          activity,
+          expectedTimeInterval,
+          aDay,
+          RecurrentType.none,
+        ));
 
     final expected1 = expectLater(
       editActivityCubit.stream,
       emits(
-        StoredActivityState(activity, expectedNewTimeInterval, aDay),
+        StoredActivityState(
+          activity,
+          expectedNewTimeInterval,
+          aDay,
+          RecurrentType.none,
+        ),
       ),
     );
 
@@ -555,7 +606,12 @@ void main() {
     final expected2 = expectLater(
       editActivityCubit.stream,
       emits(
-        StoredActivityState(expectedNewActivity, expectedNewTimeInterval, aDay),
+        StoredActivityState(
+          expectedNewActivity,
+          expectedNewTimeInterval,
+          aDay,
+          RecurrentType.none,
+        ),
       ),
     );
 
@@ -605,12 +661,23 @@ void main() {
     );
 
     // Assert
-    expect(editActivityCubit.state,
-        StoredActivityState(activity, expectedTimeInterval, aDay));
+    expect(
+        editActivityCubit.state,
+        StoredActivityState(
+          activity,
+          expectedTimeInterval,
+          aDay,
+          RecurrentType.none,
+        ));
 
     final expected1 = expectLater(
       editActivityCubit.stream,
-      emits(StoredActivityState(activity, expectedNewTimeInterval, aDay)),
+      emits(StoredActivityState(
+        activity,
+        expectedNewTimeInterval,
+        aDay,
+        RecurrentType.none,
+      )),
     );
 
     // Act
@@ -622,7 +689,11 @@ void main() {
     final expected2 = expectLater(
       editActivityCubit.stream,
       emits(StoredActivityState(
-          expectedNewActivity, expectedNewTimeInterval, aDay)),
+        expectedNewActivity,
+        expectedNewTimeInterval,
+        aDay,
+        RecurrentType.none,
+      )),
     );
 
     // Act
@@ -672,6 +743,7 @@ void main() {
           activityWithEmptyChecklist,
           timeInterval,
           aDay,
+          RecurrentType.none,
         ).copyWith(activityWithEmptyChecklist,
             infoItems: {NoteInfoItem: activity.infoItem}),
       ),
@@ -722,6 +794,7 @@ void main() {
           activityWithEmptyNote,
           timeInterval,
           aDay,
+          RecurrentType.none,
         ).copyWith(activityWithEmptyNote,
             infoItems: {Checklist: activity.infoItem}),
       ),
@@ -778,10 +851,12 @@ void main() {
           UnstoredActivityState(
             originalActivity,
             expectedTimeInterval,
+            RecurrentType.none,
           ),
           UnstoredActivityState(
             activity,
             expectedTimeInterval,
+            RecurrentType.none,
           ),
         ]));
     editActivityCubit
@@ -853,10 +928,12 @@ void main() {
               UnstoredActivityState(
                 originalActivity,
                 timeInterval,
+                RecurrentType.none,
               ),
               UnstoredActivityState(
                 activity,
                 timeInterval,
+                RecurrentType.none,
               ),
             ]));
         editActivityCubit
@@ -922,10 +999,12 @@ void main() {
               UnstoredActivityState(
                 originalActivity,
                 timeInterval,
+                RecurrentType.none,
               ),
               UnstoredActivityState(
                 activity,
                 timeInterval,
+                RecurrentType.none,
               ),
             ]));
         editActivityCubit
@@ -942,6 +1021,7 @@ void main() {
               expectedActivity,
               timeInterval,
               aDay,
+              RecurrentType.none,
             ),
           ),
         );
@@ -1017,10 +1097,12 @@ void main() {
               UnstoredActivityState(
                 originalActivity,
                 timeInterval,
+                RecurrentType.none,
               ),
               UnstoredActivityState(
                 activity,
                 timeInterval,
+                RecurrentType.none,
               ),
             ],
           ),
@@ -1038,6 +1120,7 @@ void main() {
               expectedActivity,
               timeInterval,
               saveTime,
+              RecurrentType.none,
             ),
           ),
         );
@@ -1066,7 +1149,7 @@ void main() {
         await expected2;
       });
 
-      test('Trying to save new recurring before now yields warning', () async {
+      test('Trying to save recurring with errors yields warnings', () async {
         final clockBloc = ClockBloc.fixed(aTime.add(1.hours()));
         // Arrange
         final editActivityCubit = EditActivityCubit.newActivity(
@@ -1084,6 +1167,8 @@ void main() {
             editActivity: EditActivitySettings(template: false),
           ),
         );
+        final recursWeeklyEveryDay =
+            Recurs.weeklyOnDays(List.generate(7, (d) => d + 1));
 
         // Act
         final originalActivity = editActivityCubit.state.activity;
@@ -1091,7 +1176,7 @@ void main() {
         final activity2 = activity1.copyWith(
           recurs: Recurs.weeklyOnDay(clockBloc.state.weekday),
         );
-        final activity3 = activity2.copyWith(recurs: Recurs.everyDay);
+        final activity3 = activity2.copyWith(recurs: recursWeeklyEveryDay);
         final time = TimeOfDay.fromDateTime(aTime);
         final timeInterval = TimeInterval(
           startTime: time,
@@ -1108,18 +1193,22 @@ void main() {
               UnstoredActivityState(
                 originalActivity,
                 timeInterval,
+                RecurrentType.none,
               ),
               UnstoredActivityState(
                 activity1,
                 timeInterval,
+                RecurrentType.none,
               ),
               UnstoredActivityState(
                 activity2,
                 timeInterval,
+                RecurrentType.weekly,
               ),
               UnstoredActivityState(
                 activity3,
                 timeInterval,
+                RecurrentType.weekly,
               ),
             ]));
 
@@ -1128,7 +1217,7 @@ void main() {
           ..changeTimeInterval(startTime: time)
           ..replaceActivity(activity1)
           ..changeRecurrentType(RecurrentType.weekly)
-          ..changeWeeklyRecurring(Recurs.everyDay);
+          ..changeWeeklyRecurring(recursWeeklyEveryDay);
 
         // Assert
         await expected1;
@@ -1140,6 +1229,7 @@ void main() {
                 expectedActivity,
                 recursTimeInterval,
                 aDay,
+                RecurrentType.weekly,
               ),
             ));
 
@@ -1207,6 +1297,7 @@ void main() {
                 activityWithNewTitle,
                 expectedTimeInterval,
                 aDay,
+                RecurrentType.daily,
               ),
             ));
 
@@ -1222,6 +1313,7 @@ void main() {
               expectedActivityToSave,
               expectedTimeInterval,
               aDay,
+              RecurrentType.daily,
             )));
 
         // Act
@@ -1298,10 +1390,12 @@ void main() {
               UnstoredActivityState(
                 originalActivity,
                 timeInterval,
+                RecurrentType.none,
               ),
               UnstoredActivityState(
                 activity,
                 timeInterval,
+                RecurrentType.none,
               ),
             ]));
         editActivityCubit
@@ -1318,6 +1412,7 @@ void main() {
               expectedActivity,
               timeInterval,
               aDay,
+              RecurrentType.none,
             ),
           ),
         );
@@ -1384,10 +1479,15 @@ void main() {
         final expected1 = expectLater(
             editActivityCubit.stream,
             emitsInOrder([
-              UnstoredActivityState(originalActivity, timeInterval),
+              UnstoredActivityState(
+                originalActivity,
+                timeInterval,
+                RecurrentType.none,
+              ),
               UnstoredActivityState(
                 activity,
                 timeInterval,
+                RecurrentType.none,
               ),
             ]));
 
@@ -1404,6 +1504,7 @@ void main() {
               expectedActivity,
               timeInterval,
               aDay,
+              RecurrentType.none,
             ),
           ),
         );
@@ -1466,6 +1567,7 @@ void main() {
               titleChanged,
               timeInterval,
               aDay,
+              RecurrentType.none,
             ),
           ),
         );
@@ -1487,6 +1589,7 @@ void main() {
             expectedActivity,
             timeInterval,
             aDay,
+            RecurrentType.none,
           ),
         );
       });
@@ -1532,6 +1635,7 @@ void main() {
               UnstoredActivityState(
                 activity,
                 timeInterval,
+                RecurrentType.none,
               ),
             ));
         editActivityCubit.replaceActivity(activity);
@@ -1544,6 +1648,7 @@ void main() {
               expectedActivity,
               timeInterval,
               aDay,
+              RecurrentType.none,
             )));
 
         await wizCubit.next();
@@ -1599,6 +1704,7 @@ void main() {
               UnstoredActivityState(
                 activity,
                 firstTimeInterval,
+                RecurrentType.none,
               ),
             ],
           ),
@@ -1615,6 +1721,7 @@ void main() {
               expectedActivity,
               secondTimeInterval,
               aDay,
+              RecurrentType.none,
             ),
           ),
         );
@@ -1661,6 +1768,7 @@ void main() {
               titleChanged,
               timeInterval,
               aDay,
+              RecurrentType.none,
             ),
           ),
         );
@@ -1681,6 +1789,7 @@ void main() {
             expectedActivity,
             timeInterval,
             aDay,
+            RecurrentType.none,
           ),
         );
       });
@@ -1722,16 +1831,19 @@ void main() {
           recurringActivity1,
           expectedTimeInterval1,
           aDay,
+          RecurrentType.weekly,
         ),
         StoredActivityState(
           recurringActivity2,
           expectedTimeInterval2,
           aDay,
+          RecurrentType.weekly,
         ),
         StoredActivityState(
           recurringActivity2,
           expectedTimeInterval3,
           aDay,
+          RecurrentType.weekly,
         ),
       ]),
     );
@@ -1789,6 +1901,7 @@ void main() {
               endDate: noEndDate,
             ),
             aDay,
+            RecurrentType.daily,
           ),
         ]));
     // Act
@@ -2232,254 +2345,6 @@ void main() {
           ]),
           WizardState(0, allWizStep),
         ]),
-      );
-    });
-
-    test('Changing recurring changes wizard steps', () async {
-      // Arrange
-      final editActivityCubit = EditActivityCubit.newActivity(
-        day: aDay,
-        defaultsSettings:
-            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
-        calendarId: calendarId,
-      );
-      final activity = editActivityCubit.state.activity;
-
-      final wizCubit = ActivityWizardCubit.newActivity(
-        supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
-        activitiesBloc: FakeActivitiesBloc(),
-        editActivityCubit: editActivityCubit,
-        clockBloc: clockBloc,
-        addActivitySettings: allWizStepsSettings,
-      );
-
-      editActivityCubit
-        ..replaceActivity(activity.copyWith(recurs: Recurs.monthly(aDay.day)))
-        ..changeRecurrentEndDate(DateTime(2023))
-        ..replaceActivity(
-            activity.copyWith(recurs: Recurs.weeklyOnDay(aDay.weekday)))
-        ..replaceActivity(activity.copyWith(recurs: Recurs.not));
-      await expectLater(
-        wizCubit.stream,
-        emitsInOrder([
-          WizardState(0, [
-            ...List.from(allWizStep)
-              ..insert(allWizStep.length - 1, WizardStep.recursMonthly)
-          ]),
-          WizardState(0, [
-            ...List.from(allWizStep)
-              ..insert(allWizStep.length - 1, WizardStep.endDate)
-              ..insert(allWizStep.length - 1, WizardStep.recursMonthly)
-          ]),
-          WizardState(0, [
-            ...List.from(allWizStep)
-              ..insert(allWizStep.length - 1, WizardStep.endDate)
-              ..insert(allWizStep.length - 1, WizardStep.recursWeekly)
-          ]),
-          WizardState(0, allWizStep),
-        ]),
-      );
-    });
-
-    test('Saving recurring weekly without any days yields warning', () async {
-      // Arrange
-      final editActivityCubit = EditActivityCubit.newActivity(
-        day: aDay,
-        defaultsSettings:
-            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
-        calendarId: calendarId,
-      );
-      final activity = editActivityCubit.state.activity;
-
-      final wizCubit = ActivityWizardCubit.newActivity(
-        supportPersonsCubit: FakeSupportPersonsCubit(),
-        activitiesBloc: FakeActivitiesBloc(),
-        editActivityCubit: editActivityCubit,
-        clockBloc: clockBloc,
-        addActivitySettings: const AddActivitySettings(
-          mode: AddActivityMode.stepByStep,
-          general: GeneralAddActivitySettings(
-            addRecurringActivity: true,
-          ),
-          stepByStep: StepByStepSettings(
-            template: false,
-            date: false,
-            image: false,
-            title: false,
-            fullDay: false,
-            availability: false,
-            checkable: false,
-            removeAfter: false,
-            alarm: false,
-            checklist: false,
-            notes: false,
-            reminders: false,
-          ),
-        ),
-      );
-      editActivityCubit
-        ..replaceActivity(activity.copyWith(title: 'title'))
-        ..changeTimeInterval(startTime: const TimeOfDay(hour: 22, minute: 22))
-        ..changeRecurrentType(RecurrentType.weekly)
-        ..changeWeeklyRecurring(Recurs.weeklyOnDays(const []))
-        ..changeRecurrentEndDate(DateTime(2023));
-
-      await expectLater(
-        wizCubit.stream,
-        emitsInOrder([
-          WizardState(
-            0,
-            const [
-              WizardStep.time,
-              WizardStep.category,
-              WizardStep.recurring,
-            ],
-          ),
-          WizardState(
-            0,
-            const [
-              WizardStep.time,
-              WizardStep.category,
-              WizardStep.recurring,
-              WizardStep.recursWeekly,
-            ],
-          ),
-          WizardState(
-            0,
-            const [
-              WizardStep.time,
-              WizardStep.category,
-              WizardStep.recurring,
-              WizardStep.recursWeekly,
-              WizardStep.endDate,
-            ],
-          ),
-        ]),
-      );
-
-      await wizCubit.next();
-      await wizCubit.next();
-      await wizCubit.next();
-      await wizCubit.next();
-
-      expect(
-        wizCubit.state,
-        WizardState(
-          3,
-          const [
-            WizardStep.time,
-            WizardStep.category,
-            WizardStep.recurring,
-            WizardStep.recursWeekly,
-            WizardStep.endDate,
-          ],
-          saveErrors: const {SaveError.noRecurringDays},
-          successfulSave: false,
-        ),
-      );
-    });
-
-    test(
-        'BUG SGC-1595 '
-        'Saving recurring weekly without any days yields warning', () async {
-      // Arrange
-      final editActivityCubit = EditActivityCubit.newActivity(
-        day: aDay,
-        defaultsSettings:
-            DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
-        calendarId: '',
-      );
-      final activity = editActivityCubit.state.activity;
-
-      final wizCubit = ActivityWizardCubit.newActivity(
-        supportPersonsCubit: FakeSupportPersonsCubit(),
-        activitiesBloc: FakeActivitiesBloc(),
-        editActivityCubit: editActivityCubit,
-        clockBloc: clockBloc,
-        addActivitySettings: const AddActivitySettings(
-          mode: AddActivityMode.stepByStep,
-          general: GeneralAddActivitySettings(
-            addRecurringActivity: true,
-          ),
-          stepByStep: StepByStepSettings(
-            template: false,
-            title: false,
-            image: false,
-            date: false,
-            fullDay: false,
-            availability: false,
-            checkable: false,
-            removeAfter: false,
-            alarm: false,
-            checklist: false,
-            notes: false,
-            reminders: false,
-          ),
-        ),
-      );
-
-      editActivityCubit
-        ..changeStartDate(nowTime.add(7.days()).onlyDays())
-        ..changeTimeInterval(
-          startTime: const TimeOfDay(hour: 12, minute: 34),
-        )
-        ..replaceActivity(
-          activity.copyWith(
-            title: '-_title_-',
-            recurs: Recurs.weeklyOnDays(
-              const [1, 2, 3, 4, 5, 6, 7],
-              ends: nowTime.add(1.days()).onlyDays(),
-            ),
-          ),
-        )
-        ..changeRecurrentEndDate(
-          nowTime.add(1.days()).onlyDays(),
-        );
-
-      await expectLater(
-        wizCubit.stream,
-        emitsInOrder([
-          WizardState(
-            0,
-            const [
-              WizardStep.time,
-              WizardStep.category,
-              WizardStep.recurring,
-            ],
-          ),
-          WizardState(
-            0,
-            const [
-              WizardStep.time,
-              WizardStep.category,
-              WizardStep.recurring,
-              WizardStep.recursWeekly,
-              WizardStep.endDate,
-            ],
-          ),
-        ]),
-      );
-
-      await wizCubit.next();
-      await wizCubit.next();
-      await wizCubit.next();
-      await wizCubit.next();
-      await wizCubit.next();
-
-      expect(
-        wizCubit.state,
-        WizardState(
-          4,
-          const [
-            WizardStep.time,
-            WizardStep.category,
-            WizardStep.recurring,
-            WizardStep.recursWeekly,
-            WizardStep.endDate,
-          ],
-          saveErrors: const {SaveError.endDateBeforeStart},
-          successfulSave: false,
-        ),
       );
     });
   });

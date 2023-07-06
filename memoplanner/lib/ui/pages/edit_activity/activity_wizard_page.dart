@@ -63,12 +63,6 @@ class ActivityWizardPage extends StatelessWidget {
         return const AlarmWiz();
       case WizardStep.reminder:
         return const RemindersWiz();
-      case WizardStep.recursWeekly:
-        return const RecurringWeeklyWiz();
-      case WizardStep.recursMonthly:
-        return const RecurringMonthlyWiz();
-      case WizardStep.endDate:
-        return const EndDatePickerWiz();
     }
   }
 }

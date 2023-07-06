@@ -1,6 +1,6 @@
 {
     "@@locale": "nb",
-    "@@last_modified": "2023-06-27T16:12:38+02:00",
+    "@@last_modified": "2023-06-29T12:58:36+02:00",
     "welcome": "Velkommen!",
     "welcomeText": "Denne guiden vil hjelpe deg å komme i gang med MEMOplanner.",
     "step": "Trinn",
@@ -28,7 +28,7 @@
     "loggedOutMessage": "Du har blitt logget ut. Logg på igjen.",
     "unauthorizedHeader": "Du har blitt logget ut",
     "unauthorizedMessage": "Dette er sannsynlig på grunn av en passordendring, vennligst prøv å logge på igjen.",
-    "tooManyAttempts": "",
+    "tooManyAttempts": "You have made too many attempts to log in. Please wait a few seconds until trying again",
     "createAccountHint": "Har du ikke en myAbilia-konto ennå?",
     "createAccount": "Opprett konto",
     "createAccountHeading": "Opprett kontoen din i myAbilia",
@@ -239,7 +239,6 @@
     "searchImage": "Søk bilde",
     "noMatchingImage": "Ingen samsvarende bildenavn",
     "recurrence": "Gjentakelse",
-    "once": "En gang",
     "weekly": "Ukentlig",
     "monthly": "Månedlig",
     "yearly": "Årlig",
@@ -447,7 +446,7 @@
     "allowAccessBody2": "Du kan alltids gjøre det senere fra",
     "accessToMicrophone": "Tilgang til mikrofon",
     "allowAccessMicrophoneBody": "Tillat tilgang til mikrofon for å kunne ta opp tale fra enheten",
-    "ignoreBatteryOptimizations": "",
+    "ignoreBatteryOptimizations": "Ignore battery optimizations",
     "about": "Informasjon",
     "aboutMemoplanner": "Om",
     "licenseNumber": "Lisensnummer",
@@ -493,7 +492,7 @@
     "confirmFactoryReset": "Vil du gjenopprette fabrikkinstillinger?",
     "confirmFactoryResetDescription": "Etter at tilbakestillingen er fullført må du reinstallere MEOMplanner programvaren. Følg instruksjonene for å gjøre det.",
     "factoryResetFailed": "Tilbakestilling mislyktes, prøv på nytt senere.",
-    "back": "Tilbake",
-    "noRecurrence": "",
-    "daily": ""
+    "noRecurrence": "No recurrence",
+    "daily": "Daily",
+    "back": "Tilbake"
 }

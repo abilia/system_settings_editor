@@ -207,7 +207,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Har du inte ett myAbilia konto ännu?'),
         'createAccountSubheading': MessageLookupByLibrary.simpleMessage(
             'Du behöver ett myAbilia-konto för att kunna använda MEMOplanner'),
-        'daily': MessageLookupByLibrary.simpleMessage(''),
+        'daily': MessageLookupByLibrary.simpleMessage('Daily'),
         'date': MessageLookupByLibrary.simpleMessage('Datum'),
         'day': MessageLookupByLibrary.simpleMessage('dag'),
         'dayAndNight': MessageLookupByLibrary.simpleMessage('Dygnet'),
@@ -408,7 +408,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'monthly': MessageLookupByLibrary.simpleMessage('Månadsvis'),
         'myPhotos': MessageLookupByLibrary.simpleMessage('Mina foton'),
         'name': MessageLookupByLibrary.simpleMessage('Namn'),
-        'nbOneAClock': MessageLookupByLibrary.simpleMessage(''),
+        'nbOneAClock': MessageLookupByLibrary.simpleMessage('one o clock'),
         'needLicenseToSaveData': MessageLookupByLibrary.simpleMessage(
             'Du behöver en aktiv licens för att kunna spara dina data hos myAbilia.'),
         'newActivity': MessageLookupByLibrary.simpleMessage('Ny aktivitet'),
@@ -437,7 +437,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Inget matchande bildnamn'),
         'noNotes':
             MessageLookupByLibrary.simpleMessage('Du har inga anteckningar'),
-        'noRecurrence': MessageLookupByLibrary.simpleMessage(''),
+        'noRecurrence': MessageLookupByLibrary.simpleMessage('No recurrence'),
         'noSound': MessageLookupByLibrary.simpleMessage('- Inget ljud -'),
         'noTemplateActivityError1': MessageLookupByLibrary.simpleMessage(
             'Det finns inga mallar och du har inte valt namn och bild i lägga in stegvis.'),
@@ -461,7 +461,6 @@ class MessageLookup extends MessageLookupByLibrary {
             'Tillåt notiser från inställningar för att få larm och påminnelser.'),
         'now': MessageLookupByLibrary.simpleMessage('Nu'),
         'ok': MessageLookupByLibrary.simpleMessage('OK'),
-        'once': MessageLookupByLibrary.simpleMessage('Enstaka'),
         'oneDot': MessageLookupByLibrary.simpleMessage('En punkt'),
         'oneTimePillarView':
             MessageLookupByLibrary.simpleMessage('1 tidpelare'),

@@ -15,9 +15,6 @@ enum WizardStep {
   connectedFunction,
   reminder,
   recurring,
-  recursWeekly,
-  recursMonthly,
-  endDate,
 }
 
 enum SaveError {

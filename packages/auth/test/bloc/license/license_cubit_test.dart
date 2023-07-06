@@ -1,5 +1,6 @@
 import 'package:auth/auth.dart';
 import 'package:auth/repository/user_repository.dart';
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:seagull_clock/clock_bloc.dart';
@@ -8,13 +9,16 @@ import 'package:utils/utils.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  late LicenseCubit licenseCubit;
   late UserRepository userRepository;
   final time = DateTime(2000);
 
   setUp(() {
     userRepository = MockUserRepository();
-    licenseCubit = LicenseCubit(
+  });
+
+  blocTest(
+    'Test initial state',
+    build: () => LicenseCubit(
       userRepository: userRepository,
       clockBloc: ClockBloc.fixed(time),
       pushCubit: FakePushCubit(),
@@ -24,15 +28,13 @@ void main() {
         client: FakeListenableClient.client(),
       ),
       licenseType: LicenseType.memoplanner,
-    );
-  });
+    ),
+    verify: (bloc) => expect(bloc.state, LicensesNotLoaded()),
+  );
 
-  test('Test initial state', () {
-    expect(licenseCubit.state, LicensesNotLoaded());
-  });
-
-  test('License is valid', () async {
-    when(() => userRepository.getLicenses()).thenAnswer(
+  blocTest(
+    'License is valid',
+    setUp: () => when(() => userRepository.getLicenses()).thenAnswer(
       (_) => Future.value([
         License(
           id: 1,
@@ -41,16 +43,25 @@ void main() {
           product: 'memoplanner3',
         ),
       ]),
-    );
-    licenseCubit.reloadLicenses();
-    await expectLater(
-      licenseCubit.stream,
-      emits(ValidLicense()),
-    );
-  });
+    ),
+    build: () => LicenseCubit(
+      userRepository: userRepository,
+      clockBloc: ClockBloc.fixed(time),
+      pushCubit: FakePushCubit(),
+      authenticationBloc: AuthenticationBloc(
+        userRepository: userRepository,
+        onLogout: () {},
+        client: FakeListenableClient.client(),
+      ),
+      licenseType: LicenseType.memoplanner,
+    ),
+    act: (bloc) => bloc.reloadLicenses(),
+    expect: () => [ValidLicense()],
+  );
 
-  test('License has expired', () async {
-    when(() => userRepository.getLicenses()).thenAnswer(
+  blocTest(
+    'License has expired',
+    setUp: () => when(() => userRepository.getLicenses()).thenAnswer(
       (_) => Future.value([
         License(
           id: 1,
@@ -59,22 +70,40 @@ void main() {
           product: 'memoplanner3',
         ),
       ]),
-    );
-    licenseCubit.reloadLicenses();
-    await expectLater(
-      licenseCubit.stream,
-      emits(NoValidLicense()),
-    );
-  });
+    ),
+    build: () => LicenseCubit(
+      userRepository: userRepository,
+      clockBloc: ClockBloc.fixed(time),
+      pushCubit: FakePushCubit(),
+      authenticationBloc: AuthenticationBloc(
+        userRepository: userRepository,
+        onLogout: () {},
+        client: FakeListenableClient.client(),
+      ),
+      licenseType: LicenseType.memoplanner,
+    ),
+    act: (bloc) => bloc.reloadLicenses(),
+    expect: () => [NoValidLicense()],
+  );
 
-  test('License has been removed, or no license', () async {
-    when(() => userRepository.getLicenses()).thenAnswer(
+  blocTest(
+    'License has been removed, or no license',
+    setUp: () => when(() => userRepository.getLicenses()).thenAnswer(
       (_) => Future.value([]),
-    );
-    licenseCubit.reloadLicenses();
-    await expectLater(
-      licenseCubit.stream,
-      emits(NoLicense()),
-    );
-  });
+    ),
+    build: () => LicenseCubit(
+      userRepository: userRepository,
+      clockBloc: ClockBloc.fixed(time),
+      pushCubit: FakePushCubit(),
+      authenticationBloc: AuthenticationBloc(
+        userRepository: userRepository,
+        onLogout: () {},
+        client: FakeListenableClient.client(),
+      ),
+      licenseType: LicenseType.memoplanner,
+    ),
+    act: (bloc) => bloc.reloadLicenses(),
+    expect: () => [NoLicense()],
+    verify: (bloc) => bloc.state is! NoValidLicense,
+  );
 }

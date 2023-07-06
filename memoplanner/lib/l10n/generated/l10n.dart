@@ -27,6 +27,7 @@ class Lt {
     Locale.fromSubtags(languageCode: 'da'),
     Locale.fromSubtags(languageCode: 'de'),
     Locale.fromSubtags(languageCode: 'fi'),
+    Locale.fromSubtags(languageCode: 'is'),
     Locale.fromSubtags(languageCode: 'nb'),
     Locale.fromSubtags(languageCode: 'nl'),
     Locale.fromSubtags(languageCode: 'sv'),
@@ -300,7 +301,6 @@ class Lt {
     'searchImage': [],
     'noMatchingImage': [],
     'recurrence': [],
-    'once': [],
     'weekly': [],
     'monthly': [],
     'yearly': [],
@@ -554,9 +554,9 @@ class Lt {
     'confirmFactoryReset': [],
     'confirmFactoryResetDescription': [],
     'factoryResetFailed': [],
-    'back': [],
     'noRecurrence': [],
-    'daily': []
+    'daily': [],
+    'back': []
   };
 
   /// `Welcome!`
@@ -2934,16 +2934,6 @@ class Lt {
     return Intl.message(
       'Recurrence',
       name: 'recurrence',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Once`
-  String get once {
-    return Intl.message(
-      'Once',
-      name: 'once',
       desc: '',
       args: [],
     );
@@ -5479,16 +5469,6 @@ class Lt {
     );
   }
 
-  /// `Back`
-  String get back {
-    return Intl.message(
-      'Back',
-      name: 'back',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `No recurrence`
   String get noRecurrence {
     return Intl.message(
@@ -5504,6 +5484,16 @@ class Lt {
     return Intl.message(
       'Daily',
       name: 'daily',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back`
+  String get back {
+    return Intl.message(
+      'Back',
+      name: 'back',
       desc: '',
       args: [],
     );

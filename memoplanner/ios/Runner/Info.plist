@@ -23,6 +23,7 @@
 		<string>fi</string>
 		<string>de</string>
 		<string>nb</string>
+		<string>is</string>
 	</array>
 	<key>CFBundleName</key>
 	<string>MEMOplanner Go</string>

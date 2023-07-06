@@ -20,6 +20,20 @@ When starting implementing a story a new branch is created that starts with the 
 
 Squash commits for feature branches are permitted if there are trivial commits that clutter the history. Developer or reviewer can suggest squash, and it should be agreed on by both parties.
 
+## Translations
+
+We're using [lokalise](https://app.lokalise.com) and [lokalise_flutter_sdk](https://pub.dev/packages/lokalise_flutter_sdk) for our translations. To update translations after a newly added string or language:
+
+- Download all languages as arb files in the format `intl_%LANG_ISO%.arb`
+- Put the files in the l10n folder [:calendar:](https://github.com/abilia/seagull/tree/master/memoplanner/lib/l10n)[:blue_book:](https://github.com/abilia/seagull/tree/master/handi/lib/l10n)
+
+- Run `$ dart run lokalise_flutter_sdk:gen-lok-l10n` to generate the translations as a dart file
+
+### Add new language for iOS
+
+Add the supported language to `ios/Runner/Info.plist`[:calendar:](https://github.com/abilia/seagull/blob/master/memoplanner/ios/Runner/Info.plist)[:blue_book:](https://github.com/abilia/seagull/tree/master/handi/ios/Runner/Info.plist)
+For more info read <https://flutter.dev/docs/development/accessibility-and-localization/internationalization#localizing-for-ios-updating-the-ios-app-bundle>
+
 ## Version numbering
 
 [major].[minor].[patch]
@@ -34,12 +48,11 @@ Squash commits for feature branches are permitted if there are trivial commits t
 
 - When a release period starts there should not be any stories in "Ready for test" or "Test".
 
-- All strings are translated, e.i. the files `translations.missing.tsv` [:calendar:](https://github.com/abilia/seagull/blob/master/memoplanner/lib/i18n/translations.missing.tsv) should not exist.
+- All strings are translated. [:calendar:](https://app.lokalise.com/project/5478615164886d27c51a59.58833679/?view=multi&filter=builtin_1) [:blue_book:](https://app.lokalise.com/project/49319703649a92c05413c1.00679798/?view=multi&filter=builtin_1)
 
-### Alternativly
+### Alternatively
 
-A test candidate could also be created while waiting for the last translations or to test the latest merge.
-Later, the release candidate will be created with the final fixes.
+A test candidate could also be created while waiting for the last translations or to test the latest merge. Later, the release candidate will be created with the final fixes.
 
 ### Creating the release candidate
 

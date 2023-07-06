@@ -104,10 +104,12 @@ void main() {
         final initialState = StoredActivityState(
           activityDay.activity,
           TimeInterval.fromDateTime(
-              activityDay.activity.startClock(activityDay.day),
-              null,
-              noEndDate),
+            activityDay.activity.startClock(activityDay.day),
+            null,
+            noEndDate,
+          ),
           day,
+          RecurrentType.weekly,
         );
         return [
           initialState.copyWith(
@@ -193,6 +195,7 @@ void main() {
               null,
               noEndDate),
           day,
+          RecurrentType.none,
         );
         return [
           initialState.copyWith(
@@ -204,6 +207,7 @@ void main() {
                 },
               ),
             ),
+            selectedRecurrentType: RecurrentType.weekly,
           ),
           initialState.copyWith(
             initialState.activity.copyWith(
@@ -214,6 +218,7 @@ void main() {
                 },
               ),
             ),
+            selectedRecurrentType: RecurrentType.weekly,
           ),
         ];
       });
@@ -300,9 +305,11 @@ void main() {
         );
     final newStartDay = day.add(7.days());
     final EditActivityState initialState = StoredActivityState(
-        activity,
-        TimeInterval.fromDateTime(activity.startClock(day), null, noEndDate),
-        day);
+      activity,
+      TimeInterval.fromDateTime(activity.startClock(day), null, noEndDate),
+      day,
+      RecurrentType.weekly,
+    );
     final TimeInterval newTimeInterval =
         initialState.timeInterval.copyWith(startDate: newStartDay);
 
