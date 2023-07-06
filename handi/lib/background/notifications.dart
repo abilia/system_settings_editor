@@ -65,7 +65,7 @@ Future<bool> _scheduleActivityNotification(Activity activity) async {
         android: _androidNotificationDetails(activity),
         iOS: _iosNotificationDetails(activity),
       ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.alarmClock,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.wallClockTime,
     );

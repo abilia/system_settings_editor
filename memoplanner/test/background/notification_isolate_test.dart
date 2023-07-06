@@ -224,7 +224,7 @@ void main() {
           any(),
           captureAny(),
           payload: any(named: 'payload'),
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          androidScheduleMode: AndroidScheduleMode.alarmClock,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.wallClockTime,
         ),
@@ -287,7 +287,7 @@ void main() {
       verify(() => mockedNotificationsPlugin.zonedSchedule(
           any(), any(), any(), any(), any(),
           payload: any(named: 'payload'),
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          androidScheduleMode: AndroidScheduleMode.alarmClock,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.wallClockTime)).called(11);
     });
@@ -309,7 +309,7 @@ void main() {
       verify(() => mockedNotificationsPlugin.zonedSchedule(
           any(), any(), any(), any(), any(),
           payload: any(named: 'payload'),
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          androidScheduleMode: AndroidScheduleMode.alarmClock,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.wallClockTime)).called(11);
     });
@@ -334,7 +334,7 @@ void main() {
       verify(() => mockedNotificationsPlugin.zonedSchedule(
           any(), any(), any(), any(), any(),
           payload: any(named: 'payload'),
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          androidScheduleMode: AndroidScheduleMode.alarmClock,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.wallClockTime)).called(5);
     });
@@ -361,7 +361,7 @@ void main() {
       final details = verify(() => mockedNotificationsPlugin.zonedSchedule(
               any(), any(), any(), any(), captureAny(),
               payload: any(named: 'payload'),
-              androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+              androidScheduleMode: AndroidScheduleMode.alarmClock,
               uiLocalNotificationDateInterpretation:
                   UILocalNotificationDateInterpretation.wallClockTime))
           .captured
@@ -404,7 +404,7 @@ void main() {
         () => mockedNotificationsPlugin.zonedSchedule(
             any(), any(), any(), any(), captureAny(),
             payload: any(named: 'payload'),
-            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+            androidScheduleMode: AndroidScheduleMode.alarmClock,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime),
       ).captured.single as NotificationDetails;
@@ -436,7 +436,7 @@ void main() {
         () => mockedNotificationsPlugin.zonedSchedule(
             timer1.hashCode, timer1.timer.title, any(), any(), any(),
             payload: timer1.encode(),
-            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+            androidScheduleMode: AndroidScheduleMode.alarmClock,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime),
       ).called(1);
@@ -460,7 +460,7 @@ void main() {
         () => mockedNotificationsPlugin.zonedSchedule(
             any(), any(), any(), any(), any(),
             payload: any(named: 'payload'),
-            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+            androidScheduleMode: AndroidScheduleMode.alarmClock,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime),
       ).called(3);
@@ -484,7 +484,7 @@ void main() {
         () => mockedNotificationsPlugin.zonedSchedule(
             timer1.hashCode, timer1.timer.title, any(), any(), any(),
             payload: timer1.encode(),
-            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+            androidScheduleMode: AndroidScheduleMode.alarmClock,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime),
       ).called(1);
@@ -508,7 +508,7 @@ void main() {
         () => mockedNotificationsPlugin.zonedSchedule(
             any(), any(), any(), any(), any(),
             payload: any(named: 'payload'),
-            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+            androidScheduleMode: AndroidScheduleMode.alarmClock,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime),
       ).called(3);
@@ -544,7 +544,7 @@ void main() {
       final details = verify(() => mockedNotificationsPlugin.zonedSchedule(
               any(), any(), any(), any(), captureAny(),
               payload: any(named: 'payload'),
-              androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+              androidScheduleMode: AndroidScheduleMode.alarmClock,
               uiLocalNotificationDateInterpretation:
                   UILocalNotificationDateInterpretation.wallClockTime))
           .captured
@@ -594,7 +594,7 @@ void main() {
       final details = verify(() => mockedNotificationsPlugin.zonedSchedule(
               any(), any(), any(), any(), captureAny(),
               payload: any(named: 'payload'),
-              androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+              androidScheduleMode: AndroidScheduleMode.alarmClock,
               uiLocalNotificationDateInterpretation:
                   UILocalNotificationDateInterpretation.wallClockTime))
           .captured
@@ -629,7 +629,7 @@ void main() {
       verify(() => mockedNotificationsPlugin.zonedSchedule(
           any(), any(), any(), any(), any(),
           payload: any(named: 'payload'),
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          androidScheduleMode: AndroidScheduleMode.alarmClock,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.wallClockTime)).called(3);
     });
@@ -654,7 +654,7 @@ void main() {
         () => mockedNotificationsPlugin.zonedSchedule(
             any(), any(), any(), any(), any(),
             payload: any(named: 'payload'),
-            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+            androidScheduleMode: AndroidScheduleMode.alarmClock,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime),
       ).called(11 + 3);
@@ -677,7 +677,7 @@ void main() {
         () => mockedNotificationsPlugin.zonedSchedule(
             any(), any(), any(), any(), any(),
             payload: any(named: 'payload'),
-            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+            androidScheduleMode: AndroidScheduleMode.alarmClock,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime),
       ).called(11 + 3);
