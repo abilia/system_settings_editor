@@ -160,7 +160,7 @@ Future<Set<String>> _androidNotificationChannelIds(Logging log) async {
             .toSet() ??
         {};
   } catch (e) {
-    log(Level.WARNING, 'Failed to get android notification channels: $e');
+    log(Level.SEVERE, 'Failed to get android notification channels: $e');
     return {};
   }
 }
