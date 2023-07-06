@@ -12,44 +12,24 @@ class ImageArchivePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Lt.of(context);
-    final sortableArchiveCubit =
-        context.watch<SortableArchiveCubit<ImageArchiveData>>();
-    final sortableState = sortableArchiveCubit.state;
-    final selected = sortableState.isSelected;
     return LibraryPage<ImageArchiveData>.selectable(
       searchHeader: searchHeader,
       gridChildAspectRatio: layout.imageArchive.aspectRatio,
       useHeading: false,
-      appBar: AbiliaAppBar(
-        iconData: searchHeader == SearchHeader.searchBar
-            ? AbiliaIcons.find
-            : AbiliaIcons.pastPictureFromWindowsClipboard,
-        breadcrumbs: searchHeader != SearchHeader.searchBar
-            ? selected
-                ? sortableState.selected?.data.name
-                : sortableState.isAtRoot
-                    ? translate.imageArchive
-                    : '${translate.imageArchive} / ${sortableState.breadCrumbPath()}'
-            : null,
-        title: searchHeader == SearchHeader.searchBar
-            ? translate.searchImage
-            : translate.selectImage,
-        trailing: !selected && searchHeader == SearchHeader.searchButton
-            ? Padding(
-                padding:
-                    EdgeInsets.only(right: layout.actionButton.padding.right),
-                child: SearchButton(
-                  style: actionButtonStyleLightLarge,
-                ),
-              )
-            : null,
+      appBar: ImageArchiveAppBar(
+        searchHeader: searchHeader,
+        breadcrumbRoot: context
+                .read<SortableArchiveCubit<ImageArchiveData>>()
+                .state
+                .myPhotos
+            ? ''
+            : Lt.of(context).imageArchive,
       ),
       libraryItemGenerator: (imageArchive) =>
           ArchiveImage(sortable: imageArchive),
       selectedItemGenerator: (imageArchive) =>
           FullScreenArchiveImage(selected: imageArchive.data),
-      emptyLibraryMessage: translate.noImages,
+      emptyLibraryMessage: Lt.of(context).noImages,
       onOk: (selected) {
         Navigator.of(context).pop<SelectedImageData>(
           SelectedImageData(
@@ -64,6 +44,63 @@ class ImageArchivePage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class ImageArchiveAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  final SearchHeader searchHeader;
+  final String breadcrumbRoot;
+
+  const ImageArchiveAppBar({
+    required this.searchHeader,
+    this.breadcrumbRoot = '',
+    super.key,
+  });
+
+  @override
+  Size get preferredSize => Size.fromHeight(layout.appBar.smallHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Lt.of(context);
+    final sortableState =
+        context.watch<SortableArchiveCubit<ImageArchiveData>>().state;
+
+    if (searchHeader == SearchHeader.searchBar) {
+      return AbiliaAppBar(
+        iconData: AbiliaIcons.find,
+        title: translate.searchImage,
+      );
+    }
+
+    final title = translate.selectImage;
+    if (sortableState.isSelected) {
+      return AbiliaAppBar(
+        iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
+        breadcrumbs: [sortableState.selected?.data.name ?? ''],
+        title: title,
+      );
+    }
+
+    final breadcrumbs = [
+      if (breadcrumbRoot.isNotEmpty) breadcrumbRoot,
+      ...sortableState.breadCrumbPath(),
+    ];
+
+    if (searchHeader == SearchHeader.searchButton) {
+      return AbiliaSearchAppBar(
+        iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
+        breadcrumbs: breadcrumbs,
+        title: title,
+      );
+    }
+
+    return AbiliaAppBar(
+      iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
+      breadcrumbs: breadcrumbs,
+      title: title,
     );
   }
 }

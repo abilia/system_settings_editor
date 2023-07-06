@@ -125,16 +125,12 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
 
   String folderTitle() => allById[currentFolderId]?.data.title() ?? '';
 
-  List<Sortable<T>> folderPath() => [
+  List<String> breadCrumbPath() => [
         for (var folder = allById[currentFolderId];
             folder != null;
             folder = allById[folder.groupId])
-          folder,
-      ];
-
-  String? breadCrumbPath() => !isAtRoot
-      ? folderPath().reversed.map((e) => e.data.title()).join(' / ')
-      : null;
+          folder.data.title(),
+      ].reversed.toList();
 
   @override
   List<Object?> get props => [

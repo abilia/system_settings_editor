@@ -476,7 +476,6 @@ void main() {
     // Press back returns to image archive
     await tester.tap(find.text(translate.back));
     await tester.pumpAndSettle();
-    expect(find.text(translate.imageArchive), findsOneWidget);
     expect(find.byType(ImageArchivePage), findsOneWidget);
 
     // Open a folder and tap search
@@ -531,7 +530,6 @@ void main() {
     // Press back returns to image archive
     await tester.tap(find.text(translate.back));
     await tester.pumpAndSettle();
-    expect(find.text(translate.imageArchive), findsOneWidget);
     expect(find.byType(ImageArchivePage), findsOneWidget);
   });
 }
