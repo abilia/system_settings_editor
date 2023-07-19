@@ -524,19 +524,10 @@ class LibraryFolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Lt.of(context);
-    String title = '';
-    if (sortableData is ImageArchiveData) {
-      title = (sortableData as ImageArchiveData).isUpload()
-          ? translate.mobilePictures
-          : (sortableData as ImageArchiveData).isMyPhotos()
-              ? translate.myPhotos
-              : sortableData.title();
-    }
-
+    final title = _title(context);
     return Tts.fromSemantics(
       SemanticsProperties(
-        label: title,
+        label: _title(context),
         button: true,
       ),
       child: Padding(
@@ -579,5 +570,18 @@ class LibraryFolder extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _title(BuildContext context) {
+    final translate = Lt.of(context);
+    final isImageArchive = sortableData is ImageArchiveData;
+    final isUpload =
+        isImageArchive && (sortableData as ImageArchiveData).isUpload();
+    final isMyPhotos =
+        isImageArchive && (sortableData as ImageArchiveData).isMyPhotos();
+
+    if (isUpload) return translate.mobilePictures;
+    if (isMyPhotos) return translate.myPhotos;
+    return sortableData.title();
   }
 }

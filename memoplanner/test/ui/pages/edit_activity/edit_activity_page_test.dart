@@ -1309,13 +1309,23 @@ text''';
         expect(find.byIcon(AbiliaIcons.showText), findsOneWidget);
       });
 
-      testWidgets('checklist library shows', (WidgetTester tester) async {
+      testWidgets('checklist library shows with checklist and folder',
+          (WidgetTester tester) async {
         when(() => mockUserFileBloc.state)
             .thenReturn(const UserFilesNotLoaded());
         const title1 = 'listTitle1';
+        const folder = 'aaa';
         when(() => mockSortableBloc.state).thenReturn(
           SortablesLoaded(
             sortables: [
+              Sortable.createNew<ChecklistData>(
+                data: ChecklistData(
+                  Checklist(
+                    name: folder,
+                  ),
+                ),
+                isGroup: true,
+              ),
               Sortable.createNew<ChecklistData>(
                   sortOrder: startChar,
                   data: ChecklistData(Checklist(
@@ -1325,21 +1335,6 @@ text''';
                         Question(id: 0, name: '1'),
                         Question(id: 1, name: '2', fileId: '2222')
                       ]))),
-              ...List.generate(
-                30,
-                (index) => Sortable.createNew<ChecklistData>(
-                  sortOrder: '$index',
-                  data: ChecklistData(
-                    Checklist(
-                      name: 'data $index',
-                      questions: [
-                        for (var i = 0; i < index; i++)
-                          Question(id: i, name: '$i$i$i$i$i$i\n')
-                      ],
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
         );
@@ -1352,6 +1347,7 @@ text''';
         expect(find.byType(SortableLibrary<ChecklistData>), findsOneWidget);
         expect(find.byType(ChecklistLibraryPage), findsWidgets);
         expect(find.text(title1), findsOneWidget);
+        expect(find.text(folder), findsOneWidget);
       });
 
       testWidgets('checklist from library is selectable',
