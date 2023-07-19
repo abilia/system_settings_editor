@@ -10,11 +10,12 @@ class AppBarLayout {
       monthStepperHeight,
       thirdLineFontSizeMin;
 
-  final EdgeInsets titlesPadding;
+  final EdgeInsets titlesPadding, titleSpacing, iconPadding, searchPadding;
   final BorderRadius borderRadius;
   final TextStyle _textStyle;
 
   const AppBarLayout({
+    this.iconPadding = const EdgeInsets.only(right: 8),
     this.horizontalPadding = 16,
     this.clockPadding = 8,
     this.largeHeight = 80,
@@ -23,6 +24,8 @@ class AppBarLayout {
     this.monthStepperHeight = 68,
     this.thirdLineFontSizeMin = 14,
     this.titlesPadding = const EdgeInsets.symmetric(horizontal: 2),
+    this.titleSpacing = const EdgeInsets.symmetric(vertical: 2),
+    this.searchPadding = const EdgeInsets.only(left: 24, right: 8),
     this.borderRadius = const BorderRadius.only(
       topLeft: Radius.circular(24),
       topRight: Radius.circular(24),
@@ -49,6 +52,7 @@ class AppBarLayoutMedium extends AppBarLayout {
     double? monthStepperHeight,
     TextStyle? textStyle,
   }) : super(
+          iconPadding: const EdgeInsets.only(right: 12),
           horizontalPadding: horizontalPadding ?? 16,
           clockPadding: clockPadding ?? 16,
           largeHeight: largeHeight ?? 148,
@@ -56,6 +60,8 @@ class AppBarLayoutMedium extends AppBarLayout {
           smallHeight: 104,
           monthStepperHeight: monthStepperHeight ?? 116,
           titlesPadding: const EdgeInsets.symmetric(horizontal: 12),
+          titleSpacing: const EdgeInsets.symmetric(vertical: 12),
+          searchPadding: const EdgeInsets.only(left: 32, right: 12),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(32),
             topRight: Radius.circular(32),

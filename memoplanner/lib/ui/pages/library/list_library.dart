@@ -10,12 +10,14 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
   final String emptyLibraryMessage;
   final ItemSelected<T>? onTapEdit;
   final bool selectableItems;
+  final bool useHeading;
 
   const ListLibrary({
     required this.emptyLibraryMessage,
     required this.libraryItemGenerator,
     this.onTapEdit,
     this.selectableItems = true,
+    this.useHeading = true,
     Key? key,
   }) : super(key: key);
 
@@ -28,11 +30,15 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
         final content = archiveState.currentFolderSorted;
         return Column(
           children: [
-            if (!archiveState.isAtRoot)
+            if (!archiveState.isAtRoot && useHeading)
               LibraryHeading<T>(
                 sortableArchiveState: archiveState,
                 rootHeading: '',
                 showOnlyFolders: true,
+                back: (BuildContext context, SortableArchiveState<T> state) =>
+                    state.isSelected
+                        ? context.read<SortableArchiveCubit<T>>().unselect()
+                        : context.read<SortableArchiveCubit<T>>().navigateUp(),
               ),
             Expanded(
               child: content.isEmpty
@@ -122,6 +128,7 @@ class ConfirmDeleteTimerTemplateDialog extends StatelessWidget {
 
 class ConfirmDeleteActivityTemplateDialog extends StatelessWidget {
   const ConfirmDeleteActivityTemplateDialog({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       ConfirmDeleteDialog(text: Lt.of(context).deleteActivityQuestion);

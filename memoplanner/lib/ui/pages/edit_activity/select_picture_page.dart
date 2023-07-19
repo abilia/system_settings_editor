@@ -195,11 +195,7 @@ class SelectPictureBody extends StatelessWidget {
                 initialFolderId: initialFolder,
                 myPhotos: myPhotos,
               ),
-              child: ImageArchivePage(
-                onCancel: onCancel,
-                initialFolder: initialFolder,
-                header: header,
-              ),
+              child: const ImageArchivePage(),
             ),
           ),
         ),

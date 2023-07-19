@@ -225,7 +225,7 @@ class PreviousButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LightButton(
-      text: Lt.of(context).back,
+      text: Lt.of(context).previous,
       icon: AbiliaIcons.navigationPrevious,
       onPressed: onPressed ?? Navigator.of(context).maybePop,
     );

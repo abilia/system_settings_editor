@@ -28,6 +28,8 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
         selectedItemGenerator = null,
         onOk = null,
         searchHeader = SearchHeader.noSearch,
+        useHeading = true,
+        headerBackNavigation = true,
         super(key: key);
 
   const LibraryPage.selectable({
@@ -42,8 +44,10 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     this.gridCrossAxisCount,
     this.gridChildAspectRatio,
     this.searchHeader = SearchHeader.noSearch,
+    this.useHeading = true,
     Key? key,
   })  : selectableItems = true,
+        headerBackNavigation = false,
         assert(
             onOk != null, 'onOk should not be null in LibraryPage.selectable'),
         assert(selectedItemGenerator != null,
@@ -60,6 +64,8 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   final int? gridCrossAxisCount;
   final double? gridChildAspectRatio;
   final SearchHeader searchHeader;
+  final bool useHeading;
+  final bool headerBackNavigation;
 
   @override
   Widget build(BuildContext context) {
@@ -73,27 +79,21 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
           context.read<SortableArchiveCubit<T>>().unselect();
           return false;
         }
-        onCancel?.call();
         return true;
       },
       child: Scaffold(
         appBar: appBar,
         body: Column(
           children: [
-            if (selected != null)
+            if (useHeading &&
+                (!sortableState.isAtRootAndNoSelection || rootHeading != null))
               LibraryHeading<T>(
                 sortableArchiveState: sortableState,
                 rootHeading: rootHeading ?? '',
+                back: headerBackNavigation ? _back : null,
               )
             else if (searchHeader == SearchHeader.searchBar)
-              const _SearchHeading()
-            else if (!sortableState.isAtRootAndNoSelection ||
-                rootHeading != null)
-              LibraryHeading<T>(
-                sortableArchiveState: sortableState,
-                rootHeading: rootHeading ?? '',
-                showSearchButton: searchHeader == SearchHeader.searchButton,
-              ),
+              const _SearchHeading(),
             Expanded(
               child: selected != null && selectedGenerator != null
                   ? selectedGenerator(selected)
@@ -112,7 +112,11 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
             ? Padding(
                 padding: MediaQuery.of(context).viewInsets,
                 child: BottomNavigation(
-                  backNavigationWidget: const CancelButton(),
+                  backNavigationWidget: LightButton(
+                    text: Lt.of(context).back,
+                    icon: AbiliaIcons.navigationPrevious,
+                    onPressed: () async => _back(context, sortableState),
+                  ),
                   forwardNavigationWidget: selected != null
                       ? OkButton(
                           onPressed: () => onOk?.call(selected),
@@ -123,6 +127,16 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
             : null,
       ),
     );
+  }
+
+  Future _back(BuildContext context, SortableArchiveState<T> state) async {
+    if (state.isSelected) {
+      return context.read<SortableArchiveCubit<T>>().unselect();
+    }
+    if (searchHeader != SearchHeader.searchBar && !state.isAtRoot) {
+      return context.read<SortableArchiveCubit<T>>().navigateUp();
+    }
+    return Navigator.of(context).maybePop();
   }
 }
 
@@ -139,6 +153,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
     this.showOnlyFolders = false,
     this.showSearchButton = false,
     this.onCancel,
+    this.back,
     Key? key,
   }) : super(key: key);
   final SortableArchiveState<T> sortableArchiveState;
@@ -146,10 +161,10 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
   final bool showOnlyFolders;
   final bool showSearchButton;
   final VoidCallback? onCancel;
+  final Function(BuildContext, SortableArchiveState<T>)? back;
 
   @override
   Widget build(BuildContext context) {
-    final translate = Lt.of(context);
     final heading = sortableArchiveState.isAtRootAndNoSelection
         ? rootHeading
         : sortableArchiveState.title(onlyFolders: showOnlyFolders);
@@ -161,10 +176,12 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
             padding: layout.libraryPage.headerPadding,
             child: Row(
               children: [
-                IconActionButtonDark(
-                  onPressed: () async => back(context, sortableArchiveState),
-                  child: const Icon(AbiliaIcons.navigationPrevious),
-                ),
+                if (back != null)
+                  IconActionButtonDark(
+                    onPressed: () async =>
+                        back?.call(context, sortableArchiveState),
+                    child: const Icon(AbiliaIcons.navigationPrevious),
+                  ),
                 SizedBox(width: layout.formPadding.largeHorizontalItemDistance),
                 Expanded(
                   child: Text(
@@ -174,50 +191,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                     maxLines: 1,
                   ),
                 ),
-                if (showSearchButton)
-                  IconAndTextButton(
-                    style: actionButtonStyleDark
-                        .withMinimumSize(
-                          layout.libraryPage.searchButtonSize,
-                        )
-                        .copyWith(
-                          textStyle: MaterialStateProperty.all(
-                            abiliaTextTheme.bodyLarge,
-                          ),
-                        ),
-                    text: translate.search,
-                    icon: AbiliaIcons.find,
-                    onPressed: () async {
-                      final authProviders = copiedAuthProviders(context);
-                      final sortableArchiveCubit = context
-                          .read<SortableArchiveCubit<ImageArchiveData>>()
-                        ..searchValueChanged('');
-                      final selectedImageData =
-                          await Navigator.of(context).push<SelectedImageData>(
-                        PersistentMaterialPageRoute(
-                          settings: (ImageArchivePage).routeSetting(
-                            properties: {
-                              'type': 'Search',
-                            },
-                          ),
-                          builder: (_) => MultiBlocProvider(
-                            providers: authProviders,
-                            child: BlocProvider<
-                                SortableArchiveCubit<ImageArchiveData>>.value(
-                              value: sortableArchiveCubit,
-                              child: ImageArchivePage(
-                                onCancel: onCancel,
-                                searchHeader: SearchHeader.searchBar,
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                      if (selectedImageData != null && context.mounted) {
-                        Navigator.of(context).pop(selectedImageData);
-                      }
-                    },
-                  ),
+                if (showSearchButton) SearchButton(onCancel: onCancel),
               ],
             ),
           ),
@@ -226,15 +200,57 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
       ),
     );
   }
+}
 
-  Future back(BuildContext context, SortableArchiveState<T> state) async {
-    if (state.isSelected) {
-      return context.read<SortableArchiveCubit<T>>().unselect();
-    }
-    if (!state.isAtRoot) {
-      return context.read<SortableArchiveCubit<T>>().navigateUp();
-    }
-    return Navigator.of(context).maybePop();
+class SearchButton extends StatelessWidget {
+  final VoidCallback? onCancel;
+  final ButtonStyle? style;
+
+  const SearchButton({super.key, this.onCancel, this.style});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconAndTextButton(
+      style: (style ?? actionButtonStyleDark)
+          .withMinimumSize(
+            layout.libraryPage.searchButtonSize,
+          )
+          .copyWith(
+            textStyle: MaterialStateProperty.all(
+              abiliaTextTheme.bodyLarge,
+            ),
+          ),
+      text: Lt.of(context).search,
+      icon: AbiliaIcons.find,
+      onPressed: () async {
+        final authProviders = copiedAuthProviders(context);
+        final sortableArchiveCubit = context
+            .read<SortableArchiveCubit<ImageArchiveData>>()
+          ..searchValueChanged('');
+        final selectedImageData =
+            await Navigator.of(context).push<SelectedImageData>(
+          PersistentMaterialPageRoute(
+            settings: (ImageArchivePage).routeSetting(
+              properties: {
+                'type': 'Search',
+              },
+            ),
+            builder: (_) => MultiBlocProvider(
+              providers: authProviders,
+              child: BlocProvider<SortableArchiveCubit<ImageArchiveData>>.value(
+                value: sortableArchiveCubit,
+                child: const ImageArchivePage(
+                  searchHeader: SearchHeader.searchBar,
+                ),
+              ),
+            ),
+          ),
+        );
+        if (selectedImageData != null && context.mounted) {
+          Navigator.of(context).pop(selectedImageData);
+        }
+      },
+    );
   }
 }
 

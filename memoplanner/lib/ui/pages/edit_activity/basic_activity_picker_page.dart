@@ -15,8 +15,10 @@ class BasicActivityPickerPage extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar: AbiliaAppBar(
-              iconData: AbiliaIcons.basicActivities,
-              title: translate.fromTemplate),
+            iconData: AbiliaIcons.basicActivities,
+            title: translate.fromTemplate,
+            breadcrumbs: state.breadCrumbPath(),
+          ),
           body: ListLibrary<BasicActivityData>(
             emptyLibraryMessage: translate.noTemplates,
             selectableItems: false,
@@ -32,14 +34,17 @@ class BasicActivityPickerPage extends StatelessWidget {
                   _,
                   __);
             },
+            useHeading: false,
           ),
           bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: PreviousButton(
+            backNavigationWidget: LightButton(
+              text: translate.back,
+              icon: AbiliaIcons.navigationPrevious,
               onPressed: state.isAtRoot
                   ? Navigator.of(context).maybePop
-                  : () => context
+                  : context
                       .read<SortableArchiveCubit<BasicActivityData>>()
-                      .navigateUp(),
+                      .navigateUp,
             ),
           ),
         );

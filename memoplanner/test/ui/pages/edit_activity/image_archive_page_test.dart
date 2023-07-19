@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
+
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
@@ -202,13 +203,13 @@ void main() {
       await tester.verifyTts(find.byType(LibraryFolder), exact: folderName);
       await tester.verifyTts(find.byType(ArchiveImage), exact: imageName);
       await tester.verifyTts(
-        find.byType(LibraryHeading<ImageArchiveData>),
-        exact: translate.imageArchive,
+        find.byType(AppBarHeading),
+        contains: translate.imageArchive,
       );
     });
   });
 
-  testWidgets('library heading tts', (WidgetTester tester) async {
+  testWidgets('library navigation and header tts', (WidgetTester tester) async {
     const folderName = 'Basic 2';
     final folderData = ImageArchiveData.fromJson('''
           {"name":"$folderName","fileId":"7e1635293126","icon":"/images/Basic/Basic.png"}
@@ -227,21 +228,32 @@ void main() {
       await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage()));
       await tester.pumpAndSettle();
 
-      // Assert - root heading
+      // Assert heading contains image archive tts
       await tester.verifyTts(
-        find.byType(LibraryHeading<ImageArchiveData>),
-        exact: translate.imageArchive,
+        find.byType(AppBarHeading),
+        contains: translate.imageArchive,
       );
+
+      // Go to search page
+      await tester.tap(find.byType(SearchButton));
+      await tester.pumpAndSettle();
+
+      // Assert search heading
+      await tester.verifyTts(find.byType(AppBarHeading),
+          exact: translate.searchImage);
+
+      await tester.tap(find.text(translate.back));
+      await tester.pumpAndSettle();
 
       expect(find.byType(LibraryFolder), findsOneWidget);
       // Act - go into folder
       await tester.tap(find.byType(LibraryFolder));
       await tester.pumpAndSettle();
 
-      // Assert heading is folder tts
+      // Assert heading contains folder tts
       await tester.verifyTts(
-        find.byType(LibraryHeading<ImageArchiveData>),
-        exact: folderName,
+        find.byType(AppBarHeading),
+        contains: folderName,
       );
       // Act -- go into image
       await tester.tap(find.byType(ArchiveImage));
@@ -249,8 +261,8 @@ void main() {
 
       // Assert - image name tts
       await tester.verifyTts(
-        find.byType(LibraryHeading<ImageArchiveData>),
-        exact: imageInFolderName,
+        find.byType(AppBarHeading),
+        contains: (imageInFolderName),
       );
     });
   });
@@ -279,8 +291,8 @@ void main() {
 
       expect(
         find.descendant(
-            of: find.byType(LibraryHeading<ImageArchiveData>),
-            matching: find.text(folderName)),
+            of: find.byType(AppBarHeading),
+            matching: find.textContaining(folderName)),
         findsOneWidget,
       );
     });
@@ -316,9 +328,7 @@ void main() {
           (_) => SortablesLoaded(sortables: [folder, imageInFolder]));
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ImageArchivePage(
-            initialFolder: folder.id,
-          ),
+          const ImageArchivePage(),
           initialFolder: folder.id,
         ),
       );
@@ -326,28 +336,6 @@ void main() {
       expect(find.byType(ImageArchivePage), findsOneWidget);
       expect(find.byType(ArchiveImage), findsOneWidget);
       expect(find.byType(LibraryFolder), findsNothing);
-    });
-  });
-
-  testWidgets('Image archive with custom header', (WidgetTester tester) async {
-    await mockNetworkImages(() async {
-      const testHeader = 'MyTestHeader';
-
-      final imageInFolder = Sortable.createNew<ImageArchiveData>(
-          data: const ImageArchiveData(
-        name: 'name3',
-        fileId: 'fildid3',
-        file: '/images/Basic/Basic/infolder3.gif',
-      ));
-      when(() => mockSortableBloc.state).thenAnswer(
-          (_) => SortablesLoaded(sortables: [folder, imageInFolder]));
-      await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage(
-        initialFolder: folder.id,
-        header: testHeader,
-      )));
-      await tester.pumpAndSettle();
-      expect(find.byType(ImageArchivePage), findsOneWidget);
-      expect(find.text(testHeader), findsOneWidget);
     });
   });
 
@@ -385,15 +373,14 @@ void main() {
     await mockNetworkImages(() async {
       when(() => mockSortableBloc.state).thenAnswer(
           (_) => SortablesLoaded(sortables: [folder, folderInsideFolder]));
-      await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage(
-        initialFolder: folder.id,
-      )));
+      await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage()));
       await tester.pumpAndSettle();
       expect(find.text(translate.imageArchive), findsOneWidget);
       expect(find.byType(ImageArchivePage), findsOneWidget);
       await tester.tap(find.byType(LibraryFolder));
       await tester.pumpAndSettle();
       expect(find.text(translate.imageArchive), findsNothing);
+      expect(find.byType(LibraryHeading), findsNothing);
     });
   });
 
@@ -412,21 +399,20 @@ void main() {
       );
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ImageArchivePage(
-            initialFolder: myPhotosFolder.id,
-            header: myPhotosFolder.data.name,
-          ),
-          initialFolder: myPhotosFolder.id,
+          const ImageArchivePage(),
           myPhotos: true,
         ),
       );
       await tester.pumpAndSettle();
       expect(find.text(myPhotosFolder.data.name), findsOneWidget);
+      await tester.tap(find.text(myPhotosFolder.data.name));
+      await tester.pumpAndSettle();
       expect(find.byType(ImageArchivePage), findsOneWidget);
-      await tester.tap(find.byType(LibraryFolder));
+      await tester.tap(find.text(myPhotosSubFolder.data.name));
       await tester.pumpAndSettle();
       expect(find.text(myPhotosFolder.data.name), findsNothing);
       expect(find.text(myPhotoInSubFolder.data.name), findsOneWidget);
+      expect(find.byType(LibraryHeading), findsNothing);
     });
   });
 
@@ -447,9 +433,7 @@ void main() {
               ]));
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          ImageArchivePage(
-            initialFolder: folder.id,
-          ),
+          const ImageArchivePage(),
           initialFolder: folder.id,
           myPhotos: myPhotos,
         ),
@@ -489,10 +473,9 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text(image.data.name), findsNWidgets(2));
 
-    // Press cancel returns to image archive
-    await tester.tap(find.byType(CancelButton));
+    // Press back returns to image archive
+    await tester.tap(find.text(translate.back));
     await tester.pumpAndSettle();
-    expect(find.text(translate.imageArchive), findsOneWidget);
     expect(find.byType(ImageArchivePage), findsOneWidget);
 
     // Open a folder and tap search
@@ -544,10 +527,9 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text(myPhotoInSubFolder.data.name), findsNWidgets(2));
 
-    // Press cancel returns to image archive
-    await tester.tap(find.byType(CancelButton));
+    // Press back returns to image archive
+    await tester.tap(find.text(translate.back));
     await tester.pumpAndSettle();
-    expect(find.text(translate.imageArchive), findsOneWidget);
     expect(find.byType(ImageArchivePage), findsOneWidget);
   });
 }

@@ -10,7 +10,7 @@ class LeftNavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IconActionButton(
         onPressed: onPressed,
-        ttsData: Lt.of(context).back,
+        ttsData: Lt.of(context).previous,
         child: const Icon(AbiliaIcons.returnToPreviousPage),
       );
 }

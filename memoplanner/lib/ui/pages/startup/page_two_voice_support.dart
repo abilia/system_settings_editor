@@ -87,7 +87,7 @@ class PageTwoVoiceSupport extends StatelessWidget {
                     duration: StartupGuidePage.pageDuration,
                     curve: StartupGuidePage.curve,
                   ),
-                  text: translate.back,
+                  text: translate.previous,
                   style: textButtonStyleDarkGrey,
                   icon: AbiliaIcons.navigationPrevious,
                 ),

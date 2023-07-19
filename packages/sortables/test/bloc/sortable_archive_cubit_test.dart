@@ -260,4 +260,57 @@ void main() {
       },
     );
   });
+
+  group('breadcrumbs', () {
+    const String folderTwo = 'second';
+    const String folderThree = 'third';
+
+    late SortableArchiveCubit<ImageArchiveData> sortableArchiveCubit;
+
+    final folder = Sortable.createNew<ImageArchiveData>(
+            data: const ImageArchiveData(name: folderTwo),
+            isGroup: true,
+            sortOrder: 'b'),
+        subFolder = Sortable.createNew<ImageArchiveData>(
+            data: const ImageArchiveData(name: folderThree),
+            isGroup: true,
+            groupId: folder.id,
+            sortOrder: 'c');
+
+    final List<Sortable> basicActivitySortables = [folder, subFolder];
+
+    setUp(() {
+      sortableArchiveCubit = SortableArchiveCubit<ImageArchiveData>(
+        sortableBloc: mockSortableBloc,
+      );
+    });
+
+    blocTest<SortableArchiveCubit<ImageArchiveData>,
+        SortableArchiveState<ImageArchiveData>>(
+      'folder selected',
+      build: () => sortableArchiveCubit,
+      act: (c) => c
+        ..sortablesUpdated(basicActivitySortables)
+        ..folderChanged(folder.id),
+      verify: (_) {
+        final state = sortableArchiveCubit.state;
+        expect(state.currentFolderId, folder.id);
+        expect(state.breadCrumbPath(), [folderTwo]);
+      },
+    );
+
+    blocTest<SortableArchiveCubit<ImageArchiveData>,
+        SortableArchiveState<ImageArchiveData>>(
+      'sub folder selected',
+      build: () => sortableArchiveCubit,
+      act: (c) => c
+        ..sortablesUpdated(basicActivitySortables)
+        ..folderChanged(subFolder.id),
+      verify: (_) {
+        final state = sortableArchiveCubit.state;
+        expect(state.currentFolderId, subFolder.id);
+        expect(state.breadCrumbPath(), [folderTwo, folderThree]);
+      },
+    );
+  });
 }

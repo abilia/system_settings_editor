@@ -1,41 +1,35 @@
+import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class ImageArchivePage extends StatelessWidget {
-  final VoidCallback? onCancel;
-  final String initialFolder;
-  final String? header;
   final SearchHeader searchHeader;
 
   const ImageArchivePage({
     Key? key,
-    this.onCancel,
-    this.initialFolder = '',
-    this.header,
     this.searchHeader = SearchHeader.searchButton,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final translate = Lt.of(context);
     return LibraryPage<ImageArchiveData>.selectable(
-      appBar: AbiliaAppBar(
-        iconData: searchHeader == SearchHeader.searchBar
-            ? AbiliaIcons.find
-            : AbiliaIcons.pastPictureFromWindowsClipboard,
-        title: searchHeader == SearchHeader.searchBar
-            ? translate.searchImage
-            : translate.selectImage,
-      ),
       searchHeader: searchHeader,
       gridChildAspectRatio: layout.imageArchive.aspectRatio,
-      rootHeading: header ?? translate.imageArchive,
+      useHeading: false,
+      appBar: ImageArchiveAppBar(
+        searchHeader: searchHeader,
+        breadcrumbRoot: context
+                .read<SortableArchiveCubit<ImageArchiveData>>()
+                .state
+                .myPhotos
+            ? ''
+            : Lt.of(context).imageArchive,
+      ),
       libraryItemGenerator: (imageArchive) =>
           ArchiveImage(sortable: imageArchive),
       selectedItemGenerator: (imageArchive) =>
           FullScreenArchiveImage(selected: imageArchive.data),
-      emptyLibraryMessage: translate.noImages,
-      onCancel: onCancel,
+      emptyLibraryMessage: Lt.of(context).noImages,
       onOk: (selected) {
         Navigator.of(context).pop<SelectedImageData>(
           SelectedImageData(
@@ -50,6 +44,63 @@ class ImageArchivePage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class ImageArchiveAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  final SearchHeader searchHeader;
+  final String breadcrumbRoot;
+
+  const ImageArchiveAppBar({
+    required this.searchHeader,
+    this.breadcrumbRoot = '',
+    super.key,
+  });
+
+  @override
+  Size get preferredSize => Size.fromHeight(layout.appBar.smallHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Lt.of(context);
+    final sortableState =
+        context.watch<SortableArchiveCubit<ImageArchiveData>>().state;
+
+    if (searchHeader == SearchHeader.searchBar) {
+      return AbiliaAppBar(
+        iconData: AbiliaIcons.find,
+        title: translate.searchImage,
+      );
+    }
+
+    final title = translate.selectImage;
+    if (sortableState.isSelected) {
+      return AbiliaAppBar(
+        iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
+        breadcrumbs: [sortableState.selected?.data.name ?? ''],
+        title: title,
+      );
+    }
+
+    final breadcrumbs = [
+      if (breadcrumbRoot.isNotEmpty) breadcrumbRoot,
+      ...sortableState.breadCrumbPath(),
+    ];
+
+    if (searchHeader == SearchHeader.searchButton) {
+      return AbiliaSearchAppBar(
+        iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
+        breadcrumbs: breadcrumbs,
+        title: title,
+      );
+    }
+
+    return AbiliaAppBar(
+      iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
+      breadcrumbs: breadcrumbs,
+      title: title,
     );
   }
 }
