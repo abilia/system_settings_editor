@@ -45,6 +45,8 @@ class DayEventsCubit extends Cubit<EventsState> {
       newStateDay.onlyDays(),
       newStateDay.nextDay(),
     );
+
+    if (isClosed) return;
     emit(
       _mapToState(
         activities,

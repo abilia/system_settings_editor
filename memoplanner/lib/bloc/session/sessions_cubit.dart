@@ -21,6 +21,7 @@ class SessionsCubit extends Cubit<SessionsState> {
       final hasMP4Session =
           sessions.any((s) => s.type == 'flutter' && s.app == 'memoplanner');
       await sessionsRepository.setHasMP4Session(hasMP4Session);
+      if (isClosed) return;
       emit(SessionsState(hasMP4Session));
     } on FetchSessionsException catch (e) {
       _log.warning(

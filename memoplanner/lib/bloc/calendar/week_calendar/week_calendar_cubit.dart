@@ -83,6 +83,8 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
     );
 
     previousState = state;
+
+    if (isClosed) return;
     emit(WeekCalendarLoaded(weekStart, noneFullDayEvents, fullDayActivities));
   }
 
