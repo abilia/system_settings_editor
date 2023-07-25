@@ -125,7 +125,6 @@ class AbiliaSearchAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: layout.appBar.smallHeight,
       child: _AbiliaAppBarBackground(
         child: Padding(
           padding: layout.appBar.searchPadding,
