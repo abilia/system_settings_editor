@@ -151,7 +151,7 @@ class _EditNotePageState extends State<EditNotePage> {
       if (saveChanges) {
         return Navigator.of(context).pop(_textEditingController.text);
       }
-        Navigator.of(context).pop();
+      Navigator.of(context).pop();
     }
   }
 }

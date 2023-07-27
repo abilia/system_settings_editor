@@ -22,10 +22,10 @@ class EditNoteWidget extends StatelessWidget {
           text: infoItem.text,
           textWidget: infoItem.text.isEmpty
               ? Text(
-            Lt.of(context).typeSomething,
-            style: abiliaTextTheme.bodyLarge
-                ?.copyWith(color: const Color(0xff747474)),
-          )
+                  Lt.of(context).typeSomething,
+                  style: abiliaTextTheme.bodyLarge
+                      ?.copyWith(color: const Color(0xff747474)),
+                )
               : Text(infoItem.text),
         ),
       ),
@@ -40,9 +40,7 @@ class EditNoteWidget extends StatelessWidget {
     });
   }
 
-  Future<void> _openEditText(
-      BuildContext context,
-      ) async {
+  Future<void> _openEditText(BuildContext context) async {
     final authProviders = copiedAuthProviders(context);
     final editActivityCubit = context.read<EditActivityCubit>();
     final result = await Navigator.of(context).push<String>(
@@ -74,12 +72,12 @@ class EditNoteWidget extends StatelessWidget {
   }
 }
 
-
 class NoteBlock extends StatefulWidget {
   final String text;
   final TextStyle? textStyle;
   final Text? textWidget;
   final ScrollController? scrollController;
+
   const NoteBlock({
     Key? key,
     this.text = '',
