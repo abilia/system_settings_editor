@@ -120,6 +120,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'canLogOutSafely':
             MessageLookupByLibrary.simpleMessage('Nu kan du logga ut tryggt'),
         'cancel': MessageLookupByLibrary.simpleMessage('Avbryt'),
+        'cancelChanges': MessageLookupByLibrary.simpleMessage('Cancel changes'),
         'captions': MessageLookupByLibrary.simpleMessage('Rubriker'),
         'categories': MessageLookupByLibrary.simpleMessage('Kategorier'),
         'category': MessageLookupByLibrary.simpleMessage('Kategori'),
@@ -127,6 +128,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'checkable': MessageLookupByLibrary.simpleMessage('Kvitterbar'),
         'checkableActivities':
             MessageLookupByLibrary.simpleMessage('Kvitterbara aktiviteter'),
+        'checklist': MessageLookupByLibrary.simpleMessage('Checklist'),
         'checklistDoneInfo': MessageLookupByLibrary.simpleMessage(
             'Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?'),
         'clear': MessageLookupByLibrary.simpleMessage('Rensa'),
@@ -330,8 +332,6 @@ class MessageLookup extends MessageLookupByLibrary {
         'inTimePre': MessageLookupByLibrary.simpleMessage('om'),
         'incorrectCode': MessageLookupByLibrary.simpleMessage('Felaktig kod'),
         'infoType': MessageLookupByLibrary.simpleMessage('Välj extra funktion'),
-        'infoTypeNone':
-            MessageLookupByLibrary.simpleMessage('Ingen extra funktion vald'),
         'installStarterSet': MessageLookupByLibrary.simpleMessage(
             'Installera startuppsättning?'),
         'installing': MessageLookupByLibrary.simpleMessage('Installerar'),
@@ -414,6 +414,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'newActivity': MessageLookupByLibrary.simpleMessage('Ny aktivitet'),
         'newActivityTemplate':
             MessageLookupByLibrary.simpleMessage('Ny aktivitetsmall'),
+        'newChecklist': MessageLookupByLibrary.simpleMessage('New checklist'),
+        'newNote': MessageLookupByLibrary.simpleMessage('New note'),
+        'newTask': MessageLookupByLibrary.simpleMessage('New task'),
         'newText': MessageLookupByLibrary.simpleMessage('Ny'),
         'newTimer': MessageLookupByLibrary.simpleMessage('Ny timer'),
         'newTimerTemplate':
@@ -454,6 +457,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'notCompleted': MessageLookupByLibrary.simpleMessage('inte klart'),
         'notConnected': MessageLookupByLibrary.simpleMessage('Ej ansluten'),
         'notSelected': MessageLookupByLibrary.simpleMessage('Inte valt'),
+        'note': MessageLookupByLibrary.simpleMessage('Note'),
         'notifications': MessageLookupByLibrary.simpleMessage('Notiser'),
         'notificationsWarningHintText': MessageLookupByLibrary.simpleMessage(
             'Tillåt notiser för att få larm och påminnelser för aktiviteter.'),
@@ -470,6 +474,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'onlyAppliesToGo': MessageLookupByLibrary.simpleMessage(
             'Gäller endast MEMOplanner Go'),
         'onlyMe': MessageLookupByLibrary.simpleMessage('Bara mig'),
+        'onlyOneInfoItem': MessageLookupByLibrary.simpleMessage(
+            'You can only have one extra function in this activity'),
         'onlyThisDay': MessageLookupByLibrary.simpleMessage('Endast denna dag'),
         'password': MessageLookupByLibrary.simpleMessage('Lösenord'),
         'passwordHint':
@@ -520,6 +526,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'saturdayAndSunday':
             MessageLookupByLibrary.simpleMessage('Lördag och söndag'),
         'save': MessageLookupByLibrary.simpleMessage('Spara'),
+        'saveNote': MessageLookupByLibrary.simpleMessage('Save note'),
+        'saveNoteQuestion': MessageLookupByLibrary.simpleMessage(
+            'Do you want to save note first?'),
         'screenBrightness':
             MessageLookupByLibrary.simpleMessage('Skärmens ljusstyrka'),
         'screenTimeout':
@@ -631,6 +640,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'system': MessageLookupByLibrary.simpleMessage('System'),
         'takeNewPhoto': MessageLookupByLibrary.simpleMessage('Ta ny bild'),
         'task': MessageLookupByLibrary.simpleMessage('Uppgift'),
+        'tasks': MessageLookupByLibrary.simpleMessage('tasks'),
         'templates': MessageLookupByLibrary.simpleMessage('Mallar'),
         'termsOfUse': MessageLookupByLibrary.simpleMessage('användarvillkor'),
         'termsOfUseUrl':

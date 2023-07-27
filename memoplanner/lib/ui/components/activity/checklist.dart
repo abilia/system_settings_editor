@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
@@ -46,27 +48,120 @@ class ChecklistView extends StatelessWidget {
   }
 }
 
-class EditChecklistView extends StatelessWidget {
-  const EditChecklistView({Key? key}) : super(key: key);
+class EditChecklistWidget extends StatelessWidget {
+  const EditChecklistWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = ScrollController();
-    return ScrollArrows.vertical(
-      controller: controller,
-      child: BlocSelector<EditChecklistCubit, EditChecklistState, Checklist>(
-        selector: (state) => state.checklist,
-        builder: (context, checklist) => ListView.separated(
-          controller: controller,
-          padding: layout.checklist.listPadding,
-          itemCount: checklist.questions.length,
-          itemBuilder: (context, i) => EditQuestionView(checklist.questions[i]),
-          separatorBuilder: (_, __) => SizedBox(
-            height: layout.formPadding.largeVerticalItemDistance,
+    return BlocProvider(
+      create: (context) => EditChecklistCubit(
+        context.read<EditActivityCubit>(),
+      ),
+      child: Builder(builder: (context) {
+        final controller = ScrollController();
+        final checklist =
+            context.select((EditChecklistCubit cubit) => cubit.state.checklist);
+        return BlocListener<EditChecklistCubit, EditChecklistState>(
+          listenWhen: (previous, current) =>
+              previous.checklist.questions.isNotEmpty &&
+              current.checklist.questions.isEmpty,
+          listener: (context, state) =>
+              context.read<EditActivityCubit>().removeInfoItem(Checklist),
+          child: Expanded(
+            child: ScrollArrows.vertical(
+              controller: controller,
+              child: ListView.separated(
+                controller: controller,
+                padding: layout.checklist.listPadding,
+                itemCount: checklist.questions.length + 1,
+                itemBuilder: (context, i) => i < checklist.questions.length
+                    ? EditQuestionView(checklist.questions[i])
+                    : const AddNewQuestionButton(),
+                separatorBuilder: (_, __) => SizedBox(
+                  height: layout.formPadding.largeVerticalItemDistance,
+                ),
+              ),
+            ),
           ),
+        );
+      }),
+    );
+  }
+}
+
+class AddNewQuestionButton extends StatelessWidget {
+  const AddNewQuestionButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Lt.of(context);
+    _openNewQuestionOnEmpty(context);
+    return Tts.data(
+      data: translate.newTask,
+      child: RawMaterialButton(
+        constraints: BoxConstraints(
+          minHeight: layout.checklist.addNewButtonHeight,
+        ),
+        shape: const RoundedRectangleBorder(
+          side: BorderSide(color: AbiliaColors.black),
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        fillColor: AbiliaColors.black80,
+        elevation: 0,
+        disabledElevation: 0,
+        focusElevation: 0,
+        highlightElevation: 0,
+        hoverElevation: 0,
+        onPressed: () async => _handleNewQuestion(context),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: layout.checklist.addNewQIconPadding,
+              child: Icon(
+                AbiliaIcons.plus,
+                size: layout.icon.small,
+                color: AbiliaColors.white,
+              ),
+            ),
+            Text(
+              translate.addNew,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: AbiliaColors.white,
+                  ),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  void _openNewQuestionOnEmpty(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final checklistCubit = context.read<EditChecklistCubit>();
+      final checklist = checklistCubit.state.checklist;
+      if (checklist.questions.isEmpty) {
+        await _handleNewQuestion(context);
+      }
+    });
+  }
+
+  Future<void> _handleNewQuestion(BuildContext context) async {
+    final editChecklistCubit = context.read<EditChecklistCubit>();
+    final result = await showAbiliaBottomSheet<ImageAndName>(
+      context: context,
+      providers: copiedAuthProviders(context),
+      child: const EditQuestionBottomSheet(),
+      routeSettings: (EditQuestionBottomSheet).routeSetting(),
+    );
+
+    if (result != null && result.isNotEmpty) {
+      return editChecklistCubit.newQuestion(result);
+    }
+    if (context.mounted &&
+        editChecklistCubit.state.checklist.questions.isEmpty) {
+      context.read<EditActivityCubit>().removeInfoItem(Checklist);
+    }
   }
 }
 

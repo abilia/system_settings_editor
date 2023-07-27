@@ -122,6 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'canLogOutSafely': MessageLookupByLibrary.simpleMessage(
             'Nyt voit kirjautua turvallisesti ulos'),
         'cancel': MessageLookupByLibrary.simpleMessage('Peruuta'),
+        'cancelChanges': MessageLookupByLibrary.simpleMessage('Cancel changes'),
         'captions': MessageLookupByLibrary.simpleMessage('Otsikot'),
         'categories': MessageLookupByLibrary.simpleMessage('Kategoriat'),
         'category': MessageLookupByLibrary.simpleMessage('Kategoria'),
@@ -129,6 +130,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'checkable': MessageLookupByLibrary.simpleMessage('Tarkistettava'),
         'checkableActivities':
             MessageLookupByLibrary.simpleMessage('Tarkistettavat aktiviteetit'),
+        'checklist': MessageLookupByLibrary.simpleMessage('Checklist'),
         'checklistDoneInfo': MessageLookupByLibrary.simpleMessage(
             'Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?'),
         'clear': MessageLookupByLibrary.simpleMessage('Poista'),
@@ -336,8 +338,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Virheellinen koodi'),
         'infoType':
             MessageLookupByLibrary.simpleMessage('Valitse lisätoiminto'),
-        'infoTypeNone': MessageLookupByLibrary.simpleMessage(
-            'Lisätoimintoa ei ole valittu'),
         'installStarterSet':
             MessageLookupByLibrary.simpleMessage('Aseta aloitussarja'),
         'installing': MessageLookupByLibrary.simpleMessage('Asentaa'),
@@ -424,6 +424,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Uusi aktiviteettia'),
         'newActivityTemplate':
             MessageLookupByLibrary.simpleMessage('Uusi toimintomallipohja'),
+        'newChecklist': MessageLookupByLibrary.simpleMessage('New checklist'),
+        'newNote': MessageLookupByLibrary.simpleMessage('New note'),
+        'newTask': MessageLookupByLibrary.simpleMessage('New task'),
         'newText': MessageLookupByLibrary.simpleMessage('Uusi'),
         'newTimer': MessageLookupByLibrary.simpleMessage('Uusi ajastin'),
         'newTimerTemplate':
@@ -467,6 +470,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'notCompleted': MessageLookupByLibrary.simpleMessage('kesken'),
         'notConnected': MessageLookupByLibrary.simpleMessage('Ei yhteyttä'),
         'notSelected': MessageLookupByLibrary.simpleMessage('Ei valittu'),
+        'note': MessageLookupByLibrary.simpleMessage('Note'),
         'notifications': MessageLookupByLibrary.simpleMessage('Ilmoitukset'),
         'notificationsWarningHintText': MessageLookupByLibrary.simpleMessage(
             'Salli ilmoitusten saada hälytyksiä ja muistutuksia toiminnasta.'),
@@ -483,6 +487,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'onlyAppliesToGo': MessageLookupByLibrary.simpleMessage(
             'Koskee vain MEMOplanner Gota'),
         'onlyMe': MessageLookupByLibrary.simpleMessage('Vain minä'),
+        'onlyOneInfoItem': MessageLookupByLibrary.simpleMessage(
+            'You can only have one extra function in this activity'),
         'onlyThisDay':
             MessageLookupByLibrary.simpleMessage('Vain tänä päivänä'),
         'password': MessageLookupByLibrary.simpleMessage('Salasana'),
@@ -533,6 +539,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'saturdayAndSunday':
             MessageLookupByLibrary.simpleMessage('Lauantai ja sunnuntai'),
         'save': MessageLookupByLibrary.simpleMessage('Tallenna'),
+        'saveNote': MessageLookupByLibrary.simpleMessage('Save note'),
+        'saveNoteQuestion': MessageLookupByLibrary.simpleMessage(
+            'Do you want to save note first?'),
         'screenBrightness':
             MessageLookupByLibrary.simpleMessage('Näytön kirkkaus'),
         'screenTimeout':
@@ -653,6 +662,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'system': MessageLookupByLibrary.simpleMessage('Järjestelmä'),
         'takeNewPhoto': MessageLookupByLibrary.simpleMessage('Ota uusi kuva'),
         'task': MessageLookupByLibrary.simpleMessage('Tehtävä'),
+        'tasks': MessageLookupByLibrary.simpleMessage('tasks'),
         'templates': MessageLookupByLibrary.simpleMessage('Mallit'),
         'termsOfUse': MessageLookupByLibrary.simpleMessage('käyttöehdot'),
         'termsOfUseUrl':

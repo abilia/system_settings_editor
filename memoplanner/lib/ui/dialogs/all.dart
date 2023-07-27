@@ -7,6 +7,7 @@ export 'license_error_dialog.dart';
 export 'long_press_info_dialog.dart';
 export 'permission/all.dart';
 export 'reset_device/all.dart';
+export 'save_note_warning_dialog.dart';
 export 'show_view_dialog.dart';
 export 'view_dialog.dart';
 export 'web_view_dialog.dart';

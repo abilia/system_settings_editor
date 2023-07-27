@@ -85,16 +85,11 @@ class MediumLayout extends Layout {
             secondaryTextHeight: 24 / 20,
           ),
           activityPage: activityPage ?? const ActivityPageLayoutMedium(),
-          checklist: checklist ??
-              const ChecklistLayout(
-                question: ChecklistQuestionLayoutMedium(),
-                listPadding: EdgeInsets.all(24),
-                addNewQButtonPadding: EdgeInsets.fromLTRB(18, 12, 18, 18),
-                addNewQIconPadding: EdgeInsets.only(left: 22, right: 16),
-              ),
+          checklist: checklist ?? const ChecklistLayoutMedium(),
           note: const NoteLayout(
             notePadding: EdgeInsets.fromLTRB(27, 15, 24, 36),
             lineOffset: 3,
+            previewExtrasHeight: 48,
           ),
           iconTextButton: const IconTextButtonStyle(
             minimumSize: Size(376, 96),
@@ -108,13 +103,7 @@ class MediumLayout extends Layout {
           components: const ComponentsLayout(
             subHeadingPadding: EdgeInsets.only(bottom: 12),
           ),
-          pickField: const PickFieldLayout(
-            padding: EdgeInsets.only(left: 18, right: 18),
-            imagePadding: EdgeInsets.only(left: 0, right: 12),
-            leadingPadding: EdgeInsets.only(right: 18),
-            height: 88,
-            leadingSize: Size(72, 72),
-          ),
+          pickField: const PickFieldLayoutMedium(),
           eventImageLayout: const EventImageLayout(
             fallbackCrossPadding: EdgeInsets.all(6),
             fallbackCheckPadding: EdgeInsets.all(12),

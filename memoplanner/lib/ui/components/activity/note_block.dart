@@ -1,5 +1,79 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:memoplanner/bloc/activities/edit_activity/edit_activity_cubit.dart';
+import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+
+class EditNoteWidget extends StatelessWidget {
+  final NoteInfoItem infoItem;
+
+  const EditNoteWidget({
+    required this.infoItem,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    _openNoteOnEmpty(context);
+    return Expanded(
+      child: GestureDetector(
+        onTap: () async => _openEditText(context),
+        child: NoteBlock(
+          text: infoItem.text,
+          textWidget: infoItem.text.isEmpty
+              ? Text(
+            Lt.of(context).typeSomething,
+            style: abiliaTextTheme.bodyLarge
+                ?.copyWith(color: const Color(0xff747474)),
+          )
+              : Text(infoItem.text),
+        ),
+      ),
+    );
+  }
+
+  void _openNoteOnEmpty(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (infoItem.text.isEmpty) {
+        await _openEditText(context);
+      }
+    });
+  }
+
+  Future<void> _openEditText(
+      BuildContext context,
+      ) async {
+    final authProviders = copiedAuthProviders(context);
+    final editActivityCubit = context.read<EditActivityCubit>();
+    final result = await Navigator.of(context).push<String>(
+      PersistentPageRouteBuilder(
+        pageBuilder: (_, __, ___) => MultiBlocProvider(
+          providers: authProviders,
+          child: EditNotePage(text: infoItem.text),
+        ),
+        settings: (EditNotePage).routeSetting(),
+        transitionsBuilder: (_, animation, __, child) => FadeTransition(
+          opacity: CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOut,
+          ),
+          child: child,
+        ),
+      ),
+    );
+    if (result != null && result != infoItem.text && result.isNotEmpty) {
+      return editActivityCubit.replaceActivity(
+        editActivityCubit.state.activity.copyWith(
+          infoItem: NoteInfoItem(result),
+        ),
+      );
+    }
+    if (result == null && infoItem.text.isEmpty && context.mounted) {
+      context.read<EditActivityCubit>().removeInfoItem(NoteInfoItem);
+    }
+  }
+}
+
 
 class NoteBlock extends StatefulWidget {
   final String text;

@@ -115,6 +115,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'canLogOutSafely':
             MessageLookupByLibrary.simpleMessage('Now you can log out safely'),
         'cancel': MessageLookupByLibrary.simpleMessage('Cancel'),
+        'cancelChanges': MessageLookupByLibrary.simpleMessage('Cancel changes'),
         'captions': MessageLookupByLibrary.simpleMessage('Captions'),
         'categories': MessageLookupByLibrary.simpleMessage('Categories'),
         'category': MessageLookupByLibrary.simpleMessage('Category'),
@@ -122,6 +123,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'checkable': MessageLookupByLibrary.simpleMessage('Checkable'),
         'checkableActivities':
             MessageLookupByLibrary.simpleMessage('Checkable activities'),
+        'checklist': MessageLookupByLibrary.simpleMessage('Checklist'),
         'checklistDoneInfo': MessageLookupByLibrary.simpleMessage(
             'All checklist tasks in your activity are completed. Do you want to complete the activity?'),
         'clear': MessageLookupByLibrary.simpleMessage('Clear'),
@@ -323,8 +325,6 @@ class MessageLookup extends MessageLookupByLibrary {
         'incorrectCode': MessageLookupByLibrary.simpleMessage('Incorrect code'),
         'infoType':
             MessageLookupByLibrary.simpleMessage('Select extra function'),
-        'infoTypeNone':
-            MessageLookupByLibrary.simpleMessage('No extra function selected'),
         'installStarterSet':
             MessageLookupByLibrary.simpleMessage('Install starter set?'),
         'installing': MessageLookupByLibrary.simpleMessage('Installing'),
@@ -406,6 +406,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'newActivity': MessageLookupByLibrary.simpleMessage('New activity'),
         'newActivityTemplate':
             MessageLookupByLibrary.simpleMessage('New activity template'),
+        'newChecklist': MessageLookupByLibrary.simpleMessage('New checklist'),
+        'newNote': MessageLookupByLibrary.simpleMessage('New note'),
+        'newTask': MessageLookupByLibrary.simpleMessage('New task'),
         'newText': MessageLookupByLibrary.simpleMessage('New'),
         'newTimer': MessageLookupByLibrary.simpleMessage('New timer'),
         'newTimerTemplate':
@@ -445,6 +448,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'notCompleted': MessageLookupByLibrary.simpleMessage('not completed'),
         'notConnected': MessageLookupByLibrary.simpleMessage('Not connected'),
         'notSelected': MessageLookupByLibrary.simpleMessage('Not selected'),
+        'note': MessageLookupByLibrary.simpleMessage('Note'),
         'notifications': MessageLookupByLibrary.simpleMessage('Notifications'),
         'notificationsWarningHintText': MessageLookupByLibrary.simpleMessage(
             'Allow notifications to be able to get alarms and reminders from activities.'),
@@ -461,6 +465,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'onlyAppliesToGo': MessageLookupByLibrary.simpleMessage(
             'Only applies to MEMOplanner Go'),
         'onlyMe': MessageLookupByLibrary.simpleMessage('Only me'),
+        'onlyOneInfoItem': MessageLookupByLibrary.simpleMessage(
+            'You can only have one extra function in this activity'),
         'onlyThisDay': MessageLookupByLibrary.simpleMessage('Only this day'),
         'password': MessageLookupByLibrary.simpleMessage('Password'),
         'passwordHint': MessageLookupByLibrary.simpleMessage(
@@ -509,6 +515,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'saturdayAndSunday':
             MessageLookupByLibrary.simpleMessage('Saturday and Sunday'),
         'save': MessageLookupByLibrary.simpleMessage('Save'),
+        'saveNote': MessageLookupByLibrary.simpleMessage('Save note'),
+        'saveNoteQuestion': MessageLookupByLibrary.simpleMessage(
+            'Do you want to save note first?'),
         'screenBrightness':
             MessageLookupByLibrary.simpleMessage('Screen brightness'),
         'screenTimeout': MessageLookupByLibrary.simpleMessage('Screen timeout'),
@@ -621,6 +630,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'system': MessageLookupByLibrary.simpleMessage('System'),
         'takeNewPhoto': MessageLookupByLibrary.simpleMessage('Take new photo'),
         'task': MessageLookupByLibrary.simpleMessage('Task'),
+        'tasks': MessageLookupByLibrary.simpleMessage('tasks'),
         'templates': MessageLookupByLibrary.simpleMessage('Templates'),
         'termsOfUse': MessageLookupByLibrary.simpleMessage('terms of use'),
         'termsOfUseUrl':

@@ -692,82 +692,19 @@ void main() {
       await tester.goToInfoItemTab();
 
       expect(find.byType(InfoItemTab), findsOneWidget);
-      await tester.tap(find.byType(ChangeInfoItemPicker));
-      await tester.pumpAndSettle();
-      expect(find.byType(SelectInfoTypePage), findsOneWidget);
-      expect(find.byKey(TestKey.infoItemNoneRadio), findsOneWidget);
-      expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
-      expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
-    });
-
-    testWidgets('Change between info items preserves old info item state',
-        (WidgetTester tester) async {
-      const q1 = 'q1', q2 = 'q2', q3 = 'q3', noteText = 'noteText';
-      final activity = Activity.createNew(
-          title: 'null',
-          startTime: startTime,
-          infoItem: Checklist(questions: const [
-            Question(id: 1, name: q1),
-            Question(id: 2, name: q3),
-            Question(id: 3, name: q2)
-          ]));
-      await tester.pumpWidget(createEditActivityPage(givenActivity: activity));
-      await tester.pumpAndSettle();
-      await tester.goToInfoItemTab();
-
-      await tester.tap(find.byType(ChangeInfoItemPicker));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(GreenButton));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.byType(NoteBlock));
-      await tester.pumpAndSettle();
-      await tester.enterText(find.byType(TextField), noteText);
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(GreenButton));
-      await tester.pumpAndSettle();
-
-      expect(find.text(noteText), findsOneWidget);
-
-      await tester.tap(find.byType(ChangeInfoItemPicker));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(GreenButton));
-      await tester.pumpAndSettle();
-
-      expect(find.text(q1), findsOneWidget);
-      expect(find.text(q2), findsOneWidget);
-      expect(find.text(q3), findsOneWidget);
-
-      await tester.tap(find.byType(ChangeInfoItemPicker));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.infoItemNoneRadio));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(GreenButton));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.byType(ChangeInfoItemPicker));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(GreenButton));
-      await tester.pumpAndSettle();
-
-      expect(find.text(noteText), findsOneWidget);
+      expect(find.byType(InfoItemPickField), findsNWidgets(2));
+      expect(find.text(translate.note), findsOneWidget);
+      expect(find.text(translate.checklist), findsOneWidget);
     });
 
     group('note', () {
-      Future goToNote(WidgetTester tester) async {
+      Future goToNote(WidgetTester tester, [bool newNote = true]) async {
         await tester.goToInfoItemTab();
 
-        await tester.tap(find.byType(ChangeInfoItemPicker));
+        await tester.tap(find.text(translate.note));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(GreenButton));
+        await tester
+            .tap(find.byIcon(newNote ? AbiliaIcons.plus : AbiliaIcons.folder));
         await tester.pumpAndSettle();
       }
 
@@ -785,63 +722,10 @@ that it is visible in the info item tab
             .pumpWidget(createEditActivityPage(givenActivity: activity));
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
+        await tester.tap(find.text(translate.note));
+        await tester.pumpAndSettle();
 
         expect(find.text(aLongNote), findsOneWidget);
-      });
-
-      testWidgets('Info item note not deleted when to info item note',
-          (WidgetTester tester) async {
-        const aLongNote = '''
-This is a note
-I am typing for testing
-that it is visible in the info item tab
-''';
-        final activity = Activity.createNew(
-            title: 'null',
-            startTime: startTime,
-            infoItem: const NoteInfoItem(aLongNote));
-        await tester
-            .pumpWidget(createEditActivityPage(givenActivity: activity));
-        await tester.pumpAndSettle();
-        await tester.goToInfoItemTab();
-
-        expect(find.text(aLongNote), findsOneWidget);
-        await tester.tap(find.byIcon(AbiliaIcons.edit));
-        await tester.pumpAndSettle();
-        expect(find.byType(SelectInfoTypePage), findsOneWidget);
-        expect(find.byKey(TestKey.infoItemNoneRadio), findsOneWidget);
-        expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
-        expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
-
-        await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(GreenButton));
-        await tester.pumpAndSettle();
-        expect(find.byType(SelectInfoTypePage), findsNothing);
-        expect(find.text(aLongNote), findsOneWidget);
-      });
-
-      testWidgets('Info item note can be selected',
-          (WidgetTester tester) async {
-        await tester.pumpWidget(createEditActivityPage());
-        await tester.pumpAndSettle();
-        await tester.goToInfoItemTab();
-
-        await tester.tap(find.byType(ChangeInfoItemPicker));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(SelectInfoTypePage), findsOneWidget);
-
-        await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
-        await tester.tap(find.byType(GreenButton));
-        await tester.pumpAndSettle();
-
-        await tester.pumpAndSettle();
-        expect(find.byType(SelectInfoTypePage), findsNothing);
-        expect(find.text(translate.infoType), findsOneWidget);
-        expect(find.text(translate.addNote), findsOneWidget);
-        expect(find.text(translate.typeSomething), findsOneWidget);
-        expect(find.byIcon(AbiliaIcons.edit), findsOneWidget);
       });
 
       testWidgets('Info item note opens EditNoteDialog',
@@ -849,9 +733,6 @@ that it is visible in the info item tab
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToNote(tester);
-
-        await tester.tap(find.byType(NoteBlock));
-        await tester.pumpAndSettle();
 
         expect(find.byType(EditNotePage), findsOneWidget);
       });
@@ -877,8 +758,6 @@ Internal improvements to tests and examples.''';
         await tester.pumpAndSettle();
         await goToNote(tester);
 
-        await tester.tap(find.byType(NoteBlock));
-        await tester.pumpAndSettle();
         await tester.enterText(find.byType(TextField), noteText);
         await tester.pumpAndSettle();
         await tester.verifyTts(
@@ -896,7 +775,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToNote(tester);
-        expect(find.byIcon(AbiliaIcons.showText), findsOneWidget);
+        expect(find.byType(EditNotePage), findsOneWidget);
       });
 
       testWidgets('note library shows', (WidgetTester tester) async {
@@ -931,9 +810,7 @@ Internal improvements to tests and examples.''';
 
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
-        await goToNote(tester);
-        await tester.tap(find.byIcon(AbiliaIcons.showText));
-        await tester.pumpAndSettle();
+        await goToNote(tester, false);
         expect(find.byType(SortableLibrary<NoteData>), findsOneWidget);
         expect(find.byType(LibraryNote), findsWidgets);
         expect(find.text(content), findsOneWidget);
@@ -960,9 +837,7 @@ Internal improvements to tests and examples.''';
 
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
-        await goToNote(tester);
-        await tester.tap(find.byIcon(AbiliaIcons.showText));
-        await tester.pumpAndSettle();
+        await goToNote(tester, false);
         await tester.tap(find.text(content));
         await tester.pumpAndSettle();
         expect(find.text(content), findsOneWidget);
@@ -987,11 +862,7 @@ Internal improvements to tests and examples.''';
       Future goToChecklist(WidgetTester tester) async {
         await tester.goToInfoItemTab();
 
-        await tester.tap(find.byType(ChangeInfoItemPicker));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(GreenButton));
+        await tester.tap(find.text(translate.checklist));
         await tester.pumpAndSettle();
       }
 
@@ -999,6 +870,8 @@ Internal improvements to tests and examples.''';
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
+        await tester.tap(find.byIcon(AbiliaIcons.plus));
+        await tester.pumpAndSettle();
 
         expect(find.byType(EditChecklistWidget), findsOneWidget);
       });
@@ -1008,6 +881,7 @@ Internal improvements to tests and examples.''';
             createEditActivityPage(givenActivity: activityWithChecklist));
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
+        await tester.tap(find.text(translate.checklist));
 
         expect(find.text(questions[0]!), findsOneWidget);
         expect(find.text(questions[1]!), findsOneWidget);
@@ -1030,6 +904,7 @@ Internal improvements to tests and examples.''';
         );
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
+        await tester.tap(find.text(translate.checklist));
 
         expect(find.byType(FadeInCalendarImage), findsOneWidget);
       });
@@ -1039,7 +914,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpAndSettle();
         await goToChecklist(tester);
 
-        await tester.tap(find.byIcon(AbiliaIcons.newIcon));
+        await tester.tap(find.byIcon(AbiliaIcons.plus));
         await tester.pumpAndSettle();
 
         expect(find.byType(EditQuestionBottomSheet), findsOneWidget);
@@ -1052,7 +927,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpAndSettle();
         await goToChecklist(tester);
 
-        await tester.tap(find.byIcon(AbiliaIcons.newIcon));
+        await tester.tap(find.byIcon(AbiliaIcons.plus));
         await tester.pumpAndSettle();
 
         await tester.enterText(find.byType(TextField), questionName);
@@ -1095,7 +970,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
-        await tester.tap(find.byIcon(AbiliaIcons.newIcon));
+        await tester.tap(find.byIcon(AbiliaIcons.plus));
         await tester.pumpAndSettle();
 
         // Expect - Name is empty
@@ -1122,10 +997,9 @@ Internal improvements to tests and examples.''';
         await tester.pumpWidget(
             createEditActivityPage(givenActivity: activityWithChecklist));
         await tester.pumpAndSettle();
-        await tester.goToInfoItemTab();
-        await tester.tap(find.byIcon(AbiliaIcons.newIcon));
+        await goToChecklist(tester);
+        await tester.tap(find.byIcon(AbiliaIcons.plus));
         await tester.pumpAndSettle();
-
         await tester.enterText(find.byType(TextField), questionName);
         await tester.pumpAndSettle();
         expect(find.text(questionName), findsWidgets);
@@ -1146,7 +1020,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
-        await tester.tap(find.byIcon(AbiliaIcons.newIcon));
+        await tester.tap(find.byIcon(AbiliaIcons.plus));
         await tester.pumpAndSettle();
 
         final editViewDialogBefore =
@@ -1176,6 +1050,14 @@ Internal improvements to tests and examples.''';
         expect(find.text(questions[1]!), findsOneWidget);
         expect(find.text(questions[2]!), findsOneWidget);
         expect(find.text(questions[3]!, skipOffstage: false), findsOneWidget);
+
+        await tester.tap(find.text(translate.checklist));
+        await tester.pumpAndSettle();
+        expect(find.text(questions[0]!), findsOneWidget);
+        expect(find.text(questions[1]!), findsOneWidget);
+        expect(find.text(questions[2]!), findsOneWidget);
+        expect(find.text(questions[3]!), findsOneWidget);
+
         await tester.tap(find.text(questions[0]!));
         await tester.pumpAndSettle();
 
@@ -1192,7 +1074,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpWidget(
             createEditActivityPage(givenActivity: activityWithChecklist));
         await tester.pumpAndSettle();
-        await tester.goToInfoItemTab();
+        await goToChecklist(tester);
 
         await tester.tap(find.text(questions[0]!));
         await tester.pumpAndSettle();
@@ -1204,7 +1086,7 @@ Internal improvements to tests and examples.''';
 
         await tester.tap(find.text(questions[1]!));
         await tester.pumpAndSettle();
-        await tester.dragFrom(tester.getCenter(find.byType(EditChecklistView)),
+        await tester.dragFrom(tester.getCenter(find.byType(EditChecklistWidget)),
             const Offset(0, -50));
         await tester.pump();
         await tester.tap(find.text(questions[2]!));
@@ -1216,7 +1098,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpWidget(
             createEditActivityPage(givenActivity: activityWithChecklist));
         await tester.pumpAndSettle();
-        await tester.goToInfoItemTab();
+        await goToChecklist(tester);
 
         final question0y = tester.getCenter(find.text(questions[0]!)).dy;
         final question1y = tester.getCenter(find.text(questions[1]!)).dy;
@@ -1238,7 +1120,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpWidget(
             createEditActivityPage(givenActivity: activityWithChecklist));
         await tester.pumpAndSettle();
-        await tester.goToInfoItemTab();
+        await goToChecklist(tester);
 
         await tester.tap(find.text(questions[0]!));
         await tester.pumpAndSettle();
@@ -1282,7 +1164,7 @@ text''';
         await tester.pumpWidget(
             createEditActivityPage(givenActivity: activityWithChecklist));
         await tester.pumpAndSettle();
-        await tester.goToInfoItemTab();
+        await goToChecklist(tester);
 
         expect(find.text(questions[0]!), findsOneWidget);
         await tester.scrollDown();
@@ -1299,14 +1181,6 @@ text''';
 
         expect(find.text(questions[1]!), findsNothing);
         expect(find.text(newQuestionName), findsOneWidget);
-      });
-
-      testWidgets('checklist button library shows',
-          (WidgetTester tester) async {
-        await tester.pumpWidget(createEditActivityPage());
-        await tester.pumpAndSettle();
-        await goToChecklist(tester);
-        expect(find.byIcon(AbiliaIcons.showText), findsOneWidget);
       });
 
       testWidgets('checklist library shows', (WidgetTester tester) async {
@@ -1347,7 +1221,7 @@ text''';
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
-        await tester.tap(find.byIcon(AbiliaIcons.showText));
+        await tester.tap(find.byIcon(AbiliaIcons.folder));
         await tester.pumpAndSettle();
         expect(find.byType(SortableLibrary<ChecklistData>), findsOneWidget);
         expect(find.byType(ChecklistLibraryPage), findsWidgets);
@@ -1383,7 +1257,7 @@ text''';
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
-        await tester.tap(find.byIcon(AbiliaIcons.showText));
+        await tester.tap(find.byIcon(AbiliaIcons.folder));
         await tester.pumpAndSettle();
         await tester.tap(find.text(title1));
         await tester.pumpAndSettle();
@@ -3129,11 +3003,11 @@ text''';
       await tester.pumpAndSettle();
       await tester.goToInfoItemTab();
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(PickInfoItem));
-      await tester.pumpAndSettle();
 
       // Assert -- Checklist option hidden
-      expect(find.text(translate.addChecklist), findsNothing);
+      expect(find.byType(InfoItemPickField), findsNWidgets(1));
+      expect(find.text(translate.note), findsOneWidget);
+      expect(find.text(translate.checklist), findsNothing);
     });
 
     testWidgets('Select Notes off', (WidgetTester tester) async {
@@ -3151,11 +3025,11 @@ text''';
       await tester.pumpAndSettle();
       await tester.goToInfoItemTab();
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(PickInfoItem));
-      await tester.pumpAndSettle();
 
       // Assert -- Notes option hidden
-      expect(find.text(translate.addNote), findsNothing);
+      expect(find.byType(InfoItemPickField), findsNWidgets(1));
+      expect(find.text(translate.note), findsNothing);
+      expect(find.text(translate.checklist), findsOneWidget);
     });
 
     testWidgets(
@@ -3645,15 +3519,11 @@ text''';
         );
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
-        await tester.tap(find.byType(ChangeInfoItemPicker));
-        await tester.pumpAndSettle();
 
-        await tester.verifyTts(find.byKey(TestKey.infoItemNoneRadio),
-            exact: translate.infoTypeNone);
-        await tester.verifyTts(find.byKey(TestKey.infoItemChecklistRadio),
-            exact: translate.addChecklist);
-        await tester.verifyTts(find.byKey(TestKey.infoItemNoteRadio),
-            exact: translate.addNote);
+        await tester.verifyTts(find.byType(InfoItemPickField).first,
+            exact: translate.checklist);
+        await tester.verifyTts(find.byType(InfoItemPickField).last,
+            exact: translate.note);
       });
 
       testWidgets('checklist', (WidgetTester tester) async {
@@ -3683,23 +3553,19 @@ text''';
         );
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
-        await tester.tap(find.byType(ChangeInfoItemPicker));
+        await tester.tap(find.text(translate.checklist));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(GreenButton));
+        await tester.verifyTts(find.byIcon(AbiliaIcons.folder),
+            exact: translate.fromTemplate);
+        await tester.tap(find.byIcon(AbiliaIcons.folder));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(AbiliaIcons.showText));
-        await tester.pumpAndSettle();
         await tester.verifyTts(find.byType(LibraryChecklist), exact: title1);
         await tester.tap(find.byType(LibraryChecklist));
         await tester.pumpAndSettle();
         await tester.tap(find.byType(GreenButton));
         await tester.pumpAndSettle();
         await tester.verifyTts(find.text(item1Name), exact: item1Name);
-        await tester.verifyTts(find.byIcon(AbiliaIcons.newIcon),
-            exact: translate.addNew);
       });
     });
 
@@ -3723,13 +3589,9 @@ text''';
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.goToInfoItemTab();
-      await tester.tap(find.byType(ChangeInfoItemPicker));
+      await tester.tap(find.text(translate.note));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(GreenButton));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.showText));
+      await tester.tap(find.byIcon(AbiliaIcons.folder));
       await tester.pumpAndSettle();
 
       await tester.verifyTts(find.text(content), exact: content);
@@ -4131,7 +3993,7 @@ text''';
 
 extension on WidgetTester {
   Future scrollDown({double dy = -800.0}) async {
-    final center = getCenter(find.byType(EditActivityPage));
+    final center = getCenter(find.byType(Scaffold));
     await dragFrom(center, Offset(0.0, dy));
     await pump();
   }
