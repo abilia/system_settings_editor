@@ -19,7 +19,7 @@ void main() {
 
   final FullScreenActivityCubit fullScreenActivityCubit =
       FullScreenActivityCubit(
-    activitiesBloc: FakeActivitiesBloc(),
+    activitiesCubit: FakeActivitiesCubit(),
     activityRepository: FakeActivityRepository(),
     clockBloc: ClockBloc.fixed(time),
     alarmCubit: FakeAlarmCubit(),

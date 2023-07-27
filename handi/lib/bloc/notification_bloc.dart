@@ -10,24 +10,24 @@ class ScheduleNotifications {}
 class NotificationState {}
 
 class NotificationBloc extends Bloc<ScheduleNotifications, NotificationState> {
-  final ActivitiesBloc activitiesBloc;
+  final ActivitiesCubit activitiesCubit;
   late final StreamSubscription _activitiesSubscription;
 
   NotificationBloc({
-    required this.activitiesBloc,
+    required this.activitiesCubit,
     required Duration scheduleNotificationsDelay,
   }) : super(NotificationState()) {
     on<ScheduleNotifications>(
       (event, emit) async => _scheduleNotifications(),
       transformer: _debounceTime(scheduleNotificationsDelay),
     );
-    _activitiesSubscription =
-        activitiesBloc.stream.listen((_) async => add(ScheduleNotifications()));
+    _activitiesSubscription = activitiesCubit.stream
+        .listen((_) async => add(ScheduleNotifications()));
   }
 
   Future<void> _scheduleNotifications() async {
     final now = DateTime.now();
-    final activities = await activitiesBloc.getActivitiesAfter(now);
+    final activities = await activitiesCubit.getActivitiesAfter(now);
     return scheduleActivityNotifications(activities);
   }
 

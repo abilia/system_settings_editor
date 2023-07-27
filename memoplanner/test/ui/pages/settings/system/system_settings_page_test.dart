@@ -59,8 +59,8 @@ void main() {
               BlocProvider<SpeechSettingsCubit>(
                 create: (context) => FakeSpeechSettingsCubit(),
               ),
-              BlocProvider<ActivitiesBloc>(
-                create: (context) => FakeActivitiesBloc(),
+              BlocProvider<ActivitiesCubit>(
+                create: (context) => FakeActivitiesCubit(),
               ),
               BlocProvider<TimepillarCubit>(
                 create: (context) => FakeTimepillarCubit(),

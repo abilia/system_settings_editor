@@ -213,7 +213,7 @@ class AuthenticatedProviders extends StatelessWidget {
             )..add(const SyncAll()),
           ),
           BlocProvider(
-            create: (context) => ActivitiesBloc(
+            create: (context) => ActivitiesCubit(
               activityRepository: context.read<ActivityRepository>(),
               syncBloc: context.read<SyncBloc>(),
             ),
@@ -241,7 +241,7 @@ class AuthenticatedProviders extends StatelessWidget {
           BlocProvider<NotificationBloc>(
             lazy: false,
             create: (context) => NotificationBloc(
-              activitiesBloc: context.read<ActivitiesBloc>(),
+              activitiesCubit: context.read<ActivitiesCubit>(),
               scheduleNotificationsDelay:
                   GetIt.I<Delays>().scheduleNotificationsDelay,
             )..add(ScheduleNotifications()),

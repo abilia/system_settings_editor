@@ -12,7 +12,7 @@ import '../../../mocks/mock_bloc.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
-  late MockActivitiesBloc mockActivitiesBloc;
+  late MockActivitiesCubit mockActivitiesCubit;
   late MockActivityRepository mockActivityRepository;
   late ClockBloc clockBloc;
   final nowTime = DateTime(2000, 02, 22, 22, 30);
@@ -26,13 +26,18 @@ void main() {
   });
 
   setUp(() {
-    mockActivitiesBloc = MockActivitiesBloc();
-    when(() => mockActivitiesBloc.state).thenAnswer((_) => ActivitiesChanged());
+    mockActivitiesCubit = MockActivitiesCubit();
+    when(() => mockActivitiesCubit.state)
+        .thenAnswer((_) => ActivitiesChanged());
     mockActivityRepository = MockActivityRepository();
     when(() => mockActivityRepository.allBetween(any(), any()))
         .thenAnswer((_) => Future.value([]));
-    when(() => mockActivitiesBloc.activityRepository)
+    when(() => mockActivitiesCubit.activityRepository)
         .thenReturn(mockActivityRepository);
+    when(() => mockActivitiesCubit.addActivity(any()))
+        .thenAnswer((_) => Future.value());
+    when(() => mockActivitiesCubit.updateRecurringActivity(any(), any()))
+        .thenAnswer((_) => Future.value());
 
     clockBloc = ClockBloc.fixed(nowTime);
   });
@@ -40,7 +45,7 @@ void main() {
   test('Initial edit state is', () {
     // Arrange
     final activityWizardCubit = ActivityWizardCubit.edit(
-      activitiesBloc: FakeActivitiesBloc(),
+      activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: FakeEditActivityCubit(),
       clockBloc: clockBloc,
       allowPassedStartTime: false,
@@ -53,7 +58,7 @@ void main() {
   test('Initial new with default settings', () {
     // Arrange
     final activityWizardCubit = ActivityWizardCubit.newActivity(
-      activitiesBloc: FakeActivitiesBloc(),
+      activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: FakeEditActivityCubit(),
       clockBloc: clockBloc,
       addActivitySettings: const AddActivitySettings(),
@@ -77,7 +82,7 @@ void main() {
     // Arrange
     final activityWizardCubit = ActivityWizardCubit.newActivity(
       supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
-      activitiesBloc: FakeActivitiesBloc(),
+      activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: EditActivityCubit.newActivity(
         day: aDay,
         defaultsSettings:
@@ -117,7 +122,7 @@ void main() {
   test('Initial edit', () {
     // Arrange
     final activityWizardCubit = ActivityWizardCubit.edit(
-      activitiesBloc: FakeActivitiesBloc(),
+      activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: FakeEditActivityCubit(),
       clockBloc: clockBloc,
       allowPassedStartTime: false,
@@ -146,7 +151,7 @@ void main() {
     );
 
     final activityWizardCubit = ActivityWizardCubit.edit(
-      activitiesBloc: FakeActivitiesBloc(),
+      activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       allowPassedStartTime: false,
@@ -181,7 +186,7 @@ void main() {
     );
     final activityWizardCubit = ActivityWizardCubit.newActivity(
       supportPersonsCubit: FakeSupportPersonsCubit(),
-      activitiesBloc: mockActivitiesBloc,
+      activitiesCubit: mockActivitiesCubit,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       addActivitySettings: const AddActivitySettings(
@@ -270,7 +275,7 @@ void main() {
         successfulSave: true,
       ),
     );
-    verify(() => mockActivitiesBloc.add(AddActivity(expectedSaved)));
+    verify(() => mockActivitiesCubit.addActivity(expectedSaved));
   });
 
   test('Saving full day activity sets correct time and alarms', () async {
@@ -297,7 +302,7 @@ void main() {
       ActivityDay(activity, aDay),
     );
     final activityWizardCubit = ActivityWizardCubit.edit(
-      activitiesBloc: mockActivitiesBloc,
+      activitiesCubit: mockActivitiesCubit,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       allowPassedStartTime: false,
@@ -330,8 +335,7 @@ void main() {
 
     // Assert
     expect(activityWizardCubit.state, wizState.saveSuccess());
-    verify(() =>
-        mockActivitiesBloc.add(UpdateActivity(activityExpectedToBeSaved)));
+    verify(() => mockActivitiesCubit.addActivity(activityExpectedToBeSaved));
   });
 
   test('activity.startTime set correctly', () async {
@@ -347,7 +351,7 @@ void main() {
 
     final wizCubit = ActivityWizardCubit.newActivity(
       supportPersonsCubit: FakeSupportPersonsCubit(),
-      activitiesBloc: FakeActivitiesBloc(),
+      activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       addActivitySettings: const AddActivitySettings(
@@ -473,7 +477,7 @@ void main() {
       );
 
       final wizCubit = ActivityWizardCubit.edit(
-        activitiesBloc: FakeActivitiesBloc(),
+        activitiesCubit: FakeActivitiesCubit(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
         allowPassedStartTime: true,
@@ -567,7 +571,7 @@ void main() {
     );
 
     final wizCubit = ActivityWizardCubit.edit(
-      activitiesBloc: FakeActivitiesBloc(),
+      activitiesCubit: FakeActivitiesCubit(),
       clockBloc: clockBloc,
       editActivityCubit: editActivityCubit,
       allowPassedStartTime: false,
@@ -654,7 +658,7 @@ void main() {
     );
 
     final wizCubit = ActivityWizardCubit.edit(
-      activitiesBloc: FakeActivitiesBloc(),
+      activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       allowPassedStartTime: true,
@@ -730,7 +734,7 @@ void main() {
     );
 
     final wizCubit = ActivityWizardCubit.edit(
-      activitiesBloc: mockActivitiesBloc,
+      activitiesCubit: mockActivitiesCubit,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       allowPassedStartTime: true,
@@ -757,9 +761,12 @@ void main() {
     wizCubit.next();
 
     // Assert
-    await untilCalled(() => mockActivitiesBloc.add(any()));
-    expect(verify(() => mockActivitiesBloc.add(captureAny())).captured.single,
-        UpdateActivity(expectedActivity));
+    await untilCalled(() => mockActivitiesCubit.addActivity(any()));
+    expect(
+        verify(() => mockActivitiesCubit.addActivity(captureAny()))
+            .captured
+            .single,
+        expectedActivity);
   });
 
   test('Trying to save an empty note saves noInfoItem', () async {
@@ -781,7 +788,7 @@ void main() {
     );
 
     final wizCubit = ActivityWizardCubit.edit(
-      activitiesBloc: mockActivitiesBloc,
+      activitiesCubit: mockActivitiesCubit,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       allowPassedStartTime: true,
@@ -808,9 +815,12 @@ void main() {
     wizCubit.next();
 
     // Assert
-    await untilCalled(() => mockActivitiesBloc.add(any()));
-    expect(verify(() => mockActivitiesBloc.add(captureAny())).captured.single,
-        UpdateActivity(expectedActivity));
+    await untilCalled(() => mockActivitiesCubit.addActivity(any()));
+    expect(
+        verify(() => mockActivitiesCubit.addActivity(captureAny()))
+            .captured
+            .single,
+        expectedActivity);
   });
 
   test('Trying to save recurrence without data yields error', () async {
@@ -824,7 +834,7 @@ void main() {
 
     final wizCubit = ActivityWizardCubit.newActivity(
       supportPersonsCubit: FakeSupportPersonsCubit(),
-      activitiesBloc: FakeActivitiesBloc(),
+      activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       addActivitySettings: const AddActivitySettings(
@@ -897,7 +907,7 @@ void main() {
 
         final wizCubit = ActivityWizardCubit.newActivity(
           supportPersonsCubit: FakeSupportPersonsCubit(),
-          activitiesBloc: mockActivitiesBloc,
+          activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.days())),
           addActivitySettings: const AddActivitySettings(
@@ -974,7 +984,7 @@ void main() {
 
         final wizCubit = ActivityWizardCubit.newActivity(
           supportPersonsCubit: FakeSupportPersonsCubit(),
-          activitiesBloc: mockActivitiesBloc,
+          activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           addActivitySettings: const AddActivitySettings(
@@ -1051,8 +1061,10 @@ void main() {
         await expected2;
 
         expect(
-            verify(() => mockActivitiesBloc.add(captureAny())).captured.single,
-            AddActivity(expectedActivity));
+            verify(() => mockActivitiesCubit.addActivity(captureAny()))
+                .captured
+                .single,
+            expectedActivity);
       });
 
       test('Trying to save full day before now yields warning', () async {
@@ -1068,7 +1080,7 @@ void main() {
 
         final wizCubit = ActivityWizardCubit.newActivity(
           supportPersonsCubit: FakeSupportPersonsCubit(),
-          activitiesBloc: mockActivitiesBloc,
+          activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(time),
           addActivitySettings: const AddActivitySettings(
@@ -1160,7 +1172,7 @@ void main() {
         );
         final wizCubit = ActivityWizardCubit.newActivity(
           supportPersonsCubit: FakeSupportPersonsCubit(),
-          activitiesBloc: mockActivitiesBloc,
+          activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
           clockBloc: clockBloc,
           addActivitySettings: const AddActivitySettings(
@@ -1273,7 +1285,7 @@ void main() {
         );
 
         final wizCubit = ActivityWizardCubit.edit(
-          activitiesBloc: FakeActivitiesBloc(),
+          activitiesCubit: FakeActivitiesCubit(),
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           allowPassedStartTime: true,
@@ -1366,7 +1378,7 @@ void main() {
 
         final wizCubit = ActivityWizardCubit.newActivity(
           supportPersonsCubit: FakeSupportPersonsCubit(),
-          activitiesBloc: mockActivitiesBloc,
+          activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
           addActivitySettings: const AddActivitySettings(
@@ -1457,7 +1469,7 @@ void main() {
 
         final wizCubit = ActivityWizardCubit.newActivity(
           supportPersonsCubit: FakeSupportPersonsCubit(),
-          activitiesBloc: mockActivitiesBloc,
+          activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           addActivitySettings: const AddActivitySettings(
@@ -1545,7 +1557,7 @@ void main() {
         );
 
         final wizCubit = ActivityWizardCubit.edit(
-          activitiesBloc: mockActivitiesBloc,
+          activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
           allowPassedStartTime: false,
@@ -1609,7 +1621,7 @@ void main() {
 
         final wizCubit = ActivityWizardCubit.newActivity(
           supportPersonsCubit: FakeSupportPersonsCubit(),
-          activitiesBloc: mockActivitiesBloc,
+          activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime),
           addActivitySettings: const AddActivitySettings(
@@ -1673,7 +1685,7 @@ void main() {
 
         final wizCubit = ActivityWizardCubit.newActivity(
           supportPersonsCubit: FakeSupportPersonsCubit(),
-          activitiesBloc: mockActivitiesBloc,
+          activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
           addActivitySettings: const AddActivitySettings(
@@ -1746,7 +1758,7 @@ void main() {
         );
 
         final wizCubit = ActivityWizardCubit.edit(
-          activitiesBloc: mockActivitiesBloc,
+          activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
           allowPassedStartTime: false,
@@ -1804,7 +1816,7 @@ void main() {
     );
 
     final wizCubit = ActivityWizardCubit.edit(
-      activitiesBloc: FakeActivitiesBloc(),
+      activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       allowPassedStartTime: false,
@@ -1881,7 +1893,7 @@ void main() {
     );
 
     final wizCubit = ActivityWizardCubit.edit(
-      activitiesBloc: mockActivitiesBloc,
+      activitiesCubit: mockActivitiesCubit,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       allowPassedStartTime: false,
@@ -1915,13 +1927,15 @@ void main() {
         saveRecurring: SaveRecurring(ApplyTo.onlyThisDay, aDay));
 
     // Assert - correct day is saved
-    await untilCalled(() => mockActivitiesBloc.add(any()));
+    await untilCalled(
+        () => mockActivitiesCubit.updateRecurringActivity(any(), any()));
     expect(
-      verify(() => mockActivitiesBloc.add(captureAny())).captured.single,
-      UpdateRecurringActivity(
+      verify(() => mockActivitiesCubit.updateRecurringActivity(
+          captureAny(), captureAny())).captured,
+      [
         ActivityDay(expectedActivityToSave, aDay),
         ApplyTo.onlyThisDay,
-      ),
+      ],
     );
   });
 
@@ -1940,7 +1954,7 @@ void main() {
     );
 
     final wizCubit = ActivityWizardCubit.edit(
-      activitiesBloc: mockActivitiesBloc,
+      activitiesCubit: mockActivitiesCubit,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       allowPassedStartTime: false,
@@ -1960,13 +1974,15 @@ void main() {
     await wizCubit.next(
         saveRecurring: SaveRecurring(ApplyTo.onlyThisDay, aDay));
 
-    await untilCalled(() => mockActivitiesBloc.add(any()));
+    await untilCalled(
+        () => mockActivitiesCubit.updateRecurringActivity(any(), any()));
     expect(
-      verify(() => mockActivitiesBloc.add(captureAny())).captured.single,
-      UpdateRecurringActivity(
+      verify(() => mockActivitiesCubit.updateRecurringActivity(
+          captureAny(), captureAny())).captured,
+      [
         ActivityDay(expectedActivity, aDay),
         ApplyTo.onlyThisDay,
-      ),
+      ],
     );
   });
 
@@ -1982,7 +1998,7 @@ void main() {
 
       final wizCubit = ActivityWizardCubit.newActivity(
         supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
-        activitiesBloc: FakeActivitiesBloc(),
+        activitiesCubit: FakeActivitiesCubit(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
         addActivitySettings:
@@ -2023,7 +2039,7 @@ void main() {
 
       final wizCubit = ActivityWizardCubit.newActivity(
         supportPersonsCubit: FakeSupportPersonsCubit(),
-        activitiesBloc: FakeActivitiesBloc(),
+        activitiesCubit: FakeActivitiesCubit(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
         addActivitySettings: const AddActivitySettings(
@@ -2071,7 +2087,7 @@ void main() {
 
       final wizCubit = ActivityWizardCubit.newActivity(
         supportPersonsCubit: FakeSupportPersonsCubit(),
-        activitiesBloc: FakeActivitiesBloc(),
+        activitiesCubit: FakeActivitiesCubit(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
         addActivitySettings: const AddActivitySettings(
@@ -2122,7 +2138,7 @@ void main() {
 
       final wizCubit = ActivityWizardCubit.newActivity(
         supportPersonsCubit: FakeSupportPersonsCubit(),
-        activitiesBloc: FakeActivitiesBloc(),
+        activitiesCubit: FakeActivitiesCubit(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
         addActivitySettings: const AddActivitySettings(
@@ -2208,7 +2224,7 @@ void main() {
 
       final wizCubit = ActivityWizardCubit.newActivity(
         supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
-        activitiesBloc: FakeActivitiesBloc(),
+        activitiesCubit: FakeActivitiesCubit(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
         addActivitySettings: allWizStepsSettings,
@@ -2235,7 +2251,7 @@ void main() {
 
       final wizCubit = ActivityWizardCubit.newActivity(
         supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
-        activitiesBloc: FakeActivitiesBloc(),
+        activitiesCubit: FakeActivitiesCubit(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
         addActivitySettings: allWizStepsSettings,
@@ -2315,7 +2331,7 @@ void main() {
 
       final wizCubit = ActivityWizardCubit.newActivity(
         supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
-        activitiesBloc: FakeActivitiesBloc(),
+        activitiesCubit: FakeActivitiesCubit(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
         addActivitySettings: allWizStepsSettings,

@@ -12,7 +12,7 @@ import '../mocks/mock_bloc.dart';
 import '../test_helpers/register_fallback_values.dart';
 
 void main() {
-  late ActivitiesBloc activitiesBloc;
+  late ActivitiesCubit activitiesCubit;
   late StreamController<ActivitiesChanged> activitiesStreamController;
   late Stream<ActivitiesChanged> activitiesStream;
 
@@ -38,11 +38,11 @@ void main() {
   setUpAll(registerFallbackValues);
   setUp(() async {
     await Lokalise.initMock();
-    activitiesBloc = MockActivitiesBloc();
-    when(() => activitiesBloc.state).thenReturn(ActivitiesChanged());
+    activitiesCubit = MockActivitiesCubit();
+    when(() => activitiesCubit.state).thenReturn(ActivitiesChanged());
     activitiesStreamController = StreamController<ActivitiesChanged>();
     activitiesStream = activitiesStreamController.stream.asBroadcastStream();
-    when(() => activitiesBloc.stream)
+    when(() => activitiesCubit.stream)
         .thenAnswer((invocation) => activitiesStream);
 
     sortableBloc = MockSortableBloc();
@@ -109,7 +109,7 @@ void main() {
               authenticatedState: state,
               child: MultiBlocProvider(
                 providers: [
-                  BlocProvider.value(value: activitiesBloc),
+                  BlocProvider.value(value: activitiesCubit),
                   BlocProvider.value(value: sortableBloc),
                   BlocProvider.value(value: authenticatedDialogCubit),
                   BlocProvider.value(value: timerCubit),
@@ -149,7 +149,7 @@ void main() {
 
   testWidgets('when settings we schedule alarms', (tester) async {
     // Arrange
-    when(() => activitiesBloc.state).thenReturn(
+    when(() => activitiesCubit.state).thenReturn(
       ActivitiesChanged(),
     );
     await tester.pumpWidget(authListener());
@@ -165,7 +165,7 @@ void main() {
 
   testWidgets('when timers update, we schedule alarms', (tester) async {
     // Arrange
-    when(() => activitiesBloc.state).thenReturn(ActivitiesChanged());
+    when(() => activitiesCubit.state).thenReturn(ActivitiesChanged());
     when(() => memoplannerSettingBloc.state)
         .thenReturn(const MemoplannerSettingsFailed());
     await tester.pumpWidget(authListener());
