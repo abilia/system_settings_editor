@@ -137,9 +137,38 @@ void main() {
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
       await tester.pumpAndSettle();
-      // Assert
-      expect(
-          scheduleNotificationsCalls, 1); // Alarms only scheduled on app start
+      // Assert - Alarms only scheduled on app start
+      expect(scheduleNotificationsCalls, 1);
+    });
+
+    testWidgets('Reschedule notifications on midnight', (tester) async {
+      // Arrange
+      await tester.pumpWidget(const App());
+      await tester.pumpAndSettle();
+
+      // Assert - Alarms only scheduled on app start
+      expect(scheduleNotificationsCalls, 1);
+
+      // Act - One second before midnight
+      mockTicker.add(DateTime(2021, 10, 10, 23, 59, 59));
+      await tester.pumpAndSettle();
+
+      // Assert - Alarms only scheduled on app start
+      expect(scheduleNotificationsCalls, 1);
+
+      // Act - Midnight
+      mockTicker.add(DateTime(2021, 10, 11, 0, 0, 0));
+      await tester.pumpAndSettle();
+
+      // Assert - Alarms scheduled once more
+      expect(scheduleNotificationsCalls, 2);
+
+      // Act - One second after midnight
+      mockTicker.add(DateTime(2021, 10, 11, 0, 0, 1));
+      await tester.pumpAndSettle();
+
+      // Assert - Alarms only scheduled on app start and midnight
+      expect(scheduleNotificationsCalls, 2);
     });
 
     testWidgets('SGC-1874 alarm with end time at midnight will show',
