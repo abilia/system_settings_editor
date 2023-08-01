@@ -20,7 +20,7 @@ class FullScreenActivityPage extends StatelessWidget {
       data: abiliaWhiteTheme,
       child: BlocProvider<FullScreenActivityCubit>(
         create: (context) => FullScreenActivityCubit(
-          activitiesBloc: context.read<ActivitiesBloc>(),
+          activitiesCubit: context.read<ActivitiesCubit>(),
           activityRepository: context.read<ActivityRepository>(),
           clockBloc: context.read<ClockBloc>(),
           alarmCubit: context.read<AlarmCubit>(),

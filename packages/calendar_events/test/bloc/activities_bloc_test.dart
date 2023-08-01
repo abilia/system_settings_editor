@@ -12,7 +12,7 @@ void main() {
   final anyTime = DateTime(2020, 03, 28, 15, 20);
   final anyDay = DateTime(2020, 03, 28);
 
-  late ActivitiesBloc activitiesBloc;
+  late ActivitiesCubit activitiesCubit;
   late MockActivityRepository mockActivityRepository;
   late SyncBloc mockSyncBloc;
   late SyncBloc syncBloc;
@@ -43,23 +43,13 @@ void main() {
       retryDelay: Duration.zero,
     );
 
-    activitiesBloc = ActivitiesBloc(
+    activitiesCubit = ActivitiesCubit(
       activityRepository: mockActivityRepository,
       syncBloc: mockSyncBloc,
     );
   });
 
-  group('ActivitiesBloc', () {
-    blocTest(
-      'LoadActivities event returns ActivitiesLoaded state',
-      build: () => ActivitiesBloc(
-        activityRepository: mockActivityRepository,
-        syncBloc: mockSyncBloc,
-      ),
-      act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
-      expect: () => [isA<ActivitiesChanged>()],
-    );
-
+  group('ActivitiesCubit', () {
     final storedActivity = Activity.createNew(
           title: 'title',
           startTime: DateTime(1900),
@@ -71,13 +61,14 @@ void main() {
         deletedStoredActivity = storedActivity.copyWith(deleted: true);
 
     blocTest('AddActivity calls save activities on mockActivityRepository',
-        build: () => ActivitiesBloc(
+        build: () => ActivitiesCubit(
               activityRepository: mockActivityRepository,
               syncBloc: mockSyncBloc,
             ),
-        act: (ActivitiesBloc bloc) => bloc
-          ..add(LoadActivities())
-          ..add(AddActivity(activity1)),
+        act: (ActivitiesCubit cubit) async {
+          cubit.notifyChange();
+          await cubit.addActivity(activity1);
+        },
         expect: () => [
               isA<ActivitiesChanged>(),
               isA<ActivitiesChanged>(),
@@ -88,15 +79,13 @@ void main() {
         });
 
     blocTest('UpdateActivities calls save activities on mockActivityRepository',
-        build: () => ActivitiesBloc(
+        build: () => ActivitiesCubit(
               activityRepository: mockActivityRepository,
               syncBloc: mockSyncBloc,
             ),
-        act: (ActivitiesBloc bloc) => bloc
-          ..add(LoadActivities())
-          ..add(UpdateActivity(updatedActivity1)),
+        act: (ActivitiesCubit cubit) async =>
+            cubit.addActivity(updatedActivity1),
         expect: () => [
-              isA<ActivitiesChanged>(),
               isA<ActivitiesChanged>(),
             ],
         verify: (bloc) async {
@@ -106,13 +95,14 @@ void main() {
 
     blocTest(
         'DeleteActivities calls save activities with deleted activity on mockActivityRepository',
-        build: () => ActivitiesBloc(
+        build: () => ActivitiesCubit(
               activityRepository: mockActivityRepository,
               syncBloc: mockSyncBloc,
             ),
-        act: (ActivitiesBloc bloc) => bloc
-          ..add(LoadActivities())
-          ..add(UpdateActivity(storedActivity.copyWith(deleted: true))),
+        act: (ActivitiesCubit cubit) async {
+          cubit.notifyChange();
+          await cubit.addActivity(storedActivity.copyWith(deleted: true));
+        },
         expect: () => [
               isA<ActivitiesChanged>(),
               isA<ActivitiesChanged>(),
@@ -124,7 +114,7 @@ void main() {
 
     test('Nothing happens when UnSynced is emitted', () async {
       // Arrange
-      activitiesBloc = ActivitiesBloc(
+      activitiesCubit = ActivitiesCubit(
         activityRepository: mockActivityRepository,
         syncBloc: syncBloc,
       );
@@ -134,7 +124,7 @@ void main() {
 
       // Assert
       await expectLater(
-        activitiesBloc.stream,
+        activitiesCubit.stream,
         emitsInOrder([]),
       );
     });
@@ -143,7 +133,7 @@ void main() {
         'Activities are loaded when Synced is emitted with didFetchData = true',
         () async {
       // Arrange
-      activitiesBloc = ActivitiesBloc(
+      activitiesCubit = ActivitiesCubit(
         activityRepository: mockActivityRepository,
         syncBloc: syncBloc,
       );
@@ -153,7 +143,7 @@ void main() {
 
       // Assert
       await expectLater(
-        activitiesBloc.stream,
+        activitiesCubit.stream,
         emitsInOrder([
           isA<ActivitiesChanged>(),
         ]),
@@ -163,12 +153,12 @@ void main() {
     blocTest(
       'Activities are not loaded when Synced is emitted with didFetchData = false',
       build: () {
-        activitiesBloc = ActivitiesBloc(
+        activitiesCubit = ActivitiesCubit(
           activityRepository: mockActivityRepository,
           syncBloc: syncBloc,
         );
         syncBloc.emit(const Synced(didFetchData: false));
-        return activitiesBloc;
+        return activitiesCubit;
       },
       expect: () => [], // no event emitted
     );
@@ -187,19 +177,10 @@ void main() {
               ]));
 
       // Act
-      activitiesBloc
-        ..add(LoadActivities())
-        ..add(DeleteRecurringActivity(
-            ActivityDay(recurringActivity, anyDay), ApplyTo.allDays));
+      activitiesCubit.notifyChange();
+      await activitiesCubit.deleteRecurringActivity(
+          ActivityDay(recurringActivity, anyDay), ApplyTo.allDays);
 
-      // Assert
-      await expectLater(
-        activitiesBloc.stream,
-        emitsInOrder([
-          isA<ActivitiesChanged>(),
-          isA<ActivitiesChanged>(),
-        ]),
-      );
       // Assert calls save with deleted recurring
       verify(() => mockActivityRepository.save([
             recurringActivity,
@@ -229,19 +210,10 @@ void main() {
             recurringActivity.copyWith(startTime: anyTime.nextDay());
 
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(DeleteRecurringActivity(
-              ActivityDay(recurringActivity, anyDay), ApplyTo.onlyThisDay));
+        activitiesCubit.notifyChange();
+        await activitiesCubit.deleteRecurringActivity(
+            ActivityDay(recurringActivity, anyDay), ApplyTo.onlyThisDay);
 
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
-        );
         // Assert calls save with deleted recurring
         verify(() => mockActivityRepository.save([
               expectedRecurring,
@@ -271,21 +243,12 @@ void main() {
             recurringActivity.copyWithRecurringEnd(in6Days.millisecondBefore());
 
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(DeleteRecurringActivity(
-            ActivityDay(recurringActivity, in6Days),
-            ApplyTo.onlyThisDay,
-          ));
-
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
+        activitiesCubit.notifyChange();
+        await activitiesCubit.deleteRecurringActivity(
+          ActivityDay(recurringActivity, in6Days),
+          ApplyTo.onlyThisDay,
         );
+
         // Assert calls save with deleted recurring
         verify(() => mockActivityRepository.save([
               expectedRecurring,
@@ -318,21 +281,12 @@ void main() {
         ];
 
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(DeleteRecurringActivity(
-            ActivityDay(recurringActivity, inAWeek.onlyDays()),
-            ApplyTo.onlyThisDay,
-          ));
-
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
+        activitiesCubit.notifyChange();
+        await activitiesCubit.deleteRecurringActivity(
+          ActivityDay(recurringActivity, inAWeek.onlyDays()),
+          ApplyTo.onlyThisDay,
         );
+
         // Assert calls save with deleted recurring
         verify(() => mockActivityRepository
             .save(any(that: MatchActivitiesWithoutId(expectedActivityList))));
@@ -358,21 +312,12 @@ void main() {
                 (_) => Future.value([recurringActivity, recurringActivity2]));
 
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(DeleteRecurringActivity(
-            ActivityDay(recurringActivity, anyDay),
-            ApplyTo.thisDayAndForward,
-          ));
-
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
+        activitiesCubit.notifyChange();
+        await activitiesCubit.deleteRecurringActivity(
+          ActivityDay(recurringActivity, anyDay),
+          ApplyTo.thisDayAndForward,
         );
+
         // Assert calls save with deleted recurring
         verify(() => mockActivityRepository.save([
               recurringActivity,
@@ -393,19 +338,12 @@ void main() {
             .thenAnswer((_) => Future.value([recurringActivity]));
 
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(DeleteRecurringActivity(ActivityDay(recurringActivity, inAWeek),
-              ApplyTo.thisDayAndForward));
-
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
+        activitiesCubit.notifyChange();
+        await activitiesCubit.deleteRecurringActivity(
+          ActivityDay(recurringActivity, inAWeek),
+          ApplyTo.thisDayAndForward,
         );
+
         // Assert calls save with deleted recurring
         verify(
             () => mockActivityRepository.save([recurringActivityWithEndTime]));
@@ -437,21 +375,12 @@ void main() {
         final recurringActivity1AfterDelete = recurringActivity1
             .copyWithRecurringEnd(inAWeek.millisecondBefore());
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(DeleteRecurringActivity(
-            ActivityDay(recurringActivity1, inAWeek),
-            ApplyTo.thisDayAndForward,
-          ));
-
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
+        activitiesCubit.notifyChange();
+        await activitiesCubit.deleteRecurringActivity(
+          ActivityDay(recurringActivity1, inAWeek),
+          ApplyTo.thisDayAndForward,
         );
+
         // Assert calls save with deleted recurring
         verify(() => mockActivityRepository.save([
               recurringActivity2.copyWith(deleted: true),
@@ -479,20 +408,10 @@ void main() {
 
         final expected = updated.copyWith(recurs: Recurs.not);
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(UpdateRecurringActivity(
-            ActivityDay(updated, anyDay),
-            ApplyTo.onlyThisDay,
-          ));
-
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
+        activitiesCubit.notifyChange();
+        await activitiesCubit.updateRecurringActivity(
+          ActivityDay(updated, anyDay),
+          ApplyTo.onlyThisDay,
         );
 
         // Assert calls save
@@ -520,20 +439,10 @@ void main() {
             recurring.copyWith(startTime: recurring.startTime.nextDay());
 
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(UpdateRecurringActivity(
-            ActivityDay(updated, anyDay),
-            ApplyTo.onlyThisDay,
-          ));
-
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
+        activitiesCubit.notifyChange();
+        await activitiesCubit.updateRecurringActivity(
+          ActivityDay(updated, anyDay),
+          ApplyTo.onlyThisDay,
         );
 
         // Assert calls save
@@ -584,20 +493,10 @@ void main() {
             [expectedUpdatedOldActivity, expectedUpdatedActivity]);
 
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(UpdateRecurringActivity(
-            ActivityDay(updated, lastDay),
-            ApplyTo.onlyThisDay,
-          ));
-
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
+        activitiesCubit.notifyChange();
+        await activitiesCubit.updateRecurringActivity(
+          ActivityDay(updated, lastDay),
+          ApplyTo.onlyThisDay,
         );
 
         // Assert calls save
@@ -644,20 +543,10 @@ void main() {
             [preModDaySeries, expectedUpdatedActivity, postModDaySeries]);
 
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(UpdateRecurringActivity(
-            ActivityDay(updated, updatedDay),
-            ApplyTo.onlyThisDay,
-          ));
-
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
+        activitiesCubit.notifyChange();
+        await activitiesCubit.updateRecurringActivity(
+          ActivityDay(updated, updatedDay),
+          ApplyTo.onlyThisDay,
         );
 
         // Assert calls save
@@ -697,20 +586,10 @@ void main() {
             [preModDaySeries, expectedUpdatedActivity, postModDaySeries]);
 
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(UpdateRecurringActivity(
-            ActivityDay(fullDay, aDay),
-            ApplyTo.onlyThisDay,
-          ));
-
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
+        activitiesCubit.notifyChange();
+        await activitiesCubit.updateRecurringActivity(
+          ActivityDay(fullDay, aDay),
+          ApplyTo.onlyThisDay,
         );
 
         // Assert calls save
@@ -731,20 +610,10 @@ void main() {
             .thenAnswer((_) => Future.value([recurringActivity]));
 
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(UpdateRecurringActivity(
-            ActivityDay(updatedRecurringActivity, anyDay),
-            ApplyTo.thisDayAndForward,
-          ));
-
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
+        activitiesCubit.notifyChange();
+        await activitiesCubit.updateRecurringActivity(
+          ActivityDay(updatedRecurringActivity, anyDay),
+          ApplyTo.thisDayAndForward,
         );
 
         // Assert calls save with deleted recurring
@@ -772,24 +641,15 @@ void main() {
         final expected = [beforeModifiedDay, onAndAfterModifiedDay];
 
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(UpdateRecurringActivity(
-            ActivityDay(
-              updatedRecurringActivity,
-              aDay,
-            ),
-            ApplyTo.thisDayAndForward,
-          ));
-
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
+        activitiesCubit.notifyChange();
+        await activitiesCubit.updateRecurringActivity(
+          ActivityDay(
+            updatedRecurringActivity,
+            aDay,
+          ),
+          ApplyTo.thisDayAndForward,
         );
+
         verify(() => mockActivityRepository
             .save(any(that: MatchActivitiesWithoutId(expected))));
         verify(() => mockSyncBloc.add(const SyncActivities()));
@@ -815,23 +675,13 @@ void main() {
         final expectedList = [expectedPreModified, updatedRecurringActivity];
 
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(UpdateRecurringActivity(
-            ActivityDay(
-              updatedRecurringActivity,
-              inTwoWeek.onlyDays(),
-            ),
-            ApplyTo.thisDayAndForward,
-          ));
-
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
+        activitiesCubit.notifyChange();
+        await activitiesCubit.updateRecurringActivity(
+          ActivityDay(
+            updatedRecurringActivity,
+            inTwoWeek.onlyDays(),
+          ),
+          ApplyTo.thisDayAndForward,
         );
 
         verify(() => mockActivityRepository
@@ -862,23 +712,13 @@ void main() {
         final expectedList = [expectedPreModified, updatedRecurringActivity];
 
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(UpdateRecurringActivity(
-            ActivityDay(
-              updatedRecurringActivity,
-              inAWeek.onlyDays(),
-            ),
-            ApplyTo.thisDayAndForward,
-          ));
-
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
+        activitiesCubit.notifyChange();
+        await activitiesCubit.updateRecurringActivity(
+          ActivityDay(
+            updatedRecurringActivity,
+            inAWeek.onlyDays(),
+          ),
+          ApplyTo.thisDayAndForward,
         );
 
         verify(() => mockActivityRepository
@@ -971,23 +811,13 @@ void main() {
         ];
 
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(UpdateRecurringActivity(
-            ActivityDay(
-              updatedRecurringActivity,
-              inFiveDays.onlyDays(),
-            ),
-            ApplyTo.thisDayAndForward,
-          ));
-
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
+        activitiesCubit.notifyChange();
+        await activitiesCubit.updateRecurringActivity(
+          ActivityDay(
+            updatedRecurringActivity,
+            inFiveDays.onlyDays(),
+          ),
+          ApplyTo.thisDayAndForward,
         );
 
         verify(() => mockActivityRepository
@@ -1041,24 +871,15 @@ void main() {
         final expectedA3 = a3.copyWith(title: newTitle);
 
         // Act
-        activitiesBloc
-          ..add(LoadActivities())
-          ..add(UpdateRecurringActivity(
-            ActivityDay(
-              updatedA2,
-              newTime.onlyDays(),
-            ),
-            ApplyTo.thisDayAndForward,
-          ));
-
-        // Assert
-        await expectLater(
-          activitiesBloc.stream,
-          emitsInOrder([
-            isA<ActivitiesChanged>(),
-            isA<ActivitiesChanged>(),
-          ]),
+        activitiesCubit.notifyChange();
+        await activitiesCubit.updateRecurringActivity(
+          ActivityDay(
+            updatedA2,
+            newTime.onlyDays(),
+          ),
+          ApplyTo.thisDayAndForward,
         );
+
         verify(() => mockActivityRepository.save(any(
             that: MatchActivitiesWithoutId([a2Part1, updatedA2, expectedA3]))));
         verify(() => mockSyncBloc.add(const SyncActivities()));
@@ -1067,6 +888,6 @@ void main() {
   });
 
   tearDown(() async {
-    return activitiesBloc.close();
+    return activitiesCubit.close();
   });
 }

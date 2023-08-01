@@ -23,7 +23,7 @@ class AlarmPage extends StatelessWidget {
     return BlocProvider<ActivityCubit>(
       create: (context) => ActivityCubit(
         activityDay: alarm.activityDay,
-        activitiesBloc: context.read<ActivitiesBloc>(),
+        activitiesCubit: context.read<ActivitiesCubit>(),
       ),
       child: BlocBuilder<ActivityCubit, ActivityState>(
         builder: (context, state) {
@@ -82,7 +82,7 @@ class ReminderPage extends StatelessWidget {
       child: BlocProvider<ActivityCubit>(
         create: (context) => ActivityCubit(
           activityDay: reminder.activityDay,
-          activitiesBloc: context.read<ActivitiesBloc>(),
+          activitiesCubit: context.read<ActivitiesCubit>(),
         ),
         child: BlocBuilder<ActivityCubit, ActivityState>(
             builder: (context, state) {

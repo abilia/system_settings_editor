@@ -5,7 +5,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class DayEventsCubit extends Cubit<EventsState> {
-  final ActivitiesBloc activitiesBloc;
+  final ActivitiesCubit activitiesCubit;
   final TimerAlarmBloc timerAlarmBloc;
   final DayPickerBloc dayPickerBloc;
   late final StreamSubscription _activitiesSubscription;
@@ -15,7 +15,7 @@ class DayEventsCubit extends Cubit<EventsState> {
   late EventsState previousState = state;
 
   DayEventsCubit({
-    required this.activitiesBloc,
+    required this.activitiesCubit,
     required this.dayPickerBloc,
     required this.timerAlarmBloc,
   }) : super(
@@ -25,7 +25,7 @@ class DayEventsCubit extends Cubit<EventsState> {
           ),
         ) {
     _activitiesSubscription =
-        activitiesBloc.stream.listen((state) async => _updateState());
+        activitiesCubit.stream.listen((state) async => _updateState());
     _dayPickerSubscription = dayPickerBloc.stream.listen(((state) async =>
         _updateState(day: state.day, occasion: state.occasion)));
     _timerSubscription = timerAlarmBloc.stream
@@ -41,7 +41,7 @@ class DayEventsCubit extends Cubit<EventsState> {
   }) async {
     previousState = state;
     final newStateDay = day ?? dayPickerBloc.state.day;
-    final activities = await activitiesBloc.activityRepository.allBetween(
+    final activities = await activitiesCubit.activityRepository.allBetween(
       newStateDay.onlyDays(),
       newStateDay.nextDay(),
     );

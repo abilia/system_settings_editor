@@ -30,8 +30,8 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     this.activityRepository, // ActivityRepository is null when this bloc is used for date picking
     this.timerAlarmBloc,
     this.settingsDb,
-    ActivitiesBloc?
-        activitiesBloc, // ActivitiesBloc is null when this bloc is used for date picking
+    ActivitiesCubit?
+        activitiesCubit, // ActivitiesCubit is null when this bloc is used for date picking
     DateTime? initialDay,
   }) : super(
           MonthCalendarState(
@@ -41,7 +41,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
             isCollapsed: true,
           ),
         ) {
-    _activitiesSubscription = activitiesBloc?.stream.listen(updateMonth);
+    _activitiesSubscription = activitiesCubit?.stream.listen(updateMonth);
     _timersSubscription = timerAlarmBloc?.stream.listen(updateMonth);
     _clockSubscription = clockBloc.stream
         .where((time) =>

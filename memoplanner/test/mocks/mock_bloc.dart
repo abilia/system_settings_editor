@@ -5,8 +5,8 @@ import 'package:memoplanner/models/all.dart';
 export 'package:mocktail/mocktail.dart';
 
 // Blocs
-class MockActivitiesBloc extends MockBloc<ActivitiesEvent, ActivitiesChanged>
-    implements ActivitiesBloc {}
+class MockActivitiesCubit extends MockCubit<ActivitiesChanged>
+    implements ActivitiesCubit {}
 
 class MockDayEventsCubit extends MockCubit<EventsState>
     implements DayEventsCubit {}

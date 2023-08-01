@@ -7,7 +7,7 @@ import 'package:memoplanner/utils/all.dart';
 import 'package:meta/meta.dart';
 
 class ActivityWizardCubit extends WizardCubit {
-  final ActivitiesBloc activitiesBloc;
+  final ActivitiesCubit activitiesCubit;
   final EditActivityCubit editActivityCubit;
   final ClockBloc clockBloc;
   final bool allowPassedStartTime;
@@ -17,7 +17,7 @@ class ActivityWizardCubit extends WizardCubit {
 
   @visibleForTesting
   factory ActivityWizardCubit.newActivity({
-    required ActivitiesBloc activitiesBloc,
+    required ActivitiesCubit activitiesCubit,
     required EditActivityCubit editActivityCubit,
     required ClockBloc clockBloc,
     required AddActivitySettings addActivitySettings,
@@ -26,14 +26,14 @@ class ActivityWizardCubit extends WizardCubit {
   }) {
     if (addActivitySettings.mode == AddActivityMode.editView) {
       return ActivityWizardCubit.newAdvanced(
-        activitiesBloc: activitiesBloc,
+        activitiesCubit: activitiesCubit,
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
         allowPassedStartTime: addActivitySettings.general.allowPassedStartTime,
       );
     }
     return ActivityWizardCubit.newStepByStep(
-      activitiesBloc: activitiesBloc,
+      activitiesCubit: activitiesCubit,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       allowPassedStartTime: addActivitySettings.general.allowPassedStartTime,
@@ -45,14 +45,14 @@ class ActivityWizardCubit extends WizardCubit {
   }
 
   ActivityWizardCubit.newAdvanced({
-    required this.activitiesBloc,
+    required this.activitiesCubit,
     required this.editActivityCubit,
     required this.clockBloc,
     required this.allowPassedStartTime,
   }) : super(WizardState(0, UnmodifiableListView([WizardStep.advance])));
 
   ActivityWizardCubit.newStepByStep({
-    required this.activitiesBloc,
+    required this.activitiesCubit,
     required this.editActivityCubit,
     required this.clockBloc,
     required this.allowPassedStartTime,
@@ -129,7 +129,7 @@ class ActivityWizardCubit extends WizardCubit {
       ];
 
   ActivityWizardCubit.edit({
-    required this.activitiesBloc,
+    required this.activitiesCubit,
     required this.editActivityCubit,
     required this.clockBloc,
     required this.allowPassedStartTime,
@@ -208,7 +208,7 @@ class ActivityWizardCubit extends WizardCubit {
       conflictWarningConfirmed: conflictWarningConfirmed,
       saveRecurringDefined: saveRecurring != null,
       allowPassedStartTime: allowPassedStartTime,
-      activities: await activitiesBloc.activityRepository.allBetween(
+      activities: await activitiesCubit.activityRepository.allBetween(
           activity.startTime.onlyDays(),
           activity.startTime.onlyDays().nextDay()),
       now: clockBloc.state,
@@ -218,16 +218,14 @@ class ActivityWizardCubit extends WizardCubit {
     }
 
     if (editState is UnstoredActivityState) {
-      activitiesBloc.add(AddActivity(activity));
+      await activitiesCubit.addActivity(activity);
     } else if (saveRecurring != null) {
-      activitiesBloc.add(
-        UpdateRecurringActivity(
-          ActivityDay(activity, saveRecurring.day),
-          saveRecurring.applyTo,
-        ),
+      await activitiesCubit.updateRecurringActivity(
+        ActivityDay(activity, saveRecurring.day),
+        saveRecurring.applyTo,
       );
     } else {
-      activitiesBloc.add(UpdateActivity(activity));
+      await activitiesCubit.addActivity(activity);
     }
 
     editActivityCubit.activitySaved(activity);

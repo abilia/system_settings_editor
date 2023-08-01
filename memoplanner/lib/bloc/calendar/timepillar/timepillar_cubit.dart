@@ -15,7 +15,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
   final MemoplannerSettingsBloc memoSettingsBloc;
   final DayCalendarViewCubit dayCalendarViewCubit;
   final DayPickerBloc dayPickerBloc;
-  final ActivitiesBloc activitiesBloc;
+  final ActivitiesCubit activitiesCubit;
   final TimerAlarmBloc timerAlarmBloc;
   final DayPartCubit dayPartCubit;
   late StreamSubscription _streamSubscription;
@@ -29,7 +29,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     required this.dayCalendarViewCubit,
     required this.dayPickerBloc,
     required this.timerAlarmBloc,
-    required this.activitiesBloc,
+    required this.activitiesCubit,
     required this.dayPartCubit,
   }) : super(_initialEmptyState(
           now: clockBloc.state,
@@ -44,7 +44,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
       clockBloc.stream,
       memoSettingsBloc.stream,
       dayPickerBloc.stream,
-      activitiesBloc.stream,
+      activitiesCubit.stream,
       timerAlarmBloc.stream,
       dayCalendarViewCubit.stream,
     ]).listen(
@@ -70,7 +70,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
       dayCalendarViewOptions: dayCalendarViewCubit.state,
       dayPart: dayPartCubit.state,
     );
-    final activities = await activitiesBloc.activityRepository
+    final activities = await activitiesCubit.activityRepository
         .allBetween(interval.start.onlyDays(), interval.end);
     previousState = state;
     if (isClosed) return;

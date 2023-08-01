@@ -132,10 +132,11 @@ void main() {
               BlocProvider<MemoplannerSettingsBloc>.value(
                 value: mockMemoplannerSettingsBloc,
               ),
-              BlocProvider<ActivitiesBloc>(
-                create: (_) => ActivitiesBloc(
+              BlocProvider<ActivitiesCubit>(
+                create: (_) => ActivitiesCubit(
                   activityRepository: FakeActivityRepository(),
                   syncBloc: FakeSyncBloc(),
+                  analytics: GetIt.I<SeagullAnalytics>(),
                 ),
               ),
               BlocProvider<SupportPersonsCubit>(
@@ -167,7 +168,7 @@ void main() {
                     : newActivity
                         ? ActivityWizardCubit.newActivity(
                             supportPersonsCubit: FakeSupportPersonsCubit(),
-                            activitiesBloc: context.read<ActivitiesBloc>(),
+                            activitiesCubit: context.read<ActivitiesCubit>(),
                             clockBloc: context.read<ClockBloc>(),
                             editActivityCubit:
                                 context.read<EditActivityCubit>(),
@@ -177,7 +178,7 @@ void main() {
                                 .addActivity,
                           )
                         : ActivityWizardCubit.edit(
-                            activitiesBloc: context.read<ActivitiesBloc>(),
+                            activitiesCubit: context.read<ActivitiesCubit>(),
                             clockBloc: context.read<ClockBloc>(),
                             editActivityCubit:
                                 context.read<EditActivityCubit>(),
@@ -4053,7 +4054,6 @@ text''';
 
     final expectedActivity = Activity.createNew(
         startTime: startTime, title: 'newActivityTitle', timezone: 'UTC');
-    final expectedProperties = AddActivity(expectedActivity).properties;
 
     final mockAnalytics = GetIt.I<SeagullAnalytics>() as MockSeagullAnalytics;
     verifyInOrder([
@@ -4119,7 +4119,7 @@ text''';
           ),
       () => mockAnalytics.trackEvent(
             AnalyticsEvents.activityCreated,
-            properties: expectedProperties,
+            properties: expectedActivity.properties,
           ),
     ]);
   });

@@ -15,7 +15,7 @@ import '../../mocks/mocks.dart';
 void main() {
   group('When time ticks', () {
     late ClockBloc clockBloc;
-    late ActivitiesBloc activitiesBloc;
+    late ActivitiesCubit activitiesCubit;
     late GenericCubit genericCubit;
     late MemoplannerSettingsBloc memoplannerSettingBloc;
 
@@ -38,7 +38,7 @@ void main() {
       mockedTicker = StreamController<DateTime>();
       clockBloc = ClockBloc(mockedTicker.stream, initialTime: thisMinute);
       mockActivityRepository = MockActivityRepository();
-      activitiesBloc = ActivitiesBloc(
+      activitiesCubit = ActivitiesCubit(
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
       );
@@ -73,7 +73,7 @@ void main() {
         timerAlarm: const Stream.empty(),
       ),
       act: (cubit) {
-        activitiesBloc.add(LoadActivities());
+        activitiesCubit.notifyChange();
         tick();
       },
       expect: () => [StartAlarm(ActivityDay(soonActivity, day))],
@@ -122,7 +122,7 @@ void main() {
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
         timerAlarm: const Stream.empty(),
       ),
-      act: (cubit) => activitiesBloc.add(LoadActivities()),
+      act: (cubit) => activitiesCubit.notifyChange(),
       expect: () => [],
     );
 
@@ -367,7 +367,7 @@ void main() {
     );
 
     tearDown(() {
-      activitiesBloc.close();
+      activitiesCubit.close();
       clockBloc.close();
       mockedTicker.close();
     });

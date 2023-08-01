@@ -61,7 +61,7 @@ void main() {
             BlocProvider<ActivityCubit>(
               create: (context) => ActivityCubit(
                 activityDay: activityInfo.activityDay,
-                activitiesBloc: FakeActivitiesBloc(),
+                activitiesCubit: FakeActivitiesCubit(),
               ),
             ),
           ],

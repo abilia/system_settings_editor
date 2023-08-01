@@ -11,7 +11,7 @@ import 'package:memoplanner/config.dart';
 List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
       ...copiedTopLevelProviders(blocContext),
       _tryGetBloc<SyncBloc>(blocContext),
-      _tryGetBloc<ActivitiesBloc>(blocContext),
+      _tryGetBloc<ActivitiesCubit>(blocContext),
       _tryGetBloc<UserFileBloc>(blocContext),
       _tryGetBloc<SortableBloc>(blocContext),
       _tryGetBloc<GenericCubit>(blocContext),

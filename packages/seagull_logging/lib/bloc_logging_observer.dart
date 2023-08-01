@@ -79,12 +79,8 @@ class BlocLoggingObserver extends BlocObserver {
   }
 
   void onTransitionAnalytics(Transition transition) {
-    final event = transition.event;
     final nextState = transition.nextState;
     final currentState = transition.currentState;
-    if (event is TrackableEvent) {
-      analytics.trackEvent(event.eventName, properties: event.properties);
-    }
     if (nextState is Authenticated) {
       final user = nextState.user;
       analytics.setSuperProperties(

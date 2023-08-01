@@ -25,11 +25,11 @@ class FakeGenericCubit extends Fake implements GenericCubit {
   Future<void> close() async {}
 }
 
-class FakeActivitiesBloc extends Fake implements ActivitiesBloc {
+class FakeActivitiesCubit extends Fake implements ActivitiesCubit {
   @override
   late final ActivityRepository activityRepository;
 
-  FakeActivitiesBloc({ActivityRepository? activityRepository}) {
+  FakeActivitiesCubit({ActivityRepository? activityRepository}) {
     this.activityRepository = activityRepository ?? FakeActivityRepository();
   }
 
@@ -40,7 +40,14 @@ class FakeActivitiesBloc extends Fake implements ActivitiesBloc {
   ActivitiesChanged get state => ActivitiesChanged();
 
   @override
-  void add(ActivitiesEvent event) {}
+  Future<void> addActivity(Activity activity) async {}
+
+  @override
+  Future<void> updateActivity(Activity activity) async {}
+
+  @override
+  Future<void> updateRecurringActivity(
+      ActivityDay activityDay, ApplyTo applyTo) async {}
 
   @override
   Future<void> close() async {}

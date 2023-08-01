@@ -11,7 +11,7 @@ import '../../../mocks/mocks.dart';
 
 void main() {
   late WeekCalendarCubit weekCalendarBloc;
-  late ActivitiesBloc activitiesBloc;
+  late ActivitiesCubit activitiesCubit;
   late TimerAlarmBloc timerAlarmBloc;
   late MockActivityRepository mockActivityRepository;
   late ClockBloc clockBloc;
@@ -22,7 +22,7 @@ void main() {
       mockedTicker = StreamController<DateTime>();
       clockBloc = ClockBloc(mockedTicker.stream, initialTime: initialMinutes);
       mockActivityRepository = MockActivityRepository();
-      activitiesBloc = ActivitiesBloc(
+      activitiesCubit = ActivitiesCubit(
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
       );
@@ -36,12 +36,12 @@ void main() {
         ticker: Ticker.fake(initialTime: initialMinutes),
         timerCubit: timerCubit,
       );
-      activitiesBloc = ActivitiesBloc(
+      activitiesCubit = ActivitiesCubit(
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
       );
       weekCalendarBloc = WeekCalendarCubit(
-        activitiesBloc: activitiesBloc,
+        activitiesCubit: activitiesCubit,
         timerAlarmBloc: timerAlarmBloc,
         activityRepository: mockActivityRepository,
         clockBloc: clockBloc,
@@ -59,13 +59,13 @@ void main() {
     });
 
     test(
-        'state is WeekCalendarLoaded when ActivitiesBloc activities are loaded',
+        'state is WeekCalendarLoaded when ActivitiesCubit activities are loaded',
         () {
       // Arrange
       when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value(const Iterable.empty()));
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
       // Assert
       expectLater(
         weekCalendarBloc.stream,
@@ -148,7 +148,7 @@ void main() {
       );
 
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
 
       await expected;
 
@@ -207,7 +207,7 @@ void main() {
       when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([removeAfter]));
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
       // Assert
       expectLater(
         weekCalendarBloc.stream,
@@ -252,7 +252,7 @@ void main() {
       when(() => mockActivityRepository.allBetween(any(), any())).thenAnswer(
           (_) => Future.value([initialMinActivity, nextMinActivity]));
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
       // Assert
       await expectLater(
         weekCalendarBloc.stream,
@@ -333,7 +333,7 @@ void main() {
         ticker: ticker,
       );
       weekCalendarBloc = WeekCalendarCubit(
-        activitiesBloc: activitiesBloc,
+        activitiesCubit: activitiesCubit,
         timerAlarmBloc: timerAlarmBloc,
         activityRepository: mockActivityRepository,
         clockBloc: clockBloc,

@@ -11,7 +11,7 @@ void main() {
 
   test('initial state', () {
     final fullScreenActivityCubit = FullScreenActivityCubit(
-      activitiesBloc: FakeActivitiesBloc(),
+      activitiesCubit: FakeActivitiesCubit(),
       activityRepository: FakeActivityRepository(),
       clockBloc: ClockBloc.fixed(time),
       alarmCubit: FakeAlarmCubit(),
