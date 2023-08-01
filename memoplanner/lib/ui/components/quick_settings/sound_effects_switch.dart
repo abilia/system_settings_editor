@@ -34,11 +34,11 @@ class _SoundEffectSwitchState extends State<SoundEffectsSwitch> {
         size: layout.icon.small,
       ),
       value: _on,
-      onChanged: (switchOn) {
-        setState(() async {
+      onChanged: (switchOn) async {
+        setState(() {
           _on = switchOn;
-          await SystemSettingsEditor.setSoundEffectsEnabled(switchOn);
         });
+        await SystemSettingsEditor.setSoundEffectsEnabled(switchOn);
       },
       child: Text(Lt.of(context).clickSound),
     );
