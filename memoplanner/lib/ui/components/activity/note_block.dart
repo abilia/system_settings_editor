@@ -26,7 +26,7 @@ class EditNoteWidget extends StatelessWidget {
               ? Text(
                   Lt.of(context).typeSomething,
                   style: abiliaTextTheme.bodyLarge
-                      ?.copyWith(color: const Color(0xff747474)),
+                      ?.copyWith(color: AbiliaColors.white150),
                 )
               : Text(infoItem.text),
         ),
