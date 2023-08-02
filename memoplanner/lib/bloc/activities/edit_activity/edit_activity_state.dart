@@ -3,8 +3,7 @@ part of 'edit_activity_cubit.dart';
 abstract class EditActivityState extends Equatable with Finest {
   const EditActivityState(
     this.activity,
-    this.timeInterval,
-    this.infoItems, {
+    this.timeInterval, {
     required this.originalActivity,
     required this.originalTimeInterval,
     required this.selectedRecurrentType,
@@ -13,7 +12,6 @@ abstract class EditActivityState extends Equatable with Finest {
   final Activity activity, originalActivity;
   final RecurrentType selectedRecurrentType;
   final TimeInterval timeInterval, originalTimeInterval;
-  final MapView<Type, InfoItem> infoItems;
 
   bool get hasTitleOrImage => activity.hasTitle || activity.hasImage;
 
@@ -102,7 +100,6 @@ abstract class EditActivityState extends Equatable with Finest {
   List<Object?> get props => [
         activity,
         timeInterval,
-        infoItems,
         selectedRecurrentType,
       ];
 
@@ -112,7 +109,6 @@ abstract class EditActivityState extends Equatable with Finest {
   EditActivityState copyWith(
     Activity activity, {
     TimeInterval timeInterval,
-    Map<Type, InfoItem> infoItems,
     RecurrentType selectedRecurrentType,
   });
 }
@@ -125,7 +121,6 @@ class UnstoredActivityState extends EditActivityState {
   ) : super(
           activity,
           timeInterval,
-          const MapView(<Type, InfoItem>{}),
           originalActivity: activity,
           originalTimeInterval: timeInterval,
           selectedRecurrentType: selectedRecurrentType,
@@ -134,14 +129,12 @@ class UnstoredActivityState extends EditActivityState {
   const UnstoredActivityState._(
     Activity activity,
     TimeInterval timeInterval,
-    MapView<Type, InfoItem> infoItems,
     Activity originalActivity,
     TimeInterval originalTimeInterval,
     RecurrentType selectedRecurrentType,
   ) : super(
           activity,
           timeInterval,
-          infoItems,
           originalActivity: originalActivity,
           originalTimeInterval: originalTimeInterval,
           selectedRecurrentType: selectedRecurrentType,
@@ -151,13 +144,11 @@ class UnstoredActivityState extends EditActivityState {
   UnstoredActivityState copyWith(
     Activity activity, {
     TimeInterval? timeInterval,
-    Map<Type, InfoItem>? infoItems,
     RecurrentType? selectedRecurrentType,
   }) =>
       UnstoredActivityState._(
         activity,
         timeInterval ?? this.timeInterval,
-        MapView(infoItems ?? this.infoItems),
         originalActivity,
         originalTimeInterval,
         selectedRecurrentType ?? this.selectedRecurrentType,
@@ -175,7 +166,6 @@ class StoredActivityState extends EditActivityState {
   ) : super(
           activity,
           timeInterval,
-          const MapView(<Type, InfoItem>{}),
           originalActivity: activity,
           originalTimeInterval: timeInterval,
           selectedRecurrentType: recurrentType,
@@ -186,13 +176,11 @@ class StoredActivityState extends EditActivityState {
     TimeInterval timeInterval,
     Activity originalActivity,
     TimeInterval originalTimeInterval,
-    MapView<Type, InfoItem> infoItems,
     this.day,
     RecurrentType recurrentType,
   ) : super(
           activity,
           timeInterval,
-          infoItems,
           originalActivity: originalActivity,
           originalTimeInterval: originalTimeInterval,
           selectedRecurrentType: recurrentType,
@@ -204,7 +192,6 @@ class StoredActivityState extends EditActivityState {
   @override
   StoredActivityState copyWith(
     Activity activity, {
-    Map<Type, InfoItem>? infoItems,
     TimeInterval? timeInterval,
     RecurrentType? selectedRecurrentType,
   }) =>
@@ -213,7 +200,6 @@ class StoredActivityState extends EditActivityState {
         timeInterval ?? this.timeInterval,
         originalActivity,
         originalTimeInterval,
-        MapView(infoItems ?? this.infoItems),
         day,
         selectedRecurrentType ?? this.selectedRecurrentType,
       );

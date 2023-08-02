@@ -81,13 +81,18 @@ class _CategoryPickField extends StatelessWidget {
     final padding = imageAndName.hasImage
         ? EdgeInsets.only(right: layout.pickField.padding.right)
         : null;
+    final verticalPadding = imageAndName.hasImage
+        ? layout.category.settingsRadioImagePadding
+        : null;
     return PickField(
       text: Text(imageAndName.hasName ? imageAndName.name : defaultName),
       leadingPadding: leadingPadding,
       padding: padding,
+      verticalPadding: verticalPadding,
       leading: imageAndName.image.isNotEmpty
-          ? AspectRatio(
-              aspectRatio: 1,
+          ? SizedBox(
+              height: layout.arrows.size,
+              width: layout.arrows.size,
               child: FadeInAbiliaImage(
                 imageFileId: imageAndName.image.id,
                 imageFilePath: imageAndName.image.path,

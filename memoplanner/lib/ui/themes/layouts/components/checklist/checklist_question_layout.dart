@@ -1,16 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-class ChecklistLayout {
-  final ChecklistQuestionLayout question;
-  final EdgeInsets listPadding, addNewQButtonPadding, addNewQIconPadding;
-  const ChecklistLayout({
-    this.question = const ChecklistQuestionLayout(),
-    this.listPadding = const EdgeInsets.all(12),
-    this.addNewQButtonPadding = const EdgeInsets.fromLTRB(12, 8, 12, 12),
-    this.addNewQIconPadding = const EdgeInsets.symmetric(horizontal: 12),
-  });
-}
+part of 'checklist_layout.dart';
 
 class ChecklistQuestionLayout {
   final EdgeInsets imagePadding, titlePadding, iconPadding;
@@ -57,7 +45,6 @@ class ChecklistQuestionLayoutMedium extends ChecklistQuestionLayout {
 class ChecklistQuestionLayoutLarge extends ChecklistQuestionLayoutMedium {
   const ChecklistQuestionLayoutLarge()
       : super(
-          viewHeight: 88,
           imageSize: 72,
           fontSize: 36,
           lineHeight: 52,

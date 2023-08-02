@@ -10,12 +10,7 @@ class LargeLayout extends MediumLayout {
           monthCalendar: const MonthCalendarLayoutLarge(),
           photoCalendarLayout: const PhotoCalendarLayoutLarge(),
           activityPage: const ActivityPageLayoutLarge(),
-          checklist: const ChecklistLayout(
-            question: ChecklistQuestionLayoutLarge(),
-            listPadding: EdgeInsets.all(24),
-            addNewQButtonPadding: EdgeInsets.fromLTRB(18, 12, 18, 18),
-            addNewQIconPadding: EdgeInsets.only(left: 22, right: 16),
-          ),
+          checklist: const ChecklistLayoutLarge(),
           timerPage: const TimerPageLayoutLarge(),
           timepillar: const TimepillarLayoutLarge(),
           category: const CategoryLayoutLarge(),

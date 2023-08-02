@@ -3,6 +3,9 @@
 *.key
 env.g.dart
 
+# Lokalise
+*.arb
+
 # Miscellaneous
 *.class
 *.log

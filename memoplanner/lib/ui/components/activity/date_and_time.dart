@@ -266,7 +266,7 @@ class TimePicker extends StatelessWidget {
                   color: AbiliaColors.red,
                   size: layout.icon.small,
                 )
-              : PickField.trailingArrow,
+              : PickField.trailingArrow(),
         )
       ],
     );

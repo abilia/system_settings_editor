@@ -226,17 +226,15 @@ void main() {
         const noteText = 'note Text';
         await tester.tap(find.byIcon(AbiliaIcons.attachment));
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(ChangeInfoItemPicker));
+        await tester.tap(find.byIcon(AbiliaIcons.edit));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(GreenButton));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(NoteBlock));
+        await tester.tap(find.byIcon(AbiliaIcons.plus));
         await tester.pumpAndSettle();
         await tester.enterText(find.byType(TextField), noteText);
         await tester.pumpAndSettle();
         await tester.tap(find.byType(GreenButton));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(PreviousButton));
         await tester.pumpAndSettle();
 
         // SAVE
