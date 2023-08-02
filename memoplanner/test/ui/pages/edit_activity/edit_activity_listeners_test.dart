@@ -27,7 +27,7 @@ void main() {
   final timeFieldFinder = find.byType(TimeIntervalPicker);
   final okButtonFinder = find.byType(OkButton);
 
-  late MockActivitiesBloc mockActivitiesBloc;
+  late MockActivitiesCubit mockActivitiesCubit;
   late MockActivityRepository mockActivityRepository;
   late MemoplannerSettingsBloc mockMemoplannerSettingsBloc;
 
@@ -40,14 +40,18 @@ void main() {
 
   setUp(() async {
     await initializeDateFormatting();
-    mockActivitiesBloc = MockActivitiesBloc();
-    when(() => mockActivitiesBloc.state).thenReturn(ActivitiesChanged());
-    when(() => mockActivitiesBloc.stream)
+    mockActivitiesCubit = MockActivitiesCubit();
+    when(() => mockActivitiesCubit.state).thenReturn(ActivitiesChanged());
+    when(() => mockActivitiesCubit.addActivity(any()))
+        .thenAnswer((_) => Future.value());
+    when(() => mockActivitiesCubit.updateRecurringActivity(any(), any()))
+        .thenAnswer((_) => Future.value());
+    when(() => mockActivitiesCubit.stream)
         .thenAnswer((_) => const Stream.empty());
     mockActivityRepository = MockActivityRepository();
     when(() => mockActivityRepository.allBetween(any(), any()))
         .thenAnswer((_) => Future.value([]));
-    when(() => mockActivitiesBloc.activityRepository)
+    when(() => mockActivitiesCubit.activityRepository)
         .thenReturn(mockActivityRepository);
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
@@ -101,7 +105,7 @@ void main() {
                 BlocProvider<MemoplannerSettingsBloc>(
                   create: (_) => mockMemoplannerSettingsBloc,
                 ),
-                BlocProvider<ActivitiesBloc>.value(value: mockActivitiesBloc),
+                BlocProvider<ActivitiesCubit>.value(value: mockActivitiesCubit),
                 BlocProvider<SupportPersonsCubit>.value(
                   value: FakeSupportPersonsCubit(),
                 ),
@@ -124,7 +128,7 @@ void main() {
                   create: (context) => newActivity
                       ? ActivityWizardCubit.newActivity(
                           supportPersonsCubit: FakeSupportPersonsCubit(),
-                          activitiesBloc: context.read<ActivitiesBloc>(),
+                          activitiesCubit: context.read<ActivitiesCubit>(),
                           clockBloc: context.read<ClockBloc>(),
                           editActivityCubit: context.read<EditActivityCubit>(),
                           addActivitySettings: context
@@ -133,7 +137,7 @@ void main() {
                               .addActivity,
                         )
                       : ActivityWizardCubit.edit(
-                          activitiesBloc: context.read<ActivitiesBloc>(),
+                          activitiesCubit: context.read<ActivitiesCubit>(),
                           clockBloc: context.read<ClockBloc>(),
                           editActivityCubit: context.read<EditActivityCubit>(),
                           allowPassedStartTime: context

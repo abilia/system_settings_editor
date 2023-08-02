@@ -13,6 +13,8 @@ class CalendarCubit extends Cubit<String?> {
   Future<void> loadCalendarId() async {
     final user = await userRepository.getUserFromDb();
     final calendarId = await calendarRepository.fetchAndSetCalendar(user.id);
+
+    if (isClosed) return;
     emit(calendarId);
   }
 }

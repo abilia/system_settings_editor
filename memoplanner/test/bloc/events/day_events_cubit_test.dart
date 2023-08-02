@@ -9,7 +9,7 @@ import '../../mocks/mocks.dart';
 void main() {
   late DayEventsCubit dayEventsCubit;
   late DayPickerBloc dayPickerBloc;
-  late ActivitiesBloc activitiesBloc;
+  late ActivitiesCubit activitiesCubit;
   late MockActivityRepository mockActivityRepository;
   final initialMinutes = DateTime(2006, 06, 06, 06, 06);
   final initialDay = initialMinutes.onlyDays();
@@ -22,13 +22,13 @@ void main() {
     when(() => mockActivityRepository.allBetween(any(), any()))
         .thenAnswer((_) => Future.value([]));
     final ticker = Ticker.fake(initialTime: initialMinutes);
-    activitiesBloc = ActivitiesBloc(
+    activitiesCubit = ActivitiesCubit(
       activityRepository: mockActivityRepository,
       syncBloc: FakeSyncBloc(),
     );
     dayEventsCubit = DayEventsCubit(
       dayPickerBloc: dayPickerBloc,
-      activitiesBloc: activitiesBloc,
+      activitiesCubit: activitiesCubit,
       timerAlarmBloc: TimerAlarmBloc(
         timerCubit: TimerCubit(
           timerDb: MockTimerDb(),
@@ -58,7 +58,7 @@ void main() {
       when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([activity]));
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
       // Assert
       expectLater(
         dayEventsCubit.stream,
@@ -86,7 +86,7 @@ void main() {
           (_) => Future.value([nowActivity, pastActivity, futureActivity]));
 
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
 
       // Assert
       expectLater(
@@ -125,7 +125,7 @@ void main() {
       );
 
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
 
       // Assert
       expectLater(
@@ -167,7 +167,7 @@ void main() {
       );
 
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
 
       // Assert
       expectLater(
@@ -205,7 +205,7 @@ void main() {
               ]));
 
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
       // Assert
       await expectLater(
         dayEventsCubit.stream,
@@ -276,8 +276,8 @@ void main() {
           (_) => Future.value(
               [nowActivity, pastActivity, futureActivity, fullDayActivity]));
       //Act
-      activitiesBloc.add(LoadActivities());
       dayPickerBloc.add(NextDay());
+      activitiesCubit.notifyChange();
       //Assert
       expectLater(
         dayEventsCubit.stream,
@@ -312,8 +312,8 @@ void main() {
           (_) => Future.value(
               [nowActivity, pastActivity, futureActivity, fullDayActivity]));
       //Act
-      activitiesBloc.add(LoadActivities());
       dayPickerBloc.add(PreviousDay());
+      activitiesCubit.notifyChange();
       //Assert
       expectLater(
         dayEventsCubit.stream,
@@ -342,7 +342,7 @@ void main() {
           .thenAnswer((_) => Future.value([endsSoon]));
 
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
 
       expectLater(
         dayEventsCubit.stream,
@@ -367,7 +367,7 @@ void main() {
           .thenAnswer((_) => Future.value([startsNow]));
 
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
 
       // Assert
       expectLater(
@@ -399,7 +399,7 @@ void main() {
               Future.value([nowActivity, startSoonActivity, endsSoonActivity]));
 
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
 
       // Assert
       await expectLater(
@@ -460,7 +460,7 @@ void main() {
       final monday = sunday.add(const Duration(days: 1));
 
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
       await expectLater(
         dayEventsCubit.stream,
         emits(
@@ -577,7 +577,7 @@ void main() {
           .thenAnswer((_) => Future.value(activities));
 
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
 
       // Assert
       await expectLater(
@@ -672,7 +672,7 @@ void main() {
           .thenAnswer((_) => Future.value(activities));
 
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
 
       // Assert
       await expectLater(
@@ -746,7 +746,7 @@ void main() {
           .thenAnswer((_) => Future.value(activities));
 
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
 
       // Assert
       await expectLater(
@@ -771,7 +771,7 @@ void main() {
   final today = DateTime(2020, 01, 01);
   final yesterday = today.previousDay();
   final tomorrow = today.nextDay();
-  group('Test from old DayActivitiesBloc', () {
+  group('Test from old DayActivitiesCubit', () {
     setUp(() {
       dayPickerBloc = DayPickerBloc(
         clockBloc: ClockBloc.fixed(today),
@@ -780,7 +780,7 @@ void main() {
       when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([]));
 
-      activitiesBloc = ActivitiesBloc(
+      activitiesCubit = ActivitiesCubit(
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
       );
@@ -788,7 +788,7 @@ void main() {
 
       dayEventsCubit = DayEventsCubit(
         dayPickerBloc: dayPickerBloc,
-        activitiesBloc: activitiesBloc,
+        activitiesCubit: activitiesCubit,
         timerAlarmBloc: TimerAlarmBloc(
           timerCubit: TimerCubit(
             timerDb: MockTimerDb(),
@@ -810,7 +810,7 @@ void main() {
           (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
 
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
 
       // Assert
       expectLater(
@@ -839,7 +839,7 @@ void main() {
           (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
 
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
       // Assert
       await expectLater(
         dayEventsCubit.stream,
@@ -884,7 +884,7 @@ void main() {
           (_) => Future.value(activitiesNow.followedBy(activitiesYesterDay)));
 
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
       // Assert
       await expectLater(
         dayEventsCubit.stream,
@@ -974,7 +974,7 @@ void main() {
           .thenAnswer((_) => Future.value(activitiesAdded));
 
       // Act
-      activitiesBloc.add(LoadActivities());
+      activitiesCubit.notifyChange();
 
       // Assert
       await expectLater(
@@ -992,7 +992,7 @@ void main() {
 
     tearDown(() {
       dayPickerBloc.close();
-      activitiesBloc.close();
+      activitiesCubit.close();
     });
 
     group('Recurring tests activity', () {
@@ -1002,14 +1002,14 @@ void main() {
         mockActivityRepository = MockActivityRepository();
         when(() => mockActivityRepository.allBetween(any(), any()))
             .thenAnswer((_) => Future.value([]));
-        activitiesBloc = ActivitiesBloc(
+        activitiesCubit = ActivitiesCubit(
           activityRepository: mockActivityRepository,
           syncBloc: FakeSyncBloc(),
         );
         final ticker = Ticker.fake(initialTime: today);
         dayEventsCubit = DayEventsCubit(
           dayPickerBloc: dayPickerBloc,
-          activitiesBloc: activitiesBloc,
+          activitiesCubit: activitiesCubit,
           timerAlarmBloc: TimerAlarmBloc(
             timerCubit: TimerCubit(
               timerDb: MockTimerDb(),
@@ -1029,13 +1029,13 @@ void main() {
         when(() => mockActivityRepository.allBetween(any(), any()))
             .thenAnswer((_) => Future.value(weekendActivity));
         // Act
-        activitiesBloc.add(LoadActivities());
 
         dayPickerBloc
           ..add(NextDay())
           ..add(NextDay())
           ..add(NextDay())
           ..add(NextDay());
+        activitiesCubit.notifyChange();
         // Assert
         await expectLater(
             dayEventsCubit.stream,
@@ -1085,13 +1085,14 @@ void main() {
         ];
         when(() => mockActivityRepository.allBetween(any(), any()))
             .thenAnswer((_) => Future.value(christmas));
-        // Act
-        activitiesBloc.add(LoadActivities());
 
+        // Act
         dayPickerBloc
           ..add(GoTo(day: boxingDay))
           ..add(NextDay())
           ..add(NextDay());
+        activitiesCubit.notifyChange();
+
         // Assert
         await expectLater(
             dayEventsCubit.stream,
@@ -1129,13 +1130,14 @@ void main() {
         ]);
         when(() => mockActivityRepository.allBetween(any(), any()))
             .thenAnswer((_) => Future.value(christmas));
-        // Act
-        activitiesBloc.add(LoadActivities());
 
+        // Act
         dayPickerBloc
           ..add(GoTo(day: boxingDay))
           ..add(NextDay())
           ..add(NextDay());
+        activitiesCubit.notifyChange();
+
         // Assert
         await expectLater(
             dayEventsCubit.stream,
@@ -1174,12 +1176,11 @@ void main() {
             .thenAnswer((_) => Future.value(monthStartActivity));
 
         // Act
-        activitiesBloc.add(LoadActivities());
-
         dayPickerBloc.add(GoTo(day: startTime));
         for (var i = 0; i < allOtherDays.length; i++) {
           dayPickerBloc.add(NextDay());
         }
+        activitiesCubit.notifyChange();
 
         // Assert
         await expectLater(
@@ -1288,7 +1289,7 @@ void main() {
 
   tearDown(() {
     dayPickerBloc.close();
-    activitiesBloc.close();
+    activitiesCubit.close();
     dayEventsCubit.close();
   });
 }

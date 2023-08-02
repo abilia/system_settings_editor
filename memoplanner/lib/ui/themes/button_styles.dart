@@ -244,6 +244,7 @@ final actionButtonStyleRed = _actionButtonStyle.copyWith(
 
 final actionButtonStyleRedLarge = actionButtonStyleRed.copyWith(
   minimumSize: largeSize,
+  textStyle: MaterialStateProperty.all(bodyMedium),
   shape: MaterialStateProperty.resolveWith(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {

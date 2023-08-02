@@ -132,10 +132,11 @@ void main() {
               BlocProvider<MemoplannerSettingsBloc>.value(
                 value: mockMemoplannerSettingsBloc,
               ),
-              BlocProvider<ActivitiesBloc>(
-                create: (_) => ActivitiesBloc(
+              BlocProvider<ActivitiesCubit>(
+                create: (_) => ActivitiesCubit(
                   activityRepository: FakeActivityRepository(),
                   syncBloc: FakeSyncBloc(),
+                  analytics: GetIt.I<SeagullAnalytics>(),
                 ),
               ),
               BlocProvider<SupportPersonsCubit>(
@@ -167,7 +168,7 @@ void main() {
                     : newActivity
                         ? ActivityWizardCubit.newActivity(
                             supportPersonsCubit: FakeSupportPersonsCubit(),
-                            activitiesBloc: context.read<ActivitiesBloc>(),
+                            activitiesCubit: context.read<ActivitiesCubit>(),
                             clockBloc: context.read<ClockBloc>(),
                             editActivityCubit:
                                 context.read<EditActivityCubit>(),
@@ -177,7 +178,7 @@ void main() {
                                 .addActivity,
                           )
                         : ActivityWizardCubit.edit(
-                            activitiesBloc: context.read<ActivitiesBloc>(),
+                            activitiesCubit: context.read<ActivitiesCubit>(),
                             clockBloc: context.read<ClockBloc>(),
                             editActivityCubit:
                                 context.read<EditActivityCubit>(),
@@ -1188,9 +1189,18 @@ text''';
         when(() => mockUserFileBloc.state)
             .thenReturn(const UserFilesNotLoaded());
         const title1 = 'listTitle1';
+        const folder = 'aaa';
         when(() => mockSortableBloc.state).thenReturn(
           SortablesLoaded(
             sortables: [
+              Sortable.createNew<ChecklistData>(
+                data: ChecklistData(
+                  Checklist(
+                    name: folder,
+                  ),
+                ),
+                isGroup: true,
+              ),
               Sortable.createNew<ChecklistData>(
                   sortOrder: startChar,
                   data: ChecklistData(Checklist(
@@ -1200,21 +1210,6 @@ text''';
                         Question(id: 0, name: '1'),
                         Question(id: 1, name: '2', fileId: '2222')
                       ]))),
-              ...List.generate(
-                30,
-                (index) => Sortable.createNew<ChecklistData>(
-                  sortOrder: '$index',
-                  data: ChecklistData(
-                    Checklist(
-                      name: 'data $index',
-                      questions: [
-                        for (var i = 0; i < index; i++)
-                          Question(id: i, name: '$i$i$i$i$i$i\n')
-                      ],
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
         );
@@ -1227,6 +1222,7 @@ text''';
         expect(find.byType(SortableLibrary<ChecklistData>), findsOneWidget);
         expect(find.byType(ChecklistLibraryPage), findsWidgets);
         expect(find.text(title1), findsOneWidget);
+        expect(find.text(folder), findsOneWidget);
       });
 
       testWidgets('checklist from library is selectable',
@@ -3920,7 +3916,6 @@ text''';
 
     final expectedActivity = Activity.createNew(
         startTime: startTime, title: 'newActivityTitle', timezone: 'UTC');
-    final expectedProperties = AddActivity(expectedActivity).properties;
 
     final mockAnalytics = GetIt.I<SeagullAnalytics>() as MockSeagullAnalytics;
     verifyInOrder([
@@ -3986,7 +3981,7 @@ text''';
           ),
       () => mockAnalytics.trackEvent(
             AnalyticsEvents.activityCreated,
-            properties: expectedProperties,
+            properties: expectedActivity.properties,
           ),
     ]);
   });

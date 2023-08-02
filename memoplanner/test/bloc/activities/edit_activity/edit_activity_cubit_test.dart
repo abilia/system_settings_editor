@@ -247,7 +247,7 @@ void main() {
 
     final wizCubit = ActivityWizardCubit.newActivity(
       supportPersonsCubit: FakeSupportPersonsCubit(),
-      activitiesBloc: FakeActivitiesBloc(),
+      activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: editActivityCubit,
       clockBloc: ClockBloc.fixed(nowTime),
       addActivitySettings: const AddActivitySettings(

@@ -15,8 +15,11 @@ void registerFallbackValues() {
   registerFallbackValue(TZDateTime.utc(2021));
   registerFallbackValue(const NotificationDetails());
   registerFallbackValue('');
+  registerFallbackValue(Activity.createNew(startTime: DateTime(1)));
+  registerFallbackValue(ApplyTo.onlyThisDay);
+  registerFallbackValue(
+      ActivityDay(Activity.createNew(startTime: DateTime(1)), DateTime(1)));
   registerFallbackValue(const LoginInfo(token: '', endDate: 1, renewToken: ''));
-  registerFallbackValue(LoadActivities());
   registerFallbackValue(Duration.zero);
   registerFallbackValue(Curves.ease);
   registerFallbackValue(const ImageThumb(id: ''));

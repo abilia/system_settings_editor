@@ -144,6 +144,29 @@ class Activity extends DataModel {
     );
   }
 
+  Map<String, dynamic> get properties => {
+        'title': hasTitle,
+        'image': hasImage,
+        'startTime': startTime.toIso8601String(),
+        'noneRecurringEnd': noneRecurringEnd.toIso8601String(),
+        'duration': duration.inMinutes,
+        'timezone': timezone,
+        'fullDay': fullDay,
+        'category': category,
+        'checkable': checkable,
+        'availableFor': availableFor.name,
+        'secretExemptions': secretExemptions.length,
+        'alarmType': alarm.type.name,
+        'onlyStart': alarm.onlyStart,
+        'reminders': reminders.map((d) => '$d').toList(),
+        'removeAfter': removeAfter,
+        'speechAtStartTime': extras.startTimeExtraAlarm.isNotEmpty,
+        'speechAtEndTime': extras.endTimeExtraAlarm.isNotEmpty,
+        'recurring': recurs.recurrence.name,
+        'recurringHasNoEnd': recurs.hasNoEnd,
+        'infoItem': infoItem.typeId,
+      };
+
   @visibleForTesting
   factory Activity.createNew({
     required DateTime startTime,

@@ -80,7 +80,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        BlocListener<ActivitiesBloc, ActivitiesChanged>(
+        BlocListener<ActivitiesCubit, ActivitiesChanged>(
           listener: (context, state) =>
               context.read<NotificationBloc>().add(ScheduleNotifications()),
         ),

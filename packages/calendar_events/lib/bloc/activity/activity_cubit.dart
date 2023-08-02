@@ -8,16 +8,16 @@ import 'package:utils/utils.dart';
 class ActivityCubit extends Cubit<ActivityState> {
   ActivityCubit({
     required ActivityDay activityDay,
-    required this.activitiesBloc,
+    required this.activitiesCubit,
   }) : super(ActivityLoaded(activityDay)) {
     activitiesSubscription =
-        activitiesBloc.stream.listen((_) async => _onNewState());
+        activitiesCubit.stream.listen((_) async => _onNewState());
   }
   late final StreamSubscription activitiesSubscription;
-  final ActivitiesBloc activitiesBloc;
+  final ActivitiesCubit activitiesCubit;
 
   Future<void> _onNewState() async {
-    final activityRepository = activitiesBloc.activityRepository;
+    final activityRepository = activitiesCubit.activityRepository;
     final found = await activityRepository.getById(state.activityDay.id);
     final isDeleted = await _checkIfDeleted();
     if (isClosed) {
@@ -31,7 +31,7 @@ class ActivityCubit extends Cubit<ActivityState> {
 
   Future<bool> _checkIfDeleted() async {
     final activityDay = state.activityDay;
-    final activities = await activitiesBloc.activityRepository.allBetween(
+    final activities = await activitiesCubit.activityRepository.allBetween(
       activityDay.day.onlyDays(),
       activityDay.day.nextDay(),
     );
@@ -39,9 +39,9 @@ class ActivityCubit extends Cubit<ActivityState> {
     return isDeleted;
   }
 
-  void onActivityUpdated(Activity activity) {
+  Future<void> onActivityUpdated(Activity activity) {
     _emitActivity(activity);
-    activitiesBloc.add(UpdateActivity(activity));
+    return activitiesCubit.addActivity(activity);
   }
 
   void _emitActivity(Activity activity) {

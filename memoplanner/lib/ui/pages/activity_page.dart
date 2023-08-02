@@ -32,7 +32,7 @@ class ActivityPage extends StatelessWidget {
       child: BlocProvider<ActivityCubit>(
         create: (context) => ActivityCubit(
           activityDay: activityDay,
-          activitiesBloc: context.read<ActivitiesBloc>(),
+          activitiesCubit: context.read<ActivitiesCubit>(),
         ),
         child: BlocConsumer<ActivityCubit, ActivityState>(
           listenWhen: (previous, current) => current is ActivityDeleted,
@@ -144,7 +144,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
     final activity = activityDay.activity;
     final authProviders = copiedAuthProviders(context);
     final navigator = Navigator.of(context);
-    final activitiesBloc = context.read<ActivitiesBloc>();
+    final activitiesCubit = context.read<ActivitiesCubit>();
     final result = await Navigator.of(context).push<Activity>(
       PersistentMaterialPageRoute(
         builder: (_) => MultiBlocProvider(
@@ -176,17 +176,13 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
             minute: activity.startTime.minute,
           ),
         );
-        activitiesBloc.add(
-          UpdateRecurringActivity(
-            ActivityDay(
-              withNewStart,
-              activityDay.day,
-            ),
-            applyTo,
-          ),
+        final newActivityDay = ActivityDay(
+          withNewStart,
+          activityDay.day,
         );
+        await activitiesCubit.updateRecurringActivity(newActivityDay, applyTo);
       } else {
-        activitiesBloc.add(UpdateActivity(result));
+        await activitiesCubit.addActivity(result);
       }
     }
   }
@@ -195,7 +191,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
     BuildContext context,
     Activity activity,
   ) async {
-    final activitiesBloc = context.read<ActivitiesBloc>();
+    final activitiesCubit = context.read<ActivitiesCubit>();
     final navigator = Navigator.of(context);
     final shouldDelete = await showViewDialog<bool>(
       context: context,
@@ -215,14 +211,9 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
           ),
         );
         if (applyTo == null) return;
-        activitiesBloc.add(
-          DeleteRecurringActivity(
-            activityDay,
-            applyTo,
-          ),
-        );
+        await activitiesCubit.deleteRecurringActivity(activityDay, applyTo);
       } else {
-        activitiesBloc.add(UpdateActivity(activity.copyWith(deleted: true)));
+        await activitiesCubit.updateActivity(activity.copyWith(deleted: true));
       }
       await navigator.maybePop();
     }
@@ -268,7 +259,7 @@ class EditActivityButton extends StatelessWidget {
                   ),
                   BlocProvider<WizardCubit>(
                     create: (context) => ActivityWizardCubit.edit(
-                      activitiesBloc: context.read<ActivitiesBloc>(),
+                      activitiesCubit: context.read<ActivitiesCubit>(),
                       editActivityCubit: context.read<EditActivityCubit>(),
                       clockBloc: context.read<ClockBloc>(),
                       allowPassedStartTime: context

@@ -15,6 +15,7 @@ class SupportPersonsCubit extends Cubit<SupportPersonsState> {
 
   Future<void> _loadSupportPersons() async {
     final supportPersons = await supportPersonsRepository.load();
+    if (isClosed) return;
     emit(SupportPersonsState(UnmodifiableSetView(supportPersons)));
   }
 }

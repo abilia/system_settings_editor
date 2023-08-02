@@ -93,14 +93,14 @@ mixin ActivityNavigation {
                 addActivityMode ??= addActivitySettings.mode;
                 return addActivityMode == AddActivityMode.editView
                     ? ActivityWizardCubit.newAdvanced(
-                        activitiesBloc: context.read<ActivitiesBloc>(),
+                        activitiesCubit: context.read<ActivitiesCubit>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
                         clockBloc: context.read<ClockBloc>(),
                         allowPassedStartTime:
                             addActivitySettings.general.allowPassedStartTime,
                       )
                     : ActivityWizardCubit.newStepByStep(
-                        activitiesBloc: context.read<ActivitiesBloc>(),
+                        activitiesCubit: context.read<ActivitiesCubit>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
                         supportPersonsCubit: supportPersonsCubit,
                         clockBloc: context.read<ClockBloc>(),

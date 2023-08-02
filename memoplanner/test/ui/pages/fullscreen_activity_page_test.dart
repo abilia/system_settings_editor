@@ -18,7 +18,7 @@ void main() {
   late StreamController<DateTime> mockTicker;
   late MockMemoplannerSettingBloc mockMemoplannerSettingBloc;
   late MockActivityRepository mockActivityRepository;
-  late MockActivitiesBloc mockActivitiesBloc;
+  late MockActivitiesCubit mockActivitiesCubit;
   final startTimeOne = DateTime(2122, 06, 06, 06, 00);
   final startTimeTwo = DateTime(2122, 06, 06, 06, 02);
   final initialMinutes = DateTime(2122, 06, 06, 06, 10);
@@ -66,7 +66,7 @@ void main() {
         MemoplannerSettingsLoaded(const MemoplannerSettings(
             alarm: AlarmSettings(showOngoingActivityInFullScreen: true))));
 
-    mockActivitiesBloc = MockActivitiesBloc();
+    mockActivitiesCubit = MockActivitiesCubit();
     clockBloc = ClockBloc.fixed(initialMinutes);
     mockTicker = StreamController<DateTime>();
 
@@ -76,10 +76,10 @@ void main() {
 
     final expected = ActivitiesChanged();
 
-    when(() => mockActivitiesBloc.activityRepository)
+    when(() => mockActivitiesCubit.activityRepository)
         .thenReturn(mockActivityRepository);
-    when(() => mockActivitiesBloc.state).thenReturn(expected);
-    when(() => mockActivitiesBloc.stream)
+    when(() => mockActivitiesCubit.state).thenReturn(expected);
+    when(() => mockActivitiesCubit.stream)
         .thenAnswer((_) => Stream.fromIterable([expected]));
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -112,8 +112,8 @@ void main() {
           create: (_) => mockActivityRepository,
           child: MultiBlocProvider(
             providers: [
-              BlocProvider<ActivitiesBloc>(
-                create: (context) => mockActivitiesBloc,
+              BlocProvider<ActivitiesCubit>(
+                create: (context) => mockActivitiesCubit,
               ),
               BlocProvider<ClockBloc>(
                 create: (context) => clockBloc,

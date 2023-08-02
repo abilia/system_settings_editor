@@ -14,7 +14,7 @@ import '../../../mocks/mock_bloc.dart';
 void main() {
   late ClockBloc clockBloc;
   late ActivityRepository mockActivityRepository;
-  late ActivitiesBloc activitiesBloc;
+  late ActivitiesCubit activitiesCubit;
   late DayPickerBloc dayPickerBloc;
   late DayCalendarViewCubit dayCalendarViewCubit;
   late MemoplannerSettingsBloc memoplannerSettingBloc;
@@ -25,9 +25,9 @@ void main() {
   setUp(() async {
     clockStream = StreamController();
     clockBloc = ClockBloc(clockStream.stream, initialTime: now);
-    activitiesBloc = MockActivitiesBloc();
+    activitiesCubit = MockActivitiesCubit();
     mockActivityRepository = MockActivityRepository();
-    when(() => activitiesBloc.activityRepository)
+    when(() => activitiesCubit.activityRepository)
         .thenReturn(mockActivityRepository);
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
     dayCalendarViewCubit = DayCalendarViewCubit(
@@ -66,7 +66,7 @@ void main() {
         .thenAnswer((_) => Future.value([nowActivity, fullDayActivity])),
     build: () => TimepillarCubit(
         clockBloc: clockBloc,
-        activitiesBloc: activitiesBloc,
+        activitiesCubit: activitiesCubit,
         dayPickerBloc: dayPickerBloc,
         memoSettingsBloc: memoplannerSettingBloc,
         dayCalendarViewCubit: dayCalendarViewCubit,
@@ -108,7 +108,7 @@ void main() {
         .thenAnswer((_) => Future.value([removeAfter, removeAfterRecurring])),
     build: () => TimepillarCubit(
       clockBloc: clockBloc,
-      activitiesBloc: activitiesBloc,
+      activitiesCubit: activitiesCubit,
       dayPickerBloc: dayPickerBloc,
       memoSettingsBloc: memoplannerSettingBloc,
       dayCalendarViewCubit: dayCalendarViewCubit,
