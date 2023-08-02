@@ -18,9 +18,6 @@ class AddInfoTypePage extends StatelessWidget {
     final editActivityCubit = context.watch<EditActivityCubit>();
     final infoItem = editActivityCubit.state.activity.infoItem;
     final isChecklist = infoItemType == Checklist;
-    final showButtons = infoItemType != infoItem.runtimeType;
-    final newInfoItemString =
-        isChecklist ? translate.newChecklist : translate.newNote;
     return Scaffold(
       appBar: AbiliaAppBar(
         iconData: isChecklist ? AbiliaIcons.ok : AbiliaIcons.edit,
@@ -37,11 +34,13 @@ class AddInfoTypePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                if (showButtons) ...[
+                if (infoItemType != infoItem.runtimeType) ...[
                   IconAndTextButton(
                     style: actionButtonStyleBlack,
                     icon: AbiliaIcons.plus,
-                    text: newInfoItemString,
+                    text: isChecklist
+                        ? translate.newChecklist
+                        : translate.newNote,
                     onPressed: () =>
                         editActivityCubit.createNewInfoItem(infoItemType),
                   ),

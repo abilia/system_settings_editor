@@ -112,7 +112,7 @@ class InfoItemPickField extends StatelessWidget {
           ),
           IconActionButtonDark(
             onPressed: () async {
-              context.read<EditActivityCubit>().removeInfoItem(infoItemType);
+              context.read<EditActivityCubit>().removeInfoItem();
             },
             child: const Icon(AbiliaIcons.deleteAllClear),
           ),
