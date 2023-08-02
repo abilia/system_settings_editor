@@ -66,7 +66,7 @@ class EditChecklistWidget extends StatelessWidget {
               previous.checklist.questions.isNotEmpty &&
               current.checklist.questions.isEmpty,
           listener: (context, state) =>
-              context.read<EditActivityCubit>().removeInfoItem(Checklist),
+              context.read<EditActivityCubit>().removeInfoItem(),
           child: Expanded(
             child: ScrollArrows.vertical(
               controller: controller,
@@ -108,7 +108,6 @@ class AddNewQuestionButton extends StatelessWidget {
         ),
         fillColor: AbiliaColors.black80,
         elevation: 0,
-        disabledElevation: 0,
         focusElevation: 0,
         highlightElevation: 0,
         hoverElevation: 0,
@@ -160,7 +159,7 @@ class AddNewQuestionButton extends StatelessWidget {
     }
     if (context.mounted &&
         editChecklistCubit.state.checklist.questions.isEmpty) {
-      context.read<EditActivityCubit>().removeInfoItem(Checklist);
+      context.read<EditActivityCubit>().removeInfoItem();
     }
   }
 }

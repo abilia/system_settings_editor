@@ -182,7 +182,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     );
   }
 
-  void removeInfoItem(Type infoItemType) {
+  void removeInfoItem() {
     emit(
       state.copyWith(
         state.activity.copyWith(infoItem: const NoInfoItem()),
@@ -191,11 +191,9 @@ class EditActivityCubit extends Cubit<EditActivityState> {
   }
 
   void createNewInfoItem(Type newInfoType) {
-    final newInfoItem = _newInfoItem(newInfoType);
-
     emit(
       state.copyWith(
-        state.activity.copyWith(infoItem: newInfoItem),
+        state.activity.copyWith(infoItem: _newInfoItem(newInfoType)),
       ),
     );
   }

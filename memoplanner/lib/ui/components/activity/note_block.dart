@@ -14,7 +14,9 @@ class EditNoteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _openNoteOnEmpty(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (infoItem.text.isEmpty) await _openEditText(context);
+    });
     return Expanded(
       child: GestureDetector(
         onTap: () async => _openEditText(context),
@@ -30,14 +32,6 @@ class EditNoteWidget extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _openNoteOnEmpty(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (infoItem.text.isEmpty) {
-        await _openEditText(context);
-      }
-    });
   }
 
   Future<void> _openEditText(BuildContext context) async {
@@ -67,7 +61,7 @@ class EditNoteWidget extends StatelessWidget {
       );
     }
     if (result == null && infoItem.text.isEmpty && context.mounted) {
-      context.read<EditActivityCubit>().removeInfoItem(NoteInfoItem);
+      context.read<EditActivityCubit>().removeInfoItem();
     }
   }
 }
@@ -147,11 +141,11 @@ class Lines extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final offset = layout.note.lineOffset;
     final line = Padding(
       padding: EdgeInsets.only(
-        top: textRenderingSize.textPainter.preferredLineHeight -
-            layout.note.lineOffset,
-        bottom: layout.note.lineOffset,
+        top: textRenderingSize.textPainter.preferredLineHeight - offset,
+        bottom: offset,
       ),
       child: const Divider(endIndent: 0),
     );
