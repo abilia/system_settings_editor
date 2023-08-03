@@ -34,7 +34,7 @@ void main() {
 
   blocTest(
     'License is valid',
-    setUp: () => when(() => userRepository.getLicenses()).thenAnswer(
+    setUp: () => when(() => userRepository.getLicenses(any())).thenAnswer(
       (_) => Future.value([
         License(
           id: 1,
@@ -61,7 +61,7 @@ void main() {
 
   blocTest(
     'License has expired',
-    setUp: () => when(() => userRepository.getLicenses()).thenAnswer(
+    setUp: () => when(() => userRepository.getLicenses(any())).thenAnswer(
       (_) => Future.value([
         License(
           id: 1,
@@ -88,7 +88,7 @@ void main() {
 
   blocTest(
     'License has been removed, or no license',
-    setUp: () => when(() => userRepository.getLicenses()).thenAnswer(
+    setUp: () => when(() => userRepository.getLicenses(any())).thenAnswer(
       (_) => Future.value([]),
     ),
     build: () => LicenseCubit(

@@ -111,10 +111,9 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> _checkValidLicense(bool licenseExpiredConfirmed) async {
-    final licenses = await userRepository.getLicensesFromApi();
-    final hasValidLicense =
-        licenses.anyValidLicense(clockBloc.state, licenseType);
-    final hasLicense = licenses.anyLicense(licenseType);
+    final licenses = await userRepository.getLicensesFromApi(licenseType.name);
+    final hasValidLicense = licenses.anyValidLicense(clockBloc.state);
+    final hasLicense = licenses.isNotEmpty;
     final hasLicenseAndLicenseExpiredConfirmed =
         allowExpiredLicense && hasLicense && licenseExpiredConfirmed;
 

@@ -75,7 +75,7 @@ void main() {
             ),
           ));
 
-      when(() => mockUserRepository.getLicensesFromApi()).thenAnswer(
+      when(() => mockUserRepository.getLicensesFromApi(any())).thenAnswer(
         (_) => Future.value([
           License(
             id: 1,
@@ -271,7 +271,7 @@ void main() {
       when(() => mockedUserRepository.isLoggedIn()).thenReturn(false);
       when(() => mockedUserRepository.me()).thenAnswer(
           (_) => Future.value(const User(id: 0, name: '', type: '')));
-      when(() => mockedUserRepository.getLicensesFromApi())
+      when(() => mockedUserRepository.getLicensesFromApi(any()))
           .thenAnswer((_) => Future.value([
                 License(
                     id: 1,
@@ -388,7 +388,7 @@ void main() {
     test('Login fails when no license', () async {
       // Arrange
 
-      when(() => mockUserRepository.getLicensesFromApi()).thenAnswer(
+      when(() => mockUserRepository.getLicensesFromApi(any())).thenAnswer(
         (_) => Future.value([
           // No license
         ]),
@@ -434,7 +434,7 @@ void main() {
         licenseType: LicenseType.memoplanner,
       );
 
-      when(() => mockUserRepository.getLicensesFromApi()).thenAnswer(
+      when(() => mockUserRepository.getLicensesFromApi(any())).thenAnswer(
         (_) => Future.value([
           expiredLicense,
         ]),
@@ -480,7 +480,7 @@ void main() {
         licenseType: LicenseType.memoplanner,
       );
 
-      when(() => mockUserRepository.getLicensesFromApi()).thenAnswer(
+      when(() => mockUserRepository.getLicensesFromApi(any())).thenAnswer(
         (_) => Future.value([
           expiredLicense,
         ]),
