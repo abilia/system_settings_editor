@@ -1,19 +1,20 @@
+import 'dart:math';
+
 import 'package:equatable/equatable.dart';
 import 'package:file_storage/file_storage.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class NotificationsSchedulerData extends Equatable {
-  final Iterable<Activity> activities;
-  final Iterable<TimerAlarm> timers;
+  final Iterable<NotificationAlarm> notifications;
   final String language;
   final bool alwaysUse24HourFormat;
   final AlarmSettings settings;
   final FileStorage fileStorage;
   final DateTime? dateTime;
 
-  const NotificationsSchedulerData({
-    required this.activities,
-    required this.timers,
+  const NotificationsSchedulerData._({
+    required this.notifications,
     required this.language,
     required this.alwaysUse24HourFormat,
     required this.settings,
@@ -21,17 +22,42 @@ class NotificationsSchedulerData extends Equatable {
     this.dateTime,
   });
 
+  factory NotificationsSchedulerData.fromCalendarEvents({
+    required Iterable<Activity> activities,
+    required Iterable<AbiliaTimer> timers,
+    required String language,
+    required bool alwaysUse24HourFormat,
+    required AlarmSettings settings,
+    required FileStorage fileStorage,
+    DateTime? dateTime,
+  }) {
+    final now = dateTime != null ? () => dateTime : DateTime.now;
+    final from = settings.disabledUntilDate.isAfter(now())
+        ? settings.disabledUntilDate
+        : now().nextMinute();
+    final activityNotifications = activities.alarmsFrom(
+      from,
+      take: max(maxNotifications - timers.length, 0),
+    );
+    final notifications = [...activityNotifications, ...timers.toAlarm()];
+
+    return NotificationsSchedulerData._(
+      notifications: notifications,
+      language: language,
+      alwaysUse24HourFormat: alwaysUse24HourFormat,
+      settings: settings,
+      fileStorage: fileStorage,
+      dateTime: dateTime,
+    );
+  }
+
   Map<String, dynamic> toMap() {
-    final activitiesMap = {
-      for (int i = 0; i < activities.length; i++)
-        i: activities.elementAt(i).wrapWithDbModel().toJson()
-    };
-    final timersMap = {
-      for (int i = 0; i < timers.length; i++) i: timers.elementAt(i).toJson()
+    final notificationsMap = {
+      for (int i = 0; i < notifications.length; i++)
+        i: notifications.elementAt(i).toJson()
     };
     return {
-      'activities': activitiesMap,
-      'timers': timersMap,
+      'notifications': notificationsMap,
       'language': language,
       'alwaysUse24HourFormat': alwaysUse24HourFormat,
       'settings': settings.toMap(),
@@ -41,20 +67,15 @@ class NotificationsSchedulerData extends Equatable {
   }
 
   factory NotificationsSchedulerData.fromMap(Map<String, dynamic> data) {
-    final activities = (data['activities'] as Map)
+    final notifications = (data['notifications'] as Map)
         .values
-        .map((e) => DbActivity.fromJson(e).activity)
-        .toList();
-    final timers = (data['timers'] as Map)
-        .values
-        .map((e) => NotificationAlarm.fromJson(e) as TimerAlarm)
+        .map((e) => NotificationAlarm.fromJson(e))
         .toList();
     final dateTime = data['dateTime'] != null
         ? DateTime.fromMillisecondsSinceEpoch(data['dateTime'])
         : null;
-    return NotificationsSchedulerData(
-      activities: activities,
-      timers: timers,
+    return NotificationsSchedulerData._(
+      notifications: notifications,
       language: data['language'],
       alwaysUse24HourFormat: data['alwaysUse24HourFormat'],
       settings: AlarmSettings.fromMap(data['settings']),
@@ -65,8 +86,7 @@ class NotificationsSchedulerData extends Equatable {
 
   @override
   List<Object?> get props => [
-        activities,
-        timers,
+        notifications,
         language,
         settings,
         fileStorage,

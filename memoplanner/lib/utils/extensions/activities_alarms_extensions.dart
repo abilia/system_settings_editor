@@ -3,6 +3,8 @@ import 'package:memoplanner/utils/all.dart';
 
 const maxNotifications = 50;
 
+const maxDepth = 50;
+
 const List<Duration> unsignedOffActivityReminders = [
   Duration(minutes: 15),
   Duration(minutes: 30),
@@ -68,7 +70,7 @@ extension AlarmsExtension on Iterable<Activity> {
   Iterable<ActivityAlarm> alarmsFrom(
     DateTime time, {
     int take = maxNotifications,
-    int maxDays = 60,
+    int maxDays = maxDepth,
   }) {
     final nextDay = time.nextDay().onlyDays();
     final endTime = nextDay.subtract(1.minutes());

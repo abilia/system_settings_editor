@@ -40,13 +40,14 @@ class NotificationBloc extends Bloc<ScheduleNotifications, NotificationState> {
 
     final now = DateTime.now();
     final timers = await timerDb.getRunningTimersFrom(now);
-    final activities = await activityRepository.allAfter(
-      now.subtract(maxReminder), // subtracting to get all reminders
+    final activities = await activityRepository.allBetween(
+      now.subtract(maxReminder),
+      now.add(maxDepth.days()),
     );
     return scheduleNotificationsIsolated(
-      NotificationsSchedulerData(
+      NotificationsSchedulerData.fromCalendarEvents(
         activities: activities,
-        timers: timers.toAlarm(),
+        timers: timers,
         language: settingsDb.language,
         alwaysUse24HourFormat: settingsDb.alwaysUse24HourFormat,
         settings: settings.alarm,

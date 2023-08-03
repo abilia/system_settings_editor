@@ -65,30 +65,28 @@ void main() {
           ends: now.add(5.days())),
     ),
   ];
-  final timer1 = TimerAlarm(
-        AbiliaTimer(
-          id: 'ids',
-          title: 'title',
-          startTime: now,
-          duration: 22.minutes(),
-        ),
+
+  final timer1 = AbiliaTimer(
+        id: 'ids',
+        title: 'title',
+        startTime: now,
+        duration: 22.minutes(),
       ),
-      timer2 = TimerAlarm(
-        AbiliaTimer(
-          id: 'ids2',
-          title: 'title2',
-          startTime: now.subtract(23.hours()),
-          duration: 24.hours(),
-        ),
+      timer2 = AbiliaTimer(
+        id: 'ids2',
+        title: 'title2',
+        startTime: now.subtract(23.hours()),
+        duration: 24.hours(),
       ),
-      timer3 = TimerAlarm(
-        AbiliaTimer(
-          id: 'ids3',
-          title: 'title3',
-          startTime: now.subtract(21.minutes()).subtract(55.seconds()),
-          duration: 22.minutes(),
-        ),
+      timer3 = AbiliaTimer(
+        id: 'ids3',
+        title: 'title3',
+        startTime: now.subtract(21.minutes()).subtract(55.seconds()),
+        duration: 22.minutes(),
       );
+
+  final timerAlarm1 = TimerAlarm(timer1);
+
   final allTimers = [timer1, timer2, timer3];
 
   setUpAll(registerFallbackValues);
@@ -196,15 +194,13 @@ void main() {
 
       // Act
       await scheduleNotifications(
-        NotificationsSchedulerData(
+        NotificationsSchedulerData.fromCalendarEvents(
           activities: [Activity.createNew(startTime: now.add(30.minutes()))],
           timers: [
-            TimerAlarm(
-              AbiliaTimer.createNew(
-                startTime: now,
-                duration: 10.minutes(),
-              ),
-            )
+            AbiliaTimer.createNew(
+              startTime: now,
+              duration: 10.minutes(),
+            ),
           ],
           language: 'en',
           alwaysUse24HourFormat: true,
@@ -255,7 +251,7 @@ void main() {
 
     test('Serializing AlarmSchedulerData back and forth keeps all the data',
         () async {
-      final schedulerData = NotificationsSchedulerData(
+      final schedulerData = NotificationsSchedulerData.fromCalendarEvents(
         activities: allActivities,
         timers: allTimers,
         language: 'en',
@@ -272,7 +268,7 @@ void main() {
   group('only activities', () {
     test('scheduleNotificationsIsolated', () async {
       await scheduleNotificationsIsolated(
-        NotificationsSchedulerData(
+        NotificationsSchedulerData.fromCalendarEvents(
           activities: allActivities,
           timers: const [],
           language: 'en',
@@ -294,7 +290,7 @@ void main() {
 
     test('scheduleNotifications', () async {
       await scheduleNotifications(
-        NotificationsSchedulerData(
+        NotificationsSchedulerData.fromCalendarEvents(
           activities: allActivities,
           timers: const [],
           language: 'en',
@@ -316,7 +312,7 @@ void main() {
 
     test('scheduleNotifications disabled until tomorrow', () async {
       await scheduleNotifications(
-        NotificationsSchedulerData(
+        NotificationsSchedulerData.fromCalendarEvents(
           activities: allActivities,
           timers: const [],
           language: 'en',
@@ -343,7 +339,7 @@ void main() {
       debugDefaultTargetPlatformOverride = TargetPlatform.android;
       addTearDown(() => debugDefaultTargetPlatformOverride = null);
       await scheduleNotifications(
-        NotificationsSchedulerData(
+        NotificationsSchedulerData.fromCalendarEvents(
           activities: allActivities.take(2),
           timers: const [],
           language: 'en',
@@ -386,7 +382,7 @@ void main() {
       debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
       addTearDown(() => debugDefaultTargetPlatformOverride = null);
       await scheduleNotifications(
-        NotificationsSchedulerData(
+        NotificationsSchedulerData.fromCalendarEvents(
           activities: allActivities.take(2),
           timers: const [],
           language: 'en',
@@ -420,7 +416,7 @@ void main() {
   group('only timers', () {
     test('scheduleNotificationsIsolated one timer', () async {
       await scheduleNotificationsIsolated(
-        NotificationsSchedulerData(
+        NotificationsSchedulerData.fromCalendarEvents(
           activities: const [],
           timers: [timer1],
           language: 'en',
@@ -434,8 +430,8 @@ void main() {
       verifyCancelAllPendingNotifications();
       verify(
         () => mockedNotificationsPlugin.zonedSchedule(
-            timer1.hashCode, timer1.timer.title, any(), any(), any(),
-            payload: timer1.encode(),
+            timerAlarm1.hashCode, timerAlarm1.timer.title, any(), any(), any(),
+            payload: timerAlarm1.encode(),
             androidScheduleMode: AndroidScheduleMode.alarmClock,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime),
@@ -444,7 +440,7 @@ void main() {
 
     test('scheduleNotificationsIsolated 3 timers', () async {
       await scheduleNotificationsIsolated(
-        NotificationsSchedulerData(
+        NotificationsSchedulerData.fromCalendarEvents(
           activities: const [],
           timers: allTimers,
           language: 'en',
@@ -468,7 +464,7 @@ void main() {
 
     test('scheduleNotifications one timer', () async {
       await scheduleNotifications(
-        NotificationsSchedulerData(
+        NotificationsSchedulerData.fromCalendarEvents(
           activities: const [],
           timers: [timer1],
           language: 'en',
@@ -482,8 +478,8 @@ void main() {
       verifyCancelAllPendingNotifications();
       verify(
         () => mockedNotificationsPlugin.zonedSchedule(
-            timer1.hashCode, timer1.timer.title, any(), any(), any(),
-            payload: timer1.encode(),
+            timerAlarm1.hashCode, timerAlarm1.timer.title, any(), any(), any(),
+            payload: timerAlarm1.encode(),
             androidScheduleMode: AndroidScheduleMode.alarmClock,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime),
@@ -492,7 +488,7 @@ void main() {
 
     test('scheduleNotifications 3 timers', () async {
       await scheduleNotifications(
-        NotificationsSchedulerData(
+        NotificationsSchedulerData.fromCalendarEvents(
           activities: const [],
           timers: allTimers,
           language: 'en',
@@ -517,16 +513,14 @@ void main() {
     test('scheduleNotifications with image android', () async {
       debugDefaultTargetPlatformOverride = TargetPlatform.android;
       addTearDown(() => debugDefaultTargetPlatformOverride = null);
-      final timerWithImage = TimerAlarm(
-        AbiliaTimer(
-          id: 'id6',
-          fileId: fileId,
-          startTime: now,
-          duration: 14.minutes(),
-        ),
+      final timerWithImage = AbiliaTimer(
+        id: 'id6',
+        fileId: fileId,
+        startTime: now,
+        duration: 14.minutes(),
       );
       await scheduleNotifications(
-        NotificationsSchedulerData(
+        NotificationsSchedulerData.fromCalendarEvents(
           activities: const [],
           timers: [timerWithImage],
           language: 'en',
@@ -568,16 +562,14 @@ void main() {
     test('scheduleNotifications with image iOS', () async {
       debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
       addTearDown(() => debugDefaultTargetPlatformOverride = null);
-      final timerWithImage = TimerAlarm(
-        AbiliaTimer(
-          id: 'id6',
-          fileId: fileId,
-          startTime: now,
-          duration: 14.minutes(),
-        ),
+      final timerWithImage = AbiliaTimer(
+        id: 'id6',
+        fileId: fileId,
+        startTime: now,
+        duration: 14.minutes(),
       );
       await scheduleNotifications(
-        NotificationsSchedulerData(
+        NotificationsSchedulerData.fromCalendarEvents(
           activities: const [],
           timers: [timerWithImage],
           language: 'en',
@@ -611,7 +603,7 @@ void main() {
         'scheduleNotifications disabled until tomorrow does not consider timers',
         () async {
       await scheduleNotifications(
-        NotificationsSchedulerData(
+        NotificationsSchedulerData.fromCalendarEvents(
           activities: const [],
           timers: allTimers,
           language: 'en',
@@ -638,7 +630,7 @@ void main() {
   group('activities and timers', () {
     test('scheduleNotificationsIsolated', () async {
       await scheduleNotificationsIsolated(
-        NotificationsSchedulerData(
+        NotificationsSchedulerData.fromCalendarEvents(
           activities: allActivities,
           timers: allTimers,
           language: 'en',
@@ -661,7 +653,7 @@ void main() {
     });
     test('scheduleNotifications 3 timers', () async {
       await scheduleNotifications(
-        NotificationsSchedulerData(
+        NotificationsSchedulerData.fromCalendarEvents(
           activities: allActivities,
           timers: allTimers,
           language: 'en',

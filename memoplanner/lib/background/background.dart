@@ -74,8 +74,10 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       userId: user.id,
     );
     await activityRepository.fetchIntoDatabase();
-    final activities =
-        await activityRepository.allAfter(now.subtract(maxReminder));
+    final activities = await activityRepository.allBetween(
+      now.subtract(maxReminder),
+      now.add(maxDepth.days()),
+    );
 
     final fileStorage = FileStorage.inDirectory(documentDirectory.path);
 
@@ -114,9 +116,9 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
 
     await initializeNotificationPlugin();
     await scheduleNotifications(
-      NotificationsSchedulerData(
+      NotificationsSchedulerData.fromCalendarEvents(
         activities: activities,
-        timers: timers.toAlarm(),
+        timers: timers,
         language: settingsDb.language,
         alwaysUse24HourFormat: settingsDb.alwaysUse24HourFormat,
         settings: settings.alarm,
