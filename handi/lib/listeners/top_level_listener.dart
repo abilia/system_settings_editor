@@ -1,5 +1,6 @@
 import 'package:auth/listeners/authentication_listener.dart';
 import 'package:flutter/material.dart';
+import 'package:handi/listeners/authenticated_listener.dart';
 import 'package:handi/providers.dart';
 import 'package:handi/ui/pages/logged_in_page.dart';
 import 'package:handi/ui/pages/login_page.dart';
@@ -26,8 +27,10 @@ class TopLevelListener extends StatelessWidget {
           MaterialPageRoute<void>(
             builder: (_) => AuthenticatedProviders(
               userId: state.userId,
-              child: LoggedInPage(
-                authenticated: state,
+              child: AuthenticatedListener(
+                child: LoggedInPage(
+                  authenticated: state,
+                ),
               ),
             ),
             settings: (LoggedInPage).routeSetting(),
