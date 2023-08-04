@@ -97,7 +97,7 @@ void main() {
 
   group('Steps', () {
     test('initial state is first warning and sync failed', () {
-      final logoutSyncCubit = LogoutSyncBloc(
+      final logoutSyncBloc = LogoutSyncBloc(
         authenticationBloc: mockAuthenticationBloc,
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
@@ -111,7 +111,7 @@ void main() {
       );
 
       expect(
-        logoutSyncCubit.state,
+        logoutSyncBloc.state,
         const LogoutSyncState(
           logoutWarning: LogoutWarning.firstWarningSyncFailed,
         ),
@@ -136,7 +136,7 @@ void main() {
         genericDb: genericDb,
         sortableDb: sortableDb,
       ),
-      act: (LogoutSyncBloc cubit) => cubit.next(),
+      act: (LogoutSyncBloc bloc) => bloc.next(),
       expect: () => [
         const LogoutSyncState(
           logoutWarning: LogoutWarning.firstWarningSyncFailed,
@@ -174,7 +174,7 @@ void main() {
           sortableDb: sortableDb,
         );
       },
-      act: (LogoutSyncBloc cubit) => cubit
+      act: (LogoutSyncBloc bloc) => bloc
         ..next()
         ..next(),
       expect: () => [
@@ -213,7 +213,7 @@ void main() {
 
       Future<void> testConnectivityChange(ConnectivityResult cr) async {
         final crStream = StreamController<ConnectivityResult>();
-        final logoutSyncCubit = LogoutSyncBloc(
+        final logoutSyncBloc = LogoutSyncBloc(
           authenticationBloc: mockAuthenticationBloc,
           myAbiliaConnection: myAbiliaConnection,
           licenseCubit: licenseCubit,
@@ -229,7 +229,7 @@ void main() {
         crStream.add(cr);
 
         await expectLater(
-          logoutSyncCubit.stream,
+          logoutSyncBloc.stream,
           emitsThrough(
             predicate<LogoutSyncState>(
               (state) =>
@@ -257,13 +257,13 @@ void main() {
 
       Future<void> testConnectivityChange(
         ConnectivityResult cr,
-        LogoutSyncBloc cubit,
+        LogoutSyncBloc bloc,
         StreamController<ConnectivityResult> streamController,
       ) async {
         streamController.add(cr);
 
         expectLater(
-          cubit.stream,
+          bloc.stream,
           neverEmits(
             [
               const LogoutSyncState(
@@ -287,7 +287,7 @@ void main() {
           final connectivityResultStream =
               StreamController<ConnectivityResult>();
 
-          final logoutSyncCubit = LogoutSyncBloc(
+          final logoutSyncBloc = LogoutSyncBloc(
             authenticationBloc: mockAuthenticationBloc,
             myAbiliaConnection: myAbiliaConnection,
             licenseCubit: licenseCubit,
@@ -300,14 +300,14 @@ void main() {
             sortableDb: sortableDb,
           )..close();
           await testConnectivityChange(
-              cr, logoutSyncCubit, connectivityResultStream);
+              cr, logoutSyncBloc, connectivityResultStream);
         }
       }
     });
 
     test('Connectivity changes to none does not emit syncing', () async {
       when(() => activityDb.countAllDirty()).thenAnswer((_) => Future.value(1));
-      final logoutSyncCubit = LogoutSyncBloc(
+      final logoutSyncBloc = LogoutSyncBloc(
         authenticationBloc: mockAuthenticationBloc,
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
@@ -323,7 +323,7 @@ void main() {
       connectivityStream.add(ConnectivityResult.none);
 
       final expect = expectLater(
-        logoutSyncCubit.stream,
+        logoutSyncBloc.stream,
         neverEmits([
           const LogoutSyncState(
             logoutWarning: LogoutWarning.firstWarningSyncing,
@@ -335,7 +335,7 @@ void main() {
         ]),
       );
 
-      logoutSyncCubit.close();
+      logoutSyncBloc.close();
       await expect;
     });
   });
@@ -349,7 +349,7 @@ void main() {
     test('correct number of dirty activities', () async {
       when(() => activityDb.countAllDirty()).thenAnswer((_) => Future.value(3));
 
-      final logoutSyncCubit = LogoutSyncBloc(
+      final logoutSyncBloc = LogoutSyncBloc(
         authenticationBloc: mockAuthenticationBloc,
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
@@ -363,7 +363,7 @@ void main() {
       );
 
       await expectLater(
-        logoutSyncCubit.stream,
+        logoutSyncBloc.stream,
         emitsThrough(
           LogoutSyncState(
             logoutWarning: LogoutWarning.firstWarningSyncFailed,
@@ -383,7 +383,7 @@ void main() {
           [basicActivity, basicActivity, basicActivity, basicActivity]));
       when(() => sortableDb.countAllDirty()).thenAnswer((_) => Future.value(4));
 
-      final logoutSyncCubit = LogoutSyncBloc(
+      final logoutSyncBloc = LogoutSyncBloc(
         authenticationBloc: mockAuthenticationBloc,
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
@@ -397,7 +397,7 @@ void main() {
       );
 
       await expectLater(
-        logoutSyncCubit.stream,
+        logoutSyncBloc.stream,
         emitsThrough(
           LogoutSyncState(
             logoutWarning: LogoutWarning.firstWarningSyncFailed,
@@ -416,7 +416,7 @@ void main() {
           [basicTimer, basicTimer, basicTimer, basicTimer, basicTimer]));
       when(() => sortableDb.countAllDirty()).thenAnswer((_) => Future.value(5));
 
-      final logoutSyncCubit = LogoutSyncBloc(
+      final logoutSyncBloc = LogoutSyncBloc(
         authenticationBloc: mockAuthenticationBloc,
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
@@ -430,7 +430,7 @@ void main() {
       );
 
       expectLater(
-        logoutSyncCubit.stream,
+        logoutSyncBloc.stream,
         emitsThrough(
           LogoutSyncState(
             logoutWarning: LogoutWarning.firstWarningSyncFailed,
@@ -455,7 +455,7 @@ void main() {
           (_) => Future.value([photo, photo, photo, photo, photo, photo]));
       when(() => userFileDb.countAllDirty()).thenAnswer((_) => Future.value(6));
 
-      final logoutSyncCubit = LogoutSyncBloc(
+      final logoutSyncBloc = LogoutSyncBloc(
         authenticationBloc: mockAuthenticationBloc,
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
@@ -469,7 +469,7 @@ void main() {
       );
 
       expectLater(
-        logoutSyncCubit.stream,
+        logoutSyncBloc.stream,
         emitsThrough(
           LogoutSyncState(
             logoutWarning: LogoutWarning.firstWarningSyncFailed,
@@ -482,7 +482,7 @@ void main() {
     test('correct value for settingsData', () async {
       when(() => genericDb.countAllDirty()).thenAnswer((_) => Future.value(1));
 
-      final logoutSyncCubit = LogoutSyncBloc(
+      final logoutSyncBloc = LogoutSyncBloc(
         authenticationBloc: mockAuthenticationBloc,
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
@@ -496,7 +496,7 @@ void main() {
       );
 
       expectLater(
-        logoutSyncCubit.stream,
+        logoutSyncBloc.stream,
         emitsThrough(
           LogoutSyncState(
             logoutWarning: LogoutWarning.firstWarningSyncFailed,
@@ -543,7 +543,7 @@ void main() {
       when(() => licenseCubit.validLicense).thenReturn(true);
       when(() => licenseCubit.reloadLicenses()).thenAnswer((_) async {});
 
-      final logoutSyncCubit = LogoutSyncBloc(
+      final logoutSyncBloc = LogoutSyncBloc(
         authenticationBloc: mockAuthenticationBloc,
         myAbiliaConnection: myAbiliaConnection,
         licenseCubit: licenseCubit,
@@ -559,7 +559,7 @@ void main() {
       connectivityStream.add(ConnectivityResult.wifi);
 
       await expectLater(
-        logoutSyncCubit.stream,
+        logoutSyncBloc.stream,
         emitsThrough(
           predicate<LogoutSyncState>(
             (state) => state.logoutWarning == LogoutWarning.firstWarningSyncing,
@@ -567,7 +567,7 @@ void main() {
         ),
       );
 
-      logoutSyncCubit.close();
+      logoutSyncBloc.close();
 
       verifyNever(() => licenseCubit.reloadLicenses());
     });
