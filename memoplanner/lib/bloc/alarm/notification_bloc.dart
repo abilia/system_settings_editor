@@ -15,24 +15,27 @@ class ScheduleNotifications {}
 class NotificationState {}
 
 class NotificationBloc extends Bloc<ScheduleNotifications, NotificationState> {
+  final ActivityRepository activityRepository;
+  final TimerDb timerDb;
+  final SettingsDb settingsDb;
+  final MemoplannerSettingsBloc memoplannerSettingBloc;
+  late final StreamSubscription _daysStreamSubscription;
+
   NotificationBloc({
     required this.activityRepository,
     required this.timerDb,
     required this.settingsDb,
     required this.memoplannerSettingBloc,
     required Duration scheduleNotificationsDelay,
+    required Ticker ticker,
   }) : super(NotificationState()) {
     on<ScheduleNotifications>(
       (event, emit) async => _scheduleNotifications(),
       transformer: _debounceTime(scheduleNotificationsDelay),
     );
+    _daysStreamSubscription =
+        ticker.days.listen((_) => add(ScheduleNotifications()));
   }
-
-  final ActivityRepository activityRepository;
-
-  final TimerDb timerDb;
-  final SettingsDb settingsDb;
-  final MemoplannerSettingsBloc memoplannerSettingBloc;
 
   Future<void> _scheduleNotifications() async {
     final settings = memoplannerSettingBloc.state;
@@ -57,4 +60,10 @@ class NotificationBloc extends Bloc<ScheduleNotifications, NotificationState> {
 
   EventTransformer<Event> _debounceTime<Event>(Duration time) =>
       (events, mapper) => events.debounceTime(time).asyncExpand(mapper);
+
+  @override
+  Future<void> close() async {
+    await _daysStreamSubscription.cancel();
+    return super.close();
+  }
 }

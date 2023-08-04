@@ -8,6 +8,8 @@ class Ticker {
   late Stream<DateTime> _stream = _streamController.stream.asBroadcastStream();
   Stream<DateTime> get seconds => _stream;
   Stream<DateTime> get minutes => _stream.where((t) => t.second == 0);
+  Stream<DateTime> get days =>
+      minutes.where((t) => t.minute == 0 && t.hour == 0);
 
   DateTime _time;
   DateTime get time => _time;
