@@ -9,7 +9,7 @@ class Ticker {
   Stream<DateTime> get seconds => _stream;
   Stream<DateTime> get minutes => _stream.where((t) => t.second == 0);
   Stream<DateTime> get days =>
-      _stream.where((t) => t.second == 0 && t.minute == 0 && t.hour == 0);
+      minutes.where((t) => t.minute == 0 && t.hour == 0);
 
   DateTime _time;
   DateTime get time => _time;
