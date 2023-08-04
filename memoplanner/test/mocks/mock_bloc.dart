@@ -54,7 +54,7 @@ class MockSoundBloc extends MockBloc<SoundEvent, SoundState>
     implements SoundBloc {}
 
 class MockLogoutSyncCubit extends MockCubit<LogoutSyncState>
-    implements LogoutSyncCubit {}
+    implements LogoutSyncBloc {}
 
 class MockEditTimerCubit extends MockCubit<EditTimerState>
     implements EditTimerCubit {}

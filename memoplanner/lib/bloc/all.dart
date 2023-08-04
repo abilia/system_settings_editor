@@ -26,7 +26,7 @@ export 'events/events_state.dart';
 export 'feature_toggle/feature_toggle_cubit.dart';
 export 'locale/locale_cubit.dart';
 export 'login/all.dart';
-export 'logout/logout_sync_cubit.dart';
+export 'logout/logout_sync_bloc.dart';
 export 'navigation/navigation_cubit.dart';
 export 'permission/permission_cubit.dart';
 export 'providers.dart';

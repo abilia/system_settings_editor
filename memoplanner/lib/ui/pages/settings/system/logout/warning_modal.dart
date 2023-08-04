@@ -6,7 +6,7 @@ class LogoutWarningModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<LogoutSyncCubit>().state;
+    final state = context.watch<LogoutSyncBloc>().state;
     final warning = state.logoutWarning;
 
     return _LogoutModal(
@@ -477,7 +477,7 @@ class _LogoutModal extends StatelessWidget {
                     child: LogoutButton(
                       style: iconTextButtonStyleRed.withoutMinimumWidth,
                       onPressed: () async =>
-                          context.read<LogoutSyncCubit>().next(),
+                          context.read<LogoutSyncBloc>().next(),
                     ),
                   ),
                 ],

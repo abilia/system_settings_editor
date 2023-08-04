@@ -10,9 +10,11 @@ import 'package:memoplanner/utils/myabilia_connection.dart';
 import 'package:seagull_logging/seagull_logging.dart';
 
 part 'logout_sync_state.dart';
+part 'logout_sync_event.dart';
 
-class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
-  LogoutSyncCubit({
+class LogoutSyncBloc extends Bloc<LogoutSyncEvent, LogoutSyncState>
+    with Finest {
+  LogoutSyncBloc({
     required this.syncBloc,
     required this.syncDelay,
     required this.licenseCubit,
@@ -26,21 +28,25 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
   }) : super(const LogoutSyncState(
           logoutWarning: LogoutWarning.firstWarningSyncFailed,
         )) {
-    unawaited(_setLogoutWarning());
-    unawaited(_fetchDirtyItems());
-    unawaited(_checkConnectivity());
+    on<LogoutWarningEvent>(_onEvent);
+    on<FetchDirtyItemsEvent>(_onEvent);
+    on<CheckConnectivityEvent>(_onEvent);
+
+    add(LogoutWarningEvent());
+    add(FetchDirtyItemsEvent());
+    add(CheckConnectivityEvent());
 
     _syncSubscription = syncBloc.stream.listen((_) async {
-      await _setLogoutWarning();
-      await _fetchDirtyItems();
+      add(LogoutWarningEvent());
+      add(FetchDirtyItemsEvent());
     });
 
     _connectivitySubscription =
-        connectivity.listen((cr) async => _checkConnectivity());
+        connectivity.listen((cr) async => add(CheckConnectivityEvent()));
 
     _licenseSubscription = licenseCubit.stream.listen((_) async {
-      await _setLogoutWarning();
-      await _checkConnectivity();
+      add(LogoutWarningEvent());
+      add(CheckConnectivityEvent());
     });
   }
 
@@ -52,7 +58,7 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
   late final StreamSubscription _syncSubscription;
   late final StreamSubscription _connectivitySubscription;
   late final StreamSubscription _licenseSubscription;
-  late final log = Logger((LogoutSyncCubit).toString());
+  late final log = Logger((LogoutSyncBloc).toString());
   final ActivityDb activityDb;
   final UserFileDb userFileDb;
   final SortableDb sortableDb;
@@ -65,10 +71,11 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
 
     switch (state.logoutWarning.step) {
       case WarningStep.firstWarning:
-        return _setLogoutWarning(step: WarningStep.secondWarning);
+        return add(LogoutWarningEvent(step: WarningStep.secondWarning));
       case WarningStep.secondWarning:
         if (state.isOnline && !licenseCubit.validLicense) {
-          return _setLogoutWarning(step: WarningStep.licenseExpiredWarning);
+          return add(
+              LogoutWarningEvent(step: WarningStep.licenseExpiredWarning));
         }
         return authenticationBloc.add(const LoggedOut());
       case WarningStep.licenseExpiredWarning:
@@ -76,7 +83,23 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
     }
   }
 
-  Future<void> _setLogoutWarning({
+  Future _onEvent(
+    LogoutSyncEvent event,
+    Emitter<LogoutSyncState?> emit,
+  ) async {
+    if (event is FetchDirtyItemsEvent) {
+      return await _fetchDirtyItems(emit);
+    }
+    if (event is LogoutWarningEvent) {
+      return await _setLogoutWarning(emit, step: event.step);
+    }
+    if (event is CheckConnectivityEvent) {
+      return await _checkConnectivity(emit);
+    }
+  }
+
+  Future<void> _setLogoutWarning(
+    Emitter<LogoutSyncState?> emit, {
     WarningStep? step,
     bool forceSyncing = false,
   }) async {
@@ -120,7 +143,8 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
     emit(state.copyWith(logoutWarning: logoutWarning));
   }
 
-  Future<void> _checkConnectivity({int retry = 0}) async {
+  Future<void> _checkConnectivity(Emitter<LogoutSyncState?> emit,
+      {int retry = 0}) async {
     final isOnline = await myAbiliaConnection.hasConnection();
     if (isClosed) return;
     emit(state.copyWith(isOnline: isOnline));
@@ -131,7 +155,7 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
       );
       await Future.delayed(
         syncDelay,
-        () => _checkConnectivity(retry: retry + 1),
+        () => _checkConnectivity(emit, retry: retry + 1),
       );
     }
 
@@ -141,7 +165,7 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
       log.warning(
           'Is online, adding ${(SyncAll).toString()} event to ${(SyncBloc).toString()}.');
       syncBloc.add(const SyncAll());
-      await _setLogoutWarning(forceSyncing: true);
+      await _setLogoutWarning(emit, forceSyncing: true);
     }
 
     if (!licenseCubit.validLicense) {
@@ -150,7 +174,7 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
     }
   }
 
-  Future<void> _fetchDirtyItems() async {
+  Future<void> _fetchDirtyItems(Emitter<LogoutSyncState?> emit) async {
     final dirtyActivities = await activityDb.countAllDirty();
 
     final dirtySortables = groupBy(
@@ -176,9 +200,8 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
       settingsData: settingsDataDirty,
     );
 
-    if (!isClosed) {
-      emit(state.copyWith(dirtyItems: dirtyItems));
-    }
+    if (isClosed) return;
+    emit(state.copyWith(dirtyItems: dirtyItems));
   }
 
   @override
