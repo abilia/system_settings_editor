@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:file_storage/file_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -86,56 +85,25 @@ Future scheduleNotifications(
   Logging log,
 ) async {
   final dateTime = schedulerData.dateTime;
-  final hasDateTime = dateTime != null;
-  final DateTime Function() now = hasDateTime ? () => dateTime : DateTime.now;
-  final from = schedulerData.settings.disabledUntilDate.isAfter(now())
-      ? schedulerData.settings.disabledUntilDate
-      : now().nextMinute();
-  final activityNotifications = schedulerData.activities.alarmsFrom(
-    from,
-    take: max(maxNotifications - schedulerData.timers.length, 0),
-  );
-  return _scheduleAllNotifications(
-    [
-      ...schedulerData.timers,
-      ...activityNotifications,
-    ],
-    schedulerData.language,
-    schedulerData.alwaysUse24HourFormat,
-    schedulerData.settings,
-    schedulerData.fileStorage,
-    now,
-    log,
-  );
-}
-
-Future _scheduleAllNotifications(
-  Iterable<NotificationAlarm> notifications,
-  String language,
-  bool alwaysUse24HourFormat,
-  AlarmSettings settings,
-  FileStorage fileStorage,
-  DateTime Function() now,
-  Logging log,
-) async {
+  final now = dateTime != null ? () => dateTime : DateTime.now;
   await cancelAllPendingNotifications();
-  final locale = Locale(language);
+  final locale = Locale(schedulerData.language);
   await initializeDateFormatting(locale.languageCode);
   await initLokalise();
   final androidNotificationChannels = await _androidNotificationChannelIds(log);
   log(
     Level.FINE,
-    'scheduling ${notifications.length} notifications...',
+    'scheduling ${schedulerData.notifications.length} notifications...',
   );
   final notificationTimes = <DateTime>{};
   var scheduled = 0;
-  for (final newNotification in notifications) {
+  for (final newNotification in schedulerData.notifications) {
     if (await _scheduleNotification(
       newNotification,
       locale,
-      alwaysUse24HourFormat,
-      settings,
-      fileStorage,
+      schedulerData.alwaysUse24HourFormat,
+      schedulerData.settings,
+      schedulerData.fileStorage,
       now,
       androidNotificationChannels,
       // Adding a delay on simultaneous alarms to let the
