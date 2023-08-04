@@ -70,7 +70,7 @@ class LoggedInPage extends StatelessWidget {
                       children: [
                         FutureBuilder(
                           future: context
-                              .read<ActivitiesBloc>()
+                              .read<ActivitiesCubit>()
                               // ignore: discarded_futures
                               .getActivitiesAfter(DateTime.now()),
                           builder: (context, snapshot) {

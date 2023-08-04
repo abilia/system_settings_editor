@@ -121,7 +121,7 @@ mixin ActivityMixin {
     ActivityDay activityDay, {
     String? message,
   }) async {
-    final activitiesBloc = context.read<ActivitiesBloc>();
+    final activitiesCubit = context.read<ActivitiesCubit>();
     final check = await showViewDialog<bool>(
       context: context,
       builder: (_) => CheckActivityConfirmDialog(
@@ -131,10 +131,8 @@ mixin ActivityMixin {
       routeSettings: (CheckActivityConfirmDialog).routeSetting(),
     );
     if (check == true) {
-      activitiesBloc.add(
-        UpdateActivity(
-          activityDay.activity.signOff(activityDay.day),
-        ),
+      await activitiesCubit.updateActivity(
+        activityDay.activity.signOff(activityDay.day),
       );
     }
     return check;
@@ -272,11 +270,14 @@ class Attachment extends StatelessWidget with ActivityMixin {
           final updatedActivity = activity.copyWith(
             infoItem: signedOff,
           );
-          context.read<ActivityCubit>().onActivityUpdated(updatedActivity);
+          await context
+              .read<ActivityCubit>()
+              .onActivityUpdated(updatedActivity);
 
           if (signedOff.allSignedOff(activityDay.day) &&
               updatedActivity.checkable &&
-              !activityDay.isSignedOff) {
+              !activityDay.isSignedOff &&
+              context.mounted) {
             await checkConfirmationAndRemoveAlarm(
               context,
               ActivityDay(updatedActivity, activityDay.day),

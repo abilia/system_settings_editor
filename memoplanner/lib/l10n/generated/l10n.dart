@@ -321,7 +321,6 @@ class Lt {
     'extra': [],
     'infoType': [],
     'selectInfoType': [],
-    'infoTypeNone': [],
     'addChecklist': [],
     'addNote': [],
     'typeSomething': [],
@@ -556,7 +555,17 @@ class Lt {
     'factoryResetFailed': [],
     'noRecurrence': [],
     'daily': [],
-    'back': []
+    'back': [],
+    'onlyOneInfoItem': [],
+    'cancelChanges': [],
+    'saveNote': [],
+    'saveNoteQuestion': [],
+    'newTask': [],
+    'tasks': [],
+    'checklist': [],
+    'note': [],
+    'newNote': [],
+    'newChecklist': []
   };
 
   /// `Welcome!`
@@ -3139,16 +3148,6 @@ class Lt {
     );
   }
 
-  /// `No extra function selected`
-  String get infoTypeNone {
-    return Intl.message(
-      'No extra function selected',
-      name: 'infoTypeNone',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Add checklist`
   String get addChecklist {
     return Intl.message(
@@ -5494,6 +5493,106 @@ class Lt {
     return Intl.message(
       'Back',
       name: 'back',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can only have one extra function in this activity`
+  String get onlyOneInfoItem {
+    return Intl.message(
+      'You can only have one extra function in this activity',
+      name: 'onlyOneInfoItem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel changes`
+  String get cancelChanges {
+    return Intl.message(
+      'Cancel changes',
+      name: 'cancelChanges',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save note`
+  String get saveNote {
+    return Intl.message(
+      'Save note',
+      name: 'saveNote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to save note first?`
+  String get saveNoteQuestion {
+    return Intl.message(
+      'Do you want to save note first?',
+      name: 'saveNoteQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New task`
+  String get newTask {
+    return Intl.message(
+      'New task',
+      name: 'newTask',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `tasks`
+  String get tasks {
+    return Intl.message(
+      'tasks',
+      name: 'tasks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Checklist`
+  String get checklist {
+    return Intl.message(
+      'Checklist',
+      name: 'checklist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Note`
+  String get note {
+    return Intl.message(
+      'Note',
+      name: 'note',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New note`
+  String get newNote {
+    return Intl.message(
+      'New note',
+      name: 'newNote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New checklist`
+  String get newChecklist {
+    return Intl.message(
+      'New checklist',
+      name: 'newChecklist',
       desc: '',
       args: [],
     );

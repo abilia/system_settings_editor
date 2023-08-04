@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:equatable/equatable.dart';
 import 'package:logging/logging.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -176,21 +174,41 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     _changeTimeInterval(newTimeInterval);
   }
 
-  void changeInfoItemType(Type newInfoType) {
-    final oldInfoItem = state.activity.infoItem;
-    final oldInfoItemType = oldInfoItem.runtimeType;
-    if (newInfoType == oldInfoItemType) return;
-    final infoItems = Map.fromEntries(state.infoItems.entries);
-    infoItems[oldInfoItemType] = oldInfoItem;
-
+  void setInfoItem(InfoItem infoItem) {
     emit(
       state.copyWith(
-        state.activity.copyWith(
-          infoItem: infoItems[newInfoType] ?? _newInfoItem(newInfoType),
-        ),
-        infoItems: infoItems,
+        state.activity.copyWith(infoItem: infoItem),
       ),
     );
+  }
+
+  void removeInfoItem() {
+    emit(
+      state.copyWith(
+        state.activity.copyWith(infoItem: const NoInfoItem()),
+      ),
+    );
+  }
+
+  void createNewInfoItem(Type newInfoType) {
+    emit(
+      state.copyWith(
+        state.activity.copyWith(infoItem: _newInfoItem(newInfoType)),
+      ),
+    );
+  }
+
+  InfoItem _newInfoItem(Type infoItemType) {
+    switch (infoItemType) {
+      case NoteInfoItem:
+        return const NoteInfoItem();
+      case Checklist:
+        return Checklist();
+      case VideoInfoItem:
+        return const VideoInfoItem();
+      default:
+        return InfoItem.none;
+    }
   }
 
   void changeRecurrentType(RecurrentType newType) {
@@ -311,19 +329,6 @@ class EditActivityCubit extends Cubit<EditActivityState> {
         return Recurs.yearly(startDate);
       default:
         return Recurs.not;
-    }
-  }
-
-  InfoItem _newInfoItem(Type infoItemType) {
-    switch (infoItemType) {
-      case NoteInfoItem:
-        return const NoteInfoItem();
-      case Checklist:
-        return Checklist();
-      case VideoInfoItem:
-        return const VideoInfoItem();
-      default:
-        return InfoItem.none;
     }
   }
 

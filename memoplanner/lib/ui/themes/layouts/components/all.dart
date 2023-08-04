@@ -5,7 +5,7 @@ export 'border_layout.dart';
 export 'buttons/all.dart';
 export 'calendar/all.dart';
 export 'category_layout.dart';
-export 'checklist_layout.dart';
+export 'checklist/checklist_layout.dart';
 export 'clock_layout.dart';
 export 'code_protect_layout.dart';
 export 'components_layout.dart';

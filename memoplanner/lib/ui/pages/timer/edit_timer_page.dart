@@ -278,7 +278,7 @@ class _TimerInfoInput extends StatelessWidget {
                         },
                         leading: const Icon(AbiliaIcons.clock),
                         text: Text(state.durationText),
-                        trailing: PickField.trailingArrow,
+                        trailing: PickField.trailingArrow(),
                       ),
                     ],
                   ),

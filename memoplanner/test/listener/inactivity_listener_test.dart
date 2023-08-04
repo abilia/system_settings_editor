@@ -522,12 +522,17 @@ void main() {
             ),
           );
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(ChangeInfoItemPicker));
+          await tester.tap(find.byIcon(AbiliaIcons.edit));
           await tester.pumpAndSettle();
           clockStreamController.add(initialTime.add(2.minutes()));
           await tester.pumpAndSettle();
-          expect(find.byType(SelectInfoTypePage), findsOneWidget);
-          await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+          expect(find.byType(AddInfoTypePage), findsOneWidget);
+          await tester.tap(find.byIcon(AbiliaIcons.plus));
+          await tester.pumpAndSettle();
+          clockStreamController.add(initialTime.add(2.minutes()));
+          await tester.pumpAndSettle();
+          expect(find.byType(EditNotePage), findsOneWidget);
+          await tester.enterText(find.byType(TextField), 'noteText');
           await tester.pumpAndSettle();
           await tester.tap(find.byType(OkButton));
           await tester.pumpAndSettle();
@@ -549,16 +554,12 @@ void main() {
             ),
           );
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(ChangeInfoItemPicker));
+          await tester.tap(find.byIcon(AbiliaIcons.edit));
           await tester.pumpAndSettle();
           clockStreamController.add(initialTime.add(2.minutes()));
           await tester.pumpAndSettle();
-          expect(find.byType(SelectInfoTypePage), findsOneWidget);
-          await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(OkButton));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(LibraryButton));
+          expect(find.byType(AddInfoTypePage), findsOneWidget);
+          await tester.tap(find.byIcon(AbiliaIcons.folder));
           await tester.pumpAndSettle();
           expect(find.byType(NoteLibraryPage), findsOneWidget);
           clockStreamController.add(initialTime.add(5.minutes()));

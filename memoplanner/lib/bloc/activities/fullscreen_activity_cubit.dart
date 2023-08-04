@@ -10,7 +10,7 @@ import 'package:rxdart/rxdart.dart';
 
 class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
   FullScreenActivityCubit({
-    required ActivitiesBloc activitiesBloc,
+    required ActivitiesCubit activitiesCubit,
     required this.activityRepository,
     required this.clockBloc,
     required AlarmCubit alarmCubit,
@@ -20,7 +20,7 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
             selected: startingActivity,
           ),
         ) {
-    _activityBlocSubscription = activitiesBloc.stream.listen(
+    _activityBlocSubscription = activitiesCubit.stream.listen(
       (_) async => _updateState(),
     );
     _clockBlocSubscription = clockBloc.stream.listen(

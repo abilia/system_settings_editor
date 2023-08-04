@@ -121,6 +121,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'canLogOutSafely': MessageLookupByLibrary.simpleMessage(
             'Sie können sich nun sicher abmelden.'),
         'cancel': MessageLookupByLibrary.simpleMessage('Abbrechen'),
+        'cancelChanges': MessageLookupByLibrary.simpleMessage('Cancel changes'),
         'captions': MessageLookupByLibrary.simpleMessage('Unterschriften'),
         'categories': MessageLookupByLibrary.simpleMessage('Kategorien'),
         'category': MessageLookupByLibrary.simpleMessage('Kategorie'),
@@ -128,6 +129,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'checkable': MessageLookupByLibrary.simpleMessage('Kontrollabfrage'),
         'checkableActivities':
             MessageLookupByLibrary.simpleMessage('Kontrollierbare Aktivitäten'),
+        'checklist': MessageLookupByLibrary.simpleMessage('Checklist'),
         'checklistDoneInfo': MessageLookupByLibrary.simpleMessage(
             'Alle Checklistenaufgaben sind abgeschlossen. Möchten Sie die Aktivität abschließen?'),
         'clear': MessageLookupByLibrary.simpleMessage('Entfernen'),
@@ -339,8 +341,6 @@ class MessageLookup extends MessageLookupByLibrary {
         'incorrectCode': MessageLookupByLibrary.simpleMessage('Falscher Code'),
         'infoType':
             MessageLookupByLibrary.simpleMessage('Extrafunktion auswählen'),
-        'infoTypeNone': MessageLookupByLibrary.simpleMessage(
-            'Keine Extrafunktion ausgewählt'),
         'installStarterSet': MessageLookupByLibrary.simpleMessage(
             'Einstiegspaket installieren?'),
         'installing': MessageLookupByLibrary.simpleMessage('Wird installiert'),
@@ -423,6 +423,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'newActivity': MessageLookupByLibrary.simpleMessage('Neue Aktivität'),
         'newActivityTemplate':
             MessageLookupByLibrary.simpleMessage('Neue Aktivitätsvorlage'),
+        'newChecklist': MessageLookupByLibrary.simpleMessage('New checklist'),
+        'newNote': MessageLookupByLibrary.simpleMessage('New note'),
+        'newTask': MessageLookupByLibrary.simpleMessage('New task'),
         'newText': MessageLookupByLibrary.simpleMessage('Neu'),
         'newTimer': MessageLookupByLibrary.simpleMessage('Neuer timer'),
         'newTimerTemplate':
@@ -468,6 +471,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('nicht abgeschlossen'),
         'notConnected': MessageLookupByLibrary.simpleMessage('Nicht verbunden'),
         'notSelected': MessageLookupByLibrary.simpleMessage('Nicht ausgewählt'),
+        'note': MessageLookupByLibrary.simpleMessage('Note'),
         'notifications':
             MessageLookupByLibrary.simpleMessage('Benachrichtigungen'),
         'notificationsWarningHintText': MessageLookupByLibrary.simpleMessage(
@@ -485,6 +489,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'onlyAppliesToGo':
             MessageLookupByLibrary.simpleMessage('Gilt nur für MEMOplanner Go'),
         'onlyMe': MessageLookupByLibrary.simpleMessage('Nur für mich'),
+        'onlyOneInfoItem': MessageLookupByLibrary.simpleMessage(
+            'You can only have one extra function in this activity'),
         'onlyThisDay':
             MessageLookupByLibrary.simpleMessage('Nur an diesem Tag'),
         'password': MessageLookupByLibrary.simpleMessage('Passwort'),
@@ -536,6 +542,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'saturdayAndSunday':
             MessageLookupByLibrary.simpleMessage('Samstag und Sonntag'),
         'save': MessageLookupByLibrary.simpleMessage('Speichern'),
+        'saveNote': MessageLookupByLibrary.simpleMessage('Save note'),
+        'saveNoteQuestion': MessageLookupByLibrary.simpleMessage(
+            'Do you want to save note first?'),
         'screenBrightness':
             MessageLookupByLibrary.simpleMessage('Bildschirmhelligkeit'),
         'screenTimeout': MessageLookupByLibrary.simpleMessage(
@@ -658,6 +667,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'takeNewPhoto':
             MessageLookupByLibrary.simpleMessage('Neues Foto machen'),
         'task': MessageLookupByLibrary.simpleMessage('Aufgabe'),
+        'tasks': MessageLookupByLibrary.simpleMessage('tasks'),
         'templates': MessageLookupByLibrary.simpleMessage('Vorlagen'),
         'termsOfUse':
             MessageLookupByLibrary.simpleMessage('nutzungsbedingungen'),

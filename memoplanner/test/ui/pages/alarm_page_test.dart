@@ -65,9 +65,9 @@ void main() {
   final alarmNavigator = AlarmNavigator();
   late MockMemoplannerSettingBloc mockMPSettingsBloc;
   late StreamController<MemoplannerSettings> mockMPSettingsBlocStream;
-  late StreamController<ActivitiesChanged> mockActivitiesBlocStream;
+  late StreamController<ActivitiesChanged> mockActivitiesCubitStream;
   late MockUserFileBloc mockUserFileBloc;
-  late MockActivitiesBloc mockActivitiesBloc;
+  late MockActivitiesCubit mockActivitiesCubit;
   late MockActivityRepository mockActivityRepository;
   late MockBaseClient mockClient;
 
@@ -81,8 +81,8 @@ void main() {
           create: (context) => FakeActivityRepository(),
           child: MultiBlocProvider(
             providers: [
-              BlocProvider<ActivitiesBloc>(
-                create: (context) => mockActivitiesBloc,
+              BlocProvider<ActivitiesCubit>(
+                create: (context) => mockActivitiesCubit,
               ),
               BlocProvider<ClockBloc>(
                 create: (context) => ClockBloc.fixed(day),
@@ -178,14 +178,19 @@ void main() {
     mockMPSettingsBlocStream = StreamController<MemoplannerSettings>();
     final settingsStream = mockMPSettingsBlocStream.stream.asBroadcastStream();
     when(() => mockMPSettingsBloc.stream).thenAnswer((_) => settingsStream);
-    mockActivitiesBloc = MockActivitiesBloc();
-    mockActivitiesBlocStream = StreamController<ActivitiesChanged>();
+    mockActivitiesCubit = MockActivitiesCubit();
+    mockActivitiesCubitStream = StreamController<ActivitiesChanged>();
     final activitiesStream =
-        mockActivitiesBlocStream.stream.asBroadcastStream();
-    when(() => mockActivitiesBloc.stream).thenAnswer((_) => activitiesStream);
-    when(() => mockActivitiesBloc.state).thenAnswer((_) => ActivitiesChanged());
+        mockActivitiesCubitStream.stream.asBroadcastStream();
+    when(() => mockActivitiesCubit.stream).thenAnswer((_) => activitiesStream);
+    when(() => mockActivitiesCubit.addActivity(any()))
+        .thenAnswer((_) => Future.value());
+    when(() => mockActivitiesCubit.updateActivity(any()))
+        .thenAnswer((_) => Future.value());
+    when(() => mockActivitiesCubit.state)
+        .thenAnswer((_) => ActivitiesChanged());
     mockActivityRepository = MockActivityRepository();
-    when(() => mockActivitiesBloc.activityRepository)
+    when(() => mockActivitiesCubit.activityRepository)
         .thenAnswer((_) => mockActivityRepository);
     when(() => mockActivityRepository.allBetween(any(), any()))
         .thenAnswer((_) => Future.value([]));
@@ -209,7 +214,7 @@ void main() {
     GetIt.I.reset();
     clearNotificationSubject();
     mockMPSettingsBlocStream.close();
-    mockActivitiesBlocStream.close();
+    mockActivitiesCubitStream.close();
   });
 
   group('alarm speech', () {
@@ -858,7 +863,7 @@ void main() {
         ),
       );
 
-      mockActivitiesBlocStream.add(ActivitiesChanged());
+      mockActivitiesCubitStream.add(ActivitiesChanged());
       when(() => mockActivityRepository.getById(any()))
           .thenAnswer((_) => Future.value(checkedActivity));
       when(() => mockActivityRepository.allBetween(any(), any()))

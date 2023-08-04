@@ -114,8 +114,8 @@ void main() {
                 BlocProvider<MemoplannerSettingsBloc>.value(
                   value: mockMemoplannerSettingsBloc,
                 ),
-                BlocProvider<ActivitiesBloc>(
-                    create: (_) => FakeActivitiesBloc()),
+                BlocProvider<ActivitiesCubit>(
+                    create: (_) => FakeActivitiesCubit()),
                 BlocProvider<SupportPersonsCubit>(
                     create: (_) => FakeSupportPersonsCubit()),
                 BlocProvider<EditActivityCubit>(
@@ -132,7 +132,7 @@ void main() {
                   create: (context) => ActivityWizardCubit.newActivity(
                     supportPersonsCubit:
                         FakeSupportPersonsCubit.withSupportPerson(),
-                    activitiesBloc: context.read<ActivitiesBloc>(),
+                    activitiesCubit: context.read<ActivitiesCubit>(),
                     clockBloc: context.read<ClockBloc>(),
                     editActivityCubit: context.read<EditActivityCubit>(),
                     addActivitySettings: context
@@ -1142,10 +1142,9 @@ void main() {
 
       expect(find.byType(ExtraFunctionWiz), findsOneWidget);
 
-      await tester.tap(find.byType(ChangeInfoItemPicker));
-      await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
-      expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
+      expect(find.byType(InfoItemPickField), findsNWidgets(2));
+      expect(find.text(translate.note), findsOneWidget);
+      expect(find.text(translate.checklist), findsOneWidget);
     });
 
     testWidgets('only note show', (WidgetTester tester) async {
@@ -1184,16 +1183,15 @@ void main() {
 
       expect(find.byType(ExtraFunctionWiz), findsOneWidget);
 
-      await tester.tap(find.byType(ChangeInfoItemPicker));
-      await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.infoItemChecklistRadio), findsNothing);
-      expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
+      expect(find.byType(InfoItemPickField), findsNWidgets(1));
+      expect(find.text(translate.note), findsOneWidget);
+      expect(find.text(translate.checklist), findsNothing);
 
-      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+      await tester.tap(find.text(translate.note));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
+      await tester.tap(find.byIcon(AbiliaIcons.plus));
       await tester.pumpAndSettle();
-      expect(find.byType(EditNoteWidget), findsOneWidget);
+      expect(find.byType(EditNotePage), findsOneWidget);
     });
 
     testWidgets('only checklist show', (WidgetTester tester) async {
@@ -1232,14 +1230,13 @@ void main() {
 
       expect(find.byType(ExtraFunctionWiz), findsOneWidget);
 
-      await tester.tap(find.byType(ChangeInfoItemPicker));
-      await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
-      expect(find.byKey(TestKey.infoItemNoteRadio), findsNothing);
+      expect(find.byType(InfoItemPickField), findsNWidgets(1));
+      expect(find.text(translate.note), findsNothing);
+      expect(find.text(translate.checklist), findsOneWidget);
 
-      await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
+      await tester.tap(find.text(translate.checklist));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
+      await tester.tap(find.byIcon(AbiliaIcons.plus));
       await tester.pumpAndSettle();
       expect(find.byType(EditChecklistWidget), findsOneWidget);
     });

@@ -127,8 +127,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   )..add(const SyncAll())),
               lazy: false,
             ),
-            BlocProvider<ActivitiesBloc>(
-              create: (context) => ActivitiesBloc(
+            BlocProvider<ActivitiesCubit>(
+              create: (context) => ActivitiesCubit(
                 activityRepository: context.read<ActivityRepository>(),
                 syncBloc: context.read<SyncBloc>(),
               ),
@@ -161,7 +161,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             ),
             BlocProvider<WeekCalendarCubit>(
               create: (context) => WeekCalendarCubit(
-                activitiesBloc: context.read<ActivitiesBloc>(),
+                activitiesCubit: context.read<ActivitiesCubit>(),
                 activityRepository: context.read<ActivityRepository>(),
                 timerAlarmBloc: context.read<TimerAlarmBloc>(),
                 clockBloc: context.read<ClockBloc>(),
@@ -211,7 +211,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             ),
             BlocProvider<MonthCalendarCubit>(
               create: (context) => MonthCalendarCubit(
-                activitiesBloc: context.read<ActivitiesBloc>(),
+                activitiesCubit: context.read<ActivitiesCubit>(),
                 activityRepository: context.read<ActivityRepository>(),
                 clockBloc: context.read<ClockBloc>(),
                 timerAlarmBloc: context.read<TimerAlarmBloc>(),
@@ -221,7 +221,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             ),
             BlocProvider<DayEventsCubit>(
               create: (context) => DayEventsCubit(
-                activitiesBloc: context.read<ActivitiesBloc>(),
+                activitiesCubit: context.read<ActivitiesCubit>(),
                 dayPickerBloc: context.read<DayPickerBloc>(),
                 timerAlarmBloc: context.read<TimerAlarmBloc>(),
               )..initialize(),
@@ -267,7 +267,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 dayPickerBloc: context.read<DayPickerBloc>(),
                 memoSettingsBloc: context.read<MemoplannerSettingsBloc>(),
                 dayCalendarViewCubit: context.read<DayCalendarViewCubit>(),
-                activitiesBloc: context.read<ActivitiesBloc>(),
+                activitiesCubit: context.read<ActivitiesCubit>(),
                 timerAlarmBloc: context.read<TimerAlarmBloc>(),
                 dayPartCubit: context.read<DayPartCubit>(),
               )..initialize(),

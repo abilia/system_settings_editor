@@ -247,7 +247,7 @@ void main() {
 
     final wizCubit = ActivityWizardCubit.newActivity(
       supportPersonsCubit: FakeSupportPersonsCubit(),
-      activitiesBloc: FakeActivitiesBloc(),
+      activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: editActivityCubit,
       clockBloc: ClockBloc.fixed(nowTime),
       addActivitySettings: const AddActivitySettings(
@@ -323,70 +323,6 @@ void main() {
     );
     // Assert
     await expect2;
-  });
-
-  test('Changing InfoItem', () async {
-    // Arrange
-    const note = NoteInfoItem('a note');
-    final withNote =
-        Activity.createNew(title: 'null', startTime: aTime, infoItem: note);
-    final withChecklist = withNote.copyWith(infoItem: Checklist());
-    final withNoInfoItem = withNote.copyWith(infoItem: const NoInfoItem());
-    final activityDay = ActivityDay(withNote, aDay);
-    final timeInterval = TimeInterval(
-      startTime: TimeOfDay.fromDateTime(aTime),
-      startDate: aTime,
-    );
-    final editActivityCubit = EditActivityCubit.edit(
-      activityDay,
-    );
-
-    final expect = expectLater(
-      editActivityCubit.stream,
-      emitsInOrder([
-        StoredActivityState(
-          withChecklist,
-          timeInterval,
-          aDay,
-          RecurrentType.none,
-        ).copyWith(
-          withChecklist,
-          infoItems: {
-            NoteInfoItem: note,
-          },
-        ),
-        StoredActivityState(
-          withNote,
-          timeInterval,
-          aDay,
-          RecurrentType.none,
-        ).copyWith(
-          withNote,
-          infoItems: {
-            NoteInfoItem: note,
-            Checklist: Checklist(),
-          },
-        ),
-        StoredActivityState(
-          withNoInfoItem,
-          timeInterval,
-          aDay,
-          RecurrentType.none,
-        ).copyWith(withNoInfoItem, infoItems: {
-          NoteInfoItem: note,
-          Checklist: Checklist(),
-        }),
-      ]),
-    );
-
-    // Act
-    editActivityCubit
-      ..changeInfoItemType(Checklist)
-      ..changeInfoItemType(NoteInfoItem)
-      ..changeInfoItemType(NoInfoItem);
-
-    // Assert
-    await expect;
   });
 
   test('Changing start date to after recurring end changes recurring end',

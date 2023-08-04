@@ -19,12 +19,12 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
   late WeekCalendarState previousState = state;
 
   WeekCalendarCubit({
-    required ActivitiesBloc activitiesBloc,
+    required ActivitiesCubit activitiesCubit,
     required this.activityRepository,
     required this.timerAlarmBloc,
     required this.clockBloc,
   }) : super(WeekCalendarInitial(clockBloc.state.firstInWeek())) {
-    _activitiesSubscription = activitiesBloc.stream.listen(
+    _activitiesSubscription = activitiesCubit.stream.listen(
         (_) async => _mapToState(state.currentWeekStart, clockBloc.state));
     _timersSubscription = timerAlarmBloc.stream.listen(
         (_) async => _mapToState(state.currentWeekStart, clockBloc.state));
@@ -83,6 +83,8 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
     );
 
     previousState = state;
+
+    if (isClosed) return;
     emit(WeekCalendarLoaded(weekStart, noneFullDayEvents, fullDayActivities));
   }
 

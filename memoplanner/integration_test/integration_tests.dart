@@ -128,8 +128,6 @@ extension on WidgetTester {
     await pumpAndSettle();
     await tap(find.byIcon(AbiliaIcons.information));
     await pumpAndSettle();
-    await tap(find.byKey(TestKey.infoItemNoteRadio));
-    await pumpAndSettle();
     await tap(find.byType(OkButton));
     await pumpAndSettle();
     await tap(find.byType(NoteBlock));
