@@ -11,7 +11,7 @@ void main() {
       id: 123,
       key: 'licenseKey',
       endTime: endTime,
-      product: 'thaproduct',
+      product: Product.carybase,
     );
     await db.persistLicenses([license]);
     final fromDb = db.getLicenses();
