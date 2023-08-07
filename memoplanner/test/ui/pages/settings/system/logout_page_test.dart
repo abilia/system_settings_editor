@@ -23,7 +23,7 @@ void main() {
   late final Lt translate;
   final now = DateTime(2020, 01, 01);
 
-  late MockLogoutSyncCubit mockLogoutSyncCubit;
+  late MockLogoutSyncBloc mockLogoutSyncBloc;
   late MockLastSyncDb mockLastSyncDb;
   late MockSyncBloc mockSyncBloc;
   late LicenseCubit mockLicenseCubit;
@@ -38,12 +38,12 @@ void main() {
 
   setUp(() async {
     await initializeDateFormatting();
-    mockLogoutSyncCubit = MockLogoutSyncCubit();
+    mockLogoutSyncBloc = MockLogoutSyncBloc();
     mockLastSyncDb = MockLastSyncDb();
     mockLicenseCubit = MockLicenseCubit();
     mockSyncBloc = MockSyncBloc();
 
-    when(() => mockLogoutSyncCubit.state)
+    when(() => mockLogoutSyncBloc.state)
         .thenAnswer((_) => const LogoutSyncState(
               logoutWarning: LogoutWarning.firstWarningSyncFailed,
             ));
@@ -86,7 +86,7 @@ void main() {
           BlocProvider<SyncBloc>.value(value: mockSyncBloc),
           BlocProvider<LicenseCubit>.value(value: mockLicenseCubit),
           BlocProvider<ClockBloc>(create: (context) => ClockBloc.fixed(now)),
-          BlocProvider<LogoutSyncCubit>.value(value: mockLogoutSyncCubit),
+          BlocProvider<LogoutSyncBloc>.value(value: mockLogoutSyncBloc),
           BlocProvider<SpeechSettingsCubit>(
             create: (context) => FakeSpeechSettingsCubit(),
           ),
@@ -203,7 +203,7 @@ void main() {
 
     testWidgets('first warning & syncing', (WidgetTester tester) async {
       // Arrange
-      when(() => mockLogoutSyncCubit.state).thenAnswer(
+      when(() => mockLogoutSyncBloc.state).thenAnswer(
         (_) => const LogoutSyncState(
           logoutWarning: LogoutWarning.firstWarningSyncing,
         ),
@@ -229,7 +229,7 @@ void main() {
 
     testWidgets('first warning & success', (WidgetTester tester) async {
       // Arrange
-      when(() => mockLogoutSyncCubit.state).thenAnswer(
+      when(() => mockLogoutSyncBloc.state).thenAnswer(
         (_) => const LogoutSyncState(
             logoutWarning: LogoutWarning.firstWarningSuccess),
       );
@@ -251,7 +251,7 @@ void main() {
 
     testWidgets('second warning & sync failed', (WidgetTester tester) async {
       // Arrange
-      when(() => mockLogoutSyncCubit.state).thenAnswer(
+      when(() => mockLogoutSyncBloc.state).thenAnswer(
         (_) => const LogoutSyncState(
           logoutWarning: LogoutWarning.secondWarningSyncFailed,
           dirtyItems: dirtyItems,
@@ -280,7 +280,7 @@ void main() {
 
     testWidgets('second warning & syncing', (WidgetTester tester) async {
       // Arrange
-      when(() => mockLogoutSyncCubit.state).thenAnswer(
+      when(() => mockLogoutSyncBloc.state).thenAnswer(
         (_) => const LogoutSyncState(
           logoutWarning: LogoutWarning.secondWarningSyncing,
           dirtyItems: dirtyItems,
@@ -311,7 +311,7 @@ void main() {
 
     testWidgets('second warning & success', (WidgetTester tester) async {
       // Arrange
-      when(() => mockLogoutSyncCubit.state).thenAnswer(
+      when(() => mockLogoutSyncBloc.state).thenAnswer(
         (_) => const LogoutSyncState(
           logoutWarning: LogoutWarning.secondWarningSuccess,
           dirtyItems: dirtyItems,
@@ -336,7 +336,7 @@ void main() {
 
     testWidgets('licence has expired', (WidgetTester tester) async {
       // Arrange
-      when(() => mockLogoutSyncCubit.state).thenAnswer(
+      when(() => mockLogoutSyncBloc.state).thenAnswer(
         (_) => const LogoutSyncState(
           logoutWarning: LogoutWarning.licenseExpiredWarning,
           dirtyItems: dirtyItems,

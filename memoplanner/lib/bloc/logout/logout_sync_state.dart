@@ -1,4 +1,4 @@
-part of 'logout_sync_cubit.dart';
+part of 'logout_sync_bloc.dart';
 
 class LogoutSyncState extends Equatable {
   final LogoutWarning logoutWarning;
