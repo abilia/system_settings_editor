@@ -489,7 +489,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
             pushCubit: context.read<PushCubit>(),
             userRepository: context.read<UserRepository>(),
             authenticationBloc: context.read<AuthenticationBloc>(),
-            licenseType: LicenseType.memoplanner,
+            product: Product.memoplanner,
           )..reloadLicenses(),
         ),
       ],

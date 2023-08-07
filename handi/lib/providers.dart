@@ -110,7 +110,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
             pushCubit: context.read<PushCubit>(),
             userRepository: context.read<UserRepository>(),
             authenticationBloc: context.read<AuthenticationBloc>(),
-            licenseType: LicenseType.handi,
+            product: Product.handicalendar,
           )..reloadLicenses(),
         ),
       ],

@@ -187,7 +187,7 @@ final Response factoryResetFail = Response('''
 final Response deviceLicenseSuccessResponse = Response('''
     {
       "serialNumber" : "serialNumber",
-      "product" : "$memoplannerLicenseName",
+      "product" : "${Product.memoplanner.name}",
       "endTime" : 0,
       "licenseKey" : "1111-1111-1111"
     }''', 200);
@@ -224,7 +224,7 @@ Response licenseResponseExpires(DateTime expires) => Response('''
       {
         "id":125,
         "endTime":${expires.millisecondsSinceEpoch},
-        "product":"$memoplannerLicenseName"
+        "product":"${Product.memoplanner.name}"
       }
     ]
   ''', 200);

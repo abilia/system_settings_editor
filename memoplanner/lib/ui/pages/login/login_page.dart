@@ -42,7 +42,7 @@ class LoginPage extends StatelessWidget {
         userRepository: context.read<UserRepository>(),
         database: GetIt.I<Database>(),
         allowExpiredLicense: Config.isMP,
-        licenseType: LicenseType.memoplanner,
+        product: Product.memoplanner,
       ),
       child: BlocListener<LoginCubit, LoginState>(
         listenWhen: (_, state) => state is LoginFailure,
