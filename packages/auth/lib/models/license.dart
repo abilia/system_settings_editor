@@ -1,22 +1,13 @@
+import 'package:auth/models/product.dart';
 import 'package:equatable/equatable.dart';
 import 'package:utils/utils.dart';
 
-const memoplannerLicenseName = 'memoplanner',
-    handiLicenseName = 'handicalendar';
 const licenseLength = 12;
-
-enum LicenseType {
-  memoplanner(name: memoplannerLicenseName),
-  handi(name: handiLicenseName);
-
-  const LicenseType({required this.name});
-  final String name;
-}
 
 class License extends Equatable {
   final int id;
   final String _key;
-  final String product;
+  final Product product;
   final DateTime endTime;
 
   const License({
@@ -30,7 +21,7 @@ class License extends Equatable {
     return License(
       id: json['id'],
       key: json['licenseKey'] ?? '',
-      product: json['product'],
+      product: json.parseProduct(),
       endTime: DateTime.fromMillisecondsSinceEpoch(json['endTime']),
     );
   }
@@ -38,7 +29,7 @@ class License extends Equatable {
   Map<String, dynamic> toJson() => {
         'id': id,
         'licenseKey': _key.nullOnEmpty(),
-        'product': product.nullOnEmpty(),
+        'product': product.name,
         'endTime': endTime.millisecondsSinceEpoch,
       };
 
@@ -51,7 +42,7 @@ class License extends Equatable {
 
 class DeviceLicense {
   final String serialNumber;
-  final String? product;
+  final Product product;
   final DateTime? endTime;
   final String? licenseKey;
 
@@ -62,7 +53,7 @@ class DeviceLicense {
 
   DeviceLicense.fromJson(Map<String, dynamic> json)
       : serialNumber = json['serialNumber'],
-        product = json['product'],
+        product = json.parseProduct(),
         endTime = json['endTime'] is int
             ? DateTime.fromMillisecondsSinceEpoch(json['endTime'])
             : null,
@@ -71,7 +62,7 @@ class DeviceLicense {
   Map<String, dynamic> toJson() => {
         'serialNumber': serialNumber,
         'licenseKey': licenseKey,
-        'product': product?.nullOnEmpty(),
+        'product': product.name,
         'endTime': endTime?.millisecondsSinceEpoch,
       };
 }

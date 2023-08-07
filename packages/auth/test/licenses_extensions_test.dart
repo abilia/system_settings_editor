@@ -1,5 +1,5 @@
 import 'package:auth/licenses_extensions.dart';
-import 'package:auth/models/license.dart';
+import 'package:auth/models/all.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:utils/utils.dart';
 
@@ -10,10 +10,11 @@ void main() {
     expect(
         [
           License(
-              id: 1,
-              key: 'licenseKey',
-              endTime: now.add(24.hours()),
-              product: memoplannerLicenseName)
+            id: 1,
+            key: 'licenseKey',
+            endTime: now.add(24.hours()),
+            product: Product.memoplanner,
+          )
         ].anyValidLicense(now),
         true);
   });
@@ -22,10 +23,11 @@ void main() {
     expect(
         [
           License(
-              id: 1,
-              key: 'licenseKey',
-              endTime: now.subtract(24.hours()),
-              product: memoplannerLicenseName)
+            id: 1,
+            key: 'licenseKey',
+            endTime: now.subtract(24.hours()),
+            product: Product.memoplanner,
+          )
         ].anyValidLicense(now),
         false);
   });

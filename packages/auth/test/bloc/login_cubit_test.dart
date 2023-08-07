@@ -18,6 +18,7 @@ void main() {
     setUpAll(() {
       registerFallbackValue(
           const LoginInfo(token: '', endDate: 1, renewToken: ''));
+      registerFallbackValue(Product.unknown);
     });
 
     setUp(() async {
@@ -46,7 +47,7 @@ void main() {
         userRepository: mockUserRepository,
         database: mockDb,
         allowExpiredLicense: false,
-        licenseType: LicenseType.memoplanner,
+        product: Product.memoplanner,
       );
     });
 
@@ -81,7 +82,7 @@ void main() {
             id: 1,
             key: 'licenseKey',
             endTime: time.add(const Duration(hours: 24)),
-            product: memoplannerLicenseName,
+            product: Product.memoplanner,
           ),
         ]),
       );
@@ -216,7 +217,7 @@ void main() {
         userRepository: mockUserRepository,
         database: mockDb,
         allowExpiredLicense: true,
-        licenseType: LicenseType.memoplanner,
+        product: Product.memoplanner,
       )
         ..usernameChanged('username')
         ..passwordChanged('password')
@@ -265,7 +266,7 @@ void main() {
         userRepository: mockedUserRepository,
         database: mockDb,
         allowExpiredLicense: false,
-        licenseType: LicenseType.memoplanner,
+        product: Product.memoplanner,
       );
       when(() => mockedUserRepository.baseUrl).thenReturn('url');
       when(() => mockedUserRepository.isLoggedIn()).thenReturn(false);
@@ -274,10 +275,11 @@ void main() {
       when(() => mockedUserRepository.getLicensesFromApi(any()))
           .thenAnswer((_) => Future.value([
                 License(
-                    id: 1,
-                    key: 'licenseKey',
-                    endTime: time.add(const Duration(hours: 24)),
-                    product: memoplannerLicenseName)
+                  id: 1,
+                  key: 'licenseKey',
+                  endTime: time.add(const Duration(hours: 24)),
+                  product: Product.memoplanner,
+                )
               ]));
     });
 
@@ -374,14 +376,14 @@ void main() {
         userRepository: mockUserRepository,
         database: mockDb,
         allowExpiredLicense: false,
-        licenseType: LicenseType.memoplanner,
+        product: Product.memoplanner,
       );
 
       expiredLicense = License(
         id: 1,
         key: 'licenseKey',
         endTime: time.add(const Duration(hours: -24)),
-        product: memoplannerLicenseName,
+        product: Product.memoplanner,
       );
     });
 
@@ -431,7 +433,7 @@ void main() {
         userRepository: mockUserRepository,
         database: mockDb,
         allowExpiredLicense: false,
-        licenseType: LicenseType.memoplanner,
+        product: Product.memoplanner,
       );
 
       when(() => mockUserRepository.getLicensesFromApi(any())).thenAnswer(
@@ -477,7 +479,7 @@ void main() {
         userRepository: mockUserRepository,
         database: mockDb,
         allowExpiredLicense: true,
-        licenseType: LicenseType.memoplanner,
+        product: Product.memoplanner,
       );
 
       when(() => mockUserRepository.getLicensesFromApi(any())).thenAnswer(

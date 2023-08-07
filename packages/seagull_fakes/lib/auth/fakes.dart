@@ -81,7 +81,7 @@ class FakeLicenseDb extends Fake implements LicenseDb {
         License(
           id: 123,
           key: 'licenseKey',
-          product: memoplannerLicenseName,
+          product: Product.memoplanner,
           endTime: DateTime(3333),
         ),
       ];

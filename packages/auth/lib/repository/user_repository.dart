@@ -108,7 +108,7 @@ class UserRepository extends Repository {
     }
   }
 
-  Future<List<License>> getLicenses(String product) async {
+  Future<List<License>> getLicenses(Product product) async {
     try {
       final fromApi = await getLicensesFromApi(product);
       await licenseDb.persistLicenses(fromApi);
@@ -118,9 +118,9 @@ class UserRepository extends Repository {
     return licenseDb.getLicenses();
   }
 
-  Future<List<License>> getLicensesFromApi(String product) async {
+  Future<List<License>> getLicensesFromApi(Product product) async {
     final requestString =
-        '$baseUrl/api/v$postApiVersion/license/portal/me?product=$product';
+        '$baseUrl/api/v$postApiVersion/license/portal/me?product=${product.name}';
     final response = await client.get(Uri.parse(requestString));
     if (response.statusCode == 200) {
       return (response.json() as List)

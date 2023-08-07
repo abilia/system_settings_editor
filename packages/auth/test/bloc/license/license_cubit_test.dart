@@ -12,6 +12,10 @@ void main() {
   late UserRepository userRepository;
   final time = DateTime(2000);
 
+  setUpAll(() {
+    registerFallbackValue(Product.unknown);
+  });
+
   setUp(() {
     userRepository = MockUserRepository();
   });
@@ -27,7 +31,7 @@ void main() {
         onLogout: () {},
         client: FakeListenableClient.client(),
       ),
-      licenseType: LicenseType.memoplanner,
+      product: Product.memoplanner,
     ),
     verify: (bloc) => expect(bloc.state, LicensesNotLoaded()),
   );
@@ -40,7 +44,7 @@ void main() {
           id: 1,
           key: 'licenseKey',
           endTime: time.add(24.hours()),
-          product: 'memoplanner3',
+          product: Product.memoplanner3,
         ),
       ]),
     ),
@@ -53,7 +57,7 @@ void main() {
         onLogout: () {},
         client: FakeListenableClient.client(),
       ),
-      licenseType: LicenseType.memoplanner,
+      product: Product.memoplanner,
     ),
     act: (bloc) => bloc.reloadLicenses(),
     expect: () => [ValidLicense()],
@@ -67,7 +71,7 @@ void main() {
           id: 1,
           key: 'licenseKey',
           endTime: time.subtract(24.hours()),
-          product: 'memoplanner3',
+          product: Product.memoplanner3,
         ),
       ]),
     ),
@@ -80,7 +84,7 @@ void main() {
         onLogout: () {},
         client: FakeListenableClient.client(),
       ),
-      licenseType: LicenseType.memoplanner,
+      product: Product.memoplanner,
     ),
     act: (bloc) => bloc.reloadLicenses(),
     expect: () => [NoValidLicense()],
@@ -100,7 +104,7 @@ void main() {
         onLogout: () {},
         client: FakeListenableClient.client(),
       ),
-      licenseType: LicenseType.memoplanner,
+      product: Product.memoplanner,
     ),
     act: (bloc) => bloc.reloadLicenses(),
     expect: () => [NoLicense()],
