@@ -178,7 +178,7 @@ class ActivityWizardCubit extends WizardCubit {
 
     final errors = editActivityCubit.state
         .saveErrors(
-          beforeNowWarningConfirmed: false,
+          showBeforeNowWarning: false,
           conflictWarningConfirmed: false,
           saveRecurringDefined: false,
           allowPassedStartTime: allowPassedStartTime,
@@ -204,7 +204,9 @@ class ActivityWizardCubit extends WizardCubit {
     final activity = editState.activityToStore();
 
     final errors = editState.saveErrors(
-      beforeNowWarningConfirmed: beforeNowWarningConfirmed,
+      showBeforeNowWarning:
+          !beforeNowWarningConfirmed && !activity.isRecurring ||
+              !beforeNowWarningConfirmed && editState.storedRecurring,
       conflictWarningConfirmed: conflictWarningConfirmed,
       saveRecurringDefined: saveRecurring != null,
       allowPassedStartTime: allowPassedStartTime,
@@ -242,7 +244,7 @@ class ActivityWizardCubit extends WizardCubit {
 
 extension SaveErrorExtension on EditActivityState {
   Set<SaveError> saveErrors({
-    required bool beforeNowWarningConfirmed,
+    required bool showBeforeNowWarning,
     required bool conflictWarningConfirmed,
     required bool saveRecurringDefined,
     required bool allowPassedStartTime,
@@ -255,7 +257,7 @@ extension SaveErrorExtension on EditActivityState {
         if (startTimeBeforeNow(now))
           if (!allowPassedStartTime)
             SaveError.startTimeBeforeNow
-          else if (!beforeNowWarningConfirmed)
+          else if (showBeforeNowWarning)
             SaveError.unconfirmedStartTimeBeforeNow,
         if (emptyRecurringData) SaveError.noRecurringDays,
         if (storedRecurring && !saveRecurringDefined) SaveError.storedRecurring,
