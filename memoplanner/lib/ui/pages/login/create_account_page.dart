@@ -4,7 +4,7 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class CreateAccountPage extends StatelessWidget {
-  static const maxUsernameLength = 20;
+  static const maxUsernameLength = 128;
 
   final UserRepository userRepository;
 
