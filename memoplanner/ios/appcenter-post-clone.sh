@@ -12,7 +12,7 @@ set -x
 cd ..
 
 # Install Flutter
-FLUTTER_VERSION=3.10.6
+FLUTTER_VERSION=3.10.2
 git clone --depth 1 --branch $FLUTTER_VERSION https://github.com/flutter/flutter.git
 export PATH=`pwd`/flutter/bin:$PATH
 echo "Installed Flutter version $FLUTTER_VERSION to `pwd`/flutter"

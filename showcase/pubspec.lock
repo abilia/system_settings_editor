@@ -66,10 +66,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_lints
-      sha256: "2118df84ef0c3ca93f96123a616ae8540879991b8b57af2f81b76a7ada49b2a4"
+      sha256: aeb0b80a8b3709709c9cc496cdc027c5b3216796bc0af0ce1007eaf24464fd4c
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.2"
+    version: "2.0.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -79,10 +79,10 @@ packages:
     dependency: transitive
     description:
       name: freezed_annotation
-      sha256: c3fd9336eb55a38cc1bbd79ab17573113a8deccd0ecbbf926cca3c62803b5c2d
+      sha256: aeac15850ef1b38ee368d4c53ba9a847e900bb2c53a4db3f6881cbb3cb684338
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.1"
+    version: "2.2.0"
   js:
     dependency: transitive
     description:
@@ -147,14 +147,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.3"
-  resizable_widget:
-    dependency: transitive
-    description:
-      name: resizable_widget
-      sha256: db2919754b93f386b9b3fb15e9f48f6c9d6d41f00a24397629133c99df86606a
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.5"
   seagull_lints:
     dependency: "direct dev"
     description:
@@ -234,10 +226,18 @@ packages:
     dependency: "direct main"
     description:
       name: widgetbook
-      sha256: "641923e3230bba44f6938e808e5709c7f80bdd51a242392ab2bc2f8ee81702fd"
+      sha256: "4ec2d009ba1e441d2f73d7d1c278f2cc3832e99b710b09b5f20137e2f87392c2"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "3.0.0-rc.1"
+  widgetbook_core:
+    dependency: transitive
+    description:
+      name: widgetbook_core
+      sha256: f251af4c0514202234856f297c36fcc6478a5a2fa5c6bb7b23514ea35b08d3be
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0-rc.1"
 sdks:
   dart: ">=3.0.0 <4.0.0"
   flutter: ">=3.0.0"
