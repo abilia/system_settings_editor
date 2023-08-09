@@ -40,7 +40,7 @@ jobs:
           fi
       - uses: subosito/flutter-action@v2.5.0
         with:
-          flutter-version: '3.10.2'
+          flutter-version: '3.10.6'
           channel: 'stable'
 
       - run: flutter pub get
@@ -70,7 +70,7 @@ jobs:
           fail_on_empty: true
       - uses: subosito/flutter-action@v2.5.0
         with:
-          flutter-version: '3.10.2'
+          flutter-version: '3.10.6'
           channel: 'stable'
 
       - run: flutter pub get
