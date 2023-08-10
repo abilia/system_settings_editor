@@ -42,7 +42,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
 
     final now = DateTime.now();
     final licenses = LicenseDb(preferences).getLicenses();
-    if (!licenses.anyValidLicense(now, LicenseType.memoplanner)) {
+    if (!licenses.anyValidLicense(now)) {
       log.warning('no valid license, among $licenses, will ignore push');
       return;
     }

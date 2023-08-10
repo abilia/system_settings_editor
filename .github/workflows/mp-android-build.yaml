@@ -2,6 +2,9 @@ name: MEMOPlanner Android Build
 
 on:
   workflow_dispatch:
+    inputs:
+      track:
+        description: 'Deploy to a specific Google play track, empty for default'
   push:
     branches:
       - master
@@ -104,12 +107,12 @@ jobs:
       - id: decide_track
         name: Decide Google play track
         run: |
-          if [[ "${{ needs.build.outputs.releasetype }}" == "release" ]]
+          if [ ! -z ${{inputs.track}} ];
+          then
+            track=${{inputs.track}}
+          elif [[ "${{ needs.build.outputs.releasetype }}" == "release" ]]
           then
             track="alpha"
-          elif [[ $GITHUB_REF == refs/heads/test-* ]]
-          then
-            track="memotrack"
           elif ${{ contains(matrix.flavor, 'go') }}
           then
             track="internal"

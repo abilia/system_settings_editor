@@ -61,8 +61,10 @@ class StartupCubit extends Cubit<StartupState> {
       final connectedLicense = await deviceRepository.checkLicense();
       if (isClosed) return;
       final product = connectedLicense.product;
-      if (product == null) return emit(NoConnectedLicense('Product is null'));
-      if (product != memoplannerLicenseName) {
+      if (product == Product.unknown) {
+        return emit(NoConnectedLicense('Unknown product'));
+      }
+      if (product != Product.memoplanner) {
         return emit(NoConnectedLicense('Wrong product name: $product'));
       }
       await deviceRepository.fetchDeviceLicense();
@@ -144,7 +146,8 @@ class NoConnectedLicense extends LicenseLoaded {
 }
 
 class LicenseConnected extends LicenseLoaded {
-  final String serialNumber, product;
+  final String serialNumber;
+  final Product product;
   final DateTime endTime;
   bool get hasEndTime => endTime != DateTime.fromMillisecondsSinceEpoch(0);
 

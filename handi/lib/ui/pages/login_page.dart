@@ -55,7 +55,7 @@ class LoginPage extends StatelessWidget {
         userRepository: context.read<UserRepository>(),
         database: GetIt.I<Database>(),
         allowExpiredLicense: false,
-        licenseType: LicenseType.handi,
+        product: Product.handicalendar,
       ),
       child: Scaffold(
         body: BlocListener<LoginCubit, LoginState>(

@@ -1,5 +1,4 @@
-import 'package:auth/models/license.dart';
-import 'package:auth/models/user.dart';
+import 'package:auth/models/all.dart';
 import 'package:http/http.dart';
 import 'package:seagull_fakes/all.dart';
 
@@ -28,7 +27,7 @@ ListenableMockClient fakeClient = ListenableMockClient((request) async {
       {
         "id":125,
         "endTime":${11111111111111},
-        "product":"${LicenseType.handi.name}"
+        "product":"${Product.handicalendar.name}"
       }
     ]
   ''', 200);

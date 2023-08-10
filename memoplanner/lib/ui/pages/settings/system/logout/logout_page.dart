@@ -52,8 +52,8 @@ class LogoutPage extends StatelessWidget {
         child: Padding(
           padding: layout.templates.s5,
           child: Center(
-            child: BlocProvider<LogoutSyncCubit>(
-              create: (context) => LogoutSyncCubit(
+            child: BlocProvider<LogoutSyncBloc>(
+              create: (context) => LogoutSyncBloc(
                 syncBloc: context.read<SyncBloc>(),
                 activityDb: GetIt.I<ActivityDb>(),
                 userFileDb: GetIt.I<UserFileDb>(),
