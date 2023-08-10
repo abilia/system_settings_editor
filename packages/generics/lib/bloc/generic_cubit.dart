@@ -48,12 +48,14 @@ class GenericCubit extends Cubit<GenericState> {
   Future<void> loadGenerics() async {
     try {
       final generics = await genericRepository.getAll();
+      if (isClosed) return;
       emit(
         generics.isNotEmpty || syncBloc.hasSynced
             ? GenericsLoaded(generics: generics.toGenericKeyMap())
             : GenericsNotLoaded(),
       );
     } catch (e) {
+      if (isClosed) return;
       emit(GenericsLoadedFailed());
     }
   }

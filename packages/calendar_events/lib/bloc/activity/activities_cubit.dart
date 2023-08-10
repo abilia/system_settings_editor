@@ -62,6 +62,7 @@ class ActivitiesCubit extends Cubit<ActivitiesChanged> with EditRecurringMixin {
   Future<void> _saveActivities(Iterable<Activity> savableActivities) async {
     await activityRepository.save(savableActivities);
     syncBloc.add(const SyncActivities());
+    if (isClosed) return;
     emit(ActivitiesChanged());
   }
 
