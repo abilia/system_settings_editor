@@ -11,6 +11,7 @@ class FeatureToggleCubit extends Cubit<FeatureToggleState> {
 
   Future<void> updateTogglesFromBackend() async {
     final toggles = await featureToggleRepository.getToggles();
+    if (isClosed) return;
     emit(FeatureToggleState(toggles.toSet()));
   }
 }

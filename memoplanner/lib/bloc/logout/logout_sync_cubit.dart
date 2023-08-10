@@ -176,9 +176,8 @@ class LogoutSyncCubit extends Cubit<LogoutSyncState> with Finest {
       settingsData: settingsDataDirty,
     );
 
-    if (!isClosed) {
-      emit(state.copyWith(dirtyItems: dirtyItems));
-    }
+    if (isClosed) return;
+    emit(state.copyWith(dirtyItems: dirtyItems));
   }
 
   @override

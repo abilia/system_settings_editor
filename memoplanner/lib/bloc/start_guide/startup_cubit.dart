@@ -38,10 +38,11 @@ class StartupCubit extends Cubit<StartupState> {
       if (verifiedOk) {
         await deviceRepository.setSerialId(serialId);
         await checkConnectedLicense();
-      } else {
+      } else if (!isClosed) {
         emit(VerifySerialIdFailed('Serial id $serialId not found in myAbilia'));
       }
     } on VerifyDeviceException catch (e) {
+      if (isClosed) return;
       emit(
         VerifySerialIdFailed(
           'Error when trying to verify serial id '
@@ -49,6 +50,7 @@ class StartupCubit extends Cubit<StartupState> {
         ),
       );
     } catch (e) {
+      if (isClosed) return;
       emit(VerifySerialIdFailed('Error when trying to verify serial id'));
     }
   }
@@ -64,6 +66,8 @@ class StartupCubit extends Cubit<StartupState> {
         return emit(NoConnectedLicense('Wrong product name: $product'));
       }
       await deviceRepository.fetchDeviceLicense();
+
+      if (isClosed) return;
 
       return emit(
         LicenseConnected(
@@ -87,6 +91,7 @@ class StartupCubit extends Cubit<StartupState> {
 
   Future<void> startGuideDone() async {
     await deviceRepository.setStartGuideCompleted();
+    if (isClosed) return;
     emit(StartupDone());
   }
 

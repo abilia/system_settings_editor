@@ -70,8 +70,9 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
           parameter is! ActivityAlarm || !await _notificationActive();
       if (playNow) {
         _log.fine('playing AlarmSpeech');
-        emit(AlarmSpeechState.played);
         soundBloc.add(PlaySound(alarm.speech));
+        if (isClosed) return;
+        emit(AlarmSpeechState.played);
       } else {
         _log.finer('has ongoing notification, ignoring');
       }

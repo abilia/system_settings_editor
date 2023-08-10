@@ -29,6 +29,7 @@ class DayCalendarViewCubit extends Cubit<DayCalendarViewSettings> {
   ) async {
     await dayCalendarViewDb
         .setDayCalendarViewOptionsSettings(dayCalendarViewOptionsSettings);
+    if (isClosed) return;
     emit(dayCalendarViewOptionsSettings);
   }
 }

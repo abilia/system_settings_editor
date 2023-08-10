@@ -64,6 +64,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
   }
 
   Future<void> goToNextMonth() async {
+    if (isClosed) return;
     _maybeGoToCurrentDay(state.firstDay.nextMonth());
     final first = state.firstDay.nextMonth();
     final last = first.nextMonth();
@@ -79,6 +80,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
   }
 
   Future<void> goToPreviousMonth() async {
+    if (isClosed) return;
     _maybeGoToCurrentDay(state.firstDay.previousMonth());
     final first = state.firstDay.previousMonth();
     final last = first.nextMonth();
@@ -94,6 +96,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
   }
 
   Future<void> goToCurrentMonth() async {
+    if (isClosed) return;
     dayPickerBloc.add(GoTo(day: clockBloc.state));
     final first = clockBloc.state.firstDayOfMonth();
     final last = first.nextMonth();
@@ -116,6 +119,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
   }
 
   Future<void> updateMonth([_]) async {
+    if (isClosed) return;
     final first = state.firstDay;
     final last = first.nextMonth();
     emit(

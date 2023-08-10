@@ -13,7 +13,7 @@ class ResetDeviceCubit extends Cubit<ResetDeviceState> {
   Future<void> factoryResetDevice() async {
     emit(const FactoryResetInProgress());
     final success = await factoryResetRepository.factoryResetDevice();
-    if (!success) {
+    if (!success && !isClosed) {
       emit(const FactoryResetFailed());
     }
   }
