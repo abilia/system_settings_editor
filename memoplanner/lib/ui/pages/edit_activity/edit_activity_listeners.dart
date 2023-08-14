@@ -64,51 +64,44 @@ class ErrorPopupListener extends StatelessWidget {
     Set<SaveError> errors,
     BuildContext context,
   ) async {
-    final translate = Lt.of(context);
     SaveRecurring? saveEvent;
     final state = context.read<EditActivityCubit>().state;
     final wizardCubit = context.read<WizardCubit>();
 
-    if (errors.contains(SaveError.storedRecurring)) {
-      if (state is StoredActivityState) {
-        final applyTo = await Navigator.of(context).push<ApplyTo>(
-          PersistentMaterialPageRoute(
-            builder: (_) => SelectRecurrentTypePage(
-              heading: translate.editRecurringActivity,
-              headingIcon: AbiliaIcons.edit,
-              thisDayAndForwardVisible: state.unchangedDate,
-            ),
-            settings: (SelectRecurrentTypePage).routeSetting(),
+    if (errors.contains(SaveError.storedRecurring) &&
+        state is StoredActivityState) {
+      final applyTo = await Navigator.of(context).push<ApplyTo>(
+        PersistentMaterialPageRoute(
+          builder: (_) => SelectRecurrentTypePage(
+            heading: Lt.of(context).editRecurringActivity,
+            headingIcon: AbiliaIcons.edit,
+            thisDayAndForwardVisible: state.unchangedDate,
           ),
-        );
-        if (applyTo == null) return;
-        saveEvent = SaveRecurring(applyTo, state.day);
-      }
+          settings: (SelectRecurrentTypePage).routeSetting(),
+        ),
+      );
+      if (applyTo == null) return;
+      saveEvent = SaveRecurring(applyTo, state.day);
     }
-    if (errors.any({
-      SaveError.unconfirmedStartTimeBeforeNow,
-      SaveError.unconfirmedActivityConflict
-    }.contains)) {
-      if (errors.contains(SaveError.unconfirmedStartTimeBeforeNow) &&
-          context.mounted) {
-        final confirmStartTimeBeforeNow = await showViewDialog(
-          context: context,
-          builder: (context) => const ConfirmStartTimeBeforeNowWarningDialog(),
-          routeSettings:
-              (ConfirmStartTimeBeforeNowWarningDialog).routeSetting(),
-        );
-        if (confirmStartTimeBeforeNow != true) return;
-      }
 
-      if (errors.contains(SaveError.unconfirmedActivityConflict) &&
-          context.mounted) {
-        final confirmConflict = await showViewDialog(
-          context: context,
-          builder: (context) => const ConfirmConflictWarningDialog(),
-          routeSettings: (ConfirmConflictWarningDialog).routeSetting(),
-        );
-        if (confirmConflict != true) return;
-      }
+    if (errors.contains(SaveError.unconfirmedStartTimeBeforeNow) &&
+        (saveEvent == null || saveEvent.applyTo == ApplyTo.onlyThisDay) &&
+        context.mounted) {
+      final confirmStartTimeBeforeNow = await showViewDialog(
+        context: context,
+        builder: (context) => const ConfirmStartTimeBeforeNowWarningDialog(),
+        routeSettings: (ConfirmStartTimeBeforeNowWarningDialog).routeSetting(),
+      );
+      if (confirmStartTimeBeforeNow != true) return;
+    }
+    if (errors.contains(SaveError.unconfirmedActivityConflict) &&
+        context.mounted) {
+      final confirmConflict = await showViewDialog(
+        context: context,
+        builder: (context) => const ConfirmConflictWarningDialog(),
+        routeSettings: (ConfirmConflictWarningDialog).routeSetting(),
+      );
+      if (confirmConflict != true) return;
     }
     wizardCubit.next(
       warningConfirmed: true,

@@ -313,7 +313,7 @@ void main() {
     expect(find.byType(ConfirmWarningDialog), findsOneWidget);
     expect(find.text(translate.startTimeBeforeNowWarning), findsOneWidget);
 
-    // Act dissmiss
+    // Act dismiss
     await tester.tap(
       find.descendant(
         of: find.byType(ConfirmWarningDialog),
@@ -322,7 +322,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    // Assert - back ad edit activity
+    // Assert - back to edit activity
     expect(find.byType(EditActivityPage), findsOneWidget);
     expect(find.byType(ConfirmWarningDialog), findsNothing);
     expect(find.text(translate.startTimeBeforeNowWarning), findsNothing);
@@ -368,7 +368,7 @@ void main() {
     expect(find.text(translate.missingTitleOrImage), findsOneWidget);
     expect(find.byType(ConfirmWarningDialog), findsNothing);
 
-    // Act -- dissmiss, enter title, press submit
+    // Act -- dismiss, enter title, press submit
     await tester.tap(
       find.descendant(
         of: find.byType(ErrorDialog),
@@ -706,6 +706,42 @@ void main() {
     // Assert - finds nothing
     expect(find.byType(ConfirmWarningDialog), findsNothing);
     expect(find.byType(EditActivityPage), findsNothing);
+  });
+
+  testWidgets('add recurring activity before now shows no warning',
+      (WidgetTester tester) async {
+    // Arrange
+    await tester.pumpWidget(createEditActivityPage(newActivity: true));
+    await tester.pumpAndSettle();
+
+    // Act enter title
+    await tester.ourEnterText(
+        find.byKey(TestKey.editTitleTextFormField), 'newActivtyName');
+    await tester.pumpAndSettle();
+    await tester.scrollDown(dy: -100);
+
+    // Act -- Change input to new start time
+    await tester.tap(timeFieldFinder);
+    await tester.pumpAndSettle();
+    await tester.enterTime(find.byKey(TestKey.startTimeInput), '0325');
+    await tester.tap(okButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Act -- go to recurrence tab
+    await tester.goToRecurrenceTab();
+    await tester.pumpAndSettle();
+
+    // Act -- set to weekly, deselect all days
+    await tester.tap(find.byIcon(AbiliaIcons.week));
+    await tester.pumpAndSettle();
+
+    // Act press submit
+    await tester.tap(submitButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Assert no warning about time before now
+    expect(find.byType(ConfirmWarningDialog), findsNothing);
+    expect(find.text(translate.startTimeBeforeNowWarning), findsNothing);
   });
 }
 

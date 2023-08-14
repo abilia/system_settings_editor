@@ -1144,16 +1144,6 @@ void main() {
           WizardState(
             0,
             const [WizardStep.advance],
-            saveErrors: const {SaveError.unconfirmedStartTimeBeforeNow},
-            successfulSave: false,
-          ),
-        );
-        await wizCubit.next(warningConfirmed: true);
-        expect(
-          wizCubit.state,
-          WizardState(
-            0,
-            const [WizardStep.advance],
             successfulSave: true,
           ),
         );
