@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
@@ -29,6 +30,7 @@ class RecordSoundWidget extends StatelessWidget {
                 children: <Widget>[
                   BlocProvider<SoundBloc>(
                     create: (context) => SoundBloc(
+                      audioPlayer: GetIt.I<AudioPlayer>(),
                       storage: GetIt.I<FileStorage>(),
                       userFileBloc: context.read<UserFileBloc>(),
                       spamProtectionDelay:
@@ -51,6 +53,7 @@ class RecordSoundWidget extends StatelessWidget {
                   SizedBox(height: layout.formPadding.verticalItemDistance),
                   BlocProvider<SoundBloc>(
                     create: (context) => SoundBloc(
+                      audioPlayer: GetIt.I<AudioPlayer>(),
                       storage: GetIt.I<FileStorage>(),
                       userFileBloc: context.read<UserFileBloc>(),
                       spamProtectionDelay:
@@ -154,6 +157,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                                   BlocProvider.value(value: soundBloc),
                                   BlocProvider(
                                     create: (_) => RecordSoundCubit(
+                                      audioPlayer: GetIt.I<AudioPlayer>(),
                                       originalSoundFile: recordedAudio,
                                     )..setFile(file),
                                   ),
@@ -394,10 +398,7 @@ class DeleteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IconActionButtonDark(
-        onPressed: () async {
-          context.read<SoundBloc>().add(const ResetPlayer());
-          await context.read<RecordSoundCubit>().deleteRecording();
-        },
+        onPressed: context.read<RecordSoundCubit>().deleteRecording,
         child: const Icon(AbiliaIcons.deleteAllClear),
       );
 }

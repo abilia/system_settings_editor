@@ -15,6 +15,7 @@ import 'package:memoplanner/utils/all.dart';
 
 import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';
+import '../../mocks/mocks.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
@@ -142,10 +143,7 @@ void main() {
 
   const MethodChannel localNotificationChannel =
       MethodChannel('dexterous.com/flutter/local_notifications');
-  const MethodChannel audioPlayerChannel =
-      MethodChannel('xyz.luan/audioplayers');
   final List<MethodCall> localNotificationLog = <MethodCall>[];
-  final List<MethodCall> audioLog = <MethodCall>[];
 
   setUp(() async {
     localNotificationLog.clear();
@@ -155,15 +153,6 @@ void main() {
       if (methodCall.method == 'initialize') return Future.value(true);
       if (methodCall.method == 'getActiveNotifications') {
         return null;
-      }
-      return null;
-    });
-    audioLog.clear();
-    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(audioPlayerChannel, (methodCall) async {
-      audioLog.add(methodCall);
-      if (methodCall.method == 'play') {
-        return Future.value(1);
       }
       return null;
     });
@@ -207,6 +196,7 @@ void main() {
       ..ticker = Ticker.fake(initialTime: startTime)
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..client = mockClient
+      ..audioPlayer = mockAudioPlayerFactory
       ..init();
   });
 

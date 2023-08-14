@@ -8,6 +8,8 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 import '../../fakes/all.dart';
+import '../../mocks/mocks.dart';
+import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -15,9 +17,11 @@ void main() {
   late SoundBloc soundBloc;
 
   const Duration spamProtectionDelay = Duration(milliseconds: 100);
+  late MockAudioPlayer mockAudioPlayer;
 
   final dummyFile =
       UnstoredAbiliaFile.forTest('testfile', 'jksd', File('nbnb'));
+  setUpAll(registerFallbackValues);
 
   setUp(() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
@@ -25,8 +29,9 @@ void main() {
             (methodCall) async {
       return null;
     });
-
+    mockAudioPlayer = mockAudioPlayerFactory();
     soundBloc = SoundBloc(
+      audioPlayer: mockAudioPlayer,
       storage: FakeFileStorage(),
       userFileBloc: FakeUserFileBloc(),
       spamProtectionDelay: spamProtectionDelay,
@@ -37,6 +42,7 @@ void main() {
     blocTest(
       'Initial state is NoSoundPlaying',
       build: () => soundBloc,
+      expect: () => [],
       verify: (SoundBloc bloc) => expect(
         bloc.state,
         const NoSoundPlaying(),
@@ -67,16 +73,6 @@ void main() {
       expect(await soundBloc.stream.first, SoundPlaying(dummyFile));
       soundBloc.add(const SoundCompleted());
       expect(await soundBloc.stream.first, const NoSoundPlaying());
-    });
-
-    test('ResetPlayer resets the AudioPlayer', () async {
-      final initialAudioPlayer = soundBloc.audioPlayer;
-      soundBloc.add(const ResetPlayer());
-      await Future.delayed(10.milliseconds());
-      expect(
-        soundBloc.audioPlayer == initialAudioPlayer,
-        isFalse,
-      );
     });
 
     const duration = 10000;

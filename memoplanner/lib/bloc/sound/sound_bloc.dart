@@ -27,13 +27,14 @@ class SoundBloc extends Bloc<SoundEvent, SoundState> {
 
   final Map<AbiliaFile, File> _fileMap = {};
 
-  late AudioPlayer audioPlayer;
-  late StreamSubscription audioPositionChanged;
-  late StreamSubscription onPlayerCompletion;
+  final AudioPlayer audioPlayer;
+  late final StreamSubscription audioPositionChanged;
+  late final StreamSubscription onPlayerCompletion;
 
   SoundBloc({
     required this.storage,
     required this.userFileBloc,
+    required this.audioPlayer,
     required Duration spamProtectionDelay,
   }) : super(const NoSoundPlaying()) {
     on<SoundControlEvent>(
@@ -43,7 +44,30 @@ class SoundBloc extends Bloc<SoundEvent, SoundState> {
           .asyncExpand(mapper),
     );
     on<SoundCallbackEvent>(_onCallback, transformer: droppable());
-    unawaited(_resetAudioPlayer());
+    onPlayerCompletion = audioPlayer.onPlayerComplete.listen((_) {
+      add(const SoundCompleted());
+    });
+    audioPositionChanged = audioPlayer.onPositionChanged
+        .throttleTime(const Duration(milliseconds: 25))
+        .listen(
+      (position) async {
+        final s = state;
+        if (s is SoundPlaying) {
+          final duration = s.duration == 0
+              ? (await audioPlayer.getDuration())?.inMilliseconds
+              : s.duration;
+          if (!isClosed) {
+            add(
+              PositionChanged(
+                s.currentSound,
+                duration ?? s.duration,
+                position,
+              ),
+            );
+          }
+        }
+      },
+    );
   }
 
   Future _onEvent(
@@ -55,8 +79,6 @@ class SoundBloc extends Bloc<SoundEvent, SoundState> {
     } else if (event is StopSound) {
       await audioPlayer.stop();
       emit(const NoSoundPlaying());
-    } else if (event is ResetPlayer) {
-      await _resetAudioPlayer();
     }
   }
 
@@ -133,44 +155,6 @@ class SoundBloc extends Bloc<SoundEvent, SoundState> {
     if (await tmpFile.exists()) return tmpFile;
 
     return file.copy(tmpPath);
-  }
-
-  /// 220818 - audioPlayer v1.0.1
-  /// Creating a new AudioPlayer is necessary because the current plugin tries
-  /// to set the previous source before setting the newly supplied source and
-  /// since we have deleted it, it won't work.
-  /// No official issue has been raised at this point, but there are some
-  /// possible fixes:
-  /// 1. Allow null as source. Then we could pass null before our new sound
-  /// 2. Null source in WrappedPlayer when calling release() (Easiest?)
-  /// 3. Don't try to set old source before new one in WrappedPlayer. (Maybe
-  /// other implications).
-  Future<void> _resetAudioPlayer() async {
-    audioPlayer = AudioPlayer();
-    onPlayerCompletion = audioPlayer.onPlayerComplete.listen((_) {
-      add(const SoundCompleted());
-    });
-    audioPositionChanged = audioPlayer.onPositionChanged
-        .throttleTime(const Duration(milliseconds: 25))
-        .listen(
-      (position) async {
-        final s = state;
-        if (s is SoundPlaying) {
-          final duration = s.duration == 0
-              ? (await audioPlayer.getDuration())?.inMilliseconds
-              : s.duration;
-          if (!isClosed) {
-            add(
-              PositionChanged(
-                s.currentSound,
-                duration ?? s.duration,
-                position,
-              ),
-            );
-          }
-        }
-      },
-    );
   }
 
   @override

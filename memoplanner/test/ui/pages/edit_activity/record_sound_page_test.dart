@@ -30,6 +30,7 @@ void main() {
     when(() => mockRecorder.start()).thenAnswer((_) => Future.value());
     when(() => mockRecorder.stop()).thenAnswer((_) => Future.value(filePath));
     setupPermissions();
+    registerFallbackValues();
   });
 
   bool isOkButtonActive(WidgetTester tester) =>
@@ -66,12 +67,14 @@ void main() {
               ),
               BlocProvider(
                 create: (context) => RecordSoundCubit(
+                  audioPlayer: mockAudioPlayerFactory(),
                   record: mockRecorder,
                   originalSoundFile: originalSoundFile,
                 ),
               ),
               BlocProvider<SoundBloc>(
                 create: (context) => SoundBloc(
+                  audioPlayer: mockAudioPlayerFactory(),
                   storage: FakeFileStorage(),
                   userFileBloc: context.read<UserFileBloc>(),
                   spamProtectionDelay: Duration.zero,

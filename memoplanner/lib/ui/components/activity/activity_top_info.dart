@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -44,6 +45,7 @@ class ActivityTopInfo extends StatelessWidget {
     if (showStart || endSpeech.isNotEmpty) {
       return BlocProvider(
         create: (context) => SoundBloc(
+          audioPlayer: GetIt.I<AudioPlayer>(),
           storage: GetIt.I<FileStorage>(),
           userFileBloc: context.read<UserFileBloc>(),
           spamProtectionDelay: GetIt.I<Delays>().spamProtectionDelay,

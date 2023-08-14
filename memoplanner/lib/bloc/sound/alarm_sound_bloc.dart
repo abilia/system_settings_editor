@@ -13,9 +13,9 @@ class AlarmSoundBloc extends Bloc<AlarmSoundEvent, Sound?> {
   late final StreamSubscription onPlayerCompletion;
 
   AlarmSoundBloc({
+    required this.audioPlayer,
     required Duration spamProtectionDelay,
-  })  : audioPlayer = AudioPlayer(),
-        super(null) {
+  }) : super(null) {
     on<AlarmSoundEvent>(_onEvent, transformer: _throttle(spamProtectionDelay));
     onPlayerCompletion = audioPlayer.onPlayerComplete
         .listen((_) => add(const AlarmSoundCompleted()));

@@ -26,8 +26,10 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
   StreamSubscription<Duration>? _tickerSubscription;
   StreamSubscription<Duration>? onDurationChanged;
   final AudioTicker _ticker = const AudioTicker(50);
+  final AudioPlayer audioPlayer;
 
   RecordSoundCubit({
+    required this.audioPlayer,
     required AbiliaFile originalSoundFile,
     Record? record,
   })  : _recorder = record ?? Record(),
@@ -39,7 +41,6 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
 
   Future<void> setFile(File? file) async {
     if (file != null) {
-      final audioPlayer = AudioPlayer();
       onDurationChanged = audioPlayer.onDurationChanged.listen((event) {
         final s = state;
         if (s is UnchangedRecordingSoundState) {

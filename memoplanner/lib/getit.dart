@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:abilia_sync/abilia_sync.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:auth/auth.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:calendar/all.dart';
@@ -148,6 +149,10 @@ class GetItInitializer {
   Device? _device;
   set device(Device device) => _device = device;
 
+  AudioPlayer Function()? _audioPlayerFactory;
+  set audioPlayer(AudioPlayer Function() audioPlayerFactory) =>
+      _audioPlayerFactory = audioPlayerFactory;
+
   void init() {
     final loginDb = _loginDb ?? LoginDb(_sharedPreferences);
     final deviceDb = _deviceDb ?? DeviceDb(_sharedPreferences);
@@ -221,6 +226,7 @@ class GetItInitializer {
               baseUrlDb: baseUrlDb,
               client: client,
             ),
-      );
+      )
+      ..registerFactory(_audioPlayerFactory ?? () => AudioPlayer());
   }
 }

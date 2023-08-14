@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -35,6 +36,7 @@ class QuickSettingsPage extends StatelessWidget {
             ]),
             BlocProvider<AlarmSoundBloc>(
               create: (_) => AlarmSoundBloc(
+                audioPlayer: GetIt.I<AudioPlayer>(),
                 spamProtectionDelay: GetIt.I<Delays>().spamProtectionDelay,
               ),
               child: BlocBuilder<AlarmSoundBloc, Sound?>(

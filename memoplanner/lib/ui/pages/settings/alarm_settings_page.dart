@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
@@ -25,6 +26,7 @@ class AlarmSettingsPage extends StatelessWidget {
       ),
       child: BlocProvider<AlarmSoundBloc>(
         create: (_) => AlarmSoundBloc(
+          audioPlayer: GetIt.I<AudioPlayer>(),
           spamProtectionDelay: GetIt.I<Delays>().spamProtectionDelay,
         ),
         child: BlocBuilder<AlarmSettingsCubit, AlarmSettings>(

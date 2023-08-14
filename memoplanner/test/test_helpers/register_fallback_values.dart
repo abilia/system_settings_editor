@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -38,4 +39,5 @@ void registerFallbackValues() {
   registerFallbackValue(ScheduleNotifications());
   registerFallbackValue(const StopSound());
   registerFallbackValue(FileStorage(''));
+  registerFallbackValue(UrlSource(''));
 }
