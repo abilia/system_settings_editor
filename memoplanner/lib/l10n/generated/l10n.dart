@@ -565,7 +565,8 @@ class Lt {
     'checklist': [],
     'note': [],
     'newNote': [],
-    'newChecklist': []
+    'newChecklist': [],
+    'infoTypeNone': []
   };
 
   /// `Welcome!`
@@ -648,40 +649,40 @@ class Lt {
     );
   }
 
-  /// `Enter your license key`
+  /// `Enter your licence key`
   String get enterYourLicense {
     return Intl.message(
-      'Enter your license key',
+      'Enter your licence key',
       name: 'enterYourLicense',
       desc: '',
       args: [],
     );
   }
 
-  /// `License key should contain 12 digits`
+  /// `Licence key should contain 12 digits`
   String get enterYourLicenseHint {
     return Intl.message(
-      'License key should contain 12 digits',
+      'Licence key should contain 12 digits',
       name: 'enterYourLicenseHint',
       desc: '',
       args: [],
     );
   }
 
-  /// `License is already in use`
+  /// `Licence is already in use`
   String get licenseErrorAlreadyInUse {
     return Intl.message(
-      'License is already in use',
+      'Licence is already in use',
       name: 'licenseErrorAlreadyInUse',
       desc: '',
       args: [],
     );
   }
 
-  /// `We didn't find a valid license.\nPlease check the license key and try again`
+  /// `We didn't find a valid licence.\nPlease check the licence key and try again.`
   String get licenseErrorNotFound {
     return Intl.message(
-      'We didn\'t find a valid license.\nPlease check the license key and try again',
+      'We didn\'t find a valid licence.\nPlease check the licence key and try again.',
       name: 'licenseErrorNotFound',
       desc: '',
       args: [],
@@ -1018,30 +1019,30 @@ class Lt {
     );
   }
 
-  /// `This account has no valid license.`
+  /// `This account has no valid licence.`
   String get noLicense {
     return Intl.message(
-      'This account has no valid license.',
+      'This account has no valid licence.',
       name: 'noLicense',
       desc: '',
       args: [],
     );
   }
 
-  /// `License is expired`
+  /// `Licence is expired`
   String get licenseExpired {
     return Intl.message(
-      'License is expired',
+      'Licence is expired',
       name: 'licenseExpired',
       desc: '',
       args: [],
     );
   }
 
-  /// `Your license has expired and MEMOplanner will no longer synchronize with myAbilia`
+  /// `Your licence has expired and MEMOplanner will no longer synchronize with myAbilia`
   String get licenseExpiredMessage {
     return Intl.message(
-      'Your license has expired and MEMOplanner will no longer synchronize with myAbilia',
+      'Your licence has expired and MEMOplanner will no longer synchronize with myAbilia',
       name: 'licenseExpiredMessage',
       desc: '',
       args: [],
@@ -1058,30 +1059,30 @@ class Lt {
     );
   }
 
-  /// `MEMOplanner license expired`
+  /// `MEMOplanner licence expired`
   String get memoplannerLicenseExpired {
     return Intl.message(
-      'MEMOplanner license expired',
+      'MEMOplanner licence expired',
       name: 'memoplannerLicenseExpired',
       desc: '',
       args: [],
     );
   }
 
-  /// `You need an active license to save your data to myAbilia.`
+  /// `You need an active licence to save your data to myAbilia.`
   String get needLicenseToSaveData {
     return Intl.message(
-      'You need an active license to save your data to myAbilia.',
+      'You need an active licence to save your data to myAbilia.',
       name: 'needLicenseToSaveData',
       desc: '',
       args: [],
     );
   }
 
-  /// `Contact your MEMOplanner provider in order to extend your license.`
+  /// `Contact your MEMOplanner provider in order to extend your licence.`
   String get contactProviderToExtendLicense {
     return Intl.message(
-      'Contact your MEMOplanner provider in order to extend your license.',
+      'Contact your MEMOplanner provider in order to extend your licence.',
       name: 'contactProviderToExtendLicense',
       desc: '',
       args: [],
@@ -5038,20 +5039,20 @@ class Lt {
     );
   }
 
-  /// `License number`
+  /// `Licence number`
   String get licenseNumber {
     return Intl.message(
-      'License number',
+      'Licence number',
       name: 'licenseNumber',
       desc: '',
       args: [],
     );
   }
 
-  /// `License valid date`
+  /// `Licence valid date`
   String get licenseValidDate {
     return Intl.message(
-      'License valid date',
+      'Licence valid date',
       name: 'licenseValidDate',
       desc: '',
       args: [],
@@ -5593,6 +5594,16 @@ class Lt {
     return Intl.message(
       'New checklist',
       name: 'newChecklist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get infoTypeNone {
+    return Intl.message(
+      '',
+      name: 'infoTypeNone',
       desc: '',
       args: [],
     );
