@@ -99,7 +99,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
         BlocListener<LicenseCubit, LicenseState>(
           listener: (context, state) async {
             if (Config.isMP && state is NoValidLicense) {
-              await showViewDialog(
+              await showPersistentDialog(
                 context: context,
                 builder: (context) => const LicenseExpiredWarningDialog(),
                 routeSettings: (LicenseExpiredWarningDialog).routeSetting(),
